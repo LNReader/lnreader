@@ -3,7 +3,7 @@ import { StyleSheet, View, FlatList, ActivityIndicator } from "react-native";
 import { TouchableRipple } from "react-native-paper";
 import NovelCover from "../components/NovelCover";
 
-const BrowseScreen = ({ navigation }) => {
+const LatestScreen = ({ navigation }) => {
     const [loading, setLoading] = useState(true);
     const [novels, setNovels] = useState();
 
@@ -29,6 +29,7 @@ const BrowseScreen = ({ navigation }) => {
                     numColumns={3}
                     data={novels}
                     showsVerticalScrollIndicator={false}
+                    keyExtractor={(item) => item.novelUrl}
                     renderItem={({ item }) => (
                         <TouchableRipple
                             borderless
@@ -48,7 +49,7 @@ const BrowseScreen = ({ navigation }) => {
     );
 };
 
-export default BrowseScreen;
+export default LatestScreen;
 
 const styles = StyleSheet.create({
     container: {

@@ -5,9 +5,12 @@ import {
     Image,
     ActivityIndicator,
     ImageBackground,
+    Text,
+    FlatList,
 } from "react-native";
 import { Appbar } from "react-native-paper";
 import { LinearGradient } from "expo-linear-gradient";
+import { ScrollView } from "react-native-gesture-handler";
 
 const NovelItem = ({ route, navigation }) => {
     const item = route.params;
@@ -16,7 +19,7 @@ const NovelItem = ({ route, navigation }) => {
     const [novel, setNovel] = useState();
 
     useEffect(() => {
-        fetch("http://192.168.1.38:5000/api/" + item.novelUrl)
+        fetch(`http://192.168.1.38:5000/api/novel/${item.novelUrl}`)
             .then((response) => response.json())
             .then((json) => setNovel(json))
             .catch((error) => console.error(error))
@@ -40,36 +43,67 @@ const NovelItem = ({ route, navigation }) => {
                     titleStyle={{ color: "white" }}
                 />
             </Appbar.Header>
-            <View style={styles.container}>
+            <ScrollView style={styles.container}>
+                <ImageBackground
+                    source={{
+                        uri: item.novelCover,
+                    }}
+                    style={styles.background}
+                >
+                    <LinearGradient
+                        colors={["transparent", "#202125"]}
+                        style={styles.linearGradient}
+                    >
+                        <View style={styles.detailsContainer}>
+                            <Image
+                                source={{
+                                    uri: item.novelCover,
+                                }}
+                                style={styles.logo}
+                            />
+                        </View>
+                    </LinearGradient>
+                </ImageBackground>
                 {loading ? (
                     <View style={{ flex: 1, justifyContent: "center" }}>
                         <ActivityIndicator size="large" color="white" />
                     </View>
                 ) : (
                     <>
-                        <ImageBackground
-                            source={{
-                                uri: item.novelCover,
-                            }}
-                            style={styles.background}
-                        >
-                            <LinearGradient
-                                colors={["transparent", "#202125"]}
-                                style={styles.linearGradient}
-                            >
-                                <View style={styles.detailsContainer}>
-                                    <Image
-                                        source={{
-                                            uri: item.novelCover,
+                        <FlatList
+                            data={novel.novelChapters}
+                            showsVerticalScrollIndicator={false}
+                            keyExtractor={(item) => item.chapterUrl}
+                            renderItem={({ item }) => (
+                                <>
+                                    <Text
+                                        style={{
+                                            color: "white",
+                                            paddingLeft: 7,
+                                            paddingRight: 7,
+                                            paddingTop: 15,
                                         }}
-                                        style={styles.logo}
-                                    />
-                                </View>
-                            </LinearGradient>
-                        </ImageBackground>
+                                        numberOfLines={1}
+                                    >
+                                        {item.chapterName}
+                                    </Text>
+                                    <Text
+                                        style={{
+                                            color: "grey",
+                                            paddingLeft: 7,
+                                            paddingBottom: 7,
+                                            fontSize: 13,
+                                        }}
+                                        numberOfLines={1}
+                                    >
+                                        {item.releaseDate}
+                                    </Text>
+                                </>
+                            )}
+                        />
                     </>
                 )}
-            </View>
+            </ScrollView>
         </>
     );
 };

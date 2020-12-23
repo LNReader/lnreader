@@ -17,7 +17,6 @@ const SearchScreen = ({ navigation }) => {
 
     const getNovels = (searchText) => {
         setLoading(true);
-        setNovels([]);
         fetch(`http://192.168.1.38:5000/api/search/?s=${searchText}&?o=rating`)
             .then((response) => response.json())
             .then((json) => setNovels(json))
@@ -43,6 +42,8 @@ const SearchScreen = ({ navigation }) => {
                     blurOnSubmit={true}
                     onChangeText={(text) => {
                         setSearchText(text);
+                    }}
+                    onSubmitEditing={() => {
                         getNovels(searchText);
                     }}
                 />
@@ -67,6 +68,7 @@ const SearchScreen = ({ navigation }) => {
                         numColumns={3}
                         data={novels}
                         showsVerticalScrollIndicator={false}
+                        keyExtractor={(item) => item.novelUrl}
                         renderItem={({ item }) => (
                             <TouchableRipple
                                 borderless

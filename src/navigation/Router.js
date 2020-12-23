@@ -6,12 +6,10 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 
 import Library from "../screens/Library";
 import Updates from "../screens/Updates";
-import Browse from "../screens/Browse";
+import Latest from "../screens/Latest";
 import More from "../screens/More";
 import Search from "../screens/Search";
 import NovelItem from "../screens/NovelItem";
-
-import { CardStyleInterpolators } from "@react-navigation/stack";
 
 const Stack = createStackNavigator();
 
@@ -30,7 +28,7 @@ const LibraryStack = () => {
     );
 };
 
-const BrowseStack = () => {
+const LatestStack = () => {
     return (
         <Stack.Navigator
             screenOptions={{
@@ -38,7 +36,7 @@ const BrowseStack = () => {
                 headerStyle: { backgroundColor: "#242529" },
             }}
         >
-            <Stack.Screen name="Browse" component={Browse} />
+            <Stack.Screen name="Latest" component={Latest} />
             <Stack.Screen
                 name="NovelItem"
                 component={NovelItem}
@@ -148,8 +146,8 @@ const Router = () => {
                 }}
             />
             <Tab.Screen
-                name="Browse"
-                component={BrowseStack}
+                name="Latest"
+                component={LatestStack}
                 options={{
                     tabBarIcon: ({ color }) => (
                         <MaterialCommunityIcons
