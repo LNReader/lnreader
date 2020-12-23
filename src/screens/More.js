@@ -1,8 +1,19 @@
 import React from "react";
-import { Text } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
 const MoreScreen = () => {
-    return <Text>More</Text>;
+    return (
+        <View style={styles.container}>
+            <Text style={{ color: "#FFFFFF" }}>More</Text>
+        </View>
+    );
 };
 
 export default MoreScreen;
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: "#202125",
+    },
+});

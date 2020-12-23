@@ -1,8 +1,19 @@
 import React from "react";
-import { Text } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
-const MoreScreen = () => {
-    return <Text>Updates</Text>;
+const UpdatesScreen = () => {
+    return (
+        <View style={styles.container}>
+            <Text style={{ color: "#FFFFFF" }}>Update</Text>
+        </View>
+    );
 };
 
-export default MoreScreen;
+export default UpdatesScreen;
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: "#202125",
+    },
+});
