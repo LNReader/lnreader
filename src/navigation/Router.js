@@ -10,6 +10,7 @@ import Latest from "../screens/Latest";
 import More from "../screens/More";
 import Search from "../screens/Search";
 import NovelItem from "../screens/NovelItem";
+import ChapterItem from "../screens/ChapterItem";
 
 const Stack = createStackNavigator();
 
@@ -66,6 +67,13 @@ const SearchStack = () => {
             <Stack.Screen
                 name="NovelItem"
                 component={NovelItem}
+                options={{
+                    headerShown: false,
+                }}
+            />
+            <Stack.Screen
+                name="ChapterItem"
+                component={ChapterItem}
                 options={{
                     headerShown: false,
                 }}
