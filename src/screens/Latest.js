@@ -1,27 +1,48 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, FlatList, ActivityIndicator } from "react-native";
+import {
+    StyleSheet,
+    View,
+    FlatList,
+    ActivityIndicator,
+    RefreshControl,
+} from "react-native";
 import { TouchableRipple } from "react-native-paper";
 import NovelCover from "../components/NovelCover";
+import { theme } from "../theming/theme";
 
 const LatestScreen = ({ navigation }) => {
     const [loading, setLoading] = useState(true);
+    const [refreshing, setRefreshing] = useState(true);
     const [novels, setNovels] = useState();
 
-    useEffect(() => {
+    const getNovels = () => {
         fetch("http://192.168.1.38:5000/api/latest")
             .then((response) => response.json())
             .then((json) => setNovels(json))
             .catch((error) => console.error(error))
             .finally(() => {
+                setRefreshing(false);
                 setLoading(false);
             });
+    };
+
+    useEffect(() => {
+        getNovels();
     }, []);
+
+    const onRefresh = () => {
+        setRefreshing(true);
+        getNovels();
+    };
 
     return (
         <View style={styles.container}>
             {loading ? (
                 <View style={{ flex: 1, justifyContent: "center" }}>
-                    <ActivityIndicator size="large" color="white" />
+                    <ActivityIndicator
+                        size="large"
+                        color={theme.colorAccentDark}
+                    />
                 </View>
             ) : (
                 <FlatList
@@ -43,6 +64,14 @@ const LatestScreen = ({ navigation }) => {
                             <NovelCover item={item} />
                         </TouchableRipple>
                     )}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={refreshing}
+                            onRefresh={onRefresh}
+                            colors={["white"]}
+                            progressBackgroundColor={theme.colorAccentDark}
+                        />
+                    }
                 />
             )}
         </View>

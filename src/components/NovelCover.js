@@ -10,6 +10,7 @@ const NovelCover = ({ item }) => {
             }}
             style={styles.logo}
             imageStyle={{ borderRadius: 6 }}
+            progressiveRenderingEnabled={true}
         >
             <View style={styles.titleContainer}>
                 <LinearGradient

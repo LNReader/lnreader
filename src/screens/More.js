@@ -1,11 +1,30 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
+import { List } from "react-native-paper";
+import { theme } from "../theming/theme";
 
-const MoreScreen = () => {
+const MoreScreen = ({ navigation }) => {
     return (
-        <View style={styles.container}>
-            <Text style={{ color: "#FFFFFF" }}>More</Text>
-        </View>
+        <List.Section
+            style={{
+                flex: 1,
+                backgroundColor: theme.colorDarkPrimaryDark,
+                marginTop: 0,
+                marginBottom: 0,
+            }}
+        >
+            <List.Item
+                titleStyle={{ color: theme.textColorPrimaryDark }}
+                title="About"
+                left={() => (
+                    <List.Icon
+                        color={theme.colorAccentDark}
+                        icon="information-outline"
+                    />
+                )}
+                onPress={() => navigation.navigate("About")}
+            />
+        </List.Section>
     );
 };
 

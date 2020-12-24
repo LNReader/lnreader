@@ -9,7 +9,7 @@ import {
     ScrollView,
     RefreshControl,
 } from "react-native";
-import { Appbar, TouchableRipple } from "react-native-paper";
+import { Appbar, TouchableRipple, IconButton } from "react-native-paper";
 import { LinearGradient } from "expo-linear-gradient";
 
 import { theme } from "../theming/theme";
@@ -21,12 +21,16 @@ const NovelItem = ({ route, navigation }) => {
     const [refreshing, setRefreshing] = useState(true);
 
     const [novel, setNovel] = useState();
+    const [chapters, setChapters] = useState();
     const [more, setMore] = useState(false);
 
     const getNovel = () => {
         fetch(`http://192.168.1.38:5000/api/novel/${item.novelUrl}`)
             .then((response) => response.json())
-            .then((json) => setNovel(json))
+            .then((json) => {
+                setNovel(json);
+                setChapters(json.novelChapters);
+            })
             .catch((error) => console.error(error))
             .finally(() => {
                 setRefreshing(false);
@@ -59,6 +63,7 @@ const NovelItem = ({ route, navigation }) => {
                     titleStyle={{ color: theme.textColorPrimaryDark }}
                 />
             </Appbar.Header>
+
             <ScrollView
                 style={styles.container}
                 refreshControl={
@@ -153,48 +158,52 @@ const NovelItem = ({ route, navigation }) => {
                 </ImageBackground>
                 {!loading && (
                     <>
-                        <View
-                            style={{ paddingHorizontal: 15, marginBottom: 10 }}
-                        >
-                            <Text
+                        {novel.novelSummary.length > 0 && (
+                            <View
                                 style={{
-                                    color: theme.textColorPrimaryDark,
-                                    marginTop: 5,
-                                    paddingVertical: 5,
-                                    fontSize: 15,
+                                    paddingHorizontal: 15,
+                                    marginBottom: 10,
                                 }}
                             >
-                                About
-                            </Text>
-                            <Text
-                                style={{
-                                    color: theme.textColorSecondaryDark,
-                                    lineHeight: 20,
-                                }}
-                                numberOfLines={more ? 100 : 2}
-                                onPress={() => setMore(!more)}
-                                ellipsizeMode="clip"
-                            >
-                                {novel.novelSummary}
-                            </Text>
-                            <Text
-                                style={{
-                                    color: theme.colorAccentDark,
-                                    fontWeight: "bold",
-                                    position: "absolute",
-                                    bottom: 0,
-                                    right: 15,
-                                }}
-                                onPress={() => setMore(!more)}
-                            >
-                                {more ? "Less" : "More"}
-                            </Text>
-                        </View>
-
+                                <Text
+                                    style={{
+                                        color: theme.textColorPrimaryDark,
+                                        marginTop: 5,
+                                        paddingVertical: 5,
+                                        fontSize: 15,
+                                    }}
+                                >
+                                    About
+                                </Text>
+                                <Text
+                                    style={{
+                                        color: theme.textColorSecondaryDark,
+                                        lineHeight: 20,
+                                    }}
+                                    numberOfLines={more ? 100 : 2}
+                                    onPress={() => setMore(!more)}
+                                    ellipsizeMode="clip"
+                                >
+                                    {novel.novelSummary}
+                                </Text>
+                                <Text
+                                    style={{
+                                        color: theme.colorAccentDark,
+                                        fontWeight: "bold",
+                                        position: "absolute",
+                                        bottom: 0,
+                                        right: 15,
+                                    }}
+                                    onPress={() => setMore(!more)}
+                                >
+                                    {more ? "Less" : "More"}
+                                </Text>
+                            </View>
+                        )}
                         <FlatList
                             contentContainerStyle={{
                                 paddingHorizontal: 15,
-                                marginBottom: 10,
+                                marginBottom: 15,
                             }}
                             horizontal
                             data={novel.novelDetails["Genre(s)"].split(",")}
@@ -214,19 +223,44 @@ const NovelItem = ({ route, navigation }) => {
                             )}
                         />
 
-                        <Text
+                        <TouchableRipple
                             style={{
-                                color: theme.textColorPrimaryDark,
-                                paddingHorizontal: 15,
-                                marginTop: 5,
-                                paddingVertical: 5,
-                                fontSize: 15,
+                                flex: 1,
+                                flexDirection: "row",
+                                justifyContent: "space-between",
+                                alignItems: "center",
                             }}
+                            onPress={() =>
+                                setChapters((chapters) => chapters.reverse())
+                            }
+                            rippleColor={theme.rippleColorDark}
                         >
-                            {novel.novelChapters.length + "  Chapters"}
-                        </Text>
+                            <>
+                                <Text
+                                    style={{
+                                        color: theme.textColorPrimaryDark,
+                                        paddingHorizontal: 15,
+                                        paddingVertical: 5,
+                                        fontSize: 15,
+                                    }}
+                                >
+                                    {chapters.length + "  Chapters"}
+                                </Text>
+                                <IconButton
+                                    icon="filter-variant"
+                                    color={theme.textColorPrimaryDark}
+                                    size={20}
+                                    onPress={() =>
+                                        setChapters((chapters) =>
+                                            chapters.reverse()
+                                        )
+                                    }
+                                />
+                            </>
+                        </TouchableRipple>
                         <FlatList
-                            data={novel.novelChapters}
+                            data={chapters}
+                            extraData={chapters}
                             showsVerticalScrollIndicator={false}
                             keyExtractor={(item) => item.chapterUrl}
                             removeClippedSubviews={true}

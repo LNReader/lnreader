@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { Appbar, TouchableRipple } from "react-native-paper";
 import NovelCover from "../components/NovelCover";
+import { theme } from "../theming/theme";
 
 const SearchScreen = ({ navigation }) => {
     const [loading, setLoading] = useState(false);
@@ -25,10 +26,11 @@ const SearchScreen = ({ navigation }) => {
     };
     return (
         <>
-            <Appbar.Header style={{ backgroundColor: "#202125" }}>
+            <Appbar.Header style={{ backgroundColor: theme.colorDarkPrimary }}>
                 <Appbar.BackAction
                     onPress={() => {
                         navigation.goBack();
+                        setSearchText("");
                         setNovels([]);
                     }}
                     color={"white"}
@@ -60,7 +62,10 @@ const SearchScreen = ({ navigation }) => {
             <View style={styles.container}>
                 {loading ? (
                     <View style={{ flex: 1, justifyContent: "center" }}>
-                        <ActivityIndicator size="large" color="white" />
+                        <ActivityIndicator
+                            size="large"
+                            color={theme.colorAccentDark}
+                        />
                     </View>
                 ) : (
                     <FlatList
