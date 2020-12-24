@@ -2,6 +2,9 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { theme } from "../theming/theme";
+import { CardStyleInterpolators } from "@react-navigation/stack";
+import { HeaderStyleInterpolators } from "@react-navigation/stack";
+import { TransitionPresets } from "@react-navigation/stack";
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
@@ -173,6 +176,7 @@ const MainStack = () => {
         <Stack.Navigator
             screenOptions={{
                 headerShown: false,
+                ...TransitionPresets.RevealFromBottomAndroid,
             }}
         >
             <Stack.Screen name="MainStack" component={Router} />

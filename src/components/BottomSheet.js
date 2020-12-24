@@ -23,6 +23,16 @@ export const BottomSheet = ({
                 },
             ]}
         >
+            <View
+                style={{
+                    backgroundColor: theme.textColorHintDark,
+                    height: 5,
+                    width: 30,
+                    borderRadius: 50,
+                    top: 10,
+                    alignSelf: "center",
+                }}
+            />
             <List.Section
                 title="Sort"
                 titleStyle={{

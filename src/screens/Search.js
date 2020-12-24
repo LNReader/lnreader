@@ -68,26 +68,60 @@ const SearchScreen = ({ navigation }) => {
                         />
                     </View>
                 ) : (
-                    <FlatList
-                        contentContainerStyle={styles.list}
-                        numColumns={3}
-                        data={novels}
-                        showsVerticalScrollIndicator={false}
-                        keyExtractor={(item) => item.novelUrl}
-                        renderItem={({ item }) => (
-                            <TouchableRipple
-                                borderless
-                                centered
-                                rippleColor="rgba(256,256,256,0.3)"
-                                style={styles.opac}
-                                onPress={() =>
-                                    navigation.navigate("NovelItem", item)
-                                }
+                    <>
+                        {!novels.length ? (
+                            <View
+                                style={{
+                                    flex: 1,
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                }}
                             >
-                                <NovelCover item={item} />
-                            </TouchableRipple>
+                                <Text
+                                    style={{
+                                        color: theme.textColorSecondaryDark,
+                                        fontSize: 40,
+                                        fontWeight: "bold",
+                                    }}
+                                >
+                                    Σ(ಠ_ಠ)
+                                </Text>
+                                <Text
+                                    style={{
+                                        color: theme.textColorSecondaryDark,
+                                        fontWeight: "bold",
+                                        marginTop: 10,
+                                    }}
+                                >
+                                    Try searching a light novel
+                                </Text>
+                            </View>
+                        ) : (
+                            <FlatList
+                                contentContainerStyle={styles.list}
+                                numColumns={3}
+                                data={novels}
+                                showsVerticalScrollIndicator={false}
+                                keyExtractor={(item) => item.novelUrl}
+                                renderItem={({ item }) => (
+                                    <TouchableRipple
+                                        borderless
+                                        centered
+                                        rippleColor="rgba(256,256,256,0.3)"
+                                        style={styles.opac}
+                                        onPress={() =>
+                                            navigation.navigate(
+                                                "NovelItem",
+                                                item
+                                            )
+                                        }
+                                    >
+                                        <NovelCover item={item} />
+                                    </TouchableRipple>
+                                )}
+                            />
                         )}
-                    />
+                    </>
                 )}
             </View>
         </>
