@@ -1,19 +1,8 @@
 import React, { useState, useEffect } from "react";
-import {
-    StyleSheet,
-    View,
-    Image,
-    ImageBackground,
-    Text,
-    FlatList,
-    ScrollView,
-    Platform,
-    RefreshControl,
-    StatusBar,
-    ActivityIndicator,
-} from "react-native";
+import { StyleSheet, View, Text, ActivityIndicator } from "react-native";
+import BottomSheet from "../components/ChapterBottomSheet";
 
-import { Appbar } from "react-native-paper";
+import { Appbar, Provider, Portal } from "react-native-paper";
 import { theme } from "../theming/theme";
 import { CollapsibleHeaderScrollView } from "react-native-collapsible-header-views";
 
@@ -23,6 +12,8 @@ const ChapterItem = ({ route, navigation }) => {
     const [loading, setLoading] = useState(true);
 
     const [chapter, setChapter] = useState();
+
+    const [size, setSize] = useState(14);
 
     useEffect(() => {
         getChapter();
@@ -39,12 +30,12 @@ const ChapterItem = ({ route, navigation }) => {
     };
 
     return (
-        <>
+        <Provider>
             <CollapsibleHeaderScrollView
-                headerContainerBackgroundColor={theme.colorDarkPrimary}
+                headerContainerBackgroundColor={"rgba(0,0,0,0.2)"}
                 CollapsibleHeaderComponent={
                     <Appbar.Header
-                        style={{ backgroundColor: theme.colorDarkPrimary }}
+                        style={{ backgroundColor: "rgba(0,0,0,0.2)" }}
                     >
                         <Appbar.BackAction
                             onPress={() => {
@@ -58,6 +49,7 @@ const ChapterItem = ({ route, navigation }) => {
                             title={loading ? "Chapter" : chapter.chapterName}
                             titleStyle={{ color: theme.textColorPrimaryDark }}
                         />
+
                         {!loading && (
                             <>
                                 <Appbar.Action
@@ -84,6 +76,12 @@ const ChapterItem = ({ route, navigation }) => {
                                 />
                             </>
                         )}
+                        <Appbar.Action
+                            icon="dots-vertical"
+                            size={26}
+                            onPress={() => _panel.show({ velocity: -1.5 })}
+                            color={"white"}
+                        />
                     </Appbar.Header>
                 }
                 headerHeight={100}
@@ -100,15 +98,23 @@ const ChapterItem = ({ route, navigation }) => {
                     <Text
                         style={{
                             color: theme.textColorPrimaryDark,
-                            lineHeight: 20,
+                            // lineHeight: 20,
                             paddingVertical: 15,
+                            fontSize: size,
                         }}
                     >
                         {chapter.chapterText.trim()}
                     </Text>
                 )}
+                <Portal>
+                    <BottomSheet
+                        bottomSheetRef={(c) => (_panel = c)}
+                        setSize={setSize}
+                        size={size}
+                    />
+                </Portal>
             </CollapsibleHeaderScrollView>
-        </>
+        </Provider>
     );
 };
 
@@ -117,7 +123,8 @@ export default ChapterItem;
 const styles = StyleSheet.create({
     container: {
         flexGrow: 1,
-        backgroundColor: "#202125",
+        // backgroundColor: "#202125",
+        backgroundColor: "#000000",
         paddingHorizontal: 10,
         paddingVertical: 10,
     },

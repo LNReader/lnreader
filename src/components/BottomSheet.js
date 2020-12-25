@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { Animated, StyleSheet, View } from "react-native";
 import { List } from "react-native-paper";
 import Bottomsheet from "rn-sliding-up-panel";
 import { theme } from "../theming/theme";

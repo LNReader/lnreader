@@ -68,10 +68,9 @@ const AllNovels = ({ navigation }) => {
                 />
                 <Appbar.Action
                     icon="filter-variant"
-                    onPress={() => {
-                        _panel.show({ velocity: -1.5 });
-                    }}
+                    onPress={() => _panel.show({ velocity: -1.5 })}
                 />
+                <Appbar.Action icon="refresh" onPress={() => onRefresh()} />
             </Appbar.Header>
             <View style={styles.container}>
                 {loading ? (
@@ -151,12 +150,14 @@ export default AllNovels;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#202125",
+        // backgroundColor: "#202125",
+        backgroundColor: "#000000",
     },
     opac: {
         height: 190,
         flex: 1 / 3,
-        margin: 3.2,
+        marginHorizontal: 3.6,
+        marginVertical: 3.2,
     },
     contentContainer: {
         flex: 1,

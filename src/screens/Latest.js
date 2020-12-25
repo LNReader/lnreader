@@ -83,7 +83,8 @@ export default LatestScreen;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#202125",
+        // backgroundColor: "#202125",
+        backgroundColor: "#000000",
     },
     opac: {
         height: 190,

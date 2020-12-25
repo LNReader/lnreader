@@ -133,7 +133,8 @@ export default SearchScreen;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#202125",
+        // backgroundColor: "#202125",
+        backgroundColor: "#000000",
     },
     textInput: {
         alignItems: "center",

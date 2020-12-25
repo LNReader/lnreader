@@ -1,9 +1,6 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import { theme } from "../theming/theme";
-import { CardStyleInterpolators } from "@react-navigation/stack";
-import { HeaderStyleInterpolators } from "@react-navigation/stack";
 import { TransitionPresets } from "@react-navigation/stack";
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -16,6 +13,8 @@ import Search from "../screens/Search";
 import NovelItem from "../screens/NovelItem";
 import ChapterItem from "../screens/ChapterItem";
 import About from "../screens/About";
+
+import { theme } from "../theming/theme";
 
 const Stack = createStackNavigator();
 
@@ -115,9 +114,10 @@ const Router = () => {
                     ),
                 }}
             />
+
             <Tab.Screen
-                name="Updates"
-                component={UpdatesStack}
+                name="Latest"
+                component={LatestStack}
                 options={{
                     tabBarIcon: ({ color }) => (
                         <MaterialCommunityIcons
@@ -134,7 +134,7 @@ const Router = () => {
                 options={{
                     tabBarIcon: ({ color }) => (
                         <MaterialCommunityIcons
-                            name="magnify"
+                            name="book-search"
                             color={color}
                             size={24}
                         />
@@ -142,8 +142,8 @@ const Router = () => {
                 }}
             />
             <Tab.Screen
-                name="Latest"
-                component={LatestStack}
+                name="Browse"
+                component={UpdatesStack}
                 options={{
                     tabBarIcon: ({ color }) => (
                         <MaterialCommunityIcons

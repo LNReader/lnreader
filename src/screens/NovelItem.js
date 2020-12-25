@@ -82,7 +82,7 @@ const NovelItem = ({ route, navigation }) => {
                     style={styles.background}
                 >
                     <LinearGradient
-                        colors={["transparent", "#202125"]}
+                        colors={["transparent", "#000000"]}
                         style={styles.linearGradient}
                     >
                         <View style={styles.detailsContainer}>
@@ -109,8 +109,9 @@ const NovelItem = ({ route, navigation }) => {
                                                 color:
                                                     theme.textColorSecondaryDark,
                                                 marginVertical: 3,
-                                                fontSize: 16,
+                                                fontSize: 15,
                                             }}
+                                            numberOfLines={1}
                                         >
                                             {novel.novelDetails[
                                                 "Alternative"
@@ -121,7 +122,7 @@ const NovelItem = ({ route, navigation }) => {
                                                 color:
                                                     theme.textColorSecondaryDark,
                                                 marginVertical: 3,
-                                                fontSize: 16,
+                                                fontSize: 15,
                                             }}
                                         >
                                             {novel.novelDetails[
@@ -133,7 +134,7 @@ const NovelItem = ({ route, navigation }) => {
                                                 color:
                                                     theme.textColorSecondaryDark,
                                                 marginVertical: 3,
-                                                fontSize: 16,
+                                                fontSize: 15,
                                             }}
                                         >
                                             {novel.novelDetails["Release"]}
@@ -143,7 +144,7 @@ const NovelItem = ({ route, navigation }) => {
                                                 color:
                                                     theme.textColorSecondaryDark,
                                                 marginVertical: 3,
-                                                fontSize: 16,
+                                                fontSize: 15,
                                             }}
                                         >
                                             {novel.novelDetails["Status"] +
@@ -317,7 +318,8 @@ export default NovelItem;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#202125",
+        // backgroundColor: "#202125",
+        backgroundColor: "#000000",
     },
     nameContainer: {
         flex: 1,
@@ -349,7 +351,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         marginHorizontal: 2,
         fontSize: 13,
-        paddingVertical: 1,
+        paddingVertical: 2,
         justifyContent: "center",
         flex: 1,
     },
