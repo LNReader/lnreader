@@ -25,7 +25,7 @@ const AllNovels = ({ navigation }) => {
     const [pageNo, setPageNo] = useState(2);
 
     const getNovels = () => {
-        fetch(`http://192.168.1.38:5000/api/novels/1/?o=${sort}`)
+        fetch(`http://192.168.1.39:5000/api/novels/1/?o=${sort}`)
             .then((response) => response.json())
             .then((json) => setNovels(json))
             .catch((error) => console.error(error))
@@ -38,7 +38,7 @@ const AllNovels = ({ navigation }) => {
 
     const loadMore = () => {
         setRefreshing(true);
-        fetch(`http://192.168.1.38:5000/api/novels/${pageNo}/?o=${sort}`)
+        fetch(`http://192.168.1.39:5000/api/novels/${pageNo}/?o=${sort}`)
             .then((response) => response.json())
             .then((json) => setNovels((novels) => novels.concat(json)))
             .catch((error) => console.error(error))

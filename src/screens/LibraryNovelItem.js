@@ -55,6 +55,20 @@ const NovelItem = ({ route, navigation }) => {
         });
     };
 
+    const sortChapters = () => {
+        db.transaction((tx) => {
+            tx.executeSql(
+                "SELECT * FROM ChapterTable ORDER BY chapterId DESC WHERE novelId=?",
+                [item.novelId],
+                (txObj, { rows: { _array } }) => {
+                    setChapters(_array);
+                    setLoading(false);
+                },
+                (txObj, error) => console.log("Error ", error)
+            );
+        });
+    };
+
     useEffect(() => {
         fetchNovel();
     }, []);
@@ -277,11 +291,7 @@ const NovelItem = ({ route, navigation }) => {
                                     icon="filter-variant"
                                     color={theme.textColorPrimaryDark}
                                     size={20}
-                                    onPress={() =>
-                                        setChapters((chapters) =>
-                                            chapters.reverse()
-                                        )
-                                    }
+                                    onPress={() => sortChapters()}
                                 />
                             </>
                         </TouchableRipple>

@@ -33,7 +33,7 @@ const NovelItem = ({ route, navigation }) => {
     const [more, setMore] = useState(false);
 
     const getNovel = () => {
-        fetch(`http://192.168.1.38:5000/api/novel/${item.novelUrl}`)
+        fetch(`http://192.168.1.39:5000/api/novel/${item.novelUrl}`)
             .then((response) => response.json())
             .then((json) => {
                 setNovel(json);

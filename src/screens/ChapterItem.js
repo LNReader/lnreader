@@ -22,7 +22,7 @@ const ChapterItem = ({ route, navigation }) => {
     }, []);
 
     const getChapter = () => {
-        fetch(`http://192.168.1.38:5000/api/${chapterUrl}`)
+        fetch(`http://192.168.1.39:5000/api/${chapterUrl}`)
             .then((response) => response.json())
             .then((json) => setChapter(json))
             .catch((error) => console.error(error))
