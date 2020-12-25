@@ -3,21 +3,28 @@ import { Animated, StyleSheet, View, Text, Dimensions } from "react-native";
 import Bottomsheet from "rn-sliding-up-panel";
 import { theme } from "../theming/theme";
 import Slider from "@react-native-community/slider";
+import { ToggleButton } from "react-native-paper";
 
-const ChapterBottomSheet = ({ bottomSheetRef, setSize, size }) => {
+const ChapterBottomSheet = ({
+    bottomSheetRef,
+    setSize,
+    size,
+    setReaderTheme,
+    readerTheme,
+}) => {
     return (
         <Bottomsheet
-            // animatedValue={new Animated.Value(0)}
+            animatedValue={new Animated.Value(0)}
             ref={bottomSheetRef}
             draggableRange={{ top: 200, bottom: 0 }}
             snappingPoints={[0, 200]}
-            // showBackdrop={false}
+            showBackdrop={false}
         >
             <View
                 style={[
                     styles.contentContainer,
                     {
-                        backgroundColor: "rgba(0,0,0,0.3)",
+                        backgroundColor: "rgba(0,0,0,0.5)",
                     },
                 ]}
             >
@@ -47,9 +54,9 @@ const ChapterBottomSheet = ({ bottomSheetRef, setSize, size }) => {
                             height: 40,
                         }}
                         value={size}
-                        minimumValue={7}
-                        maximumValue={28}
-                        step={3.5}
+                        minimumValue={12}
+                        maximumValue={20}
+                        step={4}
                         minimumTrackTintColor={theme.colorAccentDark}
                         maximumTrackTintColor="#000000"
                         thumbTintColor={theme.colorAccentDark}
@@ -63,6 +70,39 @@ const ChapterBottomSheet = ({ bottomSheetRef, setSize, size }) => {
                     >
                         Reader Theme{" "}
                     </Text>
+                    <ToggleButton.Row
+                        onValueChange={(value) => setReaderTheme(value)}
+                        value={readerTheme}
+                        style={{ marginTop: 10 }}
+                    >
+                        <ToggleButton
+                            icon="format-text"
+                            color="white"
+                            value={1}
+                            style={{
+                                backgroundColor: "black",
+                                marginHorizontal: 10,
+                            }}
+                        />
+                        <ToggleButton
+                            icon="format-text"
+                            color="black"
+                            value={2}
+                            style={{
+                                backgroundColor: "white",
+                                marginHorizontal: 10,
+                            }}
+                        />
+                        <ToggleButton
+                            icon="format-text"
+                            color="black"
+                            value={3}
+                            style={{
+                                backgroundColor: "#F4ECD8",
+                                marginHorizontal: 10,
+                            }}
+                        />
+                    </ToggleButton.Row>
                 </View>
             </View>
         </Bottomsheet>

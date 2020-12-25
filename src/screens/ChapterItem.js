@@ -15,6 +15,8 @@ const ChapterItem = ({ route, navigation }) => {
 
     const [size, setSize] = useState(14);
 
+    const [readerTheme, setReaderTheme] = useState(1);
+
     useEffect(() => {
         getChapter();
     }, []);
@@ -32,10 +34,14 @@ const ChapterItem = ({ route, navigation }) => {
     return (
         <Provider>
             <CollapsibleHeaderScrollView
-                headerContainerBackgroundColor={"rgba(0,0,0,0.2)"}
+                headerContainerBackgroundColor={"rgba(0,0,0,0)"}
+                // statusBarHeight={60}
                 CollapsibleHeaderComponent={
                     <Appbar.Header
-                        style={{ backgroundColor: "rgba(0,0,0,0.2)" }}
+                        style={{
+                            backgroundColor: "rgba(0,0,0,0.2)",
+                            elevation: 0,
+                        }}
                     >
                         <Appbar.BackAction
                             onPress={() => {
@@ -74,18 +80,29 @@ const ChapterItem = ({ route, navigation }) => {
                                     }}
                                     color={"white"}
                                 />
+                                <Appbar.Action
+                                    icon="dots-vertical"
+                                    size={26}
+                                    onPress={() =>
+                                        _panel.show({ velocity: -1.5 })
+                                    }
+                                    color={"white"}
+                                />
                             </>
                         )}
-                        <Appbar.Action
-                            icon="dots-vertical"
-                            size={26}
-                            onPress={() => _panel.show({ velocity: -1.5 })}
-                            color={"white"}
-                        />
                     </Appbar.Header>
                 }
                 headerHeight={100}
-                contentContainerStyle={styles.container}
+                contentContainerStyle={[
+                    styles.container,
+                    readerTheme === 1 && {
+                        backgroundColor: theme.colorDarkPrimary,
+                    },
+                    readerTheme === 3 && {
+                        backgroundColor: "#F4ECD8",
+                    },
+                ]}
+                onScroll={() => _panel.hide()}
             >
                 {loading ? (
                     <View style={{ flex: 1, justifyContent: "center" }}>
@@ -96,12 +113,28 @@ const ChapterItem = ({ route, navigation }) => {
                     </View>
                 ) : (
                     <Text
-                        style={{
-                            color: theme.textColorPrimaryDark,
-                            // lineHeight: 20,
-                            paddingVertical: 15,
-                            fontSize: size,
-                        }}
+                        style={[
+                            {
+                                // lineHeight: 0,
+                                paddingVertical: 15,
+                                fontSize: size,
+                            },
+                            readerTheme === 1 && {
+                                color: theme.textColorSecondaryDark,
+                            },
+                            readerTheme === 2 && {
+                                color: "black",
+                            },
+                            readerTheme === 3 && {
+                                color: "black",
+                            },
+                            size === 16 && {
+                                lineHeight: 20,
+                            },
+                            size === 20 && {
+                                lineHeight: 25,
+                            },
+                        ]}
                     >
                         {chapter.chapterText.trim()}
                     </Text>
@@ -111,6 +144,8 @@ const ChapterItem = ({ route, navigation }) => {
                         bottomSheetRef={(c) => (_panel = c)}
                         setSize={setSize}
                         size={size}
+                        setReaderTheme={setReaderTheme}
+                        readerTheme={readerTheme}
                     />
                 </Portal>
             </CollapsibleHeaderScrollView>
@@ -124,7 +159,7 @@ const styles = StyleSheet.create({
     container: {
         flexGrow: 1,
         // backgroundColor: "#202125",
-        backgroundColor: "#000000",
+        // backgroundColor: "#000000",
         paddingHorizontal: 10,
         paddingVertical: 10,
     },
