@@ -7,7 +7,7 @@ import { theme } from "../theming/theme";
 import { CollapsibleHeaderScrollView } from "react-native-collapsible-header-views";
 
 const ChapterItem = ({ route, navigation }) => {
-    const { chapterName, chapterUrl } = route.params;
+    const { chapterUrl } = route.params;
 
     const [loading, setLoading] = useState(true);
 
@@ -115,24 +115,18 @@ const ChapterItem = ({ route, navigation }) => {
                     <Text
                         style={[
                             {
-                                // lineHeight: 0,
                                 paddingVertical: 15,
                                 fontSize: size,
-                            },
-                            readerTheme === 1 && {
-                                color: theme.textColorSecondaryDark,
-                            },
-                            readerTheme === 2 && {
-                                color: "black",
-                            },
-                            readerTheme === 3 && {
-                                color: "black",
-                            },
-                            size === 16 && {
-                                lineHeight: 20,
-                            },
-                            size === 20 && {
-                                lineHeight: 25,
+                                color:
+                                    readerTheme === 1
+                                        ? theme.textColorSecondaryDark
+                                        : "black",
+                                // lineHeight:
+                                //     size === 16
+                                //         ? 22
+                                //         : size === 20
+                                //         ? 25
+                                //         : size === 12 && 20,
                             },
                         ]}
                     >
