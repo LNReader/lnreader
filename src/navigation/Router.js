@@ -28,11 +28,7 @@ const LibraryStack = () => {
                 headerStyle: { backgroundColor: theme.colorDarkPrimary },
             }}
         >
-            <Stack.Screen
-                name="Library"
-                component={Library}
-                options={{ headerShown: false }}
-            />
+            <Stack.Screen name="Library" component={Library} />
         </Stack.Navigator>
     );
 };
@@ -52,12 +48,7 @@ const LatestStack = () => {
 
 const SearchStack = () => {
     return (
-        <Stack.Navigator
-            screenOptions={{
-                headerTintColor: theme.textColorPrimaryDark,
-                headerStyle: { backgroundColor: theme.colorDarkPrimary },
-            }}
-        >
+        <Stack.Navigator>
             <Stack.Screen
                 name="Search"
                 component={Search}
@@ -71,13 +62,12 @@ const SearchStack = () => {
 
 const UpdatesStack = () => {
     return (
-        <Stack.Navigator
-            screenOptions={{
-                headerTintColor: theme.textColorPrimaryDark,
-                headerStyle: { backgroundColor: theme.colorDarkPrimary },
-            }}
-        >
-            <Stack.Screen name="Updates" component={Updates} />
+        <Stack.Navigator>
+            <Stack.Screen
+                name="Browse"
+                component={Updates}
+                options={{ headerShown: false }}
+            />
         </Stack.Navigator>
     );
 };

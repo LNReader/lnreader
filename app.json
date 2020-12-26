@@ -6,6 +6,7 @@
         "orientation": "portrait",
         "icon": "./assets/icon.png",
         "splash": {
+            "image": "./assets/splash.png",
             "resizeMode": "contain",
             "backgroundColor": "#000000"
         },
@@ -19,7 +20,7 @@
         "android": {
             "adaptiveIcon": {
                 "foregroundImage": "./assets/adaptive-icon.png",
-                "backgroundColor": "#FFFFFF"
+                "backgroundColor": "#000000"
             },
             "package": "com.rajarsheechatterjee.LNReader"
         },

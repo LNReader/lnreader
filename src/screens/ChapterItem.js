@@ -5,6 +5,7 @@ import BottomSheet from "../components/ChapterBottomSheet";
 import { Appbar, Provider, Portal } from "react-native-paper";
 import { theme } from "../theming/theme";
 import { CollapsibleHeaderScrollView } from "react-native-collapsible-header-views";
+import { linear } from "react-native/Libraries/Animated/src/Easing";
 
 const ChapterItem = ({ route, navigation }) => {
     const { chapterUrl } = route.params;
@@ -117,17 +118,15 @@ const ChapterItem = ({ route, navigation }) => {
                             {
                                 paddingVertical: 15,
                                 fontSize: size,
-                                color:
-                                    readerTheme === 1
-                                        ? theme.textColorSecondaryDark
-                                        : "black",
-                                // lineHeight:
-                                //     size === 16
-                                //         ? 22
-                                //         : size === 20
-                                //         ? 25
-                                //         : size === 12 && 20,
                             },
+                            readerTheme === 1
+                                ? { color: theme.textColorSecondaryDark }
+                                : { color: "black" },
+                            size === 16
+                                ? { lineHeight: 20 }
+                                : size === 20
+                                ? { lineHeight: 25 }
+                                : size === 12 && { lineHeight: 20 },
                         ]}
                     >
                         {chapter.chapterText.trim()}

@@ -27,6 +27,7 @@ const NovelItem = ({ route, navigation }) => {
 
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
+    const [libraryStatus, setlibraryStatus] = useState();
 
     const [novel, setNovel] = useState();
     const [chapters, setChapters] = useState();
@@ -55,10 +56,30 @@ const NovelItem = ({ route, navigation }) => {
         });
     };
 
+    const checkIfExistsInLibrary = (id) => {
+        db.transaction((tx) => {
+            tx.executeSql(
+                "SELECT * FROM LibraryTable WHERE novelId=?",
+                [id],
+                (txObj, res) => {
+                    console.log(res.rows.length);
+                    if (res.rows.length === 0) {
+                        console.log("Not In Library");
+                        setlibraryStatus(0);
+                    } else {
+                        console.log("In Library");
+                        setlibraryStatus(1);
+                    }
+                },
+                (txObj, error) => console.log("Error ", error)
+            );
+        });
+    };
+
     const sortChapters = () => {
         db.transaction((tx) => {
             tx.executeSql(
-                "SELECT * FROM ChapterTable ORDER BY chapterId DESC WHERE novelId=?",
+                "SELECT * FROM ChapterTable WHERE novelId=? ORDER BY chapterName ASC",
                 [item.novelId],
                 (txObj, { rows: { _array } }) => {
                     setChapters(_array);
@@ -69,8 +90,61 @@ const NovelItem = ({ route, navigation }) => {
         });
     };
 
+    const insertToLibrary = () => {
+        if (libraryStatus === 0) {
+            db.transaction((tx) => {
+                tx.executeSql(
+                    "INSERT INTO LibraryTable (novelId, novelName, novelCover, novelSummary, alternative, author, genre, type, releaseDate, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                    [
+                        item.novelId,
+                        item.novelName,
+                        item.novelCover,
+                        item.novelSummary,
+                        item.alternative,
+                        item.author,
+                        item.genre,
+                        item.type,
+                        item.releaseDate,
+                        item.status,
+                    ]
+                );
+                console.log("Inserted Novel");
+
+                // chapters.map((chap) =>
+                //     tx.executeSql(
+                //         "INSERT INTO ChapterTable (chapterId, chapterName, releaseDate, novelId) values (?, ?, ?, ?)",
+                //         [
+                //             chap.chapterId,
+                //             chap.chapterName,
+                //             chap.releaseDate,
+                //             item.novelId,
+                //         ]
+                //     )
+                // );
+                setlibraryStatus(1);
+            });
+        } else {
+            db.transaction((tx) => {
+                tx.executeSql(
+                    "DELETE FROM LibraryTable WHERE novelId=?",
+                    [item.novelId],
+                    (txObj, res) => {
+                        console.log("DELETED NOVEL FROM TABLE");
+                    },
+                    (txObj, error) => console.log("Error ", error)
+                );
+                // tx.executeSql("DELETE FROM ChapterTable WHERE novelId=?", [
+                //     item.novelId,
+                // ]);
+                console.log("Removed Novel");
+                setlibraryStatus(0);
+            });
+        }
+    };
+
     useEffect(() => {
         fetchNovel();
+        checkIfExistsInLibrary(item.novelId);
     }, []);
 
     const onRefresh = async () => {
@@ -187,18 +261,25 @@ const NovelItem = ({ route, navigation }) => {
                 </ImageBackground>
                 {!loading && (
                     <>
-                        {/* <Button
+                        <Button
                             color={theme.textColorPrimaryDark}
-                            style={{
-                                backgroundColor: theme.colorAccentDark,
-                                marginHorizontal: 15,
-                            }}
+                            style={[
+                                {
+                                    backgroundColor: theme.colorAccentDark,
+                                    marginHorizontal: 15,
+                                },
+                                item.novelSummary.length === 0 && {
+                                    marginBottom: 20,
+                                },
+                            ]}
                             uppercase={false}
                             labelStyle={{ letterSpacing: 0 }}
                             onPress={() => insertToLibrary()}
                         >
-                            Add to library
-                        </Button> */}
+                            {libraryStatus === 0
+                                ? "Add to library"
+                                : "In Library"}
+                        </Button>
                         {item.novelSummary.length > 0 && (
                             <View
                                 style={{

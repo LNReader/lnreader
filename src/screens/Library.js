@@ -1,151 +1,154 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useCallback } from "react";
 import {
     StyleSheet,
+    Text,
     View,
-    FlatList,
     ActivityIndicator,
     RefreshControl,
 } from "react-native";
-import {
-    TouchableRipple,
-    Appbar,
-    Provider,
-    Portal,
-    Button,
-} from "react-native-paper";
-import NovelCover from "../components/NovelCover";
+import { FlatList } from "react-native-gesture-handler";
 import { theme } from "../theming/theme";
-import { BottomSheet } from "../components/BottomSheet";
+import { useFocusEffect } from "@react-navigation/native";
 
-const AllNovels = ({ navigation }) => {
+import { TouchableRipple, Button } from "react-native-paper";
+import NovelCover from "../components/NovelCover";
+
+import * as SQLite from "expo-sqlite";
+
+const db = SQLite.openDatabase("lnreader.db");
+
+const UpdatesScreen = ({ navigation }) => {
     const [loading, setLoading] = useState(true);
-    const [refreshing, setRefreshing] = useState(true);
+    const [refreshing, setRefreshing] = useState(false);
     const [novels, setNovels] = useState();
-    const [sort, setSort] = useState("rating");
-    const [pageNo, setPageNo] = useState(2);
 
-    const getNovels = () => {
-        fetch(`http://192.168.1.39:5000/api/novels/1/?o=${sort}`)
-            .then((response) => response.json())
-            .then((json) => setNovels(json))
-            .catch((error) => console.error(error))
-            .finally(() => {
-                setPageNo(2);
-                setRefreshing(false);
-                setLoading(false);
-            });
+    const getLibraryNovels = () => {
+        db.transaction((tx) => {
+            tx.executeSql(
+                "SELECT * FROM LibraryTable",
+                null,
+                (txObj, { rows: { _array } }) => {
+                    setNovels(_array);
+                    // console.log(_array);
+                    setLoading(false);
+                    setRefreshing(false);
+                },
+                (txObj, error) => console.log("Error ", error)
+            );
+        });
     };
 
-    const loadMore = () => {
-        setRefreshing(true);
-        fetch(`http://192.168.1.39:5000/api/novels/${pageNo}/?o=${sort}`)
-            .then((response) => response.json())
-            .then((json) => setNovels((novels) => novels.concat(json)))
-            .catch((error) => console.error(error))
-            .finally(() => {
-                setRefreshing(false);
-                setLoading(false);
-                setPageNo(pageNo + 1);
-            });
-    };
+    // const deleted = () => {
+    //     db.transaction((tx) => {
+    //         tx.executeSql(
+    //             "DROP TABLE LibraryTable",
+    //             null,
+    //             (txObj, { rows: { _array } }) => {
+    //                 console.log("DELETED TABLE");
+    //             },
+    //             (txObj, error) => console.log("Error ", error)
+    //         );
+    //     });
+    //     setNovels([]);
+    // };
 
-    useEffect(() => {
-        getNovels();
-    }, [sort]);
+    useFocusEffect(
+        useCallback(() => {
+            getLibraryNovels();
+        }, [])
+    );
 
     const onRefresh = () => {
         setRefreshing(true);
-        setPageNo(2);
-        getNovels();
+        getLibraryNovels();
     };
 
     return (
-        <Provider>
-            <Appbar.Header style={{ backgroundColor: theme.colorDarkPrimary }}>
-                <Appbar.Content
-                    title="All Novels"
-                    titleStyle={{ color: theme.textColorPrimaryDark }}
-                />
-                <Appbar.Action
-                    icon="filter-variant"
-                    onPress={() => _panel.show({ velocity: -1.5 })}
-                />
-                <Appbar.Action icon="refresh" onPress={() => onRefresh()} />
-            </Appbar.Header>
-            <View style={styles.container}>
-                {loading ? (
-                    <View style={{ flex: 1, justifyContent: "center" }}>
-                        <ActivityIndicator
-                            size="large"
-                            color={theme.colorAccentDark}
-                        />
-                    </View>
-                ) : (
-                    <FlatList
-                        contentContainerStyle={styles.list}
-                        numColumns={3}
-                        data={novels}
-                        showsVerticalScrollIndicator={false}
-                        keyExtractor={(item) => item.novelUrl}
-                        ListFooterComponent={() => (
-                            <View
+        <View style={styles.container}>
+            {loading ? (
+                <View style={{ flex: 1, justifyContent: "center" }}>
+                    <ActivityIndicator
+                        size="large"
+                        color={theme.colorAccentDark}
+                    />
+                </View>
+            ) : (
+                <>
+                    {!novels.length ? (
+                        <View
+                            style={{
+                                flex: 1,
+                                justifyContent: "center",
+                                alignItems: "center",
+                            }}
+                        >
+                            <Text
                                 style={{
-                                    width: 120,
-                                    alignSelf: "center",
-                                    marginVertical: 10,
+                                    color: theme.textColorSecondaryDark,
+                                    fontSize: 45,
+                                    fontWeight: "bold",
                                 }}
                             >
-                                <Button
-                                    mode="contained"
-                                    color={theme.colorAccentDark}
-                                    uppercase={false}
-                                    labelStyle={{
-                                        color: theme.textColorPrimaryDark,
-                                        letterSpacing: 0,
-                                    }}
-                                    onPress={() => loadMore()}
-                                >
-                                    Load More
-                                </Button>
-                            </View>
-                        )}
-                        renderItem={({ item }) => (
-                            <TouchableRipple
-                                borderless
-                                centered
-                                rippleColor="rgba(256,256,256,0.3)"
-                                style={styles.opac}
-                                onPress={() =>
-                                    navigation.navigate("NovelItem", item)
-                                }
+                                Σ(ಠ_ಠ)
+                            </Text>
+                            <Text
+                                style={{
+                                    color: theme.textColorSecondaryDark,
+                                    fontWeight: "bold",
+                                    marginTop: 10,
+                                    textAlign: "center",
+                                    paddingHorizontal: 30,
+                                }}
                             >
-                                <NovelCover item={item} />
-                            </TouchableRipple>
-                        )}
-                        refreshControl={
-                            <RefreshControl
-                                refreshing={refreshing}
-                                onRefresh={onRefresh}
-                                colors={["white"]}
-                                progressBackgroundColor={theme.colorAccentDark}
-                            />
-                        }
-                    />
-                )}
-            </View>
-            <Portal>
-                <BottomSheet
-                    bottomSheetRef={(c) => (_panel = c)}
-                    setSort={setSort}
-                    sort={sort}
-                    setRefreshing={setRefreshing}
-                />
-            </Portal>
-        </Provider>
+                                Your library is empty. Add series to your
+                                library from Browse.
+                            </Text>
+                        </View>
+                    ) : (
+                        <FlatList
+                            contentContainerStyle={styles.list}
+                            numColumns={3}
+                            data={novels}
+                            showsVerticalScrollIndicator={false}
+                            keyExtractor={(item) => item.novelId}
+                            renderItem={({ item }) => (
+                                <TouchableRipple
+                                    borderless
+                                    centered
+                                    rippleColor="rgba(256,256,256,0.3)"
+                                    style={styles.opac}
+                                    onPress={() =>
+                                        navigation.navigate(
+                                            "LibraryNovelItem",
+                                            item
+                                        )
+                                    }
+                                >
+                                    <NovelCover item={item} />
+                                </TouchableRipple>
+                            )}
+                            refreshControl={
+                                <RefreshControl
+                                    refreshing={refreshing}
+                                    onRefresh={onRefresh}
+                                    colors={["white"]}
+                                    progressBackgroundColor={
+                                        theme.colorAccentDark
+                                    }
+                                />
+                            }
+                        />
+                    )}
+                    {/* <Button mode="contained" onPress={() => deleted()}>
+                        Delete Table
+                    </Button> */}
+                </>
+            )}
+        </View>
     );
 };
 
-export default AllNovels;
+export default UpdatesScreen;
 
 const styles = StyleSheet.create({
     container: {
@@ -158,8 +161,5 @@ const styles = StyleSheet.create({
         flex: 1 / 3,
         marginHorizontal: 3.6,
         marginVertical: 3.2,
-    },
-    contentContainer: {
-        flex: 1,
     },
 });
