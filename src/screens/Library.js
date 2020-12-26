@@ -44,7 +44,15 @@ const UpdatesScreen = ({ navigation }) => {
                 "DROP TABLE LibraryTable",
                 null,
                 (txObj, { rows: { _array } }) => {
-                    console.log("DELETED TABLE");
+                    console.log("DELETED LIB TABLE");
+                },
+                (txObj, error) => console.log("Error ", error)
+            );
+            tx.executeSql(
+                "DROP TABLE ChapterTable",
+                null,
+                (txObj, { rows: { _array } }) => {
+                    console.log("DELETED CHAP TABLE");
                 },
                 (txObj, error) => console.log("Error ", error)
             );
@@ -136,11 +144,11 @@ const UpdatesScreen = ({ navigation }) => {
                             }
                         />
                     )}
-                    <Button mode="contained" onPress={() => deleted()}>
-                        Delete Library Table
-                    </Button>
                 </>
             )}
+            {/* <Button mode="contained" onPress={() => deleted()}>
+                Delete Library Table
+            </Button> */}
         </View>
     );
 };

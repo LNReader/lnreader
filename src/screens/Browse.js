@@ -63,7 +63,7 @@ const AllNovels = ({ navigation }) => {
         <Provider>
             <Appbar.Header style={{ backgroundColor: theme.colorDarkPrimary }}>
                 <Appbar.Content
-                    title="All Novels"
+                    title="Browse"
                     titleStyle={{ color: theme.textColorPrimaryDark }}
                 />
                 <Appbar.Action

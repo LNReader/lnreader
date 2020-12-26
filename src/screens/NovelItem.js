@@ -8,6 +8,7 @@ import {
     FlatList,
     ScrollView,
     RefreshControl,
+    ToastAndroid,
 } from "react-native";
 import {
     Appbar,
@@ -33,7 +34,7 @@ const NovelItem = ({ route, navigation }) => {
     const [more, setMore] = useState(false);
 
     const [libraryStatus, setlibraryStatus] = useState();
-    // const [dbFlag, setDbFlag] = useState(0);
+    const [sort, setSort] = useState("DESC");
 
     const getNovel = () => {
         fetch(`http://192.168.1.39:5000/api/novel/${item.novelUrl}`)
@@ -76,6 +77,26 @@ const NovelItem = ({ route, navigation }) => {
         });
     };
 
+    // const sortChapters = () => {
+    //     setRefreshing(true);
+    //     if (libraryStatus === 0) {
+    //         setChapters((chapters) => chapters.reverse());
+    //     } else {
+    //         db.transaction((tx) => {
+    //             tx.executeSql(
+    //                 `SELECT * FROM ChapterTable WHERE novelUrl=? ORDER BY chapterId ${sort}`,
+    //                 [item.novelUrl],
+    //                 (txObj, { rows: { _array } }) => {
+    //                     setChapters(_array);
+    //                     sort === "ASC" ? setSort("DESC") : setSort("ASC");
+    //                     setRefreshing(false);
+    //                 },
+    //                 (txObj, error) => console.log("Error ", error)
+    //             );
+    //         });
+    //     }
+    // };
+
     const insertToLibrary = () => {
         if (libraryStatus === 0) {
             db.transaction((tx) => {
@@ -93,7 +114,11 @@ const NovelItem = ({ route, navigation }) => {
                         novel.Release,
                         novel.Status,
                     ],
-                    (tx, res) => console.log("Inserted Novel"),
+                    (tx, res) =>
+                        ToastAndroid.show(
+                            "Added to library",
+                            ToastAndroid.SHORT
+                        ),
                     (txObj, error) => console.log("Error ", error)
                 );
 
@@ -116,7 +141,10 @@ const NovelItem = ({ route, navigation }) => {
                     "DELETE FROM LibraryTable WHERE novelUrl=?",
                     [item.novelUrl],
                     (txObj, res) => {
-                        console.log("DELETED NOVEL FROM TABLE");
+                        ToastAndroid.show(
+                            "Removed from library",
+                            ToastAndroid.SHORT
+                        );
                     },
                     (txObj, error) => console.log("Error ", error)
                 );
@@ -380,9 +408,7 @@ const NovelItem = ({ route, navigation }) => {
                                 justifyContent: "space-between",
                                 alignItems: "center",
                             }}
-                            // onPress={() =>
-                            //     setChapters((chapters) => chapters.reverse())
-                            // }
+                            // onPress={() => sortChapters()}
                             rippleColor={theme.rippleColorDark}
                         >
                             <>
@@ -400,11 +426,8 @@ const NovelItem = ({ route, navigation }) => {
                                     icon="filter-variant"
                                     color={theme.textColorPrimaryDark}
                                     size={20}
-                                    // onPress={() =>
-                                    //     setChapters((chapters) =>
-                                    //         chapters.reverse()
-                                    //     )
-                                    // }
+                                    // onPress={() => sortChapters()}
+                                    disabled
                                 />
                             </>
                         </TouchableRipple>
@@ -412,7 +435,7 @@ const NovelItem = ({ route, navigation }) => {
                             data={chapters}
                             extraData={chapters}
                             showsVerticalScrollIndicator={false}
-                            keyExtractor={(item) => novel.chapterUrl}
+                            keyExtractor={(item) => item.chapterId}
                             removeClippedSubviews={true}
                             maxToRenderPerBatch={10}
                             initialNumToRender={10}

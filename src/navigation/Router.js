@@ -6,7 +6,7 @@ import { TransitionPresets } from "@react-navigation/stack";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import Library from "../screens/Library";
-import Updates from "../screens/Updates";
+import Browse from "../screens/Browse";
 import Latest from "../screens/Latest";
 import More from "../screens/More";
 import Search from "../screens/Search";
@@ -59,12 +59,12 @@ const SearchStack = () => {
     );
 };
 
-const UpdatesStack = () => {
+const BrowseStack = () => {
     return (
         <Stack.Navigator>
             <Stack.Screen
                 name="Browse"
-                component={Updates}
+                component={Browse}
                 options={{ headerShown: false }}
             />
         </Stack.Navigator>
@@ -91,7 +91,7 @@ const Router = () => {
             activeColor="#3399FF"
         >
             <Tab.Screen
-                name="All Novels"
+                name="My Library"
                 component={LibraryStack}
                 options={{
                     tabBarIcon: ({ color }) => (
@@ -132,7 +132,7 @@ const Router = () => {
             />
             <Tab.Screen
                 name="Browse"
-                component={UpdatesStack}
+                component={BrowseStack}
                 options={{
                     tabBarIcon: ({ color }) => (
                         <MaterialCommunityIcons
