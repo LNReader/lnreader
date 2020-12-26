@@ -116,10 +116,7 @@ const AllNovels = ({ navigation }) => {
                                 rippleColor="rgba(256,256,256,0.3)"
                                 style={styles.opac}
                                 onPress={() =>
-                                    navigation.navigate(
-                                        "NovelItemRewrite",
-                                        item
-                                    )
+                                    navigation.navigate("NovelItem", item)
                                 }
                             >
                                 <NovelCover item={item} />
