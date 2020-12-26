@@ -8,7 +8,6 @@ import {
     FlatList,
     ScrollView,
     RefreshControl,
-    ToastAndroid,
 } from "react-native";
 import {
     Appbar,
@@ -28,72 +27,46 @@ const NovelItem = ({ route, navigation }) => {
 
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
-    const [libraryStatus, setlibraryStatus] = useState();
 
-    const [novel, setNovel] = useState();
+    const [novel, setNovel] = useState(item);
     const [chapters, setChapters] = useState();
     const [more, setMore] = useState(false);
 
-    const fetchNovel = () => {
+    const [libraryStatus, setlibraryStatus] = useState();
+    // const [dbFlag, setDbFlag] = useState(0);
+
+    const getNovel = () => {
+        fetch(`http://192.168.1.39:5000/api/novel/${item.novelUrl}`)
+            .then((response) => response.json())
+            .then((json) => {
+                setNovel(json);
+                setChapters(json.novelChapters);
+            })
+            .catch((error) => console.error(error))
+            .finally(() => {
+                setRefreshing(false);
+                setLoading(false);
+            });
+    };
+
+    const getNovelFromDb = () => {
         db.transaction((tx) => {
-            tx.executeSql(
-                "SELECT * FROM LibraryTable WHERE novelUrl=?",
-                [item.novelUrl],
-                (txObj, { rows: { _array } }) => {
-                    setNovel(_array);
-                },
-                (txObj, error) => console.log("Error ", error)
-            );
+            // tx.executeSql(
+            //     "SELECT * FROM LibraryTable WHERE novelUrl=?",
+            //     [item.novelUrl],
+            //     (txObj, { rows: _array }) => {
+            //         // setNovel(_array);
+            //         // console.log(_array);
+            //     },
+            //     (txObj, error) => console.log("Error ", error)
+            // );
             tx.executeSql(
                 "SELECT * FROM ChapterTable WHERE novelUrl=?",
                 [item.novelUrl],
                 (txObj, { rows: { _array } }) => {
                     setChapters(_array);
-                    // !_array.length && getChapters();
+                    // console.log(_array);
                     setRefreshing(false);
-                    setLoading(false);
-                },
-                (txObj, error) => console.log("Error ", error)
-            );
-        });
-    };
-
-    // const getChapters = () => {
-    //     fetch(`http://192.168.1.39:5000/api/novel/${item.novelUrl}`)
-    //         .then((response) => response.json())
-    //         .then((json) => {
-    //             setChapters(json.novelChapters);
-    //         })
-    //         .catch((error) => console.error(error));
-    // };
-
-    const checkIfExistsInLibrary = (id) => {
-        db.transaction((tx) => {
-            tx.executeSql(
-                "SELECT * FROM LibraryTable WHERE novelUrl=?",
-                [id],
-                (txObj, res) => {
-                    // console.log(res.rows.length);
-                    if (res.rows.length === 0) {
-                        // console.log("Not In Library");
-                        setlibraryStatus(0);
-                    } else {
-                        // console.log("In Library");
-                        setlibraryStatus(1);
-                    }
-                },
-                (txObj, error) => console.log("Error ", error)
-            );
-        });
-    };
-
-    const sortChapters = () => {
-        db.transaction((tx) => {
-            tx.executeSql(
-                "SELECT * FROM ChapterTable WHERE novelUrl=? ORDER BY chapterName ASC",
-                [item.novelUrl],
-                (txObj, { rows: { _array } }) => {
-                    setChapters(_array);
                     setLoading(false);
                 },
                 (txObj, error) => console.log("Error ", error)
@@ -105,22 +78,20 @@ const NovelItem = ({ route, navigation }) => {
         if (libraryStatus === 0) {
             db.transaction((tx) => {
                 tx.executeSql(
-                    "INSERT INTO LibraryTable (novelUrl, novelName, novelCover, novelSummary, alternative, author, genre, type, releaseDate, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                    "INSERT INTO LibraryTable (novelUrl, novelName, novelCover, novelSummary, Alternative, `Author(s)`, `Genre(s)`, Type, `Release`, Status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                     [
                         item.novelUrl,
-                        item.novelName,
-                        item.novelCover,
-                        item.novelSummary,
-                        item.Alternative,
-                        item["Author(s)"],
-                        item["Genres(s)"],
-                        item.Type,
-                        item.Release,
-                        item.Status,
+                        novel.novelName,
+                        novel.novelCover,
+                        novel.novelSummary,
+                        novel.Alternative,
+                        novel["Author(s)"],
+                        novel["Genre(s)"],
+                        novel.Type,
+                        novel.Release,
+                        novel.Status,
                     ],
-                    (txObj, res) => {
-                        console.log("Novel Inserted");
-                    },
+                    (tx, res) => console.log("Inserted Novel"),
                     (txObj, error) => console.log("Error ", error)
                 );
 
@@ -132,15 +103,10 @@ const NovelItem = ({ route, navigation }) => {
                             chap.chapterName,
                             chap.releaseDate,
                             item.novelUrl,
-                        ],
-                        (txObj, res) => {
-                            // console.log("Chapters Inserted");
-                        },
-                        (txObj, error) => console.log("Error ", error)
+                        ]
                     )
                 );
                 setlibraryStatus(1);
-                ToastAndroid.show("Added to library", ToastAndroid.SHORT);
             });
         } else {
             db.transaction((tx) => {
@@ -152,29 +118,44 @@ const NovelItem = ({ route, navigation }) => {
                     },
                     (txObj, error) => console.log("Error ", error)
                 );
-                tx.executeSql(
-                    "DELETE FROM ChapterTable WHERE novelUrl=?",
-                    [item.novelUrl],
-                    (txObj, res) => {
-                        console.log("DELETED Chapters FROM TABLE");
-                    },
-                    (txObj, error) => console.log("Error ", error)
-                );
+                tx.executeSql("DELETE FROM ChapterTable WHERE novelUrl=?", [
+                    item.novelUrl,
+                ]);
                 console.log("Removed Novel");
                 setlibraryStatus(0);
-                ToastAndroid.show("Removed from library", ToastAndroid.SHORT);
             });
         }
     };
 
+    const checkIfExistsInLibrary = (id) => {
+        db.transaction((tx) => {
+            tx.executeSql(
+                "SELECT * FROM LibraryTable WHERE novelUrl=?",
+                [id],
+                (txObj, res) => {
+                    console.log(res.rows.length);
+                    if (res.rows.length === 0) {
+                        console.log("Not In Library");
+                        getNovel();
+                        setlibraryStatus(0);
+                    } else {
+                        console.log("In Library");
+                        getNovelFromDb();
+                        setlibraryStatus(1);
+                    }
+                },
+                (txObj, error) => console.log("Error ", error)
+            );
+        });
+    };
+
     useEffect(() => {
-        fetchNovel();
         checkIfExistsInLibrary(item.novelUrl);
     }, []);
 
     const onRefresh = async () => {
         setRefreshing(true);
-        fetchNovel();
+        checkIfExistsInLibrary(item.novelUrl);
     };
 
     return (
@@ -243,7 +224,7 @@ const NovelItem = ({ route, navigation }) => {
                                             }}
                                             numberOfLines={1}
                                         >
-                                            {item.Alternative.replace(
+                                            {novel.Alternative.replace(
                                                 ",",
                                                 ", "
                                             )}
@@ -256,7 +237,7 @@ const NovelItem = ({ route, navigation }) => {
                                                 fontSize: 15,
                                             }}
                                         >
-                                            {item["Author(s)"].replace(
+                                            {novel["Author(s)"].replace(
                                                 ",",
                                                 ", "
                                             )}
@@ -269,7 +250,7 @@ const NovelItem = ({ route, navigation }) => {
                                                 fontSize: 15,
                                             }}
                                         >
-                                            {item.Release}
+                                            {novel["Release"]}
                                         </Text>
                                         <Text
                                             style={{
@@ -279,7 +260,9 @@ const NovelItem = ({ route, navigation }) => {
                                                 fontSize: 15,
                                             }}
                                         >
-                                            {item.Status + " • " + item.Type}
+                                            {novel["Status"] +
+                                                " • " +
+                                                novel["Type"]}
                                         </Text>
                                     </>
                                 )}
@@ -296,7 +279,7 @@ const NovelItem = ({ route, navigation }) => {
                                     backgroundColor: theme.colorAccentDark,
                                     marginHorizontal: 15,
                                 },
-                                item.novelSummary.length === 0 && {
+                                novel.novelSummary.length === 0 && {
                                     marginBottom: 20,
                                 },
                             ]}
@@ -308,7 +291,21 @@ const NovelItem = ({ route, navigation }) => {
                                 ? "Add to library"
                                 : "In Library"}
                         </Button>
-                        {item.novelSummary.length > 0 && (
+                        {/* <Button
+                            color={theme.textColorPrimaryDark}
+                            style={{
+                                backgroundColor: theme.colorAccentDark,
+                                marginHorizontal: 15,
+                            }}
+                            uppercase={false}
+                            labelStyle={{ letterSpacing: 0 }}
+                            onPress={() =>
+                                checkIfExistsInLibrary(novel.novelUrl)
+                            }
+                        >
+                            Check
+                        </Button> */}
+                        {novel.novelSummary.length > 0 && (
                             <View
                                 style={{
                                     paddingHorizontal: 15,
@@ -334,7 +331,7 @@ const NovelItem = ({ route, navigation }) => {
                                     onPress={() => setMore(!more)}
                                     ellipsizeMode="clip"
                                 >
-                                    {item.novelSummary}
+                                    {novel.novelSummary}
                                 </Text>
                                 <Text
                                     style={{
@@ -356,7 +353,7 @@ const NovelItem = ({ route, navigation }) => {
                                 marginBottom: 15,
                             }}
                             horizontal
-                            data={item["Genre(s)"].split(",")}
+                            data={novel["Genre(s)"].split(",")}
                             keyExtractor={(item) => item}
                             renderItem={({ item }) => (
                                 <Text
@@ -380,9 +377,9 @@ const NovelItem = ({ route, navigation }) => {
                                 justifyContent: "space-between",
                                 alignItems: "center",
                             }}
-                            onPress={() =>
-                                setChapters((chapters) => chapters.reverse())
-                            }
+                            // onPress={() =>
+                            //     setChapters((chapters) => chapters.reverse())
+                            // }
                             rippleColor={theme.rippleColorDark}
                         >
                             <>
@@ -400,7 +397,11 @@ const NovelItem = ({ route, navigation }) => {
                                     icon="filter-variant"
                                     color={theme.textColorPrimaryDark}
                                     size={20}
-                                    onPress={() => sortChapters()}
+                                    // onPress={() =>
+                                    //     setChapters((chapters) =>
+                                    //         chapters.reverse()
+                                    //     )
+                                    // }
                                 />
                             </>
                         </TouchableRipple>
@@ -408,11 +409,7 @@ const NovelItem = ({ route, navigation }) => {
                             data={chapters}
                             extraData={chapters}
                             showsVerticalScrollIndicator={false}
-                            keyExtractor={(item) =>
-                                item.chapterUrl
-                                    ? item.chapterUrl
-                                    : item.chapterUrl
-                            }
+                            keyExtractor={(item) => novel.chapterUrl}
                             removeClippedSubviews={true}
                             maxToRenderPerBatch={10}
                             initialNumToRender={10}

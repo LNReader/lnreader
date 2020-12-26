@@ -15,6 +15,7 @@ import ChapterItem from "../screens/ChapterItem";
 import About from "../screens/About";
 import LibraryNovelItem from "../screens/LibraryNovelItem";
 import { theme } from "../theming/theme";
+import NovelItemRewrite from "../screens/NovelItemRewrite";
 
 const Stack = createStackNavigator();
 
@@ -172,6 +173,11 @@ const MainStack = () => {
             <Stack.Screen name="MainStack" component={Router} />
             <Stack.Screen name="ChapterItem" component={ChapterItem} />
             <Stack.Screen name="NovelItem" component={NovelItem} />
+            <Stack.Screen
+                name="NovelItemRewrite"
+                component={NovelItemRewrite}
+            />
+
             <Stack.Screen
                 name="LibraryNovelItem"
                 component={LibraryNovelItem}

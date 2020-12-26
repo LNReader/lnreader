@@ -101,18 +101,6 @@ const NovelItem = ({ route, navigation }) => {
         }
     };
 
-    const createTables = () =>
-        db.transaction((tx) => {
-            tx.executeSql(
-                "CREATE TABLE IF NOT EXISTS LibraryTable (novelId VARCHAR(255) NOT NULL PRIMARY KEY, novelName VARCHAR(255), novelCover VARCHAR(255), novelSummary TEXT, alternative VARCHAR(255), author VARCHAR(255), genre VARCHAR(255), type VARCHAR(255), releaseDate VARCHAR(255), status VARCHAR(255))"
-            );
-            console.log("Library Table Created");
-
-            tx.executeSql(
-                "CREATE TABLE IF NOT EXISTS ChapterTable (chapterId VARCHAR(255), chapterName VARCHAR(255), releaseDate VARCHAR(255), novelId VARCHAR(255), FOREIGN KEY (novelId) REFERENCES LibraryTable(novelId) ON DELETE CASCADE)"
-            );
-        });
-
     const checkIfExistsInLibrary = (id) => {
         db.transaction((tx) => {
             tx.executeSql(
@@ -134,7 +122,6 @@ const NovelItem = ({ route, navigation }) => {
     };
 
     useEffect(() => {
-        createTables();
         getNovel();
     }, []);
 

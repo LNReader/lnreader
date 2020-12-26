@@ -1,9 +1,14 @@
+console.disableYellowBox = true;
+
 import React, { useState, useEffect } from "react";
 import Router from "./src/navigation/Router";
 import { NavigationContainer } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
 import * as Font from "expo-font";
 import AppLoading from "expo-app-loading";
+
+import * as SQLite from "expo-sqlite";
+const db = SQLite.openDatabase("lnreader.db");
 
 const getFonts = () =>
     Font.loadAsync({
@@ -12,6 +17,22 @@ const getFonts = () =>
 
 export default function App() {
     const [fontsLoaded, setFontsLoaded] = useState(false);
+
+    const createTables = () =>
+        db.transaction((tx) => {
+            tx.executeSql(
+                "CREATE TABLE IF NOT EXISTS LibraryTable (novelUrl VARCHAR(255) NOT NULL PRIMARY KEY, novelName VARCHAR(255), novelCover VARCHAR(255), novelSummary TEXT, Alternative VARCHAR(255), `Author(s)` VARCHAR(255), `Genre(s)` VARCHAR(255), Type VARCHAR(255), `Release` VARCHAR(255), Status VARCHAR(255))"
+            );
+            console.log("Library Table Created");
+
+            tx.executeSql(
+                "CREATE TABLE IF NOT EXISTS ChapterTable (chapterUrl VARCHAR(255), chapterName VARCHAR(255), releaseDate VARCHAR(255), novelUrl VARCHAR(255), FOREIGN KEY (novelUrl) REFERENCES LibraryTable(novelUrl) ON DELETE CASCADE)"
+            );
+        });
+
+    useEffect(() => {
+        createTables();
+    });
 
     if (fontsLoaded) {
         return (

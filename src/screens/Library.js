@@ -38,19 +38,19 @@ const UpdatesScreen = ({ navigation }) => {
         });
     };
 
-    // const deleted = () => {
-    //     db.transaction((tx) => {
-    //         tx.executeSql(
-    //             "DROP TABLE LibraryTable",
-    //             null,
-    //             (txObj, { rows: { _array } }) => {
-    //                 console.log("DELETED TABLE");
-    //             },
-    //             (txObj, error) => console.log("Error ", error)
-    //         );
-    //     });
-    //     setNovels([]);
-    // };
+    const deleted = () => {
+        db.transaction((tx) => {
+            tx.executeSql(
+                "DROP TABLE LibraryTable",
+                null,
+                (txObj, { rows: { _array } }) => {
+                    console.log("DELETED TABLE");
+                },
+                (txObj, error) => console.log("Error ", error)
+            );
+        });
+        setNovels([]);
+    };
 
     useFocusEffect(
         useCallback(() => {
@@ -110,7 +110,7 @@ const UpdatesScreen = ({ navigation }) => {
                             numColumns={3}
                             data={novels}
                             showsVerticalScrollIndicator={false}
-                            keyExtractor={(item) => item.novelId}
+                            keyExtractor={(item) => item.novelUrl}
                             renderItem={({ item }) => (
                                 <TouchableRipple
                                     borderless
@@ -119,7 +119,7 @@ const UpdatesScreen = ({ navigation }) => {
                                     style={styles.opac}
                                     onPress={() =>
                                         navigation.navigate(
-                                            "LibraryNovelItem",
+                                            "NovelItemRewrite",
                                             item
                                         )
                                     }
@@ -139,9 +139,9 @@ const UpdatesScreen = ({ navigation }) => {
                             }
                         />
                     )}
-                    {/* <Button mode="contained" onPress={() => deleted()}>
-                        Delete Table
-                    </Button> */}
+                    <Button mode="contained" onPress={() => deleted()}>
+                        Delete Library Table
+                    </Button>
                 </>
             )}
         </View>
