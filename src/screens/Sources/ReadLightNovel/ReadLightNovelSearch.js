@@ -8,8 +8,8 @@ import {
     ActivityIndicator,
 } from "react-native";
 import { Appbar, TouchableRipple } from "react-native-paper";
-import NovelCover from "../components/NovelCover";
-import { theme } from "../theming/theme";
+import NovelCover from "../../../components/NovelCover";
+import { theme } from "../../../theming/theme";
 
 const SearchScreen = ({ navigation }) => {
     const [loading, setLoading] = useState(false);
@@ -18,9 +18,7 @@ const SearchScreen = ({ navigation }) => {
 
     const getNovels = (searchText) => {
         setLoading(true);
-        fetch(
-            `http://192.168.1.42:5000/api/1/search/?s=${searchText}&?o=rating`
-        )
+        fetch(`http://192.168.1.42:5000/api/2/search/?s=${searchText}`)
             .then((response) => response.json())
             .then((json) => setNovels(json))
             .catch((error) => console.error(error))

@@ -11,10 +11,9 @@ import BottomSheet from "../components/ChapterBottomSheet";
 import { Appbar, Provider, Portal } from "react-native-paper";
 import { theme } from "../theming/theme";
 import { CollapsibleHeaderScrollView } from "react-native-collapsible-header-views";
-import { linear } from "react-native/Libraries/Animated/src/Easing";
 
 const ChapterItem = ({ route, navigation }) => {
-    const { chapterUrl } = route.params;
+    const { extensionId, chapterUrl } = route.params;
 
     const [loading, setLoading] = useState(true);
 
@@ -24,12 +23,8 @@ const ChapterItem = ({ route, navigation }) => {
 
     const [readerTheme, setReaderTheme] = useState(1);
 
-    useEffect(() => {
-        getChapter();
-    }, []);
-
     const getChapter = () => {
-        fetch(`http://192.168.1.42:5000/api/1/${chapterUrl}`)
+        fetch(`http://192.168.1.42:5000/api/${extensionId}/${chapterUrl}`)
             .then((response) => response.json())
             .then((json) => setChapter(json))
             .catch((error) => console.error(error))
@@ -37,6 +32,10 @@ const ChapterItem = ({ route, navigation }) => {
                 setLoading(false);
             });
     };
+
+    useEffect(() => {
+        getChapter();
+    }, []);
 
     return (
         <Provider>

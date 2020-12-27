@@ -9,12 +9,15 @@ import Library from "../screens/Library";
 import Browse from "../screens/Browse";
 import Latest from "../screens/Latest";
 import More from "../screens/More";
-import BoxNovelSearch from "../screens/Search";
+import BoxNovelSearch from "../screens/Sources/BoxNovel/BoxNovelSearch";
 import NovelItem from "../screens/NovelItem";
 import ChapterItem from "../screens/ChapterItem";
 import About from "../screens/About";
-import BoxNovel from "../screens/Sources/BoxNovel";
+import BoxNovel from "../screens/Sources/BoxNovel/BoxNovel";
 import { theme } from "../theming/theme";
+
+import ReadLightNovel from "../screens/Sources/ReadLightNovel/ReadLightNovel";
+import ReadLightNovelSearch from "../screens/Sources/ReadLightNovel/ReadLightNovelSearch";
 
 const Stack = createStackNavigator();
 
@@ -93,14 +96,29 @@ const BoxNovelStack = () => {
     return (
         <Stack.Navigator
             screenOptions={{
-                // headerTintColor: theme.textColorPrimaryDark,
-                // headerStyle: { backgroundColor: theme.colorDarkPrimary },
                 headerShown: false,
+                ...TransitionPresets.RevealFromBottomAndroid,
             }}
         >
             <Stack.Screen name="BoxNovel" component={BoxNovel} />
             <Stack.Screen name="BoxNovelSearch" component={BoxNovelSearch} />
-            {/* <Stack.Screen name="WuxiaWorld" component={WuxiaWorld} /> */}
+        </Stack.Navigator>
+    );
+};
+
+const ReadLightNovelStack = () => {
+    return (
+        <Stack.Navigator
+            screenOptions={{
+                headerShown: false,
+                ...TransitionPresets.RevealFromBottomAndroid,
+            }}
+        >
+            <Stack.Screen name="ReadLightNovel" component={ReadLightNovel} />
+            <Stack.Screen
+                name="ReadLightNovelSearch"
+                component={ReadLightNovelSearch}
+            />
         </Stack.Navigator>
     );
 };
@@ -203,6 +221,10 @@ const MainStack = () => {
                 }}
             />
             <Stack.Screen name="BoxNovelStack" component={BoxNovelStack} />
+            <Stack.Screen
+                name="ReadLightNovelStack"
+                component={ReadLightNovelStack}
+            />
         </Stack.Navigator>
     );
 };

@@ -1,20 +1,6 @@
 import React, { useEffect, useState } from "react";
-import {
-    StyleSheet,
-    View,
-    Text,
-    FlatList,
-    Image,
-    ActivityIndicator,
-    RefreshControl,
-} from "react-native";
-import {
-    TouchableRipple,
-    Appbar,
-    Provider,
-    Portal,
-    Button,
-} from "react-native-paper";
+import { StyleSheet, View, Text, FlatList, Image } from "react-native";
+import { TouchableRipple, IconButton } from "react-native-paper";
 import { theme } from "../theming/theme";
 import { sources } from "../utils/sources";
 
@@ -44,22 +30,49 @@ const Browse = ({ navigation }) => {
                                 }}
                                 resizeMode="contain"
                             />
-                            <View style={{ marginLeft: 15 }}>
-                                <Text
-                                    style={{
-                                        color: theme.textColorPrimaryDark,
-                                        fontSize: 16,
-                                    }}
-                                >
-                                    {item.sourceName}
-                                </Text>
-                                <Text
-                                    style={{
-                                        color: theme.textColorSecondaryDark,
-                                    }}
-                                >
-                                    {item.sourceLanguage}
-                                </Text>
+                            <View
+                                style={{
+                                    marginLeft: 15,
+                                    flex: 1,
+                                    justifyContent: "space-between",
+                                    flexDirection: "row",
+                                    alignItems: "center",
+                                }}
+                            >
+                                <View>
+                                    <Text
+                                        style={{
+                                            color: theme.textColorPrimaryDark,
+                                            fontSize: 16,
+                                        }}
+                                    >
+                                        {item.sourceName}
+                                    </Text>
+                                    <Text
+                                        style={{
+                                            color: theme.textColorSecondaryDark,
+                                        }}
+                                    >
+                                        {item.sourceLanguage}
+                                    </Text>
+                                </View>
+                                <View>
+                                    <IconButton
+                                        icon="magnify"
+                                        color={theme.textColorSecondaryDark}
+                                        size={24}
+                                        onPress={() =>
+                                            navigation.navigate(
+                                                item.sourceName + "Stack",
+                                                {
+                                                    screen:
+                                                        item.sourceName +
+                                                        "Search",
+                                                }
+                                            )
+                                        }
+                                    />
+                                </View>
                             </View>
                         </>
                     </TouchableRipple>

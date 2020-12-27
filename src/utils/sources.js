@@ -8,8 +8,8 @@ export const sources = [
     },
     {
         sourceId: 2,
-        sourceName: "WuxiaWorld",
-        sourceCover: "https://www.wuxiaworld.com/Wu-Black-192.jpg",
+        sourceName: "ReadLightNovel",
+        sourceCover: "https://www.readlightnovel.org/assets/images/logo6.png",
         sourceLanguage: "English",
     },
 ];

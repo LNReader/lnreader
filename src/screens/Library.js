@@ -130,9 +130,9 @@ const UpdatesScreen = ({ navigation }) => {
                     </View>
                 }
             />
-            {/* <Button mode="contained" onPress={() => deleted()}>
+            <Button mode="contained" onPress={() => deleted()}>
                 Delete Library Table
-            </Button> */}
+            </Button>
         </View>
     );
 };

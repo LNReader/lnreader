@@ -27,6 +27,8 @@ const db = SQLite.openDatabase("lnreader.db");
 const NovelItem = ({ route, navigation }) => {
     const item = route.params;
 
+    const { extensionId } = route.params;
+
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
 
@@ -38,7 +40,9 @@ const NovelItem = ({ route, navigation }) => {
     // const [sort, setSort] = useState("DESC");
 
     const getNovel = () => {
-        fetch(`http://192.168.1.42:5000/api/1/novel/${item.novelUrl}`)
+        fetch(
+            `http://192.168.1.42:5000/api/${extensionId}/novel/${item.novelUrl}`
+        )
             .then((response) => response.json())
             .then((json) => {
                 setNovel(json);
@@ -102,7 +106,7 @@ const NovelItem = ({ route, navigation }) => {
         if (libraryStatus === 0) {
             db.transaction((tx) => {
                 tx.executeSql(
-                    "INSERT INTO LibraryTable (novelUrl, novelName, novelCover, novelSummary, Alternative, `Author(s)`, `Genre(s)`, Type, `Release`, Status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                    "INSERT INTO LibraryTable (novelUrl, novelName, novelCover, novelSummary, Alternative, `Author(s)`, `Genre(s)`, Type, `Release`, Status, extensionId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                     [
                         item.novelUrl,
                         novel.novelName,
@@ -114,6 +118,7 @@ const NovelItem = ({ route, navigation }) => {
                         novel.Type,
                         novel.Release,
                         novel.Status,
+                        extensionId,
                     ],
                     (tx, res) =>
                         ToastAndroid.show(
@@ -225,6 +230,7 @@ const NovelItem = ({ route, navigation }) => {
                             onPress={() =>
                                 navigation.navigate("ChapterItem", {
                                     chapterUrl: item.chapterUrl,
+                                    extensionId,
                                 })
                             }
                             rippleColor={theme.rippleColorDark}
@@ -246,7 +252,9 @@ const NovelItem = ({ route, navigation }) => {
                                     }}
                                     numberOfLines={1}
                                 >
-                                    {item.releaseDate}
+                                    {item.releaseDate
+                                        ? item.releaseDate
+                                        : "Release Date"}
                                 </Text>
                             </>
                         </TouchableRipple>

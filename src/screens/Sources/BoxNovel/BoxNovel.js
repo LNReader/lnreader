@@ -13,9 +13,9 @@ import {
     Portal,
     Button,
 } from "react-native-paper";
-import NovelCover from "../../components/NovelCover";
-import { theme } from "../../theming/theme";
-import { BottomSheet } from "../../components/BottomSheet";
+import NovelCover from "../../../components/NovelCover";
+import { theme } from "../../../theming/theme";
+import { BottomSheet } from "../../../components/BottomSheet";
 
 const AllNovels = ({ navigation }) => {
     const [loading, setLoading] = useState(true);
