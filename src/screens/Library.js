@@ -73,79 +73,63 @@ const UpdatesScreen = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            {loading ? (
-                <View style={{ flex: 1, justifyContent: "center" }}>
-                    <ActivityIndicator
-                        size="large"
-                        color={theme.colorAccentDark}
+            <FlatList
+                contentContainerStyle={{ flex: 1 }}
+                numColumns={3}
+                data={novels}
+                showsVerticalScrollIndicator={false}
+                keyExtractor={(item) => item.novelUrl}
+                renderItem={({ item }) => (
+                    <TouchableRipple
+                        borderless
+                        centered
+                        rippleColor="rgba(256,256,256,0.3)"
+                        style={styles.opac}
+                        onPress={() => navigation.navigate("NovelItem", item)}
+                    >
+                        <NovelCover item={item} />
+                    </TouchableRipple>
+                )}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                        colors={["white"]}
+                        progressBackgroundColor={theme.colorAccentDark}
                     />
-                </View>
-            ) : (
-                <>
-                    {!novels.length ? (
-                        <View
+                }
+                ListEmptyComponent={
+                    <View
+                        style={{
+                            flex: 1,
+                            justifyContent: "center",
+                            alignItems: "center",
+                        }}
+                    >
+                        <Text
                             style={{
-                                flex: 1,
-                                justifyContent: "center",
-                                alignItems: "center",
+                                color: theme.textColorSecondaryDark,
+                                fontSize: 45,
+                                fontWeight: "bold",
                             }}
                         >
-                            <Text
-                                style={{
-                                    color: theme.textColorSecondaryDark,
-                                    fontSize: 45,
-                                    fontWeight: "bold",
-                                }}
-                            >
-                                Σ(ಠ_ಠ)
-                            </Text>
-                            <Text
-                                style={{
-                                    color: theme.textColorSecondaryDark,
-                                    fontWeight: "bold",
-                                    marginTop: 10,
-                                    textAlign: "center",
-                                    paddingHorizontal: 30,
-                                }}
-                            >
-                                Your library is empty. Add series to your
-                                library from Browse.
-                            </Text>
-                        </View>
-                    ) : (
-                        <FlatList
-                            contentContainerStyle={styles.list}
-                            numColumns={3}
-                            data={novels}
-                            showsVerticalScrollIndicator={false}
-                            keyExtractor={(item) => item.novelUrl}
-                            renderItem={({ item }) => (
-                                <TouchableRipple
-                                    borderless
-                                    centered
-                                    rippleColor="rgba(256,256,256,0.3)"
-                                    style={styles.opac}
-                                    onPress={() =>
-                                        navigation.navigate("NovelItem", item)
-                                    }
-                                >
-                                    <NovelCover item={item} />
-                                </TouchableRipple>
-                            )}
-                            refreshControl={
-                                <RefreshControl
-                                    refreshing={refreshing}
-                                    onRefresh={onRefresh}
-                                    colors={["white"]}
-                                    progressBackgroundColor={
-                                        theme.colorAccentDark
-                                    }
-                                />
-                            }
-                        />
-                    )}
-                </>
-            )}
+                            Σ(ಠ_ಠ)
+                        </Text>
+                        <Text
+                            style={{
+                                color: theme.textColorSecondaryDark,
+                                fontWeight: "bold",
+                                marginTop: 10,
+                                textAlign: "center",
+                                paddingHorizontal: 30,
+                            }}
+                        >
+                            Your library is empty. Add series to your library
+                            from Browse.
+                        </Text>
+                    </View>
+                }
+            />
             {/* <Button mode="contained" onPress={() => deleted()}>
                 Delete Library Table
             </Button> */}

@@ -9,6 +9,7 @@ import {
     ScrollView,
     RefreshControl,
     ToastAndroid,
+    ActivityIndicator,
 } from "react-native";
 import {
     Appbar,
@@ -37,7 +38,7 @@ const NovelItem = ({ route, navigation }) => {
     const [sort, setSort] = useState("DESC");
 
     const getNovel = () => {
-        fetch(`http://192.168.1.39:5000/api/novel/${item.novelUrl}`)
+        fetch(`http://192.168.1.42:5000/api/novel/${item.novelUrl}`)
             .then((response) => response.json())
             .then((json) => {
                 setNovel(json);
@@ -166,11 +167,11 @@ const NovelItem = ({ route, navigation }) => {
                     console.log(res.rows.length);
                     if (res.rows.length === 0) {
                         setRefreshing(true);
-                        console.log("Not In Library");
+                        // console.log("Not In Library");
                         getNovel();
                         setlibraryStatus(0);
                     } else {
-                        console.log("In Library");
+                        // console.log("In Library");
                         getNovelFromDb();
                         setlibraryStatus(1);
                     }
@@ -206,280 +207,277 @@ const NovelItem = ({ route, navigation }) => {
                 />
             </Appbar.Header>
 
-            <ScrollView
-                style={styles.container}
-                refreshControl={
-                    <RefreshControl
-                        refreshing={refreshing}
-                        onRefresh={onRefresh}
-                        colors={["white"]}
-                        progressBackgroundColor={theme.colorAccentDark}
-                    />
-                }
-            >
-                <ImageBackground
-                    source={{
-                        uri: item.novelCover,
-                    }}
-                    style={styles.background}
-                >
-                    <LinearGradient
-                        colors={["transparent", "#000000"]}
-                        style={styles.linearGradient}
-                    >
-                        <View style={styles.detailsContainer}>
-                            <Image
-                                source={{
-                                    uri: item.novelCover,
-                                }}
-                                style={styles.logo}
-                            />
-                            <View style={styles.nameContainer}>
-                                <Text
-                                    numberOfLines={4}
-                                    style={[
-                                        styles.name,
-                                        { color: theme.textColorPrimaryDark },
-                                    ]}
-                                >
-                                    {item.novelName}
-                                </Text>
-                                {!loading && (
-                                    <>
-                                        <Text
-                                            style={{
-                                                color:
-                                                    theme.textColorSecondaryDark,
-                                                marginVertical: 3,
-                                                fontSize: 15,
-                                            }}
-                                            numberOfLines={1}
-                                        >
-                                            {novel.Alternative.replace(
-                                                ",",
-                                                ", "
-                                            )}
-                                        </Text>
-                                        <Text
-                                            style={{
-                                                color:
-                                                    theme.textColorSecondaryDark,
-                                                marginVertical: 3,
-                                                fontSize: 15,
-                                            }}
-                                        >
-                                            {novel["Author(s)"].replace(
-                                                ",",
-                                                ", "
-                                            )}
-                                        </Text>
-                                        <Text
-                                            style={{
-                                                color:
-                                                    theme.textColorSecondaryDark,
-                                                marginVertical: 3,
-                                                fontSize: 15,
-                                            }}
-                                        >
-                                            {novel["Release"]}
-                                        </Text>
-                                        <Text
-                                            style={{
-                                                color:
-                                                    theme.textColorSecondaryDark,
-                                                marginVertical: 3,
-                                                fontSize: 15,
-                                            }}
-                                        >
-                                            {novel["Status"] +
-                                                " • " +
-                                                novel["Type"]}
-                                        </Text>
-                                    </>
-                                )}
-                            </View>
-                        </View>
-                    </LinearGradient>
-                </ImageBackground>
-                {!loading && (
-                    <>
-                        <Button
-                            color={theme.textColorPrimaryDark}
-                            style={[
-                                {
-                                    backgroundColor: theme.colorAccentDark,
-                                    marginHorizontal: 15,
-                                },
-                                novel.novelSummary.length === 0 && {
-                                    marginBottom: 20,
-                                },
-                            ]}
-                            uppercase={false}
-                            labelStyle={{ letterSpacing: 0 }}
-                            onPress={() => insertToLibrary()}
-                        >
-                            {libraryStatus === 0
-                                ? "Add to library"
-                                : "In Library"}
-                        </Button>
-                        {/* <Button
-                            color={theme.textColorPrimaryDark}
-                            style={{
-                                backgroundColor: theme.colorAccentDark,
-                                marginHorizontal: 15,
-                            }}
-                            uppercase={false}
-                            labelStyle={{ letterSpacing: 0 }}
-                            onPress={() =>
-                                checkIfExistsInLibrary(novel.novelUrl)
-                            }
-                        >
-                            Check
-                        </Button> */}
-                        {novel.novelSummary.length > 0 && (
-                            <View
-                                style={{
-                                    paddingHorizontal: 15,
-                                    marginBottom: 10,
-                                }}
-                            >
-                                <Text
-                                    style={{
-                                        color: theme.textColorPrimaryDark,
-                                        marginTop: 5,
-                                        paddingVertical: 5,
-                                        fontSize: 15,
-                                    }}
-                                >
-                                    About
-                                </Text>
-                                <Text
-                                    style={{
-                                        color: theme.textColorSecondaryDark,
-                                        lineHeight: 20,
-                                    }}
-                                    numberOfLines={more ? 100 : 2}
-                                    onPress={() => setMore(!more)}
-                                    ellipsizeMode="clip"
-                                >
-                                    {novel.novelSummary}
-                                </Text>
-                                <Text
-                                    style={{
-                                        color: theme.colorAccentDark,
-                                        fontWeight: "bold",
-                                        position: "absolute",
-                                        bottom: 0,
-                                        right: 15,
-                                    }}
-                                    onPress={() => setMore(!more)}
-                                >
-                                    {more ? "Less" : "More"}
-                                </Text>
-                            </View>
-                        )}
-                        <FlatList
-                            contentContainerStyle={{
-                                paddingHorizontal: 15,
-                                marginBottom: 15,
-                            }}
-                            horizontal
-                            data={novel["Genre(s)"].split(",")}
-                            keyExtractor={(item) => item}
-                            renderItem={({ item }) => (
-                                <Text
-                                    style={[
-                                        styles.genre,
-                                        {
-                                            color: theme.colorAccentDark,
-                                            borderColor: theme.colorAccentDark,
-                                        },
-                                    ]}
-                                >
-                                    {item}
-                                </Text>
-                            )}
-                        />
-
+            <View style={styles.container}>
+                <FlatList
+                    data={chapters}
+                    extraData={chapters}
+                    showsVerticalScrollIndicator={false}
+                    keyExtractor={(item) => item.chapterId}
+                    removeClippedSubviews={true}
+                    maxToRenderPerBatch={10}
+                    initialNumToRender={10}
+                    renderItem={({ item }) => (
                         <TouchableRipple
                             style={{
-                                flex: 1,
-                                flexDirection: "row",
-                                justifyContent: "space-between",
-                                alignItems: "center",
+                                paddingHorizontal: 15,
+                                paddingVertical: 12,
                             }}
-                            // onPress={() => sortChapters()}
+                            onPress={() =>
+                                navigation.navigate("ChapterItem", {
+                                    chapterUrl: item.chapterUrl,
+                                })
+                            }
                             rippleColor={theme.rippleColorDark}
                         >
                             <>
                                 <Text
                                     style={{
                                         color: theme.textColorPrimaryDark,
-                                        paddingHorizontal: 15,
-                                        paddingVertical: 5,
-                                        fontSize: 15,
                                     }}
+                                    numberOfLines={1}
                                 >
-                                    {chapters.length + "  Chapters"}
+                                    {item.chapterName}
                                 </Text>
-                                <IconButton
-                                    icon="filter-variant"
-                                    color={theme.textColorPrimaryDark}
-                                    size={20}
-                                    // onPress={() => sortChapters()}
-                                    disabled
-                                />
+                                <Text
+                                    style={{
+                                        color: theme.textColorSecondaryDark,
+                                        marginTop: 5,
+                                        fontSize: 13,
+                                    }}
+                                    numberOfLines={1}
+                                >
+                                    {item.releaseDate}
+                                </Text>
                             </>
                         </TouchableRipple>
-                        <FlatList
-                            data={chapters}
-                            extraData={chapters}
-                            showsVerticalScrollIndicator={false}
-                            keyExtractor={(item) => item.chapterId}
-                            removeClippedSubviews={true}
-                            maxToRenderPerBatch={10}
-                            initialNumToRender={10}
-                            renderItem={({ item }) => (
-                                <TouchableRipple
-                                    style={{
-                                        paddingHorizontal: 15,
-                                        paddingVertical: 12,
-                                    }}
-                                    onPress={() =>
-                                        navigation.navigate("ChapterItem", {
-                                            chapterUrl: item.chapterUrl,
-                                        })
-                                    }
-                                    rippleColor={theme.rippleColorDark}
+                    )}
+                    ListHeaderComponent={
+                        <>
+                            <ImageBackground
+                                source={{
+                                    uri: item.novelCover,
+                                }}
+                                style={styles.background}
+                            >
+                                <LinearGradient
+                                    colors={["transparent", "#000000"]}
+                                    style={styles.linearGradient}
                                 >
-                                    <>
-                                        <Text
-                                            style={{
-                                                color:
-                                                    theme.textColorPrimaryDark,
+                                    <View style={styles.detailsContainer}>
+                                        <Image
+                                            source={{
+                                                uri: item.novelCover,
                                             }}
-                                            numberOfLines={1}
-                                        >
-                                            {item.chapterName}
-                                        </Text>
-                                        <Text
+                                            style={styles.logo}
+                                        />
+                                        <View style={styles.nameContainer}>
+                                            <Text
+                                                numberOfLines={4}
+                                                style={[
+                                                    styles.name,
+                                                    {
+                                                        color:
+                                                            theme.textColorPrimaryDark,
+                                                    },
+                                                ]}
+                                            >
+                                                {item.novelName}
+                                            </Text>
+                                            {!loading && (
+                                                <>
+                                                    <Text
+                                                        style={{
+                                                            color:
+                                                                theme.textColorSecondaryDark,
+                                                            marginVertical: 3,
+                                                            fontSize: 15,
+                                                        }}
+                                                        numberOfLines={1}
+                                                    >
+                                                        {novel.Alternative.replace(
+                                                            ",",
+                                                            ", "
+                                                        )}
+                                                    </Text>
+                                                    <Text
+                                                        style={{
+                                                            color:
+                                                                theme.textColorSecondaryDark,
+                                                            marginVertical: 3,
+                                                            fontSize: 15,
+                                                        }}
+                                                    >
+                                                        {novel[
+                                                            "Author(s)"
+                                                        ].replace(",", ", ")}
+                                                    </Text>
+                                                    <Text
+                                                        style={{
+                                                            color:
+                                                                theme.textColorSecondaryDark,
+                                                            marginVertical: 3,
+                                                            fontSize: 15,
+                                                        }}
+                                                    >
+                                                        {novel["Release"]}
+                                                    </Text>
+                                                    <Text
+                                                        style={{
+                                                            color:
+                                                                theme.textColorSecondaryDark,
+                                                            marginVertical: 3,
+                                                            fontSize: 15,
+                                                        }}
+                                                    >
+                                                        {novel["Status"] +
+                                                            " • " +
+                                                            novel["Type"]}
+                                                    </Text>
+                                                </>
+                                            )}
+                                        </View>
+                                    </View>
+                                </LinearGradient>
+                            </ImageBackground>
+
+                            {!loading && (
+                                <>
+                                    <Button
+                                        color={theme.textColorPrimaryDark}
+                                        style={[
+                                            {
+                                                backgroundColor:
+                                                    theme.colorAccentDark,
+                                                marginHorizontal: 15,
+                                            },
+                                            novel.novelSummary.length === 0 && {
+                                                marginBottom: 20,
+                                            },
+                                        ]}
+                                        uppercase={false}
+                                        labelStyle={{ letterSpacing: 0 }}
+                                        onPress={() => insertToLibrary()}
+                                    >
+                                        {libraryStatus === 0
+                                            ? "Add to library"
+                                            : "In Library"}
+                                    </Button>
+                                    {novel.novelSummary.length > 0 && (
+                                        <View
                                             style={{
-                                                color:
-                                                    theme.textColorSecondaryDark,
-                                                marginTop: 5,
-                                                fontSize: 13,
+                                                paddingHorizontal: 15,
+                                                marginBottom: 10,
                                             }}
-                                            numberOfLines={1}
                                         >
-                                            {item.releaseDate}
-                                        </Text>
-                                    </>
-                                </TouchableRipple>
+                                            <Text
+                                                style={{
+                                                    color:
+                                                        theme.textColorPrimaryDark,
+                                                    marginTop: 5,
+                                                    paddingVertical: 5,
+                                                    fontSize: 15,
+                                                }}
+                                            >
+                                                About
+                                            </Text>
+                                            <Text
+                                                style={{
+                                                    color:
+                                                        theme.textColorSecondaryDark,
+                                                    lineHeight: 20,
+                                                }}
+                                                numberOfLines={more ? 100 : 2}
+                                                onPress={() => setMore(!more)}
+                                                ellipsizeMode="clip"
+                                            >
+                                                {novel.novelSummary}
+                                            </Text>
+                                            <Text
+                                                style={{
+                                                    color:
+                                                        theme.colorAccentDark,
+                                                    fontWeight: "bold",
+                                                    position: "absolute",
+                                                    bottom: 0,
+                                                    right: 15,
+                                                }}
+                                                onPress={() => setMore(!more)}
+                                            >
+                                                {more ? "Less" : "More"}
+                                            </Text>
+                                        </View>
+                                    )}
+                                    <FlatList
+                                        contentContainerStyle={{
+                                            paddingHorizontal: 15,
+                                            marginBottom: 15,
+                                        }}
+                                        horizontal
+                                        data={novel["Genre(s)"].split(",")}
+                                        keyExtractor={(item) => item}
+                                        renderItem={({ item }) => (
+                                            <Text
+                                                style={[
+                                                    styles.genre,
+                                                    {
+                                                        color:
+                                                            theme.colorAccentDark,
+                                                        borderColor:
+                                                            theme.colorAccentDark,
+                                                    },
+                                                ]}
+                                            >
+                                                {item}
+                                            </Text>
+                                        )}
+                                    />
+                                    <TouchableRipple
+                                        style={{
+                                            flex: 1,
+                                            flexDirection: "row",
+                                            justifyContent: "space-between",
+                                            alignItems: "center",
+                                        }}
+                                        // onPress={() => sortChapters()}
+                                        rippleColor={theme.rippleColorDark}
+                                    >
+                                        <>
+                                            <Text
+                                                style={{
+                                                    color:
+                                                        theme.textColorPrimaryDark,
+                                                    paddingHorizontal: 15,
+                                                    paddingVertical: 5,
+                                                    fontSize: 15,
+                                                }}
+                                            >
+                                                {chapters.length + "  Chapters"}
+                                            </Text>
+                                            <IconButton
+                                                icon="filter-variant"
+                                                color={
+                                                    theme.textColorPrimaryDark
+                                                }
+                                                size={20}
+                                                // onPress={() => sortChapters()}
+                                                disabled
+                                            />
+                                        </>
+                                    </TouchableRipple>
+                                </>
                             )}
+                        </>
+                    }
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={refreshing}
+                            onRefresh={onRefresh}
+                            colors={["white"]}
+                            progressBackgroundColor={theme.colorAccentDark}
                         />
-                    </>
-                )}
-            </ScrollView>
+                    }
+                />
+            </View>
         </>
     );
 };

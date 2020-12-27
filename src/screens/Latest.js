@@ -16,7 +16,7 @@ const LatestScreen = ({ navigation }) => {
     const [novels, setNovels] = useState();
 
     const getNovels = () => {
-        fetch("http://192.168.1.39:5000/api/latest")
+        fetch("http://192.168.1.42:5000/api/latest")
             .then((response) => response.json())
             .then((json) => setNovels(json))
             .catch((error) => console.error(error))
