@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text, ActivityIndicator } from "react-native";
+import {
+    StyleSheet,
+    View,
+    Text,
+    ActivityIndicator,
+    StatusBar,
+} from "react-native";
 import BottomSheet from "../components/ChapterBottomSheet";
 
 import { Appbar, Provider, Portal } from "react-native-paper";
@@ -14,7 +20,7 @@ const ChapterItem = ({ route, navigation }) => {
 
     const [chapter, setChapter] = useState();
 
-    const [size, setSize] = useState(14);
+    const [size, setSize] = useState(16);
 
     const [readerTheme, setReaderTheme] = useState(1);
 
@@ -23,7 +29,7 @@ const ChapterItem = ({ route, navigation }) => {
     }, []);
 
     const getChapter = () => {
-        fetch(`http://192.168.1.42:5000/api/${chapterUrl}`)
+        fetch(`http://192.168.1.42:5000/api/1/${chapterUrl}`)
             .then((response) => response.json())
             .then((json) => setChapter(json))
             .catch((error) => console.error(error))
@@ -34,6 +40,7 @@ const ChapterItem = ({ route, navigation }) => {
 
     return (
         <Provider>
+            <StatusBar backgroundColor="transparent" />
             <CollapsibleHeaderScrollView
                 headerContainerBackgroundColor={"rgba(0,0,0,0)"}
                 // statusBarHeight={60}
@@ -123,7 +130,7 @@ const ChapterItem = ({ route, navigation }) => {
                                 ? { color: theme.textColorSecondaryDark }
                                 : { color: "black" },
                             size === 16
-                                ? { lineHeight: 20 }
+                                ? { lineHeight: 25 }
                                 : size === 20
                                 ? { lineHeight: 25 }
                                 : size === 12 && { lineHeight: 20 },

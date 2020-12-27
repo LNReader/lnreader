@@ -35,10 +35,10 @@ const NovelItem = ({ route, navigation }) => {
     const [more, setMore] = useState(false);
 
     const [libraryStatus, setlibraryStatus] = useState();
-    const [sort, setSort] = useState("DESC");
+    // const [sort, setSort] = useState("DESC");
 
     const getNovel = () => {
-        fetch(`http://192.168.1.42:5000/api/novel/${item.novelUrl}`)
+        fetch(`http://192.168.1.42:5000/api/1/novel/${item.novelUrl}`)
             .then((response) => response.json())
             .then((json) => {
                 setNovel(json);
@@ -212,7 +212,7 @@ const NovelItem = ({ route, navigation }) => {
                     data={chapters}
                     extraData={chapters}
                     showsVerticalScrollIndicator={false}
-                    keyExtractor={(item) => item.chapterId}
+                    keyExtractor={(item) => item.chapterUrl}
                     removeClippedSubviews={true}
                     maxToRenderPerBatch={10}
                     initialNumToRender={10}

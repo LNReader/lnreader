@@ -18,7 +18,9 @@ const SearchScreen = ({ navigation }) => {
 
     const getNovels = (searchText) => {
         setLoading(true);
-        fetch(`http://192.168.1.42:5000/api/search/?s=${searchText}&?o=rating`)
+        fetch(
+            `http://192.168.1.42:5000/api/1/search/?s=${searchText}&?o=rating`
+        )
             .then((response) => response.json())
             .then((json) => setNovels(json))
             .catch((error) => console.error(error))

@@ -9,10 +9,11 @@ import Library from "../screens/Library";
 import Browse from "../screens/Browse";
 import Latest from "../screens/Latest";
 import More from "../screens/More";
-import Search from "../screens/Search";
+import BoxNovelSearch from "../screens/Search";
 import NovelItem from "../screens/NovelItem";
 import ChapterItem from "../screens/ChapterItem";
 import About from "../screens/About";
+import BoxNovel from "../screens/Sources/BoxNovel";
 import { theme } from "../theming/theme";
 
 const Stack = createStackNavigator();
@@ -61,11 +62,16 @@ const SearchStack = () => {
 
 const BrowseStack = () => {
     return (
-        <Stack.Navigator>
+        <Stack.Navigator
+            screenOptions={{
+                headerTintColor: theme.textColorPrimaryDark,
+                headerStyle: { backgroundColor: theme.colorDarkPrimary },
+            }}
+        >
             <Stack.Screen
                 name="Browse"
                 component={Browse}
-                options={{ headerShown: false }}
+                // options={{ headerShown: false }}
             />
         </Stack.Navigator>
     );
@@ -79,6 +85,22 @@ const MoreStack = () => {
             }}
         >
             <Stack.Screen name="More" component={More} />
+        </Stack.Navigator>
+    );
+};
+
+const BoxNovelStack = () => {
+    return (
+        <Stack.Navigator
+            screenOptions={{
+                // headerTintColor: theme.textColorPrimaryDark,
+                // headerStyle: { backgroundColor: theme.colorDarkPrimary },
+                headerShown: false,
+            }}
+        >
+            <Stack.Screen name="BoxNovel" component={BoxNovel} />
+            <Stack.Screen name="BoxNovelSearch" component={BoxNovelSearch} />
+            {/* <Stack.Screen name="WuxiaWorld" component={WuxiaWorld} /> */}
         </Stack.Navigator>
     );
 };
@@ -104,7 +126,7 @@ const Router = () => {
                 }}
             />
 
-            <Tab.Screen
+            {/* <Tab.Screen
                 name="Latest"
                 component={LatestStack}
                 options={{
@@ -116,8 +138,8 @@ const Router = () => {
                         />
                     ),
                 }}
-            />
-            <Tab.Screen
+            /> */}
+            {/* <Tab.Screen
                 name="Search"
                 component={SearchStack}
                 options={{
@@ -129,7 +151,7 @@ const Router = () => {
                         />
                     ),
                 }}
-            />
+            /> */}
             <Tab.Screen
                 name="Browse"
                 component={BrowseStack}
@@ -180,6 +202,7 @@ const MainStack = () => {
                     headerStyle: { backgroundColor: theme.colorDarkPrimary },
                 }}
             />
+            <Stack.Screen name="BoxNovelStack" component={BoxNovelStack} />
         </Stack.Navigator>
     );
 };
