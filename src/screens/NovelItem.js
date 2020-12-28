@@ -232,6 +232,9 @@ const NovelItem = ({ route, navigation }) => {
                                     chapterUrl: item.chapterUrl,
                                     extensionId,
                                     novelUrl: novelUrl,
+                                    novelName: novel.novelName,
+                                    novelCover: novel.novelCover,
+                                    chapterName: item.chapterName,
                                 })
                             }
                             rippleColor={theme.rippleColorDark}

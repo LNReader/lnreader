@@ -16,7 +16,14 @@ import * as SQLite from "expo-sqlite";
 const db = SQLite.openDatabase("lnreader.db");
 
 const ChapterItem = ({ route, navigation }) => {
-    const { extensionId, chapterUrl, novelUrl } = route.params;
+    const {
+        extensionId,
+        chapterUrl,
+        novelUrl,
+        novelName,
+        novelCover,
+        chapterName,
+    } = route.params;
 
     const [loading, setLoading] = useState(true);
 
@@ -29,9 +36,17 @@ const ChapterItem = ({ route, navigation }) => {
     const setHistory = () => {
         db.transaction((tx) => {
             tx.executeSql(
-                "INSERT INTO HistoryTable (chapterUrl, novelUrl, lastRead) VALUES ( ?, ?, CURRENT_TIMESTAMP)",
-                [chapterUrl, novelUrl],
-                (tx, res) => console.log("Inserted into history table"),
+                "INSERT INTO HistoryTable (chapterUrl, novelUrl, novelName, novelCover, chapterName, extensionId, lastRead) VALUES ( ?, ?, ?, ?, ?, ?, (datetime('now','localtime')))",
+                [
+                    chapterUrl,
+                    novelUrl,
+                    novelName,
+                    novelCover,
+                    chapterName,
+                    extensionId,
+                ],
+                (tx, res) =>
+                    console.log("Inserted into history table: " + novelName),
                 (tx, error) => console.log(error)
             );
         });
@@ -40,9 +55,10 @@ const ChapterItem = ({ route, navigation }) => {
     const updateHistory = () => {
         db.transaction((tx) => {
             tx.executeSql(
-                "UPDATE HistoryTable SET lastRead = CURRENT_TIMESTAMP",
-                null,
-                (tx, res) => console.log("Updated into history table"),
+                "UPDATE HistoryTable SET lastRead = (datetime('now','localtime')), chapterName = ?",
+                [chapterName],
+                (tx, res) =>
+                    console.log("Updated into history table: " + novelName),
                 (tx, error) => console.log(error)
             );
         });
