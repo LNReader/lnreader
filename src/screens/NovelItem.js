@@ -333,10 +333,11 @@ const NovelItem = ({ route, navigation }) => {
                                                         }}
                                                         numberOfLines={1}
                                                     >
-                                                        {novel.Alternative.replace(
-                                                            ",",
-                                                            ", "
-                                                        )}
+                                                        {novel.Alternative &&
+                                                            novel.Alternative.replace(
+                                                                ",",
+                                                                ", "
+                                                            )}
                                                     </Text>
                                                     <Text
                                                         style={{

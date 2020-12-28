@@ -129,23 +129,35 @@ const ChapterItem = ({ route, navigation }) => {
                         {!loading && (
                             <>
                                 <Appbar.Action
+                                    disabled
                                     icon="chevron-left"
                                     size={26}
-                                    disabled={!chapter.prevChapter}
+                                    // disabled={!chapter.prevChapter}
                                     onPress={() => {
                                         navigation.push("ChapterItem", {
                                             chapterUrl: chapter.prevChapter,
+                                            extensionId,
+                                            novelCover,
+                                            novelUrl,
+                                            novelName,
+                                            chapterName: chapter.chapterName,
                                         });
                                     }}
                                     color={"white"}
                                 />
                                 <Appbar.Action
+                                    disabled
                                     icon="chevron-right"
                                     size={26}
-                                    disabled={!chapter.nextChapter}
+                                    // disabled={!chapter.nextChapter}
                                     onPress={() => {
                                         navigation.push("ChapterItem", {
                                             chapterUrl: chapter.nextChapter,
+                                            extensionId,
+                                            novelCover,
+                                            novelUrl,
+                                            novelName,
+                                            chapterName: chapter.chapterName,
                                         });
                                     }}
                                     color={"white"}
