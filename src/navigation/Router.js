@@ -13,7 +13,9 @@ import BoxNovelSearch from "../screens/Sources/BoxNovel/BoxNovelSearch";
 import NovelItem from "../screens/NovelItem";
 import ChapterItem from "../screens/ChapterItem";
 import About from "../screens/About";
+import HistoryScreen from "../screens/History/History";
 import BoxNovel from "../screens/Sources/BoxNovel/BoxNovel";
+
 import { theme } from "../theming/theme";
 
 import ReadLightNovel from "../screens/Sources/ReadLightNovel/ReadLightNovel";
@@ -157,19 +159,19 @@ const Router = () => {
                     ),
                 }}
             /> */}
-            {/* <Tab.Screen
-                name="Search"
-                component={SearchStack}
+            <Tab.Screen
+                name="History"
+                component={HistoryScreen}
                 options={{
                     tabBarIcon: ({ color }) => (
                         <MaterialCommunityIcons
-                            name="book-search"
+                            name="history"
                             color={color}
                             size={24}
                         />
                     ),
                 }}
-            /> */}
+            />
             <Tab.Screen
                 name="Browse"
                 component={BrowseStack}

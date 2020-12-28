@@ -31,6 +31,12 @@ export default function App() {
                 (tx, results) => console.log("Chapter Table Created"),
                 (tx, error) => console.log(error)
             );
+            tx.executeSql(
+                "CREATE TABLE IF NOT EXISTS HistoryTable (historyId INTEGER PRIMARY KEY AUTOINCREMENT, chapterUrl VARCHAR(255), novelUrl VARCHAR(255), lastRead DATETIME DEFAULT CURRENT_TIMESTAMP)",
+                null,
+                (tx, results) => console.log("History Table Created"),
+                (tx, error) => console.log(error)
+            );
         });
 
     useEffect(() => {

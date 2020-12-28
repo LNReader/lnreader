@@ -27,7 +27,7 @@ const db = SQLite.openDatabase("lnreader.db");
 const NovelItem = ({ route, navigation }) => {
     const item = route.params;
 
-    const { extensionId } = route.params;
+    const { extensionId, novelUrl } = route.params;
 
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
@@ -231,6 +231,7 @@ const NovelItem = ({ route, navigation }) => {
                                 navigation.navigate("ChapterItem", {
                                     chapterUrl: item.chapterUrl,
                                     extensionId,
+                                    novelUrl: novelUrl,
                                 })
                             }
                             rippleColor={theme.rippleColorDark}

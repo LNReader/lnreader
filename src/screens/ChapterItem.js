@@ -8,12 +8,15 @@ import {
 } from "react-native";
 import BottomSheet from "../components/ChapterBottomSheet";
 
-import { Appbar, Provider, Portal } from "react-native-paper";
+import { Appbar, Provider, Portal, Button } from "react-native-paper";
 import { theme } from "../theming/theme";
 import { CollapsibleHeaderScrollView } from "react-native-collapsible-header-views";
 
+import * as SQLite from "expo-sqlite";
+const db = SQLite.openDatabase("lnreader.db");
+
 const ChapterItem = ({ route, navigation }) => {
-    const { extensionId, chapterUrl } = route.params;
+    const { extensionId, chapterUrl, novelUrl } = route.params;
 
     const [loading, setLoading] = useState(true);
 
@@ -23,6 +26,48 @@ const ChapterItem = ({ route, navigation }) => {
 
     const [readerTheme, setReaderTheme] = useState(1);
 
+    const setHistory = () => {
+        db.transaction((tx) => {
+            tx.executeSql(
+                "INSERT INTO HistoryTable (chapterUrl, novelUrl, lastRead) VALUES ( ?, ?, CURRENT_TIMESTAMP)",
+                [chapterUrl, novelUrl],
+                (tx, res) => console.log("Inserted into history table"),
+                (tx, error) => console.log(error)
+            );
+        });
+    };
+
+    const updateHistory = () => {
+        db.transaction((tx) => {
+            tx.executeSql(
+                "UPDATE HistoryTable SET lastRead = CURRENT_TIMESTAMP",
+                null,
+                (tx, res) => console.log("Updated into history table"),
+                (tx, error) => console.log(error)
+            );
+        });
+    };
+
+    const checkIfInHistory = () => {
+        db.transaction((tx) => {
+            tx.executeSql(
+                "SELECT * FROM HistoryTable WHERE novelUrl=?",
+                [novelUrl],
+                (txObj, res) => {
+                    console.log(res.rows.length);
+                    if (res.rows.length === 0) {
+                        console.log("Not In History");
+                        setHistory();
+                    } else {
+                        console.log("In History");
+                        updateHistory();
+                    }
+                },
+                (txObj, error) => console.log("Error ", error)
+            );
+        });
+    };
+
     const getChapter = () => {
         fetch(`http://192.168.1.42:5000/api/${extensionId}/${chapterUrl}`)
             .then((response) => response.json())
@@ -30,6 +75,7 @@ const ChapterItem = ({ route, navigation }) => {
             .catch((error) => console.error(error))
             .finally(() => {
                 setLoading(false);
+                checkIfInHistory();
             });
     };
 
@@ -42,7 +88,7 @@ const ChapterItem = ({ route, navigation }) => {
             <StatusBar backgroundColor="transparent" />
             <CollapsibleHeaderScrollView
                 headerContainerBackgroundColor={"rgba(0,0,0,0)"}
-                // statusBarHeight={60}
+                // onScrollEndDrag={() => setHistory()}
                 CollapsibleHeaderComponent={
                     <Appbar.Header
                         style={{
@@ -62,7 +108,6 @@ const ChapterItem = ({ route, navigation }) => {
                             title={loading ? "Chapter" : chapter.chapterName}
                             titleStyle={{ color: theme.textColorPrimaryDark }}
                         />
-
                         {!loading && (
                             <>
                                 <Appbar.Action
@@ -111,6 +156,9 @@ const ChapterItem = ({ route, navigation }) => {
                 ]}
                 onScroll={() => _panel.hide()}
             >
+                {/* <Button mode="contained" onPress={() => setHistory()}>
+                    Set History
+                </Button> */}
                 {loading ? (
                     <View style={{ flex: 1, justifyContent: "center" }}>
                         <ActivityIndicator

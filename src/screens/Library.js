@@ -56,6 +56,14 @@ const UpdatesScreen = ({ navigation }) => {
                 },
                 (txObj, error) => console.log("Error ", error)
             );
+            tx.executeSql(
+                "DROP TABLE HistoryTable",
+                null,
+                (txObj, { rows: { _array } }) => {
+                    console.log("DELETED History TABLE");
+                },
+                (txObj, error) => console.log("Error ", error)
+            );
         });
         setNovels([]);
     };
