@@ -14,6 +14,7 @@ import NovelItem from "../screens/NovelItem";
 import ChapterItem from "../screens/ChapterItem";
 import About from "../screens/About";
 import HistoryScreen from "../screens/History/History";
+import Updates from "../screens/Updates/Updates";
 import BoxNovel from "../screens/Sources/BoxNovel/BoxNovel";
 
 import { theme } from "../theming/theme";
@@ -38,18 +39,18 @@ const LibraryStack = () => {
     );
 };
 
-const LatestStack = () => {
-    return (
-        <Stack.Navigator
-            screenOptions={{
-                headerTintColor: theme.textColorPrimaryDark,
-                headerStyle: { backgroundColor: theme.colorDarkPrimary },
-            }}
-        >
-            <Stack.Screen name="Latest" component={Latest} />
-        </Stack.Navigator>
-    );
-};
+// const UpdatesStack = () => {
+//     return (
+//         <Stack.Navigator
+//             screenOptions={{
+//                 headerTintColor: theme.textColorPrimaryDark,
+//                 headerStyle: { backgroundColor: theme.colorDarkPrimary },
+//             }}
+//         >
+//             <Stack.Screen name="Updates" component={Updates} />
+//         </Stack.Navigator>
+//     );
+// };
 
 const SearchStack = () => {
     return (
@@ -145,10 +146,10 @@ const Router = () => {
                     ),
                 }}
             />
-
-            {/* <Tab.Screen
-                name="Latest"
-                component={LatestStack}
+            {/* 
+            <Tab.Screen
+                name="Updates"
+                component={Updates}
                 options={{
                     tabBarIcon: ({ color }) => (
                         <MaterialCommunityIcons

@@ -25,7 +25,7 @@ const UpdatesScreen = ({ navigation }) => {
     const getLibraryNovels = () => {
         db.transaction((tx) => {
             tx.executeSql(
-                "SELECT * FROM LibraryTable",
+                "SELECT * FROM LibraryTable WHERE libraryStatus=1",
                 null,
                 (txObj, { rows: { _array } }) => {
                     setNovels(_array);

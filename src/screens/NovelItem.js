@@ -22,6 +22,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { theme } from "../theming/theme";
 
 import * as SQLite from "expo-sqlite";
+import { set } from "react-native-reanimated";
 const db = SQLite.openDatabase("lnreader.db");
 
 const NovelItem = ({ route, navigation }) => {
@@ -36,17 +37,18 @@ const NovelItem = ({ route, navigation }) => {
     const [chapters, setChapters] = useState();
     const [more, setMore] = useState(false);
 
-    const [libraryStatus, setlibraryStatus] = useState();
+    const [libraryStatus, setlibraryStatus] = useState(0);
     // const [sort, setSort] = useState("DESC");
 
     const getNovel = () => {
         fetch(
-            `http://192.168.1.42:5000/api/${extensionId}/novel/${item.novelUrl}`
+            `https://lnreader-extensions.herokuapp.com/api/${extensionId}/novel/${item.novelUrl}`
         )
             .then((response) => response.json())
             .then((json) => {
                 setNovel(json);
                 setChapters(json.novelChapters);
+                insertIntoDb(json, json.novelChapters);
             })
             .catch((error) => console.error(error))
             .finally(() => {
@@ -65,6 +67,7 @@ const NovelItem = ({ route, navigation }) => {
                     for (let i = 0; i < len; i++) {
                         let row = results.rows.item(i);
                         setNovel(row);
+                        setlibraryStatus(row.libraryStatus);
                     }
                 },
                 (txObj, error) => console.log("Error ", error)
@@ -102,11 +105,49 @@ const NovelItem = ({ route, navigation }) => {
     //     }
     // };
 
+    const insertIntoDb = (nov, chaps) => {
+        db.transaction((tx) => {
+            tx.executeSql(
+                "INSERT OR REPLACE INTO LibraryTable (novelUrl, novelName, novelCover, novelSummary, Alternative, `Author(s)`, `Genre(s)`, Type, `Release`, Status, extensionId, libraryStatus) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                [
+                    item.novelUrl,
+                    nov.novelName,
+                    nov.novelCover,
+                    nov.novelSummary,
+                    nov.Alternative,
+                    nov["Author(s)"],
+                    nov["Genre(s)"],
+                    nov.Type,
+                    nov.Release,
+                    nov.Status,
+                    extensionId,
+                    0,
+                ],
+                (tx, res) => {
+                    console.log("Inserted into DB");
+                },
+                (txObj, error) => console.log("Error ", error)
+            );
+
+            chaps.map((chap) =>
+                tx.executeSql(
+                    "INSERT INTO ChapterTable (chapterUrl, chapterName, releaseDate, novelUrl) values (?, ?, ?, ?)",
+                    [
+                        chap.chapterUrl,
+                        chap.chapterName,
+                        chap.releaseDate,
+                        item.novelUrl,
+                    ]
+                )
+            );
+        });
+    };
+
     const insertToLibrary = () => {
         if (libraryStatus === 0) {
             db.transaction((tx) => {
                 tx.executeSql(
-                    "INSERT INTO LibraryTable (novelUrl, novelName, novelCover, novelSummary, Alternative, `Author(s)`, `Genre(s)`, Type, `Release`, Status, extensionId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                    "INSERT OR REPLACE INTO LibraryTable (novelUrl, novelName, novelCover, novelSummary, Alternative, `Author(s)`, `Genre(s)`, Type, `Release`, Status, extensionId, libraryStatus) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ",
                     [
                         item.novelUrl,
                         novel.novelName,
@@ -119,46 +160,35 @@ const NovelItem = ({ route, navigation }) => {
                         novel.Release,
                         novel.Status,
                         extensionId,
+                        1,
                     ],
-                    (tx, res) =>
+                    (tx, res) => {
                         ToastAndroid.show(
                             "Added to library",
                             ToastAndroid.SHORT
-                        ),
+                        );
+                        console.log("Inserted into Library");
+
+                        setlibraryStatus(1);
+                    },
                     (txObj, error) => console.log("Error ", error)
                 );
-
-                chapters.map((chap) =>
-                    tx.executeSql(
-                        "INSERT INTO ChapterTable (chapterUrl, chapterName, releaseDate, novelUrl) values (?, ?, ?, ?)",
-                        [
-                            chap.chapterUrl,
-                            chap.chapterName,
-                            chap.releaseDate,
-                            item.novelUrl,
-                        ]
-                    )
-                );
-                setlibraryStatus(1);
             });
         } else {
             db.transaction((tx) => {
                 tx.executeSql(
-                    "DELETE FROM LibraryTable WHERE novelUrl=?",
+                    "UPDATE LibraryTable SET libraryStatus = 0 WHERE novelUrl=?",
                     [item.novelUrl],
                     (txObj, res) => {
                         ToastAndroid.show(
                             "Removed from library",
                             ToastAndroid.SHORT
                         );
+                        console.log("Removed From Library");
+                        setlibraryStatus(0);
                     },
                     (txObj, error) => console.log("Error ", error)
                 );
-                tx.executeSql("DELETE FROM ChapterTable WHERE novelUrl=?", [
-                    item.novelUrl,
-                ]);
-                console.log("Removed Novel");
-                setlibraryStatus(0);
             });
         }
     };
@@ -169,16 +199,13 @@ const NovelItem = ({ route, navigation }) => {
                 "SELECT * FROM LibraryTable WHERE novelUrl=?",
                 [id],
                 (txObj, res) => {
-                    console.log(res.rows.length);
                     if (res.rows.length === 0) {
                         setRefreshing(true);
-                        // console.log("Not In Library");
+                        console.log("Not In Database");
                         getNovel();
-                        setlibraryStatus(0);
                     } else {
-                        // console.log("In Library");
+                        console.log("In Database");
                         getNovelFromDb();
-                        setlibraryStatus(1);
                     }
                 },
                 (txObj, error) => console.log("Error ", error)

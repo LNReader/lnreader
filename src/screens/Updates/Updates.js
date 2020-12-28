@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Text, FlatList, Image } from "react-native";
 import { TouchableRipple, IconButton, Appbar } from "react-native-paper";
 import { theme } from "../../theming/theme";
@@ -12,50 +12,107 @@ const History = ({ navigation }) => {
     const [loading, setLoading] = useState(true);
     const [novels, setNovels] = useState();
 
-    const getHistory = () => {
+    const getChapters = (extensionId, novelUrl) => {
+        fetch(
+            `https://lnreader-extensions.herokuapp.com/api/${extensionId}/novel/${novelUrl}`
+        )
+            .then((response) => response.json())
+            .then((json) => {
+                json.novelChapters.forEach((chap) => {
+                    db.transaction((tx) => {
+                        tx.executeSql(
+                            "INSERT INTO ChapterTable (chapterUrl, chapterName, releaseDate, novelUrl) VALUES (?, ?, ?, ?)",
+                            [
+                                chap.chapterUrl,
+                                chap.chapterName,
+                                chap.releaseDate,
+                                json.novelUrl,
+                            ],
+                            (txObj, res) =>
+                                console.log("Inserted into chapter table"),
+                            (txObj, error) => console.log("Error ", error)
+                        );
+                        // tx.executeSql(
+                        //     "INSERT INTO UpdatesTable (chapterId, novelUrl) VALUES (last_insert_rowid(), ?)",
+                        //     [json.novelUrl],
+                        //     (txObj, res) =>
+                        //         console.log("Inserted INTO UPDATES TABLE"),
+                        //     (txObj, error) => console.log("Error ", error)
+                        // );
+                    });
+                });
+            })
+            .catch((error) => console.error(error))
+            .finally(() => {
+                // setRefreshing(false);
+                setLoading(false);
+            });
+    };
+
+    const updateLibrary = () => {
         db.transaction((tx) => {
             tx.executeSql(
-                "SELECT * FROM HistoryTable",
+                "SELECT * FROM LibraryTable",
                 null,
                 (txObj, { rows: { _array } }) => {
-                    setNovels(_array);
+                    // setNovels(_array);
                     // console.log(_array);
-                    setLoading(false);
+                    _array.forEach((item) => {
+                        getChapters(item.extensionId, item.novelUrl);
+                        console.log(item.extensionId + " + " + item.novelUrl);
+                    });
+                    // setLoading(false);
                 },
                 (txObj, error) => console.log("Error ", error)
             );
         });
     };
 
-    const deleteHistory = (name) => {
-        db.transaction((tx) => {
-            tx.executeSql(
-                "DELETE FROM HistoryTable WHERE novelName = ?",
-                [name],
-                (txObj, { rows: { _array } }) => {
-                    getHistory();
-                },
-                (txObj, error) => console.log("Error ", error)
-            );
-        });
-    };
+    // const getUpdates = () => {
+    //     db.transaction((tx) => {
+    //         tx.executeSql(
+    //             "SELECT ChapterTable.chapterName, ChapterTable.chapterUrl, ChapterTable.novelUrl FROM ChapterTable INNER JOIN UpdatesTable ON UpdatesTable.chapterId = ChapterTable.chapterId",
+    //             null,
+    //             (txObj, { rows: { _array } }) => {
+    //                 // setNovels(_array);
+    //                 // console.log(_array);
+    //                 _array.map((item) => {
+    //                     getChapters(item.extensionId, item.novelUrl);
+    //                 });
+    //                 setLoading(false);
+    //             },
+    //             (txObj, error) => console.log("Error ", error)
+    //         );
+    //     });
+    // };
 
-    useFocusEffect(
-        useCallback(() => {
-            getHistory();
-        }, [])
-    );
+    // const deleteHistory = (name) => {
+    //     db.transaction((tx) => {
+    //         tx.executeSql(
+    //             "DELETE FROM HistoryTable WHERE novelName = ?",
+    //             [name],
+    //             (txObj, { rows: { _array } }) => {
+    //                 updateLibrary();
+    //             },
+    //             (txObj, error) => console.log("Error ", error)
+    //         );
+    //     });
+    // };
+
+    useEffect(() => {
+        updateLibrary();
+    }, []);
 
     return (
         <>
             <Appbar.Header style={{ backgroundColor: theme.colorDarkPrimary }}>
                 <Appbar.Content
-                    title="History"
+                    title="Updates"
                     titleStyle={{ color: theme.textColorPrimaryDark }}
                 />
             </Appbar.Header>
             <View style={styles.container}>
-                <FlatList
+                {/* <FlatList
                     contentContainerStyle={{ flex: 1 }}
                     data={novels}
                     keyExtractor={(item) => item.historyId.toString()}
@@ -168,7 +225,7 @@ const History = ({ navigation }) => {
                             </Text>
                         </View>
                     }
-                />
+                /> */}
             </View>
         </>
     );

@@ -85,7 +85,9 @@ const ChapterItem = ({ route, navigation }) => {
     };
 
     const getChapter = () => {
-        fetch(`http://192.168.1.42:5000/api/${extensionId}/${chapterUrl}`)
+        fetch(
+            `https://lnreader-extensions.herokuapp.com/api/${extensionId}/${chapterUrl}`
+        )
             .then((response) => response.json())
             .then((json) => setChapter(json))
             .catch((error) => console.error(error))

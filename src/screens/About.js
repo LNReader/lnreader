@@ -42,21 +42,22 @@ const AboutScreen = ({ navigation }) => {
                     titleStyle={{ color: theme.textColorPrimaryDark }}
                     descriptionStyle={{ color: theme.textColorSecondaryDark }}
                     title="Github"
-                    description="https://github.com/rajarsheechatterjee/LNReader"
+                    description="https://github.com/rajarsheechatterjee/lnreader"
                     onPress={() =>
                         Linking.openURL(
-                            "https://github.com/rajarsheechatterjee/LNReader"
+                            "https://github.com/rajarsheechatterjee/lnreader"
                         )
                     }
                 />
                 <List.Item
                     titleStyle={{ color: theme.textColorPrimaryDark }}
                     descriptionStyle={{ color: theme.textColorSecondaryDark }}
-                    title="Backend"
-                    description="https://github.com/rajarsheechatterjee/LNReader-backend"
+                    title="Extensions"
+                    description="https://github.com/rajarsheechatterjee/lnreader-extensions"
+                    descriptionNumberOfLines={1}
                     onPress={() =>
                         Linking.openURL(
-                            "https://github.com/rajarsheechatterjee/LNReader-backend"
+                            "https://github.com/rajarsheechatterjee/lnreader-extensions"
                         )
                     }
                 />
