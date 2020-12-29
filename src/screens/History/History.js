@@ -15,7 +15,7 @@ const History = ({ navigation }) => {
     const getHistory = () => {
         db.transaction((tx) => {
             tx.executeSql(
-                "SELECT * FROM HistoryTable",
+                "SELECT HistoryTable.chapterUrl, HistoryTable.historyId, HistoryTable.chapterName, HistoryTable.lastRead, LibraryTable.novelName, LibraryTable.novelCover, LibraryTable.novelUrl, LibraryTable.extensionId FROM HistoryTable INNER JOIN LibraryTable ON HistoryTable.novelUrl = LibraryTable.novelUrl",
                 null,
                 (txObj, { rows: { _array } }) => {
                     setNovels(_array);
@@ -85,6 +85,14 @@ const History = ({ navigation }) => {
                                             fontWeight: "bold",
                                             fontSize: 16,
                                         }}
+                                        onPress={() =>
+                                            navigation.navigate("NovelItem", {
+                                                novelName: item.novelName,
+                                                novelCover: item.novelCover,
+                                                extensionId: item.extensionId,
+                                                novelUrl: item.novelUrl,
+                                            })
+                                        }
                                     >
                                         {item.novelName}
                                     </Text>
@@ -94,6 +102,14 @@ const History = ({ navigation }) => {
                                             marginTop: 2,
                                         }}
                                         numberOfLines={1}
+                                        onPress={() =>
+                                            navigation.navigate("NovelItem", {
+                                                novelName: item.novelName,
+                                                novelCover: item.novelCover,
+                                                extensionId: item.extensionId,
+                                                novelUrl: item.novelUrl,
+                                            })
+                                        }
                                     >
                                         {`Ch. ${item.chapterName
                                             .replace(/^\D+/g, "")

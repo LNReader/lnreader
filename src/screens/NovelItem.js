@@ -22,7 +22,6 @@ import { LinearGradient } from "expo-linear-gradient";
 import { theme } from "../theming/theme";
 
 import * as SQLite from "expo-sqlite";
-import { set } from "react-native-reanimated";
 const db = SQLite.openDatabase("lnreader.db");
 
 const NovelItem = ({ route, navigation }) => {
