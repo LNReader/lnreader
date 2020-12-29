@@ -6,10 +6,8 @@ import {
     ImageBackground,
     Text,
     FlatList,
-    ScrollView,
     RefreshControl,
     ToastAndroid,
-    ActivityIndicator,
 } from "react-native";
 import {
     Appbar,
@@ -55,7 +53,7 @@ const NovelItem = ({ route, navigation }) => {
                 setNovel(json);
                 setChapters(json.novelChapters);
                 insertIntoDb(json, json.novelChapters);
-                let chaps = json.novelChapters.reverse();
+                let chaps = json.novelChapters;
                 resumeReading(chaps[0].chapterName, chaps[0].chapterUrl);
             })
             .catch((error) => console.error(error))
@@ -231,7 +229,7 @@ const NovelItem = ({ route, navigation }) => {
                         console.log("Deleted Download");
                         checkIfExistsInDB();
                         ToastAndroid.show(
-                            `Download deleted`,
+                            `Chapter deleted`,
                             ToastAndroid.SHORT
                         );
                     },
@@ -326,10 +324,10 @@ const NovelItem = ({ route, navigation }) => {
                     size={26}
                     style={{ marginRight: 0 }}
                 />
-                <Appbar.Content
+                {/* <Appbar.Content
                     title={item.novelName}
                     titleStyle={{ color: theme.textColorPrimaryDark }}
-                />
+                /> */}
             </Appbar.Header>
 
             <View style={styles.container}>
@@ -407,6 +405,7 @@ const NovelItem = ({ route, navigation }) => {
                                                 ? "check-circle"
                                                 : "arrow-down-circle-outline"
                                         }
+                                        animated
                                         color={
                                             item.downloaded
                                                 ? "#47a84a"
@@ -415,7 +414,9 @@ const NovelItem = ({ route, navigation }) => {
                                         size={24}
                                         onPress={() => {
                                             downloadChapter(
-                                                item.downloaded,
+                                                item.downloaded
+                                                    ? item.downloaded
+                                                    : 0,
                                                 item.chapterUrl
                                             );
                                         }}
@@ -528,6 +529,11 @@ const NovelItem = ({ route, navigation }) => {
                                                 marginBottom: 20,
                                             },
                                         ]}
+                                        icon={
+                                            libraryStatus === 0
+                                                ? "bookmark-outline"
+                                                : "bookmark"
+                                        }
                                         uppercase={false}
                                         labelStyle={{ letterSpacing: 0 }}
                                         onPress={() => insertToLibrary()}
@@ -574,6 +580,8 @@ const NovelItem = ({ route, navigation }) => {
                                                     position: "absolute",
                                                     bottom: 0,
                                                     right: 15,
+                                                    backgroundColor: "black",
+                                                    paddingLeft: 5,
                                                 }}
                                                 onPress={() => setMore(!more)}
                                             >
