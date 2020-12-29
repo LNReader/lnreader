@@ -52,17 +52,12 @@ const LatestScreen = ({ navigation }) => {
                     showsVerticalScrollIndicator={false}
                     keyExtractor={(item) => item.novelUrl}
                     renderItem={({ item }) => (
-                        <TouchableRipple
-                            borderless
-                            centered
-                            rippleColor="rgba(256,256,256,0.3)"
-                            style={styles.opac}
+                        <NovelCover
+                            item={item}
                             onPress={() =>
                                 navigation.navigate("NovelItem", item)
                             }
-                        >
-                            <NovelCover item={item} />
-                        </TouchableRipple>
+                        />
                     )}
                     refreshControl={
                         <RefreshControl

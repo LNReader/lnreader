@@ -12,7 +12,7 @@ const History = ({ navigation }) => {
     const [loading, setLoading] = useState(true);
     const [novels, setNovels] = useState();
 
-    const getChapters = (extensionId, novelUrl) => {
+    const getNewChapters = (extensionId, novelUrl) => {
         fetch(
             `https://lnreader-extensions.herokuapp.com/api/${extensionId}/novel/${novelUrl}`
         )
@@ -20,25 +20,37 @@ const History = ({ navigation }) => {
             .then((json) => {
                 json.novelChapters.forEach((chap) => {
                     db.transaction((tx) => {
-                        tx.executeSql(
-                            "INSERT INTO ChapterTable (chapterUrl, chapterName, releaseDate, novelUrl) VALUES (?, ?, ?, ?)",
-                            [
-                                chap.chapterUrl,
-                                chap.chapterName,
-                                chap.releaseDate,
-                                json.novelUrl,
-                            ],
-                            (txObj, res) =>
-                                console.log("Inserted into chapter table"),
-                            (txObj, error) => console.log("Error ", error)
-                        );
+                        // tx.executeSql(
+                        //     "INSERT INTO ChapterTable (chapterUrl, chapterName, releaseDate, novelUrl) SELECT ?, ?, ?, ? WHERE NOT EXISTS (SELECT 1 FROM ChapterTable WHERE chapterUrl = ?)",
+                        //     [
+                        //         chap.chapterUrl,
+                        //         chap.chapterName,
+                        //         chap.releaseDate,
+                        //         json.novelUrl,
+                        //     ],
+                        //     (txObj, res) =>
+                        //         console.log("Inserted New Chapter Into  TABLE"),
+                        //     (txObj, error) => console.log("Error ", error)
+                        // );
                         // tx.executeSql(
                         //     "INSERT INTO UpdatesTable (chapterId, novelUrl) VALUES (last_insert_rowid(), ?)",
                         //     [json.novelUrl],
                         //     (txObj, res) =>
-                        //         console.log("Inserted INTO UPDATES TABLE"),
+                        //         console.log(
+                        //             "Inserted INTO Updates Table TABLE"
+                        //         ),
                         //     (txObj, error) => console.log("Error ", error)
                         // );
+                        tx.executeSql(
+                            `INSERT INTO ChapterTable (chapterUrl, chapterName, releaseDate, novelUrl) VALUES (${chap.chapterUrl}, ${chap.chapterName}, ${chap.releaseDate}, ${novelUrl}))`,
+                            null,
+                            (txObj, res) => {
+                                // setNovels(_array);
+                                console.log("Inserted");
+                                // setLoading(false);
+                            },
+                            (txObj, error) => console.log("Error ", error)
+                        );
                     });
                 });
             })
@@ -50,15 +62,16 @@ const History = ({ navigation }) => {
     };
 
     const updateLibrary = () => {
+        setLoading(true);
         db.transaction((tx) => {
             tx.executeSql(
-                "SELECT * FROM LibraryTable",
+                "SELECT * FROM LibraryTable WHERE libraryStatus = 1",
                 null,
                 (txObj, { rows: { _array } }) => {
                     // setNovels(_array);
                     // console.log(_array);
                     _array.forEach((item) => {
-                        getChapters(item.extensionId, item.novelUrl);
+                        getNewChapters(item.extensionId, item.novelUrl);
                         console.log(item.extensionId + " + " + item.novelUrl);
                     });
                     // setLoading(false);
@@ -112,6 +125,9 @@ const History = ({ navigation }) => {
                 />
             </Appbar.Header>
             <View style={styles.container}>
+                <Text style={{ color: theme.textColorPrimaryDark }}>
+                    HAHAHA
+                </Text>
                 {/* <FlatList
                     contentContainerStyle={{ flex: 1 }}
                     data={novels}

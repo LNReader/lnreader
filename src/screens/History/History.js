@@ -15,7 +15,7 @@ const History = ({ navigation }) => {
     const getHistory = () => {
         db.transaction((tx) => {
             tx.executeSql(
-                "SELECT HistoryTable.chapterUrl, HistoryTable.historyId, HistoryTable.chapterName, HistoryTable.lastRead, LibraryTable.novelName, LibraryTable.novelCover, LibraryTable.novelUrl, LibraryTable.extensionId FROM HistoryTable INNER JOIN LibraryTable ON HistoryTable.novelUrl = LibraryTable.novelUrl",
+                "SELECT HistoryTable.chapterUrl, HistoryTable.historyId, HistoryTable.chapterName, HistoryTable.lastRead, LibraryTable.novelName, LibraryTable.novelCover, LibraryTable.novelUrl, LibraryTable.extensionId FROM HistoryTable INNER JOIN LibraryTable ON HistoryTable.novelUrl = LibraryTable.novelUrl ORDER BY HistoryTable.lastRead DESC",
                 null,
                 (txObj, { rows: { _array } }) => {
                     setNovels(_array);
@@ -30,7 +30,7 @@ const History = ({ navigation }) => {
     const deleteHistory = (name) => {
         db.transaction((tx) => {
             tx.executeSql(
-                "DELETE FROM HistoryTable WHERE novelName = ?",
+                "DELETE FROM HistoryTable WHERE novelUrl = ?",
                 [name],
                 (txObj, { rows: { _array } }) => {
                     getHistory();
@@ -131,7 +131,7 @@ const History = ({ navigation }) => {
                                             marginRight: 0,
                                         }}
                                         onPress={() =>
-                                            deleteHistory(item.novelName)
+                                            deleteHistory(item.novelUrl)
                                         }
                                     />
                                     <IconButton

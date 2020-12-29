@@ -64,6 +64,14 @@ const UpdatesScreen = ({ navigation }) => {
                 },
                 (txObj, error) => console.log("Error ", error)
             );
+            tx.executeSql(
+                "DROP TABLE DownloadsTable",
+                null,
+                (txObj, { rows: { _array } }) => {
+                    console.log("DELETED Downloads TABLE");
+                },
+                (txObj, error) => console.log("Error ", error)
+            );
         });
         setNovels([]);
     };
@@ -88,15 +96,10 @@ const UpdatesScreen = ({ navigation }) => {
                 showsVerticalScrollIndicator={false}
                 keyExtractor={(item) => item.novelUrl}
                 renderItem={({ item }) => (
-                    <TouchableRipple
-                        borderless
-                        centered
-                        rippleColor="rgba(256,256,256,0.3)"
-                        style={styles.opac}
+                    <NovelCover
+                        item={item}
                         onPress={() => navigation.navigate("NovelItem", item)}
-                    >
-                        <NovelCover item={item} />
-                    </TouchableRipple>
+                    />
                 )}
                 refreshControl={
                     <RefreshControl
@@ -152,11 +155,5 @@ const styles = StyleSheet.create({
         flex: 1,
         // backgroundColor: "#202125",
         backgroundColor: "#000000",
-    },
-    opac: {
-        height: 190,
-        flex: 1 / 3,
-        marginHorizontal: 3.6,
-        marginVertical: 3.2,
     },
 });

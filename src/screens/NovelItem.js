@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import {
     StyleSheet,
     View,
@@ -16,8 +16,11 @@ import {
     TouchableRipple,
     IconButton,
     Button,
+    FAB,
+    ProgressBar,
 } from "react-native-paper";
 import { LinearGradient } from "expo-linear-gradient";
+import { useFocusEffect } from "@react-navigation/native";
 
 import { theme } from "../theming/theme";
 
@@ -37,7 +40,11 @@ const NovelItem = ({ route, navigation }) => {
     const [more, setMore] = useState(false);
 
     const [libraryStatus, setlibraryStatus] = useState(0);
-    // const [sort, setSort] = useState("DESC");
+    const [sort, setSort] = useState("ASC");
+
+    const [readingStatus, setReadingStatus] = useState();
+
+    const [downloading, setDownloading] = useState(false);
 
     const getNovel = () => {
         fetch(
@@ -48,6 +55,8 @@ const NovelItem = ({ route, navigation }) => {
                 setNovel(json);
                 setChapters(json.novelChapters);
                 insertIntoDb(json, json.novelChapters);
+                let chaps = json.novelChapters.reverse();
+                resumeReading(chaps[0].chapterName, chaps[0].chapterUrl);
             })
             .catch((error) => console.error(error))
             .finally(() => {
@@ -72,10 +81,11 @@ const NovelItem = ({ route, navigation }) => {
                 (txObj, error) => console.log("Error ", error)
             );
             tx.executeSql(
-                "SELECT * FROM ChapterTable WHERE novelUrl=?",
+                `SELECT * FROM ChapterTable WHERE novelUrl=? ORDER BY chapterId ${sort}`,
                 [item.novelUrl],
                 (txObj, { rows: { _array } }) => {
                     setChapters(_array);
+                    resumeReading(_array[0].chapterName, _array[0].chapterUrl);
                     setRefreshing(false);
                     setLoading(false);
                 },
@@ -84,25 +94,43 @@ const NovelItem = ({ route, navigation }) => {
         });
     };
 
-    // const sortChapters = () => {
-    //     setRefreshing(true);
-    //     if (libraryStatus === 0) {
-    //         setChapters((chapters) => chapters.reverse());
-    //     } else {
-    //         db.transaction((tx) => {
-    //             tx.executeSql(
-    //                 `SELECT * FROM ChapterTable WHERE novelUrl=? ORDER BY chapterId ${sort}`,
-    //                 [item.novelUrl],
-    //                 (txObj, { rows: { _array } }) => {
-    //                     setChapters(_array);
-    //                     sort === "ASC" ? setSort("DESC") : setSort("ASC");
-    //                     setRefreshing(false);
-    //                 },
-    //                 (txObj, error) => console.log("Error ", error)
-    //             );
-    //         });
-    //     }
-    // };
+    const sortChapters = () => {
+        setRefreshing(true);
+        if (sort === "ASC") {
+            setSort("DESC");
+        } else {
+            setSort("ASC");
+        }
+    };
+
+    const resumeReading = (chapName, chapUrl) => {
+        db.transaction((tx) => {
+            tx.executeSql(
+                "SELECT *  FROM HistoryTable WHERE novelUrl = ?",
+                [item.novelUrl],
+                (txObj, results) => {
+                    let len = results.rows.length;
+                    if (len > 0) {
+                        for (let i = 0; i < len; i++) {
+                            let row = results.rows.item(i);
+                            setReadingStatus({
+                                chapterUrl: row.chapterUrl,
+                                chapterName: row.chapterName,
+                                fabLabel: "Resume",
+                            });
+                        }
+                    } else {
+                        setReadingStatus({
+                            chapterUrl: chapUrl,
+                            chapterName: chapName,
+                            fabLabel: "Start",
+                        });
+                    }
+                },
+                (txObj, error) => console.log("Error ", error)
+            );
+        });
+    };
 
     const insertIntoDb = (nov, chaps) => {
         db.transaction((tx) => {
@@ -142,25 +170,83 @@ const NovelItem = ({ route, navigation }) => {
         });
     };
 
+    const downloadChapter = (downloadStatus, cdUrl) => {
+        setDownloading(true);
+        if (downloadStatus === 0) {
+            fetch(
+                `https://lnreader-extensions.herokuapp.com/api/${extensionId}/${cdUrl}`
+            )
+                .then((response) => response.json())
+                .then((json) => {
+                    db.transaction((tx) => {
+                        tx.executeSql(
+                            `UPDATE ChapterTable SET downloaded = 1 WHERE chapterUrl = ?`,
+                            [cdUrl],
+                            (tx, res) => {
+                                console.log(
+                                    "Updated Download Status to downloaded"
+                                );
+                            },
+                            (txObj, error) => console.log("Error ", error)
+                        );
+                        tx.executeSql(
+                            `INSERT INTO DownloadsTable (chapterUrl, novelUrl, chapterName, chapterText, prevChapter, nextChapter) VALUES (?, ?, ?, ?, ?, ?)`,
+                            [
+                                cdUrl,
+                                novelUrl,
+                                json.chapterName,
+                                json.chapterText,
+                                json.prevChapter,
+                                json.nextChapter,
+                            ],
+                            (tx, res) => {
+                                ToastAndroid.show(
+                                    `Downloaded ${json.chapterName}`,
+                                    ToastAndroid.SHORT
+                                );
+                                console.log("Inserted into Downloads Table");
+                            },
+                            (txObj, error) => console.log("Error ", error)
+                        );
+                    });
+                })
+                .catch((error) => console.error(error))
+                .finally(() => {
+                    checkIfExistsInDB();
+                });
+        } else {
+            db.transaction((tx) => {
+                tx.executeSql(
+                    `UPDATE ChapterTable SET downloaded = 0 WHERE chapterUrl = ?`,
+                    [cdUrl],
+                    (tx, res) => {
+                        console.log("Updated Download Status to downloaded");
+                    },
+                    (txObj, error) => console.log("Error ", error)
+                );
+                tx.executeSql(
+                    `DELETE FROM DownloadsTable WHERE chapterUrl = ?`,
+                    [cdUrl],
+                    (tx, res) => {
+                        console.log("Deleted Download");
+                        checkIfExistsInDB();
+                        ToastAndroid.show(
+                            `Download deleted`,
+                            ToastAndroid.SHORT
+                        );
+                    },
+                    (txObj, error) => console.log("Error ", error)
+                );
+            });
+        }
+    };
+
     const insertToLibrary = () => {
         if (libraryStatus === 0) {
             db.transaction((tx) => {
                 tx.executeSql(
-                    "INSERT OR REPLACE INTO LibraryTable (novelUrl, novelName, novelCover, novelSummary, Alternative, `Author(s)`, `Genre(s)`, Type, `Release`, Status, extensionId, libraryStatus) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ",
-                    [
-                        item.novelUrl,
-                        novel.novelName,
-                        novel.novelCover,
-                        novel.novelSummary,
-                        novel.Alternative,
-                        novel["Author(s)"],
-                        novel["Genre(s)"],
-                        novel.Type,
-                        novel.Release,
-                        novel.Status,
-                        extensionId,
-                        1,
-                    ],
+                    "UPDATE LibraryTable SET libraryStatus = 1 WHERE novelUrl=?",
+                    [item.novelUrl],
                     (tx, res) => {
                         ToastAndroid.show(
                             "Added to library",
@@ -192,17 +278,18 @@ const NovelItem = ({ route, navigation }) => {
         }
     };
 
-    const checkIfExistsInLibrary = (id) => {
+    const checkIfExistsInDB = () => {
         db.transaction((tx) => {
             tx.executeSql(
                 "SELECT * FROM LibraryTable WHERE novelUrl=?",
-                [id],
+                [novelUrl],
                 (txObj, res) => {
                     if (res.rows.length === 0) {
                         setRefreshing(true);
                         console.log("Not In Database");
                         getNovel();
                     } else {
+                        // setRefreshing(true);
                         console.log("In Database");
                         getNovelFromDb();
                     }
@@ -210,15 +297,22 @@ const NovelItem = ({ route, navigation }) => {
                 (txObj, error) => console.log("Error ", error)
             );
         });
+        setDownloading(false);
     };
 
-    useEffect(() => {
-        checkIfExistsInLibrary(item.novelUrl);
-    }, []);
+    // useEffect(() => {
+    //     checkIfExistsInDB(item.novelUrl);
+    // }, [sort]);
+
+    useFocusEffect(
+        useCallback(() => {
+            checkIfExistsInDB();
+        }, [sort])
+    );
 
     const onRefresh = async () => {
         setRefreshing(true);
-        checkIfExistsInLibrary(item.novelUrl);
+        checkIfExistsInDB();
     };
 
     return (
@@ -239,6 +333,11 @@ const NovelItem = ({ route, navigation }) => {
             </Appbar.Header>
 
             <View style={styles.container}>
+                <ProgressBar
+                    color="#47a84a"
+                    indeterminate
+                    visible={downloading}
+                />
                 <FlatList
                     data={chapters}
                     extraData={chapters}
@@ -252,40 +351,76 @@ const NovelItem = ({ route, navigation }) => {
                             style={{
                                 paddingHorizontal: 15,
                                 paddingVertical: 12,
+                                flexDirection: "row",
+                                justifyContent: "space-between",
+                                alignItems: "center",
                             }}
                             onPress={() =>
                                 navigation.navigate("ChapterItem", {
                                     chapterUrl: item.chapterUrl,
                                     extensionId,
                                     novelUrl: novelUrl,
-                                    novelName: novel.novelName,
-                                    novelCover: novel.novelCover,
                                     chapterName: item.chapterName,
                                 })
                             }
                             rippleColor={theme.rippleColorDark}
                         >
                             <>
-                                <Text
-                                    style={{
-                                        color: theme.textColorPrimaryDark,
-                                    }}
-                                    numberOfLines={1}
-                                >
-                                    {item.chapterName}
-                                </Text>
-                                <Text
-                                    style={{
-                                        color: theme.textColorSecondaryDark,
-                                        marginTop: 5,
-                                        fontSize: 13,
-                                    }}
-                                    numberOfLines={1}
-                                >
-                                    {item.releaseDate
-                                        ? item.releaseDate
-                                        : "Release Date"}
-                                </Text>
+                                <View>
+                                    <Text
+                                        style={[
+                                            {
+                                                color:
+                                                    theme.textColorPrimaryDark,
+                                            },
+                                            item.read === 1 && {
+                                                color: theme.textColorHintDark,
+                                            },
+                                        ]}
+                                        numberOfLines={1}
+                                    >
+                                        {item.chapterName}
+                                    </Text>
+                                    <Text
+                                        style={[
+                                            {
+                                                color:
+                                                    theme.textColorSecondaryDark,
+                                                marginTop: 5,
+                                                fontSize: 13,
+                                            },
+                                            item.read === 1 && {
+                                                color: theme.textColorHintDark,
+                                            },
+                                        ]}
+                                        numberOfLines={1}
+                                    >
+                                        {item.releaseDate
+                                            ? item.releaseDate
+                                            : "release-date"}
+                                    </Text>
+                                </View>
+                                <View>
+                                    <IconButton
+                                        icon={
+                                            item.downloaded
+                                                ? "check-circle"
+                                                : "arrow-down-circle-outline"
+                                        }
+                                        color={
+                                            item.downloaded
+                                                ? "#47a84a"
+                                                : theme.textColorSecondaryDark
+                                        }
+                                        size={24}
+                                        onPress={() => {
+                                            downloadChapter(
+                                                item.downloaded,
+                                                item.chapterUrl
+                                            );
+                                        }}
+                                    />
+                                </View>
                             </>
                         </TouchableRipple>
                     )}
@@ -476,8 +611,9 @@ const NovelItem = ({ route, navigation }) => {
                                             flexDirection: "row",
                                             justifyContent: "space-between",
                                             alignItems: "center",
+                                            paddingRight: 15,
                                         }}
-                                        // onPress={() => sortChapters()}
+                                        onPress={() => sortChapters()}
                                         rippleColor={theme.rippleColorDark}
                                     >
                                         <>
@@ -497,9 +633,8 @@ const NovelItem = ({ route, navigation }) => {
                                                 color={
                                                     theme.textColorPrimaryDark
                                                 }
-                                                size={20}
-                                                // onPress={() => sortChapters()}
-                                                disabled
+                                                size={24}
+                                                onPress={() => sortChapters()}
                                             />
                                         </>
                                     </TouchableRipple>
@@ -516,6 +651,24 @@ const NovelItem = ({ route, navigation }) => {
                         />
                     }
                 />
+                {!loading && readingStatus && (
+                    <FAB
+                        style={styles.fab}
+                        icon="play"
+                        uppercase={false}
+                        label={readingStatus.fabLabel}
+                        color={theme.textColorPrimaryDark}
+                        onPress={() => {
+                            // console.log(readingStatus);
+                            navigation.navigate("ChapterItem", {
+                                chapterUrl: readingStatus.chapterUrl,
+                                extensionId,
+                                novelUrl,
+                                chapterName: readingStatus.chapterName,
+                            });
+                        }}
+                    />
+                )}
             </View>
         </>
     );
@@ -566,5 +719,12 @@ const styles = StyleSheet.create({
     name: {
         fontWeight: "bold",
         fontSize: 20,
+    },
+    fab: {
+        backgroundColor: theme.colorAccentDark,
+        position: "absolute",
+        margin: 16,
+        right: 0,
+        bottom: 0,
     },
 });

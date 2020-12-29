@@ -16,14 +16,7 @@ import * as SQLite from "expo-sqlite";
 const db = SQLite.openDatabase("lnreader.db");
 
 const ChapterItem = ({ route, navigation }) => {
-    const {
-        extensionId,
-        chapterUrl,
-        novelUrl,
-        novelName,
-        novelCover,
-        chapterName,
-    } = route.params;
+    const { extensionId, chapterUrl, novelUrl, chapterName } = route.params;
 
     const [loading, setLoading] = useState(true);
 
@@ -36,17 +29,10 @@ const ChapterItem = ({ route, navigation }) => {
     const setHistory = () => {
         db.transaction((tx) => {
             tx.executeSql(
-                "INSERT INTO HistoryTable (chapterUrl, novelUrl, novelName, novelCover, chapterName, extensionId, lastRead) VALUES ( ?, ?, ?, ?, ?, ?, (datetime('now','localtime')))",
-                [
-                    chapterUrl,
-                    novelUrl,
-                    novelName,
-                    novelCover,
-                    chapterName,
-                    extensionId,
-                ],
+                "INSERT INTO HistoryTable (chapterUrl, novelUrl, chapterName, lastRead) VALUES ( ?, ?, ?, (datetime('now','localtime')))",
+                [chapterUrl, novelUrl, chapterName],
                 (tx, res) =>
-                    console.log("Inserted into history table: " + novelName),
+                    console.log("Inserted into history table: " + novelUrl),
                 (tx, error) => console.log(error)
             );
         });
@@ -55,10 +41,21 @@ const ChapterItem = ({ route, navigation }) => {
     const updateHistory = () => {
         db.transaction((tx) => {
             tx.executeSql(
-                "UPDATE HistoryTable SET lastRead = (datetime('now','localtime')), chapterName = ?",
-                [chapterName],
+                "UPDATE HistoryTable SET lastRead = (datetime('now','localtime')), chapterName=?, chapterUrl=? WHERE novelUrl = ?",
+                [chapterName, chapterUrl, novelUrl],
                 (tx, res) =>
-                    console.log("Updated into history table: " + novelName),
+                    console.log("Updated into history table: " + novelUrl),
+                (tx, error) => console.log(error)
+            );
+        });
+    };
+
+    const setRead = () => {
+        db.transaction((tx) => {
+            tx.executeSql(
+                "UPDATE ChapterTable SET `read` = 1 WHERE chapterUrl = ?",
+                [chapterUrl],
+                (tx, res) => console.log("Updated readStatus: " + novelUrl),
                 (tx, error) => console.log(error)
             );
         });
@@ -84,6 +81,27 @@ const ChapterItem = ({ route, navigation }) => {
         });
     };
 
+    const checkIfDownloaded = () => {
+        db.transaction((tx) => {
+            tx.executeSql(
+                "SELECT * FROM DownloadsTable WHERE chapterUrl=?",
+                [chapterUrl],
+                (txObj, res) => {
+                    console.log(res.rows.length);
+                    if (res.rows.length === 0) {
+                        console.log("Not Downloaded");
+                        getChapter();
+                    } else {
+                        console.log("Already Downloaded");
+                        getChapterFromDB();
+                    }
+                    checkIfInHistory();
+                },
+                (txObj, error) => console.log("Error ", error)
+            );
+        });
+    };
+
     const getChapter = () => {
         fetch(
             `https://lnreader-extensions.herokuapp.com/api/${extensionId}/${chapterUrl}`
@@ -93,20 +111,48 @@ const ChapterItem = ({ route, navigation }) => {
             .catch((error) => console.error(error))
             .finally(() => {
                 setLoading(false);
-                checkIfInHistory();
             });
     };
 
+    const getChapterFromDB = () => {
+        db.transaction((tx) => {
+            tx.executeSql(
+                `SELECT * FROM DownloadsTable WHERE chapterUrl = ?`,
+                [chapterUrl],
+                (tx, results) => {
+                    let len = results.rows.length;
+                    for (let i = 0; i < len; i++) {
+                        let row = results.rows.item(i);
+                        setChapter(row);
+                        setLoading(false);
+                    }
+                },
+                (txObj, error) => console.log("Error ", error)
+            );
+        });
+    };
+
     useEffect(() => {
-        getChapter();
+        checkIfDownloaded();
     }, []);
+
+    const isCloseToBottom = ({
+        layoutMeasurement,
+        contentOffset,
+        contentSize,
+    }) => {
+        const paddingToBottom = 0;
+        return (
+            layoutMeasurement.height + contentOffset.y >=
+            contentSize.height - paddingToBottom
+        );
+    };
 
     return (
         <Provider>
             <StatusBar backgroundColor="transparent" />
             <CollapsibleHeaderScrollView
                 headerContainerBackgroundColor={"rgba(0,0,0,0)"}
-                // onScrollEndDrag={() => setHistory()}
                 CollapsibleHeaderComponent={
                     <Appbar.Header
                         style={{
@@ -116,6 +162,7 @@ const ChapterItem = ({ route, navigation }) => {
                     >
                         <Appbar.BackAction
                             onPress={() => {
+                                // navigation.navigate("NovelItem", { novelUrl });
                                 navigation.goBack();
                             }}
                             color={"white"}
@@ -129,34 +176,28 @@ const ChapterItem = ({ route, navigation }) => {
                         {!loading && (
                             <>
                                 <Appbar.Action
-                                    disabled
                                     icon="chevron-left"
                                     size={26}
-                                    // disabled={!chapter.prevChapter}
+                                    disabled={!chapter.prevChapter}
                                     onPress={() => {
                                         navigation.push("ChapterItem", {
                                             chapterUrl: chapter.prevChapter,
                                             extensionId,
-                                            novelCover,
                                             novelUrl,
-                                            novelName,
                                             chapterName: chapter.chapterName,
                                         });
                                     }}
                                     color={"white"}
                                 />
                                 <Appbar.Action
-                                    disabled
                                     icon="chevron-right"
                                     size={26}
-                                    // disabled={!chapter.nextChapter}
+                                    disabled={!chapter.nextChapter}
                                     onPress={() => {
                                         navigation.push("ChapterItem", {
                                             chapterUrl: chapter.nextChapter,
                                             extensionId,
-                                            novelCover,
                                             novelUrl,
-                                            novelName,
                                             chapterName: chapter.chapterName,
                                         });
                                     }}
@@ -180,11 +221,20 @@ const ChapterItem = ({ route, navigation }) => {
                     readerTheme === 1 && {
                         backgroundColor: theme.colorDarkPrimary,
                     },
+                    readerTheme === 2 && {
+                        backgroundColor: "white",
+                    },
                     readerTheme === 3 && {
                         backgroundColor: "#F4ECD8",
                     },
                 ]}
-                onScroll={() => _panel.hide()}
+                onScroll={({ nativeEvent }) => {
+                    _panel.hide();
+                    if (isCloseToBottom(nativeEvent)) {
+                        console.log("Scroll End Reached");
+                        setRead();
+                    }
+                }}
             >
                 {/* <Button mode="contained" onPress={() => setHistory()}>
                     Set History
@@ -209,7 +259,7 @@ const ChapterItem = ({ route, navigation }) => {
                             size === 16
                                 ? { lineHeight: 25 }
                                 : size === 20
-                                ? { lineHeight: 25 }
+                                ? { lineHeight: 28 }
                                 : size === 12 && { lineHeight: 20 },
                         ]}
                     >

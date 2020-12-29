@@ -120,17 +120,12 @@ const AllNovels = ({ navigation }) => {
                             </View>
                         )}
                         renderItem={({ item }) => (
-                            <TouchableRipple
-                                borderless
-                                centered
-                                rippleColor="rgba(256,256,256,0.3)"
-                                style={styles.opac}
+                            <NovelCover
+                                item={item}
                                 onPress={() =>
                                     navigation.navigate("NovelItem", item)
                                 }
-                            >
-                                <NovelCover item={item} />
-                            </TouchableRipple>
+                            />
                         )}
                         refreshControl={
                             <RefreshControl
@@ -163,12 +158,7 @@ const styles = StyleSheet.create({
         // backgroundColor: "#202125",
         backgroundColor: "#000000",
     },
-    opac: {
-        height: 190,
-        flex: 1 / 3,
-        marginHorizontal: 3.6,
-        marginVertical: 3.2,
-    },
+
     contentContainer: {
         flex: 1,
     },

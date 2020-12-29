@@ -26,23 +26,30 @@ export default function App() {
             );
 
             tx.executeSql(
-                "CREATE TABLE IF NOT EXISTS ChapterTable (chapterId INTEGER PRIMARY KEY AUTOINCREMENT, chapterUrl VARCHAR(255), chapterName VARCHAR(255), releaseDate VARCHAR(255), novelUrl VARCHAR(255), FOREIGN KEY (novelUrl) REFERENCES LibraryTable(novelUrl) ON DELETE CASCADE)",
+                "CREATE TABLE IF NOT EXISTS ChapterTable (chapterId INTEGER PRIMARY KEY AUTOINCREMENT, chapterUrl VARCHAR(255), chapterName VARCHAR(255), releaseDate VARCHAR(255), `read` INTEGER DEFAULT 0, downloaded INTEGER DEFAULT 0,novelUrl VARCHAR(255), FOREIGN KEY (novelUrl) REFERENCES LibraryTable(novelUrl) ON DELETE CASCADE)",
                 null,
                 (tx, results) => console.log("Chapter Table Created"),
                 (tx, error) => console.log(error)
             );
             tx.executeSql(
-                "CREATE TABLE IF NOT EXISTS HistoryTable (historyId INTEGER PRIMARY KEY AUTOINCREMENT, chapterUrl VARCHAR(255), novelUrl VARCHAR(255), chapterName VARCHAR(255), lastRead DATETIME DEFAULT CURRENT_TIMESTAMP)",
+                "CREATE TABLE IF NOT EXISTS HistoryTable (historyId INTEGER PRIMARY KEY AUTOINCREMENT, chapterUrl VARCHAR(255) UNIQUE, novelUrl VARCHAR(255), chapterName VARCHAR(255), lastRead DATETIME DEFAULT CURRENT_TIMESTAMP)",
                 null,
                 (tx, results) => console.log("History Table Created"),
                 (tx, error) => console.log(error)
             );
+
             tx.executeSql(
-                "CREATE TABLE IF NOT EXISTS UpdatesTable (chapterId INTEGER, novelUrl VARCHAR(255))",
+                "CREATE TABLE IF NOT EXISTS DownloadsTable (downloadId INTEGER PRIMARY KEY AUTOINCREMENT, chapterUrl VARCHAR(255) UNIQUE, novelUrl VARCHAR(255), chapterName VARCHAR(255), chapterText VARCHAR(255), nextChapter VARCHAR(255), prevChapter VARCHAR(255))",
                 null,
-                (tx, results) => console.log("Updates Table Created"),
+                (tx, results) => console.log("Downloads Table Created"),
                 (tx, error) => console.log(error)
             );
+            // tx.executeSql(
+            //     "CREATE TABLE IF NOT EXISTS UpdatesTable (chapterId INTEGER, novelUrl VARCHAR(255))",
+            //     null,
+            //     (tx, results) => console.log("Updates Table Created"),
+            //     (tx, error) => console.log(error)
+            // );
         });
 
     useEffect(() => {
