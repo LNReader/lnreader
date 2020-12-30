@@ -3,9 +3,10 @@ import {
     StyleSheet,
     Text,
     View,
-    ActivityIndicator,
+    TextInput,
     RefreshControl,
 } from "react-native";
+import { Appbar } from "react-native-paper";
 import { FlatList } from "react-native-gesture-handler";
 import { theme } from "../theming/theme";
 import { useFocusEffect } from "@react-navigation/native";
@@ -23,10 +24,27 @@ const UpdatesScreen = ({ navigation }) => {
     const [refreshing, setRefreshing] = useState(false);
     const [novels, setNovels] = useState();
 
+    const [searchBar, setSearchBar] = useState(false);
+    const [searchText, setSearchText] = useState();
+
     const getLibraryNovels = () => {
         db.transaction((tx) => {
             tx.executeSql(
                 "SELECT * FROM LibraryTable WHERE libraryStatus=1",
+                null,
+                (txObj, { rows: { _array } }) => {
+                    setNovels(_array);
+                    setRefreshing(false);
+                },
+                (txObj, error) => console.log("Error ", error)
+            );
+        });
+    };
+
+    const searchNovel = (searchText) => {
+        db.transaction((tx) => {
+            tx.executeSql(
+                `SELECT * FROM LibraryTable WHERE libraryStatus=1 AND novelName LIKE '%${searchText}%'`,
                 null,
                 (txObj, { rows: { _array } }) => {
                     setNovels(_array);
@@ -88,8 +106,65 @@ const UpdatesScreen = ({ navigation }) => {
 
     return (
         <>
-            <CustomAppbar title="Library" />
-
+            <Appbar.Header style={{ backgroundColor: theme.colorDarkPrimary }}>
+                {!searchBar ? (
+                    <>
+                        <Appbar.Content
+                            title="Library"
+                            titleStyle={{ color: theme.textColorPrimaryDark }}
+                        />
+                        <Appbar.Action
+                            icon="magnify"
+                            onPress={() => setSearchBar(true)}
+                            color="white"
+                        />
+                        <Appbar.Action
+                            color="white"
+                            icon="filter-variant"
+                            // onPress={() => _panel.show({ velocity: -1.5 })}
+                        />
+                    </>
+                ) : (
+                    <>
+                        <Appbar.BackAction
+                            onPress={() => {
+                                setSearchBar(false);
+                                setSearchText("");
+                                getLibraryNovels();
+                            }}
+                            color={"white"}
+                            size={24}
+                        />
+                        <TextInput
+                            placeholder="Search..."
+                            defaultValue={searchText}
+                            style={{
+                                fontSize: 18,
+                                flex: 1,
+                                color: "white",
+                                marginLeft: 15,
+                            }}
+                            autoFocus
+                            placeholderTextColor={theme.textColorHintDark}
+                            blurOnSubmit={true}
+                            onChangeText={(text) => {
+                                setSearchText(text);
+                                searchNovel(text);
+                            }}
+                        />
+                        {searchText !== "" && (
+                            <Appbar.Action
+                                icon="close"
+                                onPress={() => {
+                                    setSearchText("");
+                                    // getLibraryNovels();
+                                }}
+                                color="white"
+                            />
+                        )}
+                    </>
+                )}
+            </Appbar.Header>
             <View style={styles.container}>
                 <FlatList
                     contentContainerStyle={{ flex: 1 }}
@@ -117,35 +192,49 @@ const UpdatesScreen = ({ navigation }) => {
                         />
                     }
                     ListEmptyComponent={
-                        <View
-                            style={{
-                                flex: 1,
-                                justifyContent: "center",
-                                alignItems: "center",
-                            }}
-                        >
-                            <Text
+                        searchBar && searchText === "" ? (
+                            <View
                                 style={{
-                                    color: theme.textColorSecondaryDark,
-                                    fontSize: 45,
-                                    fontWeight: "bold",
+                                    flex: 1,
+                                    justifyContent: "center",
+                                    alignItems: "center",
                                 }}
                             >
-                                Σ(ಠ_ಠ)
-                            </Text>
+                                <Text
+                                    style={{
+                                        color: theme.textColorSecondaryDark,
+                                        fontSize: 45,
+                                        fontWeight: "bold",
+                                    }}
+                                >
+                                    Σ(ಠ_ಠ)
+                                </Text>
+                                <Text
+                                    style={{
+                                        color: theme.textColorSecondaryDark,
+                                        fontWeight: "bold",
+                                        marginTop: 10,
+                                        textAlign: "center",
+                                        paddingHorizontal: 30,
+                                    }}
+                                >
+                                    Your library is empty. Add series to your
+                                    library from Browse.
+                                </Text>
+                            </View>
+                        ) : (
                             <Text
                                 style={{
-                                    color: theme.textColorSecondaryDark,
+                                    color: theme.colorAccentDark,
                                     fontWeight: "bold",
                                     marginTop: 10,
                                     textAlign: "center",
                                     paddingHorizontal: 30,
                                 }}
                             >
-                                Your library is empty. Add series to your
-                                library from Browse.
+                                Not in library
                             </Text>
-                        </View>
+                        )
                     }
                 />
                 {/* <Button mode="contained" onPress={() => deleted()}>

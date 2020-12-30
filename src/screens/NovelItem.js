@@ -245,10 +245,10 @@ const NovelItem = ({ route, navigation }) => {
     };
 
     const checkIfExistsInDb = () => {
-        setRefreshing(true);
         if (navigatingFrom === 1) {
             getChaptersFromDb();
         } else {
+            setRefreshing(true);
             db.transaction((tx) => {
                 tx.executeSql(
                     "SELECT * FROM LibraryTable WHERE novelUrl=? LIMIT 1",
