@@ -1,16 +1,16 @@
-import React, { useEffect, useState, useCallback } from "react";
-import { StyleSheet, View, Text, FlatList, Image } from "react-native";
-import { TouchableRipple, IconButton, Appbar } from "react-native-paper";
+import React, { useState, useCallback, useEffect } from "react";
+import { StyleSheet, View, Text, FlatList } from "react-native";
 import { theme } from "../../theming/theme";
-import moment from "moment";
 import { useFocusEffect } from "@react-navigation/native";
+
+import { CustomAppbar } from "../../components/Appbar";
+import HistoryCard from "../../components/HistoryCard";
 
 import * as SQLite from "expo-sqlite";
 const db = SQLite.openDatabase("lnreader.db");
 
 const History = ({ navigation }) => {
-    const [loading, setLoading] = useState(true);
-    const [novels, setNovels] = useState();
+    const [history, setHistory] = useState();
 
     const getHistory = () => {
         db.transaction((tx) => {
@@ -18,21 +18,19 @@ const History = ({ navigation }) => {
                 "SELECT HistoryTable.chapterUrl, HistoryTable.historyId, HistoryTable.chapterName, HistoryTable.lastRead, LibraryTable.novelName, LibraryTable.novelCover, LibraryTable.novelUrl, LibraryTable.extensionId FROM HistoryTable INNER JOIN LibraryTable ON HistoryTable.novelUrl = LibraryTable.novelUrl ORDER BY HistoryTable.lastRead DESC",
                 null,
                 (txObj, { rows: { _array } }) => {
-                    setNovels(_array);
-                    // console.log(_array);
-                    setLoading(false);
+                    setHistory(_array);
                 },
                 (txObj, error) => console.log("Error ", error)
             );
         });
     };
 
-    const deleteHistory = (name) => {
+    const deleteHistory = (novelId) => {
         db.transaction((tx) => {
             tx.executeSql(
                 "DELETE FROM HistoryTable WHERE novelUrl = ?",
-                [name],
-                (txObj, { rows: { _array } }) => {
+                [novelId],
+                (txObj, res) => {
                     getHistory();
                 },
                 (txObj, error) => console.log("Error ", error)
@@ -48,118 +46,18 @@ const History = ({ navigation }) => {
 
     return (
         <>
-            <Appbar.Header style={{ backgroundColor: theme.colorDarkPrimary }}>
-                <Appbar.Content
-                    title="History"
-                    titleStyle={{ color: theme.textColorPrimaryDark }}
-                />
-            </Appbar.Header>
+            <CustomAppbar title="History" />
             <View style={styles.container}>
                 <FlatList
                     contentContainerStyle={{ flex: 1 }}
-                    data={novels}
+                    data={history}
                     keyExtractor={(item) => item.historyId.toString()}
                     renderItem={({ item }) => (
-                        <TouchableRipple
-                            style={styles.historyCard}
-                            rippleColor={theme.rippleColorDark}
-                            borderless
-                            onPress={() =>
-                                navigation.navigate("NovelItem", {
-                                    novelName: item.novelName,
-                                    novelCover: item.novelCover,
-                                    extensionId: item.extensionId,
-                                    novelUrl: item.novelUrl,
-                                })
-                            }
-                        >
-                            <>
-                                <Image
-                                    source={{ uri: item.novelCover }}
-                                    style={{
-                                        height: 80,
-                                        width: 57,
-                                        borderTopLeftRadius: 4,
-                                        borderBottomLeftRadius: 4,
-                                    }}
-                                />
-                                <View
-                                    style={{
-                                        marginLeft: 15,
-                                        flex: 1,
-                                        flexDirection: "row",
-                                        justifyContent: "space-between",
-                                    }}
-                                >
-                                    <View>
-                                        <Text
-                                            style={{
-                                                color: "white",
-                                                fontWeight: "bold",
-                                                fontSize: 16,
-                                            }}
-                                        >
-                                            {item.novelName}
-                                        </Text>
-                                        <Text
-                                            style={{
-                                                color:
-                                                    theme.textColorSecondaryDark,
-                                                marginTop: 2,
-                                            }}
-                                            numberOfLines={1}
-                                        >
-                                            {`Ch. ${item.chapterName
-                                                .replace(/^\D+/g, "")
-                                                .substring(0, 4)} - ${moment(
-                                                item.lastRead
-                                            ).calendar()}`}
-                                        </Text>
-                                    </View>
-                                    <View
-                                        style={{
-                                            flexDirection: "row",
-                                        }}
-                                    >
-                                        <IconButton
-                                            icon="delete-outline"
-                                            size={24}
-                                            color={theme.textColorPrimaryDark}
-                                            style={{
-                                                marginRight: 0,
-                                            }}
-                                            onPress={() =>
-                                                deleteHistory(item.novelUrl)
-                                            }
-                                        />
-                                        <IconButton
-                                            icon="play"
-                                            size={24}
-                                            color={theme.textColorPrimaryDark}
-                                            style={{ marginRight: 10 }}
-                                            onPress={() =>
-                                                navigation.navigate(
-                                                    "ChapterItem",
-                                                    {
-                                                        chapterUrl:
-                                                            item.chapterUrl,
-                                                        extensionId:
-                                                            item.extensionId,
-                                                        novelUrl: item.novelUrl,
-                                                        novelName:
-                                                            item.novelName,
-                                                        novelCover:
-                                                            item.novelCover,
-                                                        chapterName:
-                                                            item.chapterName,
-                                                    }
-                                                )
-                                            }
-                                        />
-                                    </View>
-                                </View>
-                            </>
-                        </TouchableRipple>
+                        <HistoryCard
+                            item={item}
+                            deleteHistory={deleteHistory}
+                            navigation={navigation}
+                        />
                     )}
                     ListEmptyComponent={
                         <View

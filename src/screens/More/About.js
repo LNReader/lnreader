@@ -1,11 +1,16 @@
 import React from "react";
 import { List, Divider } from "react-native-paper";
 import * as Linking from "expo-linking";
-import { theme } from "../theming/theme";
+import { theme } from "../../theming/theme";
+import { CustomAppbar } from "../../components/Appbar";
 
 const AboutScreen = ({ navigation }) => {
     return (
         <>
+            <CustomAppbar
+                title="About"
+                onBackAction={() => navigation.goBack()}
+            />
             <List.Section
                 style={{
                     flex: 1,
@@ -35,6 +40,7 @@ const AboutScreen = ({ navigation }) => {
                             "https://github.com/rajarsheechatterjee/LNReader/commits/master"
                         )
                     }
+                    rippleColor={theme.rippleColorDark}
                 />
                 <Divider />
 
@@ -48,6 +54,7 @@ const AboutScreen = ({ navigation }) => {
                             "https://github.com/rajarsheechatterjee/lnreader"
                         )
                     }
+                    rippleColor={theme.rippleColorDark}
                 />
                 <List.Item
                     titleStyle={{ color: theme.textColorPrimaryDark }}
@@ -60,6 +67,7 @@ const AboutScreen = ({ navigation }) => {
                             "https://github.com/rajarsheechatterjee/lnreader-extensions"
                         )
                     }
+                    rippleColor={theme.rippleColorDark}
                 />
             </List.Section>
         </>

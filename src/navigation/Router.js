@@ -1,108 +1,53 @@
 import React from "react";
-import { createStackNavigator } from "@react-navigation/stack";
+
+import {
+    createStackNavigator,
+    TransitionPresets,
+} from "@react-navigation/stack";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import { TransitionPresets } from "@react-navigation/stack";
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import Library from "../screens/Library";
+import History from "../screens/History/History";
 import Browse from "../screens/Browse";
-import Latest from "../screens/Latest";
-import More from "../screens/More";
-import BoxNovelSearch from "../screens/Sources/BoxNovel/BoxNovelSearch";
+
+import More from "../screens/More/More";
+import About from "../screens/More/About";
+
 import NovelItem from "../screens/NovelItem";
 import ChapterItem from "../screens/ChapterItem";
-import About from "../screens/About";
-import HistoryScreen from "../screens/History/History";
-import Updates from "../screens/Updates/Updates";
-import BoxNovel from "../screens/Sources/BoxNovel/BoxNovel";
 
-import { theme } from "../theming/theme";
+// Sources
+import BoxNovel from "../screens/Sources/BoxNovel/BoxNovel";
+import BoxNovelSearch from "../screens/Sources/BoxNovel/BoxNovelSearch";
 
 import ReadLightNovel from "../screens/Sources/ReadLightNovel/ReadLightNovel";
 import ReadLightNovelSearch from "../screens/Sources/ReadLightNovel/ReadLightNovelSearch";
+
+import { theme } from "../theming/theme";
 
 const Stack = createStackNavigator();
 
 const Tab = createMaterialBottomTabNavigator();
 
-const LibraryStack = () => {
-    return (
-        <Stack.Navigator
-            screenOptions={{
-                headerTintColor: theme.textColorPrimaryDark,
-                headerStyle: { backgroundColor: theme.colorDarkPrimary },
-            }}
-        >
-            <Stack.Screen name="Library" component={Library} />
-        </Stack.Navigator>
-    );
+const stackNavigatorConfig = {
+    headerShown: false,
+    ...TransitionPresets.RevealFromBottomAndroid,
 };
 
-// const UpdatesStack = () => {
-//     return (
-//         <Stack.Navigator
-//             screenOptions={{
-//                 headerTintColor: theme.textColorPrimaryDark,
-//                 headerStyle: { backgroundColor: theme.colorDarkPrimary },
-//             }}
-//         >
-//             <Stack.Screen name="Updates" component={Updates} />
-//         </Stack.Navigator>
-//     );
-// };
-
-const SearchStack = () => {
-    return (
-        <Stack.Navigator>
-            <Stack.Screen
-                name="Search"
-                component={Search}
-                options={{
-                    headerShown: false,
-                }}
-            />
-        </Stack.Navigator>
-    );
-};
-
-const BrowseStack = () => {
-    return (
-        <Stack.Navigator
-            screenOptions={{
-                headerTintColor: theme.textColorPrimaryDark,
-                headerStyle: { backgroundColor: theme.colorDarkPrimary },
-            }}
-        >
-            <Stack.Screen
-                name="Browse"
-                component={Browse}
-                // options={{ headerShown: false }}
-            />
-        </Stack.Navigator>
-    );
-};
 const MoreStack = () => {
     return (
-        <Stack.Navigator
-            screenOptions={{
-                headerTintColor: theme.textColorPrimaryDark,
-                headerStyle: { backgroundColor: theme.colorDarkPrimary },
-            }}
-        >
+        <Stack.Navigator screenOptions={stackNavigatorConfig}>
             <Stack.Screen name="More" component={More} />
+            <Stack.Screen name="About" component={About} />
         </Stack.Navigator>
     );
 };
 
 const BoxNovelStack = () => {
     return (
-        <Stack.Navigator
-            screenOptions={{
-                headerShown: false,
-                ...TransitionPresets.RevealFromBottomAndroid,
-            }}
-        >
+        <Stack.Navigator screenOptions={stackNavigatorConfig}>
             <Stack.Screen name="BoxNovel" component={BoxNovel} />
             <Stack.Screen name="BoxNovelSearch" component={BoxNovelSearch} />
         </Stack.Navigator>
@@ -111,12 +56,7 @@ const BoxNovelStack = () => {
 
 const ReadLightNovelStack = () => {
     return (
-        <Stack.Navigator
-            screenOptions={{
-                headerShown: false,
-                ...TransitionPresets.RevealFromBottomAndroid,
-            }}
-        >
+        <Stack.Navigator screenOptions={stackNavigatorConfig}>
             <Stack.Screen name="ReadLightNovel" component={ReadLightNovel} />
             <Stack.Screen
                 name="ReadLightNovelSearch"
@@ -126,16 +66,16 @@ const ReadLightNovelStack = () => {
     );
 };
 
-const Router = () => {
+const BottomNavigator = () => {
     return (
         <Tab.Navigator
             shifting={false}
             barStyle={{ backgroundColor: theme.colorDarkPrimary }}
-            activeColor="#3399FF"
+            activeColor={theme.colorAccentDark}
         >
             <Tab.Screen
                 name="My Library"
-                component={LibraryStack}
+                component={Library}
                 options={{
                     tabBarIcon: ({ color }) => (
                         <MaterialCommunityIcons
@@ -162,7 +102,7 @@ const Router = () => {
             /> */}
             <Tab.Screen
                 name="History"
-                component={HistoryScreen}
+                component={History}
                 options={{
                     tabBarIcon: ({ color }) => (
                         <MaterialCommunityIcons
@@ -175,7 +115,7 @@ const Router = () => {
             />
             <Tab.Screen
                 name="Browse"
-                component={BrowseStack}
+                component={Browse}
                 options={{
                     tabBarIcon: ({ color }) => (
                         <MaterialCommunityIcons
@@ -203,26 +143,12 @@ const Router = () => {
     );
 };
 
-const MainStack = () => {
+const Router = () => {
     return (
-        <Stack.Navigator
-            screenOptions={{
-                headerShown: false,
-                ...TransitionPresets.RevealFromBottomAndroid,
-            }}
-        >
-            <Stack.Screen name="MainStack" component={Router} />
+        <Stack.Navigator screenOptions={stackNavigatorConfig}>
+            <Stack.Screen name="Router" component={BottomNavigator} />
             <Stack.Screen name="ChapterItem" component={ChapterItem} />
             <Stack.Screen name="NovelItem" component={NovelItem} />
-            <Stack.Screen
-                name="About"
-                component={About}
-                options={{
-                    headerShown: true,
-                    headerTintColor: theme.textColorPrimaryDark,
-                    headerStyle: { backgroundColor: theme.colorDarkPrimary },
-                }}
-            />
             <Stack.Screen name="BoxNovelStack" component={BoxNovelStack} />
             <Stack.Screen
                 name="ReadLightNovelStack"
@@ -232,4 +158,4 @@ const MainStack = () => {
     );
 };
 
-export default MainStack;
+export default Router;

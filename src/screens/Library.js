@@ -10,8 +10,10 @@ import { FlatList } from "react-native-gesture-handler";
 import { theme } from "../theming/theme";
 import { useFocusEffect } from "@react-navigation/native";
 
-import { TouchableRipple, Button } from "react-native-paper";
+import { Button } from "react-native-paper";
 import NovelCover from "../components/NovelCover";
+
+import { CustomAppbar } from "../components/Appbar";
 
 import * as SQLite from "expo-sqlite";
 
@@ -88,63 +90,69 @@ const UpdatesScreen = ({ navigation }) => {
     };
 
     return (
-        <View style={styles.container}>
-            <FlatList
-                contentContainerStyle={{ flex: 1 }}
-                numColumns={3}
-                data={novels}
-                showsVerticalScrollIndicator={false}
-                keyExtractor={(item) => item.novelUrl}
-                renderItem={({ item }) => (
-                    <NovelCover
-                        item={item}
-                        onPress={() => navigation.navigate("NovelItem", item)}
-                    />
-                )}
-                refreshControl={
-                    <RefreshControl
-                        refreshing={refreshing}
-                        onRefresh={onRefresh}
-                        colors={["white"]}
-                        progressBackgroundColor={theme.colorAccentDark}
-                    />
-                }
-                ListEmptyComponent={
-                    <View
-                        style={{
-                            flex: 1,
-                            justifyContent: "center",
-                            alignItems: "center",
-                        }}
-                    >
-                        <Text
+        <>
+            <CustomAppbar title="Library" />
+
+            <View style={styles.container}>
+                <FlatList
+                    contentContainerStyle={{ flex: 1 }}
+                    numColumns={3}
+                    data={novels}
+                    showsVerticalScrollIndicator={false}
+                    keyExtractor={(item) => item.novelUrl}
+                    renderItem={({ item }) => (
+                        <NovelCover
+                            item={item}
+                            onPress={() =>
+                                navigation.navigate("NovelItem", item)
+                            }
+                        />
+                    )}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={refreshing}
+                            onRefresh={onRefresh}
+                            colors={["white"]}
+                            progressBackgroundColor={theme.colorAccentDark}
+                        />
+                    }
+                    ListEmptyComponent={
+                        <View
                             style={{
-                                color: theme.textColorSecondaryDark,
-                                fontSize: 45,
-                                fontWeight: "bold",
+                                flex: 1,
+                                justifyContent: "center",
+                                alignItems: "center",
                             }}
                         >
-                            Σ(ಠ_ಠ)
-                        </Text>
-                        <Text
-                            style={{
-                                color: theme.textColorSecondaryDark,
-                                fontWeight: "bold",
-                                marginTop: 10,
-                                textAlign: "center",
-                                paddingHorizontal: 30,
-                            }}
-                        >
-                            Your library is empty. Add series to your library
-                            from Browse.
-                        </Text>
-                    </View>
-                }
-            />
-            {/* <Button mode="contained" onPress={() => deleted()}>
-                Delete Library Table
-            </Button> */}
-        </View>
+                            <Text
+                                style={{
+                                    color: theme.textColorSecondaryDark,
+                                    fontSize: 45,
+                                    fontWeight: "bold",
+                                }}
+                            >
+                                Σ(ಠ_ಠ)
+                            </Text>
+                            <Text
+                                style={{
+                                    color: theme.textColorSecondaryDark,
+                                    fontWeight: "bold",
+                                    marginTop: 10,
+                                    textAlign: "center",
+                                    paddingHorizontal: 30,
+                                }}
+                            >
+                                Your library is empty. Add series to your
+                                library from Browse.
+                            </Text>
+                        </View>
+                    }
+                />
+                {/* <Button mode="contained" onPress={() => deleted()}>
+                    Delete Library Table
+                </Button> */}
+            </View>
+        </>
     );
 };
 
