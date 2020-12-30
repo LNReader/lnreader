@@ -178,7 +178,7 @@ const NovelInfoHeader = ({
                                 backgroundColor: theme.colorAccentDark,
                                 marginHorizontal: 15,
                             },
-                            novel.novelSummary.length === 0 && {
+                            novel.novelSummary === "" && {
                                 marginBottom: 20,
                             },
                         ]}
@@ -193,7 +193,7 @@ const NovelInfoHeader = ({
                     >
                         {libraryStatus === 0 ? "Add to library" : "In Library"}
                     </Button>
-                    {novel.novelSummary.length > 0 && (
+                    {novel.novelSummary !== "" && (
                         <View
                             style={{
                                 paddingHorizontal: 15,
@@ -288,10 +288,9 @@ const NovelInfoHeader = ({
                                     backgroundColor: theme.colorAccentDark,
                                     marginHorizontal: 15,
                                 },
-                                item.novelSummary &&
-                                    item.novelSummary.length === 0 && {
-                                        marginBottom: 20,
-                                    },
+                                item.novelSummary === "" && {
+                                    marginBottom: 20,
+                                },
                             ]}
                             icon={
                                 item.libraryStatus === 0
@@ -307,7 +306,7 @@ const NovelInfoHeader = ({
                                 : "In Library"}
                         </Button>
                     )}
-                    {item.novelSummary && item.novelSummary.length > 0 && (
+                    {item.novelSummary !== "" && (
                         <View
                             style={{
                                 paddingHorizontal: 15,

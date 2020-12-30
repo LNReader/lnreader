@@ -1,13 +1,11 @@
 import React, { useState, useCallback } from "react";
 import { useFocusEffect } from "@react-navigation/native";
-
 import {
     StyleSheet,
     View,
     FlatList,
     RefreshControl,
     ToastAndroid,
-    ActivityIndicator,
 } from "react-native";
 import { Appbar, FAB, ProgressBar } from "react-native-paper";
 
@@ -22,7 +20,7 @@ const db = SQLite.openDatabase("lnreader.db");
 const NovelItem = ({ route, navigation }) => {
     const item = route.params;
 
-    const { extensionId, novelUrl } = route.params;
+    const { extensionId, novelUrl, navigatingFrom } = route.params;
 
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
@@ -34,7 +32,6 @@ const NovelItem = ({ route, navigation }) => {
     const [sort, setSort] = useState("ASC");
 
     const [readingStatus, setReadingStatus] = useState();
-
     const [downloading, setDownloading] = useState(false);
 
     const getNovel = () => {
@@ -45,9 +42,13 @@ const NovelItem = ({ route, navigation }) => {
             .then((json) => {
                 setNovel(json);
                 setChapters(json.novelChapters);
-                insertIntoDb(json, json.novelChapters);
                 let chaps = json.novelChapters;
-                resumeReading(chaps[0].chapterName, chaps[0].chapterUrl);
+                insertIntoDb(json, json.novelChapters);
+                setReadingStatus({
+                    chapterName: chaps[0].chapterName,
+                    chapterUrl: chaps[0].chapterUrl,
+                    fabLabel: "Start",
+                });
             })
             .catch((error) => console.error(error))
             .finally(() => {
@@ -60,12 +61,13 @@ const NovelItem = ({ route, navigation }) => {
         db.transaction((tx) => {
             tx.executeSql(
                 `SELECT * FROM ChapterTable WHERE novelUrl=? ORDER BY chapterId ${sort}`,
-                [item.novelUrl],
+                [novelUrl],
                 (txObj, { rows: { _array } }) => {
                     setChapters(_array);
-                    resumeReading(_array[0].chapterName, _array[0].chapterUrl);
-                    setRefreshing(false);
+                    resumeReading(_array[0]);
+
                     setLoading(false);
+                    setRefreshing(false);
                 },
                 (txObj, error) => console.log("Error ", error)
             );
@@ -81,14 +83,13 @@ const NovelItem = ({ route, navigation }) => {
         }
     };
 
-    const resumeReading = (chapName, chapUrl) => {
+    const resumeReading = (chap) => {
         db.transaction((tx) => {
             tx.executeSql(
                 "SELECT *  FROM HistoryTable WHERE novelUrl = ?",
                 [item.novelUrl],
                 (txObj, results) => {
-                    let len = results.rows.length;
-                    if (len > 0) {
+                    if (results.rows.length > 0) {
                         let row = results.rows.item(0);
                         setReadingStatus({
                             chapterUrl: row.chapterUrl,
@@ -97,8 +98,8 @@ const NovelItem = ({ route, navigation }) => {
                         });
                     } else {
                         setReadingStatus({
-                            chapterUrl: chapUrl,
-                            chapterName: chapName,
+                            chapterUrl: chap.chapterUrl,
+                            chapterName: chap.chapterName,
                             fabLabel: "Start",
                         });
                     }
@@ -109,11 +110,12 @@ const NovelItem = ({ route, navigation }) => {
     };
 
     const insertIntoDb = (nov, chaps) => {
+        // Insert into database
         db.transaction((tx) => {
             tx.executeSql(
-                "INSERT OR REPLACE INTO LibraryTable (novelUrl, novelName, novelCover, novelSummary, Alternative, `Author(s)`, `Genre(s)`, Type, `Release`, Status, extensionId, libraryStatus) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                "INSERT INTO LibraryTable (novelUrl, novelName, novelCover, novelSummary, Alternative, `Author(s)`, `Genre(s)`, Type, `Release`, Status, extensionId, libraryStatus) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                 [
-                    item.novelUrl,
+                    novelUrl,
                     nov.novelName,
                     nov.novelCover,
                     nov.novelSummary,
@@ -125,13 +127,10 @@ const NovelItem = ({ route, navigation }) => {
                     nov.Status,
                     extensionId,
                     0,
-                ],
-                (tx, res) => {
-                    // console.log("Inserted into DB");
-                },
-                (txObj, error) => console.log("Error ", error)
+                ]
             );
 
+            // Insert chapters into database
             chaps.map((chap) =>
                 tx.executeSql(
                     "INSERT INTO ChapterTable (chapterUrl, chapterName, releaseDate, novelUrl) values (?, ?, ?, ?)",
@@ -139,16 +138,19 @@ const NovelItem = ({ route, navigation }) => {
                         chap.chapterUrl,
                         chap.chapterName,
                         chap.releaseDate,
-                        item.novelUrl,
+                        novelUrl,
                     ]
                 )
             );
         });
     };
 
+    /**
+     * Download th chapter if not downloaded else delete
+     */
     const downloadChapter = (downloadStatus, cdUrl) => {
-        setDownloading(true);
         if (downloadStatus === 0) {
+            setDownloading(true);
             fetch(
                 `https://lnreader-extensions.herokuapp.com/api/${extensionId}/${cdUrl}`
             )
@@ -157,13 +159,7 @@ const NovelItem = ({ route, navigation }) => {
                     db.transaction((tx) => {
                         tx.executeSql(
                             `UPDATE ChapterTable SET downloaded = 1 WHERE chapterUrl = ?`,
-                            [cdUrl],
-                            (tx, res) => {
-                                // console.log(
-                                //     "Updated Download Status to downloaded"
-                                // );
-                            },
-                            (txObj, error) => console.log("Error ", error)
+                            [cdUrl]
                         );
                         tx.executeSql(
                             `INSERT INTO DownloadsTable (chapterUrl, novelUrl, chapterName, chapterText, prevChapter, nextChapter) VALUES (?, ?, ?, ?, ?, ?)`,
@@ -180,7 +176,6 @@ const NovelItem = ({ route, navigation }) => {
                                     `Downloaded ${json.chapterName}`,
                                     ToastAndroid.SHORT
                                 );
-                                // console.log("Inserted into Downloads Table");
                             },
                             (txObj, error) => console.log("Error ", error)
                         );
@@ -188,24 +183,20 @@ const NovelItem = ({ route, navigation }) => {
                 })
                 .catch((error) => console.error(error))
                 .finally(() => {
-                    checkIfExistsInDB();
+                    setDownloading(false);
+                    getChaptersFromDb();
                 });
         } else {
             db.transaction((tx) => {
                 tx.executeSql(
                     `UPDATE ChapterTable SET downloaded = 0 WHERE chapterUrl = ?`,
-                    [cdUrl],
-                    (tx, res) => {
-                        // console.log("Updated Download Status to downloaded");
-                    },
-                    (txObj, error) => console.log("Error ", error)
+                    [cdUrl]
                 );
                 tx.executeSql(
                     `DELETE FROM DownloadsTable WHERE chapterUrl = ?`,
                     [cdUrl],
                     (tx, res) => {
-                        // console.log("Deleted Download");
-                        checkIfExistsInDB();
+                        getChaptersFromDb();
                         ToastAndroid.show(
                             `Chapter deleted`,
                             ToastAndroid.SHORT
@@ -219,6 +210,7 @@ const NovelItem = ({ route, navigation }) => {
 
     const insertToLibrary = () => {
         if (libraryStatus === 0) {
+            // Insert into library
             db.transaction((tx) => {
                 tx.executeSql(
                     "UPDATE LibraryTable SET libraryStatus = 1 WHERE novelUrl=?",
@@ -228,14 +220,13 @@ const NovelItem = ({ route, navigation }) => {
                             "Added to library",
                             ToastAndroid.SHORT
                         );
-                        // console.log("Inserted into Library");
-
                         setlibraryStatus(1);
                     },
                     (txObj, error) => console.log("Error ", error)
                 );
             });
         } else {
+            // Delete from library
             db.transaction((tx) => {
                 tx.executeSql(
                     "UPDATE LibraryTable SET libraryStatus = 0 WHERE novelUrl=?",
@@ -245,7 +236,6 @@ const NovelItem = ({ route, navigation }) => {
                             "Removed from library",
                             ToastAndroid.SHORT
                         );
-                        // console.log("Removed From Library");
                         setlibraryStatus(0);
                     },
                     (txObj, error) => console.log("Error ", error)
@@ -254,44 +244,42 @@ const NovelItem = ({ route, navigation }) => {
         }
     };
 
-    const checkIfExistsInDB = () => {
-        db.transaction((tx) => {
-            tx.executeSql(
-                "SELECT * FROM LibraryTable WHERE novelUrl=?",
-                [novelUrl],
-                (txObj, res) => {
-                    if (res.rows.length === 0) {
-                        setRefreshing(true);
-                        setlibraryStatus(0);
-                        // console.log("Not In Database");
-                        getNovel();
-                    } else {
-                        // setRefreshing(true);
-                        // console.log("In Database");
-                        setlibraryStatus(res.rows.item(0).libraryStatus);
-                        setNovel(res.rows.item(0));
-                        getChaptersFromDb();
-                    }
-                },
-                (txObj, error) => console.log("Error ", error)
-            );
-        });
-        setDownloading(false);
+    const checkIfExistsInDb = () => {
+        setRefreshing(true);
+        if (navigatingFrom === 1) {
+            getChaptersFromDb();
+        } else {
+            db.transaction((tx) => {
+                tx.executeSql(
+                    "SELECT * FROM LibraryTable WHERE novelUrl=? LIMIT 1",
+                    [novelUrl],
+                    (txObj, res) => {
+                        if (res.rows.length === 0) {
+                            // Not in database
+                            setlibraryStatus(0);
+                            getNovel();
+                        } else {
+                            // In database
+                            setNovel(res.rows.item(0));
+                            setlibraryStatus(res.rows.item(0).libraryStatus);
+                            getChaptersFromDb();
+                        }
+                    },
+                    (txObj, error) => console.log("Error ", error)
+                );
+            });
+        }
     };
-
-    // useEffect(() => {
-    //     checkIfExistsInDB(item.novelUrl);
-    // }, [sort]);
 
     useFocusEffect(
         useCallback(() => {
-            checkIfExistsInDB();
+            checkIfExistsInDb();
         }, [sort])
     );
 
     const onRefresh = async () => {
         setRefreshing(true);
-        checkIfExistsInDB();
+        checkIfExistsInDb();
     };
 
     const renderChapterCard = ({ item }) => (
@@ -303,6 +291,12 @@ const NovelItem = ({ route, navigation }) => {
             downloadChapter={downloadChapter}
         />
     );
+
+    const getItemLayout = (data, index) => ({
+        length: 72,
+        offset: 72 * index,
+        index,
+    });
 
     return (
         <>
@@ -329,12 +323,13 @@ const NovelItem = ({ route, navigation }) => {
                 />
                 <FlatList
                     data={chapters}
-                    extraData={chapters}
                     showsVerticalScrollIndicator={false}
                     keyExtractor={(item) => item.chapterUrl}
                     removeClippedSubviews={true}
                     maxToRenderPerBatch={10}
-                    initialNumToRender={10}
+                    windowSize={15}
+                    getItemLayout={getItemLayout}
+                    initialNumToRender={5}
                     renderItem={renderChapterCard}
                     ListHeaderComponent={() => (
                         <NovelInfoHeader
@@ -356,7 +351,7 @@ const NovelItem = ({ route, navigation }) => {
                         />
                     }
                 />
-                {!loading && readingStatus && (
+                {readingStatus && (
                     <FAB
                         style={styles.fab}
                         icon="play"
@@ -385,44 +380,6 @@ const styles = StyleSheet.create({
         flex: 1,
         // backgroundColor: "#202125",
         backgroundColor: "#000000",
-    },
-    nameContainer: {
-        flex: 1,
-        width: "100%",
-        marginHorizontal: 15,
-        // justifyContent: "center",
-    },
-    background: {
-        height: 240,
-    },
-    linearGradient: {
-        height: "100%",
-        backgroundColor: "rgba(256, 256, 256, 0.5)",
-    },
-    detailsContainer: {
-        flex: 1,
-        flexDirection: "row",
-        margin: 15,
-    },
-    logo: {
-        height: 180,
-        width: 120,
-        margin: 3.2,
-        borderRadius: 6,
-    },
-    genre: {
-        borderRadius: 24,
-        borderWidth: 1,
-        paddingHorizontal: 10,
-        marginHorizontal: 2,
-        fontSize: 13,
-        paddingVertical: 2,
-        justifyContent: "center",
-        flex: 1,
-    },
-    name: {
-        fontWeight: "bold",
-        fontSize: 20,
     },
     fab: {
         backgroundColor: theme.colorAccentDark,

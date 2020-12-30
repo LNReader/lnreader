@@ -89,10 +89,10 @@ const ChapterItem = ({ route, navigation }) => {
                 (txObj, res) => {
                     console.log(res.rows.length);
                     if (res.rows.length === 0) {
-                        console.log("Not Downloaded");
+                        // console.log("Not Downloaded");
                         getChapter();
                     } else {
-                        console.log("Already Downloaded");
+                        // console.log("Already Downloaded");
                         getChapterFromDB();
                     }
                     checkIfInHistory();
@@ -162,8 +162,12 @@ const ChapterItem = ({ route, navigation }) => {
                     >
                         <Appbar.BackAction
                             onPress={() => {
-                                // navigation.navigate("NovelItem", { novelUrl });
-                                navigation.goBack();
+                                navigation.navigate("NovelItem", {
+                                    novelUrl,
+                                    extensionId,
+                                    navigatingFrom: 0,
+                                });
+                                // navigation.goBack();
                             }}
                             color={"white"}
                             size={26}
@@ -231,7 +235,7 @@ const ChapterItem = ({ route, navigation }) => {
                 onScroll={({ nativeEvent }) => {
                     _panel.hide();
                     if (isCloseToBottom(nativeEvent)) {
-                        console.log("Scroll End Reached");
+                        // console.log("Scroll End Reached");
                         setRead();
                     }
                 }}

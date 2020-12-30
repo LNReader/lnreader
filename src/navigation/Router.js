@@ -14,6 +14,7 @@ import Browse from "../screens/Browse";
 
 import More from "../screens/More/More";
 import About from "../screens/More/About";
+import Settings from "../screens/More/Settings";
 
 import NovelItem from "../screens/NovelItem";
 import ChapterItem from "../screens/ChapterItem";
@@ -41,6 +42,7 @@ const MoreStack = () => {
         <Stack.Navigator screenOptions={stackNavigatorConfig}>
             <Stack.Screen name="More" component={More} />
             <Stack.Screen name="About" component={About} />
+            <Stack.Screen name="Settings" component={Settings} />
         </Stack.Navigator>
     );
 };

@@ -20,7 +20,6 @@ import * as SQLite from "expo-sqlite";
 const db = SQLite.openDatabase("lnreader.db");
 
 const UpdatesScreen = ({ navigation }) => {
-    const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
     const [novels, setNovels] = useState();
 
@@ -31,8 +30,6 @@ const UpdatesScreen = ({ navigation }) => {
                 null,
                 (txObj, { rows: { _array } }) => {
                     setNovels(_array);
-                    // console.log(_array);
-                    setLoading(false);
                     setRefreshing(false);
                 },
                 (txObj, error) => console.log("Error ", error)
@@ -104,7 +101,10 @@ const UpdatesScreen = ({ navigation }) => {
                         <NovelCover
                             item={item}
                             onPress={() =>
-                                navigation.navigate("NovelItem", item)
+                                navigation.navigate("NovelItem", {
+                                    ...item,
+                                    navigatingFrom: 1,
+                                })
                             }
                         />
                     )}

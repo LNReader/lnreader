@@ -41,7 +41,7 @@ const ChapterCard = ({
                     ]}
                     numberOfLines={1}
                 >
-                    {chapter.chapterName.substring(0, 50) + "..."}
+                    {chapter.chapterName.substring(0, 50)}
                 </Text>
                 <Text
                     style={[

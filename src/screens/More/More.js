@@ -25,7 +25,7 @@ const MoreScreen = ({ navigation }) => {
                             icon="code-tags"
                         />
                     )}
-                    onPress={() => navigation.navigate("About")}
+                    onPress={() => navigation.navigate("Settings")}
                 />
                 <List.Item
                     titleStyle={{ color: theme.textColorPrimaryDark }}

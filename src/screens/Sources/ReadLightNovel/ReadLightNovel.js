@@ -124,7 +124,10 @@ const AllNovels = ({ navigation }) => {
                             <NovelCover
                                 item={item}
                                 onPress={() =>
-                                    navigation.navigate("NovelItem", item)
+                                    navigation.navigate("NovelItem", {
+                                        ...item,
+                                        navigatingFrom: 0,
+                                    })
                                 }
                             />
                         )}
