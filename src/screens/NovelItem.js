@@ -7,12 +7,13 @@ import {
     RefreshControl,
     ToastAndroid,
 } from "react-native";
-import { Appbar, FAB, ProgressBar } from "react-native-paper";
+import { Appbar, Provider, ProgressBar, Portal } from "react-native-paper";
 
 import { theme } from "../theming/theme";
 
 import ChapterCard from "../components/ChapterCard";
 import NovelInfoHeader from "../components/NovelInfoHeader";
+import { BottomSheet } from "../components/NovelItemBottomSheet";
 
 import * as SQLite from "expo-sqlite";
 const db = SQLite.openDatabase("lnreader.db");
@@ -29,10 +30,9 @@ const NovelItem = ({ route, navigation }) => {
     const [chapters, setChapters] = useState();
 
     const [libraryStatus, setlibraryStatus] = useState(item.libraryStatus);
-    const [sort, setSort] = useState("ASC");
 
-    const [readingStatus, setReadingStatus] = useState();
-    const [downloading, setDownloading] = useState(false);
+    const [sort, setSort] = useState("ASC");
+    const [filter, setFilter] = useState("");
 
     const getNovel = () => {
         fetch(
@@ -40,69 +40,26 @@ const NovelItem = ({ route, navigation }) => {
         )
             .then((response) => response.json())
             .then((json) => {
-                setNovel(json);
-                setChapters(json.novelChapters);
-                let chaps = json.novelChapters;
                 insertIntoDb(json, json.novelChapters);
-                setReadingStatus({
-                    chapterName: chaps[0].chapterName,
-                    chapterUrl: chaps[0].chapterUrl,
-                    fabLabel: "Start",
-                });
+                checkIfExistsInDb();
+                console.log("Setdb");
             })
-            .catch((error) => console.error(error))
-            .finally(() => {
-                setRefreshing(false);
-                setLoading(false);
-            });
+            .catch((error) => console.error(error));
+        // .finally(() => {
+        //     setRefreshing(false);
+        //     setLoading(false);
+        // });
     };
 
     const getChaptersFromDb = () => {
         db.transaction((tx) => {
             tx.executeSql(
-                `SELECT * FROM ChapterTable WHERE novelUrl=? ORDER BY chapterId ${sort}`,
+                `SELECT * FROM ChapterTable WHERE novelUrl=? ${filter} ORDER BY chapterId ${sort}`,
                 [novelUrl],
                 (txObj, { rows: { _array } }) => {
                     setChapters(_array);
-                    resumeReading(_array[0]);
-
                     setLoading(false);
                     setRefreshing(false);
-                },
-                (txObj, error) => console.log("Error ", error)
-            );
-        });
-    };
-
-    const sortChapters = () => {
-        setRefreshing(true);
-        if (sort === "ASC") {
-            setSort("DESC");
-        } else {
-            setSort("ASC");
-        }
-    };
-
-    const resumeReading = (chap) => {
-        db.transaction((tx) => {
-            tx.executeSql(
-                "SELECT *  FROM HistoryTable WHERE novelUrl = ?",
-                [item.novelUrl],
-                (txObj, results) => {
-                    if (results.rows.length > 0) {
-                        let row = results.rows.item(0);
-                        setReadingStatus({
-                            chapterUrl: row.chapterUrl,
-                            chapterName: row.chapterName,
-                            fabLabel: "Resume",
-                        });
-                    } else {
-                        setReadingStatus({
-                            chapterUrl: chap.chapterUrl,
-                            chapterName: chap.chapterName,
-                            fabLabel: "Start",
-                        });
-                    }
                 },
                 (txObj, error) => console.log("Error ", error)
             );
@@ -113,7 +70,7 @@ const NovelItem = ({ route, navigation }) => {
         // Insert into database
         db.transaction((tx) => {
             tx.executeSql(
-                "INSERT INTO LibraryTable (novelUrl, novelName, novelCover, novelSummary, Alternative, `Author(s)`, `Genre(s)`, Type, `Release`, Status, extensionId, libraryStatus) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                "INSERT INTO LibraryTable (novelUrl, novelName, novelCover, novelSummary, Alternative, `Author(s)`, `Genre(s)`, Type, `Release`, Status, extensionId, lastRead, sourceUrl) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                 [
                     novelUrl,
                     nov.novelName,
@@ -126,8 +83,11 @@ const NovelItem = ({ route, navigation }) => {
                     nov.Release,
                     nov.Status,
                     extensionId,
-                    0,
-                ]
+                    chaps[0].chapterUrl,
+                    nov.sourceUrl,
+                ],
+                (txObj, res) => console.log("res"),
+                (txObj, error) => console.log("Error ", error)
             );
 
             // Insert chapters into database
@@ -150,9 +110,8 @@ const NovelItem = ({ route, navigation }) => {
      */
     const downloadChapter = (downloadStatus, cdUrl) => {
         if (downloadStatus === 0) {
-            setDownloading(true);
             fetch(
-                `https://lnreader-extensions.herokuapp.com/api/${extensionId}/${cdUrl}`
+                `https://lnreader-extensions.herokuapp.com/api/${extensionId}/novel/${novelUrl}${cdUrl}`
             )
                 .then((response) => response.json())
                 .then((json) => {
@@ -183,7 +142,6 @@ const NovelItem = ({ route, navigation }) => {
                 })
                 .catch((error) => console.error(error))
                 .finally(() => {
-                    setDownloading(false);
                     getChaptersFromDb();
                 });
         } else {
@@ -255,6 +213,7 @@ const NovelItem = ({ route, navigation }) => {
                     [novelUrl],
                     (txObj, res) => {
                         if (res.rows.length === 0) {
+                            console.log("Not in db");
                             // Not in database
                             setlibraryStatus(0);
                             getNovel();
@@ -274,7 +233,7 @@ const NovelItem = ({ route, navigation }) => {
     useFocusEffect(
         useCallback(() => {
             checkIfExistsInDb();
-        }, [sort])
+        }, [sort, filter])
     );
 
     const onRefresh = async () => {
@@ -292,15 +251,15 @@ const NovelItem = ({ route, navigation }) => {
         />
     );
 
-    const getItemLayout = (data, index) => ({
-        length: 72,
-        offset: 72 * index,
-        index,
-    });
+    // const getItemLayout = (data, index) => ({
+    //     length: 72,
+    //     offset: 72 * index,
+    //     index,
+    // });
 
     return (
-        <>
-            <Appbar.Header style={{ backgroundColor: theme.colorDarkPrimary }}>
+        <Provider>
+            {/* <Appbar.Header style={{ backgroundColor: theme.colorDarkPrimary }}>
                 <Appbar.BackAction
                     onPress={() => {
                         navigation.goBack();
@@ -313,33 +272,34 @@ const NovelItem = ({ route, navigation }) => {
                     title={item.novelName}
                     titleStyle={{ color: theme.textColorPrimaryDark }}
                 />
-            </Appbar.Header>
+            </Appbar.Header> */}
 
             <View style={styles.container}>
-                <ProgressBar
+                {/* <ProgressBar
                     color="#47a84a"
                     indeterminate
                     visible={downloading}
-                />
+                /> */}
                 <FlatList
                     data={chapters}
+                    extraData={[sort, filter]}
                     showsVerticalScrollIndicator={false}
                     keyExtractor={(item) => item.chapterUrl}
                     removeClippedSubviews={true}
                     maxToRenderPerBatch={10}
                     windowSize={15}
-                    getItemLayout={getItemLayout}
-                    initialNumToRender={5}
+                    // getItemLayout={getItemLayout}
+                    initialNumToRender={6}
                     renderItem={renderChapterCard}
                     ListHeaderComponent={() => (
                         <NovelInfoHeader
                             item={item}
                             novel={novel}
                             noOfChapters={!loading && chapters.length}
-                            loading={loading}
                             libraryStatus={libraryStatus}
                             insertToLibrary={insertToLibrary}
-                            sortChapters={sortChapters}
+                            navigatingFrom={navigatingFrom}
+                            loading={loading}
                         />
                     )}
                     refreshControl={
@@ -347,29 +307,21 @@ const NovelItem = ({ route, navigation }) => {
                             refreshing={refreshing}
                             onRefresh={onRefresh}
                             colors={["white"]}
-                            progressBackgroundColor={theme.colorAccentDark}
+                            progressBackgroundColor={theme.colorDarkPrimary}
                         />
                     }
                 />
-                {readingStatus && (
-                    <FAB
-                        style={styles.fab}
-                        icon="play"
-                        uppercase={false}
-                        label={readingStatus.fabLabel}
-                        color={theme.textColorPrimaryDark}
-                        onPress={() => {
-                            navigation.navigate("ChapterItem", {
-                                chapterUrl: readingStatus.chapterUrl,
-                                extensionId,
-                                novelUrl,
-                                chapterName: readingStatus.chapterName,
-                            });
-                        }}
+                <Portal>
+                    <BottomSheet
+                        bottomSheetRef={(c) => (_panel = c)}
+                        sort={sort}
+                        filter={filter}
+                        sortChapters={setSort}
+                        filterChapters={setFilter}
                     />
-                )}
+                </Portal>
             </View>
-        </>
+        </Provider>
     );
 };
 

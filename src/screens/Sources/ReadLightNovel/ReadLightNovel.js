@@ -126,7 +126,7 @@ const AllNovels = ({ navigation }) => {
                                 onPress={() =>
                                     navigation.navigate("NovelItem", {
                                         ...item,
-                                        navigatingFrom: 0,
+                                        navigatingFrom: 2,
                                     })
                                 }
                             />

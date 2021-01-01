@@ -19,7 +19,7 @@ export default function App() {
     const createTables = () =>
         db.transaction((tx) => {
             tx.executeSql(
-                "CREATE TABLE IF NOT EXISTS LibraryTable (novelUrl VARCHAR(255) PRIMARY KEY, novelName VARCHAR(255), novelCover VARCHAR(255), novelSummary TEXT, Alternative VARCHAR(255), `Author(s)` VARCHAR(255), `Genre(s)` VARCHAR(255), Type VARCHAR(255), `Release` VARCHAR(255), Status VARCHAR(255), extensionId INTEGER, libraryStatus INTEGER)",
+                "CREATE TABLE IF NOT EXISTS LibraryTable (novelId INTEGER  PRIMARY KEY AUTOINCREMENT,novelUrl VARCHAR(255) UNIQUE, novelName VARCHAR(255), novelCover VARCHAR(255), novelSummary TEXT, Alternative VARCHAR(255), `Author(s)` VARCHAR(255), `Genre(s)` VARCHAR(255), Type VARCHAR(255), `Release` VARCHAR(255), Status VARCHAR(255), extensionId INTEGER, libraryStatus INTEGER DEFAULT 0, unread INTEGER DEFAULT 1, lastRead VARCHAR(255), sourceUrl VARCHAR(255) )",
                 null,
                 (tx, results) => console.log("Library Table Created"),
                 (tx, error) => console.log(error)

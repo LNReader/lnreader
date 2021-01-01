@@ -121,6 +121,7 @@ const UpdatesScreen = ({ navigation }) => {
                         <Appbar.Action
                             color="white"
                             icon="filter-variant"
+                            disabled
                             // onPress={() => _panel.show({ velocity: -1.5 })}
                         />
                     </>
@@ -192,7 +193,7 @@ const UpdatesScreen = ({ navigation }) => {
                         />
                     }
                     ListEmptyComponent={
-                        searchBar && searchText === "" ? (
+                        !searchBar ? (
                             <View
                                 style={{
                                     flex: 1,
@@ -223,17 +224,20 @@ const UpdatesScreen = ({ navigation }) => {
                                 </Text>
                             </View>
                         ) : (
-                            <Text
-                                style={{
-                                    color: theme.colorAccentDark,
-                                    fontWeight: "bold",
-                                    marginTop: 10,
-                                    textAlign: "center",
-                                    paddingHorizontal: 30,
-                                }}
-                            >
-                                Not in library
-                            </Text>
+                            searchBar &&
+                            searchText !== "" && (
+                                <Text
+                                    style={{
+                                        color: theme.colorAccentDark,
+                                        fontWeight: "bold",
+                                        marginTop: 10,
+                                        textAlign: "center",
+                                        paddingHorizontal: 30,
+                                    }}
+                                >
+                                    Not in library
+                                </Text>
+                            )
                         )
                     }
                 />

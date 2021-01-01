@@ -12,11 +12,13 @@ const ChapterCard = ({
 }) => (
     <TouchableRipple
         style={{
-            paddingHorizontal: 15,
-            paddingVertical: 12,
+            marginHorizontal: 15,
+            paddingVertical: 7,
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
+            borderTopColor: "rgba(255,255,255,.12)",
+            borderTopWidth: 1,
         }}
         onPress={() =>
             navigation.navigate("ChapterItem", {
@@ -47,8 +49,8 @@ const ChapterCard = ({
                     style={[
                         {
                             color: theme.textColorSecondaryDark,
-                            marginTop: 5,
-                            fontSize: 13,
+                            // marginTop: 5,
+                            fontSize: 12,
                         },
                         chapter.read === 1 && {
                             color: theme.textColorHintDark,
@@ -68,17 +70,16 @@ const ChapterCard = ({
                     }
                     animated
                     color={
-                        chapter.downloaded
-                            ? "#47a84a"
-                            : theme.textColorSecondaryDark
+                        chapter.downloaded ? "#2E7D32" : theme.colorAccentDark
                     }
-                    size={24}
+                    size={28}
                     onPress={() => {
                         downloadChapter(
                             chapter.downloaded ? chapter.downloaded : 0,
                             chapter.chapterUrl
                         );
                     }}
+                    style={{ margin: 2 }}
                 />
             </View>
         </>

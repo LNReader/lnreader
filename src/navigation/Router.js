@@ -150,7 +150,16 @@ const Router = () => {
         <Stack.Navigator screenOptions={stackNavigatorConfig}>
             <Stack.Screen name="Router" component={BottomNavigator} />
             <Stack.Screen name="ChapterItem" component={ChapterItem} />
-            <Stack.Screen name="NovelItem" component={NovelItem} />
+            <Stack.Screen
+                name="NovelItem"
+                component={NovelItem}
+                options={{
+                    headerTitle: "",
+                    headerShown: true,
+                    headerTransparent: true,
+                    headerTintColor: "white",
+                }}
+            />
             <Stack.Screen name="BoxNovelStack" component={BoxNovelStack} />
             <Stack.Screen
                 name="ReadLightNovelStack"

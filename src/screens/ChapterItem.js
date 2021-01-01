@@ -35,6 +35,12 @@ const ChapterItem = ({ route, navigation }) => {
                     console.log("Inserted into history table: " + novelUrl),
                 (tx, error) => console.log(error)
             );
+            tx.executeSql(
+                "UPDATE LibraryTable SET lastRead = ?, unread = 0 WHERE novelUrl = ?",
+                [chapterUrl, novelUrl],
+                (tx, res) => console.log("Set Last read" + novelUrl),
+                (tx, error) => console.log(error)
+            );
         });
     };
 
@@ -103,8 +109,11 @@ const ChapterItem = ({ route, navigation }) => {
     };
 
     const getChapter = () => {
+        console.log(
+            `https://lnreader-extensions.herokuapp.com/api/${extensionId}/novel/${novelUrl}${chapterUrl}`
+        );
         fetch(
-            `https://lnreader-extensions.herokuapp.com/api/${extensionId}/${chapterUrl}`
+            `https://lnreader-extensions.herokuapp.com/api/${extensionId}/novel/${novelUrl}${chapterUrl}`
         )
             .then((response) => response.json())
             .then((json) => setChapter(json))
@@ -120,12 +129,8 @@ const ChapterItem = ({ route, navigation }) => {
                 `SELECT * FROM DownloadsTable WHERE chapterUrl = ?`,
                 [chapterUrl],
                 (tx, results) => {
-                    let len = results.rows.length;
-                    for (let i = 0; i < len; i++) {
-                        let row = results.rows.item(i);
-                        setChapter(row);
-                        setLoading(false);
-                    }
+                    setChapter(results.rows.item(0));
+                    setLoading(false);
                 },
                 (txObj, error) => console.log("Error ", error)
             );
@@ -162,12 +167,12 @@ const ChapterItem = ({ route, navigation }) => {
                     >
                         <Appbar.BackAction
                             onPress={() => {
-                                navigation.navigate("NovelItem", {
-                                    novelUrl,
-                                    extensionId,
-                                    navigatingFrom: 0,
-                                });
-                                // navigation.goBack();
+                                // navigation.navigate("NovelItem", {
+                                //     novelUrl,
+                                //     extensionId,
+                                //     navigatingFrom: 0,
+                                // });
+                                navigation.goBack();
                             }}
                             color={"white"}
                             size={26}

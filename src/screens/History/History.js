@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 import { StyleSheet, View, Text, FlatList } from "react-native";
 import { theme } from "../../theming/theme";
 import { useFocusEffect } from "@react-navigation/native";
@@ -15,7 +15,7 @@ const History = ({ navigation }) => {
     const getHistory = () => {
         db.transaction((tx) => {
             tx.executeSql(
-                "SELECT HistoryTable.chapterUrl, HistoryTable.historyId, HistoryTable.chapterName, HistoryTable.lastRead, LibraryTable.novelName, LibraryTable.novelCover, LibraryTable.novelUrl, LibraryTable.extensionId FROM HistoryTable INNER JOIN LibraryTable ON HistoryTable.novelUrl = LibraryTable.novelUrl ORDER BY HistoryTable.lastRead DESC",
+                "SELECT HistoryTable.chapterUrl, HistoryTable.historyId, HistoryTable.chapterName, HistoryTable.lastRead, LibraryTable.novelName, LibraryTable.novelCover, LibraryTable.novelUrl, LibraryTable.extensionId, LibraryTable.libraryStatus FROM HistoryTable INNER JOIN LibraryTable ON HistoryTable.novelUrl = LibraryTable.novelUrl ORDER BY HistoryTable.lastRead DESC",
                 null,
                 (txObj, { rows: { _array } }) => {
                     setHistory(_array);

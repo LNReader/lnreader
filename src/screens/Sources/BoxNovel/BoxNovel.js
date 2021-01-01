@@ -125,7 +125,7 @@ const AllNovels = ({ navigation }) => {
                                 onPress={() =>
                                     navigation.navigate("NovelItem", {
                                         ...item,
-                                        navigatingFrom: 0,
+                                        navigatingFrom: 2,
                                     })
                                 }
                             />
@@ -160,6 +160,7 @@ const styles = StyleSheet.create({
         flex: 1,
         // backgroundColor: "#202125",
         backgroundColor: "#000000",
+        padding: 3,
     },
 
     contentContainer: {

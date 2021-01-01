@@ -63,8 +63,8 @@ const styles = StyleSheet.create({
     opac: {
         height: 190,
         flex: 1 / 3,
-        marginHorizontal: 3.6,
-        marginVertical: 3.2,
+        marginHorizontal: 4,
+        marginVertical: 4,
         borderRadius: 6,
     },
 });

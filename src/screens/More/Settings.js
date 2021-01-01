@@ -1,5 +1,5 @@
 import React from "react";
-import { View } from "react-native";
+import { View, ToastAndroid } from "react-native";
 
 import { List, Divider } from "react-native-paper";
 import { CustomAppbar } from "../../components/Appbar";
@@ -66,11 +66,11 @@ const AboutScreen = ({ navigation }) => {
                 null,
                 (txObj, { rows: { _array } }) => {
                     console.log("DELETED Downloads TABLE");
+                    ToastAndroid.show("Database deleted", ToastAndroid.SHORT);
                 },
                 (txObj, error) => console.log("Error ", error)
             );
         });
-        setNovels([]);
     };
 
     return (
