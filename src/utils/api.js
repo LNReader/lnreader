@@ -1,12 +1,24 @@
-import cheerio from "cheerio-without-node-native";
+export const getNovelDetails = (extensionId, novelUrl) => {
+    const url = `https://lnreader-extensions.herokuapp.com/api/${extensionId}/novel/${novelUrl}`;
 
-const baseUrl = "https://boxnovel.com/";
+    return fetch(url)
+        .then((response) => response.json())
+        .then((json) => {
+            let novel = {
+                novelSummary: json.novelSummary,
+                "Author(s)": json["Author(s)"],
+                "Genre(s)": json["Genre(s)"],
+                Status: json.Status,
+                sourceUrl: json.sourceUrl,
+                source: json.sourceName,
+                unread: 1,
+                lastRead: json.novelChapters[0].chapterUrl,
+                lastReadName: json.novelChapters[0].chapterName,
+            };
 
-export const getLatest = async () => {
-    const response = await fetch(baseUrl); // fetch page
-    const htmlString = await response.text(); // get response text
-    const $ = cheerio.load(htmlString); // parse HTML string
-    let title = $("title");
+            let chapters = json.novelChapters;
 
-    console.log(title.text());
+            return { novel, chapters };
+        })
+        .catch((error) => console.error(error));
 };

@@ -20,43 +20,40 @@ import HeaderSearchBar from "../../../components/HeaderSearchBar";
 
 const AllNovels = ({ navigation }) => {
     const [loading, setLoading] = useState(true);
-    const [refreshing, setRefreshing] = useState(true);
+    const [loadingMore, setLoadingMore] = useState(false);
 
-    const [novels, setNovels] = useState();
+    const [novels, setNovels] = useState([]);
 
     const [sort, setSort] = useState("rating");
-    const [pageNo, setPageNo] = useState(2);
+    const [pageNo, setPageNo] = useState(1);
 
     const [searchBar, setSearchBar] = useState(false);
-    const [searchText, setSearchText] = useState();
+    const [searchText, setSearchText] = useState("");
+
+    const [searched, setSearched] = useState(0);
 
     const getNovels = () => {
-        fetch(
-            `https://lnreader-extensions.herokuapp.com/api/1/novels/1/?o=${sort}`
-        )
-            .then((response) => response.json())
-            .then((json) => setNovels(json))
-            .catch((error) => console.error(error))
-            .finally(() => {
-                setPageNo(2);
-                setRefreshing(false);
-                setLoading(false);
-            });
-    };
-
-    const loadMore = () => {
-        setRefreshing(true);
         fetch(
             `https://lnreader-extensions.herokuapp.com/api/1/novels/${pageNo}/?o=${sort}`
         )
             .then((response) => response.json())
-            .then((json) => setNovels((novels) => novels.concat(json)))
-            .catch((error) => console.error(error))
-            .finally(() => {
-                setRefreshing(false);
+            .then((json) => {
+                setNovels((novels) => novels.concat(json));
                 setLoading(false);
-                setPageNo(pageNo + 1);
-            });
+            })
+            .finally(() => setPageNo(pageNo + 1));
+    };
+
+    const onEndReached = ({
+        layoutMeasurement,
+        contentOffset,
+        contentSize,
+    }) => {
+        const paddingToBottom = 10;
+        return (
+            layoutMeasurement.height + contentOffset.y >=
+            contentSize.height - paddingToBottom
+        );
     };
 
     const getSearchResults = (searchText) => {
@@ -65,20 +62,15 @@ const AllNovels = ({ navigation }) => {
             `https://lnreader-extensions.herokuapp.com/api/1/search/?s=${searchText}&?o=rating`
         )
             .then((response) => response.json())
-            .then((json) => setNovels(json))
-            .catch((error) => console.error(error))
-            .finally(() => setLoading(false));
+            .then((json) => {
+                setNovels(json);
+                setLoading(false);
+            });
     };
 
     useEffect(() => {
         getNovels();
     }, [sort]);
-
-    const onRefresh = () => {
-        setRefreshing(true);
-        setPageNo(2);
-        getNovels();
-    };
 
     return (
         <Provider>
@@ -104,26 +96,30 @@ const AllNovels = ({ navigation }) => {
                             onPress={() => _panel.show({ velocity: -1.5 })}
                             color={theme.textColorPrimaryDark}
                         />
-                        <Appbar.Action
-                            icon="refresh"
-                            onPress={() => onRefresh()}
-                            color={theme.textColorPrimaryDark}
-                        />
                     </>
                 ) : (
                     <>
                         <Appbar.BackAction
                             onPress={() => {
-                                setSearchBar(false);
-                                setLoading(true);
-                                getNovels();
+                                if (searched) {
+                                    setLoading(true);
+                                    setPageNo(1);
+                                    getNovels();
+                                } else {
+                                    setSearchBar(false);
+                                    setSearchText("");
+                                }
                             }}
                             color={theme.textColorPrimaryDark}
                         />
                         <HeaderSearchBar
                             searchText={searchText}
                             onChangeText={(text) => setSearchText(text)}
-                            onSubmitEditing={() => getSearchResults(searchText)}
+                            onSubmitEditing={() => {
+                                setSort("rating");
+                                getSearchResults(searchText);
+                                setSearched(true);
+                            }}
                         />
                         {searchText !== "" && (
                             <Appbar.Action
@@ -153,27 +149,12 @@ const AllNovels = ({ navigation }) => {
                         showsVerticalScrollIndicator={false}
                         keyExtractor={(item) => item.novelUrl}
                         ListFooterComponent={() =>
-                            !searchBar && (
-                                <View
-                                    style={{
-                                        width: 120,
-                                        alignSelf: "center",
-                                        marginVertical: 10,
-                                    }}
-                                >
-                                    <Button
-                                        mode="contained"
-                                        color={theme.colorAccentDark}
-                                        uppercase={false}
-                                        labelStyle={{
-                                            color: theme.textColorPrimaryDark,
-                                            letterSpacing: 0,
-                                        }}
-                                        onPress={() => loadMore()}
-                                    >
-                                        Load More
-                                    </Button>
-                                </View>
+                            loadingMore && (
+                                <ActivityIndicator
+                                    color={theme.colorAccentDark}
+                                    size="small"
+                                    style={{ marginTop: 20, marginBottom: 80 }}
+                                />
                             )
                         }
                         renderItem={({ item }) => (
@@ -187,14 +168,13 @@ const AllNovels = ({ navigation }) => {
                                 }
                             />
                         )}
-                        refreshControl={
-                            <RefreshControl
-                                refreshing={refreshing}
-                                onRefresh={onRefresh}
-                                colors={["white"]}
-                                progressBackgroundColor={theme.colorAccentDark}
-                            />
-                        }
+                        onScroll={({ nativeEvent }) => {
+                            if (onEndReached(nativeEvent)) {
+                                setLoadingMore(true);
+                                getNovels();
+                                console.log("End Reached");
+                            }
+                        }}
                     />
                 )}
             </View>
@@ -203,7 +183,6 @@ const AllNovels = ({ navigation }) => {
                     bottomSheetRef={(c) => (_panel = c)}
                     setSort={setSort}
                     sort={sort}
-                    setRefreshing={setRefreshing}
                 />
             </Portal>
         </Provider>

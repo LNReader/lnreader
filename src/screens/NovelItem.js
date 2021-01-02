@@ -15,6 +15,8 @@ import ChapterCard from "../components/ChapterCard";
 import NovelInfoHeader from "../components/NovelInfoHeader";
 import { BottomSheet } from "../components/NovelItemBottomSheet";
 
+import { getNovelDetails } from "../utils/api";
+
 import * as SQLite from "expo-sqlite";
 const db = SQLite.openDatabase("lnreader.db");
 
@@ -40,31 +42,14 @@ const NovelItem = ({ route, navigation }) => {
     const [sort, setSort] = useState("");
     const [filter, setFilter] = useState("");
 
-    const getNovel = () => {
-        fetch(
-            `https://lnreader-extensions.herokuapp.com/api/${extensionId}/novel/${item.novelUrl}`
-        )
-            .then((response) => response.json())
-            .then((json) => {
-                let novelObj = {
-                    novelSummary: json.novelSummary,
-                    "Author(s)": json["Author(s)"],
-                    "Genre(s)": json["Genre(s)"],
-                    Status: json.Status,
-                    sourceUrl: json.sourceUrl,
-                    source: json.sourceName,
-                    unread: 1,
-                    lastRead: json.novelChapters[0].chapterUrl,
-                    lastReadName: json.novelChapters[0].chapterName,
-                };
-                setNovel(novelObj);
-                setChapters(json.novelChapters);
-                setLoading(false);
-                setRefreshing(false);
-                insertIntoDb(novelObj, json.novelChapters);
-                console.log("Setdb");
-            })
-            .catch((error) => console.error(error));
+    const getNovel = (extensionId, novelUrl) => {
+        getNovelDetails(extensionId, novelUrl).then((response) => {
+            setNovel(response.novel);
+            setChapters(response.chapters);
+            setLoading(false);
+            setRefreshing(false);
+            insertIntoDb(response.novel, response.chapters);
+        });
     };
 
     const getChaptersFromDb = () => {
@@ -235,7 +220,7 @@ const NovelItem = ({ route, navigation }) => {
                             console.log("Not in db");
                             // Not in database
                             setlibraryStatus(0);
-                            getNovel();
+                            getNovel(extensionId, novelUrl);
                         } else {
                             // In database
                             setNovel(res.rows.item(0));

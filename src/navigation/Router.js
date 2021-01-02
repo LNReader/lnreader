@@ -21,10 +21,8 @@ import ChapterItem from "../screens/ChapterItem";
 
 // Sources
 import BoxNovel from "../screens/Sources/BoxNovel/BoxNovel";
-import BoxNovelSearch from "../screens/Sources/BoxNovel/BoxNovelSearch";
 
 import ReadLightNovel from "../screens/Sources/ReadLightNovel/ReadLightNovel";
-import ReadLightNovelSearch from "../screens/Sources/ReadLightNovel/ReadLightNovelSearch";
 
 import { theme } from "../theming/theme";
 
@@ -51,7 +49,6 @@ const BoxNovelStack = () => {
     return (
         <Stack.Navigator screenOptions={stackNavigatorConfig}>
             <Stack.Screen name="BoxNovel" component={BoxNovel} />
-            <Stack.Screen name="BoxNovelSearch" component={BoxNovelSearch} />
         </Stack.Navigator>
     );
 };
@@ -60,10 +57,6 @@ const ReadLightNovelStack = () => {
     return (
         <Stack.Navigator screenOptions={stackNavigatorConfig}>
             <Stack.Screen name="ReadLightNovel" component={ReadLightNovel} />
-            <Stack.Screen
-                name="ReadLightNovelSearch"
-                component={ReadLightNovelSearch}
-            />
         </Stack.Navigator>
     );
 };

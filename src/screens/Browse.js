@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { StyleSheet, View, Text, FlatList, Image } from "react-native";
-import { TouchableRipple, IconButton } from "react-native-paper";
+import { TouchableRipple, IconButton, Button } from "react-native-paper";
 import { CustomAppbar } from "../components/Appbar";
 import { theme } from "../theming/theme";
 import { sources } from "../utils/sources";
@@ -27,8 +27,8 @@ const Browse = ({ navigation }) => {
                                         uri: item.sourceCover,
                                     }}
                                     style={{
-                                        width: 60,
-                                        height: 60,
+                                        width: 40,
+                                        height: 40,
                                         borderRadius: 6,
                                     }}
                                     resizeMode="contain"
@@ -47,7 +47,7 @@ const Browse = ({ navigation }) => {
                                             style={{
                                                 color:
                                                     theme.textColorPrimaryDark,
-                                                fontSize: 16,
+                                                fontSize: 14,
                                             }}
                                         >
                                             {item.sourceName}
@@ -56,13 +56,14 @@ const Browse = ({ navigation }) => {
                                             style={{
                                                 color:
                                                     theme.textColorSecondaryDark,
+                                                fontSize: 12,
                                             }}
                                         >
                                             {item.sourceLanguage}
                                         </Text>
                                     </View>
                                     <View>
-                                        <IconButton
+                                        {/* <IconButton
                                             icon="magnify"
                                             color={theme.textColorSecondaryDark}
                                             size={24}
@@ -76,7 +77,19 @@ const Browse = ({ navigation }) => {
                                                     }
                                                 )
                                             }
-                                        />
+                                        /> */}
+                                        <Button
+                                            labelStyle={{ letterSpacing: 0 }}
+                                            uppercase={false}
+                                            color={theme.colorAccentDark}
+                                            onPress={() =>
+                                                navigation.navigate(
+                                                    item.sourceName + "Stack"
+                                                )
+                                            }
+                                        >
+                                            Browse
+                                        </Button>
                                     </View>
                                 </View>
                             </>
