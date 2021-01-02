@@ -54,9 +54,7 @@ const HistoryCard = ({ item, deleteHistory, navigation }) => (
                         }}
                         numberOfLines={1}
                     >
-                        {`Ch. ${item.chapterName
-                            .replace(/^\D+/g, "")
-                            .substring(0, 4)} - ${moment(
+                        {`${item.chapterName} - ${moment(
                             item.lastRead
                         ).calendar()}`}
                     </Text>

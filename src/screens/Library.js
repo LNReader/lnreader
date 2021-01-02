@@ -95,6 +95,7 @@ const UpdatesScreen = ({ navigation }) => {
 
     useFocusEffect(
         useCallback(() => {
+            setSearchBar(false);
             getLibraryNovels();
         }, [])
     );

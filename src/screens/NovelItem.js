@@ -21,7 +21,13 @@ const db = SQLite.openDatabase("lnreader.db");
 const NovelItem = ({ route, navigation }) => {
     const item = route.params;
 
-    const { extensionId, novelUrl, navigatingFrom } = route.params;
+    const {
+        extensionId,
+        novelUrl,
+        navigatingFrom,
+        novelName,
+        novelCover,
+    } = route.params;
 
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
@@ -31,7 +37,7 @@ const NovelItem = ({ route, navigation }) => {
 
     const [libraryStatus, setlibraryStatus] = useState(item.libraryStatus);
 
-    const [sort, setSort] = useState("ASC");
+    const [sort, setSort] = useState("");
     const [filter, setFilter] = useState("");
 
     const getNovel = () => {
@@ -40,21 +46,27 @@ const NovelItem = ({ route, navigation }) => {
         )
             .then((response) => response.json())
             .then((json) => {
-                insertIntoDb(json, json.novelChapters);
+                insertIntoDb(
+                    {
+                        novelSummary: json.novelSummary,
+                        "Author(s)": json["Author(s)"],
+                        "Genre(s)": json["Genre(s)"],
+                        Status: json.Status,
+                        sourceUrl: json.sourceUrl,
+                        source: json.sourceName,
+                    },
+                    json.novelChapters
+                );
                 checkIfExistsInDb();
                 console.log("Setdb");
             })
             .catch((error) => console.error(error));
-        // .finally(() => {
-        //     setRefreshing(false);
-        //     setLoading(false);
-        // });
     };
 
     const getChaptersFromDb = () => {
         db.transaction((tx) => {
             tx.executeSql(
-                `SELECT * FROM ChapterTable WHERE novelUrl=? ${filter} ORDER BY chapterId ${sort}`,
+                `SELECT * FROM ChapterTable WHERE novelUrl=? ${filter} ${sort}`,
                 [novelUrl],
                 (txObj, { rows: { _array } }) => {
                     setChapters(_array);
@@ -70,23 +82,24 @@ const NovelItem = ({ route, navigation }) => {
         // Insert into database
         db.transaction((tx) => {
             tx.executeSql(
-                "INSERT INTO LibraryTable (novelUrl, novelName, novelCover, novelSummary, Alternative, `Author(s)`, `Genre(s)`, Type, `Release`, Status, extensionId, lastRead, sourceUrl) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                "INSERT INTO LibraryTable (novelUrl, novelName, novelCover, novelSummary, `Author(s)`, `Genre(s)`, Status, extensionId, lastRead, lastReadName, sourceUrl, source) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                 [
                     novelUrl,
-                    nov.novelName,
-                    nov.novelCover,
+                    novelName,
+                    novelCover,
                     nov.novelSummary,
-                    nov.Alternative,
                     nov["Author(s)"],
                     nov["Genre(s)"],
-                    nov.Type,
-                    nov.Release,
                     nov.Status,
                     extensionId,
                     chaps[0].chapterUrl,
+                    chaps[0].chapterName,
                     nov.sourceUrl,
+                    nov.source,
                 ],
-                (txObj, res) => console.log("res"),
+                (txObj, res) => {
+                    console.log("res");
+                },
                 (txObj, error) => console.log("Error ", error)
             );
 
@@ -293,9 +306,12 @@ const NovelItem = ({ route, navigation }) => {
                     renderItem={renderChapterCard}
                     ListHeaderComponent={() => (
                         <NovelInfoHeader
-                            item={item}
+                            item={{
+                                novelCover: novelCover,
+                                novelName: novelName,
+                            }}
                             novel={novel}
-                            noOfChapters={!loading && chapters.length}
+                            noOfChapters={!loading ? chapters.length : 0}
                             libraryStatus={libraryStatus}
                             insertToLibrary={insertToLibrary}
                             navigatingFrom={navigatingFrom}

@@ -149,7 +149,11 @@ const Router = () => {
     return (
         <Stack.Navigator screenOptions={stackNavigatorConfig}>
             <Stack.Screen name="Router" component={BottomNavigator} />
-            <Stack.Screen name="ChapterItem" component={ChapterItem} />
+            <Stack.Screen
+                name="ChapterItem"
+                component={ChapterItem}
+                options={{ ...TransitionPresets.SlideFromRightIOS }}
+            />
             <Stack.Screen
                 name="NovelItem"
                 component={NovelItem}

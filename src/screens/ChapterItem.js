@@ -36,8 +36,8 @@ const ChapterItem = ({ route, navigation }) => {
                 (tx, error) => console.log(error)
             );
             tx.executeSql(
-                "UPDATE LibraryTable SET lastRead = ?, unread = 0 WHERE novelUrl = ?",
-                [chapterUrl, novelUrl],
+                "UPDATE LibraryTable SET lastRead = ?, lastReadName = ?, unread = 0 WHERE novelUrl = ?",
+                [chapterUrl, chapterName, novelUrl],
                 (tx, res) => console.log("Set Last read" + novelUrl),
                 (tx, error) => console.log(error)
             );
@@ -109,9 +109,6 @@ const ChapterItem = ({ route, navigation }) => {
     };
 
     const getChapter = () => {
-        console.log(
-            `https://lnreader-extensions.herokuapp.com/api/${extensionId}/novel/${novelUrl}${chapterUrl}`
-        );
         fetch(
             `https://lnreader-extensions.herokuapp.com/api/${extensionId}/novel/${novelUrl}${chapterUrl}`
         )

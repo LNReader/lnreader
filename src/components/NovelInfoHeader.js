@@ -20,21 +20,15 @@ import { theme } from "../theming/theme";
 const NovelInfoHeader = ({
     item,
     novel,
-    libraryStatus,
     noOfChapters,
     insertToLibrary,
-    navigatingFrom,
     loading,
+    navigatingFrom,
+    libraryStatus,
 }) => {
     const navigation = useNavigation();
 
-    const [more, setMore] = useState(navigatingFrom === 2 ? true : false);
-
-    const onShare = async (uri) => {
-        Share.share({
-            message: uri,
-        });
-    };
+    const [more, setMore] = useState(navigatingFrom === 1 ? false : true);
 
     const renderGenreChip = ({ item }) => (
         <Text
@@ -59,7 +53,7 @@ const NovelInfoHeader = ({
                 style={styles.background}
             >
                 <LinearGradient
-                    colors={["rgba(0,0,0,0.1)", "#000000"]}
+                    colors={["rgba(0,0,0,0.2)", "#000000"]}
                     style={styles.linearGradient}
                 >
                     <View style={styles.detailsContainer}>
@@ -83,35 +77,42 @@ const NovelInfoHeader = ({
                             >
                                 {item.novelName}
                             </Text>
-                            <Text
-                                style={{
-                                    color: theme.textColorSecondaryDark,
-                                    marginVertical: 3,
-                                    fontSize: 14,
-                                    fontWeight: "bold",
-                                }}
-                            >
-                                {novel["Author(s)"] &&
-                                    novel["Author(s)"].replace(",", ", ")}
-                            </Text>
+                            {(!loading || navigatingFrom === 1) && (
+                                <>
+                                    <Text
+                                        style={{
+                                            color: theme.textColorSecondaryDark,
+                                            marginVertical: 3,
+                                            fontSize: 14,
+                                            fontWeight: "bold",
+                                        }}
+                                    >
+                                        {novel["Author(s)"] &&
+                                            novel["Author(s)"].replace(
+                                                ",",
+                                                ", "
+                                            )}
+                                    </Text>
 
-                            <Text
-                                style={{
-                                    color: theme.textColorSecondaryDark,
-                                    marginVertical: 3,
-                                    fontSize: 14,
-                                }}
-                                numberOfLines={1}
-                            >
-                                {novel["Status"] &&
-                                    novel["Type"] &&
-                                    novel["Status"] + " • " + novel["Type"]}
-                            </Text>
+                                    <Text
+                                        style={{
+                                            color: theme.textColorSecondaryDark,
+                                            marginVertical: 3,
+                                            fontSize: 14,
+                                        }}
+                                        numberOfLines={1}
+                                    >
+                                        {(novel["Status"] && novel["Status"]) +
+                                            " • " +
+                                            (novel.source && novel.source)}
+                                    </Text>
+                                </>
+                            )}
                         </View>
                     </View>
                 </LinearGradient>
             </ImageBackground>
-            {!loading && (
+            {(!loading || navigatingFrom === 1) && (
                 <>
                     <View
                         style={{
@@ -125,7 +126,6 @@ const NovelInfoHeader = ({
                             icon={() => (
                                 <MaterialCommunityIcons
                                     name={
-                                        navigatingFrom !== 1 ||
                                         libraryStatus === 0
                                             ? "bookmark-outline"
                                             : "bookmark"
@@ -162,7 +162,7 @@ const NovelInfoHeader = ({
                                 color: "white",
                             }}
                         >
-                            {navigatingFrom === 1 || libraryStatus === 1
+                            {libraryStatus === 1
                                 ? "In Library"
                                 : "Add to library"}
                         </Chip>
@@ -178,7 +178,9 @@ const NovelInfoHeader = ({
                         />
                         <IconButton
                             onPress={() =>
-                                onShare(novel.sourceUrl && novel.sourceUrl)
+                                Share.share({
+                                    message: novel.sourceUrl,
+                                })
                             }
                             icon="share-variant"
                             color={theme.colorAccentDark}
@@ -263,12 +265,13 @@ const NovelInfoHeader = ({
                                 chapterUrl: novel.lastRead,
                                 novelUrl: novel.novelUrl,
                                 extensionId: novel.extensionId,
+                                chapterName: novel.lastReadName,
                             })
                         }
                     >
-                        {novel.unread && novel.unread === 0
-                            ? "Start reading"
-                            : "Continue reading"}
+                        {novel.unread && novel.unread === 1
+                            ? `Start reading ${novel.lastReadName}`
+                            : `Continue reading ${novel.lastReadName}`}
                     </Button>
 
                     <TouchableRipple
@@ -292,7 +295,7 @@ const NovelInfoHeader = ({
                                     fontWeight: "bold",
                                 }}
                             >
-                                {noOfChapters && noOfChapters + "  Chapters  "}
+                                {noOfChapters + "  Chapters  "}
                             </Text>
                             <IconButton
                                 icon="filter-variant"

@@ -70,7 +70,7 @@ export const BottomSheet = ({
                                 <RadioButton.Item
                                     uncheckedColor={theme.textColorHintDark}
                                     color={theme.colorAccentDark}
-                                    value="DESC"
+                                    value="ORDER BY chapterId DESC"
                                 />
                                 <Text
                                     style={{
@@ -89,7 +89,7 @@ export const BottomSheet = ({
                                 <RadioButton.Item
                                     uncheckedColor={theme.textColorHintDark}
                                     color={theme.colorAccentDark}
-                                    value="ASC"
+                                    value=""
                                 />
                                 <Text
                                     style={{
