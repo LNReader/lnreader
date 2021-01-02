@@ -8,6 +8,7 @@
         "eject": "expo eject"
     },
     "dependencies": {
+        "@react-native-async-storage/async-storage": "^1.13.2",
         "@react-native-community/masked-view": "0.1.10",
         "@react-native-community/netinfo": "^5.9.9",
         "@react-native-community/slider": "^3.0.3",
@@ -18,8 +19,10 @@
         "expo-app-loading": "^1.0.1",
         "expo-font": "^8.4.0",
         "expo-linear-gradient": "^8.4.0",
+        "expo-sharing": "~8.5.0",
         "expo-sqlite": "~8.5.0",
         "expo-status-bar": "~1.0.3",
+        "expo-web-browser": "~8.6.0",
         "moment": "^2.29.1",
         "react": "16.13.1",
         "react-color-extractor": "^1.1.2",
@@ -34,10 +37,8 @@
         "react-native-screens": "~2.15.0",
         "react-native-vector-icons": "^7.1.0",
         "react-native-web": "~0.13.12",
-        "rn-sliding-up-panel": "^2.4.4",
         "react-native-webview": "11.0.0",
-        "expo-web-browser": "~8.6.0",
-        "expo-sharing": "~8.5.0"
+        "rn-sliding-up-panel": "^2.4.4"
     },
     "devDependencies": {
         "@babel/core": "~7.9.0"

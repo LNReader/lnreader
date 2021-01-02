@@ -187,8 +187,7 @@ const NovelInfoHeader = ({
                             size={21}
                         />
                     </View>
-
-                    {novel.novelSummary && novel.novelSummary.length > 0 && (
+                    {novel.novelSummary !== "" && (
                         <View
                             style={{
                                 paddingHorizontal: 15,
@@ -216,7 +215,7 @@ const NovelInfoHeader = ({
                                 onPress={() => setMore(!more)}
                                 ellipsizeMode="clip"
                             >
-                                {novel.novelSummary}
+                                {/* {novel.novelSummary} */}
                             </Text>
                             <Text
                                 style={{
@@ -236,10 +235,13 @@ const NovelInfoHeader = ({
                     )}
                     {more && (
                         <FlatList
-                            contentContainerStyle={{
-                                paddingHorizontal: 15,
-                                marginBottom: 15,
-                            }}
+                            contentContainerStyle={[
+                                {
+                                    paddingHorizontal: 15,
+                                    marginBottom: 15,
+                                },
+                                novel.novelSummary === "" && { marginTop: 15 },
+                            ]}
                             horizontal
                             data={
                                 novel["Genre(s)"] &&
