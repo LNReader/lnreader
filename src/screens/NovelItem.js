@@ -46,18 +46,22 @@ const NovelItem = ({ route, navigation }) => {
         )
             .then((response) => response.json())
             .then((json) => {
-                insertIntoDb(
-                    {
-                        novelSummary: json.novelSummary,
-                        "Author(s)": json["Author(s)"],
-                        "Genre(s)": json["Genre(s)"],
-                        Status: json.Status,
-                        sourceUrl: json.sourceUrl,
-                        source: json.sourceName,
-                    },
-                    json.novelChapters
-                );
-                checkIfExistsInDb();
+                let novelObj = {
+                    novelSummary: json.novelSummary,
+                    "Author(s)": json["Author(s)"],
+                    "Genre(s)": json["Genre(s)"],
+                    Status: json.Status,
+                    sourceUrl: json.sourceUrl,
+                    source: json.sourceName,
+                    unread: 1,
+                    lastRead: json.novelChapters[0].chapterUrl,
+                    lastReadName: json.novelChapters[0].chapterName,
+                };
+                setNovel(novelObj);
+                setChapters(json.novelChapters);
+                setLoading(false);
+                setRefreshing(false);
+                insertIntoDb(novelObj, json.novelChapters);
                 console.log("Setdb");
             })
             .catch((error) => console.error(error));
@@ -92,8 +96,8 @@ const NovelItem = ({ route, navigation }) => {
                     nov["Genre(s)"],
                     nov.Status,
                     extensionId,
-                    chaps[0].chapterUrl,
-                    chaps[0].chapterName,
+                    nov.lastRead,
+                    nov.lastReadName,
                     nov.sourceUrl,
                     nov.source,
                 ],
@@ -102,6 +106,8 @@ const NovelItem = ({ route, navigation }) => {
                 },
                 (txObj, error) => console.log("Error ", error)
             );
+
+            // console.log(chaps[0]);
 
             // Insert chapters into database
             chaps.map((chap) =>

@@ -24,7 +24,7 @@ const ChapterBottomSheet = ({
                 style={[
                     styles.contentContainer,
                     {
-                        backgroundColor: "rgba(0,0,0,0.5)",
+                        backgroundColor: "rgba(0,0,0,0.4)",
                     },
                 ]}
             >

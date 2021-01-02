@@ -152,13 +152,12 @@ const ChapterItem = ({ route, navigation }) => {
 
     return (
         <Provider>
-            <StatusBar backgroundColor="transparent" />
             <CollapsibleHeaderScrollView
-                headerContainerBackgroundColor={"rgba(0,0,0,0)"}
+                headerContainerBackgroundColor={"rgba(0,0,0,0.4)"}
                 CollapsibleHeaderComponent={
                     <Appbar.Header
                         style={{
-                            backgroundColor: "rgba(0,0,0,0.2)",
+                            backgroundColor: "transparent",
                             elevation: 0,
                         }}
                     >
@@ -253,24 +252,26 @@ const ChapterItem = ({ route, navigation }) => {
                         />
                     </View>
                 ) : (
-                    <Text
-                        style={[
-                            {
-                                paddingVertical: 15,
-                                fontSize: size,
-                            },
-                            readerTheme === 1
-                                ? { color: theme.textColorSecondaryDark }
-                                : { color: "black" },
-                            size === 16
-                                ? { lineHeight: 25 }
-                                : size === 20
-                                ? { lineHeight: 28 }
-                                : size === 12 && { lineHeight: 20 },
-                        ]}
-                    >
-                        {chapter.chapterText.trim()}
-                    </Text>
+                    <>
+                        <Text
+                            style={[
+                                {
+                                    paddingVertical: 15,
+                                    fontSize: size,
+                                },
+                                readerTheme === 1
+                                    ? { color: theme.textColorSecondaryDark }
+                                    : { color: "black" },
+                                size === 16
+                                    ? { lineHeight: 25 }
+                                    : size === 20
+                                    ? { lineHeight: 28 }
+                                    : size === 12 && { lineHeight: 20 },
+                            ]}
+                        >
+                            {chapter.chapterText.trim()}
+                        </Text>
+                    </>
                 )}
                 <Portal>
                     <BottomSheet

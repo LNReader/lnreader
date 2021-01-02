@@ -12,7 +12,7 @@ const ChapterCard = ({
 }) => (
     <TouchableRipple
         style={{
-            marginHorizontal: 15,
+            paddingHorizontal: 15,
             paddingVertical: 7,
             flexDirection: "row",
             justifyContent: "space-between",
