@@ -34,8 +34,8 @@ const AllNovels = ({ navigation }) => {
             .then((json) => {
                 setNovels((novels) => novels.concat(json));
                 setLoading(false);
-            })
-            .finally(() => setPageNo(pageNo + 1));
+                setPageNo(pageNo + 1);
+            });
     };
 
     const getLibraryNovels = () => {
@@ -76,14 +76,7 @@ const AllNovels = ({ navigation }) => {
     };
 
     const checkIFInLibrary = (id) => {
-        var found = false;
-        for (var i = 0; i < libraryNovels.length; i++) {
-            if (libraryNovels[i].novelUrl === id) {
-                found = true;
-                break;
-            }
-        }
-        return found;
+        return libraryNovels.some((obj) => obj.novelUrl === id);
     };
 
     useEffect(() => {

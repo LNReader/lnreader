@@ -56,14 +56,7 @@ const ReadLightNovel = ({ navigation }) => {
     };
 
     const checkIFInLibrary = (id) => {
-        var found = false;
-        for (var i = 0; i < libraryNovels.length; i++) {
-            if (libraryNovels[i].novelUrl === id) {
-                found = true;
-                break;
-            }
-        }
-        return found;
+        return libraryNovels.some((obj) => obj.novelUrl === id);
     };
 
     useEffect(() => {
