@@ -4,7 +4,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { TouchableRipple } from "react-native-paper";
 import { theme } from "../theming/theme";
 
-const NovelCover = ({ item, onPress, mode }) => {
+const NovelCover = ({ item, onPress, mode, libraryStatus }) => {
     return (
         <View style={{ flex: 1 / 3 }}>
             <TouchableRipple
@@ -20,7 +20,10 @@ const NovelCover = ({ item, onPress, mode }) => {
                             uri: item.novelCover,
                         }}
                         style={styles.logo}
-                        imageStyle={{ borderRadius: 6 }}
+                        imageStyle={[
+                            { borderRadius: 6 },
+                            libraryStatus && { opacity: 0.5 },
+                        ]}
                         progressiveRenderingEnabled={true}
                     >
                         {(!mode || mode === "compact") && (

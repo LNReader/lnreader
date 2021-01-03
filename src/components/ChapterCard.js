@@ -45,21 +45,23 @@ const ChapterCard = ({
                 >
                     {chapter.chapterName.substring(0, 50)}
                 </Text>
-                <Text
-                    style={[
-                        {
-                            color: theme.textColorSecondaryDark,
-                            // marginTop: 5,
-                            fontSize: 12,
-                        },
-                        chapter.read === 1 && {
-                            color: theme.textColorHintDark,
-                        },
-                    ]}
-                    numberOfLines={1}
-                >
-                    {chapter.releaseDate ? chapter.releaseDate : "release-date"}
-                </Text>
+                {chapter.releaseDate && (
+                    <Text
+                        style={[
+                            {
+                                color: theme.textColorSecondaryDark,
+                                // marginTop: 5,
+                                fontSize: 12,
+                            },
+                            chapter.read === 1 && {
+                                color: theme.textColorHintDark,
+                            },
+                        ]}
+                        numberOfLines={1}
+                    >
+                        {chapter.releaseDate}
+                    </Text>
+                )}
             </View>
             <View>
                 <IconButton
@@ -70,9 +72,9 @@ const ChapterCard = ({
                     }
                     animated
                     color={
-                        chapter.downloaded ? "#2E7D32" : theme.colorAccentDark
+                        chapter.downloaded ? "#4AA97D" : theme.colorAccentDark
                     }
-                    size={28}
+                    size={26}
                     onPress={() => {
                         downloadChapter(
                             chapter.downloaded ? chapter.downloaded : 0,

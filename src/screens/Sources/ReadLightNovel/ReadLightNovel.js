@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-    StyleSheet,
-    View,
-    FlatList,
-    ActivityIndicator,
-    RefreshControl,
-} from "react-native";
+import { StyleSheet, View, FlatList, ActivityIndicator } from "react-native";
 import { Appbar, Provider } from "react-native-paper";
 
 import NovelCover from "../../../components/NovelCover";
@@ -13,11 +7,14 @@ import HeaderSearchBar from "../../../components/HeaderSearchBar";
 
 import { theme } from "../../../theming/theme";
 
+import * as SQLite from "expo-sqlite";
+const db = SQLite.openDatabase("lnreader.db");
+
 const ReadLightNovel = ({ navigation }) => {
     const [loading, setLoading] = useState(true);
-    const [refreshing, setRefreshing] = useState(true);
 
     const [novels, setNovels] = useState();
+    const [libraryNovels, setlibraryNovels] = useState([]);
 
     const [searchBar, setSearchBar] = useState(false);
     const [searchText, setSearchText] = useState("");
@@ -27,10 +24,8 @@ const ReadLightNovel = ({ navigation }) => {
     const getNovels = () => {
         fetch(`https://lnreader-extensions.herokuapp.com/api/2/novels/`)
             .then((response) => response.json())
-            .then((json) => setNovels(json))
-            .catch((error) => console.error(error))
-            .finally(() => {
-                setRefreshing(false);
+            .then((json) => {
+                setNovels(json);
                 setLoading(false);
             });
     };
@@ -47,14 +42,34 @@ const ReadLightNovel = ({ navigation }) => {
             });
     };
 
+    const getLibraryNovels = () => {
+        db.transaction((tx) => {
+            tx.executeSql(
+                "SELECT novelUrl FROM LibraryTable WHERE libraryStatus = 1 AND extensionId = 2",
+                null,
+                (tx, { rows: { _array } }) => {
+                    setlibraryNovels(_array);
+                },
+                (tx, error) => console.log(error)
+            );
+        });
+    };
+
+    const checkIFInLibrary = (id) => {
+        var found = false;
+        for (var i = 0; i < libraryNovels.length; i++) {
+            if (libraryNovels[i].novelUrl === id) {
+                found = true;
+                break;
+            }
+        }
+        return found;
+    };
+
     useEffect(() => {
         getNovels();
+        getLibraryNovels();
     }, []);
-
-    const onRefresh = () => {
-        setRefreshing(true);
-        getNovels();
-    };
 
     return (
         <Provider>
@@ -131,28 +146,6 @@ const ReadLightNovel = ({ navigation }) => {
                         data={novels}
                         showsVerticalScrollIndicator={false}
                         keyExtractor={(item) => item.novelUrl}
-                        // ListFooterComponent={() => (
-                        //     <View
-                        //         style={{
-                        //             width: 120,
-                        //             alignSelf: "center",
-                        //             marginVertical: 10,
-                        //         }}
-                        //     >
-                        //         <Button
-                        //             mode="contained"
-                        //             color={theme.colorAccentDark}
-                        //             uppercase={false}
-                        //             labelStyle={{
-                        //                 color: theme.textColorPrimaryDark,
-                        //                 letterSpacing: 0,
-                        //             }}
-                        //             onPress={() => loadMore()}
-                        //         >
-                        //             Load More
-                        //         </Button>
-                        //     </View>
-                        // )}
                         renderItem={({ item }) => (
                             <NovelCover
                                 item={item}
@@ -162,16 +155,13 @@ const ReadLightNovel = ({ navigation }) => {
                                         navigatingFrom: 2,
                                     })
                                 }
+                                libraryStatus={
+                                    checkIFInLibrary(item.novelUrl)
+                                        ? true
+                                        : false
+                                }
                             />
                         )}
-                        refreshControl={
-                            <RefreshControl
-                                refreshing={refreshing}
-                                onRefresh={onRefresh}
-                                colors={["white"]}
-                                progressBackgroundColor={theme.colorAccentDark}
-                            />
-                        }
                     />
                 )}
             </View>

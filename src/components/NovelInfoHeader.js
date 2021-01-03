@@ -102,9 +102,17 @@ const NovelInfoHeader = ({
                                         }}
                                         numberOfLines={1}
                                     >
-                                        {(novel["Status"] && novel["Status"]) +
-                                            " • " +
-                                            (novel.source && novel.source)}
+                                        {novel["Status"]}
+                                    </Text>
+                                    <Text
+                                        style={{
+                                            color: theme.textColorSecondaryDark,
+                                            // marginVertical: 3,
+                                            fontSize: 14,
+                                        }}
+                                        numberOfLines={1}
+                                    >
+                                        {novel.source}
                                     </Text>
                                 </>
                             )}
@@ -143,7 +151,7 @@ const NovelInfoHeader = ({
                                     borderColor: "rgba(255,255,255,0.121)",
                                     borderWidth: 1,
                                     justifyContent: "center",
-                                    height: 30,
+                                    height: 32,
                                     alignItems: "center",
                                     marginLeft: 15,
                                 },
@@ -293,7 +301,7 @@ const NovelInfoHeader = ({
                                     color: theme.textColorPrimaryDark,
                                     paddingHorizontal: 15,
                                     paddingVertical: 5,
-                                    fontSize: 15,
+                                    fontSize: 16,
                                     fontWeight: "bold",
                                 }}
                             >

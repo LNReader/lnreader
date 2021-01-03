@@ -1,28 +1,22 @@
 import React, { useEffect, useState } from "react";
-import {
-    StyleSheet,
-    View,
-    FlatList,
-    ActivityIndicator,
-    RefreshControl,
-} from "react-native";
-import {
-    TouchableRipple,
-    Appbar,
-    Provider,
-    Portal,
-    Button,
-} from "react-native-paper";
+import { StyleSheet, View, FlatList, ActivityIndicator } from "react-native";
+import { Appbar, Provider, Portal } from "react-native-paper";
+
 import NovelCover from "../../../components/NovelCover";
-import { theme } from "../../../theming/theme";
-import { BottomSheet } from "../../../components/BottomSheet";
 import HeaderSearchBar from "../../../components/HeaderSearchBar";
+import { BottomSheet } from "../../../components/BottomSheet";
+
+import { theme } from "../../../theming/theme";
+
+import * as SQLite from "expo-sqlite";
+const db = SQLite.openDatabase("lnreader.db");
 
 const AllNovels = ({ navigation }) => {
     const [loading, setLoading] = useState(true);
     const [loadingMore, setLoadingMore] = useState(false);
 
     const [novels, setNovels] = useState([]);
+    const [libraryNovels, setlibraryNovels] = useState([]);
 
     const [sort, setSort] = useState("rating");
     const [pageNo, setPageNo] = useState(1);
@@ -44,6 +38,19 @@ const AllNovels = ({ navigation }) => {
             .finally(() => setPageNo(pageNo + 1));
     };
 
+    const getLibraryNovels = () => {
+        db.transaction((tx) => {
+            tx.executeSql(
+                "SELECT novelUrl FROM LibraryTable WHERE libraryStatus = 1 AND extensionId = 1",
+                null,
+                (tx, { rows: { _array } }) => {
+                    setlibraryNovels(_array);
+                },
+                (tx, error) => console.log(error)
+            );
+        });
+    };
+
     const onEndReached = ({
         layoutMeasurement,
         contentOffset,
@@ -59,7 +66,7 @@ const AllNovels = ({ navigation }) => {
     const getSearchResults = (searchText) => {
         setLoading(true);
         fetch(
-            `https://lnreader-extensions.herokuapp.com/api/1/search/?s=${searchText}&?o=rating`
+            `https://lnreader-extensions.herokuapp.com/api/1/search/?s=${searchText}&?o=${sort}`
         )
             .then((response) => response.json())
             .then((json) => {
@@ -68,9 +75,30 @@ const AllNovels = ({ navigation }) => {
             });
     };
 
+    const checkIFInLibrary = (id) => {
+        var found = false;
+        for (var i = 0; i < libraryNovels.length; i++) {
+            if (libraryNovels[i].novelUrl === id) {
+                found = true;
+                break;
+            }
+        }
+        return found;
+    };
+
     useEffect(() => {
+        getLibraryNovels();
         getNovels();
     }, [sort]);
+
+    const sortNovels = () => {
+        setLoading(true);
+        if (searched) {
+            getSearchResults();
+        } else {
+            getNovels();
+        }
+    };
 
     return (
         <Provider>
@@ -104,11 +132,11 @@ const AllNovels = ({ navigation }) => {
                                 if (searched) {
                                     setLoading(true);
                                     setPageNo(1);
+                                    setNovels([]);
                                     getNovels();
-                                } else {
-                                    setSearchBar(false);
-                                    setSearchText("");
                                 }
+                                setSearchBar(false);
+                                setSearchText("");
                             }}
                             color={theme.textColorPrimaryDark}
                         />
@@ -160,11 +188,16 @@ const AllNovels = ({ navigation }) => {
                         renderItem={({ item }) => (
                             <NovelCover
                                 item={item}
-                                onPress={() =>
+                                onPress={() => {
                                     navigation.navigate("NovelItem", {
                                         ...item,
                                         navigatingFrom: 2,
-                                    })
+                                    });
+                                }}
+                                libraryStatus={
+                                    checkIFInLibrary(item.novelUrl)
+                                        ? true
+                                        : false
                                 }
                             />
                         )}
