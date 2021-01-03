@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, View, FlatList, ActivityIndicator } from "react-native";
-import { Appbar, Provider } from "react-native-paper";
+import { Appbar, Provider, Menu, RadioButton } from "react-native-paper";
 
 import NovelCover from "../../../components/NovelCover";
 import HeaderSearchBar from "../../../components/HeaderSearchBar";
@@ -20,6 +20,12 @@ const ReadLightNovel = ({ navigation }) => {
     const [searchText, setSearchText] = useState("");
 
     const [searched, setSearched] = useState(false);
+
+    const [menu, setMenu] = useState(false);
+    const openMenu = () => setMenu(true);
+    const closeMenu = () => setMenu(false);
+
+    const [mode, setMode] = useState("compact");
 
     const getNovels = () => {
         fetch(`https://lnreader-extensions.herokuapp.com/api/2/novels/`)
@@ -97,10 +103,9 @@ const ReadLightNovel = ({ navigation }) => {
                                 if (searched) {
                                     setLoading(true);
                                     getNovels();
-                                } else {
-                                    setSearchBar(false);
-                                    setSearchText("");
                                 }
+                                setSearchBar(false);
+                                setSearchText("");
                             }}
                             color={theme.textColorPrimaryDark}
                         />
@@ -108,8 +113,10 @@ const ReadLightNovel = ({ navigation }) => {
                             searchText={searchText}
                             onChangeText={(text) => setSearchText(text)}
                             onSubmitEditing={() => {
-                                getSearchResults(searchText);
-                                setSearched(true);
+                                if (searchText !== "") {
+                                    getSearchResults(searchText);
+                                    setSearched(true);
+                                }
                             }}
                         />
                         {searchText !== "" && (
@@ -123,6 +130,31 @@ const ReadLightNovel = ({ navigation }) => {
                         )}
                     </>
                 )}
+                <Menu
+                    visible={menu}
+                    onDismiss={closeMenu}
+                    anchor={
+                        <Appbar.Action
+                            icon="dots-vertical"
+                            onPress={openMenu}
+                            color={theme.textColorPrimaryDark}
+                        />
+                    }
+                    contentStyle={{
+                        backgroundColor: "#242529",
+                    }}
+                >
+                    <Menu.Item
+                        onPress={() => setMode("compact")}
+                        title="Compact grid"
+                        titleStyle={{ color: theme.textColorPrimaryDark }}
+                    />
+                    <Menu.Item
+                        onPress={() => setMode("comfortable")}
+                        title="Comfortable grid"
+                        titleStyle={{ color: theme.textColorPrimaryDark }}
+                    />
+                </Menu>
             </Appbar.Header>
             <View style={styles.container}>
                 {loading ? (
@@ -153,6 +185,7 @@ const ReadLightNovel = ({ navigation }) => {
                                         ? true
                                         : false
                                 }
+                                mode={mode}
                             />
                         )}
                     />
@@ -167,8 +200,9 @@ export default ReadLightNovel;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // backgroundColor: "#202125",
-        backgroundColor: "#000000",
+        padding: 4,
+        backgroundColor: theme.colorDarkPrimaryDark,
+        // backgroundColor: "#000000",
     },
     contentContainer: {
         flex: 1,

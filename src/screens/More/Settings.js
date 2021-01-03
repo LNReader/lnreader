@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, ToastAndroid } from "react-native";
 
-import { List, Divider } from "react-native-paper";
+import { List, Divider, Checkbox } from "react-native-paper";
 import { CustomAppbar } from "../../components/Appbar";
+
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { theme } from "../../theming/theme";
 
@@ -15,6 +17,11 @@ const AboutScreen = ({ navigation }) => {
     };
 
     const titleStyles = { color: theme.textColorPrimaryDark };
+    const [displayMode, setDisplayMode] = useState("compact");
+
+    AsyncStorage.getItem("@display_mode").then((value) => {
+        setDisplayMode(value);
+    });
 
     const deleteHistory = () => {
         db.transaction((tx) => {
@@ -112,6 +119,56 @@ const AboutScreen = ({ navigation }) => {
                         onPress={() => deleteHistory()}
                         rippleColor={theme.rippleColorDark}
                     />
+                    <List.Subheader
+                        style={{
+                            color: theme.colorAccentDark,
+                            paddingBottom: 5,
+                        }}
+                    >
+                        Display
+                    </List.Subheader>
+                    <View>
+                        <Checkbox.Item
+                            label="Comfortable"
+                            labelStyle={{ color: theme.textColorPrimaryDark }}
+                            status={
+                                displayMode === "comfortable"
+                                    ? "checked"
+                                    : "unchecked"
+                            }
+                            mode="ios"
+                            uncheckedColor={theme.textColorSecondaryDark}
+                            color={theme.colorAccentDark}
+                            onPress={() => {
+                                setDisplayMode("comfortable");
+                                AsyncStorage.setItem(
+                                    "@display_mode",
+                                    "comfortable"
+                                );
+                            }}
+                        />
+                    </View>
+                    <View>
+                        <Checkbox.Item
+                            label="Compact"
+                            labelStyle={{ color: theme.textColorPrimaryDark }}
+                            status={
+                                displayMode === "compact"
+                                    ? "checked"
+                                    : "unchecked"
+                            }
+                            mode="ios"
+                            uncheckedColor={theme.textColorSecondaryDark}
+                            color={theme.colorAccentDark}
+                            onPress={() => {
+                                setDisplayMode("compact");
+                                AsyncStorage.setItem(
+                                    "@display_mode",
+                                    "compact"
+                                );
+                            }}
+                        />
+                    </View>
                     <List.Subheader
                         style={{
                             color: theme.colorAccentDark,

@@ -137,9 +137,11 @@ const AllNovels = ({ navigation }) => {
                             searchText={searchText}
                             onChangeText={(text) => setSearchText(text)}
                             onSubmitEditing={() => {
-                                setSort("rating");
-                                getSearchResults(searchText);
-                                setSearched(true);
+                                if (searchText !== "") {
+                                    setSort("rating");
+                                    getSearchResults(searchText);
+                                    setSearched(true);
+                                }
                             }}
                         />
                         {searchText !== "" && (
@@ -220,8 +222,8 @@ export default AllNovels;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // backgroundColor: "#202125",
-        backgroundColor: "#000000",
+        backgroundColor: theme.colorDarkPrimaryDark,
+        // backgroundColor: "#000000",
         padding: 3,
     },
 

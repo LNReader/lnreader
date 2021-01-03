@@ -53,7 +53,7 @@ const NovelInfoHeader = ({
                 style={styles.background}
             >
                 <LinearGradient
-                    colors={["rgba(0,0,0,0.2)", "#000000"]}
+                    colors={["rgba(0,0,0,0.2)", theme.colorDarkPrimaryDark]}
                     style={styles.linearGradient}
                 >
                     <View style={styles.detailsContainer}>
@@ -232,7 +232,7 @@ const NovelInfoHeader = ({
                                     position: "absolute",
                                     bottom: 0,
                                     right: 15,
-                                    backgroundColor: "black",
+                                    backgroundColor: theme.colorDarkPrimaryDark,
                                     paddingLeft: 5,
                                 }}
                                 onPress={() => setMore(!more)}

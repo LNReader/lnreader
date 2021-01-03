@@ -1,19 +1,15 @@
 import React, { useState, useEffect } from "react";
-import {
-    StyleSheet,
-    View,
-    Text,
-    ActivityIndicator,
-    StatusBar,
-} from "react-native";
+import { StyleSheet, View, Text, ActivityIndicator } from "react-native";
 import BottomSheet from "../components/ChapterBottomSheet";
 
-import { Appbar, Provider, Portal, Button } from "react-native-paper";
+import { Appbar, Provider, Portal } from "react-native-paper";
 import { theme } from "../theming/theme";
 import { CollapsibleHeaderScrollView } from "react-native-collapsible-header-views";
 
 import * as SQLite from "expo-sqlite";
 const db = SQLite.openDatabase("lnreader.db");
+
+import { fetchChapterFromSource } from "../utils/api";
 
 const ChapterItem = ({ route, navigation }) => {
     const { extensionId, chapterUrl, novelUrl, chapterName } = route.params;
@@ -32,13 +28,16 @@ const ChapterItem = ({ route, navigation }) => {
                 "INSERT INTO HistoryTable (chapterUrl, novelUrl, chapterName, lastRead) VALUES ( ?, ?, ?, (datetime('now','localtime')))",
                 [chapterUrl, novelUrl, chapterName],
                 (tx, res) =>
-                    console.log("Inserted into history table: " + novelUrl),
+                    console.log(
+                        "Inserted into history table: " + novelUrl + chapterUrl
+                    ),
                 (tx, error) => console.log(error)
             );
             tx.executeSql(
                 "UPDATE LibraryTable SET lastRead = ?, lastReadName = ?, unread = 0 WHERE novelUrl = ?",
                 [chapterUrl, chapterName, novelUrl],
-                (tx, res) => console.log("Set Last read" + novelUrl),
+                (tx, res) =>
+                    console.log("Set Last read" + novelUrl + chapterUrl),
                 (tx, error) => console.log(error)
             );
         });
@@ -96,7 +95,14 @@ const ChapterItem = ({ route, navigation }) => {
                     console.log(res.rows.length);
                     if (res.rows.length === 0) {
                         // console.log("Not Downloaded");
-                        getChapter();
+                        fetchChapterFromSource(
+                            extensionId,
+                            novelUrl,
+                            chapterUrl
+                        ).then((res) => {
+                            setChapter(res);
+                            setLoading(false);
+                        });
                     } else {
                         // console.log("Already Downloaded");
                         getChapterFromDB();
@@ -106,18 +112,6 @@ const ChapterItem = ({ route, navigation }) => {
                 (txObj, error) => console.log("Error ", error)
             );
         });
-    };
-
-    const getChapter = () => {
-        fetch(
-            `https://lnreader-extensions.herokuapp.com/api/${extensionId}/novel/${novelUrl}${chapterUrl}`
-        )
-            .then((response) => response.json())
-            .then((json) => setChapter(json))
-            .catch((error) => console.error(error))
-            .finally(() => {
-                setLoading(false);
-            });
     };
 
     const getChapterFromDB = () => {

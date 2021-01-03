@@ -20,9 +20,8 @@ import NovelItem from "../screens/NovelItem";
 import ChapterItem from "../screens/ChapterItem";
 
 // Sources
-import BoxNovel from "../screens/Sources/BoxNovel/BoxNovel";
-
-import ReadLightNovel from "../screens/Sources/ReadLightNovel/ReadLightNovel";
+import BoxNovel from "../screens/Sources/boxnovel/BoxNovel";
+import ReadLightNovel from "../screens/Sources/readlightnovel/ReadLightNovel";
 
 import { theme } from "../theming/theme";
 

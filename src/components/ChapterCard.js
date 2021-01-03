@@ -1,6 +1,8 @@
 import React from "react";
+
 import { View, Text } from "react-native";
 import { TouchableRipple, IconButton } from "react-native-paper";
+
 import { theme } from "../theming/theme";
 
 const ChapterCard = ({

@@ -22,7 +22,7 @@ const MoreScreen = ({ navigation }) => {
                     left={() => (
                         <List.Icon
                             color={theme.colorAccentDark}
-                            icon="code-tags"
+                            icon="cog-outline"
                         />
                     )}
                     onPress={() => navigation.navigate("Settings")}

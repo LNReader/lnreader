@@ -25,7 +25,7 @@ const UpdatesScreen = ({ navigation }) => {
     const [novels, setNovels] = useState();
 
     const [searchBar, setSearchBar] = useState(false);
-    const [searchText, setSearchText] = useState();
+    const [searchText, setSearchText] = useState("");
 
     const getLibraryNovels = () => {
         db.transaction((tx) => {
@@ -36,7 +36,10 @@ const UpdatesScreen = ({ navigation }) => {
                     setNovels(_array);
                     setRefreshing(false);
                 },
-                (txObj, error) => console.log("Error ", error)
+                (txObj, error) => {
+                    console.log("Error ", error);
+                    setNovels([]);
+                }
             );
         });
     };
@@ -255,7 +258,8 @@ export default UpdatesScreen;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // backgroundColor: "#202125",
-        backgroundColor: "#000000",
+        backgroundColor: theme.colorDarkPrimaryDark,
+        // backgroundColor: "#000000",
+        padding: 4,
     },
 });

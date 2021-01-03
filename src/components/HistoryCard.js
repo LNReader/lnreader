@@ -98,18 +98,12 @@ const HistoryCard = ({ item, deleteHistory, navigation }) => (
 export default HistoryCard;
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: "#202125",
-        backgroundColor: "#000000",
-        padding: 10,
-    },
     historyCard: {
-        // backgroundColor: "pink",
+        backgroundColor: theme.colorDarkPrimary,
         // paddingVertical: 10,
         // marginVertical: 5,
         // paddingHorizontal: 20,
-        marginTop: 10,
+        marginBottom: 10,
         borderRadius: 4,
         flexDirection: "row",
         alignItems: "center",

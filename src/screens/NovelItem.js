@@ -15,7 +15,7 @@ import ChapterCard from "../components/ChapterCard";
 import NovelInfoHeader from "../components/NovelInfoHeader";
 import { BottomSheet } from "../components/NovelItemBottomSheet";
 
-import { getNovelDetails } from "../utils/api";
+import { fetchNovelFromSource } from "../utils/api";
 
 import * as SQLite from "expo-sqlite";
 const db = SQLite.openDatabase("lnreader.db");
@@ -43,7 +43,7 @@ const NovelItem = ({ route, navigation }) => {
     const [filter, setFilter] = useState("");
 
     const getNovel = (extensionId, novelUrl) => {
-        getNovelDetails(extensionId, novelUrl).then((response) => {
+        fetchNovelFromSource(extensionId, novelUrl).then((response) => {
             setNovel(response.novel);
             setChapters(response.chapters);
             setLoading(false);
@@ -87,7 +87,7 @@ const NovelItem = ({ route, navigation }) => {
                     nov.source,
                 ],
                 (txObj, res) => {
-                    console.log("res");
+                    console.log("Inserted into DB");
                 },
                 (txObj, error) => console.log("Error ", error)
             );
@@ -338,7 +338,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         // backgroundColor: "#202125",
-        backgroundColor: "#000000",
+        backgroundColor: theme.colorDarkPrimaryDark,
     },
     fab: {
         backgroundColor: theme.colorAccentDark,

@@ -1,24 +1,36 @@
-export const getNovelDetails = (extensionId, novelUrl) => {
+export const fetchNovelFromSource = async (extensionId, novelUrl) => {
     const url = `https://lnreader-extensions.herokuapp.com/api/${extensionId}/novel/${novelUrl}`;
 
-    return fetch(url)
-        .then((response) => response.json())
-        .then((json) => {
-            let novel = {
-                novelSummary: json.novelSummary,
-                "Author(s)": json["Author(s)"],
-                "Genre(s)": json["Genre(s)"],
-                Status: json.Status,
-                sourceUrl: json.sourceUrl,
-                source: json.sourceName,
-                unread: 1,
-                lastRead: json.novelChapters[0].chapterUrl,
-                lastReadName: json.novelChapters[0].chapterName,
-            };
+    let data = await fetch(url);
 
-            let chapters = json.novelChapters;
+    let res = await data.json();
 
-            return { novel, chapters };
-        })
-        .catch((error) => console.error(error));
+    let novel = {
+        novelSummary: res.novelSummary,
+        "Author(s)": res["Author(s)"],
+        "Genre(s)": res["Genre(s)"],
+        Status: res.Status,
+        sourceUrl: res.sourceUrl,
+        source: res.sourceName,
+        unread: 1,
+        lastRead: res.novelChapters[0].chapterUrl,
+        lastReadName: res.novelChapters[0].chapterName,
+    };
+
+    let chapters = res.novelChapters;
+
+    return { novel, chapters };
+};
+
+export const fetchChapterFromSource = async (
+    extensionId,
+    novelUrl,
+    chapterUrl
+) => {
+    const url = `https://lnreader-extensions.herokuapp.com/api/${extensionId}/novel/${novelUrl}${chapterUrl}`;
+
+    let res = await fetch(url);
+    let chapter = await res.json();
+
+    return chapter;
 };

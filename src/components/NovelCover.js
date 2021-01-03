@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, View, Text, ImageBackground } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { TouchableRipple } from "react-native-paper";
 import { theme } from "../theming/theme";
 
-const NovelCover = ({ item, onPress, mode, libraryStatus }) => {
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+const NovelCover = ({ item, onPress, libraryStatus }) => {
+    const [mode, setMode] = useState();
+    AsyncStorage.getItem("@display_mode").then((value) => setMode(value));
+
     return (
         <View style={{ flex: 1 / 3 }}>
             <TouchableRipple

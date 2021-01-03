@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, Animated } from "react-native";
 import { List, RadioButton, Checkbox } from "react-native-paper";
 import Bottomsheet from "rn-sliding-up-panel";
 import { theme } from "../theming/theme";
@@ -28,6 +28,7 @@ export const BottomSheet = ({
 
     return (
         <Bottomsheet
+            animatedValue={new Animated.Value(0)}
             ref={bottomSheetRef}
             draggableRange={{ top: 370, bottom: 0 }}
             snappingPoints={[0, 370]}
