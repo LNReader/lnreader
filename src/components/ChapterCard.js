@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 
-import { View, Text } from "react-native";
+import { View, Text, ActivityIndicator } from "react-native";
 import { TouchableRipple, IconButton } from "react-native-paper";
 
 import { theme } from "../theming/theme";
@@ -11,49 +11,37 @@ const ChapterCard = ({
     chapter,
     downloadChapter,
     extensionId,
-}) => (
-    <TouchableRipple
-        style={{
-            paddingHorizontal: 15,
-            paddingVertical: 7,
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            // borderTopColor: "rgba(255,255,255,.12)",
-            borderTopWidth: 1,
-        }}
-        onPress={() =>
-            navigation.navigate("ChapterItem", {
-                chapterUrl: chapter.chapterUrl,
-                extensionId,
-                novelUrl: novelUrl,
-                chapterName: chapter.chapterName,
-            })
-        }
-        rippleColor={theme.rippleColorDark}
-    >
-        <>
-            <View>
-                <Text
-                    style={[
-                        {
-                            color: theme.textColorPrimaryDark,
-                        },
-                        chapter.read === 1 && {
-                            color: theme.textColorHintDark,
-                        },
-                    ]}
-                    numberOfLines={1}
-                >
-                    {chapter.chapterName.substring(0, 50)}
-                </Text>
-                {chapter.releaseDate && (
+    downloading,
+}) => {
+    const [downloaded, setDownloaded] = useState(chapter.downloaded);
+
+    return (
+        <TouchableRipple
+            style={{
+                paddingHorizontal: 15,
+                paddingVertical: 7,
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                // borderTopColor: "rgba(255,255,255,.12)",
+                borderTopWidth: 1,
+            }}
+            onPress={() =>
+                navigation.navigate("ChapterItem", {
+                    chapterUrl: chapter.chapterUrl,
+                    extensionId,
+                    novelUrl: novelUrl,
+                    chapterName: chapter.chapterName,
+                })
+            }
+            rippleColor={theme.rippleColorDark}
+        >
+            <>
+                <View>
                     <Text
                         style={[
                             {
-                                color: theme.textColorSecondaryDark,
-                                // marginTop: 5,
-                                fontSize: 12,
+                                color: theme.textColorPrimaryDark,
                             },
                             chapter.read === 1 && {
                                 color: theme.textColorHintDark,
@@ -61,33 +49,60 @@ const ChapterCard = ({
                         ]}
                         numberOfLines={1}
                     >
-                        {chapter.releaseDate}
+                        {chapter.chapterName.substring(0, 50)}
                     </Text>
-                )}
-            </View>
-            <View>
-                <IconButton
-                    icon={
-                        chapter.downloaded
-                            ? "check-circle"
-                            : "arrow-down-circle-outline"
-                    }
-                    animated
-                    color={
-                        chapter.downloaded ? "#4AA97D" : theme.colorAccentDark
-                    }
-                    size={26}
-                    onPress={() => {
-                        downloadChapter(
-                            chapter.downloaded ? chapter.downloaded : 0,
-                            chapter.chapterUrl
-                        );
-                    }}
-                    style={{ margin: 2 }}
-                />
-            </View>
-        </>
-    </TouchableRipple>
-);
+                    {chapter.releaseDate && (
+                        <Text
+                            style={[
+                                {
+                                    color: theme.textColorSecondaryDark,
+                                    // marginTop: 5,
+                                    fontSize: 12,
+                                },
+                                chapter.read === 1 && {
+                                    color: theme.textColorHintDark,
+                                },
+                            ]}
+                            numberOfLines={1}
+                        >
+                            {chapter.releaseDate}
+                        </Text>
+                    )}
+                </View>
+                <View>
+                    {downloading.downloading &&
+                    downloading.chapterUrl === chapter.chapterUrl ? (
+                        <ActivityIndicator
+                            color="#4AA97D"
+                            size={26}
+                            style={{ margin: 3.5, padding: 5 }}
+                        />
+                    ) : (
+                        <IconButton
+                            icon={
+                                downloaded
+                                    ? "check-circle"
+                                    : "arrow-down-circle-outline"
+                            }
+                            animated
+                            color={
+                                downloaded ? "#4AA97D" : theme.colorAccentDark
+                            }
+                            size={26}
+                            onPress={() => {
+                                downloadChapter(
+                                    downloaded ? 1 : 0,
+                                    chapter.chapterUrl
+                                );
+                                setDownloaded(!downloaded);
+                            }}
+                            style={{ margin: 2 }}
+                        />
+                    )}
+                </View>
+            </>
+        </TouchableRipple>
+    );
+};
 
 export default ChapterCard;

@@ -7,7 +7,7 @@ import {
     RefreshControl,
     ToastAndroid,
 } from "react-native";
-import { Appbar, Provider, ProgressBar, Portal } from "react-native-paper";
+import { Appbar, Provider, Portal } from "react-native-paper";
 
 import { theme } from "../theming/theme";
 
@@ -41,6 +41,11 @@ const NovelItem = ({ route, navigation }) => {
 
     const [sort, setSort] = useState("");
     const [filter, setFilter] = useState("");
+
+    const [downloading, setDownloading] = useState({
+        downloading: false,
+        chapterUrl: "",
+    });
 
     let _panel = useRef(null);
 
@@ -116,6 +121,7 @@ const NovelItem = ({ route, navigation }) => {
      */
     const downloadChapter = (downloadStatus, cdUrl) => {
         if (downloadStatus === 0) {
+            setDownloading({ downloading: true, chapterUrl: cdUrl });
             fetch(
                 `https://lnreader-extensions.herokuapp.com/api/${extensionId}/novel/${novelUrl}${cdUrl}`
             )
@@ -141,6 +147,7 @@ const NovelItem = ({ route, navigation }) => {
                                     `Downloaded ${json.chapterName}`,
                                     ToastAndroid.SHORT
                                 );
+                                setDownloading({ downloading: false });
                             },
                             (txObj, error) => console.log("Error ", error)
                         );
@@ -254,6 +261,7 @@ const NovelItem = ({ route, navigation }) => {
             extensionId={extensionId}
             chapter={item}
             downloadChapter={downloadChapter}
+            downloading={downloading}
         />
     );
 
@@ -281,11 +289,6 @@ const NovelItem = ({ route, navigation }) => {
             </Appbar.Header> */}
 
             <View style={styles.container}>
-                {/* <ProgressBar
-                    color="#47a84a"
-                    indeterminate
-                    visible={downloading}
-                /> */}
                 <FlatList
                     data={chapters}
                     extraData={[sort, filter]}
