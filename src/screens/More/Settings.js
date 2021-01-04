@@ -20,7 +20,7 @@ const AboutScreen = ({ navigation }) => {
     const [displayMode, setDisplayMode] = useState("compact");
 
     AsyncStorage.getItem("@display_mode").then((value) => {
-        setDisplayMode(value);
+        if (value) setDisplayMode(value);
     });
 
     const deleteHistory = () => {

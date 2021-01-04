@@ -52,6 +52,13 @@ const ChapterItem = ({ route, navigation }) => {
                     console.log("Updated into history table: " + novelUrl),
                 (tx, error) => console.log(error)
             );
+            tx.executeSql(
+                "UPDATE LibraryTable SET lastRead = ?, lastReadName = ?, unread = 0 WHERE novelUrl = ?",
+                [chapterUrl, chapterName, novelUrl],
+                (tx, res) =>
+                    console.log("Set Last read" + novelUrl + chapterUrl),
+                (tx, error) => console.log(error)
+            );
         });
     };
 

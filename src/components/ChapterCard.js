@@ -19,7 +19,7 @@ const ChapterCard = ({
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
-            borderTopColor: "rgba(255,255,255,.12)",
+            // borderTopColor: "rgba(255,255,255,.12)",
             borderTopWidth: 1,
         }}
         onPress={() =>

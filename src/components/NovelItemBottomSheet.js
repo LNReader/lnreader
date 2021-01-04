@@ -28,7 +28,6 @@ export const BottomSheet = ({
 
     return (
         <Bottomsheet
-            animatedValue={new Animated.Value(0)}
             ref={bottomSheetRef}
             draggableRange={{ top: 370, bottom: 0 }}
             snappingPoints={[0, 370]}

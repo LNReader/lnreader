@@ -151,19 +151,14 @@ const NovelInfoHeader = ({
                                     borderColor: "rgba(255,255,255,0.121)",
                                     borderWidth: 1,
                                     justifyContent: "center",
-                                    height: 32,
+                                    height: 30,
                                     alignItems: "center",
                                     marginLeft: 15,
+                                    paddingHorizontal: 3,
                                 },
-                                libraryStatus === 1
-                                    ? {
-                                          width: 120,
-                                          backgroundColor:
-                                              "rgba(41,121,255,0.38)",
-                                      }
-                                    : {
-                                          width: 150,
-                                      },
+                                libraryStatus === 1 && {
+                                    backgroundColor: "rgba(41,121,255,0.38)",
+                                },
                             ]}
                             textStyle={{
                                 fontWeight: "bold",
@@ -174,6 +169,7 @@ const NovelInfoHeader = ({
                                 ? "In Library"
                                 : "Add to library"}
                         </Chip>
+
                         <IconButton
                             onPress={() =>
                                 WebBrowser.openBrowserAsync(
@@ -200,7 +196,7 @@ const NovelInfoHeader = ({
                             style={{
                                 paddingHorizontal: 15,
                                 marginBottom: 10,
-                                marginTop: 5,
+                                // marginTop: 5,
                             }}
                         >
                             <Text
@@ -237,28 +233,26 @@ const NovelInfoHeader = ({
                                 }}
                                 onPress={() => setMore(!more)}
                             >
-                                {more ? "Less" : "More"}
+                                {more ? "Less " : "More "}
                             </Text>
                         </View>
                     )}
-                    {(more || novel.novelSummary === "") && (
-                        <FlatList
-                            style={
-                                novel.novelSummary === "" && { marginTop: 20 }
-                            }
-                            contentContainerStyle={{
-                                paddingHorizontal: 15,
-                                marginBottom: 15,
-                            }}
-                            horizontal
-                            data={
-                                novel["Genre(s)"] &&
-                                novel["Genre(s)"].split(",")
-                            }
-                            keyExtractor={(item) => item}
-                            renderItem={renderGenreChip}
-                        />
-                    )}
+
+                    <FlatList
+                        style={
+                            novel.novelSummary === ""
+                                ? { marginTop: 20 }
+                                : { marginTop: 10 }
+                        }
+                        contentContainerStyle={{
+                            paddingHorizontal: 15,
+                            marginBottom: 15,
+                        }}
+                        horizontal
+                        data={novel["Genre(s)"] && novel["Genre(s)"].split(",")}
+                        keyExtractor={(item) => item}
+                        renderItem={renderGenreChip}
+                    />
 
                     <Button
                         color={theme.textColorPrimaryDark}
@@ -333,13 +327,12 @@ const styles = StyleSheet.create({
     },
     linearGradient: {
         flex: 1,
-        backgroundColor: "rgba(256, 256, 256, 0.5)",
     },
     detailsContainer: {
         flex: 1,
         flexDirection: "row",
         margin: 15,
-        paddingTop: 80,
+        paddingTop: 90,
     },
     logo: {
         height: 160,
