@@ -25,6 +25,7 @@ const NovelInfoHeader = ({
     loading,
     navigatingFrom,
     libraryStatus,
+    bottomSheetRef,
 }) => {
     const navigation = useNavigation();
 
@@ -77,7 +78,7 @@ const NovelInfoHeader = ({
                             >
                                 {item.novelName}
                             </Text>
-                            {(!loading || navigatingFrom === 1) && (
+                            {!loading && (
                                 <>
                                     <Text
                                         style={{
@@ -120,7 +121,7 @@ const NovelInfoHeader = ({
                     </View>
                 </LinearGradient>
             </ImageBackground>
-            {(!loading || navigatingFrom === 1) && (
+            {!loading && (
                 <>
                     <View
                         style={{
@@ -286,7 +287,9 @@ const NovelInfoHeader = ({
                             alignItems: "center",
                             paddingRight: 15,
                         }}
-                        onPress={() => _panel.show({ velocity: -1.5 })}
+                        onPress={() =>
+                            bottomSheetRef.current.show({ velocity: -1.5 })
+                        }
                         rippleColor={theme.rippleColorDark}
                     >
                         <>
@@ -324,6 +327,7 @@ const styles = StyleSheet.create({
     },
     background: {
         height: 285,
+        backgroundColor: "black",
     },
     linearGradient: {
         flex: 1,

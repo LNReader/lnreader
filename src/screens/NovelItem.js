@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useRef } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import {
     StyleSheet,
@@ -41,6 +41,8 @@ const NovelItem = ({ route, navigation }) => {
 
     const [sort, setSort] = useState("");
     const [filter, setFilter] = useState("");
+
+    let _panel = useRef(null);
 
     const getNovel = (extensionId, novelUrl) => {
         fetchNovelFromSource(extensionId, novelUrl).then((response) => {
@@ -293,7 +295,7 @@ const NovelItem = ({ route, navigation }) => {
                     maxToRenderPerBatch={10}
                     windowSize={15}
                     // getItemLayout={getItemLayout}
-                    initialNumToRender={6}
+                    initialNumToRender={7}
                     renderItem={renderChapterCard}
                     ListHeaderComponent={() => (
                         <NovelInfoHeader
@@ -302,11 +304,12 @@ const NovelItem = ({ route, navigation }) => {
                                 novelName: novelName,
                             }}
                             novel={novel}
-                            noOfChapters={!loading ? chapters.length : 0}
+                            noOfChapters={!loading && chapters.length}
                             libraryStatus={libraryStatus}
                             insertToLibrary={insertToLibrary}
                             navigatingFrom={navigatingFrom}
                             loading={loading}
+                            bottomSheetRef={_panel}
                         />
                     )}
                     refreshControl={
@@ -320,7 +323,7 @@ const NovelItem = ({ route, navigation }) => {
                 />
                 <Portal>
                     <BottomSheet
-                        bottomSheetRef={(c) => (_panel = c)}
+                        bottomSheetRef={_panel}
                         sort={sort}
                         filter={filter}
                         sortChapters={setSort}

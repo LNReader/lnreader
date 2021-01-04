@@ -9,6 +9,8 @@ import { CollapsibleHeaderScrollView } from "react-native-collapsible-header-vie
 import * as SQLite from "expo-sqlite";
 const db = SQLite.openDatabase("lnreader.db");
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import { fetchChapterFromSource } from "../utils/api";
 
 const ChapterItem = ({ route, navigation }) => {
@@ -21,6 +23,10 @@ const ChapterItem = ({ route, navigation }) => {
     const [size, setSize] = useState(16);
 
     const [readerTheme, setReaderTheme] = useState(1);
+
+    AsyncStorage.getItem("@reader_theme").then((value) => {
+        if (value) setReaderTheme(JSON.parse(value));
+    });
 
     const setHistory = () => {
         db.transaction((tx) => {
