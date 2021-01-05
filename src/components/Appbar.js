@@ -1,6 +1,6 @@
 import React from "react";
 import { Appbar } from "react-native-paper";
-import { theme } from "../theming/theme";
+import { theme } from "../theme/theme";
 
 export const CustomAppbar = ({ title, onBackAction }) => (
     <Appbar.Header style={{ backgroundColor: theme.colorDarkPrimary }}>

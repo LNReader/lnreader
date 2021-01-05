@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, View, Text, Animated } from "react-native";
 import { List, RadioButton, Checkbox } from "react-native-paper";
 import Bottomsheet from "rn-sliding-up-panel";
-import { theme } from "../theming/theme";
+import { theme } from "../theme/theme";
 
 const BottomSheetHandle = () => (
     <View

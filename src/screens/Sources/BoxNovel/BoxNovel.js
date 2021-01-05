@@ -6,7 +6,7 @@ import NovelCover from "../../../components/NovelCover";
 import HeaderSearchBar from "../../../components/HeaderSearchBar";
 import { BottomSheet } from "../../../components/BottomSheet";
 
-import { theme } from "../../../theming/theme";
+import { theme } from "../../../theme/theme";
 
 import * as SQLite from "expo-sqlite";
 const db = SQLite.openDatabase("lnreader.db");
@@ -33,8 +33,8 @@ const AllNovels = ({ navigation }) => {
             .then((response) => response.json())
             .then((json) => {
                 setNovels((novels) => novels.concat(json));
-                setLoading(false);
                 setPageNo(pageNo + 1);
+                setLoading(false);
             });
     };
 
@@ -56,7 +56,7 @@ const AllNovels = ({ navigation }) => {
         contentOffset,
         contentSize,
     }) => {
-        const paddingToBottom = 10;
+        const paddingToBottom = 5;
         return (
             layoutMeasurement.height + contentOffset.y >=
             contentSize.height - paddingToBottom

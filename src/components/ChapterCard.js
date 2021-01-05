@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { View, Text, ActivityIndicator } from "react-native";
 import { TouchableRipple, IconButton } from "react-native-paper";
 
-import { theme } from "../theming/theme";
+import { theme } from "../theme/theme";
 
 const ChapterCard = ({
     navigation,
@@ -24,7 +24,7 @@ const ChapterCard = ({
                 justifyContent: "space-between",
                 alignItems: "center",
                 // borderTopColor: "rgba(255,255,255,.12)",
-                borderTopWidth: 1,
+                // borderTopWidth: 1,
             }}
             onPress={() =>
                 navigation.navigate("ChapterItem", {

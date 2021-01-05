@@ -5,7 +5,7 @@ import { Appbar, Provider, Menu, RadioButton } from "react-native-paper";
 import NovelCover from "../../../components/NovelCover";
 import HeaderSearchBar from "../../../components/HeaderSearchBar";
 
-import { theme } from "../../../theming/theme";
+import { theme } from "../../../theme/theme";
 
 import * as SQLite from "expo-sqlite";
 const db = SQLite.openDatabase("lnreader.db");
@@ -20,12 +20,6 @@ const ReadLightNovel = ({ navigation }) => {
     const [searchText, setSearchText] = useState("");
 
     const [searched, setSearched] = useState(false);
-
-    const [menu, setMenu] = useState(false);
-    const openMenu = () => setMenu(true);
-    const closeMenu = () => setMenu(false);
-
-    const [mode, setMode] = useState("compact");
 
     const getNovels = () => {
         fetch(`https://lnreader-extensions.herokuapp.com/api/2/novels/`)
@@ -130,31 +124,6 @@ const ReadLightNovel = ({ navigation }) => {
                         )}
                     </>
                 )}
-                <Menu
-                    visible={menu}
-                    onDismiss={closeMenu}
-                    anchor={
-                        <Appbar.Action
-                            icon="dots-vertical"
-                            onPress={openMenu}
-                            color={theme.textColorPrimaryDark}
-                        />
-                    }
-                    contentStyle={{
-                        backgroundColor: "#242529",
-                    }}
-                >
-                    <Menu.Item
-                        onPress={() => setMode("compact")}
-                        title="Compact grid"
-                        titleStyle={{ color: theme.textColorPrimaryDark }}
-                    />
-                    <Menu.Item
-                        onPress={() => setMode("comfortable")}
-                        title="Comfortable grid"
-                        titleStyle={{ color: theme.textColorPrimaryDark }}
-                    />
-                </Menu>
             </Appbar.Header>
             <View style={styles.container}>
                 {loading ? (
@@ -185,7 +154,6 @@ const ReadLightNovel = ({ navigation }) => {
                                         ? true
                                         : false
                                 }
-                                mode={mode}
                             />
                         )}
                     />

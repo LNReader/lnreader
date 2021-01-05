@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Text, FlatList, Image } from "react-native";
 import { TouchableRipple, IconButton, Appbar } from "react-native-paper";
-import { theme } from "../../theming/theme";
+import { theme } from "../../theme/theme";
 import moment from "moment";
 import { useFocusEffect } from "@react-navigation/native";
 

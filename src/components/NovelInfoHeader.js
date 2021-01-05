@@ -15,7 +15,7 @@ import * as WebBrowser from "expo-web-browser";
 import { LinearGradient } from "expo-linear-gradient";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-import { theme } from "../theming/theme";
+import { theme } from "../theme/theme";
 
 const NovelInfoHeader = ({
     item,
@@ -38,6 +38,7 @@ const NovelInfoHeader = ({
                 {
                     color: theme.colorAccentDark,
                     borderColor: theme.colorAccentDark,
+                    backgroundColor: theme.colorDarkPrimary,
                 },
             ]}
         >
@@ -136,8 +137,8 @@ const NovelInfoHeader = ({
                                 <MaterialCommunityIcons
                                     name={
                                         libraryStatus === 0
-                                            ? "bookmark-outline"
-                                            : "bookmark"
+                                            ? "heart-outline"
+                                            : "heart"
                                     }
                                     size={21}
                                     color={theme.colorAccentDark}
@@ -157,9 +158,9 @@ const NovelInfoHeader = ({
                                     marginLeft: 15,
                                     paddingHorizontal: 3,
                                 },
-                                libraryStatus === 1 && {
-                                    backgroundColor: "rgba(41,121,255,0.38)",
-                                },
+                                // libraryStatus === 1 && {
+                                //     backgroundColor: "rgba(41,121,255,0.38)",
+                                // },
                             ]}
                             textStyle={{
                                 fontWeight: "bold",
@@ -247,7 +248,7 @@ const NovelInfoHeader = ({
                         }
                         contentContainerStyle={{
                             paddingHorizontal: 15,
-                            marginBottom: 15,
+                            paddingBottom: 15,
                         }}
                         horizontal
                         data={novel["Genre(s)"] && novel["Genre(s)"].split(",")}
@@ -327,7 +328,7 @@ const styles = StyleSheet.create({
     },
     background: {
         height: 285,
-        backgroundColor: "black",
+        backgroundColor: theme.colorDarkPrimaryDark,
     },
     linearGradient: {
         flex: 1,

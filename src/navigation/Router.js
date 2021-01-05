@@ -23,7 +23,7 @@ import ChapterItem from "../screens/ChapterItem";
 import BoxNovel from "../screens/Sources/boxnovel/BoxNovel";
 import ReadLightNovel from "../screens/Sources/readlightnovel/ReadLightNovel";
 
-import { theme } from "../theming/theme";
+import { theme } from "../theme/theme";
 
 const Stack = createStackNavigator();
 

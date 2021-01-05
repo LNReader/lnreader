@@ -1,6 +1,6 @@
 import React from "react";
 import { TextInput } from "react-native";
-import { theme } from "../theming/theme";
+import { theme } from "../theme/theme";
 
 const HeaderSearchBar = ({ searchText, onChangeText, onSubmitEditing }) => (
     <TextInput

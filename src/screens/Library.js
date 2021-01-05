@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { Appbar } from "react-native-paper";
 import { FlatList } from "react-native-gesture-handler";
-import { theme } from "../theming/theme";
+import { theme } from "../theme/theme";
 import { useFocusEffect } from "@react-navigation/native";
 
 import { Button } from "react-native-paper";

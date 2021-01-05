@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from "react";
 import { StyleSheet, View, Text, FlatList } from "react-native";
-import { theme } from "../../theming/theme";
+import { theme } from "../../theme/theme";
 import { useFocusEffect } from "@react-navigation/native";
 
 import { CustomAppbar } from "../../components/Appbar";

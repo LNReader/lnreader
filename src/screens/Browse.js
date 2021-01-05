@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, View, Text, FlatList, Image } from "react-native";
 import { TouchableRipple, IconButton, Button } from "react-native-paper";
 import { CustomAppbar } from "../components/Appbar";
-import { theme } from "../theming/theme";
+import { theme } from "../theme/theme";
 import { sources } from "../utils/sources";
 
 const Browse = ({ navigation }) => {

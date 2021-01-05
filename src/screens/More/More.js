@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import { List } from "react-native-paper";
 import { CustomAppbar } from "../../components/Appbar";
-import { theme } from "../../theming/theme";
+import { theme } from "../../theme/theme";
 
 const MoreScreen = ({ navigation }) => {
     return (

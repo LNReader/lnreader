@@ -9,13 +9,18 @@ import {
 } from "react-native";
 import { Appbar, Provider, Portal } from "react-native-paper";
 
-import { theme } from "../theming/theme";
+import { theme } from "../theme/theme";
 
 import ChapterCard from "../components/ChapterCard";
 import NovelInfoHeader from "../components/NovelInfoHeader";
 import { BottomSheet } from "../components/NovelItemBottomSheet";
 
-import { fetchNovelFromSource } from "../utils/api";
+import { fetchNovelFromSource, fetchChaptersFromSource } from "../services/api";
+import {
+    insertNovelInfoInDb,
+    insertChaptersInDb,
+    getChaptersFromDb,
+} from "../services/db";
 
 import * as SQLite from "expo-sqlite";
 const db = SQLite.openDatabase("lnreader.db");
@@ -49,71 +54,27 @@ const NovelItem = ({ route, navigation }) => {
 
     let _panel = useRef(null);
 
-    const getNovel = (extensionId, novelUrl) => {
-        fetchNovelFromSource(extensionId, novelUrl).then((response) => {
-            setNovel(response.novel);
-            setChapters(response.chapters);
-            setLoading(false);
-            setRefreshing(false);
-            insertIntoDb(response.novel, response.chapters);
+    const getNovelFromSource = async (extensionId, novelUrl) => {
+        await fetchNovelFromSource(extensionId, novelUrl).then((response) => {
+            setNovel(response);
+            insertNovelInfoInDb(response);
         });
+        await fetchChaptersFromSource(extensionId, novelUrl).then(
+            (response) => {
+                setChapters(response);
+                insertChaptersInDb(novelUrl, response);
+            }
+        );
+        setLoading(false);
+        setRefreshing(false);
     };
 
-    const getChaptersFromDb = () => {
-        db.transaction((tx) => {
-            tx.executeSql(
-                `SELECT * FROM ChapterTable WHERE novelUrl=? ${filter} ${sort}`,
-                [novelUrl],
-                (txObj, { rows: { _array } }) => {
-                    setChapters(_array);
-                    setLoading(false);
-                    setRefreshing(false);
-                },
-                (txObj, error) => console.log("Error ", error)
-            );
-        });
-    };
-
-    const insertIntoDb = (nov, chaps) => {
-        // Insert into database
-        db.transaction((tx) => {
-            tx.executeSql(
-                "INSERT INTO LibraryTable (novelUrl, novelName, novelCover, novelSummary, `Author(s)`, `Genre(s)`, Status, extensionId, lastRead, lastReadName, sourceUrl, source) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                [
-                    novelUrl,
-                    novelName,
-                    novelCover,
-                    nov.novelSummary,
-                    nov["Author(s)"],
-                    nov["Genre(s)"],
-                    nov.Status,
-                    extensionId,
-                    nov.lastRead,
-                    nov.lastReadName,
-                    nov.sourceUrl,
-                    nov.source,
-                ],
-                (txObj, res) => {
-                    console.log("Inserted into DB");
-                },
-                (txObj, error) => console.log("Error ", error)
-            );
-
-            // console.log(chaps[0]);
-
-            // Insert chapters into database
-            chaps.map((chap) =>
-                tx.executeSql(
-                    "INSERT INTO ChapterTable (chapterUrl, chapterName, releaseDate, novelUrl) values (?, ?, ?, ?)",
-                    [
-                        chap.chapterUrl,
-                        chap.chapterName,
-                        chap.releaseDate,
-                        novelUrl,
-                    ]
-                )
-            );
-        });
+    const getChapters = async (novelUrl) => {
+        await getChaptersFromDb(novelUrl, filter, sort).then((response) =>
+            setChapters(response)
+        );
+        setLoading(false);
+        setRefreshing(false);
     };
 
     /**
@@ -155,7 +116,7 @@ const NovelItem = ({ route, navigation }) => {
                 })
                 .catch((error) => console.error(error))
                 .finally(() => {
-                    getChaptersFromDb();
+                    getChapters(novelUrl);
                 });
         } else {
             db.transaction((tx) => {
@@ -167,7 +128,7 @@ const NovelItem = ({ route, navigation }) => {
                     `DELETE FROM DownloadsTable WHERE chapterUrl = ?`,
                     [cdUrl],
                     (tx, res) => {
-                        getChaptersFromDb();
+                        getChapters(novelUrl);
                         ToastAndroid.show(
                             `Chapter deleted`,
                             ToastAndroid.SHORT
@@ -217,9 +178,8 @@ const NovelItem = ({ route, navigation }) => {
 
     const checkIfExistsInDb = () => {
         if (navigatingFrom === 1) {
-            getChaptersFromDb();
+            getChapters(novelUrl);
         } else {
-            setRefreshing(true);
             db.transaction((tx) => {
                 tx.executeSql(
                     "SELECT * FROM LibraryTable WHERE novelUrl=? LIMIT 1",
@@ -229,12 +189,12 @@ const NovelItem = ({ route, navigation }) => {
                             console.log("Not in db");
                             // Not in database
                             setlibraryStatus(0);
-                            getNovel(extensionId, novelUrl);
+                            getNovelFromSource(extensionId, novelUrl);
                         } else {
                             // In database
                             setNovel(res.rows.item(0));
                             setlibraryStatus(res.rows.item(0).libraryStatus);
-                            getChaptersFromDb();
+                            getChapters(novelUrl);
                         }
                     },
                     (txObj, error) => console.log("Error ", error)

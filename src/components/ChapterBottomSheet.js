@@ -1,21 +1,20 @@
-import React, { useState } from "react";
+import React from "react";
 
 import { Animated, StyleSheet, View, Text, Dimensions } from "react-native";
+import { ToggleButton } from "react-native-paper";
+import Slider from "@react-native-community/slider";
 import Bottomsheet from "rn-sliding-up-panel";
 
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { theme } from "../theme/theme";
 
-import { theme } from "../theming/theme";
-
-import Slider from "@react-native-community/slider";
-import { ToggleButton } from "react-native-paper";
+import { saveReaderTheme } from "../services/AsyncStorage";
 
 const ChapterBottomSheet = ({
     bottomSheetRef,
     setSize,
     size,
-    setReaderTheme,
     readerTheme,
+    setReaderTheme,
 }) => {
     return (
         <Bottomsheet
@@ -78,10 +77,7 @@ const ChapterBottomSheet = ({
                     <ToggleButton.Row
                         onValueChange={(value) => {
                             setReaderTheme(value);
-                            AsyncStorage.setItem(
-                                "@reader_theme",
-                                JSON.stringify(value)
-                            );
+                            saveReaderTheme(value);
                         }}
                         value={readerTheme}
                         style={{ marginTop: 10 }}

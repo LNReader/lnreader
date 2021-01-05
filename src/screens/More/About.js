@@ -1,7 +1,7 @@
 import React from "react";
 import { List, Divider } from "react-native-paper";
 import * as Linking from "expo-linking";
-import { theme } from "../../theming/theme";
+import { theme } from "../../theme/theme";
 import { CustomAppbar } from "../../components/Appbar";
 
 const AboutScreen = ({ navigation }) => {
@@ -23,13 +23,13 @@ const AboutScreen = ({ navigation }) => {
                     titleStyle={{ color: theme.textColorPrimaryDark }}
                     title="Version"
                     descriptionStyle={{ color: theme.textColorSecondaryDark }}
-                    description="Stable 1.0.6"
+                    description="Stable 1.0.8 (Refactor Api & Db)"
                 />
                 <List.Item
                     titleStyle={{ color: theme.textColorPrimaryDark }}
                     title="Build Time"
                     descriptionStyle={{ color: theme.textColorSecondaryDark }}
-                    description="04-01-21  11:54 AM"
+                    description="04-01-21  12:35 PM"
                 />
 
                 <List.Item

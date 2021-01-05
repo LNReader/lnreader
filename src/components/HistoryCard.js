@@ -1,5 +1,5 @@
 import React from "react";
-import { theme } from "../theming/theme";
+import { theme } from "../theme/theme";
 import moment from "moment";
 import { StyleSheet, View, Text, FlatList, Image } from "react-native";
 import { TouchableRipple, IconButton, Appbar } from "react-native-paper";
@@ -37,13 +37,14 @@ const HistoryCard = ({ item, deleteHistory, navigation }) => (
                     justifyContent: "space-between",
                 }}
             >
-                <View>
+                <View style={{ flex: 0.9 }}>
                     <Text
                         style={{
                             color: "white",
                             fontWeight: "bold",
                             fontSize: 16,
                         }}
+                        numberOfLines={2}
                     >
                         {item.novelName}
                     </Text>
@@ -99,7 +100,7 @@ export default HistoryCard;
 
 const styles = StyleSheet.create({
     historyCard: {
-        backgroundColor: theme.colorDarkPrimary,
+        // backgroundColor: theme.colorDarkPrimary,
         // paddingVertical: 10,
         // marginVertical: 5,
         // paddingHorizontal: 20,

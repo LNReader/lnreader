@@ -6,7 +6,7 @@ import { CustomAppbar } from "../../components/Appbar";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { theme } from "../../theming/theme";
+import { theme } from "../../theme/theme";
 
 import * as SQLite from "expo-sqlite";
 const db = SQLite.openDatabase("lnreader.db");

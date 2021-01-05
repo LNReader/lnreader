@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet, View, Text, ImageBackground } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { TouchableRipple } from "react-native-paper";
-import { theme } from "../theming/theme";
+import { theme } from "../theme/theme";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -27,7 +27,7 @@ const NovelCover = ({ item, onPress, libraryStatus }) => {
                         style={styles.logo}
                         imageStyle={[
                             { borderRadius: 6 },
-                            libraryStatus && { opacity: 0.5 },
+                            libraryStatus && { opacity: 0.6 },
                         ]}
                         progressiveRenderingEnabled={true}
                     >

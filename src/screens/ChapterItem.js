@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Text, ActivityIndicator } from "react-native";
-import BottomSheet from "../components/ChapterBottomSheet";
 
 import { Appbar, Provider, Portal } from "react-native-paper";
-import { theme } from "../theming/theme";
+import { theme } from "../theme/theme";
 import { CollapsibleHeaderScrollView } from "react-native-collapsible-header-views";
+
+import BottomSheet from "../components/ChapterBottomSheet";
 
 import * as SQLite from "expo-sqlite";
 const db = SQLite.openDatabase("lnreader.db");
 
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { fetchChapterFromSource } from "../services/api";
 
-import { fetchChapterFromSource } from "../utils/api";
+import { getReaderTheme } from "../services/AsyncStorage";
 
 const ChapterItem = ({ route, navigation }) => {
     const { extensionId, chapterUrl, novelUrl, chapterName } = route.params;
@@ -24,9 +25,7 @@ const ChapterItem = ({ route, navigation }) => {
 
     const [readerTheme, setReaderTheme] = useState(1);
 
-    AsyncStorage.getItem("@reader_theme").then((value) => {
-        if (value) setReaderTheme(JSON.parse(value));
-    });
+    getReaderTheme().then((value) => setReaderTheme(value));
 
     const setHistory = () => {
         db.transaction((tx) => {
@@ -170,12 +169,12 @@ const ChapterItem = ({ route, navigation }) => {
                     >
                         <Appbar.BackAction
                             onPress={() => {
-                                // navigation.navigate("NovelItem", {
-                                //     novelUrl,
-                                //     extensionId,
-                                //     navigatingFrom: 0,
-                                // });
-                                navigation.goBack();
+                                navigation.navigate("NovelItem", {
+                                    novelUrl,
+                                    extensionId,
+                                    navigatingFrom: 0,
+                                });
+                                // navigation.goBack();
                             }}
                             color={"white"}
                             size={26}
@@ -254,7 +253,7 @@ const ChapterItem = ({ route, navigation }) => {
                 {loading ? (
                     <View style={{ flex: 1, justifyContent: "center" }}>
                         <ActivityIndicator
-                            size="large"
+                            size={50}
                             color={theme.colorAccentDark}
                         />
                     </View>
