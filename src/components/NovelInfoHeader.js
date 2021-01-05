@@ -136,9 +136,9 @@ const NovelInfoHeader = ({
                             icon={() => (
                                 <MaterialCommunityIcons
                                     name={
-                                        libraryStatus === 0
-                                            ? "heart-outline"
-                                            : "heart"
+                                        libraryStatus
+                                            ? "heart"
+                                            : "heart-outline"
                                     }
                                     size={21}
                                     color={theme.colorAccentDark}
@@ -158,7 +158,7 @@ const NovelInfoHeader = ({
                                     marginLeft: 15,
                                     paddingHorizontal: 3,
                                 },
-                                libraryStatus === 1 && {
+                                libraryStatus && {
                                     backgroundColor: "rgba(41,121,255,0.38)",
                                 },
                             ]}
@@ -167,9 +167,7 @@ const NovelInfoHeader = ({
                                 color: "white",
                             }}
                         >
-                            {libraryStatus === 1
-                                ? "In Library"
-                                : "Add to library"}
+                            {libraryStatus ? "In Library" : "Add to library"}
                         </Chip>
 
                         <IconButton

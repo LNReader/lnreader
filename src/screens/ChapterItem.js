@@ -84,7 +84,6 @@ const ChapterItem = ({ route, navigation }) => {
                 "SELECT * FROM HistoryTable WHERE novelUrl=?",
                 [novelUrl],
                 (txObj, res) => {
-                    console.log(res.rows.length);
                     if (res.rows.length === 0) {
                         console.log("Not In History");
                         setHistory();
@@ -104,7 +103,6 @@ const ChapterItem = ({ route, navigation }) => {
                 "SELECT * FROM DownloadsTable WHERE chapterUrl=?",
                 [chapterUrl],
                 (txObj, res) => {
-                    console.log(res.rows.length);
                     if (res.rows.length === 0) {
                         // console.log("Not Downloaded");
                         fetchChapterFromSource(

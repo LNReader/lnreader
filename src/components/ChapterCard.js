@@ -92,7 +92,10 @@ const ChapterCard = ({
                             onPress={() => {
                                 downloadChapter(
                                     downloaded ? 1 : 0,
-                                    chapter.chapterUrl
+                                    extensionId,
+                                    novelUrl,
+                                    chapter.chapterUrl,
+                                    chapter.chapterName
                                 );
                                 setDownloaded(!downloaded);
                             }}

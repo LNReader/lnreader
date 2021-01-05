@@ -23,6 +23,7 @@ import {
     checkNovelInDb,
     getNovelInfoFromDb,
     toggleFavourite,
+    downloadOrDeleteChapter,
 } from "../services/db";
 
 import * as SQLite from "expo-sqlite";
@@ -93,73 +94,34 @@ const NovelItem = ({ route, navigation }) => {
         toggleFavourite(libraryStatus, novelUrl).then((res) => {
             setlibraryStatus(res);
             ToastAndroid.show(
-                res ? "Removed from library" : "Added to library",
+                res ? "Added to library" : "Removed from library",
                 ToastAndroid.SHORT
             );
         });
     };
 
-    /**
-     * Download th chapter if not downloaded else delete
-     */
-    const downloadChapter = (downloadStatus, cdUrl) => {
-        if (downloadStatus === 0) {
-            setDownloading({ downloading: true, chapterUrl: cdUrl });
-            fetch(
-                `https://lnreader-extensions.herokuapp.com/api/${extensionId}/novel/${novelUrl}${cdUrl}`
-            )
-                .then((response) => response.json())
-                .then((json) => {
-                    db.transaction((tx) => {
-                        tx.executeSql(
-                            `UPDATE ChapterTable SET downloaded = 1 WHERE chapterUrl = ?`,
-                            [cdUrl]
-                        );
-                        tx.executeSql(
-                            `INSERT INTO DownloadsTable (chapterUrl, novelUrl, chapterName, chapterText, prevChapter, nextChapter) VALUES (?, ?, ?, ?, ?, ?)`,
-                            [
-                                cdUrl,
-                                novelUrl,
-                                json.chapterName,
-                                json.chapterText,
-                                json.prevChapter,
-                                json.nextChapter,
-                            ],
-                            (tx, res) => {
-                                ToastAndroid.show(
-                                    `Downloaded ${json.chapterName}`,
-                                    ToastAndroid.SHORT
-                                );
-                                setDownloading({ downloading: false });
-                            },
-                            (txObj, error) => console.log("Error ", error)
-                        );
-                    });
-                })
-                .catch((error) => console.error(error))
-                .finally(() => {
-                    getChapters(novelUrl);
-                });
-        } else {
-            db.transaction((tx) => {
-                tx.executeSql(
-                    `UPDATE ChapterTable SET downloaded = 0 WHERE chapterUrl = ?`,
-                    [cdUrl]
-                );
-                tx.executeSql(
-                    `DELETE FROM DownloadsTable WHERE chapterUrl = ?`,
-                    [cdUrl],
-                    (tx, res) => {
-                        getChapters(novelUrl);
-                        ToastAndroid.show(
-                            `Chapter deleted`,
-                            ToastAndroid.SHORT
-                        );
-                    },
-                    (txObj, error) => console.log("Error ", error)
-                );
-            });
-        }
+    const downloadChapter = (
+        downloadStatus,
+        extensionId,
+        novelUrl,
+        chapterUrl,
+        chapterName
+    ) => {
+        setDownloading({ downloading: true, chapterUrl: chapterUrl });
+        downloadOrDeleteChapter(
+            downloadStatus,
+            extensionId,
+            novelUrl,
+            chapterUrl
+        ).then((res) => {
+            setDownloading({ downloading: false });
+            ToastAndroid.show(
+                !downloadStatus
+                    ? `Downloaded ${chapterName}`
+                    : `Deleted ${chapterName}`,
+                ToastAndroid.SHORT
+            );
+        });
     };
 
     const checkIfExistsInDb = () => {
@@ -199,12 +161,6 @@ const NovelItem = ({ route, navigation }) => {
         />
     );
 
-    // const getItemLayout = (data, index) => ({
-    //     length: 72,
-    //     offset: 72 * index,
-    //     index,
-    // });
-
     return (
         <Provider>
             {/* <Appbar.Header style={{ backgroundColor: theme.colorDarkPrimary }}>
@@ -231,7 +187,6 @@ const NovelItem = ({ route, navigation }) => {
                     removeClippedSubviews={true}
                     maxToRenderPerBatch={10}
                     windowSize={15}
-                    // getItemLayout={getItemLayout}
                     initialNumToRender={7}
                     renderItem={renderChapterCard}
                     ListHeaderComponent={() => (
