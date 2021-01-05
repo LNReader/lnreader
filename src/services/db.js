@@ -36,6 +36,41 @@ export const createTables = async () => {
     });
 };
 
+/**
+ * Query to create index novelUrl and chapterUrl
+ */
+
+export const createIndexes = async () => {
+    db.transaction((tx) => {
+        tx.executeSql(
+            "CREATE INDEX IF NOT EXISTS LibraryTable_novelUrl ON LibraryTable(novelUrl)",
+            null,
+            (tx, results) => console.log("Library Index Created"),
+            (tx, error) => console.log(error)
+        );
+
+        tx.executeSql(
+            "CREATE INDEX IF NOT EXISTS ChapterTable_novelUrl ON ChapterTable(novelUrl)",
+            null,
+            (tx, results) => console.log("Chapter Index Created"),
+            (tx, error) => console.log(error)
+        );
+        tx.executeSql(
+            "CREATE INDEX IF NOT EXISTS HistoryTable_novelUrl ON HistoryTable(novelUrl)",
+            null,
+            (tx, results) => console.log("History Index Created"),
+            (tx, error) => console.log(error)
+        );
+
+        tx.executeSql(
+            "CREATE INDEX IF NOT EXISTS DownloadsTable_chapterUrl ON DownloadsTable(chapterUrl)",
+            null,
+            (tx, results) => console.log("Downloads Index Created"),
+            (tx, error) => console.log(error)
+        );
+    });
+};
+
 export const insertNovelInfoInDb = (novel) => {
     db.transaction((tx) => {
         tx.executeSql(
@@ -79,6 +114,29 @@ export const insertChaptersInDb = (novelUrl, chapters) => {
     console.log("Inserted Chapters in Db");
 };
 
+/**
+ * Get novel info from db
+ */
+
+export const getNovelInfoFromDb = (novelUrl) => {
+    return new Promise((resolve, reject) =>
+        db.transaction((tx) => {
+            tx.executeSql(
+                `SELECT * FROM LibraryTable WHERE novelUrl=?`,
+                [novelUrl],
+                (txObj, { rows }) => {
+                    resolve(rows.item(0));
+                },
+                (txObj, error) => console.log("Error ", error)
+            );
+        })
+    );
+};
+
+/**
+ * Get novel chapters from db
+ */
+
 export const getChaptersFromDb = (novelUrl, filter, sort) => {
     return new Promise((resolve, reject) =>
         db.transaction((tx) => {
@@ -87,6 +145,48 @@ export const getChaptersFromDb = (novelUrl, filter, sort) => {
                 [novelUrl],
                 (txObj, { rows: { _array } }) => {
                     resolve(_array);
+                },
+                (txObj, error) => console.log("Error ", error)
+            );
+        })
+    );
+};
+
+/**
+ * Check if novel is cached
+ */
+
+export const checkNovelInDb = (novelUrl) => {
+    return new Promise((resolve, reject) =>
+        db.transaction((tx) => {
+            tx.executeSql(
+                "SELECT * FROM LibraryTable WHERE novelUrl=? LIMIT 1",
+                [novelUrl],
+                (txObj, res) => {
+                    if (res.rows.length !== 0) {
+                        resolve(true);
+                    } else {
+                        resolve(false);
+                    }
+                },
+                (txObj, error) => console.log("Error ", error)
+            );
+        })
+    );
+};
+
+/**
+ * Updte library status of novel
+ */
+
+export const toggleFavourite = async (libraryStatus, novelUrl) => {
+    return new Promise((resolve, reject) =>
+        db.transaction((tx) => {
+            tx.executeSql(
+                "UPDATE LibraryTable SET libraryStatus = ? WHERE novelUrl=?",
+                [!libraryStatus, novelUrl],
+                (tx, res) => {
+                    resolve(!libraryStatus);
                 },
                 (txObj, error) => console.log("Error ", error)
             );

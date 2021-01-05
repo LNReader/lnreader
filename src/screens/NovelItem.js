@@ -7,7 +7,7 @@ import {
     RefreshControl,
     ToastAndroid,
 } from "react-native";
-import { Appbar, Provider, Portal } from "react-native-paper";
+import { Provider, Portal } from "react-native-paper";
 
 import { theme } from "../theme/theme";
 
@@ -20,6 +20,9 @@ import {
     insertNovelInfoInDb,
     insertChaptersInDb,
     getChaptersFromDb,
+    checkNovelInDb,
+    getNovelInfoFromDb,
+    toggleFavourite,
 } from "../services/db";
 
 import * as SQLite from "expo-sqlite";
@@ -65,6 +68,7 @@ const NovelItem = ({ route, navigation }) => {
                 insertChaptersInDb(novelUrl, response);
             }
         );
+        setlibraryStatus(0);
         setLoading(false);
         setRefreshing(false);
     };
@@ -75,6 +79,24 @@ const NovelItem = ({ route, navigation }) => {
         );
         setLoading(false);
         setRefreshing(false);
+    };
+
+    const getNovelFromDb = async () => {
+        await getNovelInfoFromDb(novelUrl).then((res) => {
+            setNovel(res);
+            setlibraryStatus(res.libraryStatus);
+        });
+        getChapters(novelUrl);
+    };
+
+    const insertNovelInLib = async () => {
+        toggleFavourite(libraryStatus, novelUrl).then((res) => {
+            setlibraryStatus(res);
+            ToastAndroid.show(
+                res ? "Removed from library" : "Added to library",
+                ToastAndroid.SHORT
+            );
+        });
     };
 
     /**
@@ -140,65 +162,17 @@ const NovelItem = ({ route, navigation }) => {
         }
     };
 
-    const insertToLibrary = () => {
-        if (libraryStatus === 0) {
-            // Insert into library
-            db.transaction((tx) => {
-                tx.executeSql(
-                    "UPDATE LibraryTable SET libraryStatus = 1 WHERE novelUrl=?",
-                    [item.novelUrl],
-                    (tx, res) => {
-                        ToastAndroid.show(
-                            "Added to library",
-                            ToastAndroid.SHORT
-                        );
-                        setlibraryStatus(1);
-                    },
-                    (txObj, error) => console.log("Error ", error)
-                );
-            });
-        } else {
-            // Delete from library
-            db.transaction((tx) => {
-                tx.executeSql(
-                    "UPDATE LibraryTable SET libraryStatus = 0 WHERE novelUrl=?",
-                    [item.novelUrl],
-                    (txObj, res) => {
-                        ToastAndroid.show(
-                            "Removed from library",
-                            ToastAndroid.SHORT
-                        );
-                        setlibraryStatus(0);
-                    },
-                    (txObj, error) => console.log("Error ", error)
-                );
-            });
-        }
-    };
-
     const checkIfExistsInDb = () => {
         if (navigatingFrom === 1) {
             getChapters(novelUrl);
         } else {
-            db.transaction((tx) => {
-                tx.executeSql(
-                    "SELECT * FROM LibraryTable WHERE novelUrl=? LIMIT 1",
-                    [novelUrl],
-                    (txObj, res) => {
-                        if (res.rows.length === 0) {
-                            console.log("Not in db");
-                            // Not in database
-                            setlibraryStatus(0);
-                            getNovelFromSource(extensionId, novelUrl);
-                        } else {
-                            // In database
-                            setNovel(res.rows.item(0));
-                            setlibraryStatus(res.rows.item(0).libraryStatus);
-                            getChapters(novelUrl);
-                        }
-                    },
-                    (txObj, error) => console.log("Error ", error)
-                );
+            setRefreshing(true);
+            checkNovelInDb(novelUrl).then((res) => {
+                if (res) {
+                    getNovelFromDb(novelUrl);
+                } else {
+                    getNovelFromSource(extensionId, novelUrl);
+                }
             });
         }
     };
@@ -269,7 +243,7 @@ const NovelItem = ({ route, navigation }) => {
                             novel={novel}
                             noOfChapters={!loading && chapters.length}
                             libraryStatus={libraryStatus}
-                            insertToLibrary={insertToLibrary}
+                            insertNovelInLib={insertNovelInLib}
                             navigatingFrom={navigatingFrom}
                             loading={loading}
                             bottomSheetRef={_panel}

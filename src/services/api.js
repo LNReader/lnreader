@@ -28,6 +28,9 @@ export const fetchChapterFromSource = async (
     chapterUrl
 ) => {
     const url = `https://lnreader-extensions.herokuapp.com/api/${extensionId}/novel/${novelUrl}${chapterUrl}`;
+    console.log(
+        `https://lnreader-extensions.herokuapp.com/api/${extensionId}/novel/${novelUrl}${chapterUrl}`
+    );
 
     let res = await fetch(url);
     let chapter = await res.json();
@@ -59,6 +62,7 @@ export const fetchNovelFromSource = async (extensionId, novelUrl) => {
         unread: 1,
         lastRead: res.novelChapters[0].chapterUrl,
         lastReadName: res.novelChapters[0].chapterName,
+        extensionId: res.extensionId,
     };
 
     return novel;

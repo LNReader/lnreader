@@ -21,7 +21,7 @@ const NovelInfoHeader = ({
     item,
     novel,
     noOfChapters,
-    insertToLibrary,
+    insertNovelInLib,
     loading,
     navigatingFrom,
     libraryStatus,
@@ -144,7 +144,7 @@ const NovelInfoHeader = ({
                                     color={theme.colorAccentDark}
                                 />
                             )}
-                            onPress={() => insertToLibrary()}
+                            onPress={() => insertNovelInLib()}
                             iconColor="pink"
                             style={[
                                 {
@@ -158,9 +158,9 @@ const NovelInfoHeader = ({
                                     marginLeft: 15,
                                     paddingHorizontal: 3,
                                 },
-                                // libraryStatus === 1 && {
-                                //     backgroundColor: "rgba(41,121,255,0.38)",
-                                // },
+                                libraryStatus === 1 && {
+                                    backgroundColor: "rgba(41,121,255,0.38)",
+                                },
                             ]}
                             textStyle={{
                                 fontWeight: "bold",

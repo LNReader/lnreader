@@ -8,7 +8,7 @@ import Router from "./src/navigation/Router";
 import * as Font from "expo-font";
 import AppLoading from "expo-app-loading";
 
-import { createTables } from "./src/services/db";
+import { createTables, createIndexes } from "./src/services/db";
 
 const getFonts = () =>
     Font.loadAsync({
@@ -18,8 +18,13 @@ const getFonts = () =>
 export default function App() {
     const [fontsLoaded, setFontsLoaded] = useState(false);
 
-    useEffect(() => {
+    const createDb = () => {
         createTables();
+        createIndexes();
+    };
+
+    useEffect(() => {
+        createDb();
     }, []);
 
     if (fontsLoaded) {
