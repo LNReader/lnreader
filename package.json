@@ -38,6 +38,9 @@
         "react-native-vector-icons": "^7.1.0",
         "react-native-web": "~0.13.12",
         "react-native-webview": "11.0.0",
+        "react-redux": "^7.2.2",
+        "redux": "^4.0.5",
+        "redux-thunk": "^2.3.0",
         "rn-sliding-up-panel": "^2.4.4"
     },
     "devDependencies": {

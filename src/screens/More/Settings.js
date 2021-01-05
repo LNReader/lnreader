@@ -6,12 +6,23 @@ import { CustomAppbar } from "../../components/Appbar";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { theme } from "../../theme/theme";
+import { switchTheme } from "../../theme/theme.action";
+
+import {
+    amoledDark,
+    amoledDarkTheme,
+    darkTheme,
+    midnightDuskTheme,
+} from "../../theme/theme";
+
+// import { theme } from "../../theme/theme";
 
 import * as SQLite from "expo-sqlite";
 const db = SQLite.openDatabase("lnreader.db");
 
-const AboutScreen = ({ navigation }) => {
+import { connect } from "react-redux";
+
+const SettingsScreen = ({ navigation, theme, switchTheme }) => {
     const desciptionStyles = {
         color: theme.textColorSecondaryDark,
     };
@@ -185,10 +196,55 @@ const AboutScreen = ({ navigation }) => {
                         rippleColor={theme.rippleColorDark}
                         onPress={() => deleteDatabase()}
                     />
+
+                    <List.Subheader
+                        style={{
+                            color: theme.colorAccentDark,
+                            paddingBottom: 5,
+                        }}
+                    >
+                        Theme
+                    </List.Subheader>
+                    <View>
+                        <Checkbox.Item
+                            label="Amoled Dark"
+                            labelStyle={{ color: theme.textColorPrimaryDark }}
+                            status={
+                                theme === "amoledDark" ? "checked" : "unchecked"
+                            }
+                            mode="ios"
+                            uncheckedColor={theme.textColorSecondaryDark}
+                            color={theme.colorAccentDark}
+                            onPress={() => {
+                                switchTheme(midnightDuskTheme);
+                            }}
+                        />
+                    </View>
+                    <View>
+                        <Checkbox.Item
+                            label="MidNight Dusk"
+                            labelStyle={{ color: theme.textColorPrimaryDark }}
+                            status={
+                                theme === "midnightDuskTheme"
+                                    ? "checked"
+                                    : "unchecked"
+                            }
+                            mode="ios"
+                            uncheckedColor={theme.textColorSecondaryDark}
+                            color={theme.colorAccentDark}
+                            onPress={() => {
+                                switchTheme(amoledDarkTheme);
+                            }}
+                        />
+                    </View>
                 </List.Section>
             </View>
         </>
     );
 };
 
-export default AboutScreen;
+const mapStateToProps = (state) => ({
+    theme: state.themeReducer.theme,
+});
+
+export default connect(mapStateToProps, { switchTheme })(SettingsScreen);
