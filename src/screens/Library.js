@@ -8,7 +8,6 @@ import {
 } from "react-native";
 import { Appbar } from "react-native-paper";
 import { FlatList } from "react-native-gesture-handler";
-import { theme } from "../theme/theme";
 import { useFocusEffect } from "@react-navigation/native";
 
 import { Button } from "react-native-paper";
@@ -16,11 +15,13 @@ import NovelCover from "../components/NovelCover";
 
 import { CustomAppbar } from "../components/Appbar";
 
+import { connect } from "react-redux";
+
 import * as SQLite from "expo-sqlite";
 
 const db = SQLite.openDatabase("lnreader.db");
 
-const UpdatesScreen = ({ navigation }) => {
+const LibraryScreen = ({ navigation, theme }) => {
     const [refreshing, setRefreshing] = useState(false);
     const [novels, setNovels] = useState();
 
@@ -253,13 +254,17 @@ const UpdatesScreen = ({ navigation }) => {
     );
 };
 
-export default UpdatesScreen;
+const mapStateToProps = (state) => ({
+    theme: state.themeReducer.theme,
+});
+
+export default connect(mapStateToProps)(LibraryScreen);
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: theme.colorDarkPrimaryDark,
-        // backgroundColor: "#000000",
+        // backgroundColor: theme.colorDarkPrimaryDark,
+        backgroundColor: "#000000",
         padding: 4,
     },
 });

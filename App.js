@@ -11,14 +11,10 @@ import AppLoading from "expo-app-loading";
 import { createTables, createIndexes } from "./src/services/db";
 
 import { Provider } from "react-redux";
-import { createStore, applyMiddleware, combineReducers } from "redux";
-import thunk from "redux-thunk";
 
-import themeReducer from "./src/theme/theme.reducer";
-const store = createStore(
-    combineReducers({ themeReducer }),
-    applyMiddleware(thunk)
-);
+import { persistor, store } from "./src/theme/store";
+
+import { PersistGate } from "redux-persist/lib/integration/react";
 
 const getFonts = () =>
     Font.loadAsync({
@@ -40,10 +36,12 @@ export default function App() {
     if (fontsLoaded) {
         return (
             <Provider store={store}>
-                <StatusBar style="light" />
-                <NavigationContainer>
-                    <Router />
-                </NavigationContainer>
+                <PersistGate loading={null} persistor={persistor}>
+                    <StatusBar style="light" />
+                    <NavigationContainer>
+                        <Router />
+                    </NavigationContainer>
+                </PersistGate>
             </Provider>
         );
     } else {

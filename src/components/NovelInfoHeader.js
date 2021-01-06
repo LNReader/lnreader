@@ -15,8 +15,7 @@ import * as WebBrowser from "expo-web-browser";
 import { LinearGradient } from "expo-linear-gradient";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-import { theme } from "../theme/theme";
-
+import { connect } from "react-redux";
 const NovelInfoHeader = ({
     item,
     novel,
@@ -26,6 +25,7 @@ const NovelInfoHeader = ({
     navigatingFrom,
     libraryStatus,
     bottomSheetRef,
+    theme,
 }) => {
     const navigation = useNavigation();
 
@@ -55,7 +55,7 @@ const NovelInfoHeader = ({
                 style={styles.background}
             >
                 <LinearGradient
-                    colors={["rgba(0,0,0,0.2)", theme.colorDarkPrimaryDark]}
+                    colors={["rgba(0,0,0,0.2)", theme.colorDarkPrimary]}
                     style={styles.linearGradient}
                 >
                     <View style={styles.detailsContainer}>
@@ -228,7 +228,7 @@ const NovelInfoHeader = ({
                                     position: "absolute",
                                     bottom: 0,
                                     right: 15,
-                                    backgroundColor: theme.colorDarkPrimaryDark,
+                                    backgroundColor: theme.colorDarkPrimary,
                                     paddingLeft: 5,
                                 }}
                                 onPress={() => setMore(!more)}
@@ -316,7 +316,11 @@ const NovelInfoHeader = ({
     );
 };
 
-export default NovelInfoHeader;
+const mapStateToProps = (state) => ({
+    theme: state.themeReducer.theme,
+});
+
+export default connect(mapStateToProps)(NovelInfoHeader);
 
 const styles = StyleSheet.create({
     nameContainer: {
@@ -326,7 +330,7 @@ const styles = StyleSheet.create({
     },
     background: {
         height: 285,
-        backgroundColor: theme.colorDarkPrimaryDark,
+        // backgroundColor: theme.colorDarkPrimaryDark,
     },
     linearGradient: {
         flex: 1,

@@ -9,8 +9,6 @@ import {
 } from "react-native";
 import { Provider, Portal } from "react-native-paper";
 
-import { theme } from "../theme/theme";
-
 import ChapterCard from "../components/ChapterCard";
 import NovelInfoHeader from "../components/NovelInfoHeader";
 import { BottomSheet } from "../components/NovelItemBottomSheet";
@@ -26,10 +24,9 @@ import {
     downloadOrDeleteChapter,
 } from "../services/db";
 
-import * as SQLite from "expo-sqlite";
-const db = SQLite.openDatabase("lnreader.db");
+import { connect } from "react-redux";
 
-const NovelItem = ({ route, navigation }) => {
+const NovelItem = ({ route, navigation, theme }) => {
     const item = route.params;
 
     const {
@@ -227,19 +224,16 @@ const NovelItem = ({ route, navigation }) => {
     );
 };
 
-export default NovelItem;
+const mapStateToProps = (state) => ({
+    theme: state.themeReducer.theme,
+});
+
+export default connect(mapStateToProps)(NovelItem);
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // backgroundColor: "#202125",
-        backgroundColor: theme.colorDarkPrimaryDark,
-    },
-    fab: {
-        backgroundColor: theme.colorAccentDark,
-        position: "absolute",
-        margin: 16,
-        right: 0,
-        bottom: 0,
+        backgroundColor: "#202125",
+        // backgroundColor: theme.colorDarkPrimaryDark,
     },
 });

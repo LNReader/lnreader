@@ -8,8 +8,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { switchTheme } from "../../theme/theme.action";
 
+import { setAppTheme, getAppTheme } from "../../services/AsyncStorage";
+
 import {
-    amoledDark,
     amoledDarkTheme,
     darkTheme,
     midnightDuskTheme,
@@ -30,7 +31,11 @@ const SettingsScreen = ({ navigation, theme, switchTheme }) => {
     const titleStyles = { color: theme.textColorPrimaryDark };
     const [displayMode, setDisplayMode] = useState("compact");
 
-    AsyncStorage.getItem("@display_mode").then((value) => {
+    const [applicationTheme, setApplicationTheme] = useState("amoledDarkTheme");
+
+    getAppTheme().then((res) => setApplicationTheme(res));
+
+    AsyncStorage.getItem("@application_theme").then((value) => {
         if (value) setDisplayMode(value);
     });
 
@@ -210,22 +215,7 @@ const SettingsScreen = ({ navigation, theme, switchTheme }) => {
                             label="Amoled Dark"
                             labelStyle={{ color: theme.textColorPrimaryDark }}
                             status={
-                                theme === "amoledDark" ? "checked" : "unchecked"
-                            }
-                            mode="ios"
-                            uncheckedColor={theme.textColorSecondaryDark}
-                            color={theme.colorAccentDark}
-                            onPress={() => {
-                                switchTheme(midnightDuskTheme);
-                            }}
-                        />
-                    </View>
-                    <View>
-                        <Checkbox.Item
-                            label="MidNight Dusk"
-                            labelStyle={{ color: theme.textColorPrimaryDark }}
-                            status={
-                                theme === "midnightDuskTheme"
+                                applicationTheme === "amoledDarkTheme"
                                     ? "checked"
                                     : "unchecked"
                             }
@@ -234,6 +224,27 @@ const SettingsScreen = ({ navigation, theme, switchTheme }) => {
                             color={theme.colorAccentDark}
                             onPress={() => {
                                 switchTheme(amoledDarkTheme);
+                                setApplicationTheme("amoledDarkTheme");
+                                setAppTheme("amoledDarkTheme");
+                            }}
+                        />
+                    </View>
+                    <View>
+                        <Checkbox.Item
+                            label="MidNight Dusk"
+                            labelStyle={{ color: theme.textColorPrimaryDark }}
+                            status={
+                                applicationTheme === "midnightDuskTheme"
+                                    ? "checked"
+                                    : "unchecked"
+                            }
+                            mode="ios"
+                            uncheckedColor={theme.textColorSecondaryDark}
+                            color={theme.colorAccentDark}
+                            onPress={() => {
+                                switchTheme(midnightDuskTheme);
+                                setApplicationTheme("midnightDuskTheme");
+                                setAppTheme("midnightDuskTheme");
                             }}
                         />
                     </View>

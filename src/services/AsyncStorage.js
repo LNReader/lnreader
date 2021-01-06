@@ -11,3 +11,17 @@ export const getReaderTheme = async () => {
 
     return theme;
 };
+
+export const setAppTheme = async (val) => {
+    AsyncStorage.setItem("@application_theme", JSON.stringify(val));
+};
+
+export const getAppTheme = async () => {
+    let theme = await AsyncStorage.getItem("@application_theme").then(
+        (value) => {
+            if (value) return JSON.parse(value);
+        }
+    );
+
+    return theme;
+};
