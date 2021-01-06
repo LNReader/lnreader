@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { StatusBar } from "expo-status-bar";
+import { setStatusBarStyle, StatusBar } from "expo-status-bar";
 
 import { NavigationContainer } from "@react-navigation/native";
 import Router from "./src/navigation/Router";
@@ -9,6 +9,7 @@ import * as Font from "expo-font";
 import AppLoading from "expo-app-loading";
 
 import { createTables, createIndexes } from "./src/services/db";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { Provider } from "react-redux";
 
@@ -24,6 +25,14 @@ const getFonts = () =>
 export default function App() {
     const [fontsLoaded, setFontsLoaded] = useState(false);
 
+    AsyncStorage.getItem("@application_theme").then((value) => {
+        if (JSON.parse(value) === "lightTheme") {
+            setStatusBarStyle("dark");
+        } else {
+            setStatusBarStyle("light");
+        }
+    });
+
     const createDb = () => {
         createTables();
         createIndexes();
@@ -37,7 +46,7 @@ export default function App() {
         return (
             <Provider store={store}>
                 <PersistGate loading={null} persistor={persistor}>
-                    <StatusBar style="light" />
+                    <StatusBar />
                     <NavigationContainer>
                         <Router />
                     </NavigationContainer>

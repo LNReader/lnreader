@@ -10,6 +10,8 @@ import { switchTheme } from "../../theme/theme.action";
 
 import { setAppTheme, getAppTheme } from "../../services/AsyncStorage";
 
+import { setStatusBarStyle } from "expo-status-bar";
+
 import {
     amoledDarkTheme,
     darkTheme,
@@ -265,6 +267,7 @@ const SettingsScreen = ({ navigation, theme, switchTheme }) => {
                                 switchTheme(darkTheme);
                                 setApplicationTheme("darkTheme");
                                 setAppTheme("darkTheme");
+                                setStatusBarStyle("light");
                             }}
                         />
                     </View>
@@ -284,6 +287,7 @@ const SettingsScreen = ({ navigation, theme, switchTheme }) => {
                                 switchTheme(lightTheme);
                                 setApplicationTheme("lightTheme");
                                 setAppTheme("lightTheme");
+                                setStatusBarStyle("dark");
                             }}
                         />
                     </View>

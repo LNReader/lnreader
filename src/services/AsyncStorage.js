@@ -25,3 +25,9 @@ export const getAppTheme = async () => {
 
     return theme;
 };
+
+export const setStatusBar = async () => {
+    AsyncStorage.getItem("@application_theme").then((value) => {
+        if (value) return value;
+    });
+};

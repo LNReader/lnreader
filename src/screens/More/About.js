@@ -1,10 +1,11 @@
 import React from "react";
 import { List, Divider } from "react-native-paper";
 import * as Linking from "expo-linking";
-import { theme } from "../../theme/theme";
 import { CustomAppbar } from "../../components/Appbar";
-
+import { useSelector } from "react-redux";
 const AboutScreen = ({ navigation }) => {
+    const theme = useSelector((state) => state.themeReducer.theme);
+
     return (
         <>
             <CustomAppbar
@@ -23,7 +24,7 @@ const AboutScreen = ({ navigation }) => {
                     titleStyle={{ color: theme.textColorPrimaryDark }}
                     title="Version"
                     descriptionStyle={{ color: theme.textColorSecondaryDark }}
-                    description="Stable 1.0.13 (UI Imrovements)"
+                    description="Stable 1.0.14 (fix: status bar)"
                 />
                 <List.Item
                     titleStyle={{ color: theme.textColorPrimaryDark }}
