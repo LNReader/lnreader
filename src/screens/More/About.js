@@ -23,7 +23,7 @@ const AboutScreen = ({ navigation }) => {
                     titleStyle={{ color: theme.textColorPrimaryDark }}
                     title="Version"
                     descriptionStyle={{ color: theme.textColorSecondaryDark }}
-                    description="Stable 1.0.11 (Setup redux)"
+                    description="Stable 1.0.13 (UI Imrovements)"
                 />
                 <List.Item
                     titleStyle={{ color: theme.textColorPrimaryDark }}

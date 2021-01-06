@@ -23,7 +23,7 @@ import ChapterItem from "../screens/ChapterItem";
 import BoxNovel from "../screens/Sources/boxnovel/BoxNovel";
 import ReadLightNovel from "../screens/Sources/readlightnovel/ReadLightNovel";
 
-import { theme } from "../theme/theme";
+import { connect } from "react-redux";
 
 const Stack = createStackNavigator();
 
@@ -60,7 +60,10 @@ const ReadLightNovelStack = () => {
     );
 };
 
+import { shallowEqual, useSelector } from "react-redux";
+
 const BottomNavigator = () => {
+    const theme = useSelector((state) => state.themeReducer.theme);
     return (
         <Tab.Navigator
             shifting={false}
@@ -164,5 +167,9 @@ const Router = () => {
         </Stack.Navigator>
     );
 };
+
+const mapStateToProps = (state) => ({
+    theme: state.themeReducer.theme,
+});
 
 export default Router;

@@ -49,3 +49,16 @@ export const midnightDuskTheme = {
     textColorHintDark: "rgba(255,255,255,0.5)",
     rippleColorDark: "rgba(255,255,255,0.2)",
 };
+
+/**
+ * Midnight Dusk Theme
+ */
+export const lightTheme = {
+    colorDarkPrimary: "#FFFFFF",
+    colorDarkPrimaryDark: "#FFFFFF",
+    colorAccentDark: "#2979FF",
+    textColorPrimaryDark: "#000000",
+    textColorSecondaryDark: "rgba(0,0,0,0.54)",
+    textColorHintDark: "rgba(0,0,0,0.38)",
+    rippleColorDark: "#C2C2C2",
+};

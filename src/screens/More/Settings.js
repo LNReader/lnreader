@@ -14,6 +14,7 @@ import {
     amoledDarkTheme,
     darkTheme,
     midnightDuskTheme,
+    lightTheme,
 } from "../../theme/theme";
 
 // import { theme } from "../../theme/theme";
@@ -35,7 +36,7 @@ const SettingsScreen = ({ navigation, theme, switchTheme }) => {
 
     getAppTheme().then((res) => setApplicationTheme(res));
 
-    AsyncStorage.getItem("@application_theme").then((value) => {
+    AsyncStorage.getItem("@display_mode").then((value) => {
         if (value) setDisplayMode(value);
     });
 
@@ -245,6 +246,44 @@ const SettingsScreen = ({ navigation, theme, switchTheme }) => {
                                 switchTheme(midnightDuskTheme);
                                 setApplicationTheme("midnightDuskTheme");
                                 setAppTheme("midnightDuskTheme");
+                            }}
+                        />
+                    </View>
+                    <View>
+                        <Checkbox.Item
+                            label="Dark Theme"
+                            labelStyle={{ color: theme.textColorPrimaryDark }}
+                            status={
+                                applicationTheme === "darkTheme"
+                                    ? "checked"
+                                    : "unchecked"
+                            }
+                            mode="ios"
+                            uncheckedColor={theme.textColorSecondaryDark}
+                            color={theme.colorAccentDark}
+                            onPress={() => {
+                                switchTheme(darkTheme);
+                                setApplicationTheme("darkTheme");
+                                setAppTheme("darkTheme");
+                            }}
+                        />
+                    </View>
+                    <View>
+                        <Checkbox.Item
+                            label="Light Theme"
+                            labelStyle={{ color: theme.textColorPrimaryDark }}
+                            status={
+                                applicationTheme === "lightTheme"
+                                    ? "checked"
+                                    : "unchecked"
+                            }
+                            mode="ios"
+                            uncheckedColor={theme.textColorSecondaryDark}
+                            color={theme.colorAccentDark}
+                            onPress={() => {
+                                switchTheme(lightTheme);
+                                setApplicationTheme("lightTheme");
+                                setAppTheme("lightTheme");
                             }}
                         />
                     </View>

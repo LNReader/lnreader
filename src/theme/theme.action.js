@@ -1,4 +1,3 @@
-import { theme, amoledDark, darkTheme, midnightDuskTheme } from "./theme";
 import { SWITCH_THEME } from "./constants";
 
 export const switchTheme = (theme) => (dispatch) => {

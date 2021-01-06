@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { View, Text, ActivityIndicator } from "react-native";
 import { TouchableRipple, IconButton } from "react-native-paper";
 
-import { theme } from "../theme/theme";
+import { useSelector } from "react-redux";
 
 const ChapterCard = ({
     navigation,
@@ -14,6 +14,8 @@ const ChapterCard = ({
     downloading,
 }) => {
     const [downloaded, setDownloaded] = useState(chapter.downloaded);
+
+    const theme = useSelector((state) => state.themeReducer.theme);
 
     return (
         <TouchableRipple

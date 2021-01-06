@@ -5,12 +5,14 @@ import { Appbar, Provider, Menu, RadioButton } from "react-native-paper";
 import NovelCover from "../../../components/NovelCover";
 import HeaderSearchBar from "../../../components/HeaderSearchBar";
 
-import { theme } from "../../../theme/theme";
+import { useSelector } from "react-redux";
 
 import * as SQLite from "expo-sqlite";
 const db = SQLite.openDatabase("lnreader.db");
 
 const ReadLightNovel = ({ navigation }) => {
+    const theme = useSelector((state) => state.themeReducer.theme);
+
     const [loading, setLoading] = useState(true);
 
     const [novels, setNovels] = useState();
@@ -125,7 +127,12 @@ const ReadLightNovel = ({ navigation }) => {
                     </>
                 )}
             </Appbar.Header>
-            <View style={styles.container}>
+            <View
+                style={[
+                    styles.container,
+                    { backgroundColor: theme.colorDarkPrimaryDark },
+                ]}
+            >
                 {loading ? (
                     <View style={{ flex: 1, justifyContent: "center" }}>
                         <ActivityIndicator
@@ -169,8 +176,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 4,
-        backgroundColor: theme.colorDarkPrimaryDark,
-        // backgroundColor: "#000000",
     },
     contentContainer: {
         flex: 1,

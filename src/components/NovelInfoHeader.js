@@ -55,7 +55,7 @@ const NovelInfoHeader = ({
                 style={styles.background}
             >
                 <LinearGradient
-                    colors={["rgba(0,0,0,0.2)", theme.colorDarkPrimary]}
+                    colors={["rgba(0,0,0,0.2)", theme.colorDarkPrimaryDark]}
                     style={styles.linearGradient}
                 >
                     <View style={styles.detailsContainer}>
@@ -145,10 +145,9 @@ const NovelInfoHeader = ({
                                 />
                             )}
                             onPress={() => insertNovelInLib()}
-                            iconColor="pink"
                             style={[
                                 {
-                                    backgroundColor: "transparent",
+                                    backgroundColor: theme.colorDarkPrimaryDark,
                                     marginRight: 2,
                                     borderColor: "rgba(255,255,255,0.121)",
                                     borderWidth: 1,
@@ -157,14 +156,16 @@ const NovelInfoHeader = ({
                                     alignItems: "center",
                                     marginLeft: 15,
                                     paddingHorizontal: 3,
+                                    shadowOpacity: 0,
+                                    shadowOffset: 0,
                                 },
-                                libraryStatus && {
-                                    backgroundColor: "rgba(41,121,255,0.38)",
-                                },
+                                // libraryStatus && {
+                                //     backgroundColor: "rgba(41,121,255,0.38)",
+                                // },
                             ]}
                             textStyle={{
                                 fontWeight: "bold",
-                                color: "white",
+                                color: theme.textColorPrimaryDark,
                             }}
                         >
                             {libraryStatus ? "In Library" : "Add to library"}
@@ -228,7 +229,7 @@ const NovelInfoHeader = ({
                                     position: "absolute",
                                     bottom: 0,
                                     right: 15,
-                                    backgroundColor: theme.colorDarkPrimary,
+                                    backgroundColor: theme.colorDarkPrimaryDark,
                                     paddingLeft: 5,
                                 }}
                                 onPress={() => setMore(!more)}
@@ -252,10 +253,11 @@ const NovelInfoHeader = ({
                         data={novel["Genre(s)"] && novel["Genre(s)"].split(",")}
                         keyExtractor={(item) => item}
                         renderItem={renderGenreChip}
+                        showsHorizontalScrollIndicator={false}
                     />
 
                     <Button
-                        color={theme.textColorPrimaryDark}
+                        color="white"
                         style={{
                             backgroundColor: theme.colorAccentDark,
                             marginHorizontal: 15,
@@ -333,7 +335,8 @@ const styles = StyleSheet.create({
         // backgroundColor: theme.colorDarkPrimaryDark,
     },
     linearGradient: {
-        flex: 1,
+        // flex: 1,
+        height: 286,
     },
     detailsContainer: {
         flex: 1,

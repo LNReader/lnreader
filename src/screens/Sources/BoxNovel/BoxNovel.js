@@ -6,7 +6,7 @@ import NovelCover from "../../../components/NovelCover";
 import HeaderSearchBar from "../../../components/HeaderSearchBar";
 import { BottomSheet } from "../../../components/BottomSheet";
 
-import { theme } from "../../../theme/theme";
+import { useSelector } from "react-redux";
 
 import * as SQLite from "expo-sqlite";
 const db = SQLite.openDatabase("lnreader.db");
@@ -25,6 +25,8 @@ const AllNovels = ({ navigation }) => {
     const [searchText, setSearchText] = useState("");
 
     const [searched, setSearched] = useState(0);
+
+    const theme = useSelector((state) => state.themeReducer.theme);
 
     const getNovels = () => {
         fetch(
@@ -156,7 +158,12 @@ const AllNovels = ({ navigation }) => {
                     </>
                 )}
             </Appbar.Header>
-            <View style={styles.container}>
+            <View
+                style={[
+                    styles.container,
+                    { backgroundColor: theme.colorDarkPrimaryDark },
+                ]}
+            >
                 {loading ? (
                     <View style={{ flex: 1, justifyContent: "center" }}>
                         <ActivityIndicator
@@ -222,8 +229,6 @@ export default AllNovels;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: theme.colorDarkPrimaryDark,
-        // backgroundColor: "#000000",
         padding: 3,
     },
 

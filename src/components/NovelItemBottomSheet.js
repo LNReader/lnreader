@@ -17,6 +17,8 @@ const BottomSheetHandle = () => (
     />
 );
 
+import { useSelector } from "react-redux";
+
 export const BottomSheet = ({
     bottomSheetRef,
     sort,
@@ -25,6 +27,8 @@ export const BottomSheet = ({
     filterChapters,
 }) => {
     const checkBoxStyle = { flexDirection: "row", alignItems: "center" };
+
+    const theme = useSelector((state) => state.themeReducer.theme);
 
     return (
         <Bottomsheet

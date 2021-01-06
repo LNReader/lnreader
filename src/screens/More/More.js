@@ -1,10 +1,13 @@
 import React from "react";
+
 import { StyleSheet } from "react-native";
 import { List } from "react-native-paper";
-import { CustomAppbar } from "../../components/Appbar";
-import { theme } from "../../theme/theme";
 
-const MoreScreen = ({ navigation }) => {
+import { CustomAppbar } from "../../components/Appbar";
+
+import { connect } from "react-redux";
+
+const MoreScreen = ({ navigation, theme }) => {
     return (
         <>
             <CustomAppbar title="More" />
@@ -43,7 +46,11 @@ const MoreScreen = ({ navigation }) => {
     );
 };
 
-export default MoreScreen;
+const mapStateToProps = (state) => ({
+    theme: state.themeReducer.theme,
+});
+
+export default connect(mapStateToProps)(MoreScreen);
 
 const styles = StyleSheet.create({
     container: {

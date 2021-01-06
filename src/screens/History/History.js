@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from "react";
-import { StyleSheet, View, Text, FlatList } from "react-native";
-import { theme } from "../../theme/theme";
 import { useFocusEffect } from "@react-navigation/native";
+
+import { StyleSheet, View, Text, FlatList } from "react-native";
 
 import { CustomAppbar } from "../../components/Appbar";
 import HistoryCard from "../../components/HistoryCard";
@@ -9,8 +9,12 @@ import HistoryCard from "../../components/HistoryCard";
 import * as SQLite from "expo-sqlite";
 const db = SQLite.openDatabase("lnreader.db");
 
+import { useSelector } from "react-redux";
+
 const History = ({ navigation }) => {
     const [history, setHistory] = useState();
+
+    const theme = useSelector((state) => state.themeReducer.theme);
 
     const getHistory = () => {
         db.transaction((tx) => {
@@ -47,7 +51,12 @@ const History = ({ navigation }) => {
     return (
         <>
             <CustomAppbar title="History" />
-            <View style={styles.container}>
+            <View
+                style={[
+                    styles.container,
+                    { backgroundColor: theme.colorDarkPrimaryDark },
+                ]}
+            >
                 <FlatList
                     contentContainerStyle={{ flex: 1 }}
                     data={history}
@@ -100,8 +109,6 @@ export default History;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: theme.colorDarkPrimaryDark,
-        // backgroundColor: "#000000",
         padding: 10,
     },
     historyCard: {

@@ -175,7 +175,12 @@ const NovelItem = ({ route, navigation, theme }) => {
                 />
             </Appbar.Header> */}
 
-            <View style={styles.container}>
+            <View
+                style={[
+                    styles.container,
+                    { backgroundColor: theme.colorDarkPrimaryDark },
+                ]}
+            >
                 <FlatList
                     data={chapters}
                     extraData={[sort, filter]}
@@ -205,7 +210,7 @@ const NovelItem = ({ route, navigation, theme }) => {
                         <RefreshControl
                             refreshing={refreshing}
                             onRefresh={onRefresh}
-                            colors={["white"]}
+                            colors={[theme.textColorPrimaryDark]}
                             progressBackgroundColor={theme.colorDarkPrimary}
                         />
                     }
@@ -233,7 +238,7 @@ export default connect(mapStateToProps)(NovelItem);
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#202125",
+        // backgroundColor: "#202125",
         // backgroundColor: theme.colorDarkPrimaryDark,
     },
 });

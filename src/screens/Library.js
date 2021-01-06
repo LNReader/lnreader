@@ -171,7 +171,12 @@ const LibraryScreen = ({ navigation, theme }) => {
                     </>
                 )}
             </Appbar.Header>
-            <View style={styles.container}>
+            <View
+                style={[
+                    styles.container,
+                    { backgroundColor: theme.colorDarkPrimaryDark },
+                ]}
+            >
                 <FlatList
                     contentContainerStyle={{ flex: 1 }}
                     numColumns={3}
@@ -264,7 +269,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         // backgroundColor: theme.colorDarkPrimaryDark,
-        backgroundColor: "#000000",
+        // backgroundColor: "#000000",
         padding: 4,
     },
 });

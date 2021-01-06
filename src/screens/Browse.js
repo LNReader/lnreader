@@ -1,15 +1,26 @@
 import React from "react";
+
 import { StyleSheet, View, Text, FlatList, Image } from "react-native";
 import { TouchableRipple, IconButton, Button } from "react-native-paper";
+
 import { CustomAppbar } from "../components/Appbar";
-import { theme } from "../theme/theme";
+
 import { sources } from "../utils/sources";
 
+import { useSelector } from "react-redux";
+
 const Browse = ({ navigation }) => {
+    const theme = useSelector((state) => state.themeReducer.theme);
+
     return (
         <>
             <CustomAppbar title="Browse" />
-            <View style={styles.container}>
+            <View
+                style={[
+                    styles.container,
+                    { backgroundColor: theme.colorDarkPrimaryDark },
+                ]}
+            >
                 <FlatList
                     data={sources}
                     keyExtractor={(item) => item.sourceId.toString()}
@@ -106,8 +117,6 @@ export default Browse;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: theme.colorDarkPrimaryDark,
-        // backgroundColor: "#000000",
     },
     sourceCard: {
         // backgroundColor: "pink",

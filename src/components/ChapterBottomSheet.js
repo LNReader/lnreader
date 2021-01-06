@@ -5,7 +5,7 @@ import { ToggleButton } from "react-native-paper";
 import Slider from "@react-native-community/slider";
 import Bottomsheet from "rn-sliding-up-panel";
 
-import { theme } from "../theme/theme";
+import { useSelector } from "react-redux";
 
 import { saveReaderTheme } from "../services/AsyncStorage";
 
@@ -16,6 +16,8 @@ const ChapterBottomSheet = ({
     readerTheme,
     setReaderTheme,
 }) => {
+    const theme = useSelector((state) => state.themeReducer.theme);
+
     return (
         <Bottomsheet
             animatedValue={new Animated.Value(0)}
