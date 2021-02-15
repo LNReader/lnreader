@@ -55,7 +55,7 @@ export const midnightDuskTheme = {
  */
 export const lightTheme = {
     colorDarkPrimary: "#FFFFFF",
-    colorDarkPrimaryDark: "#FFFFFF",
+    colorDarkPrimaryDark: "#FAFAFA",
     colorAccentDark: "#2979FF",
     textColorPrimaryDark: "#000000",
     textColorSecondaryDark: "rgba(0,0,0,0.54)",

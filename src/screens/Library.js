@@ -5,6 +5,7 @@ import {
     View,
     TextInput,
     RefreshControl,
+    ActivityIndicator,
 } from "react-native";
 import { Appbar } from "react-native-paper";
 import { FlatList } from "react-native-gesture-handler";
@@ -15,13 +16,15 @@ import NovelCover from "../components/NovelCover";
 
 import { CustomAppbar } from "../components/Appbar";
 
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 
 import * as SQLite from "expo-sqlite";
 
 const db = SQLite.openDatabase("lnreader.db");
 
-const LibraryScreen = ({ navigation, theme }) => {
+const LibraryScreen = ({ navigation }) => {
+    const theme = useSelector((state) => state.themeReducer.theme);
+
     const [refreshing, setRefreshing] = useState(false);
     const [novels, setNovels] = useState();
 
@@ -259,17 +262,11 @@ const LibraryScreen = ({ navigation, theme }) => {
     );
 };
 
-const mapStateToProps = (state) => ({
-    theme: state.themeReducer.theme,
-});
-
-export default connect(mapStateToProps)(LibraryScreen);
+export default LibraryScreen;
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // backgroundColor: theme.colorDarkPrimaryDark,
-        // backgroundColor: "#000000",
         padding: 4,
     },
 });

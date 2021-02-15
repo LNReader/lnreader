@@ -29,7 +29,7 @@ const NovelInfoHeader = ({
 }) => {
     const navigation = useNavigation();
 
-    const [more, setMore] = useState(navigatingFrom === 1 ? false : true);
+    const [more, setMore] = useState(navigatingFrom === 2 ? true : false);
 
     const renderGenreChip = ({ item }) => (
         <Text

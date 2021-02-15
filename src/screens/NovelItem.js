@@ -53,7 +53,11 @@ const NovelItem = ({ route, navigation, theme }) => {
         chapterUrl: "",
     });
 
-    let _panel = useRef(null);
+    let _panel = useRef(null); // Bottomsheet ref
+
+    /**
+     * Fetch novel and chapters from source and set loading false
+     */
 
     const getNovelFromSource = async (extensionId, novelUrl) => {
         await fetchNovelFromSource(extensionId, novelUrl).then((response) => {
@@ -71,6 +75,10 @@ const NovelItem = ({ route, navigation, theme }) => {
         setRefreshing(false);
     };
 
+    /**
+     * Get chapters from db and set loading false
+     */
+
     const getChapters = async (novelUrl) => {
         await getChaptersFromDb(novelUrl, filter, sort).then((response) =>
             setChapters(response)
@@ -79,6 +87,10 @@ const NovelItem = ({ route, navigation, theme }) => {
         setRefreshing(false);
     };
 
+    /**
+     * Get novel and chapters from database
+     */
+
     const getNovelFromDb = async () => {
         await getNovelInfoFromDb(novelUrl).then((res) => {
             setNovel(res);
@@ -86,6 +98,10 @@ const NovelItem = ({ route, navigation, theme }) => {
         });
         getChapters(novelUrl);
     };
+
+    /**
+     * Insert or remove novel from library
+     */
 
     const insertNovelInLib = async () => {
         toggleFavourite(libraryStatus, novelUrl).then((res) => {
@@ -96,6 +112,12 @@ const NovelItem = ({ route, navigation, theme }) => {
             );
         });
     };
+
+    /**
+     * Download chapter from source
+     *
+     * If downloaded then delete from db
+     */
 
     const downloadChapter = (
         downloadStatus,
@@ -120,6 +142,12 @@ const NovelItem = ({ route, navigation, theme }) => {
             );
         });
     };
+
+    /**
+     * Check if the novel is in db. If not, fetch from source
+     *
+     * If navigating from library then directly get chapters from db
+     */
 
     const checkIfExistsInDb = () => {
         if (navigatingFrom === 1) {
@@ -238,7 +266,5 @@ export default connect(mapStateToProps)(NovelItem);
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // backgroundColor: "#202125",
-        // backgroundColor: theme.colorDarkPrimaryDark,
     },
 });

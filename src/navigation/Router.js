@@ -60,7 +60,7 @@ const ReadLightNovelStack = () => {
     );
 };
 
-import { shallowEqual, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 const BottomNavigator = () => {
     const theme = useSelector((state) => state.themeReducer.theme);
@@ -167,9 +167,5 @@ const Router = () => {
         </Stack.Navigator>
     );
 };
-
-const mapStateToProps = (state) => ({
-    theme: state.themeReducer.theme,
-});
 
 export default Router;

@@ -14,7 +14,7 @@ const HistoryCard = ({ item, deleteHistory, navigation }) => {
         <TouchableRipple
             style={[
                 styles.historyCard,
-                { backgroundColor: theme.colorDarkPrimary },
+                // { backgroundColor: theme.colorDarkPrimary },
             ]}
             rippleColor={theme.rippleColorDark}
             borderless
@@ -34,8 +34,7 @@ const HistoryCard = ({ item, deleteHistory, navigation }) => {
                     style={{
                         height: 80,
                         width: 57,
-                        borderTopLeftRadius: 4,
-                        borderBottomLeftRadius: 4,
+                        borderRadius: 4,
                     }}
                 />
                 <View
@@ -53,7 +52,7 @@ const HistoryCard = ({ item, deleteHistory, navigation }) => {
                                 fontWeight: "bold",
                                 fontSize: 16,
                             }}
-                            numberOfLines={2}
+                            numberOfLines={1}
                         >
                             {item.novelName}
                         </Text>
@@ -72,11 +71,12 @@ const HistoryCard = ({ item, deleteHistory, navigation }) => {
                     <View
                         style={{
                             flexDirection: "row",
+                            alignItems: "center",
                         }}
                     >
                         <IconButton
                             icon="delete-outline"
-                            size={24}
+                            size={22}
                             color={theme.textColorPrimaryDark}
                             style={{
                                 marginRight: 0,
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
         // paddingVertical: 10,
         // marginVertical: 5,
         // paddingHorizontal: 20,
-        marginBottom: 10,
+        marginBottom: 15,
         borderRadius: 4,
         flexDirection: "row",
         alignItems: "center",

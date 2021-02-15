@@ -215,10 +215,10 @@ const SettingsScreen = ({ navigation, theme, switchTheme }) => {
                     </List.Subheader>
                     <View>
                         <Checkbox.Item
-                            label="Amoled Dark"
+                            label="Light Theme"
                             labelStyle={{ color: theme.textColorPrimaryDark }}
                             status={
-                                applicationTheme === "amoledDarkTheme"
+                                applicationTheme === "lightTheme"
                                     ? "checked"
                                     : "unchecked"
                             }
@@ -226,28 +226,10 @@ const SettingsScreen = ({ navigation, theme, switchTheme }) => {
                             uncheckedColor={theme.textColorSecondaryDark}
                             color={theme.colorAccentDark}
                             onPress={() => {
-                                switchTheme(amoledDarkTheme);
-                                setApplicationTheme("amoledDarkTheme");
-                                setAppTheme("amoledDarkTheme");
-                            }}
-                        />
-                    </View>
-                    <View>
-                        <Checkbox.Item
-                            label="MidNight Dusk"
-                            labelStyle={{ color: theme.textColorPrimaryDark }}
-                            status={
-                                applicationTheme === "midnightDuskTheme"
-                                    ? "checked"
-                                    : "unchecked"
-                            }
-                            mode="ios"
-                            uncheckedColor={theme.textColorSecondaryDark}
-                            color={theme.colorAccentDark}
-                            onPress={() => {
-                                switchTheme(midnightDuskTheme);
-                                setApplicationTheme("midnightDuskTheme");
-                                setAppTheme("midnightDuskTheme");
+                                switchTheme(lightTheme);
+                                setApplicationTheme("lightTheme");
+                                setAppTheme("lightTheme");
+                                setStatusBarStyle("dark");
                             }}
                         />
                     </View>
@@ -270,26 +252,50 @@ const SettingsScreen = ({ navigation, theme, switchTheme }) => {
                                 setStatusBarStyle("light");
                             }}
                         />
-                    </View>
-                    <View>
-                        <Checkbox.Item
-                            label="Light Theme"
-                            labelStyle={{ color: theme.textColorPrimaryDark }}
-                            status={
-                                applicationTheme === "lightTheme"
-                                    ? "checked"
-                                    : "unchecked"
-                            }
-                            mode="ios"
-                            uncheckedColor={theme.textColorSecondaryDark}
-                            color={theme.colorAccentDark}
-                            onPress={() => {
-                                switchTheme(lightTheme);
-                                setApplicationTheme("lightTheme");
-                                setAppTheme("lightTheme");
-                                setStatusBarStyle("dark");
-                            }}
-                        />
+                        <View>
+                            <Checkbox.Item
+                                label="Amoled Dark"
+                                labelStyle={{
+                                    color: theme.textColorPrimaryDark,
+                                }}
+                                status={
+                                    applicationTheme === "amoledDarkTheme"
+                                        ? "checked"
+                                        : "unchecked"
+                                }
+                                mode="ios"
+                                uncheckedColor={theme.textColorSecondaryDark}
+                                color={theme.colorAccentDark}
+                                onPress={() => {
+                                    switchTheme(amoledDarkTheme);
+                                    setApplicationTheme("amoledDarkTheme");
+                                    setAppTheme("amoledDarkTheme");
+                                    setStatusBarStyle("light");
+                                }}
+                            />
+                        </View>
+                        <View>
+                            <Checkbox.Item
+                                label="Midnight Dusk Theme"
+                                labelStyle={{
+                                    color: theme.textColorPrimaryDark,
+                                }}
+                                status={
+                                    applicationTheme === "midnightDuskTheme"
+                                        ? "checked"
+                                        : "unchecked"
+                                }
+                                mode="ios"
+                                uncheckedColor={theme.textColorSecondaryDark}
+                                color={theme.colorAccentDark}
+                                onPress={() => {
+                                    switchTheme(midnightDuskTheme);
+                                    setApplicationTheme("midnightDuskTheme");
+                                    setAppTheme("midnightDuskTheme");
+                                    setStatusBarStyle("light");
+                                }}
+                            />
+                        </View>
                     </View>
                 </List.Section>
             </View>

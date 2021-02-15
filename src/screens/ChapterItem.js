@@ -42,7 +42,7 @@ const ChapterItem = ({ route, navigation }) => {
                 "UPDATE LibraryTable SET lastRead = ?, lastReadName = ?, unread = 0 WHERE novelUrl = ?",
                 [chapterUrl, chapterName, novelUrl],
                 (tx, res) =>
-                    console.log("Set Last read" + novelUrl + chapterUrl),
+                    console.log("Set Last Read " + novelUrl + chapterUrl),
                 (tx, error) => console.log(error)
             );
         });
@@ -97,11 +97,24 @@ const ChapterItem = ({ route, navigation }) => {
         });
     };
 
+    // const updateLastRead = () => {
+    //     db.transaction((tx) => {
+
+    //         tx.executeSql(
+    //             "UPDATE LibraryTable SET lastRead = ?, lastReadName = ?, unread = 0 WHERE novelUrl = ?",
+    //             [chapter.nextChapter, chapterName, novelUrl],
+    //             (tx, res) =>
+    //                 console.log("Set Last Read " + novelUrl + chapterUrl),
+    //             (tx, error) => console.log(error)
+    //         );
+    //     });
+    // };
+
     const checkIfDownloaded = () => {
         db.transaction((tx) => {
             tx.executeSql(
-                "SELECT * FROM DownloadsTable WHERE chapterUrl=?",
-                [chapterUrl],
+                "SELECT * FROM DownloadsTable WHERE chapterUrl=? AND novelUrl=?",
+                [chapterUrl, novelUrl],
                 (txObj, res) => {
                     if (res.rows.length === 0) {
                         // console.log("Not Downloaded");
@@ -167,12 +180,12 @@ const ChapterItem = ({ route, navigation }) => {
                     >
                         <Appbar.BackAction
                             onPress={() => {
-                                navigation.navigate("NovelItem", {
-                                    novelUrl,
-                                    extensionId,
-                                    navigatingFrom: 0,
-                                });
-                                // navigation.goBack();
+                                // navigation.navigate("NovelItem", {
+                                //     novelUrl,
+                                //     extensionId,
+                                //     navigatingFrom: 0,
+                                // });
+                                navigation.goBack();
                             }}
                             color={"white"}
                             size={26}

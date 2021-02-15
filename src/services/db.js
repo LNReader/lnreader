@@ -195,7 +195,7 @@ export const toggleFavourite = async (libraryStatus, novelUrl) => {
 };
 
 /**
- * Download or delete chapter
+ * Fetch chapter from source and download or delete from db
  */
 
 export const downloadOrDeleteChapter = async (

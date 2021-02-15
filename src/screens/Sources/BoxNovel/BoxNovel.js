@@ -34,8 +34,8 @@ const AllNovels = ({ navigation }) => {
         )
             .then((response) => response.json())
             .then((json) => {
-                setNovels((novels) => novels.concat(json));
                 setPageNo(pageNo + 1);
+                setNovels((novels) => novels.concat(json));
                 setLoading(false);
             });
     };

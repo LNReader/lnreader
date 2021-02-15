@@ -27,7 +27,7 @@ const NovelCover = ({ item, onPress, libraryStatus }) => {
                         style={styles.logo}
                         imageStyle={[
                             { borderRadius: 6 },
-                            libraryStatus && { opacity: 0.6 },
+                            libraryStatus && { opacity: 0.4 },
                         ]}
                         progressiveRenderingEnabled={true}
                     >
@@ -62,21 +62,22 @@ export default NovelCover;
 
 const styles = StyleSheet.create({
     logo: {
-        height: 190,
+        height: 186,
         borderRadius: 6,
     },
     titleContainer: {
         flex: 1,
         justifyContent: "flex-end",
-        width: "100%",
         borderRadius: 6,
     },
     title: {
         fontFamily: "pt-sans-bold",
-        fontSize: 15,
+        fontSize: 14,
         color: "white",
-        padding: 5,
-        width: "100%",
+        padding: 8,
+        textShadowColor: "rgba(0, 0, 0, 0.75)",
+        textShadowOffset: { width: -1, height: 1 },
+        textShadowRadius: 10,
     },
     linearGradient: {
         borderRadius: 6,
