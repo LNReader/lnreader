@@ -1,1 +1,3 @@
 export const SWITCH_THEME = "SWITCH_THEME";
+
+export const GET_LIBRARY_NOVELS = "GET_LIBRARY_NOVELS";

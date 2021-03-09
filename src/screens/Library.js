@@ -18,11 +18,13 @@ import { useSelector } from "react-redux";
 
 import { getLibraryFromDb, searchInLibrary } from "../services/db";
 
+import { getLibraryNovels } from "../redux/actions/library";
+
 const LibraryScreen = ({ navigation }) => {
     const theme = useSelector((state) => state.themeReducer.theme);
 
     const [refreshing, setRefreshing] = useState(false);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [novels, setNovels] = useState();
 
     const [searchBar, setSearchBar] = useState(false);

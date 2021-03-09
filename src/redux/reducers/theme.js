@@ -1,7 +1,7 @@
-import { theme } from "../../theme/theme";
+import { amoledDarkTheme } from "../../theme/theme";
 
 const initialState = {
-    theme: theme,
+    theme: amoledDarkTheme,
 };
 
 const themeReducer = (state = initialState, action) => {
