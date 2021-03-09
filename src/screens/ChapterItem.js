@@ -5,14 +5,14 @@ import { Appbar, Provider, Portal } from "react-native-paper";
 import { theme } from "../theme/theme";
 import { CollapsibleHeaderScrollView } from "react-native-collapsible-header-views";
 
-import BottomSheet from "../components/ChapterBottomSheet";
+import BottomSheet from "../components/chapter/BottomSheet";
 
 import * as SQLite from "expo-sqlite";
 const db = SQLite.openDatabase("lnreader.db");
 
 import { fetchChapterFromSource } from "../services/api";
 
-import { getReaderTheme } from "../services/AsyncStorage";
+import { getReaderTheme } from "../services/asyncStorage";
 
 const ChapterItem = ({ route, navigation }) => {
     const { extensionId, chapterUrl, novelUrl, chapterName } = route.params;

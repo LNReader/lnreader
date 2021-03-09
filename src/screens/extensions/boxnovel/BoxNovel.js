@@ -1,45 +1,41 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, View, FlatList, ActivityIndicator } from "react-native";
-import { Appbar, Provider, Menu, RadioButton } from "react-native-paper";
+import { Appbar, Provider, Portal } from "react-native-paper";
 
-import NovelCover from "../../../components/NovelCover";
+import NovelCover from "../../../components/common/NovelCover";
 import HeaderSearchBar from "../../../components/HeaderSearchBar";
+import { BottomSheet } from "./filters/BottomSheet";
 
 import { useSelector } from "react-redux";
 
 import * as SQLite from "expo-sqlite";
 const db = SQLite.openDatabase("lnreader.db");
 
-const ReadLightNovel = ({ navigation }) => {
-    const theme = useSelector((state) => state.themeReducer.theme);
-
+const AllNovels = ({ navigation }) => {
     const [loading, setLoading] = useState(true);
+    const [loadingMore, setLoadingMore] = useState(false);
 
-    const [novels, setNovels] = useState();
+    const [novels, setNovels] = useState([]);
     const [libraryNovels, setlibraryNovels] = useState([]);
+
+    const [sort, setSort] = useState("rating");
+    const [pageNo, setPageNo] = useState(1);
 
     const [searchBar, setSearchBar] = useState(false);
     const [searchText, setSearchText] = useState("");
 
-    const [searched, setSearched] = useState(false);
+    const [searched, setSearched] = useState(0);
+
+    const theme = useSelector((state) => state.themeReducer.theme);
 
     const getNovels = () => {
-        fetch(`https://lnreader-extensions.herokuapp.com/api/2/novels/`)
-            .then((response) => response.json())
-            .then((json) => {
-                setNovels(json);
-                setLoading(false);
-            });
-    };
-
-    const getSearchResults = (searchText) => {
-        setLoading(true);
         fetch(
-            `https://lnreader-extensions.herokuapp.com/api/2/search/?s=${searchText}`
+            `https://lnreader-extensions.herokuapp.com/api/1/novels/${pageNo}/?o=${sort}`
         )
             .then((response) => response.json())
             .then((json) => {
-                setNovels(json);
+                setPageNo(pageNo + 1);
+                setNovels((novels) => novels.concat(json));
                 setLoading(false);
             });
     };
@@ -47,7 +43,7 @@ const ReadLightNovel = ({ navigation }) => {
     const getLibraryNovels = () => {
         db.transaction((tx) => {
             tx.executeSql(
-                "SELECT novelUrl FROM LibraryTable WHERE libraryStatus = 1 AND extensionId = 2",
+                "SELECT novelUrl FROM LibraryTable WHERE libraryStatus = 1 AND extensionId = 1",
                 null,
                 (tx, { rows: { _array } }) => {
                     setlibraryNovels(_array);
@@ -57,14 +53,47 @@ const ReadLightNovel = ({ navigation }) => {
         });
     };
 
+    const onEndReached = ({
+        layoutMeasurement,
+        contentOffset,
+        contentSize,
+    }) => {
+        const paddingToBottom = 5;
+        return (
+            layoutMeasurement.height + contentOffset.y >=
+            contentSize.height - paddingToBottom
+        );
+    };
+
+    const getSearchResults = (searchText) => {
+        setLoading(true);
+        fetch(
+            `https://lnreader-extensions.herokuapp.com/api/1/search/?s=${searchText}&?o=${sort}`
+        )
+            .then((response) => response.json())
+            .then((json) => {
+                setNovels(json);
+                setLoading(false);
+            });
+    };
+
     const checkIFInLibrary = (id) => {
         return libraryNovels.some((obj) => obj.novelUrl === id);
     };
 
     useEffect(() => {
-        getNovels();
         getLibraryNovels();
-    }, []);
+        getNovels();
+    }, [sort]);
+
+    const sortNovels = () => {
+        setLoading(true);
+        if (searched) {
+            getSearchResults();
+        } else {
+            getNovels();
+        }
+    };
 
     return (
         <Provider>
@@ -72,23 +101,22 @@ const ReadLightNovel = ({ navigation }) => {
                 {!searchBar ? (
                     <>
                         <Appbar.BackAction
-                            color={theme.textColorPrimaryDark}
                             onPress={() => navigation.goBack()}
+                            color={theme.textColorPrimaryDark}
                         />
 
                         <Appbar.Content
-                            color={theme.textColorPrimaryDark}
-                            title="ReadLightNovel"
+                            title="Box Novel"
                             titleStyle={{ color: theme.textColorPrimaryDark }}
                         />
                         <Appbar.Action
-                            color={theme.textColorPrimaryDark}
                             icon="magnify"
                             onPress={() => setSearchBar(true)}
+                            color={theme.textColorPrimaryDark}
                         />
                         <Appbar.Action
                             icon="filter-variant"
-                            disabled
+                            onPress={() => _panel.show({ velocity: -1.5 })}
                             color={theme.textColorPrimaryDark}
                         />
                     </>
@@ -98,6 +126,8 @@ const ReadLightNovel = ({ navigation }) => {
                             onPress={() => {
                                 if (searched) {
                                     setLoading(true);
+                                    setPageNo(1);
+                                    setNovels([]);
                                     getNovels();
                                 }
                                 setSearchBar(false);
@@ -110,6 +140,7 @@ const ReadLightNovel = ({ navigation }) => {
                             onChangeText={(text) => setSearchText(text)}
                             onSubmitEditing={() => {
                                 if (searchText !== "") {
+                                    setSort("rating");
                                     getSearchResults(searchText);
                                     setSearched(true);
                                 }
@@ -147,15 +178,24 @@ const ReadLightNovel = ({ navigation }) => {
                         data={novels}
                         showsVerticalScrollIndicator={false}
                         keyExtractor={(item) => item.novelUrl}
+                        ListFooterComponent={() =>
+                            loadingMore && (
+                                <ActivityIndicator
+                                    color={theme.colorAccentDark}
+                                    size="small"
+                                    style={{ marginTop: 20, marginBottom: 80 }}
+                                />
+                            )
+                        }
                         renderItem={({ item }) => (
                             <NovelCover
                                 item={item}
-                                onPress={() =>
+                                onPress={() => {
                                     navigation.navigate("NovelItem", {
                                         ...item,
                                         navigatingFrom: 2,
-                                    })
-                                }
+                                    });
+                                }}
                                 libraryStatus={
                                     checkIFInLibrary(item.novelUrl)
                                         ? true
@@ -163,20 +203,35 @@ const ReadLightNovel = ({ navigation }) => {
                                 }
                             />
                         )}
+                        onScroll={({ nativeEvent }) => {
+                            if (onEndReached(nativeEvent)) {
+                                setLoadingMore(true);
+                                getNovels();
+                                console.log("End Reached");
+                            }
+                        }}
                     />
                 )}
             </View>
+            <Portal>
+                <BottomSheet
+                    bottomSheetRef={(c) => (_panel = c)}
+                    setSort={setSort}
+                    sort={sort}
+                />
+            </Portal>
         </Provider>
     );
 };
 
-export default ReadLightNovel;
+export default AllNovels;
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 4,
+        padding: 3,
     },
+
     contentContainer: {
         flex: 1,
     },

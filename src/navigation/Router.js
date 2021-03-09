@@ -9,19 +9,19 @@ import { createMaterialBottomTabNavigator } from "@react-navigation/material-bot
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import Library from "../screens/Library";
-import History from "../screens/History/History";
+import History from "../screens/history/History";
 import Browse from "../screens/Browse";
 
-import More from "../screens/More/More";
-import About from "../screens/More/About";
-import Settings from "../screens/More/Settings";
+import More from "../screens/more/More";
+import About from "../screens/more/About";
+import Settings from "../screens/more/Settings";
 
 import NovelItem from "../screens/NovelItem";
 import ChapterItem from "../screens/ChapterItem";
 
-// Sources
-import BoxNovel from "../screens/Sources/boxnovel/BoxNovel";
-import ReadLightNovel from "../screens/Sources/readlightnovel/ReadLightNovel";
+// Extensions
+import BoxNovel from "../screens/extensions/boxnovel/BoxNovel";
+import ReadLightNovel from "../screens/extensions/readlightnovel/ReadLightNovel";
 
 const Stack = createStackNavigator();
 

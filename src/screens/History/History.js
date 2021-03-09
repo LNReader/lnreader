@@ -9,7 +9,7 @@ import {
     ActivityIndicator,
 } from "react-native";
 
-import { CustomAppbar } from "../../components/Appbar";
+import { CustomAppbar } from "../../components/common/Appbar";
 import HistoryCard from "../../components/HistoryCard";
 
 import * as SQLite from "expo-sqlite";

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet, View, Text, ImageBackground } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { TouchableRipple } from "react-native-paper";
-import { theme } from "../theme/theme";
+import { theme } from "../../theme/theme";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 

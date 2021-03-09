@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import { View, ToastAndroid } from "react-native";
 
 import { List, Divider, Checkbox } from "react-native-paper";
-import { CustomAppbar } from "../../components/Appbar";
+import { CustomAppbar } from "../../components/common/Appbar";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { switchTheme } from "../../redux/actions/theme";
 
-import { setAppTheme, getAppTheme } from "../../services/AsyncStorage";
+import { setAppTheme, getAppTheme } from "../../services/asyncStorage";
 
 import { setStatusBarStyle } from "expo-status-bar";
 
@@ -18,8 +18,6 @@ import {
     midnightDuskTheme,
     lightTheme,
 } from "../../theme/theme";
-
-// import { theme } from "../../theme/theme";
 
 import * as SQLite from "expo-sqlite";
 const db = SQLite.openDatabase("lnreader.db");

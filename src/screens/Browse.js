@@ -1,16 +1,33 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-import { StyleSheet, View, Text, FlatList, Image } from "react-native";
+import {
+    StyleSheet,
+    View,
+    Text,
+    FlatList,
+    Image,
+    ActivityIndicator,
+} from "react-native";
 import { TouchableRipple, IconButton, Button } from "react-native-paper";
 
-import { CustomAppbar } from "../components/Appbar";
-
-import { sources } from "../utils/sources";
+import { CustomAppbar } from "../components/common/Appbar";
 
 import { useSelector } from "react-redux";
 
 const Browse = ({ navigation }) => {
     const theme = useSelector((state) => state.themeReducer.theme);
+
+    const [loading, setLoading] = useState(true);
+    const [extensions, setExtensions] = useState();
+
+    useEffect(() => {
+        fetch(`https://lnreader-extensions.herokuapp.com/api/`)
+            .then((response) => response.json())
+            .then((json) => {
+                setExtensions(json);
+                setLoading(false);
+            });
+    }, []);
 
     return (
         <>
@@ -21,60 +38,63 @@ const Browse = ({ navigation }) => {
                     { backgroundColor: theme.colorDarkPrimaryDark },
                 ]}
             >
-                <FlatList
-                    data={sources}
-                    keyExtractor={(item) => item.sourceId.toString()}
-                    renderItem={({ item }) => (
-                        <TouchableRipple
-                            style={styles.sourceCard}
-                            onPress={() =>
-                                navigation.navigate(item.sourceName + "Stack")
-                            }
-                            rippleColor={theme.rippleColorDark}
-                        >
-                            <>
-                                <Image
-                                    source={{
-                                        uri: item.sourceCover,
-                                    }}
-                                    style={{
-                                        width: 40,
-                                        height: 40,
-                                        borderRadius: 6,
-                                    }}
-                                    resizeMode="contain"
-                                />
-                                <View
-                                    style={{
-                                        marginLeft: 15,
-                                        flex: 1,
-                                        justifyContent: "space-between",
-                                        flexDirection: "row",
-                                        alignItems: "center",
-                                    }}
-                                >
-                                    <View>
-                                        <Text
-                                            style={{
-                                                color:
-                                                    theme.textColorPrimaryDark,
-                                                fontSize: 14,
-                                            }}
-                                        >
-                                            {item.sourceName}
-                                        </Text>
-                                        <Text
-                                            style={{
-                                                color:
-                                                    theme.textColorSecondaryDark,
-                                                fontSize: 12,
-                                            }}
-                                        >
-                                            {item.sourceLanguage}
-                                        </Text>
-                                    </View>
-                                    <View>
-                                        {/* <IconButton
+                {!loading ? (
+                    <FlatList
+                        data={extensions}
+                        keyExtractor={(item) => item.sourceId.toString()}
+                        renderItem={({ item }) => (
+                            <TouchableRipple
+                                style={styles.sourceCard}
+                                onPress={() =>
+                                    navigation.navigate(
+                                        item.sourceName + "Stack"
+                                    )
+                                }
+                                rippleColor={theme.rippleColorDark}
+                            >
+                                <>
+                                    <Image
+                                        source={{
+                                            uri: item.sourceCover,
+                                        }}
+                                        style={{
+                                            width: 40,
+                                            height: 40,
+                                            borderRadius: 6,
+                                        }}
+                                        resizeMode="contain"
+                                    />
+                                    <View
+                                        style={{
+                                            marginLeft: 15,
+                                            flex: 1,
+                                            justifyContent: "space-between",
+                                            flexDirection: "row",
+                                            alignItems: "center",
+                                        }}
+                                    >
+                                        <View>
+                                            <Text
+                                                style={{
+                                                    color:
+                                                        theme.textColorPrimaryDark,
+                                                    fontSize: 14,
+                                                }}
+                                            >
+                                                {item.sourceName}
+                                            </Text>
+                                            <Text
+                                                style={{
+                                                    color:
+                                                        theme.textColorSecondaryDark,
+                                                    fontSize: 12,
+                                                }}
+                                            >
+                                                {item.sourceLanguage}
+                                            </Text>
+                                        </View>
+                                        <View>
+                                            {/* <IconButton
                                             icon="magnify"
                                             color={theme.textColorSecondaryDark}
                                             size={24}
@@ -89,24 +109,33 @@ const Browse = ({ navigation }) => {
                                                 )
                                             }
                                         /> */}
-                                        <Button
-                                            labelStyle={{ letterSpacing: 0 }}
-                                            uppercase={false}
-                                            color={theme.colorAccentDark}
-                                            onPress={() =>
-                                                navigation.navigate(
-                                                    item.sourceName + "Stack"
-                                                )
-                                            }
-                                        >
-                                            Browse
-                                        </Button>
+                                            <Button
+                                                labelStyle={{
+                                                    letterSpacing: 0,
+                                                }}
+                                                uppercase={false}
+                                                color={theme.colorAccentDark}
+                                                onPress={() =>
+                                                    navigation.navigate(
+                                                        item.sourceName +
+                                                            "Stack"
+                                                    )
+                                                }
+                                            >
+                                                Browse
+                                            </Button>
+                                        </View>
                                     </View>
-                                </View>
-                            </>
-                        </TouchableRipple>
-                    )}
-                />
+                                </>
+                            </TouchableRipple>
+                        )}
+                    />
+                ) : (
+                    <ActivityIndicator
+                        size="small"
+                        color={theme.colorAccentDark}
+                    />
+                )}
             </View>
         </>
     );

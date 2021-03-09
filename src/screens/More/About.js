@@ -1,7 +1,7 @@
 import React from "react";
 import { List, Divider } from "react-native-paper";
 import * as Linking from "expo-linking";
-import { CustomAppbar } from "../../components/Appbar";
+import { CustomAppbar } from "../../components/common/Appbar";
 import { useSelector } from "react-redux";
 const AboutScreen = ({ navigation }) => {
     const theme = useSelector((state) => state.themeReducer.theme);

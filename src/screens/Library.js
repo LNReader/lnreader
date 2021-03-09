@@ -12,10 +12,7 @@ import { Appbar } from "react-native-paper";
 import { FlatList } from "react-native-gesture-handler";
 import { useFocusEffect } from "@react-navigation/native";
 
-import { Button } from "react-native-paper";
-import NovelCover from "../components/NovelCover";
-
-import { CustomAppbar } from "../components/Appbar";
+import NovelCover from "../components/common/NovelCover";
 
 import { useSelector } from "react-redux";
 
@@ -227,9 +224,6 @@ const LibraryScreen = ({ navigation }) => {
                         )
                     }
                 />
-                {/* <Button mode="contained" onPress={() => deleted()}>
-                    Delete Library Table
-                </Button> */}
             </View>
         </>
     );
