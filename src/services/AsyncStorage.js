@@ -27,6 +27,15 @@ export const getAppTheme = async () => {
     return theme;
 };
 
+export const getDisplayMode = async () => {
+    let displayMode = await AsyncStorage.getItem("@display_mode");
+    return displayMode;
+};
+
+export const setDisplayMode = async (val) => {
+    AsyncStorage.setItem("@display_mode", val);
+};
+
 export const setStatusBar = () => {
     AsyncStorage.getItem("@application_theme").then((value) => {
         if (JSON.parse(value) === "lightTheme") {

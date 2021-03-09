@@ -1,17 +1,10 @@
 import React, { useState } from "react";
 import { View, ToastAndroid } from "react-native";
-
-import { List, Divider, Checkbox } from "react-native-paper";
-import { CustomAppbar } from "../../components/common/Appbar";
-
-import AsyncStorage from "@react-native-async-storage/async-storage";
-
-import { switchTheme } from "../../redux/actions/theme";
-
-import { setAppTheme, getAppTheme } from "../../services/asyncStorage";
-
 import { setStatusBarStyle } from "expo-status-bar";
+import { List } from "react-native-paper";
 
+import { connect } from "react-redux";
+import { switchTheme } from "../../redux/actions/theme";
 import {
     amoledDarkTheme,
     darkTheme,
@@ -19,10 +12,24 @@ import {
     lightTheme,
 } from "../../theme/theme";
 
-import * as SQLite from "expo-sqlite";
-const db = SQLite.openDatabase("lnreader.db");
+import { CustomAppbar } from "../../components/common/Appbar";
+import {
+    DisplayCheckbox,
+    ThemeCheckbox,
+} from "../../components/settings/Checkbox";
 
-import { connect } from "react-redux";
+import {
+    setAppTheme,
+    getAppTheme,
+    getDisplayMode,
+    setDisplayMode,
+} from "../../services/asyncStorage";
+
+import {
+    deleteHistory,
+    deleteNovelsNotInLibrary,
+    deleteDatabase,
+} from "../../services/db";
 
 const SettingsScreen = ({ navigation, theme, switchTheme }) => {
     const desciptionStyles = {
@@ -30,72 +37,13 @@ const SettingsScreen = ({ navigation, theme, switchTheme }) => {
     };
 
     const titleStyles = { color: theme.textColorPrimaryDark };
-    const [displayMode, setDisplayMode] = useState("compact");
 
+    const [displayMode, setDisplay] = useState("compact");
     const [applicationTheme, setApplicationTheme] = useState("amoledDarkTheme");
 
     getAppTheme().then((res) => setApplicationTheme(res));
 
-    AsyncStorage.getItem("@display_mode").then((value) => {
-        if (value) setDisplayMode(value);
-    });
-
-    const deleteHistory = () => {
-        db.transaction((tx) => {
-            tx.executeSql("DELETE FROM HistoryTable");
-        });
-    };
-
-    const deleteNovelsNotInLib = () => {
-        db.transaction((tx) => {
-            tx.executeSql(
-                "DELETE FROM LibraryTable WHERE libraryStatus=0",
-                null,
-                (txObj, res) => {
-                    console.log("Deleted");
-                },
-                (txObj, error) => console.log("Error ", error)
-            );
-        });
-    };
-
-    const deleteDatabase = () => {
-        db.transaction((tx) => {
-            tx.executeSql(
-                "DROP TABLE LibraryTable",
-                null,
-                (txObj, { rows: { _array } }) => {
-                    console.log("DELETED LIB TABLE");
-                },
-                (txObj, error) => console.log("Error ", error)
-            );
-            tx.executeSql(
-                "DROP TABLE ChapterTable",
-                null,
-                (txObj, { rows: { _array } }) => {
-                    console.log("DELETED CHAP TABLE");
-                },
-                (txObj, error) => console.log("Error ", error)
-            );
-            tx.executeSql(
-                "DROP TABLE HistoryTable",
-                null,
-                (txObj, { rows: { _array } }) => {
-                    console.log("DELETED History TABLE");
-                },
-                (txObj, error) => console.log("Error ", error)
-            );
-            tx.executeSql(
-                "DROP TABLE DownloadsTable",
-                null,
-                (txObj, { rows: { _array } }) => {
-                    console.log("DELETED Downloads TABLE");
-                    ToastAndroid.show("Database deleted", ToastAndroid.SHORT);
-                },
-                (txObj, error) => console.log("Error ", error)
-            );
-        });
-    };
+    getDisplayMode().then((res) => setDisplay(res));
 
     return (
         <>
@@ -125,7 +73,7 @@ const SettingsScreen = ({ navigation, theme, switchTheme }) => {
                         title="Clear database"
                         descriptionStyle={desciptionStyles}
                         description="Delete history for novels not in your library"
-                        onPress={() => deleteNovelsNotInLib()}
+                        onPress={() => deleteNovelsNotInLibrary()}
                         rippleColor={theme.rippleColorDark}
                     />
                     <List.Item
@@ -145,48 +93,26 @@ const SettingsScreen = ({ navigation, theme, switchTheme }) => {
                         Display
                     </List.Subheader>
                     <View>
-                        <Checkbox.Item
-                            label="Comfortable"
-                            labelStyle={{ color: theme.textColorPrimaryDark }}
-                            status={
-                                displayMode === "comfortable"
-                                    ? "checked"
-                                    : "unchecked"
-                            }
-                            mode="ios"
-                            uncheckedColor={theme.textColorSecondaryDark}
-                            color={theme.colorAccentDark}
+                        <DisplayCheckbox
+                            value="comfortable"
+                            displayMode={displayMode}
                             onPress={() => {
+                                setDisplay("comfortable");
                                 setDisplayMode("comfortable");
-                                AsyncStorage.setItem(
-                                    "@display_mode",
-                                    "comfortable"
-                                );
                             }}
                         />
                     </View>
                     <View>
-                        <Checkbox.Item
-                            label="Compact"
-                            labelStyle={{ color: theme.textColorPrimaryDark }}
-                            status={
-                                displayMode === "compact"
-                                    ? "checked"
-                                    : "unchecked"
-                            }
-                            mode="ios"
-                            uncheckedColor={theme.textColorSecondaryDark}
-                            color={theme.colorAccentDark}
+                        <DisplayCheckbox
+                            value="compact"
+                            displayMode={displayMode}
                             onPress={() => {
+                                setDisplay("compact");
                                 setDisplayMode("compact");
-                                AsyncStorage.setItem(
-                                    "@display_mode",
-                                    "compact"
-                                );
                             }}
                         />
                     </View>
-                    <List.Subheader
+                    {/* <List.Subheader
                         style={{
                             color: theme.colorAccentDark,
                             paddingBottom: 5,
@@ -201,7 +127,7 @@ const SettingsScreen = ({ navigation, theme, switchTheme }) => {
                         description="Delete entire database"
                         rippleColor={theme.rippleColorDark}
                         onPress={() => deleteDatabase()}
-                    />
+                    /> */}
 
                     <List.Subheader
                         style={{
@@ -212,37 +138,25 @@ const SettingsScreen = ({ navigation, theme, switchTheme }) => {
                         Theme
                     </List.Subheader>
                     <View>
-                        <Checkbox.Item
+                        <ThemeCheckbox
                             label="Light Theme"
-                            labelStyle={{ color: theme.textColorPrimaryDark }}
-                            status={
-                                applicationTheme === "lightTheme"
-                                    ? "checked"
-                                    : "unchecked"
+                            checked={
+                                applicationTheme === "lightTheme" ? true : false
                             }
-                            mode="ios"
-                            uncheckedColor={theme.textColorSecondaryDark}
-                            color={theme.colorAccentDark}
                             onPress={() => {
                                 switchTheme(lightTheme);
-                                setApplicationTheme("lightTheme");
+                                setApplicationTheme(`lightTheme`);
                                 setAppTheme("lightTheme");
                                 setStatusBarStyle("dark");
                             }}
                         />
                     </View>
                     <View>
-                        <Checkbox.Item
+                        <ThemeCheckbox
                             label="Dark Theme"
-                            labelStyle={{ color: theme.textColorPrimaryDark }}
-                            status={
-                                applicationTheme === "darkTheme"
-                                    ? "checked"
-                                    : "unchecked"
+                            checked={
+                                applicationTheme === "darkTheme" ? true : false
                             }
-                            mode="ios"
-                            uncheckedColor={theme.textColorSecondaryDark}
-                            color={theme.colorAccentDark}
                             onPress={() => {
                                 switchTheme(darkTheme);
                                 setApplicationTheme("darkTheme");
@@ -251,41 +165,29 @@ const SettingsScreen = ({ navigation, theme, switchTheme }) => {
                             }}
                         />
                         <View>
-                            <Checkbox.Item
-                                label="Amoled Dark"
-                                labelStyle={{
-                                    color: theme.textColorPrimaryDark,
-                                }}
-                                status={
+                            <ThemeCheckbox
+                                label="Amoled Dark Theme"
+                                checked={
                                     applicationTheme === "amoledDarkTheme"
-                                        ? "checked"
-                                        : "unchecked"
+                                        ? true
+                                        : false
                                 }
-                                mode="ios"
-                                uncheckedColor={theme.textColorSecondaryDark}
-                                color={theme.colorAccentDark}
                                 onPress={() => {
                                     switchTheme(amoledDarkTheme);
-                                    setApplicationTheme("amoledDarkTheme");
+                                    setApplicationTheme(`amoledDarkTheme`);
                                     setAppTheme("amoledDarkTheme");
                                     setStatusBarStyle("light");
                                 }}
                             />
                         </View>
                         <View>
-                            <Checkbox.Item
+                            <ThemeCheckbox
                                 label="Midnight Dusk Theme"
-                                labelStyle={{
-                                    color: theme.textColorPrimaryDark,
-                                }}
-                                status={
+                                checked={
                                     applicationTheme === "midnightDuskTheme"
-                                        ? "checked"
-                                        : "unchecked"
+                                        ? true
+                                        : false
                                 }
-                                mode="ios"
-                                uncheckedColor={theme.textColorSecondaryDark}
-                                color={theme.colorAccentDark}
                                 onPress={() => {
                                     switchTheme(midnightDuskTheme);
                                     setApplicationTheme("midnightDuskTheme");

@@ -8,8 +8,7 @@ import {
     Image,
     ActivityIndicator,
 } from "react-native";
-import { TouchableRipple, IconButton, Button } from "react-native-paper";
-
+import { TouchableRipple, Button } from "react-native-paper";
 import { CustomAppbar } from "../components/common/Appbar";
 
 import { useSelector } from "react-redux";
@@ -94,21 +93,6 @@ const Browse = ({ navigation }) => {
                                             </Text>
                                         </View>
                                         <View>
-                                            {/* <IconButton
-                                            icon="magnify"
-                                            color={theme.textColorSecondaryDark}
-                                            size={24}
-                                            onPress={() =>
-                                                navigation.navigate(
-                                                    item.sourceName + "Stack",
-                                                    {
-                                                        screen:
-                                                            item.sourceName +
-                                                            "Search",
-                                                    }
-                                                )
-                                            }
-                                        /> */}
                                             <Button
                                                 labelStyle={{
                                                     letterSpacing: 0,
@@ -150,7 +134,6 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     sourceCard: {
-        // backgroundColor: "pink",
         paddingVertical: 10,
         marginVertical: 5,
         paddingHorizontal: 20,

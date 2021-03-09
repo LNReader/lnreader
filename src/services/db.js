@@ -313,3 +313,63 @@ export const searchInLibrary = async (searchText) => {
         });
     });
 };
+
+export const deleteHistory = () => {
+    db.transaction((tx) => {
+        tx.executeSql("DELETE FROM HistoryTable");
+    });
+};
+
+export const deleteNovelsNotInLibrary = () => {
+    db.transaction((tx) => {
+        tx.executeSql(
+            "DELETE FROM LibraryTable WHERE libraryStatus=0",
+            null,
+            (txObj, res) => {
+                console.log("Deleted");
+            },
+            (txObj, error) => console.log("Error ", error)
+        );
+    });
+};
+
+/**
+ * Delete entire database
+ */
+export const deleteDatabase = () => {
+    db.transaction((tx) => {
+        tx.executeSql(
+            "DROP TABLE LibraryTable",
+            null,
+            (txObj, { rows: { _array } }) => {
+                console.log("DELETED LIB TABLE");
+            },
+            (txObj, error) => console.log("Error ", error)
+        );
+        tx.executeSql(
+            "DROP TABLE ChapterTable",
+            null,
+            (txObj, { rows: { _array } }) => {
+                console.log("DELETED CHAP TABLE");
+            },
+            (txObj, error) => console.log("Error ", error)
+        );
+        tx.executeSql(
+            "DROP TABLE HistoryTable",
+            null,
+            (txObj, { rows: { _array } }) => {
+                console.log("DELETED History TABLE");
+            },
+            (txObj, error) => console.log("Error ", error)
+        );
+        tx.executeSql(
+            "DROP TABLE DownloadsTable",
+            null,
+            (txObj, { rows: { _array } }) => {
+                console.log("DELETED Downloads TABLE");
+                ToastAndroid.show("Database deleted", ToastAndroid.SHORT);
+            },
+            (txObj, error) => console.log("Error ", error)
+        );
+    });
+};
