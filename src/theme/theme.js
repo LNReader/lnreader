@@ -1,9 +1,35 @@
 /**
- * Amoled Dark Theme
+ * Application Colors
  */
 export const theme = {
     colorDarkPrimary: "#000000",
     colorDarkPrimaryDark: "#000000",
+    colorAccentDark: "#3399FF",
+    textColorPrimaryDark: "#FFFFFF",
+    textColorSecondaryDark: "rgba(255,255,255,0.7)",
+    textColorHintDark: "rgba(255,255,255,0.5)",
+    rippleColorDark: "rgba(255,255,255,0.2)",
+};
+
+/**
+ * Light Theme
+ */
+export const lightTheme = {
+    colorDarkPrimary: "#FFFFFF",
+    colorDarkPrimaryDark: "#FAFAFA",
+    colorAccentDark: "#2979FF",
+    textColorPrimaryDark: "#000000",
+    textColorSecondaryDark: "rgba(0,0,0,0.54)",
+    textColorHintDark: "rgba(0,0,0,0.38)",
+    rippleColorDark: "#C2C2C2",
+};
+
+/**
+ * Dark Theme
+ */
+export const darkTheme = {
+    colorDarkPrimary: "#242529",
+    colorDarkPrimaryDark: "#202125",
     colorAccentDark: "#3399FF",
     textColorPrimaryDark: "#FFFFFF",
     textColorSecondaryDark: "rgba(255,255,255,0.7)",
@@ -25,19 +51,6 @@ export const amoledDarkTheme = {
 };
 
 /**
- * Dark Theme
- */
-export const darkTheme = {
-    colorDarkPrimary: "#242529",
-    colorDarkPrimaryDark: "#202125",
-    colorAccentDark: "#3399FF",
-    textColorPrimaryDark: "#FFFFFF",
-    textColorSecondaryDark: "rgba(255,255,255,0.7)",
-    textColorHintDark: "rgba(255,255,255,0.5)",
-    rippleColorDark: "rgba(255,255,255,0.2)",
-};
-
-/**
  * Midnight Dusk Theme
  */
 export const midnightDuskTheme = {
@@ -48,17 +61,4 @@ export const midnightDuskTheme = {
     textColorSecondaryDark: "rgba(255,255,255,0.7)",
     textColorHintDark: "rgba(255,255,255,0.5)",
     rippleColorDark: "rgba(255,255,255,0.2)",
-};
-
-/**
- * Midnight Dusk Theme
- */
-export const lightTheme = {
-    colorDarkPrimary: "#FFFFFF",
-    colorDarkPrimaryDark: "#FAFAFA",
-    colorAccentDark: "#2979FF",
-    textColorPrimaryDark: "#000000",
-    textColorSecondaryDark: "rgba(0,0,0,0.54)",
-    textColorHintDark: "rgba(0,0,0,0.38)",
-    rippleColorDark: "#C2C2C2",
 };

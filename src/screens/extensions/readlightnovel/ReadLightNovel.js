@@ -3,7 +3,7 @@ import { StyleSheet, View, FlatList, ActivityIndicator } from "react-native";
 import { Appbar, Provider } from "react-native-paper";
 
 import NovelCover from "../../../components/common/NovelCover";
-import HeaderSearchBar from "../../../components/HeaderSearchBar";
+import SearchBar from "../../../components/common/SearchBar";
 
 import { useSelector } from "react-redux";
 
@@ -105,7 +105,7 @@ const ReadLightNovel = ({ navigation }) => {
                             }}
                             color={theme.textColorPrimaryDark}
                         />
-                        <HeaderSearchBar
+                        <SearchBar
                             searchText={searchText}
                             onChangeText={(text) => setSearchText(text)}
                             onSubmitEditing={() => {

@@ -10,10 +10,9 @@ import {
 } from "react-native";
 
 import { CustomAppbar } from "../../components/common/Appbar";
-import HistoryCard from "../../components/HistoryCard";
+import HistoryCard from "../../components/history/HistoryCard";
 
-import * as SQLite from "expo-sqlite";
-const db = SQLite.openDatabase("lnreader.db");
+import { getHistoryFromDb, deleteChapterHistory } from "../../services/db";
 
 import { useSelector } from "react-redux";
 
@@ -23,32 +22,14 @@ const History = ({ navigation }) => {
 
     const theme = useSelector((state) => state.themeReducer.theme);
 
-    const getHistory = () => {
-        setLoading(true);
-        db.transaction((tx) => {
-            tx.executeSql(
-                "SELECT HistoryTable.chapterUrl, HistoryTable.historyId, HistoryTable.chapterName, HistoryTable.lastRead, LibraryTable.novelName, LibraryTable.novelCover, LibraryTable.novelUrl, LibraryTable.extensionId, LibraryTable.libraryStatus FROM HistoryTable INNER JOIN LibraryTable ON HistoryTable.novelUrl = LibraryTable.novelUrl ORDER BY HistoryTable.lastRead DESC",
-                null,
-                (txObj, { rows: { _array } }) => {
-                    setHistory(_array);
-                    setLoading(false);
-                },
-                (txObj, error) => console.log("Error ", error)
-            );
-        });
+    const getHistory = async () => {
+        await getHistoryFromDb().then((res) => setHistory(res));
+        setLoading(false);
     };
 
     const deleteHistory = (novelId) => {
-        db.transaction((tx) => {
-            tx.executeSql(
-                "DELETE FROM HistoryTable WHERE novelUrl = ?",
-                [novelId],
-                (txObj, res) => {
-                    getHistory();
-                },
-                (txObj, error) => console.log("Error ", error)
-            );
-        });
+        deleteChapterHistory(novelId);
+        getHistory();
     };
 
     useFocusEffect(
@@ -131,10 +112,6 @@ const styles = StyleSheet.create({
         padding: 10,
     },
     historyCard: {
-        // backgroundColor: "pink",
-        // paddingVertical: 10,
-        // marginVertical: 5,
-        // paddingHorizontal: 20,
         marginTop: 10,
         borderRadius: 4,
         flexDirection: "row",

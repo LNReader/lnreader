@@ -131,10 +131,12 @@ const Browse = ({ navigation }) => {
                         )}
                     />
                 ) : (
-                    <ActivityIndicator
-                        size="small"
-                        color={theme.colorAccentDark}
-                    />
+                    <View style={{ padding: 20 }}>
+                        <ActivityIndicator
+                            size="small"
+                            color={theme.colorAccentDark}
+                        />
+                    </View>
                 )}
             </View>
         </>

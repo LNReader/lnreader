@@ -16,9 +16,7 @@ import NovelCover from "../components/common/NovelCover";
 
 import { useSelector } from "react-redux";
 
-import * as SQLite from "expo-sqlite";
-
-const db = SQLite.openDatabase("lnreader.db");
+import { getLibraryFromDb, searchInLibrary } from "../services/db";
 
 const LibraryScreen = ({ navigation }) => {
     const theme = useSelector((state) => state.themeReducer.theme);
@@ -30,49 +28,30 @@ const LibraryScreen = ({ navigation }) => {
     const [searchBar, setSearchBar] = useState(false);
     const [searchText, setSearchText] = useState("");
 
-    const getLibraryNovels = () => {
-        db.transaction((tx) => {
-            tx.executeSql(
-                "SELECT * FROM LibraryTable WHERE libraryStatus=1",
-                null,
-                (txObj, { rows: { _array } }) => {
-                    setNovels(_array);
-                    setLoading(false);
-                    setRefreshing(false);
-                },
-                (txObj, error) => {
-                    console.log("Error ", error);
-                    setNovels([]);
-                }
-            );
+    const getLibrary = async () => {
+        await getLibraryFromDb().then((res) => {
+            setNovels(res);
         });
+        setLoading(false);
+        setRefreshing(false);
     };
 
-    const searchNovel = (searchText) => {
-        db.transaction((tx) => {
-            tx.executeSql(
-                `SELECT * FROM LibraryTable WHERE libraryStatus=1 AND novelName LIKE '%${searchText}%'`,
-                null,
-                (txObj, { rows: { _array } }) => {
-                    setNovels(_array);
-                    setRefreshing(false);
-                },
-                (txObj, error) => console.log("Error ", error)
-            );
-        });
+    const searchNovel = async (searchText) => {
+        await searchInLibrary(searchText).then((res) => setNovels(res));
+        setRefreshing(false);
     };
 
     useFocusEffect(
         useCallback(() => {
             setSearchBar(false);
-            getLibraryNovels();
+            getLibrary();
         }, [])
     );
 
     const onRefresh = () => {
         ToastAndroid.show("Updating library", ToastAndroid.SHORT);
         setRefreshing(true);
-        getLibraryNovels();
+        getLibrary();
     };
 
     return (
@@ -102,7 +81,7 @@ const LibraryScreen = ({ navigation }) => {
                             onPress={() => {
                                 setSearchBar(false);
                                 setSearchText("");
-                                getLibraryNovels();
+                                getLibrary();
                             }}
                             color={"white"}
                             size={24}
@@ -129,7 +108,7 @@ const LibraryScreen = ({ navigation }) => {
                                 icon="close"
                                 onPress={() => {
                                     setSearchText("");
-                                    // getLibraryNovels();
+                                    // getLibrary();
                                 }}
                                 color="white"
                             />
@@ -212,7 +191,7 @@ const LibraryScreen = ({ navigation }) => {
                                             paddingHorizontal: 30,
                                         }}
                                     >
-                                        Not in library
+                                        {`"${searchText}" not in library`}
                                     </Text>
                                 )
                             )

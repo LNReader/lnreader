@@ -1,8 +1,9 @@
 import React from "react";
-import { StyleSheet, View, Text, Animated } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import { List, RadioButton, Checkbox } from "react-native-paper";
 import Bottomsheet from "rn-sliding-up-panel";
-import { theme } from "../theme/theme";
+
+import { useSelector } from "react-redux";
 
 const BottomSheetHandle = () => (
     <View
@@ -16,8 +17,6 @@ const BottomSheetHandle = () => (
         }}
     />
 );
-
-import { useSelector } from "react-redux";
 
 export const BottomSheet = ({
     bottomSheetRef,

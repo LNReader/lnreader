@@ -245,3 +245,71 @@ export const downloadOrDeleteChapter = async (
         });
     }
 };
+
+/**
+ * Get reading history
+ */
+
+export const getHistoryFromDb = async () => {
+    return new Promise((resolve, reject) => {
+        db.transaction((tx) => {
+            tx.executeSql(
+                "SELECT HistoryTable.chapterUrl, HistoryTable.historyId, HistoryTable.chapterName, HistoryTable.lastRead, LibraryTable.novelName, LibraryTable.novelCover, LibraryTable.novelUrl, LibraryTable.extensionId, LibraryTable.libraryStatus FROM HistoryTable INNER JOIN LibraryTable ON HistoryTable.novelUrl = LibraryTable.novelUrl ORDER BY HistoryTable.lastRead DESC",
+                null,
+                (txObj, { rows: { _array } }) => {
+                    resolve(_array);
+                },
+                (txObj, error) => console.log("Error ", error)
+            );
+        });
+    });
+};
+
+export const deleteChapterHistory = (novelId) => {
+    db.transaction((tx) => {
+        tx.executeSql(
+            "DELETE FROM HistoryTable WHERE novelUrl = ?",
+            [novelId],
+            (txObj, res) => {},
+            (txObj, error) => console.log("Error ", error)
+        );
+    });
+};
+
+/**
+ * Get novels from library
+ */
+
+export const getLibraryFromDb = async () => {
+    return new Promise((resolve, reject) => {
+        db.transaction((tx) => {
+            tx.executeSql(
+                "SELECT * FROM LibraryTable WHERE libraryStatus=1",
+                null,
+                (txObj, { rows: { _array } }) => {
+                    resolve(_array);
+                },
+                (txObj, error) => console.log("Error ", error)
+            );
+        });
+    });
+};
+
+/**
+ * Search novel in library
+ */
+
+export const searchInLibrary = async (searchText) => {
+    return new Promise((resolve, reject) => {
+        db.transaction((tx) => {
+            tx.executeSql(
+                `SELECT * FROM LibraryTable WHERE libraryStatus=1 AND novelName LIKE '%${searchText}%'`,
+                null,
+                (txObj, { rows: { _array } }) => {
+                    resolve(_array);
+                },
+                (txObj, error) => console.log("Error ", error)
+            );
+        });
+    });
+};

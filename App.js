@@ -1,20 +1,17 @@
 import React, { useState, useEffect } from "react";
-
-import { setStatusBarStyle, StatusBar } from "expo-status-bar";
-
+import { StatusBar } from "expo-status-bar";
 import { NavigationContainer } from "@react-navigation/native";
-import Router from "./src/navigation/Router";
-
 import * as Font from "expo-font";
 import AppLoading from "expo-app-loading";
 
+import Router from "./src/navigation/Router";
+
 import { createTables, createIndexes } from "./src/services/db";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { setStatusBar } from "./src/services/asyncStorage";
 
+// Redyx
 import { Provider } from "react-redux";
-
 import { persistor, store } from "./src/redux/store/configureStore";
-
 import { PersistGate } from "redux-persist/lib/integration/react";
 
 const getFonts = () =>
@@ -25,13 +22,7 @@ const getFonts = () =>
 const App = () => {
     const [fontsLoaded, setFontsLoaded] = useState(false);
 
-    AsyncStorage.getItem("@application_theme").then((value) => {
-        if (JSON.parse(value) === "lightTheme") {
-            setStatusBarStyle("dark");
-        } else {
-            setStatusBarStyle("light");
-        }
-    });
+    setStatusBar();
 
     const createDb = () => {
         createTables();

@@ -9,9 +9,9 @@ import {
 } from "react-native";
 import { Provider, Portal } from "react-native-paper";
 
-import ChapterCard from "../components/ChapterCard";
-import NovelInfoHeader from "../components/NovelInfoHeader";
-import { BottomSheet } from "../components/NovelItemBottomSheet";
+import ChapterCard from "../components/novel/ChapterCard";
+import NovelInfoHeader from "../components/novel/NovelHeader";
+import { BottomSheet } from "../components/novel/BottomSheet";
 
 import { fetchNovelFromSource, fetchChaptersFromSource } from "../services/api";
 import {

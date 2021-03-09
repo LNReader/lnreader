@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { setStatusBarStyle } from "expo-status-bar";
 
 export const saveReaderTheme = async (val) => {
     AsyncStorage.setItem("@reader_theme", JSON.stringify(val));
@@ -24,4 +25,14 @@ export const getAppTheme = async () => {
     );
 
     return theme;
+};
+
+export const setStatusBar = () => {
+    AsyncStorage.getItem("@application_theme").then((value) => {
+        if (JSON.parse(value) === "lightTheme") {
+            setStatusBarStyle("dark");
+        } else {
+            setStatusBarStyle("light");
+        }
+    });
 };
