@@ -66,10 +66,10 @@ const LibraryScreen = ({ navigation }) => {
                         <Appbar.Action
                             icon="magnify"
                             onPress={() => setSearchBar(true)}
-                            color="white"
+                            color={theme.textColorPrimaryDark}
                         />
                         <Appbar.Action
-                            color="white"
+                            color={theme.textColorPrimaryDark}
                             icon="filter-variant"
                             disabled
                             // onPress={() => _panel.show({ velocity: -1.5 })}
@@ -83,7 +83,7 @@ const LibraryScreen = ({ navigation }) => {
                                 setSearchText("");
                                 getLibrary();
                             }}
-                            color={"white"}
+                            color={theme.textColorPrimaryDark}
                             size={24}
                         />
                         <TextInput
@@ -92,7 +92,7 @@ const LibraryScreen = ({ navigation }) => {
                             style={{
                                 fontSize: 18,
                                 flex: 1,
-                                color: "white",
+                                color: theme.textColorPrimaryDark,
                                 marginLeft: 15,
                             }}
                             autoFocus
@@ -110,7 +110,7 @@ const LibraryScreen = ({ navigation }) => {
                                     setSearchText("");
                                     // getLibrary();
                                 }}
-                                color="white"
+                                color={theme.textColorPrimaryDark}
                             />
                         )}
                     </>

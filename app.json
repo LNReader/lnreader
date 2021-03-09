@@ -19,8 +19,8 @@
         },
         "android": {
             "adaptiveIcon": {
-                "foregroundImage": "./assets/adaptive-icon.png",
-                "backgroundColor": "#000000"
+                "foregroundImage": "./assets/icon.png",
+                "backgroundColor": "#FFFFFF"
             },
             "package": "com.rajarsheechatterjee.LNReader"
         },

@@ -122,7 +122,9 @@ export const BottomSheet = ({
                         color={theme.colorAccentDark}
                         onPress={() => filterChapters("")}
                     />
-                    <Text style={{ color: "white" }}>Show all</Text>
+                    <Text style={{ color: theme.textColorPrimaryDark }}>
+                        Show all
+                    </Text>
                 </View>
                 <View style={checkBoxStyle}>
                     <Checkbox.Item
@@ -133,7 +135,9 @@ export const BottomSheet = ({
                         color={theme.colorAccentDark}
                         onPress={() => filterChapters("AND `read`=1")}
                     />
-                    <Text style={{ color: "white" }}>Show read chapters</Text>
+                    <Text style={{ color: theme.textColorPrimaryDark }}>
+                        Show read chapters
+                    </Text>
                 </View>
                 <View style={checkBoxStyle}>
                     <Checkbox.Item
@@ -144,7 +148,9 @@ export const BottomSheet = ({
                         color={theme.colorAccentDark}
                         onPress={() => filterChapters("AND `read`=0")}
                     />
-                    <Text style={{ color: "white" }}>Show unread chapters</Text>
+                    <Text style={{ color: theme.textColorPrimaryDark }}>
+                        Show unread chapters
+                    </Text>
                 </View>
                 <View style={checkBoxStyle}>
                     <Checkbox.Item
@@ -157,7 +163,7 @@ export const BottomSheet = ({
                         color={theme.colorAccentDark}
                         onPress={() => filterChapters("AND downloaded=1")}
                     />
-                    <Text style={{ color: "white" }}>
+                    <Text style={{ color: theme.textColorPrimaryDark }}>
                         Show downloaded chapters
                     </Text>
                 </View>
