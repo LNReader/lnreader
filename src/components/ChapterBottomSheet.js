@@ -74,7 +74,7 @@ const ChapterBottomSheet = ({
                             fontWeight: "bold",
                         }}
                     >
-                        Reader Theme{" "}
+                        {"Reader Theme "}
                     </Text>
                     <ToggleButton.Row
                         onValueChange={(value) => {

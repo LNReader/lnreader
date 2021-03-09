@@ -3,7 +3,7 @@ import { persistStore, persistReducer } from "redux-persist";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import thunk from "redux-thunk";
 
-import themeReducer from "./theme.reducer";
+import themeReducer from "../reducers/theme";
 
 const persistConfig = {
     key: "root",

@@ -21,7 +21,7 @@ export const createTables = async () => {
             (tx, error) => console.log(error)
         );
         tx.executeSql(
-            "CREATE TABLE IF NOT EXISTS HistoryTable (historyId INTEGER PRIMARY KEY AUTOINCREMENT, chapterUrl VARCHAR(255) UNIQUE, novelUrl VARCHAR(255) UNIQUE, chapterName VARCHAR(255), lastRead DATETIME DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY (novelUrl) REFERENCES LibraryTable(novelUrl) ON DELETE CASCADE)",
+            "CREATE TABLE IF NOT EXISTS HistoryTable (historyId INTEGER PRIMARY KEY AUTOINCREMENT, chapterUrl VARCHAR(255), novelUrl VARCHAR(255) UNIQUE, chapterName VARCHAR(255), lastRead DATETIME DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY (novelUrl) REFERENCES LibraryTable(novelUrl) ON DELETE CASCADE)",
             null,
             (tx, results) => console.log("History Table Created"),
             (tx, error) => console.log(error)

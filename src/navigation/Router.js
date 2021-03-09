@@ -23,8 +23,6 @@ import ChapterItem from "../screens/ChapterItem";
 import BoxNovel from "../screens/Sources/boxnovel/BoxNovel";
 import ReadLightNovel from "../screens/Sources/readlightnovel/ReadLightNovel";
 
-import { connect } from "react-redux";
-
 const Stack = createStackNavigator();
 
 const Tab = createMaterialBottomTabNavigator();

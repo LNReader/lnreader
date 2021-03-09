@@ -6,7 +6,7 @@ import { CustomAppbar } from "../../components/Appbar";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { switchTheme } from "../../theme/theme.action";
+import { switchTheme } from "../../redux/actions/theme";
 
 import { setAppTheme, getAppTheme } from "../../services/AsyncStorage";
 

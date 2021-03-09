@@ -13,7 +13,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { Provider } from "react-redux";
 
-import { persistor, store } from "./src/theme/store";
+import { persistor, store } from "./src/redux/store/configureStore";
 
 import { PersistGate } from "redux-persist/lib/integration/react";
 
@@ -22,7 +22,7 @@ const getFonts = () =>
         "pt-sans-bold": require("./assets/fonts/PTSansNarrow-Bold.ttf"),
     });
 
-export default function App() {
+const App = () => {
     const [fontsLoaded, setFontsLoaded] = useState(false);
 
     AsyncStorage.getItem("@application_theme").then((value) => {
@@ -62,4 +62,6 @@ export default function App() {
             />
         );
     }
-}
+};
+
+export default App;

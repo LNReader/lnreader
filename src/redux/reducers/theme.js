@@ -1,4 +1,4 @@
-import { theme } from "./theme";
+import { theme } from "../../theme/theme";
 
 const initialState = {
     theme: theme,

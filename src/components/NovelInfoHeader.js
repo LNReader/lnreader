@@ -149,8 +149,8 @@ const NovelInfoHeader = ({
                                 {
                                     backgroundColor: theme.colorDarkPrimaryDark,
                                     marginRight: 2,
-                                    borderColor: "rgba(255,255,255,0.121)",
-                                    borderWidth: 1,
+                                    // borderColor: "rgba(255,255,255,0.121)",
+                                    // borderWidth: 1,
                                     justifyContent: "center",
                                     height: 30,
                                     alignItems: "center",
@@ -307,7 +307,7 @@ const NovelInfoHeader = ({
                             </Text>
                             <IconButton
                                 icon="filter-variant"
-                                color={theme.colorAccentDark}
+                                color={theme.textColorPrimaryDark}
                                 size={24}
                             />
                         </>

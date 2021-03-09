@@ -6,6 +6,7 @@ import {
     TextInput,
     RefreshControl,
     ActivityIndicator,
+    ToastAndroid,
 } from "react-native";
 import { Appbar } from "react-native-paper";
 import { FlatList } from "react-native-gesture-handler";
@@ -26,6 +27,7 @@ const LibraryScreen = ({ navigation }) => {
     const theme = useSelector((state) => state.themeReducer.theme);
 
     const [refreshing, setRefreshing] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [novels, setNovels] = useState();
 
     const [searchBar, setSearchBar] = useState(false);
@@ -38,6 +40,7 @@ const LibraryScreen = ({ navigation }) => {
                 null,
                 (txObj, { rows: { _array } }) => {
                     setNovels(_array);
+                    setLoading(false);
                     setRefreshing(false);
                 },
                 (txObj, error) => {
@@ -62,44 +65,6 @@ const LibraryScreen = ({ navigation }) => {
         });
     };
 
-    const deleted = () => {
-        db.transaction((tx) => {
-            tx.executeSql(
-                "DROP TABLE LibraryTable",
-                null,
-                (txObj, { rows: { _array } }) => {
-                    console.log("DELETED LIB TABLE");
-                },
-                (txObj, error) => console.log("Error ", error)
-            );
-            tx.executeSql(
-                "DROP TABLE ChapterTable",
-                null,
-                (txObj, { rows: { _array } }) => {
-                    console.log("DELETED CHAP TABLE");
-                },
-                (txObj, error) => console.log("Error ", error)
-            );
-            tx.executeSql(
-                "DROP TABLE HistoryTable",
-                null,
-                (txObj, { rows: { _array } }) => {
-                    console.log("DELETED History TABLE");
-                },
-                (txObj, error) => console.log("Error ", error)
-            );
-            tx.executeSql(
-                "DROP TABLE DownloadsTable",
-                null,
-                (txObj, { rows: { _array } }) => {
-                    console.log("DELETED Downloads TABLE");
-                },
-                (txObj, error) => console.log("Error ", error)
-            );
-        });
-        setNovels([]);
-    };
-
     useFocusEffect(
         useCallback(() => {
             setSearchBar(false);
@@ -108,6 +73,7 @@ const LibraryScreen = ({ navigation }) => {
     );
 
     const onRefresh = () => {
+        ToastAndroid.show("Updating library", ToastAndroid.SHORT);
         setRefreshing(true);
         getLibraryNovels();
     };
@@ -206,51 +172,58 @@ const LibraryScreen = ({ navigation }) => {
                         />
                     }
                     ListEmptyComponent={
-                        !searchBar ? (
-                            <View
-                                style={{
-                                    flex: 1,
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                }}
-                            >
-                                <Text
+                        !loading ? (
+                            !searchBar ? (
+                                <View
                                     style={{
-                                        color: theme.textColorSecondaryDark,
-                                        fontSize: 45,
-                                        fontWeight: "bold",
+                                        flex: 1,
+                                        justifyContent: "center",
+                                        alignItems: "center",
                                     }}
                                 >
-                                    Σ(ಠ_ಠ)
-                                </Text>
-                                <Text
-                                    style={{
-                                        color: theme.textColorSecondaryDark,
-                                        fontWeight: "bold",
-                                        marginTop: 10,
-                                        textAlign: "center",
-                                        paddingHorizontal: 30,
-                                    }}
-                                >
-                                    Your library is empty. Add series to your
-                                    library from Browse.
-                                </Text>
-                            </View>
-                        ) : (
-                            searchBar &&
-                            searchText !== "" && (
-                                <Text
-                                    style={{
-                                        color: theme.colorAccentDark,
-                                        fontWeight: "bold",
-                                        marginTop: 10,
-                                        textAlign: "center",
-                                        paddingHorizontal: 30,
-                                    }}
-                                >
-                                    Not in library
-                                </Text>
+                                    <Text
+                                        style={{
+                                            color: theme.textColorSecondaryDark,
+                                            fontSize: 45,
+                                            fontWeight: "bold",
+                                        }}
+                                    >
+                                        Σ(ಠ_ಠ)
+                                    </Text>
+                                    <Text
+                                        style={{
+                                            color: theme.textColorSecondaryDark,
+                                            fontWeight: "bold",
+                                            marginTop: 10,
+                                            textAlign: "center",
+                                            paddingHorizontal: 30,
+                                        }}
+                                    >
+                                        Your library is empty. Add series to
+                                        your library from Browse.
+                                    </Text>
+                                </View>
+                            ) : (
+                                searchBar &&
+                                searchText !== "" && (
+                                    <Text
+                                        style={{
+                                            color: theme.colorAccentDark,
+                                            fontWeight: "bold",
+                                            marginTop: 10,
+                                            textAlign: "center",
+                                            paddingHorizontal: 30,
+                                        }}
+                                    >
+                                        Not in library
+                                    </Text>
+                                )
                             )
+                        ) : (
+                            <ActivityIndicator
+                                size="small"
+                                color={theme.colorAccentDark}
+                            />
                         )
                     }
                 />

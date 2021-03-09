@@ -251,7 +251,7 @@ const ChapterItem = ({ route, navigation }) => {
                     },
                 ]}
                 onScroll={({ nativeEvent }) => {
-                    _panel.hide();
+                    // _panel.hide();
                     if (isCloseToBottom(nativeEvent)) {
                         // console.log("Scroll End Reached");
                         setRead();

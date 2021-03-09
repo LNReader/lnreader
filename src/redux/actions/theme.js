@@ -1,4 +1,4 @@
-import { SWITCH_THEME } from "./constants";
+import { SWITCH_THEME } from "./types";
 
 export const switchTheme = (theme) => (dispatch) => {
     dispatch({

@@ -20,33 +20,42 @@ const NovelCover = ({ item, onPress, libraryStatus }) => {
                 onPress={onPress}
             >
                 <>
-                    <ImageBackground
-                        source={{
-                            uri: item.novelCover,
-                        }}
-                        style={styles.logo}
-                        imageStyle={[
-                            { borderRadius: 6 },
-                            libraryStatus && { opacity: 0.4 },
-                        ]}
-                        progressiveRenderingEnabled={true}
-                    >
-                        {(!mode || mode === "compact") && (
-                            <View style={styles.titleContainer}>
-                                <LinearGradient
-                                    colors={["transparent", "rgba(0,0,0,0.6)"]}
-                                    style={styles.linearGradient}
-                                >
-                                    <Text
-                                        numberOfLines={2}
-                                        style={styles.title}
+                    {item.novelCover ? (
+                        <ImageBackground
+                            source={{
+                                uri: item.novelCover,
+                            }}
+                            style={styles.logo}
+                            imageStyle={[
+                                { borderRadius: 6 },
+                                libraryStatus && { opacity: 0.4 },
+                            ]}
+                            progressiveRenderingEnabled={true}
+                        >
+                            {(!mode || mode === "compact") && (
+                                <View style={styles.titleContainer}>
+                                    <LinearGradient
+                                        colors={[
+                                            "transparent",
+                                            "rgba(0,0,0,0.6)",
+                                        ]}
+                                        style={styles.linearGradient}
                                     >
-                                        {item.novelName}
-                                    </Text>
-                                </LinearGradient>
-                            </View>
-                        )}
-                    </ImageBackground>
+                                        <Text
+                                            numberOfLines={2}
+                                            style={styles.title}
+                                        >
+                                            {item.novelName}
+                                        </Text>
+                                    </LinearGradient>
+                                </View>
+                            )}
+                        </ImageBackground>
+                    ) : (
+                        <View>
+                            <Text style={{ color: "white" }}>HAHAHAHAH</Text>
+                        </View>
+                    )}
                     {mode === "comfortable" && (
                         <Text numberOfLines={2} style={styles.title}>
                             {item.novelName}
