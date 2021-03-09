@@ -24,10 +24,11 @@ import {
     downloadOrDeleteChapter,
 } from "../services/db";
 
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 
-const NovelItem = ({ route, navigation, theme }) => {
+const NovelItem = ({ route, navigation }) => {
     const item = route.params;
+    const theme = useSelector((state) => state.themeReducer.theme);
 
     const {
         extensionId,
@@ -188,21 +189,6 @@ const NovelItem = ({ route, navigation, theme }) => {
 
     return (
         <Provider>
-            {/* <Appbar.Header style={{ backgroundColor: theme.colorDarkPrimary }}>
-                <Appbar.BackAction
-                    onPress={() => {
-                        navigation.goBack();
-                    }}
-                    color={"white"}
-                    size={26}
-                    style={{ marginRight: 0 }}
-                />
-                <Appbar.Content
-                    title={item.novelName}
-                    titleStyle={{ color: theme.textColorPrimaryDark }}
-                />
-            </Appbar.Header> */}
-
             <View
                 style={[
                     styles.container,
@@ -257,11 +243,7 @@ const NovelItem = ({ route, navigation, theme }) => {
     );
 };
 
-const mapStateToProps = (state) => ({
-    theme: state.themeReducer.theme,
-});
-
-export default connect(mapStateToProps)(NovelItem);
+export default NovelItem;
 
 const styles = StyleSheet.create({
     container: {

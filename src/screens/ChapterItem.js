@@ -309,8 +309,6 @@ export default ChapterItem;
 const styles = StyleSheet.create({
     container: {
         flexGrow: 1,
-        // backgroundColor: "#202125",
-        // backgroundColor: "#000000",
         paddingHorizontal: 10,
         paddingVertical: 10,
     },

@@ -286,7 +286,7 @@ const NovelInfoHeader = ({
                             flexDirection: "row",
                             justifyContent: "space-between",
                             alignItems: "center",
-                            paddingRight: 15,
+                            paddingRight: 12.5,
                         }}
                         onPress={() =>
                             bottomSheetRef.current.show({ velocity: -1.5 })

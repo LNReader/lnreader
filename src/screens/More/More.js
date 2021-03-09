@@ -5,9 +5,11 @@ import { List } from "react-native-paper";
 
 import { CustomAppbar } from "../../components/common/Appbar";
 
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 
-const MoreScreen = ({ navigation, theme }) => {
+const MoreScreen = ({ navigation }) => {
+    const theme = useSelector((state) => state.themeReducer.theme);
+
     return (
         <>
             <CustomAppbar title="More" />
@@ -46,16 +48,6 @@ const MoreScreen = ({ navigation, theme }) => {
     );
 };
 
-const mapStateToProps = (state) => ({
-    theme: state.themeReducer.theme,
-});
+export default MoreScreen;
 
-export default connect(mapStateToProps)(MoreScreen);
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        // backgroundColor: "#202125",
-        backgroundColor: "#000000",
-    },
-});
+const styles = StyleSheet.create({});

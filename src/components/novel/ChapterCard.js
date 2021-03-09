@@ -21,7 +21,7 @@ const ChapterCard = ({
         <TouchableRipple
             style={{
                 paddingHorizontal: 15,
-                paddingVertical: 9,
+                paddingVertical: 7,
                 flexDirection: "row",
                 justifyContent: "space-between",
                 alignItems: "center",
@@ -76,7 +76,7 @@ const ChapterCard = ({
                     downloading.chapterUrl === chapter.chapterUrl ? (
                         <ActivityIndicator
                             color={theme.textColorHintDark}
-                            size={26}
+                            size={25}
                             style={{ margin: 3.5, padding: 5 }}
                         />
                     ) : (
@@ -92,7 +92,7 @@ const ChapterCard = ({
                                     ? theme.textColorPrimaryDark
                                     : theme.textColorHintDark
                             }
-                            size={26}
+                            size={25}
                             onPress={() => {
                                 downloadChapter(
                                     downloaded ? 1 : 0,

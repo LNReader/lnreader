@@ -181,7 +181,5 @@ export const BottomSheet = ({
 const styles = StyleSheet.create({
     contentContainer: {
         flex: 1,
-        // paddingTop: ,
-        // alignItems: "center",
     },
 });
