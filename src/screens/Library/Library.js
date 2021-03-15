@@ -3,16 +3,15 @@ import {
     StyleSheet,
     Text,
     View,
-    TextInput,
     RefreshControl,
     ActivityIndicator,
     ToastAndroid,
 } from "react-native";
-import { Appbar } from "react-native-paper";
 import { FlatList } from "react-native-gesture-handler";
 import { useFocusEffect } from "@react-navigation/native";
 
-import NovelCover from "../components/common/NovelCover";
+import Appbar from "./components/Appbar";
+import NovelCover from "../../components/common/NovelCover";
 
 import { connect } from "react-redux";
 
@@ -21,7 +20,7 @@ import { useSelector } from "react-redux";
 import {
     getLibraryNovels,
     searchLibraryNovels,
-} from "../redux/actions/library";
+} from "../../redux/actions/library";
 
 const LibraryScreen = ({
     navigation,
@@ -55,66 +54,14 @@ const LibraryScreen = ({
 
     return (
         <>
-            <Appbar.Header style={{ backgroundColor: theme.colorDarkPrimary }}>
-                {!searchBar ? (
-                    <>
-                        <Appbar.Content
-                            title="Library"
-                            titleStyle={{ color: theme.textColorPrimaryDark }}
-                        />
-                        <Appbar.Action
-                            icon="magnify"
-                            onPress={() => setSearchBar(true)}
-                            color={theme.textColorPrimaryDark}
-                        />
-                        <Appbar.Action
-                            color={theme.textColorPrimaryDark}
-                            icon="filter-variant"
-                            disabled
-                            // onPress={() => _panel.show({ velocity: -1.5 })}
-                        />
-                    </>
-                ) : (
-                    <>
-                        <Appbar.BackAction
-                            onPress={() => {
-                                setSearchBar(false);
-                                setSearchText("");
-                                getLibraryNovels();
-                            }}
-                            color={theme.textColorPrimaryDark}
-                            size={24}
-                        />
-                        <TextInput
-                            placeholder="Search..."
-                            defaultValue={searchText}
-                            style={{
-                                fontSize: 18,
-                                flex: 1,
-                                color: theme.textColorPrimaryDark,
-                                marginLeft: 15,
-                            }}
-                            autoFocus
-                            placeholderTextColor={theme.textColorHintDark}
-                            blurOnSubmit={true}
-                            onChangeText={(text) => {
-                                setSearchText(text);
-                                searchLibraryNovels(text);
-                            }}
-                        />
-                        {searchText !== "" && (
-                            <Appbar.Action
-                                icon="close"
-                                onPress={() => {
-                                    setSearchText("");
-                                    // getLibrary();
-                                }}
-                                color={theme.textColorPrimaryDark}
-                            />
-                        )}
-                    </>
-                )}
-            </Appbar.Header>
+            <Appbar
+                searchBar={searchBar}
+                setSearchBar={setSearchBar}
+                searchText={searchText}
+                setSearchText={setSearchText}
+                getLibraryNovels={getLibraryNovels}
+                searchLibraryNovels={searchLibraryNovels}
+            />
             <View
                 style={[
                     styles.container,
