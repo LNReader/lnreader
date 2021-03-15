@@ -27,13 +27,13 @@ const AboutScreen = ({ navigation }) => {
                     titleStyle={{ color: theme.textColorPrimaryDark }}
                     title="Version"
                     descriptionStyle={{ color: theme.textColorSecondaryDark }}
-                    description="Stable 1.0.17"
+                    description="Stable 1.0.0"
                 />
                 <List.Item
                     titleStyle={{ color: theme.textColorPrimaryDark }}
                     title="Build Time"
                     descriptionStyle={{ color: theme.textColorSecondaryDark }}
-                    description="09-03-21  09:46 AM"
+                    description="10-03-21 10:00 AM"
                 />
 
                 <List.Item
@@ -41,7 +41,7 @@ const AboutScreen = ({ navigation }) => {
                     title="What's new"
                     onPress={() =>
                         Linking.openURL(
-                            "https://github.com/rajarsheechatterjee/lnreader/commits/master"
+                            "https://github.com/rajarsheechatterjee/lnreader/commits/main"
                         )
                     }
                     rippleColor={theme.rippleColorDark}

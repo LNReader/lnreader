@@ -5,6 +5,7 @@ import { List } from "react-native-paper";
 
 import { connect } from "react-redux";
 import { switchTheme } from "../../redux/actions/theme";
+import { setDisplayMode } from "../../redux/actions/settings";
 import {
     amoledDarkTheme,
     darkTheme,
@@ -21,8 +22,8 @@ import {
 import {
     setAppTheme,
     getAppTheme,
-    getDisplayMode,
-    setDisplayMode,
+    // getDisplayMode,
+    // setDisplayMode,
 } from "../../services/asyncStorage";
 
 import {
@@ -31,19 +32,25 @@ import {
     deleteDatabase,
 } from "../../services/db";
 
-const SettingsScreen = ({ navigation, theme, switchTheme }) => {
+const SettingsScreen = ({
+    navigation,
+    theme,
+    displayMode,
+    switchTheme,
+    setDisplayMode,
+}) => {
     const desciptionStyles = {
         color: theme.textColorSecondaryDark,
     };
 
     const titleStyles = { color: theme.textColorPrimaryDark };
 
-    const [displayMode, setDisplay] = useState("compact");
+    // const [displayMode, setDisplay] = useState("compact");
     const [applicationTheme, setApplicationTheme] = useState("amoledDarkTheme");
 
     getAppTheme().then((res) => setApplicationTheme(res));
 
-    getDisplayMode().then((res) => setDisplay(res));
+    // getDisplayMode().then((res) => setDisplay(res));
 
     return (
         <>
@@ -94,22 +101,16 @@ const SettingsScreen = ({ navigation, theme, switchTheme }) => {
                     </List.Subheader>
                     <View>
                         <DisplayCheckbox
-                            value="comfortable"
+                            value={1}
                             displayMode={displayMode}
-                            onPress={() => {
-                                setDisplay("comfortable");
-                                setDisplayMode("comfortable");
-                            }}
+                            onPress={() => setDisplayMode(1)}
                         />
                     </View>
                     <View>
                         <DisplayCheckbox
-                            value="compact"
+                            value={0}
                             displayMode={displayMode}
-                            onPress={() => {
-                                setDisplay("compact");
-                                setDisplayMode("compact");
-                            }}
+                            onPress={() => setDisplayMode(0)}
                         />
                     </View>
                     {/* <List.Subheader
@@ -205,6 +206,9 @@ const SettingsScreen = ({ navigation, theme, switchTheme }) => {
 
 const mapStateToProps = (state) => ({
     theme: state.themeReducer.theme,
+    displayMode: state.settingsReducer.displayMode,
 });
 
-export default connect(mapStateToProps, { switchTheme })(SettingsScreen);
+export default connect(mapStateToProps, { switchTheme, setDisplayMode })(
+    SettingsScreen
+);

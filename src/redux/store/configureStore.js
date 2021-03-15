@@ -4,7 +4,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import thunk from "redux-thunk";
 
 import themeReducer from "../reducers/theme";
-import libraryReducer from "../reducers/library";
+import settingsReducer from "../reducers/settings";
 
 const persistConfig = {
     key: "root",
@@ -13,7 +13,7 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(
     persistConfig,
-    combineReducers({ themeReducer, libraryReducer })
+    combineReducers({ themeReducer, settingsReducer })
 );
 
 export const store = createStore(persistedReducer, applyMiddleware(thunk));

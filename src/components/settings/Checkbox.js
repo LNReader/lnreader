@@ -5,9 +5,14 @@ import { useSelector } from "react-redux";
 export const DisplayCheckbox = ({ displayMode, onPress, value }) => {
     const theme = useSelector((state) => state.themeReducer.theme);
 
+    const label = {
+        0: "Compact",
+        1: "Comfortable",
+    };
+
     return (
         <Checkbox.Item
-            label={value.charAt(0).toUpperCase() + value.slice(1)}
+            label={label[value]}
             labelStyle={{ color: theme.textColorPrimaryDark }}
             status={displayMode === value ? "checked" : "unchecked"}
             mode="ios"

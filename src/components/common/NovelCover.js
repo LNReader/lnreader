@@ -4,11 +4,12 @@ import { LinearGradient } from "expo-linear-gradient";
 import { TouchableRipple } from "react-native-paper";
 import { theme } from "../../theme/theme";
 
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useSelector } from "react-redux";
 
 const NovelCover = ({ item, onPress, libraryStatus }) => {
-    const [mode, setMode] = useState();
-    AsyncStorage.getItem("@display_mode").then((value) => setMode(value));
+    const displayMode = useSelector(
+        (state) => state.settingsReducer.displayMode
+    );
 
     return (
         <View style={{ flex: 1 / 3 }}>
@@ -32,7 +33,7 @@ const NovelCover = ({ item, onPress, libraryStatus }) => {
                             ]}
                             progressiveRenderingEnabled={true}
                         >
-                            {(!mode || mode === "compact") && (
+                            {(!displayMode || displayMode === 0) && (
                                 <View style={styles.titleContainer}>
                                     <LinearGradient
                                         colors={[
@@ -56,7 +57,7 @@ const NovelCover = ({ item, onPress, libraryStatus }) => {
                             <Text style={{ color: "white" }}>HAHAHAHAH</Text>
                         </View>
                     )}
-                    {mode === "comfortable" && (
+                    {displayMode === 1 && (
                         <Text numberOfLines={2} style={styles.title}>
                             {item.novelName}
                         </Text>
