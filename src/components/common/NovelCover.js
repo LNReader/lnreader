@@ -2,14 +2,16 @@ import React, { useState } from "react";
 import { StyleSheet, View, Text, ImageBackground } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { TouchableRipple } from "react-native-paper";
-import { theme } from "../../theme/theme";
 
 import { useSelector } from "react-redux";
+import { color } from "react-native-reanimated";
 
 const NovelCover = ({ item, onPress, libraryStatus }) => {
     const displayMode = useSelector(
         (state) => state.settingsReducer.displayMode
     );
+
+    const theme = useSelector((state) => state.themeReducer.theme);
 
     return (
         <View style={{ flex: 1 / 3 }}>
@@ -33,7 +35,7 @@ const NovelCover = ({ item, onPress, libraryStatus }) => {
                             ]}
                             progressiveRenderingEnabled={true}
                         >
-                            {(!displayMode || displayMode === 0) && (
+                            {displayMode === 0 && (
                                 <View style={styles.titleContainer}>
                                     <LinearGradient
                                         colors={[
@@ -44,7 +46,13 @@ const NovelCover = ({ item, onPress, libraryStatus }) => {
                                     >
                                         <Text
                                             numberOfLines={2}
-                                            style={styles.title}
+                                            style={[
+                                                styles.title,
+                                                {
+                                                    color:
+                                                        theme.textColorPrimaryDark,
+                                                },
+                                            ]}
                                         >
                                             {item.novelName}
                                         </Text>
@@ -54,11 +62,19 @@ const NovelCover = ({ item, onPress, libraryStatus }) => {
                         </ImageBackground>
                     ) : (
                         <View>
-                            <Text style={{ color: "white" }}>HAHAHAHAH</Text>
+                            <Text style={{ color: "white" }}>
+                                Novel Cover Doesn't Exist
+                            </Text>
                         </View>
                     )}
                     {displayMode === 1 && (
-                        <Text numberOfLines={2} style={styles.title}>
+                        <Text
+                            numberOfLines={2}
+                            style={[
+                                styles.title,
+                                { color: theme.textColorPrimaryDark },
+                            ]}
+                        >
                             {item.novelName}
                         </Text>
                     )}
@@ -72,7 +88,7 @@ export default NovelCover;
 
 const styles = StyleSheet.create({
     logo: {
-        height: 173,
+        height: 177,
         borderRadius: 4,
     },
     titleContainer: {
@@ -83,12 +99,9 @@ const styles = StyleSheet.create({
     title: {
         fontFamily: "pt-sans-bold",
         fontSize: 14,
-        color: "white",
         padding: 8,
-        textShadowColor: "rgba(0, 0, 0, 0.75)",
-        textShadowOffset: { width: -1, height: 1 },
-        textShadowRadius: 10,
     },
+
     linearGradient: {
         borderRadius: 4,
     },

@@ -1,7 +1,20 @@
-import { amoledDarkTheme } from "../../theme/theme";
+import {
+    amoledDarkTheme,
+    lightTheme,
+    darkTheme,
+    midnightDuskTheme,
+} from "../../theme/theme";
+
+const themes = {
+    0: amoledDarkTheme,
+    1: lightTheme,
+    2: darkTheme,
+    3: midnightDuskTheme,
+};
 
 const initialState = {
-    theme: amoledDarkTheme,
+    themeCode: 0,
+    theme: themes[0],
 };
 
 const themeReducer = (state = initialState, action) => {
@@ -9,7 +22,7 @@ const themeReducer = (state = initialState, action) => {
 
     switch (type) {
         case "SWITCH_THEME":
-            return { theme: payload };
+            return { ...state, themeCode: payload, theme: themes[payload] };
         default:
             return state;
     }

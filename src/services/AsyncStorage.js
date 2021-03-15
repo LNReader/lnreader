@@ -13,29 +13,6 @@ export const getReaderTheme = async () => {
     return theme;
 };
 
-export const setAppTheme = async (val) => {
-    AsyncStorage.setItem("@application_theme", JSON.stringify(val));
-};
-
-export const getAppTheme = async () => {
-    let theme = await AsyncStorage.getItem("@application_theme").then(
-        (value) => {
-            if (value) return JSON.parse(value);
-        }
-    );
-
-    return theme;
-};
-
-export const getDisplayMode = async () => {
-    let displayMode = await AsyncStorage.getItem("@display_mode");
-    return displayMode;
-};
-
-export const setDisplayMode = async (val) => {
-    AsyncStorage.setItem("@display_mode", val);
-};
-
 export const setStatusBar = () => {
     AsyncStorage.getItem("@application_theme").then((value) => {
         if (JSON.parse(value) === "lightTheme") {

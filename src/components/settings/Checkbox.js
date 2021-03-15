@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Checkbox } from "react-native-paper";
 import { useSelector } from "react-redux";
 

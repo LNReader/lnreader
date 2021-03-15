@@ -1,8 +1,15 @@
 import { SWITCH_THEME } from "./types";
 
-export const switchTheme = (theme) => (dispatch) => {
+/**
+ * 0 -> Amoled Dark Theme
+ * 1 -> Light Theme
+ * 2 -> Dark Theme
+ * 3 -> Midnight Dusk Theme
+ */
+
+export const switchTheme = (val) => (dispatch) => {
     dispatch({
         type: SWITCH_THEME,
-        payload: theme,
+        payload: val,
     });
 };
