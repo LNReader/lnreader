@@ -5,6 +5,7 @@ import thunk from "redux-thunk";
 
 import themeReducer from "../reducers/theme";
 import settingsReducer from "../reducers/settings";
+import libraryReducer from "../reducers/library";
 
 const persistConfig = {
     key: "root",
@@ -13,7 +14,7 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(
     persistConfig,
-    combineReducers({ themeReducer, settingsReducer })
+    combineReducers({ themeReducer, settingsReducer, libraryReducer })
 );
 
 export const store = createStore(persistedReducer, applyMiddleware(thunk));

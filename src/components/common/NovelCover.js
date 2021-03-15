@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { StyleSheet, View, Text, ImageBackground } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { TouchableRipple } from "react-native-paper";
 
 import { useSelector } from "react-redux";
-import { color } from "react-native-reanimated";
 
 const NovelCover = ({ item, onPress, libraryStatus }) => {
     const displayMode = useSelector(
@@ -12,6 +11,10 @@ const NovelCover = ({ item, onPress, libraryStatus }) => {
     );
 
     const theme = useSelector((state) => state.themeReducer.theme);
+
+    // const itemsPerRow = useSelector(
+    //     (state) => state.settingsReducer.itemsPerRow
+    // );
 
     return (
         <View style={{ flex: 1 / 3 }}>
@@ -88,7 +91,7 @@ export default NovelCover;
 
 const styles = StyleSheet.create({
     logo: {
-        height: 177,
+        height: 183,
         borderRadius: 4,
     },
     titleContainer: {
@@ -103,11 +106,12 @@ const styles = StyleSheet.create({
     },
 
     linearGradient: {
+        bottom: -1,
         borderRadius: 4,
     },
     opac: {
-        paddingHorizontal: 3.5,
-        paddingVertical: 3.5,
+        paddingHorizontal: 4.5,
+        paddingVertical: 4,
         borderRadius: 4,
     },
 });

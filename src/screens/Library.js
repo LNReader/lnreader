@@ -14,46 +14,43 @@ import { useFocusEffect } from "@react-navigation/native";
 
 import NovelCover from "../components/common/NovelCover";
 
+import { connect } from "react-redux";
+
 import { useSelector } from "react-redux";
 
-import { getLibraryFromDb, searchInLibrary } from "../services/db";
+import {
+    getLibraryNovels,
+    searchLibraryNovels,
+} from "../redux/actions/library";
 
-import { getLibraryNovels } from "../redux/actions/library";
-
-const LibraryScreen = ({ navigation }) => {
+const LibraryScreen = ({
+    navigation,
+    novels,
+    loading,
+    getLibraryNovels,
+    searchLibraryNovels,
+}) => {
     const theme = useSelector((state) => state.themeReducer.theme);
 
+    // const itemsPerRow = useSelector((state) => state.settingsReducer.itemsPerRow);
+
     const [refreshing, setRefreshing] = useState(false);
-    const [loading, setLoading] = useState(false);
-    const [novels, setNovels] = useState();
 
     const [searchBar, setSearchBar] = useState(false);
     const [searchText, setSearchText] = useState("");
 
-    const getLibrary = async () => {
-        await getLibraryFromDb().then((res) => {
-            setNovels(res);
-        });
-        setLoading(false);
-        setRefreshing(false);
-    };
-
-    const searchNovel = async (searchText) => {
-        await searchInLibrary(searchText).then((res) => setNovels(res));
-        setRefreshing(false);
-    };
-
     useFocusEffect(
         useCallback(() => {
             setSearchBar(false);
-            getLibrary();
+            getLibraryNovels();
         }, [])
     );
 
     const onRefresh = () => {
         ToastAndroid.show("Updating library", ToastAndroid.SHORT);
         setRefreshing(true);
-        getLibrary();
+        getLibraryNovels();
+        setRefreshing(false);
     };
 
     return (
@@ -83,7 +80,7 @@ const LibraryScreen = ({ navigation }) => {
                             onPress={() => {
                                 setSearchBar(false);
                                 setSearchText("");
-                                getLibrary();
+                                getLibraryNovels();
                             }}
                             color={theme.textColorPrimaryDark}
                             size={24}
@@ -102,7 +99,7 @@ const LibraryScreen = ({ navigation }) => {
                             blurOnSubmit={true}
                             onChangeText={(text) => {
                                 setSearchText(text);
-                                searchNovel(text);
+                                searchLibraryNovels(text);
                             }}
                         />
                         {searchText !== "" && (
@@ -210,7 +207,15 @@ const LibraryScreen = ({ navigation }) => {
     );
 };
 
-export default LibraryScreen;
+const mapStateToProps = (state) => ({
+    novels: state.libraryReducer.novels,
+    loading: state.libraryReducer.loading,
+});
+
+export default connect(mapStateToProps, {
+    getLibraryNovels,
+    searchLibraryNovels,
+})(LibraryScreen);
 
 const styles = StyleSheet.create({
     container: {

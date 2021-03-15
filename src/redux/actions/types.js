@@ -3,3 +3,5 @@ export const SWITCH_THEME = "SWITCH_THEME";
 export const GET_LIBRARY_NOVELS = "GET_LIBRARY_NOVELS";
 
 export const SET_DISPLAY_MODE = "SET_DISPLAY_MODE";
+
+export const SET_ITEMS_PER_ROW = "SET_ITEMS_PER_ROW";

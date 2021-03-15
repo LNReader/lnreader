@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { View, ToastAndroid } from "react-native";
+import { View, Text } from "react-native";
 import { setStatusBarStyle } from "expo-status-bar";
 import { List, Modal, Provider, Portal } from "react-native-paper";
 
 import { connect } from "react-redux";
 import { switchTheme } from "../../redux/actions/theme";
-import { setDisplayMode } from "../../redux/actions/settings";
+import { setDisplayMode, setItemsPerRow } from "../../redux/actions/settings";
 
 import { CustomAppbar } from "../../components/common/Appbar";
 import {
@@ -26,6 +26,7 @@ const SettingsScreen = ({
     displayMode,
     switchTheme,
     setDisplayMode,
+    setItemsPerRow,
 }) => {
     const label = {
         0: "Compact",
@@ -33,7 +34,7 @@ const SettingsScreen = ({
     };
 
     const themes = {
-        0: "Amoled Dark Theme",
+        0: "AMOLED Dark Theme",
         1: "Light Theme",
         2: "Dark Theme",
         3: "Midnight Dusk Theme",
@@ -47,15 +48,18 @@ const SettingsScreen = ({
 
     // Display Mode Modal
     const [displayModalVisible, setDisplayModalVisible] = useState(false);
-
     const showDisplayModal = () => setDisplayModalVisible(true);
     const hideDisplayModal = () => setDisplayModalVisible(false);
 
     // Theme Modal
     const [themeModalVisible, setthemeModalVisible] = useState(false);
-
     const showthemeModal = () => setthemeModalVisible(true);
     const hidethemeModal = () => setthemeModalVisible(false);
+
+    // Items Modal
+    const [itemsModalVisible, setitemsModalVisible] = useState(false);
+    const showitemsModal = () => setitemsModalVisible(true);
+    const hideitemsModal = () => setitemsModalVisible(false);
 
     return (
         <Provider>
@@ -120,6 +124,7 @@ const SettingsScreen = ({
                                 backgroundColor: theme.colorDarkPrimaryDark,
                                 padding: 20,
                                 margin: 20,
+                                borderRadius: 6,
                             }}
                         >
                             <View>
@@ -138,6 +143,63 @@ const SettingsScreen = ({
                             </View>
                         </Modal>
                     </Portal>
+                    {/* <List.Item
+                        titleStyle={titleStyles}
+                        title="Items per row"
+                        descriptionStyle={desciptionStyles}
+                        // description={label[displayMode]}
+                        onPress={showitemsModal}
+                        rippleColor={theme.rippleColorDark}
+                    />
+                    <Portal>
+                        <Modal
+                            visible={itemsModalVisible}
+                            onDismiss={hideitemsModal}
+                            contentContainerStyle={{
+                                backgroundColor: theme.colorDarkPrimaryDark,
+                                padding: 20,
+                                margin: 20,
+                                borderRadius: 6,
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    color: theme.textColorPrimaryDark,
+                                    padding: 20,
+                                }}
+                                onPress={() => setItemsPerRow(1)}
+                            >
+                                1
+                            </Text>
+                            <Text
+                                style={{
+                                    color: theme.textColorPrimaryDark,
+                                    padding: 20,
+                                }}
+                                onPress={() => setItemsPerRow(2)}
+                            >
+                                2
+                            </Text>
+                            <Text
+                                style={{
+                                    color: theme.textColorPrimaryDark,
+                                    padding: 20,
+                                }}
+                                onPress={() => setItemsPerRow(3)}
+                            >
+                                3
+                            </Text>
+                            <Text
+                                style={{
+                                    color: theme.textColorPrimaryDark,
+                                    padding: 20,
+                                }}
+                                onPress={() => setItemsPerRow(4)}
+                            >
+                                4
+                            </Text>
+                        </Modal>
+                    </Portal> */}
                     {/* <List.Subheader
                         style={{
                             color: theme.colorAccentDark,
@@ -179,6 +241,7 @@ const SettingsScreen = ({
                                 backgroundColor: theme.colorDarkPrimaryDark,
                                 padding: 20,
                                 margin: 20,
+                                borderRadius: 6,
                             }}
                         >
                             <ThemeCheckbox
@@ -227,6 +290,8 @@ const mapStateToProps = (state) => ({
     displayMode: state.settingsReducer.displayMode,
 });
 
-export default connect(mapStateToProps, { switchTheme, setDisplayMode })(
-    SettingsScreen
-);
+export default connect(mapStateToProps, {
+    switchTheme,
+    setDisplayMode,
+    setItemsPerRow,
+})(SettingsScreen);
