@@ -8,12 +8,12 @@ import { createMaterialBottomTabNavigator } from "@react-navigation/material-bot
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import Library from "../screens/Library/Library";
-import History from "../screens/history/History";
+import History from "../screens/History/History";
 import Browse from "../screens/Browse";
 
-import More from "../screens/more/More";
-import About from "../screens/more/About";
-import Settings from "../screens/more/Settings";
+import More from "../screens/More/More";
+import About from "../screens/More/About";
+import Settings from "../screens/More/Settings";
 
 import NovelItem from "../screens/NovelItem";
 import ChapterItem from "../screens/ChapterItem";
