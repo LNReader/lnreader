@@ -1,22 +1,22 @@
 import React from "react";
-import { StyleSheet, TextInput } from "react-native";
+import { TextInput } from "react-native";
 import { Appbar } from "react-native-paper";
 
 import { useSelector } from "react-redux";
 
 const LibraryAppbar = ({
-    search,
-    setSearch,
+    searchBar,
+    setSearchBar,
+    searchText,
+    setSearchText,
     getLibraryNovels,
     searchLibraryNovels,
 }) => {
     const theme = useSelector((state) => state.themeReducer.theme);
 
-    const { searching, searchText } = search;
-
     return (
         <Appbar.Header style={{ backgroundColor: theme.colorDarkPrimary }}>
-            {!searching ? (
+            {!searchBar ? (
                 <>
                     <Appbar.Content
                         title="Library"
@@ -24,9 +24,7 @@ const LibraryAppbar = ({
                     />
                     <Appbar.Action
                         icon="magnify"
-                        onPress={() =>
-                            setSearch({ ...search, searching: true })
-                        }
+                        onPress={() => setSearchBar(true)}
                         color={theme.textColorPrimaryDark}
                     />
                     <Appbar.Action
@@ -40,7 +38,8 @@ const LibraryAppbar = ({
                 <>
                     <Appbar.BackAction
                         onPress={() => {
-                            setSearch({ searching: false, searchText: "" });
+                            setSearchBar(false);
+                            setSearchText("");
                             getLibraryNovels();
                         }}
                         color={theme.textColorPrimaryDark}
@@ -49,17 +48,17 @@ const LibraryAppbar = ({
                     <TextInput
                         placeholder="Search..."
                         defaultValue={searchText}
-                        style={[
-                            styles.searchBar,
-                            {
-                                color: theme.textColorPrimaryDark,
-                            },
-                        ]}
+                        style={{
+                            fontSize: 18,
+                            flex: 1,
+                            color: theme.textColorPrimaryDark,
+                            marginLeft: 15,
+                        }}
                         autoFocus
                         placeholderTextColor={theme.textColorHintDark}
                         blurOnSubmit={true}
                         onChangeText={(text) => {
-                            setSearch({ ...search, searchText: text });
+                            setSearchText(text);
                             searchLibraryNovels(text);
                         }}
                     />
@@ -67,7 +66,7 @@ const LibraryAppbar = ({
                         <Appbar.Action
                             icon="close"
                             onPress={() => {
-                                setSearch({ ...search, searchText: "" });
+                                setSearchText("");
                                 getLibraryNovels();
                             }}
                             color={theme.textColorPrimaryDark}
@@ -80,7 +79,3 @@ const LibraryAppbar = ({
 };
 
 export default LibraryAppbar;
-
-const styles = StyleSheet.create({
-    searchBar: { fontSize: 18, flex: 1, marginLeft: 15 },
-});

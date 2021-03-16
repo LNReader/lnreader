@@ -80,7 +80,20 @@ const BottomNavigator = () => {
                     ),
                 }}
             />
-
+            {/* 
+            <Tab.Screen
+                name="Updates"
+                component={Updates}
+                options={{
+                    tabBarIcon: ({ color }) => (
+                        <MaterialCommunityIcons
+                            name="alert-decagram-outline"
+                            color={color}
+                            size={24}
+                        />
+                    ),
+                }}
+            /> */}
             <Tab.Screen
                 name="History"
                 component={History}

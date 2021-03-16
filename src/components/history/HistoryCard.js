@@ -12,7 +12,10 @@ const HistoryCard = ({ item, deleteHistory, navigation }) => {
 
     return (
         <TouchableRipple
-            style={styles.historyCard}
+            style={[
+                styles.historyCard,
+                // { backgroundColor: theme.colorDarkPrimary },
+            ]}
             rippleColor={theme.rippleColorDark}
             borderless
             onPress={() =>
@@ -28,9 +31,20 @@ const HistoryCard = ({ item, deleteHistory, navigation }) => {
             <>
                 <Image
                     source={{ uri: item.novelCover }}
-                    style={styles.historyCover}
+                    style={{
+                        height: 80,
+                        width: 57,
+                        borderRadius: 4,
+                    }}
                 />
-                <View style={styles.historyText}>
+                <View
+                    style={{
+                        marginLeft: 15,
+                        flex: 1,
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                    }}
+                >
                     <View style={{ flex: 0.9 }}>
                         <Text
                             style={{
@@ -96,20 +110,13 @@ export default HistoryCard;
 
 const styles = StyleSheet.create({
     historyCard: {
+        // backgroundColor: theme.colorDarkPrimary,
+        // paddingVertical: 10,
+        // marginVertical: 5,
+        // paddingHorizontal: 20,
         marginBottom: 15,
         borderRadius: 4,
         flexDirection: "row",
         alignItems: "center",
-    },
-    historyCover: {
-        height: 80,
-        width: 57,
-        borderRadius: 4,
-    },
-    historyText: {
-        marginLeft: 15,
-        flex: 1,
-        flexDirection: "row",
-        justifyContent: "space-between",
     },
 });

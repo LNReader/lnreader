@@ -10,16 +10,15 @@ import {
 } from "react-native";
 
 import { CustomAppbar } from "../../components/common/Appbar";
-import HistoryCard from "./components/HistoryCard";
+import HistoryCard from "../../components/history/HistoryCard";
 
 import { getHistoryFromDb, deleteChapterHistory } from "../../services/db";
 
 import { useSelector } from "react-redux";
-import EmptyView from "./components/EmptyView";
 
 const History = ({ navigation }) => {
     const [loading, setLoading] = useState(true);
-    const [history, setHistory] = useState([]);
+    const [history, setHistory] = useState();
 
     const theme = useSelector((state) => state.themeReducer.theme);
 
@@ -39,14 +38,6 @@ const History = ({ navigation }) => {
         }, [])
     );
 
-    const renderHistoryCard = ({ item }) => (
-        <HistoryCard
-            item={item}
-            deleteHistory={deleteHistory}
-            navigation={navigation}
-        />
-    );
-
     return (
         <>
             <CustomAppbar title="History" />
@@ -60,7 +51,13 @@ const History = ({ navigation }) => {
                     contentContainerStyle={{ flex: 1 }}
                     data={history}
                     keyExtractor={(item) => item.historyId.toString()}
-                    renderItem={renderHistoryCard}
+                    renderItem={({ item }) => (
+                        <HistoryCard
+                            item={item}
+                            deleteHistory={deleteHistory}
+                            navigation={navigation}
+                        />
+                    )}
                     ListFooterComponent={
                         loading && (
                             <ActivityIndicator
@@ -69,7 +66,38 @@ const History = ({ navigation }) => {
                             />
                         )
                     }
-                    ListEmptyComponent={!loading && <EmptyView />}
+                    ListEmptyComponent={
+                        !loading && (
+                            <View
+                                style={{
+                                    flex: 1,
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                }}
+                            >
+                                <Text
+                                    style={{
+                                        color: theme.textColorSecondaryDark,
+                                        fontSize: 45,
+                                        fontWeight: "bold",
+                                    }}
+                                >
+                                    (˘･_･˘)
+                                </Text>
+                                <Text
+                                    style={{
+                                        color: theme.textColorSecondaryDark,
+                                        fontWeight: "bold",
+                                        marginTop: 10,
+                                        textAlign: "center",
+                                        paddingHorizontal: 30,
+                                    }}
+                                >
+                                    Nothing read recently.
+                                </Text>
+                            </View>
+                        )
+                    }
                 />
             </View>
         </>
@@ -82,5 +110,11 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 10,
+    },
+    historyCard: {
+        marginTop: 10,
+        borderRadius: 4,
+        flexDirection: "row",
+        alignItems: "center",
     },
 });
