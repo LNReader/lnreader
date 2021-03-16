@@ -27,7 +27,7 @@
 
         "androidNavigationBar": {
             "barStyle": "light-content",
-            "backgroundColor": "#000000"
+            "backgroundColor": "#242529"
         },
         "web": {
             "favicon": "./assets/favicon.png"
