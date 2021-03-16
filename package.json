@@ -16,7 +16,7 @@
         "@react-navigation/native": "^5.8.10",
         "@react-navigation/stack": "^5.12.8",
         "expo": "~40.0.0",
-        "expo-app-loading": "^1.0.2",
+        "expo-app-loading": "^1.0.1",
         "expo-font": "^8.4.0",
         "expo-linear-gradient": "^8.4.0",
         "expo-sharing": "~8.5.0",
@@ -36,7 +36,7 @@
         "react-native-safe-area-context": "3.1.9",
         "react-native-screens": "~2.15.0",
         "react-native-vector-icons": "^7.1.0",
-        "react-native-web": "^0.15.0",
+        "react-native-web": "~0.13.12",
         "react-native-webview": "11.0.0",
         "react-redux": "^7.2.2",
         "redux": "^4.0.5",
@@ -45,7 +45,7 @@
         "rn-sliding-up-panel": "^2.4.4"
     },
     "devDependencies": {
-        "@babel/core": "^7.9.6"
+        "@babel/core": "~7.9.0"
     },
     "private": true
 }
