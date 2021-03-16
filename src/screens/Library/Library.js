@@ -9,13 +9,11 @@ import {
 } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { useFocusEffect } from "@react-navigation/native";
+import { connect } from "react-redux";
 
 import Appbar from "./components/Appbar";
 import NovelCover from "../../components/common/NovelCover";
-
-import { connect } from "react-redux";
-
-import { useSelector } from "react-redux";
+import EmptyView from "./components/EmptyView";
 
 import {
     getLibraryNovels,
@@ -24,27 +22,28 @@ import {
 
 const LibraryScreen = ({
     navigation,
+    theme,
     novels,
     loading,
     getLibraryNovels,
     searchLibraryNovels,
 }) => {
-    const theme = useSelector((state) => state.themeReducer.theme);
-
-    // const itemsPerRow = useSelector((state) => state.settingsReducer.itemsPerRow);
-
     const [refreshing, setRefreshing] = useState(false);
 
-    const [searchBar, setSearchBar] = useState(false);
-    const [searchText, setSearchText] = useState("");
+    const [search, setSearch] = useState({ searching: false, searchText: "" });
+
+    const resetSearch = () => setSearch({ searching: false, searchText: "" });
 
     useFocusEffect(
         useCallback(() => {
-            setSearchBar(false);
+            resetSearch();
             getLibraryNovels();
         }, [])
     );
 
+    /**
+     * TODO: fix refreshing
+     */
     const onRefresh = () => {
         ToastAndroid.show("Updating library", ToastAndroid.SHORT);
         setRefreshing(true);
@@ -52,13 +51,17 @@ const LibraryScreen = ({
         setRefreshing(false);
     };
 
+    const redirectToNovel = (item) =>
+        navigation.navigate("NovelItem", {
+            ...item,
+            navigatingFrom: 1,
+        });
+
     return (
         <>
             <Appbar
-                searchBar={searchBar}
-                setSearchBar={setSearchBar}
-                searchText={searchText}
-                setSearchText={setSearchText}
+                search={search}
+                setSearch={setSearch}
                 getLibraryNovels={getLibraryNovels}
                 searchLibraryNovels={searchLibraryNovels}
             />
@@ -68,93 +71,57 @@ const LibraryScreen = ({
                     { backgroundColor: theme.colorDarkPrimaryDark },
                 ]}
             >
-                <FlatList
-                    contentContainerStyle={{ flex: 1 }}
-                    numColumns={3}
-                    data={novels}
-                    showsVerticalScrollIndicator={false}
-                    keyExtractor={(item) => item.novelUrl}
-                    renderItem={({ item }) => (
-                        <NovelCover
-                            item={item}
-                            onPress={() =>
-                                navigation.navigate("NovelItem", {
-                                    ...item,
-                                    navigatingFrom: 1,
-                                })
+                {loading ? (
+                    <ActivityIndicator
+                        size="small"
+                        color={theme.colorAccentDark}
+                    />
+                ) : (
+                    <>
+                        <FlatList
+                            numColumns={3}
+                            data={novels}
+                            keyExtractor={(item) => item.novelUrl}
+                            renderItem={({ item }) => (
+                                <NovelCover
+                                    item={item}
+                                    onPress={() => redirectToNovel(item)}
+                                />
+                            )}
+                            refreshControl={
+                                <RefreshControl
+                                    refreshing={refreshing}
+                                    onRefresh={onRefresh}
+                                    colors={["white"]}
+                                    progressBackgroundColor={
+                                        theme.colorAccentDark
+                                    }
+                                />
                             }
-                        />
-                    )}
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={refreshing}
-                            onRefresh={onRefresh}
-                            colors={["white"]}
-                            progressBackgroundColor={theme.colorAccentDark}
-                        />
-                    }
-                    ListEmptyComponent={
-                        !loading ? (
-                            !searchBar ? (
-                                <View
-                                    style={{
-                                        flex: 1,
-                                        justifyContent: "center",
-                                        alignItems: "center",
-                                    }}
-                                >
+                            ListEmptyComponent={
+                                search.searchText === "" ? (
+                                    <EmptyView />
+                                ) : (
                                     <Text
-                                        style={{
-                                            color: theme.textColorSecondaryDark,
-                                            fontSize: 45,
-                                            fontWeight: "bold",
-                                        }}
+                                        style={[
+                                            styles.emptySearch,
+                                            { color: theme.colorAccentDark },
+                                        ]}
                                     >
-                                        Σ(ಠ_ಠ)
-                                    </Text>
-                                    <Text
-                                        style={{
-                                            color: theme.textColorSecondaryDark,
-                                            fontWeight: "bold",
-                                            marginTop: 10,
-                                            textAlign: "center",
-                                            paddingHorizontal: 30,
-                                        }}
-                                    >
-                                        Your library is empty. Add series to
-                                        your library from Browse.
-                                    </Text>
-                                </View>
-                            ) : (
-                                searchBar &&
-                                searchText !== "" && (
-                                    <Text
-                                        style={{
-                                            color: theme.colorAccentDark,
-                                            fontWeight: "bold",
-                                            marginTop: 10,
-                                            textAlign: "center",
-                                            paddingHorizontal: 30,
-                                        }}
-                                    >
-                                        {`"${searchText}" not in library`}
+                                        {`"${search.searchText}" not in library`}
                                     </Text>
                                 )
-                            )
-                        ) : (
-                            <ActivityIndicator
-                                size="small"
-                                color={theme.colorAccentDark}
-                            />
-                        )
-                    }
-                />
+                            }
+                        />
+                    </>
+                )}
             </View>
         </>
     );
 };
 
 const mapStateToProps = (state) => ({
+    theme: state.themeReducer.theme,
     novels: state.libraryReducer.novels,
     loading: state.libraryReducer.loading,
 });
@@ -168,5 +135,11 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 4,
+    },
+    emptySearch: {
+        fontWeight: "bold",
+        marginTop: 10,
+        textAlign: "center",
+        paddingHorizontal: 30,
     },
 });
