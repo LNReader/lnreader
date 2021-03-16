@@ -9,7 +9,7 @@ import {
     ActivityIndicator,
 } from "react-native";
 import { TouchableRipple, Button } from "react-native-paper";
-import { CustomAppbar } from "../components/common/Appbar";
+import { CustomAppbar } from "../../components/common/Appbar";
 
 import { useSelector } from "react-redux";
 

@@ -9,11 +9,14 @@ import {
 } from "react-native";
 import { Provider, Portal } from "react-native-paper";
 
-import ChapterCard from "../components/novel/ChapterCard";
-import NovelInfoHeader from "../components/novel/NovelHeader";
-import { BottomSheet } from "../components/novel/BottomSheet";
+import ChapterCard from "./components/ChapterCard";
+import NovelInfoHeader from "./components/NovelHeader";
+import { BottomSheet } from "./components/BottomSheet";
 
-import { fetchNovelFromSource, fetchChaptersFromSource } from "../services/api";
+import {
+    fetchNovelFromSource,
+    fetchChaptersFromSource,
+} from "../../services/api";
 import {
     insertNovelInfoInDb,
     insertChaptersInDb,
@@ -22,7 +25,7 @@ import {
     getNovelInfoFromDb,
     toggleFavourite,
     downloadOrDeleteChapter,
-} from "../services/db";
+} from "../../services/db";
 
 import { useSelector } from "react-redux";
 

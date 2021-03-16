@@ -9,14 +9,14 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 
 import Library from "../screens/Library/Library";
 import History from "../screens/History/History";
-import Browse from "../screens/Browse";
+import Browse from "../screens/Browse/Browse";
 
 import More from "../screens/More/More";
 import About from "../screens/More/About";
 import Settings from "../screens/More/Settings";
 
-import NovelItem from "../screens/NovelItem";
-import ChapterItem from "../screens/ChapterItem";
+import NovelItem from "../screens/Novel/Novel";
+import ChapterItem from "../screens/Chapter/Chapter";
 
 // Extensions
 import BoxNovel from "../screens/extensions/boxnovel/BoxNovel";

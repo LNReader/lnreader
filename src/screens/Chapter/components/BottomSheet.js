@@ -7,7 +7,7 @@ import Bottomsheet from "rn-sliding-up-panel";
 
 import { useSelector } from "react-redux";
 
-import { saveReaderTheme } from "../../services/asyncStorage";
+import { saveReaderTheme } from "../../../services/asyncStorage";
 
 const ChapterBottomSheet = ({
     bottomSheetRef,
