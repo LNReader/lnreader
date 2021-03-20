@@ -27,16 +27,16 @@ const SettingsScreen = ({
     switchTheme,
     setDisplayMode,
 }) => {
-    const label = {
+    const display = {
         0: "Compact",
         1: "Comfortable",
     };
 
     const themes = [
-        { themeCode: 0, themeName: "AMOLED Dark Theme", statusBar: "light" },
-        { themeCode: 1, themeName: "Light Theme", statusBar: "dark" },
-        { themeCode: 2, themeName: "Dark Theme", statusBar: "light" },
-        { themeCode: 3, themeName: "Midnight Dusk Theme", statusBar: "light" },
+        { themeCode: 0, label: "AMOLED Dark Theme", statusBar: "light" },
+        { themeCode: 1, label: "Light Theme", statusBar: "dark" },
+        { themeCode: 2, label: "Dark Theme", statusBar: "light" },
+        { themeCode: 3, label: "Midnight Dusk Theme", statusBar: "light" },
     ];
 
     const desciptionStyles = {
@@ -107,7 +107,7 @@ const SettingsScreen = ({
                         titleStyle={titleStyles}
                         title="Display Mode"
                         descriptionStyle={desciptionStyles}
-                        description={label[displayMode]}
+                        description={display[displayMode]}
                         onPress={showDisplayModal}
                         rippleColor={theme.rippleColorDark}
                     />
@@ -122,20 +122,16 @@ const SettingsScreen = ({
                                 borderRadius: 6,
                             }}
                         >
-                            <View>
-                                <DisplayCheckbox
-                                    value={1}
-                                    displayMode={displayMode}
-                                    onPress={() => setDisplayMode(1)}
-                                />
-                            </View>
-                            <View>
-                                <DisplayCheckbox
-                                    value={0}
-                                    displayMode={displayMode}
-                                    onPress={() => setDisplayMode(0)}
-                                />
-                            </View>
+                            <DisplayCheckbox
+                                value={1}
+                                displayMode={displayMode}
+                                onPress={() => setDisplayMode(1)}
+                            />
+                            <DisplayCheckbox
+                                value={0}
+                                displayMode={displayMode}
+                                onPress={() => setDisplayMode(0)}
+                            />
                         </Modal>
                     </Portal>
                     {/* <List.Subheader
@@ -167,7 +163,7 @@ const SettingsScreen = ({
                         titleStyle={titleStyles}
                         title="Theme"
                         descriptionStyle={desciptionStyles}
-                        description={themes[themeCode].themeName}
+                        description={themes[themeCode].label}
                         onPress={showthemeModal}
                         rippleColor={theme.rippleColorDark}
                     />
@@ -184,7 +180,8 @@ const SettingsScreen = ({
                         >
                             {themes.map((item) => (
                                 <ThemeCheckbox
-                                    label={themes[item.themeCode].themeName}
+                                    key={item.key}
+                                    label={themes[item.themeCode].label}
                                     checked={
                                         themeCode === item.themeCode
                                             ? true
