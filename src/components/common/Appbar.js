@@ -14,15 +14,13 @@ export const Appbar = ({ title, onBackAction }) => {
     const theme = useSelector((state) => state.themeReducer.theme);
 
     return (
-        <MaterialAppbar.Header
-            style={{ backgroundColor: theme.colorDarkPrimary }}
-        >
+        <MaterialAppbar.Header style={{ backgroundColor: theme.colorPrimary }}>
             {onBackAction && (
                 <MaterialAppbar.BackAction onPress={onBackAction} />
             )}
             <MaterialAppbar.Content
                 title={title}
-                titleStyle={{ color: theme.textColorPrimaryDark }}
+                titleStyle={{ color: theme.textColorPrimary }}
             />
         </MaterialAppbar.Header>
     );
@@ -63,7 +61,7 @@ export const SearchAppbar = ({
                 <View style={{ flex: 1, flexDirection: "row" }}>
                     <IconButton
                         icon={screen === "Library" ? "magnify" : "arrow-left"}
-                        color={theme.textColorSecondaryDark}
+                        color={theme.textColorSecondary}
                         style={{ marginLeft: 0 }}
                         size={23}
                         onPress={() => {
@@ -76,10 +74,10 @@ export const SearchAppbar = ({
                         ref={searchRef}
                         style={{
                             fontSize: 16,
-                            color: theme.textColorSecondaryDark,
+                            color: theme.textColorSecondary,
                         }}
                         placeholder={placeholder}
-                        placeholderTextColor={theme.textColorSecondaryDark}
+                        placeholderTextColor={theme.textColorSecondary}
                         onChangeText={(text) => {
                             setSearchText(text);
                             if (screen === "Library") {
@@ -97,7 +95,7 @@ export const SearchAppbar = ({
                 {searchText !== "" && (
                     <IconButton
                         icon="close"
-                        color={theme.textColorSecondaryDark}
+                        color={theme.textColorSecondary}
                         style={{ marginRight: 0 }}
                         size={23}
                         onPress={() => {
@@ -109,7 +107,7 @@ export const SearchAppbar = ({
                 )}
                 <IconButton
                     icon="filter-variant"
-                    color={theme.textColorSecondaryDark}
+                    color={theme.textColorSecondary}
                     style={{ marginRight: 0 }}
                     size={23}
                     disabled={typeof onFilter === "function" ? false : true}

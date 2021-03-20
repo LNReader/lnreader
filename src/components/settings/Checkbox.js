@@ -13,10 +13,10 @@ export const DisplayCheckbox = ({ displayMode, onPress, value }) => {
     return (
         <Checkbox.Item
             label={label[value]}
-            labelStyle={{ color: theme.textColorPrimaryDark }}
+            labelStyle={{ color: theme.textColorPrimary }}
             status={displayMode === value ? "checked" : "unchecked"}
             mode="ios"
-            uncheckedColor={theme.textColorSecondaryDark}
+            uncheckedColor={theme.textColorSecondary}
             color={theme.colorAccentDark}
             onPress={onPress}
         />
@@ -29,10 +29,10 @@ export const ThemeCheckbox = ({ onPress, label, checked }) => {
     return (
         <Checkbox.Item
             label={label}
-            labelStyle={{ color: theme.textColorPrimaryDark }}
+            labelStyle={{ color: theme.textColorPrimary }}
             status={checked ? "checked" : "unchecked"}
             mode="ios"
-            uncheckedColor={theme.textColorSecondaryDark}
+            uncheckedColor={theme.textColorSecondary}
             color={theme.colorAccentDark}
             onPress={onPress}
         />

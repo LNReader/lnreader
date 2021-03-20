@@ -39,14 +39,14 @@ export const BottomSheet = ({
                 style={[
                     styles.contentContainer,
                     {
-                        backgroundColor: theme.colorDarkPrimary,
+                        backgroundColor: theme.colorPrimary,
                     },
                 ]}
             >
                 <BottomSheetHandle />
                 <List.Subheader
                     style={{
-                        color: theme.textColorPrimaryDark,
+                        color: theme.textColorPrimary,
                         fontSize: 20,
                     }}
                 >
@@ -77,7 +77,7 @@ export const BottomSheet = ({
                                 />
                                 <Text
                                     style={{
-                                        color: theme.textColorPrimaryDark,
+                                        color: theme.textColorPrimary,
                                     }}
                                 >
                                     Newest to oldest
@@ -96,7 +96,7 @@ export const BottomSheet = ({
                                 />
                                 <Text
                                     style={{
-                                        color: theme.textColorPrimaryDark,
+                                        color: theme.textColorPrimary,
                                     }}
                                 >
                                     Oldest to newest
@@ -108,7 +108,7 @@ export const BottomSheet = ({
 
                 <List.Subheader
                     style={{
-                        color: theme.textColorPrimaryDark,
+                        color: theme.textColorPrimary,
                         fontSize: 20,
                         paddingVertical: 10,
                     }}
@@ -122,7 +122,7 @@ export const BottomSheet = ({
                         color={theme.colorAccentDark}
                         onPress={() => filterChapters("")}
                     />
-                    <Text style={{ color: theme.textColorPrimaryDark }}>
+                    <Text style={{ color: theme.textColorPrimary }}>
                         Show all
                     </Text>
                 </View>
@@ -135,7 +135,7 @@ export const BottomSheet = ({
                         color={theme.colorAccentDark}
                         onPress={() => filterChapters("AND `read`=1")}
                     />
-                    <Text style={{ color: theme.textColorPrimaryDark }}>
+                    <Text style={{ color: theme.textColorPrimary }}>
                         Show read chapters
                     </Text>
                 </View>
@@ -148,7 +148,7 @@ export const BottomSheet = ({
                         color={theme.colorAccentDark}
                         onPress={() => filterChapters("AND `read`=0")}
                     />
-                    <Text style={{ color: theme.textColorPrimaryDark }}>
+                    <Text style={{ color: theme.textColorPrimary }}>
                         Show unread chapters
                     </Text>
                 </View>
@@ -163,7 +163,7 @@ export const BottomSheet = ({
                         color={theme.colorAccentDark}
                         onPress={() => filterChapters("AND downloaded=1")}
                     />
-                    <Text style={{ color: theme.textColorPrimaryDark }}>
+                    <Text style={{ color: theme.textColorPrimary }}>
                         Show downloaded chapters
                     </Text>
                 </View>

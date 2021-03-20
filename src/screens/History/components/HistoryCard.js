@@ -13,7 +13,7 @@ const HistoryCard = ({ item, deleteHistory, navigation }) => {
     return (
         <TouchableRipple
             style={styles.historyCard}
-            rippleColor={theme.rippleColorDark}
+            rippleColor={theme.rippleColor}
             borderless
             onPress={() =>
                 navigation.navigate("NovelItem", {
@@ -34,7 +34,7 @@ const HistoryCard = ({ item, deleteHistory, navigation }) => {
                     <View style={{ flex: 0.9 }}>
                         <Text
                             style={{
-                                color: theme.textColorPrimaryDark,
+                                color: theme.textColorPrimary,
                                 fontWeight: "bold",
                                 fontSize: 16,
                             }}
@@ -44,7 +44,7 @@ const HistoryCard = ({ item, deleteHistory, navigation }) => {
                         </Text>
                         <Text
                             style={{
-                                color: theme.textColorSecondaryDark,
+                                color: theme.textColorSecondary,
                                 marginTop: 2,
                             }}
                             numberOfLines={1}
@@ -63,7 +63,7 @@ const HistoryCard = ({ item, deleteHistory, navigation }) => {
                         <IconButton
                             icon="delete-outline"
                             size={22}
-                            color={theme.textColorPrimaryDark}
+                            color={theme.textColorPrimary}
                             style={{
                                 marginRight: 0,
                             }}
@@ -72,7 +72,7 @@ const HistoryCard = ({ item, deleteHistory, navigation }) => {
                         <IconButton
                             icon="play"
                             size={24}
-                            color={theme.textColorPrimaryDark}
+                            color={theme.textColorPrimary}
                             style={{ marginRight: 10 }}
                             onPress={() =>
                                 navigation.navigate("ChapterItem", {

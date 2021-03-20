@@ -38,7 +38,7 @@ const NovelInfoHeader = ({
                 {
                     color: theme.colorAccentDark,
                     borderColor: theme.colorAccentDark,
-                    backgroundColor: theme.colorDarkPrimary,
+                    backgroundColor: theme.colorPrimary,
                 },
             ]}
         >
@@ -55,7 +55,7 @@ const NovelInfoHeader = ({
                 style={styles.background}
             >
                 <LinearGradient
-                    colors={["rgba(0,0,0,0.2)", theme.colorDarkPrimaryDark]}
+                    colors={["rgba(0,0,0,0.2)", theme.colorPrimaryDark]}
                     style={styles.linearGradient}
                 >
                     <View style={styles.detailsContainer}>
@@ -73,7 +73,7 @@ const NovelInfoHeader = ({
                                 style={[
                                     styles.name,
                                     {
-                                        color: theme.textColorPrimaryDark,
+                                        color: theme.textColorPrimary,
                                     },
                                 ]}
                             >
@@ -83,7 +83,7 @@ const NovelInfoHeader = ({
                                 <>
                                     <Text
                                         style={{
-                                            color: theme.textColorSecondaryDark,
+                                            color: theme.textColorSecondary,
                                             marginVertical: 3,
                                             fontSize: 14,
                                             fontWeight: "bold",
@@ -98,7 +98,7 @@ const NovelInfoHeader = ({
 
                                     <Text
                                         style={{
-                                            color: theme.textColorSecondaryDark,
+                                            color: theme.textColorSecondary,
                                             marginVertical: 3,
                                             fontSize: 14,
                                         }}
@@ -108,7 +108,7 @@ const NovelInfoHeader = ({
                                     </Text>
                                     <Text
                                         style={{
-                                            color: theme.textColorSecondaryDark,
+                                            color: theme.textColorSecondary,
                                             // marginVertical: 3,
                                             fontSize: 14,
                                         }}
@@ -147,7 +147,7 @@ const NovelInfoHeader = ({
                             onPress={() => insertNovelInLib()}
                             style={[
                                 {
-                                    backgroundColor: theme.colorDarkPrimaryDark,
+                                    backgroundColor: theme.colorPrimaryDark,
                                     marginRight: 2,
                                     // borderColor: "rgba(255,255,255,0.121)",
                                     borderWidth: 0,
@@ -165,7 +165,7 @@ const NovelInfoHeader = ({
                             ]}
                             textStyle={{
                                 fontWeight: "bold",
-                                color: theme.textColorPrimaryDark,
+                                color: theme.textColorPrimary,
                             }}
                         >
                             {libraryStatus ? "In Library" : "Add to library"}
@@ -202,7 +202,7 @@ const NovelInfoHeader = ({
                         >
                             <Text
                                 style={{
-                                    color: theme.textColorPrimaryDark,
+                                    color: theme.textColorPrimary,
                                     marginTop: 5,
                                     paddingVertical: 5,
                                     fontSize: 15,
@@ -213,7 +213,7 @@ const NovelInfoHeader = ({
                             </Text>
                             <Text
                                 style={{
-                                    color: theme.textColorSecondaryDark,
+                                    color: theme.textColorSecondary,
                                     lineHeight: 20,
                                 }}
                                 numberOfLines={more ? 100 : 2}
@@ -229,7 +229,7 @@ const NovelInfoHeader = ({
                                     position: "absolute",
                                     bottom: 0,
                                     right: 15,
-                                    backgroundColor: theme.colorDarkPrimaryDark,
+                                    backgroundColor: theme.colorPrimaryDark,
                                     paddingLeft: 5,
                                 }}
                                 onPress={() => setMore(!more)}
@@ -291,12 +291,12 @@ const NovelInfoHeader = ({
                         onPress={() =>
                             bottomSheetRef.current.show({ velocity: -1.5 })
                         }
-                        rippleColor={theme.rippleColorDark}
+                        rippleColor={theme.rippleColor}
                     >
                         <>
                             <Text
                                 style={{
-                                    color: theme.textColorPrimaryDark,
+                                    color: theme.textColorPrimary,
                                     paddingHorizontal: 15,
                                     paddingVertical: 5,
                                     fontSize: 16,
@@ -307,7 +307,7 @@ const NovelInfoHeader = ({
                             </Text>
                             <IconButton
                                 icon="filter-variant"
-                                color={theme.textColorPrimaryDark}
+                                color={theme.textColorPrimary}
                                 size={24}
                             />
                         </>
@@ -332,7 +332,7 @@ const styles = StyleSheet.create({
     },
     background: {
         height: 285,
-        // backgroundColor: theme.colorDarkPrimaryDark,
+        // backgroundColor: theme.colorPrimaryDark,
     },
     linearGradient: {
         // flex: 1,

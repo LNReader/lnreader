@@ -21,7 +21,7 @@ const NovelCover = ({ item, onPress, libraryStatus }) => {
             <TouchableRipple
                 borderless
                 centered
-                rippleColor={theme.rippleColorDark}
+                rippleColor={theme.rippleColor}
                 style={styles.opac}
                 onPress={onPress}
             >
@@ -68,7 +68,7 @@ const NovelCover = ({ item, onPress, libraryStatus }) => {
                             style={[
                                 styles.title,
                                 {
-                                    color: theme.textColorPrimaryDark,
+                                    color: theme.textColorPrimary,
                                     padding: 4,
                                 },
                             ]}

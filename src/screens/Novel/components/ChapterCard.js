@@ -36,14 +36,14 @@ const ChapterCard = ({
                     chapterName: chapter.chapterName,
                 })
             }
-            rippleColor={theme.rippleColorDark}
+            rippleColor={theme.rippleColor}
         >
             <>
                 <View>
                     <Text
                         style={[
                             {
-                                color: theme.textColorPrimaryDark,
+                                color: theme.textColorPrimary,
                             },
                             chapter.read === 1 && {
                                 color: theme.textColorHintDark,
@@ -57,7 +57,7 @@ const ChapterCard = ({
                         <Text
                             style={[
                                 {
-                                    color: theme.textColorSecondaryDark,
+                                    color: theme.textColorSecondary,
                                     marginTop: 5,
                                     fontSize: 12,
                                 },
@@ -89,7 +89,7 @@ const ChapterCard = ({
                             animated
                             color={
                                 downloaded
-                                    ? theme.textColorPrimaryDark
+                                    ? theme.textColorPrimary
                                     : theme.textColorHintDark
                             }
                             size={25}

@@ -64,7 +64,7 @@ const BottomNavigator = () => {
     return (
         <Tab.Navigator
             shifting={false}
-            barStyle={{ backgroundColor: theme.colorDarkPrimary }}
+            barStyle={{ backgroundColor: theme.colorPrimary }}
             activeColor={theme.colorAccentDark}
         >
             <Tab.Screen

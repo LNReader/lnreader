@@ -2,26 +2,26 @@
  * Application Colors
  */
 export const theme = {
-    colorDarkPrimary: "#000000",
-    colorDarkPrimaryDark: "#000000",
+    colorPrimary: "#000000",
+    colorPrimaryDark: "#000000",
     colorAccentDark: "#3399FF",
-    textColorPrimaryDark: "#FFFFFF",
-    textColorSecondaryDark: "rgba(255,255,255,0.7)",
+    textColorPrimary: "#FFFFFF",
+    textColorSecondary: "rgba(255,255,255,0.7)",
     textColorHintDark: "rgba(255,255,255,0.5)",
-    rippleColorDark: "rgba(255,255,255,0.2)",
+    rippleColor: "rgba(255,255,255,0.2)",
 };
 
 /**
  * Light Theme
  */
 export const lightTheme = {
-    colorDarkPrimary: "#FFFFFF",
-    colorDarkPrimaryDark: "#FAFAFA",
+    colorPrimary: "#FFFFFF",
+    colorPrimaryDark: "#FAFAFA",
     colorAccentDark: "#2979FF",
-    textColorPrimaryDark: "#000000",
-    textColorSecondaryDark: "rgba(0,0,0,0.54)",
+    textColorPrimary: "#000000",
+    textColorSecondary: "rgba(0,0,0,0.54)",
     textColorHintDark: "rgba(0,0,0,0.38)",
-    rippleColorDark: "#C2C2C2",
+    rippleColor: "#C2C2C2",
     searchBarColor: "#FFFFFF",
 };
 
@@ -29,13 +29,13 @@ export const lightTheme = {
  * Dark Theme
  */
 export const darkTheme = {
-    colorDarkPrimary: "#242529",
-    colorDarkPrimaryDark: "#202125",
+    colorPrimary: "#242529",
+    colorPrimaryDark: "#202125",
     colorAccentDark: "#3399FF",
-    textColorPrimaryDark: "#FFFFFF",
-    textColorSecondaryDark: "rgba(255,255,255,0.7)",
+    textColorPrimary: "#FFFFFF",
+    textColorSecondary: "rgba(255,255,255,0.7)",
     textColorHintDark: "rgba(255,255,255,0.5)",
-    rippleColorDark: "rgba(255,255,255,0.2)",
+    rippleColor: "rgba(255,255,255,0.2)",
     searchBarColor: "#303135",
 };
 
@@ -43,13 +43,13 @@ export const darkTheme = {
  * Amoled Dark Theme
  */
 export const amoledDarkTheme = {
-    colorDarkPrimary: "#000000",
-    colorDarkPrimaryDark: "#000000",
+    colorPrimary: "#000000",
+    colorPrimaryDark: "#000000",
     colorAccentDark: "#3399FF",
-    textColorPrimaryDark: "#FFFFFF",
-    textColorSecondaryDark: "rgba(255,255,255,0.7)",
+    textColorPrimary: "#FFFFFF",
+    textColorSecondary: "rgba(255,255,255,0.7)",
     textColorHintDark: "rgba(255,255,255,0.5)",
-    rippleColorDark: "rgba(255,255,255,0.2)",
+    rippleColor: "rgba(255,255,255,0.2)",
     searchBarColor: "#1F1F1F",
 };
 
@@ -57,12 +57,12 @@ export const amoledDarkTheme = {
  * Midnight Dusk Theme
  */
 export const midnightDuskTheme = {
-    colorDarkPrimary: "#201F27",
-    colorDarkPrimaryDark: "#16151D",
+    colorPrimary: "#201F27",
+    colorPrimaryDark: "#16151D",
     colorAccentDark: "#F02475",
-    textColorPrimaryDark: "#FFFFFF",
-    textColorSecondaryDark: "rgba(255,255,255,0.7)",
+    textColorPrimary: "#FFFFFF",
+    textColorSecondary: "rgba(255,255,255,0.7)",
     textColorHintDark: "rgba(255,255,255,0.5)",
-    rippleColorDark: "rgba(255,255,255,0.2)",
+    rippleColor: "rgba(255,255,255,0.2)",
     searchBarColor: "#1F1F1F",
 };

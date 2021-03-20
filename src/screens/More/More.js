@@ -16,13 +16,13 @@ const MoreScreen = ({ navigation }) => {
             <List.Section
                 style={{
                     flex: 1,
-                    backgroundColor: theme.colorDarkPrimaryDark,
+                    backgroundColor: theme.colorPrimaryDark,
                     marginTop: 0,
                     marginBottom: 0,
                 }}
             >
                 <List.Item
-                    titleStyle={{ color: theme.textColorPrimaryDark }}
+                    titleStyle={{ color: theme.textColorPrimary }}
                     title="Settings"
                     left={() => (
                         <List.Icon
@@ -33,7 +33,7 @@ const MoreScreen = ({ navigation }) => {
                     onPress={() => navigation.navigate("Settings")}
                 />
                 <List.Item
-                    titleStyle={{ color: theme.textColorPrimaryDark }}
+                    titleStyle={{ color: theme.textColorPrimary }}
                     title="About"
                     left={() => (
                         <List.Icon

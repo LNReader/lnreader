@@ -48,7 +48,7 @@ const ChapterBottomSheet = ({
                 <View style={{ flex: 1, alignItems: "center", paddingTop: 30 }}>
                     <Text
                         style={{
-                            color: theme.textColorPrimaryDark,
+                            color: theme.textColorPrimary,
                             fontWeight: "bold",
                         }}
                     >
@@ -70,7 +70,7 @@ const ChapterBottomSheet = ({
                     />
                     <Text
                         style={{
-                            color: theme.textColorPrimaryDark,
+                            color: theme.textColorPrimary,
                             fontWeight: "bold",
                         }}
                     >

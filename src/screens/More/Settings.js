@@ -40,10 +40,10 @@ const SettingsScreen = ({
     ];
 
     const desciptionStyles = {
-        color: theme.textColorSecondaryDark,
+        color: theme.textColorSecondary,
     };
 
-    const titleStyles = { color: theme.textColorPrimaryDark };
+    const titleStyles = { color: theme.textColorPrimary };
 
     /**
      * Display Mode Modal
@@ -62,13 +62,11 @@ const SettingsScreen = ({
     return (
         <Provider>
             <Appbar title="Settings" onBackAction={() => navigation.goBack()} />
-            <View
-                style={{ flex: 1, backgroundColor: theme.colorDarkPrimaryDark }}
-            >
+            <View style={{ flex: 1, backgroundColor: theme.colorPrimaryDark }}>
                 <List.Section
                     style={{
                         flex: 1,
-                        backgroundColor: theme.colorDarkPrimaryDark,
+                        backgroundColor: theme.colorPrimaryDark,
                     }}
                 >
                     <List.Subheader
@@ -85,7 +83,7 @@ const SettingsScreen = ({
                         descriptionStyle={desciptionStyles}
                         description="Delete history for novels not in your library"
                         onPress={() => deleteNovelsNotInLibrary()}
-                        rippleColor={theme.rippleColorDark}
+                        rippleColor={theme.rippleColor}
                     />
                     <List.Item
                         titleStyle={titleStyles}
@@ -93,7 +91,7 @@ const SettingsScreen = ({
                         descriptionStyle={desciptionStyles}
                         description="Delete reading history for all novels"
                         onPress={() => deleteHistory()}
-                        rippleColor={theme.rippleColorDark}
+                        rippleColor={theme.rippleColor}
                     />
                     <List.Subheader
                         style={{
@@ -109,14 +107,14 @@ const SettingsScreen = ({
                         descriptionStyle={desciptionStyles}
                         description={display[displayMode]}
                         onPress={showDisplayModal}
-                        rippleColor={theme.rippleColorDark}
+                        rippleColor={theme.rippleColor}
                     />
                     <Portal>
                         <Modal
                             visible={displayModalVisible}
                             onDismiss={hideDisplayModal}
                             contentContainerStyle={{
-                                backgroundColor: theme.colorDarkPrimaryDark,
+                                backgroundColor: theme.colorPrimaryDark,
                                 padding: 20,
                                 margin: 20,
                                 borderRadius: 6,
@@ -147,7 +145,7 @@ const SettingsScreen = ({
                         title="Delete database"
                         descriptionStyle={desciptionStyles}
                         description="Delete entire database"
-                        rippleColor={theme.rippleColorDark}
+                        rippleColor={theme.rippleColor}
                         onPress={() => deleteDatabase()}
                     /> */}
 
@@ -165,14 +163,14 @@ const SettingsScreen = ({
                         descriptionStyle={desciptionStyles}
                         description={themes[themeCode].label}
                         onPress={showthemeModal}
-                        rippleColor={theme.rippleColorDark}
+                        rippleColor={theme.rippleColor}
                     />
                     <Portal>
                         <Modal
                             visible={themeModalVisible}
                             onDismiss={hidethemeModal}
                             contentContainerStyle={{
-                                backgroundColor: theme.colorDarkPrimaryDark,
+                                backgroundColor: theme.colorPrimaryDark,
                                 padding: 20,
                                 margin: 20,
                                 borderRadius: 6,

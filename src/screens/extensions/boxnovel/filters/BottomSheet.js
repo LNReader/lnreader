@@ -27,7 +27,7 @@ export const BottomSheet = ({ bottomSheetRef, setSort, sort, setLoading }) => {
                 style={[
                     styles.contentContainer,
                     {
-                        backgroundColor: theme.colorDarkPrimary,
+                        backgroundColor: theme.colorPrimary,
                     },
                 ]}
             >
@@ -70,7 +70,7 @@ export const BottomSheet = ({ bottomSheetRef, setSort, sort, setLoading }) => {
                             title={item.label}
                             titleStyle={{
                                 fontSize: 15,
-                                color: theme.textColorPrimaryDark,
+                                color: theme.textColorPrimary,
                             }}
                             onPress={() => {
                                 setLoading(true);

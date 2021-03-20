@@ -16,7 +16,7 @@ const ExtensionCard = ({ item }) => {
         <TouchableRipple
             style={styles.extensionCard}
             onPress={() => navigation.navigate(sourceName + "Stack")}
-            rippleColor={theme.rippleColorDark}
+            rippleColor={theme.rippleColor}
         >
             <>
                 <Image
@@ -30,7 +30,7 @@ const ExtensionCard = ({ item }) => {
                     <View>
                         <Text
                             style={{
-                                color: theme.textColorPrimaryDark,
+                                color: theme.textColorPrimary,
                                 fontSize: 14,
                             }}
                         >
@@ -38,7 +38,7 @@ const ExtensionCard = ({ item }) => {
                         </Text>
                         <Text
                             style={{
-                                color: theme.textColorSecondaryDark,
+                                color: theme.textColorSecondary,
                                 fontSize: 12,
                             }}
                         >

@@ -60,7 +60,7 @@ const LibraryScreen = ({
             <View
                 style={[
                     styles.container,
-                    { backgroundColor: theme.colorDarkPrimaryDark },
+                    { backgroundColor: theme.colorPrimaryDark },
                 ]}
             >
                 <SearchAppbar

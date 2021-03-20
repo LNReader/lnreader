@@ -11,7 +11,7 @@ const EmptyView = ({ icon, description }) => {
                 style={[
                     styles.emptyViewIcon,
                     {
-                        color: theme.textColorSecondaryDark,
+                        color: theme.textColorSecondary,
                     },
                 ]}
             >
@@ -21,7 +21,7 @@ const EmptyView = ({ icon, description }) => {
                 style={[
                     styles.emptyViewText,
                     {
-                        color: theme.textColorSecondaryDark,
+                        color: theme.textColorSecondary,
                     },
                 ]}
             >
