@@ -150,7 +150,7 @@ const NovelInfoHeader = ({
                                     backgroundColor: theme.colorDarkPrimaryDark,
                                     marginRight: 2,
                                     // borderColor: "rgba(255,255,255,0.121)",
-                                    // borderWidth: 1,
+                                    borderWidth: 0,
                                     justifyContent: "center",
                                     height: 30,
                                     alignItems: "center",

@@ -11,7 +11,6 @@ import { FlatList } from "react-native-gesture-handler";
 import { useFocusEffect } from "@react-navigation/native";
 import { connect } from "react-redux";
 
-import Appbar from "./components/Appbar";
 import NovelCover from "../../components/common/NovelCover";
 import EmptyView from "../../components/common/EmptyView";
 
@@ -65,10 +64,12 @@ const LibraryScreen = ({
                 ]}
             >
                 <SearchAppbar
-                    searchLibraryNovels={searchLibraryNovels}
-                    setSearchText={setSearchText}
+                    screen="Library"
+                    placeholder="Search Library"
+                    getNovels={getLibraryNovels}
+                    getSearchResults={searchLibraryNovels}
                     searchText={searchText}
-                    getLibraryNovels={getLibraryNovels}
+                    setSearchText={setSearchText}
                 />
                 {loading ? (
                     <ActivityIndicator
@@ -76,46 +77,42 @@ const LibraryScreen = ({
                         color={theme.colorAccentDark}
                     />
                 ) : (
-                    <>
-                        <FlatList
-                            numColumns={3}
-                            data={novels}
-                            keyExtractor={(item) => item.novelUrl}
-                            renderItem={({ item }) => (
-                                <NovelCover
-                                    item={item}
-                                    onPress={() => redirectToNovel(item)}
+                    <FlatList
+                        numColumns={3}
+                        data={novels}
+                        keyExtractor={(item) => item.novelUrl}
+                        renderItem={({ item }) => (
+                            <NovelCover
+                                item={item}
+                                onPress={() => redirectToNovel(item)}
+                            />
+                        )}
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={refreshing}
+                                onRefresh={onRefresh}
+                                colors={["white"]}
+                                progressBackgroundColor={theme.colorAccentDark}
+                            />
+                        }
+                        ListEmptyComponent={
+                            searchText !== "" ? (
+                                <Text
+                                    style={[
+                                        styles.emptySearch,
+                                        { color: theme.colorAccentDark },
+                                    ]}
+                                >
+                                    {`"${searchText}" not in library`}
+                                </Text>
+                            ) : (
+                                <EmptyView
+                                    icon="Σ(ಠ_ಠ)"
+                                    description="Your library is empty. Add series to your library from Browse."
                                 />
-                            )}
-                            refreshControl={
-                                <RefreshControl
-                                    refreshing={refreshing}
-                                    onRefresh={onRefresh}
-                                    colors={["white"]}
-                                    progressBackgroundColor={
-                                        theme.colorAccentDark
-                                    }
-                                />
-                            }
-                            ListEmptyComponent={
-                                searchText !== "" ? (
-                                    <Text
-                                        style={[
-                                            styles.emptySearch,
-                                            { color: theme.colorAccentDark },
-                                        ]}
-                                    >
-                                        {`"${searchText}" not in library`}
-                                    </Text>
-                                ) : (
-                                    <EmptyView
-                                        icon="Σ(ಠ_ಠ)"
-                                        description="Your library is empty. Add series to your library from Browse."
-                                    />
-                                )
-                            }
-                        />
-                    </>
+                            )
+                        }
+                    />
                 )}
             </View>
         </>

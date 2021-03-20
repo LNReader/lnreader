@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { View, TextInput } from "react-native";
+import { View, TextInput, StyleSheet } from "react-native";
 import {
     TouchableRipple,
     IconButton,
@@ -7,6 +7,7 @@ import {
 } from "react-native-paper";
 import Constants from "expo-constants";
 
+import { useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 
 export const Appbar = ({ title, onBackAction }) => {
@@ -28,12 +29,17 @@ export const Appbar = ({ title, onBackAction }) => {
 };
 
 export const SearchAppbar = ({
-    searchLibraryNovels,
+    placeholder,
+    getSearchResults,
     setSearchText,
     searchText,
-    getLibraryNovels,
+    getNovels,
+    setLoading,
+    screen,
 }) => {
     const searchRef = useRef(null);
+
+    const navigation = useNavigation();
 
     const theme = useSelector((state) => state.themeReducer.theme);
 
@@ -41,18 +47,10 @@ export const SearchAppbar = ({
         <TouchableRipple
             borderless
             onPress={() => searchRef.current.focus()}
-            style={{
-                marginTop: Constants.statusBarHeight + 4,
-                height: 50,
-                flexDirection: "row",
-                alignItems: "center",
-                paddingHorizontal: 16,
-                marginBottom: 8,
-                borderRadius: 8,
-                backgroundColor: theme.searchBarColor,
-                marginHorizontal: 12,
-                elevation: 2,
-            }}
+            style={[
+                styles.searchAppbarContainer,
+                { backgroundColor: theme.searchBarColor },
+            ]}
         >
             <View
                 style={{
@@ -63,10 +61,15 @@ export const SearchAppbar = ({
             >
                 <View style={{ flex: 1, flexDirection: "row" }}>
                     <IconButton
-                        icon="magnify"
+                        icon={screen === "Library" ? "magnify" : "arrow-left"}
                         color={theme.textColorSecondaryDark}
                         style={{ marginLeft: 0 }}
                         size={23}
+                        onPress={() => {
+                            if (screen === "Extension") {
+                                navigation.goBack();
+                            }
+                        }}
                     />
                     <TextInput
                         ref={searchRef}
@@ -74,11 +77,18 @@ export const SearchAppbar = ({
                             fontSize: 16,
                             color: theme.textColorSecondaryDark,
                         }}
-                        placeholder="Search Library"
+                        placeholder={placeholder}
                         placeholderTextColor={theme.textColorSecondaryDark}
                         onChangeText={(text) => {
                             setSearchText(text);
-                            searchLibraryNovels(text);
+                            if (screen === "Library") {
+                                getSearchResults(text);
+                            }
+                        }}
+                        onSubmitEditing={() => {
+                            if (screen === "Extension") {
+                                getSearchResults(searchText);
+                            }
                         }}
                         defaultValue={searchText}
                     />
@@ -90,7 +100,8 @@ export const SearchAppbar = ({
                         style={{ marginRight: 0 }}
                         size={23}
                         onPress={() => {
-                            getLibraryNovels();
+                            setLoading?.(true);
+                            getNovels();
                             setSearchText("");
                         }}
                     />
@@ -110,3 +121,17 @@ export const SearchAppbar = ({
         </TouchableRipple>
     );
 };
+
+const styles = StyleSheet.create({
+    searchAppbarContainer: {
+        marginTop: Constants.statusBarHeight + 4,
+        height: 50,
+        flexDirection: "row",
+        alignItems: "center",
+        paddingHorizontal: 16,
+        marginBottom: 8,
+        borderRadius: 8,
+        marginHorizontal: 12,
+        elevation: 2,
+    },
+});
