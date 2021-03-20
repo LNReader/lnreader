@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { useSelector } from "react-redux";
 
-const EmptyView = () => {
+const EmptyView = ({ icon, description }) => {
     const theme = useSelector((state) => state.themeReducer.theme);
 
     return (
@@ -15,7 +15,7 @@ const EmptyView = () => {
                     },
                 ]}
             >
-                (˘･_･˘)
+                {icon}
             </Text>
             <Text
                 style={[
@@ -25,7 +25,7 @@ const EmptyView = () => {
                     },
                 ]}
             >
-                Nothing read recently.
+                {description}
             </Text>
         </View>
     );

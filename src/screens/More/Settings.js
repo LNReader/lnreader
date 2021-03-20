@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 import { switchTheme } from "../../redux/actions/theme";
 import { setDisplayMode, setItemsPerRow } from "../../redux/actions/settings";
 
-import { CustomAppbar } from "../../components/common/Appbar";
+import { Appbar } from "../../components/common/Appbar";
 import {
     DisplayCheckbox,
     ThemeCheckbox,
@@ -63,10 +63,7 @@ const SettingsScreen = ({
 
     return (
         <Provider>
-            <CustomAppbar
-                title="Settings"
-                onBackAction={() => navigation.goBack()}
-            />
+            <Appbar title="Settings" onBackAction={() => navigation.goBack()} />
             <View
                 style={{ flex: 1, backgroundColor: theme.colorDarkPrimaryDark }}
             >

@@ -9,13 +9,13 @@ import {
     ActivityIndicator,
 } from "react-native";
 
-import { CustomAppbar } from "../../components/common/Appbar";
+import { Appbar } from "../../components/common/Appbar";
 import HistoryCard from "./components/HistoryCard";
 
 import { getHistoryFromDb, deleteChapterHistory } from "../../services/db";
 
 import { useSelector } from "react-redux";
-import EmptyView from "./components/EmptyView";
+import EmptyView from "../../components/common/EmptyView";
 
 const History = ({ navigation }) => {
     const [loading, setLoading] = useState(true);
@@ -49,7 +49,7 @@ const History = ({ navigation }) => {
 
     return (
         <>
-            <CustomAppbar title="History" />
+            <Appbar title="History" />
             <View
                 style={[
                     styles.container,
@@ -57,7 +57,6 @@ const History = ({ navigation }) => {
                 ]}
             >
                 <FlatList
-                    contentContainerStyle={{ flex: 1 }}
                     data={history}
                     keyExtractor={(item) => item.historyId.toString()}
                     renderItem={renderHistoryCard}
@@ -69,7 +68,14 @@ const History = ({ navigation }) => {
                             />
                         )
                     }
-                    ListEmptyComponent={!loading && <EmptyView />}
+                    ListEmptyComponent={
+                        !loading && (
+                            <EmptyView
+                                icon="(˘･_･˘)"
+                                description="Nothing read recently"
+                            />
+                        )
+                    }
                 />
             </View>
         </>

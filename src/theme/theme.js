@@ -22,6 +22,7 @@ export const lightTheme = {
     textColorSecondaryDark: "rgba(0,0,0,0.54)",
     textColorHintDark: "rgba(0,0,0,0.38)",
     rippleColorDark: "#C2C2C2",
+    searchBarColor: "#FFFFFF",
 };
 
 /**
@@ -35,6 +36,7 @@ export const darkTheme = {
     textColorSecondaryDark: "rgba(255,255,255,0.7)",
     textColorHintDark: "rgba(255,255,255,0.5)",
     rippleColorDark: "rgba(255,255,255,0.2)",
+    searchBarColor: "#303135",
 };
 
 /**
@@ -48,6 +50,7 @@ export const amoledDarkTheme = {
     textColorSecondaryDark: "rgba(255,255,255,0.7)",
     textColorHintDark: "rgba(255,255,255,0.5)",
     rippleColorDark: "rgba(255,255,255,0.2)",
+    searchBarColor: "#1F1F1F",
 };
 
 /**
@@ -61,4 +64,5 @@ export const midnightDuskTheme = {
     textColorSecondaryDark: "rgba(255,255,255,0.7)",
     textColorHintDark: "rgba(255,255,255,0.5)",
     rippleColorDark: "rgba(255,255,255,0.2)",
+    searchBarColor: "#1F1F1F",
 };

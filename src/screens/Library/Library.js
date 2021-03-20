@@ -13,12 +13,13 @@ import { connect } from "react-redux";
 
 import Appbar from "./components/Appbar";
 import NovelCover from "../../components/common/NovelCover";
-import EmptyView from "./components/EmptyView";
+import EmptyView from "../../components/common/EmptyView";
 
 import {
     getLibraryNovels,
     searchLibraryNovels,
 } from "../../redux/actions/library";
+import { SearchAppbar } from "../../components/common/Appbar";
 
 const LibraryScreen = ({
     navigation,
@@ -30,13 +31,11 @@ const LibraryScreen = ({
 }) => {
     const [refreshing, setRefreshing] = useState(false);
 
-    const [search, setSearch] = useState({ searching: false, searchText: "" });
-
-    const resetSearch = () => setSearch({ searching: false, searchText: "" });
+    const [searchText, setSearchText] = useState("");
 
     useFocusEffect(
         useCallback(() => {
-            resetSearch();
+            setSearchText("");
             getLibraryNovels();
         }, [])
     );
@@ -59,18 +58,18 @@ const LibraryScreen = ({
 
     return (
         <>
-            <Appbar
-                search={search}
-                setSearch={setSearch}
-                getLibraryNovels={getLibraryNovels}
-                searchLibraryNovels={searchLibraryNovels}
-            />
             <View
                 style={[
                     styles.container,
                     { backgroundColor: theme.colorDarkPrimaryDark },
                 ]}
             >
+                <SearchAppbar
+                    searchLibraryNovels={searchLibraryNovels}
+                    setSearchText={setSearchText}
+                    searchText={searchText}
+                    getLibraryNovels={getLibraryNovels}
+                />
                 {loading ? (
                     <ActivityIndicator
                         size="small"
@@ -99,17 +98,20 @@ const LibraryScreen = ({
                                 />
                             }
                             ListEmptyComponent={
-                                search.searchText === "" ? (
-                                    <EmptyView />
-                                ) : (
+                                searchText !== "" ? (
                                     <Text
                                         style={[
                                             styles.emptySearch,
                                             { color: theme.colorAccentDark },
                                         ]}
                                     >
-                                        {`"${search.searchText}" not in library`}
+                                        {`"${searchText}" not in library`}
                                     </Text>
+                                ) : (
+                                    <EmptyView
+                                        icon="Σ(ಠ_ಠ)"
+                                        description="Your library is empty. Add series to your library from Browse."
+                                    />
                                 )
                             }
                         />
@@ -137,9 +139,8 @@ const styles = StyleSheet.create({
         padding: 4,
     },
     emptySearch: {
-        fontWeight: "bold",
-        marginTop: 10,
+        marginTop: 8,
         textAlign: "center",
-        paddingHorizontal: 30,
+        paddingHorizontal: 16,
     },
 });

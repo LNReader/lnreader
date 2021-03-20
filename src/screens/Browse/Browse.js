@@ -9,7 +9,7 @@ import {
     ActivityIndicator,
 } from "react-native";
 import { TouchableRipple, Button } from "react-native-paper";
-import { CustomAppbar } from "../../components/common/Appbar";
+import { Appbar } from "../../components/common/Appbar";
 
 import { useSelector } from "react-redux";
 
@@ -30,7 +30,7 @@ const Browse = ({ navigation }) => {
 
     return (
         <>
-            <CustomAppbar title="Browse" />
+            <Appbar title="Browse" />
             <View
                 style={[
                     styles.container,

@@ -2,7 +2,7 @@ import React from "react";
 import * as Linking from "expo-linking";
 import { List, Divider } from "react-native-paper";
 
-import { CustomAppbar } from "../../components/common/Appbar";
+import { Appbar } from "../../components/common/Appbar";
 
 import { useSelector } from "react-redux";
 
@@ -11,10 +11,7 @@ const AboutScreen = ({ navigation }) => {
 
     return (
         <>
-            <CustomAppbar
-                title="About"
-                onBackAction={() => navigation.goBack()}
-            />
+            <Appbar title="About" onBackAction={() => navigation.goBack()} />
             <List.Section
                 style={{
                     flex: 1,

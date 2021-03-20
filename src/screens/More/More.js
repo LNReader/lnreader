@@ -3,7 +3,7 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import { List } from "react-native-paper";
 
-import { CustomAppbar } from "../../components/common/Appbar";
+import { Appbar } from "../../components/common/Appbar";
 
 import { useSelector } from "react-redux";
 
@@ -12,7 +12,7 @@ const MoreScreen = ({ navigation }) => {
 
     return (
         <>
-            <CustomAppbar title="More" />
+            <Appbar title="More" />
             <List.Section
                 style={{
                     flex: 1,
