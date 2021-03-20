@@ -193,7 +193,7 @@ const ChapterItem = ({ route, navigation }) => {
                         />
                         <Appbar.Content
                             title={loading ? "Chapter" : chapter.chapterName}
-                            titleStyle={{ color: theme.textColorPrimaryDark }}
+                            titleStyle={{ color: theme.textColorPrimary }}
                         />
                         {!loading && (
                             <>
@@ -241,7 +241,7 @@ const ChapterItem = ({ route, navigation }) => {
                 contentContainerStyle={[
                     styles.container,
                     readerTheme === 1 && {
-                        backgroundColor: theme.colorDarkPrimary,
+                        backgroundColor: theme.colorPrimary,
                     },
                     readerTheme === 2 && {
                         backgroundColor: "white",
@@ -277,7 +277,7 @@ const ChapterItem = ({ route, navigation }) => {
                                     fontSize: size,
                                 },
                                 readerTheme === 1
-                                    ? { color: theme.textColorSecondaryDark }
+                                    ? { color: theme.textColorSecondary }
                                     : { color: "black" },
                                 size === 16
                                     ? { lineHeight: 25 }

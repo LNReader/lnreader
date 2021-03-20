@@ -2,7 +2,7 @@ import React from "react";
 import * as Linking from "expo-linking";
 import { List, Divider } from "react-native-paper";
 
-import { CustomAppbar } from "../../components/common/Appbar";
+import { Appbar } from "../../components/common/Appbar";
 
 import { useSelector } from "react-redux";
 
@@ -11,46 +11,43 @@ const AboutScreen = ({ navigation }) => {
 
     return (
         <>
-            <CustomAppbar
-                title="About"
-                onBackAction={() => navigation.goBack()}
-            />
+            <Appbar title="About" onBackAction={() => navigation.goBack()} />
             <List.Section
                 style={{
                     flex: 1,
                     marginTop: 0,
-                    backgroundColor: theme.colorDarkPrimaryDark,
+                    backgroundColor: theme.colorPrimaryDark,
                     marginBottom: 0,
                 }}
             >
                 <List.Item
-                    titleStyle={{ color: theme.textColorPrimaryDark }}
+                    titleStyle={{ color: theme.textColorPrimary }}
                     title="Version"
-                    descriptionStyle={{ color: theme.textColorSecondaryDark }}
-                    description="Stable 1.0.1"
+                    descriptionStyle={{ color: theme.textColorSecondary }}
+                    description="Stable 1.0.3"
                 />
                 <List.Item
-                    titleStyle={{ color: theme.textColorPrimaryDark }}
+                    titleStyle={{ color: theme.textColorPrimary }}
                     title="Build Time"
-                    descriptionStyle={{ color: theme.textColorSecondaryDark }}
-                    description="15-03-21 10:30 AM"
+                    descriptionStyle={{ color: theme.textColorSecondary }}
+                    description="20-03-21 14:12 PM"
                 />
 
                 <List.Item
-                    titleStyle={{ color: theme.textColorPrimaryDark }}
+                    titleStyle={{ color: theme.textColorPrimary }}
                     title="What's new"
                     onPress={() =>
                         Linking.openURL(
                             "https://github.com/rajarsheechatterjee/lnreader/commits/main"
                         )
                     }
-                    rippleColor={theme.rippleColorDark}
+                    rippleColor={theme.rippleColor}
                 />
                 <Divider />
 
                 <List.Item
-                    titleStyle={{ color: theme.textColorPrimaryDark }}
-                    descriptionStyle={{ color: theme.textColorSecondaryDark }}
+                    titleStyle={{ color: theme.textColorPrimary }}
+                    descriptionStyle={{ color: theme.textColorSecondary }}
                     title="Github"
                     description="https://github.com/rajarsheechatterjee/lnreader"
                     onPress={() =>
@@ -58,11 +55,11 @@ const AboutScreen = ({ navigation }) => {
                             "https://github.com/rajarsheechatterjee/lnreader"
                         )
                     }
-                    rippleColor={theme.rippleColorDark}
+                    rippleColor={theme.rippleColor}
                 />
                 <List.Item
-                    titleStyle={{ color: theme.textColorPrimaryDark }}
-                    descriptionStyle={{ color: theme.textColorSecondaryDark }}
+                    titleStyle={{ color: theme.textColorPrimary }}
+                    descriptionStyle={{ color: theme.textColorSecondary }}
                     title="Extensions"
                     description="https://github.com/rajarsheechatterjee/lnreader-extensions"
                     descriptionNumberOfLines={1}
@@ -71,7 +68,7 @@ const AboutScreen = ({ navigation }) => {
                             "https://github.com/rajarsheechatterjee/lnreader-extensions"
                         )
                     }
-                    rippleColor={theme.rippleColorDark}
+                    rippleColor={theme.rippleColor}
                 />
             </List.Section>
         </>

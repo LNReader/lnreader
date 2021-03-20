@@ -195,7 +195,7 @@ const NovelItem = ({ route, navigation }) => {
             <View
                 style={[
                     styles.container,
-                    { backgroundColor: theme.colorDarkPrimaryDark },
+                    { backgroundColor: theme.colorPrimaryDark },
                 ]}
             >
                 <FlatList
@@ -227,8 +227,8 @@ const NovelItem = ({ route, navigation }) => {
                         <RefreshControl
                             refreshing={refreshing}
                             onRefresh={onRefresh}
-                            colors={[theme.textColorPrimaryDark]}
-                            progressBackgroundColor={theme.colorDarkPrimary}
+                            colors={[theme.textColorPrimary]}
+                            progressBackgroundColor={theme.colorPrimary}
                         />
                     }
                 />

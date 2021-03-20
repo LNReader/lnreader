@@ -53,12 +53,22 @@ export const fetchChapterFromSource = async (
     chapterUrl
 ) => {
     const url = `https://lnreader-extensions.herokuapp.com/api/${extensionId}/novel/${novelUrl}${chapterUrl}`;
-    console.log(
-        `https://lnreader-extensions.herokuapp.com/api/${extensionId}/novel/${novelUrl}${chapterUrl}`
-    );
 
     let res = await fetch(url);
     let chapter = await res.json();
 
     return chapter;
+};
+
+/**
+ * Fetch list of extensions
+ */
+
+export const fetchExtensionList = async () => {
+    const url = `https://lnreader-extensions.herokuapp.com/api/`;
+
+    let res = await fetch(url);
+    let extensions = await res.json();
+
+    return extensions;
 };

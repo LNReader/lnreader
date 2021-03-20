@@ -1,68 +1,36 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { StyleSheet, View, FlatList, ActivityIndicator } from "react-native";
-import { Appbar, Provider, Portal } from "react-native-paper";
+import { Provider, Portal } from "react-native-paper";
 
 import NovelCover from "../../../components/common/NovelCover";
-import SearchBar from "../../../components/common/SearchBar";
+import { SearchAppbar } from "../../../components/common/Appbar";
 import { BottomSheet } from "./filters/BottomSheet";
 
 import { useSelector } from "react-redux";
 
-import * as SQLite from "expo-sqlite";
-const db = SQLite.openDatabase("lnreader.db");
+const BoxNovel = ({ navigation }) => {
+    const theme = useSelector((state) => state.themeReducer.theme);
 
-const AllNovels = ({ navigation }) => {
+    const library = useSelector((state) => state.libraryReducer.novels);
+
     const [loading, setLoading] = useState(true);
-    const [loadingMore, setLoadingMore] = useState(false);
 
     const [novels, setNovels] = useState([]);
-    const [libraryNovels, setlibraryNovels] = useState([]);
-
     const [sort, setSort] = useState("rating");
-    const [pageNo, setPageNo] = useState(1);
 
-    const [searchBar, setSearchBar] = useState(false);
     const [searchText, setSearchText] = useState("");
 
-    const [searched, setSearched] = useState(0);
-
-    const theme = useSelector((state) => state.themeReducer.theme);
+    let bottomSheetRef = useRef(null);
 
     const getNovels = () => {
         fetch(
-            `https://lnreader-extensions.herokuapp.com/api/1/novels/${pageNo}/?o=${sort}`
+            `https://lnreader-extensions.herokuapp.com/api/1/novels/1/?o=${sort}`
         )
             .then((response) => response.json())
             .then((json) => {
-                setPageNo(pageNo + 1);
-                setNovels((novels) => novels.concat(json));
+                setNovels(json);
                 setLoading(false);
             });
-    };
-
-    const getLibraryNovels = () => {
-        db.transaction((tx) => {
-            tx.executeSql(
-                "SELECT novelUrl FROM LibraryTable WHERE libraryStatus = 1 AND extensionId = 1",
-                null,
-                (tx, { rows: { _array } }) => {
-                    setlibraryNovels(_array);
-                },
-                (tx, error) => console.log(error)
-            );
-        });
-    };
-
-    const onEndReached = ({
-        layoutMeasurement,
-        contentOffset,
-        contentSize,
-    }) => {
-        const paddingToBottom = 5;
-        return (
-            layoutMeasurement.height + contentOffset.y >=
-            contentSize.height - paddingToBottom
-        );
     };
 
     const getSearchResults = (searchText) => {
@@ -78,92 +46,33 @@ const AllNovels = ({ navigation }) => {
     };
 
     const checkIFInLibrary = (id) => {
-        return libraryNovels.some((obj) => obj.novelUrl === id);
+        return library.some((obj) => obj.novelUrl === id);
     };
 
     useEffect(() => {
-        getLibraryNovels();
         getNovels();
     }, [sort]);
 
-    const sortNovels = () => {
-        setLoading(true);
-        if (searched) {
-            getSearchResults();
-        } else {
-            getNovels();
-        }
-    };
-
     return (
         <Provider>
-            <Appbar.Header style={{ backgroundColor: theme.colorDarkPrimary }}>
-                {!searchBar ? (
-                    <>
-                        <Appbar.BackAction
-                            onPress={() => navigation.goBack()}
-                            color={theme.textColorPrimaryDark}
-                        />
-
-                        <Appbar.Content
-                            title="Box Novel"
-                            titleStyle={{ color: theme.textColorPrimaryDark }}
-                        />
-                        <Appbar.Action
-                            icon="magnify"
-                            onPress={() => setSearchBar(true)}
-                            color={theme.textColorPrimaryDark}
-                        />
-                        <Appbar.Action
-                            icon="filter-variant"
-                            onPress={() => _panel.show({ velocity: -1.5 })}
-                            color={theme.textColorPrimaryDark}
-                        />
-                    </>
-                ) : (
-                    <>
-                        <Appbar.BackAction
-                            onPress={() => {
-                                if (searched) {
-                                    setLoading(true);
-                                    setPageNo(1);
-                                    setNovels([]);
-                                    getNovels();
-                                }
-                                setSearchBar(false);
-                                setSearchText("");
-                            }}
-                            color={theme.textColorPrimaryDark}
-                        />
-                        <SearchBar
-                            searchText={searchText}
-                            onChangeText={(text) => setSearchText(text)}
-                            onSubmitEditing={() => {
-                                if (searchText !== "") {
-                                    setSort("rating");
-                                    getSearchResults(searchText);
-                                    setSearched(true);
-                                }
-                            }}
-                        />
-                        {searchText !== "" && (
-                            <Appbar.Action
-                                icon="close"
-                                onPress={() => {
-                                    setSearchText("");
-                                }}
-                                color={theme.textColorPrimaryDark}
-                            />
-                        )}
-                    </>
-                )}
-            </Appbar.Header>
             <View
                 style={[
                     styles.container,
-                    { backgroundColor: theme.colorDarkPrimaryDark },
+                    { backgroundColor: theme.colorPrimaryDark },
                 ]}
             >
+                <SearchAppbar
+                    screen="Extension"
+                    placeholder="Search BoxNovel"
+                    searchText={searchText}
+                    setSearchText={setSearchText}
+                    getSearchResults={getSearchResults}
+                    getNovels={getNovels}
+                    setLoading={setLoading}
+                    onFilter={() =>
+                        bottomSheetRef.current.show({ velocity: -1.5 })
+                    }
+                />
                 {loading ? (
                     <View style={{ flex: 1, justifyContent: "center" }}>
                         <ActivityIndicator
@@ -178,15 +87,6 @@ const AllNovels = ({ navigation }) => {
                         data={novels}
                         showsVerticalScrollIndicator={false}
                         keyExtractor={(item) => item.novelUrl}
-                        ListFooterComponent={() =>
-                            loadingMore && (
-                                <ActivityIndicator
-                                    color={theme.colorAccentDark}
-                                    size="small"
-                                    style={{ marginTop: 20, marginBottom: 80 }}
-                                />
-                            )
-                        }
                         renderItem={({ item }) => (
                             <NovelCover
                                 item={item}
@@ -203,33 +103,27 @@ const AllNovels = ({ navigation }) => {
                                 }
                             />
                         )}
-                        onScroll={({ nativeEvent }) => {
-                            if (onEndReached(nativeEvent)) {
-                                setLoadingMore(true);
-                                getNovels();
-                                console.log("End Reached");
-                            }
-                        }}
                     />
                 )}
             </View>
             <Portal>
                 <BottomSheet
-                    bottomSheetRef={(c) => (_panel = c)}
+                    bottomSheetRef={bottomSheetRef}
                     setSort={setSort}
                     sort={sort}
+                    setLoading={setLoading}
                 />
             </Portal>
         </Provider>
     );
 };
 
-export default AllNovels;
+export default BoxNovel;
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 3,
+        padding: 4,
     },
 
     contentContainer: {

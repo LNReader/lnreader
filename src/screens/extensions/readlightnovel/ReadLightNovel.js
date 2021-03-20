@@ -1,27 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, View, FlatList, ActivityIndicator } from "react-native";
-import { Appbar, Provider } from "react-native-paper";
+import { Provider } from "react-native-paper";
 
 import NovelCover from "../../../components/common/NovelCover";
-import SearchBar from "../../../components/common/SearchBar";
+import { SearchAppbar } from "../../../components/common/Appbar";
 
 import { useSelector } from "react-redux";
-
-import * as SQLite from "expo-sqlite";
-const db = SQLite.openDatabase("lnreader.db");
+import EmptyView from "../../../components/common/EmptyView";
 
 const ReadLightNovel = ({ navigation }) => {
     const theme = useSelector((state) => state.themeReducer.theme);
+    const library = useSelector((state) => state.libraryReducer.novels);
 
     const [loading, setLoading] = useState(true);
 
     const [novels, setNovels] = useState();
-    const [libraryNovels, setlibraryNovels] = useState([]);
 
-    const [searchBar, setSearchBar] = useState(false);
     const [searchText, setSearchText] = useState("");
-
-    const [searched, setSearched] = useState(false);
 
     const getNovels = () => {
         fetch(`https://lnreader-extensions.herokuapp.com/api/2/novels/`)
@@ -44,95 +39,32 @@ const ReadLightNovel = ({ navigation }) => {
             });
     };
 
-    const getLibraryNovels = () => {
-        db.transaction((tx) => {
-            tx.executeSql(
-                "SELECT novelUrl FROM LibraryTable WHERE libraryStatus = 1 AND extensionId = 2",
-                null,
-                (tx, { rows: { _array } }) => {
-                    setlibraryNovels(_array);
-                },
-                (tx, error) => console.log(error)
-            );
-        });
-    };
-
     const checkIFInLibrary = (id) => {
-        return libraryNovels.some((obj) => obj.novelUrl === id);
+        return library.some((obj) => obj.novelUrl === id);
     };
 
     useEffect(() => {
         getNovels();
-        getLibraryNovels();
     }, []);
 
     return (
         <Provider>
-            <Appbar.Header style={{ backgroundColor: theme.colorDarkPrimary }}>
-                {!searchBar ? (
-                    <>
-                        <Appbar.BackAction
-                            color={theme.textColorPrimaryDark}
-                            onPress={() => navigation.goBack()}
-                        />
-
-                        <Appbar.Content
-                            color={theme.textColorPrimaryDark}
-                            title="ReadLightNovel"
-                            titleStyle={{ color: theme.textColorPrimaryDark }}
-                        />
-                        <Appbar.Action
-                            color={theme.textColorPrimaryDark}
-                            icon="magnify"
-                            onPress={() => setSearchBar(true)}
-                        />
-                        <Appbar.Action
-                            icon="filter-variant"
-                            disabled
-                            color={theme.textColorPrimaryDark}
-                        />
-                    </>
-                ) : (
-                    <>
-                        <Appbar.BackAction
-                            onPress={() => {
-                                if (searched) {
-                                    setLoading(true);
-                                    getNovels();
-                                }
-                                setSearchBar(false);
-                                setSearchText("");
-                            }}
-                            color={theme.textColorPrimaryDark}
-                        />
-                        <SearchBar
-                            searchText={searchText}
-                            onChangeText={(text) => setSearchText(text)}
-                            onSubmitEditing={() => {
-                                if (searchText !== "") {
-                                    getSearchResults(searchText);
-                                    setSearched(true);
-                                }
-                            }}
-                        />
-                        {searchText !== "" && (
-                            <Appbar.Action
-                                icon="close"
-                                onPress={() => {
-                                    setSearchText("");
-                                }}
-                                color={theme.textColorPrimaryDark}
-                            />
-                        )}
-                    </>
-                )}
-            </Appbar.Header>
             <View
                 style={[
                     styles.container,
-                    { backgroundColor: theme.colorDarkPrimaryDark },
+                    { backgroundColor: theme.colorPrimaryDark },
                 ]}
             >
+                <SearchAppbar
+                    screen="Extension"
+                    placeholder="Search ReadLightNovel"
+                    searchText={searchText}
+                    setSearchText={setSearchText}
+                    getSearchResults={getSearchResults}
+                    getNovels={getNovels}
+                    setLoading={setLoading}
+                />
+
                 {loading ? (
                     <View style={{ flex: 1, justifyContent: "center" }}>
                         <ActivityIndicator
@@ -142,7 +74,7 @@ const ReadLightNovel = ({ navigation }) => {
                     </View>
                 ) : (
                     <FlatList
-                        contentContainerStyle={styles.list}
+                        contentContainerStyle={{ flexGrow: 1 }}
                         numColumns={3}
                         data={novels}
                         showsVerticalScrollIndicator={false}
@@ -163,6 +95,15 @@ const ReadLightNovel = ({ navigation }) => {
                                 }
                             />
                         )}
+                        ListEmptyComponent={
+                            searchText !== "" &&
+                            novels.length === 0 && (
+                                <EmptyView
+                                    icon="(；￣Д￣)"
+                                    description="No results found"
+                                />
+                            )
+                        }
                     />
                 )}
             </View>

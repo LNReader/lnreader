@@ -21,20 +21,18 @@ const NovelCover = ({ item, onPress, libraryStatus }) => {
             <TouchableRipple
                 borderless
                 centered
-                rippleColor={theme.rippleColorDark}
+                rippleColor={theme.rippleColor}
                 style={styles.opac}
                 onPress={onPress}
             >
                 <>
-                    {item.novelCover ? (
+                    {item.novelCover && (
                         <ImageBackground
-                            source={{
-                                uri: item.novelCover,
-                            }}
+                            source={{ uri: item.novelCover }}
                             style={styles.logo}
                             imageStyle={[
                                 { borderRadius: 4 },
-                                libraryStatus && { opacity: 0.4 },
+                                libraryStatus && { opacity: 0.5 },
                             ]}
                             progressiveRenderingEnabled={true}
                         >
@@ -53,7 +51,7 @@ const NovelCover = ({ item, onPress, libraryStatus }) => {
                                                 styles.title,
                                                 {
                                                     color:
-                                                        theme.textColorPrimaryDark,
+                                                        "rgba(255,255,255,1)",
                                                 },
                                             ]}
                                         >
@@ -63,19 +61,16 @@ const NovelCover = ({ item, onPress, libraryStatus }) => {
                                 </View>
                             )}
                         </ImageBackground>
-                    ) : (
-                        <View>
-                            <Text style={{ color: "white" }}>
-                                Novel Cover Doesn't Exist
-                            </Text>
-                        </View>
                     )}
                     {displayMode === 1 && (
                         <Text
                             numberOfLines={2}
                             style={[
                                 styles.title,
-                                { color: theme.textColorPrimaryDark },
+                                {
+                                    color: theme.textColorPrimary,
+                                    padding: 4,
+                                },
                             ]}
                         >
                             {item.novelName}
@@ -91,8 +86,7 @@ export default NovelCover;
 
 const styles = StyleSheet.create({
     logo: {
-        height: 183,
-        borderRadius: 4,
+        height: 180,
     },
     titleContainer: {
         flex: 1,

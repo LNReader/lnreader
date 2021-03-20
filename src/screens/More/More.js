@@ -3,7 +3,7 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import { List } from "react-native-paper";
 
-import { CustomAppbar } from "../../components/common/Appbar";
+import { Appbar } from "../../components/common/Appbar";
 
 import { useSelector } from "react-redux";
 
@@ -12,17 +12,17 @@ const MoreScreen = ({ navigation }) => {
 
     return (
         <>
-            <CustomAppbar title="More" />
+            <Appbar title="More" />
             <List.Section
                 style={{
                     flex: 1,
-                    backgroundColor: theme.colorDarkPrimaryDark,
+                    backgroundColor: theme.colorPrimaryDark,
                     marginTop: 0,
                     marginBottom: 0,
                 }}
             >
                 <List.Item
-                    titleStyle={{ color: theme.textColorPrimaryDark }}
+                    titleStyle={{ color: theme.textColorPrimary }}
                     title="Settings"
                     left={() => (
                         <List.Icon
@@ -33,7 +33,7 @@ const MoreScreen = ({ navigation }) => {
                     onPress={() => navigation.navigate("Settings")}
                 />
                 <List.Item
-                    titleStyle={{ color: theme.textColorPrimaryDark }}
+                    titleStyle={{ color: theme.textColorPrimary }}
                     title="About"
                     left={() => (
                         <List.Icon

@@ -11,14 +11,14 @@ import { FlatList } from "react-native-gesture-handler";
 import { useFocusEffect } from "@react-navigation/native";
 import { connect } from "react-redux";
 
-import Appbar from "./components/Appbar";
 import NovelCover from "../../components/common/NovelCover";
-import EmptyView from "./components/EmptyView";
+import EmptyView from "../../components/common/EmptyView";
 
 import {
     getLibraryNovels,
     searchLibraryNovels,
 } from "../../redux/actions/library";
+import { SearchAppbar } from "../../components/common/Appbar";
 
 const LibraryScreen = ({
     navigation,
@@ -30,13 +30,11 @@ const LibraryScreen = ({
 }) => {
     const [refreshing, setRefreshing] = useState(false);
 
-    const [search, setSearch] = useState({ searching: false, searchText: "" });
-
-    const resetSearch = () => setSearch({ searching: false, searchText: "" });
+    const [searchText, setSearchText] = useState("");
 
     useFocusEffect(
         useCallback(() => {
-            resetSearch();
+            setSearchText("");
             getLibraryNovels();
         }, [])
     );
@@ -59,61 +57,62 @@ const LibraryScreen = ({
 
     return (
         <>
-            <Appbar
-                search={search}
-                setSearch={setSearch}
-                getLibraryNovels={getLibraryNovels}
-                searchLibraryNovels={searchLibraryNovels}
-            />
             <View
                 style={[
                     styles.container,
-                    { backgroundColor: theme.colorDarkPrimaryDark },
+                    { backgroundColor: theme.colorPrimaryDark },
                 ]}
             >
+                <SearchAppbar
+                    screen="Library"
+                    placeholder="Search Library"
+                    getNovels={getLibraryNovels}
+                    getSearchResults={searchLibraryNovels}
+                    searchText={searchText}
+                    setSearchText={setSearchText}
+                />
                 {loading ? (
                     <ActivityIndicator
                         size="small"
                         color={theme.colorAccentDark}
                     />
                 ) : (
-                    <>
-                        <FlatList
-                            numColumns={3}
-                            data={novels}
-                            keyExtractor={(item) => item.novelUrl}
-                            renderItem={({ item }) => (
-                                <NovelCover
-                                    item={item}
-                                    onPress={() => redirectToNovel(item)}
+                    <FlatList
+                        numColumns={3}
+                        data={novels}
+                        keyExtractor={(item) => item.novelUrl}
+                        renderItem={({ item }) => (
+                            <NovelCover
+                                item={item}
+                                onPress={() => redirectToNovel(item)}
+                            />
+                        )}
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={refreshing}
+                                onRefresh={onRefresh}
+                                colors={["white"]}
+                                progressBackgroundColor={theme.colorAccentDark}
+                            />
+                        }
+                        ListEmptyComponent={
+                            searchText !== "" ? (
+                                <Text
+                                    style={[
+                                        styles.emptySearch,
+                                        { color: theme.colorAccentDark },
+                                    ]}
+                                >
+                                    {`"${searchText}" not in library`}
+                                </Text>
+                            ) : (
+                                <EmptyView
+                                    icon="Σ(ಠ_ಠ)"
+                                    description="Your library is empty. Add series to your library from Browse."
                                 />
-                            )}
-                            refreshControl={
-                                <RefreshControl
-                                    refreshing={refreshing}
-                                    onRefresh={onRefresh}
-                                    colors={["white"]}
-                                    progressBackgroundColor={
-                                        theme.colorAccentDark
-                                    }
-                                />
-                            }
-                            ListEmptyComponent={
-                                search.searchText === "" ? (
-                                    <EmptyView />
-                                ) : (
-                                    <Text
-                                        style={[
-                                            styles.emptySearch,
-                                            { color: theme.colorAccentDark },
-                                        ]}
-                                    >
-                                        {`"${search.searchText}" not in library`}
-                                    </Text>
-                                )
-                            }
-                        />
-                    </>
+                            )
+                        }
+                    />
                 )}
             </View>
         </>
@@ -137,9 +136,8 @@ const styles = StyleSheet.create({
         padding: 4,
     },
     emptySearch: {
-        fontWeight: "bold",
-        marginTop: 10,
+        marginTop: 8,
         textAlign: "center",
-        paddingHorizontal: 30,
+        paddingHorizontal: 16,
     },
 });

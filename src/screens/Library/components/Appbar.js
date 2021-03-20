@@ -15,22 +15,22 @@ const LibraryAppbar = ({
     const { searching, searchText } = search;
 
     return (
-        <Appbar.Header style={{ backgroundColor: theme.colorDarkPrimary }}>
+        <Appbar.Header style={{ backgroundColor: theme.colorPrimary }}>
             {!searching ? (
                 <>
                     <Appbar.Content
                         title="Library"
-                        titleStyle={{ color: theme.textColorPrimaryDark }}
+                        titleStyle={{ color: theme.textColorPrimary }}
                     />
                     <Appbar.Action
                         icon="magnify"
                         onPress={() =>
                             setSearch({ ...search, searching: true })
                         }
-                        color={theme.textColorPrimaryDark}
+                        color={theme.textColorPrimary}
                     />
                     <Appbar.Action
-                        color={theme.textColorPrimaryDark}
+                        color={theme.textColorPrimary}
                         icon="filter-variant"
                         disabled
                         // onPress={() => _panel.show({ velocity: -1.5 })}
@@ -43,7 +43,7 @@ const LibraryAppbar = ({
                             setSearch({ searching: false, searchText: "" });
                             getLibraryNovels();
                         }}
-                        color={theme.textColorPrimaryDark}
+                        color={theme.textColorPrimary}
                         size={24}
                     />
                     <TextInput
@@ -52,7 +52,7 @@ const LibraryAppbar = ({
                         style={[
                             styles.searchBar,
                             {
-                                color: theme.textColorPrimaryDark,
+                                color: theme.textColorPrimary,
                             },
                         ]}
                         autoFocus
@@ -70,7 +70,7 @@ const LibraryAppbar = ({
                                 setSearch({ ...search, searchText: "" });
                                 getLibraryNovels();
                             }}
-                            color={theme.textColorPrimaryDark}
+                            color={theme.textColorPrimary}
                         />
                     )}
                 </>
