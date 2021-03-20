@@ -64,5 +64,5 @@ export const midnightDuskTheme = {
     textColorSecondary: "rgba(255,255,255,0.7)",
     textColorHintDark: "rgba(255,255,255,0.5)",
     rippleColor: "rgba(255,255,255,0.2)",
-    searchBarColor: "#1F1F1F",
+    searchBarColor: "#201F27",
 };

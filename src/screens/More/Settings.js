@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { View, Text } from "react-native";
+import { View } from "react-native";
 import { setStatusBarStyle } from "expo-status-bar";
-import { List, Modal, Provider, Portal } from "react-native-paper";
+import { List, Modal, Portal } from "react-native-paper";
 
 import { connect } from "react-redux";
 import { switchTheme } from "../../redux/actions/theme";
@@ -60,7 +60,7 @@ const SettingsScreen = ({
     const hidethemeModal = () => setthemeModalVisible(false);
 
     return (
-        <Provider>
+        <>
             <Appbar title="Settings" onBackAction={() => navigation.goBack()} />
             <View style={{ flex: 1, backgroundColor: theme.colorPrimaryDark }}>
                 <List.Section
@@ -178,7 +178,6 @@ const SettingsScreen = ({
                         >
                             {themes.map((item) => (
                                 <ThemeCheckbox
-                                    key={item.key}
                                     label={themes[item.themeCode].label}
                                     checked={
                                         themeCode === item.themeCode
@@ -195,7 +194,7 @@ const SettingsScreen = ({
                     </Portal>
                 </List.Section>
             </View>
-        </Provider>
+        </>
     );
 };
 
