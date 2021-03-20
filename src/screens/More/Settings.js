@@ -26,19 +26,18 @@ const SettingsScreen = ({
     displayMode,
     switchTheme,
     setDisplayMode,
-    setItemsPerRow,
 }) => {
     const label = {
         0: "Compact",
         1: "Comfortable",
     };
 
-    const themes = {
-        0: "AMOLED Dark Theme",
-        1: "Light Theme",
-        2: "Dark Theme",
-        3: "Midnight Dusk Theme",
-    };
+    const themes = [
+        { themeCode: 0, themeName: "AMOLED Dark Theme", statusBar: "light" },
+        { themeCode: 1, themeName: "Light Theme", statusBar: "dark" },
+        { themeCode: 2, themeName: "Dark Theme", statusBar: "light" },
+        { themeCode: 3, themeName: "Midnight Dusk Theme", statusBar: "light" },
+    ];
 
     const desciptionStyles = {
         color: theme.textColorSecondaryDark,
@@ -46,20 +45,19 @@ const SettingsScreen = ({
 
     const titleStyles = { color: theme.textColorPrimaryDark };
 
-    // Display Mode Modal
+    /**
+     * Display Mode Modal
+     */
     const [displayModalVisible, setDisplayModalVisible] = useState(false);
     const showDisplayModal = () => setDisplayModalVisible(true);
     const hideDisplayModal = () => setDisplayModalVisible(false);
 
-    // Theme Modal
+    /**
+     * Change Theme Modal
+     */
     const [themeModalVisible, setthemeModalVisible] = useState(false);
     const showthemeModal = () => setthemeModalVisible(true);
     const hidethemeModal = () => setthemeModalVisible(false);
-
-    // Items Modal
-    const [itemsModalVisible, setitemsModalVisible] = useState(false);
-    const showitemsModal = () => setitemsModalVisible(true);
-    const hideitemsModal = () => setitemsModalVisible(false);
 
     return (
         <Provider>
@@ -140,63 +138,6 @@ const SettingsScreen = ({
                             </View>
                         </Modal>
                     </Portal>
-                    {/* <List.Item
-                        titleStyle={titleStyles}
-                        title="Items per row"
-                        descriptionStyle={desciptionStyles}
-                        // description={label[displayMode]}
-                        onPress={showitemsModal}
-                        rippleColor={theme.rippleColorDark}
-                    />
-                    <Portal>
-                        <Modal
-                            visible={itemsModalVisible}
-                            onDismiss={hideitemsModal}
-                            contentContainerStyle={{
-                                backgroundColor: theme.colorDarkPrimaryDark,
-                                padding: 20,
-                                margin: 20,
-                                borderRadius: 6,
-                            }}
-                        >
-                            <Text
-                                style={{
-                                    color: theme.textColorPrimaryDark,
-                                    padding: 20,
-                                }}
-                                onPress={() => setItemsPerRow(1)}
-                            >
-                                1
-                            </Text>
-                            <Text
-                                style={{
-                                    color: theme.textColorPrimaryDark,
-                                    padding: 20,
-                                }}
-                                onPress={() => setItemsPerRow(2)}
-                            >
-                                2
-                            </Text>
-                            <Text
-                                style={{
-                                    color: theme.textColorPrimaryDark,
-                                    padding: 20,
-                                }}
-                                onPress={() => setItemsPerRow(3)}
-                            >
-                                3
-                            </Text>
-                            <Text
-                                style={{
-                                    color: theme.textColorPrimaryDark,
-                                    padding: 20,
-                                }}
-                                onPress={() => setItemsPerRow(4)}
-                            >
-                                4
-                            </Text>
-                        </Modal>
-                    </Portal> */}
                     {/* <List.Subheader
                         style={{
                             color: theme.colorAccentDark,
@@ -226,7 +167,7 @@ const SettingsScreen = ({
                         titleStyle={titleStyles}
                         title="Theme"
                         descriptionStyle={desciptionStyles}
-                        description={themes[themeCode]}
+                        description={themes[themeCode].themeName}
                         onPress={showthemeModal}
                         rippleColor={theme.rippleColorDark}
                     />
@@ -241,38 +182,20 @@ const SettingsScreen = ({
                                 borderRadius: 6,
                             }}
                         >
-                            <ThemeCheckbox
-                                label={themes[1]}
-                                checked={themeCode === 1 ? true : false}
-                                onPress={() => {
-                                    switchTheme(1);
-                                    setStatusBarStyle("dark");
-                                }}
-                            />
-                            <ThemeCheckbox
-                                label={themes[2]}
-                                checked={themeCode === 2 ? true : false}
-                                onPress={() => {
-                                    switchTheme(2);
-                                    setStatusBarStyle("light");
-                                }}
-                            />
-                            <ThemeCheckbox
-                                label={themes[0]}
-                                checked={themeCode === 0 ? true : false}
-                                onPress={() => {
-                                    switchTheme(0);
-                                    setStatusBarStyle("light");
-                                }}
-                            />
-                            <ThemeCheckbox
-                                label={themes[3]}
-                                checked={themeCode === 3 ? true : false}
-                                onPress={() => {
-                                    switchTheme(3);
-                                    setStatusBarStyle("light");
-                                }}
-                            />
+                            {themes.map((item) => (
+                                <ThemeCheckbox
+                                    label={themes[item.themeCode].themeName}
+                                    checked={
+                                        themeCode === item.themeCode
+                                            ? true
+                                            : false
+                                    }
+                                    onPress={() => {
+                                        switchTheme(item.themeCode);
+                                        setStatusBarStyle(item.statusBar);
+                                    }}
+                                />
+                            ))}
                         </Modal>
                     </Portal>
                 </List.Section>

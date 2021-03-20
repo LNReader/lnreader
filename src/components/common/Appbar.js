@@ -36,6 +36,7 @@ export const SearchAppbar = ({
     getNovels,
     setLoading,
     screen,
+    onFilter,
 }) => {
     const searchRef = useRef(null);
 
@@ -111,11 +112,11 @@ export const SearchAppbar = ({
                     color={theme.textColorSecondaryDark}
                     style={{ marginRight: 0 }}
                     size={23}
-                    disabled
+                    disabled={typeof onFilter === "function" ? false : true}
                     /**
                      * TODO
                      */
-                    onPress={() => console.log("Filter Button Pressed")}
+                    onPress={() => onFilter?.()}
                 />
             </View>
         </TouchableRipple>

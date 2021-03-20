@@ -5,13 +5,17 @@ import Bottomsheet from "rn-sliding-up-panel";
 
 import { useSelector } from "react-redux";
 
-export const BottomSheet = ({
-    bottomSheetRef,
-    setSort,
-    sort,
-    setRefreshing,
-}) => {
+export const BottomSheet = ({ bottomSheetRef, setSort, sort, setLoading }) => {
     const theme = useSelector((state) => state.themeReducer.theme);
+
+    const sorting = [
+        { label: "Latest", sortFlag: "latest" },
+        { label: "A-Z", sortFlag: "aplhabet" },
+        { label: "Rating", sortFlag: "rating" },
+        { label: "Trending", sortFlag: "trending" },
+        { label: "Most Views", sortFlag: "views" },
+        { label: "New", sortFlag: "new-manga" },
+    ];
 
     return (
         <Bottomsheet
@@ -49,129 +53,31 @@ export const BottomSheet = ({
                     }}
                     expanded
                 >
-                    <List.Item
-                        right={(props) =>
-                            sort === "latest" && (
-                                <List.Icon
-                                    {...props}
-                                    size
-                                    icon="arrow-up"
-                                    color={theme.colorAccentDark}
-                                />
-                            )
-                        }
-                        title="Latest"
-                        titleStyle={{
-                            fontSize: 15,
-                            color: theme.textColorPrimaryDark,
-                        }}
-                        onPress={() => setSort("latest")}
-                    />
-                    <List.Item
-                        right={(props) =>
-                            sort === "alphabet" && (
-                                <List.Icon
-                                    {...props}
-                                    size
-                                    icon="arrow-up"
-                                    color={theme.colorAccentDark}
-                                />
-                            )
-                        }
-                        title="A-Z"
-                        titleStyle={{
-                            fontSize: 15,
-                            color: theme.textColorPrimaryDark,
-                        }}
-                        onPress={() => {
-                            setSort("alphabet");
-                            setRefreshing(true);
-                        }}
-                    />
-                    <List.Item
-                        right={(props) =>
-                            sort === "rating" && (
-                                <List.Icon
-                                    {...props}
-                                    size
-                                    icon="arrow-up"
-                                    color={theme.colorAccentDark}
-                                />
-                            )
-                        }
-                        title="Rating"
-                        titleStyle={{
-                            fontSize: 15,
-                            color: theme.textColorPrimaryDark,
-                        }}
-                        onPress={() => {
-                            setSort("rating");
-                            setRefreshing(true);
-                        }}
-                    />
-                    <List.Item
-                        right={(props) =>
-                            sort === "trending" && (
-                                <List.Icon
-                                    {...props}
-                                    size
-                                    icon="arrow-up"
-                                    color={theme.colorAccentDark}
-                                />
-                            )
-                        }
-                        title="Trending"
-                        titleStyle={{
-                            fontSize: 15,
-                            color: theme.textColorPrimaryDark,
-                        }}
-                        onPress={() => {
-                            setSort("trending");
-                            setRefreshing(true);
-                        }}
-                    />
-                    <List.Item
-                        right={(props) =>
-                            sort === "views" && (
-                                <List.Icon
-                                    {...props}
-                                    size
-                                    icon="arrow-up"
-                                    color={theme.colorAccentDark}
-                                />
-                            )
-                        }
-                        title="Most Views"
-                        titleStyle={{
-                            fontSize: 15,
-                            color: theme.textColorPrimaryDark,
-                        }}
-                        onPress={() => {
-                            setSort("views");
-                            setRefreshing(true);
-                        }}
-                    />
-                    <List.Item
-                        right={(props) =>
-                            sort === "new-manga" && (
-                                <List.Icon
-                                    {...props}
-                                    size
-                                    icon="arrow-up"
-                                    color={theme.colorAccentDark}
-                                />
-                            )
-                        }
-                        title="New"
-                        titleStyle={{
-                            fontSize: 15,
-                            color: theme.textColorPrimaryDark,
-                        }}
-                        onPress={() => {
-                            setSort("new-manga");
-                            setRefreshing(true);
-                        }}
-                    />
+                    {sorting.map((item) => (
+                        <List.Item
+                            right={() =>
+                                sort === item.sortFlag && (
+                                    <List.Icon
+                                        icon="arrow-up"
+                                        color={theme.colorAccentDark}
+                                        style={{
+                                            marginVertical: 0,
+                                            paddingVertical: 0,
+                                        }}
+                                    />
+                                )
+                            }
+                            title={item.label}
+                            titleStyle={{
+                                fontSize: 15,
+                                color: theme.textColorPrimaryDark,
+                            }}
+                            onPress={() => {
+                                setLoading(true);
+                                setSort(item.sortFlag);
+                            }}
+                        />
+                    ))}
                 </List.Section>
             </View>
         </Bottomsheet>
