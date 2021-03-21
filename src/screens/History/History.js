@@ -57,6 +57,7 @@ const History = ({ navigation }) => {
                 ]}
             >
                 <FlatList
+                    contentContainerStyle={{ flex: 1 }}
                     data={history}
                     keyExtractor={(item) => item.historyId.toString()}
                     renderItem={renderHistoryCard}

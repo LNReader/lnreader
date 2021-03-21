@@ -373,3 +373,53 @@ export const deleteDatabase = () => {
         );
     });
 };
+
+export const downloadChapterFromSource = async (
+    extensionId,
+    novelUrl,
+    chapterUrl
+) => {
+    const downloadUrl = `https://lnreader-extensions.herokuapp.com/api/${extensionId}/novel/${novelUrl}${chapterUrl}`;
+
+    const response = await fetch(downloadUrl);
+    const chapter = await response.json();
+
+    db.transaction((tx) => {
+        tx.executeSql(
+            `UPDATE ChapterTable SET downloaded = 1 WHERE chapterUrl = ?`,
+            [chapterUrl]
+        );
+        tx.executeSql(
+            `INSERT INTO DownloadsTable (chapterUrl, novelUrl, chapterName, chapterText, prevChapter, nextChapter) VALUES (?, ?, ?, ?, ?, ?)`,
+            [
+                chapterUrl,
+                novelUrl,
+                chapter.chapterName,
+                chapter.chapterText,
+                chapter.prevChapter,
+                chapter.nextChapter,
+            ],
+            (tx, res) => console.log(`Downloaded Chapter ${chapterUrl}`),
+            (txObj, error) => console.log("Error ", error)
+        );
+    });
+};
+
+export const deleteChapterFromDb = (extensionId, novelUrl, chapterUrl) => {
+    const updateIsDownloadedQuery = `UPDATE ChapterTable SET downloaded = 0 WHERE chapterUrl = ? AND novelUrl = ? AND extensionId = ?`;
+    const deleteChapterQuery = `DELETE FROM DownloadsTable WHERE chapterUrl = ? AND novelUrl = ? AND extensionId = ?`;
+
+    db.transaction((tx) => {
+        tx.executeSql(updateIsDownloadedQuery, [
+            chapterUrl,
+            novelUrl,
+            extensionId,
+        ]);
+        tx.executeSql(
+            deleteChapterQuery,
+            [chapterUrl, novelUrl, extensionId],
+            (tx, res) => console.log(`Chapter deleted`),
+            (txObj, error) => console.log("Error ", error)
+        );
+    });
+};

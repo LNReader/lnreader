@@ -303,7 +303,7 @@ const NovelInfoHeader = ({
                                     fontWeight: "bold",
                                 }}
                             >
-                                {noOfChapters + "  Chapters  "}
+                                {noOfChapters + " Chapters"}
                             </Text>
                             <IconButton
                                 icon="filter-variant"

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-
-import { View, Text, ActivityIndicator } from "react-native";
+import { View, Text, ActivityIndicator, StyleSheet } from "react-native";
 import { TouchableRipple, IconButton } from "react-native-paper";
 
 import { useSelector } from "react-redux";
@@ -19,15 +18,7 @@ const ChapterCard = ({
 
     return (
         <TouchableRipple
-            style={{
-                paddingHorizontal: 15,
-                paddingVertical: 7,
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-                // borderTopColor: "rgba(255,255,255,.12)",
-                // borderTopWidth: 1,
-            }}
+            style={styles.chapterCardContainer}
             onPress={() =>
                 navigation.navigate("ChapterItem", {
                     chapterUrl: chapter.chapterUrl,
@@ -113,3 +104,13 @@ const ChapterCard = ({
 };
 
 export default ChapterCard;
+
+const styles = StyleSheet.create({
+    chapterCardContainer: {
+        paddingHorizontal: 15,
+        paddingVertical: 7,
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+    },
+});

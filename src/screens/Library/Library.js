@@ -78,6 +78,7 @@ const LibraryScreen = ({
                     />
                 ) : (
                     <FlatList
+                        contentContainerStyle={{ flex: 1 }}
                         numColumns={3}
                         data={novels}
                         keyExtractor={(item) => item.novelUrl}

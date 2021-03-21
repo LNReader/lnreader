@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import {
     StyleSheet,
@@ -13,25 +13,22 @@ import ChapterCard from "./components/ChapterCard";
 import NovelInfoHeader from "./components/NovelHeader";
 import { BottomSheet } from "./components/BottomSheet";
 
-import {
-    fetchNovelFromSource,
-    fetchChaptersFromSource,
-} from "../../services/api";
-import {
-    insertNovelInfoInDb,
-    insertChaptersInDb,
-    getChaptersFromDb,
-    checkNovelInDb,
-    getNovelInfoFromDb,
-    toggleFavourite,
-    downloadOrDeleteChapter,
-} from "../../services/db";
+import { toggleFavourite, downloadOrDeleteChapter } from "../../services/db";
 
-import { useSelector } from "react-redux";
+import { connect } from "react-redux";
 
-const NovelItem = ({ route, navigation }) => {
+import { getNovel } from "../../redux/actions/novel";
+
+const Novel = ({
+    route,
+    navigation,
+    theme,
+    novel,
+    chapters,
+    loading,
+    getNovel,
+}) => {
     const item = route.params;
-    const theme = useSelector((state) => state.themeReducer.theme);
 
     const {
         extensionId,
@@ -41,11 +38,7 @@ const NovelItem = ({ route, navigation }) => {
         novelCover,
     } = route.params;
 
-    const [loading, setLoading] = useState(true);
-    const [refreshing, setRefreshing] = useState(false);
-
-    const [novel, setNovel] = useState(item);
-    const [chapters, setChapters] = useState();
+    // const [refreshing, setRefreshing] = useState(false);
 
     const [libraryStatus, setlibraryStatus] = useState(item.libraryStatus);
 
@@ -58,50 +51,6 @@ const NovelItem = ({ route, navigation }) => {
     });
 
     let _panel = useRef(null); // Bottomsheet ref
-
-    /**
-     * Fetch novel and chapters from source and set loading false
-     */
-
-    const getNovelFromSource = async (extensionId, novelUrl) => {
-        await fetchNovelFromSource(extensionId, novelUrl).then((response) => {
-            setNovel(response);
-            insertNovelInfoInDb(response);
-        });
-        await fetchChaptersFromSource(extensionId, novelUrl).then(
-            (response) => {
-                setChapters(response);
-                insertChaptersInDb(novelUrl, response);
-            }
-        );
-        setlibraryStatus(0);
-        setLoading(false);
-        setRefreshing(false);
-    };
-
-    /**
-     * Get chapters from db and set loading false
-     */
-
-    const getChapters = async (novelUrl) => {
-        await getChaptersFromDb(novelUrl, filter, sort).then((response) =>
-            setChapters(response)
-        );
-        setLoading(false);
-        setRefreshing(false);
-    };
-
-    /**
-     * Get novel and chapters from database
-     */
-
-    const getNovelFromDb = async () => {
-        await getNovelInfoFromDb(novelUrl).then((res) => {
-            setNovel(res);
-            setlibraryStatus(res.libraryStatus);
-        });
-        getChapters(novelUrl);
-    };
 
     /**
      * Insert or remove novel from library
@@ -147,36 +96,15 @@ const NovelItem = ({ route, navigation }) => {
         });
     };
 
-    /**
-     * Check if the novel is in db. If not, fetch from source
-     *
-     * If navigating from library then directly get chapters from db
-     */
-
-    const checkIfExistsInDb = () => {
-        if (navigatingFrom === 1) {
-            getChapters(novelUrl);
-        } else {
-            setRefreshing(true);
-            checkNovelInDb(novelUrl).then((res) => {
-                if (res) {
-                    getNovelFromDb(novelUrl);
-                } else {
-                    getNovelFromSource(extensionId, novelUrl);
-                }
-            });
-        }
-    };
-
     useFocusEffect(
         useCallback(() => {
-            checkIfExistsInDb();
+            getNovel(navigatingFrom, extensionId, novelUrl);
         }, [sort, filter])
     );
 
     const onRefresh = async () => {
-        setRefreshing(true);
-        checkIfExistsInDb();
+        // setRefreshing(true);
+        // checkIfExistsInDb();
     };
 
     const renderChapterCard = ({ item }) => (
@@ -215,7 +143,7 @@ const NovelItem = ({ route, navigation }) => {
                                 novelName: novelName,
                             }}
                             novel={novel}
-                            noOfChapters={!loading && chapters.length}
+                            noOfChapters={chapters.length}
                             libraryStatus={libraryStatus}
                             insertNovelInLib={insertNovelInLib}
                             navigatingFrom={navigatingFrom}
@@ -225,8 +153,8 @@ const NovelItem = ({ route, navigation }) => {
                     )}
                     refreshControl={
                         <RefreshControl
-                            refreshing={refreshing}
-                            onRefresh={onRefresh}
+                            refreshing={loading}
+                            // onRefresh={onRefresh}
                             colors={[theme.textColorPrimary]}
                             progressBackgroundColor={theme.colorPrimary}
                         />
@@ -245,8 +173,14 @@ const NovelItem = ({ route, navigation }) => {
         </Provider>
     );
 };
+const mapStateToProps = (state) => ({
+    theme: state.themeReducer.theme,
+    novel: state.novelReducer.novel,
+    chapters: state.novelReducer.chapters,
+    loading: state.novelReducer.loading,
+});
 
-export default NovelItem;
+export default connect(mapStateToProps, { getNovel })(Novel);
 
 const styles = StyleSheet.create({
     container: {

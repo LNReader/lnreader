@@ -9,7 +9,7 @@ import Router from "./src/navigation/Router";
 import { createTables, createIndexes } from "./src/services/db";
 import { setStatusBar } from "./src/services/asyncStorage";
 
-// Redyx
+// Redux
 import { Provider } from "react-redux";
 import { persistor, store } from "./src/redux/store/configureStore";
 import { PersistGate } from "redux-persist/lib/integration/react";
