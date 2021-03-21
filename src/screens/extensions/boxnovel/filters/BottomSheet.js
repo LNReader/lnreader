@@ -53,8 +53,9 @@ export const BottomSheet = ({ bottomSheetRef, setSort, sort, setLoading }) => {
                     }}
                     expanded
                 >
-                    {sorting.map((item) => (
+                    {sorting.map((item, index) => (
                         <List.Item
+                            key={index}
                             right={() =>
                                 sort === item.sortFlag && (
                                     <List.Icon

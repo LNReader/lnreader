@@ -82,18 +82,18 @@ export const sortAndFilterChapters = (novelUrl, filter, sort) => async (
     });
 };
 
-export const insertNovelInLibrary = (libraryStatus, novelUrl) => async (
+export const insertNovelInLibrary = (inLibrary, novelUrl) => async (
     dispatch
 ) => {
-    const inLibrary = await toggleFavourite(libraryStatus, novelUrl);
+    toggleFavourite(inLibrary, novelUrl);
 
     dispatch({
         type: UPDATE_IN_LIBRARY,
-        payload: inLibrary,
+        payload: !inLibrary,
     });
 
     ToastAndroid.show(
-        inLibrary ? "Added to library" : "Removed from library",
+        !inLibrary ? "Added to library" : "Removed from library",
         ToastAndroid.SHORT
     );
 };

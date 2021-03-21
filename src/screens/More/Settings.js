@@ -176,8 +176,9 @@ const SettingsScreen = ({
                                 borderRadius: 6,
                             }}
                         >
-                            {themes.map((item) => (
+                            {themes.map((item, index) => (
                                 <ThemeCheckbox
+                                    key={index}
                                     label={themes[item.themeCode].label}
                                     checked={
                                         themeCode === item.themeCode

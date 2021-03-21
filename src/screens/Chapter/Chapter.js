@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { StyleSheet, View, Text, ActivityIndicator } from "react-native";
 
 import { Appbar, Provider, Portal } from "react-native-paper";
@@ -14,7 +14,11 @@ import { fetchChapterFromSource } from "../../services/api";
 
 import { getReaderTheme } from "../../services/asyncStorage";
 
-const ChapterItem = ({ route, navigation }) => {
+import { updateNovelHistory } from "../../redux/actions/history";
+
+import { connect } from "react-redux";
+
+const ChapterItem = ({ route, navigation, theme, updateNovelHistory }) => {
     const { extensionId, chapterUrl, novelUrl, chapterName } = route.params;
 
     const [loading, setLoading] = useState(true);
@@ -25,47 +29,9 @@ const ChapterItem = ({ route, navigation }) => {
 
     const [readerTheme, setReaderTheme] = useState(1);
 
+    let _panel = useRef(null); // Bottomsheet ref
+
     getReaderTheme().then((value) => setReaderTheme(value));
-
-    const setHistory = () => {
-        db.transaction((tx) => {
-            tx.executeSql(
-                "INSERT INTO HistoryTable (chapterUrl, novelUrl, chapterName, lastRead) VALUES ( ?, ?, ?, (datetime('now','localtime')))",
-                [chapterUrl, novelUrl, chapterName],
-                (tx, res) =>
-                    console.log(
-                        "Inserted into history table: " + novelUrl + chapterUrl
-                    ),
-                (tx, error) => console.log(error)
-            );
-            tx.executeSql(
-                "UPDATE LibraryTable SET lastRead = ?, lastReadName = ?, unread = 0 WHERE novelUrl = ?",
-                [chapterUrl, chapterName, novelUrl],
-                (tx, res) =>
-                    console.log("Set Last Read " + novelUrl + chapterUrl),
-                (tx, error) => console.log(error)
-            );
-        });
-    };
-
-    const updateHistory = () => {
-        db.transaction((tx) => {
-            tx.executeSql(
-                "UPDATE HistoryTable SET lastRead = (datetime('now','localtime')), chapterName=?, chapterUrl=? WHERE novelUrl = ?",
-                [chapterName, chapterUrl, novelUrl],
-                (tx, res) =>
-                    console.log("Updated into history table: " + novelUrl),
-                (tx, error) => console.log(error)
-            );
-            tx.executeSql(
-                "UPDATE LibraryTable SET lastRead = ?, lastReadName = ?, unread = 0 WHERE novelUrl = ?",
-                [chapterUrl, chapterName, novelUrl],
-                (tx, res) =>
-                    console.log("Set Last read" + novelUrl + chapterUrl),
-                (tx, error) => console.log(error)
-            );
-        });
-    };
 
     const setRead = () => {
         db.transaction((tx) => {
@@ -77,38 +43,6 @@ const ChapterItem = ({ route, navigation }) => {
             );
         });
     };
-
-    const checkIfInHistory = () => {
-        db.transaction((tx) => {
-            tx.executeSql(
-                "SELECT * FROM HistoryTable WHERE novelUrl=?",
-                [novelUrl],
-                (txObj, res) => {
-                    if (res.rows.length === 0) {
-                        console.log("Not In History");
-                        setHistory();
-                    } else {
-                        console.log("In History");
-                        updateHistory();
-                    }
-                },
-                (txObj, error) => console.log("Error ", error)
-            );
-        });
-    };
-
-    // const updateLastRead = () => {
-    //     db.transaction((tx) => {
-
-    //         tx.executeSql(
-    //             "UPDATE LibraryTable SET lastRead = ?, lastReadName = ?, unread = 0 WHERE novelUrl = ?",
-    //             [chapter.nextChapter, chapterName, novelUrl],
-    //             (tx, res) =>
-    //                 console.log("Set Last Read " + novelUrl + chapterUrl),
-    //             (tx, error) => console.log(error)
-    //         );
-    //     });
-    // };
 
     const checkIfDownloaded = () => {
         db.transaction((tx) => {
@@ -130,11 +64,11 @@ const ChapterItem = ({ route, navigation }) => {
                         // console.log("Already Downloaded");
                         getChapterFromDB();
                     }
-                    checkIfInHistory();
                 },
                 (txObj, error) => console.log("Error ", error)
             );
         });
+        updateNovelHistory(chapterUrl, chapterName, novelUrl);
     };
 
     const getChapterFromDB = () => {
@@ -292,7 +226,7 @@ const ChapterItem = ({ route, navigation }) => {
                 )}
                 <Portal>
                     <BottomSheet
-                        bottomSheetRef={(c) => (_panel = c)}
+                        bottomSheetRef={_panel}
                         setSize={setSize}
                         size={size}
                         setReaderTheme={setReaderTheme}
@@ -304,7 +238,11 @@ const ChapterItem = ({ route, navigation }) => {
     );
 };
 
-export default ChapterItem;
+const mapStateToProps = (state) => ({
+    theme: state.themeReducer.theme,
+});
+
+export default connect(mapStateToProps, { updateNovelHistory })(ChapterItem);
 
 const styles = StyleSheet.create({
     container: {

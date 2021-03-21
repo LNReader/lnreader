@@ -108,12 +108,13 @@ const Novel = ({
                     showsVerticalScrollIndicator={false}
                     keyExtractor={(item) => item.chapterUrl}
                     removeClippedSubviews={true}
-                    maxToRenderPerBatch={10}
+                    maxToRenderPerBatch={5}
                     windowSize={15}
                     initialNumToRender={7}
                     renderItem={renderChapterCard}
                     ListHeaderComponent={() => (
                         <NovelInfoHeader
+                            theme={theme}
                             item={{ novelName, novelCover }}
                             novel={novel}
                             noOfChapters={chapters.length}

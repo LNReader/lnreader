@@ -15,7 +15,6 @@ import * as WebBrowser from "expo-web-browser";
 import { LinearGradient } from "expo-linear-gradient";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-import { connect } from "react-redux";
 const NovelInfoHeader = ({
     item,
     novel,
@@ -26,8 +25,6 @@ const NovelInfoHeader = ({
     bottomSheetRef,
     theme,
 }) => {
-    const navigation = useNavigation();
-
     const [more, setMore] = useState(navigatingFrom === 2 ? true : false);
 
     const renderGenreChip = ({ item }) => (
@@ -46,7 +43,7 @@ const NovelInfoHeader = ({
     );
 
     return (
-        <>
+        <View style={{ flexGrow: 1 }}>
             <ImageBackground
                 source={{
                     uri: item.novelCover,
@@ -125,7 +122,6 @@ const NovelInfoHeader = ({
                 <>
                     <View
                         style={{
-                            flex: 1,
                             flexDirection: "row",
                             alignItems: "center",
                         }}
@@ -288,7 +284,6 @@ const NovelInfoHeader = ({
 
                     <TouchableRipple
                         style={{
-                            flex: 1,
                             flexDirection: "row",
                             justifyContent: "space-between",
                             alignItems: "center",
@@ -320,15 +315,11 @@ const NovelInfoHeader = ({
                     </TouchableRipple>
                 </>
             )}
-        </>
+        </View>
     );
 };
 
-const mapStateToProps = (state) => ({
-    theme: state.themeReducer.theme,
-});
-
-export default connect(mapStateToProps)(NovelInfoHeader);
+export default NovelInfoHeader;
 
 const styles = StyleSheet.create({
     nameContainer: {

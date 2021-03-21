@@ -8,6 +8,7 @@ import settingsReducer from "../reducers/settings";
 import libraryReducer from "../reducers/library";
 import extensionReducer from "../reducers/extension";
 import novelReducer from "../reducers/novel";
+import historyReducer from "../reducers/history";
 
 const persistConfig = {
     key: "root",
@@ -23,6 +24,7 @@ const persistedReducer = persistReducer(
         libraryReducer,
         extensionReducer,
         novelReducer,
+        historyReducer,
     })
 );
 

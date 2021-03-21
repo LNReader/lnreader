@@ -1,38 +1,27 @@
 import React, { useState, useCallback } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 
-import {
-    StyleSheet,
-    View,
-    Text,
-    FlatList,
-    ActivityIndicator,
-} from "react-native";
+import { StyleSheet, View, FlatList, ActivityIndicator } from "react-native";
 
 import { Appbar } from "../../components/common/Appbar";
 import HistoryCard from "./components/HistoryCard";
 
-import { getHistoryFromDb, deleteChapterHistory } from "../../services/db";
-
-import { useSelector } from "react-redux";
+import { connect } from "react-redux";
 import EmptyView from "../../components/common/EmptyView";
 
-const History = ({ navigation }) => {
-    const [loading, setLoading] = useState(true);
-    const [history, setHistory] = useState([]);
+import {
+    getHistory,
+    deleteChapterFromHistory,
+} from "../../redux/actions/history";
 
-    const theme = useSelector((state) => state.themeReducer.theme);
-
-    const getHistory = async () => {
-        await getHistoryFromDb().then((res) => setHistory(res));
-        setLoading(false);
-    };
-
-    const deleteHistory = (novelId) => {
-        deleteChapterHistory(novelId);
-        getHistory();
-    };
-
+const History = ({
+    navigation,
+    theme,
+    history,
+    loading,
+    getHistory,
+    deleteChapterFromHistory,
+}) => {
     useFocusEffect(
         useCallback(() => {
             getHistory();
@@ -42,7 +31,7 @@ const History = ({ navigation }) => {
     const renderHistoryCard = ({ item }) => (
         <HistoryCard
             item={item}
-            deleteHistory={deleteHistory}
+            deleteHistory={deleteChapterFromHistory}
             navigation={navigation}
         />
     );
@@ -59,7 +48,7 @@ const History = ({ navigation }) => {
                 <FlatList
                     contentContainerStyle={{ flex: 1 }}
                     data={history}
-                    keyExtractor={(item) => item.historyId.toString()}
+                    keyExtractor={(item) => item.novelUrl.toString()}
                     renderItem={renderHistoryCard}
                     ListFooterComponent={
                         loading && (
@@ -83,7 +72,16 @@ const History = ({ navigation }) => {
     );
 };
 
-export default History;
+const mapStateToProps = (state) => ({
+    theme: state.themeReducer.theme,
+    history: state.historyReducer.history,
+    loading: state.historyReducer.loading,
+});
+
+export default connect(mapStateToProps, {
+    getHistory,
+    deleteChapterFromHistory,
+})(History);
 
 const styles = StyleSheet.create({
     container: {

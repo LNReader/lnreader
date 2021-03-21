@@ -71,7 +71,7 @@ export const createIndexes = async () => {
     });
 };
 
-export const insertNovelInfoInDb = (novel) => {
+export const insertNovelInfoInDb = async (novel) => {
     db.transaction((tx) => {
         tx.executeSql(
             "INSERT INTO LibraryTable (novelUrl, novelName, novelCover, novelSummary, `Author(s)`, `Genre(s)`, Status, extensionId, lastRead, lastReadName, sourceUrl, source) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
@@ -89,15 +89,13 @@ export const insertNovelInfoInDb = (novel) => {
                 novel.sourceUrl,
                 novel.source,
             ],
-            (txObj, res) => {
-                console.log("Inserted Novel Info in Db");
-            },
+            (txObj, res) => {},
             (txObj, error) => console.log("Error ", error)
         );
     });
 };
 
-export const insertChaptersInDb = (novelUrl, chapters) => {
+export const insertChaptersInDb = async (novelUrl, chapters) => {
     db.transaction((tx) => {
         chapters.map((chapter) =>
             tx.executeSql(
@@ -107,11 +105,12 @@ export const insertChaptersInDb = (novelUrl, chapters) => {
                     chapter.chapterName,
                     chapter.releaseDate,
                     novelUrl,
-                ]
+                ],
+                (txObj, res) => {},
+                (txObj, error) => console.log("Error ", error)
             )
         );
     });
-    console.log("Inserted Chapters in Db");
 };
 
 /**
@@ -180,18 +179,14 @@ export const checkNovelInDb = (novelUrl) => {
  */
 
 export const toggleFavourite = async (libraryStatus, novelUrl) => {
-    return new Promise((resolve, reject) =>
-        db.transaction((tx) => {
-            tx.executeSql(
-                "UPDATE LibraryTable SET libraryStatus = ? WHERE novelUrl=?",
-                [!libraryStatus, novelUrl],
-                (tx, res) => {
-                    resolve(!libraryStatus);
-                },
-                (txObj, error) => console.log("Error ", error)
-            );
-        })
-    );
+    db.transaction((tx) => {
+        tx.executeSql(
+            "UPDATE LibraryTable SET libraryStatus = ? WHERE novelUrl=?",
+            [!libraryStatus, novelUrl],
+            (tx, res) => {},
+            (txObj, error) => console.log("Error ", error)
+        );
+    });
 };
 
 /**
@@ -213,8 +208,8 @@ export const downloadOrDeleteChapter = async (
 
         db.transaction((tx) => {
             tx.executeSql(
-                `UPDATE ChapterTable SET downloaded = 1 WHERE chapterUrl = ?`,
-                [chapterUrl]
+                `UPDATE ChapterTable SET downloaded = 1 WHERE chapterUrl = ? AND novelUrl = ?`,
+                [chapterUrl, novelUrl]
             );
             tx.executeSql(
                 `INSERT INTO DownloadsTable (chapterUrl, novelUrl, chapterName, chapterText, prevChapter, nextChapter) VALUES (?, ?, ?, ?, ?, ?)`,
@@ -233,12 +228,12 @@ export const downloadOrDeleteChapter = async (
     } else {
         db.transaction((tx) => {
             tx.executeSql(
-                `UPDATE ChapterTable SET downloaded = 0 WHERE chapterUrl = ?`,
-                [chapterUrl]
+                `UPDATE ChapterTable SET downloaded = 0 WHERE chapterUrl = ? AND novelUrl= ?`,
+                [chapterUrl, novelUrl]
             );
             tx.executeSql(
-                `DELETE FROM DownloadsTable WHERE chapterUrl = ?`,
-                [chapterUrl],
+                `DELETE FROM DownloadsTable WHERE chapterUrl = ? AND novelUrl = ?`,
+                [chapterUrl, novelUrl],
                 (tx, res) => console.log(`Chapter deleted`),
                 (txObj, error) => console.log("Error ", error)
             );
@@ -265,14 +260,9 @@ export const getHistoryFromDb = async () => {
     });
 };
 
-export const deleteChapterHistory = (novelId) => {
+export const deleteChapterHistory = async (novelId) => {
     db.transaction((tx) => {
-        tx.executeSql(
-            "DELETE FROM HistoryTable WHERE novelUrl = ?",
-            [novelId],
-            (txObj, res) => {},
-            (txObj, error) => console.log("Error ", error)
-        );
+        tx.executeSql("DELETE FROM HistoryTable WHERE novelUrl = ?", [novelId]);
     });
 };
 
@@ -420,6 +410,19 @@ export const deleteChapterFromDb = (extensionId, novelUrl, chapterUrl) => {
             [chapterUrl, novelUrl, extensionId],
             (tx, res) => console.log(`Chapter deleted`),
             (txObj, error) => console.log("Error ", error)
+        );
+    });
+};
+
+export const insertIntoHistory = async (chapterUrl, chapterName, novelUrl) => {
+    db.transaction((tx) => {
+        tx.executeSql(
+            "INSERT OR REPLACE INTO HistoryTable (chapterUrl, novelUrl, chapterName, lastRead) VALUES ( ?, ?, ?, (datetime('now','localtime')))",
+            [chapterUrl, novelUrl, chapterName]
+        );
+        tx.executeSql(
+            "UPDATE LibraryTable SET lastRead = ?, lastReadName = ?, unread = 0 WHERE novelUrl = ?",
+            [chapterUrl, chapterName, novelUrl]
         );
     });
 };
