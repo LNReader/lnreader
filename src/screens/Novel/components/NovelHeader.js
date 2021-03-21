@@ -20,10 +20,9 @@ const NovelInfoHeader = ({
     item,
     novel,
     noOfChapters,
-    insertNovelInLib,
+    insertNovelInLibrary,
     loading,
     navigatingFrom,
-    libraryStatus,
     bottomSheetRef,
     theme,
 }) => {
@@ -136,7 +135,7 @@ const NovelInfoHeader = ({
                             icon={() => (
                                 <MaterialCommunityIcons
                                     name={
-                                        libraryStatus
+                                        novel.libraryStatus
                                             ? "heart"
                                             : "heart-outline"
                                     }
@@ -144,7 +143,12 @@ const NovelInfoHeader = ({
                                     color={theme.colorAccentDark}
                                 />
                             )}
-                            onPress={() => insertNovelInLib()}
+                            onPress={() =>
+                                insertNovelInLibrary(
+                                    novel.libraryStatus,
+                                    novel.novelUrl
+                                )
+                            }
                             style={[
                                 {
                                     backgroundColor: theme.colorPrimaryDark,
@@ -168,7 +172,9 @@ const NovelInfoHeader = ({
                                 color: theme.textColorPrimary,
                             }}
                         >
-                            {libraryStatus ? "In Library" : "Add to library"}
+                            {novel.libraryStatus
+                                ? "In Library"
+                                : "Add to library"}
                         </Chip>
 
                         <IconButton

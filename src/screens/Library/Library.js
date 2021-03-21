@@ -19,6 +19,7 @@ import {
     searchLibraryNovels,
 } from "../../redux/actions/library";
 import { SearchAppbar } from "../../components/common/Appbar";
+import { setNovel } from "../../redux/actions/novel";
 
 const LibraryScreen = ({
     navigation,
@@ -27,6 +28,7 @@ const LibraryScreen = ({
     loading,
     getLibraryNovels,
     searchLibraryNovels,
+    setNovel,
 }) => {
     const [refreshing, setRefreshing] = useState(false);
 
@@ -49,11 +51,13 @@ const LibraryScreen = ({
         setRefreshing(false);
     };
 
-    const redirectToNovel = (item) =>
+    const redirectToNovel = (item) => {
         navigation.navigate("NovelItem", {
             ...item,
             navigatingFrom: 1,
         });
+        setNovel(item);
+    };
 
     return (
         <>
@@ -129,6 +133,7 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
     getLibraryNovels,
     searchLibraryNovels,
+    setNovel,
 })(LibraryScreen);
 
 const styles = StyleSheet.create({

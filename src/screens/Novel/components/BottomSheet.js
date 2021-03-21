@@ -1,31 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { List, RadioButton, Checkbox } from "react-native-paper";
 import Bottomsheet from "rn-sliding-up-panel";
 
 import { useSelector } from "react-redux";
 
-const BottomSheetHandle = () => (
-    <View
-        style={{
-            backgroundColor: "rgba(255,255,255,0.25)",
-            height: 4,
-            width: 50,
-            borderRadius: 50,
-            top: 10,
-            alignSelf: "center",
-        }}
-    />
-);
-
 export const BottomSheet = ({
     bottomSheetRef,
-    sort,
-    filter,
-    sortChapters,
-    filterChapters,
+    sortAndFilterChapters,
+    novelUrl,
 }) => {
     const checkBoxStyle = { flexDirection: "row", alignItems: "center" };
+
+    const [chapterFlags, setChapterFlags] = useState({ sort: "", filter: "" });
+
+    const sortChapters = (sort) => {
+        setChapterFlags({ ...chapterFlags, sort: sort });
+        sortAndFilterChapters(novelUrl, chapterFlags.filter, chapterFlags.sort);
+    };
+
+    const filterChapters = (filter) => {
+        setChapterFlags({ ...chapterFlags, filter: filter });
+        sortAndFilterChapters(novelUrl, chapterFlags.filter, chapterFlags.sort);
+    };
 
     const theme = useSelector((state) => state.themeReducer.theme);
 
@@ -43,7 +40,7 @@ export const BottomSheet = ({
                     },
                 ]}
             >
-                <BottomSheetHandle />
+                <View style={styles.bottomSheetHandle} />
                 <List.Subheader
                     style={{
                         color: theme.textColorPrimary,
@@ -55,7 +52,7 @@ export const BottomSheet = ({
                 <View>
                     <RadioButton.Group
                         onValueChange={(newValue) => sortChapters(newValue)}
-                        value={sort}
+                        value={chapterFlags.sort}
                         c
                     >
                         <View
@@ -117,7 +114,9 @@ export const BottomSheet = ({
                 </List.Subheader>
                 <View style={checkBoxStyle}>
                     <Checkbox.Item
-                        status={filter === "" ? "checked" : "unchecked"}
+                        status={
+                            chapterFlags.filter === "" ? "checked" : "unchecked"
+                        }
                         uncheckedColor={theme.textColorHintDark}
                         color={theme.colorAccentDark}
                         onPress={() => filterChapters("")}
@@ -129,7 +128,9 @@ export const BottomSheet = ({
                 <View style={checkBoxStyle}>
                     <Checkbox.Item
                         status={
-                            filter === "AND `read`=1" ? "checked" : "unchecked"
+                            chapterFlags.filter === "AND `read`=1"
+                                ? "checked"
+                                : "unchecked"
                         }
                         uncheckedColor={theme.textColorHintDark}
                         color={theme.colorAccentDark}
@@ -142,7 +143,9 @@ export const BottomSheet = ({
                 <View style={checkBoxStyle}>
                     <Checkbox.Item
                         status={
-                            filter === "AND `read`=0" ? "checked" : "unchecked"
+                            chapterFlags.filter === "AND `read`=0"
+                                ? "checked"
+                                : "unchecked"
                         }
                         uncheckedColor={theme.textColorHintDark}
                         color={theme.colorAccentDark}
@@ -155,7 +158,7 @@ export const BottomSheet = ({
                 <View style={checkBoxStyle}>
                     <Checkbox.Item
                         status={
-                            filter === "AND downloaded=1"
+                            chapterFlags.filter === "AND downloaded=1"
                                 ? "checked"
                                 : "unchecked"
                         }
@@ -177,5 +180,13 @@ const styles = StyleSheet.create({
         flex: 1,
         borderTopRightRadius: 8,
         borderTopLeftRadius: 8,
+    },
+    bottomSheetHandle: {
+        backgroundColor: "rgba(255,255,255,0.25)",
+        height: 4,
+        width: 50,
+        borderRadius: 50,
+        top: 10,
+        alignSelf: "center",
     },
 });

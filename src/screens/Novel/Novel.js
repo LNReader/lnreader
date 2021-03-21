@@ -1,5 +1,4 @@
-import React, { useState, useCallback, useRef, useEffect } from "react";
-import { useFocusEffect } from "@react-navigation/native";
+import React, { useState, useEffect, useRef } from "react";
 import {
     StyleSheet,
     View,
@@ -13,11 +12,15 @@ import ChapterCard from "./components/ChapterCard";
 import NovelInfoHeader from "./components/NovelHeader";
 import { BottomSheet } from "./components/BottomSheet";
 
-import { toggleFavourite, downloadOrDeleteChapter } from "../../services/db";
+import { downloadOrDeleteChapter } from "../../services/db";
 
 import { connect } from "react-redux";
 
-import { getNovel } from "../../redux/actions/novel";
+import {
+    getNovel,
+    insertNovelInLibrary,
+    sortAndFilterChapters,
+} from "../../redux/actions/novel";
 
 const Novel = ({
     route,
@@ -27,9 +30,10 @@ const Novel = ({
     chapters,
     loading,
     getNovel,
+    fetching,
+    insertNovelInLibrary,
+    sortAndFilterChapters,
 }) => {
-    const item = route.params;
-
     const {
         extensionId,
         novelUrl,
@@ -38,33 +42,12 @@ const Novel = ({
         novelCover,
     } = route.params;
 
-    // const [refreshing, setRefreshing] = useState(false);
-
-    const [libraryStatus, setlibraryStatus] = useState(item.libraryStatus);
-
-    const [sort, setSort] = useState("");
-    const [filter, setFilter] = useState("");
-
     const [downloading, setDownloading] = useState({
         downloading: false,
         chapterUrl: "",
     });
 
     let _panel = useRef(null); // Bottomsheet ref
-
-    /**
-     * Insert or remove novel from library
-     */
-
-    const insertNovelInLib = async () => {
-        toggleFavourite(libraryStatus, novelUrl).then((res) => {
-            setlibraryStatus(res);
-            ToastAndroid.show(
-                res ? "Added to library" : "Removed from library",
-                ToastAndroid.SHORT
-            );
-        });
-    };
 
     /**
      * Download chapter from source
@@ -96,27 +79,21 @@ const Novel = ({
         });
     };
 
-    useFocusEffect(
-        useCallback(() => {
-            getNovel(navigatingFrom, extensionId, novelUrl);
-        }, [sort, filter])
-    );
+    useEffect(() => {
+        getNovel(navigatingFrom, extensionId, novelUrl);
+    }, []);
 
-    const onRefresh = async () => {
-        // setRefreshing(true);
-        // checkIfExistsInDb();
-    };
-
-    const renderChapterCard = ({ item }) => (
-        <ChapterCard
-            navigation={navigation}
-            novelUrl={novelUrl}
-            extensionId={extensionId}
-            chapter={item}
-            downloadChapter={downloadChapter}
-            downloading={downloading}
-        />
-    );
+    const renderChapterCard = ({ item }) =>
+        !loading && (
+            <ChapterCard
+                navigation={navigation}
+                novelUrl={novelUrl}
+                extensionId={extensionId}
+                chapter={item}
+                downloadChapter={downloadChapter}
+                downloading={downloading}
+            />
+        );
 
     return (
         <Provider>
@@ -128,7 +105,6 @@ const Novel = ({
             >
                 <FlatList
                     data={chapters}
-                    extraData={[sort, filter]}
                     showsVerticalScrollIndicator={false}
                     keyExtractor={(item) => item.chapterUrl}
                     removeClippedSubviews={true}
@@ -138,14 +114,10 @@ const Novel = ({
                     renderItem={renderChapterCard}
                     ListHeaderComponent={() => (
                         <NovelInfoHeader
-                            item={{
-                                novelCover: novelCover,
-                                novelName: novelName,
-                            }}
+                            item={{ novelName, novelCover }}
                             novel={novel}
                             noOfChapters={chapters.length}
-                            libraryStatus={libraryStatus}
-                            insertNovelInLib={insertNovelInLib}
+                            insertNovelInLibrary={insertNovelInLibrary}
                             navigatingFrom={navigatingFrom}
                             loading={loading}
                             bottomSheetRef={_panel}
@@ -153,7 +125,7 @@ const Novel = ({
                     )}
                     refreshControl={
                         <RefreshControl
-                            refreshing={loading}
+                            refreshing={fetching}
                             // onRefresh={onRefresh}
                             colors={[theme.textColorPrimary]}
                             progressBackgroundColor={theme.colorPrimary}
@@ -162,11 +134,9 @@ const Novel = ({
                 />
                 <Portal>
                     <BottomSheet
+                        novelUrl={novelUrl}
                         bottomSheetRef={_panel}
-                        sort={sort}
-                        filter={filter}
-                        sortChapters={setSort}
-                        filterChapters={setFilter}
+                        sortAndFilterChapters={sortAndFilterChapters}
                     />
                 </Portal>
             </View>
@@ -178,9 +148,14 @@ const mapStateToProps = (state) => ({
     novel: state.novelReducer.novel,
     chapters: state.novelReducer.chapters,
     loading: state.novelReducer.loading,
+    fetching: state.novelReducer.fetching,
 });
 
-export default connect(mapStateToProps, { getNovel })(Novel);
+export default connect(mapStateToProps, {
+    getNovel,
+    insertNovelInLibrary,
+    sortAndFilterChapters,
+})(Novel);
 
 const styles = StyleSheet.create({
     container: {

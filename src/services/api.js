@@ -20,6 +20,7 @@ export const fetchNovelFromSource = async (extensionId, novelUrl) => {
         sourceUrl: res.sourceUrl,
         source: res.sourceName,
         unread: 1,
+        libraryStatus: 0,
         lastRead: res.novelChapters[0].chapterUrl,
         lastReadName: res.novelChapters[0].chapterName,
         extensionId: res.extensionId,

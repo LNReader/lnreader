@@ -10,9 +10,15 @@ export const GET_EXTENSIONS = "GET_EXTENSIONS";
 
 export const LOADING_NOVEL = "LOADING_NOVEL";
 
+export const FETCHING_NOVEL = "FETCHING_NOVEL";
+
 export const LOADING_CHAPTERS = "LOADING_CHAPTERS";
 
+export const SET_NOVEL = "SET_NOVEL";
+
 export const GET_NOVEL = "GET_NOVEL";
+
+export const UPDATE_IN_LIBRARY = "UPDATE_IN_LIBRARY";
 
 export const GET_CHAPTERS = "GET_CHAPTERS";
 

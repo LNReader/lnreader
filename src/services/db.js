@@ -386,8 +386,8 @@ export const downloadChapterFromSource = async (
 
     db.transaction((tx) => {
         tx.executeSql(
-            `UPDATE ChapterTable SET downloaded = 1 WHERE chapterUrl = ?`,
-            [chapterUrl]
+            `UPDATE ChapterTable SET downloaded = 1 WHERE chapterUrl = ? AND novelUrl = ?`,
+            [chapterUrl, novelUrl]
         );
         tx.executeSql(
             `INSERT INTO DownloadsTable (chapterUrl, novelUrl, chapterName, chapterText, prevChapter, nextChapter) VALUES (?, ?, ?, ?, ?, ?)`,
