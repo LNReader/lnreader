@@ -26,20 +26,14 @@ export const BottomSheet = ({ bottomSheetRef, setSort, sort, setLoading }) => {
             <View
                 style={[
                     styles.contentContainer,
-                    {
-                        backgroundColor: theme.colorPrimary,
-                    },
+                    { backgroundColor: theme.colorPrimary },
                 ]}
             >
                 <View
-                    style={{
-                        backgroundColor: theme.textColorHintDark,
-                        height: 5,
-                        width: 30,
-                        borderRadius: 50,
-                        top: 10,
-                        alignSelf: "center",
-                    }}
+                    style={[
+                        styles.bottomSheetHandle,
+                        { backgroundColor: theme.textColorPrimary },
+                    ]}
                 />
                 <List.Section
                     title="Sort"
@@ -47,10 +41,7 @@ export const BottomSheet = ({ bottomSheetRef, setSort, sort, setLoading }) => {
                         color: theme.colorAccentDark,
                         fontWeight: "bold",
                     }}
-                    style={{
-                        color: theme.colorAccentDark,
-                        // backgroundColor: theme.colorAccentDark,
-                    }}
+                    style={{ color: theme.colorAccentDark }}
                     expanded
                 >
                     {sorting.map((item, index) => (
@@ -61,10 +52,7 @@ export const BottomSheet = ({ bottomSheetRef, setSort, sort, setLoading }) => {
                                     <List.Icon
                                         icon="arrow-up"
                                         color={theme.colorAccentDark}
-                                        style={{
-                                            marginVertical: 0,
-                                            paddingVertical: 0,
-                                        }}
+                                        style={styles.sortArrow}
                                     />
                                 )
                             }
@@ -88,5 +76,19 @@ export const BottomSheet = ({ bottomSheetRef, setSort, sort, setLoading }) => {
 const styles = StyleSheet.create({
     contentContainer: {
         flex: 1,
+        borderTopRightRadius: 8,
+        borderTopLeftRadius: 8,
+    },
+    bottomSheetHandle: {
+        opacity: 0.5,
+        height: 4,
+        width: 32,
+        borderRadius: 50,
+        top: 8,
+        alignSelf: "center",
+    },
+    sortArrow: {
+        marginVertical: 0,
+        paddingVertical: 0,
     },
 });

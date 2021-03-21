@@ -30,12 +30,12 @@ export const setNovel = (novel) => async (dispatch) => {
     dispatch({ type: SET_NOVEL, payload: novel });
 };
 
-export const getNovel = (navigatingFrom, extensionId, novelUrl) => async (
+export const getNovel = (inLibrary, extensionId, novelUrl) => async (
     dispatch
 ) => {
     dispatch({ type: LOADING_NOVEL });
 
-    if (navigatingFrom === 1) {
+    if (inLibrary === 1) {
         const chapters = await getChaptersFromDb(novelUrl, "", "");
         dispatch({
             type: GET_CHAPTERS,

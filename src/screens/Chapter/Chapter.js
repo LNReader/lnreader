@@ -51,7 +51,6 @@ const ChapterItem = ({ route, navigation, theme, updateNovelHistory }) => {
                 [chapterUrl, novelUrl],
                 (txObj, res) => {
                     if (res.rows.length === 0) {
-                        // console.log("Not Downloaded");
                         fetchChapterFromSource(
                             extensionId,
                             novelUrl,
@@ -113,14 +112,7 @@ const ChapterItem = ({ route, navigation, theme, updateNovelHistory }) => {
                         }}
                     >
                         <Appbar.BackAction
-                            onPress={() => {
-                                // navigation.navigate("NovelItem", {
-                                //     novelUrl,
-                                //     extensionId,
-                                //     navigatingFrom: 0,
-                                // });
-                                navigation.goBack();
-                            }}
+                            onPress={() => navigation.goBack()}
                             color={"white"}
                             size={26}
                             style={{ marginRight: 0 }}

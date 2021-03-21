@@ -37,9 +37,9 @@ const Novel = ({
     const {
         extensionId,
         novelUrl,
-        navigatingFrom,
         novelName,
         novelCover,
+        libraryStatus,
     } = route.params;
 
     const [downloading, setDownloading] = useState({
@@ -80,20 +80,18 @@ const Novel = ({
     };
 
     useEffect(() => {
-        getNovel(navigatingFrom, extensionId, novelUrl);
+        getNovel(libraryStatus, extensionId, novelUrl);
     }, []);
 
-    const renderChapterCard = ({ item }) =>
-        !loading && (
-            <ChapterCard
-                navigation={navigation}
-                novelUrl={novelUrl}
-                extensionId={extensionId}
-                chapter={item}
-                downloadChapter={downloadChapter}
-                downloading={downloading}
-            />
-        );
+    const renderChapterCard = ({ item }) => (
+        <ChapterCard
+            novelUrl={novelUrl}
+            extensionId={extensionId}
+            chapter={item}
+            downloadChapter={downloadChapter}
+            downloading={downloading}
+        />
+    );
 
     return (
         <Provider>
@@ -105,7 +103,6 @@ const Novel = ({
             >
                 <FlatList
                     data={chapters}
-                    showsVerticalScrollIndicator={false}
                     keyExtractor={(item) => item.chapterUrl}
                     removeClippedSubviews={true}
                     maxToRenderPerBatch={5}
@@ -119,7 +116,6 @@ const Novel = ({
                             novel={novel}
                             noOfChapters={chapters.length}
                             insertNovelInLibrary={insertNovelInLibrary}
-                            navigatingFrom={navigatingFrom}
                             loading={loading}
                             bottomSheetRef={_panel}
                         />

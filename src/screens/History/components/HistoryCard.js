@@ -21,7 +21,7 @@ const HistoryCard = ({ item, deleteHistory, navigation }) => {
                     novelCover: item.novelCover,
                     extensionId: item.extensionId,
                     novelUrl: item.novelUrl,
-                    navigatingFrom: 0,
+                    libraryStatus: item.libraryStatus,
                 })
             }
         >

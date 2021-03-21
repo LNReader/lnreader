@@ -21,11 +21,14 @@ const NovelInfoHeader = ({
     noOfChapters,
     insertNovelInLibrary,
     loading,
-    navigatingFrom,
     bottomSheetRef,
     theme,
 }) => {
-    const [more, setMore] = useState(navigatingFrom === 2 ? true : false);
+    const navigation = useNavigation();
+
+    const [more, setMore] = useState(
+        !loading && novel.libraryStatus !== 1 ? true : false
+    );
 
     const renderGenreChip = ({ item }) => (
         <Text
@@ -194,6 +197,7 @@ const NovelInfoHeader = ({
                             size={21}
                         />
                     </View>
+
                     {novel.novelSummary !== "" && (
                         <View
                             style={{

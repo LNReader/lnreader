@@ -52,10 +52,7 @@ const LibraryScreen = ({
     };
 
     const redirectToNovel = (item) => {
-        navigation.navigate("NovelItem", {
-            ...item,
-            navigatingFrom: 1,
-        });
+        navigation.navigate("NovelItem", item);
         setNovel(item);
     };
 
@@ -82,7 +79,10 @@ const LibraryScreen = ({
                     />
                 ) : (
                     <FlatList
-                        contentContainerStyle={{ flex: 1 }}
+                        contentContainerStyle={{
+                            flexGrow: 1,
+                            paddingBottom: 8,
+                        }}
                         numColumns={3}
                         data={novels}
                         keyExtractor={(item) => item.novelUrl}

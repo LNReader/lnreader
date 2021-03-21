@@ -249,7 +249,7 @@ export const getHistoryFromDb = async () => {
     return new Promise((resolve, reject) => {
         db.transaction((tx) => {
             tx.executeSql(
-                "SELECT HistoryTable.chapterUrl, HistoryTable.historyId, HistoryTable.chapterName, HistoryTable.lastRead, LibraryTable.novelName, LibraryTable.novelCover, LibraryTable.novelUrl, LibraryTable.extensionId, LibraryTable.libraryStatus FROM HistoryTable INNER JOIN LibraryTable ON HistoryTable.novelUrl = LibraryTable.novelUrl ORDER BY HistoryTable.lastRead DESC",
+                "SELECT HistoryTable.chapterUrl, HistoryTable.historyId, HistoryTable.chapterName, HistoryTable.lastRead, LibraryTable.novelName, LibraryTable.libraryStatus, LibraryTable.novelCover, LibraryTable.novelUrl, LibraryTable.extensionId, LibraryTable.libraryStatus FROM HistoryTable INNER JOIN LibraryTable ON HistoryTable.novelUrl = LibraryTable.novelUrl ORDER BY HistoryTable.lastRead DESC",
                 null,
                 (txObj, { rows: { _array } }) => {
                     resolve(_array);
@@ -306,14 +306,14 @@ export const searchInLibrary = async (searchText) => {
 
 export const deleteHistory = () => {
     db.transaction((tx) => {
-        tx.executeSql("DELETE FROM HistoryTable");
+        tx.executeSql("DELETE FROM HistoryTable; VACCUM;");
     });
 };
 
 export const deleteNovelsNotInLibrary = () => {
     db.transaction((tx) => {
         tx.executeSql(
-            "DELETE FROM LibraryTable WHERE libraryStatus=0",
+            "DELETE FROM LibraryTable WHERE libraryStatus = 0",
             null,
             (txObj, res) => {
                 console.log("Deleted");

@@ -91,10 +91,7 @@ const BoxNovel = ({ navigation }) => {
                             <NovelCover
                                 item={item}
                                 onPress={() => {
-                                    navigation.navigate("NovelItem", {
-                                        ...item,
-                                        navigatingFrom: 2,
-                                    });
+                                    navigation.navigate("NovelItem", item);
                                 }}
                                 libraryStatus={
                                     checkIFInLibrary(item.novelUrl)

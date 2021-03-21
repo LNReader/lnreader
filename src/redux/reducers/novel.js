@@ -29,6 +29,7 @@ const novelReducer = (state = initialState, action) => {
             return { ...state, novel: payload };
         case GET_NOVEL:
             return {
+                ...state,
                 novel: payload.novel,
                 chapters: payload.chapters,
                 loading: false,
