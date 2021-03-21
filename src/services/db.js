@@ -426,3 +426,48 @@ export const insertIntoHistory = async (chapterUrl, chapterName, novelUrl) => {
         );
     });
 };
+
+export const chapterRead = async (chapterUrl, novelUrl) => {
+    db.transaction((tx) => {
+        tx.executeSql(
+            "UPDATE ChapterTable SET `read` = 1 WHERE chapterUrl = ? AND novelUrl = ?",
+            [chapterUrl, novelUrl],
+            (tx, res) => console.log("Updated readStatus: " + novelUrl),
+            (tx, error) => console.log(error)
+        );
+    });
+};
+
+export const isChapterDownloaded = async (chapterUrl, novelUrl) => {
+    return new Promise((resolve, reject) =>
+        db.transaction((tx) => {
+            tx.executeSql(
+                "SELECT * FROM DownloadsTable WHERE chapterUrl=? AND novelUrl=?",
+                [chapterUrl, novelUrl],
+                (txObj, res) => {
+                    if (res.rows.length !== 0) {
+                        resolve(true);
+                    } else {
+                        resolve(false);
+                    }
+                },
+                (txObj, error) => console.log("Error ", error)
+            );
+        })
+    );
+};
+
+export const getChapterFromDb = async (chapterUrl, novelUrl) => {
+    return new Promise((resolve, reject) =>
+        db.transaction((tx) => {
+            tx.executeSql(
+                `SELECT * FROM DownloadsTable WHERE chapterUrl = ? AND novelUrl = ?`,
+                [chapterUrl, novelUrl],
+                (tx, results) => {
+                    resolve(results.rows.item(0));
+                },
+                (txObj, error) => console.log("Error ", error)
+            );
+        })
+    );
+};

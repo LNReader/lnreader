@@ -24,7 +24,6 @@ import {
 
 const Novel = ({
     route,
-    navigation,
     theme,
     novel,
     chapters,
@@ -102,14 +101,14 @@ const Novel = ({
                 ]}
             >
                 <FlatList
-                    data={chapters}
+                    data={!loading && chapters}
                     keyExtractor={(item) => item.chapterUrl}
                     removeClippedSubviews={true}
                     maxToRenderPerBatch={5}
                     windowSize={15}
                     initialNumToRender={7}
                     renderItem={renderChapterCard}
-                    ListHeaderComponent={() => (
+                    ListHeaderComponent={
                         <NovelInfoHeader
                             theme={theme}
                             item={{ novelName, novelCover }}
@@ -119,7 +118,7 @@ const Novel = ({
                             loading={loading}
                             bottomSheetRef={_panel}
                         />
-                    )}
+                    }
                     refreshControl={
                         <RefreshControl
                             refreshing={fetching}

@@ -2,28 +2,28 @@ import React, { useState, useEffect, useRef } from "react";
 import { StyleSheet, View, Text, ActivityIndicator } from "react-native";
 
 import { Appbar, Provider, Portal } from "react-native-paper";
-import { theme } from "../../theme/theme";
 import { CollapsibleHeaderScrollView } from "react-native-collapsible-header-views";
 
 import BottomSheet from "./components/BottomSheet";
 
-import * as SQLite from "expo-sqlite";
-const db = SQLite.openDatabase("lnreader.db");
-
-import { fetchChapterFromSource } from "../../services/api";
-
 import { getReaderTheme } from "../../services/asyncStorage";
 
 import { updateNovelHistory } from "../../redux/actions/history";
+import { getChapter, updateChapterRead } from "../../redux/actions/novel";
 
 import { connect } from "react-redux";
 
-const ChapterItem = ({ route, navigation, theme, updateNovelHistory }) => {
+const ChapterItem = ({
+    route,
+    navigation,
+    theme,
+    updateNovelHistory,
+    updateChapterRead,
+    getChapter,
+    chapter,
+    loading,
+}) => {
     const { extensionId, chapterUrl, novelUrl, chapterName } = route.params;
-
-    const [loading, setLoading] = useState(true);
-
-    const [chapter, setChapter] = useState();
 
     const [size, setSize] = useState(16);
 
@@ -33,59 +33,9 @@ const ChapterItem = ({ route, navigation, theme, updateNovelHistory }) => {
 
     getReaderTheme().then((value) => setReaderTheme(value));
 
-    const setRead = () => {
-        db.transaction((tx) => {
-            tx.executeSql(
-                "UPDATE ChapterTable SET `read` = 1 WHERE chapterUrl = ?",
-                [chapterUrl],
-                (tx, res) => console.log("Updated readStatus: " + novelUrl),
-                (tx, error) => console.log(error)
-            );
-        });
-    };
-
-    const checkIfDownloaded = () => {
-        db.transaction((tx) => {
-            tx.executeSql(
-                "SELECT * FROM DownloadsTable WHERE chapterUrl=? AND novelUrl=?",
-                [chapterUrl, novelUrl],
-                (txObj, res) => {
-                    if (res.rows.length === 0) {
-                        fetchChapterFromSource(
-                            extensionId,
-                            novelUrl,
-                            chapterUrl
-                        ).then((res) => {
-                            setChapter(res);
-                            setLoading(false);
-                        });
-                    } else {
-                        // console.log("Already Downloaded");
-                        getChapterFromDB();
-                    }
-                },
-                (txObj, error) => console.log("Error ", error)
-            );
-        });
-        updateNovelHistory(chapterUrl, chapterName, novelUrl);
-    };
-
-    const getChapterFromDB = () => {
-        db.transaction((tx) => {
-            tx.executeSql(
-                `SELECT * FROM DownloadsTable WHERE chapterUrl = ?`,
-                [chapterUrl],
-                (tx, results) => {
-                    setChapter(results.rows.item(0));
-                    setLoading(false);
-                },
-                (txObj, error) => console.log("Error ", error)
-            );
-        });
-    };
-
     useEffect(() => {
-        checkIfDownloaded();
+        getChapter(extensionId, chapterUrl, novelUrl);
+        updateNovelHistory(chapterUrl, chapterName, novelUrl);
     }, []);
 
     const isCloseToBottom = ({
@@ -155,7 +105,7 @@ const ChapterItem = ({ route, navigation, theme, updateNovelHistory }) => {
                                     icon="dots-vertical"
                                     size={26}
                                     onPress={() =>
-                                        _panel.show({ velocity: -1.5 })
+                                        _panel.current.show({ velocity: -1.5 })
                                     }
                                     color={"white"}
                                 />
@@ -177,16 +127,11 @@ const ChapterItem = ({ route, navigation, theme, updateNovelHistory }) => {
                     },
                 ]}
                 onScroll={({ nativeEvent }) => {
-                    // _panel.hide();
                     if (isCloseToBottom(nativeEvent)) {
-                        // console.log("Scroll End Reached");
-                        setRead();
+                        updateChapterRead(chapterUrl, novelUrl);
                     }
                 }}
             >
-                {/* <Button mode="contained" onPress={() => setHistory()}>
-                    Set History
-                </Button> */}
                 {loading ? (
                     <View style={{ flex: 1, justifyContent: "center" }}>
                         <ActivityIndicator
@@ -195,26 +140,24 @@ const ChapterItem = ({ route, navigation, theme, updateNovelHistory }) => {
                         />
                     </View>
                 ) : (
-                    <>
-                        <Text
-                            style={[
-                                {
-                                    paddingVertical: 15,
-                                    fontSize: size,
-                                },
-                                readerTheme === 1
-                                    ? { color: theme.textColorSecondary }
-                                    : { color: "black" },
-                                size === 16
-                                    ? { lineHeight: 25 }
-                                    : size === 20
-                                    ? { lineHeight: 28 }
-                                    : size === 12 && { lineHeight: 20 },
-                            ]}
-                        >
-                            {chapter.chapterText.trim()}
-                        </Text>
-                    </>
+                    <Text
+                        style={[
+                            {
+                                paddingVertical: 15,
+                                fontSize: size,
+                            },
+                            readerTheme === 1
+                                ? { color: theme.textColorSecondary }
+                                : { color: "black" },
+                            size === 16
+                                ? { lineHeight: 25 }
+                                : size === 20
+                                ? { lineHeight: 28 }
+                                : size === 12 && { lineHeight: 20 },
+                        ]}
+                    >
+                        {chapter.chapterText.trim()}
+                    </Text>
                 )}
                 <Portal>
                     <BottomSheet
@@ -232,9 +175,15 @@ const ChapterItem = ({ route, navigation, theme, updateNovelHistory }) => {
 
 const mapStateToProps = (state) => ({
     theme: state.themeReducer.theme,
+    chapter: state.novelReducer.chapter,
+    loading: state.novelReducer.chapterLoading,
 });
 
-export default connect(mapStateToProps, { updateNovelHistory })(ChapterItem);
+export default connect(mapStateToProps, {
+    updateNovelHistory,
+    updateChapterRead,
+    getChapter,
+})(ChapterItem);
 
 const styles = StyleSheet.create({
     container: {

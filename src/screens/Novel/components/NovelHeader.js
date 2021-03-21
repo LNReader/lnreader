@@ -48,9 +48,7 @@ const NovelInfoHeader = ({
     return (
         <View style={{ flexGrow: 1 }}>
             <ImageBackground
-                source={{
-                    uri: item.novelCover,
-                }}
+                source={{ uri: item.novelCover }}
                 style={styles.background}
             >
                 <LinearGradient
@@ -60,9 +58,7 @@ const NovelInfoHeader = ({
                     <View style={styles.detailsContainer}>
                         <View>
                             <Image
-                                source={{
-                                    uri: item.novelCover,
-                                }}
+                                source={{ uri: item.novelCover }}
                                 style={styles.logo}
                             />
                         </View>
@@ -71,9 +67,7 @@ const NovelInfoHeader = ({
                                 numberOfLines={2}
                                 style={[
                                     styles.name,
-                                    {
-                                        color: theme.textColorPrimary,
-                                    },
+                                    { color: theme.textColorPrimary },
                                 ]}
                             >
                                 {item.novelName}
@@ -88,11 +82,7 @@ const NovelInfoHeader = ({
                                             fontWeight: "bold",
                                         }}
                                     >
-                                        {novel["Author(s)"] &&
-                                            novel["Author(s)"].replace(
-                                                ",",
-                                                ", "
-                                            )}
+                                        {novel["Author(s)"].replace(",", ", ")}
                                     </Text>
 
                                     <Text
@@ -108,7 +98,6 @@ const NovelInfoHeader = ({
                                     <Text
                                         style={{
                                             color: theme.textColorSecondary,
-                                            // marginVertical: 3,
                                             fontSize: 14,
                                         }}
                                         numberOfLines={1}
@@ -123,12 +112,7 @@ const NovelInfoHeader = ({
             </ImageBackground>
             {!loading && (
                 <>
-                    <View
-                        style={{
-                            flexDirection: "row",
-                            alignItems: "center",
-                        }}
-                    >
+                    <View style={styles.buttonsContainer}>
                         <Chip
                             mode="outlined"
                             icon={() => (
@@ -149,22 +133,8 @@ const NovelInfoHeader = ({
                                 )
                             }
                             style={[
-                                {
-                                    backgroundColor: theme.colorPrimaryDark,
-                                    marginRight: 2,
-                                    // borderColor: "rgba(255,255,255,0.121)",
-                                    borderWidth: 0,
-                                    justifyContent: "center",
-                                    height: 30,
-                                    alignItems: "center",
-                                    marginLeft: 15,
-                                    paddingHorizontal: 3,
-                                    shadowOpacity: 0,
-                                    shadowOffset: 0,
-                                },
-                                // libraryStatus && {
-                                //     backgroundColor: "rgba(41,121,255,0.38)",
-                                // },
+                                { backgroundColor: theme.colorPrimaryDark },
+                                styles.toggleFavourite,
                             ]}
                             textStyle={{
                                 fontWeight: "bold",
@@ -201,19 +171,15 @@ const NovelInfoHeader = ({
                     {novel.novelSummary !== "" && (
                         <View
                             style={{
-                                paddingHorizontal: 15,
-                                marginBottom: 10,
-                                // marginTop: 5,
+                                paddingHorizontal: 16,
+                                marginBottom: 8,
                             }}
                         >
                             <Text
-                                style={{
-                                    color: theme.textColorPrimary,
-                                    marginTop: 5,
-                                    paddingVertical: 5,
-                                    fontSize: 15,
-                                    fontWeight: "bold",
-                                }}
+                                style={[
+                                    { color: theme.textColorPrimary },
+                                    styles.summaryHeader,
+                                ]}
                             >
                                 About
                             </Text>
@@ -229,15 +195,13 @@ const NovelInfoHeader = ({
                                 {novel.novelSummary}
                             </Text>
                             <Text
-                                style={{
-                                    color: theme.colorAccentDark,
-                                    fontWeight: "bold",
-                                    position: "absolute",
-                                    bottom: 0,
-                                    right: 15,
-                                    backgroundColor: theme.colorPrimaryDark,
-                                    paddingLeft: 5,
-                                }}
+                                style={[
+                                    {
+                                        color: theme.colorAccentDark,
+                                        backgroundColor: theme.colorPrimaryDark,
+                                    },
+                                    styles.moreBtn,
+                                ]}
                                 onPress={() => setMore(!more)}
                             >
                                 {more ? "Less " : "More "}
@@ -249,12 +213,9 @@ const NovelInfoHeader = ({
                         style={
                             novel.novelSummary === ""
                                 ? { marginTop: 20 }
-                                : { marginTop: 10 }
+                                : { marginTop: 12 }
                         }
-                        contentContainerStyle={{
-                            paddingHorizontal: 15,
-                            paddingBottom: 15,
-                        }}
+                        contentContainerStyle={styles.genreContainer}
                         horizontal
                         data={novel["Genre(s)"] && novel["Genre(s)"].split(",")}
                         keyExtractor={(item) => item}
@@ -264,12 +225,10 @@ const NovelInfoHeader = ({
 
                     <Button
                         color="white"
-                        style={{
-                            backgroundColor: theme.colorAccentDark,
-                            marginHorizontal: 15,
-                            marginTop: 8,
-                            marginBottom: 15,
-                        }}
+                        style={[
+                            { backgroundColor: theme.colorAccentDark },
+                            styles.startButton,
+                        ]}
                         uppercase={false}
                         labelStyle={{ letterSpacing: 0 }}
                         onPress={() =>
@@ -281,18 +240,13 @@ const NovelInfoHeader = ({
                             })
                         }
                     >
-                        {novel.unread && novel.unread === 1
+                        {novel.unread === 1
                             ? `Start reading ${novel.lastReadName}`
                             : `Continue reading ${novel.lastReadName}`}
                     </Button>
 
                     <TouchableRipple
-                        style={{
-                            flexDirection: "row",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                            paddingRight: 12.5,
-                        }}
+                        style={styles.bottomsheet}
                         onPress={() =>
                             bottomSheetRef.current.show({ velocity: -1.5 })
                         }
@@ -300,13 +254,10 @@ const NovelInfoHeader = ({
                     >
                         <>
                             <Text
-                                style={{
-                                    color: theme.textColorPrimary,
-                                    paddingHorizontal: 15,
-                                    paddingVertical: 5,
-                                    fontSize: 16,
-                                    fontWeight: "bold",
-                                }}
+                                style={[
+                                    { color: theme.textColorPrimary },
+                                    styles.chapters,
+                                ]}
                             >
                                 {noOfChapters + " Chapters"}
                             </Text>
@@ -328,21 +279,19 @@ export default NovelInfoHeader;
 const styles = StyleSheet.create({
     nameContainer: {
         flex: 1,
-        marginHorizontal: 15,
-        paddingTop: 10,
+        marginHorizontal: 16,
+        paddingTop: 8,
     },
     background: {
         height: 285,
-        // backgroundColor: theme.colorPrimaryDark,
     },
     linearGradient: {
-        // flex: 1,
         height: 286,
     },
     detailsContainer: {
         flex: 1,
         flexDirection: "row",
-        margin: 15,
+        margin: 16,
         paddingTop: 90,
     },
     logo: {
@@ -364,5 +313,53 @@ const styles = StyleSheet.create({
     name: {
         fontWeight: "bold",
         fontSize: 18,
+    },
+    buttonsContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+    },
+    toggleFavourite: {
+        height: 32,
+        justifyContent: "center",
+        alignItems: "center",
+        marginLeft: 16,
+        marginRight: 4,
+        paddingHorizontal: 4,
+        borderWidth: 0,
+        elevation: 0,
+    },
+    chapters: {
+        paddingHorizontal: 16,
+        paddingVertical: 4,
+        fontSize: 16,
+        fontWeight: "bold",
+    },
+    bottomsheet: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        paddingRight: 12,
+    },
+    summaryHeader: {
+        marginTop: 5,
+        paddingVertical: 5,
+        fontSize: 15,
+        fontWeight: "bold",
+    },
+    moreBtn: {
+        fontWeight: "bold",
+        position: "absolute",
+        bottom: 0,
+        right: 16,
+        paddingLeft: 6,
+    },
+    startButton: {
+        marginTop: 8,
+        marginBottom: 16,
+        marginHorizontal: 16,
+    },
+    genreContainer: {
+        paddingHorizontal: 15,
+        paddingBottom: 15,
     },
 });

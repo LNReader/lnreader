@@ -5,14 +5,19 @@ import {
     GET_CHAPTERS,
     LOADING_NOVEL,
     GET_NOVEL,
+    GET_CHAPTER,
     FETCHING_NOVEL,
     SET_NOVEL,
     UPDATE_IN_LIBRARY,
+    CHAPTER_READ,
+    CHAPTER_LOADING,
 } from "../actions/types";
 
 const initialState = {
     novel: null,
     chapters: [],
+    chapter: null,
+    chapterLoading: true,
     loading: true,
     fetching: false,
 };
@@ -47,6 +52,24 @@ const novelReducer = (state = initialState, action) => {
                 ...state,
                 novel: { ...state.novel, libraryStatus: payload },
             };
+
+        case CHAPTER_READ:
+            return {
+                ...state,
+                chapters: state.chapters.map((chapter) =>
+                    chapter.chapterUrl === payload.chapterUrl &&
+                    chapter.novelUrl === payload.novelUrl
+                        ? { ...chapter, read: 1 }
+                        : chapter
+                ),
+            };
+        case CHAPTER_LOADING:
+            return {
+                ...state,
+                chapterLoading: true,
+            };
+        case GET_CHAPTER:
+            return { ...state, chapter: payload, chapterLoading: false };
         // case CHAPTER_DOWNLOADING:
         //     return {
         //         ...state,

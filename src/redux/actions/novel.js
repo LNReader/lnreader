@@ -7,6 +7,9 @@ import {
     FETCHING_NOVEL,
     SET_NOVEL,
     UPDATE_IN_LIBRARY,
+    CHAPTER_READ,
+    GET_CHAPTER,
+    CHAPTER_LOADING,
     CHAPTER_DOWNLOADING,
     CHAPTER_DOWNLOADED,
     CHAPTER_DELETED,
@@ -20,8 +23,12 @@ import {
     toggleFavourite,
     downloadChapterFromSource,
     deleteChapterFromDb,
+    chapterRead,
+    isChapterDownloaded,
+    getChapterFromDb,
 } from "../../services/db";
 import {
+    fetchChapterFromSource,
     fetchChaptersFromSource,
     fetchNovelFromSource,
 } from "../../services/api";
@@ -96,6 +103,31 @@ export const insertNovelInLibrary = (inLibrary, novelUrl) => async (
         !inLibrary ? "Added to library" : "Removed from library",
         ToastAndroid.SHORT
     );
+};
+
+export const getChapter = (extensionId, chapterUrl, novelUrl) => async (
+    dispatch
+) => {
+    dispatch({ type: CHAPTER_LOADING });
+    const isDownloaded = await isChapterDownloaded(chapterUrl, novelUrl);
+    let chapter;
+
+    if (isDownloaded) {
+        chapter = await getChapterFromDb(chapterUrl, novelUrl);
+    } else {
+        chapter = await fetchChapterFromSource(
+            extensionId,
+            novelUrl,
+            chapterUrl
+        );
+    }
+    dispatch({ type: GET_CHAPTER, payload: chapter });
+};
+
+export const updateChapterRead = (chapterUrl, novelUrl) => async (dispatch) => {
+    await chapterRead(chapterUrl, novelUrl);
+
+    dispatch({ type: CHAPTER_READ, payload: { chapterUrl, novelUrl } });
 };
 
 // export const downloadChapter = (
