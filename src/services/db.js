@@ -28,7 +28,7 @@ export const createTables = async () => {
         );
 
         tx.executeSql(
-            "CREATE TABLE IF NOT EXISTS DownloadsTable (downloadId INTEGER PRIMARY KEY AUTOINCREMENT, chapterUrl VARCHAR(255) UNIQUE, novelUrl VARCHAR(255), chapterName VARCHAR(255), chapterText VARCHAR(255), nextChapter VARCHAR(255), prevChapter VARCHAR(255), FOREIGN KEY (novelUrl) REFERENCES LibraryTable(novelUrl) ON DELETE CASCADE)",
+            "CREATE TABLE IF NOT EXISTS DownloadsTable (downloadId INTEGER PRIMARY KEY AUTOINCREMENT, chapterUrl VARCHAR(255), novelUrl VARCHAR(255), chapterName VARCHAR(255), chapterText VARCHAR(255), nextChapter VARCHAR(255), prevChapter VARCHAR(255), FOREIGN KEY (novelUrl) REFERENCES LibraryTable(novelUrl) ON DELETE CASCADE, UNIQUE(chapterUrl, novelUrl))",
             null,
             (tx, results) => console.log("Downloads Table Created"),
             (tx, error) => console.log(error)

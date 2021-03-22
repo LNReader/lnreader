@@ -20,8 +20,8 @@ import NovelItem from "../screens/Novel/Novel";
 import ChapterItem from "../screens/Chapter/Chapter";
 
 // Extensions
-import BoxNovel from "../screens/extensions/boxnovel/BoxNovel";
-import ReadLightNovel from "../screens/extensions/readlightnovel/ReadLightNovel";
+import BoxNovel from "../screens/Extensions/boxnovel/BoxNovel";
+import ReadLightNovel from "../screens/Extensions/readlightnovel/ReadLightNovel";
 
 const Stack = createStackNavigator();
 

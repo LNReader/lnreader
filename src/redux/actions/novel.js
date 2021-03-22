@@ -112,6 +112,8 @@ export const getChapter = (extensionId, chapterUrl, novelUrl) => async (
     const isDownloaded = await isChapterDownloaded(chapterUrl, novelUrl);
     let chapter;
 
+    console.log(isDownloaded);
+
     if (isDownloaded) {
         chapter = await getChapterFromDb(chapterUrl, novelUrl);
     } else {
