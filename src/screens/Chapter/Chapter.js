@@ -43,7 +43,7 @@ const ChapterItem = ({
         contentOffset,
         contentSize,
     }) => {
-        const paddingToBottom = 0;
+        const paddingToBottom = 40;
         return (
             layoutMeasurement.height + contentOffset.y >=
             contentSize.height - paddingToBottom

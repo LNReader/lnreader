@@ -432,7 +432,10 @@ export const chapterRead = async (chapterUrl, novelUrl) => {
         tx.executeSql(
             "UPDATE ChapterTable SET `read` = 1 WHERE chapterUrl = ? AND novelUrl = ?",
             [chapterUrl, novelUrl],
-            (tx, res) => console.log("Updated readStatus: " + novelUrl),
+            (tx, res) =>
+                console.log(
+                    "Updated reading status of: " + chapterUrl + "/" + novelUrl
+                ),
             (tx, error) => console.log(error)
         );
     });
