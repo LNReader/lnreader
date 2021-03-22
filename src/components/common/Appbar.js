@@ -59,17 +59,22 @@ export const SearchAppbar = ({
                 }}
             >
                 <View style={{ flex: 1, flexDirection: "row" }}>
-                    <IconButton
-                        icon={screen === "Library" ? "magnify" : "arrow-left"}
-                        color={theme.textColorSecondary}
-                        style={{ marginLeft: 0 }}
-                        size={23}
-                        onPress={() => {
-                            if (screen === "Extension") {
-                                navigation.goBack();
-                            }
-                        }}
-                    />
+                    {screen === "Library" ? (
+                        <IconButton
+                            icon="magnify"
+                            color={theme.textColorSecondary}
+                            style={{ marginLeft: 0 }}
+                            size={23}
+                        />
+                    ) : (
+                        <IconButton
+                            icon="arrow-left"
+                            color={theme.textColorSecondary}
+                            style={{ marginLeft: 0 }}
+                            size={23}
+                            onPress={() => navigation.goBack()}
+                        />
+                    )}
                     <TextInput
                         ref={searchRef}
                         style={{

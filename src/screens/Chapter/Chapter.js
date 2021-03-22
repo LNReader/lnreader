@@ -71,7 +71,7 @@ const ChapterItem = ({
     return (
         <Provider>
             <CollapsibleHeaderScrollView
-                headerContainerBackgroundColor={"rgba(0,0,0,0.4)"}
+                headerContainerBackgroundColor="rgba(0,0,0,0.5)"
                 CollapsibleHeaderComponent={
                     <Appbar.Header
                         style={{

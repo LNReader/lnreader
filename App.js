@@ -7,7 +7,6 @@ import AppLoading from "expo-app-loading";
 import Router from "./src/navigation/Router";
 
 import { createTables, createIndexes } from "./src/services/db";
-import { setStatusBar } from "./src/services/asyncStorage";
 
 // Redux
 import { Provider } from "react-redux";
@@ -21,8 +20,6 @@ const getFonts = () =>
 
 const App = () => {
     const [fontsLoaded, setFontsLoaded] = useState(false);
-
-    setStatusBar();
 
     const createDb = () => {
         createTables();

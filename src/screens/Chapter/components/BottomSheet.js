@@ -31,7 +31,7 @@ const ChapterBottomSheet = ({
             <View
                 style={[
                     styles.contentContainer,
-                    { backgroundColor: "rgba(0,0,0,0.4)" },
+                    { backgroundColor: "rgba(0,0,0,0.5)" },
                 ]}
             >
                 <BottomSheetHandle />
@@ -118,6 +118,8 @@ export default connect(mapStateToProps, {
 const styles = StyleSheet.create({
     contentContainer: {
         flex: 1,
+        borderTopLeftRadius: 8,
+        borderTopRightRadius: 8,
     },
     readerSettingsContainer: { flex: 1, alignItems: "center", paddingTop: 30 },
 });

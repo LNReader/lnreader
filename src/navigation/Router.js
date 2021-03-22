@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
     createStackNavigator,
     TransitionPresets,
 } from "@react-navigation/stack";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { Provider } from "react-native-paper";
+import { setStatusBarStyle } from "expo-status-bar";
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
@@ -62,6 +63,7 @@ import { useSelector } from "react-redux";
 
 const BottomNavigator = () => {
     const theme = useSelector((state) => state.themeReducer.theme);
+
     return (
         <Tab.Navigator
             shifting={false}
@@ -139,6 +141,10 @@ const BottomNavigator = () => {
 };
 
 const Router = () => {
+    const themeCode = useSelector((state) => state.themeReducer.themeCode);
+
+    useEffect(() => setStatusBarStyle(themeCode === 1 ? "dark" : "light"), []);
+
     return (
         <Provider>
             <Stack.Navigator screenOptions={stackNavigatorConfig}>
