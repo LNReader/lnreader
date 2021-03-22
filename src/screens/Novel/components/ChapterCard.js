@@ -3,8 +3,7 @@ import { View, Text, ActivityIndicator, StyleSheet } from "react-native";
 import { TouchableRipple, IconButton } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 
-import { useSelector } from "react-redux";
-import { downloadChapter } from "../../../redux/actions/novel";
+import { deleteChapter, downloadChapter } from "../../../redux/actions/novel";
 import { connect } from "react-redux";
 
 const ChapterCard = ({
@@ -14,6 +13,7 @@ const ChapterCard = ({
     theme,
     downloading,
     downloadChapter,
+    deleteChapter,
 }) => {
     const navigation = useNavigation();
 
@@ -92,12 +92,21 @@ const ChapterCard = ({
                             }
                             size={25}
                             onPress={() => {
-                                downloadChapter(
-                                    extensionId,
-                                    novelUrl,
-                                    chapter.chapterUrl,
-                                    chapter.chapterName
-                                );
+                                if (!chapter.downloaded) {
+                                    downloadChapter(
+                                        extensionId,
+                                        novelUrl,
+                                        chapter.chapterUrl,
+                                        chapter.chapterName
+                                    );
+                                } else {
+                                    deleteChapter(
+                                        extensionId,
+                                        novelUrl,
+                                        chapter.chapterUrl,
+                                        chapter.chapterName
+                                    );
+                                }
                             }}
                             style={{ margin: 2 }}
                         />
@@ -113,7 +122,9 @@ const mapStateToProps = (state) => ({
     downloading: state.novelReducer.downloading,
 });
 
-export default connect(mapStateToProps, { downloadChapter })(ChapterCard);
+export default connect(mapStateToProps, { downloadChapter, deleteChapter })(
+    ChapterCard
+);
 
 const styles = StyleSheet.create({
     chapterCardContainer: {

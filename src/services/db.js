@@ -395,19 +395,20 @@ export const downloadChapterFromSource = async (
     });
 };
 
-export const deleteChapterFromDb = (extensionId, novelUrl, chapterUrl) => {
-    const updateIsDownloadedQuery = `UPDATE ChapterTable SET downloaded = 0 WHERE chapterUrl = ? AND novelUrl = ? AND extensionId = ?`;
-    const deleteChapterQuery = `DELETE FROM DownloadsTable WHERE chapterUrl = ? AND novelUrl = ? AND extensionId = ?`;
+export const deleteChapterFromDb = async (novelUrl, chapterUrl) => {
+    const updateIsDownloadedQuery = `UPDATE ChapterTable SET downloaded = 0 WHERE chapterUrl = ? AND novelUrl = ?`;
+    const deleteChapterQuery = `DELETE FROM DownloadsTable WHERE chapterUrl = ? AND novelUrl = ?`;
 
     db.transaction((tx) => {
-        tx.executeSql(updateIsDownloadedQuery, [
-            chapterUrl,
-            novelUrl,
-            extensionId,
-        ]);
+        tx.executeSql(
+            updateIsDownloadedQuery,
+            [chapterUrl, novelUrl],
+            (tx, res) => console.log(`Chapter deleted`),
+            (txObj, error) => console.log("Error ", error)
+        );
         tx.executeSql(
             deleteChapterQuery,
-            [chapterUrl, novelUrl, extensionId],
+            [chapterUrl, novelUrl],
             (tx, res) => console.log(`Chapter deleted`),
             (txObj, error) => console.log("Error ", error)
         );

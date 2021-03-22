@@ -160,8 +160,8 @@ export const deleteChapter = (
     novelUrl,
     chapterUrl,
     chapterName
-) => (dispatch) => {
-    deleteChapterFromDb(extensionId, novelUrl, chapterUrl);
+) => async (dispatch) => {
+    await deleteChapterFromDb(novelUrl, chapterUrl);
 
     dispatch({
         type: CHAPTER_DELETED,

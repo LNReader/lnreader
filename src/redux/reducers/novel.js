@@ -91,14 +91,16 @@ const novelReducer = (state = initialState, action) => {
                         : chapter
                 ),
             };
-        // case CHAPTER_DELETED:
-        //     return {
-        //         downloads: state.downloads.filter(
-        //             (chapter) =>
-        //                 chapter.chapterUrl === payload.chapterUrl &&
-        //                 chapter.novelUrl === payload.novelUrl
-        //         ),
-        //     };
+        case CHAPTER_DELETED:
+            return {
+                ...state,
+                chapters: state.chapters.map((chapter) =>
+                    chapter.chapterUrl === payload.chapterUrl &&
+                    chapter.novelUrl === payload.novelUrl
+                        ? { ...chapter, downloaded: 0 }
+                        : chapter
+                ),
+            };
         default:
             return state;
     }
