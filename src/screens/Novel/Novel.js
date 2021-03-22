@@ -41,10 +41,10 @@ const Novel = ({
         libraryStatus,
     } = route.params;
 
-    const [downloading, setDownloading] = useState({
-        downloading: false,
-        chapterUrl: "",
-    });
+    // const [downloading, setDownloading] = useState({
+    //     downloading: false,
+    //     chapterUrl: "",
+    // });
 
     let _panel = useRef(null); // Bottomsheet ref
 
@@ -54,29 +54,29 @@ const Novel = ({
      * If downloaded then delete from db
      */
 
-    const downloadChapter = (
-        downloadStatus,
-        extensionId,
-        novelUrl,
-        chapterUrl,
-        chapterName
-    ) => {
-        setDownloading({ downloading: true, chapterUrl: chapterUrl });
-        downloadOrDeleteChapter(
-            downloadStatus,
-            extensionId,
-            novelUrl,
-            chapterUrl
-        ).then((res) => {
-            setDownloading({ downloading: false });
-            ToastAndroid.show(
-                !downloadStatus
-                    ? `Downloaded ${chapterName}`
-                    : `Deleted ${chapterName}`,
-                ToastAndroid.SHORT
-            );
-        });
-    };
+    // const downloadChapter = (
+    //     downloadStatus,
+    //     extensionId,
+    //     novelUrl,
+    //     chapterUrl,
+    //     chapterName
+    // ) => {
+    //     setDownloading({ downloading: true, chapterUrl: chapterUrl });
+    //     downloadOrDeleteChapter(
+    //         downloadStatus,
+    //         extensionId,
+    //         novelUrl,
+    //         chapterUrl
+    //     ).then((res) => {
+    //         setDownloading({ downloading: false });
+    //         ToastAndroid.show(
+    //             !downloadStatus
+    //                 ? `Downloaded ${chapterName}`
+    //                 : `Deleted ${chapterName}`,
+    //             ToastAndroid.SHORT
+    //         );
+    //     });
+    // };
 
     useEffect(() => {
         getNovel(libraryStatus, extensionId, novelUrl);
@@ -87,8 +87,8 @@ const Novel = ({
             novelUrl={novelUrl}
             extensionId={extensionId}
             chapter={item}
-            downloadChapter={downloadChapter}
-            downloading={downloading}
+            // downloadChapter={downloadChapter}
+            // downloading={downloading}
         />
     );
 

@@ -17,6 +17,7 @@ const initialState = {
     novel: null,
     chapters: [],
     chapter: null,
+    downloading: [],
     chapterLoading: true,
     loading: true,
     fetching: false,
@@ -70,28 +71,26 @@ const novelReducer = (state = initialState, action) => {
             };
         case GET_CHAPTER:
             return { ...state, chapter: payload, chapterLoading: false };
-        // case CHAPTER_DOWNLOADING:
-        //     return {
-        //         ...state,
-        //         chapters: [
-        //             state.chapters.map((chap) =>
-        //                 chap.novelUrl === payload.novelUrl &&
-        //                 chap.chapterUrl === payload.novelUrl
-        //                     ? { ...chap, downloading: true, downloaded: false }
-        //                     : chap
-        //             ),
-        //         ],
-        //     };
-        // case CHAPTER_DOWNLOADED:
-        //     return {
-        //         ...state,
-        //         downloads: state.downloads.map((chap) =>
-        //             chap.chapterUrl === payload.chapterUrl &&
-        //             chap.novelUrl === payload.novelUrl
-        //                 ? { ...chap, downloading: false, downloaded: true }
-        //                 : chap
-        //         ),
-        //     };
+        case CHAPTER_DOWNLOADING:
+            return {
+                ...state,
+                downloading: [...state.downloading, payload],
+            };
+        case CHAPTER_DOWNLOADED:
+            return {
+                ...state,
+                downloading: state.downloading.filter(
+                    (chapter) =>
+                        chapter.chapterUrl === payload.chapterUrl &&
+                        chapter.novelUrl === payload.novelUrl
+                ),
+                chapters: state.chapters.map((chapter) =>
+                    chapter.chapterUrl === payload.chapterUrl &&
+                    chapter.novelUrl === payload.novelUrl
+                        ? { ...chapter, downloaded: 1 }
+                        : chapter
+                ),
+            };
         // case CHAPTER_DELETED:
         //     return {
         //         downloads: state.downloads.filter(

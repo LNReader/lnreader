@@ -4,19 +4,25 @@ import { TouchableRipple, IconButton } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 
 import { useSelector } from "react-redux";
+import { downloadChapter } from "../../../redux/actions/novel";
+import { connect } from "react-redux";
 
 const ChapterCard = ({
     novelUrl,
     chapter,
-    downloadChapter,
     extensionId,
+    theme,
     downloading,
+    downloadChapter,
 }) => {
-    const [downloaded, setDownloaded] = useState(chapter.downloaded);
-
-    const theme = useSelector((state) => state.themeReducer.theme);
-
     const navigation = useNavigation();
+
+    const isDownloading = () =>
+        downloading.some(
+            (obj) =>
+                obj.chapterUrl === chapter.chapterUrl &&
+                obj.novelUrl === novelUrl
+        );
 
     return (
         <TouchableRipple
@@ -65,8 +71,7 @@ const ChapterCard = ({
                     )}
                 </View>
                 <View>
-                    {downloading.downloading &&
-                    downloading.chapterUrl === chapter.chapterUrl ? (
+                    {isDownloading() && !chapter.downloaded ? (
                         <ActivityIndicator
                             color={theme.textColorHintDark}
                             size={25}
@@ -75,26 +80,24 @@ const ChapterCard = ({
                     ) : (
                         <IconButton
                             icon={
-                                downloaded
+                                chapter.downloaded
                                     ? "check-circle"
                                     : "arrow-down-circle-outline"
                             }
                             animated
                             color={
-                                downloaded
+                                chapter.downloaded
                                     ? theme.textColorPrimary
                                     : theme.textColorHintDark
                             }
                             size={25}
                             onPress={() => {
                                 downloadChapter(
-                                    downloaded ? 1 : 0,
                                     extensionId,
                                     novelUrl,
                                     chapter.chapterUrl,
                                     chapter.chapterName
                                 );
-                                setDownloaded(!downloaded);
                             }}
                             style={{ margin: 2 }}
                         />
@@ -105,7 +108,12 @@ const ChapterCard = ({
     );
 };
 
-export default ChapterCard;
+const mapStateToProps = (state) => ({
+    theme: state.themeReducer.theme,
+    downloading: state.novelReducer.downloading,
+});
+
+export default connect(mapStateToProps, { downloadChapter })(ChapterCard);
 
 const styles = StyleSheet.create({
     chapterCardContainer: {

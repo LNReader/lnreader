@@ -130,43 +130,43 @@ export const updateChapterRead = (chapterUrl, novelUrl) => async (dispatch) => {
     dispatch({ type: CHAPTER_READ, payload: { chapterUrl, novelUrl } });
 };
 
-// export const downloadChapter = (
-//     extensionId,
-//     novelUrl,
-//     chapterUrl,
-//     chapterName
-// ) => async (dispatch) => {
-//     dispatch({
-//         type: CHAPTER_DOWNLOADING,
-//         payload: {
-//             extensionId,
-//             novelUrl,
-//             chapterUrl,
-//         },
-//     });
+export const downloadChapter = (
+    extensionId,
+    novelUrl,
+    chapterUrl,
+    chapterName
+) => async (dispatch) => {
+    dispatch({
+        type: CHAPTER_DOWNLOADING,
+        payload: {
+            extensionId,
+            novelUrl,
+            chapterUrl,
+        },
+    });
 
-//     await downloadChapterFromSource(extensionId, novelUrl, chapterUrl);
+    await downloadChapterFromSource(extensionId, novelUrl, chapterUrl);
 
-//     dispatch({
-//         type: CHAPTER_DOWNLOADED,
-//         payload: { extensionId, novelUrl, chapterUrl },
-//     });
+    dispatch({
+        type: CHAPTER_DOWNLOADED,
+        payload: { extensionId, novelUrl, chapterUrl },
+    });
 
-//     ToastAndroid.show(`Downloaded ${chapterName}`, ToastAndroid.SHORT);
-// };
+    ToastAndroid.show(`Downloaded ${chapterName}`, ToastAndroid.SHORT);
+};
 
-// export const deleteChapter = (
-//     extensionId,
-//     novelUrl,
-//     chapterUrl,
-//     chapterName
-// ) => (dispatch) => {
-//     deleteChapterFromDb(extensionId, novelUrl, chapterUrl);
+export const deleteChapter = (
+    extensionId,
+    novelUrl,
+    chapterUrl,
+    chapterName
+) => (dispatch) => {
+    deleteChapterFromDb(extensionId, novelUrl, chapterUrl);
 
-//     dispatch({
-//         type: CHAPTER_DELETED,
-//         payload: { extensionId, novelUrl, chapterUrl },
-//     });
+    dispatch({
+        type: CHAPTER_DELETED,
+        payload: { extensionId, novelUrl, chapterUrl },
+    });
 
-//     ToastAndroid.show(`Deleted ${chapterName}`, ToastAndroid.SHORT);
-// };
+    ToastAndroid.show(`Deleted ${chapterName}`, ToastAndroid.SHORT);
+};
