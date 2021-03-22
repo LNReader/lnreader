@@ -5,19 +5,21 @@ import { ToggleButton } from "react-native-paper";
 import Slider from "@react-native-community/slider";
 import Bottomsheet from "rn-sliding-up-panel";
 
-import { useSelector } from "react-redux";
+import { connect } from "react-redux";
 
-import { saveReaderTheme } from "../../../services/asyncStorage";
+import {
+    updateReaderTextSize,
+    updateReaderTheme,
+} from "../../../redux/actions/settings";
+import BottomSheetHandle from "../../../components/common/BottomSheetHandle";
 
 const ChapterBottomSheet = ({
     bottomSheetRef,
-    setSize,
-    size,
-    readerTheme,
-    setReaderTheme,
+    theme,
+    reader,
+    updateReaderTextSize,
+    updateReaderTheme,
 }) => {
-    const theme = useSelector((state) => state.themeReducer.theme);
-
     return (
         <Bottomsheet
             animatedValue={new Animated.Value(0)}
@@ -29,23 +31,11 @@ const ChapterBottomSheet = ({
             <View
                 style={[
                     styles.contentContainer,
-                    {
-                        backgroundColor: "rgba(0,0,0,0.4)",
-                    },
+                    { backgroundColor: "rgba(0,0,0,0.4)" },
                 ]}
             >
-                <View
-                    style={{
-                        backgroundColor: theme.textColorHintDark,
-                        height: 5,
-                        width: 30,
-                        borderRadius: 50,
-                        top: 10,
-                        alignSelf: "center",
-                    }}
-                />
-
-                <View style={{ flex: 1, alignItems: "center", paddingTop: 30 }}>
+                <BottomSheetHandle />
+                <View style={styles.readerSettingsContainer}>
                     <Text
                         style={{
                             color: theme.textColorPrimary,
@@ -59,14 +49,14 @@ const ChapterBottomSheet = ({
                             width: Dimensions.get("window").width,
                             height: 40,
                         }}
-                        value={size}
+                        value={reader.textSize}
                         minimumValue={12}
                         maximumValue={20}
                         step={4}
                         minimumTrackTintColor={theme.colorAccentDark}
                         maximumTrackTintColor="#000000"
                         thumbTintColor={theme.colorAccentDark}
-                        onValueChange={(value) => setSize(value)}
+                        onValueChange={(value) => updateReaderTextSize(value)}
                     />
                     <Text
                         style={{
@@ -77,34 +67,31 @@ const ChapterBottomSheet = ({
                         Reader Theme
                     </Text>
                     <ToggleButton.Row
-                        onValueChange={(value) => {
-                            setReaderTheme(value);
-                            saveReaderTheme(value);
-                        }}
-                        value={readerTheme}
+                        onValueChange={(value) => updateReaderTheme(value)}
+                        value={reader.theme}
                         style={{ marginTop: 10 }}
                     >
                         <ToggleButton
                             icon="format-text"
-                            color="white"
+                            color="#FFFFFF"
                             value={1}
                             style={{
-                                backgroundColor: "black",
+                                backgroundColor: "#000000",
                                 marginHorizontal: 10,
                             }}
                         />
                         <ToggleButton
                             icon="format-text"
-                            color="black"
+                            color="#000000"
                             value={2}
                             style={{
-                                backgroundColor: "white",
+                                backgroundColor: "#FFFFFF",
                                 marginHorizontal: 10,
                             }}
                         />
                         <ToggleButton
                             icon="format-text"
-                            color="black"
+                            color="#000000"
                             value={3}
                             style={{
                                 backgroundColor: "#F4ECD8",
@@ -118,12 +105,19 @@ const ChapterBottomSheet = ({
     );
 };
 
-export default ChapterBottomSheet;
+const mapStateToProps = (state) => ({
+    theme: state.themeReducer.theme,
+    reader: state.settingsReducer.reader,
+});
+
+export default connect(mapStateToProps, {
+    updateReaderTextSize,
+    updateReaderTheme,
+})(ChapterBottomSheet);
 
 const styles = StyleSheet.create({
     contentContainer: {
         flex: 1,
-        // paddingTop: ,
-        // alignItems: "center",
     },
+    readerSettingsContainer: { flex: 1, alignItems: "center", paddingTop: 30 },
 });

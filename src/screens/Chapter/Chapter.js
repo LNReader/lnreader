@@ -6,8 +6,6 @@ import { CollapsibleHeaderScrollView } from "react-native-collapsible-header-vie
 
 import BottomSheet from "./components/BottomSheet";
 
-import { getReaderTheme } from "../../services/asyncStorage";
-
 import { updateNovelHistory } from "../../redux/actions/history";
 import { getChapter, updateChapterRead } from "../../redux/actions/novel";
 
@@ -22,21 +20,41 @@ const ChapterItem = ({
     getChapter,
     chapter,
     loading,
+    reader,
 }) => {
     const { extensionId, chapterUrl, novelUrl, chapterName } = route.params;
 
-    const [size, setSize] = useState(16);
-
-    const [readerTheme, setReaderTheme] = useState(1);
-
-    let _panel = useRef(null); // Bottomsheet ref
-
-    getReaderTheme().then((value) => setReaderTheme(value));
+    let _panel = useRef(null);
 
     useEffect(() => {
         getChapter(extensionId, chapterUrl, novelUrl);
         updateNovelHistory(chapterUrl, chapterName, novelUrl);
     }, []);
+
+    const readerBackground = (val) => {
+        const backgroundColor = {
+            1: "#000000",
+            2: "#FFFFFF",
+            3: "#F4ECD8",
+        };
+
+        return backgroundColor[val];
+    };
+
+    const readerTextColor = (val) => {
+        const textColor = val === 1 ? theme.textColorSecondary : "#000000";
+
+        return textColor;
+    };
+
+    const readerLineHeight = (val) => {
+        const lineHeight = {
+            12: 20,
+            16: 25,
+            20: 28,
+        };
+        return lineHeight[val];
+    };
 
     const isCloseToBottom = ({
         layoutMeasurement,
@@ -63,13 +81,13 @@ const ChapterItem = ({
                     >
                         <Appbar.BackAction
                             onPress={() => navigation.goBack()}
-                            color={"white"}
+                            color="#FFFFFF"
                             size={26}
                             style={{ marginRight: 0 }}
                         />
                         <Appbar.Content
                             title={loading ? "Chapter" : chapter.chapterName}
-                            titleStyle={{ color: theme.textColorPrimary }}
+                            titleStyle={{ color: "#FFFFFF" }}
                         />
                         {!loading && (
                             <>
@@ -85,7 +103,7 @@ const ChapterItem = ({
                                             chapterName: chapter.chapterName,
                                         });
                                     }}
-                                    color={"white"}
+                                    color="#FFFFFF"
                                 />
                                 <Appbar.Action
                                     icon="chevron-right"
@@ -99,7 +117,7 @@ const ChapterItem = ({
                                             chapterName: chapter.chapterName,
                                         });
                                     }}
-                                    color={"white"}
+                                    color="#FFFFFF"
                                 />
                                 <Appbar.Action
                                     icon="dots-vertical"
@@ -107,7 +125,7 @@ const ChapterItem = ({
                                     onPress={() =>
                                         _panel.current.show({ velocity: -1.5 })
                                     }
-                                    color={"white"}
+                                    color="#FFFFFF"
                                 />
                             </>
                         )}
@@ -116,15 +134,7 @@ const ChapterItem = ({
                 headerHeight={100}
                 contentContainerStyle={[
                     styles.container,
-                    readerTheme === 1 && {
-                        backgroundColor: theme.colorPrimary,
-                    },
-                    readerTheme === 2 && {
-                        backgroundColor: "white",
-                    },
-                    readerTheme === 3 && {
-                        backgroundColor: "#F4ECD8",
-                    },
+                    { backgroundColor: readerBackground(reader.theme) },
                 ]}
                 onScroll={({ nativeEvent }) => {
                     if (isCloseToBottom(nativeEvent)) {
@@ -144,29 +154,17 @@ const ChapterItem = ({
                         style={[
                             {
                                 paddingVertical: 15,
-                                fontSize: size,
+                                fontSize: reader.textSize,
+                                color: readerTextColor(reader.theme),
+                                lineHeight: readerLineHeight(reader.textSize),
                             },
-                            readerTheme === 1
-                                ? { color: theme.textColorSecondary }
-                                : { color: "black" },
-                            size === 16
-                                ? { lineHeight: 25 }
-                                : size === 20
-                                ? { lineHeight: 28 }
-                                : size === 12 && { lineHeight: 20 },
                         ]}
                     >
                         {chapter.chapterText.trim()}
                     </Text>
                 )}
                 <Portal>
-                    <BottomSheet
-                        bottomSheetRef={_panel}
-                        setSize={setSize}
-                        size={size}
-                        setReaderTheme={setReaderTheme}
-                        readerTheme={readerTheme}
-                    />
+                    <BottomSheet bottomSheetRef={_panel} />
                 </Portal>
             </CollapsibleHeaderScrollView>
         </Provider>
@@ -177,6 +175,7 @@ const mapStateToProps = (state) => ({
     theme: state.themeReducer.theme,
     chapter: state.novelReducer.chapter,
     loading: state.novelReducer.chapterLoading,
+    reader: state.settingsReducer.reader,
 });
 
 export default connect(mapStateToProps, {
