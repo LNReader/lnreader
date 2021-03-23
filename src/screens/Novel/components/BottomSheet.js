@@ -16,12 +16,12 @@ export const BottomSheet = ({
 
     const sortChapters = (sort) => {
         setChapterFlags({ ...chapterFlags, sort: sort });
-        sortAndFilterChapters(novelUrl, chapterFlags.filter, chapterFlags.sort);
+        sortAndFilterChapters(novelUrl, chapterFlags.filter, sort);
     };
 
     const filterChapters = (filter) => {
         setChapterFlags({ ...chapterFlags, filter: filter });
-        sortAndFilterChapters(novelUrl, chapterFlags.filter, chapterFlags.sort);
+        sortAndFilterChapters(novelUrl, filter, chapterFlags.sort);
     };
 
     const theme = useSelector((state) => state.themeReducer.theme);
@@ -53,7 +53,6 @@ export const BottomSheet = ({
                     <RadioButton.Group
                         onValueChange={(newValue) => sortChapters(newValue)}
                         value={chapterFlags.sort}
-                        c
                     >
                         <View
                             style={{

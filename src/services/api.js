@@ -24,6 +24,7 @@ export const fetchNovelFromSource = async (extensionId, novelUrl) => {
         lastRead: res.novelChapters[0].chapterUrl,
         lastReadName: res.novelChapters[0].chapterName,
         extensionId: res.extensionId,
+        novelChapters: res.novelChapters,
     };
 
     return novel;

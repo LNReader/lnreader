@@ -81,6 +81,7 @@ const NovelInfoHeader = ({
                                             fontSize: 14,
                                             fontWeight: "bold",
                                         }}
+                                        numberOfLines={2}
                                     >
                                         {novel["Author(s)"].replace(",", ", ")}
                                     </Text>

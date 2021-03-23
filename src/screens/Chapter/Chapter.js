@@ -42,7 +42,7 @@ const ChapterItem = ({
     };
 
     const readerTextColor = (val) => {
-        const textColor = val === 1 ? theme.textColorSecondary : "#000000";
+        const textColor = val === 1 ? "rgba(255,255,255,0.7)" : "#000000";
 
         return textColor;
     };
@@ -71,7 +71,7 @@ const ChapterItem = ({
     return (
         <Provider>
             <CollapsibleHeaderScrollView
-                headerContainerBackgroundColor="rgba(0,0,0,0.5)"
+                headerContainerBackgroundColor="rgba(0,0,0,0.4)"
                 CollapsibleHeaderComponent={
                     <Appbar.Header
                         style={{

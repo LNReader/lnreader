@@ -63,18 +63,14 @@ export const getNovel = (inLibrary, extensionId, novelUrl) => async (
             });
         } else {
             const novel = await fetchNovelFromSource(extensionId, novelUrl);
-            const chapters = await fetchChaptersFromSource(
-                extensionId,
-                novelUrl
-            );
 
             dispatch({
                 type: GET_NOVEL,
-                payload: { novel, chapters },
+                payload: { novel, chapters: novel.novelChapters },
             });
 
             insertNovelInfoInDb(novel);
-            insertChaptersInDb(novelUrl, chapters);
+            insertChaptersInDb(novelUrl, novel.novelChapters);
         }
     }
 };

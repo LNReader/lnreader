@@ -28,12 +28,7 @@ const ChapterBottomSheet = ({
             snappingPoints={[0, 200]}
             showBackdrop={false}
         >
-            <View
-                style={[
-                    styles.contentContainer,
-                    { backgroundColor: "rgba(0,0,0,0.5)" },
-                ]}
-            >
+            <View style={styles.contentContainer}>
                 <BottomSheetHandle />
                 <View style={styles.readerSettingsContainer}>
                     <Text
@@ -120,6 +115,7 @@ const styles = StyleSheet.create({
         flex: 1,
         borderTopLeftRadius: 8,
         borderTopRightRadius: 8,
+        backgroundColor: "rgba(0,0,0,0.4)",
     },
     readerSettingsContainer: { flex: 1, alignItems: "center", paddingTop: 30 },
 });
