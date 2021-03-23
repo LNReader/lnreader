@@ -20,6 +20,7 @@ import {
     getNovel,
     insertNovelInLibrary,
     sortAndFilterChapters,
+    updateLibraryNovel,
 } from "../../redux/actions/novel";
 
 const Novel = ({
@@ -32,6 +33,7 @@ const Novel = ({
     fetching,
     insertNovelInLibrary,
     sortAndFilterChapters,
+    updateLibraryNovel,
 }) => {
     const {
         extensionId,
@@ -41,42 +43,7 @@ const Novel = ({
         libraryStatus,
     } = route.params;
 
-    // const [downloading, setDownloading] = useState({
-    //     downloading: false,
-    //     chapterUrl: "",
-    // });
-
     let _panel = useRef(null); // Bottomsheet ref
-
-    /**
-     * Download chapter from source
-     *
-     * If downloaded then delete from db
-     */
-
-    // const downloadChapter = (
-    //     downloadStatus,
-    //     extensionId,
-    //     novelUrl,
-    //     chapterUrl,
-    //     chapterName
-    // ) => {
-    //     setDownloading({ downloading: true, chapterUrl: chapterUrl });
-    //     downloadOrDeleteChapter(
-    //         downloadStatus,
-    //         extensionId,
-    //         novelUrl,
-    //         chapterUrl
-    //     ).then((res) => {
-    //         setDownloading({ downloading: false });
-    //         ToastAndroid.show(
-    //             !downloadStatus
-    //                 ? `Downloaded ${chapterName}`
-    //                 : `Deleted ${chapterName}`,
-    //             ToastAndroid.SHORT
-    //         );
-    //     });
-    // };
 
     useEffect(() => {
         getNovel(libraryStatus, extensionId, novelUrl);
@@ -87,10 +54,12 @@ const Novel = ({
             novelUrl={novelUrl}
             extensionId={extensionId}
             chapter={item}
-            // downloadChapter={downloadChapter}
-            // downloading={downloading}
         />
     );
+
+    const onRefresh = () => {
+        updateLibraryNovel(extensionId, novelUrl);
+    };
 
     return (
         <Provider>
@@ -122,7 +91,7 @@ const Novel = ({
                     refreshControl={
                         <RefreshControl
                             refreshing={fetching}
-                            // onRefresh={onRefresh}
+                            onRefresh={onRefresh}
                             colors={[theme.textColorPrimary]}
                             progressBackgroundColor={theme.colorPrimary}
                         />
@@ -151,6 +120,7 @@ export default connect(mapStateToProps, {
     getNovel,
     insertNovelInLibrary,
     sortAndFilterChapters,
+    updateLibraryNovel,
 })(Novel);
 
 const styles = StyleSheet.create({

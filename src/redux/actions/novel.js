@@ -13,6 +13,7 @@ import {
     CHAPTER_DOWNLOADING,
     CHAPTER_DOWNLOADED,
     CHAPTER_DELETED,
+    UPDATE_NOVEL,
 } from "./types";
 import {
     checkNovelInDb,
@@ -32,6 +33,7 @@ import {
     fetchChaptersFromSource,
     fetchNovelFromSource,
 } from "../../services/api";
+import { updateNovel } from "../../services/updates";
 
 export const setNovel = (novel) => async (dispatch) => {
     dispatch({ type: SET_NOVEL, payload: novel });
@@ -165,4 +167,17 @@ export const deleteChapter = (
     });
 
     ToastAndroid.show(`Deleted ${chapterName}`, ToastAndroid.SHORT);
+};
+
+export const updateLibraryNovel = (extensionId, novelUrl) => async (
+    dispatch
+) => {
+    dispatch({ type: FETCHING_NOVEL });
+
+    const updatedNovel = await updateNovel(extensionId, novelUrl);
+
+    dispatch({
+        type: UPDATE_NOVEL,
+        payload: { novel: updatedNovel, chapters: updatedNovel.novelChapters },
+    });
 };

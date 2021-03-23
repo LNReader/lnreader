@@ -11,6 +11,7 @@ import {
     UPDATE_IN_LIBRARY,
     CHAPTER_READ,
     CHAPTER_LOADING,
+    UPDATE_NOVEL,
 } from "../actions/types";
 
 const initialState = {
@@ -30,7 +31,7 @@ const novelReducer = (state = initialState, action) => {
         case LOADING_NOVEL:
             return { ...state, loading: true };
         case FETCHING_NOVEL:
-            return { ...state, loading: true, fetching: true };
+            return { ...state, fetching: true };
         case SET_NOVEL:
             return { ...state, novel: payload };
         case GET_NOVEL:
@@ -53,7 +54,22 @@ const novelReducer = (state = initialState, action) => {
                 ...state,
                 novel: { ...state.novel, libraryStatus: payload },
             };
-
+        case UPDATE_NOVEL:
+            return {
+                ...state,
+                novel: {
+                    ...state.novel,
+                    novelName: payload.novel.novelName,
+                    novelUrl: payload.novel.novelUrl,
+                    novelSummary: payload.novel.novelSummary,
+                    "Author(s)": payload.novel["Author(s)"],
+                    "Genre(s)": payload.novel[`Genre(s)`],
+                    Status: payload.novel.Status,
+                },
+                chapters: payload.chapters,
+                loading: false,
+                fetching: false,
+            };
         case CHAPTER_READ:
             return {
                 ...state,
