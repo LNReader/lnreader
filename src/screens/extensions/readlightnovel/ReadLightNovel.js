@@ -11,6 +11,9 @@ import EmptyView from "../../../components/common/EmptyView";
 const ReadLightNovel = ({ navigation }) => {
     const theme = useSelector((state) => state.themeReducer.theme);
     const library = useSelector((state) => state.libraryReducer.novels);
+    const itemsPerRow = useSelector(
+        (state) => state.settingsReducer.itemsPerRow
+    );
 
     const [loading, setLoading] = useState(true);
 
@@ -75,7 +78,8 @@ const ReadLightNovel = ({ navigation }) => {
                 ) : (
                     <FlatList
                         contentContainerStyle={{ flexGrow: 1 }}
-                        numColumns={3}
+                        numColumns={itemsPerRow}
+                        key={itemsPerRow}
                         data={novels}
                         showsVerticalScrollIndicator={false}
                         keyExtractor={(item) => item.novelUrl}

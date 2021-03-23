@@ -6,8 +6,9 @@ export const DisplayCheckbox = ({ displayMode, onPress, value }) => {
     const theme = useSelector((state) => state.themeReducer.theme);
 
     const label = {
-        0: "Compact",
-        1: "Comfortable",
+        0: "Compact Grid",
+        1: "Comfortable Grid",
+        2: "List",
     };
 
     return (

@@ -13,6 +13,7 @@ export const setDisplayMode = (val) => (dispatch) => {
 };
 
 export const setItemsPerRow = (val) => (dispatch) => {
+    console.log("called" + val);
     dispatch({
         type: SET_ITEMS_PER_ROW,
         payload: val,

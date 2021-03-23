@@ -17,6 +17,7 @@ const ExtensionCard = ({ item }) => {
             style={styles.extensionCard}
             onPress={() => navigation.navigate(sourceName + "Stack")}
             rippleColor={theme.rippleColor}
+            borderless
         >
             <>
                 <Image
@@ -74,7 +75,7 @@ const styles = StyleSheet.create({
         marginVertical: 4,
         paddingVertical: 8,
         paddingHorizontal: 20,
-        borderRadius: 6,
+        borderRadius: 4,
     },
     extensionIcon: {
         width: 40,

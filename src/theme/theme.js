@@ -21,7 +21,7 @@ export const lightTheme = {
     textColorPrimary: "#000000",
     textColorSecondary: "rgba(0,0,0,0.54)",
     textColorHintDark: "rgba(0,0,0,0.38)",
-    rippleColor: "#C2C2C2",
+    rippleColor: "rgba(0,0,0,0.12)",
     searchBarColor: "#FFFFFF",
 };
 

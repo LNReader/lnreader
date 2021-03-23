@@ -34,9 +34,16 @@ const settingsReducer = (state = initialState, action) => {
 
     switch (type) {
         case SET_DISPLAY_MODE:
-            return { ...state, displayMode: payload };
+            return {
+                ...state,
+                displayMode: payload,
+                itemsPerRow: payload === 2 ? 1 : state.itemsPerRow,
+            };
         case SET_ITEMS_PER_ROW:
-            return { ...state, itemsPerRow: payload };
+            return {
+                ...state,
+                itemsPerRow: state.displayMode !== 2 ? payload : 1,
+            };
         case UPDATE_READER_THEME:
             return { ...state, reader: { ...state.reader, theme: payload } };
         case UPDATE_READER_TEXT_SIZE:

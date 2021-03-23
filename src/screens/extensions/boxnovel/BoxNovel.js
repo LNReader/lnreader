@@ -10,6 +10,9 @@ import { useSelector } from "react-redux";
 
 const BoxNovel = ({ navigation }) => {
     const theme = useSelector((state) => state.themeReducer.theme);
+    const itemsPerRow = useSelector(
+        (state) => state.settingsReducer.itemsPerRow
+    );
 
     const library = useSelector((state) => state.libraryReducer.novels);
 
@@ -83,7 +86,8 @@ const BoxNovel = ({ navigation }) => {
                 ) : (
                     <FlatList
                         contentContainerStyle={styles.list}
-                        numColumns={3}
+                        numColumns={itemsPerRow}
+                        key={itemsPerRow}
                         data={novels}
                         showsVerticalScrollIndicator={false}
                         keyExtractor={(item) => item.novelUrl}

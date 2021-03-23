@@ -29,6 +29,7 @@ const LibraryScreen = ({
     getLibraryNovels,
     searchLibraryNovels,
     setNovel,
+    itemsPerRow,
 }) => {
     const [refreshing, setRefreshing] = useState(false);
 
@@ -83,7 +84,8 @@ const LibraryScreen = ({
                             flexGrow: 1,
                             paddingBottom: 8,
                         }}
-                        numColumns={3}
+                        numColumns={itemsPerRow}
+                        key={itemsPerRow}
                         data={novels}
                         keyExtractor={(item) => item.novelUrl}
                         renderItem={({ item }) => (
@@ -126,6 +128,7 @@ const LibraryScreen = ({
 
 const mapStateToProps = (state) => ({
     theme: state.themeReducer.theme,
+    itemsPerRow: state.settingsReducer.itemsPerRow,
     novels: state.libraryReducer.novels,
     loading: state.libraryReducer.loading,
 });

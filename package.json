@@ -30,6 +30,7 @@
         "react-native": "https://github.com/expo/react-native/archive/sdk-40.0.1.tar.gz",
         "react-native-collapsible-header-views": "^1.1.2",
         "react-native-gesture-handler": "^1.8.0",
+        "react-native-input-spinner": "^1.7.7",
         "react-native-offline": "^5.7.0",
         "react-native-paper": "^4.5.0",
         "react-native-reanimated": "^1.13.2",

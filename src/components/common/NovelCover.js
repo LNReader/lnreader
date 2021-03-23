@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Text, ImageBackground } from "react-native";
+import { StyleSheet, View, Text, ImageBackground, Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { TouchableRipple } from "react-native-paper";
 
@@ -12,12 +12,25 @@ const NovelCover = ({ item, onPress, libraryStatus }) => {
 
     const theme = useSelector((state) => state.themeReducer.theme);
 
-    // const itemsPerRow = useSelector(
-    //     (state) => state.settingsReducer.itemsPerRow
-    // );
+    const itemsPerRow = useSelector(
+        (state) => state.settingsReducer.itemsPerRow
+    );
 
-    return (
-        <View style={{ flex: 1 / 3 }}>
+    const height = {
+        1: 550,
+        2: 280,
+        3: 180,
+        4: 140,
+        5: 100,
+        6: 80,
+        7: 70,
+        8: 58,
+        9: 55,
+        10: 50,
+    };
+
+    return displayMode !== 2 ? (
+        <View style={{ flex: 1 / itemsPerRow }}>
             <TouchableRipple
                 borderless
                 centered
@@ -29,7 +42,7 @@ const NovelCover = ({ item, onPress, libraryStatus }) => {
                     {item.novelCover && (
                         <ImageBackground
                             source={{ uri: item.novelCover }}
-                            style={styles.logo}
+                            style={{ height: height[itemsPerRow] }}
                             imageStyle={[
                                 { borderRadius: 4 },
                                 libraryStatus && { opacity: 0.5 },
@@ -79,15 +92,42 @@ const NovelCover = ({ item, onPress, libraryStatus }) => {
                 </>
             </TouchableRipple>
         </View>
+    ) : (
+        <TouchableRipple
+            borderless
+            centered
+            rippleColor={theme.rippleColor}
+            style={styles.listView}
+            onPress={onPress}
+        >
+            <>
+                <Image
+                    source={{ uri: item.novelCover }}
+                    style={styles.extensionIcon}
+                />
+                <Text
+                    style={{
+                        flex: 1,
+                        color: theme.textColorPrimary,
+                        marginLeft: 16,
+                        fontSize: 15,
+                        paddingRight: 8,
+                    }}
+                    numberOfLines={1}
+                >
+                    {item.novelName}
+                </Text>
+            </>
+        </TouchableRipple>
     );
 };
 
 export default NovelCover;
 
 const styles = StyleSheet.create({
-    logo: {
-        height: 180,
-    },
+    // logo: {
+    //     height: 180,
+    // },
     titleContainer: {
         flex: 1,
         justifyContent: "flex-end",
@@ -106,6 +146,19 @@ const styles = StyleSheet.create({
     opac: {
         paddingHorizontal: 4.5,
         paddingVertical: 4,
+        borderRadius: 4,
+    },
+    extensionIcon: {
+        width: 42,
+        height: 42,
+        borderRadius: 4,
+    },
+    listView: {
+        flex: 1,
+        paddingVertical: 8,
+        paddingHorizontal: 12,
+        flexDirection: "row",
+        alignItems: "center",
         borderRadius: 4,
     },
 });

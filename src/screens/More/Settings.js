@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { View } from "react-native";
+import { View, Text } from "react-native";
 import { setStatusBarStyle } from "expo-status-bar";
 import { List, Modal, Portal } from "react-native-paper";
+import InputSpinner from "react-native-input-spinner";
 
 import { connect } from "react-redux";
 import { switchTheme } from "../../redux/actions/theme";
@@ -24,12 +25,15 @@ const SettingsScreen = ({
     theme,
     themeCode,
     displayMode,
+    itemsPerRow,
     switchTheme,
     setDisplayMode,
+    setItemsPerRow,
 }) => {
     const display = {
-        0: "Compact",
-        1: "Comfortable",
+        0: "Compact Grid",
+        1: "Comfortable Grid",
+        2: "List",
     };
 
     const themes = [
@@ -58,6 +62,10 @@ const SettingsScreen = ({
     const [themeModalVisible, setthemeModalVisible] = useState(false);
     const showthemeModal = () => setthemeModalVisible(true);
     const hidethemeModal = () => setthemeModalVisible(false);
+
+    const [itemsModalVisible, setitemsModalVisible] = useState(false);
+    const showitemsModal = () => setitemsModalVisible(true);
+    const hideitemsModal = () => setitemsModalVisible(false);
 
     return (
         <>
@@ -130,8 +138,66 @@ const SettingsScreen = ({
                                 displayMode={displayMode}
                                 onPress={() => setDisplayMode(0)}
                             />
+                            <DisplayCheckbox
+                                value={2}
+                                displayMode={displayMode}
+                                onPress={() => setDisplayMode(2)}
+                            />
                         </Modal>
                     </Portal>
+                    <List.Item
+                        titleStyle={titleStyles}
+                        title="Items per row in library"
+                        descriptionStyle={desciptionStyles}
+                        description={itemsPerRow}
+                        onPress={showitemsModal}
+                        rippleColor={theme.rippleColor}
+                    />
+                    <Portal>
+                        <Modal
+                            visible={itemsModalVisible}
+                            onDismiss={hideitemsModal}
+                            contentContainerStyle={{
+                                backgroundColor: theme.colorPrimaryDark,
+                                padding: 20,
+                                margin: 20,
+                                borderRadius: 6,
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    color: theme.textColorPrimary,
+                                    fontSize: 18,
+                                    marginBottom: 10,
+                                }}
+                            >
+                                Items per row
+                            </Text>
+                            <InputSpinner
+                                style={{
+                                    paddingHorizontal: 16,
+                                    paddingVertical: 16,
+                                    elevation: 0,
+                                }}
+                                max={10}
+                                min={1}
+                                skin="paper"
+                                background={theme.colorPrimaryDark}
+                                colorMax={theme.colorAccentDark}
+                                colorLeft={theme.colorAccentDark}
+                                colorRight={theme.colorAccentDark}
+                                buttonTextColor={theme.textColorPrimary}
+                                colorPress={"white"}
+                                colorMin={theme.colorAccentDark}
+                                value={itemsPerRow}
+                                onChange={(num) => setItemsPerRow(num)}
+                                inputStyle={{
+                                    color: theme.textColorPrimary,
+                                }}
+                            />
+                        </Modal>
+                    </Portal>
+
                     {/* <List.Subheader
                         style={{
                             color: theme.colorAccentDark,
@@ -148,7 +214,6 @@ const SettingsScreen = ({
                         rippleColor={theme.rippleColor}
                         onPress={() => deleteDatabase()}
                     /> */}
-
                     <List.Subheader
                         style={{
                             color: theme.colorAccentDark,
@@ -203,6 +268,7 @@ const mapStateToProps = (state) => ({
     themeCode: state.themeReducer.themeCode,
     theme: state.themeReducer.theme,
     displayMode: state.settingsReducer.displayMode,
+    itemsPerRow: state.settingsReducer.itemsPerRow,
 });
 
 export default connect(mapStateToProps, {
