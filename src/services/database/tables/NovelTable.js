@@ -1,4 +1,4 @@
-const createNovelTableQuery = `
+export const createNovelTableQuery = `
     CREATE TABLE IF NOT EXISTS novels(
     novel_id INTEGER  PRIMARY KEY AUTOINCREMENT,
     novel_url TEXT NOT NULL,
@@ -14,3 +14,7 @@ const createNovelTableQuery = `
     followed INTEGER DEFAULT 0, 
     unread INTEGER DEFAULT 1, 
     )`;
+
+export const createUrlIndexQuery = `CREATE INDEX IF NOT EXISTS novel_url_index ON novels(novel_url)`;
+
+export const createLibraryIndexQuery = `CREATE INDEX IF NOT EXISTS novel_followed_index ON novels(followed)`;

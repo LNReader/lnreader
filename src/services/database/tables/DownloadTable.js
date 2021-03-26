@@ -1,5 +1,5 @@
-const createDownloadTableQuery = `
-CREATE TABLE IF NOT EXISTS downloads(
+export const createDownloadTableQuery = `
+    CREATE TABLE IF NOT EXISTS downloads(
     download_id INTEGER PRIMARY KEY AUTOINCREMENT,
     download_chapter_id TEXT NOT NULL,
     chapter_text TEXT,
