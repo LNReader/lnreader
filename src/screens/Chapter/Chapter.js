@@ -6,7 +6,7 @@ import { CollapsibleHeaderScrollView } from "react-native-collapsible-header-vie
 
 import BottomSheet from "./components/BottomSheet";
 
-import { updateNovelHistory } from "../../redux/actions/history";
+import { insertHistoryAction } from "../../redux/actions/history";
 import {
     getChapterAction,
     markChapterReadAction,
@@ -18,20 +18,26 @@ const ChapterItem = ({
     route,
     navigation,
     theme,
-    updateNovelHistory,
+    insertHistoryAction,
     markChapterReadAction,
     getChapterAction,
     chapter,
     loading,
     reader,
 }) => {
-    const { chapterId, extensionId, chapterUrl, novelUrl } = route.params;
+    const {
+        chapterId,
+        extensionId,
+        chapterUrl,
+        novelUrl,
+        novelId,
+    } = route.params;
 
     let _panel = useRef(null);
 
     useEffect(() => {
         getChapterAction(extensionId, chapterUrl, novelUrl, chapterId);
-        updateNovelHistory(chapterId);
+        insertHistoryAction(novelId, chapterId);
     }, []);
 
     const readerBackground = (val) => {
@@ -182,7 +188,7 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, {
-    updateNovelHistory,
+    insertHistoryAction,
     markChapterReadAction,
     getChapterAction,
 })(ChapterItem);

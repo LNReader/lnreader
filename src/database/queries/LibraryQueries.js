@@ -45,8 +45,8 @@ export const searchLibrary = (searchText) => {
     return new Promise((resolve, reject) => {
         db.transaction((tx) => {
             tx.executeSql(
-                `SELECT * FROM novels WHERE followed=1 AND novelName LIKE '%${searchText}%'`,
-                [searchText],
+                `SELECT * FROM novels WHERE followed = 1 AND novelName LIKE '%${searchText}%'`,
+                null,
                 (txObj, { rows: { _array } }) => resolve(_array),
                 (txObj, error) => console.log("Error ", error)
             );

@@ -213,7 +213,7 @@ const NovelInfoHeader = ({
                         }
                         contentContainerStyle={styles.genreContainer}
                         horizontal
-                        data={novel["Genre(s)"] && novel["Genre(s)"].split(",")}
+                        data={novel.genre && novel.genre.split(",")}
                         keyExtractor={(item) => item}
                         renderItem={renderGenreChip}
                         showsHorizontalScrollIndicator={false}

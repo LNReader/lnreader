@@ -24,7 +24,7 @@ const historyReducer = (state = initialState, action) => {
             return {
                 ...state,
                 history: state.history.filter(
-                    (item) => item.novelUrl !== payload.novelUrl
+                    (item) => item.novelId !== payload.novelId
                 ),
             };
         // return {

@@ -7,7 +7,7 @@ import moment from "moment";
 
 import { useSelector } from "react-redux";
 
-const HistoryCard = ({ item, deleteHistory, navigation }) => {
+const HistoryCard = ({ item, deleteHistoryAction, navigation }) => {
     const theme = useSelector((state) => state.themeReducer.theme);
 
     return (
@@ -66,7 +66,7 @@ const HistoryCard = ({ item, deleteHistory, navigation }) => {
                             style={{
                                 marginRight: 0,
                             }}
-                            onPress={() => deleteHistory(item.novelUrl)}
+                            onPress={() => deleteHistoryAction(item.novelId)}
                         />
                         <IconButton
                             icon="play"

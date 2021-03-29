@@ -30,6 +30,7 @@ const ChapterCard = ({
                     extensionId,
                     novelUrl: novelUrl,
                     chapterName: chapter.chapterName,
+                    novelId: chapter.novelId,
                 })
             }
             rippleColor={theme.rippleColor}

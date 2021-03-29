@@ -78,8 +78,7 @@ const NovelCover = ({ item, onPress, libraryStatus }) => {
                                         style={[
                                             {
                                                 flex: 0,
-                                                backgroundColor:
-                                                    theme.colorAccentDark,
+                                                backgroundColor: "#2979FF",
                                                 color: "#FFFFFF",
                                                 borderTopRightRadius: 4,
                                                 borderBottomRightRadius: 4,

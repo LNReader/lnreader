@@ -16,7 +16,7 @@ export const insertChapters = async (novelId, chapters) => {
     });
 };
 
-const getChaptersQuery = `SELECT * FROM chapters WHERE novelId = ?`;
+const getChaptersQuery = `SELECT * FROM chapters WHERE novelId = ? ORDER BY chapterId ASC`;
 
 export const getChapters = (novelId) => {
     return new Promise((resolve, reject) =>

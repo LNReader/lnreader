@@ -14,6 +14,7 @@ export const getLibraryAction = () => async (dispatch) => {
 };
 
 export const searchLibraryAction = (searchText) => async (dispatch) => {
+    console.log(searchText);
     const res = await searchLibrary(searchText);
 
     dispatch({
