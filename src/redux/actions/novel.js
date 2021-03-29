@@ -58,7 +58,6 @@ export const getNovelAction = (followed, sourceId, novelUrl, novelId) => async (
         if (inCache) {
             const novel = await getNovel(novelUrl);
             novel.chapters = await getChapters(novel.novelId);
-
             dispatch({
                 type: GET_NOVEL,
                 payload: novel,
@@ -134,7 +133,6 @@ export const getChapterAction = (
 
 export const markChapterReadAction = (chapterId) => async (dispatch) => {
     await markChapterRead(chapterId);
-
     dispatch({ type: CHAPTER_READ, payload: { chapterId } });
 };
 

@@ -13,6 +13,7 @@ export const fetchNovel = async (sourceId, novelUrl) => {
     let data = await fetch(url);
     let res = await data.json();
 
+    console.log(url);
     const novel = {
         novelUrl: res.novelUrl,
         sourceUrl: res.sourceUrl,

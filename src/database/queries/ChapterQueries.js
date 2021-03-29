@@ -50,13 +50,13 @@ export const getChapter = async (chapterId) => {
     );
 };
 
-const markChapterReadQuery = `UPDATE chapters SET \`read\` = 1 WHERE chapterUrl = ? AND novelUrl = ?`;
+const markChapterReadQuery = `UPDATE chapters SET \`read\` = 1 WHERE chapterId = ?`;
 
-export const markChapterRead = async () => {
+export const markChapterRead = async (chapterId) => {
     db.transaction((tx) => {
         tx.executeSql(
             markChapterReadQuery,
-            [chapterUrl, novelUrl],
+            [chapterId],
             (tx, res) => {},
             (tx, error) => console.log(error)
         );
