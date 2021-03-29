@@ -15,8 +15,8 @@ import NovelCover from "../../components/common/NovelCover";
 import EmptyView from "../../components/common/EmptyView";
 
 import {
-    getLibraryNovels,
-    searchLibraryNovels,
+    getLibraryAction,
+    searchLibraryAction,
 } from "../../redux/actions/library";
 import { SearchAppbar } from "../../components/common/Appbar";
 import { setNovel } from "../../redux/actions/novel";
@@ -26,8 +26,8 @@ const LibraryScreen = ({
     theme,
     novels,
     loading,
-    getLibraryNovels,
-    searchLibraryNovels,
+    getLibraryAction,
+    searchLibraryAction,
     setNovel,
     itemsPerRow,
 }) => {
@@ -38,7 +38,7 @@ const LibraryScreen = ({
     useFocusEffect(
         useCallback(() => {
             setSearchText("");
-            getLibraryNovels();
+            getLibraryAction();
         }, [])
     );
 
@@ -48,7 +48,7 @@ const LibraryScreen = ({
     const onRefresh = () => {
         ToastAndroid.show("Updating library", ToastAndroid.SHORT);
         setRefreshing(true);
-        getLibraryNovels();
+        getLibraryAction();
         setRefreshing(false);
     };
 
@@ -68,8 +68,8 @@ const LibraryScreen = ({
                 <SearchAppbar
                     screen="Library"
                     placeholder="Search Library"
-                    getNovels={getLibraryNovels}
-                    getSearchResults={searchLibraryNovels}
+                    getNovels={getLibraryAction}
+                    getSearchResults={searchLibraryAction}
                     searchText={searchText}
                     setSearchText={setSearchText}
                 />
@@ -134,8 +134,8 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, {
-    getLibraryNovels,
-    searchLibraryNovels,
+    getLibraryAction,
+    searchLibraryAction,
     setNovel,
 })(LibraryScreen);
 

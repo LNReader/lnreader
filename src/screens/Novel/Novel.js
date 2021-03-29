@@ -17,8 +17,8 @@ import { downloadOrDeleteChapter } from "../../services/db";
 import { connect } from "react-redux";
 
 import {
-    getNovel,
-    insertNovelInLibrary,
+    getNovelAction,
+    followNovelAction,
     sortAndFilterChapters,
     updateLibraryNovel,
 } from "../../redux/actions/novel";
@@ -29,36 +29,37 @@ const Novel = ({
     novel,
     chapters,
     loading,
-    getNovel,
+    getNovelAction,
     fetching,
-    insertNovelInLibrary,
+    followNovelAction,
     sortAndFilterChapters,
     updateLibraryNovel,
 }) => {
     const {
-        extensionId,
+        sourceId,
         novelUrl,
         novelName,
         novelCover,
-        libraryStatus,
+        followed,
+        novelId,
     } = route.params;
 
     let _panel = useRef(null); // Bottomsheet ref
 
     useEffect(() => {
-        getNovel(libraryStatus, extensionId, novelUrl);
+        getNovelAction(followed, sourceId, novelUrl, novelId);
     }, []);
 
     const renderChapterCard = ({ item }) => (
         <ChapterCard
             novelUrl={novelUrl}
-            extensionId={extensionId}
+            extensionId={sourceId}
             chapter={item}
         />
     );
 
     const onRefresh = () => {
-        updateLibraryNovel(extensionId, novelUrl);
+        updateLibraryNovel(sourceId, novelUrl);
     };
 
     return (
@@ -83,7 +84,7 @@ const Novel = ({
                             item={{ novelName, novelCover }}
                             novel={novel}
                             noOfChapters={chapters.length}
-                            insertNovelInLibrary={insertNovelInLibrary}
+                            followNovelAction={followNovelAction}
                             loading={loading}
                             bottomSheetRef={_panel}
                         />
@@ -117,8 +118,8 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, {
-    getNovel,
-    insertNovelInLibrary,
+    getNovelAction,
+    followNovelAction,
     sortAndFilterChapters,
     updateLibraryNovel,
 })(Novel);

@@ -7,7 +7,10 @@ import { CollapsibleHeaderScrollView } from "react-native-collapsible-header-vie
 import BottomSheet from "./components/BottomSheet";
 
 import { updateNovelHistory } from "../../redux/actions/history";
-import { getChapter, updateChapterRead } from "../../redux/actions/novel";
+import {
+    getChapterAction,
+    markChapterReadAction,
+} from "../../redux/actions/novel";
 
 import { connect } from "react-redux";
 
@@ -16,19 +19,19 @@ const ChapterItem = ({
     navigation,
     theme,
     updateNovelHistory,
-    updateChapterRead,
-    getChapter,
+    markChapterReadAction,
+    getChapterAction,
     chapter,
     loading,
     reader,
 }) => {
-    const { extensionId, chapterUrl, novelUrl, chapterName } = route.params;
+    const { chapterId, extensionId, chapterUrl, novelUrl } = route.params;
 
     let _panel = useRef(null);
 
     useEffect(() => {
-        getChapter(extensionId, chapterUrl, novelUrl);
-        updateNovelHistory(chapterUrl, chapterName, novelUrl);
+        getChapterAction(extensionId, chapterUrl, novelUrl, chapterId);
+        updateNovelHistory(chapterId);
     }, []);
 
     const readerBackground = (val) => {
@@ -138,7 +141,7 @@ const ChapterItem = ({
                 ]}
                 onScroll={({ nativeEvent }) => {
                     if (isCloseToBottom(nativeEvent)) {
-                        updateChapterRead(chapterUrl, novelUrl);
+                        markChapterReadAction(chapterUrl, novelUrl);
                     }
                 }}
             >
@@ -180,8 +183,8 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps, {
     updateNovelHistory,
-    updateChapterRead,
-    getChapter,
+    markChapterReadAction,
+    getChapterAction,
 })(ChapterItem);
 
 const styles = StyleSheet.create({

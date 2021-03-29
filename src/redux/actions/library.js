@@ -1,8 +1,11 @@
 import { GET_LIBRARY_NOVELS } from "./types";
-import { getLibraryFromDb, searchInLibrary } from "../../services/db";
+import {
+    getLibrary,
+    searchLibrary,
+} from "../../database/queries/LibraryQueries";
 
-export const getLibraryNovels = () => async (dispatch) => {
-    const res = await getLibraryFromDb();
+export const getLibraryAction = () => async (dispatch) => {
+    const res = await getLibrary();
 
     dispatch({
         type: GET_LIBRARY_NOVELS,
@@ -10,8 +13,8 @@ export const getLibraryNovels = () => async (dispatch) => {
     });
 };
 
-export const searchLibraryNovels = (searchText) => async (dispatch) => {
-    const res = await searchInLibrary(searchText);
+export const searchLibraryAction = (searchText) => async (dispatch) => {
+    const res = await searchLibrary(searchText);
 
     dispatch({
         type: GET_LIBRARY_NOVELS,

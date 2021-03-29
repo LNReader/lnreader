@@ -12,6 +12,7 @@ import { createTables, createIndexes } from "./src/services/db";
 import { Provider } from "react-redux";
 import { persistor, store } from "./src/redux/store/configureStore";
 import { PersistGate } from "redux-persist/lib/integration/react";
+import { createDB, deleteDb } from "./src/database/DBOpenCallback";
 
 const getFonts = () =>
     Font.loadAsync({
@@ -21,13 +22,14 @@ const getFonts = () =>
 const App = () => {
     const [fontsLoaded, setFontsLoaded] = useState(false);
 
-    const createDb = () => {
-        createTables();
-        createIndexes();
-    };
+    // const createDb = () => {
+    //     createTables();
+    //     createIndexes();
+    // };
 
     useEffect(() => {
-        createDb();
+        // deleteDb();
+        createDB();
     }, []);
 
     if (fontsLoaded) {

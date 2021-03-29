@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import { View, Text, ActivityIndicator, StyleSheet } from "react-native";
 import { TouchableRipple, IconButton } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 
-import { deleteChapter, downloadChapter } from "../../../redux/actions/novel";
+import {
+    deleteChapterAction,
+    downloadChapterAction,
+} from "../../../redux/actions/novel";
 import { connect } from "react-redux";
 
 const ChapterCard = ({
@@ -12,23 +15,17 @@ const ChapterCard = ({
     extensionId,
     theme,
     downloading,
-    downloadChapter,
-    deleteChapter,
+    downloadChapterAction,
+    deleteChapterAction,
 }) => {
     const navigation = useNavigation();
-
-    const isDownloading = () =>
-        downloading.some(
-            (obj) =>
-                obj.chapterUrl === chapter.chapterUrl &&
-                obj.novelUrl === novelUrl
-        );
 
     return (
         <TouchableRipple
             style={styles.chapterCardContainer}
             onPress={() =>
                 navigation.navigate("ChapterItem", {
+                    chapterId: chapter.chapterId,
                     chapterUrl: chapter.chapterUrl,
                     extensionId,
                     novelUrl: novelUrl,
@@ -71,7 +68,7 @@ const ChapterCard = ({
                     )}
                 </View>
                 <View>
-                    {isDownloading() && !chapter.downloaded ? (
+                    {downloading === chapter.chapterId ? (
                         <ActivityIndicator
                             color={theme.textColorHintDark}
                             size={25}
@@ -93,17 +90,16 @@ const ChapterCard = ({
                             size={25}
                             onPress={() => {
                                 if (!chapter.downloaded) {
-                                    downloadChapter(
+                                    downloadChapterAction(
                                         extensionId,
                                         novelUrl,
                                         chapter.chapterUrl,
-                                        chapter.chapterName
+                                        chapter.chapterName,
+                                        chapter.chapterId
                                     );
                                 } else {
-                                    deleteChapter(
-                                        extensionId,
-                                        novelUrl,
-                                        chapter.chapterUrl,
+                                    deleteChapterAction(
+                                        chapter.chapterId,
                                         chapter.chapterName
                                     );
                                 }
@@ -122,9 +118,10 @@ const mapStateToProps = (state) => ({
     downloading: state.novelReducer.downloading,
 });
 
-export default connect(mapStateToProps, { downloadChapter, deleteChapter })(
-    ChapterCard
-);
+export default connect(mapStateToProps, {
+    downloadChapterAction,
+    deleteChapterAction,
+})(ChapterCard);
 
 const styles = StyleSheet.create({
     chapterCardContainer: {

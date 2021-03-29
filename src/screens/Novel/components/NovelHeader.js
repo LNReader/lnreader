@@ -19,7 +19,7 @@ const NovelInfoHeader = ({
     item,
     novel,
     noOfChapters,
-    insertNovelInLibrary,
+    followNovelAction,
     loading,
     bottomSheetRef,
     theme,
@@ -27,7 +27,7 @@ const NovelInfoHeader = ({
     const navigation = useNavigation();
 
     const [more, setMore] = useState(
-        !loading && novel.libraryStatus !== 1 ? true : false
+        !loading && novel.followed !== 1 ? true : false
     );
 
     const renderGenreChip = ({ item }) => (
@@ -83,7 +83,7 @@ const NovelInfoHeader = ({
                                         }}
                                         numberOfLines={2}
                                     >
-                                        {novel["Author(s)"].replace(",", ", ")}
+                                        {novel.author.replace(",", ", ")}
                                     </Text>
 
                                     <Text
@@ -94,7 +94,7 @@ const NovelInfoHeader = ({
                                         }}
                                         numberOfLines={1}
                                     >
-                                        {novel["Status"]}
+                                        {novel.status}
                                     </Text>
                                     <Text
                                         style={{
@@ -119,7 +119,7 @@ const NovelInfoHeader = ({
                             icon={() => (
                                 <MaterialCommunityIcons
                                     name={
-                                        novel.libraryStatus
+                                        novel.followed
                                             ? "heart"
                                             : "heart-outline"
                                     }
@@ -128,10 +128,7 @@ const NovelInfoHeader = ({
                                 />
                             )}
                             onPress={() =>
-                                insertNovelInLibrary(
-                                    novel.libraryStatus,
-                                    novel.novelUrl
-                                )
+                                followNovelAction(novel.followed, novel.novelId)
                             }
                             style={[
                                 { backgroundColor: theme.colorPrimaryDark },
@@ -142,15 +139,13 @@ const NovelInfoHeader = ({
                                 color: theme.textColorPrimary,
                             }}
                         >
-                            {novel.libraryStatus
-                                ? "In Library"
-                                : "Add to library"}
+                            {novel.followed ? "In Library" : "Add to library"}
                         </Chip>
 
                         <IconButton
                             onPress={() =>
                                 WebBrowser.openBrowserAsync(
-                                    novel.sourceUrl && novel.sourceUrl
+                                    novel.source_url && novel.source_url
                                 )
                             }
                             icon="earth"
@@ -160,7 +155,7 @@ const NovelInfoHeader = ({
                         <IconButton
                             onPress={() =>
                                 Share.share({
-                                    message: novel.sourceUrl,
+                                    message: novel.source_url,
                                 })
                             }
                             icon="share-variant"
@@ -232,14 +227,14 @@ const NovelInfoHeader = ({
                         ]}
                         uppercase={false}
                         labelStyle={{ letterSpacing: 0 }}
-                        onPress={() =>
-                            navigation.navigate("ChapterItem", {
-                                chapterUrl: novel.lastRead,
-                                novelUrl: novel.novelUrl,
-                                extensionId: novel.extensionId,
-                                chapterName: novel.lastReadName,
-                            })
-                        }
+                        // onPress={() =>
+                        //     navigation.navigate("ChapterItem", {
+                        //         chapterUrl: novel.lastRead,
+                        //         novelUrl: novel.novelUrl,
+                        //         extensionId: novel.extensionId,
+                        //         chapterName: novel.lastReadName,
+                        //     })
+                        // }
                     >
                         {novel.unread === 1
                             ? `Start reading ${novel.lastReadName}`

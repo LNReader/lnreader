@@ -15,37 +15,37 @@ import {
     CHAPTER_DELETED,
     UPDATE_NOVEL,
 } from "./types";
-import {
-    checkNovelInDb,
-    getChaptersFromDb,
-    getNovelInfoFromDb,
-    insertChaptersInDb,
-    insertNovelInfoInDb,
-    toggleFavourite,
-    downloadChapterFromSource,
-    deleteChapterFromDb,
-    chapterRead,
-    isChapterDownloaded,
-    getChapterFromDb,
-} from "../../services/db";
-import {
-    fetchChapterFromSource,
-    fetchChaptersFromSource,
-    fetchNovelFromSource,
-} from "../../services/api";
+import { getChaptersFromDb } from "../../services/db";
 import { updateNovel } from "../../services/updates";
+import { fetchChapter, fetchNovel } from "../../source/Source";
+import {
+    followNovel,
+    insertNovel,
+    checkNovelInCache,
+    getNovel,
+} from "../../database/queries/NovelQueries";
+import {
+    getChapters,
+    insertChapters,
+    markChapterRead,
+    isChapterDownloaded,
+    getChapter,
+    downloadChapter,
+    deleteChapter,
+} from "../../database/queries/ChapterQueries";
 
 export const setNovel = (novel) => async (dispatch) => {
     dispatch({ type: SET_NOVEL, payload: novel });
 };
 
-export const getNovel = (inLibrary, extensionId, novelUrl) => async (
+export const getNovelAction = (followed, sourceId, novelUrl, novelId) => async (
     dispatch
 ) => {
     dispatch({ type: LOADING_NOVEL });
 
-    if (inLibrary === 1) {
-        const chapters = await getChaptersFromDb(novelUrl, "", "");
+    if (followed === 1) {
+        const chapters = await getChapters(novelId);
+
         dispatch({
             type: GET_CHAPTERS,
             payload: chapters,
@@ -53,26 +53,38 @@ export const getNovel = (inLibrary, extensionId, novelUrl) => async (
     } else {
         dispatch({ type: FETCHING_NOVEL });
 
-        const inCache = await checkNovelInDb(novelUrl);
+        const inCache = await checkNovelInCache(novelUrl);
 
         if (inCache) {
-            const novel = await getNovelInfoFromDb(novelUrl);
-            const chapters = await getChaptersFromDb(novelUrl, "", "");
+            const novel = await getNovel(novelUrl);
+            novel.chapters = await getChapters(novel.novelId);
 
             dispatch({
                 type: GET_NOVEL,
-                payload: { novel, chapters },
+                payload: novel,
             });
         } else {
-            const novel = await fetchNovelFromSource(extensionId, novelUrl);
+            /**
+             * Fetch novel from source
+             */
+            const fetchedNovel = await fetchNovel(sourceId, novelUrl);
+
+            /**
+             * Insert novel in db
+             */
+            const fetchedNovelId = await insertNovel(fetchedNovel);
+            await insertChapters(fetchedNovelId, fetchedNovel.chapters);
+
+            /**
+             * Get Novel  from db
+             */
+            const novel = await getNovel(novelUrl);
+            novel.chapters = await getChapters(novel.novelId);
 
             dispatch({
                 type: GET_NOVEL,
-                payload: { novel, chapters: novel.novelChapters },
+                payload: novel,
             });
-
-            insertNovelInfoInDb(novel);
-            insertChaptersInDb(novelUrl, novel.novelChapters);
         }
     }
 };
@@ -87,83 +99,77 @@ export const sortAndFilterChapters = (novelUrl, filter, sort) => async (
     });
 };
 
-export const insertNovelInLibrary = (inLibrary, novelUrl) => async (
-    dispatch
-) => {
-    toggleFavourite(inLibrary, novelUrl);
+export const followNovelAction = (followed, novelId) => async (dispatch) => {
+    await followNovel(followed, novelId);
 
     dispatch({
         type: UPDATE_IN_LIBRARY,
-        payload: !inLibrary,
+        payload: !followed,
     });
 
     ToastAndroid.show(
-        !inLibrary ? "Added to library" : "Removed from library",
+        !followed ? "Added to library" : "Removed from library",
         ToastAndroid.SHORT
     );
 };
 
-export const getChapter = (extensionId, chapterUrl, novelUrl) => async (
-    dispatch
-) => {
+export const getChapterAction = (
+    extensionId,
+    chapterUrl,
+    novelUrl,
+    novelId
+) => async (dispatch) => {
     dispatch({ type: CHAPTER_LOADING });
-    const isDownloaded = await isChapterDownloaded(chapterUrl, novelUrl);
+
+    const isDownloaded = await isChapterDownloaded(novelId);
     let chapter;
 
     if (isDownloaded) {
-        chapter = await getChapterFromDb(chapterUrl, novelUrl);
+        chapter = await getChapter(novelId);
     } else {
-        chapter = await fetchChapterFromSource(
-            extensionId,
-            novelUrl,
-            chapterUrl
-        );
+        chapter = await fetchChapter(extensionId, novelUrl, chapterUrl);
     }
     dispatch({ type: GET_CHAPTER, payload: chapter });
 };
 
-export const updateChapterRead = (chapterUrl, novelUrl) => async (dispatch) => {
-    await chapterRead(chapterUrl, novelUrl);
+export const markChapterReadAction = (chapterId) => async (dispatch) => {
+    await markChapterRead(chapterId);
 
-    dispatch({ type: CHAPTER_READ, payload: { chapterUrl, novelUrl } });
+    dispatch({ type: CHAPTER_READ, payload: { chapterId } });
 };
 
-export const downloadChapter = (
+export const downloadChapterAction = (
     extensionId,
     novelUrl,
     chapterUrl,
-    chapterName
+    chapterName,
+    chapterId
 ) => async (dispatch) => {
     dispatch({
         type: CHAPTER_DOWNLOADING,
         payload: {
-            extensionId,
-            novelUrl,
-            chapterUrl,
+            chapterId,
         },
     });
 
-    await downloadChapterFromSource(extensionId, novelUrl, chapterUrl);
+    await downloadChapter(extensionId, novelUrl, chapterUrl, chapterId);
 
     dispatch({
         type: CHAPTER_DOWNLOADED,
-        payload: { extensionId, novelUrl, chapterUrl },
+        payload: { chapterId },
     });
 
     ToastAndroid.show(`Downloaded ${chapterName}`, ToastAndroid.SHORT);
 };
 
-export const deleteChapter = (
-    extensionId,
-    novelUrl,
-    chapterUrl,
-    chapterName
-) => async (dispatch) => {
-    await deleteChapterFromDb(novelUrl, chapterUrl);
+export const deleteChapterAction = (chapterId, chapterName) => async (
+    dispatch
+) => {
+    await deleteChapter(chapterId);
 
     dispatch({
         type: CHAPTER_DELETED,
-        payload: { extensionId, novelUrl, chapterUrl },
+        payload: { chapterId },
     });
 
     ToastAndroid.show(`Deleted ${chapterName}`, ToastAndroid.SHORT);
