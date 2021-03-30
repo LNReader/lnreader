@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import {
     StyleSheet,
     View,
@@ -12,15 +12,13 @@ import ChapterCard from "./components/ChapterCard";
 import NovelInfoHeader from "./components/NovelHeader";
 import { BottomSheet } from "./components/BottomSheet";
 
-import { downloadOrDeleteChapter } from "../../services/db";
-
 import { connect } from "react-redux";
 
 import {
     getNovelAction,
     followNovelAction,
     sortAndFilterChapters,
-    updateLibraryNovel,
+    updateNovelAction,
 } from "../../redux/actions/novel";
 
 const Novel = ({
@@ -33,7 +31,7 @@ const Novel = ({
     fetching,
     followNovelAction,
     sortAndFilterChapters,
-    updateLibraryNovel,
+    updateNovelAction,
 }) => {
     const {
         sourceId,
@@ -59,7 +57,7 @@ const Novel = ({
     );
 
     const onRefresh = () => {
-        updateLibraryNovel(sourceId, novelUrl);
+        updateNovelAction(sourceId, novelUrl, novelId);
     };
 
     return (
@@ -83,7 +81,7 @@ const Novel = ({
                             theme={theme}
                             item={{ novelName, novelCover }}
                             novel={novel}
-                            noOfChapters={chapters.length}
+                            noOfChapters={chapters?.length}
                             followNovelAction={followNovelAction}
                             loading={loading}
                             bottomSheetRef={_panel}
@@ -121,7 +119,7 @@ export default connect(mapStateToProps, {
     getNovelAction,
     followNovelAction,
     sortAndFilterChapters,
-    updateLibraryNovel,
+    updateNovelAction,
 })(Novel);
 
 const styles = StyleSheet.create({

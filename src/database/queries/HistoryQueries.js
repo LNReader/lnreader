@@ -52,3 +52,9 @@ export const deleteHistory = async (novelId) => {
         ]);
     });
 };
+
+export const deleteAllHistory = () => {
+    db.transaction((tx) => {
+        tx.executeSql("DELETE FROM history; VACCUM;");
+    });
+};

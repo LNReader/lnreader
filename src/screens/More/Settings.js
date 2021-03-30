@@ -14,11 +14,8 @@ import {
     ThemeCheckbox,
 } from "../../components/settings/Checkbox";
 
-import {
-    deleteHistory,
-    deleteNovelsNotInLibrary,
-    deleteDatabase,
-} from "../../services/db";
+import { deleteAllHistory } from "../../database/queries/HistoryQueries";
+import { deleteNovelCache } from "../../database/queries/NovelQueries";
 
 const SettingsScreen = ({
     navigation,
@@ -90,7 +87,7 @@ const SettingsScreen = ({
                         title="Clear database"
                         descriptionStyle={desciptionStyles}
                         description="Delete history for novels not in your library"
-                        onPress={() => deleteNovelsNotInLibrary()}
+                        onPress={() => deleteNovelCache()}
                         rippleColor={theme.rippleColor}
                     />
                     <List.Item
@@ -98,7 +95,7 @@ const SettingsScreen = ({
                         title="Clear history"
                         descriptionStyle={desciptionStyles}
                         description="Delete reading history for all novels"
-                        onPress={() => deleteHistory()}
+                        onPress={() => deleteAllHistory()}
                         rippleColor={theme.rippleColor}
                     />
                     <List.Subheader

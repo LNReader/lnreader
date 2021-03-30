@@ -1,32 +1,41 @@
 import * as SQLite from "expo-sqlite";
-import { fetchNovelFromSource } from "./api";
+import { fetchNovel } from "../source/Source";
 const db = SQLite.openDatabase("lnreader.db");
 
-export const updateNovel = async (extensionId, novelUrl) => {
-    const novel = await fetchNovelFromSource(extensionId, novelUrl);
-
+const updateNovelDetails = async (novel, novelId) => {
     db.transaction((tx) => {
         tx.executeSql(
-            "UPDATE LibraryTable SET novelName = ?, novelCover = ?, novelSummary = ?, `Author(s)` = ?, `Genre(s)` = ?, Status = ? WHERE extensionId = ? AND novelUrl = ?",
+            "UPDATE novels SET novelName = ?, novelCover = ?, novelSummary = ?, author = ?, artist = ?, genre = ?, status = ? WHERE novelId = ?",
             [
                 novel.novelName,
                 novel.novelCover,
                 novel.novelSummary,
-                novel["Author(s)"],
-                novel[`Genre(s)`],
-                novel.Status,
-                extensionId,
-                novelUrl,
-            ]
+                novel.author,
+                novel.artist,
+                novel.genre,
+                novel.status,
+                novelId,
+            ],
+            (txObj, res) => {},
+            (txObj, error) => console.log("Error ", error)
         );
-        novel.novelChapters.map((chapter) =>
+    });
+};
+
+export const updateNovel = async (extensionId, novelUrl, novelId) => {
+    let novel = await fetchNovel(extensionId, novelUrl);
+    // console.log(novel);
+    await updateNovelDetails(novel, novelId);
+
+    db.transaction((tx) => {
+        novel.chapters.map((chapter) =>
             tx.executeSql(
-                "INSERT OR IGNORE INTO ChapterTable (chapterUrl, chapterName, releaseDate, novelUrl) values (?, ?, ?, ?)",
+                "INSERT OR IGNORE INTO chapters (chapterUrl, chapterName, releaseDate, novelId) values (?, ?, ?, ?)",
                 [
                     chapter.chapterUrl,
                     chapter.chapterName,
                     chapter.releaseDate,
-                    novelUrl,
+                    novelId,
                 ],
                 (txObj, res) => {},
                 (txObj, error) => console.log("Error ", error)

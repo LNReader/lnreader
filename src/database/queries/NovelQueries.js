@@ -72,3 +72,16 @@ export const getNovel = async (novelUrl) => {
         })
     );
 };
+
+export const deleteNovelCache = () => {
+    db.transaction((tx) => {
+        tx.executeSql(
+            "DELETE FROM novels WHERE followed = 0",
+            null,
+            (txObj, res) => {
+                console.log("Deleted");
+            },
+            (txObj, error) => console.log("Error ", error)
+        );
+    });
+};

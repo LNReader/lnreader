@@ -6,8 +6,6 @@ import AppLoading from "expo-app-loading";
 
 import Router from "./src/navigation/Router";
 
-import { createTables, createIndexes } from "./src/services/db";
-
 // Redux
 import { Provider } from "react-redux";
 import { persistor, store } from "./src/redux/store/configureStore";
@@ -21,11 +19,6 @@ const getFonts = () =>
 
 const App = () => {
     const [fontsLoaded, setFontsLoaded] = useState(false);
-
-    // const createDb = () => {
-    //     createTables();
-    //     createIndexes();
-    // };
 
     useEffect(() => {
         // deleteDb();

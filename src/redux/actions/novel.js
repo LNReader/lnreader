@@ -15,7 +15,7 @@ import {
     CHAPTER_DELETED,
     UPDATE_NOVEL,
 } from "./types";
-import { getChaptersFromDb } from "../../services/db";
+
 import { updateNovel } from "../../services/updates";
 import { fetchChapter, fetchNovel } from "../../source/Source";
 import {
@@ -91,11 +91,11 @@ export const getNovelAction = (followed, sourceId, novelUrl, novelId) => async (
 export const sortAndFilterChapters = (novelUrl, filter, sort) => async (
     dispatch
 ) => {
-    const chapters = await getChaptersFromDb(novelUrl, filter, sort);
-    dispatch({
-        type: GET_CHAPTERS,
-        payload: chapters,
-    });
+    // const chapters = await getChaptersFromDb(novelUrl, filter, sort);
+    // dispatch({
+    //     type: GET_CHAPTERS,
+    //     payload: chapters,
+    // });
 };
 
 export const followNovelAction = (followed, novelId) => async (dispatch) => {
@@ -173,15 +173,15 @@ export const deleteChapterAction = (chapterId, chapterName) => async (
     ToastAndroid.show(`Deleted ${chapterName}`, ToastAndroid.SHORT);
 };
 
-export const updateLibraryNovel = (extensionId, novelUrl) => async (
+export const updateNovelAction = (extensionId, novelUrl, novelId) => async (
     dispatch
 ) => {
     dispatch({ type: FETCHING_NOVEL });
 
-    const updatedNovel = await updateNovel(extensionId, novelUrl);
+    const updatedNovel = await updateNovel(extensionId, novelUrl, novelId);
 
     dispatch({
         type: UPDATE_NOVEL,
-        payload: { novel: updatedNovel, chapters: updatedNovel.novelChapters },
+        payload: { novel: updatedNovel, chapters: updatedNovel.chapters },
     });
 };
