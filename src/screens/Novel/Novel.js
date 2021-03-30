@@ -1,11 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import {
-    StyleSheet,
-    View,
-    FlatList,
-    RefreshControl,
-    ToastAndroid,
-} from "react-native";
+import { StyleSheet, View, FlatList, RefreshControl } from "react-native";
 import { Provider, Portal } from "react-native-paper";
 
 import ChapterCard from "./components/ChapterCard";
@@ -19,7 +13,7 @@ import {
     followNovelAction,
     sortAndFilterChapters,
     updateNovelAction,
-} from "../../redux/actions/novel";
+} from "../../redux/novel/novel.actions";
 
 const Novel = ({
     route,
@@ -85,6 +79,7 @@ const Novel = ({
                             followNovelAction={followNovelAction}
                             loading={loading}
                             bottomSheetRef={_panel}
+                            firstChapter={chapters[0]}
                         />
                     }
                     refreshControl={

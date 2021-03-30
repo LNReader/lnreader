@@ -1,4 +1,4 @@
-import { SWITCH_THEME } from "./types";
+import { SWITCH_THEME } from "./theme.types";
 
 /**
  * 0 -> Amoled Dark Theme

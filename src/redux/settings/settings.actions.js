@@ -3,7 +3,7 @@ import {
     SET_ITEMS_PER_ROW,
     UPDATE_READER_TEXT_SIZE,
     UPDATE_READER_THEME,
-} from "./types";
+} from "./settings.types";
 
 export const setDisplayMode = (val) => (dispatch) => {
     dispatch({

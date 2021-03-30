@@ -137,3 +137,24 @@ export const deleteChapter = async (chapterId) => {
         );
     });
 };
+
+const getLastReadChapterQuery = `
+    SELECT chapters.*
+    FROM history
+    JOIN chapters
+    ON history.historyChapterId = chapters.chapterId
+    WHERE history.historyNovelId = ?
+`;
+
+export const getLastReadChapter = async (novelId) => {
+    return new Promise((resolve, reject) => {
+        db.transaction((tx) => {
+            tx.executeSql(
+                getLastReadChapterQuery,
+                [novelId],
+                (tx, { rows }) => resolve(rows.item(0)),
+                (txObj, error) => console.log("Error ", error)
+            );
+        });
+    });
+};

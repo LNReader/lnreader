@@ -17,9 +17,9 @@ import EmptyView from "../../components/common/EmptyView";
 import {
     getLibraryAction,
     searchLibraryAction,
-} from "../../redux/actions/library";
+} from "../../redux/library/library.actions";
 import { SearchAppbar } from "../../components/common/Appbar";
-import { setNovel } from "../../redux/actions/novel";
+import { setNovel } from "../../redux/novel/novel.actions";
 
 const LibraryScreen = ({
     navigation,

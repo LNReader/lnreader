@@ -1,4 +1,4 @@
-import { GET_EXTENSIONS } from "../actions/types";
+import { GET_SOURCES } from "./source.types";
 
 const initialState = {
     extensions: [],
@@ -9,7 +9,7 @@ const libraryReducer = (state = initialState, action) => {
     const { type, payload } = action;
 
     switch (type) {
-        case GET_EXTENSIONS:
+        case GET_SOURCES:
             return { extensions: payload, loading: false };
         default:
             return state;

@@ -23,6 +23,7 @@ const NovelInfoHeader = ({
     loading,
     bottomSheetRef,
     theme,
+    firstChapter,
 }) => {
     const navigation = useNavigation();
 
@@ -145,7 +146,7 @@ const NovelInfoHeader = ({
                         <IconButton
                             onPress={() =>
                                 WebBrowser.openBrowserAsync(
-                                    novel.source_url && novel.source_url
+                                    novel.sourceUrl && novel.sourceUrl
                                 )
                             }
                             icon="earth"
@@ -155,7 +156,7 @@ const NovelInfoHeader = ({
                         <IconButton
                             onPress={() =>
                                 Share.share({
-                                    message: novel.source_url,
+                                    message: novel.sourceUrl,
                                 })
                             }
                             icon="share-variant"
@@ -227,18 +228,24 @@ const NovelInfoHeader = ({
                         ]}
                         uppercase={false}
                         labelStyle={{ letterSpacing: 0 }}
-                        // onPress={() =>
+                        // onPress={() => {
+                        //     console.log(firstChapter.chapterName);
                         //     navigation.navigate("ChapterItem", {
-                        //         chapterUrl: novel.lastRead,
+                        //         chapterUrl:
+                        //             novel.lastRead.chapterUrl ??
+                        //             firstChapter.chapterUrl,
                         //         novelUrl: novel.novelUrl,
                         //         extensionId: novel.extensionId,
-                        //         chapterName: novel.lastReadName,
-                        //     })
-                        // }
+                        //         chapterName:
+                        //             novel.lastRead.chapterUrl ??
+                        //             firstChapter.chapterName,
+                        //     });
+                        // }}
                     >
-                        {novel.unread === 1
-                            ? `Start reading ${novel.lastReadName}`
-                            : `Continue reading ${novel.lastReadName}`}
+                        {/* {novel.lastRead
+                            ? `Continue reading ${novel.lastRead.chapterName}`
+                            : `Start reading ${firstChapter.chapterName}`} */}
+                        Start reading
                     </Button>
 
                     <TouchableRipple

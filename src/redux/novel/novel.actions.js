@@ -14,7 +14,8 @@ import {
     CHAPTER_DOWNLOADED,
     CHAPTER_DELETED,
     UPDATE_NOVEL,
-} from "./types";
+    UPDATE_LAST_READ,
+} from "./novel.types";
 
 import { updateNovel } from "../../services/updates";
 import { fetchChapter, fetchNovel } from "../../source/Source";
@@ -32,6 +33,7 @@ import {
     getChapter,
     downloadChapter,
     deleteChapter,
+    getLastReadChapter,
 } from "../../database/queries/ChapterQueries";
 
 export const setNovel = (novel) => async (dispatch) => {
@@ -183,5 +185,14 @@ export const updateNovelAction = (extensionId, novelUrl, novelId) => async (
     dispatch({
         type: UPDATE_NOVEL,
         payload: { novel: updatedNovel, chapters: updatedNovel.chapters },
+    });
+};
+
+export const getLastReadChapterAction = (novelId) => async (dispatch) => {
+    const lastReadChapter = await getLastReadChapter(novelId);
+
+    dispatch({
+        type: UPDATE_LAST_READ,
+        payload: lastReadChapter,
     });
 };

@@ -3,7 +3,7 @@ import {
     GET_HISTORY,
     LOAD_HISTORY,
     UPDATE_NOVEL_HISTORY,
-} from "../actions/types";
+} from "./history.types";
 
 const initialState = {
     history: [],

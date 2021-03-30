@@ -6,7 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 import {
     deleteChapterAction,
     downloadChapterAction,
-} from "../../../redux/actions/novel";
+} from "../../../redux/novel/novel.actions";
 import { connect } from "react-redux";
 
 const ChapterCard = ({

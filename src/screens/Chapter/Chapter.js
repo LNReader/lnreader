@@ -6,11 +6,11 @@ import { CollapsibleHeaderScrollView } from "react-native-collapsible-header-vie
 
 import BottomSheet from "./components/BottomSheet";
 
-import { insertHistoryAction } from "../../redux/actions/history";
+import { insertHistoryAction } from "../../redux/history/history.actions";
 import {
     getChapterAction,
     markChapterReadAction,
-} from "../../redux/actions/novel";
+} from "../../redux/novel/novel.actions";
 
 import { connect } from "react-redux";
 

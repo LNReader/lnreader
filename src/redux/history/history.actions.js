@@ -3,7 +3,7 @@ import {
     CLEAR_NOVEL_HISTORY,
     GET_HISTORY,
     LOAD_HISTORY,
-} from "./types";
+} from "./history.types";
 import {
     getHistory,
     insertHistory,

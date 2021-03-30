@@ -12,7 +12,8 @@ import {
     CHAPTER_READ,
     CHAPTER_LOADING,
     UPDATE_NOVEL,
-} from "../actions/types";
+    UPDATE_LAST_READ,
+} from "./novel.types";
 
 const initialState = {
     novel: null,
@@ -110,6 +111,12 @@ const novelReducer = (state = initialState, action) => {
                         ? { ...chapter, downloaded: 0 }
                         : chapter
                 ),
+            };
+
+        case UPDATE_LAST_READ:
+            return {
+                ...state,
+                novel: { ...state.novel, lastRead: payload },
             };
         default:
             return state;

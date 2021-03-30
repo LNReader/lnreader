@@ -12,7 +12,7 @@ import EmptyView from "../../components/common/EmptyView";
 import {
     getHistoryAction,
     deleteHistoryAction,
-} from "../../redux/actions/history";
+} from "../../redux/history/history.actions";
 
 const History = ({
     navigation,

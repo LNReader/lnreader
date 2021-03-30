@@ -1,4 +1,4 @@
-import { GET_LIBRARY_NOVELS } from "./types";
+import { GET_LIBRARY_NOVELS } from "./library.types";
 import {
     getLibrary,
     searchLibrary,
@@ -6,7 +6,7 @@ import {
 
 export const getLibraryAction = () => async (dispatch) => {
     const res = await getLibrary();
-    console.log(res);
+
     dispatch({
         type: GET_LIBRARY_NOVELS,
         payload: res,

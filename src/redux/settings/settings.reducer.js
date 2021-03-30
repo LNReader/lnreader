@@ -3,7 +3,7 @@ import {
     SET_ITEMS_PER_ROW,
     UPDATE_READER_TEXT_SIZE,
     UPDATE_READER_THEME,
-} from "../actions/types";
+} from "./settings.types";
 
 const initialState = {
     displayMode: 0,
