@@ -87,7 +87,12 @@ const ReadLightNovel = ({ navigation }) => {
                             <NovelCover
                                 item={item}
                                 onPress={() =>
-                                    navigation.navigate("NovelItem", item)
+                                    navigation.navigate("NovelItem", {
+                                        novelName: item.novelName,
+                                        novelCover: item.novelCover,
+                                        novelUrl: item.novelUrl,
+                                        sourceId: item.extensionId,
+                                    })
                                 }
                                 libraryStatus={
                                     checkIFInLibrary(item.novelUrl)

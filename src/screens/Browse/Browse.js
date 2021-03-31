@@ -3,13 +3,13 @@ import { StyleSheet, View, FlatList, ActivityIndicator } from "react-native";
 import { Appbar } from "../../components/common/Appbar";
 import { connect } from "react-redux";
 
-import { getExtensions } from "../../redux/actions/extension";
+import { getSourcesAction } from "../../redux/source/source.actions";
 
 import ExtensionCard from "./components/ExtensionCard";
 
-const Browse = ({ theme, extensions, loading, getExtensions }) => {
+const Browse = ({ theme, extensions, loading, getSourcesAction }) => {
     useEffect(() => {
-        getExtensions();
+        getSourcesAction();
     }, []);
 
     return (
@@ -46,7 +46,7 @@ const mapStateToProps = (state) => ({
     loading: state.extensionReducer.loading,
 });
 
-export default connect(mapStateToProps, { getExtensions })(Browse);
+export default connect(mapStateToProps, { getSourcesAction })(Browse);
 
 const styles = StyleSheet.create({
     container: {

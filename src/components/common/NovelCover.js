@@ -49,6 +49,54 @@ const NovelCover = ({ item, onPress, libraryStatus }) => {
                             ]}
                             progressiveRenderingEnabled={true}
                         >
+                            <View style={{ flexDirection: "row", margin: 4 }}>
+                                {item.chaptersDownloaded && (
+                                    <Text
+                                        style={[
+                                            {
+                                                flex: 0,
+                                                backgroundColor: "#47a84a",
+                                                color: "#FFFFFF",
+                                                borderTopLeftRadius: 4,
+                                                borderBottomLeftRadius: 4,
+                                                paddingTop: 2,
+                                                paddingHorizontal: 4,
+                                                alignSelf: "flex-start",
+                                                fontSize: 12,
+                                            },
+                                            !item.chaptersUnread && {
+                                                borderTopRightRadius: 4,
+                                                borderBottomRightRadius: 4,
+                                            },
+                                        ]}
+                                    >
+                                        {item.chaptersDownloaded}
+                                    </Text>
+                                )}
+                                {item.chaptersUnread && (
+                                    <Text
+                                        style={[
+                                            {
+                                                flex: 0,
+                                                backgroundColor: "#2979FF",
+                                                color: "#FFFFFF",
+                                                borderTopRightRadius: 4,
+                                                borderBottomRightRadius: 4,
+                                                paddingTop: 2,
+                                                paddingHorizontal: 4,
+                                                alignSelf: "flex-start",
+                                                fontSize: 12,
+                                            },
+                                            !item.chaptersDownloaded && {
+                                                borderTopLeftRadius: 4,
+                                                borderBottomLeftRadius: 4,
+                                            },
+                                        ]}
+                                    >
+                                        {item.chaptersUnread}
+                                    </Text>
+                                )}
+                            </View>
                             {displayMode === 0 && (
                                 <View style={styles.titleContainer}>
                                     <LinearGradient

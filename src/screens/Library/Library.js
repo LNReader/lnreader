@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import {
     StyleSheet,
     Text,
@@ -15,19 +15,19 @@ import NovelCover from "../../components/common/NovelCover";
 import EmptyView from "../../components/common/EmptyView";
 
 import {
-    getLibraryNovels,
-    searchLibraryNovels,
-} from "../../redux/actions/library";
+    getLibraryAction,
+    searchLibraryAction,
+} from "../../redux/library/library.actions";
 import { SearchAppbar } from "../../components/common/Appbar";
-import { setNovel } from "../../redux/actions/novel";
+import { setNovel } from "../../redux/novel/novel.actions";
 
 const LibraryScreen = ({
     navigation,
     theme,
     novels,
     loading,
-    getLibraryNovels,
-    searchLibraryNovels,
+    getLibraryAction,
+    searchLibraryAction,
     setNovel,
     itemsPerRow,
 }) => {
@@ -35,12 +35,9 @@ const LibraryScreen = ({
 
     const [searchText, setSearchText] = useState("");
 
-    useFocusEffect(
-        useCallback(() => {
-            setSearchText("");
-            getLibraryNovels();
-        }, [])
-    );
+    useEffect(() => {
+        getLibraryAction();
+    }, [getLibraryAction]);
 
     /**
      * TODO: fix refreshing
@@ -48,7 +45,7 @@ const LibraryScreen = ({
     const onRefresh = () => {
         ToastAndroid.show("Updating library", ToastAndroid.SHORT);
         setRefreshing(true);
-        getLibraryNovels();
+        getLibraryAction();
         setRefreshing(false);
     };
 
@@ -68,8 +65,8 @@ const LibraryScreen = ({
                 <SearchAppbar
                     screen="Library"
                     placeholder="Search Library"
-                    getNovels={getLibraryNovels}
-                    getSearchResults={searchLibraryNovels}
+                    getNovels={getLibraryAction}
+                    getSearchResults={searchLibraryAction}
                     searchText={searchText}
                     setSearchText={setSearchText}
                 />
@@ -134,8 +131,8 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, {
-    getLibraryNovels,
-    searchLibraryNovels,
+    getLibraryAction,
+    searchLibraryAction,
     setNovel,
 })(LibraryScreen);
 

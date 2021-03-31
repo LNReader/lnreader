@@ -3,7 +3,7 @@ import {
     GET_HISTORY,
     LOAD_HISTORY,
     UPDATE_NOVEL_HISTORY,
-} from "../actions/types";
+} from "./history.types";
 
 const initialState = {
     history: [],
@@ -24,7 +24,7 @@ const historyReducer = (state = initialState, action) => {
             return {
                 ...state,
                 history: state.history.filter(
-                    (item) => item.novelUrl !== payload.novelUrl
+                    (item) => item.novelId !== payload.novelId
                 ),
             };
         // return {

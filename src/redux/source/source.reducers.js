@@ -1,5 +1,7 @@
+import { GET_SOURCES } from "./source.types";
+
 const initialState = {
-    novels: [],
+    extensions: [],
     loading: true,
 };
 
@@ -7,8 +9,8 @@ const libraryReducer = (state = initialState, action) => {
     const { type, payload } = action;
 
     switch (type) {
-        case "GET_LIBRARY_NOVELS":
-            return { novels: payload, loading: false };
+        case GET_SOURCES:
+            return { extensions: payload, loading: false };
         default:
             return state;
     }

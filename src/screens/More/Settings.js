@@ -5,8 +5,11 @@ import { List, Modal, Portal } from "react-native-paper";
 import InputSpinner from "react-native-input-spinner";
 
 import { connect } from "react-redux";
-import { switchTheme } from "../../redux/actions/theme";
-import { setDisplayMode, setItemsPerRow } from "../../redux/actions/settings";
+import { switchTheme } from "../../redux/theme/theme.actions";
+import {
+    setDisplayMode,
+    setItemsPerRow,
+} from "../../redux/settings/settings.actions";
 
 import { Appbar } from "../../components/common/Appbar";
 import {
@@ -14,11 +17,9 @@ import {
     ThemeCheckbox,
 } from "../../components/settings/Checkbox";
 
-import {
-    deleteHistory,
-    deleteNovelsNotInLibrary,
-    deleteDatabase,
-} from "../../services/db";
+import { deleteAllHistory } from "../../database/queries/HistoryQueries";
+import { deleteNovelCache } from "../../database/queries/NovelQueries";
+// import { deleteDb } from "../../database/DBHelper";
 
 const SettingsScreen = ({
     navigation,
@@ -90,7 +91,7 @@ const SettingsScreen = ({
                         title="Clear database"
                         descriptionStyle={desciptionStyles}
                         description="Delete history for novels not in your library"
-                        onPress={() => deleteNovelsNotInLibrary()}
+                        onPress={() => deleteNovelCache()}
                         rippleColor={theme.rippleColor}
                     />
                     <List.Item
@@ -98,7 +99,7 @@ const SettingsScreen = ({
                         title="Clear history"
                         descriptionStyle={desciptionStyles}
                         description="Delete reading history for all novels"
-                        onPress={() => deleteHistory()}
+                        onPress={() => deleteAllHistory()}
                         rippleColor={theme.rippleColor}
                     />
                     <List.Subheader
@@ -212,7 +213,7 @@ const SettingsScreen = ({
                         descriptionStyle={desciptionStyles}
                         description="Delete entire database"
                         rippleColor={theme.rippleColor}
-                        onPress={() => deleteDatabase()}
+                        onPress={() => deleteDb()}
                     /> */}
                     <List.Subheader
                         style={{

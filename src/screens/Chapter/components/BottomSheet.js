@@ -10,7 +10,7 @@ import { connect } from "react-redux";
 import {
     updateReaderTextSize,
     updateReaderTheme,
-} from "../../../redux/actions/settings";
+} from "../../../redux/settings/settings.actions";
 import BottomSheetHandle from "../../../components/common/BottomSheetHandle";
 
 const ChapterBottomSheet = ({

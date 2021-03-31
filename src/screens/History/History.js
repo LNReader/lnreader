@@ -10,28 +10,28 @@ import { connect } from "react-redux";
 import EmptyView from "../../components/common/EmptyView";
 
 import {
-    getHistory,
-    deleteChapterFromHistory,
-} from "../../redux/actions/history";
+    getHistoryAction,
+    deleteHistoryAction,
+} from "../../redux/history/history.actions";
 
 const History = ({
     navigation,
     theme,
     history,
     loading,
-    getHistory,
-    deleteChapterFromHistory,
+    getHistoryAction,
+    deleteHistoryAction,
 }) => {
     useFocusEffect(
         useCallback(() => {
-            getHistory();
-        }, [])
+            getHistoryAction();
+        }, [getHistoryAction])
     );
 
     const renderHistoryCard = ({ item }) => (
         <HistoryCard
             item={item}
-            deleteHistory={deleteChapterFromHistory}
+            deleteHistoryAction={deleteHistoryAction}
             navigation={navigation}
         />
     );
@@ -79,8 +79,8 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, {
-    getHistory,
-    deleteChapterFromHistory,
+    getHistoryAction,
+    deleteHistoryAction,
 })(History);
 
 const styles = StyleSheet.create({

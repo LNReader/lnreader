@@ -6,12 +6,11 @@ import AppLoading from "expo-app-loading";
 
 import Router from "./src/navigation/Router";
 
-import { createTables, createIndexes } from "./src/services/db";
-
 // Redux
 import { Provider } from "react-redux";
-import { persistor, store } from "./src/redux/store/configureStore";
+import { persistor, store } from "./src/redux/store";
 import { PersistGate } from "redux-persist/lib/integration/react";
+import { createDB } from "./src/database/DBHelper";
 
 const getFonts = () =>
     Font.loadAsync({
@@ -21,13 +20,8 @@ const getFonts = () =>
 const App = () => {
     const [fontsLoaded, setFontsLoaded] = useState(false);
 
-    const createDb = () => {
-        createTables();
-        createIndexes();
-    };
-
     useEffect(() => {
-        createDb();
+        createDB();
     }, []);
 
     if (fontsLoaded) {

@@ -1,27 +1,19 @@
-import React, { useState, useEffect, useRef } from "react";
-import {
-    StyleSheet,
-    View,
-    FlatList,
-    RefreshControl,
-    ToastAndroid,
-} from "react-native";
+import React, { useEffect, useRef } from "react";
+import { StyleSheet, View, FlatList, RefreshControl } from "react-native";
 import { Provider, Portal } from "react-native-paper";
 
 import ChapterCard from "./components/ChapterCard";
 import NovelInfoHeader from "./components/NovelHeader";
 import { BottomSheet } from "./components/BottomSheet";
 
-import { downloadOrDeleteChapter } from "../../services/db";
-
 import { connect } from "react-redux";
 
 import {
-    getNovel,
-    insertNovelInLibrary,
+    getNovelAction,
+    followNovelAction,
     sortAndFilterChapters,
-    updateLibraryNovel,
-} from "../../redux/actions/novel";
+    updateNovelAction,
+} from "../../redux/novel/novel.actions";
 
 const Novel = ({
     route,
@@ -29,36 +21,37 @@ const Novel = ({
     novel,
     chapters,
     loading,
-    getNovel,
+    getNovelAction,
     fetching,
-    insertNovelInLibrary,
+    followNovelAction,
     sortAndFilterChapters,
-    updateLibraryNovel,
+    updateNovelAction,
 }) => {
     const {
-        extensionId,
+        sourceId,
         novelUrl,
         novelName,
         novelCover,
-        libraryStatus,
+        followed,
+        novelId,
     } = route.params;
 
     let _panel = useRef(null); // Bottomsheet ref
 
     useEffect(() => {
-        getNovel(libraryStatus, extensionId, novelUrl);
+        getNovelAction(followed, sourceId, novelUrl, novelId);
     }, []);
 
     const renderChapterCard = ({ item }) => (
         <ChapterCard
             novelUrl={novelUrl}
-            extensionId={extensionId}
+            extensionId={sourceId}
             chapter={item}
         />
     );
 
     const onRefresh = () => {
-        updateLibraryNovel(extensionId, novelUrl);
+        updateNovelAction(sourceId, novelUrl, novelId);
     };
 
     return (
@@ -82,10 +75,11 @@ const Novel = ({
                             theme={theme}
                             item={{ novelName, novelCover }}
                             novel={novel}
-                            noOfChapters={chapters.length}
-                            insertNovelInLibrary={insertNovelInLibrary}
+                            noOfChapters={chapters?.length}
+                            followNovelAction={followNovelAction}
                             loading={loading}
                             bottomSheetRef={_panel}
+                            firstChapter={chapters[0]}
                         />
                     }
                     refreshControl={
@@ -117,10 +111,10 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, {
-    getNovel,
-    insertNovelInLibrary,
+    getNovelAction,
+    followNovelAction,
     sortAndFilterChapters,
-    updateLibraryNovel,
+    updateNovelAction,
 })(Novel);
 
 const styles = StyleSheet.create({
