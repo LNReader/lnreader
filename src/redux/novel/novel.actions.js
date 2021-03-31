@@ -15,6 +15,8 @@ import {
     CHAPTER_DELETED,
     UPDATE_NOVEL,
     UPDATE_LAST_READ,
+    FOLLOW_NOVEL,
+    UNFOLLOW_NOVEL,
 } from "./novel.types";
 
 import { updateNovel } from "../../services/updates";
@@ -100,16 +102,28 @@ export const sortAndFilterChapters = (novelUrl, filter, sort) => async (
     // });
 };
 
-export const followNovelAction = (followed, novelId) => async (dispatch) => {
-    await followNovel(followed, novelId);
+export const followNovelAction = (novel) => async (dispatch) => {
+    await followNovel(novel.followed, novel.novelId);
+
+    if (!novel.followed) {
+        dispatch({
+            type: FOLLOW_NOVEL,
+            payload: novel,
+        });
+    } else {
+        dispatch({
+            type: UNFOLLOW_NOVEL,
+            payload: novel.novelId,
+        });
+    }
 
     dispatch({
         type: UPDATE_IN_LIBRARY,
-        payload: !followed,
+        payload: !novel.followed,
     });
 
     ToastAndroid.show(
-        !followed ? "Added to library" : "Removed from library",
+        !novel.followed ? "Added to library" : "Removed from library",
         ToastAndroid.SHORT
     );
 };

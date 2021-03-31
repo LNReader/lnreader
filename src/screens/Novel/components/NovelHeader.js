@@ -128,9 +128,7 @@ const NovelInfoHeader = ({
                                     color={theme.colorAccentDark}
                                 />
                             )}
-                            onPress={() =>
-                                followNovelAction(novel.followed, novel.novelId)
-                            }
+                            onPress={() => followNovelAction(novel)}
                             style={[
                                 { backgroundColor: theme.colorPrimaryDark },
                                 styles.toggleFavourite,

@@ -8,8 +8,9 @@ export const createChapterTableQuery = `
     bookmark BOOLEAN NOT NULL DEFAULT 0, 
     \`read\` INTEGER NOT NULL DEFAULT 0, 
     downloaded INTEGER NOT NULL DEFAULT 0,
-    FOREIGN KEY (novelId) REFERENCES novels(novelId),
-    UNIQUE(novelId, chapterUrl)
+    UNIQUE(novelId, chapterUrl),
+    FOREIGN KEY (novelId) REFERENCES novels(novelId)
+    ON DELETE CASCADE
     )`;
 
 export const createNovelIdIndexQuery = `CREATE INDEX IF NOT EXISTS chapterNovelIdIndex ON chapters(novelId)`;

@@ -2,7 +2,6 @@ import * as SQLite from "expo-sqlite";
 const db = SQLite.openDatabase("lnreader.db");
 
 const getLibraryQuery = `
-
     SELECT novels.*, C.chaptersUnread, D.chaptersDownloaded
     FROM novels
     LEFT JOIN (

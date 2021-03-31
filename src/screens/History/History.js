@@ -25,7 +25,7 @@ const History = ({
     useFocusEffect(
         useCallback(() => {
             getHistoryAction();
-        }, [])
+        }, [getHistoryAction])
     );
 
     const renderHistoryCard = ({ item }) => (

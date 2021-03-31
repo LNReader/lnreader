@@ -17,7 +17,6 @@ export const getHistory = async () => {
                 getHistoryQuery,
                 null,
                 (txObj, { rows: { _array } }) => {
-                    // console.log(_array);
                     resolve(_array);
                 },
                 (txObj, error) => console.log("Error ", error)
@@ -31,14 +30,11 @@ export const getHistory = async () => {
 export const insertHistory = async (novelId, chapterId) => {
     db.transaction((tx) => {
         tx.executeSql(
-            "INSERT OR REPLACE INTO history (historyNovelId, historyChapterId) VALUEs (?, ?)",
+            "INSERT OR REPLACE INTO history (historyNovelId, historyChapterId) VALUES (?, ?)",
             [novelId, chapterId],
-            (txObj, { rows: { _array } }) => {},
+            (txObj, res) => {},
             (txObj, error) => console.log("Error ", error)
         );
-        tx.executeSql("UPDATE chapters SET `read` = 1 WHERE chapterId = ?", [
-            chapterId,
-        ]);
         tx.executeSql("UPDATE novels SET unread = 0 WHERE novelId = ?", [
             novelId,
         ]);

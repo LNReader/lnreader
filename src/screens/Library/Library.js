@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import {
     StyleSheet,
     Text,
@@ -35,12 +35,9 @@ const LibraryScreen = ({
 
     const [searchText, setSearchText] = useState("");
 
-    useFocusEffect(
-        useCallback(() => {
-            setSearchText("");
-            getLibraryAction();
-        }, [])
-    );
+    useEffect(() => {
+        getLibraryAction();
+    }, [getLibraryAction]);
 
     /**
      * TODO: fix refreshing
