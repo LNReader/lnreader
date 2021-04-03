@@ -105,10 +105,12 @@ const ChapterItem = ({
                                     size={26}
                                     disabled={!chapter.prevChapter}
                                     onPress={() => {
-                                        navigation.push("ChapterItem", {
+                                        navigation.replace("ChapterItem", {
                                             chapterUrl: chapter.prevChapter,
+                                            chapterId: chapterId - 1,
                                             extensionId,
                                             novelUrl,
+                                            novelId,
                                             chapterName: chapter.chapterName,
                                         });
                                     }}
@@ -119,10 +121,12 @@ const ChapterItem = ({
                                     size={26}
                                     disabled={!chapter.nextChapter}
                                     onPress={() => {
-                                        navigation.push("ChapterItem", {
+                                        navigation.replace("ChapterItem", {
                                             chapterUrl: chapter.nextChapter,
                                             extensionId,
                                             novelUrl,
+                                            novelId,
+                                            chapterId: chapterId + 1,
                                             chapterName: chapter.chapterName,
                                         });
                                     }}

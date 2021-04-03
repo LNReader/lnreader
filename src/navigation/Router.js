@@ -44,6 +44,17 @@ const SettingsStack = () => {
     );
 };
 
+const ExtensionStack = () => {
+    return (
+        <Stack.Navigator screenOptions={stackNavigatorConfig}>
+            <Stack.Screen name="BoxNovel" component={BoxNovel} />
+            <Stack.Screen name="ReadLightNovel" component={ReadLightNovel} />
+            <Stack.Screen name="FastNovel" component={FastNovel} />
+            <Stack.Screen name="ReadNovelFull" component={ReadNovelFull} />
+        </Stack.Navigator>
+    );
+};
+
 import { useSelector } from "react-redux";
 
 const BottomNavigator = () => {
@@ -149,15 +160,11 @@ const Router = () => {
                         headerTintColor: "white",
                     }}
                 />
-                <Stack.Screen name="BoxNovel" component={BoxNovel} />
                 <Stack.Screen name="SettingsStack" component={SettingsStack} />
-
                 <Stack.Screen
-                    name="ReadLightNovel"
-                    component={ReadLightNovel}
+                    name="ExtensionStack"
+                    component={ExtensionStack}
                 />
-                <Stack.Screen name="FastNovel" component={FastNovel} />
-                <Stack.Screen name="ReadNovelFull" component={ReadNovelFull} />
             </Stack.Navigator>
         </Provider>
     );

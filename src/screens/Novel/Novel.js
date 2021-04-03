@@ -1,5 +1,11 @@
 import React, { useEffect, useRef } from "react";
-import { StyleSheet, View, FlatList, RefreshControl } from "react-native";
+import {
+    StyleSheet,
+    View,
+    FlatList,
+    RefreshControl,
+    ToastAndroid,
+} from "react-native";
 import { Provider, Portal } from "react-native-paper";
 
 import ChapterCard from "./components/ChapterCard";
@@ -42,9 +48,7 @@ const Novel = ({
         getNovelAction(followed, sourceId, novelUrl, novelId);
     }, [getNovelAction]);
 
-    const getLastReadChapter = () => {
-        return chapters.find((obj) => obj.read === 0);
-    };
+    let lastRead = !loading && chapters.find((obj) => obj.read === 0);
 
     const renderChapterCard = ({ item }) => (
         <ChapterCard
@@ -56,6 +60,7 @@ const Novel = ({
 
     const onRefresh = () => {
         updateNovelAction(sourceId, novelUrl, novelId);
+        ToastAndroid.show(`Updated ${novelName}`, ToastAndroid.SHORT);
     };
 
     return (
@@ -68,7 +73,7 @@ const Novel = ({
             >
                 <FlatList
                     data={!loading && chapters}
-                    keyExtractor={(item) => item.chapterUrl}
+                    keyExtractor={(item) => item.chapterId.toString()}
                     removeClippedSubviews={true}
                     maxToRenderPerBatch={5}
                     windowSize={15}
@@ -82,7 +87,7 @@ const Novel = ({
                             noOfChapters={chapters?.length}
                             followNovelAction={followNovelAction}
                             loading={loading}
-                            getLastReadChapter={getLastReadChapter}
+                            lastRead={lastRead}
                             bottomSheetRef={_panel}
                         />
                     }

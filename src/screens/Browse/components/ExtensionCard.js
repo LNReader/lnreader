@@ -15,7 +15,11 @@ const ExtensionCard = ({ item }) => {
     return (
         <TouchableRipple
             style={styles.extensionCard}
-            onPress={() => navigation.navigate(sourceName)}
+            onPress={() =>
+                navigation.navigate("ExtensionStack", {
+                    screen: sourceName,
+                })
+            }
             rippleColor={theme.rippleColor}
             borderless
         >
@@ -64,7 +68,11 @@ const ExtensionCard = ({ item }) => {
                             }}
                             uppercase={false}
                             color={theme.colorAccentDark}
-                            onPress={() => navigation.navigate(sourceName)}
+                            onPress={() =>
+                                navigation.navigate("ExtensionStack", {
+                                    screen: sourceName,
+                                })
+                            }
                         >
                             Browse
                         </Button>

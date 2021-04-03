@@ -160,16 +160,14 @@ export const downloadChapterAction = (
 ) => async (dispatch) => {
     dispatch({
         type: CHAPTER_DOWNLOADING,
-        payload: {
-            chapterId,
-        },
+        payload: chapterId,
     });
 
     await downloadChapter(extensionId, novelUrl, chapterUrl, chapterId);
 
     dispatch({
         type: CHAPTER_DOWNLOADED,
-        payload: { chapterId },
+        payload: chapterId,
     });
 
     ToastAndroid.show(`Downloaded ${chapterName}`, ToastAndroid.SHORT);
@@ -182,7 +180,7 @@ export const deleteChapterAction = (chapterId, chapterName) => async (
 
     dispatch({
         type: CHAPTER_DELETED,
-        payload: { chapterId },
+        payload: chapterId,
     });
 
     ToastAndroid.show(`Deleted ${chapterName}`, ToastAndroid.SHORT);
@@ -193,22 +191,13 @@ export const updateNovelAction = (extensionId, novelUrl, novelId) => async (
 ) => {
     dispatch({ type: FETCHING_NOVEL });
 
-    const updatedNovel = await updateNovel(extensionId, novelUrl, novelId);
+    await updateNovel(extensionId, novelUrl, novelId);
+
+    let novel = await getNovel(novelUrl);
+    let chapters = await getChapters(novel.novelId);
 
     dispatch({
         type: UPDATE_NOVEL,
-        payload: { novel: updatedNovel, chapters: updatedNovel.chapters },
+        payload: { novel, chapters },
     });
-};
-
-export const getLastReadChapterAction = (novelId) => async (dispatch) => {
-    if (novelId) {
-        console.log(novelId);
-        const lastReadChapter = await getLastReadChapter(novelId);
-
-        dispatch({
-            type: UPDATE_LAST_READ,
-            payload: lastReadChapter,
-        });
-    }
 };

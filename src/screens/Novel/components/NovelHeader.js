@@ -23,15 +23,13 @@ const NovelInfoHeader = ({
     loading,
     bottomSheetRef,
     theme,
-    getLastReadChapter,
+    lastRead,
 }) => {
     const navigation = useNavigation();
 
     const [more, setMore] = useState(
         !loading && novel.followed !== 1 ? true : false
     );
-
-    let lastRead = getLastReadChapter();
 
     const renderGenreChip = ({ item }) => (
         <Text
@@ -240,7 +238,7 @@ const NovelInfoHeader = ({
                         }}
                     >
                         {novel.unread ? `Start reading ` : `Continue reading `}
-                        {lastRead.chapterName}
+                        {lastRead?.chapterName}
                     </Button>
 
                     <TouchableRipple
