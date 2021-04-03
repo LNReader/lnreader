@@ -3,10 +3,10 @@ import { StyleSheet, View, FlatList, ActivityIndicator } from "react-native";
 import { Provider } from "react-native-paper";
 
 import NovelCover from "../../../components/common/NovelCover";
+import EmptyView from "../../../components/common/EmptyView";
 import { SearchAppbar } from "../../../components/common/Appbar";
 
 import { useSelector } from "react-redux";
-import EmptyView from "../../../components/common/EmptyView";
 
 const ReadLightNovel = ({ navigation }) => {
     const theme = useSelector((state) => state.themeReducer.theme);

@@ -40,7 +40,11 @@ const Novel = ({
 
     useEffect(() => {
         getNovelAction(followed, sourceId, novelUrl, novelId);
-    }, []);
+    }, [getNovelAction]);
+
+    const getLastReadChapter = () => {
+        return chapters.find((obj) => obj.read === 0);
+    };
 
     const renderChapterCard = ({ item }) => (
         <ChapterCard
@@ -78,8 +82,8 @@ const Novel = ({
                             noOfChapters={chapters?.length}
                             followNovelAction={followNovelAction}
                             loading={loading}
+                            getLastReadChapter={getLastReadChapter}
                             bottomSheetRef={_panel}
-                            firstChapter={chapters[0]}
                         />
                     }
                     refreshControl={

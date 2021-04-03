@@ -5,13 +5,18 @@ const insertChaptersQuery = `INSERT INTO chapters (chapterUrl, chapterName, rele
 
 export const insertChapters = async (novelId, chapters) => {
     db.transaction((tx) => {
-        chapters.map((chapter) =>
-            tx.executeSql(insertChaptersQuery, [
-                chapter.chapterUrl,
-                chapter.chapterName,
-                chapter.releaseDate,
-                novelId,
-            ])
+        chapters.map(
+            (chapter) =>
+                tx.executeSql(insertChaptersQuery, [
+                    chapter.chapterUrl,
+                    chapter.chapterName,
+                    chapter.releaseDate,
+                    novelId,
+                ]),
+            (txObj, res) => {
+                console.log("Success");
+            },
+            (txObj, error) => console.log("Error ", error)
         );
     });
 };

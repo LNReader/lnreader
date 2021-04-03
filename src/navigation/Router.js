@@ -23,6 +23,8 @@ import ChapterItem from "../screens/Chapter/Chapter";
 // Extensions
 import BoxNovel from "../screens/Extensions/boxnovel/BoxNovel";
 import ReadLightNovel from "../screens/Extensions/readlightnovel/ReadLightNovel";
+import FastNovel from "../screens/Extensions/fastnovel/FastNovel";
+import ReadNovelFull from "../screens/Extensions/readnovelfull/ReadNovelFull";
 
 const Stack = createStackNavigator();
 
@@ -33,28 +35,11 @@ const stackNavigatorConfig = {
     ...TransitionPresets.RevealFromBottomAndroid,
 };
 
-const MoreStack = () => {
+const SettingsStack = () => {
     return (
         <Stack.Navigator screenOptions={stackNavigatorConfig}>
-            <Stack.Screen name="More" component={More} />
             <Stack.Screen name="About" component={About} />
             <Stack.Screen name="Settings" component={Settings} />
-        </Stack.Navigator>
-    );
-};
-
-const BoxNovelStack = () => {
-    return (
-        <Stack.Navigator screenOptions={stackNavigatorConfig}>
-            <Stack.Screen name="BoxNovel" component={BoxNovel} />
-        </Stack.Navigator>
-    );
-};
-
-const ReadLightNovelStack = () => {
-    return (
-        <Stack.Navigator screenOptions={stackNavigatorConfig}>
-            <Stack.Screen name="ReadLightNovel" component={ReadLightNovel} />
         </Stack.Navigator>
     );
 };
@@ -125,7 +110,7 @@ const BottomNavigator = () => {
             />
             <Tab.Screen
                 name="More"
-                component={MoreStack}
+                component={More}
                 options={{
                     tabBarIcon: ({ color }) => (
                         <MaterialCommunityIcons
@@ -164,11 +149,15 @@ const Router = () => {
                         headerTintColor: "white",
                     }}
                 />
-                <Stack.Screen name="BoxNovelStack" component={BoxNovelStack} />
+                <Stack.Screen name="BoxNovel" component={BoxNovel} />
+                <Stack.Screen name="SettingsStack" component={SettingsStack} />
+
                 <Stack.Screen
-                    name="ReadLightNovelStack"
-                    component={ReadLightNovelStack}
+                    name="ReadLightNovel"
+                    component={ReadLightNovel}
                 />
+                <Stack.Screen name="FastNovel" component={FastNovel} />
+                <Stack.Screen name="ReadNovelFull" component={ReadNovelFull} />
             </Stack.Navigator>
         </Provider>
     );

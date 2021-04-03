@@ -23,13 +23,15 @@ const NovelInfoHeader = ({
     loading,
     bottomSheetRef,
     theme,
-    firstChapter,
+    getLastReadChapter,
 }) => {
     const navigation = useNavigation();
 
     const [more, setMore] = useState(
         !loading && novel.followed !== 1 ? true : false
     );
+
+    let lastRead = getLastReadChapter();
 
     const renderGenreChip = ({ item }) => (
         <Text
@@ -226,24 +228,19 @@ const NovelInfoHeader = ({
                         ]}
                         uppercase={false}
                         labelStyle={{ letterSpacing: 0 }}
-                        // onPress={() => {
-                        //     console.log(firstChapter.chapterName);
-                        //     navigation.navigate("ChapterItem", {
-                        //         chapterUrl:
-                        //             novel.lastRead.chapterUrl ??
-                        //             firstChapter.chapterUrl,
-                        //         novelUrl: novel.novelUrl,
-                        //         extensionId: novel.extensionId,
-                        //         chapterName:
-                        //             novel.lastRead.chapterUrl ??
-                        //             firstChapter.chapterName,
-                        //     });
-                        // }}
+                        onPress={() => {
+                            navigation.navigate("ChapterItem", {
+                                chapterId: lastRead.chapterId,
+                                chapterUrl: lastRead.chapterUrl,
+                                novelUrl: novel.novelUrl,
+                                novelId: lastRead.novelId,
+                                extensionId: novel.sourceId,
+                                chapterName: lastRead.chapterName,
+                            });
+                        }}
                     >
-                        {/* {novel.lastRead
-                            ? `Continue reading ${novel.lastRead.chapterName}`
-                            : `Start reading ${firstChapter.chapterName}`} */}
-                        Start reading
+                        {novel.unread ? `Start reading ` : `Continue reading `}
+                        {lastRead.chapterName}
                     </Button>
 
                     <TouchableRipple

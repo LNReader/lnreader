@@ -10,7 +10,7 @@ import ExtensionCard from "./components/ExtensionCard";
 const Browse = ({ theme, extensions, loading, getSourcesAction }) => {
     useEffect(() => {
         getSourcesAction();
-    }, []);
+    }, [getSourcesAction]);
 
     return (
         <>

@@ -37,7 +37,7 @@ const LibraryScreen = ({
 
     useEffect(() => {
         getLibraryAction();
-    }, [getLibraryAction]);
+    }, [getLibraryAction, novels]);
 
     /**
      * TODO: fix refreshing

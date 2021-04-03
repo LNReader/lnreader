@@ -57,10 +57,9 @@ export const getNovelAction = (followed, sourceId, novelUrl, novelId) => async (
     } else {
         dispatch({ type: FETCHING_NOVEL });
 
-        const inCache = await checkNovelInCache(novelUrl);
+        const novel = await getNovel(novelUrl);
 
-        if (inCache) {
-            const novel = await getNovel(novelUrl);
+        if (novel) {
             novel.chapters = await getChapters(novel.novelId);
             dispatch({
                 type: GET_NOVEL,
@@ -105,17 +104,17 @@ export const sortAndFilterChapters = (novelUrl, filter, sort) => async (
 export const followNovelAction = (novel) => async (dispatch) => {
     await followNovel(novel.followed, novel.novelId);
 
-    if (!novel.followed) {
-        dispatch({
-            type: FOLLOW_NOVEL,
-            payload: novel,
-        });
-    } else {
-        dispatch({
-            type: UNFOLLOW_NOVEL,
-            payload: novel.novelId,
-        });
-    }
+    // if (!novel.followed) {
+    //     dispatch({
+    //         type: FOLLOW_NOVEL,
+    //         payload: novel,
+    //     });
+    // } else {
+    //     dispatch({
+    //         type: UNFOLLOW_NOVEL,
+    //         payload: novel.novelId,
+    //     });
+    // }
 
     dispatch({
         type: UPDATE_IN_LIBRARY,
@@ -203,10 +202,13 @@ export const updateNovelAction = (extensionId, novelUrl, novelId) => async (
 };
 
 export const getLastReadChapterAction = (novelId) => async (dispatch) => {
-    const lastReadChapter = await getLastReadChapter(novelId);
+    if (novelId) {
+        console.log(novelId);
+        const lastReadChapter = await getLastReadChapter(novelId);
 
-    dispatch({
-        type: UPDATE_LAST_READ,
-        payload: lastReadChapter,
-    });
+        dispatch({
+            type: UPDATE_LAST_READ,
+            payload: lastReadChapter,
+        });
+    }
 };

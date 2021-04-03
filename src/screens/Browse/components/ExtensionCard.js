@@ -6,7 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 
 const ExtensionCard = ({ item }) => {
-    const { sourceName, sourceCover, sourceLanguage } = item;
+    const { sourceId, sourceName, sourceCover, sourceLanguage } = item;
 
     const navigation = useNavigation();
 
@@ -15,7 +15,7 @@ const ExtensionCard = ({ item }) => {
     return (
         <TouchableRipple
             style={styles.extensionCard}
-            onPress={() => navigation.navigate(sourceName + "Stack")}
+            onPress={() => navigation.navigate(sourceName)}
             rippleColor={theme.rippleColor}
             borderless
         >
@@ -37,14 +37,25 @@ const ExtensionCard = ({ item }) => {
                         >
                             {sourceName}
                         </Text>
-                        <Text
-                            style={{
-                                color: theme.textColorSecondary,
-                                fontSize: 12,
-                            }}
-                        >
-                            {sourceLanguage}
-                        </Text>
+                        <View style={{ flexDirection: "row" }}>
+                            <Text
+                                style={{
+                                    color: theme.textColorSecondary,
+                                    fontSize: 12,
+                                }}
+                            >
+                                {sourceLanguage}
+                            </Text>
+                            <Text
+                                style={{
+                                    color: "#D63B2F",
+                                    fontSize: 12,
+                                    marginLeft: 5,
+                                }}
+                            >
+                                {sourceId === 3 && "(Not Working)"}
+                            </Text>
+                        </View>
                     </View>
                     <View>
                         <Button
@@ -53,9 +64,7 @@ const ExtensionCard = ({ item }) => {
                             }}
                             uppercase={false}
                             color={theme.colorAccentDark}
-                            onPress={() =>
-                                navigation.navigate(sourceName + "Stack")
-                            }
+                            onPress={() => navigation.navigate(sourceName)}
                         >
                             Browse
                         </Button>

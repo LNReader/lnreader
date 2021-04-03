@@ -30,7 +30,11 @@ const MoreScreen = ({ navigation }) => {
                             icon="cog-outline"
                         />
                     )}
-                    onPress={() => navigation.navigate("Settings")}
+                    onPress={() =>
+                        navigation.navigate("SettingsStack", {
+                            screen: "Settings",
+                        })
+                    }
                 />
                 <List.Item
                     titleStyle={{ color: theme.textColorPrimary }}
@@ -41,7 +45,11 @@ const MoreScreen = ({ navigation }) => {
                             icon="information-outline"
                         />
                     )}
-                    onPress={() => navigation.navigate("About")}
+                    onPress={() =>
+                        navigation.navigate("SettingsStack", {
+                            screen: "About",
+                        })
+                    }
                 />
             </List.Section>
         </>
