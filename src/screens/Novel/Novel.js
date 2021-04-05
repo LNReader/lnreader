@@ -46,7 +46,7 @@ const Novel = ({
 
     useEffect(() => {
         getNovelAction(followed, sourceId, novelUrl, novelId);
-    }, [getNovelAction]);
+    }, [getNovelAction, followNovelAction]);
 
     let lastRead = !loading && chapters.find((obj) => obj.read === 0);
 

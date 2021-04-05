@@ -30,7 +30,7 @@ export const getHistory = async () => {
 export const insertHistory = async (novelId, chapterId) => {
     db.transaction((tx) => {
         tx.executeSql(
-            "INSERT OR REPLACE INTO history (historyNovelId, historyChapterId) VALUES (?, ?)",
+            "INSERT OR REPLACE INTO history (historyNovelId, historyChapterId, historyTimeRead) VALUES (?, ?, (datetime('now','localtime')))",
             [novelId, chapterId],
             (txObj, res) => {},
             (txObj, error) => console.log("Error ", error)

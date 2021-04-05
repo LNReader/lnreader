@@ -20,6 +20,7 @@ import {
 } from "../../redux/library/library.actions";
 import { SearchAppbar } from "../../components/common/Appbar";
 import { setNovel } from "../../redux/novel/novel.actions";
+import { updateAllNovels } from "../../services/updates";
 
 const LibraryScreen = ({
     navigation,
@@ -45,7 +46,7 @@ const LibraryScreen = ({
     const onRefresh = () => {
         ToastAndroid.show("Updating library", ToastAndroid.SHORT);
         setRefreshing(true);
-        getLibraryAction();
+        updateAllNovels();
         setRefreshing(false);
     };
 
@@ -64,7 +65,7 @@ const LibraryScreen = ({
             >
                 <SearchAppbar
                     screen="Library"
-                    placeholder="Search Library"
+                    placeholder="Search Library (Broken)"
                     getNovels={getLibraryAction}
                     getSearchResults={searchLibraryAction}
                     searchText={searchText}

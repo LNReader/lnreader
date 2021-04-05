@@ -94,11 +94,7 @@ const ReadLightNovel = ({ navigation }) => {
                                         sourceId: item.extensionId,
                                     })
                                 }
-                                libraryStatus={
-                                    checkIFInLibrary(item.novelUrl)
-                                        ? true
-                                        : false
-                                }
+                                libraryStatus={checkIFInLibrary(item.novelUrl)}
                             />
                         )}
                         ListEmptyComponent={

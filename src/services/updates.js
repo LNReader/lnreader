@@ -1,6 +1,8 @@
 import * as SQLite from "expo-sqlite";
+import { getLibrary } from "../database/queries/LibraryQueries";
 import { fetchNovel } from "../source/Source";
 const db = SQLite.openDatabase("lnreader.db");
+import { ToastAndroid } from "react-native";
 
 const updateNovelDetails = async (novel, novelId) => {
     db.transaction((tx) => {
@@ -37,11 +39,38 @@ export const updateNovel = async (extensionId, novelUrl, novelId) => {
                     chapter.releaseDate,
                     novelId,
                 ],
-                (txObj, res) => {},
+                (txObj, { insertId }) => {
+                    if (insertId !== -1) {
+                        tx.executeSql(
+                            "INSERT OR IGNORE INTO updates (chapterId, novelId, updateTime) values (?, ?, (datetime('now','localtime')))",
+                            [insertId, novelId],
+                            (txObj, res) => {
+                                console.log(
+                                    "Inserted Chapter Id -> " +
+                                        insertId +
+                                        " Novel Id " +
+                                        novelId
+                                );
+                            },
+                            (txObj, error) => console.log("Error ", error)
+                        );
+                    }
+                },
                 (txObj, error) => console.log("Error ", error)
             )
         );
     });
+};
 
-    return novel;
+export const updateAllNovels = async () => {
+    ToastAndroid.show("Updating library", ToastAndroid.SHORT);
+
+    const libraryNovels = await getLibrary();
+
+    libraryNovels.map((novel, index) =>
+        setTimeout(async () => {
+            updateNovel(novel.sourceId, novel.novelUrl, novel.novelId);
+            console.log(novel.novelName + " Updated");
+        }, 3000 * index)
+    );
 };

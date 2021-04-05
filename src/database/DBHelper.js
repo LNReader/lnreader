@@ -14,6 +14,10 @@ import {
     createChapterIdIndexQuery,
 } from "./tables/HistoryTable";
 import { createDownloadTableQuery } from "./tables/DownloadTable";
+import {
+    createUpdatesTableQuery,
+    updatesSeedDataQuery,
+} from "./tables/UpdateTable";
 
 /**
  * Database Version = 2
@@ -29,6 +33,18 @@ export const createDB = () => {
         tx.executeSql(createChapterTableQuery);
         tx.executeSql(createHistoryTableQuery);
         tx.executeSql(createDownloadTableQuery);
+        tx.executeSql(
+            createUpdatesTableQuery,
+            null,
+            (txObj, res) => {},
+            (txObj, error) => console.log("Error ", error)
+        );
+        // tx.executeSql(
+        //     updatesSeedDataQuery,
+        //     null,
+        //     (txObj, res) => {},
+        //     (txObj, error) => console.log("Error ", error)
+        // );
 
         //Db indexes
         tx.executeSql(createUrlIndexQuery);
@@ -45,5 +61,6 @@ export const deleteDb = () => {
         tx.executeSql("DROP TABLE chapters");
         tx.executeSql("DROP TABLE history");
         tx.executeSql("DROP TABLE downloads");
+        tx.executeSql("DROP TABLE updates");
     });
 };

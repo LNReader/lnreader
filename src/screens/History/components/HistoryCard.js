@@ -49,7 +49,7 @@ const HistoryCard = ({ item, deleteHistoryAction, navigation }) => {
                             numberOfLines={1}
                         >
                             {`${item.chapterName} - ${moment(
-                                item.lastRead
+                                item.historyTimeRead
                             ).calendar()}`}
                         </Text>
                     </View>

@@ -10,6 +10,7 @@ import { setStatusBarStyle } from "expo-status-bar";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import Library from "../screens/Library/Library";
+import Updates from "../screens/Updates/Updates";
 import History from "../screens/History/History";
 import Browse from "../screens/Browse/Browse";
 
@@ -79,7 +80,7 @@ const BottomNavigator = () => {
                     ),
                 }}
             />
-            {/* 
+
             <Tab.Screen
                 name="Updates"
                 component={Updates}
@@ -92,7 +93,7 @@ const BottomNavigator = () => {
                         />
                     ),
                 }}
-            /> */}
+            />
             <Tab.Screen
                 name="History"
                 component={History}
