@@ -9,7 +9,3 @@ export const createUpdatesTableQuery = `
     FOREIGN KEY (novelId) REFERENCES novels(novelId)
     ON DELETE CASCADE
     )`;
-
-export const updatesSeedDataQuery = `
-    INSERT INTO updates (chapterId, novelId) VALUES (55,2), (421,2), (345,2)
-    `;

@@ -33,18 +33,7 @@ export const createDB = () => {
         tx.executeSql(createChapterTableQuery);
         tx.executeSql(createHistoryTableQuery);
         tx.executeSql(createDownloadTableQuery);
-        tx.executeSql(
-            createUpdatesTableQuery,
-            null,
-            (txObj, res) => {},
-            (txObj, error) => console.log("Error ", error)
-        );
-        // tx.executeSql(
-        //     updatesSeedDataQuery,
-        //     null,
-        //     (txObj, res) => {},
-        //     (txObj, error) => console.log("Error ", error)
-        // );
+        tx.executeSql(createUpdatesTableQuery);
 
         //Db indexes
         tx.executeSql(createUrlIndexQuery);

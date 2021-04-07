@@ -41,6 +41,7 @@ export const updateNovel = async (extensionId, novelUrl, novelId) => {
                 ],
                 (txObj, { insertId }) => {
                     if (insertId !== -1) {
+                        console.log(insertId);
                         tx.executeSql(
                             "INSERT OR IGNORE INTO updates (chapterId, novelId, updateTime) values (?, ?, (datetime('now','localtime')))",
                             [insertId, novelId],

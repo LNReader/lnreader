@@ -1,8 +1,12 @@
 import { FOLLOW_NOVEL, UNFOLLOW_NOVEL } from "../novel/novel.types";
-import { GET_LIBRARY_NOVELS } from "./library.types";
+import {
+    GET_LIBRARY_NOVELS,
+    GET_LIBRARY_SEARCH_RESULTS,
+} from "./library.types";
 
 const initialState = {
     novels: [],
+    searchResults: [],
     loading: true,
 };
 
@@ -11,7 +15,9 @@ const libraryReducer = (state = initialState, action) => {
 
     switch (type) {
         case GET_LIBRARY_NOVELS:
-            return { novels: payload, loading: false };
+            return { ...state, novels: payload, loading: false };
+        case GET_LIBRARY_SEARCH_RESULTS:
+            return { ...state, searchResults: payload, loading: false };
         case FOLLOW_NOVEL:
             return {
                 ...state,
