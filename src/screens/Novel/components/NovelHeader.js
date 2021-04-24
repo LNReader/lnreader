@@ -217,30 +217,48 @@ const NovelInfoHeader = ({
                         renderItem={renderGenreChip}
                         showsHorizontalScrollIndicator={false}
                     />
-
-                    <Button
-                        color="white"
-                        style={[
-                            { backgroundColor: theme.colorAccentDark },
-                            styles.startButton,
-                        ]}
-                        uppercase={false}
-                        labelStyle={{ letterSpacing: 0 }}
-                        onPress={() => {
-                            navigation.navigate("ChapterItem", {
-                                chapterId: lastRead.chapterId,
-                                chapterUrl: lastRead.chapterUrl,
-                                novelUrl: novel.novelUrl,
-                                novelId: lastRead.novelId,
-                                extensionId: novel.sourceId,
-                                chapterName: lastRead.chapterName,
-                            });
-                        }}
-                    >
-                        {novel.unread ? `Start reading ` : `Continue reading `}
-                        {lastRead?.chapterName}
-                    </Button>
-
+                    {noOfChapters > 0 &&
+                        (lastRead ? (
+                            <Button
+                                color="white"
+                                style={[
+                                    { backgroundColor: theme.colorAccentDark },
+                                    styles.startButton,
+                                ]}
+                                uppercase={false}
+                                labelStyle={{ letterSpacing: 0 }}
+                                onPress={() => {
+                                    navigation.navigate("ChapterItem", {
+                                        chapterId: lastRead.chapterId,
+                                        chapterUrl: lastRead.chapterUrl,
+                                        novelUrl: novel.novelUrl,
+                                        novelId: lastRead.novelId,
+                                        extensionId: novel.sourceId,
+                                        chapterName: lastRead.chapterName,
+                                    });
+                                }}
+                            >
+                                {novel.unread
+                                    ? `Start reading `
+                                    : `Continue reading `}
+                                {lastRead.chapterName}
+                            </Button>
+                        ) : (
+                            <Button
+                                color={theme.textColorPrimary}
+                                style={[
+                                    {
+                                        backgroundColor: theme.textColorPrimary,
+                                        opacity: 0.2,
+                                    },
+                                    styles.startButton,
+                                ]}
+                                uppercase={false}
+                                labelStyle={{ letterSpacing: 0 }}
+                            >
+                                All chapters read
+                            </Button>
+                        ))}
                     <TouchableRipple
                         style={styles.bottomsheet}
                         onPress={() =>

@@ -24,13 +24,13 @@ const AboutScreen = ({ navigation }) => {
                     titleStyle={{ color: theme.textColorPrimary }}
                     title="Version"
                     descriptionStyle={{ color: theme.textColorSecondary }}
-                    description="Stable 1.0.11 (add: readnovelfull)"
+                    description="Stable 1.0.12"
                 />
                 <List.Item
                     titleStyle={{ color: theme.textColorPrimary }}
                     title="Build Time"
                     descriptionStyle={{ color: theme.textColorSecondary }}
-                    description="31-03-21 10:00 AM"
+                    description="08-04-21 08:00 AM"
                 />
 
                 <List.Item
