@@ -21,7 +21,6 @@ const App = () => {
     const [fontsLoaded, setFontsLoaded] = useState(false);
 
     useEffect(() => {
-        // deleteDb();
         createDB();
     }, []);
 

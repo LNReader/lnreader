@@ -14,7 +14,7 @@ const initialState = {
         theme: 1,
         textSize: 16,
         textAlign: "left",
-        padding: "5",
+        padding: 5,
     },
 };
 
