@@ -27,7 +27,7 @@ const Updates = ({ theme, updates, loading, getUpdatesAction }) => {
                 ]}
             >
                 <FlatList
-                    contentContainerStyle={{ flexGrow: 1, padding: 8 }}
+                    contentContainerStyle={{ flexGrow: 1, paddingVertical: 8 }}
                     data={updates}
                     keyExtractor={(item) => item.updateId.toString()}
                     renderItem={renderUpdateCard}

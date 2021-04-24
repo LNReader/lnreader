@@ -2,7 +2,7 @@ import * as SQLite from "expo-sqlite";
 const db = SQLite.openDatabase("lnreader.db");
 
 const getHistoryQuery = `
-    SELECT chapters.chapterId, chapters.chapterUrl, chapters.chapterName, novels.novelUrl, novels.novelCover, novels.novelName, novels.sourceId, updates.updateTime, updates.updateId
+    SELECT chapters.chapterId, chapters.chapterUrl, chapters.chapterName, novels.novelUrl, novels.novelId, novels.novelCover, novels.novelName, novels.sourceId, updates.updateTime, updates.updateId
     FROM updates 
     JOIN chapters 
     ON updates.chapterId = chapters.chapterId

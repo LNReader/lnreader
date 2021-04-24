@@ -14,11 +14,17 @@ const UpdateCard = ({ item }) => {
     return (
         <TouchableRipple
             style={styles.updateCard}
-            // onPress={() =>
-            //     navigation.navigate("ExtensionStack", {
-            //         screen: sourceName,
-            //     })
-            // }
+            onPress={() =>
+                // console.log(item);
+                navigation.navigate("ChapterItem", {
+                    chapterId: item.chapterId,
+                    chapterUrl: item.chapterUrl,
+                    extensionId: item.sourceId,
+                    novelUrl: item.novelUrl,
+                    chapterName: item.chapterName,
+                    novelId: item.novelId,
+                })
+            }
             rippleColor={theme.rippleColor}
             borderless
         >
@@ -34,6 +40,7 @@ const UpdateCard = ({ item }) => {
                                 color: theme.textColorPrimary,
                                 fontSize: 14,
                             }}
+                            numberOfLines={1}
                         >
                             {item.novelName}
                         </Text>
@@ -50,22 +57,6 @@ const UpdateCard = ({ item }) => {
                             </Text>
                         </View>
                     </View>
-                    {/* <View>
-                        <Button
-                            labelStyle={{
-                                letterSpacing: 0,
-                            }}
-                            uppercase={false}
-                            color={theme.colorAccentDark}
-                            onPress={() =>
-                                navigation.navigate("ExtensionStack", {
-                                    screen: sourceName,
-                                })
-                            }
-                        >
-                            Browse
-                        </Button>
-                    </View> */}
                 </View>
             </>
         </TouchableRipple>
@@ -79,8 +70,8 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         paddingVertical: 8,
-        paddingHorizontal: 4,
-        borderRadius: 4,
+        paddingHorizontal: 12,
+        // borderRadius: 4,
     },
     updateIcon: {
         width: 42,
