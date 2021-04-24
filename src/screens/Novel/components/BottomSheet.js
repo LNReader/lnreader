@@ -7,22 +7,13 @@ import { useSelector } from "react-redux";
 
 export const BottomSheet = ({
     bottomSheetRef,
-    sortAndFilterChapters,
+    sort,
+    filter,
+    setSort,
+    setFilter,
     novelUrl,
 }) => {
     const checkBoxStyle = { flexDirection: "row", alignItems: "center" };
-
-    const [chapterFlags, setChapterFlags] = useState({ sort: "", filter: "" });
-
-    const sortChapters = (sort) => {
-        setChapterFlags({ ...chapterFlags, sort: sort });
-        sortAndFilterChapters(novelUrl, chapterFlags.filter, sort);
-    };
-
-    const filterChapters = (filter) => {
-        setChapterFlags({ ...chapterFlags, filter: filter });
-        sortAndFilterChapters(novelUrl, filter, chapterFlags.sort);
-    };
 
     const theme = useSelector((state) => state.themeReducer.theme);
 
@@ -51,8 +42,8 @@ export const BottomSheet = ({
                 </List.Subheader>
                 <View>
                     <RadioButton.Group
-                        onValueChange={(newValue) => sortChapters(newValue)}
-                        value={chapterFlags.sort}
+                        onValueChange={(newValue) => setSort(newValue)}
+                        value={sort}
                     >
                         <View
                             style={{
@@ -88,7 +79,7 @@ export const BottomSheet = ({
                                 <RadioButton.Item
                                     uncheckedColor={theme.textColorHintDark}
                                     color={theme.colorAccentDark}
-                                    value=""
+                                    value="ORDER BY chapterId ASC"
                                 />
                                 <Text
                                     style={{
@@ -113,12 +104,10 @@ export const BottomSheet = ({
                 </List.Subheader>
                 <View style={checkBoxStyle}>
                     <Checkbox.Item
-                        status={
-                            chapterFlags.filter === "" ? "checked" : "unchecked"
-                        }
+                        status={filter === "" ? "checked" : "unchecked"}
                         uncheckedColor={theme.textColorHintDark}
                         color={theme.colorAccentDark}
-                        onPress={() => filterChapters("")}
+                        onPress={() => setFilter("")}
                     />
                     <Text style={{ color: theme.textColorPrimary }}>
                         Show all
@@ -127,13 +116,11 @@ export const BottomSheet = ({
                 <View style={checkBoxStyle}>
                     <Checkbox.Item
                         status={
-                            chapterFlags.filter === "AND `read`=1"
-                                ? "checked"
-                                : "unchecked"
+                            filter === "AND `read`=1" ? "checked" : "unchecked"
                         }
                         uncheckedColor={theme.textColorHintDark}
                         color={theme.colorAccentDark}
-                        onPress={() => filterChapters("AND `read`=1")}
+                        onPress={() => setFilter("AND `read`=1")}
                     />
                     <Text style={{ color: theme.textColorPrimary }}>
                         Show read chapters
@@ -142,13 +129,11 @@ export const BottomSheet = ({
                 <View style={checkBoxStyle}>
                     <Checkbox.Item
                         status={
-                            chapterFlags.filter === "AND `read`=0"
-                                ? "checked"
-                                : "unchecked"
+                            filter === "AND `read`=0" ? "checked" : "unchecked"
                         }
                         uncheckedColor={theme.textColorHintDark}
                         color={theme.colorAccentDark}
-                        onPress={() => filterChapters("AND `read`=0")}
+                        onPress={() => setFilter("AND `read`=0")}
                     />
                     <Text style={{ color: theme.textColorPrimary }}>
                         Show unread chapters
@@ -157,13 +142,13 @@ export const BottomSheet = ({
                 <View style={checkBoxStyle}>
                     <Checkbox.Item
                         status={
-                            chapterFlags.filter === "AND downloaded=1"
+                            filter === "AND downloaded=1"
                                 ? "checked"
                                 : "unchecked"
                         }
                         uncheckedColor={theme.textColorHintDark}
                         color={theme.colorAccentDark}
-                        onPress={() => filterChapters("AND downloaded=1")}
+                        onPress={() => setFilter("AND downloaded=1")}
                     />
                     <Text style={{ color: theme.textColorPrimary }}>
                         Show downloaded chapters

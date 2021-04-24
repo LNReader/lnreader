@@ -7,12 +7,25 @@ export const insertChapters = async (novelId, chapters) => {
     db.transaction((tx) => {
         chapters.map(
             (chapter) =>
-                tx.executeSql(insertChaptersQuery, [
-                    chapter.chapterUrl,
-                    chapter.chapterName,
-                    chapter.releaseDate,
-                    novelId,
-                ]),
+                tx.executeSql(
+                    insertChaptersQuery,
+                    [
+                        chapter.chapterUrl,
+                        chapter.chapterName,
+                        chapter.releaseDate,
+                        novelId,
+                    ],
+                    (txObj, res) => {},
+                    (txObj, error) =>
+                        console.log(
+                            "Error ",
+                            error,
+                            " Chapter URL: ",
+                            chapter.chapterUrl,
+                            " Novel ID ",
+                            novelId
+                        )
+                ),
             (txObj, res) => {
                 console.log("Success");
             },
@@ -21,13 +34,14 @@ export const insertChapters = async (novelId, chapters) => {
     });
 };
 
-const getChaptersQuery = `SELECT * FROM chapters WHERE novelId = ? ORDER BY chapterId ASC`;
+const getChaptersQuery = (sort, filter) =>
+    `SELECT * FROM chapters WHERE novelId = ? ${filter} ${sort}`;
 
-export const getChapters = (novelId) => {
+export const getChapters = (novelId, sort, filter) => {
     return new Promise((resolve, reject) =>
         db.transaction((tx) => {
             tx.executeSql(
-                getChaptersQuery,
+                getChaptersQuery(sort, filter),
                 [novelId],
                 (txObj, { rows: { _array } }) => {
                     resolve(_array);
