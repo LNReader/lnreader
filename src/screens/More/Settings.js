@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { View, Text } from "react-native";
+import { View, Text, Dimensions } from "react-native";
 import { setStatusBarStyle } from "expo-status-bar";
 import { List, Modal, Portal } from "react-native-paper";
+import Slider from "@react-native-community/slider";
 import InputSpinner from "react-native-input-spinner";
 
 import { connect } from "react-redux";
@@ -172,9 +173,17 @@ const SettingsScreen = ({
                                     marginBottom: 10,
                                 }}
                             >
-                                Items per row
+                                Grid size
                             </Text>
-                            <InputSpinner
+                            <Text
+                                style={{
+                                    color: theme.textColorSecondary,
+                                    marginBottom: 4,
+                                }}
+                            >
+                                {itemsPerRow} per row
+                            </Text>
+                            {/* <InputSpinner
                                 style={{
                                     paddingHorizontal: 16,
                                     paddingVertical: 16,
@@ -195,6 +204,22 @@ const SettingsScreen = ({
                                 inputStyle={{
                                     color: theme.textColorPrimary,
                                 }}
+                            /> */}
+
+                            <Slider
+                                style={{
+                                    width: "100%",
+                                    height: 40,
+                                    // backgroundColor: "red",
+                                }}
+                                value={itemsPerRow}
+                                minimumValue={1}
+                                maximumValue={5}
+                                step={1}
+                                minimumTrackTintColor={theme.colorAccentDark}
+                                maximumTrackTintColor="#000000"
+                                thumbTintColor={theme.colorAccentDark}
+                                onValueChange={(value) => setItemsPerRow(value)}
                             />
                         </Modal>
                     </Portal>

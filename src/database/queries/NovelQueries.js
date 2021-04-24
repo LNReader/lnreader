@@ -79,7 +79,7 @@ export const deleteNovelCache = () => {
             "DELETE FROM novels WHERE followed = 0",
             null,
             (txObj, res) => {
-                console.log("Deleted");
+                console.log("Cleared Novel Cache");
             },
             (txObj, error) => console.log("Error ", error)
         );

@@ -14,9 +14,6 @@ import {
     CHAPTER_DOWNLOADED,
     CHAPTER_DELETED,
     UPDATE_NOVEL,
-    UPDATE_LAST_READ,
-    FOLLOW_NOVEL,
-    UNFOLLOW_NOVEL,
 } from "./novel.types";
 
 import { updateNovel } from "../../services/updates";
@@ -24,7 +21,6 @@ import { fetchChapter, fetchNovel } from "../../source/Source";
 import {
     followNovel,
     insertNovel,
-    checkNovelInCache,
     getNovel,
 } from "../../database/queries/NovelQueries";
 import {
@@ -35,20 +31,24 @@ import {
     getChapter,
     downloadChapter,
     deleteChapter,
-    getLastReadChapter,
 } from "../../database/queries/ChapterQueries";
 
 export const setNovel = (novel) => async (dispatch) => {
     dispatch({ type: SET_NOVEL, payload: novel });
 };
 
-export const getNovelAction = (followed, sourceId, novelUrl, novelId) => async (
-    dispatch
-) => {
+export const getNovelAction = (
+    followed,
+    sourceId,
+    novelUrl,
+    novelId,
+    sort,
+    filter
+) => async (dispatch) => {
     dispatch({ type: LOADING_NOVEL });
 
     if (followed === 1) {
-        const chapters = await getChapters(novelId);
+        const chapters = await getChapters(novelId, sort, filter);
 
         dispatch({
             type: GET_CHAPTERS,
@@ -60,7 +60,7 @@ export const getNovelAction = (followed, sourceId, novelUrl, novelId) => async (
         const novel = await getNovel(novelUrl);
 
         if (novel) {
-            novel.chapters = await getChapters(novel.novelId);
+            novel.chapters = await getChapters(novel.novelId, sort, filter);
             dispatch({
                 type: GET_NOVEL,
                 payload: novel,
@@ -103,18 +103,6 @@ export const sortAndFilterChapters = (novelUrl, filter, sort) => async (
 
 export const followNovelAction = (novel) => async (dispatch) => {
     await followNovel(novel.followed, novel.novelId);
-
-    // if (!novel.followed) {
-    //     dispatch({
-    //         type: FOLLOW_NOVEL,
-    //         payload: novel,
-    //     });
-    // } else {
-    //     dispatch({
-    //         type: UNFOLLOW_NOVEL,
-    //         payload: novel.novelId,
-    //     });
-    // }
 
     dispatch({
         type: UPDATE_IN_LIBRARY,

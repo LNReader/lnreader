@@ -18,7 +18,6 @@ export const getLibraryAction = () => async (dispatch) => {
 
 export const searchLibraryAction = (searchText) => async (dispatch) => {
     const res = await searchLibrary(searchText);
-    console.log(searchText);
 
     dispatch({
         type: GET_LIBRARY_SEARCH_RESULTS,

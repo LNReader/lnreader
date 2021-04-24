@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
     StyleSheet,
     View,
@@ -44,9 +44,12 @@ const Novel = ({
 
     let _panel = useRef(null); // Bottomsheet ref
 
+    const [sort, setSort] = useState("ORDER BY chapterId ASC");
+    const [filter, setFilter] = useState("");
+
     useEffect(() => {
-        getNovelAction(followed, sourceId, novelUrl, novelId);
-    }, [getNovelAction, followNovelAction]);
+        getNovelAction(followed, sourceId, novelUrl, novelId, sort, filter);
+    }, [getNovelAction, followNovelAction, sort, filter]);
 
     let lastRead = !loading && chapters.find((obj) => obj.read === 0);
 
@@ -105,6 +108,10 @@ const Novel = ({
                         novelUrl={novelUrl}
                         bottomSheetRef={_panel}
                         sortAndFilterChapters={sortAndFilterChapters}
+                        sort={sort}
+                        filter={filter}
+                        setSort={setSort}
+                        setFilter={setFilter}
                     />
                 </Portal>
             </View>
