@@ -170,6 +170,8 @@ const ChapterItem = ({
                                 fontSize: reader.textSize,
                                 color: readerTextColor(reader.theme),
                                 lineHeight: readerLineHeight(reader.textSize),
+                                textAlign: reader.textAlign,
+                                paddingHorizontal: `${reader.padding}%`,
                             },
                         ]}
                     >
@@ -200,7 +202,6 @@ export default connect(mapStateToProps, {
 const styles = StyleSheet.create({
     container: {
         flexGrow: 1,
-        paddingHorizontal: 10,
         paddingVertical: 10,
     },
 });
