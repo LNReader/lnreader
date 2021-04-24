@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, ActivityIndicator, StyleSheet } from "react-native";
-import { TouchableRipple, IconButton } from "react-native-paper";
+import { TouchableRipple, IconButton, Menu } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 
 import {
@@ -14,11 +14,76 @@ const ChapterCard = ({
     chapter,
     extensionId,
     theme,
-    downloading,
+    // downloading,
     downloadChapterAction,
     deleteChapterAction,
 }) => {
     const navigation = useNavigation();
+
+    const [visible, setVisible] = useState(false);
+    const openMenu = () => setVisible(true);
+    const closeMenu = () => setVisible(false);
+
+    const displayDownloadButton = () => {
+        if (chapter.downloaded === 3) {
+            return (
+                <ActivityIndicator
+                    color={theme.textColorHintDark}
+                    size={25}
+                    style={{ margin: 3.5, padding: 5 }}
+                />
+            );
+        } else if (chapter.downloaded === 1) {
+            return (
+                <Menu
+                    visible={visible}
+                    onDismiss={closeMenu}
+                    anchor={
+                        <IconButton
+                            icon="check-circle"
+                            animated
+                            color={theme.textColorPrimary}
+                            size={25}
+                            onPress={openMenu}
+                            style={{ margin: 2 }}
+                        />
+                    }
+                    contentStyle={{ backgroundColor: "#242529" }}
+                >
+                    <Menu.Item
+                        onPress={() =>
+                            deleteChapterAction(
+                                chapter.chapterId,
+                                chapter.chapterName
+                            )
+                        }
+                        title="Delete"
+                        titleStyle={{ color: theme.textColorPrimary }}
+                    />
+                </Menu>
+            );
+        } else {
+            return (
+                <IconButton
+                    icon="arrow-down-circle-outline"
+                    animated
+                    color={theme.textColorHintDark}
+                    size={25}
+                    onPress={() => {
+                        downloadChapterAction(
+                            extensionId,
+                            novelUrl,
+                            chapter.chapterUrl,
+                            chapter.chapterName,
+                            chapter.chapterId
+                        );
+                        // console.log(downloading);
+                    }}
+                    style={{ margin: 2 }}
+                />
+            );
+        }
+    };
 
     return (
         <TouchableRipple
@@ -68,47 +133,7 @@ const ChapterCard = ({
                         </Text>
                     )}
                 </View>
-                <View>
-                    {downloading === chapter.chapterId ? (
-                        <ActivityIndicator
-                            color={theme.textColorHintDark}
-                            size={25}
-                            style={{ margin: 3.5, padding: 5 }}
-                        />
-                    ) : (
-                        <IconButton
-                            icon={
-                                chapter.downloaded
-                                    ? "check-circle"
-                                    : "arrow-down-circle-outline"
-                            }
-                            animated
-                            color={
-                                chapter.downloaded
-                                    ? theme.textColorPrimary
-                                    : theme.textColorHintDark
-                            }
-                            size={25}
-                            onPress={() => {
-                                if (!chapter.downloaded) {
-                                    downloadChapterAction(
-                                        extensionId,
-                                        novelUrl,
-                                        chapter.chapterUrl,
-                                        chapter.chapterName,
-                                        chapter.chapterId
-                                    );
-                                } else {
-                                    deleteChapterAction(
-                                        chapter.chapterId,
-                                        chapter.chapterName
-                                    );
-                                }
-                            }}
-                            style={{ margin: 2 }}
-                        />
-                    )}
-                </View>
+                <View>{displayDownloadButton()}</View>
             </>
         </TouchableRipple>
     );
@@ -116,7 +141,7 @@ const ChapterCard = ({
 
 const mapStateToProps = (state) => ({
     theme: state.themeReducer.theme,
-    downloading: state.novelReducer.downloading,
+    // downloading: state.novelReducer.downloading,
 });
 
 export default connect(mapStateToProps, {

@@ -22,10 +22,10 @@ import NovelItem from "../screens/Novel/Novel";
 import ChapterItem from "../screens/Chapter/Chapter";
 
 // Extensions
-import BoxNovel from "../screens/Extensions/boxnovel/BoxNovel";
-import ReadLightNovel from "../screens/Extensions/readlightnovel/ReadLightNovel";
-import FastNovel from "../screens/Extensions/fastnovel/FastNovel";
-import ReadNovelFull from "../screens/Extensions/readnovelfull/ReadNovelFull";
+import BoxNovel from "../screens/extensions/boxnovel/BoxNovel";
+import ReadLightNovel from "../screens/extensions/readlightnovel/ReadLightNovel";
+import FastNovel from "../screens/extensions/fastnovel/FastNovel";
+import ReadNovelFull from "../screens/extensions/readnovelfull/ReadNovelFull";
 
 const Stack = createStackNavigator();
 

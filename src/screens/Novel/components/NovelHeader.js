@@ -8,7 +8,13 @@ import {
     FlatList,
     Share,
 } from "react-native";
-import { TouchableRipple, IconButton, Button, Chip } from "react-native-paper";
+import {
+    TouchableRipple,
+    IconButton,
+    Button,
+    Chip,
+    Menu,
+} from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import * as WebBrowser from "expo-web-browser";
 
@@ -24,12 +30,18 @@ const NovelInfoHeader = ({
     bottomSheetRef,
     theme,
     lastRead,
+    downloadAllChapters,
+    deleteAllChapters,
 }) => {
     const navigation = useNavigation();
 
     const [more, setMore] = useState(
         !loading && novel.followed !== 1 ? true : false
     );
+
+    const [visible, setVisible] = useState(false);
+    const openMenu = () => setVisible(true);
+    const closeMenu = () => setVisible(false);
 
     const renderGenreChip = ({ item }) => (
         <Text
@@ -161,6 +173,33 @@ const NovelInfoHeader = ({
                             color={theme.colorAccentDark}
                             size={21}
                         />
+
+                        <Menu
+                            visible={visible}
+                            onDismiss={closeMenu}
+                            anchor={
+                                <IconButton
+                                    icon="download"
+                                    color={theme.colorAccentDark}
+                                    size={21}
+                                    onPress={openMenu}
+                                />
+                            }
+                            contentStyle={{ backgroundColor: "#242529" }}
+                        >
+                            <Menu.Item
+                                title="Download all"
+                                style={{ backgroundColor: "#242529" }}
+                                titleStyle={{ color: theme.textColorPrimary }}
+                                onPress={downloadAllChapters}
+                            />
+                            <Menu.Item
+                                title="Delete downloads"
+                                style={{ backgroundColor: "#242529" }}
+                                titleStyle={{ color: theme.textColorPrimary }}
+                                onPress={deleteAllChapters}
+                            />
+                        </Menu>
                     </View>
 
                     {novel.novelSummary !== "" && (

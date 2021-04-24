@@ -35,6 +35,7 @@ export const getChapterAction = (
     } else {
         chapter = await fetchChapter(extensionId, novelUrl, chapterUrl);
     }
+    console.log(isDownloaded);
     dispatch({ type: GET_CHAPTER, payload: chapter });
 };
 
