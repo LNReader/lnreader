@@ -19,6 +19,8 @@ import {
     followNovelAction,
     sortAndFilterChapters,
     updateNovelAction,
+    downloadAllChaptersAction,
+    deleteAllChaptersAction,
 } from "../../redux/novel/novel.actions";
 
 const Novel = ({
@@ -32,6 +34,8 @@ const Novel = ({
     followNovelAction,
     sortAndFilterChapters,
     updateNovelAction,
+    downloadAllChaptersAction,
+    deleteAllChaptersAction,
 }) => {
     const {
         sourceId,
@@ -92,6 +96,16 @@ const Novel = ({
                             loading={loading}
                             lastRead={lastRead}
                             bottomSheetRef={_panel}
+                            downloadAllChapters={() =>
+                                downloadAllChaptersAction(
+                                    sourceId,
+                                    novelUrl,
+                                    chapters
+                                )
+                            }
+                            deleteAllChapters={() =>
+                                deleteAllChaptersAction(chapters)
+                            }
                         />
                     }
                     refreshControl={
@@ -131,6 +145,8 @@ export default connect(mapStateToProps, {
     followNovelAction,
     sortAndFilterChapters,
     updateNovelAction,
+    downloadAllChaptersAction,
+    deleteAllChaptersAction,
 })(Novel);
 
 const styles = StyleSheet.create({

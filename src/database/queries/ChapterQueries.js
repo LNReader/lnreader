@@ -113,6 +113,8 @@ export const downloadChapter = async (
 ) => {
     const downloadUrl = `https://lnreader-extensions.herokuapp.com/api/${extensionId}/novel/${novelUrl}${chapterUrl}`;
 
+    // console.log(downloadUrl);
+
     const response = await fetch(downloadUrl);
     const chapter = await response.json();
 
@@ -156,6 +158,26 @@ export const deleteChapter = async (chapterId) => {
         );
     });
 };
+
+// export const deleteAllChapters = async (novelId) => {
+//     const updateIsDownloadedQuery = `UPDATE chapters SET downloaded = 0 WHERE novelId=?`;
+//     const deleteChapterQuery = `DELETE FROM downloads WHERE downloadChapterId=?`;
+
+//     db.transaction((tx) => {
+//         tx.executeSql(
+//             updateIsDownloadedQuery,
+//             [chapterId],
+//             (tx, res) => console.log(`Chaptermarked not downapdeod deleted`),
+//             (txObj, error) => console.log("Error ", error)
+//         );
+//         tx.executeSql(
+//             deleteChapterQuery,
+//             [chapterId],
+//             (tx, res) => console.log(`Chapter deleted`),
+//             (txObj, error) => console.log("Error ", error)
+//         );
+//     });
+// };
 
 const getLastReadChapterQuery = `
     SELECT chapters.*

@@ -161,6 +161,37 @@ export const downloadChapterAction = (
     ToastAndroid.show(`Downloaded ${chapterName}`, ToastAndroid.SHORT);
 };
 
+export const downloadAllChaptersAction = (
+    extensionId,
+    novelUrl,
+    chapters
+) => async (dispatch) => {
+    await chapters.map((chapter, index) => {
+        setTimeout(async () => {
+            dispatch({
+                type: CHAPTER_DOWNLOADING,
+                payload: chapter.chapterId,
+            });
+
+            if (!chapter.downloaded) {
+                await downloadChapter(
+                    extensionId,
+                    novelUrl,
+                    chapter.chapterUrl,
+                    chapter.chapterId
+                );
+            }
+
+            dispatch({
+                type: CHAPTER_DOWNLOADED,
+                payload: chapter.chapterId,
+            });
+        }, 1000 * index);
+    });
+
+    ToastAndroid.show(`All chapters downloaded`, ToastAndroid.SHORT);
+};
+
 export const deleteChapterAction = (chapterId, chapterName) => async (
     dispatch
 ) => {
@@ -172,6 +203,19 @@ export const deleteChapterAction = (chapterId, chapterName) => async (
     });
 
     ToastAndroid.show(`Deleted ${chapterName}`, ToastAndroid.SHORT);
+};
+
+export const deleteAllChaptersAction = (chapters) => async (dispatch) => {
+    await chapters.map((chapter) => {
+        deleteChapter(chapter.chapterId);
+
+        dispatch({
+            type: CHAPTER_DELETED,
+            payload: chapter.chapterId,
+        });
+    });
+
+    ToastAndroid.show(`Deleted all chapters`, ToastAndroid.SHORT);
 };
 
 export const updateNovelAction = (extensionId, novelUrl, novelId) => async (

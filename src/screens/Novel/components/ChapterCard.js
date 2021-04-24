@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, ActivityIndicator, StyleSheet } from "react-native";
-import { TouchableRipple, IconButton } from "react-native-paper";
+import { TouchableRipple, IconButton, Menu } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 
 import {
@@ -20,7 +20,9 @@ const ChapterCard = ({
 }) => {
     const navigation = useNavigation();
 
-    // console.log(downloading.includes(chapter.chapterId));
+    const [visible, setVisible] = useState(false);
+    const openMenu = () => setVisible(true);
+    const closeMenu = () => setVisible(false);
 
     const displayDownloadButton = () => {
         if (chapter.downloaded === 3) {
@@ -33,19 +35,32 @@ const ChapterCard = ({
             );
         } else if (chapter.downloaded === 1) {
             return (
-                <IconButton
-                    icon="check-circle"
-                    animated
-                    color={theme.textColorPrimary}
-                    size={25}
-                    onPress={() =>
-                        deleteChapterAction(
-                            chapter.chapterId,
-                            chapter.chapterName
-                        )
+                <Menu
+                    visible={visible}
+                    onDismiss={closeMenu}
+                    anchor={
+                        <IconButton
+                            icon="check-circle"
+                            animated
+                            color={theme.textColorPrimary}
+                            size={25}
+                            onPress={openMenu}
+                            style={{ margin: 2 }}
+                        />
                     }
-                    style={{ margin: 2 }}
-                />
+                    contentStyle={{ backgroundColor: "#242529" }}
+                >
+                    <Menu.Item
+                        onPress={() =>
+                            deleteChapterAction(
+                                chapter.chapterId,
+                                chapter.chapterName
+                            )
+                        }
+                        title="Delete"
+                        titleStyle={{ color: theme.textColorPrimary }}
+                    />
+                </Menu>
             );
         } else {
             return (

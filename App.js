@@ -10,7 +10,7 @@ import Router from "./src/navigation/Router";
 import { Provider } from "react-redux";
 import { persistor, store } from "./src/redux/store";
 import { PersistGate } from "redux-persist/lib/integration/react";
-import { createDB } from "./src/database/DBHelper";
+import { createDB, deleteDb } from "./src/database/DBHelper";
 
 const getFonts = () =>
     Font.loadAsync({
@@ -21,6 +21,7 @@ const App = () => {
     const [fontsLoaded, setFontsLoaded] = useState(false);
 
     useEffect(() => {
+        // deleteDb();
         createDB();
     }, []);
 
