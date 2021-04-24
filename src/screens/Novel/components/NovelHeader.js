@@ -30,6 +30,8 @@ const NovelInfoHeader = ({
     bottomSheetRef,
     theme,
     lastRead,
+    downloadAllChapters,
+    deleteAllChapters,
 }) => {
     const navigation = useNavigation();
 
@@ -186,11 +188,16 @@ const NovelInfoHeader = ({
                             contentStyle={{ backgroundColor: "#242529" }}
                         >
                             <Menu.Item
-                                onPress={() => {}}
                                 title="Download all"
                                 style={{ backgroundColor: "#242529" }}
                                 titleStyle={{ color: theme.textColorPrimary }}
-                                // onPress={{}}
+                                onPress={downloadAllChapters}
+                            />
+                            <Menu.Item
+                                title="Delete downloads"
+                                style={{ backgroundColor: "#242529" }}
+                                titleStyle={{ color: theme.textColorPrimary }}
+                                onPress={deleteAllChapters}
                             />
                         </Menu>
                     </View>
