@@ -11,7 +11,8 @@
             "backgroundColor": "#000000"
         },
         "updates": {
-            "fallbackToCacheTimeout": 0
+            "fallbackToCacheTimeout": 0,
+            "enabled": false
         },
         "assetBundlePatterns": ["**/*"],
         "ios": {
