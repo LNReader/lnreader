@@ -44,7 +44,16 @@ const AboutScreen = ({ navigation }) => {
                     rippleColor={theme.rippleColor}
                 />
                 <Divider />
-
+                <List.Item
+                    titleStyle={{ color: theme.textColorPrimary }}
+                    descriptionStyle={{ color: theme.textColorSecondary }}
+                    title="Discord"
+                    description="https://discord.gg/QdcWN4MD63"
+                    onPress={() =>
+                        Linking.openURL("https://discord.gg/QdcWN4MD63")
+                    }
+                    rippleColor={theme.rippleColor}
+                />
                 <List.Item
                     titleStyle={{ color: theme.textColorPrimary }}
                     descriptionStyle={{ color: theme.textColorSecondary }}
