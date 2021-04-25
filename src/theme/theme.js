@@ -23,6 +23,7 @@ export const lightTheme = {
     textColorHintDark: "rgba(0,0,0,0.38)",
     rippleColor: "rgba(0,0,0,0.12)",
     searchBarColor: "#FFFFFF",
+    menuColor: "#FFFFFF",
 };
 
 /**
@@ -37,6 +38,7 @@ export const darkTheme = {
     textColorHintDark: "rgba(255,255,255,0.5)",
     rippleColor: "rgba(255,255,255,0.2)",
     searchBarColor: "#303135",
+    menuColor: "#242529",
 };
 
 /**
@@ -51,6 +53,7 @@ export const amoledDarkTheme = {
     textColorHintDark: "rgba(255,255,255,0.5)",
     rippleColor: "rgba(255,255,255,0.2)",
     searchBarColor: "#1F1F1F",
+    menuColor: "#242529",
 };
 
 /**
@@ -65,4 +68,5 @@ export const midnightDuskTheme = {
     textColorHintDark: "rgba(255,255,255,0.5)",
     rippleColor: "rgba(255,255,255,0.2)",
     searchBarColor: "#201F27",
+    menuColor: "#201F27",
 };

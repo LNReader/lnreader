@@ -185,17 +185,17 @@ const NovelInfoHeader = ({
                                     onPress={openMenu}
                                 />
                             }
-                            contentStyle={{ backgroundColor: "#242529" }}
+                            contentStyle={{ backgroundColor: theme.menuColor }}
                         >
                             <Menu.Item
                                 title="Download all"
-                                style={{ backgroundColor: "#242529" }}
+                                style={{ backgroundColor: theme.menuColor }}
                                 titleStyle={{ color: theme.textColorPrimary }}
                                 onPress={downloadAllChapters}
                             />
                             <Menu.Item
                                 title="Delete downloads"
-                                style={{ backgroundColor: "#242529" }}
+                                style={{ backgroundColor: theme.menuColor }}
                                 titleStyle={{ color: theme.textColorPrimary }}
                                 onPress={deleteAllChapters}
                             />

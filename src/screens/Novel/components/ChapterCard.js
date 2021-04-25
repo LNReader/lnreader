@@ -48,7 +48,7 @@ const ChapterCard = ({
                             style={{ margin: 2 }}
                         />
                     }
-                    contentStyle={{ backgroundColor: "#242529" }}
+                    contentStyle={{ backgroundColor: theme.menuColor }}
                 >
                     <Menu.Item
                         onPress={() =>
