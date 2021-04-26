@@ -173,6 +173,9 @@ const ChapterItem = ({
                                 textAlign: reader.textAlign,
                                 paddingHorizontal: `${reader.padding}%`,
                             },
+                            reader.fontFamily && {
+                                fontFamily: reader.fontFamily,
+                            },
                         ]}
                     >
                         {chapter.chapterText.trim()}

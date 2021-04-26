@@ -5,6 +5,7 @@ import {
     UPDATE_READER_THEME,
     UPDATE_READER_TEXT_ALIGN,
     UPDATE_READER_PADDING,
+    SET_READER_FONT,
 } from "./settings.types";
 
 export const setDisplayMode = (val) => (dispatch) => {
@@ -45,6 +46,13 @@ export const updateReaderTextAlign = (val) => (dispatch) => {
 export const updateReaderPadding = (val) => (dispatch) => {
     dispatch({
         type: UPDATE_READER_PADDING,
+        payload: val,
+    });
+};
+
+export const setReaderFont = (val) => (dispatch) => {
+    dispatch({
+        type: SET_READER_FONT,
         payload: val,
     });
 };

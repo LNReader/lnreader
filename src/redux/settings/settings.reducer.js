@@ -1,6 +1,7 @@
 import {
     SET_DISPLAY_MODE,
     SET_ITEMS_PER_ROW,
+    SET_READER_FONT,
     UPDATE_READER_PADDING,
     UPDATE_READER_TEXT_ALIGN,
     UPDATE_READER_TEXT_SIZE,
@@ -15,6 +16,7 @@ const initialState = {
         textSize: 16,
         textAlign: "left",
         padding: 5,
+        fontFamily: null,
     },
 };
 
@@ -61,6 +63,11 @@ const settingsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 reader: { ...state.reader, padding: payload },
+            };
+        case SET_READER_FONT:
+            return {
+                ...state,
+                reader: { ...state.reader, fontFamily: payload },
             };
         default:
             return state;

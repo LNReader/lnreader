@@ -1,13 +1,14 @@
 import React from "react";
 
 import { Animated, StyleSheet, View, Text, Dimensions } from "react-native";
-import { ToggleButton, IconButton } from "react-native-paper";
+import { ToggleButton, IconButton, Chip } from "react-native-paper";
 import Slider from "@react-native-community/slider";
 import Bottomsheet from "rn-sliding-up-panel";
 
 import { connect } from "react-redux";
 
 import {
+    setReaderFont,
     updateReaderPadding,
     updateReaderTextAlign,
     updateReaderTextSize,
@@ -23,13 +24,24 @@ const ChapterBottomSheet = ({
     updateReaderTheme,
     updateReaderTextAlign,
     updateReaderPadding,
+    setReaderFont,
 }) => {
+    const fonts = [
+        { fontFamily: "", name: "Original" },
+        { fontFamily: "arbutus-slab", name: "Arbutus Slab" },
+        { fontFamily: "domine", name: "Domine" },
+        { fontFamily: "lato", name: "Lato" },
+        { fontFamily: "noto-sans", name: "Noto Sans" },
+        { fontFamily: "open-sans", name: "Open Sans" },
+        { fontFamily: "pt-serif", name: "PT Serif" },
+    ];
+
     return (
         <Bottomsheet
             animatedValue={new Animated.Value(0)}
             ref={bottomSheetRef}
-            draggableRange={{ top: 360, bottom: 0 }}
-            snappingPoints={[0, 360]}
+            draggableRange={{ top: 450, bottom: 0 }}
+            snappingPoints={[0, 450]}
             showBackdrop={false}
         >
             <View style={styles.contentContainer}>
@@ -37,7 +49,7 @@ const ChapterBottomSheet = ({
                 <View style={styles.readerSettingsContainer}>
                     <Text
                         style={{
-                            color: theme.textColorPrimary,
+                            color: "#FFFFFF",
                             fontWeight: "bold",
                         }}
                     >
@@ -59,7 +71,7 @@ const ChapterBottomSheet = ({
                     />
                     <Text
                         style={{
-                            color: theme.textColorPrimary,
+                            color: "#FFFFFF",
                             fontWeight: "bold",
                         }}
                     >
@@ -100,7 +112,7 @@ const ChapterBottomSheet = ({
                     </ToggleButton.Row>
                     <Text
                         style={{
-                            color: theme.textColorPrimary,
+                            color: "#FFFFFF",
                             fontWeight: "bold",
                             marginTop: 10,
                         }}
@@ -144,7 +156,7 @@ const ChapterBottomSheet = ({
                     </ToggleButton.Row>
                     <Text
                         style={{
-                            color: theme.textColorPrimary,
+                            color: "#FFFFFF",
                             fontWeight: "bold",
                             marginTop: 10,
                         }}
@@ -170,7 +182,7 @@ const ChapterBottomSheet = ({
                         />
                         <Text
                             style={{
-                                color: theme.textColorPrimary,
+                                color: "#FFFFFF",
                                 paddingHorizontal: 50,
                             }}
                         >
@@ -185,6 +197,42 @@ const ChapterBottomSheet = ({
                                 updateReaderPadding(reader.padding + 1)
                             }
                         />
+                    </View>
+                    <Text
+                        style={{
+                            color: "#FFFFFF",
+                            fontWeight: "bold",
+                            marginTop: 10,
+                        }}
+                    >
+                        Font Style
+                    </Text>
+                    <View
+                        style={{
+                            flexDirection: "row",
+                            flexWrap: "wrap",
+                            justifyContent: "center",
+                        }}
+                    >
+                        {fonts.map((font, index) => (
+                            <Chip
+                                key={index}
+                                onPress={() => setReaderFont(font.fontFamily)}
+                                textStyle={{ fontFamily: font.fontFamily }}
+                                style={{
+                                    borderWidth: 0,
+                                    marginHorizontal: 5,
+                                    marginVertical: 5,
+                                }}
+                                selected={
+                                    reader.fontFamily === font.fontFamily
+                                        ? true
+                                        : false
+                                }
+                            >
+                                {font.name}
+                            </Chip>
+                        ))}
                     </View>
                 </View>
             </View>
@@ -202,6 +250,7 @@ export default connect(mapStateToProps, {
     updateReaderTheme,
     updateReaderTextAlign,
     updateReaderPadding,
+    setReaderFont,
 })(ChapterBottomSheet);
 
 const styles = StyleSheet.create({
