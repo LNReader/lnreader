@@ -21,7 +21,7 @@ const ThemeModal = ({
         themes.map((item) => (
             <Checkbox.Item
                 key={item.id}
-                label={`${item.name} Theme`}
+                label={item.name}
                 labelStyle={{ color: theme.textColorPrimary }}
                 status={theme.id === item.id ? "checked" : "unchecked"}
                 mode="ios"

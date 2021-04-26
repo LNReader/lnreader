@@ -98,7 +98,7 @@ const SettingsScreen = ({
                     <ListSubHeader theme={theme}>Theme</ListSubHeader>
                     <ListItem
                         title="Theme"
-                        description={`${theme.name} Theme`}
+                        description={theme.name}
                         onPress={showthemeModal}
                         theme={theme}
                     />

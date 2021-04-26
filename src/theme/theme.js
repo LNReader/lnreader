@@ -26,7 +26,7 @@ export const lightTheme = {
     rippleColor: "rgba(0,0,0,0.12)",
     searchBarColor: "#FFFFFF",
     menuColor: "#FFFFFF",
-    dividerColor: "rgba(0,0,0,0.3)",
+    dividerColor: "rgba(0,0,0,0.1)",
     statusBar: "dark",
 };
 
@@ -64,7 +64,7 @@ export const amoledDarkTheme = {
     rippleColor: "rgba(255,255,255,0.2)",
     searchBarColor: "#1F1F1F",
     menuColor: "#242529",
-    dividerColor: "rgba(0,0,0,0.3)",
+    dividerColor: "rgba(255,255,255,0.15)",
     statusBar: "light",
 };
 
@@ -83,6 +83,6 @@ export const midnightDuskTheme = {
     rippleColor: "rgba(255,255,255,0.2)",
     searchBarColor: "#201F27",
     menuColor: "#201F27",
-    dividerColor: "rgba(0,0,0,0.3)",
+    dividerColor: "rgba(255,255,255,0.1)",
     statusBar: "light",
 };
