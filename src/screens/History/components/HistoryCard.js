@@ -75,11 +75,11 @@ const HistoryCard = ({ item, deleteHistoryAction, navigation }) => {
                             style={{ marginRight: 10 }}
                             onPress={() =>
                                 navigation.navigate("ChapterItem", {
+                                    chapterId: item.historyChapterId,
                                     chapterUrl: item.chapterUrl,
-                                    extensionId: item.extensionId,
+                                    extensionId: item.sourceId,
                                     novelUrl: item.novelUrl,
-                                    novelName: item.novelName,
-                                    novelCover: item.novelCover,
+                                    novelId: item.novelId,
                                     chapterName: item.chapterName,
                                 })
                             }
