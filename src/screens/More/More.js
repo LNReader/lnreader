@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Image } from "react-native";
 import { useSelector } from "react-redux";
 
 import { Appbar } from "../../components/Appbar";
@@ -10,8 +10,28 @@ const MoreScreen = ({ navigation }) => {
 
     return (
         <>
-            <Appbar title="More" />
+            <Appbar title="More" style={{ elevation: 0 }} />
             <View style={{ flex: 1, backgroundColor: theme.colorPrimaryDark }}>
+                <View style={{ overflow: "hidden", paddingBottom: 4 }}>
+                    <View
+                        style={{
+                            paddingTop: 20,
+                            paddingBottom: 30,
+                            alignItems: "center",
+                            backgroundColor: theme.colorPrimary,
+                            elevation: 4,
+                        }}
+                    >
+                        <Image
+                            source={require("../../../assets/logo.png")}
+                            style={{
+                                height: 60,
+                                width: 60,
+                                tintColor: theme.textColorPrimary,
+                            }}
+                        />
+                    </View>
+                </View>
                 <ListSection>
                     <ListItem
                         title="Settings"

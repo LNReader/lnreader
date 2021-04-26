@@ -10,11 +10,13 @@ import Constants from "expo-constants";
 import { useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 
-export const Appbar = ({ title, onBackAction }) => {
+export const Appbar = ({ title, onBackAction, style }) => {
     const theme = useSelector((state) => state.themeReducer.theme);
 
     return (
-        <MaterialAppbar.Header style={{ backgroundColor: theme.colorPrimary }}>
+        <MaterialAppbar.Header
+            style={[{ backgroundColor: theme.colorPrimary }, style]}
+        >
             {onBackAction && (
                 <MaterialAppbar.BackAction onPress={onBackAction} />
             )}
