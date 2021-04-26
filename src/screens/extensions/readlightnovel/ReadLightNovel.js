@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, View, FlatList, ActivityIndicator } from "react-native";
 import { Provider } from "react-native-paper";
 
-import NovelCover from "../../../components/common/NovelCover";
-import EmptyView from "../../../components/common/EmptyView";
-import { SearchAppbar } from "../../../components/common/Appbar";
+import NovelCover from "../../../components/NovelCover";
+import EmptyView from "../../../components/EmptyView";
+import { SearchAppbar } from "../../../components/Appbar";
 
 import { useSelector } from "react-redux";
 

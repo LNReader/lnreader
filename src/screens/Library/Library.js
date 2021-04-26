@@ -11,14 +11,14 @@ import { FlatList } from "react-native-gesture-handler";
 import { useFocusEffect } from "@react-navigation/native";
 import { connect } from "react-redux";
 
-import NovelCover from "../../components/common/NovelCover";
-import EmptyView from "../../components/common/EmptyView";
+import NovelCover from "../../components/NovelCover";
+import EmptyView from "../../components/EmptyView";
 
 import {
     getLibraryAction,
     searchLibraryAction,
 } from "../../redux/library/library.actions";
-import { SearchAppbar } from "../../components/common/Appbar";
+import { SearchAppbar } from "../../components/Appbar";
 import { setNovel } from "../../redux/novel/novel.actions";
 import { updateAllNovels } from "../../services/updates";
 

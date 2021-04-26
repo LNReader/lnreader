@@ -2,8 +2,8 @@ import React, { useEffect, useState, useRef } from "react";
 import { StyleSheet, View, FlatList, ActivityIndicator } from "react-native";
 import { Provider, Portal } from "react-native-paper";
 
-import NovelCover from "../../../components/common/NovelCover";
-import { SearchAppbar } from "../../../components/common/Appbar";
+import NovelCover from "../../../components/NovelCover";
+import { SearchAppbar } from "../../../components/Appbar";
 import { BottomSheet } from "./filters/BottomSheet";
 
 import { useSelector } from "react-redux";

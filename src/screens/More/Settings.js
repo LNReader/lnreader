@@ -1,26 +1,25 @@
 import React, { useState } from "react";
-import { View, Text, Dimensions } from "react-native";
-import { setStatusBarStyle } from "expo-status-bar";
-import { List, Modal, Portal } from "react-native-paper";
-import Slider from "@react-native-community/slider";
-import InputSpinner from "react-native-input-spinner";
-
+import { View } from "react-native";
 import { connect } from "react-redux";
+
 import { switchTheme } from "../../redux/theme/theme.actions";
 import {
     setDisplayMode,
     setItemsPerRow,
 } from "../../redux/settings/settings.actions";
-
-import { Appbar } from "../../components/common/Appbar";
-import {
-    DisplayCheckbox,
-    ThemeCheckbox,
-} from "../../components/settings/Checkbox";
-
 import { deleteAllHistory } from "../../database/queries/HistoryQueries";
 import { deleteNovelCache } from "../../database/queries/NovelQueries";
-// import { deleteDb } from "../../database/DBHelper";
+
+import { Appbar } from "../../components/Appbar";
+import {
+    Divider,
+    ListItem,
+    ListSection,
+    ListSubHeader,
+} from "../../components/List";
+import DisplayModeModal from "./components/DisplayModeModal";
+import GridSizeModal from "./components/GridSizeModal";
+import ThemeModal from "./components/ThemeModal";
 
 const SettingsScreen = ({
     navigation,
@@ -32,266 +31,104 @@ const SettingsScreen = ({
     setDisplayMode,
     setItemsPerRow,
 }) => {
-    const display = {
-        0: "Compact Grid",
-        1: "Comfortable Grid",
-        2: "List",
+    const displayModeLabel = (displayMode) => {
+        const label = {
+            0: "Compact Grid",
+            1: "Comfortable Grid",
+            2: "List",
+        };
+
+        return label[displayMode];
     };
 
-    const themes = [
-        { themeCode: 0, label: "AMOLED Dark Theme", statusBar: "light" },
-        { themeCode: 1, label: "Light Theme", statusBar: "dark" },
-        { themeCode: 2, label: "Dark Theme", statusBar: "light" },
-        { themeCode: 3, label: "Midnight Dusk Theme", statusBar: "light" },
-    ];
-
-    const desciptionStyles = {
-        color: theme.textColorSecondary,
-    };
-
-    const titleStyles = { color: theme.textColorPrimary };
-
-    /**
-     * Display Mode Modal
-     */
+    // Display Mode Modal
     const [displayModalVisible, setDisplayModalVisible] = useState(false);
     const showDisplayModal = () => setDisplayModalVisible(true);
     const hideDisplayModal = () => setDisplayModalVisible(false);
 
-    /**
-     * Change Theme Modal
-     */
+    // Theme Modal
     const [themeModalVisible, setthemeModalVisible] = useState(false);
     const showthemeModal = () => setthemeModalVisible(true);
     const hidethemeModal = () => setthemeModalVisible(false);
 
-    const [itemsModalVisible, setitemsModalVisible] = useState(false);
-    const showitemsModal = () => setitemsModalVisible(true);
-    const hideitemsModal = () => setitemsModalVisible(false);
+    // Grid Size Modal
+    const [gridSizeModalVisible, setGridSizeModalVisible] = useState(false);
+    const showGridSizeModal = () => setGridSizeModalVisible(true);
+    const hideGridSizeModal = () => setGridSizeModalVisible(false);
 
     return (
         <>
             <Appbar title="Settings" onBackAction={() => navigation.goBack()} />
-            <View style={{ flex: 1, backgroundColor: theme.colorPrimaryDark }}>
-                <List.Section
-                    style={{
-                        flex: 1,
-                        backgroundColor: theme.colorPrimaryDark,
-                    }}
-                >
-                    <List.Subheader
-                        style={{
-                            color: theme.colorAccentDark,
-                            paddingBottom: 5,
-                        }}
-                    >
-                        Data
-                    </List.Subheader>
-                    <List.Item
-                        titleStyle={titleStyles}
+            <View
+                style={{
+                    flex: 1,
+                    backgroundColor: theme.colorPrimaryDark,
+                    paddingVertical: 8,
+                }}
+            >
+                <ListSection>
+                    <ListSubHeader theme={theme}>Data</ListSubHeader>
+                    <ListItem
                         title="Clear database"
-                        descriptionStyle={desciptionStyles}
                         description="Delete history for novels not in your library"
                         onPress={() => deleteNovelCache()}
-                        rippleColor={theme.rippleColor}
+                        theme={theme}
                     />
-                    <List.Item
-                        titleStyle={titleStyles}
+                    <ListItem
                         title="Clear history"
-                        descriptionStyle={desciptionStyles}
                         description="Delete reading history for all novels"
                         onPress={() => deleteAllHistory()}
-                        rippleColor={theme.rippleColor}
+                        theme={theme}
                     />
-                    <List.Subheader
-                        style={{
-                            color: theme.colorAccentDark,
-                            paddingBottom: 5,
-                        }}
-                    >
-                        Display
-                    </List.Subheader>
-                    <List.Item
-                        titleStyle={titleStyles}
+                    <Divider theme={theme} />
+                    <ListSubHeader theme={theme}>Display</ListSubHeader>
+                    <ListItem
                         title="Display Mode"
-                        descriptionStyle={desciptionStyles}
-                        description={display[displayMode]}
+                        description={displayModeLabel(displayMode)}
                         onPress={showDisplayModal}
-                        rippleColor={theme.rippleColor}
+                        theme={theme}
                     />
-                    <Portal>
-                        <Modal
-                            visible={displayModalVisible}
-                            onDismiss={hideDisplayModal}
-                            contentContainerStyle={{
-                                backgroundColor: theme.colorPrimaryDark,
-                                padding: 20,
-                                margin: 20,
-                                borderRadius: 6,
-                            }}
-                        >
-                            <DisplayCheckbox
-                                value={1}
-                                displayMode={displayMode}
-                                onPress={() => setDisplayMode(1)}
-                            />
-                            <DisplayCheckbox
-                                value={0}
-                                displayMode={displayMode}
-                                onPress={() => setDisplayMode(0)}
-                            />
-                            <DisplayCheckbox
-                                value={2}
-                                displayMode={displayMode}
-                                onPress={() => setDisplayMode(2)}
-                            />
-                        </Modal>
-                    </Portal>
-                    <List.Item
-                        titleStyle={titleStyles}
+                    <ListItem
                         title="Items per row in library"
-                        descriptionStyle={desciptionStyles}
-                        description={itemsPerRow}
-                        onPress={showitemsModal}
-                        rippleColor={theme.rippleColor}
+                        description={`${itemsPerRow} items per row`}
+                        onPress={showGridSizeModal}
+                        theme={theme}
                     />
-                    <Portal>
-                        <Modal
-                            visible={itemsModalVisible}
-                            onDismiss={hideitemsModal}
-                            contentContainerStyle={{
-                                backgroundColor: theme.colorPrimaryDark,
-                                padding: 20,
-                                margin: 20,
-                                borderRadius: 6,
-                            }}
-                        >
-                            <Text
-                                style={{
-                                    color: theme.textColorPrimary,
-                                    fontSize: 18,
-                                    marginBottom: 10,
-                                }}
-                            >
-                                Grid size
-                            </Text>
-                            <Text
-                                style={{
-                                    color: theme.textColorSecondary,
-                                    marginBottom: 4,
-                                }}
-                            >
-                                {itemsPerRow} per row
-                            </Text>
-                            {/* <InputSpinner
-                                style={{
-                                    paddingHorizontal: 16,
-                                    paddingVertical: 16,
-                                    elevation: 0,
-                                }}
-                                max={10}
-                                min={1}
-                                skin="paper"
-                                background={theme.colorPrimaryDark}
-                                colorMax={theme.colorAccentDark}
-                                colorLeft={theme.colorAccentDark}
-                                colorRight={theme.colorAccentDark}
-                                buttonTextColor={theme.textColorPrimary}
-                                colorPress={"white"}
-                                colorMin={theme.colorAccentDark}
-                                value={itemsPerRow}
-                                onChange={(num) => setItemsPerRow(num)}
-                                inputStyle={{
-                                    color: theme.textColorPrimary,
-                                }}
-                            /> */}
-
-                            <Slider
-                                style={{
-                                    width: "100%",
-                                    height: 40,
-                                    // backgroundColor: "red",
-                                }}
-                                value={itemsPerRow}
-                                minimumValue={1}
-                                maximumValue={5}
-                                step={1}
-                                minimumTrackTintColor={theme.colorAccentDark}
-                                maximumTrackTintColor="#000000"
-                                thumbTintColor={theme.colorAccentDark}
-                                onValueChange={(value) => setItemsPerRow(value)}
-                            />
-                        </Modal>
-                    </Portal>
-
-                    {/* <List.Subheader
-                        style={{
-                            color: theme.colorAccentDark,
-                            paddingBottom: 5,
-                        }}
-                    >
-                        Devloper options
-                    </List.Subheader>
-                    <List.Item
-                        titleStyle={titleStyles}
-                        title="Delete database"
-                        descriptionStyle={desciptionStyles}
-                        description="Delete entire database"
-                        rippleColor={theme.rippleColor}
-                        onPress={() => deleteDb()}
-                    /> */}
-                    <List.Subheader
-                        style={{
-                            color: theme.colorAccentDark,
-                            paddingBottom: 5,
-                        }}
-                    >
-                        Theme
-                    </List.Subheader>
-                    <List.Item
-                        titleStyle={titleStyles}
+                    <Divider theme={theme} />
+                    <ListSubHeader theme={theme}>Theme</ListSubHeader>
+                    <ListItem
                         title="Theme"
-                        descriptionStyle={desciptionStyles}
-                        description={themes[themeCode].label}
+                        description={`${theme.name} Theme`}
                         onPress={showthemeModal}
-                        rippleColor={theme.rippleColor}
+                        theme={theme}
                     />
-                    <Portal>
-                        <Modal
-                            visible={themeModalVisible}
-                            onDismiss={hidethemeModal}
-                            contentContainerStyle={{
-                                backgroundColor: theme.colorPrimaryDark,
-                                padding: 20,
-                                margin: 20,
-                                borderRadius: 6,
-                            }}
-                        >
-                            {themes.map((item, index) => (
-                                <ThemeCheckbox
-                                    key={index}
-                                    label={themes[item.themeCode].label}
-                                    checked={
-                                        themeCode === item.themeCode
-                                            ? true
-                                            : false
-                                    }
-                                    onPress={() => {
-                                        switchTheme(item.themeCode);
-                                        setStatusBarStyle(item.statusBar);
-                                    }}
-                                />
-                            ))}
-                        </Modal>
-                    </Portal>
-                </List.Section>
+                </ListSection>
+                <DisplayModeModal
+                    displayMode={displayMode}
+                    displayModalVisible={displayModalVisible}
+                    hideDisplayModal={hideDisplayModal}
+                    setDisplayMode={setDisplayMode}
+                    theme={theme}
+                />
+                <GridSizeModal
+                    itemsPerRow={itemsPerRow}
+                    gridSizeModalVisible={gridSizeModalVisible}
+                    hideGridSizeModal={hideGridSizeModal}
+                    setItemsPerRow={setItemsPerRow}
+                    theme={theme}
+                />
+                <ThemeModal
+                    themeModalVisible={themeModalVisible}
+                    hidethemeModal={hidethemeModal}
+                    switchTheme={switchTheme}
+                    theme={theme}
+                />
             </View>
         </>
     );
 };
 
 const mapStateToProps = (state) => ({
-    themeCode: state.themeReducer.themeCode,
     theme: state.themeReducer.theme,
     displayMode: state.settingsReducer.displayMode,
     itemsPerRow: state.settingsReducer.itemsPerRow,

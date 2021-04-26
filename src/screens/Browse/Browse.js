@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { StyleSheet, View, FlatList, ActivityIndicator } from "react-native";
-import { Appbar } from "../../components/common/Appbar";
+import { Appbar } from "../../components/Appbar";
 import { connect } from "react-redux";
 
 import { getSourcesAction } from "../../redux/source/source.actions";

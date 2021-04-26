@@ -3,7 +3,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import { StyleSheet, View, FlatList, ActivityIndicator } from "react-native";
 
 import { connect } from "react-redux";
-import EmptyView from "../../components/common/EmptyView";
+import EmptyView from "../../components/EmptyView";
 import { getUpdatesAction } from "../../redux/updates/updates.actions";
 import { Appbar } from "./components/Appbar";
 import UpdateCard from "./components/UpdateCard";

@@ -13,7 +13,7 @@ import {
     updateReaderTextSize,
     updateReaderTheme,
 } from "../../../redux/settings/settings.actions";
-import BottomSheetHandle from "../../../components/common/BottomSheetHandle";
+import BottomSheetHandle from "../../../components/BottomSheetHandle";
 
 const ChapterBottomSheet = ({
     bottomSheetRef,

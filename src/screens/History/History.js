@@ -3,11 +3,11 @@ import { useFocusEffect } from "@react-navigation/native";
 
 import { StyleSheet, View, FlatList, ActivityIndicator } from "react-native";
 
-import { Appbar } from "../../components/common/Appbar";
+import { Appbar } from "../../components/Appbar";
 import HistoryCard from "./components/HistoryCard";
 
 import { connect } from "react-redux";
-import EmptyView from "../../components/common/EmptyView";
+import EmptyView from "../../components/EmptyView";
 
 import {
     getHistoryAction,

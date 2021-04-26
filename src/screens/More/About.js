@@ -1,10 +1,11 @@
 import React from "react";
+import { View } from "react-native";
 import * as Linking from "expo-linking";
-import { List, Divider } from "react-native-paper";
 
-import { Appbar } from "../../components/common/Appbar";
+import { Appbar } from "../../components/Appbar";
 
 import { useSelector } from "react-redux";
+import { Divider, ListItem, ListSection } from "../../components/List";
 
 const AboutScreen = ({ navigation }) => {
     const theme = useSelector((state) => state.themeReducer.theme);
@@ -12,74 +13,58 @@ const AboutScreen = ({ navigation }) => {
     return (
         <>
             <Appbar title="About" onBackAction={() => navigation.goBack()} />
-            <List.Section
-                style={{
-                    flex: 1,
-                    marginTop: 0,
-                    backgroundColor: theme.colorPrimaryDark,
-                    marginBottom: 0,
-                }}
-            >
-                <List.Item
-                    titleStyle={{ color: theme.textColorPrimary }}
-                    title="Version"
-                    descriptionStyle={{ color: theme.textColorSecondary }}
-                    description="Stable 1.0.13"
-                />
-                <List.Item
-                    titleStyle={{ color: theme.textColorPrimary }}
-                    title="Build Time"
-                    descriptionStyle={{ color: theme.textColorSecondary }}
-                    description="24-04-21 21:00 PM"
-                />
-
-                <List.Item
-                    titleStyle={{ color: theme.textColorPrimary }}
-                    title="What's new"
-                    onPress={() =>
-                        Linking.openURL(
-                            "https://github.com/rajarsheechatterjee/lnreader/commits/main"
-                        )
-                    }
-                    rippleColor={theme.rippleColor}
-                />
-                <Divider />
-                <List.Item
-                    titleStyle={{ color: theme.textColorPrimary }}
-                    descriptionStyle={{ color: theme.textColorSecondary }}
-                    title="Discord"
-                    description="https://discord.gg/QdcWN4MD63"
-                    onPress={() =>
-                        Linking.openURL("https://discord.gg/QdcWN4MD63")
-                    }
-                    rippleColor={theme.rippleColor}
-                />
-                <List.Item
-                    titleStyle={{ color: theme.textColorPrimary }}
-                    descriptionStyle={{ color: theme.textColorSecondary }}
-                    title="Github"
-                    description="https://github.com/rajarsheechatterjee/lnreader"
-                    onPress={() =>
-                        Linking.openURL(
-                            "https://github.com/rajarsheechatterjee/lnreader"
-                        )
-                    }
-                    rippleColor={theme.rippleColor}
-                />
-                <List.Item
-                    titleStyle={{ color: theme.textColorPrimary }}
-                    descriptionStyle={{ color: theme.textColorSecondary }}
-                    title="Extensions"
-                    description="https://github.com/rajarsheechatterjee/lnreader-extensions"
-                    descriptionNumberOfLines={1}
-                    onPress={() =>
-                        Linking.openURL(
-                            "https://github.com/rajarsheechatterjee/lnreader-extensions"
-                        )
-                    }
-                    rippleColor={theme.rippleColor}
-                />
-            </List.Section>
+            <View style={{ flex: 1, backgroundColor: theme.colorPrimaryDark }}>
+                <ListSection>
+                    <ListItem
+                        title="Version"
+                        description="Stable 1.0.13"
+                        theme={theme}
+                    />
+                    <ListItem
+                        title="Build Time"
+                        description="24-04-21 21:00 PM"
+                        theme={theme}
+                    />
+                    <ListItem
+                        title="What's new"
+                        onPress={() =>
+                            Linking.openURL(
+                                "https://github.com/rajarsheechatterjee/lnreader/commits/main"
+                            )
+                        }
+                        theme={theme}
+                    />
+                    <Divider theme={theme} />
+                    <ListItem
+                        title="Discord"
+                        description="https://discord.gg/QdcWN4MD63"
+                        onPress={() =>
+                            Linking.openURL("https://discord.gg/QdcWN4MD63")
+                        }
+                        theme={theme}
+                    />
+                    <ListItem
+                        title="Github"
+                        description="https://github.com/rajarsheechatterjee/lnreader"
+                        onPress={() =>
+                            Linking.openURL(
+                                "https://github.com/rajarsheechatterjee/lnreader"
+                            )
+                        }
+                        theme={theme}
+                    />
+                    <ListItem
+                        title="Extensions"
+                        description="https://github.com/rajarsheechatterjee/lnreader-extensions"
+                        onPress={() =>
+                            Linking.openURL(
+                                "https://github.com/rajarsheechatterjee/lnreader-extensions"
+                            )
+                        }
+                        theme={theme}
+                    />
+                </ListSection>
+            </View>
         </>
     );
 };
