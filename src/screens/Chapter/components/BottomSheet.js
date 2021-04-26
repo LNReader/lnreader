@@ -1,9 +1,9 @@
 import React from "react";
-
 import { Animated, StyleSheet, View, Text, Dimensions } from "react-native";
 import { ToggleButton, IconButton, Chip } from "react-native-paper";
 import Slider from "@react-native-community/slider";
 import Bottomsheet from "rn-sliding-up-panel";
+import { fonts } from "../../../utils/constants";
 
 import { connect } from "react-redux";
 
@@ -26,22 +26,12 @@ const ChapterBottomSheet = ({
     updateReaderPadding,
     setReaderFont,
 }) => {
-    const fonts = [
-        { fontFamily: "", name: "Original" },
-        { fontFamily: "arbutus-slab", name: "Arbutus Slab" },
-        { fontFamily: "domine", name: "Domine" },
-        { fontFamily: "lato", name: "Lato" },
-        { fontFamily: "noto-sans", name: "Noto Sans" },
-        { fontFamily: "open-sans", name: "Open Sans" },
-        { fontFamily: "pt-serif", name: "PT Serif" },
-    ];
-
     return (
         <Bottomsheet
             animatedValue={new Animated.Value(0)}
             ref={bottomSheetRef}
-            draggableRange={{ top: 450, bottom: 0 }}
-            snappingPoints={[0, 450]}
+            draggableRange={{ top: 400, bottom: 0 }}
+            snappingPoints={[0, 400]}
             showBackdrop={false}
         >
             <View style={styles.contentContainer}>
@@ -69,91 +59,113 @@ const ChapterBottomSheet = ({
                         thumbTintColor={theme.colorAccentDark}
                         onValueChange={(value) => updateReaderTextSize(value)}
                     />
-                    <Text
+                    <View
                         style={{
-                            color: "#FFFFFF",
-                            fontWeight: "bold",
+                            flexDirection: "row",
+                            justifyContent: "center",
                         }}
                     >
-                        Reader Theme
-                    </Text>
-                    <ToggleButton.Row
-                        onValueChange={(value) => updateReaderTheme(value)}
-                        value={reader.theme}
-                        style={{ marginTop: 10 }}
-                    >
-                        <ToggleButton
-                            icon="format-text"
-                            color="#FFFFFF"
-                            value={1}
+                        <View
                             style={{
-                                backgroundColor: "#000000",
-                                marginHorizontal: 10,
+                                justifyContent: "center",
+                                alignItems: "center",
                             }}
-                        />
-                        <ToggleButton
-                            icon="format-text"
-                            color="#000000"
-                            value={2}
+                        >
+                            <Text
+                                style={{
+                                    color: "#FFFFFF",
+                                    fontWeight: "bold",
+                                }}
+                            >
+                                Reader Theme
+                            </Text>
+                            <ToggleButton.Row
+                                onValueChange={(value) =>
+                                    updateReaderTheme(value)
+                                }
+                                value={reader.theme}
+                                style={{ marginTop: 10 }}
+                            >
+                                <ToggleButton
+                                    icon="format-text"
+                                    color="#FFFFFF"
+                                    value={1}
+                                    style={{
+                                        backgroundColor: "#000000",
+                                        marginHorizontal: 10,
+                                    }}
+                                />
+                                <ToggleButton
+                                    icon="format-text"
+                                    color="#000000"
+                                    value={2}
+                                    style={{
+                                        backgroundColor: "#FFFFFF",
+                                        marginHorizontal: 10,
+                                    }}
+                                />
+                                <ToggleButton
+                                    icon="format-text"
+                                    color="#000000"
+                                    value={3}
+                                    style={{
+                                        backgroundColor: "#F4ECD8",
+                                        marginHorizontal: 10,
+                                    }}
+                                />
+                            </ToggleButton.Row>
+                        </View>
+                        <View
                             style={{
-                                backgroundColor: "#FFFFFF",
-                                marginHorizontal: 10,
+                                justifyContent: "center",
+                                alignItems: "center",
                             }}
-                        />
-                        <ToggleButton
-                            icon="format-text"
-                            color="#000000"
-                            value={3}
-                            style={{
-                                backgroundColor: "#F4ECD8",
-                                marginHorizontal: 10,
-                            }}
-                        />
-                    </ToggleButton.Row>
-                    <Text
-                        style={{
-                            color: "#FFFFFF",
-                            fontWeight: "bold",
-                            marginTop: 10,
-                        }}
-                    >
-                        Text Align
-                    </Text>
-                    <ToggleButton.Row
-                        onValueChange={(value) =>
-                            updateReaderTextAlign(value ?? "left")
-                        }
-                        value={reader.textAlign}
-                        style={{ marginTop: 10 }}
-                    >
-                        <ToggleButton
-                            icon="format-align-left"
-                            color="#000000"
-                            value="left"
-                            style={{
-                                backgroundColor: "#FFFFFF",
-                                marginHorizontal: 10,
-                            }}
-                        />
-                        <ToggleButton
-                            icon="format-align-justify"
-                            color="#000000"
-                            value="justify"
-                            style={{
-                                backgroundColor: "#FFFFFF",
-                                marginHorizontal: 10,
-                            }}
-                        />
-                        <ToggleButton
-                            icon="format-align-right"
-                            color="#000000"
-                            value="right"
-                            style={{
-                                backgroundColor: "#FFFFFF",
-                                marginHorizontal: 10,
-                            }}
-                        />
-                    </ToggleButton.Row>
+                        >
+                            <Text
+                                style={{
+                                    color: "#FFFFFF",
+                                    fontWeight: "bold",
+                                }}
+                            >
+                                Text Align
+                            </Text>
+                            <ToggleButton.Row
+                                onValueChange={(value) =>
+                                    updateReaderTextAlign(value ?? "left")
+                                }
+                                value={reader.textAlign}
+                                style={{ marginTop: 10 }}
+                            >
+                                <ToggleButton
+                                    icon="format-align-left"
+                                    color="#000000"
+                                    value="left"
+                                    style={{
+                                        backgroundColor: "#FFFFFF",
+                                        marginHorizontal: 10,
+                                    }}
+                                />
+                                <ToggleButton
+                                    icon="format-align-justify"
+                                    color="#000000"
+                                    value="justify"
+                                    style={{
+                                        backgroundColor: "#FFFFFF",
+                                        marginHorizontal: 10,
+                                    }}
+                                />
+                                <ToggleButton
+                                    icon="format-align-right"
+                                    color="#000000"
+                                    value="right"
+                                    style={{
+                                        backgroundColor: "#FFFFFF",
+                                        marginHorizontal: 10,
+                                    }}
+                                />
+                            </ToggleButton.Row>
+                        </View>
+                    </View>
                     <Text
                         style={{
                             color: "#FFFFFF",

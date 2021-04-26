@@ -51,6 +51,5 @@ export default connect(mapStateToProps, { getSourcesAction })(Browse);
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingHorizontal: 4,
     },
 });

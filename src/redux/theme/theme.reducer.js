@@ -13,7 +13,6 @@ const themes = {
 };
 
 const initialState = {
-    themeCode: 0,
     theme: themes[0],
 };
 
@@ -22,7 +21,7 @@ const themeReducer = (state = initialState, action) => {
 
     switch (type) {
         case "SWITCH_THEME":
-            return { ...state, themeCode: payload, theme: themes[payload] };
+            return { ...state, theme: themes[payload] };
         default:
             return state;
     }

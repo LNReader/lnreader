@@ -155,9 +155,7 @@ const NovelInfoHeader = ({
 
                         <IconButton
                             onPress={() =>
-                                WebBrowser.openBrowserAsync(
-                                    novel.sourceUrl && novel.sourceUrl
-                                )
+                                WebBrowser.openBrowserAsync(novel.sourceUrl)
                             }
                             icon="earth"
                             color={theme.colorAccentDark}
@@ -165,9 +163,7 @@ const NovelInfoHeader = ({
                         />
                         <IconButton
                             onPress={() =>
-                                Share.share({
-                                    message: novel.sourceUrl,
-                                })
+                                Share.share({ message: novel.sourceUrl })
                             }
                             icon="share-variant"
                             color={theme.colorAccentDark}

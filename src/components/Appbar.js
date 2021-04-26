@@ -36,7 +36,7 @@ export const SearchAppbar = ({
     getNovels,
     setLoading,
     screen,
-    onFilter,
+    openWebView,
 }) => {
     const searchRef = useRef(null);
 
@@ -112,17 +112,15 @@ export const SearchAppbar = ({
                         }}
                     />
                 )}
-                <IconButton
-                    icon="filter-variant"
-                    color={theme.textColorSecondary}
-                    style={{ marginRight: 0 }}
-                    size={23}
-                    disabled={typeof onFilter === "function" ? false : true}
-                    /**
-                     * TODO
-                     */
-                    onPress={() => onFilter?.()}
-                />
+                {openWebView && (
+                    <IconButton
+                        icon="earth"
+                        color={theme.textColorSecondary}
+                        style={{ marginRight: 0 }}
+                        size={23}
+                        onPress={openWebView}
+                    />
+                )}
             </View>
         </TouchableRipple>
     );

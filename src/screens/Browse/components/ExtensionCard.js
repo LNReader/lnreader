@@ -6,7 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 
 const ExtensionCard = ({ item }) => {
-    const { sourceId, sourceName, sourceCover, sourceLanguage } = item;
+    const { sourceName, sourceCover, sourceLanguage, status } = item;
 
     const navigation = useNavigation();
 
@@ -16,8 +16,10 @@ const ExtensionCard = ({ item }) => {
         <TouchableRipple
             style={styles.extensionCard}
             onPress={() =>
-                navigation.navigate("ExtensionStack", {
-                    screen: sourceName,
+                navigation.navigate("Extension", {
+                    sourceId: item.sourceId,
+                    sourceName: item.sourceName,
+                    sourceUrl: item.sourceUrl,
                 })
             }
             rippleColor={theme.rippleColor}
@@ -25,9 +27,7 @@ const ExtensionCard = ({ item }) => {
         >
             <>
                 <Image
-                    source={{
-                        uri: sourceCover,
-                    }}
+                    source={{ uri: sourceCover }}
                     style={styles.extensionIcon}
                     resizeMode="contain"
                 />
@@ -57,7 +57,7 @@ const ExtensionCard = ({ item }) => {
                                     marginLeft: 5,
                                 }}
                             >
-                                {sourceId === 3 && "(Not Working)"}
+                                {status === 0 && "(Not Working)"}
                             </Text>
                         </View>
                     </View>
@@ -69,8 +69,10 @@ const ExtensionCard = ({ item }) => {
                             uppercase={false}
                             color={theme.colorAccentDark}
                             onPress={() =>
-                                navigation.navigate("ExtensionStack", {
-                                    screen: sourceName,
+                                navigation.navigate("Extension", {
+                                    sourceId: item.sourceId,
+                                    sourceName: item.sourceName,
+                                    sourceUrl: item.sourceUrl,
                                 })
                             }
                         >
@@ -92,7 +94,6 @@ const styles = StyleSheet.create({
         marginVertical: 4,
         paddingVertical: 8,
         paddingHorizontal: 20,
-        borderRadius: 4,
     },
     extensionIcon: {
         width: 40,

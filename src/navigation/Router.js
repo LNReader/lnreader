@@ -21,11 +21,7 @@ import Settings from "../screens/More/Settings";
 import NovelItem from "../screens/Novel/Novel";
 import ChapterItem from "../screens/Chapter/Chapter";
 
-// Extensions
-import BoxNovel from "../screens/extensions/boxnovel/BoxNovel";
-import ReadLightNovel from "../screens/extensions/readlightnovel/ReadLightNovel";
-import FastNovel from "../screens/extensions/fastnovel/FastNovel";
-import ReadNovelFull from "../screens/extensions/readnovelfull/ReadNovelFull";
+import Extension from "../screens/Extension/Extension";
 
 const Stack = createStackNavigator();
 
@@ -41,17 +37,6 @@ const SettingsStack = () => {
         <Stack.Navigator screenOptions={stackNavigatorConfig}>
             <Stack.Screen name="About" component={About} />
             <Stack.Screen name="Settings" component={Settings} />
-        </Stack.Navigator>
-    );
-};
-
-const ExtensionStack = () => {
-    return (
-        <Stack.Navigator screenOptions={stackNavigatorConfig}>
-            <Stack.Screen name="BoxNovel" component={BoxNovel} />
-            <Stack.Screen name="ReadLightNovel" component={ReadLightNovel} />
-            <Stack.Screen name="FastNovel" component={FastNovel} />
-            <Stack.Screen name="ReadNovelFull" component={ReadNovelFull} />
         </Stack.Navigator>
     );
 };
@@ -138,9 +123,9 @@ const BottomNavigator = () => {
 };
 
 const Router = () => {
-    const themeCode = useSelector((state) => state.themeReducer.themeCode);
+    const theme = useSelector((state) => state.themeReducer.theme);
 
-    useEffect(() => setStatusBarStyle(themeCode === 1 ? "dark" : "light"), []);
+    useEffect(() => setStatusBarStyle(theme.id === 1 ? "dark" : "light"), []);
 
     return (
         <Provider>
@@ -162,10 +147,11 @@ const Router = () => {
                     }}
                 />
                 <Stack.Screen name="SettingsStack" component={SettingsStack} />
-                <Stack.Screen
+                <Stack.Screen name="Extension" component={Extension} />
+                {/* <Stack.Screen
                     name="ExtensionStack"
                     component={ExtensionStack}
-                />
+                /> */}
             </Stack.Navigator>
         </Provider>
     );

@@ -59,7 +59,9 @@ const ChapterItem = ({
     const readerLineHeight = (val) => {
         const lineHeight = {
             12: 20,
+            14: 22,
             16: 25,
+            18: 26,
             20: 28,
         };
         return lineHeight[val];

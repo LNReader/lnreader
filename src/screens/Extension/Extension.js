@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, View, FlatList, ActivityIndicator } from "react-native";
 import { Provider } from "react-native-paper";
+import * as WebBrowser from "expo-web-browser";
 
-import NovelCover from "../../../components/NovelCover";
-import EmptyView from "../../../components/EmptyView";
-import { SearchAppbar } from "../../../components/Appbar";
+import NovelCover from "../../components/NovelCover";
+import EmptyView from "../../components/EmptyView";
+import { SearchAppbar } from "../../components/Appbar";
 
 import { useSelector } from "react-redux";
 
-const ReadLightNovel = ({ navigation }) => {
+const Extension = ({ navigation, route }) => {
+    const { sourceId, sourceName, sourceUrl } = route.params;
+
     const theme = useSelector((state) => state.themeReducer.theme);
     const library = useSelector((state) => state.libraryReducer.novels);
     const itemsPerRow = useSelector(
@@ -16,13 +19,28 @@ const ReadLightNovel = ({ navigation }) => {
     );
 
     const [loading, setLoading] = useState(true);
-
     const [novels, setNovels] = useState();
 
     const [searchText, setSearchText] = useState("");
 
+    const getSourceUrl = () => {
+        if (sourceId === 1) {
+            return `https://lnreader-extensions.herokuapp.com/api/1/novels/1/?o=rating`;
+        } else {
+            return `https://lnreader-extensions.herokuapp.com/api/${sourceId}/novels/`;
+        }
+    };
+
+    const getSearchUrl = () => {
+        if (sourceId === 1) {
+            return `https://lnreader-extensions.herokuapp.com/api/1/search/?s=${searchText}&?o=rating`;
+        } else {
+            return `https://lnreader-extensions.herokuapp.com/api/${sourceId}/search/?s=${searchText}`;
+        }
+    };
+
     const getNovels = () => {
-        fetch(`https://lnreader-extensions.herokuapp.com/api/2/novels/`)
+        fetch(getSourceUrl())
             .then((response) => response.json())
             .then((json) => {
                 setNovels(json);
@@ -32,9 +50,7 @@ const ReadLightNovel = ({ navigation }) => {
 
     const getSearchResults = (searchText) => {
         setLoading(true);
-        fetch(
-            `https://lnreader-extensions.herokuapp.com/api/2/search/?s=${searchText}`
-        )
+        fetch(getSearchUrl())
             .then((response) => response.json())
             .then((json) => {
                 setNovels(json);
@@ -60,12 +76,13 @@ const ReadLightNovel = ({ navigation }) => {
             >
                 <SearchAppbar
                     screen="Extension"
-                    placeholder="Search ReadLightNovel"
+                    placeholder={`Search ${sourceName}`}
                     searchText={searchText}
                     setSearchText={setSearchText}
                     getSearchResults={getSearchResults}
                     getNovels={getNovels}
                     setLoading={setLoading}
+                    openWebView={() => WebBrowser.openBrowserAsync(sourceUrl)}
                 />
 
                 {loading ? (
@@ -98,7 +115,6 @@ const ReadLightNovel = ({ navigation }) => {
                             />
                         )}
                         ListEmptyComponent={
-                            searchText !== "" &&
                             novels.length === 0 && (
                                 <EmptyView
                                     icon="(；￣Д￣)"
@@ -113,7 +129,7 @@ const ReadLightNovel = ({ navigation }) => {
     );
 };
 
-export default ReadLightNovel;
+export default Extension;
 
 const styles = StyleSheet.create({
     container: {
