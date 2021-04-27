@@ -44,6 +44,16 @@ const MoreScreen = ({ navigation }) => {
                         theme={theme}
                     />
                     <ListItem
+                        title="Tracking"
+                        icon="sync"
+                        onPress={() =>
+                            navigation.navigate("SettingsStack", {
+                                screen: "Trackers",
+                            })
+                        }
+                        theme={theme}
+                    />
+                    <ListItem
                         title="About"
                         icon="information-outline"
                         onPress={() =>

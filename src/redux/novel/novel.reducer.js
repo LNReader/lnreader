@@ -53,7 +53,7 @@ const novelReducer = (state = initialState, action) => {
         case UPDATE_IN_LIBRARY:
             return {
                 ...state,
-                novel: { ...state.novel, followed: payload },
+                novel: { ...state.novel, followed: payload.followed },
             };
         case UPDATE_NOVEL:
             return {

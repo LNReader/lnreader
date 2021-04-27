@@ -2,7 +2,8 @@
     "expo": {
         "name": "LNReader",
         "slug": "LNReader",
-        "version": "1.0.0",
+        "scheme": "lnreader",
+        "version": "1.0.14",
         "orientation": "portrait",
         "icon": "./assets/icon.png",
         "splash": {

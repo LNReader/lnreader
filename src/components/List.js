@@ -14,7 +14,7 @@ const ListSubHeader = ({ children, theme }) => (
     </List.Subheader>
 );
 
-const ListItem = ({ title, description, icon, onPress, theme }) => (
+const ListItem = ({ title, description, icon, onPress, theme, right }) => (
     <List.Item
         title={title}
         titleStyle={{ color: theme.textColorPrimary }}
@@ -26,6 +26,15 @@ const ListItem = ({ title, description, icon, onPress, theme }) => (
                 <List.Icon
                     color={theme.colorAccentDark}
                     icon={icon}
+                    style={{ marginVertical: 0 }}
+                />
+            )
+        }
+        right={() =>
+            right && (
+                <List.Icon
+                    color="#47a84a"
+                    icon={right}
                     style={{ marginVertical: 0 }}
                 />
             )

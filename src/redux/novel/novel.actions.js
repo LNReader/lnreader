@@ -106,7 +106,7 @@ export const followNovelAction = (novel) => async (dispatch) => {
 
     dispatch({
         type: UPDATE_IN_LIBRARY,
-        payload: !novel.followed,
+        payload: { novelUrl: novel.novelUrl, followed: !novel.followed },
     });
 
     ToastAndroid.show(

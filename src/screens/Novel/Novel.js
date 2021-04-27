@@ -3,16 +3,23 @@ import {
     StyleSheet,
     View,
     FlatList,
+    Text,
     RefreshControl,
     ToastAndroid,
 } from "react-native";
-import { Provider, Portal } from "react-native-paper";
+import {
+    Provider,
+    Portal,
+    Modal,
+    TextInput,
+    IconButton,
+} from "react-native-paper";
 
 import ChapterCard from "./components/ChapterCard";
 import NovelInfoHeader from "./components/NovelHeader";
 import { BottomSheet } from "./components/BottomSheet";
 
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 
 import {
     getNovelAction,
@@ -22,6 +29,8 @@ import {
     downloadAllChaptersAction,
     deleteAllChaptersAction,
 } from "../../redux/novel/novel.actions";
+import { TrackerBottomSheet } from "./components/TrackerBottomSheet";
+import TrackerSearchModal from "./components/TrackerSearchModal";
 
 const Novel = ({
     route,
@@ -48,8 +57,14 @@ const Novel = ({
 
     let _panel = useRef(null); // Bottomsheet ref
 
+    let trackerBottomsheet = useRef(null); // Bottomsheet ref
+
     const [sort, setSort] = useState("ORDER BY chapterId ASC");
     const [filter, setFilter] = useState("");
+
+    const trackedNovels = useSelector(
+        (state) => state.trackerReducer.trackedNovels
+    );
 
     useEffect(() => {
         getNovelAction(followed, sourceId, novelUrl, novelId, sort, filter);
@@ -69,6 +84,13 @@ const Novel = ({
         updateNovelAction(sourceId, novelUrl, novelId);
         ToastAndroid.show(`Updated ${novelName}`, ToastAndroid.SHORT);
     };
+
+    // Tracker Modal
+    const [visible, setVisible] = useState(false);
+    const showModal = () => {
+        setVisible(true);
+    };
+    const hideModal = () => setVisible(false);
 
     return (
         <Provider>
@@ -96,6 +118,7 @@ const Novel = ({
                             loading={loading}
                             lastRead={lastRead}
                             bottomSheetRef={_panel}
+                            trackerBottomsheetRef={trackerBottomsheet}
                             downloadAllChapters={() =>
                                 downloadAllChaptersAction(
                                     sourceId,
@@ -126,6 +149,18 @@ const Novel = ({
                         filter={filter}
                         setSort={setSort}
                         setFilter={setFilter}
+                    />
+                    <TrackerBottomSheet
+                        bottomSheetRef={trackerBottomsheet}
+                        showModal={showModal}
+                        novelId={novelId}
+                    />
+                    <TrackerSearchModal
+                        visible={visible}
+                        hideModal={hideModal}
+                        novelId={novelId}
+                        novelName={novelName}
+                        theme={theme}
                     />
                 </Portal>
             </View>

@@ -31,6 +31,7 @@ const NovelInfoHeader = ({
     theme,
     lastRead,
     downloadAllChapters,
+    trackerBottomsheetRef,
     deleteAllChapters,
 }) => {
     const navigation = useNavigation();
@@ -161,6 +162,7 @@ const NovelInfoHeader = ({
                             color={theme.colorAccentDark}
                             size={21}
                         />
+
                         <IconButton
                             onPress={() =>
                                 Share.share({ message: novel.sourceUrl })
@@ -169,7 +171,12 @@ const NovelInfoHeader = ({
                             color={theme.colorAccentDark}
                             size={21}
                         />
-
+                        <IconButton
+                            onPress={() => trackerBottomsheetRef.current.show()}
+                            icon="sync"
+                            color={theme.colorAccentDark}
+                            size={21}
+                        />
                         <Menu
                             visible={visible}
                             onDismiss={closeMenu}

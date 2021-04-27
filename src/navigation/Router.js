@@ -17,6 +17,7 @@ import Browse from "../screens/Browse/Browse";
 import More from "../screens/More/More";
 import About from "../screens/More/About";
 import Settings from "../screens/More/Settings";
+import Trackers from "../screens/More/Trackers";
 
 import NovelItem from "../screens/Novel/Novel";
 import ChapterItem from "../screens/Chapter/Chapter";
@@ -37,6 +38,7 @@ const SettingsStack = () => {
         <Stack.Navigator screenOptions={stackNavigatorConfig}>
             <Stack.Screen name="About" component={About} />
             <Stack.Screen name="Settings" component={Settings} />
+            <Stack.Screen name="Trackers" component={Trackers} />
         </Stack.Navigator>
     );
 };

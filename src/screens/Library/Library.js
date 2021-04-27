@@ -30,16 +30,19 @@ const LibraryScreen = ({
     getLibraryAction,
     searchLibraryAction,
     setNovel,
-    searchResults,
+    // searchResults,
     itemsPerRow,
 }) => {
     const [refreshing, setRefreshing] = useState(false);
 
     const [searchText, setSearchText] = useState("");
 
-    useEffect(() => {
-        getLibraryAction();
-    }, [getLibraryAction, novels]);
+    useFocusEffect(
+        useCallback(() => {
+            setSearchText("");
+            getLibraryAction();
+        }, [getLibraryAction])
+    );
 
     /**
      * TODO: fix refreshing
@@ -85,7 +88,7 @@ const LibraryScreen = ({
                         }}
                         numColumns={itemsPerRow}
                         key={itemsPerRow}
-                        data={!searchText ? novels : searchResults}
+                        data={novels}
                         keyExtractor={(item) => item.novelUrl}
                         renderItem={({ item }) => (
                             <NovelCover
@@ -129,7 +132,7 @@ const mapStateToProps = (state) => ({
     theme: state.themeReducer.theme,
     itemsPerRow: state.settingsReducer.itemsPerRow,
     novels: state.libraryReducer.novels,
-    searchResults: state.libraryReducer.searchResults,
+    // searchResults: state.libraryReducer.searchResults,
     loading: state.libraryReducer.loading,
 });
 
