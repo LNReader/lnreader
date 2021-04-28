@@ -40,12 +40,12 @@ const TrackerSearchModal = ({
             style={[
                 { flexDirection: "row", borderRadius: 4, margin: 8 },
                 selectedNovel &&
-                    selectedNovel === item.node.id && {
+                    selectedNovel.id === item.node.id && {
                         backgroundColor: theme.rippleColor,
                     },
             ]}
             key={item.node.id}
-            onPress={() => setSelectedNovel(item.node.id)}
+            onPress={() => setSelectedNovel(item.node)}
             rippleColor={theme.rippleColor}
             borderless
         >
@@ -158,10 +158,10 @@ const TrackerSearchModal = ({
                         onPress={() => {
                             if (selectedNovel) {
                                 dispatch(
-                                    trackNovel({
-                                        novelId,
-                                        malId: selectedNovel,
-                                    })
+                                    trackNovel(
+                                        { ...selectedNovel, novelId },
+                                        tracker.access_token
+                                    )
                                 );
                             }
                             hideModal();

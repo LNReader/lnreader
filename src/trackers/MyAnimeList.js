@@ -87,13 +87,30 @@ export const findListItem = async (malId, bearerToken) => {
     const listItem = await res.json();
 
     if (!listItem.my_list_status) {
-        myListStatus = {
+        listItem.my_list_status = {
             status: "reading",
+            score: 0,
             num_chapters_read: 0,
         };
-
-        listItem.my_list_status = myListStatus;
     }
+    return listItem;
+};
 
+export const updateItem = async (malId, bearerToken, body) => {
+    const url = `https://api.myanimelist.net/v2/manga/${malId}/my_list_status`;
+
+    const headers = {
+        Authorization: "Bearer " + bearerToken,
+        "Content-Type": "application/x-www-form-urlencoded",
+    };
+
+    const res = await fetch(url, {
+        method: "PUT",
+        headers,
+        body: qs.stringify(body),
+    });
+
+    const listItem = await res.json();
+    console.log(listItem);
     return listItem;
 };
