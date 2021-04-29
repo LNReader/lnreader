@@ -20,7 +20,7 @@ export const removeTracker = () => async (dispatch) => {
 
 export const trackNovel = (trackObj, accessToken) => async (dispatch) => {
     let res = await findListItem(trackObj.id, accessToken);
-
+    trackObj.num_chapters = res.num_chapters;
     trackObj.my_list_status = {
         num_chapters_read: res.my_list_status.num_chapters_read,
         score: res.my_list_status.score,

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, Animated } from "react-native";
 import { List, RadioButton, Checkbox } from "react-native-paper";
 import Bottomsheet from "rn-sliding-up-panel";
 
 import { useSelector } from "react-redux";
 
-export const BottomSheet = ({
+const ChaptersSettingsSheet = ({
     bottomSheetRef,
     sort,
     filter,
@@ -17,8 +17,11 @@ export const BottomSheet = ({
 
     const theme = useSelector((state) => state.themeReducer.theme);
 
+    const [animatedValue] = useState(new Animated.Value(0));
+
     return (
         <Bottomsheet
+            animatedValue={animatedValue}
             ref={bottomSheetRef}
             draggableRange={{ top: 370, bottom: 0 }}
             snappingPoints={[0, 370]}
@@ -158,6 +161,8 @@ export const BottomSheet = ({
         </Bottomsheet>
     );
 };
+
+export default ChaptersSettingsSheet;
 
 const styles = StyleSheet.create({
     contentContainer: {

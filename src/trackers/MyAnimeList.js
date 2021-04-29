@@ -61,7 +61,7 @@ export const getAccessToken = async (code, codeChallenge) => {
 };
 
 export const searchNovels = async (novelName, bearerToken) => {
-    const searchrl = `https://api.myanimelist.net/v2/manga?q=${novelName}`;
+    const searchrl = `${baseApiUrl}/manga?q=${novelName}`;
 
     const headers = {
         Authorization: "Bearer " + bearerToken,
@@ -69,14 +69,13 @@ export const searchNovels = async (novelName, bearerToken) => {
     };
 
     const res = await fetch(searchrl, { method: "GET", headers });
-
     const searchResults = await res.json();
 
     return searchResults;
 };
 
 export const findListItem = async (malId, bearerToken) => {
-    const url = `https://api.myanimelist.net/v2/manga/${malId}?fields=id,num_chapters,my_list_status{start_date,finish_date}`;
+    const url = `${baseApiUrl}/manga/${malId}?fields=id,num_chapters,my_list_status{start_date,finish_date}`;
 
     const headers = {
         Authorization: "Bearer " + bearerToken,
@@ -97,7 +96,7 @@ export const findListItem = async (malId, bearerToken) => {
 };
 
 export const updateItem = async (malId, bearerToken, body) => {
-    const url = `https://api.myanimelist.net/v2/manga/${malId}/my_list_status`;
+    const url = `${baseApiUrl}/manga/${malId}/my_list_status`;
 
     const headers = {
         Authorization: "Bearer " + bearerToken,

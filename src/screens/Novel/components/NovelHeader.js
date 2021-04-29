@@ -1,159 +1,119 @@
 import React, { useState } from "react";
-import {
-    View,
-    Text,
-    ImageBackground,
-    StyleSheet,
-    Image,
-    FlatList,
-    Share,
-} from "react-native";
-import {
-    TouchableRipple,
-    IconButton,
-    Button,
-    Chip,
-    Menu,
-} from "react-native-paper";
+import { View, Text, StyleSheet, Image, FlatList, Share } from "react-native";
+import { TouchableRipple, IconButton, Button, Menu } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import * as WebBrowser from "expo-web-browser";
+import { useSelector, useDispatch } from "react-redux";
 
-import { LinearGradient } from "expo-linear-gradient";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import {
+    downloadAllChaptersAction,
+    deleteAllChaptersAction,
+} from "../../../redux/novel/novel.actions";
+import { GenreChip } from "./Info/GenreChip";
+import NovelCoverImage from "./Info/NovelCoverImage";
+import FollowChip from "./Info/FollowChip";
+import TrackerChip from "./Info/TrackerChip";
+import NovelSummary from "./Info/NovelSummary";
+import ReadButton from "./Info/ReadButton";
 
 const NovelInfoHeader = ({
-    item,
-    novel,
-    noOfChapters,
-    followNovelAction,
+    novelName,
+    novelCover,
     loading,
-    bottomSheetRef,
+    novel,
+    chapters,
     theme,
-    lastRead,
-    downloadAllChapters,
-    trackerBottomsheetRef,
-    deleteAllChapters,
+    chaptersSettingsSheetRef,
+    trackerSheetRef,
 }) => {
     const navigation = useNavigation();
+    const dispatch = useDispatch();
 
-    const [more, setMore] = useState(
-        !loading && novel.followed !== 1 ? true : false
+    const [downloadMenu, showDownloadMenu] = useState(false);
+
+    const trackedNovels = useSelector(
+        (state) => state.trackerReducer.trackedNovels
     );
 
-    const [visible, setVisible] = useState(false);
-    const openMenu = () => setVisible(true);
-    const closeMenu = () => setVisible(false);
+    let isTracked = false;
 
-    const renderGenreChip = ({ item }) => (
-        <Text
-            style={[
-                styles.genre,
-                {
-                    color: theme.colorAccentDark,
-                    borderColor: theme.colorAccentDark,
-                    backgroundColor: theme.colorPrimary,
-                },
-            ]}
-        >
-            {item}
-        </Text>
-    );
+    if (!loading) {
+        isTracked = trackedNovels.find((obj) => obj.novelId === novel.novelId);
+    }
+
+    const getGenres = ({ item }) => <GenreChip theme={theme}>{item}</GenreChip>;
 
     return (
         <View style={{ flexGrow: 1 }}>
-            <ImageBackground
-                source={{ uri: item.novelCover }}
-                style={styles.background}
-            >
-                <LinearGradient
-                    colors={["rgba(0,0,0,0.2)", theme.colorPrimaryDark]}
-                    style={styles.linearGradient}
-                >
-                    <View style={styles.detailsContainer}>
-                        <View>
-                            <Image
-                                source={{ uri: item.novelCover }}
-                                style={styles.logo}
-                            />
-                        </View>
-                        <View style={styles.nameContainer}>
-                            <Text
-                                numberOfLines={2}
-                                style={[
-                                    styles.name,
-                                    { color: theme.textColorPrimary },
-                                ]}
-                            >
-                                {item.novelName}
-                            </Text>
-                            {!loading && (
-                                <>
-                                    <Text
-                                        style={{
-                                            color: theme.textColorSecondary,
-                                            marginVertical: 3,
-                                            fontSize: 14,
-                                            fontWeight: "bold",
-                                        }}
-                                        numberOfLines={2}
-                                    >
-                                        {novel.author.replace(",", ", ")}
-                                    </Text>
-
-                                    <Text
-                                        style={{
-                                            color: theme.textColorSecondary,
-                                            marginVertical: 3,
-                                            fontSize: 14,
-                                        }}
-                                        numberOfLines={1}
-                                    >
-                                        {novel.status}
-                                    </Text>
-                                    <Text
-                                        style={{
-                                            color: theme.textColorSecondary,
-                                            fontSize: 14,
-                                        }}
-                                        numberOfLines={1}
-                                    >
-                                        {novel.source}
-                                    </Text>
-                                </>
-                            )}
-                        </View>
+            <NovelCoverImage source={{ uri: novelCover }} theme={theme}>
+                <View style={styles.detailsContainer}>
+                    <View>
+                        <Image
+                            source={{ uri: novelCover }}
+                            style={styles.logo}
+                        />
                     </View>
-                </LinearGradient>
-            </ImageBackground>
+                    <View style={styles.nameContainer}>
+                        <Text
+                            numberOfLines={2}
+                            style={[
+                                styles.name,
+                                { color: theme.textColorPrimary },
+                            ]}
+                        >
+                            {novelName}
+                        </Text>
+                        {!loading && (
+                            <>
+                                <Text
+                                    style={{
+                                        color: theme.textColorSecondary,
+                                        marginVertical: 3,
+                                        fontSize: 14,
+                                        fontWeight: "bold",
+                                    }}
+                                    numberOfLines={2}
+                                >
+                                    {novel.author.replace(",", ", ")}
+                                </Text>
+
+                                <Text
+                                    style={{
+                                        color: theme.textColorSecondary,
+                                        marginVertical: 3,
+                                        fontSize: 14,
+                                    }}
+                                    numberOfLines={1}
+                                >
+                                    {novel.status}
+                                </Text>
+                                <Text
+                                    style={{
+                                        color: theme.textColorSecondary,
+                                        fontSize: 14,
+                                    }}
+                                    numberOfLines={1}
+                                >
+                                    {novel.source}
+                                </Text>
+                            </>
+                        )}
+                    </View>
+                </View>
+            </NovelCoverImage>
             {!loading && (
                 <>
                     <View style={styles.buttonsContainer}>
-                        <Chip
-                            mode="outlined"
-                            icon={() => (
-                                <MaterialCommunityIcons
-                                    name={
-                                        novel.followed
-                                            ? "heart"
-                                            : "heart-outline"
-                                    }
-                                    size={21}
-                                    color={theme.colorAccentDark}
-                                />
-                            )}
-                            onPress={() => followNovelAction(novel)}
-                            style={[
-                                { backgroundColor: theme.colorPrimaryDark },
-                                styles.toggleFavourite,
-                            ]}
-                            textStyle={{
-                                fontWeight: "bold",
-                                color: theme.textColorPrimary,
-                            }}
-                        >
-                            {novel.followed ? "In Library" : "Add to library"}
-                        </Chip>
-
+                        <FollowChip
+                            theme={theme}
+                            followed={novel.followed}
+                            novel={novel}
+                        />
+                        <TrackerChip
+                            theme={theme}
+                            isTracked={isTracked}
+                            trackerSheetRef={trackerSheetRef}
+                        />
                         <IconButton
                             onPress={() =>
                                 WebBrowser.openBrowserAsync(novel.sourceUrl)
@@ -162,7 +122,6 @@ const NovelInfoHeader = ({
                             color={theme.colorAccentDark}
                             size={21}
                         />
-
                         <IconButton
                             onPress={() =>
                                 Share.share({ message: novel.sourceUrl })
@@ -171,21 +130,15 @@ const NovelInfoHeader = ({
                             color={theme.colorAccentDark}
                             size={21}
                         />
-                        <IconButton
-                            onPress={() => trackerBottomsheetRef.current.show()}
-                            icon="sync"
-                            color={theme.colorAccentDark}
-                            size={21}
-                        />
                         <Menu
-                            visible={visible}
-                            onDismiss={closeMenu}
+                            visible={downloadMenu}
+                            onDismiss={() => showDownloadMenu(false)}
                             anchor={
                                 <IconButton
                                     icon="download"
                                     color={theme.colorAccentDark}
                                     size={21}
-                                    onPress={openMenu}
+                                    onPress={() => showDownloadMenu(true)}
                                 />
                             }
                             contentStyle={{ backgroundColor: theme.menuColor }}
@@ -194,58 +147,31 @@ const NovelInfoHeader = ({
                                 title="Download all"
                                 style={{ backgroundColor: theme.menuColor }}
                                 titleStyle={{ color: theme.textColorPrimary }}
-                                onPress={downloadAllChapters}
+                                onPress={() =>
+                                    dispatch(
+                                        downloadAllChaptersAction(
+                                            novel.sourceId,
+                                            novel.novelUrl,
+                                            chapters
+                                        )
+                                    )
+                                }
                             />
                             <Menu.Item
                                 title="Delete downloads"
                                 style={{ backgroundColor: theme.menuColor }}
                                 titleStyle={{ color: theme.textColorPrimary }}
-                                onPress={deleteAllChapters}
+                                onPress={() =>
+                                    dispatch(deleteAllChaptersAction(chapters))
+                                }
                             />
                         </Menu>
                     </View>
-
-                    {novel.novelSummary !== "" && (
-                        <View
-                            style={{
-                                paddingHorizontal: 16,
-                                marginBottom: 8,
-                            }}
-                        >
-                            <Text
-                                style={[
-                                    { color: theme.textColorPrimary },
-                                    styles.summaryHeader,
-                                ]}
-                            >
-                                About
-                            </Text>
-                            <Text
-                                style={{
-                                    color: theme.textColorSecondary,
-                                    lineHeight: 20,
-                                }}
-                                numberOfLines={more ? 100 : 2}
-                                onPress={() => setMore(!more)}
-                                ellipsizeMode="clip"
-                            >
-                                {novel.novelSummary}
-                            </Text>
-                            <Text
-                                style={[
-                                    {
-                                        color: theme.colorAccentDark,
-                                        backgroundColor: theme.colorPrimaryDark,
-                                    },
-                                    styles.moreBtn,
-                                ]}
-                                onPress={() => setMore(!more)}
-                            >
-                                {more ? "Less " : "More "}
-                            </Text>
-                        </View>
-                    )}
-
+                    <NovelSummary
+                        summary={novel.novelSummary}
+                        followed={novel.followed}
+                        theme={theme}
+                    />
                     <FlatList
                         style={
                             novel.novelSummary === ""
@@ -254,57 +180,23 @@ const NovelInfoHeader = ({
                         }
                         contentContainerStyle={styles.genreContainer}
                         horizontal
-                        data={novel.genre && novel.genre.split(",")}
+                        data={novel.genre.split(",")}
                         keyExtractor={(item) => item}
-                        renderItem={renderGenreChip}
+                        renderItem={getGenres}
                         showsHorizontalScrollIndicator={false}
                     />
-                    {noOfChapters > 0 &&
-                        (lastRead ? (
-                            <Button
-                                color="white"
-                                style={[
-                                    { backgroundColor: theme.colorAccentDark },
-                                    styles.startButton,
-                                ]}
-                                uppercase={false}
-                                labelStyle={{ letterSpacing: 0 }}
-                                onPress={() => {
-                                    navigation.navigate("ChapterItem", {
-                                        chapterId: lastRead.chapterId,
-                                        chapterUrl: lastRead.chapterUrl,
-                                        novelUrl: novel.novelUrl,
-                                        novelId: lastRead.novelId,
-                                        extensionId: novel.sourceId,
-                                        chapterName: lastRead.chapterName,
-                                    });
-                                }}
-                            >
-                                {novel.unread
-                                    ? `Start reading `
-                                    : `Continue reading `}
-                                {lastRead.chapterName}
-                            </Button>
-                        ) : (
-                            <Button
-                                color={theme.textColorPrimary}
-                                style={[
-                                    {
-                                        backgroundColor: theme.textColorPrimary,
-                                        opacity: 0.2,
-                                    },
-                                    styles.startButton,
-                                ]}
-                                uppercase={false}
-                                labelStyle={{ letterSpacing: 0 }}
-                            >
-                                All chapters read
-                            </Button>
-                        ))}
+                    <ReadButton
+                        novel={novel}
+                        chapters={chapters}
+                        navigation={navigation}
+                        theme={theme}
+                    />
                     <TouchableRipple
                         style={styles.bottomsheet}
                         onPress={() =>
-                            bottomSheetRef.current.show({ velocity: -1.5 })
+                            chaptersSettingsSheetRef.current.show({
+                                velocity: -1.5,
+                            })
                         }
                         rippleColor={theme.rippleColor}
                     >
@@ -315,7 +207,7 @@ const NovelInfoHeader = ({
                                     styles.chapters,
                                 ]}
                             >
-                                {noOfChapters + " Chapters"}
+                                {`${chapters.length} Chapters`}
                             </Text>
                             <IconButton
                                 icon="filter-variant"
@@ -338,12 +230,6 @@ const styles = StyleSheet.create({
         marginHorizontal: 16,
         paddingTop: 8,
     },
-    background: {
-        height: 285,
-    },
-    linearGradient: {
-        height: 286,
-    },
     detailsContainer: {
         flex: 1,
         flexDirection: "row",
@@ -356,16 +242,6 @@ const styles = StyleSheet.create({
         margin: 3.2,
         borderRadius: 6,
     },
-    genre: {
-        borderRadius: 50,
-        borderWidth: 1,
-        paddingHorizontal: 10,
-        marginHorizontal: 2,
-        fontSize: 13,
-        paddingVertical: 2,
-        justifyContent: "center",
-        flex: 1,
-    },
     name: {
         fontWeight: "bold",
         fontSize: 18,
@@ -374,16 +250,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
     },
-    toggleFavourite: {
-        height: 32,
-        justifyContent: "center",
-        alignItems: "center",
-        marginLeft: 16,
-        marginRight: 4,
-        paddingHorizontal: 4,
-        borderWidth: 0,
-        elevation: 0,
-    },
+
     chapters: {
         paddingHorizontal: 16,
         paddingVertical: 4,
@@ -396,24 +263,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         paddingRight: 12,
     },
-    summaryHeader: {
-        marginTop: 5,
-        paddingVertical: 5,
-        fontSize: 15,
-        fontWeight: "bold",
-    },
-    moreBtn: {
-        fontWeight: "bold",
-        position: "absolute",
-        bottom: 0,
-        right: 16,
-        paddingLeft: 6,
-    },
-    startButton: {
-        marginTop: 8,
-        marginBottom: 16,
-        marginHorizontal: 16,
-    },
+
     genreContainer: {
         paddingHorizontal: 15,
         paddingBottom: 15,

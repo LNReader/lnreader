@@ -1,14 +1,14 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View, Image, ActivityIndicator } from "react-native";
 import { Button, Modal, TextInput, TouchableRipple } from "react-native-paper";
-import { searchNovels } from "../../../trackers/MyAnimeList";
+import { searchNovels } from "../../../../trackers/MyAnimeList";
 import { useSelector, useDispatch } from "react-redux";
 import { ScrollView } from "react-native-gesture-handler";
-import { trackNovel } from "../../../redux/tracker/tracker.actions";
+import { trackNovel } from "../../../../redux/tracker/tracker.actions";
 
-const TrackerSearchModal = ({
-    visible,
-    hideModal,
+const TrackSearchDialog = ({
+    trackSearchDialog,
+    setTrackSearchDialog,
     novelId,
     novelName,
     theme,
@@ -21,8 +21,6 @@ const TrackerSearchModal = ({
 
     const tracker = useSelector((state) => state.trackerReducer.tracker);
 
-    const textInputRef = useRef(null);
-
     const dispatch = useDispatch();
 
     const getSearchresults = async () => {
@@ -32,10 +30,10 @@ const TrackerSearchModal = ({
     };
 
     useEffect(() => {
-        visible && getSearchresults();
-    }, [visible]);
+        trackSearchDialog && getSearchresults();
+    }, [trackSearchDialog]);
 
-    const renderSearcResultCard = (item) => (
+    const renderSearchResultCard = (item) => (
         <TouchableRipple
             style={[
                 { flexDirection: "row", borderRadius: 4, margin: 8 },
@@ -73,12 +71,13 @@ const TrackerSearchModal = ({
 
     return (
         <Modal
-            visible={visible}
-            onDismiss={hideModal}
+            visible={trackSearchDialog}
+            onDismiss={() => setTrackSearchDialog(false)}
             contentContainerStyle={[
                 styles.containerStyle,
                 { backgroundColor: theme.colorPrimary },
             ]}
+            theme={{ colors: { backdrop: "rgba(0,0,0,0.25)" } }}
         >
             <TextInput
                 value={searchText}
@@ -92,7 +91,6 @@ const TrackerSearchModal = ({
                     },
                 }}
                 underlineColor={theme.textColorHintDark}
-                dense
                 right={
                     <TextInput.Icon
                         color={theme.textColorSecondary}
@@ -102,7 +100,7 @@ const TrackerSearchModal = ({
                 }
             />
             <ScrollView
-                style={{ flexGrow: 1, maxHeight: 600, paddingVertical: 12 }}
+                style={{ flexGrow: 1, maxHeight: 500, marginVertical: 8 }}
             >
                 {loading ? (
                     <ActivityIndicator
@@ -111,8 +109,9 @@ const TrackerSearchModal = ({
                         style={{ margin: 16 }}
                     />
                 ) : (
+                    searchResults.data.length > 0 &&
                     searchResults.data.map((result) =>
-                        renderSearcResultCard(result)
+                        renderSearchResultCard(result)
                     )
                 )}
             </ScrollView>
@@ -120,10 +119,10 @@ const TrackerSearchModal = ({
                 style={{
                     flexDirection: "row",
                     justifyContent: "space-between",
+                    marginTop: 30,
                 }}
             >
                 <Button
-                    style={{ marginTop: 30 }}
                     labelStyle={{
                         color: theme.colorAccentDark,
                         letterSpacing: 0,
@@ -136,19 +135,17 @@ const TrackerSearchModal = ({
                 </Button>
                 <View style={{ flexDirection: "row" }}>
                     <Button
-                        style={{ marginTop: 30 }}
                         labelStyle={{
                             color: theme.colorAccentDark,
                             letterSpacing: 0,
                             textTransform: "none",
                         }}
                         theme={{ colors: { primary: theme.colorAccentDark } }}
-                        onPress={hideModal}
+                        onPress={() => setTrackSearchDialog(false)}
                     >
                         Cancel
                     </Button>
                     <Button
-                        style={{ marginTop: 30 }}
                         labelStyle={{
                             color: theme.colorAccentDark,
                             letterSpacing: 0,
@@ -164,7 +161,7 @@ const TrackerSearchModal = ({
                                     )
                                 );
                             }
-                            hideModal();
+                            setTrackSearchDialog(false);
                         }}
                     >
                         OK
@@ -175,7 +172,7 @@ const TrackerSearchModal = ({
     );
 };
 
-export default TrackerSearchModal;
+export default TrackSearchDialog;
 
 const styles = StyleSheet.create({
     containerStyle: {

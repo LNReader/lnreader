@@ -27,6 +27,7 @@ export const lightTheme = {
     searchBarColor: "#FFFFFF",
     menuColor: "#FFFFFF",
     dividerColor: "rgba(0,0,0,0.1)",
+    colorDisabled: "rgba(220,220,220,255)",
     statusBar: "dark",
 };
 
@@ -46,6 +47,7 @@ export const darkTheme = {
     searchBarColor: "#303135",
     menuColor: "#242529",
     dividerColor: "rgba(255,255,255,0.1)",
+    colorDisabled: "rgba(57,57,57,255)",
     statusBar: "light",
 };
 
@@ -65,6 +67,7 @@ export const amoledDarkTheme = {
     searchBarColor: "#1F1F1F",
     menuColor: "#242529",
     dividerColor: "rgba(255,255,255,0.15)",
+    colorDisabled: "rgba(33,33,33,255)",
     statusBar: "light",
 };
 
@@ -84,5 +87,6 @@ export const midnightDuskTheme = {
     searchBarColor: "#201F27",
     menuColor: "#201F27",
     dividerColor: "rgba(255,255,255,0.1)",
+    colorDisabled: "rgba(57,57,57,255)",
     statusBar: "light",
 };

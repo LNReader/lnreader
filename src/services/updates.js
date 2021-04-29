@@ -62,6 +62,42 @@ export const updateNovel = async (extensionId, novelUrl, novelId) => {
     });
 };
 
+export const updateNovelChapters = async (extensionId, novelUrl, novelId) => {
+    let novel = await fetchNovel(extensionId, novelUrl);
+
+    db.transaction((tx) => {
+        novel.chapters.map((chapter) =>
+            tx.executeSql(
+                "INSERT OR IGNORE INTO chapters (chapterUrl, chapterName, releaseDate, novelId) values (?, ?, ?, ?)",
+                [
+                    chapter.chapterUrl,
+                    chapter.chapterName,
+                    chapter.releaseDate,
+                    novelId,
+                ],
+                (txObj, { insertId }) => {
+                    if (insertId !== -1) {
+                        tx.executeSql(
+                            "INSERT OR IGNORE INTO updates (chapterId, novelId, updateTime) values (?, ?, (datetime('now','localtime')))",
+                            [insertId, novelId],
+                            (txObj, res) => {
+                                console.log(
+                                    "Inserted Chapter Id -> " +
+                                        insertId +
+                                        " Novel Id " +
+                                        novelId
+                                );
+                            },
+                            (txObj, error) => console.log("Error ", error)
+                        );
+                    }
+                },
+                (txObj, error) => console.log("Error ", error)
+            )
+        );
+    });
+};
+
 export const updateAllNovels = async () => {
     ToastAndroid.show("Updating library", ToastAndroid.SHORT);
 
@@ -69,7 +105,7 @@ export const updateAllNovels = async () => {
 
     libraryNovels.map((novel, index) =>
         setTimeout(async () => {
-            updateNovel(novel.sourceId, novel.novelUrl, novel.novelId);
+            updateNovelChapters(novel.sourceId, novel.novelUrl, novel.novelId);
             console.log(novel.novelName + " Updated");
         }, 3000 * index)
     );

@@ -3,34 +3,23 @@ import {
     StyleSheet,
     View,
     FlatList,
-    Text,
     RefreshControl,
     ToastAndroid,
 } from "react-native";
-import {
-    Provider,
-    Portal,
-    Modal,
-    TextInput,
-    IconButton,
-} from "react-native-paper";
+import { Provider, Portal } from "react-native-paper";
 
 import ChapterCard from "./components/ChapterCard";
 import NovelInfoHeader from "./components/NovelHeader";
-import { BottomSheet } from "./components/BottomSheet";
+import ChaptersSettingsSheet from "./components/ChaptersSettingsSheet";
 
 import { connect, useSelector } from "react-redux";
 
 import {
     getNovelAction,
-    followNovelAction,
     sortAndFilterChapters,
     updateNovelAction,
-    downloadAllChaptersAction,
-    deleteAllChaptersAction,
 } from "../../redux/novel/novel.actions";
-import { TrackerBottomSheet } from "./components/TrackerBottomSheet";
-import TrackerSearchModal from "./components/TrackerSearchModal";
+import TrackSheet from "./components/Tracker/TrackSheet";
 
 const Novel = ({
     route,
@@ -40,11 +29,8 @@ const Novel = ({
     loading,
     getNovelAction,
     fetching,
-    followNovelAction,
     sortAndFilterChapters,
     updateNovelAction,
-    downloadAllChaptersAction,
-    deleteAllChaptersAction,
 }) => {
     const {
         sourceId,
@@ -55,22 +41,15 @@ const Novel = ({
         novelId,
     } = route.params;
 
-    let _panel = useRef(null); // Bottomsheet ref
+    let chaptersSettingsSheetRef = useRef(null);
+    let trackerSheetRef = useRef(null);
 
-    let trackerBottomsheet = useRef(null); // Bottomsheet ref
-
-    const [sort, setSort] = useState("ORDER BY chapterId ASC");
+    const [sort, setSort] = useState("");
     const [filter, setFilter] = useState("");
-
-    const trackedNovels = useSelector(
-        (state) => state.trackerReducer.trackedNovels
-    );
 
     useEffect(() => {
         getNovelAction(followed, sourceId, novelUrl, novelId, sort, filter);
-    }, [getNovelAction, followNovelAction, sort, filter]);
-
-    let lastRead = !loading && chapters.find((obj) => obj.read === 0);
+    }, [getNovelAction, sort, filter]);
 
     const renderChapterCard = ({ item }) => (
         <ChapterCard
@@ -80,17 +59,12 @@ const Novel = ({
         />
     );
 
-    const onRefresh = () => {
-        updateNovelAction(sourceId, novelUrl, novelId);
+    const onRefresh = async () => {
+        await updateNovelAction(sourceId, novelUrl, novelId);
         ToastAndroid.show(`Updated ${novelName}`, ToastAndroid.SHORT);
     };
 
     // Tracker Modal
-    const [visible, setVisible] = useState(false);
-    const showModal = () => {
-        setVisible(true);
-    };
-    const hideModal = () => setVisible(false);
 
     return (
         <Provider>
@@ -110,25 +84,14 @@ const Novel = ({
                     renderItem={renderChapterCard}
                     ListHeaderComponent={
                         <NovelInfoHeader
-                            theme={theme}
-                            item={{ novelName, novelCover }}
-                            novel={novel}
-                            noOfChapters={chapters?.length}
-                            followNovelAction={followNovelAction}
                             loading={loading}
-                            lastRead={lastRead}
-                            bottomSheetRef={_panel}
-                            trackerBottomsheetRef={trackerBottomsheet}
-                            downloadAllChapters={() =>
-                                downloadAllChaptersAction(
-                                    sourceId,
-                                    novelUrl,
-                                    chapters
-                                )
-                            }
-                            deleteAllChapters={() =>
-                                deleteAllChaptersAction(chapters)
-                            }
+                            novelName={novelName}
+                            novelCover={novelCover}
+                            novel={novel}
+                            chapters={chapters}
+                            trackerSheetRef={trackerSheetRef}
+                            chaptersSettingsSheetRef={chaptersSettingsSheetRef}
+                            theme={theme}
                         />
                     }
                     refreshControl={
@@ -141,25 +104,19 @@ const Novel = ({
                     }
                 />
                 <Portal>
-                    <BottomSheet
+                    <ChaptersSettingsSheet
                         novelUrl={novelUrl}
-                        bottomSheetRef={_panel}
+                        bottomSheetRef={chaptersSettingsSheetRef}
                         sortAndFilterChapters={sortAndFilterChapters}
                         sort={sort}
                         filter={filter}
                         setSort={setSort}
                         setFilter={setFilter}
                     />
-                    <TrackerBottomSheet
-                        bottomSheetRef={trackerBottomsheet}
-                        showModal={showModal}
-                        novelId={novelId}
-                    />
-                    <TrackerSearchModal
-                        visible={visible}
-                        hideModal={hideModal}
-                        novelId={novelId}
-                        novelName={novelName}
+                    <TrackSheet
+                        bottomSheetRef={trackerSheetRef}
+                        novelId={novel.novelId}
+                        novelName={novel.novelName}
                         theme={theme}
                     />
                 </Portal>
@@ -177,11 +134,9 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps, {
     getNovelAction,
-    followNovelAction,
+
     sortAndFilterChapters,
     updateNovelAction,
-    downloadAllChaptersAction,
-    deleteAllChaptersAction,
 })(Novel);
 
 const styles = StyleSheet.create({

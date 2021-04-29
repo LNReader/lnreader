@@ -32,6 +32,7 @@ import {
     downloadChapter,
     deleteChapter,
 } from "../../database/queries/ChapterQueries";
+import { deleteNovelUpdates } from "../../database/queries/UpdateQueries";
 
 export const setNovel = (novel) => async (dispatch) => {
     dispatch({ type: SET_NOVEL, payload: novel });
@@ -103,6 +104,10 @@ export const sortAndFilterChapters = (novelUrl, filter, sort) => async (
 
 export const followNovelAction = (novel) => async (dispatch) => {
     await followNovel(novel.followed, novel.novelId);
+
+    if (!novel.followNovel) {
+        deleteNovelUpdates(novel.novelId);
+    }
 
     dispatch({
         type: UPDATE_IN_LIBRARY,

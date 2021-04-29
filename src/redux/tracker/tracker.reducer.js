@@ -28,7 +28,11 @@ const trackerReducer = (state = initialState, action) => {
         case TRACK_NOVEL:
             return {
                 ...state,
-                trackedNovels: [...state.trackedNovels, payload],
+                trackedNovels: state.trackedNovels.some(
+                    (obj) => obj.novelId === payload.novelId
+                )
+                    ? state.trackedNovels
+                    : [...state.trackedNovels, payload],
             };
         case UPDATE_TRACKER:
             return {
