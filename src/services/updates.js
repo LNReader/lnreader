@@ -1,8 +1,26 @@
+import React from "react";
 import * as SQLite from "expo-sqlite";
 import { getLibrary } from "../database/queries/LibraryQueries";
 import { fetchChapters, fetchNovel } from "../source/Source";
 const db = SQLite.openDatabase("lnreader.db");
 import { ToastAndroid } from "react-native";
+import NewUpdateDialog from "../components/NewUpdateDialog";
+
+export const checkGithubRelease = async () => {
+    const res = await fetch(
+        "https://api.github.com/repos/rajarsheechatterjee/lnreader/releases/latest"
+    );
+
+    let latestRelease = await res.json();
+
+    latestRelease = {
+        tag_name: latestRelease.tag_name,
+        body: latestRelease.body,
+        downloadUrl: latestRelease.browser_download_url,
+    };
+
+    return latestRelease;
+};
 
 const updateNovelDetails = async (novel, novelId) => {
     db.transaction((tx) => {

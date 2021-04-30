@@ -7,10 +7,12 @@ import AppLoading from "expo-app-loading";
 import Router from "./src/navigation/Router";
 
 // Redux
-import { Provider } from "react-redux";
+import { Provider, useSelector } from "react-redux";
 import { persistor, store } from "./src/redux/store";
 import { PersistGate } from "redux-persist/lib/integration/react";
 import { createDB, deleteDb } from "./src/database/DBHelper";
+import { checkGithubRelease } from "./src/services/updates";
+import NewUpdateDialog from "./src/components/NewUpdateDialog";
 
 const getFonts = () =>
     Font.loadAsync({
@@ -26,9 +28,7 @@ const getFonts = () =>
 const App = () => {
     const [fontsLoaded, setFontsLoaded] = useState(false);
 
-    useEffect(() => {
-        createDB();
-    }, []);
+    useEffect(() => createDB(), []);
 
     if (fontsLoaded) {
         return (

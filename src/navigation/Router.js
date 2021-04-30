@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
     createStackNavigator,
     TransitionPresets,
@@ -44,6 +44,8 @@ const SettingsStack = () => {
 };
 
 import { useSelector } from "react-redux";
+import { checkGithubRelease } from "../services/updates";
+import NewUpdateDialog from "../components/NewUpdateDialog";
 
 const BottomNavigator = () => {
     const theme = useSelector((state) => state.themeReducer.theme);
@@ -127,10 +129,18 @@ const BottomNavigator = () => {
 const Router = () => {
     const theme = useSelector((state) => state.themeReducer.theme);
 
-    useEffect(() => setStatusBarStyle(theme.id === 1 ? "dark" : "light"), []);
+    const [newUpdate, setNewUpdate] = useState();
+
+    useEffect(() => {
+        setStatusBarStyle(theme.id === 1 ? "dark" : "light");
+        checkGithubRelease().then((res) => setNewUpdate(res));
+    }, []);
 
     return (
         <Provider>
+            {newUpdate && newUpdate.tag_name !== "v1.0.15" && (
+                <NewUpdateDialog newVersion={newUpdate} />
+            )}
             <Stack.Navigator screenOptions={stackNavigatorConfig}>
                 <Stack.Screen name="Router" component={BottomNavigator} />
                 <Stack.Screen

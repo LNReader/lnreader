@@ -1,4 +1,8 @@
+import * as FileSystem from "expo-file-system";
+// import { StorageAccessFramework } from "expo-file-system";
+
 import * as SQLite from "expo-sqlite";
+import { getLibrary } from "./LibraryQueries";
 const db = SQLite.openDatabase("lnreader.db");
 
 const insertNovelQuery = `INSERT INTO novels (novelUrl, sourceUrl, sourceId, source, novelName, novelCover, novelSummary, author, artist, status, genre) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
@@ -84,4 +88,12 @@ export const deleteNovelCache = () => {
             (txObj, error) => console.log("Error ", error)
         );
     });
+};
+
+export const createBackup = async () => {
+    const libraryNovels = await getLibrary();
+
+    const uri = FileSystem.documentDirectory + "backup.json";
+
+    FileSystem.writeAsStringAsync(uri, JSON.stringify(libraryNovels));
 };

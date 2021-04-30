@@ -8,7 +8,10 @@ import {
     setItemsPerRow,
 } from "../../redux/settings/settings.actions";
 import { deleteAllHistory } from "../../database/queries/HistoryQueries";
-import { deleteNovelCache } from "../../database/queries/NovelQueries";
+import {
+    createBackup,
+    deleteNovelCache,
+} from "../../database/queries/NovelQueries";
 
 import { Appbar } from "../../components/Appbar";
 import {
@@ -100,6 +103,14 @@ const SettingsScreen = ({
                         title="Theme"
                         description={theme.name}
                         onPress={showthemeModal}
+                        theme={theme}
+                    />
+                    <Divider theme={theme} />
+                    <ListSubHeader theme={theme}>Backup</ListSubHeader>
+                    <ListItem
+                        title="Create Backup"
+                        description="Can be used to restore current library"
+                        onPress={createBackup}
                         theme={theme}
                     />
                 </ListSection>

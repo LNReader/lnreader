@@ -46,7 +46,8 @@
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.3.0",
     "reflect-metadata": "^0.1.13",
-    "rn-sliding-up-panel": "^2.4.4"
+    "rn-sliding-up-panel": "^2.4.4",
+    "expo-file-system": "~9.3.0"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",
