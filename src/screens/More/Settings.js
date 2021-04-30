@@ -11,6 +11,7 @@ import { deleteAllHistory } from "../../database/queries/HistoryQueries";
 import {
     createBackup,
     deleteNovelCache,
+    restoreFromBackup,
 } from "../../database/queries/NovelQueries";
 
 import { Appbar } from "../../components/Appbar";
@@ -108,9 +109,15 @@ const SettingsScreen = ({
                     <Divider theme={theme} />
                     <ListSubHeader theme={theme}>Backup</ListSubHeader>
                     <ListItem
-                        title="Create Backup"
+                        title="Create backup"
                         description="Can be used to restore current library"
                         onPress={createBackup}
+                        theme={theme}
+                    />
+                    <ListItem
+                        title="Restore backup"
+                        description="Restore library from backup file"
+                        onPress={restoreFromBackup}
                         theme={theme}
                     />
                 </ListSection>

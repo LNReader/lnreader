@@ -1,8 +1,9 @@
 import * as FileSystem from "expo-file-system";
-// import { StorageAccessFramework } from "expo-file-system";
 
 import * as SQLite from "expo-sqlite";
 import { getLibrary } from "./LibraryQueries";
+import { fetchChapters } from "../../source/Source";
+import { insertChapters } from "./ChapterQueries";
 const db = SQLite.openDatabase("lnreader.db");
 
 const insertNovelQuery = `INSERT INTO novels (novelUrl, sourceUrl, sourceId, source, novelName, novelCover, novelSummary, author, artist, status, genre) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
@@ -90,10 +91,56 @@ export const deleteNovelCache = () => {
     });
 };
 
+const restoreFromBackupQuery = `INSERT INTO novels (novelUrl, sourceUrl, sourceId, source, novelName, novelCover, novelSummary, author, artist, status, genre, followed, unread) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+export const restoreFromBackupTx = async (novel) => {
+    return new Promise((resolve, reject) =>
+        db.transaction((tx) =>
+            tx.executeSql(
+                restoreFromBackupQuery,
+                [
+                    novel.novelUrl,
+                    novel.sourceUrl,
+                    novel.sourceId,
+                    novel.source,
+                    novel.novelName,
+                    novel.novelCover,
+                    novel.novelSummary,
+                    novel.author,
+                    novel.artist,
+                    novel.status,
+                    novel.genre,
+                    novel.followed,
+                    novel.unread,
+                ],
+                async (txObj, { insertId }) => {
+                    const chapters = await fetchChapters(
+                        novel.sourceId,
+                        novel.novelUrl
+                    );
+                    await insertChapters(insertId, chapters);
+                },
+                (txObj, error) => console.log("Error ", error)
+            )
+        )
+    );
+};
+
 export const createBackup = async () => {
     const libraryNovels = await getLibrary();
 
     const uri = FileSystem.documentDirectory + "backup.json";
 
-    FileSystem.writeAsStringAsync(uri, JSON.stringify(libraryNovels));
+    console.log(uri);
+
+    await FileSystem.writeAsStringAsync(uri, JSON.stringify(libraryNovels));
+};
+
+export const restoreFromBackup = async () => {
+    const uri = FileSystem.documentDirectory + "backup.json";
+
+    let novels = await FileSystem.readAsStringAsync(uri);
+
+    novels = await JSON.parse(novels);
+    novels.map((novel) => restoreFromBackupTx(novel));
 };
