@@ -21,6 +21,7 @@ const HistoryCard = ({ item, deleteHistoryAction, navigation }) => {
                     novelCover: item.novelCover,
                     extensionId: item.extensionId,
                     novelUrl: item.novelUrl,
+                    sourceId: item.sourceId,
                 })
             }
         >
