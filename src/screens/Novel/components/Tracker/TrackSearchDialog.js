@@ -109,7 +109,8 @@ const TrackSearchDialog = ({
                         style={{ margin: 16 }}
                     />
                 ) : (
-                    searchResults.data.length > 0 &&
+                    searchResults &&
+                    searchResults.data &&
                     searchResults.data.map((result) =>
                         renderSearchResultCard(result)
                     )

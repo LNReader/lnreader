@@ -109,6 +109,7 @@ const TrackSheet = ({ bottomSheetRef, novelId, novelName, theme }) => {
                 ref={bottomSheetRef}
                 draggableRange={{ top: 120, bottom: 0 }}
                 snappingPoints={[0, 120]}
+                backdropOpacity={0.25}
             >
                 <View
                     style={[

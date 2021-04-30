@@ -3,7 +3,7 @@
         "name": "LNReader",
         "slug": "LNReader",
         "scheme": "lnreader",
-        "version": "1.0.14",
+        "version": "1.0.15",
         "orientation": "portrait",
         "icon": "./assets/icon.png",
         "splash": {

@@ -27,12 +27,9 @@ export const getChapterAction = (
 ) => async (dispatch) => {
     dispatch({ type: CHAPTER_LOADING });
 
-    const isDownloaded = await isChapterDownloaded(novelId);
-    let chapter;
+    let chapter = await getChapter(novelId);
 
-    if (isDownloaded) {
-        chapter = await getChapter(novelId);
-    } else {
+    if (!chapter) {
         chapter = await fetchChapter(extensionId, novelUrl, chapterUrl);
     }
     console.log(isDownloaded);

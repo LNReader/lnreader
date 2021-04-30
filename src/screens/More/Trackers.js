@@ -79,7 +79,7 @@ const TrackerScreen = ({ navigation }) => {
                         right={tracker && "check"}
                         theme={theme}
                     />
-                    {tracker.expires_in < new Date(Date.now()) && (
+                    {tracker && tracker.expires_in < new Date(Date.now()) && (
                         <>
                             <Divider theme={theme} />
                             <ListSubHeader theme={theme}>

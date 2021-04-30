@@ -2,6 +2,7 @@ import React from "react";
 import { Text, StyleSheet } from "react-native";
 import { Portal, Modal } from "react-native-paper";
 import Slider from "@react-native-community/slider";
+import { RadioButton, RadioButtonGroup } from "../../../components/RadioButton";
 
 const GridSizeModal = ({
     itemsPerRow,
@@ -10,6 +11,14 @@ const GridSizeModal = ({
     setItemsPerRow,
     theme,
 }) => {
+    const gridSizes = {
+        1: "XS",
+        2: "S",
+        3: "M",
+        4: "L",
+        5: "XL",
+    };
+
     return (
         <Portal>
             <Modal
@@ -47,6 +56,19 @@ const GridSizeModal = ({
                     thumbTintColor={theme.colorAccentDark}
                     onValueChange={(value) => setItemsPerRow(value)}
                 />
+                {/* <RadioButtonGroup
+                    onValueChange={(value) => setItemsPerRow(value)}
+                    value={itemsPerRow}
+                >
+                    {Object.keys(gridSizes).map((item) => (
+                        <RadioButton
+                            key={item}
+                            value={item}
+                            label={gridSizes[item]}
+                            theme={theme}
+                        />
+                    ))}
+                </RadioButtonGroup> */}
             </Modal>
         </Portal>
     );
@@ -65,7 +87,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     modalDescription: {
-        marginBottom: 4,
+        marginBottom: 16,
     },
     slider: {
         width: "100%",

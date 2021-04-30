@@ -17,12 +17,12 @@ const AboutScreen = ({ navigation }) => {
                 <ListSection>
                     <ListItem
                         title="Version"
-                        description="Stable 1.0.14"
+                        description="Stable 1.0.15"
                         theme={theme}
                     />
                     <ListItem
                         title="Build Time"
-                        description="26-04-21 20:45 PM"
+                        description="30-04-21 11:00 AM"
                         theme={theme}
                     />
                     <ListItem

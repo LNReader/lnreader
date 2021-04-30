@@ -31,6 +31,7 @@ const NovelInfoHeader = ({
 
     const [downloadMenu, showDownloadMenu] = useState(false);
 
+    const tracker = useSelector((state) => state.trackerReducer.tracker);
     const trackedNovels = useSelector(
         (state) => state.trackerReducer.trackedNovels
     );
@@ -109,11 +110,13 @@ const NovelInfoHeader = ({
                             followed={novel.followed}
                             novel={novel}
                         />
-                        <TrackerChip
-                            theme={theme}
-                            isTracked={isTracked}
-                            trackerSheetRef={trackerSheetRef}
-                        />
+                        {tracker && (
+                            <TrackerChip
+                                theme={theme}
+                                isTracked={isTracked}
+                                trackerSheetRef={trackerSheetRef}
+                            />
+                        )}
                         <IconButton
                             onPress={() =>
                                 WebBrowser.openBrowserAsync(novel.sourceUrl)
