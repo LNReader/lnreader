@@ -55,7 +55,14 @@ export const getAccessToken = async (code, codeChallenge) => {
         body: qs.stringify(body),
     });
 
-    const tokenResponse = await response.json();
+    let tokenResponse = await response.json();
+
+    tokenResponse = {
+        ...tokenResponse,
+        expires_in: new Date(Date.now() + tokenResponse.expires_in),
+    };
+
+    console.log(tokenResponse);
 
     return tokenResponse;
 };
@@ -112,4 +119,53 @@ export const updateItem = async (malId, bearerToken, body) => {
     const listItem = await res.json();
     console.log(listItem);
     return listItem;
+};
+
+export const updateMalChaptersRead = async (malId, bearerToken, body) => {
+    const url = `${baseApiUrl}/manga/${malId}/my_list_status`;
+
+    const headers = {
+        Authorization: "Bearer " + bearerToken,
+        "Content-Type": "application/x-www-form-urlencoded",
+    };
+
+    const res = await fetch(url, {
+        method: "PUT",
+        headers,
+        body: qs.stringify(body),
+    });
+
+    const listItem = await res.json();
+    console.log(listItem.num_chapters_read);
+    return listItem.num_chapters_read;
+};
+
+const revalidateMalToken = async (refreshToken) => {
+    const headers = {
+        "Content-Type": "application/x-www-form-urlencoded",
+    };
+
+    const body = {
+        grant_type: "refresh_token",
+        refresh_token: refreshToken,
+    };
+
+    const res = await fetch(url, {
+        headers,
+        method: "POST",
+        body: qs.stringify(body),
+    });
+
+    let tokenResponse = res.json();
+
+    return tokenResponse;
+};
+
+export const malTokenWatcher = async (tracker) => {
+    if (tracker) {
+        const date = new Date(Date.now());
+        if (tracker.expires_in < date) {
+            return await revalidateMalToken(tracker.refresh_token);
+        }
+    }
 };

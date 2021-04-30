@@ -12,7 +12,9 @@ import {
     markChapterReadAction,
 } from "../../redux/novel/novel.actions";
 
-import { connect } from "react-redux";
+import { connect, useSelector, useDispatch } from "react-redux";
+import { parseChapterNumber } from "../../services/updates";
+import { updateChaptersRead } from "../../redux/tracker/tracker.actions";
 
 const ChapterItem = ({
     route,
@@ -35,6 +37,19 @@ const ChapterItem = ({
 
     let _panel = useRef(null);
 
+    const dispatch = useDispatch();
+
+    const trackedNovels = useSelector(
+        (state) => state.trackerReducer.trackedNovels
+    );
+    const tracker = useSelector((state) => state.trackerReducer.tracker);
+
+    let isTracked = false;
+
+    if (!loading) {
+        isTracked = trackedNovels.find((obj) => obj.novelId === novelId);
+    }
+
     useEffect(() => {
         getChapterAction(extensionId, chapterUrl, novelUrl, chapterId);
         insertHistoryAction(novelId, chapterId);
@@ -55,6 +70,8 @@ const ChapterItem = ({
 
         return textColor;
     };
+
+    const chapterNumber = !loading && parseChapterNumber(chapter.chapterName);
 
     const readerLineHeight = (val) => {
         const lineHeight = {
@@ -78,6 +95,8 @@ const ChapterItem = ({
             contentSize.height - paddingToBottom
         );
     };
+
+    // !loading && parseChapterNumber(chapter.chapterName);
 
     return (
         <Provider>
@@ -154,6 +173,20 @@ const ChapterItem = ({
                 onScroll={({ nativeEvent }) => {
                     if (isCloseToBottom(nativeEvent)) {
                         markChapterReadAction(chapterId);
+                        if (
+                            isTracked &&
+                            chapterNumber &&
+                            chapterNumber >
+                                isTracked.my_list_status.num_chapters_read
+                        ) {
+                            dispatch(
+                                updateChaptersRead(
+                                    isTracked.id,
+                                    tracker.access_token,
+                                    chapterNumber
+                                )
+                            );
+                        }
                     }
                 }}
             >

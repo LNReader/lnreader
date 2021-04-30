@@ -3,11 +3,20 @@ import { View } from "react-native";
 import { Modal, Portal, Text, Button, Provider } from "react-native-paper";
 
 import * as WebBrowser from "expo-web-browser";
-import { myAnimeListConfig, getAccessToken } from "../../trackers/MyAnimeList";
+import {
+    myAnimeListConfig,
+    getAccessToken,
+    malTokenWatcher,
+} from "../../trackers/MyAnimeList";
 import { Appbar } from "../../components/Appbar";
 
 import { useSelector, useDispatch } from "react-redux";
-import { ListItem, ListSection, ListSubHeader } from "../../components/List";
+import {
+    Divider,
+    ListItem,
+    ListSection,
+    ListSubHeader,
+} from "../../components/List";
 import { removeTracker, setTracker } from "../../redux/tracker/tracker.actions";
 
 const TrackerScreen = ({ navigation }) => {
@@ -70,7 +79,24 @@ const TrackerScreen = ({ navigation }) => {
                         right={tracker && "check"}
                         theme={theme}
                     />
+                    {tracker.expires_in < new Date(Date.now()) && (
+                        <>
+                            <Divider theme={theme} />
+                            <ListSubHeader theme={theme}>
+                                Settings
+                            </ListSubHeader>
+                            <ListItem
+                                title="Revalidate MyAnimeList"
+                                onPress={() => {
+                                    const res = malTokenWatcher(tracker);
+                                    dispatch(setTracker(res));
+                                }}
+                                theme={theme}
+                            />
+                        </>
+                    )}
                 </ListSection>
+
                 <Portal>
                     <Modal
                         visible={visible}

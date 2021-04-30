@@ -30,7 +30,6 @@ const LibraryScreen = ({
     getLibraryAction,
     searchLibraryAction,
     setNovel,
-    // searchResults,
     itemsPerRow,
 }) => {
     const [refreshing, setRefreshing] = useState(false);
@@ -132,7 +131,6 @@ const mapStateToProps = (state) => ({
     theme: state.themeReducer.theme,
     itemsPerRow: state.settingsReducer.itemsPerRow,
     novels: state.libraryReducer.novels,
-    // searchResults: state.libraryReducer.searchResults,
     loading: state.libraryReducer.loading,
 });
 

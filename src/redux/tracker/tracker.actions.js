@@ -5,7 +5,10 @@ import {
     TRACK_NOVEL,
     UNTRACK_NOVEL,
     UPDATE_TRACKER,
+    UPDATE_CHAPTERS_READ,
 } from "./tracker.types";
+
+import { updateMalChaptersRead } from "../../trackers/MyAnimeList";
 
 export const setTracker = (res) => async (dispatch) => {
     dispatch({
@@ -38,4 +41,17 @@ export const updateTracker = (malId, accessToken, body) => async (dispatch) => {
 
 export const untrackNovel = (id) => async (dispatch) => {
     dispatch({ type: UNTRACK_NOVEL, payload: id });
+};
+
+export const updateChaptersRead = (malId, accessToken, chaptersRead) => async (
+    dispatch
+) => {
+    let res = await updateMalChaptersRead(malId, accessToken, {
+        num_chapters_read: chaptersRead,
+    });
+
+    dispatch({
+        type: UPDATE_CHAPTERS_READ,
+        payload: { malId, chaptersRead: res },
+    });
 };

@@ -12,7 +12,7 @@ import ChapterCard from "./components/ChapterCard";
 import NovelInfoHeader from "./components/NovelHeader";
 import ChaptersSettingsSheet from "./components/ChaptersSettingsSheet";
 
-import { connect, useSelector } from "react-redux";
+import { connect } from "react-redux";
 
 import {
     getNovelAction,
@@ -44,12 +44,17 @@ const Novel = ({
     let chaptersSettingsSheetRef = useRef(null);
     let trackerSheetRef = useRef(null);
 
-    const [sort, setSort] = useState("");
+    const [sort, setSort] = useState("ORDER BY chapterId ASC");
     const [filter, setFilter] = useState("");
 
     useEffect(() => {
         getNovelAction(followed, sourceId, novelUrl, novelId, sort, filter);
     }, [getNovelAction, sort, filter]);
+
+    const onRefresh = async () => {
+        await updateNovelAction(sourceId, novelUrl, novelId);
+        ToastAndroid.show(`Updated ${novelName}`, ToastAndroid.SHORT);
+    };
 
     const renderChapterCard = ({ item }) => (
         <ChapterCard
@@ -58,13 +63,6 @@ const Novel = ({
             chapter={item}
         />
     );
-
-    const onRefresh = async () => {
-        await updateNovelAction(sourceId, novelUrl, novelId);
-        ToastAndroid.show(`Updated ${novelName}`, ToastAndroid.SHORT);
-    };
-
-    // Tracker Modal
 
     return (
         <Provider>
@@ -103,23 +101,25 @@ const Novel = ({
                         />
                     }
                 />
-                <Portal>
-                    <ChaptersSettingsSheet
-                        novelUrl={novelUrl}
-                        bottomSheetRef={chaptersSettingsSheetRef}
-                        sortAndFilterChapters={sortAndFilterChapters}
-                        sort={sort}
-                        filter={filter}
-                        setSort={setSort}
-                        setFilter={setFilter}
-                    />
-                    <TrackSheet
-                        bottomSheetRef={trackerSheetRef}
-                        novelId={novel.novelId}
-                        novelName={novel.novelName}
-                        theme={theme}
-                    />
-                </Portal>
+                {!loading && (
+                    <Portal>
+                        <ChaptersSettingsSheet
+                            novelUrl={novelUrl}
+                            bottomSheetRef={chaptersSettingsSheetRef}
+                            sortAndFilterChapters={sortAndFilterChapters}
+                            sort={sort}
+                            filter={filter}
+                            setSort={setSort}
+                            setFilter={setFilter}
+                        />
+                        <TrackSheet
+                            bottomSheetRef={trackerSheetRef}
+                            novelId={novel.novelId}
+                            novelName={novel.novelName}
+                            theme={theme}
+                        />
+                    </Portal>
+                )}
             </View>
         </Provider>
     );
@@ -140,7 +140,5 @@ export default connect(mapStateToProps, {
 })(Novel);
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
+    container: { flex: 1 },
 });

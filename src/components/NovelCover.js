@@ -148,24 +148,86 @@ const NovelCover = ({ item, onPress, libraryStatus }) => {
             style={styles.listView}
             onPress={onPress}
         >
-            <>
-                <Image
-                    source={{ uri: item.novelCover }}
-                    style={styles.extensionIcon}
-                />
-                <Text
+            <View
+                style={{
+                    flex: 1,
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                }}
+            >
+                <View
                     style={{
-                        flex: 1,
-                        color: theme.textColorPrimary,
-                        marginLeft: 16,
-                        fontSize: 15,
-                        paddingRight: 8,
+                        flexDirection: "row",
+                        alignItems: "center",
                     }}
-                    numberOfLines={1}
                 >
-                    {item.novelName}
-                </Text>
-            </>
+                    <Image
+                        source={{ uri: item.novelCover }}
+                        style={styles.extensionIcon}
+                    />
+                    <Text
+                        style={{
+                            color: theme.textColorPrimary,
+                            marginLeft: 16,
+                            fontSize: 15,
+                            paddingRight: 8,
+                        }}
+                        numberOfLines={1}
+                    >
+                        {item.novelName}
+                    </Text>
+                </View>
+                <View
+                    style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                    }}
+                >
+                    {item.chaptersDownloaded && (
+                        <Text
+                            style={[
+                                {
+                                    backgroundColor: "#47a84a",
+                                    color: "#FFFFFF",
+                                    borderTopLeftRadius: 4,
+                                    borderBottomLeftRadius: 4,
+                                    paddingTop: 2,
+                                    paddingHorizontal: 4,
+                                    fontSize: 12,
+                                },
+                                !item.chaptersUnread && {
+                                    borderTopRightRadius: 4,
+                                    borderBottomRightRadius: 4,
+                                },
+                            ]}
+                        >
+                            {item.chaptersDownloaded}
+                        </Text>
+                    )}
+                    {item.chaptersUnread && (
+                        <Text
+                            style={[
+                                {
+                                    backgroundColor: "#2979FF",
+                                    color: "#FFFFFF",
+                                    borderTopRightRadius: 4,
+                                    borderBottomRightRadius: 4,
+                                    paddingTop: 2,
+                                    paddingHorizontal: 4,
+                                    fontSize: 12,
+                                },
+                                !item.chaptersDownloaded && {
+                                    borderTopLeftRadius: 4,
+                                    borderBottomLeftRadius: 4,
+                                },
+                            ]}
+                        >
+                            {item.chaptersUnread}
+                        </Text>
+                    )}
+                </View>
+            </View>
         </TouchableRipple>
     );
 };

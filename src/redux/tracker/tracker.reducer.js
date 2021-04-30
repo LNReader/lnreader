@@ -3,6 +3,7 @@ import {
     SET_TRACKER,
     TRACK_NOVEL,
     UNTRACK_NOVEL,
+    UPDATE_CHAPTERS_READ,
     UPDATE_TRACKER,
 } from "./tracker.types";
 
@@ -55,6 +56,21 @@ const trackerReducer = (state = initialState, action) => {
                 ...state,
                 trackedNovels: state.trackedNovels.filter(
                     (id) => id === payload
+                ),
+            };
+        case UPDATE_CHAPTERS_READ:
+            return {
+                ...state,
+                trackedNovels: state.trackedNovels.map((novel) =>
+                    novel.id === payload.malId
+                        ? {
+                              ...novel,
+                              my_list_status: {
+                                  ...novel.my_list_status,
+                                  num_chapters_read: payload.chaptersRead,
+                              },
+                          }
+                        : novel
                 ),
             };
         default:
