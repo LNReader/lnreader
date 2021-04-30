@@ -1,6 +1,6 @@
 import * as SQLite from "expo-sqlite";
 import { getLibrary } from "../database/queries/LibraryQueries";
-import { fetchNovel } from "../source/Source";
+import { fetchChapters, fetchNovel } from "../source/Source";
 const db = SQLite.openDatabase("lnreader.db");
 import { ToastAndroid } from "react-native";
 
@@ -63,10 +63,10 @@ export const updateNovel = async (extensionId, novelUrl, novelId) => {
 };
 
 export const updateNovelChapters = async (extensionId, novelUrl, novelId) => {
-    let novel = await fetchNovel(extensionId, novelUrl);
+    let chapters = await fetchChapters(extensionId, novelUrl);
 
     db.transaction((tx) => {
-        novel.chapters.map((chapter) =>
+        chapters.map((chapter) =>
             tx.executeSql(
                 "INSERT OR IGNORE INTO chapters (chapterUrl, chapterName, releaseDate, novelId) values (?, ?, ?, ?)",
                 [
@@ -77,16 +77,24 @@ export const updateNovelChapters = async (extensionId, novelUrl, novelId) => {
                 ],
                 (txObj, { insertId }) => {
                     if (insertId !== -1) {
+                        console.log(
+                            "Inserted Chapter " +
+                                chapter.chapterUrl +
+                                " Chapter Name " +
+                                chapter.chapterName +
+                                " Novel Id " +
+                                novelId
+                        );
                         tx.executeSql(
                             "INSERT OR IGNORE INTO updates (chapterId, novelId, updateTime) values (?, ?, (datetime('now','localtime')))",
                             [insertId, novelId],
                             (txObj, res) => {
-                                console.log(
-                                    "Inserted Chapter Id -> " +
-                                        insertId +
-                                        " Novel Id " +
-                                        novelId
-                                );
+                                // console.log(
+                                //     "Inserted Chapter Id -> " +
+                                //         insertId +
+                                //         " Novel Id " +
+                                //         novelId
+                                // );
                             },
                             (txObj, error) => console.log("Error ", error)
                         );
@@ -109,4 +117,21 @@ export const updateAllNovels = async () => {
             console.log(novel.novelName + " Updated");
         }, 3000 * index)
     );
+};
+
+export const parseChapterNumber = (chapterName) => {
+    chapterName = chapterName.toLowerCase();
+    chapterName = chapterName.replace(/volume (\d+)/, "");
+
+    const basic = chapterName.match(/ch (\d+)/);
+
+    const occurrence = chapterName.match(/\d+/);
+
+    if (basic) {
+        return basic[0];
+    } else if (occurrence) {
+        return occurrence[0];
+    } else {
+        return 0;
+    }
 };

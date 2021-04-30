@@ -1,5 +1,5 @@
 export const fetchSources = async () => {
-    const url = `https://lnreader-extensions.herokuapp.com/api/`;
+    const url = `https://lnreader-extensions.vercel.app/api/`;
 
     let res = await fetch(url);
     let sources = await res.json();
@@ -8,7 +8,7 @@ export const fetchSources = async () => {
 };
 
 export const fetchNovel = async (sourceId, novelUrl) => {
-    const url = `https://lnreader-extensions.herokuapp.com/api/${sourceId}/novel/${novelUrl}`;
+    const url = `https://lnreader-extensions.vercel.app/api/${sourceId}/novel/${novelUrl}`;
 
     let data = await fetch(url);
     let res = await data.json();
@@ -33,12 +33,23 @@ export const fetchNovel = async (sourceId, novelUrl) => {
 };
 
 export const fetchChapter = async (sourceId, novelUrl, chapterUrl) => {
-    const url = `https://lnreader-extensions.herokuapp.com/api/${sourceId}/novel/${novelUrl}${chapterUrl}`;
+    const url = `https://lnreader-extensions.vercel.app/api/${sourceId}/novel/${novelUrl}${chapterUrl}`;
 
-    console.log(url);
+    // console.log(url);
 
     let res = await fetch(url);
     let chapter = await res.json();
 
     return chapter;
+};
+
+export const fetchChapters = async (sourceId, novelUrl) => {
+    const url = `https://lnreader-extensions.vercel.app/api/${sourceId}/novel/${novelUrl}`;
+
+    let data = await fetch(url);
+    let res = await data.json();
+
+    const chapters = res.novelChapters;
+
+    return chapters;
 };

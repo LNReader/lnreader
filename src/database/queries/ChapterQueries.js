@@ -113,7 +113,7 @@ export const downloadChapter = async (
     chapterUrl,
     chapterId
 ) => {
-    const downloadUrl = `https://lnreader-extensions.herokuapp.com/api/${extensionId}/novel/${novelUrl}${chapterUrl}`;
+    const downloadUrl = `https://lnreader-extensions.vercel.app/api/${extensionId}/novel/${novelUrl}${chapterUrl}`;
 
     // console.log(downloadUrl);
 

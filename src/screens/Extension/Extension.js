@@ -25,17 +25,17 @@ const Extension = ({ navigation, route }) => {
 
     const getSourceUrl = () => {
         if (sourceId === 1) {
-            return `https://lnreader-extensions.herokuapp.com/api/1/novels/1/?o=rating`;
+            return `https://lnreader-extensions.vercel.app/api/1/novels/1/?o=rating`;
         } else {
-            return `https://lnreader-extensions.herokuapp.com/api/${sourceId}/novels/`;
+            return `https://lnreader-extensions.vercel.app/api/${sourceId}/novels/`;
         }
     };
 
     const getSearchUrl = () => {
         if (sourceId === 1) {
-            return `https://lnreader-extensions.herokuapp.com/api/1/search/?s=${searchText}&?o=rating`;
+            return `https://lnreader-extensions.vercel.app/api/1/search/?s=${searchText}&?o=rating`;
         } else {
-            return `https://lnreader-extensions.herokuapp.com/api/${sourceId}/search/?s=${searchText}`;
+            return `https://lnreader-extensions.vercel.app/api/${sourceId}/search/?s=${searchText}`;
         }
     };
 
