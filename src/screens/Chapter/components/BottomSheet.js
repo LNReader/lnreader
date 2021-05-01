@@ -3,7 +3,7 @@ import { Animated, StyleSheet, View, Text, Dimensions } from "react-native";
 import { ToggleButton, IconButton, Chip } from "react-native-paper";
 import Slider from "@react-native-community/slider";
 import Bottomsheet from "rn-sliding-up-panel";
-import { fonts } from "../../../utils/constants";
+import { fonts } from "../../../Services/utils/constants";
 
 import { connect } from "react-redux";
 
@@ -14,7 +14,7 @@ import {
     updateReaderTextSize,
     updateReaderTheme,
 } from "../../../redux/settings/settings.actions";
-import BottomSheetHandle from "../../../components/BottomSheetHandle";
+import BottomSheetHandle from "../../../Components/BottomSheetHandle";
 
 const ChapterBottomSheet = ({
     bottomSheetRef,

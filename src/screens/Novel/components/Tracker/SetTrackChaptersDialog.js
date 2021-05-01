@@ -4,7 +4,7 @@ import { Modal, TextInput } from "react-native-paper";
 import {
     RadioButton,
     RadioButtonGroup,
-} from "../../../../components/RadioButton";
+} from "../../../../Components/RadioButton";
 
 const SetTrackChaptersDialog = ({
     trackItem,

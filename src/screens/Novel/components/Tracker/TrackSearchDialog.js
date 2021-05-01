@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View, Image, ActivityIndicator } from "react-native";
 import { Button, Modal, TextInput, TouchableRipple } from "react-native-paper";
-import { searchNovels } from "../../../../trackers/MyAnimeList";
+import { searchNovels } from "../../../../Services/Trackers/myAnimeList";
 import { useSelector, useDispatch } from "react-redux";
 import { ScrollView } from "react-native-gesture-handler";
 import { trackNovel } from "../../../../redux/tracker/tracker.actions";

@@ -89,7 +89,7 @@ const ChapterCard = ({
         <TouchableRipple
             style={styles.chapterCardContainer}
             onPress={() =>
-                navigation.navigate("ChapterItem", {
+                navigation.navigate("Chapter", {
                     chapterId: chapter.chapterId,
                     chapterUrl: chapter.chapterUrl,
                     extensionId,

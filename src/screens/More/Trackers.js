@@ -7,8 +7,8 @@ import {
     myAnimeListConfig,
     getAccessToken,
     malTokenWatcher,
-} from "../../trackers/MyAnimeList";
-import { Appbar } from "../../components/Appbar";
+} from "../../Services/Trackers/myAnimeList";
+import { Appbar } from "../../Components/Appbar";
 
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -16,7 +16,7 @@ import {
     ListItem,
     ListSection,
     ListSubHeader,
-} from "../../components/List";
+} from "../../Components/List";
 import { removeTracker, setTracker } from "../../redux/tracker/tracker.actions";
 
 const TrackerScreen = ({ navigation }) => {

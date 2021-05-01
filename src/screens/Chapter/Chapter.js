@@ -13,7 +13,7 @@ import {
 } from "../../redux/novel/novel.actions";
 
 import { connect, useSelector, useDispatch } from "react-redux";
-import { parseChapterNumber } from "../../services/updates";
+import { parseChapterNumber } from "../../Services/updates";
 import { updateChaptersRead } from "../../redux/tracker/tracker.actions";
 
 const ChapterItem = ({
@@ -126,7 +126,7 @@ const ChapterItem = ({
                                     size={26}
                                     disabled={!chapter.prevChapter}
                                     onPress={() => {
-                                        navigation.replace("ChapterItem", {
+                                        navigation.replace("Chapter", {
                                             chapterUrl: chapter.prevChapter,
                                             chapterId: chapterId - 1,
                                             extensionId,
@@ -142,7 +142,7 @@ const ChapterItem = ({
                                     size={26}
                                     disabled={!chapter.nextChapter}
                                     onPress={() => {
-                                        navigation.replace("ChapterItem", {
+                                        navigation.replace("Chapter", {
                                             chapterUrl: chapter.nextChapter,
                                             extensionId,
                                             novelUrl,

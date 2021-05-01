@@ -16,7 +16,7 @@ const HistoryCard = ({ item, deleteHistoryAction, navigation }) => {
             rippleColor={theme.rippleColor}
             borderless
             onPress={() =>
-                navigation.navigate("NovelItem", {
+                navigation.navigate("Novel", {
                     novelName: item.novelName,
                     novelCover: item.novelCover,
                     extensionId: item.extensionId,
@@ -75,7 +75,7 @@ const HistoryCard = ({ item, deleteHistoryAction, navigation }) => {
                             color={theme.textColorPrimary}
                             style={{ marginRight: 10 }}
                             onPress={() =>
-                                navigation.navigate("ChapterItem", {
+                                navigation.navigate("Chapter", {
                                     chapterId: item.historyChapterId,
                                     chapterUrl: item.chapterUrl,
                                     extensionId: item.sourceId,

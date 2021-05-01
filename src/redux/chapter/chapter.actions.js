@@ -9,7 +9,7 @@ import {
     CHAPTER_DELETED,
 } from "./chapter.types";
 
-import { fetchChapter } from "../../source/Source";
+import { fetchChapter } from "../../Services/Source/source";
 
 import {
     markChapterRead,

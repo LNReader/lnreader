@@ -16,7 +16,7 @@ const UpdateCard = ({ item }) => {
             style={styles.updateCard}
             onPress={() =>
                 // console.log(item);
-                navigation.navigate("ChapterItem", {
+                navigation.navigate("Chapter", {
                     chapterId: item.chapterId,
                     chapterUrl: item.chapterUrl,
                     extensionId: item.sourceId,

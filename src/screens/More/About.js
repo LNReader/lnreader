@@ -2,10 +2,10 @@ import React from "react";
 import { View } from "react-native";
 import * as Linking from "expo-linking";
 
-import { Appbar } from "../../components/Appbar";
+import { Appbar } from "../../Components/Appbar";
 
 import { useSelector } from "react-redux";
-import { Divider, ListItem, ListSection } from "../../components/List";
+import { Divider, ListItem, ListSection } from "../../Components/List";
 
 const AboutScreen = ({ navigation }) => {
     const theme = useSelector((state) => state.themeReducer.theme);
@@ -17,12 +17,12 @@ const AboutScreen = ({ navigation }) => {
                 <ListSection>
                     <ListItem
                         title="Version"
-                        description="Stable 1.0.15"
+                        description="Stable 1.0.16"
                         theme={theme}
                     />
                     <ListItem
                         title="Build Time"
-                        description="30-04-21 11:00 AM"
+                        description="30-04-21 11:30 PM"
                         theme={theme}
                     />
                     <ListItem

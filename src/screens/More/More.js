@@ -2,8 +2,8 @@ import React from "react";
 import { StyleSheet, View, Image } from "react-native";
 import { useSelector } from "react-redux";
 
-import { Appbar } from "../../components/Appbar";
-import { ListItem, ListSection } from "../../components/List";
+import { Appbar } from "../../Components/Appbar";
+import { ListItem, ListSection } from "../../Components/List";
 
 const MoreScreen = ({ navigation }) => {
     const theme = useSelector((state) => state.themeReducer.theme);
@@ -37,7 +37,7 @@ const MoreScreen = ({ navigation }) => {
                         title="Settings"
                         icon="cog-outline"
                         onPress={() =>
-                            navigation.navigate("SettingsStack", {
+                            navigation.navigate("MoreStack", {
                                 screen: "Settings",
                             })
                         }
@@ -47,7 +47,7 @@ const MoreScreen = ({ navigation }) => {
                         title="Tracking"
                         icon="sync"
                         onPress={() =>
-                            navigation.navigate("SettingsStack", {
+                            navigation.navigate("MoreStack", {
                                 screen: "Trackers",
                             })
                         }
@@ -57,7 +57,7 @@ const MoreScreen = ({ navigation }) => {
                         title="About"
                         icon="information-outline"
                         onPress={() =>
-                            navigation.navigate("SettingsStack", {
+                            navigation.navigate("MoreStack", {
                                 screen: "About",
                             })
                         }

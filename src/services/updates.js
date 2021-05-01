@@ -1,10 +1,8 @@
-import React from "react";
 import * as SQLite from "expo-sqlite";
 import { getLibrary } from "../database/queries/LibraryQueries";
-import { fetchChapters, fetchNovel } from "../source/Source";
+import { fetchChapters, fetchNovel } from "../Services/Source/source";
 const db = SQLite.openDatabase("lnreader.db");
 import { ToastAndroid } from "react-native";
-import NewUpdateDialog from "../components/NewUpdateDialog";
 
 export const checkGithubRelease = async () => {
     const res = await fetch(

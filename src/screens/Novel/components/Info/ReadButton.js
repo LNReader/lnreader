@@ -17,7 +17,7 @@ const ReadButton = ({ navigation, novel, chapters, theme }) => {
                 uppercase={false}
                 labelStyle={{ letterSpacing: 0 }}
                 onPress={() => {
-                    navigation.navigate("ChapterItem", {
+                    navigation.navigate("Chapter", {
                         chapterId: lastRead.chapterId,
                         chapterUrl: lastRead.chapterUrl,
                         novelUrl: novel.novelUrl,

@@ -1,4 +1,4 @@
-import { findListItem, updateItem } from "../../trackers/MyAnimeList";
+import { findListItem, updateItem } from "../../Services/Trackers/myAnimeList";
 import {
     REMOVE_TRACKER,
     SET_TRACKER,
@@ -8,7 +8,7 @@ import {
     UPDATE_CHAPTERS_READ,
 } from "./tracker.types";
 
-import { updateMalChaptersRead } from "../../trackers/MyAnimeList";
+import { updateMalChaptersRead } from "../../Services/Trackers/myAnimeList";
 
 export const setTracker = (res) => async (dispatch) => {
     dispatch({

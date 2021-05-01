@@ -2,7 +2,7 @@ import * as FileSystem from "expo-file-system";
 
 import * as SQLite from "expo-sqlite";
 import { getLibrary } from "./LibraryQueries";
-import { fetchChapters } from "../../source/Source";
+import { fetchChapters } from "../../Services/Source/source";
 import { insertChapters } from "./ChapterQueries";
 const db = SQLite.openDatabase("lnreader.db");
 

@@ -14,13 +14,13 @@ import {
     restoreFromBackup,
 } from "../../database/queries/NovelQueries";
 
-import { Appbar } from "../../components/Appbar";
+import { Appbar } from "../../Components/Appbar";
 import {
     Divider,
     ListItem,
     ListSection,
     ListSubHeader,
-} from "../../components/List";
+} from "../../Components/List";
 import DisplayModeModal from "./components/DisplayModeModal";
 import GridSizeModal from "./components/GridSizeModal";
 import ThemeModal from "./components/ThemeModal";

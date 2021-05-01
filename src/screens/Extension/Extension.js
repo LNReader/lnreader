@@ -3,9 +3,9 @@ import { StyleSheet, View, FlatList, ActivityIndicator } from "react-native";
 import { Provider } from "react-native-paper";
 import * as WebBrowser from "expo-web-browser";
 
-import NovelCover from "../../components/NovelCover";
-import EmptyView from "../../components/EmptyView";
-import { SearchAppbar } from "../../components/Appbar";
+import NovelCover from "../../Components/NovelCover";
+import EmptyView from "../../Components/EmptyView";
+import { SearchAppbar } from "../../Components/Appbar";
 
 import { useSelector } from "react-redux";
 
@@ -104,7 +104,7 @@ const Extension = ({ navigation, route }) => {
                             <NovelCover
                                 item={item}
                                 onPress={() =>
-                                    navigation.navigate("NovelItem", {
+                                    navigation.navigate("Novel", {
                                         novelName: item.novelName,
                                         novelCover: item.novelCover,
                                         novelUrl: item.novelUrl,

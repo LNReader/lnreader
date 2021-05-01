@@ -2,7 +2,7 @@ import React from "react";
 import { Appbar as MaterialAppbar } from "react-native-paper";
 
 import { useSelector } from "react-redux";
-import { updateAllNovels } from "../../../services/updates";
+import { updateAllNovels } from "../../../Services/updates";
 
 export const Appbar = () => {
     const theme = useSelector((state) => state.themeReducer.theme);

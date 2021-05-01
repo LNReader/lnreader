@@ -3,7 +3,7 @@ import {
     lightTheme,
     darkTheme,
     midnightDuskTheme,
-} from "../../theme/theme";
+} from "../../Theme/theme";
 
 const themes = {
     0: amoledDarkTheme,

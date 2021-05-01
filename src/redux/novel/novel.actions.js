@@ -16,8 +16,8 @@ import {
     UPDATE_NOVEL,
 } from "./novel.types";
 
-import { updateNovel } from "../../services/updates";
-import { fetchChapter, fetchNovel } from "../../source/Source";
+import { updateNovel } from "../../Services/updates";
+import { fetchChapter, fetchNovel } from "../../Services/Source/source";
 import {
     followNovel,
     insertNovel,

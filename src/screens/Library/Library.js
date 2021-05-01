@@ -11,16 +11,16 @@ import { FlatList } from "react-native-gesture-handler";
 import { useFocusEffect } from "@react-navigation/native";
 import { connect } from "react-redux";
 
-import NovelCover from "../../components/NovelCover";
-import EmptyView from "../../components/EmptyView";
+import NovelCover from "../../Components/NovelCover";
+import EmptyView from "../../Components/EmptyView";
 
 import {
     getLibraryAction,
     searchLibraryAction,
 } from "../../redux/library/library.actions";
-import { SearchAppbar } from "../../components/Appbar";
+import { SearchAppbar } from "../../Components/Appbar";
 import { setNovel } from "../../redux/novel/novel.actions";
-import { updateAllNovels } from "../../services/updates";
+import { updateAllNovels } from "../../Services/updates";
 
 const LibraryScreen = ({
     navigation,
@@ -54,7 +54,7 @@ const LibraryScreen = ({
     };
 
     const redirectToNovel = (item) => {
-        navigation.navigate("NovelItem", item);
+        navigation.navigate("Novel", item);
         setNovel(item);
     };
 
