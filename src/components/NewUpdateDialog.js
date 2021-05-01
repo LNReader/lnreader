@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { Portal, Modal, Button } from "react-native-paper";
 import * as Linking from "expo-linking";
-import { useSelector } from "react-redux";
+import { useTheme } from "../Hooks/useTheme";
 
 const NewUpdateDialog = ({ newVersion }) => {
     const [newUpdateDialog, showNewUpdateDialog] = useState(true);
-    const theme = useSelector((state) => state.themeReducer.theme);
+
+    const theme = useTheme();
 
     return (
         <Portal>
@@ -26,7 +27,7 @@ const NewUpdateDialog = ({ newVersion }) => {
                 >
                     {`New update available ${newVersion.tag_name}`}
                 </Text>
-                <Text style={{ color: theme.textColorPrimary, fontSize: 17 }}>
+                <Text style={{ color: theme.textColorSecondary, fontSize: 16 }}>
                     {newVersion.body}
                 </Text>
                 <View
@@ -54,7 +55,7 @@ const NewUpdateDialog = ({ newVersion }) => {
                             textTransform: "none",
                         }}
                         theme={{ colors: { primary: theme.colorAccentDark } }}
-                        onPress={() => Linking.openURL(res.downloadUrl)}
+                        onPress={() => Linking.openURL(newVersion.downloadUrl)}
                     >
                         Install
                     </Button>

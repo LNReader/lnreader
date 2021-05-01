@@ -9,7 +9,7 @@ export const fetchSources = async () => {
 
 export const fetchNovel = async (sourceId, novelUrl) => {
     const url = `https://lnreader-extensions.vercel.app/api/${sourceId}/novel/${novelUrl}`;
-
+    console.log(url);
     let data = await fetch(url);
     let res = await data.json();
 

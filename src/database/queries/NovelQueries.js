@@ -1,10 +1,8 @@
-import * as FileSystem from "expo-file-system";
-
 import * as SQLite from "expo-sqlite";
-import { getLibrary } from "./LibraryQueries";
+const db = SQLite.openDatabase("lnreader.db");
+
 import { fetchChapters } from "../../Services/Source/source";
 import { insertChapters } from "./ChapterQueries";
-const db = SQLite.openDatabase("lnreader.db");
 
 const insertNovelQuery = `INSERT INTO novels (novelUrl, sourceUrl, sourceId, source, novelName, novelCover, novelSummary, author, artist, status, genre) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
@@ -93,7 +91,7 @@ export const deleteNovelCache = () => {
 
 const restoreFromBackupQuery = `INSERT INTO novels (novelUrl, sourceUrl, sourceId, source, novelName, novelCover, novelSummary, author, artist, status, genre, followed, unread) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
-export const restoreFromBackupTx = async (novel) => {
+export const restoreLibrary = async (novel) => {
     return new Promise((resolve, reject) =>
         db.transaction((tx) =>
             tx.executeSql(
@@ -124,23 +122,4 @@ export const restoreFromBackupTx = async (novel) => {
             )
         )
     );
-};
-
-export const createBackup = async () => {
-    const libraryNovels = await getLibrary();
-
-    const uri = FileSystem.documentDirectory + "backup.json";
-
-    console.log(uri);
-
-    await FileSystem.writeAsStringAsync(uri, JSON.stringify(libraryNovels));
-};
-
-export const restoreFromBackup = async () => {
-    const uri = FileSystem.documentDirectory + "backup.json";
-
-    let novels = await FileSystem.readAsStringAsync(uri);
-
-    novels = await JSON.parse(novels);
-    novels.map((novel) => restoreFromBackupTx(novel));
 };

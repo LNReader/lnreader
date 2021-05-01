@@ -1,12 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import {
-    StyleSheet,
-    View,
-    FlatList,
-    RefreshControl,
-    ToastAndroid,
-} from "react-native";
+import { StyleSheet, View, FlatList, RefreshControl } from "react-native";
 import { Provider, Portal } from "react-native-paper";
+import { useTheme } from "../../Hooks/useTheme";
 
 import ChapterCard from "./components/ChapterCard";
 import NovelInfoHeader from "./components/NovelHeader";
@@ -20,10 +15,10 @@ import {
     updateNovelAction,
 } from "../../redux/novel/novel.actions";
 import TrackSheet from "./components/Tracker/TrackSheet";
+import { showToast } from "../../Hooks/showToast";
 
 const Novel = ({
     route,
-    theme,
     novel,
     chapters,
     loading,
@@ -41,6 +36,8 @@ const Novel = ({
         novelId,
     } = route.params;
 
+    const theme = useTheme();
+
     let chaptersSettingsSheetRef = useRef(null);
     let trackerSheetRef = useRef(null);
 
@@ -53,7 +50,7 @@ const Novel = ({
 
     const onRefresh = async () => {
         await updateNovelAction(sourceId, novelUrl, novelId);
-        ToastAndroid.show(`Updated ${novelName}`, ToastAndroid.SHORT);
+        showToast(`Updated ${novelName}`);
     };
 
     const renderChapterCard = ({ item }) => (
@@ -125,7 +122,6 @@ const Novel = ({
     );
 };
 const mapStateToProps = (state) => ({
-    theme: state.themeReducer.theme,
     novel: state.novelReducer.novel,
     chapters: state.novelReducer.chapters,
     loading: state.novelReducer.loading,

@@ -15,16 +15,20 @@
     "@react-navigation/material-bottom-tabs": "^5.3.10",
     "@react-navigation/native": "^5.8.10",
     "@react-navigation/stack": "^5.12.8",
-    "expo": "^41.0.0",
+    "expo": "^41.0.1",
     "expo-app-loading": "^1.0.1",
+    "expo-document-picker": "^9.1.2",
     "expo-file-system": "~11.0.2",
     "expo-font": "~9.1.0",
     "expo-linear-gradient": "~9.1.0",
+    "expo-linking": "~2.2.3",
     "expo-media-library": "~12.0.2",
+    "expo-permissions": "^12.0.1",
     "expo-sharing": "~9.1.2",
     "expo-sqlite": "~9.1.0",
     "expo-status-bar": "~1.0.4",
     "expo-web-browser": "~9.1.0",
+    "install": "^0.13.0",
     "moment": "^2.29.1",
     "qs": "^6.10.1",
     "react": "16.13.1",
@@ -46,8 +50,7 @@
     "redux-devtools-extension": "^2.13.9",
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.3.0",
-    "rn-sliding-up-panel": "^2.4.4",
-    "expo-linking": "~2.2.3"
+    "rn-sliding-up-panel": "^2.4.4"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0"

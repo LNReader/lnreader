@@ -8,11 +8,7 @@ import {
     setItemsPerRow,
 } from "../../redux/settings/settings.actions";
 import { deleteAllHistory } from "../../database/queries/HistoryQueries";
-import {
-    createBackup,
-    deleteNovelCache,
-    restoreFromBackup,
-} from "../../database/queries/NovelQueries";
+import { deleteNovelCache } from "../../database/queries/NovelQueries";
 
 import { Appbar } from "../../Components/Appbar";
 import {
@@ -24,11 +20,11 @@ import {
 import DisplayModeModal from "./components/DisplayModeModal";
 import GridSizeModal from "./components/GridSizeModal";
 import ThemeModal from "./components/ThemeModal";
+import { createBackup, restoreBackup } from "../../Services/backup";
+import { useTheme } from "../../Hooks/useTheme";
 
 const SettingsScreen = ({
     navigation,
-    theme,
-    themeCode,
     displayMode,
     itemsPerRow,
     switchTheme,
@@ -44,6 +40,8 @@ const SettingsScreen = ({
 
         return label[displayMode];
     };
+
+    const theme = useTheme();
 
     // Display Mode Modal
     const [displayModalVisible, setDisplayModalVisible] = useState(false);
@@ -117,7 +115,7 @@ const SettingsScreen = ({
                     <ListItem
                         title="Restore backup"
                         description="Restore library from backup file"
-                        onPress={restoreFromBackup}
+                        onPress={restoreBackup}
                         theme={theme}
                     />
                 </ListSection>
@@ -147,7 +145,6 @@ const SettingsScreen = ({
 };
 
 const mapStateToProps = (state) => ({
-    theme: state.themeReducer.theme,
     displayMode: state.settingsReducer.displayMode,
     itemsPerRow: state.settingsReducer.itemsPerRow,
 });
