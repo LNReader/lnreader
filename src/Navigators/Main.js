@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
     createStackNavigator,
     TransitionPresets,
@@ -11,34 +11,30 @@ import Extension from "../screens/Extension/Extension";
 import MoreStack from "./More";
 
 import { setStatusBarStyle } from "../Hooks/setStatusBarStyle";
-import { checkGithubRelease } from "../Services/updates";
+import { View } from "react-native";
+import { useTheme } from "../Hooks/useTheme";
+import { githubUpdateChecker } from "../Hooks/githubUpdateChecker";
+import NewUpdateDialog from "../Components/NewUpdateDialog";
 
 const Stack = createStackNavigator();
 
 const stackNavigatorConfig = {
     headerShown: false,
-    ...TransitionPresets.RevealFromBottomAndroid,
 };
 
 const MainNavigator = () => {
-    const [newUpdate, setNewUpdate] = useState();
+    const theme = useTheme();
     setStatusBarStyle();
-
-    useEffect(() => {
-        checkGithubRelease().then((res) => setNewUpdate(res));
-    }, []);
+    const { isNewVersion, latestRelease } = githubUpdateChecker() || {};
 
     return (
-        <>
-            {newUpdate && newUpdate.tag_name === "v1.0.17" && (
-                <NewUpdateDialog newVersion={newUpdate} />
-            )}
+        <View style={{ flex: 1, backgroundColor: theme.colorPrimary }}>
+            {isNewVersion && <NewUpdateDialog newVersion={latestRelease} />}
             <Stack.Navigator screenOptions={stackNavigatorConfig}>
                 <Stack.Screen
                     name="BottomNavigator"
                     component={BottomNavigator}
                 />
-
                 <Stack.Screen
                     name="Novel"
                     component={Novel}
@@ -47,6 +43,7 @@ const MainNavigator = () => {
                         headerShown: true,
                         headerTransparent: true,
                         headerTintColor: "white",
+                        ...TransitionPresets.RevealFromBottomAndroid,
                     }}
                 />
                 <Stack.Screen
@@ -57,7 +54,7 @@ const MainNavigator = () => {
                 <Stack.Screen name="MoreStack" component={MoreStack} />
                 <Stack.Screen name="Extension" component={Extension} />
             </Stack.Navigator>
-        </>
+        </View>
     );
 };
 
