@@ -1,5 +1,5 @@
 import { setStatusBarStyle as setExpoStatusBarStyle } from "expo-status-bar";
-import { useTheme } from "../Theme/hooks/useTheme";
+import { useTheme } from "../Hooks/useTheme";
 
 export const setStatusBarStyle = () => {
     const theme = useTheme();

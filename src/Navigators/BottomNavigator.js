@@ -1,7 +1,7 @@
 import React from "react";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { useTheme } from "../Theme/hooks/useTheme";
+import { useTheme } from "../Hooks/useTheme";
 
 import Library from "../screens/Library/Library";
 import Updates from "../screens/Updates/Updates";
