@@ -10,36 +10,23 @@ import { showToast } from "../Hooks/showToast";
 export const createBackup = async () => {
     const novels = await getLibrary();
 
-    if (Platform.constants.Release >= 10) {
-        const permissions = await StorageAccessFramework.requestDirectoryPermissionsAsync();
+    const permissions = await StorageAccessFramework.requestDirectoryPermissionsAsync();
 
-        const uri = permissions.directoryUri;
+    if (!permissions.granted) {
+        return;
+    }
 
-        if (uri) {
-            const fileUri = await StorageAccessFramework.createFileAsync(
-                uri,
-                "backup",
-                "application/json"
-            );
+    const uri = permissions.directoryUri;
 
-            await StorageAccessFramework.writeAsStringAsync(
-                fileUri,
-                JSON.stringify(novels)
-            );
-            showToast("Backup created");
-        }
-    } else {
-        let uri = FileSystem.documentDirectory;
-        let fileUri = uri + "LNReader";
+    if (uri) {
+        const fileUri = await StorageAccessFramework.createFileAsync(
+            uri,
+            "backup",
+            "application/json"
+        );
 
-        let folderExists = await FileSystem.getInfoAsync(fileUri);
-
-        if (!folderExists) {
-            await FileSystem.makeDirectoryAsync(fileUri);
-        }
-
-        await FileSystem.writeAsStringAsync(
-            fileUri + "/backup.json",
+        await StorageAccessFramework.writeAsStringAsync(
+            fileUri,
             JSON.stringify(novels)
         );
 
@@ -51,7 +38,7 @@ export const restoreBackup = async () => {
     const backup = await DocumentPicker.getDocumentAsync();
 
     if (backup.uri) {
-        let novels = await FileSystem.readAsStringAsync(backup.uri);
+        let novels = await StorageAccessFramework.readAsStringAsync(backup.uri);
         novels = await JSON.parse(novels);
         await novels.map((novel) => restoreLibrary(novel));
         showToast("Restored backup");

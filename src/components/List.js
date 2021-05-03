@@ -53,7 +53,24 @@ const Divider = ({ theme }) => (
     />
 );
 
-export { ListSection, ListSubHeader, ListItem, Divider };
+const InfoItem = ({ title, description, icon, onPress, theme, right }) => (
+    <List.Item
+        title={title}
+        titleStyle={{ color: theme.textColorSecondary, fontSize: 14 }}
+        titleNumberOfLines={5}
+        left={() =>
+            icon && (
+                <List.Icon
+                    color={theme.textColorSecondary}
+                    icon={icon}
+                    style={{ marginVertical: 0 }}
+                />
+            )
+        }
+    />
+);
+
+export { ListSection, ListSubHeader, ListItem, Divider, InfoItem };
 
 const styles = StyleSheet.create({
     listSection: {

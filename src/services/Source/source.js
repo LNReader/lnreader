@@ -40,8 +40,6 @@ export const fetchChapter = async (sourceId, novelUrl, chapterUrl) => {
     let res = await fetch(url);
     let chapter = await res.json();
 
-    console.log(chapter);
-
     return chapter;
 };
 

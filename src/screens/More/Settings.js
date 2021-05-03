@@ -16,6 +16,7 @@ import {
     ListItem,
     ListSection,
     ListSubHeader,
+    InfoItem,
 } from "../../Components/List";
 import DisplayModeModal from "./components/DisplayModeModal";
 import GridSizeModal from "./components/GridSizeModal";
@@ -114,6 +115,13 @@ const SettingsScreen = ({
                     />
                     <ListItem
                         title="Restore backup"
+                        description="Restore library from backup file"
+                        onPress={restoreBackup}
+                        theme={theme}
+                    />
+                    <InfoItem
+                        title="Create backup may not work on devices with Android 9 or lower."
+                        icon="information-outline"
                         description="Restore library from backup file"
                         onPress={restoreBackup}
                         theme={theme}
