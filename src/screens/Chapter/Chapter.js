@@ -96,8 +96,6 @@ const ChapterItem = ({
         );
     };
 
-    // !loading && parseChapterNumber(chapter.chapterName);
-
     return (
         <Provider>
             <CollapsibleHeaderScrollView

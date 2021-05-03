@@ -108,8 +108,6 @@ export const updateNovelChapters = async (extensionId, novelUrl, novelId) => {
 };
 
 export const updateAllNovels = async () => {
-    ToastAndroid.show("Updating library", ToastAndroid.SHORT);
-
     const libraryNovels = await getLibrary();
 
     libraryNovels.map((novel, index) =>

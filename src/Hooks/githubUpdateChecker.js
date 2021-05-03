@@ -41,8 +41,6 @@ export const githubUpdateChecker = () => {
             isNewVersion: isNewVersion(latestRelease.tag_name),
         };
 
-        console.log(data);
-
         return data;
     }
 };

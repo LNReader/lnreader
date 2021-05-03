@@ -28,7 +28,6 @@
     "expo-sqlite": "~9.1.0",
     "expo-status-bar": "~1.0.4",
     "expo-web-browser": "~9.1.0",
-    "install": "^0.13.0",
     "moment": "^2.29.1",
     "qs": "^6.10.1",
     "react": "16.13.1",

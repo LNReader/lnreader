@@ -1,9 +1,9 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import About from "../screens/More/About";
-import Settings from "../screens/More/Settings";
-import Trackers from "../screens/More/Trackers";
+import About from "../Screens/More/About";
+import Settings from "../Screens/More/Settings";
+import Trackers from "../Screens/More/Trackers";
 import { View } from "react-native";
 import { useTheme } from "../Hooks/useTheme";
 

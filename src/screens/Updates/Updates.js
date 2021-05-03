@@ -1,25 +1,42 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { useFocusEffect } from "@react-navigation/native";
-import { StyleSheet, View, FlatList, ActivityIndicator } from "react-native";
-
-import { connect } from "react-redux";
+import React, { useState, useEffect } from "react";
+import {
+    StyleSheet,
+    View,
+    FlatList,
+    ActivityIndicator,
+    RefreshControl,
+} from "react-native";
+import { connect, useDispatch } from "react-redux";
 import EmptyView from "../../Components/EmptyView";
-import { getUpdatesAction } from "../../redux/updates/updates.actions";
+import {
+    getUpdatesAction,
+    updateLibraryAction,
+} from "../../redux/updates/updates.actions";
 import { Appbar } from "./components/Appbar";
 import UpdateCard from "./components/UpdateCard";
+import { useTheme } from "../../Hooks/useTheme";
 
-const Updates = ({ theme, updates, loading, getUpdatesAction }) => {
-    useFocusEffect(
-        useCallback(() => {
-            getUpdatesAction();
-        }, [getUpdatesAction])
-    );
+const Updates = ({ updates, loading, getUpdatesAction }) => {
+    const theme = useTheme();
+    const dispatch = useDispatch();
+
+    const [refreshing, setRefreshing] = useState(false);
+
+    useEffect(() => {
+        getUpdatesAction();
+    }, [getUpdatesAction, updates]);
+
+    const onRefresh = async () => {
+        setRefreshing(true);
+        dispatch(updateLibraryAction());
+        setRefreshing(false);
+    };
 
     const renderUpdateCard = ({ item }) => <UpdateCard item={item} />;
 
     return (
         <>
-            <Appbar />
+            <Appbar theme={theme} />
             <View
                 style={[
                     styles.container,
@@ -47,6 +64,14 @@ const Updates = ({ theme, updates, loading, getUpdatesAction }) => {
                             />
                         )
                     }
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={refreshing}
+                            onRefresh={onRefresh}
+                            colors={["white"]}
+                            progressBackgroundColor={theme.colorAccentDark}
+                        />
+                    }
                 />
             </View>
         </>
@@ -54,14 +79,12 @@ const Updates = ({ theme, updates, loading, getUpdatesAction }) => {
 };
 
 const mapStateToProps = (state) => ({
-    theme: state.themeReducer.theme,
     updates: state.updatesReducer.updates,
     loading: state.updatesReducer.loading,
 });
 
 export default connect(mapStateToProps, { getUpdatesAction })(Updates);
+
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
+    container: { flex: 1 },
 });

@@ -1,29 +1,25 @@
 import React from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
 import { TouchableRipple, Button } from "react-native-paper";
-
 import { useNavigation } from "@react-navigation/native";
-import { useSelector } from "react-redux";
 
-const ExtensionCard = ({ item }) => {
+const ExtensionCard = ({ item, theme }) => {
     const { sourceName, sourceCover, sourceLanguage, status } = item;
 
     const navigation = useNavigation();
 
-    const theme = useSelector((state) => state.themeReducer.theme);
+    const navigateToExtension = () =>
+        navigation.navigate("Extension", {
+            sourceId: item.sourceId,
+            sourceName: item.sourceName,
+            sourceUrl: item.sourceUrl,
+        });
 
     return (
         <TouchableRipple
             style={styles.extensionCard}
-            onPress={() =>
-                navigation.navigate("Extension", {
-                    sourceId: item.sourceId,
-                    sourceName: item.sourceName,
-                    sourceUrl: item.sourceUrl,
-                })
-            }
+            onPress={navigateToExtension}
             rippleColor={theme.rippleColor}
-            borderless
         >
             <>
                 <Image
@@ -50,31 +46,17 @@ const ExtensionCard = ({ item }) => {
                             >
                                 {sourceLanguage}
                             </Text>
-                            <Text
-                                style={{
-                                    color: "#D63B2F",
-                                    fontSize: 12,
-                                    marginLeft: 5,
-                                }}
-                            >
-                                {status === 0 && "(Not Working)"}
+                            <Text style={styles.sourceStatus}>
+                                {status === 0 && "• Down"}
                             </Text>
                         </View>
                     </View>
                     <View>
                         <Button
-                            labelStyle={{
-                                letterSpacing: 0,
-                            }}
+                            labelStyle={{ letterSpacing: 0 }}
                             uppercase={false}
                             color={theme.colorAccentDark}
-                            onPress={() =>
-                                navigation.navigate("Extension", {
-                                    sourceId: item.sourceId,
-                                    sourceName: item.sourceName,
-                                    sourceUrl: item.sourceUrl,
-                                })
-                            }
+                            onPress={navigateToExtension}
                         >
                             Browse
                         </Button>
@@ -106,5 +88,10 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         alignItems: "center",
         marginLeft: 16,
+    },
+    sourceStatus: {
+        color: "#C14033",
+        fontSize: 12,
+        marginLeft: 5,
     },
 });

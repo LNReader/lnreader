@@ -5,15 +5,17 @@ import * as WebBrowser from "expo-web-browser";
 
 import NovelCover from "../../Components/NovelCover";
 import EmptyView from "../../Components/EmptyView";
-import { SearchAppbar } from "../../Components/Appbar";
 
 import { useSelector } from "react-redux";
+import { Searchbar } from "../../Components/Searchbar";
+import { useTheme } from "../../Hooks/useTheme";
+import { useLibrary } from "../../Hooks/useLibrary";
 
 const Extension = ({ navigation, route }) => {
     const { sourceId, sourceName, sourceUrl } = route.params;
 
-    const theme = useSelector((state) => state.themeReducer.theme);
-    const library = useSelector((state) => state.libraryReducer.novels);
+    const theme = useTheme();
+    const library = useLibrary();
     const itemsPerRow = useSelector(
         (state) => state.settingsReducer.itemsPerRow
     );
@@ -48,7 +50,7 @@ const Extension = ({ navigation, route }) => {
             });
     };
 
-    const getSearchResults = (searchText) => {
+    const getSearchResults = () => {
         setLoading(true);
         fetch(getSearchUrl())
             .then((response) => response.json())
@@ -74,15 +76,16 @@ const Extension = ({ navigation, route }) => {
                     { backgroundColor: theme.colorPrimaryDark },
                 ]}
             >
-                <SearchAppbar
-                    screen="Extension"
+                <Searchbar
+                    theme={theme}
                     placeholder={`Search ${sourceName}`}
+                    left="arrow-left"
+                    onPressLeft={() => navigation.goBack()}
                     searchText={searchText}
-                    setSearchText={setSearchText}
-                    getSearchResults={getSearchResults}
-                    getNovels={getNovels}
-                    setLoading={setLoading}
-                    openWebView={() => WebBrowser.openBrowserAsync(sourceUrl)}
+                    onChangeText={(text) => setSearchText(text)}
+                    onSubmitEditing={getSearchResults}
+                    right="earth"
+                    onPressRight={() => WebBrowser.openBrowserAsync(sourceUrl)}
                 />
 
                 {loading ? (

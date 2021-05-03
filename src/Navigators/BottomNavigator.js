@@ -3,11 +3,11 @@ import { createMaterialBottomTabNavigator } from "@react-navigation/material-bot
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { useTheme } from "../Hooks/useTheme";
 
-import Library from "../screens/Library/Library";
-import Updates from "../screens/Updates/Updates";
-import History from "../screens/History/History";
-import Browse from "../screens/Browse/Browse";
-import More from "../screens/More/More";
+import Library from "../Screens/Library/Library";
+import Updates from "../Screens/Updates/Updates";
+import History from "../Screens/History/History";
+import Browse from "../Screens/Browse/Browse";
+import More from "../Screens/More/More";
 
 const Tab = createMaterialBottomTabNavigator();
 

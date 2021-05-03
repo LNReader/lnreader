@@ -5,9 +5,9 @@ import {
 } from "@react-navigation/stack";
 
 import BottomNavigator from "./BottomNavigator";
-import Novel from "../screens/Novel/Novel";
-import Chapter from "../screens/Chapter/Chapter";
-import Extension from "../screens/Extension/Extension";
+import Novel from "../Screens/Novel/Novel";
+import Chapter from "../Screens/Chapter/Chapter";
+import Extension from "../Screens/Extension/Extension";
 import MoreStack from "./More";
 
 import { setStatusBarStyle } from "../Hooks/setStatusBarStyle";

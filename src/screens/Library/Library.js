@@ -1,15 +1,14 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 import {
     StyleSheet,
     Text,
     View,
     RefreshControl,
     ActivityIndicator,
-    ToastAndroid,
 } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { useFocusEffect } from "@react-navigation/native";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 
 import NovelCover from "../../Components/NovelCover";
 import EmptyView from "../../Components/EmptyView";
@@ -20,42 +19,47 @@ import {
 } from "../../redux/library/library.actions";
 import { SearchAppbar } from "../../Components/Appbar";
 import { setNovel } from "../../redux/novel/novel.actions";
-import { updateAllNovels } from "../../Services/updates";
+import { updateLibraryAction } from "../../redux/updates/updates.actions";
+import { useTheme } from "../../Hooks/useTheme";
+import { Searchbar } from "../../Components/Searchbar";
 
-const LibraryScreen = ({
-    navigation,
-    theme,
-    novels,
-    loading,
-    getLibraryAction,
-    searchLibraryAction,
-    setNovel,
-    itemsPerRow,
-}) => {
+const LibraryScreen = ({ navigation, novels, loading, itemsPerRow }) => {
+    const theme = useTheme();
+    const dispatch = useDispatch();
+
     const [refreshing, setRefreshing] = useState(false);
-
     const [searchText, setSearchText] = useState("");
 
     useFocusEffect(
         useCallback(() => {
             setSearchText("");
-            getLibraryAction();
+            dispatch(getLibraryAction());
         }, [getLibraryAction])
     );
 
-    /**
-     * TODO: fix refreshing
-     */
     const onRefresh = () => {
-        ToastAndroid.show("Updating library", ToastAndroid.SHORT);
         setRefreshing(true);
-        updateAllNovels();
+        dispatch(updateLibraryAction());
         setRefreshing(false);
     };
 
     const redirectToNovel = (item) => {
         navigation.navigate("Novel", item);
-        setNovel(item);
+        dispatch(setNovel(item));
+    };
+
+    const renderNovels = ({ item }) => (
+        <NovelCover item={item} onPress={() => redirectToNovel(item)} />
+    );
+
+    const clearSearchbar = () => {
+        dispatch(getLibraryAction());
+        setSearchText("");
+    };
+
+    const onChangeText = (text) => {
+        setSearchText(text);
+        dispatch(searchLibraryAction(text));
     };
 
     return (
@@ -66,13 +70,13 @@ const LibraryScreen = ({
                     { backgroundColor: theme.colorPrimaryDark },
                 ]}
             >
-                <SearchAppbar
-                    screen="Library"
+                <Searchbar
                     placeholder="Search Library"
-                    getNovels={getLibraryAction}
-                    getSearchResults={searchLibraryAction}
                     searchText={searchText}
-                    setSearchText={setSearchText}
+                    clearSearchbar={clearSearchbar}
+                    onChangeText={onChangeText}
+                    left="magnify"
+                    theme={theme}
                 />
                 {loading ? (
                     <ActivityIndicator
@@ -89,12 +93,7 @@ const LibraryScreen = ({
                         key={itemsPerRow}
                         data={novels}
                         keyExtractor={(item) => item.novelUrl}
-                        renderItem={({ item }) => (
-                            <NovelCover
-                                item={item}
-                                onPress={() => redirectToNovel(item)}
-                            />
-                        )}
+                        renderItem={renderNovels}
                         refreshControl={
                             <RefreshControl
                                 refreshing={refreshing}
@@ -128,17 +127,12 @@ const LibraryScreen = ({
 };
 
 const mapStateToProps = (state) => ({
-    theme: state.themeReducer.theme,
     itemsPerRow: state.settingsReducer.itemsPerRow,
     novels: state.libraryReducer.novels,
     loading: state.libraryReducer.loading,
 });
 
-export default connect(mapStateToProps, {
-    getLibraryAction,
-    searchLibraryAction,
-    setNovel,
-})(LibraryScreen);
+export default connect(mapStateToProps)(LibraryScreen);
 
 const styles = StyleSheet.create({
     container: {

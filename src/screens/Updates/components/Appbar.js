@@ -1,11 +1,11 @@
 import React from "react";
 import { Appbar as MaterialAppbar } from "react-native-paper";
 
-import { useSelector } from "react-redux";
-import { updateAllNovels } from "../../../Services/updates";
+import { useDispatch } from "react-redux";
+import { updateLibraryAction } from "../../../redux/updates/updates.actions";
 
-export const Appbar = () => {
-    const theme = useSelector((state) => state.themeReducer.theme);
+export const Appbar = ({ theme }) => {
+    const dispatch = useDispatch();
 
     return (
         <MaterialAppbar.Header style={{ backgroundColor: theme.colorPrimary }}>
@@ -13,7 +13,10 @@ export const Appbar = () => {
                 title="Updates"
                 titleStyle={{ color: theme.textColorPrimary }}
             />
-            <MaterialAppbar.Action icon="reload" onPress={updateAllNovels} />
+            <MaterialAppbar.Action
+                icon="reload"
+                onPress={() => dispatch(updateLibraryAction())}
+            />
         </MaterialAppbar.Header>
     );
 };
