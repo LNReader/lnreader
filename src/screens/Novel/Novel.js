@@ -20,6 +20,7 @@ import { showToast } from "../../Hooks/showToast";
 const Novel = ({
     route,
     novel,
+    novelSettings,
     chapters,
     loading,
     getNovelAction,
@@ -41,12 +42,20 @@ const Novel = ({
     let chaptersSettingsSheetRef = useRef(null);
     let trackerSheetRef = useRef(null);
 
-    const [sort, setSort] = useState("ORDER BY chapterId ASC");
-    const [filter, setFilter] = useState("");
+    const currentNovelSettings = novelSettings.find(
+        (nov) => nov.novelId === (novelId || novel.novelId)
+    );
+
+    let sort, filter;
+
+    if (currentNovelSettings) {
+        sort = currentNovelSettings.sort || "";
+        filter = currentNovelSettings.filter || "";
+    }
 
     useEffect(() => {
         getNovelAction(followed, sourceId, novelUrl, novelId, sort, filter);
-    }, [getNovelAction, sort, filter]);
+    }, [getNovelAction]);
 
     const onRefresh = async () => {
         await updateNovelAction(sourceId, novelUrl, novelId);
@@ -87,6 +96,7 @@ const Novel = ({
                             trackerSheetRef={trackerSheetRef}
                             chaptersSettingsSheetRef={chaptersSettingsSheetRef}
                             theme={theme}
+                            filter={filter}
                         />
                     }
                     refreshControl={
@@ -104,15 +114,12 @@ const Novel = ({
                             novelUrl={novelUrl}
                             bottomSheetRef={chaptersSettingsSheetRef}
                             sortAndFilterChapters={sortAndFilterChapters}
-                            sort={sort}
-                            filter={filter}
-                            setSort={setSort}
-                            setFilter={setFilter}
+                            novelId={novelId || novel.novelId}
                         />
                         <TrackSheet
                             bottomSheetRef={trackerSheetRef}
-                            novelId={novel.novelId}
-                            novelName={novel.novelName}
+                            novelId={novelId || novel.novelId}
+                            novelName={novelName || novel.novelName}
                             theme={theme}
                         />
                     </Portal>
@@ -123,6 +130,7 @@ const Novel = ({
 };
 const mapStateToProps = (state) => ({
     novel: state.novelReducer.novel,
+    novelSettings: state.novelReducer.novelSettings,
     chapters: state.novelReducer.chapters,
     loading: state.novelReducer.loading,
     fetching: state.novelReducer.fetching,
@@ -130,7 +138,6 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps, {
     getNovelAction,
-
     sortAndFilterChapters,
     updateNovelAction,
 })(Novel);

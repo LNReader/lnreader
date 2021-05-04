@@ -50,6 +50,12 @@ const Extension = ({ navigation, route }) => {
             });
     };
 
+    const clearSearchbar = () => {
+        getNovels();
+        setLoading(true);
+        setSearchText("");
+    };
+
     const getSearchResults = () => {
         setLoading(true);
         fetch(getSearchUrl())
@@ -84,6 +90,7 @@ const Extension = ({ navigation, route }) => {
                     searchText={searchText}
                     onChangeText={(text) => setSearchText(text)}
                     onSubmitEditing={getSearchResults}
+                    clearSearchbar={clearSearchbar}
                     right="earth"
                     onPressRight={() => WebBrowser.openBrowserAsync(sourceUrl)}
                 />

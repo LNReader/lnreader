@@ -10,6 +10,7 @@ export const Searchbar = ({
     left,
     onPressLeft,
     right,
+    menu,
     onPressRight,
     clearSearchbar,
     onChangeText,
@@ -25,6 +26,7 @@ export const Searchbar = ({
                 styles.searchAppbarContainer,
                 { backgroundColor: theme.searchBarColor },
             ]}
+            rippleColor={theme.rippleColor}
         >
             <View style={styles.container}>
                 <View style={{ flex: 1, flexDirection: "row" }}>

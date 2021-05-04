@@ -14,6 +14,7 @@ import {
     CHAPTER_DOWNLOADED,
     CHAPTER_DELETED,
     UPDATE_NOVEL,
+    SET_NOVEL_SETTINGS,
 } from "./novel.types";
 
 import { updateNovel } from "../../Services/updates";
@@ -92,14 +93,15 @@ export const getNovelAction = (
     }
 };
 
-export const sortAndFilterChapters = (novelUrl, filter, sort) => async (
+export const sortAndFilterChapters = (novelId, sort, filter) => async (
     dispatch
 ) => {
-    // const chapters = await getChaptersFromDb(novelUrl, filter, sort);
-    // dispatch({
-    //     type: GET_CHAPTERS,
-    //     payload: chapters,
-    // });
+    const chapters = await getChapters(novelId, sort, filter);
+
+    dispatch({
+        type: SET_NOVEL_SETTINGS,
+        payload: { chapters, novelId, sort, filter },
+    });
 };
 
 export const followNovelAction = (novel) => async (dispatch) => {

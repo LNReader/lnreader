@@ -17,3 +17,5 @@ export const GET_CHAPTER = "GET_CHAPTER";
 
 export const FOLLOW_NOVEL = "FOLLOW_NOVEL";
 export const UNFOLLOW_NOVEL = "UNFOLLOW_NOVEL";
+
+export const SET_NOVEL_SETTINGS = "SET_NOVEL_SETTINGS";

@@ -7,12 +7,22 @@ import { useSelector } from "react-redux";
 
 const ChaptersSettingsSheet = ({
     bottomSheetRef,
-    sort,
-    filter,
-    setSort,
-    setFilter,
-    novelUrl,
+    novelId,
+    sortAndFilterChapters,
 }) => {
+    const [sort, setSort] = useState("ORDER BY chapterId ASC");
+    const [filter, setFilter] = useState("");
+
+    const sortChapters = (val) => {
+        setSort(val);
+        sortAndFilterChapters(novelId, val, filter);
+    };
+
+    const filterChapters = (val) => {
+        setFilter(val);
+        sortAndFilterChapters(novelId, sort, val);
+    };
+
     const checkBoxStyle = { flexDirection: "row", alignItems: "center" };
 
     const theme = useSelector((state) => state.themeReducer.theme);
@@ -45,7 +55,9 @@ const ChaptersSettingsSheet = ({
                 </List.Subheader>
                 <View>
                     <RadioButton.Group
-                        onValueChange={(newValue) => setSort(newValue)}
+                        onValueChange={(newValue) =>
+                            sortChapters(newValue, filter)
+                        }
                         value={sort}
                     >
                         <View
@@ -110,7 +122,7 @@ const ChaptersSettingsSheet = ({
                         status={filter === "" ? "checked" : "unchecked"}
                         uncheckedColor={theme.textColorHintDark}
                         color={theme.colorAccentDark}
-                        onPress={() => setFilter("")}
+                        onPress={() => filterChapters("")}
                     />
                     <Text style={{ color: theme.textColorPrimary }}>
                         Show all
@@ -123,7 +135,7 @@ const ChaptersSettingsSheet = ({
                         }
                         uncheckedColor={theme.textColorHintDark}
                         color={theme.colorAccentDark}
-                        onPress={() => setFilter("AND `read`=1")}
+                        onPress={() => filterChapters("AND `read`=1")}
                     />
                     <Text style={{ color: theme.textColorPrimary }}>
                         Show read chapters
@@ -136,7 +148,7 @@ const ChaptersSettingsSheet = ({
                         }
                         uncheckedColor={theme.textColorHintDark}
                         color={theme.colorAccentDark}
-                        onPress={() => setFilter("AND `read`=0")}
+                        onPress={() => filterChapters("AND `read`=0")}
                     />
                     <Text style={{ color: theme.textColorPrimary }}>
                         Show unread chapters
@@ -151,7 +163,7 @@ const ChaptersSettingsSheet = ({
                         }
                         uncheckedColor={theme.textColorHintDark}
                         color={theme.colorAccentDark}
-                        onPress={() => setFilter("AND downloaded=1")}
+                        onPress={() => filterChapters("AND downloaded=1")}
                     />
                     <Text style={{ color: theme.textColorPrimary }}>
                         Show downloaded chapters

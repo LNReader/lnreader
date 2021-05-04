@@ -35,8 +35,8 @@ export const insertChapters = async (novelId, chapters) => {
 };
 
 const getChaptersQuery = (sort, filter) =>
-    `SELECT * FROM chapters WHERE novelId = ? ${filter ?? ""} ${
-        sort ?? "ORDER BY chapterId ASC"
+    `SELECT * FROM chapters WHERE novelId = ? ${filter || ""} ${
+        sort || "ORDER BY chapterId ASC"
     }`;
 
 export const getChapters = (novelId, sort, filter) => {

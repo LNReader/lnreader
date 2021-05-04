@@ -25,6 +25,7 @@ const NovelInfoHeader = ({
     theme,
     chaptersSettingsSheetRef,
     trackerSheetRef,
+    filter,
 }) => {
     const navigation = useNavigation();
     const dispatch = useDispatch();
@@ -214,7 +215,11 @@ const NovelInfoHeader = ({
                             </Text>
                             <IconButton
                                 icon="filter-variant"
-                                color={theme.textColorPrimary}
+                                color={
+                                    filter
+                                        ? theme.filterColor
+                                        : theme.textColorPrimary
+                                }
                                 size={24}
                             />
                         </>
