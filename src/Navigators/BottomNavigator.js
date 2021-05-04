@@ -1,7 +1,7 @@
 import React from "react";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { useTheme } from "../Hooks/useTheme";
+import { useTheme } from "../Hooks/reduxHooks";
 
 import Library from "../Screens/Library/Library";
 import Updates from "../Screens/Updates/Updates";
@@ -18,7 +18,7 @@ const BottomNavigator = () => {
         <Tab.Navigator
             // shifting={false}
             barStyle={{ backgroundColor: theme.colorPrimary }}
-            activeColor={theme.colorAccentDark}
+            activeColor={theme.colorAccent}
         >
             <Tab.Screen
                 name="Library"

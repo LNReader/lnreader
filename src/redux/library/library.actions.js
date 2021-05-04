@@ -5,7 +5,7 @@ import {
 import {
     getLibrary,
     searchLibrary,
-} from "../../database/queries/LibraryQueries";
+} from "../../Database/queries/LibraryQueries";
 
 export const getLibraryAction = () => async (dispatch) => {
     const res = await getLibrary();

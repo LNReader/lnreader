@@ -3,7 +3,6 @@ import { persistStore, persistReducer } from "redux-persist";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import thunk from "redux-thunk";
 
-import themeReducer from "./theme/theme.reducer";
 import settingsReducer from "./settings/settings.reducer";
 import libraryReducer from "./library/library.reducer";
 import extensionReducer from "./source/source.reducers";
@@ -22,7 +21,6 @@ const persistConfig = {
 const persistedReducer = persistReducer(
     persistConfig,
     combineReducers({
-        themeReducer,
         settingsReducer,
         libraryReducer,
         extensionReducer,

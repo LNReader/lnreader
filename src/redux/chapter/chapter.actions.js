@@ -17,7 +17,7 @@ import {
     getChapter,
     downloadChapter,
     deleteChapter,
-} from "../../database/queries/ChapterQueries";
+} from "../../Database/queries/ChapterQueries";
 import { SET_LAST_READ } from "../preferences/preference.types";
 
 export const getChapterAction = (

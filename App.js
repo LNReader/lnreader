@@ -7,7 +7,7 @@ import Main from "./src/Navigators/Main";
 import { Provider } from "react-redux";
 import { persistor, store } from "./src/redux/store";
 import { PersistGate } from "redux-persist/lib/integration/react";
-import { createDB, deleteDb } from "./src/database/DBHelper";
+import { createDB, deleteDb } from "./src/Database/DBHelper";
 
 const App = () => {
     const [loaded] = useFonts({

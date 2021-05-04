@@ -8,7 +8,7 @@ import {
     getHistory,
     insertHistory,
     deleteHistory,
-} from "../../database/queries/HistoryQueries";
+} from "../../Database/queries/HistoryQueries";
 import { SET_LAST_READ } from "../preferences/preference.types";
 
 export const getHistoryAction = () => async (dispatch) => {
@@ -30,6 +30,10 @@ export const insertHistoryAction = (novelId, chapterId) => async (dispatch) => {
         type: SET_LAST_READ,
         payload: { novelId, chapterId },
     });
+
+    const history = await getHistory();
+
+    dispatch({ type: GET_HISTORY, payload: history });
 };
 
 export const deleteHistoryAction = (novelId) => async (dispatch) => {

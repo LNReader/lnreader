@@ -1,6 +1,6 @@
 import { GET_UPDATES } from "./updates.types";
 
-import { getUpdates } from "../../database/queries/UpdateQueries";
+import { getUpdates } from "../../Database/queries/UpdateQueries";
 import { updateAllNovels } from "../../Services/updates";
 import { showToast } from "../../Hooks/showToast";
 

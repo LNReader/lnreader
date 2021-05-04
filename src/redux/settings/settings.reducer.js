@@ -1,5 +1,6 @@
 import { SET_NOVEL_SETTINGS } from "../novel/novel.types";
 import {
+    SWITCH_THEME,
     SET_DISPLAY_MODE,
     SET_ITEMS_PER_ROW,
     SET_READER_FONT,
@@ -8,6 +9,21 @@ import {
     UPDATE_READER_TEXT_SIZE,
     UPDATE_READER_THEME,
 } from "./settings.types";
+import {
+    amoledDarkTheme,
+    lightTheme,
+    darkTheme,
+    midnightDuskTheme,
+    limeTheme,
+} from "../../Theme/theme";
+
+const themes = {
+    0: amoledDarkTheme,
+    1: lightTheme,
+    2: darkTheme,
+    3: midnightDuskTheme,
+    4: limeTheme,
+};
 
 const initialState = {
     displayMode: 0,
@@ -19,6 +35,7 @@ const initialState = {
         padding: 5,
         fontFamily: null,
     },
+    theme: themes[2],
 };
 
 /**
@@ -40,11 +57,12 @@ const settingsReducer = (state = initialState, action) => {
     const { type, payload } = action;
 
     switch (type) {
+        case SWITCH_THEME:
+            return { ...state, theme: themes[payload] };
         case SET_DISPLAY_MODE:
             return {
                 ...state,
                 displayMode: payload,
-                itemsPerRow: payload === 2 ? 1 : state.itemsPerRow,
             };
         case SET_ITEMS_PER_ROW:
             return {

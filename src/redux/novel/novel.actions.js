@@ -23,7 +23,7 @@ import {
     followNovel,
     insertNovel,
     getNovel,
-} from "../../database/queries/NovelQueries";
+} from "../../Database/queries/NovelQueries";
 import {
     getChapters,
     insertChapters,
@@ -32,9 +32,11 @@ import {
     getChapter,
     downloadChapter,
     deleteChapter,
-} from "../../database/queries/ChapterQueries";
-import { deleteNovelUpdates } from "../../database/queries/UpdateQueries";
+} from "../../Database/queries/ChapterQueries";
+import { deleteNovelUpdates } from "../../Database/queries/UpdateQueries";
 import { SET_CHAPTER_LIST_PREF } from "../preferences/preference.types";
+import { GET_LIBRARY_NOVELS } from "../library/library.types";
+import { getLibrary } from "../../Database/queries/LibraryQueries";
 
 export const setNovel = (novel) => async (dispatch) => {
     dispatch({ type: SET_NOVEL, payload: novel });
@@ -60,7 +62,7 @@ export const getNovelAction = (
     } else {
         dispatch({ type: FETCHING_NOVEL });
 
-        const novel = await getNovel(novelUrl);
+        const novel = await getNovel(sourceId, novelUrl);
 
         if (novel) {
             novel.chapters = await getChapters(novel.novelId, sort, filter);
@@ -69,21 +71,12 @@ export const getNovelAction = (
                 payload: novel,
             });
         } else {
-            /**
-             * Fetch novel from source
-             */
             const fetchedNovel = await fetchNovel(sourceId, novelUrl);
 
-            /**
-             * Insert novel in db
-             */
             const fetchedNovelId = await insertNovel(fetchedNovel);
             await insertChapters(fetchedNovelId, fetchedNovel.chapters);
 
-            /**
-             * Get Novel  from db
-             */
-            const novel = await getNovel(novelUrl);
+            const novel = await getNovel(sourceId, novelUrl);
             novel.chapters = await getChapters(novel.novelId);
 
             dispatch({
@@ -120,6 +113,13 @@ export const followNovelAction = (novel) => async (dispatch) => {
     dispatch({
         type: UPDATE_IN_LIBRARY,
         payload: { novelUrl: novel.novelUrl, followed: !novel.followed },
+    });
+
+    const res = await getLibrary();
+
+    dispatch({
+        type: GET_LIBRARY_NOVELS,
+        payload: res,
     });
 
     ToastAndroid.show(
@@ -231,14 +231,14 @@ export const deleteAllChaptersAction = (chapters) => async (dispatch) => {
     ToastAndroid.show(`Deleted all chapters`, ToastAndroid.SHORT);
 };
 
-export const updateNovelAction = (extensionId, novelUrl, novelId) => async (
+export const updateNovelAction = (sourceId, novelUrl, novelId) => async (
     dispatch
 ) => {
     dispatch({ type: FETCHING_NOVEL });
 
-    await updateNovel(extensionId, novelUrl, novelId);
+    await updateNovel(sourceId, novelUrl, novelId);
 
-    let novel = await getNovel(novelUrl);
+    let novel = await getNovel(sourceId, novelUrl);
     let chapters = await getChapters(novel.novelId);
 
     dispatch({

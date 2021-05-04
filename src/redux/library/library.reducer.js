@@ -22,18 +22,6 @@ const libraryReducer = (state = initialState, action) => {
             return { ...state, novels: payload, loading: false };
         case GET_LIBRARY_SEARCH_RESULTS:
             return { ...state, novels: payload, loading: false };
-        // case FOLLOW_NOVEL:
-        //     return {
-        //         ...state,
-        //         novels: [...state.novels, { ...payload, followed: 1 }],
-        //     };
-        // case UNFOLLOW_NOVEL:
-        //     return {
-        //         ...state,
-        //         novels: state.novels.filter(
-        //             (novel) => novel.novelId !== payload
-        //         ),
-        //     };
         case UPDATE_IN_LIBRARY:
             return {
                 ...state,

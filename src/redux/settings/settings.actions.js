@@ -1,4 +1,5 @@
 import {
+    SWITCH_THEME,
     SET_DISPLAY_MODE,
     SET_ITEMS_PER_ROW,
     UPDATE_READER_TEXT_SIZE,
@@ -7,6 +8,13 @@ import {
     UPDATE_READER_PADDING,
     SET_READER_FONT,
 } from "./settings.types";
+
+export const switchTheme = (val) => (dispatch) => {
+    dispatch({
+        type: SWITCH_THEME,
+        payload: val,
+    });
+};
 
 export const setDisplayMode = (val) => (dispatch) => {
     dispatch({

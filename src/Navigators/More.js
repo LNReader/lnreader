@@ -5,7 +5,7 @@ import About from "../Screens/More/About";
 import Settings from "../Screens/More/Settings";
 import Trackers from "../Screens/More/Trackers";
 import { View } from "react-native";
-import { useTheme } from "../Hooks/useTheme";
+import { useTheme } from "../Hooks/reduxHooks";
 
 const Stack = createStackNavigator();
 

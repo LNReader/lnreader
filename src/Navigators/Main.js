@@ -12,7 +12,7 @@ import MoreStack from "./More";
 
 import { setStatusBarStyle } from "../Hooks/setStatusBarStyle";
 import { View } from "react-native";
-import { useTheme } from "../Hooks/useTheme";
+import { useTheme } from "../Hooks/reduxHooks";
 import { githubUpdateChecker } from "../Hooks/githubUpdateChecker";
 import NewUpdateDialog from "../Components/NewUpdateDialog";
 
