@@ -18,6 +18,7 @@ import {
     downloadChapter,
     deleteChapter,
 } from "../../database/queries/ChapterQueries";
+import { SET_LAST_READ } from "../preferences/preference.types";
 
 export const getChapterAction = (
     extensionId,
@@ -36,9 +37,20 @@ export const getChapterAction = (
     dispatch({ type: GET_CHAPTER, payload: chapter });
 };
 
-export const markChapterReadAction = (chapterId) => async (dispatch) => {
+export const markChapterReadAction = (chapterId, novelId) => async (
+    dispatch
+) => {
     await markChapterRead(chapterId);
-    dispatch({ type: CHAPTER_READ, payload: { chapterId } });
+
+    dispatch({
+        type: CHAPTER_READ,
+        payload: { chapterId },
+    });
+
+    dispatch({
+        type: SET_LAST_READ,
+        payload: { novelId, chapterId },
+    });
 };
 
 export const downloadChapterAction = (

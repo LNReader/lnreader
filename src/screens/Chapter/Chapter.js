@@ -170,7 +170,7 @@ const ChapterItem = ({
                 ]}
                 onScroll={({ nativeEvent }) => {
                     if (isCloseToBottom(nativeEvent)) {
-                        markChapterReadAction(chapterId);
+                        markChapterReadAction(chapterId, novelId);
                         if (
                             isTracked &&
                             chapterNumber &&

@@ -9,9 +9,11 @@ const ChaptersSettingsSheet = ({
     bottomSheetRef,
     novelId,
     sortAndFilterChapters,
+    savedSort,
+    savedFilter,
 }) => {
-    const [sort, setSort] = useState("ORDER BY chapterId ASC");
-    const [filter, setFilter] = useState("");
+    const [sort, setSort] = useState(savedSort || "ORDER BY chapterId ASC");
+    const [filter, setFilter] = useState(savedFilter || "");
 
     const sortChapters = (val) => {
         setSort(val);

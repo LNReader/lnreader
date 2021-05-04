@@ -17,8 +17,7 @@ import NovelSummary from "./Info/NovelSummary";
 import ReadButton from "./Info/ReadButton";
 
 const NovelInfoHeader = ({
-    novelName,
-    novelCover,
+    item,
     loading,
     novel,
     chapters,
@@ -47,11 +46,11 @@ const NovelInfoHeader = ({
 
     return (
         <View style={{ flexGrow: 1 }}>
-            <NovelCoverImage source={{ uri: novelCover }} theme={theme}>
+            <NovelCoverImage source={{ uri: item.novelCover }} theme={theme}>
                 <View style={styles.detailsContainer}>
                     <View>
                         <Image
-                            source={{ uri: novelCover }}
+                            source={{ uri: item.novelCover }}
                             style={styles.logo}
                         />
                     </View>
@@ -63,43 +62,44 @@ const NovelInfoHeader = ({
                                 { color: theme.textColorPrimary },
                             ]}
                         >
-                            {novelName}
+                            {item.novelName}
                         </Text>
-                        {!loading && (
-                            <>
-                                <Text
-                                    style={{
-                                        color: theme.textColorSecondary,
-                                        marginVertical: 3,
-                                        fontSize: 14,
-                                        fontWeight: "bold",
-                                    }}
-                                    numberOfLines={2}
-                                >
-                                    {novel.author.replace(",", ", ")}
-                                </Text>
+                        <>
+                            <Text
+                                style={{
+                                    color: theme.textColorSecondary,
+                                    marginVertical: 3,
+                                    fontSize: 14,
+                                    fontWeight: "bold",
+                                }}
+                                numberOfLines={2}
+                            >
+                                {(item.author &&
+                                    item.author.replace(",", ", ")) ||
+                                    (!loading &&
+                                        novel.author.replace(",", ", "))}
+                            </Text>
 
-                                <Text
-                                    style={{
-                                        color: theme.textColorSecondary,
-                                        marginVertical: 3,
-                                        fontSize: 14,
-                                    }}
-                                    numberOfLines={1}
-                                >
-                                    {novel.status}
-                                </Text>
-                                <Text
-                                    style={{
-                                        color: theme.textColorSecondary,
-                                        fontSize: 14,
-                                    }}
-                                    numberOfLines={1}
-                                >
-                                    {novel.source}
-                                </Text>
-                            </>
-                        )}
+                            <Text
+                                style={{
+                                    color: theme.textColorSecondary,
+                                    marginVertical: 3,
+                                    fontSize: 14,
+                                }}
+                                numberOfLines={1}
+                            >
+                                {item.status || (!loading && novel.status)}
+                            </Text>
+                            <Text
+                                style={{
+                                    color: theme.textColorSecondary,
+                                    fontSize: 14,
+                                }}
+                                numberOfLines={1}
+                            >
+                                {item.source || (!loading && novel.source)}
+                            </Text>
+                        </>
                     </View>
                 </View>
             </NovelCoverImage>

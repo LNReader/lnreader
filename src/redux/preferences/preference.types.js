@@ -1,0 +1,2 @@
+export const SET_CHAPTER_LIST_PREF = "SET_CHAPTER_LIST_PREF";
+export const SET_LAST_READ = "SET_LAST_READ";

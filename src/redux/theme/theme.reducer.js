@@ -13,7 +13,7 @@ const themes = {
 };
 
 const initialState = {
-    theme: themes[0],
+    theme: themes[2],
 };
 
 const themeReducer = (state = initialState, action) => {

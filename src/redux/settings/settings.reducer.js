@@ -1,3 +1,4 @@
+import { SET_NOVEL_SETTINGS } from "../novel/novel.types";
 import {
     SET_DISPLAY_MODE,
     SET_ITEMS_PER_ROW,
@@ -69,6 +70,8 @@ const settingsReducer = (state = initialState, action) => {
                 ...state,
                 reader: { ...state.reader, fontFamily: payload },
             };
+        case SET_NOVEL_SETTINGS:
+            console.log(state.novelSettings);
         default:
             return state;
     }

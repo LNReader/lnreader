@@ -11,6 +11,7 @@ import novelReducer from "./novel/novel.reducer";
 import historyReducer from "./history/history.reducer";
 import updatesReducer from "./updates/updates.reducer";
 import trackerReducer from "./tracker/tracker.reducer";
+import preferenceReducer from "./preferences/preference.reducer";
 
 const persistConfig = {
     key: "root",
@@ -29,6 +30,7 @@ const persistedReducer = persistReducer(
         historyReducer,
         updatesReducer,
         trackerReducer,
+        preferenceReducer,
     })
 );
 

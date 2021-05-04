@@ -9,6 +9,7 @@ import {
     insertHistory,
     deleteHistory,
 } from "../../database/queries/HistoryQueries";
+import { SET_LAST_READ } from "../preferences/preference.types";
 
 export const getHistoryAction = () => async (dispatch) => {
     dispatch({ type: LOAD_HISTORY });
@@ -23,6 +24,11 @@ export const insertHistoryAction = (novelId, chapterId) => async (dispatch) => {
 
     dispatch({
         type: UPDATE_NOVEL_HISTORY,
+    });
+
+    dispatch({
+        type: SET_LAST_READ,
+        payload: { novelId, chapterId },
     });
 };
 

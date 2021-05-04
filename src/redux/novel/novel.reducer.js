@@ -13,7 +13,6 @@ import {
     CHAPTER_LOADING,
     UPDATE_NOVEL,
     UPDATE_LAST_READ,
-    SET_NOVEL_SETTINGS,
 } from "./novel.types";
 
 const initialState = {
@@ -24,7 +23,6 @@ const initialState = {
     chapterLoading: true,
     loading: true,
     fetching: false,
-    novelSettings: [],
 };
 
 const novelReducer = (state = initialState, action) => {
@@ -112,33 +110,6 @@ const novelReducer = (state = initialState, action) => {
             return {
                 ...state,
                 novel: { ...state.novel, lastRead: payload },
-            };
-        case SET_NOVEL_SETTINGS:
-            return {
-                ...state,
-                chapters: payload.chapters,
-                novelSettings:
-                    state.novelSettings.length === 0
-                        ? [
-                              {
-                                  novelId: payload.novelId,
-                                  sort: payload.sort,
-                                  filter: payload.filter,
-                              },
-                          ]
-                        : state.novelSettings.map((novel) =>
-                              novel.novelId === payload.novelId
-                                  ? {
-                                        ...novel,
-                                        sort: payload.sort,
-                                        filter: payload.filter,
-                                    }
-                                  : {
-                                        novelId: payload.novelId,
-                                        sort: payload.sort,
-                                        filter: payload.filter,
-                                    }
-                          ),
             };
         default:
             return state;

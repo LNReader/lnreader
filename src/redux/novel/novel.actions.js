@@ -34,6 +34,7 @@ import {
     deleteChapter,
 } from "../../database/queries/ChapterQueries";
 import { deleteNovelUpdates } from "../../database/queries/UpdateQueries";
+import { SET_CHAPTER_LIST_PREF } from "../preferences/preference.types";
 
 export const setNovel = (novel) => async (dispatch) => {
     dispatch({ type: SET_NOVEL, payload: novel });
@@ -99,8 +100,13 @@ export const sortAndFilterChapters = (novelId, sort, filter) => async (
     const chapters = await getChapters(novelId, sort, filter);
 
     dispatch({
-        type: SET_NOVEL_SETTINGS,
-        payload: { chapters, novelId, sort, filter },
+        type: GET_CHAPTERS,
+        payload: chapters,
+    });
+
+    dispatch({
+        type: SET_CHAPTER_LIST_PREF,
+        payload: { novelId, sort, filter },
     });
 };
 

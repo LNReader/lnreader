@@ -1,9 +1,25 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 import { Button } from "react-native-paper";
+import { useSelector } from "react-redux";
 
 const ReadButton = ({ navigation, novel, chapters, theme }) => {
-    const lastRead = chapters.find((obj) => obj.read === 0);
+    let lastRead;
+    let novelSettings = useSelector(
+        (state) => state.preferenceReducer.novelSettings
+    );
+
+    let currentNovel = novelSettings.find(
+        (obj) => obj.novelId === novel.novelId
+    );
+
+    if (currentNovel && currentNovel.lastRead) {
+        lastRead = chapters.find(
+            (obj) => obj.chapterId === currentNovel.lastRead
+        );
+    } else {
+        lastRead = chapters.find((obj) => obj.read === 0);
+    }
 
     return (
         chapters.length > 0 &&

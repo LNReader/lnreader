@@ -28,6 +28,7 @@ const Novel = ({
     sortAndFilterChapters,
     updateNovelAction,
 }) => {
+    const item = route.params;
     const {
         sourceId,
         novelUrl,
@@ -35,7 +36,7 @@ const Novel = ({
         novelCover,
         followed,
         novelId,
-    } = route.params;
+    } = item;
 
     const theme = useTheme();
 
@@ -43,7 +44,7 @@ const Novel = ({
     let trackerSheetRef = useRef(null);
 
     const currentNovelSettings = novelSettings.find(
-        (nov) => nov.novelId === (novelId || novel.novelId)
+        (nov) => nov.novelId === (novelId || (!loading && novel.novelId))
     );
 
     let sort, filter;
@@ -89,8 +90,7 @@ const Novel = ({
                     ListHeaderComponent={
                         <NovelInfoHeader
                             loading={loading}
-                            novelName={novelName}
-                            novelCover={novelCover}
+                            item={item}
                             novel={novel}
                             chapters={chapters}
                             trackerSheetRef={trackerSheetRef}
@@ -115,6 +115,8 @@ const Novel = ({
                             bottomSheetRef={chaptersSettingsSheetRef}
                             sortAndFilterChapters={sortAndFilterChapters}
                             novelId={novelId || novel.novelId}
+                            savedSort={sort}
+                            savedFilter={filter}
                         />
                         <TrackSheet
                             bottomSheetRef={trackerSheetRef}
@@ -130,7 +132,7 @@ const Novel = ({
 };
 const mapStateToProps = (state) => ({
     novel: state.novelReducer.novel,
-    novelSettings: state.novelReducer.novelSettings,
+    novelSettings: state.preferenceReducer.novelSettings,
     chapters: state.novelReducer.chapters,
     loading: state.novelReducer.loading,
     fetching: state.novelReducer.fetching,
