@@ -20,7 +20,7 @@ import SourceCard from "./components/SourceCard";
 import { showToast } from "../../Hooks/showToast";
 import { Searchbar } from "../../Components/Searchbar";
 
-const Browse = () => {
+const Browse = ({ navigation }) => {
     const [refreshing, setRefreshing] = useState(false);
     const [searchText, setSearchText] = useState("");
     // const [globalSearch, setGlobalSearch] = useState(false);
@@ -79,6 +79,8 @@ const Browse = () => {
                 searchText={searchText}
                 onChangeText={onChangeText}
                 clearSearchbar={clearSearchbar}
+                right="book-search"
+                onPressRight={() => navigation.navigate("GlobalSearch")}
             />
 
             <FlatList
