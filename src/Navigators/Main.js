@@ -8,6 +8,7 @@ import BottomNavigator from "./BottomNavigator";
 import Novel from "../Screens/Novel/Novel";
 import Chapter from "../Screens/Chapter/Chapter";
 import Extension from "../Screens/Extension/Extension";
+import GlobalSearch from "../Screens/Browse/GlobalSearch";
 import MoreStack from "./More";
 
 import { setStatusBarStyle } from "../Hooks/setStatusBarStyle";
@@ -53,6 +54,7 @@ const MainNavigator = () => {
                 />
                 <Stack.Screen name="MoreStack" component={MoreStack} />
                 <Stack.Screen name="Extension" component={Extension} />
+                <Stack.Screen name="GlobalSearch" component={GlobalSearch} />
             </Stack.Navigator>
         </View>
     );

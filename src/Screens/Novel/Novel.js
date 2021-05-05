@@ -50,8 +50,10 @@ const Novel = ({
         novelId || (!loading && novel.novelId)
     );
 
-    let lastRead = useContinueReading(chapters, novel.novelId);
-    console.log(lastRead);
+    let lastRead = useContinueReading(
+        chapters,
+        novelId || (!loading && novel.novelId)
+    );
 
     useEffect(() => {
         getNovelAction(followed, sourceId, novelUrl, novelId, sort, filter);

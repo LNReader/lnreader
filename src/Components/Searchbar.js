@@ -25,9 +25,9 @@ export const Searchbar = ({
 
     const displayMenuIcon = () => {
         const icons = {
-            0: "view-grid",
+            0: "view-module",
             1: "view-list",
-            2: "view-grid",
+            2: "view-module",
         };
 
         return icons[displayMode];
@@ -92,7 +92,7 @@ export const Searchbar = ({
                 )}
                 {right && (
                     <IconButton
-                        icon="earth"
+                        icon={right}
                         color={theme.textColorSecondary}
                         style={{ marginRight: 0 }}
                         size={23}
