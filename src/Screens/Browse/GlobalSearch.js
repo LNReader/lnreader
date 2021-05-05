@@ -6,13 +6,14 @@ import {
     FlatList,
     ActivityIndicator,
 } from "react-native";
-import { useTheme } from "../../Hooks/reduxHooks";
+import { useLibrary, useTheme } from "../../Hooks/reduxHooks";
 import { useDispatch, useSelector } from "react-redux";
 
 import { Searchbar } from "../../Components/Searchbar";
 import NovelCover from "../../Components/NovelCover";
 import NovelList from "../../Components/NovelList";
 import EmptyView from "../../Components/EmptyView";
+import GlobalSearchNovelList from "./components/GlobalSearchNovelList";
 
 const GlobalSearch = ({ navigation }) => {
     const theme = useTheme();
@@ -21,6 +22,8 @@ const GlobalSearch = ({ navigation }) => {
     const [searchText, setSearchText] = useState("");
     const [searchResults, setSearchResults] = useState("");
     const { sources, pinned } = useSelector((state) => state.sourceReducer);
+
+    const library = useLibrary();
 
     const pinnedSources = sources.filter(
         (source) => pinned.indexOf(source.sourceId) !== -1
@@ -66,7 +69,7 @@ const GlobalSearch = ({ navigation }) => {
 
     const renderItem = ({ item }) => (
         <>
-            <View style={{ padding: 8 }}>
+            <View style={{ padding: 8, paddingVertical: 16 }}>
                 <Text style={{ color: theme.textColorPrimary }}>
                     {item.sourceName}
                 </Text>
@@ -74,26 +77,11 @@ const GlobalSearch = ({ navigation }) => {
                     {item.sourceLanguage}
                 </Text>
             </View>
-            <NovelList
+            <GlobalSearchNovelList
                 data={item.novels}
-                renderItem={({ item }) => (
-                    <NovelCover
-                        item={item}
-                        onPress={() =>
-                            navigation.navigate("Novel", {
-                                ...item,
-                                sourceId: item.extensionId,
-                            })
-                        }
-                    />
-                )}
-                ListEmptyComponent={
-                    <Text
-                        style={{ color: theme.textColorSecondary, padding: 8 }}
-                    >
-                        No results found
-                    </Text>
-                }
+                theme={theme}
+                library={library}
+                navigation={navigation}
             />
         </>
     );
@@ -139,7 +127,7 @@ const GlobalSearch = ({ navigation }) => {
                             style={{
                                 flex: 1,
                                 justifyContent: "center",
-                                padding: 20,
+                                padding: 16,
                             }}
                         >
                             <ActivityIndicator
