@@ -25,6 +25,7 @@ const NovelInfoHeader = ({
     chaptersSettingsSheetRef,
     trackerSheetRef,
     filter,
+    lastRead,
 }) => {
     const navigation = useNavigation();
     const dispatch = useDispatch();
@@ -194,6 +195,7 @@ const NovelInfoHeader = ({
                         chapters={chapters}
                         navigation={navigation}
                         theme={theme}
+                        lastRead={lastRead}
                     />
                     <TouchableRipple
                         style={styles.bottomsheet}

@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, FlatList, ActivityIndicator } from "react-native";
-import { Provider } from "react-native-paper";
+import { StyleSheet, View, ActivityIndicator } from "react-native";
 import * as WebBrowser from "expo-web-browser";
 
 import NovelCover from "../../Components/NovelCover";
 import EmptyView from "../../Components/EmptyView";
 
-import { useSelector } from "react-redux";
 import { Searchbar } from "../../Components/Searchbar";
 import { useTheme, useLibrary } from "../../Hooks/reduxHooks";
 import NovelList from "../../Components/NovelList";
@@ -16,9 +14,6 @@ const Extension = ({ navigation, route }) => {
 
     const theme = useTheme();
     const library = useLibrary();
-    const itemsPerRow = useSelector(
-        (state) => state.settingsReducer.itemsPerRow
-    );
 
     const [loading, setLoading] = useState(true);
     const [novels, setNovels] = useState();
@@ -137,7 +132,6 @@ export default Extension;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 4,
     },
     contentContainer: {
         flex: 1,

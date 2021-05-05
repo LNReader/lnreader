@@ -1,12 +1,15 @@
 import React from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
-import { TouchableRipple, Button } from "react-native-paper";
+import { TouchableRipple, Button, IconButton } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
+import { useDispatch } from "react-redux";
+import { pinSourceAction } from "../../../redux/source/source.actions";
 
-const ExtensionCard = ({ item, theme }) => {
-    const { sourceName, sourceCover, sourceLanguage, status } = item;
+const ExtensionCard = ({ item, theme, isPinned }) => {
+    const { sourceId, sourceName, sourceCover, sourceLanguage, status } = item;
 
     const navigation = useNavigation();
+    const dispatch = useDispatch();
 
     const navigateToExtension = () =>
         navigation.navigate("Extension", {
@@ -51,7 +54,9 @@ const ExtensionCard = ({ item, theme }) => {
                             </Text>
                         </View>
                     </View>
-                    <View>
+                    <View
+                        style={{ flexDirection: "row", alignItems: "center" }}
+                    >
                         <Button
                             labelStyle={{ letterSpacing: 0 }}
                             uppercase={false}
@@ -60,6 +65,18 @@ const ExtensionCard = ({ item, theme }) => {
                         >
                             Browse
                         </Button>
+                        <IconButton
+                            icon={isPinned ? "pin" : "pin-outline"}
+                            animated
+                            size={21}
+                            onPress={() => dispatch(pinSourceAction(sourceId))}
+                            color={
+                                isPinned
+                                    ? theme.colorAccent
+                                    : theme.textColorSecondary
+                            }
+                            style={{ margin: 2 }}
+                        />
                     </View>
                 </View>
             </>

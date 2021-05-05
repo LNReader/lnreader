@@ -106,7 +106,7 @@ export const Searchbar = ({
 
 const styles = StyleSheet.create({
     searchAppbarContainer: {
-        marginTop: Constants.statusBarHeight,
+        marginTop: Constants.statusBarHeight + 4,
         height: 48,
         flexDirection: "row",
         alignItems: "center",

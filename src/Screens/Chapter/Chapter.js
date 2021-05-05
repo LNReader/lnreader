@@ -21,7 +21,6 @@ const ChapterItem = ({
     navigation,
     theme,
     insertHistoryAction,
-    markChapterReadAction,
     getChapterAction,
     chapter,
     loading,
@@ -170,7 +169,7 @@ const ChapterItem = ({
                 ]}
                 onScroll={({ nativeEvent }) => {
                     if (isCloseToBottom(nativeEvent)) {
-                        markChapterReadAction(chapterId, novelId);
+                        dispatch(markChapterReadAction(chapterId, novelId));
                         if (
                             isTracked &&
                             chapterNumber &&
@@ -231,7 +230,6 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps, {
     insertHistoryAction,
-    markChapterReadAction,
     getChapterAction,
 })(ChapterItem);
 

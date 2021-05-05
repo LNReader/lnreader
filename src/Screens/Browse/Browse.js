@@ -2,26 +2,40 @@ import React, { useEffect, useState } from "react";
 import {
     StyleSheet,
     View,
+    ScrollView,
+    Text,
     FlatList,
     ActivityIndicator,
     RefreshControl,
 } from "react-native";
-import { Appbar } from "../../Components/Appbar";
-import { connect } from "react-redux";
 import { useTheme } from "../../Hooks/reduxHooks";
+import { useDispatch, useSelector } from "react-redux";
 
-import { getSourcesAction } from "../../redux/source/source.actions";
+import {
+    getSourcesAction,
+    searchSourcesAction,
+} from "../../redux/source/source.actions";
 
-import ExtensionCard from "./components/ExtensionCard";
+import SourceCard from "./components/SourceCard";
 import { showToast } from "../../Hooks/showToast";
+import { Searchbar } from "../../Components/Searchbar";
 
-const Browse = ({ extensions, loading, getSourcesAction }) => {
+const Browse = () => {
     const [refreshing, setRefreshing] = useState(false);
-
+    const [searchText, setSearchText] = useState("");
+    // const [globalSearch, setGlobalSearch] = useState(false);
+    // const [searchResult, setSearchResults] = useState();
+    const { sources, search, loading, pinned } = useSelector(
+        (state) => state.sourceReducer
+    );
     const theme = useTheme();
+    const dispatch = useDispatch();
+
+    const isPinned = (sourceId) =>
+        pinned.indexOf(sourceId) === -1 ? false : true;
 
     useEffect(() => {
-        getSourcesAction();
+        dispatch(getSourcesAction());
     }, [getSourcesAction]);
 
     const onRefresh = () => {
@@ -31,52 +45,108 @@ const Browse = ({ extensions, loading, getSourcesAction }) => {
         setRefreshing(false);
     };
 
-    const renderExtensionCard = ({ item }) => (
-        <ExtensionCard item={item} theme={theme} />
+    const clearSearchbar = () => {
+        setSearchText("");
+    };
+
+    const onChangeText = (text) => {
+        setSearchText(text);
+        dispatch(searchSourcesAction(text));
+    };
+
+    // const onSubmitEditing = () => {};
+
+    const renderItem = ({ item }) => (
+        <SourceCard
+            item={item}
+            isPinned={isPinned(item.sourceId)}
+            theme={theme}
+        />
     );
 
     return (
-        <>
-            <Appbar title="Browse" />
-            <View
-                style={[
-                    styles.container,
-                    { backgroundColor: theme.colorPrimaryDark },
-                ]}
-            >
-                <FlatList
-                    data={extensions}
-                    keyExtractor={(item) => item.sourceId.toString()}
-                    renderItem={renderExtensionCard}
-                    ListEmptyComponent={
-                        loading && (
-                            <ActivityIndicator
-                                size="small"
-                                color={theme.colorAccent}
-                                style={{ marginTop: 16 }}
+        <View
+            style={[
+                styles.container,
+                { backgroundColor: theme.colorPrimaryDark },
+            ]}
+        >
+            <Searchbar
+                theme={theme}
+                placeholder="Search Source"
+                left={"magnify"}
+                onPressLeft={clearSearchbar}
+                searchText={searchText}
+                onChangeText={onChangeText}
+                clearSearchbar={clearSearchbar}
+            />
+
+            <FlatList
+                contentContainerStyle={{ flexGrow: 1 }}
+                data={!searchText ? sources : search}
+                keyExtractor={(item) => item.sourceId.toString()}
+                renderItem={renderItem}
+                extraData={pinned}
+                ListHeaderComponent={
+                    <View>
+                        {pinned.length > 0 && (
+                            <FlatList
+                                contentContainerStyle={{ paddingBottom: 16 }}
+                                data={sources.filter((source) =>
+                                    isPinned(source.sourceId)
+                                )}
+                                keyExtractor={(item) =>
+                                    item.sourceId.toString()
+                                }
+                                renderItem={renderItem}
+                                extraData={pinned}
+                                ListHeaderComponent={
+                                    <Text
+                                        style={{
+                                            color: theme.textColorSecondary,
+                                            paddingHorizontal: 16,
+                                            paddingVertical: 8,
+                                        }}
+                                    >
+                                        Pinned
+                                    </Text>
+                                }
                             />
-                        )
-                    }
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={refreshing}
-                            onRefresh={onRefresh}
-                            colors={["white"]}
-                            progressBackgroundColor={theme.colorAccent}
+                        )}
+                        <Text
+                            style={{
+                                color: theme.textColorSecondary,
+                                paddingHorizontal: 16,
+                                paddingVertical: 8,
+                            }}
+                        >
+                            Sources
+                        </Text>
+                    </View>
+                }
+                ListEmptyComponent={
+                    loading && (
+                        <ActivityIndicator
+                            size="small"
+                            color={theme.colorAccent}
+                            style={{ marginTop: 16 }}
                         />
-                    }
-                />
-            </View>
-        </>
+                    )
+                }
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                        colors={["white"]}
+                        progressBackgroundColor={theme.colorAccent}
+                    />
+                }
+            />
+        </View>
     );
 };
 
-const mapStateToProps = (state) => ({
-    extensions: state.extensionReducer.extensions,
-    loading: state.extensionReducer.loading,
-});
-
-export default connect(mapStateToProps, { getSourcesAction })(Browse);
+export default Browse;
 
 const styles = StyleSheet.create({
     container: { flex: 1 },

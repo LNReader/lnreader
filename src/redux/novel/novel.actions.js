@@ -34,7 +34,10 @@ import {
     deleteChapter,
 } from "../../Database/queries/ChapterQueries";
 import { deleteNovelUpdates } from "../../Database/queries/UpdateQueries";
-import { SET_CHAPTER_LIST_PREF } from "../preferences/preference.types";
+import {
+    SET_CHAPTER_LIST_PREF,
+    SET_LAST_READ,
+} from "../preferences/preference.types";
 import { GET_LIBRARY_NOVELS } from "../library/library.types";
 import { getLibrary } from "../../Database/queries/LibraryQueries";
 
@@ -147,9 +150,15 @@ export const getChapterAction = (
     dispatch({ type: GET_CHAPTER, payload: chapter });
 };
 
-export const markChapterReadAction = (chapterId) => async (dispatch) => {
+export const markChapterReadAction = (chapterId, novelId) => async (
+    dispatch
+) => {
     await markChapterRead(chapterId);
     dispatch({ type: CHAPTER_READ, payload: { chapterId } });
+    dispatch({
+        type: SET_LAST_READ,
+        payload: { novelId, chapterId: chapterId + 1 },
+    });
 };
 
 export const downloadChapterAction = (

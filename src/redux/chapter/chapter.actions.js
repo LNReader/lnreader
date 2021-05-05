@@ -37,21 +37,24 @@ export const getChapterAction = (
     dispatch({ type: GET_CHAPTER, payload: chapter });
 };
 
-export const markChapterReadAction = (chapterId, novelId) => async (
-    dispatch
-) => {
-    await markChapterRead(chapterId);
+// export const markChapterReadAction = (chapterId, novelId) => async (
+//     dispatch
+// ) => {
+//     await markChapterRead(chapterId);
 
-    dispatch({
-        type: CHAPTER_READ,
-        payload: { chapterId },
-    });
+//     console.log("DIspatchedbsjs");
+//     dispatch({
+//         type: CHAPTER_READ,
+//         payload: { chapterId },
+//     });
 
-    dispatch({
-        type: SET_LAST_READ,
-        payload: { novelId, chapterId },
-    });
-};
+//     dispatch({
+//         type: SET_LAST_READ,
+//         payload: { novelId, chapterId: chapterId + 1 },
+//     });
+
+//     console.log("Set Last Read Diaptched", chapterId);
+// };
 
 export const downloadChapterAction = (
     extensionId,

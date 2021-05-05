@@ -117,7 +117,6 @@ export default LibraryScreen;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 4,
     },
     emptySearch: {
         marginTop: 8,

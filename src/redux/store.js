@@ -5,7 +5,7 @@ import thunk from "redux-thunk";
 
 import settingsReducer from "./settings/settings.reducer";
 import libraryReducer from "./library/library.reducer";
-import extensionReducer from "./source/source.reducers";
+import sourceReducer from "./source/source.reducers";
 import novelReducer from "./novel/novel.reducer";
 import historyReducer from "./history/history.reducer";
 import updatesReducer from "./updates/updates.reducer";
@@ -23,7 +23,7 @@ const persistedReducer = persistReducer(
     combineReducers({
         settingsReducer,
         libraryReducer,
-        extensionReducer,
+        sourceReducer,
         novelReducer,
         historyReducer,
         updatesReducer,

@@ -1,7 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { StyleSheet, View, FlatList, RefreshControl } from "react-native";
 import { Provider, Portal } from "react-native-paper";
-import { useTheme } from "../../Hooks/reduxHooks";
+import {
+    useContinueReading,
+    usePreferences,
+    useTheme,
+} from "../../Hooks/reduxHooks";
 
 import ChapterCard from "./components/ChapterCard";
 import NovelInfoHeader from "./components/NovelHeader";
@@ -20,7 +24,6 @@ import { showToast } from "../../Hooks/showToast";
 const Novel = ({
     route,
     novel,
-    novelSettings,
     chapters,
     loading,
     getNovelAction,
@@ -43,16 +46,12 @@ const Novel = ({
     let chaptersSettingsSheetRef = useRef(null);
     let trackerSheetRef = useRef(null);
 
-    const currentNovelSettings = novelSettings.find(
-        (nov) => nov.novelId === (novelId || (!loading && novel.novelId))
+    const { sort, filter } = usePreferences(
+        novelId || (!loading && novel.novelId)
     );
 
-    let sort, filter;
-
-    if (currentNovelSettings) {
-        sort = currentNovelSettings.sort || "";
-        filter = currentNovelSettings.filter || "";
-    }
+    let lastRead = useContinueReading(chapters, novel.novelId);
+    console.log(lastRead);
 
     useEffect(() => {
         getNovelAction(followed, sourceId, novelUrl, novelId, sort, filter);
@@ -97,6 +96,7 @@ const Novel = ({
                             chaptersSettingsSheetRef={chaptersSettingsSheetRef}
                             theme={theme}
                             filter={filter}
+                            lastRead={lastRead}
                         />
                     }
                     refreshControl={
@@ -134,7 +134,6 @@ const Novel = ({
 };
 const mapStateToProps = (state) => ({
     novel: state.novelReducer.novel,
-    novelSettings: state.preferenceReducer.novelSettings,
     chapters: state.novelReducer.chapters,
     loading: state.novelReducer.loading,
     fetching: state.novelReducer.fetching,
