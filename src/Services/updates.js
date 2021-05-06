@@ -3,7 +3,6 @@ const db = SQLite.openDatabase("lnreader.db");
 
 import { getLibrary } from "../Database/queries/LibraryQueries";
 import { fetchChapters, fetchNovel } from "../Services/Source/source";
-import { ToastAndroid } from "react-native";
 
 const updateNovelDetails = async (novel, novelId) => {
     db.transaction((tx) => {
@@ -27,7 +26,7 @@ const updateNovelDetails = async (novel, novelId) => {
 
 export const updateNovel = async (extensionId, novelUrl, novelId) => {
     let novel = await fetchNovel(extensionId, novelUrl);
-    // console.log(novel);
+
     await updateNovelDetails(novel, novelId);
 
     db.transaction((tx) => {
@@ -89,14 +88,7 @@ export const updateNovelChapters = async (extensionId, novelUrl, novelId) => {
                         tx.executeSql(
                             "INSERT OR IGNORE INTO updates (chapterId, novelId, updateTime) values (?, ?, (datetime('now','localtime')))",
                             [insertId, novelId],
-                            (txObj, res) => {
-                                // console.log(
-                                //     "Inserted Chapter Id -> " +
-                                //         insertId +
-                                //         " Novel Id " +
-                                //         novelId
-                                // );
-                            },
+                            (txObj, res) => {},
                             (txObj, error) => console.log("Error ", error)
                         );
                     }

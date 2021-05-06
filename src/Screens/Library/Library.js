@@ -104,7 +104,7 @@ const LibraryScreen = ({ navigation }) => {
                         data={novels}
                         renderItem={renderItem}
                         refreshControl={refreshControl()}
-                        ListEmptyComponent={listEmptyComponent()}
+                        ListEmptyComponent={listEmptyComponent}
                     />
                 )}
             </View>

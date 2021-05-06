@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View } from "react-native";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 
 import { switchTheme } from "../../redux/settings/settings.actions";
 import {
@@ -23,6 +23,7 @@ import GridSizeModal from "./components/GridSizeModal";
 import ThemeModal from "./components/ThemeModal";
 import { createBackup, restoreBackup } from "../../Services/backup";
 import { useTheme } from "../../Hooks/reduxHooks";
+import { restoreLibraryAction } from "../../redux/library/library.actions";
 
 const SettingsScreen = ({
     navigation,
@@ -43,6 +44,8 @@ const SettingsScreen = ({
     };
 
     const theme = useTheme();
+
+    const dispatch = useDispatch();
 
     // Display Mode Modal
     const [displayModalVisible, setDisplayModalVisible] = useState(false);
@@ -116,14 +119,13 @@ const SettingsScreen = ({
                     <ListItem
                         title="Restore backup"
                         description="Restore library from backup file"
-                        onPress={restoreBackup}
+                        onPress={() => dispatch(restoreLibraryAction())}
                         theme={theme}
                     />
                     <InfoItem
                         title="Create backup may not work on devices with Android 9 or lower."
                         icon="information-outline"
                         description="Restore library from backup file"
-                        onPress={restoreBackup}
                         theme={theme}
                     />
                 </ListSection>

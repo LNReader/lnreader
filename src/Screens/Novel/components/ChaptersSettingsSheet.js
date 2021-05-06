@@ -9,6 +9,7 @@ const ChaptersSettingsSheet = ({
     bottomSheetRef,
     novelId,
     sortAndFilterChapters,
+    dispatch,
     savedSort,
     savedFilter,
 }) => {
@@ -17,12 +18,12 @@ const ChaptersSettingsSheet = ({
 
     const sortChapters = (val) => {
         setSort(val);
-        sortAndFilterChapters(novelId, val, filter);
+        dispatch(sortAndFilterChapters(novelId, val, filter));
     };
 
     const filterChapters = (val) => {
         setFilter(val);
-        sortAndFilterChapters(novelId, sort, val);
+        dispatch(sortAndFilterChapters(novelId, sort, val));
     };
 
     const checkBoxStyle = { flexDirection: "row", alignItems: "center" };

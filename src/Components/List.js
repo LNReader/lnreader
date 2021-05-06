@@ -45,15 +45,10 @@ const ListItem = ({ title, description, icon, onPress, theme, right }) => (
 );
 
 const Divider = ({ theme }) => (
-    <PaperDivider
-        style={{
-            backgroundColor: theme.dividerColor,
-            height: 1,
-        }}
-    />
+    <PaperDivider style={{ backgroundColor: theme.dividerColor, height: 1 }} />
 );
 
-const InfoItem = ({ title, description, icon, onPress, theme, right }) => (
+const InfoItem = ({ title, icon, theme }) => (
     <List.Item
         title={title}
         titleStyle={{ color: theme.textColorSecondary, fontSize: 14 }}

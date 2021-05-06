@@ -7,19 +7,15 @@ import {
     deleteChapterAction,
     downloadChapterAction,
 } from "../../../redux/novel/novel.actions";
-import { connect } from "react-redux";
 
-const ChapterCard = ({
+const ChapterItem = ({
     novelUrl,
     chapter,
-    extensionId,
+    sourceId,
+    dispatch,
     theme,
-    // downloading,
-    downloadChapterAction,
-    deleteChapterAction,
+    navigation,
 }) => {
-    const navigation = useNavigation();
-
     const [visible, setVisible] = useState(false);
     const openMenu = () => setVisible(true);
     const closeMenu = () => setVisible(false);
@@ -52,9 +48,11 @@ const ChapterCard = ({
                 >
                     <Menu.Item
                         onPress={() =>
-                            deleteChapterAction(
-                                chapter.chapterId,
-                                chapter.chapterName
+                            dispatch(
+                                deleteChapterAction(
+                                    chapter.chapterId,
+                                    chapter.chapterName
+                                )
                             )
                         }
                         title="Delete"
@@ -69,16 +67,17 @@ const ChapterCard = ({
                     animated
                     color={theme.textColorHint}
                     size={25}
-                    onPress={() => {
-                        downloadChapterAction(
-                            extensionId,
-                            novelUrl,
-                            chapter.chapterUrl,
-                            chapter.chapterName,
-                            chapter.chapterId
-                        );
-                        // console.log(downloading);
-                    }}
+                    onPress={() =>
+                        dispatch(
+                            downloadChapterAction(
+                                sourceId,
+                                novelUrl,
+                                chapter.chapterUrl,
+                                chapter.chapterName,
+                                chapter.chapterId
+                            )
+                        )
+                    }
                     style={{ margin: 2 }}
                 />
             );
@@ -92,7 +91,7 @@ const ChapterCard = ({
                 navigation.navigate("Chapter", {
                     chapterId: chapter.chapterId,
                     chapterUrl: chapter.chapterUrl,
-                    extensionId,
+                    extensionId: sourceId,
                     novelUrl: novelUrl,
                     chapterName: chapter.chapterName,
                     novelId: chapter.novelId,
@@ -139,15 +138,7 @@ const ChapterCard = ({
     );
 };
 
-const mapStateToProps = (state) => ({
-    theme: state.settingsReducer.theme,
-    // downloading: state.novelReducer.downloading,
-});
-
-export default connect(mapStateToProps, {
-    downloadChapterAction,
-    deleteChapterAction,
-})(ChapterCard);
+export default ChapterItem;
 
 const styles = StyleSheet.create({
     chapterCardContainer: {

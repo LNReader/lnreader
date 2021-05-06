@@ -7,9 +7,7 @@ import moment from "moment";
 
 import { useSelector } from "react-redux";
 
-const HistoryCard = ({ item, deleteHistoryAction, navigation }) => {
-    const theme = useSelector((state) => state.settingsReducer.theme);
-
+const HistoryCard = ({ item, deleteHistoryAction, navigation, theme }) => {
     return (
         <TouchableRipple
             style={styles.historyCard}

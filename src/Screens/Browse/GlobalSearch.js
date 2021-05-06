@@ -114,12 +114,18 @@ const GlobalSearch = ({ navigation }) => {
                 renderItem={renderItem}
                 extraData={pinned}
                 ListEmptyComponent={
-                    !loading && (
-                        <EmptyView
-                            icon="__φ(．．)"
-                            description="Search a novel in your pinned sources"
-                        />
-                    )
+                    <>
+                        {!loading && (
+                            <EmptyView
+                                icon="__φ(．．)"
+                                description={`Search a novel in your pinned sources ${
+                                    pinned.length === 0
+                                        ? "(No sources pinned)"
+                                        : ""
+                                }`}
+                            />
+                        )}
+                    </>
                 }
                 ListFooterComponent={
                     loading && (

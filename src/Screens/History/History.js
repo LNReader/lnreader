@@ -27,6 +27,7 @@ const History = ({
     const renderHistoryCard = ({ item }) => (
         <HistoryCard
             item={item}
+            theme={theme}
             deleteHistoryAction={deleteHistoryAction}
             navigation={navigation}
         />

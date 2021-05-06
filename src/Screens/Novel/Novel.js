@@ -3,15 +3,16 @@ import { StyleSheet, View, FlatList, RefreshControl } from "react-native";
 import { Provider, Portal } from "react-native-paper";
 import {
     useContinueReading,
+    useNovel,
     usePreferences,
     useTheme,
 } from "../../Hooks/reduxHooks";
 
-import ChapterCard from "./components/ChapterCard";
+import ChapterItem from "./components/ChapterItem";
 import NovelInfoHeader from "./components/NovelHeader";
 import ChaptersSettingsSheet from "./components/ChaptersSettingsSheet";
 
-import { connect } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import {
     getNovelAction,
@@ -21,16 +22,7 @@ import {
 import TrackSheet from "./components/Tracker/TrackSheet";
 import { showToast } from "../../Hooks/showToast";
 
-const Novel = ({
-    route,
-    novel,
-    chapters,
-    loading,
-    getNovelAction,
-    fetching,
-    sortAndFilterChapters,
-    updateNovelAction,
-}) => {
+const Novel = ({ route, navigation }) => {
     const item = route.params;
     const {
         sourceId,
@@ -42,6 +34,8 @@ const Novel = ({
     } = item;
 
     const theme = useTheme();
+    const dispatch = useDispatch();
+    const { novel, chapters, loading, fetching } = useNovel();
 
     let chaptersSettingsSheetRef = useRef(null);
     let trackerSheetRef = useRef(null);
@@ -56,19 +50,49 @@ const Novel = ({
     );
 
     useEffect(() => {
-        getNovelAction(followed, sourceId, novelUrl, novelId, sort, filter);
+        dispatch(
+            getNovelAction(followed, sourceId, novelUrl, novelId, sort, filter)
+        );
     }, [getNovelAction]);
 
-    const onRefresh = async () => {
-        await updateNovelAction(sourceId, novelUrl, novelId);
+    const onRefresh = () => {
+        dispatch(updateNovelAction(sourceId, novelUrl, novelId));
         showToast(`Updated ${novelName}`);
     };
 
-    const renderChapterCard = ({ item }) => (
-        <ChapterCard
-            novelUrl={novelUrl}
-            extensionId={sourceId}
+    const refreshControl = () => (
+        <RefreshControl
+            onRefresh={onRefresh}
+            refreshing={fetching}
+            colors={[theme.textColorPrimary]}
+            progressBackgroundColor={theme.colorPrimary}
+        />
+    );
+
+    const ListHeaderComponent = () => (
+        <NovelInfoHeader
+            item={item}
+            novel={novel}
+            theme={theme}
+            filter={filter}
+            loading={loading}
+            lastRead={lastRead}
+            dispatch={dispatch}
+            chapters={chapters}
+            navigation={navigation}
+            trackerSheetRef={trackerSheetRef}
+            chaptersSettingsSheetRef={chaptersSettingsSheetRef}
+        />
+    );
+
+    const renderItem = ({ item }) => (
+        <ChapterItem
+            theme={theme}
             chapter={item}
+            novelUrl={novelUrl}
+            dispatch={dispatch}
+            sourceId={sourceId}
+            navigation={navigation}
         />
     );
 
@@ -87,45 +111,25 @@ const Novel = ({
                     maxToRenderPerBatch={5}
                     windowSize={15}
                     initialNumToRender={7}
-                    renderItem={renderChapterCard}
-                    ListHeaderComponent={
-                        <NovelInfoHeader
-                            loading={loading}
-                            item={item}
-                            novel={novel}
-                            chapters={chapters}
-                            trackerSheetRef={trackerSheetRef}
-                            chaptersSettingsSheetRef={chaptersSettingsSheetRef}
-                            theme={theme}
-                            filter={filter}
-                            lastRead={lastRead}
-                        />
-                    }
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={fetching}
-                            onRefresh={onRefresh}
-                            colors={[theme.textColorPrimary]}
-                            progressBackgroundColor={theme.colorPrimary}
-                        />
-                    }
+                    renderItem={renderItem}
+                    ListHeaderComponent={ListHeaderComponent}
+                    refreshControl={refreshControl()}
                 />
                 {!loading && (
                     <Portal>
                         <ChaptersSettingsSheet
                             novelUrl={novelUrl}
                             bottomSheetRef={chaptersSettingsSheetRef}
+                            dispatch={dispatch}
                             sortAndFilterChapters={sortAndFilterChapters}
-                            novelId={novelId || (!loading && novel.novelId)}
+                            novelId={novelId || novel.novelId}
                             savedSort={sort}
                             savedFilter={filter}
                         />
                         <TrackSheet
                             bottomSheetRef={trackerSheetRef}
-                            novelId={novelId || (!loading && novel.novelId)}
-                            novelName={
-                                novelName || (!loading && novel.novelName)
-                            }
+                            novelId={novelId || novel.novelId}
+                            novelName={novelName || novel.novelName}
                             theme={theme}
                         />
                     </Portal>
@@ -134,18 +138,8 @@ const Novel = ({
         </Provider>
     );
 };
-const mapStateToProps = (state) => ({
-    novel: state.novelReducer.novel,
-    chapters: state.novelReducer.chapters,
-    loading: state.novelReducer.loading,
-    fetching: state.novelReducer.fetching,
-});
 
-export default connect(mapStateToProps, {
-    getNovelAction,
-    sortAndFilterChapters,
-    updateNovelAction,
-})(Novel);
+export default Novel;
 
 const styles = StyleSheet.create({
     container: { flex: 1 },

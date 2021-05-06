@@ -27,6 +27,12 @@ const useLibrary = () => {
     return library;
 };
 
+const useNovel = () => {
+    const novel = useSelector((state) => state.novelReducer);
+
+    return novel;
+};
+
 const findNovel = (novelId) => {
     let novel = useSelector((state) => state.preferenceReducer.novelSettings);
     novel = novel.find((novel) => novel.novelId === novelId);
@@ -74,5 +80,5 @@ export {
     useSettings,
     usePreferences,
     useContinueReading,
-    findNovel,
+    useNovel,
 };

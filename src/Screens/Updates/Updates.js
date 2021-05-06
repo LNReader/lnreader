@@ -6,25 +6,26 @@ import {
     ActivityIndicator,
     RefreshControl,
 } from "react-native";
-import { connect, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import EmptyView from "../../Components/EmptyView";
 import {
     getUpdatesAction,
     updateLibraryAction,
 } from "../../redux/updates/updates.actions";
 import { Appbar } from "./components/Appbar";
-import UpdateCard from "./components/UpdateCard";
+import UpdatesItem from "./components/UpdatesItem";
 import { useTheme } from "../../Hooks/reduxHooks";
 
-const Updates = ({ updates, loading, getUpdatesAction }) => {
+const Updates = ({ navigation }) => {
     const theme = useTheme();
     const dispatch = useDispatch();
+    const { updates, loading } = useSelector((state) => state.updatesReducer);
 
     const [refreshing, setRefreshing] = useState(false);
 
     useEffect(() => {
-        getUpdatesAction();
-    }, [getUpdatesAction]);
+        dispatch(getUpdatesAction());
+    }, [getUpdatesAction, updates]);
 
     const onRefresh = async () => {
         setRefreshing(true);
@@ -32,11 +33,40 @@ const Updates = ({ updates, loading, getUpdatesAction }) => {
         setRefreshing(false);
     };
 
-    const renderUpdateCard = ({ item }) => <UpdateCard item={item} />;
+    const onPress = (item) =>
+        navigation.navigate("Chapter", {
+            chapterId: item.chapterId,
+            chapterUrl: item.chapterUrl,
+            extensionId: item.sourceId,
+            novelUrl: item.novelUrl,
+            chapterName: item.chapterName,
+            novelId: item.novelId,
+        });
+
+    const renderItem = ({ item }) => (
+        <UpdatesItem item={item} theme={theme} onPress={() => onPress(item)} />
+    );
+
+    const ListFooterComponent = () =>
+        loading && <ActivityIndicator size="small" color={theme.colorAccent} />;
+
+    const ListEmptyComponent = () =>
+        !loading && (
+            <EmptyView icon="(˘･_･˘)" description="No recent updates" />
+        );
+
+    const refreshControl = () => (
+        <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={["white"]}
+            progressBackgroundColor={theme.colorAccent}
+        />
+    );
 
     return (
         <>
-            <Appbar theme={theme} />
+            <Appbar theme={theme} dispatch={dispatch} />
             <View
                 style={[
                     styles.container,
@@ -44,47 +74,22 @@ const Updates = ({ updates, loading, getUpdatesAction }) => {
                 ]}
             >
                 <FlatList
-                    contentContainerStyle={{ flexGrow: 1, paddingVertical: 8 }}
+                    contentContainerStyle={styles.flatList}
                     data={updates}
                     keyExtractor={(item) => item.updateId.toString()}
-                    renderItem={renderUpdateCard}
-                    ListFooterComponent={
-                        loading && (
-                            <ActivityIndicator
-                                size="small"
-                                color={theme.colorAccent}
-                            />
-                        )
-                    }
-                    ListEmptyComponent={
-                        !loading && (
-                            <EmptyView
-                                icon="(˘･_･˘)"
-                                description="No recent updates"
-                            />
-                        )
-                    }
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={refreshing}
-                            onRefresh={onRefresh}
-                            colors={["white"]}
-                            progressBackgroundColor={theme.colorAccent}
-                        />
-                    }
+                    renderItem={renderItem}
+                    ListFooterComponent={ListFooterComponent()}
+                    ListEmptyComponent={ListEmptyComponent()}
+                    refreshControl={refreshControl()}
                 />
             </View>
         </>
     );
 };
 
-const mapStateToProps = (state) => ({
-    updates: state.updatesReducer.updates,
-    loading: state.updatesReducer.loading,
-});
-
-export default connect(mapStateToProps, { getUpdatesAction })(Updates);
+export default Updates;
 
 const styles = StyleSheet.create({
     container: { flex: 1 },
+    flatList: { flexGrow: 1, paddingVertical: 8 },
 });

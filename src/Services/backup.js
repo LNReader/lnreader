@@ -1,6 +1,4 @@
 import * as DocumentPicker from "expo-document-picker";
-import { Platform } from "react-native";
-import * as FileSystem from "expo-file-system";
 import { StorageAccessFramework } from "expo-file-system";
 
 import { getLibrary } from "../Database/queries/LibraryQueries";

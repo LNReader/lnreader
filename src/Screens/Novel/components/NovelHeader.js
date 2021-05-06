@@ -18,18 +18,17 @@ import ReadButton from "./Info/ReadButton";
 
 const NovelInfoHeader = ({
     item,
-    loading,
     novel,
-    chapters,
     theme,
-    chaptersSettingsSheetRef,
-    trackerSheetRef,
     filter,
+    loading,
+    dispatch,
+    chapters,
     lastRead,
+    navigation,
+    trackerSheetRef,
+    chaptersSettingsSheetRef,
 }) => {
-    const navigation = useNavigation();
-    const dispatch = useDispatch();
-
     const [downloadMenu, showDownloadMenu] = useState(false);
 
     const tracker = useSelector((state) => state.trackerReducer.tracker);
