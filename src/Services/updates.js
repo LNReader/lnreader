@@ -3,6 +3,17 @@ const db = SQLite.openDatabase("lnreader.db");
 
 import { getLibrary } from "../Database/queries/LibraryQueries";
 import { fetchChapters, fetchNovel } from "../Services/Source/source";
+import * as Notifications from "expo-notifications";
+
+Notifications.setNotificationHandler({
+    handleNotification: async () => {
+        return {
+            shouldShowAlert: true,
+            shouldPlaySound: true,
+            shouldSetBadge: true,
+        };
+    },
+});
 
 const updateNovelDetails = async (novel, novelId) => {
     db.transaction((tx) => {
@@ -106,6 +117,12 @@ export const updateAllNovels = async () => {
         setTimeout(async () => {
             updateNovelChapters(novel.sourceId, novel.novelUrl, novel.novelId);
             console.log(novel.novelName + " Updated");
+            if (index + 1 === libraryNovels.length) {
+                Notifications.scheduleNotificationAsync({
+                    content: { title: "Library Updated" },
+                    trigger: null,
+                });
+            }
         }, 3000 * index)
     );
 };

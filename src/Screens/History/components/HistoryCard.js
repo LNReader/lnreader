@@ -5,15 +5,20 @@ import { TouchableRipple, IconButton } from "react-native-paper";
 
 import moment from "moment";
 
-import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { setNovel } from "../../../redux/novel/novel.actions";
 
 const HistoryCard = ({ item, deleteHistoryAction, navigation, theme }) => {
+    const dispatch = useDispatch();
     return (
         <TouchableRipple
             style={styles.historyCard}
             rippleColor={theme.rippleColor}
             borderless
-            onPress={() => navigation.navigate("Novel", item)}
+            onPress={() => {
+                navigation.navigate("Novel", item);
+                dispatch(setNovel(item));
+            }}
         >
             <>
                 <Image
