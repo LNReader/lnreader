@@ -7,7 +7,6 @@ import {
     setDisplayMode,
     setItemsPerRow,
 } from "../../redux/settings/settings.actions";
-import { deleteAllHistory } from "../../Database/queries/HistoryQueries";
 import { deleteNovelCache } from "../../Database/queries/NovelQueries";
 
 import { Appbar } from "../../Components/Appbar";
@@ -24,6 +23,7 @@ import ThemeModal from "./components/ThemeModal";
 import { createBackup, restoreBackup } from "../../Services/backup";
 import { useTheme } from "../../Hooks/reduxHooks";
 import { restoreLibraryAction } from "../../redux/library/library.actions";
+import { clearAllHistoryAction } from "../../redux/history/history.actions";
 
 const SettingsScreen = ({
     navigation,
@@ -83,7 +83,7 @@ const SettingsScreen = ({
                     <ListItem
                         title="Clear history"
                         description="Delete reading history for all novels"
-                        onPress={() => deleteAllHistory()}
+                        onPress={() => dispatch(clearAllHistoryAction())}
                         theme={theme}
                     />
                     <Divider theme={theme} />

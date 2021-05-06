@@ -3,11 +3,13 @@ import {
     CLEAR_NOVEL_HISTORY,
     GET_HISTORY,
     LOAD_HISTORY,
+    CLEAR_HISTORY,
 } from "./history.types";
 import {
     getHistory,
     insertHistory,
     deleteHistory,
+    deleteAllHistory,
 } from "../../Database/queries/HistoryQueries";
 import { SET_LAST_READ } from "../preferences/preference.types";
 
@@ -43,4 +45,10 @@ export const deleteHistoryAction = (novelId) => async (dispatch) => {
         type: CLEAR_NOVEL_HISTORY,
         payload: { novelId },
     });
+};
+
+export const clearAllHistoryAction = () => async (dispatch) => {
+    deleteAllHistory();
+
+    dispatch({ type: CLEAR_HISTORY });
 };

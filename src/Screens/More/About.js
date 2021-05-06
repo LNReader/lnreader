@@ -22,7 +22,7 @@ const AboutScreen = ({ navigation }) => {
                     />
                     <ListItem
                         title="Build Time"
-                        description="05-05-21 21:00 PM"
+                        description="06-05-21 21:00 PM"
                         theme={theme}
                     />
                     <ListItem

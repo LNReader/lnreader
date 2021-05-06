@@ -1,4 +1,5 @@
 import {
+    CLEAR_HISTORY,
     CLEAR_NOVEL_HISTORY,
     GET_HISTORY,
     LOAD_HISTORY,
@@ -27,12 +28,11 @@ const historyReducer = (state = initialState, action) => {
                     (item) => item.novelId !== payload.novelId
                 ),
             };
-        // return {
-        //     ...state,
-        //     history: state.history.map((novel) =>
-        //         novel.novelUrl === payload.novelUrl ? payload : novel
-        //     ),
-        // };
+        case CLEAR_HISTORY:
+            return {
+                ...state,
+                history: [],
+            };
         default:
             return state;
     }
