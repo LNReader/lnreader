@@ -38,7 +38,11 @@ export const restoreBackup = async () => {
     if (backup.uri) {
         let novels = await StorageAccessFramework.readAsStringAsync(backup.uri);
         novels = await JSON.parse(novels);
-        await novels.map((novel) => restoreLibrary(novel));
-        showToast("Restored backup");
+
+        novels.map((novel, index) => {
+            restoreLibrary(novel);
+        });
     }
+
+    showToast("Backup restored. Restart your app.");
 };

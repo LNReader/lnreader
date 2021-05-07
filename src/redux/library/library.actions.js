@@ -1,6 +1,7 @@
 import {
     GET_LIBRARY_NOVELS,
     GET_LIBRARY_SEARCH_RESULTS,
+    SET_LIBRARY_LOADING,
 } from "./library.types";
 import {
     getLibrary,
@@ -27,12 +28,16 @@ export const searchLibraryAction = (searchText) => async (dispatch) => {
 };
 
 export const restoreLibraryAction = () => async (dispatch) => {
-    await restoreBackup();
+    dispatch({ type: SET_LIBRARY_LOADING });
 
-    const res = await getLibrary();
+    const res = await restoreBackup();
 
-    dispatch({
-        type: GET_LIBRARY_NOVELS,
-        payload: res,
-    });
+    if (res) {
+        const novels = await getLibrary();
+
+        dispatch({
+            type: GET_LIBRARY_NOVELS,
+            payload: novels,
+        });
+    }
 };

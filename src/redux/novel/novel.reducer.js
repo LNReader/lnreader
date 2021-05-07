@@ -5,24 +5,20 @@ import {
     GET_CHAPTERS,
     LOADING_NOVEL,
     GET_NOVEL,
-    GET_CHAPTER,
     FETCHING_NOVEL,
     SET_NOVEL,
     UPDATE_IN_LIBRARY,
     CHAPTER_READ,
-    CHAPTER_LOADING,
     UPDATE_NOVEL,
     UPDATE_LAST_READ,
 } from "./novel.types";
 
 const initialState = {
-    novel: null,
+    novel: {},
     chapters: [],
-    chapter: null,
-    downloading: [],
-    chapterLoading: true,
     loading: true,
-    fetching: false,
+    updating: false,
+    downloading: [],
 };
 
 const novelReducer = (state = initialState, action) => {
@@ -32,7 +28,7 @@ const novelReducer = (state = initialState, action) => {
         case LOADING_NOVEL:
             return { ...state, loading: true };
         case FETCHING_NOVEL:
-            return { ...state, fetching: true };
+            return { ...state, updating: true };
         case SET_NOVEL:
             return { ...state, novel: payload };
         case GET_NOVEL:
@@ -41,14 +37,14 @@ const novelReducer = (state = initialState, action) => {
                 novel: payload,
                 chapters: payload.chapters,
                 loading: false,
-                fetching: false,
+                updating: false,
             };
         case GET_CHAPTERS:
             return {
                 ...state,
                 chapters: payload,
                 loading: false,
-                fetching: false,
+                updating: false,
             };
         case UPDATE_IN_LIBRARY:
             return {
@@ -61,7 +57,7 @@ const novelReducer = (state = initialState, action) => {
                 novel: payload.novel,
                 chapters: payload.chapters,
                 loading: false,
-                fetching: false,
+                updating: false,
             };
         case CHAPTER_READ:
             return {
@@ -72,21 +68,10 @@ const novelReducer = (state = initialState, action) => {
                         : chapter
                 ),
             };
-        case CHAPTER_LOADING:
-            return {
-                ...state,
-                chapterLoading: true,
-            };
-        case GET_CHAPTER:
-            return { ...state, chapter: payload, chapterLoading: false };
         case CHAPTER_DOWNLOADING:
             return {
                 ...state,
-                chapters: state.chapters.map((chapter) =>
-                    chapter.chapterId === payload
-                        ? { ...chapter, downloaded: 3 }
-                        : chapter
-                ),
+                downloading: [...state.downloading, payload],
             };
         case CHAPTER_DOWNLOADED:
             return {
@@ -95,6 +80,9 @@ const novelReducer = (state = initialState, action) => {
                     chapter.chapterId === payload
                         ? { ...chapter, downloaded: 1 }
                         : chapter
+                ),
+                downloading: state.downloading.filter(
+                    (chapterId) => chapterId !== payload
                 ),
             };
         case CHAPTER_DELETED:

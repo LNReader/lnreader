@@ -73,7 +73,7 @@ const HistoryCard = ({ item, deleteHistoryAction, navigation, theme }) => {
                                 navigation.navigate("Chapter", {
                                     chapterId: item.historyChapterId,
                                     chapterUrl: item.chapterUrl,
-                                    extensionId: item.sourceId,
+                                    sourceId: item.sourceId,
                                     novelUrl: item.novelUrl,
                                     novelId: item.novelId,
                                     chapterName: item.chapterName,

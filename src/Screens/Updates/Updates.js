@@ -37,7 +37,7 @@ const Updates = ({ navigation }) => {
         navigation.navigate("Chapter", {
             chapterId: item.chapterId,
             chapterUrl: item.chapterUrl,
-            extensionId: item.sourceId,
+            sourceId: item.sourceId,
             novelUrl: item.novelUrl,
             chapterName: item.chapterName,
             novelId: item.novelId,

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, ActivityIndicator, StyleSheet } from "react-native";
 import { TouchableRipple, IconButton, Menu } from "react-native-paper";
-import { useNavigation } from "@react-navigation/native";
 
 import {
     deleteChapterAction,
@@ -15,13 +14,24 @@ const ChapterItem = ({
     dispatch,
     theme,
     navigation,
+    downloading,
 }) => {
-    const [visible, setVisible] = useState(false);
-    const openMenu = () => setVisible(true);
-    const closeMenu = () => setVisible(false);
+    const [deleteChapterMenu, setDeleteChapterMenu] = useState(false);
+    const showDeleteChapterMenu = () => setDeleteChapterMenu(true);
+    const hideDeleteChapterMenu = () => setDeleteChapterMenu(false);
+
+    const navigateToChapter = () =>
+        navigation.navigate("Chapter", {
+            sourceId,
+            novelUrl,
+            novelId: chapter.novelId,
+            chapterId: chapter.chapterId,
+            chapterUrl: chapter.chapterUrl,
+            chapterName: chapter.chapterName,
+        });
 
     const displayDownloadButton = () => {
-        if (chapter.downloaded === 3) {
+        if (downloading.indexOf(chapter.chapterId) !== -1) {
             return (
                 <ActivityIndicator
                     color={theme.textColorHint}
@@ -32,15 +42,15 @@ const ChapterItem = ({
         } else if (chapter.downloaded === 1) {
             return (
                 <Menu
-                    visible={visible}
-                    onDismiss={closeMenu}
+                    visible={deleteChapterMenu}
+                    onDismiss={hideDeleteChapterMenu}
                     anchor={
                         <IconButton
                             icon="check-circle"
                             animated
                             color={theme.textColorPrimary}
                             size={25}
-                            onPress={openMenu}
+                            onPress={showDeleteChapterMenu}
                             style={{ margin: 2 }}
                         />
                     }
@@ -87,26 +97,15 @@ const ChapterItem = ({
     return (
         <TouchableRipple
             style={styles.chapterCardContainer}
-            onPress={() =>
-                navigation.navigate("Chapter", {
-                    chapterId: chapter.chapterId,
-                    chapterUrl: chapter.chapterUrl,
-                    extensionId: sourceId,
-                    novelUrl: novelUrl,
-                    chapterName: chapter.chapterName,
-                    novelId: chapter.novelId,
-                })
-            }
+            onPress={navigateToChapter}
             rippleColor={theme.rippleColor}
         >
             <>
                 <View>
                     <Text
                         style={[
-                            {
-                                color: theme.textColorPrimary,
-                            },
-                            chapter.read === 1 && {
+                            { color: theme.textColorPrimary },
+                            chapter.read && {
                                 color: theme.textColorHint,
                             },
                         ]}
@@ -122,7 +121,7 @@ const ChapterItem = ({
                                     marginTop: 5,
                                     fontSize: 12,
                                 },
-                                chapter.read === 1 && {
+                                chapter.read && {
                                     color: theme.textColorHint,
                                 },
                             ]}

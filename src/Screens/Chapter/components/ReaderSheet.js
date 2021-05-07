@@ -1,11 +1,9 @@
 import React from "react";
-import { Animated, StyleSheet, View, Text, Dimensions } from "react-native";
+import { StyleSheet, View, Text, Dimensions } from "react-native";
 import { ToggleButton, IconButton, Chip } from "react-native-paper";
 import Slider from "@react-native-community/slider";
 import Bottomsheet from "rn-sliding-up-panel";
 import { fonts } from "../../../Services/utils/constants";
-
-import { connect } from "react-redux";
 
 import {
     setReaderFont,
@@ -16,23 +14,14 @@ import {
 } from "../../../redux/settings/settings.actions";
 import BottomSheetHandle from "../../../Components/BottomSheetHandle";
 
-const ChapterBottomSheet = ({
-    bottomSheetRef,
-    theme,
-    reader,
-    updateReaderTextSize,
-    updateReaderTheme,
-    updateReaderTextAlign,
-    updateReaderPadding,
-    setReaderFont,
-}) => {
+const ReaderSheet = ({ theme, reader, dispatch, bottomSheetRef }) => {
     return (
         <Bottomsheet
-            animatedValue={new Animated.Value(0)}
             ref={bottomSheetRef}
             draggableRange={{ top: 400, bottom: 0 }}
             snappingPoints={[0, 400]}
-            showBackdrop={false}
+            showBackdrop={true}
+            backdropOpacity={0}
         >
             <View style={styles.contentContainer}>
                 <BottomSheetHandle />
@@ -57,7 +46,9 @@ const ChapterBottomSheet = ({
                         minimumTrackTintColor={theme.colorAccent}
                         maximumTrackTintColor="#000000"
                         thumbTintColor={theme.colorAccent}
-                        onValueChange={(value) => updateReaderTextSize(value)}
+                        onValueChange={(value) =>
+                            dispatch(updateReaderTextSize(value))
+                        }
                     />
                     <View
                         style={{
@@ -81,7 +72,7 @@ const ChapterBottomSheet = ({
                             </Text>
                             <ToggleButton.Row
                                 onValueChange={(value) =>
-                                    updateReaderTheme(value)
+                                    dispatch(updateReaderTheme(value))
                                 }
                                 value={reader.theme}
                                 style={{ marginTop: 10 }}
@@ -131,7 +122,9 @@ const ChapterBottomSheet = ({
                             </Text>
                             <ToggleButton.Row
                                 onValueChange={(value) =>
-                                    updateReaderTextAlign(value ?? "left")
+                                    dispatch(
+                                        updateReaderTextAlign(value ?? "left")
+                                    )
                                 }
                                 value={reader.textAlign}
                                 style={{ marginTop: 10 }}
@@ -189,7 +182,9 @@ const ChapterBottomSheet = ({
                             size={26}
                             disabled={reader.padding <= 0 ? true : false}
                             onPress={() =>
-                                updateReaderPadding(reader.padding - 1)
+                                dispatch(
+                                    updateReaderPadding(reader.padding - 1)
+                                )
                             }
                         />
                         <Text
@@ -206,7 +201,9 @@ const ChapterBottomSheet = ({
                             size={26}
                             disabled={reader.padding >= 10 ? true : false}
                             onPress={() =>
-                                updateReaderPadding(reader.padding + 1)
+                                dispatch(
+                                    updateReaderPadding(reader.padding + 1)
+                                )
                             }
                         />
                     </View>
@@ -229,7 +226,9 @@ const ChapterBottomSheet = ({
                         {fonts.map((font, index) => (
                             <Chip
                                 key={index}
-                                onPress={() => setReaderFont(font.fontFamily)}
+                                onPress={() =>
+                                    dispatch(setReaderFont(font.fontFamily))
+                                }
                                 textStyle={{ fontFamily: font.fontFamily }}
                                 style={{
                                     borderWidth: 0,
@@ -252,18 +251,9 @@ const ChapterBottomSheet = ({
     );
 };
 
-const mapStateToProps = (state) => ({
-    theme: state.settingsReducer.theme,
-    reader: state.settingsReducer.reader,
-});
+const mapStateToProps = (state) => ({});
 
-export default connect(mapStateToProps, {
-    updateReaderTextSize,
-    updateReaderTheme,
-    updateReaderTextAlign,
-    updateReaderPadding,
-    setReaderFont,
-})(ChapterBottomSheet);
+export default ReaderSheet;
 
 const styles = StyleSheet.create({
     contentContainer: {
