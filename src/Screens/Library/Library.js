@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
     StyleSheet,
     Text,
@@ -6,6 +6,7 @@ import {
     RefreshControl,
     ActivityIndicator,
 } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 import { useSelector, useDispatch } from "react-redux";
 
 import { Searchbar } from "../../Components/Searchbar";
@@ -30,9 +31,12 @@ const LibraryScreen = ({ navigation }) => {
     const [refreshing, setRefreshing] = useState(false);
     const [searchText, setSearchText] = useState("");
 
-    useEffect(() => {
-        dispatch(getLibraryAction());
-    }, [getLibraryAction]);
+    useFocusEffect(
+        useCallback(() => {
+            setSearchText("");
+            dispatch(getLibraryAction());
+        }, [getLibraryAction])
+    );
 
     const onRefresh = () => {
         setRefreshing(true);

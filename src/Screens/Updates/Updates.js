@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
     StyleSheet,
     View,
@@ -6,6 +6,7 @@ import {
     ActivityIndicator,
     RefreshControl,
 } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import EmptyView from "../../Components/EmptyView";
 import {
@@ -23,9 +24,11 @@ const Updates = ({ navigation }) => {
 
     const [refreshing, setRefreshing] = useState(false);
 
-    useEffect(() => {
-        dispatch(getUpdatesAction());
-    }, [getUpdatesAction, updates]);
+    useFocusEffect(
+        useCallback(() => {
+            dispatch(getUpdatesAction());
+        }, [getUpdatesAction])
+    );
 
     const onRefresh = async () => {
         setRefreshing(true);

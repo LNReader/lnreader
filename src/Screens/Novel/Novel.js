@@ -37,10 +37,6 @@ const Novel = ({ route, navigation }) => {
     const dispatch = useDispatch();
     const { novel, chapters, loading, updating, downloading } = useNovel();
 
-    // const savedSettigns = useSavedSettings();
-
-    // if (novelId || novel)
-
     let chaptersSettingsSheetRef = useRef(null);
     let trackerSheetRef = useRef(null);
 
@@ -127,14 +123,15 @@ const Novel = ({ route, navigation }) => {
                             bottomSheetRef={chaptersSettingsSheetRef}
                             dispatch={dispatch}
                             sortAndFilterChapters={sortAndFilterChapters}
-                            novelId={novelId || novel.novelId}
+                            novelId={novel.novelId}
                             savedSort={sort}
+                            theme={theme}
                             savedFilter={filter}
                         />
                         <TrackSheet
                             bottomSheetRef={trackerSheetRef}
-                            novelId={novelId || novel.novelId}
-                            novelName={novelName || novel.novelName}
+                            novelId={novel.novelId}
+                            novelName={novel.novelName}
                             theme={theme}
                         />
                     </Portal>

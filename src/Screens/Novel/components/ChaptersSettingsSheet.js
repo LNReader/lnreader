@@ -4,6 +4,7 @@ import { List, RadioButton, Checkbox } from "react-native-paper";
 import Bottomsheet from "rn-sliding-up-panel";
 
 import { useSelector } from "react-redux";
+import { useTheme } from "../../../Hooks/reduxHooks";
 
 const ChaptersSettingsSheet = ({
     bottomSheetRef,
@@ -12,6 +13,7 @@ const ChaptersSettingsSheet = ({
     dispatch,
     savedSort,
     savedFilter,
+    theme,
 }) => {
     const [sort, setSort] = useState(savedSort || "ORDER BY chapterId ASC");
     const [filter, setFilter] = useState(savedFilter || "");
@@ -27,8 +29,6 @@ const ChaptersSettingsSheet = ({
     };
 
     const checkBoxStyle = { flexDirection: "row", alignItems: "center" };
-
-    const theme = useSelector((state) => state.settingsReducer.theme);
 
     const [animatedValue] = useState(new Animated.Value(0));
 

@@ -9,6 +9,8 @@ import Novel from "../Screens/Novel/Novel";
 import Chapter from "../Screens/Chapter/Chapter";
 import Extension from "../Screens/Extension/Extension";
 import GlobalSearch from "../Screens/Browse/GlobalSearch";
+import Migration from "../Screens/Browse/Migration";
+import SourceNovels from "../Screens/Browse/SourceNovels";
 import MoreStack from "./More";
 
 import { setStatusBarStyle } from "../Hooks/setStatusBarStyle";
@@ -59,6 +61,11 @@ const MainNavigator = () => {
                     <Stack.Screen
                         name="GlobalSearch"
                         component={GlobalSearch}
+                    />
+                    <Stack.Screen name="Migration" component={Migration} />
+                    <Stack.Screen
+                        name="SourceNovels"
+                        component={SourceNovels}
                     />
                 </Stack.Navigator>
             </View>

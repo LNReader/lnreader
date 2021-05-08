@@ -1,3 +1,4 @@
+import { UPDATE_IN_LIBRARY } from "../novel/novel.types";
 import {
     GET_LIBRARY_NOVELS,
     GET_LIBRARY_SEARCH_RESULTS,
@@ -20,6 +21,11 @@ const libraryReducer = (state = initialState, action) => {
             return { ...state, novels: payload, loading: false };
         case GET_LIBRARY_SEARCH_RESULTS:
             return { ...state, novels: payload, loading: false };
+        case UPDATE_IN_LIBRARY:
+            return {
+                ...state,
+                novels: [...state.novels, { novelUrl: payload.novelUrl }],
+            };
         default:
             return state;
     }
