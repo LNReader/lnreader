@@ -5,6 +5,18 @@ import { getLibrary } from "../Database/queries/LibraryQueries";
 import { restoreLibrary } from "../Database/queries/NovelQueries";
 import { showToast } from "../Hooks/showToast";
 
+import * as Notifications from "expo-notifications";
+
+Notifications.setNotificationHandler({
+    handleNotification: async () => {
+        return {
+            shouldShowAlert: true,
+            shouldPlaySound: true,
+            shouldSetBadge: true,
+        };
+    },
+});
+
 export const createBackup = async () => {
     const novels = await getLibrary();
 
@@ -38,7 +50,15 @@ export const restoreBackup = async () => {
     if (backup.uri) {
         let novels = await StorageAccessFramework.readAsStringAsync(backup.uri);
         novels = await JSON.parse(novels);
-        await novels.map((novel) => restoreLibrary(novel));
-        showToast("Restored backup");
+
+        novels.map((novel, index) => {
+            restoreLibrary(novel);
+            if (index + 1 === novels.length) {
+                Notifications.scheduleNotificationAsync({
+                    content: { title: "Backup restored" },
+                    trigger: null,
+                });
+            }
+        });
     }
 };

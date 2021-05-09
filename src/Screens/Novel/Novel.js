@@ -6,6 +6,7 @@ import {
     useNovel,
     usePreferences,
     useTheme,
+    showToast,
 } from "../../Hooks/reduxHooks";
 
 import ChapterItem from "./components/ChapterItem";
@@ -20,7 +21,6 @@ import {
     updateNovelAction,
 } from "../../redux/novel/novel.actions";
 import TrackSheet from "./components/Tracker/TrackSheet";
-import { showToast } from "../../Hooks/showToast";
 
 const Novel = ({ route, navigation }) => {
     const item = route.params;
@@ -35,7 +35,7 @@ const Novel = ({ route, navigation }) => {
 
     const theme = useTheme();
     const dispatch = useDispatch();
-    const { novel, chapters, loading, fetching } = useNovel();
+    const { novel, chapters, loading, updating, downloading } = useNovel();
 
     let chaptersSettingsSheetRef = useRef(null);
     let trackerSheetRef = useRef(null);
@@ -63,7 +63,7 @@ const Novel = ({ route, navigation }) => {
     const refreshControl = () => (
         <RefreshControl
             onRefresh={onRefresh}
-            refreshing={fetching}
+            refreshing={updating}
             colors={[theme.textColorPrimary]}
             progressBackgroundColor={theme.colorPrimary}
         />
@@ -93,6 +93,7 @@ const Novel = ({ route, navigation }) => {
             dispatch={dispatch}
             sourceId={sourceId}
             navigation={navigation}
+            downloading={downloading}
         />
     );
 
@@ -122,14 +123,15 @@ const Novel = ({ route, navigation }) => {
                             bottomSheetRef={chaptersSettingsSheetRef}
                             dispatch={dispatch}
                             sortAndFilterChapters={sortAndFilterChapters}
-                            novelId={novelId || novel.novelId}
+                            novelId={novel.novelId}
                             savedSort={sort}
+                            theme={theme}
                             savedFilter={filter}
                         />
                         <TrackSheet
                             bottomSheetRef={trackerSheetRef}
-                            novelId={novelId || novel.novelId}
-                            novelName={novelName || novel.novelName}
+                            novelId={novel.novelId}
+                            novelName={novel.novelName}
                             theme={theme}
                         />
                     </Portal>

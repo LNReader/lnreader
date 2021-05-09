@@ -74,13 +74,15 @@ const Browse = ({ navigation }) => {
             <Searchbar
                 theme={theme}
                 placeholder="Search Source"
-                left={"magnify"}
+                left="magnify"
                 onPressLeft={clearSearchbar}
                 searchText={searchText}
                 onChangeText={onChangeText}
                 clearSearchbar={clearSearchbar}
                 right="book-search"
                 onPressRight={() => navigation.navigate("GlobalSearch")}
+                migrate="weather-cloudy-arrow-right"
+                onPressMigrate={() => navigation.navigate("Migration")}
             />
 
             <FlatList

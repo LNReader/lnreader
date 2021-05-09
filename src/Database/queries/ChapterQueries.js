@@ -108,12 +108,12 @@ export const isChapterDownloaded = async (chapterId) => {
 const downloadChapterQuery = `INSERT INTO downloads (downloadChapterId, chapterName, chapterText, prevChapter, nextChapter) VALUES (?, ?, ?, ?, ?)`;
 
 export const downloadChapter = async (
-    extensionId,
+    sourceId,
     novelUrl,
     chapterUrl,
     chapterId
 ) => {
-    const downloadUrl = `https://lnreader-extensions.vercel.app/api/${extensionId}/novel/${novelUrl}${chapterUrl}`;
+    const downloadUrl = `https://lnreader-extensions.vercel.app/api/${sourceId}/novel/${novelUrl}${chapterUrl}`;
 
     const response = await fetch(downloadUrl);
     const chapter = await response.json();

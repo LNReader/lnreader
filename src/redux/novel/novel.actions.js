@@ -8,8 +8,6 @@ import {
     SET_NOVEL,
     UPDATE_IN_LIBRARY,
     CHAPTER_READ,
-    GET_CHAPTER,
-    CHAPTER_LOADING,
     CHAPTER_DOWNLOADING,
     CHAPTER_DOWNLOADED,
     CHAPTER_DELETED,
@@ -18,7 +16,7 @@ import {
 } from "./novel.types";
 
 import { updateNovel } from "../../Services/updates";
-import { fetchChapter, fetchNovel } from "../../Services/Source/source";
+import { fetchNovel } from "../../Services/Source/source";
 import {
     followNovel,
     insertNovel,
@@ -28,8 +26,6 @@ import {
     getChapters,
     insertChapters,
     markChapterRead,
-    isChapterDownloaded,
-    getChapter,
     downloadChapter,
     deleteChapter,
 } from "../../Database/queries/ChapterQueries";
@@ -129,25 +125,6 @@ export const followNovelAction = (novel) => async (dispatch) => {
         !novel.followed ? "Added to library" : "Removed from library",
         ToastAndroid.SHORT
     );
-};
-
-export const getChapterAction = (
-    extensionId,
-    chapterUrl,
-    novelUrl,
-    novelId
-) => async (dispatch) => {
-    dispatch({ type: CHAPTER_LOADING });
-
-    const isDownloaded = await isChapterDownloaded(novelId);
-    let chapter;
-
-    if (isDownloaded) {
-        chapter = await getChapter(novelId);
-    } else {
-        chapter = await fetchChapter(extensionId, novelUrl, chapterUrl);
-    }
-    dispatch({ type: GET_CHAPTER, payload: chapter });
 };
 
 export const markChapterReadAction = (chapterId, novelId) => async (

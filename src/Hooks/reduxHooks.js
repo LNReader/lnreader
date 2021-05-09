@@ -33,6 +33,12 @@ const useNovel = () => {
     return novel;
 };
 
+const useChapter = () => {
+    const chapter = useSelector((state) => state.chapterReducer);
+
+    return chapter;
+};
+
 const findNovel = (novelId) => {
     let novel = useSelector((state) => state.preferenceReducer.novelSettings);
     novel = novel.find((novel) => novel.novelId === novelId);
@@ -51,6 +57,14 @@ const usePreferences = (novelId) => {
     }
 
     return { sort, filter };
+};
+
+const useSavedSettings = () => {
+    const settings = useSelector(
+        (state) => state.preferenceReducer.novelSettings
+    );
+
+    return settings;
 };
 
 const useContinueReading = (chapters, novelId) => {
@@ -73,6 +87,12 @@ const useContinueReading = (chapters, novelId) => {
     return chapter;
 };
 
+const useTrackingStatus = () => {
+    const tracker = useSelector((state) => state.trackerReducer);
+
+    return tracker;
+};
+
 export {
     useTheme,
     useReaderSettings,
@@ -80,5 +100,8 @@ export {
     useSettings,
     usePreferences,
     useContinueReading,
+    useTrackingStatus,
     useNovel,
+    useChapter,
+    useSavedSettings,
 };

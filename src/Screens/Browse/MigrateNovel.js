@@ -6,43 +6,38 @@ import {
     FlatList,
     ActivityIndicator,
 } from "react-native";
+import { ProgressBar } from "react-native-paper";
 import { useLibrary, useTheme } from "../../Hooks/reduxHooks";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
-import { Searchbar } from "../../Components/Searchbar";
-import NovelCover from "../../Components/NovelCover";
-import NovelList from "../../Components/NovelList";
 import EmptyView from "../../Components/EmptyView";
-import GlobalSearchNovelList from "./components/GlobalSearchNovelList";
+import MigrationNovelList from "./components/MigrationNovelList";
+import { Appbar } from "../../Components/Appbar";
+import { showToast } from "../../Hooks/showToast";
 
-const GlobalSearch = ({ navigation }) => {
+const GlobalSearch = ({ navigation, route }) => {
+    const { sourceId, novelName } = route.params;
     const theme = useTheme();
 
+    const [progress, setProgress] = useState(0);
     const [loading, setLoading] = useState(false);
-    const [searchText, setSearchText] = useState("");
     const [searchResults, setSearchResults] = useState("");
     const { sources, pinned } = useSelector((state) => state.sourceReducer);
 
     const library = useLibrary();
 
     const pinnedSources = sources.filter(
-        (source) => pinned.indexOf(source.sourceId) !== -1
+        (source) =>
+            pinned.indexOf(source.sourceId) !== -1 &&
+            source.sourceId !== sourceId
     );
 
-    const clearSearchbar = () => {
-        setSearchText("");
-    };
-
-    const onChangeText = (text) => setSearchText(text);
-
-    const onSubmitEditing = () => {
-        setSearchResults("");
-
+    const getSearchResults = () => {
         const getSearchUrl = (sourceId) => {
             if (sourceId === 1) {
-                return `https://lnreader-extensions.vercel.app/api/1/search/?s=${searchText}&?o=rating`;
+                return `https://lnreader-extensions.vercel.app/api/1/search/?s=${novelName}&?o=rating`;
             } else {
-                return `https://lnreader-extensions.vercel.app/api/${sourceId}/search/?s=${searchText}`;
+                return `https://lnreader-extensions.vercel.app/api/${sourceId}/search/?s=${novelName}`;
             }
         };
 
@@ -76,9 +71,14 @@ const GlobalSearch = ({ navigation }) => {
                         ]);
                         setLoading(false);
                     });
+                setProgress((progress) => progress + 1 / pinnedSources.length);
             }, 1000 * index)
         );
     };
+
+    useEffect(() => {
+        getSearchResults();
+    }, []);
 
     const renderItem = ({ item }) => (
         <>
@@ -90,7 +90,7 @@ const GlobalSearch = ({ navigation }) => {
                     {item.sourceLanguage}
                 </Text>
             </View>
-            <GlobalSearchNovelList
+            <MigrationNovelList
                 data={item.novels}
                 theme={theme}
                 library={library}
@@ -106,17 +106,13 @@ const GlobalSearch = ({ navigation }) => {
                 { backgroundColor: theme.colorPrimaryDark },
             ]}
         >
-            <Searchbar
-                theme={theme}
-                placeholder="Global Search"
-                left="arrow-left"
-                onPressLeft={() => navigation.goBack()}
-                searchText={searchText}
-                onChangeText={onChangeText}
-                onSubmitEditing={onSubmitEditing}
-                clearSearchbar={clearSearchbar}
+            <Appbar
+                title={novelName}
+                onBackAction={() => navigation.goBack()}
             />
-
+            {progress < 1 && (
+                <ProgressBar color={theme.colorAccent} progress={progress} />
+            )}
             <FlatList
                 contentContainerStyle={{
                     flexGrow: 1,

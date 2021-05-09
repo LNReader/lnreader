@@ -18,6 +18,8 @@ export const Searchbar = ({
     clearSearchbar,
     onChangeText,
     onSubmitEditing,
+    migrate,
+    onPressMigrate,
 }) => {
     const searchRef = useRef(null);
     const dispatch = useDispatch();
@@ -97,6 +99,15 @@ export const Searchbar = ({
                         style={{ marginRight: 0 }}
                         size={23}
                         onPress={onPressRight}
+                    />
+                )}
+                {migrate && (
+                    <IconButton
+                        icon={migrate}
+                        color={theme.textColorSecondary}
+                        style={{ marginRight: 0 }}
+                        size={23}
+                        onPress={onPressMigrate}
                     />
                 )}
             </View>
