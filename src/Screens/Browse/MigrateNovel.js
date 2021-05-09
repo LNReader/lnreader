@@ -6,6 +6,7 @@ import {
     FlatList,
     ActivityIndicator,
 } from "react-native";
+import { ProgressBar } from "react-native-paper";
 import { useLibrary, useTheme } from "../../Hooks/reduxHooks";
 import { useSelector } from "react-redux";
 
@@ -18,6 +19,7 @@ const GlobalSearch = ({ navigation, route }) => {
     const { sourceId, novelName } = route.params;
     const theme = useTheme();
 
+    const [progress, setProgress] = useState(0);
     const [loading, setLoading] = useState(false);
     const [searchResults, setSearchResults] = useState("");
     const { sources, pinned } = useSelector((state) => state.sourceReducer);
@@ -69,6 +71,7 @@ const GlobalSearch = ({ navigation, route }) => {
                         ]);
                         setLoading(false);
                     });
+                setProgress((progress) => progress + 1 / pinnedSources.length);
             }, 1000 * index)
         );
     };
@@ -107,6 +110,9 @@ const GlobalSearch = ({ navigation, route }) => {
                 title={novelName}
                 onBackAction={() => navigation.goBack()}
             />
+            {progress < 1 && (
+                <ProgressBar color={theme.colorAccent} progress={progress} />
+            )}
             <FlatList
                 contentContainerStyle={{
                     flexGrow: 1,
