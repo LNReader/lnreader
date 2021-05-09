@@ -1,17 +1,8 @@
 import React from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
-import { TouchableRipple, Button, IconButton } from "react-native-paper";
-import { useNavigation } from "@react-navigation/native";
-import { useDispatch } from "react-redux";
-import { pinSourceAction } from "../../../redux/source/source.actions";
+import { TouchableRipple } from "react-native-paper";
 
-const MigrationSourceCard = ({
-    item,
-    theme,
-    noOfNovels,
-    onPress,
-    buttonLabel,
-}) => {
+const MigrationSourceCard = ({ item, theme, noOfNovels, onPress }) => {
     const { sourceId, sourceName, sourceCover, sourceLanguage, status } = item;
 
     return (

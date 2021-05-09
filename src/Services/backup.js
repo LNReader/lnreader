@@ -53,15 +53,12 @@ export const restoreBackup = async () => {
 
         novels.map((novel, index) => {
             restoreLibrary(novel);
-<<<<<<< HEAD
-=======
             if (index + 1 === novels.length) {
                 Notifications.scheduleNotificationAsync({
                     content: { title: "Backup restored" },
                     trigger: null,
                 });
             }
->>>>>>> 8f254b4ef52a9f5a8ce6d6ee1cbbb7d4c0e62d3d
         });
     }
 
