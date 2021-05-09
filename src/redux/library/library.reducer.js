@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+import { UPDATE_IN_LIBRARY } from "../novel/novel.types";
+>>>>>>> 8f254b4ef52a9f5a8ce6d6ee1cbbb7d4c0e62d3d
 import {
     GET_LIBRARY_NOVELS,
     GET_LIBRARY_SEARCH_RESULTS,

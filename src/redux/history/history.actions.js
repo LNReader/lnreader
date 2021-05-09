@@ -24,9 +24,7 @@ export const getHistoryAction = () => async (dispatch) => {
 export const insertHistoryAction = (novelId, chapterId) => async (dispatch) => {
     await insertHistory(novelId, chapterId);
 
-    dispatch({
-        type: UPDATE_NOVEL_HISTORY,
-    });
+    // dispatch({ type: UPDATE_NOVEL_HISTORY });
 
     dispatch({
         type: SET_LAST_READ,

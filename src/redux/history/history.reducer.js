@@ -19,8 +19,8 @@ const historyReducer = (state = initialState, action) => {
             return { ...state, loading: true };
         case GET_HISTORY:
             return { ...state, history: payload, loading: false };
-        case UPDATE_NOVEL_HISTORY:
-            return state;
+        // case UPDATE_NOVEL_HISTORY:
+        //     return state;
         case CLEAR_NOVEL_HISTORY:
             return {
                 ...state,

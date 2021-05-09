@@ -45,7 +45,7 @@ const History = ({
                 <FlatList
                     contentContainerStyle={{ flexGrow: 1, padding: 8 }}
                     data={history}
-                    keyExtractor={(item) => item.novelUrl.toString()}
+                    keyExtractor={(item) => item.novelId.toString()}
                     renderItem={renderHistoryCard}
                     ListFooterComponent={
                         loading && (

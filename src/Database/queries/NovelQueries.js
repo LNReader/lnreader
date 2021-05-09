@@ -1,7 +1,7 @@
 import * as SQLite from "expo-sqlite";
 const db = SQLite.openDatabase("lnreader.db");
 
-import { fetchChapters } from "../../Services/Source/source";
+import { fetchChapters, fetchNovel } from "../../Services/Source/source";
 import { insertChapters } from "./ChapterQueries";
 
 const insertNovelQuery = `INSERT INTO novels (novelUrl, sourceUrl, sourceId, source, novelName, novelCover, novelSummary, author, artist, status, genre) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
@@ -120,6 +120,40 @@ export const restoreLibrary = async (novel) => {
                 },
                 (txObj, error) => console.log("Error ", error)
             )
+        )
+    );
+};
+
+const migrateNovelQuery = `INSERT INTO novels (novelUrl, sourceUrl, sourceId, source, novelName, novelCover, novelSummary, author, artist, status, genre, followed) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+export const migrateNovel = async (sourceId, novelUrl) => {
+    const novel = await fetchNovel(sourceId, novelUrl);
+
+    db.transaction((tx) =>
+        tx.executeSql(
+            migrateNovelQuery,
+            [
+                novel.novelUrl,
+                novel.sourceUrl,
+                novel.sourceId,
+                novel.source,
+                novel.novelName,
+                novel.novelCover,
+                novel.novelSummary,
+                novel.author,
+                novel.artist,
+                novel.status,
+                novel.genre,
+                1,
+            ],
+            async (txObj, { insertId }) => {
+                const chapters = await fetchChapters(
+                    novel.sourceId,
+                    novel.novelUrl
+                );
+                await insertChapters(insertId, chapters);
+            },
+            (txObj, error) => console.log("Error ", error)
         )
     );
 };
