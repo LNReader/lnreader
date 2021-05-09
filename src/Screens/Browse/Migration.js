@@ -1,28 +1,13 @@
-import React, { useEffect, useState } from "react";
-import {
-    StyleSheet,
-    View,
-    Text,
-    FlatList,
-    ActivityIndicator,
-} from "react-native";
+import React from "react";
+import { StyleSheet, View, FlatList, Text } from "react-native";
 import { useLibrary, useTheme } from "../../Hooks/reduxHooks";
-import { useDispatch, useSelector } from "react-redux";
-
-import { Searchbar } from "../../Components/Searchbar";
-import NovelCover from "../../Components/NovelCover";
-import NovelList from "../../Components/NovelList";
-import EmptyView from "../../Components/EmptyView";
-import GlobalSearchNovelList from "./components/GlobalSearchNovelList";
+import { useSelector } from "react-redux";
 import { Appbar } from "../../Components/Appbar";
 import MigrationSourceCard from "./components/MigrationSourceCard";
 
 const GlobalSearch = ({ navigation }) => {
     const theme = useTheme();
 
-    const [loading, setLoading] = useState(false);
-    const [searchText, setSearchText] = useState("");
-    const [searchResults, setSearchResults] = useState("");
     const { sources } = useSelector((state) => state.sourceReducer);
 
     const library = useLibrary();
@@ -35,6 +20,7 @@ const GlobalSearch = ({ navigation }) => {
             item={item}
             theme={theme}
             noOfNovels={novelsPerSource(item.sourceId)}
+            buttonLabel="All"
             onPress={() => navigation.navigate("SourceNovels", item.sourceId)}
         />
     );
@@ -46,11 +32,26 @@ const GlobalSearch = ({ navigation }) => {
                 { backgroundColor: theme.colorPrimaryDark },
             ]}
         >
-            <Appbar title="Source Migration" />
+            <Appbar
+                title="Select Source"
+                onBackAction={() => navigation.goBack()}
+            />
             <FlatList
                 data={sources}
                 keyExtractor={(item) => item.sourceId.toString()}
                 renderItem={renderItem}
+                ListHeaderComponent={
+                    <Text
+                        style={{
+                            color: theme.textColorSecondary,
+                            padding: 20,
+                            paddingBottom: 10,
+                            textTransform: "uppercase",
+                        }}
+                    >
+                        Select a Source To Migrate From
+                    </Text>
+                }
             />
         </View>
     );
@@ -60,4 +61,9 @@ export default GlobalSearch;
 
 const styles = StyleSheet.create({
     container: { flex: 1 },
+    containerStyle: {
+        padding: 20,
+        margin: 20,
+        borderRadius: 6,
+    },
 });

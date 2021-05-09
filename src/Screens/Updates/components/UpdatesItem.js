@@ -32,6 +32,7 @@ const UpdateCard = ({ item, theme, onPress }) => {
                                 color: theme.textColorPrimary,
                                 fontSize: 12,
                             }}
+                            numberOfLines={1}
                         >
                             {`${item.chapterName} · ${moment(
                                 item.updateTime

@@ -170,6 +170,17 @@ const NovelInfoHeader = ({
                                 }
                             />
                         </Menu>
+                        {/* <IconButton
+                            onPress={() =>
+                                navigation.navigate("MigrateNovel", {
+                                    sourceId: novel.sourceId,
+                                    novelName: novel.novelName,
+                                })
+                            }
+                            icon="weather-cloudy-arrow-right"
+                            color={theme.colorAccent}
+                            size={21}
+                        /> */}
                     </View>
                     <NovelSummary
                         summary={novel.novelSummary}

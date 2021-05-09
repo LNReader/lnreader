@@ -34,7 +34,7 @@ const MigrationSourceCard = ({
                                 fontSize: 14,
                             }}
                         >
-                            {sourceName} {noOfNovels && ` (${noOfNovels})`}
+                            {sourceName} {` (${noOfNovels || 0})`}
                         </Text>
                         <View style={{ flexDirection: "row" }}>
                             <Text
@@ -45,22 +45,7 @@ const MigrationSourceCard = ({
                             >
                                 {sourceLanguage}
                             </Text>
-                            <Text style={styles.sourceStatus}>
-                                {status === 0 && "• Down"}
-                            </Text>
                         </View>
-                    </View>
-                    <View
-                        style={{ flexDirection: "row", alignItems: "center" }}
-                    >
-                        <Button
-                            labelStyle={{ letterSpacing: 0 }}
-                            uppercase={false}
-                            color={theme.colorAccent}
-                            onPress={onPress}
-                        >
-                            {buttonLabel}
-                        </Button>
                     </View>
                 </View>
             </>
