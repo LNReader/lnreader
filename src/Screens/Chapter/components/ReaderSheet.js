@@ -24,7 +24,7 @@ const ReaderSheet = ({ theme, reader, dispatch, bottomSheetRef }) => {
             backdropOpacity={0}
         >
             <View style={styles.contentContainer}>
-                <BottomSheetHandle />
+                <BottomSheetHandle theme={theme} />
                 <View style={styles.readerSettingsContainer}>
                     <Text
                         style={{

@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useSelector } from "react-redux";
 
 const useTheme = () => {
@@ -52,8 +51,8 @@ const usePreferences = (novelId) => {
     const novel = findNovel(novelId);
 
     if (novel) {
-        sort = novel.sort ?? "";
-        filter = novel.filter ?? "";
+        sort = novel.sort;
+        filter = novel.filter;
     }
 
     return { sort, filter };

@@ -16,12 +16,15 @@ import {
 import { Appbar } from "./components/Appbar";
 import UpdatesItem from "./components/UpdatesItem";
 import { useTheme } from "../../Hooks/reduxHooks";
+import { Searchbar } from "../../Components/Searchbar";
 
 const Updates = ({ navigation }) => {
     const theme = useTheme();
     const dispatch = useDispatch();
     const { updates, loading } = useSelector((state) => state.updatesReducer);
 
+    const [searchText, setSearchText] = useState("");
+    const [searchResults, setSearchResults] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
 
     useFocusEffect(
@@ -67,18 +70,41 @@ const Updates = ({ navigation }) => {
         />
     );
 
+    const clearSearchbar = () => {
+        setSearchText("");
+    };
+
+    const onChangeText = (text) => {
+        setSearchText(text);
+        let results = updates.filter((update) =>
+            update.novelName.toLowerCase().includes(text.toLowerCase())
+        );
+        setSearchResults(results);
+    };
+
     return (
         <>
-            <Appbar theme={theme} dispatch={dispatch} />
+            {/* <Appbar theme={theme} dispatch={dispatch} /> */}
+
             <View
                 style={[
                     styles.container,
                     { backgroundColor: theme.colorPrimaryDark },
                 ]}
             >
+                <Searchbar
+                    placeholder="Search Updates"
+                    searchText={searchText}
+                    clearSearchbar={clearSearchbar}
+                    onChangeText={onChangeText}
+                    left="magnify"
+                    theme={theme}
+                    right="reload"
+                    onPressRight={() => dispatch(updateLibraryAction())}
+                />
                 <FlatList
                     contentContainerStyle={styles.flatList}
-                    data={updates}
+                    data={searchText ? searchResults : updates}
                     keyExtractor={(item) => item.updateId.toString()}
                     renderItem={renderItem}
                     ListFooterComponent={ListFooterComponent()}

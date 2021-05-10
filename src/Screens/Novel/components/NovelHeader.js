@@ -15,6 +15,7 @@ import FollowChip from "./Info/FollowChip";
 import TrackerChip from "./Info/TrackerChip";
 import NovelSummary from "./Info/NovelSummary";
 import ReadButton from "./Info/ReadButton";
+import { useTrackingStatus } from "../../../Hooks/reduxHooks";
 
 const NovelInfoHeader = ({
     item,
@@ -31,10 +32,7 @@ const NovelInfoHeader = ({
 }) => {
     const [downloadMenu, showDownloadMenu] = useState(false);
 
-    const tracker = useSelector((state) => state.trackerReducer.tracker);
-    const trackedNovels = useSelector(
-        (state) => state.trackerReducer.trackedNovels
-    );
+    const { tracker, trackedNovels } = useTrackingStatus();
 
     let isTracked = false;
 

@@ -1,32 +1,24 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Text, Animated } from "react-native";
+
 import { List, RadioButton, Checkbox } from "react-native-paper";
 import Bottomsheet from "rn-sliding-up-panel";
-
-import { useSelector } from "react-redux";
-import { useTheme } from "../../../Hooks/reduxHooks";
+import BottomSheetHandle from "../../../Components/BottomSheetHandle";
 
 const ChaptersSettingsSheet = ({
     bottomSheetRef,
     novelId,
     sortAndFilterChapters,
     dispatch,
-    savedSort,
-    savedFilter,
+    sort,
+    filter,
     theme,
 }) => {
-    const [sort, setSort] = useState(savedSort || "ORDER BY chapterId ASC");
-    const [filter, setFilter] = useState(savedFilter || "");
-
-    const sortChapters = (val) => {
-        setSort(val);
+    const sortChapters = (val) =>
         dispatch(sortAndFilterChapters(novelId, val, filter));
-    };
 
-    const filterChapters = (val) => {
-        setFilter(val);
+    const filterChapters = (val) =>
         dispatch(sortAndFilterChapters(novelId, sort, val));
-    };
 
     const checkBoxStyle = { flexDirection: "row", alignItems: "center" };
 
@@ -42,12 +34,10 @@ const ChaptersSettingsSheet = ({
             <View
                 style={[
                     styles.contentContainer,
-                    {
-                        backgroundColor: theme.colorPrimary,
-                    },
+                    { backgroundColor: theme.colorPrimary },
                 ]}
             >
-                <View style={styles.bottomSheetHandle} />
+                <BottomSheetHandle theme={theme} />
                 <List.Subheader
                     style={{
                         color: theme.textColorPrimary,
@@ -184,13 +174,5 @@ const styles = StyleSheet.create({
         flex: 1,
         borderTopRightRadius: 8,
         borderTopLeftRadius: 8,
-    },
-    bottomSheetHandle: {
-        backgroundColor: "rgba(255,255,255,0.25)",
-        height: 4,
-        width: 50,
-        borderRadius: 50,
-        top: 10,
-        alignSelf: "center",
     },
 });

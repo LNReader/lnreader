@@ -1,18 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { StyleSheet, View, FlatList, RefreshControl } from "react-native";
+
 import { Provider, Portal } from "react-native-paper";
-import {
-    useContinueReading,
-    useNovel,
-    usePreferences,
-    useTheme,
-    showToast,
-} from "../../Hooks/reduxHooks";
-
-import ChapterItem from "./components/ChapterItem";
-import NovelInfoHeader from "./components/NovelHeader";
-import ChaptersSettingsSheet from "./components/ChaptersSettingsSheet";
-
 import { useDispatch } from "react-redux";
 
 import {
@@ -20,18 +9,22 @@ import {
     sortAndFilterChapters,
     updateNovelAction,
 } from "../../redux/novel/novel.actions";
+import {
+    useContinueReading,
+    useNovel,
+    usePreferences,
+    useTheme,
+} from "../../Hooks/reduxHooks";
+import { showToast } from "../../Hooks/showToast";
+
+import ChapterItem from "./components/ChapterItem";
+import NovelInfoHeader from "./components/NovelHeader";
+import ChaptersSettingsSheet from "./components/ChaptersSettingsSheet";
 import TrackSheet from "./components/Tracker/TrackSheet";
 
 const Novel = ({ route, navigation }) => {
     const item = route.params;
-    const {
-        sourceId,
-        novelUrl,
-        novelName,
-        novelCover,
-        followed,
-        novelId,
-    } = item;
+    const { sourceId, novelUrl, novelName, followed, novelId } = item;
 
     const theme = useTheme();
     const dispatch = useDispatch();
@@ -40,14 +33,11 @@ const Novel = ({ route, navigation }) => {
     let chaptersSettingsSheetRef = useRef(null);
     let trackerSheetRef = useRef(null);
 
-    const { sort, filter } = usePreferences(
-        novelId || (!loading && novel.novelId)
+    const { sort = "ORDER BY chapterId ASC", filter = "" } = usePreferences(
+        novel.novelId
     );
 
-    let lastRead = useContinueReading(
-        chapters,
-        novelId || (!loading && novel.novelId)
-    );
+    let lastRead = useContinueReading(chapters, novel.novelId);
 
     useEffect(() => {
         dispatch(
@@ -124,9 +114,9 @@ const Novel = ({ route, navigation }) => {
                             dispatch={dispatch}
                             sortAndFilterChapters={sortAndFilterChapters}
                             novelId={novel.novelId}
-                            savedSort={sort}
+                            sort={sort}
                             theme={theme}
-                            savedFilter={filter}
+                            filter={filter}
                         />
                         <TrackSheet
                             bottomSheetRef={trackerSheetRef}
