@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { StyleSheet, View, Text, ActivityIndicator } from "react-native";
+import Constants from "expo-constants";
 
-import { Appbar, Provider, Portal } from "react-native-paper";
+import { Appbar, Portal } from "react-native-paper";
 import { CollapsibleHeaderScrollView } from "react-native-collapsible-header-views";
 
 import ReaderSheet from "./components/ReaderSheet";
@@ -37,6 +38,8 @@ const Chapter = ({ route, navigation }) => {
     const isTracked = trackedNovels.find((obj) => obj.novelId === novelId);
 
     const { chapter, loading } = useChapter();
+
+    const [scrollPercentage, setScrollPercentage] = useState(0);
 
     useEffect(() => {
         dispatch(getChapterAction(sourceId, novelUrl, chapterUrl, chapterId));
@@ -108,78 +111,101 @@ const Chapter = ({ route, navigation }) => {
     ];
 
     return (
-        <CollapsibleHeaderScrollView
-            headerContainerBackgroundColor="rgba(0,0,0,0.4)"
-            CollapsibleHeaderComponent={
-                <Appbar.Header
-                    style={{ backgroundColor: "transparent", elevation: 0 }}
-                >
-                    <Appbar.BackAction
-                        onPress={() => navigation.goBack()}
-                        color="#FFFFFF"
-                        size={26}
-                        style={{ marginRight: 0 }}
-                    />
-                    <Appbar.Content
-                        title={loading ? "Chapter" : chapter.chapterName}
-                        titleStyle={{ color: "#FFFFFF" }}
-                    />
-                    {!loading && (
-                        <>
-                            <Appbar.Action
-                                icon="chevron-left"
-                                size={26}
-                                disabled={!chapter.prevChapter}
-                                onPress={navigateToPreviousChapter}
-                                color="#FFFFFF"
-                            />
-                            <Appbar.Action
-                                icon="chevron-right"
-                                size={26}
-                                disabled={!chapter.nextChapter}
-                                onPress={navigateToNextChapter}
-                                color="#FFFFFF"
-                            />
-                        </>
-                    )}
-                    <Appbar.Action
-                        icon="dots-vertical"
-                        size={26}
-                        onPress={() =>
-                            readerSheetRef.current.show({ velocity: -1.5 })
-                        }
-                        color="#FFFFFF"
-                    />
-                </Appbar.Header>
-            }
-            headerHeight={100}
-            contentContainerStyle={[
-                styles.container,
-                { backgroundColor: readerBackground(reader.theme) },
-            ]}
-            onScroll={({ nativeEvent }) => {
-                if (isCloseToBottom(nativeEvent)) {
-                    dispatch(markChapterReadAction(chapterId, novelId));
-                    updateTracker();
+        <>
+            <CollapsibleHeaderScrollView
+                headerContainerBackgroundColor="rgba(0,0,0,0.4)"
+                CollapsibleHeaderComponent={
+                    <Appbar.Header
+                        style={{ backgroundColor: "transparent", elevation: 0 }}
+                    >
+                        <Appbar.BackAction
+                            onPress={() => navigation.goBack()}
+                            color="#FFFFFF"
+                            size={26}
+                            style={{ marginRight: 0 }}
+                        />
+                        <Appbar.Content
+                            title={loading ? "Chapter" : chapter.chapterName}
+                            titleStyle={{ color: "#FFFFFF" }}
+                        />
+                        {!loading && (
+                            <>
+                                <Appbar.Action
+                                    icon="chevron-left"
+                                    size={26}
+                                    disabled={!chapter.prevChapter}
+                                    onPress={navigateToPreviousChapter}
+                                    color="#FFFFFF"
+                                />
+                                <Appbar.Action
+                                    icon="chevron-right"
+                                    size={26}
+                                    disabled={!chapter.nextChapter}
+                                    onPress={navigateToNextChapter}
+                                    color="#FFFFFF"
+                                />
+                            </>
+                        )}
+                        <Appbar.Action
+                            icon="dots-vertical"
+                            size={26}
+                            onPress={() =>
+                                readerSheetRef.current.show({ velocity: -1.5 })
+                            }
+                            color="#FFFFFF"
+                        />
+                    </Appbar.Header>
                 }
-            }}
-        >
-            {loading ? (
-                <View style={{ flex: 1, justifyContent: "center" }}>
-                    <ActivityIndicator size={50} color={theme.colorAccent} />
-                </View>
-            ) : (
-                <Text style={readerStyles}>{chapter.chapterText.trim()}</Text>
-            )}
-            <Portal>
-                <ReaderSheet
-                    theme={theme}
-                    reader={reader}
-                    dispatch={dispatch}
-                    bottomSheetRef={readerSheetRef}
-                />
-            </Portal>
-        </CollapsibleHeaderScrollView>
+                headerHeight={Constants.statusBarHeight + 60}
+                contentContainerStyle={[
+                    styles.container,
+                    { backgroundColor: readerBackground(reader.theme) },
+                ]}
+                onScroll={({ nativeEvent }) => {
+                    setScrollPercentage(
+                        Math.round(
+                            ((nativeEvent.contentOffset.y +
+                                nativeEvent.layoutMeasurement.height) /
+                                nativeEvent.contentSize.height) *
+                                100
+                        )
+                    );
+                    if (isCloseToBottom(nativeEvent)) {
+                        dispatch(markChapterReadAction(chapterId, novelId));
+                        updateTracker();
+                    }
+                }}
+            >
+                {loading ? (
+                    <View style={{ flex: 1, justifyContent: "center" }}>
+                        <ActivityIndicator
+                            size={50}
+                            color={theme.colorAccent}
+                        />
+                    </View>
+                ) : (
+                    <Text style={readerStyles}>
+                        {chapter.chapterText.trim()}
+                    </Text>
+                )}
+                <Portal>
+                    <ReaderSheet
+                        theme={theme}
+                        reader={reader}
+                        dispatch={dispatch}
+                        bottomSheetRef={readerSheetRef}
+                    />
+                </Portal>
+            </CollapsibleHeaderScrollView>
+            <Text
+                style={[
+                    styles.scrollPercentage,
+                    { color: readerTextColor(reader.theme) },
+                ]}
+            >
+                {scrollPercentage + "%"}
+            </Text>
+        </>
     );
 };
 
@@ -189,5 +215,13 @@ const styles = StyleSheet.create({
     container: {
         flexGrow: 1,
         paddingVertical: 10,
+    },
+    scrollPercentage: {
+        position: "absolute",
+        bottom: 12,
+        alignSelf: "center",
+        fontFamily: "noto-sans",
+        fontWeight: "bold",
+        zIndex: 1,
     },
 });
