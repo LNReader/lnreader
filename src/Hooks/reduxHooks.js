@@ -27,7 +27,7 @@ const useLibrary = () => {
 };
 
 const useNovel = () => {
-    const novel = useSelector((state) => state.novelReducer, shallowEqual);
+    const novel = useSelector((state) => state.novelReducer);
 
     return novel;
 };
@@ -40,7 +40,7 @@ const useChapter = () => {
 
 const findNovel = (novelId) => {
     let novel = useSelector((state) => state.preferenceReducer.novelSettings);
-    novel = novel.find((novel) => novel.novelId === novelId);
+    novel = novel[novelId];
 
     return novel;
 };
@@ -70,19 +70,19 @@ const useContinueReading = (chapters, novelId) => {
     let chapter, chapterId, novel;
 
     novel = findNovel(novelId);
-
     if (novel) {
         chapterId = novel.lastRead;
     }
 
     if (chapterId) {
-        chapter = chapters.find((obj) => obj.chapterId === chapterId);
+        chapter = chapters.find(
+            (obj) => obj.chapterId === chapterId && obj.read === 0
+        );
     }
 
     if (!chapter) {
         chapter = chapters.find((obj) => obj.read === 0);
     }
-
     return chapter;
 };
 
