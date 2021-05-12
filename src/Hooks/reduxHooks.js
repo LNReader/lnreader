@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+import { shallowEqual, useSelector } from "react-redux";
 
 const useTheme = () => {
     const theme = useSelector((state) => state.settingsReducer.theme);
@@ -27,7 +27,7 @@ const useLibrary = () => {
 };
 
 const useNovel = () => {
-    const novel = useSelector((state) => state.novelReducer);
+    const novel = useSelector((state) => state.novelReducer, shallowEqual);
 
     return novel;
 };

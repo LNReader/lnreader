@@ -115,8 +115,14 @@ export const updateAllNovels = async () => {
 
     libraryNovels.map((novel, index) =>
         setTimeout(async () => {
-            updateNovelChapters(novel.sourceId, novel.novelUrl, novel.novelId);
+            await updateNovelChapters(
+                novel.sourceId,
+                novel.novelUrl,
+                novel.novelId
+            );
+
             console.log(novel.novelName + " Updated");
+
             if (index + 1 === libraryNovels.length) {
                 Notifications.scheduleNotificationAsync({
                     content: { title: "Library Updated" },

@@ -83,36 +83,32 @@ const Updates = ({ navigation }) => {
     };
 
     return (
-        <>
-            {/* <Appbar theme={theme} dispatch={dispatch} /> */}
-
-            <View
-                style={[
-                    styles.container,
-                    { backgroundColor: theme.colorPrimaryDark },
-                ]}
-            >
-                <Searchbar
-                    placeholder="Search Updates"
-                    searchText={searchText}
-                    clearSearchbar={clearSearchbar}
-                    onChangeText={onChangeText}
-                    left="magnify"
-                    theme={theme}
-                    right="reload"
-                    onPressRight={() => dispatch(updateLibraryAction())}
-                />
-                <FlatList
-                    contentContainerStyle={styles.flatList}
-                    data={searchText ? searchResults : updates}
-                    keyExtractor={(item) => item.updateId.toString()}
-                    renderItem={renderItem}
-                    ListFooterComponent={ListFooterComponent()}
-                    ListEmptyComponent={ListEmptyComponent()}
-                    refreshControl={refreshControl()}
-                />
-            </View>
-        </>
+        <View
+            style={[
+                styles.container,
+                { backgroundColor: theme.colorPrimaryDark },
+            ]}
+        >
+            <Searchbar
+                placeholder="Search Updates"
+                searchText={searchText}
+                clearSearchbar={clearSearchbar}
+                onChangeText={onChangeText}
+                left="magnify"
+                theme={theme}
+                right="reload"
+                onPressRight={() => dispatch(updateLibraryAction())}
+            />
+            <FlatList
+                contentContainerStyle={styles.flatList}
+                data={searchText ? searchResults : updates}
+                keyExtractor={(item) => item.updateId.toString()}
+                renderItem={renderItem}
+                ListFooterComponent={ListFooterComponent()}
+                ListEmptyComponent={ListEmptyComponent()}
+                refreshControl={refreshControl()}
+            />
+        </View>
     );
 };
 

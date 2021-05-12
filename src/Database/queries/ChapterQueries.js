@@ -84,6 +84,19 @@ export const markChapterRead = async (chapterId) => {
     });
 };
 
+const markChapterUnreadQuery = `UPDATE chapters SET \`read\` = 0 WHERE chapterId = ?`;
+
+export const markChapterUnread = async (chapterId) => {
+    db.transaction((tx) => {
+        tx.executeSql(
+            markChapterUnreadQuery,
+            [chapterId],
+            (tx, res) => {},
+            (tx, error) => console.log(error)
+        );
+    });
+};
+
 const isChapterDownloadedQuery = `SELECT * FROM downloads WHERE downloadChapterId=?`;
 
 export const isChapterDownloaded = async (chapterId) => {
@@ -177,5 +190,18 @@ export const getLastReadChapter = async (novelId) => {
                 (txObj, error) => console.log("Error ", error)
             );
         });
+    });
+};
+
+const bookmarkChapterQuery = `UPDATE chapters SET bookmark = ? WHERE chapterId = ?`;
+
+export const bookmarkChapter = async (bookmark, chapterId) => {
+    db.transaction((tx) => {
+        tx.executeSql(
+            bookmarkChapterQuery,
+            [!bookmark, chapterId],
+            (tx, res) => {},
+            (txObj, error) => console.log("Error ", error)
+        );
     });
 };

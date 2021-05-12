@@ -12,7 +12,7 @@ export const theme = {
 };
 
 /**
- * Light Theme
+ * Light
  */
 export const lightTheme = {
     id: 1,
@@ -34,7 +34,7 @@ export const lightTheme = {
 };
 
 /**
- * Dark Theme
+ * Dark
  */
 export const darkTheme = {
     id: 2,
@@ -56,7 +56,7 @@ export const darkTheme = {
 };
 
 /**
- * Amoled Dark Theme
+ * Amoled Dark
  */
 export const amoledDarkTheme = {
     id: 0,
@@ -78,7 +78,7 @@ export const amoledDarkTheme = {
 };
 
 /**
- * Midnight Dusk Theme
+ * Midnight Dusk
  */
 export const midnightDuskTheme = {
     id: 3,
@@ -98,6 +98,10 @@ export const midnightDuskTheme = {
     colorButtonText: "#FFFFFF",
     statusBar: "light",
 };
+
+/**
+ * Lime
+ */
 
 export const limeTheme = {
     id: 4,

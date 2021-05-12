@@ -2,6 +2,7 @@ import { GET_UPDATES } from "./updates.types";
 
 import { getUpdates } from "../../Database/queries/UpdateQueries";
 import { updateAllNovels } from "../../Services/updates";
+
 import { showToast } from "../../Hooks/showToast";
 
 export const getUpdatesAction = () => async (dispatch) => {

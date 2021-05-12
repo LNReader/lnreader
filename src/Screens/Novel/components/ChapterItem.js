@@ -15,6 +15,9 @@ const ChapterItem = ({
     theme,
     navigation,
     downloading,
+    // selected,
+    // selectChapter,
+    // chapterActionsSheetRef,
 }) => {
     const [deleteChapterMenu, setDeleteChapterMenu] = useState(false);
     const showDeleteChapterMenu = () => setDeleteChapterMenu(true);
@@ -94,25 +97,49 @@ const ChapterItem = ({
         }
     };
 
+    const bookmarkButton = () => {
+        if (chapter.bookmark) {
+            return (
+                <IconButton
+                    icon="bookmark"
+                    color={theme.colorAccent}
+                    size={18}
+                    style={{ marginLeft: 2 }}
+                />
+            );
+        }
+    };
+
     return (
         <TouchableRipple
-            style={styles.chapterCardContainer}
+            style={[
+                styles.chapterCardContainer,
+                { backgroundColor: theme.colorPrimaryDark },
+            ]}
             onPress={navigateToChapter}
             rippleColor={theme.rippleColor}
         >
             <>
                 <View>
-                    <Text
-                        style={[
-                            { color: theme.textColorPrimary },
-                            chapter.read && {
-                                color: theme.textColorHint,
-                            },
-                        ]}
-                        numberOfLines={1}
+                    <View
+                        style={{
+                            flexDirection: "row",
+                            alignItems: "center",
+                        }}
                     >
-                        {chapter.chapterName.substring(0, 50)}
-                    </Text>
+                        {bookmarkButton()}
+                        <Text
+                            style={[
+                                { color: theme.textColorPrimary },
+                                chapter.read && {
+                                    color: theme.textColorHint,
+                                },
+                            ]}
+                            numberOfLines={1}
+                        >
+                            {chapter.chapterName.substring(0, 50)}
+                        </Text>
+                    </View>
                     {chapter.releaseDate && (
                         <Text
                             style={[
