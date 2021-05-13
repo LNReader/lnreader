@@ -98,7 +98,8 @@ const Chapter = ({ route, navigation }) => {
 
     const readerStyles = [
         {
-            paddingVertical: 15,
+            paddingVertical: 16,
+            paddingBottom: 32,
             fontSize: reader.textSize,
             color: readerTextColor(reader.theme),
             lineHeight: readerLineHeight(reader.textSize),

@@ -1,14 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import {
-    StyleSheet,
-    View,
-    FlatList,
-    Animated,
-    Dimensions,
-    Text,
-    RefreshControl,
-    Vibration,
-} from "react-native";
+import { StyleSheet, View, FlatList, RefreshControl } from "react-native";
 
 import { Provider, Portal, IconButton } from "react-native-paper";
 import { useDispatch } from "react-redux";
@@ -18,6 +9,8 @@ import {
     getNovelAction,
     markChapterReadAction,
     markChapterUnreadAction,
+    markPreviousChaptersReadAction,
+    markPreviousChaptersUnreadAction,
     sortAndFilterChapters,
     updateNovelAction,
 } from "../../redux/novel/novel.actions";
@@ -44,11 +37,11 @@ const Novel = ({ route, navigation }) => {
     const dispatch = useDispatch();
     const { novel, chapters, loading, updating, downloading } = useNovel();
 
-    // const [selected, setSelected] = useState([]);
+    const [selected, setSelected] = useState();
 
     let chaptersSettingsSheetRef = useRef(null);
     let trackerSheetRef = useRef(null);
-    // let chapterActionsSheetRef = useRef(null);
+    let chapterActionsSheetRef = useRef(null);
 
     const { sort = "ORDER BY chapterId ASC", filter = "" } = usePreferences(
         novel.novelId
@@ -92,18 +85,6 @@ const Novel = ({ route, navigation }) => {
         />
     );
 
-    // const selectChapter = (chapterUrl) => {
-    //     Vibration.vibrate(50);
-    //     setSelected((selected) =>
-    //         selected.indexOf(chapterUrl) === -1
-    //             ? [...selected, chapterUrl]
-    //             : selected.filter((chapter) => chapter !== chapterUrl)
-    //     );
-    //     if (selected.length >= 0) {
-    //         chapterActionsSheetRef.current.show({ velocity: -1.5 });
-    //     }
-    // };
-
     const renderItem = ({ item }) => (
         <ChapterItem
             theme={theme}
@@ -113,9 +94,9 @@ const Novel = ({ route, navigation }) => {
             sourceId={sourceId}
             navigation={navigation}
             downloading={downloading}
-            // selected={selected}
-            // selectChapter={selectChapter}
-            // chapterActionsSheetRef={chapterActionsSheetRef}
+            selected={selected}
+            setSelected={setSelected}
+            chapterActionsSheetRef={chapterActionsSheetRef}
         />
     );
 
@@ -228,12 +209,17 @@ const Novel = ({ route, navigation }) => {
                             novelName={novel.novelName}
                             theme={theme}
                         />
-                        {/* <ChapterActionsSheet
+                        <ChapterActionsSheet
                             theme={theme}
                             selected={selected}
+                            chapters={chapters}
+                            dispatch={dispatch}
                             setSelected={setSelected}
                             bottomSheetRef={chapterActionsSheetRef}
-                        /> */}
+                            markChapterReadAction={markChapterReadAction}
+                            markChapterUnreadAction={markChapterUnreadAction}
+                            bookmarkChapterAction={bookmarkChapterAction}
+                        />
                     </Portal>
                 )}
             </View>

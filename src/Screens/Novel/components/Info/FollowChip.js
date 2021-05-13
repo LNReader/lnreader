@@ -2,15 +2,11 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import { Chip } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { useDispatch } from "react-redux";
 
 import { followNovelAction } from "../../../../redux/novel/novel.actions";
 
-const FollowChip = ({ followed, novel, theme }) => {
-    const dispatch = useDispatch();
-
+const FollowChip = ({ followed, novel, theme, dispatch }) => {
     const getIconName = () => (followed ? "heart" : "heart-outline");
-
     const getChipLabel = () => (followed ? "In Library" : "Add to library");
 
     return (

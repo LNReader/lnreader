@@ -5,7 +5,6 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const TrackerChip = ({ isTracked, trackerSheetRef, theme }) => {
     const getIconName = () => (isTracked ? "check" : "sync");
-
     const getChipLabel = () => (isTracked ? "Tracked" : "Tracking");
 
     return (

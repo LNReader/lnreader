@@ -15,6 +15,8 @@ import {
     SET_NOVEL_SETTINGS,
     CHAPTER_UNREAD,
     BOOKMARK_CHAPTER,
+    MARK_PREVIOUS_CHAPTERS_READ,
+    MARK_PREVIOUS_CHAPTERS_UNREAD,
 } from "./novel.types";
 
 import { updateNovel } from "../../Services/updates";
@@ -32,6 +34,8 @@ import {
     deleteChapter,
     markChapterUnread,
     bookmarkChapter,
+    markPreviuschaptersRead,
+    markPreviousChaptersUnread,
 } from "../../Database/queries/ChapterQueries";
 import { deleteNovelUpdates } from "../../Database/queries/UpdateQueries";
 import {
@@ -159,6 +163,20 @@ export const markChapterReadAction =
             type: SET_LAST_READ,
             payload: { novelId, chapterId: chapterId + 1 },
         });
+    };
+
+export const markPreviousChaptersReadAction =
+    (chapterId, novelId) => async (dispatch) => {
+        await markPreviuschaptersRead(chapterId, novelId);
+
+        dispatch({ type: MARK_PREVIOUS_CHAPTERS_READ, payload: chapterId });
+    };
+
+export const markPreviousChaptersUnreadAction =
+    (chapterId, novelId) => async (dispatch) => {
+        await markPreviousChaptersUnread(chapterId, novelId);
+
+        dispatch({ type: MARK_PREVIOUS_CHAPTERS_UNREAD, payload: chapterId });
     };
 
 export const markChapterUnreadAction = (chapterId) => async (dispatch) => {

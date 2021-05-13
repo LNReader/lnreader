@@ -205,3 +205,29 @@ export const bookmarkChapter = async (bookmark, chapterId) => {
         );
     });
 };
+
+const markPreviuschaptersReadQuery = `UPDATE chapters SET \`read\` = 1 WHERE chapterId < ? AND novelId = ?`;
+
+export const markPreviuschaptersRead = async (chapterId, novelId) => {
+    db.transaction((tx) => {
+        tx.executeSql(
+            markPreviuschaptersReadQuery,
+            [chapterId, novelId],
+            (tx, res) => {},
+            (tx, error) => console.log(error)
+        );
+    });
+};
+
+const markPreviousChaptersUnreadQuery = `UPDATE chapters SET \`read\` = 0 WHERE chapterId < ? AND novelId = ?`;
+
+export const markPreviousChaptersUnread = async (chapterId, novelId) => {
+    db.transaction((tx) => {
+        tx.executeSql(
+            markPreviousChaptersUnreadQuery,
+            [chapterId, novelId],
+            (tx, res) => {},
+            (tx, error) => console.log(error)
+        );
+    });
+};

@@ -15,9 +15,9 @@ const ChapterItem = ({
     theme,
     navigation,
     downloading,
-    // selected,
-    // selectChapter,
-    // chapterActionsSheetRef,
+    selected,
+    setSelected,
+    chapterActionsSheetRef,
 }) => {
     const [deleteChapterMenu, setDeleteChapterMenu] = useState(false);
     const showDeleteChapterMenu = () => setDeleteChapterMenu(true);
@@ -117,6 +117,10 @@ const ChapterItem = ({
                 { backgroundColor: theme.colorPrimaryDark },
             ]}
             onPress={navigateToChapter}
+            onLongPress={() => {
+                setSelected(chapter);
+                chapterActionsSheetRef.current.show();
+            }}
             rippleColor={theme.rippleColor}
         >
             <>

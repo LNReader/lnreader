@@ -108,6 +108,7 @@ const NovelInfoHeader = ({
                             theme={theme}
                             followed={novel.followed}
                             novel={novel}
+                            dispatch={dispatch}
                         />
                         {tracker && (
                             <TrackerChip
