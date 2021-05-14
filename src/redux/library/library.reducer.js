@@ -23,7 +23,7 @@ const libraryReducer = (state = initialState, action) => {
         case GET_LIBRARY_SEARCH_RESULTS:
             return { ...state, novels: payload, loading: false };
         case SORT_FILTER_LIBRARY:
-            console.log("2.", payload.sort, payload.filter);
+            // console.log("2.", payload.sort, payload.filter);
             return {
                 ...state,
                 filters: { sort: payload.sort, filter: payload.filter },

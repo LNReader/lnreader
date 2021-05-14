@@ -20,6 +20,7 @@ export const Searchbar = ({
     onSubmitEditing,
     migrate,
     onPressMigrate,
+    filter,
 }) => {
     const searchRef = useRef(null);
     const dispatch = useDispatch();
@@ -95,7 +96,11 @@ export const Searchbar = ({
                 {right && (
                     <IconButton
                         icon={right}
-                        color={theme.textColorSecondary}
+                        color={
+                            !filter
+                                ? theme.textColorSecondary
+                                : theme.filterColor
+                        }
                         style={{ marginRight: 0 }}
                         size={23}
                         onPress={onPressRight}

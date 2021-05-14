@@ -38,32 +38,34 @@ export const getLibrary = (sort, filter) => {
     );
 };
 
-// const searchLibraryQuery = ``;
+const searchLibraryQuery = (searchText, sort, filter) =>
+    `
+    SELECT novels.*, C.chaptersUnread, D.chaptersDownloaded
+    FROM novels
+    LEFT JOIN (
+        SELECT chapters.novelId, COUNT(*) AS chaptersUnread 
+        FROM chapters
+        WHERE chapters.read = 0
+        GROUP BY chapters.novelId
+    ) AS C
+    ON novels.novelId = C.novelId
+    LEFT JOIN (
+        SELECT chapters.novelId, COUNT(*) AS chaptersDownloaded 
+        FROM chapters
+        WHERE chapters.downloaded = 1
+        GROUP BY chapters.novelId
+    ) AS D
+    ON novels.novelId = D.novelId
+    WHERE novels.followed = 1 AND novelName LIKE '%${searchText}%' ${
+        filter ? "AND " + filter : ""
+    }
+    ${sort ? "ORDER BY " + sort : ""} `;
 
-export const searchLibrary = (searchText) => {
+export const searchLibrary = (searchText, sort, filter) => {
     return new Promise((resolve, reject) => {
         db.transaction((tx) => {
             tx.executeSql(
-                `
-                SELECT novels.*, C.chaptersUnread, D.chaptersDownloaded
-                FROM novels
-                LEFT JOIN (
-                    SELECT chapters.novelId, COUNT(*) AS chaptersUnread 
-                    FROM chapters
-                    WHERE chapters.read = 0
-                    GROUP BY chapters.novelId
-                ) AS C
-                ON novels.novelId = C.novelId
-                LEFT JOIN (
-                    SELECT chapters.novelId, COUNT(*) AS chaptersDownloaded 
-                    FROM chapters
-                    WHERE chapters.downloaded = 1
-                    GROUP BY chapters.novelId
-                ) AS D
-                ON novels.novelId = D.novelId
-                WHERE novels.followed = 1 AND novelName LIKE '%${searchText}%'
-                GROUP BY novels.novelId
-                `,
+                searchLibraryQuery(searchText, sort, filter),
                 null,
                 (txObj, { rows: { _array } }) => resolve(_array),
                 (txObj, error) => console.log("Error ", error)

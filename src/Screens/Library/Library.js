@@ -111,7 +111,8 @@ const LibraryScreen = ({ navigation }) => {
                     clearSearchbar={clearSearchbar}
                     onChangeText={onChangeText}
                     left="magnify"
-                    right="dots-vertical"
+                    right="filter-variant"
+                    filter={filter}
                     onPressRight={() => libraryFilterSheetRef.current.show()}
                     theme={theme}
                 />

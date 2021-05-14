@@ -62,7 +62,7 @@ export const restoreBackup = async () => {
                 if (index + 1 === novels.length) {
                     Notifications.scheduleNotificationAsync({
                         content: {
-                            title: "Library Updated",
+                            title: "Library Restored",
                             body: novels.length + " novels restored",
                         },
                         trigger: null,
