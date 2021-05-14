@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { StyleSheet, View, FlatList, RefreshControl } from "react-native";
 
-import { Provider, Portal, IconButton } from "react-native-paper";
+import { Provider, Portal } from "react-native-paper";
 import { useDispatch } from "react-redux";
 
 import {
@@ -9,8 +9,6 @@ import {
     getNovelAction,
     markChapterReadAction,
     markChapterUnreadAction,
-    markPreviousChaptersReadAction,
-    markPreviousChaptersUnreadAction,
     sortAndFilterChapters,
     updateNovelAction,
 } from "../../redux/novel/novel.actions";
@@ -27,7 +25,6 @@ import NovelInfoHeader from "./components/NovelHeader";
 import ChaptersSettingsSheet from "./components/ChaptersSettingsSheet";
 import TrackSheet from "./components/Tracker/TrackSheet";
 import ChapterActionsSheet from "./components/ChapterActionsSheet";
-import { SwipeListView } from "react-native-swipe-list-view";
 
 const Novel = ({ route, navigation }) => {
     const item = route.params;
@@ -69,22 +66,6 @@ const Novel = ({ route, navigation }) => {
         />
     );
 
-    const ListHeaderComponent = () => (
-        <NovelInfoHeader
-            item={item}
-            novel={novel}
-            theme={theme}
-            filter={filter}
-            loading={loading}
-            lastRead={lastRead}
-            dispatch={dispatch}
-            chapters={chapters}
-            navigation={navigation}
-            trackerSheetRef={trackerSheetRef}
-            chaptersSettingsSheetRef={chaptersSettingsSheetRef}
-        />
-    );
-
     const renderItem = ({ item }) => (
         <ChapterItem
             theme={theme}
@@ -100,73 +81,6 @@ const Novel = ({ route, navigation }) => {
         />
     );
 
-    const closeRow = (rowMap, rowKey) => {
-        if (rowMap[rowKey]) {
-            rowMap[rowKey].closeRow();
-        }
-    };
-
-    const renderHiddenItem = (data, rowMap) => (
-        <View style={styles.rowBack}>
-            <View
-                style={{
-                    flex: 1 / 2,
-                    height: "100%",
-                    backgroundColor: theme.colorAccent,
-                    paddingLeft: 12,
-                    alignItems: "flex-start",
-                    justifyContent: "center",
-                }}
-            >
-                <IconButton
-                    icon={data.item.bookmark ? "bookmark-off" : "bookmark"}
-                    color="white"
-                    size={23}
-                    onPress={() => {
-                        closeRow(rowMap, data.item.chapterId.toString());
-                        dispatch(
-                            bookmarkChapterAction(
-                                data.item.bookmark,
-                                data.item.chapterId
-                            )
-                        );
-                    }}
-                />
-            </View>
-            <View
-                style={{
-                    flex: 1 / 2,
-                    alignItems: "flex-end",
-                    justifyContent: "center",
-                    height: "100%",
-                    backgroundColor: "#2E7D32",
-                    paddingRight: 12,
-                }}
-            >
-                <IconButton
-                    onPress={() => {
-                        closeRow(rowMap, data.item.chapterId.toString());
-                        if (data.item.read) {
-                            dispatch(
-                                markChapterUnreadAction(data.item.chapterId)
-                            );
-                        } else {
-                            dispatch(
-                                markChapterReadAction(
-                                    data.item.chapterId,
-                                    novel.novelId
-                                )
-                            );
-                        }
-                    }}
-                    icon={data.item.read ? "eye-off" : "eye"}
-                    color="white"
-                    size={23}
-                />
-            </View>
-        </View>
-    );
-
     return (
         <Provider>
             <View
@@ -175,21 +89,30 @@ const Novel = ({ route, navigation }) => {
                     { backgroundColor: theme.colorPrimaryDark },
                 ]}
             >
-                <SwipeListView
+                <FlatList
                     data={!loading && chapters}
                     keyExtractor={(item) => item.chapterId.toString()}
                     removeClippedSubviews={true}
                     maxToRenderPerBatch={5}
                     windowSize={15}
                     initialNumToRender={7}
-                    renderHiddenItem={renderHiddenItem}
                     renderItem={renderItem}
-                    ListHeaderComponent={ListHeaderComponent}
+                    ListHeaderComponent={
+                        <NovelInfoHeader
+                            item={item}
+                            novel={novel}
+                            theme={theme}
+                            filter={filter}
+                            loading={loading}
+                            lastRead={lastRead}
+                            dispatch={dispatch}
+                            chapters={chapters}
+                            navigation={navigation}
+                            trackerSheetRef={trackerSheetRef}
+                            chaptersSettingsSheetRef={chaptersSettingsSheetRef}
+                        />
+                    }
                     refreshControl={refreshControl()}
-                    leftOpenValue={75}
-                    stopLeftSwipe={75}
-                    rightOpenValue={-75}
-                    stopRightSwipe={-75}
                 />
                 {!loading && (
                     <Portal>

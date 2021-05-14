@@ -150,9 +150,7 @@ const Chapter = ({ route, navigation }) => {
                         <Appbar.Action
                             icon="dots-vertical"
                             size={26}
-                            onPress={() =>
-                                readerSheetRef.current.show({ velocity: -1.5 })
-                            }
+                            onPress={() => readerSheetRef.current.show()}
                             color="#FFFFFF"
                         />
                     </Appbar.Header>

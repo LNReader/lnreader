@@ -18,6 +18,7 @@ const ChapterActionsSheet = ({
     markChapterUnreadAction,
     dispatch,
     bookmarkChapterAction,
+    setSelected,
 }) => {
     const [animatedValue] = useState(new Animated.Value(0));
 
@@ -62,7 +63,7 @@ const ChapterActionsSheet = ({
                                 selected?.novelId
                             )
                         );
-                        bottomSheetRef.current.hide();
+                        // bottomSheetRef.current.hide();
                     }}
                     rippleColor={theme.rippleColor}
                 />
@@ -83,7 +84,7 @@ const ChapterActionsSheet = ({
                                 selected?.novelId
                             )
                         );
-                        bottomSheetRef.current.hide();
+                        // bottomSheetRef.current.hide();
                     }}
                     rippleColor={theme.rippleColor}
                 />
@@ -106,6 +107,10 @@ const ChapterActionsSheet = ({
                             dispatch(
                                 markChapterUnreadAction(selected?.chapterId)
                             );
+                            setSelected((selected) => ({
+                                ...selected,
+                                read: 0,
+                            }));
                         } else {
                             dispatch(
                                 markChapterReadAction(
@@ -113,8 +118,12 @@ const ChapterActionsSheet = ({
                                     selected?.novelId
                                 )
                             );
+                            setSelected((selected) => ({
+                                ...selected,
+                                read: 1,
+                            }));
                         }
-                        bottomSheetRef.current.hide();
+                        // bottomSheetRef.current.hide();
                     }}
                     rippleColor={theme.rippleColor}
                 />
@@ -141,7 +150,12 @@ const ChapterActionsSheet = ({
                                 selected?.chapterId
                             )
                         );
-                        bottomSheetRef.current.hide();
+                        setSelected((selected) => ({
+                            ...selected,
+                            bookmark: !selected.bookmark,
+                        }));
+
+                        // bottomSheetRef.current.hide();
                     }}
                     rippleColor={theme.rippleColor}
                 />

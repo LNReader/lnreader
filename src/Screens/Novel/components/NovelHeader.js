@@ -208,11 +208,7 @@ const NovelInfoHeader = ({
                     />
                     <TouchableRipple
                         style={styles.bottomsheet}
-                        onPress={() =>
-                            chaptersSettingsSheetRef.current.show({
-                                velocity: -1.5,
-                            })
-                        }
+                        onPress={() => chaptersSettingsSheetRef.current.show()}
                         rippleColor={theme.rippleColor}
                     >
                         <>
