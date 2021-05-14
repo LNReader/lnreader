@@ -56,7 +56,7 @@ const Novel = ({ route, navigation }) => {
     }, [getNovelAction]);
 
     const onRefresh = () => {
-        dispatch(updateNovelAction(sourceId, novelUrl, novelId));
+        dispatch(updateNovelAction(sourceId, novelUrl, novelId, sort, filter));
         showToast(`Updated ${novelName}`);
     };
 

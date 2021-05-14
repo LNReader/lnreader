@@ -257,13 +257,13 @@ export const deleteAllChaptersAction = (chapters) => async (dispatch) => {
 };
 
 export const updateNovelAction =
-    (sourceId, novelUrl, novelId) => async (dispatch) => {
+    (sourceId, novelUrl, novelId, sort, filter) => async (dispatch) => {
         dispatch({ type: FETCHING_NOVEL });
 
         await updateNovel(sourceId, novelUrl, novelId);
 
         let novel = await getNovel(sourceId, novelUrl);
-        let chapters = await getChapters(novel.novelId);
+        let chapters = await getChapters(novel.novelId, sort, filter);
 
         dispatch({
             type: UPDATE_NOVEL,

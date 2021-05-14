@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useCallback, useRef } from "react";
 import {
     StyleSheet,
     Text,
@@ -21,12 +21,22 @@ import {
 import { updateLibraryAction } from "../../redux/updates/updates.actions";
 import { useTheme } from "../../Hooks/reduxHooks";
 import { setNovel } from "../../redux/novel/novel.actions";
+import { Portal } from "react-native-paper";
+import LibraryFilterSheet from "./components/LibraryFilterSheet";
 
 const LibraryScreen = ({ navigation }) => {
     const theme = useTheme();
     const dispatch = useDispatch();
 
-    const { loading, novels } = useSelector((state) => state.libraryReducer);
+    const libraryFilterSheetRef = useRef(null);
+
+    const {
+        loading,
+        novels,
+        filters: { sort, filter },
+    } = useSelector((state) => state.libraryReducer);
+
+    console.log("1.", sort, filter);
 
     const [refreshing, setRefreshing] = useState(false);
     const [searchText, setSearchText] = useState("");
@@ -34,7 +44,7 @@ const LibraryScreen = ({ navigation }) => {
     useFocusEffect(
         useCallback(() => {
             setSearchText("");
-            dispatch(getLibraryAction());
+            dispatch(getLibraryAction(sort, filter));
         }, [getLibraryAction])
     );
 
@@ -45,13 +55,13 @@ const LibraryScreen = ({ navigation }) => {
     };
 
     const clearSearchbar = () => {
-        dispatch(getLibraryAction());
+        dispatch(getLibraryAction(sort, filter));
         setSearchText("");
     };
 
     const onChangeText = (text) => {
         setSearchText(text);
-        dispatch(searchLibraryAction(text));
+        dispatch(searchLibraryAction(text, sort, filter));
     };
 
     const renderItem = ({ item }) => (
@@ -72,6 +82,10 @@ const LibraryScreen = ({ navigation }) => {
             progressBackgroundColor={theme.colorAccent}
         />
     );
+
+    // if (!loading) {
+    //     console.log(novels);
+    // }
 
     const listEmptyComponent = () =>
         searchText !== "" ? (
@@ -99,17 +113,30 @@ const LibraryScreen = ({ navigation }) => {
                     clearSearchbar={clearSearchbar}
                     onChangeText={onChangeText}
                     left="magnify"
+                    right="dots-vertical"
+                    onPressRight={() => libraryFilterSheetRef.current.show()}
                     theme={theme}
                 />
                 {loading ? (
                     <ActivityIndicator size="small" color={theme.colorAccent} />
                 ) : (
-                    <NovelList
-                        data={novels}
-                        renderItem={renderItem}
-                        refreshControl={refreshControl()}
-                        ListEmptyComponent={listEmptyComponent}
-                    />
+                    <>
+                        <NovelList
+                            data={novels}
+                            renderItem={renderItem}
+                            refreshControl={refreshControl()}
+                            ListEmptyComponent={listEmptyComponent}
+                        />
+                        <Portal>
+                            <LibraryFilterSheet
+                                bottomSheetRef={libraryFilterSheetRef}
+                                theme={theme}
+                                dispatch={dispatch}
+                                sort={sort}
+                                filter={filter}
+                            />
+                        </Portal>
+                    </>
                 )}
             </View>
         </>

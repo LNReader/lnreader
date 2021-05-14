@@ -2,6 +2,7 @@ import {
     GET_LIBRARY_NOVELS,
     GET_LIBRARY_SEARCH_RESULTS,
     SET_LIBRARY_LOADING,
+    SORT_FILTER_LIBRARY,
 } from "./library.types";
 import {
     getLibrary,
@@ -9,8 +10,9 @@ import {
 } from "../../Database/queries/LibraryQueries";
 import { restoreBackup } from "../../Services/backup";
 
-export const getLibraryAction = () => async (dispatch) => {
-    const res = await getLibrary();
+export const getLibraryAction = (sort, filter) => async (dispatch) => {
+    // console.log(sort, filter);
+    const res = await getLibrary(sort, filter);
 
     dispatch({
         type: GET_LIBRARY_NOVELS,
@@ -18,11 +20,23 @@ export const getLibraryAction = () => async (dispatch) => {
     });
 };
 
-export const searchLibraryAction = (searchText) => async (dispatch) => {
-    const res = await searchLibrary(searchText);
+export const searchLibraryAction =
+    (searchText, sort, filter) => async (dispatch) => {
+        const res = await searchLibrary(searchText, sort, filter);
+
+        dispatch({
+            type: GET_LIBRARY_SEARCH_RESULTS,
+            payload: res,
+        });
+    };
+
+export const filterLibrary = (sort, filter) => async (dispatch) => {
+    dispatch({ type: SORT_FILTER_LIBRARY, payload: { sort, filter } });
+
+    const res = await getLibrary(sort, filter);
 
     dispatch({
-        type: GET_LIBRARY_SEARCH_RESULTS,
+        type: GET_LIBRARY_NOVELS,
         payload: res,
     });
 };

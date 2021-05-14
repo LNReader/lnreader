@@ -95,6 +95,12 @@ const useTrackingStatus = () => {
     return tracker;
 };
 
+const useLibraryFilters = () => {
+    const filters = useSelector((state) => state.libraryReducer.filters);
+
+    return filters;
+};
+
 export {
     useTheme,
     useReaderSettings,
@@ -106,4 +112,5 @@ export {
     useNovel,
     useChapter,
     useSavedSettings,
+    useLibraryFilters,
 };

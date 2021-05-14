@@ -9,11 +9,15 @@
         "splash": {
             "image": "./assets/splash.png",
             "resizeMode": "cover",
-            "backgroundColor": "#000000"
+            "backgroundColor": "#222831"
         },
         "updates": {
             "fallbackToCacheTimeout": 0,
             "enabled": false
+        },
+        "notification": {
+            "icon": "./assets/notification.png",
+            "color": "#00adb5"
         },
         "assetBundlePatterns": ["**/*"],
         "ios": {

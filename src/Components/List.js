@@ -14,10 +14,19 @@ const ListSubHeader = ({ children, theme }) => (
     </List.Subheader>
 );
 
-const ListItem = ({ title, description, icon, onPress, theme, right }) => (
+const ListItem = ({
+    title,
+    description,
+    icon,
+    onPress,
+    theme,
+    right,
+    titleStyle,
+}) => (
     <List.Item
         title={title}
-        titleStyle={{ color: theme.textColorPrimary }}
+        style={[!right && { paddingVertical: 12 }]}
+        titleStyle={[{ color: theme.textColorPrimary }, titleStyle]}
         description={description}
         descriptionStyle={{ color: theme.textColorSecondary }}
         descriptionNumberOfLines={1}
