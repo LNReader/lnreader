@@ -36,8 +36,6 @@ const LibraryScreen = ({ navigation }) => {
         filters: { sort, filter },
     } = useSelector((state) => state.libraryReducer);
 
-    console.log("1.", sort, filter);
-
     const [refreshing, setRefreshing] = useState(false);
     const [searchText, setSearchText] = useState("");
 
@@ -45,7 +43,7 @@ const LibraryScreen = ({ navigation }) => {
         useCallback(() => {
             setSearchText("");
             dispatch(getLibraryAction(sort, filter));
-        }, [getLibraryAction])
+        }, [getLibraryAction, sort, filter])
     );
 
     const onRefresh = () => {

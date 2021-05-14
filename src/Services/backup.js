@@ -20,7 +20,8 @@ Notifications.setNotificationHandler({
 export const createBackup = async () => {
     const novels = await getLibrary();
 
-    const permissions = await StorageAccessFramework.requestDirectoryPermissionsAsync();
+    const permissions =
+        await StorageAccessFramework.requestDirectoryPermissionsAsync();
 
     if (!permissions.granted) {
         return;
@@ -47,20 +48,29 @@ export const createBackup = async () => {
 export const restoreBackup = async () => {
     const backup = await DocumentPicker.getDocumentAsync();
 
+    Notifications.scheduleNotificationAsync({
+        content: { title: "Restoring backup" },
+        trigger: null,
+    });
+
     if (backup.uri) {
         let novels = await StorageAccessFramework.readAsStringAsync(backup.uri);
         novels = await JSON.parse(novels);
 
         novels.map((novel, index) => {
-            restoreLibrary(novel);
-            if (index + 1 === novels.length) {
-                Notifications.scheduleNotificationAsync({
-                    content: { title: "Backup restored" },
-                    trigger: null,
-                });
-            }
+            setTimeout(async () => {
+                if (index + 1 === novels.length) {
+                    Notifications.scheduleNotificationAsync({
+                        content: {
+                            title: "Library Updated",
+                            body: novels.length + " novels restored",
+                        },
+                        trigger: null,
+                    });
+                }
+
+                await restoreLibrary(novel);
+            }, 1000 * index);
         });
     }
-
-    showToast("Backup restored. Restart your app.");
 };

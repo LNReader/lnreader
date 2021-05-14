@@ -113,6 +113,12 @@ export const updateNovelChapters = async (extensionId, novelUrl, novelId) => {
 export const updateAllNovels = async () => {
     const libraryNovels = await getLibrary();
 
+    Notifications.scheduleNotificationAsync({
+        identifier: "updatingNotif",
+        content: { title: "Updating library" },
+        trigger: null,
+    });
+
     libraryNovels.map((novel, index) =>
         setTimeout(async () => {
             await updateNovelChapters(
@@ -120,12 +126,14 @@ export const updateAllNovels = async () => {
                 novel.novelUrl,
                 novel.novelId
             );
-
             console.log(novel.novelName + " Updated");
 
             if (index + 1 === libraryNovels.length) {
                 Notifications.scheduleNotificationAsync({
-                    content: { title: "Library Updated" },
+                    content: {
+                        title: "Library Updated",
+                        body: libraryNovels.length + " novels updated",
+                    },
                     trigger: null,
                 });
             }

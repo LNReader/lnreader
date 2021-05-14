@@ -14,6 +14,8 @@ import NovelCover from "../../Components/NovelCover";
 import NovelList from "../../Components/NovelList";
 import EmptyView from "../../Components/EmptyView";
 import GlobalSearchNovelList from "./components/GlobalSearchNovelList";
+import { ProgressBar } from "react-native-paper";
+import { showToast } from "../../Hooks/showToast";
 
 const GlobalSearch = ({ navigation }) => {
     const theme = useTheme();
@@ -22,6 +24,7 @@ const GlobalSearch = ({ navigation }) => {
     const [searchText, setSearchText] = useState("");
     const [searchResults, setSearchResults] = useState("");
     const { sources, pinned } = useSelector((state) => state.sourceReducer);
+    const [progress, setProgress] = useState(0);
 
     const library = useLibrary();
 
@@ -75,7 +78,12 @@ const GlobalSearch = ({ navigation }) => {
                             },
                         ]);
                         setLoading(false);
-                    });
+                    })
+                    .finally(() =>
+                        setProgress(
+                            (progress) => progress + 1 / pinnedSources.length
+                        )
+                    );
             }, 1000 * index)
         );
     };
@@ -116,7 +124,9 @@ const GlobalSearch = ({ navigation }) => {
                 onSubmitEditing={onSubmitEditing}
                 clearSearchbar={clearSearchbar}
             />
-
+            {progress < 1 && progress > 0 && pinned && (
+                <ProgressBar color={theme.colorAccent} progress={progress} />
+            )}
             <FlatList
                 contentContainerStyle={{
                     flexGrow: 1,

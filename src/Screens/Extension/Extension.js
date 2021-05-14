@@ -8,6 +8,7 @@ import EmptyView from "../../Components/EmptyView";
 import { Searchbar } from "../../Components/Searchbar";
 import { useTheme, useLibrary } from "../../Hooks/reduxHooks";
 import NovelList from "../../Components/NovelList";
+import { showToast } from "../../Hooks/showToast";
 
 const Extension = ({ navigation, route }) => {
     const { sourceId, sourceName, sourceUrl } = route.params;
@@ -42,6 +43,11 @@ const Extension = ({ navigation, route }) => {
             .then((json) => {
                 setNovels(json);
                 setLoading(false);
+            })
+            .catch((error) => {
+                setNovels([]);
+                setLoading(false);
+                showToast(error.message);
             });
     };
 
@@ -58,6 +64,11 @@ const Extension = ({ navigation, route }) => {
             .then((json) => {
                 setNovels(json);
                 setLoading(false);
+            })
+            .catch((error) => {
+                setNovels([]);
+                setLoading(false);
+                showToast(error.message);
             });
     };
 

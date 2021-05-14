@@ -110,7 +110,7 @@ const GlobalSearch = ({ navigation, route }) => {
                 title={novelName}
                 onBackAction={() => navigation.goBack()}
             />
-            {progress < 1 && (
+            {progress < 1 && pinned && (
                 <ProgressBar color={theme.colorAccent} progress={progress} />
             )}
             <FlatList
