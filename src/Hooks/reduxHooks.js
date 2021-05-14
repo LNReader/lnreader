@@ -46,16 +46,17 @@ const findNovel = (novelId) => {
 };
 
 const usePreferences = (novelId) => {
-    let sort, filter;
+    let sort, filter, position;
 
     const novel = findNovel(novelId);
 
     if (novel) {
         sort = novel.sort;
         filter = novel.filter;
+        position = novel.position;
     }
 
-    return { sort, filter };
+    return { sort, filter, position };
 };
 
 const useSavedSettings = () => {
@@ -67,23 +68,25 @@ const useSavedSettings = () => {
 };
 
 const useContinueReading = (chapters, novelId) => {
-    let chapter, chapterId, novel;
+    let lastReadChapter, chapterId, novel, position;
 
     novel = findNovel(novelId);
     if (novel) {
         chapterId = novel.lastRead;
+        position = novel.position;
     }
 
     if (chapterId) {
-        chapter = chapters.find(
+        lastReadChapter = chapters.find(
             (obj) => obj.chapterId === chapterId && obj.read === 0
         );
     }
 
-    if (!chapter) {
-        chapter = chapters.find((obj) => obj.read === 0);
+    if (!lastReadChapter) {
+        lastReadChapter = chapters.find((obj) => obj.read === 0);
     }
-    return chapter;
+
+    return { lastReadChapter, position };
 };
 
 const useTrackingStatus = () => {

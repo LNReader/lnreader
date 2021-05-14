@@ -121,3 +121,22 @@ export const limeTheme = {
     colorButtonText: "#16151D",
     statusBar: "light",
 };
+
+export const irisBlueTheme = {
+    id: 5,
+    name: "Iris Blue",
+    colorPrimary: "#393e46",
+    colorPrimaryDark: "#222831",
+    colorAccent: "#00adb5",
+    textColorPrimary: "#FFFFFF",
+    textColorSecondary: "rgba(255,255,255,0.7)",
+    textColorHint: "rgba(255,255,255,0.5)",
+    rippleColor: "rgba(255,255,255,0.2)",
+    searchBarColor: "#393e46",
+    menuColor: "#393e46",
+    filterColor: "#FFEB3B",
+    dividerColor: "rgba(255,255,255,0.1)",
+    colorDisabled: "#393e46",
+    colorButtonText: "#16151D",
+    statusBar: "light",
+};

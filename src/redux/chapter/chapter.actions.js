@@ -1,5 +1,6 @@
 import { getChapter } from "../../Database/queries/ChapterQueries";
 import { fetchChapter } from "../../Services/Source/source";
+import { SAVE_SCROLL_POSITION } from "../preferences/preference.types";
 import { CHAPTER_LOADING, GET_CHAPTER } from "./chapter.types";
 
 export const getChapterAction =
@@ -19,4 +20,12 @@ export const getChapterAction =
         }
 
         dispatch({ type: GET_CHAPTER, payload: chapter });
+    };
+
+export const saveScrollPosition =
+    (position, percentage, chapterId, novelId) => async (dispatch) => {
+        dispatch({
+            type: SAVE_SCROLL_POSITION,
+            payload: { position, percentage, chapterId, novelId },
+        });
     };

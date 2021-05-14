@@ -15,7 +15,7 @@ const ChapterItem = ({
     theme,
     navigation,
     downloading,
-    selected,
+    position,
     setSelected,
     chapterActionsSheetRef,
 }) => {
@@ -31,6 +31,11 @@ const ChapterItem = ({
             chapterId: chapter.chapterId,
             chapterUrl: chapter.chapterUrl,
             chapterName: chapter.chapterName,
+            position:
+                (position &&
+                    position[chapter.chapterId] &&
+                    position[chapter.chapterId].position) ||
+                0,
         });
 
     const displayDownloadButton = () => {
@@ -132,35 +137,65 @@ const ChapterItem = ({
                         }}
                     >
                         {bookmarkButton()}
-                        <Text
-                            style={[
-                                { color: theme.textColorPrimary },
-                                chapter.read && {
-                                    color: theme.textColorHint,
-                                },
-                            ]}
-                            numberOfLines={1}
-                        >
-                            {chapter.chapterName.substring(0, 50)}
-                        </Text>
-                    </View>
-                    {chapter.releaseDate && (
-                        <Text
-                            style={[
-                                {
-                                    color: theme.textColorSecondary,
+                        <View>
+                            <Text
+                                style={[
+                                    { color: theme.textColorPrimary },
+                                    chapter.read && {
+                                        color: theme.textColorHint,
+                                    },
+                                ]}
+                                numberOfLines={1}
+                            >
+                                {chapter.chapterName.substring(0, 50)}
+                            </Text>
+                            <View
+                                style={{
+                                    flexDirection: "row",
                                     marginTop: 5,
-                                    fontSize: 12,
-                                },
-                                chapter.read && {
-                                    color: theme.textColorHint,
-                                },
-                            ]}
-                            numberOfLines={1}
-                        >
-                            {chapter.releaseDate}
-                        </Text>
-                    )}
+                                }}
+                            >
+                                {chapter.releaseDate && (
+                                    <Text
+                                        style={[
+                                            {
+                                                color: theme.textColorSecondary,
+                                                fontSize: 12,
+                                            },
+                                            chapter.read && {
+                                                color: theme.textColorHint,
+                                            },
+                                        ]}
+                                        numberOfLines={1}
+                                    >
+                                        {chapter.releaseDate}
+                                    </Text>
+                                )}
+                                {position &&
+                                    !chapter.read &&
+                                    position[chapter.chapterId] &&
+                                    position[chapter.chapterId].percentage <
+                                        95 && (
+                                        <Text
+                                            style={[
+                                                {
+                                                    color: theme.textColorSecondary,
+                                                    fontSize: 12,
+                                                    marginLeft: 0,
+                                                },
+                                                chapter.releaseDate && {
+                                                    marginLeft: 5,
+                                                },
+                                            ]}
+                                            numberOfLines={1}
+                                        >
+                                            {position[chapter.chapterId]
+                                                .percentage + "%"}
+                                        </Text>
+                                    )}
+                            </View>
+                        </View>
+                    </View>
                 </View>
                 <View>{displayDownloadButton()}</View>
             </>

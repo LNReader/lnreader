@@ -1,4 +1,8 @@
-import { SET_CHAPTER_LIST_PREF, SET_LAST_READ } from "./preference.types";
+import {
+    SAVE_SCROLL_POSITION,
+    SET_CHAPTER_LIST_PREF,
+    SET_LAST_READ,
+} from "./preference.types";
 
 const initialState = {
     novelSettings: {},
@@ -28,6 +32,24 @@ const novelReducer = (state = initialState, action) => {
                         ...state.novelSettings[payload.novelId],
                         sort: payload.sort,
                         filter: payload.filter,
+                    },
+                },
+            };
+
+        case SAVE_SCROLL_POSITION:
+            return {
+                ...state,
+                novelSettings: {
+                    ...state.novelSettings,
+                    [payload.novelId]: {
+                        ...state.novelSettings[payload.novelId],
+                        position: {
+                            ...state.novelSettings[payload.novelId].position,
+                            [payload.chapterId]: {
+                                position: payload.position,
+                                percentage: payload.percentage,
+                            },
+                        },
                     },
                 },
             };

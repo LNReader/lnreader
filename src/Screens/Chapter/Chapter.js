@@ -1,5 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
-import { StyleSheet, View, Text, ActivityIndicator } from "react-native";
+import {
+    StyleSheet,
+    View,
+    Text,
+    ActivityIndicator,
+    ScrollView,
+} from "react-native";
 import Constants from "expo-constants";
 
 import { Appbar, Portal } from "react-native-paper";
@@ -8,7 +14,10 @@ import { CollapsibleHeaderScrollView } from "react-native-collapsible-header-vie
 import ReaderSheet from "./components/ReaderSheet";
 
 import { insertHistoryAction } from "../../redux/history/history.actions";
-import { getChapterAction } from "../../redux/chapter/chapter.actions";
+import {
+    getChapterAction,
+    saveScrollPosition,
+} from "../../redux/chapter/chapter.actions";
 import { markChapterReadAction } from "../../redux/novel/novel.actions";
 import { updateChaptersRead } from "../../redux/tracker/tracker.actions";
 
@@ -27,7 +36,8 @@ import {
 } from "./readerStyleController";
 
 const Chapter = ({ route, navigation }) => {
-    const { chapterId, sourceId, chapterUrl, novelUrl, novelId } = route.params;
+    const { chapterId, sourceId, chapterUrl, novelUrl, novelId, position } =
+        route.params;
     let readerSheetRef = useRef(null);
 
     const theme = useTheme();
@@ -111,6 +121,23 @@ const Chapter = ({ route, navigation }) => {
         },
     ];
 
+    const onScroll = ({ nativeEvent }) => {
+        const position =
+            nativeEvent.contentOffset.y + nativeEvent.layoutMeasurement.height;
+
+        const percentage = Math.round(
+            (position / nativeEvent.contentSize.height) * 100
+        );
+
+        setScrollPercentage(percentage);
+        dispatch(saveScrollPosition(position, percentage, chapterId, novelId));
+
+        if (isCloseToBottom(nativeEvent)) {
+            dispatch(markChapterReadAction(chapterId, novelId));
+            updateTracker();
+        }
+    };
+
     return (
         <>
             <CollapsibleHeaderScrollView
@@ -160,20 +187,7 @@ const Chapter = ({ route, navigation }) => {
                     styles.container,
                     { backgroundColor: readerBackground(reader.theme) },
                 ]}
-                onScroll={({ nativeEvent }) => {
-                    setScrollPercentage(
-                        Math.round(
-                            ((nativeEvent.contentOffset.y +
-                                nativeEvent.layoutMeasurement.height) /
-                                nativeEvent.contentSize.height) *
-                                100
-                        )
-                    );
-                    if (isCloseToBottom(nativeEvent)) {
-                        dispatch(markChapterReadAction(chapterId, novelId));
-                        updateTracker();
-                    }
-                }}
+                onScroll={onScroll}
             >
                 {loading ? (
                     <View style={{ flex: 1, justifyContent: "center" }}>

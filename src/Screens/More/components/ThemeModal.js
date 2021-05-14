@@ -16,6 +16,7 @@ const ThemeModal = ({
         { id: 2, name: "Dark", statusBar: "light" },
         { id: 3, name: "Midnight Dusk", statusBar: "light" },
         { id: 4, name: "Lime", statusBar: "light" },
+        { id: 5, name: "Iris Blue", statusBar: "light" },
     ];
 
     const renderThemeCheckboxes = () =>

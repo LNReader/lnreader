@@ -15,6 +15,7 @@ import {
     darkTheme,
     midnightDuskTheme,
     limeTheme,
+    irisBlueTheme,
 } from "../../Theme/theme";
 
 const themes = {
@@ -23,6 +24,7 @@ const themes = {
     2: darkTheme,
     3: midnightDuskTheme,
     4: limeTheme,
+    5: irisBlueTheme,
 };
 
 const initialState = {
@@ -35,7 +37,7 @@ const initialState = {
         padding: 5,
         fontFamily: null,
     },
-    theme: themes[2],
+    theme: themes[5],
 };
 
 /**

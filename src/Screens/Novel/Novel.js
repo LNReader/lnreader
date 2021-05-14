@@ -44,7 +44,10 @@ const Novel = ({ route, navigation }) => {
         novel.novelId
     );
 
-    let lastRead = useContinueReading(chapters, novel.novelId);
+    let { lastReadChapter, position } = useContinueReading(
+        chapters,
+        novel.novelId
+    );
 
     useEffect(() => {
         dispatch(
@@ -74,6 +77,8 @@ const Novel = ({ route, navigation }) => {
             dispatch={dispatch}
             sourceId={sourceId}
             navigation={navigation}
+            lastReadChapter={lastReadChapter}
+            position={position}
             downloading={downloading}
             selected={selected}
             setSelected={setSelected}
@@ -104,7 +109,7 @@ const Novel = ({ route, navigation }) => {
                             theme={theme}
                             filter={filter}
                             loading={loading}
-                            lastRead={lastRead}
+                            lastRead={lastReadChapter}
                             dispatch={dispatch}
                             chapters={chapters}
                             navigation={navigation}
