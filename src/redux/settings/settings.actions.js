@@ -1,66 +1,34 @@
 import {
-    SWITCH_THEME,
-    SET_DISPLAY_MODE,
-    SET_ITEMS_PER_ROW,
-    UPDATE_READER_TEXT_SIZE,
-    UPDATE_READER_THEME,
-    UPDATE_READER_TEXT_ALIGN,
-    UPDATE_READER_PADDING,
-    SET_READER_FONT,
+    SET_APP_THEME,
+    SET_NOVELS_PER_ROW,
+    SET_READER_SETTINGS,
+    SET_APP_SETTINGS,
 } from "./settings.types";
 
-export const switchTheme = (val) => (dispatch) => {
+export const setAppTheme = (val) => (dispatch) => {
     dispatch({
-        type: SWITCH_THEME,
+        type: SET_APP_THEME,
         payload: val,
     });
 };
 
-export const setDisplayMode = (val) => (dispatch) => {
+export const setNovelsPerRow = (val) => (dispatch) => {
     dispatch({
-        type: SET_DISPLAY_MODE,
+        type: SET_NOVELS_PER_ROW,
         payload: val,
     });
 };
 
-export const setItemsPerRow = (val) => (dispatch) => {
+export const setAppSettings = (key, val) => (dispatch) => {
     dispatch({
-        type: SET_ITEMS_PER_ROW,
-        payload: val,
+        type: SET_APP_SETTINGS,
+        payload: { key, val },
     });
 };
 
-export const updateReaderTheme = (val) => (dispatch) => {
+export const setReaderSettings = (key, val) => (dispatch) => {
     dispatch({
-        type: UPDATE_READER_THEME,
-        payload: val,
-    });
-};
-
-export const updateReaderTextSize = (val) => (dispatch) => {
-    dispatch({
-        type: UPDATE_READER_TEXT_SIZE,
-        payload: val,
-    });
-};
-
-export const updateReaderTextAlign = (val) => (dispatch) => {
-    dispatch({
-        type: UPDATE_READER_TEXT_ALIGN,
-        payload: val,
-    });
-};
-
-export const updateReaderPadding = (val) => (dispatch) => {
-    dispatch({
-        type: UPDATE_READER_PADDING,
-        payload: val,
-    });
-};
-
-export const setReaderFont = (val) => (dispatch) => {
-    dispatch({
-        type: SET_READER_FONT,
-        payload: val,
+        type: SET_READER_SETTINGS,
+        payload: { key, val },
     });
 };

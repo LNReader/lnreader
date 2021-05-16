@@ -5,13 +5,7 @@ import Slider from "@react-native-community/slider";
 import Bottomsheet from "rn-sliding-up-panel";
 import { fonts } from "../../../Services/utils/constants";
 
-import {
-    setReaderFont,
-    updateReaderPadding,
-    updateReaderTextAlign,
-    updateReaderTextSize,
-    updateReaderTheme,
-} from "../../../redux/settings/settings.actions";
+import { setReaderSettings } from "../../../redux/settings/settings.actions";
 import BottomSheetHandle from "../../../Components/BottomSheetHandle";
 
 const ReaderSheet = ({ theme, reader, dispatch, bottomSheetRef }) => {
@@ -47,7 +41,7 @@ const ReaderSheet = ({ theme, reader, dispatch, bottomSheetRef }) => {
                         maximumTrackTintColor="#000000"
                         thumbTintColor={theme.colorAccent}
                         onValueChange={(value) =>
-                            dispatch(updateReaderTextSize(value))
+                            dispatch(setReaderSettings("textSize", value))
                         }
                     />
                     <View
@@ -72,7 +66,7 @@ const ReaderSheet = ({ theme, reader, dispatch, bottomSheetRef }) => {
                             </Text>
                             <ToggleButton.Row
                                 onValueChange={(value) =>
-                                    dispatch(updateReaderTheme(value))
+                                    dispatch(setReaderSettings("theme", value))
                                 }
                                 value={reader.theme}
                                 style={{ marginTop: 10 }}
@@ -123,7 +117,10 @@ const ReaderSheet = ({ theme, reader, dispatch, bottomSheetRef }) => {
                             <ToggleButton.Row
                                 onValueChange={(value) =>
                                     dispatch(
-                                        updateReaderTextAlign(value ?? "left")
+                                        setReaderSettings(
+                                            "textAlign",
+                                            value || "left"
+                                        )
                                     )
                                 }
                                 value={reader.textAlign}
@@ -183,7 +180,10 @@ const ReaderSheet = ({ theme, reader, dispatch, bottomSheetRef }) => {
                             disabled={reader.padding <= 0 ? true : false}
                             onPress={() =>
                                 dispatch(
-                                    updateReaderPadding(reader.padding - 1)
+                                    setReaderSettings(
+                                        "padding",
+                                        reader.padding - 1
+                                    )
                                 )
                             }
                         />
@@ -202,7 +202,10 @@ const ReaderSheet = ({ theme, reader, dispatch, bottomSheetRef }) => {
                             disabled={reader.padding >= 10 ? true : false}
                             onPress={() =>
                                 dispatch(
-                                    updateReaderPadding(reader.padding + 1)
+                                    setReaderSettings(
+                                        "padding",
+                                        reader.padding + 1
+                                    )
                                 )
                             }
                         />
@@ -227,7 +230,12 @@ const ReaderSheet = ({ theme, reader, dispatch, bottomSheetRef }) => {
                             <Chip
                                 key={index}
                                 onPress={() =>
-                                    dispatch(setReaderFont(font.fontFamily))
+                                    dispatch(
+                                        setReaderSettings(
+                                            "fontFamily",
+                                            font.fontFamily
+                                        )
+                                    )
                                 }
                                 textStyle={{ fontFamily: font.fontFamily }}
                                 style={{

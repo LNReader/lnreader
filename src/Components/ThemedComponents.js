@@ -1,8 +1,12 @@
 import React from "react";
-import { View, Text as RNText, Image, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet } from "react-native";
 
-const Text = () => {};
+const ScreenContainer = ({ children, theme }) => (
+    <View style={{ flex: 1, backgroundColor: theme.colorPrimaryDark }}>
+        {children}
+    </View>
+);
 
-export default UpdateCard;
+export { ScreenContainer };
 
-const styles = StyleSheet.create({});
+// const styles = StyleSheet.create({});

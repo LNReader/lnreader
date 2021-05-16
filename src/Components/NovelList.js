@@ -1,5 +1,6 @@
 import React from "react";
-import { RefreshControl, StyleSheet, FlatList } from "react-native";
+import { StyleSheet, FlatList } from "react-native";
+
 import { useSettings } from "../Hooks/reduxHooks";
 
 const NovelList = ({
@@ -8,20 +9,15 @@ const NovelList = ({
     refreshControl,
     ListEmptyComponent,
 }) => {
-    const { displayMode, itemsPerRow } = useSettings();
-    const getItemsPerRow = () => {
-        if (displayMode === 2) {
-            return 1;
-        } else {
-            return itemsPerRow;
-        }
-    };
+    const { displayMode, novelsPerRow } = useSettings();
+
+    const getNovelsPerRow = () => (displayMode === 2 ? 1 : novelsPerRow);
 
     return (
         <FlatList
             contentContainerStyle={styles.flatListCont}
-            numColumns={getItemsPerRow()}
-            key={getItemsPerRow()}
+            numColumns={getNovelsPerRow()}
+            key={getNovelsPerRow()}
             data={data}
             keyExtractor={(item) => item.novelUrl}
             renderItem={renderItem}

@@ -34,7 +34,7 @@ const MainNavigator = () => {
 
     return (
         <NavigationContainer>
-            <View style={{ flex: 1, backgroundColor: theme.colorPrimary }}>
+            <View style={{ flex: 1, backgroundColor: theme.colorPrimaryDark }}>
                 {isNewVersion && <NewUpdateDialog newVersion={latestRelease} />}
                 <Stack.Navigator screenOptions={stackNavigatorConfig}>
                     <Stack.Screen

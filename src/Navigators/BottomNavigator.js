@@ -16,7 +16,6 @@ const BottomNavigator = () => {
 
     return (
         <Tab.Navigator
-            // shifting={false}
             barStyle={{ backgroundColor: theme.colorPrimary }}
             activeColor={theme.colorAccent}
         >

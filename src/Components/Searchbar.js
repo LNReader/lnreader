@@ -4,7 +4,7 @@ import { TouchableRipple, IconButton } from "react-native-paper";
 import Constants from "expo-constants";
 import { useSettings } from "../Hooks/reduxHooks";
 import { useDispatch } from "react-redux";
-import { setDisplayMode } from "../redux/settings/settings.actions";
+import { setAppSettings } from "../redux/settings/settings.actions";
 
 export const Searchbar = ({
     theme,
@@ -89,7 +89,9 @@ export const Searchbar = ({
                         style={{ marginRight: 0 }}
                         size={23}
                         onPress={() =>
-                            dispatch(setDisplayMode(getDisplayMode()))
+                            dispatch(
+                                setAppSettings("displayMode", getDisplayMode())
+                            )
                         }
                     />
                 )}

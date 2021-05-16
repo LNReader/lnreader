@@ -13,11 +13,11 @@ const useReaderSettings = () => {
 };
 
 const useSettings = () => {
-    const { displayMode, itemsPerRow } = useSelector(
+    const { displayMode, novelsPerRow } = useSelector(
         (state) => state.settingsReducer
     );
 
-    return { displayMode, itemsPerRow };
+    return { displayMode, novelsPerRow };
 };
 
 const useLibrary = () => {

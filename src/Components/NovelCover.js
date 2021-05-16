@@ -9,7 +9,7 @@ import ListView from "./ListView";
 
 const NovelCover = ({ item, onPress, libraryStatus }) => {
     const theme = useTheme();
-    const { displayMode, itemsPerRow } = useSettings();
+    const { displayMode, novelsPerRow } = useSettings();
 
     const height = {
         1: 550,
@@ -83,7 +83,7 @@ const NovelCover = ({ item, onPress, libraryStatus }) => {
         );
 
     return displayMode !== 2 ? (
-        <View style={{ flex: 1 / itemsPerRow }}>
+        <View style={{ flex: 1 / novelsPerRow }}>
             <TouchableRipple
                 borderless
                 centered
@@ -94,7 +94,7 @@ const NovelCover = ({ item, onPress, libraryStatus }) => {
                 <>
                     <ImageBackground
                         source={{ uri: item.novelCover }}
-                        style={{ height: height[itemsPerRow] }}
+                        style={{ height: height[novelsPerRow] }}
                         imageStyle={[
                             { borderRadius: 4 },
                             libraryStatus && { opacity: 0.5 },

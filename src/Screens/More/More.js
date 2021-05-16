@@ -38,21 +38,12 @@ const MoreScreen = ({ navigation }) => {
                         icon="cog-outline"
                         onPress={() =>
                             navigation.navigate("MoreStack", {
-                                screen: "Settings",
+                                screen: "SettingsStack",
                             })
                         }
                         theme={theme}
                     />
-                    <ListItem
-                        title="Tracking"
-                        icon="sync"
-                        onPress={() =>
-                            navigation.navigate("MoreStack", {
-                                screen: "Trackers",
-                            })
-                        }
-                        theme={theme}
-                    />
+
                     <ListItem
                         title="About"
                         icon="information-outline"

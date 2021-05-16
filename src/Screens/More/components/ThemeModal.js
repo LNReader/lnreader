@@ -3,13 +3,9 @@ import { StyleSheet } from "react-native";
 import { Portal, Modal, Checkbox } from "react-native-paper";
 
 import { setStatusBarStyle } from "expo-status-bar";
+import { setAppTheme } from "../../../redux/settings/settings.actions";
 
-const ThemeModal = ({
-    themeModalVisible,
-    hidethemeModal,
-    switchTheme,
-    theme,
-}) => {
+const ThemeModal = ({ themeModalVisible, hidethemeModal, dispatch, theme }) => {
     const themes = [
         { id: 0, name: "AMOLED Dark", statusBar: "light" },
         { id: 1, name: "Light", statusBar: "dark" },
@@ -29,7 +25,7 @@ const ThemeModal = ({
                 mode="ios"
                 color={theme.colorAccent}
                 onPress={() => {
-                    switchTheme(item.id);
+                    dispatch(setAppTheme(item.id));
                     setStatusBarStyle(item.statusBar);
                 }}
             />

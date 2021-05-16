@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, View, Text, ImageBackground } from "react-native";
 import { TouchableRipple } from "react-native-paper";
 
-import { useSettings, useTheme } from "../../../Hooks/reduxHooks";
+import { useTheme } from "../../../Hooks/reduxHooks";
 
 const GlobalSearchNovelCover = ({ item, onPress, libraryStatus }) => {
     const theme = useTheme();

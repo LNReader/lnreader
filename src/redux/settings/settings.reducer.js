@@ -1,13 +1,8 @@
-import { SET_NOVEL_SETTINGS } from "../novel/novel.types";
 import {
-    SWITCH_THEME,
-    SET_DISPLAY_MODE,
-    SET_ITEMS_PER_ROW,
-    SET_READER_FONT,
-    UPDATE_READER_PADDING,
-    UPDATE_READER_TEXT_ALIGN,
-    UPDATE_READER_TEXT_SIZE,
-    UPDATE_READER_THEME,
+    SET_APP_THEME,
+    SET_NOVELS_PER_ROW,
+    SET_READER_SETTINGS,
+    SET_APP_SETTINGS,
 } from "./settings.types";
 import {
     amoledDarkTheme,
@@ -27,9 +22,26 @@ const themes = {
     5: irisBlueTheme,
 };
 
+/**
+ * Display Mode
+ *
+ * 0 -> Compact
+ * 1 -> Comfortable
+ * 2 -> List
+ */
+
+/**
+ * Reader Theme
+ *
+ * 1 -> Dark
+ * 2 -> White
+ * 3 -> Sepia
+ */
+
 const initialState = {
+    theme: irisBlueTheme,
     displayMode: 0,
-    itemsPerRow: 3,
+    novelsPerRow: 3,
     reader: {
         theme: 1,
         textSize: 16,
@@ -37,61 +49,32 @@ const initialState = {
         padding: 5,
         fontFamily: null,
     },
-    theme: themes[5],
 };
-
-/**
- * Display Mode
- * 0 -> Compact
- * 1 -> Comfortable
- * 2 -> List
- */
-
-/**
- * Reader Settings
- * theme
- * 1 -> Dark
- * 2 -> White
- * 3 -> Sepia
- */
 
 const settingsReducer = (state = initialState, action) => {
     const { type, payload } = action;
 
     switch (type) {
-        case SWITCH_THEME:
+        case SET_APP_THEME:
             return { ...state, theme: themes[payload] };
-        case SET_DISPLAY_MODE:
+        case SET_NOVELS_PER_ROW:
             return {
                 ...state,
-                displayMode: payload,
+                novelsPerRow: state.displayMode !== 2 ? payload : 1,
             };
-        case SET_ITEMS_PER_ROW:
+        case SET_APP_SETTINGS:
             return {
                 ...state,
-                itemsPerRow: state.displayMode !== 2 ? payload : 1,
+                [payload.key]: payload.val,
             };
-        case UPDATE_READER_THEME:
-            return { ...state, reader: { ...state.reader, theme: payload } };
-        case UPDATE_READER_TEXT_SIZE:
-            return { ...state, reader: { ...state.reader, textSize: payload } };
-        case UPDATE_READER_TEXT_ALIGN:
+        case SET_READER_SETTINGS:
             return {
                 ...state,
-                reader: { ...state.reader, textAlign: payload },
+                reader: {
+                    ...state.reader,
+                    [payload.key]: payload.val,
+                },
             };
-        case UPDATE_READER_PADDING:
-            return {
-                ...state,
-                reader: { ...state.reader, padding: payload },
-            };
-        case SET_READER_FONT:
-            return {
-                ...state,
-                reader: { ...state.reader, fontFamily: payload },
-            };
-        case SET_NOVEL_SETTINGS:
-            console.log(state.novelSettings);
         default:
             return state;
     }

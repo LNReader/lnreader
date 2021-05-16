@@ -1,13 +1,14 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 import { Portal, Modal, Checkbox } from "react-native-paper";
+import { setAppSettings } from "../../../redux/settings/settings.actions";
 
 const DisplayModeModal = ({
-    displayMode,
-    displayModalVisible,
-    setDisplayMode,
-    hideDisplayModal,
     theme,
+    dispatch,
+    displayMode,
+    hideDisplayModal,
+    displayModalVisible,
 }) => {
     const displayModes = [
         { displayMode: 0, label: "Compact Grid" },
@@ -27,7 +28,9 @@ const DisplayModeModal = ({
                 mode="ios"
                 uncheckedColor={theme.textColorSecondary}
                 color={theme.colorAccent}
-                onPress={() => setDisplayMode(mode.displayMode)}
+                onPress={() =>
+                    dispatch(setAppSettings("displayMode", mode.displayMode))
+                }
             />
         ));
     };

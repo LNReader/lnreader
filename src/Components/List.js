@@ -25,7 +25,6 @@ const ListItem = ({
 }) => (
     <List.Item
         title={title}
-        style={[!right && { paddingVertical: 12 }]}
         titleStyle={[{ color: theme.textColorPrimary }, titleStyle]}
         description={description}
         descriptionStyle={{ color: theme.textColorSecondary }}

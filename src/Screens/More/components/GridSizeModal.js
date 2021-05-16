@@ -3,12 +3,13 @@ import { Text, StyleSheet } from "react-native";
 import { Portal, Modal } from "react-native-paper";
 import Slider from "@react-native-community/slider";
 import { RadioButton, RadioButtonGroup } from "../../../Components/RadioButton";
+import { setNovelsPerRow } from "../../../redux/settings/settings.actions";
 
 const GridSizeModal = ({
-    itemsPerRow,
+    dispatch,
+    novelsPerRow,
     gridSizeModalVisible,
     hideGridSizeModal,
-    setItemsPerRow,
     theme,
 }) => {
     const gridSizes = {
@@ -43,22 +44,22 @@ const GridSizeModal = ({
                         { color: theme.textColorSecondary },
                     ]}
                 >
-                    {`${itemsPerRow} per row`}
+                    {`${novelsPerRow} per row`}
                 </Text>
-                <Slider
+                {/* <Slider
                     style={styles.slider}
-                    value={itemsPerRow}
+                    value={novelsPerRow}
                     minimumValue={1}
                     maximumValue={5}
                     step={1}
                     minimumTrackTintColor={theme.colorAccent}
                     maximumTrackTintColor="#000000"
                     thumbTintColor={theme.colorAccent}
-                    onValueChange={(value) => setItemsPerRow(value)}
-                />
-                {/* <RadioButtonGroup
-                    onValueChange={(value) => setItemsPerRow(value)}
-                    value={itemsPerRow}
+                    onValueChange={(value) => dispatch(setNovelsPerRow(value))}
+                /> */}
+                <RadioButtonGroup
+                    onValueChange={(value) => dispatch(setNovelsPerRow(value))}
+                    value={novelsPerRow}
                 >
                     {Object.keys(gridSizes).map((item) => (
                         <RadioButton
@@ -68,7 +69,7 @@ const GridSizeModal = ({
                             theme={theme}
                         />
                     ))}
-                </RadioButtonGroup> */}
+                </RadioButtonGroup>
             </Modal>
         </Portal>
     );
