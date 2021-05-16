@@ -173,7 +173,9 @@ const ChapterItem = ({
                                     !chapter.read &&
                                     position[chapter.chapterId] &&
                                     position[chapter.chapterId].percentage <
-                                        95 && (
+                                        100 &&
+                                    position[chapter.chapterId].percentage >
+                                        0 && (
                                         <Text
                                             style={[
                                                 {

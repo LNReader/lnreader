@@ -39,6 +39,7 @@ import {
 } from "../../Database/queries/ChapterQueries";
 import { deleteNovelUpdates } from "../../Database/queries/UpdateQueries";
 import {
+    SAVE_SCROLL_POSITION,
     SET_CHAPTER_LIST_PREF,
     SET_LAST_READ,
 } from "../preferences/preference.types";
@@ -167,6 +168,19 @@ export const markChapterReadAction =
         dispatch({
             type: SET_LAST_READ,
             payload: { novelId, chapterId: chapterId + 1 },
+        });
+
+        /**
+         * Reset progress on marked read
+         */
+        dispatch({
+            type: SAVE_SCROLL_POSITION,
+            payload: {
+                position: 0,
+                percentage: 0,
+                chapterId,
+                novelId,
+            },
         });
     };
 

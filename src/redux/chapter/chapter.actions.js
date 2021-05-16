@@ -26,6 +26,11 @@ export const saveScrollPosition =
     (position, percentage, chapterId, novelId) => async (dispatch) => {
         dispatch({
             type: SAVE_SCROLL_POSITION,
-            payload: { position, percentage, chapterId, novelId },
+            payload: {
+                position,
+                percentage,
+                chapterId,
+                novelId,
+            },
         });
     };

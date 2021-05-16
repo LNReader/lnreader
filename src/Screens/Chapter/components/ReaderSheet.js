@@ -251,8 +251,6 @@ const ReaderSheet = ({ theme, reader, dispatch, bottomSheetRef }) => {
     );
 };
 
-const mapStateToProps = (state) => ({});
-
 export default ReaderSheet;
 
 const styles = StyleSheet.create({

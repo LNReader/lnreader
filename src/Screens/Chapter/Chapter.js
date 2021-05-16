@@ -112,11 +112,11 @@ const Chapter = ({ route, navigation }) => {
 
     const scrollToInitialPosition = () => {
         if (position && firstLayout) {
-            position.percentage < 95 &&
+            position.percentage < 100 &&
                 scrollViewRef.getNode().scrollTo({
                     x: 0,
                     y: position.position,
-                    animated: true,
+                    animated: false,
                 });
             setFirstLayout(false);
         }
