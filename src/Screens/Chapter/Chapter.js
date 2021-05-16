@@ -5,6 +5,7 @@ import {
     Text,
     ActivityIndicator,
     ScrollView,
+    InteractionManager,
 } from "react-native";
 import Constants from "expo-constants";
 
@@ -50,6 +51,9 @@ const Chapter = ({ route, navigation }) => {
     const { chapter, loading } = useChapter();
 
     const [scrollPercentage, setScrollPercentage] = useState(0);
+    const [firstLayout, setFirstLayout] = useState(true);
+
+    let scrollViewRef;
 
     useEffect(() => {
         dispatch(getChapterAction(sourceId, novelUrl, chapterUrl, chapterId));
@@ -106,6 +110,18 @@ const Chapter = ({ route, navigation }) => {
             chapterName: chapter.chapterName,
         });
 
+    const scrollToInitialPosition = () => {
+        if (position && firstLayout) {
+            position.percentage < 95 &&
+                scrollViewRef.getNode().scrollTo({
+                    x: 0,
+                    y: position.position,
+                    animated: true,
+                });
+            setFirstLayout(false);
+        }
+    };
+
     const readerStyles = [
         {
             paddingVertical: 16,
@@ -122,6 +138,7 @@ const Chapter = ({ route, navigation }) => {
     ];
 
     const onScroll = ({ nativeEvent }) => {
+        const offsetY = nativeEvent.contentOffset.y;
         const position =
             nativeEvent.contentOffset.y + nativeEvent.layoutMeasurement.height;
 
@@ -130,7 +147,7 @@ const Chapter = ({ route, navigation }) => {
         );
 
         setScrollPercentage(percentage);
-        dispatch(saveScrollPosition(position, percentage, chapterId, novelId));
+        dispatch(saveScrollPosition(offsetY, percentage, chapterId, novelId));
 
         if (isCloseToBottom(nativeEvent)) {
             dispatch(markChapterReadAction(chapterId, novelId));
@@ -142,6 +159,9 @@ const Chapter = ({ route, navigation }) => {
         <>
             <CollapsibleHeaderScrollView
                 headerContainerBackgroundColor="rgba(0,0,0,0.4)"
+                ref={(ref) => {
+                    scrollViewRef = ref;
+                }}
                 CollapsibleHeaderComponent={
                     <Appbar.Header
                         style={{ backgroundColor: "transparent", elevation: 0 }}
@@ -197,7 +217,10 @@ const Chapter = ({ route, navigation }) => {
                         />
                     </View>
                 ) : (
-                    <Text style={readerStyles}>
+                    <Text
+                        style={readerStyles}
+                        onLayout={scrollToInitialPosition}
+                    >
                         {chapter.chapterText.trim()}
                     </Text>
                 )}

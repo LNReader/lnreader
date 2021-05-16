@@ -5,7 +5,7 @@ export const readerBackground = (val) => {
         3: "#F4ECD8",
     };
 
-    return backgroundColor[val];
+    return backgroundColor[val] ?? "#FFFFFF";
 };
 
 export const readerTextColor = (val) => {

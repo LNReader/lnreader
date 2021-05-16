@@ -158,7 +158,12 @@ export const bookmarkChapterAction =
 export const markChapterReadAction =
     (chapterId, novelId) => async (dispatch) => {
         await markChapterRead(chapterId);
-        dispatch({ type: CHAPTER_READ, payload: { chapterId } });
+
+        dispatch({
+            type: CHAPTER_READ,
+            payload: { chapterId },
+        });
+
         dispatch({
             type: SET_LAST_READ,
             payload: { novelId, chapterId: chapterId + 1 },
@@ -169,20 +174,29 @@ export const markPreviousChaptersReadAction =
     (chapterId, novelId) => async (dispatch) => {
         await markPreviuschaptersRead(chapterId, novelId);
 
-        dispatch({ type: MARK_PREVIOUS_CHAPTERS_READ, payload: chapterId });
+        dispatch({
+            type: MARK_PREVIOUS_CHAPTERS_READ,
+            payload: chapterId,
+        });
     };
 
 export const markPreviousChaptersUnreadAction =
     (chapterId, novelId) => async (dispatch) => {
         await markPreviousChaptersUnread(chapterId, novelId);
 
-        dispatch({ type: MARK_PREVIOUS_CHAPTERS_UNREAD, payload: chapterId });
+        dispatch({
+            type: MARK_PREVIOUS_CHAPTERS_UNREAD,
+            payload: chapterId,
+        });
     };
 
 export const markChapterUnreadAction = (chapterId) => async (dispatch) => {
     await markChapterUnread(chapterId);
 
-    dispatch({ type: CHAPTER_UNREAD, payload: { chapterId } });
+    dispatch({
+        type: CHAPTER_UNREAD,
+        payload: { chapterId },
+    });
 };
 
 export const downloadChapterAction =

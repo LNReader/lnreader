@@ -31,11 +31,9 @@ const ChapterItem = ({
             chapterId: chapter.chapterId,
             chapterUrl: chapter.chapterUrl,
             chapterName: chapter.chapterName,
-            position:
-                (position &&
-                    position[chapter.chapterId] &&
-                    position[chapter.chapterId].position) ||
-                0,
+            position: !chapter.read
+                ? position && position[chapter.chapterId]
+                : 0,
         });
 
     const displayDownloadButton = () => {

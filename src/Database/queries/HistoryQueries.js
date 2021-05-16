@@ -54,3 +54,18 @@ export const deleteAllHistory = () => {
         tx.executeSql("DELETE FROM history; VACCUM;");
     });
 };
+
+export const getHistoryDates = async () => {
+    return new Promise((resolve, reject) => {
+        db.transaction((tx) => {
+            tx.executeSql(
+                "SELECT DISTINCT strftime('%d-%m-%Y', historyTimeRead) as day from history",
+                null,
+                (txObj, { rows: { _array } }) => {
+                    resolve(_array);
+                },
+                (txObj, error) => console.log("Error ", error)
+            );
+        });
+    });
+};
