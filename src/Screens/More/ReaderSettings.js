@@ -2,7 +2,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 
 import { Appbar } from "../../Components/Appbar";
-import { ScreenContainer } from "../../Components/ThemedComponents";
+import { ScreenContainer } from "../../Components/Common";
 
 import { useTheme } from "../../Hooks/reduxHooks";
 

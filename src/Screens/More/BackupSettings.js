@@ -8,7 +8,7 @@ import {
     ListSection,
     ListSubHeader,
 } from "../../Components/List";
-import { ScreenContainer } from "../../Components/ThemedComponents";
+import { ScreenContainer } from "../../Components/Common";
 
 import { useTheme } from "../../Hooks/reduxHooks";
 import { restoreLibraryAction } from "../../redux/library/library.actions";

@@ -1,12 +1,13 @@
 import React from "react";
 import { StyleSheet, View, Image } from "react-native";
-import { useSelector } from "react-redux";
 
 import { Appbar } from "../../Components/Appbar";
 import { ListItem, ListSection } from "../../Components/List";
 
+import { useTheme } from "../../Hooks/reduxHooks";
+
 const MoreScreen = ({ navigation }) => {
-    const theme = useSelector((state) => state.settingsReducer.theme);
+    const theme = useTheme();
 
     return (
         <>
@@ -15,8 +16,8 @@ const MoreScreen = ({ navigation }) => {
                 <View style={{ overflow: "hidden", paddingBottom: 4 }}>
                     <View
                         style={{
-                            paddingTop: 20,
-                            paddingBottom: 30,
+                            paddingTop: 10,
+                            paddingBottom: 25,
                             alignItems: "center",
                             backgroundColor: theme.colorPrimary,
                             elevation: 4,
@@ -25,8 +26,8 @@ const MoreScreen = ({ navigation }) => {
                         <Image
                             source={require("../../../assets/logo.png")}
                             style={{
-                                height: 60,
-                                width: 60,
+                                height: 80,
+                                width: 80,
                                 tintColor: theme.textColorPrimary,
                             }}
                         />

@@ -160,7 +160,7 @@ export const deleteChapter = async (chapterId) => {
         tx.executeSql(
             updateIsDownloadedQuery,
             [chapterId],
-            (tx, res) => console.log(`Chaptermarked not downapdeod deleted`),
+            (tx, res) => {},
             (txObj, error) => console.log("Error ", error)
         );
         tx.executeSql(

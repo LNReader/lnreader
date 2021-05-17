@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet } from "react-native";
+
 import { Button } from "react-native-paper";
-import { useContinueReading } from "../../../../Hooks/reduxHooks";
 
 const ReadButton = ({ navigation, novel, chapters, theme, lastRead }) => {
     return (

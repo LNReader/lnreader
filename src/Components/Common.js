@@ -7,6 +7,10 @@ const ScreenContainer = ({ children, theme }) => (
     </View>
 );
 
-export { ScreenContainer };
+const Row = ({ children }) => <View style={styles.row}>{children}</View>;
 
-// const styles = StyleSheet.create({});
+export { ScreenContainer, Row };
+
+const styles = StyleSheet.create({
+    row: { flexDirection: "row", alignItems: "center" },
+});

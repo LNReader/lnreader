@@ -8,7 +8,8 @@ const getUpdatesQuery = `
     ON updates.chapterId = chapters.chapterId
     JOIN novels
     ON updates.novelId = novels.novelId
-    ORDER BY updates.updateTime DESC`;
+    ORDER BY updates.updateTime DESC
+    `;
 
 export const getUpdates = async () => {
     return new Promise((resolve, reject) => {

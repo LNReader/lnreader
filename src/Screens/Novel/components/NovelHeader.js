@@ -1,21 +1,30 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, Image, FlatList, Share } from "react-native";
-import { TouchableRipple, IconButton, Button, Menu } from "react-native-paper";
-import { useNavigation } from "@react-navigation/native";
+import { View, Text, StyleSheet, Share } from "react-native";
+
 import * as WebBrowser from "expo-web-browser";
-import { useSelector, useDispatch } from "react-redux";
+import { TouchableRipple, IconButton, Menu } from "react-native-paper";
 
 import {
     downloadAllChaptersAction,
     deleteAllChaptersAction,
+    followNovelAction,
 } from "../../../redux/novel/novel.actions";
-import { GenreChip } from "./Info/GenreChip";
-import NovelCoverImage from "./Info/NovelCoverImage";
-import FollowChip from "./Info/FollowChip";
-import TrackerChip from "./Info/TrackerChip";
+import { useTrackingStatus } from "../../../Hooks/reduxHooks";
+
+import {
+    CoverImage,
+    NovelAuthor,
+    NovelInfo,
+    NovelInfoContainer,
+    NovelThumbnail,
+    NovelTitle,
+    FollowButton,
+    TrackerButton,
+    NovelGenres,
+} from "./Info/NovelDetailsComponents";
+import { Row } from "../../../Components/Common";
 import NovelSummary from "./Info/NovelSummary";
 import ReadButton from "./Info/ReadButton";
-import { useTrackingStatus } from "../../../Hooks/reduxHooks";
 
 const NovelInfoHeader = ({
     item,
@@ -40,81 +49,42 @@ const NovelInfoHeader = ({
         isTracked = trackedNovels.find((obj) => obj.novelId === novel.novelId);
     }
 
-    const getGenres = ({ item }) => <GenreChip theme={theme}>{item}</GenreChip>;
-
     return (
-        <View style={{ flexGrow: 1 }}>
-            <NovelCoverImage source={{ uri: item.novelCover }} theme={theme}>
-                <View style={styles.detailsContainer}>
-                    <View>
-                        <Image
-                            source={{ uri: item.novelCover }}
-                            style={styles.logo}
-                        />
+        <View>
+            <CoverImage source={{ uri: item.novelCover }} theme={theme}>
+                <NovelInfoContainer>
+                    <NovelThumbnail source={{ uri: item.novelCover }} />
+                    <View style={styles.novelDetails}>
+                        <NovelTitle theme={theme}>{item.novelName}</NovelTitle>
+                        {!loading && (
+                            <>
+                                <NovelAuthor theme={theme}>
+                                    {novel.author}
+                                </NovelAuthor>
+                                <NovelInfo theme={theme}>
+                                    {novel.status}
+                                </NovelInfo>
+                                <NovelInfo theme={theme}>
+                                    {novel.source}
+                                </NovelInfo>
+                            </>
+                        )}
                     </View>
-                    <View style={styles.nameContainer}>
-                        <Text
-                            numberOfLines={2}
-                            style={[
-                                styles.name,
-                                { color: theme.textColorPrimary },
-                            ]}
-                        >
-                            {item.novelName}
-                        </Text>
-                        <>
-                            <Text
-                                style={{
-                                    color: theme.textColorSecondary,
-                                    marginVertical: 3,
-                                    fontSize: 14,
-                                    fontWeight: "bold",
-                                }}
-                                numberOfLines={2}
-                            >
-                                {(item.author &&
-                                    item.author.replace(",", ", ")) ||
-                                    (!loading &&
-                                        novel.author.replace(",", ", "))}
-                            </Text>
-
-                            <Text
-                                style={{
-                                    color: theme.textColorSecondary,
-                                    marginVertical: 3,
-                                    fontSize: 14,
-                                }}
-                                numberOfLines={1}
-                            >
-                                {item.status || (!loading && novel.status)}
-                            </Text>
-                            <Text
-                                style={{
-                                    color: theme.textColorSecondary,
-                                    fontSize: 14,
-                                }}
-                                numberOfLines={1}
-                            >
-                                {item.source || (!loading && novel.source)}
-                            </Text>
-                        </>
-                    </View>
-                </View>
-            </NovelCoverImage>
+                </NovelInfoContainer>
+            </CoverImage>
             {!loading && (
                 <>
-                    <View style={styles.buttonsContainer}>
-                        <FollowChip
+                    <Row>
+                        <FollowButton
                             theme={theme}
                             followed={novel.followed}
-                            novel={novel}
-                            dispatch={dispatch}
+                            onPress={() => dispatch(followNovelAction(novel))}
                         />
                         {tracker && (
-                            <TrackerChip
+                            <TrackerButton
                                 theme={theme}
                                 isTracked={isTracked}
-                                trackerSheetRef={trackerSheetRef}
+                                onPress={() => trackerSheetRef.current.show()}
                             />
                         )}
                         <IconButton
@@ -169,36 +139,13 @@ const NovelInfoHeader = ({
                                 }
                             />
                         </Menu>
-                        {/* <IconButton
-                            onPress={() =>
-                                navigation.navigate("MigrateNovel", {
-                                    sourceId: novel.sourceId,
-                                    novelName: novel.novelName,
-                                })
-                            }
-                            icon="weather-cloudy-arrow-right"
-                            color={theme.colorAccent}
-                            size={21}
-                        /> */}
-                    </View>
+                    </Row>
                     <NovelSummary
                         summary={novel.novelSummary}
                         followed={novel.followed}
                         theme={theme}
                     />
-                    <FlatList
-                        style={
-                            novel.novelSummary === ""
-                                ? { marginTop: 20 }
-                                : { marginTop: 12 }
-                        }
-                        contentContainerStyle={styles.genreContainer}
-                        horizontal
-                        data={novel.genre.split(",")}
-                        keyExtractor={(item) => item}
-                        renderItem={getGenres}
-                        showsHorizontalScrollIndicator={false}
-                    />
+                    <NovelGenres theme={theme} genre={novel.genre} />
                     <ReadButton
                         novel={novel}
                         chapters={chapters}
@@ -240,32 +187,11 @@ const NovelInfoHeader = ({
 export default NovelInfoHeader;
 
 const styles = StyleSheet.create({
-    nameContainer: {
+    novelDetails: {
         flex: 1,
-        marginHorizontal: 16,
+        paddingHorizontal: 16,
         paddingTop: 8,
     },
-    detailsContainer: {
-        flex: 1,
-        flexDirection: "row",
-        margin: 16,
-        paddingTop: 90,
-    },
-    logo: {
-        height: 160,
-        width: 110,
-        margin: 3.2,
-        borderRadius: 6,
-    },
-    name: {
-        fontWeight: "bold",
-        fontSize: 18,
-    },
-    buttonsContainer: {
-        flexDirection: "row",
-        alignItems: "center",
-    },
-
     chapters: {
         paddingHorizontal: 16,
         paddingVertical: 4,
@@ -277,10 +203,5 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         alignItems: "center",
         paddingRight: 12,
-    },
-
-    genreContainer: {
-        paddingHorizontal: 15,
-        paddingBottom: 15,
     },
 });
