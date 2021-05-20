@@ -65,37 +65,49 @@ const ReaderSheet = ({ theme, reader, dispatch, bottomSheetRef }) => {
                                 Reader Theme
                             </Text>
                             <ToggleButton.Row
-                                onValueChange={(value) =>
-                                    dispatch(setReaderSettings("theme", value))
-                                }
+                                onValueChange={(value) => {
+                                    dispatch(
+                                        setReaderSettings(
+                                            "theme",
+                                            value ?? reader.theme
+                                        )
+                                    );
+                                }}
                                 value={reader.theme}
                                 style={{ marginTop: 10 }}
                             >
                                 <ToggleButton
-                                    icon="format-text"
+                                    icon={reader.theme === 1 && "check"}
                                     color="#FFFFFF"
                                     value={1}
                                     style={{
                                         backgroundColor: "#000000",
                                         marginHorizontal: 10,
+                                        borderRadius: 50,
+                                        borderTopRightRadius: 50,
+                                        borderBottomRightRadius: 50,
                                     }}
                                 />
                                 <ToggleButton
-                                    icon="format-text"
+                                    icon={reader.theme === 2 && "check"}
                                     color="#000000"
                                     value={2}
                                     style={{
                                         backgroundColor: "#FFFFFF",
                                         marginHorizontal: 10,
+                                        borderRadius: 50,
                                     }}
                                 />
                                 <ToggleButton
-                                    icon="format-text"
+                                    icon={reader.theme === 3 && "check"}
                                     color="#000000"
                                     value={3}
                                     style={{
                                         backgroundColor: "#F4ECD8",
                                         marginHorizontal: 10,
+                                        borderRadius: 50,
+                                        borderTopLeftRadius: 50,
+                                        borderBottomLeftRadius: 50,
                                     }}
                                 />
                             </ToggleButton.Row>
@@ -119,7 +131,7 @@ const ReaderSheet = ({ theme, reader, dispatch, bottomSheetRef }) => {
                                     dispatch(
                                         setReaderSettings(
                                             "textAlign",
-                                            value || "left"
+                                            value ?? reader.textAlign
                                         )
                                     )
                                 }
@@ -128,29 +140,44 @@ const ReaderSheet = ({ theme, reader, dispatch, bottomSheetRef }) => {
                             >
                                 <ToggleButton
                                     icon="format-align-left"
-                                    color="#000000"
+                                    color={
+                                        reader.textAlign === "left"
+                                            ? theme.colorAccent
+                                            : "#000000"
+                                    }
                                     value="left"
                                     style={{
                                         backgroundColor: "#FFFFFF",
                                         marginHorizontal: 10,
+                                        borderWidth: 0,
                                     }}
                                 />
                                 <ToggleButton
                                     icon="format-align-justify"
-                                    color="#000000"
+                                    color={
+                                        reader.textAlign === "justify"
+                                            ? theme.colorAccent
+                                            : "#000000"
+                                    }
                                     value="justify"
                                     style={{
                                         backgroundColor: "#FFFFFF",
                                         marginHorizontal: 10,
+                                        borderWidth: 0,
                                     }}
                                 />
                                 <ToggleButton
                                     icon="format-align-right"
-                                    color="#000000"
+                                    color={
+                                        reader.textAlign === "right"
+                                            ? theme.colorAccent
+                                            : "#000000"
+                                    }
                                     value="right"
                                     style={{
                                         backgroundColor: "#FFFFFF",
                                         marginHorizontal: 10,
+                                        borderWidth: 0,
                                     }}
                                 />
                             </ToggleButton.Row>

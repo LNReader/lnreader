@@ -106,7 +106,7 @@ const TrackerButton = ({ theme, isTracked, onPress }) => (
         onPress={onPress}
         style={[
             styles.followButton,
-            { backgroundColor: theme.colorPrimaryDark },
+            { backgroundColor: theme.colorPrimaryDark, marginLeft: 0 },
         ]}
         textStyle={{
             fontWeight: "bold",

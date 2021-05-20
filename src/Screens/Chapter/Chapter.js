@@ -220,6 +220,7 @@ const Chapter = ({ route, navigation }) => {
                     <Text
                         style={readerStyles}
                         onLayout={scrollToInitialPosition}
+                        selectable={true}
                     >
                         {chapter.chapterText.trim()}
                     </Text>
