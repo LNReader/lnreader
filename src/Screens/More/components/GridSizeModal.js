@@ -13,11 +13,11 @@ const GridSizeModal = ({
     theme,
 }) => {
     const gridSizes = {
-        1: "XS",
-        2: "S",
+        5: "XS",
+        4: "S",
         3: "M",
-        4: "L",
-        5: "XL",
+        2: "L",
+        1: "XL",
     };
 
     return (

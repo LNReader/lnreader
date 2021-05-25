@@ -4,67 +4,94 @@ import {
     View,
     Text,
     ActivityIndicator,
-    ScrollView,
-    InteractionManager,
+    Button,
 } from "react-native";
-import Constants from "expo-constants";
-
-import { Appbar, Portal } from "react-native-paper";
-import { CollapsibleHeaderScrollView } from "react-native-collapsible-header-views";
-
-import ReaderSheet from "./components/ReaderSheet";
-
-import { insertHistoryAction } from "../../redux/history/history.actions";
-import {
-    getChapterAction,
-    saveScrollPosition,
-} from "../../redux/chapter/chapter.actions";
-import { markChapterReadAction } from "../../redux/novel/novel.actions";
-import { updateChaptersRead } from "../../redux/tracker/tracker.actions";
 
 import { useDispatch } from "react-redux";
-import { parseChapterNumber } from "../../Services/updates";
+import Constants from "expo-constants";
+import { Portal } from "react-native-paper";
+import { CollapsibleHeaderScrollView } from "react-native-collapsible-header-views";
+
+import { getChapterFromDB } from "../../Database/queries/ChapterQueries";
+import { fetchChapter } from "../../Services/Source/source";
+import { showToast } from "../../Hooks/showToast";
 import {
-    useChapter,
+    usePosition,
     useReaderSettings,
     useTheme,
     useTrackingStatus,
 } from "../../Hooks/reduxHooks";
+import { updateChaptersRead } from "../../redux/tracker/tracker.actions";
+import { insertHistoryAction } from "../../redux/history/history.actions";
 import {
     readerBackground,
     readerLineHeight,
     readerTextColor,
 } from "./readerStyleController";
+import { markChapterReadAction } from "../../redux/novel/novel.actions";
+import { saveScrollPosition } from "../../redux/preferences/preference.actions";
+import { parseChapterNumber } from "../../Services/updates";
+
+import ChapterAppbar from "./components/ChapterAppbar";
+import ReaderSheet from "./components/ReaderSheet";
 
 const Chapter = ({ route, navigation }) => {
-    const { chapterId, sourceId, chapterUrl, novelUrl, novelId, position } =
-        route.params;
+    const {
+        sourceId,
+        chapterId,
+        chapterUrl,
+        novelId,
+        novelUrl,
+        novelName,
+        chapterName,
+    } = route.params;
+    let scrollViewRef;
     let readerSheetRef = useRef(null);
 
     const theme = useTheme();
-    const reader = useReaderSettings();
     const dispatch = useDispatch();
+    const reader = useReaderSettings();
     const { tracker, trackedNovels } = useTrackingStatus();
+    const position = usePosition(novelId, chapterId);
 
     const isTracked = trackedNovels.find((obj) => obj.novelId === novelId);
 
-    const { chapter, loading } = useChapter();
+    const [chapter, setChapter] = useState({});
+    const [loading, setLoading] = useState(true);
 
     const [scrollPercentage, setScrollPercentage] = useState(0);
     const [firstLayout, setFirstLayout] = useState(true);
 
-    let scrollViewRef;
+    const getChapter = async (chapterId) => {
+        try {
+            if (chapterId) {
+                const chapterDownloaded = await getChapterFromDB(chapterId);
+
+                if (chapterDownloaded) {
+                    setChapter(chapterDownloaded);
+                } else {
+                    const res = await fetchChapter(
+                        sourceId,
+                        novelUrl,
+                        chapterUrl
+                    );
+                    setChapter(res);
+                }
+            } else {
+                const res = await fetchChapter(sourceId, novelUrl, chapterUrl);
+                setChapter(res);
+            }
+
+            setLoading(false);
+        } catch (error) {
+            showToast(error.message);
+        }
+    };
 
     useEffect(() => {
-        dispatch(getChapterAction(sourceId, novelUrl, chapterUrl, chapterId));
+        getChapter(chapterId);
         dispatch(insertHistoryAction(novelId, chapterId));
     }, []);
-
-    let chapterNumber;
-
-    if (!loading) {
-        chapterNumber = parseChapterNumber(chapter.chapterName);
-    }
 
     const isCloseToBottom = ({
         layoutMeasurement,
@@ -78,39 +105,40 @@ const Chapter = ({ route, navigation }) => {
         );
     };
 
-    const updateTracker = () =>
+    const updateTracker = () => {
+        const chapterNumber = parseChapterNumber(chapterName);
+
         isTracked &&
-        chapterNumber &&
-        chapterNumber > isTracked.my_list_status.num_chapters_read &&
-        dispatch(
-            updateChaptersRead(
-                isTracked.id,
-                tracker.access_token,
-                chapterNumber
-            )
+            chapterNumber &&
+            chapterNumber > isTracked.my_list_status.num_chapters_read &&
+            dispatch(
+                updateChaptersRead(
+                    isTracked.id,
+                    tracker.access_token,
+                    chapterNumber
+                )
+            );
+    };
+
+    const onScroll = ({ nativeEvent }) => {
+        const offsetY = nativeEvent.contentOffset.y;
+        const position =
+            nativeEvent.contentOffset.y + nativeEvent.layoutMeasurement.height;
+
+        const percentage = Math.round(
+            (position / nativeEvent.contentSize.height) * 100
         );
 
-    const navigateToPreviousChapter = () =>
-        navigation.replace("Chapter", {
-            chapterUrl: chapter.prevChapter,
-            chapterId: chapterId - 1,
-            sourceId,
-            novelUrl,
-            novelId,
-            chapterName: chapter.chapterName,
-        });
+        setScrollPercentage(percentage);
+        dispatch(saveScrollPosition(offsetY, percentage, chapterId, novelId));
 
-    const navigateToNextChapter = () =>
-        navigation.replace("Chapter", {
-            chapterUrl: chapter.nextChapter,
-            sourceId,
-            novelUrl,
-            novelId,
-            chapterId: chapterId + 1,
-            chapterName: chapter.chapterName,
-        });
+        if (isCloseToBottom(nativeEvent)) {
+            dispatch(markChapterReadAction(chapterId, novelId));
+            updateTracker();
+        }
+    };
 
-    const scrollToInitialPosition = () => {
+    const scrollToSavedProgress = () => {
         if (position && firstLayout) {
             position.percentage < 100 &&
                 scrollViewRef.getNode().scrollTo({
@@ -137,74 +165,28 @@ const Chapter = ({ route, navigation }) => {
         },
     ];
 
-    const onScroll = ({ nativeEvent }) => {
-        const offsetY = nativeEvent.contentOffset.y;
-        const position =
-            nativeEvent.contentOffset.y + nativeEvent.layoutMeasurement.height;
-
-        const percentage = Math.round(
-            (position / nativeEvent.contentSize.height) * 100
-        );
-
-        setScrollPercentage(percentage);
-        dispatch(saveScrollPosition(offsetY, percentage, chapterId, novelId));
-
-        if (isCloseToBottom(nativeEvent)) {
-            dispatch(markChapterReadAction(chapterId, novelId));
-            updateTracker();
-        }
-    };
-
     return (
         <>
             <CollapsibleHeaderScrollView
                 headerContainerBackgroundColor="rgba(0,0,0,0.4)"
-                ref={(ref) => {
-                    scrollViewRef = ref;
-                }}
+                ref={(ref) => (scrollViewRef = ref)}
                 CollapsibleHeaderComponent={
-                    <Appbar.Header
-                        style={{ backgroundColor: "transparent", elevation: 0 }}
-                    >
-                        <Appbar.BackAction
-                            onPress={() => navigation.goBack()}
-                            color="#FFFFFF"
-                            size={26}
-                            style={{ marginRight: 0 }}
-                        />
-                        <Appbar.Content
-                            title={loading ? "Chapter" : chapter.chapterName}
-                            titleStyle={{ color: "#FFFFFF" }}
-                        />
-                        {!loading && (
-                            <>
-                                <Appbar.Action
-                                    icon="chevron-left"
-                                    size={26}
-                                    disabled={!chapter.prevChapter}
-                                    onPress={navigateToPreviousChapter}
-                                    color="#FFFFFF"
-                                />
-                                <Appbar.Action
-                                    icon="chevron-right"
-                                    size={26}
-                                    disabled={!chapter.nextChapter}
-                                    onPress={navigateToNextChapter}
-                                    color="#FFFFFF"
-                                />
-                            </>
-                        )}
-                        <Appbar.Action
-                            icon="dots-vertical"
-                            size={26}
-                            onPress={() => readerSheetRef.current.show()}
-                            color="#FFFFFF"
-                        />
-                    </Appbar.Header>
+                    <ChapterAppbar
+                        navigation={navigation}
+                        sourceId={sourceId}
+                        novelId={novelId}
+                        novelUrl={novelUrl}
+                        novelName={novelName}
+                        chapterName={chapterName}
+                        chapterId={chapterId}
+                        chapter={chapter}
+                        theme={theme}
+                        readerSheetRef={readerSheetRef}
+                    />
                 }
-                headerHeight={Constants.statusBarHeight + 60}
+                headerHeight={Constants.statusBarHeight + 56}
                 contentContainerStyle={[
-                    styles.container,
+                    styles.screenContainer,
                     { backgroundColor: readerBackground(reader.theme) },
                 ]}
                 onScroll={onScroll}
@@ -219,7 +201,7 @@ const Chapter = ({ route, navigation }) => {
                 ) : (
                     <Text
                         style={readerStyles}
-                        onLayout={scrollToInitialPosition}
+                        onLayout={scrollToSavedProgress}
                         selectable={true}
                     >
                         {chapter.chapterText.trim()}
@@ -249,7 +231,7 @@ const Chapter = ({ route, navigation }) => {
 export default Chapter;
 
 const styles = StyleSheet.create({
-    container: {
+    screenContainer: {
         flexGrow: 1,
         paddingVertical: 10,
     },

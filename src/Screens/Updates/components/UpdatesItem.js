@@ -18,20 +18,24 @@ const UpdateCard = ({ item, theme, onPress }) => {
                 />
                 <View style={styles.chapterDetails}>
                     <Text
-                        style={{
-                            color: theme.textColorPrimary,
-                            fontSize: 14,
-                        }}
+                        style={[
+                            { color: theme.textColorPrimary, fontSize: 14 },
+                            item.read && {
+                                color: theme.textColorHint,
+                            },
+                        ]}
                         numberOfLines={1}
                     >
                         {item.novelName}
                     </Text>
                     <View style={{ flexDirection: "row" }}>
                         <Text
-                            style={{
-                                color: theme.textColorPrimary,
-                                fontSize: 12,
-                            }}
+                            style={[
+                                { color: theme.textColorPrimary, fontSize: 12 },
+                                item.read && {
+                                    color: theme.textColorHint,
+                                },
+                            ]}
                             numberOfLines={1}
                         >
                             {`${item.chapterName} · ${moment(

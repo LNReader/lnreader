@@ -77,6 +77,7 @@ const HistoryCard = ({ item, deleteHistoryAction, navigation, theme }) => {
                                     novelUrl: item.novelUrl,
                                     novelId: item.novelId,
                                     chapterName: item.chapterName,
+                                    novelName: item.novelName,
                                 })
                             }
                         />

@@ -43,6 +43,7 @@ const ChapterActionsSheet = ({
                         paddingBottom: 8,
                         fontSize: 16,
                     }}
+                    numberOfLines={1}
                 >
                     {selected?.chapterName}
                 </Text>

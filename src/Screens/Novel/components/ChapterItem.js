@@ -9,6 +9,7 @@ import {
 
 const ChapterItem = ({
     novelUrl,
+    novelName,
     chapter,
     sourceId,
     dispatch,
@@ -31,9 +32,7 @@ const ChapterItem = ({
             chapterId: chapter.chapterId,
             chapterUrl: chapter.chapterUrl,
             chapterName: chapter.chapterName,
-            position: !chapter.read
-                ? position && position[chapter.chapterId]
-                : 0,
+            novelName: novelName,
         });
 
     const displayDownloadButton = () => {
@@ -179,7 +178,7 @@ const ChapterItem = ({
                                         <Text
                                             style={[
                                                 {
-                                                    color: theme.textColorSecondary,
+                                                    color: theme.textColorHint,
                                                     fontSize: 12,
                                                     marginLeft: 0,
                                                 },

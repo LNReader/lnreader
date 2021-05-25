@@ -56,7 +56,7 @@ export const getChapters = (novelId, sort, filter) => {
 
 const getChapterQuery = `SELECT * FROM downloads WHERE downloadChapterId = ?`;
 
-export const getChapter = async (chapterId) => {
+export const getChapterFromDB = async (chapterId) => {
     return new Promise((resolve, reject) =>
         db.transaction((tx) => {
             tx.executeSql(
@@ -64,6 +64,36 @@ export const getChapter = async (chapterId) => {
                 [chapterId],
                 (tx, results) => {
                     resolve(results.rows.item(0));
+                },
+                (txObj, error) => console.log("Error ", error)
+            );
+        })
+    );
+};
+
+export const getNextChapterFromDB = async (novelId, chapterId) => {
+    return new Promise((resolve, reject) =>
+        db.transaction((tx) => {
+            tx.executeSql(
+                `SELECT * FROM chapters WHERE novelId = ? AND chapterId > ?`,
+                [novelId, chapterId],
+                (tx, results) => {
+                    resolve(results.rows.item(0));
+                },
+                (txObj, error) => console.log("Error ", error)
+            );
+        })
+    );
+};
+
+export const getPrevChapterFromDB = async (novelId, chapterId) => {
+    return new Promise((resolve, reject) =>
+        db.transaction((tx) => {
+            tx.executeSql(
+                `SELECT * FROM chapters WHERE novelId = ? AND chapterId < ?`,
+                [novelId, chapterId],
+                (tx, results) => {
+                    resolve(results.rows.item(results.rows.length - 1));
                 },
                 (txObj, error) => console.log("Error ", error)
             );

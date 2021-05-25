@@ -11,9 +11,11 @@ export const getSourcesAction = () => async (dispatch) => {
 };
 
 export const searchSourcesAction = (searchText) => async (dispatch) => {
+    const res = searchText.toLowerCase();
+
     dispatch({
         type: SEARCH_SOURCES,
-        payload: searchText,
+        payload: res,
     });
 };
 

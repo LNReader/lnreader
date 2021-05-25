@@ -23,6 +23,7 @@ const ReadButton = ({ navigation, novel, chapters, theme, lastRead }) => {
                         novelId: lastRead.novelId,
                         sourceId: novel.sourceId,
                         chapterName: lastRead.chapterName,
+                        novelName: novel.novelName,
                     });
                 }}
             >

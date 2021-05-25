@@ -27,7 +27,7 @@ const sourceReducer = (state = initialState, action) => {
             return {
                 ...state,
                 search: state.sources.filter((source) =>
-                    source.sourceName.includes(payload)
+                    source.sourceName.toLowerCase().includes(payload)
                 ),
             };
         default:

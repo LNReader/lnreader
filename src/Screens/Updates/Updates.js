@@ -47,6 +47,7 @@ const Updates = ({ navigation }) => {
             novelUrl: item.novelUrl,
             chapterName: item.chapterName,
             novelId: item.novelId,
+            novelName: item.novelName,
         });
 
     const renderItem = ({ item }) => (

@@ -89,6 +89,20 @@ const useContinueReading = (chapters, novelId) => {
     return { lastReadChapter, position };
 };
 
+const usePosition = (novelId, chapterId) => {
+    let novel, position;
+
+    novel = findNovel(novelId);
+
+    if (novel) {
+        if (novel.position) {
+            position = novel.position[chapterId] || null;
+        }
+    }
+
+    return position;
+};
+
 const useTrackingStatus = () => {
     const tracker = useSelector((state) => state.trackerReducer);
 
@@ -113,4 +127,5 @@ export {
     useChapter,
     useSavedSettings,
     useLibraryFilters,
+    usePosition,
 };

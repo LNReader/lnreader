@@ -81,6 +81,7 @@ const Novel = ({ route, navigation }) => {
             position={position}
             downloading={downloading}
             selected={selected}
+            novelName={novelName}
             setSelected={setSelected}
             chapterActionsSheetRef={chapterActionsSheetRef}
         />
