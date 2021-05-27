@@ -81,7 +81,7 @@ const Browse = ({ navigation }) => {
                 clearSearchbar={clearSearchbar}
                 right="book-search"
                 onPressRight={() => navigation.navigate("GlobalSearch")}
-                migrate="weather-cloudy-arrow-right"
+                migrate="swap-vertical-variant"
                 onPressMigrate={() => navigation.navigate("Migration")}
             />
 

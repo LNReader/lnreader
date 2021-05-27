@@ -6,7 +6,6 @@ import thunk from "redux-thunk";
 import settingsReducer from "./settings/settings.reducer";
 import libraryReducer from "./library/library.reducer";
 import sourceReducer from "./source/source.reducers";
-import chapterReducer from "./chapter/chapter.reducer";
 import novelReducer from "./novel/novel.reducer";
 import historyReducer from "./history/history.reducer";
 import updatesReducer from "./updates/updates.reducer";
@@ -16,7 +15,7 @@ import preferenceReducer from "./preferences/preference.reducer";
 const persistConfig = {
     key: "root",
     storage: AsyncStorage,
-    blacklist: ["novelReducer", "chapterReducer"],
+    blacklist: ["novelReducer"],
 };
 
 const persistedReducer = persistReducer(
@@ -27,7 +26,6 @@ const persistedReducer = persistReducer(
         sourceReducer,
         novelReducer,
         historyReducer,
-        chapterReducer,
         updatesReducer,
         trackerReducer,
         preferenceReducer,

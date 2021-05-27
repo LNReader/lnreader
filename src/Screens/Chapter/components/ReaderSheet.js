@@ -9,6 +9,17 @@ import { setReaderSettings } from "../../../redux/settings/settings.actions";
 import BottomSheetHandle from "../../../Components/BottomSheetHandle";
 
 const ReaderSheet = ({ theme, reader, dispatch, bottomSheetRef }) => {
+    const ReaderSettingTitle = ({ title }) => (
+        <Text
+            style={{
+                color: "#FFFFFF",
+                fontWeight: "bold",
+            }}
+        >
+            {title}
+        </Text>
+    );
+
     return (
         <Bottomsheet
             ref={bottomSheetRef}
@@ -20,14 +31,7 @@ const ReaderSheet = ({ theme, reader, dispatch, bottomSheetRef }) => {
             <View style={styles.contentContainer}>
                 <BottomSheetHandle theme={theme} />
                 <View style={styles.readerSettingsContainer}>
-                    <Text
-                        style={{
-                            color: "#FFFFFF",
-                            fontWeight: "bold",
-                        }}
-                    >
-                        Text Size
-                    </Text>
+                    <ReaderSettingTitle title="Text Size" />
                     <Slider
                         style={{
                             width: Dimensions.get("window").width,
@@ -56,14 +60,7 @@ const ReaderSheet = ({ theme, reader, dispatch, bottomSheetRef }) => {
                                 alignItems: "center",
                             }}
                         >
-                            <Text
-                                style={{
-                                    color: "#FFFFFF",
-                                    fontWeight: "bold",
-                                }}
-                            >
-                                Reader Theme
-                            </Text>
+                            <ReaderSettingTitle title="Reader Theme" />
                             <ToggleButton.Row
                                 onValueChange={(value) => {
                                     dispatch(
@@ -118,14 +115,7 @@ const ReaderSheet = ({ theme, reader, dispatch, bottomSheetRef }) => {
                                 alignItems: "center",
                             }}
                         >
-                            <Text
-                                style={{
-                                    color: "#FFFFFF",
-                                    fontWeight: "bold",
-                                }}
-                            >
-                                Text Align
-                            </Text>
+                            <ReaderSettingTitle title="Text Align" />
                             <ToggleButton.Row
                                 onValueChange={(value) =>
                                     dispatch(
@@ -150,6 +140,8 @@ const ReaderSheet = ({ theme, reader, dispatch, bottomSheetRef }) => {
                                         backgroundColor: "#FFFFFF",
                                         marginHorizontal: 10,
                                         borderWidth: 0,
+                                        borderTopRightRadius: 4,
+                                        borderBottomRightRadius: 4,
                                     }}
                                 />
                                 <ToggleButton
@@ -164,6 +156,7 @@ const ReaderSheet = ({ theme, reader, dispatch, bottomSheetRef }) => {
                                         backgroundColor: "#FFFFFF",
                                         marginHorizontal: 10,
                                         borderWidth: 0,
+                                        borderRadius: 4,
                                     }}
                                 />
                                 <ToggleButton
@@ -178,6 +171,8 @@ const ReaderSheet = ({ theme, reader, dispatch, bottomSheetRef }) => {
                                         backgroundColor: "#FFFFFF",
                                         marginHorizontal: 10,
                                         borderWidth: 0,
+                                        borderTopLeftRadius: 4,
+                                        borderBottomLeftRadius: 4,
                                     }}
                                 />
                             </ToggleButton.Row>
@@ -241,7 +236,7 @@ const ReaderSheet = ({ theme, reader, dispatch, bottomSheetRef }) => {
                         style={{
                             color: "#FFFFFF",
                             fontWeight: "bold",
-                            marginTop: 10,
+                            marginVertical: 10,
                         }}
                     >
                         Font Style

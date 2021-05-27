@@ -10,7 +10,7 @@ import Constants from "expo-constants";
 import { useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 
-export const Appbar = ({ title, onBackAction, style }) => {
+export const Appbar = ({ title, onBackAction, style, children }) => {
     const theme = useSelector((state) => state.settingsReducer.theme);
 
     return (
@@ -24,6 +24,7 @@ export const Appbar = ({ title, onBackAction, style }) => {
                 title={title}
                 titleStyle={{ color: theme.textColorPrimary }}
             />
+            {children}
         </MaterialAppbar.Header>
     );
 };

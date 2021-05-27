@@ -40,18 +40,18 @@ const ChapterAppbar = ({
             novelUrl,
             novelId,
             chapterName: prevChapter.chapterName,
-            novelName: novelName,
+            novelName,
         });
 
     const navigateToNextChapter = () =>
         navigation.replace("Chapter", {
-            chapterUrl: nextChapter.nextChapter,
+            chapterUrl: nextChapter.chapterUrl,
             sourceId,
             novelUrl,
             novelId,
             chapterId: nextChapter.chapterId,
             chapterName: nextChapter.chapterName,
-            novelName: novelName,
+            novelName,
         });
 
     return (
@@ -64,9 +64,9 @@ const ChapterAppbar = ({
             />
             <Appbar.Content
                 title={novelName}
-                titleStyle={{ color: theme.textColorPrimary }}
+                titleStyle={{ color: "#FFFFFF" }}
                 subtitle={chapterName}
-                subtitleStyle={{ color: theme.textColorSecondary }}
+                subtitleStyle={{ color: "rgba(255, 255, 255, 0.7)" }}
             />
             <Appbar.Action
                 icon="chevron-left"

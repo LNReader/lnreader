@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { View, Text, ActivityIndicator, StyleSheet } from "react-native";
+
 import { TouchableRipple, IconButton, Menu } from "react-native-paper";
+import * as Haptics from "expo-haptics";
 
 import {
     deleteChapterAction,
@@ -17,6 +19,7 @@ const ChapterItem = ({
     navigation,
     downloading,
     position,
+    selected,
     setSelected,
     chapterActionsSheetRef,
 }) => {
@@ -112,16 +115,44 @@ const ChapterItem = ({
         }
     };
 
+    const isSelected = (chapterId) => {
+        return selected.some((obj) => obj.chapterId === chapterId);
+    };
+
     return (
         <TouchableRipple
             style={[
                 styles.chapterCardContainer,
-                { backgroundColor: theme.colorPrimaryDark },
+                isSelected(chapter.chapterId) && {
+                    backgroundColor: theme.rippleColor,
+                },
             ]}
-            onPress={navigateToChapter}
+            onPress={() => {
+                if (selected.length === 0) {
+                    navigateToChapter();
+                } else {
+                    if (isSelected(chapter.chapterId)) {
+                        setSelected((selected) =>
+                            selected.filter(
+                                (item) => item.chapterId !== chapter.chapterId
+                            )
+                        );
+                    } else {
+                        setSelected((selected) => [...selected, chapter]);
+                    }
+                }
+            }}
             onLongPress={() => {
-                setSelected(chapter);
-                chapterActionsSheetRef.current.show();
+                if (isSelected(chapter.chapterId)) {
+                    setSelected((selected) =>
+                        selected.filter(
+                            (item) => item.chapterId !== chapter.chapterId
+                        )
+                    );
+                } else {
+                    setSelected((selected) => [...selected, chapter]);
+                }
+                // chapterActionsSheetRef.current.show();
             }}
             rippleColor={theme.rippleColor}
         >

@@ -36,6 +36,7 @@ import {
     bookmarkChapter,
     markPreviuschaptersRead,
     markPreviousChaptersUnread,
+    getNextChapterFromDB,
 } from "../../Database/queries/ChapterQueries";
 import { deleteNovelUpdates } from "../../Database/queries/UpdateQueries";
 import {
@@ -54,58 +55,66 @@ export const setNovel = (novel) => async (dispatch) => {
 export const getNovelAction =
     (followed, sourceId, novelUrl, novelId, sort, filter) =>
     async (dispatch) => {
-        dispatch({ type: LOADING_NOVEL });
+        try {
+            dispatch({ type: LOADING_NOVEL });
 
-        if (followed === 1) {
-            /**
-             * If novel is followed directly get the chapters from db.
-             */
-            const chapters = await getChapters(novelId, sort, filter);
-
-            dispatch({
-                type: GET_CHAPTERS,
-                payload: chapters,
-            });
-        } else {
-            dispatch({ type: FETCHING_NOVEL });
-
-            /**
-             * Check if novel is cached.
-             */
-            const novel = await getNovel(sourceId, novelUrl);
-
-            if (novel) {
+            if (followed === 1) {
                 /**
-                 * Get chapters from db.
+                 * If novel is followed directly get the chapters from db.
                  */
-                novel.chapters = await getChapters(novel.novelId, sort, filter);
+                const chapters = await getChapters(novelId, sort, filter);
+
                 dispatch({
-                    type: GET_NOVEL,
-                    payload: novel,
+                    type: GET_CHAPTERS,
+                    payload: chapters,
                 });
             } else {
-                /**
-                 * Fetch novel from source.
-                 */
-                const fetchedNovel = await fetchNovel(sourceId, novelUrl);
+                dispatch({ type: FETCHING_NOVEL });
 
                 /**
-                 * Insert novel in db.
-                 */
-                const fetchedNovelId = await insertNovel(fetchedNovel);
-                await insertChapters(fetchedNovelId, fetchedNovel.chapters);
-
-                /**
-                 * Get novel from db.
+                 * Check if novel is cached.
                  */
                 const novel = await getNovel(sourceId, novelUrl);
-                novel.chapters = await getChapters(novel.novelId);
 
-                dispatch({
-                    type: GET_NOVEL,
-                    payload: novel,
-                });
+                if (novel) {
+                    /**
+                     * Get chapters from db.
+                     */
+                    novel.chapters = await getChapters(
+                        novel.novelId,
+                        sort,
+                        filter
+                    );
+                    dispatch({
+                        type: GET_NOVEL,
+                        payload: novel,
+                    });
+                } else {
+                    /**
+                     * Fetch novel from source.
+                     */
+                    const fetchedNovel = await fetchNovel(sourceId, novelUrl);
+
+                    /**
+                     * Insert novel in db.
+                     */
+                    const fetchedNovelId = await insertNovel(fetchedNovel);
+                    await insertChapters(fetchedNovelId, fetchedNovel.chapters);
+
+                    /**
+                     * Get novel from db.
+                     */
+                    const novel = await getNovel(sourceId, novelUrl);
+                    novel.chapters = await getChapters(novel.novelId);
+
+                    dispatch({
+                        type: GET_NOVEL,
+                        payload: novel,
+                    });
+                }
             }
+        } catch (error) {
+            showToast(error.message);
         }
     };
 
@@ -146,15 +155,19 @@ export const followNovelAction = (novel) => async (dispatch) => {
     showToast(!novel.followed ? "Added to library" : "Removed from library");
 };
 
-export const bookmarkChapterAction =
-    (bookmark, chapterId) => async (dispatch) => {
-        await bookmarkChapter(bookmark, chapterId);
+export const bookmarkChapterAction = (chapters) => async (dispatch) => {
+    chapters.map((chapter) => {
+        bookmarkChapter(chapter.bookmark, chapter.chapterId);
 
         dispatch({
             type: BOOKMARK_CHAPTER,
-            payload: { bookmark, chapterId },
+            payload: {
+                bookmark: chapter.bookmark,
+                chapterId: chapter.chapterId,
+            },
         });
-    };
+    });
+};
 
 export const markChapterReadAction =
     (chapterId, novelId) => async (dispatch) => {
@@ -165,9 +178,11 @@ export const markChapterReadAction =
             payload: { chapterId },
         });
 
+        const nextChapter = await getNextChapterFromDB(novelId, chapterId);
+
         dispatch({
             type: SET_LAST_READ,
-            payload: { novelId, chapterId: chapterId + 1 },
+            payload: { novelId, chapterId: nextChapter.chapterId },
         });
 
         /**
@@ -192,7 +207,50 @@ export const markPreviousChaptersReadAction =
             type: MARK_PREVIOUS_CHAPTERS_READ,
             payload: chapterId,
         });
+
+        showToast("Marked previous chapters read");
     };
+
+export const markChaptersRead = (chapters) => async (dispatch) => {
+    try {
+        chapters.map(async (chapter) => {
+            await markChapterRead(chapter.chapterId);
+
+            dispatch({
+                type: CHAPTER_READ,
+                payload: { chapterId: chapter.chapterId },
+            });
+
+            const nextChapter = await getNextChapterFromDB(
+                chapter.novelId,
+                chapter.chapterId
+            );
+
+            dispatch({
+                type: SET_LAST_READ,
+                payload: {
+                    novelId: chapter.novelId,
+                    chapterId: nextChapter.chapterId,
+                },
+            });
+
+            /**
+             * Reset progress on marked read
+             */
+            dispatch({
+                type: SAVE_SCROLL_POSITION,
+                payload: {
+                    position: 0,
+                    percentage: 0,
+                    chapterId: chapter.chapterId,
+                    novelId: chapter.novelId,
+                },
+            });
+        });
+    } catch (error) {
+        showToast(error.message);
+    }
+};
 
 export const markPreviousChaptersUnreadAction =
     (chapterId, novelId) => async (dispatch) => {
@@ -204,12 +262,14 @@ export const markPreviousChaptersUnreadAction =
         });
     };
 
-export const markChapterUnreadAction = (chapterId) => async (dispatch) => {
-    await markChapterUnread(chapterId);
+export const markChapterUnreadAction = (chapters) => async (dispatch) => {
+    await chapters.map((chapter) => {
+        markChapterUnread(chapter.chapterId);
 
-    dispatch({
-        type: CHAPTER_UNREAD,
-        payload: { chapterId },
+        dispatch({
+            type: CHAPTER_UNREAD,
+            payload: { chapterId: chapter.chapterId },
+        });
     });
 };
 
@@ -233,30 +293,36 @@ export const downloadChapterAction =
 
 export const downloadAllChaptersAction =
     (extensionId, novelUrl, chapters) => async (dispatch) => {
-        await chapters.map((chapter, index) => {
-            setTimeout(async () => {
-                dispatch({
-                    type: CHAPTER_DOWNLOADING,
-                    payload: chapter.chapterId,
-                });
+        try {
+            await chapters.map((chapter, index) => {
+                setTimeout(async () => {
+                    dispatch({
+                        type: CHAPTER_DOWNLOADING,
+                        payload: chapter.chapterId,
+                    });
 
-                if (!chapter.downloaded) {
-                    await downloadChapter(
-                        extensionId,
-                        novelUrl,
-                        chapter.chapterUrl,
-                        chapter.chapterId
-                    );
-                }
+                    if (!chapter.downloaded) {
+                        await downloadChapter(
+                            extensionId,
+                            novelUrl,
+                            chapter.chapterUrl,
+                            chapter.chapterId
+                        );
+                    }
 
-                dispatch({
-                    type: CHAPTER_DOWNLOADED,
-                    payload: chapter.chapterId,
-                });
-            }, 1000 * index);
-        });
+                    dispatch({
+                        type: CHAPTER_DOWNLOADED,
+                        payload: chapter.chapterId,
+                    });
 
-        showToast(`All chapters downloaded`);
+                    if (index + 1 === chapters.length) {
+                        showToast(`Download completed `);
+                    }
+                }, 1000 * index);
+            });
+        } catch (error) {
+            showToast(error.message);
+        }
     };
 
 export const deleteChapterAction =
@@ -281,7 +347,7 @@ export const deleteAllChaptersAction = (chapters) => async (dispatch) => {
         });
     });
 
-    showToast("Deleted all chapters");
+    showToast("Chapters deleted");
 };
 
 export const updateNovelAction =

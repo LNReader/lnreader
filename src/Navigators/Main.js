@@ -45,10 +45,6 @@ const MainNavigator = () => {
                         name="Novel"
                         component={Novel}
                         options={{
-                            headerTitle: "",
-                            headerShown: true,
-                            headerTransparent: true,
-                            headerTintColor: "white",
                             ...TransitionPresets.RevealFromBottomAndroid,
                         }}
                     />
