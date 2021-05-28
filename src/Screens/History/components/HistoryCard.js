@@ -7,6 +7,7 @@ import moment from "moment";
 
 import { useDispatch } from "react-redux";
 import { setNovel } from "../../../redux/novel/novel.actions";
+import { parseChapterNumber } from "../../../Services/utils/helpers";
 
 const HistoryCard = ({ item, deleteHistoryAction, navigation, theme }) => {
     const dispatch = useDispatch();
@@ -44,9 +45,11 @@ const HistoryCard = ({ item, deleteHistoryAction, navigation, theme }) => {
                             }}
                             numberOfLines={1}
                         >
-                            {`${item.chapterName} - ${moment(
-                                item.historyTimeRead
-                            ).calendar()}`}
+                            {`Ch. ${parseChapterNumber(
+                                item.chapterName
+                            )} - ${moment(item.historyTimeRead)
+                                .format("h:mm a")
+                                .toUpperCase()}`}
                         </Text>
                     </View>
                     <View
@@ -68,7 +71,7 @@ const HistoryCard = ({ item, deleteHistoryAction, navigation, theme }) => {
                             icon="play"
                             size={24}
                             color={theme.textColorPrimary}
-                            style={{ marginRight: 10 }}
+                            style={{ marginRight: 0 }}
                             onPress={() =>
                                 navigation.navigate("Chapter", {
                                     chapterId: item.historyChapterId,
@@ -92,7 +95,7 @@ export default HistoryCard;
 
 const styles = StyleSheet.create({
     historyCard: {
-        marginBottom: 15,
+        marginVertical: 8,
         borderRadius: 4,
         flexDirection: "row",
         alignItems: "center",

@@ -19,7 +19,7 @@ const UpdateCard = ({ item, theme, onPress }) => {
                 <View style={styles.chapterDetails}>
                     <Text
                         style={[
-                            { color: theme.textColorPrimary, fontSize: 14 },
+                            { color: theme.textColorPrimary, fontSize: 15 },
                             item.read && {
                                 color: theme.textColorHint,
                             },
@@ -38,9 +38,7 @@ const UpdateCard = ({ item, theme, onPress }) => {
                             ]}
                             numberOfLines={1}
                         >
-                            {`${item.chapterName} · ${moment(
-                                item.updateTime
-                            ).calendar()}`}
+                            {item.chapterName}
                         </Text>
                     </View>
                 </View>

@@ -5,6 +5,8 @@ import {
     FlatList,
     ActivityIndicator,
     RefreshControl,
+    Button,
+    Text,
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,6 +19,8 @@ import { Appbar } from "./components/Appbar";
 import UpdatesItem from "./components/UpdatesItem";
 import { useTheme } from "../../Hooks/reduxHooks";
 import { Searchbar } from "../../Components/Searchbar";
+
+import moment from "moment";
 
 const Updates = ({ navigation }) => {
     const theme = useTheme();
@@ -77,9 +81,23 @@ const Updates = ({ navigation }) => {
 
     const onChangeText = (text) => {
         setSearchText(text);
-        let results = updates.filter((update) =>
-            update.novelName.toLowerCase().includes(text.toLowerCase())
-        );
+        let results = [];
+
+        text !== "" &&
+            updates.map((item) => {
+                const date = item.date;
+                const chapters = item.chapters.filter((chapter) =>
+                    chapter.novelName.toLowerCase().includes(text.toLowerCase())
+                );
+
+                if (chapters.length > 0) {
+                    results.push({
+                        date,
+                        chapters,
+                    });
+                }
+            });
+
         setSearchResults(results);
     };
 
@@ -100,11 +118,45 @@ const Updates = ({ navigation }) => {
                 right="reload"
                 onPressRight={() => dispatch(updateLibraryAction())}
             />
-            <FlatList
+            {/* <FlatList
                 contentContainerStyle={styles.flatList}
                 data={searchText ? searchResults : updates}
                 keyExtractor={(item) => item.updateId.toString()}
                 renderItem={renderItem}
+                ListFooterComponent={ListFooterComponent()}
+                ListEmptyComponent={ListEmptyComponent()}
+                refreshControl={refreshControl()}
+            /> */}
+            <FlatList
+                contentContainerStyle={styles.flatList}
+                data={searchText ? searchResults : updates}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={({ item }) => (
+                    <FlatList
+                        ListHeaderComponent={
+                            <Text
+                                style={{
+                                    paddingHorizontal: 12,
+                                    textTransform: "uppercase",
+                                    paddingVertical: 4,
+                                    color: theme.textColorSecondary,
+                                }}
+                            >
+                                {moment(item.date).calendar(null, {
+                                    sameDay: "[Today]",
+                                    nextDay: "[Tomorrow]",
+                                    nextWeek: "dddd",
+                                    lastDay: "[Yesterday]",
+                                    lastWeek: "[Last] dddd",
+                                    sameElse: "DD/MM/YYYY",
+                                })}
+                            </Text>
+                        }
+                        data={item.chapters}
+                        keyExtractor={(item) => item.updateId.toString()}
+                        renderItem={renderItem}
+                    />
+                )}
                 ListFooterComponent={ListFooterComponent()}
                 ListEmptyComponent={ListEmptyComponent()}
                 refreshControl={refreshControl()}

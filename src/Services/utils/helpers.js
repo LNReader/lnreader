@@ -2,7 +2,7 @@ export const parseChapterNumber = (chapterName) => {
     chapterName = chapterName.toLowerCase();
     chapterName = chapterName.replace(/volume (\d+)/, "");
 
-    const basic = chapterName.match(/ch (\d+)/);
+    const basic = chapterName.match(/[ch]i (\d+)/);
     const occurrence = chapterName.match(/\d+/);
 
     if (basic) {

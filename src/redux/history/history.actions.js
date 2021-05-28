@@ -18,22 +18,40 @@ export const getHistoryAction = () => async (dispatch) => {
 
     const history = await getHistory();
 
-    dispatch({ type: GET_HISTORY, payload: history });
+    const groups = history.reduce((groups, update) => {
+        var dateParts = update.historyTimeRead.split("-");
+        var jsDate = new Date(
+            dateParts[0],
+            dateParts[1] - 1,
+            dateParts[2].substr(0, 2)
+        );
+        const date = jsDate.toISOString();
+        if (!groups[date]) {
+            groups[date] = [];
+        }
+        groups[date].push(update);
+        return groups;
+    }, {});
+
+    const groupedHistory = Object.keys(groups).map((date) => {
+        return {
+            date,
+            novels: groups[date],
+        };
+    });
+
+    dispatch({ type: GET_HISTORY, payload: groupedHistory });
 };
 
 export const insertHistoryAction = (novelId, chapterId) => async (dispatch) => {
     await insertHistory(novelId, chapterId);
-
-    // dispatch({ type: UPDATE_NOVEL_HISTORY });
 
     dispatch({
         type: SET_LAST_READ,
         payload: { novelId, chapterId },
     });
 
-    const history = await getHistory();
-
-    dispatch({ type: GET_HISTORY, payload: history });
+    dispatch(getHistoryAction());
 };
 
 export const deleteHistoryAction = (novelId) => async (dispatch) => {

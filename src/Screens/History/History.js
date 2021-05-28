@@ -1,5 +1,11 @@
 import React, { useEffect } from "react";
-import { StyleSheet, View, FlatList, ActivityIndicator } from "react-native";
+import {
+    StyleSheet,
+    View,
+    FlatList,
+    ActivityIndicator,
+    Text,
+} from "react-native";
 
 import { Appbar } from "../../Components/Appbar";
 import HistoryCard from "./components/HistoryCard";
@@ -11,6 +17,8 @@ import {
     getHistoryAction,
     deleteHistoryAction,
 } from "../../redux/history/history.actions";
+
+import moment from "moment";
 
 const History = ({
     navigation,
@@ -43,6 +51,54 @@ const History = ({
                 ]}
             >
                 <FlatList
+                    contentContainerStyle={{
+                        flexGrow: 1,
+                        paddingVertical: 8,
+                        paddingHorizontal: 16,
+                    }}
+                    data={history}
+                    keyExtractor={(index) => index.toString()}
+                    renderItem={({ item }) => (
+                        <FlatList
+                            keyExtractor={(item) => item.novelId.toString()}
+                            data={item.novels}
+                            renderItem={renderHistoryCard}
+                            ListHeaderComponent={
+                                <Text
+                                    style={{
+                                        textTransform: "uppercase",
+                                        paddingVertical: 8,
+                                        color: theme.textColorSecondary,
+                                    }}
+                                >
+                                    {moment(item.date).calendar(null, {
+                                        sameDay: "[Today]",
+                                        nextDay: "[Tomorrow]",
+                                        nextWeek: "dddd",
+                                        lastDay: "[Yesterday]",
+                                        lastWeek: "[Last] dddd",
+                                        sameElse: "DD/MM/YYYY",
+                                    })}
+                                </Text>
+                            }
+                        />
+                    )}
+                    ListFooterComponent={
+                        loading && (
+                            <ActivityIndicator
+                                size="small"
+                                color={theme.colorAccent}
+                            />
+                        )
+                    }
+                    ListEmptyComponent={
+                        <EmptyView
+                            icon="(˘･_･˘)"
+                            description="Nothing read recently"
+                        />
+                    }
+                />
+                {/* <FlatList
                     contentContainerStyle={{ flexGrow: 1, padding: 8 }}
                     data={history}
                     keyExtractor={(item) => item.novelId.toString()}
@@ -63,7 +119,7 @@ const History = ({
                             />
                         )
                     }
-                />
+                /> */}
             </View>
         </>
     );

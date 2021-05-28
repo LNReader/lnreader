@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { View, Text, ActivityIndicator, StyleSheet } from "react-native";
 
 import { TouchableRipple, IconButton, Menu } from "react-native-paper";
-import * as Haptics from "expo-haptics";
 
 import {
     deleteChapterAction,
