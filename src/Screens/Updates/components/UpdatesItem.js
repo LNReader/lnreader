@@ -1,7 +1,6 @@
 import React from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
 import { TouchableRipple } from "react-native-paper";
-import moment from "moment";
 
 const UpdateCard = ({ item, theme, onPress }) => {
     return (
@@ -19,7 +18,7 @@ const UpdateCard = ({ item, theme, onPress }) => {
                 <View style={styles.chapterDetails}>
                     <Text
                         style={[
-                            { color: theme.textColorPrimary, fontSize: 15 },
+                            { color: theme.textColorPrimary, fontSize: 14 },
                             item.read && {
                                 color: theme.textColorHint,
                             },
@@ -28,19 +27,17 @@ const UpdateCard = ({ item, theme, onPress }) => {
                     >
                         {item.novelName}
                     </Text>
-                    <View style={{ flexDirection: "row" }}>
-                        <Text
-                            style={[
-                                { color: theme.textColorPrimary, fontSize: 12 },
-                                item.read && {
-                                    color: theme.textColorHint,
-                                },
-                            ]}
-                            numberOfLines={1}
-                        >
-                            {item.chapterName}
-                        </Text>
-                    </View>
+                    <Text
+                        style={[
+                            { color: theme.textColorPrimary, fontSize: 12 },
+                            item.read && {
+                                color: theme.textColorHint,
+                            },
+                        ]}
+                        numberOfLines={1}
+                    >
+                        {item.chapterName}
+                    </Text>
                 </View>
             </>
         </TouchableRipple>
@@ -54,7 +51,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         paddingVertical: 8,
-        paddingHorizontal: 12,
+        paddingHorizontal: 16,
     },
     updateIcon: {
         width: 42,

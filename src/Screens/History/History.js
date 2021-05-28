@@ -19,6 +19,7 @@ import {
 } from "../../redux/history/history.actions";
 
 import moment from "moment";
+import { dateFormat } from "../../Services/utils/constants";
 
 const History = ({
     navigation,
@@ -71,14 +72,10 @@ const History = ({
                                         color: theme.textColorSecondary,
                                     }}
                                 >
-                                    {moment(item.date).calendar(null, {
-                                        sameDay: "[Today]",
-                                        nextDay: "[Tomorrow]",
-                                        nextWeek: "dddd",
-                                        lastDay: "[Yesterday]",
-                                        lastWeek: "[Last] dddd",
-                                        sameElse: "DD/MM/YYYY",
-                                    })}
+                                    {moment(item.date).calendar(
+                                        null,
+                                        dateFormat
+                                    )}
                                 </Text>
                             }
                         />

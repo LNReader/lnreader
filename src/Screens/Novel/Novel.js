@@ -5,6 +5,7 @@ import {
     FlatList,
     RefreshControl,
     StatusBar,
+    Dimensions,
 } from "react-native";
 
 import {
@@ -56,9 +57,11 @@ const Novel = ({ route, navigation }) => {
     let trackerSheetRef = useRef(null);
     let chapterActionsSheetRef = useRef(null);
 
-    const { sort = "ORDER BY chapterId ASC", filter = "" } = usePreferences(
-        novel.novelId
-    );
+    const {
+        sort = "ORDER BY chapterId ASC",
+        filter = "",
+        showChapterTitles,
+    } = usePreferences(novel.novelId);
 
     let { lastReadChapter, position } = useContinueReading(
         chapters,
@@ -85,10 +88,11 @@ const Novel = ({ route, navigation }) => {
         />
     );
 
-    const renderItem = ({ item }) => (
+    const renderItem = ({ item, index }) => (
         <ChapterItem
             theme={theme}
             chapter={item}
+            index={index}
             novelUrl={novelUrl}
             dispatch={dispatch}
             sourceId={sourceId}
@@ -100,6 +104,7 @@ const Novel = ({ route, navigation }) => {
             novelName={novelName}
             selected={selected}
             setSelected={setSelected}
+            showChapterTitles={showChapterTitles}
             chapterActionsSheetRef={chapterActionsSheetRef}
         />
     );
@@ -113,9 +118,16 @@ const Novel = ({ route, navigation }) => {
                 ]}
             >
                 {selected.length > 0 ? (
-                    <MaterialAppbar.Header
+                    <View
                         style={{
                             backgroundColor: theme.colorPrimary,
+                            position: "absolute",
+                            zIndex: 1,
+                            width: Dimensions.get("window").width,
+                            flexDirection: "row",
+                            alignItems: "center",
+                            paddingTop: StatusBar.currentHeight,
+                            paddingBottom: 8,
                         }}
                     >
                         <MaterialAppbar.Action
@@ -207,7 +219,7 @@ const Novel = ({ route, navigation }) => {
                                 setSelected(chapters);
                             }}
                         />
-                    </MaterialAppbar.Header>
+                    </View>
                 ) : (
                     <IconButton
                         icon="arrow-left"
@@ -258,6 +270,7 @@ const Novel = ({ route, navigation }) => {
                             sort={sort}
                             theme={theme}
                             filter={filter}
+                            showChapterTitles={showChapterTitles}
                         />
                         <TrackSheet
                             bottomSheetRef={trackerSheetRef}

@@ -7,6 +7,7 @@ import {
     deleteChapterAction,
     downloadChapterAction,
 } from "../../../redux/novel/novel.actions";
+import { parseChapterNumber } from "../../../Services/utils/helpers";
 
 const ChapterItem = ({
     novelUrl,
@@ -17,9 +18,11 @@ const ChapterItem = ({
     theme,
     navigation,
     downloading,
+    index,
     position,
     selected,
     setSelected,
+    showChapterTitles,
     chapterActionsSheetRef,
 }) => {
     const [deleteChapterMenu, setDeleteChapterMenu] = useState(false);
@@ -174,7 +177,14 @@ const ChapterItem = ({
                                 ]}
                                 numberOfLines={1}
                             >
-                                {chapter.chapterName.substring(0, 50)}
+                                {showChapterTitles
+                                    ? parseChapterNumber(chapter.chapterName)
+                                        ? "Chapter " +
+                                          parseChapterNumber(
+                                              chapter.chapterName
+                                          )
+                                        : "Chapter " + index
+                                    : chapter.chapterName.substring(0, 50)}
                             </Text>
                             <View
                                 style={{

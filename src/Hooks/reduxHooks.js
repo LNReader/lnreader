@@ -1,4 +1,5 @@
 import { shallowEqual, useSelector } from "react-redux";
+import { showChapterTitlesAction } from "../redux/novel/novel.actions";
 
 const useTheme = () => {
     const theme = useSelector((state) => state.settingsReducer.theme);
@@ -54,9 +55,10 @@ const usePreferences = (novelId) => {
         sort = novel.sort;
         filter = novel.filter;
         position = novel.position;
+        showChapterTitles = novel.showChapterTitles;
     }
 
-    return { sort, filter, position };
+    return { sort, filter, position, showChapterTitles };
 };
 
 const useSavedSettings = () => {

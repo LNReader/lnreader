@@ -21,6 +21,7 @@ import { useTheme } from "../../Hooks/reduxHooks";
 import { Searchbar } from "../../Components/Searchbar";
 
 import moment from "moment";
+import { dateFormat } from "../../Services/utils/constants";
 
 const Updates = ({ navigation }) => {
     const theme = useTheme();
@@ -136,20 +137,13 @@ const Updates = ({ navigation }) => {
                         ListHeaderComponent={
                             <Text
                                 style={{
-                                    paddingHorizontal: 12,
+                                    paddingHorizontal: 16,
                                     textTransform: "uppercase",
-                                    paddingVertical: 4,
+                                    paddingVertical: 8,
                                     color: theme.textColorSecondary,
                                 }}
                             >
-                                {moment(item.date).calendar(null, {
-                                    sameDay: "[Today]",
-                                    nextDay: "[Tomorrow]",
-                                    nextWeek: "dddd",
-                                    lastDay: "[Yesterday]",
-                                    lastWeek: "[Last] dddd",
-                                    sameElse: "DD/MM/YYYY",
-                                })}
+                                {moment(item.date).calendar(null, dateFormat)}
                             </Text>
                         }
                         data={item.chapters}

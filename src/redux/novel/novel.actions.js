@@ -133,6 +133,13 @@ export const sortAndFilterChapters =
         });
     };
 
+export const showChapterTitlesAction = (novelId, value) => async (dispatch) => {
+    dispatch({
+        type: SET_NOVEL_SETTINGS,
+        payload: { novelId, value: !value },
+    });
+};
+
 export const followNovelAction = (novel) => async (dispatch) => {
     await followNovel(novel.followed, novel.novelId);
 

@@ -1,4 +1,4 @@
-const fonts = [
+export const fonts = [
     { fontFamily: "", name: "Original" },
     { fontFamily: "arbutus-slab", name: "Arbutus Slab" },
     { fontFamily: "domine", name: "Domine" },
@@ -8,4 +8,11 @@ const fonts = [
     { fontFamily: "pt-serif", name: "PT Serif" },
 ];
 
-export { fonts };
+export const dateFormat = {
+    sameDay: "[Today]",
+    nextDay: "[Tomorrow]",
+    nextWeek: "dddd",
+    lastDay: "[Yesterday]",
+    lastWeek: "[Last] dddd",
+    sameElse: "DD/MM/YYYY",
+};

@@ -110,6 +110,7 @@ const Chapter = ({ route, navigation }) => {
 
         isTracked &&
             chapterNumber &&
+            Number.isInteger(chapterNumber) &&
             chapterNumber > isTracked.my_list_status.num_chapters_read &&
             dispatch(
                 updateChaptersRead(

@@ -1,3 +1,4 @@
+import { SET_NOVEL_SETTINGS } from "../novel/novel.types";
 import {
     SAVE_SCROLL_POSITION,
     SET_CHAPTER_LIST_PREF,
@@ -35,7 +36,17 @@ const novelReducer = (state = initialState, action) => {
                     },
                 },
             };
-
+        case SET_NOVEL_SETTINGS:
+            return {
+                ...state,
+                novelSettings: {
+                    ...state.novelSettings,
+                    [payload.novelId]: {
+                        ...state.novelSettings[payload.novelId],
+                        showChapterTitles: payload.value,
+                    },
+                },
+            };
         case SAVE_SCROLL_POSITION:
             return {
                 ...state,

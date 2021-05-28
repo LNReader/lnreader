@@ -4,6 +4,7 @@ import { StyleSheet, View, Text, Animated } from "react-native";
 import { List, RadioButton, Checkbox } from "react-native-paper";
 import Bottomsheet from "rn-sliding-up-panel";
 import BottomSheetHandle from "../../../Components/BottomSheetHandle";
+import { showChapterTitlesAction } from "../../../redux/novel/novel.actions";
 
 const ChaptersSettingsSheet = ({
     bottomSheetRef,
@@ -13,6 +14,7 @@ const ChaptersSettingsSheet = ({
     sort,
     filter,
     theme,
+    showChapterTitles,
 }) => {
     const sortChapters = (val) =>
         dispatch(sortAndFilterChapters(novelId, val, filter));
@@ -28,8 +30,8 @@ const ChaptersSettingsSheet = ({
         <Bottomsheet
             animatedValue={animatedValue}
             ref={bottomSheetRef}
-            draggableRange={{ top: 370, bottom: 0 }}
-            snappingPoints={[0, 370]}
+            draggableRange={{ top: 470, bottom: 0 }}
+            snappingPoints={[0, 400, 470]}
         >
             <View
                 style={[
@@ -160,6 +162,33 @@ const ChaptersSettingsSheet = ({
                     />
                     <Text style={{ color: theme.textColorPrimary }}>
                         Show downloaded chapters
+                    </Text>
+                </View>
+                <List.Subheader
+                    style={{
+                        color: theme.textColorPrimary,
+                        fontSize: 20,
+                    }}
+                >
+                    More
+                </List.Subheader>
+                <View style={checkBoxStyle}>
+                    <Checkbox.Item
+                        status={showChapterTitles ? "checked" : "unchecked"}
+                        uncheckedColor={theme.textColorHint}
+                        color={theme.colorAccent}
+                        onPress={() => {
+                            // console.log(!showChapterTitles);
+                            dispatch(
+                                showChapterTitlesAction(
+                                    novelId,
+                                    showChapterTitles
+                                )
+                            );
+                        }}
+                    />
+                    <Text style={{ color: theme.textColorPrimary }}>
+                        Hide chapter titles
                     </Text>
                 </View>
             </View>
