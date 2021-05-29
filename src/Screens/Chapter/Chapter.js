@@ -11,7 +11,7 @@ import {
 
 import { useDispatch } from "react-redux";
 import Constants from "expo-constants";
-import { Portal } from "react-native-paper";
+import { IconButton, Portal } from "react-native-paper";
 import { CollapsibleHeaderScrollView } from "react-native-collapsible-header-views";
 
 import { getChapterFromDB } from "../../Database/queries/ChapterQueries";
@@ -26,6 +26,7 @@ import {
 import { updateChaptersRead } from "../../redux/tracker/tracker.actions";
 import { insertHistoryAction } from "../../redux/history/history.actions";
 import {
+    errorTextColor,
     readerBackground,
     readerLineHeight,
     readerTextColor,
@@ -36,6 +37,7 @@ import { parseChapterNumber } from "../../Services/updates";
 
 import ChapterAppbar from "./components/ChapterAppbar";
 import ReaderSheet from "./components/ReaderSheet";
+import EmptyView from "../../Components/EmptyView";
 
 const Chapter = ({ route, navigation }) => {
     const {
@@ -60,6 +62,7 @@ const Chapter = ({ route, navigation }) => {
 
     const [chapter, setChapter] = useState({});
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState();
 
     const [scrollPercentage, setScrollPercentage] = useState(0);
     const [firstLayout, setFirstLayout] = useState(true);
@@ -91,6 +94,8 @@ const Chapter = ({ route, navigation }) => {
 
             setLoading(false);
         } catch (error) {
+            setError(error.message);
+            setLoading(false);
             showToast(error.message);
         }
     };
@@ -216,7 +221,7 @@ const Chapter = ({ route, navigation }) => {
                             color={theme.colorAccent}
                         />
                     </View>
-                ) : (
+                ) : !error ? (
                     <View style={{ flex: 1 }}>
                         {images.length > 0 &&
                             images.map((image) => (
@@ -241,6 +246,31 @@ const Chapter = ({ route, navigation }) => {
                         >
                             {chapter.chapterText.trim()}
                         </Text>
+                    </View>
+                ) : (
+                    <View style={{ flex: 1, justifyContent: "center" }}>
+                        <EmptyView
+                            icon="(-_-;)・・・"
+                            description={error}
+                            style={{ color: errorTextColor(reader.theme) }}
+                        >
+                            <IconButton
+                                icon="reload"
+                                size={25}
+                                style={{ margin: 0, marginTop: 16 }}
+                                color={errorTextColor(reader.theme)}
+                                onPress={() => {
+                                    getChapter(chapterId);
+                                    setLoading(true);
+                                    setError();
+                                }}
+                            />
+                            <Text
+                                style={{ color: errorTextColor(reader.theme) }}
+                            >
+                                Retry
+                            </Text>
+                        </EmptyView>
                     </View>
                 )}
                 <Portal>

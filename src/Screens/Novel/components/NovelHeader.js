@@ -1,14 +1,10 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, Share } from "react-native";
+import React from "react";
+import { View, Text, StyleSheet } from "react-native";
 
 import * as WebBrowser from "expo-web-browser";
-import { TouchableRipple, IconButton, Menu } from "react-native-paper";
+import { TouchableRipple, IconButton } from "react-native-paper";
 
-import {
-    downloadAllChaptersAction,
-    deleteAllChaptersAction,
-    followNovelAction,
-} from "../../../redux/novel/novel.actions";
+import { followNovelAction } from "../../../redux/novel/novel.actions";
 import { useTrackingStatus } from "../../../Hooks/reduxHooks";
 
 import {
@@ -39,8 +35,6 @@ const NovelInfoHeader = ({
     trackerSheetRef,
     chaptersSettingsSheetRef,
 }) => {
-    const [downloadMenu, showDownloadMenu] = useState(false);
-
     const { tracker, trackedNovels } = useTrackingStatus();
 
     let isTracked = false;
@@ -74,7 +68,7 @@ const NovelInfoHeader = ({
             </CoverImage>
             {!loading && (
                 <>
-                    <Row>
+                    <Row style={{ justifyContent: "space-around" }}>
                         <FollowButton
                             theme={theme}
                             followed={novel.followed}
@@ -87,58 +81,47 @@ const NovelInfoHeader = ({
                                 onPress={() => trackerSheetRef.current.show()}
                             />
                         )}
-                        <IconButton
-                            onPress={() =>
-                                WebBrowser.openBrowserAsync(novel.sourceUrl)
-                            }
-                            icon="earth"
-                            color={theme.colorAccent}
-                            size={21}
-                        />
-                        <IconButton
-                            onPress={() =>
-                                Share.share({ message: novel.sourceUrl })
-                            }
-                            icon="share-variant"
-                            color={theme.colorAccent}
-                            size={21}
-                        />
-                        <Menu
-                            visible={downloadMenu}
-                            onDismiss={() => showDownloadMenu(false)}
-                            anchor={
-                                <IconButton
-                                    icon="download"
-                                    color={theme.colorAccent}
-                                    size={21}
-                                    onPress={() => showDownloadMenu(true)}
-                                />
-                            }
-                            contentStyle={{ backgroundColor: theme.menuColor }}
-                        >
-                            <Menu.Item
-                                title="Download all"
-                                style={{ backgroundColor: theme.menuColor }}
-                                titleStyle={{ color: theme.textColorPrimary }}
+                        <View style={{ alignItems: "center" }}>
+                            <IconButton
+                                icon="swap-vertical-variant"
+                                color={theme.textColorSecondary}
+                                size={24}
+                                style={{ margin: 0 }}
                                 onPress={() =>
-                                    dispatch(
-                                        downloadAllChaptersAction(
-                                            novel.sourceId,
-                                            novel.novelUrl,
-                                            chapters
-                                        )
-                                    )
+                                    navigation.navigate("MigrateNovel", {
+                                        sourceId: novel.sourceId,
+                                        novelName: novel.novelName,
+                                    })
                                 }
                             />
-                            <Menu.Item
-                                title="Delete downloads"
-                                style={{ backgroundColor: theme.menuColor }}
-                                titleStyle={{ color: theme.textColorPrimary }}
+                            <Text
+                                style={{
+                                    fontSize: 12,
+                                    color: theme.textColorSecondary,
+                                }}
+                            >
+                                Migrate
+                            </Text>
+                        </View>
+                        <View style={{ alignItems: "center" }}>
+                            <IconButton
+                                icon="earth"
+                                color={theme.textColorSecondary}
+                                size={24}
+                                style={{ margin: 0 }}
                                 onPress={() =>
-                                    dispatch(deleteAllChaptersAction(chapters))
+                                    WebBrowser.openBrowserAsync(novel.sourceUrl)
                                 }
                             />
-                        </Menu>
+                            <Text
+                                style={{
+                                    fontSize: 12,
+                                    color: theme.textColorSecondary,
+                                }}
+                            >
+                                WebView
+                            </Text>
+                        </View>
                     </Row>
                     <NovelSummary
                         summary={novel.novelSummary}

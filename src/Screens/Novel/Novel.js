@@ -6,14 +6,10 @@ import {
     RefreshControl,
     StatusBar,
     Dimensions,
+    Share,
 } from "react-native";
 
-import {
-    Provider,
-    Portal,
-    Appbar as MaterialAppbar,
-    IconButton,
-} from "react-native-paper";
+import { Provider, Portal, Appbar, IconButton, Menu } from "react-native-paper";
 import { useDispatch } from "react-redux";
 
 import {
@@ -41,7 +37,7 @@ import NovelInfoHeader from "./components/NovelHeader";
 import ChaptersSettingsSheet from "./components/ChaptersSettingsSheet";
 import TrackSheet from "./components/Tracker/TrackSheet";
 import ChapterActionsSheet from "./components/ChapterActionsSheet";
-import { Appbar } from "../../Components/Appbar";
+import { Row } from "../../Components/Common";
 
 const Novel = ({ route, navigation }) => {
     const item = route.params;
@@ -52,6 +48,7 @@ const Novel = ({ route, navigation }) => {
     const { novel, chapters, loading, updating, downloading } = useNovel();
 
     const [selected, setSelected] = useState([]);
+    const [downloadMenu, showDownloadMenu] = useState(false);
 
     let chaptersSettingsSheetRef = useRef(null);
     let trackerSheetRef = useRef(null);
@@ -130,18 +127,18 @@ const Novel = ({ route, navigation }) => {
                             paddingBottom: 8,
                         }}
                     >
-                        <MaterialAppbar.Action
+                        <Appbar.Action
                             icon="close"
                             color={theme.textColorPrimary}
                             onPress={() => {
                                 setSelected([]);
                             }}
                         />
-                        <MaterialAppbar.Content
+                        <Appbar.Content
                             title={selected.length}
                             titleStyle={{ color: theme.textColorPrimary }}
                         />
-                        <MaterialAppbar.Action
+                        <Appbar.Action
                             icon="bookmark-outline"
                             color={theme.textColorPrimary}
                             onPress={() => {
@@ -151,7 +148,7 @@ const Novel = ({ route, navigation }) => {
                         />
 
                         {selected.some((obj) => obj.read === 0) && (
-                            <MaterialAppbar.Action
+                            <Appbar.Action
                                 icon="check"
                                 color={theme.textColorPrimary}
                                 onPress={() => {
@@ -161,7 +158,7 @@ const Novel = ({ route, navigation }) => {
                             />
                         )}
                         {selected.some((obj) => obj.read === 1) && (
-                            <MaterialAppbar.Action
+                            <Appbar.Action
                                 icon="check-outline"
                                 color={theme.textColorPrimary}
                                 onPress={() => {
@@ -171,8 +168,8 @@ const Novel = ({ route, navigation }) => {
                             />
                         )}
                         {selected.length === 1 && (
-                            <MaterialAppbar.Action
-                                icon="eye-check"
+                            <Appbar.Action
+                                icon="playlist-check"
                                 color={theme.textColorPrimary}
                                 onPress={() => {
                                     dispatch(
@@ -186,7 +183,7 @@ const Novel = ({ route, navigation }) => {
                             />
                         )}
                         {selected.some((obj) => obj.downloaded === 1) && (
-                            <MaterialAppbar.Action
+                            <Appbar.Action
                                 icon="trash-can-outline"
                                 color={theme.textColorPrimary}
                                 onPress={() => {
@@ -197,7 +194,7 @@ const Novel = ({ route, navigation }) => {
                         )}
 
                         {selected.some((obj) => obj.downloaded === 0) && (
-                            <MaterialAppbar.Action
+                            <Appbar.Action
                                 icon="download-outline"
                                 color={theme.textColorPrimary}
                                 onPress={() => {
@@ -212,7 +209,7 @@ const Novel = ({ route, navigation }) => {
                                 }}
                             />
                         )}
-                        <MaterialAppbar.Action
+                        <Appbar.Action
                             icon="select-all"
                             color={theme.textColorPrimary}
                             onPress={() => {
@@ -221,18 +218,88 @@ const Novel = ({ route, navigation }) => {
                         />
                     </View>
                 ) : (
-                    <IconButton
-                        icon="arrow-left"
-                        color="white"
-                        size={24}
-                        onPress={() => navigation.goBack()}
+                    <View
                         style={{
                             position: "absolute",
                             zIndex: 1,
-                            top: StatusBar.currentHeight + 8,
-                            left: 8,
+                            height: StatusBar.currentHeight + 54,
+                            width: "100%",
+                            flexDirection: "row",
+                            justifyContent: "space-between",
                         }}
-                    />
+                    >
+                        <IconButton
+                            icon="arrow-left"
+                            color="white"
+                            size={24}
+                            style={{ marginTop: StatusBar.currentHeight + 8 }}
+                            onPress={() => navigation.goBack()}
+                        />
+                        <Row>
+                            <Menu
+                                visible={downloadMenu}
+                                onDismiss={() => showDownloadMenu(false)}
+                                anchor={
+                                    <IconButton
+                                        icon="download"
+                                        color="white"
+                                        size={24}
+                                        style={{
+                                            marginTop:
+                                                StatusBar.currentHeight + 8,
+                                        }}
+                                        onPress={() => showDownloadMenu(true)}
+                                    />
+                                }
+                                contentStyle={{
+                                    backgroundColor: theme.menuColor,
+                                }}
+                            >
+                                <Menu.Item
+                                    title="Download all"
+                                    style={{ backgroundColor: theme.menuColor }}
+                                    titleStyle={{
+                                        color: theme.textColorPrimary,
+                                    }}
+                                    onPress={() =>
+                                        dispatch(
+                                            downloadAllChaptersAction(
+                                                novel.sourceId,
+                                                novel.novelUrl,
+                                                chapters
+                                            )
+                                        )
+                                    }
+                                />
+                                <Menu.Item
+                                    title="Delete downloads"
+                                    style={{ backgroundColor: theme.menuColor }}
+                                    titleStyle={{
+                                        color: theme.textColorPrimary,
+                                    }}
+                                    onPress={() =>
+                                        dispatch(
+                                            deleteAllChaptersAction(chapters)
+                                        )
+                                    }
+                                />
+                            </Menu>
+                            <IconButton
+                                icon="share-variant"
+                                color="white"
+                                size={21}
+                                style={{
+                                    marginTop: StatusBar.currentHeight + 8,
+                                    marginRight: 16,
+                                }}
+                                onPress={() =>
+                                    Share.share({
+                                        message: novel.sourceUrl,
+                                    })
+                                }
+                            />
+                        </Row>
+                    </View>
                 )}
                 <FlatList
                     data={!loading && chapters}

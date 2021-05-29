@@ -228,7 +228,8 @@ const ChapterItem = ({
                                             ]}
                                             numberOfLines={1}
                                         >
-                                            {"• Progress " +
+                                            {chapter.releaseDate && "• "}
+                                            {"Progress " +
                                                 position[chapter.chapterId]
                                                     .percentage +
                                                 "%"}

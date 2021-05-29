@@ -302,9 +302,8 @@ const ReaderSheet = ({ theme, reader, dispatch, bottomSheetRef }) => {
                                     {fonts.find(
                                         (font) =>
                                             font.fontFamily ===
-                                                reader.fontFamily ||
-                                            font.fontFamily === ""
-                                    ).name || "Original"}
+                                            reader.fontFamily
+                                    ).name || "Default"}
                                 </Text>
                             }
                         >

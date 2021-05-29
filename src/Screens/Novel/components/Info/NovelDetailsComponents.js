@@ -8,7 +8,7 @@ import {
     View,
 } from "react-native";
 
-import { Chip } from "react-native-paper";
+import { Chip, IconButton } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import easeGradient from "react-native-easing-gradient";
@@ -70,51 +70,43 @@ const NovelInfo = ({ theme, children }) => (
 );
 
 const FollowButton = ({ theme, onPress, followed }) => (
-    <Chip
-        mode="outlined"
-        icon={() => (
-            <MaterialCommunityIcons
-                name={followed ? "heart" : "heart-outline"}
-                size={21}
-                color={theme.colorAccent}
-            />
-        )}
-        onPress={onPress}
-        style={[
-            { backgroundColor: theme.colorPrimaryDark },
-            styles.followButton,
-        ]}
-        textStyle={{
-            fontWeight: "bold",
-            color: theme.textColorPrimary,
-        }}
-    >
-        {followed ? "In Library" : "Add to library"}
-    </Chip>
+    <View style={{ alignItems: "center" }}>
+        <IconButton
+            icon={followed ? "heart" : "heart-outline"}
+            color={followed ? theme.colorAccent : theme.textColorSecondary}
+            size={24}
+            style={{ margin: 0 }}
+            onPress={onPress}
+        />
+        <Text
+            style={{
+                fontSize: 12,
+                color: followed ? theme.colorAccent : theme.textColorSecondary,
+            }}
+        >
+            {followed ? "In Library" : "Add to library"}
+        </Text>
+    </View>
 );
 
 const TrackerButton = ({ theme, isTracked, onPress }) => (
-    <Chip
-        mode="outlined"
-        icon={() => (
-            <MaterialCommunityIcons
-                name={isTracked ? "check" : "sync"}
-                size={21}
-                color={theme.colorAccent}
-            />
-        )}
-        onPress={onPress}
-        style={[
-            styles.followButton,
-            { backgroundColor: theme.colorPrimaryDark, marginLeft: 0 },
-        ]}
-        textStyle={{
-            fontWeight: "bold",
-            color: theme.textColorPrimary,
-        }}
-    >
-        {isTracked ? "Tracked" : "Tracking"}
-    </Chip>
+    <View style={{ alignItems: "center" }}>
+        <IconButton
+            icon={isTracked ? "check" : "sync"}
+            color={followed ? theme.colorAccent : theme.textColorSecondary}
+            size={24}
+            style={{ margin: 0 }}
+            onPress={onPress}
+        />
+        <Text
+            style={{
+                fontSize: 12,
+                color: followed ? theme.colorAccent : theme.textColorSecondary,
+            }}
+        >
+            {isTracked ? "Tracked" : "Tracking"}
+        </Text>
+    </View>
 );
 
 const GenreChip = ({ children, theme }) => (
