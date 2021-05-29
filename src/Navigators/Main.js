@@ -33,7 +33,9 @@ const MainNavigator = () => {
     const { isNewVersion, latestRelease } = githubUpdateChecker() || {};
 
     return (
-        <NavigationContainer>
+        <NavigationContainer
+            theme={{ colors: { background: theme.colorPrimaryDark } }}
+        >
             <View style={{ flex: 1, backgroundColor: theme.colorPrimaryDark }}>
                 {isNewVersion && <NewUpdateDialog newVersion={latestRelease} />}
                 <Stack.Navigator screenOptions={stackNavigatorConfig}>
