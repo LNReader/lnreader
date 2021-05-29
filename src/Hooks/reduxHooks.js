@@ -47,7 +47,7 @@ const findNovel = (novelId) => {
 };
 
 const usePreferences = (novelId) => {
-    let sort, filter, position;
+    let sort, filter, position, showChapterTitles;
 
     const novel = findNovel(novelId);
 

@@ -60,7 +60,7 @@ const Novel = ({ route, navigation }) => {
     const {
         sort = "ORDER BY chapterId ASC",
         filter = "",
-        showChapterTitles,
+        showChapterTitles = false,
     } = usePreferences(novel.novelId);
 
     let { lastReadChapter, position } = useContinueReading(

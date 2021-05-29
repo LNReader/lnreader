@@ -5,6 +5,8 @@ import {
     Text,
     ActivityIndicator,
     Button,
+    Image,
+    Dimensions,
 } from "react-native";
 
 import { useDispatch } from "react-redux";
@@ -62,6 +64,8 @@ const Chapter = ({ route, navigation }) => {
     const [scrollPercentage, setScrollPercentage] = useState(0);
     const [firstLayout, setFirstLayout] = useState(true);
 
+    const [images, setImages] = useState([]);
+
     const getChapter = async (chapterId) => {
         try {
             if (chapterId) {
@@ -69,22 +73,35 @@ const Chapter = ({ route, navigation }) => {
 
                 if (chapterDownloaded) {
                     setChapter(chapterDownloaded);
+                    parseImages(chapterDownloaded.chapterText);
                 } else {
                     const res = await fetchChapter(
                         sourceId,
                         novelUrl,
                         chapterUrl
                     );
+                    parseImages(res.chapterText);
                     setChapter(res);
                 }
             } else {
                 const res = await fetchChapter(sourceId, novelUrl, chapterUrl);
+                parseImages(res.chapterText);
                 setChapter(res);
             }
 
             setLoading(false);
         } catch (error) {
             showToast(error.message);
+        }
+    };
+
+    const parseImages = (chapterText) => {
+        let imageLinks = chapterText.match(/\[https.*?\]/g, "");
+
+        if (imageLinks) {
+            imageLinks = imageLinks.map((link) => link.slice(1, -1));
+
+            setImages(imageLinks);
         }
     };
 
@@ -157,7 +174,7 @@ const Chapter = ({ route, navigation }) => {
             paddingBottom: 32,
             fontSize: reader.textSize,
             color: readerTextColor(reader.theme),
-            lineHeight: readerLineHeight(reader.textSize),
+            lineHeight: readerLineHeight(reader.textSize, reader.lineHeight),
             textAlign: reader.textAlign,
             paddingHorizontal: `${reader.padding}%`,
         },
@@ -169,7 +186,7 @@ const Chapter = ({ route, navigation }) => {
     return (
         <>
             <CollapsibleHeaderScrollView
-                headerContainerBackgroundColor="rgba(0,0,0,0.4)"
+                headerContainerBackgroundColor="rgba(0,0,0,0.5)"
                 ref={(ref) => (scrollViewRef = ref)}
                 CollapsibleHeaderComponent={
                     <ChapterAppbar
@@ -200,13 +217,31 @@ const Chapter = ({ route, navigation }) => {
                         />
                     </View>
                 ) : (
-                    <Text
-                        style={readerStyles}
-                        onLayout={scrollToSavedProgress}
-                        selectable={true}
-                    >
-                        {chapter.chapterText.trim()}
-                    </Text>
+                    <View style={{ flex: 1 }}>
+                        {images.length > 0 &&
+                            images.map((image) => (
+                                <View
+                                    style={{
+                                        paddingHorizontal: `${reader.padding}%`,
+                                        paddingVertical: 8,
+                                    }}
+                                >
+                                    <Image
+                                        source={{ uri: image }}
+                                        style={{ height: 500 }}
+                                        resizeMode="contain"
+                                    />
+                                </View>
+                            ))}
+
+                        <Text
+                            style={readerStyles}
+                            onLayout={scrollToSavedProgress}
+                            selectable={true}
+                        >
+                            {chapter.chapterText.trim()}
+                        </Text>
+                    </View>
                 )}
                 <Portal>
                     <ReaderSheet

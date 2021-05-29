@@ -14,14 +14,10 @@ export const readerTextColor = (val) => {
     return textColor;
 };
 
-export const readerLineHeight = (val) => {
-    const lineHeight = {
-        12: 20,
-        14: 22,
-        16: 25,
-        18: 26,
-        20: 28,
-    };
+export const readerLineHeight = (fontSize, lineHeightMultiplier) => {
+    let lineHeight = fontSize * lineHeightMultiplier;
 
-    return lineHeight[val];
+    lineHeight = Math.round(lineHeight);
+
+    return lineHeight;
 };

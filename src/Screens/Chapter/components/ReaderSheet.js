@@ -1,23 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, View, Text, Dimensions } from "react-native";
-import { ToggleButton, IconButton, Chip } from "react-native-paper";
+import { ToggleButton, IconButton, Menu } from "react-native-paper";
 import Slider from "@react-native-community/slider";
 import Bottomsheet from "rn-sliding-up-panel";
 import { fonts } from "../../../Services/utils/constants";
 
 import { setReaderSettings } from "../../../redux/settings/settings.actions";
 import BottomSheetHandle from "../../../Components/BottomSheetHandle";
+import { Row } from "../../../Components/Common";
 
 const ReaderSheet = ({ theme, reader, dispatch, bottomSheetRef }) => {
+    const [fontMenu, setFontMenu] = useState(false);
+    const openFontMenu = () => setFontMenu(true);
+    const closeFontMenu = () => setFontMenu(false);
+
     const ReaderSettingTitle = ({ title }) => (
-        <Text
-            style={{
-                color: "#FFFFFF",
-                fontWeight: "bold",
-            }}
-        >
-            {title}
-        </Text>
+        <Text style={styles.title}>{title}</Text>
     );
 
     return (
@@ -48,19 +46,15 @@ const ReaderSheet = ({ theme, reader, dispatch, bottomSheetRef }) => {
                             dispatch(setReaderSettings("textSize", value))
                         }
                     />
-                    <View
+                    <Row
                         style={{
-                            flexDirection: "row",
-                            justifyContent: "center",
+                            justifyContent: "space-between",
+                            width: "100%",
+                            paddingHorizontal: 16,
                         }}
                     >
-                        <View
-                            style={{
-                                justifyContent: "center",
-                                alignItems: "center",
-                            }}
-                        >
-                            <ReaderSettingTitle title="Reader Theme" />
+                        <ReaderSettingTitle title="Reader Theme" />
+                        <Row>
                             <ToggleButton.Row
                                 onValueChange={(value) => {
                                     dispatch(
@@ -71,7 +65,6 @@ const ReaderSheet = ({ theme, reader, dispatch, bottomSheetRef }) => {
                                     );
                                 }}
                                 value={reader.theme}
-                                style={{ marginTop: 10 }}
                             >
                                 <ToggleButton
                                     icon={reader.theme === 1 && "check"}
@@ -108,14 +101,18 @@ const ReaderSheet = ({ theme, reader, dispatch, bottomSheetRef }) => {
                                     }}
                                 />
                             </ToggleButton.Row>
-                        </View>
-                        <View
-                            style={{
-                                justifyContent: "center",
-                                alignItems: "center",
-                            }}
-                        >
-                            <ReaderSettingTitle title="Text Align" />
+                        </Row>
+                    </Row>
+                    <Row
+                        style={{
+                            justifyContent: "space-between",
+                            width: "100%",
+                            paddingHorizontal: 16,
+                            marginTop: 16,
+                        }}
+                    >
+                        <ReaderSettingTitle title="Text Align" />
+                        <Row>
                             <ToggleButton.Row
                                 onValueChange={(value) =>
                                     dispatch(
@@ -126,7 +123,6 @@ const ReaderSheet = ({ theme, reader, dispatch, bottomSheetRef }) => {
                                     )
                                 }
                                 value={reader.textAlign}
-                                style={{ marginTop: 10 }}
                             >
                                 <ToggleButton
                                     icon="format-align-left"
@@ -176,105 +172,166 @@ const ReaderSheet = ({ theme, reader, dispatch, bottomSheetRef }) => {
                                     }}
                                 />
                             </ToggleButton.Row>
-                        </View>
-                    </View>
-                    <Text
+                        </Row>
+                    </Row>
+                    <Row
                         style={{
-                            color: "#FFFFFF",
-                            fontWeight: "bold",
-                            marginTop: 10,
-                        }}
-                    >
-                        Padding
-                    </Text>
-                    <View
-                        style={{
+                            justifyContent: "space-between",
                             width: "100%",
-                            flexDirection: "row",
-                            justifyContent: "center",
-                            alignItems: "center",
+                            paddingHorizontal: 16,
+                            marginTop: 16,
                         }}
                     >
-                        <IconButton
-                            icon="minus"
-                            color={theme.colorAccent}
-                            size={26}
-                            disabled={reader.padding <= 0 ? true : false}
-                            onPress={() =>
-                                dispatch(
-                                    setReaderSettings(
-                                        "padding",
-                                        reader.padding - 1
-                                    )
-                                )
-                            }
-                        />
-                        <Text
-                            style={{
-                                color: "#FFFFFF",
-                                paddingHorizontal: 50,
-                            }}
-                        >
-                            {`${reader.padding}%`}
-                        </Text>
-                        <IconButton
-                            icon="plus"
-                            color={theme.colorAccent}
-                            size={26}
-                            disabled={reader.padding >= 10 ? true : false}
-                            onPress={() =>
-                                dispatch(
-                                    setReaderSettings(
-                                        "padding",
-                                        reader.padding + 1
-                                    )
-                                )
-                            }
-                        />
-                    </View>
-                    <Text
-                        style={{
-                            color: "#FFFFFF",
-                            fontWeight: "bold",
-                            marginVertical: 10,
-                        }}
-                    >
-                        Font Style
-                    </Text>
-                    <View
-                        style={{
-                            flexDirection: "row",
-                            flexWrap: "wrap",
-                            justifyContent: "center",
-                        }}
-                    >
-                        {fonts.map((font, index) => (
-                            <Chip
-                                key={index}
+                        <ReaderSettingTitle title="Padding" />
+                        <Row>
+                            <IconButton
+                                icon="minus"
+                                color={theme.colorAccent}
+                                size={26}
+                                disabled={reader.padding <= 0 ? true : false}
                                 onPress={() =>
                                     dispatch(
                                         setReaderSettings(
-                                            "fontFamily",
-                                            font.fontFamily
+                                            "padding",
+                                            reader.padding - 1
                                         )
                                     )
                                 }
-                                textStyle={{ fontFamily: font.fontFamily }}
+                                style={{ marginVertical: 0 }}
+                            />
+                            <Text
                                 style={{
-                                    borderWidth: 0,
-                                    marginHorizontal: 5,
-                                    marginVertical: 5,
+                                    color: "#FFFFFF",
+                                    paddingHorizontal: 24,
                                 }}
-                                selected={
-                                    reader.fontFamily === font.fontFamily
-                                        ? true
-                                        : false
-                                }
                             >
-                                {font.name}
-                            </Chip>
-                        ))}
-                    </View>
+                                {`${reader.padding}%`}
+                            </Text>
+                            <IconButton
+                                icon="plus"
+                                color={theme.colorAccent}
+                                size={26}
+                                disabled={reader.padding >= 10 ? true : false}
+                                onPress={() =>
+                                    dispatch(
+                                        setReaderSettings(
+                                            "padding",
+                                            reader.padding + 1
+                                        )
+                                    )
+                                }
+                                style={{ marginVertical: 0 }}
+                            />
+                        </Row>
+                    </Row>
+                    <Row
+                        style={{
+                            justifyContent: "space-between",
+                            width: "100%",
+                            paddingHorizontal: 16,
+                            marginTop: 16,
+                        }}
+                    >
+                        <ReaderSettingTitle title="Line Height" />
+                        <Row>
+                            <IconButton
+                                icon="minus"
+                                color={theme.colorAccent}
+                                size={26}
+                                disabled={
+                                    reader.lineHeight <= 1.3 ? true : false
+                                }
+                                onPress={() =>
+                                    dispatch(
+                                        setReaderSettings(
+                                            "lineHeight",
+                                            reader.lineHeight - 0.1
+                                        )
+                                    )
+                                }
+                                style={{ marginVertical: 0 }}
+                            />
+                            <Text
+                                style={{
+                                    color: "#FFFFFF",
+                                    paddingHorizontal: 24,
+                                }}
+                            >
+                                {`${Math.round(reader.lineHeight * 10) / 10}%`}
+                            </Text>
+                            <IconButton
+                                icon="plus"
+                                color={theme.colorAccent}
+                                size={26}
+                                disabled={reader.lineHeight >= 2 ? true : false}
+                                onPress={() =>
+                                    dispatch(
+                                        setReaderSettings(
+                                            "lineHeight",
+                                            reader.lineHeight + 0.1
+                                        )
+                                    )
+                                }
+                                style={{ marginVertical: 0 }}
+                            />
+                        </Row>
+                    </Row>
+                    <Row
+                        style={{
+                            justifyContent: "space-between",
+                            width: "100%",
+                            paddingHorizontal: 16,
+                            marginTop: 16,
+                        }}
+                    >
+                        <ReaderSettingTitle title="Font Style" />
+                        <Menu
+                            visible={fontMenu}
+                            onDismiss={closeFontMenu}
+                            contentStyle={{ backgroundColor: theme.menuColor }}
+                            anchor={
+                                <Text
+                                    onPress={openFontMenu}
+                                    style={{
+                                        color: "white",
+                                        paddingHorizontal: 16,
+                                        fontSize: 16,
+                                        fontFamily: reader.fontFamily,
+                                    }}
+                                >
+                                    {fonts.find(
+                                        (font) =>
+                                            font.fontFamily ===
+                                                reader.fontFamily ||
+                                            font.fontFamily === ""
+                                    ).name || "Original"}
+                                </Text>
+                            }
+                        >
+                            {fonts.map((font) => (
+                                <Menu.Item
+                                    key={font.fontFamily}
+                                    onPress={() =>
+                                        dispatch(
+                                            setReaderSettings(
+                                                "fontFamily",
+                                                font.fontFamily
+                                            )
+                                        )
+                                    }
+                                    icon={
+                                        font.fontFamily === reader.fontFamily &&
+                                        "check"
+                                    }
+                                    title={font.name}
+                                    style={{ backgroundColor: theme.menuColor }}
+                                    titleStyle={{
+                                        color: theme.textColorPrimary,
+                                    }}
+                                />
+                            ))}
+                        </Menu>
+                    </Row>
                 </View>
             </View>
         </Bottomsheet>
@@ -288,7 +345,15 @@ const styles = StyleSheet.create({
         flex: 1,
         borderTopLeftRadius: 8,
         borderTopRightRadius: 8,
-        backgroundColor: "rgba(0,0,0,0.4)",
+        backgroundColor: "rgba(0,0,0,0.5)",
     },
-    readerSettingsContainer: { flex: 1, alignItems: "center", paddingTop: 30 },
+    readerSettingsContainer: {
+        flex: 1,
+        alignItems: "center",
+        paddingTop: 30,
+    },
+    title: {
+        color: "#FFFFFF",
+        fontWeight: "bold",
+    },
 });

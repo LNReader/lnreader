@@ -48,6 +48,7 @@ const initialState = {
         textAlign: "left",
         padding: 5,
         fontFamily: null,
+        lineHeight: 1.5,
     },
 };
 

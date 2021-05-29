@@ -228,8 +228,10 @@ const ChapterItem = ({
                                             ]}
                                             numberOfLines={1}
                                         >
-                                            {position[chapter.chapterId]
-                                                .percentage + "%"}
+                                            {"• Progress " +
+                                                position[chapter.chapterId]
+                                                    .percentage +
+                                                "%"}
                                         </Text>
                                     )}
                             </View>
