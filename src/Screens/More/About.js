@@ -54,11 +54,11 @@ const AboutScreen = ({ navigation }) => {
                         theme={theme}
                     />
                     <ListItem
-                        title="Extensions"
-                        description="https://github.com/rajarsheechatterjee/lnreader-extensions"
+                        title="Sources"
+                        description="https://github.com/rajarsheechatterjee/lnreader-sources"
                         onPress={() =>
                             Linking.openURL(
-                                "https://github.com/rajarsheechatterjee/lnreader-extensions"
+                                "https://github.com/rajarsheechatterjee/lnreader-sources"
                             )
                         }
                         theme={theme}
