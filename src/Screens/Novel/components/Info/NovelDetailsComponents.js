@@ -93,7 +93,7 @@ const TrackerButton = ({ theme, isTracked, onPress }) => (
     <View style={{ alignItems: "center" }}>
         <IconButton
             icon={isTracked ? "check" : "sync"}
-            color={followed ? theme.colorAccent : theme.textColorSecondary}
+            color={isTracked ? theme.colorAccent : theme.textColorSecondary}
             size={24}
             style={{ margin: 0 }}
             onPress={onPress}
@@ -101,7 +101,7 @@ const TrackerButton = ({ theme, isTracked, onPress }) => (
         <Text
             style={{
                 fontSize: 12,
-                color: followed ? theme.colorAccent : theme.textColorSecondary,
+                color: isTracked ? theme.colorAccent : theme.textColorSecondary,
             }}
         >
             {isTracked ? "Tracked" : "Tracking"}
@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
         elevation: 0,
     },
     novelGenres: {
-        marginTop: 12,
+        // marginTop: 12,
         paddingHorizontal: 16,
         paddingBottom: 16,
     },

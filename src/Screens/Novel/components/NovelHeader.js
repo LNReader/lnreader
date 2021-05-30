@@ -68,7 +68,12 @@ const NovelInfoHeader = ({
             </CoverImage>
             {!loading && (
                 <>
-                    <Row style={{ justifyContent: "space-around" }}>
+                    <Row
+                        style={{
+                            justifyContent: "space-around",
+                            paddingHorizontal: 16,
+                        }}
+                    >
                         <FollowButton
                             theme={theme}
                             followed={novel.followed}

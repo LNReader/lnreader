@@ -5,16 +5,8 @@ const NovelSummary = ({ summary, followed, theme }) => {
     const [more, showMore] = useState(!followed);
 
     return (
-        summary !== "" && (
+        summary && (
             <View style={styles.summaryContainer}>
-                <Text
-                    style={[
-                        { color: theme.textColorPrimary },
-                        styles.summaryHeader,
-                    ]}
-                >
-                    About
-                </Text>
                 <Text
                     style={{
                         color: theme.textColorSecondary,
@@ -48,14 +40,14 @@ export default NovelSummary;
 const styles = StyleSheet.create({
     summaryContainer: {
         paddingHorizontal: 16,
-        marginBottom: 8,
+        marginVertical: 16,
     },
-    summaryHeader: {
-        marginTop: 5,
-        paddingVertical: 5,
-        fontSize: 15,
-        fontWeight: "bold",
-    },
+    // summaryHeader: {
+    //     marginTop: 5,
+    //     paddingVertical: 5,
+    //     fontSize: 15,
+    //     fontWeight: "bold",
+    // },
     showMoreButton: {
         fontWeight: "bold",
         position: "absolute",
