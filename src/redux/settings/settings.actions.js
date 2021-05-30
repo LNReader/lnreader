@@ -3,6 +3,7 @@ import {
     SET_NOVELS_PER_ROW,
     SET_READER_SETTINGS,
     SET_APP_SETTINGS,
+    SET_ACCENT_COLOR,
 } from "./settings.types";
 
 export const setAppTheme = (val) => (dispatch) => {
@@ -30,5 +31,12 @@ export const setReaderSettings = (key, val) => (dispatch) => {
     dispatch({
         type: SET_READER_SETTINGS,
         payload: { key, val },
+    });
+};
+
+export const setAccentColor = (val) => (dispatch) => {
+    dispatch({
+        type: SET_ACCENT_COLOR,
+        payload: val,
     });
 };

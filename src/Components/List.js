@@ -21,6 +21,7 @@ const ListItem = ({
     onPress,
     theme,
     right,
+    iconColor,
     titleStyle,
 }) => (
     <List.Item
@@ -41,7 +42,7 @@ const ListItem = ({
         right={() =>
             right && (
                 <List.Icon
-                    color="#47a84a"
+                    color={iconColor || "#47a84a"}
                     icon={right}
                     style={{ marginVertical: 0 }}
                 />

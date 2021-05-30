@@ -3,6 +3,7 @@ import {
     SET_NOVELS_PER_ROW,
     SET_READER_SETTINGS,
     SET_APP_SETTINGS,
+    SET_ACCENT_COLOR,
 } from "./settings.types";
 import {
     amoledDarkTheme,
@@ -62,6 +63,14 @@ const settingsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 novelsPerRow: state.displayMode !== 2 ? payload : 1,
+            };
+        case SET_ACCENT_COLOR:
+            return {
+                ...state,
+                theme: {
+                    ...state.theme,
+                    colorAccent: payload,
+                },
             };
         case SET_APP_SETTINGS:
             return {

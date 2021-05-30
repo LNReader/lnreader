@@ -79,6 +79,19 @@ const ReaderSheet = ({ theme, reader, dispatch, bottomSheetRef }) => {
                                     }}
                                 />
                                 <ToggleButton
+                                    icon={reader.theme === 4 && "check"}
+                                    color="#FFFFFF"
+                                    value={4}
+                                    style={{
+                                        backgroundColor: "#444444",
+                                        marginHorizontal: 10,
+                                        borderWidth: 0,
+                                        borderRadius: 50,
+                                        borderTopRightRadius: 50,
+                                        borderBottomRightRadius: 50,
+                                    }}
+                                />
+                                <ToggleButton
                                     icon={reader.theme === 2 && "check"}
                                     color="#000000"
                                     value={2}
@@ -129,11 +142,11 @@ const ReaderSheet = ({ theme, reader, dispatch, bottomSheetRef }) => {
                                     color={
                                         reader.textAlign === "left"
                                             ? theme.colorAccent
-                                            : "#000000"
+                                            : "#FFFFFF"
                                     }
                                     value="left"
                                     style={{
-                                        backgroundColor: "#FFFFFF",
+                                        backgroundColor: "transparent",
                                         marginHorizontal: 10,
                                         borderWidth: 0,
                                         borderTopRightRadius: 4,
@@ -145,11 +158,11 @@ const ReaderSheet = ({ theme, reader, dispatch, bottomSheetRef }) => {
                                     color={
                                         reader.textAlign === "justify"
                                             ? theme.colorAccent
-                                            : "#000000"
+                                            : "#FFFFFF"
                                     }
                                     value="justify"
                                     style={{
-                                        backgroundColor: "#FFFFFF",
+                                        backgroundColor: "transparent",
                                         marginHorizontal: 10,
                                         borderWidth: 0,
                                         borderRadius: 4,
@@ -160,11 +173,11 @@ const ReaderSheet = ({ theme, reader, dispatch, bottomSheetRef }) => {
                                     color={
                                         reader.textAlign === "right"
                                             ? theme.colorAccent
-                                            : "#000000"
+                                            : "#FFFFFF"
                                     }
                                     value="right"
                                     style={{
-                                        backgroundColor: "#FFFFFF",
+                                        backgroundColor: "transparent",
                                         marginHorizontal: 10,
                                         borderWidth: 0,
                                         borderTopLeftRadius: 4,

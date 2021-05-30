@@ -14,6 +14,7 @@ import { useTheme } from "../../Hooks/reduxHooks";
 import DisplayModeModal from "./components/DisplayModeModal";
 import GridSizeModal from "./components/GridSizeModal";
 import ThemeModal from "./components/ThemeModal";
+import AccentColorModal from "./components/AccentColorModal";
 
 const GenralSettings = ({ navigation }) => {
     const theme = useTheme();
@@ -54,6 +55,13 @@ const GenralSettings = ({ navigation }) => {
     const showGridSizeModal = () => setGridSizeModalVisible(true);
     const hideGridSizeModal = () => setGridSizeModalVisible(false);
 
+    /**
+     * Accent Color Modal
+     */
+    const [accentColorModal, setAccentColorModal] = useState(false);
+    const showAccentColorModal = () => setAccentColorModal(true);
+    const hideAccentColorModal = () => setAccentColorModal(false);
+
     return (
         <ScreenContainer theme={theme}>
             <Appbar title="General" onBackAction={() => navigation.goBack()} />
@@ -79,6 +87,14 @@ const GenralSettings = ({ navigation }) => {
                     onPress={showthemeModal}
                     theme={theme}
                 />
+                <ListItem
+                    title="Accent Color"
+                    description={theme.colorAccent}
+                    onPress={showAccentColorModal}
+                    theme={theme}
+                    iconColor={theme.colorAccent}
+                    right="palette"
+                />
             </ListSection>
             <DisplayModeModal
                 displayMode={displayMode}
@@ -98,6 +114,12 @@ const GenralSettings = ({ navigation }) => {
                 dispatch={dispatch}
                 themeModalVisible={themeModalVisible}
                 hidethemeModal={hidethemeModal}
+                theme={theme}
+            />
+            <AccentColorModal
+                dispatch={dispatch}
+                accentColorModal={accentColorModal}
+                hideAccentColorModal={hideAccentColorModal}
                 theme={theme}
             />
         </ScreenContainer>

@@ -3,13 +3,15 @@ export const readerBackground = (val) => {
         1: "#000000",
         2: "#FFFFFF",
         3: "#F4ECD8",
+        4: "#444444",
     };
 
     return backgroundColor[val] ?? "#FFFFFF";
 };
 
 export const readerTextColor = (val) => {
-    const textColor = val === 1 ? "rgba(255,255,255,0.7)" : "#000000";
+    const textColor =
+        val === 1 ? "rgba(255,255,255,0.7)" : val === 4 ? "#FFFFFF" : "#000000";
 
     return textColor;
 };
