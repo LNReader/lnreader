@@ -38,6 +38,7 @@ import { parseChapterNumber } from "../../Services/updates";
 import ChapterAppbar from "./components/ChapterAppbar";
 import ReaderSheet from "./components/ReaderSheet";
 import EmptyView from "../../Components/EmptyView";
+import FitImage from "react-native-fit-image";
 
 const Chapter = ({ route, navigation }) => {
     const {
@@ -102,6 +103,7 @@ const Chapter = ({ route, navigation }) => {
 
     const parseImages = (chapterText) => {
         let imageLinks = chapterText.match(/\[https.*?\]/g, "");
+        let chapterTextWithoutLinks;
 
         if (imageLinks) {
             imageLinks = imageLinks.map((link) => link.slice(1, -1));
@@ -188,6 +190,8 @@ const Chapter = ({ route, navigation }) => {
         },
     ];
 
+    const win = Dimensions.get("window");
+
     return (
         <>
             <CollapsibleHeaderScrollView
@@ -224,19 +228,8 @@ const Chapter = ({ route, navigation }) => {
                 ) : !error ? (
                     <View style={{ flex: 1 }}>
                         {images.length > 0 &&
-                            images.map((image) => (
-                                <View
-                                    style={{
-                                        paddingHorizontal: `${reader.padding}%`,
-                                        paddingVertical: 8,
-                                    }}
-                                >
-                                    <Image
-                                        source={{ uri: image }}
-                                        style={{ height: 500 }}
-                                        resizeMode="contain"
-                                    />
-                                </View>
+                            images.map((image, index) => (
+                                <FitImage source={{ uri: image }} />
                             ))}
 
                         <Text
@@ -244,7 +237,9 @@ const Chapter = ({ route, navigation }) => {
                             onLayout={scrollToSavedProgress}
                             selectable={true}
                         >
-                            {chapter.chapterText.trim()}
+                            {chapter.chapterText
+                                .trim()
+                                .replace(/\[https.*?\]/g, "")}
                         </Text>
                     </View>
                 ) : (
