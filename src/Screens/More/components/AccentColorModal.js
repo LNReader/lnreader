@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet, Text } from "react-native";
-import { Modal, TextInput } from "react-native-paper";
+import { Modal, Portal, TextInput } from "react-native-paper";
 import { setAccentColor } from "../../../redux/settings/settings.actions";
 
 const AccentColorModal = ({
@@ -13,50 +13,55 @@ const AccentColorModal = ({
     const [error, setError] = useState();
 
     return (
-        <Modal
-            visible={accentColorModal}
-            onDismiss={() => {
-                hideAccentColorModal();
-                setText();
-                setError();
-            }}
-            contentContainerStyle={[
-                styles.containerStyle,
-                { backgroundColor: theme.colorPrimary },
-            ]}
-        >
-            <Text
-                style={[styles.dialogTitle, { color: theme.textColorPrimary }]}
+        <Portal>
+            <Modal
+                visible={accentColorModal}
+                onDismiss={() => {
+                    hideAccentColorModal();
+                    setText();
+                    setError();
+                }}
+                contentContainerStyle={[
+                    styles.containerStyle,
+                    { backgroundColor: theme.colorPrimary },
+                ]}
             >
-                Hex Color Code
-            </Text>
-            <TextInput
-                value={text}
-                defaultValue={theme.colorAccent}
-                onChangeText={(text) => setText(text)}
-                onSubmitEditing={() => {
-                    if (text.match(/^#[0-9a-f]{3,6}$/i)) {
-                        dispatch(setAccentColor(text));
-                        hideAccentColorModal();
-                    } else {
-                        setError("Enter a valid hex color code");
-                    }
-                }}
-                mode="outlined"
-                theme={{
-                    colors: {
-                        primary: theme.colorAccent,
-                        placeholder: theme.textColorHint,
-                        text: theme.textColorPrimary,
-                        background: "transparent",
-                    },
-                }}
-                underlineColor={theme.textColorHint}
-                dense
-                error={error}
-            />
-            <Text style={{ color: "#FF0033", paddingTop: 8 }}>{error}</Text>
-        </Modal>
+                <Text
+                    style={[
+                        styles.dialogTitle,
+                        { color: theme.textColorPrimary },
+                    ]}
+                >
+                    Hex Color Code
+                </Text>
+                <TextInput
+                    value={text}
+                    defaultValue={theme.colorAccent}
+                    onChangeText={(text) => setText(text)}
+                    onSubmitEditing={() => {
+                        if (text.match(/^#[0-9a-f]{3,6}$/i)) {
+                            dispatch(setAccentColor(text));
+                            hideAccentColorModal();
+                        } else {
+                            setError("Enter a valid hex color code");
+                        }
+                    }}
+                    mode="outlined"
+                    theme={{
+                        colors: {
+                            primary: theme.colorAccent,
+                            placeholder: theme.textColorHint,
+                            text: theme.textColorPrimary,
+                            background: "transparent",
+                        },
+                    }}
+                    underlineColor={theme.textColorHint}
+                    dense
+                    error={error}
+                />
+                <Text style={{ color: "#FF0033", paddingTop: 8 }}>{error}</Text>
+            </Modal>
+        </Portal>
     );
 };
 

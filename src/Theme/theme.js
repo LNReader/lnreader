@@ -29,7 +29,7 @@ export const lightTheme = {
     dividerColor: "rgba(0,0,0,0.1)",
     filterColor: "#FFC107",
     colorDisabled: "rgba(220,220,220,255)",
-    colorButtonText: "#000000",
+    colorButtonText: "#FFFFFF",
     statusBar: "dark",
 };
 
@@ -67,7 +67,7 @@ export const amoledDarkTheme = {
     textColorPrimary: "#FFFFFF",
     textColorSecondary: "rgba(255,255,255,0.7)",
     textColorHint: "rgba(255,255,255,0.5)",
-    rippleColor: "rgba(255,255,255,0.06)",
+    rippleColor: "rgba(255,255,255,0.12)",
     searchBarColor: "#1F1F1F",
     menuColor: "#242529",
     filterColor: "#FFEB3B",

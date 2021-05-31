@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Text, Dimensions } from "react-native";
-import { ToggleButton, IconButton, Menu } from "react-native-paper";
+import { ToggleButton, IconButton, Menu, Switch } from "react-native-paper";
 import Slider from "@react-native-community/slider";
 import Bottomsheet from "rn-sliding-up-panel";
 import { fonts } from "../../../Services/utils/constants";
@@ -9,7 +9,14 @@ import { setReaderSettings } from "../../../redux/settings/settings.actions";
 import BottomSheetHandle from "../../../Components/BottomSheetHandle";
 import { Row } from "../../../Components/Common";
 
-const ReaderSheet = ({ theme, reader, dispatch, bottomSheetRef }) => {
+const ReaderSheet = ({
+    theme,
+    reader,
+    dispatch,
+    bottomSheetRef,
+    selectText,
+    setSelectText,
+}) => {
     const [fontMenu, setFontMenu] = useState(false);
     const openFontMenu = () => setFontMenu(true);
     const closeFontMenu = () => setFontMenu(false);
@@ -21,8 +28,8 @@ const ReaderSheet = ({ theme, reader, dispatch, bottomSheetRef }) => {
     return (
         <Bottomsheet
             ref={bottomSheetRef}
-            draggableRange={{ top: 400, bottom: 0 }}
-            snappingPoints={[0, 400]}
+            draggableRange={{ top: 420, bottom: 0 }}
+            snappingPoints={[0, 420]}
             showBackdrop={true}
             backdropOpacity={0}
         >
@@ -343,6 +350,31 @@ const ReaderSheet = ({ theme, reader, dispatch, bottomSheetRef }) => {
                                 />
                             ))}
                         </Menu>
+                    </Row>
+                    <Row
+                        style={{
+                            justifyContent: "space-between",
+                            width: "100%",
+                            paddingHorizontal: 16,
+                            marginTop: 16,
+                        }}
+                    >
+                        <View>
+                            <ReaderSettingTitle title="Select Text " />
+                            <Text
+                                style={{
+                                    fontSize: 14,
+                                    color: "white",
+                                }}
+                            >
+                                (Justify does not work with selectable text)
+                            </Text>
+                        </View>
+                        <Switch
+                            value={selectText}
+                            onValueChange={setSelectText}
+                            color={theme.colorAccent}
+                        />
                     </Row>
                 </View>
             </View>
