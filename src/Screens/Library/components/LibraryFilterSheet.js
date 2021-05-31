@@ -356,5 +356,7 @@ export default LibraryFilterSheet;
 const styles = StyleSheet.create({
     contentContainer: {
         flex: 1,
+        borderTopRightRadius: 8,
+        borderTopLeftRadius: 8,
     },
 });

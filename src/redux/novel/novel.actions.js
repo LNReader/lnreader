@@ -121,6 +121,8 @@ export const getNovelAction =
 
 export const sortAndFilterChapters =
     (novelId, sort, filter) => async (dispatch) => {
+        dispatch({ type: FETCHING_NOVEL });
+
         const chapters = await getChapters(novelId, sort, filter);
 
         dispatch({
@@ -137,7 +139,7 @@ export const sortAndFilterChapters =
 export const showChapterTitlesAction = (novelId, value) => async (dispatch) => {
     dispatch({
         type: SET_NOVEL_SETTINGS,
-        payload: { novelId, value: !value },
+        payload: { novelId, value: value },
     });
 };
 

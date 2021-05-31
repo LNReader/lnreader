@@ -1,10 +1,19 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, Animated } from "react-native";
+import {
+    StyleSheet,
+    View,
+    Text,
+    Animated,
+    useWindowDimensions,
+} from "react-native";
+import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 
-import { List, RadioButton, Checkbox } from "react-native-paper";
 import Bottomsheet from "rn-sliding-up-panel";
 import BottomSheetHandle from "../../../Components/BottomSheetHandle";
 import { showChapterTitlesAction } from "../../../redux/novel/novel.actions";
+import { ListItem } from "../../../Components/List";
+import { RadioButton, RadioButtonGroup } from "../../../Components/RadioButton";
+import { Checkbox } from "react-native-paper";
 
 const ChaptersSettingsSheet = ({
     bottomSheetRef,
@@ -22,16 +31,157 @@ const ChaptersSettingsSheet = ({
     const filterChapters = (val) =>
         dispatch(sortAndFilterChapters(novelId, sort, val));
 
-    const checkBoxStyle = { flexDirection: "row", alignItems: "center" };
-
     const [animatedValue] = useState(new Animated.Value(0));
+
+    const FirstRoute = () => (
+        <View style={{ flex: 1 }}>
+            <Checkbox.Item
+                label="Downloaded"
+                labelStyle={{
+                    fontSize: 14,
+                    color: theme.textColorPrimary,
+                }}
+                color={theme.colorAccent}
+                uncheckedColor={theme.textColorHint}
+                status={
+                    filter.match("AND downloaded=1") ? "checked" : "unchecked"
+                }
+                onPress={() =>
+                    filter.match("AND downloaded=1")
+                        ? filterChapters(
+                              filter.replace(" AND downloaded=1", "")
+                          )
+                        : filterChapters(filter + " AND downloaded=1")
+                }
+            />
+            <Checkbox.Item
+                label="Unread"
+                labelStyle={{
+                    fontSize: 14,
+                    color: theme.textColorPrimary,
+                }}
+                color={theme.colorAccent}
+                uncheckedColor={theme.textColorHint}
+                status={
+                    filter.match("AND `read`=0")
+                        ? "checked"
+                        : filter.match("AND `read`=1")
+                        ? "indeterminate"
+                        : "unchecked"
+                }
+                onPress={() => {
+                    if (filter.match("AND `read`=0")) {
+                        filterChapters(
+                            filter.replace(" AND `read`=0", " AND `read`=1")
+                        );
+                    } else if (filter.match("AND `read`=1")) {
+                        filterChapters(filter.replace(" AND `read`=1", ""));
+                    } else {
+                        filterChapters(" AND `read`=0");
+                    }
+                }}
+            />
+            <Checkbox.Item
+                label="Bookmarked"
+                labelStyle={{
+                    fontSize: 14,
+                    color: theme.textColorPrimary,
+                }}
+                color={theme.colorAccent}
+                uncheckedColor={theme.textColorHint}
+                status={
+                    filter.match("AND bookmark=1") ? "checked" : "unchecked"
+                }
+                onPress={() => {
+                    filter.match("AND bookmark=1")
+                        ? filterChapters(filter.replace(" AND bookmark=1", ""))
+                        : filterChapters(filter + " AND bookmark=1");
+                }}
+            />
+        </View>
+    );
+
+    const SecondRoute = () => (
+        <View style={{ flex: 1 }}>
+            <ListItem
+                style={{ paddingVertical: 10 }}
+                title="By source"
+                titleStyle={{ fontSize: 14 }}
+                theme={theme}
+                right={
+                    sort === "ORDER BY chapterId ASC"
+                        ? "arrow-up"
+                        : "arrow-down"
+                }
+                iconColor={theme.colorAccent}
+                onPress={() =>
+                    sort === "ORDER BY chapterId ASC"
+                        ? sortChapters("ORDER BY chapterId DESC")
+                        : sortChapters("ORDER BY chapterId ASC")
+                }
+            />
+        </View>
+    );
+
+    const ThirdRoute = () => (
+        <View style={{ flex: 1, padding: 8 }}>
+            <RadioButtonGroup
+                onValueChange={(value) =>
+                    dispatch(showChapterTitlesAction(novelId, value))
+                }
+                value={showChapterTitles}
+            >
+                <RadioButton
+                    value={false}
+                    label="Source title"
+                    theme={theme}
+                    labelStyle={{ fontSize: 14 }}
+                />
+                <RadioButton
+                    value={true}
+                    label="Chapter number"
+                    theme={theme}
+                    labelStyle={{ fontSize: 14 }}
+                />
+            </RadioButtonGroup>
+        </View>
+    );
+
+    const renderScene = SceneMap({
+        first: FirstRoute,
+        second: SecondRoute,
+        third: ThirdRoute,
+    });
+
+    const layout = useWindowDimensions();
+
+    const [index, setIndex] = useState(0);
+    const [routes] = useState([
+        { key: "first", title: "Filter" },
+        { key: "second", title: "Sort" },
+        { key: "third", title: "Display" },
+    ]);
+
+    const renderTabBar = (props) => (
+        <TabBar
+            {...props}
+            indicatorStyle={{ backgroundColor: theme.colorAccent }}
+            style={{ backgroundColor: theme.colorPrimary }}
+            renderLabel={({ route, focused, color }) => (
+                <Text style={{ color, margin: 8 }}>{route.title}</Text>
+            )}
+            inactiveColor={theme.textColorSecondary}
+            activeColor={theme.colorAccent}
+            pressColor={theme.rippleColor}
+        />
+    );
 
     return (
         <Bottomsheet
             animatedValue={animatedValue}
             ref={bottomSheetRef}
-            draggableRange={{ top: 470, bottom: 0 }}
-            snappingPoints={[0, 400, 470]}
+            draggableRange={{ top: 220, bottom: 0 }}
+            snappingPoints={[0, 220]}
         >
             <View
                 style={[
@@ -39,158 +189,14 @@ const ChaptersSettingsSheet = ({
                     { backgroundColor: theme.colorPrimary },
                 ]}
             >
-                <BottomSheetHandle theme={theme} />
-                <List.Subheader
-                    style={{
-                        color: theme.textColorPrimary,
-                        fontSize: 20,
-                    }}
-                >
-                    Sort
-                </List.Subheader>
-                <View>
-                    <RadioButton.Group
-                        onValueChange={(newValue) =>
-                            sortChapters(newValue, filter)
-                        }
-                        value={sort}
-                    >
-                        <View
-                            style={{
-                                flexDirection: "row",
-                                alignItems: "center",
-                            }}
-                        >
-                            <View
-                                style={{
-                                    flexDirection: "row",
-                                    alignItems: "center",
-                                }}
-                            >
-                                <RadioButton.Item
-                                    uncheckedColor={theme.textColorHint}
-                                    color={theme.colorAccent}
-                                    value="ORDER BY chapterId DESC"
-                                />
-                                <Text
-                                    style={{
-                                        color: theme.textColorPrimary,
-                                    }}
-                                >
-                                    Newest to oldest
-                                </Text>
-                            </View>
-                            <View
-                                style={{
-                                    flexDirection: "row",
-                                    alignItems: "center",
-                                }}
-                            >
-                                <RadioButton.Item
-                                    uncheckedColor={theme.textColorHint}
-                                    color={theme.colorAccent}
-                                    value="ORDER BY chapterId ASC"
-                                />
-                                <Text
-                                    style={{
-                                        color: theme.textColorPrimary,
-                                    }}
-                                >
-                                    Oldest to newest
-                                </Text>
-                            </View>
-                        </View>
-                    </RadioButton.Group>
-                </View>
-
-                <List.Subheader
-                    style={{
-                        color: theme.textColorPrimary,
-                        fontSize: 20,
-                        paddingVertical: 10,
-                    }}
-                >
-                    Filter
-                </List.Subheader>
-                <View style={checkBoxStyle}>
-                    <Checkbox.Item
-                        status={filter === "" ? "checked" : "unchecked"}
-                        uncheckedColor={theme.textColorHint}
-                        color={theme.colorAccent}
-                        onPress={() => filterChapters("")}
-                    />
-                    <Text style={{ color: theme.textColorPrimary }}>
-                        Show all
-                    </Text>
-                </View>
-                <View style={checkBoxStyle}>
-                    <Checkbox.Item
-                        status={
-                            filter === "AND `read`=1" ? "checked" : "unchecked"
-                        }
-                        uncheckedColor={theme.textColorHint}
-                        color={theme.colorAccent}
-                        onPress={() => filterChapters("AND `read`=1")}
-                    />
-                    <Text style={{ color: theme.textColorPrimary }}>
-                        Show read chapters
-                    </Text>
-                </View>
-                <View style={checkBoxStyle}>
-                    <Checkbox.Item
-                        status={
-                            filter === "AND `read`=0" ? "checked" : "unchecked"
-                        }
-                        uncheckedColor={theme.textColorHint}
-                        color={theme.colorAccent}
-                        onPress={() => filterChapters("AND `read`=0")}
-                    />
-                    <Text style={{ color: theme.textColorPrimary }}>
-                        Show unread chapters
-                    </Text>
-                </View>
-                <View style={checkBoxStyle}>
-                    <Checkbox.Item
-                        status={
-                            filter === "AND downloaded=1"
-                                ? "checked"
-                                : "unchecked"
-                        }
-                        uncheckedColor={theme.textColorHint}
-                        color={theme.colorAccent}
-                        onPress={() => filterChapters("AND downloaded=1")}
-                    />
-                    <Text style={{ color: theme.textColorPrimary }}>
-                        Show downloaded chapters
-                    </Text>
-                </View>
-                <List.Subheader
-                    style={{
-                        color: theme.textColorPrimary,
-                        fontSize: 20,
-                    }}
-                >
-                    More
-                </List.Subheader>
-                <View style={checkBoxStyle}>
-                    <Checkbox.Item
-                        status={showChapterTitles ? "checked" : "unchecked"}
-                        uncheckedColor={theme.textColorHint}
-                        color={theme.colorAccent}
-                        onPress={() => {
-                            // console.log(!showChapterTitles);
-                            dispatch(
-                                showChapterTitlesAction(
-                                    novelId,
-                                    showChapterTitles
-                                )
-                            );
-                        }}
-                    />
-                    <Text style={{ color: theme.textColorPrimary }}>
-                        Hide chapter titles
-                    </Text>
-                </View>
+                <TabView
+                    navigationState={{ index, routes }}
+                    renderTabBar={renderTabBar}
+                    renderScene={renderScene}
+                    onIndexChange={setIndex}
+                    initialLayout={{ width: layout.width }}
+                    style={{ borderTopRightRadius: 8, borderTopLeftRadius: 8 }}
+                />
             </View>
         </Bottomsheet>
     );

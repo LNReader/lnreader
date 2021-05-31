@@ -8,7 +8,7 @@ export const RadioButtonGroup = ({ children, value, onValueChange }) => (
     </MaterialRadioButton.Group>
 );
 
-export const RadioButton = ({ value, label, theme }) => (
+export const RadioButton = ({ value, label, theme, labelStyle }) => (
     <View style={styles.radioButtonContainer}>
         <MaterialRadioButton
             value={value}
@@ -16,7 +16,11 @@ export const RadioButton = ({ value, label, theme }) => (
             uncheckedColor={theme.textColorSecondary}
         />
         <Text
-            style={[styles.radioButtonLabel, { color: theme.textColorPrimary }]}
+            style={[
+                styles.radioButtonLabel,
+                { color: theme.textColorPrimary },
+                labelStyle,
+            ]}
         >
             {label}
         </Text>
