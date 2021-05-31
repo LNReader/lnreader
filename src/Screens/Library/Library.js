@@ -88,22 +88,7 @@ const LibraryScreen = ({ navigation }) => {
     // }
 
     const listEmptyComponent = () =>
-        searchText !== "" ? (
-            <TouchableRipple
-                onPress={() =>
-                    navigation.navigate("GlobalSearch", {
-                        novelName: searchText,
-                    })
-                }
-                borderless
-                rippleColor={theme.colorAccent}
-                style={styles.emptySearch}
-            >
-                <Text style={{ color: theme.colorAccent }}>
-                    {`Search for "${searchText}" globally`}
-                </Text>
-            </TouchableRipple>
-        ) : (
+        searchText === "" && (
             <EmptyView
                 icon="Σ(ಠ_ಠ)"
                 description="Your library is empty. Add series to your library from Browse."
@@ -135,6 +120,22 @@ const LibraryScreen = ({ navigation }) => {
                     <ActivityIndicator size="small" color={theme.colorAccent} />
                 ) : (
                     <>
+                        {searchText !== "" && (
+                            <TouchableRipple
+                                onPress={() =>
+                                    navigation.navigate("GlobalSearch", {
+                                        novelName: searchText,
+                                    })
+                                }
+                                borderless
+                                rippleColor={theme.colorAccent}
+                                style={styles.emptySearch}
+                            >
+                                <Text style={{ color: theme.colorAccent }}>
+                                    {`Search for "${searchText}" globally`}
+                                </Text>
+                            </TouchableRipple>
+                        )}
                         <NovelList
                             data={novels}
                             renderItem={renderItem}

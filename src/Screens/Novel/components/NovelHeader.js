@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Clipboard } from "react-native";
 
 import * as WebBrowser from "expo-web-browser";
 import { TouchableRipple, IconButton } from "react-native-paper";
@@ -21,6 +21,7 @@ import {
 import { Row } from "../../../Components/Common";
 import NovelSummary from "./Info/NovelSummary";
 import ReadButton from "./Info/ReadButton";
+import { showToast } from "../../../Hooks/showToast";
 
 const NovelInfoHeader = ({
     item,
@@ -49,7 +50,22 @@ const NovelInfoHeader = ({
                 <NovelInfoContainer>
                     <NovelThumbnail source={{ uri: item.novelCover }} />
                     <View style={styles.novelDetails}>
-                        <NovelTitle theme={theme}>{item.novelName}</NovelTitle>
+                        <NovelTitle
+                            theme={theme}
+                            onPress={() =>
+                                navigation.navigate("GlobalSearch", {
+                                    novelName: item.novelName,
+                                })
+                            }
+                            onLongPress={() => {
+                                Clipboard.setString(item.novelName);
+                                showToast(
+                                    "Copied to clipboard: " + item.novelName
+                                );
+                            }}
+                        >
+                            {item.novelName}
+                        </NovelTitle>
                         {!loading && (
                             <>
                                 <NovelAuthor theme={theme}>

@@ -19,7 +19,7 @@ import { showToast } from "../../Hooks/showToast";
 
 const GlobalSearch = ({ route, navigation }) => {
     const theme = useTheme();
-    let novelName;
+    let novelName = "";
 
     if (route.params) {
         novelName = route.params.novelName;
@@ -134,7 +134,14 @@ const GlobalSearch = ({ route, navigation }) => {
                 clearSearchbar={clearSearchbar}
             />
             {progress < 1 && progress > 0 && pinned && (
-                <ProgressBar color={theme.colorAccent} progress={progress} />
+                <ProgressBar
+                    color={
+                        progress > 0.9
+                            ? theme.colorPrimaryDark
+                            : theme.colorAccent
+                    }
+                    progress={progress}
+                />
             )}
             <FlatList
                 contentContainerStyle={{

@@ -42,8 +42,10 @@ const NovelThumbnail = ({ source }) => (
     <Image source={source} style={styles.novelThumbnail} />
 );
 
-const NovelTitle = ({ theme, children }) => (
+const NovelTitle = ({ theme, children, onLongPress, onPress }) => (
     <Text
+        onLongPress={onLongPress}
+        onPress={onPress}
         numberOfLines={2}
         style={[styles.novelTitle, { color: theme.textColorPrimary }]}
     >
