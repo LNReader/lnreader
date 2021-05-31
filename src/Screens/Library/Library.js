@@ -19,7 +19,7 @@ import {
     searchLibraryAction,
 } from "../../redux/library/library.actions";
 import { updateLibraryAction } from "../../redux/updates/updates.actions";
-import { useTheme } from "../../Hooks/reduxHooks";
+import { useSettings, useTheme } from "../../Hooks/reduxHooks";
 import { setNovel } from "../../redux/novel/novel.actions";
 import { Portal } from "react-native-paper";
 import LibraryFilterSheet from "./components/LibraryFilterSheet";
@@ -27,6 +27,7 @@ import LibraryFilterSheet from "./components/LibraryFilterSheet";
 const LibraryScreen = ({ navigation }) => {
     const theme = useTheme();
     const dispatch = useDispatch();
+    const { showNumberOfNovels } = useSettings();
 
     const libraryFilterSheetRef = useRef(null);
 
@@ -106,7 +107,9 @@ const LibraryScreen = ({ navigation }) => {
                 ]}
             >
                 <Searchbar
-                    placeholder="Search Library"
+                    placeholder={`Search Library ${
+                        showNumberOfNovels && "(" + novels.length + ")"
+                    }`}
                     searchText={searchText}
                     clearSearchbar={clearSearchbar}
                     onChangeText={onChangeText}

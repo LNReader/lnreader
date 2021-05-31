@@ -12,7 +12,9 @@ import { fonts } from "./src/Theme/fonts";
 const App = () => {
     const [loaded] = useFonts(fonts);
 
-    useEffect(() => createDB(), []);
+    useEffect(() => {
+        createDB();
+    }, []);
 
     if (!loaded) {
         return null;

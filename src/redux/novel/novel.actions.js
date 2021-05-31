@@ -47,6 +47,7 @@ import {
 import { GET_LIBRARY_NOVELS } from "../library/library.types";
 import { getLibrary } from "../../Database/queries/LibraryQueries";
 import { showToast } from "../../Hooks/showToast";
+import { store } from "../store";
 
 export const setNovel = (novel) => async (dispatch) => {
     dispatch({ type: SET_NOVEL, payload: novel });
@@ -218,41 +219,18 @@ export const markPreviousChaptersReadAction =
         showToast("Marked previous chapters read");
     };
 
-export const markChaptersRead = (chapters) => async (dispatch) => {
+export const markChaptersRead = (chapters, novelId) => async (dispatch) => {
     try {
-        chapters.map(async (chapter) => {
-            await markChapterRead(chapter.chapterId);
+        const { sort = "ORDER BY chapterId ASC", filter = "" } =
+            store.getState().preferenceReducer.novelSettings[novelId];
 
-            dispatch({
-                type: CHAPTER_READ,
-                payload: { chapterId: chapter.chapterId },
-            });
+        chapters.map((chapter) => markChapterRead(chapter.chapterId));
 
-            const nextChapter = await getNextChapterFromDB(
-                chapter.novelId,
-                chapter.chapterId
-            );
+        const chaps = await getChapters(novelId, sort, filter);
 
-            dispatch({
-                type: SET_LAST_READ,
-                payload: {
-                    novelId: chapter.novelId,
-                    chapterId: nextChapter.chapterId,
-                },
-            });
-
-            /**
-             * Reset progress on marked read
-             */
-            dispatch({
-                type: SAVE_SCROLL_POSITION,
-                payload: {
-                    position: 0,
-                    percentage: 0,
-                    chapterId: chapter.chapterId,
-                    novelId: chapter.novelId,
-                },
-            });
+        dispatch({
+            type: GET_CHAPTERS,
+            payload: chaps,
         });
     } catch (error) {
         showToast(error.message);
@@ -269,16 +247,20 @@ export const markPreviousChaptersUnreadAction =
         });
     };
 
-export const markChapterUnreadAction = (chapters) => async (dispatch) => {
-    await chapters.map((chapter) => {
-        markChapterUnread(chapter.chapterId);
+export const markChapterUnreadAction =
+    (chapters, novelId) => async (dispatch) => {
+        const { sort = "ORDER BY chapterId ASC", filter = "" } =
+            store.getState().preferenceReducer.novelSettings[novelId];
+
+        chapters.map((chapter) => markChapterUnread(chapter.chapterId));
+
+        const chaps = await getChapters(novelId, sort, filter);
 
         dispatch({
-            type: CHAPTER_UNREAD,
-            payload: { chapterId: chapter.chapterId },
+            type: GET_CHAPTERS,
+            payload: chaps,
         });
-    });
-};
+    };
 
 export const downloadChapterAction =
     (extensionId, novelUrl, chapterUrl, chapterName, chapterId) =>

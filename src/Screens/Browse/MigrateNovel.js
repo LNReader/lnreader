@@ -70,8 +70,12 @@ const GlobalSearch = ({ navigation, route }) => {
                             },
                         ]);
                         setLoading(false);
-                    });
-                setProgress((progress) => progress + 1 / pinnedSources.length);
+                    })
+                    .finally(() =>
+                        setProgress(
+                            (progress) => progress + 1 / pinnedSources.length
+                        )
+                    );
             }, 1000 * index)
         );
     };

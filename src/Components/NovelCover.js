@@ -54,6 +54,7 @@ const NovelCover = ({ item, onPress, libraryStatus }) => {
         );
 
     const unreadBadge = () =>
+        showUnreadBadges &&
         item.chaptersUnread && (
             <Text
                 style={[
@@ -69,6 +70,7 @@ const NovelCover = ({ item, onPress, libraryStatus }) => {
         );
 
     const downloadBadge = () =>
+        showDownloadBadges &&
         item.chaptersDownloaded && (
             <Text
                 style={[
@@ -103,8 +105,8 @@ const NovelCover = ({ item, onPress, libraryStatus }) => {
                         progressiveRenderingEnabled={true}
                     >
                         <View style={{ flexDirection: "row", margin: 4 }}>
-                            {showDownloadBadges && downloadBadge()}
-                            {showUnreadBadges && unreadBadge()}
+                            {downloadBadge()}
+                            {unreadBadge()}
                         </View>
                         {compactTitle()}
                     </ImageBackground>
