@@ -8,7 +8,10 @@ const getHistoryQuery = `
     ON history.historyChapterId = chapters.chapterId
     JOIN novels
     ON history.historyNovelId = novels.novelId
-    ORDER BY history.historyTimeRead DESC`;
+    GROUP BY novels.novelId
+    HAVING history.historyTimeRead = MAX(history.historyTimeRead)
+    ORDER BY history.historyTimeRead DESC
+    `;
 
 export const getHistory = async () => {
     return new Promise((resolve, reject) => {
@@ -41,31 +44,19 @@ export const insertHistory = async (novelId, chapterId) => {
     });
 };
 
-export const deleteHistory = async (novelId) => {
+export const deleteHistory = async (historyId) => {
     db.transaction((tx) => {
-        tx.executeSql("DELETE FROM history WHERE historyNovelId = ?", [
-            novelId,
-        ]);
+        tx.executeSql(
+            "DELETE FROM history WHERE historyId = ?",
+            [historyId],
+            (txObj, res) => {},
+            (txObj, error) => console.log("Error ", error)
+        );
     });
 };
 
 export const deleteAllHistory = async () => {
     db.transaction((tx) => {
         tx.executeSql("DELETE FROM history; VACCUM;");
-    });
-};
-
-export const getHistoryDates = async () => {
-    return new Promise((resolve, reject) => {
-        db.transaction((tx) => {
-            tx.executeSql(
-                "SELECT DISTINCT strftime('%d-%m-%Y', historyTimeRead) as day from history",
-                null,
-                (txObj, { rows: { _array } }) => {
-                    resolve(_array);
-                },
-                (txObj, error) => console.log("Error ", error)
-            );
-        });
     });
 };

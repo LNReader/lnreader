@@ -18,13 +18,13 @@ const historyReducer = (state = initialState, action) => {
             return { ...state, loading: true };
         case GET_HISTORY:
             return { ...state, history: payload, loading: false };
-        case CLEAR_NOVEL_HISTORY:
-            return {
-                ...state,
-                history: state.history.filter(
-                    (item) => item.novelId !== payload.novelId
-                ),
-            };
+        // case CLEAR_NOVEL_HISTORY:
+        //     return {
+        //         ...state,
+        //         history: state.history.filter(
+        //             (item) => item.novelId !== payload.novelId
+        //         ),
+        //     };
         case CLEAR_HISTORY:
             return { ...state, history: [] };
         default:

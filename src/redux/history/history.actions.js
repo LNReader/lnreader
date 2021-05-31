@@ -40,6 +40,8 @@ export const getHistoryAction = () => async (dispatch) => {
         };
     });
 
+    // console.log(groupedHistory);
+
     dispatch({ type: GET_HISTORY, payload: groupedHistory });
 };
 
@@ -54,13 +56,10 @@ export const insertHistoryAction = (novelId, chapterId) => async (dispatch) => {
     dispatch(getHistoryAction());
 };
 
-export const deleteHistoryAction = (novelId) => async (dispatch) => {
-    await deleteHistory(novelId);
-
-    dispatch({
-        type: CLEAR_NOVEL_HISTORY,
-        payload: { novelId },
-    });
+export const deleteHistoryAction = (historyId) => async (dispatch) => {
+    await deleteHistory(historyId);
+    console.log("Delete History Action Called");
+    dispatch(getHistoryAction());
 };
 
 export const clearAllHistoryAction = () => async (dispatch) => {

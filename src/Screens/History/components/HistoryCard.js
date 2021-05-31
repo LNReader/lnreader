@@ -8,9 +8,9 @@ import moment from "moment";
 import { useDispatch } from "react-redux";
 import { setNovel } from "../../../redux/novel/novel.actions";
 import { parseChapterNumber } from "../../../Services/utils/helpers";
+import { deleteHistoryAction } from "../../../redux/history/history.actions";
 
-const HistoryCard = ({ item, deleteHistoryAction, navigation, theme }) => {
-    const dispatch = useDispatch();
+const HistoryCard = ({ item, navigation, theme, dispatch }) => {
     return (
         <TouchableRipple
             style={styles.historyCard}
@@ -65,7 +65,9 @@ const HistoryCard = ({ item, deleteHistoryAction, navigation, theme }) => {
                             style={{
                                 marginRight: 0,
                             }}
-                            onPress={() => deleteHistoryAction(item.novelId)}
+                            onPress={() =>
+                                dispatch(deleteHistoryAction(item.historyId))
+                            }
                         />
                         <IconButton
                             icon="play"

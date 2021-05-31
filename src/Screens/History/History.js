@@ -8,7 +8,6 @@ import EmptyView from "../../Components/EmptyView";
 
 import {
     getHistoryAction,
-    deleteHistoryAction,
     clearAllHistoryAction,
 } from "../../redux/history/history.actions";
 
@@ -40,9 +39,9 @@ const History = ({ navigation }) => {
 
     const renderHistoryCard = ({ item }) => (
         <HistoryCard
+            dispatch={dispatch}
             item={item}
             theme={theme}
-            deleteHistoryAction={() => dispatch(deleteHistoryAction())}
             navigation={navigation}
         />
     );
