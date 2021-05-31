@@ -1,140 +1,172 @@
-import React, { useEffect } from "react";
-import {
-    StyleSheet,
-    View,
-    FlatList,
-    ActivityIndicator,
-    Text,
-} from "react-native";
+import React, { useState, useEffect } from "react";
+import { StyleSheet, FlatList, ActivityIndicator, Text } from "react-native";
 
-import { Appbar } from "../../Components/Appbar";
 import HistoryCard from "./components/HistoryCard";
 
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import EmptyView from "../../Components/EmptyView";
 
 import {
     getHistoryAction,
     deleteHistoryAction,
+    clearAllHistoryAction,
 } from "../../redux/history/history.actions";
 
 import moment from "moment";
 import { dateFormat } from "../../Services/utils/constants";
+import { ScreenContainer } from "../../Components/Common";
+import { Searchbar } from "../../Components/Searchbar";
+import { useTheme } from "../../Hooks/reduxHooks";
+import { Button, Dialog, Portal } from "react-native-paper";
 
-const History = ({
-    navigation,
-    theme,
-    history,
-    loading,
-    getHistoryAction,
-    deleteHistoryAction,
-}) => {
+const History = ({ navigation }) => {
+    const theme = useTheme();
+    const dispatch = useDispatch();
+    const { history, loading } = useSelector((state) => state.historyReducer);
+
+    const [searchText, setSearchText] = useState("");
+    const [searchResults, setSearchResults] = useState([]);
+
+    /**
+     * Confirm Clear History Dialog
+     */
+    const [visible, setVisible] = useState(false);
+    const showDialog = () => setVisible(true);
+    const hideDialog = () => setVisible(false);
+
     useEffect(() => {
-        getHistoryAction();
+        dispatch(getHistoryAction());
     }, [getHistoryAction]);
 
     const renderHistoryCard = ({ item }) => (
         <HistoryCard
             item={item}
             theme={theme}
-            deleteHistoryAction={deleteHistoryAction}
+            deleteHistoryAction={() => dispatch(deleteHistoryAction())}
             navigation={navigation}
         />
     );
 
+    const clearSearchbar = () => setSearchText("");
+
+    const onChangeText = (text) => {
+        setSearchText(text);
+        let results = [];
+
+        text !== "" &&
+            history.map((item) => {
+                const date = item.date;
+                const novels = item.novels.filter((novel) =>
+                    novel.novelName.toLowerCase().includes(text.toLowerCase())
+                );
+
+                if (novels.length > 0) {
+                    results.push({
+                        date,
+                        novels,
+                    });
+                }
+            });
+
+        setSearchResults(results);
+    };
+
     return (
-        <>
-            <Appbar title="History" />
-            <View
-                style={[
-                    styles.container,
-                    { backgroundColor: theme.colorPrimaryDark },
-                ]}
-            >
-                <FlatList
-                    contentContainerStyle={{
-                        flexGrow: 1,
-                        paddingVertical: 8,
-                        paddingHorizontal: 16,
+        <ScreenContainer theme={theme}>
+            <Searchbar
+                placeholder="Search History"
+                searchText={searchText}
+                clearSearchbar={clearSearchbar}
+                onChangeText={onChangeText}
+                left="magnify"
+                theme={theme}
+                right="trash-can-outline"
+                onPressRight={showDialog}
+            />
+            <FlatList
+                contentContainerStyle={{
+                    flexGrow: 1,
+                    paddingVertical: 8,
+                    paddingHorizontal: 16,
+                }}
+                data={searchText ? searchResults : history}
+                keyExtractor={(index) => index.toString()}
+                renderItem={({ item }) => (
+                    <FlatList
+                        keyExtractor={(item, index) => index.toString()}
+                        data={item.novels}
+                        renderItem={renderHistoryCard}
+                        ListHeaderComponent={
+                            <Text
+                                style={{
+                                    textTransform: "uppercase",
+                                    paddingVertical: 8,
+                                    color: theme.textColorSecondary,
+                                }}
+                            >
+                                {moment(item.date).calendar(null, dateFormat)}
+                            </Text>
+                        }
+                    />
+                )}
+                ListFooterComponent={
+                    loading && (
+                        <ActivityIndicator
+                            size="small"
+                            color={theme.colorAccent}
+                        />
+                    )
+                }
+                ListEmptyComponent={
+                    <EmptyView
+                        icon="(˘･_･˘)"
+                        description="Nothing read recently"
+                    />
+                }
+            />
+            <Portal>
+                <Dialog
+                    visible={visible}
+                    onDismiss={hideDialog}
+                    style={{
+                        borderRadius: 6,
+                        backgroundColor: theme.colorPrimary,
                     }}
-                    data={history}
-                    keyExtractor={(index) => index.toString()}
-                    renderItem={({ item }) => (
-                        <FlatList
-                            keyExtractor={(item) => item.novelId.toString()}
-                            data={item.novels}
-                            renderItem={renderHistoryCard}
-                            ListHeaderComponent={
-                                <Text
-                                    style={{
-                                        textTransform: "uppercase",
-                                        paddingVertical: 8,
-                                        color: theme.textColorSecondary,
-                                    }}
-                                >
-                                    {moment(item.date).calendar(
-                                        null,
-                                        dateFormat
-                                    )}
-                                </Text>
-                            }
-                        />
-                    )}
-                    ListFooterComponent={
-                        loading && (
-                            <ActivityIndicator
-                                size="small"
-                                color={theme.colorAccent}
-                            />
-                        )
-                    }
-                    ListEmptyComponent={
-                        <EmptyView
-                            icon="(˘･_･˘)"
-                            description="Nothing read recently"
-                        />
-                    }
-                />
-                {/* <FlatList
-                    contentContainerStyle={{ flexGrow: 1, padding: 8 }}
-                    data={history}
-                    keyExtractor={(item) => item.novelId.toString()}
-                    renderItem={renderHistoryCard}
-                    ListFooterComponent={
-                        loading && (
-                            <ActivityIndicator
-                                size="small"
-                                color={theme.colorAccent}
-                            />
-                        )
-                    }
-                    ListEmptyComponent={
-                        !loading && (
-                            <EmptyView
-                                icon="(˘･_･˘)"
-                                description="Nothing read recently"
-                            />
-                        )
-                    }
-                /> */}
-            </View>
-        </>
+                >
+                    <Dialog.Title
+                        style={{
+                            letterSpacing: 0,
+                            fontSize: 16,
+                            color: theme.textColorPrimary,
+                        }}
+                    >
+                        Are you sure? All history will be lost.
+                    </Dialog.Title>
+                    <Dialog.Actions>
+                        <Button
+                            uppercase={false}
+                            theme={{ colors: { primary: theme.colorAccent } }}
+                            onPress={hideDialog}
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            uppercase={false}
+                            theme={{ colors: { primary: theme.colorAccent } }}
+                            onPress={() => {
+                                dispatch(clearAllHistoryAction());
+                                hideDialog();
+                            }}
+                        >
+                            Ok
+                        </Button>
+                    </Dialog.Actions>
+                </Dialog>
+            </Portal>
+        </ScreenContainer>
     );
 };
 
-const mapStateToProps = (state) => ({
-    theme: state.settingsReducer.theme,
-    history: state.historyReducer.history,
-    loading: state.historyReducer.loading,
-});
+export default History;
 
-export default connect(mapStateToProps, {
-    getHistoryAction,
-    deleteHistoryAction,
-})(History);
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-});
+const styles = StyleSheet.create({});

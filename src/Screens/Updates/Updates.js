@@ -119,15 +119,6 @@ const Updates = ({ navigation }) => {
                 right="reload"
                 onPressRight={() => dispatch(updateLibraryAction())}
             />
-            {/* <FlatList
-                contentContainerStyle={styles.flatList}
-                data={searchText ? searchResults : updates}
-                keyExtractor={(item) => item.updateId.toString()}
-                renderItem={renderItem}
-                ListFooterComponent={ListFooterComponent()}
-                ListEmptyComponent={ListEmptyComponent()}
-                refreshControl={refreshControl()}
-            /> */}
             <FlatList
                 contentContainerStyle={styles.flatList}
                 data={searchText ? searchResults : updates}

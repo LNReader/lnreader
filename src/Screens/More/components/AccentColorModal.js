@@ -28,7 +28,7 @@ const AccentColorModal = ({
             <Text
                 style={[styles.dialogTitle, { color: theme.textColorPrimary }]}
             >
-                Chapters
+                Hex Color Code
             </Text>
             <TextInput
                 value={text}

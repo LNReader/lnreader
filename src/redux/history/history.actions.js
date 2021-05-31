@@ -1,5 +1,4 @@
 import {
-    UPDATE_NOVEL_HISTORY,
     CLEAR_NOVEL_HISTORY,
     GET_HISTORY,
     LOAD_HISTORY,
@@ -12,6 +11,7 @@ import {
     deleteAllHistory,
 } from "../../Database/queries/HistoryQueries";
 import { SET_LAST_READ } from "../preferences/preference.types";
+import { showToast } from "../../Hooks/showToast";
 
 export const getHistoryAction = () => async (dispatch) => {
     dispatch({ type: LOAD_HISTORY });
@@ -64,7 +64,11 @@ export const deleteHistoryAction = (novelId) => async (dispatch) => {
 };
 
 export const clearAllHistoryAction = () => async (dispatch) => {
-    deleteAllHistory();
+    try {
+        await deleteAllHistory();
 
-    dispatch({ type: CLEAR_HISTORY });
+        dispatch({ type: CLEAR_HISTORY });
+    } catch (error) {
+        showToast(error.message);
+    }
 };

@@ -3,7 +3,6 @@ import {
     CLEAR_NOVEL_HISTORY,
     GET_HISTORY,
     LOAD_HISTORY,
-    UPDATE_NOVEL_HISTORY,
 } from "./history.types";
 
 const initialState = {
@@ -19,8 +18,6 @@ const historyReducer = (state = initialState, action) => {
             return { ...state, loading: true };
         case GET_HISTORY:
             return { ...state, history: payload, loading: false };
-        // case UPDATE_NOVEL_HISTORY:
-        //     return state;
         case CLEAR_NOVEL_HISTORY:
             return {
                 ...state,
@@ -29,10 +26,7 @@ const historyReducer = (state = initialState, action) => {
                 ),
             };
         case CLEAR_HISTORY:
-            return {
-                ...state,
-                history: [],
-            };
+            return { ...state, history: [] };
         default:
             return state;
     }

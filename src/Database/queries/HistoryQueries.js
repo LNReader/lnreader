@@ -49,7 +49,7 @@ export const deleteHistory = async (novelId) => {
     });
 };
 
-export const deleteAllHistory = () => {
+export const deleteAllHistory = async () => {
     db.transaction((tx) => {
         tx.executeSql("DELETE FROM history; VACCUM;");
     });
