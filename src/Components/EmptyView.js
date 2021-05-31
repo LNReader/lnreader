@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { useSelector } from "react-redux";
 
-const EmptyView = ({ icon, description, style, children }) => {
+const EmptyView = ({ icon, description, style, children, iconStyle }) => {
     const theme = useSelector((state) => state.settingsReducer.theme);
 
     return (
@@ -12,6 +12,7 @@ const EmptyView = ({ icon, description, style, children }) => {
                     styles.emptyViewIcon,
                     { color: theme.textColorSecondary },
                     style,
+                    iconStyle,
                 ]}
             >
                 {icon}
@@ -40,7 +41,6 @@ const styles = StyleSheet.create({
     },
     emptyViewIcon: {
         fontSize: 45,
-        fontWeight: "bold",
     },
     emptyViewText: {
         fontWeight: "bold",

@@ -63,6 +63,9 @@ const NovelCover = ({ item, onPress, libraryStatus }) => {
                         borderTopLeftRadius: 4,
                         borderBottomLeftRadius: 4,
                     },
+                    !showDownloadBadges && {
+                        borderRadius: 4,
+                    },
                 ]}
             >
                 {item.chaptersUnread}
@@ -78,6 +81,9 @@ const NovelCover = ({ item, onPress, libraryStatus }) => {
                     !item.chaptersUnread && {
                         borderTopRightRadius: 4,
                         borderBottomRightRadius: 4,
+                    },
+                    !showUnreadBadges && {
+                        borderRadius: 4,
                     },
                 ]}
             >
