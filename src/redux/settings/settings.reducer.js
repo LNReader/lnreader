@@ -40,7 +40,7 @@ const themes = {
  */
 
 const initialState = {
-    theme: irisBlueTheme,
+    theme: darkTheme,
     displayMode: 0,
     novelsPerRow: 3,
     reader: {

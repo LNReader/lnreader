@@ -66,6 +66,8 @@ export const clearAllHistoryAction = () => async (dispatch) => {
     try {
         await deleteAllHistory();
 
+        showToast("History deleted");
+
         dispatch({ type: CLEAR_HISTORY });
     } catch (error) {
         showToast(error.message);

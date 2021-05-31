@@ -40,7 +40,7 @@ const getChaptersQuery = (sort, filter) =>
     }`;
 
 export const getChapters = (novelId, sort, filter) => {
-    console.log(getChaptersQuery(sort, filter));
+    // console.log(getChaptersQuery(sort, filter));
     return new Promise((resolve, reject) =>
         db.transaction((tx) => {
             tx.executeSql(

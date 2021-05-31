@@ -43,7 +43,7 @@ const SettingsScreen = ({ navigation }) => {
                     }
                     theme={theme}
                 />
-                <ListItem
+                {/* <ListItem
                     title="Reader"
                     icon="book-open-outline"
                     onPress={() =>
@@ -52,7 +52,7 @@ const SettingsScreen = ({ navigation }) => {
                         })
                     }
                     theme={theme}
-                />
+                /> */}
                 <ListItem
                     title="Tracking"
                     icon="sync"

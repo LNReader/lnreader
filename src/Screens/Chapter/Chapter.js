@@ -1,13 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import {
-    StyleSheet,
-    View,
-    Text,
-    ActivityIndicator,
-    Button,
-    Image,
-    Dimensions,
-} from "react-native";
+import { StyleSheet, View, Text, ActivityIndicator } from "react-native";
 
 import { useDispatch } from "react-redux";
 import Constants from "expo-constants";
@@ -67,6 +59,7 @@ const Chapter = ({ route, navigation }) => {
 
     const [scrollPercentage, setScrollPercentage] = useState(0);
     const [firstLayout, setFirstLayout] = useState(true);
+    const [selectText, setSelectText] = useState(false);
 
     const [images, setImages] = useState([]);
 
@@ -190,8 +183,6 @@ const Chapter = ({ route, navigation }) => {
         },
     ];
 
-    const win = Dimensions.get("window");
-
     return (
         <>
             <CollapsibleHeaderScrollView
@@ -217,32 +208,9 @@ const Chapter = ({ route, navigation }) => {
                     { backgroundColor: readerBackground(reader.theme) },
                 ]}
                 onScroll={onScroll}
+                showsVerticalScrollIndicator={false}
             >
-                {loading ? (
-                    <View style={{ flex: 1, justifyContent: "center" }}>
-                        <ActivityIndicator
-                            size={50}
-                            color={theme.colorAccent}
-                        />
-                    </View>
-                ) : !error ? (
-                    <View style={{ flex: 1 }}>
-                        {images.length > 0 &&
-                            images.map((image, index) => (
-                                <FitImage source={{ uri: image }} />
-                            ))}
-
-                        <Text
-                            style={readerStyles}
-                            onLayout={scrollToSavedProgress}
-                            selectable={true}
-                        >
-                            {chapter.chapterText
-                                .trim()
-                                .replace(/\[https.*?\]/g, "")}
-                        </Text>
-                    </View>
-                ) : (
+                {error ? (
                     <View style={{ flex: 1, justifyContent: "center" }}>
                         <EmptyView
                             icon="(-_-;)・・・"
@@ -267,6 +235,30 @@ const Chapter = ({ route, navigation }) => {
                             </Text>
                         </EmptyView>
                     </View>
+                ) : loading ? (
+                    <View style={{ flex: 1, justifyContent: "center" }}>
+                        <ActivityIndicator
+                            size={50}
+                            color={theme.colorAccent}
+                        />
+                    </View>
+                ) : (
+                    <View style={{ flex: 1 }}>
+                        {images.length > 0 &&
+                            images.map((image, index) => (
+                                <FitImage source={{ uri: image }} />
+                            ))}
+
+                        <Text
+                            style={readerStyles}
+                            onLayout={scrollToSavedProgress}
+                            selectable={selectText}
+                        >
+                            {chapter.chapterText
+                                .trim()
+                                .replace(/\[https.*?\]/g, "")}
+                        </Text>
+                    </View>
                 )}
                 <Portal>
                     <ReaderSheet
@@ -274,6 +266,8 @@ const Chapter = ({ route, navigation }) => {
                         reader={reader}
                         dispatch={dispatch}
                         bottomSheetRef={readerSheetRef}
+                        selectText={selectText}
+                        setSelectText={setSelectText}
                     />
                 </Portal>
             </CollapsibleHeaderScrollView>

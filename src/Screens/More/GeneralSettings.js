@@ -93,7 +93,7 @@ const GenralSettings = ({ navigation }) => {
                     onPress={showAccentColorModal}
                     theme={theme}
                     iconColor={theme.colorAccent}
-                    right="palette"
+                    right="circle"
                 />
             </ListSection>
             <DisplayModeModal

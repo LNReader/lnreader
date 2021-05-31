@@ -8,6 +8,7 @@ import {
     FETCHING_NOVEL,
     SET_NOVEL,
     UPDATE_IN_LIBRARY,
+    NOVEL_ERROR,
     CHAPTER_READ,
     UPDATE_NOVEL,
     UPDATE_LAST_READ,
@@ -139,6 +140,14 @@ const novelReducer = (state = initialState, action) => {
                         ? { ...chapter, read: 0 }
                         : chapter
                 ),
+            };
+        case NOVEL_ERROR:
+            return {
+                ...state,
+                novel: {},
+                chapters: [],
+                loading: false,
+                updating: false,
             };
         default:
             return state;

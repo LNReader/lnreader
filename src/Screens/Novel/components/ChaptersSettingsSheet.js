@@ -77,7 +77,7 @@ const ChaptersSettingsSheet = ({
                     } else if (filter.match("AND `read`=1")) {
                         filterChapters(filter.replace(" AND `read`=1", ""));
                     } else {
-                        filterChapters(" AND `read`=0");
+                        filterChapters(filter + " AND `read`=0");
                     }
                 }}
             />

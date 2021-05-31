@@ -9,6 +9,7 @@ import { Searchbar } from "../../Components/Searchbar";
 import { useTheme, useLibrary } from "../../Hooks/reduxHooks";
 import NovelList from "../../Components/NovelList";
 import { showToast } from "../../Hooks/showToast";
+import ErrorView from "../../Components/ErrorView";
 
 const Extension = ({ navigation, route }) => {
     const { sourceId, sourceName, sourceUrl } = route.params;
@@ -18,6 +19,7 @@ const Extension = ({ navigation, route }) => {
 
     const [loading, setLoading] = useState(true);
     const [novels, setNovels] = useState();
+    const [error, setError] = useState();
 
     const [searchText, setSearchText] = useState("");
 
@@ -37,18 +39,21 @@ const Extension = ({ navigation, route }) => {
         }
     };
 
-    const getNovels = () => {
-        fetch(getSourceUrl())
-            .then((response) => response.json())
-            .then((json) => {
-                setNovels(json);
-                setLoading(false);
-            })
-            .catch((error) => {
-                setNovels([]);
-                setLoading(false);
-                showToast(error.message);
-            });
+    const getNovels = async () => {
+        try {
+            const url = getSourceUrl();
+
+            const res = await fetch(url);
+            const data = await res.json();
+
+            setNovels(data);
+            setLoading(false);
+        } catch (error) {
+            setError(error.message);
+            setNovels([]);
+            setLoading(false);
+            showToast(error.message);
+        }
     };
 
     const clearSearchbar = () => {
@@ -97,10 +102,18 @@ const Extension = ({ navigation, route }) => {
         />
     );
 
-    const listEmptyComponent = () =>
-        novels.length === 0 && (
-            <EmptyView icon="(；￣Д￣)" description="No results found" />
-        );
+    const listEmptyComponent = () => (
+        <ErrorView
+            error={error || "No results found"}
+            onRetry={() => {
+                getNovels();
+                setLoading(true);
+                setError();
+            }}
+            openWebView={() => WebBrowser.openBrowserAsync(sourceUrl)}
+            theme={theme}
+        />
+    );
 
     return (
         <View

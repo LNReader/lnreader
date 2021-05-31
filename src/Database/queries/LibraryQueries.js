@@ -56,7 +56,7 @@ const searchLibraryQuery = (searchText, sort, filter) =>
         GROUP BY chapters.novelId
     ) AS D
     ON novels.novelId = D.novelId
-    WHERE novels.followed = 1 AND novelName LIKE '%${searchText}%' ${
+    WHERE novels.followed = 1 AND novelName LIKE '%${searchText}%' OR source LIKE '%${searchText}%'  ${
         filter ? "AND " + filter : ""
     }
     ${sort ? "ORDER BY " + sort : ""} `;

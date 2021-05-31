@@ -4,6 +4,7 @@ import {
     LOADING_NOVEL,
     GET_NOVEL,
     GET_CHAPTERS,
+    NOVEL_ERROR,
     FETCHING_NOVEL,
     SET_NOVEL,
     UPDATE_IN_LIBRARY,
@@ -116,6 +117,7 @@ export const getNovelAction =
             }
         } catch (error) {
             showToast(error.message);
+            // dispatch({ type: NOVEL_ERROR });
         }
     };
 
