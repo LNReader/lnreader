@@ -17,11 +17,16 @@ import GlobalSearchNovelList from "./components/GlobalSearchNovelList";
 import { ProgressBar } from "react-native-paper";
 import { showToast } from "../../Hooks/showToast";
 
-const GlobalSearch = ({ navigation }) => {
+const GlobalSearch = ({ route, navigation }) => {
     const theme = useTheme();
+    let novelName;
+
+    if (route.params) {
+        novelName = route.params.novelName;
+    }
 
     const [loading, setLoading] = useState(false);
-    const [searchText, setSearchText] = useState("");
+    const [searchText, setSearchText] = useState(novelName);
     const [searchResults, setSearchResults] = useState("");
     const { sources, pinned } = useSelector((state) => state.sourceReducer);
     const [progress, setProgress] = useState(0);
@@ -31,6 +36,10 @@ const GlobalSearch = ({ navigation }) => {
     const pinnedSources = sources.filter(
         (source) => pinned.indexOf(source.sourceId) !== -1
     );
+
+    useEffect(() => {
+        novelName && onSubmitEditing();
+    }, []);
 
     const clearSearchbar = () => {
         setSearchText("");

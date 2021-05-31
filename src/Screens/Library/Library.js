@@ -5,6 +5,7 @@ import {
     View,
     RefreshControl,
     ActivityIndicator,
+    TouchableOpacity,
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { useSelector, useDispatch } from "react-redux";
@@ -21,7 +22,7 @@ import {
 import { updateLibraryAction } from "../../redux/updates/updates.actions";
 import { useSettings, useTheme } from "../../Hooks/reduxHooks";
 import { setNovel } from "../../redux/novel/novel.actions";
-import { Portal } from "react-native-paper";
+import { Portal, TouchableRipple } from "react-native-paper";
 import LibraryFilterSheet from "./components/LibraryFilterSheet";
 
 const LibraryScreen = ({ navigation }) => {
@@ -88,9 +89,20 @@ const LibraryScreen = ({ navigation }) => {
 
     const listEmptyComponent = () =>
         searchText !== "" ? (
-            <Text style={[styles.emptySearch, { color: theme.colorAccent }]}>
-                {`"${searchText}" not in library`}
-            </Text>
+            <TouchableRipple
+                onPress={() =>
+                    navigation.navigate("GlobalSearch", {
+                        novelName: searchText,
+                    })
+                }
+                borderless
+                rippleColor={theme.colorAccent}
+                style={styles.emptySearch}
+            >
+                <Text style={{ color: theme.colorAccent }}>
+                    {`Search for "${searchText}" globally`}
+                </Text>
+            </TouchableRipple>
         ) : (
             <EmptyView
                 icon="Σ(ಠ_ಠ)"
@@ -108,7 +120,7 @@ const LibraryScreen = ({ navigation }) => {
             >
                 <Searchbar
                     placeholder={`Search Library ${
-                        showNumberOfNovels && "(" + novels.length + ")"
+                        showNumberOfNovels ? "(" + novels.length + ")" : ""
                     }`}
                     searchText={searchText}
                     clearSearchbar={clearSearchbar}
@@ -152,8 +164,8 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     emptySearch: {
-        marginTop: 8,
-        textAlign: "center",
-        paddingHorizontal: 16,
+        alignItems: "center",
+        paddingVertical: 8,
+        borderRadius: 4,
     },
 });
