@@ -3,13 +3,13 @@
         "name": "LNReader",
         "slug": "LNReader",
         "scheme": "lnreader",
-        "version": "1.0.18",
+        "version": "1.0.19",
         "orientation": "default",
         "icon": "./assets/icon.png",
         "splash": {
             "image": "./assets/splash.png",
             "resizeMode": "cover",
-            "backgroundColor": "#222831"
+            "backgroundColor": "#000000"
         },
         "updates": {
             "fallbackToCacheTimeout": 0,

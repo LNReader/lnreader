@@ -48,7 +48,7 @@ const initialState = {
         textSize: 16,
         textAlign: "left",
         padding: 5,
-        fontFamily: null,
+        fontFamily: "",
         lineHeight: 1.5,
     },
     showDownloadBadges: true,
