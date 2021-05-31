@@ -9,7 +9,8 @@ import ListView from "./ListView";
 
 const NovelCover = ({ item, onPress, libraryStatus }) => {
     const theme = useTheme();
-    const { displayMode, novelsPerRow } = useSettings();
+    const { displayMode, novelsPerRow, showDownloadBadges, showUnreadBadges } =
+        useSettings();
 
     const height = {
         1: 550,
@@ -102,8 +103,8 @@ const NovelCover = ({ item, onPress, libraryStatus }) => {
                         progressiveRenderingEnabled={true}
                     >
                         <View style={{ flexDirection: "row", margin: 4 }}>
-                            {downloadBadge()}
-                            {unreadBadge()}
+                            {showDownloadBadges && downloadBadge()}
+                            {showUnreadBadges && unreadBadge()}
                         </View>
                         {compactTitle()}
                     </ImageBackground>

@@ -1,6 +1,8 @@
 import React from "react";
 import { StyleSheet } from "react-native";
+
 import { List, Divider as PaperDivider } from "react-native-paper";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 const ListSection = ({ children }) => (
     <List.Section style={styles.listSection}>{children}</List.Section>
@@ -23,9 +25,11 @@ const ListItem = ({
     right,
     iconColor,
     titleStyle,
+    style,
 }) => (
     <List.Item
         title={title}
+        style={style}
         titleStyle={[{ color: theme.textColorPrimary }, titleStyle]}
         description={description}
         descriptionStyle={{ color: theme.textColorSecondary }}
@@ -41,10 +45,11 @@ const ListItem = ({
         }
         right={() =>
             right && (
-                <List.Icon
+                <MaterialCommunityIcons
+                    name={right}
                     color={iconColor || "#47a84a"}
-                    icon={right}
-                    style={{ marginVertical: 0 }}
+                    size={23}
+                    style={{ marginRight: 16, textAlignVertical: "center" }}
                 />
             )
         }

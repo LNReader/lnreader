@@ -51,6 +51,9 @@ const initialState = {
         fontFamily: null,
         lineHeight: 1.5,
     },
+    showDownloadBadges: true,
+    showUnreadBadges: true,
+    showNumberOfNovels: false,
 };
 
 const settingsReducer = (state = initialState, action) => {

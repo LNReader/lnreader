@@ -44,6 +44,7 @@
     "react-native-reanimated": "~2.1.0",
     "react-native-safe-area-context": "3.2.0",
     "react-native-screens": "~3.0.0",
+    "react-native-tab-view": "^3.0.1",
     "react-native-vector-icons": "^7.1.0",
     "react-native-web": "~0.13.12",
     "react-native-webview": "11.2.3",
@@ -52,7 +53,8 @@
     "redux-devtools-extension": "^2.13.9",
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.3.0",
-    "rn-sliding-up-panel": "^2.4.4"
+    "rn-sliding-up-panel": "^2.4.4",
+    "react-native-pager-view": "5.0.12"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0"
