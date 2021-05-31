@@ -70,7 +70,7 @@ const NovelInfo = ({ theme, children }) => (
 );
 
 const FollowButton = ({ theme, onPress, followed }) => (
-    <View style={{ alignItems: "center" }}>
+    <View style={{ alignItems: "center", flex: 1 }}>
         <IconButton
             icon={followed ? "heart" : "heart-outline"}
             color={followed ? theme.colorAccent : theme.textColorSecondary}
@@ -90,7 +90,7 @@ const FollowButton = ({ theme, onPress, followed }) => (
 );
 
 const TrackerButton = ({ theme, isTracked, onPress }) => (
-    <View style={{ alignItems: "center" }}>
+    <View style={{ alignItems: "center", flex: 1 }}>
         <IconButton
             icon={isTracked ? "check" : "sync"}
             color={isTracked ? theme.colorAccent : theme.textColorSecondary}

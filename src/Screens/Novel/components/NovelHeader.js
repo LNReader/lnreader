@@ -72,6 +72,7 @@ const NovelInfoHeader = ({
                         style={{
                             justifyContent: "space-around",
                             paddingHorizontal: 16,
+                            flex: 1,
                         }}
                     >
                         <FollowButton
@@ -86,7 +87,7 @@ const NovelInfoHeader = ({
                                 onPress={() => trackerSheetRef.current.show()}
                             />
                         )}
-                        <View style={{ alignItems: "center" }}>
+                        <View style={{ alignItems: "center", flex: 1 }}>
                             <IconButton
                                 icon="swap-vertical-variant"
                                 color={theme.textColorSecondary}
@@ -108,7 +109,7 @@ const NovelInfoHeader = ({
                                 Migrate
                             </Text>
                         </View>
-                        <View style={{ alignItems: "center" }}>
+                        <View style={{ alignItems: "center", flex: 1 }}>
                             <IconButton
                                 icon="earth"
                                 color={theme.textColorSecondary}

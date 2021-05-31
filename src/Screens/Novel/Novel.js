@@ -152,7 +152,12 @@ const Novel = ({ route, navigation }) => {
                                 icon="check"
                                 color={theme.textColorPrimary}
                                 onPress={() => {
-                                    dispatch(markChaptersRead(selected));
+                                    dispatch(
+                                        markChaptersRead(
+                                            selected,
+                                            novel.novelId
+                                        )
+                                    );
                                     setSelected([]);
                                 }}
                             />
@@ -162,7 +167,12 @@ const Novel = ({ route, navigation }) => {
                                 icon="check-outline"
                                 color={theme.textColorPrimary}
                                 onPress={() => {
-                                    dispatch(markChapterUnreadAction(selected));
+                                    dispatch(
+                                        markChapterUnreadAction(
+                                            selected,
+                                            novel.novelId
+                                        )
+                                    );
                                     setSelected([]);
                                 }}
                             />
