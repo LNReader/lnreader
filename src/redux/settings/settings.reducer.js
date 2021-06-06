@@ -54,6 +54,7 @@ const initialState = {
     showDownloadBadges: true,
     showUnreadBadges: true,
     showNumberOfNovels: false,
+    showScrollPercentage: true,
 };
 
 const settingsReducer = (state = initialState, action) => {

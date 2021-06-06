@@ -1,7 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
-import { StyleSheet, View, Text, ActivityIndicator } from "react-native";
+import {
+    StyleSheet,
+    View,
+    Text,
+    ActivityIndicator,
+    StatusBar,
+} from "react-native";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Constants from "expo-constants";
 import { IconButton, Portal } from "react-native-paper";
 import { CollapsibleHeaderScrollView } from "react-native-collapsible-header-views";
@@ -32,6 +38,11 @@ import ReaderSheet from "./components/ReaderSheet";
 import EmptyView from "../../Components/EmptyView";
 import FitImage from "react-native-fit-image";
 
+import {
+    hideNavigationBar,
+    showNavigationBar,
+} from "react-native-navigation-bar-color";
+
 const Chapter = ({ route, navigation }) => {
     const {
         sourceId,
@@ -48,6 +59,10 @@ const Chapter = ({ route, navigation }) => {
     const theme = useTheme();
     const dispatch = useDispatch();
     const reader = useReaderSettings();
+    const showScrollPercentage = useSelector(
+        (state) => state.settingsReducer.showScrollPercentage
+    );
+
     const { tracker, trackedNovels } = useTrackingStatus();
     const position = usePosition(novelId, chapterId);
 
@@ -108,6 +123,10 @@ const Chapter = ({ route, navigation }) => {
     useEffect(() => {
         getChapter(chapterId);
         dispatch(insertHistoryAction(novelId, chapterId));
+        return () => {
+            StatusBar.setHidden(false);
+            showNavigationBar();
+        };
     }, []);
 
     const isCloseToBottom = ({
@@ -157,6 +176,8 @@ const Chapter = ({ route, navigation }) => {
     };
 
     const scrollToSavedProgress = () => {
+        StatusBar.setHidden(true);
+        hideNavigationBar();
         if (position && firstLayout) {
             position.percentage < 100 &&
                 scrollViewRef.getNode().scrollTo({
@@ -268,17 +289,23 @@ const Chapter = ({ route, navigation }) => {
                         bottomSheetRef={readerSheetRef}
                         selectText={selectText}
                         setSelectText={setSelectText}
+                        showScrollPercentage={showScrollPercentage}
                     />
                 </Portal>
             </CollapsibleHeaderScrollView>
-            <Text
-                style={[
-                    styles.scrollPercentage,
-                    { color: readerTextColor(reader.theme) },
-                ]}
-            >
-                {scrollPercentage + "%"}
-            </Text>
+            {showScrollPercentage && (
+                <Text
+                    style={[
+                        styles.scrollPercentage,
+                        {
+                            color: readerTextColor(reader.theme),
+                            backgroundColor: readerBackground(reader.theme),
+                        },
+                    ]}
+                >
+                    {scrollPercentage + "%"}
+                </Text>
+            )}
         </>
     );
 };
@@ -291,8 +318,12 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
     },
     scrollPercentage: {
+        width: "100%",
         position: "absolute",
-        bottom: 12,
+        bottom: 0,
+        height: 30,
+        textAlign: "center",
+        textAlignVertical: "center",
         alignSelf: "center",
         fontFamily: "noto-sans",
         fontWeight: "bold",

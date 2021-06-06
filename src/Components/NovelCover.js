@@ -1,24 +1,27 @@
 import React from "react";
-import { StyleSheet, View, Text, ImageBackground, Image } from "react-native";
+import { StyleSheet, View, Text, useWindowDimensions } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { TouchableRipple } from "react-native-paper";
 
 import { useSelector } from "react-redux";
 import { useSettings, useTheme } from "../Hooks/reduxHooks";
 import ListView from "./ListView";
+import FastImage from "react-native-fast-image";
+import { getDeviceOrientation } from "../Services/utils/helpers";
 
 const NovelCover = ({ item, onPress, libraryStatus }) => {
     const theme = useTheme();
     const { displayMode, novelsPerRow, showDownloadBadges, showUnreadBadges } =
         useSettings();
 
-    const height = {
-        1: 550,
-        2: 280,
-        3: 180,
-        4: 140,
-        5: 100,
-    };
+    const window = useWindowDimensions();
+
+    const orientation = getDeviceOrientation();
+
+    const getNovelsPerRow = () =>
+        orientation === "landscape" ? 6 : novelsPerRow;
+
+    const getHeight = () => (window.width / getNovelsPerRow()) * (4 / 3);
 
     const comfortableTitle = () =>
         displayMode === 1 && (
@@ -92,7 +95,7 @@ const NovelCover = ({ item, onPress, libraryStatus }) => {
         );
 
     return displayMode !== 2 ? (
-        <View style={{ flex: 1 / novelsPerRow }}>
+        <View style={{ flex: 1 / getNovelsPerRow() }}>
             <TouchableRipple
                 borderless
                 centered
@@ -101,21 +104,19 @@ const NovelCover = ({ item, onPress, libraryStatus }) => {
                 onPress={onPress}
             >
                 <>
-                    <ImageBackground
+                    <FastImage
                         source={{ uri: item.novelCover }}
-                        style={{ height: height[novelsPerRow] }}
-                        imageStyle={[
-                            { borderRadius: 4 },
+                        style={[
+                            { height: getHeight(), borderRadius: 4 },
                             libraryStatus && { opacity: 0.5 },
                         ]}
-                        progressiveRenderingEnabled={true}
                     >
                         <View style={{ flexDirection: "row", margin: 4 }}>
                             {downloadBadge()}
                             {unreadBadge()}
                         </View>
                         {compactTitle()}
-                    </ImageBackground>
+                    </FastImage>
                     {comfortableTitle()}
                 </>
             </TouchableRipple>

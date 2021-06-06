@@ -4,6 +4,7 @@ import { Portal, Modal, Checkbox } from "react-native-paper";
 
 import { setStatusBarStyle } from "expo-status-bar";
 import { setAppTheme } from "../../../redux/settings/settings.actions";
+import ImmersiveMode from "react-native-immersive-mode";
 
 const ThemeModal = ({ themeModalVisible, hidethemeModal, dispatch, theme }) => {
     const themes = [
@@ -26,7 +27,8 @@ const ThemeModal = ({ themeModalVisible, hidethemeModal, dispatch, theme }) => {
                 color={theme.colorAccent}
                 onPress={() => {
                     dispatch(setAppTheme(item.id));
-                    setStatusBarStyle(item.statusBar);
+                    // setStatusBarStyle(item.statusBar);
+                    ImmersiveMode.setBarColor(item.colorPrimary);
                 }}
             />
         ));

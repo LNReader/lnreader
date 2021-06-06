@@ -46,7 +46,10 @@ const History = ({ navigation }) => {
         />
     );
 
-    const clearSearchbar = () => setSearchText("");
+    const clearSearchbar = () => {
+        setSearchText("");
+        setSearchResults([]);
+    };
 
     const onChangeText = (text) => {
         setSearchText(text);

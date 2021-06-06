@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
+import FastImage from "react-native-fast-image";
 import { TouchableRipple } from "react-native-paper";
 
 const MigrationSourceCard = ({ item, theme, noOfNovels, onPress }) => {
@@ -12,10 +13,9 @@ const MigrationSourceCard = ({ item, theme, noOfNovels, onPress }) => {
             rippleColor={theme.rippleColor}
         >
             <>
-                <Image
+                <FastImage
                     source={{ uri: sourceCover }}
                     style={styles.extensionIcon}
-                    resizeMode="contain"
                 />
                 <View style={styles.extensionDetails}>
                     <View>
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     extensionIcon: {
         width: 40,
         height: 40,
-        borderRadius: 8,
+        borderRadius: 4,
     },
     extensionDetails: {
         flex: 1,

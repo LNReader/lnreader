@@ -39,7 +39,7 @@ const AccentColorModal = ({
                     defaultValue={theme.colorAccent}
                     onChangeText={(text) => setText(text)}
                     onSubmitEditing={() => {
-                        if (text.match(/^#[0-9a-f]{3,6}$/i)) {
+                        if (text.match(/^#([0-9a-f]{6}|[0-9a-f]{3})$/i)) {
                             dispatch(setAccentColor(text));
                             hideAccentColorModal();
                         } else {

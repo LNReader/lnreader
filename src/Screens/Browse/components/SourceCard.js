@@ -4,6 +4,7 @@ import { TouchableRipple, Button, IconButton } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch } from "react-redux";
 import { pinSourceAction } from "../../../redux/source/source.actions";
+import FastImage from "react-native-fast-image";
 
 const ExtensionCard = ({ item, theme, isPinned }) => {
     const { sourceId, sourceName, sourceCover, sourceLanguage, status } = item;

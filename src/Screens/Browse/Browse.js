@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import {
     StyleSheet,
     View,
-    ScrollView,
     Text,
     FlatList,
     ActivityIndicator,
@@ -19,6 +18,7 @@ import {
 import SourceCard from "./components/SourceCard";
 import { showToast } from "../../Hooks/showToast";
 import { Searchbar } from "../../Components/Searchbar";
+import MalCard from "./components/MalCard";
 
 const Browse = ({ navigation }) => {
     const [refreshing, setRefreshing] = useState(false);
@@ -93,6 +93,16 @@ const Browse = ({ navigation }) => {
                 extraData={pinned}
                 ListHeaderComponent={
                     <View>
+                        <Text
+                            style={{
+                                color: theme.textColorSecondary,
+                                paddingHorizontal: 16,
+                                paddingVertical: 8,
+                            }}
+                        >
+                            Discover
+                        </Text>
+                        <MalCard theme={theme} />
                         {pinned.length > 0 && (
                             <FlatList
                                 contentContainerStyle={{ paddingBottom: 16 }}

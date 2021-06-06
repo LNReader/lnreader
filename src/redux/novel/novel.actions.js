@@ -223,23 +223,21 @@ export const markPreviousChaptersReadAction =
         showToast("Marked previous chapters read");
     };
 
-export const markChaptersRead = (chapters, novelId) => async (dispatch) => {
-    try {
-        const { sort = "ORDER BY chapterId ASC", filter = "" } =
-            store.getState().preferenceReducer.novelSettings[novelId];
+export const markChaptersRead =
+    (chapters, novelId, sort, filter) => async (dispatch) => {
+        try {
+            chapters.map((chapter) => markChapterRead(chapter.chapterId));
 
-        chapters.map((chapter) => markChapterRead(chapter.chapterId));
+            const chaps = await getChapters(novelId, sort, filter);
 
-        const chaps = await getChapters(novelId, sort, filter);
-
-        dispatch({
-            type: GET_CHAPTERS,
-            payload: chaps,
-        });
-    } catch (error) {
-        showToast(error.message);
-    }
-};
+            dispatch({
+                type: GET_CHAPTERS,
+                payload: chaps,
+            });
+        } catch (error) {
+            showToast(error.message);
+        }
+    };
 
 export const markPreviousChaptersUnreadAction =
     (chapterId, novelId) => async (dispatch) => {

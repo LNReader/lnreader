@@ -5,33 +5,31 @@ const NovelSummary = ({ summary, followed, theme }) => {
     const [more, showMore] = useState(!followed);
 
     return (
-        summary && (
-            <View style={styles.summaryContainer}>
-                <Text
-                    style={{
-                        color: theme.textColorSecondary,
-                        lineHeight: 20,
-                    }}
-                    numberOfLines={more ? 200 : 2}
-                    onPress={() => showMore(!more)}
-                    ellipsizeMode="clip"
-                >
-                    {summary}
-                </Text>
-                <Text
-                    style={[
-                        {
-                            color: theme.colorAccent,
-                            backgroundColor: theme.colorPrimaryDark,
-                        },
-                        styles.showMoreButton,
-                    ]}
-                    onPress={() => showMore(!more)}
-                >
-                    {more ? "Less" : "More"}
-                </Text>
-            </View>
-        )
+        <View style={styles.summaryContainer}>
+            <Text
+                style={{
+                    color: theme.textColorSecondary,
+                    lineHeight: 20,
+                }}
+                numberOfLines={more ? 200 : 2}
+                onPress={() => showMore(!more)}
+                ellipsizeMode="clip"
+            >
+                {summary}
+            </Text>
+            <Text
+                style={[
+                    {
+                        color: theme.colorAccent,
+                        backgroundColor: theme.colorPrimaryDark,
+                    },
+                    styles.showMoreButton,
+                ]}
+                onPress={() => showMore(!more)}
+            >
+                {more ? "Less" : "More"}
+            </Text>
+        </View>
     );
 };
 

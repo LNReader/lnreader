@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { setNovel } from "../../../redux/novel/novel.actions";
 import { parseChapterNumber } from "../../../Services/utils/helpers";
 import { deleteHistoryAction } from "../../../redux/history/history.actions";
+import FastImage from "react-native-fast-image";
 
 const HistoryCard = ({ item, navigation, theme, dispatch }) => {
     return (
@@ -22,7 +23,7 @@ const HistoryCard = ({ item, navigation, theme, dispatch }) => {
             }}
         >
             <>
-                <Image
+                <FastImage
                     source={{ uri: item.novelCover }}
                     style={styles.historyCover}
                 />

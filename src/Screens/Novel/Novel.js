@@ -155,7 +155,9 @@ const Novel = ({ route, navigation }) => {
                                     dispatch(
                                         markChaptersRead(
                                             selected,
-                                            novel.novelId
+                                            novel.novelId,
+                                            sort,
+                                            filter
                                         )
                                     );
                                     setSelected([]);

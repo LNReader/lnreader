@@ -12,6 +12,7 @@ import { Chip, IconButton } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import easeGradient from "react-native-easing-gradient";
+import FastImage from "react-native-fast-image";
 
 const NovelInfoContainer = ({ children }) => (
     <View style={styles.novelInfoContainer}>{children}</View>
@@ -26,7 +27,7 @@ const CoverImage = ({ children, source, theme }) => {
     });
 
     return (
-        <ImageBackground source={source} style={styles.coverImage}>
+        <FastImage source={source} style={styles.coverImage}>
             <LinearGradient
                 colors={colors}
                 locations={locations}
@@ -34,12 +35,12 @@ const CoverImage = ({ children, source, theme }) => {
             >
                 {children}
             </LinearGradient>
-        </ImageBackground>
+        </FastImage>
     );
 };
 
 const NovelThumbnail = ({ source }) => (
-    <Image source={source} style={styles.novelThumbnail} />
+    <FastImage source={source} style={styles.novelThumbnail} />
 );
 
 const NovelTitle = ({ theme, children, onLongPress, onPress }) => (

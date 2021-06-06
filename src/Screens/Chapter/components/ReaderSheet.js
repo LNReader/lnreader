@@ -5,7 +5,10 @@ import Slider from "@react-native-community/slider";
 import Bottomsheet from "rn-sliding-up-panel";
 import { fonts } from "../../../Services/utils/constants";
 
-import { setReaderSettings } from "../../../redux/settings/settings.actions";
+import {
+    setAppSettings,
+    setReaderSettings,
+} from "../../../redux/settings/settings.actions";
 import BottomSheetHandle from "../../../Components/BottomSheetHandle";
 import { Row } from "../../../Components/Common";
 
@@ -16,6 +19,7 @@ const ReaderSheet = ({
     bottomSheetRef,
     selectText,
     setSelectText,
+    showScrollPercentage,
 }) => {
     const [fontMenu, setFontMenu] = useState(false);
     const openFontMenu = () => setFontMenu(true);
@@ -28,8 +32,8 @@ const ReaderSheet = ({
     return (
         <Bottomsheet
             ref={bottomSheetRef}
-            draggableRange={{ top: 420, bottom: 0 }}
-            snappingPoints={[0, 420]}
+            draggableRange={{ top: 450, bottom: 0 }}
+            snappingPoints={[0, 450]}
             showBackdrop={true}
             backdropOpacity={0}
         >
@@ -45,7 +49,7 @@ const ReaderSheet = ({
                         value={reader.textSize}
                         minimumValue={12}
                         maximumValue={20}
-                        step={2}
+                        step={1}
                         minimumTrackTintColor={theme.colorAccent}
                         maximumTrackTintColor="#000000"
                         thumbTintColor={theme.colorAccent}
@@ -359,6 +363,28 @@ const ReaderSheet = ({
                             marginTop: 16,
                         }}
                     >
+                        <ReaderSettingTitle title="Show Progress Percentage" />
+                        <Switch
+                            value={showScrollPercentage}
+                            onValueChange={() =>
+                                dispatch(
+                                    setAppSettings(
+                                        "showScrollPercentage",
+                                        !showScrollPercentage
+                                    )
+                                )
+                            }
+                            color={theme.colorAccent}
+                        />
+                    </Row>
+                    <Row
+                        style={{
+                            justifyContent: "space-between",
+                            width: "100%",
+                            paddingHorizontal: 16,
+                            marginTop: 16,
+                        }}
+                    >
                         <View>
                             <ReaderSettingTitle title="Select Text " />
                             <Text
@@ -389,7 +415,7 @@ const styles = StyleSheet.create({
         flex: 1,
         borderTopLeftRadius: 8,
         borderTopRightRadius: 8,
-        backgroundColor: "rgba(0,0,0,0.5)",
+        backgroundColor: "rgba(0,0,0,0.7)",
     },
     readerSettingsContainer: {
         flex: 1,

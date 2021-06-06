@@ -20,6 +20,7 @@ import { useTheme } from "../Hooks/reduxHooks";
 import { githubUpdateChecker } from "../Hooks/githubUpdateChecker";
 import NewUpdateDialog from "../Components/NewUpdateDialog";
 import { NavigationContainer } from "@react-navigation/native";
+import BrowseMalScreen from "../Screens/Browse/BrowseMal";
 
 const Stack = createStackNavigator();
 
@@ -57,6 +58,11 @@ const MainNavigator = () => {
                     />
                     <Stack.Screen name="MoreStack" component={MoreStack} />
                     <Stack.Screen name="Extension" component={Extension} />
+                    <Stack.Screen
+                        name="BrowseMal"
+                        component={BrowseMalScreen}
+                    />
+
                     <Stack.Screen
                         name="GlobalSearch"
                         component={GlobalSearch}

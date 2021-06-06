@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
+import FastImage from "react-native-fast-image";
 import { TouchableRipple } from "react-native-paper";
 
 const UpdateCard = ({ item, theme, onPress }) => {
@@ -11,7 +12,7 @@ const UpdateCard = ({ item, theme, onPress }) => {
             borderless
         >
             <>
-                <Image
+                <FastImage
                     source={{ uri: item.novelCover }}
                     style={styles.updateIcon}
                 />

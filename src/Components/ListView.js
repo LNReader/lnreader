@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet, View, Text, Image } from "react-native";
+import FastImage from "react-native-fast-image";
 import { TouchableRipple } from "react-native-paper";
 
 const ListView = ({ item, downloadBadge, unreadBadge, theme, onPress }) => {
@@ -12,7 +13,7 @@ const ListView = ({ item, downloadBadge, unreadBadge, theme, onPress }) => {
             onPress={onPress}
         >
             <>
-                <Image
+                <FastImage
                     source={{ uri: item.novelCover }}
                     style={styles.extensionIcon}
                 />

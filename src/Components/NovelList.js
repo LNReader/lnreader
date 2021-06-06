@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet, FlatList } from "react-native";
 
 import { useSettings } from "../Hooks/reduxHooks";
+import { getDeviceOrientation } from "../Services/utils/helpers";
 
 const NovelList = ({
     data,
@@ -11,13 +12,25 @@ const NovelList = ({
 }) => {
     const { displayMode, novelsPerRow } = useSettings();
 
-    const getNovelsPerRow = () => (displayMode === 2 ? 1 : novelsPerRow);
+    const orientation = getDeviceOrientation();
+
+    const getNovelsPerRow = () => {
+        if (displayMode === 2) {
+            return 1;
+        }
+
+        if (orientation === "landscape") {
+            return 6;
+        } else {
+            return novelsPerRow;
+        }
+    };
 
     return (
         <FlatList
             contentContainerStyle={styles.flatListCont}
             numColumns={getNovelsPerRow()}
-            key={getNovelsPerRow()}
+            key={[orientation, getNovelsPerRow()]}
             data={data}
             keyExtractor={(item) => item.novelUrl}
             renderItem={renderItem}
