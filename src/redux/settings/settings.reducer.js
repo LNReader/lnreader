@@ -45,6 +45,7 @@ const initialState = {
     novelsPerRow: 3,
     reader: {
         theme: 1,
+        textColor: "rgba(255,255,255,0.7)",
         textSize: 16,
         textAlign: "left",
         padding: 5,
@@ -82,6 +83,7 @@ const settingsReducer = (state = initialState, action) => {
                 [payload.key]: payload.val,
             };
         case SET_READER_SETTINGS:
+            console.log(payload.val);
             return {
                 ...state,
                 reader: {

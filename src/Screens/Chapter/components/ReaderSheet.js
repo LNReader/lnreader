@@ -29,6 +29,13 @@ const ReaderSheet = ({
         <Text style={styles.title}>{title}</Text>
     );
 
+    const textColor = {
+        1: "rgba(255,255,255,0.7)",
+        2: "#000000",
+        3: "#000000",
+        4: "#FFFFFF",
+    };
+
     return (
         <Bottomsheet
             ref={bottomSheetRef}
@@ -72,6 +79,12 @@ const ReaderSheet = ({
                                         setReaderSettings(
                                             "theme",
                                             value ?? reader.theme
+                                        )
+                                    );
+                                    dispatch(
+                                        setReaderSettings(
+                                            "textColor",
+                                            textColor[value] ?? reader.textColor
                                         )
                                     );
                                 }}

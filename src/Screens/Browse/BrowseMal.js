@@ -25,7 +25,6 @@ const BrowseMalScreen = ({ navigation, route }) => {
     const getNovels = async () => {
         try {
             const url = `https://api.jikan.moe/v3/top/manga/1/novels`;
-            console.log(url);
 
             const res = await fetch(url);
             const data = await res.json();
@@ -69,15 +68,12 @@ const BrowseMalScreen = ({ navigation, route }) => {
 
     const getSearchResults = () => {
         setLoading(true);
-        console.log(
-            `https://api.jikan.moe/v3/search/manga?q=${searchText}&page=1&type=novel`
-        );
+
         fetch(
             `https://api.jikan.moe/v3/search/manga?q=${searchText}&page=1&type=novel`
         )
             .then((response) => response.json())
             .then((json) => {
-                console.log(json.results);
                 setNovels(json.results);
                 setLoading(false);
             })

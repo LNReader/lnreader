@@ -15,6 +15,7 @@ import DisplayModeModal from "./components/DisplayModeModal";
 import GridSizeModal from "./components/GridSizeModal";
 import ThemeModal from "./components/ThemeModal";
 import AccentColorModal from "./components/AccentColorModal";
+import { setAccentColor } from "../../redux/settings/settings.actions";
 
 const GenralSettings = ({ navigation }) => {
     const theme = useTheme();
@@ -120,6 +121,8 @@ const GenralSettings = ({ navigation }) => {
                 dispatch={dispatch}
                 accentColorModal={accentColorModal}
                 hideAccentColorModal={hideAccentColorModal}
+                color={theme.colorAccent}
+                onPress={(val) => dispatch(setAccentColor(val))}
                 theme={theme}
             />
         </ScreenContainer>

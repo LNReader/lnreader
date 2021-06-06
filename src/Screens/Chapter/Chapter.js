@@ -194,7 +194,7 @@ const Chapter = ({ route, navigation }) => {
             paddingVertical: 16,
             paddingBottom: 32,
             fontSize: reader.textSize,
-            color: readerTextColor(reader.theme),
+            color: reader.textColor,
             lineHeight: readerLineHeight(reader.textSize, reader.lineHeight),
             textAlign: reader.textAlign,
             paddingHorizontal: `${reader.padding}%`,
@@ -298,7 +298,7 @@ const Chapter = ({ route, navigation }) => {
                     style={[
                         styles.scrollPercentage,
                         {
-                            color: readerTextColor(reader.theme),
+                            color: reader.textColor,
                             backgroundColor: readerBackground(reader.theme),
                         },
                     ]}

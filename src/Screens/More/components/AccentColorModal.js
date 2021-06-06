@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import { StyleSheet, Text } from "react-native";
 import { Modal, Portal, TextInput } from "react-native-paper";
-import { setAccentColor } from "../../../redux/settings/settings.actions";
 
 const AccentColorModal = ({
-    dispatch,
     accentColorModal,
     hideAccentColorModal,
     theme,
+    onPress,
+    color,
 }) => {
-    const [text, setText] = useState(theme.colorAccent);
+    const [text, setText] = useState(color);
     const [error, setError] = useState();
 
     return (
@@ -36,11 +36,11 @@ const AccentColorModal = ({
                 </Text>
                 <TextInput
                     value={text}
-                    defaultValue={theme.colorAccent}
+                    defaultValue={color}
                     onChangeText={(text) => setText(text)}
                     onSubmitEditing={() => {
                         if (text.match(/^#([0-9a-f]{6}|[0-9a-f]{3})$/i)) {
-                            dispatch(setAccentColor(text));
+                            onPress(text);
                             hideAccentColorModal();
                         } else {
                             setError("Enter a valid hex color code");
@@ -49,7 +49,7 @@ const AccentColorModal = ({
                     mode="outlined"
                     theme={{
                         colors: {
-                            primary: theme.colorAccent,
+                            primary: color,
                             placeholder: theme.textColorHint,
                             text: theme.textColorPrimary,
                             background: "transparent",

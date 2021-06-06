@@ -6,14 +6,14 @@ export const readerBackground = (val) => {
         4: "#444444",
     };
 
-    return backgroundColor[val] ?? "#FFFFFF";
+    return backgroundColor[val] ?? val;
 };
 
 export const readerTextColor = (val) => {
     const textColor =
         val === 1 ? "rgba(255,255,255,0.7)" : val === 4 ? "#FFFFFF" : "#000000";
 
-    return textColor;
+    return textColor ?? val;
 };
 
 export const readerLineHeight = (fontSize, lineHeightMultiplier) => {
