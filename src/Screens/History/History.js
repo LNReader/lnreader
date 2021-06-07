@@ -80,10 +80,15 @@ const History = ({ navigation }) => {
                 searchText={searchText}
                 clearSearchbar={clearSearchbar}
                 onChangeText={onChangeText}
-                left="magnify"
+                backAction="magnify"
                 theme={theme}
-                right="trash-can-outline"
-                onPressRight={showDialog}
+                actions={[
+                    {
+                        icon: "trash-can-outline",
+                        color: theme.textColorSecondary,
+                        onPress: showDialog,
+                    },
+                ]}
             />
             <FlatList
                 contentContainerStyle={{

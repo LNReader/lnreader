@@ -114,10 +114,14 @@ const Updates = ({ navigation }) => {
                 searchText={searchText}
                 clearSearchbar={clearSearchbar}
                 onChangeText={onChangeText}
-                left="magnify"
+                backAction="magnify"
                 theme={theme}
-                right="reload"
-                onPressRight={() => dispatch(updateLibraryAction())}
+                actions={[
+                    {
+                        icon: "reload",
+                        onPress: () => dispatch(updateLibraryAction()),
+                    },
+                ]}
             />
             <FlatList
                 contentContainerStyle={styles.flatList}

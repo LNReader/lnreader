@@ -110,10 +110,16 @@ const LibraryScreen = ({ navigation }) => {
                     searchText={searchText}
                     clearSearchbar={clearSearchbar}
                     onChangeText={onChangeText}
-                    left="magnify"
-                    right="filter-variant"
-                    filter={filter}
-                    onPressRight={() => libraryFilterSheetRef.current.show()}
+                    backAction="magnify"
+                    actions={[
+                        {
+                            icon: "filter-variant",
+                            onPress: () => libraryFilterSheetRef.current.show(),
+                            color: filter
+                                ? theme.filterColor
+                                : theme.textColorSecondary,
+                        },
+                    ]}
                     theme={theme}
                 />
                 {loading ? (

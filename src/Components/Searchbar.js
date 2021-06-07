@@ -1,63 +1,41 @@
 import React, { useRef } from "react";
-import { View, TextInput, StyleSheet } from "react-native";
+import { StyleSheet, View, TextInput, Text, StatusBar } from "react-native";
+
 import { TouchableRipple, IconButton } from "react-native-paper";
-import Constants from "expo-constants";
-import { useSettings } from "../Hooks/reduxHooks";
-import { useDispatch } from "react-redux";
-import { setAppSettings } from "../redux/settings/settings.actions";
+import { Row } from "./Common";
 
 export const Searchbar = ({
     theme,
     placeholder,
     searchText,
-    left,
-    onPressLeft,
-    right,
-    displayMenu,
-    onPressRight,
+    backAction,
+    onBackAction,
     clearSearchbar,
     onChangeText,
     onSubmitEditing,
-    migrate,
-    onPressMigrate,
-    filter,
+    actions,
 }) => {
     const searchRef = useRef(null);
-    const dispatch = useDispatch();
-    const { displayMode } = useSettings();
-
-    const displayMenuIcon = () => {
-        const icons = {
-            0: "view-module",
-            1: "view-list",
-            2: "view-module",
-        };
-
-        return icons[displayMode];
-    };
-
-    const getDisplayMode = () =>
-        displayMode === 0 ? 1 : displayMode === 1 ? 2 : displayMode === 2 && 0;
 
     return (
         <TouchableRipple
             borderless
             onPress={() => searchRef.current.focus()}
             style={[
-                styles.searchAppbarContainer,
+                styles.searchbarContainer,
                 { backgroundColor: theme.searchBarColor },
             ]}
             rippleColor={theme.rippleColor}
         >
             <View style={styles.container}>
-                <View style={{ flex: 1, flexDirection: "row" }}>
-                    {left && (
+                <Row style={{ flex: 1 }}>
+                    {backAction && (
                         <IconButton
-                            icon={left}
+                            icon={backAction}
                             color={theme.textColorSecondary}
                             style={{ marginLeft: 0 }}
                             size={23}
-                            onPress={onPressLeft}
+                            onPress={onBackAction}
                         />
                     )}
                     <TextInput
@@ -72,7 +50,7 @@ export const Searchbar = ({
                         onSubmitEditing={onSubmitEditing}
                         defaultValue={searchText}
                     />
-                </View>
+                </Row>
                 {searchText !== "" && (
                     <IconButton
                         icon="close"
@@ -82,49 +60,25 @@ export const Searchbar = ({
                         onPress={clearSearchbar}
                     />
                 )}
-                {displayMenu && (
-                    <IconButton
-                        icon={displayMenuIcon()}
-                        color={theme.textColorSecondary}
-                        style={{ marginRight: 0 }}
-                        size={23}
-                        onPress={() =>
-                            dispatch(
-                                setAppSettings("displayMode", getDisplayMode())
-                            )
-                        }
-                    />
-                )}
-                {right && (
-                    <IconButton
-                        icon={right}
-                        color={
-                            !filter
-                                ? theme.textColorSecondary
-                                : theme.filterColor
-                        }
-                        style={{ marginRight: 0 }}
-                        size={23}
-                        onPress={onPressRight}
-                    />
-                )}
-                {migrate && (
-                    <IconButton
-                        icon={migrate}
-                        color={theme.textColorSecondary}
-                        style={{ marginRight: 0 }}
-                        size={23}
-                        onPress={onPressMigrate}
-                    />
-                )}
+                {actions &&
+                    actions.map((action, index) => (
+                        <IconButton
+                            key={index}
+                            icon={action.icon}
+                            color={action.color ?? theme.textColorSecondary}
+                            style={{ marginRight: 0 }}
+                            size={23}
+                            onPress={action.onPress}
+                        />
+                    ))}
             </View>
         </TouchableRipple>
     );
 };
 
 const styles = StyleSheet.create({
-    searchAppbarContainer: {
-        marginTop: Constants.statusBarHeight + 4,
+    searchbarContainer: {
+        marginTop: StatusBar.currentHeight + 4,
         height: 48,
         flexDirection: "row",
         alignItems: "center",
@@ -133,6 +87,7 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         marginHorizontal: 12,
         elevation: 2,
+        backgroundColor: "white",
     },
     container: {
         flex: 1,

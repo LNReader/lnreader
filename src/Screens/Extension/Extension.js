@@ -6,16 +6,20 @@ import NovelCover from "../../Components/NovelCover";
 import EmptyView from "../../Components/EmptyView";
 
 import { Searchbar } from "../../Components/Searchbar";
-import { useTheme, useLibrary } from "../../Hooks/reduxHooks";
+import { useTheme, useLibrary, useSettings } from "../../Hooks/reduxHooks";
 import NovelList from "../../Components/NovelList";
 import { showToast } from "../../Hooks/showToast";
 import ErrorView from "../../Components/ErrorView";
+import { useDispatch } from "react-redux";
+import { setAppSettings } from "../../redux/settings/settings.actions";
 
 const Extension = ({ navigation, route }) => {
     const { sourceId, sourceName, sourceUrl } = route.params;
 
     const theme = useTheme();
     const library = useLibrary();
+    const dispatch = useDispatch();
+    const { displayMode } = useSettings();
 
     const [loading, setLoading] = useState(true);
     const [novels, setNovels] = useState();
@@ -115,6 +119,19 @@ const Extension = ({ navigation, route }) => {
         />
     );
 
+    const displayMenuIcon = () => {
+        const icons = {
+            0: "view-module",
+            1: "view-list",
+            2: "view-module",
+        };
+
+        return icons[displayMode];
+    };
+
+    const getDisplayMode = () =>
+        displayMode === 0 ? 1 : displayMode === 1 ? 2 : displayMode === 2 && 0;
+
     return (
         <View
             style={[
@@ -125,15 +142,27 @@ const Extension = ({ navigation, route }) => {
             <Searchbar
                 theme={theme}
                 placeholder={`Search ${sourceName}`}
-                left="arrow-left"
-                onPressLeft={() => navigation.goBack()}
+                backAction="arrow-left"
+                onBackAction={() => navigation.goBack()}
                 searchText={searchText}
                 onChangeText={(text) => setSearchText(text)}
                 onSubmitEditing={getSearchResults}
                 clearSearchbar={clearSearchbar}
-                right="earth"
-                displayMenu={true}
-                onPressRight={() => WebBrowser.openBrowserAsync(sourceUrl)}
+                actions={[
+                    {
+                        icon: displayMenuIcon(),
+                        color: theme.textColorSecondary,
+                        onPress: () =>
+                            dispatch(
+                                setAppSettings("displayMode", getDisplayMode())
+                            ),
+                    },
+                    {
+                        icon: "earth",
+                        color: theme.textColorSecondary,
+                        onPress: () => WebBrowser.openBrowserAsync(sourceUrl),
+                    },
+                ]}
             />
 
             {loading ? (
