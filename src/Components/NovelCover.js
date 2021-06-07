@@ -69,6 +69,7 @@ const NovelCover = ({ item, onPress, libraryStatus }) => {
                     !showDownloadBadges && {
                         borderRadius: 4,
                     },
+                    { backgroundColor: theme.colorAccent },
                 ]}
             >
                 {item.chaptersUnread}
@@ -178,7 +179,6 @@ const styles = StyleSheet.create({
         fontSize: 12,
     },
     unreadBadge: {
-        backgroundColor: "#2979FF",
         color: "#FFFFFF",
         borderTopRightRadius: 4,
         borderBottomRightRadius: 4,

@@ -18,13 +18,15 @@ const BrowseMalScreen = ({ navigation, route }) => {
     const [loading, setLoading] = useState(true);
     const [novels, setNovels] = useState();
     const [error, setError] = useState();
-    const [pageNo, setPageNo] = useState(1);
 
     const [searchText, setSearchText] = useState("");
 
+    const baseUrl = "https://api.jikan.moe/v3/";
+    const malUrl = "https://myanimelist.net/topmanga.php?type=lightnovels";
+
     const getNovels = async () => {
         try {
-            const url = `https://api.jikan.moe/v3/top/manga/1/novels`;
+            const url = `${baseUrl}top/manga/1/novels`;
 
             const res = await fetch(url);
             const data = await res.json();
@@ -35,30 +37,9 @@ const BrowseMalScreen = ({ navigation, route }) => {
             setError(error.message);
             setNovels([]);
             setLoading(false);
-            setPageNo(1);
             showToast(error.message);
         }
     };
-
-    // const getNextPage = async () => {
-    //     try {
-    //         const url = `https://api.jikan.moe/v3/top/manga/${pageNo}/novels`;
-    //         console.log(url);
-
-    //         const res = await fetch(url);
-    //         const data = await res.json();
-
-    //         setNovels((novels) => novels.concat(data.top));
-    //         setPageNo((pageNo) => pageNo + 1);
-    //         setLoading(false);
-    //     } catch (error) {
-    //         setError(error.message);
-    //         setNovels([]);
-    //         setPageNo(1);
-    //         setLoading(false);
-    //         showToast(error.message);
-    //     }
-    // };
 
     const clearSearchbar = () => {
         getNovels();
@@ -69,9 +50,7 @@ const BrowseMalScreen = ({ navigation, route }) => {
     const getSearchResults = () => {
         setLoading(true);
 
-        fetch(
-            `https://api.jikan.moe/v3/search/manga?q=${searchText}&page=1&type=novel`
-        )
+        fetch(`${baseUrl}search/manga?q=${searchText}&page=1&type=novel`)
             .then((response) => response.json())
             .then((json) => {
                 setNovels(json.results);
@@ -83,12 +62,6 @@ const BrowseMalScreen = ({ navigation, route }) => {
                 showToast(error.message);
             });
     };
-
-    // const checkIFInLibrary = (sourceId, novelUrl) => {
-    //     return library.some(
-    //         (obj) => obj.novelUrl === novelUrl && obj.sourceId === sourceId
-    //     );
-    // };
 
     useEffect(() => {
         getNovels();
@@ -121,25 +94,6 @@ const BrowseMalScreen = ({ navigation, route }) => {
         }
     };
 
-    const isCloseToBottom = ({
-        layoutMeasurement,
-        contentOffset,
-        contentSize,
-    }) => {
-        const paddingToBottom = 0;
-        return (
-            layoutMeasurement.height + contentOffset.y >=
-            contentSize.height - paddingToBottom
-        );
-    };
-
-    const onScroll = ({ nativeEvent }) => {
-        if (isCloseToBottom(nativeEvent)) {
-            console.log("Close to bototm");
-            getNextPage();
-        }
-    };
-
     const ListEmptyComponent = () => (
         <ErrorView
             error={error || "No results found"}
@@ -148,11 +102,7 @@ const BrowseMalScreen = ({ navigation, route }) => {
                 setLoading(true);
                 setError();
             }}
-            openWebView={() =>
-                WebBrowser.openBrowserAsync(
-                    "https://myanimelist.net/topmanga.php?type=lightnovels"
-                )
-            }
+            openWebView={() => WebBrowser.openBrowserAsync(topNovelsUrl)}
             theme={theme}
         />
     );
@@ -167,19 +117,18 @@ const BrowseMalScreen = ({ navigation, route }) => {
             <Searchbar
                 theme={theme}
                 placeholder="Search MyAnimeList"
-                left="arrow-left"
-                onPressLeft={() => navigation.goBack()}
+                backAction="arrow-left"
+                onBackAction={() => navigation.goBack()}
                 searchText={searchText}
                 onChangeText={(text) => setSearchText(text)}
                 onSubmitEditing={getSearchResults}
                 clearSearchbar={clearSearchbar}
-                right="earth"
-                displayMenu={true}
-                onPressRight={() =>
-                    WebBrowser.openBrowserAsync(
-                        "https://myanimelist.net/topmanga.php?type=lightnovels"
-                    )
-                }
+                actions={[
+                    {
+                        icon: "earth",
+                        onPress: () => WebBrowser.openBrowserAsync(malUrl),
+                    },
+                ]}
             />
             {loading ? (
                 <View style={{ flex: 1, justifyContent: "center" }}>
@@ -187,29 +136,15 @@ const BrowseMalScreen = ({ navigation, route }) => {
                 </View>
             ) : (
                 <FlatList
-                    contentContainerStyle={styles.flatListCont}
+                    contentContainerStyle={styles.novelsContainer}
                     numColumns={getNovelsPerRow()}
                     key={getNovelsPerRow()}
                     data={novels}
                     keyExtractor={(item) => item.mal_id.toString()}
                     renderItem={renderItem}
                     ListEmptyComponent={ListEmptyComponent}
-                    // onScroll={onScroll}
-                    // ListFooterComponent={
-                    //     <View
-                    //         style={{
-                    //             flex: 1,
-                    //             justifyContent: "center",
-                    //             paddingTop: 16,
-                    //             paddingBottom: 8,
-                    //         }}
-                    //     >
-                    //         <ActivityIndicator color={theme.colorAccent} />
-                    //     </View>
-                    // }
                 />
             )}
-            {/* <Button title="Grt novels" onPress={() => console.log(novels)} /> */}
         </View>
     );
 };
@@ -223,7 +158,7 @@ const styles = StyleSheet.create({
     contentContainer: {
         flex: 1,
     },
-    flatListCont: {
+    novelsContainer: {
         flexGrow: 1,
         paddingVertical: 8,
         paddingHorizontal: 4,

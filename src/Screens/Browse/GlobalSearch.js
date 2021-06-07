@@ -126,8 +126,8 @@ const GlobalSearch = ({ route, navigation }) => {
             <Searchbar
                 theme={theme}
                 placeholder="Global Search"
-                left="arrow-left"
-                onPressLeft={() => navigation.goBack()}
+                backAction="arrow-left"
+                onBackAction={() => navigation.goBack()}
                 searchText={searchText}
                 onChangeText={onChangeText}
                 onSubmitEditing={onSubmitEditing}

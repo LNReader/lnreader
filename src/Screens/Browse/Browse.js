@@ -74,15 +74,20 @@ const Browse = ({ navigation }) => {
             <Searchbar
                 theme={theme}
                 placeholder="Search Source"
-                left="magnify"
-                onPressLeft={clearSearchbar}
+                backAction="magnify"
                 searchText={searchText}
                 onChangeText={onChangeText}
                 clearSearchbar={clearSearchbar}
-                right="book-search"
-                onPressRight={() => navigation.navigate("GlobalSearch")}
-                migrate="swap-vertical-variant"
-                onPressMigrate={() => navigation.navigate("Migration")}
+                actions={[
+                    {
+                        icon: "book-search",
+                        onPress: () => navigation.navigate("GlobalSearch"),
+                    },
+                    {
+                        icon: "swap-vertical-variant",
+                        onPress: () => navigation.navigate("Migration"),
+                    },
+                ]}
             />
 
             <FlatList

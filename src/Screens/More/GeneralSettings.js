@@ -16,6 +16,7 @@ import GridSizeModal from "./components/GridSizeModal";
 import ThemeModal from "./components/ThemeModal";
 import AccentColorModal from "./components/AccentColorModal";
 import { setAccentColor } from "../../redux/settings/settings.actions";
+import ColorPickerModal from "../../Components/ColorPickerModal";
 
 const GenralSettings = ({ navigation }) => {
     const theme = useTheme();
@@ -90,7 +91,7 @@ const GenralSettings = ({ navigation }) => {
                 />
                 <ListItem
                     title="Accent Color"
-                    description={theme.colorAccent}
+                    description={theme.colorAccent.toUpperCase()}
                     onPress={showAccentColorModal}
                     theme={theme}
                     iconColor={theme.colorAccent}
@@ -117,12 +118,12 @@ const GenralSettings = ({ navigation }) => {
                 hidethemeModal={hidethemeModal}
                 theme={theme}
             />
-            <AccentColorModal
-                dispatch={dispatch}
-                accentColorModal={accentColorModal}
-                hideAccentColorModal={hideAccentColorModal}
+            <ColorPickerModal
+                title="Accent color"
+                modalVisible={accentColorModal}
+                hideModal={hideAccentColorModal}
                 color={theme.colorAccent}
-                onPress={(val) => dispatch(setAccentColor(val))}
+                onSubmit={(val) => dispatch(setAccentColor(val))}
                 theme={theme}
             />
         </ScreenContainer>

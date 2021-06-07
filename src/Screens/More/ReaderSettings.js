@@ -3,6 +3,7 @@ import { Text, View } from "react-native";
 import { useDispatch } from "react-redux";
 
 import { Appbar } from "../../Components/Appbar";
+import ColorPickerModal from "../../Components/ColorPickerModal";
 import { ScreenContainer } from "../../Components/Common";
 import { ListItem, ListSection, ListSubHeader } from "../../Components/List";
 
@@ -92,7 +93,7 @@ const ReaderSettings = ({ navigation }) => {
                 <ListSubHeader theme={theme}>Reader</ListSubHeader>
                 <ListItem
                     title="Background Color"
-                    description={readerBackground(reader.theme)}
+                    description={readerBackground(reader.theme).toUpperCase()}
                     onPress={showReaderBackgroundtColorModal}
                     theme={theme}
                     iconColor={readerBackground(reader.theme)}
@@ -100,26 +101,28 @@ const ReaderSettings = ({ navigation }) => {
                 />
                 <ListItem
                     title="Text Color"
-                    description={reader.textColor}
+                    description={reader.textColor.toUpperCase()}
                     onPress={showReaderTextColorModal}
                     theme={theme}
                     iconColor={reader.textColor}
                     right="circle"
                 />
             </ListSection>
-            <AccentColorModal
-                accentColorModal={readerBackgroundColorModal}
+            <ColorPickerModal
+                title="Reader background color"
+                modalVisible={readerBackgroundColorModal}
                 color={readerBackground(reader.theme)}
-                hideAccentColorModal={hideReaderBackgroundtColorModal}
+                hideModal={hideReaderBackgroundtColorModal}
                 theme={theme}
-                onPress={setReaderBackground}
+                onSubmit={setReaderBackground}
             />
-            <AccentColorModal
-                accentColorModal={readerTextColorModal}
+            <ColorPickerModal
+                title="Reader text color"
+                modalVisible={readerTextColorModal}
                 color={reader.textColor}
-                hideAccentColorModal={hideReaderTextColorModal}
+                hideModal={hideReaderTextColorModal}
                 theme={theme}
-                onPress={setReaderTextColor}
+                onSubmit={setReaderTextColor}
             />
         </ScreenContainer>
     );

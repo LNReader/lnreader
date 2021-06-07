@@ -1,10 +1,6 @@
 import React, { useEffect } from "react";
 import { StatusBar } from "react-native";
 
-import * as SplashScreen from "expo-splash-screen";
-
-SplashScreen.preventAutoHideAsync();
-
 import { useFonts } from "expo-font";
 import { Provider as PaperProvider } from "react-native-paper";
 import { Provider } from "react-redux";
@@ -21,9 +17,6 @@ const App = () => {
 
     useEffect(() => {
         createDB();
-        setTimeout(async () => {
-            await SplashScreen.hideAsync();
-        }, 2000);
     }, []);
 
     if (!loaded) {
