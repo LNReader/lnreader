@@ -3,13 +3,13 @@ import { StyleSheet, View, ActivityIndicator, FlatList } from "react-native";
 
 import * as WebBrowser from "expo-web-browser";
 
-import NovelCover from "../../Components/NovelCover";
-import { Searchbar } from "../../Components/Searchbar";
-import ErrorView from "../../Components/ErrorView";
+import NovelCover from "../../../Components/NovelCover";
+import { Searchbar } from "../../../Components/Searchbar";
+import ErrorView from "../../../Components/ErrorView";
 
-import { useTheme, useSettings } from "../../Hooks/reduxHooks";
-import { showToast } from "../../Hooks/showToast";
-import { getDeviceOrientation } from "../../Services/utils/helpers";
+import { useTheme, useSettings } from "../../../Hooks/reduxHooks";
+import { showToast } from "../../../Hooks/showToast";
+import { getDeviceOrientation } from "../../../Services/utils/helpers";
 
 const BrowseMalScreen = ({ navigation, route }) => {
     const theme = useTheme();

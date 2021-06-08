@@ -13,6 +13,7 @@ import Migration from "../Screens/Browse/migration/Migration";
 import SourceNovels from "../Screens/Browse/SourceNovels";
 import MigrateNovel from "../Screens/Browse/migration/MigrationNovels";
 import MoreStack from "./More";
+import MalTopNovels from "../Screens/Browse/discover/MalTopNovels";
 
 import { setStatusBarStyle } from "../Hooks/setStatusBarStyle";
 import { View } from "react-native";
@@ -20,7 +21,6 @@ import { useTheme } from "../Hooks/reduxHooks";
 import { githubUpdateChecker } from "../Hooks/githubUpdateChecker";
 import NewUpdateDialog from "../Components/NewUpdateDialog";
 import { NavigationContainer } from "@react-navigation/native";
-import BrowseMalScreen from "../Screens/Browse/BrowseMal";
 
 const Stack = createStackNavigator();
 
@@ -58,10 +58,7 @@ const MainNavigator = () => {
                     />
                     <Stack.Screen name="MoreStack" component={MoreStack} />
                     <Stack.Screen name="Extension" component={Extension} />
-                    <Stack.Screen
-                        name="BrowseMal"
-                        component={BrowseMalScreen}
-                    />
+                    <Stack.Screen name="BrowseMal" component={MalTopNovels} />
 
                     <Stack.Screen
                         name="GlobalSearch"

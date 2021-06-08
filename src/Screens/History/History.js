@@ -1,22 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, FlatList, ActivityIndicator, Text } from "react-native";
 
-import HistoryCard from "./components/HistoryCard";
-
-import { useDispatch, useSelector } from "react-redux";
-import EmptyView from "../../Components/EmptyView";
-
-import {
-    getHistoryAction,
-    clearAllHistoryAction,
-} from "../../redux/history/history.actions";
-
 import moment from "moment";
-import { dateFormat } from "../../Services/utils/constants";
+import { useDispatch, useSelector } from "react-redux";
+
+import EmptyView from "../../Components/EmptyView";
+import HistoryItem from "./HistoryItem";
+import RemoveHistoryDialog from "./RemoveHistoryDialog";
 import { ScreenContainer } from "../../Components/Common";
 import { Searchbar } from "../../Components/Searchbar";
+
+import { getHistoryAction } from "../../redux/history/history.actions";
+import { dateFormat } from "../../Services/utils/constants";
 import { useTheme } from "../../Hooks/reduxHooks";
-import { Button, Dialog, Portal } from "react-native-paper";
 
 const History = ({ navigation }) => {
     const theme = useTheme();
@@ -38,9 +34,9 @@ const History = ({ navigation }) => {
     }, [getHistoryAction]);
 
     const renderHistoryCard = ({ item }) => (
-        <HistoryCard
+        <HistoryItem
             dispatch={dispatch}
-            item={item}
+            history={item}
             theme={theme}
             navigation={navigation}
         />
@@ -131,45 +127,12 @@ const History = ({ navigation }) => {
                     />
                 }
             />
-            <Portal>
-                <Dialog
-                    visible={visible}
-                    onDismiss={hideDialog}
-                    style={{
-                        borderRadius: 6,
-                        backgroundColor: theme.colorPrimary,
-                    }}
-                >
-                    <Dialog.Title
-                        style={{
-                            letterSpacing: 0,
-                            fontSize: 16,
-                            color: theme.textColorPrimary,
-                        }}
-                    >
-                        Are you sure? All history will be lost.
-                    </Dialog.Title>
-                    <Dialog.Actions>
-                        <Button
-                            uppercase={false}
-                            theme={{ colors: { primary: theme.colorAccent } }}
-                            onPress={hideDialog}
-                        >
-                            Cancel
-                        </Button>
-                        <Button
-                            uppercase={false}
-                            theme={{ colors: { primary: theme.colorAccent } }}
-                            onPress={() => {
-                                dispatch(clearAllHistoryAction());
-                                hideDialog();
-                            }}
-                        >
-                            Ok
-                        </Button>
-                    </Dialog.Actions>
-                </Dialog>
-            </Portal>
+            <RemoveHistoryDialog
+                dialogVisible={visible}
+                hideDialog={hideDialog}
+                dispatch={dispatch}
+                theme={theme}
+            />
         </ScreenContainer>
     );
 };
