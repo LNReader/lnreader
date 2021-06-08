@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { StyleSheet, FlatList, Text, View } from "react-native";
+
 import { Portal, Modal, Button } from "react-native-paper";
+
+import GlobalSearchNovelCover from "../globalsearch/GlobalSearchNovelCover";
+
 import { migrateNovel } from "../../../Database/queries/NovelQueries";
 import { showToast } from "../../../Hooks/showToast";
-import GlobalSearchNovelCover from "./GlobalSearchNovelCover";
 
 const MigrationNovelList = ({ data, theme, library, navigation }) => {
     const [selectedNovel, setSelectedNovel] = useState(false);
@@ -12,7 +15,7 @@ const MigrationNovelList = ({ data, theme, library, navigation }) => {
     const showMigrateNovelDialog = () => setMigrateNovelDialog(true);
     const hideMigrateNovelDialog = () => setMigrateNovelDialog(false);
 
-    const checkIFInLibrary = (sourceId, novelUrl) => {
+    const inLibrary = (sourceId, novelUrl) => {
         return library.some(
             (obj) => obj.novelUrl === novelUrl && obj.sourceId === sourceId
         );
@@ -20,16 +23,23 @@ const MigrationNovelList = ({ data, theme, library, navigation }) => {
 
     const renderItem = ({ item }) => (
         <GlobalSearchNovelCover
-            item={item}
+            novel={item}
+            theme={theme}
             onPress={() =>
                 showModal(item.extensionId, item.novelUrl, item.novelName)
             }
-            libraryStatus={checkIFInLibrary(item.extensionId, item.novelUrl)}
+            onLongPress={() =>
+                navigation.navigate("Novel", {
+                    ...item,
+                    sourceId: item.extensionId,
+                })
+            }
+            inLibrary={inLibrary(item.extensionId, item.novelUrl)}
         />
     );
 
     const showModal = (sourceId, novelUrl, novelName) => {
-        if (checkIFInLibrary(sourceId, novelUrl)) {
+        if (inLibrary(sourceId, novelUrl)) {
             showToast("Novel already in library");
         } else {
             setSelectedNovel({ sourceId, novelUrl, novelName });

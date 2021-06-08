@@ -14,7 +14,6 @@ import {
     readerLineHeight,
     readerTextColor,
 } from "../Chapter/readerStyleController";
-import AccentColorModal from "./components/AccentColorModal";
 
 const ReaderSettings = ({ navigation }) => {
     const theme = useTheme();
@@ -101,10 +100,15 @@ const ReaderSettings = ({ navigation }) => {
                 />
                 <ListItem
                     title="Text Color"
-                    description={reader.textColor.toUpperCase()}
+                    description={
+                        reader.textColor.toUpperCase() ||
+                        readerTextColor(reader.theme)
+                    }
                     onPress={showReaderTextColorModal}
                     theme={theme}
-                    iconColor={reader.textColor}
+                    iconColor={
+                        reader.textColor || readerTextColor(reader.theme)
+                    }
                     right="circle"
                 />
             </ListSection>

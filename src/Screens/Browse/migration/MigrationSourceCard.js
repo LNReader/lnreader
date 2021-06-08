@@ -1,23 +1,23 @@
 import React from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
-import FastImage from "react-native-fast-image";
 import { TouchableRipple } from "react-native-paper";
 
 const MigrationSourceCard = ({ item, theme, noOfNovels, onPress }) => {
-    const { sourceId, sourceName, sourceCover, sourceLanguage, status } = item;
+    const { sourceName, sourceCover, sourceLanguage } = item;
 
     return (
         <TouchableRipple
-            style={styles.extensionCard}
+            style={styles.cardContainer}
             onPress={onPress}
             rippleColor={theme.rippleColor}
         >
             <>
-                <FastImage
+                <Image
                     source={{ uri: sourceCover }}
-                    style={styles.extensionIcon}
+                    style={styles.sourceIcon}
+                    resizeMode="contain"
                 />
-                <View style={styles.extensionDetails}>
+                <View style={styles.sourceDetailsContainer}>
                     <View>
                         <Text
                             style={{
@@ -27,16 +27,14 @@ const MigrationSourceCard = ({ item, theme, noOfNovels, onPress }) => {
                         >
                             {sourceName} {` (${noOfNovels || 0})`}
                         </Text>
-                        <View style={{ flexDirection: "row" }}>
-                            <Text
-                                style={{
-                                    color: theme.textColorSecondary,
-                                    fontSize: 12,
-                                }}
-                            >
-                                {sourceLanguage}
-                            </Text>
-                        </View>
+                        <Text
+                            style={{
+                                color: theme.textColorSecondary,
+                                fontSize: 12,
+                            }}
+                        >
+                            {sourceLanguage}
+                        </Text>
                     </View>
                 </View>
             </>
@@ -47,19 +45,19 @@ const MigrationSourceCard = ({ item, theme, noOfNovels, onPress }) => {
 export default MigrationSourceCard;
 
 const styles = StyleSheet.create({
-    extensionCard: {
+    cardContainer: {
         flexDirection: "row",
         alignItems: "center",
         marginVertical: 4,
         paddingVertical: 8,
         paddingHorizontal: 20,
     },
-    extensionIcon: {
+    sourceIcon: {
         width: 40,
         height: 40,
         borderRadius: 4,
     },
-    extensionDetails: {
+    sourceDetailsContainer: {
         flex: 1,
         flexDirection: "row",
         justifyContent: "space-between",

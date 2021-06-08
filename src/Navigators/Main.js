@@ -8,10 +8,10 @@ import BottomNavigator from "./BottomNavigator";
 import Novel from "../Screens/Novel/Novel";
 import Chapter from "../Screens/Chapter/Chapter";
 import Extension from "../Screens/Extension/Extension";
-import GlobalSearch from "../Screens/Browse/GlobalSearch";
-import Migration from "../Screens/Browse/Migration";
+import GlobalSearch from "../Screens/Browse/globalsearch/GlobalSearch";
+import Migration from "../Screens/Browse/migration/Migration";
 import SourceNovels from "../Screens/Browse/SourceNovels";
-import MigrateNovel from "../Screens/Browse/MigrateNovel";
+import MigrateNovel from "../Screens/Browse/migration/MigrationNovels";
 import MoreStack from "./More";
 
 import { setStatusBarStyle } from "../Hooks/setStatusBarStyle";

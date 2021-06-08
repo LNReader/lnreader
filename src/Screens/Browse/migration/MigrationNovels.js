@@ -6,55 +6,41 @@ import {
     FlatList,
     ActivityIndicator,
 } from "react-native";
-import { useLibrary, useTheme } from "../../Hooks/reduxHooks";
-import { useDispatch, useSelector } from "react-redux";
-
-import { Searchbar } from "../../Components/Searchbar";
-import NovelCover from "../../Components/NovelCover";
-import NovelList from "../../Components/NovelList";
-import EmptyView from "../../Components/EmptyView";
-import GlobalSearchNovelList from "./components/GlobalSearchNovelList";
 import { ProgressBar } from "react-native-paper";
-import { showToast } from "../../Hooks/showToast";
+import { useLibrary, useTheme } from "../../../Hooks/reduxHooks";
+import { useSelector } from "react-redux";
 
-const GlobalSearch = ({ route, navigation }) => {
+import EmptyView from "../../../Components/EmptyView";
+import MigrationNovelList from "./MigrationNovelList";
+import { Appbar } from "../../../Components/Appbar";
+
+import { showToast } from "../../../Hooks/showToast";
+import { migrateNovel } from "../../../Database/queries/NovelQueries";
+import { ScreenContainer } from "../../../Components/Common";
+
+const MigrationNovels = ({ navigation, route }) => {
+    const { sourceId, novelName } = route.params;
     const theme = useTheme();
-    let novelName = "";
 
-    if (route.params) {
-        novelName = route.params.novelName;
-    }
-
+    const [progress, setProgress] = useState(0);
     const [loading, setLoading] = useState(false);
-    const [searchText, setSearchText] = useState(novelName);
     const [searchResults, setSearchResults] = useState("");
     const { sources, pinned } = useSelector((state) => state.sourceReducer);
-    const [progress, setProgress] = useState(0);
 
     const library = useLibrary();
 
     const pinnedSources = sources.filter(
-        (source) => pinned.indexOf(source.sourceId) !== -1
+        (source) =>
+            pinned.indexOf(source.sourceId) !== -1 &&
+            source.sourceId !== sourceId
     );
 
-    useEffect(() => {
-        novelName && onSubmitEditing();
-    }, []);
-
-    const clearSearchbar = () => {
-        setSearchText("");
-    };
-
-    const onChangeText = (text) => setSearchText(text);
-
-    const onSubmitEditing = () => {
-        setSearchResults("");
-
+    const getSearchResults = () => {
         const getSearchUrl = (sourceId) => {
             if (sourceId === 1) {
-                return `https://lnreader-extensions.vercel.app/api/1/search/?s=${searchText}&?o=rating`;
+                return `https://lnreader-extensions.vercel.app/api/1/search/?s=${novelName}&?o=rating`;
             } else {
-                return `https://lnreader-extensions.vercel.app/api/${sourceId}/search/?s=${searchText}`;
+                return `https://lnreader-extensions.vercel.app/api/${sourceId}/search/?s=${novelName}`;
             }
         };
 
@@ -97,6 +83,10 @@ const GlobalSearch = ({ route, navigation }) => {
         );
     };
 
+    useEffect(() => {
+        getSearchResults();
+    }, []);
+
     const renderItem = ({ item }) => (
         <>
             <View style={{ padding: 8, paddingVertical: 16 }}>
@@ -107,7 +97,7 @@ const GlobalSearch = ({ route, navigation }) => {
                     {item.sourceLanguage}
                 </Text>
             </View>
-            <GlobalSearchNovelList
+            <MigrationNovelList
                 data={item.novels}
                 theme={theme}
                 library={library}
@@ -117,31 +107,13 @@ const GlobalSearch = ({ route, navigation }) => {
     );
 
     return (
-        <View
-            style={[
-                styles.container,
-                { backgroundColor: theme.colorPrimaryDark },
-            ]}
-        >
-            <Searchbar
-                theme={theme}
-                placeholder="Global Search"
-                backAction="arrow-left"
+        <ScreenContainer theme={theme}>
+            <Appbar
+                title={novelName}
                 onBackAction={() => navigation.goBack()}
-                searchText={searchText}
-                onChangeText={onChangeText}
-                onSubmitEditing={onSubmitEditing}
-                clearSearchbar={clearSearchbar}
             />
-            {progress < 1 && progress > 0 && pinned && (
-                <ProgressBar
-                    color={
-                        progress > 0.9
-                            ? theme.colorPrimaryDark
-                            : theme.colorAccent
-                    }
-                    progress={progress}
-                />
+            {progress < 1 && pinned && (
+                <ProgressBar color={theme.colorAccent} progress={progress} />
             )}
             <FlatList
                 contentContainerStyle={{
@@ -183,12 +155,10 @@ const GlobalSearch = ({ route, navigation }) => {
                     )
                 }
             />
-        </View>
+        </ScreenContainer>
     );
 };
 
-export default GlobalSearch;
+export default MigrationNovels;
 
-const styles = StyleSheet.create({
-    container: { flex: 1 },
-});
+const styles = StyleSheet.create({});

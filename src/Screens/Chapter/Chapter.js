@@ -194,7 +194,7 @@ const Chapter = ({ route, navigation }) => {
             paddingVertical: 16,
             paddingBottom: 32,
             fontSize: reader.textSize,
-            color: reader.textColor,
+            color: reader.textColor || readerTextColor(reader.theme),
             lineHeight: readerLineHeight(reader.textSize, reader.lineHeight),
             textAlign: reader.textAlign,
             paddingHorizontal: `${reader.padding}%`,
