@@ -10,6 +10,7 @@ import ErrorView from "../../Components/ErrorView";
 import { useTheme, useSettings } from "../../Hooks/reduxHooks";
 import { showToast } from "../../Hooks/showToast";
 import { getDeviceOrientation } from "../../Services/utils/helpers";
+import { scrapeSearchResults } from "./discover/MyAnimeListScraper";
 
 const BrowseMalScreen = ({ navigation, route }) => {
     const theme = useTheme();
@@ -46,20 +47,20 @@ const BrowseMalScreen = ({ navigation, route }) => {
         setSearchText("");
     };
 
-    const getSearchResults = () => {
-        setLoading(true);
+    const getSearchResults = async () => {
+        try {
+            setLoading(true);
 
-        fetch(`${baseUrl}search/manga?q=${searchText}&page=1&type=novel`)
-            .then((response) => response.json())
-            .then((json) => {
-                setNovels(json.results);
-                setLoading(false);
-            })
-            .catch((error) => {
-                setNovels([]);
-                setLoading(false);
-                showToast(error.message);
-            });
+            const data = await scrapeSearchResults(searchText);
+
+            setNovels(data);
+            setLoading(false);
+        } catch (error) {
+            setError(error.message);
+            setNovels([]);
+            setLoading(false);
+            showToast(error.message);
+        }
     };
 
     useEffect(() => {

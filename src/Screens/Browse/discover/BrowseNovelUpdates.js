@@ -104,15 +104,17 @@ const BrowseNovelUpdates = ({ navigation }) => {
                         />
                     )}
                     onScroll={({ nativeEvent }) => {
-                        if (isCloseToBottom(nativeEvent)) {
+                        if (!searchText && isCloseToBottom(nativeEvent)) {
                             getNovels(pageNo + 1);
                             setPageNo((pageNo) => pageNo + 1);
                         }
                     }}
                     ListFooterComponent={
-                        <View style={{ paddingVertical: 16 }}>
-                            <ActivityIndicator color={theme.colorAccent} />
-                        </View>
+                        !searchText && (
+                            <View style={{ paddingVertical: 16 }}>
+                                <ActivityIndicator color={theme.colorAccent} />
+                            </View>
+                        )
                     }
                 />
             )}

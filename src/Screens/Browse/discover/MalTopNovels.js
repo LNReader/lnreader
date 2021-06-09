@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, ActivityIndicator, FlatList } from "react-native";
+import {
+    StyleSheet,
+    View,
+    ActivityIndicator,
+    FlatList,
+    Button,
+} from "react-native";
 
 import * as WebBrowser from "expo-web-browser";
 
@@ -10,27 +16,26 @@ import ErrorView from "../../../Components/ErrorView";
 import { useTheme, useSettings } from "../../../Hooks/reduxHooks";
 import { showToast } from "../../../Hooks/showToast";
 import { getDeviceOrientation } from "../../../Services/utils/helpers";
+import { scrapeSearchResults, scrapeTopNovels } from "./MyAnimeListScraper";
 
 const BrowseMalScreen = ({ navigation, route }) => {
     const theme = useTheme();
 
     const [loading, setLoading] = useState(true);
-    const [novels, setNovels] = useState();
+    const [novels, setNovels] = useState([]);
     const [error, setError] = useState();
+    const [limit, setLimit] = useState(0);
 
     const [searchText, setSearchText] = useState("");
 
     const baseUrl = "https://api.jikan.moe/v3/";
     const malUrl = "https://myanimelist.net/topmanga.php?type=lightnovels";
 
-    const getNovels = async () => {
+    const getNovels = async (limit) => {
         try {
-            const url = `${baseUrl}top/manga/1/novels`;
+            const data = await scrapeTopNovels(limit);
 
-            const res = await fetch(url);
-            const data = await res.json();
-
-            setNovels(data.top);
+            setNovels((novels) => novels.concat(data));
             setLoading(false);
         } catch (error) {
             setError(error.message);
@@ -46,20 +51,20 @@ const BrowseMalScreen = ({ navigation, route }) => {
         setSearchText("");
     };
 
-    const getSearchResults = () => {
-        setLoading(true);
+    const getSearchResults = async () => {
+        try {
+            setLoading(true);
 
-        fetch(`${baseUrl}search/manga?q=${searchText}&page=1&type=novel`)
-            .then((response) => response.json())
-            .then((json) => {
-                setNovels(json.results);
-                setLoading(false);
-            })
-            .catch((error) => {
-                setNovels([]);
-                setLoading(false);
-                showToast(error.message);
-            });
+            const data = await scrapeSearchResults(searchText);
+
+            setNovels(data);
+            setLoading(false);
+        } catch (error) {
+            setError(error.message);
+            setNovels([]);
+            setLoading(false);
+            showToast(error.message);
+        }
     };
 
     useEffect(() => {
@@ -68,10 +73,10 @@ const BrowseMalScreen = ({ navigation, route }) => {
 
     const renderItem = ({ item }) => (
         <NovelCover
-            item={{ novelName: item.title, novelCover: item.image_url }}
+            item={{ novelName: item.novelName, novelCover: item.novelCover }}
             onPress={() =>
                 navigation.navigate("GlobalSearch", {
-                    novelName: item.title,
+                    novelName: item.novelName,
                 })
             }
         />
@@ -91,6 +96,18 @@ const BrowseMalScreen = ({ navigation, route }) => {
         } else {
             return novelsPerRow;
         }
+    };
+
+    const isCloseToBottom = ({
+        layoutMeasurement,
+        contentOffset,
+        contentSize,
+    }) => {
+        const paddingToBottom = 20;
+        return (
+            layoutMeasurement.height + contentOffset.y >=
+            contentSize.height - paddingToBottom
+        );
     };
 
     const ListEmptyComponent = () => (
@@ -139,9 +156,22 @@ const BrowseMalScreen = ({ navigation, route }) => {
                     numColumns={getNovelsPerRow()}
                     key={getNovelsPerRow()}
                     data={novels}
-                    keyExtractor={(item) => item.mal_id.toString()}
+                    keyExtractor={(item) => item.novelName}
                     renderItem={renderItem}
                     ListEmptyComponent={ListEmptyComponent}
+                    onScroll={({ nativeEvent }) => {
+                        if (!searchText && isCloseToBottom(nativeEvent)) {
+                            getNovels(limit + 50);
+                            setLimit((limit) => limit + 50);
+                        }
+                    }}
+                    ListFooterComponent={
+                        !searchText && (
+                            <View style={{ paddingVertical: 16 }}>
+                                <ActivityIndicator color={theme.colorAccent} />
+                            </View>
+                        )
+                    }
                 />
             )}
         </View>
