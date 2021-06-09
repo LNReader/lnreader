@@ -22,7 +22,7 @@ export const githubUpdateChecker = () => {
     };
 
     const isNewVersion = (versionTag) => {
-        let currentVersion = "v1.0.20";
+        let currentVersion = "v1.0.21";
         const regex = /[^\\d.]/;
 
         let newVersion = versionTag.replace(regex, "");
