@@ -19,6 +19,7 @@ import SourceCard from "./components/SourceCard";
 import { showToast } from "../../Hooks/showToast";
 import { Searchbar } from "../../Components/Searchbar";
 import MalCard from "./components/MalCard";
+import NovelUpdatesCard from "./components/NovelUpdatesCard";
 
 const Browse = ({ navigation }) => {
     const [refreshing, setRefreshing] = useState(false);
@@ -107,6 +108,7 @@ const Browse = ({ navigation }) => {
                         >
                             Discover
                         </Text>
+                        <NovelUpdatesCard theme={theme} />
                         <MalCard theme={theme} />
                         {pinned.length > 0 && (
                             <FlatList
