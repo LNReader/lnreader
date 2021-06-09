@@ -1,7 +1,14 @@
 import React, { useState } from "react";
-import { View, Text, ActivityIndicator, StyleSheet } from "react-native";
+import {
+    View,
+    Text,
+    ActivityIndicator,
+    StyleSheet,
+    Pressable,
+} from "react-native";
 
 import { TouchableRipple, IconButton, Menu } from "react-native-paper";
+import { Row } from "../../../Components/Common";
 
 import {
     deleteChapterAction,
@@ -121,127 +128,114 @@ const ChapterItem = ({
         return selected.some((obj) => obj.chapterId === chapterId);
     };
 
+    const onPress = () => {
+        if (selected.length === 0) {
+            navigateToChapter();
+        } else {
+            if (isSelected(chapter.chapterId)) {
+                setSelected((selected) =>
+                    selected.filter(
+                        (item) => item.chapterId !== chapter.chapterId
+                    )
+                );
+            } else {
+                setSelected((selected) => [...selected, chapter]);
+            }
+        }
+    };
+
+    const onLongPress = () => {
+        if (isSelected(chapter.chapterId)) {
+            setSelected((selected) =>
+                selected.filter((item) => item.chapterId !== chapter.chapterId)
+            );
+        } else {
+            setSelected((selected) => [...selected, chapter]);
+        }
+    };
+
     return (
-        <TouchableRipple
+        <Pressable
             style={[
                 styles.chapterCardContainer,
                 isSelected(chapter.chapterId) && {
                     backgroundColor: theme.rippleColor,
                 },
             ]}
-            onPress={() => {
-                if (selected.length === 0) {
-                    navigateToChapter();
-                } else {
-                    if (isSelected(chapter.chapterId)) {
-                        setSelected((selected) =>
-                            selected.filter(
-                                (item) => item.chapterId !== chapter.chapterId
-                            )
-                        );
-                    } else {
-                        setSelected((selected) => [...selected, chapter]);
-                    }
-                }
-            }}
-            onLongPress={() => {
-                if (isSelected(chapter.chapterId)) {
-                    setSelected((selected) =>
-                        selected.filter(
-                            (item) => item.chapterId !== chapter.chapterId
-                        )
-                    );
-                } else {
-                    setSelected((selected) => [...selected, chapter]);
-                }
-                // chapterActionsSheetRef.current.show();
-            }}
-            rippleColor={theme.rippleColor}
+            onPress={onPress}
+            onLongPress={onLongPress}
+            android_ripple={{ color: theme.rippleColor }}
         >
-            <>
+            <Row>
+                {bookmarkButton()}
                 <View>
+                    <Text
+                        style={[
+                            { color: theme.textColorPrimary },
+                            chapter.read && {
+                                color: theme.textColorHint,
+                            },
+                        ]}
+                        numberOfLines={1}
+                    >
+                        {showChapterTitles
+                            ? parseChapterNumber(chapter.chapterName)
+                                ? "Chapter " +
+                                  parseChapterNumber(chapter.chapterName)
+                                : "Chapter " + index
+                            : chapter.chapterName.substring(0, 50)}
+                    </Text>
                     <View
                         style={{
                             flexDirection: "row",
-                            alignItems: "center",
+                            marginTop: 5,
                         }}
                     >
-                        {bookmarkButton()}
-                        <View>
+                        {chapter.releaseDate && (
                             <Text
                                 style={[
-                                    { color: theme.textColorPrimary },
+                                    {
+                                        color: theme.textColorSecondary,
+                                        fontSize: 12,
+                                    },
                                     chapter.read && {
                                         color: theme.textColorHint,
                                     },
                                 ]}
                                 numberOfLines={1}
                             >
-                                {showChapterTitles
-                                    ? parseChapterNumber(chapter.chapterName)
-                                        ? "Chapter " +
-                                          parseChapterNumber(
-                                              chapter.chapterName
-                                          )
-                                        : "Chapter " + index
-                                    : chapter.chapterName.substring(0, 50)}
+                                {chapter.releaseDate}
                             </Text>
-                            <View
-                                style={{
-                                    flexDirection: "row",
-                                    marginTop: 5,
-                                }}
-                            >
-                                {chapter.releaseDate && (
-                                    <Text
-                                        style={[
-                                            {
-                                                color: theme.textColorSecondary,
-                                                fontSize: 12,
-                                            },
-                                            chapter.read && {
-                                                color: theme.textColorHint,
-                                            },
-                                        ]}
-                                        numberOfLines={1}
-                                    >
-                                        {chapter.releaseDate}
-                                    </Text>
-                                )}
-                                {position &&
-                                    !chapter.read &&
-                                    position[chapter.chapterId] &&
-                                    position[chapter.chapterId].percentage <
-                                        100 &&
-                                    position[chapter.chapterId].percentage >
-                                        0 && (
-                                        <Text
-                                            style={[
-                                                {
-                                                    color: theme.textColorHint,
-                                                    fontSize: 12,
-                                                    marginLeft: 0,
-                                                },
-                                                chapter.releaseDate && {
-                                                    marginLeft: 5,
-                                                },
-                                            ]}
-                                            numberOfLines={1}
-                                        >
-                                            {chapter.releaseDate && "• "}
-                                            {"Progress " +
-                                                position[chapter.chapterId]
-                                                    .percentage +
-                                                "%"}
-                                        </Text>
-                                    )}
-                            </View>
-                        </View>
+                        )}
+                        {position &&
+                            !chapter.read &&
+                            position[chapter.chapterId] &&
+                            position[chapter.chapterId].percentage < 100 &&
+                            position[chapter.chapterId].percentage > 0 && (
+                                <Text
+                                    style={[
+                                        {
+                                            color: theme.textColorHint,
+                                            fontSize: 12,
+                                            marginLeft: 0,
+                                        },
+                                        chapter.releaseDate && {
+                                            marginLeft: 5,
+                                        },
+                                    ]}
+                                    numberOfLines={1}
+                                >
+                                    {chapter.releaseDate && "• "}
+                                    {"Progress " +
+                                        position[chapter.chapterId].percentage +
+                                        "%"}
+                                </Text>
+                            )}
                     </View>
                 </View>
-                <View>{displayDownloadButton()}</View>
-            </>
-        </TouchableRipple>
+            </Row>
+            <View>{displayDownloadButton()}</View>
+        </Pressable>
     );
 };
 

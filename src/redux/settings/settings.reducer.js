@@ -83,7 +83,6 @@ const settingsReducer = (state = initialState, action) => {
                 [payload.key]: payload.val,
             };
         case SET_READER_SETTINGS:
-            console.log(payload.val);
             return {
                 ...state,
                 reader: {
