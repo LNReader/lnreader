@@ -5,7 +5,7 @@ import { htmlToText } from "../helpers/htmlToText";
 const baseUrl = "https://foxaholic.com/";
 
 const popularNovels = async (page) => {
-    let url = baseUrl + "novel/?m_orderby=rating";
+    let url = baseUrl + "novel/page/" + page + "/?m_orderby=rating";
 
     const result = await fetch(url);
     const body = await result.text();
@@ -35,7 +35,9 @@ const popularNovels = async (page) => {
 };
 
 const parseNovelAndChapters = async (novelUrl) => {
-    const url = `${baseUrl}novel/${novelUrl}/`;
+    const url = `${baseUrl}novel/${novelUrl}`;
+
+    console.log(url);
 
     const result = await fetch(url);
     const body = await result.text();
@@ -71,36 +73,44 @@ const parseNovelAndChapters = async (novelUrl) => {
             .replace(/[\t\n]/g, "")
             .trim();
 
-        novel[detailName] = detail;
+        switch (detailName) {
+            case "Genre":
+                novel.genre = detail.trim().replace(/[\t\n]/g, ",");
+                break;
+            case "Author":
+                novel.author = detail.trim();
+                break;
+            case "Artist":
+                novel.status = detail.trim();
+                break;
+        }
     });
-
-    novel.genre = novel.Genre.replace(/, /g, ",");
-    novel.author = novel.Author;
-    novel.Status = null;
-    novel.artist = null;
-
-    delete novel.Genre;
-    delete novel.Author;
 
     $(".description-summary > div.summary__content").find("em").remove();
 
     novel.summary = $(".description-summary > div.summary__content")
         .text()
-        .replace(/[\t\n]/g, "");
+        .trim();
 
     let novelChapters = [];
 
     const novelId = $("#manga-chapters-holder").attr("data-id");
 
+    console.log(novelId);
+
     let formData = new FormData();
     formData.append("action", "manga_get_chapters");
     formData.append("manga", novelId);
 
-    const data = await fetch("https://foxaholic.com/wp-admin/admin-ajax.php", {
-        method: "POST",
-        body: formData,
-    });
+    const data = await fetch(
+        "https://www.foxaholic.com/wp-admin/admin-ajax.php",
+        {
+            method: "POST",
+            body: formData,
+        }
+    );
     const text = await data.text();
+    console.log(text);
 
     $ = cheerio.load(text);
 
@@ -128,7 +138,7 @@ const parseNovelAndChapters = async (novelUrl) => {
 };
 
 const parseChapter = async (novelUrl, chapterUrl) => {
-    const url = `${baseUrl}novel/${novelUrl}/${chapterUrl}/`;
+    const url = `${baseUrl}novel/${novelUrl}${chapterUrl}/`;
 
     const result = await fetch(url);
     const body = await result.text();
@@ -156,9 +166,6 @@ const parseChapter = async (novelUrl, chapterUrl) => {
             ? (prevChapter = prevChapter[5] + "/" + prevChapter[6])
             : (prevChapter = prevChapter[5]);
     }
-
-    novelUrl += "/";
-    chapterUrl = optionalUrl + chapterUrl;
 
     const chapter = {
         sourceId: 22,

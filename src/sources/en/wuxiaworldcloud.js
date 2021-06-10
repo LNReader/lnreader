@@ -5,7 +5,7 @@ import { htmlToText } from "../helpers/htmlToText";
 const baseUrl = "http://wuxiaworld.cloud/";
 
 const popularNovels = async (page) => {
-    const url = `${baseUrl}/popular-novel`;
+    const url = `${baseUrl}/popular-novel?page=${page}`;
 
     const result = await fetch(url);
     const body = await result.text();

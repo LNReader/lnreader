@@ -15,7 +15,6 @@ const popularNovels = async (page) => {
         const novelName = $(this).find(".book-name").text();
         const novelCover = "http:" + $(this).find("img").attr("src");
         let novelUrl = $(this).attr("data-id");
-        novelUrl += "/";
 
         const novel = {
             sourceId: 17,
@@ -32,6 +31,8 @@ const popularNovels = async (page) => {
 
 const parseNovelAndChapters = async (novelUrl) => {
     const url = `${baseUrl}/book/detail/${novelUrl}`;
+
+    console.log(url);
 
     const result = await fetch(url);
     const body = await result.text();
@@ -58,7 +59,7 @@ const parseNovelAndChapters = async (novelUrl) => {
 
     novel.author = $("div.author > span.name").text();
 
-    novelSummary = $("div.content > p.desc").text();
+    novel.summary = $("div.content > p.desc").text();
 
     const getChapters = async (novelId) => {
         const chapterListUrl = "http://www.tapread.com/ajax/book/contents";
@@ -153,10 +154,10 @@ const searchNovels = async (searchTerm) => {
 
     body.result.storyList.map((novel) => {
         const novelName = novel.storyName.replace(
-            '<font color="#FFCE2E">Demon</font>',
+            /<font color="#FFCE2E">|<\/font>/g,
             ""
         );
-        const novelUrl = novel.storyId + "/";
+        const novelUrl = novel.storyId;
         const novelCover = "http://static.tapread.com" + novel.coverUrl;
 
         novels.push({ sourceId: 17, novelName, novelCover, novelUrl });

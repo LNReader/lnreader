@@ -204,7 +204,13 @@ const Extension = ({ navigation, route }) => {
                     data={novels}
                     renderItem={renderItem}
                     ListEmptyComponent={listEmptyComponent()}
-                    onScroll={onScroll}
+                    // onScroll={onScroll}
+                    onEndReached={() => {
+                        if (!searchText) {
+                            getNovels(page + 1);
+                            setPage((page) => page + 1);
+                        }
+                    }}
                     ListFooterComponent={
                         !searchText && (
                             <View style={{ paddingVertical: 16 }}>

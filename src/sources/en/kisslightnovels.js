@@ -1,11 +1,12 @@
 import cheerio from "react-native-cheerio";
-
 import { htmlToText } from "../helpers/htmlToText";
 
 const baseUrl = "https://kisslightnovels.info/";
 
 const popularNovels = async (page) => {
-    const result = await fetch(baseUrl);
+    const url = `${baseUrl}light-novel/page/${page}`;
+
+    const result = await fetch(url);
     const body = await result.text();
 
     $ = cheerio.load(body);
@@ -33,7 +34,7 @@ const popularNovels = async (page) => {
 };
 
 const parseNovelAndChapters = async (novelUrl) => {
-    const url = `${baseUrl}novel/${novelUrl}/`;
+    const url = `${baseUrl}novel/${novelUrl}`;
 
     const result = await fetch(url);
     const body = await result.text();
@@ -69,7 +70,17 @@ const parseNovelAndChapters = async (novelUrl) => {
             .replace(/[\t\n]/g, "")
             .trim();
 
-        novel[detailName] = detail;
+        switch (detailName) {
+            case "Genre(s)":
+                novel.genre = detail.trim().replace(/[\t\n]/g, ",");
+                break;
+            case "Author(s)":
+                novel.author = detail.trim();
+                break;
+            case "Artist(s)":
+                novel.status = detail.trim();
+                break;
+        }
     });
 
     $(".description-summary > div.summary__content").find("em").remove();

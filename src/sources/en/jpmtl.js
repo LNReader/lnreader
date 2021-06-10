@@ -6,7 +6,9 @@ const baseUrl = "https://jpmtl.com/";
 
 const popularNovels = async (page) => {
     let url =
-        "https://jpmtl.com/v2/book/show/browse?query=&categories=&content_type=0&direction=0&page=2&limit=20&type=5&status=all&language=3&exclude_categories=";
+        "https://jpmtl.com/v2/book/show/browse?query=&categories=&content_type=0&direction=0&page=" +
+        page +
+        "&limit=20&type=5&status=all&language=3&exclude_categories=";
 
     const result = await fetch(url);
     const body = await result.json();
@@ -106,7 +108,9 @@ const parseNovelAndChapters = async (novelUrl) => {
 };
 
 const parseChapter = async (novelUrl, chapterUrl) => {
-    const url = `${baseUrl}books/${novelUrl}/${chapterUrl}`;
+    const url = `${baseUrl}books/${novelUrl}${chapterUrl}`;
+
+    console.log(url);
 
     const result = await fetch(url);
     const body = await result.text();

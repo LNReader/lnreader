@@ -5,7 +5,7 @@ import { htmlToText } from "../helpers/htmlToText";
 const baseUrl = "https://vipnovel.com/";
 
 const popularNovels = async (page) => {
-    let url = baseUrl;
+    let url = `${baseUrl}vipnovel/page/${page}/?m_orderby=rating`;
 
     const result = await fetch(url);
     const body = await result.text();
@@ -30,6 +30,8 @@ const popularNovels = async (page) => {
 
         novels.push(novel);
     });
+
+    console.log(novels[0]);
 
     return novels;
 };
@@ -85,9 +87,9 @@ const parseNovelAndChapters = async (novelUrl) => {
 
     // $(".description-summary > div.summary__content").find("em").remove();
 
-    let novelSummary = $(".description-summary > div.summary__content").html();
+    let novelSummary = $(".description-summary > div.summary__content").text();
 
-    novel.summary = htmlToText(novelSummary);
+    novel.summary = novelSummary.replace(/[\t\n]/g, "");
 
     let novelChapters = [];
 
@@ -117,7 +119,9 @@ const parseNovelAndChapters = async (novelUrl) => {
 };
 
 const parseChapter = async (novelUrl, chapterUrl) => {
-    const url = `${baseUrl}vipnovel/${novelUrl}/${chapterUrl}`;
+    const url = chapterUrl;
+
+    console.log(url);
 
     const result = await fetch(url);
     const body = await result.text();

@@ -4,7 +4,7 @@ import { htmlToText } from "../helpers/htmlToText";
 const baseUrl = "https://freewebnovel.com/";
 
 const popularNovels = async (page) => {
-    let url = baseUrl + "most-popular-novel/";
+    let url = baseUrl + "completed-novel/" + page;
 
     const result = await fetch(url);
     const body = await result.text();
@@ -23,8 +23,6 @@ const popularNovels = async (page) => {
             .replace(".html", "")
             .slice(1);
 
-        novelUrl += "/";
-
         const novel = {
             sourceId: 13,
             novelName,
@@ -41,6 +39,8 @@ const popularNovels = async (page) => {
 const parseNovelAndChapters = async (novelUrl) => {
     const url = `${baseUrl}${novelUrl}.html`;
 
+    console.log(url);
+
     const result = await fetch(url);
     const body = await result.text();
 
@@ -54,7 +54,7 @@ const parseNovelAndChapters = async (novelUrl) => {
 
     novel.url = url;
 
-    novel.novelUrl = `${novelUrl.replace(".html", "")}/`;
+    novel.novelUrl = novelUrl;
 
     novel.novelName = $("h1.tit").text();
 
@@ -72,18 +72,18 @@ const parseNovelAndChapters = async (novelUrl) => {
 
     novel.artist = null;
 
-    novel.Status = $("[title=Status]")
+    novel.status = $("[title=Status]")
         .next()
         .text()
         .replace(/[\t\n]/g, "");
 
-    novel.Alternative = $("[title='Alternative names']")
-        .next()
-        .text()
-        .replace(/[\t\n]/g, "");
+    // novel.Alternative = $("[title='Alternative names']")
+    //     .next()
+    //     .text()
+    //     .replace(/[\t\n]/g, "");
 
-    let novelSummary = $(".inner").html();
-    novel.summary = htmlToText(novelSummary);
+    let novelSummary = $(".inner").text();
+    novel.summary = novelSummary;
 
     let novelChapters = [];
 

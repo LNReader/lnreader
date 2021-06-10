@@ -7,6 +7,7 @@ import { getDeviceOrientation } from "../Services/utils/helpers";
 const NovelList = ({
     data,
     onScroll,
+    onEndReached,
     renderItem,
     refreshControl,
     ListEmptyComponent,
@@ -40,6 +41,7 @@ const NovelList = ({
             ListEmptyComponent={ListEmptyComponent}
             ListFooterComponent={ListFooterComponent}
             onScroll={onScroll}
+            onEndReached={onEndReached}
         />
     );
 };

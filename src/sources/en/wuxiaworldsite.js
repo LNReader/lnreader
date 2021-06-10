@@ -4,9 +4,18 @@ const baseUrl = "https://wuxiaworldsite.co/";
 const searchUrl = "https://wuxiaworldsite.co/search/";
 
 const popularNovels = async (page) => {
-    const url = `${baseUrl}/power-ranking`;
+    const url = `https://wuxiaworldsite.co/ajax-story-power.ajax`;
 
-    const result = await fetch(url);
+    const formData = new FormData();
+    formData.append("page", page);
+    formData.append("keyword", "");
+    formData.append("count", 18);
+    formData.append("genres_include", "");
+    formData.append("limit", 18);
+    formData.append("order_type", "DESC");
+    formData.append("order_by", "views");
+
+    const result = await fetch(url, { method: "POST", body: formData });
     const body = await result.text();
 
     $ = cheerio.load(body);

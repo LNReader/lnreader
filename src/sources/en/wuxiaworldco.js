@@ -60,7 +60,7 @@ const parseNovelAndChapters = async (novelUrl) => {
     novel.author = $("div.author > span.name").text();
 
     novelSummary = $("div.content > p.desc").html();
-    novel.summary = htmlToText(novelSummary);
+    novel.summary = novelSummary.trim();
 
     let novelChapters = [];
 

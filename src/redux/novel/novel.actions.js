@@ -57,7 +57,6 @@ export const setNovel = (novel) => async (dispatch) => {
 export const getNovelAction =
     (followed, sourceId, novelUrl, novelId, sort, filter) =>
     async (dispatch) => {
-        console.log(followed, sourceId, novelUrl, novelId, sort, filter);
         try {
             dispatch({ type: LOADING_NOVEL });
 
@@ -102,7 +101,6 @@ export const getNovelAction =
                      * Insert novel in db.
                      */
                     const fetchedNovelId = await insertNovel(fetchedNovel);
-                    console.log(fetchedNovelId);
                     await insertChapters(fetchedNovelId, fetchedNovel.chapters);
 
                     /**

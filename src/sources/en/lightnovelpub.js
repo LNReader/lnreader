@@ -5,9 +5,19 @@ import { htmlToText } from "../helpers/htmlToText";
 const baseUrl = "https://www.lightnovelpub.com/";
 
 const popularNovels = async (page) => {
-    let url = baseUrl + "browse/all/popular/all/1";
+    let url = baseUrl + "browse/all/popular/all/" + page;
 
-    const result = await fetch(url);
+    let headers = new Headers({
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "User-Agent":
+            "'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36",
+    });
+
+    const result = await fetch(url, {
+        method: "GET",
+        headers: headers,
+    });
     const body = await result.text();
 
     $ = cheerio.load(body);
@@ -46,7 +56,17 @@ const popularNovels = async (page) => {
 const parseNovelAndChapters = async (novelUrl) => {
     const url = `${baseUrl}novel/${novelUrl}/`;
 
-    const result = await fetch(url);
+    let headers = new Headers({
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "User-Agent":
+            "'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36",
+    });
+
+    const result = await fetch(url, {
+        method: "GET",
+        headers: headers,
+    });
     const body = await result.text();
 
     $ = cheerio.load(body);
@@ -88,7 +108,7 @@ const parseNovelAndChapters = async (novelUrl) => {
     novel.author = $(".author > a > span").text();
 
     novelSummary = $(".summary > .content").html();
-    novel.summary = htmlToText(novelSummary);
+    novel.summary = htmlToText(novelSummary).trim();
 
     let novelChapters = [];
 
@@ -117,9 +137,18 @@ const parseNovelAndChapters = async (novelUrl) => {
 const parseChapter = async (novelUrl, chapterUrl) => {
     const url = `${baseUrl}novel/${novelUrl}/${chapterUrl}`;
 
-    const result = await fetch(url);
-    const body = await result.text();
+    let headers = new Headers({
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "User-Agent":
+            "'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36",
+    });
 
+    const result = await fetch(url, {
+        method: "GET",
+        headers: headers,
+    });
+    const body = await result.text();
     $ = cheerio.load(body);
 
     const chapterName = $("h2").text();
@@ -158,9 +187,20 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 const searchNovels = async (searchTerm) => {
     const url = `${baseUrl}lnwsearchlive?inputContent=${searchTerm}`;
 
-    const result = await scraper(url);
+    let headers = new Headers({
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "User-Agent":
+            "'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36",
+    });
 
-    $ = cheerio.load(result);
+    const result = await fetch(url, {
+        method: "GET",
+        headers: headers,
+    });
+    const body = await result.text();
+
+    $ = cheerio.load(body);
 
     let novels = [];
 

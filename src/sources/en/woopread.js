@@ -1,11 +1,10 @@
 import cheerio from "react-native-cheerio";
-
 import { htmlToText } from "../helpers/htmlToText";
 
 const baseUrl = "https://woopread.com/";
 
 const popularNovels = async (page) => {
-    let url = baseUrl + "novellist/?m_orderby=rating";
+    let url = baseUrl + "novellist/page/" + page + "/?m_orderby=rating";
 
     const result = await fetch(url);
     const body = await result.text();
@@ -35,7 +34,7 @@ const popularNovels = async (page) => {
 };
 
 const parseNovelAndChapters = async (novelUrl) => {
-    const url = `${baseUrl}series/${novelUrl}/`;
+    const url = `${baseUrl}series/${novelUrl}`;
 
     const result = await fetch(url);
     const body = await result.text();
@@ -71,14 +70,23 @@ const parseNovelAndChapters = async (novelUrl) => {
             .replace(/[\t\n]/g, "")
             .trim();
 
-        novel[detailName] = detail;
+        switch (detailName) {
+            case "Genre(s)":
+                novel.genre = detail.trim().replace(/[\t\n]/g, ",");
+                break;
+            case "Author(s)":
+                novel.author = detail.trim();
+                break;
+            case "Artist(s)":
+                novel.status = detail.trim();
+                break;
+        }
     });
-
     $(".description-summary > div.summary__content").find("em").remove();
 
     novel.summary = $(".description-summary > div.summary__content")
         .text()
-        .replace(/[\t\n]/g, "");
+        .trim();
 
     let novelChapters = [];
 
@@ -145,9 +153,6 @@ const parseChapter = async (novelUrl, chapterUrl) => {
             .attr("href")
             .replace(baseUrl + "series/" + novelUrl + "/", "");
     }
-
-    novelUrl += "/";
-    chapterUrl = optionalUrl + chapterUrl + "/";
 
     const chapter = {
         sourceId: 21,
