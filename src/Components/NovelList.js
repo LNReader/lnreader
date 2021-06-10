@@ -6,9 +6,11 @@ import { getDeviceOrientation } from "../Services/utils/helpers";
 
 const NovelList = ({
     data,
+    onScroll,
     renderItem,
     refreshControl,
     ListEmptyComponent,
+    ListFooterComponent,
 }) => {
     const { displayMode, novelsPerRow } = useSettings();
 
@@ -36,6 +38,8 @@ const NovelList = ({
             renderItem={renderItem}
             refreshControl={refreshControl}
             ListEmptyComponent={ListEmptyComponent}
+            ListFooterComponent={ListFooterComponent}
+            onScroll={onScroll}
         />
     );
 };

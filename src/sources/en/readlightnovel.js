@@ -54,7 +54,7 @@ const parseNovelAndChapters = async (novelUrl) => {
 
     const novelCover = $(".novel-cover > a > img").attr("src");
 
-    let author, artist, genre, summary;
+    let author, artist, genre, summary, status;
 
     $(".novel-detail-item").each(function (result) {
         const detailName = $(this).find(".novel-detail-header > h6").text();
@@ -62,7 +62,7 @@ const parseNovelAndChapters = async (novelUrl) => {
 
         switch (detailName) {
             case "Genre":
-                genre = detail.replace(/[\t\n]/g, ",");
+                genre = detail.trim().replace(/[\t\n]/g, ",");
                 break;
             case "Author(s)":
                 author = detail.trim();
@@ -72,6 +72,9 @@ const parseNovelAndChapters = async (novelUrl) => {
                 break;
             case "Description":
                 summary = detail;
+                break;
+            case "Status":
+                status = detail;
                 break;
         }
     });
@@ -111,10 +114,12 @@ const parseNovelAndChapters = async (novelUrl) => {
         sourceId,
         sourceName,
         url,
+        novelUrl,
         novelName,
         novelCover,
         genre,
         author,
+        status,
         artist,
         summary,
         chapters,
@@ -123,4 +128,67 @@ const parseNovelAndChapters = async (novelUrl) => {
     return novel;
 };
 
-export { popularNovels, parseNovelAndChapters };
+const parseChapter = async (novelUrl, chapterUrl) => {
+    const url = `${baseUrl}/${novelUrl}/${chapterUrl}/`;
+
+    const result = await fetch(url);
+    const body = await result.text();
+
+    $ = cheerio.load(body);
+
+    $(".block-title > h1").find("a").remove();
+
+    const chapterName = $(".block-title > h1").text().replace(" - ", "");
+
+    $(".desc")
+        .find("hr")
+        .each(function (result) {
+            $(this).remove();
+        });
+
+    $(".alert").remove();
+    $(".hidden").remove();
+
+    let chapterText = $(".desc").html();
+
+    // chapterText = parseHtml(chapterText).replace(
+    //     /\n\nSponsored Content\n\n|If audio player doesn't work, press Stop then Play button again/g,
+    //     ""
+    // );
+
+    let nextChapter = null;
+
+    if ($("a.next.next-link").length) {
+        nextChapter = $("a.next.next-link")
+            .attr("href")
+            .replace(`${baseUrl}/${novelUrl}/`, "");
+    }
+
+    let prevChapter = null;
+
+    if ($("a.prev.prev-link").length) {
+        prevChapter = $("a.prev.prev-link")
+            .attr("href")
+            .replace(`${baseUrl}/${novelUrl}/`, "");
+    }
+
+    const chapter = {
+        extensionId: 2,
+        novelUrl,
+        chapterUrl,
+        chapterName,
+        chapterText,
+        nextChapter,
+        prevChapter,
+    };
+
+    return chapter;
+};
+
+const ReadLightNovelScraper = {
+    popularNovels,
+    parseNovelAndChapters,
+    parseChapter,
+};
+
+export default ReadLightNovelScraper;

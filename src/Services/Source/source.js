@@ -1,4 +1,5 @@
 import { showToast } from "../../Hooks/showToast";
+import { getSource } from "../../sources/sources";
 
 export const fetchSources = async () => {
     const url = `https://lnreader-extensions.vercel.app/api/`;
@@ -10,35 +11,35 @@ export const fetchSources = async () => {
 };
 
 export const fetchNovel = async (sourceId, novelUrl) => {
-    const url = `https://lnreader-extensions.vercel.app/api/${sourceId}/novel/${novelUrl}`;
+    const source = getSource(sourceId);
 
-    let data = await fetch(url);
-    let res = await data.json();
+    const res = await source.parseNovelAndChapters(novelUrl);
 
     const novel = {
         novelUrl: res.novelUrl,
-        sourceUrl: res.sourceUrl,
+        sourceUrl: res.url,
         source: res.sourceName,
-        sourceId: res.extensionId,
+        sourceId: res.sourceId,
         novelName: res.novelName,
         novelCover: res.novelCover,
-        novelSummary: res.novelSummary,
-        author: res["Author(s)"],
-        artist: res["Artist(s)"],
-        status: res.Status,
-        genre: res["Genre(s)"],
+        novelSummary: res.summary,
+        author: res.author,
+        artist: res.artist,
+        status: res.status,
+        genre: res.genre,
         followed: 0,
-        chapters: res.novelChapters,
+        chapters: res.chapters,
     };
+
+    // console.log(novel);
 
     return novel;
 };
 
 export const fetchChapter = async (sourceId, novelUrl, chapterUrl) => {
-    const url = `https://lnreader-extensions.vercel.app/api/${sourceId}/novel/${novelUrl}${chapterUrl}`;
+    const source = getSource(sourceId);
 
-    let res = await fetch(url);
-    let chapter = await res.json();
+    let chapter = await source.parseChapter(novelUrl, chapterUrl);
 
     return chapter;
 };

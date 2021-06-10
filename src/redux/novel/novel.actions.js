@@ -57,6 +57,7 @@ export const setNovel = (novel) => async (dispatch) => {
 export const getNovelAction =
     (followed, sourceId, novelUrl, novelId, sort, filter) =>
     async (dispatch) => {
+        console.log(followed, sourceId, novelUrl, novelId, sort, filter);
         try {
             dispatch({ type: LOADING_NOVEL });
 

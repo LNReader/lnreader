@@ -13,6 +13,8 @@ import ErrorView from "../../Components/ErrorView";
 import { useDispatch } from "react-redux";
 import { setAppSettings } from "../../redux/settings/settings.actions";
 
+import { getSource } from "../../sources/sources";
+
 const Extension = ({ navigation, route }) => {
     const { sourceId, sourceName, sourceUrl } = route.params;
 
@@ -22,35 +24,38 @@ const Extension = ({ navigation, route }) => {
     const { displayMode } = useSettings();
 
     const [loading, setLoading] = useState(true);
-    const [novels, setNovels] = useState();
+    const [novels, setNovels] = useState([]);
+    const [page, setPage] = useState(1);
     const [error, setError] = useState();
 
     const [searchText, setSearchText] = useState("");
 
-    const getSourceUrl = () => {
-        if (sourceId === 1) {
-            return `https://lnreader-extensions.vercel.app/api/1/novels/1/?o=rating`;
-        } else {
-            return `https://lnreader-extensions.vercel.app/api/${sourceId}/novels/`;
-        }
-    };
+    // const getSourceUrl = () => {
+    //     if (sourceId === 1) {
+    //         return `https://lnreader-extensions.vercel.app/api/1/novels/1/?o=rating`;
+    //     } else {
+    //         return `https://lnreader-extensions.vercel.app/api/${sourceId}/novels/`;
+    //     }
+    // };
 
-    const getSearchUrl = () => {
-        if (sourceId === 1) {
-            return `https://lnreader-extensions.vercel.app/api/1/search/?s=${searchText}&?o=rating`;
-        } else {
-            return `https://lnreader-extensions.vercel.app/api/${sourceId}/search/?s=${searchText}`;
-        }
-    };
+    // const getSearchUrl = () => {
+    //     if (sourceId === 1) {
+    //         return `https://lnreader-extensions.vercel.app/api/1/search/?s=${searchText}&?o=rating`;
+    //     } else {
+    //         return `https://lnreader-extensions.vercel.app/api/${sourceId}/search/?s=${searchText}`;
+    //     }
+    // };
 
-    const getNovels = async () => {
+    const getNovels = async (page) => {
         try {
-            const url = getSourceUrl();
+            const source = getSource(sourceId);
 
-            const res = await fetch(url);
-            const data = await res.json();
+            // console.log(page);
+            const res = await source.popularNovels(page);
 
-            setNovels(data);
+            // console.log(res);
+
+            setNovels((novels) => novels.concat(res));
             setLoading(false);
         } catch (error) {
             setError(error.message);
@@ -88,8 +93,27 @@ const Extension = ({ navigation, route }) => {
     };
 
     useEffect(() => {
-        getNovels();
+        getNovels(1);
     }, []);
+
+    const isCloseToBottom = ({
+        layoutMeasurement,
+        contentOffset,
+        contentSize,
+    }) => {
+        const paddingToBottom = 20;
+        return (
+            layoutMeasurement.height + contentOffset.y >=
+            contentSize.height - paddingToBottom
+        );
+    };
+
+    const onScroll = ({ nativeEvent }) => {
+        if (!searchText && isCloseToBottom(nativeEvent)) {
+            getNovels(page + 1);
+            setPage((page) => page + 1);
+        }
+    };
 
     const renderItem = ({ item }) => (
         <NovelCover
@@ -99,7 +123,7 @@ const Extension = ({ navigation, route }) => {
                     novelName: item.novelName,
                     novelCover: item.novelCover,
                     novelUrl: item.novelUrl,
-                    sourceId: item.extensionId,
+                    sourceId,
                 })
             }
             libraryStatus={checkIFInLibrary(item.extensionId, item.novelUrl)}
@@ -174,6 +198,14 @@ const Extension = ({ navigation, route }) => {
                     data={novels}
                     renderItem={renderItem}
                     ListEmptyComponent={listEmptyComponent()}
+                    onScroll={onScroll}
+                    ListFooterComponent={
+                        !searchText && (
+                            <View style={{ paddingVertical: 16 }}>
+                                <ActivityIndicator color={theme.colorAccent} />
+                            </View>
+                        )
+                    }
                 />
             )}
         </View>

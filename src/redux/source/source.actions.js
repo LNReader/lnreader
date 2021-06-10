@@ -1,15 +1,11 @@
 import { GET_SOURCES, PIN_SOURCES, SEARCH_SOURCES } from "./source.types";
 import { fetchSources } from "../../Services/Source/source";
 import { showToast } from "../../Hooks/showToast";
+import { sources } from "../../sources/sources";
 
 export const getSourcesAction = () => async (dispatch) => {
     try {
-        const res = await fetchSources();
-
-        dispatch({
-            type: GET_SOURCES,
-            payload: res,
-        });
+        dispatch({ type: GET_SOURCES, payload: sources });
     } catch (error) {
         showToast(error.message);
     }

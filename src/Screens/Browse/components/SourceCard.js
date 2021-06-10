@@ -7,7 +7,7 @@ import { pinSourceAction } from "../../../redux/source/source.actions";
 import FastImage from "react-native-fast-image";
 
 const ExtensionCard = ({ item, theme, isPinned }) => {
-    const { sourceId, sourceName, sourceCover, sourceLanguage, status } = item;
+    const { sourceId, sourceName, icon, lang } = item;
 
     const navigation = useNavigation();
     const dispatch = useDispatch();
@@ -27,7 +27,7 @@ const ExtensionCard = ({ item, theme, isPinned }) => {
         >
             <>
                 <Image
-                    source={{ uri: sourceCover }}
+                    source={{ uri: icon }}
                     style={styles.extensionIcon}
                     resizeMode="contain"
                 />
@@ -41,19 +41,14 @@ const ExtensionCard = ({ item, theme, isPinned }) => {
                         >
                             {sourceName}
                         </Text>
-                        <View style={{ flexDirection: "row" }}>
-                            <Text
-                                style={{
-                                    color: theme.textColorSecondary,
-                                    fontSize: 12,
-                                }}
-                            >
-                                {sourceLanguage}
-                            </Text>
-                            <Text style={styles.sourceStatus}>
-                                {status === 0 && "• Down"}
-                            </Text>
-                        </View>
+                        <Text
+                            style={{
+                                color: theme.textColorSecondary,
+                                fontSize: 12,
+                            }}
+                        >
+                            {lang}
+                        </Text>
                     </View>
                     <View
                         style={{ flexDirection: "row", alignItems: "center" }}
