@@ -35,8 +35,8 @@ const updateNovelDetails = async (novel, novelId) => {
     });
 };
 
-export const updateNovel = async (extensionId, novelUrl, novelId) => {
-    let novel = await fetchNovel(extensionId, novelUrl);
+export const updateNovel = async (sourceId, novelUrl, novelId) => {
+    let novel = await fetchNovel(sourceId, novelUrl);
 
     await updateNovelDetails(novel, novelId);
 
@@ -73,8 +73,8 @@ export const updateNovel = async (extensionId, novelUrl, novelId) => {
     });
 };
 
-export const updateNovelChapters = async (extensionId, novelUrl, novelId) => {
-    let chapters = await fetchChapters(extensionId, novelUrl);
+export const updateNovelChapters = async (sourceId, novelUrl, novelId) => {
+    let chapters = await fetchChapters(sourceId, novelUrl);
 
     db.transaction((tx) => {
         chapters.map((chapter) =>

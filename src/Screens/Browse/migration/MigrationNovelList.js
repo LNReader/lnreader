@@ -26,15 +26,15 @@ const MigrationNovelList = ({ data, theme, library, navigation }) => {
             novel={item}
             theme={theme}
             onPress={() =>
-                showModal(item.extensionId, item.novelUrl, item.novelName)
+                showModal(item.sourceId, item.novelUrl, item.novelName)
             }
             onLongPress={() =>
                 navigation.navigate("Novel", {
                     ...item,
-                    sourceId: item.extensionId,
+                    sourceId: item.sourceId,
                 })
             }
-            inLibrary={inLibrary(item.extensionId, item.novelUrl)}
+            inLibrary={inLibrary(item.sourceId, item.novelUrl)}
         />
     );
 

@@ -1,4 +1,5 @@
 import cheerio from "react-native-cheerio";
+import { htmlToText } from "../helpers/htmlToText";
 
 const sourceId = 2;
 
@@ -29,6 +30,7 @@ const popularNovels = async (page) => {
             .replace(`${baseUrl}/`, "");
 
         const novel = {
+            sourceId,
             novelName,
             novelCover,
             novelUrl,
@@ -149,12 +151,14 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     $(".alert").remove();
     $(".hidden").remove();
 
+    var re = new RegExp(String.fromCharCode(160), "g");
+
     let chapterText = $(".desc").html();
 
-    // chapterText = parseHtml(chapterText).replace(
-    //     /\n\nSponsored Content\n\n|If audio player doesn't work, press Stop then Play button again/g,
-    //     ""
-    // );
+    chapterText = htmlToText(chapterText).replace(
+        /\n\nSponsored Content\n\n|If audio player doesn't work, press Stop then Play button again/g,
+        ""
+    );
 
     let nextChapter = null;
 
@@ -173,7 +177,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     }
 
     const chapter = {
-        extensionId: 2,
+        sourceId: 2,
         novelUrl,
         chapterUrl,
         chapterName,
@@ -185,10 +189,48 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     return chapter;
 };
 
+const searchNovels = async (searchTerm) => {
+    const formData = new FormData();
+    formData.append("keyword", searchTerm);
+    formData.append("search", 1);
+
+    const result = await fetch(searchUrl, {
+        method: "POST",
+        body: formData,
+    });
+    const body = await result.text();
+
+    $ = cheerio.load(body);
+
+    let novels = [];
+
+    $(".top-novel-block").each(function (result) {
+        const novelName = $(this).find(".top-novel-header > h2 > a").text();
+        const novelCover = $(this).find("img").attr("src");
+
+        const novelUrl = $(this)
+            .find(".top-novel-header > h2 > a")
+            .attr("href")
+            .replace(`${baseUrl}/`, "");
+
+        const novel = {
+            sourceId,
+            novelName,
+            novelCover,
+            novelUrl,
+        };
+
+        novels.push(novel);
+    });
+
+    return novels;
+};
+
 const ReadLightNovelScraper = {
     popularNovels,
     parseNovelAndChapters,
     parseChapter,
+    searchNovels,
 };
 
 export default ReadLightNovelScraper;

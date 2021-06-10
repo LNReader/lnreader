@@ -16,7 +16,7 @@ const ExtensionCard = ({ item, theme, isPinned }) => {
         navigation.navigate("Extension", {
             sourceId: item.sourceId,
             sourceName: item.sourceName,
-            sourceUrl: item.sourceUrl,
+            sourceUrl: item.url,
         });
 
     return (

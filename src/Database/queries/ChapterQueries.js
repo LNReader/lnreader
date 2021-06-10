@@ -1,4 +1,5 @@
 import * as SQLite from "expo-sqlite";
+import { getSource } from "../../sources/sources";
 const db = SQLite.openDatabase("lnreader.db");
 
 const insertChaptersQuery = `INSERT INTO chapters (chapterUrl, chapterName, releaseDate, novelId) values (?, ?, ?, ?)`;
@@ -157,10 +158,9 @@ export const downloadChapter = async (
     chapterUrl,
     chapterId
 ) => {
-    const downloadUrl = `https://lnreader-extensions.vercel.app/api/${sourceId}/novel/${novelUrl}${chapterUrl}`;
+    const source = getSource(sourceId);
 
-    const response = await fetch(downloadUrl);
-    const chapter = await response.json();
+    const chapter = await source.parseChapter(novelUrl, chapterUrl);
 
     db.transaction((tx) => {
         tx.executeSql(

@@ -16,7 +16,7 @@ import { setAppSettings } from "../../redux/settings/settings.actions";
 import { getSource } from "../../sources/sources";
 
 const Extension = ({ navigation, route }) => {
-    const { sourceId, sourceName, sourceUrl } = route.params;
+    const { sourceId, sourceName, url } = route.params;
 
     const theme = useTheme();
     const library = useLibrary();
@@ -71,19 +71,24 @@ const Extension = ({ navigation, route }) => {
         setSearchText("");
     };
 
-    const getSearchResults = () => {
-        setLoading(true);
-        fetch(getSearchUrl())
-            .then((response) => response.json())
-            .then((json) => {
-                setNovels(json);
-                setLoading(false);
-            })
-            .catch((error) => {
-                setNovels([]);
-                setLoading(false);
-                showToast(error.message);
-            });
+    const getSearchResults = async () => {
+        try {
+            setLoading(true);
+            const source = getSource(sourceId);
+
+            // console.log(page);
+            const res = await source.searchNovels(searchText);
+
+            // console.log(res);
+
+            setNovels(res);
+            setLoading(false);
+        } catch (error) {
+            setError(error.message);
+            setNovels([]);
+            setLoading(false);
+            showToast(error.message);
+        }
     };
 
     const checkIFInLibrary = (sourceId, novelUrl) => {
@@ -126,7 +131,7 @@ const Extension = ({ navigation, route }) => {
                     sourceId,
                 })
             }
-            libraryStatus={checkIFInLibrary(item.extensionId, item.novelUrl)}
+            libraryStatus={checkIFInLibrary(item.sourceId, item.novelUrl)}
         />
     );
 
@@ -138,7 +143,7 @@ const Extension = ({ navigation, route }) => {
                 setLoading(true);
                 setError();
             }}
-            openWebView={() => WebBrowser.openBrowserAsync(sourceUrl)}
+            openWebView={() => WebBrowser.openBrowserAsync(url)}
             theme={theme}
         />
     );
@@ -184,7 +189,7 @@ const Extension = ({ navigation, route }) => {
                     {
                         icon: "earth",
                         color: theme.textColorSecondary,
-                        onPress: () => WebBrowser.openBrowserAsync(sourceUrl),
+                        onPress: () => WebBrowser.openBrowserAsync(url),
                     },
                 ]}
             />

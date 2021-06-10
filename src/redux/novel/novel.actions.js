@@ -102,6 +102,7 @@ export const getNovelAction =
                      * Insert novel in db.
                      */
                     const fetchedNovelId = await insertNovel(fetchedNovel);
+                    console.log(fetchedNovelId);
                     await insertChapters(fetchedNovelId, fetchedNovel.chapters);
 
                     /**
@@ -266,14 +267,14 @@ export const markChapterUnreadAction =
     };
 
 export const downloadChapterAction =
-    (extensionId, novelUrl, chapterUrl, chapterName, chapterId) =>
+    (sourceId, novelUrl, chapterUrl, chapterName, chapterId) =>
     async (dispatch) => {
         dispatch({
             type: CHAPTER_DOWNLOADING,
             payload: chapterId,
         });
 
-        await downloadChapter(extensionId, novelUrl, chapterUrl, chapterId);
+        await downloadChapter(sourceId, novelUrl, chapterUrl, chapterId);
 
         dispatch({
             type: CHAPTER_DOWNLOADED,
@@ -284,7 +285,7 @@ export const downloadChapterAction =
     };
 
 export const downloadAllChaptersAction =
-    (extensionId, novelUrl, chapters) => async (dispatch) => {
+    (sourceId, novelUrl, chapters) => async (dispatch) => {
         try {
             await chapters.map((chapter, index) => {
                 setTimeout(async () => {
@@ -295,7 +296,7 @@ export const downloadAllChaptersAction =
 
                     if (!chapter.downloaded) {
                         await downloadChapter(
-                            extensionId,
+                            sourceId,
                             novelUrl,
                             chapter.chapterUrl,
                             chapter.chapterId

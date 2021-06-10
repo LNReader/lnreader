@@ -12,7 +12,7 @@ const GlobalSearchNovelList = ({ data, theme, library, navigation }) => {
     const navigateToNovel = (item) =>
         navigation.navigate("Novel", {
             ...item,
-            sourceId: item.extensionId,
+            sourceId: item.sourceId,
         });
 
     const renderItem = ({ item }) => (
@@ -20,7 +20,7 @@ const GlobalSearchNovelList = ({ data, theme, library, navigation }) => {
             novel={item}
             theme={theme}
             onPress={() => navigateToNovel(item)}
-            inLibrary={inLibrary(item.extensionId, item.novelUrl)}
+            inLibrary={inLibrary(item.sourceId, item.novelUrl)}
         />
     );
 

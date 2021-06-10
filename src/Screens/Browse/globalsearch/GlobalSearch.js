@@ -12,6 +12,7 @@ import GlobalSearchSourceItem from "./GlobalSearchSourceItem";
 
 import { showToast } from "../../../Hooks/showToast";
 import { useLibrary, useTheme } from "../../../Hooks/reduxHooks";
+import { getSource } from "../../../sources/sources";
 
 const GlobalSearch = ({ route, navigation }) => {
     const theme = useTheme();
@@ -40,52 +41,40 @@ const GlobalSearch = ({ route, navigation }) => {
     const clearSearchbar = () => setSearchText("");
     const onChangeText = (text) => setSearchText(text);
 
-    const onSubmitEditing = () => {
+    const onSubmitEditing = async () => {
         setSearchResults([]);
 
-        const getSearchUrl = (sourceId) => {
-            if (sourceId === 1) {
-                return `https://lnreader-extensions.vercel.app/api/1/search/?s=${searchText}&?o=rating`;
-            } else {
-                return `https://lnreader-extensions.vercel.app/api/${sourceId}/search/?s=${searchText}`;
-            }
-        };
+        pinnedSources.map((item, index) =>
+            setTimeout(async () => {
+                try {
+                    setLoading(true);
 
-        pinnedSources.map((source, index) =>
-            setTimeout(() => {
-                setLoading(true);
-                fetch(getSearchUrl(source.sourceId))
-                    .then((response) => response.json())
-                    .then((json) => {
-                        setSearchResults((searchResults) => [
-                            ...searchResults,
-                            {
-                                sourceId: source.sourceId,
-                                sourceName: source.sourceName,
-                                sourceLanguage: source.sourceLanguage,
-                                novels: json,
-                            },
-                        ]);
-                        setLoading(false);
-                    })
-                    .catch((error) => {
-                        showToast(error.message);
-                        setSearchResults((searchResults) => [
-                            ...searchResults,
-                            {
-                                sourceId: source.sourceId,
-                                sourceName: source.sourceName,
-                                sourceLanguage: source.sourceLanguage,
-                                novels: [],
-                            },
-                        ]);
-                        setLoading(false);
-                    })
-                    .finally(() =>
-                        setProgress(
-                            (progress) => progress + 1 / pinnedSources.length
-                        )
-                    );
+                    const source = getSource(item.sourceId);
+                    const data = await source.searchNovels(searchText);
+
+                    setSearchResults((searchResults) => [
+                        ...searchResults,
+                        {
+                            sourceId: item.sourceId,
+                            sourceName: item.sourceName,
+                            sourceLanguage: item.sourceLanguage,
+                            novels: data,
+                        },
+                    ]);
+                    setLoading(false);
+                } catch (error) {
+                    showToast(error.message);
+                    setSearchResults((searchResults) => [
+                        ...searchResults,
+                        {
+                            sourceId: item.sourceId,
+                            sourceName: item.sourceName,
+                            sourceLanguage: item.sourceLanguage,
+                            novels: [],
+                        },
+                    ]);
+                    setLoading(false);
+                }
             }, 1000 * index)
         );
     };
