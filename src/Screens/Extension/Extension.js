@@ -66,7 +66,8 @@ const Extension = ({ navigation, route }) => {
     };
 
     const clearSearchbar = () => {
-        getNovels();
+        setNovels([]);
+        getNovels(1);
         setLoading(true);
         setSearchText("");
     };
