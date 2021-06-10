@@ -21,6 +21,7 @@ import { githubUpdateChecker } from "../Hooks/githubUpdateChecker";
 import NewUpdateDialog from "../Components/NewUpdateDialog";
 import { NavigationContainer } from "@react-navigation/native";
 import BrowseNovelUpdates from "../Screens/Browse/discover/BrowseNovelUpdates";
+import NewExtension from "../Screens/testnewsource";
 
 const Stack = createStackNavigator();
 
@@ -59,6 +60,7 @@ const MainNavigator = () => {
                     <Stack.Screen name="MoreStack" component={MoreStack} />
                     <Stack.Screen name="Extension" component={Extension} />
                     <Stack.Screen name="BrowseMal" component={MalTopNovels} />
+                    <Stack.Screen name="NewExt" component={NewExtension} />
                     <Stack.Screen
                         name="BrowseNovelUpdates"
                         component={BrowseNovelUpdates}

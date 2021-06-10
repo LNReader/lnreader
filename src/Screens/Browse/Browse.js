@@ -6,6 +6,7 @@ import {
     FlatList,
     ActivityIndicator,
     RefreshControl,
+    Button,
 } from "react-native";
 import { useTheme } from "../../Hooks/reduxHooks";
 import { useDispatch, useSelector } from "react-redux";
@@ -90,7 +91,10 @@ const Browse = ({ navigation }) => {
                     },
                 ]}
             />
-
+            <Button
+                title="Read Light Novel"
+                onPress={() => navigation.navigate("NewExt")}
+            />
             <FlatList
                 contentContainerStyle={{ flexGrow: 1 }}
                 data={!searchText ? sources : search}
