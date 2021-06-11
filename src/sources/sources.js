@@ -21,6 +21,7 @@ import tapReadScraper from "./en/tapread";
 import WuxiaWorldCloudScraper from "./en/wuxiaworldcloud";
 import WoopReadScraper from "./en/woopread";
 import FoxaHolicScraper from "./en/foxaholic";
+import EinharjarProjectScraper from "./es/einherjarproject";
 
 export const sources = [
     {
@@ -178,6 +179,13 @@ export const sources = [
         lang: "English",
     },
     {
+        sourceId: 25,
+        url: "https://einherjarproject.net/",
+        sourceName: "EinherjarProject",
+        icon: "https://github.com/rajarsheechatterjee/lnreader-extensions/blob/main/src/es/einherjarproject/icon.png?raw=true",
+        lang: "Spanish",
+    },
+    {
         sourceId: 27,
         url: "https://comrademao.com/",
         sourceName: "ComradeMao",
@@ -261,7 +269,7 @@ export const getSource = (sourceId) => {
             return;
         }
         case 25: {
-            return;
+            return EinharjarProjectScraper;
         }
         case 26: {
             return;
