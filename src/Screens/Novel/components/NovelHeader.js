@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, Clipboard } from "react-native";
+import { View, Text, StyleSheet, Clipboard, Pressable } from "react-native";
 
 import * as WebBrowser from "expo-web-browser";
 import { TouchableRipple, IconButton } from "react-native-paper";
@@ -103,46 +103,82 @@ const NovelInfoHeader = ({
                                 onPress={() => trackerSheetRef.current.show()}
                             />
                         )}
-                        <View style={{ alignItems: "center", flex: 1 }}>
-                            <IconButton
-                                icon="swap-vertical-variant"
-                                color={theme.textColorSecondary}
-                                size={24}
-                                style={{ margin: 0 }}
+                        <View
+                            style={{
+                                borderRadius: 4,
+                                overflow: "hidden",
+                                flex: 1,
+                            }}
+                        >
+                            <Pressable
+                                android_ripple={{
+                                    color: theme.rippleColor,
+                                    borderless: false,
+                                }}
                                 onPress={() =>
                                     navigation.navigate("MigrateNovel", {
                                         sourceId: novel.sourceId,
                                         novelName: novel.novelName,
                                     })
                                 }
-                            />
-                            <Text
                                 style={{
-                                    fontSize: 12,
-                                    color: theme.textColorSecondary,
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    paddingBottom: 8,
                                 }}
                             >
-                                Migrate
-                            </Text>
+                                <IconButton
+                                    icon="swap-vertical-variant"
+                                    color={theme.textColorSecondary}
+                                    size={24}
+                                    style={{ margin: 0 }}
+                                />
+                                <Text
+                                    style={{
+                                        fontSize: 12,
+                                        color: theme.textColorSecondary,
+                                    }}
+                                >
+                                    Migrate
+                                </Text>
+                            </Pressable>
                         </View>
-                        <View style={{ alignItems: "center", flex: 1 }}>
-                            <IconButton
-                                icon="earth"
-                                color={theme.textColorSecondary}
-                                size={24}
-                                style={{ margin: 0 }}
+                        <View
+                            style={{
+                                borderRadius: 4,
+                                overflow: "hidden",
+                                flex: 1,
+                            }}
+                        >
+                            <Pressable
+                                android_ripple={{
+                                    color: theme.rippleColor,
+                                    borderless: false,
+                                }}
                                 onPress={() =>
                                     WebBrowser.openBrowserAsync(novel.sourceUrl)
                                 }
-                            />
-                            <Text
                                 style={{
-                                    fontSize: 12,
-                                    color: theme.textColorSecondary,
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    paddingBottom: 8,
                                 }}
                             >
-                                WebView
-                            </Text>
+                                <IconButton
+                                    icon="earth"
+                                    color={theme.textColorSecondary}
+                                    size={24}
+                                    style={{ margin: 0 }}
+                                />
+                                <Text
+                                    style={{
+                                        fontSize: 12,
+                                        color: theme.textColorSecondary,
+                                    }}
+                                >
+                                    WebView
+                                </Text>
+                            </Pressable>
                         </View>
                     </Row>
                     <NovelSummary

@@ -45,6 +45,7 @@ const ChapterItem = ({
             chapterUrl: chapter.chapterUrl,
             chapterName: chapter.chapterName,
             novelName: novelName,
+            bookmark: chapter.bookmark,
         });
 
     const displayDownloadButton = () => {

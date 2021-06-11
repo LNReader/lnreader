@@ -6,6 +6,7 @@ import {
     StyleSheet,
     Text,
     View,
+    Pressable,
 } from "react-native";
 
 import { Chip, IconButton } from "react-native-paper";
@@ -73,42 +74,71 @@ const NovelInfo = ({ theme, children }) => (
 );
 
 const FollowButton = ({ theme, onPress, followed }) => (
-    <View style={{ alignItems: "center", flex: 1 }}>
-        <IconButton
-            icon={followed ? "heart" : "heart-outline"}
-            color={followed ? theme.colorAccent : theme.textColorSecondary}
-            size={24}
-            style={{ margin: 0 }}
+    <View style={{ borderRadius: 4, overflow: "hidden", flex: 1 }}>
+        <Pressable
+            android_ripple={{
+                color: theme.rippleColor,
+                borderless: false,
+            }}
             onPress={onPress}
-        />
-        <Text
             style={{
-                fontSize: 12,
-                color: followed ? theme.colorAccent : theme.textColorSecondary,
+                justifyContent: "center",
+                alignItems: "center",
+                paddingBottom: 8,
             }}
         >
-            {followed ? "In Library" : "Add to library"}
-        </Text>
+            <IconButton
+                icon={followed ? "heart" : "heart-outline"}
+                color={followed ? theme.colorAccent : theme.textColorSecondary}
+                size={24}
+                style={{ margin: 0 }}
+            />
+            <Text
+                style={{
+                    fontSize: 12,
+                    color: followed
+                        ? theme.colorAccent
+                        : theme.textColorSecondary,
+                }}
+            >
+                {followed ? "In Library" : "Add to library"}
+            </Text>
+        </Pressable>
     </View>
 );
 
 const TrackerButton = ({ theme, isTracked, onPress }) => (
-    <View style={{ alignItems: "center", flex: 1 }}>
-        <IconButton
-            icon={isTracked ? "check" : "sync"}
-            color={isTracked ? theme.colorAccent : theme.textColorSecondary}
-            size={24}
-            style={{ margin: 0 }}
+    <View style={{ borderRadius: 4, overflow: "hidden", flex: 1 }}>
+        <Pressable
+            android_ripple={{
+                color: theme.rippleColor,
+                borderless: false,
+            }}
             onPress={onPress}
-        />
-        <Text
             style={{
-                fontSize: 12,
-                color: isTracked ? theme.colorAccent : theme.textColorSecondary,
+                justifyContent: "center",
+                alignItems: "center",
+                paddingBottom: 8,
             }}
         >
-            {isTracked ? "Tracked" : "Tracking"}
-        </Text>
+            <IconButton
+                icon={isTracked ? "check" : "sync"}
+                color={isTracked ? theme.colorAccent : theme.textColorSecondary}
+                size={24}
+                style={{ margin: 0 }}
+                onPress={onPress}
+            />
+            <Text
+                style={{
+                    fontSize: 12,
+                    color: isTracked
+                        ? theme.colorAccent
+                        : theme.textColorSecondary,
+                }}
+            >
+                {isTracked ? "Tracked" : "Tracking"}
+            </Text>
+        </Pressable>
     </View>
 );
 

@@ -53,6 +53,7 @@ const Updates = ({ navigation }) => {
             chapterName: item.chapterName,
             novelId: item.novelId,
             novelName: item.novelName,
+            bookmark: item.bookmark,
         });
 
     const renderItem = ({ item }) => (

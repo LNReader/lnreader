@@ -19,6 +19,7 @@ const HistoryItem = ({ history, theme, dispatch, navigation }) => {
         novelCover,
         chapterName,
         chapterUrl,
+        bookmark,
     } = history;
 
     const getChapterNumber = () =>
@@ -37,6 +38,7 @@ const HistoryItem = ({ history, theme, dispatch, navigation }) => {
             novelId,
             chapterName,
             novelName,
+            bookmark,
         });
 
     return (

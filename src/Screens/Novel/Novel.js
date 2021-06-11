@@ -125,6 +125,7 @@ const Novel = ({ route, navigation }) => {
                             alignItems: "center",
                             paddingTop: StatusBar.currentHeight,
                             paddingBottom: 8,
+                            elevation: 2,
                         }}
                     >
                         <Appbar.Action
@@ -138,89 +139,7 @@ const Novel = ({ route, navigation }) => {
                             title={selected.length}
                             titleStyle={{ color: theme.textColorPrimary }}
                         />
-                        <Appbar.Action
-                            icon="bookmark-outline"
-                            color={theme.textColorPrimary}
-                            onPress={() => {
-                                dispatch(bookmarkChapterAction(selected));
-                                setSelected([]);
-                            }}
-                        />
 
-                        {selected.some((obj) => obj.read === 0) && (
-                            <Appbar.Action
-                                icon="check"
-                                color={theme.textColorPrimary}
-                                onPress={() => {
-                                    dispatch(
-                                        markChaptersRead(
-                                            selected,
-                                            novel.novelId,
-                                            sort,
-                                            filter
-                                        )
-                                    );
-                                    setSelected([]);
-                                }}
-                            />
-                        )}
-                        {selected.some((obj) => obj.read === 1) && (
-                            <Appbar.Action
-                                icon="check-outline"
-                                color={theme.textColorPrimary}
-                                onPress={() => {
-                                    dispatch(
-                                        markChapterUnreadAction(
-                                            selected,
-                                            novel.novelId
-                                        )
-                                    );
-                                    setSelected([]);
-                                }}
-                            />
-                        )}
-                        {selected.length === 1 && (
-                            <Appbar.Action
-                                icon="playlist-check"
-                                color={theme.textColorPrimary}
-                                onPress={() => {
-                                    dispatch(
-                                        markPreviousChaptersReadAction(
-                                            selected[0].chapterId,
-                                            selected[0].novelId
-                                        )
-                                    );
-                                    setSelected([]);
-                                }}
-                            />
-                        )}
-                        {selected.some((obj) => obj.downloaded === 1) && (
-                            <Appbar.Action
-                                icon="trash-can-outline"
-                                color={theme.textColorPrimary}
-                                onPress={() => {
-                                    dispatch(deleteAllChaptersAction(selected));
-                                    setSelected([]);
-                                }}
-                            />
-                        )}
-
-                        {selected.some((obj) => obj.downloaded === 0) && (
-                            <Appbar.Action
-                                icon="download-outline"
-                                color={theme.textColorPrimary}
-                                onPress={() => {
-                                    dispatch(
-                                        downloadAllChaptersAction(
-                                            novel.sourceId,
-                                            novel.novelUrl,
-                                            selected
-                                        )
-                                    );
-                                    setSelected([]);
-                                }}
-                            />
-                        )}
                         <Appbar.Action
                             icon="select-all"
                             color={theme.textColorPrimary}
@@ -338,6 +257,107 @@ const Novel = ({ route, navigation }) => {
                     }
                     refreshControl={refreshControl()}
                 />
+                {selected.length > 0 && (
+                    <View
+                        style={{
+                            position: "absolute",
+                            width: Dimensions.get("window").width - 32,
+                            bottom: 0,
+                            margin: 16,
+                            backgroundColor: theme.colorPrimary,
+                            borderRadius: 6,
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                            paddingHorizontal: 8,
+                            paddingVertical: 4,
+                            elevation: 2,
+                        }}
+                    >
+                        {selected.some((obj) => obj.downloaded === 0) && (
+                            <Appbar.Action
+                                icon="download-outline"
+                                color={theme.textColorPrimary}
+                                onPress={() => {
+                                    dispatch(
+                                        downloadAllChaptersAction(
+                                            novel.sourceId,
+                                            novel.novelUrl,
+                                            selected
+                                        )
+                                    );
+                                    setSelected([]);
+                                }}
+                            />
+                        )}
+                        {selected.some((obj) => obj.downloaded === 1) && (
+                            <Appbar.Action
+                                icon="trash-can-outline"
+                                color={theme.textColorPrimary}
+                                onPress={() => {
+                                    dispatch(deleteAllChaptersAction(selected));
+                                    setSelected([]);
+                                }}
+                            />
+                        )}
+                        <Appbar.Action
+                            icon="bookmark-outline"
+                            color={theme.textColorPrimary}
+                            onPress={() => {
+                                dispatch(bookmarkChapterAction(selected));
+                                setSelected([]);
+                            }}
+                        />
+
+                        {selected.some((obj) => obj.read === 0) && (
+                            <Appbar.Action
+                                icon="check"
+                                color={theme.textColorPrimary}
+                                onPress={() => {
+                                    dispatch(
+                                        markChaptersRead(
+                                            selected,
+                                            novel.novelId,
+                                            sort,
+                                            filter
+                                        )
+                                    );
+                                    setSelected([]);
+                                }}
+                            />
+                        )}
+
+                        {selected.some((obj) => obj.read === 1) && (
+                            <Appbar.Action
+                                icon="check-outline"
+                                color={theme.textColorPrimary}
+                                onPress={() => {
+                                    dispatch(
+                                        markChapterUnreadAction(
+                                            selected,
+                                            novel.novelId
+                                        )
+                                    );
+                                    setSelected([]);
+                                }}
+                            />
+                        )}
+                        {selected.length === 1 && (
+                            <Appbar.Action
+                                icon="playlist-check"
+                                color={theme.textColorPrimary}
+                                onPress={() => {
+                                    dispatch(
+                                        markPreviousChaptersReadAction(
+                                            selected[0].chapterId,
+                                            selected[0].novelId
+                                        )
+                                    );
+                                    setSelected([]);
+                                }}
+                            />
+                        )}
+                    </View>
+                )}
                 {!loading && (
                     <Portal>
                         <ChaptersSettingsSheet
