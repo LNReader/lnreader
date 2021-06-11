@@ -1,95 +1,68 @@
 import React, { useEffect, useState } from "react";
+import { Dimensions, View } from "react-native";
 
 import { Appbar } from "react-native-paper";
 import {
     getNextChapterFromDB,
     getPrevChapterFromDB,
 } from "../../../Database/queries/ChapterQueries";
+import { bookmarkChapterAction } from "../../../redux/novel/novel.actions";
 
 const ChapterAppbar = ({
     navigation,
-    sourceId,
-    novelId,
+    bookmark,
     novelName,
-    novelUrl,
     chapterId,
     chapterName,
-    theme,
-    readerSheetRef,
+    hide,
+    dispatch,
 }) => {
-    const [nextChapter, setNextChapter] = useState({});
-    const [prevChapter, setPrevChapter] = useState({});
+    const [bookmarked, setBookmarked] = useState(bookmark);
 
-    const setPrevAndNextChap = async () => {
-        const nextChap = await getNextChapterFromDB(novelId, chapterId);
-        const prevChap = await getPrevChapterFromDB(novelId, chapterId);
-
-        setNextChapter(nextChap);
-        setPrevChapter(prevChap);
-    };
-
-    useEffect(() => {
-        setPrevAndNextChap();
-    }, []);
-
-    const navigateToPrevChapter = () =>
-        navigation.replace("Chapter", {
-            chapterUrl: prevChapter.chapterUrl,
-            chapterId: prevChapter.chapterId,
-            sourceId,
-            novelUrl,
-            novelId,
-            chapterName: prevChapter.chapterName,
-            novelName,
-        });
-
-    const navigateToNextChapter = () =>
-        navigation.replace("Chapter", {
-            chapterUrl: nextChapter.chapterUrl,
-            sourceId,
-            novelUrl,
-            novelId,
-            chapterId: nextChapter.chapterId,
-            chapterName: nextChapter.chapterName,
-            novelName,
-        });
-
-    return (
-        <Appbar.Header style={{ backgroundColor: "transparent", elevation: 0 }}>
-            <Appbar.BackAction
-                onPress={() => navigation.goBack()}
-                color="#FFFFFF"
-                size={26}
-                style={{ marginRight: 0 }}
-            />
-            <Appbar.Content
-                title={novelName}
-                titleStyle={{ color: "#FFFFFF" }}
-                subtitle={chapterName}
-                subtitleStyle={{ color: "rgba(255, 255, 255, 0.7)" }}
-            />
-            <Appbar.Action
-                icon="chevron-left"
-                size={26}
-                disabled={!prevChapter}
-                onPress={navigateToPrevChapter}
-                color="#FFFFFF"
-            />
-            <Appbar.Action
-                icon="chevron-right"
-                size={26}
-                disabled={!nextChapter}
-                onPress={navigateToNextChapter}
-                color="#FFFFFF"
-            />
-            <Appbar.Action
-                icon="dots-vertical"
-                size={26}
-                onPress={() => readerSheetRef.current.show()}
-                color="#FFFFFF"
-            />
-        </Appbar.Header>
-    );
+    if (hide) {
+        return null;
+    } else {
+        return (
+            <View
+                style={{
+                    position: "absolute",
+                    flex: 1,
+                    backgroundColor: "rgba(0,0,0,0.6)",
+                    width: Dimensions.get("window").width,
+                    top: 0,
+                    zIndex: 1,
+                }}
+            >
+                <Appbar.Header
+                    style={{ backgroundColor: "transparent", elevation: 0 }}
+                >
+                    <Appbar.BackAction
+                        onPress={() => navigation.goBack()}
+                        color="#FFFFFF"
+                        size={26}
+                        style={{ marginRight: 0 }}
+                    />
+                    <Appbar.Content
+                        title={novelName}
+                        titleStyle={{ color: "#FFFFFF" }}
+                        subtitle={chapterName}
+                        subtitleStyle={{ color: "rgba(255, 255, 255, 0.7)" }}
+                    />
+                    <Appbar.Action
+                        icon={bookmarked ? "bookmark" : "bookmark-outline"}
+                        size={26}
+                        onPress={() => {
+                            dispatch(
+                                bookmarkChapterAction([{ bookmark, chapterId }])
+                            );
+                            setBookmarked(!bookmarked);
+                        }}
+                        color="#FFFFFF"
+                    />
+                </Appbar.Header>
+            </View>
+        );
+    }
 };
 
 export default ChapterAppbar;

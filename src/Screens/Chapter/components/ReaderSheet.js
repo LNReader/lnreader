@@ -97,6 +97,7 @@ const ReaderSheet = ({
                                     style={{
                                         backgroundColor: "#000000",
                                         marginHorizontal: 10,
+                                        borderWidth: 0,
                                         borderRadius: 50,
                                         borderTopRightRadius: 50,
                                         borderBottomRightRadius: 50,

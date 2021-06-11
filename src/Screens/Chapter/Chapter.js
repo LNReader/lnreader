@@ -5,6 +5,7 @@ import {
     Text,
     ActivityIndicator,
     StatusBar,
+    ScrollView,
 } from "react-native";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -38,10 +39,11 @@ import ReaderSheet from "./components/ReaderSheet";
 import EmptyView from "../../Components/EmptyView";
 import FitImage from "react-native-fit-image";
 
-import {
+import changeNavigationBarColor, {
     hideNavigationBar,
     showNavigationBar,
 } from "react-native-navigation-bar-color";
+import ChapterFooter from "./components/ChapterFooter";
 
 const Chapter = ({ route, navigation }) => {
     const {
@@ -52,8 +54,9 @@ const Chapter = ({ route, navigation }) => {
         novelUrl,
         novelName,
         chapterName,
+        bookmark,
     } = route.params;
-    let scrollViewRef;
+    let scrollViewRef = useRef(null);
     let readerSheetRef = useRef(null);
 
     const theme = useTheme();
@@ -62,6 +65,8 @@ const Chapter = ({ route, navigation }) => {
     const showScrollPercentage = useSelector(
         (state) => state.settingsReducer.showScrollPercentage
     );
+
+    const [hidden, setHidden] = useState(true);
 
     const { tracker, trackedNovels } = useTrackingStatus();
     const position = usePosition(novelId, chapterId);
@@ -180,7 +185,7 @@ const Chapter = ({ route, navigation }) => {
         hideNavigationBar();
         if (position && firstLayout) {
             position.percentage < 100 &&
-                scrollViewRef.getNode().scrollTo({
+                scrollViewRef.current.scrollTo({
                     x: 0,
                     y: position.position,
                     animated: false,
@@ -206,24 +211,18 @@ const Chapter = ({ route, navigation }) => {
 
     return (
         <>
-            <CollapsibleHeaderScrollView
-                headerContainerBackgroundColor="rgba(0,0,0,0.5)"
-                ref={(ref) => (scrollViewRef = ref)}
-                CollapsibleHeaderComponent={
-                    <ChapterAppbar
-                        navigation={navigation}
-                        sourceId={sourceId}
-                        novelId={novelId}
-                        novelUrl={novelUrl}
-                        novelName={novelName}
-                        chapterName={chapterName}
-                        chapterId={chapterId}
-                        chapter={chapter}
-                        theme={theme}
-                        readerSheetRef={readerSheetRef}
-                    />
-                }
-                headerHeight={Constants.statusBarHeight + 56}
+            <ChapterAppbar
+                novelName={novelName}
+                chapterName={chapterName}
+                chapterId={chapterId}
+                bookmark={bookmark}
+                readerSheetRef={readerSheetRef}
+                hide={hidden}
+                navigation={navigation}
+                dispatch={dispatch}
+            />
+            <ScrollView
+                ref={(ref) => (scrollViewRef.current = ref)}
                 contentContainerStyle={[
                     styles.screenContainer,
                     { backgroundColor: readerBackground(reader.theme) },
@@ -267,13 +266,14 @@ const Chapter = ({ route, navigation }) => {
                     <View style={{ flex: 1 }}>
                         {images.length > 0 &&
                             images.map((image, index) => (
-                                <FitImage source={{ uri: image }} />
+                                <FitImage source={{ uri: image }} key={index} />
                             ))}
 
                         <Text
                             style={readerStyles}
                             onLayout={scrollToSavedProgress}
                             selectable={selectText}
+                            onPress={() => setHidden(!hidden)}
                         >
                             {chapter.chapterText
                                 .trim()
@@ -292,7 +292,20 @@ const Chapter = ({ route, navigation }) => {
                         showScrollPercentage={showScrollPercentage}
                     />
                 </Portal>
-            </CollapsibleHeaderScrollView>
+            </ScrollView>
+            <ChapterFooter
+                sourceId={sourceId}
+                novelId={novelId}
+                novelUrl={novelUrl}
+                chapterId={chapterId}
+                theme={theme}
+                hide={hidden}
+                novelName={novelName}
+                chapterName={chapterName}
+                navigation={navigation}
+                readerSheetRef={readerSheetRef}
+                scrollViewRef={scrollViewRef}
+            />
             {showScrollPercentage && (
                 <Text
                     style={[
@@ -315,7 +328,7 @@ export default Chapter;
 const styles = StyleSheet.create({
     screenContainer: {
         flexGrow: 1,
-        paddingVertical: 10,
+        paddingTop: StatusBar.currentHeight,
     },
     scrollPercentage: {
         width: "100%",
