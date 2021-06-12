@@ -285,8 +285,8 @@ const Chapter = ({ route, navigation }) => {
                 showsVerticalScrollIndicator={false}
             >
                 <GestureRecognizer
-                    onSwipeLeft={navigateToPrevChapter}
-                    onSwipeRight={navigateToNextChapter}
+                    onSwipeRight={navigateToPrevChapter}
+                    onSwipeLeft={navigateToNextChapter}
                     config={config}
                     style={{ flex: 1 }}
                 >
