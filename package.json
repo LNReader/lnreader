@@ -47,7 +47,7 @@
     "react-native-offline": "^5.7.0",
     "react-native-pager-view": "^5.1.10",
     "react-native-paper": "^4.5.0",
-    "react-native-reanimated": "~2.1.0",
+    "react-native-reanimated": "^2.1.0",
     "react-native-safe-area-context": "3.2.0",
     "react-native-screens": "~3.0.0",
     "react-native-tab-view": "^3.0.1",

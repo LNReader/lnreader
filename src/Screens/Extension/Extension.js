@@ -30,65 +30,41 @@ const Extension = ({ navigation, route }) => {
 
     const [searchText, setSearchText] = useState("");
 
-    // const getSourceUrl = () => {
-    //     if (sourceId === 1) {
-    //         return `https://lnreader-extensions.vercel.app/api/1/novels/1/?o=rating`;
-    //     } else {
-    //         return `https://lnreader-extensions.vercel.app/api/${sourceId}/novels/`;
-    //     }
-    // };
-
-    // const getSearchUrl = () => {
-    //     if (sourceId === 1) {
-    //         return `https://lnreader-extensions.vercel.app/api/1/search/?s=${searchText}&?o=rating`;
-    //     } else {
-    //         return `https://lnreader-extensions.vercel.app/api/${sourceId}/search/?s=${searchText}`;
-    //     }
-    // };
-
-    const getNovels = async (page) => {
-        try {
-            const source = getSource(sourceId);
-
-            // console.log(page);
-            const res = await source.popularNovels(page);
-
-            // console.log(res);
-
-            setNovels((novels) => novels.concat(res));
-            setLoading(false);
-        } catch (error) {
-            setError(error.message);
-            setNovels([]);
-            setLoading(false);
-            showToast(error.message);
-        }
-    };
+    const incrementPage = () => setPage((page) => page + 1);
 
     const clearSearchbar = () => {
         setNovels([]);
-        getNovels(1);
+        setPage(1);
         setLoading(true);
         setSearchText("");
+    };
+
+    const getNovels = async () => {
+        try {
+            const source = getSource(sourceId);
+            const res = await source.popularNovels(page);
+            setNovels((novels) => [...novels, ...res]);
+            setLoading(false);
+        } catch (error) {
+            setError(error.message);
+            showToast(error.message);
+            setNovels([]);
+            setLoading(false);
+        }
     };
 
     const getSearchResults = async () => {
         try {
             setLoading(true);
             const source = getSource(sourceId);
-
-            // console.log(page);
             const res = await source.searchNovels(searchText);
-
-            // console.log(res);
-
             setNovels(res);
             setLoading(false);
         } catch (error) {
             setError(error.message);
+            showToast(error.message);
             setNovels([]);
             setLoading(false);
-            showToast(error.message);
         }
     };
 
@@ -99,8 +75,8 @@ const Extension = ({ navigation, route }) => {
     };
 
     useEffect(() => {
-        getNovels(1);
-    }, []);
+        getNovels();
+    }, [page]);
 
     const isCloseToBottom = ({
         layoutMeasurement,
@@ -116,8 +92,7 @@ const Extension = ({ navigation, route }) => {
 
     const onScroll = ({ nativeEvent }) => {
         if (!searchText && isCloseToBottom(nativeEvent)) {
-            getNovels(page + 1);
-            setPage((page) => page + 1);
+            incrementPage();
         }
     };
 
@@ -207,8 +182,7 @@ const Extension = ({ navigation, route }) => {
                     // onScroll={onScroll}
                     onEndReached={() => {
                         if (!searchText) {
-                            getNovels(page + 1);
-                            setPage((page) => page + 1);
+                            incrementPage();
                         }
                     }}
                     ListFooterComponent={

@@ -44,6 +44,7 @@ import changeNavigationBarColor, {
     showNavigationBar,
 } from "react-native-navigation-bar-color";
 import ChapterFooter from "./components/ChapterFooter";
+import VerticalScrollbar from "./components/VerticalScrollbar";
 
 const Chapter = ({ route, navigation }) => {
     const {
@@ -80,6 +81,8 @@ const Chapter = ({ route, navigation }) => {
     const [scrollPercentage, setScrollPercentage] = useState(0);
     const [firstLayout, setFirstLayout] = useState(true);
     const [selectText, setSelectText] = useState(false);
+
+    const [contentSize, setContentSize] = useState(0);
 
     const [images, setImages] = useState([]);
 
@@ -180,7 +183,7 @@ const Chapter = ({ route, navigation }) => {
         }
     };
 
-    const scrollToSavedProgress = () => {
+    const scrollToSavedProgress = (event) => {
         StatusBar.setHidden(true);
         hideNavigationBar();
         if (position && firstLayout) {
@@ -228,6 +231,10 @@ const Chapter = ({ route, navigation }) => {
                     { backgroundColor: readerBackground(reader.theme) },
                 ]}
                 onScroll={onScroll}
+                onContentSizeChange={(x, y) => {
+                    console.log(y);
+                    setContentSize(y);
+                }}
                 showsVerticalScrollIndicator={false}
             >
                 {error ? (
@@ -293,6 +300,15 @@ const Chapter = ({ route, navigation }) => {
                     />
                 </Portal>
             </ScrollView>
+            <VerticalScrollbar
+                theme={theme}
+                hide={hidden}
+                setLoading={setLoading}
+                contentSize={contentSize}
+                scrollViewRef={scrollViewRef}
+                scrollPercentage={scrollPercentage}
+                setScrollPercentage={setScrollPercentage}
+            />
             <ChapterFooter
                 sourceId={sourceId}
                 novelId={novelId}

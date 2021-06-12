@@ -15,4 +15,4 @@ export const createChapterTableQuery = `
 
 export const createNovelIdIndexQuery = `CREATE INDEX IF NOT EXISTS chapterNovelIdIndex ON chapters(novelId)`;
 
-export const createUnreadChaptersIndexQuery = `CREATE INDEX IF NOT EXISTS chapterUnreadByNovelIndex ON chapters(novelId, \`read\`)`;
+export const createUnreadChaptersIndexQuery = `CREATE INDEX IF NOT EXISTS chapterUnreadByNovelIndex ON chapters(novelId, \`read\`) WHERE \`read\`=0`;

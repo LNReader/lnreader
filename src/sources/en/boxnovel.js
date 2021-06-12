@@ -4,6 +4,8 @@ import { htmlToText } from "../helpers/htmlToText";
 const baseUrl = "https://boxnovel.com/novel";
 const searchUrl = "https://boxnovel.com/";
 
+const sourceId = 1;
+
 const popularNovels = async (page) => {
     let url = `${baseUrl}/page/${page}/?m_orderby=rating`;
 
@@ -22,6 +24,7 @@ const popularNovels = async (page) => {
         novelUrl = novelUrl.replace(`${baseUrl}/`, "");
 
         const novel = {
+            sourceId,
             novelName,
             novelCover,
             novelUrl,
@@ -151,7 +154,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     }
 
     const chapter = {
-        sourceId: 1,
+        sourceId,
         novelUrl,
         chapterUrl,
         chapterName,
@@ -181,6 +184,7 @@ const searchNovels = async (searchTerm) => {
         novelUrl = novelUrl.replace(`${baseUrl}/`, "");
 
         const novel = {
+            sourceId,
             novelName,
             novelCover,
             novelUrl,
