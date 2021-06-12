@@ -13,7 +13,11 @@ import Constants from "expo-constants";
 import { IconButton, Portal } from "react-native-paper";
 import { CollapsibleHeaderScrollView } from "react-native-collapsible-header-views";
 
-import { getChapterFromDB } from "../../Database/queries/ChapterQueries";
+import {
+    getChapterFromDB,
+    getNextChapterFromDB,
+    getPrevChapterFromDB,
+} from "../../Database/queries/ChapterQueries";
 import { fetchChapter } from "../../Services/Source/source";
 import { showToast } from "../../Hooks/showToast";
 import {
@@ -45,6 +49,7 @@ import changeNavigationBarColor, {
 } from "react-native-navigation-bar-color";
 import ChapterFooter from "./components/ChapterFooter";
 import VerticalScrollbar from "./components/VerticalScrollbar";
+import GestureRecognizer from "react-native-swipe-gestures";
 
 const Chapter = ({ route, navigation }) => {
     const {
@@ -128,8 +133,20 @@ const Chapter = ({ route, navigation }) => {
         }
     };
 
+    const [nextChapter, setNextChapter] = useState({});
+    const [prevChapter, setPrevChapter] = useState({});
+
+    const setPrevAndNextChap = async () => {
+        const nextChap = await getNextChapterFromDB(novelId, chapterId);
+        const prevChap = await getPrevChapterFromDB(novelId, chapterId);
+
+        setNextChapter(nextChap);
+        setPrevChapter(prevChap);
+    };
+
     useEffect(() => {
         getChapter(chapterId);
+        setPrevAndNextChap();
         dispatch(insertHistoryAction(novelId, chapterId));
         return () => {
             StatusBar.setHidden(false);
@@ -212,6 +229,39 @@ const Chapter = ({ route, navigation }) => {
         },
     ];
 
+    const config = {
+        velocityThreshold: 0.3,
+        directionalOffsetThreshold: 80,
+    };
+
+    const navigateToPrevChapter = () =>
+        prevChapter
+            ? navigation.replace("Chapter", {
+                  chapterUrl: prevChapter.chapterUrl,
+                  chapterId: prevChapter.chapterId,
+                  sourceId,
+                  novelUrl,
+                  novelId,
+                  chapterName: prevChapter.chapterName,
+                  novelName,
+                  bookmark: prevChapter.bookmark,
+              })
+            : showToast("'There's no previous chapter");
+
+    const navigateToNextChapter = () =>
+        nextChapter
+            ? navigation.replace("Chapter", {
+                  chapterUrl: nextChapter.chapterUrl,
+                  sourceId,
+                  novelUrl,
+                  novelId,
+                  chapterId: nextChapter.chapterId,
+                  chapterName: nextChapter.chapterName,
+                  novelName,
+                  bookmark: nextChapter.bookmark,
+              })
+            : showToast("'There's no next chapter");
+
     return (
         <>
             <ChapterAppbar
@@ -231,63 +281,72 @@ const Chapter = ({ route, navigation }) => {
                     { backgroundColor: readerBackground(reader.theme) },
                 ]}
                 onScroll={onScroll}
-                onContentSizeChange={(x, y) => {
-                    console.log(y);
-                    setContentSize(y);
-                }}
+                onContentSizeChange={(x, y) => setContentSize(y)}
                 showsVerticalScrollIndicator={false}
             >
-                {error ? (
-                    <View style={{ flex: 1, justifyContent: "center" }}>
-                        <EmptyView
-                            icon="(-_-;)・・・"
-                            description={error}
-                            style={{ color: errorTextColor(reader.theme) }}
-                        >
-                            <IconButton
-                                icon="reload"
-                                size={25}
-                                style={{ margin: 0, marginTop: 16 }}
-                                color={errorTextColor(reader.theme)}
-                                onPress={() => {
-                                    getChapter(chapterId);
-                                    setLoading(true);
-                                    setError();
-                                }}
-                            />
-                            <Text
+                <GestureRecognizer
+                    onSwipeLeft={navigateToPrevChapter}
+                    onSwipeRight={navigateToNextChapter}
+                    config={config}
+                    style={{ flex: 1 }}
+                >
+                    {error ? (
+                        <View style={{ flex: 1, justifyContent: "center" }}>
+                            <EmptyView
+                                icon="(-_-;)・・・"
+                                description={error}
                                 style={{ color: errorTextColor(reader.theme) }}
                             >
-                                Retry
-                            </Text>
-                        </EmptyView>
-                    </View>
-                ) : loading ? (
-                    <View style={{ flex: 1, justifyContent: "center" }}>
-                        <ActivityIndicator
-                            size={50}
-                            color={theme.colorAccent}
-                        />
-                    </View>
-                ) : (
-                    <View style={{ flex: 1 }}>
-                        {images.length > 0 &&
-                            images.map((image, index) => (
-                                <FitImage source={{ uri: image }} key={index} />
-                            ))}
+                                <IconButton
+                                    icon="reload"
+                                    size={25}
+                                    style={{ margin: 0, marginTop: 16 }}
+                                    color={errorTextColor(reader.theme)}
+                                    onPress={() => {
+                                        getChapter(chapterId);
+                                        setLoading(true);
+                                        setError();
+                                    }}
+                                />
+                                <Text
+                                    style={{
+                                        color: errorTextColor(reader.theme),
+                                    }}
+                                >
+                                    Retry
+                                </Text>
+                            </EmptyView>
+                        </View>
+                    ) : loading ? (
+                        <View style={{ flex: 1, justifyContent: "center" }}>
+                            <ActivityIndicator
+                                size={50}
+                                color={theme.colorAccent}
+                            />
+                        </View>
+                    ) : (
+                        <View style={{ flex: 1 }}>
+                            {images.length > 0 &&
+                                images.map((image, index) => (
+                                    <FitImage
+                                        source={{ uri: image }}
+                                        key={index}
+                                    />
+                                ))}
 
-                        <Text
-                            style={readerStyles}
-                            onLayout={scrollToSavedProgress}
-                            selectable={selectText}
-                            onPress={() => setHidden(!hidden)}
-                        >
-                            {chapter.chapterText
-                                .trim()
-                                .replace(/\[https.*?\]/g, "")}
-                        </Text>
-                    </View>
-                )}
+                            <Text
+                                style={readerStyles}
+                                onLayout={scrollToSavedProgress}
+                                selectable={selectText}
+                                onPress={() => setHidden(!hidden)}
+                            >
+                                {chapter.chapterText
+                                    .trim()
+                                    .replace(/\[https.*?\]/g, "")}
+                            </Text>
+                        </View>
+                    )}
+                </GestureRecognizer>
                 <Portal>
                     <ReaderSheet
                         theme={theme}
@@ -310,15 +369,12 @@ const Chapter = ({ route, navigation }) => {
                 setScrollPercentage={setScrollPercentage}
             />
             <ChapterFooter
-                sourceId={sourceId}
-                novelId={novelId}
-                novelUrl={novelUrl}
-                chapterId={chapterId}
                 theme={theme}
+                nextChapter={nextChapter}
+                prevChapter={prevChapter}
                 hide={hidden}
-                novelName={novelName}
-                chapterName={chapterName}
-                navigation={navigation}
+                navigateToNextChapter={navigateToNextChapter}
+                navigateToPrevChapter={navigateToPrevChapter}
                 readerSheetRef={readerSheetRef}
                 scrollViewRef={scrollViewRef}
             />

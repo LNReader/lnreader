@@ -44,18 +44,8 @@ const MainNavigator = () => {
                         name="BottomNavigator"
                         component={BottomNavigator}
                     />
-                    <Stack.Screen
-                        name="Novel"
-                        component={Novel}
-                        options={{
-                            ...TransitionPresets.RevealFromBottomAndroid,
-                        }}
-                    />
-                    <Stack.Screen
-                        name="Chapter"
-                        component={Chapter}
-                        options={{ ...TransitionPresets.SlideFromRightIOS }}
-                    />
+                    <Stack.Screen name="Novel" component={Novel} />
+                    <Stack.Screen name="Chapter" component={Chapter} />
                     <Stack.Screen name="MoreStack" component={MoreStack} />
                     <Stack.Screen name="Extension" component={Extension} />
                     <Stack.Screen name="BrowseMal" component={MalTopNovels} />

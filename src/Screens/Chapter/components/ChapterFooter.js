@@ -9,59 +9,14 @@ import { showToast } from "../../../Hooks/showToast";
 
 const ChapterFooter = ({
     hide,
-    sourceId,
-    novelId,
-    novelUrl,
-    chapterId,
     theme,
     readerSheetRef,
-    navigation,
-    novelName,
     scrollViewRef,
+    navigateToNextChapter,
+    navigateToPrevChapter,
+    nextChapter,
+    prevChapter,
 }) => {
-    const [nextChapter, setNextChapter] = useState({});
-    const [prevChapter, setPrevChapter] = useState({});
-
-    const setPrevAndNextChap = async () => {
-        const nextChap = await getNextChapterFromDB(novelId, chapterId);
-        const prevChap = await getPrevChapterFromDB(novelId, chapterId);
-
-        setNextChapter(nextChap);
-        setPrevChapter(prevChap);
-    };
-
-    useEffect(() => {
-        setPrevAndNextChap();
-    }, []);
-
-    const navigateToPrevChapter = () =>
-        prevChapter
-            ? navigation.replace("Chapter", {
-                  chapterUrl: prevChapter.chapterUrl,
-                  chapterId: prevChapter.chapterId,
-                  sourceId,
-                  novelUrl,
-                  novelId,
-                  chapterName: prevChapter.chapterName,
-                  novelName,
-                  bookmark: prevChapter.bookmark,
-              })
-            : showToast("'There's no previous chapter");
-
-    const navigateToNextChapter = () =>
-        nextChapter
-            ? navigation.replace("Chapter", {
-                  chapterUrl: nextChapter.chapterUrl,
-                  sourceId,
-                  novelUrl,
-                  novelId,
-                  chapterId: nextChapter.chapterId,
-                  chapterName: nextChapter.chapterName,
-                  novelName,
-                  bookmark: nextChapter.bookmark,
-              })
-            : showToast("'There's no next chapter");
-
     if (hide) {
         return null;
     } else {
