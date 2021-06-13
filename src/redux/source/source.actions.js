@@ -1,5 +1,10 @@
-import { GET_SOURCES, PIN_SOURCES, SEARCH_SOURCES } from "./source.types";
-import { fetchSources } from "../../Services/Source/source";
+import {
+    ENABLE_DISCOVER,
+    FILTER_LANGUAGE,
+    GET_SOURCES,
+    PIN_SOURCES,
+    SEARCH_SOURCES,
+} from "./source.types";
 import { showToast } from "../../Hooks/showToast";
 import { sources } from "../../sources/sources";
 
@@ -24,5 +29,19 @@ export const pinSourceAction = (sourceId) => async (dispatch) => {
     dispatch({
         type: PIN_SOURCES,
         payload: sourceId,
+    });
+};
+
+export const filterLanguage = (language) => async (dispatch) => {
+    dispatch({
+        type: FILTER_LANGUAGE,
+        payload: language,
+    });
+};
+
+export const enableDiscover = (key) => async (dispatch) => {
+    dispatch({
+        type: ENABLE_DISCOVER,
+        payload: key,
     });
 };

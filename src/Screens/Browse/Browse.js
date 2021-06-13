@@ -26,14 +26,22 @@ const Browse = ({ navigation }) => {
     const [searchText, setSearchText] = useState("");
     // const [globalSearch, setGlobalSearch] = useState(false);
     // const [searchResult, setSearchResults] = useState();
-    const { sources, search, loading, pinned } = useSelector(
-        (state) => state.sourceReducer
-    );
+    let {
+        sources,
+        search,
+        loading,
+        pinned,
+        filters,
+        showNovelUpdates,
+        showMyAnimeList,
+    } = useSelector((state) => state.sourceReducer);
     const theme = useTheme();
     const dispatch = useDispatch();
 
     const isPinned = (sourceId) =>
         pinned.indexOf(sourceId) === -1 ? false : true;
+
+    sources = sources.filter((source) => filters.indexOf(source.lang) === -1);
 
     useEffect(() => {
         dispatch(getSourcesAction());
@@ -88,6 +96,10 @@ const Browse = ({ navigation }) => {
                         icon: "swap-vertical-variant",
                         onPress: () => navigation.navigate("Migration"),
                     },
+                    {
+                        icon: "cog-outline",
+                        onPress: () => navigation.navigate("BrowseSettings"),
+                    },
                 ]}
             />
 
@@ -99,17 +111,23 @@ const Browse = ({ navigation }) => {
                 extraData={pinned}
                 ListHeaderComponent={
                     <View>
-                        <Text
-                            style={{
-                                color: theme.textColorSecondary,
-                                paddingHorizontal: 16,
-                                paddingVertical: 8,
-                            }}
-                        >
-                            Discover
-                        </Text>
-                        <NovelUpdatesCard theme={theme} />
-                        <MalCard theme={theme} />
+                        {(showNovelUpdates || showMyAnimeList) && (
+                            <>
+                                <Text
+                                    style={{
+                                        color: theme.textColorSecondary,
+                                        paddingHorizontal: 16,
+                                        paddingVertical: 8,
+                                    }}
+                                >
+                                    Discover
+                                </Text>
+                                {showNovelUpdates && (
+                                    <NovelUpdatesCard theme={theme} />
+                                )}
+                                {showMyAnimeList && <MalCard theme={theme} />}
+                            </>
+                        )}
                         {pinned.length > 0 && (
                             <FlatList
                                 contentContainerStyle={{ paddingBottom: 16 }}
