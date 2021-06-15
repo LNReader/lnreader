@@ -23,6 +23,7 @@ import { showToast } from "../../Hooks/showToast";
 import {
     usePosition,
     useReaderSettings,
+    useSettings,
     useTheme,
     useTrackingStatus,
 } from "../../Hooks/reduxHooks";
@@ -71,6 +72,7 @@ const Chapter = ({ route, navigation }) => {
     const showScrollPercentage = useSelector(
         (state) => state.settingsReducer.showScrollPercentage
     );
+    const { swipeGestures = true } = useSettings();
 
     const [hidden, setHidden] = useState(true);
 
@@ -285,8 +287,8 @@ const Chapter = ({ route, navigation }) => {
                 showsVerticalScrollIndicator={false}
             >
                 <GestureRecognizer
-                    onSwipeRight={navigateToPrevChapter}
-                    onSwipeLeft={navigateToNextChapter}
+                    onSwipeRight={swipeGestures && navigateToPrevChapter}
+                    onSwipeLeft={swipeGestures && navigateToNextChapter}
                     config={config}
                     style={{ flex: 1 }}
                 >
@@ -370,6 +372,8 @@ const Chapter = ({ route, navigation }) => {
             />
             <ChapterFooter
                 theme={theme}
+                swipeGestures={swipeGestures}
+                dispatch={dispatch}
                 nextChapter={nextChapter}
                 prevChapter={prevChapter}
                 hide={hidden}

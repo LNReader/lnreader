@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { Dimensions, Pressable, Text, View } from "react-native";
+import { Dimensions, Pressable, StyleSheet, Text, View } from "react-native";
 import { IconButton } from "react-native-paper";
 import {
     getNextChapterFromDB,
     getPrevChapterFromDB,
 } from "../../../Database/queries/ChapterQueries";
+import { useSettings } from "../../../Hooks/reduxHooks";
 import { showToast } from "../../../Hooks/showToast";
+import { setAppSettings } from "../../../redux/settings/settings.actions";
 
 const ChapterFooter = ({
     hide,
     theme,
+    swipeGestures,
+    dispatch,
     readerSheetRef,
     scrollViewRef,
     navigateToNextChapter,
@@ -17,6 +21,19 @@ const ChapterFooter = ({
     nextChapter,
     prevChapter,
 }) => {
+    const rippleConfig = {
+        color: theme.rippleColor,
+        borderless: true,
+        radius: 50,
+    };
+
+    const enableSwipeGestures = () => {
+        dispatch(setAppSettings("swipeGestures", !swipeGestures));
+        showToast(
+            swipeGestures ? "Swipe gestures disabled" : "Swipe gestured enabled"
+        );
+    };
+
     if (hide) {
         return null;
     } else {
@@ -32,17 +49,8 @@ const ChapterFooter = ({
                 }}
             >
                 <Pressable
-                    android_ripple={{
-                        color: theme.rippleColor,
-                        borderless: true,
-                        radius: 50,
-                    }}
-                    style={{
-                        flex: 1,
-                        justifyContent: "center",
-                        alignItems: "center",
-                        paddingVertical: 8,
-                    }}
+                    android_ripple={rippleConfig}
+                    style={styles.buttonStyles}
                     onPress={navigateToPrevChapter}
                 >
                     <IconButton
@@ -53,17 +61,20 @@ const ChapterFooter = ({
                     />
                 </Pressable>
                 <Pressable
-                    android_ripple={{
-                        color: theme.rippleColor,
-                        borderless: true,
-                        radius: 50,
-                    }}
-                    style={{
-                        flex: 1,
-                        justifyContent: "center",
-                        alignItems: "center",
-                        paddingVertical: 8,
-                    }}
+                    android_ripple={rippleConfig}
+                    style={styles.buttonStyles}
+                    onPress={enableSwipeGestures}
+                >
+                    <IconButton
+                        icon="gesture-swipe"
+                        disabled={!swipeGestures}
+                        size={26}
+                        color="#FFFFFF"
+                    />
+                </Pressable>
+                <Pressable
+                    android_ripple={rippleConfig}
+                    style={styles.buttonStyles}
                     onPress={() => scrollViewRef.current.scrollTo({})}
                 >
                     <IconButton
@@ -73,33 +84,15 @@ const ChapterFooter = ({
                     />
                 </Pressable>
                 <Pressable
-                    android_ripple={{
-                        color: theme.rippleColor,
-                        borderless: true,
-                        radius: 50,
-                    }}
-                    style={{
-                        flex: 1,
-                        justifyContent: "center",
-                        alignItems: "center",
-                        paddingVertical: 8,
-                    }}
+                    android_ripple={rippleConfig}
+                    style={styles.buttonStyles}
                     onPress={() => readerSheetRef.current.show()}
                 >
                     <IconButton icon="cog-outline" size={26} color="#FFFFFF" />
                 </Pressable>
                 <Pressable
-                    android_ripple={{
-                        color: theme.rippleColor,
-                        borderless: true,
-                        radius: 50,
-                    }}
-                    style={{
-                        flex: 1,
-                        justifyContent: "center",
-                        alignItems: "center",
-                        paddingVertical: 8,
-                    }}
+                    android_ripple={rippleConfig}
+                    style={styles.buttonStyles}
                     onPress={navigateToNextChapter}
                 >
                     <IconButton
@@ -115,3 +108,12 @@ const ChapterFooter = ({
 };
 
 export default ChapterFooter;
+
+const styles = StyleSheet.create({
+    buttonStyles: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        paddingVertical: 8,
+    },
+});
