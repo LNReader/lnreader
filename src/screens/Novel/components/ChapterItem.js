@@ -31,6 +31,7 @@ const ChapterItem = ({
     setSelected,
     showChapterTitles,
     chapterActionsSheetRef,
+    downloadQueue,
 }) => {
     const [deleteChapterMenu, setDeleteChapterMenu] = useState(false);
     const showDeleteChapterMenu = () => setDeleteChapterMenu(true);
@@ -49,7 +50,9 @@ const ChapterItem = ({
         });
 
     const displayDownloadButton = () => {
-        if (downloading.indexOf(chapter.chapterId) !== -1) {
+        if (
+            downloadQueue.some((chap) => chap.chapterId === chapter.chapterId)
+        ) {
             return (
                 <ActivityIndicator
                     color={theme.textColorHint}

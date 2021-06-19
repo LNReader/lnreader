@@ -5,6 +5,8 @@ import { getLibrary } from "../database/queries/LibraryQueries";
 import { fetchChapters, fetchNovel } from "../services/Source/source";
 import * as Notifications from "expo-notifications";
 
+import BackgroundService from "react-native-background-actions";
+
 Notifications.setNotificationHandler({
     handleNotification: async () => {
         return {
@@ -113,32 +115,67 @@ export const updateNovelChapters = async (sourceId, novelUrl, novelId) => {
 export const updateAllNovels = async () => {
     const libraryNovels = await getLibrary();
 
-    Notifications.scheduleNotificationAsync({
-        identifier: "updatingNotif",
-        content: { title: "Updating library" },
-        trigger: null,
-    });
+    const options = {
+        taskName: "Library Update",
+        taskTitle: "Updating library",
+        taskDesc: "0/" + libraryNovels.length,
+        taskIcon: {
+            name: "notification_icon",
+            type: "drawable",
+        },
+        color: "#00adb5",
+        parameters: {
+            delay: 1000,
+        },
+        progressBar: {
+            max: libraryNovels.length,
+            value: 0,
+        },
+    };
 
-    libraryNovels.map((novel, index) =>
-        setTimeout(async () => {
-            await updateNovelChapters(
-                novel.sourceId,
-                novel.novelUrl,
-                novel.novelId
-            );
-            console.log(novel.novelName + " Updated");
+    const sleep = (time) =>
+        new Promise((resolve) => setTimeout(() => resolve(), time));
 
-            if (index + 1 === libraryNovels.length) {
-                Notifications.scheduleNotificationAsync({
-                    content: {
-                        title: "Library Updated",
-                        body: libraryNovels.length + " novels updated",
-                    },
-                    trigger: null,
-                });
+    const veryIntensiveTask = async (taskData) =>
+        await new Promise(async (resolve) => {
+            for (
+                let i = 0;
+                BackgroundService.isRunning() && i < libraryNovels.length;
+                i++
+            ) {
+                if (BackgroundService.isRunning()) {
+                    await updateNovelChapters(
+                        libraryNovels[i].sourceId,
+                        libraryNovels[i].novelUrl,
+                        libraryNovels[i].novelId
+                    );
+                    console.log(libraryNovels[i].novelName + " Updated");
+                    await BackgroundService.updateNotification({
+                        taskTitle: libraryNovels[i].novelName,
+                        taskDesc: i + 1 + "/" + libraryNovels.length,
+                        progressBar: {
+                            max: libraryNovels.length,
+                            value: i + 1,
+                        },
+                    });
+                    if (libraryNovels.length === i + 1) {
+                        resolve();
+                        await BackgroundService.stop();
+                        Notifications.scheduleNotificationAsync({
+                            content: {
+                                title: "Library Updated",
+                                body: libraryNovels.length + " novels updated",
+                            },
+                            trigger: null,
+                        });
+                    }
+
+                    await sleep(taskData.delay);
+                }
             }
-        }, 3000 * index)
-    );
+        });
+
+    await BackgroundService.start(veryIntensiveTask, options);
 };
 
 export const parseChapterNumber = (chapterName) => {

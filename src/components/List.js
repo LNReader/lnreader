@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 import { List, Divider as PaperDivider } from "react-native-paper";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -34,15 +34,19 @@ const ListItem = ({
         description={description}
         descriptionStyle={{ color: theme.textColorSecondary }}
         descriptionNumberOfLines={1}
-        left={() =>
-            icon && (
-                <List.Icon
-                    color={theme.colorAccent}
-                    icon={icon}
-                    style={{ marginVertical: 0 }}
-                />
-            )
-        }
+        left={() => (
+            <View style={{ justifyContent: "center" }}>
+                {icon && (
+                    <List.Icon
+                        color={theme.colorAccent}
+                        icon={icon}
+                        style={{
+                            marginVertical: 0,
+                        }}
+                    />
+                )}
+            </View>
+        )}
         right={() =>
             right && (
                 <MaterialCommunityIcons

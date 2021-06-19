@@ -1,13 +1,15 @@
 import React from "react";
 import { StyleSheet, View, Image } from "react-native";
+import { useSelector } from "react-redux";
 
 import { Appbar } from "../../components/Appbar";
-import { ListItem, ListSection } from "../../components/List";
+import { Divider, ListItem, ListSection } from "../../components/List";
 
 import { useTheme } from "../../hooks/reduxHooks";
 
 const MoreScreen = ({ navigation }) => {
     const theme = useTheme();
+    const { downloadQueue } = useSelector((state) => state.downloadsReducer);
 
     return (
         <>
@@ -34,6 +36,21 @@ const MoreScreen = ({ navigation }) => {
                     </View>
                 </View>
                 <ListSection>
+                    <ListItem
+                        title="Download queue"
+                        description={
+                            downloadQueue.length > 0 &&
+                            downloadQueue.length + " remaining"
+                        }
+                        icon="download-outline"
+                        onPress={() =>
+                            navigation.navigate("MoreStack", {
+                                screen: "DownloadQueue",
+                            })
+                        }
+                        theme={theme}
+                    />
+                    <Divider theme={theme} />
                     <ListItem
                         title="Settings"
                         icon="cog-outline"

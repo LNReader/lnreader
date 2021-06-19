@@ -37,7 +37,7 @@ const ChapterAppbar = ({
                     style={{ backgroundColor: "transparent", elevation: 0 }}
                 >
                     <Appbar.BackAction
-                        onPress={() => navigation.goBack()}
+                        onPress={navigation.goBack}
                         color="#FFFFFF"
                         size={26}
                         style={{ marginRight: 0 }}

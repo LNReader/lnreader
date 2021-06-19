@@ -50,6 +50,22 @@ import { getLibrary } from "../../database/queries/LibraryQueries";
 import { showToast } from "../../hooks/showToast";
 import { store } from "../store";
 
+import * as Notifications from "expo-notifications";
+
+Notifications.setNotificationHandler({
+    handleNotification: async () => {
+        return {
+            shouldShowAlert: true,
+            shouldPlaySound: true,
+            shouldSetBadge: true,
+        };
+    },
+});
+
+import BackgroundService from "react-native-background-actions";
+import { setDownloadQueue } from "../downloads/downloads.actions";
+import { SET_DOWNLOAD_QUEUE } from "../downloads/donwloads.types";
+
 export const setNovel = (novel) => async (dispatch) => {
     dispatch({ type: SET_NOVEL, payload: novel });
 };
@@ -267,9 +283,13 @@ export const markChapterUnreadAction =
 export const downloadChapterAction =
     (sourceId, novelUrl, chapterUrl, chapterName, chapterId) =>
     async (dispatch) => {
+        // dispatch({
+        //     type: CHAPTER_DOWNLOADING,
+        //     payload: chapterId,
+        // });
         dispatch({
-            type: CHAPTER_DOWNLOADING,
-            payload: chapterId,
+            type: SET_DOWNLOAD_QUEUE,
+            payload: [{ chapterId, chapterName }],
         });
 
         await downloadChapter(sourceId, novelUrl, chapterUrl, chapterId);
@@ -283,34 +303,87 @@ export const downloadChapterAction =
     };
 
 export const downloadAllChaptersAction =
-    (sourceId, novelUrl, chapters) => async (dispatch) => {
+    (sourceId, novelUrl, chaps) => async (dispatch) => {
         try {
-            await chapters.map((chapter, index) => {
-                setTimeout(async () => {
-                    dispatch({
-                        type: CHAPTER_DOWNLOADING,
-                        payload: chapter.chapterId,
-                    });
+            let chapters = chaps.filter((chapter) => chapter.downloaded === 0);
 
-                    if (!chapter.downloaded) {
-                        await downloadChapter(
-                            sourceId,
-                            novelUrl,
-                            chapter.chapterUrl,
-                            chapter.chapterId
-                        );
+            dispatch({ type: SET_DOWNLOAD_QUEUE, payload: chapters });
+            const options = {
+                taskName: "Library Update",
+                taskTitle: chapters[0].chapterName,
+                taskDesc: "0/" + chapters.length,
+                taskIcon: {
+                    name: "notification_icon",
+                    type: "drawable",
+                },
+                color: "#00adb5",
+                parameters: {
+                    delay: 1000,
+                },
+                progressBar: {
+                    max: chapters.length,
+                    value: 0,
+                },
+            };
+
+            const sleep = (time) =>
+                new Promise((resolve) => setTimeout(() => resolve(), time));
+
+            const veryIntensiveTask = async (taskData) => {
+                await new Promise(async (resolve) => {
+                    for (
+                        let i = 0;
+                        BackgroundService.isRunning() && i < chapters.length;
+                        i++
+                    ) {
+                        if (BackgroundService.isRunning()) {
+                            // dispatch({
+                            //     type: CHAPTER_DOWNLOADING,
+                            //     payload: chapters[i].chapterId,
+                            // });
+
+                            if (!chapters[i].downloaded) {
+                                await downloadChapter(
+                                    sourceId,
+                                    novelUrl,
+                                    chapters[i].chapterUrl,
+                                    chapters[i].chapterId
+                                );
+                            }
+
+                            dispatch({
+                                type: CHAPTER_DOWNLOADED,
+                                payload: chapters[i].chapterId,
+                            });
+
+                            await BackgroundService.updateNotification({
+                                taskTitle: chapters[i].chapterName,
+                                taskDesc: i + 1 + "/" + chapters.length,
+                                progressBar: {
+                                    max: chapters.length,
+                                    value: i + 1,
+                                },
+                            });
+
+                            if (i + 1 === chapters.length) {
+                                resolve();
+                                await BackgroundService.stop();
+
+                                Notifications.scheduleNotificationAsync({
+                                    content: {
+                                        title: "Downloader",
+                                        body: "Download completed",
+                                    },
+                                    trigger: null,
+                                });
+                            }
+                            await sleep(taskData.delay);
+                        }
                     }
+                });
+            };
 
-                    dispatch({
-                        type: CHAPTER_DOWNLOADED,
-                        payload: chapter.chapterId,
-                    });
-
-                    if (index + 1 === chapters.length) {
-                        showToast(`Download completed `);
-                    }
-                }, 1000 * index);
-            });
+            await BackgroundService.start(veryIntensiveTask, options);
         } catch (error) {
             showToast(error.message);
         }

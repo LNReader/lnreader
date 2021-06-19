@@ -11,6 +11,7 @@ import ReaderSettings from "../screens/More/ReaderSettings";
 import BackupSettings from "../screens/More/BackupSettings";
 import AdvancedSettings from "../screens/More/AdvancedSettings";
 import GeneralSettings from "../screens/More/GeneralSettings";
+import DownloadQueue from "../screens/More/DownloadQueue";
 
 const Stack = createStackNavigator();
 
@@ -56,6 +57,7 @@ const MoreStack = () => {
             <Stack.Navigator screenOptions={stackNavigatorConfig}>
                 <Stack.Screen name="SettingsStack" component={SettingsStack} />
                 <Stack.Screen name="About" component={About} />
+                <Stack.Screen name="DownloadQueue" component={DownloadQueue} />
             </Stack.Navigator>
         </View>
     );

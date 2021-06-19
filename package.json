@@ -35,6 +35,7 @@
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "^0.64.2",
+    "react-native-background-actions": "^2.6.1",
     "react-native-cheerio": "^1.0.0-rc.4",
     "react-native-collapsible-header-views": "^1.1.2",
     "react-native-device-info": "^8.1.3",

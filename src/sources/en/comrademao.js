@@ -83,6 +83,17 @@ const parseNovelAndChapters = async (novelUrl) => {
 
     let novelChapters = [];
 
+    let chapterUrlPrefix = $("tbody > tr")
+        .first()
+        .next()
+        .find("td > a")
+        .text()
+        .split(" ");
+
+    chapterUrlPrefix.pop();
+
+    chapterUrlPrefix = chapterUrlPrefix.join("-").toLowerCase();
+
     const latestChapter = $("tbody > tr")
         .first()
         .next()
@@ -93,7 +104,7 @@ const parseNovelAndChapters = async (novelUrl) => {
     for (let i = 1; i <= latestChapter; i++) {
         const chapterName = "Chapter " + i;
         const releaseDate = null;
-        const chapterUrl = novelUrl.slice(0, -1) + "-chapter-" + i + "/";
+        const chapterUrl = chapterUrlPrefix + "-" + i + "/";
 
         const chapter = {
             chapterName,
@@ -103,7 +114,6 @@ const parseNovelAndChapters = async (novelUrl) => {
 
         novelChapters.push(chapter);
     }
-
     novel.chapters = novelChapters;
 
     return novel;

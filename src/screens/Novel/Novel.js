@@ -10,7 +10,7 @@ import {
 } from "react-native";
 
 import { Provider, Portal, Appbar, IconButton, Menu } from "react-native-paper";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import {
     bookmarkChapterAction,
@@ -46,6 +46,7 @@ const Novel = ({ route, navigation }) => {
     const theme = useTheme();
     const dispatch = useDispatch();
     const { novel, chapters, loading, updating, downloading } = useNovel();
+    const { downloadQueue } = useSelector((state) => state.downloadsReducer);
 
     const [selected, setSelected] = useState([]);
     const [downloadMenu, showDownloadMenu] = useState(false);
@@ -103,6 +104,7 @@ const Novel = ({ route, navigation }) => {
             setSelected={setSelected}
             showChapterTitles={showChapterTitles}
             chapterActionsSheetRef={chapterActionsSheetRef}
+            downloadQueue={downloadQueue}
         />
     );
 
