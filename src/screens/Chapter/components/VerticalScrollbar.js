@@ -15,7 +15,7 @@ const VerticalScrollbar = ({
 }) => {
     const onSlidingComplete = (value) => {
         setLoading(true);
-        setScrollPercentage(value);
+        // setScrollPercentage(value);
         scrollViewRef.current.scrollTo({
             x: 0,
             y: Math.round((value * contentSize) / 100),

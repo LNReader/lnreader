@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { useSelector, useDispatch } from "react-redux";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import { Searchbar } from "../../components/Searchbar";
 import NovelList from "../../components/NovelList";
@@ -28,7 +29,7 @@ import LibraryFilterSheet from "./components/LibraryFilterSheet";
 const LibraryScreen = ({ navigation }) => {
     const theme = useTheme();
     const dispatch = useDispatch();
-    const { showNumberOfNovels } = useSettings();
+    const { showNumberOfNovels, incognitoMode } = useSettings();
 
     const libraryFilterSheetRef = useRef(null);
 
@@ -122,6 +123,17 @@ const LibraryScreen = ({ navigation }) => {
                     ]}
                     theme={theme}
                 />
+                {incognitoMode && (
+                    <View
+                        style={{
+                            backgroundColor: "#424242",
+                            paddingVertical: 4,
+                            alignItems: "center",
+                        }}
+                    >
+                        <Text style={{ color: "#FFFFFF" }}>Incognito Mode</Text>
+                    </View>
+                )}
                 {loading ? (
                     <ActivityIndicator size="small" color={theme.colorAccent} />
                 ) : (

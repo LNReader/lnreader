@@ -57,6 +57,7 @@ const initialState = {
     showNumberOfNovels: false,
     showScrollPercentage: true,
     swipeGestures: true,
+    incognitoMode: false,
 };
 
 const settingsReducer = (state = initialState, action) => {

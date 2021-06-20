@@ -39,8 +39,8 @@ const ReaderSheet = ({
     return (
         <Bottomsheet
             ref={bottomSheetRef}
-            draggableRange={{ top: 450, bottom: 0 }}
-            snappingPoints={[0, 450]}
+            draggableRange={{ top: 470, bottom: 0 }}
+            snappingPoints={[0, 470]}
             showBackdrop={true}
             backdropOpacity={0}
         >
