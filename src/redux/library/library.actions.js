@@ -7,8 +7,8 @@ import {
 import {
     getLibrary,
     searchLibrary,
-} from "../../Database/queries/LibraryQueries";
-import { restoreBackup } from "../../Services/backup";
+} from "../../database/queries/LibraryQueries";
+import { restoreBackup } from "../../services/backup";
 
 export const getLibraryAction = (sort, filter) => async (dispatch) => {
     // console.log("1.", sort, filter);

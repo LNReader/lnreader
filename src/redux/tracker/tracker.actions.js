@@ -1,4 +1,4 @@
-import { findListItem, updateItem } from "../../Services/Trackers/myAnimeList";
+import { findListItem, updateItem } from "../../services/Trackers/myAnimeList";
 import {
     REMOVE_TRACKER,
     SET_TRACKER,
@@ -8,7 +8,7 @@ import {
     UPDATE_CHAPTERS_READ,
 } from "./tracker.types";
 
-import { updateMalChaptersRead } from "../../Services/Trackers/myAnimeList";
+import { updateMalChaptersRead } from "../../services/Trackers/myAnimeList";
 
 export const setTracker = (res) => async (dispatch) => {
     dispatch({
@@ -43,15 +43,14 @@ export const untrackNovel = (id) => async (dispatch) => {
     dispatch({ type: UNTRACK_NOVEL, payload: id });
 };
 
-export const updateChaptersRead = (malId, accessToken, chaptersRead) => async (
-    dispatch
-) => {
-    let res = await updateMalChaptersRead(malId, accessToken, {
-        num_chapters_read: chaptersRead,
-    });
+export const updateChaptersRead =
+    (malId, accessToken, chaptersRead) => async (dispatch) => {
+        let res = await updateMalChaptersRead(malId, accessToken, {
+            num_chapters_read: chaptersRead,
+        });
 
-    dispatch({
-        type: UPDATE_CHAPTERS_READ,
-        payload: { malId, chaptersRead: res },
-    });
-};
+        dispatch({
+            type: UPDATE_CHAPTERS_READ,
+            payload: { malId, chaptersRead: res },
+        });
+    };

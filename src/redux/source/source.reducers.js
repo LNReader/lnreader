@@ -1,10 +1,19 @@
-import { GET_SOURCES, SEARCH_SOURCES, PIN_SOURCES } from "./source.types";
+import {
+    GET_SOURCES,
+    SEARCH_SOURCES,
+    PIN_SOURCES,
+    FILTER_LANGUAGE,
+    ENABLE_DISCOVER,
+} from "./source.types";
 
 const initialState = {
     sources: [],
     pinnedSources: [],
     search: [],
     pinned: [],
+    filters: [],
+    showNovelUpdates: true,
+    showMyAnimeList: true,
     loading: true,
 };
 
@@ -29,6 +38,26 @@ const sourceReducer = (state = initialState, action) => {
                 search: state.sources.filter((source) =>
                     source.sourceName.toLowerCase().includes(payload)
                 ),
+            };
+
+        case FILTER_LANGUAGE:
+            if (!state.filters) {
+                state.filters = [];
+            }
+
+            return {
+                ...state,
+                filters:
+                    state.filters.indexOf(payload) === -1
+                        ? [...state.filters, payload]
+                        : state.filters.filter(
+                              (language) => language !== payload
+                          ),
+            };
+        case ENABLE_DISCOVER:
+            return {
+                ...state,
+                [payload]: !state[payload],
             };
         default:
             return state;

@@ -12,7 +12,7 @@ import {
     midnightDuskTheme,
     limeTheme,
     irisBlueTheme,
-} from "../../Theme/theme";
+} from "../../theme/theme";
 
 const themes = {
     0: amoledDarkTheme,
@@ -56,6 +56,9 @@ const initialState = {
     showUnreadBadges: true,
     showNumberOfNovels: false,
     showScrollPercentage: true,
+    swipeGestures: true,
+    incognitoMode: false,
+    searchAllSources: false,
 };
 
 const settingsReducer = (state = initialState, action) => {

@@ -9,9 +9,9 @@ import {
     insertHistory,
     deleteHistory,
     deleteAllHistory,
-} from "../../Database/queries/HistoryQueries";
+} from "../../database/queries/HistoryQueries";
 import { SET_LAST_READ } from "../preferences/preference.types";
-import { showToast } from "../../Hooks/showToast";
+import { showToast } from "../../hooks/showToast";
 
 export const getHistoryAction = () => async (dispatch) => {
     dispatch({ type: LOAD_HISTORY });
