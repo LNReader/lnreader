@@ -36,7 +36,7 @@ const popularNovels = async (page) => {
 };
 
 const parseNovelAndChapters = async (novelUrl) => {
-    const url = `${baseUrl}manga/${novelUrl}/`;
+    const url = `${baseUrl}manga/${novelUrl}`;
 
     const result = await fetch(url);
     const body = await result.text();
@@ -107,7 +107,6 @@ const parseNovelAndChapters = async (novelUrl) => {
             .trim();
 
         chapterUrl = $(this).find("a").attr("href").replace(url, "");
-
         novelChapters.push({ chapterName, releaseDate, chapterUrl });
     });
 
@@ -117,9 +116,7 @@ const parseNovelAndChapters = async (novelUrl) => {
 };
 
 const parseChapter = async (novelUrl, chapterUrl) => {
-    const url = chapterUrl;
-
-    console.log(url);
+    const url = `${baseUrl}manga/${novelUrl}${chapterUrl}`;
 
     const result = await fetch(url);
     const body = await result.text();

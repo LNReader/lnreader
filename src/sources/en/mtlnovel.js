@@ -102,7 +102,7 @@ const parseNovelAndChapters = async (novelUrl) => {
 
                 let chapterUrl = $(this).attr("href");
                 chapterUrl = chapterUrl.replace(
-                    `https://www.mtlnovel.com/${novelUrl}/`,
+                    `https://www.mtlnovel.com/${novelUrl}`,
                     ""
                 );
 
@@ -121,7 +121,7 @@ const parseNovelAndChapters = async (novelUrl) => {
 };
 
 const parseChapter = async (novelUrl, chapterUrl) => {
-    const url = chapterUrl;
+    const url = `${baseUrl}/${novelUrl}${chapterUrl}`;
     console.log(url);
 
     const result = await fetch(url);

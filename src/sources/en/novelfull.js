@@ -105,7 +105,7 @@ const parseNovelAndChapters = async (novelUrl) => {
             let chapterName = $(this).text();
             let releaseDate = null;
             let chapterUrl = $(this).attr("value");
-            chapterUrl = chapterUrl.replace(`/${novelUrl}/`, "");
+            chapterUrl = chapterUrl.replace(`/${novelUrl}`, "");
 
             novelChapters.push({
                 chapterName,
@@ -122,7 +122,7 @@ const parseNovelAndChapters = async (novelUrl) => {
 };
 
 const parseChapter = async (novelUrl, chapterUrl) => {
-    const url = `${baseUrl}${chapterUrl}`;
+    const url = `${baseUrl}/${novelUrl}${chapterUrl}`;
 
     const result = await fetch(url);
     const body = await result.text();
