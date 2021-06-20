@@ -11,7 +11,7 @@ import { ScreenContainer } from "../../../components/Common";
 import GlobalSearchSourceItem from "./GlobalSearchSourceItem";
 
 import { showToast } from "../../../hooks/showToast";
-import { useLibrary, useTheme } from "../../../hooks/reduxHooks";
+import { useLibrary, useSettings, useTheme } from "../../../hooks/reduxHooks";
 import { getSource } from "../../../sources/sources";
 
 const GlobalSearch = ({ route, navigation }) => {
@@ -26,6 +26,7 @@ const GlobalSearch = ({ route, navigation }) => {
     const pinnedSources = sources.filter(
         (source) => pinned.indexOf(source.sourceId) !== -1
     );
+    const { searchAllSources = false } = useSettings();
 
     const [loading, setLoading] = useState(false);
     const [searchText, setSearchText] = useState(novelName);
@@ -44,7 +45,9 @@ const GlobalSearch = ({ route, navigation }) => {
     const onSubmitEditing = async () => {
         setSearchResults([]);
 
-        pinnedSources.map((item, index) =>
+        let globalSearchSources = searchAllSources ? sources : pinnedSources;
+
+        globalSearchSources.map((item, index) =>
             setTimeout(async () => {
                 try {
                     setLoading(true);
@@ -124,8 +127,10 @@ const GlobalSearch = ({ route, navigation }) => {
                         {!loading && (
                             <EmptyView
                                 icon="__φ(．．)"
-                                description={`Search a novel in your pinned sources ${
-                                    pinned.length === 0
+                                description={`Search a novel in your pinned sources\n${
+                                    searchAllSources
+                                        ? "(Search all sources)"
+                                        : pinned.length === 0
                                         ? "(No sources pinned)"
                                         : ""
                                 }`}

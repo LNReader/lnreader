@@ -126,7 +126,6 @@ const TrackerButton = ({ theme, isTracked, onPress }) => (
                 color={isTracked ? theme.colorAccent : theme.textColorSecondary}
                 size={24}
                 style={{ margin: 0 }}
-                onPress={onPress}
             />
             <Text
                 style={{

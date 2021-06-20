@@ -58,6 +58,7 @@ const initialState = {
     showScrollPercentage: true,
     swipeGestures: true,
     incognitoMode: false,
+    searchAllSources: false,
 };
 
 const settingsReducer = (state = initialState, action) => {

@@ -29,7 +29,7 @@ import LibraryFilterSheet from "./components/LibraryFilterSheet";
 const LibraryScreen = ({ navigation }) => {
     const theme = useTheme();
     const dispatch = useDispatch();
-    const { showNumberOfNovels, incognitoMode } = useSettings();
+    const { showNumberOfNovels, incognitoMode = false } = useSettings();
 
     const libraryFilterSheetRef = useRef(null);
 

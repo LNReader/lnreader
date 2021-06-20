@@ -70,7 +70,7 @@ const Chapter = ({ route, navigation }) => {
     const showScrollPercentage = useSelector(
         (state) => state.settingsReducer.showScrollPercentage
     );
-    const { swipeGestures = true } = useSettings();
+    const { swipeGestures = true, incognitoMode = false } = useSettings();
 
     const [hidden, setHidden] = useState(true);
 
@@ -147,7 +147,7 @@ const Chapter = ({ route, navigation }) => {
     useEffect(() => {
         getChapter(chapterId);
         setPrevAndNextChap();
-        dispatch(insertHistoryAction(novelId, chapterId));
+        !incognitoMode && dispatch(insertHistoryAction(novelId, chapterId));
         return () => {
             StatusBar.setHidden(false);
             showNavigationBar();
@@ -194,7 +194,7 @@ const Chapter = ({ route, navigation }) => {
         setScrollPercentage(percentage);
         dispatch(saveScrollPosition(offsetY, percentage, chapterId, novelId));
 
-        if (isCloseToBottom(nativeEvent)) {
+        if (!incognitoMode && isCloseToBottom(nativeEvent)) {
             dispatch(markChapterReadAction(chapterId, novelId));
             updateTracker();
         }
