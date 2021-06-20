@@ -18,9 +18,11 @@ import {
 const BrowseSettings = ({ navigation }) => {
     const theme = useTheme();
     const dispatch = useDispatch();
-    const { filters, showNovelUpdates, showMyAnimeList } = useSelector(
-        (state) => state.sourceReducer
-    );
+    const {
+        filters = [],
+        showNovelUpdates = true,
+        showMyAnimeList = true,
+    } = useSelector((state) => state.sourceReducer);
     const languages = ["English", "Spanish"];
     const { searchAllSources = false } = useSettings();
 

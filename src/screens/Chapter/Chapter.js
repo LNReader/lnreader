@@ -190,9 +190,13 @@ const Chapter = ({ route, navigation }) => {
         const percentage = Math.round(
             (position / nativeEvent.contentSize.height) * 100
         );
-
         setScrollPercentage(percentage);
-        dispatch(saveScrollPosition(offsetY, percentage, chapterId, novelId));
+
+        if (!incognitoMode) {
+            dispatch(
+                saveScrollPosition(offsetY, percentage, chapterId, novelId)
+            );
+        }
 
         if (!incognitoMode && isCloseToBottom(nativeEvent)) {
             dispatch(markChapterReadAction(chapterId, novelId));

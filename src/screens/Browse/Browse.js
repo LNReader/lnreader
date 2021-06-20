@@ -20,6 +20,7 @@ import { showToast } from "../../hooks/showToast";
 import { Searchbar } from "../../components/Searchbar";
 import MalCard from "./components/MalCard";
 import NovelUpdatesCard from "./components/NovelUpdatesCard";
+import EmptyView from "../../components/EmptyView";
 
 const Browse = ({ navigation }) => {
     const [refreshing, setRefreshing] = useState(false);
@@ -152,24 +153,33 @@ const Browse = ({ navigation }) => {
                                 }
                             />
                         )}
-                        <Text
-                            style={{
-                                color: theme.textColorSecondary,
-                                paddingHorizontal: 16,
-                                paddingVertical: 8,
-                            }}
-                        >
-                            Sources
-                        </Text>
+                        {sources.length > 0 && (
+                            <Text
+                                style={{
+                                    color: theme.textColorSecondary,
+                                    paddingHorizontal: 16,
+                                    paddingVertical: 8,
+                                }}
+                            >
+                                Sources
+                            </Text>
+                        )}
                     </View>
                 }
                 ListEmptyComponent={
-                    loading && (
+                    loading ? (
                         <ActivityIndicator
                             size="small"
                             color={theme.colorAccent}
                             style={{ marginTop: 16 }}
                         />
+                    ) : (
+                        sources.length === 0 && (
+                            <EmptyView
+                                icon="(･Д･。"
+                                description="Enable languages from settings"
+                            />
+                        )
                     )
                 }
                 refreshControl={

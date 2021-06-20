@@ -41,6 +41,10 @@ const sourceReducer = (state = initialState, action) => {
             };
 
         case FILTER_LANGUAGE:
+            if (!state.filters) {
+                state.filters = [];
+            }
+
             return {
                 ...state,
                 filters:
