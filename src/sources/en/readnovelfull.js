@@ -5,6 +5,7 @@ import { htmlToText } from "../helpers/htmlToText";
 const baseUrl = "https://readnovelfull.com";
 
 const popularNovels = async (page) => {
+    let totalPages = 61;
     const url = `${baseUrl}/most-popular-novel?page=${page}`;
 
     const result = await fetch(url);
@@ -35,7 +36,7 @@ const popularNovels = async (page) => {
         novels.push(novel);
     });
 
-    return novels;
+    return { totalPages, novels };
 };
 
 const parseNovelAndChapters = async (novelUrl) => {

@@ -8,6 +8,7 @@ const sourceId = 1;
 
 const popularNovels = async (page) => {
     let url = `${baseUrl}/page/${page}/?m_orderby=rating`;
+    let totalPages = 73;
 
     const result = await fetch(url);
     const body = await result.text();
@@ -33,7 +34,7 @@ const popularNovels = async (page) => {
         novels.push(novel);
     });
 
-    return novels;
+    return { totalPages, novels };
 };
 
 const parseNovelAndChapters = async (novelUrl) => {

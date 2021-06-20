@@ -5,6 +5,7 @@ import { htmlToText } from "../helpers/htmlToText";
 const baseUrl = "https://noveltrench.com/";
 
 const popularNovels = async (page) => {
+    let totalPages = 270;
     let url = baseUrl + "manga/page/" + page;
 
     const result = await fetch(url);
@@ -31,7 +32,7 @@ const popularNovels = async (page) => {
         novels.push(novel);
     });
 
-    return novels;
+    return { totalPages, novels };
 };
 
 const parseNovelAndChapters = async (novelUrl) => {

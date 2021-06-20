@@ -5,6 +5,7 @@ import { htmlToText } from "../helpers/htmlToText";
 const baseUrl = "https://novelfull.com";
 
 const popularNovels = async (page) => {
+    let totalPages = 42;
     const url = `${baseUrl}/most-popular?page=${page}`;
 
     const result = await fetch(url);
@@ -37,7 +38,7 @@ const popularNovels = async (page) => {
         novels.push(novel);
     });
 
-    return novels;
+    return { totalPages, novels };
 };
 
 const parseNovelAndChapters = async (novelUrl) => {
@@ -180,8 +181,7 @@ const searchNovels = async (searchTerm) => {
         novelUrl = `${novelUrl}/`;
 
         const novelName = $(this).find("h3.truyen-title > a").text();
-        let novelCover = $(this).find("img").attr("src");
-        novelCover = baseUrl + novelCover;
+        const novelCover = baseUrl + $(this).find("img").attr("src");
 
         const novel = {
             sourceId: 8,

@@ -5,6 +5,7 @@ import { htmlToText } from "../helpers/htmlToText";
 const baseUrl = "https://www.lightnovelpub.com/";
 
 const popularNovels = async (page) => {
+    let totalPages = 33;
     let url = baseUrl + "browse/all/popular/all/" + page;
 
     let headers = new Headers({
@@ -50,7 +51,7 @@ const popularNovels = async (page) => {
         novels.push(novel);
     });
 
-    return novels;
+    return { totalPages, novels };
 };
 
 const parseNovelAndChapters = async (novelUrl) => {

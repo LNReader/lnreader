@@ -22,8 +22,19 @@ import WuxiaWorldCloudScraper from "./en/wuxiaworldcloud";
 import WoopReadScraper from "./en/woopread";
 import FoxaHolicScraper from "./en/foxaholic";
 import EinharjarProjectScraper from "./es/einherjarproject";
+import TuNovelaLigeraScraper from "./es/tunovelaligera";
+import SkyNovelsScraper from "./es/skynovels";
+import NovelasLigeraScraper from "./es/novelasligera";
+import YuukiTlsScraper from "./es/yuukitls";
+import NovelaWuxiaScraper from "./es/novelawuxia";
+import OasisTranslationsScraper from "./es/oasistranslations";
+import HasuTlScraper from "./es/hasutl";
 
 export const sources = [
+    /**
+     * English
+     */
+
     {
         sourceId: 1,
         url: "https://boxnovel.com/",
@@ -179,6 +190,32 @@ export const sources = [
         lang: "English",
     },
     {
+        sourceId: 27,
+        url: "https://comrademao.com/",
+        sourceName: "ComradeMao",
+        icon: "https://github.com/rajarsheechatterjee/lnreader-extensions/blob/main/src/en/comrademao/icon.png?raw=true",
+        lang: "English",
+    },
+
+    /**
+     * Spanish
+     */
+
+    {
+        sourceId: 23,
+        url: "https://tunovelaligera.com/",
+        sourceName: "Tunovelaligera",
+        icon: "https://github.com/rajarsheechatterjee/lnreader-extensions/blob/main/src/es/tunovelaligera/icon.png?raw=true",
+        lang: "Spanish",
+    },
+    {
+        sourceId: 24,
+        url: "https://www.skynovels.net/",
+        sourceName: "SkyNovels",
+        icon: "https://github.com/rajarsheechatterjee/lnreader-extensions/blob/main/src/es/skynovels/icon.png?raw=true",
+        lang: "Spanish",
+    },
+    {
         sourceId: 25,
         url: "https://einherjarproject.net/",
         sourceName: "EinherjarProject",
@@ -186,11 +223,39 @@ export const sources = [
         lang: "Spanish",
     },
     {
-        sourceId: 27,
-        url: "https://comrademao.com/",
-        sourceName: "ComradeMao",
-        icon: "https://github.com/rajarsheechatterjee/lnreader-extensions/blob/main/src/en/comrademao/icon.png?raw=true",
-        lang: "English",
+        sourceId: 26,
+        url: "https://novelasligera.com/",
+        sourceName: "NovelasLigera",
+        icon: "https://github.com/rajarsheechatterjee/lnreader-extensions/blob/main/src/es/novelasligera/icon.png?raw=true",
+        lang: "Spanish",
+    },
+    {
+        sourceId: 28,
+        url: "https://yuukitls.com/",
+        sourceName: "YuukiTls",
+        icon: "https://github.com/rajarsheechatterjee/lnreader-extensions/blob/main/src/es/yuukitls/icon.png?raw=true",
+        lang: "Spanish",
+    },
+    {
+        sourceId: 29,
+        url: "https://hasutl.wordpress.com/",
+        sourceName: "Hasu Translations",
+        icon: "https://github.com/rajarsheechatterjee/lnreader-extensions/blob/main/src/es/hasutl/icon.png?raw=true",
+        lang: "Spanish",
+    },
+    {
+        sourceId: 30,
+        url: "https://oasistranslations.wordpress.com/",
+        sourceName: "Oasis Translations",
+        icon: "https://github.com/rajarsheechatterjee/lnreader-extensions/blob/main/src/es/oasistranslations/icon.png?raw=true",
+        lang: "Spanish",
+    },
+    {
+        sourceId: 31,
+        url: "http://www.novelawuxia.com/",
+        sourceName: "Novela Wuxia",
+        icon: "https://github.com/rajarsheechatterjee/lnreader-extensions/blob/main/src/es/novelawuxia/icon.png?raw=true",
+        lang: "Spanish",
     },
 ];
 
@@ -263,22 +328,31 @@ export const getSource = (sourceId) => {
             return FoxaHolicScraper;
         }
         case 23: {
-            return;
+            return TuNovelaLigeraScraper;
         }
         case 24: {
-            return;
+            return SkyNovelsScraper;
         }
         case 25: {
             return EinharjarProjectScraper;
         }
         case 26: {
-            return;
+            return NovelasLigeraScraper;
         }
         case 27: {
             return ComradeMaoScraper;
         }
-        case 3: {
-            return;
+        case 28: {
+            return YuukiTlsScraper;
+        }
+        case 29: {
+            return HasuTlScraper;
+        }
+        case 30: {
+            return OasisTranslationsScraper;
+        }
+        case 31: {
+            return NovelaWuxiaScraper;
         }
     }
 };

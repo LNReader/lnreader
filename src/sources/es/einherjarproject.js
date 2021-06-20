@@ -4,6 +4,7 @@ import { htmlToText } from "../helpers/htmlToText";
 const baseUrl = "https://einherjarproject.net/";
 
 const popularNovels = async (page) => {
+    let totalPages = 1;
     let url = baseUrl + "proyectos-activos/";
 
     const result = await fetch(url);
@@ -33,9 +34,7 @@ const popularNovels = async (page) => {
         novels.push(novel);
     });
 
-    if (page === 1) {
-        return novels;
-    }
+    return { totalPages, novels };
 };
 
 const parseNovelAndChapters = async (novelUrl) => {

@@ -4,6 +4,7 @@ import { htmlToText } from "../helpers/htmlToText";
 const baseUrl = "https://www.mtlnovel.com";
 
 const popularNovels = async (page) => {
+    let totalPages = 10;
     const url = `${baseUrl}/alltime-rank/page/${page}`;
 
     const result = await fetch(url);
@@ -30,7 +31,7 @@ const popularNovels = async (page) => {
         novels.push(novel);
     });
 
-    return novels;
+    return { totalPages, novels };
 };
 
 const parseNovelAndChapters = async (novelUrl) => {

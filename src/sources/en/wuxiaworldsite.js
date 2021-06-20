@@ -4,6 +4,7 @@ const baseUrl = "https://wuxiaworldsite.co/";
 const searchUrl = "https://wuxiaworldsite.co/search/";
 
 const popularNovels = async (page) => {
+    let totalPages = 222;
     const url = `https://wuxiaworldsite.co/ajax-story-power.ajax`;
 
     const formData = new FormData();
@@ -40,7 +41,7 @@ const popularNovels = async (page) => {
         novels.push(novel);
     });
 
-    return novels;
+    return { totalPages, novels };
 };
 
 const parseNovelAndChapters = async (novelUrl) => {

@@ -5,6 +5,7 @@ import { htmlToText } from "../helpers/htmlToText";
 const baseUrl = "https://www.wuxiaworld.com/";
 
 const popularNovels = async (page) => {
+    let totalPages = 1;
     const url = `${baseUrl}api/novels`;
 
     const result = await fetch(url);
@@ -25,7 +26,7 @@ const popularNovels = async (page) => {
         });
     });
 
-    return novels;
+    return { totalPages, novels };
 };
 
 const parseNovelAndChapters = async (novelUrl) => {

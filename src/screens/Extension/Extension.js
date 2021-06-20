@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, ActivityIndicator } from "react-native";
+import { StyleSheet, View, ActivityIndicator, Text } from "react-native";
 import * as WebBrowser from "expo-web-browser";
 
 import NovelCover from "../../components/NovelCover";
@@ -27,6 +27,7 @@ const Extension = ({ navigation, route }) => {
     const [novels, setNovels] = useState([]);
     const [page, setPage] = useState(1);
     const [error, setError] = useState();
+    const [totalPages, setTotalPages] = useState(1);
 
     const [searchText, setSearchText] = useState("");
 
@@ -41,10 +42,13 @@ const Extension = ({ navigation, route }) => {
 
     const getNovels = async () => {
         try {
-            const source = getSource(sourceId);
-            const res = await source.popularNovels(page);
-            setNovels((novels) => [...novels, ...res]);
-            setLoading(false);
+            if (page <= totalPages) {
+                const source = getSource(sourceId);
+                const res = await source.popularNovels(page);
+                setNovels((novels) => [...novels, ...res.novels]);
+                setTotalPages(res.totalPages);
+                setLoading(false);
+            }
         } catch (error) {
             setError(error.message);
             showToast(error.message);
@@ -75,7 +79,10 @@ const Extension = ({ navigation, route }) => {
     };
 
     useEffect(() => {
+        let mounted = true;
         getNovels();
+
+        return () => (mounted = false);
     }, [page]);
 
     const isCloseToBottom = ({
@@ -181,7 +188,8 @@ const Extension = ({ navigation, route }) => {
                     ListEmptyComponent={listEmptyComponent()}
                     onScroll={onScroll}
                     ListFooterComponent={
-                        !searchText && (
+                        !searchText &&
+                        page < totalPages && (
                             <View style={{ paddingVertical: 16 }}>
                                 <ActivityIndicator color={theme.colorAccent} />
                             </View>

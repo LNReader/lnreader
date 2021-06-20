@@ -5,6 +5,7 @@ import { htmlToText } from "../helpers/htmlToText";
 const baseUrl = "https://jpmtl.com/";
 
 const popularNovels = async (page) => {
+    let totalPages = 157;
     let url =
         "https://jpmtl.com/v2/book/show/browse?query=&categories=&content_type=0&direction=0&page=" +
         page +
@@ -25,7 +26,7 @@ const popularNovels = async (page) => {
         novels.push(novel);
     });
 
-    return novels;
+    return { totalPages, novels };
 };
 
 const parseNovelAndChapters = async (novelUrl) => {

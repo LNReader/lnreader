@@ -9,7 +9,7 @@ const baseUrl = "https://comrademao.com/";
 
 const popularNovels = async (page) => {
     let url = baseUrl + "novel/page/" + page;
-
+    const totalPages = 108;
     const result = await fetch(url);
     const body = await result.text();
 
@@ -34,7 +34,7 @@ const popularNovels = async (page) => {
         novels.push(novel);
     });
 
-    return novels;
+    return { novels, totalPages };
 };
 
 const parseNovelAndChapters = async (novelUrl) => {
@@ -58,11 +58,16 @@ const parseNovelAndChapters = async (novelUrl) => {
 
     function getNovelName(y) {
         return y
-            .replace("-", " ")
-            .replace(/(?:^|\s)\S/g, (a) => a.toUpperCase());
+            .split("-")
+            .map((part) => {
+                return part.charAt(0).toUpperCase() + part.slice(1);
+            })
+            .join(" ")
+            .replace("/", "");
     }
 
     novelName = getNovelName(novelUrl);
+    console.log(novelName);
     novel.novelName = novelName;
 
     novel.novelCover = $("#thumbnail > img").attr("src");

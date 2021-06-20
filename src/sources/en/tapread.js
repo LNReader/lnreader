@@ -4,6 +4,7 @@ import { htmlToText } from "../helpers/htmlToText";
 const baseUrl = "http://www.tapread.com";
 
 const popularNovels = async (page) => {
+    let totalPages = 1;
     const result = await fetch(baseUrl);
     const body = await result.text();
 
@@ -26,7 +27,7 @@ const popularNovels = async (page) => {
         novels.push(novel);
     });
 
-    return novels;
+    return { totalPages, novels };
 };
 
 const parseNovelAndChapters = async (novelUrl) => {

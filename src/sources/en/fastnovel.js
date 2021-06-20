@@ -5,6 +5,7 @@ const baseUrl = "https://fastnovel.net";
 const searchUrl = `https://fastnovel.net/search/`;
 
 const popularNovels = async (page) => {
+    let totalPages = 39;
     const url = `${baseUrl}/list/most-popular.html?page=${page}`;
 
     const result = await fetch(url);
@@ -29,7 +30,7 @@ const popularNovels = async (page) => {
         novels.push(novel);
     });
 
-    return novels;
+    return { totalPages, novels };
 };
 
 const parseNovelAndChapters = async (novelUrl) => {

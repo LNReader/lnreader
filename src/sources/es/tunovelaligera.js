@@ -1,12 +1,11 @@
 import cheerio from "react-native-cheerio";
-
 import { htmlToText } from "../helpers/htmlToText";
 
-const baseUrl = "https://foxaholic.com/";
+const baseUrl = "https://tunovelaligera.com/";
 
 const popularNovels = async (page) => {
-    let totalPages = 5;
-    let url = baseUrl + "novel/page/" + page + "/?m_orderby=rating";
+    let totalPages = 1;
+    let url = baseUrl + "mejores-novelas-originales/";
 
     const result = await fetch(url);
     const body = await result.text();
@@ -17,13 +16,13 @@ const popularNovels = async (page) => {
 
     $(".page-item-detail").each(function (result) {
         const novelName = $(this).find(".h5 > a").text();
-        const novelCover = $(this).find("img").attr("data-src");
+        const novelCover = $(this).find("img").attr("src");
 
         let novelUrl = $(this).find(".h5 > a").attr("href").split("/")[4];
         novelUrl += "/";
 
         const novel = {
-            sourceId: 22,
+            sourceId: 23,
             novelName,
             novelCover,
             novelUrl,
@@ -36,9 +35,7 @@ const popularNovels = async (page) => {
 };
 
 const parseNovelAndChapters = async (novelUrl) => {
-    const url = `${baseUrl}novel/${novelUrl}`;
-
-    console.log(url);
+    const url = `${baseUrl}novelas/${novelUrl}`;
 
     const result = await fetch(url);
     const body = await result.text();
@@ -47,20 +44,20 @@ const parseNovelAndChapters = async (novelUrl) => {
 
     let novel = {};
 
-    novel.sourceId = 22;
+    novel.sourceId = 23;
 
-    novel.sourceName = "Foxaholic";
+    novel.sourceName = "Tunovelaligera";
 
     novel.url = url;
 
     novel.novelUrl = novelUrl;
 
-    novel.novelName = $(".post-title > h1")
+    novel.novelName = $("h1.titulo-novela")
         .text()
         .replace(/[\t\n]/g, "")
         .trim();
 
-    novel.novelCover = $(".summary_image > a > img").attr("data-src");
+    novel.novelCover = $(".summary_image > a > img").attr("src");
 
     $(".post-content_item").each(function (result) {
         detailName = $(this)
@@ -74,44 +71,47 @@ const parseNovelAndChapters = async (novelUrl) => {
             .replace(/[\t\n]/g, "")
             .trim();
 
-        switch (detailName) {
-            case "Genre":
-                novel.genre = detail.trim().replace(/[\t\n]/g, ",");
-                break;
-            case "Author":
-                novel.author = detail.trim();
-                break;
-            case "Artist":
-                novel.status = detail.trim();
-                break;
-        }
+        novel[detailName] = detail;
     });
 
-    $(".description-summary > div.summary__content").find("em").remove();
+    novel.genre = novel.Generos.replace(/, /g, ",");
+    novel.author = novel.Autores;
+    novel.Status = novel.Estado;
+    novel.Status = null;
 
-    novel.summary = $(".description-summary > div.summary__content")
-        .text()
-        .trim();
+    novel.artist = novel["Artista(s)"];
+
+    delete novel.Genre;
+    delete novel["Artista(s)"];
+    delete novel.Autores;
+    delete novel.Estado;
+
+    let novelSummary = "";
+
+    $(".summary__content")
+        .find("p")
+        .each(function () {
+            novelSummary += $(this).html();
+        });
+
+    novel.summary = htmlToText(novelSummary);
 
     let novelChapters = [];
 
-    const novelId = $("#manga-chapters-holder").attr("data-id");
-
-    console.log(novelId);
+    const novelId = $(".wp-manga-action-button").attr("data-post");
 
     let formData = new FormData();
     formData.append("action", "manga_get_chapters");
     formData.append("manga", novelId);
 
     const data = await fetch(
-        "https://www.foxaholic.com/wp-admin/admin-ajax.php",
+        "https://tunovelaligera.com/wp-admin/admin-ajax.php",
         {
             method: "POST",
             body: formData,
         }
     );
     const text = await data.text();
-    console.log(text);
 
     $ = cheerio.load(text);
 
@@ -139,37 +139,40 @@ const parseNovelAndChapters = async (novelUrl) => {
 };
 
 const parseChapter = async (novelUrl, chapterUrl) => {
-    const url = `${baseUrl}novel/${novelUrl}${chapterUrl}/`;
+    const url = `${baseUrl}novelas/${novelUrl}/${chapterUrl}`;
 
     const result = await fetch(url);
     const body = await result.text();
 
     $ = cheerio.load(body);
 
-    const chapterName = $("h1#chapter-heading").text();
-    let chapterText = $(".reading-content").html();
+    let chapterName = $("h1#chapter-heading").text();
+
+    let chapterText = $(".text-left").html();
     chapterText = htmlToText(chapterText);
 
     let nextChapter = null;
 
     if ($(".nav-next").length) {
-        nextChapter = $(".nav-next").find("a").attr("href").split("/");
-        nextChapter[6]
-            ? (nextChapter = nextChapter[5] + "/" + nextChapter[6])
-            : (nextChapter = nextChapter[5]);
+        nextChapter = $(".nav-next")
+            .find("a")
+            .attr("href")
+            .replace(baseUrl + "novelas/" + novelUrl + "/", "");
     }
 
     let prevChapter = null;
 
     if ($(".nav-previous").length) {
-        prevChapter = $(".nav-previous").find("a").attr("href").split("/");
-        prevChapter[6]
-            ? (prevChapter = prevChapter[5] + "/" + prevChapter[6])
-            : (prevChapter = prevChapter[5]);
+        prevChapter = $(".nav-previous")
+            .find("a")
+            .attr("href")
+            .replace(baseUrl + "novelas/" + novelUrl + "/", "");
     }
 
+    novelUrl = novelUrl + "/";
+
     const chapter = {
-        sourceId: 22,
+        sourceId: 23,
         novelUrl,
         chapterUrl,
         chapterName,
@@ -193,12 +196,13 @@ const searchNovels = async (searchTerm) => {
 
     $(".c-tabs-item__content").each(function (result) {
         const novelName = $(this).find(".h4 > a").text();
-        const novelCover = $(this).find("img").attr("data-src");
+        const novelCover = $(this).find("img").attr("src");
 
-        let novelUrl = $(this).find(".h4 > a").attr("href").split("/")[4];
-        novelUrl += "/";
+        let novelUrl = $(this).find(".h4 > a").attr("href");
+        novelUrl = novelUrl.replace(`${baseUrl}novelas/`, "");
+
         const novel = {
-            sourceId: 22,
+            sourceId: 23,
             novelName,
             novelCover,
             novelUrl,
@@ -210,11 +214,11 @@ const searchNovels = async (searchTerm) => {
     return novels;
 };
 
-const FoxaHolicScraper = {
+const TuNovelaLigeraScraper = {
     popularNovels,
     parseNovelAndChapters,
     parseChapter,
     searchNovels,
 };
 
-export default FoxaHolicScraper;
+export default TuNovelaLigeraScraper;
