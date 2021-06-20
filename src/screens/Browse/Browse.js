@@ -31,9 +31,9 @@ const Browse = ({ navigation }) => {
         search,
         loading,
         pinned,
-        filters,
-        showNovelUpdates,
-        showMyAnimeList,
+        filters = [],
+        showNovelUpdates = true,
+        showMyAnimeList = true,
     } = useSelector((state) => state.sourceReducer);
     const theme = useTheme();
     const dispatch = useDispatch();

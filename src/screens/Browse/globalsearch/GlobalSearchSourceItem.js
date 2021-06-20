@@ -4,7 +4,7 @@ import { StyleSheet, View, Text } from "react-native";
 import GlobalSearchNovelList from "./GlobalSearchNovelList";
 
 const GlobalSearchSourceItem = ({ source, library, theme, navigation }) => {
-    const { sourceName, sourceLanguage, novels } = source;
+    const { sourceName, lang, novels } = source;
 
     return (
         <>
@@ -13,7 +13,7 @@ const GlobalSearchSourceItem = ({ source, library, theme, navigation }) => {
                     {sourceName}
                 </Text>
                 <Text style={{ color: theme.textColorSecondary, fontSize: 12 }}>
-                    {sourceLanguage}
+                    {lang}
                 </Text>
             </View>
             <GlobalSearchNovelList

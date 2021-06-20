@@ -6,6 +6,7 @@ import { IconButton } from "react-native-paper";
 
 import { parseChapterNumber } from "../../services/utils/helpers";
 import { deleteHistoryAction } from "../../redux/history/history.actions";
+import { setNovel } from "../../redux/novel/novel.actions";
 
 const HistoryItem = ({ history, theme, dispatch, navigation }) => {
     const {
@@ -27,7 +28,10 @@ const HistoryItem = ({ history, theme, dispatch, navigation }) => {
             .format("h:mm a")
             .toUpperCase()}`;
 
-    const navigateToNovel = () => navigation.navigate("Novel", history);
+    const navigateToNovel = () => {
+        navigation.navigate("Novel", history);
+        dispatch(setNovel(history));
+    };
 
     const navigateToChapter = () =>
         navigation.navigate("Chapter", {

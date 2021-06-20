@@ -22,7 +22,13 @@ const GlobalSearch = ({ route, navigation }) => {
         novelName = route.params.novelName;
     }
 
-    const { sources, pinned } = useSelector((state) => state.sourceReducer);
+    let {
+        sources,
+        pinned,
+        filters = [],
+    } = useSelector((state) => state.sourceReducer);
+    sources = sources.filter((source) => filters.indexOf(source.lang) === -1);
+
     const pinnedSources = sources.filter(
         (source) => pinned.indexOf(source.sourceId) !== -1
     );
@@ -53,14 +59,16 @@ const GlobalSearch = ({ route, navigation }) => {
                     setLoading(true);
 
                     const source = getSource(item.sourceId);
-                    const data = await source.searchNovels(searchText);
+                    const data = await source.searchNovels(
+                        encodeURI(searchText)
+                    );
 
                     setSearchResults((searchResults) => [
                         ...searchResults,
                         {
                             sourceId: item.sourceId,
                             sourceName: item.sourceName,
-                            sourceLanguage: item.sourceLanguage,
+                            lang: item.lang,
                             novels: data,
                         },
                     ]);
@@ -72,7 +80,7 @@ const GlobalSearch = ({ route, navigation }) => {
                         {
                             sourceId: item.sourceId,
                             sourceName: item.sourceName,
-                            sourceLanguage: item.sourceLanguage,
+                            lang: item.lang,
                             novels: [],
                         },
                     ]);
