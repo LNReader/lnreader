@@ -100,7 +100,7 @@ const parseNovelAndChapters = async (novelUrl) => {
 
     $("div.header-stats > span").each(function (result) {
         if ($(this).find("small").text() === "Status") {
-            novel.Status = $(this).find("strong").text();
+            novel.status = $(this).find("strong").text();
         }
     });
 

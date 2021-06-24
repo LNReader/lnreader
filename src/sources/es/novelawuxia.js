@@ -76,7 +76,7 @@ const parseNovelAndChapters = async (novelUrl) => {
     novel.novelCover = $("div.separator").find("a").attr("href");
 
     novel.artist = "";
-    novel.Status = "";
+    novel.status = "";
 
     $("div > b").each(function (result) {
         const detailName = $(this).text();
@@ -90,7 +90,7 @@ const parseNovelAndChapters = async (novelUrl) => {
             }
 
             if (detailName.includes("Estatus")) {
-                novel.Status = detail.replace("Estatus: ", "");
+                novel.status = detail.replace("Estatus: ", "");
             }
             if (detailName.includes("Géneros:")) {
                 novel.genre = detail
@@ -104,13 +104,16 @@ const parseNovelAndChapters = async (novelUrl) => {
 
     $("div").each(function (result) {
         const detailName = $(this).text();
-
         if (detailName.includes("Sinopsis")) {
-            novel.summary = $(this)
-                .next()
-                .text()
-                .replace("Sinopsis", "")
-                .trim();
+            novel.summary =
+                $(this).next().text() !== ""
+                    ? $(this).next().text().replace("Sinopsis", "").trim()
+                    : $(this)
+                          .next()
+                          .next()
+                          .text()
+                          .replace("Sinopsis", "")
+                          .trim();
         }
 
         if (detailName.includes("Lista de Capítulos")) {
@@ -149,11 +152,7 @@ const parseNovelAndChapters = async (novelUrl) => {
 };
 
 const parseChapter = async (novelUrl, chapterUrl) => {
-    let year = req.params.year;
-    let month = req.params.month;
     const url = `${baseUrl}${year}/${month}/${chapterUrl}`;
-
-    console.log(url);
 
     const result = await fetch(url);
     const body = await result.text();

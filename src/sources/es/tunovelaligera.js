@@ -76,8 +76,8 @@ const parseNovelAndChapters = async (novelUrl) => {
 
     novel.genre = novel.Generos.replace(/, /g, ",");
     novel.author = novel.Autores;
-    novel.Status = novel.Estado;
-    novel.Status = null;
+    novel.status = novel.Estado;
+    novel.status = null;
 
     novel.artist = novel["Artista(s)"];
 

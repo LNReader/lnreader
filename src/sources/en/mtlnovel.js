@@ -37,7 +37,16 @@ const popularNovels = async (page) => {
 const parseNovelAndChapters = async (novelUrl) => {
     const url = `${baseUrl}/${novelUrl}`;
 
-    const result = await fetch(url);
+    let headers = new Headers({
+        referer: "https://www.mtlnovel.com/alltime-rank/",
+        "User-Agent":
+            "'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36",
+    });
+
+    const result = await fetch(url, {
+        method: "GET",
+        headers: headers,
+    });
     const body = await result.text();
 
     $ = cheerio.load(body);
@@ -66,7 +75,7 @@ const parseNovelAndChapters = async (novelUrl) => {
         .text()
         .replace("Auhtor:", "");
 
-    novel.Status = $("tr > td")
+    novel.status = $("tr > td")
         .filter(function () {
             return $(this).prev().text().trim() === "Status";
         })

@@ -72,7 +72,7 @@ const parseNovelAndChapters = async (novelUrl) => {
 
     novel.artist = null;
 
-    novel.Status = null;
+    novel.status = null;
 
     let novelChapters = [];
 

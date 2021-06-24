@@ -70,7 +70,7 @@ const parseNovelAndChapters = async (novelUrl) => {
                 novel.author = $(this).text().replace("Autor:", "").trim();
             }
             if ($(this).text().includes("Estado:")) {
-                novel.Status = $(this).text().replace("Estado: ", "").trim();
+                novel.status = $(this).text().replace("Estado: ", "").trim();
             }
 
             if ($(this).text().includes("Género:")) {

@@ -79,7 +79,7 @@ const parseNovelAndChapters = async (novelUrl) => {
 
     novel.artist = null;
 
-    novel.Status = $("li > h3")
+    novel.status = $("li > h3")
         .filter(function () {
             return $(this).text().trim() === "Status:";
         })

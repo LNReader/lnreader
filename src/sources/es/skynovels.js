@@ -60,7 +60,7 @@ const parseNovelAndChapters = async (novUrl) => {
     novel.genre = genres.join(",");
     novel.author = item.nvl_writer;
     novel.summary = item.nvl_content;
-    novel.Status = item.nvl_status;
+    novel.status = item.nvl_status;
 
     let novelChapters = [];
 

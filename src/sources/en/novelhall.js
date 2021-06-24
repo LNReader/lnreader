@@ -65,7 +65,7 @@ const parseNovelAndChapters = async (novelUrl) => {
 
     novel.artist = null;
 
-    novel.Status = $("span.blue").first().next().text().replace("Status：", "");
+    novel.status = $("span.blue").first().next().text().replace("Status：", "");
 
     let novelChapters = [];
 

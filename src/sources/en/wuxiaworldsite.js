@@ -83,7 +83,7 @@ const parseNovelAndChapters = async (novelUrl) => {
     novel.genre = novel.genre.split(",");
     novel.genre.pop();
 
-    novel.Status = novel.genre.pop();
+    novel.status = novel.genre.pop();
 
     novel.genre = novel.genre.join(",");
 

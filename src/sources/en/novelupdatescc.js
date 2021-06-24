@@ -56,7 +56,7 @@ const parseNovelAndChapters = async (novelUrl) => {
 
     novel.genre = $("div.book-catalog > span.txt").text();
 
-    novel.Status = $("div.book-state > span.txt").text();
+    novel.status = $("div.book-state > span.txt").text();
 
     novel.author = $("div.author > span.name").text();
 
