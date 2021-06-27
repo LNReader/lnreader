@@ -81,7 +81,7 @@ const parseNovelAndChapters = async (novelUrl) => {
             case "Author":
                 novel.author = detail.trim();
                 break;
-            case "Artist":
+            case "Novel":
                 novel.status = detail.trim();
                 break;
         }

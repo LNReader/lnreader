@@ -61,17 +61,17 @@ const parseNovelAndChapters = async (novelUrl) => {
 
     $(".novel-detail-item").each(function (result) {
         const detailName = $(this).find(".novel-detail-header > h6").text();
-        const detail = $(this).find(".novel-detail-body").text();
+        const detail = $(this).find(".novel-detail-body").text().trim();
 
         switch (detailName) {
             case "Genre":
-                genre = detail.trim().replace(/[\t\n]/g, ",");
+                genre = detail.replace(/[\t\n]/g, ",");
                 break;
             case "Author(s)":
-                author = detail.trim();
+                author = detail;
                 break;
             case "Artist(s)":
-                artist = detail.trim();
+                artist = detail;
                 break;
             case "Description":
                 summary = detail;

@@ -60,7 +60,7 @@ const parseNovelAndChapters = async (novelUrl) => {
 
     novel.novelCover = $("div.book > img").attr("src");
 
-    novel.summary = $("div.desc-text").text();
+    novel.summary = $("div.desc-text").text().trim();
 
     novel.author = $("div.info > div > h3")
         .filter(function () {
@@ -79,12 +79,13 @@ const parseNovelAndChapters = async (novelUrl) => {
 
     novel.artist = null;
 
-    novel.status = $("li > h3")
+    novel.status = $("div.info > div")
         .filter(function () {
-            return $(this).text().trim() === "Status:";
+            return $(this).find("h3").text().trim() === "Status:";
         })
-        .siblings()
-        .text();
+        .text()
+        .replace("Status:", "")
+        .replace(/\s/g, "");
 
     const novelId = $("#rating").attr("data-novel-id");
 

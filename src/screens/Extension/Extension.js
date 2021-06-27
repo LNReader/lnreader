@@ -189,7 +189,8 @@ const Extension = ({ navigation, route }) => {
                     onScroll={onScroll}
                     ListFooterComponent={
                         !searchText &&
-                        page < totalPages && (
+                        page < totalPages &&
+                        novels.length && (
                             <View style={{ paddingVertical: 16 }}>
                                 <ActivityIndicator color={theme.colorAccent} />
                             </View>

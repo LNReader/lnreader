@@ -74,10 +74,20 @@ const parseNovelAndChapters = async (novelUrl) => {
         novel.genre += $(this).text();
     });
 
-    novel.author = $(".book-sidebar__author > .book-sidebar__info")
+    function capitalizeFirstLetter(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+
+    const info = $(".book-sidebar__author > .book-sidebar__info")
         .text()
-        .replace(/[\t\n]/g, "")
-        .trim();
+        .trim()
+        .split("・");
+
+    if (info) {
+        novel.author = info[0];
+
+        novel.status = capitalizeFirstLetter(info[1]);
+    }
 
     let novelChapters = [];
 

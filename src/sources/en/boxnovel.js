@@ -95,7 +95,7 @@ const parseNovelAndChapters = async (novelUrl) => {
 
     novel.summary = $(".description-summary > div.summary__content")
         .text()
-        .replace(/[\t\n]/g, "");
+        .replace(/[\t\n]|Description|Summary/g, "");
 
     let novelChapters = [];
 

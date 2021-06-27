@@ -75,6 +75,15 @@ const parseNovelAndChapters = async (novelUrl) => {
 
     novel.status = null;
 
+    novel.status = $("li")
+        .filter(function () {
+            return $(this).find("label").text().trim() === "Status:";
+        })
+        .text()
+        .includes("Completed")
+        ? "Completed"
+        : "Ongoing";
+
     let novelChapters = [];
 
     $(".chapter").each(function (result) {

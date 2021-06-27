@@ -38,7 +38,7 @@ const popularNovels = async (page) => {
 };
 
 const parseNovelAndChapters = async (novelUrl) => {
-    const url = `${baseUrl}${novelUrl}.html`;
+    const url = `${baseUrl}${novelUrl.replace("/", "")}.html`;
 
     console.log(url);
 
@@ -78,12 +78,7 @@ const parseNovelAndChapters = async (novelUrl) => {
         .text()
         .replace(/[\t\n]/g, "");
 
-    // novel.Alternative = $("[title='Alternative names']")
-    //     .next()
-    //     .text()
-    //     .replace(/[\t\n]/g, "");
-
-    let novelSummary = $(".inner").text();
+    let novelSummary = $(".inner").text().trim();
     novel.summary = novelSummary;
 
     let novelChapters = [];
@@ -92,8 +87,6 @@ const parseNovelAndChapters = async (novelUrl) => {
 
     $("h3.tit").each(function (res) {
         if ($(this).find("a").text() === novel.novelName) {
-            // console.log($(this).find("a").text());
-            // console.log(novel.novelName);
             latestChapter = $(this).next().find("span.s3").text().match(/\d+/);
         }
     });
@@ -118,7 +111,12 @@ const parseNovelAndChapters = async (novelUrl) => {
 };
 
 const parseChapter = async (novelUrl, chapterUrl) => {
-    const url = `${baseUrl}${novelUrl}/${chapterUrl}.html`;
+    let novelId = novelUrl.replace("/", "");
+
+    const url = `${baseUrl}${novelId}/${chapterUrl}.html`;
+    console.log(novelUrl, chapterUrl);
+
+    console.log(url);
 
     const result = await fetch(url);
     const body = await result.text();
@@ -129,6 +127,8 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 
     let chapterText = $("div.txt").html();
     chapterText = htmlToText(chapterText);
+
+    console.log(chapterText);
 
     let nextChapter = null;
 

@@ -70,7 +70,7 @@ const parseNovelAndChapters = async (novelUrl) => {
 
     novel.summary = $(".story-introduction-content").text();
 
-    novel.author = $(".content-reading > p").text();
+    novel.author = $(".content-reading > p").text().trim();
 
     novel.artist = null;
 

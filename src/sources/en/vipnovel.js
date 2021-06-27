@@ -86,7 +86,11 @@ const parseNovelAndChapters = async (novelUrl) => {
         }
     });
 
-    let novelSummary = $(".description-summary > div.summary__content").text();
+    $(".summary__content > p").first().remove();
+
+    let novelSummary = $(".description-summary > div.summary__content")
+        .text()
+        .replace("Synopsis", "");
 
     novel.summary = novelSummary.replace(/[\t\n]/g, "");
 

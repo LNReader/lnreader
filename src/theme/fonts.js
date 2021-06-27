@@ -11,4 +11,5 @@ export const fonts = {
     "noto-sans-bold": require("../../assets/fonts/NotoSans-Bold.ttf"),
     "open-sans": require("../../assets/fonts/OpenSans-Regular.ttf"),
     "pt-serif": require("../../assets/fonts/PTSerif-Regular.ttf"),
+    "productsans-regular": require("../../assets/fonts/productsans_regular.ttf"),
 };

@@ -61,7 +61,7 @@ const parseNovelAndChapters = async (novelUrl) => {
 
     novel.novelCover = $("div.book > img").attr("src");
 
-    novel.summary = $("div.desc-text").text();
+    novel.summary = $("div.desc-text").text().trim();
 
     novel.author = $("li > h3")
         .filter(function () {

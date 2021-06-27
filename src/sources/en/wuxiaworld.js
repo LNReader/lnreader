@@ -51,7 +51,13 @@ const parseNovelAndChapters = async (novelUrl) => {
 
     novel.novelCover = $("img.img-thumbnail").attr("src");
 
-    novel.summary = $(".fr-view > p").text();
+    novel.summary = $("h3")
+        .filter(function () {
+            return $(this).text().trim() === "Synopsis";
+        })
+        .next()
+        .text()
+        .trim();
 
     novel.author = $("div > dt")
         .filter(function () {
@@ -73,6 +79,10 @@ const parseNovelAndChapters = async (novelUrl) => {
     novel.artist = null;
 
     novel.status = null;
+
+    novel.status = $("div.fr-view.pt-10").text().includes("Complete")
+        ? "Completed"
+        : "Ongoing";
 
     let novelChapters = [];
 

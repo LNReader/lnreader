@@ -74,7 +74,7 @@ const GlobalSearch = ({ route, navigation }) => {
                     ]);
                     setLoading(false);
                 } catch (error) {
-                    showToast(error.message);
+                    showToast(item.sourceName + ": " + error.message);
                     setSearchResults((searchResults) => [
                         ...searchResults,
                         {

@@ -72,7 +72,10 @@ const parseNovelAndChapters = async (novelUrl) => {
 
     novel.novelCover = $("#thumbnail > img").attr("src");
 
-    novel.summary = $("div#Description").text();
+    novel.summary = $("div#Description")
+        .text()
+        .replace("Description", "")
+        .trim();
 
     novel.genre = $("div#Genre")
         .text()

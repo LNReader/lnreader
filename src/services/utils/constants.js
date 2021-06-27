@@ -6,6 +6,7 @@ export const fonts = [
     { fontFamily: "noto-sans", name: "Noto Sans" },
     { fontFamily: "open-sans", name: "Open Sans" },
     { fontFamily: "pt-serif", name: "PT Serif" },
+    { fontFamily: "productsans-regular", name: "Product Sans" },
 ];
 
 export const dateFormat = {
