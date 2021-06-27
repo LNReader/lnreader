@@ -29,6 +29,8 @@ import YuukiTlsScraper from "./es/yuukitls";
 import NovelaWuxiaScraper from "./es/novelawuxia";
 import OasisTranslationsScraper from "./es/oasistranslations";
 import HasuTlScraper from "./es/hasutl";
+import NovelPassionScraper from "./en/novelpassion";
+import RoyalRoadScraper from "./en/royalroad";
 
 export const sources = [
     /**
@@ -196,6 +198,20 @@ export const sources = [
         icon: "https://github.com/rajarsheechatterjee/lnreader-extensions/blob/main/src/en/comrademao/icon.png?raw=true",
         lang: "English",
     },
+    {
+        sourceId: 33,
+        url: "https://www.novelpassion.com/",
+        sourceName: "NovelPassion",
+        icon: "https://github.com/rajarsheechatterjee/lnreader-extensions/blob/main/src/en/novelpassion/icon.png?raw=true",
+        lang: "English",
+    },
+    {
+        sourceId: 34,
+        url: "https://www.royalroad.com/",
+        sourceName: "Royal Road",
+        icon: "https://github.com/rajarsheechatterjee/lnreader-extensions/blob/main/src/en/royalroad/icon.png?raw=true",
+        lang: "English",
+    },
 
     /**
      * Spanish
@@ -353,6 +369,12 @@ export const getSource = (sourceId) => {
         }
         case 31: {
             return NovelaWuxiaScraper;
+        }
+        case 33: {
+            return NovelPassionScraper;
+        }
+        case 34: {
+            return RoyalRoadScraper;
         }
     }
 };
