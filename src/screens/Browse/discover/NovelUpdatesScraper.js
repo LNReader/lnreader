@@ -34,7 +34,31 @@ const scrapeTopNovels = async (pageNo) => {
         const novelSummary =
             $(this).find(".search_genre")[0].nextSibling.nodeValue;
 
-        const novel = { novelName, novelCover, genres, novelSummary };
+        let chapterCount = "";
+
+        $(this)
+            .find(".search_stats > span")
+            .each(function () {
+                let detail = $(this).text();
+
+                if (detail.includes("Chapters")) {
+                    chapterCount = detail.replace(" Chapters", "");
+                }
+            });
+
+        // const chapterCount = $(this)
+        //     .find('i[title="Chapter Count"]')
+        // const updateFrequency = $(this)
+        //     .find('i[title="Updates Frequency"]')
+
+        const novel = {
+            novelName,
+            novelCover,
+            genres,
+            novelSummary,
+            chapterCount,
+            // updateFrequency,
+        };
 
         novels.push(novel);
     });

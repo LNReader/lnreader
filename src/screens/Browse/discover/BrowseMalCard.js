@@ -18,14 +18,14 @@ const GenreChip = ({ children, theme }) => (
                     },
                 ]}
             >
-                {`${"Genre "}`}
+                {`${"Score "}`}
             </Text>
             {children}
         </Text>
     </View>
 );
 
-const NovelUpdatesNovelCard = ({ novel, theme, onPress }) => {
+const BrowseMalCard = ({ novel, theme, onPress }) => {
     return (
         <View
             style={{
@@ -33,14 +33,17 @@ const NovelUpdatesNovelCard = ({ novel, theme, onPress }) => {
                 backgroundColor: theme.colorPrimary,
                 borderRadius: 8,
                 elevation: 1,
-                marginHorizontal: 12,
                 marginVertical: 4,
+                marginHorizontal: 8,
             }}
         >
             <Pressable
                 style={styles.novelUpdatesCard}
                 onPress={onPress}
-                android_ripple={{ color: theme.rippleColor, borderless: true }}
+                android_ripple={{
+                    color: theme.rippleColor,
+                    borderless: true,
+                }}
             >
                 <FastImage
                     source={{ uri: novel.novelCover }}
@@ -63,15 +66,14 @@ const NovelUpdatesNovelCard = ({ novel, theme, onPress }) => {
                     >
                         {novel.novelName}
                     </Text>
+                    <GenreChip theme={theme}>{novel.score}</GenreChip>
 
-                    <GenreChip theme={theme}>{novel.genres}</GenreChip>
-                    <View style={{ flexDirection: "row", marginBottom: 4 }}>
+                    <View style={{ flexDirection: "row" }}>
                         <Text
                             style={[
                                 styles.genreChip,
                                 { color: theme.textColorSecondary },
                             ]}
-                            numberOfLines={2}
                         >
                             <Text
                                 style={[
@@ -82,29 +84,39 @@ const NovelUpdatesNovelCard = ({ novel, theme, onPress }) => {
                                     },
                                 ]}
                             >
-                                {`${"Chapter Count "}`}
+                                {`${"Type "}`}
                             </Text>
-                            {novel.chapterCount}
+                            {novel.info[1]}
                         </Text>
                     </View>
-
-                    <Text
-                        style={{
-                            fontSize: 12,
-                            color: theme.textColorSecondary,
-                            marginTop: 8,
-                        }}
-                        numberOfLines={4}
-                    >
-                        {novel.novelSummary}
-                    </Text>
+                    <View style={{ flexDirection: "row", marginBottom: 4 }}>
+                        <Text
+                            style={[
+                                styles.genreChip,
+                                { color: theme.textColorSecondary },
+                            ]}
+                        >
+                            <Text
+                                style={[
+                                    styles.genreChip,
+                                    {
+                                        color: theme.textColorPrimary,
+                                        fontSize: 14,
+                                    },
+                                ]}
+                            >
+                                {`${"Published "}`}
+                            </Text>
+                            {novel.info[2]}
+                        </Text>
+                    </View>
                 </View>
             </Pressable>
         </View>
     );
 };
 
-export default NovelUpdatesNovelCard;
+export default BrowseMalCard;
 
 const styles = StyleSheet.create({
     novelUpdatesCard: {

@@ -69,7 +69,10 @@ const NovelCover = ({ item, onPress, libraryStatus }) => {
                     !showDownloadBadges && {
                         borderRadius: 4,
                     },
-                    { backgroundColor: theme.colorAccent },
+                    {
+                        backgroundColor: theme.colorAccent,
+                        color: theme.colorButtonText,
+                    },
                 ]}
             >
                 {item.chaptersUnread}

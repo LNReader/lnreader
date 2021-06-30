@@ -17,6 +17,7 @@ import { useTheme, useSettings } from "../../../hooks/reduxHooks";
 import { showToast } from "../../../hooks/showToast";
 import { getDeviceOrientation } from "../../../services/utils/helpers";
 import { scrapeSearchResults, scrapeTopNovels } from "./MyAnimeListScraper";
+import BrowseMalCard from "./BrowseMalCard";
 
 const BrowseMalScreen = ({ navigation, route }) => {
     const theme = useTheme();
@@ -72,8 +73,9 @@ const BrowseMalScreen = ({ navigation, route }) => {
     }, []);
 
     const renderItem = ({ item }) => (
-        <NovelCover
-            item={{ novelName: item.novelName, novelCover: item.novelCover }}
+        <BrowseMalCard
+            novel={item}
+            theme={theme}
             onPress={() =>
                 navigation.navigate("GlobalSearch", {
                     novelName: item.novelName,
@@ -153,8 +155,8 @@ const BrowseMalScreen = ({ navigation, route }) => {
             ) : (
                 <FlatList
                     contentContainerStyle={styles.novelsContainer}
-                    numColumns={getNovelsPerRow()}
-                    key={getNovelsPerRow()}
+                    // numColumns={getNovelsPerRow()}
+                    // key={getNovelsPerRow()}
                     data={novels}
                     keyExtractor={(item) => item.novelName}
                     renderItem={renderItem}
@@ -189,7 +191,7 @@ const styles = StyleSheet.create({
     },
     novelsContainer: {
         flexGrow: 1,
-        paddingVertical: 8,
+        paddingBottom: 8,
         paddingHorizontal: 4,
     },
 });

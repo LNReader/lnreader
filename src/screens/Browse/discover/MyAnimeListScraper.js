@@ -22,7 +22,12 @@ const scrapeTopNovels = async (pageNo) => {
             ".jpg";
         const novelName = $(this).find("h3").text();
 
-        const novel = { novelName, novelCover };
+        const score = $(this)
+            .find(".js-top-ranking-score-col > span.score-label")
+            .text();
+
+        const info = $(this).find("div.information").text().split(/\s\s+/);
+        const novel = { novelName, novelCover, score, info };
 
         novels.push(novel);
     });
