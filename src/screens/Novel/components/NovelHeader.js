@@ -129,14 +129,14 @@ const NovelInfoHeader = ({
                             >
                                 <IconButton
                                     icon="swap-vertical-variant"
-                                    color={theme.textColorSecondary}
+                                    color={theme.textColorHint}
                                     size={24}
                                     style={{ margin: 0 }}
                                 />
                                 <Text
                                     style={{
                                         fontSize: 12,
-                                        color: theme.textColorSecondary,
+                                        color: theme.textColorHint,
                                     }}
                                 >
                                     Migrate
@@ -166,14 +166,14 @@ const NovelInfoHeader = ({
                             >
                                 <IconButton
                                     icon="earth"
-                                    color={theme.textColorSecondary}
+                                    color={theme.textColorHint}
                                     size={24}
                                     style={{ margin: 0 }}
                                 />
                                 <Text
                                     style={{
                                         fontSize: 12,
-                                        color: theme.textColorSecondary,
+                                        color: theme.textColorHint,
                                     }}
                                 >
                                     WebView

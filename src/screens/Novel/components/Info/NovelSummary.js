@@ -38,7 +38,8 @@ export default NovelSummary;
 const styles = StyleSheet.create({
     summaryContainer: {
         paddingHorizontal: 16,
-        marginVertical: 16,
+        marginTop: 8,
+        marginBottom: 16,
     },
     // summaryHeader: {
     //     marginTop: 5,

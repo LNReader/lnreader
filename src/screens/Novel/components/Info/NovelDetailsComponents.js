@@ -89,16 +89,14 @@ const FollowButton = ({ theme, onPress, followed }) => (
         >
             <IconButton
                 icon={followed ? "heart" : "heart-outline"}
-                color={followed ? theme.colorAccent : theme.textColorSecondary}
+                color={followed ? theme.colorAccent : theme.textColorHint}
                 size={24}
                 style={{ margin: 0 }}
             />
             <Text
                 style={{
                     fontSize: 12,
-                    color: followed
-                        ? theme.colorAccent
-                        : theme.textColorSecondary,
+                    color: followed ? theme.colorAccent : theme.textColorHint,
                 }}
             >
                 {followed ? "In Library" : "Add to library"}
@@ -123,16 +121,14 @@ const TrackerButton = ({ theme, isTracked, onPress }) => (
         >
             <IconButton
                 icon={isTracked ? "check" : "sync"}
-                color={isTracked ? theme.colorAccent : theme.textColorSecondary}
+                color={isTracked ? theme.colorAccent : theme.textColorHint}
                 size={24}
                 style={{ margin: 0 }}
             />
             <Text
                 style={{
                     fontSize: 12,
-                    color: isTracked
-                        ? theme.colorAccent
-                        : theme.textColorSecondary,
+                    color: isTracked ? theme.colorAccent : theme.textColorHint,
                 }}
             >
                 {isTracked ? "Tracked" : "Tracking"}

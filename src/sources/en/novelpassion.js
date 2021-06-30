@@ -106,7 +106,7 @@ const parseNovelAndChapters = async (novelUrl) => {
             });
         });
 
-    novel.chapters = novelChapters;
+    novel.chapters = novelChapters.reverse();
 
     return novel;
 };

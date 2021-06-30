@@ -31,6 +31,7 @@ import OasisTranslationsScraper from "./es/oasistranslations";
 import HasuTlScraper from "./es/hasutl";
 import NovelPassionScraper from "./en/novelpassion";
 import RoyalRoadScraper from "./en/royalroad";
+import ScribbleHubScraper from "./en/scribblehub";
 
 export const sources = [
     /**
@@ -273,6 +274,13 @@ export const sources = [
         icon: "https://github.com/rajarsheechatterjee/lnreader-extensions/blob/main/src/es/novelawuxia/icon.png?raw=true",
         lang: "Spanish",
     },
+    {
+        sourceId: 35,
+        url: "https://www.scribblehub.com/",
+        sourceName: "Scribble Hub",
+        icon: "https://github.com/rajarsheechatterjee/lnreader-extensions/blob/main/src/en/scribblehub/icon.png?raw=true",
+        lang: "English",
+    },
 ];
 
 export const getSource = (sourceId) => {
@@ -375,6 +383,9 @@ export const getSource = (sourceId) => {
         }
         case 34: {
             return RoyalRoadScraper;
+        }
+        case 35: {
+            return ScribbleHubScraper;
         }
     }
 };
