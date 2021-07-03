@@ -42,7 +42,10 @@ const GlobalSearch = ({ route, navigation }) => {
     const library = useLibrary();
 
     useEffect(() => {
+        let mounted = true;
         novelName && onSubmitEditing();
+
+        return () => (mounted = false);
     }, []);
 
     const clearSearchbar = () => setSearchText("");
@@ -53,41 +56,42 @@ const GlobalSearch = ({ route, navigation }) => {
 
         let globalSearchSources = searchAllSources ? sources : pinnedSources;
 
-        globalSearchSources.map((item, index) =>
-            setTimeout(async () => {
-                try {
-                    setLoading(true);
+        for (let i = 0; i < globalSearchSources.length; i++) {
+            try {
+                setLoading(true);
 
-                    const source = getSource(item.sourceId);
-                    const data = await source.searchNovels(
-                        encodeURI(searchText)
-                    );
+                const source = getSource(globalSearchSources[i].sourceId);
+                const data = await source.searchNovels(encodeURI(searchText));
 
-                    setSearchResults((searchResults) => [
-                        ...searchResults,
-                        {
-                            sourceId: item.sourceId,
-                            sourceName: item.sourceName,
-                            lang: item.lang,
-                            novels: data,
-                        },
-                    ]);
-                    setLoading(false);
-                } catch (error) {
-                    showToast(item.sourceName + ": " + error.message);
-                    setSearchResults((searchResults) => [
-                        ...searchResults,
-                        {
-                            sourceId: item.sourceId,
-                            sourceName: item.sourceName,
-                            lang: item.lang,
-                            novels: [],
-                        },
-                    ]);
-                    setLoading(false);
-                }
-            }, 1000 * index)
-        );
+                setSearchResults((searchResults) => [
+                    ...searchResults,
+                    {
+                        sourceId: globalSearchSources[i].sourceId,
+                        sourceName: globalSearchSources[i].sourceName,
+                        lang: globalSearchSources[i].lang,
+                        novels: data,
+                    },
+                ]);
+                setLoading(false);
+                setProgress(
+                    (progress) => progress + 1 / globalSearchSources.length
+                );
+            } catch (error) {
+                showToast(
+                    globalSearchSources[i].sourceName + ": " + error.message
+                );
+                setSearchResults((searchResults) => [
+                    ...searchResults,
+                    {
+                        sourceId: globalSearchSources[i].sourceId,
+                        sourceName: globalSearchSources[i].sourceName,
+                        lang: globalSearchSources[i].lang,
+                        novels: [],
+                    },
+                ]);
+                setLoading(false);
+            }
+        }
     };
 
     const renderItem = ({ item }) => (
@@ -111,15 +115,8 @@ const GlobalSearch = ({ route, navigation }) => {
                 onSubmitEditing={onSubmitEditing}
                 clearSearchbar={clearSearchbar}
             />
-            {progress < 1 && progress > 0 && pinned && (
-                <ProgressBar
-                    color={
-                        progress > 0.9
-                            ? theme.colorPrimaryDark
-                            : theme.colorAccent
-                    }
-                    progress={progress}
-                />
+            {progress > 0 && (
+                <ProgressBar color={theme.colorAccent} progress={progress} />
             )}
             <FlatList
                 contentContainerStyle={{

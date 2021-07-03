@@ -7,7 +7,7 @@ import {
     ActivityIndicator,
 } from "react-native";
 import { ProgressBar } from "react-native-paper";
-import { useLibrary, useTheme } from "../../../hooks/reduxHooks";
+import { useLibrary, useSettings, useTheme } from "../../../hooks/reduxHooks";
 import { useSelector } from "react-redux";
 
 import EmptyView from "../../../components/EmptyView";
@@ -26,7 +26,13 @@ const MigrationNovels = ({ navigation, route }) => {
     const [progress, setProgress] = useState(0);
     const [loading, setLoading] = useState(false);
     const [searchResults, setSearchResults] = useState("");
-    const { sources, pinned } = useSelector((state) => state.sourceReducer);
+    const { searchAllSources = false } = useSettings();
+    let {
+        sources,
+        pinned,
+        filters = [],
+    } = useSelector((state) => state.sourceReducer);
+    sources = sources.filter((source) => filters.indexOf(source.lang) === -1);
 
     const library = useLibrary();
 
@@ -36,41 +42,43 @@ const MigrationNovels = ({ navigation, route }) => {
             source.sourceId !== sourceId
     );
 
-    const getSearchResults = () => {
-        pinnedSources.map((item, index) =>
-            setTimeout(async () => {
-                try {
-                    setLoading(true);
+    const getSearchResults = async () => {
+        let migrationSources = searchAllSources ? sources : pinnedSources;
+        for (let i = 0; i < migrationSources.length; i++) {
+            try {
+                setLoading(true);
 
-                    const source = getSource(item.sourceId);
-                    const data = await source.searchNovels(novelName);
+                const source = getSource(migrationSources[i].sourceId);
+                const data = await source.searchNovels(novelName);
 
-                    setSearchResults((searchResults) => [
-                        ...searchResults,
-                        {
-                            sourceId: item.sourceId,
-                            sourceName: item.sourceName,
-                            sourceLanguage: item.sourceLanguage,
-                            novels: data,
-                        },
-                    ]);
-                    setLoading(false);
-                } catch (error) {
-                    showToast(error.message);
+                setSearchResults((searchResults) => [
+                    ...searchResults,
+                    {
+                        sourceId: migrationSources[i].sourceId,
+                        sourceName: migrationSources[i].sourceName,
+                        sourceLanguage: migrationSources[i].lang,
+                        novels: data,
+                    },
+                ]);
+                setLoading(false);
+                setProgress(
+                    (progress) => progress + 1 / migrationSources.length
+                );
+            } catch (error) {
+                showToast(error.message);
 
-                    setSearchResults((searchResults) => [
-                        ...searchResults,
-                        {
-                            sourceId: item.sourceId,
-                            sourceName: item.sourceName,
-                            sourceLanguage: item.sourceLanguage,
-                            novels: [],
-                        },
-                    ]);
-                    setLoading(false);
-                }
-            }, 1000 * index)
-        );
+                setSearchResults((searchResults) => [
+                    ...searchResults,
+                    {
+                        sourceId: migrationSources[i].sourceId,
+                        sourceName: migrationSources[i].sourceName,
+                        sourceLanguage: migrationSources[i].lang,
+                        novels: [],
+                    },
+                ]);
+                setLoading(false);
+            }
+        }
     };
 
     useEffect(() => {
@@ -102,7 +110,7 @@ const MigrationNovels = ({ navigation, route }) => {
                 title={novelName}
                 onBackAction={() => navigation.goBack()}
             />
-            {progress < 1 && pinned && (
+            {progress > 0 && (
                 <ProgressBar color={theme.colorAccent} progress={progress} />
             )}
             <FlatList
