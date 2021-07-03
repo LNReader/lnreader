@@ -43,7 +43,7 @@ const JumpToChapterModal = ({
             }
         } else {
             const chapter = chapters.find((chap) =>
-                chap.chapterName.includes(text)
+                chap.chapterName.toLowerCase().includes(text.toLowerCase())
             );
 
             if (chapter) {

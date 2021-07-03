@@ -222,6 +222,15 @@ const Novel = ({ route, navigation }) => {
                                 />
                             </Menu>
                             <IconButton
+                                icon="text-box-search-outline"
+                                color="white"
+                                size={21}
+                                style={{
+                                    marginTop: StatusBar.currentHeight + 8,
+                                }}
+                                onPress={() => showJumpToChapterModal(true)}
+                            />
+                            <IconButton
                                 icon="share-variant"
                                 color="white"
                                 size={21}
@@ -234,16 +243,6 @@ const Novel = ({ route, navigation }) => {
                                         message: novel.sourceUrl,
                                     })
                                 }
-                            />
-                            <IconButton
-                                icon="text-box-search-outline"
-                                color="white"
-                                size={21}
-                                style={{
-                                    marginTop: StatusBar.currentHeight + 8,
-                                    marginRight: 16,
-                                }}
-                                onPress={() => showJumpToChapterModal(true)}
                             />
                         </Row>
                     </View>

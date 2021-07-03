@@ -69,6 +69,10 @@ const parseNovelAndChapters = async (novelUrl) => {
         novel.genre = novel.genre.slice(0, -1);
     }
 
+    novel.status = $("span.rnd_stats").next().text().includes("Ongoing")
+        ? "Ongoing"
+        : "Completed";
+
     novel.author = $("span.auth_name_fic").text();
 
     let formData = new FormData();

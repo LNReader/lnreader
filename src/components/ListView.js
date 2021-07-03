@@ -3,7 +3,14 @@ import { StyleSheet, View, Text, Image } from "react-native";
 import FastImage from "react-native-fast-image";
 import { TouchableRipple } from "react-native-paper";
 
-const ListView = ({ item, downloadBadge, unreadBadge, theme, onPress }) => {
+const ListView = ({
+    item,
+    downloadBadge,
+    unreadBadge,
+    inLibraryBadge,
+    theme,
+    onPress,
+}) => {
     return (
         <TouchableRipple
             borderless
@@ -29,6 +36,7 @@ const ListView = ({ item, downloadBadge, unreadBadge, theme, onPress }) => {
                 <View style={styles.badgeContainer}>
                     {downloadBadge}
                     {unreadBadge}
+                    {inLibraryBadge}
                 </View>
             </>
         </TouchableRipple>

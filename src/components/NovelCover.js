@@ -43,7 +43,7 @@ const NovelCover = ({ item, onPress, libraryStatus }) => {
         displayMode === 0 && (
             <View style={styles.titleContainer}>
                 <LinearGradient
-                    colors={["transparent", "rgba(0,0,0,0.6)"]}
+                    colors={["transparent", "rgba(0,0,0,0.7)"]}
                     style={styles.linearGradient}
                 >
                     <Text
@@ -98,6 +98,22 @@ const NovelCover = ({ item, onPress, libraryStatus }) => {
             </Text>
         );
 
+    const inLibraryBadge = () =>
+        libraryStatus && (
+            <Text
+                style={[
+                    styles.inLibraryBadge,
+                    {
+                        backgroundColor: theme.colorAccent,
+                        color: theme.colorButtonText,
+                        borderRadius: 4,
+                    },
+                ]}
+            >
+                In library
+            </Text>
+        );
+
     return displayMode !== 2 ? (
         <View style={{ flex: 1 / getNovelsPerRow() }}>
             <TouchableRipple
@@ -108,19 +124,36 @@ const NovelCover = ({ item, onPress, libraryStatus }) => {
                 onPress={onPress}
             >
                 <>
+                    <View
+                        style={{
+                            position: "absolute",
+                            zIndex: 1,
+                            top: 8,
+                            left: 8,
+                            flexDirection: "row",
+                        }}
+                    >
+                        {inLibraryBadge()}
+                        {downloadBadge()}
+                        {unreadBadge()}
+                    </View>
                     <FastImage
                         source={{ uri: item.novelCover }}
                         style={[
                             { height: getHeight(), borderRadius: 4 },
                             libraryStatus && { opacity: 0.5 },
                         ]}
+                    />
+                    <View
+                        style={{
+                            position: "absolute",
+                            bottom: 4,
+                            left: 4,
+                            right: 4,
+                        }}
                     >
-                        <View style={{ flexDirection: "row", margin: 4 }}>
-                            {downloadBadge()}
-                            {unreadBadge()}
-                        </View>
                         {compactTitle()}
-                    </FastImage>
+                    </View>
                     {comfortableTitle()}
                 </>
             </TouchableRipple>
@@ -130,6 +163,7 @@ const NovelCover = ({ item, onPress, libraryStatus }) => {
             item={item}
             downloadBadge={downloadBadge()}
             unreadBadge={unreadBadge()}
+            inLibraryBadge={inLibraryBadge()}
             theme={theme}
             onPress={onPress}
         />
@@ -141,7 +175,6 @@ export default NovelCover;
 const styles = StyleSheet.create({
     titleContainer: {
         flex: 1,
-        justifyContent: "flex-end",
         borderRadius: 4,
     },
     title: {
@@ -186,6 +219,11 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 4,
         borderBottomRightRadius: 4,
         paddingTop: 2,
+        paddingHorizontal: 4,
+        fontSize: 12,
+    },
+    inLibraryBadge: {
+        paddingVertical: 2,
         paddingHorizontal: 4,
         fontSize: 12,
     },

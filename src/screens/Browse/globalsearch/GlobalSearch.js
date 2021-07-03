@@ -132,12 +132,12 @@ const GlobalSearch = ({ route, navigation }) => {
                         {!loading && (
                             <EmptyView
                                 icon="__φ(．．)"
-                                description={`Search a novel in your pinned sources\n${
+                                description={`Search a novel in ${
                                     searchAllSources
-                                        ? "(Search all sources)"
+                                        ? "all sources"
                                         : pinned.length === 0
-                                        ? "(No sources pinned)"
-                                        : ""
+                                        ? "pinned sources\n(No sources pinned)"
+                                        : "pinned sources"
                                 }`}
                             />
                         )}

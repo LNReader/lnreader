@@ -221,6 +221,14 @@ const Chapter = ({ route, navigation }) => {
         }
     };
 
+    const hideHeader = () => {
+        if (!hidden) {
+            StatusBar.setHidden(true);
+            hideNavigationBar();
+        }
+        setHidden(!hidden);
+    };
+
     const readerStyles = [
         {
             paddingVertical: 16,
@@ -345,7 +353,7 @@ const Chapter = ({ route, navigation }) => {
                                 style={readerStyles}
                                 onLayout={scrollToSavedProgress}
                                 selectable={textSelectable}
-                                onPress={() => setHidden(!hidden)}
+                                onPress={hideHeader}
                             >
                                 {chapter.chapterText
                                     .trim()
