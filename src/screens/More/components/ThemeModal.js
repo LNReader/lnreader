@@ -13,6 +13,8 @@ const ThemeModal = ({ themeModalVisible, hidethemeModal, dispatch, theme }) => {
         { id: 2, name: "Dark", statusBar: "light" },
         { id: 3, name: "Midnight Dusk", statusBar: "light" },
         { id: 4, name: "Lime", statusBar: "light" },
+        { id: 6, name: "Hot Pink", statusBar: "light" },
+        { id: 7, name: "Strawberry Daiquiri", statusBar: "dark" },
         { id: 5, name: "Iris Blue", statusBar: "light" },
     ];
 
@@ -27,7 +29,7 @@ const ThemeModal = ({ themeModalVisible, hidethemeModal, dispatch, theme }) => {
                 color={theme.colorAccent}
                 onPress={() => {
                     dispatch(setAppTheme(item.id));
-                    // setStatusBarStyle(item.statusBar);
+                    setStatusBarStyle(item.statusBar);
                     ImmersiveMode.setBarColor(item.colorPrimary);
                 }}
             />

@@ -12,6 +12,8 @@ import {
     midnightDuskTheme,
     limeTheme,
     irisBlueTheme,
+    hotPinkTheme,
+    strawberryDaiquiri,
 } from "../../theme/theme";
 
 const themes = {
@@ -21,6 +23,8 @@ const themes = {
     3: midnightDuskTheme,
     4: limeTheme,
     5: irisBlueTheme,
+    6: hotPinkTheme,
+    7: strawberryDaiquiri,
 };
 
 /**

@@ -45,7 +45,7 @@ export const darkTheme = {
     textColorPrimary: "#FFFFFF",
     textColorSecondary: "rgba(255,255,255,0.7)",
     textColorHint: "rgba(255,255,255,0.5)",
-    rippleColor: "rgba(255,255,255,0.06)",
+    rippleColor: "rgba(41,121,255,0.12)",
     searchBarColor: "#303135",
     menuColor: "#242529",
     filterColor: "#FFEB3B",
@@ -67,7 +67,7 @@ export const amoledDarkTheme = {
     textColorPrimary: "#FFFFFF",
     textColorSecondary: "rgba(255,255,255,0.7)",
     textColorHint: "rgba(255,255,255,0.5)",
-    rippleColor: "rgba(255,255,255,0.12)",
+    rippleColor: "rgba(41,121,255,0.12)",
     searchBarColor: "#1F1F1F",
     menuColor: "#242529",
     filterColor: "#FFEB3B",
@@ -89,7 +89,7 @@ export const midnightDuskTheme = {
     textColorPrimary: "#FFFFFF",
     textColorSecondary: "rgba(255,255,255,0.7)",
     textColorHint: "rgba(255,255,255,0.5)",
-    rippleColor: "rgba(255,255,255,0.06)",
+    rippleColor: "rgba(240,36,117,0.12)",
     searchBarColor: "#201F27",
     menuColor: "#201F27",
     filterColor: "#FFEB3B",
@@ -108,11 +108,11 @@ export const limeTheme = {
     name: "Lime",
     colorPrimary: "#201F27",
     colorPrimaryDark: "#16151D",
-    colorAccent: "#4AF88A",
+    colorAccent: "#48E484",
     textColorPrimary: "#FFFFFF",
     textColorSecondary: "rgba(255,255,255,0.7)",
     textColorHint: "rgba(255,255,255,0.5)",
-    rippleColor: "rgba(255,255,255,0.06)",
+    rippleColor: "rgba(72,228,132,0.12)",
     searchBarColor: "#201F27",
     menuColor: "#201F27",
     filterColor: "#FFEB3B",
@@ -120,6 +120,52 @@ export const limeTheme = {
     colorDisabled: "rgba(57,57,57,255)",
     colorButtonText: "#16151D",
     statusBar: "light",
+};
+
+/**
+ * Hot Pink Theme
+ */
+
+export const hotPinkTheme = {
+    id: 6,
+    name: "Hot Pink",
+    colorPrimary: "#000000",
+    colorPrimaryDark: "#000000",
+    colorAccent: "#FF3399",
+    textColorPrimary: "#FFFFFF",
+    textColorSecondary: "rgba(255,255,255,0.7)",
+    textColorHint: "rgba(255,255,255,0.5)",
+    rippleColor: "rgba(255,51,153,0.12)",
+    searchBarColor: "#1F1F1F",
+    menuColor: "#242529",
+    filterColor: "#FFEB3B",
+    dividerColor: "rgba(255,255,255,0.15)",
+    colorDisabled: "rgba(33,33,33,255)",
+    colorButtonText: "#FFFFFF",
+    statusBar: "light",
+};
+
+/**
+ * Strawberry Daiquiri
+ */
+
+export const strawberryDaiquiri = {
+    id: 7,
+    name: "Strawberry Daiquiri",
+    colorPrimary: "#FFFFFF",
+    colorPrimaryDark: "#FAFAFA",
+    colorAccent: "#ED4A65",
+    textColorPrimary: "#000000",
+    textColorSecondary: "rgba(0,0,0,0.54)",
+    textColorHint: "rgba(0,0,0,0.38)",
+    rippleColor: "rgba(237,74,101,0.12)",
+    searchBarColor: "#FFFFFF",
+    menuColor: "#FFFFFF",
+    dividerColor: "rgba(0,0,0,0.1)",
+    filterColor: "#FFC107",
+    colorDisabled: "rgba(220,220,220,255)",
+    colorButtonText: "#FFFFFF",
+    statusBar: "dark",
 };
 
 export const irisBlueTheme = {
