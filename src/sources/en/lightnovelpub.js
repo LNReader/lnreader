@@ -113,22 +113,18 @@ const parseNovelAndChapters = async (novelUrl) => {
 
     let novelChapters = [];
 
-    let firstChapterNo, totalChapters;
-
-    totalChapters = $(".header-stats > span").first().text().match(/\d+/)[0];
-    firstChapterNo = $(".chapter-no").first().text().match(/\d+/)[0];
-
-    for (let i = firstChapterNo; i <= totalChapters; i++) {
-        const chapterName = "Chapter " + i;
-
-        const releaseDate = null;
-
-        const chapterUrl = "chapter-" + i;
+    $("ul.chapter-list > li").each(function (result) {
+        const chapterName = $(this).find(".chapter-title").text().trim();
+        const releaseDate = $(this).find("time").text().trim();
+        const chapterUrl = $(this)
+            .find("a")
+            .attr("href")
+            .replace(`/novel/${novelUrl}/`, "");
 
         const chapter = { chapterName, releaseDate, chapterUrl };
 
         novelChapters.push(chapter);
-    }
+    });
 
     novel.chapters = novelChapters;
 
