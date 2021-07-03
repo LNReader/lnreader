@@ -1,15 +1,13 @@
 import React from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 import FastImage from "react-native-fast-image";
-import { TouchableRipple } from "react-native-paper";
 
 const UpdateCard = ({ item, theme, onPress }) => {
     return (
-        <TouchableRipple
+        <Pressable
             style={styles.updateCard}
             onPress={onPress}
-            rippleColor={theme.rippleColor}
-            borderless
+            android_ripple={{ color: theme.rippleColor }}
         >
             <>
                 <FastImage
@@ -41,7 +39,7 @@ const UpdateCard = ({ item, theme, onPress }) => {
                     </Text>
                 </View>
             </>
-        </TouchableRipple>
+        </Pressable>
     );
 };
 

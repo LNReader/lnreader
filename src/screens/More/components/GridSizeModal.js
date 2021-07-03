@@ -46,17 +46,6 @@ const GridSizeModal = ({
                 >
                     {`${novelsPerRow} per row`}
                 </Text>
-                {/* <Slider
-                    style={styles.slider}
-                    value={novelsPerRow}
-                    minimumValue={1}
-                    maximumValue={5}
-                    step={1}
-                    minimumTrackTintColor={theme.colorAccent}
-                    maximumTrackTintColor="#000000"
-                    thumbTintColor={theme.colorAccent}
-                    onValueChange={(value) => dispatch(setNovelsPerRow(value))}
-                /> */}
                 <RadioButtonGroup
                     onValueChange={(value) => dispatch(setNovelsPerRow(value))}
                     value={novelsPerRow}

@@ -23,7 +23,7 @@ export const lightTheme = {
     textColorPrimary: "#000000",
     textColorSecondary: "rgba(0,0,0,0.54)",
     textColorHint: "rgba(0,0,0,0.38)",
-    rippleColor: "rgba(0,0,0,0.06)",
+    rippleColor: "rgba(41,121,255,0.12)",
     searchBarColor: "#FFFFFF",
     menuColor: "#FFFFFF",
     dividerColor: "rgba(0,0,0,0.1)",
@@ -105,7 +105,7 @@ export const midnightDuskTheme = {
 
 export const limeTheme = {
     id: 4,
-    name: "Lime",
+    name: "Green Apple",
     colorPrimary: "#201F27",
     colorPrimaryDark: "#16151D",
     colorAccent: "#48E484",
@@ -128,7 +128,7 @@ export const limeTheme = {
 
 export const hotPinkTheme = {
     id: 6,
-    name: "Hot Pink",
+    name: "AMOLED Hot Pink",
     colorPrimary: "#000000",
     colorPrimaryDark: "#000000",
     colorAccent: "#FF3399",
@@ -177,7 +177,7 @@ export const irisBlueTheme = {
     textColorPrimary: "#FFFFFF",
     textColorSecondary: "rgba(255,255,255,0.7)",
     textColorHint: "rgba(255,255,255,0.5)",
-    rippleColor: "rgba(255,255,255,0.06)",
+    rippleColor: "rgba(0,173,181,0.12)",
     searchBarColor: "#393e46",
     menuColor: "#393e46",
     filterColor: "#FFEB3B",

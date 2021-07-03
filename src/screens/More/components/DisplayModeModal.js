@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, View, Text, Pressable } from "react-native";
 import { Portal, Modal, Checkbox } from "react-native-paper";
 import { setAppSettings } from "../../../redux/settings/settings.actions";
 
@@ -18,20 +18,39 @@ const DisplayModeModal = ({
 
     const renderCheckboxes = () => {
         return displayModes.map((mode) => (
-            <Checkbox.Item
+            <View
                 key={mode.displayMode}
-                label={mode.label}
-                labelStyle={{ color: theme.textColorPrimary }}
-                status={
-                    displayMode === mode.displayMode ? "checked" : "unchecked"
-                }
-                mode="ios"
-                uncheckedColor={theme.textColorSecondary}
-                color={theme.colorAccent}
-                onPress={() =>
-                    dispatch(setAppSettings("displayMode", mode.displayMode))
-                }
-            />
+                style={[
+                    {
+                        borderRadius: 8,
+                        overflow: "hidden",
+                        marginVertical: 4,
+                    },
+                    displayMode === mode.displayMode && {
+                        backgroundColor: theme.rippleColor,
+                    },
+                ]}
+            >
+                <Pressable
+                    android_ripple={{
+                        color: theme.rippleColor,
+                    }}
+                    style={{
+                        paddingHorizontal: 16,
+                        paddingVertical: 12,
+                        justifyContent: "space-between",
+                    }}
+                    onPress={() =>
+                        dispatch(
+                            setAppSettings("displayMode", mode.displayMode)
+                        )
+                    }
+                >
+                    <Text style={{ color: theme.textColorPrimary }}>
+                        {mode.label}
+                    </Text>
+                </Pressable>
+            </View>
         ));
     };
 

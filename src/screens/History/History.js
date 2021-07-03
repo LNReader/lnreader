@@ -93,10 +93,10 @@ const History = ({ navigation }) => {
                     paddingHorizontal: 16,
                 }}
                 data={searchText ? searchResults : history}
-                keyExtractor={(index) => index.toString()}
+                keyExtractor={(item, index) => item.date}
                 renderItem={({ item }) => (
                     <FlatList
-                        keyExtractor={(item, index) => index.toString()}
+                        keyExtractor={(item, index) => item.novelId.toString()}
                         data={item.novels}
                         renderItem={renderHistoryCard}
                         ListHeaderComponent={

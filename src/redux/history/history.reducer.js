@@ -26,7 +26,7 @@ const historyReducer = (state = initialState, action) => {
         //         ),
         //     };
         case CLEAR_HISTORY:
-            return { ...state, loading: [] };
+            return { ...state, loading: false, history: [] };
         default:
             return state;
     }
