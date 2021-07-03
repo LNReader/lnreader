@@ -38,6 +38,7 @@ import ChaptersSettingsSheet from "./components/ChaptersSettingsSheet";
 import TrackSheet from "./components/Tracker/TrackSheet";
 import ChapterActionsSheet from "./components/ChapterActionsSheet";
 import { Row } from "../../components/Common";
+import JumpToChapterModal from "./components/JumpToChapterModal";
 
 const Novel = ({ route, navigation }) => {
     const item = route.params;
@@ -51,6 +52,7 @@ const Novel = ({ route, navigation }) => {
     const [selected, setSelected] = useState([]);
     const [downloadMenu, showDownloadMenu] = useState(false);
 
+    let flatlistRef = useRef(null);
     let chaptersSettingsSheetRef = useRef(null);
     let trackerSheetRef = useRef(null);
     let chapterActionsSheetRef = useRef(null);
@@ -85,6 +87,8 @@ const Novel = ({ route, navigation }) => {
             progressBackgroundColor={theme.colorPrimary}
         />
     );
+
+    const [jumpToChapterModal, showJumpToChapterModal] = useState(false);
 
     const renderItem = ({ item, index }) => (
         <ChapterItem
@@ -231,10 +235,21 @@ const Novel = ({ route, navigation }) => {
                                     })
                                 }
                             />
+                            <IconButton
+                                icon="text-box-search-outline"
+                                color="white"
+                                size={21}
+                                style={{
+                                    marginTop: StatusBar.currentHeight + 8,
+                                    marginRight: 16,
+                                }}
+                                onPress={() => showJumpToChapterModal(true)}
+                            />
                         </Row>
                     </View>
                 )}
                 <FlatList
+                    ref={(ref) => (flatlistRef.current = ref)}
                     data={!loading && chapters}
                     keyExtractor={(item) => item.chapterId.toString()}
                     removeClippedSubviews={true}
@@ -362,6 +377,14 @@ const Novel = ({ route, navigation }) => {
                 )}
                 {!loading && (
                     <Portal>
+                        <JumpToChapterModal
+                            modalVisible={jumpToChapterModal}
+                            hideModal={() => showJumpToChapterModal(false)}
+                            theme={theme}
+                            chapters={chapters}
+                            novel={novel}
+                            navigation={navigation}
+                        />
                         <ChaptersSettingsSheet
                             novelUrl={novelUrl}
                             bottomSheetRef={chaptersSettingsSheetRef}
