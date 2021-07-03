@@ -59,6 +59,8 @@ const initialState = {
     swipeGestures: true,
     incognitoMode: false,
     searchAllSources: false,
+    textSelectable: false,
+    updateLibraryOnLaunch: false,
 };
 
 const settingsReducer = (state = initialState, action) => {

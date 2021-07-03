@@ -70,7 +70,11 @@ const Chapter = ({ route, navigation }) => {
     const showScrollPercentage = useSelector(
         (state) => state.settingsReducer.showScrollPercentage
     );
-    const { swipeGestures = true, incognitoMode = false } = useSettings();
+    const {
+        swipeGestures = true,
+        incognitoMode = false,
+        textSelectable = false,
+    } = useSettings();
 
     const [hidden, setHidden] = useState(true);
 
@@ -85,7 +89,6 @@ const Chapter = ({ route, navigation }) => {
 
     const [scrollPercentage, setScrollPercentage] = useState(0);
     const [firstLayout, setFirstLayout] = useState(true);
-    const [selectText, setSelectText] = useState(false);
 
     const [contentSize, setContentSize] = useState(0);
 
@@ -341,7 +344,7 @@ const Chapter = ({ route, navigation }) => {
                             <Text
                                 style={readerStyles}
                                 onLayout={scrollToSavedProgress}
-                                selectable={selectText}
+                                selectable={textSelectable}
                                 onPress={() => setHidden(!hidden)}
                             >
                                 {chapter.chapterText
@@ -357,8 +360,7 @@ const Chapter = ({ route, navigation }) => {
                         reader={reader}
                         dispatch={dispatch}
                         bottomSheetRef={readerSheetRef}
-                        selectText={selectText}
-                        setSelectText={setSelectText}
+                        selectText={textSelectable}
                         showScrollPercentage={showScrollPercentage}
                     />
                 </Portal>

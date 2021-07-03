@@ -18,7 +18,6 @@ const ReaderSheet = ({
     dispatch,
     bottomSheetRef,
     selectText,
-    setSelectText,
     showScrollPercentage,
 }) => {
     const [fontMenu, setFontMenu] = useState(false);
@@ -412,7 +411,14 @@ const ReaderSheet = ({
                         </View>
                         <Switch
                             value={selectText}
-                            onValueChange={setSelectText}
+                            onValueChange={() =>
+                                dispatch(
+                                    setAppSettings(
+                                        "textSelectable",
+                                        !selectText
+                                    )
+                                )
+                            }
                             color={theme.colorAccent}
                         />
                     </Row>

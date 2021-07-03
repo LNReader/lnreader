@@ -10,12 +10,16 @@ import {
 } from "../../components/List";
 import { ScreenContainer } from "../../components/Common";
 
-import { useTheme } from "../../hooks/reduxHooks";
+import { useSettings, useTheme } from "../../hooks/reduxHooks";
 import DisplayModeModal from "./components/DisplayModeModal";
 import GridSizeModal from "./components/GridSizeModal";
 import ThemeModal from "./components/ThemeModal";
-import { setAccentColor } from "../../redux/settings/settings.actions";
+import {
+    setAccentColor,
+    setAppSettings,
+} from "../../redux/settings/settings.actions";
 import ColorPickerModal from "../../components/ColorPickerModal";
+import SwitchSetting from "../../components/Switch/Switch";
 
 const GenralSettings = ({ navigation }) => {
     const theme = useTheme();
@@ -24,6 +28,8 @@ const GenralSettings = ({ navigation }) => {
     const { displayMode, novelsPerRow } = useSelector(
         (state) => state.settingsReducer
     );
+
+    const { updateLibraryOnLaunch = false } = useSettings();
 
     const displayModeLabel = (displayMode) => {
         const label = {
@@ -81,6 +87,20 @@ const GenralSettings = ({ navigation }) => {
                     theme={theme}
                 />
                 <Divider theme={theme} />
+                <ListSubHeader theme={theme}>Library</ListSubHeader>
+                <SwitchSetting
+                    label="Update library on launch"
+                    value={updateLibraryOnLaunch}
+                    onPress={() =>
+                        dispatch(
+                            setAppSettings(
+                                "updateLibraryOnLaunch",
+                                !updateLibraryOnLaunch
+                            )
+                        )
+                    }
+                    theme={theme}
+                />
                 <ListSubHeader theme={theme}>Theme</ListSubHeader>
                 <ListItem
                     title="Theme"

@@ -175,7 +175,9 @@ export const updateAllNovels = async () => {
             }
         });
 
-    await BackgroundService.start(veryIntensiveTask, options);
+    if (libraryNovels.length > 0) {
+        await BackgroundService.start(veryIntensiveTask, options);
+    }
 };
 
 export const parseChapterNumber = (chapterName) => {

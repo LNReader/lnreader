@@ -1,15 +1,13 @@
-import React, { useState, useCallback, useRef } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import {
     StyleSheet,
     Text,
     View,
     RefreshControl,
     ActivityIndicator,
-    TouchableOpacity,
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { useSelector, useDispatch } from "react-redux";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import { Searchbar } from "../../components/Searchbar";
 import NovelList from "../../components/NovelList";
@@ -29,7 +27,11 @@ import LibraryFilterSheet from "./components/LibraryFilterSheet";
 const LibraryScreen = ({ navigation }) => {
     const theme = useTheme();
     const dispatch = useDispatch();
-    const { showNumberOfNovels, incognitoMode = false } = useSettings();
+    const {
+        showNumberOfNovels,
+        incognitoMode = false,
+        updateLibraryOnLaunch = false,
+    } = useSettings();
 
     const libraryFilterSheetRef = useRef(null);
 
@@ -48,6 +50,10 @@ const LibraryScreen = ({ navigation }) => {
             dispatch(getLibraryAction(sort, filter));
         }, [getLibraryAction, sort, filter])
     );
+
+    useEffect(() => {
+        updateLibraryOnLaunch && dispatch(updateLibraryAction());
+    }, []);
 
     const onRefresh = () => {
         setRefreshing(true);
