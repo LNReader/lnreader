@@ -1,15 +1,8 @@
 import React, { useEffect, useState } from "react";
-import {
-    StyleSheet,
-    View,
-    ActivityIndicator,
-    FlatList,
-    Button,
-} from "react-native";
+import { StyleSheet, View, ActivityIndicator, FlatList } from "react-native";
 
 import * as WebBrowser from "expo-web-browser";
 
-import NovelCover from "../../../components/NovelCover";
 import { Searchbar } from "../../../components/Searchbar";
 import ErrorView from "../../../components/ErrorView";
 
@@ -29,7 +22,6 @@ const BrowseMalScreen = ({ navigation, route }) => {
 
     const [searchText, setSearchText] = useState("");
 
-    const baseUrl = "https://api.jikan.moe/v3/";
     const malUrl = "https://myanimelist.net/topmanga.php?type=lightnovels";
 
     const getNovels = async (limit) => {
@@ -155,8 +147,6 @@ const BrowseMalScreen = ({ navigation, route }) => {
             ) : (
                 <FlatList
                     contentContainerStyle={styles.novelsContainer}
-                    // numColumns={getNovelsPerRow()}
-                    // key={getNovelsPerRow()}
                     data={novels}
                     keyExtractor={(item) => item.novelName}
                     renderItem={renderItem}

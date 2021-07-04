@@ -18,15 +18,13 @@ import {
 import SourceCard from "./components/SourceCard";
 import { showToast } from "../../hooks/showToast";
 import { Searchbar } from "../../components/Searchbar";
-import MalCard from "./components/MalCard";
-import NovelUpdatesCard from "./components/NovelUpdatesCard";
 import EmptyView from "../../components/EmptyView";
+import DiscoverCard from "./discover/DiscoverCard";
 
 const Browse = ({ navigation }) => {
     const [refreshing, setRefreshing] = useState(false);
     const [searchText, setSearchText] = useState("");
-    // const [globalSearch, setGlobalSearch] = useState(false);
-    // const [searchResult, setSearchResults] = useState();
+
     let {
         sources,
         search,
@@ -64,12 +62,12 @@ const Browse = ({ navigation }) => {
         dispatch(searchSourcesAction(text));
     };
 
-    // const onSubmitEditing = () => {};
-
     const renderItem = ({ item }) => (
         <SourceCard
             item={item}
             isPinned={isPinned(item.sourceId)}
+            dispatch={dispatch}
+            navigation={navigation}
             theme={theme}
         />
     );
@@ -124,9 +122,27 @@ const Browse = ({ navigation }) => {
                                     Discover
                                 </Text>
                                 {showNovelUpdates && (
-                                    <NovelUpdatesCard theme={theme} />
+                                    <DiscoverCard
+                                        label="Novel Updates"
+                                        onPress={() =>
+                                            navigation.navigate(
+                                                "BrowseNovelUpdates"
+                                            )
+                                        }
+                                        icon={require("../../../assets/novelupdates.png")}
+                                        theme={theme}
+                                    />
                                 )}
-                                {showMyAnimeList && <MalCard theme={theme} />}
+                                {showMyAnimeList && (
+                                    <DiscoverCard
+                                        label="MyAnimeList"
+                                        onPress={() =>
+                                            navigation.navigate("BrowseMal")
+                                        }
+                                        icon={require("../../../assets/mal.png")}
+                                        theme={theme}
+                                    />
+                                )}
                             </>
                         )}
                         {pinned.length > 0 && (

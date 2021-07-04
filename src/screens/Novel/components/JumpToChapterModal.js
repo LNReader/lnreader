@@ -24,7 +24,7 @@ const JumpToChapterModal = ({
 
     const onSubmit = () => {
         if (!mode) {
-            if (text <= chapters.length) {
+            if (text > 0 && text <= chapters.length) {
                 navigation.navigate("Chapter", {
                     sourceId: novel.sourceId,
                     novelUrl: novel.novelUrl,
@@ -113,6 +113,7 @@ const JumpToChapterModal = ({
                     style={{
                         flexDirection: "row",
                         justifyContent: "space-between",
+                        marginTop: 4,
                     }}
                 >
                     <Text style={{ color: theme.textColorPrimary }}>

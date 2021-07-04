@@ -63,7 +63,9 @@ const scrapeSearchResults = async (searchTerm) => {
                     novelId[8].split(".")[0] +
                     ".jpg";
 
-                const novel = { novelName, novelCover };
+                const score = $(this).find("td:nth-child(5)").text().trim();
+
+                const novel = { novelName, novelCover, score };
 
                 novels.push(novel);
             }

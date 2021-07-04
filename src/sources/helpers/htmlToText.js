@@ -16,9 +16,6 @@ const htmlToText = (html) => {
             // Remove content in comments.
             .replace(/<!--.*?-->/gim, "")
             // Format anchor tags properly.
-            // e.g.
-            // input - <a class='ahref' href='http://pinetechlabs.com/' title='asdfqwer\"><b>asdf</b></a>
-            // output - asdf (http://pinetechlabs.com/)
             .replace(
                 /<\s*a[^>]*href=['"](.*?)['"][^>]*>([\s\S]*?)<\/\s*a\s*>/gi,
                 "$2"
@@ -41,29 +38,18 @@ const htmlToText = (html) => {
 };
 
 const decodeHtmlEntity = (m, n) => {
-    // Determine the character code of the entity. Range is 0 to 65535
-    // (characters in JavaScript are Unicode, and entities can represent
-    // Unicode characters).
     let code;
 
-    // Try to parse as numeric entity. This is done before named entities for
-    // speed because associative array lookup in many JavaScript implementations
-    // is a linear search.
     if (n.substr(0, 1) == "#") {
-        // Try to parse as numeric entity
         if (n.substr(1, 1) == "x") {
-            // Try to parse as hexadecimal
             code = parseInt(n.substr(2), 16);
         } else {
-            // Try to parse as decimal
             code = parseInt(n.substr(1), 10);
         }
     } else {
-        // Try to parse as named entity
         code = ENTITIES_MAP[n];
     }
 
-    // If still nothing, pass entity through
     return code === undefined || code === NaN
         ? "&" + n + ";"
         : String.fromCharCode(code);

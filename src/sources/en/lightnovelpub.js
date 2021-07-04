@@ -119,7 +119,7 @@ const parseNovelAndChapters = async (novelUrl) => {
         const chapterUrl = $(this)
             .find("a")
             .attr("href")
-            .replace(`/novel/${novelUrl}/`, "");
+            .replace(`/novel/${novelUrl}`, "");
 
         const chapter = { chapterName, releaseDate, chapterUrl };
 

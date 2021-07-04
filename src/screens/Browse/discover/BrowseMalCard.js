@@ -67,49 +67,57 @@ const BrowseMalCard = ({ novel, theme, onPress }) => {
                         {novel.novelName}
                     </Text>
                     <GenreChip theme={theme}>{novel.score}</GenreChip>
-
-                    <View style={{ flexDirection: "row" }}>
-                        <Text
-                            style={[
-                                styles.genreChip,
-                                { color: theme.textColorSecondary },
-                            ]}
-                        >
-                            <Text
-                                style={[
-                                    styles.genreChip,
-                                    {
-                                        color: theme.textColorPrimary,
-                                        fontSize: 14,
-                                    },
-                                ]}
+                    {novel.info && (
+                        <>
+                            <View style={{ flexDirection: "row" }}>
+                                <Text
+                                    style={[
+                                        styles.genreChip,
+                                        { color: theme.textColorSecondary },
+                                    ]}
+                                >
+                                    <Text
+                                        style={[
+                                            styles.genreChip,
+                                            {
+                                                color: theme.textColorPrimary,
+                                                fontSize: 14,
+                                            },
+                                        ]}
+                                    >
+                                        {`${"Type "}`}
+                                    </Text>
+                                    {novel.info[1]}
+                                </Text>
+                            </View>
+                            <View
+                                style={{
+                                    flexDirection: "row",
+                                    marginBottom: 4,
+                                }}
                             >
-                                {`${"Type "}`}
-                            </Text>
-                            {novel.info[1]}
-                        </Text>
-                    </View>
-                    <View style={{ flexDirection: "row", marginBottom: 4 }}>
-                        <Text
-                            style={[
-                                styles.genreChip,
-                                { color: theme.textColorSecondary },
-                            ]}
-                        >
-                            <Text
-                                style={[
-                                    styles.genreChip,
-                                    {
-                                        color: theme.textColorPrimary,
-                                        fontSize: 14,
-                                    },
-                                ]}
-                            >
-                                {`${"Published "}`}
-                            </Text>
-                            {novel.info[2]}
-                        </Text>
-                    </View>
+                                <Text
+                                    style={[
+                                        styles.genreChip,
+                                        { color: theme.textColorSecondary },
+                                    ]}
+                                >
+                                    <Text
+                                        style={[
+                                            styles.genreChip,
+                                            {
+                                                color: theme.textColorPrimary,
+                                                fontSize: 14,
+                                            },
+                                        ]}
+                                    >
+                                        {`${"Published "}`}
+                                    </Text>
+                                    {novel.info[2]}
+                                </Text>
+                            </View>
+                        </>
+                    )}
                 </View>
             </Pressable>
         </View>

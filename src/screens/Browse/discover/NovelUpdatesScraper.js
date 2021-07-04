@@ -101,7 +101,25 @@ const scrapeSearchResults = async (searchTerm) => {
         const novelSummary =
             $(this).find(".search_genre")[0].nextSibling.nodeValue;
 
-        const novel = { novelName, novelCover, genres, novelSummary };
+        let chapterCount = "";
+
+        $(this)
+            .find(".search_stats > span")
+            .each(function () {
+                let detail = $(this).text();
+
+                if (detail.includes("Chapters")) {
+                    chapterCount = detail.replace(" Chapters", "");
+                }
+            });
+
+        const novel = {
+            novelName,
+            novelCover,
+            genres,
+            novelSummary,
+            chapterCount,
+        };
 
         novels.push(novel);
     });

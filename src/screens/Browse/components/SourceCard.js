@@ -1,16 +1,12 @@
 import React from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
-import { TouchableRipple, Button, IconButton } from "react-native-paper";
-import { useNavigation } from "@react-navigation/native";
-import { useDispatch } from "react-redux";
+import { View, Text, Image, StyleSheet, Pressable } from "react-native";
+
+import { Button, IconButton } from "react-native-paper";
+
 import { pinSourceAction } from "../../../redux/source/source.actions";
-import FastImage from "react-native-fast-image";
 
-const ExtensionCard = ({ item, theme, isPinned }) => {
+const ExtensionCard = ({ item, theme, isPinned, dispatch, navigation }) => {
     const { sourceId, sourceName, icon, lang } = item;
-
-    const navigation = useNavigation();
-    const dispatch = useDispatch();
 
     const navigateToExtension = () =>
         navigation.navigate("Extension", {
@@ -20,63 +16,59 @@ const ExtensionCard = ({ item, theme, isPinned }) => {
         });
 
     return (
-        <TouchableRipple
+        <Pressable
             style={styles.extensionCard}
             onPress={navigateToExtension}
-            rippleColor={theme.rippleColor}
+            android_ripple={{ color: theme.rippleColor }}
         >
-            <>
-                <Image
-                    source={{ uri: icon }}
-                    style={styles.extensionIcon}
-                    resizeMode="contain"
-                />
-                <View style={styles.extensionDetails}>
-                    <View>
-                        <Text
-                            style={{
-                                color: theme.textColorPrimary,
-                                fontSize: 14,
-                            }}
-                        >
-                            {sourceName}
-                        </Text>
-                        <Text
-                            style={{
-                                color: theme.textColorSecondary,
-                                fontSize: 12,
-                            }}
-                        >
-                            {lang}
-                        </Text>
-                    </View>
-                    <View
-                        style={{ flexDirection: "row", alignItems: "center" }}
+            <Image
+                source={{ uri: icon }}
+                style={styles.extensionIcon}
+                // resizeMode="contain"
+            />
+            <View style={styles.extensionDetails}>
+                <View>
+                    <Text
+                        style={{
+                            color: theme.textColorPrimary,
+                            fontSize: 14,
+                        }}
                     >
-                        <Button
-                            labelStyle={{ letterSpacing: 0 }}
-                            uppercase={false}
-                            color={theme.colorAccent}
-                            onPress={navigateToExtension}
-                        >
-                            Browse
-                        </Button>
-                        <IconButton
-                            icon={isPinned ? "pin" : "pin-outline"}
-                            animated
-                            size={21}
-                            onPress={() => dispatch(pinSourceAction(sourceId))}
-                            color={
-                                isPinned
-                                    ? theme.colorAccent
-                                    : theme.textColorSecondary
-                            }
-                            style={{ margin: 2 }}
-                        />
-                    </View>
+                        {sourceName}
+                    </Text>
+                    <Text
+                        style={{
+                            color: theme.textColorSecondary,
+                            fontSize: 12,
+                        }}
+                    >
+                        {lang}
+                    </Text>
                 </View>
-            </>
-        </TouchableRipple>
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <Button
+                        labelStyle={{ letterSpacing: 0 }}
+                        uppercase={false}
+                        color={theme.colorAccent}
+                        onPress={navigateToExtension}
+                    >
+                        Browse
+                    </Button>
+                    <IconButton
+                        icon={isPinned ? "pin" : "pin-outline"}
+                        animated
+                        size={21}
+                        onPress={() => dispatch(pinSourceAction(sourceId))}
+                        color={
+                            isPinned
+                                ? theme.colorAccent
+                                : theme.textColorSecondary
+                        }
+                        style={{ margin: 2 }}
+                    />
+                </View>
+            </View>
+        </Pressable>
     );
 };
 
@@ -93,7 +85,7 @@ const styles = StyleSheet.create({
     extensionIcon: {
         width: 40,
         height: 40,
-        borderRadius: 8,
+        borderRadius: 4,
     },
     extensionDetails: {
         flex: 1,

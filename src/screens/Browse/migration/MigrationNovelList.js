@@ -111,12 +111,12 @@ const MigrationNovelList = ({ data, theme, library, navigation }) => {
                                 textTransform: "none",
                             }}
                             theme={{ colors: { primary: theme.colorAccent } }}
-                            onPress={() => {
-                                migrateNovel(
+                            onPress={async () => {
+                                hideMigrateNovelDialog();
+                                await migrateNovel(
                                     selectedNovel.sourceId,
                                     selectedNovel.novelUrl
                                 );
-                                hideMigrateNovelDialog();
                                 showToast(
                                     `${selectedNovel.novelName} migrated to new source.`
                                 );

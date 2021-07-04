@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, Dimensions } from "react-native";
+import { StyleSheet, View, Text, Dimensions, Pressable } from "react-native";
 import { ToggleButton, IconButton, Menu, Switch } from "react-native-paper";
 import Slider from "@react-native-community/slider";
 import Bottomsheet from "rn-sliding-up-panel";
@@ -68,6 +68,7 @@ const ReaderSheet = ({
                             justifyContent: "space-between",
                             width: "100%",
                             paddingHorizontal: 16,
+                            paddingVertical: 8,
                         }}
                     >
                         <ReaderSettingTitle title="Reader Theme" />
@@ -145,7 +146,7 @@ const ReaderSheet = ({
                             justifyContent: "space-between",
                             width: "100%",
                             paddingHorizontal: 16,
-                            marginTop: 16,
+                            paddingVertical: 8,
                         }}
                     >
                         <ReaderSettingTitle title="Text Align" />
@@ -216,7 +217,7 @@ const ReaderSheet = ({
                             justifyContent: "space-between",
                             width: "100%",
                             paddingHorizontal: 16,
-                            marginTop: 16,
+                            paddingVertical: 8,
                         }}
                     >
                         <ReaderSettingTitle title="Padding" />
@@ -266,7 +267,7 @@ const ReaderSheet = ({
                             justifyContent: "space-between",
                             width: "100%",
                             paddingHorizontal: 16,
-                            marginTop: 16,
+                            paddingVertical: 8,
                         }}
                     >
                         <ReaderSettingTitle title="Line Height" />
@@ -313,13 +314,17 @@ const ReaderSheet = ({
                             />
                         </Row>
                     </Row>
-                    <Row
+                    <Pressable
                         style={{
+                            flexDirection: "row",
+                            alignItems: "center",
                             justifyContent: "space-between",
                             width: "100%",
                             paddingHorizontal: 16,
-                            marginTop: 16,
+                            paddingVertical: 8,
                         }}
+                        android_ripple={{ color: theme.colorAccent }}
+                        onPress={openFontMenu}
                     >
                         <ReaderSettingTitle title="Font Style" />
                         <Menu
@@ -328,12 +333,11 @@ const ReaderSheet = ({
                             contentStyle={{ backgroundColor: theme.menuColor }}
                             anchor={
                                 <Text
-                                    onPress={openFontMenu}
                                     style={{
                                         color: "white",
-                                        paddingHorizontal: 16,
                                         fontSize: 16,
                                         fontFamily: reader.fontFamily,
+                                        paddingHorizontal: 16,
                                     }}
                                 >
                                     {fonts.find(
@@ -367,14 +371,25 @@ const ReaderSheet = ({
                                 />
                             ))}
                         </Menu>
-                    </Row>
-                    <Row
+                    </Pressable>
+                    <Pressable
                         style={{
+                            flexDirection: "row",
+                            alignItems: "center",
                             justifyContent: "space-between",
                             width: "100%",
                             paddingHorizontal: 16,
-                            marginTop: 16,
+                            paddingVertical: 8,
                         }}
+                        android_ripple={{ color: theme.colorAccent }}
+                        onPress={() =>
+                            dispatch(
+                                setAppSettings(
+                                    "showScrollPercentage",
+                                    !showScrollPercentage
+                                )
+                            )
+                        }
                     >
                         <ReaderSettingTitle title="Show Progress Percentage" />
                         <Switch
@@ -389,14 +404,22 @@ const ReaderSheet = ({
                             }
                             color={theme.colorAccent}
                         />
-                    </Row>
-                    <Row
+                    </Pressable>
+                    <Pressable
                         style={{
+                            flexDirection: "row",
+                            alignItems: "center",
                             justifyContent: "space-between",
                             width: "100%",
                             paddingHorizontal: 16,
-                            marginTop: 16,
+                            paddingVertical: 8,
                         }}
+                        android_ripple={{ color: theme.colorAccent }}
+                        onPress={() =>
+                            dispatch(
+                                setAppSettings("textSelectable", !selectText)
+                            )
+                        }
                     >
                         <View>
                             <ReaderSettingTitle title="Select Text " />
@@ -421,7 +444,7 @@ const ReaderSheet = ({
                             }
                             color={theme.colorAccent}
                         />
-                    </Row>
+                    </Pressable>
                 </View>
             </View>
         </Bottomsheet>

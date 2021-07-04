@@ -53,25 +53,6 @@ const SourceNovels = ({ navigation, route }) => {
                     </Text>
                 }
             />
-            {/* <Portal>
-                <MigrationDialog
-                    migrationDialog={migrationDialog}
-                    hideMigrationDialog={hideMigrationDIalog}
-                    theme={theme}
-                    selectedNovel={selectedNovel}
-                    loading={loading}
-                    migrationNovel={migrationNovel}
-                />
-                <SourceToMigrateDialog
-                    selectedNovel={selectedNovel}
-                    sourceToMigrateDialog={sourceToMigrateDialog}
-                    hideSourceToMigrateDialog={hideSourceToMigrateDialog}
-                    sources={sources}
-                    theme={theme}
-                    showMigrationDialog={showMigrationDialog}
-                    selectSourceToMigrate={selectSourceToMigrate}
-                />
-            </Portal> */}
         </View>
     );
 };

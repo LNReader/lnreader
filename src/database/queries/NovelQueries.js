@@ -1,8 +1,12 @@
 import * as SQLite from "expo-sqlite";
 const db = SQLite.openDatabase("lnreader.db");
 
+import BackgroundService from "react-native-background-actions";
+
 import { fetchChapters, fetchNovel } from "../../services/Source/source";
 import { insertChapters } from "./ChapterQueries";
+
+import { showToast } from "../../hooks/showToast";
 
 const insertNovelQuery = `INSERT INTO novels (novelUrl, sourceUrl, sourceId, source, novelName, novelCover, novelSummary, author, artist, status, genre) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
@@ -127,33 +131,67 @@ export const restoreLibrary = async (novel) => {
 const migrateNovelQuery = `INSERT INTO novels (novelUrl, sourceUrl, sourceId, source, novelName, novelCover, novelSummary, author, artist, status, genre, followed) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
 export const migrateNovel = async (sourceId, novelUrl) => {
-    const novel = await fetchNovel(sourceId, novelUrl);
+    try {
+        const novel = await fetchNovel(sourceId, novelUrl);
 
-    db.transaction((tx) =>
-        tx.executeSql(
-            migrateNovelQuery,
-            [
-                novel.novelUrl,
-                novel.sourceUrl,
-                novel.sourceId,
-                novel.source,
-                novel.novelName,
-                novel.novelCover,
-                novel.novelSummary,
-                novel.author,
-                novel.artist,
-                novel.status,
-                novel.genre,
-                1,
-            ],
-            async (txObj, { insertId }) => {
-                const chapters = await fetchChapters(
-                    novel.sourceId,
-                    novel.novelUrl
-                );
-                await insertChapters(insertId, chapters);
+        const options = {
+            taskName: "Migration",
+            taskTitle: `Migrating ${novel.novelName} to new source`,
+            taskDesc: novel.source,
+            taskIcon: {
+                name: "notification_icon",
+                type: "drawable",
             },
-            (txObj, error) => console.log("Error ", error)
-        )
-    );
+            color: "#00adb5",
+            parameters: {
+                delay: 1000,
+            },
+            progressBar: {
+                max: 1,
+                value: 0,
+                indeterminate: true,
+            },
+        };
+
+        const veryIntensiveTask = async () => {
+            await new Promise(async (resolve) => {
+                db.transaction((tx) =>
+                    tx.executeSql(
+                        migrateNovelQuery,
+                        [
+                            novel.novelUrl,
+                            novel.sourceUrl,
+                            novel.sourceId,
+                            novel.source,
+                            novel.novelName,
+                            novel.novelCover,
+                            novel.novelSummary,
+                            novel.author,
+                            novel.artist,
+                            novel.status,
+                            novel.genre,
+                            1,
+                        ],
+                        async (txObj, { insertId }) => {
+                            const chapters = await fetchChapters(
+                                novel.sourceId,
+                                novel.novelUrl
+                            );
+                            await insertChapters(insertId, chapters);
+                            resolve();
+                        },
+                        (txObj, error) => console.log("Error ", error)
+                    )
+                );
+            });
+        };
+
+        await BackgroundService.start(veryIntensiveTask, options);
+        await BackgroundService.updateNotification({
+            progressBar: { value: 1, indeterminate: false },
+        });
+        await BackgroundService.stop();
+    } catch (error) {
+        showToast(error.message);
+    }
 };
