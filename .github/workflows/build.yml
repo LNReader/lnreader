@@ -19,7 +19,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
-            - name: Install npm dependencies
+            - name: Install Dependencies
               run: |
                   npm install
 
@@ -42,4 +42,4 @@ jobs:
 
             - name: Build Android Release
               run: |
-                  cd android && gradlew assembleRelease --no-daemon
+                  cd android && ./gradlew assembleRelease --no-daemon
