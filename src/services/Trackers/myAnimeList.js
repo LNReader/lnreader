@@ -150,7 +150,7 @@ const revalidateMalToken = async (refreshToken) => {
         refresh_token: refreshToken,
     };
 
-    const res = await fetch(url, {
+    const res = await fetch(myAnimeListConfig.tokenUrl, {
         headers,
         method: "POST",
         body: qs.stringify(body),

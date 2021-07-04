@@ -53,6 +53,7 @@ const GlobalSearch = ({ route, navigation }) => {
 
     const onSubmitEditing = async () => {
         setSearchResults([]);
+        setProgress(0);
 
         let globalSearchSources = searchAllSources ? sources : pinnedSources;
 

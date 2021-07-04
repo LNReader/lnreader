@@ -1,36 +1,40 @@
 import React from "react";
-import { StyleSheet, View, Text, Image } from "react-native";
+import { StyleSheet, View, Text, Image, Pressable } from "react-native";
 import { TouchableRipple, IconButton } from "react-native-paper";
 import { useDispatch } from "react-redux";
 import { untrackNovel } from "../../../../redux/tracker/tracker.actions";
 
 export const AddMalTrackingCard = ({ theme, setTrackSearchDialog }) => (
-    <View
-        style={[
-            styles.addCardContainer,
-            { backgroundColor: theme.colorPrimary },
-        ]}
-    >
+    <View style={styles.addCardContainer}>
         <Image
             source={require("../../../../../assets/mal.png")}
             style={styles.trackerIcon}
         />
-        <TouchableRipple
-            style={styles.rippleContainer}
-            borderless
-            onPress={() => setTrackSearchDialog(true)}
-            rippleColor={theme.colorAccent}
+
+        <View
+            style={{
+                flex: 1,
+                flexDirection: "row",
+                borderRadius: 4,
+                overflow: "hidden",
+                marginHorizontal: 16,
+            }}
         >
-            <Text
-                style={{
-                    flex: 1,
-                    textAlignVertical: "center",
-                    color: theme.colorAccent,
-                }}
+            <Pressable
+                style={styles.rippleContainer}
+                android_ripple={{ color: theme.rippleColor, borderless: true }}
+                onPress={() => setTrackSearchDialog(true)}
             >
-                Add Tracking
-            </Text>
-        </TouchableRipple>
+                <Text
+                    style={{
+                        textAlignVertical: "center",
+                        color: theme.colorAccent,
+                    }}
+                >
+                    Add Tracking
+                </Text>
+            </Pressable>
+        </View>
     </View>
 );
 
@@ -59,7 +63,7 @@ export const MalTrackItemCard = ({
             >
                 <Image
                     source={require("../../../../../assets/mal.png")}
-                    style={[styles.trackerIcon, { borderBottomLeftRadius: 0 }]}
+                    style={styles.trackerIcon}
                 />
                 <View style={styles.listItemContainer}>
                     <Text
@@ -145,21 +149,17 @@ const styles = StyleSheet.create({
     trackerIcon: {
         height: 50,
         width: 50,
-        borderTopLeftRadius: 4,
-        borderBottomLeftRadius: 4,
+        borderRadius: 8,
     },
     rippleContainer: {
         flex: 1,
+        paddingVertical: 8,
         alignItems: "center",
-        borderTopRightRadius: 4,
-        borderBottomRightRadius: 4,
     },
     addCardContainer: {
         flexDirection: "row",
         alignItems: "center",
-        margin: 8,
-        borderRadius: 4,
-        elevation: 2,
+        margin: 16,
     },
     cardContainer: {
         margin: 8,

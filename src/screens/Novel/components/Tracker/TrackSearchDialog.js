@@ -5,6 +5,7 @@ import { searchNovels } from "../../../../services/Trackers/myAnimeList";
 import { useSelector, useDispatch } from "react-redux";
 import { ScrollView } from "react-native-gesture-handler";
 import { trackNovel } from "../../../../redux/tracker/tracker.actions";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 const TrackSearchDialog = ({
     trackSearchDialog,
@@ -48,6 +49,19 @@ const TrackSearchDialog = ({
             borderless
         >
             <>
+                {selectedNovel && selectedNovel.id === item.node.id && (
+                    <MaterialCommunityIcons
+                        name="check-circle"
+                        color={theme.colorAccent}
+                        size={24}
+                        style={{
+                            position: "absolute",
+                            top: 8,
+                            right: 8,
+                            zIndex: 1,
+                        }}
+                    />
+                )}
                 <Image
                     source={{ uri: item.node.main_picture.large }}
                     style={{ height: 150, width: 100, borderRadius: 4 }}
