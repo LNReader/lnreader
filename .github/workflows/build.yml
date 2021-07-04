@@ -12,6 +12,7 @@ jobs:
             - name: Install npm dependencies
               run: |
                   npm install
+
     build-android:
         name: Build app
         needs: install-and-test
@@ -21,6 +22,24 @@ jobs:
             - name: Install npm dependencies
               run: |
                   npm install
+
+            - name: Cache Gradle Wrapper
+              uses: actions/cache@v2
+              with:
+                  path: ~/.gradle/wrapper
+                  key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
+
+            - name: Cache Gradle Dependencies
+              uses: actions/cache@v2
+              with:
+                  path: ~/.gradle/caches
+                  key: ${{ runner.os }}-gradle-caches-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
+                  restore-keys: |
+                      ${{ runner.os }}-gradle-caches-
+
+            - name: Make Gradlew Executable
+              run: cd android && chmod +x ./gradlew
+
             - name: Build Android Release
               run: |
-                  cd android && chmod +x ./gradlew assembleRelease
+                  cd android && gradlew assembleRelease --no-daemon
