@@ -1,10 +1,11 @@
-name: react-native-android-build-apk
+name: CI
 on:
     push:
         branches:
             - main
 jobs:
     install-and-test:
+        name: Install dependencies
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
@@ -12,6 +13,7 @@ jobs:
               run: |
                   npm install
     build-android:
+        name: Build app
         needs: install-and-test
         runs-on: ubuntu-latest
         steps:
@@ -21,4 +23,4 @@ jobs:
                   npm install
             - name: Build Android Release
               run: |
-                  cd android && ./gradlew assembleRelease
+                  cd android && chmod +x ./gradlew assembleRelease
