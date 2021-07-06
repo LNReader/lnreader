@@ -40,20 +40,20 @@ const sourceName = "Syosetu";
 const maxPageLoad = 3;
 
 const popularNovels = async (page) => {
-    const totalPages = 3;
+    const totalPages = 100;
     // array of all the novels
     let novels = [];
     // returns list of novels from given page
     let getNovelsFromPage = async (pagenumber) => {
         // load page
-        console.log(searchUrl(pagenumber));
+        // console.log(searchUrl(pagenumber));
         const result = await fetch(searchUrl(pagenumber || null));
         const body = await result.text();
-        console.log("Loaded");
+        // console.log("Loaded");
         // Cheerio it!
         const cheerioQuery = cheerio.load(body, { decodeEntities: false });
 
-        console.log("Parsed");
+        // console.log("Parsed");
 
         let pageNovels = [];
         // find class=searchkekka_box
@@ -70,13 +70,13 @@ const popularNovels = async (page) => {
                 novelCover, // TODO: IDK what to do about covers... On Syo they don't have them
             });
         });
-        console.log("Read");
+        // console.log("Read");
         // return all novels from this page
         return pageNovels;
     };
 
     novels = await getNovelsFromPage(page);
-    console.log("Added");
+    // console.log("Added");
 
     /** Use
      * novels.push(...(await getNovelsFromPage(pageNumber)))
@@ -84,7 +84,7 @@ const popularNovels = async (page) => {
      */
 
     // respond with novels!
-    console.log("Finished!");
+    // console.log("Finished!");
     return { totalPages, novels };
 };
 
@@ -110,7 +110,7 @@ const parseNovelAndChapters = async (novelUrl) => {
 
     // Get all the chapters
     const cqGetChapters = cheerioQuery(".novel_sublist2");
-    console.log(url, cqGetChapters.length);
+    // console.log(url, cqGetChapters.length);
     if (cqGetChapters.length !== 0) {
         // has more than 1 chapter
         novel.summary = cheerioQuery("#novel_ex")
@@ -160,7 +160,7 @@ const parseNovelAndChapters = async (novelUrl) => {
     }
 
     novel.chapters = chapters;
-    console.log("Finished!");
+    // console.log("Finished!");
 
     return novel;
 };
@@ -216,7 +216,7 @@ let parseChapter = async (novelUrl, chapterUrl) => {
             chapter.nextChapter = getLastPartOfUrl(lastButton.attribs.href);
         }
     }
-    console.log("Finished!");
+    // console.log("Finished!");
 
     return chapter;
 };
@@ -275,7 +275,7 @@ let searchNovels = async (searchTerm) => {
      * if you want to load more
      */
 
-    console.log("Finished!");
+    // console.log("Finished!");
     // respond with novels!
     return novels;
 };

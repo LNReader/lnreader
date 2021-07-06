@@ -33,6 +33,7 @@ import NovelPassionScraper from "./en/novelpassion";
 import RoyalRoadScraper from "./en/royalroad";
 import ScribbleHubScraper from "./en/scribblehub";
 import SyosetuScraper from "./jp/syosetu";
+import LNMTLScraper from "./en/lnmtl";
 
 export const sources = [
     /**
@@ -215,6 +216,21 @@ export const sources = [
         lang: "English",
     },
 
+    {
+        sourceId: 35,
+        url: "https://www.scribblehub.com/",
+        sourceName: "Scribble Hub",
+        icon: "https://github.com/rajarsheechatterjee/lnreader-extensions/blob/main/src/en/scribblehub/icon.png?raw=true",
+        lang: "English",
+    },
+    {
+        sourceId: 37,
+        url: "https://lnmtl.com/",
+        sourceName: "LNMTL",
+        icon: "https://github.com/rajarsheechatterjee/lnreader-extensions/blob/main/src/en/lnmtl/icon.png?raw=true",
+        lang: "English",
+    },
+
     /**
      * Spanish
      */
@@ -274,13 +290,6 @@ export const sources = [
         sourceName: "Novela Wuxia",
         icon: "https://github.com/rajarsheechatterjee/lnreader-extensions/blob/main/src/es/novelawuxia/icon.png?raw=true",
         lang: "Spanish",
-    },
-    {
-        sourceId: 35,
-        url: "https://www.scribblehub.com/",
-        sourceName: "Scribble Hub",
-        icon: "https://github.com/rajarsheechatterjee/lnreader-extensions/blob/main/src/en/scribblehub/icon.png?raw=true",
-        lang: "English",
     },
 
     /**
@@ -401,6 +410,9 @@ export const getSource = (sourceId) => {
         }
         case 36: {
             return SyosetuScraper;
+        }
+        case 37: {
+            return LNMTLScraper;
         }
     }
 };
