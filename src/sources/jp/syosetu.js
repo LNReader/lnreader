@@ -145,9 +145,6 @@ const parseNovelAndChapters = async (novelUrl) => {
             chapterUrl: "oneshot", // set chapterUrl to oneshot so that chapterScraper knows it's a one-shot
         });
     }
-
-    console.log(novel.summary);
-
     novel.chapters = chapters;
 
     return novel;
