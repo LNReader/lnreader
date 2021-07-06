@@ -288,8 +288,8 @@ export const sources = [
      */
     {
         sourceId: 36,
-        url: "https://syosetsu.com",
-        sourceName: "Syosetsu",
+        url: "https://syosetu.com",
+        sourceName: "Syosetu",
         icon: "https://github.com/skillgg/lnreader-sources/blob/main/src/jp/syosetu/icon.png?raw=true",
         lang: "Japanese",
     },
