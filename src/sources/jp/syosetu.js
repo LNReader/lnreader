@@ -46,14 +46,10 @@ const popularNovels = async (page) => {
     // returns list of novels from given page
     let getNovelsFromPage = async (pagenumber) => {
         // load page
-        // console.log(searchUrl(pagenumber));
         const result = await fetch(searchUrl(pagenumber || null));
         const body = await result.text();
-        // console.log("Loaded");
         // Cheerio it!
         const cheerioQuery = cheerio.load(body, { decodeEntities: false });
-
-        // console.log("Parsed");
 
         let pageNovels = [];
         // find class=searchkekka_box
@@ -70,21 +66,17 @@ const popularNovels = async (page) => {
                 novelCover, // TODO: IDK what to do about covers... On Syo they don't have them
             });
         });
-        // console.log("Read");
         // return all novels from this page
         return pageNovels;
     };
 
     novels = await getNovelsFromPage(page);
-    // console.log("Added");
-
     /** Use
      * novels.push(...(await getNovelsFromPage(pageNumber)))
      * if you want to load more
      */
 
     // respond with novels!
-    // console.log("Finished!");
     return { totalPages, novels };
 };
 
@@ -110,7 +102,6 @@ const parseNovelAndChapters = async (novelUrl) => {
 
     // Get all the chapters
     const cqGetChapters = cheerioQuery(".novel_sublist2");
-    // console.log(url, cqGetChapters.length);
     if (cqGetChapters.length !== 0) {
         // has more than 1 chapter
         novel.summary = cheerioQuery("#novel_ex")
@@ -140,15 +131,14 @@ const parseNovelAndChapters = async (novelUrl) => {
 
         const result = await fetch(searchUrl() + `&word=${novel.novelName}`);
         const body = await result.text();
-
-        novel.novelSummary = cheerio // because there is no summary anywhere on the novel page, we have to take it from search page for a one-shot manga
-            .load(await scraper(body), {
-                decodeEntities: false,
-            })(".searchkekka_box") // find the manga in search.php
+        const summaryQuery = cheerio.load(body, { decodeEntities: false });
+        const foundText = summaryQuery(".searchkekka_box")
             .first()
             .find(".ex")
             .text()
-            .replace(/\s{2,}/g, "\n"); // get the description as text
+            .replace(/\s{2,}/g, "\n");
+        novel.summary = foundText;
+
         // add single chapter
         chapters.push({
             chapterName: novel.novelName,
@@ -158,9 +148,7 @@ const parseNovelAndChapters = async (novelUrl) => {
             chapterUrl: "oneshot", // set chapterUrl to oneshot so that chapterScraper knows it's a one-shot
         });
     }
-
     novel.chapters = chapters;
-    // console.log("Finished!");
 
     return novel;
 };
@@ -216,7 +204,6 @@ let parseChapter = async (novelUrl, chapterUrl) => {
             chapter.nextChapter = getLastPartOfUrl(lastButton.attribs.href);
         }
     }
-    // console.log("Finished!");
 
     return chapter;
 };
@@ -275,7 +262,6 @@ let searchNovels = async (searchTerm) => {
      * if you want to load more
      */
 
-    // console.log("Finished!");
     // respond with novels!
     return novels;
 };
