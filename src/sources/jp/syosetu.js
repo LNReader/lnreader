@@ -280,11 +280,11 @@ let searchNovels = async (searchTerm) => {
     return novels;
 };
 
-const SyosetsuScraper = {
+const SyosetuScraper = {
     popularNovels,
     parseNovelAndChapters,
     parseChapter,
     searchNovels,
 };
 
-export default SyosetsuScraper;
+export default SyosetuScraper;

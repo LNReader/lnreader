@@ -32,7 +32,7 @@ import HasuTlScraper from "./es/hasutl";
 import NovelPassionScraper from "./en/novelpassion";
 import RoyalRoadScraper from "./en/royalroad";
 import ScribbleHubScraper from "./en/scribblehub";
-import SyosetsuScraper from "./jp/syosetsu";
+import SyosetuScraper from "./jp/syosetu";
 
 export const sources = [
     /**
@@ -400,7 +400,7 @@ export const getSource = (sourceId) => {
             return ScribbleHubScraper;
         }
         case 36: {
-            return SyosetsuScraper;
+            return SyosetuScraper;
         }
     }
 };
