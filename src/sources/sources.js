@@ -32,6 +32,7 @@ import HasuTlScraper from "./es/hasutl";
 import NovelPassionScraper from "./en/novelpassion";
 import RoyalRoadScraper from "./en/royalroad";
 import ScribbleHubScraper from "./en/scribblehub";
+import SyosetsuScraper from "./jp/syosetsu";
 
 export const sources = [
     /**
@@ -281,6 +282,17 @@ export const sources = [
         icon: "https://github.com/rajarsheechatterjee/lnreader-extensions/blob/main/src/en/scribblehub/icon.png?raw=true",
         lang: "English",
     },
+
+    /**
+     * Japanese
+     */
+    {
+        sourceId: 36,
+        url: "https://syosetsu.com",
+        sourceName: "Syosetsu",
+        icon: "https://github.com/skillgg/lnreader-sources/blob/main/src/jp/syosetu/icon.png?raw=true",
+        lang: "Japanese",
+    },
 ];
 
 export const getSource = (sourceId) => {
@@ -386,6 +398,9 @@ export const getSource = (sourceId) => {
         }
         case 35: {
             return ScribbleHubScraper;
+        }
+        case 36: {
+            return SyosetsuScraper;
         }
     }
 };

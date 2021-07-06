@@ -160,16 +160,14 @@ const NovelGenres = ({ theme, genre }) => {
     );
 
     return (
-        genre !== "" && (
-            <FlatList
-                contentContainerStyle={styles.novelGenres}
-                horizontal
-                data={data}
-                keyExtractor={(item) => item}
-                renderItem={renderItem}
-                showsHorizontalScrollIndicator={false}
-            />
-        )
+        <FlatList
+            contentContainerStyle={styles.novelGenres}
+            horizontal
+            data={data}
+            keyExtractor={(item) => item}
+            renderItem={renderItem}
+            showsHorizontalScrollIndicator={false}
+        />
     );
 };
 

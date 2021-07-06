@@ -186,7 +186,9 @@ const NovelInfoHeader = ({
                         followed={novel.followed}
                         theme={theme}
                     />
-                    <NovelGenres theme={theme} genre={novel.genre} />
+                    {novel.genre && novel.genre !== "" && (
+                        <NovelGenres theme={theme} genre={novel.genre} />
+                    )}
                     <ReadButton
                         novel={novel}
                         chapters={chapters}
