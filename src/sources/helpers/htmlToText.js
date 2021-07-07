@@ -1,40 +1,41 @@
-const htmlToText = (html) => {
-    return (
-        html
-            // Remove line breaks
-            .replace(/(?:\n|\r\n|\r)/gi, "")
-            // Turn <br>'s into single line breaks.
-            .replace(/<\s*br[^>]*>/gi, "\n")
-            // Turn </li>'s into line breaks.
-            .replace(/<\s*\/li[^>]*>/gi, "\n")
-            // Turn <p>'s into double line breaks.
-            .replace(/<\s*p[^>]*>/gi, "\n\n")
-            // Remove content in script tags.
-            .replace(/<\s*script[^>]*>[\s\S]*?<\/script>/gim, "")
-            // Remove content in style tags.
-            .replace(/<\s*style[^>]*>[\s\S]*?<\/style>/gim, "")
-            // Remove content in comments.
-            .replace(/<!--.*?-->/gim, "")
-            // Format anchor tags properly.
-            .replace(
-                /<\s*a[^>]*href=['"](.*?)['"][^>]*>([\s\S]*?)<\/\s*a\s*>/gi,
-                "$2"
-            )
-            .replace(/<\s*img[^>]*src=['"](.*?)['"][^>]*>/gi, "[$1]")
-            // Remove all remaining tags.
-            .replace(/(<([^>]+)>)/gi, "")
-            // Make sure there are never more than two
-            // consecutive linebreaks.
-            .replace(/\n{2,}/g, "\n\n")
-            // Remove tabs.
-            .replace(/\t/g, "")
-            // Remove newlines at the beginning of the text.
-            .replace(/^\n+/m, "")
-            // Replace multiple spaces with a single space.
-            .replace(/ {2,}/g, " ")
-            // Decode HTML entities.
-            .replace(/&([^;]+);/g, decodeHtmlEntity)
-    );
+const htmlToText = (html, options = {}) => {
+    const { removeLineBreaks = true } = options;
+
+    text = removeLineBreaks && html.replace(/(?:\n|\r\n|\r)/gi, "");
+    text = html
+        // Turn <br>'s into single line breaks.
+        .replace(/<\s*br[^>]*>/gi, "\n")
+        // Turn </li>'s into line breaks.
+        .replace(/<\s*\/li[^>]*>/gi, "\n")
+        // Turn <p>'s into double line breaks.
+        .replace(/<\s*p[^>]*>/gi, "\n\n")
+        // Remove content in script tags.
+        .replace(/<\s*script[^>]*>[\s\S]*?<\/script>/gim, "")
+        // Remove content in style tags.
+        .replace(/<\s*style[^>]*>[\s\S]*?<\/style>/gim, "")
+        // Remove content in comments.
+        .replace(/<!--.*?-->/gim, "")
+        // Format anchor tags properly.
+        .replace(
+            /<\s*a[^>]*href=['"](.*?)['"][^>]*>([\s\S]*?)<\/\s*a\s*>/gi,
+            "$2"
+        )
+        .replace(/<\s*img[^>]*src=['"](.*?)['"][^>]*>/gi, "[$1]")
+        // Remove all remaining tags.
+        .replace(/(<([^>]+)>)/gi, "")
+        // Make sure there are never more than two
+        // consecutive linebreaks.
+        .replace(/\n{2,}/g, "\n\n")
+        // Remove tabs.
+        .replace(/\t/g, "")
+        // Remove newlines at the beginning of the text.
+        .replace(/^\n+/m, "")
+        // Replace multiple spaces with a single space.
+        .replace(/ {2,}/g, " ")
+        // Decode HTML entities.
+        .replace(/&([^;]+);/g, decodeHtmlEntity);
+
+    return text;
 };
 
 const decodeHtmlEntity = (m, n) => {

@@ -1,4 +1,3 @@
-import { showToast } from "../../hooks/showToast";
 import { getSource } from "../../sources/sources";
 
 export const fetchSources = async () => {
@@ -11,8 +10,6 @@ export const fetchSources = async () => {
 };
 
 export const fetchNovel = async (sourceId, novelUrl) => {
-    if (sourceId === 37) showToast("LNMTL might take around 20-30 seconds.");
-
     const source = getSource(sourceId);
 
     const res = await source.parseNovelAndChapters(novelUrl);

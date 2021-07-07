@@ -34,6 +34,16 @@ import RoyalRoadScraper from "./en/royalroad";
 import ScribbleHubScraper from "./en/scribblehub";
 import SyosetuScraper from "./jp/syosetu";
 import LNMTLScraper from "./en/lnmtl";
+import {
+    FreeNovelScraper,
+    LunarLettersScraper,
+    NovelCakeScraper,
+    NovelsRockScraper,
+    NovelTranslateScraper,
+    SkyNovelScraper,
+    SleepyTranslationsScraper,
+    ZinnNovelScraper,
+} from "./multisrc/MadaraGenerator";
 
 export const sources = [
     /**
@@ -230,6 +240,62 @@ export const sources = [
         icon: "https://github.com/rajarsheechatterjee/lnreader-extensions/blob/main/src/en/lnmtl/icon.png?raw=true",
         lang: "English",
     },
+    {
+        sourceId: 38,
+        sourceUrl: "https://skynovel.org/",
+        sourceName: "SkyNovel",
+        icon: "https://github.com/rajarsheechatterjee/lnreader-extensions/blob/main/multisrc/madara/icons/skynovel.png?raw=true",
+        lang: "English",
+    },
+    {
+        sourceId: 39,
+        sourceUrl: "https://novelcake.com/",
+        sourceName: "NovelCake",
+        icon: "https://github.com/rajarsheechatterjee/lnreader-extensions/blob/main/multisrc/madara/icons/novelcake.png?raw=true",
+        lang: "English",
+    },
+    {
+        sourceId: 40,
+        sourceUrl: "https://novelsrock.com/",
+        sourceName: "NovelsRock",
+        icon: "https://github.com/rajarsheechatterjee/lnreader-extensions/blob/main/multisrc/madara/icons/novelsrock.png?raw=true",
+        lang: "English",
+    },
+    {
+        sourceId: 41,
+        sourceUrl: "https://zinnovel.com/",
+        sourceName: "ZinnNovel",
+        icon: "https://github.com/rajarsheechatterjee/lnreader-extensions/blob/main/multisrc/madara/icons/zinnovel.png?raw=true",
+        lang: "English",
+    },
+    {
+        sourceId: 42,
+        sourceUrl: "https://noveltranslate.com/",
+        sourceName: "NovelTranslate",
+        icon: "https://github.com/rajarsheechatterjee/lnreader-extensions/blob/main/multisrc/madara/icons/noveltranslate.png?raw=true",
+        lang: "English",
+    },
+    {
+        sourceId: 43,
+        sourceUrl: "https://www.lunarletters.com/",
+        sourceName: "LunarLetters",
+        icon: "https://github.com/rajarsheechatterjee/lnreader-extensions/blob/main/multisrc/madara/icons/lunarletters.png?raw=true",
+        lang: "English",
+    },
+    {
+        sourceId: 44,
+        sourceUrl: "https://sleepytranslations.com/",
+        sourceName: "SleepyTranslations",
+        icon: "https://github.com/rajarsheechatterjee/lnreader-extensions/blob/main/multisrc/madara/icons/sleepytranslations.png?raw=true",
+        lang: "English",
+    },
+    {
+        sourceId: 45,
+        sourceUrl: "https://freenovel.me/",
+        sourceName: "FreeNovelMe",
+        icon: "https://github.com/rajarsheechatterjee/lnreader-extensions/blob/main/multisrc/madara/icons/freenovel.png?raw=true",
+        lang: "English",
+    },
 
     /**
      * Spanish
@@ -413,6 +479,30 @@ export const getSource = (sourceId) => {
         }
         case 37: {
             return LNMTLScraper;
+        }
+        case 38: {
+            return SkyNovelScraper;
+        }
+        case 39: {
+            return NovelCakeScraper;
+        }
+        case 40: {
+            return NovelsRockScraper;
+        }
+        case 41: {
+            return ZinnNovelScraper;
+        }
+        case 42: {
+            return NovelTranslateScraper;
+        }
+        case 43: {
+            return LunarLettersScraper;
+        }
+        case 44: {
+            return SleepyTranslationsScraper;
+        }
+        case 45: {
+            return FreeNovelScraper;
         }
     }
 };

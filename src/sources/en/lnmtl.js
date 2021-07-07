@@ -1,4 +1,5 @@
 import cheerio from "react-native-cheerio";
+import { showToast } from "../../hooks/showToast";
 import { htmlToText } from "../helpers/htmlToText";
 
 const baseUrl = "https://lnmtl.com/";
@@ -35,6 +36,8 @@ const popularNovels = async (page) => {
 };
 
 const parseNovelAndChapters = async (novelUrl) => {
+    showToast("LNMTL might take around 20-30 seconds.");
+
     const url = baseUrl + "novel/" + novelUrl;
 
     const result = await fetch(url);
@@ -130,7 +133,10 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     $(".original").remove();
 
     let chapterText = $(".chapter-body").html();
-    chapterText = chapterName + "\n\n" + htmlToText(chapterText);
+    chapterText =
+        chapterName +
+        "\n\n" +
+        htmlToText(chapterText, { removeLineBreaks: false });
 
     let nextChapter = null;
     let prevChapter = null;

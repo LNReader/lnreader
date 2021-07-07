@@ -23,7 +23,7 @@ const BrowseSettings = ({ navigation }) => {
         showNovelUpdates = true,
         showMyAnimeList = true,
     } = useSelector((state) => state.sourceReducer);
-    const languages = ["English", "Spanish"];
+    const languages = ["English", "Spanish", "Japanese"];
     const { searchAllSources = false } = useSettings();
 
     const renderItem = ({ item }) => {
