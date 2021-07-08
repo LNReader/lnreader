@@ -1,14 +1,5 @@
 import { getSource } from "../../sources/sources";
 
-export const fetchSources = async () => {
-    const url = `https://lnreader-extensions.vercel.app/api/`;
-
-    let res = await fetch(url);
-    let sources = await res.json();
-
-    return sources;
-};
-
 export const fetchNovel = async (sourceId, novelUrl) => {
     const source = getSource(sourceId);
 
@@ -30,8 +21,6 @@ export const fetchNovel = async (sourceId, novelUrl) => {
         chapters: res.chapters,
     };
 
-    // console.log(novel);
-
     return novel;
 };
 
@@ -44,12 +33,11 @@ export const fetchChapter = async (sourceId, novelUrl, chapterUrl) => {
 };
 
 export const fetchChapters = async (sourceId, novelUrl) => {
-    const url = `https://lnreader-extensions.vercel.app/api/${sourceId}/novel/${novelUrl}`;
+    const source = getSource(sourceId);
 
-    let data = await fetch(url);
-    let res = await data.json();
+    const res = await source.parseNovelAndChapters(novelUrl);
 
-    const chapters = res.novelChapters;
+    const chapters = res.chapters;
 
     return chapters;
 };

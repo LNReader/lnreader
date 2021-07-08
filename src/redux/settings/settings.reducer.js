@@ -4,6 +4,7 @@ import {
     SET_READER_SETTINGS,
     SET_APP_SETTINGS,
     SET_ACCENT_COLOR,
+    SET_RIPPLE_COLOR,
 } from "./settings.types";
 import {
     amoledDarkTheme,
@@ -15,6 +16,7 @@ import {
     hotPinkTheme,
     strawberryDaiquiri,
 } from "../../theme/theme";
+import { setRippleColor } from "./settings.actions";
 
 const themes = {
     0: amoledDarkTheme,
@@ -84,6 +86,14 @@ const settingsReducer = (state = initialState, action) => {
                 theme: {
                     ...state.theme,
                     colorAccent: payload,
+                },
+            };
+        case SET_RIPPLE_COLOR:
+            return {
+                ...state,
+                theme: {
+                    ...state.theme,
+                    rippleColor: payload,
                 },
             };
         case SET_APP_SETTINGS:

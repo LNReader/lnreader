@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { memo, useCallback, useState } from "react";
 import {
     View,
     Text,
@@ -30,7 +30,6 @@ const ChapterItem = ({
     selected,
     setSelected,
     showChapterTitles,
-    chapterActionsSheetRef,
     downloadQueue,
 }) => {
     const [deleteChapterMenu, setDeleteChapterMenu] = useState(false);
@@ -243,7 +242,7 @@ const ChapterItem = ({
     );
 };
 
-export default ChapterItem;
+export default memo(ChapterItem);
 
 const styles = StyleSheet.create({
     chapterCardContainer: {

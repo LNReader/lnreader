@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { StyleSheet, FlatList } from "react-native";
 
 import { useSettings } from "../hooks/reduxHooks";
@@ -29,13 +29,15 @@ const NovelList = ({
         }
     };
 
+    const keyExtractor = useCallback((item) => item.novelUrl, []);
+
     return (
         <FlatList
             contentContainerStyle={styles.flatListCont}
             numColumns={getNovelsPerRow()}
             key={[orientation, getNovelsPerRow()]}
             data={data}
-            keyExtractor={(item) => item.novelUrl}
+            keyExtractor={keyExtractor}
             renderItem={renderItem}
             refreshControl={refreshControl}
             ListEmptyComponent={ListEmptyComponent}

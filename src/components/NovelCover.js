@@ -1,5 +1,11 @@
 import React from "react";
-import { StyleSheet, View, Text, useWindowDimensions } from "react-native";
+import {
+    StyleSheet,
+    View,
+    Text,
+    useWindowDimensions,
+    Pressable,
+} from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { TouchableRipple } from "react-native-paper";
 
@@ -115,11 +121,15 @@ const NovelCover = ({ item, onPress, libraryStatus }) => {
         );
 
     return displayMode !== 2 ? (
-        <View style={{ flex: 1 / getNovelsPerRow() }}>
-            <TouchableRipple
-                borderless
-                centered
-                rippleColor={theme.rippleColor}
+        <View
+            style={{
+                flex: 1 / getNovelsPerRow(),
+                borderRadius: 4,
+                overflow: "hidden",
+            }}
+        >
+            <Pressable
+                android_ripple={{ color: theme.colorAccent }}
                 style={styles.opac}
                 onPress={onPress}
             >
@@ -156,7 +166,7 @@ const NovelCover = ({ item, onPress, libraryStatus }) => {
                     </View>
                     {comfortableTitle()}
                 </>
-            </TouchableRipple>
+            </Pressable>
         </View>
     ) : (
         <ListView

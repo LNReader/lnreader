@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { View, Text, StyleSheet, Clipboard, Pressable } from "react-native";
 
 import * as WebBrowser from "expo-web-browser";
@@ -69,10 +69,10 @@ const NovelInfoHeader = ({
                         {!loading && (
                             <>
                                 <NovelAuthor theme={theme}>
-                                    {novel.author}
+                                    {novel.author ?? "Unknown author"}
                                 </NovelAuthor>
                                 <NovelInfo theme={theme}>
-                                    {novel.status}
+                                    {novel.status ?? "Unknown status"}
                                 </NovelInfo>
                                 <NovelInfo theme={theme}>
                                     {novel.source}
@@ -227,7 +227,7 @@ const NovelInfoHeader = ({
     );
 };
 
-export default NovelInfoHeader;
+export default memo(NovelInfoHeader);
 
 const styles = StyleSheet.create({
     novelDetails: {

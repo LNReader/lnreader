@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import {
     StyleSheet,
     View,
@@ -185,7 +185,7 @@ const Chapter = ({ route, navigation }) => {
             );
     };
 
-    const onScroll = ({ nativeEvent }) => {
+    const onScroll = useCallback(({ nativeEvent }) => {
         const offsetY = nativeEvent.contentOffset.y;
         const position =
             nativeEvent.contentOffset.y + nativeEvent.layoutMeasurement.height;
@@ -205,9 +205,9 @@ const Chapter = ({ route, navigation }) => {
             dispatch(markChapterReadAction(chapterId, novelId));
             updateTracker();
         }
-    };
+    }, []);
 
-    const scrollToSavedProgress = (event) => {
+    const scrollToSavedProgress = useCallback((event) => {
         StatusBar.setHidden(true);
         hideNavigationBar();
         if (position && firstLayout) {
@@ -219,7 +219,7 @@ const Chapter = ({ route, navigation }) => {
                 });
             setFirstLayout(false);
         }
-    };
+    }, []);
 
     const hideHeader = () => {
         if (!hidden) {

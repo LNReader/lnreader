@@ -85,9 +85,7 @@ export const deleteNovelCache = () => {
         tx.executeSql(
             "DELETE FROM novels WHERE followed = 0",
             null,
-            (txObj, res) => {
-                console.log("Cleared Novel Cache");
-            },
+            (txObj, res) => showToast("Entries deleted"),
             (txObj, error) => console.log("Error ", error)
         );
     });

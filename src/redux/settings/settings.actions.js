@@ -4,6 +4,7 @@ import {
     SET_READER_SETTINGS,
     SET_APP_SETTINGS,
     SET_ACCENT_COLOR,
+    SET_RIPPLE_COLOR,
 } from "./settings.types";
 
 export const setAppTheme = (val) => (dispatch) => {
@@ -37,6 +38,13 @@ export const setReaderSettings = (key, val) => (dispatch) => {
 export const setAccentColor = (val) => (dispatch) => {
     dispatch({
         type: SET_ACCENT_COLOR,
+        payload: val,
+    });
+};
+
+export const setRippleColor = (val) => (dispatch) => {
+    dispatch({
+        type: SET_RIPPLE_COLOR,
         payload: val,
     });
 };

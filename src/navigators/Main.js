@@ -31,7 +31,8 @@ const stackNavigatorConfig = {
 
 const MainNavigator = () => {
     const theme = useTheme();
-    setStatusBarStyle();
+
+    setStatusBarStyle(theme);
     const { isNewVersion, latestRelease } = githubUpdateChecker() || {};
 
     return (

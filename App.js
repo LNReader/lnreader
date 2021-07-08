@@ -9,7 +9,7 @@ import { PersistGate } from "redux-persist/lib/integration/react";
 
 import Main from "./src/navigators/Main";
 
-import { createDB, deleteDb } from "./src/database/DBHelper";
+import { createDB } from "./src/database/DBHelper";
 import { fonts } from "./src/theme/fonts";
 
 const App = () => {

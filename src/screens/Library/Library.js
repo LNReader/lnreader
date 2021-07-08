@@ -71,14 +71,17 @@ const LibraryScreen = ({ navigation }) => {
         dispatch(searchLibraryAction(text, sort, filter));
     };
 
-    const renderItem = ({ item }) => (
-        <NovelCover
-            item={item}
-            onPress={() => {
-                navigation.navigate("Novel", item);
-                dispatch(setNovel(item));
-            }}
-        />
+    const renderItem = useCallback(
+        ({ item }) => (
+            <NovelCover
+                item={item}
+                onPress={() => {
+                    navigation.navigate("Novel", item);
+                    dispatch(setNovel(item));
+                }}
+            />
+        ),
+        []
     );
 
     const refreshControl = () => (

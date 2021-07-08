@@ -1,10 +1,9 @@
-import { setStatusBarStyle as setExpoStatusBarStyle } from "expo-status-bar";
-import { useTheme } from "../hooks/reduxHooks";
+import { StatusBar } from "react-native";
 import changeNavigationBarColor from "react-native-navigation-bar-color";
 
-export const setStatusBarStyle = () => {
-    const theme = useTheme();
-
-    setExpoStatusBarStyle(theme.id === 1 ? "dark" : "light");
+export const setStatusBarStyle = (theme) => {
     changeNavigationBarColor(theme.colorPrimary);
+    StatusBar.setBarStyle(
+        theme.statusBar === "light" ? "light-content" : "dark-content"
+    );
 };

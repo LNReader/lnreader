@@ -7,11 +7,6 @@ class MadaraScraper {
         this.baseUrl = baseUrl;
         this.sourceName = sourceName;
         this.path = path;
-
-        // this.novelsScraper = this.novelsScraper.bind(this);
-        // this.novelScraper = this.novelScraper.bind(this);
-        // this.chapterScraper = this.chapterScraper.bind(this);
-        // this.searchScraper = this.searchScraper.bind(this);
     }
 
     async popularNovels(page) {
@@ -140,8 +135,6 @@ class MadaraScraper {
 
             novelChapters.push({ chapterName, releaseDate, chapterUrl });
         });
-
-        console.log(novel);
 
         novel.chapters = novelChapters.reverse();
 

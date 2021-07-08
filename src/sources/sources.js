@@ -43,7 +43,7 @@ import {
     SkyNovelScraper,
     SleepyTranslationsScraper,
     ZinnNovelScraper,
-} from "./multisrc/MadaraGenerator";
+} from "./multisrc/madara/MadaraGenerator";
 
 export const sources = [
     /**

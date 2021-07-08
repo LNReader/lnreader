@@ -17,6 +17,7 @@ import ThemeModal from "./components/ThemeModal";
 import {
     setAccentColor,
     setAppSettings,
+    setRippleColor,
 } from "../../redux/settings/settings.actions";
 import ColorPickerModal from "../../components/ColorPickerModal";
 import SwitchSetting from "../../components/Switch/Switch";
@@ -69,9 +70,27 @@ const GenralSettings = ({ navigation }) => {
     const showAccentColorModal = () => setAccentColorModal(true);
     const hideAccentColorModal = () => setAccentColorModal(false);
 
+    const hexToRgb = (hex) => {
+        var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return result
+            ? {
+                  r: parseInt(result[1], 16),
+                  g: parseInt(result[2], 16),
+                  b: parseInt(result[3], 16),
+              }
+            : null;
+    };
+
+    const onSubmit = (val) => {
+        dispatch(setAccentColor(val));
+        const rgb = hexToRgb(val);
+        const rgbaColor = `rgba(${rgb.r},${rgb.g},${rgb.b},0.12)`;
+        dispatch(setRippleColor(rgbaColor));
+    };
+
     return (
         <ScreenContainer theme={theme}>
-            <Appbar title="General" onBackAction={() => navigation.goBack()} />
+            <Appbar title="General" onBackAction={navigation.goBack} />
             <ListSection>
                 <ListSubHeader theme={theme}>Display</ListSubHeader>
                 <ListItem
@@ -142,7 +161,7 @@ const GenralSettings = ({ navigation }) => {
                 modalVisible={accentColorModal}
                 hideModal={hideAccentColorModal}
                 color={theme.colorAccent}
-                onSubmit={(val) => dispatch(setAccentColor(val))}
+                onSubmit={onSubmit}
                 theme={theme}
             />
         </ScreenContainer>

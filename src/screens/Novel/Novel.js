@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
     StyleSheet,
     View,
@@ -17,7 +17,6 @@ import {
     deleteAllChaptersAction,
     downloadAllChaptersAction,
     getNovelAction,
-    markChapterReadAction,
     markChaptersRead,
     markChapterUnreadAction,
     markPreviousChaptersReadAction,
@@ -36,7 +35,6 @@ import ChapterItem from "./components/ChapterItem";
 import NovelInfoHeader from "./components/NovelHeader";
 import ChaptersSettingsSheet from "./components/ChaptersSettingsSheet";
 import TrackSheet from "./components/Tracker/TrackSheet";
-import ChapterActionsSheet from "./components/ChapterActionsSheet";
 import { Row } from "../../components/Common";
 import JumpToChapterModal from "./components/JumpToChapterModal";
 
@@ -89,6 +87,8 @@ const Novel = ({ route, navigation }) => {
     );
 
     const [jumpToChapterModal, showJumpToChapterModal] = useState(false);
+
+    const keyExtractor = useCallback((item) => item.chapterId.toString(), []);
 
     const renderItem = ({ item, index }) => (
         <ChapterItem
@@ -250,7 +250,7 @@ const Novel = ({ route, navigation }) => {
                 <FlatList
                     ref={(ref) => (flatlistRef.current = ref)}
                     data={!loading && chapters}
-                    keyExtractor={(item) => item.chapterId.toString()}
+                    keyExtractor={keyExtractor}
                     removeClippedSubviews={true}
                     maxToRenderPerBatch={5}
                     windowSize={15}
@@ -401,17 +401,6 @@ const Novel = ({ route, navigation }) => {
                             novelName={novel.novelName}
                             theme={theme}
                         />
-                        {/* <ChapterActionsSheet
-                            theme={theme}
-                            selected={selected}
-                            chapters={chapters}
-                            dispatch={dispatch}
-                            setSelected={setSelected}
-                            bottomSheetRef={chapterActionsSheetRef}
-                            markChapterReadAction={markChapterReadAction}
-                            markChapterUnreadAction={markChapterUnreadAction}
-                            bookmarkChapterAction={bookmarkChapterAction}
-                        /> */}
                     </Portal>
                 )}
             </View>

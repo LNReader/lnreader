@@ -1,10 +1,9 @@
 import React from "react";
 import { Pressable, StyleSheet, View, Text } from "react-native";
-import { Portal, Modal, Checkbox } from "react-native-paper";
 
-import { setStatusBarStyle } from "expo-status-bar";
+import { Portal, Modal } from "react-native-paper";
+
 import { setAppTheme } from "../../../redux/settings/settings.actions";
-import ImmersiveMode from "react-native-immersive-mode";
 
 const ThemeModal = ({ themeModalVisible, hidethemeModal, dispatch, theme }) => {
     const themes = [
@@ -40,11 +39,7 @@ const ThemeModal = ({ themeModalVisible, hidethemeModal, dispatch, theme }) => {
                     paddingVertical: 12,
                     justifyContent: "space-between",
                 }}
-                onPress={() => {
-                    dispatch(setAppTheme(item.id));
-                    setStatusBarStyle(item.statusBar);
-                    ImmersiveMode.setBarColor(item.colorPrimary);
-                }}
+                onPress={() => dispatch(setAppTheme(item.id))}
             >
                 <Text style={{ color: theme.textColorPrimary }}>
                     {item.name}
