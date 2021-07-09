@@ -1,5 +1,12 @@
 import React, { memo } from "react";
-import { View, Text, StyleSheet, Clipboard, Pressable } from "react-native";
+import {
+    View,
+    Text,
+    StyleSheet,
+    Clipboard,
+    Pressable,
+    Button,
+} from "react-native";
 
 import * as WebBrowser from "expo-web-browser";
 import { TouchableRipple, IconButton } from "react-native-paper";
@@ -186,7 +193,7 @@ const NovelInfoHeader = ({
                         followed={novel.followed}
                         theme={theme}
                     />
-                    {novel.genre && novel.genre !== "" && (
+                    {novel.genre.length > 0 && novel.genre !== "" && (
                         <NovelGenres theme={theme} genre={novel.genre} />
                     )}
                     <ReadButton

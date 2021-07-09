@@ -97,6 +97,35 @@ const parseNovelAndChapters = async (novelUrl) => {
         novelChapters.push(chapter);
     });
 
+    let moreChaptersUrl =
+        baseUrl +
+        "temphtml/_tempChapterList_all_" +
+        $("div#more").attr("data-nid") +
+        ".html";
+
+    let moreChapters = await fetch(moreChaptersUrl);
+    let moreChaptersString = await moreChapters.text();
+
+    $ = cheerio.load(moreChaptersString);
+
+    $("a").each(function () {
+        const chapterName = $(this).text();
+
+        const releaseDate = $(this)[0]
+            .nextSibling.nodeValue.replace(/-/g, "/")
+            .trim();
+
+        const chapterUrl = $(this).attr("href").replace(url, "");
+
+        const chapter = {
+            chapterName,
+            releaseDate,
+            chapterUrl,
+        };
+
+        novelChapters.push(chapter);
+    });
+
     novel.chapters = novelChapters.reverse();
 
     return novel;

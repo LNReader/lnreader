@@ -48,12 +48,19 @@ import {
 } from "./multisrc/madara/MadaraGenerator";
 import WuxiaBlogScraper from "./en/wuxiablog";
 import WuxiaCityScraper from "./en/wuxiacity";
+import NovelUpdatesScraper from "./en/novelupdates";
 
 export const sources = [
     /**
      * English
      */
-
+    {
+        sourceId: 50,
+        sourceUrl: "https://www.novelupdates.com/",
+        sourceName: "Novel Updates",
+        icon: "https://github.com/rajarsheechatterjee/lnreader-extensions/blob/main/src/en/novelupdates/icon.png?raw=true",
+        lang: "English",
+    },
     {
         sourceId: 1,
         url: "https://boxnovel.com/",
@@ -547,6 +554,9 @@ export const getSource = (sourceId) => {
         }
         case 49: {
             return WuxiaCityScraper;
+        }
+        case 50: {
+            return NovelUpdatesScraper;
         }
     }
 };

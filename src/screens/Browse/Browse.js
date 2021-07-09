@@ -110,7 +110,7 @@ const Browse = ({ navigation }) => {
                 extraData={pinned}
                 ListHeaderComponent={
                     <View>
-                        {(showNovelUpdates || showMyAnimeList) && (
+                        {showMyAnimeList && (
                             <>
                                 <Text
                                     style={{
@@ -121,7 +121,7 @@ const Browse = ({ navigation }) => {
                                 >
                                     Discover
                                 </Text>
-                                {showNovelUpdates && (
+                                {/* {showNovelUpdates && (
                                     <DiscoverCard
                                         label="Novel Updates"
                                         onPress={() =>
@@ -132,7 +132,7 @@ const Browse = ({ navigation }) => {
                                         icon={require("../../../assets/novelupdates.png")}
                                         theme={theme}
                                     />
-                                )}
+                                )} */}
                                 {showMyAnimeList && (
                                     <DiscoverCard
                                         label="MyAnimeList"

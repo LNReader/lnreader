@@ -87,7 +87,7 @@ const BrowseSettings = ({ navigation }) => {
                     />
                 </Pressable>
                 <ListSubHeader theme={theme}>Discover</ListSubHeader>
-                <Pressable
+                {/* <Pressable
                     android_ripple={{ color: theme.rippleColor }}
                     style={{
                         padding: 16,
@@ -107,7 +107,7 @@ const BrowseSettings = ({ navigation }) => {
                             dispatch(enableDiscover("showNovelUpdates"))
                         }
                     />
-                </Pressable>
+                </Pressable> */}
                 <Pressable
                     android_ripple={{ color: theme.rippleColor }}
                     style={{
