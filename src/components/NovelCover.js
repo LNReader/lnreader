@@ -200,6 +200,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 4.5,
         paddingVertical: 4,
         borderRadius: 4,
+        flex: 1,
     },
     extensionIcon: {
         width: 42,
