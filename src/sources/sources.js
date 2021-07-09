@@ -35,6 +35,8 @@ import ScribbleHubScraper from "./en/scribblehub";
 import SyosetuScraper from "./jp/syosetu";
 import LNMTLScraper from "./en/lnmtl";
 import {
+    DaoNovelScraper,
+    FirstKissNovelScraper,
     FreeNovelScraper,
     LunarLettersScraper,
     NovelCakeScraper,
@@ -44,6 +46,8 @@ import {
     SleepyTranslationsScraper,
     ZinnNovelScraper,
 } from "./multisrc/madara/MadaraGenerator";
+import WuxiaBlogScraper from "./en/wuxiablog";
+import WuxiaCityScraper from "./en/wuxiacity";
 
 export const sources = [
     /**
@@ -296,6 +300,34 @@ export const sources = [
         icon: "https://github.com/rajarsheechatterjee/lnreader-extensions/blob/main/multisrc/madara/icons/freenovel.png?raw=true",
         lang: "English",
     },
+    {
+        sourceId: 46,
+        sourceUrl: "https://1stkissnovel.love/",
+        sourceName: "1stKissNovel",
+        icon: "https://github.com/rajarsheechatterjee/lnreader-extensions/blob/main/multisrc/madara/icons/1stkissnovel.png?raw=true",
+        lang: "English",
+    },
+    {
+        sourceId: 47,
+        sourceUrl: "https://daonovel.com/",
+        sourceName: "DaoNovel",
+        icon: "https://github.com/rajarsheechatterjee/lnreader-extensions/blob/main/multisrc/madara/icons/daonovel.png?raw=true",
+        lang: "English",
+    },
+    {
+        sourceId: 48,
+        sourceUrl: "https://www.wuxia.blog/",
+        sourceName: "Wuxia.Blog",
+        icon: "https://github.com/rajarsheechatterjee/lnreader-extensions/blob/main/src/en/wuxiablog/icon.png?raw=true",
+        lang: "English",
+    },
+    {
+        sourceId: 49,
+        sourceUrl: "https://wuxia.city/",
+        sourceName: "Wuxia.City",
+        icon: "https://github.com/rajarsheechatterjee/lnreader-extensions/blob/main/src/en/wuxiacity/icon.png?raw=true",
+        lang: "English",
+    },
 
     /**
      * Spanish
@@ -503,6 +535,18 @@ export const getSource = (sourceId) => {
         }
         case 45: {
             return FreeNovelScraper;
+        }
+        case 46: {
+            return FirstKissNovelScraper;
+        }
+        case 47: {
+            return DaoNovelScraper;
+        }
+        case 48: {
+            return WuxiaBlogScraper;
+        }
+        case 49: {
+            return WuxiaCityScraper;
         }
     }
 };

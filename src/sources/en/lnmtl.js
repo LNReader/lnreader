@@ -133,6 +133,11 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     $(".original").remove();
 
     let chapterText = $(".chapter-body").html();
+
+    if (!chapterText) {
+        chapterText = $(".alert.alert-warning").text();
+    }
+
     chapterText =
         chapterName +
         "\n\n" +

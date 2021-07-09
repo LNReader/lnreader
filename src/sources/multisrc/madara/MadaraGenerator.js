@@ -80,7 +80,7 @@ export const FirstKissNovelScraper = new MadaraScraper(
     getPath(46)
 );
 
-export const DaoNovel = new MadaraScraper(
+export const DaoNovelScraper = new MadaraScraper(
     47,
     "https://daonovel.com/",
     "DaoNovel",

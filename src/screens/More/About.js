@@ -29,7 +29,7 @@ const AboutScreen = ({ navigation }) => {
                         title="What's new"
                         onPress={() =>
                             Linking.openURL(
-                                "https://github.com/rajarsheechatterjee/lnreader/commits/main"
+                                "https://github.com/LNReader/lnreader/commits/main"
                             )
                         }
                         theme={theme}
@@ -45,20 +45,20 @@ const AboutScreen = ({ navigation }) => {
                     />
                     <ListItem
                         title="Github"
-                        description="https://github.com/rajarsheechatterjee/lnreader"
+                        description="https://github.com/LNReader/lnreader"
                         onPress={() =>
                             Linking.openURL(
-                                "https://github.com/rajarsheechatterjee/lnreader"
+                                "https://github.com/LNReader/lnreader"
                             )
                         }
                         theme={theme}
                     />
                     <ListItem
                         title="Sources"
-                        description="https://github.com/rajarsheechatterjee/lnreader-sources"
+                        description="https://github.com/LNReader/lnreader-sources"
                         onPress={() =>
                             Linking.openURL(
-                                "https://github.com/rajarsheechatterjee/lnreader-sources"
+                                "https://github.com/LNReader/lnreader-sources"
                             )
                         }
                         theme={theme}
