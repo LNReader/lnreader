@@ -1,51 +1,7 @@
 import React from "react";
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet, View } from "react-native";
 
 import { IconButton } from "react-native-paper";
-
-const actions = [
-    {
-        icon: "download-outline",
-        onPress: () => {
-            dispatch(
-                downloadAllChaptersAction(
-                    novel.sourceId,
-                    novel.novelUrl,
-                    selected
-                )
-            );
-            setSelected([]);
-        },
-    },
-    {
-        icon: "trash-can-outline",
-        onPress: () => {
-            dispatch(deleteAllChaptersAction(selected));
-            setSelected([]);
-        },
-    },
-    {
-        icon: "bookmark-outline",
-        onPress: () => {
-            dispatch(bookmarkChapterAction(selected));
-            setSelected([]);
-        },
-    },
-    {
-        icon: "check",
-        onPress: () => {
-            dispatch(markChaptersRead(selected, novel.novelId, sort, filter));
-            setSelected([]);
-        },
-    },
-    {
-        icon: "check-outline",
-        onPress: () => {
-            dispatch(markChapterUnreadAction(selected, novel.novelId));
-            setSelected([]);
-        },
-    },
-];
 
 export const Actionbar = ({ actions, theme }) => {
     return (
@@ -55,9 +11,16 @@ export const Actionbar = ({ actions, theme }) => {
                 { backgroundColor: theme.colorPrimary },
             ]}
         >
-            {actions.map((action) => (
-                <IconButton icon={action.icon} onPress={action.onPress} />
-            ))}
+            {actions.map(
+                (action, index) =>
+                    action.icon && (
+                        <IconButton
+                            key={index}
+                            icon={action.icon}
+                            onPress={action.onPress}
+                        />
+                    )
+            )}
         </View>
     );
 };

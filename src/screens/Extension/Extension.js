@@ -82,7 +82,9 @@ const Extension = ({ navigation, route }) => {
         let mounted = true;
         getNovels();
 
-        return () => (mounted = false);
+        return () => {
+            mounted = false;
+        };
     }, [page]);
 
     const isCloseToBottom = ({

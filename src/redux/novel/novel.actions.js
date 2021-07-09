@@ -307,6 +307,12 @@ export const downloadAllChaptersAction =
         try {
             let chapters = chaps.filter((chapter) => chapter.downloaded === 0);
 
+            chapters = chapters.map((chapter) => ({
+                ...chapter,
+                sourceId,
+                novelUrl,
+            }));
+
             dispatch({ type: SET_DOWNLOAD_QUEUE, payload: chapters });
             const options = {
                 taskName: "Library Update",

@@ -22,7 +22,10 @@ const ListView = ({
             <>
                 <FastImage
                     source={{ uri: item.novelCover }}
-                    style={styles.extensionIcon}
+                    style={[
+                        styles.extensionIcon,
+                        inLibraryBadge && { opacity: 0.5 },
+                    ]}
                 />
                 <Text
                     style={[

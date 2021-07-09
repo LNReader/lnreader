@@ -6,6 +6,7 @@ import { fetchChapters, fetchNovel } from "../services/Source/source";
 import * as Notifications from "expo-notifications";
 
 import BackgroundService from "react-native-background-actions";
+import { showToast } from "../hooks/showToast";
 
 Notifications.setNotificationHandler({
     handleNotification: async () => {
@@ -143,34 +144,43 @@ export const updateAllNovels = async () => {
                 BackgroundService.isRunning() && i < libraryNovels.length;
                 i++
             ) {
-                if (BackgroundService.isRunning()) {
-                    await updateNovelChapters(
-                        libraryNovels[i].sourceId,
-                        libraryNovels[i].novelUrl,
-                        libraryNovels[i].novelId
-                    );
-                    console.log(libraryNovels[i].novelName + " Updated");
-                    await BackgroundService.updateNotification({
-                        taskTitle: libraryNovels[i].novelName,
-                        taskDesc: i + 1 + "/" + libraryNovels.length,
-                        progressBar: {
-                            max: libraryNovels.length,
-                            value: i + 1,
-                        },
-                    });
-                    if (libraryNovels.length === i + 1) {
-                        resolve();
-                        await BackgroundService.stop();
-                        Notifications.scheduleNotificationAsync({
-                            content: {
-                                title: "Library Updated",
-                                body: libraryNovels.length + " novels updated",
+                try {
+                    if (BackgroundService.isRunning()) {
+                        await updateNovelChapters(
+                            libraryNovels[i].sourceId,
+                            libraryNovels[i].novelUrl,
+                            libraryNovels[i].novelId
+                        );
+                        console.log(libraryNovels[i].novelName + " Updated");
+                        await BackgroundService.updateNotification({
+                            taskTitle: libraryNovels[i].novelName,
+                            taskDesc: i + 1 + "/" + libraryNovels.length,
+                            progressBar: {
+                                max: libraryNovels.length,
+                                value: i + 1,
                             },
-                            trigger: null,
                         });
-                    }
+                        if (libraryNovels.length === i + 1) {
+                            resolve();
+                            await BackgroundService.stop();
+                            Notifications.scheduleNotificationAsync({
+                                content: {
+                                    title: "Library Updated",
+                                    body:
+                                        libraryNovels.length +
+                                        " novels updated",
+                                },
+                                trigger: null,
+                            });
+                        }
 
-                    await sleep(taskData.delay);
+                        await sleep(taskData.delay);
+                    }
+                } catch (error) {
+                    showToast(
+                        libraryNovels[i].novelName + ": " + error.message
+                    );
+                    break;
                 }
             }
         });

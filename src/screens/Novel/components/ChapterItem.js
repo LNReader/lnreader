@@ -1,13 +1,7 @@
 import React, { memo, useCallback, useState } from "react";
-import {
-    View,
-    Text,
-    ActivityIndicator,
-    StyleSheet,
-    Pressable,
-} from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 
-import { TouchableRipple, IconButton, Menu } from "react-native-paper";
+import { Menu } from "react-native-paper";
 import { Row } from "../../../components/Common";
 
 import {
@@ -15,6 +9,12 @@ import {
     downloadChapterAction,
 } from "../../../redux/novel/novel.actions";
 import { parseChapterNumber } from "../../../services/utils/helpers";
+import {
+    ChapterBookmarkButton,
+    ChapterDownloadingButton,
+    DeleteChapterButton,
+    DownloadChapterButton,
+} from "./Chapter/ChapterDownloadButtons";
 
 const ChapterItem = ({
     novelUrl,
@@ -24,7 +24,6 @@ const ChapterItem = ({
     dispatch,
     theme,
     navigation,
-    downloading,
     index,
     position,
     selected,
@@ -32,6 +31,17 @@ const ChapterItem = ({
     showChapterTitles,
     downloadQueue,
 }) => {
+    const {
+        novelId,
+        chapterId,
+        chapterUrl,
+        chapterName,
+        read,
+        releaseDate,
+        bookmark,
+        downloaded,
+    } = chapter;
+
     const [deleteChapterMenu, setDeleteChapterMenu] = useState(false);
     const showDeleteChapterMenu = () => setDeleteChapterMenu(true);
     const hideDeleteChapterMenu = () => setDeleteChapterMenu(false);
@@ -40,51 +50,51 @@ const ChapterItem = ({
         navigation.navigate("Chapter", {
             sourceId,
             novelUrl,
-            novelId: chapter.novelId,
-            chapterId: chapter.chapterId,
-            chapterUrl: chapter.chapterUrl,
-            chapterName: chapter.chapterName,
-            novelName: novelName,
-            bookmark: chapter.bookmark,
+            novelId,
+            chapterId,
+            chapterUrl,
+            chapterName,
+            novelName,
+            bookmark,
         });
 
-    const displayDownloadButton = () => {
-        if (
-            downloadQueue.some((chap) => chap.chapterId === chapter.chapterId)
-        ) {
-            return (
-                <ActivityIndicator
-                    color={theme.textColorHint}
-                    size={25}
-                    style={{ margin: 3.5, padding: 5 }}
-                />
-            );
-        } else if (chapter.downloaded === 1) {
+    const downloadChapter = useCallback(
+        () =>
+            dispatch(
+                downloadChapterAction(
+                    sourceId,
+                    novelUrl,
+                    chapterUrl,
+                    chapterName,
+                    chapterId
+                )
+            ),
+        []
+    );
+
+    const deleteChapter = useCallback(
+        () => () => dispatch(deleteChapterAction(chapterId, chapterName)),
+        []
+    );
+
+    const renderDownloadIcon = () => {
+        if (downloadQueue.some((chap) => chap.chapterId === chapterId)) {
+            return <ChapterDownloadingButton theme={theme} />;
+        } else if (downloaded === 1) {
             return (
                 <Menu
                     visible={deleteChapterMenu}
                     onDismiss={hideDeleteChapterMenu}
                     anchor={
-                        <IconButton
-                            icon="check-circle"
-                            animated
-                            color={theme.textColorPrimary}
-                            size={25}
+                        <DeleteChapterButton
+                            theme={theme}
                             onPress={showDeleteChapterMenu}
-                            style={{ margin: 2 }}
                         />
                     }
                     contentStyle={{ backgroundColor: theme.menuColor }}
                 >
                     <Menu.Item
-                        onPress={() =>
-                            dispatch(
-                                deleteChapterAction(
-                                    chapter.chapterId,
-                                    chapter.chapterName
-                                )
-                            )
-                        }
+                        onPress={deleteChapter}
                         title="Delete"
                         titleStyle={{ color: theme.textColorPrimary }}
                     />
@@ -92,36 +102,9 @@ const ChapterItem = ({
             );
         } else {
             return (
-                <IconButton
-                    icon="arrow-down-circle-outline"
-                    animated
-                    color={theme.textColorHint}
-                    size={25}
-                    onPress={() =>
-                        dispatch(
-                            downloadChapterAction(
-                                sourceId,
-                                novelUrl,
-                                chapter.chapterUrl,
-                                chapter.chapterName,
-                                chapter.chapterId
-                            )
-                        )
-                    }
-                    style={{ margin: 2 }}
-                />
-            );
-        }
-    };
-
-    const bookmarkButton = () => {
-        if (chapter.bookmark) {
-            return (
-                <IconButton
-                    icon="bookmark"
-                    color={theme.colorAccent}
-                    size={18}
-                    style={{ marginLeft: 2 }}
+                <DownloadChapterButton
+                    theme={theme}
+                    onPress={downloadChapter}
                 />
             );
         }
@@ -135,11 +118,9 @@ const ChapterItem = ({
         if (selected.length === 0) {
             navigateToChapter();
         } else {
-            if (isSelected(chapter.chapterId)) {
+            if (isSelected(chapterId)) {
                 setSelected((selected) =>
-                    selected.filter(
-                        (item) => item.chapterId !== chapter.chapterId
-                    )
+                    selected.filter((item) => item.chapterId !== chapterId)
                 );
             } else {
                 setSelected((selected) => [...selected, chapter]);
@@ -148,12 +129,32 @@ const ChapterItem = ({
     };
 
     const onLongPress = () => {
-        if (isSelected(chapter.chapterId)) {
+        if (isSelected(chapterId)) {
             setSelected((selected) =>
-                selected.filter((item) => item.chapterId !== chapter.chapterId)
+                selected.filter((item) => item.chapterId !== chapterId)
             );
         } else {
             setSelected((selected) => [...selected, chapter]);
+        }
+    };
+
+    const renderProgressPercentage = () => {
+        const savedProgress =
+            position && position[chapterId] && position[chapterId].percentage;
+        if (savedProgress < 100 && savedProgress > 0) {
+            return (
+                <Text
+                    style={{
+                        color: theme.textColorHint,
+                        fontSize: 12,
+                        marginLeft: releaseDate ? 5 : 0,
+                    }}
+                    numberOfLines={1}
+                >
+                    {releaseDate && "•  "}
+                    {"Progress " + position[chapterId].percentage + "%"}
+                </Text>
+            );
         }
     };
 
@@ -161,7 +162,7 @@ const ChapterItem = ({
         <Pressable
             style={[
                 styles.chapterCardContainer,
-                isSelected(chapter.chapterId) && {
+                isSelected(chapterId) && {
                     backgroundColor: theme.rippleColor,
                 },
             ]}
@@ -170,23 +171,21 @@ const ChapterItem = ({
             android_ripple={{ color: theme.rippleColor }}
         >
             <Row>
-                {bookmarkButton()}
+                {bookmark === true && <ChapterBookmarkButton theme={theme} />}
                 <View>
                     <Text
-                        style={[
-                            { color: theme.textColorPrimary },
-                            chapter.read && {
-                                color: theme.textColorHint,
-                            },
-                        ]}
+                        style={{
+                            color: read
+                                ? theme.textColorHint
+                                : theme.textColorPrimary,
+                        }}
                         numberOfLines={1}
                     >
                         {showChapterTitles
-                            ? parseChapterNumber(chapter.chapterName)
-                                ? "Chapter " +
-                                  parseChapterNumber(chapter.chapterName)
+                            ? parseChapterNumber(chapterName)
+                                ? "Chapter " + parseChapterNumber(chapterName)
                                 : "Chapter " + index
-                            : chapter.chapterName.substring(0, 50)}
+                            : chapterName.substring(0, 50)}
                     </Text>
                     <View
                         style={{
@@ -194,50 +193,24 @@ const ChapterItem = ({
                             marginTop: 5,
                         }}
                     >
-                        {chapter.releaseDate && (
+                        {releaseDate && (
                             <Text
-                                style={[
-                                    {
-                                        color: theme.textColorSecondary,
-                                        fontSize: 12,
-                                    },
-                                    chapter.read && {
-                                        color: theme.textColorHint,
-                                    },
-                                ]}
+                                style={{
+                                    color: read
+                                        ? theme.textColorHint
+                                        : theme.textColorSecondary,
+                                    fontSize: 12,
+                                }}
                                 numberOfLines={1}
                             >
-                                {chapter.releaseDate}
+                                {releaseDate}
                             </Text>
                         )}
-                        {position &&
-                            !chapter.read &&
-                            position[chapter.chapterId] &&
-                            position[chapter.chapterId].percentage < 100 &&
-                            position[chapter.chapterId].percentage > 0 && (
-                                <Text
-                                    style={[
-                                        {
-                                            color: theme.textColorHint,
-                                            fontSize: 12,
-                                            marginLeft: 0,
-                                        },
-                                        chapter.releaseDate && {
-                                            marginLeft: 5,
-                                        },
-                                    ]}
-                                    numberOfLines={1}
-                                >
-                                    {chapter.releaseDate && "• "}
-                                    {"Progress " +
-                                        position[chapter.chapterId].percentage +
-                                        "%"}
-                                </Text>
-                            )}
+                        {renderProgressPercentage()}
                     </View>
                 </View>
             </Row>
-            <View>{displayDownloadButton()}</View>
+            <View>{renderDownloadIcon()}</View>
         </Pressable>
     );
 };

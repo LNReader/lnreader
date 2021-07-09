@@ -46,12 +46,12 @@ const HistoryItem = ({ history, theme, dispatch, navigation }) => {
         });
 
     return (
-        <View style={styles.historyItemContainer}>
-            <Pressable
-                onPress={navigateToNovel}
-                android_ripple={{ color: theme.rippleColor }}
-                style={styles.pressable}
-            >
+        <Pressable
+            onPress={navigateToNovel}
+            android_ripple={{ color: theme.rippleColor }}
+            style={styles.pressable}
+        >
+            <View style={styles.historyItemContainer}>
                 <View
                     style={{
                         flex: 1,
@@ -106,8 +106,8 @@ const HistoryItem = ({ history, theme, dispatch, navigation }) => {
                         onPress={navigateToChapter}
                     />
                 </View>
-            </Pressable>
-        </View>
+            </View>
+        </Pressable>
     );
 };
 
@@ -115,14 +115,13 @@ export default HistoryItem;
 
 const styles = StyleSheet.create({
     historyItemContainer: {
-        marginVertical: 8,
-        borderRadius: 4,
-        overflow: "hidden",
+        paddingVertical: 8,
+        paddingHorizontal: 16,
+        flexDirection: "row",
+        justifyContent: "space-between",
     },
     pressable: {
         flex: 1,
-        flexDirection: "row",
-        justifyContent: "space-between",
     },
     historyItemCover: {
         height: 80,

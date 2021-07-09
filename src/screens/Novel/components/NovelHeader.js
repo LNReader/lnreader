@@ -9,7 +9,7 @@ import {
 } from "react-native";
 
 import * as WebBrowser from "expo-web-browser";
-import { TouchableRipple, IconButton } from "react-native-paper";
+import { IconButton } from "react-native-paper";
 
 import { followNovelAction } from "../../../redux/novel/novel.actions";
 import { useTrackingStatus } from "../../../hooks/reduxHooks";
@@ -203,10 +203,10 @@ const NovelInfoHeader = ({
                         theme={theme}
                         lastRead={lastRead}
                     />
-                    <TouchableRipple
+                    <Pressable
                         style={styles.bottomsheet}
                         onPress={() => chaptersSettingsSheetRef.current.show()}
-                        rippleColor={theme.rippleColor}
+                        android_ripple={{ color: theme.rippleColor }}
                     >
                         <>
                             <Text
@@ -227,7 +227,7 @@ const NovelInfoHeader = ({
                                 size={24}
                             />
                         </>
-                    </TouchableRipple>
+                    </Pressable>
                 </>
             )}
         </View>

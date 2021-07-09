@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FlatList, View, Text, StyleSheet } from "react-native";
 import { FAB, ProgressBar } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,7 +9,11 @@ import EmptyView from "../../components/EmptyView";
 
 import { useTheme } from "../../hooks/reduxHooks";
 
-import { cancelDownload } from "../../redux/downloads/downloads.actions";
+import {
+    cancelDownload,
+    pauseDownloads,
+    resumeDownloads,
+} from "../../redux/downloads/downloads.actions";
 
 import BackgroundService from "react-native-background-actions";
 import { downloadAllChaptersAction } from "../../redux/novel/novel.actions";
@@ -21,10 +25,13 @@ const DownloadQueue = ({ navigation }) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (!BackgroundService.isRunning() && downloadQueue.length > 0) {
-            dispatch(cancelDownload());
-        }
+        // if (!BackgroundService.isRunning() && downloadQueue.length > 0) {
+        //     dispatch(cancelDownload());
+        // }
+        console.log(downloadQueue);
     }, []);
+
+    const [fab, setFab] = useState(BackgroundService.isRunning());
 
     return (
         <ScreenContainer theme={theme}>
@@ -53,11 +60,16 @@ const DownloadQueue = ({ navigation }) => {
                 <FAB
                     style={[styles.fab, { backgroundColor: theme.colorAccent }]}
                     color={theme.textColorPrimary}
-                    label="Cancel"
+                    label={fab ? "Pause" : "Resume"}
                     uppercase={false}
                     small
-                    icon="close"
-                    onPress={() => dispatch(cancelDownload())}
+                    icon={fab ? "pause" : "play"}
+                    onPress={() => {
+                        setFab((prevState) => !prevState);
+                        BackgroundService.isRunning()
+                            ? dispatch(pauseDownloads())
+                            : dispatch(resumeDownloads(downloadQueue));
+                    }}
                 />
             )}
         </ScreenContainer>

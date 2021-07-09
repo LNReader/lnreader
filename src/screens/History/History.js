@@ -87,11 +87,6 @@ const History = ({ navigation }) => {
                 ]}
             />
             <FlatList
-                contentContainerStyle={{
-                    flexGrow: 1,
-                    paddingVertical: 8,
-                    paddingHorizontal: 16,
-                }}
                 data={searchText ? searchResults : history}
                 keyExtractor={(item, index) => item.date}
                 renderItem={({ item }) => (
@@ -104,6 +99,7 @@ const History = ({ navigation }) => {
                                 style={{
                                     textTransform: "uppercase",
                                     paddingVertical: 8,
+                                    paddingHorizontal: 16,
                                     color: theme.textColorSecondary,
                                 }}
                             >
