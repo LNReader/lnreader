@@ -58,6 +58,15 @@
     "devDependencies": {
         "@babel/core": "~7.9.0"
     },
+    "prettier": {
+        "tabWidth": 4,
+        "semi": true,
+        "singleQuote": false,
+        "quoteProps": "as-needed",
+        "trailingComma": "es5",
+        "bracketSpacing": true,
+        "arrowParens": "always"
+    },
     "private": true,
     "name": "lnreader-eject",
     "version": "1.0.0"
