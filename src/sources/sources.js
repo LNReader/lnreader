@@ -49,6 +49,7 @@ import {
 import WuxiaBlogScraper from "./en/wuxiablog";
 import WuxiaCityScraper from "./en/wuxiacity";
 import NovelUpdatesScraper from "./en/novelupdates";
+import RanobesScraper from "./en/ranobes";
 
 export const sources = [
     /**
@@ -335,6 +336,13 @@ export const sources = [
         icon: "https://github.com/rajarsheechatterjee/lnreader-extensions/blob/main/src/en/wuxiacity/icon.png?raw=true",
         lang: "English",
     },
+    {
+        sourceId: 51,
+        sourceUrl: "https://ranobes.net/",
+        sourceName: "Ranobes",
+        icon: "https://github.com/rajarsheechatterjee/lnreader-extensions/blob/main/src/en/ranobes/icon.png?raw=true",
+        lang: "English",
+    },
 
     /**
      * Spanish
@@ -557,6 +565,9 @@ export const getSource = (sourceId) => {
         }
         case 50: {
             return NovelUpdatesScraper;
+        }
+        case 51: {
+            return RanobesScraper;
         }
     }
 };
