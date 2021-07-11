@@ -17,6 +17,7 @@ export const Actionbar = ({ actions, theme }) => {
                         <IconButton
                             key={index}
                             icon={action.icon}
+                            color={theme.textColorPrimary}
                             onPress={action.onPress}
                         />
                     )

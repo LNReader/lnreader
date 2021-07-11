@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
         borderRadius: 4,
     },
     opac: {
-        paddingHorizontal: 4.5,
+        paddingHorizontal: 4,
         paddingVertical: 4,
         borderRadius: 4,
         flex: 1,

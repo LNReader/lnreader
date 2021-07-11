@@ -10,7 +10,11 @@ import { sources } from "../../sources/sources";
 
 export const getSourcesAction = () => async (dispatch) => {
     try {
-        dispatch({ type: GET_SOURCES, payload: sources });
+        let sortedSources = sources.sort((a, b) =>
+            a.sourceName.localeCompare(b.sourceName)
+        );
+
+        dispatch({ type: GET_SOURCES, payload: sortedSources });
     } catch (error) {
         showToast(error.message);
     }

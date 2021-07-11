@@ -19,6 +19,7 @@ const ReaderSheet = ({
     bottomSheetRef,
     selectText,
     showScrollPercentage,
+    navigation,
 }) => {
     const [fontMenu, setFontMenu] = useState(false);
     const openFontMenu = () => setFontMenu(true);
@@ -45,6 +46,22 @@ const ReaderSheet = ({
         >
             <View style={styles.contentContainer}>
                 <BottomSheetHandle theme={theme} />
+                {/* <IconButton
+                    icon="cog-outline"
+                    color="#FFFFFF"
+                    size={24}
+                    onPress={() =>
+                        navigation.navigate("SettingsStack", {
+                            screen: "ReaderSettings",
+                        })
+                    }
+                    style={{
+                        marginVertical: 0,
+                        position: "absolute",
+                        top: 16,
+                        right: 16,
+                    }}
+                /> */}
                 <View style={styles.readerSettingsContainer}>
                     <ReaderSettingTitle title="Text Size" />
                     <Slider

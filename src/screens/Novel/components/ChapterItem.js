@@ -72,10 +72,8 @@ const ChapterItem = ({
         []
     );
 
-    const deleteChapter = useCallback(
-        () => () => dispatch(deleteChapterAction(chapterId, chapterName)),
-        []
-    );
+    const deleteChapter = () =>
+        dispatch(deleteChapterAction(chapterId, chapterName));
 
     const renderDownloadIcon = () => {
         if (downloadQueue.some((chap) => chap.chapterId === chapterId)) {
@@ -141,7 +139,7 @@ const ChapterItem = ({
     const renderProgressPercentage = () => {
         const savedProgress =
             position && position[chapterId] && position[chapterId].percentage;
-        if (savedProgress < 100 && savedProgress > 0) {
+        if (savedProgress < 100 && savedProgress > 0 && !read) {
             return (
                 <Text
                     style={{

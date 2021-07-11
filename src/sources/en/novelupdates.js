@@ -1,6 +1,5 @@
 import cheerio from "react-native-cheerio";
 import { htmlToText } from "../helpers/htmlToText";
-import moment from "moment";
 
 const sourceId = 50;
 
@@ -72,13 +71,17 @@ const parseNovelAndChapters = async (novelUrl) => {
 
     novel.author = $("#showauthors").text().trim();
 
-    novel.genre = $(".book-generes").text().trim();
+    novel.genre = $("#seriesgenre").text().trim().replace(/\s/g, ",");
 
     novel.status = $("#editstatus").text().includes("Ongoing")
         ? "Ongoing"
         : "Completed";
 
-    novel.summary = $("#editdescription").text().trim();
+    let type = $("#showtype").text().trim();
+
+    let summary = $("#editdescription").text().trim();
+
+    novel.summary = `Type: ${type}\n` + summary;
 
     let novelChapters = [];
 
@@ -124,13 +127,60 @@ const parseChapter = async (novelUrl, chapterUrl) => {
         method: "GET",
         headers: headers,
     });
-    const body = await result.text();
+    let body = await result.text();
 
     $ = cheerio.load(body);
 
     let chapterName = "";
 
-    let chapterText = body;
+    let isWuxiaWorld = $('meta[name="application-name"]').attr("content");
+    isWuxiaWorld =
+        isWuxiaWorld && isWuxiaWorld.includes("Wuxiaworld") ? true : false;
+
+    /**
+     * Checks if its a wwordpress site
+     */
+    let isWordPress = $('meta[name="generator"]').attr("content");
+
+    if (isWordPress) {
+        isWordPress =
+            isWordPress.toLowerCase().includes("wordpress") ||
+            isWordPress.toLowerCase().includes("Site Kit by Google 1.36.0") ||
+            $(".powered-by").text().toLowerCase().includes("wordpress")
+                ? true
+                : false;
+    }
+
+    let isWebNovel =
+        $("header > a").attr("alt") === "Webnovel.com" ? true : false;
+
+    if (isWuxiaWorld) {
+        chapterText = $("#chapter-content").html();
+    } else if (isWordPress) {
+        $(".c-ads").remove();
+        $("#madara-comments").remove();
+        $(".sharedaddy").remove();
+        chapterText = $(".entry-content").html();
+
+        if (!chapterText) {
+            chapterText = $("#chp_raw").html();
+        }
+    } else if (isWebNovel) {
+        chapterText = $(".cha-words").html();
+    } else {
+        /**
+         * Tags and classes to remove
+         */
+        const tags = ["nav", "footer"];
+
+        tags.map((tag) => $(tag).remove());
+
+        chapterText = $("body").html();
+
+        chapterText = htmlToText(chapterText);
+    }
+
+    chapterText = htmlToText(chapterText);
 
     let nextChapter = null;
     let prevChapter = null;
