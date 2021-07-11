@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import { StyleSheet, View, TextInput, Text, StatusBar } from "react-native";
 
 import { TouchableRipple, IconButton } from "react-native-paper";
-import { Row } from "./Common";
+import { Row } from "../Common";
 
 export const Searchbar = ({
     theme,

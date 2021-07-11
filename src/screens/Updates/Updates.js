@@ -18,7 +18,7 @@ import {
 import { Appbar } from "./components/Appbar";
 import UpdatesItem from "./components/UpdatesItem";
 import { useTheme } from "../../hooks/reduxHooks";
-import { Searchbar } from "../../components/Searchbar";
+import { Searchbar } from "../../components/Searchbar/Searchbar";
 
 import moment from "moment";
 import { dateFormat } from "../../services/utils/constants";

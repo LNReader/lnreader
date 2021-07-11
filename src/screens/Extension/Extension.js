@@ -5,7 +5,7 @@ import * as WebBrowser from "expo-web-browser";
 import NovelCover from "../../components/NovelCover";
 import EmptyView from "../../components/EmptyView";
 
-import { Searchbar } from "../../components/Searchbar";
+import { Searchbar } from "../../components/Searchbar/Searchbar";
 import { useTheme, useLibrary, useSettings } from "../../hooks/reduxHooks";
 import NovelList from "../../components/NovelList";
 import { showToast } from "../../hooks/showToast";

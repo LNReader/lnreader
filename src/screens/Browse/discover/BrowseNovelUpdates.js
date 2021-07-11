@@ -11,7 +11,7 @@ import {
 import * as WebBrowser from "expo-web-browser";
 
 import { ScreenContainer } from "../../../components/Common";
-import { Searchbar } from "../../../components/Searchbar";
+import { Searchbar } from "../../../components/Searchbar/Searchbar";
 
 import { useTheme } from "../../../hooks/reduxHooks";
 import { scrapeSearchResults, scrapeTopNovels } from "./NovelUpdatesScraper";

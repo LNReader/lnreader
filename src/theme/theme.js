@@ -1,15 +1,10 @@
-/**
- * Application Colors
- */
-export const theme = {
-    colorPrimary: "#000000",
-    colorPrimaryDark: "#000000",
-    colorAccent: "#3399FF",
-    textColorPrimary: "#FFFFFF",
-    textColorSecondary: "rgba(255,255,255,0.7)",
-    textColorHint: "rgba(255,255,255,0.5)",
-    rippleColor: "rgba(255,255,255,0.06)",
-};
+import {
+    AccentColors,
+    PrimaryColors,
+    RippleColors,
+    StatusBarStyle,
+    TextColors,
+} from "./colors";
 
 /**
  * Light
@@ -17,20 +12,17 @@ export const theme = {
 export const lightTheme = {
     id: 1,
     name: "Light",
-    colorPrimary: "#FFFFFF",
-    colorPrimaryDark: "#FAFAFA",
-    colorAccent: "#2979FF",
-    textColorPrimary: "#000000",
-    textColorSecondary: "rgba(0,0,0,0.54)",
-    textColorHint: "rgba(0,0,0,0.38)",
-    rippleColor: "rgba(41,121,255,0.12)",
+    ...PrimaryColors.light,
+    ...TextColors.light,
+    colorAccent: AccentColors.default,
+    rippleColor: RippleColors.default,
     searchBarColor: "#FFFFFF",
     menuColor: "#FFFFFF",
     dividerColor: "rgba(0,0,0,0.1)",
     filterColor: "#FFC107",
     colorDisabled: "rgba(220,220,220,255)",
     colorButtonText: "#FFFFFF",
-    statusBar: "dark",
+    statusBar: StatusBarStyle.DARK,
 };
 
 /**
@@ -39,20 +31,17 @@ export const lightTheme = {
 export const darkTheme = {
     id: 2,
     name: "Dark",
-    colorPrimary: "#242529",
-    colorPrimaryDark: "#202125",
-    colorAccent: "#3399FF",
-    textColorPrimary: "#FFFFFF",
-    textColorSecondary: "rgba(255,255,255,0.7)",
-    textColorHint: "rgba(255,255,255,0.5)",
-    rippleColor: "rgba(41,121,255,0.12)",
+    ...PrimaryColors.dark,
+    ...TextColors.dark,
+    colorAccent: AccentColors.defaultDark,
+    rippleColor: RippleColors.default,
     searchBarColor: "#303135",
     menuColor: "#242529",
     filterColor: "#FFEB3B",
     dividerColor: "rgba(255,255,255,0.1)",
     colorDisabled: "rgba(57,57,57,255)",
     colorButtonText: "#FFFFFF",
-    statusBar: "light",
+    statusBar: StatusBarStyle.LIGHT,
 };
 
 /**
@@ -61,20 +50,17 @@ export const darkTheme = {
 export const amoledDarkTheme = {
     id: 0,
     name: "AMOLED Dark",
-    colorPrimary: "#000000",
-    colorPrimaryDark: "#000000",
-    colorAccent: "#3399FF",
-    textColorPrimary: "#FFFFFF",
-    textColorSecondary: "rgba(255,255,255,0.7)",
-    textColorHint: "rgba(255,255,255,0.5)",
-    rippleColor: "rgba(41,121,255,0.12)",
+    ...PrimaryColors.amoled,
+    colorAccent: AccentColors.defaultDark,
+    rippleColor: RippleColors.default,
     searchBarColor: "#1F1F1F",
     menuColor: "#242529",
     filterColor: "#FFEB3B",
     dividerColor: "rgba(255,255,255,0.15)",
     colorDisabled: "rgba(33,33,33,255)",
     colorButtonText: "#FFFFFF",
-    statusBar: "light",
+    statusBar: StatusBarStyle.LIGHT,
+    ...TextColors.dark,
 };
 
 /**
@@ -83,43 +69,37 @@ export const amoledDarkTheme = {
 export const midnightDuskTheme = {
     id: 3,
     name: "Midnight Dusk",
-    colorPrimary: "#201F27",
-    colorPrimaryDark: "#16151D",
-    colorAccent: "#F02475",
-    textColorPrimary: "#FFFFFF",
-    textColorSecondary: "rgba(255,255,255,0.7)",
-    textColorHint: "rgba(255,255,255,0.5)",
-    rippleColor: "rgba(240,36,117,0.12)",
+    ...PrimaryColors.midnightDusk,
+    colorAccent: AccentColors.midnightDusk,
+    rippleColor: RippleColors.midnightDusk,
     searchBarColor: "#201F27",
     menuColor: "#201F27",
     filterColor: "#FFEB3B",
     dividerColor: "rgba(255,255,255,0.1)",
     colorDisabled: "rgba(57,57,57,255)",
     colorButtonText: "#FFFFFF",
-    statusBar: "light",
+    statusBar: StatusBarStyle.LIGHT,
+    ...TextColors.dark,
 };
 
 /**
  * Lime
  */
 
-export const limeTheme = {
+export const greenAppleTheme = {
     id: 4,
     name: "Green Apple",
-    colorPrimary: "#201F27",
-    colorPrimaryDark: "#16151D",
-    colorAccent: "#48E484",
-    textColorPrimary: "#FFFFFF",
-    textColorSecondary: "rgba(255,255,255,0.7)",
-    textColorHint: "rgba(255,255,255,0.5)",
-    rippleColor: "rgba(72,228,132,0.12)",
-    searchBarColor: "#201F27",
-    menuColor: "#201F27",
+    ...PrimaryColors.dark,
+    ...TextColors.dark,
+    colorAccent: AccentColors.greenApple,
+    rippleColor: RippleColors.greenApple,
+    searchBarColor: "#303135",
+    menuColor: "#242529",
     filterColor: "#FFEB3B",
     dividerColor: "rgba(255,255,255,0.1)",
     colorDisabled: "rgba(57,57,57,255)",
-    colorButtonText: "#16151D",
-    statusBar: "light",
+    colorButtonText: "#FFFFFF",
+    statusBar: StatusBarStyle.LIGHT,
 };
 
 /**
@@ -129,20 +109,17 @@ export const limeTheme = {
 export const hotPinkTheme = {
     id: 6,
     name: "AMOLED Hot Pink",
-    colorPrimary: "#000000",
-    colorPrimaryDark: "#000000",
-    colorAccent: "#FF3399",
-    textColorPrimary: "#FFFFFF",
-    textColorSecondary: "rgba(255,255,255,0.7)",
-    textColorHint: "rgba(255,255,255,0.5)",
-    rippleColor: "rgba(255,51,153,0.12)",
+    ...PrimaryColors.amoled,
+    ...TextColors.dark,
+    colorAccent: AccentColors.hotPink,
+    rippleColor: RippleColors.hotPink,
     searchBarColor: "#1F1F1F",
     menuColor: "#242529",
     filterColor: "#FFEB3B",
     dividerColor: "rgba(255,255,255,0.15)",
     colorDisabled: "rgba(33,33,33,255)",
     colorButtonText: "#FFFFFF",
-    statusBar: "light",
+    statusBar: StatusBarStyle.LIGHT,
 };
 
 /**
@@ -152,37 +129,31 @@ export const hotPinkTheme = {
 export const strawberryDaiquiri = {
     id: 7,
     name: "Strawberry Daiquiri",
-    colorPrimary: "#FFFFFF",
-    colorPrimaryDark: "#FAFAFA",
-    colorAccent: "#ED4A65",
-    textColorPrimary: "#000000",
-    textColorSecondary: "rgba(0,0,0,0.54)",
-    textColorHint: "rgba(0,0,0,0.38)",
-    rippleColor: "rgba(237,74,101,0.12)",
+    ...PrimaryColors.light,
+    colorAccent: AccentColors.strawberryDaiquiri,
+    rippleColor: RippleColors.strawberryDaiquiri,
     searchBarColor: "#FFFFFF",
     menuColor: "#FFFFFF",
     dividerColor: "rgba(0,0,0,0.1)",
     filterColor: "#FFC107",
     colorDisabled: "rgba(220,220,220,255)",
     colorButtonText: "#FFFFFF",
-    statusBar: "dark",
+    statusBar: StatusBarStyle.DARK,
+    ...TextColors.light,
 };
 
 export const irisBlueTheme = {
     id: 5,
     name: "Iris Blue",
-    colorPrimary: "#393e46",
-    colorPrimaryDark: "#222831",
-    colorAccent: "#00adb5",
-    textColorPrimary: "#FFFFFF",
-    textColorSecondary: "rgba(255,255,255,0.7)",
-    textColorHint: "rgba(255,255,255,0.5)",
-    rippleColor: "rgba(0,173,181,0.12)",
+    ...PrimaryColors.irisBlue,
+    ...TextColors.dark,
+    colorAccent: AccentColors.irisBlue,
+    rippleColor: RippleColors.irisBlue,
     searchBarColor: "#393e46",
     menuColor: "#393e46",
     filterColor: "#FFEB3B",
     dividerColor: "rgba(255,255,255,0.1)",
     colorDisabled: "#393e46",
     colorButtonText: "#16151D",
-    statusBar: "light",
+    statusBar: StatusBarStyle.LIGHT,
 };

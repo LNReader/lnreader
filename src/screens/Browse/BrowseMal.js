@@ -4,7 +4,7 @@ import { StyleSheet, View, ActivityIndicator, FlatList } from "react-native";
 import * as WebBrowser from "expo-web-browser";
 
 import NovelCover from "../../components/NovelCover";
-import { Searchbar } from "../../components/Searchbar";
+import { Searchbar } from "../../components/Searchbar/Searchbar";
 import ErrorView from "../../components/ErrorView";
 
 import { useTheme, useSettings } from "../../hooks/reduxHooks";

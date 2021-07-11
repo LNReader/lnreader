@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
     createStackNavigator,
     TransitionPresets,
@@ -14,7 +14,6 @@ import SourceNovels from "../screens/Browse/SourceNovels";
 import MigrateNovel from "../screens/Browse/migration/MigrationNovels";
 import MoreStack from "./More";
 import MalTopNovels from "../screens/Browse/discover/MalTopNovels";
-import { setStatusBarStyle } from "../hooks/setStatusBarStyle";
 import { View } from "react-native";
 import { useTheme } from "../hooks/reduxHooks";
 import { githubUpdateChecker } from "../hooks/githubUpdateChecker";
@@ -22,6 +21,7 @@ import NewUpdateDialog from "../components/NewUpdateDialog";
 import { NavigationContainer } from "@react-navigation/native";
 import BrowseNovelUpdates from "../screens/Browse/discover/BrowseNovelUpdates";
 import BrowseSettings from "../screens/Browse/BrowseSettings";
+import { setBarColor } from "../theme/utils/setBarColor";
 
 const Stack = createStackNavigator();
 
@@ -32,7 +32,10 @@ const stackNavigatorConfig = {
 const MainNavigator = () => {
     const theme = useTheme();
 
-    setStatusBarStyle(theme);
+    useEffect(() => {
+        setBarColor(theme);
+    }, [theme]);
+
     const { isNewVersion, latestRelease } = githubUpdateChecker() || {};
 
     return (

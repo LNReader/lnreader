@@ -7,14 +7,14 @@ import { setAppTheme } from "../../../redux/settings/settings.actions";
 
 const ThemeModal = ({ themeModalVisible, hidethemeModal, dispatch, theme }) => {
     const themes = [
-        { id: 1, name: "Light", statusBar: "dark" },
-        { id: 7, name: "Strawberry Daiquiri", statusBar: "dark" },
-        { id: 2, name: "Dark", statusBar: "light" },
-        { id: 3, name: "Midnight Dusk", statusBar: "light" },
-        { id: 4, name: "Green Apple", statusBar: "light" },
-        { id: 5, name: "Iris Blue", statusBar: "light" },
-        { id: 0, name: "AMOLED Dark", statusBar: "light" },
-        { id: 6, name: "AMOLED Hot Pink", statusBar: "light" },
+        { id: 1, name: "Light" },
+        { id: 7, name: "Strawberry Daiquiri" },
+        { id: 2, name: "Dark" },
+        { id: 3, name: "Midnight Dusk" },
+        { id: 4, name: "Green Apple" },
+        { id: 5, name: "Iris Blue" },
+        { id: 0, name: "AMOLED Dark" },
+        { id: 6, name: "AMOLED Hot Pink" },
     ];
 
     const ThemeItem = ({ item }) => (

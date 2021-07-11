@@ -17,7 +17,7 @@ import {
 
 import SourceCard from "./components/SourceCard";
 import { showToast } from "../../hooks/showToast";
-import { Searchbar } from "../../components/Searchbar";
+import { Searchbar } from "../../components/Searchbar/Searchbar";
 import EmptyView from "../../components/EmptyView";
 import DiscoverCard from "./discover/DiscoverCard";
 

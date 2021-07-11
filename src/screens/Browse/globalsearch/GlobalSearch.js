@@ -4,7 +4,7 @@ import { StyleSheet, View, FlatList, ActivityIndicator } from "react-native";
 import { ProgressBar } from "react-native-paper";
 import { useSelector } from "react-redux";
 
-import { Searchbar } from "../../../components/Searchbar";
+import { Searchbar } from "../../../components/Searchbar/Searchbar";
 import EmptyView from "../../../components/EmptyView";
 
 import { ScreenContainer } from "../../../components/Common";

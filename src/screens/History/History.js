@@ -8,7 +8,7 @@ import EmptyView from "../../components/EmptyView";
 import HistoryItem from "./HistoryItem";
 import RemoveHistoryDialog from "./RemoveHistoryDialog";
 import { ScreenContainer } from "../../components/Common";
-import { Searchbar } from "../../components/Searchbar";
+import { Searchbar } from "../../components/Searchbar/Searchbar";
 
 import { getHistoryAction } from "../../redux/history/history.actions";
 import { dateFormat } from "../../services/utils/constants";

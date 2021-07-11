@@ -9,7 +9,7 @@ import {
 import { useFocusEffect } from "@react-navigation/native";
 import { useSelector, useDispatch } from "react-redux";
 
-import { Searchbar } from "../../components/Searchbar";
+import { Searchbar } from "../../components/Searchbar/Searchbar";
 import NovelList from "../../components/NovelList";
 import NovelCover from "../../components/NovelCover";
 import EmptyView from "../../components/EmptyView";
