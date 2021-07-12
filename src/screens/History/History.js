@@ -87,6 +87,7 @@ const History = ({ navigation }) => {
                 ]}
             />
             <FlatList
+                contentContainerStyle={{ flexGrow: 1 }}
                 data={searchText ? searchResults : history}
                 keyExtractor={(item, index) => item.date}
                 renderItem={({ item }) => (

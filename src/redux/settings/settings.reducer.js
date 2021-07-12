@@ -15,6 +15,7 @@ import {
     irisBlueTheme,
     hotPinkTheme,
     strawberryDaiquiri,
+    palenightTheme,
 } from "../../theme/theme";
 import { setRippleColor } from "./settings.actions";
 
@@ -27,6 +28,7 @@ const themes = {
     5: irisBlueTheme,
     6: hotPinkTheme,
     7: strawberryDaiquiri,
+    8: palenightTheme,
 };
 
 /**

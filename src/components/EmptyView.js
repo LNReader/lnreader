@@ -10,7 +10,7 @@ const EmptyView = ({ icon, description, style, children, iconStyle }) => {
             <Text
                 style={[
                     styles.emptyViewIcon,
-                    { color: theme.textColorSecondary },
+                    { color: theme.textColorHint },
                     style,
                     iconStyle,
                 ]}
@@ -20,7 +20,7 @@ const EmptyView = ({ icon, description, style, children, iconStyle }) => {
             <Text
                 style={[
                     styles.emptyViewText,
-                    { color: theme.textColorSecondary },
+                    { color: theme.textColorHint },
                     style,
                 ]}
             >

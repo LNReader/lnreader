@@ -17,7 +17,7 @@ const ErrorView = ({ theme, onRetry, error, openWebView }) => (
                 icon="reload"
                 size={25}
                 style={{ margin: 0, marginTop: 24 }}
-                color={theme.textColorSecondary}
+                color={theme.text}
                 onPress={onRetry}
             />
             <Text style={{ color: theme.textColorPrimary }}>Retry</Text>

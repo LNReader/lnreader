@@ -224,13 +224,10 @@ const Chapter = ({ route, navigation }) => {
 
     const readerStyles = [
         {
-            paddingVertical: 16,
-            paddingBottom: 32,
             fontSize: reader.textSize,
             color: reader.textColor || readerTextColor(reader.theme),
             lineHeight: readerLineHeight(reader.textSize, reader.lineHeight),
             textAlign: reader.textAlign,
-            paddingHorizontal: `${reader.padding}%`,
         },
         reader.fontFamily && {
             fontFamily: reader.fontFamily,
@@ -296,11 +293,9 @@ const Chapter = ({ route, navigation }) => {
                     {error ? (
                         <View style={{ flex: 1, justifyContent: "center" }}>
                             <EmptyView
-                                icon="(-_-;)・・・"
+                                icon="Σ(ಠ_ಠ)"
                                 description={error}
-                                style={{
-                                    color: errorTextColor(reader.theme),
-                                }}
+                                style={{ color: errorTextColor(reader.theme) }}
                             >
                                 <IconButton
                                     icon="reload"
@@ -339,31 +334,68 @@ const Chapter = ({ route, navigation }) => {
                             style={{ flex: 1 }}
                         >
                             <Pressable
-                                style={{ flex: 1 }}
+                                style={{
+                                    flex: 1,
+                                    paddingVertical: 16,
+                                    paddingBottom: 32,
+                                    paddingHorizontal: `${reader.padding}%`,
+                                }}
                                 onLayout={scrollToSavedProgress}
                                 onPress={hideHeader}
                             >
                                 {chapter.chapterText
-                                    .split(/(\[https.*?\])/g)
+                                    .trim()
+                                    .split(/(\[https.*?\])|(_.*?_)/g)
                                     .map((part, index) => {
-                                        if (part.match(/\[https.*?\]/)) {
-                                            return (
-                                                <FitImage
-                                                    source={{
-                                                        uri: part.slice(1, -1),
-                                                    }}
-                                                    key={index}
-                                                />
-                                            );
-                                        } else {
-                                            return (
-                                                <Text
-                                                    style={readerStyles}
-                                                    selectable={textSelectable}
-                                                >
-                                                    {part}
-                                                </Text>
-                                            );
+                                        if (part) {
+                                            const isItalic =
+                                                part.match(/_(.*?)_/);
+                                            const isImage =
+                                                part.match(/\[https.*?\]/);
+
+                                            if (isImage) {
+                                                return (
+                                                    <FitImage
+                                                        source={{
+                                                            uri: part.slice(
+                                                                1,
+                                                                -1
+                                                            ),
+                                                        }}
+                                                        key={index}
+                                                    />
+                                                );
+                                            } else if (isItalic) {
+                                                return (
+                                                    <Text
+                                                        style={[
+                                                            readerStyles,
+                                                            {
+                                                                fontStyle:
+                                                                    "italic",
+                                                            },
+                                                        ]}
+                                                        selectable={
+                                                            textSelectable
+                                                        }
+                                                        key={index}
+                                                    >
+                                                        {isItalic[1]}
+                                                    </Text>
+                                                );
+                                            } else {
+                                                return (
+                                                    <Text
+                                                        style={readerStyles}
+                                                        selectable={
+                                                            textSelectable
+                                                        }
+                                                        key={index}
+                                                    >
+                                                        {part}
+                                                    </Text>
+                                                );
+                                            }
                                         }
                                     })}
                             </Pressable>

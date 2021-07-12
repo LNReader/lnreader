@@ -98,7 +98,7 @@ export const greenAppleTheme = {
     filterColor: "#FFEB3B",
     dividerColor: "rgba(255,255,255,0.1)",
     colorDisabled: "rgba(57,57,57,255)",
-    colorButtonText: "#FFFFFF",
+    colorButtonText: "#000000",
     statusBar: StatusBarStyle.LIGHT,
 };
 

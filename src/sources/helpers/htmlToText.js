@@ -5,6 +5,7 @@ const htmlToText = (html, options = {}) => {
     text = html
         // Turn <br>'s into single line breaks.
         .replace(/<\s*br[^>]*>/gi, "\n")
+        .replace(/<\s*hr[^>]*>/gi, `\n\n${"-".repeat(40)}\n\n`)
         // Turn </li>'s into line breaks.
         .replace(/<\s*\/li[^>]*>/gi, "\n")
         // Turn <p>'s into double line breaks.
@@ -16,6 +17,13 @@ const htmlToText = (html, options = {}) => {
         // Remove content in comments.
         .replace(/<!--.*?-->/gim, "")
         // Format anchor tags properly.
+        .replace(/<em>(.*?)<\/em>/gi, "_$1_")
+        // .replace(
+        //     /<\s*h(\d)[^>]*>(.*?)<\/h(\d)>/gim,
+        //     `${"#".repeat("$1")}$2${"#".repeat("$1")}`
+        // )
+        // .replace(/<strong>(.*?)<\/strong>/gi, "*$1*")
+
         .replace(
             /<\s*a[^>]*href=['"](.*?)['"][^>]*>([\s\S]*?)<\/\s*a\s*>/gi,
             "$2"

@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { FlatList, View, Text, StyleSheet } from "react-native";
-import { FAB, ProgressBar } from "react-native-paper";
+import {
+    FAB,
+    ProgressBar,
+    Appbar as MaterialAppbar,
+    Menu,
+} from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
 
 import { Appbar } from "../../components/Appbar";
@@ -17,12 +22,17 @@ import {
 
 import BackgroundService from "react-native-background-actions";
 import { downloadAllChaptersAction } from "../../redux/novel/novel.actions";
+import { showToast } from "../../hooks/showToast";
 
 const DownloadQueue = ({ navigation }) => {
     const theme = useTheme();
     const { downloadQueue } = useSelector((state) => state.downloadsReducer);
 
     const dispatch = useDispatch();
+
+    const [visible, setVisible] = useState(false);
+    const openMenu = () => setVisible(true);
+    const closeMenu = () => setVisible(false);
 
     useEffect(() => {
         // if (!BackgroundService.isRunning() && downloadQueue.length > 0) {
@@ -35,7 +45,31 @@ const DownloadQueue = ({ navigation }) => {
 
     return (
         <ScreenContainer theme={theme}>
-            <Appbar title="Download queue" onBackAction={navigation.goBack} />
+            <Appbar title="Download queue" onBackAction={navigation.goBack}>
+                <Menu
+                    visible={visible}
+                    onDismiss={closeMenu}
+                    anchor={
+                        <MaterialAppbar.Action
+                            icon="dots-vertical"
+                            color={theme.textColorPrimary}
+                            onPress={openMenu}
+                        />
+                    }
+                    contentStyle={{ backgroundColor: theme.menuColor }}
+                >
+                    <Menu.Item
+                        onPress={() => {
+                            dispatch(cancelDownload());
+                            showToast("Downloads cancelled.");
+                            BackgroundService.stop();
+                            closeMenu();
+                        }}
+                        title="Cancel downloads"
+                        titleStyle={{ color: theme.textColorPrimary }}
+                    />
+                </Menu>
+            </Appbar>
             <FlatList
                 contentContainerStyle={{ flexGrow: 1 }}
                 keyExtractor={(item) => item.chapterId.toString()}
@@ -46,7 +80,10 @@ const DownloadQueue = ({ navigation }) => {
                             {item.chapterName}
                         </Text>
                         <ProgressBar
-                            indeterminate={true}
+                            indeterminate={
+                                BackgroundService.isRunning() ? true : false
+                            }
+                            progress={!BackgroundService.isRunning() && 0}
                             color={theme.colorAccent}
                             style={{ marginTop: 8 }}
                         />
