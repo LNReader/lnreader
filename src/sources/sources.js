@@ -50,6 +50,7 @@ import WuxiaBlogScraper from "./en/wuxiablog";
 import WuxiaCityScraper from "./en/wuxiacity";
 import NovelUpdatesScraper from "./en/novelupdates";
 import RanobesScraper from "./en/ranobes";
+import YushuboScraper from "./ch/yushubo";
 
 export const sources = [
     /**
@@ -415,6 +416,17 @@ export const sources = [
         icon: "https://github.com/skillgg/lnreader-sources/blob/main/src/jp/syosetu/icon.png?raw=true",
         lang: "Japanese",
     },
+
+    /**
+     * Chinese
+     */
+     {
+        sourceId: 52,
+        url: "https://m.yushubo.com",
+        sourceName: "Yushubo",
+        icon: "https://github.com/LNReader/lnreader-sources/blob/main/src/ch/yushubo/icon.png?raw=true",
+        lang: "Chinese",
+    },
 ];
 
 export const getSource = (sourceId) => {
@@ -568,6 +580,9 @@ export const getSource = (sourceId) => {
         }
         case 51: {
             return RanobesScraper;
+        }
+        case 52: {
+            return YushuboScraper;
         }
     }
 };
