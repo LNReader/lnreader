@@ -30,7 +30,7 @@ const popularNovels = async (page) => {
             : `${baseUrl}${novelCover}`;
 
         const novel = {
-            extensionId: 52,
+            sourceId: 52,
             novelUrl,
             novelName,
             novelCover,
@@ -126,7 +126,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     const prevChapter = null;
 
     const chapter = {
-        extensionId: 52,
+        sourceId: 52,
         novelUrl,
         chapterUrl,
         chapterName,
@@ -169,7 +169,7 @@ const searchNovels = async (searchTerm) => {
             : `${baseUrl}${novelCover}`;
 
         const novel = {
-            extensionId: 52,
+            sourceId: 52,
             novelUrl,
             novelName,
             novelCover,

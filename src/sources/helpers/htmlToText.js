@@ -12,6 +12,7 @@ const htmlToText = (html, options = {}) => {
         .replace(/<\s*p[^>]*>/gi, "\n\n")
         // Remove content in script tags.
         .replace(/<\s*script[^>]*>[\s\S]*?<\/script>/gim, "")
+        .replace(/<\s*noscript[^>]*>[\s\S]*?<\/noscript>/gim, "")
         // Remove content in style tags.
         .replace(/<\s*style[^>]*>[\s\S]*?<\/style>/gim, "")
         // Remove content in comments.

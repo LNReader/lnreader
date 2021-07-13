@@ -127,92 +127,118 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 
     let result, body;
 
+    let chapterName = "";
+
     try {
         result = await fetch(url, {
             method: "GET",
             headers: headers,
         });
         body = await result.text();
+
+        // console.log("Redirected URL: ", result.url);
+
+        $ = cheerio.load(body);
+
+        let isWuxiaWorld = result.url.toLowerCase().includes("wuxiaworld");
+
+        let isBlogspot = result.url.toLowerCase().includes("blogspot");
+
+        let isTumblr = result.url.toLowerCase().includes("tumblr");
+
+        /**
+         * Checks if its a wwordpress site
+         */
+        let isWordPress =
+            $('meta[name="generator"]').attr("content") || $("footer").text();
+
+        if (isWordPress) {
+            isWordPress =
+                isWordPress.toLowerCase().includes("wordpress") ||
+                isWordPress
+                    .toLowerCase()
+                    .includes("Site Kit by Google 1.36.0") ||
+                $(".powered-by").text().toLowerCase().includes("wordpress") ||
+                $(".entry-content").html() ||
+                $("section.content").html()
+                    ? true
+                    : false;
+
+            // console.log(isWordPress);
+        }
+
+        let isRainOfSnow = result.url.toLowerCase().includes("rainofsnow");
+
+        let isWebNovel = result.url.toLowerCase().includes("webnovel");
+
+        let isHostedNovel = result.url.toLowerCase().includes("hostednovel");
+
+        let isScribbleHub = result.url.toLowerCase().includes("scribblehub");
+
+        if (isWuxiaWorld) {
+            chapterText = $("#chapter-content").html();
+        } else if (isRainOfSnow) {
+            chapterText = $("div.content").html();
+        } else if (isTumblr) {
+            chapterText = $(".post").html();
+        } else if (isBlogspot) {
+            chapterText = $(".entry-content").html();
+        } else if (isHostedNovel) {
+            chapterText = $(".chapter").html();
+        } else if (isScribbleHub) {
+            chapterText = $("div.chp_raw").html();
+        } else if (isWordPress) {
+            /**
+             * Remove wordpress bloat tags
+             */
+            $(".c-ads").remove();
+            $("#madara-comments").remove();
+            $(".sharedaddy").remove();
+
+            chapterText = $(".entry-content").html();
+
+            if (!chapterText) {
+                chapterText = $(".single_post").html();
+            }
+            if (!chapterText) {
+                chapterText = $("article.post").html();
+            }
+
+            if (!chapterText) {
+                chapterText = $(".content").html() || $("#content").html();
+            }
+
+            /**
+             * Format anchor tags properly Eg. [title](https://www.example.com)
+             */
+        } else if (isWebNovel) {
+            chapterText = $(".cha-words").html();
+
+            if (!chapterText) {
+                chapterText = $("._content").html();
+            }
+        } else {
+            /**
+             * Remove unnecessary tags
+             */
+            const tags = ["nav", "header", "footer", ".hidden"];
+
+            tags.map((tag) => $(tag).remove());
+
+            chapterText = $("body").html();
+        }
+
+        if (chapterText) {
+            chapterText = htmlToText(chapterText);
+        } else {
+            if (!chapterText) {
+                chapterText =
+                    "Chapter not available.\n\nReport if it's available in webview.";
+            }
+        }
     } catch (error) {
-        chapterText =
-            "Chapter not available.\n\nReport if it's available in webview.";
+        chapterText = `Chapter not available (Error: ${error.message}).\n\nReport if it's available in webview.`;
     }
-
-    // console.log("Redirected URL: ", result.url);
-
-    $ = cheerio.load(body);
-
-    let chapterName = "";
-
-    let isWuxiaWorld = result.url.toLowerCase().includes("wuxiaworld");
-
-    /**
-     * Checks if its a wwordpress site
-     */
-    let isWordPress =
-        $('meta[name="generator"]').attr("content") || $("footer").text();
-
-    if (isWordPress) {
-        isWordPress =
-            isWordPress.toLowerCase().includes("wordpress") ||
-            isWordPress.toLowerCase().includes("Site Kit by Google 1.36.0") ||
-            $(".powered-by").text().toLowerCase().includes("wordpress") ||
-            $(".entry-content").html() ||
-            $("section.content").html()
-                ? true
-                : false;
-
-        // console.log(isWordPress);
-    }
-
-    let isWebNovel = result.url.toLowerCase().includes("webnovel");
-
-    if (isWuxiaWorld) {
-        chapterText = $("#chapter-content").html();
-    } else if (isWordPress) {
-        /**
-         * Remove wordpress bloat tags
-         */
-        $(".c-ads").remove();
-        $("#madara-comments").remove();
-        $(".sharedaddy").remove();
-
-        chapterText = $(".entry-content").html();
-
-        if (!chapterText) {
-            chapterText = $("section.content").html();
-        }
-
-        if (!chapterText) {
-            chapterText = $(".single_post").html();
-        }
-
-        /**
-         * Format anchor tags properly Eg. [title](https://www.example.com)
-         */
-        // .replace(
-        //     /<\s*a[^>]*href=['"](.*?)['"][^>]*>([\s\S]*?)<\/\s*a\s*>/gi,
-        //     "[$2]($1)"
-        // );
-    } else if (isWebNovel) {
-        chapterText = $(".cha-words").html();
-    } else {
-        /**
-         * Remove unnecessary tags
-         */
-        const tags = ["nav", "header", "footer", ".hidden"];
-
-        tags.map((tag) => $(tag).remove());
-
-        chapterText = $("body").html();
-    }
-
-    if (!chapterText) {
-        chapterText =
-            "Chapter not available.\n\nReport if it's available in webview.";
-    }
-
-    chapterText = htmlToText(chapterText);
 
     let nextChapter = null;
     let prevChapter = null;

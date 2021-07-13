@@ -3,19 +3,31 @@ import { htmlToText } from "../helpers/htmlToText";
 
 const baseUrl = "http://www.tapread.com";
 
+let headers = new Headers({
+    "User-Agent":
+        "'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36",
+});
+
 const popularNovels = async (page) => {
-    let totalPages = 1;
-    const result = await fetch(baseUrl);
-    const body = await result.text();
+    let totalPages = 10;
 
-    $ = cheerio.load(body);
+    let url = baseUrl + "/ajax/category/detail";
 
+    let formData = new FormData();
+    formData.append("cateId", "0");
+    formData.append("pageNo", page);
+
+    const result = await fetch(url, {
+        method: "POST",
+        headers: headers,
+    });
+    const data = await result.json();
     let novels = [];
 
-    $('.section-item[data-classify="1"]').each(function (result) {
-        const novelName = $(this).find(".book-name").text();
-        const novelCover = "http:" + $(this).find("img").attr("src");
-        let novelUrl = $(this).attr("data-id");
+    data.result.bookList.map((book) => {
+        const novelName = book.bookName;
+        const novelCover = "http://static.tapread.com" + book.coverUrl;
+        let novelUrl = book.bookId + "/";
 
         const novel = {
             sourceId: 17,
