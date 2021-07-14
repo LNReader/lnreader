@@ -6,15 +6,21 @@ import {
     SEARCH_SOURCES,
 } from "./source.types";
 import { showToast } from "../../hooks/showToast";
-import { sources } from "../../sources/sources";
+import sources from "../../sources/sources.json";
 
 export const getSourcesAction = () => async (dispatch) => {
     try {
+        /**
+         * Sort sources aplhabetically
+         */
         let sortedSources = sources.sort((a, b) =>
             a.sourceName.localeCompare(b.sourceName)
         );
 
-        dispatch({ type: GET_SOURCES, payload: sortedSources });
+        dispatch({
+            type: GET_SOURCES,
+            payload: sortedSources,
+        });
     } catch (error) {
         showToast(error.message);
     }

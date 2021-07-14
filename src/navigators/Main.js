@@ -1,10 +1,17 @@
 import React, { useEffect } from "react";
-import {
-    createStackNavigator,
-    TransitionPresets,
-} from "@react-navigation/stack";
+import { View } from "react-native";
 
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+
+import { setBarColor } from "../theme/utils/setBarColor";
+import { useTheme } from "../hooks/reduxHooks";
+import { githubUpdateChecker } from "../hooks/githubUpdateChecker";
+
+// Navigators
 import BottomNavigator from "./BottomNavigator";
+
+// Screens
 import Novel from "../screens/Novel/Novel";
 import Chapter from "../screens/Chapter/Chapter";
 import Extension from "../screens/Extension/Extension";
@@ -14,20 +21,10 @@ import SourceNovels from "../screens/Browse/SourceNovels";
 import MigrateNovel from "../screens/Browse/migration/MigrationNovels";
 import MoreStack from "./More";
 import MalTopNovels from "../screens/Browse/discover/MalTopNovels";
-import { View } from "react-native";
-import { useTheme } from "../hooks/reduxHooks";
-import { githubUpdateChecker } from "../hooks/githubUpdateChecker";
 import NewUpdateDialog from "../components/NewUpdateDialog";
-import { NavigationContainer } from "@react-navigation/native";
-import BrowseNovelUpdates from "../screens/Browse/discover/BrowseNovelUpdates";
 import BrowseSettings from "../screens/Browse/BrowseSettings";
-import { setBarColor } from "../theme/utils/setBarColor";
 
 const Stack = createStackNavigator();
-
-const stackNavigatorConfig = {
-    headerShown: false,
-};
 
 const MainNavigator = () => {
     const theme = useTheme();
@@ -44,7 +41,7 @@ const MainNavigator = () => {
         >
             <View style={{ flex: 1, backgroundColor: theme.colorPrimaryDark }}>
                 {isNewVersion && <NewUpdateDialog newVersion={latestRelease} />}
-                <Stack.Navigator screenOptions={stackNavigatorConfig}>
+                <Stack.Navigator screenOptions={{ headerShown: false }}>
                     <Stack.Screen
                         name="BottomNavigator"
                         component={BottomNavigator}
@@ -57,10 +54,6 @@ const MainNavigator = () => {
                     <Stack.Screen
                         name="BrowseSettings"
                         component={BrowseSettings}
-                    />
-                    <Stack.Screen
-                        name="BrowseNovelUpdates"
-                        component={BrowseNovelUpdates}
                     />
                     <Stack.Screen
                         name="GlobalSearch"

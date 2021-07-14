@@ -59,12 +59,12 @@ export const updateNovel = async (sourceId, novelUrl, novelId) => {
                             "INSERT OR IGNORE INTO updates (chapterId, novelId, updateTime) values (?, ?, (datetime('now','localtime')))",
                             [insertId, novelId],
                             (txObj, res) => {
-                                console.log(
-                                    "Inserted Chapter Id -> " +
-                                        insertId +
-                                        " Novel Id " +
-                                        novelId
-                                );
+                                // console.log(
+                                //     "Inserted Chapter Id -> " +
+                                //         insertId +
+                                //         " Novel Id " +
+                                //         novelId
+                                // );
                             },
                             (txObj, error) => console.log("Error ", error)
                         );
@@ -91,14 +91,14 @@ export const updateNovelChapters = async (sourceId, novelUrl, novelId) => {
                 ],
                 (txObj, { insertId }) => {
                     if (insertId !== -1) {
-                        console.log(
-                            "Inserted Chapter " +
-                                chapter.chapterUrl +
-                                " Chapter Name " +
-                                chapter.chapterName +
-                                " Novel Id " +
-                                novelId
-                        );
+                        // console.log(
+                        //     "Inserted Chapter " +
+                        //         chapter.chapterUrl +
+                        //         " Chapter Name " +
+                        //         chapter.chapterName +
+                        //         " Novel Id " +
+                        //         novelId
+                        // );
                         tx.executeSql(
                             "INSERT OR IGNORE INTO updates (chapterId, novelId, updateTime) values (?, ?, (datetime('now','localtime')))",
                             [insertId, novelId],
@@ -151,7 +151,7 @@ export const updateAllNovels = async () => {
                             libraryNovels[i].novelUrl,
                             libraryNovels[i].novelId
                         );
-                        console.log(libraryNovels[i].novelName + " Updated");
+                        // console.log(libraryNovels[i].novelName + " Updated");
                         await BackgroundService.updateNotification({
                             taskTitle: libraryNovels[i].novelName,
                             taskDesc: i + 1 + "/" + libraryNovels.length,

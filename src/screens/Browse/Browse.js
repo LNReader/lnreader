@@ -7,17 +7,18 @@ import {
     ActivityIndicator,
     RefreshControl,
 } from "react-native";
-import { useTheme } from "../../hooks/reduxHooks";
+
 import { useDispatch, useSelector } from "react-redux";
 
 import {
     getSourcesAction,
     searchSourcesAction,
 } from "../../redux/source/source.actions";
-
-import SourceCard from "./components/SourceCard";
+import { useTheme } from "../../hooks/reduxHooks";
 import { showToast } from "../../hooks/showToast";
+
 import { Searchbar } from "../../components/Searchbar/Searchbar";
+import SourceCard from "./components/SourceCard";
 import EmptyView from "../../components/EmptyView";
 import DiscoverCard from "./discover/DiscoverCard";
 
@@ -31,7 +32,6 @@ const Browse = ({ navigation }) => {
         loading,
         pinned,
         filters = [],
-        showNovelUpdates = true,
         showMyAnimeList = true,
     } = useSelector((state) => state.sourceReducer);
     const theme = useTheme();
@@ -41,6 +41,8 @@ const Browse = ({ navigation }) => {
         pinned.indexOf(sourceId) === -1 ? false : true;
 
     sources = sources.filter((source) => filters.indexOf(source.lang) === -1);
+
+    let pinnedSources = sources.filter((source) => isPinned(source.sourceId));
 
     useEffect(() => {
         dispatch(getSourcesAction());
@@ -70,6 +72,14 @@ const Browse = ({ navigation }) => {
             navigation={navigation}
             theme={theme}
         />
+    );
+
+    const SourceHeader = ({ title }) => (
+        <Text
+            style={[styles.sourcesHeader, { color: theme.textColorSecondary }]}
+        >
+            {title}
+        </Text>
     );
 
     return (
@@ -107,32 +117,12 @@ const Browse = ({ navigation }) => {
                 data={!searchText ? sources : search}
                 keyExtractor={(item) => item.sourceId.toString()}
                 renderItem={renderItem}
-                extraData={pinned}
+                extraData={pinnedSources}
                 ListHeaderComponent={
                     <View>
                         {showMyAnimeList && (
                             <>
-                                <Text
-                                    style={{
-                                        color: theme.textColorSecondary,
-                                        paddingHorizontal: 16,
-                                        paddingVertical: 8,
-                                    }}
-                                >
-                                    Discover
-                                </Text>
-                                {/* {showNovelUpdates && (
-                                    <DiscoverCard
-                                        label="Novel Updates"
-                                        onPress={() =>
-                                            navigation.navigate(
-                                                "BrowseNovelUpdates"
-                                            )
-                                        }
-                                        icon={require("../../../assets/novelupdates.png")}
-                                        theme={theme}
-                                    />
-                                )} */}
+                                <SourceHeader title="Discover" />
                                 {showMyAnimeList && (
                                     <DiscoverCard
                                         label="MyAnimeList"
@@ -145,41 +135,21 @@ const Browse = ({ navigation }) => {
                                 )}
                             </>
                         )}
-                        {pinned.length > 0 && (
+                        {pinnedSources.length > 0 && (
                             <FlatList
                                 contentContainerStyle={{ paddingBottom: 16 }}
-                                data={sources.filter((source) =>
-                                    isPinned(source.sourceId)
-                                )}
+                                data={pinnedSources}
                                 keyExtractor={(item) =>
                                     item.sourceId.toString()
                                 }
                                 renderItem={renderItem}
-                                extraData={pinned}
+                                extraData={pinnedSources}
                                 ListHeaderComponent={
-                                    <Text
-                                        style={{
-                                            color: theme.textColorSecondary,
-                                            paddingHorizontal: 16,
-                                            paddingVertical: 8,
-                                        }}
-                                    >
-                                        Pinned
-                                    </Text>
+                                    <SourceHeader title="Pinned" />
                                 }
                             />
                         )}
-                        {sources.length > 0 && (
-                            <Text
-                                style={{
-                                    color: theme.textColorSecondary,
-                                    paddingHorizontal: 16,
-                                    paddingVertical: 8,
-                                }}
-                            >
-                                Sources
-                            </Text>
-                        )}
+                        {sources.length > 0 && <SourceHeader title="Sources" />}
                     </View>
                 }
                 ListEmptyComponent={
@@ -214,5 +184,11 @@ const Browse = ({ navigation }) => {
 export default Browse;
 
 const styles = StyleSheet.create({
-    container: { flex: 1 },
+    container: {
+        flex: 1,
+    },
+    sourcesHeader: {
+        paddingHorizontal: 16,
+        paddingVertical: 8,
+    },
 });

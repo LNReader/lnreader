@@ -51,6 +51,7 @@ import FitImage from "react-native-fit-image";
 import ChapterFooter from "./components/ChapterFooter";
 import VerticalScrollbar from "./components/VerticalScrollbar";
 import GestureRecognizer from "react-native-swipe-gestures";
+import TextToComponents from "./TextToComponent";
 
 const Chapter = ({ route, navigation }) => {
     const {
@@ -201,8 +202,7 @@ const Chapter = ({ route, navigation }) => {
     };
 
     const scrollToSavedProgress = useCallback((event) => {
-        StatusBar.setHidden(true);
-        hideNavigationBar();
+        setImmersiveMode();
         if (position && firstLayout) {
             position.percentage < 100 &&
                 scrollViewRef.current.scrollTo({
@@ -215,10 +215,7 @@ const Chapter = ({ route, navigation }) => {
     }, []);
 
     const hideHeader = () => {
-        if (!hidden) {
-            StatusBar.setHidden(true);
-            hideNavigationBar();
-        }
+        !hidden && setImmersiveMode();
         setHidden(!hidden);
     };
 
@@ -343,61 +340,12 @@ const Chapter = ({ route, navigation }) => {
                                 onLayout={scrollToSavedProgress}
                                 onPress={hideHeader}
                             >
-                                {chapter.chapterText
-                                    .trim()
-                                    .split(/(\[https.*?\])|(_.*?_)/g)
-                                    .map((part, index) => {
-                                        if (part) {
-                                            const isItalic =
-                                                part.match(/_(.*?)_/);
-                                            const isImage =
-                                                part.match(/\[https.*?\]/);
-
-                                            if (isImage) {
-                                                return (
-                                                    <FitImage
-                                                        source={{
-                                                            uri: part.slice(
-                                                                1,
-                                                                -1
-                                                            ),
-                                                        }}
-                                                        key={index}
-                                                    />
-                                                );
-                                            } else if (isItalic) {
-                                                return (
-                                                    <Text
-                                                        style={[
-                                                            readerStyles,
-                                                            {
-                                                                fontStyle:
-                                                                    "italic",
-                                                            },
-                                                        ]}
-                                                        selectable={
-                                                            textSelectable
-                                                        }
-                                                        key={index}
-                                                    >
-                                                        {isItalic[1]}
-                                                    </Text>
-                                                );
-                                            } else {
-                                                return (
-                                                    <Text
-                                                        style={readerStyles}
-                                                        selectable={
-                                                            textSelectable
-                                                        }
-                                                        key={index}
-                                                    >
-                                                        {part}
-                                                    </Text>
-                                                );
-                                            }
-                                        }
-                                    })}
+                                <TextToComponents
+                                    text={chapter.chapterText}
+                                    textStyle={readerStyles}
+                                    textSize={reader.textSize}
+                                    textSelectable={textSelectable}
+                                />
                             </Pressable>
                         </GestureRecognizer>
                     )}

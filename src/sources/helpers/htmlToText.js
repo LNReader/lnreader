@@ -23,13 +23,14 @@ const htmlToText = (html, options = {}) => {
         //     /<\s*h(\d)[^>]*>(.*?)<\/h(\d)>/gim,
         //     `${"#".repeat("$1")}$2${"#".repeat("$1")}`
         // )
-        // .replace(/<strong>(.*?)<\/strong>/gi, "*$1*")
 
+        .replace(/<(h[1-6])>(.*?)<\/h[1-6]>/gi, "[$1]($2)")
+        // .replace(/<strong>(.*?)<\/strong>/gi, "*$1*")
         .replace(
             /<\s*a[^>]*href=['"](.*?)['"][^>]*>([\s\S]*?)<\/\s*a\s*>/gi,
-            "$2"
+            "[Link: $2]($1)"
         )
-        .replace(/<\s*img[^>]*src=['"](.*?)['"][^>]*>/gi, "[$1]")
+        .replace(/<\s*img[^>]*src=['"](.*?)['"][^>]*>/gi, "[Image]($1)")
         // Remove all remaining tags.
         .replace(/(<([^>]+)>)/gi, "")
         // Make sure there are never more than two

@@ -18,12 +18,10 @@ import {
 const BrowseSettings = ({ navigation }) => {
     const theme = useTheme();
     const dispatch = useDispatch();
-    const {
-        filters = [],
-        showNovelUpdates = true,
-        showMyAnimeList = true,
-    } = useSelector((state) => state.sourceReducer);
-    const languages = ["English", "Spanish", "Japanese"];
+    const { filters = [], showMyAnimeList = true } = useSelector(
+        (state) => state.sourceReducer
+    );
+    const languages = ["English", "Spanish", "Japanese", "Chinese"];
     const { searchAllSources = false } = useSettings();
 
     const renderItem = ({ item }) => {
@@ -87,27 +85,7 @@ const BrowseSettings = ({ navigation }) => {
                     />
                 </Pressable>
                 <ListSubHeader theme={theme}>Discover</ListSubHeader>
-                {/* <Pressable
-                    android_ripple={{ color: theme.rippleColor }}
-                    style={{
-                        padding: 16,
-                        flexDirection: "row",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                    }}
-                    onPress={() => dispatch(enableDiscover("showNovelUpdates"))}
-                >
-                    <Text style={{ color: theme.textColorPrimary }}>
-                        Novel Updates
-                    </Text>
-                    <Switch
-                        color={theme.colorAccent}
-                        value={showNovelUpdates}
-                        onValueChange={() =>
-                            dispatch(enableDiscover("showNovelUpdates"))
-                        }
-                    />
-                </Pressable> */}
+
                 <Pressable
                     android_ripple={{ color: theme.rippleColor }}
                     style={{

@@ -12,7 +12,6 @@ const initialState = {
     search: [],
     pinned: [],
     filters: [],
-    showNovelUpdates: true,
     showMyAnimeList: true,
     loading: true,
 };
@@ -44,7 +43,6 @@ const sourceReducer = (state = initialState, action) => {
             if (!state.filters) {
                 state.filters = [];
             }
-
             return {
                 ...state,
                 filters:

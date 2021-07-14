@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import {
     StyleSheet,
     View,
     FlatList,
     ActivityIndicator,
     RefreshControl,
-    Button,
     Text,
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
@@ -15,7 +14,6 @@ import {
     getUpdatesAction,
     updateLibraryAction,
 } from "../../redux/updates/updates.actions";
-import { Appbar } from "./components/Appbar";
 import UpdatesItem from "./components/UpdatesItem";
 import { useTheme } from "../../hooks/reduxHooks";
 import { Searchbar } from "../../components/Searchbar/Searchbar";
@@ -44,20 +42,39 @@ const Updates = ({ navigation }) => {
         setRefreshing(false);
     };
 
-    const onPress = (item) =>
-        navigation.navigate("Chapter", {
-            chapterId: item.chapterId,
-            chapterUrl: item.chapterUrl,
-            sourceId: item.sourceId,
-            novelUrl: item.novelUrl,
-            chapterName: item.chapterName,
-            novelId: item.novelId,
-            novelName: item.novelName,
-            bookmark: item.bookmark,
-        });
+    const onPress = useCallback(
+        (item) =>
+            navigation.navigate("Chapter", {
+                chapterId: item.chapterId,
+                chapterUrl: item.chapterUrl,
+                sourceId: item.sourceId,
+                novelUrl: item.novelUrl,
+                chapterName: item.chapterName,
+                novelId: item.novelId,
+                novelName: item.novelName,
+                bookmark: item.bookmark,
+            }),
+        []
+    );
+
+    const onPressCover = useCallback(
+        (item) =>
+            navigation.navigate("Novel", {
+                sourceId: item.sourceId,
+                novelUrl: item.novelUrl,
+                novelName: item.novelName,
+                novelCover: item.novelCover,
+            }),
+        []
+    );
 
     const renderItem = ({ item }) => (
-        <UpdatesItem item={item} theme={theme} onPress={() => onPress(item)} />
+        <UpdatesItem
+            item={item}
+            theme={theme}
+            onPress={() => onPress(item)}
+            onPressCover={() => onPressCover(item)}
+        />
     );
 
     const ListFooterComponent = () =>
@@ -103,6 +120,8 @@ const Updates = ({ navigation }) => {
         setSearchResults(results);
     };
 
+    const keyExtractor = useCallback((item) => item.updateId.toString(), []);
+
     return (
         <View
             style={[
@@ -143,12 +162,12 @@ const Updates = ({ navigation }) => {
                             </Text>
                         }
                         data={item.chapters}
-                        keyExtractor={(item) => item.updateId.toString()}
+                        keyExtractor={keyExtractor}
                         renderItem={renderItem}
                     />
                 )}
-                ListFooterComponent={ListFooterComponent()}
-                ListEmptyComponent={ListEmptyComponent()}
+                ListFooterComponent={<ListFooterComponent />}
+                ListEmptyComponent={<ListEmptyComponent />}
                 refreshControl={refreshControl()}
             />
         </View>

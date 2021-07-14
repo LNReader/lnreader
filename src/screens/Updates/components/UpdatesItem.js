@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import FastImage from "react-native-fast-image";
 
-const UpdateCard = ({ item, theme, onPress }) => {
+const UpdateCard = ({ item, theme, onPress, onPressCover }) => {
     return (
         <Pressable
             style={styles.updateCard}
@@ -10,10 +10,12 @@ const UpdateCard = ({ item, theme, onPress }) => {
             android_ripple={{ color: theme.rippleColor }}
         >
             <>
-                <FastImage
-                    source={{ uri: item.novelCover }}
-                    style={styles.updateIcon}
-                />
+                <Pressable onPress={onPressCover}>
+                    <FastImage
+                        source={{ uri: item.novelCover }}
+                        style={styles.updateIcon}
+                    />
+                </Pressable>
                 <View style={styles.chapterDetails}>
                     <Text
                         style={[

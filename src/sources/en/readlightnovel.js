@@ -143,16 +143,8 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 
     const chapterName = $(".block-title > h1").text().replace(" - ", "");
 
-    $(".desc")
-        .find("hr")
-        .each(function (result) {
-            $(this).remove();
-        });
-
     $(".alert").remove();
     $(".hidden").remove();
-
-    var re = new RegExp(String.fromCharCode(160), "g");
 
     let chapterText = $(".desc").html();
 
