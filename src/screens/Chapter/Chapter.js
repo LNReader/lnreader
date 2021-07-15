@@ -52,6 +52,7 @@ import ChapterFooter from "./components/ChapterFooter";
 import VerticalScrollbar from "./components/VerticalScrollbar";
 import GestureRecognizer from "react-native-swipe-gestures";
 import TextToComponents from "./TextToComponent";
+import { LoadingScreen } from "../../components/LoadingScreen/LoadingScreen";
 
 const Chapter = ({ route, navigation }) => {
     const {
@@ -95,8 +96,6 @@ const Chapter = ({ route, navigation }) => {
 
     const [contentSize, setContentSize] = useState(0);
 
-    const [images, setImages] = useState([]);
-
     const getChapter = async (chapterId) => {
         try {
             if (chapterId) {
@@ -138,13 +137,16 @@ const Chapter = ({ route, navigation }) => {
 
     useEffect(() => {
         getChapter(chapterId);
-        setPrevAndNextChap();
         !incognitoMode && dispatch(insertHistoryAction(novelId, chapterId));
         return () => {
             StatusBar.setHidden(false);
             showNavigationBar();
         };
     }, []);
+
+    useEffect(() => {
+        setPrevAndNextChap();
+    }, [chapter]);
 
     const isCloseToBottom = ({
         layoutMeasurement,
@@ -264,6 +266,13 @@ const Chapter = ({ route, navigation }) => {
               })
             : showToast("There's no next chapter");
 
+    const onPressLink = async (link) => {
+        setLoading(true);
+        const res = await fetchChapter(sourceId, novelUrl, link);
+        setChapter(res);
+        setLoading(false);
+    };
+
     return (
         <>
             <>
@@ -315,12 +324,7 @@ const Chapter = ({ route, navigation }) => {
                             </EmptyView>
                         </View>
                     ) : loading ? (
-                        <View style={{ flex: 1, justifyContent: "center" }}>
-                            <ActivityIndicator
-                                size={50}
-                                color={theme.colorAccent}
-                            />
-                        </View>
+                        <LoadingScreen theme={theme} />
                     ) : (
                         <GestureRecognizer
                             onSwipeRight={
@@ -345,6 +349,8 @@ const Chapter = ({ route, navigation }) => {
                                     textStyle={readerStyles}
                                     textSize={reader.textSize}
                                     textSelectable={textSelectable}
+                                    onPressLink={onPressLink}
+                                    theme={theme}
                                 />
                             </Pressable>
                         </GestureRecognizer>

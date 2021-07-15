@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, ActivityIndicator, Text } from "react-native";
-import * as WebBrowser from "expo-web-browser";
+import { StyleSheet, View, ActivityIndicator } from "react-native";
 
-import NovelCover from "../../components/NovelCover";
-import EmptyView from "../../components/EmptyView";
+import * as WebBrowser from "expo-web-browser";
+import { useDispatch } from "react-redux";
+
+import { useTheme, useLibrary, useSettings } from "../../hooks/reduxHooks";
+import { setAppSettings } from "../../redux/settings/settings.actions";
+import { getSource } from "../../sources/sources";
+import { showToast } from "../../hooks/showToast";
 
 import { Searchbar } from "../../components/Searchbar/Searchbar";
-import { useTheme, useLibrary, useSettings } from "../../hooks/reduxHooks";
+import { LoadingScreen } from "../../components/LoadingScreen/LoadingScreen";
+import NovelCover from "../../components/NovelCover";
 import NovelList from "../../components/NovelList";
-import { showToast } from "../../hooks/showToast";
 import ErrorView from "../../components/ErrorView";
-import { useDispatch } from "react-redux";
-import { setAppSettings } from "../../redux/settings/settings.actions";
-
-import { getSource } from "../../sources/sources";
 
 const Extension = ({ navigation, route }) => {
     const { sourceId, sourceName, url } = route.params;
@@ -143,7 +143,7 @@ const Extension = ({ navigation, route }) => {
         return icons[displayMode];
     };
 
-    const getDisplayMode = () =>
+    const getNextDisplayMode = () =>
         displayMode === 0 ? 1 : displayMode === 1 ? 2 : displayMode === 2 && 0;
 
     return (
@@ -168,7 +168,10 @@ const Extension = ({ navigation, route }) => {
                         color: theme.textColorSecondary,
                         onPress: () =>
                             dispatch(
-                                setAppSettings("displayMode", getDisplayMode())
+                                setAppSettings(
+                                    "displayMode",
+                                    getNextDisplayMode()
+                                )
                             ),
                     },
                     {
@@ -180,9 +183,7 @@ const Extension = ({ navigation, route }) => {
             />
 
             {loading ? (
-                <View style={{ flex: 1, justifyContent: "center" }}>
-                    <ActivityIndicator size={60} color={theme.colorAccent} />
-                </View>
+                <LoadingScreen theme={theme} />
             ) : (
                 <NovelList
                     data={novels}

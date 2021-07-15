@@ -2,6 +2,7 @@ import React from "react";
 import { Text } from "react-native";
 
 import FitImage from "react-native-fit-image";
+import { Button } from "react-native-paper";
 
 const getHeadingSize = (size) => {
     const headings = {
@@ -16,27 +17,25 @@ const getHeadingSize = (size) => {
     return headings[size];
 };
 
-const TextToComponents = ({ text, textStyle, textSelectable, textSize }) => {
-    // let imagePattern = /(\[Image\]\(http.*?\))/;
-    // let italicPattern = /(_.*?_)/;
-    // let headingPattern = /(\[h[1-6]\]\(.*?\))/;
-
-    // patterns = [imagePattern, headingPattern, italicPattern];
-    // regex = new RegExp(patterns.join("|"), "g");
-
-    // console.log(regex);
-
-    regex = /(\[Image\]\(http.*?\))|(\[h[1-6]\]\(.*?\))|(_.*?_)/;
+const TextToComponents = ({
+    text,
+    textStyle,
+    textSelectable,
+    textSize,
+    onPressLink,
+    theme,
+}) => {
+    regex =
+        /(\[Image\]\(http.*?\))|(\[h[1-6]\]\(.*?\))|(_.*?_)|(\[Link:\n|.*?\]\(http.*?\))/;
 
     let parseText = text.trim().split(regex);
-
-    // console.log(parseText);
 
     return parseText.map((part, index) => {
         if (part) {
             const isItalic = part.match(/_(.*?)_/);
             const isImage = part.match(/\[Image\]\((http.*?)\)/);
             const isHeading = part.match(/\[(h[1-6])\]\((.*?)\)/);
+            const isLink = part.match(/\[Link:((\n|.)*?)\]\((http.*?)\)/);
 
             if (isImage) {
                 return <FitImage source={{ uri: isImage[1] }} key={index} />;
@@ -66,6 +65,18 @@ const TextToComponents = ({ text, textStyle, textSelectable, textSize }) => {
                     >
                         {isHeading[2]}
                     </Text>
+                );
+            } else if (isLink) {
+                return (
+                    <Button
+                        key={index}
+                        labelStyle={{ letterSpacing: 0 }}
+                        uppercase={false}
+                        color={theme.colorAccent}
+                        onPress={() => onPressLink(isLink[3])}
+                    >
+                        {isLink[1]}
+                    </Button>
                 );
             } else {
                 return (
