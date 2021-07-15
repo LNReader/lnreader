@@ -2,18 +2,24 @@ export const readerBackground = (val) => {
     const backgroundColor = {
         1: "#000000",
         2: "#FFFFFF",
-        3: "#F4ECD8",
-        4: "#444444",
+        3: "#F7DFC6",
+        4: "#292832",
+        5: "#2B2C30",
     };
 
-    return backgroundColor[val] ?? val;
+    return backgroundColor[val] || val;
 };
 
 export const readerTextColor = (val) => {
-    const textColor =
-        val === 1 ? "rgba(255,255,255,0.7)" : val === 4 ? "#FFFFFF" : "#000000";
+    const textColor = {
+        1: "rgba(255,255,255,0.7)",
+        2: "#111111",
+        3: "#593100",
+        4: "#CCCCCC",
+        5: "#CCCCCC",
+    };
 
-    return textColor ?? val;
+    return textColor[val] || val;
 };
 
 export const readerLineHeight = (fontSize, lineHeightMultiplier) => {

@@ -1,8 +1,7 @@
-import React from "react";
-import { Text } from "react-native";
+import React, { memo, useCallback } from "react";
+import { Text, View } from "react-native";
 
 import FitImage from "react-native-fit-image";
-import { Button } from "react-native-paper";
 
 const getHeadingSize = (size) => {
     const headings = {
@@ -17,80 +16,214 @@ const getHeadingSize = (size) => {
     return headings[size];
 };
 
+const Header = ({ size, text, textStyle, textSelectable, textSize }) => (
+    <Text
+        style={[
+            textStyle,
+            {
+                fontSize: textSize + getHeadingSize(size),
+                fontWeight: "bold",
+            },
+        ]}
+        selectable={textSelectable}
+    >
+        {text}
+    </Text>
+);
+
+const DefaultText = ({ text, textStyle, textSelectable }) => (
+    <Text style={textStyle} selectable={textSelectable}>
+        {text}
+    </Text>
+);
+
+const ItalicText = ({ text, textStyle, textSelectable }) => (
+    <Text
+        style={[textStyle, { fontStyle: "italic" }]}
+        selectable={textSelectable}
+    >
+        {text}
+    </Text>
+);
+
+const HorizontalRule = ({ textColor }) => (
+    <View
+        style={{
+            borderBottomWidth: 1,
+            flex: 1,
+            borderBottomColor: textColor,
+            marginVertical: 16,
+        }}
+    />
+);
+
+const Link = ({ link, text, textStyle, textSelectable, onPressLink }) => (
+    <Text
+        style={[
+            textStyle,
+            {
+                alignSelf: "flex-start",
+                fontStyle: "italic",
+                color: theme.colorAccent,
+            },
+        ]}
+        selectable={textSelectable}
+        onPress={() => onPressLink(link)}
+    >
+        {text}
+    </Text>
+);
+
 const TextToComponents = ({
     text,
     textStyle,
     textSelectable,
     textSize,
+    textColor,
     onPressLink,
     theme,
 }) => {
-    regex =
-        /(\[Image\]\(http.*?\))|(\[h[1-6]\]\(.*?\))|(_.*?_)|(\[Link:\n|.*?\]\(http.*?\))/;
+    regex = /(\[.*?\]\(.*?\))/;
 
     let parseText = text.trim().split(regex);
 
+    console.log("Rerendered");
+
     return parseText.map((part, index) => {
         if (part) {
-            const isItalic = part.match(/_(.*?)_/);
-            const isImage = part.match(/\[Image\]\((http.*?)\)/);
-            const isHeading = part.match(/\[(h[1-6])\]\((.*?)\)/);
-            const isLink = part.match(/\[Link:((\n|.)*?)\]\((http.*?)\)/);
+            let match = part.match(/\[(.*?)\]\((.*?)\)/);
 
-            if (isImage) {
-                return <FitImage source={{ uri: isImage[1] }} key={index} />;
-            } else if (isItalic) {
-                return (
-                    <Text
-                        style={[textStyle, { fontStyle: "italic" }]}
-                        selectable={textSelectable}
-                        key={index}
-                    >
-                        {isItalic[1]}
-                    </Text>
-                );
-            } else if (isHeading) {
-                return (
-                    <Text
-                        style={[
-                            textStyle,
-                            {
-                                fontSize:
-                                    textSize + getHeadingSize(isHeading[1]),
-                                fontWeight: "bold",
-                            },
-                        ]}
-                        selectable={textSelectable}
-                        key={index}
-                    >
-                        {isHeading[2]}
-                    </Text>
-                );
-            } else if (isLink) {
-                return (
-                    <Button
-                        key={index}
-                        labelStyle={{ letterSpacing: 0 }}
-                        uppercase={false}
-                        color={theme.colorAccent}
-                        onPress={() => onPressLink(isLink[3])}
-                    >
-                        {isLink[1]}
-                    </Button>
-                );
+            if (match) {
+                tag = match[1];
+                text = match[2];
+
+                if (tag.startsWith("Anchor:")) {
+                    link = tag.replace("Anchor: ", "");
+                    tag = "a";
+                }
+
+                switch (tag) {
+                    case "h1":
+                        return (
+                            <Header
+                                size="h1"
+                                text={text}
+                                textStyle={textStyle}
+                                textSelectable={textSelectable}
+                                index={index}
+                                textSize={textSize}
+                            />
+                        );
+                    case "h2":
+                        return (
+                            <Header
+                                size="h2"
+                                text={text}
+                                textStyle={textStyle}
+                                textSelectable={textSelectable}
+                                index={index}
+                                textSize={textSize}
+                            />
+                        );
+                    case "h3":
+                        return (
+                            <Header
+                                size="h3"
+                                text={text}
+                                textStyle={textStyle}
+                                textSelectable={textSelectable}
+                                index={index}
+                                textSize={textSize}
+                            />
+                        );
+                    case "h4":
+                        return (
+                            <Header
+                                size="h4"
+                                text={text}
+                                textStyle={textStyle}
+                                textSelectable={textSelectable}
+                                index={index}
+                                textSize={textSize}
+                            />
+                        );
+                    case "h5":
+                        return (
+                            <Header
+                                size="h5"
+                                text={text}
+                                textStyle={textStyle}
+                                textSelectable={textSelectable}
+                                index={index}
+                                textSize={textSize}
+                            />
+                        );
+                    case "h6":
+                        return (
+                            <Header
+                                size="h6"
+                                text={text}
+                                textStyle={textStyle}
+                                textSelectable={textSelectable}
+                                index={index}
+                                textSize={textSize}
+                            />
+                        );
+                    case "strong":
+                        return (
+                            <Header
+                                size="strong"
+                                text={text}
+                                textStyle={textStyle}
+                                textSelectable={textSelectable}
+                                index={index}
+                                textSize={textSize}
+                            />
+                        );
+                    case "em":
+                        return (
+                            <ItalicText
+                                text={text}
+                                textStyle={textStyle}
+                                textSelectable={textSelectable}
+                                index={index}
+                            />
+                        );
+
+                    case "a":
+                        return (
+                            <Link
+                                link={text}
+                                textStyle={textStyle}
+                                textSelectable={textSelectable}
+                                text={link}
+                                onPressLink={onPressLink}
+                            />
+                        );
+                    case "img":
+                        return (
+                            <FitImage source={{ uri: text }} index={index} />
+                        );
+                    case "hr":
+                        return (
+                            <HorizontalRule
+                                index={index}
+                                textColor={textColor}
+                            />
+                        );
+                }
             } else {
                 return (
-                    <Text
-                        style={textStyle}
-                        selectable={textSelectable}
-                        key={index}
-                    >
-                        {part}
-                    </Text>
+                    <DefaultText
+                        text={part}
+                        textStyle={textStyle}
+                        textSelectable={textSelectable}
+                        index={index}
+                    />
                 );
             }
         }
     });
 };
 
-export default TextToComponents;
+export default memo(TextToComponents);

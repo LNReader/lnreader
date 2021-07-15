@@ -26,7 +26,7 @@ const ReaderSettings = ({ navigation }) => {
         1: "rgba(255,255,255,0.7)",
         2: "#000000",
         3: "#000000",
-        4: "#FFFFFF",
+        4: "#CCCCCC",
     };
 
     /**
@@ -75,9 +75,10 @@ const ReaderSettings = ({ navigation }) => {
             backgroundColor: "#000000",
             textColor: "rgba(255,255,255,0.7)",
         },
-        { value: 2, backgroundColor: "#FFFFFF", textColor: "#000000" },
-        { value: 3, backgroundColor: "#F4ECD8", textColor: "#000000" },
-        { value: 4, backgroundColor: "#444444", textColor: "#FFFFFF" },
+        { value: 2, backgroundColor: "#FFFFFF", textColor: "#111111" },
+        { value: 3, backgroundColor: "#F7DFC6", textColor: "#593100" },
+        { value: 4, backgroundColor: "#292832", textColor: "#CCCCCC" },
+        { value: 5, backgroundColor: "#2B2C30", textColor: "#CCCCCC" },
     ];
 
     const onValueChange = (value) => {

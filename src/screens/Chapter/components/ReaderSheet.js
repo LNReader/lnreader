@@ -1,16 +1,19 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Text, Dimensions, Pressable } from "react-native";
-import { ToggleButton, IconButton, Menu, Switch } from "react-native-paper";
+
 import Slider from "@react-native-community/slider";
+import { ToggleButton, IconButton, Menu, Switch } from "react-native-paper";
 import Bottomsheet from "rn-sliding-up-panel";
+
+import BottomSheetHandle from "../../../components/BottomSheetHandle";
+import { Row } from "../../../components/Common";
+
 import { fonts } from "../../../services/utils/constants";
 
 import {
     setAppSettings,
     setReaderSettings,
 } from "../../../redux/settings/settings.actions";
-import BottomSheetHandle from "../../../components/BottomSheetHandle";
-import { Row } from "../../../components/Common";
 
 const ReaderSheet = ({
     theme,
@@ -19,7 +22,6 @@ const ReaderSheet = ({
     bottomSheetRef,
     selectText,
     showScrollPercentage,
-    navigation,
 }) => {
     const [fontMenu, setFontMenu] = useState(false);
     const openFontMenu = () => setFontMenu(true);
@@ -31,9 +33,10 @@ const ReaderSheet = ({
 
     const textColor = {
         1: "rgba(255,255,255,0.7)",
-        2: "#000000",
-        3: "#000000",
-        4: "#FFFFFF",
+        2: "#111111",
+        3: "#593100",
+        4: "#CCCCCC",
+        5: "#CCCCCC",
     };
 
     return (
@@ -109,7 +112,7 @@ const ReaderSheet = ({
                             >
                                 <ToggleButton
                                     icon={reader.theme === 1 && "check"}
-                                    color="#FFFFFF"
+                                    color="rgba(255,255,255,0.7)"
                                     value={1}
                                     style={{
                                         backgroundColor: "#000000",
@@ -120,12 +123,25 @@ const ReaderSheet = ({
                                         borderBottomRightRadius: 50,
                                     }}
                                 />
+                                {/* <ToggleButton
+                                    icon={reader.theme === 5 && "check"}
+                                    color="#CCCCCC"
+                                    value={5}
+                                    style={{
+                                        backgroundColor: "#2B2C30",
+                                        marginHorizontal: 10,
+                                        borderWidth: 0,
+                                        borderRadius: 50,
+                                        borderTopRightRadius: 50,
+                                        borderBottomRightRadius: 50,
+                                    }}
+                                /> */}
                                 <ToggleButton
                                     icon={reader.theme === 4 && "check"}
-                                    color="#FFFFFF"
+                                    color="#CCCCCC"
                                     value={4}
                                     style={{
-                                        backgroundColor: "#444444",
+                                        backgroundColor: "#292832",
                                         marginHorizontal: 10,
                                         borderWidth: 0,
                                         borderRadius: 50,
@@ -135,7 +151,7 @@ const ReaderSheet = ({
                                 />
                                 <ToggleButton
                                     icon={reader.theme === 2 && "check"}
-                                    color="#000000"
+                                    color="#111111"
                                     value={2}
                                     style={{
                                         backgroundColor: "#FFFFFF",
@@ -145,10 +161,10 @@ const ReaderSheet = ({
                                 />
                                 <ToggleButton
                                     icon={reader.theme === 3 && "check"}
-                                    color="#000000"
+                                    color="#593100"
                                     value={3}
                                     style={{
-                                        backgroundColor: "#F4ECD8",
+                                        backgroundColor: "#F7DFC6",
                                         marginHorizontal: 10,
                                         borderRadius: 50,
                                         borderTopLeftRadius: 50,

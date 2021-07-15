@@ -348,6 +348,10 @@ const Chapter = ({ route, navigation }) => {
                                     text={chapter.chapterText}
                                     textStyle={readerStyles}
                                     textSize={reader.textSize}
+                                    textColor={
+                                        reader.textColor ||
+                                        readerTextColor(reader.theme)
+                                    }
                                     textSelectable={textSelectable}
                                     onPressLink={onPressLink}
                                     theme={theme}

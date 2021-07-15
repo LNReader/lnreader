@@ -2,47 +2,111 @@ const htmlToText = (html, options = {}) => {
     const { removeLineBreaks = true } = options;
 
     text = removeLineBreaks && html.replace(/(?:\n|\r\n|\r)/gi, "");
+
     text = html
-        // Turn <br>'s into single line breaks.
+        /**
+         * <br> -> \n
+         */
+
         .replace(/<\s*br[^>]*>/gi, "\n")
-        .replace(/<\s*hr[^>]*>/gi, `\n\n${"-".repeat(40)}\n\n`)
-        // Turn </li>'s into line breaks.
+
+        /**
+         * <hr> -> [hr]()
+         */
+
+        .replace(/<\s*hr[^>]*>/gi, "[hr]()")
+
+        /**
+         * <li> -> \n
+         */
         .replace(/<\s*\/li[^>]*>/gi, "\n")
-        // Turn <p>'s into double line breaks.
+
+        /**
+         * <p> -> \n\n
+         */
+
         .replace(/<\s*p[^>]*>/gi, "\n\n")
-        // Remove content in script tags.
+
+        /**
+         * Remove script and noscript tags
+         */
         .replace(/<\s*script[^>]*>[\s\S]*?<\/script>/gim, "")
         .replace(/<\s*noscript[^>]*>[\s\S]*?<\/noscript>/gim, "")
-        // Remove content in style tags.
-        .replace(/<\s*style[^>]*>[\s\S]*?<\/style>/gim, "")
-        // Remove content in comments.
-        .replace(/<!--.*?-->/gim, "")
-        // Format anchor tags properly.
-        .replace(/<em>(.*?)<\/em>/gi, "_$1_")
-        // .replace(
-        //     /<\s*h(\d)[^>]*>(.*?)<\/h(\d)>/gim,
-        //     `${"#".repeat("$1")}$2${"#".repeat("$1")}`
-        // )
 
-        .replace(/<(h[1-6])>(.*?)<\/h[1-6]>/gi, "[$1]($2)")
-        // .replace(/<strong>(.*?)<\/strong>/gi, "*$1*")
+        /**
+         * Remove style tags
+         */
+
+        .replace(/<\s*style[^>]*>[\s\S]*?<\/style>/gim, "")
+
+        /**
+         * Remove comments
+         */
+
+        .replace(/<!--.*?-->/gim, "")
+
+        /**
+         * <a href='link'>Text</a> -> [Text](link)
+         */
+
         .replace(
             /<\s*a[^>]*href=['"](.*?)['"][^>]*>([\s\S]*?)<\/\s*a\s*>/gi,
-            "[Link: $2]($1)"
+            "[Anchor: $2]($1)"
         )
-        .replace(/<\s*img[^>]*src=['"](.*?)['"][^>]*>/gi, "[Image]($1)")
-        // Remove all remaining tags.
+
+        /**
+         * <em>Text</em> -> _Text_
+         */
+
+        .replace(/<em>(.*?)<\/em>/gi, "[em]($1)")
+
+        /**
+         * <h1>Text</h1> -> [h1](Text)
+         */
+
+        .replace(/<(h[1-6])>(.*?)<\/h[1-6]>/gi, "[$1]($2)")
+        .replace(/<strong>(.*?)<strong>/gi, "[strong]($1)")
+
+        /**
+         * <img> -> [img](src)
+         */
+
+        .replace(/<\s*img[^>]*src=['"](.*?)['"][^>]*>/gi, "[img]($1)")
+
+        /**
+         * Remove remaining tags
+         */
+
         .replace(/(<([^>]+)>)/gi, "")
-        // Make sure there are never more than two
-        // consecutive linebreaks.
+
+        /**
+         * Make sure there are never more than two consecutive linebreaks.
+         */
+
         .replace(/\n{2,}/g, "\n\n")
-        // Remove tabs.
+
+        /**
+         * Remove tabs.
+         */
+
         .replace(/\t/g, "")
-        // Remove newlines at the beginning of the text.
+
+        /**
+         * Remove newlines at the beginning of the text.
+         */
+
         .replace(/^\n+/m, "")
-        // Replace multiple spaces with a single space.
+
+        /**
+         * Replace multiple spaces with a single space.
+         */
+
         .replace(/ {2,}/g, " ")
-        // Decode HTML entities.
+
+        /**
+         * Decode HTML entities.
+         */
+
         .replace(/&([^;]+);/g, decodeHtmlEntity);
 
     return text;
