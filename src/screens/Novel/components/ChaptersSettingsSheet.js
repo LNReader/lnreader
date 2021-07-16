@@ -9,7 +9,6 @@ import {
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 
 import Bottomsheet from "rn-sliding-up-panel";
-import BottomSheetHandle from "../../../components/BottomSheetHandle";
 import { showChapterTitlesAction } from "../../../redux/novel/novel.actions";
 import { ListItem } from "../../../components/List";
 import { RadioButton, RadioButtonGroup } from "../../../components/RadioButton";

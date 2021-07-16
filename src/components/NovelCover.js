@@ -13,10 +13,11 @@ import FastImage from "react-native-fast-image";
 import ListView from "./ListView";
 
 import { getDeviceOrientation } from "../services/utils/helpers";
+import { useSettings } from "../hooks/reduxHooks";
 
-const NovelCover = ({ item, onPress, libraryStatus, theme, settings }) => {
+const NovelCover = ({ item, onPress, libraryStatus, theme }) => {
     const { displayMode, novelsPerRow, showDownloadBadges, showUnreadBadges } =
-        settings;
+        useSettings();
 
     const window = useWindowDimensions();
 

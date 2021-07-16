@@ -77,7 +77,6 @@ const BrowseMalScreen = ({ navigation, route }) => {
                 })
             }
             theme={theme}
-            settings={settings}
         />
     );
 

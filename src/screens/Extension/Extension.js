@@ -120,7 +120,6 @@ const Extension = ({ navigation, route }) => {
                 })
             }
             libraryStatus={checkIFInLibrary(item.sourceId, item.novelUrl)}
-            settings={settings}
             theme={theme}
         />
     );

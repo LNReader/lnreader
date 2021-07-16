@@ -80,7 +80,6 @@ const LibraryScreen = ({ navigation }) => {
                     navigation.navigate("Novel", item);
                     dispatch(setNovel(item));
                 }}
-                settings={settings}
                 theme={theme}
             />
         ),
