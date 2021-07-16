@@ -90,7 +90,7 @@ const MoreScreen = ({ navigation }) => {
                             downloadQueue.length > 0 &&
                             downloadQueue.length + " remaining"
                         }
-                        icon="download-outline"
+                        icon="progress-download"
                         onPress={() =>
                             navigation.navigate("MoreStack", {
                                 screen: "DownloadQueue",
@@ -98,6 +98,17 @@ const MoreScreen = ({ navigation }) => {
                         }
                         theme={theme}
                     />
+                    <ListItem
+                        title="Downloads"
+                        icon="folder-download"
+                        onPress={() =>
+                            navigation.navigate("MoreStack", {
+                                screen: "Downloads",
+                            })
+                        }
+                        theme={theme}
+                    />
+
                     <ListItem
                         title="Settings"
                         icon="cog-outline"

@@ -17,15 +17,15 @@ export const insertChapters = async (novelId, chapters) => {
                         novelId,
                     ],
                     (txObj, res) => {},
-                    (txObj, error) =>
-                        console.log(
-                            "Error ",
-                            error,
-                            " Chapter URL: ",
-                            chapter.chapterUrl,
-                            " Novel ID ",
-                            novelId
-                        )
+                    (txObj, error) => {}
+                    // console.log(
+                    //     "Error ",
+                    //     error,
+                    //     " Chapter URL: ",
+                    //     chapter.chapterUrl,
+                    //     " Novel ID ",
+                    //     novelId
+                    // )
                 ),
             (txObj, res) => {
                 console.log("Success");
@@ -35,13 +35,10 @@ export const insertChapters = async (novelId, chapters) => {
     });
 };
 
-const getChaptersQuery = (sort, filter) =>
-    `SELECT * FROM chapters WHERE novelId = ? ${filter || ""} ${
-        sort || "ORDER BY chapterId ASC"
-    }`;
+const getChaptersQuery = (sort = "ORDER BY chapterId ASC", filter = "") =>
+    `SELECT * FROM chapters WHERE novelId = ? ${filter} ${sort}`;
 
 export const getChapters = (novelId, sort, filter) => {
-    // console.log(getChaptersQuery(sort, filter));
     return new Promise((resolve, reject) =>
         db.transaction((tx) => {
             tx.executeSql(
@@ -261,4 +258,26 @@ export const markPreviousChaptersUnread = async (chapterId, novelId) => {
             (tx, error) => console.log(error)
         );
     });
+};
+
+const getDownloadedChaptersQuery = `
+    SELECT chapters.*, novels.sourceId, novels.novelName, novels.novelCover
+    FROM chapters
+    JOIN novels
+    ON chapters.novelId = novels.novelId
+    WHERE chapters.downloaded = 1`;
+
+export const getDownloadedChapters = () => {
+    return new Promise((resolve, reject) =>
+        db.transaction((tx) => {
+            tx.executeSql(
+                getDownloadedChaptersQuery,
+                null,
+                (txObj, { rows: { _array } }) => {
+                    resolve(_array);
+                },
+                (txObj, error) => console.log("Error ", error)
+            );
+        })
+    );
 };

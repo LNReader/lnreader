@@ -3,10 +3,8 @@ import {
     StyleSheet,
     View,
     Text,
-    ActivityIndicator,
     StatusBar,
     ScrollView,
-    Image,
     Pressable,
 } from "react-native";
 
@@ -46,7 +44,6 @@ import { parseChapterNumber } from "../../services/updates";
 import ChapterAppbar from "./components/ChapterAppbar";
 import ReaderSheet from "./components/ReaderSheet";
 import EmptyView from "../../components/EmptyView";
-import FitImage from "react-native-fit-image";
 
 import ChapterFooter from "./components/ChapterFooter";
 import VerticalScrollbar from "./components/VerticalScrollbar";

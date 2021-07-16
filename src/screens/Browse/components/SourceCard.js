@@ -21,11 +21,7 @@ const ExtensionCard = ({ item, theme, isPinned, dispatch, navigation }) => {
             onPress={navigateToExtension}
             android_ripple={{ color: theme.rippleColor }}
         >
-            <Image
-                source={{ uri: icon }}
-                style={styles.extensionIcon}
-                // resizeMode="contain"
-            />
+            <Image source={{ uri: icon }} style={styles.extensionIcon} />
             <View style={styles.extensionDetails}>
                 <View>
                     <Text

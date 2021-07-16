@@ -29,7 +29,7 @@ const ReaderSeekbar = ({
             <View style={styles.verticalSliderContainer}>
                 <Text
                     style={{
-                        color: theme.textColorPrimary,
+                        color: "#FFFFFF",
                         marginLeft: 16,
                         transform: [{ rotate: "-90deg" }],
                     }}
@@ -52,7 +52,7 @@ const ReaderSeekbar = ({
                 />
                 <Text
                     style={{
-                        color: theme.textColorPrimary,
+                        color: "#FFFFFF",
                         marginRight: 16,
                         transform: [{ rotate: "-90deg" }],
                     }}
@@ -66,7 +66,7 @@ const ReaderSeekbar = ({
             <View style={styles.horizontalSliderContainer}>
                 <Text
                     style={{
-                        color: theme.textColorPrimary,
+                        color: "#FFFFFF",
                         marginLeft: 16,
                     }}
                 >
@@ -88,7 +88,7 @@ const ReaderSeekbar = ({
                 />
                 <Text
                     style={{
-                        color: theme.textColorPrimary,
+                        color: "#FFFFFF",
                         marginRight: 16,
                     }}
                 >

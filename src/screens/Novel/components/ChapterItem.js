@@ -1,36 +1,30 @@
-import React, { memo, useCallback, useState } from "react";
+import React, { memo, useState } from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 
-import { Menu } from "react-native-paper";
 import { Row } from "../../../components/Common";
 
-import {
-    deleteChapterAction,
-    downloadChapterAction,
-} from "../../../redux/novel/novel.actions";
 import { parseChapterNumber } from "../../../services/utils/helpers";
 import {
     ChapterBookmarkButton,
-    ChapterDownloadingButton,
-    DeleteChapterButton,
-    DownloadChapterButton,
+    DownloadButton,
 } from "./Chapter/ChapterDownloadButtons";
 
 const ChapterItem = ({
-    novelUrl,
-    novelName,
+    novelData,
     chapter,
-    sourceId,
-    dispatch,
     theme,
     navigation,
     index,
     position,
-    selected,
-    setSelected,
     showChapterTitles,
     downloadQueue,
+    downloadChapter,
+    deleteChapter,
+    isSelected,
+    onSelectPress,
+    onSelectLongPress,
 }) => {
+    const { sourceId, novelName, novelUrl } = novelData;
     const {
         novelId,
         chapterId,
@@ -39,7 +33,6 @@ const ChapterItem = ({
         read,
         releaseDate,
         bookmark,
-        downloaded,
     } = chapter;
 
     const [deleteChapterMenu, setDeleteChapterMenu] = useState(false);
@@ -57,84 +50,6 @@ const ChapterItem = ({
             novelName,
             bookmark,
         });
-
-    const downloadChapter = useCallback(
-        () =>
-            dispatch(
-                downloadChapterAction(
-                    sourceId,
-                    novelUrl,
-                    chapterUrl,
-                    chapterName,
-                    chapterId
-                )
-            ),
-        []
-    );
-
-    const deleteChapter = () =>
-        dispatch(deleteChapterAction(chapterId, chapterName));
-
-    const renderDownloadIcon = () => {
-        if (downloadQueue.some((chap) => chap.chapterId === chapterId)) {
-            return <ChapterDownloadingButton theme={theme} />;
-        } else if (downloaded === 1) {
-            return (
-                <Menu
-                    visible={deleteChapterMenu}
-                    onDismiss={hideDeleteChapterMenu}
-                    anchor={
-                        <DeleteChapterButton
-                            theme={theme}
-                            onPress={showDeleteChapterMenu}
-                        />
-                    }
-                    contentStyle={{ backgroundColor: theme.menuColor }}
-                >
-                    <Menu.Item
-                        onPress={deleteChapter}
-                        title="Delete"
-                        titleStyle={{ color: theme.textColorPrimary }}
-                    />
-                </Menu>
-            );
-        } else {
-            return (
-                <DownloadChapterButton
-                    theme={theme}
-                    onPress={downloadChapter}
-                />
-            );
-        }
-    };
-
-    const isSelected = (chapterId) => {
-        return selected.some((obj) => obj.chapterId === chapterId);
-    };
-
-    const onPress = () => {
-        if (selected.length === 0) {
-            navigateToChapter();
-        } else {
-            if (isSelected(chapterId)) {
-                setSelected((selected) =>
-                    selected.filter((item) => item.chapterId !== chapterId)
-                );
-            } else {
-                setSelected((selected) => [...selected, chapter]);
-            }
-        }
-    };
-
-    const onLongPress = () => {
-        if (isSelected(chapterId)) {
-            setSelected((selected) =>
-                selected.filter((item) => item.chapterId !== chapterId)
-            );
-        } else {
-            setSelected((selected) => [...selected, chapter]);
-        }
-    };
 
     const renderProgressPercentage = () => {
         const savedProgress =
@@ -164,8 +79,8 @@ const ChapterItem = ({
                     backgroundColor: theme.rippleColor,
                 },
             ]}
-            onPress={onPress}
-            onLongPress={onLongPress}
+            onPress={() => onSelectPress(chapter, navigateToChapter)}
+            onLongPress={() => onSelectLongPress(chapter)}
             android_ripple={{ color: theme.rippleColor }}
         >
             <Row>
@@ -208,7 +123,16 @@ const ChapterItem = ({
                     </View>
                 </View>
             </Row>
-            <View>{renderDownloadIcon()}</View>
+            <DownloadButton
+                downloadQueue={downloadQueue}
+                chapter={chapter}
+                theme={theme}
+                deleteChapter={deleteChapter}
+                downloadChapter={downloadChapter}
+                hideDeleteChapterMenu={hideDeleteChapterMenu}
+                showDeleteChapterMenu={showDeleteChapterMenu}
+                deleteChapterMenu={deleteChapterMenu}
+            />
         </Pressable>
     );
 };

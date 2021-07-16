@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { FlatList, View, Text, StyleSheet } from "react-native";
 import {
     FAB,
@@ -21,7 +21,6 @@ import {
 } from "../../redux/downloads/downloads.actions";
 
 import BackgroundService from "react-native-background-actions";
-import { downloadAllChaptersAction } from "../../redux/novel/novel.actions";
 import { showToast } from "../../hooks/showToast";
 
 const DownloadQueue = ({ navigation }) => {
@@ -33,13 +32,6 @@ const DownloadQueue = ({ navigation }) => {
     const [visible, setVisible] = useState(false);
     const openMenu = () => setVisible(true);
     const closeMenu = () => setVisible(false);
-
-    useEffect(() => {
-        // if (!BackgroundService.isRunning() && downloadQueue.length > 0) {
-        //     dispatch(cancelDownload());
-        // }
-        console.log(downloadQueue);
-    }, []);
 
     const [fab, setFab] = useState(BackgroundService.isRunning());
 
@@ -60,9 +52,11 @@ const DownloadQueue = ({ navigation }) => {
                 >
                     <Menu.Item
                         onPress={() => {
-                            dispatch(cancelDownload());
-                            showToast("Downloads cancelled.");
-                            BackgroundService.stop();
+                            if (downloadQueue.length > 0) {
+                                dispatch(cancelDownload());
+                                showToast("Downloads cancelled.");
+                                BackgroundService.stop();
+                            }
                             closeMenu();
                         }}
                         title="Cancel downloads"

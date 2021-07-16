@@ -355,5 +355,19 @@
         "sourceName": "Yushubo",
         "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/ch/yushubo/icon.png?raw=true",
         "lang": "Chinese"
+    },
+    {
+        "sourceId": 53,
+        "sourceUrl": "https://kolnovel.com/",
+        "sourceName": "KolNovel",
+        "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/wpmangastream/icons/kolnovel.png?raw=true",
+        "lang": "Arabic"
+    },
+    {
+        "sourceId": 54,
+        "sourceUrl": "https://rewayat-ar.site/",
+        "sourceName": "RewayatAr",
+        "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/wpmangastream/icons/rewayatar.png?raw=true",
+        "lang": "Arabic"
     }
 ]

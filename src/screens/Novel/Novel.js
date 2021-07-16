@@ -15,7 +15,9 @@ import { useDispatch, useSelector } from "react-redux";
 import {
     bookmarkChapterAction,
     deleteAllChaptersAction,
+    deleteChapterAction,
     downloadAllChaptersAction,
+    downloadChapterAction,
     getNovelAction,
     markChaptersRead,
     markChapterUnreadAction,
@@ -45,7 +47,7 @@ const Novel = ({ route, navigation }) => {
 
     const theme = useTheme();
     const dispatch = useDispatch();
-    const { novel, chapters, loading, updating, downloading } = useNovel();
+    const { novel, chapters, loading, updating } = useNovel();
     const { downloadQueue } = useSelector((state) => state.downloadsReducer);
 
     const [selected, setSelected] = useState([]);
@@ -54,7 +56,6 @@ const Novel = ({ route, navigation }) => {
     let flatlistRef = useRef(null);
     let chaptersSettingsSheetRef = useRef(null);
     let trackerSheetRef = useRef(null);
-    let chapterActionsSheetRef = useRef(null);
 
     const {
         sort = "ORDER BY chapterId ASC",
@@ -91,25 +92,65 @@ const Novel = ({ route, navigation }) => {
 
     const keyExtractor = useCallback((item) => item.chapterId.toString(), []);
 
+    const downloadChapter = (chapterUrl, chapterName, chapterId) =>
+        dispatch(
+            downloadChapterAction(
+                sourceId,
+                novelUrl,
+                chapterUrl,
+                chapterName,
+                chapterId
+            )
+        );
+
+    const deleteChapter = (chapterId, chapterName) =>
+        dispatch(deleteChapterAction(chapterId, chapterName));
+
+    const isSelected = (chapterId) => {
+        return selected.some((obj) => obj.chapterId === chapterId);
+    };
+
+    const onSelectPress = (chapter, navigateToChapter) => {
+        if (selected.length === 0) {
+            navigateToChapter();
+        } else {
+            if (isSelected(chapter.chapterId)) {
+                setSelected((selected) =>
+                    selected.filter(
+                        (item) => item.chapterId !== chapter.chapterId
+                    )
+                );
+            } else {
+                setSelected((selected) => [...selected, chapter]);
+            }
+        }
+    };
+
+    const onSelectLongPress = (chapter) => {
+        if (isSelected(chapter.chapterId)) {
+            setSelected((selected) =>
+                selected.filter((item) => item.chapterId !== chapter.chapterId)
+            );
+        } else {
+            setSelected((selected) => [...selected, chapter]);
+        }
+    };
+
     const renderItem = ({ item, index }) => (
         <ChapterItem
             theme={theme}
             chapter={item}
             index={index}
-            novelUrl={novelUrl}
-            dispatch={dispatch}
-            sourceId={sourceId}
+            novelData={{ sourceId, novelUrl, novelName }}
             navigation={navigation}
-            lastReadChapter={lastReadChapter}
             position={position}
-            downloading={downloading}
-            selected={selected}
-            novelName={novelName}
-            selected={selected}
-            setSelected={setSelected}
             showChapterTitles={showChapterTitles}
-            chapterActionsSheetRef={chapterActionsSheetRef}
             downloadQueue={downloadQueue}
+            deleteChapter={deleteChapter}
+            downloadChapter={downloadChapter}
+            isSelected={isSelected}
+            onSelectPress={onSelectPress}
+            onSelectLongPress={onSelectLongPress}
         />
     );
 

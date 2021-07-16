@@ -1,5 +1,7 @@
 import { GET_UPDATES } from "./updates.types";
 
+import store from "../store";
+
 import { getUpdates } from "../../database/queries/UpdateQueries";
 import { updateAllNovels } from "../../services/updates";
 
@@ -33,10 +35,12 @@ export const getUpdatesAction = () => async (dispatch) => {
     dispatch({ type: GET_UPDATES, payload: groupedUpdates });
 };
 
-export const updateLibraryAction = () => async (dispatch) => {
+export const updateLibraryAction = () => async (dispatch, getState) => {
     showToast("Updating library");
 
-    await updateAllNovels();
+    const { downloadNewChapters = false } = getState().settingsReducer;
+
+    await updateAllNovels({ downloadNewChapters });
 
     dispatch(getUpdatesAction());
 };

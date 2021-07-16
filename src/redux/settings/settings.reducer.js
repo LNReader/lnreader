@@ -17,7 +17,6 @@ import {
     strawberryDaiquiri,
     palenightTheme,
 } from "../../theme/theme";
-import { setRippleColor } from "./settings.actions";
 
 const themes = {
     0: amoledDarkTheme,
@@ -69,6 +68,7 @@ const initialState = {
     searchAllSources: false,
     textSelectable: false,
     updateLibraryOnLaunch: false,
+    downloadNewChapters: false,
 };
 
 const settingsReducer = (state = initialState, action) => {

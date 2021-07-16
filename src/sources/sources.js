@@ -51,6 +51,10 @@ import WuxiaCityScraper from "./en/wuxiacity";
 import NovelUpdatesScraper from "./en/novelupdates";
 import RanobesScraper from "./en/ranobes";
 import YushuboScraper from "./ch/yushubo";
+import {
+    KolNovelScraper,
+    RewayatArScraper,
+} from "./multisrc/wpmangastream/WPMangaStreamGenerator";
 
 export const getSource = (sourceId) => {
     const scrapers = {
@@ -105,6 +109,8 @@ export const getSource = (sourceId) => {
         50: NovelUpdatesScraper,
         51: RanobesScraper,
         52: YushuboScraper,
+        53: KolNovelScraper,
+        54: RewayatArScraper,
     };
 
     return scrapers[sourceId];

@@ -76,8 +76,15 @@ export const updateNovel = async (sourceId, novelUrl, novelId) => {
     });
 };
 
-export const updateNovelChapters = async (sourceId, novelUrl, novelId) => {
+export const updateNovelChapters = async (
+    sourceId,
+    novelUrl,
+    novelId,
+    updateSettings
+) => {
     let chapters = await fetchChapters(sourceId, novelUrl);
+
+    const { downloadNewChapters = false } = updateSettings;
 
     db.transaction((tx) => {
         chapters.map((chapter) =>
@@ -91,14 +98,14 @@ export const updateNovelChapters = async (sourceId, novelUrl, novelId) => {
                 ],
                 (txObj, { insertId }) => {
                     if (insertId !== -1) {
-                        // console.log(
-                        //     "Inserted Chapter " +
-                        //         chapter.chapterUrl +
-                        //         " Chapter Name " +
-                        //         chapter.chapterName +
-                        //         " Novel Id " +
-                        //         novelId
-                        // );
+                        downloadNewChapters &&
+                            downloadChapter(
+                                sourceId,
+                                novelUrl,
+                                chapter.chapterUrl,
+                                insertId
+                            );
+
                         tx.executeSql(
                             "INSERT OR IGNORE INTO updates (chapterId, novelId, updateTime) values (?, ?, (datetime('now','localtime')))",
                             [insertId, novelId],
@@ -113,7 +120,7 @@ export const updateNovelChapters = async (sourceId, novelUrl, novelId) => {
     });
 };
 
-export const updateAllNovels = async () => {
+export const updateAllNovels = async (updateSettings) => {
     const libraryNovels = await getLibrary();
 
     const options = {
@@ -149,7 +156,8 @@ export const updateAllNovels = async () => {
                         await updateNovelChapters(
                             libraryNovels[i].sourceId,
                             libraryNovels[i].novelUrl,
-                            libraryNovels[i].novelId
+                            libraryNovels[i].novelId,
+                            updateSettings
                         );
                         // console.log(libraryNovels[i].novelName + " Updated");
                         await BackgroundService.updateNotification({

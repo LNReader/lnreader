@@ -21,7 +21,7 @@ const BrowseSettings = ({ navigation }) => {
     const { filters = [], showMyAnimeList = true } = useSelector(
         (state) => state.sourceReducer
     );
-    const languages = ["English", "Spanish", "Japanese", "Chinese"];
+    const languages = ["English", "Spanish", "Japanese", "Chinese", "Arabic"];
     const { searchAllSources = false } = useSettings();
 
     const renderItem = ({ item }) => {

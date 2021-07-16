@@ -11,11 +11,9 @@ const VerticalScrollbar = ({
     scrollPercentage,
     setLoading,
     scrollViewRef,
-    setScrollPercentage,
 }) => {
     const onSlidingComplete = (value) => {
         setLoading(true);
-        // setScrollPercentage(value);
         scrollViewRef.current.scrollTo({
             x: 0,
             y: Math.round((value * contentSize) / 100),
@@ -31,7 +29,7 @@ const VerticalScrollbar = ({
             <View style={styles.verticalSliderContainer}>
                 <Text
                     style={{
-                        color: theme.textColorPrimary,
+                        color: "#FFFFFF",
                         marginLeft: 16,
                         transform: [{ rotate: "-90deg" }],
                     }}
@@ -50,11 +48,11 @@ const VerticalScrollbar = ({
                     onSlidingComplete={onSlidingComplete}
                     thumbTintColor={theme.colorAccent}
                     minimumTrackTintColor={theme.colorAccent}
-                    maximumTrackTintColor={theme.textColorPrimary}
+                    maximumTrackTintColor="#FFFFFF"
                 />
                 <Text
                     style={{
-                        color: theme.textColorPrimary,
+                        color: "#FFFFFF",
                         marginRight: 16,
                         transform: [{ rotate: "-90deg" }],
                     }}
@@ -68,7 +66,7 @@ const VerticalScrollbar = ({
             <View style={styles.horizontalSliderContainer}>
                 <Text
                     style={{
-                        color: theme.textColorPrimary,
+                        color: "#FFFFFF",
                         marginLeft: 16,
                     }}
                 >
@@ -90,7 +88,7 @@ const VerticalScrollbar = ({
                 />
                 <Text
                     style={{
-                        color: theme.textColorPrimary,
+                        color: "#FFFFFF",
                         marginRight: 16,
                     }}
                 >

@@ -10,6 +10,7 @@ const ColorPickerModal = ({
     onSubmit,
     hideModal,
     modalVisible,
+    showAccentColors,
 }) => {
     const [text, setText] = useState(color);
     const [error, setError] = useState();

@@ -30,7 +30,8 @@ const GenralSettings = ({ navigation }) => {
         (state) => state.settingsReducer
     );
 
-    const { updateLibraryOnLaunch = false } = useSettings();
+    const { updateLibraryOnLaunch = false, downloadNewChapters = false } =
+        useSettings();
 
     const displayModeLabel = (displayMode) => {
         const label = {
@@ -115,6 +116,20 @@ const GenralSettings = ({ navigation }) => {
                             setAppSettings(
                                 "updateLibraryOnLaunch",
                                 !updateLibraryOnLaunch
+                            )
+                        )
+                    }
+                    theme={theme}
+                />
+                <ListSubHeader theme={theme}>Auto-download</ListSubHeader>
+                <SwitchSetting
+                    label="Download new chapters"
+                    value={downloadNewChapters}
+                    onPress={() =>
+                        dispatch(
+                            setAppSettings(
+                                "downloadNewChapters",
+                                !downloadNewChapters
                             )
                         )
                     }

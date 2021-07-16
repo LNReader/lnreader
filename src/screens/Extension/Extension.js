@@ -20,8 +20,11 @@ const Extension = ({ navigation, route }) => {
 
     const theme = useTheme();
     const library = useLibrary();
+
     const dispatch = useDispatch();
-    const { displayMode } = useSettings();
+
+    const settings = useSettings();
+    const { displayMode } = settings;
 
     const [loading, setLoading] = useState(true);
     const [novels, setNovels] = useState([]);
@@ -117,6 +120,8 @@ const Extension = ({ navigation, route }) => {
                 })
             }
             libraryStatus={checkIFInLibrary(item.sourceId, item.novelUrl)}
+            settings={settings}
+            theme={theme}
         />
     );
 

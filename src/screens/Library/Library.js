@@ -27,11 +27,12 @@ import LibraryFilterSheet from "./components/LibraryFilterSheet";
 const LibraryScreen = ({ navigation }) => {
     const theme = useTheme();
     const dispatch = useDispatch();
+    const settings = useSettings();
     const {
         showNumberOfNovels,
         incognitoMode = false,
         updateLibraryOnLaunch = false,
-    } = useSettings();
+    } = settings;
 
     const libraryFilterSheetRef = useRef(null);
 
@@ -79,6 +80,8 @@ const LibraryScreen = ({ navigation }) => {
                     navigation.navigate("Novel", item);
                     dispatch(setNovel(item));
                 }}
+                settings={settings}
+                theme={theme}
             />
         ),
         []

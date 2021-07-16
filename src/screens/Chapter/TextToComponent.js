@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from "react";
+import React, { memo, useCallback, useEffect } from "react";
 import { Text, View } from "react-native";
 
 import FitImage from "react-native-fit-image";
@@ -57,7 +57,14 @@ const HorizontalRule = ({ textColor }) => (
     />
 );
 
-const Link = ({ link, text, textStyle, textSelectable, onPressLink }) => (
+const Link = ({
+    link,
+    text,
+    textStyle,
+    textSelectable,
+    onPressLink,
+    theme,
+}) => (
     <Text
         style={[
             textStyle,
@@ -87,8 +94,6 @@ const TextToComponents = ({
 
     let parseText = text.trim().split(regex);
 
-    console.log("Rerendered");
-
     return parseText.map((part, index) => {
         if (part) {
             let match = part.match(/\[(.*?)\]\((.*?)\)/);
@@ -110,7 +115,7 @@ const TextToComponents = ({
                                 text={text}
                                 textStyle={textStyle}
                                 textSelectable={textSelectable}
-                                index={index}
+                                key={index}
                                 textSize={textSize}
                             />
                         );
@@ -121,7 +126,7 @@ const TextToComponents = ({
                                 text={text}
                                 textStyle={textStyle}
                                 textSelectable={textSelectable}
-                                index={index}
+                                key={index}
                                 textSize={textSize}
                             />
                         );
@@ -132,7 +137,7 @@ const TextToComponents = ({
                                 text={text}
                                 textStyle={textStyle}
                                 textSelectable={textSelectable}
-                                index={index}
+                                key={index}
                                 textSize={textSize}
                             />
                         );
@@ -143,7 +148,7 @@ const TextToComponents = ({
                                 text={text}
                                 textStyle={textStyle}
                                 textSelectable={textSelectable}
-                                index={index}
+                                key={index}
                                 textSize={textSize}
                             />
                         );
@@ -154,7 +159,7 @@ const TextToComponents = ({
                                 text={text}
                                 textStyle={textStyle}
                                 textSelectable={textSelectable}
-                                index={index}
+                                key={index}
                                 textSize={textSize}
                             />
                         );
@@ -165,7 +170,7 @@ const TextToComponents = ({
                                 text={text}
                                 textStyle={textStyle}
                                 textSelectable={textSelectable}
-                                index={index}
+                                key={index}
                                 textSize={textSize}
                             />
                         );
@@ -176,7 +181,7 @@ const TextToComponents = ({
                                 text={text}
                                 textStyle={textStyle}
                                 textSelectable={textSelectable}
-                                index={index}
+                                key={index}
                                 textSize={textSize}
                             />
                         );
@@ -186,7 +191,7 @@ const TextToComponents = ({
                                 text={text}
                                 textStyle={textStyle}
                                 textSelectable={textSelectable}
-                                index={index}
+                                key={index}
                             />
                         );
 
@@ -198,18 +203,15 @@ const TextToComponents = ({
                                 textSelectable={textSelectable}
                                 text={link}
                                 onPressLink={onPressLink}
+                                theme={theme}
+                                key={index}
                             />
                         );
                     case "img":
-                        return (
-                            <FitImage source={{ uri: text }} index={index} />
-                        );
+                        return <FitImage source={{ uri: text }} key={index} />;
                     case "hr":
                         return (
-                            <HorizontalRule
-                                index={index}
-                                textColor={textColor}
-                            />
+                            <HorizontalRule key={index} textColor={textColor} />
                         );
                 }
             } else {
@@ -218,7 +220,7 @@ const TextToComponents = ({
                         text={part}
                         textStyle={textStyle}
                         textSelectable={textSelectable}
-                        index={index}
+                        key={index}
                     />
                 );
             }

@@ -20,11 +20,16 @@ import { Searchbar } from "../../components/Searchbar/Searchbar";
 
 import moment from "moment";
 import { dateFormat } from "../../services/utils/constants";
+import {
+    deleteChapterAction,
+    downloadChapterAction,
+} from "../../redux/novel/novel.actions";
 
 const Updates = ({ navigation }) => {
     const theme = useTheme();
     const dispatch = useDispatch();
     const { updates, loading } = useSelector((state) => state.updatesReducer);
+    const { downloadQueue } = useSelector((state) => state.downloadsReducer);
 
     const [searchText, setSearchText] = useState("");
     const [searchResults, setSearchResults] = useState([]);
@@ -33,7 +38,7 @@ const Updates = ({ navigation }) => {
     useFocusEffect(
         useCallback(() => {
             dispatch(getUpdatesAction());
-        }, [getUpdatesAction])
+        }, [getUpdatesAction, downloadQueue])
     );
 
     const onRefresh = async () => {
@@ -68,12 +73,35 @@ const Updates = ({ navigation }) => {
         []
     );
 
+    const downloadChapter = (
+        sourceId,
+        novelUrl,
+        chapterUrl,
+        chapterName,
+        chapterId
+    ) =>
+        dispatch(
+            downloadChapterAction(
+                sourceId,
+                novelUrl,
+                chapterUrl,
+                chapterName,
+                chapterId
+            )
+        );
+
+    const deleteChapter = (chapterId, chapterName) =>
+        dispatch(deleteChapterAction(chapterId, chapterName));
+
     const renderItem = ({ item }) => (
         <UpdatesItem
             item={item}
             theme={theme}
             onPress={() => onPress(item)}
             onPressCover={() => onPressCover(item)}
+            downloadQueue={downloadQueue}
+            deleteChapter={deleteChapter}
+            downloadChapter={downloadChapter}
         />
     );
 

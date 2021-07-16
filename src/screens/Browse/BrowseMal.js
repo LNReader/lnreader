@@ -14,6 +14,7 @@ import { scrapeSearchResults } from "./discover/MyAnimeListScraper";
 
 const BrowseMalScreen = ({ navigation, route }) => {
     const theme = useTheme();
+    const settings = useSettings();
 
     const [loading, setLoading] = useState(true);
     const [novels, setNovels] = useState();
@@ -75,10 +76,12 @@ const BrowseMalScreen = ({ navigation, route }) => {
                     novelName: item.title,
                 })
             }
+            theme={theme}
+            settings={settings}
         />
     );
 
-    const { displayMode, novelsPerRow } = useSettings();
+    const { displayMode, novelsPerRow } = settings;
 
     const orientation = getDeviceOrientation();
 
