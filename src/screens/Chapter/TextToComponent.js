@@ -72,8 +72,8 @@ const Link = ({
             textStyle,
             {
                 alignSelf: "flex-start",
-                fontStyle: "italic",
                 color: theme.colorAccent,
+                textDecorationLine: "underline",
             },
         ]}
         selectable={textSelectable}
@@ -93,12 +93,12 @@ const TextToComponents = ({
     theme,
 }) => {
     try {
-        regex = /(\[.*?\]\(.*?\))/;
+        regex = /(\[(?:\n|.)*?\]\(.*?\))/;
 
         let parseText = text.trim().split(regex);
         return parseText.map((part, index) => {
             if (part) {
-                let match = part.match(/\[(.*?)\]\((.*?)\)/);
+                let match = part.match(/\[((?:\n|.)*?)\]\((.*?)\)/);
 
                 if (match) {
                     tag = match[1];

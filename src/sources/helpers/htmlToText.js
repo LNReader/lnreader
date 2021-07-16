@@ -50,7 +50,7 @@ const htmlToText = (html, options = {}) => {
          */
 
         .replace(
-            /<\s*a[^>]*href=['"](.*?)['"][^>]*>([\s\S]*?)<\/\s*a\s*>/gi,
+            /<\s*a[^>]*href=['"](http.*?)['"][^>]*>([\s\S]*?)<\/\s*a\s*>/gi,
             "[Anchor: $2]($1)"
         )
 
@@ -80,12 +80,6 @@ const htmlToText = (html, options = {}) => {
         .replace(/(<([^>]+)>)/gi, "")
 
         /**
-         * Make sure there are never more than two consecutive linebreaks.
-         */
-
-        .replace(/\n{2,}/g, "\n\n")
-
-        /**
          * Remove tabs.
          */
 
@@ -102,6 +96,12 @@ const htmlToText = (html, options = {}) => {
          */
 
         .replace(/ {2,}/g, " ")
+
+        /**
+         * Make sure there are never more than two consecutive linebreaks.
+         */
+
+        .replace(/\n{2,}/g, "\n\n")
 
         /**
          * Decode HTML entities.

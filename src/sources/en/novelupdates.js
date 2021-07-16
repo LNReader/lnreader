@@ -155,16 +155,12 @@ const parseChapter = async (novelUrl, chapterUrl) => {
         if (isWordPress) {
             isWordPress =
                 isWordPress.toLowerCase().includes("wordpress") ||
-                isWordPress
-                    .toLowerCase()
-                    .includes("Site Kit by Google 1.36.0") ||
+                isWordPress.includes("Site Kit by Google") ||
                 $(".powered-by").text().toLowerCase().includes("wordpress") ||
                 $(".entry-content").html() ||
                 $("section.content").html()
                     ? true
                     : false;
-
-            // console.log(isWordPress);
         }
 
         let isRainOfSnow = result.url.toLowerCase().includes("rainofsnow");
@@ -191,26 +187,30 @@ const parseChapter = async (novelUrl, chapterUrl) => {
             /**
              * Remove wordpress bloat tags
              */
-            $(".c-ads").remove();
-            $("#madara-comments").remove();
-            $(".sharedaddy").remove();
 
-            chapterText = $(".entry-content").html();
+            const bloatClasses = [
+                ".c-ads",
+                "#madara-comments",
+                "#comments",
+                ".sharedaddy",
+                ".wp-dark-mode-switcher",
+                ".wp-next-post-navi",
+                ".wp-block-buttons",
+                ".wp-block-columns",
+                ".post-cats",
+                ".sidebar",
+                ".author-avatar",
+            ];
 
-            if (!chapterText) {
-                chapterText = $(".single_post").html();
-            }
-            if (!chapterText) {
-                chapterText = $("article.post").html();
-            }
+            bloatClasses.map((tag) => $(tag).remove());
 
-            if (!chapterText) {
-                chapterText = $(".content").html() || $("#content").html();
-            }
-
-            /**
-             * Format anchor tags properly Eg. [title](https://www.example.com)
-             */
+            chapterText =
+                $(".entry-content").html() ||
+                $(".single_post").html() ||
+                $(".post-entry").html() ||
+                $("article.post").html() ||
+                $(".content").html() ||
+                $("#content").html();
         } else if (isWebNovel) {
             chapterText = $(".cha-words").html();
 
@@ -229,7 +229,16 @@ const parseChapter = async (novelUrl, chapterUrl) => {
         }
 
         if (chapterText) {
+            /**
+             * Remove patreon/discord links
+             */
+            chapterText = chapterText.replace(
+                /<\s*a[^>]*href=['"](https:\/\/(?:www.|patreon|discord).*?)['"][^>]*>([\s\S]*?)<\/\s*a\s*>/gi,
+                ""
+            );
+
             chapterText = htmlToText(chapterText);
+            console.log(chapterText);
         } else {
             if (!chapterText) {
                 chapterText =
