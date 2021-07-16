@@ -12,30 +12,24 @@ const MigrationSourceCard = ({ item, theme, noOfNovels, onPress }) => {
             rippleColor={theme.rippleColor}
         >
             <>
-                <Image
-                    source={{ uri: icon }}
-                    style={styles.sourceIcon}
-                    resizeMode="contain"
-                />
+                <Image source={{ uri: icon }} style={styles.sourceIcon} />
                 <View style={styles.sourceDetailsContainer}>
-                    <View>
-                        <Text
-                            style={{
-                                color: theme.textColorPrimary,
-                                fontSize: 14,
-                            }}
-                        >
-                            {sourceName} {` (${noOfNovels || 0})`}
-                        </Text>
-                        <Text
-                            style={{
-                                color: theme.textColorSecondary,
-                                fontSize: 12,
-                            }}
-                        >
-                            {sourceLanguage}
-                        </Text>
-                    </View>
+                    <Text
+                        style={{
+                            color: theme.textColorPrimary,
+                            fontSize: 14,
+                        }}
+                    >
+                        {sourceName} {` (${noOfNovels || 0})`}
+                    </Text>
+                    <Text
+                        style={{
+                            color: theme.textColorSecondary,
+                            fontSize: 12,
+                        }}
+                    >
+                        {sourceLanguage}
+                    </Text>
                 </View>
             </>
         </TouchableRipple>
