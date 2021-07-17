@@ -141,7 +141,7 @@ const parseNovelAndChapters = async (novelUrl) => {
 
         // add single chapter
         chapters.push({
-            chapterName: novel.novelName,
+            chapterName: "Oneshot",
             releaseDate: cheerioQuery("head")
                 .find("meta[name='WWWC']")
                 .attr("content"), // get date from metadata
