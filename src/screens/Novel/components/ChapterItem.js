@@ -83,7 +83,7 @@ const ChapterItem = ({
             onLongPress={() => onSelectLongPress(chapter)}
             android_ripple={{ color: theme.rippleColor }}
         >
-            <Row>
+            <Row style={{ flex: 1, overflow: "hidden" }}>
                 {bookmark === true && <ChapterBookmarkButton theme={theme} />}
                 <View>
                     <Text
@@ -98,7 +98,7 @@ const ChapterItem = ({
                             ? parseChapterNumber(chapterName)
                                 ? "Chapter " + parseChapterNumber(chapterName)
                                 : "Chapter " + index
-                            : chapterName.substring(0, 50)}
+                            : chapterName}
                     </Text>
                     <View
                         style={{
