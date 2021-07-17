@@ -62,6 +62,7 @@ const Chapter = ({ route, navigation }) => {
         chapterName,
         bookmark,
     } = route.params;
+
     let scrollViewRef = useRef(null);
     let readerSheetRef = useRef(null);
 
@@ -145,17 +146,16 @@ const Chapter = ({ route, navigation }) => {
         setPrevAndNextChap();
     }, [chapter]);
 
-    const isCloseToBottom = ({
-        layoutMeasurement,
-        contentOffset,
-        contentSize,
-    }) => {
-        const paddingToBottom = 40;
-        return (
-            layoutMeasurement.height + contentOffset.y >=
-            contentSize.height - paddingToBottom
-        );
-    };
+    const isCloseToBottom = useCallback(
+        ({ layoutMeasurement, contentOffset, contentSize }) => {
+            const paddingToBottom = 40;
+            return (
+                layoutMeasurement.height + contentOffset.y >=
+                contentSize.height - paddingToBottom
+            );
+        },
+        []
+    );
 
     const updateTracker = () => {
         const chapterNumber = parseChapterNumber(chapterName);

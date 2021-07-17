@@ -1,13 +1,18 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { FlatList, StyleSheet } from "react-native";
 
+import { Appbar as MaterialAppbar } from "react-native-paper";
+
 import { useDispatch, useSelector } from "react-redux";
 
 import { Appbar } from "../../components/Appbar";
 import { ScreenContainer } from "../../components/Common";
 import EmptyView from "../../components/EmptyView";
 import { LoadingScreen } from "../../components/LoadingScreen/LoadingScreen";
-import { getDownloadedChapters } from "../../database/queries/ChapterQueries";
+import {
+    deleteDownloads,
+    getDownloadedChapters,
+} from "../../database/queries/ChapterQueries";
 
 import { useTheme } from "../../hooks/reduxHooks";
 import {
@@ -16,6 +21,7 @@ import {
 } from "../../redux/novel/novel.actions";
 
 import UpdatesItem from "../Updates/components/UpdatesItem";
+import RemoveDownloadsDialog from "./components/RemoveDownloadsDialog";
 
 const Downloads = ({ navigation }) => {
     const theme = useTheme();
@@ -26,6 +32,13 @@ const Downloads = ({ navigation }) => {
 
     const [loading, setLoading] = useState(true);
     const [chapters, setChapters] = useState([]);
+
+    /**
+     * Confirm Clear downloads Dialog
+     */
+    const [visible, setVisible] = useState(false);
+    const showDialog = () => setVisible(true);
+    const hideDialog = () => setVisible(false);
 
     const getChapters = async () => {
         const res = await getDownloadedChapters();
@@ -104,7 +117,15 @@ const Downloads = ({ navigation }) => {
 
     return (
         <ScreenContainer theme={theme}>
-            <Appbar title="Downloads" onBackAction={navigation.goBack} />
+            <Appbar title="Downloads" onBackAction={navigation.goBack}>
+                {chapters.length > 0 && (
+                    <MaterialAppbar.Action
+                        icon="delete-sweep"
+                        color={theme.textColorPrimary}
+                        onPress={showDialog}
+                    />
+                )}
+            </Appbar>
             {loading ? (
                 <LoadingScreen theme={theme} />
             ) : (
@@ -116,6 +137,16 @@ const Downloads = ({ navigation }) => {
                     ListEmptyComponent={<ListEmptyComponent />}
                 />
             )}
+            <RemoveDownloadsDialog
+                dialogVisible={visible}
+                hideDialog={hideDialog}
+                onSubmit={() => {
+                    deleteDownloads();
+                    setChapters([]);
+                    hideDialog();
+                }}
+                theme={theme}
+            />
         </ScreenContainer>
     );
 };

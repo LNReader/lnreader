@@ -129,17 +129,17 @@ export const hotPinkTheme = {
 export const strawberryDaiquiri = {
     id: 7,
     name: "Strawberry Daiquiri",
-    ...PrimaryColors.light,
+    ...PrimaryColors.dark,
     colorAccent: AccentColors.strawberryDaiquiri,
     rippleColor: RippleColors.strawberryDaiquiri,
-    searchBarColor: "#FFFFFF",
-    menuColor: "#FFFFFF",
-    dividerColor: "rgba(0,0,0,0.1)",
-    filterColor: "#FFC107",
-    colorDisabled: "rgba(220,220,220,255)",
+    searchBarColor: "#303135",
+    menuColor: "#242529",
+    filterColor: "#FFEB3B",
+    dividerColor: "rgba(255,255,255,0.1)",
+    colorDisabled: "rgba(57,57,57,255)",
     colorButtonText: "#FFFFFF",
-    statusBar: StatusBarStyle.DARK,
-    ...TextColors.light,
+    statusBar: StatusBarStyle.LIGHT,
+    ...TextColors.dark,
 };
 
 export const irisBlueTheme = {

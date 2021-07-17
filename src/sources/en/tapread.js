@@ -9,28 +9,22 @@ let headers = new Headers({
 });
 
 const popularNovels = async (page) => {
-    let totalPages = 10;
+    let totalPages = 0;
 
-    let url = baseUrl + "/ajax/category/detail";
+    const result = await fetch(baseUrl);
+    const body = await result.text();
 
-    let formData = new FormData();
-    formData.append("cateId", "0");
-    formData.append("pageNo", page);
+    $ = cheerio.load(body);
 
-    const result = await fetch(url, {
-        method: "POST",
-        headers: headers,
-    });
-    const data = await result.json();
     let novels = [];
 
-    data.result.bookList.map((book) => {
-        const novelName = book.bookName;
-        const novelCover = "http://static.tapread.com" + book.coverUrl;
-        let novelUrl = book.bookId + "/";
+    $('.section-item[data-classify="1"]').each(function (result) {
+        const novelName = $(this).find(".book-name").text();
+        const novelCover = "http:" + $(this).find("img").attr("src");
+        let novelUrl = $(this).attr("data-id");
 
         const novel = {
-            sourceId: 17,
+            extensionId: 17,
             novelName,
             novelCover,
             novelUrl,
@@ -128,12 +122,9 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 
     const chapterName = body.result.chapterName;
     const chapterText = htmlToText(body.result.content);
-    const nextChapter =
-        body.result.nextChapterId === 0
-            ? null
-            : body.result.nextChapterId.toString();
-    const prevChapter = body.result.preChapterId.toString();
-    novelUrl += "/";
+
+    const nextChapter = null;
+    const prevChapter = null;
 
     const chapter = {
         sourceId: 17,

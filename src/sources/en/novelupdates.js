@@ -81,7 +81,7 @@ const parseNovelAndChapters = async (novelUrl) => {
 
     let summary = $("#editdescription").text().trim();
 
-    novel.summary = `Type: ${type}\n` + summary;
+    novel.summary = summary + `\nType: ${type}`;
 
     let novelChapters = [];
 
@@ -238,7 +238,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
             );
 
             chapterText = htmlToText(chapterText);
-            console.log(chapterText);
+            // console.log(chapterText);
         } else {
             if (!chapterText) {
                 chapterText =

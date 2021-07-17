@@ -16,6 +16,7 @@ import GridSizeModal from "./components/GridSizeModal";
 import ThemeModal from "./components/ThemeModal";
 import {
     setAccentColor,
+    setAmoledMode,
     setAppSettings,
     setRippleColor,
 } from "../../redux/settings/settings.actions";
@@ -150,6 +151,27 @@ const GenralSettings = ({ navigation }) => {
                     iconColor={theme.colorAccent}
                     right="circle"
                 />
+                {theme.statusBar === "light-content" && (
+                    <SwitchSetting
+                        label="Pure black dark mode"
+                        value={
+                            theme.colorPrimary === "#000000" &&
+                            theme.colorPrimaryDark === "#000000"
+                        }
+                        onPress={() =>
+                            dispatch(
+                                setAmoledMode(
+                                    theme.id,
+                                    !(
+                                        theme.colorPrimary === "#000000" &&
+                                        theme.colorPrimaryDark === "#000000"
+                                    )
+                                )
+                            )
+                        }
+                        theme={theme}
+                    />
+                )}
             </ListSection>
             <DisplayModeModal
                 displayMode={displayMode}

@@ -5,6 +5,7 @@ import {
     SET_APP_SETTINGS,
     SET_ACCENT_COLOR,
     SET_RIPPLE_COLOR,
+    SET_AMOLED_MODE,
 } from "./settings.types";
 
 export const setAppTheme = (val) => (dispatch) => {
@@ -46,5 +47,12 @@ export const setRippleColor = (val) => (dispatch) => {
     dispatch({
         type: SET_RIPPLE_COLOR,
         payload: val,
+    });
+};
+
+export const setAmoledMode = (id, val) => (dispatch) => {
+    dispatch({
+        type: SET_AMOLED_MODE,
+        payload: { id, val },
     });
 };

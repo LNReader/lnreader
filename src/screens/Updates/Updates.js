@@ -38,7 +38,7 @@ const Updates = ({ navigation }) => {
     useFocusEffect(
         useCallback(() => {
             dispatch(getUpdatesAction());
-        }, [getUpdatesAction, downloadQueue])
+        }, [getUpdatesAction])
     );
 
     const onRefresh = async () => {
@@ -90,8 +90,10 @@ const Updates = ({ navigation }) => {
             )
         );
 
-    const deleteChapter = (chapterId, chapterName) =>
+    const deleteChapter = (chapterId, chapterName) => {
         dispatch(deleteChapterAction(chapterId, chapterName));
+        dispatch(getUpdatesAction());
+    };
 
     const renderItem = ({ item }) => (
         <UpdatesItem

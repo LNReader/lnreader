@@ -134,7 +134,7 @@ class WPMangaStreamScraper {
             prevChapter,
         };
 
-        console.log(chapter);
+        // console.log(chapter);
 
         return chapter;
     }

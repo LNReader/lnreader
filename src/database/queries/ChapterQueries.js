@@ -281,3 +281,10 @@ export const getDownloadedChapters = () => {
         })
     );
 };
+
+export const deleteDownloads = async () => {
+    db.transaction((tx) => {
+        tx.executeSql(`UPDATE chapters SET downloaded = 0`);
+        tx.executeSql("DELETE FROM downloads; VACCUM;");
+    });
+};

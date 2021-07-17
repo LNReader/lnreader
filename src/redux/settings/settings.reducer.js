@@ -5,6 +5,7 @@ import {
     SET_APP_SETTINGS,
     SET_ACCENT_COLOR,
     SET_RIPPLE_COLOR,
+    SET_AMOLED_MODE,
 } from "./settings.types";
 import {
     amoledDarkTheme,
@@ -15,7 +16,6 @@ import {
     irisBlueTheme,
     hotPinkTheme,
     strawberryDaiquiri,
-    palenightTheme,
 } from "../../theme/theme";
 
 const themes = {
@@ -27,7 +27,6 @@ const themes = {
     5: irisBlueTheme,
     6: hotPinkTheme,
     7: strawberryDaiquiri,
-    8: palenightTheme,
 };
 
 /**
@@ -98,6 +97,20 @@ const settingsReducer = (state = initialState, action) => {
                     rippleColor: payload,
                 },
             };
+        case SET_AMOLED_MODE:
+            return {
+                ...state,
+                theme: payload.val
+                    ? {
+                          ...themes[0],
+                          colorAccent: state.theme.colorAccent,
+                          rippleColor: state.theme.rippleColor,
+                          id: state.theme.id,
+                          name: state.theme.name,
+                      }
+                    : themes[payload.id],
+            };
+
         case SET_APP_SETTINGS:
             return {
                 ...state,
