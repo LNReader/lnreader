@@ -14,7 +14,7 @@ const htmlToText = (html, options = {}) => {
          * <hr> -> [hr]()
          */
 
-        .replace(/<\s*hr[^>]*>/gi, "[hr]()")
+        .replace(/<\s*hr[^>]*>/gi, "{hr}()")
 
         /**
          * <li> -> \n
@@ -51,27 +51,27 @@ const htmlToText = (html, options = {}) => {
 
         .replace(
             /<\s*a[^>]*href=['"](http.*?)['"][^>]*>([\s\S]*?)<\/\s*a\s*>/gi,
-            "[Anchor: $2]($1)"
+            "{Anchor: $2}($1)"
         )
 
         /**
          * <em>Text</em> -> _Text_
          */
 
-        .replace(/<em>(.*?)<\/em>/gi, "[em]($1)")
+        .replace(/<em>(.*?)<\/em>/gi, "{em}($1)")
 
         /**
          * <h1>Text</h1> -> [h1](Text)
          */
 
-        .replace(/<(h[1-6])>(.*?)<\/h[1-6]>/gi, "[$1]($2)")
-        .replace(/<strong>(.*?)<strong>/gi, "[strong]($1)")
+        .replace(/<(h[1-6])>(.*?)<\/h[1-6]>/gi, "{$1}($2)")
+        .replace(/<strong>(.*?)<strong>/gi, "{strong}($1)")
 
         /**
          * <img> -> [img](src)
          */
 
-        .replace(/<\s*img[^>]*src=['"](.*?)['"][^>]*>/gi, "[img]($1)")
+        .replace(/<\s*img[^>]*src=['"](.*?)['"][^>]*>/gi, "{img}($1)")
 
         /**
          * Remove remaining tags

@@ -93,12 +93,12 @@ const TextToComponents = ({
     theme,
 }) => {
     try {
-        regex = /(\[(?:\n|.)*?\]\(.*?\))/;
+        regex = /(\{(?:\n|.)*?\}\(.*?\))/;
 
         let parseText = text.trim().split(regex);
         return parseText.map((part, index) => {
             if (part) {
-                let match = part.match(/\[((?:\n|.)*?)\]\((.*?)\)/);
+                let match = part.match(/\{((?:\n|.)*?)\}\((.*?)\)/);
 
                 if (match) {
                     tag = match[1];
