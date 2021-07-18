@@ -1,6 +1,10 @@
 import React from "react";
-import { StyleSheet, View, Text, Pressable } from "react-native";
-import { Portal, Modal, Checkbox } from "react-native-paper";
+import { StyleSheet } from "react-native";
+
+import { Portal, Modal } from "react-native-paper";
+
+import { Checkbox } from "../../../components/Checkbox/Checkbox";
+
 import { setAppSettings } from "../../../redux/settings/settings.actions";
 
 const DisplayModeModal = ({
@@ -18,39 +22,15 @@ const DisplayModeModal = ({
 
     const renderCheckboxes = () => {
         return displayModes.map((mode) => (
-            <View
+            <Checkbox
                 key={mode.displayMode}
-                style={[
-                    {
-                        borderRadius: 8,
-                        overflow: "hidden",
-                        marginVertical: 4,
-                    },
-                    displayMode === mode.displayMode && {
-                        backgroundColor: theme.rippleColor,
-                    },
-                ]}
-            >
-                <Pressable
-                    android_ripple={{
-                        color: theme.rippleColor,
-                    }}
-                    style={{
-                        paddingHorizontal: 16,
-                        paddingVertical: 12,
-                        justifyContent: "space-between",
-                    }}
-                    onPress={() =>
-                        dispatch(
-                            setAppSettings("displayMode", mode.displayMode)
-                        )
-                    }
-                >
-                    <Text style={{ color: theme.textColorPrimary }}>
-                        {mode.label}
-                    </Text>
-                </Pressable>
-            </View>
+                status={displayMode === mode.displayMode}
+                onPress={() =>
+                    dispatch(setAppSettings("displayMode", mode.displayMode))
+                }
+                label={mode.label}
+                theme={theme}
+            />
         ));
     };
 

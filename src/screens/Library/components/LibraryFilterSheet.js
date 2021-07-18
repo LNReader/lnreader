@@ -8,13 +8,14 @@ import {
 } from "react-native";
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 
-import { Checkbox } from "react-native-paper";
+import { Checkbox as PaperCheckbox } from "react-native-paper";
 
 import Bottomsheet from "rn-sliding-up-panel";
 import { ListItem } from "../../../components/List";
 import { filterLibrary } from "../../../redux/library/library.actions";
 import { useSettings } from "../../../hooks/reduxHooks";
 import { setAppSettings } from "../../../redux/settings/settings.actions";
+import { Checkbox, SortItem } from "../../../components/Checkbox/Checkbox";
 
 const LibraryFilterSheet = ({
     bottomSheetRef,
@@ -27,7 +28,7 @@ const LibraryFilterSheet = ({
 
     const FirstRoute = () => (
         <View style={{ flex: 1 }}>
-            <Checkbox.Item
+            <PaperCheckbox.Item
                 label="Downloaded"
                 labelStyle={{
                     fontSize: 14,
@@ -48,7 +49,7 @@ const LibraryFilterSheet = ({
                           )
                 }
             />
-            <Checkbox.Item
+            <PaperCheckbox.Item
                 label="Unread"
                 labelStyle={{
                     fontSize: 14,
@@ -63,7 +64,7 @@ const LibraryFilterSheet = ({
                         : dispatch(filterLibrary(sort, "unread = 1"))
                 }
             />
-            <Checkbox.Item
+            <PaperCheckbox.Item
                 label="Completed"
                 labelStyle={{
                     fontSize: 14,
@@ -87,111 +88,55 @@ const LibraryFilterSheet = ({
         </View>
     );
 
+    const sortOrders = [
+        {
+            label: "Date Added",
+            ASC: "novels.novelId ASC",
+            DESC: "novels.novelId DESC",
+        },
+        {
+            label: "Aplhabetically",
+            ASC: "novels.novelName ASC",
+            DESC: "novels.novelName DESC",
+        },
+        {
+            label: "Unread",
+            ASC: "novels.unread ASC",
+            DESC: "novels.unread DESC",
+        },
+        {
+            label: "Downloaded",
+            ASC: "chaptersDownloaded ASC",
+            DESC: "chaptersDownloaded DESC",
+        },
+        {
+            label: "Total Chapters",
+            ASC: "chaptersUnread ASC",
+            DESC: "chaptersUnread DESC",
+        },
+    ];
+
     const SecondRoute = () => (
-        <View style={{ flex: 1 }}>
-            <ListItem
-                style={{ paddingVertical: 10 }}
-                title="Date Added"
-                titleStyle={{ fontSize: 14 }}
-                theme={theme}
-                right={
-                    sort === "novels.novelId ASC"
-                        ? "arrow-up"
-                        : sort === "novels.novelId DESC"
-                        ? "arrow-down"
-                        : null
-                }
-                iconColor={theme.colorAccent}
-                onPress={() =>
-                    sort === "novels.novelId ASC"
-                        ? dispatch(filterLibrary("novels.novelId DESC", filter))
-                        : dispatch(filterLibrary("novels.novelId ASC", filter))
-                }
-            />
-            <ListItem
-                style={{ paddingVertical: 10 }}
-                title="Alphabetically"
-                titleStyle={{ fontSize: 14 }}
-                theme={theme}
-                right={
-                    sort === "novels.novelName ASC"
-                        ? "arrow-up"
-                        : sort === "novels.novelName DESC"
-                        ? "arrow-down"
-                        : null
-                }
-                iconColor={theme.colorAccent}
-                onPress={() =>
-                    sort === "novels.novelName ASC"
-                        ? dispatch(
-                              filterLibrary("novels.novelName DESC", filter)
-                          )
-                        : dispatch(
-                              filterLibrary("novels.novelName ASC", filter)
-                          )
-                }
-            />
-            <ListItem
-                style={{ paddingVertical: 10 }}
-                title="Unread"
-                titleStyle={{ fontSize: 14 }}
-                theme={theme}
-                right={
-                    sort === "novels.unread ASC"
-                        ? "arrow-up"
-                        : sort === "novels.unread DESC"
-                        ? "arrow-down"
-                        : null
-                }
-                iconColor={theme.colorAccent}
-                onPress={() =>
-                    sort === "novels.unread ASC"
-                        ? dispatch(filterLibrary("novels.unread DESC", filter))
-                        : dispatch(filterLibrary("novels.unread ASC", filter))
-                }
-            />
-            <ListItem
-                style={{ paddingVertical: 10 }}
-                title="Downloaded"
-                titleStyle={{ fontSize: 14 }}
-                theme={theme}
-                right={
-                    sort === "chaptersDownloaded ASC"
-                        ? "arrow-up"
-                        : sort === "chaptersDownloaded DESC"
-                        ? "arrow-down"
-                        : null
-                }
-                iconColor={theme.colorAccent}
-                onPress={() =>
-                    sort === "chaptersDownloaded ASC"
-                        ? dispatch(
-                              filterLibrary("chaptersDownloaded DESC", filter)
-                          )
-                        : dispatch(
-                              filterLibrary("chaptersDownloaded ASC", filter)
-                          )
-                }
-            />
-            <ListItem
-                style={{ paddingVertical: 10 }}
-                title="Total Chapters"
-                titleStyle={{ fontSize: 14 }}
-                theme={theme}
-                right={
-                    sort === "chaptersUnread ASC"
-                        ? "arrow-up"
-                        : sort === "chaptersUnread DESC"
-                        ? "arrow-down"
-                        : null
-                }
-                iconColor={theme.colorAccent}
-                onPress={() =>
-                    sort === "chaptersUnread ASC"
-                        ? dispatch(filterLibrary("chaptersUnread DESC", filter))
-                        : dispatch(filterLibrary("chaptersUnread ASC", filter))
-                }
-            />
+        <View style={{ flex: 1, margin: 8 }}>
+            {sortOrders.map((item, index) => (
+                <SortItem
+                    key={index}
+                    label={item.label}
+                    theme={theme}
+                    status={
+                        sort === item.ASC
+                            ? "asc"
+                            : sort === item.DESC
+                            ? "desc"
+                            : null
+                    }
+                    onPress={() =>
+                        sort === item.ASC
+                            ? dispatch(filterLibrary(item.DESC, filter))
+                            : dispatch(filterLibrary(item.ASC, filter))
+                    }
+                />
+            ))}
         </View>
     );
 
@@ -210,30 +155,25 @@ const LibraryFilterSheet = ({
 
     const renderCheckboxes = () => {
         return displayModes.map((mode) => (
-            <Checkbox.Item
+            <Checkbox
                 key={mode.displayMode}
                 label={mode.label}
-                labelStyle={{ color: theme.textColorPrimary, fontSize: 14 }}
-                status={
-                    displayMode === mode.displayMode ? "checked" : "unchecked"
-                }
-                // mode="ios"
-                uncheckedColor={theme.textColorSecondary}
-                color={theme.colorAccent}
+                status={displayMode === mode.displayMode}
                 onPress={() =>
                     dispatch(setAppSettings("displayMode", mode.displayMode))
                 }
+                theme={theme}
             />
         ));
     };
 
     const ThirdRoute = () => (
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, margin: 8 }}>
             <Text
                 style={{
                     color: theme.textColorSecondary,
                     paddingHorizontal: 16,
-                    paddingVertical: 16,
+                    paddingVertical: 8,
                     textTransform: "uppercase",
                 }}
             >
@@ -245,18 +185,15 @@ const LibraryFilterSheet = ({
                 style={{
                     color: theme.textColorSecondary,
                     paddingHorizontal: 16,
-                    paddingVertical: 16,
+                    paddingVertical: 8,
                     textTransform: "uppercase",
                 }}
             >
                 Badges
             </Text>
-            <Checkbox.Item
+            <Checkbox
                 label="Download Badges"
-                labelStyle={{ color: theme.textColorPrimary, fontSize: 14 }}
-                status={showDownloadBadges ? "checked" : "unchecked"}
-                uncheckedColor={theme.textColorSecondary}
-                color={theme.colorAccent}
+                status={showDownloadBadges}
                 onPress={() =>
                     dispatch(
                         setAppSettings(
@@ -265,25 +202,21 @@ const LibraryFilterSheet = ({
                         )
                     )
                 }
+                theme={theme}
             />
-            <Checkbox.Item
+            <Checkbox
                 label="Unread Badges"
-                labelStyle={{ color: theme.textColorPrimary, fontSize: 14 }}
-                status={showUnreadBadges ? "checked" : "unchecked"}
-                uncheckedColor={theme.textColorSecondary}
-                color={theme.colorAccent}
+                status={showUnreadBadges}
                 onPress={() =>
                     dispatch(
                         setAppSettings("showUnreadBadges", !showUnreadBadges)
                     )
                 }
+                theme={theme}
             />
-            <Checkbox.Item
+            <Checkbox
                 label="Show number of items"
-                labelStyle={{ color: theme.textColorPrimary, fontSize: 14 }}
-                status={showNumberOfNovels ? "checked" : "unchecked"}
-                uncheckedColor={theme.textColorSecondary}
-                color={theme.colorAccent}
+                status={showNumberOfNovels}
                 onPress={() =>
                     dispatch(
                         setAppSettings(
@@ -292,6 +225,7 @@ const LibraryFilterSheet = ({
                         )
                     )
                 }
+                theme={theme}
             />
         </View>
     );

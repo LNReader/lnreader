@@ -1,7 +1,8 @@
 import React from "react";
-import { Pressable, StyleSheet, View, Text } from "react-native";
+import { StyleSheet } from "react-native";
 
 import { Portal, Modal } from "react-native-paper";
+import { Checkbox } from "../../../components/Checkbox/Checkbox";
 
 import { setAppTheme } from "../../../redux/settings/settings.actions";
 
@@ -15,39 +16,16 @@ const ThemeModal = ({ themeModalVisible, hidethemeModal, dispatch, theme }) => {
         { id: 7, name: "Strawberry Daiquiri" },
     ];
 
-    const ThemeItem = ({ item }) => (
-        <View
-            style={[
-                {
-                    borderRadius: 8,
-                    overflow: "hidden",
-                    marginVertical: 4,
-                },
-                theme.id === item.id && {
-                    backgroundColor: theme.rippleColor,
-                },
-            ]}
-        >
-            <Pressable
-                android_ripple={{
-                    color: theme.rippleColor,
-                }}
-                style={{
-                    paddingHorizontal: 16,
-                    paddingVertical: 12,
-                    justifyContent: "space-between",
-                }}
-                onPress={() => dispatch(setAppTheme(item.id))}
-            >
-                <Text style={{ color: theme.textColorPrimary }}>
-                    {item.name}
-                </Text>
-            </Pressable>
-        </View>
-    );
-
     const renderThemeCheckboxes = () =>
-        themes.map((item) => <ThemeItem item={item} key={item.id} />);
+        themes.map((item) => (
+            <Checkbox
+                key={item.id}
+                status={theme.id === item.id}
+                label={item.name}
+                onPress={() => dispatch(setAppTheme(item.id))}
+                theme={theme}
+            />
+        ));
 
     return (
         <Portal>

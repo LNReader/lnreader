@@ -27,6 +27,7 @@ const ReaderSettings = ({ navigation }) => {
         2: "#000000",
         3: "#000000",
         4: "#CCCCCC",
+        5: "#CCCCCC",
     };
 
     /**

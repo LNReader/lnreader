@@ -22,6 +22,7 @@ import {
 } from "../../redux/settings/settings.actions";
 import ColorPickerModal from "../../components/ColorPickerModal";
 import SwitchSetting from "../../components/Switch/Switch";
+import { ScrollView } from "react-native";
 
 const GenralSettings = ({ navigation }) => {
     const theme = useTheme();
@@ -93,86 +94,88 @@ const GenralSettings = ({ navigation }) => {
     return (
         <ScreenContainer theme={theme}>
             <Appbar title="General" onBackAction={navigation.goBack} />
-            <ListSection>
-                <ListSubHeader theme={theme}>Display</ListSubHeader>
-                <ListItem
-                    title="Display Mode"
-                    description={displayModeLabel(displayMode)}
-                    onPress={showDisplayModal}
-                    theme={theme}
-                />
-                <ListItem
-                    title="Items per row in library"
-                    description={`${novelsPerRow} items per row`}
-                    onPress={showGridSizeModal}
-                    theme={theme}
-                />
-                <Divider theme={theme} />
-                <ListSubHeader theme={theme}>Library</ListSubHeader>
-                <SwitchSetting
-                    label="Update library on launch"
-                    value={updateLibraryOnLaunch}
-                    onPress={() =>
-                        dispatch(
-                            setAppSettings(
-                                "updateLibraryOnLaunch",
-                                !updateLibraryOnLaunch
-                            )
-                        )
-                    }
-                    theme={theme}
-                />
-                <ListSubHeader theme={theme}>Auto-download</ListSubHeader>
-                <SwitchSetting
-                    label="Download new chapters"
-                    value={downloadNewChapters}
-                    onPress={() =>
-                        dispatch(
-                            setAppSettings(
-                                "downloadNewChapters",
-                                !downloadNewChapters
-                            )
-                        )
-                    }
-                    theme={theme}
-                />
-                <ListSubHeader theme={theme}>Theme</ListSubHeader>
-                <ListItem
-                    title="Theme"
-                    description={theme.name}
-                    onPress={showthemeModal}
-                    theme={theme}
-                />
-                <ListItem
-                    title="Accent Color"
-                    description={theme.colorAccent.toUpperCase()}
-                    onPress={showAccentColorModal}
-                    theme={theme}
-                    iconColor={theme.colorAccent}
-                    right="circle"
-                />
-                {theme.statusBar === "light-content" && (
+            <ScrollView>
+                <ListSection>
+                    <ListSubHeader theme={theme}>Display</ListSubHeader>
+                    <ListItem
+                        title="Display Mode"
+                        description={displayModeLabel(displayMode)}
+                        onPress={showDisplayModal}
+                        theme={theme}
+                    />
+                    <ListItem
+                        title="Items per row in library"
+                        description={`${novelsPerRow} items per row`}
+                        onPress={showGridSizeModal}
+                        theme={theme}
+                    />
+                    <Divider theme={theme} />
+                    <ListSubHeader theme={theme}>Library</ListSubHeader>
                     <SwitchSetting
-                        label="Pure black dark mode"
-                        value={
-                            theme.colorPrimary === "#000000" &&
-                            theme.colorPrimaryDark === "#000000"
-                        }
+                        label="Update library on launch"
+                        value={updateLibraryOnLaunch}
                         onPress={() =>
                             dispatch(
-                                setAmoledMode(
-                                    theme.id,
-                                    !(
-                                        theme.colorPrimary === "#000000" &&
-                                        theme.colorPrimaryDark === "#000000"
-                                    )
+                                setAppSettings(
+                                    "updateLibraryOnLaunch",
+                                    !updateLibraryOnLaunch
                                 )
                             )
                         }
                         theme={theme}
                     />
-                )}
-            </ListSection>
+                    <ListSubHeader theme={theme}>Auto-download</ListSubHeader>
+                    <SwitchSetting
+                        label="Download new chapters"
+                        value={downloadNewChapters}
+                        onPress={() =>
+                            dispatch(
+                                setAppSettings(
+                                    "downloadNewChapters",
+                                    !downloadNewChapters
+                                )
+                            )
+                        }
+                        theme={theme}
+                    />
+                    <ListSubHeader theme={theme}>Theme</ListSubHeader>
+                    <ListItem
+                        title="Theme"
+                        description={theme.name}
+                        onPress={showthemeModal}
+                        theme={theme}
+                    />
+                    <ListItem
+                        title="Accent Color"
+                        description={theme.colorAccent.toUpperCase()}
+                        onPress={showAccentColorModal}
+                        theme={theme}
+                        iconColor={theme.colorAccent}
+                        right="circle"
+                    />
+                    {theme.statusBar === "light-content" && (
+                        <SwitchSetting
+                            label="Pure black dark mode"
+                            value={
+                                theme.colorPrimary === "#000000" &&
+                                theme.colorPrimaryDark === "#000000"
+                            }
+                            onPress={() =>
+                                dispatch(
+                                    setAmoledMode(
+                                        theme.id,
+                                        !(
+                                            theme.colorPrimary === "#000000" &&
+                                            theme.colorPrimaryDark === "#000000"
+                                        )
+                                    )
+                                )
+                            }
+                            theme={theme}
+                        />
+                    )}
+                </ListSection>
+            </ScrollView>
             <DisplayModeModal
                 displayMode={displayMode}
                 displayModalVisible={displayModalVisible}

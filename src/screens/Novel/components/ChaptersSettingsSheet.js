@@ -6,13 +6,14 @@ import {
     Animated,
     useWindowDimensions,
 } from "react-native";
-import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 
+import { TabView, SceneMap, TabBar } from "react-native-tab-view";
+import { Checkbox as PaperCheckbox } from "react-native-paper";
 import Bottomsheet from "rn-sliding-up-panel";
+
+import { Checkbox, SortItem } from "../../../components/Checkbox/Checkbox";
+
 import { showChapterTitlesAction } from "../../../redux/novel/novel.actions";
-import { ListItem } from "../../../components/List";
-import { RadioButton, RadioButtonGroup } from "../../../components/RadioButton";
-import { Checkbox } from "react-native-paper";
 
 const ChaptersSettingsSheet = ({
     bottomSheetRef,
@@ -34,7 +35,7 @@ const ChaptersSettingsSheet = ({
 
     const FirstRoute = () => (
         <View style={{ flex: 1 }}>
-            <Checkbox.Item
+            <PaperCheckbox.Item
                 label="Downloaded"
                 labelStyle={{
                     fontSize: 14,
@@ -53,7 +54,7 @@ const ChaptersSettingsSheet = ({
                         : filterChapters(filter + " AND downloaded=1")
                 }
             />
-            <Checkbox.Item
+            <PaperCheckbox.Item
                 label="Unread"
                 labelStyle={{
                     fontSize: 14,
@@ -80,7 +81,7 @@ const ChaptersSettingsSheet = ({
                     }
                 }}
             />
-            <Checkbox.Item
+            <PaperCheckbox.Item
                 label="Bookmarked"
                 labelStyle={{
                     fontSize: 14,
@@ -101,48 +102,36 @@ const ChaptersSettingsSheet = ({
     );
 
     const SecondRoute = () => (
-        <View style={{ flex: 1 }}>
-            <ListItem
-                style={{ paddingVertical: 10 }}
-                title="By source"
-                titleStyle={{ fontSize: 14 }}
-                theme={theme}
-                right={
-                    sort === "ORDER BY chapterId ASC"
-                        ? "arrow-up"
-                        : "arrow-down"
-                }
-                iconColor={theme.colorAccent}
+        <View style={{ flex: 1, margin: 8 }}>
+            <SortItem
+                label="By source"
+                status={sort === "ORDER BY chapterId ASC" ? "asc" : "desc"}
                 onPress={() =>
                     sort === "ORDER BY chapterId ASC"
                         ? sortChapters("ORDER BY chapterId DESC")
                         : sortChapters("ORDER BY chapterId ASC")
                 }
+                theme={theme}
             />
         </View>
     );
 
     const ThirdRoute = () => (
         <View style={{ flex: 1, padding: 8 }}>
-            <RadioButtonGroup
-                onValueChange={(value) =>
-                    dispatch(showChapterTitlesAction(novelId, value))
+            <Checkbox
+                status={!showChapterTitles}
+                label="Source title"
+                onPress={() =>
+                    dispatch(showChapterTitlesAction(novelId, false))
                 }
-                value={showChapterTitles}
-            >
-                <RadioButton
-                    value={false}
-                    label="Source title"
-                    theme={theme}
-                    labelStyle={{ fontSize: 14 }}
-                />
-                <RadioButton
-                    value={true}
-                    label="Chapter number"
-                    theme={theme}
-                    labelStyle={{ fontSize: 14 }}
-                />
-            </RadioButtonGroup>
+                theme={theme}
+            />
+            <Checkbox
+                status={showChapterTitles}
+                label="Chapter number"
+                onPress={() => dispatch(showChapterTitlesAction(novelId, true))}
+                theme={theme}
+            />
         </View>
     );
 

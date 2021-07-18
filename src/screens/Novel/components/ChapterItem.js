@@ -10,12 +10,9 @@ import {
 } from "./Chapter/ChapterDownloadButtons";
 
 const ChapterItem = ({
-    novelData,
     chapter,
     theme,
-    navigation,
     index,
-    position,
     showChapterTitles,
     downloadQueue,
     downloadChapter,
@@ -23,53 +20,14 @@ const ChapterItem = ({
     isSelected,
     onSelectPress,
     onSelectLongPress,
+    navigateToChapter,
+    showProgressPercentage,
 }) => {
-    const { sourceId, novelName, novelUrl } = novelData;
-    const {
-        novelId,
-        chapterId,
-        chapterUrl,
-        chapterName,
-        read,
-        releaseDate,
-        bookmark,
-    } = chapter;
+    const { chapterId, chapterName, read, releaseDate, bookmark } = chapter;
 
     const [deleteChapterMenu, setDeleteChapterMenu] = useState(false);
     const showDeleteChapterMenu = () => setDeleteChapterMenu(true);
     const hideDeleteChapterMenu = () => setDeleteChapterMenu(false);
-
-    const navigateToChapter = () =>
-        navigation.navigate("Chapter", {
-            sourceId,
-            novelUrl,
-            novelId,
-            chapterId,
-            chapterUrl,
-            chapterName,
-            novelName,
-            bookmark,
-        });
-
-    const renderProgressPercentage = () => {
-        const savedProgress =
-            position && position[chapterId] && position[chapterId].percentage;
-        if (savedProgress < 100 && savedProgress > 0 && !read) {
-            return (
-                <Text
-                    style={{
-                        color: theme.textColorHint,
-                        fontSize: 12,
-                        marginLeft: releaseDate ? 5 : 0,
-                    }}
-                    numberOfLines={1}
-                >
-                    {releaseDate && "•  "}
-                    {"Progress " + position[chapterId].percentage + "%"}
-                </Text>
-            );
-        }
-    };
 
     return (
         <Pressable
@@ -79,7 +37,9 @@ const ChapterItem = ({
                     backgroundColor: theme.rippleColor,
                 },
             ]}
-            onPress={() => onSelectPress(chapter, navigateToChapter)}
+            onPress={() =>
+                onSelectPress(chapter, () => navigateToChapter(chapter))
+            }
             onLongPress={() => onSelectLongPress(chapter)}
             android_ripple={{ color: theme.rippleColor }}
         >
@@ -119,7 +79,7 @@ const ChapterItem = ({
                                 {releaseDate}
                             </Text>
                         )}
-                        {renderProgressPercentage()}
+                        {showProgressPercentage(chapter)}
                     </View>
                 </View>
             </Row>

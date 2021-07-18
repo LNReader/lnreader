@@ -7,6 +7,7 @@ import {
     StatusBar,
     Dimensions,
     Share,
+    Text,
 } from "react-native";
 
 import { Provider, Portal, Appbar, IconButton, Menu } from "react-native-paper";
@@ -136,14 +137,41 @@ const Novel = ({ route, navigation }) => {
         }
     };
 
+    const navigateToChapter = (chapter) =>
+        navigation.navigate("Chapter", {
+            sourceId,
+            novelUrl,
+            novelName,
+            ...chapter,
+        });
+
+    const showProgressPercentage = (chapter) => {
+        const savedProgress =
+            position &&
+            position[chapter.chapterId] &&
+            position[chapter.chapterId].percentage;
+        if (savedProgress < 100 && savedProgress > 0 && !chapter.read) {
+            return (
+                <Text
+                    style={{
+                        color: theme.textColorHint,
+                        fontSize: 12,
+                        marginLeft: chapter.releaseDate ? 5 : 0,
+                    }}
+                    numberOfLines={1}
+                >
+                    {chapter.releaseDate && "•  "}
+                    {"Progress " + position[chapter.chapterId].percentage + "%"}
+                </Text>
+            );
+        }
+    };
+
     const renderItem = ({ item, index }) => (
         <ChapterItem
             theme={theme}
             chapter={item}
             index={index}
-            novelData={{ sourceId, novelUrl, novelName }}
-            navigation={navigation}
-            position={position}
             showChapterTitles={showChapterTitles}
             downloadQueue={downloadQueue}
             deleteChapter={deleteChapter}
@@ -151,6 +179,8 @@ const Novel = ({ route, navigation }) => {
             isSelected={isSelected}
             onSelectPress={onSelectPress}
             onSelectLongPress={onSelectLongPress}
+            navigateToChapter={navigateToChapter}
+            showProgressPercentage={showProgressPercentage}
         />
     );
 
