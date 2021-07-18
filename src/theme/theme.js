@@ -157,3 +157,62 @@ export const irisBlueTheme = {
     colorButtonText: "#16151D",
     statusBar: StatusBarStyle.LIGHT,
 };
+
+/**
+ * TakoTheme
+ */
+
+export const takoTheme = {
+    id: 8,
+    name: "Tako",
+    ...PrimaryColors.tako,
+    colorAccent: AccentColors.tako,
+    rippleColor: RippleColors.tako,
+    searchBarColor: "#484861",
+    menuColor: "#484861",
+    filterColor: "#FFEB3B",
+    dividerColor: "rgba(255,255,255,0.1)",
+    colorDisabled: "#484861",
+    colorButtonText: "#2C2C3B",
+    statusBar: StatusBarStyle.LIGHT,
+    ...TextColors.dark,
+};
+
+/**
+ * Yin & Yang
+ */
+
+export const yinYangTheme = {
+    id: 9,
+    name: "Yin & Yang",
+    ...PrimaryColors.dark,
+    colorAccent: AccentColors.yinYang,
+    rippleColor: RippleColors.yinYang,
+    searchBarColor: "#484861",
+    menuColor: "#484861",
+    filterColor: "#FFEB3B",
+    dividerColor: "rgba(255,255,255,0.1)",
+    colorDisabled: "#484861",
+    colorButtonText: "#000000",
+    statusBar: StatusBarStyle.LIGHT,
+    ...TextColors.dark,
+};
+
+/**
+ * Light
+ */
+export const springBlossomTheme = {
+    id: 10,
+    name: "Spring Blossom",
+    ...PrimaryColors.springBlossom,
+    ...TextColors.light,
+    colorAccent: AccentColors.springBlossom,
+    rippleColor: RippleColors.springBlossom,
+    searchBarColor: PrimaryColors.springBlossom.colorPrimary,
+    menuColor: "#FFFFFF",
+    dividerColor: "rgba(0,0,0,0.1)",
+    filterColor: "#FFC107",
+    colorDisabled: PrimaryColors.springBlossom.colorPrimary,
+    colorButtonText: "#FFFFFF",
+    statusBar: StatusBarStyle.DARK,
+};

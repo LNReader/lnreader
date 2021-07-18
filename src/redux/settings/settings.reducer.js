@@ -14,8 +14,10 @@ import {
     midnightDuskTheme,
     greenAppleTheme,
     irisBlueTheme,
-    hotPinkTheme,
     strawberryDaiquiri,
+    takoTheme,
+    yinYangTheme,
+    springBlossomTheme,
 } from "../../theme/theme";
 
 const themes = {
@@ -25,8 +27,10 @@ const themes = {
     3: midnightDuskTheme,
     4: greenAppleTheme,
     5: irisBlueTheme,
-    6: hotPinkTheme,
     7: strawberryDaiquiri,
+    8: takoTheme,
+    9: yinYangTheme,
+    10: springBlossomTheme,
 };
 
 /**
@@ -105,6 +109,7 @@ const settingsReducer = (state = initialState, action) => {
                           ...themes[0],
                           colorAccent: state.theme.colorAccent,
                           rippleColor: state.theme.rippleColor,
+                          colorButtonText: state.theme.colorButtonText,
                           id: state.theme.id,
                           name: state.theme.name,
                       }

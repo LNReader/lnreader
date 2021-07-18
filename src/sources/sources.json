@@ -253,98 +253,98 @@
     },
     {
         "sourceId": 38,
-        "sourceUrl": "https://skynovel.org/",
+        "url": "https://skynovel.org/",
         "sourceName": "SkyNovel",
         "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/skynovel.png?raw=true",
         "lang": "English"
     },
     {
         "sourceId": 39,
-        "sourceUrl": "https://novelcake.com/",
+        "url": "https://novelcake.com/",
         "sourceName": "NovelCake",
         "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/novelcake.png?raw=true",
         "lang": "English"
     },
     {
         "sourceId": 40,
-        "sourceUrl": "https://novelsrock.com/",
+        "url": "https://novelsrock.com/",
         "sourceName": "NovelsRock",
         "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/novelsrock.png?raw=true",
         "lang": "English"
     },
     {
         "sourceId": 41,
-        "sourceUrl": "https://zinnovel.com/",
+        "url": "https://zinnovel.com/",
         "sourceName": "ZinnNovel",
         "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/zinnovel.png?raw=true",
         "lang": "English"
     },
     {
         "sourceId": 42,
-        "sourceUrl": "https://noveltranslate.com/",
+        "url": "https://noveltranslate.com/",
         "sourceName": "NovelTranslate",
         "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/noveltranslate.png?raw=true",
         "lang": "English"
     },
     {
         "sourceId": 43,
-        "sourceUrl": "https://www.lunarletters.com/",
+        "url": "https://www.lunarletters.com/",
         "sourceName": "LunarLetters",
         "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/lunarletters.png?raw=true",
         "lang": "English"
     },
     {
         "sourceId": 44,
-        "sourceUrl": "https://sleepytranslations.com/",
+        "url": "https://sleepytranslations.com/",
         "sourceName": "SleepyTranslations",
         "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/sleepytranslations.png?raw=true",
         "lang": "English"
     },
     {
         "sourceId": 45,
-        "sourceUrl": "https://freenovel.me/",
+        "url": "https://freenovel.me/",
         "sourceName": "FreeNovelMe",
         "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/freenovel.png?raw=true",
         "lang": "English"
     },
     {
         "sourceId": 46,
-        "sourceUrl": "https://1stkissnovel.love/",
+        "url": "https://1stkissnovel.love/",
         "sourceName": "1stKissNovel",
         "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/1stkissnovel.png?raw=true",
         "lang": "English"
     },
     {
         "sourceId": 47,
-        "sourceUrl": "https://daonovel.com/",
+        "url": "https://daonovel.com/",
         "sourceName": "DaoNovel",
         "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/daonovel.png?raw=true",
         "lang": "English"
     },
     {
         "sourceId": 48,
-        "sourceUrl": "https://www.wuxia.blog/",
+        "url": "https://www.wuxia.blog/",
         "sourceName": "Wuxia.Blog",
         "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/wuxiablog/icon.png?raw=true",
         "lang": "English"
     },
     {
         "sourceId": 49,
-        "sourceUrl": "https://wuxia.city/",
+        "url": "https://wuxia.city/",
         "sourceName": "Wuxia.City",
         "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/wuxiacity/icon.png?raw=true",
         "lang": "English"
     },
     {
         "sourceId": 50,
-        "sourceUrl": "https://www.novelupdates.com/",
+        "url": "https://www.novelupdates.com/",
         "sourceName": "Novel Updates",
         "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/novelupdates/icon.png?raw=true",
         "lang": "English"
     },
     {
         "sourceId": 51,
-        "sourceUrl": "https://ranobes.net/",
+        "url": "https://ranobes.net/",
         "sourceName": "Ranobes",
         "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/ranobes/icon.png?raw=true",
         "lang": "English"
@@ -358,14 +358,14 @@
     },
     {
         "sourceId": 53,
-        "sourceUrl": "https://kolnovel.com/",
+        "url": "https://kolnovel.com/",
         "sourceName": "KolNovel",
         "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/wpmangastream/icons/kolnovel.png?raw=true",
         "lang": "Arabic"
     },
     {
         "sourceId": 54,
-        "sourceUrl": "https://rewayat-ar.site/",
+        "url": "https://rewayat-ar.site/",
         "sourceName": "RewayatAr",
         "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/wpmangastream/icons/rewayatar.png?raw=true",
         "lang": "Arabic"

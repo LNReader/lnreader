@@ -156,7 +156,7 @@ const ChaptersSettingsSheet = ({
             indicatorStyle={{ backgroundColor: theme.colorAccent }}
             style={{ backgroundColor: theme.colorPrimary }}
             renderLabel={({ route, focused, color }) => (
-                <Text style={{ color, margin: 8 }}>{route.title}</Text>
+                <Text style={{ color }}>{route.title}</Text>
             )}
             inactiveColor={theme.textColorSecondary}
             activeColor={theme.colorAccent}
@@ -174,7 +174,7 @@ const ChaptersSettingsSheet = ({
             <View
                 style={[
                     styles.contentContainer,
-                    { backgroundColor: theme.colorPrimary },
+                    { backgroundColor: theme.colorPrimaryDark },
                 ]}
             >
                 <TabView

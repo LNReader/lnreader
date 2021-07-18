@@ -251,7 +251,7 @@ const LibraryFilterSheet = ({
             indicatorStyle={{ backgroundColor: theme.colorAccent }}
             style={{ backgroundColor: theme.colorPrimary }}
             renderLabel={({ route, focused, color }) => (
-                <Text style={{ color, margin: 8 }}>{route.title}</Text>
+                <Text style={{ color }}>{route.title}</Text>
             )}
             inactiveColor={theme.textColorSecondary}
             activeColor={theme.colorAccent}

@@ -208,5 +208,5 @@ export default Updates;
 
 const styles = StyleSheet.create({
     container: { flex: 1 },
-    flatList: { flexGrow: 1, paddingVertical: 8 },
+    flatList: { flexGrow: 1, paddingBottom: 8 },
 });

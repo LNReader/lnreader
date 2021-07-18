@@ -6,6 +6,9 @@ const AccentColors = {
     strawberryDaiquiri: "#ED4A65",
     irisBlue: "#00adb5",
     hotPink: "#FF3399",
+    tako: "#F3B375",
+    yinYang: "#FFFFFF",
+    springBlossom: "#c43c97",
 };
 
 const RippleColors = {
@@ -15,6 +18,9 @@ const RippleColors = {
     strawberryDaiquiri: "rgba(237,74,101,0.12)",
     irisBlue: "rgba(0,173,181,0.12)",
     hotPink: "rgba(255,51,153,0.12)",
+    tako: "rgba(243,179,117,0.12)",
+    yinYang: "#rgba(255,255,255,0.12)",
+    springBlossom: "rgba(196,60,151,0.12)",
 };
 
 const StatusBarStyle = {
@@ -55,6 +61,14 @@ const PrimaryColors = {
     irisBlue: {
         colorPrimary: "#393e46",
         colorPrimaryDark: "#222831",
+    },
+    tako: {
+        colorPrimary: "#484861",
+        colorPrimaryDark: "#2C2C3B",
+    },
+    springBlossom: {
+        colorPrimary: "#efe3f3",
+        colorPrimaryDark: "#f7f4f8",
     },
 };
 

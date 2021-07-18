@@ -138,31 +138,36 @@ const ReaderSettings = ({ navigation }) => {
                         >
                             Preset Themes
                         </Text>
-                        <Row>
-                            <ToggleButton.Row
-                                onValueChange={onValueChange}
-                                value={reader.theme}
-                            >
-                                {presetThemes.map((theme) => (
-                                    <ToggleButton
-                                        key={theme.value}
-                                        icon={
-                                            reader.theme === theme.value &&
-                                            "check"
-                                        }
-                                        color={theme.textColor}
-                                        value={theme.value}
-                                        style={[
-                                            {
-                                                backgroundColor:
-                                                    theme.backgroundColor,
-                                            },
-                                            styles.presetToggleButton,
-                                        ]}
-                                    />
-                                ))}
-                            </ToggleButton.Row>
-                        </Row>
+                        <ScrollView
+                            style={{ marginLeft: 16 }}
+                            horizontal={true}
+                        >
+                            <Row>
+                                <ToggleButton.Row
+                                    onValueChange={onValueChange}
+                                    value={reader.theme}
+                                >
+                                    {presetThemes.map((theme) => (
+                                        <ToggleButton
+                                            key={theme.value}
+                                            icon={
+                                                reader.theme === theme.value &&
+                                                "check"
+                                            }
+                                            color={theme.textColor}
+                                            value={theme.value}
+                                            style={[
+                                                {
+                                                    backgroundColor:
+                                                        theme.backgroundColor,
+                                                },
+                                                styles.presetToggleButton,
+                                            ]}
+                                        />
+                                    ))}
+                                </ToggleButton.Row>
+                            </Row>
+                        </ScrollView>
                     </Pressable>
                     <ListSubHeader theme={theme}>Reader</ListSubHeader>
                     <ListItem
