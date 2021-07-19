@@ -8,7 +8,6 @@ import {
     SET_AMOLED_MODE,
 } from "./settings.types";
 import {
-    amoledDarkTheme,
     lightTheme,
     darkTheme,
     midnightDuskTheme,
@@ -18,10 +17,10 @@ import {
     takoTheme,
     yinYangTheme,
     springBlossomTheme,
+    colorsAmoled,
 } from "../../theme/theme";
 
 const themes = {
-    0: amoledDarkTheme,
     1: lightTheme,
     2: darkTheme,
     3: midnightDuskTheme,
@@ -106,7 +105,7 @@ const settingsReducer = (state = initialState, action) => {
                 ...state,
                 theme: payload.val
                     ? {
-                          ...themes[0],
+                          ...colorsAmoled,
                           colorAccent: state.theme.colorAccent,
                           rippleColor: state.theme.rippleColor,
                           colorButtonText: state.theme.colorButtonText,

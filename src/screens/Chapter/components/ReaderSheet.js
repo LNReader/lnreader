@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, Dimensions, Pressable } from "react-native";
+import {
+    StyleSheet,
+    View,
+    Text,
+    Dimensions,
+    Pressable,
+    ScrollView,
+} from "react-native";
 
 import Slider from "@react-native-community/slider";
 import { ToggleButton, IconButton, Menu, Switch } from "react-native-paper";
@@ -31,13 +38,17 @@ const ReaderSheet = ({
         <Text style={styles.title}>{title}</Text>
     );
 
-    const textColor = {
-        1: "rgba(255,255,255,0.7)",
-        2: "#111111",
-        3: "#593100",
-        4: "#CCCCCC",
-        5: "#CCCCCC",
-    };
+    const presetThemes = [
+        { value: 2, backgroundColor: "#f5f5fa", textColor: "#111111" },
+        { value: 3, backgroundColor: "#F7DFC6", textColor: "#593100" },
+        { value: 6, backgroundColor: "#dce5e2", textColor: "#000000" },
+        { value: 4, backgroundColor: "#292832", textColor: "#CCCCCC" },
+        {
+            value: 1,
+            backgroundColor: "#000000",
+            textColor: "rgba(255,255,255,0.7)",
+        },
+    ];
 
     return (
         <Bottomsheet
@@ -91,88 +102,44 @@ const ReaderSheet = ({
                             paddingVertical: 8,
                         }}
                     >
-                        <ReaderSettingTitle title="Reader Theme" />
-                        <Row>
-                            <ToggleButton.Row
-                                onValueChange={(value) => {
-                                    dispatch(
-                                        setReaderSettings(
-                                            "theme",
-                                            value ?? reader.theme
-                                        )
-                                    );
-                                    dispatch(
-                                        setReaderSettings(
-                                            "textColor",
-                                            textColor[value] ?? reader.textColor
-                                        )
-                                    );
-                                }}
-                                value={reader.theme}
-                            >
-                                <ToggleButton
-                                    icon={reader.theme === 1 && "check"}
-                                    color="rgba(255,255,255,0.7)"
-                                    value={1}
-                                    style={{
-                                        backgroundColor: "#000000",
-                                        marginHorizontal: 10,
-                                        borderWidth: 0,
-                                        borderRadius: 50,
-                                        borderTopRightRadius: 50,
-                                        borderBottomRightRadius: 50,
-                                    }}
-                                />
-                                {/* <ToggleButton
-                                    icon={reader.theme === 5 && "check"}
-                                    color="#CCCCCC"
-                                    value={5}
-                                    style={{
-                                        backgroundColor: "#2B2C30",
-                                        marginHorizontal: 10,
-                                        borderWidth: 0,
-                                        borderRadius: 50,
-                                        borderTopRightRadius: 50,
-                                        borderBottomRightRadius: 50,
-                                    }}
-                                /> */}
-                                <ToggleButton
-                                    icon={reader.theme === 4 && "check"}
-                                    color="#CCCCCC"
-                                    value={4}
-                                    style={{
-                                        backgroundColor: "#292832",
-                                        marginHorizontal: 10,
-                                        borderWidth: 0,
-                                        borderRadius: 50,
-                                        borderTopRightRadius: 50,
-                                        borderBottomRightRadius: 50,
-                                    }}
-                                />
-                                <ToggleButton
-                                    icon={reader.theme === 2 && "check"}
-                                    color="#111111"
-                                    value={2}
-                                    style={{
-                                        backgroundColor: "#FFFFFF",
-                                        marginHorizontal: 10,
-                                        borderRadius: 50,
-                                    }}
-                                />
-                                <ToggleButton
-                                    icon={reader.theme === 3 && "check"}
-                                    color="#593100"
-                                    value={3}
-                                    style={{
-                                        backgroundColor: "#F7DFC6",
-                                        marginHorizontal: 10,
-                                        borderRadius: 50,
-                                        borderTopLeftRadius: 50,
-                                        borderBottomLeftRadius: 50,
-                                    }}
-                                />
-                            </ToggleButton.Row>
-                        </Row>
+                        <ReaderSettingTitle title="Color" />
+                        <View style={{ marginLeft: 16 }}>
+                            <ScrollView horizontal={true}>
+                                {presetThemes.map((item) => (
+                                    <ToggleButton
+                                        icon={
+                                            reader.theme === item.value &&
+                                            "check"
+                                        }
+                                        color={item.textColor}
+                                        value={item.value}
+                                        style={{
+                                            backgroundColor:
+                                                item.backgroundColor,
+                                            marginHorizontal: 10,
+                                            borderWidth: 0,
+                                            borderRadius: 50,
+                                            borderTopStartRadius: 50,
+                                            borderBottomStartRadius: 50,
+                                        }}
+                                        onPress={() => {
+                                            dispatch(
+                                                setReaderSettings(
+                                                    "theme",
+                                                    item.value
+                                                )
+                                            );
+                                            dispatch(
+                                                setReaderSettings(
+                                                    "textColor",
+                                                    item.textColor
+                                                )
+                                            );
+                                        }}
+                                    />
+                                ))}
+                            </ScrollView>
+                        </View>
                     </Row>
                     <Row
                         style={{
@@ -400,6 +367,7 @@ const ReaderSheet = ({
                                     style={{ backgroundColor: theme.menuColor }}
                                     titleStyle={{
                                         color: theme.textColorPrimary,
+                                        fontFamily: font.fontFamily,
                                     }}
                                 />
                             ))}

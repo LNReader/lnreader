@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { Appbar } from "../../components/Appbar";
 import ColorPickerModal from "../../components/ColorPickerModal";
 import { Row, ScreenContainer } from "../../components/Common";
-import { ListItem, ListSection, ListSubHeader } from "../../components/List";
+import { List } from "../../components/List";
 
 import { useReaderSettings, useTheme } from "../../hooks/reduxHooks";
 import { setReaderSettings } from "../../redux/settings/settings.actions";
@@ -124,8 +124,8 @@ const ReaderSettings = ({ navigation }) => {
                         sit amet.
                     </Text>
                 </View>
-                <ListSection>
-                    <ListSubHeader theme={theme}>Preset</ListSubHeader>
+                <List.Section>
+                    <List.SubHeader theme={theme}>Preset</List.SubHeader>
                     <Pressable
                         android_ripple={{ color: theme.rippleColor }}
                         style={styles.pressableListItem}
@@ -169,8 +169,9 @@ const ReaderSettings = ({ navigation }) => {
                             </Row>
                         </ScrollView>
                     </Pressable>
-                    <ListSubHeader theme={theme}>Reader</ListSubHeader>
-                    <ListItem
+                    <List.Divider theme={theme} />
+                    <List.SubHeader theme={theme}>Reader</List.SubHeader>
+                    <List.Item
                         title="Background Color"
                         description={readerBackground(
                             reader.theme
@@ -180,7 +181,7 @@ const ReaderSettings = ({ navigation }) => {
                         iconColor={readerBackground(reader.theme)}
                         right="circle"
                     />
-                    <ListItem
+                    <List.Item
                         title="Text Color"
                         description={
                             reader.textColor.toUpperCase() ||
@@ -193,7 +194,9 @@ const ReaderSettings = ({ navigation }) => {
                         }
                         right="circle"
                     />
-                    <ListSubHeader theme={theme}>Text</ListSubHeader>
+                    <List.Divider theme={theme} />
+
+                    <List.SubHeader theme={theme}>Text</List.SubHeader>
                     <Pressable
                         android_ripple={{ color: theme.rippleColor }}
                         style={styles.pressableListItem}
@@ -242,7 +245,7 @@ const ReaderSettings = ({ navigation }) => {
                             </ToggleButton.Row>
                         </Row>
                     </Pressable>
-                </ListSection>
+                </List.Section>
             </ScrollView>
             <ColorPickerModal
                 title="Reader background color"

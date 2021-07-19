@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 
 import { Appbar } from "../../components/Appbar";
 import { ScreenContainer } from "../../components/Common";
-import { ListItem, ListSection, ListSubHeader } from "../../components/List";
+import { List } from "../../components/List";
 
 import { useTheme } from "../../hooks/reduxHooks";
 
@@ -24,15 +24,15 @@ const AdvancedSettings = ({ navigation }) => {
     return (
         <ScreenContainer theme={theme}>
             <Appbar title="Advanced" onBackAction={() => navigation.goBack()} />
-            <ListSection>
-                <ListSubHeader theme={theme}>Data</ListSubHeader>
-                <ListItem
+            <List.Section>
+                <List.SubHeader theme={theme}>Data</List.SubHeader>
+                <List.Item
                     title="Clear database"
                     description="Delete history for novels not in your library"
                     onPress={showClearDatabaseDialog}
                     theme={theme}
                 />
-            </ListSection>
+            </List.Section>
             <Portal>
                 <Dialog
                     visible={clearDatabaseDialog}

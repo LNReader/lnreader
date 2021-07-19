@@ -1,5 +1,6 @@
 import {
     AccentColors,
+    DividerColors,
     PrimaryColors,
     RippleColors,
     StatusBarStyle,
@@ -18,7 +19,7 @@ export const lightTheme = {
     rippleColor: RippleColors.default,
     searchBarColor: "#FFFFFF",
     menuColor: "#FFFFFF",
-    dividerColor: "rgba(0,0,0,0.1)",
+    dividerColor: DividerColors.LIGHT,
     filterColor: "#FFC107",
     colorDisabled: "rgba(220,220,220,255)",
     colorButtonText: "#FFFFFF",
@@ -38,29 +39,10 @@ export const darkTheme = {
     searchBarColor: "#303135",
     menuColor: "#242529",
     filterColor: "#FFEB3B",
-    dividerColor: "rgba(255,255,255,0.1)",
+    dividerColor: DividerColors.DARK,
     colorDisabled: "rgba(57,57,57,255)",
     colorButtonText: "#FFFFFF",
     statusBar: StatusBarStyle.LIGHT,
-};
-
-/**
- * Amoled Dark
- */
-export const amoledDarkTheme = {
-    id: 0,
-    name: "AMOLED Dark",
-    ...PrimaryColors.amoled,
-    colorAccent: AccentColors.defaultDark,
-    rippleColor: RippleColors.default,
-    searchBarColor: "#1F1F1F",
-    menuColor: "#242529",
-    filterColor: "#FFEB3B",
-    dividerColor: "rgba(255,255,255,0.15)",
-    colorDisabled: "rgba(33,33,33,255)",
-    colorButtonText: "#FFFFFF",
-    statusBar: StatusBarStyle.LIGHT,
-    ...TextColors.dark,
 };
 
 /**
@@ -75,7 +57,7 @@ export const midnightDuskTheme = {
     searchBarColor: "#201F27",
     menuColor: "#201F27",
     filterColor: "#FFEB3B",
-    dividerColor: "rgba(255,255,255,0.1)",
+    dividerColor: DividerColors.DARK,
     colorDisabled: "rgba(57,57,57,255)",
     colorButtonText: "#FFFFFF",
     statusBar: StatusBarStyle.LIGHT,
@@ -96,29 +78,9 @@ export const greenAppleTheme = {
     searchBarColor: "#303135",
     menuColor: "#242529",
     filterColor: "#FFEB3B",
-    dividerColor: "rgba(255,255,255,0.1)",
+    dividerColor: DividerColors.DARK,
     colorDisabled: "rgba(57,57,57,255)",
     colorButtonText: "#000000",
-    statusBar: StatusBarStyle.LIGHT,
-};
-
-/**
- * Hot Pink Theme
- */
-
-export const hotPinkTheme = {
-    id: 6,
-    name: "AMOLED Hot Pink",
-    ...PrimaryColors.amoled,
-    ...TextColors.dark,
-    colorAccent: AccentColors.hotPink,
-    rippleColor: RippleColors.hotPink,
-    searchBarColor: "#1F1F1F",
-    menuColor: "#242529",
-    filterColor: "#FFEB3B",
-    dividerColor: "rgba(255,255,255,0.15)",
-    colorDisabled: "rgba(33,33,33,255)",
-    colorButtonText: "#FFFFFF",
     statusBar: StatusBarStyle.LIGHT,
 };
 
@@ -135,7 +97,7 @@ export const strawberryDaiquiri = {
     searchBarColor: "#303135",
     menuColor: "#242529",
     filterColor: "#FFEB3B",
-    dividerColor: "rgba(255,255,255,0.1)",
+    dividerColor: DividerColors.DARK,
     colorDisabled: "rgba(57,57,57,255)",
     colorButtonText: "#FFFFFF",
     statusBar: StatusBarStyle.LIGHT,
@@ -152,7 +114,7 @@ export const irisBlueTheme = {
     searchBarColor: "#393e46",
     menuColor: "#393e46",
     filterColor: "#FFEB3B",
-    dividerColor: "rgba(255,255,255,0.1)",
+    dividerColor: DividerColors.DARK,
     colorDisabled: "#393e46",
     colorButtonText: "#16151D",
     statusBar: StatusBarStyle.LIGHT,
@@ -168,12 +130,12 @@ export const takoTheme = {
     ...PrimaryColors.tako,
     colorAccent: AccentColors.tako,
     rippleColor: RippleColors.tako,
-    searchBarColor: "#484861",
+    searchBarColor: "#2A2A3C",
     menuColor: "#484861",
     filterColor: "#FFEB3B",
-    dividerColor: "rgba(255,255,255,0.1)",
+    dividerColor: DividerColors.DARK,
     colorDisabled: "#484861",
-    colorButtonText: "#2C2C3B",
+    colorButtonText: "#000000",
     statusBar: StatusBarStyle.LIGHT,
     ...TextColors.dark,
 };
@@ -191,7 +153,7 @@ export const yinYangTheme = {
     searchBarColor: "#484861",
     menuColor: "#484861",
     filterColor: "#FFEB3B",
-    dividerColor: "rgba(255,255,255,0.1)",
+    dividerColor: DividerColors.DARK,
     colorDisabled: "#484861",
     colorButtonText: "#000000",
     statusBar: StatusBarStyle.LIGHT,
@@ -210,9 +172,21 @@ export const springBlossomTheme = {
     rippleColor: RippleColors.springBlossom,
     searchBarColor: PrimaryColors.springBlossom.colorPrimary,
     menuColor: "#FFFFFF",
-    dividerColor: "rgba(0,0,0,0.1)",
+    dividerColor: DividerColors.LIGHT,
     filterColor: "#FFC107",
     colorDisabled: PrimaryColors.springBlossom.colorPrimary,
     colorButtonText: "#FFFFFF",
     statusBar: StatusBarStyle.DARK,
+};
+
+export const colorsAmoled = {
+    ...PrimaryColors.amoled,
+    ...TextColors.dark,
+    statusBar: StatusBarStyle.LIGHT,
+    searchBarColor: "#1F1F1F",
+    menuColor: "#242529",
+    filterColor: "#FFEB3B",
+    dividerColor: "rgba(255,255,255,0.15)",
+    colorDisabled: "rgba(33,33,33,255)",
+    colorButtonText: "#FFFFFF",
 };

@@ -1,19 +1,19 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 
-import { List, Divider as PaperDivider } from "react-native-paper";
+import { List as PaperList, Divider as PaperDivider } from "react-native-paper";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 const ListSection = ({ children }) => (
-    <List.Section style={styles.listSection}>{children}</List.Section>
+    <PaperList.Section style={styles.listSection}>{children}</PaperList.Section>
 );
 
 const ListSubHeader = ({ children, theme }) => (
-    <List.Subheader
+    <PaperList.Subheader
         style={[styles.listSubHeader, { color: theme.colorAccent }]}
     >
         {children}
-    </List.Subheader>
+    </PaperList.Subheader>
 );
 
 const ListItem = ({
@@ -27,7 +27,7 @@ const ListItem = ({
     titleStyle,
     style,
 }) => (
-    <List.Item
+    <PaperList.Item
         title={title}
         style={style}
         titleStyle={[{ color: theme.textColorPrimary }, titleStyle]}
@@ -37,7 +37,7 @@ const ListItem = ({
         left={() => (
             <View style={{ justifyContent: "center" }}>
                 {icon && (
-                    <List.Icon
+                    <PaperList.Icon
                         color={theme.colorAccent}
                         icon={icon}
                         style={{
@@ -67,13 +67,13 @@ const Divider = ({ theme }) => (
 );
 
 const InfoItem = ({ title, icon, theme }) => (
-    <List.Item
+    <PaperList.Item
         title={title}
         titleStyle={{ color: theme.textColorSecondary, fontSize: 14 }}
         titleNumberOfLines={5}
         left={() =>
             icon && (
-                <List.Icon
+                <PaperList.Icon
                     color={theme.textColorSecondary}
                     icon={icon}
                     style={{ marginVertical: 0 }}
@@ -83,7 +83,22 @@ const InfoItem = ({ title, icon, theme }) => (
     />
 );
 
-export { ListSection, ListSubHeader, ListItem, Divider, InfoItem };
+const Icon = ({ icon, theme }) => (
+    <PaperList.Icon
+        color={theme.colorAccent}
+        icon={icon}
+        style={{ margin: 0 }}
+    />
+);
+
+export const List = {
+    Section: ListSection,
+    SubHeader: ListSubHeader,
+    Item: ListItem,
+    Divider,
+    InfoItem,
+    Icon,
+};
 
 const styles = StyleSheet.create({
     listSection: {

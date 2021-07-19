@@ -1,13 +1,15 @@
 import React from "react";
 import { StyleSheet, View, Image, Pressable, Text } from "react-native";
-import { List, Switch } from "react-native-paper";
+import { Switch } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
 
 import { Appbar } from "../../components/Appbar";
-import { Divider, ListItem, ListSection } from "../../components/List";
+import { ScreenContainer } from "../../components/Common";
+import { List } from "../../components/List";
 
 import { useSettings, useTheme } from "../../hooks/reduxHooks";
 import { setAppSettings } from "../../redux/settings/settings.actions";
+import { MoreHeader } from "./components/MoreHeader";
 
 const MoreScreen = ({ navigation }) => {
     const theme = useTheme();
@@ -20,119 +22,91 @@ const MoreScreen = ({ navigation }) => {
     };
 
     return (
-        <>
-            <Appbar title="More" style={{ elevation: 0 }} />
-            <View style={{ flex: 1, backgroundColor: theme.colorPrimaryDark }}>
-                <View style={{ overflow: "hidden", paddingBottom: 4 }}>
-                    <View
-                        style={{
-                            paddingTop: 10,
-                            paddingBottom: 25,
-                            alignItems: "center",
-                            backgroundColor: theme.colorPrimary,
-                            elevation: 4,
-                        }}
-                    >
-                        <Image
-                            source={require("../../../assets/logo.png")}
-                            style={{
-                                height: 80,
-                                width: 80,
-                                tintColor: theme.textColorPrimary,
-                            }}
-                        />
-                    </View>
-                </View>
-                <ListSection>
-                    <Pressable
-                        android_ripple={{ color: theme.rippleColor }}
-                        style={{
-                            paddingHorizontal: 16,
-                            paddingVertical: 12,
-                            flexDirection: "row",
-                            justifyContent: "space-between",
-                        }}
-                        onPress={enableIncognitoMode}
-                    >
-                        <View style={{ flexDirection: "row" }}>
-                            <List.Icon
-                                color={theme.colorAccent}
-                                icon="incognito"
-                                style={{ margin: 0 }}
-                            />
-                            <View style={{ marginLeft: 16 }}>
-                                <Text
-                                    style={{
-                                        color: theme.textColorPrimary,
-                                        fontSize: 16,
-                                    }}
-                                >
-                                    Incognito Mode
-                                </Text>
-                                <Text
-                                    style={{ color: theme.textColorSecondary }}
-                                >
-                                    Pauses reading history
-                                </Text>
-                            </View>
+        <ScreenContainer theme={theme}>
+            <MoreHeader title="More" navigation={navigation} theme={theme} />
+            <List.Section>
+                <Pressable
+                    android_ripple={{ color: theme.rippleColor }}
+                    style={{
+                        paddingHorizontal: 16,
+                        paddingVertical: 12,
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                    }}
+                    onPress={enableIncognitoMode}
+                >
+                    <View style={{ flexDirection: "row" }}>
+                        <List.Icon theme={theme} icon="incognito" />
+                        <View style={{ marginLeft: 16 }}>
+                            <Text
+                                style={{
+                                    color: theme.textColorPrimary,
+                                    fontSize: 16,
+                                }}
+                            >
+                                Incognito Mode
+                            </Text>
+                            <Text style={{ color: theme.textColorSecondary }}>
+                                Pauses reading history
+                            </Text>
                         </View>
-                        <Switch
-                            value={incognitoMode}
-                            onValueChange={enableIncognitoMode}
-                            color={theme.colorAccent}
-                            style={{ marginRight: 8 }}
-                        />
-                    </Pressable>
+                    </View>
+                    <Switch
+                        value={incognitoMode}
+                        onValueChange={enableIncognitoMode}
+                        color={theme.colorAccent}
+                        style={{ marginRight: 8 }}
+                    />
+                </Pressable>
+                <List.Divider theme={theme} />
+                <List.Item
+                    title="Download queue"
+                    description={
+                        downloadQueue.length > 0 &&
+                        downloadQueue.length + " remaining"
+                    }
+                    icon="progress-download"
+                    onPress={() =>
+                        navigation.navigate("MoreStack", {
+                            screen: "DownloadQueue",
+                        })
+                    }
+                    theme={theme}
+                />
+                <List.Item
+                    title="Downloads"
+                    icon="folder-download"
+                    onPress={() =>
+                        navigation.navigate("MoreStack", {
+                            screen: "Downloads",
+                        })
+                    }
+                    theme={theme}
+                />
+                <List.Divider theme={theme} />
+                <List.Item
+                    title="Settings"
+                    icon="cog-outline"
+                    onPress={() =>
+                        navigation.navigate("MoreStack", {
+                            screen: "SettingsStack",
+                        })
+                    }
+                    theme={theme}
+                />
 
-                    <ListItem
-                        title="Download queue"
-                        description={
-                            downloadQueue.length > 0 &&
-                            downloadQueue.length + " remaining"
-                        }
-                        icon="progress-download"
-                        onPress={() =>
-                            navigation.navigate("MoreStack", {
-                                screen: "DownloadQueue",
-                            })
-                        }
-                        theme={theme}
-                    />
-                    <ListItem
-                        title="Downloads"
-                        icon="folder-download"
-                        onPress={() =>
-                            navigation.navigate("MoreStack", {
-                                screen: "Downloads",
-                            })
-                        }
-                        theme={theme}
-                    />
-
-                    <ListItem
-                        title="Settings"
-                        icon="cog-outline"
-                        onPress={() =>
-                            navigation.navigate("MoreStack", {
-                                screen: "SettingsStack",
-                            })
-                        }
-                        theme={theme}
-                    />
-
-                    <ListItem
-                        title="About"
-                        icon="information-outline"
-                        onPress={() =>
-                            navigation.navigate("MoreStack", {
-                                screen: "About",
-                            })
-                        }
-                        theme={theme}
-                    />
-                </ListSection>
-            </View>
-        </>
+                <List.Item
+                    title="About"
+                    icon="information-outline"
+                    onPress={() =>
+                        navigation.navigate("MoreStack", {
+                            screen: "About",
+                        })
+                    }
+                    theme={theme}
+                />
+            </List.Section>
+        </ScreenContainer>
     );
 };
 

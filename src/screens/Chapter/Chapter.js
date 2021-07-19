@@ -422,7 +422,6 @@ const styles = StyleSheet.create({
         textAlign: "center",
         textAlignVertical: "center",
         alignSelf: "center",
-        fontFamily: "noto-sans",
         fontWeight: "bold",
         zIndex: 1,
     },

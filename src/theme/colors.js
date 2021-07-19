@@ -63,13 +63,18 @@ const PrimaryColors = {
         colorPrimaryDark: "#222831",
     },
     tako: {
-        colorPrimary: "#484861",
-        colorPrimaryDark: "#2C2C3B",
+        colorPrimary: "#2A2A3C",
+        colorPrimaryDark: "#21212E",
     },
     springBlossom: {
         colorPrimary: "#efe3f3",
         colorPrimaryDark: "#f7f4f8",
     },
+};
+
+const DividerColors = {
+    LIGHT: "rgba(0,0,0,0.12)",
+    DARK: "rgba(255,255,255,0.12)",
 };
 
 export {
@@ -78,4 +83,5 @@ export {
     StatusBarStyle,
     TextColors,
     PrimaryColors,
+    DividerColors,
 };

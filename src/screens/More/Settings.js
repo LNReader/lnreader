@@ -2,7 +2,7 @@ import React from "react";
 import { View } from "react-native";
 
 import { Appbar } from "../../components/Appbar";
-import { ListItem } from "../../components/List";
+import { List } from "../../components/List";
 
 import { useTheme } from "../../hooks/reduxHooks";
 
@@ -18,7 +18,7 @@ const SettingsScreen = ({ navigation }) => {
                     backgroundColor: theme.colorPrimaryDark,
                 }}
             >
-                <ListItem
+                <List.Item
                     title="General"
                     icon="tune"
                     onPress={() =>
@@ -28,7 +28,7 @@ const SettingsScreen = ({ navigation }) => {
                     }
                     theme={theme}
                 />
-                <ListItem
+                <List.Item
                     title="Reader"
                     icon="book-open-outline"
                     onPress={() =>
@@ -38,7 +38,7 @@ const SettingsScreen = ({ navigation }) => {
                     }
                     theme={theme}
                 />
-                <ListItem
+                <List.Item
                     title="Tracking"
                     icon="sync"
                     onPress={() =>
@@ -48,7 +48,7 @@ const SettingsScreen = ({ navigation }) => {
                     }
                     theme={theme}
                 />
-                <ListItem
+                <List.Item
                     title="Backup"
                     icon="cloud-upload-outline"
                     onPress={() =>
@@ -58,7 +58,7 @@ const SettingsScreen = ({ navigation }) => {
                     }
                     theme={theme}
                 />
-                <ListItem
+                <List.Item
                     title="Advanced"
                     icon="code-tags"
                     onPress={() =>

@@ -2,12 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { Appbar } from "../../components/Appbar";
-import {
-    Divider,
-    ListItem,
-    ListSection,
-    ListSubHeader,
-} from "../../components/List";
+import { List } from "../../components/List";
 import { ScreenContainer } from "../../components/Common";
 
 import { useSettings, useTheme } from "../../hooks/reduxHooks";
@@ -95,22 +90,22 @@ const GenralSettings = ({ navigation }) => {
         <ScreenContainer theme={theme}>
             <Appbar title="General" onBackAction={navigation.goBack} />
             <ScrollView>
-                <ListSection>
-                    <ListSubHeader theme={theme}>Display</ListSubHeader>
-                    <ListItem
+                <List.Section>
+                    <List.SubHeader theme={theme}>Display</List.SubHeader>
+                    <List.Item
                         title="Display Mode"
                         description={displayModeLabel(displayMode)}
                         onPress={showDisplayModal}
                         theme={theme}
                     />
-                    <ListItem
+                    <List.Item
                         title="Items per row in library"
                         description={`${novelsPerRow} items per row`}
                         onPress={showGridSizeModal}
                         theme={theme}
                     />
-                    <Divider theme={theme} />
-                    <ListSubHeader theme={theme}>Library</ListSubHeader>
+                    <List.Divider theme={theme} />
+                    <List.SubHeader theme={theme}>Library</List.SubHeader>
                     <SwitchSetting
                         label="Update library on launch"
                         value={updateLibraryOnLaunch}
@@ -124,7 +119,8 @@ const GenralSettings = ({ navigation }) => {
                         }
                         theme={theme}
                     />
-                    <ListSubHeader theme={theme}>Auto-download</ListSubHeader>
+                    <List.Divider theme={theme} />
+                    <List.SubHeader theme={theme}>Auto-download</List.SubHeader>
                     <SwitchSetting
                         label="Download new chapters"
                         value={downloadNewChapters}
@@ -138,14 +134,16 @@ const GenralSettings = ({ navigation }) => {
                         }
                         theme={theme}
                     />
-                    <ListSubHeader theme={theme}>Theme</ListSubHeader>
-                    <ListItem
+                    <List.Divider theme={theme} />
+
+                    <List.SubHeader theme={theme}>Theme</List.SubHeader>
+                    <List.Item
                         title="Theme"
                         description={theme.name}
                         onPress={showthemeModal}
                         theme={theme}
                     />
-                    <ListItem
+                    <List.Item
                         title="Accent Color"
                         description={theme.colorAccent.toUpperCase()}
                         onPress={showAccentColorModal}
@@ -174,7 +172,7 @@ const GenralSettings = ({ navigation }) => {
                             theme={theme}
                         />
                     )}
-                </ListSection>
+                </List.Section>
             </ScrollView>
             <DisplayModeModal
                 displayMode={displayMode}

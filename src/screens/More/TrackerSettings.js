@@ -11,12 +11,7 @@ import {
 import { Appbar } from "../../components/Appbar";
 
 import { useSelector, useDispatch } from "react-redux";
-import {
-    Divider,
-    ListItem,
-    ListSection,
-    ListSubHeader,
-} from "../../components/List";
+import { List } from "../../components/List";
 import { removeTracker, setTracker } from "../../redux/tracker/tracker.actions";
 
 const TrackerScreen = ({ navigation }) => {
@@ -39,9 +34,9 @@ const TrackerScreen = ({ navigation }) => {
                     paddingVertical: 8,
                 }}
             >
-                <ListSection>
-                    <ListSubHeader theme={theme}>Services</ListSubHeader>
-                    <ListItem
+                <List.Section>
+                    <List.SubHeader theme={theme}>Services</List.SubHeader>
+                    <List.Item
                         title="MyAnimeList"
                         onPress={async () => {
                             if (tracker) {
@@ -82,10 +77,10 @@ const TrackerScreen = ({ navigation }) => {
                     {tracker && tracker.expires_in < new Date(Date.now()) && (
                         <>
                             <Divider theme={theme} />
-                            <ListSubHeader theme={theme}>
+                            <List.SubHeader theme={theme}>
                                 Settings
-                            </ListSubHeader>
-                            <ListItem
+                            </List.SubHeader>
+                            <List.Item
                                 title="Revalidate MyAnimeList"
                                 onPress={() => {
                                     const res = malTokenWatcher(tracker);
@@ -95,7 +90,7 @@ const TrackerScreen = ({ navigation }) => {
                             />
                         </>
                     )}
-                </ListSection>
+                </List.Section>
 
                 <Portal>
                     <Modal

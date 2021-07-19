@@ -2,12 +2,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 
 import { Appbar } from "../../components/Appbar";
-import {
-    InfoItem,
-    ListItem,
-    ListSection,
-    ListSubHeader,
-} from "../../components/List";
+import { List } from "../../components/List";
 import { ScreenContainer } from "../../components/Common";
 
 import { useTheme } from "../../hooks/reduxHooks";
@@ -25,27 +20,27 @@ const BackupSettings = ({ navigation }) => {
                     title="Backup"
                     onBackAction={() => navigation.goBack()}
                 />
-                <ListSection>
-                    <ListSubHeader theme={theme}>Backup</ListSubHeader>
-                    <ListItem
+                <List.Section>
+                    <List.SubHeader theme={theme}>Backup</List.SubHeader>
+                    <List.Item
                         title="Create backup"
                         description="Can be used to restore current library"
                         onPress={createBackup}
                         theme={theme}
                     />
-                    <ListItem
+                    <List.Item
                         title="Restore backup"
                         description="Restore library from backup file"
                         onPress={() => dispatch(restoreLibraryAction())}
                         theme={theme}
                     />
-                    <InfoItem
+                    <List.InfoItem
                         title="Create backup may not work on devices with Android 9 or lower."
                         icon="information-outline"
                         description="Restore library from backup file"
                         theme={theme}
                     />
-                </ListSection>
+                </List.Section>
             </ScreenContainer>
         </>
     );

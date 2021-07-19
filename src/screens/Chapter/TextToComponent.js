@@ -1,8 +1,7 @@
-import React, { memo, useCallback, useEffect } from "react";
+import React, { memo } from "react";
 import { Text, View } from "react-native";
 
 import FitImage from "react-native-fit-image";
-import { showToast } from "../../hooks/showToast";
 
 const getHeadingSize = (size) => {
     const headings = {
@@ -20,13 +19,7 @@ const getHeadingSize = (size) => {
 
 const Header = ({ size, text, textStyle, textSelectable, textSize }) => (
     <Text
-        style={[
-            textStyle,
-            {
-                fontSize: textSize + getHeadingSize(size),
-                fontWeight: "bold",
-            },
-        ]}
+        style={[textStyle, { fontSize: textSize + getHeadingSize(size) }]}
         selectable={textSelectable}
     >
         {text}
