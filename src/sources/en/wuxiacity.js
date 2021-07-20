@@ -125,17 +125,12 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     let chapterText = $(".chapter-content").html();
     chapterText = htmlToText(chapterText);
 
-    let nextChapter = null;
-    let prevChapter = null;
-
     const chapter = {
         sourceId,
         novelUrl,
         chapterUrl,
         chapterName,
         chapterText,
-        nextChapter,
-        prevChapter,
     };
 
     return chapter;

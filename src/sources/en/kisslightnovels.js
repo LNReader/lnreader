@@ -126,26 +126,9 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     $("#snippet-box").remove();
 
     const chapterName = $("div.text-left > h4").text();
+
     let chapterText = $(".reading-content").html();
     chapterText = htmlToText(chapterText);
-
-    let nextChapter = null;
-
-    if ($(".nav-next").length) {
-        nextChapter = $(".nav-next")
-            .find("a")
-            .attr("href")
-            .replace(baseUrl + "novel/" + novelUrl + "/", "");
-    }
-
-    let prevChapter = null;
-
-    if ($(".nav-previous").length) {
-        prevChapter = $(".nav-previous")
-            .find("a")
-            .attr("href")
-            .replace(baseUrl + "novel/" + novelUrl + "/", "");
-    }
 
     const chapter = {
         sourceId: 11,
@@ -153,8 +136,6 @@ const parseChapter = async (novelUrl, chapterUrl) => {
         chapterUrl,
         chapterName,
         chapterText,
-        nextChapter,
-        prevChapter,
     };
 
     return chapter;

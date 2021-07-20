@@ -97,9 +97,6 @@ const parseChapter = async (novUrl, chapUrl) => {
 
     let chapterText = htmlToText(item.chp_content);
 
-    let nextChapter = null;
-    let prevChapter = null;
-
     novelUrl = novelId + "/" + novelUrl + "/";
     chapterUrl = item.id + "/" + item.chp_name;
 
@@ -109,8 +106,6 @@ const parseChapter = async (novUrl, chapUrl) => {
         chapterUrl,
         chapterName,
         chapterText,
-        nextChapter,
-        prevChapter,
     };
 
     return chapter;

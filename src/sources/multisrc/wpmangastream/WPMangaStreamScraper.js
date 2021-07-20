@@ -121,20 +121,13 @@ class WPMangaStreamScraper {
             chapterText = htmlToText(chapterText);
         }
 
-        let nextChapter = null;
-        let prevChapter = null;
-
         const chapter = {
             sourceId,
             novelUrl,
             chapterUrl,
             chapterName,
             chapterText,
-            nextChapter,
-            prevChapter,
         };
-
-        // console.log(chapter);
 
         return chapter;
     }

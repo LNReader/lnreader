@@ -249,17 +249,12 @@ const parseChapter = async (novelUrl, chapterUrl) => {
         chapterText = `Chapter not available (Error: ${error.message}).\n\nReport if it's available in webview.`;
     }
 
-    let nextChapter = null;
-    let prevChapter = null;
-
     const chapter = {
         sourceId,
         novelUrl,
         chapterUrl,
         chapterName,
         chapterText,
-        nextChapter,
-        prevChapter,
     };
 
     return chapter;

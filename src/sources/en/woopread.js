@@ -137,32 +137,12 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     chapterText = htmlToText(chapterText);
     chapterText = chapterText.replace(/(?<=[[])[\n](?=[h])/g, "");
 
-    let nextChapter = null;
-
-    if ($(".nav-next").length) {
-        nextChapter = $(".nav-next")
-            .find("a")
-            .attr("href")
-            .replace(baseUrl + "series/" + novelUrl + "/", "");
-    }
-
-    let prevChapter = null;
-
-    if ($(".nav-previous").length) {
-        prevChapter = $(".nav-previous")
-            .find("a")
-            .attr("href")
-            .replace(baseUrl + "series/" + novelUrl + "/", "");
-    }
-
     const chapter = {
         sourceId: 21,
         novelUrl,
         chapterUrl,
         chapterName,
         chapterText,
-        nextChapter,
-        prevChapter,
     };
 
     return chapter;

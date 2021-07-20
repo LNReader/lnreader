@@ -1,11 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { Dimensions, Pressable, StyleSheet, Text, View } from "react-native";
+import React from "react";
+import { Pressable, StyleSheet, View } from "react-native";
 import { IconButton } from "react-native-paper";
-import {
-    getNextChapterFromDB,
-    getPrevChapterFromDB,
-} from "../../../database/queries/ChapterQueries";
-import { useSettings } from "../../../hooks/reduxHooks";
+
 import { showToast } from "../../../hooks/showToast";
 import { setAppSettings } from "../../../redux/settings/settings.actions";
 

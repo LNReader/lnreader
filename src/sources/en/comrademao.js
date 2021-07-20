@@ -154,21 +154,12 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     let chapterText = $(".txtnav").html();
     chapterText = htmlToText(chapterText);
 
-    let nextChapter = null;
-
-    let prevChapter = null;
-
-    novelUrl = novelUrl;
-    chapterUrl = chapterUrl;
-
     const chapter = {
         sourceId,
         novelUrl,
         chapterUrl,
         chapterName,
         chapterText,
-        nextChapter,
-        prevChapter,
     };
 
     return chapter;

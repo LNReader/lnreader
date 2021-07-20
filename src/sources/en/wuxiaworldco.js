@@ -94,30 +94,12 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     let chapterText = $("div.chapter-entity").html();
     chapterText = htmlToText(chapterText);
 
-    let nextChapter = null;
-
-    if ($("a.next").length) {
-        nextChapter = $("a.next")
-            .attr("href")
-            .replace("/" + novelUrl + "/", "");
-    }
-
-    let prevChapter = null;
-
-    if ($("a.prev").length) {
-        prevChapter = $("a.prev")
-            .attr("href")
-            .replace("/" + novelUrl + "/", "");
-    }
-
     const chapter = {
         sourceId: 16,
         novelUrl,
         chapterUrl,
         chapterName,
         chapterText,
-        nextChapter,
-        prevChapter,
     };
 
     return chapter;

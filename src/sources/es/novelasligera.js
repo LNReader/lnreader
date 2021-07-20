@@ -118,22 +118,6 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 
     let chapterName = $("h1.entry-title").text();
 
-    let nextChapter = null;
-
-    // if ($(".wp-post-navigation-next").length > 0) {
-    //     nextChapter =
-    //         $(".wp-post-navigation-next").find("a").attr("href") || null;
-    //     nextChapter && nextChapter.replace(baseUrl + "novela/", "");
-    // }
-
-    let prevChapter = null;
-
-    // if ($(".wp-post-navigation-pre").length > 0) {
-    //     prevChapter =
-    //         $(".wp-post-navigation-pre").find("a").attr("href") || null;
-    //     prevChapter && prevChapter.replace(baseUrl + "novela/", "");
-    // }
-
     $(".osny-nightmode.osny-nightmode--left").remove();
     $(".code-block.code-block-1").remove();
     $(".adsb30").remove();
@@ -149,8 +133,6 @@ const parseChapter = async (novelUrl, chapterUrl) => {
         chapterUrl,
         chapterName,
         chapterText,
-        nextChapter,
-        prevChapter,
     };
 
     return chapter;

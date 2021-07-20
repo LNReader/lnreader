@@ -146,14 +146,6 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 
     chapterText = chapterText.join("\n");
 
-    const prevChapter = $(".pre").attr("href")
-        ? $(".pre").attr("href").split("/").pop()
-        : null;
-
-    const nextChapter = $(".next_sesction > a").attr("href")
-        ? $(".next_sesction > a").attr("href").split("/").pop()
-        : null;
-
     novelUrl += "/";
     chapterUrl += "/";
 
@@ -163,8 +155,6 @@ const parseChapter = async (novelUrl, chapterUrl) => {
         chapterUrl,
         chapterName,
         chapterText,
-        nextChapter,
-        prevChapter,
     };
 
     return chapter;

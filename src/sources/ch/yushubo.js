@@ -122,17 +122,12 @@ const parseChapter = async (novelUrl, chapterUrl) => {
         chapterText += `${$(this).text()}\n`;
     });
 
-    const nextChapter = null;
-    const prevChapter = null;
-
     const chapter = {
         sourceId: 52,
         novelUrl,
         chapterUrl,
         chapterName,
         chapterText,
-        nextChapter,
-        prevChapter,
     };
 
     return chapter;

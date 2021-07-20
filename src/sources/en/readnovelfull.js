@@ -133,28 +133,12 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     let chapterText = $("#chr-content").html();
     chapterText = htmlToText(chapterText);
 
-    let nextChapter = null;
-    if ($("a#next_chap").attr("href")) {
-        nextChapter = $("a#next_chap")
-            .attr("href")
-            .replace(`/${novelUrl}/`, "");
-    }
-
-    let prevChapter = null;
-    if ($("a#prev_chap").attr("href")) {
-        prevChapter = $("a#prev_chap")
-            .attr("href")
-            .replace(`/${novelUrl}/`, "");
-    }
-
     const chapter = {
         sourceId: 4,
         novelUrl,
         chapterUrl,
         chapterName,
         chapterText,
-        nextChapter,
-        prevChapter,
     };
 
     return chapter;

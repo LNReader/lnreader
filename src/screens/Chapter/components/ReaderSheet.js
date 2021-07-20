@@ -105,8 +105,9 @@ const ReaderSheet = ({
                         <ReaderSettingTitle title="Color" />
                         <View style={{ marginLeft: 16 }}>
                             <ScrollView horizontal={true}>
-                                {presetThemes.map((item) => (
+                                {presetThemes.map((item, index) => (
                                     <ToggleButton
+                                        key={index}
                                         icon={
                                             reader.theme === item.value &&
                                             "check"

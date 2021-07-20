@@ -114,24 +114,6 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     let chapterText = $(".post-content").html();
     chapterText = htmlToText(chapterText);
 
-    let nextChapter = null;
-
-    // if ($(".nav-next").length) {
-    //     nextChapter = $(".nav-next")
-    //         .find("a")
-    //         .attr("href")
-    //         .replace(baseUrl + "vipnovel/" + novelUrl + "/", "");
-    // }
-
-    let prevChapter = null;
-
-    // if ($(".nav-previous").length) {
-    //     prevChapter = $(".nav-previous")
-    //         .find("a")
-    //         .attr("href")
-    //         .replace(baseUrl + "vipnovel/" + novelUrl + "/", "");
-    // }
-
     novelUrl = novelUrl + "/";
     chapterUrl = chapterUrl;
 
@@ -141,8 +123,6 @@ const parseChapter = async (novelUrl, chapterUrl) => {
         chapterUrl,
         chapterName,
         chapterText,
-        nextChapter,
-        prevChapter,
     };
 
     return chapter;

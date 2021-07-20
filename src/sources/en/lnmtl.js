@@ -143,17 +143,12 @@ const parseChapter = async (novelUrl, chapterUrl) => {
         "\n\n" +
         htmlToText(chapterText, { removeLineBreaks: false });
 
-    let nextChapter = null;
-    let prevChapter = null;
-
     const chapter = {
         sourceId: 37,
         novelUrl,
         chapterUrl,
         chapterName,
         chapterText,
-        nextChapter,
-        prevChapter,
     };
 
     return chapter;

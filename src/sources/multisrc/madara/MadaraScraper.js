@@ -157,17 +157,12 @@ class MadaraScraper {
         let chapterText = $(".text-left").html();
         chapterText = htmlToText(chapterText);
 
-        let nextChapter = null;
-        let prevChapter = null;
-
         const chapter = {
             sourceId,
             novelUrl,
             chapterUrl,
             chapterName,
             chapterText,
-            nextChapter,
-            prevChapter,
         };
 
         return chapter;

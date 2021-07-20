@@ -175,8 +175,6 @@ let parseChapter = async (novelUrl, chapterUrl) => {
         chapterUrl,
         chapterName: "",
         chapterText,
-        nextChapter: null,
-        prevChapter: null,
     };
 
     if (chapterUrl === "oneshot")
@@ -192,17 +190,6 @@ let parseChapter = async (novelUrl, chapterUrl) => {
         const chapterButtons = cheerioQuery(
             "#novel_contents .novel_bn"
         ).first();
-        if (chapterButtons.length === 1) {
-            const button = chapterButtons.find("a");
-            if (button.text().match(/次/))
-                chapter.nextChapter = getLastPartOfUrl(button.attr("href"));
-            else chapter.prevChapter = getLastPartOfUrl(button.attr("href"));
-        } else {
-            const firstButton = chapterButtons.find("a").first();
-            const lastButton = chapterButtons.find("a").last();
-            chapter.prevChapter = getLastPartOfUrl(firstButton.attribs.href);
-            chapter.nextChapter = getLastPartOfUrl(lastButton.attribs.href);
-        }
     }
 
     return chapter;

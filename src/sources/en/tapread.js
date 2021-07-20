@@ -123,17 +123,12 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     const chapterName = body.result.chapterName;
     const chapterText = htmlToText(body.result.content);
 
-    const nextChapter = null;
-    const prevChapter = null;
-
     const chapter = {
         sourceId: 17,
         novelUrl,
         chapterUrl,
         chapterName,
         chapterText,
-        nextChapter,
-        prevChapter,
     };
 
     return chapter;
