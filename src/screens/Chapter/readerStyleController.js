@@ -31,9 +31,3 @@ export const readerLineHeight = (fontSize, lineHeightMultiplier) => {
 
     return lineHeight;
 };
-
-export const errorTextColor = (val) => {
-    const textColor = val === 1 ? "rgba(255,255,255,0.7)" : "rgba(0,0,0,0.54)";
-
-    return textColor;
-};

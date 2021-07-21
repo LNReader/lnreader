@@ -57,10 +57,7 @@ const NovelAuthor = ({ theme, children }) => (
 
 const NovelInfo = ({ theme, children }) => (
     <Text
-        style={[
-            styles.novelInfo,
-            { color: theme.textColorSecondary, textTransform: "capitalize" },
-        ]}
+        style={[styles.novelInfo, { color: theme.textColorSecondary }]}
         numberOfLines={1}
     >
         {children}

@@ -299,13 +299,20 @@ const Chapter = ({ route, navigation }) => {
                             <EmptyView
                                 icon="Σ(ಠ_ಠ)"
                                 description={error}
-                                style={{ color: errorTextColor(reader.theme) }}
+                                style={{
+                                    color:
+                                        reader.textColor ||
+                                        readerTextColor(reader.theme),
+                                }}
                             >
                                 <IconButton
                                     icon="reload"
                                     size={25}
                                     style={{ margin: 0, marginTop: 16 }}
-                                    color={errorTextColor(reader.theme)}
+                                    color={
+                                        reader.textColor ||
+                                        readerTextColor(reader.theme)
+                                    }
                                     onPress={() => {
                                         getChapter(chapterId);
                                         setLoading(true);
@@ -314,7 +321,9 @@ const Chapter = ({ route, navigation }) => {
                                 />
                                 <Text
                                     style={{
-                                        color: errorTextColor(reader.theme),
+                                        color:
+                                            reader.textColor ||
+                                            readerTextColor(reader.theme),
                                     }}
                                 >
                                     Retry

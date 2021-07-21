@@ -12,6 +12,15 @@ const getPath = (extensionId) => {
         45: { novels: "novel", novel: "novel", chapter: "novel" },
         46: { novels: "novel", novel: "novel", chapter: "novel" },
         47: { novels: "novel-list", novel: "novel", chapter: "novel" },
+        55: { novels: "manga", novel: "manga", chapter: "manga" },
+        56: { novels: "novel", novel: "novel", chapter: "novel" },
+        57: { novels: "series", novel: "series", chapter: "series" },
+        58: { novels: "novel", novel: "novel", chapter: "novel" },
+        59: { novels: "novel", novel: "novel", chapter: "novel" },
+        60: { novels: "novel", novel: "novel", chapter: "novel" },
+        61: { novels: "novel", novel: "novel", chapter: "novel" },
+        62: { novels: "novel", novel: "novel", chapter: "novel" },
+        63: { novels: "novel", novel: "novel", chapter: "novel" },
     };
 
     return path[extensionId];
@@ -85,4 +94,53 @@ export const DaoNovelScraper = new MadaraScraper(
     "https://daonovel.com/",
     "DaoNovel",
     getPath(47)
+);
+
+export const MostNovelScraper = new MadaraScraper(
+    55,
+    "https://mostnovel.com/",
+    "MostNovel",
+    getPath(55)
+);
+
+export const NovelMultiverseScraper = new MadaraScraper(
+    56,
+    "https://www.novelmultiverse.com/",
+    "NovelMultiverse",
+    getPath(56)
+);
+
+export const LightNovelHeavenScraper = new MadaraScraper(
+    57,
+    "https://lightnovelheaven.com/",
+    "LightNovelHeaven",
+    getPath(57)
+);
+
+export const LightNovelsHubScraper = new MadaraScraper(
+    58,
+    "https://lightnovelshub.com/",
+    "LightNovelsHub",
+    getPath(58)
+);
+
+export const ArNovelScraper = new MadaraScraper(
+    59,
+    "https://arnovel.me/",
+    "ArNovel",
+    getPath(59)
+);
+
+export const MeionNovelScraper = new MadaraScraper(
+    60,
+    "https://meionovel.id/",
+    "MeionNovel",
+    getPath(60)
+);
+
+export const WebNovelLoverScraper = new MadaraScraper(
+    61,
+    "https://www.webnovelover.com/",
+    "WebNovelLover",
+    getPath(61)
 );

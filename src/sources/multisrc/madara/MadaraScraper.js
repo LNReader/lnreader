@@ -1,5 +1,7 @@
 import cheerio from "react-native-cheerio";
+import { Status } from "../../helpers/constants";
 import { htmlToText } from "../../helpers/htmlToText";
+import { parseMadaraDate } from "../../helpers/parseDate";
 
 class MadaraScraper {
     constructor(sourceId, baseUrl, sourceName, path) {
@@ -28,7 +30,7 @@ class MadaraScraper {
 
         $(".manga-title-badges").remove();
 
-        $(".page-item-detail").each(function (result) {
+        $(".page-item-detail").each(function () {
             const novelName = $(this).find(".post-title").text().trim();
             let image = $(this).find("img");
             const novelCover = image.attr("data-src") || image.attr("src");
@@ -76,9 +78,10 @@ class MadaraScraper {
 
         novel.novelCover =
             $(".summary_image > a > img").attr("data-src") ||
-            $(".summary_image > a > img").attr("src");
+            $(".summary_image > a > img").attr("src") ||
+            "https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.png?raw=true";
 
-        $(".post-content_item").each(function (result) {
+        $(".post-content_item").each(function () {
             const detailName = $(this)
                 .find(".summary-heading > h5")
                 .text()
@@ -93,7 +96,9 @@ class MadaraScraper {
                     novel.author = detail;
                     break;
                 case "Status":
-                    novel.status = detail;
+                    novel.status = detail.includes("OnGoing")
+                        ? Status.ONGOING
+                        : Status.COMPLETED;
                     break;
             }
         });
@@ -116,20 +121,25 @@ class MadaraScraper {
         });
         const text = await data.text();
 
-        $ = cheerio.load(text);
+        if (text !== "0") {
+            $ = cheerio.load(text);
+        }
 
-        $(".wp-manga-chapter").each(function (result) {
+        $(".wp-manga-chapter").each(function () {
             const chapterName = $(this)
                 .find("a")
                 .text()
                 .replace(/[\t\n]/g, "")
                 .trim();
 
-            const releaseDate = $(this)
-                .find("span")
+            let releaseDate = $(this)
+                .find("span.chapter-release-date")
                 .text()
-                .replace("Free", "")
                 .trim();
+
+            if (releaseDate) {
+                releaseDate = parseMadaraDate(releaseDate);
+            }
 
             const chapterUrl = $(this).find("a").attr("href").split("/")[5];
 
@@ -179,7 +189,7 @@ class MadaraScraper {
         let novels = [];
         let sourceId = this.sourceId;
 
-        $(".c-tabs-item__content").each(function (result) {
+        $(".c-tabs-item__content").each(function () {
             const novelName = $(this).find(".post-title").text().trim();
 
             let image = $(this).find("img");

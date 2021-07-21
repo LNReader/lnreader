@@ -369,5 +369,54 @@
         "sourceName": "RewayatAr",
         "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/wpmangastream/icons/rewayatar.png?raw=true",
         "lang": "Arabic"
+    },
+    {
+        "sourceId": 55,
+        "url": "https://mostnovel.com/",
+        "sourceName": "MostNovel",
+        "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/mostnovel.png?raw=true",
+        "lang": "English"
+    },
+    {
+        "sourceId": 56,
+        "url": "https://www.novelmultiverse.com/",
+        "sourceName": "NovelMultiverse",
+        "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/novelmultiverse.png?raw=true",
+        "lang": "English"
+    },
+    {
+        "sourceId": 57,
+        "url": "https://lightnovelheaven.com/",
+        "sourceName": "LightNovelHeaven",
+        "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/lightnovelHeaven.png?raw=true",
+        "lang": "English"
+    },
+    {
+        "sourceId": 58,
+        "url": "https://lightnovelshub.com/",
+        "sourceName": "LightNovelsHub",
+        "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/lightnovelshub.png?raw=true",
+        "lang": "English"
+    },
+    {
+        "sourceId": 59,
+        "url": "https://arnovel.me/",
+        "sourceName": "ArNovel",
+        "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/arnovel.png?raw=true",
+        "lang": "Arabic"
+    },
+    {
+        "sourceId": 60,
+        "url": "https://meionovel.id/",
+        "sourceName": "MeioNovel",
+        "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/meionovel.png?raw=true",
+        "lang": "Indonesia"
+    },
+    {
+        "sourceId": 61,
+        "url": "https://www.webnovelover.com/",
+        "sourceName": "WebNovelLover",
+        "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/webnovellovers.png?raw=true",
+        "lang": "English"
     }
 ]

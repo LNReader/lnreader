@@ -35,15 +35,22 @@ import ScribbleHubScraper from "./en/scribblehub";
 import SyosetuScraper from "./jp/syosetu";
 import LNMTLScraper from "./en/lnmtl";
 import {
+    ArNovelScraper,
     DaoNovelScraper,
     FirstKissNovelScraper,
     FreeNovelScraper,
+    LightNovelHeavenScraper,
+    LightNovelsHubScraper,
     LunarLettersScraper,
+    MeionNovelScraper,
+    MostNovelScraper,
     NovelCakeScraper,
+    NovelMultiverseScraper,
     NovelsRockScraper,
     NovelTranslateScraper,
     SkyNovelScraper,
     SleepyTranslationsScraper,
+    WebNovelLoverScraper,
     ZinnNovelScraper,
 } from "./multisrc/madara/MadaraGenerator";
 import WuxiaBlogScraper from "./en/wuxiablog";
@@ -111,6 +118,13 @@ export const getSource = (sourceId) => {
         52: YushuboScraper,
         53: KolNovelScraper,
         54: RewayatArScraper,
+        55: MostNovelScraper,
+        56: NovelMultiverseScraper,
+        57: LightNovelHeavenScraper,
+        58: LightNovelsHubScraper,
+        59: ArNovelScraper,
+        60: MeionNovelScraper,
+        61: WebNovelLoverScraper,
     };
 
     return scrapers[sourceId];
