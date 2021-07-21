@@ -147,7 +147,7 @@ export const isChapterDownloaded = async (chapterId) => {
     );
 };
 
-const downloadChapterQuery = `INSERT INTO downloads (downloadChapterId, chapterName, chapterText) VALUES (?, ?, ?, ?, ?)`;
+const downloadChapterQuery = `INSERT INTO downloads (downloadChapterId, chapterName, chapterText) VALUES (?, ?, ?)`;
 
 export const downloadChapter = async (
     sourceId,

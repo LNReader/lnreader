@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
-import { ToggleButton } from "react-native-paper";
 import { useDispatch } from "react-redux";
 
 import { Appbar } from "../../components/Appbar";
 import ColorPickerModal from "../../components/ColorPickerModal";
 import { Row, ScreenContainer } from "../../components/Common";
+import {
+    ToggleButton,
+    ToggleColorButton,
+} from "../../components/Common/ToggleButton";
 import { List } from "../../components/List";
 
 import { useReaderSettings, useTheme } from "../../hooks/reduxHooks";
@@ -21,14 +24,6 @@ const ReaderSettings = ({ navigation }) => {
     const dispatch = useDispatch();
 
     const reader = useReaderSettings();
-
-    const textColor = {
-        1: "rgba(255,255,255,0.7)",
-        2: "#000000",
-        3: "#000000",
-        4: "#CCCCCC",
-        5: "#CCCCCC",
-    };
 
     /**
      * Reader Background Color Modal
@@ -82,22 +77,12 @@ const ReaderSettings = ({ navigation }) => {
         { value: 5, backgroundColor: "#2B2C30", textColor: "#CCCCCC" },
     ];
 
-    const onValueChange = (value) => {
-        dispatch(setReaderSettings("theme", value ?? reader.theme));
-        dispatch(
-            setReaderSettings("textColor", textColor[value] ?? reader.textColor)
-        );
-    };
-
     const textAlignments = [
         { value: "left", icon: "format-align-left" },
+        { value: "center", icon: "format-align-center" },
         { value: "justify", icon: "format-align-justify" },
         { value: "right", icon: "format-align-right" },
     ];
-
-    const onValueChangeTextAlign = (value) => {
-        dispatch(setReaderSettings("textAlign", value ?? reader.textAlign));
-    };
 
     return (
         <ScreenContainer theme={theme}>
@@ -143,45 +128,45 @@ const ReaderSettings = ({ navigation }) => {
                             horizontal={true}
                         >
                             <Row>
-                                <ToggleButton.Row
-                                    onValueChange={onValueChange}
-                                    value={reader.theme}
-                                >
-                                    {presetThemes.map((theme) => (
-                                        <ToggleButton
-                                            key={theme.value}
-                                            icon={
-                                                reader.theme === theme.value &&
-                                                "check"
-                                            }
-                                            color={theme.textColor}
-                                            value={theme.value}
-                                            style={[
-                                                {
-                                                    backgroundColor:
-                                                        theme.backgroundColor,
-                                                },
-                                                styles.presetToggleButton,
-                                            ]}
-                                        />
-                                    ))}
-                                </ToggleButton.Row>
+                                {presetThemes.map((theme) => (
+                                    <ToggleColorButton
+                                        key={theme.value}
+                                        selected={
+                                            reader.theme ===
+                                            theme.backgroundColor
+                                        }
+                                        backgroundColor={theme.backgroundColor}
+                                        textColor={theme.textColor}
+                                        onPress={() => {
+                                            dispatch(
+                                                setReaderSettings(
+                                                    "theme",
+                                                    theme.backgroundColor
+                                                )
+                                            );
+                                            dispatch(
+                                                setReaderSettings(
+                                                    "textColor",
+                                                    theme.textColor
+                                                )
+                                            );
+                                        }}
+                                    />
+                                ))}
                             </Row>
                         </ScrollView>
                     </Pressable>
                     <List.Divider theme={theme} />
                     <List.SubHeader theme={theme}>Reader</List.SubHeader>
-                    <List.Item
+                    <List.ColorItem
                         title="Background Color"
                         description={readerBackground(
                             reader.theme
                         ).toUpperCase()}
                         onPress={showReaderBackgroundtColorModal}
                         theme={theme}
-                        iconColor={readerBackground(reader.theme)}
-                        right="circle"
                     />
-                    <List.Item
+                    <List.ColorItem
                         title="Text Color"
                         description={
                             reader.textColor.toUpperCase() ||
@@ -189,13 +174,8 @@ const ReaderSettings = ({ navigation }) => {
                         }
                         onPress={showReaderTextColorModal}
                         theme={theme}
-                        iconColor={
-                            reader.textColor || readerTextColor(reader.theme)
-                        }
-                        right="circle"
                     />
                     <List.Divider theme={theme} />
-
                     <List.SubHeader theme={theme}>Text</List.SubHeader>
                     <Pressable
                         android_ripple={{ color: theme.rippleColor }}
@@ -220,29 +200,22 @@ const ReaderSettings = ({ navigation }) => {
                             </Text>
                         </View>
                         <Row>
-                            <ToggleButton.Row
-                                onValueChange={onValueChangeTextAlign}
-                                value={reader.textAlign}
-                            >
-                                {textAlignments.map((item) => (
-                                    <ToggleButton
-                                        key={item.value}
-                                        icon={item.icon}
-                                        color={
-                                            reader.textAlign === item.value
-                                                ? theme.colorAccent
-                                                : "#FFFFFF"
-                                        }
-                                        value={item.value}
-                                        style={{
-                                            backgroundColor: "transparent",
-                                            marginHorizontal: 10,
-                                            borderWidth: 0,
-                                            borderRadius: 4,
-                                        }}
-                                    />
-                                ))}
-                            </ToggleButton.Row>
+                            {textAlignments.map((item) => (
+                                <ToggleButton
+                                    key={item.value}
+                                    icon={item.icon}
+                                    onPress={() => {
+                                        dispatch(
+                                            setReaderSettings(
+                                                "textAlign",
+                                                item.value
+                                            )
+                                        );
+                                    }}
+                                    selected={item.value === reader.textAlign}
+                                    theme={theme}
+                                />
+                            ))}
                         </Row>
                     </Pressable>
                 </List.Section>

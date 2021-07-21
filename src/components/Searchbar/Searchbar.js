@@ -78,12 +78,12 @@ export const Searchbar = ({
 
 const styles = StyleSheet.create({
     searchbarContainer: {
-        marginTop: StatusBar.currentHeight + 4,
-        height: 48,
+        marginTop: StatusBar.currentHeight + 8,
+        height: 46,
         flexDirection: "row",
         alignItems: "center",
-        paddingHorizontal: 16,
-        marginBottom: 8,
+        paddingHorizontal: 12,
+        marginBottom: 6,
         borderRadius: 8,
         marginHorizontal: 12,
         elevation: 2,
@@ -92,5 +92,6 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: "row",
         justifyContent: "space-between",
+        alignItems: "center",
     },
 });

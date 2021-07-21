@@ -6,12 +6,10 @@ import {
     Animated,
     useWindowDimensions,
 } from "react-native";
+
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 
-import { Checkbox as PaperCheckbox } from "react-native-paper";
-
 import Bottomsheet from "rn-sliding-up-panel";
-import { ListItem } from "../../../components/List";
 import { filterLibrary } from "../../../redux/library/library.actions";
 import { useSettings } from "../../../hooks/reduxHooks";
 import { setAppSettings } from "../../../redux/settings/settings.actions";
@@ -27,20 +25,11 @@ const LibraryFilterSheet = ({
     const [animatedValue] = useState(new Animated.Value(0));
 
     const FirstRoute = () => (
-        <View style={{ flex: 1 }}>
-            <PaperCheckbox.Item
+        <View style={{ flex: 1, margin: 8 }}>
+            <Checkbox
                 label="Downloaded"
-                labelStyle={{
-                    fontSize: 14,
-                    color: theme.textColorPrimary,
-                }}
-                color={theme.colorAccent}
-                uncheckedColor={theme.textColorHint}
-                status={
-                    filter === "chaptersDownloaded > 0"
-                        ? "checked"
-                        : "unchecked"
-                }
+                theme={theme}
+                status={filter === "chaptersDownloaded > 0"}
                 onPress={() =>
                     filter === "chaptersDownloaded > 0"
                         ? dispatch(filterLibrary(sort, ""))
@@ -49,34 +38,20 @@ const LibraryFilterSheet = ({
                           )
                 }
             />
-            <PaperCheckbox.Item
+            <Checkbox
                 label="Unread"
-                labelStyle={{
-                    fontSize: 14,
-                    color: theme.textColorPrimary,
-                }}
-                color={theme.colorAccent}
-                uncheckedColor={theme.textColorHint}
-                status={filter === "unread = 1" ? "checked" : "unchecked"}
+                theme={theme}
+                status={filter === "unread = 1"}
                 onPress={() =>
                     filter === "unread = 1"
                         ? dispatch(filterLibrary(sort, ""))
                         : dispatch(filterLibrary(sort, "unread = 1"))
                 }
             />
-            <PaperCheckbox.Item
+            <Checkbox
                 label="Completed"
-                labelStyle={{
-                    fontSize: 14,
-                    color: theme.textColorPrimary,
-                }}
-                color={theme.colorAccent}
-                uncheckedColor={theme.textColorHint}
-                status={
-                    filter === "chaptersUnread IS NULL"
-                        ? "checked"
-                        : "unchecked"
-                }
+                theme={theme}
+                status={filter === "chaptersUnread IS NULL"}
                 onPress={() =>
                     filter === "chaptersUnread IS NULL"
                         ? dispatch(filterLibrary(sort, ""))

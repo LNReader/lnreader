@@ -111,6 +111,7 @@ const Chapter = ({ route, navigation }) => {
                 }
             } else {
                 const res = await fetchChapter(sourceId, novelUrl, chapterUrl);
+
                 setChapter(res);
             }
 

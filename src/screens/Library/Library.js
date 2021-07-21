@@ -5,6 +5,7 @@ import {
     View,
     RefreshControl,
     ActivityIndicator,
+    Pressable,
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { useSelector, useDispatch } from "react-redux";
@@ -137,12 +138,14 @@ const LibraryScreen = ({ navigation }) => {
                 {incognitoMode && (
                     <View
                         style={{
-                            backgroundColor: "#424242",
+                            backgroundColor: theme.searchBarColor,
                             paddingVertical: 4,
                             alignItems: "center",
                         }}
                     >
-                        <Text style={{ color: "#FFFFFF" }}>Incognito Mode</Text>
+                        <Text style={{ color: theme.textColorSecondary }}>
+                            Incognito Mode
+                        </Text>
                     </View>
                 )}
                 {loading ? (
@@ -150,20 +153,19 @@ const LibraryScreen = ({ navigation }) => {
                 ) : (
                     <>
                         {searchText !== "" && (
-                            <TouchableRipple
+                            <Pressable
                                 onPress={() =>
                                     navigation.navigate("GlobalSearch", {
                                         novelName: searchText,
                                     })
                                 }
-                                borderless
-                                rippleColor={theme.colorAccent}
+                                android_ripple={{ color: theme.colorAccent }}
                                 style={styles.emptySearch}
                             >
                                 <Text style={{ color: theme.colorAccent }}>
                                     {`Search for "${searchText}" globally`}
                                 </Text>
-                            </TouchableRipple>
+                            </Pressable>
                         )}
                         <NovelList
                             data={novels}

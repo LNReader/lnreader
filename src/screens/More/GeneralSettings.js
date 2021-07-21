@@ -143,14 +143,7 @@ const GenralSettings = ({ navigation }) => {
                         onPress={showthemeModal}
                         theme={theme}
                     />
-                    <List.Item
-                        title="Accent Color"
-                        description={theme.colorAccent.toUpperCase()}
-                        onPress={showAccentColorModal}
-                        theme={theme}
-                        iconColor={theme.colorAccent}
-                        right="circle"
-                    />
+
                     {theme.statusBar === "light-content" && (
                         <SwitchSetting
                             label="Pure black dark mode"
@@ -172,6 +165,12 @@ const GenralSettings = ({ navigation }) => {
                             theme={theme}
                         />
                     )}
+                    <List.ColorItem
+                        title="Accent Color"
+                        description={theme.colorAccent.toUpperCase()}
+                        onPress={showAccentColorModal}
+                        theme={theme}
+                    />
                 </List.Section>
             </ScrollView>
             <DisplayModeModal

@@ -40,7 +40,7 @@ const ChapterFooter = ({
                     zIndex: 2,
                     bottom: 0,
                     width: "100%",
-                    backgroundColor: "rgba(0,0,0,0.6)",
+                    backgroundColor: "rgba(0,0,0,0.7)",
                     flexDirection: "row",
                 }}
             >

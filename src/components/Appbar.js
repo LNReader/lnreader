@@ -1,13 +1,7 @@
-import React, { useRef } from "react";
-import { View, TextInput, StyleSheet } from "react-native";
-import {
-    TouchableRipple,
-    IconButton,
-    Appbar as MaterialAppbar,
-} from "react-native-paper";
-import Constants from "expo-constants";
+import React from "react";
 
-import { useNavigation } from "@react-navigation/native";
+import { Appbar as MaterialAppbar } from "react-native-paper";
+
 import { useSelector } from "react-redux";
 
 export const Appbar = ({ title, onBackAction, style, children }) => {
@@ -28,17 +22,3 @@ export const Appbar = ({ title, onBackAction, style, children }) => {
         </MaterialAppbar.Header>
     );
 };
-
-const styles = StyleSheet.create({
-    searchAppbarContainer: {
-        marginTop: Constants.statusBarHeight + 8,
-        height: 48,
-        flexDirection: "row",
-        alignItems: "center",
-        paddingHorizontal: 16,
-        marginBottom: 12,
-        borderRadius: 8,
-        marginHorizontal: 12,
-        elevation: 2,
-    },
-});

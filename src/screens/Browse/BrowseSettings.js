@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { FlatList, Pressable, Text, View } from "react-native";
 
 import { Switch } from "react-native-paper";
@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { Appbar } from "../../components/Appbar";
 import { ScreenContainer } from "../../components/Common";
-import { ListSubHeader } from "../../components/List";
+import { List } from "../../components/List";
 
 import { useSettings, useTheme } from "../../hooks/reduxHooks";
 import { setAppSettings } from "../../redux/settings/settings.actions";
@@ -18,10 +18,12 @@ import {
 const BrowseSettings = ({ navigation }) => {
     const theme = useTheme();
     const dispatch = useDispatch();
+
     const { filters = [], showMyAnimeList = true } = useSelector(
         (state) => state.sourceReducer
     );
     const languages = ["English", "Spanish", "Japanese", "Chinese", "Arabic"];
+
     const { searchAllSources = false } = useSettings();
 
     const renderItem = ({ item }) => {
@@ -50,7 +52,7 @@ const BrowseSettings = ({ navigation }) => {
         <ScreenContainer theme={theme}>
             <Appbar onBackAction={navigation.goBack} title="Sources" />
             <View>
-                <ListSubHeader theme={theme}>Global Search</ListSubHeader>
+                <List.SubHeader theme={theme}>Global Search</List.SubHeader>
                 <Pressable
                     android_ripple={{ color: theme.rippleColor }}
                     style={{
@@ -84,8 +86,7 @@ const BrowseSettings = ({ navigation }) => {
                         }
                     />
                 </Pressable>
-                <ListSubHeader theme={theme}>Discover</ListSubHeader>
-
+                <List.SubHeader theme={theme}>Discover</List.SubHeader>
                 <Pressable
                     android_ripple={{ color: theme.rippleColor }}
                     style={{
@@ -107,7 +108,7 @@ const BrowseSettings = ({ navigation }) => {
                         }
                     />
                 </Pressable>
-                <ListSubHeader theme={theme}>Languages</ListSubHeader>
+                <List.SubHeader theme={theme}>Languages</List.SubHeader>
                 <FlatList
                     data={languages}
                     keyExtractor={(item) => item}

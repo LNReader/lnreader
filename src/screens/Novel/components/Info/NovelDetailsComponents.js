@@ -1,16 +1,7 @@
 import React from "react";
-import {
-    FlatList,
-    Image,
-    ImageBackground,
-    StyleSheet,
-    Text,
-    View,
-    Pressable,
-} from "react-native";
+import { FlatList, StyleSheet, Text, View, Pressable } from "react-native";
 
-import { Chip, IconButton } from "react-native-paper";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { IconButton } from "react-native-paper";
 import { LinearGradient } from "expo-linear-gradient";
 import easeGradient from "react-native-easing-gradient";
 import FastImage from "react-native-fast-image";

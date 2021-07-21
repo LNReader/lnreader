@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import { List as PaperList, Divider as PaperDivider } from "react-native-paper";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -83,6 +83,37 @@ const InfoItem = ({ title, icon, theme }) => (
     />
 );
 
+const ColorItem = ({ title, description, theme, onPress }) => (
+    <Pressable
+        style={{
+            padding: 16,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+        }}
+        android_ripple={{ color: theme.rippleColor }}
+        onPress={onPress}
+    >
+        <View>
+            <Text style={{ color: theme.textColorPrimary, fontSize: 16 }}>
+                {title}
+            </Text>
+            <Text style={{ color: theme.textColorSecondary }}>
+                {description}
+            </Text>
+        </View>
+        <View
+            style={{
+                backgroundColor: description,
+                height: 24,
+                width: 24,
+                borderRadius: 50,
+                marginRight: 16,
+            }}
+        />
+    </Pressable>
+);
+
 const Icon = ({ icon, theme }) => (
     <PaperList.Icon
         color={theme.colorAccent}
@@ -97,6 +128,7 @@ export const List = {
     Item: ListItem,
     Divider,
     InfoItem,
+    ColorItem,
     Icon,
 };
 

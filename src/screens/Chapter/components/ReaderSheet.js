@@ -9,7 +9,7 @@ import {
 } from "react-native";
 
 import Slider from "@react-native-community/slider";
-import { ToggleButton, IconButton, Menu, Switch } from "react-native-paper";
+import { IconButton, Menu, Switch } from "react-native-paper";
 import Bottomsheet from "rn-sliding-up-panel";
 
 import BottomSheetHandle from "../../../components/BottomSheetHandle";
@@ -21,11 +21,16 @@ import {
     setAppSettings,
     setReaderSettings,
 } from "../../../redux/settings/settings.actions";
+import {
+    ToggleButton,
+    ToggleColorButton,
+} from "../../../components/Common/ToggleButton";
 
 const ReaderSheet = ({
     theme,
     reader,
     dispatch,
+    navigation,
     bottomSheetRef,
     selectText,
     showScrollPercentage,
@@ -50,11 +55,18 @@ const ReaderSheet = ({
         },
     ];
 
+    const textAlignments = [
+        { value: "left", icon: "format-align-left" },
+        { value: "center", icon: "format-align-center" },
+        { value: "justify", icon: "format-align-justify" },
+        { value: "right", icon: "format-align-right" },
+    ];
+
     return (
         <Bottomsheet
             ref={bottomSheetRef}
-            draggableRange={{ top: 470, bottom: 0 }}
-            snappingPoints={[0, 470]}
+            draggableRange={{ top: 480, bottom: 0 }}
+            snappingPoints={[0, 480]}
             showBackdrop={true}
             backdropOpacity={0}
         >
@@ -64,11 +76,15 @@ const ReaderSheet = ({
                     icon="cog-outline"
                     color="#FFFFFF"
                     size={24}
-                    onPress={() =>
-                        navigation.navigate("SettingsStack", {
-                            screen: "ReaderSettings",
-                        })
-                    }
+                    onPress={() => {
+                        navigation.navigate("MoreStack", {
+                            screen: "SettingsStack",
+                            params: {
+                                screen: "ReaderSettings",
+                            },
+                        });
+                        bottomSheetRef.current.hide();
+                    }}
                     style={{
                         marginVertical: 0,
                         position: "absolute",
@@ -106,23 +122,12 @@ const ReaderSheet = ({
                         <View style={{ marginLeft: 16 }}>
                             <ScrollView horizontal={true}>
                                 {presetThemes.map((item, index) => (
-                                    <ToggleButton
+                                    <ToggleColorButton
                                         key={index}
-                                        icon={
-                                            reader.theme === item.value &&
-                                            "check"
-                                        }
-                                        color={item.textColor}
-                                        value={item.value}
-                                        style={{
-                                            backgroundColor:
-                                                item.backgroundColor,
-                                            marginHorizontal: 10,
-                                            borderWidth: 0,
-                                            borderRadius: 50,
-                                            borderTopStartRadius: 50,
-                                            borderBottomStartRadius: 50,
-                                        }}
+                                        selected={reader.theme === item.value}
+                                        backgroundColor={item.backgroundColor}
+                                        textColor={item.textColor}
+                                        theme={theme}
                                         onPress={() => {
                                             dispatch(
                                                 setReaderSettings(
@@ -152,65 +157,23 @@ const ReaderSheet = ({
                     >
                         <ReaderSettingTitle title="Text Align" />
                         <Row>
-                            <ToggleButton.Row
-                                onValueChange={(value) =>
-                                    dispatch(
-                                        setReaderSettings(
-                                            "textAlign",
-                                            value ?? reader.textAlign
+                            {textAlignments.map((item) => (
+                                <ToggleButton
+                                    key={item.value}
+                                    selected={item.value === reader.textAlign}
+                                    icon={item.icon}
+                                    color="#FFFFFF"
+                                    theme={theme}
+                                    onPress={() =>
+                                        dispatch(
+                                            setReaderSettings(
+                                                "textAlign",
+                                                item.value
+                                            )
                                         )
-                                    )
-                                }
-                                value={reader.textAlign}
-                            >
-                                <ToggleButton
-                                    icon="format-align-left"
-                                    color={
-                                        reader.textAlign === "left"
-                                            ? theme.colorAccent
-                                            : "#FFFFFF"
                                     }
-                                    value="left"
-                                    style={{
-                                        backgroundColor: "transparent",
-                                        marginHorizontal: 10,
-                                        borderWidth: 0,
-                                        borderTopRightRadius: 4,
-                                        borderBottomRightRadius: 4,
-                                    }}
                                 />
-                                <ToggleButton
-                                    icon="format-align-justify"
-                                    color={
-                                        reader.textAlign === "justify"
-                                            ? theme.colorAccent
-                                            : "#FFFFFF"
-                                    }
-                                    value="justify"
-                                    style={{
-                                        backgroundColor: "transparent",
-                                        marginHorizontal: 10,
-                                        borderWidth: 0,
-                                        borderRadius: 4,
-                                    }}
-                                />
-                                <ToggleButton
-                                    icon="format-align-right"
-                                    color={
-                                        reader.textAlign === "right"
-                                            ? theme.colorAccent
-                                            : "#FFFFFF"
-                                    }
-                                    value="right"
-                                    style={{
-                                        backgroundColor: "transparent",
-                                        marginHorizontal: 10,
-                                        borderWidth: 0,
-                                        borderTopLeftRadius: 4,
-                                        borderBottomLeftRadius: 4,
-                                    }}
-                                />
-                            </ToggleButton.Row>
+                            ))}
                         </Row>
                     </Row>
                     <Row

@@ -115,6 +115,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     $ = cheerio.load(body);
 
     const chapterName = $(".episode-name").text();
+
     let chapterText = $("#chapter-body").html();
     chapterText = htmlToText(chapterText);
 

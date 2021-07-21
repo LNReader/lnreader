@@ -1,7 +1,7 @@
 import React from "react";
-import { StyleSheet, View, Text, Image } from "react-native";
+import { StyleSheet, View, Text, Pressable } from "react-native";
+
 import FastImage from "react-native-fast-image";
-import { TouchableRipple } from "react-native-paper";
 
 const ListView = ({
     item,
@@ -12,37 +12,30 @@ const ListView = ({
     onPress,
 }) => {
     return (
-        <TouchableRipple
-            borderless
-            centered
-            rippleColor={theme.rippleColor}
+        <Pressable
+            android_ripple={{ color: theme.rippleColor }}
             style={styles.listView}
             onPress={onPress}
         >
-            <>
-                <FastImage
-                    source={{ uri: item.novelCover }}
-                    style={[
-                        styles.extensionIcon,
-                        inLibraryBadge && { opacity: 0.5 },
-                    ]}
-                />
-                <Text
-                    style={[
-                        { color: theme.textColorPrimary },
-                        styles.novelName,
-                    ]}
-                    numberOfLines={1}
-                >
-                    {item.novelName}
-                </Text>
-                <View style={styles.badgeContainer}>
-                    {downloadBadge}
-                    {unreadBadge}
-                    {inLibraryBadge}
-                </View>
-            </>
-        </TouchableRipple>
+            <FastImage
+                source={{ uri: item.novelCover }}
+                style={[
+                    styles.extensionIcon,
+                    inLibraryBadge && { opacity: 0.5 },
+                ]}
+            />
+            <Text
+                style={[{ color: theme.textColorPrimary }, styles.novelName]}
+                numberOfLines={1}
+            >
+                {item.novelName}
+            </Text>
+            <View style={styles.badgeContainer}>
+                {downloadBadge}
+                {unreadBadge}
+                {inLibraryBadge}
+            </View>
+        </Pressable>
     );
 };
 

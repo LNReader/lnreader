@@ -1,11 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { Dimensions, View } from "react-native";
+import React, { useState } from "react";
+import { View } from "react-native";
 
 import { Appbar } from "react-native-paper";
-import {
-    getNextChapterFromDB,
-    getPrevChapterFromDB,
-} from "../../../database/queries/ChapterQueries";
 import { bookmarkChapterAction } from "../../../redux/novel/novel.actions";
 
 const ChapterAppbar = ({
@@ -27,7 +23,7 @@ const ChapterAppbar = ({
                 style={{
                     position: "absolute",
                     flex: 1,
-                    backgroundColor: "rgba(0,0,0,0.6)",
+                    backgroundColor: "rgba(0,0,0,0.7)",
                     width: "100%",
                     top: 0,
                     zIndex: 1,
