@@ -418,5 +418,12 @@
         "sourceName": "WebNovelLover",
         "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/webnovellovers.png?raw=true",
         "lang": "English"
+    },
+    {
+        "sourceId": 62,
+        "url": "https://www.wlnupdates.com/",
+        "sourceName": "WLNUpdates",
+        "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/wlnupdates/icon.png?raw=true",
+        "lang": "English"
     }
 ]

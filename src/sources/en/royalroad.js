@@ -1,6 +1,7 @@
 import cheerio from "react-native-cheerio";
 import { htmlToText } from "../helpers/htmlToText";
 import moment from "moment";
+import { parseMadaraDate } from "../helpers/parseDate";
 
 const baseUrl = "https://www.royalroad.com/";
 
@@ -15,10 +16,14 @@ const popularNovels = async (page) => {
 
     let novels = [];
 
-    $("div.fiction-list-item.row").each(function (result) {
+    $("div.fiction-list-item.row").each(function () {
         const novelName = $(this).find("h2.fiction-title").text().trim();
-        const novelCover = $(this).find("img").attr("src");
+        let novelCover = $(this).find("img").attr("src");
 
+        if (novelCover === "/Content/Images/nocover-new-min.png") {
+            novelCover =
+                "https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true";
+        }
         let novelUrl = $(this)
             .find("h2.fiction-title > a")
             .attr("href")
@@ -76,9 +81,10 @@ const parseNovelAndChapters = async (novelUrl) => {
 
     $("table#chapters > tbody")
         .find("tr")
-        .each(function (result) {
+        .each(function () {
             const chapterName = $(this).find("td").first().text().trim();
-            const releaseDate = $(this).find("td").first().next().text().trim();
+            let releaseDate = $(this).find("td").first().next().text().trim();
+            releaseDate = releaseDate && parseMadaraDate(releaseDate);
 
             const chapterUrl = $(this)
                 .find("td")
@@ -135,7 +141,7 @@ const searchNovels = async (searchTerm) => {
 
     let novels = [];
 
-    $("div.fiction-list-item.row").each(function (result) {
+    $("div.fiction-list-item.row").each(function () {
         const novelName = $(this).find("h2.fiction-title").text().trim();
         let novelCover = $(this).find("img").attr("src");
 

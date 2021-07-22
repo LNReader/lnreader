@@ -229,5 +229,6 @@ const styles = StyleSheet.create({
         fontSize: 13,
         borderWidth: 1,
         borderRadius: 50,
+        textTransform: "capitalize",
     },
 });

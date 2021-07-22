@@ -241,7 +241,6 @@ const TextToComponents = ({
                 text={text}
                 textStyle={textStyle}
                 textSelectable={textSelectable}
-                key={index}
             />
         );
     }
