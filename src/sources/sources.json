@@ -388,7 +388,7 @@
         "sourceId": 57,
         "url": "https://lightnovelheaven.com/",
         "sourceName": "LightNovelHeaven",
-        "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/lightnovelHeaven.png?raw=true",
+        "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/lightnovelheaven.png?raw=true",
         "lang": "English"
     },
     {
@@ -416,7 +416,7 @@
         "sourceId": 61,
         "url": "https://www.webnovelover.com/",
         "sourceName": "WebNovelLover",
-        "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/webnovellovers.png?raw=true",
+        "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/webnovellover.png?raw=true",
         "lang": "English"
     },
     {
@@ -424,6 +424,34 @@
         "url": "https://www.wlnupdates.com/",
         "sourceName": "WLNUpdates",
         "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/wlnupdates/icon.png?raw=true",
+        "lang": "English"
+    },
+    {
+        "sourceId": 63,
+        "url": "https://boxnovel.online/",
+        "sourceName": "BoxNovel.online",
+        "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/boxnovel.online.png?raw=true",
+        "lang": "English"
+    },
+    {
+        "sourceId": 64,
+        "url": "https://clicknovel.net/",
+        "sourceName": "ClickNovel",
+        "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/clicknovel.png?raw=true",
+        "lang": "English"
+    },
+    {
+        "sourceId": 65,
+        "url": "https://readwebnovels.net/",
+        "sourceName": "ReadWebNovels",
+        "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/readwebnovels.png?raw=true",
+        "lang": "English"
+    },
+    {
+        "sourceId": 66,
+        "url": "https://wbnovel.com/",
+        "sourceName": "WBNovel",
+        "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/wbnovel.png?raw=true",
         "lang": "English"
     }
 ]

@@ -36,6 +36,8 @@ import SyosetuScraper from "./jp/syosetu";
 import LNMTLScraper from "./en/lnmtl";
 import {
     ArNovelScraper,
+    BoxNovelOnlineScraper,
+    ClickNovelScraper,
     DaoNovelScraper,
     FirstKissNovelScraper,
     FreeNovelScraper,
@@ -48,8 +50,10 @@ import {
     NovelMultiverseScraper,
     NovelsRockScraper,
     NovelTranslateScraper,
+    ReadWebNovelsScraper,
     SkyNovelScraper,
     SleepyTranslationsScraper,
+    WBNovelScraper,
     WebNovelLoverScraper,
     ZinnNovelScraper,
 } from "./multisrc/madara/MadaraGenerator";
@@ -127,6 +131,10 @@ export const getSource = (sourceId) => {
         60: MeionNovelScraper,
         61: WebNovelLoverScraper,
         62: WLNUpdatesScraper,
+        63: BoxNovelOnlineScraper,
+        64: ClickNovelScraper,
+        65: ReadWebNovelsScraper,
+        66: WBNovelScraper,
     };
 
     return scrapers[sourceId];

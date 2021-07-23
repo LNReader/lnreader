@@ -23,7 +23,13 @@ const getPath = (extensionId) => {
         63: { novels: "novel", novel: "novel", chapter: "novel" },
     };
 
-    return path[extensionId];
+    return (
+        path[extensionId] ?? {
+            novels: "novel",
+            novel: "novel",
+            chapter: "novel",
+        }
+    );
 };
 
 export const SkyNovelScraper = new MadaraScraper(
@@ -143,4 +149,32 @@ export const WebNovelLoverScraper = new MadaraScraper(
     "https://www.webnovelover.com/",
     "WebNovelLover",
     getPath(61)
+);
+
+export const BoxNovelOnlineScraper = new MadaraScraper(
+    63,
+    "https://boxnovel.online/",
+    "BoxNovel.online",
+    getPath(63)
+);
+
+export const ClickNovelScraper = new MadaraScraper(
+    64,
+    "https://clicknovel.net/",
+    "ClickNovel",
+    getPath(64)
+);
+
+export const ReadWebNovelsScraper = new MadaraScraper(
+    65,
+    "https://readwebnovels.net/",
+    "ReadWebNovels",
+    getPath(65)
+);
+
+export const WBNovelScraper = new MadaraScraper(
+    66,
+    "https://wbnovel.com/",
+    "WBNovel",
+    getPath(66)
 );
