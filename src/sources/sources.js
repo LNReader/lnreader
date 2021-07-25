@@ -67,6 +67,7 @@ import {
     RewayatArScraper,
 } from "./multisrc/wpmangastream/WPMangaStreamGenerator";
 import WLNUpdatesScraper from "./en/wlnupdates";
+import ReaperScansScraper from "./en/reaperscans";
 
 export const getSource = (sourceId) => {
     const scrapers = {
@@ -135,6 +136,7 @@ export const getSource = (sourceId) => {
         64: ClickNovelScraper,
         65: ReadWebNovelsScraper,
         66: WBNovelScraper,
+        67: ReaperScansScraper,
     };
 
     return scrapers[sourceId];

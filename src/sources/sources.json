@@ -453,5 +453,12 @@
         "sourceName": "WBNovel",
         "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/wbnovel.png?raw=true",
         "lang": "English"
+    },
+    {
+        "sourceId": 67,
+        "url": "https://reaperscans.com/all-series/novels/",
+        "sourceName": "ReaperScans",
+        "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/reaperscans/icon.png?raw=true",
+        "lang": "English"
     }
 ]
