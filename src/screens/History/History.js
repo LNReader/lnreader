@@ -3,7 +3,7 @@ import { StyleSheet, FlatList, ActivityIndicator, Text } from "react-native";
 
 import moment from "moment";
 import { useFocusEffect } from "@react-navigation/native";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import EmptyView from "../../components/EmptyView";
 import HistoryItem from "./HistoryItem";
@@ -11,7 +11,6 @@ import RemoveHistoryDialog from "./RemoveHistoryDialog";
 import { ScreenContainer } from "../../components/Common";
 import { Searchbar } from "../../components/Searchbar/Searchbar";
 
-import { getHistoryAction } from "../../redux/history/history.actions";
 import { dateFormat } from "../../services/utils/constants";
 import { useTheme } from "../../hooks/reduxHooks";
 import {
