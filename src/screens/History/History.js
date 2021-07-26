@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 import { StyleSheet, FlatList, ActivityIndicator, Text } from "react-native";
 
 import moment from "moment";
+import { useFocusEffect } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 
 import EmptyView from "../../components/EmptyView";
@@ -13,14 +14,49 @@ import { Searchbar } from "../../components/Searchbar/Searchbar";
 import { getHistoryAction } from "../../redux/history/history.actions";
 import { dateFormat } from "../../services/utils/constants";
 import { useTheme } from "../../hooks/reduxHooks";
+import {
+    deleteHistory,
+    getHistoryFromDb,
+} from "../../database/queries/HistoryQueries";
 
 const History = ({ navigation }) => {
     const theme = useTheme();
     const dispatch = useDispatch();
-    const { history, loading } = useSelector((state) => state.historyReducer);
 
     const [searchText, setSearchText] = useState("");
     const [searchResults, setSearchResults] = useState([]);
+
+    const [history, setHistory] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    const getHistory = async () => {
+        const history = await getHistoryFromDb();
+
+        const groups = history.reduce((groups, update) => {
+            var dateParts = update.historyTimeRead.split("-");
+            var jsDate = new Date(
+                dateParts[0],
+                dateParts[1] - 1,
+                dateParts[2].substr(0, 2)
+            );
+            const date = jsDate.toISOString();
+            if (!groups[date]) {
+                groups[date] = [];
+            }
+            groups[date].push(update);
+            return groups;
+        }, {});
+
+        const groupedHistory = Object.keys(groups).map((date) => {
+            return {
+                date,
+                novels: groups[date],
+            };
+        });
+
+        setHistory(groupedHistory);
+        setLoading(false);
+    };
 
     /**
      * Confirm Clear History Dialog
@@ -29,9 +65,16 @@ const History = ({ navigation }) => {
     const showDialog = () => setVisible(true);
     const hideDialog = () => setVisible(false);
 
-    useEffect(() => {
-        dispatch(getHistoryAction());
-    }, [getHistoryAction]);
+    useFocusEffect(
+        useCallback(() => {
+            getHistory();
+        }, [visible])
+    );
+
+    const deleteChapterHistory = (historyId) => {
+        deleteHistory(historyId);
+        getHistory();
+    };
 
     const renderHistoryCard = ({ item }) => (
         <HistoryItem
@@ -39,6 +82,7 @@ const History = ({ navigation }) => {
             history={item}
             theme={theme}
             navigation={navigation}
+            deleteHistory={deleteChapterHistory}
         />
     );
 
@@ -89,10 +133,10 @@ const History = ({ navigation }) => {
             <FlatList
                 contentContainerStyle={{ flexGrow: 1 }}
                 data={searchText ? searchResults : history}
-                keyExtractor={(item, index) => item.date}
+                keyExtractor={(item) => item.date}
                 renderItem={({ item }) => (
                     <FlatList
-                        keyExtractor={(item, index) => item.novelId.toString()}
+                        keyExtractor={(item) => item.novelId.toString()}
                         data={item.novels}
                         renderItem={renderHistoryCard}
                         ListHeaderComponent={
@@ -114,20 +158,22 @@ const History = ({ navigation }) => {
                         <ActivityIndicator
                             size="small"
                             color={theme.colorAccent}
+                            style={{ margin: 16 }}
                         />
                     )
                 }
                 ListEmptyComponent={
-                    <EmptyView
-                        icon="(˘･_･˘)"
-                        description="Nothing read recently"
-                    />
+                    !loading && (
+                        <EmptyView
+                            icon="(˘･_･˘)"
+                            description="Nothing read recently"
+                        />
+                    )
                 }
             />
             <RemoveHistoryDialog
                 dialogVisible={visible}
                 hideDialog={hideDialog}
-                dispatch={dispatch}
                 theme={theme}
             />
         </ScreenContainer>

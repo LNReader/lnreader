@@ -1,7 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Text, Image } from "react-native";
-
-import { TouchableRipple } from "react-native-paper";
+import { StyleSheet, View, Text, Image, Pressable } from "react-native";
 
 const GlobalSearchNovelCover = ({
     novel,
@@ -13,11 +11,9 @@ const GlobalSearchNovelCover = ({
     const { novelName, novelCover } = novel;
 
     return (
-        <View style={{ flex: 1 }}>
-            <TouchableRipple
-                borderless
-                centered
-                rippleColor={theme.rippleColor}
+        <View style={{ flex: 1, borderRadius: 6, overflow: "hidden" }}>
+            <Pressable
+                android_ripple={{ color: theme.rippleColor }}
                 style={styles.novelContainer}
                 onPress={onPress}
                 onLongPress={onLongPress}
@@ -41,7 +37,7 @@ const GlobalSearchNovelCover = ({
                         {novelName}
                     </Text>
                 </>
-            </TouchableRipple>
+            </Pressable>
         </View>
     );
 };

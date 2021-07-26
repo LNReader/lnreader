@@ -4,7 +4,7 @@ import { StyleSheet, View, ActivityIndicator, FlatList } from "react-native";
 import * as WebBrowser from "expo-web-browser";
 
 import { Searchbar } from "../../../components/Searchbar/Searchbar";
-import ErrorView from "../../../components/ErrorView";
+import { ErrorView } from "../../../components/ErrorView/ErrorView";
 
 import { useTheme, useSettings } from "../../../hooks/reduxHooks";
 import { showToast } from "../../../hooks/showToast";
@@ -106,13 +106,18 @@ const BrowseMalScreen = ({ navigation, route }) => {
 
     const ListEmptyComponent = () => (
         <ErrorView
-            error={error || "No results found"}
-            onRetry={() => {
-                getNovels();
-                setLoading(true);
-                setError();
-            }}
-            openWebView={() => WebBrowser.openBrowserAsync(topNovelsUrl)}
+            errorName={error || "No results found"}
+            actions={[
+                {
+                    name: "Retry",
+                    onPress: () => {
+                        getNovels();
+                        setLoading(true);
+                        setError();
+                    },
+                    icon: "reload",
+                },
+            ]}
             theme={theme}
         />
     );

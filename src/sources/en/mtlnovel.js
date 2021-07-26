@@ -7,6 +7,8 @@ const popularNovels = async (page) => {
     let totalPages = 10;
     const url = `${baseUrl}/alltime-rank/page/${page}`;
 
+    console.log(url);
+
     let headers = new Headers({
         referer: "https://www.mtlnovel.com/",
         "User-Agent":

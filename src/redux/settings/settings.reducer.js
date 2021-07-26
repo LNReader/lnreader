@@ -71,6 +71,9 @@ const initialState = {
     textSelectable: false,
     updateLibraryOnLaunch: false,
     downloadNewChapters: false,
+    showHistoryTab: true,
+    showUpdatesTab: true,
+    showLabelsInNav: false,
 };
 
 const settingsReducer = (state = initialState, action) => {

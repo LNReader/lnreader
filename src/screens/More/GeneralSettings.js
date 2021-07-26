@@ -27,8 +27,13 @@ const GenralSettings = ({ navigation }) => {
         (state) => state.settingsReducer
     );
 
-    const { updateLibraryOnLaunch = false, downloadNewChapters = false } =
-        useSettings();
+    const {
+        updateLibraryOnLaunch = false,
+        downloadNewChapters = false,
+        showHistoryTab = true,
+        showUpdatesTab = true,
+        showLabelsInNav = false,
+    } = useSettings();
 
     const displayModeLabel = (displayMode) => {
         const label = {
@@ -91,6 +96,46 @@ const GenralSettings = ({ navigation }) => {
             <Appbar title="General" onBackAction={navigation.goBack} />
             <ScrollView>
                 <List.Section>
+                    <SwitchSetting
+                        label="Show updates in the nav"
+                        value={showUpdatesTab}
+                        onPress={() =>
+                            dispatch(
+                                setAppSettings(
+                                    "showUpdatesTab",
+                                    !showUpdatesTab
+                                )
+                            )
+                        }
+                        theme={theme}
+                    />
+                    <SwitchSetting
+                        label="Show history in the nav"
+                        value={showHistoryTab}
+                        onPress={() =>
+                            dispatch(
+                                setAppSettings(
+                                    "showHistoryTab",
+                                    !showHistoryTab
+                                )
+                            )
+                        }
+                        theme={theme}
+                    />
+                    <SwitchSetting
+                        label="Always show nav labels"
+                        value={showLabelsInNav}
+                        onPress={() =>
+                            dispatch(
+                                setAppSettings(
+                                    "showLabelsInNav",
+                                    !showLabelsInNav
+                                )
+                            )
+                        }
+                        theme={theme}
+                    />
+                    <List.Divider theme={theme} />
                     <List.SubHeader theme={theme}>Display</List.SubHeader>
                     <List.Item
                         title="Display Mode"
@@ -135,7 +180,6 @@ const GenralSettings = ({ navigation }) => {
                         theme={theme}
                     />
                     <List.Divider theme={theme} />
-
                     <List.SubHeader theme={theme}>Theme</List.SubHeader>
                     <List.Item
                         title="Theme"
@@ -143,7 +187,6 @@ const GenralSettings = ({ navigation }) => {
                         onPress={showthemeModal}
                         theme={theme}
                     />
-
                     {theme.statusBar === "light-content" && (
                         <SwitchSetting
                             label="Pure black dark mode"

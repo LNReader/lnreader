@@ -13,7 +13,7 @@ import { Searchbar } from "../../components/Searchbar/Searchbar";
 import { LoadingScreen } from "../../components/LoadingScreen/LoadingScreen";
 import NovelCover from "../../components/NovelCover";
 import NovelList from "../../components/NovelList";
-import ErrorView from "../../components/ErrorView";
+import { ErrorView } from "../../components/ErrorView/ErrorView";
 
 const Extension = ({ navigation, route }) => {
     const { sourceId, sourceName, url } = route.params;
@@ -126,13 +126,18 @@ const Extension = ({ navigation, route }) => {
 
     const listEmptyComponent = () => (
         <ErrorView
-            error={error || "No results found"}
-            onRetry={() => {
-                getNovels();
-                setLoading(true);
-                setError();
-            }}
-            openWebView={() => WebBrowser.openBrowserAsync(url)}
+            errorName={error || "No results found"}
+            actions={[
+                {
+                    name: "Retry",
+                    onPress: () => {
+                        getNovels();
+                        setLoading(true);
+                        setError();
+                    },
+                    icon: "reload",
+                },
+            ]}
             theme={theme}
         />
     );

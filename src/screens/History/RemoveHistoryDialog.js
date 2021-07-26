@@ -1,16 +1,13 @@
 import React from "react";
 
 import { Button, Dialog, Portal } from "react-native-paper";
-import { clearAllHistoryAction } from "../../redux/history/history.actions";
+import { deleteAllHistory } from "../../database/queries/HistoryQueries";
+import { showToast } from "../../hooks/showToast";
 
-const RemoveHistoryDialog = ({
-    dialogVisible,
-    hideDialog,
-    dispatch,
-    theme,
-}) => {
+const RemoveHistoryDialog = ({ dialogVisible, hideDialog, theme }) => {
     const onPress = () => {
-        dispatch(clearAllHistoryAction());
+        deleteAllHistory();
+        showToast("History deleted.");
         hideDialog();
     };
 

@@ -22,7 +22,7 @@ import {
 import { updateLibraryAction } from "../../redux/updates/updates.actions";
 import { useSettings, useTheme } from "../../hooks/reduxHooks";
 import { setNovel } from "../../redux/novel/novel.actions";
-import { Portal, TouchableRipple } from "react-native-paper";
+import { Portal } from "react-native-paper";
 import LibraryFilterSheet from "./components/LibraryFilterSheet";
 
 const LibraryScreen = ({ navigation }) => {

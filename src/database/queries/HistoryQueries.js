@@ -13,7 +13,7 @@ const getHistoryQuery = `
     ORDER BY history.historyTimeRead DESC
     `;
 
-export const getHistory = async () => {
+export const getHistoryFromDb = async () => {
     return new Promise((resolve, reject) => {
         db.transaction((tx) => {
             tx.executeSql(

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
 
 import { Appbar } from "../../components/Appbar";
 import { ScreenContainer } from "../../components/Common";
@@ -7,7 +6,6 @@ import { List } from "../../components/List";
 
 import { useTheme } from "../../hooks/reduxHooks";
 
-import { clearAllHistoryAction } from "../../redux/history/history.actions";
 import { deleteNovelCache } from "../../database/queries/NovelQueries";
 import { Button, Dialog, Portal } from "react-native-paper";
 

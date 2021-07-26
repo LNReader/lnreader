@@ -9,17 +9,24 @@ import History from "../screens/History/History";
 import Browse from "../screens/Browse/Browse";
 import More from "../screens/More/More";
 
-import { useTheme } from "../hooks/reduxHooks";
+import { useSettings, useTheme } from "../hooks/reduxHooks";
 
 const Tab = createMaterialBottomTabNavigator();
 
 const BottomNavigator = () => {
     const theme = useTheme();
 
+    const {
+        showHistoryTab = true,
+        showUpdatesTab = true,
+        showLabelsInNav = false,
+    } = useSettings();
+
     return (
         <Tab.Navigator
             barStyle={{ backgroundColor: theme.colorPrimary }}
             activeColor={theme.colorAccent}
+            shifting={!showLabelsInNav}
         >
             <Tab.Screen
                 name="Library"
@@ -34,32 +41,36 @@ const BottomNavigator = () => {
                     ),
                 }}
             />
-            <Tab.Screen
-                name="Updates"
-                component={Updates}
-                options={{
-                    tabBarIcon: ({ color }) => (
-                        <MaterialCommunityIcons
-                            name="alert-decagram-outline"
-                            color={color}
-                            size={24}
-                        />
-                    ),
-                }}
-            />
-            <Tab.Screen
-                name="History"
-                component={History}
-                options={{
-                    tabBarIcon: ({ color }) => (
-                        <MaterialCommunityIcons
-                            name="history"
-                            color={color}
-                            size={24}
-                        />
-                    ),
-                }}
-            />
+            {showUpdatesTab && (
+                <Tab.Screen
+                    name="Updates"
+                    component={Updates}
+                    options={{
+                        tabBarIcon: ({ color }) => (
+                            <MaterialCommunityIcons
+                                name="alert-decagram-outline"
+                                color={color}
+                                size={24}
+                            />
+                        ),
+                    }}
+                />
+            )}
+            {showHistoryTab && (
+                <Tab.Screen
+                    name="History"
+                    component={History}
+                    options={{
+                        tabBarIcon: ({ color }) => (
+                            <MaterialCommunityIcons
+                                name="history"
+                                color={color}
+                                size={24}
+                            />
+                        ),
+                    }}
+                />
+            )}
             <Tab.Screen
                 name="Browse"
                 component={Browse}

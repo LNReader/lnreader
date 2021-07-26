@@ -9,6 +9,7 @@ import { setAppTheme } from "../../../redux/settings/settings.actions";
 const ThemeModal = ({ themeModalVisible, hidethemeModal, dispatch, theme }) => {
     const themes = [
         { id: 1, name: "Light" },
+        { id: 10, name: "Spring Blossom" },
         { id: 2, name: "Dark" },
         { id: 3, name: "Midnight Dusk" },
         { id: 4, name: "Green Apple" },
@@ -16,7 +17,6 @@ const ThemeModal = ({ themeModalVisible, hidethemeModal, dispatch, theme }) => {
         { id: 7, name: "Strawberry Daiquiri" },
         { id: 8, name: "Tako" },
         { id: 9, name: "Yin & Yang" },
-        { id: 10, name: "Spring Blossom" },
     ];
 
     const renderThemeCheckboxes = () =>

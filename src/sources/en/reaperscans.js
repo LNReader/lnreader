@@ -1,4 +1,5 @@
 import cheerio from "react-native-cheerio";
+import { Status } from "../helpers/constants";
 import { htmlToText } from "../helpers/htmlToText";
 
 const baseUrl = "https://reaperscans.com";
@@ -56,12 +57,9 @@ const parseNovelAndChapters = async (novelUrl) => {
 
     novel.novelUrl = novelUrl;
 
-    novel.novelName = $(".post-title > h3")
-        .text()
-        .replace(/[\t\n]/g, "")
-        .trim();
+    novel.novelName = $(".post-title > h1").text().trim();
 
-    novel.novelCover = $(".summary_image > a > img").attr("src");
+    novel.novelCover = $(".summary_image > a > img").attr("data-src");
 
     $(".post-content_item").each(function (result) {
         detailName = $(this)
@@ -83,7 +81,10 @@ const parseNovelAndChapters = async (novelUrl) => {
                 novel.author = detail.trim();
                 break;
             case "Status":
-                novel.status = detail.trim();
+                novel.status =
+                    detail.trim() === "OnGoing"
+                        ? Status.ONGOING
+                        : Status.COMPLETED;
                 break;
         }
     });
@@ -93,7 +94,8 @@ const parseNovelAndChapters = async (novelUrl) => {
 
     novel.summary = $(".description-summary > div.summary__content")
         .text()
-        .replace(/[\t\n]|Description|Summary/g, "");
+        .trim()
+        .replace(/Description|Summary/g, "");
 
     let novelChapters = [];
 

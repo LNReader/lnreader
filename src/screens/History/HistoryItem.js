@@ -5,10 +5,15 @@ import moment from "moment";
 import { IconButton } from "react-native-paper";
 
 import { parseChapterNumber } from "../../services/utils/helpers";
-import { deleteHistoryAction } from "../../redux/history/history.actions";
 import { setNovel } from "../../redux/novel/novel.actions";
 
-const HistoryItem = ({ history, theme, dispatch, navigation }) => {
+const HistoryItem = ({
+    history,
+    theme,
+    dispatch,
+    navigation,
+    deleteHistory,
+}) => {
     const {
         historyId,
         historyTimeRead,
@@ -97,7 +102,7 @@ const HistoryItem = ({ history, theme, dispatch, navigation }) => {
                         icon="delete-outline"
                         size={22}
                         color={theme.textColorPrimary}
-                        onPress={() => dispatch(deleteHistoryAction(historyId))}
+                        onPress={() => deleteHistory(historyId)}
                     />
                     <IconButton
                         icon="play"

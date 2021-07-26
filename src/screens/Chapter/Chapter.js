@@ -30,9 +30,7 @@ import {
     useTrackingStatus,
 } from "../../hooks/reduxHooks";
 import { updateChaptersRead } from "../../redux/tracker/tracker.actions";
-import { insertHistoryAction } from "../../redux/history/history.actions";
 import {
-    errorTextColor,
     readerBackground,
     readerLineHeight,
     readerTextColor,
@@ -50,6 +48,8 @@ import VerticalScrollbar from "./components/VerticalScrollbar";
 import GestureRecognizer from "react-native-swipe-gestures";
 import TextToComponents from "./TextToComponent";
 import { LoadingScreen } from "../../components/LoadingScreen/LoadingScreen";
+import { insertHistory } from "../../database/queries/HistoryQueries";
+import { SET_LAST_READ } from "../../redux/preferences/preference.types";
 
 const Chapter = ({ route, navigation }) => {
     const {
@@ -136,7 +136,13 @@ const Chapter = ({ route, navigation }) => {
 
     useEffect(() => {
         getChapter(chapterId);
-        !incognitoMode && dispatch(insertHistoryAction(novelId, chapterId));
+        if (!incognitoMode) {
+            insertHistory(novelId, chapterId);
+            dispatch({
+                type: SET_LAST_READ,
+                payload: { novelId, chapterId },
+            });
+        }
         return () => {
             StatusBar.setHidden(false);
             showNavigationBar();

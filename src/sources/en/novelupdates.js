@@ -156,11 +156,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
             isWordPress =
                 isWordPress.toLowerCase().includes("wordpress") ||
                 isWordPress.includes("Site Kit by Google") ||
-                $(".powered-by").text().toLowerCase().includes("wordpress") ||
-                $(".entry-content").html() ||
-                $("section.content").html()
-                    ? true
-                    : false;
+                $(".powered-by").text().toLowerCase().includes("wordpress");
         }
 
         let isRainOfSnow = result.url.toLowerCase().includes("rainofsnow");
@@ -192,6 +188,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
                 ".c-ads",
                 "#madara-comments",
                 "#comments",
+                ".content-comments",
                 ".sharedaddy",
                 ".wp-dark-mode-switcher",
                 ".wp-next-post-navi",
@@ -208,6 +205,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
                 $(".entry-content").html() ||
                 $(".single_post").html() ||
                 $(".post-entry").html() ||
+                $(".main-content").html() ||
                 $("article.post").html() ||
                 $(".content").html() ||
                 $("#content").html();

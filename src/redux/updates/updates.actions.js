@@ -1,7 +1,5 @@
 import { GET_UPDATES } from "./updates.types";
 
-import store from "../store";
-
 import { getUpdates } from "../../database/queries/UpdateQueries";
 import { updateAllNovels } from "../../services/updates";
 

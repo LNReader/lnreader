@@ -35,7 +35,7 @@ const NovelCover = ({ item, onPress, libraryStatus, theme }) => {
         <View
             style={{
                 flex: 1 / getNovelsPerRow(),
-                borderRadius: 4,
+                borderRadius: 6,
                 overflow: "hidden",
             }}
         >
@@ -225,8 +225,8 @@ const styles = StyleSheet.create({
         borderRadius: 4,
     },
     opac: {
-        paddingHorizontal: 4,
-        paddingVertical: 4,
+        paddingHorizontal: 4.4,
+        paddingVertical: 4.4,
         borderRadius: 4,
         flex: 1,
     },
