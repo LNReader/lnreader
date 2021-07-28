@@ -141,6 +141,8 @@ const LibraryScreen = ({ navigation }) => {
                             backgroundColor: theme.searchBarColor,
                             paddingVertical: 4,
                             alignItems: "center",
+                            marginVertical: 8,
+                            elevation: 2,
                         }}
                     >
                         <Text style={{ color: theme.textColorSecondary }}>

@@ -460,5 +460,12 @@
         "sourceName": "ReaperScans",
         "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/reaperscans/icon.png?raw=true",
         "lang": "English"
+    },
+    {
+        "sourceId": 68,
+        "url": "https://www.readwn.com/",
+        "sourceName": "Readwn.com",
+        "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/readwn/icon.png?raw=true",
+        "lang": "English"
     }
 ]

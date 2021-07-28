@@ -7,7 +7,8 @@ const icons = ["(･o･;)", "Σ(ಠ_ಠ)", "ಥ_ಥ", "(˘･_･˘)", "(；￣
 export const ErrorView = ({ errorName, actions, theme }) => (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <Text style={[styles.emptyViewIcon, { color: theme.textColorHint }]}>
-            {icons[Math.floor(Math.random() * 5)]}
+            {/* {icons[Math.floor(Math.random() * 5)]} */}
+            ಥ_ಥ
         </Text>
         <Text style={[styles.emptyViewText, { color: theme.textColorHint }]}>
             {errorName}
@@ -32,6 +33,7 @@ export const ErrorView = ({ errorName, actions, theme }) => (
                             alignItems: "center",
                             paddingBottom: 8,
                             paddingHorizontal: 20,
+                            minWidth: 100,
                         }}
                     >
                         <IconButton
