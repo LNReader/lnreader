@@ -24,7 +24,7 @@ const popularNovels = async (page) => {
         let novelUrl = $(this).attr("data-id");
 
         const novel = {
-            extensionId: 17,
+            sourceId: 17,
             novelName,
             novelCover,
             novelUrl,
@@ -121,6 +121,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     const body = await result.json();
 
     const chapterName = body.result.chapterName;
+    const chapterTextRaw = body.result.content;
     const chapterText = htmlToText(body.result.content);
 
     const chapter = {

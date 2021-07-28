@@ -302,6 +302,15 @@ const Novel = ({ route, navigation }) => {
                                 }}
                                 onPress={() => showJumpToChapterModal(true)}
                             />
+                            {/* <IconButton
+                                icon="file-document-edit-outline"
+                                color="white"
+                                size={21}
+                                style={{
+                                    marginTop: StatusBar.currentHeight + 8,
+                                }}
+                                onPress={() => showJumpToChapterModal(true)}
+                            /> */}
                             <IconButton
                                 icon="share-variant"
                                 color="white"

@@ -38,8 +38,6 @@ const popularNovels = async (page) => {
 const parseNovelAndChapters = async (novelUrl) => {
     const url = `${baseUrl}novel/${novelUrl}`;
 
-    console.log(url);
-
     const result = await fetch(url);
     const body = await result.text();
 
@@ -97,8 +95,6 @@ const parseNovelAndChapters = async (novelUrl) => {
 
     const novelId = $("#manga-chapters-holder").attr("data-id");
 
-    console.log(novelId);
-
     let formData = new FormData();
     formData.append("action", "manga_get_chapters");
     formData.append("manga", novelId);
@@ -111,7 +107,6 @@ const parseNovelAndChapters = async (novelUrl) => {
         }
     );
     const text = await data.text();
-    console.log(text);
 
     $ = cheerio.load(text);
 

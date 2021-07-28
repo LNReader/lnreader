@@ -351,15 +351,21 @@ const Chapter = ({ route, navigation }) => {
                             style={{ flex: 1 }}
                         >
                             <TouchableWithoutFeedback
-                                style={{
-                                    flex: 1,
-                                }}
+                                style={{ flex: 1 }}
                                 onPress={hideHeader}
                                 onLayout={scrollToSavedProgress}
                             >
                                 {useWebViewForChapter &&
                                 chapter.chapterTextRaw ? (
                                     <WebView
+                                        style={{
+                                            backgroundColor: readerBackground(
+                                                reader.theme
+                                            ),
+                                        }}
+                                        originWhitelist={["*"]}
+                                        scalesPageToFit={true}
+                                        showsVerticalScrollIndicator={false}
                                         source={{
                                             html: `
                                     <html>
@@ -385,9 +391,7 @@ const Chapter = ({ route, navigation }) => {
                                                         reader.textSize
                                                     }px;
                                                     color: ${reader.textColor};
-                                                    background-color: ${readerBackground(
-                                                        reader.theme
-                                                    )};
+                                                    
                                                     text-align: ${
                                                         reader.textAlign
                                                     };

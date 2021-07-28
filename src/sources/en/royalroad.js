@@ -2,6 +2,7 @@ import cheerio from "react-native-cheerio";
 import { htmlToText } from "../helpers/htmlToText";
 import moment from "moment";
 import { parseMadaraDate } from "../helpers/parseDate";
+import { Status } from "../helpers/constants";
 
 const baseUrl = "https://www.royalroad.com/";
 
@@ -69,13 +70,16 @@ const parseNovelAndChapters = async (novelUrl) => {
 
     novel.author = $("h1").next().text().replace("by ", "").trim();
     novel.genre = $("span.tags").text().trim().replace(/\n\s+/g, ",");
-    novel.status = $(
-        "div.fiction-info > div.portlet > .col-md-8 > .margin-bottom-10 > span"
-    )
-        .first()
-        .next()
-        .text()
-        .trim();
+    novel.status =
+        $(
+            "div.fiction-info > div.portlet > .col-md-8 > .margin-bottom-10 > span"
+        )
+            .first()
+            .next()
+            .text()
+            .trim() === "ONGOING"
+            ? Status.ONGOING
+            : Status.COMPLETED;
 
     let novelChapters = [];
 

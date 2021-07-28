@@ -25,7 +25,6 @@ const popularNovels = async (page) => {
 
         const novelCover =
             baseUrl + $(this).find(".novel-cover > img").attr("data-src");
-        console.log(novelCover);
 
         const novel = {
             sourceId,
@@ -112,7 +111,8 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     $ = cheerio.load(body);
 
     const chapterName = $(".titles > h2").text();
-    let chapterText = htmlToText($(".chapter-content").html());
+    let chapterTextRaw = $(".chapter-content").html();
+    let chapterText = htmlToText(chapterTextRaw);
 
     const chapter = {
         sourceId,
@@ -144,8 +144,6 @@ const searchNovels = async (searchTerm) => {
         }),
     });
     const body = await result.text();
-
-    console.log(body);
 
     $ = cheerio.load(body);
 

@@ -9,11 +9,7 @@ const GlobalSearchNovelList = ({ data, theme, library, navigation }) => {
             (obj) => obj.novelUrl === novelUrl && obj.sourceId === sourceId
         );
 
-    const navigateToNovel = (item) =>
-        navigation.navigate("Novel", {
-            ...item,
-            sourceId: item.sourceId,
-        });
+    const navigateToNovel = (item) => navigation.replace("Novel", item);
 
     const renderItem = ({ item }) => (
         <GlobalSearchNovelCover
