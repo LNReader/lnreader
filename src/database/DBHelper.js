@@ -13,7 +13,10 @@ import {
     createHistoryTableQuery,
     createChapterIdIndexQuery,
 } from "./tables/HistoryTable";
-import { createDownloadTableQuery } from "./tables/DownloadTable";
+import {
+    addChapterTextRawColumn,
+    createDownloadTableQuery,
+} from "./tables/DownloadTable";
 import {
     createUpdatesTableQuery,
     updatesSeedDataQuery,
@@ -34,6 +37,9 @@ export const createDB = () => {
         tx.executeSql(createHistoryTableQuery);
         tx.executeSql(createDownloadTableQuery);
         tx.executeSql(createUpdatesTableQuery);
+
+        //Alter table
+        tx.executeSql(addChapterTextRawColumn);
 
         //Db indexes
         tx.executeSql(createUrlIndexQuery);

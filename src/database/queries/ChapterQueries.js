@@ -147,7 +147,7 @@ export const isChapterDownloaded = async (chapterId) => {
     );
 };
 
-const downloadChapterQuery = `INSERT INTO downloads (downloadChapterId, chapterName, chapterText) VALUES (?, ?, ?)`;
+const downloadChapterQuery = `INSERT INTO downloads (downloadChapterId, chapterName, chapterText, chapterTextRaw) VALUES (?, ?, ?, ?)`;
 
 export const downloadChapter = async (
     sourceId,
@@ -166,7 +166,12 @@ export const downloadChapter = async (
         );
         tx.executeSql(
             downloadChapterQuery,
-            [chapterId, chapter.chapterName, chapter.chapterText],
+            [
+                chapterId,
+                chapter.chapterName,
+                chapter.chapterText,
+                chapter.chapterTextRaw,
+            ],
             (tx, res) => {
                 // console.log(`Downloaded Chapter ${chapter.chapterUrl}`);
             },

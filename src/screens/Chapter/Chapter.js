@@ -5,7 +5,6 @@ import {
     Text,
     StatusBar,
     ScrollView,
-    Pressable,
     TouchableWithoutFeedback,
     Dimensions,
 } from "react-native";
@@ -369,7 +368,11 @@ const Chapter = ({ route, navigation }) => {
                                             <style>
                                                 html,body
                                                     {
-                                                        overflow-x: hidden; 
+                                                        overflow-x: hidden;
+                                                        padding-top: ${
+                                                            StatusBar.currentHeight
+                                                        };
+
                                                     }
                                                 body {
                                                     padding-left: ${
@@ -399,6 +402,9 @@ const Chapter = ({ route, navigation }) => {
                                                     color: ${theme.colorAccent};
                                                 }
                                                 img {
+                                                    display: block;
+                                                    width: auto;
+                                                    height: auto;
                                                     max-width: ${
                                                         Dimensions.get("window")
                                                             .width -
@@ -431,6 +437,7 @@ const Chapter = ({ route, navigation }) => {
                                             paddingVertical: 16,
                                             paddingBottom: 32,
                                             paddingHorizontal: `${reader.padding}%`,
+                                            paddingTop: StatusBar.currentHeight,
                                         }}
                                         onLayout={scrollToSavedProgress}
                                         onPress={hideHeader}
@@ -510,10 +517,7 @@ const Chapter = ({ route, navigation }) => {
 export default Chapter;
 
 const styles = StyleSheet.create({
-    screenContainer: {
-        flexGrow: 1,
-        paddingTop: StatusBar.currentHeight,
-    },
+    screenContainer: { flexGrow: 1 },
     scrollPercentage: {
         width: "100%",
         position: "absolute",

@@ -4,8 +4,9 @@ export const createDownloadTableQuery = `
     downloadChapterId INTEGER NOT NULL,
     chapterName TEXT,
     chapterText TEXT,
-    nextChapter TEXT,
-    prevChapter TEXT,
+    chapterTextRaw TEXT,
     FOREIGN KEY (downloadChapterId) REFERENCES chapters(chapterId)
     ON DELETE CASCADE
     )`;
+
+export const addChapterTextRawColumn = `ALTER TABLE DOWNLOADS ADD COLUMN chapterTextRaw TEXT`;
