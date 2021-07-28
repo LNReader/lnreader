@@ -166,6 +166,7 @@ let parseChapter = async (novelUrl, chapterUrl) => {
 
     let chapterText = cheerioQuery("#novel_honbun") // get chapter text
         .html();
+    chapterTextRaw = chapterText;
     chapterText = htmlToText(chapterText);
 
     // create chapter data structure
@@ -175,6 +176,7 @@ let parseChapter = async (novelUrl, chapterUrl) => {
         chapterUrl,
         chapterName: "",
         chapterText,
+        chapterTextRaw,
     };
 
     if (chapterUrl === "oneshot")

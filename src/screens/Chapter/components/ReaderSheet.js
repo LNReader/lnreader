@@ -33,6 +33,7 @@ const ReaderSheet = ({
     navigation,
     bottomSheetRef,
     selectText,
+    useWebViewForChapter,
     showScrollPercentage,
 }) => {
     const [fontMenu, setFontMenu] = useState(false);
@@ -65,8 +66,8 @@ const ReaderSheet = ({
     return (
         <Bottomsheet
             ref={bottomSheetRef}
-            draggableRange={{ top: 480, bottom: 0 }}
-            snappingPoints={[0, 480]}
+            draggableRange={{ top: 520, bottom: 0 }}
+            snappingPoints={[0, 520]}
             showBackdrop={true}
             backdropOpacity={0}
         >
@@ -74,7 +75,7 @@ const ReaderSheet = ({
                 <BottomSheetHandle theme={theme} />
                 {/* <IconButton
                     icon="cog-outline"
-                    color="#FFFFFF"
+                    color={"#FFFFFF"}
                     size={24}
                     onPress={() => {
                         navigation.navigate("MoreStack", {
@@ -336,6 +337,39 @@ const ReaderSheet = ({
                                 />
                             ))}
                         </Menu>
+                    </Pressable>
+                    <Pressable
+                        style={{
+                            flexDirection: "row",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                            width: "100%",
+                            paddingHorizontal: 16,
+                            paddingVertical: 8,
+                        }}
+                        android_ripple={{ color: theme.colorAccent }}
+                        onPress={() =>
+                            dispatch(
+                                setAppSettings(
+                                    "useWebViewForChapter",
+                                    !useWebViewForChapter
+                                )
+                            )
+                        }
+                    >
+                        <ReaderSettingTitle title="Use WebView" />
+                        <Switch
+                            value={useWebViewForChapter}
+                            onValueChange={() =>
+                                dispatch(
+                                    setAppSettings(
+                                        "useWebViewForChapter",
+                                        !useWebViewForChapter
+                                    )
+                                )
+                            }
+                            color={theme.colorAccent}
+                        />
                     </Pressable>
                     <Pressable
                         style={{

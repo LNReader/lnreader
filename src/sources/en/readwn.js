@@ -23,16 +23,6 @@ const popularNovels = async (page) => {
         const novelName = $(this).find("h4").text();
         const novelUrl = $(this).find("a").attr("href").split("/").pop();
 
-        // const coverUrl = novelUrl
-        //     .replace(".html", "")
-        //     .split("-")
-        //     .map((word) =>
-        //         word.replace(/(^\w{1})|(\s{1}\w{1})/g, (match) =>
-        //             match.toUpperCase()
-        //         )
-        //     )
-        //     .join("-");
-
         const novelCover =
             baseUrl + $(this).find(".novel-cover > img").attr("data-src");
         console.log(novelCover);
@@ -130,6 +120,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
         chapterUrl,
         chapterName,
         chapterText,
+        chapterTextRaw,
     };
 
     return chapter;

@@ -233,6 +233,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
                 ""
             );
 
+            chapterTextRaw = chapterText;
             chapterText = htmlToText(chapterText);
         } else {
             if (!chapterText) {
@@ -250,6 +251,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
         chapterUrl,
         chapterName,
         chapterText,
+        chapterTextRaw,
     };
 
     return chapter;

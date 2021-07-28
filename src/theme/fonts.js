@@ -3,13 +3,13 @@
  */
 
 export const fonts = {
-    "pt-sans-bold": require("../../assets/fonts/PTSansNarrow-Bold.ttf"),
-    "arbutus-slab": require("../../assets/fonts/ArbutusSlab-Regular.ttf"),
-    domine: require("../../assets/fonts/Domine-VariableFont_wght.ttf"),
-    lato: require("../../assets/fonts/Lato-Regular.ttf"),
-    "noto-sans": require("../../assets/fonts/NotoSans-Regular.ttf"),
-    "open-sans": require("../../assets/fonts/OpenSans-Regular.ttf"),
-    "pt-serif": require("../../assets/fonts/PTSerif-Regular.ttf"),
-    lora: require("../../assets/fonts/Lora-VariableFont_wght.ttf"),
-    nunito: require("../../assets/fonts/Nunito-Regular.ttf"),
+    "pt-sans-bold": require("../../android/app/src/main/assets/fonts/pt-sans-bold.ttf"),
+    "arbutus-slab": require("../../android/app/src/main/assets/fonts/arbutus-slab.ttf"),
+    domine: require("../../android/app/src/main/assets/fonts/domine.ttf"),
+    lato: require("../../android/app/src/main/assets/fonts/lato.ttf"),
+    "noto-sans": require("../../android/app/src/main/assets/fonts/noto-sans.ttf"),
+    "open-sans": require("../../android/app/src/main/assets/fonts/open-sans.ttf"),
+    "pt-serif": require("../../android/app/src/main/assets/fonts/pt-serif.ttf"),
+    lora: require("../../android/app/src/main/assets/fonts/lora.ttf"),
+    nunito: require("../../android/app/src/main/assets/fonts/nunito.ttf"),
 };

@@ -118,6 +118,7 @@ class WPMangaStreamScraper {
         let chapterText = $("div.epcontent").text();
 
         if (chapterText) {
+            chapterTextRaw = chapterText;
             chapterText = htmlToText(chapterText);
         }
 
@@ -127,6 +128,7 @@ class WPMangaStreamScraper {
             chapterUrl,
             chapterName,
             chapterText,
+            chapterTextRaw,
         };
 
         return chapter;

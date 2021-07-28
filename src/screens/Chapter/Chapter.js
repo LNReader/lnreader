@@ -6,6 +6,8 @@ import {
     StatusBar,
     ScrollView,
     Pressable,
+    TouchableWithoutFeedback,
+    Dimensions,
 } from "react-native";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -50,6 +52,7 @@ import TextToComponents from "./TextToComponent";
 import { LoadingScreen } from "../../components/LoadingScreen/LoadingScreen";
 import { insertHistory } from "../../database/queries/HistoryQueries";
 import { SET_LAST_READ } from "../../redux/preferences/preference.types";
+import WebView from "react-native-webview";
 
 const Chapter = ({ route, navigation }) => {
     const {
@@ -76,6 +79,7 @@ const Chapter = ({ route, navigation }) => {
         swipeGestures = true,
         incognitoMode = false,
         textSelectable = false,
+        useWebViewForChapter = false,
     } = useSettings();
 
     const [hidden, setHidden] = useState(true);
@@ -347,29 +351,105 @@ const Chapter = ({ route, navigation }) => {
                             config={config}
                             style={{ flex: 1 }}
                         >
-                            <Pressable
+                            <TouchableWithoutFeedback
                                 style={{
                                     flex: 1,
-                                    paddingVertical: 16,
-                                    paddingBottom: 32,
-                                    paddingHorizontal: `${reader.padding}%`,
                                 }}
-                                onLayout={scrollToSavedProgress}
                                 onPress={hideHeader}
+                                onLayout={scrollToSavedProgress}
                             >
-                                <TextToComponents
-                                    text={chapter.chapterText}
-                                    textStyle={readerStyles}
-                                    textSize={reader.textSize}
-                                    textColor={
-                                        reader.textColor ||
-                                        readerTextColor(reader.theme)
-                                    }
-                                    textSelectable={textSelectable}
-                                    onPressLink={onPressLink}
-                                    theme={theme}
-                                />
-                            </Pressable>
+                                {useWebViewForChapter &&
+                                chapter.chapterTextRaw ? (
+                                    <WebView
+                                        source={{
+                                            html: `
+                                    <html>
+                                        <head>
+                                            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+                                            <style>
+                                                html,body
+                                                    {
+                                                        overflow-x: hidden; 
+                                                    }
+                                                body {
+                                                    padding-left: ${
+                                                        reader.padding
+                                                    }%;
+                                                    padding-right: ${
+                                                        reader.padding
+                                                    }%;
+                                                    font-size: ${
+                                                        reader.textSize
+                                                    }px;
+                                                    color: ${reader.textColor};
+                                                    background-color: ${readerBackground(
+                                                        reader.theme
+                                                    )};
+                                                    text-align: ${
+                                                        reader.textAlign
+                                                    };
+                                                    line-height: ${
+                                                        reader.lineHeight
+                                                    };
+                                                    font-family: ${
+                                                        reader.fontFamily
+                                                    };
+                                                }
+                                                a {
+                                                    color: ${theme.colorAccent};
+                                                }
+                                                img {
+                                                    max-width: ${
+                                                        Dimensions.get("window")
+                                                            .width -
+                                                        10 * reader.padding
+                                                    };
+                                                }
+                                                @font-face {
+                                                    font-family: ${
+                                                        reader.fontFamily
+                                                    };
+                                                    src: url('file:///android_asset/fonts/${
+                                                        reader.fontFamily
+                                                    }.ttf');
+                                                }
+                                                
+                                            </style>
+                                            </head>
+                                        <body>
+                                            ${chapter.chapterTextRaw}
+                                        </body>
+                                    </html>
+                                    `,
+                                        }}
+                                        onScroll={onScroll}
+                                    />
+                                ) : (
+                                    <View
+                                        style={{
+                                            flex: 1,
+                                            paddingVertical: 16,
+                                            paddingBottom: 32,
+                                            paddingHorizontal: `${reader.padding}%`,
+                                        }}
+                                        onLayout={scrollToSavedProgress}
+                                        onPress={hideHeader}
+                                    >
+                                        <TextToComponents
+                                            text={chapter.chapterText}
+                                            textStyle={readerStyles}
+                                            textSize={reader.textSize}
+                                            textColor={
+                                                reader.textColor ||
+                                                readerTextColor(reader.theme)
+                                            }
+                                            textSelectable={textSelectable}
+                                            onPressLink={onPressLink}
+                                            theme={theme}
+                                        />
+                                    </View>
+                                )}
+                            </TouchableWithoutFeedback>
                         </GestureRecognizer>
                     )}
                     <Portal>
@@ -380,19 +460,22 @@ const Chapter = ({ route, navigation }) => {
                             navigation={navigation}
                             bottomSheetRef={readerSheetRef}
                             selectText={textSelectable}
+                            useWebViewForChapter={useWebViewForChapter}
                             showScrollPercentage={showScrollPercentage}
                         />
                     </Portal>
                 </ScrollView>
-                <VerticalScrollbar
-                    theme={theme}
-                    hide={hidden}
-                    setLoading={setLoading}
-                    contentSize={contentSize}
-                    scrollViewRef={scrollViewRef}
-                    scrollPercentage={scrollPercentage}
-                    setScrollPercentage={setScrollPercentage}
-                />
+                {!useWebViewForChapter && (
+                    <VerticalScrollbar
+                        theme={theme}
+                        hide={hidden}
+                        setLoading={setLoading}
+                        contentSize={contentSize}
+                        scrollViewRef={scrollViewRef}
+                        scrollPercentage={scrollPercentage}
+                        setScrollPercentage={setScrollPercentage}
+                    />
+                )}
                 <ChapterFooter
                     theme={theme}
                     swipeGestures={swipeGestures}
@@ -400,6 +483,7 @@ const Chapter = ({ route, navigation }) => {
                     nextChapter={nextChapter}
                     prevChapter={prevChapter}
                     hide={hidden}
+                    useWebViewForChapter={useWebViewForChapter}
                     navigateToNextChapter={navigateToNextChapter}
                     navigateToPrevChapter={navigateToPrevChapter}
                     readerSheetRef={readerSheetRef}

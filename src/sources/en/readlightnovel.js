@@ -145,13 +145,16 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 
     $(".alert").remove();
     $(".hidden").remove();
+    $("iframe").remove();
+    $("button").remove();
+    $(
+        'div[style="float: left; margin-top: 20px; font-style: italic;margin-left: 50px; font-size: 14px;"]'
+    ).remove();
 
     let chapterText = $(".desc").html();
 
-    chapterText = htmlToText(chapterText).replace(
-        /\n\nSponsored Content\n\n|If audio player doesn't work, press Stop then Play button again/g,
-        ""
-    );
+    chapterTextRaw = chapterText;
+    chapterText = htmlToText(chapterText);
 
     const chapter = {
         sourceId: 2,
@@ -159,6 +162,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
         chapterUrl,
         chapterName,
         chapterText,
+        chapterTextRaw,
     };
 
     return chapter;

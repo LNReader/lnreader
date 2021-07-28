@@ -106,6 +106,7 @@ const parseChapter = async (novUrl, chapUrl) => {
         chapterUrl,
         chapterName,
         chapterText,
+        chapterTextRaw,
     };
 
     return chapter;

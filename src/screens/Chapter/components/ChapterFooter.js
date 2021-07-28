@@ -16,6 +16,7 @@ const ChapterFooter = ({
     navigateToPrevChapter,
     nextChapter,
     prevChapter,
+    useWebViewForChapter,
 }) => {
     const rippleConfig = {
         color: theme.rippleColor,
@@ -68,17 +69,19 @@ const ChapterFooter = ({
                         color="#FFFFFF"
                     />
                 </Pressable>
-                <Pressable
-                    android_ripple={rippleConfig}
-                    style={styles.buttonStyles}
-                    onPress={() => scrollViewRef.current.scrollTo({})}
-                >
-                    <IconButton
-                        icon="format-vertical-align-top"
-                        size={26}
-                        color="#FFFFFF"
-                    />
-                </Pressable>
+                {!useWebViewForChapter && (
+                    <Pressable
+                        android_ripple={rippleConfig}
+                        style={styles.buttonStyles}
+                        onPress={() => scrollViewRef.current.scrollTo({})}
+                    >
+                        <IconButton
+                            icon="format-vertical-align-top"
+                            size={26}
+                            color="#FFFFFF"
+                        />
+                    </Pressable>
+                )}
                 <Pressable
                     android_ripple={rippleConfig}
                     style={styles.buttonStyles}

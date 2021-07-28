@@ -133,8 +133,9 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     $ = cheerio.load(body);
 
     const chapterName = $("h1#chapter-heading").text();
-    let chapterText = $(".reading-content").html();
-    chapterText = htmlToText(chapterText);
+
+    let chapterTextRaw = $(".reading-content").html();
+    chapterText = htmlToText(chapterTextRaw);
     chapterText = chapterText.replace(/(?<=[[])[\n](?=[h])/g, "");
 
     const chapter = {
@@ -143,6 +144,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
         chapterUrl,
         chapterName,
         chapterText,
+        chapterTextRaw,
     };
 
     return chapter;

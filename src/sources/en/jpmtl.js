@@ -132,6 +132,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 
     const chapterName = $(".chapter-content__title").text();
     let chapterText = $(".chapter-content__content").html();
+    chapterTextRaw = chapterText;
     chapterText = htmlToText(chapterText);
 
     novelUrl += "/";
@@ -142,6 +143,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
         chapterUrl,
         chapterName,
         chapterText,
+        chapterTextRaw,
     };
 
     return chapter;

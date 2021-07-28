@@ -165,6 +165,7 @@ class MadaraScraper {
             $(".text-center").text() || $("#chapter-heading").text();
 
         let chapterText = $(".text-left").html();
+        chapterTextRaw = chapterText;
         chapterText = htmlToText(chapterText);
 
         const chapter = {
@@ -173,6 +174,7 @@ class MadaraScraper {
             chapterUrl,
             chapterName,
             chapterText,
+            chapterTextRaw,
         };
 
         return chapter;

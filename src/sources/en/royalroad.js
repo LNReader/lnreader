@@ -117,8 +117,8 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 
     let chapterName = $("div.chapter-content").find("strong").text();
 
-    let chapterText = $("div.chapter-content").html();
-    chapterText = htmlToText(chapterText);
+    let chapterTextRaw = $("div.chapter-content").html();
+    chapterText = htmlToText(chapterTextRaw);
 
     const chapter = {
         sourceId: 34,
@@ -126,6 +126,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
         chapterUrl,
         chapterName,
         chapterText,
+        chapterTextRaw,
     };
 
     return chapter;
