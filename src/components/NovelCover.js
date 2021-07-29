@@ -221,12 +221,11 @@ const styles = StyleSheet.create({
         padding: 8,
     },
     linearGradient: {
-        bottom: -1,
         borderRadius: 4,
     },
     opac: {
-        paddingHorizontal: 4.4,
-        paddingVertical: 4.4,
+        paddingHorizontal: 4.8,
+        paddingVertical: 4.8,
         borderRadius: 4,
         flex: 1,
     },

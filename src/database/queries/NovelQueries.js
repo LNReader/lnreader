@@ -193,3 +193,21 @@ export const migrateNovel = async (sourceId, novelUrl) => {
         showToast(error.message);
     }
 };
+
+export const updateNovelInfo = async (info, novelId) => {
+    db.transaction((tx) => {
+        tx.executeSql(
+            "UPDATE novels SET novelName = ?, novelSummary = ?, author = ?, genre = ?, status = ? WHERE novelId = ?",
+            [
+                info.novelName,
+                info.novelSummary,
+                info.author,
+                info.genre,
+                info.status,
+                novelId,
+            ],
+            (txObj, res) => {},
+            (txObj, error) => console.log("Error ", error)
+        );
+    });
+};

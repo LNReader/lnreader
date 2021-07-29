@@ -395,7 +395,7 @@ const Chapter = ({ route, navigation }) => {
                                     height: auto;
                                     max-width: ${
                                         Dimensions.get("window").width -
-                                        10 * reader.padding
+                                        12 * reader.padding
                                     };
                                 }
                                 @font-face {

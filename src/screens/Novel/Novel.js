@@ -41,6 +41,7 @@ import TrackSheet from "./components/Tracker/TrackSheet";
 import { Row } from "../../components/Common";
 import JumpToChapterModal from "./components/JumpToChapterModal";
 import { Actionbar } from "../../components/Actionbar/Actionbar";
+import EditInfoModal from "./components/EditInfoModal";
 
 const Novel = ({ route, navigation }) => {
     const item = route.params;
@@ -184,6 +185,8 @@ const Novel = ({ route, navigation }) => {
         />
     );
 
+    const [editInfoModal, showEditInfoModal] = useState(false);
+
     return (
         <Provider>
             <View
@@ -302,15 +305,15 @@ const Novel = ({ route, navigation }) => {
                                 }}
                                 onPress={() => showJumpToChapterModal(true)}
                             />
-                            {/* <IconButton
+                            <IconButton
                                 icon="file-document-edit-outline"
                                 color="white"
                                 size={21}
                                 style={{
                                     marginTop: StatusBar.currentHeight + 8,
                                 }}
-                                onPress={() => showJumpToChapterModal(true)}
-                            /> */}
+                                onPress={() => showEditInfoModal(true)}
+                            />
                             <IconButton
                                 icon="share-variant"
                                 color="white"
@@ -435,6 +438,13 @@ const Novel = ({ route, navigation }) => {
                             chapters={chapters}
                             novel={novel}
                             navigation={navigation}
+                        />
+                        <EditInfoModal
+                            modalVisible={editInfoModal}
+                            hideModal={() => showEditInfoModal(false)}
+                            novel={novel}
+                            theme={theme}
+                            dispatch={dispatch}
                         />
                         <ChaptersSettingsSheet
                             novelUrl={novelUrl}
