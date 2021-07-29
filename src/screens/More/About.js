@@ -1,21 +1,23 @@
 import React from "react";
-import { View } from "react-native";
+
 import * as Linking from "expo-linking";
-
-import { Appbar } from "../../components/Appbar";
-
 import { useSelector } from "react-redux";
+
 import { List } from "../../components/List";
 import { ScreenContainer } from "../../components/Common";
 import { MoreHeader } from "./components/MoreHeader";
-import { IconButton } from "react-native-paper";
 
 const AboutScreen = ({ navigation }) => {
     const theme = useSelector((state) => state.settingsReducer.theme);
 
     return (
         <ScreenContainer theme={theme}>
-            <MoreHeader title="About" navigation={navigation} theme={theme} />
+            <MoreHeader
+                title="About"
+                navigation={navigation}
+                theme={theme}
+                goBack={true}
+            />
             <List.Section>
                 <List.Item
                     title="Version"

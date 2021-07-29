@@ -96,10 +96,6 @@ const LibraryScreen = ({ navigation }) => {
         />
     );
 
-    // if (!loading) {
-    //     console.log(novels);
-    // }
-
     const listEmptyComponent = () =>
         searchText === "" && (
             <EmptyView

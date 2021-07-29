@@ -2,11 +2,11 @@ import React from "react";
 import { Image, StyleSheet, View } from "react-native";
 import { Appbar } from "../../../components/Appbar";
 
-export const MoreHeader = ({ title, navigation, theme }) => (
+export const MoreHeader = ({ title, navigation, theme, goBack }) => (
     <>
         <Appbar
             title={title}
-            onBackAction={navigation.goBack}
+            onBackAction={goBack && navigation.goBack}
             style={{ elevation: 0 }}
         />
         <View style={{ overflow: "hidden", paddingBottom: 4 }}>

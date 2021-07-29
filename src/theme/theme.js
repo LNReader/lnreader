@@ -161,7 +161,27 @@ export const yinYangTheme = {
 };
 
 /**
- * Light
+ * Yin & Yang
+ */
+
+export const oceanicTheme = {
+    id: 6,
+    name: "Oceanic",
+    ...PrimaryColors.oceanic,
+    colorAccent: AccentColors.oceanic,
+    rippleColor: RippleColors.oceanic,
+    searchBarColor: "#32424A",
+    menuColor: "#32424A",
+    filterColor: "#FFEB3B",
+    dividerColor: DividerColors.DARK,
+    colorDisabled: "#484861",
+    colorButtonText: "#000000",
+    statusBar: StatusBarStyle.LIGHT,
+    ...TextColors.dark,
+};
+
+/**
+ * Spring Blossom
  */
 export const springBlossomTheme = {
     id: 10,

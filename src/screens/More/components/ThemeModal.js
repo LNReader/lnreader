@@ -14,6 +14,7 @@ const ThemeModal = ({ themeModalVisible, hidethemeModal, dispatch, theme }) => {
         { id: 3, name: "Midnight Dusk" },
         { id: 4, name: "Green Apple" },
         { id: 5, name: "Iris Blue" },
+        { id: 6, name: "Oceanic" },
         { id: 7, name: "Strawberry Daiquiri" },
         { id: 8, name: "Tako" },
         { id: 9, name: "Yin & Yang" },

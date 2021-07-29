@@ -7,6 +7,7 @@ import {
     ScrollView,
     TouchableWithoutFeedback,
     Dimensions,
+    Pressable,
 } from "react-native";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -52,6 +53,7 @@ import { LoadingScreen } from "../../components/LoadingScreen/LoadingScreen";
 import { insertHistory } from "../../database/queries/HistoryQueries";
 import { SET_LAST_READ } from "../../redux/preferences/preference.types";
 import WebView from "react-native-webview";
+import { WebViewReader } from "./components/WebViewReader";
 
 const Chapter = ({ route, navigation }) => {
     const {
@@ -71,10 +73,9 @@ const Chapter = ({ route, navigation }) => {
     const theme = useTheme();
     const dispatch = useDispatch();
     const reader = useReaderSettings();
-    const showScrollPercentage = useSelector(
-        (state) => state.settingsReducer.showScrollPercentage
-    );
+
     const {
+        showScrollPercentage = true,
         swipeGestures = true,
         incognitoMode = false,
         textSelectable = false,
@@ -293,63 +294,61 @@ const Chapter = ({ route, navigation }) => {
                     navigation={navigation}
                     dispatch={dispatch}
                 />
-                <ScrollView
-                    ref={(ref) => (scrollViewRef.current = ref)}
-                    contentContainerStyle={[
-                        styles.screenContainer,
-                        { backgroundColor: readerBackground(reader.theme) },
-                    ]}
-                    onScroll={onScroll}
-                    onContentSizeChange={(x, y) => setContentSize(y)}
-                    showsVerticalScrollIndicator={false}
+                <GestureRecognizer
+                    onSwipeRight={swipeGestures && navigateToPrevChapter}
+                    onSwipeLeft={swipeGestures && navigateToNextChapter}
+                    config={config}
+                    style={{ flex: 1 }}
                 >
-                    {error ? (
-                        <View style={{ flex: 1, justifyContent: "center" }}>
-                            <EmptyView
-                                icon="Σ(ಠ_ಠ)"
-                                description={error}
-                                style={{
-                                    color:
-                                        reader.textColor ||
-                                        readerTextColor(reader.theme),
-                                }}
-                            >
-                                <IconButton
-                                    icon="reload"
-                                    size={25}
-                                    style={{ margin: 0, marginTop: 16 }}
-                                    color={
-                                        reader.textColor ||
-                                        readerTextColor(reader.theme)
-                                    }
-                                    onPress={() => {
-                                        getChapter(chapterId);
-                                        setLoading(true);
-                                        setError();
-                                    }}
-                                />
-                                <Text
+                    <ScrollView
+                        ref={(ref) => (scrollViewRef.current = ref)}
+                        contentContainerStyle={[
+                            styles.screenContainer,
+                            { backgroundColor: readerBackground(reader.theme) },
+                        ]}
+                        onScroll={onScroll}
+                        onContentSizeChange={(x, y) => setContentSize(y)}
+                        showsVerticalScrollIndicator={false}
+                    >
+                        {error ? (
+                            <View style={{ flex: 1, justifyContent: "center" }}>
+                                <EmptyView
+                                    icon="Σ(ಠ_ಠ)"
+                                    description={error}
                                     style={{
                                         color:
                                             reader.textColor ||
                                             readerTextColor(reader.theme),
                                     }}
                                 >
-                                    Retry
-                                </Text>
-                            </EmptyView>
-                        </View>
-                    ) : loading ? (
-                        <LoadingScreen theme={theme} />
-                    ) : (
-                        <GestureRecognizer
-                            onSwipeRight={
-                                swipeGestures && navigateToPrevChapter
-                            }
-                            onSwipeLeft={swipeGestures && navigateToNextChapter}
-                            config={config}
-                            style={{ flex: 1 }}
-                        >
+                                    <IconButton
+                                        icon="reload"
+                                        size={25}
+                                        style={{ margin: 0, marginTop: 16 }}
+                                        color={
+                                            reader.textColor ||
+                                            readerTextColor(reader.theme)
+                                        }
+                                        onPress={() => {
+                                            getChapter(chapterId);
+                                            setLoading(true);
+                                            setError();
+                                        }}
+                                    />
+                                    <Text
+                                        style={{
+                                            color:
+                                                reader.textColor ||
+                                                readerTextColor(reader.theme),
+                                        }}
+                                    >
+                                        Retry
+                                    </Text>
+                                </EmptyView>
+                            </View>
+                        ) : loading ? (
+                            <LoadingScreen theme={theme} />
+                        ) : (
                             <TouchableWithoutFeedback
                                 style={{ flex: 1 }}
                                 onPress={hideHeader}
@@ -366,71 +365,52 @@ const Chapter = ({ route, navigation }) => {
                                         originWhitelist={["*"]}
                                         scalesPageToFit={true}
                                         showsVerticalScrollIndicator={false}
+                                        onScroll={onScroll}
                                         source={{
                                             html: `
-                                    <html>
-                                        <head>
-                                            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-                                            <style>
-                                                html,body
-                                                    {
-                                                        overflow-x: hidden;
-                                                        padding-top: ${
-                                                            StatusBar.currentHeight
-                                                        };
+                            <html>
+                            <head>
+                                <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+                                <style>
+                                html {
+                                    overflow-x: hidden;
+                                    padding-top: ${StatusBar.currentHeight};
+                                }
+                                body {
+                                    padding-left: ${reader.padding}%;
+                                    padding-right: ${reader.padding}%;
+                                    font-size: ${reader.textSize}px;
+                                    color: ${reader.textColor};
 
-                                                    }
-                                                body {
-                                                    padding-left: ${
-                                                        reader.padding
-                                                    }%;
-                                                    padding-right: ${
-                                                        reader.padding
-                                                    }%;
-                                                    font-size: ${
-                                                        reader.textSize
-                                                    }px;
-                                                    color: ${reader.textColor};
-                                                    
-                                                    text-align: ${
-                                                        reader.textAlign
-                                                    };
-                                                    line-height: ${
-                                                        reader.lineHeight
-                                                    };
-                                                    font-family: ${
-                                                        reader.fontFamily
-                                                    };
-                                                }
-                                                a {
-                                                    color: ${theme.colorAccent};
-                                                }
-                                                img {
-                                                    display: block;
-                                                    width: auto;
-                                                    height: auto;
-                                                    max-width: ${
-                                                        Dimensions.get("window")
-                                                            .width -
-                                                        10 * reader.padding
-                                                    };
-                                                }
-                                                @font-face {
-                                                    font-family: ${
-                                                        reader.fontFamily
-                                                    };
-                                                    src: url('file:///android_asset/fonts/${
-                                                        reader.fontFamily
-                                                    }.ttf');
-                                                }
-                                                
-                                            </style>
-                                            </head>
-                                        <body>
-                                            ${chapter.chapterTextRaw}
-                                        </body>
-                                    </html>
-                                    `,
+                                    text-align: ${reader.textAlign};
+                                    line-height: ${reader.lineHeight};
+                                    font-family: ${reader.fontFamily};
+                                }
+                                a {
+                                    color: ${theme.colorAccent};
+                                }
+                                img {
+                                    display: block;
+                                    width: auto;
+                                    height: auto;
+                                    max-width: ${
+                                        Dimensions.get("window").width -
+                                        10 * reader.padding
+                                    };
+                                }
+                                @font-face {
+                                    font-family: ${reader.fontFamily};
+                                    src: url("file:///android_asset/fonts/${
+                                        reader.fontFamily
+                                    }.ttf");
+                                }
+                                </style>
+                                </head>
+                            <body>
+                                ${chapter.chapterTextRaw}
+                            </body>
+                            </html>
+                            `,
                                         }}
                                         onScroll={onScroll}
                                     />
@@ -443,8 +423,6 @@ const Chapter = ({ route, navigation }) => {
                                             paddingHorizontal: `${reader.padding}%`,
                                             paddingTop: StatusBar.currentHeight,
                                         }}
-                                        onLayout={scrollToSavedProgress}
-                                        onPress={hideHeader}
                                     >
                                         <TextToComponents
                                             text={chapter.chapterText}
@@ -461,21 +439,21 @@ const Chapter = ({ route, navigation }) => {
                                     </View>
                                 )}
                             </TouchableWithoutFeedback>
-                        </GestureRecognizer>
-                    )}
-                    <Portal>
-                        <ReaderSheet
-                            theme={theme}
-                            reader={reader}
-                            dispatch={dispatch}
-                            navigation={navigation}
-                            bottomSheetRef={readerSheetRef}
-                            selectText={textSelectable}
-                            useWebViewForChapter={useWebViewForChapter}
-                            showScrollPercentage={showScrollPercentage}
-                        />
-                    </Portal>
-                </ScrollView>
+                        )}
+                    </ScrollView>
+                </GestureRecognizer>
+                <Portal>
+                    <ReaderSheet
+                        theme={theme}
+                        reader={reader}
+                        dispatch={dispatch}
+                        navigation={navigation}
+                        bottomSheetRef={readerSheetRef}
+                        selectText={textSelectable}
+                        useWebViewForChapter={useWebViewForChapter}
+                        showScrollPercentage={showScrollPercentage}
+                    />
+                </Portal>
                 {!useWebViewForChapter && (
                     <VerticalScrollbar
                         theme={theme}

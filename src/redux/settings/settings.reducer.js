@@ -18,6 +18,7 @@ import {
     yinYangTheme,
     springBlossomTheme,
     colorsAmoled,
+    oceanicTheme,
 } from "../../theme/theme";
 
 const themes = {
@@ -26,6 +27,7 @@ const themes = {
     3: midnightDuskTheme,
     4: greenAppleTheme,
     5: irisBlueTheme,
+    6: oceanicTheme,
     7: strawberryDaiquiri,
     8: takoTheme,
     9: yinYangTheme,
@@ -38,14 +40,6 @@ const themes = {
  * 0 -> Compact
  * 1 -> Comfortable
  * 2 -> List
- */
-
-/**
- * Reader Theme
- *
- * 1 -> Dark
- * 2 -> White
- * 3 -> Sepia
  */
 
 const initialState = {

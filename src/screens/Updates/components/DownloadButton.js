@@ -33,9 +33,10 @@ export const DownloadButton = ({
                 contentStyle={{ backgroundColor: theme.menuColor }}
             >
                 <Menu.Item
-                    onPress={() =>
-                        deleteChapter(chapter.chapterId, chapter.chapterName)
-                    }
+                    onPress={() => {
+                        deleteChapter(chapter.chapterId, chapter.chapterName);
+                        hideDeleteChapterMenu();
+                    }}
                     title="Delete"
                     titleStyle={{ color: theme.textColorPrimary }}
                 />

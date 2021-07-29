@@ -73,27 +73,25 @@ const Updates = ({ navigation }) => {
         []
     );
 
-    const downloadChapter = (
-        sourceId,
-        novelUrl,
-        chapterUrl,
-        chapterName,
-        chapterId
-    ) =>
-        dispatch(
-            downloadChapterAction(
-                sourceId,
-                novelUrl,
-                chapterUrl,
-                chapterName,
-                chapterId
-            )
-        );
+    const downloadChapter = useCallback(
+        (sourceId, novelUrl, chapterUrl, chapterName, chapterId) => {
+            dispatch(
+                downloadChapterAction(
+                    sourceId,
+                    novelUrl,
+                    chapterUrl,
+                    chapterName,
+                    chapterId
+                )
+            );
+        },
+        []
+    );
 
-    const deleteChapter = (chapterId, chapterName) => {
+    const deleteChapter = useCallback((chapterId, chapterName) => {
         dispatch(deleteChapterAction(chapterId, chapterName));
         dispatch(getUpdatesAction());
-    };
+    }, []);
 
     const renderItem = ({ item }) => (
         <UpdatesItem

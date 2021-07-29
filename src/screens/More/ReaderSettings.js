@@ -111,10 +111,7 @@ const ReaderSettings = ({ navigation }) => {
                 </View>
                 <List.Section>
                     <List.SubHeader theme={theme}>Preset</List.SubHeader>
-                    <Pressable
-                        android_ripple={{ color: theme.rippleColor }}
-                        style={styles.pressableListItem}
-                    >
+                    <View style={styles.pressableListItem}>
                         <Text
                             style={{
                                 color: theme.textColorPrimary,
@@ -155,7 +152,7 @@ const ReaderSettings = ({ navigation }) => {
                                 ))}
                             </Row>
                         </ScrollView>
-                    </Pressable>
+                    </View>
                     <List.Divider theme={theme} />
                     <List.SubHeader theme={theme}>Reader</List.SubHeader>
                     <List.ColorItem

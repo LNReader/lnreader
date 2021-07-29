@@ -2,10 +2,10 @@ import React from "react";
 
 import { Appbar as MaterialAppbar } from "react-native-paper";
 
-import { useSelector } from "react-redux";
+import { useTheme } from "../hooks/reduxHooks";
 
 export const Appbar = ({ title, onBackAction, style, children }) => {
-    const theme = useSelector((state) => state.settingsReducer.theme);
+    const theme = useTheme();
 
     return (
         <MaterialAppbar.Header

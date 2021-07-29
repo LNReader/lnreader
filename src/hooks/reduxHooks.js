@@ -1,10 +1,11 @@
 import { shallowEqual, useSelector } from "react-redux";
 import { showChapterTitlesAction } from "../redux/novel/novel.actions";
+import { darkTheme } from "../theme/theme";
 
 const useTheme = () => {
     const theme = useSelector((state) => state.settingsReducer.theme);
 
-    return theme;
+    return theme ?? darkTheme;
 };
 
 const useReaderSettings = () => {
