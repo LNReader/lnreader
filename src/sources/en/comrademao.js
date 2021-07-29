@@ -1,5 +1,4 @@
 import cheerio from "react-native-cheerio";
-import { htmlToText } from "../helpers/htmlToText";
 
 const sourceId = 27;
 
@@ -152,16 +151,12 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     let chapterName = "";
 
     let chapterText = $(".txtnav").html();
-    chapterTextRaw = chapterText;
-    chapterText = htmlToText(chapterText);
-
     const chapter = {
         sourceId,
         novelUrl,
         chapterUrl,
         chapterName,
         chapterText,
-        chapterTextRaw,
     };
 
     return chapter;

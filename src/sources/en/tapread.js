@@ -1,5 +1,4 @@
 import cheerio from "react-native-cheerio";
-import { htmlToText } from "../helpers/htmlToText";
 
 const baseUrl = "http://www.tapread.com";
 
@@ -121,8 +120,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     const body = await result.json();
 
     const chapterName = body.result.chapterName;
-    const chapterTextRaw = body.result.content;
-    const chapterText = htmlToText(body.result.content);
+    const chapterText = body.result.content;
 
     const chapter = {
         sourceId: 17,
@@ -130,7 +128,6 @@ const parseChapter = async (novelUrl, chapterUrl) => {
         chapterUrl,
         chapterName,
         chapterText,
-        chapterTextRaw,
     };
 
     return chapter;

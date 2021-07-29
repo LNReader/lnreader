@@ -121,7 +121,6 @@ const parseNovelAndChapters = async (novelUrl) => {
 
 const parseChapter = async (novelUrl, chapterUrl) => {
     const url = `${baseUrl}chapter/${chapterUrl}`;
-    console.log(url);
 
     const result = await fetch(url);
     const body = await result.text();
@@ -149,7 +148,6 @@ const parseChapter = async (novelUrl, chapterUrl) => {
         chapterUrl,
         chapterName,
         chapterText,
-        chapterTextRaw,
     };
 
     return chapter;

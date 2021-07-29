@@ -1,5 +1,4 @@
 import cheerio from "react-native-cheerio";
-import { htmlToText } from "../helpers/htmlToText";
 
 const baseUrl = "https://hasutl.wordpress.com/";
 
@@ -77,7 +76,7 @@ const parseNovelAndChapters = async (novelUrl) => {
     });
 
     let novelSummary = $(".post-content").find("p").html();
-    novel.summary = htmlToText(novelSummary);
+    novel.summary = novelSummary;
 
     let novelChapters = [];
 
@@ -112,9 +111,6 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     let chapterName = $(".post-title").text();
 
     let chapterText = $(".post-content").html();
-    chapterTextRaw = chapterText;
-    chapterText = htmlToText(chapterText);
-
     novelUrl = novelUrl + "/";
     chapterUrl = chapterUrl;
 
@@ -124,7 +120,6 @@ const parseChapter = async (novelUrl, chapterUrl) => {
         chapterUrl,
         chapterName,
         chapterText,
-        chapterTextRaw,
     };
 
     return chapter;

@@ -1,5 +1,5 @@
 import cheerio from "react-native-cheerio";
-import { htmlToText } from "../helpers/htmlToText";
+
 import moment from "moment";
 import { parseMadaraDate } from "../helpers/parseDate";
 import { Status } from "../helpers/constants";
@@ -121,8 +121,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 
     let chapterName = $("div.chapter-content").find("strong").text();
 
-    let chapterTextRaw = $("div.chapter-content").html();
-    chapterText = htmlToText(chapterTextRaw);
+    let chapterText = $("div.chapter-content").html();
 
     const chapter = {
         sourceId: 34,
@@ -130,7 +129,6 @@ const parseChapter = async (novelUrl, chapterUrl) => {
         chapterUrl,
         chapterName,
         chapterText,
-        chapterTextRaw,
     };
 
     return chapter;

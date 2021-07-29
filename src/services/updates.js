@@ -127,7 +127,7 @@ export const updateAllNovels = async (updateSettings) => {
     const options = {
         taskName: "Library Update",
         taskTitle: "Updating library",
-        taskDesc: "0/" + libraryNovels.length,
+        taskDesc: "(0/" + libraryNovels.length + ")",
         taskIcon: {
             name: "notification_icon",
             type: "drawable",
@@ -163,7 +163,12 @@ export const updateAllNovels = async (updateSettings) => {
                         // console.log(libraryNovels[i].novelName + " Updated");
                         await BackgroundService.updateNotification({
                             taskTitle: libraryNovels[i].novelName,
-                            taskDesc: i + 1 + "/" + libraryNovels.length,
+                            taskDesc:
+                                "(" +
+                                (i + 1) +
+                                "/" +
+                                libraryNovels.length +
+                                ")",
                             progressBar: {
                                 max: libraryNovels.length,
                                 value: i + 1,

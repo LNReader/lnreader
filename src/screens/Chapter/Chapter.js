@@ -48,12 +48,11 @@ import EmptyView from "../../components/EmptyView";
 import ChapterFooter from "./components/ChapterFooter";
 import VerticalScrollbar from "./components/VerticalScrollbar";
 import GestureRecognizer from "react-native-swipe-gestures";
-import TextToComponents from "./TextToComponent";
 import { LoadingScreen } from "../../components/LoadingScreen/LoadingScreen";
 import { insertHistory } from "../../database/queries/HistoryQueries";
 import { SET_LAST_READ } from "../../redux/preferences/preference.types";
 import WebView from "react-native-webview";
-import { WebViewReader } from "./components/WebViewReader";
+import { htmlToText } from "../../sources/helpers/htmlToText";
 
 const Chapter = ({ route, navigation }) => {
     const {
@@ -354,8 +353,7 @@ const Chapter = ({ route, navigation }) => {
                                 onPress={hideHeader}
                                 onLayout={scrollToSavedProgress}
                             >
-                                {useWebViewForChapter &&
-                                chapter.chapterTextRaw ? (
+                                {useWebViewForChapter ? (
                                     <WebView
                                         style={{
                                             backgroundColor: readerBackground(
@@ -386,6 +384,9 @@ const Chapter = ({ route, navigation }) => {
                                     line-height: ${reader.lineHeight};
                                     font-family: ${reader.fontFamily};
                                 }
+                                span[style] {
+                                    color: ${reader.textColor} !important;
+                                }
                                 a {
                                     color: ${theme.colorAccent};
                                 }
@@ -407,7 +408,7 @@ const Chapter = ({ route, navigation }) => {
                                 </style>
                                 </head>
                             <body>
-                                ${chapter.chapterTextRaw}
+                                ${chapter.chapterText.trim()}
                             </body>
                             </html>
                             `,
@@ -424,18 +425,12 @@ const Chapter = ({ route, navigation }) => {
                                             paddingTop: StatusBar.currentHeight,
                                         }}
                                     >
-                                        <TextToComponents
-                                            text={chapter.chapterText}
-                                            textStyle={readerStyles}
-                                            textSize={reader.textSize}
-                                            textColor={
-                                                reader.textColor ||
-                                                readerTextColor(reader.theme)
-                                            }
-                                            textSelectable={textSelectable}
-                                            onPressLink={onPressLink}
-                                            theme={theme}
-                                        />
+                                        <Text
+                                            style={readerStyles}
+                                            selectable={textSelectable}
+                                        >
+                                            {htmlToText(chapter.chapterText)}
+                                        </Text>
                                     </View>
                                 )}
                             </TouchableWithoutFeedback>

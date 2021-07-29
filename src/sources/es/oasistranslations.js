@@ -1,5 +1,4 @@
 import cheerio from "react-native-cheerio";
-import { htmlToText } from "../helpers/htmlToText";
 
 const baseUrl = "https://oasistranslations.wordpress.com/";
 
@@ -142,9 +141,6 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     $("div#jp-post-flair").remove();
 
     let chapterText = $(".entry-content").html();
-    chapterTextRaw = chapterText;
-    chapterText = htmlToText(chapterText);
-
     novelUrl = novelUrl + "/";
     chapterUrl = chapterUrl + "/";
 
@@ -154,7 +150,6 @@ const parseChapter = async (novelUrl, chapterUrl) => {
         chapterUrl,
         chapterName,
         chapterText,
-        chapterTextRaw,
     };
 
     return chapter;

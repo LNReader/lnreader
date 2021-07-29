@@ -1,5 +1,3 @@
-import { htmlToText } from "../helpers/htmlToText";
-
 const baseUrl = "https://www.skynovels.net/";
 
 const popularNovels = async (page) => {
@@ -95,7 +93,7 @@ const parseChapter = async (novUrl, chapUrl) => {
 
     let chapterName = item.chp_index_title;
 
-    let chapterText = htmlToText(item.chp_content);
+    let chapterText = item.chp_content;
 
     novelUrl = novelId + "/" + novelUrl + "/";
     chapterUrl = item.id + "/" + item.chp_name;
@@ -106,7 +104,6 @@ const parseChapter = async (novUrl, chapUrl) => {
         chapterUrl,
         chapterName,
         chapterText,
-        chapterTextRaw,
     };
 
     return chapter;

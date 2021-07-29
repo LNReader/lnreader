@@ -1,7 +1,5 @@
 import cheerio from "react-native-cheerio";
 
-import { htmlToText } from "../helpers/htmlToText";
-
 const baseUrl = "https://www.novelupdates.cc/";
 
 const popularNovels = async (page) => {
@@ -92,16 +90,12 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 
     const chapterName = $("h1.chapter-title").text();
     let chapterText = $("div.chapter-entity").html();
-    chapterTextRaw = chapterText;
-    chapterText = htmlToText(chapterText);
-
     const chapter = {
         sourceId: 18,
         novelUrl,
         chapterUrl,
         chapterName,
         chapterText,
-        chapterTextRaw,
     };
 
     return chapter;

@@ -34,7 +34,7 @@ const MainNavigator = () => {
         setTimeout(async () => {
             await SplashScreen.hideAsync();
             setBarColor(theme);
-        }, 1500);
+        }, 500);
     }, [theme]);
 
     const { isNewVersion, latestRelease } = githubUpdateChecker() || {};

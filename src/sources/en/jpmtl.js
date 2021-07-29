@@ -1,7 +1,5 @@
 import cheerio from "react-native-cheerio";
 
-import { htmlToText } from "../helpers/htmlToText";
-
 const baseUrl = "https://jpmtl.com/";
 
 const popularNovels = async (page) => {
@@ -121,20 +119,13 @@ const parseNovelAndChapters = async (novelUrl) => {
 const parseChapter = async (novelUrl, chapterUrl) => {
     const url = `${baseUrl}books/${novelUrl}${chapterUrl}`;
 
-    console.log(url);
-
     const result = await fetch(url);
     const body = await result.text();
-
-    console.log(url);
 
     $ = cheerio.load(body);
 
     const chapterName = $(".chapter-content__title").text();
     let chapterText = $(".chapter-content__content").html();
-    chapterTextRaw = chapterText;
-    chapterText = htmlToText(chapterText);
-
     novelUrl += "/";
 
     const chapter = {
@@ -143,7 +134,6 @@ const parseChapter = async (novelUrl, chapterUrl) => {
         chapterUrl,
         chapterName,
         chapterText,
-        chapterTextRaw,
     };
 
     return chapter;

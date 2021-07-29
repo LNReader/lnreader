@@ -1,6 +1,5 @@
 import cheerio from "react-native-cheerio";
 import { Status } from "../helpers/constants";
-import { htmlToText } from "../helpers/htmlToText";
 
 const sourceId = 62;
 
@@ -232,9 +231,6 @@ const parseChapter = async (novelUrl, chapterUrl) => {
                 /<\s*a[^>]*href=['"](https:\/\/(?:www.|patreon|discord).*?)['"][^>]*>([\s\S]*?)<\/\s*a\s*>/gi,
                 ""
             );
-
-            chapterTextRaw = chapterText;
-            chapterText = htmlToText(chapterText);
         } else {
             if (!chapterText) {
                 chapterText =
@@ -251,7 +247,6 @@ const parseChapter = async (novelUrl, chapterUrl) => {
         chapterUrl,
         chapterName,
         chapterText,
-        chapterTextRaw: chapterTextRaw || chapterText,
     };
 
     return chapter;

@@ -174,8 +174,8 @@ export const oceanicTheme = {
     menuColor: "#32424A",
     filterColor: "#FFEB3B",
     dividerColor: DividerColors.DARK,
-    colorDisabled: "#484861",
-    colorButtonText: "#000000",
+    colorDisabled: PrimaryColors.oceanic.colorPrimary,
+    colorButtonText: "#FFFFFF",
     statusBar: StatusBarStyle.LIGHT,
     ...TextColors.dark,
 };

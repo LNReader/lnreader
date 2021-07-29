@@ -1,6 +1,5 @@
 import cheerio from "react-native-cheerio";
 import { Status } from "../../helpers/constants";
-import { htmlToText } from "../../helpers/htmlToText";
 import { parseMadaraDate } from "../../helpers/parseDate";
 
 class MadaraScraper {
@@ -165,8 +164,6 @@ class MadaraScraper {
             $(".text-center").text() || $("#chapter-heading").text();
 
         let chapterText = $(".text-left").html();
-        chapterTextRaw = chapterText;
-        chapterText = htmlToText(chapterText);
 
         const chapter = {
             sourceId,
@@ -174,7 +171,6 @@ class MadaraScraper {
             chapterUrl,
             chapterName,
             chapterText,
-            chapterTextRaw,
         };
 
         return chapter;

@@ -1,5 +1,4 @@
 import cheerio from "react-native-cheerio";
-import { htmlToText } from "../helpers/htmlToText";
 
 const baseUrl = "https://woopread.com/";
 
@@ -134,8 +133,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 
     const chapterName = $("h1#chapter-heading").text();
 
-    let chapterTextRaw = $(".reading-content").html();
-    chapterText = htmlToText(chapterTextRaw);
+    let chapterText = $(".reading-content").html();
     chapterText = chapterText.replace(/(?<=[[])[\n](?=[h])/g, "");
 
     const chapter = {
@@ -144,7 +142,6 @@ const parseChapter = async (novelUrl, chapterUrl) => {
         chapterUrl,
         chapterName,
         chapterText,
-        chapterTextRaw,
     };
 
     return chapter;

@@ -1,5 +1,5 @@
 import cheerio from "react-native-cheerio";
-import { htmlToText } from "../helpers/htmlToText";
+
 import moment from "moment";
 
 const baseUrl = "https://syosetu.com"; // base url for syosetu.com
@@ -166,9 +166,6 @@ let parseChapter = async (novelUrl, chapterUrl) => {
 
     let chapterText = cheerioQuery("#novel_honbun") // get chapter text
         .html();
-    chapterTextRaw = chapterText;
-    chapterText = htmlToText(chapterText);
-
     // create chapter data structure
     let chapter = {
         sourceId: 36,
@@ -176,7 +173,6 @@ let parseChapter = async (novelUrl, chapterUrl) => {
         chapterUrl,
         chapterName: "",
         chapterText,
-        chapterTextRaw,
     };
 
     if (chapterUrl === "oneshot")

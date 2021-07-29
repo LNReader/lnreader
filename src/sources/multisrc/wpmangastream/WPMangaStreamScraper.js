@@ -1,5 +1,4 @@
 import cheerio from "react-native-cheerio";
-import { htmlToText } from "../../helpers/htmlToText";
 
 class WPMangaStreamScraper {
     constructor(sourceId, baseUrl, sourceName) {
@@ -114,13 +113,7 @@ class WPMangaStreamScraper {
         const $ = cheerio.load(body);
 
         let chapterName = $(".entry-title").text();
-
         let chapterText = $("div.epcontent").text();
-
-        if (chapterText) {
-            chapterTextRaw = chapterText;
-            chapterText = htmlToText(chapterText);
-        }
 
         const chapter = {
             sourceId,
@@ -128,7 +121,6 @@ class WPMangaStreamScraper {
             chapterUrl,
             chapterName,
             chapterText,
-            chapterTextRaw,
         };
 
         return chapter;
