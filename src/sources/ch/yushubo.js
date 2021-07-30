@@ -117,10 +117,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     $ = cheerio.load(body);
 
     const chapterName = $(".read-section h3").text();
-    let chapterText = "";
-    $(".read-section p").each(function (result) {
-        chapterText += `${$(this).text()}\n`;
-    });
+    let chapterText = $(".read-section").html();
 
     const chapter = {
         sourceId: 52,

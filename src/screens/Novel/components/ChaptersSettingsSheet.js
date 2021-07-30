@@ -170,6 +170,7 @@ const ChaptersSettingsSheet = ({
             ref={bottomSheetRef}
             draggableRange={{ top: 220, bottom: 0 }}
             snappingPoints={[0, 220]}
+            backdropOpacity={0.5}
         >
             <View
                 style={[

@@ -146,6 +146,8 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     $(".hidden").remove();
     $("iframe").remove();
     $("button").remove();
+    $(".hid").remove();
+    $("center").remove();
     $(
         'div[style="float: left; margin-top: 20px; font-style: italic;margin-left: 50px; font-size: 14px;"]'
     ).remove();

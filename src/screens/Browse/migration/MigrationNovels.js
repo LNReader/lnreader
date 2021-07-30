@@ -61,9 +61,6 @@ const MigrationNovels = ({ navigation, route }) => {
                     },
                 ]);
                 setLoading(false);
-                setProgress(
-                    (progress) => progress + 1 / migrationSources.length
-                );
             } catch (error) {
                 showToast(error.message);
 
@@ -78,6 +75,7 @@ const MigrationNovels = ({ navigation, route }) => {
                 ]);
                 setLoading(false);
             }
+            setProgress((progress) => progress + 1 / migrationSources.length);
         }
     };
 

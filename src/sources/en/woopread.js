@@ -15,7 +15,7 @@ const popularNovels = async (page) => {
 
     $(".page-item-detail").each(function (result) {
         const novelName = $(this).find(".h5 > a").text();
-        const novelCover = $(this).find("img").attr("src");
+        const novelCover = $(this).find("img").attr("data-src");
 
         let novelUrl = $(this).find(".h5 > a").attr("href");
         novelUrl = novelUrl.replace(baseUrl + "series/", "");

@@ -53,6 +53,7 @@ import { insertHistory } from "../../database/queries/HistoryQueries";
 import { SET_LAST_READ } from "../../redux/preferences/preference.types";
 import WebView from "react-native-webview";
 import { htmlToText } from "../../sources/helpers/htmlToText";
+import { setAppSettings } from "../../redux/settings/settings.actions";
 
 const Chapter = ({ route, navigation }) => {
     const {
@@ -280,6 +281,16 @@ const Chapter = ({ route, navigation }) => {
         setLoading(false);
     };
 
+    const enableSwipeGestures = () => {
+        dispatch(setAppSettings("swipeGestures", !swipeGestures));
+        showToast(
+            swipeGestures ? "Swipe gestures disabled" : "Swipe gestured enabled"
+        );
+    };
+
+    const enableWebView = () =>
+        dispatch(setAppSettings("useWebViewForChapter", !useWebViewForChapter));
+
     return (
         <>
             <>
@@ -394,10 +405,7 @@ const Chapter = ({ route, navigation }) => {
                                     display: block;
                                     width: auto;
                                     height: auto;
-                                    max-width: ${
-                                        Dimensions.get("window").width -
-                                        12 * reader.padding
-                                    };
+                                    max-width: 100%;
                                 }
                                 @font-face {
                                     font-family: ${reader.fontFamily};
@@ -463,6 +471,8 @@ const Chapter = ({ route, navigation }) => {
                 <ChapterFooter
                     theme={theme}
                     swipeGestures={swipeGestures}
+                    enableSwipeGestures={enableSwipeGestures}
+                    enableWebView={enableWebView}
                     dispatch={dispatch}
                     nextChapter={nextChapter}
                     prevChapter={prevChapter}

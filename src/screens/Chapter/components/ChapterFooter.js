@@ -2,14 +2,10 @@ import React from "react";
 import { Pressable, StyleSheet, View } from "react-native";
 import { IconButton } from "react-native-paper";
 
-import { showToast } from "../../../hooks/showToast";
-import { setAppSettings } from "../../../redux/settings/settings.actions";
-
 const ChapterFooter = ({
     hide,
     theme,
     swipeGestures,
-    dispatch,
     readerSheetRef,
     scrollViewRef,
     navigateToNextChapter,
@@ -17,18 +13,13 @@ const ChapterFooter = ({
     nextChapter,
     prevChapter,
     useWebViewForChapter,
+    enableSwipeGestures,
+    enableWebView,
 }) => {
     const rippleConfig = {
         color: theme.rippleColor,
         borderless: true,
         radius: 50,
-    };
-
-    const enableSwipeGestures = () => {
-        dispatch(setAppSettings("swipeGestures", !swipeGestures));
-        showToast(
-            swipeGestures ? "Swipe gestures disabled" : "Swipe gestured enabled"
-        );
     };
 
     if (hide) {
@@ -82,6 +73,18 @@ const ChapterFooter = ({
                         />
                     </Pressable>
                 )}
+                <Pressable
+                    android_ripple={rippleConfig}
+                    style={styles.buttonStyles}
+                    onPress={enableWebView}
+                >
+                    <IconButton
+                        icon="language-html5"
+                        disabled={!useWebViewForChapter}
+                        size={26}
+                        color="#FFFFFF"
+                    />
+                </Pressable>
                 <Pressable
                     android_ripple={rippleConfig}
                     style={styles.buttonStyles}

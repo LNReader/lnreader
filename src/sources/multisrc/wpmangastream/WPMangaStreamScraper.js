@@ -113,7 +113,7 @@ class WPMangaStreamScraper {
         const $ = cheerio.load(body);
 
         let chapterName = $(".entry-title").text();
-        let chapterText = $("div.epcontent").text();
+        let chapterText = $("div.epcontent").html();
 
         const chapter = {
             sourceId,

@@ -129,22 +129,8 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 
     $ = cheerio.load(body);
 
-    let chapterText = $("#content").html() || "";
-    let chapterName = "";
-    if (chapterText) {
-        chapterText = chapterText.split("<br>");
-        chapterName = chapterText.shift();
-    } else {
-        $("p").each((i, el) => {
-            if ($(el).css("display") !== "none") {
-                chapterText += $(el).text() + "\n";
-            }
-        });
-        chapterText = chapterText.split("\n");
-        chapterName = chapterText.shift();
-    }
-
-    chapterText = chapterText.join("\n");
+    let chapterName = $("h1.text-center.heading_read").text();
+    let chapterText = $(".content-story").html();
 
     novelUrl += "/";
     chapterUrl += "/";

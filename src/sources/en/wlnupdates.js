@@ -223,19 +223,9 @@ const parseChapter = async (novelUrl, chapterUrl) => {
             chapterText = $("body").html();
         }
 
-        if (chapterText) {
-            /**
-             * Remove patreon/discord links
-             */
-            chapterText = chapterText.replace(
-                /<\s*a[^>]*href=['"](https:\/\/(?:www.|patreon|discord).*?)['"][^>]*>([\s\S]*?)<\/\s*a\s*>/gi,
-                ""
-            );
-        } else {
-            if (!chapterText) {
-                chapterText =
-                    "Chapter not available.\n\nReport if it's available in webview.";
-            }
+        if (!chapterText) {
+            chapterText =
+                "Chapter not available.\n\nReport if it's available in webview.";
         }
     } catch (error) {
         chapterText = `Chapter not available (Error: ${error.message}).\n\nReport if it's available in webview.`;

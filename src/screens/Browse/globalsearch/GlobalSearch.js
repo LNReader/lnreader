@@ -74,9 +74,6 @@ const GlobalSearch = ({ route, navigation }) => {
                     },
                 ]);
                 setLoading(false);
-                setProgress(
-                    (progress) => progress + 1 / globalSearchSources.length
-                );
             } catch (error) {
                 showToast(
                     globalSearchSources[i].sourceName + ": " + error.message
@@ -92,6 +89,9 @@ const GlobalSearch = ({ route, navigation }) => {
                 ]);
                 setLoading(false);
             }
+            setProgress(
+                (progress) => progress + 1 / globalSearchSources.length
+            );
         }
     };
 
