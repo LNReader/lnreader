@@ -66,7 +66,11 @@ const HistoryItem = ({
                 >
                     <View>
                         <Image
-                            source={{ uri: novelCover }}
+                            source={{
+                                uri: novelCover.startsWith("http")
+                                    ? novelCover
+                                    : "https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true",
+                            }}
                             style={styles.historyItemCover}
                         />
                     </View>

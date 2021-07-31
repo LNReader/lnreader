@@ -64,7 +64,11 @@ const NovelCover = ({ item, onPress, libraryStatus, theme }) => {
                         )}
                     </View>
                     <FastImage
-                        source={{ uri: item.novelCover }}
+                        source={{
+                            uri: item.novelCover.startsWith("https")
+                                ? item.novelCover
+                                : "https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true",
+                        }}
                         style={[
                             { height: getHeight(), borderRadius: 4 },
                             libraryStatus && { opacity: 0.5 },

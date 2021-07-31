@@ -26,7 +26,11 @@ const UpdateCard = ({
             <>
                 <Pressable onPress={onPressCover}>
                     <FastImage
-                        source={{ uri: item.novelCover }}
+                        source={{
+                            uri: item.novelCover.startsWith("http")
+                                ? item.novelCover
+                                : "https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true",
+                        }}
                         style={styles.updateIcon}
                     />
                 </Pressable>

@@ -69,6 +69,7 @@ import {
 import WLNUpdatesScraper from "./en/wlnupdates";
 import ReaperScansScraper from "./en/reaperscans";
 import ReadwnScraper from "./en/readwn";
+import RanobeHubScraper from "./ru/ranobehub";
 
 export const getSource = (sourceId) => {
     const scrapers = {
@@ -139,6 +140,7 @@ export const getSource = (sourceId) => {
         66: WBNovelScraper,
         67: ReaperScansScraper,
         68: ReadwnScraper,
+        69: RanobeHubScraper,
     };
 
     return scrapers[sourceId];

@@ -53,9 +53,22 @@ const NovelInfoHeader = ({
 
     return (
         <View>
-            <CoverImage source={{ uri: item.novelCover }} theme={theme}>
+            <CoverImage
+                source={{
+                    uri: item.novelCover.startsWith("http")
+                        ? item.novelCover
+                        : "https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true",
+                }}
+                theme={theme}
+            >
                 <NovelInfoContainer>
-                    <NovelThumbnail source={{ uri: item.novelCover }} />
+                    <NovelThumbnail
+                        source={{
+                            uri: item.novelCover.startsWith("http")
+                                ? item.novelCover
+                                : "https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true",
+                        }}
+                    />
                     <View style={styles.novelDetails}>
                         <NovelTitle
                             theme={theme}

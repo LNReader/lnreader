@@ -73,7 +73,7 @@ const ChapterFooter = ({
                         />
                     </Pressable>
                 )}
-                <Pressable
+                {/* <Pressable
                     android_ripple={rippleConfig}
                     style={styles.buttonStyles}
                     onPress={enableWebView}
@@ -84,7 +84,7 @@ const ChapterFooter = ({
                         size={26}
                         color="#FFFFFF"
                     />
-                </Pressable>
+                </Pressable> */}
                 <Pressable
                     android_ripple={rippleConfig}
                     style={styles.buttonStyles}

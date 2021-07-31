@@ -1,6 +1,5 @@
 import cheerio from "react-native-cheerio";
 
-import moment from "moment";
 import { parseMadaraDate } from "../helpers/parseDate";
 import { Status } from "../helpers/constants";
 
@@ -64,7 +63,14 @@ const parseNovelAndChapters = async (novelUrl) => {
     novelName = $("h1").text();
     novel.novelName = novelName;
 
-    novel.novelCover = $("img.thumbnail").attr("src");
+    let novelCover = $("img.thumbnail").attr("src");
+
+    if (novelCover === "/Content/Images/nocover-new-min.png") {
+        novelCover =
+            "https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true";
+    }
+
+    novel.novelCover = novelCover;
 
     novel.summary = $("div.description").text().trim();
 
