@@ -21,9 +21,10 @@ const GlobalSearchNovelCover = ({
                 <>
                     <Image
                         source={{
-                            uri: novelCover.startsWith("http")
-                                ? novelCover
-                                : "https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true",
+                            uri:
+                                novelCover && novelCover.startsWith("https")
+                                    ? novelCover
+                                    : "https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true",
                         }}
                         style={[
                             styles.novelCover,
