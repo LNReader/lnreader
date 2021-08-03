@@ -25,7 +25,7 @@ const popularNovels = async (page) => {
 
     $(".novel-item.ads").remove();
 
-    $(".novel-item").each(function (result) {
+    $(".novel-item").each(function () {
         const novelName = $(this)
             .find(".novel-title")
             .text()
@@ -89,14 +89,14 @@ const parseNovelAndChapters = async (novelUrl) => {
 
     novel.genre = "";
 
-    $("div.categories > ul > li").each(function (result) {
+    $("div.categories > ul > li").each(function () {
         novel.genre +=
             $(this)
                 .text()
                 .replace(/[\t\n]/g, "") + ",";
     });
 
-    $("div.header-stats > span").each(function (result) {
+    $("div.header-stats > span").each(function () {
         if ($(this).find("small").text() === "Status") {
             novel.status = $(this).find("strong").text();
         }
@@ -106,23 +106,26 @@ const parseNovelAndChapters = async (novelUrl) => {
 
     novel.author = $(".author > a > span").text();
 
-    novelSummary = $(".summary > .content").html();
-    novel.summary = novelSummary.trim();
+    novel.summary = $(".summary > .content").text().trim();
 
     let novelChapters = [];
 
-    $("ul.chapter-list > li").each(function (result) {
-        const chapterName = $(this).find(".chapter-title").text().trim();
-        const releaseDate = $(this).find("time").text().trim();
-        const chapterUrl = $(this)
-            .find("a")
-            .attr("href")
-            .replace(`/novel/${novelUrl}`, "");
+    let firstChapterNo, totalChapters;
+
+    totalChapters = $(".header-stats > span").first().text().match(/\d+/)[0];
+    firstChapterNo = $(".chapter-no").first().text().match(/\d+/)[0];
+
+    for (let i = firstChapterNo; i <= totalChapters; i++) {
+        const chapterName = "Chapter " + i;
+
+        const releaseDate = null;
+
+        const chapterUrl = "chapter-" + i;
 
         const chapter = { chapterName, releaseDate, chapterUrl };
 
         novelChapters.push(chapter);
-    });
+    }
 
     novel.chapters = novelChapters;
 
@@ -183,7 +186,7 @@ const searchNovels = async (searchTerm) => {
 
     $ = cheerio.load(results.resultview);
 
-    $(".novel-item").each(function (result) {
+    $(".novel-item").each(function () {
         const novelName = $(this).find("h4.novel-title").text();
         const novelCover = $(this).find("img").attr("src");
 
