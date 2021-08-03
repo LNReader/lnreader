@@ -68,6 +68,6 @@
         "arrowParens": "always"
     },
     "private": true,
-    "name": "lnreader-eject",
+    "name": "lnreader",
     "version": "1.0.0"
 }

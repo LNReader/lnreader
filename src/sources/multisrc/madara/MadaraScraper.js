@@ -1,3 +1,4 @@
+import moment from "moment";
 import cheerio from "react-native-cheerio";
 import { Status } from "../../helpers/constants";
 import { parseMadaraDate } from "../../helpers/parseDate";
@@ -131,13 +132,20 @@ class MadaraScraper {
                 .replace(/[\t\n]/g, "")
                 .trim();
 
-            let releaseDate = $(this)
+            let releaseDate = null;
+            releaseDate = $(this)
                 .find("span.chapter-release-date")
                 .text()
                 .trim();
 
             if (releaseDate) {
                 releaseDate = parseMadaraDate(releaseDate);
+            } else {
+                /**
+                 * Insert current date
+                 */
+
+                releaseDate = moment().format("MMMM DD, YYYY");
             }
 
             const chapterUrl = $(this).find("a").attr("href").split("/")[5];
@@ -146,6 +154,7 @@ class MadaraScraper {
         });
 
         novel.chapters = novelChapters.reverse();
+        console.log(novel);
 
         return novel;
     }

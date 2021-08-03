@@ -118,8 +118,6 @@ const parseNovelAndChapters = async (novelUrl) => {
 const parseChapter = async (novelUrl, chapterUrl) => {
     const url = `${baseUrl}fiction/${novelUrl}/chapter/${chapterUrl}`;
 
-    console.log(url);
-
     const result = await fetch(url);
     const body = await result.text();
 
