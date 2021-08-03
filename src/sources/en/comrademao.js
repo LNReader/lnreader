@@ -9,6 +9,7 @@ const baseUrl = "https://comrademao.com/";
 const popularNovels = async (page) => {
     let url = baseUrl + "novel/page/" + page;
     const totalPages = 111;
+
     const result = await fetch(url);
     const body = await result.text();
 
@@ -16,13 +17,17 @@ const popularNovels = async (page) => {
 
     let novels = [];
 
-    $(".newbox")
-        .find("li")
+    $("div.container")
+        .find("section")
         .each(function () {
-            const novelName = $(this).find("h3").text();
+            const novelName = $(this)
+                .find("div.columns > div:nth-child(2) > a")
+                .text();
             const novelCover = $(this).find("img").attr("src");
 
-            let novelUrl = $(this).find("a").attr("href");
+            let novelUrl = $(this)
+                .find("div.columns > div:nth-child(2) > a")
+                .attr("href");
             novelUrl = novelUrl.replace(baseUrl + "novel/", "");
 
             const novel = {
@@ -47,49 +52,40 @@ const parseNovelAndChapters = async (novelUrl) => {
 
     $ = cheerio.load(body);
 
-    let novel = {};
+    let novel = { sourceId, sourceName, url, novelUrl };
 
-    novel.sourceId = 27;
-
-    novel.sourceName = sourceName;
-
-    novel.url = url;
-
-    novel.novelUrl = novelUrl;
-
-    novel.novelName = $(".booknav2 > h1").text();
-
-    novel.novelCover = $(".bookimg2 > img").attr("src");
-
-    novel.summary = $(".mybox")
-        .find(".tabsnav > div > div.qustime > span")
+    novel.novelName = $(
+        "#NovelInfo > div > div.column.is-one-third.has-text-centered > p"
+    )
         .text()
         .trim();
 
-    novel.genre = $(".booknav2 > p:nth-child(2)")
+    novel.novelCover = $("img.attachment-post-thumbnail").attr("src");
+
+    novel.summary = $("#NovelInfo > div > div:nth-child(2) > p").text().trim();
+
+    novel.genre = $("#NovelInfo > p:nth-child(2)")
         .text()
         .replace(/Genre(s):|\s/g, "");
 
-    novel.status = $(".booknav2 > p:nth-child(5)")
+    novel.status = $("#NovelInfo > p:nth-child(5)")
         .text()
         .replace(/Status:|\s/g, "")
         .trim();
 
-    novel.author = $(".booknav2 > p:nth-child(4)")
+    novel.author = $("#NovelInfo > p:nth-child(4)")
         .text()
         .replace(/Publisher:|\s/g, "")
         .trim();
 
     let novelChapters = [];
 
-    // $(".qustime")
-    //     .find("li")
+    // $("table > tbody")
+    //     .find("tr")
     //     .each(function () {
-    //         const releaseDate = $(this).find("small").text();
+    //         const releaseDate = $(this).find("span").text();
 
-    //         $(this).find("small").remove();
-
-    //         const chapterName = $(this).find("span").text();
+    //         const chapterName = $(this).find("a").text();
     //         const chapterUrl = $(this).find("a").attr("href").split("/")[5];
 
     //         novelChapters.push({
@@ -99,21 +95,24 @@ const parseNovelAndChapters = async (novelUrl) => {
     //         });
     //     });
 
-    $("small").remove();
+    // $("small").remove();
 
-    let chapterUrlPrefix = $(".qustime")
-        .find("li")
+    let chapterUrlPrefix = $("table > tbody")
+        .find("tr")
         .first()
         .find("a")
-        .text()
-        .split(" ");
+        .attr("href")
+        .slice(0, -1)
+        .split("/")
+        .pop()
+        .split("-");
 
     chapterUrlPrefix.pop();
 
     chapterUrlPrefix = chapterUrlPrefix.join("-").toLowerCase();
 
-    let latestChapter = $(".qustime")
-        .find("li")
+    let latestChapter = $("table > tbody")
+        .find("tr")
         .first()
         .find("a")
         .text()
@@ -150,7 +149,8 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 
     let chapterName = "";
 
-    let chapterText = $(".txtnav").html();
+    let chapterText = $("#content").html();
+
     const chapter = {
         sourceId,
         novelUrl,
