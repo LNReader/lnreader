@@ -6,7 +6,6 @@ import { restoreLibrary } from "../database/queries/NovelQueries";
 import { showToast } from "../hooks/showToast";
 
 import * as Notifications from "expo-notifications";
-import BackgroundService from "react-native-background-actions";
 
 Notifications.setNotificationHandler({
     handleNotification: async () => {

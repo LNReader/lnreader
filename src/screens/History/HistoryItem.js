@@ -68,7 +68,7 @@ const HistoryItem = ({
                         <Image
                             source={{
                                 uri:
-                                    novelCover && novelCover.startsWith("https")
+                                    novelCover && !novelCover.startsWith("/")
                                         ? novelCover
                                         : "https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true",
                             }}

@@ -2,11 +2,13 @@ import * as SQLite from "expo-sqlite";
 const db = SQLite.openDatabase("lnreader.db");
 
 import BackgroundService from "react-native-background-actions";
+import * as DocumentPicker from "expo-document-picker";
 
 import { fetchChapters, fetchNovel } from "../../services/Source/source";
 import { insertChapters } from "./ChapterQueries";
 
 import { showToast } from "../../hooks/showToast";
+import { setNovel } from "../../redux/novel/novel.actions";
 
 const insertNovelQuery = `INSERT INTO novels (novelUrl, sourceUrl, sourceId, source, novelName, novelCover, novelSummary, author, artist, status, genre) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
@@ -210,4 +212,21 @@ export const updateNovelInfo = async (info, novelId) => {
             (txObj, error) => console.log("Error ", error)
         );
     });
+};
+
+export const setCustomNovelCover = async (novelId) => {
+    const image = await DocumentPicker.getDocumentAsync({ type: "image/*" });
+
+    if (image.uri) {
+        db.transaction((tx) => {
+            tx.executeSql(
+                "UPDATE novels SET novelCover = ? WHERE novelId = ?",
+                [image.uri, novelId],
+                (txObj, res) => {},
+                (txObj, error) => console.log("Error ", error)
+            );
+        });
+
+        return image.uri;
+    }
 };

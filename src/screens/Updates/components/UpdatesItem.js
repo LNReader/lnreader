@@ -29,7 +29,7 @@ const UpdateCard = ({
                         source={{
                             uri:
                                 item.novelCover &&
-                                item.novelCover.startsWith("http")
+                                !item.novelCover.startsWith("/")
                                     ? item.novelCover
                                     : "https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true",
                         }}

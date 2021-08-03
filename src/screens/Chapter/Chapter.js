@@ -54,6 +54,7 @@ import { SET_LAST_READ } from "../../redux/preferences/preference.types";
 import WebView from "react-native-webview";
 import { htmlToText } from "../../sources/helpers/htmlToText";
 import { setAppSettings } from "../../redux/settings/settings.actions";
+import { cleanHtml } from "../../sources/helpers/cleanHtml";
 
 const Chapter = ({ route, navigation }) => {
     const {
@@ -370,11 +371,30 @@ const Chapter = ({ route, navigation }) => {
                                             backgroundColor: readerBackground(
                                                 reader.theme
                                             ),
+                                            paddingBottom: 24,
                                         }}
                                         originWhitelist={["*"]}
                                         scalesPageToFit={true}
                                         showsVerticalScrollIndicator={false}
                                         onScroll={onScroll}
+                                        onNavigationStateChange={async ({
+                                            url,
+                                        }) => {
+                                            if (
+                                                (sourceId === 50 ||
+                                                    sourceId == 62) &&
+                                                url !== "about:blank"
+                                            ) {
+                                                setLoading(true);
+                                                const res = await fetchChapter(
+                                                    sourceId,
+                                                    novelUrl,
+                                                    url
+                                                );
+                                                setChapter(res);
+                                                setLoading(false);
+                                            }
+                                        }}
                                         source={{
                                             html: `
                             <html>
@@ -416,7 +436,7 @@ const Chapter = ({ route, navigation }) => {
                                 </style>
                                 </head>
                             <body>
-                                ${chapter.chapterText.trim()}
+                                ${cleanHtml(chapter.chapterText)}
                             </body>
                             </html>
                             `,

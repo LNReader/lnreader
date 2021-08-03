@@ -55,21 +55,28 @@ const NovelInfoHeader = ({
         <View>
             <CoverImage
                 source={{
-                    uri:
-                        item.novelCover && item.novelCover.startsWith("https")
+                    uri: loading
+                        ? item.novelCover && !item.novelCover.startsWith("/")
                             ? item.novelCover
-                            : "https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true",
+                            : "https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true"
+                        : novel.novelCover && !novel.novelCover.startsWith("/")
+                        ? novel.novelCover
+                        : "https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true",
                 }}
                 theme={theme}
             >
                 <NovelInfoContainer>
                     <NovelThumbnail
                         source={{
-                            uri:
-                                item.novelCover &&
-                                item.novelCover.startsWith("https")
+                            uri: loading
+                                ? item.novelCover &&
+                                  !item.novelCover.startsWith("/")
                                     ? item.novelCover
-                                    : "https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true",
+                                    : "https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true"
+                                : novel.novelCover &&
+                                  !novel.novelCover.startsWith("/")
+                                ? novel.novelCover
+                                : "https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true",
                         }}
                     />
                     <View style={styles.novelDetails}>

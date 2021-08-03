@@ -67,7 +67,7 @@ const NovelCover = ({ item, onPress, libraryStatus, theme }) => {
                         source={{
                             uri:
                                 item.novelCover &&
-                                item.novelCover.startsWith("https")
+                                !item.novelCover.startsWith("/")
                                     ? item.novelCover
                                     : "https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true",
                         }}

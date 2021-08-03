@@ -85,7 +85,7 @@ const parseNovelAndChapters = async (novelUrl) => {
         .replace(/[\t\n]/g, "")
         .trim();
 
-    novel.novelCover = $("figure.cover > img").attr("src");
+    novel.novelCover = $("figure.cover > img").attr("data-src");
 
     novel.genre = "";
 

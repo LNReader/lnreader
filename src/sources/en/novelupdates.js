@@ -80,7 +80,7 @@ const parseNovelAndChapters = async (novelUrl) => {
 
     let summary = $("#editdescription").text().trim();
 
-    novel.summary = summary + `\nType: ${type}`;
+    novel.summary = summary + `\n\nType: ${type}`;
 
     let novelChapters = [];
 
@@ -119,6 +119,13 @@ const parseNovelAndChapters = async (novelUrl) => {
     return novel;
 };
 
+function getLocation(href) {
+    var match = href.match(
+        /^(https?\:)\/\/(([^:\/?#]*)(?:\:([0-9]+))?)([\/]{0,1}[^?#]*)(\?[^#]*|)(#.*|)$/
+    );
+    return match && `${match[1]}//${match[3]}`;
+}
+
 const parseChapter = async (novelUrl, chapterUrl) => {
     const url = chapterUrl;
 
@@ -134,6 +141,8 @@ const parseChapter = async (novelUrl, chapterUrl) => {
             headers: headers,
         });
         body = await result.text();
+
+        // console.log(result.url);
 
         // console.log("Redirected URL: ", result.url);
 
@@ -173,6 +182,8 @@ const parseChapter = async (novelUrl, chapterUrl) => {
         } else if (isTumblr) {
             chapterText = $(".post").html();
         } else if (isBlogspot) {
+            $(".post-share-buttons").remove();
+
             chapterText = $(".entry-content").html();
         } else if (isHostedNovel) {
             chapterText = $(".chapter").html();
@@ -196,6 +207,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
                 ".post-cats",
                 ".sidebar",
                 ".author-avatar",
+                ".ezoic-ad",
             ];
 
             bloatClasses.map((tag) => $(tag).remove());
@@ -228,6 +240,14 @@ const parseChapter = async (novelUrl, chapterUrl) => {
         if (!chapterText) {
             chapterText =
                 "Chapter not available.\n\nReport if it's available in webview.";
+        } else {
+            /**
+             * Convert relative urls to absolute
+             */
+            chapterText = chapterText.replace(
+                /href="\//g,
+                `href="${getLocation(result.url)}/`
+            );
         }
     } catch (error) {
         chapterText = `Chapter not available (Error: ${error.message}).\n\nReport if it's available in webview.`;

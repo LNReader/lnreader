@@ -23,6 +23,7 @@ import {
     markChaptersRead,
     markChapterUnreadAction,
     markPreviousChaptersReadAction,
+    setNovel,
     sortAndFilterChapters,
     updateNovelAction,
 } from "../../redux/novel/novel.actions";
@@ -42,6 +43,7 @@ import { Row } from "../../components/Common";
 import JumpToChapterModal from "./components/JumpToChapterModal";
 import { Actionbar } from "../../components/Actionbar/Actionbar";
 import EditInfoModal from "./components/EditInfoModal";
+import { setCustomNovelCover } from "../../database/queries/NovelQueries";
 
 const Novel = ({ route, navigation }) => {
     const item = route.params;
@@ -54,6 +56,7 @@ const Novel = ({ route, navigation }) => {
 
     const [selected, setSelected] = useState([]);
     const [downloadMenu, showDownloadMenu] = useState(false);
+    const [extraMenu, showExtraMenu] = useState(false);
 
     let flatlistRef = useRef(null);
     let chaptersSettingsSheetRef = useRef(null);
@@ -305,22 +308,13 @@ const Novel = ({ route, navigation }) => {
                                 }}
                                 onPress={() => showJumpToChapterModal(true)}
                             />
-                            <IconButton
-                                icon="file-document-edit-outline"
-                                color="white"
-                                size={21}
-                                style={{
-                                    marginTop: StatusBar.currentHeight + 8,
-                                }}
-                                onPress={() => showEditInfoModal(true)}
-                            />
+
                             <IconButton
                                 icon="share-variant"
                                 color="white"
                                 size={21}
                                 style={{
                                     marginTop: StatusBar.currentHeight + 8,
-                                    marginRight: 16,
                                 }}
                                 onPress={() =>
                                     Share.share({
@@ -328,6 +322,54 @@ const Novel = ({ route, navigation }) => {
                                     })
                                 }
                             />
+                            <Menu
+                                visible={extraMenu}
+                                onDismiss={() => showExtraMenu(false)}
+                                anchor={
+                                    <IconButton
+                                        icon="dots-vertical"
+                                        color="white"
+                                        size={21}
+                                        style={{
+                                            marginTop:
+                                                StatusBar.currentHeight + 8,
+                                            marginRight: 16,
+                                        }}
+                                        onPress={() => showExtraMenu(true)}
+                                    />
+                                }
+                                contentStyle={{
+                                    backgroundColor: theme.menuColor,
+                                }}
+                            >
+                                <Menu.Item
+                                    title="Edit info"
+                                    style={{ backgroundColor: theme.menuColor }}
+                                    titleStyle={{
+                                        color: theme.textColorPrimary,
+                                    }}
+                                    onPress={() => showEditInfoModal(true)}
+                                />
+                                <Menu.Item
+                                    title="Edit cover"
+                                    style={{ backgroundColor: theme.menuColor }}
+                                    titleStyle={{
+                                        color: theme.textColorPrimary,
+                                    }}
+                                    onPress={async () => {
+                                        const cover = await setCustomNovelCover(
+                                            novelId
+                                        );
+
+                                        dispatch(
+                                            setNovel({
+                                                ...novel,
+                                                novelCover: cover,
+                                            })
+                                        );
+                                    }}
+                                />
+                            </Menu>
                         </Row>
                     </View>
                 )}

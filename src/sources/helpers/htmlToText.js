@@ -99,7 +99,9 @@ const htmlToText = (html, options = {}) => {
          * Decode HTML entities.
          */
 
-        .replace(/&([^;]+);/g, decodeHtmlEntity);
+        .replace(/&([^;]+);/g, decodeHtmlEntity)
+
+        .trim();
 
     return text;
 };

@@ -115,6 +115,8 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 
     $ = cheerio.load(body);
 
+    $(".chapter-nav").remove();
+
     let chapterName = $("#sidebar-toggler-container").next().text();
     chapterName = chapterName.replace(/[\t\n]/g, "");
 

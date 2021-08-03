@@ -150,7 +150,7 @@ export const yinYangTheme = {
     ...PrimaryColors.dark,
     colorAccent: AccentColors.yinYang,
     rippleColor: RippleColors.yinYang,
-    searchBarColor: "#484861",
+    searchBarColor: "#303135",
     menuColor: "#484861",
     filterColor: "#FFEB3B",
     dividerColor: DividerColors.DARK,
