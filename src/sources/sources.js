@@ -35,7 +35,6 @@ import ScribbleHubScraper from "./en/scribblehub";
 import SyosetuScraper from "./jp/syosetu";
 import LNMTLScraper from "./en/lnmtl";
 import {
-    ArNovelScraper,
     BoxNovelOnlineScraper,
     ClickNovelScraper,
     DaoNovelScraper,
@@ -70,6 +69,7 @@ import WLNUpdatesScraper from "./en/wlnupdates";
 import ReaperScansScraper from "./en/reaperscans";
 import ReadwnScraper from "./en/readwn";
 import RanobeHubScraper from "./ru/ranobehub";
+import ArNovelScraper from "./ar/arnovel";
 
 export const getSource = (sourceId) => {
     const scrapers = {

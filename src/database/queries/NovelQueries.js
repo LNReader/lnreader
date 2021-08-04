@@ -8,7 +8,6 @@ import { fetchChapters, fetchNovel } from "../../services/Source/source";
 import { insertChapters } from "./ChapterQueries";
 
 import { showToast } from "../../hooks/showToast";
-import { setNovel } from "../../redux/novel/novel.actions";
 
 const insertNovelQuery = `INSERT INTO novels (novelUrl, sourceUrl, sourceId, source, novelName, novelCover, novelSummary, author, artist, status, genre) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 

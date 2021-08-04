@@ -16,7 +16,7 @@ const getPath = (extensionId) => {
         56: { novels: "novel", novel: "novel", chapter: "novel" },
         57: { novels: "series", novel: "series", chapter: "series" },
         58: { novels: "novel", novel: "novel", chapter: "novel" },
-        59: { novels: "novel", novel: "novel", chapter: "novel" },
+        59: { novels: "novel", novel: "novels", chapter: "novel" },
         60: { novels: "novel", novel: "novel", chapter: "novel" },
         61: { novels: "novel", novel: "novel", chapter: "novel" },
         62: { novels: "novel", novel: "novel", chapter: "novel" },
@@ -130,12 +130,12 @@ export const LightNovelsHubScraper = new MadaraScraper(
     getPath(58)
 );
 
-export const ArNovelScraper = new MadaraScraper(
-    59,
-    "https://arnovel.me/",
-    "ArNovel",
-    getPath(59)
-);
+// export const ArNovelScraper = new MadaraScraper(
+//     59,
+//     "https://arnovel.me/",
+//     "ArNovel",
+//     getPath(59)
+// );
 
 export const MeionNovelScraper = new MadaraScraper(
     60,

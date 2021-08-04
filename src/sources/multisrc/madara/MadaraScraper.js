@@ -79,7 +79,7 @@ class MadaraScraper {
         novel.novelCover =
             $(".summary_image > a > img").attr("data-src") ||
             $(".summary_image > a > img").attr("src") ||
-            "https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.png?raw=true";
+            "https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true";
 
         $(".post-content_item").each(function () {
             const detailName = $(this)
