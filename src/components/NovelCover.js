@@ -31,8 +31,6 @@ const NovelCover = ({ item, onPress, libraryStatus, theme }) => {
         []
     );
 
-    console.log(item.novelCover);
-
     return displayMode !== 2 ? (
         <View
             style={{

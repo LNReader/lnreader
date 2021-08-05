@@ -415,6 +415,10 @@ const Chapter = ({ route, navigation }) => {
                                     line-height: ${reader.lineHeight};
                                     font-family: ${reader.fontFamily};
                                 }
+                                hr {
+                                    margin-top: 20px;
+                                    margin-bottom: 20px;
+                                }
                                 span[style] {
                                     color: ${reader.textColor} !important;
                                 }

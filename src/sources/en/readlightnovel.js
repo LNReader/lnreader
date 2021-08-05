@@ -83,12 +83,12 @@ const parseNovelAndChapters = async (novelUrl) => {
 
     let chapters = [];
 
-    $(".panel").each(function (res) {
+    $(".panel").each(function () {
         let volumeName = $(this).find("h4.panel-title").text();
 
         $(this)
             .find("ul.chapter-chs > li")
-            .each(function (result) {
+            .each(function () {
                 let chapterName = $(this).find("a").text();
 
                 const releaseDate = null;
@@ -151,6 +151,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     $(
         'div[style="float: left; margin-top: 20px; font-style: italic;margin-left: 50px; font-size: 14px;"]'
     ).remove();
+    $('div[style="float:left;margin-top:15px;margin-bottom:15px;"]').remove();
 
     let chapterText = $(".desc").html();
 

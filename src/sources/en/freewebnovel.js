@@ -39,8 +39,6 @@ const popularNovels = async (page) => {
 const parseNovelAndChapters = async (novelUrl) => {
     const url = `${baseUrl}${novelUrl.replace("/", "")}.html`;
 
-    console.log(url);
-
     const result = await fetch(url);
     const body = await result.text();
 
@@ -113,9 +111,6 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     let novelId = novelUrl.replace("/", "");
 
     const url = `${baseUrl}${novelId}/${chapterUrl}.html`;
-    console.log(novelUrl, chapterUrl);
-
-    console.log(url);
 
     const result = await fetch(url);
     const body = await result.text();
@@ -125,7 +120,6 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     let chapterName = $("h1.tit").text();
 
     let chapterText = $("div.txt").html();
-    console.log(chapterText);
 
     const chapter = {
         sourceId: 13,

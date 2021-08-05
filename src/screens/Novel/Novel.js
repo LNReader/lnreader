@@ -348,7 +348,10 @@ const Novel = ({ route, navigation }) => {
                                     titleStyle={{
                                         color: theme.textColorPrimary,
                                     }}
-                                    onPress={() => showEditInfoModal(true)}
+                                    onPress={() => {
+                                        showEditInfoModal(true);
+                                        showExtraMenu(false);
+                                    }}
                                 />
                                 <Menu.Item
                                     title="Edit cover"
@@ -367,6 +370,8 @@ const Novel = ({ route, navigation }) => {
                                                 novelCover: cover,
                                             })
                                         );
+
+                                        showExtraMenu(false);
                                     }}
                                 />
                             </Menu>
