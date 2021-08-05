@@ -7,7 +7,10 @@ import { ScreenContainer } from "../../components/Common";
 
 import { useTheme } from "../../hooks/reduxHooks";
 import { restoreLibraryAction } from "../../redux/library/library.actions";
-import { createBackup } from "../../services/backup";
+import {
+    createFullBackup,
+    restoreFullBackup,
+} from "../../services/backup/backup";
 
 const BackupSettings = ({ navigation }) => {
     const theme = useTheme();
@@ -25,12 +28,19 @@ const BackupSettings = ({ navigation }) => {
                     <List.Item
                         title="Create backup"
                         description="Can be used to restore current library"
-                        onPress={createBackup}
+                        onPress={createFullBackup}
                         theme={theme}
                     />
                     <List.Item
                         title="Restore backup"
                         description="Restore library from backup file"
+                        onPress={restoreFullBackup}
+                        theme={theme}
+                    />
+                    <List.Divider theme={theme} />
+                    <List.Item
+                        title="Restore old backup"
+                        description="Restore library from backup file of version v1.1.2 or lower"
                         onPress={() => dispatch(restoreLibraryAction())}
                         theme={theme}
                     />
