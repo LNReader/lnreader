@@ -1,5 +1,14 @@
 import React, { useState } from "react";
-import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+    Pressable,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TextInput,
+    View,
+} from "react-native";
+import { Button } from "react-native-paper";
+import WebView from "react-native-webview";
 import { useDispatch } from "react-redux";
 
 import { Appbar } from "../../components/Appbar";
@@ -84,31 +93,67 @@ const ReaderSettings = ({ navigation }) => {
         { value: "right", icon: "format-align-right" },
     ];
 
+    const [customHtmlCSS, setcustomHtmlCSS] = useState(reader.customCSS);
+
     return (
         <ScreenContainer theme={theme}>
             <Appbar title="Reader" onBackAction={navigation.goBack} />
+            <View style={{ height: 360 }}>
+                <WebView
+                    originWhitelist={["*"]}
+                    style={{
+                        backgroundColor: readerBackground(reader.theme),
+                    }}
+                    source={{
+                        html: `
+                    <html>
+                        <head>
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+                            <style>
+                                @font-face {
+                                    font-family: ${reader.fontFamily};
+                                    src: url("file:///android_asset/fonts/${reader.fontFamily}.ttf");
+                                }
+                                body {
+                                    padding-top: 8px;
+                                    padding-bottom: 8px;
+                                    padding-left: ${reader.padding}%;
+                                    padding-right: ${reader.padding}%;
+                                    font-family: ${reader.fontFamily};
+                                    text-align: ${reader.textAlign};
+                                    line-height: ${reader.lineHeight};
+                                    font-size: ${reader.textSize}px;
+                                    color: ${reader.textColor};
+                                }
+                                ${reader.customCSS}
+                            </style>
+                        </head>
+                        <body>
+                            <p>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                Ut lobortis nunc id nisl tempor, sed tristique sem
+                                sagittis. Mauris consequat orci egestas volutpat
+                                vestibulum. Nullam convallis, leo in porttitor
+                                fringilla, ex mi finibus felis, non molestie ligula
+                                ligula facilisis ligula. Nam eu est a turpis porttitor
+                                aliquet sed vel risus. Ut ac scelerisque diam. Nulla
+                                fringilla enim non ex rhoncus faucibus. Integer eget
+                                lacus justo.
+                            </p>
+                            <p>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                Ut lobortis nunc id nisl tempor, sed tristique sem
+                                sagittis. Mauris consequat orci egestas volutpat
+                                vestibulum. Nullam convallis, leo in porttitor
+                                fringilla, ex mi finibus felis, non molestie ligula
+                                ligula facilisis ligula.
+                        </body>
+                    </html>
+                    `,
+                    }}
+                />
+            </View>
             <ScrollView>
-                <View
-                    style={{ backgroundColor: readerBackground(reader.theme) }}
-                >
-                    <Text style={readerStyles}>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Ut lobortis nunc id nisl tempor, sed tristique sem
-                        sagittis. Mauris consequat orci egestas volutpat
-                        vestibulum. Nullam convallis, leo in porttitor
-                        fringilla, ex mi finibus felis, non molestie ligula
-                        ligula facilisis ligula. Nam eu est a turpis porttitor
-                        aliquet sed vel risus. Ut ac scelerisque diam. Nulla
-                        fringilla enim non ex rhoncus faucibus. Integer eget
-                        lacus justo. Lorem ipsum dolor sit amet, consectetur
-                        adipiscing elit. Ut vitae tempor metus. Morbi nec nisl
-                        cursus, gravida ex vitae, laoreet leo. Pellentesque in
-                        lectus ante. Aliquam porta suscipit pretium. Sed ut
-                        ligula at dolor pretium egestas quis vitae urna. In
-                        ullamcorper venenatis orci, eu pulvinar nibh venenatis
-                        sit amet.
-                    </Text>
-                </View>
                 <List.Section>
                     <List.SubHeader theme={theme}>Preset</List.SubHeader>
                     <View style={styles.pressableListItem}>
@@ -215,8 +260,52 @@ const ReaderSettings = ({ navigation }) => {
                             ))}
                         </Row>
                     </Pressable>
+                    <List.Divider theme={theme} />
+                    <List.SubHeader theme={theme}>CSS</List.SubHeader>
+                    <View style={{ paddingHorizontal: 16, paddingBottom: 8 }}>
+                        <TextInput
+                            style={{
+                                color: theme.textColorPrimary,
+                                fontSize: 16,
+                            }}
+                            value={customHtmlCSS}
+                            onChangeText={(text) => setcustomHtmlCSS(text)}
+                            placeholderTextColor={theme.textColorSecondary}
+                            placeholder="Example: body { color: red; }"
+                            multiline={true}
+                        />
+                        <View style={{ flexDirection: "row-reverse" }}>
+                            <Button
+                                uppercase={false}
+                                color={theme.colorAccent}
+                                onPress={() =>
+                                    dispatch(
+                                        setReaderSettings(
+                                            "customCSS",
+                                            customHtmlCSS
+                                        )
+                                    )
+                                }
+                            >
+                                Save
+                            </Button>
+                            <Button
+                                uppercase={false}
+                                color={theme.colorAccent}
+                                onPress={() => {
+                                    setcustomHtmlCSS("");
+                                    dispatch(
+                                        setReaderSettings("customCSS", "")
+                                    );
+                                }}
+                            >
+                                Clear
+                            </Button>
+                        </View>
+                    </View>
                 </List.Section>
             </ScrollView>
+
             <ColorPickerModal
                 title="Reader background color"
                 modalVisible={readerBackgroundColorModal}

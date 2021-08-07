@@ -54,6 +54,7 @@ const initialState = {
         padding: 5,
         fontFamily: "",
         lineHeight: 1.5,
+        customCSS: null,
     },
     showDownloadBadges: true,
     showUnreadBadges: true,

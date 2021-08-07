@@ -2,7 +2,10 @@ export const cleanHtml = (html) => {
     let text = html;
 
     text = text
-        .replace(/(font-family|line-height|font-size|text-align):.*?;/gi, "")
+        .replace(
+            /style="((?:color|font-family|line-height|font-size|text-align).*?)"/gi,
+            ""
+        )
         .replace(/class=".*?"/gi, "")
         .replace(/id=".*?"/gi, "")
         .replace(/<!--.*?-->/gim, "")

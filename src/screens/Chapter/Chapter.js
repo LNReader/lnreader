@@ -6,16 +6,15 @@ import {
     StatusBar,
     ScrollView,
     TouchableWithoutFeedback,
-    Dimensions,
-    Pressable,
 } from "react-native";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { IconButton, Portal } from "react-native-paper";
 import {
     hideNavigationBar,
     showNavigationBar,
 } from "react-native-navigation-bar-color";
+import WebView from "react-native-webview";
 
 import {
     getChapterFromDB,
@@ -51,7 +50,6 @@ import GestureRecognizer from "react-native-swipe-gestures";
 import { LoadingScreen } from "../../components/LoadingScreen/LoadingScreen";
 import { insertHistory } from "../../database/queries/HistoryQueries";
 import { SET_LAST_READ } from "../../redux/preferences/preference.types";
-import WebView from "react-native-webview";
 import { htmlToText } from "../../sources/helpers/htmlToText";
 import { setAppSettings } from "../../redux/settings/settings.actions";
 import { cleanHtml } from "../../sources/helpers/cleanHtml";
@@ -275,13 +273,6 @@ const Chapter = ({ route, navigation }) => {
               })
             : showToast("There's no next chapter");
 
-    const onPressLink = async (link) => {
-        setLoading(true);
-        const res = await fetchChapter(sourceId, novelUrl, link);
-        setChapter(res);
-        setLoading(false);
-    };
-
     const enableSwipeGestures = () => {
         dispatch(setAppSettings("swipeGestures", !swipeGestures));
         showToast(
@@ -419,9 +410,6 @@ const Chapter = ({ route, navigation }) => {
                                     margin-top: 20px;
                                     margin-bottom: 20px;
                                 }
-                                span[style] {
-                                    color: ${reader.textColor} !important;
-                                }
                                 a {
                                     color: ${theme.colorAccent};
                                 }
@@ -437,6 +425,8 @@ const Chapter = ({ route, navigation }) => {
                                         reader.fontFamily
                                     }.ttf");
                                 }
+                                
+                                ${reader.customCSS}
                                 </style>
                                 </head>
                             <body>

@@ -1,5 +1,4 @@
-import { shallowEqual, useSelector } from "react-redux";
-import { showChapterTitlesAction } from "../redux/novel/novel.actions";
+import { useSelector } from "react-redux";
 import { darkTheme } from "../theme/theme";
 
 const useTheme = () => {
