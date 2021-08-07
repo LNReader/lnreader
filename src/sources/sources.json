@@ -467,5 +467,12 @@
         "sourceName": "Readwn.com",
         "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/readwn/icon.png?raw=true",
         "lang": "English"
+    },
+    {
+        "sourceId": 69,
+        "url": "https://ranobehub.org/",
+        "sourceName": "Ranobehub",
+        "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/ru/ranobehub/icon.png?raw=true",
+        "lang": "Russian"
     }
 ]

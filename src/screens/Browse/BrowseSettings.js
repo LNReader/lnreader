@@ -29,6 +29,7 @@ const BrowseSettings = ({ navigation }) => {
         "Chinese",
         "Arabic",
         "Indonesian",
+        "Russian",
     ];
 
     const { searchAllSources = false } = useSettings();

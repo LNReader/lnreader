@@ -35,7 +35,6 @@ const popularNovels = async (page) => {
 
 const parseNovelAndChapters = async (novelUrl) => {
     const url = baseUrl + "ranobe/" + novelUrl;
-    console.log(url);
 
     const result = await fetch(url);
     const body = await result.text();
@@ -58,9 +57,21 @@ const parseNovelAndChapters = async (novelUrl) => {
 
     let novelChapters = [];
 
-    $("div.contents-chapter").each(function () {
-        console.log("Called");
-    });
+    const novelId = novelUrl.split("-")[0];
+    const fetchChaptersUrl = `https://ranobehub.org/api/ranobe/${novelId}/contents`;
+
+    const chaptersRaw = await fetch(fetchChaptersUrl);
+    const chaptersJSON = await chaptersRaw.json();
+
+    chaptersJSON.volumes.map((volume) =>
+        volume.chapters.map((chapter) =>
+            novelChapters.push({
+                chapterName: chapter.name,
+                chapterUrl: chapter.url,
+                releaseDate: null,
+            })
+        )
+    );
 
     novel.chapters = novelChapters;
 
@@ -68,18 +79,20 @@ const parseNovelAndChapters = async (novelUrl) => {
 };
 
 const parseChapter = async (novelUrl, chapterUrl) => {
-    const url = `${baseUrl}mtl/${novelUrl}/${chapterUrl}`;
-
-    console.log(url);
+    const url = chapterUrl;
 
     const result = await fetch(url);
     const body = await result.text();
 
     $ = cheerio.load(body);
 
-    let chapterName = "";
+    let chapterName = $(
+        "body > div.pusher.container_main > div:nth-child(5) > div:nth-child(1) > div.title-wrapper > h1"
+    ).text();
+    let chapterText = $(
+        "body > div.pusher.container_main > div:nth-child(5) > div:nth-child(1)"
+    ).html();
 
-    let chapterText = $(".txtnav").html();
     const chapter = {
         sourceId,
         novelUrl,
@@ -92,33 +105,23 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 };
 
 const searchNovels = async (searchTerm) => {
-    const url = baseUrl + "?s=" + searchTerm + "&post_type=novel";
+    const url = "https://ranobehub.org/api/fulltext/ranobe?query=" + searchTerm;
 
     const result = await fetch(url);
-    const body = await result.text();
-
-    $ = cheerio.load(body);
+    const data = await result.json();
 
     let novels = [];
 
-    $(".newbox")
-        .find("li")
-        .each(function () {
-            const novelName = $(this).find("h3").text();
-            const novelCover = $(this).find("img").attr("src");
-
-            let novelUrl = $(this).find("a").attr("href");
-            novelUrl = novelUrl.replace(baseUrl + "novel/", "");
-
-            const novel = {
-                sourceId,
-                novelName,
-                novelCover,
-                novelUrl,
-            };
-
-            novels.push(novel);
-        });
+    data.data.map((novel) =>
+        novels.push({
+            sourceId,
+            novelName: novel.names.rus,
+            novelUrl: novel.url.match(
+                /https:\/\/ranobehub\.org\/ranobe\/(.*?)\?utm_source=search_name&utm_medium=search&utm_campaign=search_using/
+            )[1],
+            novelCover: novel.image,
+        })
+    );
 
     return novels;
 };
