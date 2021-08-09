@@ -474,5 +474,12 @@
         "sourceName": "Ranobehub",
         "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/ru/ranobehub/icon.png?raw=true",
         "lang": "Russian"
+    },
+    {
+        "sourceId": 70,
+        "url": "https://divinedaolibrary.com/",
+        "sourceName": "Divine Dao Library",
+        "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/divinedaolibrary/icon.png?raw=true",
+        "lang": "English"
     }
 ]

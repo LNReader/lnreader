@@ -70,6 +70,7 @@ import ReaperScansScraper from "./en/reaperscans";
 import ReadwnScraper from "./en/readwn";
 import RanobeHubScraper from "./ru/ranobehub";
 import ArNovelScraper from "./ar/arnovel";
+import DivineDaoLibraryScraper from "./en/divinedaolibrary";
 
 export const getSource = (sourceId) => {
     const scrapers = {
@@ -141,6 +142,7 @@ export const getSource = (sourceId) => {
         67: ReaperScansScraper,
         68: ReadwnScraper,
         69: RanobeHubScraper,
+        70: DivineDaoLibraryScraper,
     };
 
     return scrapers[sourceId];

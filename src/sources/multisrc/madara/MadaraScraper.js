@@ -154,7 +154,6 @@ class MadaraScraper {
         });
 
         novel.chapters = novelChapters.reverse();
-        console.log(novel);
 
         return novel;
     }
