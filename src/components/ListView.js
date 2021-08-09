@@ -18,7 +18,12 @@ const ListView = ({
             onPress={onPress}
         >
             <FastImage
-                source={{ uri: item.novelCover }}
+                source={{
+                    uri:
+                        item.novelCover && !item.novelCover.startsWith("/")
+                            ? item.novelCover
+                            : "https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true",
+                }}
                 style={[
                     styles.extensionIcon,
                     inLibraryBadge && { opacity: 0.5 },
