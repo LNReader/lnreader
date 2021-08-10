@@ -136,6 +136,7 @@ export const updateAllNovels = async (updateSettings) => {
         parameters: {
             delay: 1000,
         },
+        linkingURI: "lnreader://updates",
         progressBar: {
             max: libraryNovels.length,
             value: 0,

@@ -33,7 +33,10 @@ const NovelList = ({
 
     return (
         <FlatList
-            contentContainerStyle={styles.flatListCont}
+            contentContainerStyle={[
+                styles.flatListCont,
+                displayMode !== 2 && { paddingHorizontal: 4 },
+            ]}
             numColumns={getNovelsPerRow()}
             key={[orientation, getNovelsPerRow()]}
             data={data}
@@ -54,6 +57,5 @@ const styles = StyleSheet.create({
     flatListCont: {
         flexGrow: 1,
         paddingVertical: 8,
-        paddingHorizontal: 4,
     },
 });

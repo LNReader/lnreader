@@ -323,6 +323,7 @@ export const downloadAllChaptersAction =
                     type: "drawable",
                 },
                 color: "#00adb5",
+                linkingURI: "lnreader://downloads/redirect",
                 parameters: {
                     delay: 1000,
                 },

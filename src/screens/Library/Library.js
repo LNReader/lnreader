@@ -24,6 +24,12 @@ import { useSettings, useTheme } from "../../hooks/reduxHooks";
 import { setNovel } from "../../redux/novel/novel.actions";
 import { Portal } from "react-native-paper";
 import LibraryFilterSheet from "./components/LibraryFilterSheet";
+import { Actionbar } from "../../components/Actionbar/Actionbar";
+import {
+    markAllChaptersRead,
+    markAllChaptersUnread,
+} from "../../database/queries/ChapterQueries";
+import { unfollowNovel } from "../../database/queries/NovelQueries";
 
 const LibraryScreen = ({ navigation }) => {
     const theme = useTheme();
@@ -73,18 +79,20 @@ const LibraryScreen = ({ navigation }) => {
         dispatch(searchLibraryAction(text, sort, filter));
     };
 
-    const renderItem = useCallback(
-        ({ item }) => (
-            <NovelCover
-                item={item}
-                onPress={() => {
-                    navigation.navigate("Novel", item);
-                    dispatch(setNovel(item));
-                }}
-                theme={theme}
-            />
-        ),
-        []
+    const renderItem = ({ item }) => (
+        <NovelCover
+            item={item}
+            onPress={() => {
+                navigation.navigate("Novel", item);
+                dispatch(setNovel(item));
+            }}
+            theme={theme}
+            onLongPress={selectNovel}
+            isSelected={
+                selectedNovels.indexOf(item.novelId) === -1 ? false : true
+            }
+            selectedNovels={selectedNovels}
+        />
     );
 
     const refreshControl = () => (
@@ -104,6 +112,22 @@ const LibraryScreen = ({ navigation }) => {
             />
         );
 
+    /**
+     * Selected Novels
+     */
+
+    const [selectedNovels, setSelectedNovels] = useState([]);
+
+    const selectNovel = (novelId) => {
+        if (selectedNovels.indexOf(novelId) === -1) {
+            setSelectedNovels((prevState) => [...prevState, novelId]);
+        } else {
+            setSelectedNovels((prevState) =>
+                prevState.filter((id) => id !== novelId)
+            );
+        }
+    };
+
     return (
         <>
             <View
@@ -113,13 +137,22 @@ const LibraryScreen = ({ navigation }) => {
                 ]}
             >
                 <Searchbar
-                    placeholder={`Search Library ${
-                        showNumberOfNovels ? "(" + novels.length + ")" : ""
-                    }`}
+                    placeholder={
+                        selectedNovels.length === 0
+                            ? `Search Library ${
+                                  showNumberOfNovels
+                                      ? "(" + novels.length + ")"
+                                      : ""
+                              }`
+                            : `${selectedNovels.length} selected`
+                    }
                     searchText={searchText}
                     clearSearchbar={clearSearchbar}
                     onChangeText={onChangeText}
-                    backAction="magnify"
+                    backAction={selectedNovels.length > 0 ? "close" : "magnify"}
+                    onBackAction={() =>
+                        selectedNovels.length > 0 && setSelectedNovels([])
+                    }
                     actions={[
                         {
                             icon: "filter-variant",
@@ -171,6 +204,49 @@ const LibraryScreen = ({ navigation }) => {
                             refreshControl={refreshControl()}
                             ListEmptyComponent={listEmptyComponent}
                         />
+                        {selectedNovels.length > 0 && (
+                            <Actionbar
+                                theme={theme}
+                                actions={[
+                                    {
+                                        icon: "check",
+                                        onPress: () => {
+                                            selectedNovels.map((id) =>
+                                                markAllChaptersRead(id)
+                                            ),
+                                                setSelectedNovels([]);
+                                            dispatch(
+                                                getLibraryAction(sort, filter)
+                                            );
+                                        },
+                                    },
+                                    {
+                                        icon: "check-outline",
+                                        onPress: () => {
+                                            selectedNovels.map((id) =>
+                                                markAllChaptersUnread(id)
+                                            );
+                                            setSelectedNovels([]);
+                                            dispatch(
+                                                getLibraryAction(sort, filter)
+                                            );
+                                        },
+                                    },
+                                    {
+                                        icon: "delete-outline",
+                                        onPress: () => {
+                                            selectedNovels.map((id) =>
+                                                unfollowNovel(id)
+                                            );
+                                            setSelectedNovels([]);
+                                            dispatch(
+                                                getLibraryAction(sort, filter)
+                                            );
+                                        },
+                                    },
+                                ]}
+                            />
+                        )}
                         <Portal>
                             <LibraryFilterSheet
                                 bottomSheetRef={libraryFilterSheetRef}

@@ -261,7 +261,9 @@ const ReaderSettings = ({ navigation }) => {
                         </Row>
                     </Pressable>
                     <List.Divider theme={theme} />
-                    <List.SubHeader theme={theme}>CSS</List.SubHeader>
+                    <List.SubHeader theme={theme}>
+                        Custom CSS (Only works in webview mode)
+                    </List.SubHeader>
                     <View style={{ paddingHorizontal: 16, paddingBottom: 8 }}>
                         <TextInput
                             style={{

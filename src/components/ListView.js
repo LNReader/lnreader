@@ -10,12 +10,18 @@ const ListView = ({
     inLibraryBadge,
     theme,
     onPress,
+    isSelected,
+    onLongPress,
 }) => {
     return (
         <Pressable
             android_ripple={{ color: theme.rippleColor }}
-            style={styles.listView}
+            style={[
+                styles.listView,
+                isSelected && { backgroundColor: theme.rippleColor },
+            ]}
             onPress={onPress}
+            onLongPress={onLongPress}
         >
             <FastImage
                 source={{

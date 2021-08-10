@@ -47,6 +47,17 @@ export const followNovel = async (followed, novelId) => {
     });
 };
 
+export const unfollowNovel = async (novelId) => {
+    db.transaction((tx) => {
+        tx.executeSql(
+            "UPDATE novels SET followed = 0 WHERE novelId = ?",
+            [novelId],
+            (tx, res) => {},
+            (txObj, error) => console.log("Error ", error)
+        );
+    });
+};
+
 const checkNovelInCacheQuery = `SELECT * FROM novels WHERE novelUrl=? LIMIT 1`;
 
 export const checkNovelInCache = (novelUrl) => {

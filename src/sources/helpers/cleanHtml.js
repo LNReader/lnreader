@@ -12,6 +12,13 @@ export const cleanHtml = (html) => {
         .replace(/<\s*script[^>]*>[\s\S]*?<\/script>/gim, "")
         .replace(/<\s*noscript[^>]*>[\s\S]*?<\/noscript>/gim, "")
         .replace(/<\s*form[^>]*>[\s\S]*?<\/form>/gim, "")
+        /**
+         * Remove relative links
+         */
+        .replace(
+            /<\s*a[^>]*href=['"](\/.*?)['"][^>]*>([\s\S]*?)<\/\s*a\s*>/gi,
+            "$2"
+        )
         .trim();
 
     return text;

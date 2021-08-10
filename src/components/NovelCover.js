@@ -15,7 +15,15 @@ import ListView from "./ListView";
 import { getDeviceOrientation } from "../services/utils/helpers";
 import { useSettings } from "../hooks/reduxHooks";
 
-const NovelCover = ({ item, onPress, libraryStatus, theme }) => {
+const NovelCover = ({
+    item,
+    onPress,
+    libraryStatus,
+    theme,
+    isSelected,
+    onLongPress,
+    selectedNovels,
+}) => {
     const { displayMode, novelsPerRow, showDownloadBadges, showUnreadBadges } =
         useSettings();
 
@@ -31,18 +39,29 @@ const NovelCover = ({ item, onPress, libraryStatus, theme }) => {
         []
     );
 
+    const selectNovel = () => onLongPress(item.novelId);
+
     return displayMode !== 2 ? (
         <View
-            style={{
-                flex: 1 / getNovelsPerRow(),
-                borderRadius: 6,
-                overflow: "hidden",
-            }}
+            style={[
+                {
+                    flex: 1 / getNovelsPerRow(),
+                    borderRadius: 6,
+                    overflow: "hidden",
+                    margin: 2,
+                },
+                isSelected && { backgroundColor: theme.colorAccent },
+            ]}
         >
             <Pressable
                 android_ripple={{ color: theme.colorAccent }}
                 style={styles.opac}
-                onPress={onPress}
+                onPress={
+                    selectedNovels && selectedNovels.length > 0
+                        ? selectNovel
+                        : onPress
+                }
+                onLongPress={selectNovel}
             >
                 <>
                     <View style={styles.badgeContainer}>
@@ -116,7 +135,13 @@ const NovelCover = ({ item, onPress, libraryStatus, theme }) => {
             }
             inLibraryBadge={libraryStatus && <InLibraryBadge theme={theme} />}
             theme={theme}
-            onPress={onPress}
+            onPress={
+                selectedNovels && selectedNovels.length > 0
+                    ? selectNovel
+                    : onPress
+            }
+            onLongPress={selectNovel}
+            isSelected={isSelected}
         />
     );
 };
@@ -225,13 +250,15 @@ const styles = StyleSheet.create({
         fontFamily: "pt-sans-bold",
         fontSize: 14,
         padding: 8,
+        textShadowColor: "rgba(0, 0, 0, 0.75)",
+        textShadowOffset: { width: -1, height: 1 },
+        textShadowRadius: 10,
     },
     linearGradient: {
         borderRadius: 4,
     },
     opac: {
-        paddingHorizontal: 4.8,
-        paddingVertical: 4.8,
+        padding: 5,
         borderRadius: 4,
         flex: 1,
     },

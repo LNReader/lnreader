@@ -31,6 +31,7 @@ export const resumeDownloads = (chapters) => async (dispatch) => {
         parameters: {
             delay: 1000,
         },
+        linkingURI: "lnreader://downloads",
         progressBar: {
             max: chapters.length,
             value: 0,
