@@ -40,7 +40,7 @@ export const darkTheme = {
     menuColor: "#242529",
     filterColor: "#FFEB3B",
     dividerColor: DividerColors.DARK,
-    colorDisabled: "rgba(57,57,57,255)",
+    colorDisabled: PrimaryColors.dark.colorPrimary,
     colorButtonText: "#FFFFFF",
     statusBar: StatusBarStyle.LIGHT,
 };

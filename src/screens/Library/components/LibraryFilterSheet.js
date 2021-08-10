@@ -119,6 +119,7 @@ const LibraryFilterSheet = ({
         { displayMode: 0, label: "Compact Grid" },
         { displayMode: 1, label: "Comfortable Grid" },
         { displayMode: 2, label: "List" },
+        { displayMode: 3, label: "No Title Grid" },
     ];
 
     const {
@@ -238,8 +239,8 @@ const LibraryFilterSheet = ({
         <Bottomsheet
             animatedValue={animatedValue}
             ref={bottomSheetRef}
-            draggableRange={{ top: 470, bottom: 0 }}
-            snappingPoints={[0, 470]}
+            draggableRange={{ top: 480, bottom: 0 }}
+            snappingPoints={[0, 480]}
         >
             <View
                 style={[

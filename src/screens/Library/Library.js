@@ -7,6 +7,8 @@ import {
     ActivityIndicator,
     Pressable,
 } from "react-native";
+
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { useFocusEffect } from "@react-navigation/native";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -168,13 +170,25 @@ const LibraryScreen = ({ navigation }) => {
                     <View
                         style={{
                             backgroundColor: theme.searchBarColor,
-                            paddingVertical: 4,
+                            paddingVertical: 6,
                             alignItems: "center",
                             marginVertical: 8,
                             elevation: 2,
+                            flexDirection: "row",
+                            justifyContent: "center",
                         }}
                     >
-                        <Text style={{ color: theme.textColorSecondary }}>
+                        <MaterialCommunityIcons
+                            name="incognito"
+                            color={theme.textColorSecondary}
+                            size={18}
+                        />
+                        <Text
+                            style={{
+                                color: theme.textColorSecondary,
+                                marginLeft: 8,
+                            }}
+                        >
                             Incognito Mode
                         </Text>
                     </View>

@@ -94,6 +94,7 @@ const BrowseSettings = ({ navigation }) => {
                         }
                     />
                 </Pressable>
+                <List.Divider theme={theme} />
                 <List.SubHeader theme={theme}>Discover</List.SubHeader>
                 <Pressable
                     android_ripple={{ color: theme.rippleColor }}
@@ -116,6 +117,7 @@ const BrowseSettings = ({ navigation }) => {
                         }
                     />
                 </Pressable>
+                <List.Divider theme={theme} />
                 <List.SubHeader theme={theme}>Languages</List.SubHeader>
                 <FlatList
                     data={languages}

@@ -258,7 +258,7 @@ const styles = StyleSheet.create({
         borderRadius: 4,
     },
     opac: {
-        padding: 5,
+        padding: 4.8,
         borderRadius: 4,
         flex: 1,
     },
@@ -277,7 +277,7 @@ const styles = StyleSheet.create({
     },
 
     downloadBadge: {
-        backgroundColor: "#47a84a",
+        backgroundColor: "#2979FF",
         color: "#FFFFFF",
         borderTopLeftRadius: 4,
         borderBottomLeftRadius: 4,

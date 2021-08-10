@@ -40,6 +40,7 @@ const GenralSettings = ({ navigation }) => {
             0: "Compact Grid",
             1: "Comfortable Grid",
             2: "List",
+            3: "No Title Grid",
         };
 
         return label[displayMode] ?? "Compact Grid";

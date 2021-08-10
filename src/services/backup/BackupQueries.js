@@ -46,7 +46,7 @@ const getLibraryDownloads = () => {
     );
 };
 
-const restoreNovelsQuery = `INSERT INTO novels (novelId, novelUrl, sourceUrl, sourceId, source, novelName, novelCover, novelSummary, author, artist, status, genre, followed, unread) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+const restoreNovelsQuery = `INSERT OR REPLACE INTO novels (novelId, novelUrl, sourceUrl, sourceId, source, novelName, novelCover, novelSummary, author, artist, status, genre, followed, unread) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
 const restoreNovels = async (novel) => {
     db.transaction((tx) =>
@@ -74,7 +74,7 @@ const restoreNovels = async (novel) => {
     );
 };
 
-const restoreChaptersQuery = `INSERT INTO chapters (novelId, chapterId, chapterUrl, chapterName, releaseDate, bookmark, \`read\`, downloaded) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+const restoreChaptersQuery = `INSERT OR IGNORE INTO chapters (novelId, chapterId, chapterUrl, chapterName, releaseDate, bookmark, \`read\`, downloaded) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
 
 const restoreChapters = async (chapter) => {
     const {
@@ -107,7 +107,7 @@ const restoreChapters = async (chapter) => {
     );
 };
 
-const restoreDownloadsQuery = `INSERT INTO downloads (downloadChapterId, chapterName, chapterText) VALUES (?, ?, ?)`;
+const restoreDownloadsQuery = `INSERT OR IGNORE INTO downloads (downloadChapterId, chapterName, chapterText) VALUES (?, ?, ?)`;
 
 const restoreDownloads = async (chapter) => {
     const { downloadChapterId, chapterName, chapterText } = chapter;
