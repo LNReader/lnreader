@@ -110,12 +110,11 @@ const parseNovelAndChapters = async (novelUrl) => {
 
     let novelChapters = [];
 
-    let firstChapterNo, totalChapters;
+    let totalChapters;
 
     totalChapters = $(".header-stats > span").first().text().match(/\d+/)[0];
-    firstChapterNo = $(".chapter-no").first().text().match(/\d+/)[0];
 
-    for (let i = firstChapterNo; i <= totalChapters; i++) {
+    for (let i = 1; i <= totalChapters; i++) {
         const chapterName = "Chapter " + i;
 
         const releaseDate = null;

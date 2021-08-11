@@ -3,7 +3,7 @@ export const cleanHtml = (html) => {
 
     text = text
         .replace(
-            /style="((?:color|font-family|line-height|font-size|text-align).*?)"/gi,
+            /style="((?:font-family|line-height|font-size|text-align).*?)"/gi,
             ""
         )
         .replace(/class=".*?"/gi, "")
