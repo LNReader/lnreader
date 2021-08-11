@@ -118,8 +118,8 @@ const LibraryFilterSheet = ({
     const displayModes = [
         { displayMode: 0, label: "Compact Grid" },
         { displayMode: 1, label: "Comfortable Grid" },
-        { displayMode: 2, label: "List" },
         { displayMode: 3, label: "No Title Grid" },
+        { displayMode: 2, label: "List" },
     ];
 
     const {

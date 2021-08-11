@@ -50,7 +50,10 @@ const NovelCover = ({
                     overflow: "hidden",
                     margin: 2,
                 },
-                isSelected && { backgroundColor: theme.colorAccent },
+                isSelected && {
+                    backgroundColor: theme.colorAccent,
+                    opacity: 0.8,
+                },
             ]}
         >
             <Pressable

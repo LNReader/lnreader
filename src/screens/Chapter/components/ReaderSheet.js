@@ -6,8 +6,11 @@ import {
     Dimensions,
     Pressable,
     ScrollView,
+    useWindowDimensions,
+    Animated,
 } from "react-native";
 
+import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 import Slider from "@react-native-community/slider";
 import { IconButton, Menu, Switch } from "react-native-paper";
 import Bottomsheet from "rn-sliding-up-panel";
@@ -26,6 +29,10 @@ import {
     ToggleColorButton,
 } from "../../../components/Common/ToggleButton";
 
+const ReaderSettingTitle = ({ title }) => (
+    <Text style={styles.title}>{title}</Text>
+);
+
 const ReaderSheet = ({
     theme,
     reader,
@@ -36,13 +43,11 @@ const ReaderSheet = ({
     useWebViewForChapter,
     showScrollPercentage,
 }) => {
+    const [animatedValue] = useState(new Animated.Value(0));
+
     const [fontMenu, setFontMenu] = useState(false);
     const openFontMenu = () => setFontMenu(true);
     const closeFontMenu = () => setFontMenu(false);
-
-    const ReaderSettingTitle = ({ title }) => (
-        <Text style={styles.title}>{title}</Text>
-    );
 
     const presetThemes = [
         { value: 2, backgroundColor: "#f5f5fa", textColor: "#111111" },
@@ -63,259 +68,247 @@ const ReaderSheet = ({
         { value: "right", icon: "format-align-right" },
     ];
 
-    return (
-        <Bottomsheet
-            ref={bottomSheetRef}
-            draggableRange={{ top: 520, bottom: 0 }}
-            snappingPoints={[0, 520]}
-            showBackdrop={true}
-            backdropOpacity={0}
-        >
-            <View style={styles.contentContainer}>
-                <BottomSheetHandle theme={theme} />
-                {/* <IconButton
-                    icon="cog-outline"
-                    color={"#FFFFFF"}
-                    size={24}
-                    onPress={() => {
-                        navigation.navigate("MoreStack", {
-                            screen: "SettingsStack",
-                            params: {
-                                screen: "ReaderSettings",
-                            },
-                        });
-                        bottomSheetRef.current.hide();
-                    }}
+    const FirstRoute = () => (
+        <View style={{ flex: 1, paddingVertical: 16 }}>
+            <View
+                style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                }}
+            >
+                <Text
                     style={{
-                        marginVertical: 0,
-                        position: "absolute",
-                        top: 16,
-                        right: 16,
+                        color: theme.textColorSecondary,
+                        paddingHorizontal: 16,
+                        textAlign: "center",
                     }}
-                /> */}
-                <View style={styles.readerSettingsContainer}>
-                    <ReaderSettingTitle title="Text Size" />
-                    <Slider
-                        style={{
-                            width: Dimensions.get("window").width,
-                            height: 40,
-                        }}
-                        value={reader.textSize}
-                        minimumValue={12}
-                        maximumValue={20}
-                        step={1}
-                        minimumTrackTintColor={theme.colorAccent}
-                        maximumTrackTintColor="#000000"
-                        thumbTintColor={theme.colorAccent}
-                        onSlidingComplete={(value) =>
-                            dispatch(setReaderSettings("textSize", value))
-                        }
-                    />
-                    <Row
-                        style={{
-                            justifyContent: "space-between",
-                            width: "100%",
-                            paddingHorizontal: 16,
-                            paddingVertical: 8,
-                        }}
-                    >
-                        <ReaderSettingTitle title="Color" />
-                        <View style={{ marginLeft: 16 }}>
-                            <ScrollView horizontal={true}>
-                                {presetThemes.map((item, index) => (
-                                    <ToggleColorButton
-                                        key={index}
-                                        selected={reader.theme === item.value}
-                                        backgroundColor={item.backgroundColor}
-                                        textColor={item.textColor}
-                                        theme={theme}
-                                        onPress={() => {
-                                            dispatch(
-                                                setReaderSettings(
-                                                    "theme",
-                                                    item.value
-                                                )
-                                            );
-                                            dispatch(
-                                                setReaderSettings(
-                                                    "textColor",
-                                                    item.textColor
-                                                )
-                                            );
-                                        }}
-                                    />
-                                ))}
-                            </ScrollView>
-                        </View>
-                    </Row>
-                    <Row
-                        style={{
-                            justifyContent: "space-between",
-                            width: "100%",
-                            paddingHorizontal: 16,
-                            paddingVertical: 8,
-                        }}
-                    >
-                        <ReaderSettingTitle title="Text Align" />
-                        <Row>
-                            {textAlignments.map((item) => (
-                                <ToggleButton
-                                    key={item.value}
-                                    selected={item.value === reader.textAlign}
-                                    icon={item.icon}
-                                    color="#FFFFFF"
+                >
+                    Text size
+                </Text>
+                <Slider
+                    style={{
+                        flex: 1,
+                        height: 40,
+                    }}
+                    value={reader.textSize}
+                    minimumValue={12}
+                    maximumValue={20}
+                    step={1}
+                    minimumTrackTintColor={theme.colorAccent}
+                    maximumTrackTintColor="#000000"
+                    thumbTintColor={theme.colorAccent}
+                    onSlidingComplete={(value) =>
+                        dispatch(setReaderSettings("textSize", value))
+                    }
+                />
+            </View>
+
+            <View style={{ paddingLeft: 16, paddingRight: 8 }}>
+                <Row
+                    style={{
+                        justifyContent: "space-between",
+                        marginVertical: 6,
+                    }}
+                >
+                    <Text style={{ color: theme.textColorSecondary }}>
+                        Color
+                    </Text>
+                    <View style={{ marginLeft: 16 }}>
+                        <ScrollView horizontal={true}>
+                            {presetThemes.map((item, index) => (
+                                <ToggleColorButton
+                                    key={index}
+                                    selected={reader.theme === item.value}
+                                    backgroundColor={item.backgroundColor}
+                                    textColor={item.textColor}
                                     theme={theme}
-                                    onPress={() =>
+                                    onPress={() => {
                                         dispatch(
                                             setReaderSettings(
-                                                "textAlign",
+                                                "theme",
                                                 item.value
                                             )
-                                        )
-                                    }
+                                        );
+                                        dispatch(
+                                            setReaderSettings(
+                                                "textColor",
+                                                item.textColor
+                                            )
+                                        );
+                                    }}
                                 />
                             ))}
-                        </Row>
+                        </ScrollView>
+                    </View>
+                </Row>
+                <Row
+                    style={{
+                        justifyContent: "space-between",
+                        marginVertical: 6,
+                    }}
+                >
+                    <Text style={{ color: theme.textColorSecondary }}>
+                        Text align
+                    </Text>
+                    <Row>
+                        {textAlignments.map((item) => (
+                            <ToggleButton
+                                key={item.value}
+                                selected={item.value === reader.textAlign}
+                                icon={item.icon}
+                                theme={theme}
+                                onPress={() =>
+                                    dispatch(
+                                        setReaderSettings(
+                                            "textAlign",
+                                            item.value
+                                        )
+                                    )
+                                }
+                            />
+                        ))}
                     </Row>
-                    <Row
-                        style={{
-                            justifyContent: "space-between",
-                            width: "100%",
-                            paddingHorizontal: 16,
-                            paddingVertical: 8,
-                        }}
-                    >
-                        <ReaderSettingTitle title="Padding" />
-                        <Row>
-                            <IconButton
-                                icon="minus"
-                                color={theme.colorAccent}
-                                size={26}
-                                disabled={reader.padding <= 0 ? true : false}
-                                onPress={() =>
-                                    dispatch(
-                                        setReaderSettings(
-                                            "padding",
-                                            reader.padding - 1
-                                        )
+                </Row>
+                <Row
+                    style={{
+                        justifyContent: "space-between",
+                        marginVertical: 6,
+                    }}
+                >
+                    <Text style={{ color: theme.textColorSecondary }}>
+                        Padding
+                    </Text>
+                    <Row>
+                        <IconButton
+                            icon="minus"
+                            color={theme.colorAccent}
+                            size={26}
+                            disabled={reader.padding <= 0 ? true : false}
+                            onPress={() =>
+                                dispatch(
+                                    setReaderSettings(
+                                        "padding",
+                                        reader.padding - 1
                                     )
-                                }
-                                style={{ marginVertical: 0 }}
-                            />
-                            <Text
-                                style={{
-                                    color: "#FFFFFF",
-                                    paddingHorizontal: 24,
-                                }}
-                            >
-                                {`${reader.padding}%`}
-                            </Text>
-                            <IconButton
-                                icon="plus"
-                                color={theme.colorAccent}
-                                size={26}
-                                disabled={reader.padding >= 10 ? true : false}
-                                onPress={() =>
-                                    dispatch(
-                                        setReaderSettings(
-                                            "padding",
-                                            reader.padding + 1
-                                        )
-                                    )
-                                }
-                                style={{ marginVertical: 0 }}
-                            />
-                        </Row>
-                    </Row>
-                    <Row
-                        style={{
-                            justifyContent: "space-between",
-                            width: "100%",
-                            paddingHorizontal: 16,
-                            paddingVertical: 8,
-                        }}
-                    >
-                        <ReaderSettingTitle title="Line Height" />
-                        <Row>
-                            <IconButton
-                                icon="minus"
-                                color={theme.colorAccent}
-                                size={26}
-                                disabled={
-                                    reader.lineHeight <= 1.3 ? true : false
-                                }
-                                onPress={() =>
-                                    dispatch(
-                                        setReaderSettings(
-                                            "lineHeight",
-                                            reader.lineHeight - 0.1
-                                        )
-                                    )
-                                }
-                                style={{ marginVertical: 0 }}
-                            />
-                            <Text
-                                style={{
-                                    color: "#FFFFFF",
-                                    paddingHorizontal: 24,
-                                }}
-                            >
-                                {`${Math.round(reader.lineHeight * 10) / 10}%`}
-                            </Text>
-                            <IconButton
-                                icon="plus"
-                                color={theme.colorAccent}
-                                size={26}
-                                disabled={reader.lineHeight >= 2 ? true : false}
-                                onPress={() =>
-                                    dispatch(
-                                        setReaderSettings(
-                                            "lineHeight",
-                                            reader.lineHeight + 0.1
-                                        )
-                                    )
-                                }
-                                style={{ marginVertical: 0 }}
-                            />
-                        </Row>
-                    </Row>
-                    <Pressable
-                        style={{
-                            flexDirection: "row",
-                            alignItems: "center",
-                            justifyContent: "space-between",
-                            width: "100%",
-                            paddingHorizontal: 16,
-                            paddingVertical: 8,
-                        }}
-                        android_ripple={{ color: theme.colorAccent }}
-                        onPress={openFontMenu}
-                    >
-                        <ReaderSettingTitle title="Font Style" />
-                        <Menu
-                            visible={fontMenu}
-                            onDismiss={closeFontMenu}
-                            contentStyle={{ backgroundColor: theme.menuColor }}
-                            anchor={
-                                <Text
-                                    style={{
-                                        color: "white",
-                                        fontSize: 16,
-                                        fontFamily: reader.fontFamily,
-                                        paddingHorizontal: 16,
-                                    }}
-                                >
-                                    {fonts.find(
-                                        (font) =>
-                                            font.fontFamily ===
-                                            reader.fontFamily
-                                    ).name || "Default"}
-                                </Text>
+                                )
                             }
+                            style={{ marginVertical: 0 }}
+                        />
+                        <Text
+                            style={{
+                                color: "#FFFFFF",
+                                paddingHorizontal: 24,
+                            }}
                         >
-                            {fonts.map((font) => (
-                                <Menu.Item
-                                    key={font.fontFamily}
+                            {`${reader.padding}%`}
+                        </Text>
+                        <IconButton
+                            icon="plus"
+                            color={theme.colorAccent}
+                            size={26}
+                            disabled={reader.padding >= 10 ? true : false}
+                            onPress={() =>
+                                dispatch(
+                                    setReaderSettings(
+                                        "padding",
+                                        reader.padding + 1
+                                    )
+                                )
+                            }
+                            style={{ marginVertical: 0 }}
+                        />
+                    </Row>
+                </Row>
+                <Row
+                    style={{
+                        justifyContent: "space-between",
+                        marginVertical: 6,
+                    }}
+                >
+                    <Text style={{ color: theme.textColorSecondary }}>
+                        Line height
+                    </Text>
+                    <Row>
+                        <IconButton
+                            icon="minus"
+                            color={theme.colorAccent}
+                            size={26}
+                            disabled={reader.lineHeight <= 1.3 ? true : false}
+                            onPress={() =>
+                                dispatch(
+                                    setReaderSettings(
+                                        "lineHeight",
+                                        reader.lineHeight - 0.1
+                                    )
+                                )
+                            }
+                            style={{ marginVertical: 0 }}
+                        />
+                        <Text
+                            style={{
+                                color: "#FFFFFF",
+                                paddingHorizontal: 24,
+                            }}
+                        >
+                            {`${Math.round(reader.lineHeight * 10) / 10}%`}
+                        </Text>
+                        <IconButton
+                            icon="plus"
+                            color={theme.colorAccent}
+                            size={26}
+                            disabled={reader.lineHeight >= 2 ? true : false}
+                            onPress={() =>
+                                dispatch(
+                                    setReaderSettings(
+                                        "lineHeight",
+                                        reader.lineHeight + 0.1
+                                    )
+                                )
+                            }
+                            style={{ marginVertical: 0 }}
+                        />
+                    </Row>
+                </Row>
+                <Row
+                    style={{
+                        justifyContent: "space-between",
+                        marginVertical: 6,
+                    }}
+                >
+                    <Text
+                        style={{
+                            color: theme.textColorSecondary,
+                            marginRight: 16,
+                        }}
+                    >
+                        Font style
+                    </Text>
+                    <ScrollView
+                        horizontal={true}
+                        contentContainerStyle={{
+                            alignItems: "center",
+                        }}
+                    >
+                        {fonts.map((font) => (
+                            <View
+                                style={[
+                                    {
+                                        borderRadius: 8,
+                                        overflow: "hidden",
+                                        marginHorizontal: 6,
+                                    },
+                                    reader.fontFamily === font.fontFamily && {
+                                        backgroundColor: theme.rippleColor,
+                                    },
+                                ]}
+                            >
+                                <Pressable
+                                    style={{
+                                        borderRadius: 8,
+                                        paddingHorizontal: 10,
+                                        paddingVertical: 4,
+                                    }}
                                     onPress={() =>
                                         dispatch(
                                             setReaderSettings(
@@ -324,127 +317,171 @@ const ReaderSheet = ({
                                             )
                                         )
                                     }
-                                    icon={
-                                        font.fontFamily === reader.fontFamily &&
-                                        "check"
-                                    }
-                                    title={font.name}
-                                    style={{ backgroundColor: theme.menuColor }}
-                                    titleStyle={{
-                                        color: theme.textColorPrimary,
-                                        fontFamily: font.fontFamily,
+                                    android_ripple={{
+                                        color: theme.rippleColor,
                                     }}
-                                />
-                            ))}
-                        </Menu>
-                    </Pressable>
-                    <Pressable
-                        style={{
-                            flexDirection: "row",
-                            alignItems: "center",
-                            justifyContent: "space-between",
-                            width: "100%",
-                            paddingHorizontal: 16,
-                            paddingVertical: 8,
-                        }}
-                        android_ripple={{ color: theme.colorAccent }}
-                        onPress={() =>
-                            dispatch(
-                                setAppSettings(
-                                    "useWebViewForChapter",
-                                    !useWebViewForChapter
-                                )
+                                >
+                                    <Text
+                                        style={{
+                                            fontSize: 16,
+                                            fontFamily: font.fontFamily,
+                                            color: theme.textColorPrimary,
+                                        }}
+                                    >
+                                        {font.name}
+                                    </Text>
+                                </Pressable>
+                            </View>
+                        ))}
+                    </ScrollView>
+                </Row>
+            </View>
+        </View>
+    );
+
+    const SecondRoute = () => (
+        <View style={{ flex: 1 }}>
+            <Pressable
+                style={styles.switchStyle}
+                android_ripple={{ color: theme.rippleColor }}
+                onPress={() =>
+                    dispatch(
+                        setAppSettings(
+                            "useWebViewForChapter",
+                            !useWebViewForChapter
+                        )
+                    )
+                }
+            >
+                <Text
+                    style={{
+                        color: theme.textColorSecondary,
+                    }}
+                >
+                    Use WebView
+                </Text>
+                <Switch
+                    value={useWebViewForChapter}
+                    onValueChange={() =>
+                        dispatch(
+                            setAppSettings(
+                                "useWebViewForChapter",
+                                !useWebViewForChapter
                             )
-                        }
-                    >
-                        <ReaderSettingTitle title="Use WebView" />
-                        <Switch
-                            value={useWebViewForChapter}
-                            onValueChange={() =>
-                                dispatch(
-                                    setAppSettings(
-                                        "useWebViewForChapter",
-                                        !useWebViewForChapter
-                                    )
-                                )
-                            }
-                            color={theme.colorAccent}
-                        />
-                    </Pressable>
-                    <Pressable
-                        style={{
-                            flexDirection: "row",
-                            alignItems: "center",
-                            justifyContent: "space-between",
-                            width: "100%",
-                            paddingHorizontal: 16,
-                            paddingVertical: 8,
-                        }}
-                        android_ripple={{ color: theme.colorAccent }}
-                        onPress={() =>
-                            dispatch(
-                                setAppSettings(
-                                    "showScrollPercentage",
-                                    !showScrollPercentage
-                                )
+                        )
+                    }
+                    color={theme.colorAccent}
+                />
+            </Pressable>
+            <Pressable
+                style={styles.switchStyle}
+                android_ripple={{ color: theme.rippleColor }}
+                onPress={() =>
+                    dispatch(
+                        setAppSettings(
+                            "showScrollPercentage",
+                            !showScrollPercentage
+                        )
+                    )
+                }
+            >
+                <Text
+                    style={{
+                        color: theme.textColorSecondary,
+                    }}
+                >
+                    Show progress percentage
+                </Text>
+                <Switch
+                    value={showScrollPercentage}
+                    onValueChange={() =>
+                        dispatch(
+                            setAppSettings(
+                                "showScrollPercentage",
+                                !showScrollPercentage
                             )
-                        }
-                    >
-                        <ReaderSettingTitle title="Show Progress Percentage" />
-                        <Switch
-                            value={showScrollPercentage}
-                            onValueChange={() =>
-                                dispatch(
-                                    setAppSettings(
-                                        "showScrollPercentage",
-                                        !showScrollPercentage
-                                    )
-                                )
-                            }
-                            color={theme.colorAccent}
-                        />
-                    </Pressable>
-                    <Pressable
+                        )
+                    }
+                    color={theme.colorAccent}
+                />
+            </Pressable>
+            {!useWebViewForChapter && (
+                <Pressable
+                    style={styles.switchStyle}
+                    android_ripple={{ color: theme.rippleColor }}
+                    onPress={() =>
+                        dispatch(setAppSettings("textSelectable", !selectText))
+                    }
+                >
+                    <Text
                         style={{
-                            flexDirection: "row",
-                            alignItems: "center",
-                            justifyContent: "space-between",
-                            width: "100%",
-                            paddingHorizontal: 16,
-                            paddingVertical: 8,
+                            color: theme.textColorSecondary,
                         }}
-                        android_ripple={{ color: theme.colorAccent }}
-                        onPress={() =>
+                    >
+                        Select text
+                    </Text>
+                    <Switch
+                        value={selectText}
+                        onValueChange={() =>
                             dispatch(
                                 setAppSettings("textSelectable", !selectText)
                             )
                         }
-                    >
-                        <View>
-                            <ReaderSettingTitle title="Select Text " />
-                            <Text
-                                style={{
-                                    fontSize: 14,
-                                    color: "white",
-                                }}
-                            >
-                                (Justify does not work with selectable text)
-                            </Text>
-                        </View>
-                        <Switch
-                            value={selectText}
-                            onValueChange={() =>
-                                dispatch(
-                                    setAppSettings(
-                                        "textSelectable",
-                                        !selectText
-                                    )
-                                )
-                            }
-                            color={theme.colorAccent}
-                        />
-                    </Pressable>
-                </View>
+                        color={theme.colorAccent}
+                    />
+                </Pressable>
+            )}
+        </View>
+    );
+
+    const renderScene = SceneMap({
+        first: FirstRoute,
+        second: SecondRoute,
+    });
+
+    const layout = useWindowDimensions();
+
+    const [index, setIndex] = useState(0);
+    const [routes] = useState([
+        { key: "first", title: "Display" },
+        { key: "second", title: "General" },
+    ]);
+
+    const renderTabBar = (props) => (
+        <TabBar
+            {...props}
+            indicatorStyle={{ backgroundColor: theme.colorAccent }}
+            style={{ backgroundColor: theme.colorPrimary }}
+            renderLabel={({ route, focused, color }) => (
+                <Text style={{ color }}>{route.title}</Text>
+            )}
+            inactiveColor={theme.textColorSecondary}
+            activeColor={theme.colorAccent}
+            pressColor={theme.rippleColor}
+        />
+    );
+
+    return (
+        <Bottomsheet
+            animatedValue={animatedValue}
+            ref={bottomSheetRef}
+            draggableRange={{ top: 400, bottom: 0 }}
+            snappingPoints={[0, 400]}
+        >
+            <View
+                style={[
+                    styles.contentContainer,
+                    { backgroundColor: theme.colorPrimaryDark },
+                ]}
+            >
+                <TabView
+                    navigationState={{ index, routes }}
+                    renderTabBar={renderTabBar}
+                    renderScene={renderScene}
+                    onIndexChange={setIndex}
+                    initialLayout={{ width: layout.width }}
+                    style={{ borderTopRightRadius: 8, borderTopLeftRadius: 8 }}
+                />
             </View>
         </Bottomsheet>
     );
@@ -467,5 +504,13 @@ const styles = StyleSheet.create({
     title: {
         color: "#FFFFFF",
         fontWeight: "bold",
+    },
+    switchStyle: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        width: "100%",
+        paddingHorizontal: 16,
+        paddingVertical: 12,
     },
 });
