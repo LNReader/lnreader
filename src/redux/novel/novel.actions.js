@@ -266,9 +266,9 @@ export const markPreviousChaptersUnreadAction =
     };
 
 export const markChapterUnreadAction =
-    (chapters, novelId) => async (dispatch) => {
+    (chapters, novelId) => async (dispatch, getState) => {
         const { sort = "ORDER BY chapterId ASC", filter = "" } =
-            store.getState().preferenceReducer.novelSettings[novelId];
+            getState().preferenceReducer.novelSettings[novelId];
 
         chapters.map((chapter) => markChapterUnread(chapter.chapterId));
 

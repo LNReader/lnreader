@@ -113,6 +113,19 @@ export const markChapterRead = async (chapterId) => {
     });
 };
 
+const markChapterUnreadQuery = `UPDATE chapters SET \`read\` = 0 WHERE chapterId = ?`;
+
+export const markChapterUnread = async (chapterId) => {
+    db.transaction((tx) => {
+        tx.executeSql(
+            markChapterUnreadQuery,
+            [chapterId],
+            (tx, res) => {},
+            (tx, error) => console.log(error)
+        );
+    });
+};
+
 const markAllChaptersReadQuery = `UPDATE chapters SET \`read\` = 1 WHERE novelId = ?`;
 
 export const markAllChaptersRead = async (novelId) => {
