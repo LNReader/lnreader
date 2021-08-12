@@ -11,8 +11,15 @@ const popularNovels = async (page) => {
     let url = `${baseUrl}list/all/all-onclick-${page - 1}.html`;
     const totalPages = 281;
 
-    const result = await fetch(url);
+    const headers = new Headers({
+        "user-agent":
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36",
+    });
+
+    const result = await fetch(url, { method: "GET", headers });
     const body = await result.text();
+
+    console.log(body);
 
     $ = cheerio.load(body);
 
@@ -40,7 +47,12 @@ const popularNovels = async (page) => {
 const parseNovelAndChapters = async (novelUrl) => {
     const url = `${baseUrl}novel/${novelUrl}`;
 
-    const result = await fetch(url);
+    const headers = new Headers({
+        "user-agent":
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36",
+    });
+
+    const result = await fetch(url, { method: "GET", headers });
     const body = await result.text();
 
     $ = cheerio.load(body);
@@ -104,7 +116,12 @@ const parseNovelAndChapters = async (novelUrl) => {
 const parseChapter = async (novelUrl, chapterUrl) => {
     const url = `${baseUrl}novel/${chapterUrl}.html`;
 
-    const result = await fetch(url);
+    const headers = new Headers({
+        "user-agent":
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36",
+    });
+
+    const result = await fetch(url, { method: "GET", headers });
     const body = await result.text();
 
     $ = cheerio.load(body);
@@ -131,6 +148,8 @@ const searchNovels = async (searchTerm) => {
             "Content-Type": "application/x-www-form-urlencoded",
             Referer: "https://www.readwn.com/search.html",
             Origin: "https://www.readwn.com",
+            "user-agent":
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36",
         },
         method: "POST",
         body: QueryString.stringify({
