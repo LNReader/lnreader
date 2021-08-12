@@ -39,7 +39,7 @@ const NovelCover = ({
         []
     );
 
-    const selectNovel = () => onLongPress(item.novelId);
+    const selectNovel = () => onLongPress && onLongPress(item.novelId);
 
     return displayMode !== 2 ? (
         <View
