@@ -419,6 +419,9 @@ const Chapter = ({ route, navigation }) => {
                                     height: auto;
                                     max-width: 100%;
                                 }
+                                </style>
+                                <style>
+                                ${reader.customCSS}
                                 @font-face {
                                     font-family: ${reader.fontFamily};
                                     src: url("file:///android_asset/fonts/${
@@ -426,7 +429,6 @@ const Chapter = ({ route, navigation }) => {
                                     }.ttf");
                                 }
                                 
-                                ${reader.customCSS}
                                 </style>
                                 </head>
                             <body>
