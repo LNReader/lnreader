@@ -174,7 +174,15 @@ const CompactTitle = ({ novelName }) => (
         >
             <Text
                 numberOfLines={2}
-                style={[styles.title, { color: "rgba(255,255,255,1)" }]}
+                style={[
+                    styles.title,
+                    {
+                        color: "rgba(255,255,255,1)",
+                        textShadowColor: "rgba(0, 0, 0, 0.75)",
+                        textShadowOffset: { width: -1, height: 1 },
+                        textShadowRadius: 10,
+                    },
+                ]}
             >
                 {novelName}
             </Text>
@@ -253,9 +261,6 @@ const styles = StyleSheet.create({
         fontFamily: "pt-sans-bold",
         fontSize: 14,
         padding: 8,
-        textShadowColor: "rgba(0, 0, 0, 0.75)",
-        textShadowOffset: { width: -1, height: 1 },
-        textShadowRadius: 10,
     },
     linearGradient: {
         borderRadius: 4,
