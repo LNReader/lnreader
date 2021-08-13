@@ -1,4 +1,4 @@
-import { GET_UPDATES } from "./updates.types";
+import { GET_UPDATES, SET_LAST_UPDATE_TIME } from "./updates.types";
 
 import { getUpdates } from "../../database/queries/UpdateQueries";
 import { updateAllNovels } from "../../services/updates";
@@ -35,6 +35,8 @@ export const getUpdatesAction = () => async (dispatch) => {
 
 export const updateLibraryAction = () => async (dispatch, getState) => {
     showToast("Updating library");
+
+    dispatch({ type: SET_LAST_UPDATE_TIME, payload: Date.now() });
 
     const { downloadNewChapters = false } = getState().settingsReducer;
 

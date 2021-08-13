@@ -28,7 +28,12 @@ import {
 const Updates = ({ navigation }) => {
     const theme = useTheme();
     const dispatch = useDispatch();
-    const { updates, loading } = useSelector((state) => state.updatesReducer);
+    const {
+        updates,
+        lastUpdateTime = null,
+        showLastUpdateTime = true,
+        loading,
+    } = useSelector((state) => state.updatesReducer);
     const { downloadQueue } = useSelector((state) => state.downloadsReducer);
 
     const [searchText, setSearchText] = useState("");
@@ -171,6 +176,18 @@ const Updates = ({ navigation }) => {
                     },
                 ]}
             />
+            {showLastUpdateTime && lastUpdateTime && (
+                <Text
+                    style={{
+                        color: theme.textColorSecondary,
+                        paddingHorizontal: 16,
+                        paddingTop: 8,
+                        textAlign: "center",
+                    }}
+                >
+                    Library last updated: {moment(lastUpdateTime).fromNow()}
+                </Text>
+            )}
             <FlatList
                 contentContainerStyle={styles.flatList}
                 data={searchText ? searchResults : updates}

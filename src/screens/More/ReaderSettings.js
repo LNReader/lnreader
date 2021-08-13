@@ -95,6 +95,7 @@ const FirstRoute = React.memo(({ theme, dispatch, reader }) => {
                         <ScrollView
                             style={{ marginLeft: 16 }}
                             horizontal={true}
+                            showsHorizontalScrollIndicator={false}
                         >
                             <Row>
                                 {presetThemes.map((theme) => (

@@ -328,7 +328,11 @@ const ReaderSheet = ({
                                             style={{
                                                 fontSize: 16,
                                                 fontFamily: font.fontFamily,
-                                                color: theme.textColorPrimary,
+                                                color:
+                                                    reader.fontFamily ===
+                                                    font.fontFamily
+                                                        ? theme.colorAccent
+                                                        : theme.textColorPrimary,
                                             }}
                                         >
                                             {font.name}

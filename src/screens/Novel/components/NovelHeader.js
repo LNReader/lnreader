@@ -99,10 +99,10 @@ const NovelInfoHeader = ({
                         {!loading && (
                             <>
                                 <NovelAuthor theme={theme}>
-                                    {novel.author ?? "Unknown author"}
+                                    {novel.author || "Unknown author"}
                                 </NovelAuthor>
                                 <NovelInfo theme={theme}>
-                                    {novel.status ?? "Unknown status"}
+                                    {novel.status || "Unknown status"}
                                 </NovelInfo>
                                 <NovelInfo theme={theme}>
                                     {novel.source}

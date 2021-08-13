@@ -1,7 +1,14 @@
-import { LOAD_UPDATES, GET_UPDATES } from "./updates.types";
+import {
+    LOAD_UPDATES,
+    GET_UPDATES,
+    SET_LAST_UPDATE_TIME,
+    SHOW_LAST_UPDATE_TIME,
+} from "./updates.types";
 
 const initialState = {
     updates: [],
+    lastUpdateTime: null,
+    showLastUpdateTime: true,
     loading: true,
 };
 
@@ -13,6 +20,16 @@ const updateReducer = (state = initialState, action) => {
             return { ...state, loading: true };
         case GET_UPDATES:
             return { ...state, updates: payload, loading: false };
+        case SET_LAST_UPDATE_TIME:
+            return {
+                ...state,
+                lastUpdateTime: payload,
+            };
+        case SHOW_LAST_UPDATE_TIME:
+            return {
+                ...state,
+                showLastUpdateTime: payload,
+            };
         default:
             return state;
     }

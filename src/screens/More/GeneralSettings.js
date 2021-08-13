@@ -18,6 +18,7 @@ import {
 import ColorPickerModal from "../../components/ColorPickerModal";
 import SwitchSetting from "../../components/Switch/Switch";
 import { ScrollView } from "react-native";
+import { SHOW_LAST_UPDATE_TIME } from "../../redux/updates/updates.types";
 
 const GenralSettings = ({ navigation }) => {
     const theme = useTheme();
@@ -34,6 +35,10 @@ const GenralSettings = ({ navigation }) => {
         showUpdatesTab = true,
         showLabelsInNav = false,
     } = useSettings();
+
+    const { showLastUpdateTime = true } = useSelector(
+        (state) => state.updatesReducer
+    );
 
     const displayModeLabel = (displayMode) => {
         const label = {
@@ -162,6 +167,17 @@ const GenralSettings = ({ navigation }) => {
                                     !updateLibraryOnLaunch
                                 )
                             )
+                        }
+                        theme={theme}
+                    />
+                    <SwitchSetting
+                        label="Show last update time"
+                        value={showLastUpdateTime}
+                        onPress={() =>
+                            dispatch({
+                                type: SHOW_LAST_UPDATE_TIME,
+                                payload: !showLastUpdateTime,
+                            })
                         }
                         theme={theme}
                     />

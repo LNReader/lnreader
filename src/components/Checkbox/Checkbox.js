@@ -15,7 +15,13 @@ export const Checkbox = ({ label, status, onPress, theme }) => (
             style={styles.pressable}
             onPress={onPress}
         >
-            <Text style={{ color: theme.textColorPrimary }}>{label}</Text>
+            <Text
+                style={{
+                    color: status ? theme.colorAccent : theme.textColorPrimary,
+                }}
+            >
+                {label}
+            </Text>
             {status && (
                 <MaterialCommunityIcons
                     name="check"
@@ -40,7 +46,13 @@ export const SortItem = ({ label, status, onPress, theme }) => (
             style={styles.pressable}
             onPress={onPress}
         >
-            <Text style={{ color: theme.textColorPrimary }}>{label}</Text>
+            <Text
+                style={{
+                    color: status ? theme.colorAccent : theme.textColorPrimary,
+                }}
+            >
+                {label}
+            </Text>
             {status && (
                 <MaterialCommunityIcons
                     name={status === "asc" ? "arrow-up" : "arrow-down"}
