@@ -481,5 +481,12 @@
         "sourceName": "Divine Dao Library",
         "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/divinedaolibrary/icon.png?raw=true",
         "lang": "English"
+    },
+    {
+        "sourceId": 71,
+        "url": "https://novelonlinefull.com/",
+        "sourceName": "NovelOnlineFull.com",
+        "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/novelonlinefull/icon.png?raw=true",
+        "lang": "English"
     }
 ]
