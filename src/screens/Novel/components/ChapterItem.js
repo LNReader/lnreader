@@ -44,7 +44,7 @@ const ChapterItem = ({
             android_ripple={{ color: theme.rippleColor }}
         >
             <Row style={{ flex: 1, overflow: "hidden" }}>
-                {bookmark === 1 && <ChapterBookmarkButton theme={theme} />}
+                {!!bookmark && <ChapterBookmarkButton theme={theme} />}
                 <View>
                     <Text
                         style={{
