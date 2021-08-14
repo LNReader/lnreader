@@ -488,5 +488,12 @@
         "sourceName": "NovelOnlineFull.com",
         "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/novelonlinefull/icon.png?raw=true",
         "lang": "English"
+    },
+    {
+        "sourceId": 72,
+        "url": "https://www.lightnovelupdates.com/",
+        "sourceName": "LightNovelUpdates",
+        "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/lightnovelupdates/icon.png?raw=true",
+        "lang": "English"
     }
 ]

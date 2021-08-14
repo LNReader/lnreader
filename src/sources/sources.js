@@ -72,6 +72,7 @@ import RanobeHubScraper from "./ru/ranobehub";
 import ArNovelScraper from "./ar/arnovel";
 import DivineDaoLibraryScraper from "./en/divinedaolibrary";
 import NovelOnlineFullScraper from "./en/novelonlinefull";
+import LightNovelUpdatesScraper from "./en/lightnovelupdates";
 
 export const getSource = (sourceId) => {
     const scrapers = {
@@ -145,6 +146,7 @@ export const getSource = (sourceId) => {
         69: RanobeHubScraper,
         70: DivineDaoLibraryScraper,
         71: NovelOnlineFullScraper,
+        72: LightNovelUpdatesScraper,
     };
 
     return scrapers[sourceId];
