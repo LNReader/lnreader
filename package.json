@@ -35,7 +35,6 @@
         "react-native-device-info": "^8.1.3",
         "react-native-easing-gradient": "^0.1.2",
         "react-native-fast-image": "^8.3.4",
-        "react-native-fit-image": "^1.5.5",
         "react-native-gesture-handler": "~1.10.2",
         "react-native-navigation-bar-color": "^2.0.1",
         "react-native-pager-view": "^5.1.10",

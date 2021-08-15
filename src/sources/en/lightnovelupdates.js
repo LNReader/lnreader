@@ -46,7 +46,7 @@ const parseNovelAndChapters = async (novelUrl) => {
 
     let novel = { sourceId, sourceName, novelUrl, url };
 
-    novel.novelName = $(".post-title > h3").text().trim();
+    novel.novelName = $(".post-title > h1").text().trim();
     novel.novelCover =
         $(".summary_image > a > img").attr("src") ||
         "https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true";
