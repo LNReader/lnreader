@@ -96,19 +96,20 @@ const NovelInfoHeader = ({
                         >
                             {item.novelName}
                         </NovelTitle>
-                        {!loading && (
-                            <>
-                                <NovelAuthor theme={theme}>
-                                    {novel.author || "Unknown author"}
-                                </NovelAuthor>
-                                <NovelInfo theme={theme}>
-                                    {novel.status || "Unknown status"}
-                                </NovelInfo>
-                                <NovelInfo theme={theme}>
-                                    {novel.source}
-                                </NovelInfo>
-                            </>
-                        )}
+                        <>
+                            <NovelAuthor theme={theme}>
+                                {!loading && novel.author
+                                    ? novel.author
+                                    : "Unknown author"}
+                            </NovelAuthor>
+                            <NovelInfo theme={theme}>
+                                {!loading
+                                    ? (novel.status || "Unknown status") +
+                                      " • " +
+                                      novel.source
+                                    : "Unknown status • Unknown source"}
+                            </NovelInfo>
+                        </>
                     </View>
                 </NovelInfoContainer>
             </CoverImage>
@@ -119,6 +120,7 @@ const NovelInfoHeader = ({
                             justifyContent: "space-around",
                             paddingHorizontal: 16,
                             flex: 1,
+                            marginTop: 12,
                         }}
                     >
                         <FollowButton
@@ -238,7 +240,7 @@ const NovelInfoHeader = ({
                                     styles.chapters,
                                 ]}
                             >
-                                {`${chapters.length} Chapters`}
+                                {`${chapters.length} chapters`}
                             </Text>
                             <IconButton
                                 icon="filter-variant"
@@ -262,8 +264,9 @@ export default memo(NovelInfoHeader);
 const styles = StyleSheet.create({
     novelDetails: {
         flex: 1,
-        paddingHorizontal: 16,
-        paddingTop: 8,
+        paddingBottom: 16,
+        paddingLeft: 12,
+        justifyContent: "flex-end",
     },
     chapters: {
         paddingHorizontal: 16,

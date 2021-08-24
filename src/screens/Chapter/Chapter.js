@@ -295,6 +295,7 @@ const Chapter = ({ route, navigation }) => {
                     hide={hidden}
                     navigation={navigation}
                     dispatch={dispatch}
+                    theme={theme}
                 />
                 <GestureRecognizer
                     onSwipeRight={swipeGestures && navigateToPrevChapter}
@@ -395,6 +396,7 @@ const Chapter = ({ route, navigation }) => {
                                 html {
                                     overflow-x: hidden;
                                     padding-top: ${StatusBar.currentHeight};
+                                    word-wrap: break-word;
                                 }
                                 body {
                                     padding-left: ${reader.padding}%;

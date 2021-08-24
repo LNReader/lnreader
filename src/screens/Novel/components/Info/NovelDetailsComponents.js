@@ -13,20 +13,27 @@ const NovelInfoContainer = ({ children }) => (
 const CoverImage = ({ children, source, theme }) => {
     const { colors, locations } = easeGradient({
         colorStops: {
-            0: { color: "rgba(0,0,0,0.2)" },
+            0: { color: "rgba(0,0,0,0)" },
             1: { color: theme.colorPrimaryDark },
         },
     });
 
     return (
         <FastImage source={source} style={styles.coverImage}>
-            <LinearGradient
-                colors={colors}
-                locations={locations}
-                style={styles.linearGradient}
+            <View
+                style={{
+                    flex: 1,
+                    backgroundColor: `${theme.colorPrimaryDark}B4`,
+                }}
             >
-                {children}
-            </LinearGradient>
+                <LinearGradient
+                    colors={colors}
+                    locations={locations}
+                    style={styles.linearGradient}
+                >
+                    {children}
+                </LinearGradient>
+            </View>
         </FastImage>
     );
 };
@@ -133,9 +140,8 @@ const GenreChip = ({ children, theme }) => (
         style={[
             styles.genreChip,
             {
-                color: theme.colorAccent,
-                borderColor: theme.colorAccent,
-                backgroundColor: theme.colorPrimary,
+                color: theme.textColorPrimary,
+                backgroundColor: theme.dividerColor,
             },
         ]}
     >
@@ -176,34 +182,33 @@ export {
 
 const styles = StyleSheet.create({
     novelInfoContainer: {
-        flex: 1,
         flexDirection: "row",
         margin: 16,
+        marginTop: 28,
+        marginBottom: 0,
         paddingTop: 90,
     },
     coverImage: {
-        height: 285,
+        height: 270,
     },
     linearGradient: {
-        height: 286,
+        height: 271,
     },
     novelThumbnail: {
-        height: 160,
-        width: 110,
-        margin: 3.2,
+        height: 150,
+        width: 100,
+        marginHorizontal: 4,
         borderRadius: 6,
     },
     novelTitle: {
-        fontWeight: "bold",
         fontSize: 18,
     },
     novelAuthor: {
-        marginVertical: 3,
+        marginVertical: 5,
         fontSize: 14,
         fontWeight: "bold",
     },
     novelInfo: {
-        marginVertical: 3,
         fontSize: 14,
     },
     followButton: {
@@ -223,11 +228,10 @@ const styles = StyleSheet.create({
     genreChip: {
         flex: 1,
         justifyContent: "center",
-        paddingVertical: 2,
-        paddingHorizontal: 10,
+        paddingVertical: 5,
+        paddingHorizontal: 12,
         marginHorizontal: 2,
-        fontSize: 13,
-        borderWidth: 1,
+        fontSize: 12,
         borderRadius: 50,
         textTransform: "capitalize",
     },

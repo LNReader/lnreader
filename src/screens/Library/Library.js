@@ -161,7 +161,7 @@ const LibraryScreen = ({ navigation }) => {
                             onPress: () => libraryFilterSheetRef.current.show(),
                             color: filter
                                 ? theme.filterColor
-                                : theme.textColorSecondary,
+                                : theme.textColorPrimary,
                         },
                     ]}
                     theme={theme}

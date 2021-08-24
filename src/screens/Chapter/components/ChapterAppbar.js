@@ -12,6 +12,7 @@ const ChapterAppbar = ({
     chapterName,
     hide,
     dispatch,
+    theme,
 }) => {
     const [bookmarked, setBookmarked] = useState(bookmark);
 
@@ -23,7 +24,7 @@ const ChapterAppbar = ({
                 style={{
                     position: "absolute",
                     flex: 1,
-                    backgroundColor: "rgba(0,0,0,0.7)",
+                    backgroundColor: `${theme.colorPrimary}E6`,
                     width: "100%",
                     top: 0,
                     zIndex: 1,
@@ -34,15 +35,15 @@ const ChapterAppbar = ({
                 >
                     <Appbar.BackAction
                         onPress={navigation.goBack}
-                        color="#FFFFFF"
+                        color={theme.textColorPrimary}
                         size={26}
                         style={{ marginRight: 0 }}
                     />
                     <Appbar.Content
                         title={novelName}
-                        titleStyle={{ color: "#FFFFFF" }}
+                        titleStyle={{ color: theme.textColorPrimary }}
                         subtitle={chapterName}
-                        subtitleStyle={{ color: "rgba(255, 255, 255, 0.7)" }}
+                        subtitleStyle={{ color: theme.textColorSecondary }}
                     />
                     <Appbar.Action
                         icon={bookmarked ? "bookmark" : "bookmark-outline"}
@@ -53,7 +54,7 @@ const ChapterAppbar = ({
                             );
                             setBookmarked(!bookmarked);
                         }}
-                        color="#FFFFFF"
+                        color={theme.textColorPrimary}
                     />
                 </Appbar.Header>
             </View>

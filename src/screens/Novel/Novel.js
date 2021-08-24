@@ -245,19 +245,42 @@ const Novel = ({ route, navigation }) => {
                     >
                         <IconButton
                             icon="arrow-left"
-                            color="white"
+                            color={theme.textColorPrimary}
                             size={24}
                             style={{ marginTop: StatusBar.currentHeight + 8 }}
                             onPress={() => navigation.goBack()}
                         />
                         <Row>
+                            <IconButton
+                                icon="share-variant"
+                                color={theme.textColorPrimary}
+                                size={21}
+                                style={{
+                                    marginTop: StatusBar.currentHeight + 8,
+                                }}
+                                onPress={() =>
+                                    Share.share({
+                                        message: novel.sourceUrl,
+                                    })
+                                }
+                            />
+                            <IconButton
+                                icon="text-box-search-outline"
+                                color={theme.textColorPrimary}
+                                size={21}
+                                style={{
+                                    marginTop: StatusBar.currentHeight + 8,
+                                }}
+                                onPress={() => showJumpToChapterModal(true)}
+                            />
+
                             <Menu
                                 visible={downloadMenu}
                                 onDismiss={() => showDownloadMenu(false)}
                                 anchor={
                                     <IconButton
-                                        icon="download"
-                                        color="white"
+                                        icon="download-outline"
+                                        color={theme.textColorPrimary}
                                         size={24}
                                         style={{
                                             marginTop:
@@ -299,36 +322,14 @@ const Novel = ({ route, navigation }) => {
                                     }
                                 />
                             </Menu>
-                            <IconButton
-                                icon="text-box-search-outline"
-                                color="white"
-                                size={21}
-                                style={{
-                                    marginTop: StatusBar.currentHeight + 8,
-                                }}
-                                onPress={() => showJumpToChapterModal(true)}
-                            />
 
-                            <IconButton
-                                icon="share-variant"
-                                color="white"
-                                size={21}
-                                style={{
-                                    marginTop: StatusBar.currentHeight + 8,
-                                }}
-                                onPress={() =>
-                                    Share.share({
-                                        message: novel.sourceUrl,
-                                    })
-                                }
-                            />
                             <Menu
                                 visible={extraMenu}
                                 onDismiss={() => showExtraMenu(false)}
                                 anchor={
                                     <IconButton
                                         icon="dots-vertical"
-                                        color="white"
+                                        color={theme.textColorPrimary}
                                         size={21}
                                         style={{
                                             marginTop:
@@ -364,12 +365,14 @@ const Novel = ({ route, navigation }) => {
                                             novelId
                                         );
 
-                                        dispatch(
-                                            setNovel({
-                                                ...novel,
-                                                novelCover: cover,
-                                            })
-                                        );
+                                        if (cover) {
+                                            dispatch(
+                                                setNovel({
+                                                    ...novel,
+                                                    novelCover: cover,
+                                                })
+                                            );
+                                        }
 
                                         showExtraMenu(false);
                                     }}
@@ -387,6 +390,7 @@ const Novel = ({ route, navigation }) => {
                     windowSize={15}
                     initialNumToRender={7}
                     renderItem={renderItem}
+                    contentContainerStyle={{ paddingBottom: 40 }}
                     ListHeaderComponent={
                         <NovelInfoHeader
                             item={item}

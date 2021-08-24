@@ -32,7 +32,7 @@ export const Searchbar = ({
                     {backAction && (
                         <IconButton
                             icon={backAction}
-                            color={theme.textColorSecondary}
+                            color={theme.textColorPrimary}
                             style={{ marginLeft: 0 }}
                             size={23}
                             onPress={onBackAction}
@@ -42,7 +42,7 @@ export const Searchbar = ({
                         ref={searchRef}
                         style={{
                             fontSize: 16,
-                            color: theme.textColorSecondary,
+                            color: theme.textColorPrimary,
                         }}
                         placeholder={placeholder}
                         placeholderTextColor={theme.textColorSecondary}
@@ -54,7 +54,7 @@ export const Searchbar = ({
                 {searchText !== "" && (
                     <IconButton
                         icon="close"
-                        color={theme.textColorSecondary}
+                        color={theme.textColorPrimary}
                         style={{ marginRight: 0 }}
                         size={23}
                         onPress={clearSearchbar}
@@ -65,7 +65,7 @@ export const Searchbar = ({
                         <IconButton
                             key={index}
                             icon={action.icon}
-                            color={action.color ?? theme.textColorSecondary}
+                            color={action.color ?? theme.textColorPrimary}
                             style={{ marginRight: 0 }}
                             size={23}
                             onPress={action.onPress}

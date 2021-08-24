@@ -32,7 +32,7 @@ const ChapterFooter = ({
                     zIndex: 2,
                     bottom: 0,
                     width: "100%",
-                    backgroundColor: "rgba(0,0,0,0.7)",
+                    backgroundColor: `${theme.colorPrimary}E6`,
                     flexDirection: "row",
                 }}
             >
@@ -45,7 +45,7 @@ const ChapterFooter = ({
                         icon="chevron-left"
                         size={26}
                         disabled={!prevChapter}
-                        color="#FFFFFF"
+                        color={theme.textColorPrimary}
                     />
                 </Pressable>
                 <Pressable
@@ -57,7 +57,7 @@ const ChapterFooter = ({
                         icon="gesture-swipe"
                         disabled={!swipeGestures}
                         size={26}
-                        color="#FFFFFF"
+                        color={theme.textColorPrimary}
                     />
                 </Pressable>
                 {!useWebViewForChapter && (
@@ -69,7 +69,7 @@ const ChapterFooter = ({
                         <IconButton
                             icon="format-vertical-align-top"
                             size={26}
-                            color="#FFFFFF"
+                            color={theme.textColorPrimary}
                         />
                     </Pressable>
                 )}
@@ -82,7 +82,7 @@ const ChapterFooter = ({
                         icon="language-html5"
                         disabled={!useWebViewForChapter}
                         size={26}
-                        color="#FFFFFF"
+                        color={theme.textColorPrimary}
                     />
                 </Pressable> */}
                 <Pressable
@@ -90,7 +90,11 @@ const ChapterFooter = ({
                     style={styles.buttonStyles}
                     onPress={() => readerSheetRef.current.show()}
                 >
-                    <IconButton icon="cog-outline" size={26} color="#FFFFFF" />
+                    <IconButton
+                        icon="cog-outline"
+                        size={26}
+                        color={theme.textColorPrimary}
+                    />
                 </Pressable>
                 <Pressable
                     android_ripple={rippleConfig}
@@ -101,7 +105,7 @@ const ChapterFooter = ({
                         icon="chevron-right"
                         size={26}
                         disabled={!nextChapter}
-                        color="#FFFFFF"
+                        color={theme.textColorPrimary}
                     />
                 </Pressable>
             </View>

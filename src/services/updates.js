@@ -177,7 +177,7 @@ export const updateAllNovels = async (updateSettings) => {
                         });
                         if (libraryNovels.length === i + 1) {
                             resolve();
-                            await BackgroundService.stop();
+
                             Notifications.scheduleNotificationAsync({
                                 content: {
                                     title: "Library Updated",

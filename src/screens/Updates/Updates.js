@@ -182,6 +182,7 @@ const Updates = ({ navigation }) => {
                         color: theme.textColorSecondary,
                         paddingHorizontal: 16,
                         paddingTop: 8,
+                        paddingBottom: 4,
                         textAlign: "center",
                     }}
                 >

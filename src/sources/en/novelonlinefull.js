@@ -18,7 +18,7 @@ const popularNovels = async (page) => {
     let novels = [];
 
     $(".update_item.list_category").each(function () {
-        const novelName = $(this).find("h3").text();
+        const novelName = $(this).find("h3").text().trim();
         const novelCover = $(this).find("img").attr("src");
 
         let novelUrl = $(this).find("h3 > a").attr("href");

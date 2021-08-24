@@ -26,10 +26,15 @@ const VerticalScrollbar = ({
         return null;
     } else if (getDeviceOrientation() === "potrait") {
         return (
-            <View style={styles.verticalSliderContainer}>
+            <View
+                style={[
+                    styles.verticalSliderContainer,
+                    { backgroundColor: `${theme.colorPrimary}E6` },
+                ]}
+            >
                 <Text
                     style={{
-                        color: "#FFFFFF",
+                        color: theme.textColorPrimary,
                         marginLeft: 16,
                         transform: [{ rotate: "-90deg" }],
                     }}
@@ -48,11 +53,11 @@ const VerticalScrollbar = ({
                     onSlidingComplete={onSlidingComplete}
                     thumbTintColor={theme.colorAccent}
                     minimumTrackTintColor={theme.colorAccent}
-                    maximumTrackTintColor="#FFFFFF"
+                    maximumTrackTintColor={theme.textColorPrimary}
                 />
                 <Text
                     style={{
-                        color: "#FFFFFF",
+                        color: theme.textColorPrimary,
                         marginRight: 16,
                         transform: [{ rotate: "-90deg" }],
                     }}
