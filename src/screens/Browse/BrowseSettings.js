@@ -30,7 +30,8 @@ const BrowseSettings = ({ navigation }) => {
         "Arabic",
         "Indonesian",
         "Russian",
-    ];
+        "Turkish",
+    ].sort();
 
     const { searchAllSources = false } = useSettings();
 

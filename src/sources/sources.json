@@ -495,5 +495,12 @@
         "sourceName": "LightNovelUpdates",
         "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/lightnovelupdates/icon.png?raw=true",
         "lang": "English"
+    },
+    {
+        "sourceId": 73,
+        "url": "https://www.epiknovel.com/",
+        "sourceName": "EpikNovel",
+        "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/lightnovelupdates/icon.png?raw=true",
+        "lang": "Turkish"
     }
 ]
