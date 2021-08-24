@@ -21,6 +21,7 @@ const getPath = (extensionId) => {
         61: { novels: "novel", novel: "novel", chapter: "novel" },
         62: { novels: "novel", novel: "novel", chapter: "novel" },
         63: { novels: "novel", novel: "novel", chapter: "novel" },
+        75: { novels: "series", novel: "series", chapter: "series" },
     };
 
     return (
@@ -177,4 +178,11 @@ export const WuxiaWorldDotSiteScraper = new MadaraScraper(
     "https://wuxiaworld.site/",
     "WuxiaWorld.Site",
     getPath(74)
+);
+
+export const MysticalSeriesScraper = new MadaraScraper(
+    75,
+    "https://mysticalmerries.com/",
+    "MysticalSeries",
+    getPath(75)
 );

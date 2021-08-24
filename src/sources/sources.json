@@ -509,5 +509,12 @@
         "sourceName": "WuxiaWorld.Site",
         "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/wuxiaworldsite.png?raw=true",
         "lang": "English"
+    },
+    {
+        "sourceId": 75,
+        "url": "https://mysticalmerries.com/",
+        "sourceName": "MysticalSeries",
+        "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/mysticalseries.png?raw=true",
+        "lang": "English"
     }
 ]

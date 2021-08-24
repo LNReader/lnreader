@@ -45,6 +45,7 @@ import {
     LunarLettersScraper,
     MeionNovelScraper,
     MostNovelScraper,
+    MysticalSeriesScraper,
     NovelCakeScraper,
     NovelMultiverseScraper,
     NovelsRockScraper,
@@ -151,6 +152,7 @@ export const getSource = (sourceId) => {
         72: LightNovelUpdatesScraper,
         73: EpikNovelScraper,
         74: WuxiaWorldDotSiteScraper,
+        75: MysticalSeriesScraper,
     };
 
     return scrapers[sourceId];
