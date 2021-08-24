@@ -130,13 +130,6 @@ export const LightNovelsHubScraper = new MadaraScraper(
     getPath(58)
 );
 
-// export const ArNovelScraper = new MadaraScraper(
-//     59,
-//     "https://arnovel.me/",
-//     "ArNovel",
-//     getPath(59)
-// );
-
 export const MeionNovelScraper = new MadaraScraper(
     60,
     "https://meionovel.id/",
@@ -177,4 +170,11 @@ export const WBNovelScraper = new MadaraScraper(
     "https://wbnovel.com/",
     "WBNovel",
     getPath(66)
+);
+
+export const WuxiaWorldDotSiteScraper = new MadaraScraper(
+    74,
+    "https://wuxiaworld.site/",
+    "WuxiaWorld.Site",
+    getPath(74)
 );

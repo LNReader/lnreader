@@ -54,6 +54,7 @@ import {
     SleepyTranslationsScraper,
     WBNovelScraper,
     WebNovelLoverScraper,
+    WuxiaWorldDotSiteScraper,
     ZinnNovelScraper,
 } from "./multisrc/madara/MadaraGenerator";
 import WuxiaBlogScraper from "./en/wuxiablog";
@@ -149,6 +150,7 @@ export const getSource = (sourceId) => {
         71: NovelOnlineFullScraper,
         72: LightNovelUpdatesScraper,
         73: EpikNovelScraper,
+        74: WuxiaWorldDotSiteScraper,
     };
 
     return scrapers[sourceId];

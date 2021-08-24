@@ -500,7 +500,14 @@
         "sourceId": 73,
         "url": "https://www.epiknovel.com/",
         "sourceName": "EpikNovel",
-        "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/lightnovelupdates/icon.png?raw=true",
+        "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/tr/epiknovel/icon.png?raw=true",
         "lang": "Turkish"
+    },
+    {
+        "sourceId": 74,
+        "url": "https://wuxiaworld.site/",
+        "sourceName": "WuxiaWorld.Site",
+        "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/wuxiaworldsite.png?raw=true",
+        "lang": "English"
     }
 ]
