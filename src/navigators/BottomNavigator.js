@@ -2,6 +2,7 @@ import React from "react";
 
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import Library from "../screens/Library/Library";
 import Updates from "../screens/Updates/Updates";
@@ -15,6 +16,7 @@ const Tab = createMaterialBottomTabNavigator();
 
 const BottomNavigator = () => {
     const theme = useTheme();
+    const insets = useSafeAreaInsets();
 
     const {
         showHistoryTab = true,
@@ -24,7 +26,10 @@ const BottomNavigator = () => {
 
     return (
         <Tab.Navigator
-            barStyle={{ backgroundColor: theme.colorPrimary }}
+            barStyle={{
+                backgroundColor: theme.colorPrimary,
+                paddingBottom: insets.bottom,
+            }}
             activeColor={theme.colorAccent}
             shifting={!showLabelsInNav}
         >
