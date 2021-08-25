@@ -73,7 +73,7 @@ const ReaderSheet = ({
             animatedValue={animatedValue}
             ref={bottomSheetRef}
             draggableRange={{ top: 520, bottom: 0 }}
-            snappingPoints={[0, 520]}
+            snappingPoints={[0, 390, 520]}
             showBackdrop={true}
             backdropOpacity={0}
         >
@@ -84,7 +84,7 @@ const ReaderSheet = ({
                 ]}
             >
                 <BottomSheetHandle theme={theme} />
-                <View style={{ flex: 1, paddingVertical: 16 }}>
+                <View style={{ flex: 1, paddingVertical: 16, paddingTop: 24 }}>
                     <View
                         style={{
                             flexDirection: "row",

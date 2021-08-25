@@ -146,7 +146,7 @@ export const takoTheme = {
 
 export const yinYangTheme = {
     id: 9,
-    name: "Yin & Yang",
+    name: "Yin",
     ...PrimaryColors.dark,
     colorAccent: AccentColors.yinYang,
     rippleColor: RippleColors.yinYang,
@@ -160,6 +160,21 @@ export const yinYangTheme = {
     ...TextColors.dark,
 };
 
+export const yangTheme = {
+    id: 11,
+    name: "Yang",
+    ...PrimaryColors.light,
+    colorAccent: AccentColors.yang,
+    rippleColor: RippleColors.yang,
+    searchBarColor: "#303135",
+    menuColor: "#484861",
+    filterColor: "#FFEB3B",
+    dividerColor: DividerColors.LIGHT,
+    colorDisabled: PrimaryColors.light.colorPrimary,
+    colorButtonText: "#FFFFFF",
+    statusBar: StatusBarStyle.DARK,
+    ...TextColors.light,
+};
 /**
  * Yin & Yang
  */
@@ -199,11 +214,27 @@ export const springBlossomTheme = {
     statusBar: StatusBarStyle.DARK,
 };
 
+export const yotsubaTheme = {
+    id: 12,
+    name: "Yotsuba",
+    ...PrimaryColors.light,
+    ...TextColors.light,
+    colorAccent: AccentColors.yotsuba,
+    rippleColor: RippleColors.yotsuba,
+    searchBarColor: PrimaryColors.light.colorPrimary,
+    menuColor: "#FFFFFF",
+    dividerColor: DividerColors.LIGHT,
+    filterColor: "#FFC107",
+    colorDisabled: PrimaryColors.light.colorPrimary,
+    colorButtonText: "#FFFFFF",
+    statusBar: StatusBarStyle.DARK,
+};
+
 export const colorsAmoled = {
     ...PrimaryColors.amoled,
     ...TextColors.dark,
     statusBar: StatusBarStyle.LIGHT,
-    searchBarColor: "#1F1F1F",
+    searchBarColor: "#000000",
     menuColor: "#242529",
     filterColor: "#FFEB3B",
     dividerColor: "rgba(255,255,255,0.15)",

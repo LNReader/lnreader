@@ -24,13 +24,18 @@ const ChapterFooter = ({
     };
 
     return (
-        <FadeView active={hide} animationDuration={150}>
+        <FadeView
+            style={{
+                position: "absolute",
+                zIndex: 2,
+                bottom: 0,
+                width: "100%",
+            }}
+            active={hide}
+            animationDuration={150}
+        >
             <View
                 style={{
-                    position: "absolute",
-                    zIndex: 2,
-                    bottom: 0,
-                    width: "100%",
                     backgroundColor: `${theme.colorPrimary}E6`,
                     flexDirection: "row",
                 }}
@@ -87,7 +92,7 @@ const ChapterFooter = ({
                 <Pressable
                     android_ripple={rippleConfig}
                     style={styles.buttonStyles}
-                    onPress={() => readerSheetRef.current.show()}
+                    onPress={() => readerSheetRef.current.show(390)}
                 >
                     <IconButton
                         icon="cog-outline"

@@ -19,6 +19,8 @@ import {
     springBlossomTheme,
     colorsAmoled,
     oceanicTheme,
+    yangTheme,
+    yotsubaTheme,
 } from "../../theme/theme";
 
 const themes = {
@@ -32,6 +34,8 @@ const themes = {
     8: takoTheme,
     9: yinYangTheme,
     10: springBlossomTheme,
+    11: yangTheme,
+    12: yotsubaTheme,
 };
 
 /**

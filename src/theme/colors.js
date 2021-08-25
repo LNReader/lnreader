@@ -8,8 +8,10 @@ const AccentColors = {
     hotPink: "#FF3399",
     tako: "#F3B375",
     yinYang: "#FFFFFF",
+    yang: "#000000",
     springBlossom: "#c43c97",
     oceanic: "#009688",
+    yotsuba: "#FC8C5C",
 };
 
 const RippleColors = {
@@ -20,9 +22,11 @@ const RippleColors = {
     irisBlue: "rgba(0,173,181,0.12)",
     hotPink: "rgba(255,51,153,0.12)",
     tako: "rgba(243,179,117,0.12)",
-    yinYang: "#rgba(255,255,255,0.12)",
+    yinYang: "rgba(255,255,255,0.12)",
+    yang: "rgba(0,0,0,0.12)",
     springBlossom: "rgba(196,60,151,0.12)",
     oceanic: "rgba(0, 150, 136,0.12)",
+    yotsuba: "rgba(252, 140, 92,0.12)",
 };
 
 const StatusBarStyle = {

@@ -207,7 +207,7 @@ const Novel = ({ route, navigation }) => {
                         elevation: 2,
                     }}
                     active={selected.length == 0}
-                    animationDuration={150}
+                    animationDuration={100}
                 >
                     <View
                         style={{

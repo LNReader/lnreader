@@ -124,7 +124,6 @@ const History = ({ navigation }) => {
                 actions={[
                     {
                         icon: "delete-sweep",
-                        color: theme.textColorSecondary,
                         onPress: showDialog,
                     },
                 ]}

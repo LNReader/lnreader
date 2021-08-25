@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, Text } from "react-native";
+import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 
 import { Modal, Portal, TextInput } from "react-native-paper";
 
@@ -43,6 +43,29 @@ const ColorPickerModal = ({
         },
     };
 
+    const accentColors = [
+        "#EF5350",
+        "#EC407A",
+        "#AB47BC",
+        "#7E57C2",
+        "#5C6BC0",
+        "#42A5F5",
+        "#29B6FC",
+        "#26C6DA",
+        "#26A69A",
+        "#66BB6A",
+        "#9CCC65",
+        "#D4E157",
+        "#FFEE58",
+        "#FFCA28",
+        "#FFA726",
+        "#FF7043",
+        "#8D6E63",
+        "#BDBDBD",
+        "#78909C",
+        "#000000",
+    ];
+
     return (
         <Portal>
             <Modal
@@ -61,6 +84,34 @@ const ColorPickerModal = ({
                 >
                     {title}
                 </Text>
+                <FlatList
+                    contentContainerStyle={{ marginBottom: 8 }}
+                    data={accentColors}
+                    numColumns={4}
+                    keyExtractor={(item) => item}
+                    renderItem={({ item }) => (
+                        <View
+                            style={{
+                                borderRadius: 4,
+                                overflow: "hidden",
+                                backgroundColor: item,
+                                flex: 1 / 4,
+                                height: 40,
+                                marginHorizontal: 4,
+                                marginVertical: 4,
+                            }}
+                        >
+                            <Pressable
+                                style={{ flex: 1 }}
+                                android_ripple={{ color: "rgba(0,0,0,0.12)" }}
+                                onPress={() => {
+                                    onSubmit(item);
+                                    hideModal();
+                                }}
+                            />
+                        </View>
+                    )}
+                />
                 <TextInput
                     value={text}
                     defaultValue={color}
