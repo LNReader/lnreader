@@ -44,6 +44,7 @@ import JumpToChapterModal from "./components/JumpToChapterModal";
 import { Actionbar } from "../../components/Actionbar/Actionbar";
 import EditInfoModal from "./components/EditInfoModal";
 import { setCustomNovelCover } from "../../database/queries/NovelQueries";
+import FadeView from "../../components/Common/CrossFadeView";
 
 const Novel = ({ route, navigation }) => {
     const item = route.params;
@@ -198,26 +199,29 @@ const Novel = ({ route, navigation }) => {
                     { backgroundColor: theme.colorPrimaryDark },
                 ]}
             >
-                {selected.length > 0 ? (
+                <FadeView
+                    style={{
+                        position: "absolute",
+                        zIndex: 1,
+                        width: Dimensions.get("window").width,
+                        elevation: 2,
+                    }}
+                    active={selected.length == 0}
+                    animationDuration={150}
+                >
                     <View
                         style={{
                             backgroundColor: theme.colorPrimary,
-                            position: "absolute",
-                            zIndex: 1,
-                            width: Dimensions.get("window").width,
+                            paddingTop: StatusBar.currentHeight,
                             flexDirection: "row",
                             alignItems: "center",
-                            paddingTop: StatusBar.currentHeight,
                             paddingBottom: 8,
-                            elevation: 2,
                         }}
                     >
                         <Appbar.Action
                             icon="close"
                             color={theme.textColorPrimary}
-                            onPress={() => {
-                                setSelected([]);
-                            }}
+                            onPress={() => setSelected([])}
                         />
                         <Appbar.Content
                             title={selected.length}
@@ -232,7 +236,8 @@ const Novel = ({ route, navigation }) => {
                             }}
                         />
                     </View>
-                ) : (
+                </FadeView>
+                {selected.length == 0 && (
                     <View
                         style={{
                             position: "absolute",

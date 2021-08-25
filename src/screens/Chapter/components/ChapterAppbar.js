@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { View } from "react-native";
 
 import { Appbar } from "react-native-paper";
+import FadeView from "../../../components/Common/CrossFadeView";
 import { bookmarkChapterAction } from "../../../redux/novel/novel.actions";
 
 const ChapterAppbar = ({
@@ -16,19 +17,20 @@ const ChapterAppbar = ({
 }) => {
     const [bookmarked, setBookmarked] = useState(bookmark);
 
-    if (hide) {
-        return null;
-    } else {
-        return (
+    return (
+        <FadeView
+            style={{
+                flex: 1,
+                position: "absolute",
+                width: "100%",
+                top: 0,
+                zIndex: 1,
+            }}
+            active={hide}
+            animationDuration={150}
+        >
             <View
-                style={{
-                    position: "absolute",
-                    flex: 1,
-                    backgroundColor: `${theme.colorPrimary}E6`,
-                    width: "100%",
-                    top: 0,
-                    zIndex: 1,
-                }}
+                style={{ flex: 1, backgroundColor: `${theme.colorPrimary}E6` }}
             >
                 <Appbar.Header
                     style={{ backgroundColor: "transparent", elevation: 0 }}
@@ -58,8 +60,8 @@ const ChapterAppbar = ({
                     />
                 </Appbar.Header>
             </View>
-        );
-    }
+        </FadeView>
+    );
 };
 
 export default ChapterAppbar;

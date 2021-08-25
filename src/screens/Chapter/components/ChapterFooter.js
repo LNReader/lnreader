@@ -1,6 +1,7 @@
 import React from "react";
 import { Pressable, StyleSheet, View } from "react-native";
 import { IconButton } from "react-native-paper";
+import FadeView from "../../../components/Common/CrossFadeView";
 
 const ChapterFooter = ({
     hide,
@@ -22,10 +23,8 @@ const ChapterFooter = ({
         radius: 50,
     };
 
-    if (hide) {
-        return null;
-    } else {
-        return (
+    return (
+        <FadeView active={hide} animationDuration={150}>
             <View
                 style={{
                     position: "absolute",
@@ -109,8 +108,8 @@ const ChapterFooter = ({
                     />
                 </Pressable>
             </View>
-        );
-    }
+        </FadeView>
+    );
 };
 
 export default ChapterFooter;
