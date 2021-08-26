@@ -200,7 +200,6 @@ export const migrateNovel = async (sourceId, novelUrl) => {
         await BackgroundService.updateNotification({
             progressBar: { value: 1, indeterminate: false },
         });
-        await BackgroundService.stop();
     } catch (error) {
         showToast(error.message);
     }

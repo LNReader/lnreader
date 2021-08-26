@@ -313,84 +313,86 @@ export const downloadAllChaptersAction =
                 novelUrl,
             }));
 
-            dispatch({ type: SET_DOWNLOAD_QUEUE, payload: chapters });
-            const options = {
-                taskName: "Library Update",
-                taskTitle: chapters[0].chapterName,
-                taskDesc: "0/" + chapters.length,
-                taskIcon: {
-                    name: "notification_icon",
-                    type: "drawable",
-                },
-                color: "#00adb5",
-                linkingURI: "lnreader://downloads/redirect",
-                parameters: {
-                    delay: 1000,
-                },
-                progressBar: {
-                    max: chapters.length,
-                    value: 0,
-                },
-            };
+            if (chapters.length > 0) {
+                dispatch({ type: SET_DOWNLOAD_QUEUE, payload: chapters });
+                const options = {
+                    taskName: "Library Update",
+                    taskTitle: chapters[0].chapterName,
+                    taskDesc: "0/" + chapters.length,
+                    taskIcon: {
+                        name: "notification_icon",
+                        type: "drawable",
+                    },
+                    color: "#00adb5",
+                    linkingURI: "lnreader://downloads/redirect",
+                    parameters: {
+                        delay: 1000,
+                    },
+                    progressBar: {
+                        max: chapters.length,
+                        value: 0,
+                    },
+                };
 
-            const sleep = (time) =>
-                new Promise((resolve) => setTimeout(() => resolve(), time));
+                const sleep = (time) =>
+                    new Promise((resolve) => setTimeout(() => resolve(), time));
 
-            const veryIntensiveTask = async (taskData) => {
-                await new Promise(async (resolve) => {
-                    for (
-                        let i = 0;
-                        BackgroundService.isRunning() && i < chapters.length;
-                        i++
-                    ) {
-                        if (BackgroundService.isRunning()) {
-                            // dispatch({
-                            //     type: CHAPTER_DOWNLOADING,
-                            //     payload: chapters[i].chapterId,
-                            // });
+                const veryIntensiveTask = async (taskData) => {
+                    await new Promise(async (resolve) => {
+                        for (
+                            let i = 0;
+                            BackgroundService.isRunning() &&
+                            i < chapters.length;
+                            i++
+                        ) {
+                            if (BackgroundService.isRunning()) {
+                                // dispatch({
+                                //     type: CHAPTER_DOWNLOADING,
+                                //     payload: chapters[i].chapterId,
+                                // });
 
-                            if (!chapters[i].downloaded) {
-                                await downloadChapter(
-                                    sourceId,
-                                    novelUrl,
-                                    chapters[i].chapterUrl,
-                                    chapters[i].chapterId
-                                );
-                            }
+                                if (!chapters[i].downloaded) {
+                                    await downloadChapter(
+                                        sourceId,
+                                        novelUrl,
+                                        chapters[i].chapterUrl,
+                                        chapters[i].chapterId
+                                    );
+                                }
 
-                            dispatch({
-                                type: CHAPTER_DOWNLOADED,
-                                payload: chapters[i].chapterId,
-                            });
-
-                            await BackgroundService.updateNotification({
-                                taskTitle: chapters[i].chapterName,
-                                taskDesc: i + 1 + "/" + chapters.length,
-                                progressBar: {
-                                    max: chapters.length,
-                                    value: i + 1,
-                                },
-                            });
-
-                            if (i + 1 === chapters.length) {
-                                resolve();
-                                await BackgroundService.stop();
-
-                                Notifications.scheduleNotificationAsync({
-                                    content: {
-                                        title: "Downloader",
-                                        body: "Download completed",
-                                    },
-                                    trigger: null,
+                                dispatch({
+                                    type: CHAPTER_DOWNLOADED,
+                                    payload: chapters[i].chapterId,
                                 });
-                            }
-                            await sleep(taskData.delay);
-                        }
-                    }
-                });
-            };
 
-            await BackgroundService.start(veryIntensiveTask, options);
+                                await BackgroundService.updateNotification({
+                                    taskTitle: chapters[i].chapterName,
+                                    taskDesc: i + 1 + "/" + chapters.length,
+                                    progressBar: {
+                                        max: chapters.length,
+                                        value: i + 1,
+                                    },
+                                });
+
+                                if (i + 1 === chapters.length) {
+                                    resolve();
+
+                                    Notifications.scheduleNotificationAsync({
+                                        content: {
+                                            title: "Downloader",
+                                            body: "Download completed",
+                                        },
+                                        trigger: null,
+                                    });
+                                }
+                                await sleep(taskData.delay);
+                            }
+                        }
+                    });
+                };
+
+                await BackgroundService.start(veryIntensiveTask, options);
+            }
         } catch (error) {
             showToast(error.message);
         }

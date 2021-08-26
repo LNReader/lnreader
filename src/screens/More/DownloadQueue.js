@@ -55,7 +55,6 @@ const DownloadQueue = ({ navigation }) => {
                             if (downloadQueue.length > 0) {
                                 dispatch(cancelDownload());
                                 showToast("Downloads cancelled.");
-                                BackgroundService.stop();
                             }
                             closeMenu();
                         }}

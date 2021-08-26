@@ -299,7 +299,7 @@ const Novel = ({ route, navigation }) => {
                                 }}
                             >
                                 <Menu.Item
-                                    title="Download all"
+                                    title="All"
                                     style={{ backgroundColor: theme.menuColor }}
                                     titleStyle={{
                                         color: theme.textColorPrimary,
@@ -310,6 +310,25 @@ const Novel = ({ route, navigation }) => {
                                                 novel.sourceId,
                                                 novel.novelUrl,
                                                 chapters
+                                            )
+                                        )
+                                    }
+                                />
+                                <Menu.Item
+                                    title="Unread"
+                                    style={{ backgroundColor: theme.menuColor }}
+                                    titleStyle={{
+                                        color: theme.textColorPrimary,
+                                    }}
+                                    onPress={() =>
+                                        dispatch(
+                                            downloadAllChaptersAction(
+                                                novel.sourceId,
+                                                novel.novelUrl,
+                                                chapters.filter(
+                                                    (chapter) =>
+                                                        !!chapter.read === false
+                                                )
                                             )
                                         )
                                     }
