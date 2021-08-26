@@ -133,12 +133,39 @@ const Novel = ({ route, navigation }) => {
     };
 
     const onSelectLongPress = (chapter) => {
-        if (isSelected(chapter.chapterId)) {
-            setSelected((selected) =>
-                selected.filter((item) => item.chapterId !== chapter.chapterId)
-            );
-        } else {
+        if (selected.length === 0) {
             setSelected((selected) => [...selected, chapter]);
+        } else {
+            /**
+             * Select custom range
+             */
+            const lastSelectedChapter = selected[selected.length - 1];
+
+            if (lastSelectedChapter.chapterId !== chapter.chapterId) {
+                if (lastSelectedChapter.chapterId > chapter.chapterId) {
+                    setSelected((selected) => [
+                        ...selected,
+                        chapter,
+                        ...chapters.filter(
+                            (chap) =>
+                                (chap.chapterId <= chapter.chapterId ||
+                                    chap.chapterId >=
+                                        lastSelectedChapter.chapterId) === false
+                        ),
+                    ]);
+                } else {
+                    setSelected((selected) => [
+                        ...selected,
+                        chapter,
+                        ...chapters.filter(
+                            (chap) =>
+                                (chap.chapterId >= chapter.chapterId ||
+                                    chap.chapterId <=
+                                        lastSelectedChapter.chapterId) === false
+                        ),
+                    ]);
+                }
+            }
         }
     };
 

@@ -305,6 +305,9 @@ export const downloadChapterAction =
 export const downloadAllChaptersAction =
     (sourceId, novelUrl, chaps) => async (dispatch) => {
         try {
+            /**
+             * Filter downloaded chapters
+             */
             let chapters = chaps.filter((chapter) => chapter.downloaded === 0);
 
             chapters = chapters.map((chapter) => ({
