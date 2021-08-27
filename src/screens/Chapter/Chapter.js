@@ -6,6 +6,7 @@ import {
     StatusBar,
     ScrollView,
     TouchableWithoutFeedback,
+    Dimensions,
 } from "react-native";
 
 import { useDispatch } from "react-redux";
@@ -83,6 +84,8 @@ const Chapter = ({ route, navigation }) => {
         textSelectable = false,
         useWebViewForChapter = false,
         showBatteryAndTime = false,
+        autoScroll = false,
+        autoScrollInterval = 10,
     } = useSettings();
 
     const batteryLevel = useBatteryLevel();
@@ -169,6 +172,26 @@ const Chapter = ({ route, navigation }) => {
             setCurrentTime(new Date().toISOString());
         }, 60000);
     }, []);
+
+    const [currentOffset, setCurrentOffset] = useState(position?.position || 0);
+
+    useEffect(
+        () =>
+            setTimeout(() => {
+                if (scrollPercentage !== 100 && autoScroll) {
+                    console.log("Called");
+                    scrollViewRef.current.scrollTo({
+                        x: 0,
+                        y: currentOffset + Dimensions.get("window").height,
+                        animated: true,
+                    });
+                    setCurrentOffset(
+                        (prevState) =>
+                            prevState + Dimensions.get("window").height
+                    );
+                }
+            }, autoScrollInterval * 1000)[(autoScroll, currentOffset)]
+    );
 
     const isCloseToBottom = useCallback(
         ({ layoutMeasurement, contentOffset, contentSize }) => {
@@ -297,6 +320,10 @@ const Chapter = ({ route, navigation }) => {
         showToast(
             swipeGestures ? "Swipe gestures disabled" : "Swipe gestured enabled"
         );
+    };
+
+    const enableAutoScroll = () => {
+        dispatch(setAppSettings("autoScroll", !autoScroll));
     };
 
     const enableWebView = () =>
@@ -490,6 +517,7 @@ const Chapter = ({ route, navigation }) => {
                         navigation={navigation}
                         bottomSheetRef={readerSheetRef}
                         selectText={textSelectable}
+                        autoScroll={autoScroll}
                         useWebViewForChapter={useWebViewForChapter}
                         showScrollPercentage={showScrollPercentage}
                         showBatteryAndTime={showBatteryAndTime}
@@ -515,11 +543,13 @@ const Chapter = ({ route, navigation }) => {
                     nextChapter={nextChapter}
                     prevChapter={prevChapter}
                     hide={hidden}
+                    autoScroll={autoScroll}
                     useWebViewForChapter={useWebViewForChapter}
                     navigateToNextChapter={navigateToNextChapter}
                     navigateToPrevChapter={navigateToPrevChapter}
                     readerSheetRef={readerSheetRef}
                     scrollViewRef={scrollViewRef}
+                    enableAutoScroll={enableAutoScroll}
                 />
                 {(showScrollPercentage || showBatteryAndTime) && (
                     <View

@@ -23,8 +23,15 @@ import {
 } from "../../components/Common/ToggleButton";
 import { List } from "../../components/List";
 
-import { useReaderSettings, useTheme } from "../../hooks/reduxHooks";
-import { setReaderSettings } from "../../redux/settings/settings.actions";
+import {
+    useReaderSettings,
+    useSettings,
+    useTheme,
+} from "../../hooks/reduxHooks";
+import {
+    setAppSettings,
+    setReaderSettings,
+} from "../../redux/settings/settings.actions";
 import {
     readerBackground,
     readerLineHeight,
@@ -50,6 +57,8 @@ const FirstRoute = React.memo(({ theme, dispatch, reader }) => {
         { value: "justify", icon: "format-align-justify" },
         { value: "right", icon: "format-align-right" },
     ];
+
+    const { autoScrollInterval = 10 } = useSettings();
 
     /**
      * Reader Background Color Modal
@@ -229,6 +238,26 @@ const FirstRoute = React.memo(({ theme, dispatch, reader }) => {
                                 Clear
                             </Button>
                         </View>
+                    </View>
+                    <List.SubHeader theme={theme}>
+                        Auto scroll interval (in seconds)
+                    </List.SubHeader>
+                    <View style={{ paddingHorizontal: 16, paddingBottom: 8 }}>
+                        <TextInput
+                            style={{
+                                color: theme.textColorPrimary,
+                                fontSize: 16,
+                            }}
+                            defaultValue={autoScrollInterval.toString()}
+                            onChangeText={(text) =>
+                                dispatch(
+                                    setAppSettings(
+                                        "autoScrollInterval",
+                                        parseInt(text)
+                                    )
+                                )
+                            }
+                        />
                     </View>
                 </List.Section>
             </ScrollView>

@@ -41,6 +41,7 @@ const ReaderSheet = ({
     bottomSheetRef,
     showBatteryAndTime,
     selectText,
+    autoScroll,
     useWebViewForChapter,
     showScrollPercentage,
 }) => {
@@ -396,6 +397,30 @@ const ReaderSheet = ({
                                         "useWebViewForChapter",
                                         !useWebViewForChapter
                                     )
+                                )
+                            }
+                            color={theme.colorAccent}
+                        />
+                    </Pressable>
+                    <Pressable
+                        style={styles.switchStyle}
+                        android_ripple={{ color: theme.rippleColor }}
+                        onPress={() =>
+                            dispatch(setAppSettings("autoScroll", !autoScroll))
+                        }
+                    >
+                        <Text
+                            style={{
+                                color: theme.textColorSecondary,
+                            }}
+                        >
+                            AutoScroll
+                        </Text>
+                        <Switch
+                            value={autoScroll}
+                            onValueChange={() =>
+                                dispatch(
+                                    setAppSettings("autoScroll", !autoScroll)
                                 )
                             }
                             color={theme.colorAccent}

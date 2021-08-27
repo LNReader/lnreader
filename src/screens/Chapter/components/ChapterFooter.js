@@ -1,6 +1,7 @@
 import React from "react";
 import { Pressable, StyleSheet, View } from "react-native";
 import { IconButton } from "react-native-paper";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import FadeView from "../../../components/Common/CrossFadeView";
 
 const ChapterFooter = ({
@@ -15,13 +16,17 @@ const ChapterFooter = ({
     prevChapter,
     useWebViewForChapter,
     enableSwipeGestures,
+    autoScroll,
     enableWebView,
+    enableAutoScroll,
 }) => {
     const rippleConfig = {
         color: theme.rippleColor,
         borderless: true,
         radius: 50,
     };
+
+    const insets = useSafeAreaInsets();
 
     return (
         <FadeView
@@ -38,6 +43,7 @@ const ChapterFooter = ({
                 style={{
                     backgroundColor: `${theme.colorPrimary}E6`,
                     flexDirection: "row",
+                    paddingBottom: insets.bottom,
                 }}
             >
                 <Pressable
@@ -65,17 +71,31 @@ const ChapterFooter = ({
                     />
                 </Pressable>
                 {!useWebViewForChapter && (
-                    <Pressable
-                        android_ripple={rippleConfig}
-                        style={styles.buttonStyles}
-                        onPress={() => scrollViewRef.current.scrollTo({})}
-                    >
-                        <IconButton
-                            icon="format-vertical-align-top"
-                            size={26}
-                            color={theme.textColorPrimary}
-                        />
-                    </Pressable>
+                    <>
+                        <Pressable
+                            android_ripple={rippleConfig}
+                            style={styles.buttonStyles}
+                            onPress={enableAutoScroll}
+                        >
+                            <IconButton
+                                icon="chevron-triple-down"
+                                disabled={!autoScroll}
+                                size={26}
+                                color={theme.textColorPrimary}
+                            />
+                        </Pressable>
+                        <Pressable
+                            android_ripple={rippleConfig}
+                            style={styles.buttonStyles}
+                            onPress={() => scrollViewRef.current.scrollTo({})}
+                        >
+                            <IconButton
+                                icon="format-vertical-align-top"
+                                size={26}
+                                color={theme.textColorPrimary}
+                            />
+                        </Pressable>
+                    </>
                 )}
                 {/* <Pressable
                     android_ripple={rippleConfig}
@@ -125,5 +145,6 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         paddingVertical: 8,
+        paddingBottom: 4,
     },
 });

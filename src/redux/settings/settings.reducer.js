@@ -75,6 +75,8 @@ const initialState = {
     showLabelsInNav: false,
     useWebViewForChapter: false,
     showBatteryAndTime: false,
+    autoScroll: false,
+    autoScrollInterval: 10,
 };
 
 const settingsReducer = (state = initialState, action) => {
