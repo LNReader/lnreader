@@ -39,15 +39,12 @@ const ReaderSheet = ({
     dispatch,
     navigation,
     bottomSheetRef,
+    showBatteryAndTime,
     selectText,
     useWebViewForChapter,
     showScrollPercentage,
 }) => {
     const [animatedValue] = useState(new Animated.Value(0));
-
-    const [fontMenu, setFontMenu] = useState(false);
-    const openFontMenu = () => setFontMenu(true);
-    const closeFontMenu = () => setFontMenu(false);
 
     const presetThemes = [
         { value: 2, backgroundColor: "#f5f5fa", textColor: "#111111" },
@@ -84,7 +81,7 @@ const ReaderSheet = ({
                 ]}
             >
                 <BottomSheetHandle theme={theme} />
-                <View style={{ flex: 1, paddingVertical: 16, paddingTop: 24 }}>
+                <View style={{ flex: 1, paddingVertical: 16, paddingTop: 32 }}>
                     <View
                         style={{
                             flexDirection: "row",
@@ -398,6 +395,38 @@ const ReaderSheet = ({
                                     setAppSettings(
                                         "useWebViewForChapter",
                                         !useWebViewForChapter
+                                    )
+                                )
+                            }
+                            color={theme.colorAccent}
+                        />
+                    </Pressable>
+                    <Pressable
+                        style={styles.switchStyle}
+                        android_ripple={{ color: theme.rippleColor }}
+                        onPress={() =>
+                            dispatch(
+                                setAppSettings(
+                                    "showBatteryAndTime",
+                                    !showBatteryAndTime
+                                )
+                            )
+                        }
+                    >
+                        <Text
+                            style={{
+                                color: theme.textColorSecondary,
+                            }}
+                        >
+                            Show battery and time
+                        </Text>
+                        <Switch
+                            value={showBatteryAndTime}
+                            onValueChange={() =>
+                                dispatch(
+                                    setAppSettings(
+                                        "showBatteryAndTime",
+                                        !showBatteryAndTime
                                     )
                                 )
                             }

@@ -74,6 +74,7 @@ const initialState = {
     showUpdatesTab: true,
     showLabelsInNav: false,
     useWebViewForChapter: false,
+    showBatteryAndTime: false,
 };
 
 const settingsReducer = (state = initialState, action) => {

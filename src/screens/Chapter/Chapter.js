@@ -10,6 +10,7 @@ import {
 
 import { useDispatch } from "react-redux";
 import { IconButton, Portal } from "react-native-paper";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import {
     hideNavigationBar,
     showNavigationBar,
@@ -53,6 +54,8 @@ import { SET_LAST_READ } from "../../redux/preferences/preference.types";
 import { htmlToText } from "../../sources/helpers/htmlToText";
 import { setAppSettings } from "../../redux/settings/settings.actions";
 import { cleanHtml } from "../../sources/helpers/cleanHtml";
+import { useBatteryLevel } from "react-native-device-info";
+import moment from "moment";
 
 const Chapter = ({ route, navigation }) => {
     const {
@@ -79,7 +82,10 @@ const Chapter = ({ route, navigation }) => {
         incognitoMode = false,
         textSelectable = false,
         useWebViewForChapter = false,
+        showBatteryAndTime = false,
     } = useSettings();
+
+    const batteryLevel = useBatteryLevel();
 
     const [hidden, setHidden] = useState(true);
 
@@ -156,6 +162,14 @@ const Chapter = ({ route, navigation }) => {
         setPrevAndNextChap();
     }, [chapter]);
 
+    const [currentTime, setCurrentTime] = useState();
+
+    useEffect(() => {
+        setInterval(() => {
+            setCurrentTime(new Date().toISOString());
+        }, 60000);
+    }, []);
+
     const isCloseToBottom = useCallback(
         ({ layoutMeasurement, contentOffset, contentSize }) => {
             const paddingToBottom = 40;
@@ -224,7 +238,12 @@ const Chapter = ({ route, navigation }) => {
     }, []);
 
     const hideHeader = () => {
-        !hidden && setImmersiveMode();
+        if (!hidden) {
+            setImmersiveMode();
+        } else {
+            StatusBar.setHidden(false);
+            showNavigationBar();
+        }
         setHidden(!hidden);
     };
 
@@ -363,7 +382,6 @@ const Chapter = ({ route, navigation }) => {
                                             backgroundColor: readerBackground(
                                                 reader.theme
                                             ),
-                                            paddingBottom: 24,
                                         }}
                                         originWhitelist={["*"]}
                                         scalesPageToFit={true}
@@ -401,6 +419,7 @@ const Chapter = ({ route, navigation }) => {
                                 body {
                                     padding-left: ${reader.padding}%;
                                     padding-right: ${reader.padding}%;
+                                    padding-bottom: 30px;
                                     font-size: ${reader.textSize}px;
                                     color: ${reader.textColor};
 
@@ -473,6 +492,7 @@ const Chapter = ({ route, navigation }) => {
                         selectText={textSelectable}
                         useWebViewForChapter={useWebViewForChapter}
                         showScrollPercentage={showScrollPercentage}
+                        showBatteryAndTime={showBatteryAndTime}
                     />
                 </Portal>
                 {!useWebViewForChapter && (
@@ -501,18 +521,35 @@ const Chapter = ({ route, navigation }) => {
                     readerSheetRef={readerSheetRef}
                     scrollViewRef={scrollViewRef}
                 />
-                {showScrollPercentage && (
-                    <Text
+                {(showScrollPercentage || showBatteryAndTime) && (
+                    <View
                         style={[
-                            styles.scrollPercentage,
-                            {
-                                color: reader.textColor,
-                                backgroundColor: readerBackground(reader.theme),
-                            },
+                            styles.scrollPercentageContainer,
+                            { backgroundColor: readerBackground(reader.theme) },
                         ]}
                     >
-                        {scrollPercentage + "%"}
-                    </Text>
+                        {showBatteryAndTime && (
+                            <Text style={{ color: reader.textColor }}>
+                                {Math.ceil(batteryLevel * 100) + "%"}
+                            </Text>
+                        )}
+                        {showScrollPercentage && (
+                            <Text
+                                style={{
+                                    flex: 1,
+                                    color: reader.textColor,
+                                    textAlign: "center",
+                                }}
+                            >
+                                {scrollPercentage + "%"}
+                            </Text>
+                        )}
+                        {showBatteryAndTime && (
+                            <Text style={{ color: reader.textColor }}>
+                                {moment(currentTime).format("h:mm")}
+                            </Text>
+                        )}
+                    </View>
                 )}
             </>
         </>
@@ -523,15 +560,17 @@ export default Chapter;
 
 const styles = StyleSheet.create({
     screenContainer: { flexGrow: 1 },
-    scrollPercentage: {
+    scrollPercentageContainer: {
         width: "100%",
         position: "absolute",
-        bottom: 0,
         height: 30,
-        textAlign: "center",
-        textAlignVertical: "center",
-        alignSelf: "center",
-        fontWeight: "bold",
+        left: 0,
+        right: 0,
+        bottom: 0,
         zIndex: 1,
+        flexDirection: "row",
+        paddingHorizontal: 32,
+        alignItems: "center",
+        justifyContent: "space-between",
     },
 });
