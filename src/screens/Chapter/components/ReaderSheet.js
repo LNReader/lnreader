@@ -44,6 +44,7 @@ const ReaderSheet = ({
     autoScroll,
     useWebViewForChapter,
     showScrollPercentage,
+    fullScreenMode,
 }) => {
     const [animatedValue] = useState(new Animated.Value(0));
 
@@ -70,19 +71,20 @@ const ReaderSheet = ({
         <Bottomsheet
             animatedValue={animatedValue}
             ref={bottomSheetRef}
-            draggableRange={{ top: 520, bottom: 0 }}
-            snappingPoints={[0, 390, 520]}
+            draggableRange={{ top: 390, bottom: 0 }}
+            snappingPoints={[0, 390]}
             showBackdrop={true}
             backdropOpacity={0}
+            height={390}
         >
-            <View
+            <ScrollView
                 style={[
                     styles.contentContainer,
                     { backgroundColor: theme.colorPrimaryDark },
                 ]}
             >
                 <BottomSheetHandle theme={theme} />
-                <View style={{ flex: 1, paddingVertical: 16, paddingTop: 32 }}>
+                <View style={{ flex: 1, paddingVertical: 16, paddingTop: 24 }}>
                     <View
                         style={{
                             flexDirection: "row",
@@ -406,7 +408,12 @@ const ReaderSheet = ({
                         style={styles.switchStyle}
                         android_ripple={{ color: theme.rippleColor }}
                         onPress={() =>
-                            dispatch(setAppSettings("autoScroll", !autoScroll))
+                            dispatch(
+                                setAppSettings(
+                                    "fullScreenMode",
+                                    !fullScreenMode
+                                )
+                            )
                         }
                     >
                         <Text
@@ -414,18 +421,52 @@ const ReaderSheet = ({
                                 color: theme.textColorSecondary,
                             }}
                         >
-                            AutoScroll
+                            Fullscreen
                         </Text>
                         <Switch
-                            value={autoScroll}
+                            value={fullScreenMode}
                             onValueChange={() =>
                                 dispatch(
-                                    setAppSettings("autoScroll", !autoScroll)
+                                    setAppSettings(
+                                        "fullScreenMode",
+                                        !fullScreenMode
+                                    )
                                 )
                             }
                             color={theme.colorAccent}
                         />
                     </Pressable>
+                    {!useWebViewForChapter && (
+                        <Pressable
+                            style={styles.switchStyle}
+                            android_ripple={{ color: theme.rippleColor }}
+                            onPress={() =>
+                                dispatch(
+                                    setAppSettings("autoScroll", !autoScroll)
+                                )
+                            }
+                        >
+                            <Text
+                                style={{
+                                    color: theme.textColorSecondary,
+                                }}
+                            >
+                                AutoScroll
+                            </Text>
+                            <Switch
+                                value={autoScroll}
+                                onValueChange={() =>
+                                    dispatch(
+                                        setAppSettings(
+                                            "autoScroll",
+                                            !autoScroll
+                                        )
+                                    )
+                                }
+                                color={theme.colorAccent}
+                            />
+                        </Pressable>
+                    )}
                     <Pressable
                         style={styles.switchStyle}
                         android_ripple={{ color: theme.rippleColor }}
@@ -503,11 +544,7 @@ const ReaderSheet = ({
                                 )
                             }
                         >
-                            <Text
-                                style={{
-                                    color: theme.textColorSecondary,
-                                }}
-                            >
+                            <Text style={{ color: theme.textColorSecondary }}>
                                 Select text
                             </Text>
                             <Switch
@@ -525,7 +562,7 @@ const ReaderSheet = ({
                         </Pressable>
                     )}
                 </View>
-            </View>
+            </ScrollView>
         </Bottomsheet>
     );
 };

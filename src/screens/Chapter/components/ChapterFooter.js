@@ -112,7 +112,7 @@ const ChapterFooter = ({
                 <Pressable
                     android_ripple={rippleConfig}
                     style={styles.buttonStyles}
-                    onPress={() => readerSheetRef.current.show(390)}
+                    onPress={() => readerSheetRef.current.show()}
                 >
                     <IconButton
                         icon="cog-outline"

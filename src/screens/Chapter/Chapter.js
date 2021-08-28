@@ -12,7 +12,7 @@ import {
 import { useDispatch } from "react-redux";
 import { IconButton, Portal } from "react-native-paper";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import {
+import changeNavigationBarColor, {
     hideNavigationBar,
     showNavigationBar,
 } from "react-native-navigation-bar-color";
@@ -57,6 +57,7 @@ import { setAppSettings } from "../../redux/settings/settings.actions";
 import { cleanHtml } from "../../sources/helpers/cleanHtml";
 import { useBatteryLevel } from "react-native-device-info";
 import moment from "moment";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const Chapter = ({ route, navigation }) => {
     const {
@@ -76,9 +77,11 @@ const Chapter = ({ route, navigation }) => {
     const theme = useTheme();
     const dispatch = useDispatch();
     const reader = useReaderSettings();
+    const insets = useSafeAreaInsets();
 
     const {
         showScrollPercentage = true,
+        fullScreenMode = true,
         swipeGestures = true,
         incognitoMode = false,
         textSelectable = false,
@@ -248,8 +251,13 @@ const Chapter = ({ route, navigation }) => {
     }, []);
 
     const setImmersiveMode = () => {
-        StatusBar.setHidden(true);
-        hideNavigationBar();
+        if (fullScreenMode) {
+            StatusBar.setHidden(true);
+            hideNavigationBar();
+        } else {
+            StatusBar.setBackgroundColor(readerBackground(reader.theme));
+            changeNavigationBarColor(readerBackground(reader.theme));
+        }
     };
 
     const scrollToSavedProgress = useCallback((event) => {
@@ -268,8 +276,10 @@ const Chapter = ({ route, navigation }) => {
         if (!hidden) {
             setImmersiveMode();
         } else {
-            StatusBar.setHidden(false);
-            showNavigationBar();
+            if (fullScreenMode) {
+                StatusBar.setHidden(false);
+                showNavigationBar();
+            }
         }
         setHidden(!hidden);
     };
@@ -524,6 +534,7 @@ const Chapter = ({ route, navigation }) => {
                         useWebViewForChapter={useWebViewForChapter}
                         showScrollPercentage={showScrollPercentage}
                         showBatteryAndTime={showBatteryAndTime}
+                        fullScreenMode={fullScreenMode}
                     />
                 </Portal>
                 {!useWebViewForChapter && (
@@ -559,6 +570,9 @@ const Chapter = ({ route, navigation }) => {
                         style={[
                             styles.scrollPercentageContainer,
                             { backgroundColor: readerBackground(reader.theme) },
+                            !fullScreenMode && {
+                                paddingBottom: insets.bottom,
+                            },
                         ]}
                     >
                         {showBatteryAndTime && (
@@ -596,7 +610,7 @@ const styles = StyleSheet.create({
     scrollPercentageContainer: {
         width: "100%",
         position: "absolute",
-        height: 30,
+        paddingVertical: 4,
         left: 0,
         right: 0,
         bottom: 0,

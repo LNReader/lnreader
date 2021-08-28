@@ -63,6 +63,7 @@ const initialState = {
     showDownloadBadges: true,
     showUnreadBadges: true,
     showNumberOfNovels: false,
+    fullScreenMode: true,
     showScrollPercentage: true,
     swipeGestures: true,
     incognitoMode: false,
