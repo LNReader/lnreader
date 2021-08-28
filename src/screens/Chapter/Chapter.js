@@ -147,7 +147,9 @@ const Chapter = ({ route, navigation }) => {
     };
 
     useEffect(() => {
+        setImmersiveMode();
         getChapter(chapterId);
+
         if (!incognitoMode) {
             insertHistory(novelId, chapterId);
             dispatch({
@@ -155,10 +157,13 @@ const Chapter = ({ route, navigation }) => {
                 payload: { novelId, chapterId },
             });
         }
-        return () => {
+    }, []);
+
+    useEffect(() => {
+        navigation.addListener("beforeRemove", (e) => {
             StatusBar.setHidden(false);
             showNavigationBar();
-        };
+        });
     }, []);
 
     useEffect(() => {
@@ -177,9 +182,9 @@ const Chapter = ({ route, navigation }) => {
 
     useEffect(
         () =>
+            !useWebViewForChapter &&
             setTimeout(() => {
                 if (scrollPercentage !== 100 && autoScroll) {
-                    console.log("Called");
                     scrollViewRef.current.scrollTo({
                         x: 0,
                         y: currentOffset + Dimensions.get("window").height,
@@ -248,7 +253,6 @@ const Chapter = ({ route, navigation }) => {
     };
 
     const scrollToSavedProgress = useCallback((event) => {
-        setImmersiveMode();
         if (position && firstLayout) {
             position.percentage < 100 &&
                 scrollViewRef.current.scrollTo({
@@ -322,9 +326,8 @@ const Chapter = ({ route, navigation }) => {
         );
     };
 
-    const enableAutoScroll = () => {
+    const enableAutoScroll = () =>
         dispatch(setAppSettings("autoScroll", !autoScroll));
-    };
 
     const enableWebView = () =>
         dispatch(setAppSettings("useWebViewForChapter", !useWebViewForChapter));
