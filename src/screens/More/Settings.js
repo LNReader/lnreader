@@ -59,6 +59,16 @@ const SettingsScreen = ({ navigation }) => {
                     theme={theme}
                 />
                 <List.Item
+                    title="Appearance"
+                    icon="palette-outline"
+                    onPress={() =>
+                        navigation.navigate("SettingsStack", {
+                            screen: "AppearanceSettings",
+                        })
+                    }
+                    theme={theme}
+                />
+                <List.Item
                     title="Advanced"
                     icon="code-tags"
                     onPress={() =>

@@ -12,6 +12,7 @@ const AccentColors = {
     springBlossom: "#c43c97",
     oceanic: "#009688",
     yotsuba: "#FC8C5C",
+    tako_light: "#66577E",
 };
 
 const RippleColors = {
@@ -27,6 +28,7 @@ const RippleColors = {
     springBlossom: "rgba(196,60,151,0.12)",
     oceanic: "rgba(0, 150, 136,0.12)",
     yotsuba: "rgba(252, 140, 92,0.12)",
+    tako_light: "rgba(102, 87, 126,0.12)",
 };
 
 const StatusBarStyle = {
@@ -79,6 +81,10 @@ const PrimaryColors = {
     oceanic: {
         colorPrimary: "#32424A",
         colorPrimaryDark: "#263238",
+    },
+    tako_light: {
+        colorPrimary: "#F7F5FF",
+        colorPrimaryDark: "#F2EDF7",
     },
 };
 

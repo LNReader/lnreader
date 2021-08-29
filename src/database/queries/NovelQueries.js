@@ -226,7 +226,7 @@ export const updateNovelInfo = async (info, novelId) => {
 export const setCustomNovelCover = async (novelId) => {
     const image = await DocumentPicker.getDocumentAsync({ type: "image/*" });
 
-    if (image.type !== "success" && image.uri) {
+    if (image.type === "success" && image.uri) {
         db.transaction((tx) => {
             tx.executeSql(
                 "UPDATE novels SET novelCover = ? WHERE novelId = ?",

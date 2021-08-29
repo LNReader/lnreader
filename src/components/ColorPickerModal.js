@@ -84,34 +84,38 @@ const ColorPickerModal = ({
                 >
                     {title}
                 </Text>
-                <FlatList
-                    contentContainerStyle={{ marginBottom: 8 }}
-                    data={accentColors}
-                    numColumns={4}
-                    keyExtractor={(item) => item}
-                    renderItem={({ item }) => (
-                        <View
-                            style={{
-                                borderRadius: 4,
-                                overflow: "hidden",
-                                backgroundColor: item,
-                                flex: 1 / 4,
-                                height: 40,
-                                marginHorizontal: 4,
-                                marginVertical: 4,
-                            }}
-                        >
-                            <Pressable
-                                style={{ flex: 1 }}
-                                android_ripple={{ color: "rgba(0,0,0,0.12)" }}
-                                onPress={() => {
-                                    onSubmit(item);
-                                    hideModal();
+                {showAccentColors && (
+                    <FlatList
+                        contentContainerStyle={{ marginBottom: 8 }}
+                        data={accentColors}
+                        numColumns={4}
+                        keyExtractor={(item) => item}
+                        renderItem={({ item }) => (
+                            <View
+                                style={{
+                                    borderRadius: 4,
+                                    overflow: "hidden",
+                                    backgroundColor: item,
+                                    flex: 1 / 4,
+                                    height: 40,
+                                    marginHorizontal: 4,
+                                    marginVertical: 4,
                                 }}
-                            />
-                        </View>
-                    )}
-                />
+                            >
+                                <Pressable
+                                    style={{ flex: 1 }}
+                                    android_ripple={{
+                                        color: "rgba(0,0,0,0.12)",
+                                    }}
+                                    onPress={() => {
+                                        onSubmit(item);
+                                        hideModal();
+                                    }}
+                                />
+                            </View>
+                        )}
+                    />
+                )}
                 <TextInput
                     value={text}
                     defaultValue={color}

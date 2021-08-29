@@ -416,6 +416,7 @@ const Novel = ({ route, navigation }) => {
                                             novelId
                                         );
 
+                                        console.log(cover);
                                         if (cover) {
                                             dispatch(
                                                 setNovel({

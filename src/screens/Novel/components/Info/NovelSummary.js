@@ -1,34 +1,52 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+
 const NovelSummary = ({ summary, followed, theme }) => {
-    const [more, showMore] = useState(!followed);
+    const [expanded, setExpanded] = useState(!followed);
+
+    const maxNumberOfLines = expanded ? Number.MAX_SAFE_INTEGER : 3;
+
+    const expandNovelSummary = () => setExpanded(!expanded);
 
     return (
-        <View style={styles.summaryContainer}>
+        <View
+            style={[
+                styles.summaryContainer,
+                { paddingBottom: expanded ? 20 : 8 },
+            ]}
+        >
             <Text
                 style={{
                     color: theme.textColorSecondary,
                     lineHeight: 20,
                 }}
-                numberOfLines={more ? 200 : 2}
-                onPress={() => showMore(!more)}
+                numberOfLines={maxNumberOfLines}
+                onPress={expandNovelSummary}
                 ellipsizeMode="clip"
             >
                 {summary}
             </Text>
-            <Text
-                style={[
-                    {
-                        color: theme.colorAccent,
-                        backgroundColor: theme.colorPrimaryDark,
-                    },
-                    styles.showMoreButton,
-                ]}
-                onPress={() => showMore(!more)}
+            <View
+                style={{
+                    backgroundColor: `${theme.colorPrimaryDark}B4`,
+                    position: "absolute",
+                    flex: 1,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                }}
             >
-                {more ? "Less" : "More"}
-            </Text>
+                <MaterialCommunityIcons
+                    name={expanded ? "chevron-up" : "chevron-down"}
+                    color={theme.textColorPrimary}
+                    size={24}
+                    onPress={expandNovelSummary}
+                />
+            </View>
         </View>
     );
 };
@@ -39,14 +57,8 @@ const styles = StyleSheet.create({
     summaryContainer: {
         paddingHorizontal: 16,
         marginTop: 8,
-        marginBottom: 16,
+        marginBottom: 8,
     },
-    // summaryHeader: {
-    //     marginTop: 5,
-    //     paddingVertical: 5,
-    //     fontSize: 15,
-    //     fontWeight: "bold",
-    // },
     showMoreButton: {
         fontWeight: "bold",
         position: "absolute",

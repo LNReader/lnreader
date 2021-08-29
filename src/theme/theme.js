@@ -230,6 +230,22 @@ export const yotsubaTheme = {
     statusBar: StatusBarStyle.DARK,
 };
 
+export const takoLightTheme = {
+    id: 13,
+    name: "Tako",
+    ...PrimaryColors.tako_light,
+    ...TextColors.light,
+    colorAccent: AccentColors.tako_light,
+    rippleColor: RippleColors.tako_light,
+    searchBarColor: PrimaryColors.tako_light.colorPrimary,
+    menuColor: "#FFFFFF",
+    dividerColor: DividerColors.LIGHT,
+    filterColor: "#FFC107",
+    colorDisabled: PrimaryColors.tako_light.colorPrimary,
+    colorButtonText: "#F3B375",
+    statusBar: StatusBarStyle.DARK,
+};
+
 export const colorsAmoled = {
     ...PrimaryColors.amoled,
     ...TextColors.dark,

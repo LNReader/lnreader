@@ -220,7 +220,7 @@ const ReaderSheet = ({
                                 />
                                 <Text
                                     style={{
-                                        color: "#FFFFFF",
+                                        color: theme.textColorPrimary,
                                         paddingHorizontal: 24,
                                     }}
                                 >
@@ -274,7 +274,7 @@ const ReaderSheet = ({
                                 />
                                 <Text
                                     style={{
-                                        color: "#FFFFFF",
+                                        color: theme.textColorPrimary,
                                         paddingHorizontal: 24,
                                     }}
                                 >

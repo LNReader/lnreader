@@ -12,6 +12,7 @@ import AdvancedSettings from "../screens/More/AdvancedSettings";
 import GeneralSettings from "../screens/More/GeneralSettings";
 import DownloadQueue from "../screens/More/DownloadQueue";
 import Downloads from "../screens/More/Downloads";
+import AppearanceSettings from "../screens/More/AppearanceSettings";
 
 const Stack = createStackNavigator();
 
@@ -24,6 +25,10 @@ const SettingsStack = () => (
         <Stack.Screen name="ReaderSettings" component={ReaderSettings} />
         <Stack.Screen name="TrackerSettings" component={TrackerSettings} />
         <Stack.Screen name="BackupSettings" component={BackupSettings} />
+        <Stack.Screen
+            name="AppearanceSettings"
+            component={AppearanceSettings}
+        />
         <Stack.Screen name="AdvancedSettings" component={AdvancedSettings} />
     </Stack.Navigator>
 );
