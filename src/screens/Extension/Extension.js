@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { StyleSheet, View, ActivityIndicator } from "react-native";
 
 import * as WebBrowser from "expo-web-browser";
@@ -75,11 +75,13 @@ const Extension = ({ navigation, route }) => {
         }
     };
 
-    const checkIFInLibrary = (sourceId, novelUrl) => {
-        return library.some(
-            (obj) => obj.novelUrl === novelUrl && obj.sourceId === sourceId
-        );
-    };
+    const checkIFInLibrary = useCallback(
+        (sourceId, novelUrl) =>
+            library.some(
+                (obj) => obj.novelUrl === novelUrl && obj.sourceId === sourceId
+            ),
+        []
+    );
 
     useEffect(() => {
         let mounted = true;
@@ -102,8 +104,14 @@ const Extension = ({ navigation, route }) => {
         );
     };
 
-    const onScroll = ({ nativeEvent }) => {
-        if (!searchText && isCloseToBottom(nativeEvent)) {
+    // const onScroll = ({ nativeEvent }) => {
+    //     if (!searchText && isCloseToBottom(nativeEvent)) {
+    //         incrementPage();
+    //     }
+    // };
+
+    const getNextPage = () => {
+        if (!searchText) {
             incrementPage();
         }
     };
@@ -198,7 +206,8 @@ const Extension = ({ navigation, route }) => {
                     data={novels}
                     renderItem={renderItem}
                     ListEmptyComponent={listEmptyComponent()}
-                    onScroll={onScroll}
+                    // onScroll={onScroll}
+                    onEndReached={getNextPage}
                     ListFooterComponent={
                         !searchText &&
                         page < totalPages &&

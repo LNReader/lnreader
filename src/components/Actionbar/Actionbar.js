@@ -3,27 +3,31 @@ import { Dimensions, StyleSheet, View } from "react-native";
 
 import { IconButton } from "react-native-paper";
 
-export const Actionbar = ({ actions, theme }) => {
-    return (
-        <View
-            style={[
-                styles.actionbarContainer,
-                { backgroundColor: theme.colorPrimary },
-            ]}
-        >
-            {actions.map(
-                (action, index) =>
-                    action.icon && (
-                        <IconButton
-                            key={index}
-                            icon={action.icon}
-                            color={theme.textColorPrimary}
-                            onPress={action.onPress}
-                        />
-                    )
-            )}
-        </View>
-    );
+export const Actionbar = ({ active, actions, theme }) => {
+    if (active) {
+        return (
+            <View
+                style={[
+                    styles.actionbarContainer,
+                    { backgroundColor: theme.colorPrimary },
+                ]}
+            >
+                {actions.map(
+                    (action, index) =>
+                        action.icon && (
+                            <IconButton
+                                key={index}
+                                icon={action.icon}
+                                color={theme.textColorPrimary}
+                                onPress={action.onPress}
+                            />
+                        )
+                )}
+            </View>
+        );
+    } else {
+        return null;
+    }
 };
 
 const styles = StyleSheet.create({

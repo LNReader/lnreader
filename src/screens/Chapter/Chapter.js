@@ -183,23 +183,24 @@ const Chapter = ({ route, navigation }) => {
 
     const [currentOffset, setCurrentOffset] = useState(position?.position || 0);
 
-    useEffect(
-        () =>
-            !useWebViewForChapter &&
-            setTimeout(() => {
-                if (scrollPercentage !== 100 && autoScroll) {
-                    scrollViewRef.current.scrollTo({
-                        x: 0,
-                        y: currentOffset + Dimensions.get("window").height,
-                        animated: true,
-                    });
-                    setCurrentOffset(
-                        (prevState) =>
-                            prevState + Dimensions.get("window").height
-                    );
-                }
-            }, autoScrollInterval * 1000)[(autoScroll, currentOffset)]
-    );
+    let scrollTimeout;
+
+    useEffect(() => {
+        if (!useWebViewForChapter && scrollPercentage !== 100 && autoScroll) {
+            scrollTimeout = setTimeout(() => {
+                scrollViewRef.current.scrollTo({
+                    x: 0,
+                    y: currentOffset + Dimensions.get("window").height,
+                    animated: true,
+                });
+                setCurrentOffset(
+                    (prevState) => prevState + Dimensions.get("window").height
+                );
+            }, autoScrollInterval * 1000);
+        }
+
+        return () => clearTimeout(scrollTimeout);
+    }, [autoScroll, currentOffset]);
 
     const isCloseToBottom = useCallback(
         ({ layoutMeasurement, contentOffset, contentSize }) => {

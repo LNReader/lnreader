@@ -12,6 +12,7 @@ import {
 
 import { Provider, Portal, Appbar, IconButton, Menu } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
+import * as Haptics from "expo-haptics";
 
 import {
     bookmarkChapterAction,
@@ -134,6 +135,7 @@ const Novel = ({ route, navigation }) => {
 
     const onSelectLongPress = (chapter) => {
         if (selected.length === 0) {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
             setSelected((selected) => [...selected, chapter]);
         } else {
             /**
@@ -460,78 +462,77 @@ const Novel = ({ route, navigation }) => {
                     }
                     refreshControl={refreshControl()}
                 />
-                {selected.length > 0 && (
-                    <Actionbar
-                        theme={theme}
-                        actions={[
-                            selected.some((obj) => obj.downloaded === 0) && {
-                                icon: "download-outline",
-                                onPress: () => {
-                                    dispatch(
-                                        downloadAllChaptersAction(
-                                            novel.sourceId,
-                                            novel.novelUrl,
-                                            selected
-                                        )
-                                    );
-                                    setSelected([]);
-                                },
+                <Actionbar
+                    active={selected.length > 0}
+                    theme={theme}
+                    actions={[
+                        selected.some((obj) => obj.downloaded === 0) && {
+                            icon: "download-outline",
+                            onPress: () => {
+                                dispatch(
+                                    downloadAllChaptersAction(
+                                        novel.sourceId,
+                                        novel.novelUrl,
+                                        selected
+                                    )
+                                );
+                                setSelected([]);
                             },
-                            selected.some((obj) => obj.downloaded === 1) && {
-                                icon: "trash-can-outline",
-                                onPress: () => {
-                                    dispatch(deleteAllChaptersAction(selected));
-                                    setSelected([]);
-                                },
+                        },
+                        selected.some((obj) => obj.downloaded === 1) && {
+                            icon: "trash-can-outline",
+                            onPress: () => {
+                                dispatch(deleteAllChaptersAction(selected));
+                                setSelected([]);
                             },
-                            {
-                                icon: "bookmark-outline",
-                                onPress: () => {
-                                    dispatch(bookmarkChapterAction(selected));
-                                    setSelected([]);
-                                },
+                        },
+                        {
+                            icon: "bookmark-outline",
+                            onPress: () => {
+                                dispatch(bookmarkChapterAction(selected));
+                                setSelected([]);
                             },
-                            selected.some((obj) => obj.read === 0) && {
-                                icon: "check",
-                                onPress: () => {
-                                    dispatch(
-                                        markChaptersRead(
-                                            selected,
-                                            novel.novelId,
-                                            sort,
-                                            filter
-                                        )
-                                    );
-                                    setSelected([]);
-                                },
+                        },
+                        selected.some((obj) => obj.read === 0) && {
+                            icon: "check",
+                            onPress: () => {
+                                dispatch(
+                                    markChaptersRead(
+                                        selected,
+                                        novel.novelId,
+                                        sort,
+                                        filter
+                                    )
+                                );
+                                setSelected([]);
                             },
-                            selected.some((obj) => obj.read === 1) && {
-                                icon: "check-outline",
-                                onPress: () => {
-                                    dispatch(
-                                        markChapterUnreadAction(
-                                            selected,
-                                            novel.novelId
-                                        )
-                                    );
-                                    setSelected([]);
-                                },
+                        },
+                        selected.some((obj) => obj.read === 1) && {
+                            icon: "check-outline",
+                            onPress: () => {
+                                dispatch(
+                                    markChapterUnreadAction(
+                                        selected,
+                                        novel.novelId
+                                    )
+                                );
+                                setSelected([]);
                             },
-                            selected.length === 1 && {
-                                icon: "playlist-check",
-                                onPress: () => {
-                                    dispatch(
-                                        markPreviousChaptersReadAction(
-                                            selected[0].chapterId,
-                                            selected[0].novelId
-                                        )
-                                    );
-                                    setSelected([]);
-                                },
+                        },
+                        selected.length === 1 && {
+                            icon: "playlist-check",
+                            onPress: () => {
+                                dispatch(
+                                    markPreviousChaptersReadAction(
+                                        selected[0].chapterId,
+                                        selected[0].novelId
+                                    )
+                                );
+                                setSelected([]);
                             },
-                        ]}
-                    />
-                )}
+                        },
+                    ]}
+                />
                 {!loading && (
                     <Portal>
                         <JumpToChapterModal

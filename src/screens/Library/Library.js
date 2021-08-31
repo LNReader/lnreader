@@ -11,6 +11,7 @@ import {
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { useFocusEffect } from "@react-navigation/native";
 import { useSelector, useDispatch } from "react-redux";
+import * as Haptics from "expo-haptics";
 
 import { Searchbar } from "../../components/Searchbar/Searchbar";
 import NovelList from "../../components/NovelList";
@@ -81,6 +82,23 @@ const LibraryScreen = ({ navigation }) => {
         dispatch(searchLibraryAction(text, sort, filter));
     };
 
+    /**
+     * Selected Novels
+     */
+
+    const [selectedNovels, setSelectedNovels] = useState([]);
+
+    const selectNovel = (novelId) => {
+        if (selectedNovels.indexOf(novelId) === -1) {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+            setSelectedNovels((prevState) => [...prevState, novelId]);
+        } else {
+            setSelectedNovels((prevState) =>
+                prevState.filter((id) => id !== novelId)
+            );
+        }
+    };
+
     const renderItem = ({ item }) => (
         <NovelCover
             item={item}
@@ -113,22 +131,6 @@ const LibraryScreen = ({ navigation }) => {
                 description="Your library is empty. Add series to your library from Browse."
             />
         );
-
-    /**
-     * Selected Novels
-     */
-
-    const [selectedNovels, setSelectedNovels] = useState([]);
-
-    const selectNovel = (novelId) => {
-        if (selectedNovels.indexOf(novelId) === -1) {
-            setSelectedNovels((prevState) => [...prevState, novelId]);
-        } else {
-            setSelectedNovels((prevState) =>
-                prevState.filter((id) => id !== novelId)
-            );
-        }
-    };
 
     return (
         <>
@@ -218,49 +220,48 @@ const LibraryScreen = ({ navigation }) => {
                             refreshControl={refreshControl()}
                             ListEmptyComponent={listEmptyComponent}
                         />
-                        {selectedNovels.length > 0 && (
-                            <Actionbar
-                                theme={theme}
-                                actions={[
-                                    {
-                                        icon: "check",
-                                        onPress: () => {
-                                            selectedNovels.map((id) =>
-                                                markAllChaptersRead(id)
-                                            ),
-                                                setSelectedNovels([]);
-                                            dispatch(
-                                                getLibraryAction(sort, filter)
-                                            );
-                                        },
-                                    },
-                                    {
-                                        icon: "check-outline",
-                                        onPress: () => {
-                                            selectedNovels.map((id) =>
-                                                markAllChaptersUnread(id)
-                                            );
+                        <Actionbar
+                            active={selectedNovels.length > 0}
+                            theme={theme}
+                            actions={[
+                                {
+                                    icon: "check",
+                                    onPress: () => {
+                                        selectedNovels.map((id) =>
+                                            markAllChaptersRead(id)
+                                        ),
                                             setSelectedNovels([]);
-                                            dispatch(
-                                                getLibraryAction(sort, filter)
-                                            );
-                                        },
+                                        dispatch(
+                                            getLibraryAction(sort, filter)
+                                        );
                                     },
-                                    {
-                                        icon: "delete-outline",
-                                        onPress: () => {
-                                            selectedNovels.map((id) =>
-                                                unfollowNovel(id)
-                                            );
-                                            setSelectedNovels([]);
-                                            dispatch(
-                                                getLibraryAction(sort, filter)
-                                            );
-                                        },
+                                },
+                                {
+                                    icon: "check-outline",
+                                    onPress: () => {
+                                        selectedNovels.map((id) =>
+                                            markAllChaptersUnread(id)
+                                        );
+                                        setSelectedNovels([]);
+                                        dispatch(
+                                            getLibraryAction(sort, filter)
+                                        );
                                     },
-                                ]}
-                            />
-                        )}
+                                },
+                                {
+                                    icon: "delete-outline",
+                                    onPress: () => {
+                                        selectedNovels.map((id) =>
+                                            unfollowNovel(id)
+                                        );
+                                        setSelectedNovels([]);
+                                        dispatch(
+                                            getLibraryAction(sort, filter)
+                                        );
+                                    },
+                                },
+                            ]}
+                        />
                         <Portal>
                             <LibraryFilterSheet
                                 bottomSheetRef={libraryFilterSheetRef}

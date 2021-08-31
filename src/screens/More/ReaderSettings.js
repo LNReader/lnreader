@@ -248,8 +248,10 @@ const FirstRoute = React.memo(({ theme, dispatch, reader }) => {
                                 color: theme.textColorPrimary,
                                 fontSize: 16,
                             }}
-                            defaultValue={autoScrollInterval.toString()}
+                            defaultValue={autoScrollInterval.toString() ?? 10}
+                            keyboardType="numeric"
                             onChangeText={(text) =>
+                                text !== "" &&
                                 dispatch(
                                     setAppSettings(
                                         "autoScrollInterval",

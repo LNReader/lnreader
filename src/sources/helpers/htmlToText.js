@@ -1,6 +1,10 @@
 const htmlToText = (html, options = {}) => {
     const { removeLineBreaks = true } = options;
 
+    if (!html) {
+        return "Chapter is empty.\n\nReport if it's available in webview.'";
+    }
+
     html = html.trim();
 
     text = removeLineBreaks && html.replace(/(?:\n|\r\n|\r)/gi, "");
