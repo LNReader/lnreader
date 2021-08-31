@@ -13,7 +13,11 @@ const ChapterAppbar = ({
     chapterName,
     hide,
     dispatch,
+    tts,
+    textToSpeech,
     theme,
+    pauseTts,
+    ttsPosition,
 }) => {
     const [bookmarked, setBookmarked] = useState(bookmark);
 
@@ -48,8 +52,28 @@ const ChapterAppbar = ({
                         subtitleStyle={{ color: theme.textColorSecondary }}
                     />
                     <Appbar.Action
+                        icon="volume-high"
+                        size={24}
+                        onPress={tts}
+                        color={
+                            textToSpeech === "progress"
+                                ? theme.colorAccent
+                                : theme.textColorPrimary
+                        }
+                    />
+                    {ttsPosition !== null && ttsPosition > 0 && (
+                        <Appbar.Action
+                            icon={
+                                textToSpeech === "progress" ? "pause" : "play"
+                            }
+                            size={24}
+                            onPress={pauseTts}
+                            color={theme.textColorPrimary}
+                        />
+                    )}
+                    <Appbar.Action
                         icon={bookmarked ? "bookmark" : "bookmark-outline"}
-                        size={26}
+                        size={24}
                         onPress={() => {
                             dispatch(
                                 bookmarkChapterAction([{ bookmark, chapterId }])

@@ -11,7 +11,7 @@ import {
 
 import { useDispatch } from "react-redux";
 import { IconButton, Portal } from "react-native-paper";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import Tts from "react-native-tts";
 import changeNavigationBarColor, {
     hideNavigationBar,
     showNavigationBar,
@@ -108,6 +108,97 @@ const Chapter = ({ route, navigation }) => {
     const [firstLayout, setFirstLayout] = useState(true);
 
     const [contentSize, setContentSize] = useState(0);
+
+    const [textToSpeech, setTextToSpeech] = useState();
+
+    const [ttsPosition, setTtsPosition] = useState(0);
+    const [ttsProgress, setTtsProgress] = useState();
+
+    useEffect(() => {
+        Tts.addEventListener("tts-start", () => setTextToSpeech("start"));
+        Tts.addEventListener("tts-progress", (event) => {
+            setTextToSpeech("progress");
+            setTtsPosition(event.start);
+        });
+        Tts.addEventListener("tts-finish", () => setTextToSpeech("finish"));
+        Tts.addEventListener("tts-cancel", () => setTextToSpeech("cancel"));
+
+        return () => Tts.stop();
+    }, []);
+
+    const tts = () => {
+        if (!loading) {
+            if (textToSpeech === "progress") {
+                Tts.stop();
+                setTtsPosition(0);
+                return;
+            }
+
+            const text = htmlToText(chapter.chapterText);
+
+            if (text.length >= 3999) {
+                const splitNChars = (txt, num) => {
+                    let result = [];
+                    for (let i = 0; i < txt.length; i += num) {
+                        result.push(txt.substr(i, num));
+                    }
+                    return result;
+                };
+
+                let splitMe = splitNChars(text, 3999);
+
+                splitMe.forEach((value, key) => {
+                    Tts.speak(value, {
+                        androidParams: {
+                            KEY_PARAM_STREAM: "STREAM_MUSIC",
+                        },
+                    });
+                });
+            } else {
+                Tts.stop();
+                Tts.speak(escaped, {
+                    androidParams: {
+                        KEY_PARAM_STREAM: "STREAM_MUSIC",
+                    },
+                });
+            }
+        }
+    };
+
+    const pauseTts = () => {
+        if (textToSpeech === "progress") {
+            Tts.stop();
+            const text = htmlToText(chapter.chapterText);
+            setTtsProgress(text.substring(ttsPosition, text.length - 1));
+        } else {
+            if (ttsProgress.length >= 3999) {
+                const splitNChars = (txt, num) => {
+                    let result = [];
+                    for (let i = 0; i < txt.length; i += num) {
+                        result.push(txt.substr(i, num));
+                    }
+                    return result;
+                };
+
+                let splitMe = splitNChars(ttsProgress, 3999);
+
+                splitMe.forEach((value, key) => {
+                    Tts.speak(value, {
+                        androidParams: {
+                            KEY_PARAM_STREAM: "STREAM_MUSIC",
+                        },
+                    });
+                });
+            } else {
+                Tts.stop();
+                Tts.speak(ttsProgress, {
+                    androidParams: {
+                        KEY_PARAM_STREAM: "STREAM_MUSIC",
+                    },
+                });
+            }
+        }
+    };
 
     const getChapter = async (chapterId) => {
         try {
@@ -351,6 +442,10 @@ const Chapter = ({ route, navigation }) => {
                     chapterName={chapterName}
                     chapterId={chapterId}
                     bookmark={bookmark}
+                    textToSpeech={textToSpeech}
+                    tts={tts}
+                    ttsPosition={ttsPosition}
+                    pauseTts={pauseTts}
                     readerSheetRef={readerSheetRef}
                     hide={hidden}
                     navigation={navigation}
