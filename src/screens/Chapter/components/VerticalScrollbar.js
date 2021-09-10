@@ -23,18 +23,11 @@ const VerticalScrollbar = ({
         setLoading(false);
     };
 
-    if (getDeviceOrientation() === "potrait") {
-        return (
-            <FadeView
-                style={{
-                    position: "absolute",
-                    zIndex: 2,
-                    right: -(Dimensions.get("window").width / 2) + 40,
-                    bottom: 300,
-                }}
-                active={hide}
-                animationDuration={150}
-            >
+    if (hide) {
+        return null;
+    } else {
+        if (getDeviceOrientation() === "potrait") {
+            return (
                 <View
                     style={[
                         styles.verticalSliderContainer,
@@ -74,11 +67,9 @@ const VerticalScrollbar = ({
                         100
                     </Text>
                 </View>
-            </FadeView>
-        );
-    } else {
-        return (
-            <FadeView active={hide} animationDuration={150}>
+            );
+        } else {
+            return (
                 <View style={styles.horizontalSliderContainer}>
                     <Text
                         style={{
@@ -111,8 +102,8 @@ const VerticalScrollbar = ({
                         100
                     </Text>
                 </View>
-            </FadeView>
-        );
+            );
+        }
     }
 };
 
@@ -126,6 +117,10 @@ const styles = StyleSheet.create({
         borderRadius: 50,
         marginHorizontal: 8,
         transform: [{ rotate: "90deg" }],
+        position: "absolute",
+        zIndex: 2,
+        right: -(Dimensions.get("window").width / 2) + 40,
+        bottom: 300,
     },
     horizontalSliderContainer: {
         position: "absolute",

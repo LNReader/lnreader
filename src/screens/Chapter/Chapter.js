@@ -111,15 +111,11 @@ const Chapter = ({ route, navigation }) => {
 
     const [textToSpeech, setTextToSpeech] = useState();
 
-    const [ttsPosition, setTtsPosition] = useState(0);
-    const [ttsProgress, setTtsProgress] = useState();
-
     useEffect(() => {
         Tts.addEventListener("tts-start", () => setTextToSpeech("start"));
-        Tts.addEventListener("tts-progress", (event) => {
-            setTextToSpeech("progress");
-            setTtsPosition(event.start);
-        });
+        Tts.addEventListener("tts-progress", (event) =>
+            setTextToSpeech("progress")
+        );
         Tts.addEventListener("tts-finish", () => setTextToSpeech("finish"));
         Tts.addEventListener("tts-cancel", () => setTextToSpeech("cancel"));
 
@@ -130,7 +126,6 @@ const Chapter = ({ route, navigation }) => {
         if (!loading) {
             if (textToSpeech === "progress") {
                 Tts.stop();
-                setTtsPosition(0);
                 return;
             }
 
@@ -157,41 +152,6 @@ const Chapter = ({ route, navigation }) => {
             } else {
                 Tts.stop();
                 Tts.speak(escaped, {
-                    androidParams: {
-                        KEY_PARAM_STREAM: "STREAM_MUSIC",
-                    },
-                });
-            }
-        }
-    };
-
-    const pauseTts = () => {
-        if (textToSpeech === "progress") {
-            Tts.stop();
-            const text = htmlToText(chapter.chapterText);
-            setTtsProgress(text.substring(ttsPosition, text.length - 1));
-        } else {
-            if (ttsProgress.length >= 3999) {
-                const splitNChars = (txt, num) => {
-                    let result = [];
-                    for (let i = 0; i < txt.length; i += num) {
-                        result.push(txt.substr(i, num));
-                    }
-                    return result;
-                };
-
-                let splitMe = splitNChars(ttsProgress, 3999);
-
-                splitMe.forEach((value, key) => {
-                    Tts.speak(value, {
-                        androidParams: {
-                            KEY_PARAM_STREAM: "STREAM_MUSIC",
-                        },
-                    });
-                });
-            } else {
-                Tts.stop();
-                Tts.speak(ttsProgress, {
                     androidParams: {
                         KEY_PARAM_STREAM: "STREAM_MUSIC",
                     },
@@ -444,8 +404,6 @@ const Chapter = ({ route, navigation }) => {
                     bookmark={bookmark}
                     textToSpeech={textToSpeech}
                     tts={tts}
-                    ttsPosition={ttsPosition}
-                    pauseTts={pauseTts}
                     readerSheetRef={readerSheetRef}
                     hide={hidden}
                     navigation={navigation}

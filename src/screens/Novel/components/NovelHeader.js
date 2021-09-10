@@ -1,15 +1,9 @@
 import React, { memo } from "react";
-import {
-    View,
-    Text,
-    StyleSheet,
-    Clipboard,
-    Pressable,
-    Button,
-} from "react-native";
+import { View, Text, StyleSheet, Clipboard, Pressable } from "react-native";
 
 import * as WebBrowser from "expo-web-browser";
 import { IconButton } from "react-native-paper";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import { followNovelAction } from "../../../redux/novel/novel.actions";
 import { useTrackingStatus } from "../../../hooks/reduxHooks";
@@ -29,6 +23,16 @@ import { Row } from "../../../components/Common";
 import NovelSummary from "./Info/NovelSummary";
 import ReadButton from "./Info/ReadButton";
 import { showToast } from "../../../hooks/showToast";
+
+const getStatusIcon = (status) => {
+    const icons = {
+        Ongoing: "clock-outline",
+        Completed: "check-all",
+        Unknown: "help",
+    };
+
+    return icons[status] || icons.Unknown;
+};
 
 const NovelInfoHeader = ({
     item,
@@ -102,13 +106,21 @@ const NovelInfoHeader = ({
                                     ? novel.author
                                     : "Unknown author"}
                             </NovelAuthor>
-                            <NovelInfo theme={theme}>
-                                {!loading
-                                    ? (novel.status || "Unknown status") +
-                                      " • " +
-                                      novel.source
-                                    : "Unknown status • Unknown source"}
-                            </NovelInfo>
+                            <Row>
+                                <MaterialCommunityIcons
+                                    name={getStatusIcon(novel.status)}
+                                    size={16}
+                                    color={theme.textColorSecondary}
+                                    style={{ marginRight: 4 }}
+                                />
+                                <NovelInfo theme={theme}>
+                                    {!loading
+                                        ? (novel.status || "Unknown status") +
+                                          " • " +
+                                          novel.source
+                                        : "Unknown status • Unknown source"}
+                                </NovelInfo>
+                            </Row>
                         </>
                     </View>
                 </NovelInfoContainer>
@@ -266,7 +278,7 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingBottom: 16,
         paddingLeft: 12,
-        justifyContent: "flex-end",
+        justifyContent: "center",
     },
     chapters: {
         paddingHorizontal: 16,

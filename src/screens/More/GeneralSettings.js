@@ -91,6 +91,8 @@ const GenralSettings = ({ navigation }) => {
                         }
                         theme={theme}
                     />
+                    <List.Divider theme={theme} />
+                    <List.SubHeader theme={theme}>Global update</List.SubHeader>
                     <SwitchSetting
                         label="Only update ongoing novels"
                         value={onlyUpdateOngoingNovels}
