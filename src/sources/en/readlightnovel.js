@@ -6,9 +6,9 @@ const sourceName = "ReadLightNovel";
 
 const lang = "en";
 
-const baseUrl = "https://www.readlightnovel.org";
+const baseUrl = "https://www.readlightnovel.me";
 
-const searchUrl = "https://www.readlightnovel.org/detailed-search";
+const searchUrl = "https://www.readlightnovel.me/detailed-search";
 
 const popularNovels = async (page) => {
     let totalPages = 1751;
@@ -64,7 +64,8 @@ const parseNovelAndChapters = async (novelUrl) => {
 
         switch (detailName) {
             case "Genre":
-                genre = detail.replace(/[\t\n]/g, ",");
+                genre = detail.trim().replace(/\s{2,}/g, ",");
+
                 break;
             case "Author(s)":
                 author = detail;
