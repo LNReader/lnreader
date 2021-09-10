@@ -121,8 +121,19 @@ export const updateNovelChapters = async (
     });
 };
 
+const sleep = (time) =>
+    new Promise((resolve) => setTimeout(() => resolve(), time));
+
 export const updateAllNovels = async (updateSettings) => {
-    const libraryNovels = await getLibrary();
+    let libraryNovels = await getLibrary();
+
+    const { onlyUpdateOngoingNovels = false } = updateSettings;
+
+    if (onlyUpdateOngoingNovels) {
+        libraryNovels = libraryNovels.filter(
+            (item) => item.status !== "Completed"
+        );
+    }
 
     const options = {
         taskName: "Library Update",
@@ -143,9 +154,6 @@ export const updateAllNovels = async (updateSettings) => {
         },
     };
 
-    const sleep = (time) =>
-        new Promise((resolve) => setTimeout(() => resolve(), time));
-
     const veryIntensiveTask = async (taskData) =>
         await new Promise(async (resolve) => {
             for (
@@ -155,13 +163,19 @@ export const updateAllNovels = async (updateSettings) => {
             ) {
                 try {
                     if (BackgroundService.isRunning()) {
+                        /**
+                         * Update chapters
+                         */
                         await updateNovelChapters(
                             libraryNovels[i].sourceId,
                             libraryNovels[i].novelUrl,
                             libraryNovels[i].novelId,
                             updateSettings
                         );
-                        // console.log(libraryNovels[i].novelName + " Updated");
+
+                        /**
+                         * Update notification
+                         */
                         await BackgroundService.updateNotification({
                             taskTitle: libraryNovels[i].novelName,
                             taskDesc:
@@ -175,6 +189,10 @@ export const updateAllNovels = async (updateSettings) => {
                                 value: i + 1,
                             },
                         });
+
+                        /**
+                         * When updating library is finished
+                         */
                         if (libraryNovels.length === i + 1) {
                             resolve();
 
@@ -189,13 +207,21 @@ export const updateAllNovels = async (updateSettings) => {
                             });
                         }
 
-                        await sleep(taskData.delay);
+                        const nextNovelIndex = i + 1;
+
+                        if (
+                            nextNovelIndex in libraryNovels &&
+                            libraryNovels[nextNovelIndex].sourceId ===
+                                libraryNovels[i].sourceId
+                        ) {
+                            await sleep(taskData.delay);
+                        }
                     }
                 } catch (error) {
                     showToast(
                         libraryNovels[i].novelName + ": " + error.message
                     );
-                    break;
+                    continue;
                 }
             }
         });

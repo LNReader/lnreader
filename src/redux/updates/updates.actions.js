@@ -38,9 +38,10 @@ export const updateLibraryAction = () => async (dispatch, getState) => {
 
     dispatch({ type: SET_LAST_UPDATE_TIME, payload: Date.now() });
 
-    const { downloadNewChapters = false } = getState().settingsReducer;
+    const { downloadNewChapters = false, onlyUpdateOngoingNovels = false } =
+        getState().settingsReducer;
 
-    await updateAllNovels({ downloadNewChapters });
+    await updateAllNovels({ downloadNewChapters, onlyUpdateOngoingNovels });
 
     dispatch(getUpdatesAction());
 };

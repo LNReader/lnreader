@@ -80,6 +80,7 @@ const initialState = {
     showBatteryAndTime: false,
     autoScroll: false,
     autoScrollInterval: 10,
+    onlyUpdateOngoingNovels: false,
 };
 
 const settingsReducer = (state = initialState, action) => {

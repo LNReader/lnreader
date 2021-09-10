@@ -30,7 +30,7 @@ const NovelSummary = ({ summary, followed, theme }) => {
             </Text>
             <View
                 style={{
-                    backgroundColor: `${theme.colorPrimaryDark}B4`,
+                    backgroundColor: `${theme.colorPrimaryDark}D1`,
                     position: "absolute",
                     flex: 1,
                     justifyContent: "center",

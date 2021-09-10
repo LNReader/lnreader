@@ -22,8 +22,11 @@ const GenralSettings = ({ navigation }) => {
         (state) => state.settingsReducer
     );
 
-    const { updateLibraryOnLaunch = false, downloadNewChapters = false } =
-        useSettings();
+    const {
+        updateLibraryOnLaunch = false,
+        downloadNewChapters = false,
+        onlyUpdateOngoingNovels = false,
+    } = useSettings();
 
     const { showLastUpdateTime = true } = useSelector(
         (state) => state.updatesReducer
@@ -83,6 +86,19 @@ const GenralSettings = ({ navigation }) => {
                                 setAppSettings(
                                     "updateLibraryOnLaunch",
                                     !updateLibraryOnLaunch
+                                )
+                            )
+                        }
+                        theme={theme}
+                    />
+                    <SwitchSetting
+                        label="Only update ongoing novels"
+                        value={onlyUpdateOngoingNovels}
+                        onPress={() =>
+                            dispatch(
+                                setAppSettings(
+                                    "onlyUpdateOngoingNovels",
+                                    !onlyUpdateOngoingNovels
                                 )
                             )
                         }
