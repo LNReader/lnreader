@@ -9,7 +9,8 @@ class WPMangaStreamScraper {
 
     async popularNovels(page) {
         let totalPages = 100;
-        let url = this.baseUrl + "series/?page=" + page + "?m_orderby=popular";
+        let url =
+            this.baseUrl + "series/?page=" + page + "&status=&order=popular";
         let sourceId = this.sourceId;
 
         const result = await fetch(url);
