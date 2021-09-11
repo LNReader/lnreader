@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import {
+    FlatList,
+    Pressable,
+    ScrollView,
+    StyleSheet,
+    Text,
+    View,
+} from "react-native";
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { Button, Modal, Portal, Switch, TextInput } from "react-native-paper";
@@ -25,6 +32,8 @@ const EditInfoModal = ({ theme, hideModal, modalVisible, novel, dispatch }) => {
         setInfo({ ...info, genre: tags.join(",") });
     };
 
+    const status = ["Ongoing", "Hiatus", "Completed", "Unknown", "Cancelled"];
+
     return (
         <Portal>
             <Modal
@@ -43,6 +52,56 @@ const EditInfoModal = ({ theme, hideModal, modalVisible, novel, dispatch }) => {
                 >
                     Edit info
                 </Text>
+                <View
+                    style={{
+                        marginVertical: 8,
+                        flexDirection: "row",
+                        alignItems: "center",
+                    }}
+                >
+                    <Text style={{ color: theme.textColorSecondary }}>
+                        Status:
+                    </Text>
+                    <ScrollView
+                        style={{ marginLeft: 8 }}
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
+                    >
+                        {status.map((item) => (
+                            <View
+                                style={{ borderRadius: 8, overflow: "hidden" }}
+                            >
+                                <Pressable
+                                    style={{
+                                        backgroundColor:
+                                            info.status === item
+                                                ? theme.rippleColor
+                                                : "transparent",
+                                        paddingVertical: 4,
+                                        paddingHorizontal: 8,
+                                    }}
+                                    android_ripple={{
+                                        color: theme.rippleColor,
+                                    }}
+                                    onPress={() =>
+                                        setInfo({ ...info, status: item })
+                                    }
+                                >
+                                    <Text
+                                        style={{
+                                            color:
+                                                info.status === item
+                                                    ? theme.colorAccent
+                                                    : theme.textColorSecondary,
+                                        }}
+                                    >
+                                        {item}
+                                    </Text>
+                                </Pressable>
+                            </View>
+                        ))}
+                    </ScrollView>
+                </View>
                 <TextInput
                     placeholder={`Title: ${info.novelName}`}
                     style={{ fontSize: 14 }}
@@ -149,19 +208,22 @@ const GenreChip = ({ children, theme, onPress }) => (
         style={{
             flex: 1,
             flexDirection: "row",
-            borderWidth: 1,
             borderRadius: 50,
-            borderColor: theme.colorAccent,
-            paddingVertical: 2,
+            paddingVertical: 4,
             paddingHorizontal: 8,
             marginVertical: 4,
             marginRight: 8,
             justifyContent: "center",
             alignItems: "center",
-            backgroundColor: theme.colorPrimary,
+            backgroundColor: theme.dividerColor,
         }}
     >
-        <Text style={{ color: theme.colorAccent, textTransform: "capitalize" }}>
+        <Text
+            style={{
+                color: theme.textColorSecondary,
+                textTransform: "capitalize",
+            }}
+        >
             {children}
         </Text>
         <MaterialCommunityIcons

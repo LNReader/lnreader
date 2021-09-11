@@ -37,7 +37,7 @@ const NovelSummary = ({ summary, followed, theme }) => {
                     alignItems: "center",
                     left: 0,
                     right: 0,
-                    bottom: 0,
+                    bottom: expanded ? 0 : 4,
                 }}
             >
                 <MaterialCommunityIcons
@@ -45,6 +45,11 @@ const NovelSummary = ({ summary, followed, theme }) => {
                     color={theme.textColorPrimary}
                     size={24}
                     onPress={expandNovelSummary}
+                    style={{
+                        borderRadius: 50,
+                        backgroundColor: theme.colorPrimaryDark,
+                        paddingHorizontal: 2,
+                    }}
                 />
             </View>
         </View>
