@@ -223,7 +223,7 @@ export const updateNovelInfo = async (info, novelId) => {
     });
 };
 
-export const setCustomNovelCover = async (novelId) => {
+export const pickCustomNovelCover = async (novelId) => {
     const image = await DocumentPicker.getDocumentAsync({ type: "image/*" });
 
     if (image.type === "success" && image.uri) {

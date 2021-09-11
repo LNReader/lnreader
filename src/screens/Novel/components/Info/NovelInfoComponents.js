@@ -1,10 +1,19 @@
-import React from "react";
-import { FlatList, StyleSheet, Text, View, Pressable } from "react-native";
+import React, { useState } from "react";
+import {
+    FlatList,
+    StyleSheet,
+    Text,
+    View,
+    Pressable,
+    Dimensions,
+    StatusBar,
+} from "react-native";
 
-import { IconButton } from "react-native-paper";
+import { IconButton, Portal } from "react-native-paper";
 import { LinearGradient } from "expo-linear-gradient";
 import easeGradient from "react-native-easing-gradient";
 import FastImage from "react-native-fast-image";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 const NovelInfoContainer = ({ children }) => (
     <View style={styles.novelInfoContainer}>{children}</View>
@@ -38,9 +47,60 @@ const CoverImage = ({ children, source, theme }) => {
     );
 };
 
-const NovelThumbnail = ({ source }) => (
-    <FastImage source={source} style={styles.novelThumbnail} />
-);
+const NovelThumbnail = ({ source, setCustomNovelCover }) => {
+    const [expanded, setExpanded] = useState(false);
+
+    if (!expanded) {
+        return (
+            <TouchableWithoutFeedback onPress={() => setExpanded(!expanded)}>
+                <FastImage source={source} style={styles.novelThumbnail} />
+            </TouchableWithoutFeedback>
+        );
+    } else {
+        return (
+            <Portal>
+                <IconButton
+                    icon="close"
+                    style={{
+                        position: "absolute",
+                        top: StatusBar.currentHeight,
+                        left: 0,
+                        zIndex: 10,
+                    }}
+                    onPress={() => setExpanded(false)}
+                />
+                <IconButton
+                    icon="pencil-outline"
+                    style={{
+                        position: "absolute",
+                        top: StatusBar.currentHeight,
+                        right: 0,
+                        zIndex: 10,
+                    }}
+                    onPress={setCustomNovelCover}
+                />
+                <Pressable
+                    style={{
+                        position: "absolute",
+                        width: Dimensions.get("window").width,
+                        height: Dimensions.get("window").height + 60,
+                        justifyContent: "center",
+                        backgroundColor: "rgba(0,0,0,0.7)",
+                    }}
+                    onPress={() => setExpanded(false)}
+                >
+                    <FastImage
+                        source={source}
+                        style={{
+                            width: Dimensions.get("window").width,
+                            height: (Dimensions.get("window").width * 3) / 2,
+                        }}
+                    />
+                </Pressable>
+            </Portal>
+        );
+    }
+};
 
 const NovelTitle = ({ theme, children, onLongPress, onPress }) => (
     <Text

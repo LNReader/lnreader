@@ -3,13 +3,14 @@ import { Dimensions, StyleSheet, View } from "react-native";
 
 import { IconButton } from "react-native-paper";
 
-export const Actionbar = ({ active, actions, theme }) => {
+export const Actionbar = ({ active, actions, theme, style }) => {
     if (active) {
         return (
             <View
                 style={[
                     styles.actionbarContainer,
                     { backgroundColor: theme.colorPrimary },
+                    style,
                 ]}
             >
                 {actions.map(

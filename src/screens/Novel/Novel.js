@@ -45,14 +45,14 @@ import {
 import { showToast } from "../../hooks/showToast";
 
 import ChapterItem from "./components/ChapterItem";
-import NovelInfoHeader from "./components/NovelHeader";
+import NovelInfoHeader from "./components/Info/NovelInfoHeader";
 import ChaptersSettingsSheet from "./components/ChaptersSettingsSheet";
 import TrackSheet from "./components/Tracker/TrackSheet";
 import { Row } from "../../components/Common";
 import JumpToChapterModal from "./components/JumpToChapterModal";
 import { Actionbar } from "../../components/Actionbar/Actionbar";
 import EditInfoModal from "./components/EditInfoModal";
-import { setCustomNovelCover } from "../../database/queries/NovelQueries";
+import { pickCustomNovelCover } from "../../database/queries/NovelQueries";
 import FadeView from "../../components/Common/CrossFadeView";
 
 const Novel = ({ route, navigation }) => {
@@ -210,6 +210,21 @@ const Novel = ({ route, navigation }) => {
                 </Text>
             );
         }
+    };
+
+    const setCustomNovelCover = async () => {
+        const cover = await pickCustomNovelCover(novelId);
+
+        if (cover) {
+            dispatch(
+                setNovel({
+                    ...novel,
+                    novelCover: cover,
+                })
+            );
+        }
+
+        showExtraMenu(false);
     };
 
     const renderItem = ({ item, index }) => (
@@ -424,23 +439,7 @@ const Novel = ({ route, navigation }) => {
                                     titleStyle={{
                                         color: theme.textColorPrimary,
                                     }}
-                                    onPress={async () => {
-                                        const cover = await setCustomNovelCover(
-                                            novelId
-                                        );
-
-                                        console.log(cover);
-                                        if (cover) {
-                                            dispatch(
-                                                setNovel({
-                                                    ...novel,
-                                                    novelCover: cover,
-                                                })
-                                            );
-                                        }
-
-                                        showExtraMenu(false);
-                                    }}
+                                    onPress={setCustomNovelCover}
                                 />
                             </Menu>
                         </Row>
@@ -464,6 +463,7 @@ const Novel = ({ route, navigation }) => {
                             filter={filter}
                             loading={loading}
                             lastRead={lastReadChapter}
+                            setCustomNovelCover={setCustomNovelCover}
                             dispatch={dispatch}
                             chapters={chapters}
                             navigation={navigation}
@@ -501,77 +501,80 @@ const Novel = ({ route, navigation }) => {
                             }
                         />
                     )}
-                <Actionbar
-                    active={selected.length > 0}
-                    theme={theme}
-                    actions={[
-                        selected.some((obj) => obj.downloaded === 0) && {
-                            icon: "download-outline",
-                            onPress: () => {
-                                dispatch(
-                                    downloadAllChaptersAction(
-                                        novel.sourceId,
-                                        novel.novelUrl,
-                                        selected
-                                    )
-                                );
-                                setSelected([]);
+                <Portal>
+                    <Actionbar
+                        active={selected.length > 0}
+                        theme={theme}
+                        style={{ marginBottom: 24 }}
+                        actions={[
+                            selected.some((obj) => obj.downloaded === 0) && {
+                                icon: "download-outline",
+                                onPress: () => {
+                                    dispatch(
+                                        downloadAllChaptersAction(
+                                            novel.sourceId,
+                                            novel.novelUrl,
+                                            selected
+                                        )
+                                    );
+                                    setSelected([]);
+                                },
                             },
-                        },
-                        selected.some((obj) => obj.downloaded === 1) && {
-                            icon: "trash-can-outline",
-                            onPress: () => {
-                                dispatch(deleteAllChaptersAction(selected));
-                                setSelected([]);
+                            selected.some((obj) => obj.downloaded === 1) && {
+                                icon: "trash-can-outline",
+                                onPress: () => {
+                                    dispatch(deleteAllChaptersAction(selected));
+                                    setSelected([]);
+                                },
                             },
-                        },
-                        {
-                            icon: "bookmark-outline",
-                            onPress: () => {
-                                dispatch(bookmarkChapterAction(selected));
-                                setSelected([]);
+                            {
+                                icon: "bookmark-outline",
+                                onPress: () => {
+                                    dispatch(bookmarkChapterAction(selected));
+                                    setSelected([]);
+                                },
                             },
-                        },
-                        selected.some((obj) => obj.read === 0) && {
-                            icon: "check",
-                            onPress: () => {
-                                dispatch(
-                                    markChaptersRead(
-                                        selected,
-                                        novel.novelId,
-                                        sort,
-                                        filter
-                                    )
-                                );
-                                setSelected([]);
+                            selected.some((obj) => obj.read === 0) && {
+                                icon: "check",
+                                onPress: () => {
+                                    dispatch(
+                                        markChaptersRead(
+                                            selected,
+                                            novel.novelId,
+                                            sort,
+                                            filter
+                                        )
+                                    );
+                                    setSelected([]);
+                                },
                             },
-                        },
-                        selected.some((obj) => obj.read === 1) && {
-                            icon: "check-outline",
-                            onPress: () => {
-                                dispatch(
-                                    markChapterUnreadAction(
-                                        selected,
-                                        novel.novelId
-                                    )
-                                );
-                                setSelected([]);
+                            selected.some((obj) => obj.read === 1) && {
+                                icon: "check-outline",
+                                onPress: () => {
+                                    dispatch(
+                                        markChapterUnreadAction(
+                                            selected,
+                                            novel.novelId
+                                        )
+                                    );
+                                    setSelected([]);
+                                },
                             },
-                        },
-                        selected.length === 1 && {
-                            icon: "playlist-check",
-                            onPress: () => {
-                                dispatch(
-                                    markPreviousChaptersReadAction(
-                                        selected[0].chapterId,
-                                        selected[0].novelId
-                                    )
-                                );
-                                setSelected([]);
+                            selected.length === 1 && {
+                                icon: "playlist-check",
+                                onPress: () => {
+                                    dispatch(
+                                        markPreviousChaptersReadAction(
+                                            selected[0].chapterId,
+                                            selected[0].novelId
+                                        )
+                                    );
+                                    setSelected([]);
+                                },
                             },
-                        },
-                    ]}
-                />
+                        ]}
+                    />
+                </Portal>
                 {!loading && (
                     <Portal>
                         <JumpToChapterModal

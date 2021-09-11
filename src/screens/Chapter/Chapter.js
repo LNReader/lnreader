@@ -7,6 +7,7 @@ import {
     ScrollView,
     TouchableWithoutFeedback,
     Dimensions,
+    Pressable,
 } from "react-native";
 
 import { useDispatch } from "react-redux";
@@ -559,7 +560,6 @@ const Chapter = ({ route, navigation }) => {
                                         style={{
                                             flex: 1,
                                             paddingVertical: 16,
-                                            paddingBottom: 32,
                                             paddingHorizontal: `${reader.padding}%`,
                                             paddingTop: StatusBar.currentHeight,
                                         }}
@@ -570,12 +570,65 @@ const Chapter = ({ route, navigation }) => {
                                         >
                                             {htmlToText(chapter.chapterText)}
                                         </Text>
+                                        {nextChapter && (
+                                            <View
+                                                style={{
+                                                    marginTop: 32,
+                                                    marginBottom: 16,
+                                                }}
+                                            >
+                                                <Text
+                                                    style={{
+                                                        color: reader.textColor,
+                                                        fontSize: 16,
+                                                        textAlign: "center",
+                                                    }}
+                                                >
+                                                    Finished: {chapterName}
+                                                </Text>
+                                                <View
+                                                    style={{
+                                                        borderRadius: 8,
+                                                        marginVertical: 4,
+                                                        overflow: "hidden",
+                                                    }}
+                                                >
+                                                    <Pressable
+                                                        style={{
+                                                            paddingHorizontal: 16,
+                                                            paddingVertical: 8,
+                                                        }}
+                                                        android_ripple={{
+                                                            color: theme.rippleColor,
+                                                        }}
+                                                        onPress={
+                                                            navigateToNextChapter
+                                                        }
+                                                    >
+                                                        <Text
+                                                            style={{
+                                                                color: reader.textColor,
+                                                                fontSize: 16,
+                                                                textAlign:
+                                                                    "center",
+                                                            }}
+                                                        >
+                                                            Next:{" "}
+                                                            {
+                                                                nextChapter.chapterName
+                                                            }
+                                                        </Text>
+                                                    </Pressable>
+                                                </View>
+                                            </View>
+                                        )}
                                     </View>
                                 )}
                             </TouchableWithoutFeedback>
                         )}
                     </ScrollView>
                 </GestureRecognizer>
+
                 <Portal>
                     <ReaderSheet
                         theme={theme}

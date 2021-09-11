@@ -5,8 +5,8 @@ import * as WebBrowser from "expo-web-browser";
 import { IconButton } from "react-native-paper";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-import { followNovelAction } from "../../../redux/novel/novel.actions";
-import { useTrackingStatus } from "../../../hooks/reduxHooks";
+import { followNovelAction } from "../../../../redux/novel/novel.actions";
+import { useTrackingStatus } from "../../../../hooks/reduxHooks";
 
 import {
     CoverImage,
@@ -18,21 +18,21 @@ import {
     FollowButton,
     TrackerButton,
     NovelGenres,
-} from "./Info/NovelDetailsComponents";
-import { Row } from "../../../components/Common";
-import NovelSummary from "./Info/NovelSummary";
-import ReadButton from "./Info/ReadButton";
-import { showToast } from "../../../hooks/showToast";
+} from "./NovelInfoComponents";
+import { Row } from "../../../../components/Common";
+import NovelSummary from "./NovelSummary";
+import ReadButton from "./ReadButton";
+import { showToast } from "../../../../hooks/showToast";
 
-const getStatusIcon = (status) => {
-    const icons = {
-        Ongoing: "clock-outline",
-        Completed: "check-all",
-        Unknown: "help",
-    };
+// const getStatusIcon = (status) => {
+//     const icons = {
+//         Ongoing: "clock-outline",
+//         Completed: "check-all",
+//         Unknown: "help",
+//     };
 
-    return icons[status] || icons.Unknown;
-};
+//     return icons[status] || icons.Unknown;
+// };
 
 const NovelInfoHeader = ({
     item,
@@ -45,6 +45,7 @@ const NovelInfoHeader = ({
     lastRead,
     navigation,
     trackerSheetRef,
+    setCustomNovelCover,
     chaptersSettingsSheetRef,
 }) => {
     const { tracker, trackedNovels } = useTrackingStatus();
@@ -55,33 +56,38 @@ const NovelInfoHeader = ({
         isTracked = trackedNovels.find((obj) => obj.novelId === novel.novelId);
     }
 
+    const getNovelCoverUrl = () => {
+        const defaultCover =
+            "https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true";
+
+        if (loading) {
+            if (item.novelCover && !item.novelCover.startsWith("/")) {
+                return item.novelCover;
+            } else {
+                return defaultCover;
+            }
+        } else {
+            if (novel.novelCover && !novel.novelCover.startsWith("/")) {
+                return novel.novelCover;
+            } else {
+                return defaultCover;
+            }
+        }
+    };
+
     return (
         <View>
             <CoverImage
                 source={{
-                    uri: loading
-                        ? item.novelCover && !item.novelCover.startsWith("/")
-                            ? item.novelCover
-                            : "https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true"
-                        : novel.novelCover && !novel.novelCover.startsWith("/")
-                        ? novel.novelCover
-                        : "https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true",
+                    uri: getNovelCoverUrl(),
                 }}
                 theme={theme}
             >
                 <NovelInfoContainer>
                     <NovelThumbnail
-                        source={{
-                            uri: loading
-                                ? item.novelCover &&
-                                  !item.novelCover.startsWith("/")
-                                    ? item.novelCover
-                                    : "https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true"
-                                : novel.novelCover &&
-                                  !novel.novelCover.startsWith("/")
-                                ? novel.novelCover
-                                : "https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true",
-                        }}
+                        source={{ uri: getNovelCoverUrl() }}
+                        theme={theme}
+                        setCustomNovelCover={setCustomNovelCover}
                     />
                     <View style={styles.novelDetails}>
                         <NovelTitle
@@ -107,7 +113,7 @@ const NovelInfoHeader = ({
                                     : "Unknown author"}
                             </NovelAuthor>
                             <Row>
-                                <MaterialCommunityIcons
+                                {/* <MaterialCommunityIcons
                                     name={
                                         loading
                                             ? "help"
@@ -116,7 +122,7 @@ const NovelInfoHeader = ({
                                     size={16}
                                     color={theme.textColorSecondary}
                                     style={{ marginRight: 4 }}
-                                />
+                                /> */}
                                 <NovelInfo theme={theme}>
                                     {!loading
                                         ? (novel.status || "Unknown status") +
