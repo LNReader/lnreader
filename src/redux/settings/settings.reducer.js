@@ -46,12 +46,63 @@ const themes = {
  * 0 -> Compact
  * 1 -> Comfortable
  * 2 -> List
+ * 3 -> No title
  */
 
 const initialState = {
+    /**
+     * General settings
+     */
+
+    incognitoMode: false,
+
+    /**
+     * Appearence settings
+     */
+
     theme: darkTheme,
     displayMode: 0,
     novelsPerRow: 3,
+    showHistoryTab: true,
+    showUpdatesTab: true,
+    showLabelsInNav: false,
+    useFabForContinueReading: false,
+
+    /**
+     * Library settings
+     */
+
+    showDownloadBadges: true,
+    showUnreadBadges: true,
+    showNumberOfNovels: false,
+
+    /**
+     * Browse settings
+     */
+
+    searchAllSources: false,
+
+    /**
+     * Update settings
+     */
+
+    onlyUpdateOngoingNovels: false,
+    updateLibraryOnLaunch: false,
+    downloadNewChapters: false,
+
+    /**
+     * Reader settings
+     */
+
+    fullScreenMode: true,
+    swipeGestures: true,
+    showScrollPercentage: true,
+    useWebViewForChapter: false,
+    showBatteryAndTime: false,
+    autoScroll: false,
+    autoScrollInterval: 10,
+    textSelectable: false,
+
     reader: {
         theme: 1,
         textColor: "rgba(255,255,255,0.7)",
@@ -62,25 +113,6 @@ const initialState = {
         lineHeight: 1.5,
         customCSS: null,
     },
-    showDownloadBadges: true,
-    showUnreadBadges: true,
-    showNumberOfNovels: false,
-    fullScreenMode: true,
-    showScrollPercentage: true,
-    swipeGestures: true,
-    incognitoMode: false,
-    searchAllSources: false,
-    textSelectable: false,
-    updateLibraryOnLaunch: false,
-    downloadNewChapters: false,
-    showHistoryTab: true,
-    showUpdatesTab: true,
-    showLabelsInNav: false,
-    useWebViewForChapter: false,
-    showBatteryAndTime: false,
-    autoScroll: false,
-    autoScrollInterval: 10,
-    onlyUpdateOngoingNovels: false,
 };
 
 const settingsReducer = (state = initialState, action) => {

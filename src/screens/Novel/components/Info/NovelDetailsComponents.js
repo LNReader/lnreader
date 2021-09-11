@@ -221,9 +221,8 @@ const styles = StyleSheet.create({
         elevation: 0,
     },
     novelGenres: {
-        // marginTop: 12,
         paddingHorizontal: 16,
-        paddingBottom: 16,
+        marginBottom: 8,
     },
     genreChip: {
         flex: 1,

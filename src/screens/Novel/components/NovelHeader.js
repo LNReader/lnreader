@@ -108,7 +108,11 @@ const NovelInfoHeader = ({
                             </NovelAuthor>
                             <Row>
                                 <MaterialCommunityIcons
-                                    name={getStatusIcon(novel.status)}
+                                    name={
+                                        loading
+                                            ? "help"
+                                            : getStatusIcon(novel.status)
+                                    }
                                     size={16}
                                     color={theme.textColorSecondary}
                                     style={{ marginRight: 4 }}

@@ -35,6 +35,24 @@ import {
     yotsubaTheme,
 } from "../../theme/theme";
 
+const lightThemes = [
+    lightTheme,
+    springBlossomTheme,
+    takoLightTheme,
+    yangTheme,
+    yotsubaTheme,
+];
+const darkThemes = [
+    darkTheme,
+    midnightDuskTheme,
+    strawberryDaiquiri,
+    takoTheme,
+    greenAppleTheme,
+    yinYangTheme,
+    irisBlueTheme,
+    oceanicTheme,
+];
+
 const AppearanceSettings = ({ navigation }) => {
     const theme = useTheme();
     const dispatch = useDispatch();
@@ -43,6 +61,7 @@ const AppearanceSettings = ({ navigation }) => {
         showHistoryTab = true,
         showUpdatesTab = true,
         showLabelsInNav = false,
+        useFabForContinueReading = false,
     } = useSettings();
 
     /**
@@ -94,37 +113,14 @@ const AppearanceSettings = ({ navigation }) => {
                         horizontal={true}
                         showsHorizontalScrollIndicator={false}
                     >
-                        <ThemePicker
-                            currentTheme={theme}
-                            theme={lightTheme}
-                            onPress={() => dispatch(setAppTheme(lightTheme.id))}
-                        />
-                        <ThemePicker
-                            currentTheme={theme}
-                            theme={springBlossomTheme}
-                            onPress={() =>
-                                dispatch(setAppTheme(springBlossomTheme.id))
-                            }
-                        />
-                        <ThemePicker
-                            currentTheme={theme}
-                            theme={takoLightTheme}
-                            onPress={() =>
-                                dispatch(setAppTheme(takoLightTheme.id))
-                            }
-                        />
-                        <ThemePicker
-                            currentTheme={theme}
-                            theme={yangTheme}
-                            onPress={() => dispatch(setAppTheme(yangTheme.id))}
-                        />
-                        <ThemePicker
-                            currentTheme={theme}
-                            theme={yotsubaTheme}
-                            onPress={() =>
-                                dispatch(setAppTheme(yotsubaTheme.id))
-                            }
-                        />
+                        {lightThemes.map((item) => (
+                            <ThemePicker
+                                key={item.id}
+                                currentTheme={theme}
+                                theme={item}
+                                onPress={() => dispatch(setAppTheme(item.id))}
+                            />
+                        ))}
                     </ScrollView>
                     <Text
                         style={{
@@ -144,59 +140,14 @@ const AppearanceSettings = ({ navigation }) => {
                         horizontal={true}
                         showsHorizontalScrollIndicator={false}
                     >
-                        <ThemePicker
-                            currentTheme={theme}
-                            theme={darkTheme}
-                            onPress={() => dispatch(setAppTheme(darkTheme.id))}
-                        />
-
-                        <ThemePicker
-                            currentTheme={theme}
-                            theme={midnightDuskTheme}
-                            onPress={() =>
-                                dispatch(setAppTheme(midnightDuskTheme.id))
-                            }
-                        />
-                        <ThemePicker
-                            currentTheme={theme}
-                            theme={strawberryDaiquiri}
-                            onPress={() =>
-                                dispatch(setAppTheme(strawberryDaiquiri.id))
-                            }
-                        />
-                        <ThemePicker
-                            currentTheme={theme}
-                            theme={takoTheme}
-                            onPress={() => dispatch(setAppTheme(takoTheme.id))}
-                        />
-                        <ThemePicker
-                            currentTheme={theme}
-                            theme={greenAppleTheme}
-                            onPress={() =>
-                                dispatch(setAppTheme(greenAppleTheme.id))
-                            }
-                        />
-                        <ThemePicker
-                            currentTheme={theme}
-                            theme={yinYangTheme}
-                            onPress={() =>
-                                dispatch(setAppTheme(yinYangTheme.id))
-                            }
-                        />
-                        <ThemePicker
-                            currentTheme={theme}
-                            theme={irisBlueTheme}
-                            onPress={() =>
-                                dispatch(setAppTheme(irisBlueTheme.id))
-                            }
-                        />
-                        <ThemePicker
-                            currentTheme={theme}
-                            theme={oceanicTheme}
-                            onPress={() =>
-                                dispatch(setAppTheme(oceanicTheme.id))
-                            }
-                        />
+                        {darkThemes.map((item) => (
+                            <ThemePicker
+                                key={item.id}
+                                currentTheme={theme}
+                                theme={item}
+                                onPress={() => dispatch(setAppTheme(item.id))}
+                            />
+                        ))}
                     </ScrollView>
                     {theme.statusBar === "light-content" && (
                         <SwitchSetting
@@ -223,6 +174,21 @@ const AppearanceSettings = ({ navigation }) => {
                         title="Accent Color"
                         description={theme.colorAccent.toUpperCase()}
                         onPress={showAccentColorModal}
+                        theme={theme}
+                    />
+                    <List.Divider theme={theme} />
+                    <List.SubHeader theme={theme}>Novel info</List.SubHeader>
+                    <SwitchSetting
+                        label="Use FAB instead of button"
+                        value={useFabForContinueReading}
+                        onPress={() =>
+                            dispatch(
+                                setAppSettings(
+                                    "useFabForContinueReading",
+                                    !useFabForContinueReading
+                                )
+                            )
+                        }
                         theme={theme}
                     />
                     <List.Divider theme={theme} />

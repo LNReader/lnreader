@@ -10,7 +10,14 @@ import {
     Text,
 } from "react-native";
 
-import { Provider, Portal, Appbar, IconButton, Menu } from "react-native-paper";
+import {
+    Provider,
+    Portal,
+    Appbar,
+    IconButton,
+    Menu,
+    FAB,
+} from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
 import * as Haptics from "expo-haptics";
 
@@ -32,6 +39,7 @@ import {
     useContinueReading,
     useNovel,
     usePreferences,
+    useSettings,
     useTheme,
 } from "../../hooks/reduxHooks";
 import { showToast } from "../../hooks/showToast";
@@ -74,6 +82,9 @@ const Novel = ({ route, navigation }) => {
         chapters,
         novel.novelId
     );
+
+    const { useFabForContinueReading = lastReadChapter && false } =
+        useSettings();
 
     useEffect(() => {
         dispatch(
@@ -462,6 +473,34 @@ const Novel = ({ route, navigation }) => {
                     }
                     refreshControl={refreshControl()}
                 />
+                {useFabForContinueReading &&
+                    !loading &&
+                    chapters.length > 0 &&
+                    lastReadChapter && (
+                        <FAB
+                            style={[
+                                styles.fab,
+                                { backgroundColor: theme.colorAccent },
+                            ]}
+                            small
+                            color={theme.textColorPrimary}
+                            uppercase={false}
+                            label={novel.unread ? `Start` : `Resume`}
+                            icon="play"
+                            onPress={() =>
+                                navigation.navigate("Chapter", {
+                                    chapterId: lastReadChapter.chapterId,
+                                    chapterUrl: lastReadChapter.chapterUrl,
+                                    novelUrl: novel.novelUrl,
+                                    novelId: lastReadChapter.novelId,
+                                    sourceId: novel.sourceId,
+                                    chapterName: lastReadChapter.chapterName,
+                                    novelName: novel.novelName,
+                                    bookmark: lastReadChapter.bookmark,
+                                })
+                            }
+                        />
+                    )}
                 <Actionbar
                     active={selected.length > 0}
                     theme={theme}
@@ -583,5 +622,11 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: "row",
         justifyContent: "space-between",
+    },
+    fab: {
+        position: "absolute",
+        margin: 16,
+        right: 0,
+        bottom: 16,
     },
 });

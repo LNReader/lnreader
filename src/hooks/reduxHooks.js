@@ -4,7 +4,7 @@ import { darkTheme } from "../theme/theme";
 const useTheme = () => {
     const theme = useSelector((state) => state.settingsReducer.theme);
 
-    return theme ?? darkTheme;
+    return theme || darkTheme;
 };
 
 const useReaderSettings = () => {
