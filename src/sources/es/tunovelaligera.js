@@ -1,10 +1,14 @@
 import cheerio from "react-native-cheerio";
+import { defaultCoverUri, Status } from "../helpers/constants";
+
+const sourceId = 23;
+const sourceName = "TuNovelaLigera";
 
 const baseUrl = "https://tunovelaligera.com/";
 
 const popularNovels = async (page) => {
-    let totalPages = 1;
-    let url = baseUrl + "mejores-novelas-originales/";
+    let totalPages = 62;
+    let url = baseUrl + "novelas/page/" + page + "/?m_orderby=rating";
 
     const result = await fetch(url);
     const body = await result.text();
@@ -13,7 +17,7 @@ const popularNovels = async (page) => {
 
     let novels = [];
 
-    $(".page-item-detail").each(function (result) {
+    $(".page-item-detail").each(function () {
         const novelName = $(this).find(".h5 > a").text();
         const novelCover = $(this).find("img").attr("src");
 
@@ -21,7 +25,7 @@ const popularNovels = async (page) => {
         novelUrl += "/";
 
         const novel = {
-            sourceId: 23,
+            sourceId,
             novelName,
             novelCover,
             novelUrl,
@@ -41,63 +45,48 @@ const parseNovelAndChapters = async (novelUrl) => {
 
     $ = cheerio.load(body);
 
-    let novel = {};
-
-    novel.sourceId = 23;
-
-    novel.sourceName = "Tunovelaligera";
-
-    novel.url = url;
+    let novel = { sourceId, sourceName, url };
 
     novel.novelUrl = novelUrl;
 
-    novel.novelName = $("h1.titulo-novela")
-        .text()
-        .replace(/[\t\n]/g, "")
-        .trim();
+    $(".manga-title-badges").remove();
 
-    novel.novelCover = $(".summary_image > a > img").attr("src");
+    novel.novelName = $(".post-title > h1").text().trim();
 
-    $(".post-content_item").each(function (result) {
-        detailName = $(this)
-            .find(".summary-heading > h5")
-            .text()
-            .replace(/[\t\n]/g, "")
-            .trim();
-        detail = $(this)
-            .find(".summary-content")
-            .text()
-            .replace(/[\t\n]/g, "")
-            .trim();
+    novelCover = $(".summary_image > a > img");
 
-        novel[detailName] = detail;
+    novel.novelCover =
+        novelCover.attr("data-src") ||
+        novelCover.attr("src") ||
+        defaultCoverUri;
+
+    $(".post-content_item").each(function () {
+        const detailName = $(this).find(".summary-heading > h5").text().trim();
+        const detail = $(this).find(".summary-content").text().trim();
+
+        switch (detailName) {
+            case "Generos":
+                novel.genre = detail.replace(/, /g, ",");
+                break;
+            case "Autores":
+                novel.author = detail;
+                break;
+            case "Estado":
+                novel.status =
+                    detail.includes("OnGoing") || detail.includes("Updating")
+                        ? Status.ONGOING
+                        : Status.COMPLETED;
+                break;
+        }
     });
 
-    novel.genre = novel.Generos.replace(/, /g, ",");
-    novel.author = novel.Autores;
-    novel.status = novel.Estado;
-    novel.status = null;
-
-    novel.artist = novel["Artista(s)"];
-
-    delete novel.Genre;
-    delete novel["Artista(s)"];
-    delete novel.Autores;
-    delete novel.Estado;
-
-    let novelSummary = "";
-
-    $(".summary__content")
-        .find("p")
-        .each(function () {
-            novelSummary += $(this).html();
-        });
-
-    novel.summary = novelSummary;
+    novel.summary = $("div.summary__content > p").text().trim();
 
     let novelChapters = [];
 
-    const novelId = $(".wp-manga-action-button").attr("data-post");
+    const novelId =
+        $(".rating-post-id").attr("value") ||
+        $("#manga-chapters-holder").attr("data-id");
 
     let formData = new FormData();
     formData.append("action", "manga_get_chapters");
@@ -151,7 +140,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     novelUrl = novelUrl + "/";
 
     const chapter = {
-        sourceId: 23,
+        sourceId,
         novelUrl,
         chapterUrl,
         chapterName,
@@ -179,7 +168,7 @@ const searchNovels = async (searchTerm) => {
         novelUrl = novelUrl.replace(`${baseUrl}novelas/`, "");
 
         const novel = {
-            sourceId: 23,
+            sourceId,
             novelName,
             novelCover,
             novelUrl,
