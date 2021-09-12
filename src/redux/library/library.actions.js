@@ -11,7 +11,6 @@ import {
 import { restoreBackup } from "../../services/backup";
 
 export const getLibraryAction = (sort, filter) => async (dispatch) => {
-    // console.log("1.", sort, filter);
     const res = await getLibrary(sort, filter);
 
     dispatch({

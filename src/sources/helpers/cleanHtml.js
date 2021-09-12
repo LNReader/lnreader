@@ -2,7 +2,7 @@ export const cleanHtml = (html) => {
     let text = html;
 
     if (!text) {
-        return "Chapter is empty.\n\nReport if it's available in webview.'";
+        return "Chapter is empty.\n\nReport if it's available in webview.";
     }
 
     text = text

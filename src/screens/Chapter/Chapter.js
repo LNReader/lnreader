@@ -152,7 +152,7 @@ const Chapter = ({ route, navigation }) => {
                 });
             } else {
                 Tts.stop();
-                Tts.speak(escaped, {
+                Tts.speak(text, {
                     androidParams: {
                         KEY_PARAM_STREAM: "STREAM_MUSIC",
                     },
@@ -570,22 +570,23 @@ const Chapter = ({ route, navigation }) => {
                                         >
                                             {htmlToText(chapter.chapterText)}
                                         </Text>
-                                        {nextChapter && (
-                                            <View
+
+                                        <View
+                                            style={{
+                                                marginTop: 32,
+                                                marginBottom: 16,
+                                            }}
+                                        >
+                                            <Text
                                                 style={{
-                                                    marginTop: 32,
-                                                    marginBottom: 16,
+                                                    color: reader.textColor,
+                                                    fontSize: 16,
+                                                    textAlign: "center",
                                                 }}
                                             >
-                                                <Text
-                                                    style={{
-                                                        color: reader.textColor,
-                                                        fontSize: 16,
-                                                        textAlign: "center",
-                                                    }}
-                                                >
-                                                    Finished: {chapterName}
-                                                </Text>
+                                                Finished: {chapterName}
+                                            </Text>
+                                            {nextChapter ? (
                                                 <View
                                                     style={{
                                                         borderRadius: 8,
@@ -620,8 +621,19 @@ const Chapter = ({ route, navigation }) => {
                                                         </Text>
                                                     </Pressable>
                                                 </View>
-                                            </View>
-                                        )}
+                                            ) : (
+                                                <Text
+                                                    style={{
+                                                        color: reader.textColor,
+                                                        fontSize: 16,
+                                                        paddingVertical: 8,
+                                                        textAlign: "center",
+                                                    }}
+                                                >
+                                                    There's no next chapter
+                                                </Text>
+                                            )}
+                                        </View>
                                     </View>
                                 )}
                             </TouchableWithoutFeedback>

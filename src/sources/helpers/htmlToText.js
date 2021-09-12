@@ -2,7 +2,7 @@ const htmlToText = (html, options = {}) => {
     const { removeLineBreaks = true } = options;
 
     if (!html) {
-        return "Chapter is empty.\n\nReport if it's available in webview.'";
+        return "Chapter is empty.\n\nReport if it's available in webview.";
     }
 
     html = html.trim();
