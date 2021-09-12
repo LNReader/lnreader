@@ -91,6 +91,12 @@ const initialState = {
     downloadNewChapters: false,
 
     /**
+     * Novel settings
+     */
+
+    hideBackdrop: false,
+
+    /**
      * Reader settings
      */
 

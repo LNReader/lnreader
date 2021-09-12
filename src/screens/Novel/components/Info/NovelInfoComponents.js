@@ -19,7 +19,7 @@ const NovelInfoContainer = ({ children }) => (
     <View style={styles.novelInfoContainer}>{children}</View>
 );
 
-const CoverImage = ({ children, source, theme }) => {
+const CoverImage = ({ children, source, theme, hideBackdrop }) => {
     const { colors, locations } = easeGradient({
         colorStops: {
             0: { color: "rgba(0,0,0,0)" },
@@ -27,24 +27,28 @@ const CoverImage = ({ children, source, theme }) => {
         },
     });
 
-    return (
-        <FastImage source={source} style={styles.coverImage}>
-            <View
-                style={{
-                    flex: 1,
-                    backgroundColor: `${theme.colorPrimaryDark}B4`,
-                }}
-            >
-                <LinearGradient
-                    colors={colors}
-                    locations={locations}
-                    style={styles.linearGradient}
+    if (hideBackdrop) {
+        return <View>{children}</View>;
+    } else {
+        return (
+            <FastImage source={source} style={styles.coverImage}>
+                <View
+                    style={{
+                        flex: 1,
+                        backgroundColor: `${theme.colorPrimaryDark}B4`,
+                    }}
                 >
-                    {children}
-                </LinearGradient>
-            </View>
-        </FastImage>
-    );
+                    <LinearGradient
+                        colors={colors}
+                        locations={locations}
+                        style={styles.linearGradient}
+                    >
+                        {children}
+                    </LinearGradient>
+                </View>
+            </FastImage>
+        );
+    }
 };
 
 const NovelThumbnail = ({ source, setCustomNovelCover }) => {

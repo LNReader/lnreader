@@ -6,7 +6,8 @@ import { IconButton } from "react-native-paper";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import { followNovelAction } from "../../../../redux/novel/novel.actions";
-import { useTrackingStatus } from "../../../../hooks/reduxHooks";
+import { useTrackingStatus, useSettings } from "../../../../hooks/reduxHooks";
+import { showToast } from "../../../../hooks/showToast";
 
 import {
     CoverImage,
@@ -22,7 +23,6 @@ import {
 import { Row } from "../../../../components/Common";
 import NovelSummary from "./NovelSummary";
 import ReadButton from "./ReadButton";
-import { showToast } from "../../../../hooks/showToast";
 
 // const getStatusIcon = (status) => {
 //     const icons = {
@@ -56,6 +56,8 @@ const NovelInfoHeader = ({
         isTracked = trackedNovels.find((obj) => obj.novelId === novel.novelId);
     }
 
+    const { hideBackdrop = false } = useSettings();
+
     const getNovelCoverUrl = () => {
         const defaultCover =
             "https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true";
@@ -78,10 +80,9 @@ const NovelInfoHeader = ({
     return (
         <View>
             <CoverImage
-                source={{
-                    uri: getNovelCoverUrl(),
-                }}
+                source={{ uri: getNovelCoverUrl() }}
                 theme={theme}
+                hideBackdrop={hideBackdrop}
             >
                 <NovelInfoContainer>
                     <NovelThumbnail

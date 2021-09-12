@@ -61,6 +61,7 @@ const AppearanceSettings = ({ navigation }) => {
         showHistoryTab = true,
         showUpdatesTab = true,
         showLabelsInNav = false,
+        hideBackdrop = false,
         useFabForContinueReading = false,
     } = useSettings();
 
@@ -179,6 +180,16 @@ const AppearanceSettings = ({ navigation }) => {
                     <List.Divider theme={theme} />
                     <List.SubHeader theme={theme}>Novel info</List.SubHeader>
                     <SwitchSetting
+                        label="Hide backdrop"
+                        value={hideBackdrop}
+                        onPress={() =>
+                            dispatch(
+                                setAppSettings("hideBackdrop", !hideBackdrop)
+                            )
+                        }
+                        theme={theme}
+                    />
+                    <SwitchSetting
                         label="Use FAB instead of button"
                         value={useFabForContinueReading}
                         onPress={() =>
@@ -219,7 +230,6 @@ const AppearanceSettings = ({ navigation }) => {
                         }
                         theme={theme}
                     />
-
                     <SwitchSetting
                         label="Always show nav labels"
                         value={showLabelsInNav}
