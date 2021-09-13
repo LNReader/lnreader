@@ -4,6 +4,7 @@ import { Status } from "../helpers/constants";
 const baseUrl = "https://reaperscans.com";
 
 const sourceId = 67;
+const sourceName = "ReaperScans";
 
 const popularNovels = async (page) => {
     let url = `${baseUrl}/all-series/novels/`;
@@ -17,7 +18,7 @@ const popularNovels = async (page) => {
     let novels = [];
 
     $(".page-item-detail").each(function (result) {
-        const novelName = $(this).find(".item-summary h3").text();
+        const novelName = $(this).find(".item-summary h3").text().trim();
         const novelCover = $(this).find(".img-responsive").attr("data-src");
 
         let novelUrl = $(this).find("div > a").attr("href");
@@ -44,15 +45,9 @@ const parseNovelAndChapters = async (novelUrl) => {
 
     $ = cheerio.load(body);
 
-    let novel = {};
+    let novel = { sourceId, url, sourceName };
 
     $(".post-title > h3 > span").remove();
-
-    novel.sourceId = 67;
-
-    novel.sourceName = "ReaperScans";
-
-    novel.url = url;
 
     novel.novelUrl = novelUrl;
 
@@ -60,30 +55,21 @@ const parseNovelAndChapters = async (novelUrl) => {
 
     novel.novelCover = $(".summary_image > a > img").attr("data-src");
 
-    $(".post-content_item").each(function (result) {
-        detailName = $(this)
-            .find(".summary-heading > h5")
-            .text()
-            .replace(/[\t\n]/g, "")
-            .trim();
-        detail = $(this)
-            .find(".summary-content")
-            .text()
-            .replace(/[\t\n]/g, "")
-            .trim();
+    $(".post-content_item").each(function () {
+        const detailName = $(this).find(".summary-heading > h5").text().trim();
+        const detail = $(this).find(".summary-content").text().trim();
 
         switch (detailName) {
             case "Genre(s)":
-                novel.genre = detail.trim().replace(/[\t\n]/g, ",");
+                novel.genre = detail.replace(/[\t\n]/g, ",");
                 break;
             case "Author(s)":
-                novel.author = detail.trim();
+                novel.author = detail;
                 break;
             case "Status":
-                novel.status =
-                    detail.trim() === "OnGoing"
-                        ? Status.ONGOING
-                        : Status.COMPLETED;
+                novel.status = detail.includes("OnGoing")
+                    ? Status.ONGOING
+                    : Status.COMPLETED;
                 break;
         }
     });
@@ -91,25 +77,15 @@ const parseNovelAndChapters = async (novelUrl) => {
     $(".description-summary > div.summary__content").find("em").remove();
     $(".premium-block").remove();
 
-    novel.summary = $(".description-summary > div.summary__content")
-        .text()
-        .trim()
-        .replace(/Description|Summary/g, "");
+    novel.summary = $("div.summary__content").text().trim();
 
     let novelChapters = [];
 
     $(".wp-manga-chapter").each(function (result) {
-        const chapterName = $(this)
-            .find("a")
-            .text()
-            .replace(/[\t\n]/g, "")
-            .trim();
+        $("i").remove();
 
-        const releaseDate = $(this)
-            .find(".chapter-release-date")
-            .text()
-            .replace(/[\t\n]/g, "")
-            .trim();
+        const chapterName = $(this).find("a").text().trim();
+        const releaseDate = null;
 
         const chapterUrl = $(this).find("a").attr("href").replace(url, "");
 
@@ -155,7 +131,7 @@ const searchNovels = async (searchTerm) => {
     let novels = [];
 
     $(".c-tabs-item__content").each(function (result) {
-        const novelName = $(this).find(".post-title > h3").text();
+        const novelName = $(this).find(".post-title > h3").text().trim();
         const novelCover = $(this).find("div > div > a > img").attr("data-src");
 
         let novelUrl = $(this).find("div > div > a").attr("href");
