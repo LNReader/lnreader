@@ -76,6 +76,7 @@ import DivineDaoLibraryScraper from "./en/divinedaolibrary";
 import NovelOnlineFullScraper from "./en/novelonlinefull";
 import LightNovelUpdatesScraper from "./en/lightnovelupdates";
 import EpikNovelScraper from "./tr/epiknovel";
+import TravisTranslationsScraper from "./en/travistranslations";
 
 export const getSource = (sourceId) => {
     const scrapers = {
@@ -153,6 +154,7 @@ export const getSource = (sourceId) => {
         73: EpikNovelScraper,
         74: WuxiaWorldDotSiteScraper,
         75: MysticalSeriesScraper,
+        76: TravisTranslationsScraper,
     };
 
     return scrapers[sourceId];

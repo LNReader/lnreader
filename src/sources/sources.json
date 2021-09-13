@@ -516,5 +516,12 @@
         "sourceName": "MysticalSeries",
         "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/mysticalseries.png?raw=true",
         "lang": "English"
+    },
+    {
+        "sourceId": 76,
+        "url": "https://travistranslations.com/",
+        "sourceName": "TravisTranslations",
+        "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/travistranslations/icon.png?raw=true",
+        "lang": "English"
     }
 ]
