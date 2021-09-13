@@ -75,6 +75,7 @@ const initialState = {
     showDownloadBadges: true,
     showUnreadBadges: true,
     showNumberOfNovels: false,
+    downloadedOnlyMode: false,
 
     /**
      * Browse settings

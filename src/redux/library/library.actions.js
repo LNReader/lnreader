@@ -10,14 +10,20 @@ import {
 } from "../../database/queries/LibraryQueries";
 import { restoreBackup } from "../../services/backup";
 
-export const getLibraryAction = (sort, filter) => async (dispatch) => {
-    const res = await getLibrary(sort, filter);
+export const getLibraryAction =
+    (sort, filter) => async (dispatch, getState) => {
+        const { downloadedOnlyMode = false } = getState().settingsReducer;
 
-    dispatch({
-        type: GET_LIBRARY_NOVELS,
-        payload: res,
-    });
-};
+        const res = await getLibrary(
+            sort,
+            downloadedOnlyMode ? "chaptersDownloaded > 0" : filter
+        );
+
+        dispatch({
+            type: GET_LIBRARY_NOVELS,
+            payload: res,
+        });
+    };
 
 export const searchLibraryAction =
     (searchText, sort, filter) => async (dispatch) => {

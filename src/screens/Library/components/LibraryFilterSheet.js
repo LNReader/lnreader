@@ -20,6 +20,7 @@ const LibraryFilterSheet = ({
     dispatch,
     sort,
     filter,
+    downloadedOnlyMode,
     theme,
 }) => {
     const [animatedValue] = useState(new Animated.Value(0));
@@ -29,14 +30,19 @@ const LibraryFilterSheet = ({
             <Checkbox
                 label="Downloaded"
                 theme={theme}
-                status={filter === "chaptersDownloaded > 0"}
-                onPress={() =>
-                    filter === "chaptersDownloaded > 0"
-                        ? dispatch(filterLibrary(sort, ""))
-                        : dispatch(
-                              filterLibrary(sort, "chaptersDownloaded > 0")
-                          )
+                status={
+                    filter === "chaptersDownloaded > 0" ||
+                    downloadedOnlyMode === true
                 }
+                onPress={() => {
+                    if (!downloadedOnlyMode) {
+                        filter === "chaptersDownloaded > 0"
+                            ? dispatch(filterLibrary(sort, ""))
+                            : dispatch(
+                                  filterLibrary(sort, "chaptersDownloaded > 0")
+                              );
+                    }
+                }}
             />
             <Checkbox
                 label="Unread"

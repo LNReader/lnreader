@@ -42,6 +42,7 @@ const LibraryScreen = ({ navigation }) => {
         showNumberOfNovels,
         incognitoMode = false,
         updateLibraryOnLaunch = false,
+        downloadedOnlyMode = false,
     } = settings;
 
     const libraryFilterSheetRef = useRef(null);
@@ -161,9 +162,10 @@ const LibraryScreen = ({ navigation }) => {
                         {
                             icon: "filter-variant",
                             onPress: () => libraryFilterSheetRef.current.show(),
-                            color: filter
-                                ? theme.filterColor
-                                : theme.textColorPrimary,
+                            color:
+                                filter || downloadedOnlyMode
+                                    ? theme.filterColor
+                                    : theme.textColorPrimary,
                         },
                     ]}
                     theme={theme}
@@ -191,7 +193,34 @@ const LibraryScreen = ({ navigation }) => {
                                 marginLeft: 8,
                             }}
                         >
-                            Incognito Mode
+                            Incognito mode
+                        </Text>
+                    </View>
+                )}
+                {downloadedOnlyMode && (
+                    <View
+                        style={{
+                            backgroundColor: theme.searchBarColor,
+                            paddingVertical: 6,
+                            alignItems: "center",
+                            marginVertical: 4,
+                            elevation: 2,
+                            flexDirection: "row",
+                            justifyContent: "center",
+                        }}
+                    >
+                        <MaterialCommunityIcons
+                            name="cloud-off-outline"
+                            color={theme.textColorSecondary}
+                            size={18}
+                        />
+                        <Text
+                            style={{
+                                color: theme.textColorSecondary,
+                                marginLeft: 8,
+                            }}
+                        >
+                            Downloaded only
                         </Text>
                     </View>
                 )}
@@ -269,6 +298,7 @@ const LibraryScreen = ({ navigation }) => {
                                 dispatch={dispatch}
                                 sort={sort}
                                 filter={filter}
+                                downloadedOnlyMode={downloadedOnlyMode}
                             />
                         </Portal>
                     </>

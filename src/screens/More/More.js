@@ -14,11 +14,15 @@ import { MoreHeader } from "./components/MoreHeader";
 const MoreScreen = ({ navigation }) => {
     const theme = useTheme();
     const { downloadQueue } = useSelector((state) => state.downloadsReducer);
-    const { incognitoMode } = useSettings();
+    const { incognitoMode = false, downloadedOnlyMode = false } = useSettings();
     const dispatch = useDispatch();
 
     const enableIncognitoMode = () => {
         dispatch(setAppSettings("incognitoMode", !incognitoMode));
+    };
+
+    const enableDownloadedOnlyMode = () => {
+        dispatch(setAppSettings("downloadedOnlyMode", !downloadedOnlyMode));
     };
 
     return (
@@ -29,7 +33,40 @@ const MoreScreen = ({ navigation }) => {
                     android_ripple={{ color: theme.rippleColor }}
                     style={{
                         paddingHorizontal: 16,
-                        paddingVertical: 12,
+                        paddingVertical: 14,
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                    }}
+                    onPress={enableDownloadedOnlyMode}
+                >
+                    <View style={{ flexDirection: "row" }}>
+                        <List.Icon theme={theme} icon="cloud-off-outline" />
+                        <View style={{ marginLeft: 16 }}>
+                            <Text
+                                style={{
+                                    color: theme.textColorPrimary,
+                                    fontSize: 16,
+                                }}
+                            >
+                                Downloaded only
+                            </Text>
+                            <Text style={{ color: theme.textColorSecondary }}>
+                                Filters all novels in your library
+                            </Text>
+                        </View>
+                    </View>
+                    <Switch
+                        value={downloadedOnlyMode}
+                        onValueChange={enableDownloadedOnlyMode}
+                        color={theme.colorAccent}
+                        style={{ marginRight: 8 }}
+                    />
+                </Pressable>
+                <Pressable
+                    android_ripple={{ color: theme.rippleColor }}
+                    style={{
+                        paddingHorizontal: 16,
+                        paddingVertical: 14,
                         flexDirection: "row",
                         justifyContent: "space-between",
                     }}
@@ -44,7 +81,7 @@ const MoreScreen = ({ navigation }) => {
                                     fontSize: 16,
                                 }}
                             >
-                                Incognito Mode
+                                Incognito mode
                             </Text>
                             <Text style={{ color: theme.textColorSecondary }}>
                                 Pauses reading history
