@@ -523,5 +523,12 @@
         "sourceName": "TravisTranslations",
         "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/travistranslations/icon.png?raw=true",
         "lang": "English"
+    },
+    {
+        "sourceId": 77,
+        "url": "https://noveldeglace.com/",
+        "sourceName": "NovelDeGlace",
+        "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/fr/noveldeglace/icon.png?raw=true",
+        "lang": "French"
     }
 ]
