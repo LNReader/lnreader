@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 
+import { Button, Dialog, Portal } from "react-native-paper";
+
 import { Appbar } from "../../components/Appbar";
 import { ScreenContainer } from "../../components/Common";
 import { List } from "../../components/List";
 
 import { useTheme } from "../../hooks/reduxHooks";
+import { showToast } from "../../hooks/showToast";
 
 import { deleteNovelCache } from "../../database/queries/NovelQueries";
-import { Button, Dialog, Portal } from "react-native-paper";
+import { clearUpdates } from "../../database/queries/UpdateQueries";
 
 const AdvancedSettings = ({ navigation }) => {
     const theme = useTheme();
@@ -28,6 +31,15 @@ const AdvancedSettings = ({ navigation }) => {
                     title="Clear database"
                     description="Delete history for novels not in your library"
                     onPress={showClearDatabaseDialog}
+                    theme={theme}
+                />
+                <List.Item
+                    title="Clear updates tab"
+                    description="Clears chapter entries in updates tab"
+                    onPress={() => {
+                        clearUpdates();
+                        showToast("Updates cleared.");
+                    }}
                     theme={theme}
                 />
             </List.Section>

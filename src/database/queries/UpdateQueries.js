@@ -8,6 +8,7 @@ const getUpdatesQuery = `
     ON updates.chapterId = chapters.chapterId
     JOIN novels
     ON updates.novelId = novels.novelId
+    WHERE date(updates.updateTime) > date('now','-3 months')
     ORDER BY updates.updateTime DESC
     `;
 
@@ -36,3 +37,6 @@ export const deleteNovelUpdates = (novelId) => {
         );
     });
 };
+
+export const clearUpdates = () =>
+    db.transaction((tx) => tx.executeSql("DELETE FROM updates; VACCUM;"));
