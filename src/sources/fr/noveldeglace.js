@@ -84,8 +84,6 @@ const parseNovelAndChapters = async (novelUrl) => {
 
     novel.chapters = novelChapters;
 
-    console.log(novel);
-
     return novel;
 };
 
@@ -139,8 +137,6 @@ const searchNovels = async (searchTerm) => {
     novels = novels.filter((novel) =>
         novel.novelName.toLowerCase().includes(searchTerm.toLowerCase())
     );
-
-    console.log(novels);
 
     return novels;
 };

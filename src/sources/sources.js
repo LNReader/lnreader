@@ -78,6 +78,7 @@ import LightNovelUpdatesScraper from "./en/lightnovelupdates";
 import EpikNovelScraper from "./tr/epiknovel";
 import TravisTranslationsScraper from "./en/travistranslations";
 import NovelDeGlaceScraper from "./fr/noveldeglace";
+import RainOfSnowScraper from "./en/rainofsnow";
 
 export const getSource = (sourceId) => {
     const scrapers = {
@@ -157,6 +158,7 @@ export const getSource = (sourceId) => {
         75: MysticalSeriesScraper,
         76: TravisTranslationsScraper,
         77: NovelDeGlaceScraper,
+        78: RainOfSnowScraper,
     };
 
     return scrapers[sourceId];
