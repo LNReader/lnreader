@@ -111,14 +111,18 @@ const Chapter = ({ route, navigation }) => {
     const [contentSize, setContentSize] = useState(0);
 
     const [textToSpeech, setTextToSpeech] = useState();
+    const [textToSpeechPosition, setTextToSpeechPosition] = useState({
+        end: 0,
+    });
 
     useEffect(() => {
         Tts.addEventListener("tts-start", () => setTextToSpeech("start"));
-        Tts.addEventListener("tts-progress", (event) =>
-            setTextToSpeech("progress")
-        );
+        Tts.addEventListener("tts-progress", (event) => {
+            setTextToSpeech("progress");
+            setTextToSpeechPosition(event);
+        });
         Tts.addEventListener("tts-finish", () => setTextToSpeech("finish"));
-        Tts.addEventListener("tts-cancel", () => setTextToSpeech("cancel"));
+        Tts.addEventListener("tts-cancel", () => setTextToSpeech("paused"));
 
         return () => Tts.stop();
     }, []);
@@ -126,6 +130,8 @@ const Chapter = ({ route, navigation }) => {
     const tts = () => {
         if (!loading) {
             if (textToSpeech === "progress") {
+                setTextToSpeechPosition({ end: 0 });
+                setTextToSpeech("finish");
                 Tts.stop();
                 return;
             }
@@ -157,6 +163,46 @@ const Chapter = ({ route, navigation }) => {
                         KEY_PARAM_STREAM: "STREAM_MUSIC",
                     },
                 });
+            }
+        }
+    };
+
+    const pauseTts = () => {
+        if (!loading) {
+            if (textToSpeech === "progress") {
+                setTextToSpeech("paused");
+                Tts.stop();
+                return;
+            } else {
+                let text = htmlToText(chapter.chapterText);
+                text = text.slice(textToSpeechPosition.end);
+
+                if (text.length >= 3999) {
+                    const splitNChars = (txt, num) => {
+                        let result = [];
+                        for (let i = 0; i < txt.length; i += num) {
+                            result.push(txt.substr(i, num));
+                        }
+                        return result;
+                    };
+
+                    let splitMe = splitNChars(text, 3999);
+
+                    splitMe.forEach((value, key) => {
+                        Tts.speak(value, {
+                            androidParams: {
+                                KEY_PARAM_STREAM: "STREAM_MUSIC",
+                            },
+                        });
+                    });
+                } else {
+                    Tts.stop();
+                    Tts.speak(text, {
+                        androidParams: {
+                            KEY_PARAM_STREAM: "STREAM_MUSIC",
+                        },
+                    });
+                }
             }
         }
     };
@@ -410,6 +456,8 @@ const Chapter = ({ route, navigation }) => {
                     navigation={navigation}
                     dispatch={dispatch}
                     theme={theme}
+                    textToSpeechPosition={textToSpeechPosition}
+                    pauseTts={pauseTts}
                 />
                 <GestureRecognizer
                     onSwipeRight={swipeGestures && navigateToPrevChapter}

@@ -16,6 +16,8 @@ const ChapterAppbar = ({
     tts,
     textToSpeech,
     theme,
+    textToSpeechPosition,
+    pauseTts,
 }) => {
     const [bookmarked, setBookmarked] = useState(bookmark);
 
@@ -59,6 +61,15 @@ const ChapterAppbar = ({
                                 : theme.textColorPrimary
                         }
                     />
+
+                    {textToSpeechPosition.end > 0 && (
+                        <Appbar.Action
+                            icon={textToSpeech === "paused" ? "play" : "pause"}
+                            size={24}
+                            onPress={pauseTts}
+                            color={theme.textColorPrimary}
+                        />
+                    )}
 
                     <Appbar.Action
                         icon={bookmarked ? "bookmark" : "bookmark-outline"}
