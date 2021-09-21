@@ -135,7 +135,7 @@ export const takoTheme = {
     filterColor: "#FFEB3B",
     dividerColor: DividerColors.DARK,
     colorDisabled: "#484861",
-    colorButtonText: "#000000",
+    colorButtonText: PrimaryColors.tako.colorPrimaryDark,
     statusBar: StatusBarStyle.LIGHT,
     ...TextColors.dark,
 };
@@ -166,7 +166,7 @@ export const yangTheme = {
     ...PrimaryColors.light,
     colorAccent: AccentColors.yang,
     rippleColor: RippleColors.yang,
-    searchBarColor: "#303135",
+    searchBarColor: "#FFFFFF",
     menuColor: "#484861",
     filterColor: "#FFEB3B",
     dividerColor: DividerColors.LIGHT,

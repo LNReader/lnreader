@@ -483,7 +483,7 @@ const Novel = ({ route, navigation }) => {
                                 { backgroundColor: theme.colorAccent },
                             ]}
                             small
-                            color={theme.textColorPrimary}
+                            color={theme.colorButtonText}
                             uppercase={false}
                             label={novel.unread ? `Start` : `Resume`}
                             icon="play"
