@@ -454,7 +454,7 @@ const Novel = ({ route, navigation }) => {
                     windowSize={15}
                     initialNumToRender={7}
                     renderItem={renderItem}
-                    contentContainerStyle={{ paddingBottom: 40 }}
+                    contentContainerStyle={{ paddingBottom: 100 }}
                     ListHeaderComponent={
                         <NovelInfoHeader
                             item={item}

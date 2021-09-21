@@ -245,8 +245,8 @@ const LibraryFilterSheet = ({
         <Bottomsheet
             animatedValue={animatedValue}
             ref={bottomSheetRef}
-            draggableRange={{ top: 480, bottom: 0 }}
-            snappingPoints={[0, 480]}
+            draggableRange={{ top: 500, bottom: 0 }}
+            snappingPoints={[0, 500]}
         >
             <View
                 style={[

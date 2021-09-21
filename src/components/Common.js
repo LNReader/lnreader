@@ -1,8 +1,14 @@
 import React from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 
 const ScreenContainer = ({ children, theme }) => (
-    <View style={{ flex: 1, backgroundColor: theme.colorPrimaryDark }}>
+    <View
+        style={{
+            flex: 1,
+            backgroundColor: theme.colorPrimaryDark,
+            paddingBottom: 16,
+        }}
+    >
         {children}
     </View>
 );
