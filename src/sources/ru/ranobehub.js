@@ -80,6 +80,7 @@ const parseNovelAndChapters = async (novelUrl) => {
 
 const parseChapter = async (novelUrl, chapterUrl) => {
     const url = chapterUrl;
+    const chapterId = chapterUrl.split("/")[4];
 
     const result = await fetch(url);
     const body = await result.text();
@@ -92,6 +93,21 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     let chapterText = $(
         "body > div.pusher.container_main > div:nth-child(5) > div:nth-child(1)"
     ).html();
+
+    if (chapterText) {
+        /**
+         * Convert relative url to absolute
+         */
+
+        chapterText = chapterText
+            .replace(/<\s*script[^>]*>[\s\S]*?<\/script>/gim, "")
+            .replace(
+                /data-src="(.*)"/g,
+                `src="https://ranobehub.org/img/ranobe/content/${chapterId}/$1.jpg"`
+            );
+    }
+
+    console.log(chapterText);
 
     const chapter = {
         sourceId,
