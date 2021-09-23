@@ -537,5 +537,12 @@
         "sourceName": "RainOfSnow",
         "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/rainofsnow/icon.png?raw=true",
         "lang": "French"
+    },
+    {
+        "sourceId": 79,
+        "url": "https://reaperscans.com.br/",
+        "sourceName": "ReaperScans (BR)",
+        "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/reaperscans/icon.png?raw=true",
+        "lang": "Portuguese (Brazil)"
     }
 ]
