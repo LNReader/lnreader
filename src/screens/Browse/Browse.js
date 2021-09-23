@@ -41,6 +41,7 @@ const Browse = ({ navigation }) => {
         pinned.indexOf(sourceId) === -1 ? false : true;
 
     sources = sources.filter((source) => filters.indexOf(source.lang) === -1);
+    search = search.filter((source) => filters.indexOf(source.lang) === -1);
 
     let pinnedSources = sources.filter((source) => isPinned(source.sourceId));
 

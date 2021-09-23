@@ -1,38 +1,89 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.rajarsheechatterjee.LNReader">
-  <uses-permission android:name="android.permission.INTERNET"/>
-  <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-  <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-  <uses-permission android:name="android.permission.VIBRATE"/>
-  <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
-  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-  <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-  <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-  <uses-permission android:name="android.permission.WAKE_LOCK"/>
-  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-  <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
-  <application android:name=".MainApplication" android:label="@string/app_name" android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher_round" android:allowBackup="true" android:theme="@style/AppTheme" android:usesCleartextTraffic="true">
-    <meta-data android:name="expo.modules.updates.EXPO_UPDATE_URL" android:value="https://exp.host/@rajarsheechatterjee/LNReader"/>
-    <meta-data android:name="expo.modules.updates.EXPO_SDK_VERSION" android:value="41.0.0"/>
-    <meta-data android:name="expo.modules.updates.ENABLED" android:value="false"/>
-    <meta-data android:name="expo.modules.updates.EXPO_UPDATES_CHECK_ON_LAUNCH" android:value="ALWAYS"/>
-    <meta-data android:name="expo.modules.updates.EXPO_UPDATES_LAUNCH_WAIT_MS" android:value="0"/>
-    <meta-data android:name="expo.modules.notifications.default_notification_icon" android:resource="@drawable/notification_icon"/>
-    <meta-data android:name="expo.modules.notifications.default_notification_color" android:resource="@color/notification_icon_color"/>
-    <activity android:name=".MainActivity" android:label="@string/app_name" android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode" android:launchMode="singleTask" android:windowSoftInputMode="adjustResize" android:theme="@style/Theme.App.SplashScreen" android:screenOrientation="unspecified">
-      <intent-filter>
-        <action android:name="android.intent.action.MAIN"/>
-        <category android:name="android.intent.category.LAUNCHER"/>
-      </intent-filter>
-      <intent-filter>
-        <action android:name="android.intent.action.VIEW"/>
-        <category android:name="android.intent.category.DEFAULT"/>
-        <category android:name="android.intent.category.BROWSABLE"/>
-        <data android:scheme="lnreader"/>
-        <data android:scheme="com.rajarsheechatterjee.LNReader"/>
-      </intent-filter>
-    </activity>
-    <activity android:name="com.facebook.react.devsupport.DevSettingsActivity"/>
-    <service android:name="com.asterinet.react.bgactions.RNBackgroundActionsTask" />
-  </application>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" 
+  	package="com.rajarsheechatterjee.LNReader">
+
+	<!-- Internet -->
+  	<uses-permission android:name="android.permission.INTERNET"/>
+  	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
+	<!-- Storage -->
+  	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
+	<!-- For background jobs -->
+  	<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+
+
+  	<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+  	<uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+  	<uses-permission android:name="android.permission.VIBRATE"/>
+  	<uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+  	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+  	<uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
+
+  	<application 
+	  	android:name=".MainApplication" 
+		android:label="@string/app_name"
+		android:icon="@mipmap/ic_launcher"
+		android:roundIcon="@mipmap/ic_launcher_round"
+		android:allowBackup="true"
+		android:theme="@style/AppTheme"
+		android:usesCleartextTraffic="true">
+    
+		<meta-data
+			android:name="expo.modules.updates.EXPO_UPDATE_URL"
+			android:value="https://exp.host/@rajarsheechatterjee/LNReader"/>
+    	
+		<meta-data
+			android:name="expo.modules.updates.EXPO_SDK_VERSION"
+			android:value="41.0.0"/>
+    
+		<meta-data
+			android:name="expo.modules.updates.ENABLED"
+			android:value="false"/>
+	
+		<meta-data
+			android:name="expo.modules.updates.EXPO_UPDATES_CHECK_ON_LAUNCH"
+			android:value="ALWAYS"/>
+	
+		<meta-data
+			android:name="expo.modules.updates.EXPO_UPDATES_LAUNCH_WAIT_MS"
+			android:value="0"/>
+	
+		<meta-data
+			android:name="expo.modules.notifications.default_notification_icon"
+			android:resource="@drawable/notification_icon"/>
+	
+		<meta-data
+			android:name="expo.modules.notifications.default_notification_color"
+			android:resource="@color/notification_icon_color"/>
+    
+		<activity
+			android:name=".MainActivity"
+			android:label="@string/app_name"
+			android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode"
+			android:launchMode="singleTask"
+			android:windowSoftInputMode="adjustResize"
+			android:theme="@style/Theme.App.SplashScreen"
+			android:screenOrientation="unspecified">
+			
+      		<intent-filter>
+      		  <action android:name="android.intent.action.MAIN"/>
+      		  <category android:name="android.intent.category.LAUNCHER"/>
+      		</intent-filter>
+      		
+			<intent-filter>
+      		  <action android:name="android.intent.action.VIEW"/>
+      		  <category android:name="android.intent.category.DEFAULT"/>
+      		  <category android:name="android.intent.category.BROWSABLE"/>
+      		  <data android:scheme="lnreader"/>
+      		  <data android:scheme="com.rajarsheechatterjee.LNReader"/>
+      		</intent-filter>
+		</activity>
+    	
+		<activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
+    
+		<service android:name="com.asterinet.react.bgactions.RNBackgroundActionsTask" />
+		
+  	</application>
 </manifest>

@@ -1,5 +1,11 @@
 import React, { useState, useCallback } from "react";
-import { StyleSheet, FlatList, ActivityIndicator, Text } from "react-native";
+import {
+    StyleSheet,
+    FlatList,
+    ActivityIndicator,
+    Text,
+    View,
+} from "react-native";
 
 import moment from "moment";
 import { useFocusEffect } from "@react-navigation/native";
@@ -113,7 +119,7 @@ const History = ({ navigation }) => {
     };
 
     return (
-        <ScreenContainer theme={theme}>
+        <View style={{ flex: 1 }}>
             <Searchbar
                 placeholder="Search History"
                 searchText={searchText}
@@ -129,7 +135,7 @@ const History = ({ navigation }) => {
                 ]}
             />
             <FlatList
-                contentContainerStyle={{ flexGrow: 1 }}
+                contentContainerStyle={{ paddingBottom: 40 }}
                 data={searchText ? searchResults : history}
                 keyExtractor={(item) => item.date}
                 renderItem={({ item }) => (
@@ -174,7 +180,7 @@ const History = ({ navigation }) => {
                 hideDialog={hideDialog}
                 theme={theme}
             />
-        </ScreenContainer>
+        </View>
     );
 };
 

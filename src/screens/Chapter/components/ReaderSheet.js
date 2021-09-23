@@ -44,6 +44,8 @@ const ReaderSheet = ({
     autoScroll,
     useWebViewForChapter,
     showScrollPercentage,
+    swipeGestures,
+    enableSwipeGestures,
     fullScreenMode,
 }) => {
     const [animatedValue] = useState(new Animated.Value(0));
@@ -528,6 +530,24 @@ const ReaderSheet = ({
                                     )
                                 )
                             }
+                            color={theme.colorAccent}
+                        />
+                    </Pressable>
+                    <Pressable
+                        style={styles.switchStyle}
+                        android_ripple={{ color: theme.rippleColor }}
+                        onPress={enableSwipeGestures}
+                    >
+                        <Text
+                            style={{
+                                color: theme.textColorSecondary,
+                            }}
+                        >
+                            Swipe gestures
+                        </Text>
+                        <Switch
+                            value={swipeGestures}
+                            onValueChange={enableSwipeGestures}
                             color={theme.colorAccent}
                         />
                     </Pressable>

@@ -29,7 +29,7 @@ const HistoryItem = ({
     } = history;
 
     const getChapterNumber = () =>
-        `Ch. ${parseChapterNumber(chapterName)} - ${moment(historyTimeRead)
+        `Chapter ${parseChapterNumber(chapterName)} • ${moment(historyTimeRead)
             .format("h:mm a")
             .toUpperCase()}`;
 

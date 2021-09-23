@@ -70,6 +70,7 @@ const EditInfoModal = ({ theme, hideModal, modalVisible, novel, dispatch }) => {
                         {status.map((item) => (
                             <View
                                 style={{ borderRadius: 8, overflow: "hidden" }}
+                                key={item}
                             >
                                 <Pressable
                                     style={{

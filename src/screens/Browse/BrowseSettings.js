@@ -32,6 +32,7 @@ const BrowseSettings = ({ navigation }) => {
         "Russian",
         "Turkish",
         "French",
+        "Portuguese (Brazil)",
     ].sort();
 
     const { searchAllSources = false } = useSettings();

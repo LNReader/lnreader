@@ -702,6 +702,8 @@ const Chapter = ({ route, navigation }) => {
                         showScrollPercentage={showScrollPercentage}
                         showBatteryAndTime={showBatteryAndTime}
                         fullScreenMode={fullScreenMode}
+                        swipeGestures={swipeGestures}
+                        enableSwipeGestures={enableSwipeGestures}
                     />
                 </Portal>
                 {!useWebViewForChapter && (
