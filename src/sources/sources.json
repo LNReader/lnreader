@@ -541,8 +541,15 @@
     {
         "sourceId": 79,
         "url": "https://reaperscans.com.br/",
-        "sourceName": "ReaperScans (BR)",
+        "sourceName": "ReaperScans (Br)",
         "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/reaperscans/icon.png?raw=true",
+        "lang": "Portuguese (Brazil)"
+    },
+    {
+        "sourceId": 80,
+        "url": "https://arthurscan.xyz/",
+        "sourceName": "ArthurScans (Br)",
+        "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/arthurscans.png?raw=true",
         "lang": "Portuguese (Brazil)"
     }
 ]

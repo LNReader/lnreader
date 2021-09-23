@@ -1,19 +1,15 @@
 import cheerio from "react-native-cheerio";
 import { Status } from "../helpers/constants";
 
-const baseUrl = "https://reaperscans.com.br/";
+const baseUrl = "https://arthurscan.xyz/";
 
-const sourceId = 79;
-const sourceName = "ReaperScans (Br)";
+const sourceId = 80;
+const sourceName = "ArthurScans (Br)";
 
 const popularNovels = async (page) => {
-    let url =
-        baseUrl +
-        "/all-series/todas-as-series/page/" +
-        page +
-        "/?m_orderby=rating";
+    let url = baseUrl + "/manga/page/" + page + "/?m_orderby=rating";
 
-    const totalPages = 1;
+    const totalPages = 2;
 
     const result = await fetch(url);
     const body = await result.text();
@@ -22,7 +18,7 @@ const popularNovels = async (page) => {
 
     let novels = [];
 
-    $(".page-item-detail").each(function (result) {
+    $(".page-item-detail").each(function () {
         const novelName = $(this).find(".item-summary h3").text().trim();
         const novelCover = $(this).find(".img-responsive").attr("data-src");
 
@@ -85,6 +81,11 @@ const parseNovelAndChapters = async (novelUrl) => {
 
     let novelChapters = [];
 
+    const data = await fetch(novelUrl + "ajax/chapters", { method: "POST" });
+    const text = await data.text();
+
+    $ = cheerio.load(text);
+
     $(".wp-manga-chapter").each(function () {
         $("i").remove();
 
@@ -112,7 +113,8 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     $ = cheerio.load(body);
 
     const chapterName = $("#chapter-heading").text();
-    let chapterText = $(".reading-content").html();
+    const chapterText = $(".reading-content").html();
+
     const chapter = {
         sourceId,
         novelUrl,
@@ -154,11 +156,11 @@ const searchNovels = async (searchTerm) => {
     return novels;
 };
 
-const ReaperScansBrScraper = {
+const ArthurScansScraper = {
     popularNovels,
     parseNovelAndChapters,
     parseChapter,
     searchNovels,
 };
 
-export default ReaperScansBrScraper;
+export default ArthurScansScraper;

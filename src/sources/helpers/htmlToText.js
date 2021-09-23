@@ -67,7 +67,10 @@ const htmlToText = (html, options = {}) => {
          * <img> -> [img](src)
          */
 
-        // .replace(/<\s*img[^>]*src=['"](.*?)['"][^>]*>/gi, "[img]($1)")
+        .replace(
+            /<\s*img[^>]*[src|data-src]=['"](.*?)['"][^>]*>/gi,
+            "[Image]($1)\n"
+        )
 
         /**
          * Remove remaining tags
