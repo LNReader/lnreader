@@ -182,7 +182,6 @@ const Extension = ({ navigation, route }) => {
                 actions={[
                     {
                         icon: displayMenuIcon(),
-                        color: theme.textColorSecondary,
                         onPress: () =>
                             dispatch(
                                 setAppSettings(
@@ -193,7 +192,6 @@ const Extension = ({ navigation, route }) => {
                     },
                     {
                         icon: "earth",
-                        color: theme.textColorSecondary,
                         onPress: () => WebBrowser.openBrowserAsync(url),
                     },
                 ]}

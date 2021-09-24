@@ -60,27 +60,42 @@ const BrowseSettings = ({ navigation }) => {
     };
 
     return (
-        <ScreenContainer theme={theme}>
+        <View style={{ flex: 1 }}>
             <Appbar onBackAction={navigation.goBack} title="Sources" />
-            <View>
-                <FlatList
-                    data={languages}
-                    keyExtractor={(item) => item}
-                    renderItem={renderItem}
-                    ListHeaderComponent={
-                        <View>
-                            <List.SubHeader theme={theme}>
-                                Global Search
-                            </List.SubHeader>
-                            <Pressable
-                                android_ripple={{ color: theme.rippleColor }}
-                                style={{
-                                    padding: 16,
-                                    flexDirection: "row",
-                                    alignItems: "center",
-                                    justifyContent: "space-between",
-                                }}
-                                onPress={() =>
+            <FlatList
+                contentContainerStyle={{ paddingBottom: 32 }}
+                data={languages}
+                keyExtractor={(item) => item}
+                renderItem={renderItem}
+                ListHeaderComponent={
+                    <View>
+                        <List.SubHeader theme={theme}>
+                            Global Search
+                        </List.SubHeader>
+                        <Pressable
+                            android_ripple={{ color: theme.rippleColor }}
+                            style={{
+                                padding: 16,
+                                flexDirection: "row",
+                                alignItems: "center",
+                                justifyContent: "space-between",
+                            }}
+                            onPress={() =>
+                                dispatch(
+                                    setAppSettings(
+                                        "searchAllSources",
+                                        !searchAllSources
+                                    )
+                                )
+                            }
+                        >
+                            <Text style={{ color: theme.textColorPrimary }}>
+                                Search all sources
+                            </Text>
+                            <Switch
+                                color={theme.colorAccent}
+                                value={searchAllSources}
+                                onValueChange={() =>
                                     dispatch(
                                         setAppSettings(
                                             "searchAllSources",
@@ -88,61 +103,39 @@ const BrowseSettings = ({ navigation }) => {
                                         )
                                     )
                                 }
-                            >
-                                <Text style={{ color: theme.textColorPrimary }}>
-                                    Search all sources
-                                </Text>
-                                <Switch
-                                    color={theme.colorAccent}
-                                    value={searchAllSources}
-                                    onValueChange={() =>
-                                        dispatch(
-                                            setAppSettings(
-                                                "searchAllSources",
-                                                !searchAllSources
-                                            )
-                                        )
-                                    }
-                                />
-                            </Pressable>
-                            <List.Divider theme={theme} />
-                            <List.SubHeader theme={theme}>
-                                Discover
-                            </List.SubHeader>
-                            <Pressable
-                                android_ripple={{ color: theme.rippleColor }}
-                                style={{
-                                    padding: 16,
-                                    flexDirection: "row",
-                                    alignItems: "center",
-                                    justifyContent: "space-between",
-                                }}
-                                onPress={() =>
+                            />
+                        </Pressable>
+                        <List.Divider theme={theme} />
+                        <List.SubHeader theme={theme}>Discover</List.SubHeader>
+                        <Pressable
+                            android_ripple={{ color: theme.rippleColor }}
+                            style={{
+                                padding: 16,
+                                flexDirection: "row",
+                                alignItems: "center",
+                                justifyContent: "space-between",
+                            }}
+                            onPress={() =>
+                                dispatch(enableDiscover("showMyAnimeList"))
+                            }
+                        >
+                            <Text style={{ color: theme.textColorPrimary }}>
+                                MyAnimeList
+                            </Text>
+                            <Switch
+                                color={theme.colorAccent}
+                                value={showMyAnimeList}
+                                onValueChange={() =>
                                     dispatch(enableDiscover("showMyAnimeList"))
                                 }
-                            >
-                                <Text style={{ color: theme.textColorPrimary }}>
-                                    MyAnimeList
-                                </Text>
-                                <Switch
-                                    color={theme.colorAccent}
-                                    value={showMyAnimeList}
-                                    onValueChange={() =>
-                                        dispatch(
-                                            enableDiscover("showMyAnimeList")
-                                        )
-                                    }
-                                />
-                            </Pressable>
-                            <List.Divider theme={theme} />
-                            <List.SubHeader theme={theme}>
-                                Languages
-                            </List.SubHeader>
-                        </View>
-                    }
-                />
-            </View>
-        </ScreenContainer>
+                            />
+                        </Pressable>
+                        <List.Divider theme={theme} />
+                        <List.SubHeader theme={theme}>Languages</List.SubHeader>
+                    </View>
+                }
+            />
+        </View>
     );
 };
 

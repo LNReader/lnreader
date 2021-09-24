@@ -114,7 +114,7 @@ const Browse = ({ navigation }) => {
             />
 
             <FlatList
-                contentContainerStyle={{ flexGrow: 1 }}
+                contentContainerStyle={{ flexGrow: 1, paddingBottom: 32 }}
                 data={!searchText ? sources : search}
                 keyExtractor={(item) => item.sourceId.toString()}
                 renderItem={renderItem}
