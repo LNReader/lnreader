@@ -1,142 +1,142 @@
-import cheerio from "react-native-cheerio";
+import cheerio from 'react-native-cheerio';
 
-const baseUrl = "https://www.novelupdates.cc/";
+const baseUrl = 'https://www.novelupdates.cc/';
 
-const popularNovels = async (page) => {
-    let totalPages = 1;
-    const result = await fetch(baseUrl);
-    const body = await result.text();
+const popularNovels = async page => {
+  let totalPages = 1;
+  const result = await fetch(baseUrl);
+  const body = await result.text();
 
-    $ = cheerio.load(body);
+  $ = cheerio.load(body);
 
-    let novels = [];
+  let novels = [];
 
-    $(".section-item").each(function (result) {
-        const novelName = $(this).find(".book-name").text();
-        const novelCover = $(this).find("img").attr("src");
+  $('.section-item').each(function (result) {
+    const novelName = $(this).find('.book-name').text();
+    const novelCover = $(this).find('img').attr('src');
 
-        let novelUrl = $(this).find("a").attr("href").slice(1);
+    let novelUrl = $(this).find('a').attr('href').slice(1);
 
-        const novel = {
-            sourceId: 18,
-            novelName,
-            novelCover,
-            novelUrl,
-        };
+    const novel = {
+      sourceId: 18,
+      novelName,
+      novelCover,
+      novelUrl,
+    };
 
-        novels.push(novel);
-    });
+    novels.push(novel);
+  });
 
-    return { totalPages, novels };
+  return {totalPages, novels};
 };
 
-const parseNovelAndChapters = async (novelUrl) => {
-    const url = `${baseUrl}${novelUrl}/`;
+const parseNovelAndChapters = async novelUrl => {
+  const url = `${baseUrl}${novelUrl}/`;
 
-    const result = await fetch(url);
-    const body = await result.text();
+  const result = await fetch(url);
+  const body = await result.text();
 
-    $ = cheerio.load(body);
+  $ = cheerio.load(body);
 
-    let novel = {};
+  let novel = {};
 
-    novel.sourceId = 18;
+  novel.sourceId = 18;
 
-    novel.sourceName = "NovelUpdates.cc";
+  novel.sourceName = 'NovelUpdates.cc';
 
-    novel.url = url;
+  novel.url = url;
 
-    novel.novelUrl = novelUrl;
+  novel.novelUrl = novelUrl;
 
-    novel.novelName = $(".book-name").text();
+  novel.novelName = $('.book-name').text();
 
-    novel.novelCover = $("div.book-img > img").attr("src");
+  novel.novelCover = $('div.book-img > img').attr('src');
 
-    novel.genre = $("div.book-catalog > span.txt").text();
+  novel.genre = $('div.book-catalog > span.txt').text();
 
-    novel.status = $("div.book-state > span.txt").text();
+  novel.status = $('div.book-state > span.txt').text();
 
-    novel.author = $("div.author > span.name").text();
+  novel.author = $('div.author > span.name').text();
 
-    novelSummary = $("div.content > p.desc").text();
-    novel.summary = novelSummary.trim();
+  novelSummary = $('div.content > p.desc').text();
+  novel.summary = novelSummary.trim();
 
-    let novelChapters = [];
+  let novelChapters = [];
 
-    $(".chapter-item").each(function (result) {
-        const chapterName = $(this).find(".chapter-name").text();
-        const releaseDate = null;
-        const chapterUrl = $(this).attr("href").slice(1);
+  $('.chapter-item').each(function (result) {
+    const chapterName = $(this).find('.chapter-name').text();
+    const releaseDate = null;
+    const chapterUrl = $(this).attr('href').slice(1);
 
-        novelChapters.push({
-            chapterName,
-            releaseDate,
-            chapterUrl,
-        });
+    novelChapters.push({
+      chapterName,
+      releaseDate,
+      chapterUrl,
     });
+  });
 
-    novel.chapters = novelChapters;
+  novel.chapters = novelChapters;
 
-    return novel;
+  return novel;
 };
 
 const parseChapter = async (novelUrl, chapterUrl) => {
-    const url = `${baseUrl}${chapterUrl}`;
+  const url = `${baseUrl}${chapterUrl}`;
 
-    const result = await fetch(url);
-    const body = await result.text();
+  const result = await fetch(url);
+  const body = await result.text();
 
-    $ = cheerio.load(body);
+  $ = cheerio.load(body);
 
-    const chapterName = $("h1.chapter-title").text();
-    let chapterText = $("div.chapter-entity").html();
-    const chapter = {
-        sourceId: 18,
-        novelUrl,
-        chapterUrl,
-        chapterName,
-        chapterText,
-    };
+  const chapterName = $('h1.chapter-title').text();
+  let chapterText = $('div.chapter-entity').html();
+  const chapter = {
+    sourceId: 18,
+    novelUrl,
+    chapterUrl,
+    chapterName,
+    chapterText,
+  };
 
-    return chapter;
+  return chapter;
 };
 
-const searchNovels = async (searchTerm) => {
-    const url = `${baseUrl}search/${searchTerm}/1`;
+const searchNovels = async searchTerm => {
+  const url = `${baseUrl}search/${searchTerm}/1`;
 
-    const result = await fetch(url);
-    const body = await result.text();
+  const result = await fetch(url);
+  const body = await result.text();
 
-    $ = cheerio.load(body);
+  $ = cheerio.load(body);
 
-    let novels = [];
+  let novels = [];
 
-    $(".list-item").each(function (result) {
-        $(this).find("font").remove();
+  $('.list-item').each(function (result) {
+    $(this).find('font').remove();
 
-        const novelName = $(this).find(".book-name").text();
-        const novelCover = $(this).find("img").attr("src");
+    const novelName = $(this).find('.book-name').text();
+    const novelCover = $(this).find('img').attr('src');
 
-        let novelUrl = $(this).find("a").attr("href").slice(1);
+    let novelUrl = $(this).find('a').attr('href').slice(1);
 
-        const novel = {
-            sourceId: 18,
-            novelName,
-            novelCover,
-            novelUrl,
-        };
+    const novel = {
+      sourceId: 18,
+      novelName,
+      novelCover,
+      novelUrl,
+    };
 
-        novels.push(novel);
-    });
+    novels.push(novel);
+  });
 
-    return novels;
+  return novels;
 };
 
 const novelUpdatesCcScraper = {
-    popularNovels,
-    parseNovelAndChapters,
-    parseChapter,
-    searchNovels,
+  popularNovels,
+  parseNovelAndChapters,
+  parseChapter,
+  searchNovels,
 };
 
 export default novelUpdatesCcScraper;

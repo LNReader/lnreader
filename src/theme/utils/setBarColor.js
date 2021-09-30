@@ -1,4 +1,4 @@
-import { StatusBar } from "react-native";
+import {StatusBar} from 'react-native';
 
 /**
  * Sets status and navigation bar color.
@@ -6,4 +6,4 @@ import { StatusBar } from "react-native";
  * @param theme
  */
 
-export const setBarColor = (theme) => StatusBar.setBarStyle(theme.statusBar);
+export const setBarColor = theme => StatusBar.setBarStyle(theme.statusBar);

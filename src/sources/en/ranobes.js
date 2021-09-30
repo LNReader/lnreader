@@ -1,228 +1,226 @@
-import cheerio from "react-native-cheerio";
+import cheerio from 'react-native-cheerio';
 
-import moment from "moment";
-import { showToast } from "../../hooks/showToast";
+import moment from 'moment';
+import {showToast} from '../../hooks/showToast';
 
 const sourceId = 51;
 
-const sourceName = "Ranobes";
+const sourceName = 'Ranobes';
 
-const baseUrl = "https://ranobes.net/";
+const baseUrl = 'https://ranobes.net/';
 
-const popularNovels = async (page) => {
-    const totalPages = 152;
-    let url = `${baseUrl}novels/page/${page}`;
+const popularNovels = async page => {
+  const totalPages = 152;
+  let url = `${baseUrl}novels/page/${page}`;
 
-    let headers = new Headers({
-        referer: "https://ranobes.net/",
-        "user-agent":
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36",
-    });
+  let headers = new Headers({
+    referer: 'https://ranobes.net/',
+    'user-agent':
+      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36',
+  });
 
-    const result = await fetch(url, { method: "GET", headers: headers });
-    const body = await result.text();
+  const result = await fetch(url, {method: 'GET', headers: headers});
+  const body = await result.text();
 
-    let $ = cheerio.load(body);
+  let $ = cheerio.load(body);
 
-    let novels = [];
+  let novels = [];
 
-    $("article.block.story.shortstory.mod-poster").each(function () {
-        const novelName = $(this).find("h2.title").text();
-        let novelCover = $(this).find("figure").attr("style");
+  $('article.block.story.shortstory.mod-poster').each(function () {
+    const novelName = $(this).find('h2.title').text();
+    let novelCover = $(this).find('figure').attr('style');
 
-        let novelUrl = $(this)
-            .find("a")
-            .attr("href")
-            .replace(baseUrl + "novels/", "");
+    let novelUrl = $(this)
+      .find('a')
+      .attr('href')
+      .replace(baseUrl + 'novels/', '');
 
-        novelCover = novelCover
-            .match(/background-image: url(.*);/)[1]
-            .slice(1, -1);
+    novelCover = novelCover.match(/background-image: url(.*);/)[1].slice(1, -1);
 
-        const novel = {
-            sourceId,
-            novelName,
-            novelCover,
-            novelUrl,
-        };
-
-        novels.push(novel);
-    });
-
-    return { totalPages, novels };
-};
-
-const parseNovelAndChapters = async (novelUrl) => {
-    showToast("Ranobes: Only has latest 25 chapters.");
-
-    const url = `${baseUrl}novels/${novelUrl}`;
-
-    const result = await fetch(url);
-    const body = await result.text();
-
-    let $ = cheerio.load(body);
-
-    let novel = {
-        sourceId,
-        sourceName,
-        url,
-        novelUrl,
+    const novel = {
+      sourceId,
+      novelName,
+      novelCover,
+      novelUrl,
     };
 
-    novel.novelName = $('meta[property="og:title"]').attr("content");
+    novels.push(novel);
+  });
 
-    novel.novelCover = baseUrl + $(".poster > a > img").attr("src");
+  return {totalPages, novels};
+};
 
-    novel.author = $("dl.author > dd").text();
+const parseNovelAndChapters = async novelUrl => {
+  showToast('Ranobes: Only has latest 25 chapters.');
 
-    novel.genre = $(".book-generes").text().trim();
+  const url = `${baseUrl}novels/${novelUrl}`;
 
-    novel.summary = $('div[itemprop="description"]').text().trim();
+  const result = await fetch(url);
+  const body = await result.text();
 
-    novel.author = $('span[itemprop="author"]').text();
-    novel.genre = $('span[itemprop="genre"]').text().replace(", ", ",");
+  let $ = cheerio.load(body);
 
-    let tempNovelUrl = $(".r-fullstory-chapters-foot")
-        .find("a")
-        .next()
-        .next()
-        .attr("href")
-        .split("/")[2];
+  let novel = {
+    sourceId,
+    sourceName,
+    url,
+    novelUrl,
+  };
 
-    const chapterListUrl = `${baseUrl}up/${tempNovelUrl}/page/1`;
+  novel.novelName = $('meta[property="og:title"]').attr('content');
 
-    const chaptersHtml = await fetch(chapterListUrl);
-    const chapterHtmlToString = await chaptersHtml.text();
+  novel.novelCover = baseUrl + $('.poster > a > img').attr('src');
 
-    $ = cheerio.load(chapterHtmlToString);
+  novel.author = $('dl.author > dd').text();
 
-    // let lastPage = $("div.pages > a").last().text();
+  novel.genre = $('.book-generes').text().trim();
 
-    let novelChapters = [];
+  novel.summary = $('div[itemprop="description"]').text().trim();
 
-    $("#dle-content > div.cat_block.cat_line").each(function () {
-        const chapterName = $(this).find(".title").text();
+  novel.author = $('span[itemprop="author"]').text();
+  novel.genre = $('span[itemprop="genre"]').text().replace(', ', ',');
 
-        let releaseDate = new Date();
+  let tempNovelUrl = $('.r-fullstory-chapters-foot')
+    .find('a')
+    .next()
+    .next()
+    .attr('href')
+    .split('/')[2];
 
-        let timeAgo = $(this).find("small").text();
+  const chapterListUrl = `${baseUrl}up/${tempNovelUrl}/page/1`;
 
-        timeAgo = timeAgo.match(/\d+/)[0];
+  const chaptersHtml = await fetch(chapterListUrl);
+  const chapterHtmlToString = await chaptersHtml.text();
 
-        if (timeAgo.includes("hours ago")) {
-            releaseDate.setTime(releaseDate.getTime() - timeAgo);
-        }
+  $ = cheerio.load(chapterHtmlToString);
 
-        if (timeAgo.includes("months ago")) {
-            releaseDate.setMonth(releaseDate.getMonth() - timeAgo);
-        }
+  // let lastPage = $("div.pages > a").last().text();
 
-        if (timeAgo.includes("days ago")) {
-            releaseDate.setDate(releaseDate.getDate() - timeAgo);
-        }
+  let novelChapters = [];
 
-        releaseDate = moment(releaseDate).format("MM/DD/YY");
+  $('#dle-content > div.cat_block.cat_line').each(function () {
+    const chapterName = $(this).find('.title').text();
 
-        const chapterUrl = $(this)
-            .find("a")
-            .attr("href")
-            .replace(baseUrl + "up/", "");
+    let releaseDate = new Date();
 
-        const chapter = {
-            chapterName,
-            releaseDate,
-            chapterUrl,
-        };
+    let timeAgo = $(this).find('small').text();
 
-        novelChapters.push(chapter);
-    });
+    timeAgo = timeAgo.match(/\d+/)[0];
 
-    // for (i = 1; i <= lastPage; i++) {
-    //     const chapterPageUrl = `${baseUrl}up/${tempNovelUrl}/page/${i}`;
+    if (timeAgo.includes('hours ago')) {
+      releaseDate.setTime(releaseDate.getTime() - timeAgo);
+    }
 
-    //     const chaptersHtml = await fetch(chapterPageUrl);
-    //     const chapterHtmlToString = await chaptersHtml.text();
-    //     $ = cheerio.load(chapterHtmlToString);
+    if (timeAgo.includes('months ago')) {
+      releaseDate.setMonth(releaseDate.getMonth() - timeAgo);
+    }
 
-    //     $("#dle-content > div.cat_block.cat_line").each(function () {
-    //         const chapterName = $(this).find(".title").text();
+    if (timeAgo.includes('days ago')) {
+      releaseDate.setDate(releaseDate.getDate() - timeAgo);
+    }
 
-    //         let releaseDate = new Date();
+    releaseDate = moment(releaseDate).format('MM/DD/YY');
 
-    //         let timeAgo = $(this).find("small").text();
+    const chapterUrl = $(this)
+      .find('a')
+      .attr('href')
+      .replace(baseUrl + 'up/', '');
 
-    //         timeAgo = timeAgo.match(/\d+/)[0];
+    const chapter = {
+      chapterName,
+      releaseDate,
+      chapterUrl,
+    };
 
-    //         if (timeAgo.includes("hours ago")) {
-    //             releaseDate.setTime(releaseDate.getTime() - timeAgo);
-    //         }
+    novelChapters.push(chapter);
+  });
 
-    //         if (timeAgo.includes("months ago")) {
-    //             releaseDate.setMonth(releaseDate.getMonth() - timeAgo);
-    //         }
+  // for (i = 1; i <= lastPage; i++) {
+  //     const chapterPageUrl = `${baseUrl}up/${tempNovelUrl}/page/${i}`;
 
-    //         if (timeAgo.includes("days ago")) {
-    //             releaseDate.setDate(releaseDate.getDate() - timeAgo);
-    //         }
+  //     const chaptersHtml = await fetch(chapterPageUrl);
+  //     const chapterHtmlToString = await chaptersHtml.text();
+  //     $ = cheerio.load(chapterHtmlToString);
 
-    //         releaseDate = moment(releaseDate).format("MM/DD/YY");
+  //     $("#dle-content > div.cat_block.cat_line").each(function () {
+  //         const chapterName = $(this).find(".title").text();
 
-    //         const chapterUrl = $(this)
-    //             .find("a")
-    //             .attr("href")
-    //             .replace(baseUrl + "up/", "");
+  //         let releaseDate = new Date();
 
-    //         const chapter = {
-    //             chapterName,
-    //             releaseDate,
-    //             chapterUrl,
-    //         };
+  //         let timeAgo = $(this).find("small").text();
 
-    //         novelChapters.push(chapter);
-    //     });
-    // }
+  //         timeAgo = timeAgo.match(/\d+/)[0];
 
-    novel.chapters = novelChapters.reverse();
+  //         if (timeAgo.includes("hours ago")) {
+  //             releaseDate.setTime(releaseDate.getTime() - timeAgo);
+  //         }
 
-    return novel;
+  //         if (timeAgo.includes("months ago")) {
+  //             releaseDate.setMonth(releaseDate.getMonth() - timeAgo);
+  //         }
+
+  //         if (timeAgo.includes("days ago")) {
+  //             releaseDate.setDate(releaseDate.getDate() - timeAgo);
+  //         }
+
+  //         releaseDate = moment(releaseDate).format("MM/DD/YY");
+
+  //         const chapterUrl = $(this)
+  //             .find("a")
+  //             .attr("href")
+  //             .replace(baseUrl + "up/", "");
+
+  //         const chapter = {
+  //             chapterName,
+  //             releaseDate,
+  //             chapterUrl,
+  //         };
+
+  //         novelChapters.push(chapter);
+  //     });
+  // }
+
+  novel.chapters = novelChapters.reverse();
+
+  return novel;
 };
 
 const parseChapter = async (novelUrl, chapterUrl) => {
-    const url = `${baseUrl}up/${chapterUrl}`;
+  const url = `${baseUrl}up/${chapterUrl}`;
 
-    const result = await fetch(url);
-    const body = await result.text();
+  const result = await fetch(url);
+  const body = await result.text();
 
-    $ = cheerio.load(body);
+  $ = cheerio.load(body);
 
-    let chapterName = $("h1.title").text();
+  let chapterName = $('h1.title').text();
 
-    let chapterText = $("#arrticle").html();
-    const chapter = {
-        sourceId,
-        novelUrl,
-        chapterUrl,
-        chapterName,
-        chapterText,
-    };
+  let chapterText = $('#arrticle').html();
+  const chapter = {
+    sourceId,
+    novelUrl,
+    chapterUrl,
+    chapterName,
+    chapterText,
+  };
 
-    return chapter;
+  return chapter;
 };
 
-const searchNovels = async (searchTerm) => {
-    /**
-     * TODO
-     */
+const searchNovels = async searchTerm => {
+  /**
+   * TODO
+   */
 
-    showToast("Ranobes: Search does not work");
-    return [];
+  showToast('Ranobes: Search does not work');
+  return [];
 };
 
 const RanobesScraper = {
-    popularNovels,
-    parseNovelAndChapters,
-    parseChapter,
-    searchNovels,
+  popularNovels,
+  parseNovelAndChapters,
+  parseChapter,
+  searchNovels,
 };
 
 export default RanobesScraper;

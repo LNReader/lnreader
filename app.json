@@ -1,11 +1,11 @@
 {
-    "expo": {
-        "name": "LNReader",
-        "slug": "LNReader",
-        "scheme": "lnreader",
-        "notification": {
-            "icon": "./assets/notification.png",
-            "color": "#00adb5"
-        }
+  "expo": {
+    "name": "LNReader",
+    "slug": "LNReader",
+    "scheme": "lnreader",
+    "notification": {
+      "icon": "./assets/notification.png",
+      "color": "#00adb5"
     }
+  }
 }

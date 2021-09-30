@@ -1,310 +1,307 @@
-import cheerio from "react-native-cheerio";
+import cheerio from 'react-native-cheerio';
 
 const sourceId = 50;
 
-const sourceName = "Novel Updates";
+const sourceName = 'Novel Updates';
 
-const baseUrl = "https://www.novelupdates.com/";
+const baseUrl = 'https://www.novelupdates.com/';
 
 let headers = new Headers({
-    "User-Agent":
-        "'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36",
+  'User-Agent':
+    "'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36",
 });
 
-const popularNovels = async (page) => {
-    const totalPages = 100;
-    let url = `${baseUrl}series-ranking/?rank=week&pg=` + page;
+const popularNovels = async page => {
+  const totalPages = 100;
+  let url = `${baseUrl}series-ranking/?rank=week&pg=` + page;
 
-    const result = await fetch(url, {
-        method: "GET",
-        headers: headers,
-    });
-    const body = await result.text();
+  const result = await fetch(url, {
+    method: 'GET',
+    headers: headers,
+  });
+  const body = await result.text();
 
-    const $ = cheerio.load(body);
+  const $ = cheerio.load(body);
 
-    const novels = [];
+  const novels = [];
 
-    $("div.search_main_box_nu").each(function (res) {
-        const novelCover = $(this).find("img").attr("src");
-        const novelName = $(this).find(".search_title > a").text();
-        const novelUrl = $(this)
-            .find(".search_title > a")
-            .attr("href")
-            .split("/")[4];
+  $('div.search_main_box_nu').each(function (res) {
+    const novelCover = $(this).find('img').attr('src');
+    const novelName = $(this).find('.search_title > a').text();
+    const novelUrl = $(this)
+      .find('.search_title > a')
+      .attr('href')
+      .split('/')[4];
 
-        const novel = {
-            sourceId,
-            novelName,
-            novelCover,
-            novelUrl,
-        };
-
-        novels.push(novel);
-    });
-
-    return { totalPages, novels };
-};
-
-const parseNovelAndChapters = async (novelUrl) => {
-    const url = `${baseUrl}series/${novelUrl}`;
-
-    const result = await fetch(url, {
-        method: "GET",
-        headers: headers,
-    });
-    const body = await result.text();
-
-    $ = cheerio.load(body);
-
-    let novel = {
-        sourceId,
-        sourceName,
-        url,
-        novelUrl,
+    const novel = {
+      sourceId,
+      novelName,
+      novelCover,
+      novelUrl,
     };
 
-    novel.novelName = $(".seriestitlenu").text();
+    novels.push(novel);
+  });
 
-    novel.novelCover = $(".seriesimg > img").attr("src");
+  return {totalPages, novels};
+};
 
-    novel.author = $("#showauthors").text().trim();
+const parseNovelAndChapters = async novelUrl => {
+  const url = `${baseUrl}series/${novelUrl}`;
 
-    novel.genre = $("#seriesgenre").text().trim().replace(/\s/g, ",");
+  const result = await fetch(url, {
+    method: 'GET',
+    headers: headers,
+  });
+  const body = await result.text();
 
-    novel.status = $("#editstatus").text().includes("Ongoing")
-        ? "Ongoing"
-        : "Completed";
+  $ = cheerio.load(body);
 
-    let type = $("#showtype").text().trim();
+  let novel = {
+    sourceId,
+    sourceName,
+    url,
+    novelUrl,
+  };
 
-    let summary = $("#editdescription").text().trim();
+  novel.novelName = $('.seriestitlenu').text();
 
-    novel.summary = summary + `\n\nType: ${type}`;
+  novel.novelCover = $('.seriesimg > img').attr('src');
 
-    let novelChapters = [];
+  novel.author = $('#showauthors').text().trim();
 
-    const novelId = $("input#mypostid").attr("value");
+  novel.genre = $('#seriesgenre').text().trim().replace(/\s/g, ',');
 
-    let formData = new FormData();
-    formData.append("action", "nd_getchapters");
-    formData.append("mygrr", 0);
-    formData.append("mypostid", parseInt(novelId));
+  novel.status = $('#editstatus').text().includes('Ongoing')
+    ? 'Ongoing'
+    : 'Completed';
 
-    const data = await fetch(
-        "https://www.novelupdates.com/wp-admin/admin-ajax.php",
-        {
-            method: "POST",
-            headers,
-            body: formData,
-        }
-    );
-    const text = await data.text();
+  let type = $('#showtype').text().trim();
 
-    $ = cheerio.load(text);
+  let summary = $('#editdescription').text().trim();
 
-    $("li.sp_li_chp").each(function () {
-        const chapterName = $(this).text().trim();
+  novel.summary = summary + `\n\nType: ${type}`;
 
-        const releaseDate = null;
+  let novelChapters = [];
 
-        const chapterUrl =
-            "https:" + $(this).find("a").first().next().attr("href");
+  const novelId = $('input#mypostid').attr('value');
 
-        novelChapters.push({ chapterName, releaseDate, chapterUrl });
-    });
+  let formData = new FormData();
+  formData.append('action', 'nd_getchapters');
+  formData.append('mygrr', 0);
+  formData.append('mypostid', parseInt(novelId));
 
-    novel.chapters = novelChapters.reverse();
+  const data = await fetch(
+    'https://www.novelupdates.com/wp-admin/admin-ajax.php',
+    {
+      method: 'POST',
+      headers,
+      body: formData,
+    },
+  );
+  const text = await data.text();
 
-    return novel;
+  $ = cheerio.load(text);
+
+  $('li.sp_li_chp').each(function () {
+    const chapterName = $(this).text().trim();
+
+    const releaseDate = null;
+
+    const chapterUrl = 'https:' + $(this).find('a').first().next().attr('href');
+
+    novelChapters.push({chapterName, releaseDate, chapterUrl});
+  });
+
+  novel.chapters = novelChapters.reverse();
+
+  return novel;
 };
 
 function getLocation(href) {
-    var match = href.match(
-        /^(https?\:)\/\/(([^:\/?#]*)(?:\:([0-9]+))?)([\/]{0,1}[^?#]*)(\?[^#]*|)(#.*|)$/
-    );
-    return match && `${match[1]}//${match[3]}`;
+  var match = href.match(
+    /^(https?\:)\/\/(([^:\/?#]*)(?:\:([0-9]+))?)([\/]{0,1}[^?#]*)(\?[^#]*|)(#.*|)$/,
+  );
+  return match && `${match[1]}//${match[3]}`;
 }
 
 const parseChapter = async (novelUrl, chapterUrl) => {
-    const url = chapterUrl;
+  const url = chapterUrl;
 
-    // console.log("Original URL: ", url);
+  // console.log("Original URL: ", url);
 
-    let result, body;
+  let result, body;
 
-    let chapterName = "";
+  let chapterName = '';
 
-    try {
-        result = await fetch(url, {
-            method: "GET",
-            headers: headers,
-        });
-        body = await result.text();
-
-        // console.log(result.url);
-
-        // console.log("Redirected URL: ", result.url);
-
-        $ = cheerio.load(body);
-
-        let isWuxiaWorld = result.url.toLowerCase().includes("wuxiaworld");
-
-        let isBlogspot = result.url.toLowerCase().includes("blogspot");
-
-        let isTumblr = result.url.toLowerCase().includes("tumblr");
-
-        /**
-         * Checks if its a wwordpress site
-         */
-        let isWordPress =
-            $('meta[name="generator"]').attr("content") || $("footer").text();
-
-        if (isWordPress) {
-            isWordPress =
-                isWordPress.toLowerCase().includes("wordpress") ||
-                isWordPress.includes("Site Kit by Google") ||
-                $(".powered-by").text().toLowerCase().includes("wordpress");
-        }
-
-        let isRainOfSnow = result.url.toLowerCase().includes("rainofsnow");
-
-        let isWebNovel = result.url.toLowerCase().includes("webnovel");
-
-        let isHostedNovel = result.url.toLowerCase().includes("hostednovel");
-
-        let isScribbleHub = result.url.toLowerCase().includes("scribblehub");
-
-        if (isWuxiaWorld) {
-            chapterText = $("#chapter-content").html();
-        } else if (isRainOfSnow) {
-            chapterText = $("div.content").html();
-        } else if (isTumblr) {
-            chapterText = $(".post").html();
-        } else if (isBlogspot) {
-            $(".post-share-buttons").remove();
-
-            chapterText = $(".entry-content").html();
-        } else if (isHostedNovel) {
-            chapterText = $(".chapter").html();
-        } else if (isScribbleHub) {
-            chapterText = $("div.chp_raw").html();
-        } else if (isWordPress) {
-            /**
-             * Remove wordpress bloat tags
-             */
-
-            const bloatClasses = [
-                ".c-ads",
-                "#madara-comments",
-                "#comments",
-                ".content-comments",
-                ".sharedaddy",
-                ".wp-dark-mode-switcher",
-                ".wp-next-post-navi",
-                ".wp-block-buttons",
-                ".wp-block-columns",
-                ".post-cats",
-                ".sidebar",
-                ".author-avatar",
-                ".ezoic-ad",
-            ];
-
-            bloatClasses.map((tag) => $(tag).remove());
-
-            chapterText =
-                $(".entry-content").html() ||
-                $(".single_post").html() ||
-                $(".post-entry").html() ||
-                $(".main-content").html() ||
-                $("article.post").html() ||
-                $(".content").html() ||
-                $("#content").html();
-        } else if (isWebNovel) {
-            chapterText = $(".cha-words").html();
-
-            if (!chapterText) {
-                chapterText = $("._content").html();
-            }
-        } else {
-            /**
-             * Remove unnecessary tags
-             */
-            const tags = ["nav", "header", "footer", ".hidden"];
-
-            tags.map((tag) => $(tag).remove());
-
-            chapterText = $("body").html();
-        }
-
-        if (!chapterText) {
-            chapterText =
-                "Chapter not available.\n\nReport if it's available in webview.";
-        } else {
-            /**
-             * Convert relative urls to absolute
-             */
-            chapterText = chapterText.replace(
-                /href="\//g,
-                `href="${getLocation(result.url)}/`
-            );
-        }
-    } catch (error) {
-        chapterText = `Chapter not available (Error: ${error.message}).\n\nReport if it's available in webview.`;
-    }
-
-    const chapter = {
-        sourceId,
-        novelUrl,
-        chapterUrl,
-        chapterName,
-        chapterText,
-    };
-
-    return chapter;
-};
-
-const searchNovels = async (searchTerm) => {
-    const url =
-        "https://www.novelupdates.com/?s=" +
-        searchTerm +
-        "&post_type=seriesplans";
-
-    const res = await fetch(url, {
-        method: "GET",
-        headers: headers,
+  try {
+    result = await fetch(url, {
+      method: 'GET',
+      headers: headers,
     });
-    const body = await res.text();
+    body = await result.text();
+
+    // console.log(result.url);
+
+    // console.log("Redirected URL: ", result.url);
 
     $ = cheerio.load(body);
 
-    let novels = [];
+    let isWuxiaWorld = result.url.toLowerCase().includes('wuxiaworld');
 
-    $("div.search_main_box_nu").each(function (res) {
-        const novelCover = $(this).find("img").attr("src");
-        const novelName = $(this).find(".search_title > a").text();
-        const novelUrl = $(this)
-            .find(".search_title > a")
-            .attr("href")
-            .split("/")[4];
+    let isBlogspot = result.url.toLowerCase().includes('blogspot');
 
-        const novel = {
-            sourceId,
-            novelName,
-            novelCover,
-            novelUrl,
-        };
+    let isTumblr = result.url.toLowerCase().includes('tumblr');
 
-        novels.push(novel);
-    });
-    return novels;
+    /**
+     * Checks if its a wwordpress site
+     */
+    let isWordPress =
+      $('meta[name="generator"]').attr('content') || $('footer').text();
+
+    if (isWordPress) {
+      isWordPress =
+        isWordPress.toLowerCase().includes('wordpress') ||
+        isWordPress.includes('Site Kit by Google') ||
+        $('.powered-by').text().toLowerCase().includes('wordpress');
+    }
+
+    let isRainOfSnow = result.url.toLowerCase().includes('rainofsnow');
+
+    let isWebNovel = result.url.toLowerCase().includes('webnovel');
+
+    let isHostedNovel = result.url.toLowerCase().includes('hostednovel');
+
+    let isScribbleHub = result.url.toLowerCase().includes('scribblehub');
+
+    if (isWuxiaWorld) {
+      chapterText = $('#chapter-content').html();
+    } else if (isRainOfSnow) {
+      chapterText = $('div.content').html();
+    } else if (isTumblr) {
+      chapterText = $('.post').html();
+    } else if (isBlogspot) {
+      $('.post-share-buttons').remove();
+
+      chapterText = $('.entry-content').html();
+    } else if (isHostedNovel) {
+      chapterText = $('.chapter').html();
+    } else if (isScribbleHub) {
+      chapterText = $('div.chp_raw').html();
+    } else if (isWordPress) {
+      /**
+       * Remove wordpress bloat tags
+       */
+
+      const bloatClasses = [
+        '.c-ads',
+        '#madara-comments',
+        '#comments',
+        '.content-comments',
+        '.sharedaddy',
+        '.wp-dark-mode-switcher',
+        '.wp-next-post-navi',
+        '.wp-block-buttons',
+        '.wp-block-columns',
+        '.post-cats',
+        '.sidebar',
+        '.author-avatar',
+        '.ezoic-ad',
+      ];
+
+      bloatClasses.map(tag => $(tag).remove());
+
+      chapterText =
+        $('.entry-content').html() ||
+        $('.single_post').html() ||
+        $('.post-entry').html() ||
+        $('.main-content').html() ||
+        $('article.post').html() ||
+        $('.content').html() ||
+        $('#content').html();
+    } else if (isWebNovel) {
+      chapterText = $('.cha-words').html();
+
+      if (!chapterText) {
+        chapterText = $('._content').html();
+      }
+    } else {
+      /**
+       * Remove unnecessary tags
+       */
+      const tags = ['nav', 'header', 'footer', '.hidden'];
+
+      tags.map(tag => $(tag).remove());
+
+      chapterText = $('body').html();
+    }
+
+    if (!chapterText) {
+      chapterText =
+        "Chapter not available.\n\nReport if it's available in webview.";
+    } else {
+      /**
+       * Convert relative urls to absolute
+       */
+      chapterText = chapterText.replace(
+        /href="\//g,
+        `href="${getLocation(result.url)}/`,
+      );
+    }
+  } catch (error) {
+    chapterText = `Chapter not available (Error: ${error.message}).\n\nReport if it's available in webview.`;
+  }
+
+  const chapter = {
+    sourceId,
+    novelUrl,
+    chapterUrl,
+    chapterName,
+    chapterText,
+  };
+
+  return chapter;
+};
+
+const searchNovels = async searchTerm => {
+  const url =
+    'https://www.novelupdates.com/?s=' + searchTerm + '&post_type=seriesplans';
+
+  const res = await fetch(url, {
+    method: 'GET',
+    headers: headers,
+  });
+  const body = await res.text();
+
+  $ = cheerio.load(body);
+
+  let novels = [];
+
+  $('div.search_main_box_nu').each(function (res) {
+    const novelCover = $(this).find('img').attr('src');
+    const novelName = $(this).find('.search_title > a').text();
+    const novelUrl = $(this)
+      .find('.search_title > a')
+      .attr('href')
+      .split('/')[4];
+
+    const novel = {
+      sourceId,
+      novelName,
+      novelCover,
+      novelUrl,
+    };
+
+    novels.push(novel);
+  });
+  return novels;
 };
 
 const NovelUpdatesScraper = {
-    popularNovels,
-    parseNovelAndChapters,
-    parseChapter,
-    searchNovels,
+  popularNovels,
+  parseNovelAndChapters,
+  parseChapter,
+  searchNovels,
 };
 
 export default NovelUpdatesScraper;

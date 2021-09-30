@@ -1,173 +1,173 @@
-import cheerio from "react-native-cheerio";
+import cheerio from 'react-native-cheerio';
 
-import moment from "moment";
+import moment from 'moment';
 
 const sourceId = 49;
 
-const sourceName = "wuxia.city";
+const sourceName = 'wuxia.city';
 
-const baseUrl = "https://wuxia.city/";
+const baseUrl = 'https://wuxia.city/';
 
-const popularNovels = async (page) => {
-    const totalPages = 133;
-    let url = `${baseUrl}genre/all?page=` + page;
+const popularNovels = async page => {
+  const totalPages = 133;
+  let url = `${baseUrl}genre/all?page=` + page;
 
-    const result = await fetch(url);
-    const body = await result.text();
+  const result = await fetch(url);
+  const body = await result.text();
 
-    $ = cheerio.load(body);
+  $ = cheerio.load(body);
 
-    let novels = [];
+  let novels = [];
 
-    $(".section-item.card").each(function () {
-        const novelName = $(this).find(".book-name").text();
-        const novelCover = $(this).find("img").attr("src");
-        const novelUrl = $(this).find("a").attr("href").replace("/book/", "");
+  $('.section-item.card').each(function () {
+    const novelName = $(this).find('.book-name').text();
+    const novelCover = $(this).find('img').attr('src');
+    const novelUrl = $(this).find('a').attr('href').replace('/book/', '');
 
-        const novel = {
-            sourceId,
-            novelName,
-            novelCover,
-            novelUrl,
-        };
-
-        novels.push(novel);
-    });
-
-    return { totalPages, novels };
-};
-
-const parseNovelAndChapters = async (novelUrl) => {
-    const url = `${baseUrl}book/${novelUrl}`;
-
-    const result = await fetch(url);
-    const body = await result.text();
-
-    let $ = cheerio.load(body);
-
-    let novel = {
-        sourceId,
-        sourceName,
-        url,
-        novelUrl,
+    const novel = {
+      sourceId,
+      novelName,
+      novelCover,
+      novelUrl,
     };
 
-    novel.novelName = $("h1.book-name").text();
+    novels.push(novel);
+  });
 
-    novel.novelCover = $("div.book-img > img").attr("src");
+  return {totalPages, novels};
+};
 
-    novel.author = $("dl.author > dd").text();
+const parseNovelAndChapters = async novelUrl => {
+  const url = `${baseUrl}book/${novelUrl}`;
 
-    novel.genre = $(".book-generes").text().trim();
+  const result = await fetch(url);
+  const body = await result.text();
 
-    novel.summary = $(".book-synopsis").text().replace("Synopsis", "").trim();
+  let $ = cheerio.load(body);
 
-    const chapterListUrl = `${baseUrl}book/${novelUrl}/chapter-list`;
+  let novel = {
+    sourceId,
+    sourceName,
+    url,
+    novelUrl,
+  };
 
-    const chaptersHtml = await fetch(chapterListUrl);
-    const chapterHtmlToString = await chaptersHtml.text();
+  novel.novelName = $('h1.book-name').text();
 
-    $ = cheerio.load(chapterHtmlToString);
+  novel.novelCover = $('div.book-img > img').attr('src');
 
-    let novelChapters = [];
+  novel.author = $('dl.author > dd').text();
 
-    $("ul.chapters > li").each(function () {
-        const chapterName = $(this)
-            .find(".chapter-name")
-            .text()
-            .trim()
-            .replace(/\n/, " ");
+  novel.genre = $('.book-generes').text().trim();
 
-        let releaseDate = new Date();
+  novel.summary = $('.book-synopsis').text().replace('Synopsis', '').trim();
 
-        let timeAgo = $(this).find(".chapter-time").text();
+  const chapterListUrl = `${baseUrl}book/${novelUrl}/chapter-list`;
 
-        timeAgo = timeAgo.replace("one", 1);
+  const chaptersHtml = await fetch(chapterListUrl);
+  const chapterHtmlToString = await chaptersHtml.text();
 
-        timeAgo = timeAgo.match(/\d+/)[0];
+  $ = cheerio.load(chapterHtmlToString);
 
-        if (timeAgo.includes("months ago") || timeAgo.includes("month ago")) {
-            releaseDate.setMonth(releaseDate.getMonth() - timeAgo);
-        }
+  let novelChapters = [];
 
-        if (timeAgo.includes("days ago")) {
-            releaseDate.setDate(releaseDate.getDate() - timeAgo);
-        }
+  $('ul.chapters > li').each(function () {
+    const chapterName = $(this)
+      .find('.chapter-name')
+      .text()
+      .trim()
+      .replace(/\n/, ' ');
 
-        releaseDate = moment(releaseDate).format("MM/DD/YY");
+    let releaseDate = new Date();
 
-        const chapterUrl = $(this).find("a").attr("href").split("/").pop();
+    let timeAgo = $(this).find('.chapter-time').text();
 
-        const chapter = {
-            chapterName,
-            releaseDate,
-            chapterUrl,
-        };
+    timeAgo = timeAgo.replace('one', 1);
 
-        novelChapters.push(chapter);
-    });
+    timeAgo = timeAgo.match(/\d+/)[0];
 
-    novel.chapters = novelChapters.reverse();
+    if (timeAgo.includes('months ago') || timeAgo.includes('month ago')) {
+      releaseDate.setMonth(releaseDate.getMonth() - timeAgo);
+    }
 
-    return novel;
+    if (timeAgo.includes('days ago')) {
+      releaseDate.setDate(releaseDate.getDate() - timeAgo);
+    }
+
+    releaseDate = moment(releaseDate).format('MM/DD/YY');
+
+    const chapterUrl = $(this).find('a').attr('href').split('/').pop();
+
+    const chapter = {
+      chapterName,
+      releaseDate,
+      chapterUrl,
+    };
+
+    novelChapters.push(chapter);
+  });
+
+  novel.chapters = novelChapters.reverse();
+
+  return novel;
 };
 
 const parseChapter = async (novelUrl, chapterUrl) => {
-    const url = `${baseUrl}book/${novelUrl}/${chapterUrl}`;
+  const url = `${baseUrl}book/${novelUrl}/${chapterUrl}`;
 
-    const result = await fetch(url);
-    const body = await result.text();
+  const result = await fetch(url);
+  const body = await result.text();
 
-    $ = cheerio.load(body);
+  $ = cheerio.load(body);
 
-    let chapterName = $(".chapter-name").text();
+  let chapterName = $('.chapter-name').text();
 
-    let chapterText = $(".chapter-content").html();
-    const chapter = {
-        sourceId,
-        novelUrl,
-        chapterUrl,
-        chapterName,
-        chapterText,
-    };
+  let chapterText = $('.chapter-content').html();
+  const chapter = {
+    sourceId,
+    novelUrl,
+    chapterUrl,
+    chapterName,
+    chapterText,
+  };
 
-    return chapter;
+  return chapter;
 };
 
-const searchNovels = async (searchTerm) => {
-    const url = `${baseUrl}search?q=${searchTerm}`;
+const searchNovels = async searchTerm => {
+  const url = `${baseUrl}search?q=${searchTerm}`;
 
-    const result = await fetch(url);
-    const body = await result.text();
+  const result = await fetch(url);
+  const body = await result.text();
 
-    $ = cheerio.load(body);
+  $ = cheerio.load(body);
 
-    let novels = [];
+  let novels = [];
 
-    $(".section-item").each(function () {
-        const novelName = $(this).find(".book-name").text().trim();
-        const novelCover = $(this).find("img").attr("src");
+  $('.section-item').each(function () {
+    const novelName = $(this).find('.book-name').text().trim();
+    const novelCover = $(this).find('img').attr('src');
 
-        let novelUrl = $(this).find("a").attr("href").replace("/book/", "");
+    let novelUrl = $(this).find('a').attr('href').replace('/book/', '');
 
-        const novel = {
-            sourceId,
-            novelName,
-            novelCover,
-            novelUrl,
-        };
+    const novel = {
+      sourceId,
+      novelName,
+      novelCover,
+      novelUrl,
+    };
 
-        novels.push(novel);
-    });
+    novels.push(novel);
+  });
 
-    return novels;
+  return novels;
 };
 
 const WuxiaCityScraper = {
-    popularNovels,
-    parseNovelAndChapters,
-    parseChapter,
-    searchNovels,
+  popularNovels,
+  parseNovelAndChapters,
+  parseChapter,
+  searchNovels,
 };
 
 export default WuxiaCityScraper;

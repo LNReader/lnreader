@@ -1,161 +1,161 @@
-import cheerio from "react-native-cheerio";
+import cheerio from 'react-native-cheerio';
 
-const baseUrl = "https://www.novelhall.com/";
+const baseUrl = 'https://www.novelhall.com/';
 
-const popularNovels = async (page) => {
-    let totalPages = 1;
-    const result = await fetch(baseUrl);
-    const body = await result.text();
+const popularNovels = async page => {
+  let totalPages = 1;
+  const result = await fetch(baseUrl);
+  const body = await result.text();
 
-    $ = cheerio.load(body);
+  $ = cheerio.load(body);
 
-    let novels = [];
+  let novels = [];
 
-    $("div.section1")
-        .find("li")
-        .each(function (result) {
-            const novelName = $(this).find(".book-info > h2 > a").text();
-            const novelCover = $(this).find("img").attr("src");
-            const novelUrl = $(this).find("a").attr("href").substring(1);
+  $('div.section1')
+    .find('li')
+    .each(function (result) {
+      const novelName = $(this).find('.book-info > h2 > a').text();
+      const novelCover = $(this).find('img').attr('src');
+      const novelUrl = $(this).find('a').attr('href').substring(1);
 
-            const novel = {
-                sourceId: 6,
-                novelName,
-                novelCover,
-                novelUrl,
-            };
+      const novel = {
+        sourceId: 6,
+        novelName,
+        novelCover,
+        novelUrl,
+      };
 
-            novels.push(novel);
-        });
+      novels.push(novel);
+    });
 
-    return { totalPages, novels };
+  return {totalPages, novels};
 };
 
-const parseNovelAndChapters = async (novelUrl) => {
-    const url = `${baseUrl}${novelUrl}/`;
+const parseNovelAndChapters = async novelUrl => {
+  const url = `${baseUrl}${novelUrl}/`;
 
-    const result = await fetch(url);
-    const body = await result.text();
+  const result = await fetch(url);
+  const body = await result.text();
 
-    $ = cheerio.load(body);
+  $ = cheerio.load(body);
 
-    let novel = {};
+  let novel = {};
 
-    novel.sourceId = 6;
+  novel.sourceId = 6;
 
-    novel.sourceName = "NovelHall";
+  novel.sourceName = 'NovelHall';
 
-    novel.url = url;
+  novel.url = url;
 
-    novel.novelUrl = novelUrl;
+  novel.novelUrl = novelUrl;
 
-    novel.novelName = $("h1").text();
+  novel.novelName = $('h1').text();
 
-    novel.novelCover = $("div.book-img > img").attr("src");
+  novel.novelCover = $('div.book-img > img').attr('src');
 
-    novel.summary = $("div.intro")
-        .text()
-        .replace(/[\t\n]/g, "");
+  novel.summary = $('div.intro')
+    .text()
+    .replace(/[\t\n]/g, '');
 
-    novel.author = $("span.blue").first().text().replace("Author：", "");
+  novel.author = $('span.blue').first().text().replace('Author：', '');
 
-    novel.genre = $("a.red").text();
+  novel.genre = $('a.red').text();
 
-    novel.artist = null;
+  novel.artist = null;
 
-    novel.status = $("span.blue").first().next().text().replace("Status：", "");
+  novel.status = $('span.blue').first().next().text().replace('Status：', '');
 
-    let novelChapters = [];
+  let novelChapters = [];
 
-    $("div.book-catalog.hidden-xs#morelist")
-        .find("li.post-11")
-        .each(function (result) {
-            let chapterName = $(this).find("a").text();
+  $('div.book-catalog.hidden-xs#morelist')
+    .find('li.post-11')
+    .each(function (result) {
+      let chapterName = $(this).find('a').text();
 
-            let releaseDate = null;
+      let releaseDate = null;
 
-            let chapterUrl = $(this).find("a").attr("href");
+      let chapterUrl = $(this).find('a').attr('href');
 
-            if (chapterUrl) {
-                chapterUrl = chapterUrl.replace(`/${novelUrl}/`, "");
-            }
+      if (chapterUrl) {
+        chapterUrl = chapterUrl.replace(`/${novelUrl}/`, '');
+      }
 
-            const chapter = {
-                chapterName,
-                releaseDate,
-                chapterUrl,
-            };
+      const chapter = {
+        chapterName,
+        releaseDate,
+        chapterUrl,
+      };
 
-            novelChapters.push(chapter);
-        });
+      novelChapters.push(chapter);
+    });
 
-    novel.chapters = novelChapters;
+  novel.chapters = novelChapters;
 
-    return novel;
+  return novel;
 };
 
 const parseChapter = async (novelUrl, chapterUrl) => {
-    const url = `${baseUrl}${novelUrl}/${chapterUrl}`;
+  const url = `${baseUrl}${novelUrl}/${chapterUrl}`;
 
-    const result = await fetch(url);
-    const body = await result.text();
+  const result = await fetch(url);
+  const body = await result.text();
 
-    $ = cheerio.load(body);
+  $ = cheerio.load(body);
 
-    const chapterName = $("h1").text();
-    let chapterText = $("div.entry-content").html();
-    chapter = {
-        sourceId: 6,
-        novelUrl,
-        chapterUrl,
-        chapterName,
-        chapterText,
-    };
+  const chapterName = $('h1').text();
+  let chapterText = $('div.entry-content').html();
+  chapter = {
+    sourceId: 6,
+    novelUrl,
+    chapterUrl,
+    chapterName,
+    chapterText,
+  };
 
-    return chapter;
+  return chapter;
 };
 
-const searchNovels = async (searchTerm) => {
-    const searchUrl = `${baseUrl}index.php?s=so&module=book&keyword=`;
+const searchNovels = async searchTerm => {
+  const searchUrl = `${baseUrl}index.php?s=so&module=book&keyword=`;
 
-    const url = `${searchUrl}${searchTerm}`;
+  const url = `${searchUrl}${searchTerm}`;
 
-    const result = await fetch(url);
-    const body = await result.text();
+  const result = await fetch(url);
+  const body = await result.text();
 
-    $ = cheerio.load(body);
+  $ = cheerio.load(body);
 
-    let novels = [];
+  let novels = [];
 
-    $("tr").each(function (result) {
-        let novelName = $(this).find("td:nth-child(2)").text();
-        novelName = novelName.replace(/[\t\n]/g, "");
+  $('tr').each(function (result) {
+    let novelName = $(this).find('td:nth-child(2)').text();
+    novelName = novelName.replace(/[\t\n]/g, '');
 
-        const novelCover = "https://cdn.novelupdates.com/imgmid/noimagemid.jpg";
+    const novelCover = 'https://cdn.novelupdates.com/imgmid/noimagemid.jpg';
 
-        let novelUrl = $(this).find("td:nth-child(2) >").attr("href");
-        if (novelUrl) {
-            novelUrl = novelUrl.slice(1);
-        }
+    let novelUrl = $(this).find('td:nth-child(2) >').attr('href');
+    if (novelUrl) {
+      novelUrl = novelUrl.slice(1);
+    }
 
-        novel = {
-            sourceId: 6,
-            novelName,
-            novelCover,
-            novelUrl,
-        };
+    novel = {
+      sourceId: 6,
+      novelName,
+      novelCover,
+      novelUrl,
+    };
 
-        novels.push(novel);
-    });
+    novels.push(novel);
+  });
 
-    return novels;
+  return novels;
 };
 
 const novelhallScraper = {
-    popularNovels,
-    parseNovelAndChapters,
-    parseChapter,
-    searchNovels,
+  popularNovels,
+  parseNovelAndChapters,
+  parseChapter,
+  searchNovels,
 };
 
 export default novelhallScraper;

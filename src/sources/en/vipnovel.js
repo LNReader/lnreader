@@ -1,189 +1,189 @@
-import cheerio from "react-native-cheerio";
+import cheerio from 'react-native-cheerio';
 
-const baseUrl = "https://vipnovel.com/";
+const baseUrl = 'https://vipnovel.com/';
 
-const popularNovels = async (page) => {
-    let totalPages = 89;
-    let url = `${baseUrl}vipnovel/page/${page}/?m_orderby=rating`;
+const popularNovels = async page => {
+  let totalPages = 89;
+  let url = `${baseUrl}vipnovel/page/${page}/?m_orderby=rating`;
 
-    const result = await fetch(url);
-    const body = await result.text();
+  const result = await fetch(url);
+  const body = await result.text();
 
-    $ = cheerio.load(body);
+  $ = cheerio.load(body);
 
-    let novels = [];
+  let novels = [];
 
-    $(".page-item-detail").each(function (result) {
-        const novelName = $(this).find("h5 > a").text();
-        const novelCover = $(this).find("img").attr("src");
+  $('.page-item-detail').each(function (result) {
+    const novelName = $(this).find('h5 > a').text();
+    const novelCover = $(this).find('img').attr('src');
 
-        let novelUrl = $(this).find("h5 > a").attr("href");
-        novelUrl = novelUrl.replace(`${baseUrl}vipnovel/`, "");
+    let novelUrl = $(this).find('h5 > a').attr('href');
+    novelUrl = novelUrl.replace(`${baseUrl}vipnovel/`, '');
 
-        const novel = {
-            sourceId: 10,
-            novelName,
-            novelCover,
-            novelUrl,
-        };
+    const novel = {
+      sourceId: 10,
+      novelName,
+      novelCover,
+      novelUrl,
+    };
 
-        novels.push(novel);
-    });
+    novels.push(novel);
+  });
 
-    return { totalPages, novels };
+  return {totalPages, novels};
 };
 
-const parseNovelAndChapters = async (novelUrl) => {
-    const url = `${baseUrl}vipnovel/${novelUrl}`;
+const parseNovelAndChapters = async novelUrl => {
+  const url = `${baseUrl}vipnovel/${novelUrl}`;
 
-    console.log(url);
+  console.log(url);
 
-    const result = await fetch(url);
-    const body = await result.text();
+  const result = await fetch(url);
+  const body = await result.text();
 
-    $ = cheerio.load(body);
+  $ = cheerio.load(body);
 
-    let novel = {};
+  let novel = {};
 
-    novel.sourceId = 10;
+  novel.sourceId = 10;
 
-    novel.sourceName = "VipNovel";
+  novel.sourceName = 'VipNovel';
 
-    novel.url = url;
+  novel.url = url;
 
-    novel.novelUrl = novelUrl;
+  novel.novelUrl = novelUrl;
 
-    novel.novelName = $(".post-title > h3")
-        .text()
-        .replace(/[\t\n]/g, "")
-        .trim();
+  novel.novelName = $('.post-title > h3')
+    .text()
+    .replace(/[\t\n]/g, '')
+    .trim();
 
-    novel.novelCover = $(".summary_image > a > img").attr("src");
-    $(".post-content_item").each(function (result) {
-        detailName = $(this)
-            .find(".summary-heading > h5")
-            .text()
-            .replace(/[\t\n]/g, "")
-            .trim();
-        detail = $(this)
-            .find(".summary-content")
-            .text()
-            .replace(/[\t\n]/g, "")
-            .trim();
+  novel.novelCover = $('.summary_image > a > img').attr('src');
+  $('.post-content_item').each(function (result) {
+    detailName = $(this)
+      .find('.summary-heading > h5')
+      .text()
+      .replace(/[\t\n]/g, '')
+      .trim();
+    detail = $(this)
+      .find('.summary-content')
+      .text()
+      .replace(/[\t\n]/g, '')
+      .trim();
 
-        switch (detailName) {
-            case "Genre(s)":
-                novel.genre = detail.trim().replace(/[\t\n]/g, ",");
-                break;
-            case "Author(s)":
-                novel.author = detail.trim();
-                break;
-            case "Artist(s)":
-                novel.status = detail.trim();
-                break;
-        }
-    });
+    switch (detailName) {
+      case 'Genre(s)':
+        novel.genre = detail.trim().replace(/[\t\n]/g, ',');
+        break;
+      case 'Author(s)':
+        novel.author = detail.trim();
+        break;
+      case 'Artist(s)':
+        novel.status = detail.trim();
+        break;
+    }
+  });
 
-    $(".summary__content > p").first().remove();
+  $('.summary__content > p').first().remove();
 
-    let novelSummary = $(".description-summary > div.summary__content")
-        .text()
-        .replace("Synopsis", "");
+  let novelSummary = $('.description-summary > div.summary__content')
+    .text()
+    .replace('Synopsis', '');
 
-    novel.summary = novelSummary.replace(/[\t\n]/g, "");
+  novel.summary = novelSummary.replace(/[\t\n]/g, '');
 
-    let novelChapters = [];
+  let novelChapters = [];
 
-    $(".wp-manga-chapter").each(function (result) {
-        const chapterName = $(this)
-            .find("a")
-            .text()
-            .replace(/[\t\n]/g, "")
-            .trim();
+  $('.wp-manga-chapter').each(function (result) {
+    const chapterName = $(this)
+      .find('a')
+      .text()
+      .replace(/[\t\n]/g, '')
+      .trim();
 
-        const releaseDate = $(this)
-            .find("span")
-            .text()
-            .replace(/[\t\n]/g, "")
-            .trim();
+    const releaseDate = $(this)
+      .find('span')
+      .text()
+      .replace(/[\t\n]/g, '')
+      .trim();
 
-        const chapterUrl = $(this).find("a").attr("href").replace(url, "");
+    const chapterUrl = $(this).find('a').attr('href').replace(url, '');
 
-        const chapter = { chapterName, releaseDate, chapterUrl };
+    const chapter = {chapterName, releaseDate, chapterUrl};
 
-        console.log(chapterUrl);
+    console.log(chapterUrl);
 
-        novelChapters.push(chapter);
-    });
+    novelChapters.push(chapter);
+  });
 
-    novel.chapters = novelChapters.reverse();
+  novel.chapters = novelChapters.reverse();
 
-    return novel;
+  return novel;
 };
 
 const parseChapter = async (novelUrl, chapterUrl) => {
-    const url = baseUrl + "vipnovel/" + novelUrl + chapterUrl;
+  const url = baseUrl + 'vipnovel/' + novelUrl + chapterUrl;
 
-    console.log(url);
+  console.log(url);
 
-    const result = await fetch(url);
-    const body = await result.text();
+  const result = await fetch(url);
+  const body = await result.text();
 
-    $ = cheerio.load(body);
+  $ = cheerio.load(body);
 
-    let chapterName = $(".text-center").text();
+  let chapterName = $('.text-center').text();
 
-    if (!chapterName) {
-        chapterName = $(".text-left > div> h3").text();
-    }
+  if (!chapterName) {
+    chapterName = $('.text-left > div> h3').text();
+  }
 
-    let chapterText = $(".text-left").html();
-    const chapter = {
-        sourceId: 10,
-        novelUrl,
-        chapterUrl,
-        chapterName,
-        chapterText,
-    };
+  let chapterText = $('.text-left').html();
+  const chapter = {
+    sourceId: 10,
+    novelUrl,
+    chapterUrl,
+    chapterName,
+    chapterText,
+  };
 
-    return chapter;
+  return chapter;
 };
 
-const searchNovels = async (searchTerm) => {
-    const url = `${baseUrl}?s=${searchTerm}&post_type=wp-manga`;
+const searchNovels = async searchTerm => {
+  const url = `${baseUrl}?s=${searchTerm}&post_type=wp-manga`;
 
-    const result = await fetch(url);
-    const body = await result.text();
+  const result = await fetch(url);
+  const body = await result.text();
 
-    $ = cheerio.load(body);
+  $ = cheerio.load(body);
 
-    let novels = [];
+  let novels = [];
 
-    $(".c-tabs-item__content").each(function (result) {
-        const novelName = $(this).find("h4 > a").text();
-        const novelCover = $(this).find("img").attr("src");
+  $('.c-tabs-item__content').each(function (result) {
+    const novelName = $(this).find('h4 > a').text();
+    const novelCover = $(this).find('img').attr('src');
 
-        let novelUrl = $(this).find("h4 > a").attr("href");
-        novelUrl = novelUrl.replace(`${baseUrl}vipnovel/`, "");
+    let novelUrl = $(this).find('h4 > a').attr('href');
+    novelUrl = novelUrl.replace(`${baseUrl}vipnovel/`, '');
 
-        const novel = {
-            sourceId: 10,
-            novelName,
-            novelCover,
-            novelUrl,
-        };
+    const novel = {
+      sourceId: 10,
+      novelName,
+      novelCover,
+      novelUrl,
+    };
 
-        novels.push(novel);
-    });
+    novels.push(novel);
+  });
 
-    return novels;
+  return novels;
 };
 
 const vipNovelScraper = {
-    popularNovels,
-    parseNovelAndChapters,
-    parseChapter,
-    searchNovels,
+  popularNovels,
+  parseNovelAndChapters,
+  parseChapter,
+  searchNovels,
 };
 
 export default vipNovelScraper;

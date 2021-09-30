@@ -1,131 +1,129 @@
-import { useSelector } from "react-redux";
-import { darkTheme } from "../theme/theme";
+import {useSelector} from 'react-redux';
+import {darkTheme} from '../theme/theme';
 
 const useTheme = () => {
-    const theme = useSelector((state) => state.settingsReducer.theme);
+  const theme = useSelector(state => state.settingsReducer.theme);
 
-    return theme || darkTheme;
+  return theme || darkTheme;
 };
 
 const useReaderSettings = () => {
-    const readerSettings = useSelector((state) => state.settingsReducer.reader);
+  const readerSettings = useSelector(state => state.settingsReducer.reader);
 
-    return readerSettings;
+  return readerSettings;
 };
 
 const useSettings = () => {
-    const settings = useSelector((state) => state.settingsReducer);
+  const settings = useSelector(state => state.settingsReducer);
 
-    return settings;
+  return settings;
 };
 
 const useLibrary = () => {
-    const library = useSelector((state) => state.libraryReducer.novels);
+  const library = useSelector(state => state.libraryReducer.novels);
 
-    return library;
+  return library;
 };
 
 const useNovel = () => {
-    const novel = useSelector((state) => state.novelReducer);
+  const novel = useSelector(state => state.novelReducer);
 
-    return novel;
+  return novel;
 };
 
 const useChapter = () => {
-    const chapter = useSelector((state) => state.chapterReducer);
+  const chapter = useSelector(state => state.chapterReducer);
 
-    return chapter;
+  return chapter;
 };
 
-const findNovel = (novelId) => {
-    let novel = useSelector((state) => state.preferenceReducer.novelSettings);
-    novel = novel[novelId];
+const findNovel = novelId => {
+  let novel = useSelector(state => state.preferenceReducer.novelSettings);
+  novel = novel[novelId];
 
-    return novel;
+  return novel;
 };
 
-const usePreferences = (novelId) => {
-    let sort, filter, position, showChapterTitles;
+const usePreferences = novelId => {
+  let sort, filter, position, showChapterTitles;
 
-    const novel = findNovel(novelId);
+  const novel = findNovel(novelId);
 
-    if (novel) {
-        sort = novel.sort;
-        filter = novel.filter;
-        position = novel.position;
-        showChapterTitles = novel.showChapterTitles;
-    }
+  if (novel) {
+    sort = novel.sort;
+    filter = novel.filter;
+    position = novel.position;
+    showChapterTitles = novel.showChapterTitles;
+  }
 
-    return { sort, filter, position, showChapterTitles };
+  return {sort, filter, position, showChapterTitles};
 };
 
 const useSavedSettings = () => {
-    const settings = useSelector(
-        (state) => state.preferenceReducer.novelSettings
-    );
+  const settings = useSelector(state => state.preferenceReducer.novelSettings);
 
-    return settings;
+  return settings;
 };
 
 const useContinueReading = (chapters, novelId) => {
-    let lastReadChapter, chapterId, novel, position;
+  let lastReadChapter, chapterId, novel, position;
 
-    novel = findNovel(novelId);
-    if (novel) {
-        chapterId = novel.lastRead;
-        position = novel.position;
-    }
+  novel = findNovel(novelId);
+  if (novel) {
+    chapterId = novel.lastRead;
+    position = novel.position;
+  }
 
-    if (chapterId) {
-        lastReadChapter = chapters.find(
-            (obj) => obj.chapterId === chapterId && obj.read === 0
-        );
-    }
+  if (chapterId) {
+    lastReadChapter = chapters.find(
+      obj => obj.chapterId === chapterId && obj.read === 0,
+    );
+  }
 
-    if (!lastReadChapter) {
-        lastReadChapter = chapters.find((obj) => obj.read === 0);
-    }
+  if (!lastReadChapter) {
+    lastReadChapter = chapters.find(obj => obj.read === 0);
+  }
 
-    return { lastReadChapter, position };
+  return {lastReadChapter, position};
 };
 
 const usePosition = (novelId, chapterId) => {
-    let novel, position;
+  let novel, position;
 
-    novel = findNovel(novelId);
+  novel = findNovel(novelId);
 
-    if (novel) {
-        if (novel.position) {
-            position = novel.position[chapterId] || null;
-        }
+  if (novel) {
+    if (novel.position) {
+      position = novel.position[chapterId] || null;
     }
+  }
 
-    return position;
+  return position;
 };
 
 const useTrackingStatus = () => {
-    const tracker = useSelector((state) => state.trackerReducer);
+  const tracker = useSelector(state => state.trackerReducer);
 
-    return tracker;
+  return tracker;
 };
 
 const useLibraryFilters = () => {
-    const filters = useSelector((state) => state.libraryReducer.filters);
+  const filters = useSelector(state => state.libraryReducer.filters);
 
-    return filters;
+  return filters;
 };
 
 export {
-    useTheme,
-    useReaderSettings,
-    useLibrary,
-    useSettings,
-    usePreferences,
-    useContinueReading,
-    useTrackingStatus,
-    useNovel,
-    useChapter,
-    useSavedSettings,
-    useLibraryFilters,
-    usePosition,
+  useTheme,
+  useReaderSettings,
+  useLibrary,
+  useSettings,
+  usePreferences,
+  useContinueReading,
+  useTrackingStatus,
+  useNovel,
+  useChapter,
+  useSavedSettings,
+  useLibraryFilters,
+  usePosition,
 };

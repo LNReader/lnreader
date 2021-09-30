@@ -1,57 +1,57 @@
 import {
-    ENABLE_DISCOVER,
-    FILTER_LANGUAGE,
-    GET_SOURCES,
-    PIN_SOURCES,
-    SEARCH_SOURCES,
-} from "./source.types";
-import { showToast } from "../../hooks/showToast";
-import sources from "../../sources/sources.json";
+  ENABLE_DISCOVER,
+  FILTER_LANGUAGE,
+  GET_SOURCES,
+  PIN_SOURCES,
+  SEARCH_SOURCES,
+} from './source.types';
+import {showToast} from '../../hooks/showToast';
+import sources from '../../sources/sources.json';
 
-export const getSourcesAction = () => async (dispatch) => {
-    try {
-        /**
-         * Sort sources aplhabetically
-         */
-        let sortedSources = sources.sort((a, b) =>
-            a.sourceName.localeCompare(b.sourceName)
-        );
-
-        dispatch({
-            type: GET_SOURCES,
-            payload: sortedSources,
-        });
-    } catch (error) {
-        showToast(error.message);
-    }
-};
-
-export const searchSourcesAction = (searchText) => async (dispatch) => {
-    const res = searchText.toLowerCase();
+export const getSourcesAction = () => async dispatch => {
+  try {
+    /**
+     * Sort sources aplhabetically
+     */
+    let sortedSources = sources.sort((a, b) =>
+      a.sourceName.localeCompare(b.sourceName),
+    );
 
     dispatch({
-        type: SEARCH_SOURCES,
-        payload: res,
+      type: GET_SOURCES,
+      payload: sortedSources,
     });
+  } catch (error) {
+    showToast(error.message);
+  }
 };
 
-export const pinSourceAction = (sourceId) => async (dispatch) => {
-    dispatch({
-        type: PIN_SOURCES,
-        payload: sourceId,
-    });
+export const searchSourcesAction = searchText => async dispatch => {
+  const res = searchText.toLowerCase();
+
+  dispatch({
+    type: SEARCH_SOURCES,
+    payload: res,
+  });
 };
 
-export const filterLanguage = (language) => async (dispatch) => {
-    dispatch({
-        type: FILTER_LANGUAGE,
-        payload: language,
-    });
+export const pinSourceAction = sourceId => async dispatch => {
+  dispatch({
+    type: PIN_SOURCES,
+    payload: sourceId,
+  });
 };
 
-export const enableDiscover = (key) => async (dispatch) => {
-    dispatch({
-        type: ENABLE_DISCOVER,
-        payload: key,
-    });
+export const filterLanguage = language => async dispatch => {
+  dispatch({
+    type: FILTER_LANGUAGE,
+    payload: language,
+  });
+};
+
+export const enableDiscover = key => async dispatch => {
+  dispatch({
+    type: ENABLE_DISCOVER,
+    payload: key,
+  });
 };

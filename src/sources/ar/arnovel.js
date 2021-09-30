@@ -1,186 +1,186 @@
-import cheerio from "react-native-cheerio";
+import cheerio from 'react-native-cheerio';
 
 const sourceId = 59;
-const sourceName = "ArNovel";
+const sourceName = 'ArNovel';
 
-const baseUrl = "https://arnovel.me/";
+const baseUrl = 'https://arnovel.me/';
 
-const popularNovels = async (page) => {
-    let totalPages = 21;
-    let url = baseUrl + "novels/page/" + page;
+const popularNovels = async page => {
+  let totalPages = 21;
+  let url = baseUrl + 'novels/page/' + page;
 
-    const result = await fetch(url);
-    const body = await result.text();
+  const result = await fetch(url);
+  const body = await result.text();
 
-    $ = cheerio.load(body);
+  $ = cheerio.load(body);
 
-    let novels = [];
+  let novels = [];
 
-    $(".page-item-detail").each(function () {
-        const novelName = $(this).find(".h5 > a").text();
-        const novelCover =
-            "https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true";
+  $('.page-item-detail').each(function () {
+    const novelName = $(this).find('.h5 > a').text();
+    const novelCover =
+      'https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true';
 
-        let novelUrl = $(this).find(".h5 > a").attr("href").split("/")[4];
+    let novelUrl = $(this).find('.h5 > a').attr('href').split('/')[4];
 
-        const novel = {
-            sourceId,
-            novelName,
-            novelCover,
-            novelUrl,
-        };
+    const novel = {
+      sourceId,
+      novelName,
+      novelCover,
+      novelUrl,
+    };
 
-        novels.push(novel);
-    });
+    novels.push(novel);
+  });
 
-    return { totalPages, novels };
+  return {totalPages, novels};
 };
 
-const parseNovelAndChapters = async (novelUrl) => {
-    const url = `${baseUrl}novel/${novelUrl}`;
+const parseNovelAndChapters = async novelUrl => {
+  const url = `${baseUrl}novel/${novelUrl}`;
 
-    const result = await fetch(url);
-    const body = await result.text();
+  const result = await fetch(url);
+  const body = await result.text();
 
-    $ = cheerio.load(body);
+  $ = cheerio.load(body);
 
-    let novel = { sourceId, sourceName, url, novelUrl };
+  let novel = {sourceId, sourceName, url, novelUrl};
 
-    novel.novelName = $(".post-title > h1")
-        .text()
-        .replace(/[\t\n]/g, "")
-        .trim();
+  novel.novelName = $('.post-title > h1')
+    .text()
+    .replace(/[\t\n]/g, '')
+    .trim();
 
-    novel.novelCover =
-        "https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true";
+  novel.novelCover =
+    'https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true';
 
-    $(".post-content_item").each(function () {
-        detailName = $(this)
-            .find(".summary-heading > h5")
-            .text()
-            .replace(/[\t\n]/g, "")
-            .trim();
-        detail = $(this)
-            .find(".summary-content")
-            .text()
-            .replace(/[\t\n]/g, "")
-            .trim();
+  $('.post-content_item').each(function () {
+    detailName = $(this)
+      .find('.summary-heading > h5')
+      .text()
+      .replace(/[\t\n]/g, '')
+      .trim();
+    detail = $(this)
+      .find('.summary-content')
+      .text()
+      .replace(/[\t\n]/g, '')
+      .trim();
 
-        switch (detailName) {
-            case "التصنيفات":
-                novel.genre = detail.trim().replace(/[\t\n]/g, ",");
-                break;
-            case "المؤلف (ين)":
-                novel.author = detail.trim();
-                break;
-            case "الحالة":
-                novel.status = detail.trim();
-                break;
-        }
-    });
+    switch (detailName) {
+      case 'التصنيفات':
+        novel.genre = detail.trim().replace(/[\t\n]/g, ',');
+        break;
+      case 'المؤلف (ين)':
+        novel.author = detail.trim();
+        break;
+      case 'الحالة':
+        novel.status = detail.trim();
+        break;
+    }
+  });
 
-    $(".description-summary > div.summary__content").find("em").remove();
+  $('.description-summary > div.summary__content').find('em').remove();
 
-    novel.summary = $(".description-summary > div.summary__content")
-        .text()
-        .trim();
+  novel.summary = $('.description-summary > div.summary__content')
+    .text()
+    .trim();
 
-    let novelChapters = [];
+  let novelChapters = [];
 
-    const novelId = $("#manga-chapters-holder").attr("data-id");
+  const novelId = $('#manga-chapters-holder').attr('data-id');
 
-    let formData = new FormData();
-    formData.append("action", "manga_get_chapters");
-    formData.append("manga", novelId);
+  let formData = new FormData();
+  formData.append('action', 'manga_get_chapters');
+  formData.append('manga', novelId);
 
-    const data = await fetch("https://www.arnovel.me/wp-admin/admin-ajax.php", {
-        method: "POST",
-        body: formData,
-    });
-    const text = await data.text();
+  const data = await fetch('https://www.arnovel.me/wp-admin/admin-ajax.php', {
+    method: 'POST',
+    body: formData,
+  });
+  const text = await data.text();
 
-    $ = cheerio.load(text);
+  $ = cheerio.load(text);
 
-    $(".wp-manga-chapter").each(function () {
-        chapterName = $(this)
-            .find("a")
-            .text()
-            .replace(/[\t\n]/g, "")
-            .trim();
+  $('.wp-manga-chapter').each(function () {
+    chapterName = $(this)
+      .find('a')
+      .text()
+      .replace(/[\t\n]/g, '')
+      .trim();
 
-        releaseDate = $(this).find("span").text().trim();
+    releaseDate = $(this).find('span').text().trim();
 
-        chapterUrl = $(this).find("a").attr("href").split("/");
+    chapterUrl = $(this).find('a').attr('href').split('/');
 
-        chapterUrl[6]
-            ? (chapterUrl = chapterUrl[5] + "/" + chapterUrl[6])
-            : (chapterUrl = chapterUrl[5]);
+    chapterUrl[6]
+      ? (chapterUrl = chapterUrl[5] + '/' + chapterUrl[6])
+      : (chapterUrl = chapterUrl[5]);
 
-        novelChapters.push({ chapterName, releaseDate, chapterUrl });
-    });
+    novelChapters.push({chapterName, releaseDate, chapterUrl});
+  });
 
-    novel.chapters = novelChapters.reverse();
+  novel.chapters = novelChapters.reverse();
 
-    return novel;
+  return novel;
 };
 
 const parseChapter = async (novelUrl, chapterUrl) => {
-    const url = `${baseUrl}novel/${novelUrl}/${chapterUrl}/`;
+  const url = `${baseUrl}novel/${novelUrl}/${chapterUrl}/`;
 
-    const result = await fetch(url);
-    const body = await result.text();
+  const result = await fetch(url);
+  const body = await result.text();
 
-    $ = cheerio.load(body);
+  $ = cheerio.load(body);
 
-    const chapterName = $("h1#chapter-heading").text();
-    const chapterText = $(".reading-content").html();
+  const chapterName = $('h1#chapter-heading').text();
+  const chapterText = $('.reading-content').html();
 
-    const chapter = {
-        sourceId,
-        novelUrl,
-        chapterUrl,
-        chapterName,
-        chapterText,
-    };
+  const chapter = {
+    sourceId,
+    novelUrl,
+    chapterUrl,
+    chapterName,
+    chapterText,
+  };
 
-    return chapter;
+  return chapter;
 };
 
-const searchNovels = async (searchTerm) => {
-    const url = `${baseUrl}?s=${searchTerm}&post_type=wp-manga`;
+const searchNovels = async searchTerm => {
+  const url = `${baseUrl}?s=${searchTerm}&post_type=wp-manga`;
 
-    const result = await fetch(url);
-    const body = await result.text();
+  const result = await fetch(url);
+  const body = await result.text();
 
-    $ = cheerio.load(body);
+  $ = cheerio.load(body);
 
-    let novels = [];
+  let novels = [];
 
-    $(".c-tabs-item__content").each(function () {
-        const novelName = $(this).find(".h4 > a").text();
-        const novelCover =
-            "https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true";
+  $('.c-tabs-item__content').each(function () {
+    const novelName = $(this).find('.h4 > a').text();
+    const novelCover =
+      'https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true';
 
-        let novelUrl = $(this).find(".h4 > a").attr("href").split("/")[4];
+    let novelUrl = $(this).find('.h4 > a').attr('href').split('/')[4];
 
-        const novel = {
-            sourceId,
-            novelName,
-            novelCover,
-            novelUrl,
-        };
+    const novel = {
+      sourceId,
+      novelName,
+      novelCover,
+      novelUrl,
+    };
 
-        novels.push(novel);
-    });
+    novels.push(novel);
+  });
 
-    return novels;
+  return novels;
 };
 
 const ArNovelScraper = {
-    popularNovels,
-    parseNovelAndChapters,
-    parseChapter,
-    searchNovels,
+  popularNovels,
+  parseNovelAndChapters,
+  parseChapter,
+  searchNovels,
 };
 
 export default ArNovelScraper;

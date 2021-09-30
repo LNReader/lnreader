@@ -1,5 +1,5 @@
-import * as SQLite from "expo-sqlite";
-const db = SQLite.openDatabase("lnreader.db");
+import * as SQLite from 'expo-sqlite';
+const db = SQLite.openDatabase('lnreader.db');
 
 const getUpdatesQuery = `
     SELECT chapters.chapterId, chapters.read, chapters.downloaded, chapters.chapterUrl, chapters.chapterName, novels.novelUrl, novels.novelId, novels.novelCover, novels.novelName, novels.sourceId, updates.updateTime, updates.updateId
@@ -13,30 +13,30 @@ const getUpdatesQuery = `
     `;
 
 export const getUpdates = async () => {
-    return new Promise((resolve, reject) => {
-        db.transaction((tx) => {
-            tx.executeSql(
-                getUpdatesQuery,
-                null,
-                (txObj, { rows: { _array } }) => {
-                    resolve(_array);
-                },
-                (txObj, error) => console.log("Error ", error)
-            );
-        });
+  return new Promise((resolve, reject) => {
+    db.transaction(tx => {
+      tx.executeSql(
+        getUpdatesQuery,
+        null,
+        (txObj, {rows: {_array}}) => {
+          resolve(_array);
+        },
+        (txObj, error) => console.log('Error ', error),
+      );
     });
+  });
 };
 
-export const deleteNovelUpdates = (novelId) => {
-    db.transaction((tx) => {
-        tx.executeSql(
-            "DELETE FROM updates WHERE novelId = ?",
-            [novelId],
-            (txObj, res) => {},
-            (txObj, error) => console.log("Error ", error)
-        );
-    });
+export const deleteNovelUpdates = novelId => {
+  db.transaction(tx => {
+    tx.executeSql(
+      'DELETE FROM updates WHERE novelId = ?',
+      [novelId],
+      (txObj, res) => {},
+      (txObj, error) => console.log('Error ', error),
+    );
+  });
 };
 
 export const clearUpdates = () =>
-    db.transaction((tx) => tx.executeSql("DELETE FROM updates; VACCUM;"));
+  db.transaction(tx => tx.executeSql('DELETE FROM updates; VACCUM;'));

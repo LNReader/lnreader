@@ -1,224 +1,213 @@
-import moment from "moment";
-import cheerio from "react-native-cheerio";
-import { Status } from "../../helpers/constants";
-import { parseMadaraDate } from "../../helpers/parseDate";
+import moment from 'moment';
+import cheerio from 'react-native-cheerio';
+import {Status} from '../../helpers/constants';
+import {parseMadaraDate} from '../../helpers/parseDate';
 
 class MadaraScraper {
-    constructor(sourceId, baseUrl, sourceName, path) {
-        this.sourceId = sourceId;
-        this.baseUrl = baseUrl;
-        this.sourceName = sourceName;
-        this.path = path;
+  constructor(sourceId, baseUrl, sourceName, path) {
+    this.sourceId = sourceId;
+    this.baseUrl = baseUrl;
+    this.sourceName = sourceName;
+    this.path = path;
+  }
+
+  async popularNovels(page) {
+    const totalPages = 100;
+    let url =
+      this.baseUrl + this.path.novels + '/page/' + page + '/?m_orderby=rating';
+    let sourceId = this.sourceId;
+
+    const result = await fetch(url);
+    const body = await result.text();
+
+    const $ = cheerio.load(body);
+
+    let novels = [];
+
+    $('.manga-title-badges').remove();
+
+    $('.page-item-detail').each(function () {
+      const novelName = $(this).find('.post-title').text().trim();
+      let image = $(this).find('img');
+      const novelCover = image.attr('data-src') || image.attr('src');
+
+      let novelUrl = $(this)
+        .find('.post-title')
+        .find('a')
+        .attr('href')
+        .split('/')[4];
+
+      const novel = {
+        sourceId,
+        novelName,
+        novelCover,
+        novelUrl,
+      };
+
+      novels.push(novel);
+    });
+
+    return {totalPages, novels};
+  }
+
+  async parseNovelAndChapters(novelUrl) {
+    const url = `${this.baseUrl}${this.path.novel}/${novelUrl}/`;
+
+    const result = await fetch(url);
+    const body = await result.text();
+
+    let $ = cheerio.load(body);
+
+    let novel = {};
+
+    novel.sourceId = this.sourceId;
+
+    novel.sourceName = this.sourceName;
+
+    novel.url = url;
+
+    novel.novelUrl = novelUrl;
+
+    $('.manga-title-badges').remove();
+
+    novel.novelName = $('.post-title > h1').text().trim();
+
+    novel.novelCover =
+      $('.summary_image > a > img').attr('data-src') ||
+      $('.summary_image > a > img').attr('src') ||
+      'https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true';
+
+    $('.post-content_item').each(function () {
+      const detailName = $(this).find('.summary-heading > h5').text().trim();
+      const detail = $(this).find('.summary-content').text().trim();
+
+      switch (detailName) {
+        case 'Genre(s)':
+          novel.genre = detail.replace(/[\t\n]/g, ',');
+          break;
+        case 'Author(s)':
+          novel.author = detail;
+          break;
+        case 'Status':
+          novel.status = detail.includes('OnGoing')
+            ? Status.ONGOING
+            : Status.COMPLETED;
+          break;
+      }
+    });
+
+    novel.summary = $('div.summary__content').text().trim();
+
+    let novelChapters = [];
+
+    const novelId =
+      $('.rating-post-id').attr('value') ||
+      $('#manga-chapters-holder').attr('data-id');
+
+    let formData = new FormData();
+    formData.append('action', 'manga_get_chapters');
+    formData.append('manga', novelId);
+
+    const data = await fetch(this.baseUrl + 'wp-admin/admin-ajax.php', {
+      method: 'POST',
+      body: formData,
+    });
+    const text = await data.text();
+
+    if (text !== '0') {
+      $ = cheerio.load(text);
     }
 
-    async popularNovels(page) {
-        const totalPages = 100;
-        let url =
-            this.baseUrl +
-            this.path.novels +
-            "/page/" +
-            page +
-            "/?m_orderby=rating";
-        let sourceId = this.sourceId;
+    $('.wp-manga-chapter').each(function () {
+      const chapterName = $(this)
+        .find('a')
+        .text()
+        .replace(/[\t\n]/g, '')
+        .trim();
 
-        const result = await fetch(url);
-        const body = await result.text();
+      let releaseDate = null;
+      releaseDate = $(this).find('span.chapter-release-date').text().trim();
 
-        const $ = cheerio.load(body);
+      if (releaseDate) {
+        releaseDate = parseMadaraDate(releaseDate);
+      } else {
+        /**
+         * Insert current date
+         */
 
-        let novels = [];
+        releaseDate = moment().format('MMMM DD, YYYY');
+      }
 
-        $(".manga-title-badges").remove();
+      const chapterUrl = $(this).find('a').attr('href').split('/')[5];
 
-        $(".page-item-detail").each(function () {
-            const novelName = $(this).find(".post-title").text().trim();
-            let image = $(this).find("img");
-            const novelCover = image.attr("data-src") || image.attr("src");
+      novelChapters.push({chapterName, releaseDate, chapterUrl});
+    });
 
-            let novelUrl = $(this)
-                .find(".post-title")
-                .find("a")
-                .attr("href")
-                .split("/")[4];
+    novel.chapters = novelChapters.reverse();
 
-            const novel = {
-                sourceId,
-                novelName,
-                novelCover,
-                novelUrl,
-            };
+    return novel;
+  }
 
-            novels.push(novel);
-        });
+  async parseChapter(novelUrl, chapterUrl) {
+    let sourceId = this.sourceId;
 
-        return { totalPages, novels };
-    }
+    const url = `${this.baseUrl}${this.path.chapter}/${novelUrl}/${chapterUrl}`;
 
-    async parseNovelAndChapters(novelUrl) {
-        const url = `${this.baseUrl}${this.path.novel}/${novelUrl}/`;
+    const result = await fetch(url);
+    const body = await result.text();
 
-        const result = await fetch(url);
-        const body = await result.text();
+    const $ = cheerio.load(body);
 
-        let $ = cheerio.load(body);
+    let chapterName = $('.text-center').text() || $('#chapter-heading').text();
 
-        let novel = {};
+    let chapterText = $('.text-left').html();
 
-        novel.sourceId = this.sourceId;
+    const chapter = {
+      sourceId,
+      novelUrl,
+      chapterUrl,
+      chapterName,
+      chapterText,
+    };
 
-        novel.sourceName = this.sourceName;
+    return chapter;
+  }
 
-        novel.url = url;
+  async searchNovels(searchTerm) {
+    const url = `${this.baseUrl}?s=${searchTerm}&post_type=wp-manga`;
 
-        novel.novelUrl = novelUrl;
+    const result = await fetch(url);
+    const body = await result.text();
 
-        $(".manga-title-badges").remove();
+    const $ = cheerio.load(body);
 
-        novel.novelName = $(".post-title > h1").text().trim();
+    let novels = [];
+    let sourceId = this.sourceId;
 
-        novel.novelCover =
-            $(".summary_image > a > img").attr("data-src") ||
-            $(".summary_image > a > img").attr("src") ||
-            "https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true";
+    $('.c-tabs-item__content').each(function () {
+      const novelName = $(this).find('.post-title').text().trim();
 
-        $(".post-content_item").each(function () {
-            const detailName = $(this)
-                .find(".summary-heading > h5")
-                .text()
-                .trim();
-            const detail = $(this).find(".summary-content").text().trim();
+      let image = $(this).find('img');
+      const novelCover = image.attr('data-src') || image.attr('src');
 
-            switch (detailName) {
-                case "Genre(s)":
-                    novel.genre = detail.replace(/[\t\n]/g, ",");
-                    break;
-                case "Author(s)":
-                    novel.author = detail;
-                    break;
-                case "Status":
-                    novel.status = detail.includes("OnGoing")
-                        ? Status.ONGOING
-                        : Status.COMPLETED;
-                    break;
-            }
-        });
+      let novelUrl = $(this)
+        .find('.post-title')
+        .find('a')
+        .attr('href')
+        .split('/')[4];
 
-        novel.summary = $("div.summary__content").text().trim();
+      const novel = {
+        sourceId,
+        novelName,
+        novelCover,
+        novelUrl,
+      };
 
-        let novelChapters = [];
+      novels.push(novel);
+    });
 
-        const novelId =
-            $(".rating-post-id").attr("value") ||
-            $("#manga-chapters-holder").attr("data-id");
-
-        let formData = new FormData();
-        formData.append("action", "manga_get_chapters");
-        formData.append("manga", novelId);
-
-        const data = await fetch(this.baseUrl + "wp-admin/admin-ajax.php", {
-            method: "POST",
-            body: formData,
-        });
-        const text = await data.text();
-
-        if (text !== "0") {
-            $ = cheerio.load(text);
-        }
-
-        $(".wp-manga-chapter").each(function () {
-            const chapterName = $(this)
-                .find("a")
-                .text()
-                .replace(/[\t\n]/g, "")
-                .trim();
-
-            let releaseDate = null;
-            releaseDate = $(this)
-                .find("span.chapter-release-date")
-                .text()
-                .trim();
-
-            if (releaseDate) {
-                releaseDate = parseMadaraDate(releaseDate);
-            } else {
-                /**
-                 * Insert current date
-                 */
-
-                releaseDate = moment().format("MMMM DD, YYYY");
-            }
-
-            const chapterUrl = $(this).find("a").attr("href").split("/")[5];
-
-            novelChapters.push({ chapterName, releaseDate, chapterUrl });
-        });
-
-        novel.chapters = novelChapters.reverse();
-
-        return novel;
-    }
-
-    async parseChapter(novelUrl, chapterUrl) {
-        let sourceId = this.sourceId;
-
-        const url = `${this.baseUrl}${this.path.chapter}/${novelUrl}/${chapterUrl}`;
-
-        const result = await fetch(url);
-        const body = await result.text();
-
-        const $ = cheerio.load(body);
-
-        let chapterName =
-            $(".text-center").text() || $("#chapter-heading").text();
-
-        let chapterText = $(".text-left").html();
-
-        const chapter = {
-            sourceId,
-            novelUrl,
-            chapterUrl,
-            chapterName,
-            chapterText,
-        };
-
-        return chapter;
-    }
-
-    async searchNovels(searchTerm) {
-        const url = `${this.baseUrl}?s=${searchTerm}&post_type=wp-manga`;
-
-        const result = await fetch(url);
-        const body = await result.text();
-
-        const $ = cheerio.load(body);
-
-        let novels = [];
-        let sourceId = this.sourceId;
-
-        $(".c-tabs-item__content").each(function () {
-            const novelName = $(this).find(".post-title").text().trim();
-
-            let image = $(this).find("img");
-            const novelCover = image.attr("data-src") || image.attr("src");
-
-            let novelUrl = $(this)
-                .find(".post-title")
-                .find("a")
-                .attr("href")
-                .split("/")[4];
-
-            const novel = {
-                sourceId,
-                novelName,
-                novelCover,
-                novelUrl,
-            };
-
-            novels.push(novel);
-        });
-
-        return novels;
-    }
+    return novels;
+  }
 }
 
 export default MadaraScraper;

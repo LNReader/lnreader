@@ -1,194 +1,176 @@
-import cheerio from "react-native-cheerio";
+import cheerio from 'react-native-cheerio';
 
-const baseUrl = "https://einherjarproject.net/";
+const baseUrl = 'https://einherjarproject.net/';
 
-const popularNovels = async (page) => {
-    let totalPages = 1;
-    let url = baseUrl + "proyectos-activos/";
+const popularNovels = async page => {
+  let totalPages = 1;
+  let url = baseUrl + 'proyectos-activos/';
 
-    const result = await fetch(url);
-    const body = await result.text();
+  const result = await fetch(url);
+  const body = await result.text();
 
-    $ = cheerio.load(body);
+  $ = cheerio.load(body);
 
-    let novels = [];
+  let novels = [];
 
-    $(".wp-block-media-text").each(function (result) {
-        const novelName = $(this).find("a").text();
-        const novelCover = $(this).find("img").attr("src");
+  $('.wp-block-media-text').each(function (result) {
+    const novelName = $(this).find('a').text();
+    const novelCover = $(this).find('img').attr('src');
 
-        let novelUrl = $(this)
-            .find(".wp-block-media-text__content")
-            .find("a")
-            .attr("href");
-        novelUrl = novelUrl.replace(baseUrl, "");
+    let novelUrl = $(this)
+      .find('.wp-block-media-text__content')
+      .find('a')
+      .attr('href');
+    novelUrl = novelUrl.replace(baseUrl, '');
 
-        const novel = {
-            sourceId: 25,
-            novelName,
-            novelCover,
-            novelUrl,
-        };
+    const novel = {
+      sourceId: 25,
+      novelName,
+      novelCover,
+      novelUrl,
+    };
 
-        novels.push(novel);
-    });
+    novels.push(novel);
+  });
 
-    return { totalPages, novels };
+  return {totalPages, novels};
 };
 
-const parseNovelAndChapters = async (novelUrl) => {
-    const url = baseUrl + novelUrl;
+const parseNovelAndChapters = async novelUrl => {
+  const url = baseUrl + novelUrl;
 
-    const result = await fetch(url);
-    const body = await result.text();
+  const result = await fetch(url);
+  const body = await result.text();
 
-    $ = cheerio.load(body);
+  $ = cheerio.load(body);
 
-    let novel = {};
+  let novel = {};
 
-    novel.sourceId = 25;
+  novel.sourceId = 25;
 
-    novel.sourceName = "Einherjar Project";
+  novel.sourceName = 'Einherjar Project';
 
-    novel.url = url;
+  novel.url = url;
 
-    novel.novelUrl = novelUrl;
+  novel.novelUrl = novelUrl;
 
-    novel.novelName = $("h1").text();
+  novel.novelName = $('h1').text();
 
-    novel.novelCover = $("img").attr("src");
+  novel.novelCover = $('img').attr('src');
 
-    $(".wp-block-columns")
-        .find("li")
-        .each(function (result) {
-            if ($(this).text().includes("Autor:")) {
-                novel.author = $(this)
-                    .text()
-                    .replace("Autor:", "")
-                    .slice(0, -1);
-            }
-            if ($(this).text().includes("Ilustrador: ")) {
-                novel.artist = $(this)
-                    .text()
-                    .replace("Ilustrador: ", "")
-                    .slice(0, -1);
-            }
-            if ($(this).text().includes("Estado: ")) {
-                novel.status = $(this)
-                    .text()
-                    .replace("Estado: ", "")
-                    .slice(0, -1);
-            }
-        });
+  $('.wp-block-columns')
+    .find('li')
+    .each(function (result) {
+      if ($(this).text().includes('Autor:')) {
+        novel.author = $(this).text().replace('Autor:', '').slice(0, -1);
+      }
+      if ($(this).text().includes('Ilustrador: ')) {
+        novel.artist = $(this).text().replace('Ilustrador: ', '').slice(0, -1);
+      }
+      if ($(this).text().includes('Estado: ')) {
+        novel.status = $(this).text().replace('Estado: ', '').slice(0, -1);
+      }
+    });
 
-    novel.genre = $(".post-content > h6")
-        .text()
-        .replace(/GÉNEROS: /, "")
-        .replace(/,\s/g, ",");
+  novel.genre = $('.post-content > h6')
+    .text()
+    .replace(/GÉNEROS: /, '')
+    .replace(/,\s/g, ',');
 
-    let novelSummary = $(".post-content > .has-text-align-center").html();
+  let novelSummary = $('.post-content > .has-text-align-center').html();
 
-    novel.summary = novelSummary.trim();
+  novel.summary = novelSummary.trim();
 
-    let novelChapters = [];
+  let novelChapters = [];
 
-    $(".wp-block-media-text")
-        .find("p")
-        .each(function (result) {
-            if ($(this).find("a").text()) {
-                const chapterName = $(this).text();
-                const releaseDate = null;
-                let chapterUrl = $(this)
-                    .find("a")
-                    .attr("href")
-                    .replace(baseUrl, "");
-                if (chapterUrl.includes(novelUrl + "/"))
-                    chapterUrl = chapterUrl.replace(novelUrl + "/", "");
+  $('.wp-block-media-text')
+    .find('p')
+    .each(function (result) {
+      if ($(this).find('a').text()) {
+        const chapterName = $(this).text();
+        const releaseDate = null;
+        let chapterUrl = $(this).find('a').attr('href').replace(baseUrl, '');
+        if (chapterUrl.includes(novelUrl + '/'))
+          chapterUrl = chapterUrl.replace(novelUrl + '/', '');
 
-                const chapter = { chapterName, releaseDate, chapterUrl };
+        const chapter = {chapterName, releaseDate, chapterUrl};
 
-                novelChapters.push(chapter);
-            }
-        });
+        novelChapters.push(chapter);
+      }
+    });
 
-    novel.chapters = novelChapters;
+  novel.chapters = novelChapters;
 
-    return novel;
+  return novel;
 };
 
 const parseChapter = async (novelUrl, chapterUrl) => {
-    const url = baseUrl + chapterUrl;
+  const url = baseUrl + chapterUrl;
 
-    const result = await fetch(url);
-    const body = await result.text();
+  const result = await fetch(url);
+  const body = await result.text();
 
-    $ = cheerio.load(body);
+  $ = cheerio.load(body);
 
-    let chapterName = $("h1.post-title").text();
+  let chapterName = $('h1.post-title').text();
 
-    let chapterText = $(".post-content").html();
-    novelUrl = novelUrl + "/";
-    chapterUrl = chapterUrl + "/";
+  let chapterText = $('.post-content').html();
+  novelUrl = novelUrl + '/';
+  chapterUrl = chapterUrl + '/';
 
-    const chapter = {
-        sourceId: 25,
-        novelUrl,
-        chapterUrl,
-        chapterName,
-        chapterText,
-    };
+  const chapter = {
+    sourceId: 25,
+    novelUrl,
+    chapterUrl,
+    chapterName,
+    chapterText,
+  };
 
-    return chapter;
+  return chapter;
 };
 
-const searchNovels = async (searchTerm) => {
-    const url = baseUrl + "?s=" + searchTerm;
+const searchNovels = async searchTerm => {
+  const url = baseUrl + '?s=' + searchTerm;
 
-    const result = await fetch(url);
-    const body = await result.text();
+  const result = await fetch(url);
+  const body = await result.text();
 
-    $ = cheerio.load(body);
+  $ = cheerio.load(body);
 
-    let novels = [];
+  let novels = [];
 
-    $(".post-container")
-        .find("div.type-page")
-        .each(function (result) {
-            const novelName = $(this)
-                .find(".post-header")
-                .text()
-                .replace(/\n/g, "");
-            if (
-                !novelName.includes("EPUBs") &&
-                !novelName.includes("Proyectos Activos") &&
-                !novelName.includes("Chapter")
-            ) {
-                const novelCover = $(this).find("img").attr("src");
+  $('.post-container')
+    .find('div.type-page')
+    .each(function (result) {
+      const novelName = $(this).find('.post-header').text().replace(/\n/g, '');
+      if (
+        !novelName.includes('EPUBs') &&
+        !novelName.includes('Proyectos Activos') &&
+        !novelName.includes('Chapter')
+      ) {
+        const novelCover = $(this).find('img').attr('src');
 
-                let novelUrl = $(this)
-                    .find("a")
-                    .attr("href")
-                    .replace(baseUrl, "");
+        let novelUrl = $(this).find('a').attr('href').replace(baseUrl, '');
 
-                const novel = {
-                    sourceId: 25,
-                    novelName,
-                    novelCover,
-                    novelUrl,
-                };
+        const novel = {
+          sourceId: 25,
+          novelName,
+          novelCover,
+          novelUrl,
+        };
 
-                novels.push(novel);
-            }
-        });
+        novels.push(novel);
+      }
+    });
 
-    return novels;
+  return novels;
 };
 
 const EinharjarProjectScraper = {
-    popularNovels,
-    parseNovelAndChapters,
-    parseChapter,
-    searchNovels,
+  popularNovels,
+  parseNovelAndChapters,
+  parseChapter,
+  searchNovels,
 };
 
 export default EinharjarProjectScraper;
