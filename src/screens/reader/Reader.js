@@ -38,17 +38,18 @@ import {
   readerBackground,
   readerLineHeight,
   readerTextColor,
-} from './readerStyleController';
+} from './utils/readerStyles';
 import {markChapterReadAction} from '../../redux/novel/novel.actions';
 import {saveScrollPosition} from '../../redux/preferences/preference.actions';
 import {parseChapterNumber} from '../../services/updates';
 
-import ChapterAppbar from './components/ChapterAppbar';
+import ReaderAppbar from './components/ReaderAppbar';
 import ReaderBottomSheet from './components/ReaderBottomSheet';
+import ReaderFooter from './components/ReaderFooter';
+import ReaderSeekBar from './components/ReaderSeekBar';
+
 import EmptyView from '../../components/EmptyView';
 
-import ChapterFooter from './components/ChapterFooter';
-import VerticalScrollbar from './components/VerticalScrollbar';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import {LoadingScreen} from '../../components/LoadingScreen/LoadingScreen';
 import {insertHistory} from '../../database/queries/HistoryQueries';
@@ -59,6 +60,8 @@ import {cleanHtml} from '../../sources/helpers/cleanHtml';
 import {useBatteryLevel} from 'react-native-device-info';
 import moment from 'moment';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import WebViewReader from './components/WebViewReader';
+import TextReader from './components/TextReader';
 
 const Chapter = ({route, navigation}) => {
   const {
@@ -373,18 +376,6 @@ const Chapter = ({route, navigation}) => {
     setHidden(!hidden);
   };
 
-  const readerStyles = [
-    {
-      fontSize: reader.textSize,
-      color: reader.textColor || readerTextColor(reader.theme),
-      lineHeight: readerLineHeight(reader.textSize, reader.lineHeight),
-      textAlign: reader.textAlign,
-    },
-    reader.fontFamily && {
-      fontFamily: reader.fontFamily,
-    },
-  ];
-
   const config = {
     velocityThreshold: 0.3,
     directionalOffsetThreshold: 80,
@@ -431,10 +422,19 @@ const Chapter = ({route, navigation}) => {
   const enableWebView = () =>
     dispatch(setAppSettings('useWebViewForChapter', !useWebViewForChapter));
 
+  const onWebViewNavigationStateChange = async ({url}) => {
+    if ((sourceId === 50 || sourceId == 62) && url !== 'about:blank') {
+      setLoading(true);
+      const res = await fetchChapter(sourceId, novelUrl, url);
+      setChapter(res);
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       <>
-        <ChapterAppbar
+        <ReaderAppbar
           novelName={novelName}
           chapterName={chapterName}
           chapterId={chapterId}
@@ -502,153 +502,29 @@ const Chapter = ({route, navigation}) => {
                 onPress={hideHeader}
                 onLayout={scrollToSavedProgress}
               >
-                {useWebViewForChapter ? (
-                  <WebView
-                    style={{
-                      backgroundColor: readerBackground(reader.theme),
-                    }}
-                    originWhitelist={['*']}
-                    scalesPageToFit={true}
-                    showsVerticalScrollIndicator={false}
-                    onScroll={onScroll}
-                    onNavigationStateChange={async ({url}) => {
-                      if (
-                        (sourceId === 50 || sourceId == 62) &&
-                        url !== 'about:blank'
-                      ) {
-                        setLoading(true);
-                        const res = await fetchChapter(sourceId, novelUrl, url);
-                        setChapter(res);
-                        setLoading(false);
+                <View style={{flex: 1}}>
+                  {useWebViewForChapter ? (
+                    <WebViewReader
+                      html={chapter.chapterText}
+                      reader={reader}
+                      theme={theme}
+                      onScroll={onScroll}
+                      onWebViewNavigationStateChange={
+                        onWebViewNavigationStateChange
                       }
-                    }}
-                    source={{
-                      html: `
-                            <html>
-                            <head>
-                                <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-                                <style>
-                                html {
-                                    overflow-x: hidden;
-                                    padding-top: ${StatusBar.currentHeight};
-                                    word-wrap: break-word;
-                                }
-                                body {
-                                    padding-left: ${reader.padding}%;
-                                    padding-right: ${reader.padding}%;
-                                    padding-bottom: 30px;
-                                    font-size: ${reader.textSize}px;
-                                    color: ${reader.textColor};
-
-                                    text-align: ${reader.textAlign};
-                                    line-height: ${reader.lineHeight};
-                                    font-family: ${reader.fontFamily};
-                                }
-                                hr {
-                                    margin-top: 20px;
-                                    margin-bottom: 20px;
-                                }
-                                a {
-                                    color: ${theme.colorAccent};
-                                }
-                                img {
-                                    display: block;
-                                    width: auto;
-                                    height: auto;
-                                    max-width: 100%;
-                                }
-                                </style>
-                                <style>
-                                ${reader.customCSS}
-                                @font-face {
-                                    font-family: ${reader.fontFamily};
-                                    src: url("file:///android_asset/fonts/${
-                                      reader.fontFamily
-                                    }.ttf");
-                                }
-                                
-                                </style>
-                                </head>
-                            <body>
-                                ${cleanHtml(chapter.chapterText)}
-                            </body>
-                            </html>
-                            `,
-                    }}
-                    onScroll={onScroll}
-                  />
-                ) : (
-                  <View
-                    style={{
-                      flex: 1,
-                      paddingVertical: 16,
-                      paddingHorizontal: `${reader.padding}%`,
-                      paddingTop: StatusBar.currentHeight,
-                    }}
-                  >
-                    <Text style={readerStyles} selectable={textSelectable}>
-                      {htmlToText(chapter.chapterText)}
-                    </Text>
-
-                    <View
-                      style={{
-                        marginTop: 32,
-                        marginBottom: 16,
-                      }}
-                    >
-                      <Text
-                        style={{
-                          color: reader.textColor,
-                          fontSize: 16,
-                          textAlign: 'center',
-                        }}
-                      >
-                        Finished: {chapterName}
-                      </Text>
-                      {nextChapter ? (
-                        <View
-                          style={{
-                            borderRadius: 8,
-                            marginVertical: 4,
-                            overflow: 'hidden',
-                          }}
-                        >
-                          <Pressable
-                            style={{
-                              paddingHorizontal: 16,
-                              paddingVertical: 8,
-                            }}
-                            android_ripple={{
-                              color: theme.rippleColor,
-                            }}
-                            onPress={navigateToNextChapter}
-                          >
-                            <Text
-                              style={{
-                                color: reader.textColor,
-                                fontSize: 16,
-                                textAlign: 'center',
-                              }}
-                            >
-                              Next: {nextChapter.chapterName}
-                            </Text>
-                          </Pressable>
-                        </View>
-                      ) : (
-                        <Text
-                          style={{
-                            color: reader.textColor,
-                            fontSize: 16,
-                            paddingVertical: 8,
-                            textAlign: 'center',
-                          }}
-                        >
-                          There's no next chapter
-                        </Text>
-                      )}
-                    </View>
-                  </View>
-                )}
+                    />
+                  ) : (
+                    <TextReader
+                      text={chapter.chapterText}
+                      reader={reader}
+                      chapterName={chapterName}
+                      textSelectable={textSelectable}
+                      theme={theme}
+                      nextChapter={nextChapter}
+                      navigateToNextChapter={navigateToNextChapter}
+                    />
+                  )}
+                </View>
               </TouchableWithoutFeedback>
             )}
           </ScrollView>
@@ -672,7 +548,7 @@ const Chapter = ({route, navigation}) => {
           />
         </Portal>
         {!useWebViewForChapter && (
-          <VerticalScrollbar
+          <ReaderSeekBar
             theme={theme}
             hide={hidden}
             setLoading={setLoading}
@@ -682,7 +558,7 @@ const Chapter = ({route, navigation}) => {
             setScrollPercentage={setScrollPercentage}
           />
         )}
-        <ChapterFooter
+        <ReaderFooter
           theme={theme}
           swipeGestures={swipeGestures}
           enableSwipeGestures={enableSwipeGestures}

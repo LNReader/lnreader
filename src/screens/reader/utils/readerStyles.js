@@ -1,3 +1,15 @@
+const presetThemes = [
+  {
+    value: 1,
+    backgroundColor: '#000000',
+    textColor: 'rgba(255,255,255,0.7)',
+  },
+  {value: 2, backgroundColor: '#FFFFFF', textColor: '#111111'},
+  {value: 3, backgroundColor: '#F7DFC6', textColor: '#593100'},
+  {value: 4, backgroundColor: '#292832', textColor: '#CCCCCC'},
+  {value: 5, backgroundColor: '#2B2C30', textColor: '#CCCCCC'},
+];
+
 export const readerBackground = val => {
   const backgroundColor = {
     1: '#000000',
@@ -31,3 +43,5 @@ export const readerLineHeight = (fontSize, lineHeightMultiplier) => {
 
   return lineHeight;
 };
+
+export {presetThemes};
