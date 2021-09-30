@@ -35,7 +35,9 @@ export const createDB = () => {
     tx.executeSql(createDownloadTableQuery);
     tx.executeSql(createUpdatesTableQuery);
 
-    //Db indexes
+    /**
+     * Indexes
+     */
     tx.executeSql(createUrlIndexQuery);
     tx.executeSql(createLibraryIndexQuery);
     tx.executeSql(createNovelIdIndexQuery);

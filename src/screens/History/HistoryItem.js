@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {Pressable, StyleSheet, View, Image, Text} from 'react-native';
 
 import moment from 'moment';
@@ -22,10 +22,13 @@ const HistoryItem = ({history, theme, dispatch, navigation, deleteHistory}) => {
     bookmark,
   } = history;
 
-  const getChapterNumber = () =>
-    `Chapter ${parseChapterNumber(chapterName)} • ${moment(historyTimeRead)
-      .format('h:mm a')
-      .toUpperCase()}`;
+  const getChapterNumber = useCallback(
+    () =>
+      `Chapter ${parseChapterNumber(chapterName)} • ${moment(historyTimeRead)
+        .format('h:mm a')
+        .toUpperCase()}`,
+    [],
+  );
 
   const navigateToNovel = () => {
     navigation.navigate('Novel', history);

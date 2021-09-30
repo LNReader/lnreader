@@ -1,18 +1,15 @@
-import React, {memo, useCallback, useState} from 'react';
+import React, {memo, useState} from 'react';
 import {
   StyleSheet,
   View,
   Text,
-  Dimensions,
   Pressable,
   ScrollView,
-  useWindowDimensions,
   Animated,
 } from 'react-native';
 
-import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 import Slider from '@react-native-community/slider';
-import {IconButton, Menu, Switch} from 'react-native-paper';
+import {IconButton, Switch} from 'react-native-paper';
 import Bottomsheet from 'rn-sliding-up-panel';
 
 import BottomSheetHandle from '../../../components/BottomSheetHandle';
@@ -28,10 +25,6 @@ import {
   ToggleButton,
   ToggleColorButton,
 } from '../../../components/Common/ToggleButton';
-
-const ReaderSettingTitle = ({title}) => (
-  <Text style={styles.title}>{title}</Text>
-);
 
 const ReaderSheet = ({
   theme,

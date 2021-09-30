@@ -12,7 +12,7 @@ export const parseChapterNumber = chapterName => {
   } else if (occurrence) {
     return occurrence[0];
   } else {
-    return 0;
+    return -1;
   }
 };
 

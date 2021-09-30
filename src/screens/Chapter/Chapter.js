@@ -44,7 +44,7 @@ import {saveScrollPosition} from '../../redux/preferences/preference.actions';
 import {parseChapterNumber} from '../../services/updates';
 
 import ChapterAppbar from './components/ChapterAppbar';
-import ReaderSheet from './components/ReaderSheet';
+import ReaderBottomSheet from './components/ReaderBottomSheet';
 import EmptyView from '../../components/EmptyView';
 
 import ChapterFooter from './components/ChapterFooter';
@@ -655,7 +655,7 @@ const Chapter = ({route, navigation}) => {
         </GestureRecognizer>
 
         <Portal>
-          <ReaderSheet
+          <ReaderBottomSheet
             theme={theme}
             reader={reader}
             dispatch={dispatch}
