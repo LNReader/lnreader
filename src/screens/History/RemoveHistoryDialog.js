@@ -1,23 +1,15 @@
 import React from 'react';
 
 import {Button, Dialog, Portal} from 'react-native-paper';
-import {deleteAllHistory} from '../../database/queries/HistoryQueries';
-import {showToast} from '../../hooks/showToast';
 
-const RemoveHistoryDialog = ({dialogVisible, hideDialog, theme}) => {
-  const onPress = () => {
-    deleteAllHistory();
-    showToast('History deleted.');
-    hideDialog();
-  };
-
+const RemoveHistoryDialog = ({dialogVisible, hideDialog, theme, onPress}) => {
   return (
     <Portal>
       <Dialog
         visible={dialogVisible}
         onDismiss={hideDialog}
         style={{
-          borderRadius: 6,
+          borderRadius: 8,
           backgroundColor: theme.colorPrimary,
         }}
       >

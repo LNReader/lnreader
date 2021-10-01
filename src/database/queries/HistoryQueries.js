@@ -1,6 +1,8 @@
 import * as SQLite from 'expo-sqlite';
 const db = SQLite.openDatabase('lnreader.db');
 
+import {showToast} from '../../hooks/showToast';
+
 const getHistoryQuery = `
     SELECT history.*, chapters.*, novels.*
     FROM history 
@@ -57,4 +59,5 @@ export const deleteAllHistory = async () => {
   db.transaction(tx => {
     tx.executeSql('DELETE FROM history; VACCUM;');
   });
+  showToast('History deleted.');
 };

@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {memo, useCallback} from 'react';
 import {
   StyleSheet,
   View,
@@ -139,7 +139,7 @@ const NovelCover = ({
   );
 };
 
-export default NovelCover;
+export default memo(NovelCover);
 
 const ComfortableTitle = ({theme, novelName}) => (
   <Text
