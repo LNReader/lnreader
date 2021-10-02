@@ -25,6 +25,7 @@ export const ReaderBottomSheetFontPicker = ({reader, theme}) => {
       >
         {fonts.map(item => (
           <View
+            key={item.fontFamily}
             style={[
               styles.container,
               isSelected(item) && {backgroundColor: theme.rippleColor},

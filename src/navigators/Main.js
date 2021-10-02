@@ -18,17 +18,17 @@ import MoreStack from './More';
 /**
  * Screens
  */
-import Novel from '../screens/Novel/Novel';
+import Novel from '../screens/novel/Novel';
 import Reader from '../screens/reader/Reader';
 import Extension from '../screens/source/Source';
-import GlobalSearch from '../screens/Browse/globalsearch/GlobalSearch';
-import Migration from '../screens/Browse/migration/Migration';
-import SourceNovels from '../screens/Browse/SourceNovels';
-import MigrateNovel from '../screens/Browse/migration/MigrationNovels';
+import GlobalSearch from '../screens/browse/globalsearch/GlobalSearch';
+import Migration from '../screens/browse/migration/Migration';
+import SourceNovels from '../screens/browse/SourceNovels';
+import MigrateNovel from '../screens/browse/migration/MigrationNovels';
 
-import MalTopNovels from '../screens/Browse/discover/MalTopNovels';
+import MalTopNovels from '../screens/browse/discover/MalTopNovels';
 import NewUpdateDialog from '../components/NewUpdateDialog';
-import BrowseSettings from '../screens/Browse/BrowseSettings';
+import BrowseSettings from '../screens/browse/BrowseSettings';
 
 const Stack = createStackNavigator();
 

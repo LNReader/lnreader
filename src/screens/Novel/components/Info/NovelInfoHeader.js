@@ -24,14 +24,14 @@ import {Row} from '../../../../components/Common';
 import NovelSummary from './NovelSummary';
 import ReadButton from './ReadButton';
 
-// const getStatusIcon = (status) => {
-//     const icons = {
-//         Ongoing: "clock-outline",
-//         Completed: "check-all",
-//         Unknown: "help",
-//     };
+// const getStatusIcon = status => {
+//   const icons = {
+//     Ongoing: 'clock-outline',
+//     Completed: 'check-all',
+//     Unknown: 'help',
+//   };
 
-//     return icons[status] || icons.Unknown;
+//   return icons[status] || icons.Unknown;
 // };
 
 const NovelInfoHeader = ({
@@ -46,7 +46,7 @@ const NovelInfoHeader = ({
   navigation,
   trackerSheetRef,
   setCustomNovelCover,
-  chaptersSettingsSheetRef,
+  novelBottomSheetRef,
 }) => {
   const {tracker, trackedNovels} = useTrackingStatus();
 
@@ -111,15 +111,11 @@ const NovelInfoHeader = ({
               </NovelAuthor>
               <Row>
                 {/* <MaterialCommunityIcons
-                                    name={
-                                        loading
-                                            ? "help"
-                                            : getStatusIcon(novel.status)
-                                    }
-                                    size={16}
-                                    color={theme.textColorSecondary}
-                                    style={{ marginRight: 4 }}
-                                /> */}
+                  name={loading ? 'help' : getStatusIcon(novel.status)}
+                  size={16}
+                  color={theme.textColorSecondary}
+                  style={{marginRight: 4}}
+                /> */}
                 <NovelInfo theme={theme}>
                   {!loading
                     ? (novel.status || 'Unknown status') + ' • ' + novel.source
@@ -245,7 +241,7 @@ const NovelInfoHeader = ({
           />
           <Pressable
             style={styles.bottomsheet}
-            onPress={() => chaptersSettingsSheetRef.current.show()}
+            onPress={() => novelBottomSheetRef.current.show()}
             android_ripple={{color: theme.rippleColor}}
           >
             <>
