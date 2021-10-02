@@ -15,7 +15,6 @@ import MigrationNovelList from './MigrationNovelList';
 import {Appbar} from '../../../components/Appbar';
 
 import {showToast} from '../../../hooks/showToast';
-import {migrateNovel} from '../../../database/queries/NovelQueries';
 import {ScreenContainer} from '../../../components/Common';
 import {getSource} from '../../../sources/sources';
 

@@ -34,7 +34,7 @@ const Extension = ({navigation, route}) => {
 
   const [searchText, setSearchText] = useState('');
 
-  const incrementPage = () => setPage(page => page + 1);
+  const incrementPage = () => setPage(prevState => prevState + 1);
 
   const clearSearchbar = () => {
     setNovels([]);
@@ -48,7 +48,7 @@ const Extension = ({navigation, route}) => {
       if (page <= totalPages) {
         const source = getSource(sourceId);
         const res = await source.popularNovels(page);
-        setNovels(novels => [...novels, ...res.novels]);
+        setNovels(prevState => [...prevState, ...res.novels]);
         setTotalPages(res.totalPages);
         setLoading(false);
       }
@@ -91,20 +91,6 @@ const Extension = ({navigation, route}) => {
       mounted = false;
     };
   }, [page]);
-
-  const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}) => {
-    const paddingToBottom = 20;
-    return (
-      layoutMeasurement.height + contentOffset.y >=
-      contentSize.height - paddingToBottom
-    );
-  };
-
-  // const onScroll = ({ nativeEvent }) => {
-  //     if (!searchText && isCloseToBottom(nativeEvent)) {
-  //         incrementPage();
-  //     }
-  // };
 
   const getNextPage = () => {
     if (!searchText) {
@@ -190,7 +176,6 @@ const Extension = ({navigation, route}) => {
           data={novels}
           renderItem={renderItem}
           ListEmptyComponent={listEmptyComponent()}
-          // onScroll={onScroll}
           onEndReached={getNextPage}
           ListFooterComponent={
             !searchText &&

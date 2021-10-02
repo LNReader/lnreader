@@ -3,7 +3,6 @@ import {Dimensions, View, Text, StyleSheet} from 'react-native';
 
 import Slider from '@react-native-community/slider';
 import {getDeviceOrientation} from '../../../services/utils/helpers';
-import FadeView from '../../../components/Common/CrossFadeView';
 
 const VerticalScrollbar = ({
   theme,

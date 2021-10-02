@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {ScrollView} from 'react-native';
 
 import {useDispatch, useSelector} from 'react-redux';
@@ -7,12 +7,13 @@ import {Appbar} from '../../components/Appbar';
 import {List} from '../../components/List';
 import {ScreenContainer} from '../../components/Common';
 import SwitchSetting from '../../components/Switch/Switch';
-import DisplayModeModal from './components/DisplayModeModal';
-import GridSizeModal from './components/GridSizeModal';
+import DisplayModeModal from '../more/components/DisplayModeModal';
+import GridSizeModal from '../more/components/GridSizeModal';
 
 import {useSettings, useTheme} from '../../hooks/reduxHooks';
 import {setAppSettings} from '../../redux/settings/settings.actions';
 import {SHOW_LAST_UPDATE_TIME} from '../../redux/updates/updates.types';
+import {useModal} from '../../hooks/useModal';
 
 const GenralSettings = ({navigation}) => {
   const theme = useTheme();
@@ -32,7 +33,7 @@ const GenralSettings = ({navigation}) => {
     state => state.updatesReducer,
   );
 
-  const displayModeLabel = displayMode => {
+  const displayModeLabel = () => {
     const label = {
       0: 'Compact Grid',
       1: 'Comfortable Grid',
@@ -40,22 +41,18 @@ const GenralSettings = ({navigation}) => {
       3: 'No Title Grid',
     };
 
-    return label[displayMode] ?? 'Compact Grid';
+    return label[displayMode] || label[0];
   };
 
   /**
    * Display Mode Modal
    */
-  const [displayModalVisible, setDisplayModalVisible] = useState(false);
-  const showDisplayModal = () => setDisplayModalVisible(true);
-  const hideDisplayModal = () => setDisplayModalVisible(false);
+  const displayModalRef = useModal();
 
   /**
    * Grid Size Modal
    */
-  const [gridSizeModalVisible, setGridSizeModalVisible] = useState(false);
-  const showGridSizeModal = () => setGridSizeModalVisible(true);
-  const hideGridSizeModal = () => setGridSizeModalVisible(false);
+  const gridSizeModalRef = useModal();
 
   return (
     <ScreenContainer theme={theme}>
@@ -66,14 +63,14 @@ const GenralSettings = ({navigation}) => {
           <List.SubHeader theme={theme}>Display</List.SubHeader>
           <List.Item
             title="Display Mode"
-            description={displayModeLabel(displayMode)}
-            onPress={showDisplayModal}
+            description={displayModeLabel()}
+            onPress={displayModalRef.showModal}
             theme={theme}
           />
           <List.Item
             title="Items per row in library"
             description={`${novelsPerRow} items per row`}
-            onPress={showGridSizeModal}
+            onPress={gridSizeModalRef.showModal}
             theme={theme}
           />
           <List.Divider theme={theme} />
@@ -130,16 +127,16 @@ const GenralSettings = ({navigation}) => {
       </ScrollView>
       <DisplayModeModal
         displayMode={displayMode}
-        displayModalVisible={displayModalVisible}
-        hideDisplayModal={hideDisplayModal}
+        displayModalVisible={displayModalRef.visible}
+        hideDisplayModal={displayModalRef.hideModal}
         dispatch={dispatch}
         theme={theme}
       />
       <GridSizeModal
         dispatch={dispatch}
         novelsPerRow={novelsPerRow}
-        gridSizeModalVisible={gridSizeModalVisible}
-        hideGridSizeModal={hideGridSizeModal}
+        gridSizeModalVisible={gridSizeModalRef.visible}
+        hideGridSizeModal={gridSizeModalRef.hideModal}
         theme={theme}
       />
     </ScreenContainer>

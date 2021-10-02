@@ -46,7 +46,7 @@ import {showToast} from '../../hooks/showToast';
 
 import ChapterItem from './components/ChapterItem';
 import NovelInfoHeader from './components/Info/NovelInfoHeader';
-import ChaptersSettingsSheet from './components/ChaptersSettingsSheet';
+import NovelBottomSheet from './components/NovelBottomSheet';
 import TrackSheet from './components/Tracker/TrackSheet';
 import {Row} from '../../components/Common';
 import JumpToChapterModal from './components/JumpToChapterModal';
@@ -69,7 +69,7 @@ const Novel = ({route, navigation}) => {
   const [extraMenu, showExtraMenu] = useState(false);
 
   let flatlistRef = useRef(null);
-  let chaptersSettingsSheetRef = useRef(null);
+  let novelBottomSheetRef = useRef(null);
   let trackerSheetRef = useRef(null);
 
   const {
@@ -448,7 +448,7 @@ const Novel = ({route, navigation}) => {
               chapters={chapters}
               navigation={navigation}
               trackerSheetRef={trackerSheetRef}
-              chaptersSettingsSheetRef={chaptersSettingsSheetRef}
+              novelBottomSheetRef={novelBottomSheetRef}
             />
           }
           refreshControl={refreshControl()}
@@ -559,9 +559,9 @@ const Novel = ({route, navigation}) => {
               theme={theme}
               dispatch={dispatch}
             />
-            <ChaptersSettingsSheet
+            <NovelBottomSheet
               novelUrl={novelUrl}
-              bottomSheetRef={chaptersSettingsSheetRef}
+              bottomSheetRef={novelBottomSheetRef}
               dispatch={dispatch}
               sortAndFilterChapters={sortAndFilterChapters}
               novelId={novel.novelId}

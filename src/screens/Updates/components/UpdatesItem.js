@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {memo, useState} from 'react';
 import {View, Text, StyleSheet, Pressable} from 'react-native';
 
 import FastImage from 'react-native-fast-image';
@@ -83,7 +83,7 @@ const UpdateCard = ({
   );
 };
 
-export default UpdateCard;
+export default memo(UpdateCard);
 
 const styles = StyleSheet.create({
   updateCard: {

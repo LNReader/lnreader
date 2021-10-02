@@ -1,11 +1,11 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {Pressable, StyleSheet, View, Image, Text} from 'react-native';
 
 import moment from 'moment';
 import {IconButton} from 'react-native-paper';
 
-import {parseChapterNumber} from '../../services/utils/helpers';
-import {setNovel} from '../../redux/novel/novel.actions';
+import {parseChapterNumber} from '../../../services/utils/helpers';
+import {setNovel} from '../../../redux/novel/novel.actions';
 
 const HistoryItem = ({history, theme, dispatch, navigation, deleteHistory}) => {
   const {
@@ -22,10 +22,13 @@ const HistoryItem = ({history, theme, dispatch, navigation, deleteHistory}) => {
     bookmark,
   } = history;
 
-  const getChapterNumber = () =>
-    `Chapter ${parseChapterNumber(chapterName)} • ${moment(historyTimeRead)
-      .format('h:mm a')
-      .toUpperCase()}`;
+  const getChapterNumber = useCallback(
+    () =>
+      `Chapter ${parseChapterNumber(chapterName)} • ${moment(historyTimeRead)
+        .format('h:mm a')
+        .toUpperCase()}`,
+    [],
+  );
 
   const navigateToNovel = () => {
     navigation.navigate('Novel', history);
@@ -44,59 +47,43 @@ const HistoryItem = ({history, theme, dispatch, navigation, deleteHistory}) => {
       bookmark,
     });
 
+  const getNovelCover = useCallback(
+    () =>
+      novelCover && !novelCover.startsWith('/')
+        ? novelCover
+        : 'https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true',
+    [],
+  );
+
   return (
     <Pressable
       onPress={navigateToNovel}
       android_ripple={{color: theme.rippleColor}}
-      style={styles.pressable}
     >
-      <View style={styles.historyItemContainer}>
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'row',
-            overflow: 'hidden',
-          }}
-        >
+      <View style={styles.content}>
+        <View style={styles.container}>
           <View>
-            <Image
-              source={{
-                uri:
-                  novelCover && !novelCover.startsWith('/')
-                    ? novelCover
-                    : 'https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true',
-              }}
-              style={styles.historyItemCover}
-            />
+            <Image source={{uri: getNovelCover()}} style={styles.novelCover} />
           </View>
-          <View
-            style={{
-              flexShrink: 1,
-              marginLeft: 16,
-              justifyContent: 'center',
-            }}
-          >
+          <View style={styles.textContainer}>
             <Text
-              style={[{color: theme.textColorPrimary}, styles.historyItemTitle]}
+              style={[{color: theme.textColorPrimary}, styles.chapterTitle]}
               numberOfLines={2}
             >
               {novelName}
             </Text>
             <Text
-              style={{
-                color: theme.textColorSecondary,
-                marginTop: 2,
-              }}
+              style={[{color: theme.textColorSecondary}, styles.chapterNumber]}
               numberOfLines={1}
             >
               {getChapterNumber()}
             </Text>
           </View>
         </View>
-        <View style={styles.historyActionsContainer}>
+        <View style={styles.buttons}>
           <IconButton
             icon="delete-outline"
-            size={22}
+            size={24}
             color={theme.textColorPrimary}
             onPress={() => deleteHistory(historyId)}
           />
@@ -115,27 +102,37 @@ const HistoryItem = ({history, theme, dispatch, navigation, deleteHistory}) => {
 export default HistoryItem;
 
 const styles = StyleSheet.create({
-  historyItemContainer: {
+  content: {
     paddingVertical: 8,
     paddingHorizontal: 16,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  pressable: {
+  container: {
     flex: 1,
+    flexDirection: 'row',
+    overflow: 'hidden',
   },
-  historyItemCover: {
+  novelCover: {
     height: 80,
-    width: 57,
+    width: 56,
     borderRadius: 4,
   },
-  historyItemTitle: {
-    fontSize: 16,
+  textContainer: {
+    flexShrink: 1,
+    marginLeft: 16,
+    justifyContent: 'center',
+  },
+  chapterTitle: {
+    fontSize: 15,
     flexWrap: 'wrap',
   },
-  historyActionsContainer: {
+  buttons: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  chapterNumber: {
+    marginTop: 4,
   },
 });

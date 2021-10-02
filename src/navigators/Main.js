@@ -9,21 +9,26 @@ import {useTheme} from '../hooks/reduxHooks';
 import {githubUpdateChecker} from '../hooks/githubUpdateChecker';
 import * as SplashScreen from 'expo-splash-screen';
 
-// Navigators
+/**
+ * Navigators
+ */
 import BottomNavigator from './BottomNavigator';
-
-// Screens
-import Novel from '../screens/Novel/Novel';
-import Chapter from '../screens/Chapter/Chapter';
-import Extension from '../screens/Extension/Extension';
-import GlobalSearch from '../screens/Browse/globalsearch/GlobalSearch';
-import Migration from '../screens/Browse/migration/Migration';
-import SourceNovels from '../screens/Browse/SourceNovels';
-import MigrateNovel from '../screens/Browse/migration/MigrationNovels';
 import MoreStack from './More';
-import MalTopNovels from '../screens/Browse/discover/MalTopNovels';
+
+/**
+ * Screens
+ */
+import Novel from '../screens/novel/Novel';
+import Reader from '../screens/reader/Reader';
+import Extension from '../screens/source/Source';
+import GlobalSearch from '../screens/browse/globalsearch/GlobalSearch';
+import Migration from '../screens/browse/migration/Migration';
+import SourceNovels from '../screens/browse/SourceNovels';
+import MigrateNovel from '../screens/browse/migration/MigrationNovels';
+
+import MalTopNovels from '../screens/browse/discover/MalTopNovels';
 import NewUpdateDialog from '../components/NewUpdateDialog';
-import BrowseSettings from '../screens/Browse/BrowseSettings';
+import BrowseSettings from '../screens/browse/BrowseSettings';
 
 const Stack = createStackNavigator();
 
@@ -46,7 +51,7 @@ const MainNavigator = () => {
         <Stack.Navigator screenOptions={{headerShown: false}}>
           <Stack.Screen name="BottomNavigator" component={BottomNavigator} />
           <Stack.Screen name="Novel" component={Novel} />
-          <Stack.Screen name="Chapter" component={Chapter} />
+          <Stack.Screen name="Chapter" component={Reader} />
           <Stack.Screen name="MoreStack" component={MoreStack} />
           <Stack.Screen name="Extension" component={Extension} />
           <Stack.Screen name="BrowseMal" component={MalTopNovels} />

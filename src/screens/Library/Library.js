@@ -26,7 +26,7 @@ import {updateLibraryAction} from '../../redux/updates/updates.actions';
 import {useSettings, useTheme} from '../../hooks/reduxHooks';
 import {setNovel} from '../../redux/novel/novel.actions';
 import {Portal} from 'react-native-paper';
-import LibraryFilterSheet from './components/LibraryFilterSheet';
+import LibraryBottomSheet from './components/LibraryBottomSheet';
 import {Actionbar} from '../../components/Actionbar/Actionbar';
 import {
   markAllChaptersRead,
@@ -45,7 +45,7 @@ const LibraryScreen = ({navigation}) => {
     downloadedOnlyMode = false,
   } = settings;
 
-  const libraryFilterSheetRef = useRef(null);
+  const libraryBottomSheetRef = useRef(null);
 
   const {
     loading,
@@ -152,7 +152,7 @@ const LibraryScreen = ({navigation}) => {
           actions={[
             {
               icon: 'filter-variant',
-              onPress: () => libraryFilterSheetRef.current.show(),
+              onPress: () => libraryBottomSheetRef.current.show(),
               color:
                 filter || downloadedOnlyMode
                   ? theme.filterColor
@@ -271,8 +271,8 @@ const LibraryScreen = ({navigation}) => {
               ]}
             />
             <Portal>
-              <LibraryFilterSheet
-                bottomSheetRef={libraryFilterSheetRef}
+              <LibraryBottomSheet
+                bottomSheetRef={libraryBottomSheetRef}
                 theme={theme}
                 dispatch={dispatch}
                 sort={sort}

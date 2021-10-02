@@ -1,6 +1,5 @@
-import React, {useCallback, useState} from 'react';
+import React, {useState} from 'react';
 import {
-  Dimensions,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -12,7 +11,7 @@ import {
 import {Button} from 'react-native-paper';
 import WebView from 'react-native-webview';
 import {useDispatch} from 'react-redux';
-import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
+import {TabView, TabBar} from 'react-native-tab-view';
 
 import {Appbar} from '../../components/Appbar';
 import ColorPickerModal from '../../components/ColorPickerModal';
@@ -28,11 +27,8 @@ import {
   setAppSettings,
   setReaderSettings,
 } from '../../redux/settings/settings.actions';
-import {
-  readerBackground,
-  readerLineHeight,
-  readerTextColor,
-} from '../Chapter/readerStyleController';
+import {readerBackground, readerTextColor} from '../reader/utils/readerStyles';
+import {useModal} from '../../hooks/useModal';
 
 const FirstRoute = React.memo(({theme, dispatch, reader}) => {
   const presetThemes = [
@@ -59,12 +55,7 @@ const FirstRoute = React.memo(({theme, dispatch, reader}) => {
   /**
    * Reader Background Color Modal
    */
-  const [readerBackgroundColorModal, setReaderBackgroundtColorModal] =
-    useState(false);
-  const showReaderBackgroundtColorModal = () =>
-    setReaderBackgroundtColorModal(true);
-  const hideReaderBackgroundtColorModal = () =>
-    setReaderBackgroundtColorModal(false);
+  const readerBackgroundModal = useModal();
 
   /**
    * Reader Text Color Modal
@@ -78,7 +69,7 @@ const FirstRoute = React.memo(({theme, dispatch, reader}) => {
   };
 
   const setReaderTextColor = val => {
-    dispatch(setReaderSettings('textColor', val ?? reader.textColor));
+    dispatch(setReaderSettings('textColor', val || reader.textColor));
   };
 
   const [customHtmlCSS, setcustomHtmlCSS] = useState(reader.customCSS);
@@ -103,17 +94,17 @@ const FirstRoute = React.memo(({theme, dispatch, reader}) => {
               showsHorizontalScrollIndicator={false}
             >
               <Row>
-                {presetThemes.map(theme => (
+                {presetThemes.map(item => (
                   <ToggleColorButton
-                    key={theme.value}
-                    selected={reader.theme === theme.backgroundColor}
-                    backgroundColor={theme.backgroundColor}
-                    textColor={theme.textColor}
+                    key={item.value}
+                    selected={reader.theme === item.backgroundColor}
+                    backgroundColor={item.backgroundColor}
+                    textColor={item.textColor}
                     onPress={() => {
                       dispatch(
-                        setReaderSettings('theme', theme.backgroundColor),
+                        setReaderSettings('theme', item.backgroundColor),
                       );
-                      dispatch(setReaderSettings('textColor', theme.textColor));
+                      dispatch(setReaderSettings('textColor', item.textColor));
                     }}
                   />
                 ))}
@@ -125,7 +116,7 @@ const FirstRoute = React.memo(({theme, dispatch, reader}) => {
           <List.ColorItem
             title="Background Color"
             description={readerBackground(reader.theme).toUpperCase()}
-            onPress={showReaderBackgroundtColorModal}
+            onPress={readerBackgroundModal.showModal}
             theme={theme}
           />
           <List.ColorItem
@@ -230,9 +221,9 @@ const FirstRoute = React.memo(({theme, dispatch, reader}) => {
       </ScrollView>
       <ColorPickerModal
         title="Reader background color"
-        modalVisible={readerBackgroundColorModal}
+        modalVisible={readerBackgroundModal.visible}
         color={readerBackground(reader.theme)}
-        hideModal={hideReaderBackgroundtColorModal}
+        hideModal={readerBackgroundModal.hideModal}
         theme={theme}
         onSubmit={setReaderBackground}
       />

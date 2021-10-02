@@ -20,7 +20,7 @@ import {
   downloadChapterAction,
 } from '../../redux/novel/novel.actions';
 
-import UpdatesItem from '../Updates/components/UpdatesItem';
+import UpdatesItem from '../updates/components/UpdatesItem';
 import RemoveDownloadsDialog from './components/RemoveDownloadsDialog';
 
 const Downloads = ({navigation}) => {

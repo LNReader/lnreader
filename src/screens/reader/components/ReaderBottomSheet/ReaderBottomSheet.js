@@ -1,37 +1,32 @@
-import React, {memo, useCallback, useState} from 'react';
+import React, {memo, useState} from 'react';
 import {
   StyleSheet,
   View,
   Text,
-  Dimensions,
   Pressable,
   ScrollView,
-  useWindowDimensions,
   Animated,
 } from 'react-native';
 
-import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 import Slider from '@react-native-community/slider';
-import {IconButton, Menu, Switch} from 'react-native-paper';
+import {IconButton, Switch} from 'react-native-paper';
 import Bottomsheet from 'rn-sliding-up-panel';
 
-import BottomSheetHandle from '../../../components/BottomSheetHandle';
-import {Row} from '../../../components/Common';
+import BottomSheetHandle from '../../../../components/BottomSheetHandle';
+import {Row} from '../../../../components/Common';
 
-import {fonts} from '../../../services/utils/constants';
+import {fonts} from '../../../../services/utils/constants';
 
 import {
   setAppSettings,
   setReaderSettings,
-} from '../../../redux/settings/settings.actions';
+} from '../../../../redux/settings/settings.actions';
 import {
   ToggleButton,
   ToggleColorButton,
-} from '../../../components/Common/ToggleButton';
-
-const ReaderSettingTitle = ({title}) => (
-  <Text style={styles.title}>{title}</Text>
-);
+} from '../../../../components/Common/ToggleButton';
+import {ReaderBottomSheetSwitch} from './components/ReaderBottomSheetSwitch';
+import {ReaderBottomSheetFontPicker} from './components/ReaderBottomSheetFontPicker';
 
 const ReaderSheet = ({
   theme,
@@ -250,230 +245,71 @@ const ReaderSheet = ({
                 />
               </Row>
             </Row>
-            <Row
-              style={{
-                justifyContent: 'space-between',
-                marginVertical: 6,
-              }}
-            >
-              <Text
-                style={{
-                  color: theme.textColorSecondary,
-                  marginRight: 16,
-                }}
-              >
-                Font style
-              </Text>
-              <ScrollView
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={{alignItems: 'center'}}
-              >
-                {fonts.map(font => (
-                  <View
-                    style={[
-                      {
-                        borderRadius: 8,
-                        overflow: 'hidden',
-                        marginHorizontal: 6,
-                      },
-                      reader.fontFamily === font.fontFamily && {
-                        backgroundColor: theme.rippleColor,
-                      },
-                    ]}
-                  >
-                    <Pressable
-                      style={{
-                        borderRadius: 8,
-                        paddingHorizontal: 10,
-                        paddingVertical: 4,
-                      }}
-                      onPress={() =>
-                        dispatch(
-                          setReaderSettings('fontFamily', font.fontFamily),
-                        )
-                      }
-                      android_ripple={{
-                        color: theme.rippleColor,
-                      }}
-                    >
-                      <Text
-                        style={{
-                          fontSize: 16,
-                          fontFamily: font.fontFamily,
-                          color:
-                            reader.fontFamily === font.fontFamily
-                              ? theme.colorAccent
-                              : theme.textColorPrimary,
-                        }}
-                      >
-                        {font.name}
-                      </Text>
-                    </Pressable>
-                  </View>
-                ))}
-              </ScrollView>
-            </Row>
+            <ReaderBottomSheetFontPicker reader={reader} theme={theme} />
           </View>
-          <Pressable
-            style={styles.switchStyle}
-            android_ripple={{color: theme.rippleColor}}
+          <ReaderBottomSheetSwitch
+            label="Use WebView"
             onPress={() =>
               dispatch(
                 setAppSettings('useWebViewForChapter', !useWebViewForChapter),
               )
             }
-          >
-            <Text
-              style={{
-                color: theme.textColorSecondary,
-              }}
-            >
-              Use WebView
-            </Text>
-            <Switch
-              value={useWebViewForChapter}
-              onValueChange={() =>
-                dispatch(
-                  setAppSettings('useWebViewForChapter', !useWebViewForChapter),
-                )
-              }
-              color={theme.colorAccent}
-            />
-          </Pressable>
-          <Pressable
-            style={styles.switchStyle}
-            android_ripple={{color: theme.rippleColor}}
+            value={useWebViewForChapter}
+            theme={theme}
+          />
+          <ReaderBottomSheetSwitch
+            label="Fullscreen"
             onPress={() =>
               dispatch(setAppSettings('fullScreenMode', !fullScreenMode))
             }
-          >
-            <Text
-              style={{
-                color: theme.textColorSecondary,
-              }}
-            >
-              Fullscreen
-            </Text>
-            <Switch
-              value={fullScreenMode}
-              onValueChange={() =>
-                dispatch(setAppSettings('fullScreenMode', !fullScreenMode))
-              }
-              color={theme.colorAccent}
-            />
-          </Pressable>
+            value={fullScreenMode}
+            theme={theme}
+          />
           {!useWebViewForChapter && (
-            <Pressable
-              style={styles.switchStyle}
-              android_ripple={{color: theme.rippleColor}}
+            <ReaderBottomSheetSwitch
+              label="AutoScroll"
               onPress={() =>
                 dispatch(setAppSettings('autoScroll', !autoScroll))
               }
-            >
-              <Text
-                style={{
-                  color: theme.textColorSecondary,
-                }}
-              >
-                AutoScroll
-              </Text>
-              <Switch
-                value={autoScroll}
-                onValueChange={() =>
-                  dispatch(setAppSettings('autoScroll', !autoScroll))
-                }
-                color={theme.colorAccent}
-              />
-            </Pressable>
+              value={autoScroll}
+              theme={theme}
+            />
           )}
-          <Pressable
-            style={styles.switchStyle}
-            android_ripple={{color: theme.rippleColor}}
+          <ReaderBottomSheetSwitch
+            label="Show battery and time"
             onPress={() =>
               dispatch(
                 setAppSettings('showBatteryAndTime', !showBatteryAndTime),
               )
             }
-          >
-            <Text
-              style={{
-                color: theme.textColorSecondary,
-              }}
-            >
-              Show battery and time
-            </Text>
-            <Switch
-              value={showBatteryAndTime}
-              onValueChange={() =>
-                dispatch(
-                  setAppSettings('showBatteryAndTime', !showBatteryAndTime),
-                )
-              }
-              color={theme.colorAccent}
-            />
-          </Pressable>
-          <Pressable
-            style={styles.switchStyle}
-            android_ripple={{color: theme.rippleColor}}
+            value={showBatteryAndTime}
+            theme={theme}
+          />
+          <ReaderBottomSheetSwitch
+            label="Show progress percentage"
             onPress={() =>
               dispatch(
                 setAppSettings('showScrollPercentage', !showScrollPercentage),
               )
             }
-          >
-            <Text
-              style={{
-                color: theme.textColorSecondary,
-              }}
-            >
-              Show progress percentage
-            </Text>
-            <Switch
-              value={showScrollPercentage}
-              onValueChange={() =>
-                dispatch(
-                  setAppSettings('showScrollPercentage', !showScrollPercentage),
-                )
-              }
-              color={theme.colorAccent}
-            />
-          </Pressable>
-          <Pressable
-            style={styles.switchStyle}
-            android_ripple={{color: theme.rippleColor}}
+            value={showScrollPercentage}
+            theme={theme}
+          />
+          <ReaderBottomSheetSwitch
+            label="Swipe gestures"
             onPress={enableSwipeGestures}
-          >
-            <Text
-              style={{
-                color: theme.textColorSecondary,
-              }}
-            >
-              Swipe gestures
-            </Text>
-            <Switch
-              value={swipeGestures}
-              onValueChange={enableSwipeGestures}
-              color={theme.colorAccent}
-            />
-          </Pressable>
+            value={swipeGestures}
+            theme={theme}
+          />
           {!useWebViewForChapter && (
-            <Pressable
-              style={styles.switchStyle}
-              android_ripple={{color: theme.rippleColor}}
+            <ReaderBottomSheetSwitch
+              label="Select text"
               onPress={() =>
                 dispatch(setAppSettings('textSelectable', !selectText))
               }
-            >
-              <Text style={{color: theme.textColorSecondary}}>Select text</Text>
-              <Switch
-                value={selectText}
-                onValueChange={() =>
-                  dispatch(setAppSettings('textSelectable', !selectText))
-                }
-                color={theme.colorAccent}
-              />
-            </Pressable>
+              value={selectText}
+              theme={theme}
+            />
           )}
         </View>
       </ScrollView>

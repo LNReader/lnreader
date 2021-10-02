@@ -5,7 +5,7 @@ import {
   ChapterDownloadingButton,
   DeleteChapterButton,
   DownloadChapterButton,
-} from '../../Novel/components/Chapter/ChapterDownloadButtons';
+} from '../../novel/components/Chapter/ChapterDownloadButtons';
 
 export const DownloadButton = ({
   downloadQueue,

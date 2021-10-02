@@ -12,15 +12,15 @@ const popularNovels = async page => {
   const result = await fetch(url);
   const body = await result.text();
 
-  $ = cheerio.load(body);
+  const $ = cheerio.load(body);
 
   let novels = [];
 
   $('.page-item-detail').each(function (result) {
-    const novelName = $(this).find('h5 > a').text();
+    const novelName = $(this).find('h3 > a').text();
     const novelCover = $(this).find('img').attr('src');
 
-    let novelUrl = $(this).find('h5 > a').attr('href');
+    let novelUrl = $(this).find('h3 > a').attr('href');
     novelUrl = novelUrl.replace(`${baseUrl}/`, '');
 
     const novel = {
@@ -39,12 +39,10 @@ const popularNovels = async page => {
 const parseNovelAndChapters = async novelUrl => {
   const url = `${baseUrl}/${novelUrl}`;
 
-  console.log(url);
-
   const result = await fetch(url);
   const body = await result.text();
 
-  $ = cheerio.load(body);
+  const $ = cheerio.load(body);
 
   let novel = {};
 

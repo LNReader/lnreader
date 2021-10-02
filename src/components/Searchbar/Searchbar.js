@@ -1,7 +1,7 @@
 import React, {useRef} from 'react';
-import {StyleSheet, View, TextInput, Text, StatusBar} from 'react-native';
+import {StyleSheet, View, TextInput, StatusBar, Pressable} from 'react-native';
 
-import {TouchableRipple, IconButton} from 'react-native-paper';
+import {IconButton} from 'react-native-paper';
 import {Row} from '../Common';
 
 export const Searchbar = ({
@@ -18,16 +18,12 @@ export const Searchbar = ({
   const searchRef = useRef(null);
 
   return (
-    <TouchableRipple
-      borderless
-      onPress={() => searchRef.current.focus()}
-      style={[
-        styles.searchbarContainer,
-        {backgroundColor: theme.searchBarColor},
-      ]}
-      rippleColor={theme.rippleColor}
-    >
-      <View style={styles.container}>
+    <View style={styles.searchBar}>
+      <Pressable
+        onPress={() => searchRef.current.focus()}
+        style={[styles.pressable, {backgroundColor: theme.searchBarColor}]}
+        android_ripple={{color: theme.rippleColor}}
+      >
         <Row style={{flex: 1}}>
           {backAction && (
             <IconButton
@@ -71,26 +67,24 @@ export const Searchbar = ({
               onPress={action.onPress}
             />
           ))}
-      </View>
-    </TouchableRipple>
+      </Pressable>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  searchbarContainer: {
+  searchBar: {
     marginTop: StatusBar.currentHeight + 8,
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 12,
     marginBottom: 8,
-    borderRadius: 50,
     marginHorizontal: 16,
+    borderRadius: 50,
+    overflow: 'hidden',
     elevation: 1,
   },
-  container: {
-    flex: 1,
+  pressable: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    paddingHorizontal: 16,
   },
 });

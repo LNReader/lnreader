@@ -14,6 +14,7 @@ import {LinearGradient} from 'expo-linear-gradient';
 import easeGradient from 'react-native-easing-gradient';
 import FastImage from 'react-native-fast-image';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
+import {Chip} from '../../../../components/Chip/Chip';
 
 const NovelInfoContainer = ({children}) => (
   <View style={styles.novelInfoContainer}>{children}</View>
@@ -199,28 +200,14 @@ const TrackerButton = ({theme, isTracked, onPress}) => (
   </View>
 );
 
-const GenreChip = ({children, theme}) => (
-  <Text
-    style={[
-      styles.genreChip,
-      {
-        color: theme.textColorPrimary,
-        backgroundColor: theme.dividerColor,
-      },
-    ]}
-  >
-    {children}
-  </Text>
-);
-
 const NovelGenres = ({theme, genre}) => {
   const data = genre.split(',');
 
-  const renderItem = ({item}) => <GenreChip theme={theme}>{item}</GenreChip>;
+  const renderItem = ({item}) => <Chip label={item} theme={theme} />;
 
   return (
     <FlatList
-      contentContainerStyle={styles.novelGenres}
+      contentContainerStyle={styles.genreContainer}
       horizontal
       data={data}
       keyExtractor={item => item}
@@ -282,9 +269,9 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     elevation: 0,
   },
-  novelGenres: {
+  genreContainer: {
     paddingHorizontal: 16,
-    marginBottom: 8,
+    paddingBottom: 4,
   },
   genreChip: {
     flex: 1,

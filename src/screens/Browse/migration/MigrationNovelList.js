@@ -15,11 +15,8 @@ const MigrationNovelList = ({data, theme, library, navigation}) => {
   const showMigrateNovelDialog = () => setMigrateNovelDialog(true);
   const hideMigrateNovelDialog = () => setMigrateNovelDialog(false);
 
-  const inLibrary = (sourceId, novelUrl) => {
-    return library.some(
-      obj => obj.novelUrl === novelUrl && obj.sourceId === sourceId,
-    );
-  };
+  const inLibrary = (sourceId, novelUrl) =>
+    library.some(obj => obj.novelUrl === novelUrl && obj.sourceId === sourceId);
 
   const renderItem = ({item}) => (
     <GlobalSearchNovelCover

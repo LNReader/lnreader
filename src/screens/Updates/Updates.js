@@ -43,7 +43,7 @@ const Updates = ({navigation}) => {
   useFocusEffect(
     useCallback(() => {
       dispatch(getUpdatesAction());
-    }, [getUpdatesAction]),
+    }, []),
   );
 
   const onRefresh = async () => {
@@ -125,9 +125,7 @@ const Updates = ({navigation}) => {
     />
   );
 
-  const clearSearchbar = () => {
-    setSearchText('');
-  };
+  const clearSearchbar = () => setSearchText('');
 
   const onChangeText = text => {
     setSearchText(text);
@@ -171,13 +169,7 @@ const Updates = ({navigation}) => {
       />
       {showLastUpdateTime && lastUpdateTime && (
         <Text
-          style={{
-            color: theme.textColorSecondary,
-            paddingHorizontal: 16,
-            paddingTop: 8,
-            paddingBottom: 4,
-            textAlign: 'center',
-          }}
+          style={[styles.lastUpdateTime, {color: theme.textColorSecondary}]}
         >
           Library last updated: {moment(lastUpdateTime).fromNow()}
         </Text>
@@ -216,6 +208,17 @@ const Updates = ({navigation}) => {
 export default Updates;
 
 const styles = StyleSheet.create({
-  container: {flex: 1},
-  flatList: {flexGrow: 1, paddingBottom: 8},
+  container: {
+    flex: 1,
+  },
+  flatList: {
+    flexGrow: 1,
+    paddingBottom: 8,
+  },
+  lastUpdateTime: {
+    paddingHorizontal: 16,
+    paddingTop: 8,
+    paddingBottom: 4,
+    textAlign: 'center',
+  },
 });

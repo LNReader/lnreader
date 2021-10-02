@@ -12,17 +12,19 @@ import {useFocusEffect} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
 
 import EmptyView from '../../components/EmptyView';
-import HistoryItem from './HistoryItem';
-import RemoveHistoryDialog from './RemoveHistoryDialog';
-import {ScreenContainer} from '../../components/Common';
+import HistoryItem from './components/HistoryItem';
+import RemoveHistoryDialog from './components/RemoveHistoryDialog';
 import {Searchbar} from '../../components/Searchbar/Searchbar';
 
 import {dateFormat} from '../../services/utils/constants';
 import {useTheme} from '../../hooks/reduxHooks';
 import {
+  deleteAllHistory,
   deleteHistory,
   getHistoryFromDb,
 } from '../../database/queries/HistoryQueries';
+
+import {useModal} from '../../hooks/useModal';
 
 const History = ({navigation}) => {
   const theme = useTheme();
@@ -35,50 +37,26 @@ const History = ({navigation}) => {
   const [loading, setLoading] = useState(true);
 
   const getHistory = async () => {
-    const history = await getHistoryFromDb();
+    const rawHistory = await getHistoryFromDb();
 
-    const groups = history.reduce((groups, update) => {
-      var dateParts = update.historyTimeRead.split('-');
-      var jsDate = new Date(
-        dateParts[0],
-        dateParts[1] - 1,
-        dateParts[2].substr(0, 2),
-      );
-      const date = jsDate.toISOString();
-      if (!groups[date]) {
-        groups[date] = [];
-      }
-      groups[date].push(update);
-      return groups;
-    }, {});
-
-    const groupedHistory = Object.keys(groups).map(date => {
-      return {
-        date,
-        novels: groups[date],
-      };
-    });
-
-    setHistory(groupedHistory);
+    setHistory(rawHistory);
     setLoading(false);
   };
 
   /**
    * Confirm Clear History Dialog
    */
-  const [visible, setVisible] = useState(false);
-  const showDialog = () => setVisible(true);
-  const hideDialog = () => setVisible(false);
+  const removeHistoryModal = useModal();
 
   useFocusEffect(
     useCallback(() => {
       getHistory();
-    }, [visible]),
+    }, []),
   );
 
   const deleteChapterHistory = historyId => {
     deleteHistory(historyId);
-    getHistory();
+    setHistory(history.filter(item => item.historyId !== historyId));
   };
 
   const renderHistoryCard = ({item}) => (
@@ -100,22 +78,39 @@ const History = ({navigation}) => {
     setSearchText(text);
     let results = [];
 
-    text !== '' &&
-      history.map(item => {
-        const date = item.date;
-        const novels = item.novels.filter(novel =>
-          novel.novelName.toLowerCase().includes(text.toLowerCase()),
-        );
+    if (text !== '') {
+      results = history.filter(novel =>
+        novel.novelName.toLowerCase().includes(text.toLowerCase()),
+      );
+    }
 
-        if (novels.length > 0) {
-          results.push({
-            date,
-            novels,
-          });
-        }
-      });
+    setSearchResults(groupByDate(results));
+  };
 
-    setSearchResults(results);
+  const groupByDate = rawHistory => {
+    const groups = rawHistory.reduce((groups, update) => {
+      var dateParts = update.historyTimeRead.split('-');
+      var jsDate = new Date(
+        dateParts[0],
+        dateParts[1] - 1,
+        dateParts[2].substr(0, 2),
+      );
+      const date = jsDate.toISOString();
+      if (!groups[date]) {
+        groups[date] = [];
+      }
+      groups[date].push(update);
+      return groups;
+    }, {});
+
+    const groupedHistory = Object.keys(groups).map(date => {
+      return {
+        date,
+        novels: groups[date],
+      };
+    });
+
+    return groupedHistory;
   };
 
   return (
@@ -130,13 +125,13 @@ const History = ({navigation}) => {
         actions={[
           {
             icon: 'delete-sweep',
-            onPress: showDialog,
+            onPress: removeHistoryModal.showModal,
           },
         ]}
       />
       <FlatList
-        contentContainerStyle={{paddingBottom: 40}}
-        data={searchText ? searchResults : history}
+        contentContainerStyle={styles.container}
+        data={searchText ? searchResults : groupByDate(history)}
         keyExtractor={item => item.date}
         renderItem={({item}) => (
           <FlatList
@@ -145,12 +140,7 @@ const History = ({navigation}) => {
             renderItem={renderHistoryCard}
             ListHeaderComponent={
               <Text
-                style={{
-                  textTransform: 'uppercase',
-                  paddingVertical: 8,
-                  paddingHorizontal: 16,
-                  color: theme.textColorSecondary,
-                }}
+                style={[styles.dateHeader, {color: theme.textColorSecondary}]}
               >
                 {moment(item.date).calendar(null, dateFormat)}
               </Text>
@@ -173,9 +163,14 @@ const History = ({navigation}) => {
         }
       />
       <RemoveHistoryDialog
-        dialogVisible={visible}
-        hideDialog={hideDialog}
+        dialogVisible={removeHistoryModal.visible}
+        hideDialog={removeHistoryModal.hideModal}
         theme={theme}
+        onPress={() => {
+          deleteAllHistory();
+          setHistory([]);
+          removeHistoryModal.hideModal();
+        }}
       />
     </View>
   );
@@ -183,4 +178,14 @@ const History = ({navigation}) => {
 
 export default History;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flexGrow: 1,
+    paddingBottom: 40,
+  },
+  dateHeader: {
+    textTransform: 'uppercase',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+  },
+});

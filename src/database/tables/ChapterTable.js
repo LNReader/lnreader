@@ -1,4 +1,4 @@
-export const createChapterTableQuery = `
+const createChapterTableQuery = `
     CREATE TABLE IF NOT EXISTS chapters(
     chapterId INTEGER PRIMARY KEY AUTOINCREMENT,
     chapterUrl TEXT,
@@ -13,6 +13,18 @@ export const createChapterTableQuery = `
     ON DELETE CASCADE
     )`;
 
-export const createNovelIdIndexQuery = `CREATE INDEX IF NOT EXISTS chapterNovelIdIndex ON chapters(novelId)`;
+const createNovelIdIndexQuery = `
+    CREATE INDEX
+    IF NOT EXISTS
+    chapterNovelIdIndex ON chapters(novelId)`;
 
-export const createUnreadChaptersIndexQuery = `CREATE INDEX IF NOT EXISTS chapterUnreadByNovelIndex ON chapters(novelId, \`read\`) WHERE \`read\`=0`;
+const createUnreadChaptersIndexQuery = `
+    CREATE INDEX 
+    IF NOT EXISTS 
+    chapterUnreadByNovelIndex ON chapters(novelId, \`read\`) WHERE \`read\`=0`;
+
+export {
+  createChapterTableQuery,
+  createNovelIdIndexQuery,
+  createUnreadChaptersIndexQuery,
+};
