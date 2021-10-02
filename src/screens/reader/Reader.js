@@ -7,7 +7,6 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
   Dimensions,
-  Pressable,
 } from 'react-native';
 
 import {useDispatch} from 'react-redux';
@@ -17,7 +16,6 @@ import changeNavigationBarColor, {
   hideNavigationBar,
   showNavigationBar,
 } from 'react-native-navigation-bar-color';
-import WebView from 'react-native-webview';
 
 import {
   getChapterFromDB,
@@ -34,17 +32,13 @@ import {
   useTrackingStatus,
 } from '../../hooks/reduxHooks';
 import {updateChaptersRead} from '../../redux/tracker/tracker.actions';
-import {
-  readerBackground,
-  readerLineHeight,
-  readerTextColor,
-} from './utils/readerStyles';
+import {readerBackground, readerTextColor} from './utils/readerStyles';
 import {markChapterReadAction} from '../../redux/novel/novel.actions';
 import {saveScrollPosition} from '../../redux/preferences/preference.actions';
 import {parseChapterNumber} from '../../services/updates';
 
 import ReaderAppbar from './components/ReaderAppbar';
-import ReaderBottomSheet from './components/ReaderBottomSheet';
+import ReaderBottomSheet from './components/ReaderBottomSheet/ReaderBottomSheet';
 import ReaderFooter from './components/ReaderFooter';
 import ReaderSeekBar from './components/ReaderSeekBar';
 
@@ -56,7 +50,6 @@ import {insertHistory} from '../../database/queries/HistoryQueries';
 import {SET_LAST_READ} from '../../redux/preferences/preference.types';
 import {htmlToText} from '../../sources/helpers/htmlToText';
 import {setAppSettings} from '../../redux/settings/settings.actions';
-import {cleanHtml} from '../../sources/helpers/cleanHtml';
 import {useBatteryLevel} from 'react-native-device-info';
 import moment from 'moment';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
