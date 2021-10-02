@@ -1,27 +1,30 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {View, Text, Image, StyleSheet, Pressable} from 'react-native';
 
 import {Button, IconButton} from 'react-native-paper';
 
 import {pinSourceAction} from '../../../redux/source/source.actions';
 
-const ExtensionCard = ({item, theme, isPinned, dispatch, navigation}) => {
+const SourceItem = ({item, theme, isPinned, dispatch, navigation}) => {
   const {sourceId, sourceName, icon, lang} = item;
 
-  const navigateToExtension = () =>
-    navigation.navigate('Extension', {
-      sourceId: item.sourceId,
-      sourceName: item.sourceName,
-      url: item.url,
-    });
+  const navigateToSource = useCallback(
+    () =>
+      navigation.navigate('Extension', {
+        sourceId: item.sourceId,
+        sourceName: item.sourceName,
+        url: item.url,
+      }),
+    [],
+  );
 
   return (
     <Pressable
-      style={styles.extensionCard}
-      onPress={navigateToExtension}
+      style={styles.container}
+      onPress={navigateToSource}
       android_ripple={{color: theme.rippleColor}}
     >
-      <Image source={{uri: icon}} style={styles.extensionIcon} />
+      <Image source={{uri: icon}} style={styles.icon} />
       <View style={styles.extensionDetails}>
         <View>
           <Text
@@ -46,7 +49,7 @@ const ExtensionCard = ({item, theme, isPinned, dispatch, navigation}) => {
             labelStyle={{letterSpacing: 0}}
             uppercase={false}
             color={theme.colorAccent}
-            onPress={navigateToExtension}
+            onPress={navigateToSource}
           >
             Browse
           </Button>
@@ -64,17 +67,17 @@ const ExtensionCard = ({item, theme, isPinned, dispatch, navigation}) => {
   );
 };
 
-export default ExtensionCard;
+export default SourceItem;
 
 const styles = StyleSheet.create({
-  extensionCard: {
+  container: {
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 4,
     paddingVertical: 8,
     paddingHorizontal: 20,
   },
-  extensionIcon: {
+  icon: {
     width: 40,
     height: 40,
     borderRadius: 4,

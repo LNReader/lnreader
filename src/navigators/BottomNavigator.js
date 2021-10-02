@@ -8,7 +8,7 @@ import Library from '../screens/Library/Library';
 import Updates from '../screens/Updates/Updates';
 import History from '../screens/History/History';
 import Browse from '../screens/Browse/Browse';
-import More from '../screens/More/More';
+import More from '../screens/more/More';
 
 import {useSettings, useTheme} from '../hooks/reduxHooks';
 

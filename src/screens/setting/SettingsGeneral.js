@@ -7,8 +7,8 @@ import {Appbar} from '../../components/Appbar';
 import {List} from '../../components/List';
 import {ScreenContainer} from '../../components/Common';
 import SwitchSetting from '../../components/Switch/Switch';
-import DisplayModeModal from './components/DisplayModeModal';
-import GridSizeModal from './components/GridSizeModal';
+import DisplayModeModal from '../more/components/DisplayModeModal';
+import GridSizeModal from '../more/components/GridSizeModal';
 
 import {useSettings, useTheme} from '../../hooks/reduxHooks';
 import {setAppSettings} from '../../redux/settings/settings.actions';

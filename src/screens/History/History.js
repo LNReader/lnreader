@@ -12,8 +12,8 @@ import {useFocusEffect} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
 
 import EmptyView from '../../components/EmptyView';
-import HistoryItem from './HistoryItem';
-import RemoveHistoryDialog from './RemoveHistoryDialog';
+import HistoryItem from './components/HistoryItem';
+import RemoveHistoryDialog from './components/RemoveHistoryDialog';
 import {Searchbar} from '../../components/Searchbar/Searchbar';
 
 import {dateFormat} from '../../services/utils/constants';
@@ -46,7 +46,7 @@ const History = ({navigation}) => {
   /**
    * Confirm Clear History Dialog
    */
-  const clearHistoryModal = useModal();
+  const removeHistoryModal = useModal();
 
   useFocusEffect(
     useCallback(() => {
@@ -125,7 +125,7 @@ const History = ({navigation}) => {
         actions={[
           {
             icon: 'delete-sweep',
-            onPress: clearHistoryModal.showModal,
+            onPress: removeHistoryModal.showModal,
           },
         ]}
       />
@@ -163,13 +163,13 @@ const History = ({navigation}) => {
         }
       />
       <RemoveHistoryDialog
-        dialogVisible={clearHistoryModal.visible}
-        hideDialog={clearHistoryModal.hideModal}
+        dialogVisible={removeHistoryModal.visible}
+        hideDialog={removeHistoryModal.hideModal}
         theme={theme}
         onPress={() => {
           deleteAllHistory();
           setHistory([]);
-          clearHistoryModal.hideModal();
+          removeHistoryModal.hideModal();
         }}
       />
     </View>

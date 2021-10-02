@@ -20,7 +20,7 @@ import MoreStack from './More';
  */
 import Novel from '../screens/Novel/Novel';
 import Reader from '../screens/reader/Reader';
-import Extension from '../screens/Extension/Extension';
+import Extension from '../screens/source/Source';
 import GlobalSearch from '../screens/Browse/globalsearch/GlobalSearch';
 import Migration from '../screens/Browse/migration/Migration';
 import SourceNovels from '../screens/Browse/SourceNovels';

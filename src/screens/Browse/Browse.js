@@ -18,7 +18,7 @@ import {useTheme} from '../../hooks/reduxHooks';
 import {showToast} from '../../hooks/showToast';
 
 import {Searchbar} from '../../components/Searchbar/Searchbar';
-import SourceCard from './components/SourceCard';
+import SourceItem from './components/SourceItem';
 import EmptyView from '../../components/EmptyView';
 import DiscoverCard from './discover/DiscoverCard';
 
@@ -65,7 +65,7 @@ const Browse = ({navigation}) => {
   };
 
   const renderItem = ({item}) => (
-    <SourceCard
+    <SourceItem
       item={item}
       isPinned={isPinned(item.sourceId)}
       dispatch={dispatch}
