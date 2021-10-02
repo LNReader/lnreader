@@ -81,6 +81,7 @@ import NovelDeGlaceScraper from './fr/noveldeglace';
 import RainOfSnowScraper from './en/rainofsnow';
 import ReaperScansBrScraper from './br/ReaperScansBr';
 import ArthurScansScraper from './br/ArthurScans';
+import IdMtlNovelScraper from './id/idmtlnovel';
 
 export const getSource = sourceId => {
   const scrapers = {
@@ -163,6 +164,7 @@ export const getSource = sourceId => {
     78: RainOfSnowScraper,
     79: ReaperScansBrScraper,
     80: ArthurScansScraper,
+    81: IdMtlNovelScraper,
   };
 
   return scrapers[sourceId];

@@ -551,5 +551,12 @@
     "sourceName": "ArthurScans (Br)",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/arthurscans.png?raw=true",
     "lang": "Portuguese (Brazil)"
+  },
+  {
+    "sourceId": 81,
+    "url": "https://id.mtlnovel.com/",
+    "sourceName": "MTLNovel (Id)",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/mtlnovel/icon.png?raw=true",
+    "lang": "Indonesian"
   }
 ]
