@@ -1,10 +1,11 @@
 import React from 'react';
 import {Text, StyleSheet} from 'react-native';
+
 import {Portal, Modal} from 'react-native-paper';
-import Slider from '@react-native-community/slider';
-import {RadioButton, RadioButtonGroup} from '../../../components/RadioButton';
+
+import {RadioButton} from '../../../components/RadioButton/RadioButton';
+
 import {setNovelsPerRow} from '../../../redux/settings/settings.actions';
-import {Checkbox} from '../../../components/Checkbox/Checkbox';
 
 const GridSizeModal = ({
   dispatch,
@@ -40,7 +41,7 @@ const GridSizeModal = ({
           {`${novelsPerRow} per row`}
         </Text>
         {Object.keys(gridSizes).map(item => (
-          <Checkbox
+          <RadioButton
             key={item}
             status={item === novelsPerRow}
             label={gridSizes[item]}

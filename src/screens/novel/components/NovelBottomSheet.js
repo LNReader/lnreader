@@ -35,35 +35,27 @@ const ChaptersSettingsSheet = ({
 
   const FirstRoute = () => (
     <View style={{flex: 1}}>
-      <PaperCheckbox.Item
+      <Checkbox
+        theme={theme}
         label="Downloaded"
-        labelStyle={{
-          fontSize: 14,
-          color: theme.textColorPrimary,
-        }}
         color={theme.colorAccent}
-        uncheckedColor={theme.textColorHint}
-        status={filter.match('AND downloaded=1') ? 'checked' : 'unchecked'}
+        status={filter.match('AND downloaded=1')}
         onPress={() =>
           filter.match('AND downloaded=1')
             ? filterChapters(filter.replace(' AND downloaded=1', ''))
             : filterChapters(filter + ' AND downloaded=1')
         }
       />
-      <PaperCheckbox.Item
+      <Checkbox
+        theme={theme}
         label="Unread"
-        labelStyle={{
-          fontSize: 14,
-          color: theme.textColorPrimary,
-        }}
         color={theme.colorAccent}
-        uncheckedColor={theme.textColorHint}
         status={
           filter.match('AND `read`=0')
-            ? 'checked'
+            ? true
             : filter.match('AND `read`=1')
             ? 'indeterminate'
-            : 'unchecked'
+            : false
         }
         onPress={() => {
           if (filter.match('AND `read`=0')) {
@@ -75,15 +67,11 @@ const ChaptersSettingsSheet = ({
           }
         }}
       />
-      <PaperCheckbox.Item
+      <Checkbox
+        theme={theme}
         label="Bookmarked"
-        labelStyle={{
-          fontSize: 14,
-          color: theme.textColorPrimary,
-        }}
         color={theme.colorAccent}
-        uncheckedColor={theme.textColorHint}
-        status={filter.match('AND bookmark=1') ? 'checked' : 'unchecked'}
+        status={filter.match('AND bookmark=1')}
         onPress={() => {
           filter.match('AND bookmark=1')
             ? filterChapters(filter.replace(' AND bookmark=1', ''))
@@ -94,7 +82,7 @@ const ChaptersSettingsSheet = ({
   );
 
   const SecondRoute = () => (
-    <View style={{flex: 1, margin: 8}}>
+    <View style={{flex: 1}}>
       <SortItem
         label="By source"
         status={sort === 'ORDER BY chapterId ASC' ? 'asc' : 'desc'}
@@ -109,7 +97,7 @@ const ChaptersSettingsSheet = ({
   );
 
   const ThirdRoute = () => (
-    <View style={{flex: 1, padding: 8}}>
+    <View style={{flex: 1}}>
       <Checkbox
         status={!showChapterTitles}
         label="Source title"
@@ -144,7 +132,7 @@ const ChaptersSettingsSheet = ({
     <TabBar
       {...props}
       indicatorStyle={{backgroundColor: theme.colorAccent}}
-      style={{backgroundColor: theme.colorPrimary}}
+      style={{backgroundColor: theme.colorPrimary, elevation: 0}}
       renderLabel={({route, focused, color}) => (
         <Text style={{color}}>{route.title}</Text>
       )}

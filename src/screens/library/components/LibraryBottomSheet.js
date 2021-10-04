@@ -14,6 +14,7 @@ import {filterLibrary} from '../../../redux/library/library.actions';
 import {useSettings} from '../../../hooks/reduxHooks';
 import {setAppSettings} from '../../../redux/settings/settings.actions';
 import {Checkbox, SortItem} from '../../../components/Checkbox/Checkbox';
+import {RadioButton} from '../../../components/RadioButton/RadioButton';
 
 const LibraryFilterSheet = ({
   bottomSheetRef,
@@ -26,7 +27,7 @@ const LibraryFilterSheet = ({
   const [animatedValue] = useState(new Animated.Value(0));
 
   const FirstRoute = () => (
-    <View style={{flex: 1, margin: 8}}>
+    <View style={{flex: 1}}>
       <Checkbox
         label="Downloaded"
         theme={theme}
@@ -93,7 +94,7 @@ const LibraryFilterSheet = ({
   ];
 
   const SecondRoute = () => (
-    <View style={{flex: 1, margin: 8}}>
+    <View style={{flex: 1}}>
       {sortOrders.map((item, index) => (
         <SortItem
           key={index}
@@ -128,7 +129,7 @@ const LibraryFilterSheet = ({
 
   const renderCheckboxes = () => {
     return displayModes.map(mode => (
-      <Checkbox
+      <RadioButton
         key={mode.displayMode}
         label={mode.label}
         status={displayMode === mode.displayMode}
@@ -141,7 +142,7 @@ const LibraryFilterSheet = ({
   };
 
   const ThirdRoute = () => (
-    <View style={{flex: 1, margin: 8}}>
+    <View style={{flex: 1}}>
       <Text
         style={{
           color: theme.textColorSecondary,
@@ -210,9 +211,22 @@ const LibraryFilterSheet = ({
     <TabBar
       {...props}
       indicatorStyle={{backgroundColor: theme.colorAccent}}
-      style={{backgroundColor: theme.colorPrimary}}
+      style={{backgroundColor: theme.colorPrimary, elevation: 0}}
       renderLabel={({route, focused, color}) => (
+        // <View
+        //   style={[
+        //     {
+        //       flex: 1,
+        //       paddingHorizontal: 16,
+        //       justifyContent: 'center',
+        //       alignItems: 'center',
+        //       borderRadius: 8,
+        //     },
+        //     focused && {backgroundColor: theme.rippleColor},
+        //   ]}
+        // >
         <Text style={{color}}>{route.title}</Text>
+        // </View>
       )}
       inactiveColor={theme.textColorSecondary}
       activeColor={theme.colorAccent}

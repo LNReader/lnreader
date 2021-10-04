@@ -59,7 +59,6 @@ const GenralSettings = ({navigation}) => {
       <Appbar title="General" onBackAction={navigation.goBack} />
       <ScrollView contentContainerStyle={{paddingBottom: 32}}>
         <List.Section>
-          <List.Divider theme={theme} />
           <List.SubHeader theme={theme}>Display</List.SubHeader>
           <List.Item
             title="Display Mode"

@@ -3,7 +3,7 @@ import {StyleSheet} from 'react-native';
 
 import {Portal, Modal} from 'react-native-paper';
 
-import {Checkbox} from '../../../components/Checkbox/Checkbox';
+import {RadioButton} from '../../../components/RadioButton/RadioButton';
 
 import {setAppSettings} from '../../../redux/settings/settings.actions';
 
@@ -23,7 +23,7 @@ const DisplayModeModal = ({
 
   const renderCheckboxes = () => {
     return displayModes.map(mode => (
-      <Checkbox
+      <RadioButton
         key={mode.displayMode}
         status={displayMode === mode.displayMode}
         onPress={() =>

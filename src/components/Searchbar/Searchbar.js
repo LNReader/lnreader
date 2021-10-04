@@ -79,7 +79,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     borderRadius: 50,
     overflow: 'hidden',
-    elevation: 1,
   },
   pressable: {
     flexDirection: 'row',
