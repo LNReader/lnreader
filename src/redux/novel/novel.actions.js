@@ -4,17 +4,14 @@ import {
   LOADING_NOVEL,
   GET_NOVEL,
   GET_CHAPTERS,
-  NOVEL_ERROR,
   FETCHING_NOVEL,
   SET_NOVEL,
   UPDATE_IN_LIBRARY,
   CHAPTER_READ,
-  CHAPTER_DOWNLOADING,
   CHAPTER_DOWNLOADED,
   CHAPTER_DELETED,
   UPDATE_NOVEL,
   SET_NOVEL_SETTINGS,
-  CHAPTER_UNREAD,
   BOOKMARK_CHAPTER,
   MARK_PREVIOUS_CHAPTERS_READ,
   MARK_PREVIOUS_CHAPTERS_UNREAD,
@@ -48,7 +45,6 @@ import {
 import {GET_LIBRARY_NOVELS} from '../library/library.types';
 import {getLibrary} from '../../database/queries/LibraryQueries';
 import {showToast} from '../../hooks/showToast';
-import {store} from '../store';
 
 import * as Notifications from 'expo-notifications';
 
@@ -63,7 +59,6 @@ Notifications.setNotificationHandler({
 });
 
 import BackgroundService from 'react-native-background-actions';
-import {setDownloadQueue} from '../downloads/downloads.actions';
 import {SET_DOWNLOAD_QUEUE} from '../downloads/donwloads.types';
 
 export const setNovel = novel => async dispatch => {
@@ -297,12 +292,21 @@ export const downloadChapterAction =
   };
 
 export const downloadAllChaptersAction =
-  (sourceId, novelUrl, chaps) => async dispatch => {
+  (sourceId, novelUrl, chaps) => async (dispatch, getState) => {
     try {
+      const downloadQueue = getState().downloadsReducer.downloadQueue;
       /**
        * Filter downloaded chapters
        */
       let chapters = chaps.filter(chapter => chapter.downloaded === 0);
+
+      /**
+       * Filter chapters already in download queue
+       */
+      chapters = chapters.filter(
+        chapter =>
+          !downloadQueue.some(obj => obj.chapterId === chapter.chapterId),
+      );
 
       chapters = chapters.map(chapter => ({
         ...chapter,
@@ -312,6 +316,7 @@ export const downloadAllChaptersAction =
 
       if (chapters.length > 0) {
         dispatch({type: SET_DOWNLOAD_QUEUE, payload: chapters});
+
         const options = {
           taskName: 'Library Update',
           taskTitle: chapters[0].chapterName,

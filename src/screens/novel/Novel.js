@@ -347,15 +347,16 @@ const Novel = ({route, navigation}) => {
                   titleStyle={{
                     color: theme.textColorPrimary,
                   }}
-                  onPress={() =>
+                  onPress={() => {
                     dispatch(
                       downloadAllChaptersAction(
                         novel.sourceId,
                         novel.novelUrl,
                         chapters,
                       ),
-                    )
-                  }
+                    );
+                    showDownloadMenu(false);
+                  }}
                 />
                 <Menu.Item
                   title="Unread"
@@ -363,15 +364,16 @@ const Novel = ({route, navigation}) => {
                   titleStyle={{
                     color: theme.textColorPrimary,
                   }}
-                  onPress={() =>
+                  onPress={() => {
                     dispatch(
                       downloadAllChaptersAction(
                         novel.sourceId,
                         novel.novelUrl,
                         chapters.filter(chapter => !!chapter.read === false),
                       ),
-                    )
-                  }
+                    );
+                    showDownloadMenu(false);
+                  }}
                 />
                 <Menu.Item
                   title="Delete downloads"
