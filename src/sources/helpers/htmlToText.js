@@ -7,7 +7,7 @@ const htmlToText = (html, options = {}) => {
 
   html = html.trim();
 
-  text = removeLineBreaks && html.replace(/(?:\n|\r\n|\r)/gi, '');
+  let text = removeLineBreaks && html.replace(/(?:\n|\r\n|\r)/gi, '');
 
   text = html
     /**

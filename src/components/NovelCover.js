@@ -14,6 +14,7 @@ import ListView from './ListView';
 
 import {getDeviceOrientation} from '../services/utils/helpers';
 import {useSettings} from '../hooks/reduxHooks';
+import {defaultCoverUri} from '../sources/helpers/constants';
 
 const NovelCover = ({
   item,
@@ -41,6 +42,11 @@ const NovelCover = ({
 
   const selectNovel = () => onLongPress && onLongPress(item.novelId);
 
+  const uri =
+    item.novelCover && !item.novelCover.startsWith('/')
+      ? item.novelCover
+      : defaultCoverUri;
+
   return displayMode !== 2 ? (
     <View
       style={[
@@ -64,44 +70,37 @@ const NovelCover = ({
         }
         onLongPress={selectNovel}
       >
-        <>
-          <View style={styles.badgeContainer}>
-            {libraryStatus && <InLibraryBadge theme={theme} />}
-            {showDownloadBadges && item.chaptersDownloaded && (
-              <DownloadBadge
-                showUnreadBadges={showUnreadBadges}
-                chaptersDownloaded={item.chaptersDownloaded}
-                chaptersUnread={item.chaptersUnread}
-              />
-            )}
-            {showUnreadBadges && item.chaptersUnread && (
-              <UnreadBadge
-                theme={theme}
-                chaptersDownloaded={item.chaptersDownloaded}
-                chaptersUnread={item.chaptersUnread}
-                showDownloadBadges={showDownloadBadges}
-              />
-            )}
-          </View>
-          <FastImage
-            source={{
-              uri:
-                item.novelCover && !item.novelCover.startsWith('/')
-                  ? item.novelCover
-                  : 'https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true',
-            }}
-            style={[
-              {height: getHeight(), borderRadius: 4},
-              libraryStatus && {opacity: 0.5},
-            ]}
-          />
-          <View style={styles.compactTitleContainer}>
-            {displayMode === 0 && <CompactTitle novelName={item.novelName} />}
-          </View>
-          {displayMode === 1 && (
-            <ComfortableTitle novelName={item.novelName} theme={theme} />
+        <View style={styles.badgeContainer}>
+          {libraryStatus && <InLibraryBadge theme={theme} />}
+          {showDownloadBadges && item.chaptersDownloaded && (
+            <DownloadBadge
+              showUnreadBadges={showUnreadBadges}
+              chaptersDownloaded={item.chaptersDownloaded}
+              chaptersUnread={item.chaptersUnread}
+            />
           )}
-        </>
+          {showUnreadBadges && item.chaptersUnread && (
+            <UnreadBadge
+              theme={theme}
+              chaptersDownloaded={item.chaptersDownloaded}
+              chaptersUnread={item.chaptersUnread}
+              showDownloadBadges={showDownloadBadges}
+            />
+          )}
+        </View>
+        <FastImage
+          source={{uri}}
+          style={[
+            {height: getHeight(), borderRadius: 4},
+            libraryStatus && {opacity: 0.5},
+          ]}
+        />
+        <View style={styles.compactTitleContainer}>
+          {displayMode === 0 && <CompactTitle novelName={item.novelName} />}
+        </View>
+        {displayMode === 1 && (
+          <ComfortableTitle novelName={item.novelName} theme={theme} />
+        )}
       </Pressable>
     </View>
   ) : (

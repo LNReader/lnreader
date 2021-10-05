@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, View, Text, Pressable} from 'react-native';
 
 import FastImage from 'react-native-fast-image';
+import {defaultCoverUri} from '../sources/helpers/constants';
 
 const ListView = ({
   item,
@@ -13,6 +14,11 @@ const ListView = ({
   isSelected,
   onLongPress,
 }) => {
+  const uri =
+    item.novelCover && !item.novelCover.startsWith('/')
+      ? item.novelCover
+      : defaultCoverUri;
+
   return (
     <Pressable
       android_ripple={{color: theme.rippleColor}}
@@ -25,10 +31,7 @@ const ListView = ({
     >
       <FastImage
         source={{
-          uri:
-            item.novelCover && !item.novelCover.startsWith('/')
-              ? item.novelCover
-              : 'https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true',
+          uri,
         }}
         style={[styles.extensionIcon, inLibraryBadge && {opacity: 0.5}]}
       />

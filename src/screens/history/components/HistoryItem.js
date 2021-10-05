@@ -1,11 +1,13 @@
 import React, {useCallback} from 'react';
-import {Pressable, StyleSheet, View, Image, Text} from 'react-native';
+import {Pressable, StyleSheet, View, Text} from 'react-native';
 
 import moment from 'moment';
-import {IconButton} from 'react-native-paper';
+import FastImage from 'react-native-fast-image';
 
 import {parseChapterNumber} from '../../../services/utils/helpers';
 import {setNovel} from '../../../redux/novel/novel.actions';
+import {defaultCoverUri} from '../../../sources/helpers/constants';
+import {IconButton} from '../../../components/IconButton/IconButton';
 
 const HistoryItem = ({history, theme, dispatch, navigation, deleteHistory}) => {
   const {
@@ -47,13 +49,8 @@ const HistoryItem = ({history, theme, dispatch, navigation, deleteHistory}) => {
       bookmark,
     });
 
-  const getNovelCover = useCallback(
-    () =>
-      novelCover && !novelCover.startsWith('/')
-        ? novelCover
-        : 'https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true',
-    [],
-  );
+  const uri =
+    novelCover && !novelCover.startsWith('/') ? novelCover : defaultCoverUri;
 
   return (
     <Pressable
@@ -63,7 +60,7 @@ const HistoryItem = ({history, theme, dispatch, navigation, deleteHistory}) => {
       <View style={styles.content}>
         <View style={styles.container}>
           <View>
-            <Image source={{uri: getNovelCover()}} style={styles.novelCover} />
+            <FastImage source={{uri}} style={styles.novelCover} />
           </View>
           <View style={styles.textContainer}>
             <Text
@@ -86,12 +83,14 @@ const HistoryItem = ({history, theme, dispatch, navigation, deleteHistory}) => {
             size={24}
             color={theme.textColorPrimary}
             onPress={() => deleteHistory(historyId)}
+            theme={theme}
           />
           <IconButton
             icon="play"
             size={24}
             color={theme.textColorPrimary}
             onPress={navigateToChapter}
+            theme={theme}
           />
         </View>
       </View>

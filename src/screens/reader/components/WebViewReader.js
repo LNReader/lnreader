@@ -22,6 +22,7 @@ const WebViewReader = ({
     <View style={styles.container}>
       <WebView
         style={{backgroundColor}}
+        containerStyle={{flex: 1}}
         originWhitelist={['*']}
         scalesPageToFit={true}
         showsVerticalScrollIndicator={false}

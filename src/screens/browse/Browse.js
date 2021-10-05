@@ -74,8 +74,8 @@ const Browse = ({navigation}) => {
     />
   );
 
-  const SourceHeader = ({title}) => (
-    <Text style={[styles.sourcesHeader, {color: theme.textColorSecondary}]}>
+  const Header = ({title}) => (
+    <Text style={[styles.header, {color: theme.textColorSecondary}]}>
       {title}
     </Text>
   );
@@ -115,7 +115,7 @@ const Browse = ({navigation}) => {
           <View>
             {showMyAnimeList && (
               <>
-                <SourceHeader title="Discover" />
+                <Header title="Discover" />
                 {showMyAnimeList && (
                   <DiscoverCard
                     label="MyAnimeList"
@@ -133,10 +133,10 @@ const Browse = ({navigation}) => {
                 keyExtractor={item => item.sourceId.toString()}
                 renderItem={renderItem}
                 extraData={pinnedSources}
-                ListHeaderComponent={<SourceHeader title="Pinned" />}
+                ListHeaderComponent={<Header title="Pinned" />}
               />
             )}
-            {sources.length > 0 && <SourceHeader title="Sources" />}
+            {sources.length > 0 && <Header title="Sources" />}
           </View>
         }
         ListEmptyComponent={
@@ -174,8 +174,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  sourcesHeader: {
+  header: {
     paddingHorizontal: 16,
-    paddingVertical: 8,
+    paddingVertical: 12,
+    textTransform: 'uppercase',
   },
 });

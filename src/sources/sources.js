@@ -19,7 +19,6 @@ import novelUpdatesCcScraper from './en/novelupdatescc';
 import readLightNovelCcScraper from './en/readlightnovelcc';
 import tapReadScraper from './en/tapread';
 import WuxiaWorldCloudScraper from './en/wuxiaworldcloud';
-import WoopReadScraper from './en/woopread';
 import FoxaHolicScraper from './en/foxaholic';
 import EinharjarProjectScraper from './es/einherjarproject';
 import TuNovelaLigeraScraper from './es/tunovelaligera';
@@ -55,6 +54,7 @@ import {
   SleepyTranslationsScraper,
   WBNovelScraper,
   WebNovelLoverScraper,
+  WoopReadScraper,
   WuxiaWorldDotSiteScraper,
   ZinnNovelScraper,
 } from './multisrc/madara/MadaraGenerator';

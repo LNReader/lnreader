@@ -26,10 +26,7 @@ const BottomNavigator = () => {
 
   return (
     <Tab.Navigator
-      barStyle={{
-        backgroundColor: theme.colorPrimary,
-        paddingBottom: insets.bottom,
-      }}
+      barStyle={{backgroundColor: theme.colorPrimary}}
       activeColor={theme.colorAccent}
       shifting={!showLabelsInNav}
     >
