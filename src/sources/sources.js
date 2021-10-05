@@ -54,7 +54,6 @@ import {
   SleepyTranslationsScraper,
   WBNovelScraper,
   WebNovelLoverScraper,
-  WoopReadScraper,
   WuxiaWorldDotSiteScraper,
   ZinnNovelScraper,
 } from './multisrc/madara/MadaraGenerator';
@@ -82,6 +81,7 @@ import RainOfSnowScraper from './en/rainofsnow';
 import ReaperScansBrScraper from './br/ReaperScansBr';
 import ArthurScansScraper from './br/ArthurScans';
 import IdMtlNovelScraper from './id/idmtlnovel';
+import WoopReadScraper from './en/woopread';
 
 export const getSource = sourceId => {
   const scrapers = {

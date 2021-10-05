@@ -23,7 +23,6 @@ const getPath = extensionId => {
     63: {novels: 'novel', novel: 'novel', chapter: 'novel'},
     75: {novels: 'series', novel: 'series', chapter: 'series'},
     80: {novels: 'manga', novel: 'manga', chapter: 'manga'},
-    21: {novels: 'novellist', novel: 'series', chapter: 'series'},
   };
 
   return (
@@ -35,12 +34,7 @@ const getPath = extensionId => {
   );
 };
 
-export const WoopReadScraper = new MadaraScraper(
-  21,
-  'https://woopread.com/',
-  'WoopRead',
-  getPath(21),
-);
+
 
 export const SkyNovelScraper = new MadaraScraper(
   38,
