@@ -13,6 +13,7 @@ const AccentColors = {
   oceanic: '#009688',
   yotsuba: '#FC8C5C',
   tako_light: '#66577E',
+  teal: '#40E0D0',
 };
 
 const RippleColors = {
@@ -29,6 +30,7 @@ const RippleColors = {
   oceanic: 'rgba(0, 150, 136,0.12)',
   yotsuba: 'rgba(252, 140, 92,0.12)',
   tako_light: 'rgba(102, 87, 126,0.12)',
+  teal: 'rgba(64, 224, 208,0.12)',
 };
 
 const StatusBarStyle = {

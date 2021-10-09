@@ -32,6 +32,7 @@ export const Searchbar = ({
               style={{marginLeft: 0}}
               size={23}
               onPress={onBackAction}
+              rippleColor={theme.rippleColor}
             />
           )}
           <TextInput
@@ -54,6 +55,7 @@ export const Searchbar = ({
             style={{marginRight: 0}}
             size={23}
             onPress={clearSearchbar}
+            rippleColor={theme.rippleColor}
           />
         )}
         {actions &&
@@ -65,6 +67,7 @@ export const Searchbar = ({
               style={{marginRight: 0}}
               size={23}
               onPress={action.onPress}
+              rippleColor={theme.rippleColor}
             />
           ))}
       </Pressable>

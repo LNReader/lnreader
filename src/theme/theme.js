@@ -17,7 +17,7 @@ export const lightTheme = {
   ...TextColors.light,
   colorAccent: AccentColors.default,
   rippleColor: RippleColors.default,
-  searchBarColor: '#FFFFFF',
+  searchBarColor: '#DEE8F4',
   menuColor: '#FFFFFF',
   dividerColor: DividerColors.LIGHT,
   filterColor: '#FFC107',
@@ -221,7 +221,7 @@ export const yotsubaTheme = {
   ...TextColors.light,
   colorAccent: AccentColors.yotsuba,
   rippleColor: RippleColors.yotsuba,
-  searchBarColor: PrimaryColors.light.colorPrimary,
+  searchBarColor: '#F6EBE7',
   menuColor: '#FFFFFF',
   dividerColor: DividerColors.LIGHT,
   filterColor: '#FFC107',
@@ -237,7 +237,7 @@ export const takoLightTheme = {
   ...TextColors.light,
   colorAccent: AccentColors.tako_light,
   rippleColor: RippleColors.tako_light,
-  searchBarColor: PrimaryColors.tako_light.colorPrimary,
+  searchBarColor: '#E5DCF4',
   menuColor: '#FFFFFF',
   dividerColor: DividerColors.LIGHT,
   filterColor: '#FFC107',
@@ -256,4 +256,23 @@ export const colorsAmoled = {
   dividerColor: 'rgba(255,255,255,0.15)',
   colorDisabled: 'rgba(33,33,33,255)',
   colorButtonText: '#FFFFFF',
+};
+
+/**
+ * Dark
+ */
+export const tealTheme = {
+  id: 14,
+  name: 'Teal',
+  ...PrimaryColors.dark,
+  ...TextColors.dark,
+  colorAccent: AccentColors.teal,
+  rippleColor: RippleColors.teal,
+  searchBarColor: '#303135',
+  menuColor: '#242529',
+  filterColor: '#FFEB3B',
+  dividerColor: DividerColors.DARK,
+  colorDisabled: PrimaryColors.dark.colorPrimary,
+  colorButtonText: '#000000',
+  statusBar: StatusBarStyle.LIGHT,
 };

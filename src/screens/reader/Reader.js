@@ -55,6 +55,8 @@ import moment from 'moment';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import WebViewReader from './components/WebViewReader';
 import TextReader from './components/TextReader';
+import {cleanHtml} from '../../sources/helpers/cleanHtml';
+import WebView from 'react-native-webview';
 
 const Chapter = ({route, navigation}) => {
   const {
@@ -424,6 +426,8 @@ const Chapter = ({route, navigation}) => {
     }
   };
 
+  const backgroundColor = readerBackground(reader.theme);
+
   return (
     <>
       <>
@@ -450,10 +454,7 @@ const Chapter = ({route, navigation}) => {
         >
           <ScrollView
             ref={ref => (scrollViewRef.current = ref)}
-            contentContainerStyle={[
-              styles.screenContainer,
-              {backgroundColor: readerBackground(reader.theme)},
-            ]}
+            contentContainerStyle={[styles.screenContainer, {backgroundColor}]}
             onScroll={onScroll}
             onContentSizeChange={(x, y) => setContentSize(y)}
             showsVerticalScrollIndicator={false}
@@ -495,18 +496,71 @@ const Chapter = ({route, navigation}) => {
                 onPress={hideHeader}
                 onLayout={scrollToSavedProgress}
               >
-                <View style={{flex: 1}}>
-                  {useWebViewForChapter ? (
-                    <WebViewReader
-                      html={chapter.chapterText}
-                      reader={reader}
-                      theme={theme}
-                      onScroll={onScroll}
-                      onWebViewNavigationStateChange={
-                        onWebViewNavigationStateChange
-                      }
-                    />
-                  ) : (
+                {useWebViewForChapter ? (
+                  <WebView
+                    style={{backgroundColor}}
+                    originWhitelist={['*']}
+                    scalesPageToFit={true}
+                    showsVerticalScrollIndicator={false}
+                    onScroll={onScroll}
+                    onNavigationStateChange={onWebViewNavigationStateChange}
+                    source={{
+                      html: `
+                         <html>
+                           <head>
+                             <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+                             <style>
+                               html {
+                                 overflow-x: hidden;
+                                 padding-top: ${StatusBar.currentHeight};
+                                 word-wrap: break-word;
+                               }
+                               body {
+                                 padding-left: ${reader.padding}%;
+                                 padding-right: ${reader.padding}%;
+                                 padding-bottom: 30px;
+                                 
+                                 font-size: ${reader.textSize}px;
+                                 color: ${reader.textColor};
+                                 text-align: ${reader.textAlign};
+                                 line-height: ${reader.lineHeight};
+                                 font-family: ${reader.fontFamily};
+                               }
+                               hr {
+                                 margin-top: 20px;
+                                 margin-bottom: 20px;
+                               }
+                               a {
+                                 color: ${theme.colorAccent};
+                               }
+                               img {
+                                 display: block;
+                                 width: auto;
+                                 height: auto;
+                                 max-width: 100%;
+                               }
+                             </style>
+                             
+                             <style>
+                               ${reader.customCSS}
+                               
+                               @font-face {
+                                 font-family: ${reader.fontFamily};
+                                 src: url("file:///android_asset/fonts/${
+                                   reader.fontFamily
+                                 }.ttf");
+                               }
+                             </style>
+                           </head>
+                           <body>
+                             ${cleanHtml(chapter.chapterText)}
+                           </body>
+                         </html>
+                       `,
+                    }}
+                  />
+                ) : (
+                  <View>
                     <TextReader
                       text={chapter.chapterText}
                       reader={reader}
@@ -516,8 +570,8 @@ const Chapter = ({route, navigation}) => {
                       nextChapter={nextChapter}
                       navigateToNextChapter={navigateToNextChapter}
                     />
-                  )}
-                </View>
+                  </View>
+                )}
               </TouchableWithoutFeedback>
             )}
           </ScrollView>
@@ -572,7 +626,7 @@ const Chapter = ({route, navigation}) => {
           <View
             style={[
               styles.scrollPercentageContainer,
-              {backgroundColor: readerBackground(reader.theme)},
+              {backgroundColor},
               !fullScreenMode && {
                 paddingBottom: insets.bottom,
               },

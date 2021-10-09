@@ -200,6 +200,7 @@ const FirstRoute = React.memo(({theme, dispatch, reader}) => {
               </Button>
             </View>
           </View>
+          <List.Divider theme={theme} />
           <List.SubHeader theme={theme}>
             Auto scroll interval (in seconds)
           </List.SubHeader>

@@ -24,7 +24,7 @@ export const MoreHeader = ({title, navigation, theme, goBack}) => (
 
 const styles = StyleSheet.create({
   logoContainer: {
-    paddingTop: 8,
+    paddingTop: 16,
     paddingBottom: 24,
     alignItems: 'center',
     elevation: 4,

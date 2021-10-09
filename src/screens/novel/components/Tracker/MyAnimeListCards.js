@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
   cardContainer: {
     margin: 8,
     elevation: 2,
-    borderRadius: 4,
+    borderRadius: 8,
   },
   titleContainer: {
     flexDirection: 'row',

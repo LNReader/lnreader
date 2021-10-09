@@ -55,7 +55,7 @@ export default DisplayModeModal;
 
 const styles = StyleSheet.create({
   containerStyle: {
-    padding: 20,
+    paddingVertical: 20,
     margin: 20,
     borderRadius: 6,
   },

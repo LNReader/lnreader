@@ -22,6 +22,7 @@ import {
   yangTheme,
   yotsubaTheme,
   takoLightTheme,
+  tealTheme,
 } from '../../theme/theme';
 
 const themes = {
@@ -38,6 +39,7 @@ const themes = {
   11: yangTheme,
   12: yotsubaTheme,
   13: takoLightTheme,
+  14: tealTheme,
 };
 
 /**

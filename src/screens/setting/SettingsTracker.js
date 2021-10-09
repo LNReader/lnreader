@@ -102,7 +102,7 @@ const TrackerScreen = ({navigation}) => {
             <Text
               style={{
                 color: theme.textColorPrimary,
-                fontSize: 20,
+                fontSize: 18,
               }}
             >
               Log out from MyAnimeList?

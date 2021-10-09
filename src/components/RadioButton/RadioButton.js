@@ -1,11 +1,11 @@
 import React from 'react';
-import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {Pressable, StyleSheet, Text} from 'react-native';
 import {RadioButton as PaperRadioButton} from 'react-native-paper';
 
-export const RadioButton = ({label, status, onPress, theme}) => (
+export const RadioButton = ({label, status, onPress, style, theme}) => (
   <Pressable
     android_ripple={{color: theme.rippleColor}}
-    style={styles.pressable}
+    style={[styles.pressable, style]}
     onPress={onPress}
   >
     <PaperRadioButton

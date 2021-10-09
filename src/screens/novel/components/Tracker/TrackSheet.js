@@ -107,14 +107,14 @@ const TrackSheet = ({bottomSheetRef, novelId, novelName, theme}) => {
     <>
       <Bottomsheet
         ref={bottomSheetRef}
-        draggableRange={{top: 120, bottom: 0}}
-        snappingPoints={[0, 120]}
+        draggableRange={{top: 140, bottom: 0}}
+        snappingPoints={[0, 140]}
         backdropOpacity={0.25}
       >
         <View
           style={[
             styles.contentContainer,
-            {backgroundColor: theme.colorPrimary},
+            {backgroundColor: theme.colorPrimaryDark},
           ]}
         >
           {!trackItem ? (
@@ -176,5 +176,7 @@ const TrackSheet = ({bottomSheetRef, novelId, novelName, theme}) => {
 export default TrackSheet;
 
 const styles = StyleSheet.create({
-  contentContainer: {flex: 1},
+  contentContainer: {
+    flex: 1,
+  },
 });

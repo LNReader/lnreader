@@ -28,7 +28,7 @@ const GridSizeModal = ({
         visible={gridSizeModalVisible}
         onDismiss={hideGridSizeModal}
         contentContainerStyle={[
-          styles.containerStyle,
+          styles.container,
           {backgroundColor: theme.colorPrimaryDark},
         ]}
       >
@@ -47,6 +47,7 @@ const GridSizeModal = ({
             label={gridSizes[item]}
             onPress={() => dispatch(setNovelsPerRow(item))}
             theme={theme}
+            style={{paddingHorizontal: 20}}
           />
         ))}
       </Modal>
@@ -57,16 +58,18 @@ const GridSizeModal = ({
 export default GridSizeModal;
 
 const styles = StyleSheet.create({
-  containerStyle: {
-    padding: 20,
+  container: {
+    paddingVertical: 20,
     margin: 20,
     borderRadius: 6,
   },
   modalHeader: {
+    paddingHorizontal: 20,
     fontSize: 18,
     marginBottom: 10,
   },
   modalDescription: {
+    paddingHorizontal: 20,
     marginBottom: 16,
   },
   slider: {
