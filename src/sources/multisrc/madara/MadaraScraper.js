@@ -1,6 +1,6 @@
 import moment from 'moment';
 import cheerio from 'react-native-cheerio';
-import {Status} from '../../helpers/constants';
+import {defaultCoverUri, Status} from '../../helpers/constants';
 import {parseMadaraDate} from '../../helpers/parseDate';
 
 class MadaraScraper {
@@ -75,7 +75,7 @@ class MadaraScraper {
     novel.novelCover =
       $('.summary_image > a > img').attr('data-src') ||
       $('.summary_image > a > img').attr('src') ||
-      'https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true';
+      defaultCoverUri;
 
     $('.post-content_item').each(function () {
       const detailName = $(this).find('.summary-heading > h5').text().trim();
@@ -100,18 +100,18 @@ class MadaraScraper {
 
     let novelChapters = [];
 
-    const novelId =
-      $('.rating-post-id').attr('value') ||
-      $('#manga-chapters-holder').attr('data-id');
+    // const novelId =
+    //   $('.rating-post-id').attr('value') ||
+    //   $('#manga-chapters-holder').attr('data-id');
 
-    let formData = new FormData();
-    formData.append('action', 'manga_get_chapters');
-    formData.append('manga', novelId);
+    // let formData = new FormData();
+    // formData.append('action', 'manga_get_chapters');
+    // formData.append('manga', novelId);
 
-    const data = await fetch(this.baseUrl + 'wp-admin/admin-ajax.php', {
+    const data = await fetch(url + 'ajax/chapters/', {
       method: 'POST',
-      body: formData,
     });
+
     const text = await data.text();
 
     if (text !== '0') {
