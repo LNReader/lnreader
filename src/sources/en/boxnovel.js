@@ -42,7 +42,7 @@ const parseNovelAndChapters = async novelUrl => {
   const result = await fetch(url);
   const body = await result.text();
 
-  const $ = cheerio.load(body);
+  let $ = cheerio.load(body);
 
   let novel = {};
 
@@ -96,7 +96,12 @@ const parseNovelAndChapters = async novelUrl => {
 
   let novelChapters = [];
 
-  $('.wp-manga-chapter').each(function (result) {
+  const data = await fetch(`${url}ajax/chapters/`, {method: 'POST'});
+  const text = await data.text();
+
+  $ = cheerio.load(text);
+
+  $('.wp-manga-chapter').each(function () {
     const chapterName = $(this)
       .find('a')
       .text()

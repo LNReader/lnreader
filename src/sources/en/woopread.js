@@ -82,7 +82,7 @@ const parseNovelAndChapters = async novelUrl => {
 
   let novelChapters = [];
 
-  console.log(`${url}ajax/chapters/`);
+  // console.log(`${url}ajax/chapters/`);
   const data = await fetch(`${url}ajax/chapters/`, {method: 'POST'});
   const text = await data.text();
 

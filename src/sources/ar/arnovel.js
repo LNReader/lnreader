@@ -87,15 +87,14 @@ const parseNovelAndChapters = async novelUrl => {
 
   let novelChapters = [];
 
-  const novelId = $('#manga-chapters-holder').attr('data-id');
+  // const novelId = $('#manga-chapters-holder').attr('data-id');
 
-  let formData = new FormData();
-  formData.append('action', 'manga_get_chapters');
-  formData.append('manga', novelId);
+  // let formData = new FormData();
+  // formData.append('action', 'manga_get_chapters');
+  // formData.append('manga', novelId);
 
-  const data = await fetch('https://www.arnovel.me/wp-admin/admin-ajax.php', {
+  const data = await fetch(`${url}ajax/chapters/`, {
     method: 'POST',
-    body: formData,
   });
   const text = await data.text();
 

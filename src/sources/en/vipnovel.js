@@ -14,10 +14,10 @@ const popularNovels = async page => {
   let novels = [];
 
   $('.page-item-detail').each(function (result) {
-    const novelName = $(this).find('h5 > a').text();
+    const novelName = $(this).find('.h5 > a').text();
     const novelCover = $(this).find('img').attr('src');
 
-    let novelUrl = $(this).find('h5 > a').attr('href');
+    let novelUrl = $(this).find('.h5 > a').attr('href');
     novelUrl = novelUrl.replace(`${baseUrl}vipnovel/`, '');
 
     const novel = {
