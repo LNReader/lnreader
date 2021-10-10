@@ -133,7 +133,7 @@ const Updates = ({navigation}) => {
         if (chapters.length > 0) {
           results.push({
             date,
-            chapters,
+            data: chapters,
           });
         }
       });
