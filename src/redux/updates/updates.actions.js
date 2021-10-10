@@ -26,7 +26,7 @@ export const getUpdatesAction = () => async dispatch => {
   const groupedUpdates = Object.keys(groups).map(date => {
     return {
       date,
-      chapters: groups[date],
+      data: groups[date],
     };
   });
 

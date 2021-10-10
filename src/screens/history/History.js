@@ -5,6 +5,7 @@ import {
   ActivityIndicator,
   Text,
   View,
+  SectionList,
 } from 'react-native';
 
 import moment from 'moment';
@@ -106,7 +107,7 @@ const History = ({navigation}) => {
     const groupedHistory = Object.keys(groups).map(date => {
       return {
         date,
-        novels: groups[date],
+        data: groups[date],
       };
     });
 
@@ -129,23 +130,15 @@ const History = ({navigation}) => {
           },
         ]}
       />
-      <FlatList
+      <SectionList
         contentContainerStyle={styles.container}
-        data={searchText ? searchResults : groupByDate(history)}
-        keyExtractor={item => item.date}
-        renderItem={({item}) => (
-          <FlatList
-            keyExtractor={item => item.novelId.toString()}
-            data={item.novels}
-            renderItem={renderHistoryCard}
-            ListHeaderComponent={
-              <Text
-                style={[styles.dateHeader, {color: theme.textColorSecondary}]}
-              >
-                {moment(item.date).calendar(null, dateFormat)}
-              </Text>
-            }
-          />
+        sections={searchText ? searchResults : groupByDate(history)}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={renderHistoryCard}
+        renderSectionHeader={({section: {date}}) => (
+          <Text style={[styles.dateHeader, {color: theme.textColorSecondary}]}>
+            {moment(date).calendar(null, dateFormat)}
+          </Text>
         )}
         ListFooterComponent={
           loading && (

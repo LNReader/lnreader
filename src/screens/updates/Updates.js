@@ -6,6 +6,7 @@ import {
   ActivityIndicator,
   RefreshControl,
   Text,
+  SectionList,
 } from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
@@ -116,15 +117,6 @@ const Updates = ({navigation}) => {
   const ListEmptyComponent = () =>
     !loading && <EmptyView icon="(˘･_･˘)" description="No recent updates" />;
 
-  const refreshControl = () => (
-    <RefreshControl
-      refreshing={refreshing}
-      onRefresh={onRefresh}
-      colors={['white']}
-      progressBackgroundColor={theme.colorAccent}
-    />
-  );
-
   const clearSearchbar = () => setSearchText('');
 
   const onChangeText = text => {
@@ -149,8 +141,6 @@ const Updates = ({navigation}) => {
     setSearchResults(results);
   };
 
-  const keyExtractor = useCallback(item => item.updateId.toString(), []);
-
   return (
     <View style={[styles.container, {backgroundColor: theme.colorPrimaryDark}]}>
       <Searchbar
@@ -174,32 +164,26 @@ const Updates = ({navigation}) => {
           Library last updated: {moment(lastUpdateTime).fromNow()}
         </Text>
       )}
-      <FlatList
+      <SectionList
         contentContainerStyle={styles.flatList}
-        data={searchText ? searchResults : updates}
+        sections={searchText ? searchResults : updates}
         keyExtractor={(item, index) => index.toString()}
-        renderItem={({item}) => (
-          <FlatList
-            ListHeaderComponent={
-              <Text
-                style={{
-                  paddingHorizontal: 16,
-                  textTransform: 'uppercase',
-                  paddingVertical: 8,
-                  color: theme.textColorSecondary,
-                }}
-              >
-                {moment(item.date).calendar(null, dateFormat)}
-              </Text>
-            }
-            data={item.chapters}
-            keyExtractor={keyExtractor}
-            renderItem={renderItem}
-          />
+        renderItem={renderItem}
+        renderSectionHeader={({section: {date}}) => (
+          <Text style={[styles.header, {color: theme.textColorSecondary}]}>
+            {moment(date).calendar(null, dateFormat)}
+          </Text>
         )}
         ListFooterComponent={<ListFooterComponent />}
         ListEmptyComponent={<ListEmptyComponent />}
-        refreshControl={refreshControl()}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={['white']}
+            progressBackgroundColor={theme.colorAccent}
+          />
+        }
       />
     </View>
   );
@@ -213,7 +197,12 @@ const styles = StyleSheet.create({
   },
   flatList: {
     flexGrow: 1,
-    paddingBottom: 8,
+    paddingBottom: 40,
+  },
+  header: {
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    textTransform: 'uppercase',
   },
   lastUpdateTime: {
     paddingHorizontal: 16,
