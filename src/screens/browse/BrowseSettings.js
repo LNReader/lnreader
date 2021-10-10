@@ -1,5 +1,5 @@
 import React from 'react';
-import {FlatList, Pressable, Text, View} from 'react-native';
+import {FlatList, Pressable, StyleSheet, Text, View} from 'react-native';
 
 import {Switch} from 'react-native-paper';
 import {useDispatch, useSelector} from 'react-redux';
@@ -22,6 +22,7 @@ const BrowseSettings = ({navigation}) => {
   const {filters = [], showMyAnimeList = true} = useSelector(
     state => state.sourceReducer,
   );
+
   const languages = [
     'English',
     'Spanish',
@@ -35,18 +36,14 @@ const BrowseSettings = ({navigation}) => {
     'Portuguese (Brazil)',
   ].sort();
 
-  const {searchAllSources = false} = useSettings();
+  const {searchAllSources = false, onlyShowPinnedSources = false} =
+    useSettings();
 
   const renderItem = ({item}) => {
     return (
       <Pressable
         android_ripple={{color: theme.rippleColor}}
-        style={{
-          padding: 16,
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}
+        style={styles.switch}
         onPress={() => dispatch(filterLanguage(item))}
       >
         <Text style={{color: theme.textColorPrimary}}>{item}</Text>
@@ -61,7 +58,7 @@ const BrowseSettings = ({navigation}) => {
 
   return (
     <View style={{flex: 1}}>
-      <Appbar onBackAction={navigation.goBack} title="Sources" />
+      <Appbar onBackAction={navigation.goBack} title="Browse" />
       <FlatList
         contentContainerStyle={{paddingBottom: 32}}
         data={languages}
@@ -72,12 +69,7 @@ const BrowseSettings = ({navigation}) => {
             <List.SubHeader theme={theme}>Global Search</List.SubHeader>
             <Pressable
               android_ripple={{color: theme.rippleColor}}
-              style={{
-                padding: 16,
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-              }}
+              style={styles.switch}
               onPress={() =>
                 dispatch(setAppSettings('searchAllSources', !searchAllSources))
               }
@@ -96,15 +88,10 @@ const BrowseSettings = ({navigation}) => {
               />
             </Pressable>
             <List.Divider theme={theme} />
-            <List.SubHeader theme={theme}>Discover</List.SubHeader>
+            <List.SubHeader theme={theme}>Browse</List.SubHeader>
             <Pressable
               android_ripple={{color: theme.rippleColor}}
-              style={{
-                padding: 16,
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-              }}
+              style={styles.switch}
               onPress={() => dispatch(enableDiscover('showMyAnimeList'))}
             >
               <Text style={{color: theme.textColorPrimary}}>MyAnimeList</Text>
@@ -113,6 +100,34 @@ const BrowseSettings = ({navigation}) => {
                 value={showMyAnimeList}
                 onValueChange={() =>
                   dispatch(enableDiscover('showMyAnimeList'))
+                }
+              />
+            </Pressable>
+            <Pressable
+              android_ripple={{color: theme.rippleColor}}
+              style={styles.switch}
+              onPress={() =>
+                dispatch(
+                  setAppSettings(
+                    'onlyShowPinnedSources',
+                    !onlyShowPinnedSources,
+                  ),
+                )
+              }
+            >
+              <Text style={{color: theme.textColorPrimary}}>
+                Only show pinned sources
+              </Text>
+              <Switch
+                color={theme.colorAccent}
+                value={onlyShowPinnedSources}
+                onValueChange={() =>
+                  dispatch(
+                    setAppSettings(
+                      'onlyShowPinnedSources',
+                      !onlyShowPinnedSources,
+                    ),
+                  )
                 }
               />
             </Pressable>
@@ -126,3 +141,12 @@ const BrowseSettings = ({navigation}) => {
 };
 
 export default BrowseSettings;
+
+const styles = StyleSheet.create({
+  switch: {
+    padding: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+});

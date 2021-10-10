@@ -14,7 +14,7 @@ import {
   getSourcesAction,
   searchSourcesAction,
 } from '../../redux/source/source.actions';
-import {useTheme} from '../../hooks/reduxHooks';
+import {useSettings, useTheme} from '../../hooks/reduxHooks';
 import {showToast} from '../../hooks/showToast';
 
 import {Searchbar} from '../../components/Searchbar/Searchbar';
@@ -34,6 +34,9 @@ const Browse = ({navigation}) => {
     filters = [],
     showMyAnimeList = true,
   } = useSelector(state => state.sourceReducer);
+
+  const {onlyShowPinnedSources = false} = useSettings();
+
   const theme = useTheme();
   const dispatch = useDispatch();
 
@@ -46,7 +49,7 @@ const Browse = ({navigation}) => {
 
   useEffect(() => {
     dispatch(getSourcesAction());
-  }, [getSourcesAction]);
+  }, []);
 
   const onRefresh = () => {
     showToast('Updating extension list');
@@ -107,7 +110,7 @@ const Browse = ({navigation}) => {
 
       <FlatList
         contentContainerStyle={{flexGrow: 1, paddingBottom: 32}}
-        data={!searchText ? sources : search}
+        data={onlyShowPinnedSources ? [] : !searchText ? sources : search}
         keyExtractor={item => item.sourceId.toString()}
         renderItem={renderItem}
         extraData={pinnedSources}
@@ -136,7 +139,9 @@ const Browse = ({navigation}) => {
                 ListHeaderComponent={<Header title="Pinned" />}
               />
             )}
-            {sources.length > 0 && <Header title="Sources" />}
+            {sources.length > 0 && !onlyShowPinnedSources && (
+              <Header title="Sources" />
+            )}
           </View>
         }
         ListEmptyComponent={

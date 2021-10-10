@@ -84,6 +84,7 @@ const initialState = {
    */
 
   searchAllSources: false,
+  onlyShowPinnedSources: false,
 
   /**
    * Update settings
