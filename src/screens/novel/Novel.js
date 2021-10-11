@@ -17,6 +17,7 @@ import {
   IconButton,
   Menu,
   FAB,
+  Snackbar,
 } from 'react-native-paper';
 import {useDispatch, useSelector} from 'react-redux';
 import * as Haptics from 'expo-haptics';
@@ -54,6 +55,7 @@ import {Actionbar} from '../../components/Actionbar/Actionbar';
 import EditInfoModal from './components/EditInfoModal';
 import {pickCustomNovelCover} from '../../database/queries/NovelQueries';
 import FadeView from '../../components/Common/CrossFadeView';
+import {useModal} from '../../hooks/useModal';
 
 const Novel = ({route, navigation}) => {
   const item = route.params;
@@ -71,6 +73,8 @@ const Novel = ({route, navigation}) => {
   let flatlistRef = useRef(null);
   let novelBottomSheetRef = useRef(null);
   let trackerSheetRef = useRef(null);
+
+  const deleteDownloadsSnackbar = useModal();
 
   const {
     sort = 'ORDER BY chapterId ASC',
@@ -451,6 +455,7 @@ const Novel = ({route, navigation}) => {
               navigation={navigation}
               trackerSheetRef={trackerSheetRef}
               novelBottomSheetRef={novelBottomSheetRef}
+              deleteDownloadsSnackbar={deleteDownloadsSnackbar}
             />
           }
           refreshControl={refreshControl()}
@@ -543,6 +548,22 @@ const Novel = ({route, navigation}) => {
               },
             ]}
           />
+          <Snackbar
+            visible={deleteDownloadsSnackbar.visible}
+            onDismiss={deleteDownloadsSnackbar.hideModal}
+            action={{
+              label: 'Delete',
+              onPress: () => {
+                dispatch(deleteAllChaptersAction(chapters));
+              },
+            }}
+            theme={{colors: {accent: theme.colorAccent}}}
+            style={{backgroundColor: theme.colorPrimary, marginBottom: 32}}
+          >
+            <Text style={{color: theme.textColorPrimary}}>
+              Delete downloaded chapters?
+            </Text>
+          </Snackbar>
         </Portal>
         {!loading && (
           <Portal>

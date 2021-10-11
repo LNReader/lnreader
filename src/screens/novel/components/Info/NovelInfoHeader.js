@@ -47,6 +47,7 @@ const NovelInfoHeader = ({
   trackerSheetRef,
   setCustomNovelCover,
   novelBottomSheetRef,
+  deleteDownloadsSnackbar,
 }) => {
   const {tracker, trackedNovels} = useTrackingStatus();
 
@@ -139,7 +140,15 @@ const NovelInfoHeader = ({
             <FollowButton
               theme={theme}
               followed={novel.followed}
-              onPress={() => dispatch(followNovelAction(novel))}
+              onPress={() => {
+                dispatch(followNovelAction(novel));
+                if (
+                  novel.followed &&
+                  chapters.some(chapter => chapter.downloaded === 1)
+                ) {
+                  deleteDownloadsSnackbar.showModal();
+                }
+              }}
             />
             {tracker && (
               <TrackerButton
