@@ -21,7 +21,7 @@ export const RadioButton = ({label, status, onPress, style, theme}) => (
 const styles = StyleSheet.create({
   pressable: {
     paddingHorizontal: 16,
-    paddingVertical: 8,
+    paddingVertical: 6,
     flexDirection: 'row',
     alignItems: 'center',
   },

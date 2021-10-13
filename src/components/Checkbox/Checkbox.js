@@ -1,14 +1,15 @@
 import React from 'react';
-import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {Pressable, StyleSheet, Text} from 'react-native';
 import {Checkbox as PaperCheckbox} from 'react-native-paper';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-export const Checkbox = ({label, status, onPress, theme}) => (
+export const Checkbox = ({label, status, onPress, disabled, theme}) => (
   <Pressable
     android_ripple={{color: theme.rippleColor}}
     style={styles.pressable}
     onPress={onPress}
+    disabled={disabled}
   >
     <PaperCheckbox
       status={
@@ -21,6 +22,7 @@ export const Checkbox = ({label, status, onPress, theme}) => (
       onPress={onPress}
       color={theme.colorAccent}
       uncheckedColor={theme.textColorSecondary}
+      disabled={disabled}
     />
     <Text style={{color: theme.textColorPrimary, marginLeft: 12}}>{label}</Text>
   </Pressable>
@@ -47,7 +49,7 @@ export const SortItem = ({label, status, onPress, theme}) => (
 const styles = StyleSheet.create({
   pressable: {
     paddingHorizontal: 16,
-    paddingVertical: 8,
+    paddingVertical: 6,
     flexDirection: 'row',
     alignItems: 'center',
   },

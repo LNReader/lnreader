@@ -8,7 +8,6 @@ import {
   Pressable,
 } from 'react-native';
 
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useFocusEffect} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
 import * as Haptics from 'expo-haptics';
@@ -33,19 +32,20 @@ import {
   markAllChaptersUnread,
 } from '../../database/queries/ChapterQueries';
 import {unfollowNovel} from '../../database/queries/NovelQueries';
+import {Banner} from './components/Banner';
 
 const LibraryScreen = ({navigation}) => {
   const theme = useTheme();
   const dispatch = useDispatch();
-  const settings = useSettings();
+
   const {
     showNumberOfNovels,
     incognitoMode = false,
     updateLibraryOnLaunch = false,
     downloadedOnlyMode = false,
-  } = settings;
+  } = useSettings();
 
-  const libraryBottomSheetRef = useRef(null);
+  const bottomSheetRef = useRef(null);
 
   const {
     loading,
@@ -152,7 +152,7 @@ const LibraryScreen = ({navigation}) => {
           actions={[
             {
               icon: 'filter-variant',
-              onPress: () => libraryBottomSheetRef.current.show(),
+              onPress: () => bottomSheetRef.current.show(),
               color:
                 filter || downloadedOnlyMode
                   ? theme.filterColor
@@ -161,78 +161,40 @@ const LibraryScreen = ({navigation}) => {
           ]}
           theme={theme}
         />
-        {incognitoMode && (
-          <View
-            style={{
-              backgroundColor: theme.searchBarColor,
-              paddingVertical: 6,
-              alignItems: 'center',
-              marginVertical: 8,
-              elevation: 2,
-              flexDirection: 'row',
-              justifyContent: 'center',
-            }}
-          >
-            <MaterialCommunityIcons
-              name="incognito"
-              color={theme.textColorSecondary}
-              size={18}
-            />
-            <Text
-              style={{
-                color: theme.textColorSecondary,
-                marginLeft: 8,
-              }}
-            >
-              Incognito mode
-            </Text>
-          </View>
-        )}
+
         {downloadedOnlyMode && (
-          <View
-            style={{
-              backgroundColor: theme.searchBarColor,
-              paddingVertical: 6,
-              alignItems: 'center',
-              marginVertical: 4,
-              elevation: 2,
-              flexDirection: 'row',
-              justifyContent: 'center',
-            }}
-          >
-            <MaterialCommunityIcons
-              name="cloud-off-outline"
-              color={theme.textColorSecondary}
-              size={18}
-            />
-            <Text
-              style={{
-                color: theme.textColorSecondary,
-                marginLeft: 8,
-              }}
-            >
-              Downloaded only
-            </Text>
-          </View>
+          <Banner
+            icon="cloud-off-outline"
+            label="Downloaded only"
+            theme={theme}
+          />
+        )}
+        {incognitoMode && (
+          <Banner
+            icon="incognito"
+            label="Incognito mode"
+            theme={theme}
+            backgroundColor={theme.colorAccent}
+          />
         )}
         {loading ? (
           <ActivityIndicator size="small" color={theme.colorAccent} />
         ) : (
           <>
             {searchText !== '' && (
-              <Pressable
-                onPress={() =>
-                  navigation.navigate('GlobalSearch', {
-                    novelName: searchText,
-                  })
-                }
-                android_ripple={{color: theme.colorAccent}}
-                style={styles.emptySearch}
-              >
-                <Text style={{color: theme.colorAccent}}>
-                  {`Search for "${searchText}" globally`}
-                </Text>
-              </Pressable>
+              <View style={styles.globalSearch}>
+                <Pressable
+                  onPress={() =>
+                    navigation.navigate('GlobalSearch', {novelName: searchText})
+                  }
+                  android_ripple={{color: theme.rippleColor}}
+                  style={styles.globalSearchBtn}
+                >
+                  <Text style={{color: theme.colorAccent}}>
+                    {`Search for "${searchText}" globally`}
+                  </Text>
+                </Pressable>
+              </View>
             )}
             <NovelList
               data={novels}
@@ -272,11 +234,11 @@ const LibraryScreen = ({navigation}) => {
             />
             <Portal>
               <LibraryBottomSheet
-                bottomSheetRef={libraryBottomSheetRef}
-                theme={theme}
+                bottomSheetRef={bottomSheetRef}
                 dispatch={dispatch}
                 sort={sort}
                 filter={filter}
+                theme={theme}
                 downloadedOnlyMode={downloadedOnlyMode}
               />
             </Portal>
@@ -293,9 +255,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  emptySearch: {
+  globalSearch: {
+    marginHorizontal: 16,
+    borderRadius: 4,
+    overflow: 'hidden',
+  },
+  globalSearchBtn: {
     alignItems: 'center',
     paddingVertical: 8,
-    borderRadius: 4,
   },
 });

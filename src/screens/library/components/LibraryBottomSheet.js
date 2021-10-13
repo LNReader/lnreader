@@ -31,15 +31,12 @@ const LibrarySheet = ({
       <Checkbox
         label="Downloaded"
         theme={theme}
-        status={
-          filter === 'chaptersDownloaded > 0' || downloadedOnlyMode === true
-        }
+        disabled={downloadedOnlyMode}
+        status={filter === 'chaptersDownloaded > 0' || downloadedOnlyMode}
         onPress={() => {
-          if (!downloadedOnlyMode) {
-            filter === 'chaptersDownloaded > 0'
-              ? dispatch(filterLibrary(sort, ''))
-              : dispatch(filterLibrary(sort, 'chaptersDownloaded > 0'));
-          }
+          filter === 'chaptersDownloaded > 0'
+            ? dispatch(filterLibrary(sort, ''))
+            : dispatch(filterLibrary(sort, 'chaptersDownloaded > 0'));
         }}
       />
       <Checkbox
@@ -127,7 +124,7 @@ const LibrarySheet = ({
     showNumberOfNovels,
   } = useSettings();
 
-  const renderCheckboxes = () => {
+  const renderRadioButtons = () => {
     return displayModes.map(mode => (
       <RadioButton
         key={mode.displayMode}
@@ -153,7 +150,7 @@ const LibrarySheet = ({
       >
         Display Mode
       </Text>
-      {renderCheckboxes()}
+      {renderRadioButtons()}
 
       <Text
         style={{
@@ -212,21 +209,8 @@ const LibrarySheet = ({
       {...props}
       indicatorStyle={{backgroundColor: theme.colorAccent}}
       style={{backgroundColor: theme.colorPrimary, elevation: 0}}
-      renderLabel={({route, focused, color}) => (
-        // <View
-        //   style={[
-        //     {
-        //       flex: 1,
-        //       paddingHorizontal: 16,
-        //       justifyContent: 'center',
-        //       alignItems: 'center',
-        //       borderRadius: 8,
-        //     },
-        //     focused && {backgroundColor: theme.rippleColor},
-        //   ]}
-        // >
+      renderLabel={({route, color}) => (
         <Text style={{color}}>{route.title}</Text>
-        // </View>
       )}
       inactiveColor={theme.textColorSecondary}
       activeColor={theme.colorAccent}
@@ -238,8 +222,8 @@ const LibrarySheet = ({
     <Bottomsheet
       animatedValue={animatedValue}
       ref={bottomSheetRef}
-      draggableRange={{top: 500, bottom: 0}}
-      snappingPoints={[0, 500]}
+      draggableRange={{top: 480, bottom: 0}}
+      snappingPoints={[0, 480]}
     >
       <View
         style={[

@@ -10,4 +10,4 @@ const fonts = {
   nunito: require('../../android/app/src/main/assets/fonts/nunito.ttf'),
 };
 
-export default {fonts};
+export {fonts};
