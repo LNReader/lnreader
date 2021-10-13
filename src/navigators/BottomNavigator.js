@@ -4,11 +4,11 @@ import {createMaterialBottomTabNavigator} from '@react-navigation/material-botto
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
-import Library from '../screens/library/Library';
-import Updates from '../screens/updates/Updates';
-import History from '../screens/history/History';
-import Browse from '../screens/browse/Browse';
-import More from '../screens/more/More';
+import Library from '../screens/library/LibraryScreen';
+import Updates from '../screens/updates/UpdatesScreen';
+import History from '../screens/history/HistoryScreen';
+import Browse from '../screens/browse/BrowseScreen';
+import More from '../screens/more/MoreScreen';
 
 import {useSettings, useTheme} from '../hooks/reduxHooks';
 

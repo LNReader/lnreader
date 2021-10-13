@@ -59,7 +59,7 @@ const parseNovelAndChapters = async novelUrl => {
   });
   const body = await result.text();
 
-  $ = cheerio.load(body);
+  const $ = cheerio.load(body);
 
   let novel = {};
 
@@ -75,7 +75,7 @@ const parseNovelAndChapters = async novelUrl => {
 
   novel.novelCover = $('.nov-head > amp-img').attr('src');
 
-  novel.summary = $('div.desc > h2').next().text();
+  novel.summary = $('div.desc > h2').next().text().trim();
 
   novel.author = $('tr > td')
     .filter(function () {
@@ -168,15 +168,11 @@ const searchNovels = async searchTerm => {
     '&__amp_source_origin=https%3A%2F%2Fwww.mtlnovel.com';
 
   const res = await fetch(searchUrl);
-  const result = await res.text();
-
-  $ = cheerio.load(result);
-
-  let body = JSON.parse($('body').text());
+  const result = await res.json();
 
   let novels = [];
 
-  body.items[0].results.map(item => {
+  result.items[0].results.map(item => {
     const novelName = item.title.replace(/<\/?strong>/g, '');
     const novelCover = item.thumbnail;
     const novelUrl = item.permalink.replace('https://www.mtlnovel.com/', '');

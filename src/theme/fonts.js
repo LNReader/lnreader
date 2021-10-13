@@ -1,8 +1,4 @@
-/**
- * Reader fonts
- */
-
-export const fonts = {
+const fonts = {
   'pt-sans-bold': require('../../android/app/src/main/assets/fonts/pt-sans-bold.ttf'),
   'arbutus-slab': require('../../android/app/src/main/assets/fonts/arbutus-slab.ttf'),
   domine: require('../../android/app/src/main/assets/fonts/domine.ttf'),
@@ -13,3 +9,5 @@ export const fonts = {
   lora: require('../../android/app/src/main/assets/fonts/lora.ttf'),
   nunito: require('../../android/app/src/main/assets/fonts/nunito.ttf'),
 };
+
+export default {fonts};

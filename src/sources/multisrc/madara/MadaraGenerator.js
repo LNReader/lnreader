@@ -34,8 +34,6 @@ const getPath = extensionId => {
   );
 };
 
-
-
 export const SkyNovelScraper = new MadaraScraper(
   38,
   'https://skynovel.org/',

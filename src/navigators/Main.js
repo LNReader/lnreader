@@ -13,14 +13,14 @@ import * as SplashScreen from 'expo-splash-screen';
  * Navigators
  */
 import BottomNavigator from './BottomNavigator';
-import MoreStack from './More';
+import MoreStack from './MoreStack';
 
 /**
  * Screens
  */
-import Novel from '../screens/novel/Novel';
-import Reader from '../screens/reader/Reader';
-import Extension from '../screens/source/Source';
+import Novel from '../screens/novel/NovelScreen';
+import Reader from '../screens/reader/ReaderScreen';
+import Extension from '../screens/source/SourceScreen';
 import GlobalSearch from '../screens/browse/globalsearch/GlobalSearch';
 import Migration from '../screens/browse/migration/Migration';
 import SourceNovels from '../screens/browse/SourceNovels';
@@ -28,7 +28,7 @@ import MigrateNovel from '../screens/browse/migration/MigrationNovels';
 
 import MalTopNovels from '../screens/browse/discover/MalTopNovels';
 import NewUpdateDialog from '../components/NewUpdateDialog';
-import BrowseSettings from '../screens/browse/BrowseSettings';
+import BrowseSettings from '../screens/browse/SettingsBrowseScreen';
 
 const Stack = createStackNavigator();
 

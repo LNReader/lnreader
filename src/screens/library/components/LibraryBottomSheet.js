@@ -16,7 +16,7 @@ import {setAppSettings} from '../../../redux/settings/settings.actions';
 import {Checkbox, SortItem} from '../../../components/Checkbox/Checkbox';
 import {RadioButton} from '../../../components/RadioButton/RadioButton';
 
-const LibraryFilterSheet = ({
+const LibrarySheet = ({
   bottomSheetRef,
   dispatch,
   sort,
@@ -260,7 +260,7 @@ const LibraryFilterSheet = ({
   );
 };
 
-export default LibraryFilterSheet;
+export default LibrarySheet;
 
 const styles = StyleSheet.create({
   contentContainer: {
