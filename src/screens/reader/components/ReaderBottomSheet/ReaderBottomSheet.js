@@ -42,6 +42,7 @@ const ReaderSheet = ({
   swipeGestures,
   enableSwipeGestures,
   fullScreenMode,
+  verticalSeekbar,
 }) => {
   const [animatedValue] = useState(new Animated.Value(0));
 
@@ -275,6 +276,14 @@ const ReaderSheet = ({
               theme={theme}
             />
           )}
+          <ReaderBottomSheetSwitch
+            label="Vertical seekbar"
+            onPress={() =>
+              dispatch(setAppSettings('verticalSeekbar', !verticalSeekbar))
+            }
+            value={verticalSeekbar}
+            theme={theme}
+          />
           <ReaderBottomSheetSwitch
             label="Show battery and time"
             onPress={() =>

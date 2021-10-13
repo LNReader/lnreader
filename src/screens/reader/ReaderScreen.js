@@ -53,7 +53,6 @@ import {setAppSettings} from '../../redux/settings/settings.actions';
 import {useBatteryLevel} from 'react-native-device-info';
 import moment from 'moment';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import WebViewReader from './components/WebViewReader';
 import TextReader from './components/TextReader';
 import {cleanHtml} from '../../sources/helpers/cleanHtml';
 import WebView from 'react-native-webview';
@@ -88,6 +87,7 @@ const Chapter = ({route, navigation}) => {
     showBatteryAndTime = false,
     autoScroll = false,
     autoScrollInterval = 10,
+    verticalSeekbar = true,
   } = useSettings();
 
   const batteryLevel = useBatteryLevel();
@@ -584,6 +584,7 @@ const Chapter = ({route, navigation}) => {
             dispatch={dispatch}
             navigation={navigation}
             bottomSheetRef={readerSheetRef}
+            verticalSeekbar={verticalSeekbar}
             selectText={textSelectable}
             autoScroll={autoScroll}
             useWebViewForChapter={useWebViewForChapter}
@@ -603,6 +604,7 @@ const Chapter = ({route, navigation}) => {
             scrollViewRef={scrollViewRef}
             scrollPercentage={scrollPercentage}
             setScrollPercentage={setScrollPercentage}
+            verticalSeekbar={verticalSeekbar}
           />
         )}
         <ReaderFooter

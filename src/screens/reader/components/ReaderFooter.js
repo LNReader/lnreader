@@ -72,7 +72,7 @@ const ChapterFooter = ({
         </Pressable>
         {!useWebViewForChapter && (
           <>
-            <Pressable
+            {/* <Pressable
               android_ripple={rippleConfig}
               style={styles.buttonStyles}
               onPress={enableAutoScroll}
@@ -83,7 +83,7 @@ const ChapterFooter = ({
                 size={26}
                 color={theme.textColorPrimary}
               />
-            </Pressable>
+            </Pressable> */}
             <Pressable
               android_ripple={rippleConfig}
               style={styles.buttonStyles}
@@ -98,17 +98,17 @@ const ChapterFooter = ({
           </>
         )}
         {/* <Pressable
-                    android_ripple={rippleConfig}
-                    style={styles.buttonStyles}
-                    onPress={enableWebView}
-                >
-                    <IconButton
-                        icon="language-html5"
-                        disabled={!useWebViewForChapter}
-                        size={26}
-                        color={theme.textColorPrimary}
-                    />
-                </Pressable> */}
+          android_ripple={rippleConfig}
+          style={styles.buttonStyles}
+          onPress={enableWebView}
+        >
+          <IconButton
+            icon="language-html5"
+            disabled={!useWebViewForChapter}
+            size={26}
+            color={theme.textColorPrimary}
+          />
+        </Pressable> */}
         <Pressable
           android_ripple={rippleConfig}
           style={styles.buttonStyles}

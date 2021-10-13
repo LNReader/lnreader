@@ -112,6 +112,7 @@ const initialState = {
   autoScroll: false,
   autoScrollInterval: 10,
   textSelectable: false,
+  verticalSeekbar: true,
 
   reader: {
     theme: 1,

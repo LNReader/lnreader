@@ -11,6 +11,7 @@ const VerticalScrollbar = ({
   scrollPercentage,
   setLoading,
   scrollViewRef,
+  verticalSeekbar,
 }) => {
   const onSlidingComplete = value => {
     setLoading(true);
@@ -25,7 +26,7 @@ const VerticalScrollbar = ({
   if (hide) {
     return null;
   } else {
-    if (getDeviceOrientation() === 'potrait') {
+    if (getDeviceOrientation() === 'potrait' && verticalSeekbar) {
       return (
         <View
           style={[
@@ -69,7 +70,12 @@ const VerticalScrollbar = ({
       );
     } else {
       return (
-        <View style={styles.horizontalSliderContainer}>
+        <View
+          style={[
+            styles.horizontalSliderContainer,
+            {backgroundColor: `${theme.colorPrimary}E6`},
+          ]}
+        >
           <Text
             style={{
               color: '#FFFFFF',
