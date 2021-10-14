@@ -1,6 +1,8 @@
 import {useState, useEffect} from 'react';
 
-export const githubUpdateChecker = () => {
+import {showToast} from './../hooks/showToast';
+
+export const useGithubUpdateChecker = () => {
   const latestReleaseUrl =
     'https://api.github.com/repos/rajarsheechatterjee/lnreader/releases/latest';
 
@@ -34,7 +36,7 @@ export const githubUpdateChecker = () => {
   useEffect(() => {
     checkForRelease().catch(e => {
       showToast(`Could not connect to github:\n${`${e}`.split(':')[1].trim()}`);
-      console.error(e);
+      // console.error(e);
     });
   }, []);
 

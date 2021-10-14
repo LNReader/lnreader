@@ -13,15 +13,20 @@ const popularNovels = async page => {
   const result = await fetch(url);
   const body = await result.text();
 
-  $ = cheerio.load(body);
+  const loadedCheerio = cheerio.load(body);
 
   let novels = [];
 
-  $('.page-item-detail').each(function (result) {
-    const novelName = $(this).find('.item-summary h3').text().trim();
-    const novelCover = $(this).find('.img-responsive').attr('data-src');
+  loadedCheerio('.page-item-detail').each(function () {
+    const novelName = loadedCheerio(this)
+      .find('.item-summary h3')
+      .text()
+      .trim();
+    const novelCover = loadedCheerio(this)
+      .find('.img-responsive')
+      .attr('data-src');
 
-    let novelUrl = $(this).find('div > a').attr('href');
+    let novelUrl = loadedCheerio(this).find('div > a').attr('href');
     novelUrl = novelUrl.replace(`${baseUrl}/`, '');
 
     const novel = {
@@ -43,21 +48,24 @@ const parseNovelAndChapters = async novelUrl => {
   const result = await fetch(url);
   const body = await result.text();
 
-  $ = cheerio.load(body);
+  const loadedCheerio = cheerio.load(body);
 
   let novel = {sourceId, url, sourceName};
 
-  $('.post-title > h3 > span').remove();
+  loadedCheerio('.post-title > h3 > span').remove();
 
   novel.novelUrl = novelUrl;
 
-  novel.novelName = $('.post-title > h1').text().trim();
+  novel.novelName = loadedCheerio('.post-title > h1').text().trim();
 
-  novel.novelCover = $('.summary_image > a > img').attr('data-src');
+  novel.novelCover = loadedCheerio('.summary_image > a > img').attr('data-src');
 
-  $('.post-content_item').each(function () {
-    const detailName = $(this).find('.summary-heading > h5').text().trim();
-    const detail = $(this).find('.summary-content').text().trim();
+  loadedCheerio('.post-content_item').each(function () {
+    const detailName = loadedCheerio(this)
+      .find('.summary-heading > h5')
+      .text()
+      .trim();
+    const detail = loadedCheerio(this).find('.summary-content').text().trim();
 
     switch (detailName) {
       case 'Genre(s)':
@@ -74,20 +82,25 @@ const parseNovelAndChapters = async novelUrl => {
     }
   });
 
-  $('.description-summary > div.summary__content').find('em').remove();
-  $('.premium-block').remove();
+  loadedCheerio('.description-summary > div.summary__content')
+    .find('em')
+    .remove();
+  loadedCheerio('.premium-block').remove();
 
-  novel.summary = $('div.summary__content').text().trim();
+  novel.summary = loadedCheerio('div.summary__content').text().trim();
 
   let novelChapters = [];
 
-  $('.wp-manga-chapter').each(function (result) {
-    $('i').remove();
+  loadedCheerio('.wp-manga-chapter').each(function () {
+    loadedCheerio('i').remove();
 
-    const chapterName = $(this).find('a').text().trim();
+    const chapterName = loadedCheerio(this).find('a').text().trim();
     const releaseDate = null;
 
-    const chapterUrl = $(this).find('a').attr('href').replace(url, '');
+    const chapterUrl = loadedCheerio(this)
+      .find('a')
+      .attr('href')
+      .replace(url, '');
 
     const chapter = {chapterName, releaseDate, chapterUrl};
 
@@ -105,10 +118,10 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   const result = await fetch(url);
   const body = await result.text();
 
-  $ = cheerio.load(body);
+  const loadedCheerio = cheerio.load(body);
 
-  const chapterName = $('#chapter-heading').text();
-  let chapterText = $('.reading-content').html();
+  const chapterName = loadedCheerio('#chapter-heading').text();
+  let chapterText = loadedCheerio('.reading-content').html();
   const chapter = {
     sourceId,
     novelUrl,
@@ -126,15 +139,20 @@ const searchNovels = async searchTerm => {
   const result = await fetch(url);
   const body = await result.text();
 
-  $ = cheerio.load(body);
+  const loadedCheerio = cheerio.load(body);
 
   let novels = [];
 
-  $('.c-tabs-item__content').each(function (result) {
-    const novelName = $(this).find('.post-title > h3').text().trim();
-    const novelCover = $(this).find('div > div > a > img').attr('data-src');
+  loadedCheerio('.c-tabs-item__content').each(function () {
+    const novelName = loadedCheerio(this)
+      .find('.post-title > h3')
+      .text()
+      .trim();
+    const novelCover = loadedCheerio(this)
+      .find('div > div > a > img')
+      .attr('data-src');
 
-    let novelUrl = $(this).find('div > div > a').attr('href');
+    let novelUrl = loadedCheerio(this).find('div > div > a').attr('href');
     novelUrl = novelUrl.replace(`${baseUrl}/`, '');
 
     const novel = {

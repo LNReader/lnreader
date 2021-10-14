@@ -214,7 +214,9 @@ const FirstRoute = React.memo(({theme, dispatch, reader}) => {
               keyboardType="numeric"
               onChangeText={text =>
                 text !== '' &&
-                dispatch(setAppSettings('autoScrollInterval', parseInt(text)))
+                dispatch(
+                  setAppSettings('autoScrollInterval', parseInt(text, 10)),
+                )
               }
             />
           </View>

@@ -2,7 +2,7 @@ import React from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {IconButton} from 'react-native-paper';
 
-const icons = ['(･o･;)', 'Σ(ಠ_ಠ)', 'ಥ_ಥ', '(˘･_･˘)', '(；￣Д￣)', '(･Д･。'];
+// const icons = ['(･o･;)', 'Σ(ಠ_ಠ)', 'ಥ_ಥ', '(˘･_･˘)', '(；￣Д￣)', '(･Д･。'];
 
 export const ErrorView = ({errorName, actions, theme}) => (
   <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>

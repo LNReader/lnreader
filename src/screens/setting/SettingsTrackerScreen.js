@@ -46,14 +46,14 @@ const TrackerScreen = ({navigation}) => {
                   myAnimeListConfig.authUrl,
                   myAnimeListConfig.redirectUri,
                 ).then(res => {
-                  console.log(res.type);
+                  // console.log(res.type);
                   if (res.type === 'success') {
                     const {url} = res;
 
-                    const codeExtractor = new RegExp(/=([^&]+)/);
+                    const codeExtractor = new RegExp(/[=]([^&]+)/);
                     let code = url.match(codeExtractor);
 
-                    console.log(code);
+                    // console.log(code);
 
                     if (code) {
                       code = code[1];
@@ -61,7 +61,7 @@ const TrackerScreen = ({navigation}) => {
                         code,
                         myAnimeListConfig.codeChallenge,
                       ).then(objects => {
-                        console.log(objects);
+                        // console.log(objects);
                         dispatch(setTracker(objects));
                       });
                     }
@@ -74,7 +74,7 @@ const TrackerScreen = ({navigation}) => {
           />
           {tracker && tracker.expires_in < new Date(Date.now()) && (
             <>
-              <Divider theme={theme} />
+              <List.Divider theme={theme} />
               <List.SubHeader theme={theme}>Settings</List.SubHeader>
               <List.Item
                 title="Revalidate MyAnimeList"

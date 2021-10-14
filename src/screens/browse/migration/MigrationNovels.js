@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {
-  StyleSheet,
+  /* StyleSheet, */
   View,
   Text,
   FlatList,
@@ -49,8 +49,8 @@ const MigrationNovels = ({navigation, route}) => {
         const source = getSource(migrationSources[i].sourceId);
         const data = await source.searchNovels(novelName);
 
-        setSearchResults(searchResults => [
-          ...searchResults,
+        setSearchResults(before => [
+          ...before,
           {
             sourceId: migrationSources[i].sourceId,
             sourceName: migrationSources[i].sourceName,
@@ -62,8 +62,8 @@ const MigrationNovels = ({navigation, route}) => {
       } catch (error) {
         showToast(error.message);
 
-        setSearchResults(searchResults => [
-          ...searchResults,
+        setSearchResults(before => [
+          ...before,
           {
             sourceId: migrationSources[i].sourceId,
             sourceName: migrationSources[i].sourceName,
@@ -73,7 +73,7 @@ const MigrationNovels = ({navigation, route}) => {
         ]);
         setLoading(false);
       }
-      setProgress(progress => progress + 1 / migrationSources.length);
+      setProgress(before => before + 1 / migrationSources.length);
     }
   };
 
@@ -145,4 +145,4 @@ const MigrationNovels = ({navigation, route}) => {
 
 export default MigrationNovels;
 
-const styles = StyleSheet.create({});
+// const styles = StyleSheet.create({});

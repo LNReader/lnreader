@@ -205,9 +205,9 @@ const Chapter = ({route, navigation}) => {
     }
   };
 
-  const getChapter = async chapterId => {
+  const getChapter = async id => {
     try {
-      if (chapterId) {
+      if (id) {
         const chapterDownloaded = await getChapterFromDB(chapterId);
 
         if (chapterDownloaded) {
@@ -223,10 +223,10 @@ const Chapter = ({route, navigation}) => {
       }
 
       setLoading(false);
-    } catch (error) {
-      setError(error.message);
+    } catch (e) {
+      setError(e.message);
       setLoading(false);
-      showToast(error.message);
+      showToast(e.message);
     }
   };
 
@@ -295,6 +295,7 @@ const Chapter = ({route, navigation}) => {
   }, [autoScroll, currentOffset]);
 
   const isCloseToBottom = useCallback(
+    // eslint-disable-next-line no-shadow
     ({layoutMeasurement, contentOffset, contentSize}) => {
       const paddingToBottom = 40;
       return (
@@ -319,12 +320,10 @@ const Chapter = ({route, navigation}) => {
 
   const onScroll = useCallback(({nativeEvent}) => {
     const offsetY = nativeEvent.contentOffset.y;
-    const position =
+    const pos =
       nativeEvent.contentOffset.y + nativeEvent.layoutMeasurement.height;
 
-    const percentage = Math.round(
-      (position / nativeEvent.contentSize.height) * 100,
-    );
+    const percentage = Math.round((pos / nativeEvent.contentSize.height) * 100);
     setScrollPercentage(percentage);
 
     if (!incognitoMode) {
@@ -418,7 +417,7 @@ const Chapter = ({route, navigation}) => {
     dispatch(setAppSettings('useWebViewForChapter', !useWebViewForChapter));
 
   const onWebViewNavigationStateChange = async ({url}) => {
-    if ((sourceId === 50 || sourceId == 62) && url !== 'about:blank') {
+    if ((sourceId === 50 || sourceId === 62) && url !== 'about:blank') {
       setLoading(true);
       const res = await fetchChapter(sourceId, novelUrl, url);
       setChapter(res);

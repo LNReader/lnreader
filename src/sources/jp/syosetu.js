@@ -1,21 +1,19 @@
 import cheerio from 'react-native-cheerio';
 
-import moment from 'moment';
-
-const baseUrl = 'https://syosetu.com'; // base url for syosetu.com
-
 // get given page of search (if pagenum is 0 or >100 (max possible on site) see first page)
 const searchUrl = (pagenum, order) => {
   return `https://yomou.syosetu.com/search.php?order=${order || 'hyoka'}${
-    !isNaN((pagenum = parseInt(pagenum))) // check if pagenum is a number
+    !isNaN((pagenum = parseInt(pagenum, 10))) // check if pagenum is a number
       ? `&p=${pagenum <= 1 || pagenum > 100 ? '1' : pagenum}` // check if pagenum is between 1 and 100
       : '' // if isn't don't set ?p
   }`;
 };
 
 // get the Syosetu ID of the chapter
-const getLastPartOfUrl = url =>
-  (ex = /.*(?=\/)(.{2,})$/.exec(url)) ? ex[1].replace(/\//g, '') : null;
+const getLastPartOfUrl = url => {
+  let temp = /.*(?=\/)(.{2,})$/.exec(url);
+  return temp ? temp[1].replace(/\//g, '') : null;
+};
 
 // get novelUrl from Syosetu ID
 const getNovelUrl = id => `https://ncode.syosetu.com/${id}`;
@@ -36,8 +34,7 @@ const sourceName = 'Syosetu';
 
 // there are 20 mangas per page
 // this is number of pages loaded in the first "batch" of loads
-// TOOD: in-app dynamic loading on scroll
-const maxPageLoad = 3;
+// const maxPageLoad = 3;
 
 const popularNovels = async page => {
   const totalPages = 100;
@@ -129,9 +126,9 @@ const parseNovelAndChapters = async novelUrl => {
      */
     // get summary for oneshot chapter
 
-    const result = await fetch(searchUrl() + `&word=${novel.novelName}`);
-    const body = await result.text();
-    const summaryQuery = cheerio.load(body, {decodeEntities: false});
+    const nameResult = await fetch(searchUrl() + `&word=${novel.novelName}`);
+    const nameBody = await nameResult.text();
+    const summaryQuery = cheerio.load(nameBody, {decodeEntities: false});
     const foundText = summaryQuery('.searchkekka_box')
       .first()
       .find('.ex')
@@ -175,17 +172,14 @@ let parseChapter = async (novelUrl, chapterUrl) => {
     chapterText,
   };
 
-  if (chapterUrl === 'oneshot')
+  if (chapterUrl === 'oneshot') {
     // oneshot get name
     chapter.chapterName = cheerioQuery('#novel_title').text();
-  else {
+  } else {
     // single chapter
 
     // get name
     chapter.chapterName = cheerioQuery('.novel_subtitle').first().text();
-
-    // get next/prev buttons
-    const chapterButtons = cheerioQuery('#novel_contents .novel_bn').first();
   }
 
   return chapter;
@@ -197,8 +191,6 @@ let searchNovels = async searchTerm => {
   // array of all the novels
   let novels = [];
 
-  let isNext = true;
-
   // returns list of novels from given page
   let getNovelsFromPage = async pagenumber => {
     // load page
@@ -208,8 +200,6 @@ let searchNovels = async searchTerm => {
     const body = await result.text();
     // Cheerio it!
     const cheerioQuery = cheerio.load(body, {decodeEntities: false});
-
-    if (cheerioQuery('.nextlink').length === 0) isNext = false;
 
     let pageNovels = [];
     // find class=searchkekka_box

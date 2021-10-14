@@ -13,19 +13,19 @@ const popularNovels = async page => {
   const result = await fetch(url);
   const body = await result.text();
 
-  $ = cheerio.load(body);
+  const loadedCheerio = cheerio.load(body);
 
   let novels = [];
 
-  $('div.container')
+  loadedCheerio('div.container')
     .find('section')
     .each(function () {
-      const novelName = $(this)
+      const novelName = loadedCheerio(this)
         .find('div.columns > div:nth-child(2) > a')
         .text();
-      const novelCover = $(this).find('img').attr('src');
+      const novelCover = loadedCheerio(this).find('img').attr('src');
 
-      let novelUrl = $(this)
+      let novelUrl = loadedCheerio(this)
         .find('div.columns > div:nth-child(2) > a')
         .attr('href');
       novelUrl = novelUrl.replace(baseUrl + 'novel/', '');
@@ -45,35 +45,37 @@ const popularNovels = async page => {
 
 const parseNovelAndChapters = async novelUrl => {
   const url = baseUrl + 'novel/' + novelUrl;
-  console.log(url);
+  // console.log(url);
 
   const result = await fetch(url);
   const body = await result.text();
 
-  $ = cheerio.load(body);
+  const loadedCheerio = cheerio.load(body);
 
   let novel = {sourceId, sourceName, url, novelUrl};
 
-  novel.novelName = $(
+  novel.novelName = loadedCheerio(
     '#NovelInfo > div > div.column.is-one-third.has-text-centered > p',
   )
     .text()
     .trim();
 
-  novel.novelCover = $('img.attachment-post-thumbnail').attr('src');
+  novel.novelCover = loadedCheerio('img.attachment-post-thumbnail').attr('src');
 
-  novel.summary = $('#NovelInfo > div > div:nth-child(2) > p').text().trim();
+  novel.summary = loadedCheerio('#NovelInfo > div > div:nth-child(2) > p')
+    .text()
+    .trim();
 
-  novel.genre = $('#NovelInfo > p:nth-child(2)')
+  novel.genre = loadedCheerio('#NovelInfo > p:nth-child(2)')
     .text()
     .replace(/Genre(s):|\s/g, '');
 
-  novel.status = $('#NovelInfo > p:nth-child(5)')
+  novel.status = loadedCheerio('#NovelInfo > p:nth-child(5)')
     .text()
     .replace(/Status:|\s/g, '')
     .trim();
 
-  novel.author = $('#NovelInfo > p:nth-child(4)')
+  novel.author = loadedCheerio('#NovelInfo > p:nth-child(4)')
     .text()
     .replace(/Publisher:|\s/g, '')
     .trim();
@@ -97,7 +99,7 @@ const parseNovelAndChapters = async novelUrl => {
 
   // $("small").remove();
 
-  let chapterUrlPrefix = $('table > tbody')
+  let chapterUrlPrefix = loadedCheerio('table > tbody')
     .find('tr')
     .first()
     .find('a')
@@ -111,7 +113,7 @@ const parseNovelAndChapters = async novelUrl => {
 
   chapterUrlPrefix = chapterUrlPrefix.join('-').toLowerCase();
 
-  let latestChapter = $('table > tbody')
+  let latestChapter = loadedCheerio('table > tbody')
     .find('tr')
     .first()
     .find('a')
@@ -140,16 +142,16 @@ const parseNovelAndChapters = async novelUrl => {
 const parseChapter = async (novelUrl, chapterUrl) => {
   const url = `${baseUrl}mtl/${novelUrl}/${chapterUrl}`;
 
-  console.log(url);
+  // console.log(url);
 
   const result = await fetch(url);
   const body = await result.text();
 
-  $ = cheerio.load(body);
+  const loadedCheerio = cheerio.load(body);
 
   let chapterName = '';
 
-  let chapterText = $('#content').html();
+  let chapterText = loadedCheerio('#content').html();
 
   const chapter = {
     sourceId,
@@ -168,17 +170,17 @@ const searchNovels = async searchTerm => {
   const result = await fetch(url);
   const body = await result.text();
 
-  $ = cheerio.load(body);
+  const loadedCheerio = cheerio.load(body);
 
   let novels = [];
 
-  $('.newbox')
+  loadedCheerio('.newbox')
     .find('li')
     .each(function () {
-      const novelName = $(this).find('h3').text();
-      const novelCover = $(this).find('img').attr('src');
+      const novelName = loadedCheerio(this).find('h3').text();
+      const novelCover = loadedCheerio(this).find('img').attr('src');
 
-      let novelUrl = $(this).find('a').attr('href');
+      let novelUrl = loadedCheerio(this).find('a').attr('href');
       novelUrl = novelUrl.replace(baseUrl + 'novel/', '');
 
       const novel = {

@@ -19,15 +19,15 @@ const popularNovels = async page => {
   });
   const body = await result.text();
 
-  let $ = cheerio.load(body);
+  let loadedCheerio = cheerio.load(body);
 
   let novels = [];
 
-  $('div.box.wide').each(function () {
-    const novelName = $(this).find('a.list-title').text().slice(4);
-    const novelCover = $(this).find('amp-img').attr('src');
+  loadedCheerio('div.box.wide').each(function () {
+    const novelName = loadedCheerio(this).find('a.list-title').text().slice(4);
+    const novelCover = loadedCheerio(this).find('amp-img').attr('src');
 
-    let novelUrl = $(this).find('a.list-title').attr('href');
+    let novelUrl = loadedCheerio(this).find('a.list-title').attr('href');
     novelUrl = novelUrl.replace('https://id.mtlnovel.com/', '');
 
     const novel = {
@@ -58,37 +58,37 @@ const parseNovelAndChapters = async novelUrl => {
   });
   const body = await result.text();
 
-  $ = cheerio.load(body);
+  let loadedCheerio = cheerio.load(body);
 
   let novel = {sourceId, url, novelUrl};
 
   novel.sourceName = 'MTLNovel';
 
-  novel.novelName = $('h1.entry-title').text();
+  novel.novelName = loadedCheerio('h1.entry-title').text();
 
-  novel.novelCover = $('.nov-head > amp-img').attr('src');
+  novel.novelCover = loadedCheerio('.nov-head > amp-img').attr('src');
 
-  novel.summary = $('div.desc > h2').next().text();
+  novel.summary = loadedCheerio('div.desc > h2').next().text();
 
-  novel.author = $('tr > td')
+  novel.author = loadedCheerio('tr > td')
     .filter(function () {
-      return $(this).prev().text().trim() === 'Author';
+      return loadedCheerio(this).prev().text().trim() === 'Author';
     })
     .next()
     .text()
     .replace('Auhtor:', '');
 
-  novel.status = $('tr > td')
+  novel.status = loadedCheerio('tr > td')
     .filter(function () {
-      return $(this).prev().text().trim() === 'Status';
+      return loadedCheerio(this).prev().text().trim() === 'Status';
     })
     .next()
     .text()
     .replace('Status:', '');
 
-  novel.genre = $('td')
+  novel.genre = loadedCheerio('td')
     .filter(function () {
-      return $(this).prev().text().trim() === 'Genre';
+      return loadedCheerio(this).prev().text().trim() === 'Genre';
     })
     .next()
     .text()
@@ -99,20 +99,20 @@ const parseNovelAndChapters = async novelUrl => {
   const chapterListUrl = url + '/chapter-list/';
 
   const getChapters = async () => {
-    const result = await fetch(chapterListUrl);
-    const body = await result.text();
+    const listResult = await fetch(chapterListUrl);
+    const listBody = await listResult.text();
 
-    $ = cheerio.load(body);
+    loadedCheerio = cheerio.load(listBody);
 
     let novelChapters = [];
 
-    $('div.ch-list')
+    loadedCheerio('div.ch-list')
       .find('a.ch-link')
-      .each(function (result) {
-        const chapterName = $(this).text().replace('~ ', '');
+      .each(function () {
+        const chapterName = loadedCheerio(this).text().replace('~ ', '');
         const releaseDate = null;
 
-        let chapterUrl = $(this).attr('href');
+        let chapterUrl = loadedCheerio(this).attr('href');
         chapterUrl = chapterUrl.replace(
           `https://id.mtlnovel.com/${novelUrl}`,
           '',
@@ -138,10 +138,10 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   const result = await fetch(url);
   const body = await result.text();
 
-  $ = cheerio.load(body);
+  let loadedCheerio = cheerio.load(body);
 
-  const chapterName = $('h1.main-title').text();
-  let chapterText = $('div.par').html();
+  const chapterName = loadedCheerio('h1.main-title').text();
+  let chapterText = loadedCheerio('div.par').html();
   const chapter = {
     sourceId,
     novelUrl,
@@ -162,9 +162,9 @@ const searchNovels = async searchTerm => {
   const res = await fetch(searchUrl);
   const result = await res.text();
 
-  $ = cheerio.load(result);
+  let loadedCheerio = cheerio.load(result);
 
-  let body = JSON.parse($('body').text());
+  let body = JSON.parse(loadedCheerio('body').text());
 
   let novels = [];
 

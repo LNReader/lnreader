@@ -15,16 +15,16 @@ class WPMangaStreamScraper {
     const result = await fetch(url);
     const body = await result.text();
 
-    const $ = cheerio.load(body);
+    const loadedCheerio = cheerio.load(body);
 
     let novels = [];
 
-    $('article.bs').each(function () {
-      const novelName = $(this).find('.ntitle').text().trim();
-      let image = $(this).find('img');
+    loadedCheerio('article.bs').each(function () {
+      const novelName = loadedCheerio(this).find('.ntitle').text().trim();
+      let image = loadedCheerio(this).find('img');
       const novelCover = image.attr('src');
 
-      let novelUrl = $(this).find('a').attr('href').split('/')[4];
+      let novelUrl = loadedCheerio(this).find('a').attr('href').split('/')[4];
 
       const novel = {
         sourceId,
@@ -45,7 +45,7 @@ class WPMangaStreamScraper {
     const result = await fetch(url);
     const body = await result.text();
 
-    let $ = cheerio.load(body);
+    let loadedCheerio = cheerio.load(body);
 
     let novel = {};
 
@@ -57,16 +57,16 @@ class WPMangaStreamScraper {
 
     novel.novelUrl = novelUrl;
 
-    novel.novelName = $('.entry-title').text();
+    novel.novelName = loadedCheerio('.entry-title').text();
 
-    novel.novelCover = $('img.wp-post-image').attr('src');
+    novel.novelCover = loadedCheerio('img.wp-post-image').attr('src');
 
-    $('div.spe > span').each(function () {
-      const detailName = $(this).find('b').text().trim();
-      const detail = $(this).find('b').next().text().trim();
+    loadedCheerio('div.spe > span').each(function () {
+      const detailName = loadedCheerio(this).find('b').text().trim();
+      const detail = loadedCheerio(this).find('b').next().text().trim();
 
-      if ($(this).text().includes('الحالة:')) {
-        novel.status = $(this).text().replace('الحالة: ', '');
+      if (loadedCheerio(this).text().includes('الحالة:')) {
+        novel.status = loadedCheerio(this).text().replace('الحالة: ', '');
       }
 
       switch (detailName) {
@@ -76,23 +76,26 @@ class WPMangaStreamScraper {
       }
     });
 
-    novel.genre = $('.genxed').text().replace(/\s/g, ',');
+    novel.genre = loadedCheerio('.genxed').text().replace(/\s/g, ',');
 
-    novel.summary = $('div[itemprop="description"]').text().trim();
+    novel.summary = loadedCheerio('div[itemprop="description"]').text().trim();
 
     let novelChapters = [];
 
-    $('.eplister')
+    loadedCheerio('.eplister')
       .find('li')
       .each(function () {
         const chapterName =
-          $(this).find('.epl-num').text() +
+          loadedCheerio(this).find('.epl-num').text() +
           ' - ' +
-          $(this).find('.epl-title').text();
+          loadedCheerio(this).find('.epl-title').text();
 
-        const releaseDate = $(this).find('.epl-date').text().trim();
+        const releaseDate = loadedCheerio(this).find('.epl-date').text().trim();
 
-        const chapterUrl = $(this).find('a').attr('href').split('/')[3];
+        const chapterUrl = loadedCheerio(this)
+          .find('a')
+          .attr('href')
+          .split('/')[3];
 
         novelChapters.push({chapterName, releaseDate, chapterUrl});
       });
@@ -110,10 +113,10 @@ class WPMangaStreamScraper {
     const result = await fetch(url);
     const body = await result.text();
 
-    const $ = cheerio.load(body);
+    const loadedCheerio = cheerio.load(body);
 
-    let chapterName = $('.entry-title').text();
-    let chapterText = $('div.epcontent').html();
+    let chapterName = loadedCheerio('.entry-title').text();
+    let chapterText = loadedCheerio('div.epcontent').html();
 
     const chapter = {
       sourceId,
@@ -132,17 +135,17 @@ class WPMangaStreamScraper {
     const result = await fetch(url);
     const body = await result.text();
 
-    const $ = cheerio.load(body);
+    const loadedCheerio = cheerio.load(body);
 
     let novels = [];
     let sourceId = this.sourceId;
 
-    $('article.bs').each(function () {
-      const novelName = $(this).find('.ntitle').text().trim();
-      let image = $(this).find('img');
+    loadedCheerio('article.bs').each(function () {
+      const novelName = loadedCheerio(this).find('.ntitle').text().trim();
+      let image = loadedCheerio(this).find('img');
       const novelCover = image.attr('src');
 
-      let novelUrl = $(this).find('a').attr('href').split('/')[4];
+      let novelUrl = loadedCheerio(this).find('a').attr('href').split('/')[4];
 
       const novel = {
         sourceId,

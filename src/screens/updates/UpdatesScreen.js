@@ -2,7 +2,6 @@ import React, {useState, useCallback} from 'react';
 import {
   StyleSheet,
   View,
-  FlatList,
   ActivityIndicator,
   RefreshControl,
   Text,
@@ -44,7 +43,7 @@ const Updates = ({navigation}) => {
   useFocusEffect(
     useCallback(() => {
       dispatch(getUpdatesAction());
-    }, []),
+    }, [dispatch]),
   );
 
   const onRefresh = async () => {
@@ -65,7 +64,7 @@ const Updates = ({navigation}) => {
         novelName: item.novelName,
         bookmark: item.bookmark,
       }),
-    [],
+    [navigation],
   );
 
   const onPressCover = useCallback(
@@ -76,7 +75,7 @@ const Updates = ({navigation}) => {
         novelName: item.novelName,
         novelCover: item.novelCover,
       }),
-    [],
+    [navigation],
   );
 
   const downloadChapter = useCallback(
@@ -91,13 +90,16 @@ const Updates = ({navigation}) => {
         ),
       );
     },
-    [],
+    [dispatch],
   );
 
-  const deleteChapter = useCallback((chapterId, chapterName) => {
-    dispatch(deleteChapterAction(chapterId, chapterName));
-    dispatch(getUpdatesAction());
-  }, []);
+  const deleteChapter = useCallback(
+    (chapterId, chapterName) => {
+      dispatch(deleteChapterAction(chapterId, chapterName));
+      dispatch(getUpdatesAction());
+    },
+    [dispatch],
+  );
 
   const renderItem = ({item}) => (
     <UpdatesItem

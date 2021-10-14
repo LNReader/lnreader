@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {Button, Modal, Portal, Switch, TextInput} from 'react-native-paper';
+import {Button, Modal, Portal, TextInput} from 'react-native-paper';
 import {setNovel} from '../../../redux/novel/novel.actions';
 import {updateNovelInfo} from '../../../database/queries/NovelQueries';
 
@@ -27,8 +27,8 @@ const EditInfoModal = ({theme, hideModal, modalVisible, novel, dispatch}) => {
     },
   };
 
-  const removeTag = tag => {
-    let tags = info.genre.split(',').filter(item => item !== tag);
+  const removeTag = t => {
+    let tags = info.genre.split(',').filter(item => item !== t);
     setInfo({...info, genre: tags.join(',')});
   };
 
@@ -118,7 +118,7 @@ const EditInfoModal = ({theme, hideModal, modalVisible, novel, dispatch}) => {
         />
 
         <TextInput
-          placeholder={`Add Tag`}
+          placeholder={'Add Tag'}
           style={{fontSize: 14}}
           numberOfLines={1}
           mode="outlined"

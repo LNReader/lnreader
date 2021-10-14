@@ -3,7 +3,6 @@ import {View, Text, StyleSheet, Clipboard, Pressable} from 'react-native';
 
 import * as WebBrowser from 'expo-web-browser';
 import {IconButton} from 'react-native-paper';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {followNovelAction} from '../../../../redux/novel/novel.actions';
 import {useTrackingStatus, useSettings} from '../../../../hooks/reduxHooks';

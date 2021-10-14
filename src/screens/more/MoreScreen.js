@@ -1,9 +1,8 @@
 import React from 'react';
-import {StyleSheet, View, Image, Pressable, Text} from 'react-native';
+import {/* StyleSheet ,*/ View, Pressable, Text} from 'react-native';
 import {Switch} from 'react-native-paper';
 import {useDispatch, useSelector} from 'react-redux';
 
-import {Appbar} from '../../components/Appbar';
 import {ScreenContainer} from '../../components/Common';
 import {List} from '../../components/List';
 
@@ -148,4 +147,4 @@ const MoreScreen = ({navigation}) => {
 
 export default MoreScreen;
 
-const styles = StyleSheet.create({});
+// const styles = StyleSheet.create({});

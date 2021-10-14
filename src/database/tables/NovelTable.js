@@ -16,6 +16,8 @@ export const createNovelTableQuery = `
     unread INTEGER DEFAULT 1
     )`;
 
-export const createUrlIndexQuery = `CREATE INDEX IF NOT EXISTS novelUrlIndex ON novels(novelUrl)`;
+export const createUrlIndexQuery =
+  'CREATE INDEX IF NOT EXISTS novelUrlIndex ON novels(novelUrl)';
 
-export const createLibraryIndexQuery = `CREATE INDEX IF NOT EXISTS novelFollowedIndex ON novels(followed)`;
+export const createLibraryIndexQuery =
+  'CREATE INDEX IF NOT EXISTS novelFollowedIndex ON novels(followed)';

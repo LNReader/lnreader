@@ -1,3 +1,5 @@
+/* eslint-disable no-bitwise */
+
 import PropTypes from 'prop-types';
 import React, {PureComponent, Children} from 'react';
 import {View, Animated, StyleSheet} from 'react-native';

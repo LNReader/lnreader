@@ -13,15 +13,15 @@ const popularNovels = async page => {
   const result = await fetch(url);
   const body = await result.text();
 
-  $ = cheerio.load(body);
+  const loadedCheerio = cheerio.load(body);
 
   let novels = [];
 
-  $('.update_item.list_category').each(function () {
-    const novelName = $(this).find('h3').text().trim();
-    const novelCover = $(this).find('img').attr('src');
+  loadedCheerio('.update_item.list_category').each(function () {
+    const novelName = loadedCheerio(this).find('h3').text().trim();
+    const novelCover = loadedCheerio(this).find('img').attr('src');
 
-    let novelUrl = $(this).find('h3 > a').attr('href');
+    let novelUrl = loadedCheerio(this).find('h3 > a').attr('href');
     novelUrl = novelUrl.replace(baseUrl + 'novel/', '');
 
     const novel = {
@@ -43,46 +43,48 @@ const parseNovelAndChapters = async novelUrl => {
   const result = await fetch(url);
   const body = await result.text();
 
-  $ = cheerio.load(body);
+  const loadedCheerio = cheerio.load(body);
 
   let novel = {sourceId, sourceName, url, novelUrl};
 
-  novel.novelName = $('h1').text().trim();
+  novel.novelName = loadedCheerio('h1').text().trim();
 
-  novel.novelCover = $('.info_image > img').attr('src');
+  novel.novelCover = loadedCheerio('.info_image > img').attr('src');
 
-  novel.summary = $('#noidungm').text().trim();
+  novel.summary = loadedCheerio('#noidungm').text().trim();
 
-  novel.genre = $('div.truyen_if_wrap > ul > li:nth-child(3)')
+  novel.genre = loadedCheerio('div.truyen_if_wrap > ul > li:nth-child(3)')
     .text()
     .replace('GENRES: ', '')
     .replace(/ - /g, ',')
     .trim();
 
-  console.log(novel.genre);
+  // console.log(novel.genre);
 
   novel.status =
-    $(' div.truyen_if_wrap > ul > li:nth-child(4) > a')
+    loadedCheerio(' div.truyen_if_wrap > ul > li:nth-child(4) > a')
       .text()
       .replace('STATUS', '')
       .trim() === 'ONGOING'
       ? Status.ONGOING
       : Status.COMPLETED;
 
-  novel.author = $('div.truyen_if_wrap > ul > li:nth-child(2)')
+  novel.author = loadedCheerio('div.truyen_if_wrap > ul > li:nth-child(2)')
     .text()
     .replace('Author(s):', '')
     .trim();
 
   let novelChapters = [];
 
-  $('.chapter-list')
+  loadedCheerio('.chapter-list')
     .find('.row')
     .each(function () {
-      const releaseDate = $(this).find('span:nth-child(2)').text();
+      const releaseDate = loadedCheerio(this).find('span:nth-child(2)').text();
 
-      const chapterName = $(this).find('span:nth-child(1) > a').text();
-      const chapterUrl = $(this).find('a').attr('href');
+      const chapterName = loadedCheerio(this)
+        .find('span:nth-child(1) > a')
+        .text();
+      const chapterUrl = loadedCheerio(this).find('a').attr('href');
 
       novelChapters.push({
         chapterName,
@@ -102,10 +104,10 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   const result = await fetch(url);
   const body = await result.text();
 
-  $ = cheerio.load(body);
+  const loadedCheerio = cheerio.load(body);
 
-  let chapterName = $('.name_chapter').text();
-  let chapterText = $('#vung_doc').html();
+  let chapterName = loadedCheerio('.name_chapter').text();
+  let chapterText = loadedCheerio('#vung_doc').html();
 
   const chapter = {
     sourceId,
@@ -124,15 +126,15 @@ const searchNovels = async searchTerm => {
   const result = await fetch(url);
   const body = await result.text();
 
-  $ = cheerio.load(body);
+  const loadedCheerio = cheerio.load(body);
 
   let novels = [];
 
-  $('.update_item.list_category').each(function () {
-    const novelName = $(this).find('h3').text();
-    const novelCover = $(this).find('img').attr('src');
+  loadedCheerio('.update_item.list_category').each(function () {
+    const novelName = loadedCheerio(this).find('h3').text();
+    const novelCover = loadedCheerio(this).find('img').attr('src');
 
-    let novelUrl = $(this).find('h3 > a').attr('href');
+    let novelUrl = loadedCheerio(this).find('h3 > a').attr('href');
     novelUrl = novelUrl.replace(baseUrl + 'novel/', '');
 
     const novel = {

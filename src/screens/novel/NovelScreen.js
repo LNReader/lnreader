@@ -108,7 +108,7 @@ const Novel = ({route, navigation}) => {
 
   const [jumpToChapterModal, showJumpToChapterModal] = useState(false);
 
-  const keyExtractor = useCallback(item => item.chapterId.toString(), []);
+  const keyExtractor = useCallback(i => i.chapterId.toString(), []);
 
   const downloadChapter = (chapterUrl, chapterName, chapterId) =>
     dispatch(
@@ -133,11 +133,11 @@ const Novel = ({route, navigation}) => {
       navigateToChapter();
     } else {
       if (isSelected(chapter.chapterId)) {
-        setSelected(selected =>
-          selected.filter(item => item.chapterId !== chapter.chapterId),
+        setSelected(sel =>
+          sel.filter(it => it.chapterId !== chapter.chapterId),
         );
       } else {
-        setSelected(selected => [...selected, chapter]);
+        setSelected(sel => [...sel, chapter]);
       }
     }
   };
@@ -145,7 +145,7 @@ const Novel = ({route, navigation}) => {
   const onSelectLongPress = chapter => {
     if (selected.length === 0) {
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-      setSelected(selected => [...selected, chapter]);
+      setSelected(sel => [...sel, chapter]);
     } else {
       /**
        * Select custom range
@@ -154,8 +154,8 @@ const Novel = ({route, navigation}) => {
 
       if (lastSelectedChapter.chapterId !== chapter.chapterId) {
         if (lastSelectedChapter.chapterId > chapter.chapterId) {
-          setSelected(selected => [
-            ...selected,
+          setSelected(sel => [
+            ...sel,
             chapter,
             ...chapters.filter(
               chap =>
@@ -164,8 +164,8 @@ const Novel = ({route, navigation}) => {
             ),
           ]);
         } else {
-          setSelected(selected => [
-            ...selected,
+          setSelected(sel => [
+            ...sel,
             chapter,
             ...chapters.filter(
               chap =>
@@ -223,10 +223,10 @@ const Novel = ({route, navigation}) => {
     showExtraMenu(false);
   };
 
-  const renderItem = ({item, index}) => (
+  const renderItem = ({item: it, index}) => (
     <ChapterItem
       theme={theme}
-      chapter={item}
+      chapter={it}
       index={index}
       showChapterTitles={showChapterTitles}
       downloadQueue={downloadQueue}
@@ -254,7 +254,7 @@ const Novel = ({route, navigation}) => {
             width: Dimensions.get('window').width,
             elevation: 2,
           }}
-          active={selected.length == 0}
+          active={selected.length === 0}
           animationDuration={100}
         >
           <View
@@ -285,7 +285,7 @@ const Novel = ({route, navigation}) => {
             />
           </View>
         </FadeView>
-        {selected.length == 0 && (
+        {selected.length === 0 && (
           <View
             style={{
               position: 'absolute',
@@ -469,7 +469,7 @@ const Novel = ({route, navigation}) => {
               small
               color={theme.colorButtonText}
               uppercase={false}
-              label={novel.unread ? `Start` : `Resume`}
+              label={novel.unread ? 'Start' : 'Resume'}
               icon="play"
               onPress={() =>
                 navigation.navigate('Chapter', {

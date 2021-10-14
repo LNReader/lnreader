@@ -9,7 +9,8 @@ import {insertChapters} from './ChapterQueries';
 
 import {showToast} from '../../hooks/showToast';
 
-const insertNovelQuery = `INSERT INTO novels (novelUrl, sourceUrl, sourceId, source, novelName, novelCover, novelSummary, author, artist, status, genre) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+const insertNovelQuery =
+  'INSERT INTO novels (novelUrl, sourceUrl, sourceId, source, novelName, novelCover, novelSummary, author, artist, status, genre) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
 export const insertNovel = async novel => {
   return new Promise((resolve, reject) =>
@@ -41,7 +42,7 @@ export const followNovel = async (followed, novelId) => {
     tx.executeSql(
       'UPDATE novels SET followed = ? WHERE novelId = ?',
       [!followed, novelId],
-      (tx, res) => {},
+      (txo, res) => {},
       (txObj, error) => console.log('Error ', error),
     );
   });
@@ -52,13 +53,13 @@ export const unfollowNovel = async novelId => {
     tx.executeSql(
       'UPDATE novels SET followed = 0 WHERE novelId = ?',
       [novelId],
-      (tx, res) => {},
+      (txo, res) => {},
       (txObj, error) => console.log('Error ', error),
     );
   });
 };
 
-const checkNovelInCacheQuery = `SELECT * FROM novels WHERE novelUrl=? LIMIT 1`;
+const checkNovelInCacheQuery = 'SELECT * FROM novels WHERE novelUrl=? LIMIT 1';
 
 export const checkNovelInCache = novelUrl => {
   return new Promise((resolve, reject) =>
@@ -83,7 +84,7 @@ export const getNovel = async (sourceId, novelUrl) => {
   return new Promise((resolve, reject) =>
     db.transaction(tx => {
       tx.executeSql(
-        `SELECT * FROM novels WHERE novelUrl = ? AND sourceId = ?`,
+        'SELECT * FROM novels WHERE novelUrl = ? AND sourceId = ?',
         [novelUrl, sourceId],
         (txObj, {rows}) => resolve(rows.item(0)),
         (txObj, error) => console.log('Error ', error),
@@ -103,7 +104,8 @@ export const deleteNovelCache = () => {
   });
 };
 
-const restoreFromBackupQuery = `INSERT INTO novels (novelUrl, sourceUrl, sourceId, source, novelName, novelCover, novelSummary, author, artist, status, genre, followed, unread) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+const restoreFromBackupQuery =
+  'INSERT INTO novels (novelUrl, sourceUrl, sourceId, source, novelName, novelCover, novelSummary, author, artist, status, genre, followed, unread) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
 export const restoreLibrary = async novel => {
   return new Promise((resolve, reject) =>
@@ -135,7 +137,8 @@ export const restoreLibrary = async novel => {
   );
 };
 
-const migrateNovelQuery = `INSERT INTO novels (novelUrl, sourceUrl, sourceId, source, novelName, novelCover, novelSummary, author, artist, status, genre, followed) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+const migrateNovelQuery =
+  'INSERT INTO novels (novelUrl, sourceUrl, sourceId, source, novelName, novelCover, novelSummary, author, artist, status, genre, followed) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
 export const migrateNovel = async (sourceId, novelUrl) => {
   try {

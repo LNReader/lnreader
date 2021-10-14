@@ -11,7 +11,7 @@ const scrapeTopNovels = async pageNo => {
 
   const novels = [];
 
-  $('tr.ranking-list').each(function (res) {
+  $('tr.ranking-list').each(function () {
     const novelId = $(this).find('img').attr('data-src').split('/');
 
     const novelCover =
@@ -48,7 +48,7 @@ const scrapeSearchResults = async searchTerm => {
 
   $('.list')
     .find('tr')
-    .each(function (res) {
+    .each(function () {
       const novelName = $(this).find('a > strong').text();
 
       if (novelName) {

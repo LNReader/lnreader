@@ -1,7 +1,6 @@
 import React, {useState, useCallback} from 'react';
 import {
   StyleSheet,
-  FlatList,
   ActivityIndicator,
   Text,
   View,
@@ -89,7 +88,7 @@ const History = ({navigation}) => {
   };
 
   const groupByDate = rawHistory => {
-    const groups = rawHistory.reduce((groups, update) => {
+    const groups = rawHistory.reduce((grs, update) => {
       var dateParts = update.historyTimeRead.split('-');
       var jsDate = new Date(
         dateParts[0],
@@ -97,11 +96,11 @@ const History = ({navigation}) => {
         dateParts[2].substr(0, 2),
       );
       const date = jsDate.toISOString();
-      if (!groups[date]) {
-        groups[date] = [];
+      if (!grs[date]) {
+        grs[date] = [];
       }
-      groups[date].push(update);
-      return groups;
+      grs[date].push(update);
+      return grs;
     }, {});
 
     const groupedHistory = Object.keys(groups).map(date => {

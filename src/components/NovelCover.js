@@ -12,7 +12,7 @@ import FastImage from 'react-native-fast-image';
 
 import ListView from './ListView';
 
-import {getDeviceOrientation} from '../services/utils/helpers';
+import {useDeviceOrientation} from '../services/utils/helpers';
 import {useSettings} from '../hooks/reduxHooks';
 import {defaultCoverUri} from '../sources/helpers/constants';
 
@@ -30,7 +30,7 @@ const NovelCover = ({
 
   const window = useWindowDimensions();
 
-  const orientation = getDeviceOrientation();
+  const orientation = useDeviceOrientation();
 
   const getNovelsPerRow = () =>
     orientation === 'landscape' ? 6 : novelsPerRow;

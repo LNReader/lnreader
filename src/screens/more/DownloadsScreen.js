@@ -98,9 +98,7 @@ const Downloads = ({navigation}) => {
 
   const deleteChapter = (chapterId, chapterName) => {
     dispatch(deleteChapterAction(chapterId, chapterName));
-    setChapters(chapters =>
-      chapters.filter(item => item.chapterId !== chapterId),
-    );
+    setChapters(chaps => chaps.filter(item => item.chapterId !== chapterId));
   };
 
   const renderItem = ({item}) => (

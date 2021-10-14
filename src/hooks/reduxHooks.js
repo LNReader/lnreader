@@ -37,7 +37,7 @@ const useChapter = () => {
   return chapter;
 };
 
-const findNovel = novelId => {
+const useFindNovel = novelId => {
   let novel = useSelector(state => state.preferenceReducer.novelSettings);
   novel = novel[novelId];
 
@@ -47,7 +47,7 @@ const findNovel = novelId => {
 const usePreferences = novelId => {
   let sort, filter, position, showChapterTitles;
 
-  const novel = findNovel(novelId);
+  const novel = useFindNovel(novelId);
 
   if (novel) {
     sort = novel.sort;
@@ -68,7 +68,7 @@ const useSavedSettings = () => {
 const useContinueReading = (chapters, novelId) => {
   let lastReadChapter, chapterId, novel, position;
 
-  novel = findNovel(novelId);
+  novel = useFindNovel(novelId);
   if (novel) {
     chapterId = novel.lastRead;
     position = novel.position;
@@ -90,7 +90,7 @@ const useContinueReading = (chapters, novelId) => {
 const usePosition = (novelId, chapterId) => {
   let novel, position;
 
-  novel = findNovel(novelId);
+  novel = useFindNovel(novelId);
 
   if (novel) {
     if (novel.position) {

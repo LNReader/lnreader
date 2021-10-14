@@ -8,7 +8,6 @@ import {
 } from 'react-native';
 
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
-import {Checkbox as PaperCheckbox} from 'react-native-paper';
 import Bottomsheet from 'rn-sliding-up-panel';
 
 import {Checkbox, SortItem} from '../../../components/Checkbox/Checkbox';

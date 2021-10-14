@@ -19,24 +19,24 @@ const popularNovels = async page => {
   });
   const body = await result.text();
 
-  $ = cheerio.load(body);
+  const loadedCheerio = cheerio.load(body);
 
   let novels = [];
 
-  $('.novel-item.ads').remove();
+  loadedCheerio('.novel-item.ads').remove();
 
-  $('.novel-item').each(function () {
-    const novelName = $(this)
+  loadedCheerio('.novel-item').each(function () {
+    const novelName = loadedCheerio(this)
       .find('.novel-title')
       .text()
       .replace(/[\t\n]/g, '');
 
-    const novelCover = $(this).find('img').attr('data-src');
+    const novelCover = loadedCheerio(this).find('img').attr('data-src');
 
-    let novelUrl = $(this)
+    let novelUrl = loadedCheerio(this)
       .find('.novel-title > a')
       .attr('href')
-      .replace(`/novel/`, '');
+      .replace('/novel/', '');
     novelUrl += '/';
 
     const novel = {
@@ -68,7 +68,7 @@ const parseNovelAndChapters = async novelUrl => {
   });
   const body = await result.text();
 
-  $ = cheerio.load(body);
+  const loadedCheerio = cheerio.load(body);
 
   let novel = {};
 
@@ -80,39 +80,42 @@ const parseNovelAndChapters = async novelUrl => {
 
   novel.novelUrl = novelUrl;
 
-  novel.novelName = $('h1.novel-title')
+  novel.novelName = loadedCheerio('h1.novel-title')
     .text()
     .replace(/[\t\n]/g, '')
     .trim();
 
-  novel.novelCover = $('figure.cover > img').attr('data-src');
+  novel.novelCover = loadedCheerio('figure.cover > img').attr('data-src');
 
   novel.genre = '';
 
-  $('div.categories > ul > li').each(function () {
+  loadedCheerio('div.categories > ul > li').each(function () {
     novel.genre +=
-      $(this)
+      loadedCheerio(this)
         .text()
         .replace(/[\t\n]/g, '') + ',';
   });
 
-  $('div.header-stats > span').each(function () {
-    if ($(this).find('small').text() === 'Status') {
-      novel.status = $(this).find('strong').text();
+  loadedCheerio('div.header-stats > span').each(function () {
+    if (loadedCheerio(this).find('small').text() === 'Status') {
+      novel.status = loadedCheerio(this).find('strong').text();
     }
   });
 
   novel.genre = novel.genre.slice(0, -1);
 
-  novel.author = $('.author > a > span').text();
+  novel.author = loadedCheerio('.author > a > span').text();
 
-  novel.summary = $('.summary > .content').text().trim();
+  novel.summary = loadedCheerio('.summary > .content').text().trim();
 
   let novelChapters = [];
 
   let totalChapters;
 
-  totalChapters = $('.header-stats > span').first().text().match(/\d+/)[0];
+  totalChapters = loadedCheerio('.header-stats > span')
+    .first()
+    .text()
+    .match(/\d+/)[0];
 
   for (let i = 1; i <= totalChapters; i++) {
     const chapterName = 'Chapter ' + i;
@@ -146,10 +149,10 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     headers: headers,
   });
   const body = await result.text();
-  $ = cheerio.load(body);
+  const loadedCheerio = cheerio.load(body);
 
-  const chapterName = $('h2').text();
-  let chapterText = $('#chapter-container').html();
+  const chapterName = loadedCheerio('h2').text();
+  let chapterText = loadedCheerio('#chapter-container').html();
   const chapter = {
     sourceId: 15,
     novelUrl,
@@ -177,19 +180,22 @@ const searchNovels = async searchTerm => {
   });
   const body = await result.text();
 
-  $ = cheerio.load(body);
+  let loadedCheerio = cheerio.load(body);
 
   let novels = [];
 
-  let results = JSON.parse($('body').text());
+  let results = JSON.parse(loadedCheerio('body').text());
 
-  $ = cheerio.load(results.resultview);
+  loadedCheerio = cheerio.load(results.resultview);
 
-  $('.novel-item').each(function () {
-    const novelName = $(this).find('h4.novel-title').text();
-    const novelCover = $(this).find('img').attr('src');
+  loadedCheerio('.novel-item').each(function () {
+    const novelName = loadedCheerio(this).find('h4.novel-title').text();
+    const novelCover = loadedCheerio(this).find('img').attr('src');
 
-    let novelUrl = $(this).find('a').attr('href').replace(`/novel/`, '');
+    let novelUrl = loadedCheerio(this)
+      .find('a')
+      .attr('href')
+      .replace('/novel/', '');
     novelUrl += '/';
 
     const novel = {

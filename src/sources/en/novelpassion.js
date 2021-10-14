@@ -11,18 +11,19 @@ const popularNovels = async page => {
   const result = await fetch(url);
   const body = await result.text();
 
-  $ = cheerio.load(body);
+  const loadedCheerio = cheerio.load(body);
 
   let novels = [];
 
-  $('div.j_bookList.lis-mn.ddc')
+  loadedCheerio('div.j_bookList.lis-mn.ddc')
     .find('li')
-    .each(function (result) {
-      const novelName = $(this).find('h3').text();
+    .each(function () {
+      const novelName = loadedCheerio(this).find('h3').text();
       const novelCover =
-        'https://www.novelpassion.com' + $(this).find('img').attr('src');
+        'https://www.novelpassion.com' +
+        loadedCheerio(this).find('img').attr('src');
 
-      let novelUrl = $(this).find('div.pr > a').attr('href');
+      let novelUrl = loadedCheerio(this).find('div.pr > a').attr('href');
       novelUrl = novelUrl.replace('/novel/', '');
 
       const novel = {
@@ -44,7 +45,7 @@ const parseNovelAndChapters = async novelUrl => {
   const result = await fetch(url);
   const body = await result.text();
 
-  $ = cheerio.load(body);
+  const loadedCheerio = cheerio.load(body);
 
   let novel = {};
 
@@ -56,25 +57,25 @@ const parseNovelAndChapters = async novelUrl => {
 
   novel.novelUrl = novelUrl;
 
-  novelName = $('h2.mh').text();
+  const novelName = loadedCheerio('h2.mh').text();
   novel.novelName = novelName;
 
-  novel.novelCover = baseUrl + $('i.g_thumb > img').attr('src');
+  novel.novelCover = baseUrl + loadedCheerio('i.g_thumb > img').attr('src');
 
-  let novelSummary = $('div.j_synopsis').text().trim();
+  let novelSummary = loadedCheerio('div.j_synopsis').text().trim();
   novel.summary = novelSummary;
 
-  $('address.lh20.m14.pr').each(function (result) {
-    detailName = $(this).find('p.ell.dib.vam').text().trim();
+  loadedCheerio('address.lh20.m14.pr').each(function () {
+    const detailName = loadedCheerio(this).find('p.ell.dib.vam').text().trim();
 
-    detail = $(this).find('div.dns').text().trim();
+    const detail = loadedCheerio(this).find('div.dns').text().trim();
 
     switch (detailName) {
       case 'Categories:':
-        novel.genre = detail.trim().replace(/ -  /g, ',');
+        novel.genre = detail.trim().replace(/ - {2}/g, ',');
         break;
       case 'Author:':
-        novel.author = detail.trim().replace(/ -  /g, ', ');
+        novel.author = detail.trim().replace(/ - {2}/g, ', ');
         break;
     }
 
@@ -85,15 +86,15 @@ const parseNovelAndChapters = async novelUrl => {
 
   let novelChapters = [];
 
-  $('.content-list')
+  loadedCheerio('.content-list')
     .find('li')
-    .each(function (result) {
-      const chapterName = $(this).find('span.sp1').text();
+    .each(function () {
+      const chapterName = loadedCheerio(this).find('span.sp1').text();
 
-      let releaseDate = $(this).find('i.sp2').text();
+      let releaseDate = loadedCheerio(this).find('i.sp2').text();
       releaseDate = moment(new Date(releaseDate)).format('MM/DD/YY');
 
-      const chapterUrl = $(this)
+      const chapterUrl = loadedCheerio(this)
         .find('a')
         .attr('href')
         .replace('/novel/' + novelUrl + '/', '');
@@ -116,11 +117,11 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   const result = await fetch(url);
   const body = await result.text();
 
-  $ = cheerio.load(body);
+  const loadedCheerio = cheerio.load(body);
 
-  let chapterName = $('div.cha-content').find('strong').text();
+  let chapterName = loadedCheerio('div.cha-content').find('strong').text();
 
-  let chapterText = $('div.cha-content').html();
+  let chapterText = loadedCheerio('div.cha-content').html();
   const chapter = {
     sourceId: 33,
     novelUrl,
@@ -138,18 +139,19 @@ const searchNovels = async searchTerm => {
   const result = await fetch(url);
   const body = await result.text();
 
-  $ = cheerio.load(body);
+  const loadedCheerio = cheerio.load(body);
 
   let novels = [];
 
-  $('div.j_bookList.lis-mn.ddc')
+  loadedCheerio('div.j_bookList.lis-mn.ddc')
     .find('li')
-    .each(function (result) {
-      const novelName = $(this).find('h3').text();
+    .each(function () {
+      const novelName = loadedCheerio(this).find('h3').text();
       const novelCover =
-        'https://www.novelpassion.com' + $(this).find('img').attr('src');
+        'https://www.novelpassion.com' +
+        loadedCheerio(this).find('img').attr('src');
 
-      let novelUrl = $(this).find('div.pr > a').attr('href');
+      let novelUrl = loadedCheerio(this).find('div.pr > a').attr('href');
       novelUrl = novelUrl.replace('/novel/', '');
 
       const novel = {

@@ -16,7 +16,7 @@ import {
 import {createDownloadTableQuery} from './tables/DownloadTable';
 import {
   createUpdatesTableQuery,
-  updatesSeedDataQuery,
+  // updatesSeedDataQuery,
 } from './tables/UpdateTable';
 
 /**

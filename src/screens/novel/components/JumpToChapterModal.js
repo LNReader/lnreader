@@ -57,12 +57,12 @@ const JumpToChapterModal = ({
         });
         hideModal();
       } else {
-        setError(`Enter a valid chapter name`);
+        setError('Enter a valid chapter name');
       }
     }
   };
 
-  const onChangeText = text => setText(text);
+  const onChangeText = txt => setText(txt);
 
   const textInputTheme = {
     colors: {

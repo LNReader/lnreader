@@ -8,7 +8,7 @@ import {showToast} from '../../hooks/showToast';
 export const getUpdatesAction = () => async dispatch => {
   const updates = await getUpdates();
 
-  const groups = updates.reduce((groups, update) => {
+  const groups = updates.reduce((grs, update) => {
     var dateParts = update.updateTime.split('-');
     var jsDate = new Date(
       dateParts[0],
@@ -16,11 +16,11 @@ export const getUpdatesAction = () => async dispatch => {
       dateParts[2].substr(0, 2),
     );
     const date = jsDate.toISOString();
-    if (!groups[date]) {
-      groups[date] = [];
+    if (!grs[date]) {
+      grs[date] = [];
     }
-    groups[date].push(update);
-    return groups;
+    grs[date].push(update);
+    return grs;
   }, {});
 
   const groupedUpdates = Object.keys(groups).map(date => {

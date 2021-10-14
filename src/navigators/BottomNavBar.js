@@ -25,11 +25,11 @@ const BottomNavigationBar = ({
 }) => {
   const focusedOptions = descriptors[state.routes[state.index].key].options;
 
+  const insets = useSafeAreaInsets();
+
   if (focusedOptions.tabBarVisible === false) {
     return null;
   }
-
-  const insets = useSafeAreaInsets();
 
   return (
     <View

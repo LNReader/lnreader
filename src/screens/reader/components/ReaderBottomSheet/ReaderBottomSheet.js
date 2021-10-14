@@ -1,21 +1,12 @@
 import React, {memo, useState} from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-  Pressable,
-  ScrollView,
-  Animated,
-} from 'react-native';
+import {StyleSheet, View, Text, ScrollView, Animated} from 'react-native';
 
 import Slider from '@react-native-community/slider';
-import {IconButton, Switch} from 'react-native-paper';
+import {IconButton} from 'react-native-paper';
 import Bottomsheet from 'rn-sliding-up-panel';
 
 import BottomSheetHandle from '../../../../components/BottomSheetHandle';
 import {Row} from '../../../../components/Common';
-
-import {fonts} from '../../../../services/utils/constants';
 
 import {
   setAppSettings,

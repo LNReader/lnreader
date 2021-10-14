@@ -21,7 +21,7 @@ const ColorPickerModal = ({
     setError();
   };
 
-  const onChangeText = text => setText(text);
+  const onChangeText = txt => setText(txt);
 
   const onSubmitEditing = () => {
     const re = /^#([0-9a-f]{6}|[0-9a-f]{3})$/i;

@@ -6,9 +6,9 @@ import * as WebBrowser from 'expo-web-browser';
 import {Searchbar} from '../../../components/Searchbar/Searchbar';
 import {ErrorView} from '../../../components/ErrorView/ErrorView';
 
-import {useTheme, useSettings} from '../../../hooks/reduxHooks';
+import {useTheme /*, useSettings */} from '../../../hooks/reduxHooks';
 import {showToast} from '../../../hooks/showToast';
-import {getDeviceOrientation} from '../../../services/utils/helpers';
+// import {useDeviceOrientation} from '../../../services/utils/helpers';
 import {scrapeSearchResults, scrapeTopNovels} from './MyAnimeListScraper';
 import BrowseMalCard from './BrowseMalCard';
 
@@ -24,17 +24,17 @@ const BrowseMalScreen = ({navigation, route}) => {
 
   const malUrl = 'https://myanimelist.net/topmanga.php?type=lightnovels';
 
-  const getNovels = async limit => {
+  const getNovels = async lim => {
     try {
-      const data = await scrapeTopNovels(limit);
+      const data = await scrapeTopNovels(lim ?? limit);
 
-      setNovels(novels => novels.concat(data));
+      setNovels(before => before.concat(data));
       setLoading(false);
-    } catch (error) {
-      setError(error.message);
+    } catch (err) {
+      setError(err.message);
       setNovels([]);
       setLoading(false);
-      showToast(error.message);
+      showToast(err.message);
     }
   };
 
@@ -52,11 +52,11 @@ const BrowseMalScreen = ({navigation, route}) => {
 
       setNovels(data);
       setLoading(false);
-    } catch (error) {
-      setError(error.message);
+    } catch (err) {
+      setError(err.message);
       setNovels([]);
       setLoading(false);
-      showToast(error.message);
+      showToast(err.message);
     }
   };
 
@@ -76,21 +76,21 @@ const BrowseMalScreen = ({navigation, route}) => {
     />
   );
 
-  const {displayMode, novelsPerRow} = useSettings();
+  // const {displayMode, novelsPerRow} = useSettings();
 
-  const orientation = getDeviceOrientation();
+  // const orientation = useDeviceOrientation();
 
-  const getNovelsPerRow = () => {
-    if (displayMode === 2) {
-      return 1;
-    }
+  // const getNovelsPerRow = () => {
+  //   if (displayMode === 2) {
+  //     return 1;
+  //   }
 
-    if (orientation === 'landscape') {
-      return 6;
-    } else {
-      return novelsPerRow;
-    }
-  };
+  //   if (orientation === 'landscape') {
+  //     return 6;
+  //   } else {
+  //     return novelsPerRow;
+  //   }
+  // };
 
   const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}) => {
     const paddingToBottom = 20;
@@ -150,7 +150,7 @@ const BrowseMalScreen = ({navigation, route}) => {
           onScroll={({nativeEvent}) => {
             if (!searchText && isCloseToBottom(nativeEvent)) {
               getNovels(limit + 50);
-              setLimit(limit => limit + 50);
+              setLimit(before => before + 50);
             }
           }}
           ListFooterComponent={

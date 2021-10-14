@@ -27,7 +27,7 @@ const redirectUri = Linking.makeUrl();
 
 export const authUrl = `${baseOAuthUrl}?response_type=code&client_id=${clientId}&code_challenge_method=plain&code_challenge=${codeChallenge}`;
 
-const tokenUrl = `https://myanimelist.net/v1/oauth2/token`;
+const tokenUrl = 'https://myanimelist.net/v1/oauth2/token';
 
 export const myAnimeListConfig = {
   clientId,
@@ -37,7 +37,7 @@ export const myAnimeListConfig = {
   tokenUrl,
 };
 
-export const getAccessToken = async (code, codeChallenge) => {
+export const getAccessToken = async (code, challenge) => {
   const headers = {
     'Content-Type': 'application/x-www-form-urlencoded',
   };
@@ -46,7 +46,7 @@ export const getAccessToken = async (code, codeChallenge) => {
     client_id: myAnimeListConfig.clientId,
     grant_type: 'authorization_code',
     code,
-    code_verifier: codeChallenge,
+    code_verifier: challenge,
   };
 
   const response = await fetch(myAnimeListConfig.tokenUrl, {
@@ -62,7 +62,7 @@ export const getAccessToken = async (code, codeChallenge) => {
     expires_in: new Date(Date.now() + tokenResponse.expires_in),
   };
 
-  console.log(tokenResponse);
+  // console.log(tokenResponse);
 
   return tokenResponse;
 };
@@ -117,7 +117,7 @@ export const updateItem = async (malId, bearerToken, body) => {
   });
 
   const listItem = await res.json();
-  console.log(listItem);
+  // console.log(listItem);
   return listItem;
 };
 
@@ -136,7 +136,7 @@ export const updateMalChaptersRead = async (malId, bearerToken, body) => {
   });
 
   const listItem = await res.json();
-  console.log(listItem.num_chapters_read);
+  // console.log(listItem.num_chapters_read);
   return listItem.num_chapters_read;
 };
 

@@ -34,7 +34,7 @@ const ReadButton = ({navigation, novel, chapters, theme, lastRead}) => {
           }}
           onPress={navigateToLastReadChapter}
         >
-          {novel.unread ? `Start reading ` : `Continue reading `}
+          {novel.unread ? 'Start reading ' : 'Continue reading '}
           {lastRead.chapterName}
         </Button>
       ) : (

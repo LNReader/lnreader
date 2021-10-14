@@ -14,16 +14,20 @@ const popularNovels = async page => {
   });
   const body = await result.text();
 
-  $ = cheerio.load(body);
+  let loadedCheerio = cheerio.load(body);
 
   let novels = [];
 
-  $('.clearfix > li').each(function (result) {
+  loadedCheerio('.clearfix > li').each(function () {
     const novelUrl =
-      $(this).find('a').attr('href').replace('.html', '').substring(1) + '/';
+      loadedCheerio(this)
+        .find('a')
+        .attr('href')
+        .replace('.html', '')
+        .substring(1) + '/';
 
-    const novelName = $(this).find('a').text();
-    let novelCover = $(this).find('img').attr('src');
+    const novelName = loadedCheerio(this).find('a').text();
+    let novelCover = loadedCheerio(this).find('img').attr('src');
     novelCover = novelCover.includes('https://tva1.sinaimg.cn/')
       ? `${novelCover}`
       : `${baseUrl}${novelCover}`;
@@ -52,7 +56,7 @@ const parseNovelAndChapters = async novelUrl => {
   });
   const body = await result.text();
 
-  $ = cheerio.load(body);
+  let loadedCheerio = cheerio.load(body);
 
   let novel = {};
 
@@ -64,15 +68,15 @@ const parseNovelAndChapters = async novelUrl => {
 
   novel.novelUrl = novelUrl;
 
-  novel.novelName = $('dd > h2').text();
+  novel.novelName = loadedCheerio('dd > h2').text();
 
-  novel.novelCover = $('dt > img').attr('src');
+  novel.novelCover = loadedCheerio('dt > img').attr('src');
 
-  novel.summary = $('div.content > p').text();
+  novel.summary = loadedCheerio('div.content > p').text();
 
   let info = [];
-  $('.info a').each(function (result) {
-    info.push($(this).text());
+  loadedCheerio('.info a').each(function () {
+    info.push(loadedCheerio(this).text());
   });
 
   novel.genre = info[0];
@@ -85,9 +89,9 @@ const parseNovelAndChapters = async novelUrl => {
 
   let chapters = [];
 
-  $('.bookshelf-list a').each(function (result) {
-    let chapterUrl = $(this).attr('href').substring(1);
-    let chapterName = $(this).attr('title');
+  loadedCheerio('.bookshelf-list a').each(function () {
+    let chapterUrl = loadedCheerio(this).attr('href').substring(1);
+    let chapterName = loadedCheerio(this).attr('title');
     let releaseDate = null;
 
     chapters.push({
@@ -113,10 +117,10 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   });
   const body = await result.text();
 
-  $ = cheerio.load(body);
+  let loadedCheerio = cheerio.load(body);
 
-  const chapterName = $('.read-section h3').text();
-  let chapterText = $('.read-section').html();
+  const chapterName = loadedCheerio('.read-section h3').text();
+  let chapterText = loadedCheerio('.read-section').html();
 
   const chapter = {
     sourceId: 52,
@@ -144,16 +148,20 @@ const searchNovels = async searchTerm => {
 
   const body = await result.text();
 
-  $ = cheerio.load(body);
+  let loadedCheerio = cheerio.load(body);
 
   let novels = [];
 
-  $('.clearfix > li').each(function (result) {
+  loadedCheerio('.clearfix > li').each(function () {
     let novelUrl =
-      $(this).find('a').attr('href').replace('.html', '').substring(1) + '/';
+      loadedCheerio(this)
+        .find('a')
+        .attr('href')
+        .replace('.html', '')
+        .substring(1) + '/';
 
-    const novelName = $(this).find('a').text();
-    let novelCover = $(this).find('img').attr('src');
+    const novelName = loadedCheerio(this).find('a').text();
+    let novelCover = loadedCheerio(this).find('img').attr('src');
     novelCover = novelCover.includes('https://tva1.sinaimg.cn/')
       ? `${novelCover}`
       : `${baseUrl}${novelCover}`;

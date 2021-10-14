@@ -2,10 +2,10 @@ import cheerio from 'react-native-cheerio';
 
 const baseUrl = 'http://www.tapread.com';
 
-let headers = new Headers({
-  'User-Agent':
-    "'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36",
-});
+// let headers = new Headers({
+//   'User-Agent':
+//     "'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36",
+// });
 
 const popularNovels = async page => {
   let totalPages = 0;
@@ -13,14 +13,14 @@ const popularNovels = async page => {
   const result = await fetch(baseUrl);
   const body = await result.text();
 
-  $ = cheerio.load(body);
+  const loadedCheerio = cheerio.load(body);
 
   let novels = [];
 
-  $('.section-item[data-classify="1"]').each(function (result) {
-    const novelName = $(this).find('.book-name').text();
-    const novelCover = 'http:' + $(this).find('img').attr('src');
-    let novelUrl = $(this).attr('data-id');
+  loadedCheerio('.section-item[data-classify="1"]').each(function () {
+    const novelName = loadedCheerio(this).find('.book-name').text();
+    const novelCover = 'http:' + loadedCheerio(this).find('img').attr('src');
+    let novelUrl = loadedCheerio(this).attr('data-id');
 
     const novel = {
       sourceId: 17,
@@ -38,12 +38,12 @@ const popularNovels = async page => {
 const parseNovelAndChapters = async novelUrl => {
   const url = `${baseUrl}/book/detail/${novelUrl}`;
 
-  console.log(url);
+  // console.log(url);
 
   const result = await fetch(url);
   const body = await result.text();
 
-  $ = cheerio.load(body);
+  const loadedCheerio = cheerio.load(body);
 
   let novel = {};
 
@@ -55,17 +55,17 @@ const parseNovelAndChapters = async novelUrl => {
 
   novel.novelUrl = novelUrl;
 
-  novel.novelName = $('.book-name').text();
+  novel.novelName = loadedCheerio('.book-name').text();
 
-  novel.novelCover = 'http:' + $('div.book-img > img').attr('src');
+  novel.novelCover = 'http:' + loadedCheerio('div.book-img > img').attr('src');
 
-  novel.genre = $('div.book-catalog > span.txt').text();
+  novel.genre = loadedCheerio('div.book-catalog > span.txt').text();
 
-  novel.status = $('div.book-state > span.txt').text();
+  novel.status = loadedCheerio('div.book-state > span.txt').text();
 
-  novel.author = $('div.author > span.name').text();
+  novel.author = loadedCheerio('div.author > span.name').text();
 
-  novel.summary = $('div.content > p.desc').text();
+  novel.summary = loadedCheerio('div.content > p.desc').text();
 
   const getChapters = async novelId => {
     const chapterListUrl = 'http://www.tapread.com/ajax/book/contents';

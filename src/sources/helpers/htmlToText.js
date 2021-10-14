@@ -116,8 +116,8 @@ const htmlToText = (html, options = {}) => {
 const decodeHtmlEntity = (m, n) => {
   let code;
 
-  if (n.substr(0, 1) == '#') {
-    if (n.substr(1, 1) == 'x') {
+  if (n.substr(0, 1) === '#') {
+    if (n.substr(1, 1) === 'x') {
       code = parseInt(n.substr(2), 16);
     } else {
       code = parseInt(n.substr(1), 10);
@@ -126,7 +126,7 @@ const decodeHtmlEntity = (m, n) => {
     code = ENTITIES_MAP[n];
   }
 
-  return code === undefined || code === NaN
+  return code === undefined || isNaN(code)
     ? '&' + n + ';'
     : String.fromCharCode(code);
 };
