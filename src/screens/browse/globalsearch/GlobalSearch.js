@@ -1,5 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, View, FlatList, ActivityIndicator} from 'react-native';
+import {
+  /* StyleSheet,  */ View,
+  FlatList,
+  ActivityIndicator,
+} from 'react-native';
 
 import {ProgressBar} from 'react-native-paper';
 import {useSelector} from 'react-redux';
@@ -42,10 +46,7 @@ const GlobalSearch = ({route, navigation}) => {
   const library = useLibrary();
 
   useEffect(() => {
-    let mounted = true;
     novelName && onSubmitEditing();
-
-    return () => (mounted = false);
   }, []);
 
   const clearSearchbar = () => setSearchText('');
@@ -64,8 +65,8 @@ const GlobalSearch = ({route, navigation}) => {
         const source = getSource(globalSearchSources[i].sourceId);
         const data = await source.searchNovels(encodeURI(searchText));
 
-        setSearchResults(searchResults => [
-          ...searchResults,
+        setSearchResults(before => [
+          ...before,
           {
             sourceId: globalSearchSources[i].sourceId,
             sourceName: globalSearchSources[i].sourceName,
@@ -76,8 +77,8 @@ const GlobalSearch = ({route, navigation}) => {
         setLoading(false);
       } catch (error) {
         showToast(globalSearchSources[i].sourceName + ': ' + error.message);
-        setSearchResults(searchResults => [
-          ...searchResults,
+        setSearchResults(before => [
+          ...before,
           {
             sourceId: globalSearchSources[i].sourceId,
             sourceName: globalSearchSources[i].sourceName,
@@ -87,7 +88,7 @@ const GlobalSearch = ({route, navigation}) => {
         ]);
         setLoading(false);
       }
-      setProgress(progress => progress + 1 / globalSearchSources.length);
+      setProgress(before => before + 1 / globalSearchSources.length);
     }
   };
 
@@ -160,4 +161,4 @@ const GlobalSearch = ({route, navigation}) => {
 
 export default GlobalSearch;
 
-const styles = StyleSheet.create({});
+// const styles = StyleSheet.create({});

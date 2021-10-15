@@ -2,7 +2,7 @@ import React, {useCallback} from 'react';
 import {StyleSheet, FlatList} from 'react-native';
 
 import {useSettings} from '../hooks/reduxHooks';
-import {getDeviceOrientation} from '../services/utils/helpers';
+import {useDeviceOrientation} from '../services/utils/helpers';
 
 const NovelList = ({
   data,
@@ -15,7 +15,7 @@ const NovelList = ({
 }) => {
   const {displayMode, novelsPerRow} = useSettings();
 
-  const orientation = getDeviceOrientation();
+  const orientation = useDeviceOrientation();
 
   const getNovelsPerRow = () => {
     if (displayMode === 2) {

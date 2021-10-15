@@ -6,7 +6,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 
 import {setBarColor} from '../theme/utils/setBarColor';
 import {useTheme} from '../hooks/reduxHooks';
-import {githubUpdateChecker} from '../hooks/githubUpdateChecker';
+import {useGithubUpdateChecker} from '../hooks/githubUpdateChecker';
 import * as SplashScreen from 'expo-splash-screen';
 
 /**
@@ -42,7 +42,7 @@ const MainNavigator = () => {
     }, 500);
   }, [theme]);
 
-  const {isNewVersion, latestRelease} = githubUpdateChecker() || {};
+  const {isNewVersion, latestRelease} = useGithubUpdateChecker() || {};
 
   return (
     <NavigationContainer theme={{colors: {background: theme.colorPrimaryDark}}}>

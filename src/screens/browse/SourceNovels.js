@@ -2,7 +2,6 @@ import React from 'react';
 import {StyleSheet, View, FlatList, Text} from 'react-native';
 import {useLibrary, useTheme} from '../../hooks/reduxHooks';
 
-import EmptyView from '../../components/EmptyView';
 import {Appbar} from '../../components/Appbar';
 import ListView from '../../components/ListView';
 

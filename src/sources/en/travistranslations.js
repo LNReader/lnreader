@@ -18,14 +18,15 @@ const popularNovels = async page => {
   const result = await fetch(url);
   const body = await result.text();
 
-  $ = cheerio.load(body);
+  const loadedCheerio = cheerio.load(body);
 
   let novels = [];
 
-  $('.group').each(function () {
-    const novelName = $(this).find('h3').text();
-    const novelCover = 'https://' + $(this).find('img').attr('data-src');
-    const novelUrl = $(this).find(' a').attr('href');
+  loadedCheerio('.group').each(function () {
+    const novelName = loadedCheerio(this).find('h3').text();
+    const novelCover =
+      'https://' + loadedCheerio(this).find('img').attr('data-src');
+    const novelUrl = loadedCheerio(this).find(' a').attr('href');
 
     const novel = {
       sourceId,
@@ -46,41 +47,48 @@ const parseNovelAndChapters = async novelUrl => {
   const result = await fetch(url);
   const body = await result.text();
 
-  $ = cheerio.load(body);
+  const loadedCheerio = cheerio.load(body);
 
   let novel = {sourceId, sourceName, url, novelUrl};
 
-  novel.novelName = $('h1').text().trim();
+  novel.novelName = loadedCheerio('h1').text().trim();
 
-  novel.novelCover = 'https://' + $('img.object-cover').attr('data-src');
+  novel.novelCover =
+    'https://' + loadedCheerio('img.object-cover').attr('data-src');
 
-  novel.summary = $('div[property=description]').text().trim();
+  novel.summary = loadedCheerio('div[property=description]').text().trim();
 
   novel.genre = '';
 
-  $('div.flex.flex-col.mt-3.text-center > ul > li').each(function () {
-    novel.genre +=
-      $(this)
-        .text()
-        .replace(/[\t\n]/g, '') + ',';
-  });
-  $('div.header-stats > span').each(function () {
-    if ($(this).find('small').text() === 'Status') {
-      novel.status = $(this).find('strong').text();
+  loadedCheerio('div.flex.flex-col.mt-3.text-center > ul > li').each(
+    function () {
+      novel.genre +=
+        loadedCheerio(this)
+          .text()
+          .replace(/[\t\n]/g, '') + ',';
+    },
+  );
+  loadedCheerio('div.header-stats > span').each(function () {
+    if (loadedCheerio(this).find('small').text() === 'Status') {
+      novel.status = loadedCheerio(this).find('strong').text();
     }
   });
 
   novel.genre = novel.genre.slice(0, -1);
 
-  novel.author = $('.author > a > span').text();
+  novel.author = loadedCheerio('.author > a > span').text();
   let novelChapters = [];
 
-  $('.tab_content > ul.grid')
+  loadedCheerio('.tab_content > ul.grid')
     .find('li')
     .each(function () {
-      const chapterName = $(this).find('span').first().text().trim();
+      const chapterName = loadedCheerio(this)
+        .find('span')
+        .first()
+        .text()
+        .trim();
       const releaseDate = null;
-      const chapterUrl = $(this).find('a').attr('href');
+      const chapterUrl = loadedCheerio(this).find('a').attr('href');
 
       novelChapters.push({chapterName, releaseDate, chapterUrl});
     });
@@ -94,9 +102,9 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   const result = await fetch(chapterUrl);
   let body = await result.text();
 
-  $ = cheerio.load(body);
+  const loadedCheerio = cheerio.load(body);
 
-  const chapterId = $('input[name=id]').attr('value');
+  const chapterId = loadedCheerio('input[name=id]').attr('value');
 
   const url = 'https://travistranslations.com/wp-json/wp/v2/posts/' + chapterId;
 
@@ -123,14 +131,15 @@ const searchNovels = async searchTerm => {
   const result = await fetch(url);
   const body = await result.text();
 
-  $ = cheerio.load(body);
+  const loadedCheerio = cheerio.load(body);
 
   let novels = [];
 
-  $('.group').each(function () {
-    const novelName = $(this).find('h3').text();
-    const novelCover = 'https://' + $(this).find('img').attr('data-src');
-    const novelUrl = $(this).find(' a').attr('href');
+  loadedCheerio('.group').each(function () {
+    const novelName = loadedCheerio(this).find('h3').text();
+    const novelCover =
+      'https://' + loadedCheerio(this).find('img').attr('data-src');
+    const novelUrl = loadedCheerio(this).find(' a').attr('href');
 
     const novel = {
       sourceId,

@@ -8,4 +8,5 @@ export const createHistoryTableQuery = `
     ON DELETE CASCADE
     )`;
 
-export const createChapterIdIndexQuery = `CREATE INDEX IF NOT EXISTS historyChapterIdIndex ON history(historyChapterId)`;
+export const createChapterIdIndexQuery =
+  'CREATE INDEX IF NOT EXISTS historyChapterIdIndex ON history(historyChapterId)';

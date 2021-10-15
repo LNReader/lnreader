@@ -20,18 +20,18 @@ class MadaraScraper {
     const result = await fetch(url);
     const body = await result.text();
 
-    const $ = cheerio.load(body);
+    const loadedCheerio = cheerio.load(body);
 
     let novels = [];
 
-    $('.manga-title-badges').remove();
+    loadedCheerio('.manga-title-badges').remove();
 
-    $('.page-item-detail').each(function () {
-      const novelName = $(this).find('.post-title').text().trim();
-      let image = $(this).find('img');
+    loadedCheerio('.page-item-detail').each(function () {
+      const novelName = loadedCheerio(this).find('.post-title').text().trim();
+      let image = loadedCheerio(this).find('img');
       const novelCover = image.attr('data-src') || image.attr('src');
 
-      let novelUrl = $(this)
+      let novelUrl = loadedCheerio(this)
         .find('.post-title')
         .find('a')
         .attr('href')
@@ -56,7 +56,7 @@ class MadaraScraper {
     const result = await fetch(url);
     const body = await result.text();
 
-    let $ = cheerio.load(body);
+    let loadedCheerio = cheerio.load(body);
 
     let novel = {};
 
@@ -68,18 +68,21 @@ class MadaraScraper {
 
     novel.novelUrl = novelUrl;
 
-    $('.manga-title-badges').remove();
+    loadedCheerio('.manga-title-badges').remove();
 
-    novel.novelName = $('.post-title > h1').text().trim();
+    novel.novelName = loadedCheerio('.post-title > h1').text().trim();
 
     novel.novelCover =
-      $('.summary_image > a > img').attr('data-src') ||
-      $('.summary_image > a > img').attr('src') ||
+      loadedCheerio('.summary_image > a > img').attr('data-src') ||
+      loadedCheerio('.summary_image > a > img').attr('src') ||
       defaultCoverUri;
 
-    $('.post-content_item').each(function () {
-      const detailName = $(this).find('.summary-heading > h5').text().trim();
-      const detail = $(this).find('.summary-content').text().trim();
+    loadedCheerio('.post-content_item').each(function () {
+      const detailName = loadedCheerio(this)
+        .find('.summary-heading > h5')
+        .text()
+        .trim();
+      const detail = loadedCheerio(this).find('.summary-content').text().trim();
 
       switch (detailName) {
         case 'Genre(s)':
@@ -96,7 +99,7 @@ class MadaraScraper {
       }
     });
 
-    novel.summary = $('div.summary__content').text().trim();
+    novel.summary = loadedCheerio('div.summary__content').text().trim();
 
     let novelChapters = [];
 
@@ -115,18 +118,21 @@ class MadaraScraper {
     const text = await data.text();
 
     if (text !== '0') {
-      $ = cheerio.load(text);
+      loadedCheerio = cheerio.load(text);
     }
 
-    $('.wp-manga-chapter').each(function () {
-      const chapterName = $(this)
+    loadedCheerio('.wp-manga-chapter').each(function () {
+      const chapterName = loadedCheerio(this)
         .find('a')
         .text()
         .replace(/[\t\n]/g, '')
         .trim();
 
       let releaseDate = null;
-      releaseDate = $(this).find('span.chapter-release-date').text().trim();
+      releaseDate = loadedCheerio(this)
+        .find('span.chapter-release-date')
+        .text()
+        .trim();
 
       if (releaseDate) {
         releaseDate = parseMadaraDate(releaseDate);
@@ -138,7 +144,10 @@ class MadaraScraper {
         releaseDate = moment().format('MMMM DD, YYYY');
       }
 
-      const chapterUrl = $(this).find('a').attr('href').split('/')[5];
+      const chapterUrl = loadedCheerio(this)
+        .find('a')
+        .attr('href')
+        .split('/')[5];
 
       novelChapters.push({chapterName, releaseDate, chapterUrl});
     });
@@ -156,11 +165,13 @@ class MadaraScraper {
     const result = await fetch(url);
     const body = await result.text();
 
-    const $ = cheerio.load(body);
+    const loadedCheerio = cheerio.load(body);
 
-    let chapterName = $('.text-center').text() || $('#chapter-heading').text();
+    let chapterName =
+      loadedCheerio('.text-center').text() ||
+      loadedCheerio('#chapter-heading').text();
 
-    let chapterText = $('.text-left').html();
+    let chapterText = loadedCheerio('.text-left').html();
 
     const chapter = {
       sourceId,
@@ -179,18 +190,18 @@ class MadaraScraper {
     const result = await fetch(url);
     const body = await result.text();
 
-    const $ = cheerio.load(body);
+    const loadedCheerio = cheerio.load(body);
 
     let novels = [];
     let sourceId = this.sourceId;
 
-    $('.c-tabs-item__content').each(function () {
-      const novelName = $(this).find('.post-title').text().trim();
+    loadedCheerio('.c-tabs-item__content').each(function () {
+      const novelName = loadedCheerio(this).find('.post-title').text().trim();
 
-      let image = $(this).find('img');
+      let image = loadedCheerio(this).find('img');
       const novelCover = image.attr('data-src') || image.attr('src');
 
-      let novelUrl = $(this)
+      let novelUrl = loadedCheerio(this)
         .find('.post-title')
         .find('a')
         .attr('href')

@@ -1,12 +1,10 @@
-import {
-  SET_DOWNLOAD_QUEUE,
-  CANCEL_DOWNLOAD,
-  PAUSE_DOWNLOADS,
-} from './donwloads.types';
+import {CANCEL_DOWNLOAD, PAUSE_DOWNLOADS} from './donwloads.types';
 import BackgroundService from 'react-native-background-actions';
 import {downloadChapter} from '../../database/queries/ChapterQueries';
 import {CHAPTER_DOWNLOADED} from '../novel/novel.types';
 import {showToast} from '../../hooks/showToast';
+
+import * as Notifications from 'expo-notifications';
 
 export const pauseDownloads = () => async dispatch => {
   showToast('Download paused');

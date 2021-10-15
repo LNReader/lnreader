@@ -33,7 +33,7 @@ const parseNovelAndChapters = async novelUrl => {
   const result = await fetch(url);
   const body = await result.text();
 
-  $ = cheerio.load(body);
+  const loadedCheerio = cheerio.load(body);
 
   let novel = {};
 
@@ -45,17 +45,17 @@ const parseNovelAndChapters = async novelUrl => {
 
   novel.novelUrl = novelUrl;
 
-  novel.novelName = $('h1.book-sidebar__title').text();
+  novel.novelName = loadedCheerio('h1.book-sidebar__title').text();
 
-  novel.novelCover = $('.book-sidebar').find('img').attr('src');
+  novel.novelCover = loadedCheerio('.book-sidebar').find('img').attr('src');
 
-  $('.post-content_item').each(function (result) {
-    detailName = $(this)
+  loadedCheerio('.post-content_item').each(function () {
+    const detailName = loadedCheerio(this)
       .find('.summary-heading > h5')
       .text()
       .replace(/[\t\n]/g, '')
       .trim();
-    detail = $(this)
+    const detail = loadedCheerio(this)
       .find('.summary-content')
       .text()
       .replace(/[\t\n]/g, '')
@@ -64,19 +64,19 @@ const parseNovelAndChapters = async novelUrl => {
     novel[detailName] = detail;
   });
 
-  novel.summary = $('.main-book__synopsis').text();
+  novel.summary = loadedCheerio('.main-book__synopsis').text();
 
   novel.genre = '';
 
-  $('a.main-book__category').each(function (result) {
-    novel.genre += $(this).text();
+  loadedCheerio('a.main-book__category').each(function () {
+    novel.genre += loadedCheerio(this).text();
   });
 
   function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
-  const info = $('.book-sidebar__author > .book-sidebar__info')
+  const info = loadedCheerio('.book-sidebar__author > .book-sidebar__info')
     .text()
     .trim()
     .split('・');
@@ -122,10 +122,10 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   const result = await fetch(url);
   const body = await result.text();
 
-  $ = cheerio.load(body);
+  const loadedCheerio = cheerio.load(body);
 
-  const chapterName = $('.chapter-content__title').text();
-  let chapterText = $('.chapter-content__content').html();
+  const chapterName = loadedCheerio('.chapter-content__title').text();
+  let chapterText = loadedCheerio('.chapter-content__content').html();
   novelUrl += '/';
 
   const chapter = {

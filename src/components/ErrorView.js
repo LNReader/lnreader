@@ -2,7 +2,7 @@ import React from 'react';
 import {Text, View} from 'react-native';
 
 import {IconButton} from 'react-native-paper';
-import {Row} from './Common';
+// import {Row} from './Common';
 
 import EmptyView from './EmptyView';
 

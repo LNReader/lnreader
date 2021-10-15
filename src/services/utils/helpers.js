@@ -16,7 +16,7 @@ export const parseChapterNumber = chapterName => {
   }
 };
 
-export const getDeviceOrientation = () => {
+export const useDeviceOrientation = () => {
   const window = useWindowDimensions();
 
   if (window.width > window.height) {

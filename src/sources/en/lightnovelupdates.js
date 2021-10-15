@@ -12,14 +12,14 @@ const popularNovels = async page => {
   const result = await fetch(url);
   const body = await result.text();
 
-  $ = cheerio.load(body);
+  const loadedCheerio = cheerio.load(body);
 
   let novels = [];
 
-  $('.page-item-detail').each(function () {
-    const novelName = $(this).find('.h5 > a').text();
-    const novelCover = $(this).find('img').attr('src');
-    const novelUrl = $(this).find('.h5 > a').attr('href');
+  loadedCheerio('.page-item-detail').each(function () {
+    const novelName = loadedCheerio(this).find('.h5 > a').text();
+    const novelCover = loadedCheerio(this).find('img').attr('src');
+    const novelUrl = loadedCheerio(this).find('.h5 > a').attr('href');
 
     const novel = {
       sourceId,
@@ -37,23 +37,26 @@ const popularNovels = async page => {
 const parseNovelAndChapters = async novelUrl => {
   const url = novelUrl;
 
-  console.log(url);
+  // console.log(url);
 
   const result = await fetch(url);
   const body = await result.text();
 
-  $ = cheerio.load(body);
+  let loadedCheerio = cheerio.load(body);
 
   let novel = {sourceId, sourceName, novelUrl, url};
 
-  novel.novelName = $('.post-title > h1').text().trim();
+  novel.novelName = loadedCheerio('.post-title > h1').text().trim();
   novel.novelCover =
-    $('.summary_image > a > img').attr('src') ||
+    loadedCheerio('.summary_image > a > img').attr('src') ||
     'https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true';
 
-  $('.post-content_item').each(function (result) {
-    detailName = $(this).find('.summary-heading > h5').text().trim();
-    detail = $(this).find('.summary-content').text().trim();
+  loadedCheerio('.post-content_item').each(function () {
+    const detailName = loadedCheerio(this)
+      .find('.summary-heading > h5')
+      .text()
+      .trim();
+    const detail = loadedCheerio(this).find('.summary-content').text().trim();
 
     switch (detailName) {
       case 'Genre(s)':
@@ -68,11 +71,11 @@ const parseNovelAndChapters = async novelUrl => {
     }
   });
 
-  novel.summary = $('div.summary__content').text();
+  novel.summary = loadedCheerio('div.summary__content').text();
 
   let novelChapters = [];
 
-  const novelId = $('.rating-post-id').attr('value');
+  const novelId = loadedCheerio('.rating-post-id').attr('value');
 
   let formData = new FormData();
   formData.append('action', 'manga_get_chapters');
@@ -87,12 +90,12 @@ const parseNovelAndChapters = async novelUrl => {
   );
   const text = await data.text();
 
-  $ = cheerio.load(text);
+  loadedCheerio = cheerio.load(text);
 
-  $('.wp-manga-chapter').each(function () {
-    const chapterName = $(this).find('a').text().trim();
-    const releaseDate = $(this).find('span').text().trim();
-    const chapterUrl = $(this).find('a').attr('href');
+  loadedCheerio('.wp-manga-chapter').each(function () {
+    const chapterName = loadedCheerio(this).find('a').text().trim();
+    const releaseDate = loadedCheerio(this).find('span').text().trim();
+    const chapterUrl = loadedCheerio(this).find('a').attr('href');
 
     const chapter = {chapterName, releaseDate, chapterUrl};
 
@@ -127,14 +130,14 @@ const searchNovels = async searchTerm => {
   const result = await fetch(url);
   const body = await result.text();
 
-  $ = cheerio.load(body);
+  const loadedCheerio = cheerio.load(body);
 
   let novels = [];
 
-  $('.c-tabs-item__content').each(function (result) {
-    const novelName = $(this).find('.h4 > a').text();
-    const novelCover = $(this).find('img').attr('src');
-    const novelUrl = $(this).find('.h4 > a').attr('href');
+  loadedCheerio('.c-tabs-item__content').each(function () {
+    const novelName = loadedCheerio(this).find('.h4 > a').text();
+    const novelCover = loadedCheerio(this).find('img').attr('src');
+    const novelUrl = loadedCheerio(this).find('.h4 > a').attr('href');
 
     const novel = {
       sourceId,

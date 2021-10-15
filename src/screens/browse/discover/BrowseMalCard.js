@@ -1,7 +1,6 @@
 import React from 'react';
-import {StyleSheet, Pressable, Text, View, FlatList} from 'react-native';
+import {StyleSheet, Pressable, Text, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
-import {Row} from '../../../components/Common';
 
 const GenreChip = ({children, theme}) => (
   <View style={{flexDirection: 'row'}}>

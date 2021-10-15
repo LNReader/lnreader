@@ -5,7 +5,6 @@ import {Switch} from 'react-native-paper';
 import {useDispatch, useSelector} from 'react-redux';
 
 import {Appbar} from '../../components/Appbar';
-import {ScreenContainer} from '../../components/Common';
 import {List} from '../../components/List';
 
 import {useSettings, useTheme} from '../../hooks/reduxHooks';

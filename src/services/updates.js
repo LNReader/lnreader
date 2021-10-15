@@ -54,7 +54,7 @@ export const updateNovel = async (sourceId, novelUrl, novelId) => {
             tx.executeSql(
               "INSERT OR IGNORE INTO updates (chapterId, novelId, updateTime) values (?, ?, (datetime('now','localtime')))",
               [insertId, novelId],
-              (txObj, res) => {
+              (txOBJ, res) => {
                 // console.log(
                 //     "Inserted Chapter Id -> " +
                 //         insertId +
@@ -62,7 +62,7 @@ export const updateNovel = async (sourceId, novelUrl, novelId) => {
                 //         novelId
                 // );
               },
-              (txObj, error) => console.log('Error ', error),
+              (txOBJ, error) => console.log('Error ', error),
             );
           }
         },
@@ -95,8 +95,8 @@ export const updateNovelChapters = async (
             tx.executeSql(
               "INSERT OR IGNORE INTO updates (chapterId, novelId, updateTime) values (?, ?, (datetime('now','localtime')))",
               [insertId, novelId],
-              (txObj, res) => {},
-              (txObj, error) => console.log('Error ', error),
+              (txOBJ, res) => {},
+              (txOBJ, error) => console.log('Error ', error),
             );
           }
         },

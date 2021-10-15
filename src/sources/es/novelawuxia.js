@@ -21,22 +21,22 @@ const popularNovels = async page => {
   });
   const body = await result.text();
 
-  $ = cheerio.load(body);
+  let loadedCheerio = cheerio.load(body);
 
   let novels = [];
 
-  $('.post-body.entry-content')
+  loadedCheerio('.post-body.entry-content')
     .find('a')
-    .each(function (result) {
-      let novelName = $(this)
+    .each(function () {
+      let novelName = loadedCheerio(this)
         .attr('href')
         .split('/')
         .pop()
         .replace('.html', '');
       novelName = getNovelName(novelName);
-      const novelCover = $(this).find('img').attr('src');
+      const novelCover = loadedCheerio(this).find('img').attr('src');
 
-      let novelUrl = $(this).attr('href');
+      let novelUrl = loadedCheerio(this).attr('href');
       novelUrl = novelUrl.replace(`${baseUrl}p/`, '') + '/';
 
       const novel = {
@@ -58,7 +58,7 @@ const parseNovelAndChapters = async novelUrl => {
   const result = await fetch(url);
   const body = await result.text();
 
-  $ = cheerio.load(body);
+  let loadedCheerio = cheerio.load(body);
 
   let novel = {};
 
@@ -70,16 +70,16 @@ const parseNovelAndChapters = async novelUrl => {
 
   novel.novelUrl = novelUrl;
 
-  novel.novelName = $('h1.post-title').text().trim();
+  novel.novelName = loadedCheerio('h1.post-title').text().trim();
 
-  novel.novelCover = $('div.separator').find('a').attr('href');
+  novel.novelCover = loadedCheerio('div.separator').find('a').attr('href');
 
   novel.artist = '';
   novel.status = '';
 
-  $('div > b').each(function (result) {
-    const detailName = $(this).text();
-    let detail = $(this)[0].nextSibling;
+  loadedCheerio('div > b').each(function () {
+    const detailName = loadedCheerio(this).text();
+    let detail = loadedCheerio(this)[0].nextSibling;
 
     if (detailName && detail) {
       detail = detail.nodeValue;
@@ -99,21 +99,26 @@ const parseNovelAndChapters = async novelUrl => {
 
   let novelChapters = [];
 
-  $('div').each(function (result) {
-    const detailName = $(this).text();
+  loadedCheerio('div').each(function () {
+    const detailName = loadedCheerio(this).text();
     if (detailName.includes('Sinopsis')) {
       novel.summary =
-        $(this).next().text() !== ''
-          ? $(this).next().text().replace('Sinopsis', '').trim()
-          : $(this).next().next().text().replace('Sinopsis', '').trim();
+        loadedCheerio(this).next().text() !== ''
+          ? loadedCheerio(this).next().text().replace('Sinopsis', '').trim()
+          : loadedCheerio(this)
+              .next()
+              .next()
+              .text()
+              .replace('Sinopsis', '')
+              .trim();
     }
 
     if (detailName.includes('Lista de Capítulos')) {
-      $(this)
+      loadedCheerio(this)
         .find('a')
         .each(function (res) {
-          const chapterName = $(this).text();
-          let chapterUrl = $(this).attr('href');
+          const chapterName = loadedCheerio(this).text();
+          let chapterUrl = loadedCheerio(this).attr('href');
           const releaseDate = null;
 
           if (
@@ -147,11 +152,11 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   const result = await fetch(url);
   const body = await result.text();
 
-  $ = cheerio.load(body);
+  let loadedCheerio = cheerio.load(body);
 
-  let chapterName = $('h1.post-title').text().trim();
+  let chapterName = loadedCheerio('h1.post-title').text().trim();
 
-  let chapterText = $('.post-body.entry-content').html();
+  let chapterText = loadedCheerio('.post-body.entry-content').html();
   novelUrl = novelUrl + '/';
   chapterUrl = chapterUrl + '/';
 
@@ -172,12 +177,12 @@ const searchNovels = async searchTerm => {
   const result = await fetch(url);
   const body = await result.text();
 
-  $ = cheerio.load(body);
+  let loadedCheerio = cheerio.load(body);
 
   let novels = [];
 
-  $('.date-outer').each(function (result) {
-    let novelName = $(this)
+  loadedCheerio('.date-outer').each(function () {
+    let novelName = loadedCheerio(this)
       .find('a')
       .attr('href')
       .split('/')

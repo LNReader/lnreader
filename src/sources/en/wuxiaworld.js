@@ -33,7 +33,7 @@ const parseNovelAndChapters = async novelUrl => {
   const result = await fetch(url);
   const body = await result.text();
 
-  $ = cheerio.load(body);
+  const loadedCheerio = cheerio.load(body);
 
   let novel = {};
 
@@ -45,31 +45,31 @@ const parseNovelAndChapters = async novelUrl => {
 
   novel.novelUrl = novelUrl;
 
-  novel.novelName = $('h2').text();
+  novel.novelName = loadedCheerio('h2').text();
 
-  novel.novelCover = $('img.img-thumbnail').attr('src');
+  novel.novelCover = loadedCheerio('img.img-thumbnail').attr('src');
 
-  novel.summary = $('h3')
+  novel.summary = loadedCheerio('h3')
     .filter(function () {
-      return $(this).text().trim() === 'Synopsis';
+      return loadedCheerio(this).text().trim() === 'Synopsis';
     })
     .next()
     .text()
     .trim();
 
-  novel.author = $('div > dt')
+  novel.author = loadedCheerio('div > dt')
     .filter(function () {
-      return $(this).text().trim() === 'Author:';
+      return loadedCheerio(this).text().trim() === 'Author:';
     })
     .next()
     .text();
 
   let genres = [];
 
-  $('.genres')
+  loadedCheerio('.genres')
     .find('div')
     .each(function (res) {
-      genres.push($(this).find('a').text());
+      genres.push(loadedCheerio(this).find('a').text());
     });
 
   novel.genre = genres.join(',');
@@ -78,19 +78,19 @@ const parseNovelAndChapters = async novelUrl => {
 
   novel.status = null;
 
-  novel.status = $('div.fr-view.pt-10').text().includes('Complete')
+  novel.status = loadedCheerio('div.fr-view.pt-10').text().includes('Complete')
     ? 'Completed'
     : 'Ongoing';
 
   let novelChapters = [];
 
-  $('.chapter-item').each(function (result) {
-    let chapterName = $(this).text();
+  loadedCheerio('.chapter-item').each(function () {
+    let chapterName = loadedCheerio(this).text();
     chapterName = chapterName.replace(/[\t\n]/g, '');
 
     const releaseDate = null;
 
-    let chapterUrl = $(this).find('a').attr('href');
+    let chapterUrl = loadedCheerio(this).find('a').attr('href');
     chapterUrl = chapterUrl.replace(`/novel/${novelUrl}/`, '');
 
     const chapter = {
@@ -113,16 +113,16 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   const result = await fetch(url);
   const body = await result.text();
 
-  $ = cheerio.load(body);
+  const loadedCheerio = cheerio.load(body);
 
-  $('.chapter-nav').remove();
+  loadedCheerio('.chapter-nav').remove();
 
-  let chapterName = $('#sidebar-toggler-container').next().text();
+  let chapterName = loadedCheerio('#sidebar-toggler-container').next().text();
   chapterName = chapterName.replace(/[\t\n]/g, '');
 
-  $('#chapter-content > script').remove();
+  loadedCheerio('#chapter-content > script').remove();
 
-  let chapterText = $('#chapter-content').html();
+  let chapterText = loadedCheerio('#chapter-content').html();
 
   const chapter = {
     sourceId: 7,
@@ -136,7 +136,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 };
 
 const searchNovels = async searchTerm => {
-  const searchUrl = `https://www.wuxiaworld.com/api/novels/search?query=`;
+  const searchUrl = 'https://www.wuxiaworld.com/api/novels/search?query=';
 
   const url = `${searchUrl}${searchTerm}`;
 

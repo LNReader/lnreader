@@ -86,7 +86,7 @@ export const getNovelAction =
         /**
          * Check if novel is cached.
          */
-        const novel = await getNovel(sourceId, novelUrl);
+        let novel = await getNovel(sourceId, novelUrl);
 
         if (novel) {
           /**
@@ -112,7 +112,7 @@ export const getNovelAction =
           /**
            * Get novel from db.
            */
-          const novel = await getNovel(sourceId, novelUrl);
+          novel = await getNovel(sourceId, novelUrl);
           novel.chapters = await getChapters(novel.novelId);
 
           dispatch({

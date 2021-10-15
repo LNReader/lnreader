@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet, Pressable} from 'react-native';
+import {View, Text, /* StyleSheet, */ Pressable} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export const ThemePicker = ({theme, currentTheme, onPress}) => (
@@ -15,7 +15,7 @@ export const ThemePicker = ({theme, currentTheme, onPress}) => (
         backgroundColor: theme.colorPrimaryDark,
         borderWidth: 3.6,
         borderColor:
-          currentTheme.id == theme.id
+          currentTheme.id === theme.id
             ? theme.colorAccent
             : currentTheme.colorPrimaryDark,
         width: 95,
@@ -26,7 +26,7 @@ export const ThemePicker = ({theme, currentTheme, onPress}) => (
       }}
     >
       <Pressable style={{flex: 1}} onPress={onPress}>
-        {currentTheme.id == theme.id && (
+        {currentTheme.id === theme.id && (
           <MaterialCommunityIcons
             name="check"
             color={theme.colorButtonText}
@@ -169,4 +169,4 @@ export const ThemePicker = ({theme, currentTheme, onPress}) => (
   </View>
 );
 
-const styles = StyleSheet.create({});
+// const styles = StyleSheet.create({});

@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {StyleSheet, View, ActivityIndicator} from 'react-native';
 
 import * as WebBrowser from 'expo-web-browser';
@@ -43,22 +43,25 @@ const Extension = ({navigation, route}) => {
     setSearchText('');
   };
 
-  const getNovels = async () => {
-    try {
-      if (page <= totalPages) {
-        const source = getSource(sourceId);
-        const res = await source.popularNovels(page);
-        setNovels(prevState => [...prevState, ...res.novels]);
-        setTotalPages(res.totalPages);
+  const getNovels = useCallback(
+    async loadPage => {
+      try {
+        if (loadPage <= totalPages) {
+          const source = getSource(sourceId);
+          const res = await source.popularNovels(loadPage);
+          setNovels(prevState => [...prevState, ...res.novels]);
+          setTotalPages(res.totalPages);
+          setLoading(false);
+        }
+      } catch (e) {
+        setError(e.message);
+        showToast(e.message);
+        setNovels([]);
         setLoading(false);
       }
-    } catch (error) {
-      setError(error.message);
-      showToast(error.message);
-      setNovels([]);
-      setLoading(false);
-    }
-  };
+    },
+    [sourceId, totalPages],
+  );
 
   const getSearchResults = async () => {
     try {
@@ -67,30 +70,23 @@ const Extension = ({navigation, route}) => {
       const res = await source.searchNovels(searchText);
       setNovels(res);
       setLoading(false);
-    } catch (error) {
-      setError(error.message);
-      showToast(error.message);
+    } catch (e) {
+      setError(e.message);
+      showToast(e.message);
       setNovels([]);
       setLoading(false);
     }
   };
 
   const checkIFInLibrary = useCallback(
-    (sourceId, novelUrl) =>
-      library.some(
-        obj => obj.novelUrl === novelUrl && obj.sourceId === sourceId,
-      ),
-    [],
+    (id, novelUrl) =>
+      library.some(obj => obj.novelUrl === novelUrl && obj.sourceId === id),
+    [library],
   );
 
-  useEffect(() => {
-    let mounted = true;
-    getNovels();
-
-    return () => {
-      mounted = false;
-    };
-  }, [page]);
+  useCallback(() => {
+    getNovels(page);
+  }, [page, getNovels]);
 
   const getNextPage = () => {
     if (!searchText) {

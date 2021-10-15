@@ -209,8 +209,8 @@ const LibraryScreen = ({navigation}) => {
                 {
                   icon: 'check',
                   onPress: () => {
-                    selectedNovels.map(id => markAllChaptersRead(id)),
-                      setSelectedNovels([]);
+                    selectedNovels.map(id => markAllChaptersRead(id));
+                    setSelectedNovels([]);
                     dispatch(getLibraryAction(sort, filter));
                   },
                 },

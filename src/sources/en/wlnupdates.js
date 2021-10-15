@@ -23,19 +23,20 @@ const popularNovels = async page => {
   });
   const body = await result.text();
 
-  const $ = cheerio.load(body);
+  const loadedCheerio = cheerio.load(body);
 
   const novels = [];
 
-  $('table').find('tr').first().remove();
+  loadedCheerio('table').find('tr').first().remove();
 
-  $('tr').each(function (res) {
+  loadedCheerio('tr').each(function (res) {
     const novelCover =
       'https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true';
 
-    const novelName = $(this).find('td > a').text();
+    const novelName = loadedCheerio(this).find('td > a').text();
     const novelUrl =
-      'https://www.wlnupdates.com' + $(this).find('td > a').attr('href');
+      'https://www.wlnupdates.com' +
+      loadedCheerio(this).find('td > a').attr('href');
 
     const novel = {
       sourceId,
@@ -59,7 +60,7 @@ const parseNovelAndChapters = async novelUrl => {
   });
   const body = await result.text();
 
-  $ = cheerio.load(body);
+  const loadedCheerio = cheerio.load(body);
 
   let novel = {
     sourceId,
@@ -68,47 +69,53 @@ const parseNovelAndChapters = async novelUrl => {
     novelUrl,
   };
 
-  novel.novelName = $('h2').text();
+  novel.novelName = loadedCheerio('h2').text();
 
   novel.novelCover =
     'https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true';
 
-  novel.author = $('.multiitem#author')
+  novel.author = loadedCheerio('.multiitem#author')
     .text()
     .trim()
     .replace(/[\t\n]/g, '');
 
-  novel.genre = $('.multiitem#genre')
+  novel.genre = loadedCheerio('.multiitem#genre')
     .text()
     .trim()
     .replace(/[\t\n]/g, '');
 
   novel.status = Status.UNKNOWN;
 
-  let summary = $('#description').text().trim();
+  let summary = loadedCheerio('#description').text().trim();
 
   novel.summary = summary;
 
   let novelChapters = [];
 
-  $('#release-entry').each(function () {
+  loadedCheerio('#release-entry').each(function () {
     let chapterName;
 
-    if ($(this).find('td.numeric').length > 1) {
+    if (loadedCheerio(this).find('td.numeric').length > 1) {
       chapterName =
         'Volume ' +
-        $(this).find(' td:nth-child(3)').text().trim() +
+        loadedCheerio(this).find(' td:nth-child(3)').text().trim() +
         ' Chapter ' +
-        $(this).find(' td:nth-child(4)').text().trim();
-    } else if ($(this).find('td.numeric').length > 0) {
-      chapterName = 'Chapter ' + $(this).find('td.numeric').text().trim();
+        loadedCheerio(this).find(' td:nth-child(4)').text().trim();
+    } else if (loadedCheerio(this).find('td.numeric').length > 0) {
+      chapterName =
+        'Chapter ' + loadedCheerio(this).find('td.numeric').text().trim();
     } else {
-      chapterName = $(this).find('td.postfix').text().trim();
+      chapterName = loadedCheerio(this).find('td.postfix').text().trim();
     }
 
-    const releaseDate = $(this).find('.release-entry-cell').text().trim();
+    const releaseDate = loadedCheerio(this)
+      .find('.release-entry-cell')
+      .text()
+      .trim();
 
-    const chapterUrl = $(this).find('td:nth-child(1) > a').attr('href');
+    const chapterUrl = loadedCheerio(this)
+      .find('td:nth-child(1) > a')
+      .attr('href');
 
     novelChapters.push({chapterName, releaseDate, chapterUrl});
   });
@@ -144,16 +151,17 @@ const searchNovels = async searchTerm => {
   });
   const body = await res.text();
 
-  $ = cheerio.load(body);
+  const loadedCheerio = cheerio.load(body);
 
   let novels = [];
 
-  $('tr').each(function (res) {
+  loadedCheerio('tr').each(function () {
     const novelCover =
       'https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true';
-    const novelName = $(this).find('td > a').text();
+    const novelName = loadedCheerio(this).find('td > a').text();
     const novelUrl =
-      'https://www.wlnupdates.com' + $(this).find('td > a').attr('href');
+      'https://www.wlnupdates.com' +
+      loadedCheerio(this).find('td > a').attr('href');
 
     const novel = {
       sourceId,

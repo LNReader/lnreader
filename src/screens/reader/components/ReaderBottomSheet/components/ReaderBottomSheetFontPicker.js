@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {Pressable, ScrollView, StyleSheet, Text, View} from 'react-native';
 
 import {useDispatch} from 'react-redux';

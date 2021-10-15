@@ -1,5 +1,4 @@
 import React from 'react';
-import {useDispatch} from 'react-redux';
 
 import {Appbar} from '../../components/Appbar';
 import {List} from '../../components/List';

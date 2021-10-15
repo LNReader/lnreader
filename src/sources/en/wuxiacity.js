@@ -15,14 +15,17 @@ const popularNovels = async page => {
   const result = await fetch(url);
   const body = await result.text();
 
-  $ = cheerio.load(body);
+  const loadedCheerio = cheerio.load(body);
 
   let novels = [];
 
-  $('.section-item.card').each(function () {
-    const novelName = $(this).find('.book-name').text();
-    const novelCover = $(this).find('img').attr('src');
-    const novelUrl = $(this).find('a').attr('href').replace('/book/', '');
+  loadedCheerio('.section-item.card').each(function () {
+    const novelName = loadedCheerio(this).find('.book-name').text();
+    const novelCover = loadedCheerio(this).find('img').attr('src');
+    const novelUrl = loadedCheerio(this)
+      .find('a')
+      .attr('href')
+      .replace('/book/', '');
 
     const novel = {
       sourceId,
@@ -43,7 +46,7 @@ const parseNovelAndChapters = async novelUrl => {
   const result = await fetch(url);
   const body = await result.text();
 
-  let $ = cheerio.load(body);
+  let loadedCheerio = cheerio.load(body);
 
   let novel = {
     sourceId,
@@ -52,27 +55,30 @@ const parseNovelAndChapters = async novelUrl => {
     novelUrl,
   };
 
-  novel.novelName = $('h1.book-name').text();
+  novel.novelName = loadedCheerio('h1.book-name').text();
 
-  novel.novelCover = $('div.book-img > img').attr('src');
+  novel.novelCover = loadedCheerio('div.book-img > img').attr('src');
 
-  novel.author = $('dl.author > dd').text();
+  novel.author = loadedCheerio('dl.author > dd').text();
 
-  novel.genre = $('.book-generes').text().trim();
+  novel.genre = loadedCheerio('.book-generes').text().trim();
 
-  novel.summary = $('.book-synopsis').text().replace('Synopsis', '').trim();
+  novel.summary = loadedCheerio('.book-synopsis')
+    .text()
+    .replace('Synopsis', '')
+    .trim();
 
   const chapterListUrl = `${baseUrl}book/${novelUrl}/chapter-list`;
 
   const chaptersHtml = await fetch(chapterListUrl);
   const chapterHtmlToString = await chaptersHtml.text();
 
-  $ = cheerio.load(chapterHtmlToString);
+  loadedCheerio = cheerio.load(chapterHtmlToString);
 
   let novelChapters = [];
 
-  $('ul.chapters > li').each(function () {
-    const chapterName = $(this)
+  loadedCheerio('ul.chapters > li').each(function () {
+    const chapterName = loadedCheerio(this)
       .find('.chapter-name')
       .text()
       .trim()
@@ -80,7 +86,7 @@ const parseNovelAndChapters = async novelUrl => {
 
     let releaseDate = new Date();
 
-    let timeAgo = $(this).find('.chapter-time').text();
+    let timeAgo = loadedCheerio(this).find('.chapter-time').text();
 
     timeAgo = timeAgo.replace('one', 1);
 
@@ -96,7 +102,11 @@ const parseNovelAndChapters = async novelUrl => {
 
     releaseDate = moment(releaseDate).format('MM/DD/YY');
 
-    const chapterUrl = $(this).find('a').attr('href').split('/').pop();
+    const chapterUrl = loadedCheerio(this)
+      .find('a')
+      .attr('href')
+      .split('/')
+      .pop();
 
     const chapter = {
       chapterName,
@@ -118,11 +128,11 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   const result = await fetch(url);
   const body = await result.text();
 
-  $ = cheerio.load(body);
+  const loadedCheerio = cheerio.load(body);
 
-  let chapterName = $('.chapter-name').text();
+  let chapterName = loadedCheerio('.chapter-name').text();
 
-  let chapterText = $('.chapter-content').html();
+  let chapterText = loadedCheerio('.chapter-content').html();
   const chapter = {
     sourceId,
     novelUrl,
@@ -140,15 +150,18 @@ const searchNovels = async searchTerm => {
   const result = await fetch(url);
   const body = await result.text();
 
-  $ = cheerio.load(body);
+  const loadedCheerio = cheerio.load(body);
 
   let novels = [];
 
-  $('.section-item').each(function () {
-    const novelName = $(this).find('.book-name').text().trim();
-    const novelCover = $(this).find('img').attr('src');
+  loadedCheerio('.section-item').each(function () {
+    const novelName = loadedCheerio(this).find('.book-name').text().trim();
+    const novelCover = loadedCheerio(this).find('img').attr('src');
 
-    let novelUrl = $(this).find('a').attr('href').replace('/book/', '');
+    let novelUrl = loadedCheerio(this)
+      .find('a')
+      .attr('href')
+      .replace('/book/', '');
 
     const novel = {
       sourceId,

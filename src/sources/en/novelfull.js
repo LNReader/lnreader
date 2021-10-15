@@ -9,32 +9,34 @@ const popularNovels = async page => {
   const result = await fetch(url);
   const body = await result.text();
 
-  $ = cheerio.load(body);
+  const loadedCheerio = cheerio.load(body);
 
   let novels = [];
 
-  $('div.col-truyen-main > div.list-truyen > .row').each(function (result) {
-    const novelName = $(this).find('h3.truyen-title > a').text();
+  loadedCheerio('div.col-truyen-main > div.list-truyen > .row').each(
+    function () {
+      const novelName = loadedCheerio(this).find('h3.truyen-title > a').text();
 
-    let novelCover = $(this).find('img').attr('src');
-    novelCover = baseUrl + novelCover;
+      let novelCover = loadedCheerio(this).find('img').attr('src');
+      novelCover = baseUrl + novelCover;
 
-    let novelUrl = $(this)
-      .find('h3.truyen-title > a')
-      .attr('href')
-      .replace('.html', '')
-      .substring(1);
-    novelUrl = `${novelUrl}/`;
+      let novelUrl = loadedCheerio(this)
+        .find('h3.truyen-title > a')
+        .attr('href')
+        .replace('.html', '')
+        .substring(1);
+      novelUrl = `${novelUrl}/`;
 
-    const novel = {
-      sourceId: 8,
-      novelUrl,
-      novelName,
-      novelCover,
-    };
+      const novel = {
+        sourceId: 8,
+        novelUrl,
+        novelName,
+        novelCover,
+      };
 
-    novels.push(novel);
-  });
+      novels.push(novel);
+    },
+  );
 
   return {totalPages, novels};
 };
@@ -45,7 +47,7 @@ const parseNovelAndChapters = async novelUrl => {
   const result = await fetch(url);
   const body = await result.text();
 
-  $ = cheerio.load(body);
+  let loadedCheerio = cheerio.load(body);
 
   let novel = {};
 
@@ -57,51 +59,51 @@ const parseNovelAndChapters = async novelUrl => {
 
   novel.novelUrl = novelUrl;
 
-  novel.novelName = $('div.book > img').attr('alt');
+  novel.novelName = loadedCheerio('div.book > img').attr('alt');
 
-  novel.novelCover = baseUrl + $('div.book > img').attr('src');
+  novel.novelCover = baseUrl + loadedCheerio('div.book > img').attr('src');
 
-  novel.summary = $('div.desc-text').text().trim();
+  novel.summary = loadedCheerio('div.desc-text').text().trim();
 
-  novel.author = $('div.info > div > h3')
+  novel.author = loadedCheerio('div.info > div > h3')
     .filter(function () {
-      return $(this).text().trim() === 'Author:';
+      return loadedCheerio(this).text().trim() === 'Author:';
     })
     .siblings()
     .text();
 
-  novel.genre = $('div.info > div')
+  novel.genre = loadedCheerio('div.info > div')
     .filter(function () {
-      return $(this).find('h3').text().trim() === 'Genre:';
+      return loadedCheerio(this).find('h3').text().trim() === 'Genre:';
     })
     .text()
     .replace('Genre:', '');
 
   novel.artist = null;
 
-  novel.status = $('div.info > div > h3')
+  novel.status = loadedCheerio('div.info > div > h3')
     .filter(function () {
-      return $(this).text().trim() === 'Status:';
+      return loadedCheerio(this).text().trim() === 'Status:';
     })
     .next()
     .text();
 
-  const novelId = $('#rating').attr('data-novel-id');
+  const novelId = loadedCheerio('#rating').attr('data-novel-id');
 
-  const getChapters = async novelId => {
-    const chapterListUrl = baseUrl + '/ajax/chapter-option?novelId=' + novelId;
+  const getChapters = async id => {
+    const chapterListUrl = baseUrl + '/ajax/chapter-option?novelId=' + id;
 
     const data = await fetch(chapterListUrl);
     const chapters = await data.text();
 
-    $ = cheerio.load(chapters);
+    loadedCheerio = cheerio.load(chapters);
 
     let novelChapters = [];
 
-    $('select > option').each(function (result) {
-      let chapterName = $(this).text();
+    loadedCheerio('select > option').each(function () {
+      let chapterName = loadedCheerio(this).text();
       let releaseDate = null;
-      let chapterUrl = $(this).attr('value');
+      let chapterUrl = loadedCheerio(this).attr('value');
       chapterUrl = chapterUrl.replace(`/${novelUrl}`, '');
 
       novelChapters.push({
@@ -124,10 +126,10 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   const result = await fetch(url);
   const body = await result.text();
 
-  $ = cheerio.load(body);
+  const loadedCheerio = cheerio.load(body);
 
-  const chapterName = $('.chapter-title').attr('title');
-  let chapterText = $('#chapter-content').html();
+  const chapterName = loadedCheerio('.chapter-title').attr('title');
+  let chapterText = loadedCheerio('#chapter-content').html();
   const chapter = {
     sourceId: 8,
     novelUrl,
@@ -140,37 +142,39 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 };
 
 const searchNovels = async searchTerm => {
-  const searchUrl = `https://novelfull.com/search?keyword=`;
+  const searchUrl = 'https://novelfull.com/search?keyword=';
 
   const url = `${searchUrl}${searchTerm}`;
 
   const result = await fetch(url);
   const body = await result.text();
 
-  $ = cheerio.load(body);
+  const loadedCheerio = cheerio.load(body);
 
   let novels = [];
 
-  $('div.col-truyen-main > div.list-truyen > .row').each(function (result) {
-    let novelUrl = $(this)
-      .find('h3.truyen-title > a')
-      .attr('href')
-      .replace('.html', '')
-      .substring(1);
-    novelUrl = `${novelUrl}/`;
+  loadedCheerio('div.col-truyen-main > div.list-truyen > .row').each(
+    function () {
+      let novelUrl = loadedCheerio(this)
+        .find('h3.truyen-title > a')
+        .attr('href')
+        .replace('.html', '')
+        .substring(1);
+      novelUrl = `${novelUrl}/`;
 
-    const novelName = $(this).find('h3.truyen-title > a').text();
-    const novelCover = baseUrl + $(this).find('img').attr('src');
+      const novelName = loadedCheerio(this).find('h3.truyen-title > a').text();
+      const novelCover = baseUrl + loadedCheerio(this).find('img').attr('src');
 
-    const novel = {
-      sourceId: 8,
-      novelUrl,
-      novelName,
-      novelCover,
-    };
+      const novel = {
+        sourceId: 8,
+        novelUrl,
+        novelName,
+        novelCover,
+      };
 
-    novels.push(novel);
-  });
+      novels.push(novel);
+    },
+  );
 
   return novels;
 };
