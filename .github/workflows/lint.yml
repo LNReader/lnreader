@@ -2,6 +2,7 @@ name: Lint
 on: [push, pull_request]
 jobs:
   build:
+    name: ESLint
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
