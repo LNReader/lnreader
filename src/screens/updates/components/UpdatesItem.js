@@ -45,23 +45,20 @@ const UpdateCard = ({
         >
           <View style={styles.chapterDetails}>
             <Text
-              style={[
-                {color: theme.textColorPrimary, fontSize: 14},
-                item.read && {
-                  color: theme.textColorHint,
-                },
-              ]}
+              style={{
+                color: item.read ? theme.textColorHint : theme.textColorPrimary,
+              }}
               numberOfLines={1}
             >
               {item.novelName}
             </Text>
             <Text
-              style={[
-                {color: theme.textColorPrimary, fontSize: 12},
-                item.read && {
-                  color: theme.textColorHint,
-                },
-              ]}
+              style={{
+                color: item.read
+                  ? theme.textColorHint
+                  : theme.textColorSecondary,
+                fontSize: 12,
+              }}
               numberOfLines={1}
             >
               {item.chapterName}
