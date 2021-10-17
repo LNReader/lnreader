@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet, View, ActivityIndicator} from 'react-native';
 
 import * as WebBrowser from 'expo-web-browser';
@@ -15,7 +15,7 @@ import NovelCover from '../../components/NovelCover';
 import NovelList from '../../components/NovelList';
 import {ErrorView} from '../../components/ErrorView/ErrorView';
 
-const Extension = ({navigation, route}) => {
+const SourceScreen = ({navigation, route}) => {
   const {sourceId, sourceName, url} = route.params;
 
   const theme = useTheme();
@@ -84,7 +84,7 @@ const Extension = ({navigation, route}) => {
     [library],
   );
 
-  useCallback(() => {
+  useEffect(() => {
     getNovels(page);
   }, [page, getNovels]);
 
@@ -188,7 +188,7 @@ const Extension = ({navigation, route}) => {
   );
 };
 
-export default Extension;
+export default SourceScreen;
 
 const styles = StyleSheet.create({
   container: {
