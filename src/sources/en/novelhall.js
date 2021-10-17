@@ -1,25 +1,34 @@
 import cheerio from 'react-native-cheerio';
+import {defaultCoverUri} from '../helpers/constants';
 
 const baseUrl = 'https://www.novelhall.com/';
 
+const sourceId = 6;
+
 const popularNovels = async page => {
-  let totalPages = 1;
-  const result = await fetch(baseUrl);
+  let totalPages = 284;
+
+  const url = baseUrl + 'completed-' + page + '.html';
+
+  const result = await fetch(url);
   const body = await result.text();
 
   const loadedCheerio = cheerio.load(body);
 
   let novels = [];
 
-  loadedCheerio('div.section1')
-    .find('li')
+  loadedCheerio('div.section3')
+    .find('tr')
     .each(function () {
-      const novelName = loadedCheerio(this).find('.book-info > h2 > a').text();
-      const novelCover = loadedCheerio(this).find('img').attr('src');
-      const novelUrl = loadedCheerio(this).find('a').attr('href').substring(1);
+      const novelName = loadedCheerio(this).find('.w70 > a').text();
+      const novelCover = defaultCoverUri;
+      const novelUrl = loadedCheerio(this)
+        .find('.w70 > a')
+        .attr('href')
+        .substring(1);
 
       const novel = {
-        sourceId: 6,
+        sourceId,
         novelName,
         novelCover,
         novelUrl,
@@ -53,9 +62,9 @@ const parseNovelAndChapters = async novelUrl => {
 
   novel.novelCover = loadedCheerio('div.book-img > img').attr('src');
 
-  novel.summary = loadedCheerio('div.intro')
+  novel.summary = loadedCheerio('div.intro > span.js-close-wrap')
     .text()
-    .replace(/[\t\n]/g, '');
+    ?.replace('back<<', '');
 
   novel.author = loadedCheerio('span.blue')
     .first()
@@ -112,7 +121,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   const chapterName = loadedCheerio('h1').text();
   const chapterText = loadedCheerio('div.entry-content').html();
   const chapter = {
-    sourceId: 6,
+    sourceId,
     novelUrl,
     chapterUrl,
     chapterName,
@@ -146,7 +155,7 @@ const searchNovels = async searchTerm => {
     }
 
     const novel = {
-      sourceId: 6,
+      sourceId,
       novelName,
       novelCover,
       novelUrl,
