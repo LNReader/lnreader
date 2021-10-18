@@ -4,11 +4,18 @@ import {defaultCoverUri, Status} from '../../helpers/constants';
 import {parseMadaraDate} from '../../helpers/parseDate';
 
 class MadaraScraper {
-  constructor(sourceId, baseUrl, sourceName, path) {
+  constructor(
+    sourceId,
+    baseUrl,
+    sourceName,
+    path,
+    useNewChapterEndpoint = false,
+  ) {
     this.sourceId = sourceId;
     this.baseUrl = baseUrl;
     this.sourceName = sourceName;
     this.path = path;
+    this.useNewChapterEndpoint = useNewChapterEndpoint;
   }
 
   async popularNovels(page) {
@@ -103,22 +110,29 @@ class MadaraScraper {
 
     let novelChapters = [];
 
-    // const novelId =
-    //   $('.rating-post-id').attr('value') ||
-    //   $('#manga-chapters-holder').attr('data-id');
+    let html;
 
-    // let formData = new FormData();
-    // formData.append('action', 'manga_get_chapters');
-    // formData.append('manga', novelId);
+    if (this.useNewChapterEndpoint) {
+      const novelId =
+        loadedCheerio('.rating-post-id').attr('value') ||
+        loadedCheerio('#manga-chapters-holder').attr('data-id');
 
-    const data = await fetch(url + 'ajax/chapters/', {
-      method: 'POST',
-    });
+      let formData = new FormData();
+      formData.append('action', 'manga_get_chapters');
+      formData.append('manga', novelId);
 
-    const text = await data.text();
+      const data = await fetch(this.baseUrl + 'wp-admin/admin-ajax.php', {
+        method: 'POST',
+        body: formData,
+      });
+      html = await data.text();
+    } else {
+      const data = await fetch(url + 'ajax/chapters/', {method: 'POST'});
+      html = await data.text();
+    }
 
-    if (text !== '0') {
-      loadedCheerio = cheerio.load(text);
+    if (html !== '0') {
+      loadedCheerio = cheerio.load(html);
     }
 
     loadedCheerio('.wp-manga-chapter').each(function () {

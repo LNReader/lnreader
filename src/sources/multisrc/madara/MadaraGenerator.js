@@ -26,13 +26,21 @@ const getPath = extensionId => {
   };
 
   return (
-    path[extensionId] ?? {
+    path[extensionId] || {
       novels: 'novel',
       novel: 'novel',
       chapter: 'novel',
     }
   );
 };
+
+export const BoxNovelScraper = new MadaraScraper(
+  1,
+  'https://boxnovel.com/',
+  'BoxNovel',
+  getPath(1),
+  true,
+);
 
 export const SkyNovelScraper = new MadaraScraper(
   38,
@@ -81,6 +89,7 @@ export const SleepyTranslationsScraper = new MadaraScraper(
   'https://sleepytranslations.com/',
   'SleepyTranslations',
   getPath(44),
+  true,
 );
 
 export const FreeNovelScraper = new MadaraScraper(
@@ -102,6 +111,7 @@ export const DaoNovelScraper = new MadaraScraper(
   'https://daonovel.com/',
   'DaoNovel',
   getPath(47),
+  true,
 );
 
 export const MostNovelScraper = new MadaraScraper(
@@ -130,6 +140,7 @@ export const LightNovelsHubScraper = new MadaraScraper(
   'https://lightnovelshub.com/',
   'LightNovelsHub',
   getPath(58),
+  true,
 );
 
 export const MeionNovelScraper = new MadaraScraper(
@@ -137,6 +148,7 @@ export const MeionNovelScraper = new MadaraScraper(
   'https://meionovel.id/',
   'MeionNovel',
   getPath(60),
+  true,
 );
 
 export const WebNovelLoverScraper = new MadaraScraper(
@@ -151,6 +163,7 @@ export const BoxNovelOnlineScraper = new MadaraScraper(
   'https://boxnovel.online/',
   'BoxNovel.online',
   getPath(63),
+  true,
 );
 
 export const ClickNovelScraper = new MadaraScraper(
@@ -186,4 +199,5 @@ export const MysticalSeriesScraper = new MadaraScraper(
   'https://mysticalmerries.com/',
   'MysticalSeries',
   getPath(75),
+  true,
 );

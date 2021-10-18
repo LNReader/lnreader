@@ -1,6 +1,5 @@
 import ComradeMaoScraper from './en/comrademao';
 import ReadLightNovelScraper from './en/readlightnovel';
-import BoxNovelScraper from './en/boxnovel';
 import fastNovelScraper from './en/fastnovel';
 import readNovelFullScraper from './en/readnovelfull';
 import mtlNovelScraper from './en/mtlnovel';
@@ -35,6 +34,7 @@ import SyosetuScraper from './jp/syosetu';
 import LNMTLScraper from './en/lnmtl';
 import {
   BoxNovelOnlineScraper,
+  BoxNovelScraper,
   ClickNovelScraper,
   DaoNovelScraper,
   FirstKissNovelScraper,
