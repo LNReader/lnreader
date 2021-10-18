@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, View, ActivityIndicator} from 'react-native';
 
 import * as WebBrowser from 'expo-web-browser';
@@ -43,25 +43,22 @@ const SourceScreen = ({navigation, route}) => {
     setSearchText('');
   };
 
-  const getNovels = useCallback(
-    async loadPage => {
-      try {
-        if (loadPage <= totalPages) {
-          const source = getSource(sourceId);
-          const res = await source.popularNovels(loadPage);
-          setNovels(prevState => [...prevState, ...res.novels]);
-          setTotalPages(res.totalPages);
-          setLoading(false);
-        }
-      } catch (e) {
-        setError(e.message);
-        showToast(e.message);
-        setNovels([]);
+  const getNovels = async () => {
+    try {
+      if (page <= totalPages) {
+        const source = getSource(sourceId);
+        const res = await source.popularNovels(page);
+        setNovels(prevState => [...prevState, ...res.novels]);
+        setTotalPages(res.totalPages);
         setLoading(false);
       }
-    },
-    [sourceId, totalPages],
-  );
+    } catch (e) {
+      setError(e.message);
+      showToast(e.message);
+      setNovels([]);
+      setLoading(false);
+    }
+  };
 
   const getSearchResults = async () => {
     try {
@@ -78,15 +75,12 @@ const SourceScreen = ({navigation, route}) => {
     }
   };
 
-  const checkIFInLibrary = useCallback(
-    (id, novelUrl) =>
-      library.some(obj => obj.novelUrl === novelUrl && obj.sourceId === id),
-    [library],
-  );
+  const checkIFInLibrary = (sourceId, novelUrl) =>
+    library.some(obj => obj.novelUrl === novelUrl && obj.sourceId === sourceId);
 
   useEffect(() => {
-    getNovels(page);
-  }, [page, getNovels]);
+    getNovels();
+  }, [page]);
 
   const getNextPage = () => {
     if (!searchText) {
