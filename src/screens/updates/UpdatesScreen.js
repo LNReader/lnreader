@@ -24,6 +24,7 @@ import {
   deleteChapterAction,
   downloadChapterAction,
 } from '../../redux/novel/novel.actions';
+import {showToast} from '../../hooks/showToast';
 
 const Updates = ({navigation}) => {
   const theme = useTheme();
@@ -39,6 +40,14 @@ const Updates = ({navigation}) => {
   const [searchText, setSearchText] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
+
+  let sectionedUpdates = [];
+
+  if (updates.length && updates[0].data !== undefined) {
+    sectionedUpdates = updates;
+  } else {
+    showToast('Update your library to show updates.');
+  }
 
   useFocusEffect(
     useCallback(() => {
@@ -168,7 +177,7 @@ const Updates = ({navigation}) => {
       )}
       <SectionList
         contentContainerStyle={styles.flatList}
-        sections={searchText ? searchResults : updates}
+        sections={searchText ? searchResults : sectionedUpdates}
         keyExtractor={(item, index) => index.toString()}
         renderItem={renderItem}
         renderSectionHeader={({section: {date}}) => (
