@@ -15,7 +15,7 @@ import Tts from 'react-native-tts';
 import changeNavigationBarColor, {
   hideNavigationBar,
   showNavigationBar,
-} from 'react-native-navigation-bar-color';
+} from '../../theme/utils/androidNavigationBarColor';
 
 import {
   getChapterFromDB,
