@@ -83,6 +83,7 @@ const HistoryItem = ({history, theme, dispatch, navigation, deleteHistory}) => {
             size={24}
             color={theme.textColorPrimary}
             onPress={() => deleteHistory(historyId)}
+            containerStyle={{marginLeft: 12}}
             theme={theme}
           />
           <IconButton
@@ -90,6 +91,7 @@ const HistoryItem = ({history, theme, dispatch, navigation, deleteHistory}) => {
             size={24}
             color={theme.textColorPrimary}
             onPress={navigateToChapter}
+            containerStyle={{marginLeft: 12}}
             theme={theme}
           />
         </View>

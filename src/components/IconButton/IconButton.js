@@ -14,7 +14,7 @@ export const IconButton = ({
 }) => (
   <Pressable
     style={[styles.container, containerStyle]}
-    android_ripple={{color: theme.rippleColor, borderless: true, radius: 24}}
+    android_ripple={{color: theme.rippleColor, borderless: true, radius: 20}}
     onPress={onPress}
   >
     <MaterialCommunityIcons name={icon} size={size} color={color} />
@@ -23,6 +23,7 @@ export const IconButton = ({
 
 IconButton.defaultProps = {
   size: 24,
+  color: '#FFFFFF',
 };
 
 IconButton.propTypes = {
@@ -35,5 +36,7 @@ IconButton.propTypes = {
 };
 
 const styles = StyleSheet.create({
-  container: {padding: 12},
+  container: {
+    margin: 6,
+  },
 });

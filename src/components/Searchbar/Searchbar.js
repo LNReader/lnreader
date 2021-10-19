@@ -1,8 +1,8 @@
 import React, {useRef} from 'react';
 import {StyleSheet, View, TextInput, StatusBar, Pressable} from 'react-native';
 
-import {IconButton} from 'react-native-paper';
 import {Row} from '../Common';
+import {IconButton} from '../IconButton/IconButton';
 
 export const Searchbar = ({
   theme,
@@ -29,18 +29,14 @@ export const Searchbar = ({
             <IconButton
               icon={backAction}
               color={theme.textColorPrimary}
-              style={{marginLeft: 0}}
-              size={23}
               onPress={onBackAction}
-              rippleColor={theme.rippleColor}
+              theme={theme}
+              containerStyle={{marginLeft: 0}}
             />
           )}
           <TextInput
             ref={searchRef}
-            style={{
-              fontSize: 16,
-              color: theme.textColorPrimary,
-            }}
+            style={{fontSize: 16, color: theme.textColorPrimary, marginLeft: 4}}
             placeholder={placeholder}
             placeholderTextColor={theme.textColorSecondary}
             onChangeText={onChangeText}
@@ -52,10 +48,8 @@ export const Searchbar = ({
           <IconButton
             icon="close"
             color={theme.textColorPrimary}
-            style={{marginRight: 0}}
-            size={23}
             onPress={clearSearchbar}
-            rippleColor={theme.rippleColor}
+            theme={theme}
           />
         )}
         {actions &&
@@ -64,10 +58,9 @@ export const Searchbar = ({
               key={index}
               icon={action.icon}
               color={action.color ?? theme.textColorPrimary}
-              style={{marginRight: 0}}
-              size={23}
               onPress={action.onPress}
-              rippleColor={theme.rippleColor}
+              theme={theme}
+              containerStyle={{marginRight: 0}}
             />
           ))}
       </Pressable>
@@ -80,6 +73,7 @@ const styles = StyleSheet.create({
     marginTop: StatusBar.currentHeight + 8,
     marginBottom: 8,
     marginHorizontal: 16,
+    height: 48,
     borderRadius: 50,
     overflow: 'hidden',
   },
