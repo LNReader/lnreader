@@ -10,7 +10,9 @@ const getLibraryNovels = () => {
         getLibraryNovelsQuery,
         null,
         (txObj, {rows: {_array}}) => resolve(_array),
-        (txObj, error) => console.log('Error ', error),
+        (txObj, error) => {
+          // console.log('Error ', error)
+        },
       );
     }),
   );
@@ -26,7 +28,9 @@ const getLibraryChapters = () => {
         getLibraryChaptersQuery,
         null,
         (txObj, {rows: {_array}}) => resolve(_array),
-        (txObj, error) => console.log('Error ', error),
+        (txObj, error) => {
+          // console.log('Error ', error)
+        },
       );
     }),
   );
@@ -42,7 +46,9 @@ const getLibraryDownloads = () => {
         getLibraryDownloadsQuery,
         null,
         (txObj, {rows: {_array}}) => resolve(_array),
-        (txObj, error) => console.log('Error ', error),
+        (txObj, error) => {
+          // console.log('Error ', error)
+        },
       );
     }),
   );
@@ -72,7 +78,9 @@ const restoreNovels = async novel => {
         novel.unread,
       ],
       (txObj, res) => {},
-      (txObj, error) => console.log('Error ', error),
+      (txObj, error) => {
+        // console.log('Error ', error)
+      },
     ),
   );
 };
@@ -106,7 +114,9 @@ const restoreChapters = async chapter => {
         downloaded,
       ],
       (txObj, res) => {},
-      (txObj, error) => console.log('Error ', error),
+      (txObj, error) => {
+        // console.log('Error ', error)
+      },
     ),
   );
 };
@@ -122,7 +132,9 @@ const restoreDownloads = async chapter => {
       restoreDownloadsQuery,
       [downloadChapterId, chapterName, chapterText],
       (txObj, res) => {},
-      (txObj, error) => console.log('Error ', error),
+      (txObj, error) => {
+        // console.log('Error ', error)
+      },
     ),
   );
 };

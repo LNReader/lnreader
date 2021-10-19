@@ -22,7 +22,9 @@ export const getUpdates = async () => {
         (txObj, {rows: {_array}}) => {
           resolve(_array);
         },
-        (txObj, error) => console.log('Error ', error),
+        (txObj, error) => {
+          // console.log('Error ', error)
+        },
       );
     });
   });
@@ -34,7 +36,9 @@ export const deleteNovelUpdates = novelId => {
       'DELETE FROM updates WHERE novelId = ?',
       [novelId],
       (txObj, res) => {},
-      (txObj, error) => console.log('Error ', error),
+      (txObj, error) => {
+        // console.log('Error ', error);
+      },
     );
   });
 };

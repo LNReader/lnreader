@@ -24,7 +24,6 @@ import {
   deleteChapterAction,
   downloadChapterAction,
 } from '../../redux/novel/novel.actions';
-import {showToast} from '../../hooks/showToast';
 
 const Updates = ({navigation}) => {
   const theme = useTheme();
@@ -43,11 +42,7 @@ const Updates = ({navigation}) => {
 
   let sectionedUpdates = [];
 
-  if (updates.length && updates[0].data !== undefined) {
-    sectionedUpdates = updates;
-  } else {
-    showToast('Update your library to show updates.');
-  }
+  sectionedUpdates = updates.length && updates[0].data !== undefined && updates;
 
   useFocusEffect(
     useCallback(() => {

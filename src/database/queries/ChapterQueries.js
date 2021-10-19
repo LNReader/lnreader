@@ -29,9 +29,11 @@ export const insertChapters = async (novelId, chapters) => {
           // )
         ),
       (txObj, res) => {
-        console.log('Success');
+        // console.log('Success');
       },
-      (txObj, error) => console.log('Error ', error),
+      (txObj, error) => {
+        // console.log('Error ', error)
+      },
     );
   });
 };
@@ -48,7 +50,9 @@ export const getChapters = (novelId, sort, filter) => {
         (txObj, {rows: {_array}}) => {
           resolve(_array);
         },
-        (txObj, error) => console.log('Error ', error),
+        (txObj, error) => {
+          // console.log('Error ', error)
+        },
       );
     }),
   );
@@ -65,7 +69,9 @@ export const getChapterFromDB = async chapterId => {
         (txObj, results) => {
           resolve(results.rows.item(0));
         },
-        (txObj, error) => console.log('Error ', error),
+        (txObj, error) => {
+          // console.log('Error ', error)
+        },
       );
     }),
   );
@@ -80,7 +86,9 @@ export const getNextChapterFromDB = async (novelId, chapterId) => {
         (txObj, results) => {
           resolve(results.rows.item(0));
         },
-        (txObj, error) => console.log('Error ', error),
+        (txObj, error) => {
+          // console.log('Error ', error)
+        },
       );
     }),
   );
@@ -95,7 +103,9 @@ export const getPrevChapterFromDB = async (novelId, chapterId) => {
         (txObj, results) => {
           resolve(results.rows.item(results.rows.length - 1));
         },
-        (txObj, error) => console.log('Error ', error),
+        (txObj, error) => {
+          // console.log('Error ', error)
+        },
       );
     }),
   );
@@ -110,7 +120,9 @@ export const markChapterRead = async chapterId => {
       markChapterReadQuery,
       [chapterId],
       (txObj, res) => {},
-      (txObj, error) => console.log(error),
+      (txObj, error) => {
+        // console.log(error)
+      },
     );
   });
 };
@@ -124,7 +136,9 @@ export const markChapterUnread = async chapterId => {
       markChapterUnreadQuery,
       [chapterId],
       (txObj, res) => {},
-      (txObj, error) => console.log(error),
+      (txObj, error) => {
+        // console.log(error)
+      },
     );
   });
 };
@@ -138,7 +152,9 @@ export const markAllChaptersRead = async novelId => {
       markAllChaptersReadQuery,
       [novelId],
       (txObj, res) => {},
-      (txObj, error) => console.log(error),
+      (txObj, error) => {
+        // console.log(error)
+      },
     );
   });
 };
@@ -152,7 +168,9 @@ export const markAllChaptersUnread = async novelId => {
       markAllChaptersUnreadQuery,
       [novelId],
       (txObj, res) => {},
-      (txObj, error) => console.log(error),
+      (txObj, error) => {
+        // console.log(error)
+      },
     );
   });
 };
@@ -173,7 +191,9 @@ export const isChapterDownloaded = async chapterId => {
             resolve(false);
           }
         },
-        (txObj, error) => console.log('Error ', error),
+        (txObj, error) => {
+          // console.log('Error ', error)
+        },
       );
     }),
   );
@@ -202,7 +222,9 @@ export const downloadChapter = async (
       (txObj, res) => {
         // console.log(`Downloaded Chapter ${chapter.chapterUrl}`);
       },
-      (txObj, error) => console.log('Error ', error),
+      (txObj, error) => {
+        // console.log('Error ', error)
+      },
     );
   });
 };
@@ -217,13 +239,19 @@ export const deleteChapter = async chapterId => {
       updateIsDownloadedQuery,
       [chapterId],
       (txObj, res) => {},
-      (txObj, error) => console.log('Error ', error),
+      (txObj, error) => {
+        // console.log('Error ', error)
+      },
     );
     tx.executeSql(
       deleteChapterQuery,
       [chapterId],
-      (txObj, res) => console.log('Chapter deleted'),
-      (txObj, error) => console.log('Error ', error),
+      (txObj, res) => {
+        // console.log('Chapter deleted');
+      },
+      (txObj, error) => {
+        // console.log('Error ', error)
+      },
     );
   });
 };
@@ -243,7 +271,9 @@ export const getLastReadChapter = async novelId => {
         getLastReadChapterQuery,
         [novelId],
         (txObj, {rows}) => resolve(rows.item(0)),
-        (txObj, error) => console.log('Error ', error),
+        (txObj, error) => {
+          // console.log('Error ', error)
+        },
       );
     });
   });
@@ -258,7 +288,9 @@ export const bookmarkChapter = async (bookmark, chapterId) => {
       bookmarkChapterQuery,
       [!bookmark, chapterId],
       (txObj, res) => {},
-      (txObj, error) => console.log('Error ', error),
+      (txObj, error) => {
+        // console.log('Error ', error)
+      },
     );
   });
 };
@@ -272,7 +304,9 @@ export const markPreviuschaptersRead = async (chapterId, novelId) => {
       markPreviuschaptersReadQuery,
       [chapterId, novelId],
       (txObj, res) => {},
-      (txObj, error) => console.log(error),
+      (txObj, error) => {
+        // console.log(error)
+      },
     );
   });
 };
@@ -286,7 +320,9 @@ export const markPreviousChaptersUnread = async (chapterId, novelId) => {
       markPreviousChaptersUnreadQuery,
       [chapterId, novelId],
       (txObj, res) => {},
-      (txObj, error) => console.log(error),
+      (txObj, error) => {
+        // console.log(error)
+      },
     );
   });
 };
@@ -307,7 +343,9 @@ export const getDownloadedChapters = () => {
         (txObj, {rows: {_array}}) => {
           resolve(_array);
         },
-        (txObj, error) => console.log('Error ', error),
+        (txObj, error) => {
+          // console.log('Error ', error)
+        },
       );
     }),
   );

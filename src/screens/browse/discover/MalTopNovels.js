@@ -62,6 +62,7 @@ const BrowseMalScreen = ({navigation, route}) => {
 
   useEffect(() => {
     getNovels();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const renderItem = ({item}) => (

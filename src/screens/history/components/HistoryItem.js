@@ -29,6 +29,7 @@ const HistoryItem = ({history, theme, dispatch, navigation, deleteHistory}) => {
       `Chapter ${parseChapterNumber(chapterName)} • ${moment(historyTimeRead)
         .format('h:mm a')
         .toUpperCase()}`,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
 

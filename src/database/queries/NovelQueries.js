@@ -31,7 +31,9 @@ export const insertNovel = async novel => {
           novel.genre,
         ],
         (txObj, {insertId}) => resolve(insertId),
-        (txObj, error) => console.log('Error ', error),
+        (txObj, error) => {
+          // console.log('Error ', error)
+        },
       ),
     ),
   );
@@ -43,7 +45,9 @@ export const followNovel = async (followed, novelId) => {
       'UPDATE novels SET followed = ? WHERE novelId = ?',
       [!followed, novelId],
       (txo, res) => {},
-      (txObj, error) => console.log('Error ', error),
+      (txObj, error) => {
+        // console.log('Error ', error)
+      },
     );
   });
 };
@@ -54,7 +58,9 @@ export const unfollowNovel = async novelId => {
       'UPDATE novels SET followed = 0 WHERE novelId = ?',
       [novelId],
       (txo, res) => {},
-      (txObj, error) => console.log('Error ', error),
+      (txObj, error) => {
+        // console.log('Error ', error)
+      },
     );
   });
 };
@@ -74,7 +80,9 @@ export const checkNovelInCache = novelUrl => {
             resolve(false);
           }
         },
-        (txObj, error) => console.log('Error ', error),
+        (txObj, error) => {
+          // console.log('Error ', error)
+        },
       );
     }),
   );
@@ -87,7 +95,9 @@ export const getNovel = async (sourceId, novelUrl) => {
         'SELECT * FROM novels WHERE novelUrl = ? AND sourceId = ?',
         [novelUrl, sourceId],
         (txObj, {rows}) => resolve(rows.item(0)),
-        (txObj, error) => console.log('Error ', error),
+        (txObj, error) => {
+          // console.log('Error ', error)
+        },
       );
     }),
   );
@@ -99,7 +109,9 @@ export const deleteNovelCache = () => {
       'DELETE FROM novels WHERE followed = 0',
       null,
       (txObj, res) => showToast('Entries deleted'),
-      (txObj, error) => console.log('Error ', error),
+      (txObj, error) => {
+        // console.log('Error ', error)
+      },
     );
   });
 };
@@ -131,7 +143,9 @@ export const restoreLibrary = async novel => {
           const chapters = await fetchChapters(novel.sourceId, novel.novelUrl);
           await insertChapters(insertId, chapters);
         },
-        (txObj, error) => console.log('Error ', error),
+        (txObj, error) => {
+          // console.log('Error ', error)
+        },
       ),
     ),
   );
@@ -190,7 +204,9 @@ export const migrateNovel = async (sourceId, novelUrl) => {
               await insertChapters(insertId, chapters);
               resolve();
             },
-            (txObj, error) => console.log('Error ', error),
+            (txObj, error) => {
+              // console.log('Error ', error)
+            },
           ),
         );
       });
@@ -218,7 +234,9 @@ export const updateNovelInfo = async (info, novelId) => {
         novelId,
       ],
       (txObj, res) => {},
-      (txObj, error) => console.log('Error ', error),
+      (txObj, error) => {
+        // console.log('Error ', error)
+      },
     );
   });
 };
@@ -232,7 +250,9 @@ export const pickCustomNovelCover = async novelId => {
         'UPDATE novels SET novelCover = ? WHERE novelId = ?',
         [image.uri, novelId],
         (txObj, res) => {},
-        (txObj, error) => console.log('Error ', error),
+        (txObj, error) => {
+          // console.log('Error ', error)
+        },
       );
     });
 

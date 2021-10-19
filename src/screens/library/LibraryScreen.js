@@ -60,11 +60,13 @@ const LibraryScreen = ({navigation}) => {
     useCallback(() => {
       setSearchText('');
       dispatch(getLibraryAction(sort, filter));
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [getLibraryAction, sort, filter]),
   );
 
   useEffect(() => {
     updateLibraryOnLaunch && dispatch(updateLibraryAction());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onRefresh = () => {

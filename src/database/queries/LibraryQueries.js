@@ -32,7 +32,9 @@ export const getLibrary = (sort, filter) => {
           // console.log(_array);
           resolve(_array);
         },
-        (txObj, error) => console.log('Error ', error),
+        (txObj, error) => {
+          // console.log('Error ', error);
+        },
       );
     }),
   );
@@ -68,7 +70,9 @@ export const searchLibrary = (searchText, sort, filter) => {
         searchLibraryQuery(searchText, sort, filter),
         null,
         (txObj, {rows: {_array}}) => resolve(_array),
-        (txObj, error) => console.log('Error ', error),
+        (txObj, error) => {
+          // console.log('Error ', error);
+        },
       );
     });
   });

@@ -60,7 +60,7 @@ export const Searchbar = ({
               color={action.color ?? theme.textColorPrimary}
               onPress={action.onPress}
               theme={theme}
-              containerStyle={{marginRight: 0}}
+              containerStyle={{marginRight: 0, marginLeft: 6}}
             />
           ))}
       </Pressable>

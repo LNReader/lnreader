@@ -90,6 +90,7 @@ const Novel = ({route, navigation}) => {
     dispatch(
       getNovelAction(followed, sourceId, novelUrl, novelId, sort, filter),
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getNovelAction]);
 
   const onRefresh = () => {

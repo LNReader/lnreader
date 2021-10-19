@@ -47,6 +47,7 @@ const GlobalSearch = ({route, navigation}) => {
 
   useEffect(() => {
     novelName && onSubmitEditing();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const clearSearchbar = () => setSearchText('');

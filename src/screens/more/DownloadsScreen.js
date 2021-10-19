@@ -65,6 +65,7 @@ const Downloads = ({navigation}) => {
         novelName: item.novelName,
         bookmark: item.bookmark,
       }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
 
@@ -76,6 +77,7 @@ const Downloads = ({navigation}) => {
         novelName: item.novelName,
         novelCover: item.novelCover,
       }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
 

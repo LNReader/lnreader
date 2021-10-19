@@ -49,6 +49,7 @@ const Browse = ({navigation}) => {
 
   useEffect(() => {
     dispatch(getSourcesAction());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onRefresh = () => {

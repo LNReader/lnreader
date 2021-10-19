@@ -34,7 +34,9 @@ const updateNovelDetails = async (novel, novelId) => {
         novelId,
       ],
       (txObj, res) => {},
-      (txObj, error) => console.log('Error ', error),
+      (txObj, error) => {
+        // console.log('Error ', error)
+      },
     );
   });
 };
@@ -62,11 +64,15 @@ export const updateNovel = async (sourceId, novelUrl, novelId) => {
                 //         novelId
                 // );
               },
-              (txOBJ, error) => console.log('Error ', error),
+              (txOBJ, error) => {
+                // console.log('Error ', error)
+              },
             );
           }
         },
-        (txObj, error) => console.log('Error ', error),
+        (txObj, error) => {
+          // console.log('Error ', error)
+        },
       ),
     );
   });
@@ -89,18 +95,23 @@ export const updateNovelChapters = async (
         [chapter.chapterUrl, chapter.chapterName, chapter.releaseDate, novelId],
         (txObj, {insertId}) => {
           if (insertId !== -1) {
-            downloadNewChapters &&
+            if (downloadNewChapters) {
               downloadChapter(sourceId, novelUrl, chapter.chapterUrl, insertId);
+            }
 
             tx.executeSql(
               "INSERT OR IGNORE INTO updates (chapterId, novelId, updateTime) values (?, ?, (datetime('now','localtime')))",
               [insertId, novelId],
               (txOBJ, res) => {},
-              (txOBJ, error) => console.log('Error ', error),
+              (txOBJ, error) => {
+                // console.log('Error ', error)
+              },
             );
           }
         },
-        (txObj, error) => console.log('Error ', error),
+        (txObj, error) => {
+          // console.log('Error ', error)
+        },
       ),
     );
   });

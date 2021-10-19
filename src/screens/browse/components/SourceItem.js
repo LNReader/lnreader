@@ -15,6 +15,7 @@ const SourceItem = ({item, theme, isPinned, dispatch, navigation}) => {
         sourceName: item.sourceName,
         url: item.url,
       }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
 

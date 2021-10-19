@@ -109,9 +109,7 @@ const Chapter = ({route, navigation}) => {
   const [contentSize, setContentSize] = useState(0);
 
   const [textToSpeech, setTextToSpeech] = useState();
-  const [textToSpeechPosition, setTextToSpeechPosition] = useState({
-    end: 0,
-  });
+  const [textToSpeechPosition, setTextToSpeechPosition] = useState({end: 0});
 
   useEffect(() => {
     Tts.addEventListener('tts-start', () => setTextToSpeech('start'));
@@ -241,28 +239,33 @@ const Chapter = ({route, navigation}) => {
     setPrevChapter(prevChap);
   };
 
-  useEffect(() => {
-    setImmersiveMode();
-    getChapter(chapterId);
+  useEffect(
+    () => {
+      setImmersiveMode();
+      getChapter(chapterId);
 
-    if (!incognitoMode) {
-      insertHistory(novelId, chapterId);
-      dispatch({
-        type: SET_LAST_READ,
-        payload: {novelId, chapterId},
-      });
-    }
-  }, []);
+      if (!incognitoMode) {
+        insertHistory(novelId, chapterId);
+        dispatch({
+          type: SET_LAST_READ,
+          payload: {novelId, chapterId},
+        });
+      }
+    }, // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
+  );
 
   useEffect(() => {
     navigation.addListener('beforeRemove', e => {
       StatusBar.setHidden(false);
       showNavigationBar();
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     setPrevAndNextChap();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chapter]);
 
   const [currentTime, setCurrentTime] = useState();
@@ -279,6 +282,7 @@ const Chapter = ({route, navigation}) => {
 
   useEffect(() => {
     if (!useWebViewForChapter && scrollPercentage !== 100 && autoScroll) {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       scrollTimeout = setTimeout(() => {
         scrollViewRef.current.scrollTo({
           x: 0,
@@ -334,6 +338,7 @@ const Chapter = ({route, navigation}) => {
       dispatch(markChapterReadAction(chapterId, novelId));
       updateTracker();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const setImmersiveMode = () => {
@@ -346,17 +351,20 @@ const Chapter = ({route, navigation}) => {
     }
   };
 
-  const scrollToSavedProgress = useCallback(event => {
-    if (position && firstLayout) {
-      position.percentage < 100 &&
-        scrollViewRef.current.scrollTo({
-          x: 0,
-          y: position.position,
-          animated: false,
-        });
-      setFirstLayout(false);
-    }
-  }, []);
+  const scrollToSavedProgress = useCallback(
+    event => {
+      if (position && firstLayout) {
+        position.percentage < 100 &&
+          scrollViewRef.current.scrollTo({
+            x: 0,
+            y: position.position,
+            animated: false,
+          });
+        setFirstLayout(false);
+      }
+    }, // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
+  );
 
   const hideHeader = () => {
     if (!hidden) {

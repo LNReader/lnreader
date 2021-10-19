@@ -24,7 +24,9 @@ export const getHistoryFromDb = async () => {
         (txObj, {rows: {_array}}) => {
           resolve(_array);
         },
-        (txObj, error) => console.log('Error ', error),
+        (txObj, error) => {
+          // console.log('Error ', error)
+        },
       );
     });
   });
@@ -38,7 +40,9 @@ export const insertHistory = async (novelId, chapterId) => {
       "INSERT OR REPLACE INTO history (historyNovelId, historyChapterId, historyTimeRead) VALUES (?, ?, (datetime('now','localtime')))",
       [novelId, chapterId],
       (txObj, res) => {},
-      (txObj, error) => console.log('Error ', error),
+      (txObj, error) => {
+        // console.log('Error ', error)
+      },
     );
     tx.executeSql('UPDATE novels SET unread = 0 WHERE novelId = ?', [novelId]);
   });
@@ -50,7 +54,9 @@ export const deleteHistory = async historyId => {
       'DELETE FROM history WHERE historyId = ?',
       [historyId],
       (txObj, res) => {},
-      (txObj, error) => console.log('Error ', error),
+      (txObj, error) => {
+        // console.log('Error ', error)
+      },
     );
   });
 };

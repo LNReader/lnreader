@@ -37,6 +37,7 @@ const NovelCover = ({
 
   const getHeight = useCallback(
     () => (window.width / getNovelsPerRow()) * (4 / 3),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
 

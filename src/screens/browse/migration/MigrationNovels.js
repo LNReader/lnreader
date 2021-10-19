@@ -79,6 +79,7 @@ const MigrationNovels = ({navigation, route}) => {
 
   useEffect(() => {
     getSearchResults();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const renderItem = ({item}) => (

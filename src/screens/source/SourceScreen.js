@@ -75,11 +75,14 @@ const SourceScreen = ({navigation, route}) => {
     }
   };
 
-  const checkIFInLibrary = (sourceId, novelUrl) =>
-    library.some(obj => obj.novelUrl === novelUrl && obj.sourceId === sourceId);
+  const checkIFInLibrary = (novelSourceId, novelUrl) =>
+    library.some(
+      obj => obj.novelUrl === novelUrl && obj.sourceId === novelSourceId,
+    );
 
   useEffect(() => {
     getNovels();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
   const getNextPage = () => {

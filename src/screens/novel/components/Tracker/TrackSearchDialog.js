@@ -32,6 +32,7 @@ const TrackSearchDialog = ({
 
   useEffect(() => {
     trackSearchDialog && getSearchresults();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [trackSearchDialog]);
 
   const renderSearchResultCard = item => (
