@@ -112,7 +112,7 @@ class MadaraScraper {
 
     let html;
 
-    if (this.useNewChapterEndpoint) {
+    if (this.useNewChapterEndpoint === false) {
       const novelId =
         loadedCheerio('.rating-post-id').attr('value') ||
         loadedCheerio('#manga-chapters-holder').attr('data-id');
