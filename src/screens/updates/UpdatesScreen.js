@@ -132,7 +132,7 @@ const Updates = ({navigation}) => {
     text !== '' &&
       updates.map(item => {
         const date = item.date;
-        const chapters = item.chapters.filter(chapter =>
+        const chapters = item.data.filter(chapter =>
           chapter.novelName.toLowerCase().includes(text.toLowerCase()),
         );
 
