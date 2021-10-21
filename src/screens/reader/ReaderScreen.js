@@ -12,7 +12,8 @@ import {
 import {useDispatch} from 'react-redux';
 import {IconButton, Portal} from 'react-native-paper';
 import Tts from 'react-native-tts';
-import changeNavigationBarColor, {
+import {
+  changeNavigationBarColor,
   hideNavigationBar,
   showNavigationBar,
 } from '../../theme/utils/androidNavigationBarColor';
