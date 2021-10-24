@@ -1,4 +1,5 @@
 import cheerio from 'react-native-cheerio';
+import {defaultCoverUri} from '../helpers/constants';
 
 const sourceId = 59;
 const sourceName = 'ArNovel';
@@ -6,20 +7,19 @@ const sourceName = 'ArNovel';
 const baseUrl = 'https://arnovel.me/';
 
 const popularNovels = async page => {
-  let totalPages = 21;
-  let url = baseUrl + 'novels/page/' + page;
+  const totalPages = 21;
+  const url = baseUrl + 'novels/page/' + page;
 
   const result = await fetch(url);
   const body = await result.text();
 
-  let loadedCheerio = cheerio.load(body);
+  const loadedCheerio = cheerio.load(body);
 
   let novels = [];
 
   loadedCheerio('.page-item-detail').each(function () {
     const novelName = loadedCheerio(this).find('.h5 > a').text();
-    const novelCover =
-      'https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true';
+    const novelCover = defaultCoverUri;
 
     let novelUrl = loadedCheerio(this)
       .find('.h5 > a')
@@ -47,71 +47,49 @@ const parseNovelAndChapters = async novelUrl => {
 
   let loadedCheerio = cheerio.load(body);
 
-  let novel = {sourceId, sourceName, url, novelUrl};
+  let novel = {
+    sourceId,
+    sourceName,
+    url,
+    novelUrl,
+    novelCover: defaultCoverUri,
+    author: '',
+    status: '',
+    genre: '',
+    summary: '',
+    chapters: [],
+  };
 
-  novel.novelName = loadedCheerio('.post-title > h1')
-    .text()
-    .replace(/[\t\n]/g, '')
-    .trim();
-
-  novel.novelCover =
-    'https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true';
+  novel.novelName = loadedCheerio('.post-title > h1').text().trim();
 
   loadedCheerio('.post-content_item').each(function () {
-    const detailName = loadedCheerio(this)
-      .find('.summary-heading > h5')
-      .text()
-      .replace(/[\t\n]/g, '')
-      .trim();
-    const detail = loadedCheerio(this)
-      .find('.summary-content')
-      .text()
-      .replace(/[\t\n]/g, '')
-      .trim();
+    const key = loadedCheerio(this).find('h5').text().trim();
+    const value = loadedCheerio(this).find('.summary-content').text().trim();
 
-    switch (detailName) {
+    switch (key) {
       case 'التصنيفات':
-        novel.genre = detail.trim().replace(/[\t\n]/g, ',');
+        novel.genre = value.replace(/[\t\n]/g, ',');
         break;
       case 'المؤلف (ين)':
-        novel.author = detail.trim();
+        novel.author = value;
         break;
       case 'الحالة':
-        novel.status = detail.trim();
+        novel.status = value;
         break;
     }
   });
 
-  loadedCheerio('.description-summary > div.summary__content')
-    .find('em')
-    .remove();
-
-  novel.summary = loadedCheerio('.description-summary > div.summary__content')
-    .text()
-    .trim();
+  novel.summary = loadedCheerio('div.summary__content').text().trim();
 
   let novelChapters = [];
 
-  // const novelId = loadedCheerio('#manga-chapters-holder').attr('data-id');
-
-  // let formData = new FormData();
-  // formData.append('action', 'manga_get_chapters');
-  // formData.append('manga', novelId);
-
-  const data = await fetch(`${url}ajax/chapters/`, {
-    method: 'POST',
-  });
+  const data = await fetch(`${url}/ajax/chapters/`, {method: 'POST'});
   const text = await data.text();
 
   loadedCheerio = cheerio.load(text);
 
   loadedCheerio('.wp-manga-chapter').each(function () {
-    const chapterName = loadedCheerio(this)
-      .find('a')
-      .text()
-      .replace(/[\t\n]/g, '')
-      .trim();
-
+    const chapterName = loadedCheerio(this).find('a').text().trim();
     const releaseDate = loadedCheerio(this).find('span').text().trim();
 
     let chapterUrl = loadedCheerio(this).find('a').attr('href').split('/');
@@ -162,8 +140,7 @@ const searchNovels = async searchTerm => {
 
   loadedCheerio('.c-tabs-item__content').each(function () {
     const novelName = loadedCheerio(this).find('.h4 > a').text();
-    const novelCover =
-      'https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true';
+    const novelCover = defaultCoverUri;
 
     let novelUrl = loadedCheerio(this)
       .find('.h4 > a')
