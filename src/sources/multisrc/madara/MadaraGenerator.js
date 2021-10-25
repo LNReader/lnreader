@@ -82,6 +82,7 @@ export const LunarLettersScraper = new MadaraScraper(
   'https://www.lunarletters.com/',
   'LunarLetters',
   getPath(43),
+  true,
 );
 
 export const SleepyTranslationsScraper = new MadaraScraper(
