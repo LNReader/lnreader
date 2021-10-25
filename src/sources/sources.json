@@ -558,5 +558,19 @@
     "sourceName": "MTLNovel (Id)",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/mtlnovel/icon.png?raw=true",
     "lang": "Indonesian"
+  },
+  {
+    "sourceId": 82,
+    "url": "https://mtlreader.com/",
+    "sourceName": "MTLReader",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/mtlreader/icon.png?raw=true",
+    "lang": "English"
+  },
+  {
+    "sourceId": 83,
+    "url": "https://m.mylovenovel.com/",
+    "sourceName": "MyLoveNovel",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/mylovenovel/icon.png?raw=true",
+    "lang": "English"
   }
 ]

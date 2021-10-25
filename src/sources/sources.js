@@ -82,6 +82,8 @@ import ReaperScansBrScraper from './br/ReaperScansBr';
 import ArthurScansScraper from './br/ArthurScans';
 import IdMtlNovelScraper from './id/idmtlnovel';
 import WoopReadScraper from './en/woopread';
+import MTLReaderScraper from './en/mtlreader';
+import MyLoveNovelScraper from './en/mylovenovel';
 
 export const getSource = sourceId => {
   const scrapers = {
@@ -165,6 +167,8 @@ export const getSource = sourceId => {
     79: ReaperScansBrScraper,
     80: ArthurScansScraper,
     81: IdMtlNovelScraper,
+    82: MTLReaderScraper,
+    83: MyLoveNovelScraper,
   };
 
   return scrapers[sourceId];
