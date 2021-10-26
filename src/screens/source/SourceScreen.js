@@ -46,36 +46,36 @@ const SourceScreen = ({navigation, route}) => {
   const isMounted = useRef(true);
 
   const getNovels = async () => {
-    try {
-      if (page <= totalPages) {
-        const source = getSource(sourceId);
-        const res = await source.popularNovels(page);
-        setNovels(prevState => [...prevState, ...res.novels]);
-        setTotalPages(res.totalPages);
-        setLoading(false);
-      }
-    } catch (e) {
-      setError(e.message);
-      showToast(e.message);
-      setNovels([]);
-      setLoading(false);
-    }
-  };
-
-  const getSearchResults = async () => {
     if (isMounted.current === true) {
       try {
-        setLoading(true);
-        const source = getSource(sourceId);
-        const res = await source.searchNovels(searchText);
-        setNovels(res);
-        setLoading(false);
+        if (page <= totalPages) {
+          const source = getSource(sourceId);
+          const res = await source.popularNovels(page);
+          setNovels(prevState => [...prevState, ...res.novels]);
+          setTotalPages(res.totalPages);
+          setLoading(false);
+        }
       } catch (e) {
         setError(e.message);
         showToast(e.message);
         setNovels([]);
         setLoading(false);
       }
+    }
+  };
+
+  const getSearchResults = async () => {
+    try {
+      setLoading(true);
+      const source = getSource(sourceId);
+      const res = await source.searchNovels(searchText);
+      setNovels(res);
+      setLoading(false);
+    } catch (e) {
+      setError(e.message);
+      showToast(e.message);
+      setNovels([]);
+      setLoading(false);
     }
   };
 
