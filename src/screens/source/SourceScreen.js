@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {StyleSheet, View, ActivityIndicator} from 'react-native';
 
 import * as WebBrowser from 'expo-web-browser';
@@ -43,6 +43,8 @@ const SourceScreen = ({navigation, route}) => {
     setSearchText('');
   };
 
+  const isMounted = useRef(true);
+
   const getNovels = async () => {
     try {
       if (page <= totalPages) {
@@ -61,17 +63,19 @@ const SourceScreen = ({navigation, route}) => {
   };
 
   const getSearchResults = async () => {
-    try {
-      setLoading(true);
-      const source = getSource(sourceId);
-      const res = await source.searchNovels(searchText);
-      setNovels(res);
-      setLoading(false);
-    } catch (e) {
-      setError(e.message);
-      showToast(e.message);
-      setNovels([]);
-      setLoading(false);
+    if (isMounted.current === true) {
+      try {
+        setLoading(true);
+        const source = getSource(sourceId);
+        const res = await source.searchNovels(searchText);
+        setNovels(res);
+        setLoading(false);
+      } catch (e) {
+        setError(e.message);
+        showToast(e.message);
+        setNovels([]);
+        setLoading(false);
+      }
     }
   };
 
@@ -82,6 +86,10 @@ const SourceScreen = ({navigation, route}) => {
 
   useEffect(() => {
     getNovels();
+
+    return () => {
+      isMounted.current = false;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 

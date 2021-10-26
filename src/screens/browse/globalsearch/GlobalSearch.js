@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   /* StyleSheet,  */ View,
   FlatList,
@@ -45,8 +45,16 @@ const GlobalSearch = ({route, navigation}) => {
 
   const library = useLibrary();
 
+  const isMounted = useRef(true);
+
   useEffect(() => {
-    novelName && onSubmitEditing();
+    if (novelName) {
+      onSubmitEditing();
+    }
+
+    return () => {
+      isMounted.current = false;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -60,6 +68,10 @@ const GlobalSearch = ({route, navigation}) => {
     let globalSearchSources = searchAllSources ? sources : pinnedSources;
 
     for (let i = 0; i < globalSearchSources.length; i++) {
+      if (isMounted.current === false) {
+        break;
+      }
+
       try {
         setLoading(true);
 

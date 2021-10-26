@@ -22,6 +22,8 @@ const MigrationNovels = ({navigation, route}) => {
   const {sourceId, novelName} = route.params;
   const theme = useTheme();
 
+  const isMounted = React.useRef(true);
+
   const [progress, setProgress] = useState(0);
   const [loading, setLoading] = useState(false);
   const [searchResults, setSearchResults] = useState('');
@@ -43,6 +45,10 @@ const MigrationNovels = ({navigation, route}) => {
   const getSearchResults = async () => {
     let migrationSources = searchAllSources ? sources : pinnedSources;
     for (let i = 0; i < migrationSources.length; i++) {
+      if (isMounted.current === false) {
+        break;
+      }
+
       try {
         setLoading(true);
 
@@ -79,6 +85,10 @@ const MigrationNovels = ({navigation, route}) => {
 
   useEffect(() => {
     getSearchResults();
+
+    return () => {
+      isMounted.current = false;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
