@@ -579,5 +579,12 @@
     "sourceName": "MoreNovel",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/morenovel.png?raw=true",
     "lang": "Indonesian"
+  },
+  {
+    "sourceId": 85,
+    "url": "https://riwyat.com/",
+    "sourceName": "NovelSpace",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/riwayat.png?raw=true",
+    "lang": "Arabic"
   }
 ]
