@@ -89,9 +89,9 @@ const parseNovelAndChapters = async novelUrl => {
 
   let chapters = [];
 
-  loadedCheerio('.bookshelf-list a').each(function () {
+  loadedCheerio('.bookshelf-list #chapter').each(function () {
     let chapterUrl = loadedCheerio(this).attr('href').substring(1);
-    let chapterName = loadedCheerio(this).attr('title');
+    let chapterName = loadedCheerio(this).text();
     let releaseDate = null;
 
     chapters.push({
