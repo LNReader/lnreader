@@ -43,6 +43,7 @@ import {
   LightNovelsHubScraper,
   LunarLettersScraper,
   MeionNovelScraper,
+  MoreNovelScraper,
   MostNovelScraper,
   MysticalSeriesScraper,
   NovelCakeScraper,
@@ -169,6 +170,7 @@ export const getSource = sourceId => {
     81: IdMtlNovelScraper,
     82: MTLReaderScraper,
     83: MyLoveNovelScraper,
+    84: MoreNovelScraper,
   };
 
   return scrapers[sourceId];

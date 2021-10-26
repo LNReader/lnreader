@@ -572,5 +572,12 @@
     "sourceName": "MyLoveNovel",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/mylovenovel/icon.png?raw=true",
     "lang": "English"
+  },
+  {
+    "sourceId": 84,
+    "url": "https://morenovel.net/",
+    "sourceName": "MoreNovel",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/morenovel.png?raw=true",
+    "lang": "Indonesian"
   }
 ]

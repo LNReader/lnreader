@@ -147,7 +147,7 @@ export const LightNovelsHubScraper = new MadaraScraper(
 export const MeionNovelScraper = new MadaraScraper(
   60,
   'https://meionovel.id/',
-  'MeionNovel',
+  'MeioNovel',
   getPath(60),
   true,
 );
@@ -200,5 +200,13 @@ export const MysticalSeriesScraper = new MadaraScraper(
   'https://mysticalmerries.com/',
   'MysticalSeries',
   getPath(75),
+  true,
+);
+
+export const MoreNovelScraper = new MadaraScraper(
+  84,
+  'https://morenovel.net/',
+  'MoreNovel',
+  getPath(84),
   true,
 );
