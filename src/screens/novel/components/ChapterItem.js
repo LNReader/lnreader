@@ -46,7 +46,11 @@ const ChapterItem = ({
         <View>
           <Text
             style={{
-              color: read ? theme.textColorHint : theme.textColorPrimary,
+              color: read
+                ? theme.textColorHint
+                : bookmark
+                ? theme.colorAccent
+                : theme.textColorPrimary,
             }}
             numberOfLines={1}
           >
@@ -65,7 +69,11 @@ const ChapterItem = ({
             {releaseDate && (
               <Text
                 style={{
-                  color: read ? theme.textColorHint : theme.textColorSecondary,
+                  color: read
+                    ? theme.textColorHint
+                    : bookmark
+                    ? theme.colorAccent
+                    : theme.textColorSecondary,
                   fontSize: 12,
                 }}
                 numberOfLines={1}

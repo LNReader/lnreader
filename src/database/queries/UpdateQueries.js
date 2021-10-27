@@ -10,7 +10,6 @@ const getUpdatesQuery = `
     ON updates.novelId = novels.novelId
     WHERE date(updates.updateTime) > date('now','-3 months')
     ORDER BY updates.updateTime DESC
-    LIMIT 100
     `;
 
 export const getUpdates = async () => {
