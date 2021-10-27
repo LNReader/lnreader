@@ -1,17 +1,22 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
-const ScreenContainer = ({children, theme}) => (
-  <View
-    style={{
-      flex: 1,
-      backgroundColor: theme.colorPrimaryDark,
-      paddingBottom: 16,
-    }}
-  >
-    {children}
-  </View>
-);
+const ScreenContainer = ({children, theme}) => {
+  const {bottom} = useSafeAreaInsets();
+
+  return (
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: theme.colorPrimaryDark,
+        paddingBottom: bottom,
+      }}
+    >
+      {children}
+    </View>
+  );
+};
 
 const Row = ({children, style}) => (
   <View style={[styles.row, style]}>{children}</View>

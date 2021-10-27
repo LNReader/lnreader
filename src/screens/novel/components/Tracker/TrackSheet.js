@@ -11,6 +11,7 @@ import SetTrackStatusDialog from './SetTrackStatusDialog';
 import SetTrackScoreDialog from './SetTrackScoreDialog';
 import SetTrackChaptersDialog from './SetTrackChaptersDialog';
 import {AddMalTrackingCard, MalTrackItemCard} from './MyAnimeListCards';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 const TrackSheet = ({bottomSheetRef, novelId, novelName, theme}) => {
   const tracker = useSelector(state => state.trackerReducer.tracker);
@@ -18,6 +19,8 @@ const TrackSheet = ({bottomSheetRef, novelId, novelName, theme}) => {
     state => state.trackerReducer.trackedNovels,
   );
   const dispatch = useDispatch();
+
+  const {bottom} = useSafeAreaInsets();
 
   const [trackItem, setTrackItem] = useState();
 
@@ -103,12 +106,14 @@ const TrackSheet = ({bottomSheetRef, novelId, novelName, theme}) => {
     setTrackScoreDialog(false);
   };
 
+  const bottomSheetHeight = 120 + bottom;
+
   return (
     <>
       <Bottomsheet
         ref={bottomSheetRef}
-        draggableRange={{top: 140, bottom: 0}}
-        snappingPoints={[0, 140]}
+        draggableRange={{top: bottomSheetHeight, bottom: 0}}
+        snappingPoints={[0, bottomSheetHeight]}
         backdropOpacity={0.25}
       >
         <View

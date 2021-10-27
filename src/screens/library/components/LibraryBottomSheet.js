@@ -15,6 +15,7 @@ import {useSettings} from '../../../hooks/reduxHooks';
 import {setAppSettings} from '../../../redux/settings/settings.actions';
 import {Checkbox, SortItem} from '../../../components/Checkbox/Checkbox';
 import {RadioButton} from '../../../components/RadioButton/RadioButton';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 const LibrarySheet = ({
   bottomSheetRef,
@@ -25,6 +26,10 @@ const LibrarySheet = ({
   theme,
 }) => {
   const [animatedValue] = useState(new Animated.Value(0));
+
+  const {bottom} = useSafeAreaInsets();
+
+  const bottomSheetHeight = 460 + bottom;
 
   const FirstRoute = () => (
     <View style={{flex: 1}}>
@@ -222,8 +227,8 @@ const LibrarySheet = ({
     <Bottomsheet
       animatedValue={animatedValue}
       ref={bottomSheetRef}
-      draggableRange={{top: 480, bottom: 0}}
-      snappingPoints={[0, 480]}
+      draggableRange={{top: bottomSheetHeight, bottom: 0}}
+      snappingPoints={[0, bottomSheetHeight]}
     >
       <View
         style={[

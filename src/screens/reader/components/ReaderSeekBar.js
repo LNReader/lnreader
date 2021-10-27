@@ -3,6 +3,7 @@ import {Dimensions, View, Text, StyleSheet} from 'react-native';
 
 import Slider from '@react-native-community/slider';
 import {useDeviceOrientation} from '../../../services/utils/helpers';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 const VerticalScrollbar = ({
   theme,
@@ -13,6 +14,8 @@ const VerticalScrollbar = ({
   scrollViewRef,
   verticalSeekbar,
 }) => {
+  const {bottom} = useSafeAreaInsets();
+
   const onSlidingComplete = value => {
     setLoading(true);
     scrollViewRef.current.scrollTo({
@@ -76,7 +79,7 @@ const VerticalScrollbar = ({
       <View
         style={[
           styles.horizontalSliderContainer,
-          {backgroundColor: `${theme.colorPrimary}E6`},
+          {backgroundColor: `${theme.colorPrimary}E6`, bottom: 80 + bottom},
         ]}
       >
         <Text
@@ -132,7 +135,6 @@ const styles = StyleSheet.create({
   horizontalSliderContainer: {
     position: 'absolute',
     zIndex: 2,
-    bottom: 100,
     flexDirection: 'row',
     justifyContent: 'flex-end',
     alignItems: 'center',

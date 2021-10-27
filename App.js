@@ -12,6 +12,7 @@ import Main from './src/navigators/Main';
 
 import {createDB} from './src/database/DBHelper';
 import {fonts} from './src/theme/fonts';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
 
 const App = () => {
   const [loaded] = useFonts(fonts);
@@ -28,10 +29,12 @@ const App = () => {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <PaperProvider>
-          <StatusBar translucent={true} backgroundColor="transparent" />
-          <Main />
-        </PaperProvider>
+        <SafeAreaProvider>
+          <PaperProvider>
+            <StatusBar translucent={true} backgroundColor="transparent" />
+            <Main />
+          </PaperProvider>
+        </SafeAreaProvider>
       </PersistGate>
     </Provider>
   );

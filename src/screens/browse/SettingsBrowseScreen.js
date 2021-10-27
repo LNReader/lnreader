@@ -2,6 +2,7 @@ import React from 'react';
 import {FlatList, Pressable, StyleSheet, Text, View} from 'react-native';
 
 import {Switch} from 'react-native-paper';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useDispatch, useSelector} from 'react-redux';
 
 import {Appbar} from '../../components/Appbar';
@@ -17,6 +18,8 @@ import {
 const BrowseSettings = ({navigation}) => {
   const theme = useTheme();
   const dispatch = useDispatch();
+
+  const {bottom} = useSafeAreaInsets();
 
   const {filters = [], showMyAnimeList = true} = useSelector(
     state => state.sourceReducer,
@@ -59,7 +62,7 @@ const BrowseSettings = ({navigation}) => {
     <View style={{flex: 1}}>
       <Appbar onBackAction={navigation.goBack} title="Browse" />
       <FlatList
-        contentContainerStyle={{paddingBottom: 32}}
+        contentContainerStyle={{paddingBottom: bottom}}
         data={languages}
         keyExtractor={item => item}
         renderItem={renderItem}

@@ -18,6 +18,7 @@ import {
 } from '../../../../components/Common/ToggleButton';
 import {ReaderBottomSheetSwitch} from './components/ReaderBottomSheetSwitch';
 import {ReaderBottomSheetFontPicker} from './components/ReaderBottomSheetFontPicker';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 const ReaderSheet = ({
   theme,
@@ -35,6 +36,8 @@ const ReaderSheet = ({
   fullScreenMode,
   verticalSeekbar,
 }) => {
+  const {bottom} = useSafeAreaInsets();
+
   const [animatedValue] = useState(new Animated.Value(0));
 
   const presetThemes = [
@@ -73,7 +76,7 @@ const ReaderSheet = ({
         ]}
       >
         <BottomSheetHandle theme={theme} />
-        <View style={{flex: 1, paddingVertical: 16, paddingTop: 24}}>
+        <View style={{flex: 1, paddingTop: 24, paddingBottom: bottom}}>
           <View
             style={{
               flexDirection: 'row',

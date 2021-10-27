@@ -6,6 +6,7 @@ import {
   Animated,
   useWindowDimensions,
 } from 'react-native';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 import Bottomsheet from 'rn-sliding-up-panel';
@@ -24,6 +25,10 @@ const ChaptersSettingsSheet = ({
   theme,
   showChapterTitles,
 }) => {
+  const {bottom} = useSafeAreaInsets();
+
+  const bottomSheetHeight = 220 + bottom;
+
   const sortChapters = val =>
     dispatch(sortAndFilterChapters(novelId, val, filter));
 
@@ -145,8 +150,8 @@ const ChaptersSettingsSheet = ({
     <Bottomsheet
       animatedValue={animatedValue}
       ref={bottomSheetRef}
-      draggableRange={{top: 220, bottom: 0}}
-      snappingPoints={[0, 220]}
+      draggableRange={{top: bottomSheetHeight, bottom: 0}}
+      snappingPoints={[0, bottomSheetHeight]}
       backdropOpacity={0.5}
     >
       <View
