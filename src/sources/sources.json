@@ -593,5 +593,12 @@
     "sourceName": "NovelRingan",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/id/novelringan/icon.png?raw=true",
     "lang": "Indonesian"
+  },
+  {
+    "sourceId": 87,
+    "url": "http://indowebnovel.id/",
+    "sourceName": "IndoWebNovel",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/id/indowebnovel/icon.png?raw=true",
+    "lang": "Indonesian"
   }
 ]

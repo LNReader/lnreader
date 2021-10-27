@@ -10,16 +10,17 @@ class MadaraScraper {
     sourceName,
     path,
     useNewChapterEndpoint = false,
+    totalPages = 100,
   ) {
     this.sourceId = sourceId;
     this.baseUrl = baseUrl;
     this.sourceName = sourceName;
     this.path = path;
     this.useNewChapterEndpoint = useNewChapterEndpoint;
+    this.totalPages = totalPages;
   }
 
   async popularNovels(page) {
-    const totalPages = 100;
     let url =
       this.baseUrl + this.path.novels + '/page/' + page + '/?m_orderby=rating';
     let sourceId = this.sourceId;
@@ -54,7 +55,7 @@ class MadaraScraper {
       novels.push(novel);
     });
 
-    return {totalPages, novels};
+    return {totalPages: this.totalPages, novels};
   }
 
   async parseNovelAndChapters(novelUrl) {
@@ -158,10 +159,11 @@ class MadaraScraper {
         releaseDate = moment().format('MMMM DD, YYYY');
       }
 
-      const chapterUrl = loadedCheerio(this)
-        .find('a')
-        .attr('href')
-        .split('/')[5];
+      let chapterUrl = loadedCheerio(this).find('a').attr('href').split('/');
+
+      chapterUrl[6]
+        ? (chapterUrl = chapterUrl[5] + '/' + chapterUrl[6])
+        : (chapterUrl = chapterUrl[5]);
 
       novelChapters.push({chapterName, releaseDate, chapterUrl});
     });

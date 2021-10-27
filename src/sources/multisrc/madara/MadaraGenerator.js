@@ -150,6 +150,7 @@ export const MeionNovelScraper = new MadaraScraper(
   'MeioNovel',
   getPath(60),
   true,
+  1,
 );
 
 export const WebNovelLoverScraper = new MadaraScraper(
