@@ -29,7 +29,7 @@ const NovelList = ({
     }
   };
 
-  const keyExtractor = useCallback(item => item.novelUrl, []);
+  const keyExtractor = useCallback(item => item.sourceId + item.novelUrl, []);
 
   return (
     <FlatList
