@@ -88,6 +88,7 @@ import MyLoveNovelScraper from './en/mylovenovel';
 import RiwayatScraper from './ar/riwayat';
 import NovelRinganScraper from './id/novelringan';
 import IndoWebNovelScraper from './id/indowebnovel';
+import ChireadsScraper from './fr/chireads';
 
 export const getSource = sourceId => {
   const scrapers = {
@@ -177,6 +178,7 @@ export const getSource = sourceId => {
     85: RiwayatScraper,
     86: NovelRinganScraper,
     87: IndoWebNovelScraper,
+    88: ChireadsScraper,
   };
 
   return scrapers[sourceId];

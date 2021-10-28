@@ -600,5 +600,12 @@
     "sourceName": "IndoWebNovel",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/id/indowebnovel/icon.png?raw=true",
     "lang": "Indonesian"
+  },
+  {
+    "sourceId": 88,
+    "url": "https://chireads.com/",
+    "sourceName": "Chireads",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/fr/chireads/icon.png?raw=true",
+    "lang": "French"
   }
 ]
