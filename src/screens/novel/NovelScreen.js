@@ -202,7 +202,7 @@ const Novel = ({route, navigation}) => {
           }}
           numberOfLines={1}
         >
-          {chapter.releaseDate && '•  '}
+          {chapter.releaseDate ? '•  ' : null}
           {'Progress ' + position[chapter.chapterId].percentage + '%'}
         </Text>
       );
