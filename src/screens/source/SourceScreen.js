@@ -87,11 +87,12 @@ const SourceScreen = ({navigation, route}) => {
   useEffect(() => {
     getNovels();
 
-    return () => {
-      isMounted.current = false;
-    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
+
+  useEffect(() => {
+    return () => (isMounted.current = false);
+  }, []);
 
   const getNextPage = () => {
     if (!searchText) {
