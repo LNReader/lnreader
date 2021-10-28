@@ -66,7 +66,7 @@ const ChapterItem = ({
               marginTop: 5,
             }}
           >
-            {releaseDate && (
+            {releaseDate && releaseDate !== '' && (
               <Text
                 style={{
                   color: read
