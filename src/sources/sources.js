@@ -63,10 +63,7 @@ import WuxiaCityScraper from './en/wuxiacity';
 import NovelUpdatesScraper from './en/novelupdates';
 import RanobesScraper from './en/ranobes';
 import YushuboScraper from './ch/yushubo';
-import {
-  KolNovelScraper,
-  RewayatArScraper,
-} from './multisrc/wpmangastream/WPMangaStreamGenerator';
+import {KolNovelScraper} from './multisrc/wpmangastream/WPMangaStreamGenerator';
 import WLNUpdatesScraper from './en/wlnupdates';
 import ReaperScansScraper from './en/reaperscans';
 import ReadwnScraper from './en/readwn';
@@ -89,6 +86,7 @@ import RiwayatScraper from './ar/riwayat';
 import NovelRinganScraper from './id/novelringan';
 import IndoWebNovelScraper from './id/indowebnovel';
 import ChireadsScraper from './fr/chireads';
+import RewayatArScraper from './ar/rewayatar';
 
 export const getSource = sourceId => {
   const scrapers = {

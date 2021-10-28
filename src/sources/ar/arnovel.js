@@ -32,8 +32,6 @@ const popularNovels = async page => {
     novels.push(novel);
   });
 
-  console.log(url);
-
   return {totalPages, novels};
 };
 

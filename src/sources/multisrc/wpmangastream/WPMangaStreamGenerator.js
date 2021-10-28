@@ -5,9 +5,3 @@ export const KolNovelScraper = new WPMangaStreamScraper(
   'https://alightnovel.com/',
   'KolNovel',
 );
-
-export const RewayatArScraper = new WPMangaStreamScraper(
-  54,
-  'https://rewayat-ar.site/',
-  'RewayatAr',
-);
