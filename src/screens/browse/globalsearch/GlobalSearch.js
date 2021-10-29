@@ -52,10 +52,13 @@ const GlobalSearch = ({route, navigation}) => {
       onSubmitEditing();
     }
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
     return () => {
       isMounted.current = false;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const clearSearchbar = () => setSearchText('');
