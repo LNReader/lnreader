@@ -237,9 +237,9 @@ const NovelInfoHeader = ({
             followed={novel.followed}
             theme={theme}
           />
-          {novel.genre !== null && novel.genre !== '' && (
+          {novel.genre ? (
             <NovelGenres theme={theme} genre={novel.genre} />
-          )}
+          ) : null}
           <ReadButton
             novel={novel}
             chapters={chapters}
@@ -252,16 +252,14 @@ const NovelInfoHeader = ({
             onPress={() => novelBottomSheetRef.current.show()}
             android_ripple={{color: theme.rippleColor}}
           >
-            <>
-              <Text style={[{color: theme.textColorPrimary}, styles.chapters]}>
-                {`${chapters.length} chapters`}
-              </Text>
-              <IconButton
-                icon="filter-variant"
-                color={filter ? theme.filterColor : theme.textColorPrimary}
-                size={24}
-              />
-            </>
+            <Text style={[{color: theme.textColorPrimary}, styles.chapters]}>
+              {`${chapters.length} chapters`}
+            </Text>
+            <IconButton
+              icon="filter-variant"
+              color={filter ? theme.filterColor : theme.textColorPrimary}
+              size={24}
+            />
           </Pressable>
         </>
       )}
