@@ -88,6 +88,7 @@ import IndoWebNovelScraper from './id/indowebnovel';
 import ChireadsScraper from './fr/chireads';
 import RewayatArScraper from './ar/rewayatar';
 import MTLCornerScraper from './en/mtlcorner';
+import NitroScansScraper from './en/nitroscans';
 
 export const getSource = sourceId => {
   const scrapers = {
@@ -179,6 +180,7 @@ export const getSource = sourceId => {
     87: IndoWebNovelScraper,
     88: ChireadsScraper,
     89: MTLCornerScraper,
+    90: NitroScansScraper,
   };
 
   return scrapers[sourceId];

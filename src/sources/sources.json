@@ -614,5 +614,12 @@
     "sourceName": "MTLCorner",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/mtlcorner/icon.png?raw=true",
     "lang": "English"
+  },
+  {
+    "sourceId": 90,
+    "url": "https://nitroscans.com/",
+    "sourceName": "NitroScans",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/nitroscans/icon.png?raw=true",
+    "lang": "English"
   }
 ]
