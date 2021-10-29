@@ -89,7 +89,7 @@ const parseNovelAndChapters = async novelUrl => {
 
   let chapters = [];
 
-  loadedCheerio('.bookshelf-list #chapter').each(function () {
+  loadedCheerio('.bookshelf-list #chapter a').each(function () {
     let chapterUrl = loadedCheerio(this).attr('href').substring(1);
     let chapterName = loadedCheerio(this).text();
     let releaseDate = null;
@@ -134,11 +134,11 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 };
 
 const searchNovels = async searchTerm => {
-  const searchUrl = `${baseUrl}/search.html`;
+  const searchUrl = `${baseUrl}/so.html`;
 
   const result = await fetch(searchUrl, {
     method: 'post',
-    body: JSON.stringify({keyword: searchTerm}),
+    body: JSON.stringify({ss: searchTerm}),
     headers: {
       'User-Agent':
         "'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36",
