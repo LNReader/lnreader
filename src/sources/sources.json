@@ -607,5 +607,12 @@
     "sourceName": "Chireads",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/fr/chireads/icon.png?raw=true",
     "lang": "French"
+  },
+  {
+    "sourceId": 89,
+    "url": "https://mtlcorner.com/",
+    "sourceName": "MTLCorner",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/mtlcorner/icon.png?raw=true",
+    "lang": "English"
   }
 ]
