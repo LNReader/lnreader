@@ -121,14 +121,14 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 };
 
 const searchNovels = async searchTerm => {
-  const url = 'https://ranobehub.org/api/fulltext/ranobe?query=' + searchTerm;
+  const url = `https://ranobehub.org/api/fulltext/global?query=${searchTerm}&take=5`;
 
   const result = await fetch(url);
   const data = await result.json();
 
   let novels = [];
 
-  data.data.map(novel =>
+  data[1].data.map(novel =>
     novels.push({
       sourceId,
       novelName: novel.names.rus,
