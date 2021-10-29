@@ -52,6 +52,8 @@ const parseNovelAndChapters = async novelUrl => {
     chapters: [],
   };
 
+  loadedCheerio('.manga-title-badges.custom.novel').remove();
+
   novel.novelName = loadedCheerio('.post-title > h1').text().trim();
   novel.novelCover = loadedCheerio('.summary_image')
     .find('img')
