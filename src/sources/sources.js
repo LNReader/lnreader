@@ -50,6 +50,7 @@ import {
   NovelMultiverseScraper,
   NovelsRockScraper,
   NovelTranslateScraper,
+  OnlyMTLScraper,
   ReadWebNovelsScraper,
   SkyNovelScraper,
   SleepyTranslationsScraper,
@@ -181,6 +182,7 @@ export const getSource = sourceId => {
     88: ChireadsScraper,
     89: MTLCornerScraper,
     90: NitroScansScraper,
+    91: OnlyMTLScraper,
   };
 
   return scrapers[sourceId];

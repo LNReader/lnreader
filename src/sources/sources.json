@@ -621,5 +621,12 @@
     "sourceName": "NitroScans",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/nitroscans/icon.png?raw=true",
     "lang": "English"
+  },
+  {
+    "sourceId": 91,
+    "url": "https://www.onlymtl.com/",
+    "sourceName": "OnlyMTL",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/onlymtl.png?raw=true",
+    "lang": "English"
   }
 ]

@@ -23,6 +23,7 @@ const getPath = extensionId => {
     63: {novels: 'novel', novel: 'novel', chapter: 'novel'},
     75: {novels: 'series', novel: 'series', chapter: 'series'},
     80: {novels: 'manga', novel: 'manga', chapter: 'manga'},
+    91: {novels: 'manga', novel: 'manga', chapter: 'manga'},
   };
 
   return (
@@ -210,4 +211,11 @@ export const MoreNovelScraper = new MadaraScraper(
   'MoreNovel',
   getPath(84),
   true,
+);
+
+export const OnlyMTLScraper = new MadaraScraper(
+  91,
+  'https://www.onlymtl.com/',
+  'OnlyMTL',
+  getPath(91),
 );
