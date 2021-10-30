@@ -135,6 +135,7 @@ export const LightNovelHeavenScraper = new MadaraScraper(
   'https://lightnovelheaven.com/',
   'LightNovelHeaven',
   getPath(57),
+  true,
 );
 
 export const LightNovelsHubScraper = new MadaraScraper(
@@ -163,8 +164,8 @@ export const WebNovelLoverScraper = new MadaraScraper(
 
 export const BoxNovelOnlineScraper = new MadaraScraper(
   63,
-  'https://boxnovel.online/',
-  'BoxNovel.online',
+  'https://tipnovel.com/',
+  'TipNovel',
   getPath(63),
   true,
 );
