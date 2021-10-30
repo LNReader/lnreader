@@ -48,7 +48,7 @@ const MigrationNovelList = ({data, theme, library, navigation}) => {
         contentContainerStyle={styles.flatListCont}
         horizontal={true}
         data={data}
-        keyExtractor={item => item.novelUrl}
+        keyExtractor={item => item.sourceId + item.novelUrl}
         renderItem={renderItem}
         ListEmptyComponent={
           <Text

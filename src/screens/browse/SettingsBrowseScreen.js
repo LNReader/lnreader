@@ -89,6 +89,11 @@ const BrowseSettings = ({navigation}) => {
                 }
               />
             </Pressable>
+            <List.InfoItem
+              title="Searching a large number of sources may freeze the app till searching is finished."
+              icon="information-outline"
+              theme={theme}
+            />
             <List.Divider theme={theme} />
             <List.SubHeader theme={theme}>Browse</List.SubHeader>
             <Pressable

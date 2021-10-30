@@ -29,7 +29,7 @@ const GlobalSearchNovelList = ({data, theme, library, navigation}) => {
       contentContainerStyle={styles.listContainer}
       horizontal={true}
       data={data}
-      keyExtractor={item => item.novelUrl}
+      keyExtractor={item => item.sourceId + item.novelUrl}
       renderItem={renderItem}
       ListEmptyComponent={ListEmptyComponent}
     />

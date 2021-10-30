@@ -1,9 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {
-  /* StyleSheet,  */ View,
-  FlatList,
-  ActivityIndicator,
-} from 'react-native';
+import {FlatList} from 'react-native';
 
 import {ProgressBar} from 'react-native-paper';
 import {useSelector} from 'react-redux';
@@ -14,7 +10,6 @@ import EmptyView from '../../../components/EmptyView';
 import {ScreenContainer} from '../../../components/Common';
 import GlobalSearchSourceItem from './GlobalSearchSourceItem';
 
-import {showToast} from '../../../hooks/showToast';
 import {useLibrary, useSettings, useTheme} from '../../../hooks/reduxHooks';
 import {getSource} from '../../../sources/sources';
 
@@ -38,7 +33,6 @@ const GlobalSearch = ({route, navigation}) => {
   );
   const {searchAllSources = false} = useSettings();
 
-  const [loading, setLoading] = useState(false);
   const [searchText, setSearchText] = useState(novelName);
   const [searchResults, setSearchResults] = useState([]);
   const [progress, setProgress] = useState(0);
@@ -51,7 +45,6 @@ const GlobalSearch = ({route, navigation}) => {
     if (novelName) {
       onSubmitEditing();
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -65,47 +58,51 @@ const GlobalSearch = ({route, navigation}) => {
   const onChangeText = text => setSearchText(text);
 
   const onSubmitEditing = async () => {
-    setSearchResults([]);
     setProgress(0);
 
     let globalSearchSources = searchAllSources ? sources : pinnedSources;
 
-    for (let i = 0; i < globalSearchSources.length; i++) {
-      if (isMounted.current === false) {
-        break;
+    setSearchResults(
+      globalSearchSources.map(item => ({
+        sourceId: item.sourceId,
+        sourceName: item.sourceName,
+        lang: item.lang,
+        loading: true,
+        novels: [],
+        error: null,
+      })),
+    );
+
+    globalSearchSources.map(async item => {
+      if (isMounted.current === true) {
+        try {
+          const source = getSource(item.sourceId);
+          const data = await source.searchNovels(encodeURI(searchText));
+
+          setSearchResults(prevState =>
+            prevState.map(sourceItem =>
+              sourceItem.sourceId === item.sourceId
+                ? {...sourceItem, novels: data, loading: false}
+                : {...sourceItem},
+            ),
+          );
+        } catch (e) {
+          setSearchResults(prevState =>
+            prevState.map(sourceItem =>
+              sourceItem.sourceId === item.sourceId
+                ? {
+                    ...sourceItem,
+                    loading: false,
+                    error: e.message,
+                  }
+                : sourceItem,
+            ),
+          );
+        }
+
+        setProgress(before => before + 1 / globalSearchSources.length);
       }
-
-      try {
-        setLoading(true);
-
-        const source = getSource(globalSearchSources[i].sourceId);
-        const data = await source.searchNovels(encodeURI(searchText));
-
-        setSearchResults(before => [
-          ...before,
-          {
-            sourceId: globalSearchSources[i].sourceId,
-            sourceName: globalSearchSources[i].sourceName,
-            lang: globalSearchSources[i].lang,
-            novels: data,
-          },
-        ]);
-        setLoading(false);
-      } catch (error) {
-        showToast(globalSearchSources[i].sourceName + ': ' + error.message);
-        setSearchResults(before => [
-          ...before,
-          {
-            sourceId: globalSearchSources[i].sourceId,
-            sourceName: globalSearchSources[i].sourceName,
-            lang: globalSearchSources[i].lang,
-            novels: [],
-          },
-        ]);
-        setLoading(false);
-      }
-      setProgress(before => before + 1 / globalSearchSources.length);
-    }
+    });
   };
 
   const renderItem = ({item}) => (
@@ -133,42 +130,22 @@ const GlobalSearch = ({route, navigation}) => {
         <ProgressBar color={theme.colorAccent} progress={progress} />
       )}
       <FlatList
-        contentContainerStyle={{
-          flexGrow: 1,
-          padding: 4,
-        }}
+        contentContainerStyle={{flexGrow: 1, padding: 4}}
         data={searchResults}
         keyExtractor={item => item.sourceId.toString()}
         renderItem={renderItem}
         extraData={pinned}
         ListEmptyComponent={
-          <>
-            {!loading && (
-              <EmptyView
-                icon="__φ(．．)"
-                description={`Search a novel in ${
-                  searchAllSources
-                    ? 'all sources'
-                    : pinned.length === 0
-                    ? 'pinned sources\n(No sources pinned)'
-                    : 'pinned sources'
-                }`}
-              />
-            )}
-          </>
-        }
-        ListFooterComponent={
-          loading && (
-            <View
-              style={{
-                flex: 1,
-                justifyContent: 'center',
-                padding: 16,
-              }}
-            >
-              <ActivityIndicator size="large" color={theme.colorAccent} />
-            </View>
-          )
+          <EmptyView
+            icon="__φ(．．)"
+            description={`Search a novel in ${
+              searchAllSources
+                ? 'all sources'
+                : pinned.length === 0
+                ? 'pinned sources\n(No sources pinned)'
+                : 'pinned sources'
+            }`}
+          />
         }
       />
     </ScreenContainer>
@@ -176,5 +153,3 @@ const GlobalSearch = ({route, navigation}) => {
 };
 
 export default GlobalSearch;
-
-// const styles = StyleSheet.create({});

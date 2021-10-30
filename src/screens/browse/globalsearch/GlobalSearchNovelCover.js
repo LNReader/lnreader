@@ -1,5 +1,6 @@
 import React from 'react';
 import {StyleSheet, View, Text, Image, Pressable} from 'react-native';
+import {defaultCoverUri} from '../../../sources/helpers/constants';
 
 const GlobalSearchNovelCover = ({
   novel,
@@ -10,32 +11,28 @@ const GlobalSearchNovelCover = ({
 }) => {
   const {novelName, novelCover} = novel;
 
+  const uri =
+    novelCover && !novelCover.startsWith('/') ? novelCover : defaultCoverUri;
+
   return (
-    <View style={{flex: 1, borderRadius: 6, overflow: 'hidden'}}>
+    <View style={styles.container}>
       <Pressable
         android_ripple={{color: theme.rippleColor}}
-        style={styles.novelContainer}
+        style={styles.pressable}
         onPress={onPress}
         onLongPress={onLongPress}
       >
-        <>
-          <Image
-            source={{
-              uri:
-                novelCover && !novelCover.startsWith('/')
-                  ? novelCover
-                  : 'https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true',
-            }}
-            style={[styles.novelCover, inLibrary && {opacity: 0.5}]}
-            progressiveRenderingEnabled={true}
-          />
-          <Text
-            numberOfLines={2}
-            style={[styles.title, {color: theme.textColorPrimary}]}
-          >
-            {novelName}
-          </Text>
-        </>
+        <Image
+          source={{uri}}
+          style={[styles.novelCover, inLibrary && {opacity: 0.5}]}
+          progressiveRenderingEnabled={true}
+        />
+        <Text
+          numberOfLines={2}
+          style={[styles.title, {color: theme.textColorPrimary}]}
+        >
+          {novelName}
+        </Text>
       </Pressable>
     </View>
   );
@@ -44,10 +41,16 @@ const GlobalSearchNovelCover = ({
 export default GlobalSearchNovelCover;
 
 const styles = StyleSheet.create({
-  novelContainer: {
+  container: {
+    flex: 1,
+    borderRadius: 6,
+    overflow: 'hidden',
+  },
+  pressable: {
     paddingHorizontal: 5,
     paddingVertical: 4,
     borderRadius: 4,
+    flex: 1,
   },
   novelCover: {
     height: 150,

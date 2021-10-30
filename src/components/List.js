@@ -72,13 +72,7 @@ const InfoItem = ({title, icon, theme}) => (
     titleStyle={{color: theme.textColorSecondary, fontSize: 14}}
     titleNumberOfLines={5}
     left={() =>
-      icon && (
-        <PaperList.Icon
-          color={theme.textColorSecondary}
-          icon={icon}
-          style={{marginVertical: 0}}
-        />
-      )
+      icon && <PaperList.Icon color={theme.textColorSecondary} icon={icon} />
     }
   />
 );
