@@ -74,7 +74,7 @@ const LibrarySheet = ({
       DESC: 'novels.novelId DESC',
     },
     {
-      label: 'Aplhabetically',
+      label: 'Alphabetically',
       ASC: 'novels.novelName ASC',
       DESC: 'novels.novelName DESC',
     },

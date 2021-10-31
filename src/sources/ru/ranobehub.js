@@ -90,24 +90,27 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   let chapterName = loadedCheerio(
     'body > div.pusher.container_main > div:nth-child(5) > div:nth-child(1) > div.title-wrapper > h1',
   ).text();
+
+  loadedCheerio(
+    'body > div.pusher.container_main > div:nth-child(5) > div:nth-child(1) img',
+  ).each(function () {
+    if (!loadedCheerio(this).attr('src')?.startsWith('http')) {
+      const dataMediaId = loadedCheerio(this).attr('data-media-id');
+      const newSrc = `https://ranobehub.org/api/media/${dataMediaId}`;
+
+      loadedCheerio(this).attr('src', newSrc);
+    }
+  });
+
   let chapterText = loadedCheerio(
     'body > div.pusher.container_main > div:nth-child(5) > div:nth-child(1)',
   ).html();
 
-  if (chapterText) {
-    /**
-     * Convert relative url to absolute
-     */
-
-    chapterText = chapterText
-      .replace(/<\s*script[^>]*>[\s\S]*?<\/script>/gim, '')
-      .replace(
-        /data-src="(.*)"/g,
-        `src="https://ranobehub.org/img/ranobe/content/${chapterId}/$1.jpg"`,
-      );
-  }
-
-  // console.log(chapterText);
+  // Remove script tags
+  chapterText = chapterText?.replace(
+    /<\s*script[^>]*>[\s\S]*?<\/script>/gim,
+    '',
+  );
 
   const chapter = {
     sourceId,
@@ -128,16 +131,18 @@ const searchNovels = async searchTerm => {
 
   let novels = [];
 
-  data[1].data.map(novel =>
-    novels.push({
-      sourceId,
-      novelName: novel.names.rus,
-      novelUrl: novel.url.match(
-        /https:\/\/ranobehub\.org\/ranobe\/(.*?)\?utm_source=search_name&utm_medium=search&utm_campaign=search_using/,
-      )[1],
-      novelCover: novel.image,
-    }),
-  );
+  data
+    .find(item => item.meta.key === 'ranobe')
+    ?.data.map(novel =>
+      novels.push({
+        sourceId,
+        novelName: novel.names.rus,
+        novelUrl: novel.url.match(
+          /https:\/\/ranobehub\.org\/ranobe\/(.*?)\?utm_source=search_name&utm_medium=search&utm_campaign=search_using/,
+        )[1],
+        novelCover: novel.image,
+      }),
+    );
 
   return novels;
 };

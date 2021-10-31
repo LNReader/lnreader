@@ -37,7 +37,7 @@ const JumpToChapterModal = ({
         });
         hideModal();
       } else {
-        setError(`Enter a valid chapter number (<= ${chapters.length})`);
+        setError(`Enter a valid chapter number (≤ ${chapters.length})`);
       }
     } else {
       const chapter = chapters.find(chap =>
