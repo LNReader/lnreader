@@ -14,6 +14,7 @@ import {useSettings, useTheme} from '../../hooks/reduxHooks';
 import {setAppSettings} from '../../redux/settings/settings.actions';
 import {SHOW_LAST_UPDATE_TIME} from '../../redux/updates/updates.types';
 import {useModal} from '../../hooks/useModal';
+import DefaultChapterSortModal from './components/DefaultChapterSortModal';
 
 const GenralSettings = ({navigation}) => {
   const theme = useTheme();
@@ -27,6 +28,7 @@ const GenralSettings = ({navigation}) => {
     updateLibraryOnLaunch = false,
     downloadNewChapters = false,
     onlyUpdateOngoingNovels = false,
+    defaultChapterSort = 'ORDER BY chapterId ASC',
   } = useSettings();
 
   const {showLastUpdateTime = true} = useSelector(
@@ -53,6 +55,8 @@ const GenralSettings = ({navigation}) => {
    * Grid Size Modal
    */
   const gridSizeModalRef = useModal();
+
+  const defaultChapterSortModal = useModal();
 
   return (
     <ScreenContainer theme={theme}>
@@ -82,6 +86,18 @@ const GenralSettings = ({navigation}) => {
                 setAppSettings('updateLibraryOnLaunch', !updateLibraryOnLaunch),
               )
             }
+            theme={theme}
+          />
+          <List.Divider theme={theme} />
+          <List.SubHeader theme={theme}>Novel</List.SubHeader>
+          <List.Item
+            title="Default chapter sort"
+            description={`By source ${
+              defaultChapterSort === 'ORDER BY chapterId ASC'
+                ? '(Ascending)'
+                : '(Descending)'
+            }`}
+            onPress={defaultChapterSortModal.showModal}
             theme={theme}
           />
           <List.Divider theme={theme} />
@@ -128,6 +144,13 @@ const GenralSettings = ({navigation}) => {
         displayMode={displayMode}
         displayModalVisible={displayModalRef.visible}
         hideDisplayModal={displayModalRef.hideModal}
+        dispatch={dispatch}
+        theme={theme}
+      />
+      <DefaultChapterSortModal
+        defaultChapterSort={defaultChapterSort}
+        displayModalVisible={defaultChapterSortModal.visible}
+        hideDisplayModal={defaultChapterSortModal.hideModal}
         dispatch={dispatch}
         theme={theme}
       />

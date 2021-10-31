@@ -89,7 +89,7 @@ const JumpToChapterModal = ({
         <TextInput
           value={text}
           placeholder={
-            mode ? 'Chapter Name' : `Chapter Number (<= ${chapters.length})`
+            mode ? 'Chapter Name' : `Chapter Number (≤ ${chapters.length})`
           }
           onChangeText={onChangeText}
           onSubmitEditing={onSubmit}

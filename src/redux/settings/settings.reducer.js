@@ -99,6 +99,7 @@ const initialState = {
    */
 
   hideBackdrop: false,
+  defaultChapterSort: null,
 
   /**
    * Reader settings

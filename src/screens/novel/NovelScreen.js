@@ -77,14 +77,17 @@ const Novel = ({route, navigation}) => {
   const deleteDownloadsSnackbar = useModal();
 
   const {
-    sort = 'ORDER BY chapterId ASC',
+    useFabForContinueReading = false,
+    defaultChapterSort = 'ORDER BY chapterId ASC',
+  } = useSettings();
+
+  const {
+    sort = defaultChapterSort,
     filter = '',
     showChapterTitles = false,
   } = usePreferences(novel.novelId);
 
   let {lastReadChapter, position} = useContinueReading(chapters, novel.novelId);
-
-  const {useFabForContinueReading = lastReadChapter && false} = useSettings();
 
   useEffect(() => {
     dispatch(
