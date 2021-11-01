@@ -28,8 +28,6 @@ const popularNovels = async page => {
     novels.push(novel);
   });
 
-  console.log(novels);
-
   return {totalPages, novels};
 };
 
@@ -73,8 +71,6 @@ const parseNovelAndChapters = async novelUrl => {
 
   novel.chapters = chapters;
 
-  console.log(novel);
-
   return novel;
 };
 
@@ -96,8 +92,6 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     chapterName,
     chapterText,
   };
-
-  console.log(chapter);
 
   return chapter;
 };
@@ -123,8 +117,6 @@ const searchNovels = async searchTerm => {
 
     novels.push(novel);
   });
-
-  console.log(novels);
 
   return novels;
 };

@@ -628,5 +628,12 @@
     "sourceName": "OnlyMTL",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/onlymtl.png?raw=true",
     "lang": "English"
+  },
+  {
+    "sourceId": 92,
+    "url": "https://novelforest.com/",
+    "sourceName": "NovelForest",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/novelforest/icon.png?raw=true",
+    "lang": "English"
   }
 ]
