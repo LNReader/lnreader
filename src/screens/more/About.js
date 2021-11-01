@@ -23,14 +23,14 @@ const AboutScreen = ({navigation}) => {
         <List.Section>
           <List.Item
             title="Version"
-            description="Stable 1.1.6 (26/10/21 09:00 PM)"
+            description="Stable 1.1.7 (01/11/21 10:00 AM)"
             theme={theme}
           />
           <List.Item
             title="What's new"
             onPress={() =>
               Linking.openURL(
-                'https://github.com/LNReader/lnreader/releases/tag/v1.1.6',
+                'https://github.com/LNReader/lnreader/releases/tag/v1.1.7',
               )
             }
             theme={theme}

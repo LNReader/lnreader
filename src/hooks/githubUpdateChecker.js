@@ -24,7 +24,7 @@ export const useGithubUpdateChecker = () => {
   };
 
   const isNewVersion = versionTag => {
-    let currentVersion = 'v1.1.6';
+    let currentVersion = 'v1.1.7';
     const regex = /[^\\d.]/;
 
     let newVersion = versionTag.replace(regex, '');
@@ -34,10 +34,11 @@ export const useGithubUpdateChecker = () => {
   };
 
   useEffect(() => {
-    checkForRelease().catch(e => {
-      showToast(`Could not connect to github:\n${`${e}`.split(':')[1].trim()}`);
-      // console.error(e);
-    });
+    checkForRelease();
+    // .catch(e => {
+    //   showToast(`Could not connect to github:\n${`${e}`.split(':')[1].trim()}`);
+    //   // console.error(e);
+    // });
   }, []);
 
   if (!checking) {
