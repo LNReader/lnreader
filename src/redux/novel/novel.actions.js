@@ -113,7 +113,7 @@ export const getNovelAction =
            * Get novel from db.
            */
           novel = await getNovel(sourceId, novelUrl);
-          novel.chapters = await getChapters(novel.novelId);
+          novel.chapters = await getChapters(novel.novelId, sort, filter);
 
           dispatch({
             type: GET_NOVEL,
