@@ -170,10 +170,10 @@ const searchNovels = async searchTerm => {
   let novels = [];
 
   loadedCheerio('.c-tabs-item__content').each(function () {
-    const novelName = loadedCheerio(this).find('h4 > a').text();
+    const novelName = loadedCheerio(this).find('.post-title a').text();
     const novelCover = loadedCheerio(this).find('img').attr('src');
 
-    let novelUrl = loadedCheerio(this).find('h4 > a').attr('href');
+    let novelUrl = loadedCheerio(this).find('.post-title a').attr('href');
     novelUrl = novelUrl.replace(`${baseUrl}vipnovel/`, '');
 
     const novel = {
