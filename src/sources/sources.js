@@ -91,6 +91,7 @@ import RewayatArScraper from './ar/rewayatar';
 import MTLCornerScraper from './en/mtlcorner';
 import NitroScansScraper from './en/nitroscans';
 import NovelForestScraper from './en/novelforest';
+import RanobeLibScraper from './ru/ranobelib';
 
 export const getSource = sourceId => {
   const scrapers = {
@@ -185,6 +186,7 @@ export const getSource = sourceId => {
     90: NitroScansScraper,
     91: OnlyMTLScraper,
     92: NovelForestScraper,
+    93: RanobeLibScraper,
   };
 
   return scrapers[sourceId];

@@ -635,5 +635,12 @@
     "sourceName": "NovelForest",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/novelforest/icon.png?raw=true",
     "lang": "English"
+  },
+  {
+    "sourceId": 93,
+    "url": "https://ranobelib.me/",
+    "sourceName": "RanobeLib",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/ru/ranobelib/icon.png?raw=true",
+    "lang": "Russian"
   }
 ]
