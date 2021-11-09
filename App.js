@@ -1,3 +1,7 @@
+import {enableFreeze} from 'react-native-screens';
+
+enableFreeze(true);
+
 import React, {useEffect} from 'react';
 import {StatusBar} from 'react-native';
 

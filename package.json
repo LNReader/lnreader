@@ -42,7 +42,7 @@
     "react-native-paper": "^4.5.0",
     "react-native-reanimated": "^2.1.0",
     "react-native-safe-area-context": "3.2.0",
-    "react-native-screens": "~3.0.0",
+    "react-native-screens": "^3.9.0",
     "react-native-swipe-gestures": "^1.0.5",
     "react-native-tab-view": "^3.0.1",
     "react-native-tts": "^4.1.0",
