@@ -99,7 +99,7 @@ const initialState = {
    */
 
   hideBackdrop: false,
-  defaultChapterSort: null,
+  defaultChapterSort: 'ORDER BY chapterId ASC',
 
   /**
    * Reader settings
