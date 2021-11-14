@@ -43,7 +43,7 @@ const parseNovelAndChapters = async novelUrl => {
   const result = await fetch(url);
   const body = await result.text();
 
-  const loadedCheerio = cheerio.load(body);
+  let loadedCheerio = cheerio.load(body);
 
   let novel = {sourceId, sourceName, url, novelUrl};
 
@@ -78,8 +78,45 @@ const parseNovelAndChapters = async novelUrl => {
       const releaseDate = loadedCheerio(this).find('small').text();
       const chapterUrl = loadedCheerio(this).find('a').attr('href');
 
-      novelChapters.push({chapterName, releaseDate, chapterUrl});
+      if (chapterUrl && chapterName) {
+        novelChapters.push({chapterName, releaseDate, chapterUrl});
+      }
     });
+
+  const delay = ms => new Promise(res => setTimeout(res, ms));
+
+  let page = 1;
+
+  let nextPageExists = loadedCheerio('.next.page-numbers').length;
+
+  while (nextPageExists) {
+    const chaptersUrl = `${url}page/${++page}/#chapter`;
+
+    const chaptersRequest = await fetch(chaptersUrl);
+    const chaptersHtml = await chaptersRequest.text();
+
+    loadedCheerio = cheerio.load(chaptersHtml);
+
+    nextPageExists = loadedCheerio('.next.page-numbers').length;
+
+    loadedCheerio('#chapter')
+      .find('li')
+      .each(function () {
+        const chapterName = loadedCheerio(this)
+          .find('.chapter')
+          .first()
+          .text()
+          .trim();
+        const releaseDate = loadedCheerio(this).find('small').text();
+        const chapterUrl = loadedCheerio(this).find('a').attr('href');
+
+        if (chapterUrl && chapterName) {
+          novelChapters.push({chapterName, releaseDate, chapterUrl});
+        }
+      });
+
+    delay(1000);
+  }
 
   novel.chapters = novelChapters;
 
