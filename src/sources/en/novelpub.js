@@ -97,7 +97,6 @@ const parseNovelAndChapters = async novelUrl => {
   for (let i = 1; i <= lastPage; i++) {
     const chaptersUrl = `${baseUrl}novel/the-legendary-mechanic-novel/chapters/page-${i}`;
 
-    console.log(chaptersUrl);
     const chaptersRequest = await fetch(chaptersUrl);
     const chaptersHtml = await chaptersRequest.text();
 
@@ -118,9 +117,9 @@ const parseNovelAndChapters = async novelUrl => {
         baseUrl + loadedCheerio(this).find('a').attr('href').substring(1);
 
       novelChapters.push({chapterName, releaseDate, chapterUrl});
-
-      delay(1000);
     });
+
+    delay(1000);
   }
 
   novel.chapters = novelChapters;

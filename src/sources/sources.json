@@ -649,5 +649,12 @@
     "sourceName": "NovelPub",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/novelpub/icon.png?raw=true",
     "lang": "English"
+  },
+  {
+    "sourceId": 95,
+    "url": "https://www.bestlightnovel.com/",
+    "sourceName": "BestLightNovel",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/bestlightnovel/icon.png?raw=true",
+    "lang": "English"
   }
 ]

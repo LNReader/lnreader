@@ -93,6 +93,7 @@ import NitroScansScraper from './en/nitroscans';
 import NovelForestScraper from './en/novelforest';
 import RanobeLibScraper from './ru/ranobelib';
 import NovelPubScraper from './en/novelpub';
+import BestLightNovel from './en/bestlightnovel';
 
 export const getSource = sourceId => {
   const scrapers = {
@@ -189,6 +190,7 @@ export const getSource = sourceId => {
     92: NovelForestScraper,
     93: RanobeLibScraper,
     94: NovelPubScraper,
+    95: BestLightNovel,
   };
 
   return scrapers[sourceId];
