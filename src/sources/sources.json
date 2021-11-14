@@ -642,5 +642,12 @@
     "sourceName": "RanobeLib",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/ru/ranobelib/icon.png?raw=true",
     "lang": "Russian"
+  },
+  {
+    "sourceId": 94,
+    "url": "https://www.novelpub.com/",
+    "sourceName": "NovelPub",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/novelpub/icon.png?raw=true",
+    "lang": "English"
   }
 ]
