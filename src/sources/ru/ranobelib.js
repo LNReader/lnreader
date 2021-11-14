@@ -88,7 +88,7 @@ const parseNovelAndChapters = async novelUrl => {
     chapters.push({chapterName, releaseDate, chapterUrl});
   });
 
-  novel.chapters = chapters;
+  novel.chapters = chapters.reverse();
 
   return novel;
 };
@@ -98,6 +98,14 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   const body = await result.text();
 
   const loadedCheerio = cheerio.load(body);
+
+  loadedCheerio('.reader-container img').each(function () {
+    if (!loadedCheerio(this).attr('src')?.startsWith('http')) {
+      const src = loadedCheerio(this).attr('src');
+
+      loadedCheerio(this).attr('src', `http://ranobelib.me${src}`);
+    }
+  });
 
   const chapterName = loadedCheerio(
     'body > div.reader.reader_text > div.header.header_reader.headroom.headroom--top.headroom--not-bottom > div > a > div:nth-child(3)',
