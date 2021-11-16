@@ -93,6 +93,7 @@ const initialState = {
   onlyUpdateOngoingNovels: false,
   updateLibraryOnLaunch: false,
   downloadNewChapters: false,
+  refreshNovelMetadata: false,
 
   /**
    * Novel settings

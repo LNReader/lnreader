@@ -1,9 +1,9 @@
 import {GET_UPDATES, SET_LAST_UPDATE_TIME} from './updates.types';
 
 import {getUpdates} from '../../database/queries/UpdateQueries';
-import {updateAllNovels} from '../../services/updates';
 
 import {showToast} from '../../hooks/showToast';
+import {updateLibrary} from '../../services/updates/updates';
 
 export const getUpdatesAction = () => async dispatch => {
   const updates = await getUpdates();
@@ -38,10 +38,17 @@ export const updateLibraryAction = () => async (dispatch, getState) => {
 
   dispatch({type: SET_LAST_UPDATE_TIME, payload: Date.now()});
 
-  const {downloadNewChapters = false, onlyUpdateOngoingNovels = false} =
-    getState().settingsReducer;
+  const {
+    downloadNewChapters = false,
+    onlyUpdateOngoingNovels = false,
+    refreshNovelMetadata = false,
+  } = getState().settingsReducer;
 
-  await updateAllNovels({downloadNewChapters, onlyUpdateOngoingNovels});
+  await updateLibrary({
+    downloadNewChapters,
+    onlyUpdateOngoingNovels,
+    refreshNovelMetadata,
+  });
 
   dispatch(getUpdatesAction());
 };

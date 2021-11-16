@@ -29,6 +29,7 @@ const GenralSettings = ({navigation}) => {
     downloadNewChapters = false,
     onlyUpdateOngoingNovels = false,
     defaultChapterSort = 'ORDER BY chapterId ASC',
+    refreshNovelMetadata = false,
   } = useSettings();
 
   const {showLastUpdateTime = true} = useSelector(
@@ -111,6 +112,17 @@ const GenralSettings = ({navigation}) => {
                   'onlyUpdateOngoingNovels',
                   !onlyUpdateOngoingNovels,
                 ),
+              )
+            }
+            theme={theme}
+          />
+          <SwitchSetting
+            label="Automatically refresh metadata"
+            description="Check for new cover and details when updating library"
+            value={refreshNovelMetadata}
+            onPress={() =>
+              dispatch(
+                setAppSettings('refreshNovelMetadata', !refreshNovelMetadata),
               )
             }
             theme={theme}

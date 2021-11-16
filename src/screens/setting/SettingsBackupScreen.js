@@ -31,13 +31,6 @@ const BackupSettings = ({navigation}) => {
             onPress={restoreFullBackup}
             theme={theme}
           />
-          {/* <List.Divider theme={theme} />
-          <List.Item
-            title="Restore old backup"
-            description="Restore library from backup file of version v1.1.2 or lower"
-            onPress={() => dispatch(restoreLibraryAction())}
-            theme={theme}
-          /> */}
           <List.InfoItem
             title="Create backup may not work on devices with Android 9 or lower."
             icon="information-outline"

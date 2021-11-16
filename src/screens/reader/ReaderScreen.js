@@ -36,7 +36,7 @@ import {updateChaptersRead} from '../../redux/tracker/tracker.actions';
 import {readerBackground, readerTextColor} from './utils/readerStyles';
 import {markChapterReadAction} from '../../redux/novel/novel.actions';
 import {saveScrollPosition} from '../../redux/preferences/preference.actions';
-import {parseChapterNumber} from '../../services/updates';
+import {parseChapterNumber} from '../../services/utils/helpers';
 
 import ReaderAppbar from './components/ReaderAppbar';
 import ReaderBottomSheet from './components/ReaderBottomSheet/ReaderBottomSheet';

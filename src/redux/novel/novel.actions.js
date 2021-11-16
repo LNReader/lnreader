@@ -17,7 +17,6 @@ import {
   MARK_PREVIOUS_CHAPTERS_UNREAD,
 } from './novel.types';
 
-import {updateNovel} from '../../services/updates';
 import {fetchNovel} from '../../services/Source/source';
 import {
   followNovel,
@@ -60,6 +59,7 @@ Notifications.setNotificationHandler({
 
 import BackgroundService from 'react-native-background-actions';
 import {SET_DOWNLOAD_QUEUE} from '../downloads/donwloads.types';
+import {updateNovel} from '../../services/updates/LibraryUpdateQueries';
 
 export const setNovel = novel => async dispatch => {
   dispatch({type: SET_NOVEL, payload: novel});
@@ -425,10 +425,18 @@ export const deleteAllChaptersAction = chapters => async dispatch => {
 };
 
 export const updateNovelAction =
-  (sourceId, novelUrl, novelId, sort, filter) => async dispatch => {
+  (sourceId, novelUrl, novelId, sort, filter) => async (dispatch, getState) => {
     dispatch({type: FETCHING_NOVEL});
 
-    await updateNovel(sourceId, novelUrl, novelId);
+    const {downloadNewChapters = false, refreshNovelMetadata = false} =
+      getState().settingsReducer;
+
+    const options = {
+      downloadNewChapters,
+      refreshNovelMetadata,
+    };
+
+    await updateNovel(sourceId, novelUrl, novelId, options);
 
     let novel = await getNovel(sourceId, novelUrl);
     let chapters = await getChapters(novel.novelId, sort, filter);
