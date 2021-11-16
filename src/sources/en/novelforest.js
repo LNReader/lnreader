@@ -58,7 +58,11 @@ const parseNovelAndChapters = async novelUrl => {
   novel.novelCover =
     'https:' + loadedCheerio('.img-cover img').attr('data-src');
 
-  novel.summary = loadedCheerio('#info > p').text().trim();
+  novel.summary = loadedCheerio(
+    'body > div.layout > div.main-container.book-details > div > div.row.no-gutters > div.col-lg-8 > div.mt-1 > div.section.box.mt-1.summary > div.section-body > p.content',
+  )
+    .text()
+    .trim();
 
   novel.author = loadedCheerio(
     'body > div.layout > div.main-container.book-details > div > div.row.no-gutters > div.col-lg-8 > div.book-info > div.detail > div.meta.box.mt-1.p-10 > p:nth-child(1) > a > span',
@@ -82,42 +86,33 @@ const parseNovelAndChapters = async novelUrl => {
 
   let chapters = [];
 
-  const delay = ms => new Promise(res => setTimeout(res, ms));
+  const chaptersUrl =
+    novelUrl.replace(baseUrl, 'https://novelforest.com/api/novels/') +
+    '/chapters?source=detail';
 
-  const lastPage = loadedCheerio('label:contains("❯❯")').attr('id');
+  const chaptersRequest = await fetch(chaptersUrl);
+  const chaptersHtml = await chaptersRequest.text();
 
-  for (let i = 1; i <= lastPage; i++) {
-    const chaptersUrl =
-      novelUrl.replace(baseUrl, 'https://novelforest.com/api/novels/') +
-      '/chapters?page=' +
-      i;
+  loadedCheerio = cheerio.load(chaptersHtml);
 
-    const chaptersRequest = await fetch(chaptersUrl);
-    const chaptersJSON = await chaptersRequest.json();
+  loadedCheerio('li').each(function () {
+    const chapterName = loadedCheerio(this)
+      .find('.chapter-title')
+      .text()
+      .trim();
 
-    loadedCheerio = cheerio.load(chaptersJSON.chapters);
+    const releaseDate = loadedCheerio(this)
+      .find('.chapter-update')
+      .text()
+      .trim();
 
-    loadedCheerio('li').each(function () {
-      const chapterName = loadedCheerio(this)
-        .find('.chapter-title')
-        .text()
-        .trim();
+    const chapterUrl =
+      baseUrl + loadedCheerio(this).find('a').attr('href').substring(1);
 
-      const releaseDate = loadedCheerio(this)
-        .find('.chapter-update')
-        .text()
-        .trim();
+    chapters.push({chapterName, releaseDate, chapterUrl});
+  });
 
-      const chapterUrl =
-        baseUrl + loadedCheerio(this).find('a').attr('href').substring(1);
-
-      chapters.push({chapterName, releaseDate, chapterUrl});
-
-      delay(1000);
-    });
-  }
-
-  novel.chapters = chapters;
+  novel.chapters = chapters.reverse();
 
   return novel;
 };
