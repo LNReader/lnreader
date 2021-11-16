@@ -22,6 +22,10 @@ const AdvancedSettings = ({navigation}) => {
   const showClearDatabaseDialog = () => setClearDatabaseDialog(true);
   const hideClearDatabaseDialog = () => setClearDatabaseDialog(false);
 
+  const [clearUpdatesDialog, setClearUpdatesDialog] = useState(false);
+  const showClearUpdatesDialog = () => setClearUpdatesDialog(true);
+  const hideClearUpdatesDialog = () => setClearUpdatesDialog(false);
+
   return (
     <ScreenContainer theme={theme}>
       <Appbar title="Advanced" onBackAction={() => navigation.goBack()} />
@@ -36,10 +40,7 @@ const AdvancedSettings = ({navigation}) => {
         <List.Item
           title="Clear updates tab"
           description="Clears chapter entries in updates tab"
-          onPress={() => {
-            clearUpdates();
-            showToast('Updates cleared.');
-          }}
+          onPress={showClearUpdatesDialog}
           theme={theme}
         />
       </List.Section>
@@ -77,6 +78,45 @@ const AdvancedSettings = ({navigation}) => {
               onPress={() => {
                 deleteNovelCache();
                 hideClearDatabaseDialog();
+              }}
+            >
+              Ok
+            </Button>
+          </Dialog.Actions>
+        </Dialog>
+        <Dialog
+          visible={clearUpdatesDialog}
+          onDismiss={hideClearUpdatesDialog}
+          style={{
+            borderRadius: 6,
+            backgroundColor: theme.colorPrimary,
+          }}
+        >
+          <Dialog.Title
+            style={{
+              letterSpacing: 0,
+              fontSize: 16,
+              lineHeight: 16 * 1.5,
+              color: theme.textColorPrimary,
+            }}
+          >
+            Are you sure? Updates tab will be cleared.
+          </Dialog.Title>
+          <Dialog.Actions>
+            <Button
+              uppercase={false}
+              theme={{colors: {primary: theme.colorAccent}}}
+              onPress={hideClearUpdatesDialog}
+            >
+              Cancel
+            </Button>
+            <Button
+              uppercase={false}
+              theme={{colors: {primary: theme.colorAccent}}}
+              onPress={() => {
+                clearUpdates();
+                showToast('Updates cleared.');
+                hideClearUpdatesDialog();
               }}
             >
               Ok
