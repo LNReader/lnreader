@@ -23,7 +23,7 @@ const getPath = extensionId => {
     63: {novels: 'novel', novel: 'novel', chapter: 'novel'},
     75: {novels: 'series', novel: 'series', chapter: 'series'},
     80: {novels: 'manga', novel: 'manga', chapter: 'manga'},
-    91: {novels: 'manga', novel: 'manga', chapter: 'manga'},
+    91: {novels: 'novel', novel: 'novel', chapter: 'novel'},
   };
 
   return (
