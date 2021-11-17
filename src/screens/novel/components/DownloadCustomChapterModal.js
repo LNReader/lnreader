@@ -64,7 +64,7 @@ const DownloadCustomChapterModal = ({
             color={theme.colorAccent}
           />
           <TextInput
-            value={text}
+            value={`${text}`}
             style={{color: theme.textColorPrimary, marginHorizontal: 4}}
             keyboardType="numeric"
             onChangeText={onChangeText}
