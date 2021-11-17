@@ -56,6 +56,7 @@ import EditInfoModal from './components/EditInfoModal';
 import {pickCustomNovelCover} from '../../database/queries/NovelQueries';
 import FadeView from '../../components/Common/CrossFadeView';
 import {useModal} from '../../hooks/useModal';
+import DownloadCustomChapterModal from './components/DownloadCustomChapterModal';
 
 const Novel = ({route, navigation}) => {
   const item = route.params;
@@ -245,6 +246,7 @@ const Novel = ({route, navigation}) => {
   );
 
   const [editInfoModal, showEditInfoModal] = useState(false);
+  const downloadCustomChapterModal = useModal();
 
   return (
     <Provider>
@@ -350,7 +352,7 @@ const Novel = ({route, navigation}) => {
                 }}
               >
                 <Menu.Item
-                  title="All"
+                  title="Next chapter"
                   style={{backgroundColor: theme.menuColor}}
                   titleStyle={{
                     color: theme.textColorPrimary,
@@ -360,9 +362,70 @@ const Novel = ({route, navigation}) => {
                       downloadAllChaptersAction(
                         novel.sourceId,
                         novel.novelUrl,
-                        chapters,
+                        [
+                          chapters.find(
+                            chapter =>
+                              !!chapter.read === false &&
+                              !!chapter.downloaded === false,
+                          ),
+                        ],
                       ),
                     );
+                    showDownloadMenu(false);
+                  }}
+                />
+                <Menu.Item
+                  title="Next 5 chapter"
+                  style={{backgroundColor: theme.menuColor}}
+                  titleStyle={{
+                    color: theme.textColorPrimary,
+                  }}
+                  onPress={() => {
+                    dispatch(
+                      downloadAllChaptersAction(
+                        novel.sourceId,
+                        novel.novelUrl,
+                        chapters
+                          .filter(
+                            chapter =>
+                              !!chapter.read === false &&
+                              !!chapter.downloaded === false,
+                          )
+                          .slice(0, 5),
+                      ),
+                    );
+                    showDownloadMenu(false);
+                  }}
+                />
+                <Menu.Item
+                  title="Next 10 chapter"
+                  style={{backgroundColor: theme.menuColor}}
+                  titleStyle={{
+                    color: theme.textColorPrimary,
+                  }}
+                  onPress={() => {
+                    dispatch(
+                      downloadAllChaptersAction(
+                        novel.sourceId,
+                        novel.novelUrl,
+                        chapters
+                          .filter(
+                            chapter =>
+                              !!chapter.read === false &&
+                              !!chapter.downloaded === false,
+                          )
+                          .slice(0, 10),
+                      ),
+                    );
+                    showDownloadMenu(false);
+                  }}
+                />
+                <Menu.Item
+                  title="Custom"
+                  style={{backgroundColor: theme.menuColor}}
+                  titleStyle={{color: theme.textColorPrimary}}
+                  onPress={() => {
+                    downloadCustomChapterModal.showModal();
                     showDownloadMenu(false);
                   }}
                 />
@@ -378,6 +441,23 @@ const Novel = ({route, navigation}) => {
                         novel.sourceId,
                         novel.novelUrl,
                         chapters.filter(chapter => !!chapter.read === false),
+                      ),
+                    );
+                    showDownloadMenu(false);
+                  }}
+                />
+                <Menu.Item
+                  title="All"
+                  style={{backgroundColor: theme.menuColor}}
+                  titleStyle={{
+                    color: theme.textColorPrimary,
+                  }}
+                  onPress={() => {
+                    dispatch(
+                      downloadAllChaptersAction(
+                        novel.sourceId,
+                        novel.novelUrl,
+                        chapters,
                       ),
                     );
                     showDownloadMenu(false);
@@ -583,6 +663,14 @@ const Novel = ({route, navigation}) => {
               modalVisible={editInfoModal}
               hideModal={() => showEditInfoModal(false)}
               novel={novel}
+              theme={theme}
+              dispatch={dispatch}
+            />
+            <DownloadCustomChapterModal
+              modalVisible={downloadCustomChapterModal.visible}
+              hideModal={downloadCustomChapterModal.hideModal}
+              novel={novel}
+              chapters={chapters}
               theme={theme}
               dispatch={dispatch}
             />
