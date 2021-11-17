@@ -59,7 +59,8 @@
   "devDependencies": {
     "@babel/core": "^7.16.0",
     "@react-native-community/eslint-config": "^3.0.1",
-    "eslint": "^8.2.0"
+    "eslint": "^7.32.0",
+    "eslint-plugin-react-native": "^3.11.0"
   },
   "private": true,
   "name": "lnreader",
