@@ -16,7 +16,7 @@ const DownloadCustomChapterModal = ({
 
   const onDismiss = () => {
     hideModal();
-    setText();
+    setText(0);
   };
 
   const onSubmit = () => {
@@ -29,13 +29,17 @@ const DownloadCustomChapterModal = ({
             chapter =>
               !!chapter.read === false && !!chapter.downloaded === false,
           )
-          .slice(0, text),
+          .slice(0, text.toString()),
       ),
     );
     hideModal();
   };
 
-  const onChangeText = txt => setText(parseInt(txt, 10));
+  const onChangeText = txt => {
+    if (Number(txt) >= 0) {
+      setText(Number(txt));
+    }
+  };
 
   return (
     <Portal>
@@ -56,15 +60,17 @@ const DownloadCustomChapterModal = ({
             animated
             size={24}
             color={theme.colorAccent}
+            onPress={() => text > 9 && setText(prevState => prevState - 10)}
           />
           <IconButton
             icon="chevron-left"
             animated
             size={24}
             color={theme.colorAccent}
+            onPress={() => text > 0 && setText(prevState => prevState - 1)}
           />
           <TextInput
-            value={text}
+            value={text.toString()}
             style={{color: theme.textColorPrimary, marginHorizontal: 4}}
             keyboardType="numeric"
             onChangeText={onChangeText}
@@ -75,12 +81,14 @@ const DownloadCustomChapterModal = ({
             animated
             size={24}
             color={theme.colorAccent}
+            onPress={() => setText(prevState => prevState + 1)}
           />
           <IconButton
             icon="chevron-double-right"
             animated
             size={24}
             color={theme.colorAccent}
+            onPress={() => setText(prevState => prevState + 10)}
           />
         </View>
       </Modal>
