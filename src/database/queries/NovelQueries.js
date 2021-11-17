@@ -245,14 +245,14 @@ export const pickCustomNovelCover = async novelId => {
   const image = await DocumentPicker.getDocumentAsync({type: 'image/*'});
 
   if (image.type === 'success' && image.uri) {
+    const uri = 'file://' + image.uri;
+
     db.transaction(tx => {
       tx.executeSql(
         'UPDATE novels SET novelCover = ? WHERE novelId = ?',
-        [image.uri, novelId],
+        [uri, novelId],
         (txObj, res) => {},
-        (txObj, error) => {
-          // console.log('Error ', error)
-        },
+        (txObj, error) => showToast(`Error: ${error}`),
       );
     });
 
