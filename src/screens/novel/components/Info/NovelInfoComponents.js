@@ -11,7 +11,7 @@ import {
 
 import {IconButton, Portal} from 'react-native-paper';
 import {LinearGradient} from 'expo-linear-gradient';
-import easeGradient from 'react-native-easing-gradient';
+import {easeGradient} from 'react-native-easing-gradient';
 import FastImage from 'react-native-fast-image';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 import {Chip} from '../../../../components/Chip/Chip';
