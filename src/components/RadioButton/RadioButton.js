@@ -2,7 +2,14 @@ import React from 'react';
 import {Pressable, StyleSheet, Text} from 'react-native';
 import {RadioButton as PaperRadioButton} from 'react-native-paper';
 
-export const RadioButton = ({label, status, onPress, style, theme}) => (
+export const RadioButton = ({
+  label,
+  status,
+  onPress,
+  style,
+  labelStyle,
+  theme,
+}) => (
   <Pressable
     android_ripple={{color: theme.rippleColor}}
     style={[styles.pressable, style]}
@@ -14,7 +21,9 @@ export const RadioButton = ({label, status, onPress, style, theme}) => (
       color={theme.colorAccent}
       uncheckedColor={theme.textColorSecondary}
     />
-    <Text style={{color: theme.textColorPrimary, marginLeft: 12}}>{label}</Text>
+    <Text style={[labelStyle, {color: theme.textColorPrimary, marginLeft: 12}]}>
+      {label}
+    </Text>
   </Pressable>
 );
 

@@ -6,7 +6,7 @@ import {Switch, List} from 'react-native-paper';
 const SwitchSetting = ({label, description, onPress, theme, icon, value}) => (
   <Pressable
     android_ripple={{color: theme.rippleColor}}
-    style={styles.container}
+    style={[styles.container, {paddingVertical: description ? 16 : 12}]}
     onPress={onPress}
   >
     <View style={{flexDirection: 'row', flex: 1}}>
@@ -33,7 +33,7 @@ const SwitchSetting = ({label, description, onPress, theme, icon, value}) => (
       value={value}
       onValueChange={onPress}
       color={theme.colorAccent}
-      style={{marginRight: 8}}
+      style={{marginLeft: 8}}
     />
   </Pressable>
 );
@@ -43,7 +43,6 @@ export default SwitchSetting;
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 16,
-    paddingVertical: 12,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },

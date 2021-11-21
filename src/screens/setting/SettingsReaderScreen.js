@@ -5,17 +5,16 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  useWindowDimensions,
+  KeyboardAvoidingView,
   View,
 } from 'react-native';
-import {Button} from 'react-native-paper';
+import {Button, IconButton} from 'react-native-paper';
 import WebView from 'react-native-webview';
 import {useDispatch} from 'react-redux';
-import {TabView, TabBar} from 'react-native-tab-view';
 
 import {Appbar} from '../../components/Appbar';
 import ColorPickerModal from '../../components/ColorPickerModal';
-import {Row, ScreenContainer} from '../../components/Common';
+import {Row} from '../../components/Common';
 import {
   ToggleButton,
   ToggleColorButton,
@@ -27,230 +26,83 @@ import {
   setAppSettings,
   setReaderSettings,
 } from '../../redux/settings/settings.actions';
-import {readerBackground, readerTextColor} from '../reader/utils/readerStyles';
+import {
+  readerBackground,
+  readerLineHeight,
+  readerTextColor,
+} from '../reader/utils/readerStyles';
 import {useModal} from '../../hooks/useModal';
+import SwitchSetting from '../../components/Switch/Switch';
+import FontPickerModal from './components/FontPickerModal';
+import {fonts} from '../../services/utils/constants';
 
-const FirstRoute = React.memo(({theme, dispatch, reader}) => {
-  const presetThemes = [
-    {
-      value: 1,
-      backgroundColor: '#000000',
-      textColor: 'rgba(255,255,255,0.7)',
-    },
-    {value: 2, backgroundColor: '#FFFFFF', textColor: '#111111'},
-    {value: 3, backgroundColor: '#F7DFC6', textColor: '#593100'},
-    {value: 4, backgroundColor: '#292832', textColor: '#CCCCCC'},
-    {value: 5, backgroundColor: '#2B2C30', textColor: '#CCCCCC'},
-  ];
+const presetThemes = [
+  {
+    value: 1,
+    backgroundColor: '#000000',
+    textColor: 'rgba(255,255,255,0.7)',
+  },
+  {value: 2, backgroundColor: '#FFFFFF', textColor: '#111111'},
+  {value: 3, backgroundColor: '#F7DFC6', textColor: '#593100'},
+  {value: 4, backgroundColor: '#292832', textColor: '#CCCCCC'},
+  {value: 5, backgroundColor: '#2B2C30', textColor: '#CCCCCC'},
+];
 
-  const textAlignments = [
-    {value: 'left', icon: 'format-align-left'},
-    {value: 'center', icon: 'format-align-center'},
-    {value: 'justify', icon: 'format-align-justify'},
-    {value: 'right', icon: 'format-align-right'},
-  ];
+const textAlignments = [
+  {value: 'left', icon: 'format-align-left'},
+  {value: 'center', icon: 'format-align-center'},
+  {value: 'justify', icon: 'format-align-justify'},
+  {value: 'right', icon: 'format-align-right'},
+];
 
-  const {autoScrollInterval = 10} = useSettings();
+const SettingsReaderScreen = ({navigation}) => {
+  const theme = useTheme();
+  const dispatch = useDispatch();
+  const reader = useReaderSettings();
 
-  /**
-   * Reader Background Color Modal
-   */
+  const {
+    useWebViewForChapter = false,
+    verticalSeekbar = true,
+    swipeGestures = true,
+    fullScreenMode = true,
+    showScrollPercentage = true,
+    showBatteryAndTime = false,
+
+    autoScrollInterval = 10,
+  } = useSettings();
+
+  const readerFontPickerModal = useModal();
   const readerBackgroundModal = useModal();
-
-  /**
-   * Reader Text Color Modal
-   */
-  const [readerTextColorModal, setReaderTextColorModal] = useState(false);
-  const showReaderTextColorModal = () => setReaderTextColorModal(true);
-  const hideReaderTextColorModal = () => setReaderTextColorModal(false);
+  const readerTextColorModal = useModal();
 
   const setReaderBackground = val => {
     dispatch(setReaderSettings('theme', val));
   };
 
   const setReaderTextColor = val => {
-    dispatch(setReaderSettings('textColor', val || reader.textColor));
+    dispatch(setReaderSettings('textColor', val ?? reader.textColor));
   };
 
-  const [customHtmlCSS, setcustomHtmlCSS] = useState(reader.customCSS);
+  const [customCSS, setcustomCSS] = useState(reader.customCSS);
 
   return (
-    <View style={{flex: 1}}>
-      <ScrollView>
-        <List.Section>
-          <List.SubHeader theme={theme}>Preset</List.SubHeader>
-          <View style={styles.pressableListItem}>
-            <Text
+    <>
+      <Appbar title="Reader" onBackAction={navigation.goBack} />
+      <KeyboardAvoidingView style={{flex: 1}} behavior="padding">
+        <ScrollView
+          style={{flex: 1}}
+          contentContainerStyle={{paddingBottom: 40}}
+        >
+          {useWebViewForChapter ? (
+            <WebView
+              originWhitelist={['*']}
               style={{
-                color: theme.textColorPrimary,
-                fontSize: 16,
+                height: 500,
+                backgroundColor: readerBackground(reader.theme),
               }}
-            >
-              Preset Themes
-            </Text>
-            <ScrollView
-              style={{marginLeft: 16}}
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-            >
-              <Row>
-                {presetThemes.map(item => (
-                  <ToggleColorButton
-                    key={item.value}
-                    selected={reader.theme === item.backgroundColor}
-                    backgroundColor={item.backgroundColor}
-                    textColor={item.textColor}
-                    onPress={() => {
-                      dispatch(
-                        setReaderSettings('theme', item.backgroundColor),
-                      );
-                      dispatch(setReaderSettings('textColor', item.textColor));
-                    }}
-                  />
-                ))}
-              </Row>
-            </ScrollView>
-          </View>
-          <List.Divider theme={theme} />
-          <List.SubHeader theme={theme}>Reader</List.SubHeader>
-          <List.ColorItem
-            title="Background Color"
-            description={readerBackground(reader.theme).toUpperCase()}
-            onPress={readerBackgroundModal.showModal}
-            theme={theme}
-          />
-          <List.ColorItem
-            title="Text Color"
-            description={
-              reader.textColor.toUpperCase() || readerTextColor(reader.theme)
-            }
-            onPress={showReaderTextColorModal}
-            theme={theme}
-          />
-          <List.Divider theme={theme} />
-          <List.SubHeader theme={theme}>Text</List.SubHeader>
-          <Pressable style={styles.pressableListItem}>
-            <View>
-              <Text
-                style={{
-                  color: theme.textColorPrimary,
-                  fontSize: 16,
-                }}
-              >
-                Text Align
-              </Text>
-              <Text
-                style={{
-                  color: theme.textColorSecondary,
-                  textTransform: 'capitalize',
-                }}
-              >
-                {reader.textAlign}
-              </Text>
-            </View>
-            <Row>
-              {textAlignments.map(item => (
-                <ToggleButton
-                  key={item.value}
-                  icon={item.icon}
-                  onPress={() => {
-                    dispatch(setReaderSettings('textAlign', item.value));
-                  }}
-                  selected={item.value === reader.textAlign}
-                  theme={theme}
-                />
-              ))}
-            </Row>
-          </Pressable>
-          <List.Divider theme={theme} />
-          <List.SubHeader theme={theme}>
-            Custom CSS (Only works in webview mode)
-          </List.SubHeader>
-          <View style={{paddingHorizontal: 16, paddingBottom: 8}}>
-            <TextInput
-              style={{
-                color: theme.textColorPrimary,
-                fontSize: 16,
-              }}
-              value={customHtmlCSS}
-              onChangeText={text => setcustomHtmlCSS(text)}
-              placeholderTextColor={theme.textColorSecondary}
-              placeholder="Example: body { color: red; }"
-              multiline={true}
-            />
-            <View style={{flexDirection: 'row-reverse'}}>
-              <Button
-                uppercase={false}
-                color={theme.colorAccent}
-                onPress={() =>
-                  dispatch(setReaderSettings('customCSS', customHtmlCSS))
-                }
-              >
-                Save
-              </Button>
-              <Button
-                uppercase={false}
-                color={theme.colorAccent}
-                onPress={() => {
-                  setcustomHtmlCSS('');
-                  dispatch(setReaderSettings('customCSS', ''));
-                }}
-              >
-                Clear
-              </Button>
-            </View>
-          </View>
-          <List.Divider theme={theme} />
-          <List.SubHeader theme={theme}>
-            Auto scroll interval (in seconds)
-          </List.SubHeader>
-          <View style={{paddingHorizontal: 16, paddingBottom: 8}}>
-            <TextInput
-              style={{
-                color: theme.textColorPrimary,
-                fontSize: 16,
-              }}
-              defaultValue={autoScrollInterval.toString() ?? 10}
-              keyboardType="numeric"
-              onChangeText={text =>
-                text !== '' &&
-                dispatch(
-                  setAppSettings('autoScrollInterval', parseInt(text, 10)),
-                )
-              }
-            />
-          </View>
-        </List.Section>
-      </ScrollView>
-      <ColorPickerModal
-        title="Reader background color"
-        modalVisible={readerBackgroundModal.visible}
-        color={readerBackground(reader.theme)}
-        hideModal={readerBackgroundModal.hideModal}
-        theme={theme}
-        onSubmit={setReaderBackground}
-      />
-      <ColorPickerModal
-        title="Reader text color"
-        modalVisible={readerTextColorModal}
-        color={reader.textColor}
-        hideModal={hideReaderTextColorModal}
-        theme={theme}
-        onSubmit={setReaderTextColor}
-      />
-    </View>
-  );
-});
-
-const SecondRoute = React.memo(({reader}) => (
-  <View style={{flex: 1}}>
-    <WebView
-      originWhitelist={['*']}
-      style={{
-        backgroundColor: readerBackground(reader.theme),
-      }}
-      source={{
-        html: `
+              nestedScrollEnabled={true}
+              source={{
+                html: `
                 <html>
                     <head>
                         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
@@ -291,69 +143,410 @@ const SecondRoute = React.memo(({reader}) => (
                     </body>
                 </html>
                 `,
-      }}
-    />
-  </View>
-));
+              }}
+            />
+          ) : (
+            <View
+              style={{
+                backgroundColor: readerBackground(reader.theme),
+                padding: `${reader.padding}%`,
+              }}
+            >
+              <Text
+                style={{
+                  color: reader.textColor,
+                  fontSize: reader.textSize,
+                  lineHeight: readerLineHeight(
+                    reader.textSize,
+                    reader.lineHeight,
+                  ),
+                  fontFamily: reader.fontFamily,
+                }}
+              >
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
+                lobortis, diam sed malesuada bibendum, nulla libero scelerisque
+                sapien, nec interdum nisl ipsum ac ipsum. In lacinia eros ut
+                quam commodo, in finibus augue ultricies. Vestibulum ex purus,
+                condimentum eget sem at, molestie semper mi. Mauris ac feugiat
+                quam. Pellentesque sagittis bibendum nibh eu lacinia. Aenean
+                rhoncus, velit sit amet mollis egestas, diam turpis ornare
+                velit, a dictum elit velit in erat. Quisque luctus in sem a
+                vulputate.{'\n\n'}Pellentesque id tempus orci, non finibus
+                tortor. Suspendisse in neque non eros eleifend hendrerit vitae a
+                lacus. Vestibulum ante ipsum primis in faucibus orci luctus et
+                ultrices posuere cubilia curae; Nunc interdum magna nulla, eget
+                pharetra arcu dapibus eu. Pellentesque sed lectus sit amet sem
+                porta lacinia. Curabitur consectetur dolor in nibh varius, ac
+                placerat erat pellentesque. Proin in justo condimentum,
+                fermentum lacus eget, ultrices ante. Fusce tempor blandit erat
+                nec mollis. Vivamus in leo et nunc consectetur elementum nec ac
+                lectus.
+              </Text>
+            </View>
+          )}
+          <SwitchSetting
+            label="Render HTML"
+            description="Render chapter as html"
+            value={useWebViewForChapter}
+            onPress={() =>
+              dispatch(
+                setAppSettings('useWebViewForChapter', !useWebViewForChapter),
+              )
+            }
+            theme={theme}
+          />
+          <SwitchSetting
+            label="Horizontal seekbar"
+            description="Show horizontal seekbar instead of vertical"
+            value={verticalSeekbar}
+            onPress={() =>
+              dispatch(setAppSettings('verticalSeekbar', !verticalSeekbar))
+            }
+            theme={theme}
+          />
+          <SwitchSetting
+            label="Gesture navigation"
+            description="Use left and right swipe to navigate to previous or next chapter"
+            value={swipeGestures}
+            onPress={() =>
+              dispatch(setAppSettings('swipeGestures', !swipeGestures))
+            }
+            theme={theme}
+          />
+          <List.Divider theme={theme} />
+          <List.SubHeader theme={theme}>
+            Auto scroll interval (in seconds)
+          </List.SubHeader>
+          <View style={{paddingHorizontal: 16, paddingBottom: 8}}>
+            <TextInput
+              style={{
+                color: theme.textColorPrimary,
+                fontSize: 16,
+              }}
+              defaultValue={autoScrollInterval.toString() ?? 10}
+              keyboardType="numeric"
+              onChangeText={text =>
+                text !== '' &&
+                dispatch(
+                  setAppSettings('autoScrollInterval', parseInt(text, 10)),
+                )
+              }
+            />
+          </View>
+          <List.Divider theme={theme} />
+          <List.SubHeader theme={theme}>Display</List.SubHeader>
+          <SwitchSetting
+            label="Fullscreen"
+            value={fullScreenMode}
+            onPress={() =>
+              dispatch(setAppSettings('fullScreenMode', !fullScreenMode))
+            }
+            theme={theme}
+          />
+          <SwitchSetting
+            label="Show progress percentage"
+            value={showScrollPercentage}
+            onPress={() =>
+              dispatch(
+                setAppSettings('showScrollPercentage', !showScrollPercentage),
+              )
+            }
+            theme={theme}
+          />
 
-const ReaderSettings = ({navigation}) => {
-  const theme = useTheme();
-  const dispatch = useDispatch();
+          <SwitchSetting
+            label="Show battery and time"
+            value={showBatteryAndTime}
+            onPress={() =>
+              dispatch(
+                setAppSettings('showBatteryAndTime', !showBatteryAndTime),
+              )
+            }
+            theme={theme}
+          />
+          <List.Divider theme={theme} />
 
-  const reader = useReaderSettings();
+          <List.SubHeader theme={theme}>Reader</List.SubHeader>
+          <View style={styles.pressableListItem}>
+            <Text
+              style={{
+                color: theme.textColorPrimary,
+                fontSize: 16,
+              }}
+            >
+              Themes
+            </Text>
+            <ScrollView
+              contentContainerStyle={{
+                flexDirection: 'column-reverse',
+                alignItems: 'flex-end',
+              }}
+              style={{marginLeft: 16}}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+            >
+              <Row>
+                {presetThemes.map(item => (
+                  <ToggleColorButton
+                    key={item.value}
+                    selected={reader.theme === item.backgroundColor}
+                    backgroundColor={item.backgroundColor}
+                    textColor={item.textColor}
+                    onPress={() => {
+                      dispatch(
+                        setReaderSettings('theme', item.backgroundColor),
+                      );
+                      dispatch(setReaderSettings('textColor', item.textColor));
+                    }}
+                  />
+                ))}
+              </Row>
+            </ScrollView>
+          </View>
+          <List.ColorItem
+            title="Background Color"
+            description={readerBackground(reader.theme).toUpperCase()}
+            onPress={readerBackgroundModal.showModal}
+            theme={theme}
+          />
+          <List.ColorItem
+            title="Text Color"
+            description={
+              reader.textColor.toUpperCase() || readerTextColor(reader.theme)
+            }
+            onPress={readerTextColorModal.showModal}
+            theme={theme}
+          />
+          <Pressable style={styles.pressableListItem}>
+            <View>
+              <Text style={{color: theme.textColorPrimary, fontSize: 16}}>
+                Text Align
+              </Text>
+              <Text
+                style={{
+                  color: theme.textColorSecondary,
+                  textTransform: 'capitalize',
+                }}
+              >
+                {reader.textAlign}
+              </Text>
+            </View>
+            <Row>
+              {textAlignments.map(item => (
+                <ToggleButton
+                  key={item.value}
+                  icon={item.icon}
+                  onPress={() => {
+                    dispatch(setReaderSettings('textAlign', item.value));
+                  }}
+                  selected={item.value === reader.textAlign}
+                  theme={theme}
+                />
+              ))}
+            </Row>
+          </Pressable>
+          <List.Item
+            title="Font"
+            description={
+              fonts.find(item => item.fontFamily === reader.fontFamily)?.name
+            }
+            onPress={readerFontPickerModal.showModal}
+            theme={theme}
+          />
+          <Row
+            style={{
+              justifyContent: 'space-between',
+              marginHorizontal: 16,
+              marginVertical: 8,
+            }}
+          >
+            <Text style={{color: theme.textColorPrimary, fontSize: 16}}>
+              Font size
+            </Text>
+            <Row>
+              <IconButton
+                icon="minus"
+                color={theme.colorAccent}
+                size={26}
+                disabled={reader.textSize <= 1 ? true : false}
+                onPress={() =>
+                  dispatch(setReaderSettings('textSize', reader.textSize - 1))
+                }
+                style={{marginVertical: 0}}
+              />
+              <Text
+                style={{
+                  color: theme.textColorPrimary,
+                  paddingHorizontal: 24,
+                }}
+              >
+                {reader.textSize}
+              </Text>
+              <IconButton
+                icon="plus"
+                color={theme.colorAccent}
+                size={26}
+                onPress={() =>
+                  dispatch(setReaderSettings('textSize', reader.textSize + 1))
+                }
+                style={{marginVertical: 0}}
+              />
+            </Row>
+          </Row>
+          <Row
+            style={{
+              justifyContent: 'space-between',
+              marginHorizontal: 16,
+              marginVertical: 8,
+            }}
+          >
+            <Text style={{color: theme.textColorPrimary, fontSize: 16}}>
+              Padding
+            </Text>
+            <Row>
+              <IconButton
+                icon="minus"
+                color={theme.colorAccent}
+                size={26}
+                disabled={reader.padding <= 0 ? true : false}
+                onPress={() =>
+                  dispatch(setReaderSettings('padding', reader.padding - 1))
+                }
+                style={{marginVertical: 0}}
+              />
+              <Text
+                style={{
+                  color: theme.textColorPrimary,
+                  paddingHorizontal: 24,
+                }}
+              >
+                {`${reader.padding}%`}
+              </Text>
+              <IconButton
+                icon="plus"
+                color={theme.colorAccent}
+                size={26}
+                disabled={reader.padding >= 10 ? true : false}
+                onPress={() =>
+                  dispatch(setReaderSettings('padding', reader.padding + 1))
+                }
+                style={{marginVertical: 0}}
+              />
+            </Row>
+          </Row>
+          <Row
+            style={{
+              justifyContent: 'space-between',
+              marginHorizontal: 16,
+              marginVertical: 8,
+            }}
+          >
+            <Text style={{color: theme.textColorPrimary, fontSize: 16}}>
+              Line height
+            </Text>
+            <Row>
+              <IconButton
+                icon="minus"
+                color={theme.colorAccent}
+                size={26}
+                disabled={reader.lineHeight <= 1.3 ? true : false}
+                onPress={() =>
+                  dispatch(
+                    setReaderSettings('lineHeight', reader.lineHeight - 0.1),
+                  )
+                }
+                style={{marginVertical: 0}}
+              />
+              <Text
+                style={{
+                  color: theme.textColorPrimary,
+                  paddingHorizontal: 24,
+                }}
+              >
+                {`${Math.round(reader.lineHeight * 10) / 10}%`}
+              </Text>
+              <IconButton
+                icon="plus"
+                color={theme.colorAccent}
+                size={26}
+                disabled={reader.lineHeight >= 2 ? true : false}
+                onPress={() =>
+                  dispatch(
+                    setReaderSettings('lineHeight', reader.lineHeight + 0.1),
+                  )
+                }
+                style={{marginVertical: 0}}
+              />
+            </Row>
+          </Row>
+          {useWebViewForChapter ? (
+            <>
+              <List.Divider theme={theme} />
+              <List.SubHeader theme={theme}>Custom CSS</List.SubHeader>
+              <View style={{paddingHorizontal: 16, paddingBottom: 8}}>
+                <TextInput
+                  style={{color: theme.textColorPrimary, fontSize: 16}}
+                  value={customCSS}
+                  onChangeText={text => setcustomCSS(text)}
+                  placeholderTextColor={theme.textColorSecondary}
+                  placeholder="Example: body { color: red; }"
+                  multiline={true}
+                />
+                <View style={{flexDirection: 'row-reverse'}}>
+                  <Button
+                    uppercase={false}
+                    color={theme.colorAccent}
+                    onPress={() =>
+                      dispatch(setReaderSettings('customCSS', customCSS))
+                    }
+                  >
+                    Save
+                  </Button>
+                  <Button
+                    uppercase={false}
+                    color={theme.colorAccent}
+                    onPress={() => {
+                      setcustomCSS('');
+                      dispatch(setReaderSettings('customCSS', ''));
+                    }}
+                  >
+                    Clear
+                  </Button>
+                </View>
+              </View>
+            </>
+          ) : null}
+        </ScrollView>
+      </KeyboardAvoidingView>
 
-  const renderScene = ({route}) => {
-    switch (route.key) {
-      case 'first':
-        return <FirstRoute dispatch={dispatch} theme={theme} reader={reader} />;
-      case 'second':
-        return <SecondRoute reader={reader} />;
-    }
-  };
-
-  const layout = useWindowDimensions();
-
-  const [index, setIndex] = useState(0);
-  const [routes] = useState([
-    {key: 'first', title: 'Settings'},
-    {key: 'second', title: 'Preview'},
-  ]);
-
-  const renderTabBar = props => (
-    <TabBar
-      {...props}
-      indicatorStyle={{backgroundColor: theme.colorAccent}}
-      style={{backgroundColor: theme.colorPrimary}}
-      renderLabel={({route, focused, color}) => (
-        <Text style={{color}}>{route.title}</Text>
-      )}
-      inactiveColor={theme.textColorSecondary}
-      activeColor={theme.colorAccent}
-      pressColor={theme.rippleColor}
-    />
-  );
-
-  return (
-    <ScreenContainer theme={theme}>
-      <Appbar
-        title="Reader"
-        onBackAction={navigation.goBack}
-        style={{elevation: 0}}
+      <ColorPickerModal
+        title="Reader background color"
+        modalVisible={readerBackgroundModal.visible}
+        color={readerBackground(reader.theme)}
+        hideModal={readerBackgroundModal.hideModal}
+        theme={theme}
+        onSubmit={setReaderBackground}
       />
-
-      <TabView
-        navigationState={{index, routes}}
-        renderTabBar={renderTabBar}
-        renderScene={renderScene}
-        onIndexChange={setIndex}
-        initialLayout={{width: layout.width}}
-        swipeEnabled={false}
+      <ColorPickerModal
+        title="Reader text color"
+        modalVisible={readerTextColorModal.visible}
+        color={reader.textColor}
+        hideModal={readerTextColorModal.hideModal}
+        theme={theme}
+        onSubmit={setReaderTextColor}
       />
-    </ScreenContainer>
+      <FontPickerModal
+        currentFont={reader.fontFamily}
+        visible={readerFontPickerModal.visible}
+        hideModal={readerFontPickerModal.hideModal}
+        theme={theme}
+        dispatch={dispatch}
+      />
+    </>
   );
 };
 
-export default ReaderSettings;
+export default SettingsReaderScreen;
 
 const styles = StyleSheet.create({
   pressableListItem: {
@@ -362,13 +555,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  presetToggleButton: {
-    marginLeft: 12,
-    borderRadius: 50,
-    borderTopRightRadius: 50,
-    borderBottomRightRadius: 50,
-    borderTopLeftRadius: 50,
-    borderBottomLeftRadius: 50,
-    borderWidth: 0,
+  fontContainer: {
+    borderRadius: 8,
+    overflow: 'hidden',
+    marginHorizontal: 6,
+  },
+  fontContent: {
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
   },
 });
