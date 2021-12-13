@@ -39,6 +39,7 @@ import {
   DaoNovelScraper,
   FirstKissNovelScraper,
   FreeNovelScraper,
+  HizoMangaScraper,
   LightNovelHeavenScraper,
   LightNovelsHubScraper,
   LunarLettersScraper,
@@ -191,6 +192,7 @@ export const getSource = sourceId => {
     93: RanobeLibScraper,
     94: NovelPubScraper,
     95: BestLightNovel,
+    96: HizoMangaScraper,
   };
 
   return scrapers[sourceId];

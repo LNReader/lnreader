@@ -656,5 +656,12 @@
     "sourceName": "BestLightNovel",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/bestlightnovel/icon.png?raw=true",
     "lang": "English"
+  },
+  {
+    "sourceId": 96,
+    "url": "https://hizomanga.com/",
+    "sourceName": "HizoManga",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/hizomanga.png?raw=true",
+    "lang": "Arabic"
   }
 ]

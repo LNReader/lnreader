@@ -94,15 +94,19 @@ class MadaraScraper {
 
       switch (detailName) {
         case 'Genre(s)':
+        case 'التصنيفات':
           novel.genre = detail.replace(/[\t\n]/g, ',');
           break;
         case 'Author(s)':
+        case 'المؤلف':
           novel.author = detail;
           break;
         case 'Status':
-          novel.status = detail.includes('OnGoing')
-            ? Status.ONGOING
-            : Status.COMPLETED;
+        case 'الحالة':
+          novel.status =
+            detail.includes('OnGoing') || detail.includes('مستمرة')
+              ? Status.ONGOING
+              : Status.COMPLETED;
           break;
       }
     });
