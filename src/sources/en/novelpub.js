@@ -95,7 +95,7 @@ const parseNovelAndChapters = async novelUrl => {
   lastPage = Math.ceil(lastPage / 100);
 
   for (let i = 1; i <= lastPage; i++) {
-    const chaptersUrl = `${baseUrl}novel/the-legendary-mechanic-novel/chapters/page-${i}`;
+    const chaptersUrl = `${novelUrl}/chapters/page-${i}`;
 
     const chaptersRequest = await fetch(chaptersUrl);
     const chaptersHtml = await chaptersRequest.text();
