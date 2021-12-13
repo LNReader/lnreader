@@ -95,6 +95,7 @@ import NovelForestScraper from './en/novelforest';
 import RanobeLibScraper from './ru/ranobelib';
 import NovelPubScraper from './en/novelpub';
 import BestLightNovel from './en/bestlightnovel';
+import NovelFullMeScraper from './en/NovelFullMe';
 
 export const getSource = sourceId => {
   const scrapers = {
@@ -193,6 +194,7 @@ export const getSource = sourceId => {
     94: NovelPubScraper,
     95: BestLightNovel,
     96: HizoMangaScraper,
+    97: NovelFullMeScraper,
   };
 
   return scrapers[sourceId];

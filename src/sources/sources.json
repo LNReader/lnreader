@@ -663,5 +663,12 @@
     "sourceName": "HizoManga",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/hizomanga.png?raw=true",
     "lang": "Arabic"
+  },
+  {
+    "sourceId": 97,
+    "url": "https://novelfull.me/",
+    "sourceName": "NovelFull.me",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/novelfullme/icon.png?raw=true",
+    "lang": "English"
   }
 ]
