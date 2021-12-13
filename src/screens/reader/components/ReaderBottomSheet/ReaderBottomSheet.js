@@ -243,7 +243,7 @@ const ReaderSheet = ({
             <ReaderBottomSheetFontPicker reader={reader} theme={theme} />
           </View>
           <ReaderBottomSheetSwitch
-            label="Use WebView"
+            label="Render HTML"
             onPress={() =>
               dispatch(
                 setAppSettings('useWebViewForChapter', !useWebViewForChapter),
