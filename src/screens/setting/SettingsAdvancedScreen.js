@@ -11,6 +11,7 @@ import {showToast} from '../../hooks/showToast';
 
 import {deleteNovelCache} from '../../database/queries/NovelQueries';
 import {clearUpdates} from '../../database/queries/UpdateQueries';
+import {clearCoverCache} from '../../services/utils/coverCache';
 
 const AdvancedSettings = ({navigation}) => {
   const theme = useTheme();
@@ -30,7 +31,7 @@ const AdvancedSettings = ({navigation}) => {
     <ScreenContainer theme={theme}>
       <Appbar title="Advanced" onBackAction={() => navigation.goBack()} />
       <List.Section>
-        <List.SubHeader theme={theme}>Data</List.SubHeader>
+        <List.SubHeader theme={theme}>Data Management</List.SubHeader>
         <List.Item
           title="Clear database"
           description="Delete history for novels not in your library"
@@ -41,6 +42,12 @@ const AdvancedSettings = ({navigation}) => {
           title="Clear updates tab"
           description="Clears chapter entries in updates tab"
           onPress={showClearUpdatesDialog}
+          theme={theme}
+        />
+        <List.Item
+          title="Clean up cached covers"
+          description="Delete all covers cached"
+          onPress={clearCoverCache}
           theme={theme}
         />
       </List.Section>
