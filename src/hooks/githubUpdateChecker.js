@@ -1,6 +1,5 @@
 import {useState, useEffect} from 'react';
-
-import {showToast} from './../hooks/showToast';
+import {appversion} from '../utils/utils';
 
 export const useGithubUpdateChecker = () => {
   const latestReleaseUrl =
@@ -24,11 +23,11 @@ export const useGithubUpdateChecker = () => {
   };
 
   const isNewVersion = versionTag => {
-    let currentVersion = 'v1.1.7';
+    let currentVersion = `${appversion}`;
     const regex = /[^\\d.]/;
 
     let newVersion = versionTag.replace(regex, '');
-    currentVersion = currentVersion.replace(regex, '');
+    currentVersion = currentVersion;
 
     return newVersion !== currentVersion;
   };

@@ -1,4 +1,5 @@
 import React from 'react';
+import {ScrollView} from 'react-native';
 
 import * as Linking from 'expo-linking';
 import {useSelector} from 'react-redux';
@@ -6,7 +7,7 @@ import {useSelector} from 'react-redux';
 import {List} from '../../components/List';
 import {ScreenContainer} from '../../components/Common';
 import {MoreHeader} from './components/MoreHeader';
-import {ScrollView} from 'react-native';
+import {appversion, releasedt} from '../../utils/utils';
 
 const AboutScreen = ({navigation}) => {
   const theme = useSelector(state => state.settingsReducer.theme);
@@ -23,14 +24,14 @@ const AboutScreen = ({navigation}) => {
         <List.Section>
           <List.Item
             title="Version"
-            description="Stable 1.1.7 (01/11/21 10:00 AM)"
+            description={`Stable ${appversion} (${releasedt})`}
             theme={theme}
           />
           <List.Item
             title="What's new"
             onPress={() =>
               Linking.openURL(
-                'https://github.com/LNReader/lnreader/releases/tag/v1.1.7',
+                `https://github.com/LNReader/lnreader/releases/tag/v${appversion}`,
               )
             }
             theme={theme}
