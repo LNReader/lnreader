@@ -33,7 +33,6 @@ import BrowseSettings from '../screens/browse/SettingsBrowseScreen';
 const Stack = createStackNavigator();
 
 const MainNavigator = () => {
-
   const theme = useTheme();
 
   useEffect(() => {
