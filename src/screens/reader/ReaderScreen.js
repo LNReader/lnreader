@@ -12,6 +12,7 @@ import {
 import {useDispatch} from 'react-redux';
 import {IconButton, Portal} from 'react-native-paper';
 import Tts from 'react-native-tts';
+import {useKeepAwake} from 'expo-keep-awake';
 import {
   changeNavigationBarColor,
   hideNavigationBar,
@@ -59,6 +60,8 @@ import {cleanHtml} from '../../sources/helpers/cleanHtml';
 import WebView from 'react-native-webview';
 
 const Chapter = ({route, navigation}) => {
+  useKeepAwake();
+
   const {
     sourceId,
     chapterId,
