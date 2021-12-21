@@ -40,6 +40,7 @@ import {
   FirstKissNovelScraper,
   FreeNovelScraper,
   HizoMangaScraper,
+  LatestNovelScraper,
   LightNovelHeavenScraper,
   LightNovelsHubScraper,
   LunarLettersScraper,
@@ -195,6 +196,7 @@ export const getSource = sourceId => {
     95: BestLightNovel,
     96: HizoMangaScraper,
     97: NovelFullMeScraper,
+    98: LatestNovelScraper,
   };
 
   return scrapers[sourceId];

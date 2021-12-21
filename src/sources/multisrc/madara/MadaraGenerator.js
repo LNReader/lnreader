@@ -227,6 +227,15 @@ export const HizoMangaScraper = new MadaraScraper(
   'https://hizomanga.com/',
   'HizoManga',
   getPath(96),
-  null,
+  true,
   56,
+);
+
+export const LatestNovelScraper = new MadaraScraper(
+  98,
+  'https://latestnovel.net/',
+  'LatestNovel',
+  getPath(98),
+  false,
+  130,
 );

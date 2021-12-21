@@ -670,5 +670,12 @@
     "sourceName": "NovelFull.me",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/novelfullme/icon.png?raw=true",
     "lang": "English"
+  },
+  {
+    "sourceId": 98,
+    "url": "https://latestnovel.net/",
+    "sourceName": "LatestNovel",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/latestnovel.png?raw=true",
+    "lang": "English"
   }
 ]
