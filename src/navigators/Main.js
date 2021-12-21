@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react';
 import {View} from 'react-native';
+import { useKeepAwake } from 'expo-keep-awake';
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -33,6 +34,8 @@ import BrowseSettings from '../screens/browse/SettingsBrowseScreen';
 const Stack = createStackNavigator();
 
 const MainNavigator = () => {
+  useKeepAwake();
+
   const theme = useTheme();
 
   useEffect(() => {
