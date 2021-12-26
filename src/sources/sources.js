@@ -69,7 +69,6 @@ import YushuboScraper from './ch/yushubo';
 import {KolNovelScraper} from './multisrc/wpmangastream/WPMangaStreamGenerator';
 import WLNUpdatesScraper from './en/wlnupdates';
 import ReaperScansScraper from './en/reaperscans';
-import ReadwnScraper from './en/readwn';
 import RanobeHubScraper from './ru/ranobehub';
 import ArNovelScraper from './ar/arnovel';
 import DivineDaoLibraryScraper from './en/divinedaolibrary';
@@ -97,6 +96,11 @@ import RanobeLibScraper from './ru/ranobelib';
 import NovelPubScraper from './en/novelpub';
 import BestLightNovel from './en/bestlightnovel';
 import NovelFullMeScraper from './en/NovelFullMe';
+import {
+  LtnovelScraper,
+  NovelmtScraper,
+  ReadwnScraper,
+} from './multisrc/readwn/ReadwnGenerator';
 
 export const getSource = sourceId => {
   const scrapers = {
@@ -197,6 +201,8 @@ export const getSource = sourceId => {
     96: HizoMangaScraper,
     97: NovelFullMeScraper,
     98: LatestNovelScraper,
+    99: NovelmtScraper,
+    100: LtnovelScraper,
   };
 
   return scrapers[sourceId];

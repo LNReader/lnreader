@@ -465,7 +465,7 @@
     "sourceId": 68,
     "url": "https://www.readwn.com/",
     "sourceName": "Readwn.com",
-    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/readwn/icon.png?raw=true",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/readwn/icons/readwn.png?raw=true",
     "lang": "English"
   },
   {
@@ -676,6 +676,20 @@
     "url": "https://latestnovel.net/",
     "sourceName": "LatestNovel",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/latestnovel.png?raw=true",
+    "lang": "English"
+  },
+  {
+    "sourceId": 99,
+    "url": "https://www.novelmt.com/",
+    "sourceName": "Novelmt.com",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/readwn/icons/novelmt.png?raw=true",
+    "lang": "English"
+  },
+  {
+    "sourceId": 100,
+    "url": "https://www.ltnovel.com/",
+    "sourceName": "Ltnovel.com",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/readwn/icons/ltnovel.png?raw=true",
     "lang": "English"
   }
 ]
