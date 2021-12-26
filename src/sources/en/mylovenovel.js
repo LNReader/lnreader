@@ -53,7 +53,7 @@ const parseNovelAndChapters = async novelUrl => {
     author: '',
     status: Status.UNKNOWN,
     genre: '',
-    summary: '',
+    summary: null,
     chapters: [],
   };
 
@@ -61,7 +61,9 @@ const parseNovelAndChapters = async novelUrl => {
 
   novel.novelCover = loadedCheerio('img.bookimg').attr('src');
 
-  novel.summary = loadedCheerio('.intro').text().trim();
+  novel.summary = loadedCheerio('meta[name="description"]')
+    .attr('content')
+    .trim();
 
   novel.author = loadedCheerio('#info > div.main > div.detail > p:nth-child(3)')
     .text()
