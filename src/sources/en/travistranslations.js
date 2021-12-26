@@ -62,15 +62,13 @@ const parseNovelAndChapters = async novelUrl => {
 
   loadedCheerio('div.flex.flex-col.mt-3.text-center > ul > li').each(
     function () {
-      novel.genre +=
-        loadedCheerio(this)
-          .text()
-          .replace(/[\t\n]/g, '') + ',';
+      novel.genre += loadedCheerio(this).text().trim() + ',';
     },
   );
+
   loadedCheerio('div.header-stats > span').each(function () {
     if (loadedCheerio(this).find('small').text() === 'Status') {
-      novel.status = loadedCheerio(this).find('strong').text();
+      novel.status = loadedCheerio(this).find('strong').text().trim();
     }
   });
 
@@ -104,15 +102,8 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 
   const loadedCheerio = cheerio.load(body);
 
-  const chapterId = loadedCheerio('input[name=id]').attr('value');
-
-  const url = 'https://travistranslations.com/wp-json/wp/v2/posts/' + chapterId;
-
-  const data = await fetch(url);
-  body = await data.json();
-
-  let chapterName = body.title.rendered;
-  let chapterText = body.content.rendered;
+  let chapterName = loadedCheerio('.header').text().trim();
+  let chapterText = loadedCheerio('.reader-content').html();
 
   const chapter = {
     sourceId,
