@@ -239,3 +239,12 @@ export const LatestNovelScraper = new MadaraScraper(
   false,
   130,
 );
+
+export const ArMTLScraper = new MadaraScraper(
+  101,
+  'https://ar-mtl.club/',
+  'ArMTL',
+  getPath(101),
+  true,
+  1,
+);

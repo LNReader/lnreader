@@ -191,7 +191,8 @@ class MadaraScraper {
       loadedCheerio('.text-center').text() ||
       loadedCheerio('#chapter-heading').text();
 
-    let chapterText = loadedCheerio('.text-left').html();
+    let chapterText =
+      loadedCheerio('.text-left').html() || loadedCheerio('.text-right').html();
 
     const chapter = {
       sourceId,

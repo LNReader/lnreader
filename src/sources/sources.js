@@ -33,6 +33,7 @@ import ScribbleHubScraper from './en/scribblehub';
 import SyosetuScraper from './jp/syosetu';
 import LNMTLScraper from './en/lnmtl';
 import {
+  ArMTLScraper,
   BoxNovelOnlineScraper,
   BoxNovelScraper,
   ClickNovelScraper,
@@ -203,6 +204,7 @@ export const getSource = sourceId => {
     98: LatestNovelScraper,
     99: NovelmtScraper,
     100: LtnovelScraper,
+    101: ArMTLScraper,
   };
 
   return scrapers[sourceId];

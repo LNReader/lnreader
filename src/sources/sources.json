@@ -691,5 +691,12 @@
     "sourceName": "Ltnovel.com",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/readwn/icons/ltnovel.png?raw=true",
     "lang": "English"
+  },
+  {
+    "sourceId": 101,
+    "url": "https://ar-mtl.club/",
+    "sourceName": "ArMTL",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/armtl.png?raw=true",
+    "lang": "Arabic"
   }
 ]
