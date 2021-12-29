@@ -102,6 +102,7 @@ import {
   NovelmtScraper,
   ReadwnScraper,
 } from './multisrc/readwn/ReadwnGenerator';
+import SakuraNovelScraper from './id/sakuranovel';
 
 export const getSource = sourceId => {
   const scrapers = {
@@ -205,6 +206,7 @@ export const getSource = sourceId => {
     99: NovelmtScraper,
     100: LtnovelScraper,
     101: ArMTLScraper,
+    103: SakuraNovelScraper,
   };
 
   return scrapers[sourceId];

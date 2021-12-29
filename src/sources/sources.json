@@ -698,5 +698,12 @@
     "sourceName": "ArMTL",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/armtl.png?raw=true",
     "lang": "Arabic"
+  },
+  {
+    "sourceId": 103,
+    "url": "https://sakuranovel.id/",
+    "sourceName": "SakuraNovel",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/id/sakuranovel/icon.png?raw=true",
+    "lang": "Indonesian"
   }
 ]
