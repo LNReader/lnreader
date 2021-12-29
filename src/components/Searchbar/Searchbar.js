@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     marginTop: StatusBar.currentHeight + 8,
     marginBottom: 8,
     marginHorizontal: 16,
-    height: 48,
+    height: 46,
     borderRadius: 50,
     overflow: 'hidden',
   },

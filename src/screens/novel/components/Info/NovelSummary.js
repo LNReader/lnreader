@@ -10,8 +10,8 @@ const NovelSummary = ({summary, followed, theme}) => {
 
   const expandNovelSummary = () => setExpanded(!expanded);
 
-  return (
-    <View style={[styles.summaryContainer, {paddingBottom: expanded ? 20 : 8}]}>
+  return summary ? (
+    <View style={[styles.summaryContainer, {paddingBottom: expanded ? 24 : 8}]}>
       <Text
         style={{
           color: theme.textColorSecondary,
@@ -48,7 +48,7 @@ const NovelSummary = ({summary, followed, theme}) => {
         />
       </View>
     </View>
-  );
+  ) : null;
 };
 
 export default NovelSummary;

@@ -1,6 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Pressable, StatusBar, StyleSheet, Text, View} from 'react-native';
+import {
+  Pressable,
+  StatusBar,
+  StyleSheet,
+  Text,
+  View,
+  Dimensions,
+} from 'react-native';
 
 import {readerLineHeight, readerTextColor} from '../utils/readerStyles';
 import {htmlToText} from '../../../sources/helpers/htmlToText';
@@ -25,6 +32,7 @@ const TextReader = ({
     fontFamily: reader.fontFamily,
   };
 
+  const readerHeight = Dimensions.get('window').height + 80;
   const chapterText = htmlToText(text);
 
   return (
@@ -34,6 +42,7 @@ const TextReader = ({
         {
           paddingHorizontal: `${reader.padding}%`,
           paddingTop: StatusBar.currentHeight,
+          minHeight: readerHeight,
         },
       ]}
     >
