@@ -10,7 +10,7 @@ const searchUrl = 'https://www.readlightnovel.me/detailed-search';
 
 const popularNovels = async page => {
   let totalPages = 1751;
-  const url = `${baseUrl}/top-novel/${page}`;
+  const url = `${baseUrl}/top-novels/most-viewed/${page}`;
 
   const result = await fetch(url);
   const body = await result.text();
