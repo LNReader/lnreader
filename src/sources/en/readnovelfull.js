@@ -1,5 +1,6 @@
 import cheerio from 'react-native-cheerio';
 
+const sourceId = 4;
 const baseUrl = 'https://readnovelfull.com';
 
 const popularNovels = async page => {
@@ -14,18 +15,13 @@ const popularNovels = async page => {
   let novels = [];
 
   loadedCheerio('div.col-novel-main > div.list-novel > .row').each(function () {
-    let novelUrl = loadedCheerio(this)
-      .find('h3.novel-title > a')
-      .attr('href')
-      .replace('.html', '')
-      .substring(1);
-    novelUrl = `${novelUrl}/`;
-
     const novelName = loadedCheerio(this).find('h3.novel-title > a').text();
     const novelCover = loadedCheerio(this).find('img').attr('src');
+    const novelUrl =
+      baseUrl + loadedCheerio(this).find('h3.novel-title > a').attr('href');
 
     const novel = {
-      sourceId: 4,
+      sourceId,
       novelUrl,
       novelName,
       novelCover,
@@ -38,7 +34,7 @@ const popularNovels = async page => {
 };
 
 const parseNovelAndChapters = async novelUrl => {
-  const url = `${baseUrl}/${novelUrl.slice(0, -1)}.html`;
+  const url = novelUrl;
 
   const result = await fetch(url);
   const body = await result.text();
@@ -51,7 +47,7 @@ const parseNovelAndChapters = async novelUrl => {
 
   novel.sourceName = 'ReadNovelFull';
 
-  novel.url = url;
+  novel.url = novelUrl;
 
   novel.novelUrl = novelUrl;
 
@@ -100,10 +96,9 @@ const parseNovelAndChapters = async novelUrl => {
     loadedCheerio('.panel-body')
       .find('li')
       .each(function () {
-        let chapterName = loadedCheerio(this).find('a').attr('title');
-        let releaseDate = null;
-        let chapterUrl = loadedCheerio(this).find('a').attr('href');
-        chapterUrl = chapterUrl.replace(`/${novelUrl}`, '');
+        const chapterName = loadedCheerio(this).find('a').attr('title');
+        const releaseDate = null;
+        const chapterUrl = loadedCheerio(this).find('a').attr('href');
 
         novelChapters.push({
           chapterName,
@@ -111,6 +106,7 @@ const parseNovelAndChapters = async novelUrl => {
           chapterUrl,
         });
       });
+
     return novelChapters;
   };
 
@@ -120,7 +116,7 @@ const parseNovelAndChapters = async novelUrl => {
 };
 
 const parseChapter = async (novelUrl, chapterUrl) => {
-  const url = `${baseUrl}/${novelUrl}${chapterUrl}`;
+  const url = baseUrl + chapterUrl;
 
   const result = await fetch(url);
   const body = await result.text();
@@ -128,7 +124,8 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   const loadedCheerio = cheerio.load(body);
 
   const chapterName = loadedCheerio('.chr-title').attr('title');
-  let chapterText = loadedCheerio('#chr-content').html();
+  const chapterText = loadedCheerio('#chr-content').html();
+
   const chapter = {
     sourceId: 4,
     novelUrl,
@@ -153,15 +150,10 @@ const searchNovels = async searchTerm => {
   let novels = [];
 
   loadedCheerio('div.col-novel-main > div.list-novel > .row').each(function () {
-    let novelUrl = loadedCheerio(this)
-      .find('h3.novel-title > a')
-      .attr('href')
-      .replace('.html', '')
-      .substring(1);
-    novelUrl = `${novelUrl}/`;
-
     const novelName = loadedCheerio(this).find('h3.novel-title > a').text();
     const novelCover = loadedCheerio(this).find('img').attr('src');
+    const novelUrl =
+      baseUrl + loadedCheerio(this).find('h3.novel-title > a').attr('href');
 
     const novel = {
       sourceId: 4,
