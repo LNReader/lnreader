@@ -5,18 +5,18 @@ const baseUrl = 'https://www.novelpub.com/';
 const sourceName = 'NovelPub';
 const sourceId = 94;
 
+const headers = new Headers({
+  Accept: 'application/json',
+  'Content-Type': 'application/json',
+  'User-Agent':
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36',
+});
+
 const popularNovels = async page => {
   let totalPages = 40;
   let url = baseUrl + 'browse/all/popular/all/' + page;
 
-  let headers = new Headers({
-    Accept: 'application/json',
-    'Content-Type': 'application/json',
-    'User-Agent':
-      "'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36",
-  });
-
-  const result = await fetch(url, {method: 'GET', headers: headers});
+  const result = await fetch(url, {method: 'GET', headers});
   const body = await result.text();
 
   const loadedCheerio = cheerio.load(body);
@@ -43,14 +43,7 @@ const popularNovels = async page => {
 const parseNovelAndChapters = async novelUrl => {
   const url = novelUrl;
 
-  let headers = new Headers({
-    Accept: 'application/json',
-    'Content-Type': 'application/json',
-    'User-Agent':
-      "'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36",
-  });
-
-  const result = await fetch(url, {method: 'GET', headers: headers});
+  const result = await fetch(url, {method: 'GET', headers});
   const body = await result.text();
 
   let loadedCheerio = cheerio.load(body);
@@ -80,8 +73,6 @@ const parseNovelAndChapters = async novelUrl => {
 
   novel.summary = loadedCheerio('.summary > .content').text().trim();
 
-  let novelChapters = [];
-
   const delay = ms => new Promise(res => setTimeout(res, ms));
 
   let lastPage = 1;
@@ -94,35 +85,41 @@ const parseNovelAndChapters = async novelUrl => {
 
   lastPage = Math.ceil(lastPage / 100);
 
-  for (let i = 1; i <= lastPage; i++) {
-    const chaptersUrl = `${novelUrl}/chapters/page-${i}`;
+  const getChapters = async () => {
+    let novelChapters = [];
 
-    const chaptersRequest = await fetch(chaptersUrl);
-    const chaptersHtml = await chaptersRequest.text();
+    for (let i = 1; i <= lastPage; i++) {
+      const chaptersUrl = `${novelUrl}/chapters/page-${i}`;
 
-    loadedCheerio = cheerio.load(chaptersHtml);
+      const chaptersRequest = await fetch(chaptersUrl, {headers});
+      const chaptersHtml = await chaptersRequest.text();
 
-    loadedCheerio('.chapter-list li').each(function () {
-      const chapterName = loadedCheerio(this)
-        .find('.chapter-title')
-        .text()
-        .trim();
+      loadedCheerio = cheerio.load(chaptersHtml);
 
-      const releaseDate = loadedCheerio(this)
-        .find('.chapter-update')
-        .text()
-        .trim();
+      loadedCheerio('.chapter-list li').each(function () {
+        const chapterName = loadedCheerio(this)
+          .find('.chapter-title')
+          .text()
+          .trim();
 
-      const chapterUrl =
-        baseUrl + loadedCheerio(this).find('a').attr('href').substring(1);
+        const releaseDate = loadedCheerio(this)
+          .find('.chapter-update')
+          .text()
+          .trim();
 
-      novelChapters.push({chapterName, releaseDate, chapterUrl});
-    });
+        const chapterUrl =
+          baseUrl + loadedCheerio(this).find('a').attr('href').substring(1);
 
-    delay(1000);
-  }
+        novelChapters.push({chapterName, releaseDate, chapterUrl});
+      });
 
-  novel.chapters = novelChapters;
+      await delay(1000);
+    }
+
+    return novelChapters;
+  };
+
+  novel.chapters = await getChapters();
 
   return novel;
 };
@@ -130,14 +127,7 @@ const parseNovelAndChapters = async novelUrl => {
 const parseChapter = async (novelUrl, chapterUrl) => {
   const url = chapterUrl;
 
-  let headers = new Headers({
-    Accept: 'application/json',
-    'Content-Type': 'application/json',
-    'User-Agent':
-      "'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36",
-  });
-
-  const result = await fetch(url, {method: 'GET', headers: headers});
+  const result = await fetch(url, {method: 'GET', headers});
 
   const body = await result.text();
   const loadedCheerio = cheerio.load(body);
@@ -153,14 +143,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 const searchNovels = async searchTerm => {
   const url = `${baseUrl}lnwsearchlive?inputContent=${searchTerm}`;
 
-  let headers = new Headers({
-    Accept: 'application/json',
-    'Content-Type': 'application/json',
-    'User-Agent':
-      "'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36",
-  });
-
-  const result = await fetch(url, {method: 'GET', headers: headers});
+  const result = await fetch(url, {method: 'GET', headers});
   const body = await result.text();
 
   let loadedCheerio = cheerio.load(body);

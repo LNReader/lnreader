@@ -1,22 +1,20 @@
 import cheerio from 'react-native-cheerio';
 
+const sourceId = 15;
 const baseUrl = 'https://www.lightnovelpub.com/';
 
+const headers = new Headers({
+  Accept: 'application/json',
+  'Content-Type': 'application/json',
+  'User-Agent':
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36',
+});
+
 const popularNovels = async page => {
-  let totalPages = 33;
-  let url = baseUrl + 'browse/all/popular/all/' + page;
+  const totalPages = 33;
+  const url = baseUrl + 'browse/all/popular/all/' + page;
 
-  let headers = new Headers({
-    Accept: 'application/json',
-    'Content-Type': 'application/json',
-    'User-Agent':
-      "'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36",
-  });
-
-  const result = await fetch(url, {
-    method: 'GET',
-    headers: headers,
-  });
+  const result = await fetch(url, {method: 'GET', headers});
   const body = await result.text();
 
   const loadedCheerio = cheerio.load(body);
@@ -26,21 +24,14 @@ const popularNovels = async page => {
   loadedCheerio('.novel-item.ads').remove();
 
   loadedCheerio('.novel-item').each(function () {
-    const novelName = loadedCheerio(this)
-      .find('.novel-title')
-      .text()
-      .replace(/[\t\n]/g, '');
-
+    const novelName = loadedCheerio(this).find('.novel-title').text().trim();
     const novelCover = loadedCheerio(this).find('img').attr('data-src');
-
-    let novelUrl = loadedCheerio(this)
-      .find('.novel-title > a')
-      .attr('href')
-      .replace('/novel/', '');
-    novelUrl += '/';
+    const novelUrl =
+      baseUrl +
+      loadedCheerio(this).find('.novel-title > a').attr('href').substring(1);
 
     const novel = {
-      sourceId: 15,
+      sourceId,
       novelName,
       novelCover,
       novelUrl,
@@ -53,32 +44,14 @@ const popularNovels = async page => {
 };
 
 const parseNovelAndChapters = async novelUrl => {
-  const url = `${baseUrl}novel/${novelUrl}/`;
+  const url = novelUrl;
 
-  let headers = new Headers({
-    Accept: 'application/json',
-    'Content-Type': 'application/json',
-    'User-Agent':
-      "'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36",
-  });
-
-  const result = await fetch(url, {
-    method: 'GET',
-    headers: headers,
-  });
+  const result = await fetch(url, {method: 'GET', headers});
   const body = await result.text();
 
-  const loadedCheerio = cheerio.load(body);
+  let loadedCheerio = cheerio.load(body);
 
-  let novel = {};
-
-  novel.sourceId = 15;
-
-  novel.sourceName = 'LightNovelPub';
-
-  novel.url = url;
-
-  novel.novelUrl = novelUrl;
+  let novel = {sourceId, url: novelUrl, novelUrl, sourceName: 'LightNovelPub'};
 
   novel.novelName = loadedCheerio('h1.novel-title')
     .text()
@@ -108,53 +81,70 @@ const parseNovelAndChapters = async novelUrl => {
 
   novel.summary = loadedCheerio('.summary > .content').text().trim();
 
-  let novelChapters = [];
+  const delay = ms => new Promise(res => setTimeout(res, ms));
 
-  let totalChapters;
+  let lastPage = 1;
 
-  totalChapters = loadedCheerio('.header-stats > span')
-    .first()
+  lastPage = loadedCheerio(
+    '#novel > header > div.header-body.container > div.novel-info > div.header-stats > span:nth-child(1) > strong',
+  )
     .text()
-    .match(/\d+/)[0];
+    ?.trim();
 
-  for (let i = 1; i <= totalChapters; i++) {
-    const chapterName = 'Chapter ' + i;
+  lastPage = Math.ceil(lastPage / 100);
 
-    const releaseDate = null;
+  const getChapters = async () => {
+    let novelChapters = [];
 
-    const chapterUrl = 'chapter-' + i;
+    for (let i = 1; i <= lastPage; i++) {
+      const chaptersUrl = `${novelUrl}/chapters/page-${i}`;
 
-    const chapter = {chapterName, releaseDate, chapterUrl};
+      const chaptersRequest = await fetch(chaptersUrl, {headers});
+      const chaptersHtml = await chaptersRequest.text();
 
-    novelChapters.push(chapter);
-  }
+      loadedCheerio = cheerio.load(chaptersHtml);
 
-  novel.chapters = novelChapters;
+      loadedCheerio('.chapter-list li').each(function () {
+        const chapterName = loadedCheerio(this)
+          .find('.chapter-title')
+          .text()
+          .trim();
+
+        const releaseDate = loadedCheerio(this)
+          .find('.chapter-update')
+          .text()
+          .trim();
+
+        const chapterUrl =
+          baseUrl + loadedCheerio(this).find('a').attr('href').substring(1);
+
+        novelChapters.push({chapterName, releaseDate, chapterUrl});
+      });
+
+      await delay(1000);
+    }
+
+    return novelChapters;
+  };
+
+  novel.chapters = await getChapters();
 
   return novel;
 };
 
 const parseChapter = async (novelUrl, chapterUrl) => {
-  const url = `${baseUrl}novel/${novelUrl}/${chapterUrl}`;
+  const url = chapterUrl;
 
-  let headers = new Headers({
-    Accept: 'application/json',
-    'Content-Type': 'application/json',
-    'User-Agent':
-      "'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36",
-  });
-
-  const result = await fetch(url, {
-    method: 'GET',
-    headers: headers,
-  });
+  const result = await fetch(url, {method: 'GET', headers});
   const body = await result.text();
+
   const loadedCheerio = cheerio.load(body);
 
   const chapterName = loadedCheerio('h2').text();
-  let chapterText = loadedCheerio('#chapter-container').html();
+  const chapterText = loadedCheerio('#chapter-container').html();
+
   const chapter = {
-    sourceId: 15,
+    sourceId,
     novelUrl,
     chapterUrl,
     chapterName,
@@ -167,17 +157,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 const searchNovels = async searchTerm => {
   const url = `${baseUrl}lnwsearchlive?inputContent=${searchTerm}`;
 
-  let headers = new Headers({
-    Accept: 'application/json',
-    'Content-Type': 'application/json',
-    'User-Agent':
-      "'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36",
-  });
-
-  const result = await fetch(url, {
-    method: 'GET',
-    headers: headers,
-  });
+  const result = await fetch(url, {method: 'GET', headers});
   const body = await result.text();
 
   let loadedCheerio = cheerio.load(body);
@@ -189,17 +169,13 @@ const searchNovels = async searchTerm => {
   loadedCheerio = cheerio.load(results.resultview);
 
   loadedCheerio('.novel-item').each(function () {
-    const novelName = loadedCheerio(this).find('h4.novel-title').text();
+    const novelName = loadedCheerio(this).find('h4.novel-title').text().trim();
     const novelCover = loadedCheerio(this).find('img').attr('src');
-
-    let novelUrl = loadedCheerio(this)
-      .find('a')
-      .attr('href')
-      .replace('/novel/', '');
-    novelUrl += '/';
+    const novelUrl =
+      baseUrl + loadedCheerio(this).find('a').attr('href').substring(1);
 
     const novel = {
-      sourceId: 15,
+      sourceId,
       novelName,
       novelCover,
       novelUrl,
