@@ -8,6 +8,7 @@ const fonts = {
   'pt-serif': require('../../android/app/src/main/assets/fonts/pt-serif.ttf'),
   lora: require('../../android/app/src/main/assets/fonts/lora.ttf'),
   nunito: require('../../android/app/src/main/assets/fonts/nunito.ttf'),
+  openDyslexic: require('../../android/app/src/main/assets/fonts/OpenDyslexic3-Regular.ttf'),
 };
 
 export {fonts};

@@ -8,6 +8,7 @@ export const fonts = [
   {fontFamily: 'domine', name: 'Domine'},
   {fontFamily: 'lato', name: 'Lato'},
   {fontFamily: 'pt-serif', name: 'PT Serif'},
+  {fontFamily: 'openDyslexic', name: 'OpenDyslexic'},
 ];
 
 export const dateFormat = {
