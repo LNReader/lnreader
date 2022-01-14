@@ -261,23 +261,26 @@ const ReaderSheet = ({
             theme={theme}
           />
           {!useWebViewForChapter && (
-            <ReaderBottomSheetSwitch
-              label="AutoScroll"
-              onPress={() =>
-                dispatch(setAppSettings('autoScroll', !autoScroll))
-              }
-              value={autoScroll}
-              theme={theme}
-            />
+            <>
+              <ReaderBottomSheetSwitch
+                label="AutoScroll"
+                onPress={() =>
+                  dispatch(setAppSettings('autoScroll', !autoScroll))
+                }
+                value={autoScroll}
+                theme={theme}
+              />
+              <ReaderBottomSheetSwitch
+                label="Vertical seekbar"
+                onPress={() =>
+                  dispatch(setAppSettings('verticalSeekbar', !verticalSeekbar))
+                }
+                value={verticalSeekbar}
+                theme={theme}
+              />
+            </>
           )}
-          <ReaderBottomSheetSwitch
-            label="Vertical seekbar"
-            onPress={() =>
-              dispatch(setAppSettings('verticalSeekbar', !verticalSeekbar))
-            }
-            value={verticalSeekbar}
-            theme={theme}
-          />
+
           <ReaderBottomSheetSwitch
             label="Show battery and time"
             onPress={() =>

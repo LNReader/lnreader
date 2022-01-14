@@ -11,7 +11,6 @@ import {
 
 import {useDispatch} from 'react-redux';
 import {IconButton, Portal} from 'react-native-paper';
-import Tts from 'react-native-tts';
 import {useKeepAwake} from 'expo-keep-awake';
 import {
   changeNavigationBarColor,
@@ -50,14 +49,13 @@ import GestureRecognizer from 'react-native-swipe-gestures';
 import {LoadingScreen} from '../../components/LoadingScreen/LoadingScreen';
 import {insertHistory} from '../../database/queries/HistoryQueries';
 import {SET_LAST_READ} from '../../redux/preferences/preference.types';
-import {htmlToText} from '../../sources/helpers/htmlToText';
 import {setAppSettings} from '../../redux/settings/settings.actions';
 import {useBatteryLevel} from 'react-native-device-info';
 import moment from 'moment';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import TextReader from './components/TextReader';
-import {cleanHtml} from '../../sources/helpers/cleanHtml';
-import WebView from 'react-native-webview';
+import WebViewReader from './components/WebViewReader';
+import {useTextToSpeech} from '../../hooks/useTextToSpeech';
 
 const Chapter = ({route, navigation}) => {
   useKeepAwake();
@@ -78,8 +76,12 @@ const Chapter = ({route, navigation}) => {
 
   const theme = useTheme();
   const dispatch = useDispatch();
-  const reader = useReaderSettings();
+  const readerSettings = useReaderSettings();
   const insets = useSafeAreaInsets();
+
+  const [ttsStatus, ttsPosition, startTts, pauseTts] = useTextToSpeech(
+    chapter?.chapterText,
+  );
 
   const {
     showScrollPercentage = true,
@@ -111,101 +113,6 @@ const Chapter = ({route, navigation}) => {
   const [firstLayout, setFirstLayout] = useState(true);
 
   const [contentSize, setContentSize] = useState(0);
-
-  const [textToSpeech, setTextToSpeech] = useState();
-  const [textToSpeechPosition, setTextToSpeechPosition] = useState({end: 0});
-
-  useEffect(() => {
-    Tts.addEventListener('tts-start', () => setTextToSpeech('start'));
-    Tts.addEventListener('tts-progress', event => {
-      setTextToSpeech('progress');
-      setTextToSpeechPosition(event);
-    });
-    Tts.addEventListener('tts-finish', () => setTextToSpeech('finish'));
-    Tts.addEventListener('tts-cancel', () => setTextToSpeech('paused'));
-
-    return () => Tts.stop();
-  }, []);
-
-  const tts = () => {
-    if (!loading) {
-      if (textToSpeech === 'progress') {
-        setTextToSpeechPosition({end: 0});
-        setTextToSpeech('finish');
-        Tts.stop();
-        return;
-      }
-
-      const text = htmlToText(chapter.chapterText);
-
-      if (text.length >= 3999) {
-        const splitNChars = (txt, num) => {
-          let result = [];
-          for (let i = 0; i < txt.length; i += num) {
-            result.push(txt.substr(i, num));
-          }
-          return result;
-        };
-
-        let splitMe = splitNChars(text, 3999);
-
-        splitMe.forEach((value, key) => {
-          Tts.speak(value, {
-            androidParams: {
-              KEY_PARAM_STREAM: 'STREAM_MUSIC',
-            },
-          });
-        });
-      } else {
-        Tts.stop();
-        Tts.speak(text, {
-          androidParams: {
-            KEY_PARAM_STREAM: 'STREAM_MUSIC',
-          },
-        });
-      }
-    }
-  };
-
-  const pauseTts = () => {
-    if (!loading) {
-      if (textToSpeech === 'progress') {
-        setTextToSpeech('paused');
-        Tts.stop();
-        return;
-      } else {
-        let text = htmlToText(chapter.chapterText);
-        text = text.slice(textToSpeechPosition.end);
-
-        if (text.length >= 3999) {
-          const splitNChars = (txt, num) => {
-            let result = [];
-            for (let i = 0; i < txt.length; i += num) {
-              result.push(txt.substr(i, num));
-            }
-            return result;
-          };
-
-          let splitMe = splitNChars(text, 3999);
-
-          splitMe.forEach((value, key) => {
-            Tts.speak(value, {
-              androidParams: {
-                KEY_PARAM_STREAM: 'STREAM_MUSIC',
-              },
-            });
-          });
-        } else {
-          Tts.stop();
-          Tts.speak(text, {
-            androidParams: {
-              KEY_PARAM_STREAM: 'STREAM_MUSIC',
-            },
-          });
-        }
-      }
-    }
-  };
 
   const getChapter = async id => {
     try {
@@ -275,9 +182,11 @@ const Chapter = ({route, navigation}) => {
   const [currentTime, setCurrentTime] = useState();
 
   useEffect(() => {
-    setInterval(() => {
+    const timeInterval = setInterval(() => {
       setCurrentTime(new Date().toISOString());
     }, 60000);
+
+    return () => clearInterval(timeInterval);
   }, []);
 
   const [currentOffset, setCurrentOffset] = useState(position?.position || 0);
@@ -350,8 +259,8 @@ const Chapter = ({route, navigation}) => {
       StatusBar.setHidden(true);
       hideNavigationBar();
     } else {
-      StatusBar.setBackgroundColor(readerBackground(reader.theme));
-      changeNavigationBarColor(readerBackground(reader.theme));
+      StatusBar.setBackgroundColor(readerBackground(readerSettings.theme));
+      changeNavigationBarColor(readerBackground(readerSettings.theme));
     }
   };
 
@@ -437,7 +346,7 @@ const Chapter = ({route, navigation}) => {
     }
   };
 
-  const backgroundColor = readerBackground(reader.theme);
+  const backgroundColor = readerBackground(readerSettings.theme);
 
   return (
     <>
@@ -447,14 +356,14 @@ const Chapter = ({route, navigation}) => {
           chapterName={chapterName}
           chapterId={chapterId}
           bookmark={bookmark}
-          textToSpeech={textToSpeech}
-          tts={tts}
+          textToSpeech={ttsStatus}
+          tts={startTts}
           readerSheetRef={readerSheetRef}
           hide={hidden}
           navigation={navigation}
           dispatch={dispatch}
           theme={theme}
-          textToSpeechPosition={textToSpeechPosition}
+          textToSpeechPosition={ttsPosition}
           pauseTts={pauseTts}
         />
         <GestureRecognizer
@@ -476,14 +385,19 @@ const Chapter = ({route, navigation}) => {
                   icon="Σ(ಠ_ಠ)"
                   description={error}
                   style={{
-                    color: reader.textColor || readerTextColor(reader.theme),
+                    color:
+                      readerSettings.textColor ||
+                      readerTextColor(readerSettings.theme),
                   }}
                 >
                   <IconButton
                     icon="reload"
                     size={25}
                     style={{margin: 0, marginTop: 16}}
-                    color={reader.textColor || readerTextColor(reader.theme)}
+                    color={
+                      readerSettings.textColor ||
+                      readerTextColor(readerSettings.theme)
+                    }
                     onPress={() => {
                       getChapter(chapterId);
                       setLoading(true);
@@ -492,7 +406,9 @@ const Chapter = ({route, navigation}) => {
                   />
                   <Text
                     style={{
-                      color: reader.textColor || readerTextColor(reader.theme),
+                      color:
+                        readerSettings.textColor ||
+                        readerTextColor(readerSettings.theme),
                     }}
                   >
                     Retry
@@ -508,73 +424,22 @@ const Chapter = ({route, navigation}) => {
                 onLayout={scrollToSavedProgress}
               >
                 {useWebViewForChapter ? (
-                  <WebView
-                    style={{backgroundColor}}
-                    originWhitelist={['*']}
-                    scalesPageToFit={true}
-                    showsVerticalScrollIndicator={false}
-                    onScroll={onScroll}
-                    onNavigationStateChange={onWebViewNavigationStateChange}
-                    source={{
-                      html: `
-                         <html>
-                           <head>
-                             <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-                             <style>
-                               html {
-                                 overflow-x: hidden;
-                                 padding-top: ${StatusBar.currentHeight};
-                                 word-wrap: break-word;
-                               }
-                               body {
-                                 padding-left: ${reader.padding}%;
-                                 padding-right: ${reader.padding}%;
-                                 padding-bottom: 30px;
-                                 
-                                 font-size: ${reader.textSize}px;
-                                 color: ${reader.textColor};
-                                 text-align: ${reader.textAlign};
-                                 line-height: ${reader.lineHeight};
-                                 font-family: ${reader.fontFamily};
-                               }
-                               hr {
-                                 margin-top: 20px;
-                                 margin-bottom: 20px;
-                               }
-                               a {
-                                 color: ${theme.colorAccent};
-                               }
-                               img {
-                                 display: block;
-                                 width: auto;
-                                 height: auto;
-                                 max-width: 100%;
-                               }
-                             </style>
-                             
-                             <style>
-                               ${reader.customCSS}
-                               
-                               @font-face {
-                                 font-family: ${reader.fontFamily};
-                                 src: url("file:///android_asset/fonts/${
-                                   reader.fontFamily
-                                 }.ttf");
-                               }
-                             </style>
-                           </head>
-                           <body>
-                             ${cleanHtml(chapter.chapterText)}
-                           </body>
-                         </html>
-                       `,
-                    }}
-                  />
+                  <View style={{flex: 1}}>
+                    <WebViewReader
+                      reader={readerSettings}
+                      html={chapter.chapterText}
+                      onScroll={onScroll}
+                      onWebViewNavigationStateChange={
+                        onWebViewNavigationStateChange
+                      }
+                      theme={theme}
+                    />
+                  </View>
                 ) : (
                   <View>
                     <TextReader
                       text={chapter.chapterText}
-                      reader={reader}
+                      reader={readerSettings}
                       chapterName={chapterName}
                       textSelectable={textSelectable}
                       theme={theme}
@@ -591,7 +456,7 @@ const Chapter = ({route, navigation}) => {
         <Portal>
           <ReaderBottomSheet
             theme={theme}
-            reader={reader}
+            reader={readerSettings}
             dispatch={dispatch}
             navigation={navigation}
             bottomSheetRef={readerSheetRef}
@@ -646,7 +511,7 @@ const Chapter = ({route, navigation}) => {
             ]}
           >
             {showBatteryAndTime && (
-              <Text style={{color: reader.textColor}}>
+              <Text style={{color: readerSettings.textColor}}>
                 {Math.ceil(batteryLevel * 100) + '%'}
               </Text>
             )}
@@ -654,7 +519,7 @@ const Chapter = ({route, navigation}) => {
               <Text
                 style={{
                   flex: 1,
-                  color: reader.textColor,
+                  color: readerSettings.textColor,
                   textAlign: 'center',
                 }}
               >
@@ -662,7 +527,7 @@ const Chapter = ({route, navigation}) => {
               </Text>
             )}
             {showBatteryAndTime && (
-              <Text style={{color: reader.textColor}}>
+              <Text style={{color: readerSettings.textColor}}>
                 {moment(currentTime).format('h:mm')}
               </Text>
             )}
