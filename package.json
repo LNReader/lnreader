@@ -1,9 +1,13 @@
 {
+  "name": "lnreader",
+  "version": "1.1.8",
+  "private": true,
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
-    "lint": "eslint ."
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "prettier": "prettier --config .prettierrc 'src/**/*.ts' --write"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.15.11",
@@ -14,6 +18,7 @@
     "@react-navigation/material-bottom-tabs": "^6.0.9",
     "@react-navigation/native": "^6.0.6",
     "@react-navigation/stack": "^6.0.11",
+    "@reduxjs/toolkit": "^1.7.2",
     "expo": "^41.0.1",
     "expo-document-picker": "^9.2.4",
     "expo-file-system": "~11.0.2",
@@ -55,15 +60,22 @@
     "redux": "^4.1.2",
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.4.0",
-    "rn-sliding-up-panel": "^2.4.4"
+    "rn-sliding-up-panel": "^2.4.4",
+    "sanitize-html": "^2.7.0"
   },
   "devDependencies": {
     "@babel/core": "^7.16.0",
     "@react-native-community/eslint-config": "^3.0.1",
+    "@types/jest": "^27.4.0",
+    "@types/react-native": "^0.66.15",
+    "@types/react-test-renderer": "^17.0.1",
+    "@typescript-eslint/eslint-plugin": "^5.10.2",
+    "@typescript-eslint/parser": "^5.10.2",
     "eslint": "^7.32.0",
-    "eslint-plugin-react-native": "^3.11.0"
+    "eslint-plugin-react-native": "^3.11.0",
+    "typescript": "^4.5.5"
   },
-  "private": true,
-  "name": "lnreader",
-  "version": "1.1.6"
+  "resolutions": {
+    "@types/react": "^17"
+  }
 }
