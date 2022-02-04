@@ -2,7 +2,6 @@
 
 Contributions are welcome and are greatly appreciated!
 
-
 ## Setting up your environment
 
 After forking to your own github org or account, do the following steps to get started:

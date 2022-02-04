@@ -30,12 +30,15 @@
 </p>
 
 ## Download
+
 Get the app from our [releases page](https://github.com/rajarsheechatterjee/LNReader/releases).
 
 ## Sources
+
 LNReader does not have any affiliation with the content providers available.
 
 Source requests should be created at [LNReader/lnreader-sources](https://github.com/LNReader/lnreader-sources).
 
 ## License
+
 [MIT ](https://github.com/rajarsheechatterjee/lnreader/blob/main/LICENSE)

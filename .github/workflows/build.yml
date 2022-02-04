@@ -1,45 +1,45 @@
 name: CI
 on:
-    push:
-        branches:
-            - main
+  push:
+    branches:
+      - main
 jobs:
-    install-and-test:
-        name: Install dependencies
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v2
-            - name: Install npm dependencies
-              run: |
-                  npm install
+  install-and-test:
+    name: Install dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install npm dependencies
+        run: |
+          npm install
 
-    build-android:
-        name: Build app
-        needs: install-and-test
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v2
-            - name: Install Dependencies
-              run: |
-                  npm install
+  build-android:
+    name: Build app
+    needs: install-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Dependencies
+        run: |
+          npm install
 
-            - name: Cache Gradle Wrapper
-              uses: actions/cache@v2
-              with:
-                  path: ~/.gradle/wrapper
-                  key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
+      - name: Cache Gradle Wrapper
+        uses: actions/cache@v2
+        with:
+          path: ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
 
-            - name: Cache Gradle Dependencies
-              uses: actions/cache@v2
-              with:
-                  path: ~/.gradle/caches
-                  key: ${{ runner.os }}-gradle-caches-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
-                  restore-keys: |
-                      ${{ runner.os }}-gradle-caches-
+      - name: Cache Gradle Dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-caches-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-caches-
 
-            - name: Make Gradlew Executable
-              run: cd android && chmod +x ./gradlew
+      - name: Make Gradlew Executable
+        run: cd android && chmod +x ./gradlew
 
-            - name: Build Android Release
-              run: |
-                  cd android && ./gradlew assembleRelease --no-daemon
+      - name: Build Android Release
+        run: |
+          cd android && ./gradlew assembleRelease --no-daemon
