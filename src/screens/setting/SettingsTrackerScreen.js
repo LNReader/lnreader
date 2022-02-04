@@ -26,7 +26,7 @@ const TrackerScreen = ({navigation}) => {
 
   return (
     <Provider>
-      <Appbar title="Tacking" onBackAction={() => navigation.goBack()} />
+      <Appbar title="Tracking" onBackAction={() => navigation.goBack()} />
       <View
         style={{
           flex: 1,
