@@ -27,23 +27,24 @@ const popularNovels = async page => {
       .attr('data-src');
 
     let novelUrl = loadedCheerio(this).find('div > a').attr('href');
-    novelUrl = novelUrl.replace(`${baseUrl}/`, '');
 
-    const novel = {
-      sourceId,
-      novelName,
-      novelCover,
-      novelUrl,
-    };
+    if (novelUrl) {
+      novelUrl = novelUrl.replace(`${baseUrl}/series/`, '');
 
-    novels.push(novel);
+      novels.push({
+        sourceId,
+        novelName,
+        novelCover,
+        novelUrl,
+      });
+    }
   });
 
   return {totalPages, novels};
 };
 
 const parseNovelAndChapters = async novelUrl => {
-  const url = `${baseUrl}/${novelUrl}`;
+  const url = `${baseUrl}/series/${novelUrl}`;
 
   const result = await fetch(url);
   const body = await result.text();
@@ -113,7 +114,7 @@ const parseNovelAndChapters = async novelUrl => {
 };
 
 const parseChapter = async (novelUrl, chapterUrl) => {
-  const url = `${baseUrl}/${novelUrl}/${chapterUrl}`;
+  const url = `${baseUrl}/series/${novelUrl}/${chapterUrl}`;
 
   const result = await fetch(url);
   const body = await result.text();
@@ -153,16 +154,16 @@ const searchNovels = async searchTerm => {
       .attr('data-src');
 
     let novelUrl = loadedCheerio(this).find('div > div > a').attr('href');
-    novelUrl = novelUrl.replace(`${baseUrl}/`, '');
+    if (novelUrl) {
+      novelUrl = novelUrl.replace(`${baseUrl}/series/`, '');
 
-    const novel = {
-      sourceId,
-      novelName,
-      novelCover,
-      novelUrl,
-    };
-
-    novels.push(novel);
+      novels.push({
+        sourceId,
+        novelName,
+        novelCover,
+        novelUrl,
+      });
+    }
   });
 
   return novels;
