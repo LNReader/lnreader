@@ -705,5 +705,12 @@
     "sourceName": "SakuraNovel",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/id/sakuranovel/icon.png?raw=true",
     "lang": "Indonesian"
+  },
+  {
+    "sourceId": 104,
+    "url": "https://novel4up.com/",
+    "sourceName": "Novel4Up",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/novel4up.png?raw=true",
+    "lang": "Arabic"
   }
 ]

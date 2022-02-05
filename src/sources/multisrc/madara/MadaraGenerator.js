@@ -248,3 +248,12 @@ export const ArMTLScraper = new MadaraScraper(
   true,
   1,
 );
+
+export const Novel4UpScraper = new MadaraScraper(
+  104,
+  'https://novel4up.com/',
+  'Novel4Up',
+  getPath(104),
+  false,
+  2,
+);
