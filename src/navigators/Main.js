@@ -16,20 +16,20 @@ import MoreStack from './MoreStack';
 /**
  * Screens
  */
-import NovelScreen from '../screens/novel/NovelScreen';
-import ReaderScreen from '../screens/reader/ReaderScreen';
-import BrowseSourceScreen from '../screens/SourceScreen/SourceScreen';
-import GlobalSearch from '../screens/browse/globalsearch/GlobalSearch';
-import Migration from '../screens/browse/migration/Migration';
-import SourceNovels from '../screens/browse/SourceNovels';
-import MigrateNovel from '../screens/browse/migration/MigrationNovels';
+import NovelScreen from '../screens/NovelScreen/NovelScreen';
+import ReaderScreen from '../screens/ReaderScreen/ReaderScreen';
+import BrowseSourceScreen from '../screens/BrowseSourceScreen/BrowseSourceScreen';
+import GlobalSearch from '../screens/BrowseScreen/globalsearch/GlobalSearch';
+import Migration from '../screens/BrowseScreen/migration/Migration';
+import SourceNovels from '../screens/BrowseScreen/SourceNovels';
+import MigrateNovel from '../screens/BrowseScreen/migration/MigrationNovels';
 
-import MalTopNovels from '../screens/browse/discover/MalTopNovels';
+import MalTopNovels from '../screens/BrowseScreen/discover/MalTopNovels';
 import NewUpdateDialog from '../components/NewUpdateDialog';
 // import BrowseSettings from '../screens/browse/SettingsBrowseScreen';
 import {setStatusBarColor} from '../theme/utils/setStatusBarColor';
 import {useTheme} from '../redux/hooks';
-import SettingsBrowse from '../screens/setting/SettingsBrowse/SettingsBrowse';
+import SettingsBrowse from '../screens/SettingsScreen/SettingsBrowse/SettingsBrowse';
 
 const Stack = createStackNavigator();
 

@@ -3,20 +3,19 @@ import React from 'react';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import Library from '../screens/library/LibraryScreen';
-import Updates from '../screens/updates/UpdatesScreen';
-import History from '../screens/history/HistoryScreen';
-import Browse from '../screens/browse/BrowseScreen';
-import More from '../screens/more/MoreScreen';
+import Library from '../screens/LibraryScreen/LibraryScreen';
+import Updates from '../screens/UpdatesScreen/UpdatesScreen';
+import History from '../screens/HistoryScreen/HistoryScreen';
+import Browse from '../screens/BrowseScreen/BrowseScreen';
+import More from '../screens/MoreScreen/MoreScreen';
 
-import {useAppearanceSettings, useTheme} from '../redux/hooks';
+import {useAppearanceSettings} from '../redux/hooks';
 
 const Tab = createMaterialBottomTabNavigator();
 
 const BottomNavigator = () => {
-  const theme = useTheme();
-
   const {
+    theme,
     showHistoryTab = true,
     showUpdatesTab = true,
     showLabelsInNav = true,

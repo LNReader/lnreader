@@ -1,31 +1,72 @@
 import * as SQLite from 'expo-sqlite';
 import {showToast} from '../../hooks/showToast';
-import {DownloadedChapter} from '../types';
+import {sourceManager} from '../../sources/sourceManager';
+
+import {
+  updateChapterDeletedQuery,
+  updateChapterDownloadedQuery,
+} from './ChapterQueries';
 
 const db = SQLite.openDatabase('lnreader.db');
 
-const getChapterFromDbQuery = `
-    SELECT 
-      * 
-    FROM 
-      downloads 
-    WHERE 
-      downloadChapterId = ?
-`;
+const downloadChapterQuery = `
+  INSERT INTO 
+      downloads (chapterId, name, text)
+  VALUES
+    (?, ?, ?)
+	`;
 
-export const getChapterFromDb = async (
+export const fetchAndInsertChapterInDb = async (
+  sourceId: number,
+  novelUrl: string,
   chapterId: number,
-): Promise<DownloadedChapter> => {
-  return new Promise(resolve =>
+  chapterUrl: string,
+) => {
+  const chapter = await sourceManager(sourceId).parseChapter(
+    novelUrl,
+    chapterUrl,
+  );
+
+  db.transaction(tx => {
+    tx.executeSql(updateChapterDownloadedQuery, [chapterId]);
+    tx.executeSql(
+      downloadChapterQuery,
+      [chapterId, chapter.chapterName, chapter.chapterText],
+      (txObj, res) => {},
+      (txObj, error) => reject(error),
+    );
+  });
+};
+
+const deleteChapterFromDbQuery = `
+  DELETE FROM 
+      downloads
+  WHERE
+    chapterId = ?
+	`;
+
+export const deleteChapterFromDb = (chapterId: number) => {
+  db.transaction(tx => {
+    tx.executeSql(updateChapterDeletedQuery, [chapterId]);
+    tx.executeSql(
+      deleteChapterFromDbQuery,
+      [chapterId],
+      (txObj, res) => {},
+      (txObj, error) => showToast(error.message),
+    );
+  });
+};
+
+const getChapterFromDbQuery = 'SELECT * FROM downloads WHERE chapterId = ?';
+
+export const getChapterFromDb = async (chapterId: number) => {
+  return new Promise((resolve, reject) =>
     db.transaction(tx => {
       tx.executeSql(
         getChapterFromDbQuery,
         [chapterId],
         (txObj, results) => resolve(results.rows.item(0)),
-        (txObj, error) => {
-          showToast(error.message);
-          return true;
-        },
+        (txObj, error) => reject(error),
       );
     }),
   );

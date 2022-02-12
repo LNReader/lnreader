@@ -26,3 +26,6 @@ export const useSourcesReducer = () =>
 
 export const useDownloadQueue = () =>
   useAppSelector((state: RootState) => state.downloadsReducerV2.downloadQueue);
+
+export const useNovelReducer = () =>
+  useAppSelector((state: RootState) => state.novelReducerV2);

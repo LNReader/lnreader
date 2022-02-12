@@ -1,9 +1,9 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 
-import About from '../screens/more/About';
-import DownloadQueue from '../screens/more/DownloadQueueScreen';
-import Downloads from '../screens/more/DownloadsScreen';
+import About from '../screens/MoreScreen/About';
+import DownloadQueue from '../screens/MoreScreen/DownloadQueueScreen';
+import Downloads from '../screens/MoreScreen/DownloadsScreen';
 import SettingsStack from './SettingsStack';
 
 const Stack = createStackNavigator();

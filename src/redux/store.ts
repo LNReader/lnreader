@@ -7,6 +7,7 @@ import settingsReducerV2 from './settings/settingsSlice';
 import sourcesReducerV2 from './sources/sourcesSlice';
 import sourceReducer from './source/source.reducers';
 import novelReducer from './novel/novel.reducer';
+import novelReducerV2 from './novel/novelSlice';
 import updatesReducer from './updates/updates.reducer';
 import trackerReducer from './tracker/tracker.reducer';
 import preferenceReducer from './preferences/preference.reducer';
@@ -25,6 +26,7 @@ const reducers = combineReducers({
   sourceReducer,
   sourcesReducerV2,
   novelReducer,
+  novelReducerV2,
   updatesReducer,
   trackerReducer,
   preferenceReducer,

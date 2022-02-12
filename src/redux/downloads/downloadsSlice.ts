@@ -11,7 +11,7 @@ const initialState: SettingsState = {
 };
 
 export const settingsSlice = createSlice({
-  name: 'settingsReducer',
+  name: 'downloadsReducer',
   initialState,
   reducers: {
     addToDownloadQueue: (state, action: PayloadAction<ChapterItem[]>) => {
