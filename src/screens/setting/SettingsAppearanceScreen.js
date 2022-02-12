@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {ScrollView, Text} from 'react-native';
+import {ScrollView, Text, View, FlatList} from 'react-native';
 
 import {useDispatch} from 'react-redux';
 
@@ -10,50 +10,32 @@ import {ThemePicker} from '../../components/ThemePicker/ThemePicker';
 import SwitchSetting from '../../components/Switch/Switch';
 import ColorPickerModal from '../../components/ColorPickerModal';
 
-import {useSettings, useTheme} from '../../hooks/reduxHooks';
+import {useSettings} from '../../hooks/reduxHooks';
 import {
   setAccentColor,
   setAmoledMode,
   setAppSettings,
-  setAppTheme,
   setRippleColor,
 } from '../../redux/settings/settings.actions';
 
-import {
-  darkTheme,
-  greenAppleTheme,
-  irisBlueTheme,
-  lightTheme,
-  midnightDuskTheme,
-  oceanicTheme,
-  springBlossomTheme,
-  strawberryDaiquiri,
-  takoLightTheme,
-  takoTheme,
-  tealTheme,
-  yangTheme,
-  yinYangTheme,
-  yotsubaTheme,
-} from '../../theme/theme';
+import {setTheme} from '../../redux/settings/settingsSlice';
+import {useTheme} from '../../redux/hooks';
 
-const lightThemes = [
-  lightTheme,
-  springBlossomTheme,
-  takoLightTheme,
-  yangTheme,
-  yotsubaTheme,
-];
+import {
+  defaultDarkTheme,
+  greenAppleDark,
+  midnightDuskDark,
+  strawberryDaiquiriDark,
+} from '../../theme/dark';
+import {defaultLightTheme} from '../../theme/light';
+
 const darkThemes = [
-  darkTheme,
-  midnightDuskTheme,
-  strawberryDaiquiri,
-  takoTheme,
-  greenAppleTheme,
-  tealTheme,
-  yinYangTheme,
-  irisBlueTheme,
-  oceanicTheme,
+  defaultDarkTheme,
+  greenAppleDark,
+  midnightDuskDark,
+  strawberryDaiquiriDark,
 ];
+const lightThemes = [defaultLightTheme];
 
 const AppearanceSettings = ({navigation}) => {
   const theme = useTheme();
@@ -98,61 +80,61 @@ const AppearanceSettings = ({navigation}) => {
       <ScrollView style={{flex: 1}}>
         <List.Section>
           <List.SubHeader theme={theme}>App theme</List.SubHeader>
-          <Text
-            style={{
-              color: theme.textColorPrimary,
-              paddingHorizontal: 16,
-              paddingVertical: 8,
-            }}
-          >
-            Light Theme
-          </Text>
-          <ScrollView
-            contentContainerStyle={{
-              paddingHorizontal: 16,
-              paddingVertical: 8,
-              flexDirection: 'row',
-            }}
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-          >
-            {lightThemes.map(item => (
-              <ThemePicker
-                key={item.id}
-                currentTheme={theme}
-                theme={item}
-                onPress={() => dispatch(setAppTheme(item.id))}
-              />
-            ))}
-          </ScrollView>
-          <Text
-            style={{
-              color: theme.textColorPrimary,
-              paddingHorizontal: 16,
-              paddingVertical: 8,
-            }}
-          >
-            Dark Theme
-          </Text>
-          <ScrollView
-            contentContainerStyle={{
-              paddingHorizontal: 16,
-              paddingVertical: 8,
-              flexDirection: 'row',
-            }}
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-          >
-            {darkThemes.map(item => (
-              <ThemePicker
-                key={item.id}
-                currentTheme={theme}
-                theme={item}
-                onPress={() => dispatch(setAppTheme(item.id))}
-              />
-            ))}
-          </ScrollView>
-          {theme.statusBar === 'light-content' && (
+          <View>
+            <Text
+              style={{
+                color: theme.textColorPrimary,
+                paddingHorizontal: 16,
+                paddingVertical: 8,
+              }}
+            >
+              Light Theme
+            </Text>
+            <FlatList
+              contentContainerStyle={{
+                paddingHorizontal: 16,
+                paddingVertical: 8,
+              }}
+              data={darkThemes}
+              horizontal
+              keyExtractor={item => item.id.toString()}
+              renderItem={({item}) => (
+                <ThemePicker
+                  theme={item}
+                  currentTheme={theme}
+                  onPress={() => dispatch(setTheme(item))}
+                />
+              )}
+              showsHorizontalScrollIndicator={false}
+            />
+            <Text
+              style={{
+                color: theme.textColorPrimary,
+                paddingHorizontal: 16,
+                paddingVertical: 8,
+              }}
+            >
+              Dark Theme
+            </Text>
+            <FlatList
+              contentContainerStyle={{
+                paddingHorizontal: 16,
+                paddingVertical: 8,
+              }}
+              data={lightThemes}
+              horizontal
+              keyExtractor={item => item.id.toString()}
+              renderItem={({item}) => (
+                <ThemePicker
+                  theme={item}
+                  currentTheme={theme}
+                  onPress={() => dispatch(setTheme(item))}
+                />
+              )}
+              showsHorizontalScrollIndicator={false}
+            />
+          </View>
+          {/* {theme.statusBar === 'light-content' && (
             <SwitchSetting
               label="Pure black dark mode"
               value={
@@ -172,13 +154,13 @@ const AppearanceSettings = ({navigation}) => {
               }
               theme={theme}
             />
-          )}
-          <List.ColorItem
+          )} */}
+          {/* <List.ColorItem
             title="Accent Color"
             description={theme.colorAccent.toUpperCase()}
             onPress={showAccentColorModal}
             theme={theme}
-          />
+          /> */}
           <List.Divider theme={theme} />
           <List.SubHeader theme={theme}>Novel info</List.SubHeader>
           <SwitchSetting
@@ -231,7 +213,7 @@ const AppearanceSettings = ({navigation}) => {
         </List.Section>
       </ScrollView>
 
-      <ColorPickerModal
+      {/* <ColorPickerModal
         title="Accent color"
         modalVisible={accentColorModal}
         hideModal={hideAccentColorModal}
@@ -239,7 +221,7 @@ const AppearanceSettings = ({navigation}) => {
         onSubmit={onSubmit}
         theme={theme}
         showAccentColors={true}
-      />
+      /> */}
     </ScreenContainer>
   );
 };

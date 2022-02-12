@@ -9,7 +9,7 @@ import History from '../screens/history/HistoryScreen';
 import Browse from '../screens/browse/BrowseScreen';
 import More from '../screens/more/MoreScreen';
 
-import {useSettings, useTheme} from '../hooks/reduxHooks';
+import {useAppearanceSettings, useTheme} from '../redux/hooks';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -19,13 +19,13 @@ const BottomNavigator = () => {
   const {
     showHistoryTab = true,
     showUpdatesTab = true,
-    showLabelsInNav = false,
-  } = useSettings();
+    showLabelsInNav = true,
+  } = useAppearanceSettings();
 
   return (
     <Tab.Navigator
-      barStyle={{backgroundColor: theme.colorPrimary}}
-      activeColor={theme.colorAccent}
+      barStyle={{backgroundColor: theme.surface}}
+      activeColor={theme.primary}
       shifting={!showLabelsInNav}
     >
       <Tab.Screen

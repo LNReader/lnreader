@@ -35,7 +35,7 @@ const sourceReducer = (state = initialState, action) => {
       return {
         ...state,
         search: state.sources.filter(source =>
-          source.sourceName.toLowerCase().includes(payload),
+          source.name.toLowerCase().includes(payload),
         ),
       };
 

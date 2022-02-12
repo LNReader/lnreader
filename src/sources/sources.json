@@ -1,715 +1,816 @@
 [
   {
-    "sourceId": 1,
-    "url": "https://boxnovel.com/",
-    "sourceName": "BoxNovel",
+    "id": 1,
+    "baseUrl": "https://boxnovel.com/",
+    "name": "BoxNovel",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/boxnovel/icon.png?raw=true",
-    "lang": "English"
-  },
-  {
-    "sourceId": 2,
-    "sourceName": "ReadLightNovel",
-    "url": "https://www.readlightnovel.org",
     "lang": "English",
-    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/readlightnovel/icon.png?raw=true"
+    "isNsfw": false
   },
   {
-    "sourceId": 3,
-    "url": "https://fastnovel.net/",
-    "sourceName": "FastNovel",
+    "id": 2,
+    "name": "ReadLightNovel",
+    "baseUrl": "https://www.readlightnovel.org",
+    "lang": "English",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/readlightnovel/icon.png?raw=true",
+    "isNsfw": false
+  },
+  {
+    "id": 3,
+    "baseUrl": "https://fastnovel.net/",
+    "name": "FastNovel",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/fastnovel/icon.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 4,
-    "url": "https://readnovelfull.com/",
-    "sourceName": "ReadNovelFull",
+    "id": 4,
+    "baseUrl": "https://readnovelfull.com/",
+    "name": "ReadNovelFull",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/readnovelfull/icon.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 5,
-    "url": "https://www.mtlnovel.com/",
-    "sourceName": "MTLNovel",
+    "id": 5,
+    "baseUrl": "https://www.mtlnovel.com/",
+    "name": "MTLNovel",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/mtlnovel/icon.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 6,
-    "url": "https://www.novelhall.com/",
-    "sourceName": "NovelHall",
+    "id": 6,
+    "baseUrl": "https://www.novelhall.com/",
+    "name": "NovelHall",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/novelhall/icon.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 7,
-    "url": "https://www.wuxiaworld.com/",
-    "sourceName": "WuxiaWorld",
+    "id": 7,
+    "baseUrl": "https://www.wuxiaworld.com/",
+    "name": "WuxiaWorld",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/wuxiaworld/icon.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 8,
-    "url": "https://novelfull.com/",
-    "sourceName": "NovelFull",
+    "id": 8,
+    "baseUrl": "https://novelfull.com/",
+    "name": "NovelFull",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/novelfull/icon.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 9,
-    "url": "https://noveltrench.com/",
-    "sourceName": "NovelTrench",
+    "id": 9,
+    "baseUrl": "https://noveltrench.com/",
+    "name": "NovelTrench",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/noveltrench/icon.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 10,
-    "url": "https://vipnovel.com/",
-    "sourceName": "VipNovel",
+    "id": 10,
+    "baseUrl": "https://vipnovel.com/",
+    "name": "VipNovel",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/vipnovel/icon.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 11,
-    "url": "https://kisslightnovels.info/",
-    "sourceName": "KissLightNovels",
+    "id": 11,
+    "baseUrl": "https://kisslightnovels.info/",
+    "name": "KissLightNovels",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/kisslightnovels/icon.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 12,
-    "url": "https://wuxiaworldsite.co/",
-    "sourceName": "WuxiaWorldSite",
+    "id": 12,
+    "baseUrl": "https://wuxiaworldsite.co/",
+    "name": "WuxiaWorldSite",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/wuxiaworldsite/icon.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 13,
-    "url": "https://freewebnovel.com/",
-    "sourceName": "FreeWebNovel",
+    "id": 13,
+    "baseUrl": "https://freewebnovel.com/",
+    "name": "FreeWebNovel",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/freewebnovel/icon.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 14,
-    "url": "https://jpmtl.com/",
-    "sourceName": "JPMTL",
+    "id": 14,
+    "baseUrl": "https://jpmtl.com/",
+    "name": "JPMTL",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/jpmtl/icon.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 15,
-    "url": "https://www.lightnovelpub.com/",
-    "sourceName": "LightNovelPub",
+    "id": 15,
+    "baseUrl": "https://www.lightnovelpub.com/",
+    "name": "LightNovelPub",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/lightnovelpub/icon.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 16,
-    "url": "https://www.wuxiaworld.co/",
-    "sourceName": "WuxiaWorld.co",
+    "id": 16,
+    "baseUrl": "https://www.wuxiaworld.co/",
+    "name": "WuxiaWorld.co",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/wuxiaworldco/icon.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 17,
-    "url": "http://www.tapread.com/",
-    "sourceName": "TapRead",
+    "id": 17,
+    "baseUrl": "http://www.tapread.com/",
+    "name": "TapRead",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/tapread/icon.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 18,
-    "url": "https://www.novelupdates.cc/",
-    "sourceName": "NovelUpdates.cc",
+    "id": 18,
+    "baseUrl": "https://www.novelupdates.cc/",
+    "name": "NovelUpdates.cc",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/novelupdatescc/icon.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 19,
-    "url": "https://m.readlightnovel.cc/",
-    "sourceName": "ReadLightNovel.cc",
+    "id": 19,
+    "baseUrl": "https://m.readlightnovel.cc/",
+    "name": "ReadLightNovel.cc",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/readlightnovelcc/icon.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 20,
-    "url": "http://wuxiaworld.cloud/",
-    "sourceName": "WuxiaWorld.cloud",
+    "id": 20,
+    "baseUrl": "http://wuxiaworld.cloud/",
+    "name": "WuxiaWorld.cloud",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/wuxiaworldcloud/icon.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 21,
-    "url": "https://woopread.com/",
-    "sourceName": "WoopRead",
+    "id": 21,
+    "baseUrl": "https://woopread.com/",
+    "name": "WoopRead",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/woopread/icon.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 22,
-    "url": "https://foxaholic.com/",
-    "sourceName": "Foxaholic",
+    "id": 22,
+    "baseUrl": "https://foxaholic.com/",
+    "name": "Foxaholic",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/foxaholic/icon.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 23,
-    "url": "https://tunovelaligera.com/",
-    "sourceName": "TuNovelaLigera",
+    "id": 23,
+    "baseUrl": "https://tunovelaligera.com/",
+    "name": "TuNovelaLigera",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/es/tunovelaligera/icon.png?raw=true",
-    "lang": "Spanish"
+    "lang": "Spanish",
+    "isNsfw": false
   },
   {
-    "sourceId": 24,
-    "url": "https://www.skynovels.net/",
-    "sourceName": "SkyNovels",
+    "id": 24,
+    "baseUrl": "https://www.skynovels.net/",
+    "name": "SkyNovels",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/es/skynovels/icon.png?raw=true",
-    "lang": "Spanish"
+    "lang": "Spanish",
+    "isNsfw": false
   },
   {
-    "sourceId": 25,
-    "url": "https://einherjarproject.net/",
-    "sourceName": "EinherjarProject",
+    "id": 25,
+    "baseUrl": "https://einherjarproject.net/",
+    "name": "EinherjarProject",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/es/einherjarproject/icon.png?raw=true",
-    "lang": "Spanish"
+    "lang": "Spanish",
+    "isNsfw": false
   },
   {
-    "sourceId": 26,
-    "url": "https://novelasligera.com/",
-    "sourceName": "NovelasLigera",
+    "id": 26,
+    "baseUrl": "https://novelasligera.com/",
+    "name": "NovelasLigera",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/es/novelasligera/icon.png?raw=true",
-    "lang": "Spanish"
+    "lang": "Spanish",
+    "isNsfw": false
   },
   {
-    "sourceId": 27,
-    "url": "https://comrademao.com/",
-    "sourceName": "ComradeMao",
+    "id": 27,
+    "baseUrl": "https://comrademao.com/",
+    "name": "ComradeMao",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/comrademao/icon.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 28,
-    "url": "https://yuukitls.com/",
-    "sourceName": "YuukiTls",
+    "id": 28,
+    "baseUrl": "https://yuukitls.com/",
+    "name": "YuukiTls",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/es/yuukitls/icon.png?raw=true",
-    "lang": "Spanish"
+    "lang": "Spanish",
+    "isNsfw": false
   },
   {
-    "sourceId": 29,
-    "url": "https://hasutl.wordpress.com/",
-    "sourceName": "Hasu Translations",
+    "id": 29,
+    "baseUrl": "https://hasutl.wordpress.com/",
+    "name": "Hasu Translations",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/es/hasutl/icon.png?raw=true",
-    "lang": "Spanish"
+    "lang": "Spanish",
+    "isNsfw": false
   },
   {
-    "sourceId": 30,
-    "url": "https://oasistranslations.wordpress.com/",
-    "sourceName": "Oasis Translations",
+    "id": 30,
+    "baseUrl": "https://oasistranslations.wordpress.com/",
+    "name": "Oasis Translations",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/es/oasistranslations/icon.png?raw=true",
-    "lang": "Spanish"
+    "lang": "Spanish",
+    "isNsfw": false
   },
   {
-    "sourceId": 31,
-    "url": "http://www.novelawuxia.com/",
-    "sourceName": "Novela Wuxia",
+    "id": 31,
+    "baseUrl": "http://www.novelawuxia.com/",
+    "name": "Novela Wuxia",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/es/novelawuxia/icon.png?raw=true",
-    "lang": "Spanish"
+    "lang": "Spanish",
+    "isNsfw": false
   },
   {
-    "sourceId": 33,
-    "url": "https://www.novelpassion.com/",
-    "sourceName": "NovelPassion",
+    "id": 33,
+    "baseUrl": "https://www.novelpassion.com/",
+    "name": "NovelPassion",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/novelpassion/icon.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 34,
-    "url": "https://www.royalroad.com/",
-    "sourceName": "Royal Road",
+    "id": 34,
+    "baseUrl": "https://www.royalroad.com/",
+    "name": "Royal Road",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/royalroad/icon.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 35,
-    "url": "https://www.scribblehub.com/",
-    "sourceName": "Scribble Hub",
+    "id": 35,
+    "baseUrl": "https://www.scribblehub.com/",
+    "name": "Scribble Hub",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/scribblehub/icon.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 36,
-    "url": "https://syosetu.com",
-    "sourceName": "Syosetu",
+    "id": 36,
+    "baseUrl": "https://syosetu.com",
+    "name": "Syosetu",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/jp/syosetu/icon.png?raw=true",
-    "lang": "Japanese"
+    "lang": "Japanese",
+    "isNsfw": false
   },
   {
-    "sourceId": 37,
-    "url": "https://lnmtl.com/",
-    "sourceName": "LNMTL",
+    "id": 37,
+    "baseUrl": "https://lnmtl.com/",
+    "name": "LNMTL",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/lnmtl/icon.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 38,
-    "url": "https://skynovel.org/",
-    "sourceName": "SkyNovel",
+    "id": 38,
+    "baseUrl": "https://skynovel.org/",
+    "name": "SkyNovel",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/skynovel.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 39,
-    "url": "https://novelcake.com/",
-    "sourceName": "NovelCake",
+    "id": 39,
+    "baseUrl": "https://novelcake.com/",
+    "name": "NovelCake",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/novelcake.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 40,
-    "url": "https://novelsrock.com/",
-    "sourceName": "NovelsRock",
+    "id": 40,
+    "baseUrl": "https://novelsrock.com/",
+    "name": "NovelsRock",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/novelsrock.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 41,
-    "url": "https://zinnovel.com/",
-    "sourceName": "ZinnNovel",
+    "id": 41,
+    "baseUrl": "https://zinnovel.com/",
+    "name": "ZinnNovel",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/zinnovel.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 42,
-    "url": "https://noveltranslate.com/",
-    "sourceName": "NovelTranslate",
+    "id": 42,
+    "baseUrl": "https://noveltranslate.com/",
+    "name": "NovelTranslate",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/noveltranslate.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 43,
-    "url": "https://www.lunarletters.com/",
-    "sourceName": "LunarLetters",
+    "id": 43,
+    "baseUrl": "https://www.lunarletters.com/",
+    "name": "LunarLetters",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/lunarletters.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 44,
-    "url": "https://sleepytranslations.com/",
-    "sourceName": "SleepyTranslations",
+    "id": 44,
+    "baseUrl": "https://sleepytranslations.com/",
+    "name": "SleepyTranslations",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/sleepytranslations.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 45,
-    "url": "https://freenovel.me/",
-    "sourceName": "FreeNovelMe",
+    "id": 45,
+    "baseUrl": "https://freenovel.me/",
+    "name": "FreeNovelMe",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/freenovel.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 46,
-    "url": "https://1stkissnovel.love/",
-    "sourceName": "1stKissNovel",
+    "id": 46,
+    "baseUrl": "https://1stkissnovel.love/",
+    "name": "1stKissNovel",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/1stkissnovel.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 47,
-    "url": "https://daonovel.com/",
-    "sourceName": "DaoNovel",
+    "id": 47,
+    "baseUrl": "https://daonovel.com/",
+    "name": "DaoNovel",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/daonovel.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 48,
-    "url": "https://www.wuxia.blog/",
-    "sourceName": "Wuxia.Blog",
+    "id": 48,
+    "baseUrl": "https://www.wuxia.blog/",
+    "name": "Wuxia.Blog",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/wuxiablog/icon.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 49,
-    "url": "https://wuxia.city/",
-    "sourceName": "Wuxia.City",
+    "id": 49,
+    "baseUrl": "https://wuxia.city/",
+    "name": "Wuxia.City",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/wuxiacity/icon.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 50,
-    "url": "https://www.novelupdates.com/",
-    "sourceName": "Novel Updates",
+    "id": 50,
+    "baseUrl": "https://www.novelupdates.com/",
+    "name": "Novel Updates",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/novelupdates/icon.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 51,
-    "url": "https://ranobes.net/",
-    "sourceName": "Ranobes",
+    "id": 51,
+    "baseUrl": "https://ranobes.net/",
+    "name": "Ranobes",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/ranobes/icon.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 52,
-    "url": "https://m.yushubo.com",
-    "sourceName": "Yushubo",
+    "id": 52,
+    "baseUrl": "https://m.yushubo.com",
+    "name": "Yushubo",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/ch/yushubo/icon.png?raw=true",
-    "lang": "Chinese"
+    "lang": "Chinese",
+    "isNsfw": false
   },
   {
-    "sourceId": 53,
-    "url": "https://kolnovel.com/",
-    "sourceName": "KolNovel",
+    "id": 53,
+    "baseUrl": "https://kolnovel.com/",
+    "name": "KolNovel",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/wpmangastream/icons/kolnovel.png?raw=true",
-    "lang": "Arabic"
+    "lang": "Arabic",
+    "isNsfw": false
   },
   {
-    "sourceId": 54,
-    "url": "https://rewayat-ar.site/",
-    "sourceName": "RewayatAr",
+    "id": 54,
+    "baseUrl": "https://rewayat-ar.site/",
+    "name": "RewayatAr",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/wpmangastream/icons/rewayatar.png?raw=true",
-    "lang": "Arabic"
+    "lang": "Arabic",
+    "isNsfw": false
   },
   {
-    "sourceId": 55,
-    "url": "https://mostnovel.com/",
-    "sourceName": "MostNovel",
+    "id": 55,
+    "baseUrl": "https://mostnovel.com/",
+    "name": "MostNovel",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/mostnovel.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 56,
-    "url": "https://www.novelmultiverse.com/",
-    "sourceName": "NovelMultiverse",
+    "id": 56,
+    "baseUrl": "https://www.novelmultiverse.com/",
+    "name": "NovelMultiverse",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/novelmultiverse.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 57,
-    "url": "https://lightnovelheaven.com/",
-    "sourceName": "LightNovelHeaven",
+    "id": 57,
+    "baseUrl": "https://lightnovelheaven.com/",
+    "name": "LightNovelHeaven",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/lightnovelheaven.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 58,
-    "url": "https://lightnovelshub.com/",
-    "sourceName": "LightNovelsHub",
+    "id": 58,
+    "baseUrl": "https://lightnovelshub.com/",
+    "name": "LightNovelsHub",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/lightnovelshub.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 59,
-    "url": "https://arnovel.me/",
-    "sourceName": "ArNovel",
+    "id": 59,
+    "baseUrl": "https://arnovel.me/",
+    "name": "ArNovel",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/arnovel.png?raw=true",
-    "lang": "Arabic"
+    "lang": "Arabic",
+    "isNsfw": false
   },
   {
-    "sourceId": 60,
-    "url": "https://meionovel.id/",
-    "sourceName": "MeioNovel",
+    "id": 60,
+    "baseUrl": "https://meionovel.id/",
+    "name": "MeioNovel",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/meionovel.png?raw=true",
-    "lang": "Indonesian"
+    "lang": "Indonesian",
+    "isNsfw": false
   },
   {
-    "sourceId": 61,
-    "url": "https://www.webnovelover.com/",
-    "sourceName": "WebNovelLover",
+    "id": 61,
+    "baseUrl": "https://www.webnovelover.com/",
+    "name": "WebNovelLover",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/webnovellover.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 62,
-    "url": "https://www.wlnupdates.com/",
-    "sourceName": "WLNUpdates",
+    "id": 62,
+    "baseUrl": "https://www.wlnupdates.com/",
+    "name": "WLNUpdates",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/wlnupdates/icon.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 63,
-    "url": "https://boxnovel.online/",
-    "sourceName": "BoxNovel.online",
+    "id": 63,
+    "baseUrl": "https://boxnovel.online/",
+    "name": "BoxNovel.online",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/boxnovel.online.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 64,
-    "url": "https://clicknovel.net/",
-    "sourceName": "ClickNovel",
+    "id": 64,
+    "baseUrl": "https://clicknovel.net/",
+    "name": "ClickNovel",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/clicknovel.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 65,
-    "url": "https://readwebnovels.net/",
-    "sourceName": "ReadWebNovels",
+    "id": 65,
+    "baseUrl": "https://readwebnovels.net/",
+    "name": "ReadWebNovels",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/readwebnovels.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 66,
-    "url": "https://wbnovel.com/",
-    "sourceName": "WBNovel",
+    "id": 66,
+    "baseUrl": "https://wbnovel.com/",
+    "name": "WBNovel",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/wbnovel.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 67,
-    "url": "https://reaperscans.com/all-series/novels/",
-    "sourceName": "ReaperScans",
+    "id": 67,
+    "baseUrl": "https://reaperscans.com/all-series/novels/",
+    "name": "ReaperScans",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/reaperscans/icon.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 68,
-    "url": "https://www.readwn.com/",
-    "sourceName": "Readwn.com",
+    "id": 68,
+    "baseUrl": "https://www.readwn.com/",
+    "name": "Readwn.com",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/readwn/icons/readwn.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 69,
-    "url": "https://ranobehub.org/",
-    "sourceName": "Ranobehub",
+    "id": 69,
+    "baseUrl": "https://ranobehub.org/",
+    "name": "Ranobehub",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/ru/ranobehub/icon.png?raw=true",
-    "lang": "Russian"
+    "lang": "Russian",
+    "isNsfw": false
   },
   {
-    "sourceId": 70,
-    "url": "https://divinedaolibrary.com/",
-    "sourceName": "Divine Dao Library",
+    "id": 70,
+    "baseUrl": "https://divinedaolibrary.com/",
+    "name": "Divine Dao Library",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/divinedaolibrary/icon.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 71,
-    "url": "https://novelonlinefull.com/",
-    "sourceName": "NovelOnlineFull.com",
+    "id": 71,
+    "baseUrl": "https://novelonlinefull.com/",
+    "name": "NovelOnlineFull.com",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/novelonlinefull/icon.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 72,
-    "url": "https://www.lightnovelupdates.com/",
-    "sourceName": "LightNovelUpdates",
+    "id": 72,
+    "baseUrl": "https://www.lightnovelupdates.com/",
+    "name": "LightNovelUpdates",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/lightnovelupdates/icon.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 73,
-    "url": "https://www.epiknovel.com/",
-    "sourceName": "EpikNovel",
+    "id": 73,
+    "baseUrl": "https://www.epiknovel.com/",
+    "name": "EpikNovel",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/tr/epiknovel/icon.png?raw=true",
-    "lang": "Turkish"
+    "lang": "Turkish",
+    "isNsfw": false
   },
   {
-    "sourceId": 74,
-    "url": "https://wuxiaworld.site/",
-    "sourceName": "WuxiaWorld.Site",
+    "id": 74,
+    "baseUrl": "https://wuxiaworld.site/",
+    "name": "WuxiaWorld.Site",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/wuxiaworldsite.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 75,
-    "url": "https://mysticalmerries.com/",
-    "sourceName": "MysticalSeries",
+    "id": 75,
+    "baseUrl": "https://mysticalmerries.com/",
+    "name": "MysticalSeries",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/mysticalseries.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 76,
-    "url": "https://travistranslations.com/",
-    "sourceName": "TravisTranslations",
+    "id": 76,
+    "baseUrl": "https://travistranslations.com/",
+    "name": "TravisTranslations",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/travistranslations/icon.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 77,
-    "url": "https://noveldeglace.com/",
-    "sourceName": "NovelDeGlace",
+    "id": 77,
+    "baseUrl": "https://noveldeglace.com/",
+    "name": "NovelDeGlace",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/fr/noveldeglace/icon.png?raw=true",
-    "lang": "French"
+    "lang": "French",
+    "isNsfw": false
   },
   {
-    "sourceId": 78,
-    "url": "https://rainofsnow.com/",
-    "sourceName": "RainOfSnow",
+    "id": 78,
+    "baseUrl": "https://rainofsnow.com/",
+    "name": "RainOfSnow",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/rainofsnow/icon.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 79,
-    "url": "https://reaperscans.com.br/",
-    "sourceName": "ReaperScans (Br)",
+    "id": 79,
+    "baseUrl": "https://reaperscans.com.br/",
+    "name": "ReaperScans (Br)",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/reaperscans/icon.png?raw=true",
-    "lang": "Portuguese (Brazil)"
+    "lang": "Portuguese (Brazil)",
+    "isNsfw": false
   },
   {
-    "sourceId": 80,
-    "url": "https://arthurscan.xyz/",
-    "sourceName": "ArthurScans (Br)",
+    "id": 80,
+    "baseUrl": "https://arthurscan.xyz/",
+    "name": "ArthurScans (Br)",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/arthurscans.png?raw=true",
-    "lang": "Portuguese (Brazil)"
+    "lang": "Portuguese (Brazil)",
+    "isNsfw": false
   },
   {
-    "sourceId": 81,
-    "url": "https://id.mtlnovel.com/",
-    "sourceName": "MTLNovel (Id)",
+    "id": 81,
+    "baseUrl": "https://id.mtlnovel.com/",
+    "name": "MTLNovel (Id)",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/mtlnovel/icon.png?raw=true",
-    "lang": "Indonesian"
+    "lang": "Indonesian",
+    "isNsfw": false
   },
   {
-    "sourceId": 82,
-    "url": "https://mtlreader.com/",
-    "sourceName": "MTLReader",
+    "id": 82,
+    "baseUrl": "https://mtlreader.com/",
+    "name": "MTLReader",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/mtlreader/icon.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 83,
-    "url": "https://m.mylovenovel.com/",
-    "sourceName": "MyLoveNovel",
+    "id": 83,
+    "baseUrl": "https://m.mylovenovel.com/",
+    "name": "MyLoveNovel",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/mylovenovel/icon.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 84,
-    "url": "https://morenovel.net/",
-    "sourceName": "MoreNovel",
+    "id": 84,
+    "baseUrl": "https://morenovel.net/",
+    "name": "MoreNovel",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/morenovel.png?raw=true",
-    "lang": "Indonesian"
+    "lang": "Indonesian",
+    "isNsfw": false
   },
   {
-    "sourceId": 85,
-    "url": "https://riwyat.com/",
-    "sourceName": "NovelSpace",
+    "id": 85,
+    "baseUrl": "https://riwyat.com/",
+    "name": "NovelSpace",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/riwayat.png?raw=true",
-    "lang": "Arabic"
+    "lang": "Arabic",
+    "isNsfw": false
   },
   {
-    "sourceId": 86,
-    "url": "https://novelringan.com/",
-    "sourceName": "NovelRingan",
+    "id": 86,
+    "baseUrl": "https://novelringan.com/",
+    "name": "NovelRingan",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/id/novelringan/icon.png?raw=true",
-    "lang": "Indonesian"
+    "lang": "Indonesian",
+    "isNsfw": false
   },
   {
-    "sourceId": 87,
-    "url": "http://indowebnovel.id/",
-    "sourceName": "IndoWebNovel",
+    "id": 87,
+    "baseUrl": "http://indowebnovel.id/",
+    "name": "IndoWebNovel",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/id/indowebnovel/icon.png?raw=true",
-    "lang": "Indonesian"
+    "lang": "Indonesian",
+    "isNsfw": false
   },
   {
-    "sourceId": 88,
-    "url": "https://chireads.com/",
-    "sourceName": "Chireads",
+    "id": 88,
+    "baseUrl": "https://chireads.com/",
+    "name": "Chireads",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/fr/chireads/icon.png?raw=true",
-    "lang": "French"
+    "lang": "French",
+    "isNsfw": false
   },
   {
-    "sourceId": 89,
-    "url": "https://mtlcorner.com/",
-    "sourceName": "MTLCorner",
+    "id": 89,
+    "baseUrl": "https://mtlcorner.com/",
+    "name": "MTLCorner",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/mtlcorner/icon.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 90,
-    "url": "https://nitroscans.com/",
-    "sourceName": "NitroScans",
+    "id": 90,
+    "baseUrl": "https://nitroscans.com/",
+    "name": "NitroScans",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/nitroscans/icon.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 91,
-    "url": "https://www.onlymtl.com/",
-    "sourceName": "OnlyMTL",
+    "id": 91,
+    "baseUrl": "https://www.onlymtl.com/",
+    "name": "OnlyMTL",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/onlymtl.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 92,
-    "url": "https://novelforest.com/",
-    "sourceName": "NovelForest",
+    "id": 92,
+    "baseUrl": "https://novelforest.com/",
+    "name": "NovelForest",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/novelforest/icon.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 93,
-    "url": "https://ranobelib.me/",
-    "sourceName": "RanobeLib",
+    "id": 93,
+    "baseUrl": "https://ranobelib.me/",
+    "name": "RanobeLib",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/ru/ranobelib/icon.png?raw=true",
-    "lang": "Russian"
+    "lang": "Russian",
+    "isNsfw": false
   },
   {
-    "sourceId": 94,
-    "url": "https://www.novelpub.com/",
-    "sourceName": "NovelPub",
+    "id": 94,
+    "baseUrl": "https://www.novelpub.com/",
+    "name": "NovelPub",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/novelpub/icon.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 95,
-    "url": "https://www.bestlightnovel.com/",
-    "sourceName": "BestLightNovel",
+    "id": 95,
+    "baseUrl": "https://www.bestlightnovel.com/",
+    "name": "BestLightNovel",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/bestlightnovel/icon.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 96,
-    "url": "https://hizomanga.com/",
-    "sourceName": "HizoManga",
+    "id": 96,
+    "baseUrl": "https://hizomanga.com/",
+    "name": "HizoManga",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/hizomanga.png?raw=true",
-    "lang": "Arabic"
+    "lang": "Arabic",
+    "isNsfw": false
   },
   {
-    "sourceId": 97,
-    "url": "https://novelfull.me/",
-    "sourceName": "NovelFull.me",
+    "id": 97,
+    "baseUrl": "https://novelfull.me/",
+    "name": "NovelFull.me",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/novelfullme/icon.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 98,
-    "url": "https://latestnovel.net/",
-    "sourceName": "LatestNovel",
+    "id": 98,
+    "baseUrl": "https://latestnovel.net/",
+    "name": "LatestNovel",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/latestnovel.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 99,
-    "url": "https://www.novelmt.com/",
-    "sourceName": "Novelmt.com",
+    "id": 99,
+    "baseUrl": "https://www.novelmt.com/",
+    "name": "Novelmt.com",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/readwn/icons/novelmt.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 100,
-    "url": "https://www.ltnovel.com/",
-    "sourceName": "Ltnovel.com",
+    "id": 100,
+    "baseUrl": "https://www.ltnovel.com/",
+    "name": "Ltnovel.com",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/readwn/icons/ltnovel.png?raw=true",
-    "lang": "English"
+    "lang": "English",
+    "isNsfw": false
   },
   {
-    "sourceId": 101,
-    "url": "https://ar-mtl.club/",
-    "sourceName": "ArMTL",
+    "id": 101,
+    "baseUrl": "https://ar-mtl.club/",
+    "name": "ArMTL",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/armtl.png?raw=true",
-    "lang": "Arabic"
+    "lang": "Arabic",
+    "isNsfw": false
   },
   {
-    "sourceId": 103,
-    "url": "https://sakuranovel.id/",
-    "sourceName": "SakuraNovel",
+    "id": 103,
+    "baseUrl": "https://sakuranovel.id/",
+    "name": "SakuraNovel",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/id/sakuranovel/icon.png?raw=true",
-    "lang": "Indonesian"
+    "lang": "Indonesian",
+    "isNsfw": false
   },
   {
-    "sourceId": 104,
-    "url": "https://novel4up.com/",
-    "sourceName": "Novel4Up",
+    "id": 104,
+    "baseUrl": "https://novel4up.com/",
+    "name": "Novel4Up",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/novel4up.png?raw=true",
     "lang": "Arabic"
   }

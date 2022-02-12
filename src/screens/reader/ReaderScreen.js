@@ -16,10 +16,9 @@ import {
   changeNavigationBarColor,
   hideNavigationBar,
   showNavigationBar,
-} from '../../theme/utils/androidNavigationBarColor';
+} from '../../theme/NativeModules/NavigationBarColor';
 
 import {
-  getChapterFromDB,
   getNextChapterFromDB,
   getPrevChapterFromDB,
 } from '../../database/queries/ChapterQueries';
@@ -46,7 +45,6 @@ import ReaderSeekBar from './components/ReaderSeekBar';
 import EmptyView from '../../components/EmptyView';
 
 import GestureRecognizer from 'react-native-swipe-gestures';
-import {LoadingScreen} from '../../components/LoadingScreen/LoadingScreen';
 import {insertHistory} from '../../database/queries/HistoryQueries';
 import {SET_LAST_READ} from '../../redux/preferences/preference.types';
 import {setAppSettings} from '../../redux/settings/settings.actions';
@@ -56,6 +54,8 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import TextReader from './components/TextReader';
 import WebViewReader from './components/WebViewReader';
 import {useTextToSpeech} from '../../hooks/useTextToSpeech';
+import useChapter from './hooks/useChapter';
+import {LoadingScreen} from '../../components';
 
 const Chapter = ({route, navigation}) => {
   useKeepAwake();
@@ -100,44 +100,22 @@ const Chapter = ({route, navigation}) => {
 
   const [hidden, setHidden] = useState(true);
 
+  const {isLoading, setIsLoading, chapter, error} = useChapter(
+    sourceId,
+    chapterId,
+    chapterUrl,
+    novelUrl,
+  );
+
   const {tracker, trackedNovels} = useTrackingStatus();
   const position = usePosition(novelId, chapterId);
 
   const isTracked = trackedNovels.find(obj => obj.novelId === novelId);
 
-  const [chapter, setChapter] = useState({});
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState();
-
   const [scrollPercentage, setScrollPercentage] = useState(0);
   const [firstLayout, setFirstLayout] = useState(true);
 
   const [contentSize, setContentSize] = useState(0);
-
-  const getChapter = async id => {
-    try {
-      if (id) {
-        const chapterDownloaded = await getChapterFromDB(chapterId);
-
-        if (chapterDownloaded) {
-          setChapter(chapterDownloaded);
-        } else {
-          const res = await fetchChapter(sourceId, novelUrl, chapterUrl);
-          setChapter(res);
-        }
-      } else {
-        const res = await fetchChapter(sourceId, novelUrl, chapterUrl);
-
-        setChapter(res);
-      }
-
-      setLoading(false);
-    } catch (e) {
-      setError(e.message);
-      setLoading(false);
-      showToast(e.message);
-    }
-  };
 
   const [nextChapter, setNextChapter] = useState({});
   const [prevChapter, setPrevChapter] = useState({});
@@ -153,7 +131,6 @@ const Chapter = ({route, navigation}) => {
   useEffect(
     () => {
       setImmersiveMode();
-      getChapter(chapterId);
 
       if (!incognitoMode) {
         insertHistory(novelId, chapterId);
@@ -339,10 +316,10 @@ const Chapter = ({route, navigation}) => {
 
   const onWebViewNavigationStateChange = async ({url}) => {
     if ((sourceId === 50 || sourceId === 62) && url !== 'about:blank') {
-      setLoading(true);
+      setIsLoading(true);
       const res = await fetchChapter(sourceId, novelUrl, url);
       setChapter(res);
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -399,8 +376,7 @@ const Chapter = ({route, navigation}) => {
                       readerTextColor(readerSettings.theme)
                     }
                     onPress={() => {
-                      getChapter(chapterId);
-                      setLoading(true);
+                      setIsLoading(true);
                       setError();
                     }}
                   />
@@ -415,7 +391,7 @@ const Chapter = ({route, navigation}) => {
                   </Text>
                 </EmptyView>
               </View>
-            ) : loading ? (
+            ) : isLoading ? (
               <LoadingScreen theme={theme} />
             ) : (
               <TouchableWithoutFeedback
@@ -475,7 +451,7 @@ const Chapter = ({route, navigation}) => {
           <ReaderSeekBar
             theme={theme}
             hide={hidden}
-            setLoading={setLoading}
+            setLoading={setIsLoading}
             contentSize={contentSize}
             scrollViewRef={scrollViewRef}
             scrollPercentage={scrollPercentage}

@@ -1,3 +1,12 @@
+export interface Source {
+  id: number;
+  name: string;
+  baseUrl: string;
+  lang: string;
+  icon: string;
+  isNsfw: boolean;
+}
+
 export interface SourceNovelItem {
   sourceId: number;
   novelName: string;

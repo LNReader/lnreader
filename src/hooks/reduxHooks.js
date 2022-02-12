@@ -1,10 +1,9 @@
 import {useSelector} from 'react-redux';
-import {darkTheme} from '../theme/theme';
 
 const useTheme = () => {
   const theme = useSelector(state => state.settingsReducer.theme);
 
-  return theme || darkTheme;
+  return theme;
 };
 
 const useReaderSettings = () => {
@@ -29,12 +28,6 @@ const useNovel = () => {
   const novel = useSelector(state => state.novelReducer);
 
   return novel;
-};
-
-const useChapter = () => {
-  const chapter = useSelector(state => state.chapterReducer);
-
-  return chapter;
 };
 
 const useFindNovel = novelId => {
@@ -122,7 +115,6 @@ export {
   useContinueReading,
   useTrackingStatus,
   useNovel,
-  useChapter,
   useSavedSettings,
   useLibraryFilters,
   usePosition,

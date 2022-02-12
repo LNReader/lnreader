@@ -9,12 +9,7 @@ const SourceItem = ({item, theme, isPinned, dispatch, navigation}) => {
   const {sourceId, sourceName, icon, lang} = item;
 
   const navigateToSource = useCallback(
-    () =>
-      navigation.navigate('Extension', {
-        sourceId: item.sourceId,
-        sourceName: item.sourceName,
-        url: item.url,
-      }),
+    () => navigation.navigate('Extension', item),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );

@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 
 import {readerLineHeight, readerTextColor} from '../utils/readerStyles';
-import {htmlToText} from '../../../sources/helpers/htmlToText';
 
 const TextReader = ({
   text,
@@ -33,7 +32,6 @@ const TextReader = ({
   };
 
   const readerHeight = Dimensions.get('window').height + 80;
-  const chapterText = htmlToText(text);
 
   return (
     <View
@@ -47,7 +45,7 @@ const TextReader = ({
       ]}
     >
       <Text style={[textStyle, fontStyle]} selectable={textSelectable}>
-        {chapterText}
+        {text}
       </Text>
 
       <View style={styles.navigationContainer}>

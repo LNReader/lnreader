@@ -1,11 +1,18 @@
 import {useWindowDimensions} from 'react-native';
 
-export const useDeviceOrientation = () => {
+export enum DeviceOrientation {
+  POTRAIT = 'potrait',
+  LANDSCAPE = 'landscape',
+}
+
+const useDeviceOrientation = (): DeviceOrientation => {
   const window = useWindowDimensions();
 
   if (window.width > window.height) {
-    return 'landscape';
+    return DeviceOrientation.LANDSCAPE;
   } else {
-    return 'potrait';
+    return DeviceOrientation.POTRAIT;
   }
 };
+
+export default useDeviceOrientation;

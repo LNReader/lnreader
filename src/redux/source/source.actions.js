@@ -13,9 +13,7 @@ export const getSourcesAction = () => async dispatch => {
     /**
      * Sort sources aplhabetically
      */
-    let sortedSources = sources.sort((a, b) =>
-      a.sourceName.localeCompare(b.sourceName),
-    );
+    let sortedSources = sources.sort((a, b) => a.name.localeCompare(b.name));
 
     dispatch({
       type: GET_SOURCES,

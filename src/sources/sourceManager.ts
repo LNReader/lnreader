@@ -122,7 +122,7 @@ interface Scraper {
   searchNovels: (searchTerm: string) => Promise<SourceNovelItem[]>;
 }
 
-export const getSource = (sourceId: number): Scraper => {
+export const sourceManager = (sourceId: number): Scraper => {
   const scrapers: Record<number, Scraper> = {
     1: BoxNovelScraper,
     2: ReadLightNovelScraper,

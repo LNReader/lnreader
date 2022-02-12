@@ -674,7 +674,7 @@ const Novel = ({route, navigation}) => {
               theme={theme}
               dispatch={dispatch}
             />
-            <NovelBottomSheet
+            {/* <NovelBottomSheet
               novelUrl={novelUrl}
               bottomSheetRef={novelBottomSheetRef}
               dispatch={dispatch}
@@ -684,7 +684,7 @@ const Novel = ({route, navigation}) => {
               theme={theme}
               filter={filter}
               showChapterTitles={showChapterTitles}
-            />
+            /> */}
             <TrackSheet
               bottomSheetRef={trackerSheetRef}
               novelId={novel.novelId}
