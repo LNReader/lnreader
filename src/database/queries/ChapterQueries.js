@@ -1,5 +1,5 @@
 import * as SQLite from 'expo-sqlite';
-import {getSource} from '../../sources/sources';
+import {getSource} from '../../sources/sourceManager';
 const db = SQLite.openDatabase('lnreader.db');
 
 const insertChaptersQuery =

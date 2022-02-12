@@ -6,7 +6,7 @@ import {useDispatch} from 'react-redux';
 
 import {useTheme, useLibrary, useSettings} from '../../hooks/reduxHooks';
 import {setAppSettings} from '../../redux/settings/settings.actions';
-import {getSource} from '../../sources/sources';
+import {getSource} from '../../sources/sourceManager';
 import {showToast} from '../../hooks/showToast';
 
 import {Searchbar} from '../../components/Searchbar/Searchbar';

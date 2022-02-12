@@ -11,7 +11,7 @@ import {ScreenContainer} from '../../../components/Common';
 import GlobalSearchSourceItem from './GlobalSearchSourceItem';
 
 import {useLibrary, useSettings, useTheme} from '../../../hooks/reduxHooks';
-import {getSource} from '../../../sources/sources';
+import {getSource} from '../../../sources/sourceManager';
 
 const GlobalSearch = ({route, navigation}) => {
   const theme = useTheme();

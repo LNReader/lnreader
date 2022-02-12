@@ -15,7 +15,7 @@ import MigrationNovelList from './MigrationNovelList';
 import {Appbar} from '../../../components/Appbar';
 
 import {ScreenContainer} from '../../../components/Common';
-import {getSource} from '../../../sources/sources';
+import {getSource} from '../../../sources/sourceManager';
 
 const MigrationNovels = ({navigation, route}) => {
   const {sourceId, novelName} = route.params;
