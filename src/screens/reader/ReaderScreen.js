@@ -45,7 +45,10 @@ import ReaderSeekBar from './components/ReaderSeekBar';
 import EmptyView from '../../components/EmptyView';
 
 import GestureRecognizer from 'react-native-swipe-gestures';
-import {insertHistory} from '../../database/queries/HistoryQueries';
+import {
+  insertHistory,
+  insertHistoryInDb,
+} from '../../database/queries/HistoryQueries';
 import {SET_LAST_READ} from '../../redux/preferences/preference.types';
 import {setAppSettings} from '../../redux/settings/settings.actions';
 import {useBatteryLevel} from 'react-native-device-info';
@@ -133,7 +136,7 @@ const Chapter = ({route, navigation}) => {
       setImmersiveMode();
 
       if (!incognitoMode) {
-        insertHistory(novelId, chapterId);
+        insertHistoryInDb(novelId, chapterId);
         dispatch({
           type: SET_LAST_READ,
           payload: {novelId, chapterId},

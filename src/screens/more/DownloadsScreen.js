@@ -55,7 +55,7 @@ const Downloads = ({navigation}) => {
 
   const onPress = useCallback(
     item =>
-      navigation.navigate('Chapter', {
+      navigation.navigate('ReaderScreen', {
         chapterId: item.chapterId,
         chapterUrl: item.chapterUrl,
         sourceId: item.sourceId,

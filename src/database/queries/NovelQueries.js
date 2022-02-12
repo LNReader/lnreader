@@ -259,3 +259,12 @@ export const pickCustomNovelCover = async novelId => {
     return image.uri;
   }
 };
+
+export const updateNovelUnreadInDbQuery = `
+  UPDATE 
+    novels 
+  SET 
+    unread = 0 
+  WHERE 
+    novelId = ?
+  `;

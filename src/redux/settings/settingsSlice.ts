@@ -54,6 +54,7 @@ interface SettingsState {
     lastUpdateTime: Date | null;
     onlyUpdateOngoingNovels: boolean;
     updateNovelMetadata: boolean;
+    showLastUpdateTime: boolean;
   };
   app: {
     incognitoMode: boolean;
@@ -92,6 +93,7 @@ const initialState: SettingsState = {
     lastUpdateTime: null,
     onlyUpdateOngoingNovels: false,
     updateNovelMetadata: false,
+    showLastUpdateTime: false,
   },
   app: {
     incognitoMode: false,

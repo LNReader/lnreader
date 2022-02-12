@@ -9,6 +9,7 @@ export {default as RadioButton} from './RadioButton/RadioButton';
 export {default as ErrorScreen} from './ErrorScreen/ErrorScreen';
 export {default as LoadingMoreIndicator} from './LoadingMoreIndicator/LoadingMoreIndicator';
 export {default as Button} from './Button/Button';
+export {default as Chip} from './Chip/Chip';
 export {default as SwitchItem} from './SwitchItem/SwitchItem';
 export {default as Appbar} from './Appbar/Appbar';
 export {default as List} from './List/List';

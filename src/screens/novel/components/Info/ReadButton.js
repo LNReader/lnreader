@@ -8,7 +8,7 @@ const ReadButton = ({navigation, novel, chapters, theme, lastRead}) => {
   const {useFabForContinueReading = false} = useSettings();
 
   const navigateToLastReadChapter = () => {
-    navigation.navigate('Chapter', {
+    navigation.navigate('ReaderScreen', {
       chapterId: lastRead.chapterId,
       chapterUrl: lastRead.chapterUrl,
       novelUrl: novel.novelUrl,

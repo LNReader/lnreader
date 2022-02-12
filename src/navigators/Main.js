@@ -4,7 +4,7 @@ import {View} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
-import {useGithubUpdateChecker} from '../hooks/githubUpdateChecker';
+import {useGithubUpdateChecker} from '../hooks/useAppUpdateChecker';
 import * as SplashScreen from 'expo-splash-screen';
 
 /**
@@ -17,7 +17,7 @@ import MoreStack from './MoreStack';
  * Screens
  */
 import NovelScreen from '../screens/novel/NovelScreen';
-import Reader from '../screens/reader/ReaderScreen';
+import ReaderScreen from '../screens/reader/ReaderScreen';
 import BrowseSourceScreen from '../screens/SourceScreen/SourceScreen';
 import GlobalSearch from '../screens/browse/globalsearch/GlobalSearch';
 import Migration from '../screens/browse/migration/Migration';
@@ -51,7 +51,7 @@ const MainNavigator = () => {
       <Stack.Navigator screenOptions={{headerShown: false}}>
         <Stack.Screen name="BottomNavigator" component={BottomNavigator} />
         <Stack.Screen name="NovelScreen" component={NovelScreen} />
-        <Stack.Screen name="Chapter" component={Reader} />
+        <Stack.Screen name="ReaderScreen" component={ReaderScreen} />
         <Stack.Screen name="MoreStack" component={MoreStack} />
         <Stack.Screen
           name="BrowseSourceScreen"

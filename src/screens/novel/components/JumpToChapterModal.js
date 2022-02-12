@@ -25,7 +25,7 @@ const JumpToChapterModal = ({
   const onSubmit = () => {
     if (!mode) {
       if (text > 0 && text <= chapters.length) {
-        navigation.navigate('Chapter', {
+        navigation.navigate('ReaderScreen', {
           sourceId: novel.sourceId,
           novelUrl: novel.novelUrl,
           novelId: novel.novelId,
@@ -45,7 +45,7 @@ const JumpToChapterModal = ({
       );
 
       if (chapter) {
-        navigation.navigate('Chapter', {
+        navigation.navigate('ReaderScreen', {
           sourceId: novel.sourceId,
           novelUrl: novel.novelUrl,
           novelId: chapter.novelId,

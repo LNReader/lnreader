@@ -8,6 +8,7 @@ import {
   NovelCover,
   NovelList,
   Searchbar,
+  EmptyView,
 } from '../../components';
 import {useNavigation} from '@react-navigation/native';
 
@@ -71,7 +72,7 @@ const LibraryScreen = () => {
       />
       <NovelList
         data={novels}
-        keyExtractor={item => item.novelUrl + item.sourceId}
+        keyExtractor={item => `${item.novelUrl}${item.sourceId}`}
         renderItem={({item}) => (
           <NovelCover
             item={item}
@@ -79,6 +80,13 @@ const LibraryScreen = () => {
             onPress={() => navigate('NovelScreen' as never, {...item} as never)}
           />
         )}
+        ListEmptyComponent={
+          <EmptyView
+            icon="Σ(ಠ_ಠ)"
+            description="Your library is empty. Add series to your library from Browse."
+            theme={theme}
+          />
+        }
         // refreshControl={
         //   <RefreshControl
         //     refreshing={isUpdating}

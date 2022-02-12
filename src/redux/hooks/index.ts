@@ -23,3 +23,6 @@ export const useUpdateSettings = () =>
 
 export const useSourcesReducer = () =>
   useAppSelector((state: RootState) => state.sourcesReducerV2);
+
+export const useDownloadQueue = () =>
+  useAppSelector((state: RootState) => state.downloadsReducerV2.downloadQueue);

@@ -34,10 +34,6 @@ export const useGithubUpdateChecker = () => {
 
   useEffect(() => {
     checkForRelease();
-    // .catch(e => {
-    //   showToast(`Could not connect to github:\n${`${e}`.split(':')[1].trim()}`);
-    //   // console.error(e);
-    // });
   }, []);
 
   if (!checking) {

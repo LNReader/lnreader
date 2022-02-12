@@ -184,7 +184,7 @@ const Novel = ({route, navigation}) => {
   };
 
   const navigateToChapter = chapter =>
-    navigation.navigate('Chapter', {
+    navigation.navigate('ReaderScreen', {
       sourceId,
       novelUrl,
       novelName,
@@ -556,7 +556,7 @@ const Novel = ({route, navigation}) => {
               label={novel.unread ? 'Start' : 'Resume'}
               icon="play"
               onPress={() =>
-                navigation.navigate('Chapter', {
+                navigation.navigate('ReaderScreen', {
                   chapterId: lastReadChapter.chapterId,
                   chapterUrl: lastReadChapter.chapterUrl,
                   novelUrl: novel.novelUrl,

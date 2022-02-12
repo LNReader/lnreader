@@ -41,8 +41,6 @@ import {
   SET_CHAPTER_LIST_PREF,
   SET_LAST_READ,
 } from '../preferences/preference.types';
-import {GET_LIBRARY_NOVELS} from '../library/library.types';
-import {getLibrary} from '../../database/queries/LibraryQueries';
 import {showToast} from '../../hooks/showToast';
 
 import * as Notifications from 'expo-notifications';
@@ -161,13 +159,6 @@ export const followNovelAction = novel => async dispatch => {
   dispatch({
     type: UPDATE_IN_LIBRARY,
     payload: {novelUrl: novel.novelUrl, followed: !novel.followed},
-  });
-
-  const res = await getLibrary();
-
-  dispatch({
-    type: GET_LIBRARY_NOVELS,
-    payload: res,
   });
 
   showToast(!novel.followed ? 'Added to library' : 'Removed from library');
