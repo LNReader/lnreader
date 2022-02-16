@@ -7,7 +7,7 @@ import {defaultDarkTheme} from '../../theme/dark';
 export enum DisplayModes {
   Compact = 'compact',
   Comfortable = 'comfortable',
-  NoTitle = 'noTitle',
+  NoTitle = 'no title',
   List = 'list',
 }
 
@@ -113,6 +113,11 @@ export const settingsSlice = createSlice({
       );
       state.appearance.theme = action.payload;
     },
+    setAmoledMode: state => {
+      state.appearance.theme.background = '#000000';
+      state.appearance.theme.surface = '#000000';
+      state.appearance.theme.surfaceVariant = '#000000';
+    },
     setDisplayMode: (state, action: PayloadAction<DisplayModes>) => {
       state.appearance.displayMode = action.payload;
     },
@@ -194,6 +199,7 @@ export const {
   setLibrarySortOrder,
   toggleShowUnreadBadge,
   toggleShowDownloadsBadge,
+  setAmoledMode,
 } = settingsSlice.actions;
 
 export default settingsSlice.reducer;

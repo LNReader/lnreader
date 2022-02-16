@@ -12,29 +12,33 @@ import {Button, IconButton} from 'react-native-paper';
 import WebView from 'react-native-webview';
 import {useDispatch} from 'react-redux';
 
-import {Appbar} from '../../components/Appbar';
-import ColorPickerModal from '../../components/ColorPickerModal';
-import {Row} from '../../components/Common';
+import {Appbar} from '../../../components/Appbar';
+import ColorPickerModal from '../../../components/ColorPickerModal';
+import {Row} from '../../../components/Common';
 import {
   ToggleButton,
   ToggleColorButton,
-} from '../../components/Common/ToggleButton';
-import {List} from '../../components/List';
+} from '../../../components/Common/ToggleButton';
+import {List} from '../../../components/List';
 
-import {useReaderSettings, useSettings, useTheme} from '../../hooks/reduxHooks';
+import {
+  useReaderSettings,
+  useSettings,
+  useTheme,
+} from '../../../hooks/reduxHooks';
 import {
   setAppSettings,
   setReaderSettings,
-} from '../../redux/settings/settings.actions';
+} from '../../../redux/settings/settings.actions';
 import {
   readerBackground,
   readerLineHeight,
   readerTextColor,
-} from '../ReaderScreen/utils/readerStyles';
-import {useModal} from '../../hooks/useModal';
-import SwitchSetting from '../../components/Switch/Switch';
-import FontPickerModal from './components/FontPickerModal';
-import {fonts} from '../../services/utils/constants';
+} from '../../ReaderScreen/utils/readerStyles';
+import {useModal} from '../../../hooks/useModal';
+import SwitchSetting from '../../../components/Switch/Switch';
+import FontPickerModal from '../components/FontPickerModal';
+import {fonts} from '../../../services/utils/constants';
 
 const presetThemes = [
   {

@@ -5,8 +5,13 @@ import {useNavigation} from '@react-navigation/native';
 import {ErrorScreen, LoadingScreen} from '../../components';
 import {ChapterCard, NovelScreenHeader} from './components';
 
-import {getNovel} from '../../redux/novel/novelSlice';
-import {useAppDispatch, useNovelReducer, useTheme} from '../../redux/hooks';
+import {clearNovelReducer, getNovel} from '../../redux/novel/novelSlice';
+import {
+  useAppDispatch,
+  useDownloadQueue,
+  useNovelReducer,
+  useTheme,
+} from '../../redux/hooks';
 import useDownloader from '../../hooks/useDownloader';
 import {ChapterItem} from '../../database/types';
 import useLibraryUpdates from '../UpdatesScreen/hooks/useLibraryUpdate';
@@ -35,10 +40,10 @@ const NovelScreen: React.FC<NovelScreenProps> = ({route}) => {
 
   const {isUpdating, updateNovel} = useLibraryUpdates();
 
-  const {downloadChapter} = useDownloader();
+  const {downloadChapters} = useDownloader();
 
   const handleDownloadChapter = (chapter: ChapterItem) =>
-    downloadChapter(sourceId, novelUrl, chapter);
+    downloadChapters(sourceId, novelUrl, [chapter]);
 
   useEffect(() => {
     try {
@@ -47,6 +52,12 @@ const NovelScreen: React.FC<NovelScreenProps> = ({route}) => {
       setError(err.message);
     }
   }, [dispatch, novelUrl, sourceId]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearNovelReducer());
+    };
+  }, [dispatch]);
 
   const navigateToChapter = (
     chapterId: number,

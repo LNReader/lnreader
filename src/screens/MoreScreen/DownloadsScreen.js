@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {FlatList, StyleSheet} from 'react-native';
+import {FlatList, StyleSheet, Text} from 'react-native';
 
 import {Appbar as MaterialAppbar} from 'react-native-paper';
 
@@ -116,38 +116,41 @@ const Downloads = ({navigation}) => {
   );
 
   return (
-    <ScreenContainer theme={theme}>
-      <Appbar title="Downloads" onBackAction={navigation.goBack}>
-        {chapters.length > 0 && (
-          <MaterialAppbar.Action
-            icon="delete-sweep"
-            color={theme.textColorPrimary}
-            onPress={showDialog}
+    <>
+      <Text>hcsdhjd</Text>
+      {/* <ScreenContainer theme={theme}>
+        <Appbar title="Downloads" onBackAction={navigation.goBack}>
+          {chapters.length > 0 && (
+            <MaterialAppbar.Action
+              icon="delete-sweep"
+              color={theme.textColorPrimary}
+              onPress={showDialog}
+            />
+          )}
+        </Appbar>
+        {loading ? (
+          <LoadingScreen theme={theme} />
+        ) : (
+          <FlatList
+            contentContainerStyle={styles.flatList}
+            data={chapters}
+            keyExtractor={item => item.chapterId.toString()}
+            renderItem={renderItem}
+            ListEmptyComponent={<ListEmptyComponent />}
           />
         )}
-      </Appbar>
-      {loading ? (
-        <LoadingScreen theme={theme} />
-      ) : (
-        <FlatList
-          contentContainerStyle={styles.flatList}
-          data={chapters}
-          keyExtractor={item => item.chapterId.toString()}
-          renderItem={renderItem}
-          ListEmptyComponent={<ListEmptyComponent />}
+        <RemoveDownloadsDialog
+          dialogVisible={visible}
+          hideDialog={hideDialog}
+          onSubmit={() => {
+            deleteDownloads();
+            setChapters([]);
+            hideDialog();
+          }}
+          theme={theme}
         />
-      )}
-      <RemoveDownloadsDialog
-        dialogVisible={visible}
-        hideDialog={hideDialog}
-        onSubmit={() => {
-          deleteDownloads();
-          setChapters([]);
-          hideDialog();
-        }}
-        theme={theme}
-      />
-    </ScreenContainer>
+      </ScreenContainer> */}
+    </>
   );
 };
 

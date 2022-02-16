@@ -1,3 +1,5 @@
+import {SourceChapter} from '../../sources/types';
+
 export interface NovelInfo {
   novelId: number;
   sourceUrl: string;
@@ -64,4 +66,5 @@ export interface Update {
   read: number;
   updateTime: string;
   bookmark: number;
+  releaseDate: string;
 }

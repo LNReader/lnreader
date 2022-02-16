@@ -3,11 +3,11 @@ import {createStackNavigator} from '@react-navigation/stack';
 
 import Settings from '../screens/SettingsScreen/SettingsScreen';
 import TrackerSettings from '../screens/SettingsScreen/SettingsTrackerScreen';
-import ReaderSettings from '../screens/SettingsScreen/SettingsReaderScreen';
+import ReaderSettings from '../screens/SettingsScreen/SettingsReader/SettingsReader';
 import BackupSettings from '../screens/SettingsScreen/SettingsBackupScreen';
-import AdvancedSettings from '../screens/SettingsScreen/SettingsAdvancedScreen';
-import GeneralSettings from '../screens/SettingsScreen/SettingsGeneralScreen';
-import AppearanceSettings from '../screens/SettingsScreen/SettingsAppearanceScreen';
+import SettingsAdvanced from '../screens/SettingsScreen/SettingsAdvanced/SettingsAdvanced';
+import GeneralSettings from '../screens/SettingsScreen/SettingsGeneral/SettingsGeneral';
+import SettingsAppearance from '../screens/SettingsScreen/SettingsAppearance/SettingsAppearance';
 
 const Stack = createStackNavigator();
 
@@ -20,8 +20,8 @@ const SettingsStack = () => (
     <Stack.Screen name="ReaderSettings" component={ReaderSettings} />
     <Stack.Screen name="TrackerSettings" component={TrackerSettings} />
     <Stack.Screen name="BackupSettings" component={BackupSettings} />
-    <Stack.Screen name="AppearanceSettings" component={AppearanceSettings} />
-    <Stack.Screen name="AdvancedSettings" component={AdvancedSettings} />
+    <Stack.Screen name="SettingsAppearance" component={SettingsAppearance} />
+    <Stack.Screen name="SettingsAdvanced" component={SettingsAdvanced} />
   </Stack.Navigator>
 );
 

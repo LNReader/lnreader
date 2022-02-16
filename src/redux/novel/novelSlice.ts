@@ -65,6 +65,11 @@ export const novelSlice = createSlice({
     setNovelLoading: state => {
       state.loading = true;
     },
+    clearNovelReducer: state => {
+      state.loading = true;
+      state.novel = null;
+      state.chapters = null;
+    },
     toggleFollowNovel: state => {
       if (state.novel) {
         state.novel.followed = +!state.novel?.followed;
@@ -114,6 +119,7 @@ export const novelSlice = createSlice({
 });
 
 export const {
+  clearNovelReducer,
   setNovelLoading,
   toggleFollowNovel,
   updateChapterDownloaded,

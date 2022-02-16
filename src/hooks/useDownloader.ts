@@ -38,13 +38,16 @@ const useDownloader = () => {
         );
 
         dispatch(removeFromDownloadQueue(chapter.chapterId));
-        dispatch(updateChapterDownloaded(chapter.chapterId));
-        showToast(`${chapter.chapterName} downloaded.`);
       } else {
         deleteChapterFromDb(chapter.chapterId);
-        dispatch(updateChapterDownloaded(chapter.chapterId));
-        showToast(`${chapter.chapterName} deleted.`);
       }
+
+      showToast(
+        `${chapter.chapterName} ${
+          chapter.downloaded === 0 ? 'downloaded' : 'deleted'
+        }.`,
+      );
+      dispatch(updateChapterDownloaded(chapter.chapterId));
     } catch (error) {
       showToast(error);
     }
@@ -112,6 +115,7 @@ const useDownloader = () => {
               );
 
               dispatch(removeFromDownloadQueue(currentChapter.chapterId));
+              dispatch(updateChapterDownloaded(currentChapter.chapterId));
 
               await BackgroundService.updateNotification({
                 taskTitle: currentChapter.chapterName,

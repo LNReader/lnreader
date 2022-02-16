@@ -8,7 +8,7 @@ interface ListItemProps {
   title: string;
   description?: string | null;
   icon?: string;
-  onPress: () => void;
+  onPress?: () => void;
   theme: ThemeType;
 }
 
@@ -16,7 +16,13 @@ const Section = ({children}: {children: ReactNode}) => (
   <PaperList.Section style={styles.listSection}>{children}</PaperList.Section>
 );
 
-const SubHeader = ({children, theme}: {children: ReactNode; theme: Theme}) => (
+const SubHeader = ({
+  children,
+  theme,
+}: {
+  children: ReactNode;
+  theme: ThemeType;
+}) => (
   <PaperList.Subheader style={{color: theme.primary}}>
     {children}
   </PaperList.Subheader>

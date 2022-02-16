@@ -77,8 +77,11 @@ const UpdatesScreen = () => {
 
   const {downloadChapters} = useDownloader();
 
-  const handleDownloadChapter = (sourceId: number, chapter: ChapterItem) =>
-    downloadChapters(sourceId, [chapter]);
+  const handleDownloadChapter = (
+    sourceId: number,
+    novelUrl: string,
+    chapter: ChapterItem,
+  ) => downloadChapters(sourceId, novelUrl, [chapter]);
 
   const navigateToChapter = (
     sourceId: number,
@@ -100,6 +103,15 @@ const UpdatesScreen = () => {
       } as never,
     );
 
+  const navigateToNovel = (sourceId: number, novelUrl: string) =>
+    navigate(
+      'NovelScreen' as never,
+      {
+        sourceId,
+        novelUrl,
+      } as never,
+    );
+
   return (
     <>
       <Searchbar
@@ -118,8 +130,9 @@ const UpdatesScreen = () => {
       ) : (
         <SectionList
           contentContainerStyle={styles.listContainer}
+          keyExtractor={item => item.chapterId.toString()}
           sections={groupUpdatesByDate(
-            searchResults.length > 1 ? searchResults : updates,
+            searchResults.length > 0 ? searchResults : updates,
           )}
           renderSectionHeader={({section: {date}}) => (
             <Text
@@ -132,6 +145,7 @@ const UpdatesScreen = () => {
             <UpdateCard
               item={item}
               navigateToChapter={navigateToChapter}
+              navigateToNovel={navigateToNovel}
               handleDownloadChapter={handleDownloadChapter}
               theme={theme}
             />

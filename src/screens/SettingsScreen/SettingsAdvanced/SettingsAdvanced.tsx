@@ -2,19 +2,18 @@ import React, {useState} from 'react';
 
 import {Button, Dialog, Portal} from 'react-native-paper';
 
-import {Appbar} from '../../components/Appbar';
-import {ScreenContainer} from '../../components/Common';
-import {List} from '../../components/List';
+import {showToast} from '../../../hooks/showToast';
 
-import {useTheme} from '../../hooks/reduxHooks';
-import {showToast} from '../../hooks/showToast';
+import {deleteNovelCache} from '../../../database/queries/NovelQueries';
+import {clearUpdates} from '../../../database/queries/UpdateQueries';
+import {clearCoverCache} from '../../../services/utils/coverCache';
+import {useTheme} from '../../../redux/hooks';
+import {useNavigation} from '@react-navigation/native';
+import {Appbar, List} from '../../../components';
 
-import {deleteNovelCache} from '../../database/queries/NovelQueries';
-import {clearUpdates} from '../../database/queries/UpdateQueries';
-import {clearCoverCache} from '../../services/utils/coverCache';
-
-const AdvancedSettings = ({navigation}) => {
+const SetingsAdvanced = () => {
   const theme = useTheme();
+  const {goBack} = useNavigation();
 
   /**
    * Confirm Clear Database Dialog
@@ -28,8 +27,8 @@ const AdvancedSettings = ({navigation}) => {
   const hideClearUpdatesDialog = () => setClearUpdatesDialog(false);
 
   return (
-    <ScreenContainer theme={theme}>
-      <Appbar title="Advanced" onBackAction={() => navigation.goBack()} />
+    <>
+      <Appbar title="Advanced" handleGoBack={goBack} theme={theme} />
       <List.Section>
         <List.SubHeader theme={theme}>Data Management</List.SubHeader>
         <List.Item
@@ -131,8 +130,8 @@ const AdvancedSettings = ({navigation}) => {
           </Dialog.Actions>
         </Dialog>
       </Portal>
-    </ScreenContainer>
+    </>
   );
 };
 
-export default AdvancedSettings;
+export default SetingsAdvanced;

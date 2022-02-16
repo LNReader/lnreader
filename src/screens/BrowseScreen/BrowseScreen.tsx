@@ -4,7 +4,7 @@ import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 
 import {useNavigation} from '@react-navigation/native';
 
-import {Searchbar} from '../../components';
+import {EmptyView, Searchbar} from '../../components';
 import SourceCard from './components/SourceCard/SourceCard';
 
 import sourceList from '../../sources/sources.json';
@@ -33,9 +33,7 @@ const SourcesTab = () => {
   const handleOnTogglePinSource = (sourceId: number) =>
     dispatch(togglePinSource(sourceId));
 
-  const lastUsedSource = sourceList.find(
-    (source: Source) => source.id === lastUsed,
-  );
+  const lastUsedSource = sourceList.find(source => source.id === lastUsed);
 
   const renderItem = ({item}: {item: Source}) => {
     const pinnedStatus = isPinned(item.id);
@@ -131,6 +129,13 @@ const AllTab = memo(() => {
       data={allSources}
       keyExtractor={item => item.id.toString()}
       renderItem={renderItem}
+      ListEmptyComponent={
+        <EmptyView
+          icon="(･Д･。"
+          description="Enable languages from settings"
+          theme={theme}
+        />
+      }
       removeClippedSubviews
     />
   );
@@ -225,6 +230,7 @@ export default BrowseScreen;
 
 const styles = StyleSheet.create({
   listContainer: {
+    flex: 1,
     paddingVertical: 16,
   },
   header: {

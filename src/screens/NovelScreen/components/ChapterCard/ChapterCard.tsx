@@ -82,7 +82,7 @@ const ChapterCard: React.FC<ChapterCardProps> = ({
       {isDownloading ? (
         <ActivityIndicator
           color={theme.textColorHint}
-          size={25}
+          size={26}
           style={{margin: 6}}
         />
       ) : (

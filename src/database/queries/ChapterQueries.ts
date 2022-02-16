@@ -68,6 +68,28 @@ export const getChapters = (novelId: number): Promise<ChapterItem[]> => {
   );
 };
 
+const getDownloadedChaptersQuery = `
+  SELECT
+    *
+  FROM
+    chapters
+  WHERE
+    downloaded = 1
+  `;
+
+export const getDownloadedChapters = (): Promise<ChapterItem[]> => {
+  return new Promise((resolve, reject) =>
+    db.transaction(tx => {
+      tx.executeSql(
+        getDownloadedChaptersQuery,
+        [],
+        (txObj, {rows: {_array}}) => resolve(_array),
+        (txObj, error) => reject(error),
+      );
+    }),
+  );
+};
+
 const getPrevChapterQuery = `
   SELECT
     *

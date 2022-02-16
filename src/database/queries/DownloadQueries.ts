@@ -1,6 +1,7 @@
 import * as SQLite from 'expo-sqlite';
 import {showToast} from '../../hooks/showToast';
 import {sourceManager} from '../../sources/sourceManager';
+import {DownloadedChapter} from '../types';
 
 import {
   updateChapterDeletedQuery,
@@ -11,7 +12,7 @@ const db = SQLite.openDatabase('lnreader.db');
 
 const downloadChapterQuery = `
   INSERT INTO 
-      downloads (chapterId, name, text)
+      downloads (chapterId, chapterName, chapterText)
   VALUES
     (?, ?, ?)
 	`;
@@ -33,7 +34,7 @@ export const fetchAndInsertChapterInDb = async (
       downloadChapterQuery,
       [chapterId, chapter.chapterName, chapter.chapterText],
       (txObj, res) => {},
-      (txObj, error) => reject(error),
+      (txObj, error) => console.log(error),
     );
   });
 };
@@ -57,9 +58,12 @@ export const deleteChapterFromDb = (chapterId: number) => {
   });
 };
 
-const getChapterFromDbQuery = 'SELECT * FROM downloads WHERE chapterId = ?';
+const getChapterFromDbQuery =
+  'SELECT * FROM downloads WHERE downloadChapterId = ?';
 
-export const getChapterFromDb = async (chapterId: number) => {
+export const getChapterFromDb = async (
+  chapterId: number,
+): Promise<DownloadedChapter> => {
   return new Promise((resolve, reject) =>
     db.transaction(tx => {
       tx.executeSql(

@@ -13,7 +13,7 @@ import {
 import {useNavigation} from '@react-navigation/native';
 
 import useLibrary from './hooks/useLibrary';
-import {useLibrarySettings, useTheme} from '../../redux/hooks';
+import {useTheme} from '../../redux/hooks';
 import {useSearch} from '../../hooks';
 
 import LibraryBottomSheet from './components/LibraryBottomSheet/LibraryBottomSheet';

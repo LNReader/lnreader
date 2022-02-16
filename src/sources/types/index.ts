@@ -4,7 +4,7 @@ export interface Source {
   baseUrl: string;
   lang: string;
   icon: string;
-  isNsfw: boolean;
+  isNsfw?: boolean;
 }
 
 export interface SourceNovelItem {

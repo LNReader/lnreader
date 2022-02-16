@@ -126,6 +126,7 @@ const HistoryScreen = () => {
           <SectionList
             contentContainerStyle={styles.listContainer}
             sections={groupHistoryByDate(searchText ? searchResults : history)}
+            keyExtractor={item => item.chapterId.toString()}
             renderSectionHeader={({section: {date}}) => (
               <Text
                 style={[styles.dateHeader, {color: theme.textColorSecondary}]}

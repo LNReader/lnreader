@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Text, /* StyleSheet, */ Pressable} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-export const ThemePicker = ({theme, currentTheme, onPress}) => (
+const ThemePicker = ({theme, currentTheme, onPress}) => (
   <View
     style={{
       justifyContent: 'center',
@@ -12,12 +12,12 @@ export const ThemePicker = ({theme, currentTheme, onPress}) => (
   >
     <View
       style={{
-        backgroundColor: theme.colorPrimaryDark,
+        backgroundColor: theme.background,
         borderWidth: 3.6,
         borderColor:
           currentTheme.id === theme.id
-            ? theme.colorAccent
-            : currentTheme.colorPrimaryDark,
+            ? theme.primary
+            : currentTheme.background,
         width: 95,
         height: 140,
         borderRadius: 16,
@@ -29,10 +29,10 @@ export const ThemePicker = ({theme, currentTheme, onPress}) => (
         {currentTheme.id === theme.id && (
           <MaterialCommunityIcons
             name="check"
-            color={theme.colorButtonText}
+            color={theme.onPrimary}
             size={15}
             style={{
-              backgroundColor: theme.colorAccent,
+              backgroundColor: theme.primary,
               position: 'absolute',
               top: 5,
               right: 5,
@@ -45,7 +45,7 @@ export const ThemePicker = ({theme, currentTheme, onPress}) => (
         <View
           style={{
             height: 20,
-            backgroundColor: theme.colorPrimary,
+            backgroundColor: theme.surface,
             elevation: 1,
             justifyContent: 'center',
           }}
@@ -82,7 +82,7 @@ export const ThemePicker = ({theme, currentTheme, onPress}) => (
                 height: 10,
                 width: 16,
                 marginLeft: 4,
-                backgroundColor: theme.colorAccent,
+                backgroundColor: theme.primary,
                 borderRadius: 50,
               }}
             />
@@ -114,7 +114,7 @@ export const ThemePicker = ({theme, currentTheme, onPress}) => (
             left: 0,
             right: 0,
             height: 24,
-            backgroundColor: theme.colorPrimary,
+            backgroundColor: theme.surface,
             justifyContent: 'center',
           }}
         >
@@ -141,7 +141,7 @@ export const ThemePicker = ({theme, currentTheme, onPress}) => (
                 height: 12,
                 width: 12,
                 borderRadius: 50,
-                backgroundColor: theme.colorAccent,
+                backgroundColor: theme.primary,
               }}
             />
             <View
@@ -169,4 +169,4 @@ export const ThemePicker = ({theme, currentTheme, onPress}) => (
   </View>
 );
 
-// const styles = StyleSheet.create({});
+export default ThemePicker;

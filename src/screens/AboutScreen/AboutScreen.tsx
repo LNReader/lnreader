@@ -1,37 +1,32 @@
 import React from 'react';
 import {ScrollView} from 'react-native';
-
 import * as Linking from 'expo-linking';
-import {useSelector} from 'react-redux';
 
-import {List} from '../../components/List';
-import {ScreenContainer} from '../../components/Common';
-import {MoreHeader} from './components/MoreHeader';
-import {appversion, releasedt} from '../../utils/utils';
+import {List} from '../../components';
+import AboutScreenHeader from './components/AboutScreenHeader/AboutScreenHeader';
 
-const AboutScreen = ({navigation}) => {
-  const theme = useSelector(state => state.settingsReducer.theme);
+import {appVersion, releaseDate} from '../../utils/constants/appVersion';
+
+import {useTheme} from '../../redux/hooks';
+
+const AboutScreen = () => {
+  const theme = useTheme();
 
   return (
-    <ScreenContainer theme={theme}>
-      <MoreHeader
-        title="About"
-        navigation={navigation}
-        theme={theme}
-        goBack={true}
-      />
-      <ScrollView style={{flex: 1}}>
+    <>
+      <AboutScreenHeader theme={theme} />
+      <ScrollView>
         <List.Section>
           <List.Item
             title="Version"
-            description={`Stable ${appversion} (${releasedt})`}
+            description={`Stable ${appVersion} (${releaseDate})`}
             theme={theme}
           />
           <List.Item
             title="What's new"
             onPress={() =>
               Linking.openURL(
-                `https://github.com/LNReader/lnreader/releases/tag/v${appversion}`,
+                `https://github.com/LNReader/lnreader/releases/tag/v${appVersion}`,
               )
             }
             theme={theme}
@@ -61,7 +56,7 @@ const AboutScreen = ({navigation}) => {
           />
         </List.Section>
       </ScrollView>
-    </ScreenContainer>
+    </>
   );
 };
 

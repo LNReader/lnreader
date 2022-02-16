@@ -11,7 +11,8 @@ import {ChapterItem, Update} from '../../../../database/types';
 import {ThemeType} from '../../../../theme/types';
 import FastImage from 'react-native-fast-image';
 import {IconButton} from '../../../../components';
-import {useAppSelector} from '../../../../redux/hooks';
+import {useDownloadQueue} from '../../../../redux/hooks';
+import {converUpdateToChapter} from '../../utils/convertUpdateToChapter';
 
 interface UpdateCardProps {
   item: Update;
@@ -23,13 +24,19 @@ interface UpdateCardProps {
     chapterUrl: string,
     isBookmarked: number,
   ) => void;
-  handleDownloadChapter?: (sourceId: number, chapter: ChapterItem) => void;
+  navigateToNovel: (sourceId: number, novelUrl: string) => void;
+  handleDownloadChapter?: (
+    sourceId: number,
+    novelUrl: string,
+    chapter: ChapterItem,
+  ) => void;
   theme: ThemeType;
 }
 
 const UpdateCard: React.FC<UpdateCardProps> = ({
   item,
   navigateToChapter,
+  navigateToNovel,
   handleDownloadChapter,
   theme,
 }) => {
@@ -40,7 +47,7 @@ const UpdateCard: React.FC<UpdateCardProps> = ({
     ? theme.textColorHint
     : theme.textColorSecondary;
 
-  const {downloadQueue} = useAppSelector(state => state.downloadsReducer);
+  const downloadQueue = useDownloadQueue();
 
   const isDownloading = downloadQueue.some(
     (chapter: ChapterItem) => chapter.chapterId === item.chapterId,
@@ -62,7 +69,11 @@ const UpdateCard: React.FC<UpdateCardProps> = ({
       }
     >
       <View style={styles.imageContainer}>
-        <FastImage source={{uri: item.coverUri}} style={styles.cover} />
+        <Pressable
+          onPress={() => navigateToNovel(item.sourceId, item.novelUrl)}
+        >
+          <FastImage source={{uri: item.novelCover}} style={styles.cover} />
+        </Pressable>
         <View style={styles.nameContainer}>
           <Text style={[styles.name, {color: titleColor}]} numberOfLines={1}>
             {item.novelName}
@@ -75,24 +86,20 @@ const UpdateCard: React.FC<UpdateCardProps> = ({
       {isDownloading ? (
         <ActivityIndicator
           color={theme.textColorHint}
-          size={25}
-          style={{margin: 6}}
+          size={26}
+          style={{margin: 8}}
         />
       ) : (
         <IconButton
           name={item.downloaded ? 'check-circle' : 'arrow-down-circle-outline'}
           size={25}
-          padding={6}
           onPress={() =>
-            handleDownloadChapter(item.sourceId, {
-              id: item.chapterId,
-              name: item.chapterName,
-              url: item.chapterUrl,
-              downloaded: item.downloaded,
-              novelId: item.novelId,
-              bookmark: item.bookmark,
-              read: item.read,
-            })
+            handleDownloadChapter &&
+            handleDownloadChapter(
+              item.sourceId,
+              item.novelUrl,
+              converUpdateToChapter(item),
+            )
           }
           theme={theme}
         />

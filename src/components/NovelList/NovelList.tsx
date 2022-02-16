@@ -23,6 +23,7 @@ const NovelList: React.FC<FlatListProps<SourceNovelItem | NovelInfo>> =
             ? novelsPerRowLandscape
             : novelsPerRowPotrait
         }
+        key={orientation}
         {...props}
       />
     );

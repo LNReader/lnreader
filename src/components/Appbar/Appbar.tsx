@@ -1,5 +1,5 @@
 import React from 'react';
-import {StatusBar, StyleSheet, Text, View} from 'react-native';
+import {StatusBar, StyleSheet} from 'react-native';
 
 import {Appbar as PaperAppbar} from 'react-native-paper';
 import {ThemeType} from '../../theme/types';
