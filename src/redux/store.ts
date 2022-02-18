@@ -13,6 +13,7 @@ import trackerReducer from './tracker/tracker.reducer';
 import preferenceReducer from './preferences/preference.reducer';
 import downloadsReducer from './downloads/downloads.reducer';
 import downloadsReducerV2 from './downloads/downloadsSlice';
+import localStorageReducer from './localStorage/localStorageSlice';
 
 const persistConfig = {
   key: 'root',
@@ -32,6 +33,7 @@ const reducers = combineReducers({
   preferenceReducer,
   downloadsReducer,
   downloadsReducerV2,
+  localStorageReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducers);

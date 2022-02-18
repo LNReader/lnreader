@@ -1,5 +1,7 @@
 import React, {useRef} from 'react';
 import {StyleSheet, RefreshControl} from 'react-native';
+import {Portal} from 'react-native-paper';
+import {useNavigation} from '@react-navigation/native';
 
 import {
   Container,
@@ -10,14 +12,11 @@ import {
   Searchbar,
   EmptyView,
 } from '../../components';
-import {useNavigation} from '@react-navigation/native';
+import LibraryBottomSheet from './components/LibraryBottomSheet/LibraryBottomSheet';
 
 import useLibrary from './hooks/useLibrary';
 import {useTheme} from '../../redux/hooks';
 import {useSearch} from '../../hooks';
-
-import LibraryBottomSheet from './components/LibraryBottomSheet/LibraryBottomSheet';
-import {Portal} from 'react-native-paper';
 import useLibraryUpdate from '../UpdatesScreen/hooks/useLibraryUpdate';
 
 const LibraryScreen = () => {

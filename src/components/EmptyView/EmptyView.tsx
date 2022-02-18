@@ -4,7 +4,7 @@ import {StyleSheet, View, Text} from 'react-native';
 import {ThemeType} from '../../theme/types';
 
 interface EmptyViewProps {
-  icon: string;
+  icon?: string;
   description: string;
   theme: ThemeType;
 }

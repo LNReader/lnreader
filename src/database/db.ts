@@ -13,15 +13,11 @@ import {
   createHistoryTableQuery,
   createChapterIdIndexQuery,
 } from './tables/HistoryTable';
-import {createDownloadTableQuery} from './tables/DownloadTable';
 import {
-  createUpdatesTableQuery,
-  // updatesSeedDataQuery,
-} from './tables/UpdateTable';
-
-/**
- * Database Version = 2
- */
+  createDownloadChapterIdIndexQuery,
+  createDownloadTableQuery,
+} from './tables/DownloadTable';
+import {createUpdatesTableQuery} from './tables/UpdateTable';
 
 const dbName = 'lnreader.db';
 
@@ -43,15 +39,16 @@ export const createDB = () => {
     tx.executeSql(createNovelIdIndexQuery);
     tx.executeSql(createUnreadChaptersIndexQuery);
     tx.executeSql(createChapterIdIndexQuery);
+    tx.executeSql(createDownloadChapterIdIndexQuery);
   });
 };
 
-export const deleteDb = () => {
-  db.transaction(tx => {
-    tx.executeSql('DROP TABLE novels');
-    tx.executeSql('DROP TABLE chapters');
-    tx.executeSql('DROP TABLE history');
-    tx.executeSql('DROP TABLE downloads');
-    tx.executeSql('DROP TABLE updates');
-  });
-};
+// export const deleteDb = () => {
+//   db.transaction(tx => {
+//     tx.executeSql('DROP TABLE novels');
+//     tx.executeSql('DROP TABLE chapters');
+//     tx.executeSql('DROP TABLE history');
+//     tx.executeSql('DROP TABLE downloads');
+//     tx.executeSql('DROP TABLE updates');
+//   });
+// };

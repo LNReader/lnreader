@@ -43,6 +43,8 @@ interface SettingsState {
     paddingHorizontal: number;
     customCSS: string | null;
     fullScreenMode: boolean;
+    useWebViewReader: boolean;
+    showProgressPercentage: boolean;
   };
   library: {
     filters: string[];
@@ -82,6 +84,8 @@ const initialState: SettingsState = {
     paddingHorizontal: 5,
     customCSS: null,
     fullScreenMode: true,
+    useWebViewReader: false,
+    showProgressPercentage: false,
   },
   library: {
     filters: [],
@@ -158,6 +162,9 @@ export const settingsSlice = createSlice({
     toggleReaderFullScreenMode: state => {
       state.reader.fullScreenMode = !state.reader.fullScreenMode;
     },
+    toggleWebViewReader: state => {
+      state.reader.useWebViewReader = !state.reader.useWebViewReader;
+    },
     setLibraryFilter: (state, action: PayloadAction<{filter: string}>) => {
       if (state.library.filters.includes(action.payload.filter)) {
         state.library.filters = state.library.filters.filter(
@@ -178,6 +185,10 @@ export const settingsSlice = createSlice({
     },
     toggleShowDownloadsBadge: state => {
       state.library.showDownloadsBadge = !state.library.showDownloadsBadge;
+    },
+    toggleShowProgressPercentage: state => {
+      state.reader.showProgressPercentage =
+        !state.reader.showProgressPercentage;
     },
   },
 });
@@ -200,6 +211,8 @@ export const {
   toggleShowUnreadBadge,
   toggleShowDownloadsBadge,
   setAmoledMode,
+  toggleWebViewReader,
+  toggleShowProgressPercentage,
 } = settingsSlice.actions;
 
 export default settingsSlice.reducer;

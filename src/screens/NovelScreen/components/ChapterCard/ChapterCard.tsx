@@ -9,7 +9,7 @@ import {
 import {IconButton} from '../../../../components';
 
 import {ChapterItem} from '../../../../database/types';
-import {useDownloadQueue} from '../../../../redux/hooks';
+import {useDownloadQueue, useSavedChapterData} from '../../../../redux/hooks';
 import {ThemeType} from '../../../../theme/types';
 
 interface ChapterCardProps {
@@ -39,6 +39,8 @@ const ChapterCard: React.FC<ChapterCardProps> = ({
     : chapter.read
     ? theme.textColorHint
     : theme.textColorSecondary;
+
+  const {progressPercentage = 0} = useSavedChapterData(chapter.chapterId) || {};
 
   const downloadQueue = useDownloadQueue();
 
@@ -73,11 +75,18 @@ const ChapterCard: React.FC<ChapterCardProps> = ({
             {chapter.chapterName}
           </Text>
         </View>
-        {chapter.releaseDate ? (
-          <Text style={[styles.date, {color: dateColor}]}>
-            {chapter.releaseDate}
-          </Text>
-        ) : null}
+        <View style={styles.infoContainer}>
+          {chapter.releaseDate ? (
+            <Text style={[styles.date, {color: dateColor}]}>
+              {chapter.releaseDate}
+            </Text>
+          ) : null}
+          {progressPercentage > 0 && progressPercentage < 100 ? (
+            <Text style={[styles.progress, {color: dateColor}]}>
+              {`${chapter.releaseDate ? '  •  ' : ''}${progressPercentage}%`}
+            </Text>
+          ) : null}
+        </View>
       </View>
       {isDownloading ? (
         <ActivityIndicator
@@ -119,12 +128,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  infoContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 4,
+  },
   bookmarkIcon: {
     marginRight: 8,
   },
   chapterName: {},
   date: {
     fontSize: 12,
-    marginTop: 4,
+  },
+  progress: {
+    fontSize: 12,
   },
 });

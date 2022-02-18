@@ -31,6 +31,8 @@ import {
   setReaderPadding,
   setReaderTheme,
   toggleReaderFullScreenMode,
+  toggleShowProgressPercentage,
+  toggleWebViewReader,
 } from '../../../../redux/settings/settingsSlice';
 import {fonts} from '../../../../theme/reader/fonts';
 import {IconButton} from '../../../../components';
@@ -209,7 +211,8 @@ const GeneralTab = () => {
   const theme = useTheme();
   const dispatch = useAppDispatch();
 
-  const {fullScreenMode} = useReaderSettings();
+  const {fullScreenMode, useWebViewReader, showProgressPercentage} =
+    useReaderSettings();
 
   return (
     <>
@@ -217,6 +220,18 @@ const GeneralTab = () => {
         label="Fullscreen"
         value={fullScreenMode}
         onPress={() => dispatch(toggleReaderFullScreenMode())}
+        theme={theme}
+      />
+      {/* <ReaderBottomSheetSwitch
+        label="HTML Reader"
+        value={useWebViewReader}
+        onPress={() => dispatch(toggleWebViewReader())}
+        theme={theme}
+      /> */}
+      <ReaderBottomSheetSwitch
+        label="Show progress percentage"
+        value={showProgressPercentage}
+        onPress={() => dispatch(toggleShowProgressPercentage())}
         theme={theme}
       />
     </>

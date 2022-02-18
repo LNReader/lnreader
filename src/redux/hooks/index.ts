@@ -29,3 +29,13 @@ export const useDownloadQueue = () =>
 
 export const useNovelReducer = () =>
   useAppSelector((state: RootState) => state.novelReducerV2);
+
+export const useSavedChapterData = (chapterId: number) =>
+  useAppSelector(
+    (state: RootState) => state.localStorageReducer.chapterData[chapterId],
+  );
+
+export const useSavedNovelData = (novelId: number) =>
+  useAppSelector(
+    (state: RootState) => state.localStorageReducer.novelData[novelId],
+  );

@@ -1,7 +1,7 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 
-import DownloadQueue from '../screens/MoreScreen/DownloadQueueScreen';
+import DownloadQueue from '../screens/DownloadQueueScreen/DownloadQueueScreen';
 import Downloads from '../screens/MoreScreen/DownloadsScreen';
 import SettingsStack from './SettingsStack';
 import AboutScreen from '../screens/AboutScreen/AboutScreen';

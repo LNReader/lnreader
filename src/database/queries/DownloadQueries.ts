@@ -12,7 +12,7 @@ const db = SQLite.openDatabase('lnreader.db');
 
 const downloadChapterQuery = `
   INSERT INTO 
-      downloads (chapterId, chapterName, chapterText)
+      downloads (downloadChapterId, chapterName, chapterText)
   VALUES
     (?, ?, ?)
 	`;
@@ -41,9 +41,9 @@ export const fetchAndInsertChapterInDb = async (
 
 const deleteChapterFromDbQuery = `
   DELETE FROM 
-      downloads
+    downloads
   WHERE
-    chapterId = ?
+    downloadChapterId = ?
 	`;
 
 export const deleteChapterFromDb = (chapterId: number) => {
@@ -58,8 +58,14 @@ export const deleteChapterFromDb = (chapterId: number) => {
   });
 };
 
-const getChapterFromDbQuery =
-  'SELECT * FROM downloads WHERE downloadChapterId = ?';
+const getChapterFromDbQuery = `
+  SELECT 
+    * 
+  FROM 
+    downloads 
+  WHERE 
+    downloadChapterId = ?
+  `;
 
 export const getChapterFromDb = async (
   chapterId: number,

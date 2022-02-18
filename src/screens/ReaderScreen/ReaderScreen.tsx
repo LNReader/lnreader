@@ -5,6 +5,7 @@ import {
   useWindowDimensions,
   Text,
   View,
+  ActivityIndicator,
 } from 'react-native';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 
@@ -20,6 +21,9 @@ import {Portal} from 'react-native-paper';
 import {updateChapterRead} from '../../redux/novel/novelSlice';
 import {insertHistoryInDb} from '../../database/queries/HistoryQueries';
 import {updateChapterReadInDb} from '../../database/queries/ChapterQueries';
+import WebViewReader from './components/WebViewReader/WebViewReader';
+import {useChapterProgress} from './hooks/useChapterProgress';
+import BottomInfoBar from './components/BottomInfoBar/BottomInfoBar';
 
 interface ReaderScreenProps {
   route: {
@@ -29,14 +33,22 @@ interface ReaderScreenProps {
       novelName?: string;
       chapterId: number;
       chapterUrl: string;
+      novelUrl: string;
       isBookmarked: number;
     };
   };
 }
 
 const ReaderScreen: React.FC<ReaderScreenProps> = ({route}) => {
-  const {sourceId, novelId, novelName, chapterId, chapterUrl, isBookmarked} =
-    route.params;
+  const {
+    sourceId,
+    novelId,
+    novelName,
+    chapterId,
+    chapterUrl,
+    novelUrl,
+    isBookmarked,
+  } = route.params;
 
   const dispatch = useAppDispatch();
 
@@ -48,6 +60,8 @@ const ReaderScreen: React.FC<ReaderScreenProps> = ({route}) => {
   let bottomSheetRef = useRef<any>(null);
   const expandBottomSheet = () => bottomSheetRef.current.show();
 
+  let readerRef = useRef<ScrollView | null>(null);
+
   const {
     backgroundColor,
     textColor,
@@ -55,13 +69,18 @@ const ReaderScreen: React.FC<ReaderScreenProps> = ({route}) => {
     lineHeight,
     fontFamily,
     fontSize,
+    useWebViewReader,
   } = useReaderSettings();
 
   const {isLoading, chapter, error} = useChapter(
     sourceId,
     chapterId,
     chapterUrl,
+    novelUrl,
   );
+
+  const {progressPercentage, setProgress, scrollToSavedProgress} =
+    useChapterProgress(chapterId, readerRef);
 
   const {
     isLoading: isNextAndPrevChapLoading,
@@ -97,6 +116,8 @@ const ReaderScreen: React.FC<ReaderScreenProps> = ({route}) => {
   );
 
   const onScroll = ({nativeEvent}: {nativeEvent: any}) => {
+    setProgress({nativeEvent});
+
     if (onChapterEndReached(nativeEvent)) {
       dispatch(updateChapterRead(chapterId));
       updateChapterReadInDb(1, chapterId);
@@ -107,7 +128,7 @@ const ReaderScreen: React.FC<ReaderScreenProps> = ({route}) => {
     <>
       <ReaderAppbar
         novelName={novelName}
-        chapterName={chapter?.chapterName}
+        chapterName={chapter?.chapterName || ''}
         chapterUrl={chapterUrl}
         visible={menuVisible}
         theme={theme}
@@ -117,60 +138,73 @@ const ReaderScreen: React.FC<ReaderScreenProps> = ({route}) => {
       ) : error ? (
         <ErrorScreen error={error} theme={theme} />
       ) : (
-        <ScrollView
-          contentContainerStyle={[styles.scrollView, {backgroundColor}]}
-          onScroll={onScroll}
-        >
-          <TouchableWithoutFeedback
-            onPress={toggleMenu}
-            style={[styles.container]}
+        <>
+          <ScrollView
+            contentContainerStyle={[styles.scrollView, {backgroundColor}]}
+            onScroll={onScroll}
+            ref={ref => (readerRef.current = ref)}
+            onLayout={scrollToSavedProgress}
           >
-            {chapter?.chapterText ? (
-              <RenderHtml
-                contentWidth={width}
-                source={{html: chapter?.chapterText}}
-                defaultTextProps={{
-                  style: {
-                    color: textColor,
-                    fontFamily: fontFamily || '',
-                    lineHeight: fontSize * lineHeight,
-                    fontSize,
-                  },
-                  selectable: true,
-                }}
-                defaultViewProps={{
-                  style: {
-                    backgroundColor,
-                  },
-                }}
-                baseStyle={{
-                  padding: `${paddingHorizontal}%`,
-                }}
-              />
-            ) : (
-              <EmptyView
-                description="Chapter is empty.\n\nReport if it's available in webview."
-                theme={theme}
-              />
-            )}
-            <View style={styles.buttonContainer}>
-              <Text style={[styles.finished, {color: textColor}]}>
-                {chapter?.chapterName
-                  ? `Finished: ${chapter?.chapterName}`
-                  : 'Finished'}
-              </Text>
-              {!isNextAndPrevChapLoading ? (
-                <Button
-                  title={`Next Chapter: ${nextChapter?.chapterName}`}
-                  onPress={navigateToNextChapter}
+            <TouchableWithoutFeedback
+              onPress={toggleMenu}
+              style={[styles.container]}
+            >
+              {chapter?.chapterText ? (
+                <RenderHtml
+                  contentWidth={width}
+                  source={{html: chapter?.chapterText}}
+                  defaultTextProps={{
+                    style: {
+                      color: textColor,
+                      fontFamily: fontFamily || '',
+                      lineHeight: fontSize * lineHeight,
+                      fontSize,
+                    },
+                    selectable: true,
+                  }}
+                  defaultViewProps={{
+                    style: {
+                      backgroundColor,
+                    },
+                  }}
+                  baseStyle={{
+                    padding: `${paddingHorizontal}%`,
+                  }}
+                />
+              ) : (
+                <EmptyView
+                  description="Chapter is empty.\n\nReport if it's available in webview."
                   theme={theme}
                 />
+              )}
+              {!useWebViewReader ? (
+                <View style={styles.buttonContainer}>
+                  <Text style={[styles.finished, {color: textColor}]}>
+                    {chapter?.chapterName
+                      ? `Finished: ${chapter?.chapterName}`
+                      : 'Finished'}
+                  </Text>
+                  {!isNextAndPrevChapLoading ? (
+                    <Button
+                      margin={8}
+                      title={`Next Chapter: ${nextChapter?.chapterName}`}
+                      onPress={navigateToNextChapter}
+                      theme={theme}
+                    />
+                  ) : (
+                    <ActivityIndicator size="small" color={theme.primary} />
+                  )}
+                </View>
               ) : null}
-            </View>
-          </TouchableWithoutFeedback>
-        </ScrollView>
+            </TouchableWithoutFeedback>
+          </ScrollView>
+          <BottomInfoBar
+            percentage={progressPercentage}
+            background={backgroundColor}
+            color={textColor}
+          />
+        </>
       )}
-
       <ReaderFooter
         visible={menuVisible}
         chapterId={chapterId}
@@ -197,7 +231,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   container: {
-    flex: 1,
+    height: '100%',
     paddingTop: 40,
     paddingBottom: 80,
   },
@@ -207,5 +241,8 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     margin: 8,
+  },
+  flex: {
+    flex: 1,
   },
 });
