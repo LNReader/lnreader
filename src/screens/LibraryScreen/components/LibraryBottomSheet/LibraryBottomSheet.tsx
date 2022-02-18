@@ -55,6 +55,7 @@ const FilterTab: React.FC = () => {
     <View>
       <FlatList
         data={libraryFilters}
+        keyExtractor={item => item.filter}
         renderItem={({item}) => (
           <Checkbox
             label={item.label}
@@ -82,6 +83,7 @@ const SortTab: React.FC = () => {
     <View>
       <FlatList
         data={librarySortOrders}
+        keyExtractor={item => item.label}
         renderItem={({item}) => (
           <SortItem
             label={item.label}
@@ -119,14 +121,12 @@ const DisplayTab: React.FC = () => {
       <Text style={[styles.header, {color: theme.primary}]}>Display modes</Text>
       <RadioButton
         label="Compact"
-        value={DisplayModes.Compact}
         status={displayMode === DisplayModes.Compact ? 'checked' : 'unchecked'}
         onPress={() => dispatch(setDisplayMode(DisplayModes.Compact))}
         theme={theme}
       />
       <RadioButton
         label="Comfortable"
-        value={DisplayModes.Comfortable}
         status={
           displayMode === DisplayModes.Comfortable ? 'checked' : 'unchecked'
         }
@@ -135,14 +135,12 @@ const DisplayTab: React.FC = () => {
       />
       <RadioButton
         label="No title"
-        value={DisplayModes.NoTitle}
         status={displayMode === DisplayModes.NoTitle ? 'checked' : 'unchecked'}
         onPress={() => dispatch(setDisplayMode(DisplayModes.NoTitle))}
         theme={theme}
       />
       <RadioButton
         label="List"
-        value={DisplayModes.List}
         status={displayMode === DisplayModes.List ? 'checked' : 'unchecked'}
         onPress={() => dispatch(setDisplayMode(DisplayModes.List))}
         theme={theme}
@@ -150,14 +148,12 @@ const DisplayTab: React.FC = () => {
       <Text style={[styles.header, {color: theme.primary}]}>Badges</Text>
       <RadioButton
         label="Downloaded chapters"
-        value={showDownloadsBadge}
         status={showDownloadsBadge ? 'checked' : 'unchecked'}
         onPress={() => dispatch(toggleShowDownloadsBadge())}
         theme={theme}
       />
       <RadioButton
         label="Unread chapters"
-        value={showUnreadBadge}
         status={showUnreadBadge ? 'checked' : 'unchecked'}
         onPress={() => dispatch(toggleShowUnreadBadge())}
         theme={theme}

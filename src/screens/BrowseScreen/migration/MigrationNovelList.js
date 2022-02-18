@@ -3,7 +3,7 @@ import {StyleSheet, FlatList, Text, View} from 'react-native';
 
 import {Portal, Modal, Button} from 'react-native-paper';
 
-import GlobalSearchNovelCover from '../globalsearch/GlobalSearchNovelCover';
+import GlobalSearchNovelCover from '../GlobalSearchScreen/GlobalSearchNovelCover';
 
 import {migrateNovel} from '../../../database/queries/NovelQueries';
 import {showToast} from '../../../hooks/showToast';

@@ -17,3 +17,4 @@ export {default as List} from './List/List';
 export {default as Dialog} from './Dialog/Dialog';
 export {default as Text} from './Text/Text';
 export {default as ThemePicker} from './ThemePicker/ThemePicker';
+export {default as CrossFadeView} from './CrossFadeView/CrossFadeView';

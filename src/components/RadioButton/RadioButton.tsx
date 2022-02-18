@@ -7,7 +7,7 @@ import {ThemeType} from '../../theme/types';
 interface RadioButtonProps {
   label: string;
   status: 'checked' | 'unchecked';
-  value: string;
+  value?: string;
   onPress: () => void;
   theme: ThemeType;
 }

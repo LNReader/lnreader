@@ -2,12 +2,12 @@ import React, {useState} from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import {Theme} from '../../../../theme/types';
+import {ThemeType} from '../../../../theme/types';
 
 interface NovelSummaryProps {
   summary: string;
   isExpanded: boolean;
-  theme: Theme;
+  theme: ThemeType;
 }
 
 const NovelSummary: React.FC<NovelSummaryProps> = ({
@@ -27,10 +27,12 @@ const NovelSummary: React.FC<NovelSummaryProps> = ({
   return (
     <Pressable
       style={[styles.summaryContainer, {paddingBottom: containerBottomPadding}]}
-      onPress={toggleExpanded}>
+      onPress={toggleExpanded}
+    >
       <Text
         style={[styles.summaryText, {color: textColor}]}
-        numberOfLines={expanded ? Number.MAX_SAFE_INTEGER : 3}>
+        numberOfLines={expanded ? Number.MAX_SAFE_INTEGER : 3}
+      >
         {summary}
       </Text>
       <View
@@ -40,7 +42,8 @@ const NovelSummary: React.FC<NovelSummaryProps> = ({
             backgroundColor: iconBackground,
             bottom,
           },
-        ]}>
+        ]}
+      >
         <MaterialCommunityIcons
           name={expanded ? 'chevron-up' : 'chevron-down'}
           color={theme.textColorPrimary}

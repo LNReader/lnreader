@@ -29,11 +29,6 @@ const useChapter = (
 
       let chapterText = sanitize(res.chapterText);
 
-      if (!chapterText) {
-        chapterText =
-          "Chapter is empty.\n\nReport if it's available in webview.";
-      }
-
       setChapter({...res, chapterText});
     } catch (err: unknown) {
       if (typeof err === 'string') {

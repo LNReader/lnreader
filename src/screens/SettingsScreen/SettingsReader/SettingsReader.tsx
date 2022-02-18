@@ -30,11 +30,7 @@ import {
   setAppSettings,
   setReaderSettings,
 } from '../../../redux/settings/settings.actions';
-import {
-  readerBackground,
-  readerLineHeight,
-  readerTextColor,
-} from '../../ReaderScreen/utils/readerStyles';
+
 import {useModal} from '../../../hooks/useModal';
 import SwitchSetting from '../../../components/Switch/Switch';
 import FontPickerModal from '../components/FontPickerModal';
@@ -97,7 +93,7 @@ const SettingsReaderScreen = ({navigation}) => {
           style={{flex: 1}}
           contentContainerStyle={{paddingBottom: 40}}
         >
-          {useWebViewForChapter ? (
+          {/* {useWebViewForChapter ? (
             <WebView
               originWhitelist={['*']}
               style={{
@@ -187,7 +183,7 @@ const SettingsReaderScreen = ({navigation}) => {
                 lectus.
               </Text>
             </View>
-          )}
+          )} */}
           <SwitchSetting
             label="Render HTML"
             description="Render chapter as html"
@@ -307,7 +303,7 @@ const SettingsReaderScreen = ({navigation}) => {
               </Row>
             </ScrollView>
           </View>
-          <List.ColorItem
+          {/* <List.ColorItem
             title="Background Color"
             description={readerBackground(reader.theme).toUpperCase()}
             onPress={readerBackgroundModal.showModal}
@@ -320,7 +316,7 @@ const SettingsReaderScreen = ({navigation}) => {
             }
             onPress={readerTextColorModal.showModal}
             theme={theme}
-          />
+          /> */}
           <Pressable style={styles.pressableListItem}>
             <View>
               <Text style={{color: theme.textColorPrimary, fontSize: 16}}>

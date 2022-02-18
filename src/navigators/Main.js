@@ -19,7 +19,7 @@ import MoreStack from './MoreStack';
 import NovelScreen from '../screens/NovelScreen/NovelScreen';
 import ReaderScreen from '../screens/ReaderScreen/ReaderScreen';
 import BrowseSourceScreen from '../screens/BrowseSourceScreen/BrowseSourceScreen';
-import GlobalSearch from '../screens/BrowseScreen/globalsearch/GlobalSearch';
+import GlobalSearch from '../screens/BrowseScreen/GlobalSearchScreen/GlobalSearch';
 import Migration from '../screens/BrowseScreen/migration/Migration';
 import SourceNovels from '../screens/BrowseScreen/SourceNovels';
 import MigrateNovel from '../screens/BrowseScreen/migration/MigrationNovels';
