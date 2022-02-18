@@ -128,7 +128,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   loadedCheerio('#listen-chapter').remove();
   loadedCheerio('#google_translate_element').remove();
 
-  const chapterName = loadedCheerio('#chapter__content > h1').text();
+  const chapterName = loadedCheerio('#chapter__content > h1').text().trim();
   const chapterText = loadedCheerio('.chapter__content').html();
 
   const chapter = {

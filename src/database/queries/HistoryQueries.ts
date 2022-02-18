@@ -1,7 +1,8 @@
 import * as SQLite from 'expo-sqlite';
+import {showToast} from '../../hooks/showToast';
 
 import {History} from '../types';
-import {updateNovelUnreadInDbQuery} from './NovelQueries';
+import {updateNovelReadQuery} from './NovelQueries';
 
 const db = SQLite.openDatabase('lnreader.db');
 
@@ -25,7 +26,7 @@ const getHistoryQuery = `
     HAVING 
       history.historyTimeRead = MAX(history.historyTimeRead)
     ORDER BY 
-    history.historyTimeRead DESC
+      history.historyTimeRead DESC
     `;
 
 export const getHistoryFromDb = async (): Promise<History[]> => {
@@ -36,7 +37,7 @@ export const getHistoryFromDb = async (): Promise<History[]> => {
         [],
         (txObj, {rows: {_array}}) => resolve(_array),
         (txObj, error) => {
-          reject(error);
+          console.log(error);
           return true;
         },
       );
@@ -62,10 +63,12 @@ export const insertHistoryInDb = async (novelId: number, chapterId: number) => {
     tx.executeSql(
       insertHistoryInDbQuery,
       [novelId, chapterId],
-      (txObj, res) => {},
-      (txObj, error) => {},
+      () => {},
+      (txObj, error) => {
+        showToast(error.message);
+      },
     );
-    tx.executeSql(updateNovelUnreadInDbQuery, [novelId]);
+    tx.executeSql(updateNovelReadQuery, [novelId]);
   });
 };
 

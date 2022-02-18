@@ -1,6 +1,5 @@
 import React, {useRef} from 'react';
 import {Pressable, StyleSheet, View, TextInput} from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 import {ThemeType} from '../../theme/types';
@@ -35,7 +34,7 @@ const Searchbar: React.FC<SearcbarProps> = ({
   clearSearchbar,
   theme,
 }) => {
-  const searchbarRef = useRef(null);
+  const searchbarRef = useRef<any>(null);
   const focusSearchbar = () => searchbarRef.current.focus();
 
   const {top} = useSafeAreaInsets();
@@ -88,7 +87,7 @@ const Searchbar: React.FC<SearcbarProps> = ({
           <IconButton
             key={index}
             name={icon.iconName}
-            color={theme.textColorPrimary}
+            color={icon.color || theme.textColorPrimary}
             onPress={icon.onPress}
             theme={theme}
           />

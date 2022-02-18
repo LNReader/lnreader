@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import {
   ActivityIndicator,
   Pressable,
@@ -9,8 +9,14 @@ import {
 import {IconButton} from '../../../../components';
 
 import {ChapterItem} from '../../../../database/types';
-import {useDownloadQueue, useSavedChapterData} from '../../../../redux/hooks';
+import {
+  useDownloadQueue,
+  useSavedChapterData,
+  useSavedNovelData,
+} from '../../../../redux/hooks';
+import {ChapterTitleDisplayModes} from '../../../../redux/localStorage/localStorageSlice';
 import {ThemeType} from '../../../../theme/types';
+import {parseChapterNumber} from '../../../../utils/parseChapterNumber';
 
 interface ChapterCardProps {
   chapter: ChapterItem;
@@ -40,7 +46,10 @@ const ChapterCard: React.FC<ChapterCardProps> = ({
     ? theme.textColorHint
     : theme.textColorSecondary;
 
-  const {progressPercentage = 0} = useSavedChapterData(chapter.chapterId) || {};
+  const {progressPercentage = 0} = useSavedChapterData(chapter.chapterId);
+
+  const {chapterTitleDisplayMode = ChapterTitleDisplayModes.SOURCE_TITLE} =
+    useSavedNovelData(chapter.novelId);
 
   const downloadQueue = useDownloadQueue();
 
@@ -50,6 +59,12 @@ const ChapterCard: React.FC<ChapterCardProps> = ({
   const isDownloading = downloadQueue.some(
     item => item.chapterId === chapter.chapterId,
   );
+
+  const chapterName = useMemo(() => {
+    return chapterTitleDisplayMode === ChapterTitleDisplayModes.SOURCE_TITLE
+      ? chapter.chapterName
+      : `Chapter ${parseChapterNumber(chapter.chapterName)}`;
+  }, [chapterTitleDisplayMode, chapter.chapterName]);
 
   return (
     <Pressable
@@ -72,7 +87,7 @@ const ChapterCard: React.FC<ChapterCardProps> = ({
             style={[styles.chapterName, {color: chapterNameColor}]}
             numberOfLines={1}
           >
-            {chapter.chapterName}
+            {chapterName}
           </Text>
         </View>
         <View style={styles.infoContainer}>
@@ -82,8 +97,10 @@ const ChapterCard: React.FC<ChapterCardProps> = ({
             </Text>
           ) : null}
           {progressPercentage > 0 && progressPercentage < 100 ? (
-            <Text style={[styles.progress, {color: dateColor}]}>
-              {`${chapter.releaseDate ? '  •  ' : ''}${progressPercentage}%`}
+            <Text style={[styles.progress, {color: theme.textColorHint}]}>
+              {`${
+                chapter.releaseDate ? '  •  ' : ''
+              }Progress ${progressPercentage}%`}
             </Text>
           ) : null}
         </View>

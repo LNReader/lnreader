@@ -32,10 +32,15 @@ export const useNovelReducer = () =>
 
 export const useSavedChapterData = (chapterId: number) =>
   useAppSelector(
-    (state: RootState) => state.localStorageReducer.chapterData[chapterId],
+    (state: RootState) =>
+      state.localStorageReducer.chapterData[chapterId] || {},
   );
 
 export const useSavedNovelData = (novelId: number) =>
-  useAppSelector(
-    (state: RootState) => state.localStorageReducer.novelData[novelId],
-  );
+  useAppSelector((state: RootState) => {
+    if (novelId === -1) {
+      return {};
+    } else {
+      return state.localStorageReducer.novelData[novelId] || {};
+    }
+  });

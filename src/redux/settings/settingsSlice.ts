@@ -11,7 +11,7 @@ export enum DisplayModes {
   List = 'list',
 }
 
-enum TextAlignments {
+export enum TextAlignments {
   Left = 'left',
   Center = 'center',
   Justify = 'justfy',
@@ -125,6 +125,9 @@ export const settingsSlice = createSlice({
     setDisplayMode: (state, action: PayloadAction<DisplayModes>) => {
       state.appearance.displayMode = action.payload;
     },
+    setGridSizPotrait: (state, action: PayloadAction<GridSizes>) => {
+      state.appearance.novelsPerRowPotrait = action.payload;
+    },
     toggleShowUpdatesTab: state => {
       state.appearance.showUpdatesTab = !state.appearance.showUpdatesTab;
     },
@@ -213,6 +216,7 @@ export const {
   setAmoledMode,
   toggleWebViewReader,
   toggleShowProgressPercentage,
+  setGridSizPotrait,
 } = settingsSlice.actions;
 
 export default settingsSlice.reducer;

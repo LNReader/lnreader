@@ -55,14 +55,28 @@ const getChaptersQuery = `
   
   `;
 
-export const getChapters = (novelId: number): Promise<ChapterItem[]> => {
+export const getChapters = (
+  novelId: number,
+  filters: string[],
+  sort: string,
+): Promise<ChapterItem[]> => {
+  let query = getChaptersQuery;
+
+  if (filters.length > 0) {
+    query = query.concat(' AND ', filters.join(' AND '));
+  }
+
+  if (sort) {
+    query = query.concat(' ORDER BY ', sort);
+  }
+
   return new Promise((resolve, reject) =>
     db.transaction(tx => {
       tx.executeSql(
-        getChaptersQuery,
+        query,
         [novelId],
         (txObj, {rows: {_array}}) => resolve(_array),
-        (txObj, error) => reject(error),
+        (txObj, error) => resolve([]),
       );
     }),
   );

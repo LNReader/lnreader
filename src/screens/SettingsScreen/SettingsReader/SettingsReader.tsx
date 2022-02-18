@@ -1,568 +1,216 @@
-import React, {useState} from 'react';
+import {useNavigation} from '@react-navigation/native';
+import React from 'react';
+import {FlatList, StyleSheet, Text, View} from 'react-native';
+import {Appbar, IconButton} from '../../../components/';
 import {
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  KeyboardAvoidingView,
-  View,
-} from 'react-native';
-import {Button, IconButton} from 'react-native-paper';
-import WebView from 'react-native-webview';
-import {useDispatch} from 'react-redux';
-
-import {Appbar} from '../../../components/Appbar';
-import ColorPickerModal from '../../../components/ColorPickerModal';
-import {Row} from '../../../components/Common';
-import {
-  ToggleButton,
-  ToggleColorButton,
-} from '../../../components/Common/ToggleButton';
-import {List} from '../../../components/List';
-
-import {
+  useAppDispatch,
   useReaderSettings,
-  useSettings,
   useTheme,
-} from '../../../hooks/reduxHooks';
+} from '../../../redux/hooks';
 import {
-  setAppSettings,
-  setReaderSettings,
-} from '../../../redux/settings/settings.actions';
+  setReaderFont,
+  setReaderFontSize,
+  setReaderLineHeight,
+  setReaderPadding,
+  setReaderTheme,
+} from '../../../redux/settings/settingsSlice';
+import {fonts} from '../../../theme/reader/fonts';
+import {presetReaderThemes} from '../../../theme/reader/presets';
+import {
+  ReaderFontToggleButton,
+  ReaderThemeToggleButton,
+} from '../../ReaderScreen/components';
 
-import {useModal} from '../../../hooks/useModal';
-import SwitchSetting from '../../../components/Switch/Switch';
-import FontPickerModal from '../components/FontPickerModal';
-import {fonts} from '../../../services/utils/constants';
-
-const presetThemes = [
-  {
-    value: 1,
-    backgroundColor: '#000000',
-    textColor: 'rgba(255,255,255,0.7)',
-  },
-  {value: 2, backgroundColor: '#FFFFFF', textColor: '#111111'},
-  {value: 3, backgroundColor: '#F7DFC6', textColor: '#593100'},
-  {value: 4, backgroundColor: '#292832', textColor: '#CCCCCC'},
-  {value: 5, backgroundColor: '#2B2C30', textColor: '#CCCCCC'},
-];
-
-const textAlignments = [
-  {value: 'left', icon: 'format-align-left'},
-  {value: 'center', icon: 'format-align-center'},
-  {value: 'justify', icon: 'format-align-justify'},
-  {value: 'right', icon: 'format-align-right'},
-];
-
-const SettingsReaderScreen = ({navigation}) => {
+const SettingsReader = () => {
   const theme = useTheme();
-  const dispatch = useDispatch();
-  const reader = useReaderSettings();
+  const {goBack} = useNavigation();
+  const dispatch = useAppDispatch();
 
   const {
-    useWebViewForChapter = false,
-    verticalSeekbar = true,
-    swipeGestures = true,
-    fullScreenMode = true,
-    showScrollPercentage = true,
-    showBatteryAndTime = false,
-
-    autoScrollInterval = 10,
-  } = useSettings();
-
-  const readerFontPickerModal = useModal();
-  const readerBackgroundModal = useModal();
-  const readerTextColorModal = useModal();
-
-  const setReaderBackground = val => {
-    dispatch(setReaderSettings('theme', val));
-  };
-
-  const setReaderTextColor = val => {
-    dispatch(setReaderSettings('textColor', val ?? reader.textColor));
-  };
-
-  const [customCSS, setcustomCSS] = useState(reader.customCSS);
+    backgroundColor,
+    textColor,
+    lineHeight,
+    fontFamily,
+    paddingHorizontal,
+    fontSize,
+  } = useReaderSettings();
 
   return (
     <>
-      <Appbar title="Reader" onBackAction={navigation.goBack} />
-      <KeyboardAvoidingView style={{flex: 1}} behavior="padding">
-        <ScrollView
-          style={{flex: 1}}
-          contentContainerStyle={{paddingBottom: 40}}
-        >
-          {/* {useWebViewForChapter ? (
-            <WebView
-              originWhitelist={['*']}
-              style={{
-                height: 500,
-                backgroundColor: readerBackground(reader.theme),
-              }}
-              nestedScrollEnabled={true}
-              source={{
-                html: `
-                <html>
-                    <head>
-                        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-                        <style>
-                        body {
-                            color: ${reader.textColor};
-                            text-align: ${reader.textAlign};
-                            line-height: ${reader.lineHeight};
-                            font-size: ${reader.textSize}px;
-                            padding-top: 8px;
-                            padding-bottom: 8px;
-                            padding-left: ${reader.padding}%;
-                            padding-right: ${reader.padding}%;
-                            font-family: ${reader.fontFamily}; 
-                        }
-                        </style>
-                        <style>
-                          
-                            ${reader.customCSS}
-                           
-                            @font-face {
-                                font-family: ${reader.fontFamily};
-                                src: url("file:///android_asset/fonts/${reader.fontFamily}.ttf");
-                            }
-                        </style>
-                    </head>
-                    <body>
-                    <p>  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean lobortis, diam sed malesuada bibendum, nulla libero scelerisque sapien, nec interdum nisl ipsum ac ipsum. In lacinia eros ut quam commodo, in finibus augue ultricies. Vestibulum ex purus, condimentum eget sem at, molestie semper mi. Mauris ac feugiat quam. Pellentesque sagittis bibendum nibh eu lacinia. Aenean rhoncus, velit sit amet mollis egestas, diam turpis ornare velit, a dictum elit velit in erat. Quisque luctus in sem a vulputate.
-                    </p>
-                    <p>  Pellentesque id tempus orci, non finibus tortor. Suspendisse in neque non eros eleifend hendrerit vitae a lacus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nunc interdum magna nulla, eget pharetra arcu dapibus eu. Pellentesque sed lectus sit amet sem porta lacinia. Curabitur consectetur dolor in nibh varius, ac placerat erat pellentesque. Proin in justo condimentum, fermentum lacus eget, ultrices ante. Fusce tempor blandit erat nec mollis. Vivamus in leo et nunc consectetur elementum nec ac lectus.
-                    </p>  
-                    <p>  In consectetur libero tempor metus interdum, sit amet viverra leo dapibus. Nullam tincidunt justo hendrerit lorem maximus, eu pretium erat fringilla. Nulla scelerisque leo at enim convallis, a elementum velit laoreet. Aliquam quis vestibulum quam. Morbi ut sollicitudin mi, et laoreet elit. Vivamus mattis, nulla at blandit sodales, lectus lacus luctus metus, non euismod neque urna vel nisl. Quisque vitae ante vitae orci tempus egestas quis eu nibh. Phasellus eget nulla non velit tincidunt fringilla eget nec libero. Morbi tempor erat quis rutrum condimentum.
-                    </p>  
-                    <p>  Cras sem magna, tempus sed urna eget, scelerisque tincidunt tortor. Cras euismod turpis libero, ut condimentum nulla ultrices id. Phasellus faucibus, elit ut imperdiet euismod, enim dui volutpat turpis, in tincidunt ex ligula non felis. Praesent erat erat, ultrices ut imperdiet sed, congue eu leo. Aliquam viverra fringilla ultrices. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent ac malesuada massa. Cras eu augue in dui venenatis laoreet sit amet eget sem. Nullam malesuada sapien felis, et varius neque auctor eu.
-                    </p>  
-                    <p>  Sed vestibulum facilisis libero, in aliquet mauris lobortis et. In vitae lectus id risus cursus dictum at ac mi. Praesent ac lectus eget nunc elementum pellentesque. Ut at dui magna. Aliquam mattis posuere gravida. Morbi volutpat, dolor quis varius tincidunt, quam nulla vulputate libero, eu sagittis dui odio et magna. Sed luctus lectus ante, sit amet ultrices ligula convallis vitae. Sed efficitur libero nec quam porta, et fringilla turpis egestas. Nulla facilisi. Duis leo tellus, porta non enim eu, tincidunt cursus lorem.
-                    </p>
-                    </body>
-                </html>
-                `,
-              }}
-            />
-          ) : (
-            <View
-              style={{
-                backgroundColor: readerBackground(reader.theme),
-                padding: `${reader.padding}%`,
-              }}
-            >
-              <Text
-                style={{
-                  color: reader.textColor,
-                  fontSize: reader.textSize,
-                  lineHeight: readerLineHeight(
-                    reader.textSize,
-                    reader.lineHeight,
-                  ),
-                  fontFamily: reader.fontFamily,
-                }}
-              >
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
-                lobortis, diam sed malesuada bibendum, nulla libero scelerisque
-                sapien, nec interdum nisl ipsum ac ipsum. In lacinia eros ut
-                quam commodo, in finibus augue ultricies. Vestibulum ex purus,
-                condimentum eget sem at, molestie semper mi. Mauris ac feugiat
-                quam. Pellentesque sagittis bibendum nibh eu lacinia. Aenean
-                rhoncus, velit sit amet mollis egestas, diam turpis ornare
-                velit, a dictum elit velit in erat. Quisque luctus in sem a
-                vulputate.{'\n\n'}Pellentesque id tempus orci, non finibus
-                tortor. Suspendisse in neque non eros eleifend hendrerit vitae a
-                lacus. Vestibulum ante ipsum primis in faucibus orci luctus et
-                ultrices posuere cubilia curae; Nunc interdum magna nulla, eget
-                pharetra arcu dapibus eu. Pellentesque sed lectus sit amet sem
-                porta lacinia. Curabitur consectetur dolor in nibh varius, ac
-                placerat erat pellentesque. Proin in justo condimentum,
-                fermentum lacus eget, ultrices ante. Fusce tempor blandit erat
-                nec mollis. Vivamus in leo et nunc consectetur elementum nec ac
-                lectus.
-              </Text>
-            </View>
-          )} */}
-          <SwitchSetting
-            label="Render HTML"
-            description="Render chapter as html"
-            value={useWebViewForChapter}
-            onPress={() =>
-              dispatch(
-                setAppSettings('useWebViewForChapter', !useWebViewForChapter),
-              )
-            }
-            theme={theme}
-          />
-          <SwitchSetting
-            label="Horizontal seekbar"
-            description="Show horizontal seekbar instead of vertical"
-            value={verticalSeekbar}
-            onPress={() =>
-              dispatch(setAppSettings('verticalSeekbar', !verticalSeekbar))
-            }
-            theme={theme}
-          />
-          <SwitchSetting
-            label="Gesture navigation"
-            description="Use left and right swipe to navigate to previous or next chapter"
-            value={swipeGestures}
-            onPress={() =>
-              dispatch(setAppSettings('swipeGestures', !swipeGestures))
-            }
-            theme={theme}
-          />
-          <List.Divider theme={theme} />
-          <List.SubHeader theme={theme}>
-            Auto scroll interval (in seconds)
-          </List.SubHeader>
-          <View style={{paddingHorizontal: 16, paddingBottom: 8}}>
-            <TextInput
-              style={{
-                color: theme.textColorPrimary,
-                fontSize: 16,
-              }}
-              defaultValue={autoScrollInterval.toString() ?? 10}
-              keyboardType="numeric"
-              onChangeText={text =>
-                text !== '' &&
+      <Appbar title="Reader" theme={theme} handleGoBack={goBack} />
+      <View style={styles.container}>
+        <Text style={{color: theme.onSurface}}>Themes</Text>
+        <FlatList
+          horizontal
+          style={styles.themesList}
+          showsHorizontalScrollIndicator={false}
+          data={presetReaderThemes}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({item}) => (
+            <ReaderThemeToggleButton
+              readerTheme={item}
+              selected={
+                item.backgroundColor === backgroundColor &&
+                item.textColor === textColor
+              }
+              onPress={() =>
                 dispatch(
-                  setAppSettings('autoScrollInterval', parseInt(text, 10)),
+                  setReaderTheme({
+                    backgroundColor: item.backgroundColor,
+                    textColor: item.textColor,
+                  }),
                 )
               }
             />
-          </View>
-          <List.Divider theme={theme} />
-          <List.SubHeader theme={theme}>Display</List.SubHeader>
-          <SwitchSetting
-            label="Fullscreen"
-            value={fullScreenMode}
-            onPress={() =>
-              dispatch(setAppSettings('fullScreenMode', !fullScreenMode))
-            }
+          )}
+        />
+      </View>
+      <View style={styles.container}>
+        <Text style={{color: theme.onSurface}}>Fonts</Text>
+        <FlatList
+          horizontal
+          style={styles.fontsList}
+          showsHorizontalScrollIndicator={false}
+          data={fonts}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({item}) => (
+            <ReaderFontToggleButton
+              readerFont={item}
+              theme={theme}
+              selected={item.fontFamily === fontFamily}
+              onPress={() =>
+                dispatch(
+                  setReaderFont({
+                    fontFamily: item.fontFamily,
+                  }),
+                )
+              }
+            />
+          )}
+        />
+      </View>
+      <View style={styles.container}>
+        <Text style={{color: theme.onSurface}}>Padding</Text>
+        <View style={styles.paddingContainer}>
+          <IconButton
+            name="minus"
             theme={theme}
-          />
-          <SwitchSetting
-            label="Show progress percentage"
-            value={showScrollPercentage}
+            disabled={paddingHorizontal <= 0}
             onPress={() =>
               dispatch(
-                setAppSettings('showScrollPercentage', !showScrollPercentage),
+                setReaderPadding({
+                  paddingHorizontal: paddingHorizontal - 1,
+                }),
               )
             }
-            theme={theme}
           />
-
-          <SwitchSetting
-            label="Show battery and time"
-            value={showBatteryAndTime}
+          <Text
+            style={[styles.valueText, {color: theme.onSurface}]}
+          >{`${paddingHorizontal}%`}</Text>
+          <IconButton
+            name="plus"
+            theme={theme}
+            disabled={paddingHorizontal >= 10}
             onPress={() =>
               dispatch(
-                setAppSettings('showBatteryAndTime', !showBatteryAndTime),
+                setReaderPadding({
+                  paddingHorizontal: paddingHorizontal + 1,
+                }),
               )
             }
-            theme={theme}
           />
-          <List.Divider theme={theme} />
-
-          <List.SubHeader theme={theme}>Reader</List.SubHeader>
-          <View style={styles.pressableListItem}>
-            <Text
-              style={{
-                color: theme.textColorPrimary,
-                fontSize: 16,
-              }}
-            >
-              Themes
-            </Text>
-            <ScrollView
-              contentContainerStyle={{
-                flexDirection: 'column-reverse',
-                alignItems: 'flex-end',
-              }}
-              style={{marginLeft: 16}}
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-            >
-              <Row>
-                {presetThemes.map(item => (
-                  <ToggleColorButton
-                    key={item.value}
-                    selected={reader.theme === item.backgroundColor}
-                    backgroundColor={item.backgroundColor}
-                    textColor={item.textColor}
-                    onPress={() => {
-                      dispatch(
-                        setReaderSettings('theme', item.backgroundColor),
-                      );
-                      dispatch(setReaderSettings('textColor', item.textColor));
-                    }}
-                  />
-                ))}
-              </Row>
-            </ScrollView>
-          </View>
-          {/* <List.ColorItem
-            title="Background Color"
-            description={readerBackground(reader.theme).toUpperCase()}
-            onPress={readerBackgroundModal.showModal}
+        </View>
+      </View>
+      <View style={styles.container}>
+        <Text style={{color: theme.onSurface}}>Font size</Text>
+        <View style={styles.paddingContainer}>
+          <IconButton
+            name="minus"
             theme={theme}
-          />
-          <List.ColorItem
-            title="Text Color"
-            description={
-              reader.textColor.toUpperCase() || readerTextColor(reader.theme)
+            disabled={fontSize <= 1}
+            onPress={() =>
+              dispatch(
+                setReaderFontSize({
+                  fontSize: fontSize - 1,
+                }),
+              )
             }
-            onPress={readerTextColorModal.showModal}
-            theme={theme}
-          /> */}
-          <Pressable style={styles.pressableListItem}>
-            <View>
-              <Text style={{color: theme.textColorPrimary, fontSize: 16}}>
-                Text Align
-              </Text>
-              <Text
-                style={{
-                  color: theme.textColorSecondary,
-                  textTransform: 'capitalize',
-                }}
-              >
-                {reader.textAlign}
-              </Text>
-            </View>
-            <Row>
-              {textAlignments.map(item => (
-                <ToggleButton
-                  key={item.value}
-                  icon={item.icon}
-                  onPress={() => {
-                    dispatch(setReaderSettings('textAlign', item.value));
-                  }}
-                  selected={item.value === reader.textAlign}
-                  theme={theme}
-                />
-              ))}
-            </Row>
-          </Pressable>
-          <List.Item
-            title="Font"
-            description={
-              fonts.find(item => item.fontFamily === reader.fontFamily)?.name
-            }
-            onPress={readerFontPickerModal.showModal}
-            theme={theme}
           />
-          <Row
-            style={{
-              justifyContent: 'space-between',
-              marginHorizontal: 16,
-              marginVertical: 8,
-            }}
-          >
-            <Text style={{color: theme.textColorPrimary, fontSize: 16}}>
-              Font size
-            </Text>
-            <Row>
-              <IconButton
-                icon="minus"
-                color={theme.colorAccent}
-                size={26}
-                disabled={reader.textSize <= 1 ? true : false}
-                onPress={() =>
-                  dispatch(setReaderSettings('textSize', reader.textSize - 1))
-                }
-                style={{marginVertical: 0}}
-              />
-              <Text
-                style={{
-                  color: theme.textColorPrimary,
-                  paddingHorizontal: 24,
-                }}
-              >
-                {reader.textSize}
-              </Text>
-              <IconButton
-                icon="plus"
-                color={theme.colorAccent}
-                size={26}
-                onPress={() =>
-                  dispatch(setReaderSettings('textSize', reader.textSize + 1))
-                }
-                style={{marginVertical: 0}}
-              />
-            </Row>
-          </Row>
-          <Row
-            style={{
-              justifyContent: 'space-between',
-              marginHorizontal: 16,
-              marginVertical: 8,
-            }}
-          >
-            <Text style={{color: theme.textColorPrimary, fontSize: 16}}>
-              Padding
-            </Text>
-            <Row>
-              <IconButton
-                icon="minus"
-                color={theme.colorAccent}
-                size={26}
-                disabled={reader.padding <= 0 ? true : false}
-                onPress={() =>
-                  dispatch(setReaderSettings('padding', reader.padding - 1))
-                }
-                style={{marginVertical: 0}}
-              />
-              <Text
-                style={{
-                  color: theme.textColorPrimary,
-                  paddingHorizontal: 24,
-                }}
-              >
-                {`${reader.padding}%`}
-              </Text>
-              <IconButton
-                icon="plus"
-                color={theme.colorAccent}
-                size={26}
-                disabled={reader.padding >= 10 ? true : false}
-                onPress={() =>
-                  dispatch(setReaderSettings('padding', reader.padding + 1))
-                }
-                style={{marginVertical: 0}}
-              />
-            </Row>
-          </Row>
-          <Row
-            style={{
-              justifyContent: 'space-between',
-              marginHorizontal: 16,
-              marginVertical: 8,
-            }}
-          >
-            <Text style={{color: theme.textColorPrimary, fontSize: 16}}>
-              Line height
-            </Text>
-            <Row>
-              <IconButton
-                icon="minus"
-                color={theme.colorAccent}
-                size={26}
-                disabled={reader.lineHeight <= 1.3 ? true : false}
-                onPress={() =>
-                  dispatch(
-                    setReaderSettings('lineHeight', reader.lineHeight - 0.1),
-                  )
-                }
-                style={{marginVertical: 0}}
-              />
-              <Text
-                style={{
-                  color: theme.textColorPrimary,
-                  paddingHorizontal: 24,
-                }}
-              >
-                {`${Math.round(reader.lineHeight * 10) / 10}%`}
-              </Text>
-              <IconButton
-                icon="plus"
-                color={theme.colorAccent}
-                size={26}
-                disabled={reader.lineHeight >= 2 ? true : false}
-                onPress={() =>
-                  dispatch(
-                    setReaderSettings('lineHeight', reader.lineHeight + 0.1),
-                  )
-                }
-                style={{marginVertical: 0}}
-              />
-            </Row>
-          </Row>
-          {useWebViewForChapter ? (
-            <>
-              <List.Divider theme={theme} />
-              <List.SubHeader theme={theme}>Custom CSS</List.SubHeader>
-              <View style={{paddingHorizontal: 16, paddingBottom: 8}}>
-                <TextInput
-                  style={{color: theme.textColorPrimary, fontSize: 16}}
-                  value={customCSS}
-                  onChangeText={text => setcustomCSS(text)}
-                  placeholderTextColor={theme.textColorSecondary}
-                  placeholder="Example: body { color: red; }"
-                  multiline={true}
-                />
-                <View style={{flexDirection: 'row-reverse'}}>
-                  <Button
-                    uppercase={false}
-                    color={theme.colorAccent}
-                    onPress={() =>
-                      dispatch(setReaderSettings('customCSS', customCSS))
-                    }
-                  >
-                    Save
-                  </Button>
-                  <Button
-                    uppercase={false}
-                    color={theme.colorAccent}
-                    onPress={() => {
-                      setcustomCSS('');
-                      dispatch(setReaderSettings('customCSS', ''));
-                    }}
-                  >
-                    Clear
-                  </Button>
-                </View>
-              </View>
-            </>
-          ) : null}
-        </ScrollView>
-      </KeyboardAvoidingView>
-
-      <ColorPickerModal
-        title="Reader background color"
-        modalVisible={readerBackgroundModal.visible}
-        color={readerBackground(reader.theme)}
-        hideModal={readerBackgroundModal.hideModal}
-        theme={theme}
-        onSubmit={setReaderBackground}
-      />
-      <ColorPickerModal
-        title="Reader text color"
-        modalVisible={readerTextColorModal.visible}
-        color={reader.textColor}
-        hideModal={readerTextColorModal.hideModal}
-        theme={theme}
-        onSubmit={setReaderTextColor}
-      />
-      <FontPickerModal
-        currentFont={reader.fontFamily}
-        visible={readerFontPickerModal.visible}
-        hideModal={readerFontPickerModal.hideModal}
-        theme={theme}
-        dispatch={dispatch}
-      />
+          <Text style={[styles.valueText, {color: theme.onSurface}]}>
+            {fontSize}
+          </Text>
+          <IconButton
+            name="plus"
+            theme={theme}
+            onPress={() =>
+              dispatch(
+                setReaderFontSize({
+                  fontSize: fontSize + 1,
+                }),
+              )
+            }
+          />
+        </View>
+      </View>
+      <View style={styles.container}>
+        <Text style={{color: theme.onSurface}}>Line height</Text>
+        <View style={styles.paddingContainer}>
+          <IconButton
+            name="minus"
+            theme={theme}
+            disabled={lineHeight <= 1.3}
+            onPress={() =>
+              dispatch(
+                setReaderLineHeight({
+                  lineHeight: lineHeight - 0.1,
+                }),
+              )
+            }
+          />
+          <Text style={[styles.valueText, {color: theme.onSurface}]}>{`${
+            Math.round(lineHeight * 10) / 10
+          }%`}</Text>
+          <IconButton
+            name="plus"
+            theme={theme}
+            disabled={lineHeight >= 2}
+            onPress={() =>
+              dispatch(
+                setReaderLineHeight({
+                  lineHeight: lineHeight + 0.1,
+                }),
+              )
+            }
+          />
+        </View>
+      </View>
     </>
   );
 };
 
-export default SettingsReaderScreen;
+export default SettingsReader;
 
 const styles = StyleSheet.create({
-  pressableListItem: {
-    padding: 16,
+  container: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'space-between',
+  },
+  themesList: {
+    flexDirection: 'row-reverse',
+  },
+  fontsList: {
+    marginLeft: 16,
+    flexDirection: 'row',
+  },
+  paddingContainer: {
+    flexDirection: 'row',
     alignItems: 'center',
   },
-  fontContainer: {
-    borderRadius: 8,
-    overflow: 'hidden',
-    marginHorizontal: 6,
-  },
-  fontContent: {
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    paddingVertical: 4,
+  valueText: {
+    fontSize: 16,
+    marginHorizontal: 16,
   },
 });

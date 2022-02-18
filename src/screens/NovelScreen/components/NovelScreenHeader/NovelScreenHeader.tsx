@@ -1,12 +1,15 @@
 import React, {ReactNode} from 'react';
 import {FlatList, Pressable, StyleSheet, Text, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {NovelScreenBackdrop, NovelScreenButtonGroup, NovelSummary} from '..';
 import {Chip} from '../../../../components';
 
 import {ChapterItem, NovelInfo} from '../../../../database/types';
+import {useSavedNovelData} from '../../../../redux/hooks';
 import {ThemeType} from '../../../../theme/types';
+import {getFilterColor} from '../../../../theme/utils/colorUtils';
 
 const NovelCover: React.FC<{coverUri?: string}> = ({coverUri}) => (
   <FastImage source={{uri: coverUri}} style={styles.novelCover} />
@@ -29,18 +32,22 @@ const InfoText: React.FC<{
 interface NovelScreenHeaderProps {
   novel: NovelInfo | null;
   chapters: ChapterItem[] | null;
+  expandBottomSheet: () => void;
   theme: ThemeType;
 }
 
 const NovelScreenHeader: React.FC<NovelScreenHeaderProps> = ({
   novel,
   chapters,
+  expandBottomSheet,
   theme,
 }) => {
   const titleColor = theme.textColorPrimary;
   const infoColor = theme.textColorSecondary;
 
   const genres = novel?.genre?.split(',');
+
+  const {filters = []} = useSavedNovelData(novel ? novel.novelId : -1);
 
   return (
     <>
@@ -78,10 +85,17 @@ const NovelScreenHeader: React.FC<NovelScreenHeaderProps> = ({
       <Pressable
         style={styles.chapterListHeader}
         android_ripple={{color: theme.rippleColor}}
+        onPress={expandBottomSheet}
       >
         <Text
           style={[styles.chapterLength, {color: titleColor}]}
         >{`${chapters?.length} chapters`}</Text>
+        <MaterialCommunityIcons
+          name="filter-variant"
+          size={24}
+          color={filters.length > 0 ? getFilterColor(theme) : theme.primary}
+          onPress={expandBottomSheet}
+        />
       </Pressable>
     </>
   );
@@ -108,8 +122,12 @@ const styles = StyleSheet.create({
     marginVertical: 8,
   },
   chapterListHeader: {
-    paddingHorizontal: 16,
-    paddingVertical: 12,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingLeft: 16,
+    paddingRight: 24,
+    paddingVertical: 8,
   },
   chapterLength: {
     fontSize: 16,

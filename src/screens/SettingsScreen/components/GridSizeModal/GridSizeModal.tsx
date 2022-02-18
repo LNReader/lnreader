@@ -5,13 +5,9 @@ import {Portal, Modal} from 'react-native-paper';
 import {RadioButton} from '../../../../components';
 
 import {useAppDispatch, useAppearanceSettings} from '../../../../redux/hooks';
-
-import {
-  DisplayModes,
-  setDisplayMode,
-} from '../../../../redux/settings/settingsSlice';
+import {setGridSizPotrait} from '../../../../redux/settings/settingsSlice';
 import {ThemeType} from '../../../../theme/types';
-import {capitalizeFirstLetter} from '../../../../utils/capitalizeFirstLetter';
+import {GridSizes} from '../../utils/constants';
 
 interface ModalProps {
   visible: boolean;
@@ -19,12 +15,8 @@ interface ModalProps {
   theme: ThemeType;
 }
 
-const DisplayModeModal: React.FC<ModalProps> = ({
-  visible,
-  closeModal,
-  theme,
-}) => {
-  const {displayMode} = useAppearanceSettings();
+const GridSizeModal: React.FC<ModalProps> = ({visible, closeModal, theme}) => {
+  const {novelsPerRowPotrait} = useAppearanceSettings();
   const dispatch = useAppDispatch();
 
   return (
@@ -38,13 +30,13 @@ const DisplayModeModal: React.FC<ModalProps> = ({
         ]}
       >
         <FlatList
-          data={Object.values(DisplayModes)}
-          keyExtractor={item => item}
+          data={Object.keys(GridSizes)}
+          keyExtractor={item => item.toString()}
           renderItem={({item}) => (
             <RadioButton
-              status={displayMode === item ? 'checked' : 'unchecked'}
-              onPress={() => dispatch(setDisplayMode(item))}
-              label={capitalizeFirstLetter(item)}
+              status={novelsPerRowPotrait === item ? 'checked' : 'unchecked'}
+              onPress={() => dispatch(setGridSizPotrait(item))}
+              label={GridSizes[item]}
               theme={theme}
             />
           )}
@@ -54,7 +46,7 @@ const DisplayModeModal: React.FC<ModalProps> = ({
   );
 };
 
-export default DisplayModeModal;
+export default GridSizeModal;
 
 const styles = StyleSheet.create({
   containerStyle: {

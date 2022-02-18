@@ -173,7 +173,7 @@ const ReaderScreen: React.FC<ReaderScreenProps> = ({route}) => {
                 />
               ) : (
                 <EmptyView
-                  description="Chapter is empty.\n\nReport if it's available in webview."
+                  description="Chapter is empty. Report if it's available in webview."
                   theme={theme}
                 />
               )}

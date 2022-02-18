@@ -4,7 +4,6 @@ import {Portal} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
 
 import {
-  Container,
   ErrorScreen,
   LoadingScreen,
   NovelCover,
@@ -15,9 +14,10 @@ import {
 import LibraryBottomSheet from './components/LibraryBottomSheet/LibraryBottomSheet';
 
 import useLibrary from './hooks/useLibrary';
-import {useTheme} from '../../redux/hooks';
+import {useLibrarySettings, useTheme} from '../../redux/hooks';
 import {useSearch} from '../../hooks';
 import useLibraryUpdate from '../UpdatesScreen/hooks/useLibraryUpdate';
+import {getFilterColor} from '../../theme/utils/colorUtils';
 
 const LibraryScreen = () => {
   const theme = useTheme();
@@ -31,7 +31,7 @@ const LibraryScreen = () => {
     error,
   } = useLibrary();
 
-  // const {filters} = useLibrarySettings();
+  const {filters} = useLibrarySettings();
 
   const {isUpdating, updateLibrary} = useLibraryUpdate();
 
@@ -54,7 +54,7 @@ const LibraryScreen = () => {
   ) : error ? (
     <ErrorScreen error={error} theme={theme} />
   ) : (
-    <Container>
+    <>
       <Searchbar
         searchText={searchText}
         placeholder="Search library"
@@ -65,6 +65,10 @@ const LibraryScreen = () => {
           {
             iconName: 'filter-variant',
             onPress: expandBottomSheet,
+            color:
+              filters.length > 0
+                ? getFilterColor(theme)
+                : theme.textColorPrimary,
           },
         ]}
         theme={theme}
@@ -98,7 +102,7 @@ const LibraryScreen = () => {
       <Portal>
         <LibraryBottomSheet bottomSheetRef={bottomSheetRef} theme={theme} />
       </Portal>
-    </Container>
+    </>
   );
 };
 

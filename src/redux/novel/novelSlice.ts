@@ -5,7 +5,9 @@ import {
 } from '../../database/queries/ChapterQueries';
 import {insertNovel, getNovelFromDb} from '../../database/queries/NovelQueries';
 import {ChapterItem, NovelInfo} from '../../database/types';
+import {chapterSortOrders} from '../../screens/NovelScreen/utils/constants';
 import {sourceManager} from '../../sources/sourceManager';
+import {RootState} from '../store';
 
 interface NovelState {
   loading: boolean;
@@ -33,7 +35,7 @@ interface GetNovelRequestProps {
 
 export const getNovel = createAsyncThunk(
   'novelSlice/getNovel',
-  async ({novelUrl, sourceId}: GetNovelRequestProps) => {
+  async ({novelUrl, sourceId}: GetNovelRequestProps, thunkAPI) => {
     let novel = await getNovelFromDb(sourceId, novelUrl);
     let chapters = [];
     if (!novel) {
@@ -49,7 +51,11 @@ export const getNovel = createAsyncThunk(
       novel = await getNovelFromDb(sourceId, novelUrl);
     }
 
-    chapters = await getChapters(novel.novelId);
+    const state: any = thunkAPI.getState() as RootState;
+    const {sort = chapterSortOrders[0].ASC, filters = []} =
+      state.localStorageReducer.novelData[novel.novelId] || {};
+
+    chapters = await getChapters(novel.novelId, filters, sort);
 
     return {
       novel,
