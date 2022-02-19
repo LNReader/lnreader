@@ -85,7 +85,16 @@ export const novelSlice = createSlice({
       if (state.chapters) {
         state.chapters = state.chapters?.map(chapter =>
           chapter.chapterId === action.payload
-            ? {...chapter, downloaded: +!chapter.downloaded}
+            ? {...chapter, downloaded: 1}
+            : chapter,
+        );
+      }
+    },
+    updateChapterDeleted: (state, action: PayloadAction<number>) => {
+      if (state.chapters) {
+        state.chapters = state.chapters?.map(chapter =>
+          chapter.chapterId === action.payload
+            ? {...chapter, downloaded: 0}
             : chapter,
         );
       }
@@ -129,6 +138,7 @@ export const {
   setNovelLoading,
   toggleFollowNovel,
   updateChapterDownloaded,
+  updateChapterDeleted,
   updateChapterBookmarked,
   updateChapterRead,
 } = novelSlice.actions;

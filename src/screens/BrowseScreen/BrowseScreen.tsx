@@ -1,4 +1,4 @@
-import React, {memo, useCallback, useEffect, useState} from 'react';
+import React, {memo, useEffect, useState} from 'react';
 import {StyleSheet, Text, useWindowDimensions, FlatList} from 'react-native';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 
@@ -208,6 +208,10 @@ const BrowseScreen = () => {
         clearSearchbar={handleClearSearchbar}
         theme={theme}
         rightIcons={[
+          {
+            iconName: 'book-search',
+            onPress: () => navigate('GlobalSearch' as never),
+          },
           {
             iconName: 'cog-outline',
             onPress: () => navigate('SettingsBrowse' as never),

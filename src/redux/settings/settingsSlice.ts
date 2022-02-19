@@ -127,7 +127,7 @@ export const settingsSlice = createSlice({
     setDisplayMode: (state, action: PayloadAction<DisplayModes>) => {
       state.appearance.displayMode = action.payload;
     },
-    setGridSizPotrait: (state, action: PayloadAction<GridSizes>) => {
+    setGridSizPotrait: (state, action: PayloadAction<number>) => {
       state.appearance.novelsPerRowPotrait = action.payload;
     },
     toggleShowUpdatesTab: state => {

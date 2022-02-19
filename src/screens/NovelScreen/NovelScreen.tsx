@@ -5,7 +5,11 @@ import {useNavigation} from '@react-navigation/native';
 import {ErrorScreen, LoadingScreen} from '../../components';
 import {ChapterCard, NovelScreenHeader} from './components';
 
-import {clearNovelReducer, getNovel} from '../../redux/novel/novelSlice';
+import {
+  clearNovelReducer,
+  getNovel,
+  updateChapterDeleted,
+} from '../../redux/novel/novelSlice';
 import {
   useAppDispatch,
   useNovelReducer,
@@ -18,6 +22,7 @@ import useLibraryUpdates from '../UpdatesScreen/hooks/useLibraryUpdate';
 import NovelBottomSheet from './components/NovelBottomSheet/NovelBottomSheet';
 import {chapterSortOrders} from './utils/constants';
 import {Portal} from 'react-native-paper';
+import {deleteChapterFromDb} from '../../database/queries/DownloadQueries';
 
 interface NovelScreenProps {
   route: {
@@ -54,6 +59,11 @@ const NovelScreen: React.FC<NovelScreenProps> = ({route}) => {
 
   const handleDownloadChapter = (chapter: ChapterItem) =>
     downloadChapters(sourceId, novelUrl, [chapter]);
+
+  const handleDeleteChapter = (chapterId: number) => {
+    deleteChapterFromDb(chapterId);
+    dispatch(updateChapterDeleted(chapterId));
+  };
 
   useEffect(() => {
     try {
@@ -109,6 +119,7 @@ const NovelScreen: React.FC<NovelScreenProps> = ({route}) => {
             chapter={item}
             navigateToChapter={navigateToChapter}
             handleDownloadChapter={handleDownloadChapter}
+            handleDeleteChapter={handleDeleteChapter}
             theme={theme}
           />
         )}

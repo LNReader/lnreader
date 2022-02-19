@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react';
+import React, {useMemo, useState} from 'react';
 import {
   ActivityIndicator,
   Pressable,
@@ -6,6 +6,7 @@ import {
   Text,
   View,
 } from 'react-native';
+import {Menu} from 'react-native-paper';
 import {IconButton} from '../../../../components';
 
 import {ChapterItem} from '../../../../database/types';
@@ -27,6 +28,7 @@ interface ChapterCardProps {
     isBookmarked: number,
   ) => void;
   handleDownloadChapter: (chapter: ChapterItem) => void;
+  handleDeleteChapter: (chapterId: number) => void;
 }
 
 const ChapterCard: React.FC<ChapterCardProps> = ({
@@ -34,6 +36,7 @@ const ChapterCard: React.FC<ChapterCardProps> = ({
   theme,
   navigateToChapter,
   handleDownloadChapter,
+  handleDeleteChapter,
 }) => {
   const chapterNameColor = chapter.bookmark
     ? theme.primary
@@ -65,6 +68,8 @@ const ChapterCard: React.FC<ChapterCardProps> = ({
       ? chapter.chapterName
       : `Chapter ${parseChapterNumber(chapter.chapterName)}`;
   }, [chapterTitleDisplayMode, chapter.chapterName]);
+
+  const [menu, setMenu] = useState(false);
 
   return (
     <Pressable
@@ -111,16 +116,35 @@ const ChapterCard: React.FC<ChapterCardProps> = ({
           size={26}
           style={{margin: 6}}
         />
-      ) : (
+      ) : !chapter.downloaded ? (
         <IconButton
-          name={
-            chapter.downloaded ? 'check-circle' : 'arrow-down-circle-outline'
-          }
+          name="arrow-down-circle-outline"
           size={25}
-          padding={6}
           onPress={() => handleDownloadChapter(chapter)}
+          padding={6}
           theme={theme}
         />
+      ) : (
+        <Menu
+          visible={menu}
+          onDismiss={() => setMenu(false)}
+          anchor={
+            <IconButton
+              name="check-circle"
+              size={25}
+              padding={6}
+              onPress={() => setMenu(true)}
+              theme={theme}
+            />
+          }
+          contentStyle={{backgroundColor: theme.surface}}
+        >
+          <Menu.Item
+            onPress={() => handleDeleteChapter(chapter.chapterId)}
+            title="Delete"
+            titleStyle={{color: theme.textColorPrimary}}
+          />
+        </Menu>
       )}
     </Pressable>
   );

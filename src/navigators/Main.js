@@ -19,7 +19,6 @@ import MoreStack from './MoreStack';
 import NovelScreen from '../screens/NovelScreen/NovelScreen';
 import ReaderScreen from '../screens/ReaderScreen/ReaderScreen';
 import BrowseSourceScreen from '../screens/BrowseSourceScreen/BrowseSourceScreen';
-import GlobalSearch from '../screens/BrowseScreen/GlobalSearchScreen/GlobalSearch';
 import Migration from '../screens/BrowseScreen/migration/Migration';
 import SourceNovels from '../screens/BrowseScreen/SourceNovels';
 import MigrateNovel from '../screens/BrowseScreen/migration/MigrationNovels';
@@ -30,6 +29,7 @@ import NewUpdateDialog from '../components/NewUpdateDialog';
 import {setStatusBarColor} from '../theme/utils/setStatusBarColor';
 import {useTheme} from '../redux/hooks';
 import SettingsBrowse from '../screens/SettingsScreen/SettingsBrowse/SettingsBrowse';
+import GlobalSearchScreen from '../screens/BrowseScreen/GlobalSearchScreen/GlobalSearchScreen';
 
 const Stack = createStackNavigator();
 
@@ -59,7 +59,7 @@ const MainNavigator = () => {
         />
         <Stack.Screen name="BrowseMal" component={MalTopNovels} />
         <Stack.Screen name="SettingsBrowse" component={SettingsBrowse} />
-        <Stack.Screen name="GlobalSearch" component={GlobalSearch} />
+        <Stack.Screen name="GlobalSearch" component={GlobalSearchScreen} />
         <Stack.Screen name="Migration" component={Migration} />
         <Stack.Screen name="SourceNovels" component={SourceNovels} />
         <Stack.Screen name="MigrateNovel" component={MigrateNovel} />
