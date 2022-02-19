@@ -4,8 +4,10 @@ import {Text as RNText, TextProps} from 'react-native';
 interface Props extends TextProps {
   color?: string;
   size?: number;
+  paddingHorizontal?: number;
+  paddingVertical?: number;
+  children: string | number;
   padding?: number;
-  children: string;
 }
 
 const Text: React.FC<Props> = props => (
@@ -14,6 +16,8 @@ const Text: React.FC<Props> = props => (
       {
         color: props.color,
         fontSize: props.size,
+        paddingHorizontal: props.paddingHorizontal,
+        paddingVertical: props.paddingVertical,
         padding: props.padding,
       },
     ]}

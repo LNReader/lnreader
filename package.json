@@ -19,6 +19,7 @@
     "@react-navigation/native": "^6.0.6",
     "@react-navigation/stack": "^6.0.11",
     "@reduxjs/toolkit": "^1.7.2",
+    "cheerio": "^1.0.0-rc.10",
     "expo": "^41.0.1",
     "expo-document-picker": "^9.2.4",
     "expo-file-system": "~11.0.2",
@@ -39,7 +40,6 @@
     "react-dom": "16.13.1",
     "react-native": "^0.64.3",
     "react-native-background-actions": "^2.6.5",
-    "react-native-cheerio": "^1.0.0-rc.4",
     "react-native-device-info": "^8.4.7",
     "react-native-easing-gradient": "^1.0.0",
     "react-native-fast-image": "^8.5.11",
@@ -67,6 +67,7 @@
   "devDependencies": {
     "@babel/core": "^7.16.0",
     "@react-native-community/eslint-config": "^3.0.1",
+    "@types/cheerio": "^0.22.31",
     "@types/jest": "^27.4.0",
     "@types/react-native": "^0.66.15",
     "@types/react-test-renderer": "^17.0.1",

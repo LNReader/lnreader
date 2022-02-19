@@ -1,4 +1,4 @@
-import cheerio from 'react-native-cheerio';
+import * as cheerio from 'cheerio';
 import {showToast} from '../../../hooks/showToast';
 
 const baseUrl = 'https://lnmtl.com/';

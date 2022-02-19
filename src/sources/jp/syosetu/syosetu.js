@@ -1,4 +1,4 @@
-import cheerio from 'react-native-cheerio';
+import * as cheerio from 'cheerio';
 
 // get given page of search (if pagenum is 0 or >100 (max possible on site) see first page)
 const searchUrl = (pagenum, order) => {

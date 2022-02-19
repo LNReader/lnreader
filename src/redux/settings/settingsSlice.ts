@@ -51,6 +51,7 @@ interface SettingsState {
     sort: string;
     showDownloadsBadge: boolean;
     showUnreadBadge: boolean;
+    updateLibraryOnLaunch: boolean;
   };
   updates: {
     lastUpdateTime: Date | null;
@@ -92,6 +93,7 @@ const initialState: SettingsState = {
     sort: 'novelId DESC',
     showDownloadsBadge: true,
     showUnreadBadge: true,
+    updateLibraryOnLaunch: false,
   },
   updates: {
     lastUpdateTime: null,
@@ -193,6 +195,20 @@ export const settingsSlice = createSlice({
       state.reader.showProgressPercentage =
         !state.reader.showProgressPercentage;
     },
+    toggleUpdateLibraryOnLaunch: state => {
+      state.library.updateLibraryOnLaunch =
+        !state.library.updateLibraryOnLaunch;
+    },
+    toggleUpdateNovelMetadata: state => {
+      state.updates.updateNovelMetadata = !state.updates.updateNovelMetadata;
+    },
+    toggleOnlyUpdateOngoingNovels: state => {
+      state.updates.onlyUpdateOngoingNovels =
+        !state.updates.onlyUpdateOngoingNovels;
+    },
+    toggleShowLastUpdateTime: state => {
+      state.updates.showLastUpdateTime = !state.updates.showLastUpdateTime;
+    },
   },
 });
 
@@ -217,6 +233,10 @@ export const {
   toggleWebViewReader,
   toggleShowProgressPercentage,
   setGridSizPotrait,
+  toggleUpdateLibraryOnLaunch,
+  toggleOnlyUpdateOngoingNovels,
+  toggleUpdateNovelMetadata,
+  toggleShowLastUpdateTime,
 } = settingsSlice.actions;
 
 export default settingsSlice.reducer;

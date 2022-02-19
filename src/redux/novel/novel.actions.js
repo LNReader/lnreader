@@ -99,7 +99,7 @@ export const getNovelAction =
           /**
            * Fetch novel from source.
            */
-          const fetchedNovel = await fetchNovel(sourceId, novelUrl);
+          const fetchedNovel = await (sourceId, novelUrl);
 
           /**
            * Insert novel in db.

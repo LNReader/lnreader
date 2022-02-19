@@ -1,5 +1,4 @@
 import React from 'react';
-import {View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 
 import {Appbar, List} from '../../components';
@@ -13,7 +12,6 @@ const SettingsScreen = () => {
   return (
     <>
       <Appbar title="Settings" handleGoBack={goBack} theme={theme} />
-
       <List.Item
         title="General"
         icon="tune"
@@ -40,7 +38,7 @@ const SettingsScreen = () => {
         }
         theme={theme}
       />
-      <List.Item
+      {/* <List.Item
         title="Tracking"
         icon="sync"
         onPress={() =>
@@ -52,7 +50,7 @@ const SettingsScreen = () => {
           )
         }
         theme={theme}
-      />
+      /> */}
       {/* <List.Item
         title="Backup"
         icon="cloud-upload-outline"

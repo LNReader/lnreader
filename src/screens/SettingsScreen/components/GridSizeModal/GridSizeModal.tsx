@@ -2,7 +2,7 @@ import React from 'react';
 import {FlatList, StyleSheet} from 'react-native';
 
 import {Portal, Modal} from 'react-native-paper';
-import {RadioButton} from '../../../../components';
+import {RadioButton, Text} from '../../../../components';
 
 import {useAppDispatch, useAppearanceSettings} from '../../../../redux/hooks';
 import {setGridSizPotrait} from '../../../../redux/settings/settingsSlice';
@@ -29,6 +29,22 @@ const GridSizeModal: React.FC<ModalProps> = ({visible, closeModal, theme}) => {
           {backgroundColor: theme.surface},
         ]}
       >
+        <Text
+          color={theme.textColorPrimary}
+          size={16}
+          paddingHorizontal={20}
+          paddingVertical={8}
+        >
+          Grid Size
+        </Text>
+        <Text
+          color={theme.textColorSecondary}
+          size={16}
+          paddingHorizontal={20}
+          paddingVertical={4}
+        >
+          {novelsPerRowPotrait}
+        </Text>
         <FlatList
           data={Object.keys(GridSizes)}
           keyExtractor={item => item.toString()}

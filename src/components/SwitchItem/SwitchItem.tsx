@@ -51,11 +51,9 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
   },
   labelContainer: {
-    flexDirection: 'row',
     flex: 1,
   },
   label: {
-    flex: 1,
     fontSize: 16,
     textAlignVertical: 'center',
   },

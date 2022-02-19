@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 
 import {useAppDispatch, useSavedChapterData} from '../../../redux/hooks';
 import {saveChapterProgress} from '../../../redux/localStorage/localStorageSlice';
@@ -6,10 +6,16 @@ import {saveChapterProgress} from '../../../redux/localStorage/localStorageSlice
 export const useChapterProgress = (chapterId: number, readerRef: any) => {
   const dispatch = useAppDispatch();
   const {progressPercentage = 0, progressLocation = 0} =
-    useSavedChapterData(chapterId) || {};
+    useSavedChapterData(chapterId)
 
   const [percentage, setPercentage] = useState(progressPercentage);
   const [location, setLocation] = useState(progressLocation);
+
+  const percentageRef = useRef(0)
+  percentageRef.current = percentage
+
+  const locationRef = useRef(0)
+  locationRef.current = location
 
   const setProgress = ({nativeEvent}: {nativeEvent: any}) => {
     const currentOffsetY = nativeEvent.contentOffset.y;
@@ -22,15 +28,20 @@ export const useChapterProgress = (chapterId: number, readerRef: any) => {
 
     setPercentage(currentProgressPercentage);
     setLocation(currentOffsetY);
-
-    dispatch(
-      saveChapterProgress({
-        chapterId,
-        progressLocation: currentOffsetY,
-        progressPercentage: currentProgressPercentage,
-      }),
-    );
   };
+
+  useEffect(()=>{
+
+    return () => {
+      dispatch(
+          saveChapterProgress({
+            chapterId,
+            progressLocation: locationRef.current,
+            progressPercentage: percentageRef.current,
+          }),
+      );
+    }
+  },[])
 
   const [firstLayout, setFirstLayout] = useState(true);
 

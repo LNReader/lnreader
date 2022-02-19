@@ -1,4 +1,4 @@
-import cheerio from 'react-native-cheerio';
+import * as cheerio from 'cheerio';
 
 const sourceId = 81;
 const baseUrl = 'https://id.mtlnovel.com';
