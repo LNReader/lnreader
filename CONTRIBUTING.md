@@ -4,7 +4,7 @@ Contributions are welcome and are greatly appreciated!
 
 ## Setting up your environment
 
-After forking to your own github org or account, do the following steps to get started:
+After forking to your own GitHub org or account, do the following steps to get started:
 
 ```bash
 # clone your fork to your local machine
@@ -22,7 +22,7 @@ npm start
 
 ### Developing on Android
 
-While the packager is running and you have an Android device or emulator connected to your computer, build and launch the Android app.
+While the packager is running, and you have an Android device or emulator connected to your computer, build and launch the Android app.
 
 ```
 npm run android

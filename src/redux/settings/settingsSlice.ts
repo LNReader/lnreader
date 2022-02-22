@@ -45,6 +45,7 @@ interface SettingsState {
     fullScreenMode: boolean;
     useWebViewReader: boolean;
     showProgressPercentage: boolean;
+    useSwipeGestures: boolean;
   };
   library: {
     filters: string[];
@@ -87,6 +88,7 @@ const initialState: SettingsState = {
     fullScreenMode: true,
     useWebViewReader: false,
     showProgressPercentage: false,
+    useSwipeGestures: true,
   },
   library: {
     filters: [],
@@ -209,6 +211,9 @@ export const settingsSlice = createSlice({
     toggleShowLastUpdateTime: state => {
       state.updates.showLastUpdateTime = !state.updates.showLastUpdateTime;
     },
+    toggleUseSwipeGestures: state => {
+      state.reader.useSwipeGestures = !state.reader.useSwipeGestures;
+    },
   },
 });
 
@@ -237,6 +242,7 @@ export const {
   toggleOnlyUpdateOngoingNovels,
   toggleUpdateNovelMetadata,
   toggleShowLastUpdateTime,
+  toggleUseSwipeGestures,
 } = settingsSlice.actions;
 
 export default settingsSlice.reducer;

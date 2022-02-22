@@ -32,6 +32,7 @@ import {
   setReaderTheme,
   toggleReaderFullScreenMode,
   toggleShowProgressPercentage,
+  toggleUseSwipeGestures,
   toggleWebViewReader,
 } from '../../../../redux/settings/settingsSlice';
 import {fonts} from '../../../../theme/reader/fonts';
@@ -211,8 +212,12 @@ const GeneralTab = () => {
   const theme = useTheme();
   const dispatch = useAppDispatch();
 
-  const {fullScreenMode, useWebViewReader, showProgressPercentage} =
-    useReaderSettings();
+  const {
+    fullScreenMode,
+    useWebViewReader,
+    showProgressPercentage,
+    useSwipeGestures,
+  } = useReaderSettings();
 
   return (
     <>
@@ -222,16 +227,22 @@ const GeneralTab = () => {
         onPress={() => dispatch(toggleReaderFullScreenMode())}
         theme={theme}
       />
-      {/* <ReaderBottomSheetSwitch
+      <ReaderBottomSheetSwitch
         label="HTML Reader"
         value={useWebViewReader}
         onPress={() => dispatch(toggleWebViewReader())}
         theme={theme}
-      /> */}
+      />
       <ReaderBottomSheetSwitch
         label="Show progress percentage"
         value={showProgressPercentage}
         onPress={() => dispatch(toggleShowProgressPercentage())}
+        theme={theme}
+      />
+      <ReaderBottomSheetSwitch
+        label="Swipe gestures"
+        value={useSwipeGestures}
+        onPress={() => dispatch(toggleUseSwipeGestures())}
         theme={theme}
       />
     </>

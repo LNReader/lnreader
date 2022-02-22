@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
+import GestureRecognizer from 'react-native-swipe-gestures';
 
 import RenderHtml from 'react-native-render-html';
 
@@ -70,6 +71,7 @@ const ReaderScreen: React.FC<ReaderScreenProps> = ({route}) => {
     fontFamily,
     fontSize,
     useWebViewReader,
+    useSwipeGestures,
   } = useReaderSettings();
 
   const {isLoading, chapter, error} = useChapter(
@@ -124,6 +126,18 @@ const ReaderScreen: React.FC<ReaderScreenProps> = ({route}) => {
     }
   };
 
+  const handleSwipeLeft = () => {
+    if (useSwipeGestures) {
+      navigateToNextChapter();
+    }
+  };
+
+  const handleSwipeRight = () => {
+    if (useSwipeGestures) {
+      navigateToPrevChapter();
+    }
+  };
+
   return (
     <>
       <ReaderAppbar
@@ -139,65 +153,81 @@ const ReaderScreen: React.FC<ReaderScreenProps> = ({route}) => {
         <ErrorScreen error={error} theme={theme} />
       ) : (
         <>
-          <ScrollView
-            contentContainerStyle={[styles.scrollView, {backgroundColor}]}
-            onScroll={onScroll}
-            ref={ref => (readerRef.current = ref)}
-            onLayout={scrollToSavedProgress}
+          <GestureRecognizer
+            onSwipeRight={handleSwipeRight}
+            onSwipeLeft={handleSwipeLeft}
+            config={{velocityThreshold: 0.3, directionalOffsetThreshold: 80}}
+            style={{flex: 1}}
           >
-            <TouchableWithoutFeedback
-              onPress={toggleMenu}
-              style={[styles.container]}
+            <ScrollView
+              contentContainerStyle={[styles.scrollView, {backgroundColor}]}
+              onScroll={onScroll}
+              ref={ref => (readerRef.current = ref)}
+              showsVerticalScrollIndicator={false}
             >
-              {chapter?.chapterText ? (
-                <RenderHtml
-                  contentWidth={width}
-                  source={{html: chapter?.chapterText}}
-                  defaultTextProps={{
-                    style: {
-                      color: textColor,
-                      fontFamily: fontFamily || '',
-                      lineHeight: fontSize * lineHeight,
-                      fontSize,
-                    },
-                    selectable: true,
-                  }}
-                  defaultViewProps={{
-                    style: {
-                      backgroundColor,
-                    },
-                  }}
-                  baseStyle={{
-                    padding: `${paddingHorizontal}%`,
-                  }}
-                />
-              ) : (
-                <EmptyView
-                  description="Chapter is empty. Report if it's available in webview."
-                  theme={theme}
-                />
-              )}
-              {!useWebViewReader ? (
-                <View style={styles.buttonContainer}>
-                  <Text style={[styles.finished, {color: textColor}]}>
-                    {chapter?.chapterName
-                      ? `Finished: ${chapter?.chapterName}`
-                      : 'Finished'}
-                  </Text>
-                  {!isNextAndPrevChapLoading ? (
-                    <Button
-                      margin={8}
-                      title={`Next Chapter: ${nextChapter?.chapterName}`}
-                      onPress={navigateToNextChapter}
-                      theme={theme}
+              <TouchableWithoutFeedback
+                onPress={toggleMenu}
+                style={[styles.container]}
+                onLayout={scrollToSavedProgress}
+              >
+                {chapter?.chapterText ? (
+                  useWebViewReader ? (
+                    <WebViewReader
+                      html={chapter.chapterText}
+                      onScroll={onScroll}
                     />
                   ) : (
-                    <ActivityIndicator size="small" color={theme.primary} />
-                  )}
-                </View>
-              ) : null}
-            </TouchableWithoutFeedback>
-          </ScrollView>
+                    <RenderHtml
+                      contentWidth={width}
+                      source={{html: chapter.chapterText}}
+                      defaultTextProps={{
+                        style: {
+                          color: textColor,
+                          fontFamily: fontFamily || '',
+                          lineHeight: fontSize * lineHeight,
+                          fontSize,
+                        },
+                        selectable: true,
+                      }}
+                      defaultViewProps={{
+                        style: {
+                          backgroundColor,
+                        },
+                      }}
+                      baseStyle={{
+                        padding: `${paddingHorizontal}%`,
+                      }}
+                    />
+                  )
+                ) : (
+                  <EmptyView
+                    description="Chapter is empty. Report if it's available in webview."
+                    theme={theme}
+                  />
+                )}
+                {!useWebViewReader ? (
+                  <View style={styles.buttonContainer}>
+                    <Text style={[styles.finished, {color: textColor}]}>
+                      {chapter?.chapterName
+                        ? `Finished: ${chapter?.chapterName}`
+                        : 'Finished'}
+                    </Text>
+                    {!isNextAndPrevChapLoading ? (
+                      <Button
+                        margin={8}
+                        title={`Next Chapter: ${nextChapter?.chapterName}`}
+                        onPress={navigateToNextChapter}
+                        theme={theme}
+                      />
+                    ) : (
+                      <ActivityIndicator size="small" color={theme.primary} />
+                    )}
+                  </View>
+                ) : null}
+              </TouchableWithoutFeedback>
+            </ScrollView>
+          </GestureRecognizer>
+
           <BottomInfoBar
             percentage={progressPercentage}
             background={backgroundColor}
@@ -233,7 +263,6 @@ const styles = StyleSheet.create({
   container: {
     height: '100%',
     paddingTop: 40,
-    paddingBottom: 80,
   },
   finished: {
     textAlign: 'center',

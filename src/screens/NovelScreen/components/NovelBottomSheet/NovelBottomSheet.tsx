@@ -128,11 +128,11 @@ const DisplayTab: React.FC = () => {
       <FlatList
         data={Object.values(ChapterTitleDisplayModes)}
         keyExtractor={item => item}
-        renderItem={curentMode => (
+        renderItem={currentMode => (
           <RadioButton
-            label={curentMode.item}
+            label={currentMode.item}
             status={
-              curentMode.item === chapterTitleDisplayMode
+              currentMode.item === chapterTitleDisplayMode
                 ? 'checked'
                 : 'unchecked'
             }
@@ -140,7 +140,7 @@ const DisplayTab: React.FC = () => {
               dispatch(
                 setNovelChapterTitleDisplayMode({
                   novelId: novel?.novelId,
-                  chapterTitleDisplayMode: curentMode.item,
+                  chapterTitleDisplayMode: currentMode.item,
                 }),
               )
             }

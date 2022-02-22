@@ -157,7 +157,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     let isTumblr = result.url.toLowerCase().includes('tumblr');
 
     /**
-     * Checks if its a wwordpress site
+     * Checks if it's a WordPress site
      */
     let isWordPress =
       loadedCheerio('meta[name="generator"]').attr('content') ||

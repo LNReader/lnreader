@@ -26,7 +26,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({
         scalesPageToFit={true}
         showsVerticalScrollIndicator={false}
         onScroll={onScroll}
-        onNavigationStateChange={onWebViewNavigationStateChange}
+        // onNavigationStateChange={onWebViewNavigationStateChange}
         nestedScrollEnabled={true}
         source={{
           html: `
