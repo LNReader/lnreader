@@ -62,7 +62,6 @@ import {
   WebNovelLoverScraper,
   WuxiaWorldDotSiteScraper,
   ZinnNovelScraper,
-  TeamXNovelScraper
 } from './multisrc/madara/MadaraGenerator';
 import WuxiaBlogScraper from './en/wuxiablog';
 import WuxiaCityScraper from './en/wuxiacity';
