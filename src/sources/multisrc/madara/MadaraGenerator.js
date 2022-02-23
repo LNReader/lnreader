@@ -1,4 +1,4 @@
-import MadaraScraper from './MadaraScraper';
+7import MadaraScraper from './MadaraScraper';
 
 const getPath = extensionId => {
   const path = {
@@ -253,6 +253,14 @@ export const Novel4UpScraper = new MadaraScraper(
   104,
   'https://novel4up.com/',
   'Novel4Up',
+  getPath(104),
+  false,
+  2,
+);
+export const TeamXNovelScraper = new MadaraScraper(
+  104,
+  'https://teamxnovel.com/',
+  'TeamXNovel',
   getPath(104),
   false,
   2,
