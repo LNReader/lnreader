@@ -62,6 +62,7 @@ import {
   WebNovelLoverScraper,
   WuxiaWorldDotSiteScraper,
   ZinnNovelScraper,
+  TeamXNovelScraper
 } from './multisrc/madara/MadaraGenerator';
 import WuxiaBlogScraper from './en/wuxiablog';
 import WuxiaCityScraper from './en/wuxiacity';
@@ -98,6 +99,7 @@ import RanobeLibScraper from './ru/ranobelib';
 import NovelPubScraper from './en/novelpub';
 import BestLightNovel from './en/bestlightnovel';
 import NovelFullMeScraper from './en/NovelFullMe';
+import ArNovelScraper from './ar/teamxnovel';
 import {
   LtnovelScraper,
   NovelmtScraper,
@@ -209,6 +211,7 @@ export const getSource = sourceId => {
     101: ArMTLScraper,
     103: SakuraNovelScraper,
     104: Novel4UpScraper,
+    105: TeamXNovelScraper,
   };
 
   return scrapers[sourceId];
