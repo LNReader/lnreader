@@ -1,5 +1,5 @@
 import React, {useCallback} from 'react';
-import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {Pressable, PressableProps, StyleSheet, Text, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {useAppearanceSettings, useLibrarySettings} from '../../redux/hooks';
 
@@ -13,19 +13,16 @@ import {useDeviceOrientation} from '../../hooks';
 import {DeviceOrientation} from '../../hooks/useDeviceOrientation';
 import useNovelCoverHeight from './hooks/useNovelCoverHeight';
 
-interface Props {
+interface Props extends PressableProps {
   item: LibraryNovelInfo | SourceNovelItem | NovelInfo;
+  isSelected: boolean;
   theme: ThemeType;
   showInLibraryBadge?: boolean;
-  onPress: () => void;
 }
 
-const NovelItem: React.FC<Props> = ({
-  item,
-  onPress,
-  showInLibraryBadge = false,
-  theme,
-}) => {
+const NovelItem: React.FC<Props> = props => {
+  const {item, showInLibraryBadge = false, theme, isSelected = false} = props;
+
   const {displayMode} = useAppearanceSettings();
   const {novelsPerRowLandscape, novelsPerRowPotrait} = useAppearanceSettings();
   const {showUnreadBadge, showDownloadsBadge} = useLibrarySettings();
@@ -45,12 +42,16 @@ const NovelItem: React.FC<Props> = ({
               : novelsPerRowLandscape),
         },
         styles.container,
+        isSelected && {
+          backgroundColor: theme.primary,
+          opacity: 0.8,
+        },
       ]}
     >
       <Pressable
         style={styles.pressable}
         android_ripple={{color: theme.rippleColor}}
-        onPress={onPress}
+        {...props}
       >
         <View style={styles.badgeContainer}>
           {'chaptersDownloaded' in item &&
@@ -119,11 +120,11 @@ const styles = StyleSheet.create({
   container: {
     overflow: 'hidden',
     borderRadius: 6,
-    marginBottom: 2,
+    margin: 2,
   },
   pressable: {
     flex: 1,
-    padding: 6,
+    padding: 4,
   },
   badgeContainer: {
     position: 'absolute',

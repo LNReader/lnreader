@@ -54,6 +54,7 @@ const useLibrary = () => {
     error,
     getLibrarySearchResults,
     clearSearchResults,
+    getLibraryNovels,
   };
 };
 

@@ -2,6 +2,7 @@ import React, {useMemo, useState} from 'react';
 import {
   ActivityIndicator,
   Pressable,
+  PressableProps,
   StyleSheet,
   Text,
   View,
@@ -19,7 +20,7 @@ import {ChapterTitleDisplayModes} from '../../../../redux/localStorage/localStor
 import {ThemeType} from '../../../../theme/types';
 import {parseChapterNumber} from '../../../../utils/parseChapterNumber';
 
-interface ChapterCardProps {
+interface ChapterCardProps extends PressableProps {
   chapter: ChapterItem;
   theme: ThemeType;
   navigateToChapter: (
@@ -29,15 +30,18 @@ interface ChapterCardProps {
   ) => void;
   handleDownloadChapter: (chapter: ChapterItem) => void;
   handleDeleteChapter: (chapterId: number) => void;
+  isSelected: boolean;
 }
 
-const ChapterCard: React.FC<ChapterCardProps> = ({
-  chapter,
-  theme,
-  navigateToChapter,
-  handleDownloadChapter,
-  handleDeleteChapter,
-}) => {
+const ChapterCard: React.FC<ChapterCardProps> = props => {
+  const {
+    chapter,
+    theme,
+    handleDownloadChapter,
+    handleDeleteChapter,
+    isSelected,
+  } = props;
+
   const chapterNameColor = chapter.bookmark
     ? theme.primary
     : chapter.read
@@ -56,9 +60,6 @@ const ChapterCard: React.FC<ChapterCardProps> = ({
 
   const downloadQueue = useDownloadQueue();
 
-  const handleNavigateToChapter = () =>
-    navigateToChapter(chapter.chapterId, chapter.chapterUrl, chapter.bookmark);
-
   const isDownloading = downloadQueue.some(
     item => item.chapterId === chapter.chapterId,
   );
@@ -73,9 +74,12 @@ const ChapterCard: React.FC<ChapterCardProps> = ({
 
   return (
     <Pressable
-      onPress={handleNavigateToChapter}
       android_ripple={{color: theme.rippleColor}}
-      style={styles.chapterCardPressable}
+      style={[
+        styles.chapterCardPressable,
+        isSelected && {backgroundColor: theme.rippleColor},
+      ]}
+      {...props}
     >
       <View style={styles.flex}>
         <View style={styles.nameContainer}>

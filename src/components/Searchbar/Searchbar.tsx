@@ -20,6 +20,7 @@ interface SearcbarProps {
   rightIcons?: RightIcon[];
   handleBackAction?: () => void;
   clearSearchbar: () => void;
+  onLeftIconPress?: () => void;
   theme: ThemeType;
 }
 
@@ -32,6 +33,7 @@ const Searchbar: React.FC<SearcbarProps> = ({
   rightIcons,
   handleBackAction,
   clearSearchbar,
+  onLeftIconPress,
   theme,
 }) => {
   const searchbarRef = useRef<any>(null);
@@ -52,20 +54,19 @@ const Searchbar: React.FC<SearcbarProps> = ({
         android_ripple={{color: theme.rippleColor}}
         style={[styles.searchbar]}
       >
-        {handleBackAction ? (
-          <IconButton
-            name="arrow-left"
-            color={theme.textColorPrimary}
-            onPress={handleBackAction}
-            theme={theme}
-          />
-        ) : (
-          <IconButton
-            name={leftIcon}
-            color={theme.textColorPrimary}
-            theme={theme}
-          />
-        )}
+        <IconButton
+          name={handleBackAction ? 'arrow-left' : leftIcon}
+          color={theme.textColorPrimary}
+          onPress={() => {
+            if (handleBackAction) {
+              handleBackAction();
+            } else if (onLeftIconPress) {
+              onLeftIconPress();
+            }
+          }}
+          theme={theme}
+        />
+
         <TextInput
           ref={searchbarRef}
           style={[styles.textInput, {color: theme.textColorPrimary}]}

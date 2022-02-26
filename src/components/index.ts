@@ -14,6 +14,7 @@ export {default as Chip} from './Chip/Chip';
 export {default as SwitchItem} from './SwitchItem/SwitchItem';
 export {default as Appbar} from './Appbar/Appbar';
 export {default as List} from './List/List';
+export {default as Actionbar} from './Actionbar/Actionbar';
 export {default as Dialog} from './Dialog/Dialog';
 export {default as Text} from './Text/Text';
 export {default as ThemePicker} from './ThemePicker/ThemePicker';

@@ -114,6 +114,26 @@ export const toggleFollowNovelInDb = (id: number, followed: number) => {
   });
 };
 
+const unfollowNovelInDbQuery = `
+  UPDATE
+    novels
+  SET
+    followed = 0
+  WHERE
+    novelId = ?
+  `;
+
+export const unfollowNovelInDb = (novelId: number) => {
+  db.transaction(tx => {
+    tx.executeSql(
+      unfollowNovelInDbQuery,
+      [novelId],
+      (txObj, results) => {},
+      (txObj, error) => {},
+    );
+  });
+};
+
 export const updateNovelReadQuery = `
   UPDATE 
     novels 

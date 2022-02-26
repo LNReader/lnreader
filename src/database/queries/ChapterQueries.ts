@@ -254,3 +254,43 @@ export const updateChapters = async (
     );
   });
 };
+
+const updateAllChapterReadQuery = `
+  UPDATE 
+    chapters 
+  SET 
+    \`read\` = 1 
+  WHERE
+    novelId = ?
+  `;
+
+export const updateAllChapterReadInDb = (novelId: number) => {
+  db.transaction(tx => {
+    tx.executeSql(
+      updateAllChapterReadQuery,
+      [novelId],
+      (txObj, res) => {},
+      (txObj, error) => showToast(error.message),
+    );
+  });
+};
+
+const updateAllChapterUnreadQuery = `
+  UPDATE 
+    chapters 
+  SET 
+    \`read\` = 0
+  WHERE
+    novelId = ?
+  `;
+
+export const updateAllChapterUnreadInDb = (novelId: number) => {
+  db.transaction(tx => {
+    tx.executeSql(
+      updateAllChapterUnreadQuery,
+      [novelId],
+      (txObj, res) => {},
+      (txObj, error) => showToast(error.message),
+    );
+  });
+};

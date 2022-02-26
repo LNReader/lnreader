@@ -23,6 +23,8 @@ import NovelBottomSheet from './components/NovelBottomSheet/NovelBottomSheet';
 import {chapterSortOrders} from './utils/constants';
 import {Portal} from 'react-native-paper';
 import {deleteChapterFromDb} from '../../database/queries/DownloadQueries';
+import SelectionAppbar from './components/SelectionAppbar/SelectionAppbar';
+import useSelectChapters from './hooks/useSelectChapters';
 
 interface NovelScreenProps {
   route: {
@@ -49,6 +51,14 @@ const NovelScreen: React.FC<NovelScreenProps> = ({route}) => {
   const {isUpdating, updateNovel} = useLibraryUpdates();
 
   const {downloadChapters} = useDownloader();
+
+  const {
+    selectedChapters,
+    selectChapter,
+    isSelected,
+    clearSelection,
+    setSelectedChapters,
+  } = useSelectChapters();
 
   let bottomSheetRef = useRef<any>(null);
   const expandBottomSheet = () => bottomSheetRef.current.show();
@@ -102,6 +112,14 @@ const NovelScreen: React.FC<NovelScreenProps> = ({route}) => {
     <ErrorScreen theme={theme} />
   ) : novel ? (
     <View>
+      {selectedChapters.length > 0 ? (
+        <SelectionAppbar
+          selectedChapters={selectedChapters.length}
+          clearSelection={clearSelection}
+          selectAllChapters={() => setSelectedChapters(chapters || [])}
+          theme={theme}
+        />
+      ) : null}
       <FlatList
         contentContainerStyle={styles.container}
         data={chapters}
@@ -120,6 +138,19 @@ const NovelScreen: React.FC<NovelScreenProps> = ({route}) => {
             navigateToChapter={navigateToChapter}
             handleDownloadChapter={handleDownloadChapter}
             handleDeleteChapter={handleDeleteChapter}
+            onPress={() => {
+              if (selectedChapters.length) {
+                selectChapter(item);
+              } else {
+                navigateToChapter(
+                  item.chapterId,
+                  item.chapterUrl,
+                  item.bookmark,
+                );
+              }
+            }}
+            onLongPress={() => selectChapter(item)}
+            isSelected={isSelected(item)}
             theme={theme}
           />
         )}
