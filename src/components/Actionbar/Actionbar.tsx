@@ -47,7 +47,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 8,
-    paddingVertical: 4,
+    paddingVertical: 8,
+    marginBottom: 32,
     elevation: 2,
   },
 });

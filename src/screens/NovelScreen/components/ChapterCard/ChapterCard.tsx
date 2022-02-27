@@ -105,7 +105,9 @@ const ChapterCard: React.FC<ChapterCardProps> = props => {
               {chapter.releaseDate}
             </Text>
           ) : null}
-          {progressPercentage > 0 && progressPercentage < 100 ? (
+          {!chapter.read &&
+          progressPercentage > 0 &&
+          progressPercentage < 100 ? (
             <Text style={[styles.progress, {color: theme.textColorHint}]}>
               {`${
                 chapter.releaseDate ? '  •  ' : ''

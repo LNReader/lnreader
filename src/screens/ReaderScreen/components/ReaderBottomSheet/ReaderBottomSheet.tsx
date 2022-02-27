@@ -227,12 +227,12 @@ const GeneralTab = () => {
         onPress={() => dispatch(toggleReaderFullScreenMode())}
         theme={theme}
       />
-      <ReaderBottomSheetSwitch
+      {/* <ReaderBottomSheetSwitch
         label="HTML Reader"
         value={useWebViewReader}
         onPress={() => dispatch(toggleWebViewReader())}
         theme={theme}
-      />
+      /> */}
       <ReaderBottomSheetSwitch
         label="Show progress percentage"
         value={showProgressPercentage}

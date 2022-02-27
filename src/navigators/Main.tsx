@@ -19,17 +19,13 @@ import MoreStack from './MoreStack';
 import NovelScreen from '../screens/NovelScreen/NovelScreen';
 import ReaderScreen from '../screens/ReaderScreen/ReaderScreen';
 import BrowseSourceScreen from '../screens/BrowseSourceScreen/BrowseSourceScreen';
-import Migration from '../screens/BrowseScreen/migration/Migration';
-import SourceNovels from '../screens/BrowseScreen/SourceNovels';
-import MigrateNovel from '../screens/BrowseScreen/migration/MigrationNovels';
-
-import MalTopNovels from '../screens/BrowseScreen/discover/MalTopNovels';
-import NewUpdateDialog from '../components/NewUpdateDialog';
-// import BrowseSettings from '../screens/browse/SettingsBrowseScreen';
-import {setStatusBarColor} from '../theme/utils/setStatusBarColor';
-import {useTheme} from '../redux/hooks';
 import SettingsBrowse from '../screens/SettingsScreen/SettingsBrowse/SettingsBrowse';
 import GlobalSearchScreen from '../screens/BrowseScreen/GlobalSearchScreen/GlobalSearchScreen';
+
+import NewUpdateDialog from '../components/NewUpdateDialog';
+
+import {setStatusBarColor} from '../theme/utils/setStatusBarColor';
+import {useTheme} from '../redux/hooks';
 
 const Stack = createStackNavigator();
 
@@ -39,8 +35,11 @@ const MainNavigator = () => {
   useEffect(() => {
     setTimeout(async () => {
       await SplashScreen.hideAsync();
-      setStatusBarColor(theme);
     }, 500);
+  });
+
+  useEffect(() => {
+    setStatusBarColor(theme);
   }, [theme]);
 
   const {isNewVersion, latestRelease} = useGithubUpdateChecker() || {};
@@ -57,12 +56,8 @@ const MainNavigator = () => {
           name="BrowseSourceScreen"
           component={BrowseSourceScreen}
         />
-        <Stack.Screen name="BrowseMal" component={MalTopNovels} />
         <Stack.Screen name="SettingsBrowse" component={SettingsBrowse} />
         <Stack.Screen name="GlobalSearch" component={GlobalSearchScreen} />
-        <Stack.Screen name="Migration" component={Migration} />
-        <Stack.Screen name="SourceNovels" component={SourceNovels} />
-        <Stack.Screen name="MigrateNovel" component={MigrateNovel} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import {StyleSheet, FlatList, View, RefreshControl} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 
-import {ErrorScreen, LoadingScreen} from '../../components';
+import {Actionbar, ErrorScreen, LoadingScreen} from '../../components';
 import {ChapterCard, NovelScreenHeader} from './components';
 
 import {
@@ -163,11 +163,33 @@ const NovelScreen: React.FC<NovelScreenProps> = ({route}) => {
           />
         }
       />
-      {novel ? (
-        <Portal>
+      <Portal>
+        <Actionbar
+          visible={selectedChapters.length > 0}
+          actions={[
+            {
+              icon: 'download-outline',
+              onPress: () => {
+                downloadChapters(sourceId, novelUrl, selectedChapters);
+                clearSelection();
+              },
+            },
+            {
+              icon: 'trash-can-outline',
+              onPress: () => {
+                selectedChapters.map(chapter =>
+                  handleDeleteChapter(chapter.chapterId),
+                );
+                clearSelection();
+              },
+            },
+          ]}
+          theme={theme}
+        />
+        {novel ? (
           <NovelBottomSheet bottomSheetRef={bottomSheetRef} theme={theme} />
-        </Portal>
-      ) : null}
+        ) : null}
+      </Portal>
     </View>
   ) : null;
 };

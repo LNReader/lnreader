@@ -39,7 +39,7 @@ const GlobalSearchNovelCover: React.FC<GlobalSearchNovelCoverProps> = ({
         <FastImage
           source={{uri: item.novelCover}}
           style={[
-            {height: 150, width: 115},
+            {height: 160, width: 110},
             styles.image,
             showInLibraryBadge && styles.inLibrary,
           ]}
@@ -100,10 +100,11 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   title: {
+    flex: 1,
     padding: 4,
     fontSize: 12,
     flexWrap: 'wrap',
-    width: 115,
+    width: 110,
   },
   compactTitleContainer: {
     position: 'absolute',

@@ -234,7 +234,7 @@ export default BrowseScreen;
 
 const styles = StyleSheet.create({
   listContainer: {
-    flex: 1,
+    flexGrow: 1,
     paddingVertical: 16,
   },
   header: {

@@ -6,6 +6,7 @@ import {Appbar as PaperAppbar} from 'react-native-paper';
 import {CrossFadeView, IconButton} from '../../../../components';
 
 import {ThemeType} from '../../../../theme/types';
+import {isAbsoluteUrl} from '../../utils/isAbsoluteUrl';
 
 interface ReaderAppbarProps {
   visible: boolean;
@@ -46,16 +47,18 @@ const ReaderAppbar: React.FC<ReaderAppbarProps> = ({
             subtitle={novelName && chapterName}
             subtitleStyle={{color: theme.textColorSecondary}}
           />
-          <PaperAppbar.Action
-            icon="share-variant"
-            size={24}
-            onPress={() =>
-              Share.share({
-                message: chapterUrl,
-              })
-            }
-            color={theme.textColorPrimary}
-          />
+          {isAbsoluteUrl(chapterUrl) ? (
+            <PaperAppbar.Action
+              icon="share-variant"
+              size={24}
+              onPress={() =>
+                Share.share({
+                  message: chapterUrl,
+                })
+              }
+              color={theme.textColorPrimary}
+            />
+          ) : null}
         </PaperAppbar.Header>
       </View>
     </CrossFadeView>

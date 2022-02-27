@@ -88,7 +88,7 @@ const initialState: SettingsState = {
     fullScreenMode: true,
     useWebViewReader: false,
     showProgressPercentage: false,
-    useSwipeGestures: true,
+    useSwipeGestures: false,
   },
   library: {
     filters: [],
