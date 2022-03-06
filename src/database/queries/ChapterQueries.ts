@@ -1,5 +1,7 @@
 import * as SQLite from 'expo-sqlite';
+import { showToast } from '../../hooks/showToast';
 import { sourceManager } from '../../sources/sourceManager';
+import { ChapterItem } from '../types';
 const db = SQLite.openDatabase('lnreader.db');
 
 const insertChaptersQuery =
@@ -77,35 +79,55 @@ export const getChapterFromDB = async chapterId => {
   );
 };
 
-export const getNextChapterFromDB = async (novelId, chapterId) => {
+const getPrevChapterQuery = `
+  SELECT
+    *
+  FROM
+    chapters
+  WHERE
+    novelId = ?
+  AND
+    chapterId < ?
+  `;
+
+export const getPrevChapter = (
+  novelId: number,
+  chapterId: number,
+): Promise<ChapterItem> => {
   return new Promise((resolve, reject) =>
     db.transaction(tx => {
       tx.executeSql(
-        'SELECT * FROM chapters WHERE novelId = ? AND chapterId > ?',
+        getPrevChapterQuery,
         [novelId, chapterId],
-        (txObj, results) => {
-          resolve(results.rows.item(0));
-        },
-        (txObj, error) => {
-          // console.log('Error ', error)
-        },
+        (txObj, results) => resolve(results.rows.item(results.rows.length - 1)),
+        (txObj, error) => showToast(error.message),
       );
     }),
   );
 };
 
-export const getPrevChapterFromDB = async (novelId, chapterId) => {
+const getNextChapterQuery = `
+  SELECT
+    *
+  FROM
+    chapters
+  WHERE
+    novelId = ?
+  AND
+  chapterId > ?
+  `;
+
+export const getNextChapter = (
+  novelId: number,
+  chapterId: number,
+): Promise<ChapterItem> => {
   return new Promise((resolve, reject) =>
     db.transaction(tx => {
       tx.executeSql(
-        'SELECT * FROM chapters WHERE novelId = ? AND chapterId < ?',
+        getNextChapterQuery,
         [novelId, chapterId],
-        (txObj, results) => {
-          resolve(results.rows.item(results.rows.length - 1));
-        },
-        (txObj, error) => {
-          // console.log('Error ', error)
-        },
+        (txObj, results) => resolve(results.rows.item(0)),
+        (txObj, error) => showToast(error.message),
       );
     }),
   );
@@ -357,3 +379,19 @@ export const deleteDownloads = async () => {
     tx.executeSql('DELETE FROM downloads; VACCUM;');
   });
 };
+
+export const updateChapterDownloadedQuery = `
+  UPDATE 
+    chapters 
+  SET 
+    downloaded = 1
+  WHERE 
+    chapterId = ?`;
+
+export const updateChapterDeletedQuery = `
+  UPDATE 
+    chapters 
+  SET 
+    downloaded = 0
+  WHERE 
+    chapterId = ?`;

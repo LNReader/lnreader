@@ -4,6 +4,7 @@ import { persistStore, persistReducer } from 'redux-persist';
 
 import settingsReducer from './settings/settings.reducer';
 import settingsReducerV2 from './settings/settingsSlice';
+import localStorageReducer from './localStorage/localStorageSlice';
 import libraryReducer from './library/library.reducer';
 import sourceReducer from './source/source.reducers';
 import novelReducer from './novel/novel.reducer';
@@ -21,6 +22,7 @@ const persistConfig = {
 const reducers = combineReducers({
   settingsReducer,
   settingsReducerV2,
+  localStorageReducer,
   libraryReducer,
   sourceReducer,
   novelReducer,

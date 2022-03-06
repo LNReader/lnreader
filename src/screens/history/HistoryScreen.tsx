@@ -75,17 +75,17 @@ const HistoryScreen = () => {
     novelName: string,
     chapterId: number,
     chapterUrl: string,
-    isBookmarked: number,
+    bookmark: number,
   ) =>
     navigate(
-      'ReaderScreen' as never,
+      'Chapter' as never,
       {
         sourceId,
         novelId,
         novelName,
         chapterId,
         chapterUrl,
-        isBookmarked,
+        bookmark,
       } as never,
     );
 
@@ -94,16 +94,16 @@ const HistoryScreen = () => {
     novelId: number,
     novelUrl: string,
     novelName: string,
-    coverUri: string,
+    novelCover: string,
   ) =>
     navigate(
-      'NovelScreen' as never,
+      'Novel' as never,
       {
         sourceId,
         novelId,
         novelUrl,
         novelName,
-        coverUri,
+        novelCover,
       } as never,
     );
 

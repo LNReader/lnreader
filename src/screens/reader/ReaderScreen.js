@@ -56,6 +56,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import TextReader from './components/TextReader';
 import WebViewReader from './components/WebViewReader';
 import { useTextToSpeech } from '../../hooks/useTextToSpeech';
+import { useFullscreenMode } from '../../hooks';
 
 const Chapter = ({ route, navigation }) => {
   useKeepAwake();
@@ -95,6 +96,8 @@ const Chapter = ({ route, navigation }) => {
     autoScrollInterval = 10,
     verticalSeekbar = true,
   } = useSettings();
+
+  const { setImmersiveMode, showStatusAndNavBar } = useFullscreenMode();
 
   const batteryLevel = useBatteryLevel();
 
@@ -150,33 +153,27 @@ const Chapter = ({ route, navigation }) => {
     setPrevChapter(prevChap);
   };
 
-  useEffect(
-    () => {
-      setImmersiveMode();
-      getChapter(chapterId);
+  useEffect(() => {
+    getChapter(chapterId);
 
-      if (!incognitoMode) {
-        insertHistory(novelId, chapterId);
-        dispatch({
-          type: SET_LAST_READ,
-          payload: { novelId, chapterId },
-        });
-      }
-    }, // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
-  );
+    if (!incognitoMode) {
+      insertHistory(novelId, chapterId);
+      dispatch({
+        type: SET_LAST_READ,
+        payload: { novelId, chapterId },
+      });
+    }
+  }, []);
 
   useEffect(() => {
     navigation.addListener('beforeRemove', e => {
       StatusBar.setHidden(false);
       showNavigationBar();
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     setPrevAndNextChap();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chapter]);
 
   const [currentTime, setCurrentTime] = useState();
@@ -195,7 +192,6 @@ const Chapter = ({ route, navigation }) => {
 
   useEffect(() => {
     if (!useWebViewForChapter && scrollPercentage !== 100 && autoScroll) {
-      // eslint-disable-next-line react-hooks/exhaustive-deps
       scrollTimeout = setTimeout(() => {
         scrollViewRef.current.scrollTo({
           x: 0,
@@ -212,7 +208,6 @@ const Chapter = ({ route, navigation }) => {
   }, [autoScroll, currentOffset]);
 
   const isCloseToBottom = useCallback(
-    // eslint-disable-next-line no-shadow
     ({ layoutMeasurement, contentOffset, contentSize }) => {
       const paddingToBottom = 40;
       return (
@@ -251,42 +246,25 @@ const Chapter = ({ route, navigation }) => {
       dispatch(markChapterReadAction(chapterId, novelId));
       updateTracker();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const setImmersiveMode = () => {
-    if (fullScreenMode) {
-      StatusBar.setHidden(true);
-      hideNavigationBar();
-    } else {
-      StatusBar.setBackgroundColor(readerBackground(readerSettings.theme));
-      changeNavigationBarColor(readerBackground(readerSettings.theme));
+  const scrollToSavedProgress = useCallback(event => {
+    if (position && firstLayout) {
+      position.percentage < 100 &&
+        scrollViewRef.current.scrollTo({
+          x: 0,
+          y: position.position,
+          animated: false,
+        });
+      setFirstLayout(false);
     }
-  };
-
-  const scrollToSavedProgress = useCallback(
-    event => {
-      if (position && firstLayout) {
-        position.percentage < 100 &&
-          scrollViewRef.current.scrollTo({
-            x: 0,
-            y: position.position,
-            animated: false,
-          });
-        setFirstLayout(false);
-      }
-    }, // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
-  );
+  }, []);
 
   const hideHeader = () => {
     if (!hidden) {
       setImmersiveMode();
     } else {
-      if (fullScreenMode) {
-        StatusBar.setHidden(false);
-        showNavigationBar();
-      }
+      showStatusAndNavBar();
     }
     setHidden(!hidden);
   };
