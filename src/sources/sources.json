@@ -720,4 +720,11 @@
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/teamxnovel.png?raw=true",
     "lang": "Arabic"
   },
+  {
+    "sourceId": 108,
+    "url": "https://allnovelfull.com/",
+    "sourceName": "AllNovelFull",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/allnovelfull/icon.png?raw=true",
+    "lang": "English"
+  }
 ]
