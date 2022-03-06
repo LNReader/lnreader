@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import * as SQLite from 'expo-sqlite';
 import { showToast } from '../../hooks/showToast';
 import { sourceManager } from '../../sources/sourceManager';
@@ -34,7 +36,7 @@ export const fetchAndInsertChapterInDb = async (
       downloadChapterQuery,
       [chapterId, chapter.chapterName, chapter.chapterText],
       (txObj, res) => {},
-      (txObj, error) => console.log(error),
+      (_txObj, error) => showToast(error),
     );
   });
 };
@@ -53,7 +55,7 @@ export const deleteChapterFromDb = (chapterId: number) => {
       deleteChapterFromDbQuery,
       [chapterId],
       (txObj, res) => {},
-      (txObj, error) => showToast(error.message),
+      (_txObj, error) => showToast(error.message),
     );
   });
 };

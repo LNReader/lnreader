@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import * as SQLite from 'expo-sqlite';
 import { showToast } from '../../hooks/showToast';
 import { sourceManager } from '../../sources/sourceManager';

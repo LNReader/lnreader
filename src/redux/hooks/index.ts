@@ -1,8 +1,6 @@
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import type { RootState, AppDispatch } from '../store';
 
-import { defaultTo } from 'lodash';
-
 export const useAppDispatch = () => useDispatch<AppDispatch>();
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
@@ -24,6 +22,7 @@ export const useUpdateSettings = () =>
   useAppSelector((state: RootState) => state.settingsReducerV2.updates);
 
 export const useSavedChapterData = (chapterId: number) =>
-  useAppSelector((state: RootState) =>
-    defaultTo(state.localStorageReducer.chapterData[chapterId], {}),
+  useAppSelector(
+    (state: RootState) =>
+      state.localStorageReducer.chapterData[chapterId] || {},
   );

@@ -12,6 +12,7 @@ module.exports = {
         'no-undef': 'off',
         'react-native/no-inline-styles': 'warn',
         'no-console': 'warn',
+        'react-hooks/exhaustive-deps': 'warn',
       },
     },
   ],
