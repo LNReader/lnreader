@@ -1,0 +1,11 @@
+{
+  "library": "Library",
+  "libraryScreen": {
+    "searchbar": "Search Library",
+    "empty": "Your library is empty. Add series to your library from Browse."
+  },
+  "history": "History",
+  "historyScreen": {
+    "searchbar": "Search History"
+  }
+}
