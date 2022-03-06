@@ -712,5 +712,12 @@
     "sourceName": "Novel4Up",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/novel4up.png?raw=true",
     "lang": "Arabic"
-  }
+  },
+  {
+    "sourceId": 107,
+    "url": "https://teamxnovel.com/",
+    "sourceName": "TeamXNovel",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/teamxnovel.png?raw=true",
+    "lang": "Arabic"
+  },
 ]

@@ -50,6 +50,7 @@ import {
   MostNovelScraper,
   MysticalSeriesScraper,
   Novel4UpScraper,
+  TeamXNovelScraper,
   NovelCakeScraper,
   NovelMultiverseScraper,
   NovelsRockScraper,
@@ -226,6 +227,7 @@ export const sourceManager = (sourceId: number): Scraper => {
     101: ArMTLScraper,
     103: SakuraNovelScraper,
     104: Novel4UpScraper,
+    107: TeamXNovelScraper,
   };
 
   return scrapers[sourceId];
