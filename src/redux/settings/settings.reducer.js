@@ -23,7 +23,7 @@ import {
   yotsubaTheme,
   takoLightTheme,
   tealTheme,
-} from '../../theme/theme';
+} from '../../theme/v1/theme/theme';
 
 const themes = {
   1: lightTheme,

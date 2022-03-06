@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react';
-import { View } from 'react-native';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import { setBarColor } from '../theme/utils/setBarColor';
-import { useTheme } from '../hooks/reduxHooks';
+import { useTheme } from '../redux/hooks';
 import { useGithubUpdateChecker } from '../hooks/githubUpdateChecker';
 import * as SplashScreen from 'expo-splash-screen';
 
@@ -45,25 +44,21 @@ const MainNavigator = () => {
   const { isNewVersion, latestRelease } = useGithubUpdateChecker() || {};
 
   return (
-    <NavigationContainer
-      theme={{ colors: { background: theme.colorPrimaryDark } }}
-    >
-      <View style={{ flex: 1, backgroundColor: theme.colorPrimaryDark }}>
-        {isNewVersion && <NewUpdateDialog newVersion={latestRelease} />}
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="BottomNavigator" component={BottomNavigator} />
-          <Stack.Screen name="Novel" component={Novel} />
-          <Stack.Screen name="Chapter" component={Reader} />
-          <Stack.Screen name="MoreStack" component={MoreStack} />
-          <Stack.Screen name="Extension" component={Extension} />
-          <Stack.Screen name="BrowseMal" component={MalTopNovels} />
-          <Stack.Screen name="BrowseSettings" component={BrowseSettings} />
-          <Stack.Screen name="GlobalSearch" component={GlobalSearch} />
-          <Stack.Screen name="Migration" component={Migration} />
-          <Stack.Screen name="SourceNovels" component={SourceNovels} />
-          <Stack.Screen name="MigrateNovel" component={MigrateNovel} />
-        </Stack.Navigator>
-      </View>
+    <NavigationContainer theme={{ colors: { background: theme.background } }}>
+      {isNewVersion && <NewUpdateDialog newVersion={latestRelease} />}
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="BottomNavigator" component={BottomNavigator} />
+        <Stack.Screen name="Novel" component={Novel} />
+        <Stack.Screen name="Chapter" component={Reader} />
+        <Stack.Screen name="MoreStack" component={MoreStack} />
+        <Stack.Screen name="Extension" component={Extension} />
+        <Stack.Screen name="BrowseMal" component={MalTopNovels} />
+        <Stack.Screen name="BrowseSettings" component={BrowseSettings} />
+        <Stack.Screen name="GlobalSearch" component={GlobalSearch} />
+        <Stack.Screen name="Migration" component={Migration} />
+        <Stack.Screen name="SourceNovels" component={SourceNovels} />
+        <Stack.Screen name="MigrateNovel" component={MigrateNovel} />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 };
