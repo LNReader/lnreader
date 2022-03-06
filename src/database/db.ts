@@ -14,14 +14,7 @@ import {
   createChapterIdIndexQuery,
 } from './tables/HistoryTable';
 import { createDownloadTableQuery } from './tables/DownloadTable';
-import {
-  createUpdatesTableQuery,
-  // updatesSeedDataQuery,
-} from './tables/UpdateTable';
-
-/**
- * Database Version = 2
- */
+import { createUpdatesTableQuery } from './tables/UpdateTable';
 
 const dbName = 'lnreader.db';
 

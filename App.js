@@ -14,7 +14,7 @@ import * as SplashScreen from 'expo-splash-screen';
 
 import Main from './src/navigators/Main';
 
-import { createDB } from './src/database/DBHelper';
+import { createDB } from './src/database/db';
 import { fonts } from './src/theme/fonts';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 

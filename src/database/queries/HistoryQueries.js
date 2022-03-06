@@ -48,7 +48,7 @@ export const insertHistory = async (novelId, chapterId) => {
   });
 };
 
-export const deleteHistory = async historyId => {
+export const deleteChapterHistory = async historyId => {
   db.transaction(tx => {
     tx.executeSql(
       'DELETE FROM history WHERE historyId = ?',
