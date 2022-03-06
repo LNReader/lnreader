@@ -33,12 +33,12 @@ class ReadwnScraper {
 
       const novelCover = baseUrl + coverUri;
 
-      const novel = {sourceId, novelName, novelCover, novelUrl};
+      const novel = { sourceId, novelName, novelCover, novelUrl };
 
       novels.push(novel);
     });
 
-    return {totalPages: this.totalPages, novels};
+    return { totalPages: this.totalPages, novels };
   }
 
   async parseNovelAndChapters(novelUrl) {
@@ -101,7 +101,7 @@ class ReadwnScraper {
       const chapterUrl = `${novelId}_${i}.html`;
       const releaseDate = null;
 
-      const chapter = {chapterName, releaseDate, chapterUrl};
+      const chapter = { chapterName, releaseDate, chapterUrl };
 
       novelChapters.push(chapter);
     }

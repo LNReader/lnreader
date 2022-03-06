@@ -32,7 +32,7 @@ const popularNovels = async page => {
     novels.push(novel);
   });
 
-  return {totalPages, novels};
+  return { totalPages, novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {
@@ -158,7 +158,7 @@ const searchNovels = async searchTerm => {
     const novelUrl = novel.storyId;
     const novelCover = 'http://static.tapread.com' + novel.coverUrl;
 
-    novels.push({sourceId: 17, novelName, novelCover, novelUrl});
+    novels.push({ sourceId: 17, novelName, novelCover, novelUrl });
   });
 
   return novels;

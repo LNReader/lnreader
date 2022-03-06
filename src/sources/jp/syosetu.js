@@ -46,7 +46,7 @@ const popularNovels = async page => {
     const result = await fetch(searchUrl(pagenumber || null));
     const body = await result.text();
     // Cheerio it!
-    const cheerioQuery = cheerio.load(body, {decodeEntities: false});
+    const cheerioQuery = cheerio.load(body, { decodeEntities: false });
 
     let pageNovels = [];
     // find class=searchkekka_box
@@ -74,7 +74,7 @@ const popularNovels = async page => {
    */
 
   // respond with novels!
-  return {totalPages, novels};
+  return { totalPages, novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {
@@ -84,7 +84,7 @@ const parseNovelAndChapters = async novelUrl => {
 
   const result = await fetch(url);
   const body = await result.text();
-  const cheerioQuery = cheerio.load(body, {decodeEntities: false});
+  const cheerioQuery = cheerio.load(body, { decodeEntities: false });
 
   // create novel object
   let novel = {
@@ -116,7 +116,7 @@ const parseNovelAndChapters = async novelUrl => {
           .trim(), // trim spaces
         getLastPartOfUrl(chapterA.attr('href')),
       ];
-      chapters.push({chapterName, releaseDate, chapterUrl});
+      chapters.push({ chapterName, releaseDate, chapterUrl });
     });
   } else {
     /**
@@ -128,7 +128,7 @@ const parseNovelAndChapters = async novelUrl => {
 
     const nameResult = await fetch(searchUrl() + `&word=${novel.novelName}`);
     const nameBody = await nameResult.text();
-    const summaryQuery = cheerio.load(nameBody, {decodeEntities: false});
+    const summaryQuery = cheerio.load(nameBody, { decodeEntities: false });
     const foundText = summaryQuery('.searchkekka_box')
       .first()
       .find('.ex')
@@ -199,7 +199,7 @@ let searchNovels = async searchTerm => {
     );
     const body = await result.text();
     // Cheerio it!
-    const cheerioQuery = cheerio.load(body, {decodeEntities: false});
+    const cheerioQuery = cheerio.load(body, { decodeEntities: false });
 
     let pageNovels = [];
     // find class=searchkekka_box

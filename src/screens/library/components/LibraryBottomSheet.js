@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -7,15 +7,15 @@ import {
   useWindowDimensions,
 } from 'react-native';
 
-import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
+import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 
 import Bottomsheet from 'rn-sliding-up-panel';
-import {filterLibrary} from '../../../redux/library/library.actions';
-import {useSettings} from '../../../hooks/reduxHooks';
-import {setAppSettings} from '../../../redux/settings/settings.actions';
-import {Checkbox, SortItem} from '../../../components/Checkbox/Checkbox';
-import {RadioButton} from '../../../components/RadioButton/RadioButton';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import { filterLibrary } from '../../../redux/library/library.actions';
+import { useSettings } from '../../../hooks/reduxHooks';
+import { setAppSettings } from '../../../redux/settings/settings.actions';
+import { Checkbox, SortItem } from '../../../components/Checkbox/Checkbox';
+import { RadioButton } from '../../../components/RadioButton/RadioButton';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const LibrarySheet = ({
   bottomSheetRef,
@@ -27,12 +27,12 @@ const LibrarySheet = ({
 }) => {
   const [animatedValue] = useState(new Animated.Value(0));
 
-  const {bottom} = useSafeAreaInsets();
+  const { bottom } = useSafeAreaInsets();
 
   const bottomSheetHeight = 460 + bottom;
 
   const FirstRoute = () => (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       <Checkbox
         label="Downloaded"
         theme={theme}
@@ -96,7 +96,7 @@ const LibrarySheet = ({
   ];
 
   const SecondRoute = () => (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       {sortOrders.map((item, index) => (
         <SortItem
           key={index}
@@ -116,10 +116,10 @@ const LibrarySheet = ({
   );
 
   const displayModes = [
-    {displayMode: 0, label: 'Compact Grid'},
-    {displayMode: 1, label: 'Comfortable Grid'},
-    {displayMode: 3, label: 'No Title Grid'},
-    {displayMode: 2, label: 'List'},
+    { displayMode: 0, label: 'Compact Grid' },
+    { displayMode: 1, label: 'Comfortable Grid' },
+    { displayMode: 3, label: 'No Title Grid' },
+    { displayMode: 2, label: 'List' },
   ];
 
   const {
@@ -144,7 +144,7 @@ const LibrarySheet = ({
   };
 
   const ThirdRoute = () => (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       <Text
         style={{
           color: theme.textColorSecondary,
@@ -204,18 +204,18 @@ const LibrarySheet = ({
 
   const [index, setIndex] = useState(0);
   const [routes] = useState([
-    {key: 'first', title: 'Filter'},
-    {key: 'second', title: 'Sort'},
-    {key: 'third', title: 'Display'},
+    { key: 'first', title: 'Filter' },
+    { key: 'second', title: 'Sort' },
+    { key: 'third', title: 'Display' },
   ]);
 
   const renderTabBar = props => (
     <TabBar
       {...props}
-      indicatorStyle={{backgroundColor: theme.colorAccent}}
-      style={{backgroundColor: theme.colorPrimary, elevation: 0}}
-      renderLabel={({route, color}) => (
-        <Text style={{color}}>{route.title}</Text>
+      indicatorStyle={{ backgroundColor: theme.colorAccent }}
+      style={{ backgroundColor: theme.colorPrimary, elevation: 0 }}
+      renderLabel={({ route, color }) => (
+        <Text style={{ color }}>{route.title}</Text>
       )}
       inactiveColor={theme.textColorSecondary}
       activeColor={theme.colorAccent}
@@ -227,22 +227,22 @@ const LibrarySheet = ({
     <Bottomsheet
       animatedValue={animatedValue}
       ref={bottomSheetRef}
-      draggableRange={{top: bottomSheetHeight, bottom: 0}}
+      draggableRange={{ top: bottomSheetHeight, bottom: 0 }}
       snappingPoints={[0, bottomSheetHeight]}
     >
       <View
         style={[
           styles.contentContainer,
-          {backgroundColor: theme.colorPrimaryDark},
+          { backgroundColor: theme.colorPrimaryDark },
         ]}
       >
         <TabView
-          navigationState={{index, routes}}
+          navigationState={{ index, routes }}
           renderTabBar={renderTabBar}
           renderScene={renderScene}
           onIndexChange={setIndex}
-          initialLayout={{width: layout.width}}
-          style={{borderTopRightRadius: 8, borderTopLeftRadius: 8}}
+          initialLayout={{ width: layout.width }}
+          style={{ borderTopRightRadius: 8, borderTopLeftRadius: 8 }}
         />
       </View>
     </Bottomsheet>

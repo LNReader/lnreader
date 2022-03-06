@@ -1,10 +1,10 @@
 import React from 'react';
-import {StyleSheet, View, Text, ActivityIndicator} from 'react-native';
+import { StyleSheet, View, Text, ActivityIndicator } from 'react-native';
 
 import GlobalSearchNovelList from './GlobalSearchNovelList';
 
-const GlobalSearchSourceItem = ({source, library, theme, navigation}) => {
-  const {sourceName, lang, loading, novels, error} = source;
+const GlobalSearchSourceItem = ({ source, library, theme, navigation }) => {
+  const { sourceName, lang, loading, novels, error } = source;
 
   const colorError = {
     color: theme.statusBar === 'dark-content' ? '#B3261E' : '#F2B8B5',
@@ -13,8 +13,8 @@ const GlobalSearchSourceItem = ({source, library, theme, navigation}) => {
   return (
     <>
       <View style={styles.sourceContainer}>
-        <Text style={{color: theme.textColorPrimary}}>{sourceName}</Text>
-        <Text style={{color: theme.textColorSecondary, fontSize: 12}}>
+        <Text style={{ color: theme.textColorPrimary }}>{sourceName}</Text>
+        <Text style={{ color: theme.textColorSecondary, fontSize: 12 }}>
           {lang}
         </Text>
       </View>
@@ -23,7 +23,7 @@ const GlobalSearchSourceItem = ({source, library, theme, navigation}) => {
       ) : loading ? (
         <ActivityIndicator
           color={theme.colorAccent}
-          style={{marginVertical: 16}}
+          style={{ marginVertical: 16 }}
         />
       ) : (
         <GlobalSearchNovelList

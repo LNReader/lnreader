@@ -1,7 +1,7 @@
 import moment from 'moment';
 import cheerio from 'react-native-cheerio';
-import {defaultCoverUri, Status} from '../../helpers/constants';
-import {parseMadaraDate} from '../../helpers/parseDate';
+import { defaultCoverUri, Status } from '../../helpers/constants';
+import { parseMadaraDate } from '../../helpers/parseDate';
 
 class MadaraScraper {
   constructor(
@@ -55,7 +55,7 @@ class MadaraScraper {
       novels.push(novel);
     });
 
-    return {totalPages: this.totalPages, novels};
+    return { totalPages: this.totalPages, novels };
   }
 
   async parseNovelAndChapters(novelUrl) {
@@ -132,7 +132,7 @@ class MadaraScraper {
       });
       html = await data.text();
     } else {
-      const data = await fetch(url + 'ajax/chapters/', {method: 'POST'});
+      const data = await fetch(url + 'ajax/chapters/', { method: 'POST' });
       html = await data.text();
     }
 
@@ -169,7 +169,7 @@ class MadaraScraper {
         ? (chapterUrl = chapterUrl[5] + '/' + chapterUrl[6])
         : (chapterUrl = chapterUrl[5]);
 
-      novelChapters.push({chapterName, releaseDate, chapterUrl});
+      novelChapters.push({ chapterName, releaseDate, chapterUrl });
     });
 
     novel.chapters = novelChapters.reverse();

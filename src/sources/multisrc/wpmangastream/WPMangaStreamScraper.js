@@ -36,7 +36,7 @@ class WPMangaStreamScraper {
       novels.push(novel);
     });
 
-    return {totalPages, novels};
+    return { totalPages, novels };
   }
 
   async parseNovelAndChapters(novelUrl) {
@@ -97,7 +97,7 @@ class WPMangaStreamScraper {
           .attr('href')
           .split('/')[3];
 
-        novelChapters.push({chapterName, releaseDate, chapterUrl});
+        novelChapters.push({ chapterName, releaseDate, chapterUrl });
       });
 
     novel.chapters = novelChapters.reverse();

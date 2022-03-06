@@ -9,7 +9,7 @@ const getLibraryNovels = () => {
       tx.executeSql(
         getLibraryNovelsQuery,
         null,
-        (txObj, {rows: {_array}}) => resolve(_array),
+        (txObj, { rows: { _array } }) => resolve(_array),
         (txObj, error) => {
           // console.log('Error ', error)
         },
@@ -27,7 +27,7 @@ const getLibraryChapters = () => {
       tx.executeSql(
         getLibraryChaptersQuery,
         null,
-        (txObj, {rows: {_array}}) => resolve(_array),
+        (txObj, { rows: { _array } }) => resolve(_array),
         (txObj, error) => {
           // console.log('Error ', error)
         },
@@ -45,7 +45,7 @@ const getLibraryDownloads = () => {
       tx.executeSql(
         getLibraryDownloadsQuery,
         null,
-        (txObj, {rows: {_array}}) => resolve(_array),
+        (txObj, { rows: { _array } }) => resolve(_array),
         (txObj, error) => {
           // console.log('Error ', error)
         },
@@ -125,7 +125,7 @@ const restoreDownloadsQuery =
   'INSERT OR IGNORE INTO downloads (downloadChapterId, chapterName, chapterText) VALUES (?, ?, ?)';
 
 const restoreDownloads = async chapter => {
-  const {downloadChapterId, chapterName, chapterText} = chapter;
+  const { downloadChapterId, chapterName, chapterText } = chapter;
 
   db.transaction(tx =>
     tx.executeSql(

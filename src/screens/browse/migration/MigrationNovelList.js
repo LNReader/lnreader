@@ -1,14 +1,14 @@
-import React, {useState} from 'react';
-import {StyleSheet, FlatList, Text, View} from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, FlatList, Text, View } from 'react-native';
 
-import {Portal, Modal, Button} from 'react-native-paper';
+import { Portal, Modal, Button } from 'react-native-paper';
 
 import GlobalSearchNovelCover from '../globalsearch/GlobalSearchNovelCover';
 
-import {migrateNovel} from '../../../database/queries/NovelQueries';
-import {showToast} from '../../../hooks/showToast';
+import { migrateNovel } from '../../../database/queries/NovelQueries';
+import { showToast } from '../../../hooks/showToast';
 
-const MigrationNovelList = ({data, theme, library, navigation}) => {
+const MigrationNovelList = ({ data, theme, library, navigation }) => {
   const [selectedNovel, setSelectedNovel] = useState(false);
 
   const [migrateNovelDialog, setMigrateNovelDialog] = useState(false);
@@ -18,7 +18,7 @@ const MigrationNovelList = ({data, theme, library, navigation}) => {
   const inLibrary = (sourceId, novelUrl) =>
     library.some(obj => obj.novelUrl === novelUrl && obj.sourceId === sourceId);
 
-  const renderItem = ({item}) => (
+  const renderItem = ({ item }) => (
     <GlobalSearchNovelCover
       novel={item}
       theme={theme}
@@ -37,7 +37,7 @@ const MigrationNovelList = ({data, theme, library, navigation}) => {
     if (inLibrary(sourceId, novelUrl)) {
       showToast('Novel already in library');
     } else {
-      setSelectedNovel({sourceId, novelUrl, novelName});
+      setSelectedNovel({ sourceId, novelUrl, novelName });
       showMigrateNovelDialog();
     }
   };
@@ -88,7 +88,7 @@ const MigrationNovelList = ({data, theme, library, navigation}) => {
             }}
           >
             <Button
-              style={{marginTop: 30}}
+              style={{ marginTop: 30 }}
               labelStyle={{
                 color: theme.colorAccent,
                 letterSpacing: 0,
@@ -99,13 +99,13 @@ const MigrationNovelList = ({data, theme, library, navigation}) => {
               Cancel
             </Button>
             <Button
-              style={{marginTop: 30}}
+              style={{ marginTop: 30 }}
               labelStyle={{
                 color: theme.colorAccent,
                 letterSpacing: 0,
                 textTransform: 'none',
               }}
-              theme={{colors: {primary: theme.colorAccent}}}
+              theme={{ colors: { primary: theme.colorAccent } }}
               onPress={async () => {
                 hideMigrateNovelDialog();
                 await migrateNovel(

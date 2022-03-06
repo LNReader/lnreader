@@ -13,13 +13,13 @@ const initialState = {
 };
 
 const updateReducer = (state = initialState, action) => {
-  const {type, payload} = action;
+  const { type, payload } = action;
 
   switch (type) {
     case LOAD_UPDATES:
-      return {...state, loading: true};
+      return { ...state, loading: true };
     case GET_UPDATES:
-      return {...state, updates: payload, loading: false};
+      return { ...state, updates: payload, loading: false };
     case SET_LAST_UPDATE_TIME:
       return {
         ...state,

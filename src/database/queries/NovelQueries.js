@@ -4,10 +4,10 @@ const db = SQLite.openDatabase('lnreader.db');
 import BackgroundService from 'react-native-background-actions';
 import * as DocumentPicker from 'expo-document-picker';
 
-import {fetchChapters, fetchNovel} from '../../services/Source/source';
-import {insertChapters} from './ChapterQueries';
+import { fetchChapters, fetchNovel } from '../../services/Source/source';
+import { insertChapters } from './ChapterQueries';
 
-import {showToast} from '../../hooks/showToast';
+import { showToast } from '../../hooks/showToast';
 
 const insertNovelQuery =
   'INSERT INTO novels (novelUrl, sourceUrl, sourceId, source, novelName, novelCover, novelSummary, author, artist, status, genre) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
@@ -30,7 +30,7 @@ export const insertNovel = async novel => {
           novel.status,
           novel.genre,
         ],
-        (txObj, {insertId}) => resolve(insertId),
+        (txObj, { insertId }) => resolve(insertId),
         (txObj, error) => {
           // console.log('Error ', error)
         },
@@ -94,7 +94,7 @@ export const getNovel = async (sourceId, novelUrl) => {
       tx.executeSql(
         'SELECT * FROM novels WHERE novelUrl = ? AND sourceId = ?',
         [novelUrl, sourceId],
-        (txObj, {rows}) => resolve(rows.item(0)),
+        (txObj, { rows }) => resolve(rows.item(0)),
         (txObj, error) => {
           // console.log('Error ', error)
         },
@@ -139,7 +139,7 @@ export const restoreLibrary = async novel => {
           novel.followed,
           novel.unread,
         ],
-        async (txObj, {insertId}) => {
+        async (txObj, { insertId }) => {
           const chapters = await fetchChapters(novel.sourceId, novel.novelUrl);
           await insertChapters(insertId, chapters);
         },
@@ -196,7 +196,7 @@ export const migrateNovel = async (sourceId, novelUrl) => {
               novel.genre,
               1,
             ],
-            async (txObj, {insertId}) => {
+            async (txObj, { insertId }) => {
               const chapters = await fetchChapters(
                 novel.sourceId,
                 novel.novelUrl,
@@ -214,7 +214,7 @@ export const migrateNovel = async (sourceId, novelUrl) => {
 
     await BackgroundService.start(veryIntensiveTask, options);
     await BackgroundService.updateNotification({
-      progressBar: {value: 1, indeterminate: false},
+      progressBar: { value: 1, indeterminate: false },
     });
   } catch (error) {
     showToast(error.message);
@@ -242,7 +242,7 @@ export const updateNovelInfo = async (info, novelId) => {
 };
 
 export const pickCustomNovelCover = async novelId => {
-  const image = await DocumentPicker.getDocumentAsync({type: 'image/*'});
+  const image = await DocumentPicker.getDocumentAsync({ type: 'image/*' });
 
   if (image.type === 'success' && image.uri) {
     const uri = 'file://' + image.uri;

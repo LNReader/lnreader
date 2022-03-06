@@ -1,7 +1,7 @@
 import React from 'react';
-import {View} from 'react-native';
+import { View } from 'react-native';
 
-const BottomSheetHandle = ({theme}) => (
+const BottomSheetHandle = ({ theme }) => (
   <View
     style={{
       backgroundColor: `${theme.textColorPrimary}66`,

@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   StyleSheet,
   View,
@@ -7,25 +7,25 @@ import {
   Text,
   SectionList,
 } from 'react-native';
-import {useFocusEffect} from '@react-navigation/native';
-import {useDispatch, useSelector} from 'react-redux';
+import { useFocusEffect } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
 import EmptyView from '../../components/EmptyView';
 import {
   getUpdatesAction,
   updateLibraryAction,
 } from '../../redux/updates/updates.actions';
 import UpdatesItem from './components/UpdatesItem';
-import {useTheme} from '../../hooks/reduxHooks';
-import {Searchbar} from '../../components/Searchbar/Searchbar';
+import { useTheme } from '../../hooks/reduxHooks';
+import { Searchbar } from '../../components/Searchbar/Searchbar';
 
 import moment from 'moment';
-import {dateFormat} from '../../services/utils/constants';
+import { dateFormat } from '../../services/utils/constants';
 import {
   deleteChapterAction,
   downloadChapterAction,
 } from '../../redux/novel/novel.actions';
 
-const Updates = ({navigation}) => {
+const Updates = ({ navigation }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const {
@@ -34,7 +34,7 @@ const Updates = ({navigation}) => {
     showLastUpdateTime = true,
     loading,
   } = useSelector(state => state.updatesReducer);
-  const {downloadQueue} = useSelector(state => state.downloadsReducer);
+  const { downloadQueue } = useSelector(state => state.downloadsReducer);
 
   const [searchText, setSearchText] = useState('');
   const [searchResults, setSearchResults] = useState([]);
@@ -105,7 +105,7 @@ const Updates = ({navigation}) => {
     [dispatch],
   );
 
-  const renderItem = ({item}) => (
+  const renderItem = ({ item }) => (
     <UpdatesItem
       item={item}
       theme={theme}
@@ -148,7 +148,9 @@ const Updates = ({navigation}) => {
   };
 
   return (
-    <View style={[styles.container, {backgroundColor: theme.colorPrimaryDark}]}>
+    <View
+      style={[styles.container, { backgroundColor: theme.colorPrimaryDark }]}
+    >
       <Searchbar
         placeholder="Search Updates"
         searchText={searchText}
@@ -165,7 +167,7 @@ const Updates = ({navigation}) => {
       />
       {showLastUpdateTime && lastUpdateTime && (
         <Text
-          style={[styles.lastUpdateTime, {color: theme.textColorSecondary}]}
+          style={[styles.lastUpdateTime, { color: theme.textColorSecondary }]}
         >
           Library last updated: {moment(lastUpdateTime).fromNow()}
         </Text>
@@ -175,8 +177,8 @@ const Updates = ({navigation}) => {
         sections={searchText ? searchResults : sectionedUpdates}
         keyExtractor={(item, index) => index.toString()}
         renderItem={renderItem}
-        renderSectionHeader={({section: {date}}) => (
-          <Text style={[styles.header, {color: theme.textColorSecondary}]}>
+        renderSectionHeader={({ section: { date } }) => (
+          <Text style={[styles.header, { color: theme.textColorSecondary }]}>
             {moment(date).calendar(null, dateFormat)}
           </Text>
         )}

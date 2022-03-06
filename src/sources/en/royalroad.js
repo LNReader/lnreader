@@ -1,7 +1,7 @@
 import cheerio from 'react-native-cheerio';
 
-import {parseMadaraDate} from '../helpers/parseDate';
-import {Status} from '../helpers/constants';
+import { parseMadaraDate } from '../helpers/parseDate';
+import { Status } from '../helpers/constants';
 
 const baseUrl = 'https://www.royalroad.com/';
 
@@ -42,7 +42,7 @@ const popularNovels = async page => {
     novels.push(novel);
   });
 
-  return {totalPages, novels};
+  return { totalPages, novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

@@ -18,4 +18,4 @@ const LtnovelScraper = new MultiSrcScraper(
   'Ltnovel.com',
 );
 
-export {ReadwnScraper, NovelmtScraper, LtnovelScraper};
+export { ReadwnScraper, NovelmtScraper, LtnovelScraper };

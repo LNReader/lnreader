@@ -1,19 +1,19 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 
-import {Button, Dialog, Portal} from 'react-native-paper';
+import { Button, Dialog, Portal } from 'react-native-paper';
 
-import {Appbar} from '../../components/Appbar';
-import {ScreenContainer} from '../../components/Common';
-import {List} from '../../components/List';
+import { Appbar } from '../../components/Appbar';
+import { ScreenContainer } from '../../components/Common';
+import { List } from '../../components/List';
 
-import {useTheme} from '../../hooks/reduxHooks';
-import {showToast} from '../../hooks/showToast';
+import { useTheme } from '../../hooks/reduxHooks';
+import { showToast } from '../../hooks/showToast';
 
-import {deleteNovelCache} from '../../database/queries/NovelQueries';
-import {clearUpdates} from '../../database/queries/UpdateQueries';
-import {clearCoverCache} from '../../services/utils/coverCache';
+import { deleteNovelCache } from '../../database/queries/NovelQueries';
+import { clearUpdates } from '../../database/queries/UpdateQueries';
+import { clearCoverCache } from '../../services/utils/coverCache';
 
-const AdvancedSettings = ({navigation}) => {
+const AdvancedSettings = ({ navigation }) => {
   const theme = useTheme();
 
   /**
@@ -74,14 +74,14 @@ const AdvancedSettings = ({navigation}) => {
           <Dialog.Actions>
             <Button
               uppercase={false}
-              theme={{colors: {primary: theme.colorAccent}}}
+              theme={{ colors: { primary: theme.colorAccent } }}
               onPress={hideClearDatabaseDialog}
             >
               Cancel
             </Button>
             <Button
               uppercase={false}
-              theme={{colors: {primary: theme.colorAccent}}}
+              theme={{ colors: { primary: theme.colorAccent } }}
               onPress={() => {
                 deleteNovelCache();
                 hideClearDatabaseDialog();
@@ -112,14 +112,14 @@ const AdvancedSettings = ({navigation}) => {
           <Dialog.Actions>
             <Button
               uppercase={false}
-              theme={{colors: {primary: theme.colorAccent}}}
+              theme={{ colors: { primary: theme.colorAccent } }}
               onPress={hideClearUpdatesDialog}
             >
               Cancel
             </Button>
             <Button
               uppercase={false}
-              theme={{colors: {primary: theme.colorAccent}}}
+              theme={{ colors: { primary: theme.colorAccent } }}
               onPress={() => {
                 clearUpdates();
                 showToast('Updates cleared.');

@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
-import {View} from 'react-native';
+import React, { useState } from 'react';
+import { View } from 'react-native';
 
-import {Appbar} from 'react-native-paper';
+import { Appbar } from 'react-native-paper';
 import FadeView from '../../../components/Common/CrossFadeView';
-import {bookmarkChapterAction} from '../../../redux/novel/novel.actions';
+import { bookmarkChapterAction } from '../../../redux/novel/novel.actions';
 
 const ChapterAppbar = ({
   navigation,
@@ -33,19 +33,19 @@ const ChapterAppbar = ({
       active={hide}
       animationDuration={150}
     >
-      <View style={{flex: 1, backgroundColor: `${theme.colorPrimary}E6`}}>
-        <Appbar.Header style={{backgroundColor: 'transparent', elevation: 0}}>
+      <View style={{ flex: 1, backgroundColor: `${theme.colorPrimary}E6` }}>
+        <Appbar.Header style={{ backgroundColor: 'transparent', elevation: 0 }}>
           <Appbar.BackAction
             onPress={navigation.goBack}
             color={theme.textColorPrimary}
             size={26}
-            style={{marginRight: 0}}
+            style={{ marginRight: 0 }}
           />
           <Appbar.Content
             title={novelName}
-            titleStyle={{color: theme.textColorPrimary}}
+            titleStyle={{ color: theme.textColorPrimary }}
             subtitle={chapterName}
-            subtitleStyle={{color: theme.textColorSecondary}}
+            subtitleStyle={{ color: theme.textColorSecondary }}
           />
           <Appbar.Action
             icon="volume-high"
@@ -71,7 +71,7 @@ const ChapterAppbar = ({
             icon={bookmarked ? 'bookmark' : 'bookmark-outline'}
             size={24}
             onPress={() => {
-              dispatch(bookmarkChapterAction([{bookmark, chapterId}]));
+              dispatch(bookmarkChapterAction([{ bookmark, chapterId }]));
               setBookmarked(!bookmarked);
             }}
             color={theme.textColorPrimary}

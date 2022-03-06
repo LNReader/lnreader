@@ -1,19 +1,19 @@
 import React from 'react';
-import {Pressable, StyleSheet, Text, View} from 'react-native';
-import {IconButton} from 'react-native-paper';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { IconButton } from 'react-native-paper';
 
 // const icons = ['(･o･;)', 'Σ(ಠ_ಠ)', 'ಥ_ಥ', '(˘･_･˘)', '(；￣Д￣)', '(･Д･。'];
 
-export const ErrorView = ({errorName, actions, theme}) => (
-  <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-    <Text style={[styles.emptyViewIcon, {color: theme.textColorHint}]}>
+export const ErrorView = ({ errorName, actions, theme }) => (
+  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <Text style={[styles.emptyViewIcon, { color: theme.textColorHint }]}>
       {/* {icons[Math.floor(Math.random() * 5)]} */}
       ಥ_ಥ
     </Text>
-    <Text style={[styles.emptyViewText, {color: theme.textColorHint}]}>
+    <Text style={[styles.emptyViewText, { color: theme.textColorHint }]}>
       {errorName}
     </Text>
-    <View style={{flexDirection: 'row'}}>
+    <View style={{ flexDirection: 'row' }}>
       {actions.map(action => (
         <View
           style={{
@@ -40,7 +40,7 @@ export const ErrorView = ({errorName, actions, theme}) => (
               icon={action.icon}
               color={theme.textColorHint}
               size={24}
-              style={{margin: 0}}
+              style={{ margin: 0 }}
             />
             <Text
               style={{

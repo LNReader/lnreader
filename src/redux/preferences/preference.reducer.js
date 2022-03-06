@@ -1,4 +1,4 @@
-import {SET_NOVEL_SETTINGS} from '../novel/novel.types';
+import { SET_NOVEL_SETTINGS } from '../novel/novel.types';
 import {
   SAVE_SCROLL_POSITION,
   SET_CHAPTER_LIST_PREF,
@@ -10,7 +10,7 @@ const initialState = {
 };
 
 const novelReducer = (state = initialState, action) => {
-  const {type, payload} = action;
+  const { type, payload } = action;
 
   switch (type) {
     case SET_LAST_READ:

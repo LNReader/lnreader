@@ -1,5 +1,5 @@
-import {useSelector} from 'react-redux';
-import {darkTheme} from '../theme/theme';
+import { useSelector } from 'react-redux';
+import { darkTheme } from '../theme/theme';
 
 const useTheme = () => {
   const theme = useSelector(state => state.settingsReducer.theme);
@@ -56,7 +56,7 @@ const usePreferences = novelId => {
     showChapterTitles = novel.showChapterTitles;
   }
 
-  return {sort, filter, position, showChapterTitles};
+  return { sort, filter, position, showChapterTitles };
 };
 
 const useSavedSettings = () => {
@@ -84,7 +84,7 @@ const useContinueReading = (chapters, novelId) => {
     lastReadChapter = chapters.find(obj => obj.read === 0);
   }
 
-  return {lastReadChapter, position};
+  return { lastReadChapter, position };
 };
 
 const usePosition = (novelId, chapterId) => {

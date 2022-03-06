@@ -33,7 +33,7 @@ const popularNovels = async page => {
     novels.push(novel);
   });
 
-  return {totalPages, novels};
+  return { totalPages, novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {
@@ -124,7 +124,7 @@ const parseNovelAndChapters = async novelUrl => {
       ? (chapterUrl = chapterUrl[5] + '/' + chapterUrl[6])
       : (chapterUrl = chapterUrl[5]);
 
-    novelChapters.push({chapterName, releaseDate, chapterUrl});
+    novelChapters.push({ chapterName, releaseDate, chapterUrl });
   });
 
   novel.chapters = novelChapters.reverse();

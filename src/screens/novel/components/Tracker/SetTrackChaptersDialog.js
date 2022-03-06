@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
-import {StyleSheet, Text} from 'react-native';
-import {Modal, TextInput} from 'react-native-paper';
+import React, { useState } from 'react';
+import { StyleSheet, Text } from 'react-native';
+import { Modal, TextInput } from 'react-native-paper';
 
 const SetTrackChaptersDialog = ({
   trackItem,
@@ -19,10 +19,10 @@ const SetTrackChaptersDialog = ({
       onDismiss={() => setTrackChaptersDialog(false)}
       contentContainerStyle={[
         styles.containerStyle,
-        {backgroundColor: theme.colorPrimary},
+        { backgroundColor: theme.colorPrimary },
       ]}
     >
-      <Text style={[styles.dialogTitle, {color: theme.textColorPrimary}]}>
+      <Text style={[styles.dialogTitle, { color: theme.textColorPrimary }]}>
         Chapters
       </Text>
       <TextInput

@@ -1,27 +1,27 @@
 import React from 'react';
-import {FlatList, Pressable, StyleSheet, Text, View} from 'react-native';
+import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 
-import {Switch} from 'react-native-paper';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {useDispatch, useSelector} from 'react-redux';
+import { Switch } from 'react-native-paper';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useDispatch, useSelector } from 'react-redux';
 
-import {Appbar} from '../../components/Appbar';
-import {List} from '../../components/List';
+import { Appbar } from '../../components/Appbar';
+import { List } from '../../components/List';
 
-import {useSettings, useTheme} from '../../hooks/reduxHooks';
-import {setAppSettings} from '../../redux/settings/settings.actions';
+import { useSettings, useTheme } from '../../hooks/reduxHooks';
+import { setAppSettings } from '../../redux/settings/settings.actions';
 import {
   enableDiscover,
   filterLanguage,
 } from '../../redux/source/source.actions';
 
-const BrowseSettings = ({navigation}) => {
+const BrowseSettings = ({ navigation }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
 
-  const {bottom} = useSafeAreaInsets();
+  const { bottom } = useSafeAreaInsets();
 
-  const {filters = [], showMyAnimeList = true} = useSelector(
+  const { filters = [], showMyAnimeList = true } = useSelector(
     state => state.sourceReducer,
   );
 
@@ -38,17 +38,17 @@ const BrowseSettings = ({navigation}) => {
     'Portuguese (Brazil)',
   ].sort();
 
-  const {searchAllSources = false, onlyShowPinnedSources = false} =
+  const { searchAllSources = false, onlyShowPinnedSources = false } =
     useSettings();
 
-  const renderItem = ({item}) => {
+  const renderItem = ({ item }) => {
     return (
       <Pressable
-        android_ripple={{color: theme.rippleColor}}
+        android_ripple={{ color: theme.rippleColor }}
         style={styles.switch}
         onPress={() => dispatch(filterLanguage(item))}
       >
-        <Text style={{color: theme.textColorPrimary}}>{item}</Text>
+        <Text style={{ color: theme.textColorPrimary }}>{item}</Text>
         <Switch
           color={theme.colorAccent}
           value={filters.indexOf(item) === -1 ? true : false}
@@ -59,10 +59,10 @@ const BrowseSettings = ({navigation}) => {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       <Appbar onBackAction={navigation.goBack} title="Browse" />
       <FlatList
-        contentContainerStyle={{paddingBottom: bottom}}
+        contentContainerStyle={{ paddingBottom: bottom }}
         data={languages}
         keyExtractor={item => item}
         renderItem={renderItem}
@@ -70,13 +70,13 @@ const BrowseSettings = ({navigation}) => {
           <View>
             <List.SubHeader theme={theme}>Global Search</List.SubHeader>
             <Pressable
-              android_ripple={{color: theme.rippleColor}}
+              android_ripple={{ color: theme.rippleColor }}
               style={styles.switch}
               onPress={() =>
                 dispatch(setAppSettings('searchAllSources', !searchAllSources))
               }
             >
-              <Text style={{color: theme.textColorPrimary}}>
+              <Text style={{ color: theme.textColorPrimary }}>
                 Search all sources
               </Text>
               <Switch
@@ -97,11 +97,11 @@ const BrowseSettings = ({navigation}) => {
             <List.Divider theme={theme} />
             <List.SubHeader theme={theme}>Browse</List.SubHeader>
             <Pressable
-              android_ripple={{color: theme.rippleColor}}
+              android_ripple={{ color: theme.rippleColor }}
               style={styles.switch}
               onPress={() => dispatch(enableDiscover('showMyAnimeList'))}
             >
-              <Text style={{color: theme.textColorPrimary}}>MyAnimeList</Text>
+              <Text style={{ color: theme.textColorPrimary }}>MyAnimeList</Text>
               <Switch
                 color={theme.colorAccent}
                 value={showMyAnimeList}
@@ -111,7 +111,7 @@ const BrowseSettings = ({navigation}) => {
               />
             </Pressable>
             <Pressable
-              android_ripple={{color: theme.rippleColor}}
+              android_ripple={{ color: theme.rippleColor }}
               style={styles.switch}
               onPress={() =>
                 dispatch(
@@ -122,7 +122,7 @@ const BrowseSettings = ({navigation}) => {
                 )
               }
             >
-              <Text style={{color: theme.textColorPrimary}}>
+              <Text style={{ color: theme.textColorPrimary }}>
                 Only show pinned sources
               </Text>
               <Switch

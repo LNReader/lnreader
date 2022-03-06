@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -8,21 +8,21 @@ import {
   RefreshControl,
 } from 'react-native';
 
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import {
   getSourcesAction,
   searchSourcesAction,
 } from '../../redux/source/source.actions';
-import {useSettings, useTheme} from '../../hooks/reduxHooks';
-import {showToast} from '../../hooks/showToast';
+import { useSettings, useTheme } from '../../hooks/reduxHooks';
+import { showToast } from '../../hooks/showToast';
 
-import {Searchbar} from '../../components/Searchbar/Searchbar';
+import { Searchbar } from '../../components/Searchbar/Searchbar';
 import SourceItem from './components/SourceItem';
 import EmptyView from '../../components/EmptyView';
 import DiscoverCard from './discover/DiscoverCard';
 
-const Browse = ({navigation}) => {
+const Browse = ({ navigation }) => {
   const [refreshing, setRefreshing] = useState(false);
   const [searchText, setSearchText] = useState('');
 
@@ -35,7 +35,7 @@ const Browse = ({navigation}) => {
     showMyAnimeList = true,
   } = useSelector(state => state.sourceReducer);
 
-  const {onlyShowPinnedSources = false} = useSettings();
+  const { onlyShowPinnedSources = false } = useSettings();
 
   const theme = useTheme();
   const dispatch = useDispatch();
@@ -68,7 +68,7 @@ const Browse = ({navigation}) => {
     dispatch(searchSourcesAction(text));
   };
 
-  const renderItem = ({item}) => (
+  const renderItem = ({ item }) => (
     <SourceItem
       item={item}
       isPinned={isPinned(item.sourceId)}
@@ -78,14 +78,16 @@ const Browse = ({navigation}) => {
     />
   );
 
-  const Header = ({title}) => (
-    <Text style={[styles.header, {color: theme.textColorSecondary}]}>
+  const Header = ({ title }) => (
+    <Text style={[styles.header, { color: theme.textColorSecondary }]}>
       {title}
     </Text>
   );
 
   return (
-    <View style={[styles.container, {backgroundColor: theme.colorPrimaryDark}]}>
+    <View
+      style={[styles.container, { backgroundColor: theme.colorPrimaryDark }]}
+    >
       <Searchbar
         theme={theme}
         placeholder="Search Source"
@@ -110,7 +112,7 @@ const Browse = ({navigation}) => {
       />
 
       <FlatList
-        contentContainerStyle={{flexGrow: 1, paddingBottom: 32}}
+        contentContainerStyle={{ flexGrow: 1, paddingBottom: 32 }}
         data={onlyShowPinnedSources ? [] : !searchText ? sources : search}
         keyExtractor={item => item.sourceId.toString()}
         renderItem={renderItem}
@@ -132,7 +134,7 @@ const Browse = ({navigation}) => {
             )}
             {pinnedSources.length > 0 && (
               <FlatList
-                contentContainerStyle={{paddingBottom: 16}}
+                contentContainerStyle={{ paddingBottom: 16 }}
                 data={pinnedSources}
                 keyExtractor={item => item.sourceId.toString()}
                 renderItem={renderItem}
@@ -150,7 +152,7 @@ const Browse = ({navigation}) => {
             <ActivityIndicator
               size="small"
               color={theme.colorAccent}
-              style={{marginTop: 16}}
+              style={{ marginTop: 16 }}
             />
           ) : (
             sources.length === 0 && (

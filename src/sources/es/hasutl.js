@@ -32,7 +32,7 @@ const popularNovels = async page => {
     novels.push(novel);
   });
 
-  return {totalPages, novels};
+  return { totalPages, novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {
@@ -92,7 +92,7 @@ const parseNovelAndChapters = async novelUrl => {
       let chapterUrl = loadedCheerio(this).attr('href').split('/');
       chapterUrl = chapterUrl[chapterUrl.length - 2];
 
-      const chapter = {chapterName, releaseDate, chapterUrl};
+      const chapter = { chapterName, releaseDate, chapterUrl };
 
       novelChapters.push(chapter);
     });

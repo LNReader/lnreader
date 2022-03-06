@@ -1,4 +1,4 @@
-import {StatusBar} from 'react-native';
+import { StatusBar } from 'react-native';
 
 /**
  * Sets status and navigation bar color.

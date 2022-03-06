@@ -1,4 +1,4 @@
-import {ToastAndroid} from 'react-native';
+import { ToastAndroid } from 'react-native';
 
 import {
   LOADING_NOVEL,
@@ -17,7 +17,7 @@ import {
   MARK_PREVIOUS_CHAPTERS_UNREAD,
 } from './novel.types';
 
-import {fetchNovel} from '../../services/Source/source';
+import { fetchNovel } from '../../services/Source/source';
 import {
   followNovel,
   insertNovel,
@@ -35,15 +35,15 @@ import {
   markPreviousChaptersUnread,
   getNextChapterFromDB,
 } from '../../database/queries/ChapterQueries';
-import {deleteNovelUpdates} from '../../database/queries/UpdateQueries';
+import { deleteNovelUpdates } from '../../database/queries/UpdateQueries';
 import {
   SAVE_SCROLL_POSITION,
   SET_CHAPTER_LIST_PREF,
   SET_LAST_READ,
 } from '../preferences/preference.types';
-import {GET_LIBRARY_NOVELS} from '../library/library.types';
-import {getLibrary} from '../../database/queries/LibraryQueries';
-import {showToast} from '../../hooks/showToast';
+import { GET_LIBRARY_NOVELS } from '../library/library.types';
+import { getLibrary } from '../../database/queries/LibraryQueries';
+import { showToast } from '../../hooks/showToast';
 
 import * as Notifications from 'expo-notifications';
 
@@ -58,17 +58,17 @@ Notifications.setNotificationHandler({
 });
 
 import BackgroundService from 'react-native-background-actions';
-import {SET_DOWNLOAD_QUEUE} from '../downloads/donwloads.types';
-import {updateNovel} from '../../services/updates/LibraryUpdateQueries';
+import { SET_DOWNLOAD_QUEUE } from '../downloads/donwloads.types';
+import { updateNovel } from '../../services/updates/LibraryUpdateQueries';
 
 export const setNovel = novel => async dispatch => {
-  dispatch({type: SET_NOVEL, payload: novel});
+  dispatch({ type: SET_NOVEL, payload: novel });
 };
 
 export const getNovelAction =
   (followed, sourceId, novelUrl, novelId, sort, filter) => async dispatch => {
     try {
-      dispatch({type: LOADING_NOVEL});
+      dispatch({ type: LOADING_NOVEL });
 
       if (followed === 1) {
         /**
@@ -81,7 +81,7 @@ export const getNovelAction =
           payload: chapters,
         });
       } else {
-        dispatch({type: FETCHING_NOVEL});
+        dispatch({ type: FETCHING_NOVEL });
 
         /**
          * Check if novel is cached.
@@ -129,7 +129,7 @@ export const getNovelAction =
 
 export const sortAndFilterChapters =
   (novelId, sort, filter) => async dispatch => {
-    dispatch({type: FETCHING_NOVEL});
+    dispatch({ type: FETCHING_NOVEL });
 
     const chapters = await getChapters(novelId, sort, filter);
 
@@ -140,14 +140,14 @@ export const sortAndFilterChapters =
 
     dispatch({
       type: SET_CHAPTER_LIST_PREF,
-      payload: {novelId, sort, filter},
+      payload: { novelId, sort, filter },
     });
   };
 
 export const showChapterTitlesAction = (novelId, value) => async dispatch => {
   dispatch({
     type: SET_NOVEL_SETTINGS,
-    payload: {novelId, value: value},
+    payload: { novelId, value: value },
   });
 };
 
@@ -160,7 +160,7 @@ export const followNovelAction = novel => async dispatch => {
 
   dispatch({
     type: UPDATE_IN_LIBRARY,
-    payload: {novelUrl: novel.novelUrl, followed: !novel.followed},
+    payload: { novelUrl: novel.novelUrl, followed: !novel.followed },
   });
 
   const res = await getLibrary();
@@ -192,14 +192,14 @@ export const markChapterReadAction = (chapterId, novelId) => async dispatch => {
 
   dispatch({
     type: CHAPTER_READ,
-    payload: {chapterId},
+    payload: { chapterId },
   });
 
   const nextChapter = await getNextChapterFromDB(novelId, chapterId);
 
   dispatch({
     type: SET_LAST_READ,
-    payload: {novelId, chapterId: nextChapter.chapterId},
+    payload: { novelId, chapterId: nextChapter.chapterId },
   });
 
   /**
@@ -256,7 +256,7 @@ export const markPreviousChaptersUnreadAction =
 
 export const markChapterUnreadAction =
   (chapters, novelId) => async (dispatch, getState) => {
-    const {sort = 'ORDER BY chapterId ASC', filter = ''} =
+    const { sort = 'ORDER BY chapterId ASC', filter = '' } =
       getState().preferenceReducer.novelSettings[novelId];
 
     chapters.map(chapter => markChapterUnread(chapter.chapterId));
@@ -278,7 +278,7 @@ export const downloadChapterAction =
     // });
     dispatch({
       type: SET_DOWNLOAD_QUEUE,
-      payload: [{chapterId, chapterName}],
+      payload: [{ chapterId, chapterName }],
     });
 
     await downloadChapter(sourceId, novelUrl, chapterUrl, chapterId);
@@ -315,7 +315,7 @@ export const downloadAllChaptersAction =
       }));
 
       if (chapters.length > 0) {
-        dispatch({type: SET_DOWNLOAD_QUEUE, payload: chapters});
+        dispatch({ type: SET_DOWNLOAD_QUEUE, payload: chapters });
 
         const options = {
           taskName: 'Library Update',
@@ -426,9 +426,9 @@ export const deleteAllChaptersAction = chapters => async dispatch => {
 
 export const updateNovelAction =
   (sourceId, novelUrl, novelId, sort, filter) => async (dispatch, getState) => {
-    dispatch({type: FETCHING_NOVEL});
+    dispatch({ type: FETCHING_NOVEL });
 
-    const {downloadNewChapters = false, refreshNovelMetadata = false} =
+    const { downloadNewChapters = false, refreshNovelMetadata = false } =
       getState().settingsReducer;
 
     const options = {
@@ -443,6 +443,6 @@ export const updateNovelAction =
 
     dispatch({
       type: UPDATE_NOVEL,
-      payload: {novel, chapters},
+      payload: { novel, chapters },
     });
   };

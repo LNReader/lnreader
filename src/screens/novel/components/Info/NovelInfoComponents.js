@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   FlatList,
   StyleSheet,
@@ -9,22 +9,22 @@ import {
   StatusBar,
 } from 'react-native';
 
-import {IconButton, Portal} from 'react-native-paper';
-import {LinearGradient} from 'expo-linear-gradient';
-import {easeGradient} from 'react-native-easing-gradient';
+import { IconButton, Portal } from 'react-native-paper';
+import { LinearGradient } from 'expo-linear-gradient';
+import { easeGradient } from 'react-native-easing-gradient';
 import FastImage from 'react-native-fast-image';
-import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
-import {Chip} from '../../../../components/Chip/Chip';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { Chip } from '../../../../components/Chip/Chip';
 
-const NovelInfoContainer = ({children}) => (
+const NovelInfoContainer = ({ children }) => (
   <View style={styles.novelInfoContainer}>{children}</View>
 );
 
-const CoverImage = ({children, source, theme, hideBackdrop}) => {
-  const {colors, locations} = easeGradient({
+const CoverImage = ({ children, source, theme, hideBackdrop }) => {
+  const { colors, locations } = easeGradient({
     colorStops: {
-      0: {color: 'rgba(0,0,0,0)'},
-      1: {color: theme.colorPrimaryDark},
+      0: { color: 'rgba(0,0,0,0)' },
+      1: { color: theme.colorPrimaryDark },
     },
   });
 
@@ -52,7 +52,7 @@ const CoverImage = ({children, source, theme, hideBackdrop}) => {
   }
 };
 
-const NovelThumbnail = ({source, setCustomNovelCover}) => {
+const NovelThumbnail = ({ source, setCustomNovelCover }) => {
   const [expanded, setExpanded] = useState(false);
 
   if (!expanded) {
@@ -107,37 +107,37 @@ const NovelThumbnail = ({source, setCustomNovelCover}) => {
   }
 };
 
-const NovelTitle = ({theme, children, onLongPress, onPress}) => (
+const NovelTitle = ({ theme, children, onLongPress, onPress }) => (
   <Text
     onLongPress={onLongPress}
     onPress={onPress}
     numberOfLines={2}
-    style={[styles.novelTitle, {color: theme.textColorPrimary}]}
+    style={[styles.novelTitle, { color: theme.textColorPrimary }]}
   >
     {children}
   </Text>
 );
 
-const NovelAuthor = ({theme, children}) => (
+const NovelAuthor = ({ theme, children }) => (
   <Text
-    style={[styles.novelAuthor, {color: theme.textColorSecondary}]}
+    style={[styles.novelAuthor, { color: theme.textColorSecondary }]}
     numberOfLines={2}
   >
     {children}
   </Text>
 );
 
-const NovelInfo = ({theme, children}) => (
+const NovelInfo = ({ theme, children }) => (
   <Text
-    style={[styles.novelInfo, {color: theme.textColorSecondary}]}
+    style={[styles.novelInfo, { color: theme.textColorSecondary }]}
     numberOfLines={1}
   >
     {children}
   </Text>
 );
 
-const FollowButton = ({theme, onPress, followed}) => (
-  <View style={{borderRadius: 4, overflow: 'hidden', flex: 1}}>
+const FollowButton = ({ theme, onPress, followed }) => (
+  <View style={{ borderRadius: 4, overflow: 'hidden', flex: 1 }}>
     <Pressable
       android_ripple={{
         color: theme.rippleColor,
@@ -154,7 +154,7 @@ const FollowButton = ({theme, onPress, followed}) => (
         icon={followed ? 'heart' : 'heart-outline'}
         color={followed ? theme.colorAccent : theme.textColorHint}
         size={24}
-        style={{margin: 0}}
+        style={{ margin: 0 }}
       />
       <Text
         style={{
@@ -168,8 +168,8 @@ const FollowButton = ({theme, onPress, followed}) => (
   </View>
 );
 
-const TrackerButton = ({theme, isTracked, onPress}) => (
-  <View style={{borderRadius: 4, overflow: 'hidden', flex: 1}}>
+const TrackerButton = ({ theme, isTracked, onPress }) => (
+  <View style={{ borderRadius: 4, overflow: 'hidden', flex: 1 }}>
     <Pressable
       android_ripple={{
         color: theme.rippleColor,
@@ -186,7 +186,7 @@ const TrackerButton = ({theme, isTracked, onPress}) => (
         icon={isTracked ? 'check' : 'sync'}
         color={isTracked ? theme.colorAccent : theme.textColorHint}
         size={24}
-        style={{margin: 0}}
+        style={{ margin: 0 }}
       />
       <Text
         style={{
@@ -200,10 +200,10 @@ const TrackerButton = ({theme, isTracked, onPress}) => (
   </View>
 );
 
-const NovelGenres = ({theme, genre}) => {
+const NovelGenres = ({ theme, genre }) => {
   const data = genre.split(',');
 
-  const renderItem = ({item}) => <Chip label={item} theme={theme} />;
+  const renderItem = ({ item }) => <Chip label={item} theme={theme} />;
 
   return (
     <FlatList

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -6,26 +6,26 @@ import {
   ActivityIndicator,
   StyleSheet,
 } from 'react-native';
-import {ProgressBar} from 'react-native-paper';
-import {useLibrary, useSettings, useTheme} from '../../../hooks/reduxHooks';
-import {useSelector} from 'react-redux';
+import { ProgressBar } from 'react-native-paper';
+import { useLibrary, useSettings, useTheme } from '../../../hooks/reduxHooks';
+import { useSelector } from 'react-redux';
 
 import EmptyView from '../../../components/EmptyView';
 import MigrationNovelList from './MigrationNovelList';
-import {Appbar} from '../../../components/Appbar';
+import { Appbar } from '../../../components/Appbar';
 
-import {ScreenContainer} from '../../../components/Common';
-import {getSource} from '../../../sources/sources';
+import { ScreenContainer } from '../../../components/Common';
+import { getSource } from '../../../sources/sources';
 
-const MigrationNovels = ({navigation, route}) => {
-  const {sourceId, novelName} = route.params;
+const MigrationNovels = ({ navigation, route }) => {
+  const { sourceId, novelName } = route.params;
   const theme = useTheme();
 
   const isMounted = React.useRef(true);
 
   const [progress, setProgress] = useState(0);
   const [searchResults, setSearchResults] = useState('');
-  const {searchAllSources = false} = useSettings();
+  const { searchAllSources = false } = useSettings();
   let {
     sources,
     pinned,
@@ -63,8 +63,8 @@ const MigrationNovels = ({navigation, route}) => {
           setSearchResults(prevState =>
             prevState.map(sourceItem =>
               sourceItem.sourceId === item.sourceId
-                ? {...sourceItem, novels: data, loading: false}
-                : {...sourceItem},
+                ? { ...sourceItem, novels: data, loading: false }
+                : { ...sourceItem },
             ),
           );
         } catch (e) {
@@ -101,11 +101,11 @@ const MigrationNovels = ({navigation, route}) => {
     color: theme.statusBar === 'dark-content' ? '#B3261E' : '#F2B8B5',
   };
 
-  const renderItem = ({item}) => (
+  const renderItem = ({ item }) => (
     <>
-      <View style={{padding: 8, paddingVertical: 16}}>
-        <Text style={{color: theme.textColorPrimary}}>{item.sourceName}</Text>
-        <Text style={{color: theme.textColorSecondary, fontSize: 12}}>
+      <View style={{ padding: 8, paddingVertical: 16 }}>
+        <Text style={{ color: theme.textColorPrimary }}>{item.sourceName}</Text>
+        <Text style={{ color: theme.textColorSecondary, fontSize: 12 }}>
           {item.lang}
         </Text>
       </View>
@@ -114,7 +114,7 @@ const MigrationNovels = ({navigation, route}) => {
       ) : item.loading ? (
         <ActivityIndicator
           color={theme.colorAccent}
-          style={{marginVertical: 16}}
+          style={{ marginVertical: 16 }}
         />
       ) : (
         <MigrationNovelList
@@ -134,7 +134,7 @@ const MigrationNovels = ({navigation, route}) => {
         <ProgressBar color={theme.colorAccent} progress={progress} />
       )}
       <FlatList
-        contentContainerStyle={{flexGrow: 1, padding: 4}}
+        contentContainerStyle={{ flexGrow: 1, padding: 4 }}
         data={searchResults}
         keyExtractor={item => item.sourceId.toString()}
         renderItem={renderItem}

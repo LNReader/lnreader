@@ -40,7 +40,7 @@ const popularNovels = async page => {
     novels.push(novel);
   });
 
-  return {totalPages, novels};
+  return { totalPages, novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {
@@ -60,7 +60,7 @@ const parseNovelAndChapters = async novelUrl => {
 
   let loadedCheerio = cheerio.load(body);
 
-  let novel = {sourceId, url, novelUrl};
+  let novel = { sourceId, url, novelUrl };
 
   novel.sourceName = 'MTLNovel';
 
@@ -173,7 +173,7 @@ const searchNovels = async searchTerm => {
     const novelCover = item.thumbnail;
     const novelUrl = item.permalink.replace('https://id.mtlnovel.com/', '');
 
-    const novel = {sourceId, novelName, novelCover, novelUrl};
+    const novel = { sourceId, novelName, novelCover, novelUrl };
 
     novels.push(novel);
   });

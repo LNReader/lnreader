@@ -1,12 +1,12 @@
-import React, {memo, useState} from 'react';
-import {StyleSheet, View, Text, ScrollView, Animated} from 'react-native';
+import React, { memo, useState } from 'react';
+import { StyleSheet, View, Text, ScrollView, Animated } from 'react-native';
 
 import Slider from '@react-native-community/slider';
-import {IconButton} from 'react-native-paper';
+import { IconButton } from 'react-native-paper';
 import Bottomsheet from 'rn-sliding-up-panel';
 
 import BottomSheetHandle from '../../../../components/BottomSheetHandle';
-import {Row} from '../../../../components/Common';
+import { Row } from '../../../../components/Common';
 
 import {
   setAppSettings,
@@ -16,9 +16,9 @@ import {
   ToggleButton,
   ToggleColorButton,
 } from '../../../../components/Common/ToggleButton';
-import {ReaderBottomSheetSwitch} from './components/ReaderBottomSheetSwitch';
-import {ReaderBottomSheetFontPicker} from './components/ReaderBottomSheetFontPicker';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import { ReaderBottomSheetSwitch } from './components/ReaderBottomSheetSwitch';
+import { ReaderBottomSheetFontPicker } from './components/ReaderBottomSheetFontPicker';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const ReaderSheet = ({
   theme,
@@ -36,15 +36,15 @@ const ReaderSheet = ({
   fullScreenMode,
   verticalSeekbar,
 }) => {
-  const {bottom} = useSafeAreaInsets();
+  const { bottom } = useSafeAreaInsets();
 
   const [animatedValue] = useState(new Animated.Value(0));
 
   const presetThemes = [
-    {value: 2, backgroundColor: '#f5f5fa', textColor: '#111111'},
-    {value: 3, backgroundColor: '#F7DFC6', textColor: '#593100'},
-    {value: 6, backgroundColor: '#dce5e2', textColor: '#000000'},
-    {value: 4, backgroundColor: '#292832', textColor: '#CCCCCC'},
+    { value: 2, backgroundColor: '#f5f5fa', textColor: '#111111' },
+    { value: 3, backgroundColor: '#F7DFC6', textColor: '#593100' },
+    { value: 6, backgroundColor: '#dce5e2', textColor: '#000000' },
+    { value: 4, backgroundColor: '#292832', textColor: '#CCCCCC' },
     {
       value: 1,
       backgroundColor: '#000000',
@@ -53,17 +53,17 @@ const ReaderSheet = ({
   ];
 
   const textAlignments = [
-    {value: 'left', icon: 'format-align-left'},
-    {value: 'center', icon: 'format-align-center'},
-    {value: 'justify', icon: 'format-align-justify'},
-    {value: 'right', icon: 'format-align-right'},
+    { value: 'left', icon: 'format-align-left' },
+    { value: 'center', icon: 'format-align-center' },
+    { value: 'justify', icon: 'format-align-justify' },
+    { value: 'right', icon: 'format-align-right' },
   ];
 
   return (
     <Bottomsheet
       animatedValue={animatedValue}
       ref={bottomSheetRef}
-      draggableRange={{top: 390, bottom: 0}}
+      draggableRange={{ top: 390, bottom: 0 }}
       snappingPoints={[0, 390]}
       showBackdrop={true}
       backdropOpacity={0}
@@ -72,11 +72,11 @@ const ReaderSheet = ({
       <ScrollView
         style={[
           styles.contentContainer,
-          {backgroundColor: theme.colorPrimaryDark},
+          { backgroundColor: theme.colorPrimaryDark },
         ]}
       >
         <BottomSheetHandle theme={theme} />
-        <View style={{flex: 1, paddingTop: 24, paddingBottom: bottom}}>
+        <View style={{ flex: 1, paddingTop: 24, paddingBottom: bottom }}>
           <View
             style={{
               flexDirection: 'row',
@@ -111,15 +111,15 @@ const ReaderSheet = ({
             />
           </View>
 
-          <View style={{paddingLeft: 16, paddingRight: 8}}>
+          <View style={{ paddingLeft: 16, paddingRight: 8 }}>
             <Row
               style={{
                 justifyContent: 'space-between',
                 marginVertical: 6,
               }}
             >
-              <Text style={{color: theme.textColorSecondary}}>Color</Text>
-              <View style={{marginLeft: 16}}>
+              <Text style={{ color: theme.textColorSecondary }}>Color</Text>
+              <View style={{ marginLeft: 16 }}>
                 <ScrollView horizontal={true}>
                   {presetThemes.map((item, index) => (
                     <ToggleColorButton
@@ -145,7 +145,9 @@ const ReaderSheet = ({
                 marginVertical: 6,
               }}
             >
-              <Text style={{color: theme.textColorSecondary}}>Text align</Text>
+              <Text style={{ color: theme.textColorSecondary }}>
+                Text align
+              </Text>
               <Row>
                 {textAlignments.map(item => (
                   <ToggleButton
@@ -166,7 +168,7 @@ const ReaderSheet = ({
                 marginVertical: 6,
               }}
             >
-              <Text style={{color: theme.textColorSecondary}}>Padding</Text>
+              <Text style={{ color: theme.textColorSecondary }}>Padding</Text>
               <Row>
                 <IconButton
                   icon="minus"
@@ -176,7 +178,7 @@ const ReaderSheet = ({
                   onPress={() =>
                     dispatch(setReaderSettings('padding', reader.padding - 1))
                   }
-                  style={{marginVertical: 0}}
+                  style={{ marginVertical: 0 }}
                 />
                 <Text
                   style={{
@@ -194,7 +196,7 @@ const ReaderSheet = ({
                   onPress={() =>
                     dispatch(setReaderSettings('padding', reader.padding + 1))
                   }
-                  style={{marginVertical: 0}}
+                  style={{ marginVertical: 0 }}
                 />
               </Row>
             </Row>
@@ -204,7 +206,9 @@ const ReaderSheet = ({
                 marginVertical: 6,
               }}
             >
-              <Text style={{color: theme.textColorSecondary}}>Line height</Text>
+              <Text style={{ color: theme.textColorSecondary }}>
+                Line height
+              </Text>
               <Row>
                 <IconButton
                   icon="minus"
@@ -216,7 +220,7 @@ const ReaderSheet = ({
                       setReaderSettings('lineHeight', reader.lineHeight - 0.1),
                     )
                   }
-                  style={{marginVertical: 0}}
+                  style={{ marginVertical: 0 }}
                 />
                 <Text
                   style={{
@@ -236,7 +240,7 @@ const ReaderSheet = ({
                       setReaderSettings('lineHeight', reader.lineHeight + 0.1),
                     )
                   }
-                  style={{marginVertical: 0}}
+                  style={{ marginVertical: 0 }}
                 />
               </Row>
             </Row>

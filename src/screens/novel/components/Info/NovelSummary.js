@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const NovelSummary = ({summary, followed, theme}) => {
+const NovelSummary = ({ summary, followed, theme }) => {
   const [expanded, setExpanded] = useState(!followed);
 
   const maxNumberOfLines = expanded ? Number.MAX_SAFE_INTEGER : 3;
@@ -11,7 +11,9 @@ const NovelSummary = ({summary, followed, theme}) => {
   const expandNovelSummary = () => setExpanded(!expanded);
 
   return summary ? (
-    <View style={[styles.summaryContainer, {paddingBottom: expanded ? 24 : 8}]}>
+    <View
+      style={[styles.summaryContainer, { paddingBottom: expanded ? 24 : 8 }]}
+    >
       <Text
         style={{
           color: theme.textColorSecondary,

@@ -1,11 +1,11 @@
 import React from 'react';
-import {Text, StyleSheet} from 'react-native';
+import { Text, StyleSheet } from 'react-native';
 
-import {Portal, Modal} from 'react-native-paper';
+import { Portal, Modal } from 'react-native-paper';
 
-import {RadioButton} from '../../../components/RadioButton/RadioButton';
+import { RadioButton } from '../../../components/RadioButton/RadioButton';
 
-import {setNovelsPerRow} from '../../../redux/settings/settings.actions';
+import { setNovelsPerRow } from '../../../redux/settings/settings.actions';
 
 const GridSizeModal = ({
   dispatch,
@@ -29,14 +29,14 @@ const GridSizeModal = ({
         onDismiss={hideGridSizeModal}
         contentContainerStyle={[
           styles.container,
-          {backgroundColor: theme.colorPrimaryDark},
+          { backgroundColor: theme.colorPrimaryDark },
         ]}
       >
-        <Text style={[styles.modalHeader, {color: theme.textColorPrimary}]}>
+        <Text style={[styles.modalHeader, { color: theme.textColorPrimary }]}>
           Grid size
         </Text>
         <Text
-          style={[styles.modalDescription, {color: theme.textColorSecondary}]}
+          style={[styles.modalDescription, { color: theme.textColorSecondary }]}
         >
           {`${novelsPerRow} per row`}
         </Text>
@@ -47,7 +47,7 @@ const GridSizeModal = ({
             label={gridSizes[item]}
             onPress={() => dispatch(setNovelsPerRow(item))}
             theme={theme}
-            style={{paddingHorizontal: 20}}
+            style={{ paddingHorizontal: 20 }}
           />
         ))}
       </Modal>

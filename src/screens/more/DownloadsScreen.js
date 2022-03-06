@@ -1,20 +1,20 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {FlatList, StyleSheet} from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { FlatList, StyleSheet } from 'react-native';
 
-import {Appbar as MaterialAppbar} from 'react-native-paper';
+import { Appbar as MaterialAppbar } from 'react-native-paper';
 
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import {Appbar} from '../../components/Appbar';
-import {ScreenContainer} from '../../components/Common';
+import { Appbar } from '../../components/Appbar';
+import { ScreenContainer } from '../../components/Common';
 import EmptyView from '../../components/EmptyView';
-import {LoadingScreen} from '../../components/LoadingScreen/LoadingScreen';
+import { LoadingScreen } from '../../components/LoadingScreen/LoadingScreen';
 import {
   deleteDownloads,
   getDownloadedChapters,
 } from '../../database/queries/ChapterQueries';
 
-import {useTheme} from '../../hooks/reduxHooks';
+import { useTheme } from '../../hooks/reduxHooks';
 import {
   deleteChapterAction,
   downloadChapterAction,
@@ -23,12 +23,12 @@ import {
 import UpdatesItem from '../updates/components/UpdatesItem';
 import RemoveDownloadsDialog from './components/RemoveDownloadsDialog';
 
-const Downloads = ({navigation}) => {
+const Downloads = ({ navigation }) => {
   const theme = useTheme();
 
   const dispatch = useDispatch();
 
-  const {downloadQueue} = useSelector(state => state.downloadsReducer);
+  const { downloadQueue } = useSelector(state => state.downloadsReducer);
 
   const [loading, setLoading] = useState(true);
   const [chapters, setChapters] = useState([]);
@@ -103,7 +103,7 @@ const Downloads = ({navigation}) => {
     setChapters(chaps => chaps.filter(item => item.chapterId !== chapterId));
   };
 
-  const renderItem = ({item}) => (
+  const renderItem = ({ item }) => (
     <UpdatesItem
       item={item}
       theme={theme}
@@ -154,6 +154,6 @@ const Downloads = ({navigation}) => {
 export default Downloads;
 
 const styles = StyleSheet.create({
-  container: {flex: 1},
-  flatList: {flexGrow: 1, paddingVertical: 8},
+  container: { flex: 1 },
+  flatList: { flexGrow: 1, paddingVertical: 8 },
 });

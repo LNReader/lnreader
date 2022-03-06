@@ -1,8 +1,8 @@
-import React, {useCallback} from 'react';
-import {StyleSheet, FlatList} from 'react-native';
+import React, { useCallback } from 'react';
+import { StyleSheet, FlatList } from 'react-native';
 
-import {useSettings} from '../hooks/reduxHooks';
-import {useDeviceOrientation} from '../services/utils/helpers';
+import { useSettings } from '../hooks/reduxHooks';
+import { useDeviceOrientation } from '../services/utils/helpers';
 
 const NovelList = ({
   data,
@@ -13,7 +13,7 @@ const NovelList = ({
   ListEmptyComponent,
   ListFooterComponent,
 }) => {
-  const {displayMode, novelsPerRow} = useSettings();
+  const { displayMode, novelsPerRow } = useSettings();
 
   const orientation = useDeviceOrientation();
 
@@ -35,7 +35,7 @@ const NovelList = ({
     <FlatList
       contentContainerStyle={[
         styles.flatListCont,
-        displayMode !== 2 && {paddingHorizontal: 4},
+        displayMode !== 2 && { paddingHorizontal: 4 },
       ]}
       numColumns={getNovelsPerRow()}
       key={[orientation, getNovelsPerRow()]}

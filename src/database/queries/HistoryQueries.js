@@ -1,7 +1,7 @@
 import * as SQLite from 'expo-sqlite';
 const db = SQLite.openDatabase('lnreader.db');
 
-import {showToast} from '../../hooks/showToast';
+import { showToast } from '../../hooks/showToast';
 
 const getHistoryQuery = `
     SELECT history.*, chapters.*, novels.*
@@ -21,7 +21,7 @@ export const getHistoryFromDb = async () => {
       tx.executeSql(
         getHistoryQuery,
         null,
-        (txObj, {rows: {_array}}) => {
+        (txObj, { rows: { _array } }) => {
           resolve(_array);
         },
         (txObj, error) => {

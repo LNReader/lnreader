@@ -1,5 +1,5 @@
 import cheerio from 'react-native-cheerio';
-import {defaultCoverUri} from '../helpers/constants';
+import { defaultCoverUri } from '../helpers/constants';
 
 const sourceId = 59;
 const sourceName = 'ArNovel';
@@ -32,7 +32,7 @@ const popularNovels = async page => {
     novels.push(novel);
   });
 
-  return {totalPages, novels};
+  return { totalPages, novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {
@@ -79,7 +79,7 @@ const parseNovelAndChapters = async novelUrl => {
 
   let novelChapters = [];
 
-  const data = await fetch(`${url}ajax/chapters/`, {method: 'POST'});
+  const data = await fetch(`${url}ajax/chapters/`, { method: 'POST' });
   const chapterListRaw = await data.text();
 
   loadedCheerio = cheerio.load(chapterListRaw);
@@ -89,7 +89,7 @@ const parseNovelAndChapters = async novelUrl => {
     const releaseDate = null;
     const chapterUrl = loadedCheerio(this).find('a').attr('href');
 
-    novelChapters.push({chapterName, releaseDate, chapterUrl});
+    novelChapters.push({ chapterName, releaseDate, chapterUrl });
   });
 
   novel.chapters = novelChapters.reverse();

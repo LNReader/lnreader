@@ -27,7 +27,7 @@ const scrapeTopNovels = async pageNo => {
       .text();
 
     const info = $(this).find('div.information').text().split(/\s\s+/);
-    const novel = {novelName, novelCover, score, info};
+    const novel = { novelName, novelCover, score, info };
 
     novels.push(novel);
   });
@@ -63,7 +63,7 @@ const scrapeSearchResults = async searchTerm => {
 
         const score = $(this).find('td:nth-child(5)').text().trim();
 
-        const novel = {novelName, novelCover, score};
+        const novel = { novelName, novelCover, score };
 
         novels.push(novel);
       }
@@ -72,4 +72,4 @@ const scrapeSearchResults = async searchTerm => {
   return novels;
 };
 
-export {scrapeTopNovels, scrapeSearchResults};
+export { scrapeTopNovels, scrapeSearchResults };

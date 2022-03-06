@@ -1,5 +1,5 @@
-import {useState, useEffect} from 'react';
-import {appversion} from '../utils/utils';
+import { useState, useEffect } from 'react';
+import { appversion } from '../utils/utils';
 
 export const useGithubUpdateChecker = () => {
   const latestReleaseUrl =

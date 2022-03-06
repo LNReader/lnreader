@@ -1,8 +1,8 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-import {useSelector} from 'react-redux';
+import { StyleSheet, Text, View } from 'react-native';
+import { useSelector } from 'react-redux';
 
-const EmptyView = ({icon, description, style, children, iconStyle}) => {
+const EmptyView = ({ icon, description, style, children, iconStyle }) => {
   const theme = useSelector(state => state.settingsReducer.theme);
 
   return (
@@ -10,14 +10,16 @@ const EmptyView = ({icon, description, style, children, iconStyle}) => {
       <Text
         style={[
           styles.emptyViewIcon,
-          {color: theme.textColorHint},
+          { color: theme.textColorHint },
           style,
           iconStyle,
         ]}
       >
         {icon}
       </Text>
-      <Text style={[styles.emptyViewText, {color: theme.textColorHint}, style]}>
+      <Text
+        style={[styles.emptyViewText, { color: theme.textColorHint }, style]}
+      >
         {description}
       </Text>
       {children}

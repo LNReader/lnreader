@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
-import {View} from 'react-native';
-import {Modal, Portal, Text, Button, Provider} from 'react-native-paper';
+import React, { useState } from 'react';
+import { View } from 'react-native';
+import { Modal, Portal, Text, Button, Provider } from 'react-native-paper';
 
 import * as WebBrowser from 'expo-web-browser';
 import {
@@ -8,13 +8,13 @@ import {
   getAccessToken,
   malTokenWatcher,
 } from '../../services/Trackers/myAnimeList';
-import {Appbar} from '../../components/Appbar';
+import { Appbar } from '../../components/Appbar';
 
-import {useSelector, useDispatch} from 'react-redux';
-import {List} from '../../components/List';
-import {removeTracker, setTracker} from '../../redux/tracker/tracker.actions';
+import { useSelector, useDispatch } from 'react-redux';
+import { List } from '../../components/List';
+import { removeTracker, setTracker } from '../../redux/tracker/tracker.actions';
 
-const TrackerScreen = ({navigation}) => {
+const TrackerScreen = ({ navigation }) => {
   const theme = useSelector(state => state.settingsReducer.theme);
   const tracker = useSelector(state => state.trackerReducer.tracker);
   const dispatch = useDispatch();
@@ -48,7 +48,7 @@ const TrackerScreen = ({navigation}) => {
                 ).then(res => {
                   // console.log(res.type);
                   if (res.type === 'success') {
-                    const {url} = res;
+                    const { url } = res;
 
                     const codeExtractor = new RegExp(/[=]([^&]+)/);
                     let code = url.match(codeExtractor);
@@ -114,7 +114,7 @@ const TrackerScreen = ({navigation}) => {
               }}
             >
               <Button
-                style={{marginTop: 30}}
+                style={{ marginTop: 30 }}
                 labelStyle={{
                   color: theme.colorAccent,
                   letterSpacing: 0,
@@ -125,7 +125,7 @@ const TrackerScreen = ({navigation}) => {
                 Cancel
               </Button>
               <Button
-                style={{marginTop: 30}}
+                style={{ marginTop: 30 }}
                 labelStyle={{
                   color: theme.colorAccent,
                   letterSpacing: 0,

@@ -1,33 +1,33 @@
 import React from 'react';
-import {Pressable, ScrollView, StyleSheet, Text, View} from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
-import {useDispatch} from 'react-redux';
+import { useDispatch } from 'react-redux';
 
-import {setReaderSettings} from '../../../../../redux/settings/settings.actions';
+import { setReaderSettings } from '../../../../../redux/settings/settings.actions';
 
-import {fonts} from '../../../../../services/utils/constants';
+import { fonts } from '../../../../../services/utils/constants';
 
-export const ReaderBottomSheetFontPicker = ({reader, theme}) => {
+export const ReaderBottomSheetFontPicker = ({ reader, theme }) => {
   const dispatch = useDispatch();
 
   const isSelected = font => reader.fontFamily === font.fontFamily;
 
   return (
     <View style={styles.row}>
-      <Text style={[{color: theme.textColorSecondary}, styles.title]}>
+      <Text style={[{ color: theme.textColorSecondary }, styles.title]}>
         Font style
       </Text>
       <ScrollView
         horizontal={true}
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{alignItems: 'center'}}
+        contentContainerStyle={{ alignItems: 'center' }}
       >
         {fonts.map(item => (
           <View
             key={item.fontFamily}
             style={[
               styles.container,
-              isSelected(item) && {backgroundColor: theme.rippleColor},
+              isSelected(item) && { backgroundColor: theme.rippleColor },
             ]}
           >
             <Pressable
@@ -35,7 +35,7 @@ export const ReaderBottomSheetFontPicker = ({reader, theme}) => {
               onPress={() =>
                 dispatch(setReaderSettings('fontFamily', item.fontFamily))
               }
-              android_ripple={{color: theme.rippleColor}}
+              android_ripple={{ color: theme.rippleColor }}
             >
               <Text
                 style={{

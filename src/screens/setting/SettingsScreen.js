@@ -1,12 +1,12 @@
 import React from 'react';
-import {View} from 'react-native';
+import { View } from 'react-native';
 
-import {Appbar} from '../../components/Appbar';
-import {List} from '../../components/List';
+import { Appbar } from '../../components/Appbar';
+import { List } from '../../components/List';
 
-import {useTheme} from '../../hooks/reduxHooks';
+import { useTheme } from '../../hooks/reduxHooks';
 
-const SettingsScreen = ({navigation}) => {
+const SettingsScreen = ({ navigation }) => {
   const theme = useTheme();
 
   return (

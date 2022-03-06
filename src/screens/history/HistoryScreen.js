@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   StyleSheet,
   ActivityIndicator,
@@ -8,25 +8,25 @@ import {
 } from 'react-native';
 
 import moment from 'moment';
-import {useFocusEffect} from '@react-navigation/native';
-import {useDispatch} from 'react-redux';
+import { useFocusEffect } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
 
 import EmptyView from '../../components/EmptyView';
 import HistoryItem from './components/HistoryItem';
 import RemoveHistoryDialog from './components/RemoveHistoryDialog';
-import {Searchbar} from '../../components/Searchbar/Searchbar';
+import { Searchbar } from '../../components/Searchbar/Searchbar';
 
-import {dateFormat} from '../../services/utils/constants';
-import {useTheme} from '../../hooks/reduxHooks';
+import { dateFormat } from '../../services/utils/constants';
+import { useTheme } from '../../hooks/reduxHooks';
 import {
   deleteAllHistory,
   deleteHistory,
   getHistoryFromDb,
 } from '../../database/queries/HistoryQueries';
 
-import {useModal} from '../../hooks/useModal';
+import { useModal } from '../../hooks/useModal';
 
-const History = ({navigation}) => {
+const History = ({ navigation }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
 
@@ -59,7 +59,7 @@ const History = ({navigation}) => {
     setHistory(history.filter(item => item.historyId !== historyId));
   };
 
-  const renderHistoryCard = ({item}) => (
+  const renderHistoryCard = ({ item }) => (
     <HistoryItem
       dispatch={dispatch}
       history={item}
@@ -114,7 +114,7 @@ const History = ({navigation}) => {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       <Searchbar
         placeholder="Search History"
         searchText={searchText}
@@ -134,8 +134,10 @@ const History = ({navigation}) => {
         sections={searchText ? searchResults : groupByDate(history)}
         keyExtractor={(item, index) => index.toString()}
         renderItem={renderHistoryCard}
-        renderSectionHeader={({section: {date}}) => (
-          <Text style={[styles.dateHeader, {color: theme.textColorSecondary}]}>
+        renderSectionHeader={({ section: { date } }) => (
+          <Text
+            style={[styles.dateHeader, { color: theme.textColorSecondary }]}
+          >
             {moment(date).calendar(null, dateFormat)}
           </Text>
         )}
@@ -144,7 +146,7 @@ const History = ({navigation}) => {
             <ActivityIndicator
               size="small"
               color={theme.colorAccent}
-              style={{margin: 16}}
+              style={{ margin: 16 }}
             />
           )
         }

@@ -1,5 +1,5 @@
 import cheerio from 'react-native-cheerio';
-import {Status} from '../helpers/constants';
+import { Status } from '../helpers/constants';
 
 const sourceId = 86;
 
@@ -34,7 +34,7 @@ const popularNovels = async page => {
     novels.push(novel);
   });
 
-  return {totalPages, novels};
+  return { totalPages, novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

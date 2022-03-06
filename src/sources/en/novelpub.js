@@ -16,7 +16,7 @@ const popularNovels = async page => {
   let totalPages = 40;
   let url = baseUrl + 'browse/all/popular/all/' + page;
 
-  const result = await fetch(url, {method: 'GET', headers});
+  const result = await fetch(url, { method: 'GET', headers });
   const body = await result.text();
 
   const loadedCheerio = cheerio.load(body);
@@ -32,23 +32,23 @@ const popularNovels = async page => {
       baseUrl +
       loadedCheerio(this).find('.novel-title > a').attr('href').substring(1);
 
-    const novel = {sourceId, novelName, novelCover, novelUrl};
+    const novel = { sourceId, novelName, novelCover, novelUrl };
 
     novels.push(novel);
   });
 
-  return {totalPages, novels};
+  return { totalPages, novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {
   const url = novelUrl;
 
-  const result = await fetch(url, {method: 'GET', headers});
+  const result = await fetch(url, { method: 'GET', headers });
   const body = await result.text();
 
   let loadedCheerio = cheerio.load(body);
 
-  let novel = {url, novelUrl, sourceId, sourceName, genre: ''};
+  let novel = { url, novelUrl, sourceId, sourceName, genre: '' };
 
   novel.novelName = loadedCheerio('h1.novel-title').text().trim();
 
@@ -91,7 +91,7 @@ const parseNovelAndChapters = async novelUrl => {
     for (let i = 1; i <= lastPage; i++) {
       const chaptersUrl = `${novelUrl}/chapters/page-${i}`;
 
-      const chaptersRequest = await fetch(chaptersUrl, {headers});
+      const chaptersRequest = await fetch(chaptersUrl, { headers });
       const chaptersHtml = await chaptersRequest.text();
 
       loadedCheerio = cheerio.load(chaptersHtml);
@@ -110,7 +110,7 @@ const parseNovelAndChapters = async novelUrl => {
         const chapterUrl =
           baseUrl + loadedCheerio(this).find('a').attr('href').substring(1);
 
-        novelChapters.push({chapterName, releaseDate, chapterUrl});
+        novelChapters.push({ chapterName, releaseDate, chapterUrl });
       });
 
       await delay(1000);
@@ -127,7 +127,7 @@ const parseNovelAndChapters = async novelUrl => {
 const parseChapter = async (novelUrl, chapterUrl) => {
   const url = chapterUrl;
 
-  const result = await fetch(url, {method: 'GET', headers});
+  const result = await fetch(url, { method: 'GET', headers });
 
   const body = await result.text();
   const loadedCheerio = cheerio.load(body);
@@ -135,7 +135,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   const chapterName = loadedCheerio('h2').text();
   const chapterText = loadedCheerio('#chapter-container').html();
 
-  const chapter = {sourceId, novelUrl, chapterUrl, chapterName, chapterText};
+  const chapter = { sourceId, novelUrl, chapterUrl, chapterName, chapterText };
 
   return chapter;
 };
@@ -143,7 +143,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 const searchNovels = async searchTerm => {
   const url = `${baseUrl}lnwsearchlive?inputContent=${searchTerm}`;
 
-  const result = await fetch(url, {method: 'GET', headers});
+  const result = await fetch(url, { method: 'GET', headers });
   const body = await result.text();
 
   let loadedCheerio = cheerio.load(body);
@@ -160,7 +160,7 @@ const searchNovels = async searchTerm => {
     const novelUrl =
       baseUrl + loadedCheerio(this).find('a').attr('href').substring(1);
 
-    const novel = {sourceId, novelName, novelCover, novelUrl};
+    const novel = { sourceId, novelName, novelCover, novelUrl };
 
     novels.push(novel);
   });

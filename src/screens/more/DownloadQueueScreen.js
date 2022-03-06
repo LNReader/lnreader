@@ -1,18 +1,18 @@
-import React, {useState} from 'react';
-import {FlatList, View, Text, StyleSheet} from 'react-native';
+import React, { useState } from 'react';
+import { FlatList, View, Text, StyleSheet } from 'react-native';
 import {
   FAB,
   ProgressBar,
   Appbar as MaterialAppbar,
   Menu,
 } from 'react-native-paper';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import {Appbar} from '../../components/Appbar';
-import {ScreenContainer} from '../../components/Common';
+import { Appbar } from '../../components/Appbar';
+import { ScreenContainer } from '../../components/Common';
 import EmptyView from '../../components/EmptyView';
 
-import {useTheme} from '../../hooks/reduxHooks';
+import { useTheme } from '../../hooks/reduxHooks';
 
 import {
   cancelDownload,
@@ -21,11 +21,11 @@ import {
 } from '../../redux/downloads/downloads.actions';
 
 import BackgroundService from 'react-native-background-actions';
-import {showToast} from '../../hooks/showToast';
+import { showToast } from '../../hooks/showToast';
 
-const DownloadQueue = ({navigation}) => {
+const DownloadQueue = ({ navigation }) => {
   const theme = useTheme();
-  const {downloadQueue} = useSelector(state => state.downloadsReducer);
+  const { downloadQueue } = useSelector(state => state.downloadsReducer);
 
   const dispatch = useDispatch();
 
@@ -48,7 +48,7 @@ const DownloadQueue = ({navigation}) => {
               onPress={openMenu}
             />
           }
-          contentStyle={{backgroundColor: theme.menuColor}}
+          contentStyle={{ backgroundColor: theme.menuColor }}
         >
           <Menu.Item
             onPress={() => {
@@ -59,24 +59,24 @@ const DownloadQueue = ({navigation}) => {
               closeMenu();
             }}
             title="Cancel downloads"
-            titleStyle={{color: theme.textColorPrimary}}
+            titleStyle={{ color: theme.textColorPrimary }}
           />
         </Menu>
       </Appbar>
       <FlatList
-        contentContainerStyle={{flexGrow: 1}}
+        contentContainerStyle={{ flexGrow: 1 }}
         keyExtractor={item => item.chapterId.toString()}
         data={downloadQueue}
-        renderItem={({item}) => (
-          <View style={{padding: 16}}>
-            <Text style={{color: theme.textColorPrimary}}>
+        renderItem={({ item }) => (
+          <View style={{ padding: 16 }}>
+            <Text style={{ color: theme.textColorPrimary }}>
               {item.chapterName}
             </Text>
             <ProgressBar
               indeterminate={BackgroundService.isRunning() ? true : false}
               progress={!BackgroundService.isRunning() && 0}
               color={theme.colorAccent}
-              style={{marginTop: 8}}
+              style={{ marginTop: 8 }}
             />
           </View>
         )}
@@ -86,7 +86,7 @@ const DownloadQueue = ({navigation}) => {
       />
       {downloadQueue.length > 0 && (
         <FAB
-          style={[styles.fab, {backgroundColor: theme.colorAccent}]}
+          style={[styles.fab, { backgroundColor: theme.colorAccent }]}
           color={theme.textColorPrimary}
           label={fab ? 'Pause' : 'Resume'}
           uppercase={false}

@@ -1,18 +1,18 @@
 import React from 'react';
-import {StyleSheet, View, FlatList, Text} from 'react-native';
+import { StyleSheet, View, FlatList, Text } from 'react-native';
 
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import {Appbar} from '../../../components/Appbar';
+import { Appbar } from '../../../components/Appbar';
 import MigrationSourceItem from './MigrationSourceItem';
 
-import {useLibrary, useTheme} from '../../../hooks/reduxHooks';
+import { useLibrary, useTheme } from '../../../hooks/reduxHooks';
 
-const GlobalSearch = ({navigation}) => {
+const GlobalSearch = ({ navigation }) => {
   const theme = useTheme();
 
   const library = useLibrary();
-  let {sources} = useSelector(state => state.sourceReducer);
+  let { sources } = useSelector(state => state.sourceReducer);
 
   const novelsPerSource = sourceId =>
     library.filter(novel => novel.sourceId === sourceId).length;
@@ -22,7 +22,7 @@ const GlobalSearch = ({navigation}) => {
       library.filter(novel => novel.sourceId === source.sourceId).length,
   );
 
-  const renderItem = ({item}) => (
+  const renderItem = ({ item }) => (
     <MigrationSourceItem
       item={item}
       theme={theme}
@@ -32,17 +32,19 @@ const GlobalSearch = ({navigation}) => {
   );
 
   const ListHeaderComponent = (
-    <Text style={[{color: theme.textColorSecondary}, styles.listHeader]}>
+    <Text style={[{ color: theme.textColorSecondary }, styles.listHeader]}>
       Select a Source To Migrate From
     </Text>
   );
 
   return (
-    <View style={[styles.container, {backgroundColor: theme.colorPrimaryDark}]}>
+    <View
+      style={[styles.container, { backgroundColor: theme.colorPrimaryDark }]}
+    >
       <Appbar title="Select Source" onBackAction={navigation.goBack} />
       <FlatList
         data={sources}
-        contentContainerStyle={{paddingBottom: 48}}
+        contentContainerStyle={{ paddingBottom: 48 }}
         keyExtractor={item => item.sourceId.toString()}
         renderItem={renderItem}
         ListHeaderComponent={ListHeaderComponent}

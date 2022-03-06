@@ -1,9 +1,9 @@
-import React, {memo, useState} from 'react';
-import {View, Text, StyleSheet, Pressable} from 'react-native';
+import React, { memo, useState } from 'react';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 
-import {Row} from '../../../components/Common';
+import { Row } from '../../../components/Common';
 
-import {parseChapterNumber} from '../../../services/utils/helpers';
+import { parseChapterNumber } from '../../../services/utils/helpers';
 import {
   ChapterBookmarkButton,
   DownloadButton,
@@ -23,7 +23,7 @@ const ChapterItem = ({
   navigateToChapter,
   showProgressPercentage,
 }) => {
-  const {chapterId, chapterName, read, releaseDate, bookmark} = chapter;
+  const { chapterId, chapterName, read, releaseDate, bookmark } = chapter;
 
   const [deleteChapterMenu, setDeleteChapterMenu] = useState(false);
   const showDeleteChapterMenu = () => setDeleteChapterMenu(true);
@@ -39,9 +39,9 @@ const ChapterItem = ({
       ]}
       onPress={() => onSelectPress(chapter, () => navigateToChapter(chapter))}
       onLongPress={() => onSelectLongPress(chapter)}
-      android_ripple={{color: theme.rippleColor}}
+      android_ripple={{ color: theme.rippleColor }}
     >
-      <Row style={{flex: 1, overflow: 'hidden'}}>
+      <Row style={{ flex: 1, overflow: 'hidden' }}>
         {!!bookmark && <ChapterBookmarkButton theme={theme} />}
         <View>
           <Text

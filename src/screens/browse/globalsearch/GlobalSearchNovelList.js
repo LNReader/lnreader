@@ -1,15 +1,15 @@
 import React from 'react';
-import {StyleSheet, FlatList, Text} from 'react-native';
+import { StyleSheet, FlatList, Text } from 'react-native';
 
 import GlobalSearchNovelCover from './GlobalSearchNovelCover';
 
-const GlobalSearchNovelList = ({data, theme, library, navigation}) => {
+const GlobalSearchNovelList = ({ data, theme, library, navigation }) => {
   const inLibrary = (sourceId, novelUrl) =>
     library.some(obj => obj.novelUrl === novelUrl && obj.sourceId === sourceId);
 
   const navigateToNovel = item => navigation.push('Novel', item);
 
-  const renderItem = ({item}) => (
+  const renderItem = ({ item }) => (
     <GlobalSearchNovelCover
       novel={item}
       theme={theme}
@@ -19,7 +19,7 @@ const GlobalSearchNovelList = ({data, theme, library, navigation}) => {
   );
 
   const ListEmptyComponent = (
-    <Text style={[{color: theme.textColorSecondary}, styles.emptyList]}>
+    <Text style={[{ color: theme.textColorSecondary }, styles.emptyList]}>
       No results found
     </Text>
   );

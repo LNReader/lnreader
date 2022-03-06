@@ -11,4 +11,4 @@ const fonts = {
   openDyslexic: require('../../android/app/src/main/assets/fonts/OpenDyslexic3-Regular.ttf'),
 };
 
-export {fonts};
+export { fonts };

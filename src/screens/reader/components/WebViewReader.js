@@ -1,10 +1,10 @@
 import React from 'react';
-import {StatusBar, StyleSheet, View} from 'react-native';
+import { StatusBar, StyleSheet, View } from 'react-native';
 
 import WebView from 'react-native-webview';
 
-import {readerBackground} from '../utils/readerStyles';
-import {cleanHtml} from '../../../sources/helpers/cleanHtml';
+import { readerBackground } from '../utils/readerStyles';
+import { cleanHtml } from '../../../sources/helpers/cleanHtml';
 
 const WebViewReader = ({
   html,
@@ -20,7 +20,7 @@ const WebViewReader = ({
   return (
     <View style={styles.container}>
       <WebView
-        style={{backgroundColor}}
+        style={{ backgroundColor }}
         originWhitelist={['*']}
         scalesPageToFit={true}
         showsVerticalScrollIndicator={false}

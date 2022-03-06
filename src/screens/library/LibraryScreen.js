@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useRef, useEffect} from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,11 +8,11 @@ import {
   Pressable,
 } from 'react-native';
 
-import {useFocusEffect} from '@react-navigation/native';
-import {useSelector, useDispatch} from 'react-redux';
+import { useFocusEffect } from '@react-navigation/native';
+import { useSelector, useDispatch } from 'react-redux';
 import * as Haptics from 'expo-haptics';
 
-import {Searchbar} from '../../components/Searchbar/Searchbar';
+import { Searchbar } from '../../components/Searchbar/Searchbar';
 import NovelList from '../../components/NovelList';
 import NovelCover from '../../components/NovelCover';
 import EmptyView from '../../components/EmptyView';
@@ -21,20 +21,20 @@ import {
   getLibraryAction,
   searchLibraryAction,
 } from '../../redux/library/library.actions';
-import {updateLibraryAction} from '../../redux/updates/updates.actions';
-import {useSettings, useTheme} from '../../hooks/reduxHooks';
-import {setNovel} from '../../redux/novel/novel.actions';
-import {Portal} from 'react-native-paper';
+import { updateLibraryAction } from '../../redux/updates/updates.actions';
+import { useSettings, useTheme } from '../../hooks/reduxHooks';
+import { setNovel } from '../../redux/novel/novel.actions';
+import { Portal } from 'react-native-paper';
 import LibraryBottomSheet from './components/LibraryBottomSheet';
-import {Actionbar} from '../../components/Actionbar/Actionbar';
+import { Actionbar } from '../../components/Actionbar/Actionbar';
 import {
   markAllChaptersRead,
   markAllChaptersUnread,
 } from '../../database/queries/ChapterQueries';
-import {unfollowNovel} from '../../database/queries/NovelQueries';
-import {Banner} from './components/Banner';
+import { unfollowNovel } from '../../database/queries/NovelQueries';
+import { Banner } from './components/Banner';
 
-const LibraryScreen = ({navigation}) => {
+const LibraryScreen = ({ navigation }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
 
@@ -50,7 +50,7 @@ const LibraryScreen = ({navigation}) => {
   const {
     loading,
     novels,
-    filters: {sort, filter},
+    filters: { sort, filter },
   } = useSelector(state => state.libraryReducer);
 
   const [refreshing, setRefreshing] = useState(false);
@@ -100,7 +100,7 @@ const LibraryScreen = ({navigation}) => {
     }
   };
 
-  const renderItem = ({item}) => (
+  const renderItem = ({ item }) => (
     <NovelCover
       item={item}
       onPress={() => {
@@ -134,7 +134,7 @@ const LibraryScreen = ({navigation}) => {
   return (
     <>
       <View
-        style={[styles.container, {backgroundColor: theme.colorPrimaryDark}]}
+        style={[styles.container, { backgroundColor: theme.colorPrimaryDark }]}
       >
         <Searchbar
           placeholder={
@@ -187,12 +187,14 @@ const LibraryScreen = ({navigation}) => {
               <View style={styles.globalSearch}>
                 <Pressable
                   onPress={() =>
-                    navigation.navigate('GlobalSearch', {novelName: searchText})
+                    navigation.navigate('GlobalSearch', {
+                      novelName: searchText,
+                    })
                   }
-                  android_ripple={{color: theme.rippleColor}}
+                  android_ripple={{ color: theme.rippleColor }}
                   style={styles.globalSearchBtn}
                 >
-                  <Text style={{color: theme.colorAccent}}>
+                  <Text style={{ color: theme.colorAccent }}>
                     {`Search for "${searchText}" globally`}
                   </Text>
                 </Pressable>

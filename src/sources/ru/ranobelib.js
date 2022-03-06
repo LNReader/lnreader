@@ -23,12 +23,12 @@ const popularNovels = async page => {
       .attr('data-src');
     const novelUrl = loadedCheerio(this).find('a.media-card').attr('href');
 
-    const novel = {sourceId, novelName, novelCover, novelUrl};
+    const novel = { sourceId, novelName, novelCover, novelUrl };
 
     novels.push(novel);
   });
 
-  return {totalPages, novels};
+  return { totalPages, novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {
@@ -85,7 +85,7 @@ const parseNovelAndChapters = async novelUrl => {
     const releaseDate = item.chapter_created_at;
     const chapterUrl = `${baseUrl}${novelSlug}/v${item.chapter_volume}/c${item.chapter_number}`;
 
-    chapters.push({chapterName, releaseDate, chapterUrl});
+    chapters.push({ chapterName, releaseDate, chapterUrl });
   });
 
   novel.chapters = chapters.reverse();
@@ -142,7 +142,7 @@ const searchNovels = async searchTerm => {
       .attr('data-src');
     const novelUrl = loadedCheerio(this).find('a.media-card').attr('href');
 
-    const novel = {sourceId, novelName, novelCover, novelUrl};
+    const novel = { sourceId, novelName, novelCover, novelUrl };
 
     novels.push(novel);
   });

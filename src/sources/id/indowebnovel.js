@@ -1,5 +1,5 @@
 import cheerio from 'react-native-cheerio';
-import {Status} from '../helpers/constants';
+import { Status } from '../helpers/constants';
 
 const sourceId = 87;
 const sourceName = 'IndoWebNovel';
@@ -32,7 +32,7 @@ const popularNovels = async page => {
     novels.push(novel);
   });
 
-  return {totalPages, novels};
+  return { totalPages, novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {
@@ -87,7 +87,7 @@ const parseNovelAndChapters = async novelUrl => {
     const releaseDate = null;
     const chapterUrl = loadedCheerio(this).find('a').attr('href');
 
-    chapters.push({chapterName, releaseDate, chapterUrl});
+    chapters.push({ chapterName, releaseDate, chapterUrl });
   });
 
   novel.chapters = chapters.reverse();

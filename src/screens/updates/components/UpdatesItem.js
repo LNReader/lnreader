@@ -1,8 +1,8 @@
-import React, {memo, useState} from 'react';
-import {View, Text, StyleSheet, Pressable} from 'react-native';
+import React, { memo, useState } from 'react';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 
 import FastImage from 'react-native-fast-image';
-import {DownloadButton} from './DownloadButton';
+import { DownloadButton } from './DownloadButton';
 
 const UpdateCard = ({
   item,
@@ -21,7 +21,7 @@ const UpdateCard = ({
     <Pressable
       style={styles.updateCard}
       onPress={onPress}
-      android_ripple={{color: theme.rippleColor}}
+      android_ripple={{ color: theme.rippleColor }}
     >
       <>
         <Pressable onPress={onPressCover}>

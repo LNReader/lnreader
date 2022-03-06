@@ -1,14 +1,14 @@
 import React from 'react';
-import {View, Text, Image, StyleSheet, Pressable} from 'react-native';
+import { View, Text, Image, StyleSheet, Pressable } from 'react-native';
 
-import {Button} from 'react-native-paper';
+import { Button } from 'react-native-paper';
 
-const DiscoverCard = ({icon, label, onPress, theme}) => {
+const DiscoverCard = ({ icon, label, onPress, theme }) => {
   return (
     <Pressable
       style={styles.discoverCard}
       onPress={onPress}
-      android_ripple={{color: theme.rippleColor}}
+      android_ripple={{ color: theme.rippleColor }}
     >
       <Image source={icon} style={styles.discoverIcon} />
       <View style={styles.label}>
@@ -21,7 +21,7 @@ const DiscoverCard = ({icon, label, onPress, theme}) => {
           {label}
         </Text>
         <Button
-          labelStyle={{letterSpacing: 0}}
+          labelStyle={{ letterSpacing: 0 }}
           uppercase={false}
           color={theme.colorAccent}
           onPress={onPress}

@@ -1,14 +1,14 @@
 import React from 'react';
-import {StyleSheet, View, Text} from 'react-native';
-import {RadioButton as MaterialRadioButton} from 'react-native-paper';
+import { StyleSheet, View, Text } from 'react-native';
+import { RadioButton as MaterialRadioButton } from 'react-native-paper';
 
-export const RadioButtonGroup = ({children, value, onValueChange}) => (
+export const RadioButtonGroup = ({ children, value, onValueChange }) => (
   <MaterialRadioButton.Group onValueChange={onValueChange} value={value}>
     {children}
   </MaterialRadioButton.Group>
 );
 
-export const RadioButton = ({value, label, theme, labelStyle}) => (
+export const RadioButton = ({ value, label, theme, labelStyle }) => (
   <View style={styles.radioButtonContainer}>
     <MaterialRadioButton
       value={value}
@@ -18,7 +18,7 @@ export const RadioButton = ({value, label, theme, labelStyle}) => (
     <Text
       style={[
         styles.radioButtonLabel,
-        {color: theme.textColorPrimary},
+        { color: theme.textColorPrimary },
         labelStyle,
       ]}
     >

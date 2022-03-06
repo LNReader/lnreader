@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import Library from '../screens/library/LibraryScreen';
@@ -9,7 +9,7 @@ import History from '../screens/history/HistoryScreen';
 import Browse from '../screens/browse/BrowseScreen';
 import More from '../screens/more/MoreScreen';
 
-import {useSettings, useTheme} from '../hooks/reduxHooks';
+import { useSettings, useTheme } from '../hooks/reduxHooks';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -24,7 +24,7 @@ const BottomNavigator = () => {
 
   return (
     <Tab.Navigator
-      barStyle={{backgroundColor: theme.colorPrimary}}
+      barStyle={{ backgroundColor: theme.colorPrimary }}
       activeColor={theme.colorAccent}
       shifting={!showLabelsInNav}
     >
@@ -32,7 +32,7 @@ const BottomNavigator = () => {
         name="Library"
         component={Library}
         options={{
-          tabBarIcon: ({color}) => (
+          tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons
               name="book-variant-multiple"
               color={color}
@@ -46,7 +46,7 @@ const BottomNavigator = () => {
           name="Updates"
           component={Updates}
           options={{
-            tabBarIcon: ({color}) => (
+            tabBarIcon: ({ color }) => (
               <MaterialCommunityIcons
                 name="alert-decagram-outline"
                 color={color}
@@ -61,7 +61,7 @@ const BottomNavigator = () => {
           name="History"
           component={History}
           options={{
-            tabBarIcon: ({color}) => (
+            tabBarIcon: ({ color }) => (
               <MaterialCommunityIcons name="history" color={color} size={24} />
             ),
           }}
@@ -71,7 +71,7 @@ const BottomNavigator = () => {
         name="Browse"
         component={Browse}
         options={{
-          tabBarIcon: ({color}) => (
+          tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons
               name="compass-outline"
               color={color}
@@ -84,7 +84,7 @@ const BottomNavigator = () => {
         name="More"
         component={More}
         options={{
-          tabBarIcon: ({color}) => (
+          tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons
               name="dots-horizontal"
               color={color}

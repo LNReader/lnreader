@@ -1,5 +1,5 @@
 import cheerio from 'react-native-cheerio';
-import {defaultCoverUri, Status} from '../helpers/constants';
+import { defaultCoverUri, Status } from '../helpers/constants';
 
 const sourceId = 23;
 const sourceName = 'TuNovelaLigera';
@@ -37,7 +37,7 @@ const popularNovels = async page => {
     novels.push(novel);
   });
 
-  return {totalPages, novels};
+  return { totalPages, novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {
@@ -48,7 +48,7 @@ const parseNovelAndChapters = async novelUrl => {
 
   let loadedCheerio = cheerio.load(body);
 
-  let novel = {sourceId, sourceName, url};
+  let novel = { sourceId, sourceName, url };
 
   novel.novelUrl = novelUrl;
 
@@ -122,7 +122,7 @@ const parseNovelAndChapters = async novelUrl => {
       ? (chapterUrl = chapterUrl[5] + '/' + chapterUrl[6])
       : (chapterUrl = chapterUrl[5]);
 
-    novelChapters.push({chapterName, releaseDate, chapterUrl});
+    novelChapters.push({ chapterName, releaseDate, chapterUrl });
   });
 
   novel.chapters = novelChapters.reverse();

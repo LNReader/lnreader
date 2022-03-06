@@ -25,14 +25,14 @@ export const setNovelsPerRow = val => dispatch => {
 export const setAppSettings = (key, val) => dispatch => {
   dispatch({
     type: SET_APP_SETTINGS,
-    payload: {key, val},
+    payload: { key, val },
   });
 };
 
 export const setReaderSettings = (key, val) => dispatch => {
   dispatch({
     type: SET_READER_SETTINGS,
-    payload: {key, val},
+    payload: { key, val },
   });
 };
 
@@ -53,6 +53,6 @@ export const setRippleColor = val => dispatch => {
 export const setAmoledMode = (id, val) => dispatch => {
   dispatch({
     type: SET_AMOLED_MODE,
-    payload: {id, val},
+    payload: { id, val },
   });
 };

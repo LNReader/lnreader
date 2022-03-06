@@ -1,9 +1,9 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import { View, StyleSheet } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-const ScreenContainer = ({children, theme}) => {
-  const {bottom} = useSafeAreaInsets();
+const ScreenContainer = ({ children, theme }) => {
+  const { bottom } = useSafeAreaInsets();
 
   return (
     <View
@@ -18,11 +18,11 @@ const ScreenContainer = ({children, theme}) => {
   );
 };
 
-const Row = ({children, style}) => (
+const Row = ({ children, style }) => (
   <View style={[styles.row, style]}>{children}</View>
 );
 
-export {ScreenContainer, Row};
+export { ScreenContainer, Row };
 
 const styles = StyleSheet.create({
   row: {

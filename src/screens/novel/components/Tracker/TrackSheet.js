@@ -1,26 +1,26 @@
-import React, {useState, useEffect} from 'react';
-import {StyleSheet, View, ToastAndroid} from 'react-native';
-import {Portal} from 'react-native-paper';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, ToastAndroid } from 'react-native';
+import { Portal } from 'react-native-paper';
 import Bottomsheet from 'rn-sliding-up-panel';
 
-import {useSelector, useDispatch} from 'react-redux';
-import {updateTracker} from '../../../../redux/tracker/tracker.actions';
+import { useSelector, useDispatch } from 'react-redux';
+import { updateTracker } from '../../../../redux/tracker/tracker.actions';
 
 import TrackSearchDialog from './TrackSearchDialog';
 import SetTrackStatusDialog from './SetTrackStatusDialog';
 import SetTrackScoreDialog from './SetTrackScoreDialog';
 import SetTrackChaptersDialog from './SetTrackChaptersDialog';
-import {AddMalTrackingCard, MalTrackItemCard} from './MyAnimeListCards';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import { AddMalTrackingCard, MalTrackItemCard } from './MyAnimeListCards';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-const TrackSheet = ({bottomSheetRef, novelId, novelName, theme}) => {
+const TrackSheet = ({ bottomSheetRef, novelId, novelName, theme }) => {
   const tracker = useSelector(state => state.trackerReducer.tracker);
   const trackedNovels = useSelector(
     state => state.trackerReducer.trackedNovels,
   );
   const dispatch = useDispatch();
 
-  const {bottom} = useSafeAreaInsets();
+  const { bottom } = useSafeAreaInsets();
 
   const [trackItem, setTrackItem] = useState();
 
@@ -112,14 +112,14 @@ const TrackSheet = ({bottomSheetRef, novelId, novelName, theme}) => {
     <>
       <Bottomsheet
         ref={bottomSheetRef}
-        draggableRange={{top: bottomSheetHeight, bottom: 0}}
+        draggableRange={{ top: bottomSheetHeight, bottom: 0 }}
         snappingPoints={[0, bottomSheetHeight]}
         backdropOpacity={0.25}
       >
         <View
           style={[
             styles.contentContainer,
-            {backgroundColor: theme.colorPrimaryDark},
+            { backgroundColor: theme.colorPrimaryDark },
           ]}
         >
           {!trackItem ? (

@@ -1,17 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Pressable, StyleSheet, Text} from 'react-native';
+import { Pressable, StyleSheet, Text } from 'react-native';
 
-import {Switch} from 'react-native-paper';
+import { Switch } from 'react-native-paper';
 
-export const ReaderBottomSheetSwitch = ({label, value, onPress, theme}) => {
+export const ReaderBottomSheetSwitch = ({ label, value, onPress, theme }) => {
   return (
     <Pressable
       style={styles.container}
-      android_ripple={{color: theme.rippleColor}}
+      android_ripple={{ color: theme.rippleColor }}
       onPress={onPress}
     >
-      <Text style={{color: theme.textColorSecondary}}>{label}</Text>
+      <Text style={{ color: theme.textColorSecondary }}>{label}</Text>
       <Switch value={value} onValueChange={onPress} color={theme.colorAccent} />
     </Pressable>
   );

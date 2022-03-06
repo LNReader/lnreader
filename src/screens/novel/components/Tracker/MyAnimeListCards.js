@@ -1,10 +1,10 @@
 import React from 'react';
-import {StyleSheet, View, Text, Image, Pressable} from 'react-native';
-import {TouchableRipple, IconButton} from 'react-native-paper';
-import {useDispatch} from 'react-redux';
-import {untrackNovel} from '../../../../redux/tracker/tracker.actions';
+import { StyleSheet, View, Text, Image, Pressable } from 'react-native';
+import { TouchableRipple, IconButton } from 'react-native-paper';
+import { useDispatch } from 'react-redux';
+import { untrackNovel } from '../../../../redux/tracker/tracker.actions';
 
-export const AddMalTrackingCard = ({theme, setTrackSearchDialog}) => (
+export const AddMalTrackingCard = ({ theme, setTrackSearchDialog }) => (
   <View style={styles.addCardContainer}>
     <Image
       source={require('../../../../../assets/mal.png')}
@@ -22,7 +22,7 @@ export const AddMalTrackingCard = ({theme, setTrackSearchDialog}) => (
     >
       <Pressable
         style={styles.rippleContainer}
-        android_ripple={{color: theme.rippleColor, borderless: true}}
+        android_ripple={{ color: theme.rippleColor, borderless: true }}
         onPress={() => setTrackSearchDialog(true)}
       >
         <Text
@@ -49,16 +49,21 @@ export const MalTrackItemCard = ({
   const dispatch = useDispatch();
 
   return (
-    <View style={[styles.cardContainer, {backgroundColor: theme.colorPrimary}]}>
+    <View
+      style={[styles.cardContainer, { backgroundColor: theme.colorPrimary }]}
+    >
       <View
-        style={[styles.titleContainer, {borderBottomColor: theme.dividerColor}]}
+        style={[
+          styles.titleContainer,
+          { borderBottomColor: theme.dividerColor },
+        ]}
       >
         <Image
           source={require('../../../../../assets/mal.png')}
           style={styles.trackerIcon}
         />
         <View style={styles.listItemContainer}>
-          <Text style={[styles.listItem, {color: theme.textColorSecondary}]}>
+          <Text style={[styles.listItem, { color: theme.textColorSecondary }]}>
             {trackItem.title}
           </Text>
           <IconButton
@@ -69,36 +74,42 @@ export const MalTrackItemCard = ({
           />
         </View>
       </View>
-      <View style={{height: 50, flexDirection: 'row'}}>
+      <View style={{ height: 50, flexDirection: 'row' }}>
         <TouchableRipple
-          style={[styles.listItemLeft, {borderRightColor: theme.dividerColor}]}
+          style={[
+            styles.listItemLeft,
+            { borderRightColor: theme.dividerColor },
+          ]}
           borderless
           onPress={() => setTrackStatusDialog(true)}
           rippleColor={theme.rippleColor}
         >
-          <Text style={[styles.listItem, {color: theme.textColorSecondary}]}>
+          <Text style={[styles.listItem, { color: theme.textColorSecondary }]}>
             {getStatus(trackItem.my_list_status.status)}
           </Text>
         </TouchableRipple>
         <TouchableRipple
-          style={{flex: 1}}
+          style={{ flex: 1 }}
           borderless
           onPress={() => setTrackChaptersDialog(true)}
           rippleColor={theme.rippleColor}
         >
-          <Text style={[styles.listItem, {color: theme.textColorSecondary}]}>
+          <Text style={[styles.listItem, { color: theme.textColorSecondary }]}>
             {`${trackItem.my_list_status.num_chapters_read}/${
               trackItem.num_chapters !== 0 ? trackItem.num_chapters : '-'
             }`}
           </Text>
         </TouchableRipple>
         <TouchableRipple
-          style={[styles.listItemRight, {borderLeftColor: theme.dividerColor}]}
+          style={[
+            styles.listItemRight,
+            { borderLeftColor: theme.dividerColor },
+          ]}
           borderless
           onPress={() => setTrackScoreDialog(true)}
           rippleColor={theme.rippleColor}
         >
-          <Text style={[styles.listItem, {color: theme.textColorSecondary}]}>
+          <Text style={[styles.listItem, { color: theme.textColorSecondary }]}>
             {trackItem.my_list_status.score === 0
               ? '-'
               : trackItem.my_list_status.score}

@@ -1,8 +1,8 @@
 import React from 'react';
-import {StyleSheet, View, Text, Pressable} from 'react-native';
+import { StyleSheet, View, Text, Pressable } from 'react-native';
 
 import FastImage from 'react-native-fast-image';
-import {defaultCoverUri} from '../sources/helpers/constants';
+import { defaultCoverUri } from '../sources/helpers/constants';
 
 const ListView = ({
   item,
@@ -21,10 +21,10 @@ const ListView = ({
 
   return (
     <Pressable
-      android_ripple={{color: theme.rippleColor}}
+      android_ripple={{ color: theme.rippleColor }}
       style={[
         styles.listView,
-        isSelected && {backgroundColor: theme.rippleColor},
+        isSelected && { backgroundColor: theme.rippleColor },
       ]}
       onPress={onPress}
       onLongPress={onLongPress}
@@ -33,10 +33,10 @@ const ListView = ({
         source={{
           uri,
         }}
-        style={[styles.extensionIcon, inLibraryBadge && {opacity: 0.5}]}
+        style={[styles.extensionIcon, inLibraryBadge && { opacity: 0.5 }]}
       />
       <Text
-        style={[{color: theme.textColorPrimary}, styles.novelName]}
+        style={[{ color: theme.textColorPrimary }, styles.novelName]}
         numberOfLines={1}
       >
         {item.novelName}

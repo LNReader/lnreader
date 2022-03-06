@@ -5,20 +5,20 @@ import {
   Text,
   ScrollView,
 } from 'react-native';
-import {Switch} from 'react-native-paper';
-import {useDispatch, useSelector} from 'react-redux';
+import { Switch } from 'react-native-paper';
+import { useDispatch, useSelector } from 'react-redux';
 
-import {ScreenContainer} from '../../components/Common';
-import {List} from '../../components/List';
+import { ScreenContainer } from '../../components/Common';
+import { List } from '../../components/List';
 
-import {useSettings, useTheme} from '../../hooks/reduxHooks';
-import {setAppSettings} from '../../redux/settings/settings.actions';
-import {MoreHeader} from './components/MoreHeader';
+import { useSettings, useTheme } from '../../hooks/reduxHooks';
+import { setAppSettings } from '../../redux/settings/settings.actions';
+import { MoreHeader } from './components/MoreHeader';
 
-const MoreScreen = ({navigation}) => {
+const MoreScreen = ({ navigation }) => {
   const theme = useTheme();
-  const {downloadQueue} = useSelector(state => state.downloadsReducer);
-  const {incognitoMode = false, downloadedOnlyMode = false} = useSettings();
+  const { downloadQueue } = useSelector(state => state.downloadsReducer);
+  const { incognitoMode = false, downloadedOnlyMode = false } = useSettings();
   const dispatch = useDispatch();
 
   const enableIncognitoMode = () => {
@@ -32,10 +32,10 @@ const MoreScreen = ({navigation}) => {
   return (
     <ScreenContainer theme={theme}>
       <MoreHeader title="More" navigation={navigation} theme={theme} />
-      <ScrollView style={{flex: 1}}>
+      <ScrollView style={{ flex: 1 }}>
         <List.Section>
           <Pressable
-            android_ripple={{color: theme.rippleColor}}
+            android_ripple={{ color: theme.rippleColor }}
             style={{
               paddingHorizontal: 16,
               paddingVertical: 14,
@@ -44,9 +44,9 @@ const MoreScreen = ({navigation}) => {
             }}
             onPress={enableDownloadedOnlyMode}
           >
-            <View style={{flexDirection: 'row'}}>
+            <View style={{ flexDirection: 'row' }}>
               <List.Icon theme={theme} icon="cloud-off-outline" />
-              <View style={{marginLeft: 16}}>
+              <View style={{ marginLeft: 16 }}>
                 <Text
                   style={{
                     color: theme.textColorPrimary,
@@ -55,7 +55,7 @@ const MoreScreen = ({navigation}) => {
                 >
                   Downloaded only
                 </Text>
-                <Text style={{color: theme.textColorSecondary}}>
+                <Text style={{ color: theme.textColorSecondary }}>
                   Filters all novels in your library
                 </Text>
               </View>
@@ -64,11 +64,11 @@ const MoreScreen = ({navigation}) => {
               value={downloadedOnlyMode}
               onValueChange={enableDownloadedOnlyMode}
               color={theme.colorAccent}
-              style={{marginRight: 8}}
+              style={{ marginRight: 8 }}
             />
           </Pressable>
           <Pressable
-            android_ripple={{color: theme.rippleColor}}
+            android_ripple={{ color: theme.rippleColor }}
             style={{
               paddingHorizontal: 16,
               paddingVertical: 14,
@@ -77,9 +77,9 @@ const MoreScreen = ({navigation}) => {
             }}
             onPress={enableIncognitoMode}
           >
-            <View style={{flexDirection: 'row'}}>
+            <View style={{ flexDirection: 'row' }}>
               <List.Icon theme={theme} icon="incognito" />
-              <View style={{marginLeft: 16}}>
+              <View style={{ marginLeft: 16 }}>
                 <Text
                   style={{
                     color: theme.textColorPrimary,
@@ -88,7 +88,7 @@ const MoreScreen = ({navigation}) => {
                 >
                   Incognito mode
                 </Text>
-                <Text style={{color: theme.textColorSecondary}}>
+                <Text style={{ color: theme.textColorSecondary }}>
                   Pauses reading history
                 </Text>
               </View>
@@ -97,7 +97,7 @@ const MoreScreen = ({navigation}) => {
               value={incognitoMode}
               onValueChange={enableIncognitoMode}
               color={theme.colorAccent}
-              style={{marginRight: 8}}
+              style={{ marginRight: 8 }}
             />
           </Pressable>
           <List.Divider theme={theme} />

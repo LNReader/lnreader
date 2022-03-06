@@ -1,8 +1,8 @@
 import React from 'react';
-import {Pressable, View} from 'react-native';
+import { Pressable, View } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-export const ToggleButton = ({icon, selected, theme, color, onPress}) => (
+export const ToggleButton = ({ icon, selected, theme, color, onPress }) => (
   <View
     style={{
       borderRadius: 8,
@@ -11,7 +11,7 @@ export const ToggleButton = ({icon, selected, theme, color, onPress}) => (
     }}
   >
     <Pressable
-      android_ripple={{color: theme.rippleColor}}
+      android_ripple={{ color: theme.rippleColor }}
       style={{
         padding: 10,
         alignItems: 'center',
@@ -46,7 +46,7 @@ export const ToggleColorButton = ({
     }}
   >
     <Pressable
-      android_ripple={{color: textColor}}
+      android_ripple={{ color: textColor }}
       style={{
         flex: 1,
         padding: 10,

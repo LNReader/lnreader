@@ -14,7 +14,7 @@ const popularNovels = async page => {
   const totalPages = 33;
   const url = baseUrl + 'browse/all/popular/all/' + page;
 
-  const result = await fetch(url, {method: 'GET', headers});
+  const result = await fetch(url, { method: 'GET', headers });
   const body = await result.text();
 
   const loadedCheerio = cheerio.load(body);
@@ -40,18 +40,23 @@ const popularNovels = async page => {
     novels.push(novel);
   });
 
-  return {totalPages, novels};
+  return { totalPages, novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {
   const url = novelUrl;
 
-  const result = await fetch(url, {method: 'GET', headers});
+  const result = await fetch(url, { method: 'GET', headers });
   const body = await result.text();
 
   let loadedCheerio = cheerio.load(body);
 
-  let novel = {sourceId, url: novelUrl, novelUrl, sourceName: 'LightNovelPub'};
+  let novel = {
+    sourceId,
+    url: novelUrl,
+    novelUrl,
+    sourceName: 'LightNovelPub',
+  };
 
   novel.novelName = loadedCheerio('h1.novel-title')
     .text()
@@ -99,7 +104,7 @@ const parseNovelAndChapters = async novelUrl => {
     for (let i = 1; i <= lastPage; i++) {
       const chaptersUrl = `${novelUrl}/chapters/page-${i}`;
 
-      const chaptersRequest = await fetch(chaptersUrl, {headers});
+      const chaptersRequest = await fetch(chaptersUrl, { headers });
       const chaptersHtml = await chaptersRequest.text();
 
       loadedCheerio = cheerio.load(chaptersHtml);
@@ -118,7 +123,7 @@ const parseNovelAndChapters = async novelUrl => {
         const chapterUrl =
           baseUrl + loadedCheerio(this).find('a').attr('href').substring(1);
 
-        novelChapters.push({chapterName, releaseDate, chapterUrl});
+        novelChapters.push({ chapterName, releaseDate, chapterUrl });
       });
 
       await delay(1000);
@@ -135,7 +140,7 @@ const parseNovelAndChapters = async novelUrl => {
 const parseChapter = async (novelUrl, chapterUrl) => {
   const url = chapterUrl;
 
-  const result = await fetch(url, {method: 'GET', headers});
+  const result = await fetch(url, { method: 'GET', headers });
   const body = await result.text();
 
   const loadedCheerio = cheerio.load(body);
@@ -157,7 +162,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 const searchNovels = async searchTerm => {
   const url = `${baseUrl}lnwsearchlive?inputContent=${searchTerm}`;
 
-  const result = await fetch(url, {method: 'GET', headers});
+  const result = await fetch(url, { method: 'GET', headers });
   const body = await result.text();
 
   let loadedCheerio = cheerio.load(body);

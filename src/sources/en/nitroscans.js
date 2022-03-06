@@ -1,5 +1,5 @@
 import cheerio from 'react-native-cheerio';
-import {Status} from '../helpers/constants';
+import { Status } from '../helpers/constants';
 
 const sourceId = 90;
 const sourceName = 'NitroScans';
@@ -22,12 +22,12 @@ const popularNovels = async page => {
     const novelCover = loadedCheerio(this).find('img').attr('data-src');
     const novelUrl = loadedCheerio(this).find('h3 > a').attr('href');
 
-    const novel = {sourceId, novelName, novelCover, novelUrl};
+    const novel = { sourceId, novelName, novelCover, novelUrl };
 
     novels.push(novel);
   });
 
-  return {totalPages, novels};
+  return { totalPages, novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {
@@ -103,7 +103,7 @@ const parseNovelAndChapters = async novelUrl => {
     const releaseDate = loadedCheerio(this).find('span').text().trim();
     const chapterUrl = loadedCheerio(this).find('a').attr('href');
 
-    novelChapters.push({chapterName, releaseDate, chapterUrl});
+    novelChapters.push({ chapterName, releaseDate, chapterUrl });
   });
 
   novel.chapters = novelChapters.reverse();
@@ -148,7 +148,7 @@ const searchNovels = async searchTerm => {
     const novelCover = loadedCheerio(this).find('img').attr('data-src');
     const novelUrl = loadedCheerio(this).find('h3 > a').attr('href');
 
-    const novel = {sourceId, novelName, novelCover, novelUrl};
+    const novel = { sourceId, novelName, novelCover, novelUrl };
 
     novels.push(novel);
   });

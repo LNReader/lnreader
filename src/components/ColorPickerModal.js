@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
-import {FlatList, Pressable, StyleSheet, Text, View} from 'react-native';
+import React, { useState } from 'react';
+import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 
-import {Modal, Portal, TextInput} from 'react-native-paper';
+import { Modal, Portal, TextInput } from 'react-native-paper';
 
 const ColorPickerModal = ({
   theme,
@@ -73,19 +73,19 @@ const ColorPickerModal = ({
         onDismiss={onDismiss}
         contentContainerStyle={[
           styles.modalContainer,
-          {backgroundColor: theme.colorPrimary},
+          { backgroundColor: theme.colorPrimary },
         ]}
       >
-        <Text style={[styles.modalTitle, {color: theme.textColorPrimary}]}>
+        <Text style={[styles.modalTitle, { color: theme.textColorPrimary }]}>
           {title}
         </Text>
         {showAccentColors && (
           <FlatList
-            contentContainerStyle={{marginBottom: 8}}
+            contentContainerStyle={{ marginBottom: 8 }}
             data={accentColors}
             numColumns={4}
             keyExtractor={item => item}
-            renderItem={({item}) => (
+            renderItem={({ item }) => (
               <View
                 style={{
                   borderRadius: 4,
@@ -98,7 +98,7 @@ const ColorPickerModal = ({
                 }}
               >
                 <Pressable
-                  style={{flex: 1}}
+                  style={{ flex: 1 }}
                   android_ripple={{
                     color: 'rgba(0,0,0,0.12)',
                   }}

@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, View, Image, ActivityIndicator} from 'react-native';
-import {Button, Modal, TextInput, TouchableRipple} from 'react-native-paper';
-import {searchNovels} from '../../../../services/Trackers/myAnimeList';
-import {useSelector, useDispatch} from 'react-redux';
-import {ScrollView} from 'react-native-gesture-handler';
-import {trackNovel} from '../../../../redux/tracker/tracker.actions';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, Image, ActivityIndicator } from 'react-native';
+import { Button, Modal, TextInput, TouchableRipple } from 'react-native-paper';
+import { searchNovels } from '../../../../services/Trackers/myAnimeList';
+import { useSelector, useDispatch } from 'react-redux';
+import { ScrollView } from 'react-native-gesture-handler';
+import { trackNovel } from '../../../../redux/tracker/tracker.actions';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const TrackSearchDialog = ({
@@ -38,7 +38,7 @@ const TrackSearchDialog = ({
   const renderSearchResultCard = item => (
     <TouchableRipple
       style={[
-        {flexDirection: 'row', borderRadius: 4, margin: 8},
+        { flexDirection: 'row', borderRadius: 4, margin: 8 },
         selectedNovel &&
           selectedNovel.id === item.node.id && {
             backgroundColor: theme.rippleColor,
@@ -64,8 +64,8 @@ const TrackSearchDialog = ({
           />
         )}
         <Image
-          source={{uri: item.node.main_picture.large}}
-          style={{height: 150, width: 100, borderRadius: 4}}
+          source={{ uri: item.node.main_picture.large }}
+          style={{ height: 150, width: 100, borderRadius: 4 }}
         />
         <Text
           style={{
@@ -90,9 +90,9 @@ const TrackSearchDialog = ({
       onDismiss={() => setTrackSearchDialog(false)}
       contentContainerStyle={[
         styles.containerStyle,
-        {backgroundColor: theme.colorPrimary},
+        { backgroundColor: theme.colorPrimary },
       ]}
-      theme={{colors: {backdrop: 'rgba(0,0,0,0.25)'}}}
+      theme={{ colors: { backdrop: 'rgba(0,0,0,0.25)' } }}
     >
       <TextInput
         value={searchText}
@@ -114,12 +114,12 @@ const TrackSearchDialog = ({
           />
         }
       />
-      <ScrollView style={{flexGrow: 1, maxHeight: 500, marginVertical: 8}}>
+      <ScrollView style={{ flexGrow: 1, maxHeight: 500, marginVertical: 8 }}>
         {loading ? (
           <ActivityIndicator
             color={theme.colorAccent}
             size={45}
-            style={{margin: 16}}
+            style={{ margin: 16 }}
           />
         ) : (
           searchResults &&
@@ -140,19 +140,19 @@ const TrackSearchDialog = ({
             letterSpacing: 0,
             textTransform: 'none',
           }}
-          theme={{colors: {primary: theme.colorAccent}}}
+          theme={{ colors: { primary: theme.colorAccent } }}
           onPress={() => setSelectedNovel(null)}
         >
           Remove
         </Button>
-        <View style={{flexDirection: 'row'}}>
+        <View style={{ flexDirection: 'row' }}>
           <Button
             labelStyle={{
               color: theme.colorAccent,
               letterSpacing: 0,
               textTransform: 'none',
             }}
-            theme={{colors: {primary: theme.colorAccent}}}
+            theme={{ colors: { primary: theme.colorAccent } }}
             onPress={() => setTrackSearchDialog(false)}
           >
             Cancel
@@ -163,11 +163,14 @@ const TrackSearchDialog = ({
               letterSpacing: 0,
               textTransform: 'none',
             }}
-            theme={{colors: {primary: theme.colorAccent}}}
+            theme={{ colors: { primary: theme.colorAccent } }}
             onPress={() => {
               if (selectedNovel) {
                 dispatch(
-                  trackNovel({...selectedNovel, novelId}, tracker.access_token),
+                  trackNovel(
+                    { ...selectedNovel, novelId },
+                    tracker.access_token,
+                  ),
                 );
               }
               setTrackSearchDialog(false);

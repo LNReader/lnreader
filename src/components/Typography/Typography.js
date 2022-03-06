@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Text as NativeText, TextPropTypes} from 'react-native';
+import { Text as NativeText, TextPropTypes } from 'react-native';
 
-const Text = ({type, children, style, theme}) => {
+const Text = ({ type, children, style, theme }) => {
   const color =
     type === 'primary'
       ? theme.textColorPrimary
@@ -10,7 +10,7 @@ const Text = ({type, children, style, theme}) => {
       ? theme.textColorSecondary
       : theme.textColorHint;
 
-  return <NativeText style={[style, {color}]}>{children}</NativeText>;
+  return <NativeText style={[style, { color }]}>{children}</NativeText>;
 };
 
 Text.propType = {

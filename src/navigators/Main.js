@@ -1,12 +1,12 @@
-import React, {useEffect} from 'react';
-import {View} from 'react-native';
+import React, { useEffect } from 'react';
+import { View } from 'react-native';
 
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
-import {setBarColor} from '../theme/utils/setBarColor';
-import {useTheme} from '../hooks/reduxHooks';
-import {useGithubUpdateChecker} from '../hooks/githubUpdateChecker';
+import { setBarColor } from '../theme/utils/setBarColor';
+import { useTheme } from '../hooks/reduxHooks';
+import { useGithubUpdateChecker } from '../hooks/githubUpdateChecker';
 import * as SplashScreen from 'expo-splash-screen';
 
 /**
@@ -42,13 +42,15 @@ const MainNavigator = () => {
     }, 500);
   }, [theme]);
 
-  const {isNewVersion, latestRelease} = useGithubUpdateChecker() || {};
+  const { isNewVersion, latestRelease } = useGithubUpdateChecker() || {};
 
   return (
-    <NavigationContainer theme={{colors: {background: theme.colorPrimaryDark}}}>
-      <View style={{flex: 1, backgroundColor: theme.colorPrimaryDark}}>
+    <NavigationContainer
+      theme={{ colors: { background: theme.colorPrimaryDark } }}
+    >
+      <View style={{ flex: 1, backgroundColor: theme.colorPrimaryDark }}>
         {isNewVersion && <NewUpdateDialog newVersion={latestRelease} />}
-        <Stack.Navigator screenOptions={{headerShown: false}}>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="BottomNavigator" component={BottomNavigator} />
           <Stack.Screen name="Novel" component={Novel} />
           <Stack.Screen name="Chapter" component={Reader} />

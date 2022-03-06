@@ -1,8 +1,8 @@
 import React from 'react';
-import {View, Text, /* StyleSheet, */ Pressable} from 'react-native';
+import { View, Text, /* StyleSheet, */ Pressable } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-export const ThemePicker = ({theme, currentTheme, onPress}) => (
+export const ThemePicker = ({ theme, currentTheme, onPress }) => (
   <View
     style={{
       justifyContent: 'center',
@@ -25,7 +25,7 @@ export const ThemePicker = ({theme, currentTheme, onPress}) => (
         elevation: 1,
       }}
     >
-      <Pressable style={{flex: 1}} onPress={onPress}>
+      <Pressable style={{ flex: 1 }} onPress={onPress}>
         {currentTheme.id === theme.id && (
           <MaterialCommunityIcons
             name="check"
@@ -60,7 +60,7 @@ export const ThemePicker = ({theme, currentTheme, onPress}) => (
             }}
           />
         </View>
-        <View style={{padding: 8}}>
+        <View style={{ padding: 8 }}>
           <View
             style={{
               height: 18,
@@ -68,7 +68,7 @@ export const ThemePicker = ({theme, currentTheme, onPress}) => (
               borderRadius: 4,
             }}
           />
-          <View style={{paddingVertical: 4, flexDirection: 'row'}}>
+          <View style={{ paddingVertical: 4, flexDirection: 'row' }}>
             <View
               style={{
                 height: 10,
@@ -87,7 +87,7 @@ export const ThemePicker = ({theme, currentTheme, onPress}) => (
               }}
             />
           </View>
-          <View style={{flexDirection: 'row'}}>
+          <View style={{ flexDirection: 'row' }}>
             <View
               style={{
                 height: 10,

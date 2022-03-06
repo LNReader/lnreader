@@ -1,5 +1,5 @@
 import cheerio from 'react-native-cheerio';
-import {Status} from '../helpers/constants';
+import { Status } from '../helpers/constants';
 
 const sourceId = 85;
 const sourceName = 'NovelSpace';
@@ -36,7 +36,7 @@ const popularNovels = async page => {
     novels.push(novel);
   });
 
-  return {totalPages, novels};
+  return { totalPages, novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {
@@ -72,7 +72,7 @@ const parseNovelAndChapters = async novelUrl => {
 
   let novelChapters = [];
 
-  const data = await fetch(`${url}/ajax/chapters/`, {method: 'POST'});
+  const data = await fetch(`${url}/ajax/chapters/`, { method: 'POST' });
   const text = await data.text();
 
   loadedCheerio = cheerio.load(text);
@@ -87,7 +87,7 @@ const parseNovelAndChapters = async novelUrl => {
       ? (chapterUrl = chapterUrl[5] + '/' + chapterUrl[6])
       : (chapterUrl = chapterUrl[5]);
 
-    novelChapters.push({chapterName, releaseDate, chapterUrl});
+    novelChapters.push({ chapterName, releaseDate, chapterUrl });
   });
 
   novel.chapters = novelChapters.reverse();

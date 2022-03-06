@@ -9,8 +9,8 @@ import {
   Dimensions,
 } from 'react-native';
 
-import {readerLineHeight, readerTextColor} from '../utils/readerStyles';
-import {htmlToText} from '../../../sources/helpers/htmlToText';
+import { readerLineHeight, readerTextColor } from '../utils/readerStyles';
+import { htmlToText } from '../../../sources/helpers/htmlToText';
 
 const TextReader = ({
   text,
@@ -51,25 +51,28 @@ const TextReader = ({
       </Text>
 
       <View style={styles.navigationContainer}>
-        <Text style={[styles.finishedChapterText, {color: reader.textColor}]}>
+        <Text style={[styles.finishedChapterText, { color: reader.textColor }]}>
           Finished: {chapterName}
         </Text>
         {nextChapter ? (
           <View style={styles.nextChapButtonContainer}>
             <Pressable
               style={styles.nextChapterButton}
-              android_ripple={{color: theme.rippleColor}}
+              android_ripple={{ color: theme.rippleColor }}
               onPress={navigateToNextChapter}
             >
               <Text
-                style={[styles.nextChapButtonLabel, {color: reader.textColor}]}
+                style={[
+                  styles.nextChapButtonLabel,
+                  { color: reader.textColor },
+                ]}
               >
                 Next: {nextChapter.chapterName}
               </Text>
             </Pressable>
           </View>
         ) : (
-          <Text style={[{color: reader.textColor}, styles.noNextChapterText]}>
+          <Text style={[{ color: reader.textColor }, styles.noNextChapterText]}>
             There's no next chapter
           </Text>
         )}

@@ -1,12 +1,12 @@
-import React, {memo} from 'react';
-import {View, Text, StyleSheet, Clipboard, Pressable} from 'react-native';
+import React, { memo } from 'react';
+import { View, Text, StyleSheet, Clipboard, Pressable } from 'react-native';
 
 import * as WebBrowser from 'expo-web-browser';
-import {IconButton} from 'react-native-paper';
+import { IconButton } from 'react-native-paper';
 
-import {followNovelAction} from '../../../../redux/novel/novel.actions';
-import {useTrackingStatus, useSettings} from '../../../../hooks/reduxHooks';
-import {showToast} from '../../../../hooks/showToast';
+import { followNovelAction } from '../../../../redux/novel/novel.actions';
+import { useTrackingStatus, useSettings } from '../../../../hooks/reduxHooks';
+import { showToast } from '../../../../hooks/showToast';
 
 import {
   CoverImage,
@@ -19,7 +19,7 @@ import {
   TrackerButton,
   NovelGenres,
 } from './NovelInfoComponents';
-import {Row} from '../../../../components/Common';
+import { Row } from '../../../../components/Common';
 import NovelSummary from './NovelSummary';
 import ReadButton from './ReadButton';
 
@@ -48,7 +48,7 @@ const NovelInfoHeader = ({
   novelBottomSheetRef,
   deleteDownloadsSnackbar,
 }) => {
-  const {tracker, trackedNovels} = useTrackingStatus();
+  const { tracker, trackedNovels } = useTrackingStatus();
 
   let isTracked = false;
 
@@ -56,7 +56,7 @@ const NovelInfoHeader = ({
     isTracked = trackedNovels.find(obj => obj.novelId === novel.novelId);
   }
 
-  const {hideBackdrop = false} = useSettings();
+  const { hideBackdrop = false } = useSettings();
 
   const getNovelCoverUrl = () => {
     const defaultCover =
@@ -80,13 +80,13 @@ const NovelInfoHeader = ({
   return (
     <View>
       <CoverImage
-        source={{uri: getNovelCoverUrl()}}
+        source={{ uri: getNovelCoverUrl() }}
         theme={theme}
         hideBackdrop={hideBackdrop}
       >
         <NovelInfoContainer>
           <NovelThumbnail
-            source={{uri: getNovelCoverUrl()}}
+            source={{ uri: getNovelCoverUrl() }}
             theme={theme}
             setCustomNovelCover={setCustomNovelCover}
           />
@@ -184,7 +184,7 @@ const NovelInfoHeader = ({
                   icon="swap-vertical-variant"
                   color={theme.textColorHint}
                   size={24}
-                  style={{margin: 0}}
+                  style={{ margin: 0 }}
                 />
                 <Text
                   style={{
@@ -219,7 +219,7 @@ const NovelInfoHeader = ({
                   icon="earth"
                   color={theme.textColorHint}
                   size={24}
-                  style={{margin: 0}}
+                  style={{ margin: 0 }}
                 />
                 <Text
                   style={{
@@ -250,9 +250,9 @@ const NovelInfoHeader = ({
           <Pressable
             style={styles.bottomsheet}
             onPress={() => novelBottomSheetRef.current.show()}
-            android_ripple={{color: theme.rippleColor}}
+            android_ripple={{ color: theme.rippleColor }}
           >
-            <Text style={[{color: theme.textColorPrimary}, styles.chapters]}>
+            <Text style={[{ color: theme.textColorPrimary }, styles.chapters]}>
               {`${chapters.length} chapters`}
             </Text>
             <IconButton

@@ -5,7 +5,7 @@ import {
   PIN_SOURCES,
   SEARCH_SOURCES,
 } from './source.types';
-import {showToast} from '../../hooks/showToast';
+import { showToast } from '../../hooks/showToast';
 import sources from '../../sources/sources.json';
 
 export const getSourcesAction = () => async dispatch => {

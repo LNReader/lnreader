@@ -1,8 +1,8 @@
 import * as DocumentPicker from 'expo-document-picker';
-import {StorageAccessFramework} from 'expo-file-system';
+import { StorageAccessFramework } from 'expo-file-system';
 import moment from 'moment';
 
-import {showToast} from '../../hooks/showToast';
+import { showToast } from '../../hooks/showToast';
 
 import {
   getLibraryChapters,
@@ -18,7 +18,7 @@ const createFullBackup = async () => {
   const chapters = await getLibraryChapters();
   const downloads = await getLibraryDownloads();
 
-  const backup = {novels, chapters, downloads};
+  const backup = { novels, chapters, downloads };
 
   /**
    * Request permissions
@@ -58,7 +58,7 @@ const restoreFullBackup = async () => {
     let data = await StorageAccessFramework.readAsStringAsync(backup.uri);
     data = JSON.parse(data);
 
-    const {novels, chapters, downloads} = data;
+    const { novels, chapters, downloads } = data;
 
     novels.map(novel => restoreNovels(novel));
     chapters.map(chapter => restoreChapters(chapter));
@@ -68,4 +68,4 @@ const restoreFullBackup = async () => {
   showToast('Backup restored.');
 };
 
-export {createFullBackup, restoreFullBackup};
+export { createFullBackup, restoreFullBackup };

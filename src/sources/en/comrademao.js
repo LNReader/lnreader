@@ -40,7 +40,7 @@ const popularNovels = async page => {
       novels.push(novel);
     });
 
-  return {novels, totalPages};
+  return { novels, totalPages };
 };
 
 const parseNovelAndChapters = async novelUrl => {
@@ -52,7 +52,7 @@ const parseNovelAndChapters = async novelUrl => {
 
   const loadedCheerio = cheerio.load(body);
 
-  let novel = {sourceId, sourceName, url, novelUrl};
+  let novel = { sourceId, sourceName, url, novelUrl };
 
   novel.novelName = loadedCheerio(
     '#NovelInfo > div > div.column.is-one-third.has-text-centered > p',

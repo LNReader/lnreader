@@ -1,6 +1,6 @@
 import React from 'react';
-import {StyleSheet, Text} from 'react-native';
-import {Modal} from 'react-native-paper';
+import { StyleSheet, Text } from 'react-native';
+import { Modal } from 'react-native-paper';
 import {
   RadioButton,
   RadioButtonGroup,
@@ -37,11 +37,11 @@ const SetTrackScoreDialog = ({
       onDismiss={() => setTrackScoreDialog(false)}
       contentContainerStyle={[
         styles.containerStyle,
-        {backgroundColor: theme.colorPrimary},
+        { backgroundColor: theme.colorPrimary },
       ]}
-      theme={{colors: {backdrop: 'rgba(0,0,0,0.25)'}}}
+      theme={{ colors: { backdrop: 'rgba(0,0,0,0.25)' } }}
     >
-      <Text style={[styles.dialogTitle, {color: theme.textColorPrimary}]}>
+      <Text style={[styles.dialogTitle, { color: theme.textColorPrimary }]}>
         Score
       </Text>
       <RadioButtonGroup

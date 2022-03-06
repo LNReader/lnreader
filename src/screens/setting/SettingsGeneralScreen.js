@@ -1,26 +1,26 @@
 import React from 'react';
-import {ScrollView} from 'react-native';
+import { ScrollView } from 'react-native';
 
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import {Appbar} from '../../components/Appbar';
-import {List} from '../../components/List';
-import {ScreenContainer} from '../../components/Common';
+import { Appbar } from '../../components/Appbar';
+import { List } from '../../components/List';
+import { ScreenContainer } from '../../components/Common';
 import SwitchSetting from '../../components/Switch/Switch';
 import DisplayModeModal from '../more/components/DisplayModeModal';
 import GridSizeModal from '../more/components/GridSizeModal';
 
-import {useSettings, useTheme} from '../../hooks/reduxHooks';
-import {setAppSettings} from '../../redux/settings/settings.actions';
-import {SHOW_LAST_UPDATE_TIME} from '../../redux/updates/updates.types';
-import {useModal} from '../../hooks/useModal';
+import { useSettings, useTheme } from '../../hooks/reduxHooks';
+import { setAppSettings } from '../../redux/settings/settings.actions';
+import { SHOW_LAST_UPDATE_TIME } from '../../redux/updates/updates.types';
+import { useModal } from '../../hooks/useModal';
 import DefaultChapterSortModal from './components/DefaultChapterSortModal';
 
-const GenralSettings = ({navigation}) => {
+const GenralSettings = ({ navigation }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
 
-  const {displayMode, novelsPerRow} = useSelector(
+  const { displayMode, novelsPerRow } = useSelector(
     state => state.settingsReducer,
   );
 
@@ -32,7 +32,7 @@ const GenralSettings = ({navigation}) => {
     refreshNovelMetadata = false,
   } = useSettings();
 
-  const {showLastUpdateTime = true} = useSelector(
+  const { showLastUpdateTime = true } = useSelector(
     state => state.updatesReducer,
   );
 
@@ -62,7 +62,7 @@ const GenralSettings = ({navigation}) => {
   return (
     <ScreenContainer theme={theme}>
       <Appbar title="General" onBackAction={navigation.goBack} />
-      <ScrollView contentContainerStyle={{paddingBottom: 32}}>
+      <ScrollView contentContainerStyle={{ paddingBottom: 32 }}>
         <List.Section>
           <List.SubHeader theme={theme}>Display</List.SubHeader>
           <List.Item

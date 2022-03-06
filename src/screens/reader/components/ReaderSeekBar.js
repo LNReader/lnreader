@@ -1,9 +1,9 @@
 import React from 'react';
-import {Dimensions, View, Text, StyleSheet} from 'react-native';
+import { Dimensions, View, Text, StyleSheet } from 'react-native';
 
 import Slider from '@react-native-community/slider';
-import {useDeviceOrientation} from '../../../services/utils/helpers';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import { useDeviceOrientation } from '../../../services/utils/helpers';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const VerticalScrollbar = ({
   theme,
@@ -14,7 +14,7 @@ const VerticalScrollbar = ({
   scrollViewRef,
   verticalSeekbar,
 }) => {
-  const {bottom} = useSafeAreaInsets();
+  const { bottom } = useSafeAreaInsets();
 
   const onSlidingComplete = value => {
     setLoading(true);
@@ -37,14 +37,14 @@ const VerticalScrollbar = ({
       <View
         style={[
           styles.verticalSliderContainer,
-          {backgroundColor: `${theme.colorPrimary}E6`},
+          { backgroundColor: `${theme.colorPrimary}E6` },
         ]}
       >
         <Text
           style={{
             color: theme.textColorPrimary,
             marginLeft: 16,
-            transform: [{rotate: '-90deg'}],
+            transform: [{ rotate: '-90deg' }],
           }}
         >
           {scrollPercentage}
@@ -67,7 +67,7 @@ const VerticalScrollbar = ({
           style={{
             color: theme.textColorPrimary,
             marginRight: 16,
-            transform: [{rotate: '-90deg'}],
+            transform: [{ rotate: '-90deg' }],
           }}
         >
           100
@@ -79,7 +79,7 @@ const VerticalScrollbar = ({
       <View
         style={[
           styles.horizontalSliderContainer,
-          {backgroundColor: `${theme.colorPrimary}E6`, bottom: 80 + bottom},
+          { backgroundColor: `${theme.colorPrimary}E6`, bottom: 80 + bottom },
         ]}
       >
         <Text
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 50,
     marginHorizontal: 8,
-    transform: [{rotate: '90deg'}],
+    transform: [{ rotate: '90deg' }],
     position: 'absolute',
     zIndex: 2,
     right: -(Dimensions.get('window').width / 2) + 40,

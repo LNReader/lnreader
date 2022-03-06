@@ -1,11 +1,11 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 
-import {Button} from 'react-native-paper';
-import {useSettings} from '../../../../hooks/reduxHooks';
+import { Button } from 'react-native-paper';
+import { useSettings } from '../../../../hooks/reduxHooks';
 
-const ReadButton = ({navigation, novel, chapters, theme, lastRead}) => {
-  const {useFabForContinueReading = false} = useSettings();
+const ReadButton = ({ navigation, novel, chapters, theme, lastRead }) => {
+  const { useFabForContinueReading = false } = useSettings();
 
   const navigateToLastReadChapter = () => {
     navigation.navigate('Chapter', {
@@ -26,7 +26,7 @@ const ReadButton = ({navigation, novel, chapters, theme, lastRead}) => {
       (lastRead ? (
         <Button
           color="white"
-          style={[{backgroundColor: theme.colorAccent}, styles.startButton]}
+          style={[{ backgroundColor: theme.colorAccent }, styles.startButton]}
           uppercase={false}
           labelStyle={{
             letterSpacing: 0,
@@ -40,9 +40,9 @@ const ReadButton = ({navigation, novel, chapters, theme, lastRead}) => {
       ) : (
         <Button
           color={theme.textColorHint}
-          style={[styles.startButton, {backgroundColor: theme.colorDisabled}]}
+          style={[styles.startButton, { backgroundColor: theme.colorDisabled }]}
           uppercase={false}
-          labelStyle={{letterSpacing: 0}}
+          labelStyle={{ letterSpacing: 0 }}
         >
           All chapters read
         </Button>

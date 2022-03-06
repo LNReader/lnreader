@@ -16,7 +16,7 @@ const popularNovels = async page => {
   formData.append('order_type', 'DESC');
   formData.append('order_by', 'views');
 
-  const result = await fetch(url, {method: 'POST', body: formData});
+  const result = await fetch(url, { method: 'POST', body: formData });
   const body = await result.text();
 
   const loadedCheerio = cheerio.load(body);
@@ -41,7 +41,7 @@ const popularNovels = async page => {
     novels.push(novel);
   });
 
-  return {totalPages, novels};
+  return { totalPages, novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

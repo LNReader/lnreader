@@ -68,7 +68,7 @@ import WuxiaCityScraper from './en/wuxiacity';
 import NovelUpdatesScraper from './en/novelupdates';
 import RanobesScraper from './en/ranobes';
 import YushuboScraper from './ch/yushubo';
-import {KolNovelScraper} from './multisrc/wpmangastream/WPMangaStreamGenerator';
+import { KolNovelScraper } from './multisrc/wpmangastream/WPMangaStreamGenerator';
 import WLNUpdatesScraper from './en/wlnupdates';
 import ReaperScansScraper from './en/reaperscans';
 import RanobeHubScraper from './ru/ranobehub';

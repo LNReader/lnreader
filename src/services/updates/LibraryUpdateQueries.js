@@ -1,13 +1,13 @@
-import {showToast} from '../../hooks/showToast';
+import { showToast } from '../../hooks/showToast';
 
-import {fetchNovel} from '../Source/source';
-import {downloadChapter} from '../../database/queries/ChapterQueries';
+import { fetchNovel } from '../Source/source';
+import { downloadChapter } from '../../database/queries/ChapterQueries';
 
 import * as SQLite from 'expo-sqlite';
 const db = SQLite.openDatabase('lnreader.db');
 
 const updateNovelMetadata = async (novelId, novel) => {
-  const {novelName, novelCover, novelSummary, author, artist, genre, status} =
+  const { novelName, novelCover, novelSummary, author, artist, genre, status } =
     novel;
 
   db.transaction(tx => {
@@ -30,7 +30,7 @@ const updateNovelMetadata = async (novelId, novel) => {
 };
 
 const updateNovelCover = async (novelId, novel) => {
-  const {novelCover} = novel;
+  const { novelCover } = novel;
 
   db.transaction(tx => {
     tx.executeSql(
@@ -51,7 +51,7 @@ const insertUpdate = async (tx, chapterId, novelId) =>
   );
 
 const updateNovel = async (sourceId, novelUrl, novelId, options) => {
-  const {downloadNewChapters, refreshNovelMetadata} = options;
+  const { downloadNewChapters, refreshNovelMetadata } = options;
 
   let novel = await fetchNovel(sourceId, novelUrl);
 
@@ -61,12 +61,12 @@ const updateNovel = async (sourceId, novelUrl, novelId, options) => {
 
   db.transaction(tx => {
     novel.chapters.map(chapter => {
-      const {chapterName, chapterUrl, releaseDate} = chapter;
+      const { chapterName, chapterUrl, releaseDate } = chapter;
 
       tx.executeSql(
         'INSERT OR IGNORE INTO chapters (chapterUrl, chapterName, releaseDate, novelId) values (?, ?, ?, ?)',
         [chapterUrl, chapterName, releaseDate, novelId],
-        (txObj, {insertId}) => {
+        (txObj, { insertId }) => {
           if (insertId !== -1) {
             if (downloadNewChapters) {
               downloadChapter(sourceId, novelUrl, chapterUrl, insertId);
@@ -80,4 +80,4 @@ const updateNovel = async (sourceId, novelUrl, novelId, options) => {
   });
 };
 
-export {updateNovel};
+export { updateNovel };

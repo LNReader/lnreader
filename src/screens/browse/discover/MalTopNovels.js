@@ -1,18 +1,18 @@
-import React, {useEffect, useState} from 'react';
-import {StyleSheet, View, ActivityIndicator, FlatList} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, View, ActivityIndicator, FlatList } from 'react-native';
 
 import * as WebBrowser from 'expo-web-browser';
 
-import {Searchbar} from '../../../components/Searchbar/Searchbar';
-import {ErrorView} from '../../../components/ErrorView/ErrorView';
+import { Searchbar } from '../../../components/Searchbar/Searchbar';
+import { ErrorView } from '../../../components/ErrorView/ErrorView';
 
-import {useTheme /*, useSettings */} from '../../../hooks/reduxHooks';
-import {showToast} from '../../../hooks/showToast';
+import { useTheme /*, useSettings */ } from '../../../hooks/reduxHooks';
+import { showToast } from '../../../hooks/showToast';
 // import {useDeviceOrientation} from '../../../services/utils/helpers';
-import {scrapeSearchResults, scrapeTopNovels} from './MyAnimeListScraper';
+import { scrapeSearchResults, scrapeTopNovels } from './MyAnimeListScraper';
 import BrowseMalCard from './BrowseMalCard';
 
-const BrowseMalScreen = ({navigation, route}) => {
+const BrowseMalScreen = ({ navigation, route }) => {
   const theme = useTheme();
 
   const [loading, setLoading] = useState(true);
@@ -65,7 +65,7 @@ const BrowseMalScreen = ({navigation, route}) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const renderItem = ({item}) => (
+  const renderItem = ({ item }) => (
     <BrowseMalCard
       novel={item}
       theme={theme}
@@ -93,7 +93,11 @@ const BrowseMalScreen = ({navigation, route}) => {
   //   }
   // };
 
-  const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}) => {
+  const isCloseToBottom = ({
+    layoutMeasurement,
+    contentOffset,
+    contentSize,
+  }) => {
     const paddingToBottom = 20;
     return (
       layoutMeasurement.height + contentOffset.y >=
@@ -120,7 +124,9 @@ const BrowseMalScreen = ({navigation, route}) => {
   );
 
   return (
-    <View style={[styles.container, {backgroundColor: theme.colorPrimaryDark}]}>
+    <View
+      style={[styles.container, { backgroundColor: theme.colorPrimaryDark }]}
+    >
       <Searchbar
         theme={theme}
         placeholder="Search MyAnimeList"
@@ -138,7 +144,7 @@ const BrowseMalScreen = ({navigation, route}) => {
         ]}
       />
       {loading ? (
-        <View style={{flex: 1, justifyContent: 'center'}}>
+        <View style={{ flex: 1, justifyContent: 'center' }}>
           <ActivityIndicator size={60} color={theme.colorAccent} />
         </View>
       ) : (
@@ -148,7 +154,7 @@ const BrowseMalScreen = ({navigation, route}) => {
           keyExtractor={item => item.novelName}
           renderItem={renderItem}
           ListEmptyComponent={ListEmptyComponent}
-          onScroll={({nativeEvent}) => {
+          onScroll={({ nativeEvent }) => {
             if (!searchText && isCloseToBottom(nativeEvent)) {
               getNovels(limit + 50);
               setLimit(before => before + 50);
@@ -156,7 +162,7 @@ const BrowseMalScreen = ({navigation, route}) => {
           }}
           ListFooterComponent={
             !searchText && (
-              <View style={{paddingVertical: 16}}>
+              <View style={{ paddingVertical: 16 }}>
                 <ActivityIndicator color={theme.colorAccent} />
               </View>
             )

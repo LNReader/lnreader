@@ -1,15 +1,15 @@
 import React from 'react';
-import {ScrollView} from 'react-native';
+import { ScrollView } from 'react-native';
 
 import * as Linking from 'expo-linking';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import {List} from '../../components/List';
-import {ScreenContainer} from '../../components/Common';
-import {MoreHeader} from './components/MoreHeader';
-import {appversion, releasedt} from '../../utils/utils';
+import { List } from '../../components/List';
+import { ScreenContainer } from '../../components/Common';
+import { MoreHeader } from './components/MoreHeader';
+import { appversion, releasedt } from '../../utils/utils';
 
-const AboutScreen = ({navigation}) => {
+const AboutScreen = ({ navigation }) => {
   const theme = useSelector(state => state.settingsReducer.theme);
 
   return (
@@ -20,7 +20,7 @@ const AboutScreen = ({navigation}) => {
         theme={theme}
         goBack={true}
       />
-      <ScrollView style={{flex: 1}}>
+      <ScrollView style={{ flex: 1 }}>
         <List.Section>
           <List.Item
             title="Version"

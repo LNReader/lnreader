@@ -1,19 +1,19 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {FlatList} from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { FlatList } from 'react-native';
 
-import {ProgressBar} from 'react-native-paper';
-import {useSelector} from 'react-redux';
+import { ProgressBar } from 'react-native-paper';
+import { useSelector } from 'react-redux';
 
-import {Searchbar} from '../../../components/Searchbar/Searchbar';
+import { Searchbar } from '../../../components/Searchbar/Searchbar';
 import EmptyView from '../../../components/EmptyView';
 
-import {ScreenContainer} from '../../../components/Common';
+import { ScreenContainer } from '../../../components/Common';
 import GlobalSearchSourceItem from './GlobalSearchSourceItem';
 
-import {useLibrary, useSettings, useTheme} from '../../../hooks/reduxHooks';
-import {getSource} from '../../../sources/sources';
+import { useLibrary, useSettings, useTheme } from '../../../hooks/reduxHooks';
+import { getSource } from '../../../sources/sources';
 
-const GlobalSearch = ({route, navigation}) => {
+const GlobalSearch = ({ route, navigation }) => {
   const theme = useTheme();
 
   let novelName = '';
@@ -31,7 +31,7 @@ const GlobalSearch = ({route, navigation}) => {
   const pinnedSources = sources.filter(
     source => pinned.indexOf(source.sourceId) !== -1,
   );
-  const {searchAllSources = false} = useSettings();
+  const { searchAllSources = false } = useSettings();
 
   const [searchText, setSearchText] = useState(novelName);
   const [searchResults, setSearchResults] = useState([]);
@@ -82,8 +82,8 @@ const GlobalSearch = ({route, navigation}) => {
           setSearchResults(prevState =>
             prevState.map(sourceItem =>
               sourceItem.sourceId === item.sourceId
-                ? {...sourceItem, novels: data, loading: false}
-                : {...sourceItem},
+                ? { ...sourceItem, novels: data, loading: false }
+                : { ...sourceItem },
             ),
           );
         } catch (e) {
@@ -105,7 +105,7 @@ const GlobalSearch = ({route, navigation}) => {
     });
   };
 
-  const renderItem = ({item}) => (
+  const renderItem = ({ item }) => (
     <GlobalSearchSourceItem
       source={item}
       library={library}
@@ -130,7 +130,7 @@ const GlobalSearch = ({route, navigation}) => {
         <ProgressBar color={theme.colorAccent} progress={progress} />
       )}
       <FlatList
-        contentContainerStyle={{flexGrow: 1, padding: 4}}
+        contentContainerStyle={{ flexGrow: 1, padding: 4 }}
         data={searchResults}
         keyExtractor={item => item.sourceId.toString()}
         renderItem={renderItem}

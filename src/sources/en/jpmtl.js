@@ -19,12 +19,12 @@ const popularNovels = async page => {
     const novelCover = item.cover;
     const novelUrl = item.id + '/';
 
-    const novel = {sourceId: 14, novelName, novelCover, novelUrl};
+    const novel = { sourceId: 14, novelName, novelCover, novelUrl };
 
     novels.push(novel);
   });
 
-  return {totalPages, novels};
+  return { totalPages, novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {
@@ -152,7 +152,7 @@ const searchNovels = async searchTerm => {
     const novelCover = item.cover;
     const novelUrl = item.id + '/';
 
-    const novel = {sourceId: 14, novelName, novelCover, novelUrl};
+    const novel = { sourceId: 14, novelName, novelCover, novelUrl };
 
     novels.push(novel);
   });

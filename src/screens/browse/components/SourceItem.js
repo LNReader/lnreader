@@ -1,12 +1,12 @@
-import React, {useCallback} from 'react';
-import {View, Text, Image, StyleSheet, Pressable} from 'react-native';
+import React, { useCallback } from 'react';
+import { View, Text, Image, StyleSheet, Pressable } from 'react-native';
 
-import {Button, IconButton} from 'react-native-paper';
+import { Button, IconButton } from 'react-native-paper';
 
-import {pinSourceAction} from '../../../redux/source/source.actions';
+import { pinSourceAction } from '../../../redux/source/source.actions';
 
-const SourceItem = ({item, theme, isPinned, dispatch, navigation}) => {
-  const {sourceId, sourceName, icon, lang} = item;
+const SourceItem = ({ item, theme, isPinned, dispatch, navigation }) => {
+  const { sourceId, sourceName, icon, lang } = item;
 
   const navigateToSource = useCallback(
     () =>
@@ -23,9 +23,9 @@ const SourceItem = ({item, theme, isPinned, dispatch, navigation}) => {
     <Pressable
       style={styles.container}
       onPress={navigateToSource}
-      android_ripple={{color: theme.rippleColor}}
+      android_ripple={{ color: theme.rippleColor }}
     >
-      <Image source={{uri: icon}} style={styles.icon} />
+      <Image source={{ uri: icon }} style={styles.icon} />
       <View style={styles.extensionDetails}>
         <View>
           <Text
@@ -45,9 +45,9 @@ const SourceItem = ({item, theme, isPinned, dispatch, navigation}) => {
             {lang}
           </Text>
         </View>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Button
-            labelStyle={{letterSpacing: 0}}
+            labelStyle={{ letterSpacing: 0 }}
             uppercase={false}
             color={theme.colorAccent}
             onPress={navigateToSource}
@@ -60,7 +60,7 @@ const SourceItem = ({item, theme, isPinned, dispatch, navigation}) => {
             size={21}
             onPress={() => dispatch(pinSourceAction(sourceId))}
             color={isPinned ? theme.colorAccent : theme.textColorSecondary}
-            style={{margin: 2}}
+            style={{ margin: 2 }}
           />
         </View>
       </View>

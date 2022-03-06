@@ -1,5 +1,5 @@
 import cheerio from 'react-native-cheerio';
-import {Status} from '../helpers/constants';
+import { Status } from '../helpers/constants';
 
 const sourceId = 54;
 const sourceName = 'RewayatAr';
@@ -33,7 +33,7 @@ const popularNovels = async page => {
     novels.push(novel);
   });
 
-  return {totalPages, novels};
+  return { totalPages, novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {
@@ -77,7 +77,7 @@ const parseNovelAndChapters = async novelUrl => {
       .trim();
     const chapterUrl = loadedCheerio(this).find('a').attr('href');
 
-    novelChapters.push({chapterName, releaseDate, chapterUrl});
+    novelChapters.push({ chapterName, releaseDate, chapterUrl });
   });
 
   novel.chapters = novelChapters.reverse();
@@ -123,7 +123,7 @@ const searchNovels = async searchTerm => {
 
     let novelUrl = loadedCheerio(this).find('h3 > a').attr('href');
 
-    const novel = {sourceId, novelName, novelCover, novelUrl};
+    const novel = { sourceId, novelName, novelCover, novelUrl };
 
     novels.push(novel);
   });

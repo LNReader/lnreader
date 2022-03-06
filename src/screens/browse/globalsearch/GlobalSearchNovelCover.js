@@ -1,6 +1,6 @@
 import React from 'react';
-import {StyleSheet, View, Text, Image, Pressable} from 'react-native';
-import {defaultCoverUri} from '../../../sources/helpers/constants';
+import { StyleSheet, View, Text, Image, Pressable } from 'react-native';
+import { defaultCoverUri } from '../../../sources/helpers/constants';
 
 const GlobalSearchNovelCover = ({
   novel,
@@ -9,7 +9,7 @@ const GlobalSearchNovelCover = ({
   inLibrary,
   onLongPress,
 }) => {
-  const {novelName, novelCover} = novel;
+  const { novelName, novelCover } = novel;
 
   const uri =
     novelCover && !novelCover.startsWith('/') ? novelCover : defaultCoverUri;
@@ -17,19 +17,19 @@ const GlobalSearchNovelCover = ({
   return (
     <View style={styles.container}>
       <Pressable
-        android_ripple={{color: theme.rippleColor}}
+        android_ripple={{ color: theme.rippleColor }}
         style={styles.pressable}
         onPress={onPress}
         onLongPress={onLongPress}
       >
         <Image
-          source={{uri}}
-          style={[styles.novelCover, inLibrary && {opacity: 0.5}]}
+          source={{ uri }}
+          style={[styles.novelCover, inLibrary && { opacity: 0.5 }]}
           progressiveRenderingEnabled={true}
         />
         <Text
           numberOfLines={2}
-          style={[styles.title, {color: theme.textColorPrimary}]}
+          style={[styles.title, { color: theme.textColorPrimary }]}
         >
           {novelName}
         </Text>

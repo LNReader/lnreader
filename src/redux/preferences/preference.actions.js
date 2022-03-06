@@ -1,4 +1,4 @@
-import {SAVE_SCROLL_POSITION} from '../preferences/preference.types';
+import { SAVE_SCROLL_POSITION } from '../preferences/preference.types';
 
 export const saveScrollPosition =
   (position, percentage, chapterId, novelId) => async dispatch => {

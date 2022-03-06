@@ -1,16 +1,18 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-export const Banner = ({label, icon, backgroundColor, theme}) => (
-  <View style={[{backgroundColor}, styles.container]}>
+export const Banner = ({ label, icon, backgroundColor, theme }) => (
+  <View style={[{ backgroundColor }, styles.container]}>
     <MaterialCommunityIcons
       name={icon}
       color={theme.textColorPrimary}
       size={18}
     />
-    <Text style={{color: theme.textColorPrimary, marginLeft: 8}}>{label}</Text>
+    <Text style={{ color: theme.textColorPrimary, marginLeft: 8 }}>
+      {label}
+    </Text>
   </View>
 );
 

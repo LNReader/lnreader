@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -19,7 +19,7 @@ import {
   FAB,
   Snackbar,
 } from 'react-native-paper';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import * as Haptics from 'expo-haptics';
 
 import {
@@ -43,29 +43,29 @@ import {
   useSettings,
   useTheme,
 } from '../../hooks/reduxHooks';
-import {showToast} from '../../hooks/showToast';
+import { showToast } from '../../hooks/showToast';
 
 import ChapterItem from './components/ChapterItem';
 import NovelInfoHeader from './components/Info/NovelInfoHeader';
 import NovelBottomSheet from './components/NovelBottomSheet';
 import TrackSheet from './components/Tracker/TrackSheet';
-import {Row} from '../../components/Common';
+import { Row } from '../../components/Common';
 import JumpToChapterModal from './components/JumpToChapterModal';
-import {Actionbar} from '../../components/Actionbar/Actionbar';
+import { Actionbar } from '../../components/Actionbar/Actionbar';
 import EditInfoModal from './components/EditInfoModal';
-import {pickCustomNovelCover} from '../../database/queries/NovelQueries';
+import { pickCustomNovelCover } from '../../database/queries/NovelQueries';
 import FadeView from '../../components/Common/CrossFadeView';
-import {useModal} from '../../hooks/useModal';
+import { useModal } from '../../hooks/useModal';
 import DownloadCustomChapterModal from './components/DownloadCustomChapterModal';
 
-const Novel = ({route, navigation}) => {
+const Novel = ({ route, navigation }) => {
   const item = route.params;
-  const {sourceId, novelUrl, novelName, followed, novelId} = item;
+  const { sourceId, novelUrl, novelName, followed, novelId } = item;
 
   const theme = useTheme();
   const dispatch = useDispatch();
-  const {novel, chapters, loading, updating} = useNovel();
-  const {downloadQueue} = useSelector(state => state.downloadsReducer);
+  const { novel, chapters, loading, updating } = useNovel();
+  const { downloadQueue } = useSelector(state => state.downloadsReducer);
 
   const [selected, setSelected] = useState([]);
   const [downloadMenu, showDownloadMenu] = useState(false);
@@ -88,7 +88,10 @@ const Novel = ({route, navigation}) => {
     showChapterTitles = false,
   } = usePreferences(novel.novelId);
 
-  let {lastReadChapter, position} = useContinueReading(chapters, novel.novelId);
+  let { lastReadChapter, position } = useContinueReading(
+    chapters,
+    novel.novelId,
+  );
 
   useEffect(() => {
     dispatch(
@@ -228,7 +231,7 @@ const Novel = ({route, navigation}) => {
     showExtraMenu(false);
   };
 
-  const renderItem = ({item: it, index}) => (
+  const renderItem = ({ item: it, index }) => (
     <ChapterItem
       theme={theme}
       chapter={it}
@@ -251,7 +254,7 @@ const Novel = ({route, navigation}) => {
   return (
     <Provider>
       <View
-        style={[styles.container, {backgroundColor: theme.colorPrimaryDark}]}
+        style={[styles.container, { backgroundColor: theme.colorPrimaryDark }]}
       >
         <FadeView
           style={{
@@ -279,7 +282,7 @@ const Novel = ({route, navigation}) => {
             />
             <Appbar.Content
               title={selected.length}
-              titleStyle={{color: theme.textColorPrimary}}
+              titleStyle={{ color: theme.textColorPrimary }}
             />
 
             <Appbar.Action
@@ -306,7 +309,7 @@ const Novel = ({route, navigation}) => {
               icon="arrow-left"
               color={theme.textColorPrimary}
               size={24}
-              style={{marginTop: StatusBar.currentHeight + 8}}
+              style={{ marginTop: StatusBar.currentHeight + 8 }}
               onPress={() => navigation.goBack()}
             />
             <Row>
@@ -353,7 +356,7 @@ const Novel = ({route, navigation}) => {
               >
                 <Menu.Item
                   title="Next chapter"
-                  style={{backgroundColor: theme.menuColor}}
+                  style={{ backgroundColor: theme.menuColor }}
                   titleStyle={{
                     color: theme.textColorPrimary,
                   }}
@@ -376,7 +379,7 @@ const Novel = ({route, navigation}) => {
                 />
                 <Menu.Item
                   title="Next 5 chapter"
-                  style={{backgroundColor: theme.menuColor}}
+                  style={{ backgroundColor: theme.menuColor }}
                   titleStyle={{
                     color: theme.textColorPrimary,
                   }}
@@ -399,7 +402,7 @@ const Novel = ({route, navigation}) => {
                 />
                 <Menu.Item
                   title="Next 10 chapter"
-                  style={{backgroundColor: theme.menuColor}}
+                  style={{ backgroundColor: theme.menuColor }}
                   titleStyle={{
                     color: theme.textColorPrimary,
                   }}
@@ -422,8 +425,8 @@ const Novel = ({route, navigation}) => {
                 />
                 <Menu.Item
                   title="Custom"
-                  style={{backgroundColor: theme.menuColor}}
-                  titleStyle={{color: theme.textColorPrimary}}
+                  style={{ backgroundColor: theme.menuColor }}
+                  titleStyle={{ color: theme.textColorPrimary }}
                   onPress={() => {
                     downloadCustomChapterModal.showModal();
                     showDownloadMenu(false);
@@ -431,7 +434,7 @@ const Novel = ({route, navigation}) => {
                 />
                 <Menu.Item
                   title="Unread"
-                  style={{backgroundColor: theme.menuColor}}
+                  style={{ backgroundColor: theme.menuColor }}
                   titleStyle={{
                     color: theme.textColorPrimary,
                   }}
@@ -448,7 +451,7 @@ const Novel = ({route, navigation}) => {
                 />
                 <Menu.Item
                   title="All"
-                  style={{backgroundColor: theme.menuColor}}
+                  style={{ backgroundColor: theme.menuColor }}
                   titleStyle={{
                     color: theme.textColorPrimary,
                   }}
@@ -465,7 +468,7 @@ const Novel = ({route, navigation}) => {
                 />
                 <Menu.Item
                   title="Delete downloads"
-                  style={{backgroundColor: theme.menuColor}}
+                  style={{ backgroundColor: theme.menuColor }}
                   titleStyle={{
                     color: theme.textColorPrimary,
                   }}
@@ -494,7 +497,7 @@ const Novel = ({route, navigation}) => {
               >
                 <Menu.Item
                   title="Edit info"
-                  style={{backgroundColor: theme.menuColor}}
+                  style={{ backgroundColor: theme.menuColor }}
                   titleStyle={{
                     color: theme.textColorPrimary,
                   }}
@@ -505,7 +508,7 @@ const Novel = ({route, navigation}) => {
                 />
                 <Menu.Item
                   title="Edit cover"
-                  style={{backgroundColor: theme.menuColor}}
+                  style={{ backgroundColor: theme.menuColor }}
                   titleStyle={{
                     color: theme.textColorPrimary,
                   }}
@@ -524,7 +527,7 @@ const Novel = ({route, navigation}) => {
           windowSize={15}
           initialNumToRender={7}
           renderItem={renderItem}
-          contentContainerStyle={{paddingBottom: 100}}
+          contentContainerStyle={{ paddingBottom: 100 }}
           ListHeaderComponent={
             <NovelInfoHeader
               item={item}
@@ -549,7 +552,7 @@ const Novel = ({route, navigation}) => {
           chapters.length > 0 &&
           lastReadChapter && (
             <FAB
-              style={[styles.fab, {backgroundColor: theme.colorAccent}]}
+              style={[styles.fab, { backgroundColor: theme.colorAccent }]}
               small
               color={theme.colorButtonText}
               uppercase={false}
@@ -573,7 +576,7 @@ const Novel = ({route, navigation}) => {
           <Actionbar
             active={selected.length > 0}
             theme={theme}
-            style={{marginBottom: 24}}
+            style={{ marginBottom: 24 }}
             actions={[
               selected.some(obj => obj.downloaded === 0) && {
                 icon: 'download-outline',
@@ -641,10 +644,10 @@ const Novel = ({route, navigation}) => {
                 dispatch(deleteAllChaptersAction(chapters));
               },
             }}
-            theme={{colors: {accent: theme.colorAccent}}}
-            style={{backgroundColor: theme.colorPrimary, marginBottom: 32}}
+            theme={{ colors: { accent: theme.colorAccent } }}
+            style={{ backgroundColor: theme.colorPrimary, marginBottom: 32 }}
           >
-            <Text style={{color: theme.textColorPrimary}}>
+            <Text style={{ color: theme.textColorPrimary }}>
               Delete downloaded chapters?
             </Text>
           </Snackbar>
@@ -701,7 +704,7 @@ const Novel = ({route, navigation}) => {
 export default Novel;
 
 const styles = StyleSheet.create({
-  container: {flex: 1},
+  container: { flex: 1 },
   rowBack: {
     alignItems: 'center',
     flex: 1,

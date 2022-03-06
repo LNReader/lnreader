@@ -1,18 +1,18 @@
 import React from 'react';
-import {StyleSheet, View, FlatList, Text} from 'react-native';
-import {useLibrary, useTheme} from '../../hooks/reduxHooks';
+import { StyleSheet, View, FlatList, Text } from 'react-native';
+import { useLibrary, useTheme } from '../../hooks/reduxHooks';
 
-import {Appbar} from '../../components/Appbar';
+import { Appbar } from '../../components/Appbar';
 import ListView from '../../components/ListView';
 
-const SourceNovels = ({navigation, route}) => {
+const SourceNovels = ({ navigation, route }) => {
   const sourceId = route.params;
   const theme = useTheme();
   const library = useLibrary();
 
   const sourceNovels = library.filter(novel => novel.sourceId === sourceId);
 
-  const renderItem = ({item}) => (
+  const renderItem = ({ item }) => (
     <ListView
       item={item}
       theme={theme}
@@ -26,7 +26,9 @@ const SourceNovels = ({navigation, route}) => {
   );
 
   return (
-    <View style={[styles.container, {backgroundColor: theme.colorPrimaryDark}]}>
+    <View
+      style={[styles.container, { backgroundColor: theme.colorPrimaryDark }]}
+    >
       <Appbar title="Select Novel" onBackAction={() => navigation.goBack()} />
       <FlatList
         data={sourceNovels}
@@ -51,5 +53,5 @@ const SourceNovels = ({navigation, route}) => {
 export default SourceNovels;
 
 const styles = StyleSheet.create({
-  container: {flex: 1},
+  container: { flex: 1 },
 });

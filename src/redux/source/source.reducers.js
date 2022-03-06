@@ -17,11 +17,11 @@ const initialState = {
 };
 
 const sourceReducer = (state = initialState, action) => {
-  const {type, payload} = action;
+  const { type, payload } = action;
 
   switch (type) {
     case GET_SOURCES:
-      return {...state, sources: payload, loading: false};
+      return { ...state, sources: payload, loading: false };
     case PIN_SOURCES:
       return {
         ...state,

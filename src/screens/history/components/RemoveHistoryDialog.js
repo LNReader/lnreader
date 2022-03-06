@@ -1,8 +1,8 @@
 import React from 'react';
 
-import {Button, Dialog, Portal} from 'react-native-paper';
+import { Button, Dialog, Portal } from 'react-native-paper';
 
-const RemoveHistoryDialog = ({dialogVisible, hideDialog, theme, onPress}) => {
+const RemoveHistoryDialog = ({ dialogVisible, hideDialog, theme, onPress }) => {
   return (
     <Portal>
       <Dialog
@@ -25,17 +25,17 @@ const RemoveHistoryDialog = ({dialogVisible, hideDialog, theme, onPress}) => {
         <Dialog.Actions>
           <Button
             uppercase={false}
-            theme={{colors: {primary: theme.colorAccent}}}
+            theme={{ colors: { primary: theme.colorAccent } }}
             onPress={hideDialog}
-            labelStyle={{letterSpacing: 0}}
+            labelStyle={{ letterSpacing: 0 }}
           >
             Cancel
           </Button>
           <Button
             uppercase={false}
-            theme={{colors: {primary: theme.colorAccent}}}
+            theme={{ colors: { primary: theme.colorAccent } }}
             onPress={onPress}
-            labelStyle={{letterSpacing: 0}}
+            labelStyle={{ letterSpacing: 0 }}
           >
             Ok
           </Button>

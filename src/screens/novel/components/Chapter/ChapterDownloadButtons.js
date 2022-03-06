@@ -1,7 +1,7 @@
 import React from 'react';
-import {ActivityIndicator} from 'react-native';
+import { ActivityIndicator } from 'react-native';
 
-import {IconButton, Menu} from 'react-native-paper';
+import { IconButton, Menu } from 'react-native-paper';
 
 export const DownloadButton = ({
   downloadQueue,
@@ -23,12 +23,12 @@ export const DownloadButton = ({
         anchor={
           <DeleteChapterButton theme={theme} onPress={showDeleteChapterMenu} />
         }
-        contentStyle={{backgroundColor: theme.menuColor}}
+        contentStyle={{ backgroundColor: theme.menuColor }}
       >
         <Menu.Item
           onPress={() => deleteChapter(chapter.chapterId, chapter.chapterName)}
           title="Delete"
-          titleStyle={{color: theme.textColorPrimary}}
+          titleStyle={{ color: theme.textColorPrimary }}
         />
       </Menu>
     );
@@ -48,41 +48,41 @@ export const DownloadButton = ({
   }
 };
 
-export const ChapterDownloadingButton = ({theme}) => (
+export const ChapterDownloadingButton = ({ theme }) => (
   <ActivityIndicator
     color={theme.textColorHint}
     size={25}
-    style={{margin: 3.5, padding: 5}}
+    style={{ margin: 3.5, padding: 5 }}
   />
 );
 
-export const DownloadChapterButton = ({theme, onPress}) => (
+export const DownloadChapterButton = ({ theme, onPress }) => (
   <IconButton
     icon="arrow-down-circle-outline"
     animated
     color={theme.textColorHint}
     size={25}
     onPress={onPress}
-    style={{margin: 2}}
+    style={{ margin: 2 }}
   />
 );
 
-export const DeleteChapterButton = ({theme, onPress}) => (
+export const DeleteChapterButton = ({ theme, onPress }) => (
   <IconButton
     icon="check-circle"
     animated
     color={theme.textColorPrimary}
     size={25}
     onPress={onPress}
-    style={{margin: 2}}
+    style={{ margin: 2 }}
   />
 );
 
-export const ChapterBookmarkButton = ({theme}) => (
+export const ChapterBookmarkButton = ({ theme }) => (
   <IconButton
     icon="bookmark"
     color={theme.colorAccent}
     size={18}
-    style={{marginLeft: 2}}
+    style={{ marginLeft: 2 }}
   />
 );

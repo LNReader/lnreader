@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   Pressable,
   ScrollView,
@@ -8,20 +8,24 @@ import {
   KeyboardAvoidingView,
   View,
 } from 'react-native';
-import {Button, IconButton} from 'react-native-paper';
+import { Button, IconButton } from 'react-native-paper';
 import WebView from 'react-native-webview';
-import {useDispatch} from 'react-redux';
+import { useDispatch } from 'react-redux';
 
-import {Appbar} from '../../components/Appbar';
+import { Appbar } from '../../components/Appbar';
 import ColorPickerModal from '../../components/ColorPickerModal';
-import {Row} from '../../components/Common';
+import { Row } from '../../components/Common';
 import {
   ToggleButton,
   ToggleColorButton,
 } from '../../components/Common/ToggleButton';
-import {List} from '../../components/List';
+import { List } from '../../components/List';
 
-import {useReaderSettings, useSettings, useTheme} from '../../hooks/reduxHooks';
+import {
+  useReaderSettings,
+  useSettings,
+  useTheme,
+} from '../../hooks/reduxHooks';
 import {
   setAppSettings,
   setReaderSettings,
@@ -31,10 +35,10 @@ import {
   readerLineHeight,
   readerTextColor,
 } from '../reader/utils/readerStyles';
-import {useModal} from '../../hooks/useModal';
+import { useModal } from '../../hooks/useModal';
 import SwitchSetting from '../../components/Switch/Switch';
 import FontPickerModal from './components/FontPickerModal';
-import {fonts} from '../../services/utils/constants';
+import { fonts } from '../../services/utils/constants';
 
 const presetThemes = [
   {
@@ -42,20 +46,20 @@ const presetThemes = [
     backgroundColor: '#000000',
     textColor: 'rgba(255,255,255,0.7)',
   },
-  {value: 2, backgroundColor: '#FFFFFF', textColor: '#111111'},
-  {value: 3, backgroundColor: '#F7DFC6', textColor: '#593100'},
-  {value: 4, backgroundColor: '#292832', textColor: '#CCCCCC'},
-  {value: 5, backgroundColor: '#2B2C30', textColor: '#CCCCCC'},
+  { value: 2, backgroundColor: '#FFFFFF', textColor: '#111111' },
+  { value: 3, backgroundColor: '#F7DFC6', textColor: '#593100' },
+  { value: 4, backgroundColor: '#292832', textColor: '#CCCCCC' },
+  { value: 5, backgroundColor: '#2B2C30', textColor: '#CCCCCC' },
 ];
 
 const textAlignments = [
-  {value: 'left', icon: 'format-align-left'},
-  {value: 'center', icon: 'format-align-center'},
-  {value: 'justify', icon: 'format-align-justify'},
-  {value: 'right', icon: 'format-align-right'},
+  { value: 'left', icon: 'format-align-left' },
+  { value: 'center', icon: 'format-align-center' },
+  { value: 'justify', icon: 'format-align-justify' },
+  { value: 'right', icon: 'format-align-right' },
 ];
 
-const SettingsReaderScreen = ({navigation}) => {
+const SettingsReaderScreen = ({ navigation }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const reader = useReaderSettings();
@@ -88,10 +92,10 @@ const SettingsReaderScreen = ({navigation}) => {
   return (
     <>
       <Appbar title="Reader" onBackAction={navigation.goBack} />
-      <KeyboardAvoidingView style={{flex: 1}} behavior="padding">
+      <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
         <ScrollView
-          style={{flex: 1}}
-          contentContainerStyle={{paddingBottom: 40}}
+          style={{ flex: 1 }}
+          contentContainerStyle={{ paddingBottom: 40 }}
         >
           {useWebViewForChapter ? (
             <WebView
@@ -217,7 +221,7 @@ const SettingsReaderScreen = ({navigation}) => {
           <List.SubHeader theme={theme}>
             Auto scroll interval (in seconds)
           </List.SubHeader>
-          <View style={{paddingHorizontal: 16, paddingBottom: 8}}>
+          <View style={{ paddingHorizontal: 16, paddingBottom: 8 }}>
             <TextInput
               style={{
                 color: theme.textColorPrimary,
@@ -281,7 +285,7 @@ const SettingsReaderScreen = ({navigation}) => {
                 flexDirection: 'column-reverse',
                 alignItems: 'flex-end',
               }}
-              style={{marginLeft: 16}}
+              style={{ marginLeft: 16 }}
               horizontal={true}
               showsHorizontalScrollIndicator={false}
             >
@@ -319,7 +323,7 @@ const SettingsReaderScreen = ({navigation}) => {
           />
           <Pressable style={styles.pressableListItem}>
             <View>
-              <Text style={{color: theme.textColorPrimary, fontSize: 16}}>
+              <Text style={{ color: theme.textColorPrimary, fontSize: 16 }}>
                 Text Align
               </Text>
               <Text
@@ -360,7 +364,7 @@ const SettingsReaderScreen = ({navigation}) => {
               marginVertical: 8,
             }}
           >
-            <Text style={{color: theme.textColorPrimary, fontSize: 16}}>
+            <Text style={{ color: theme.textColorPrimary, fontSize: 16 }}>
               Font size
             </Text>
             <Row>
@@ -372,7 +376,7 @@ const SettingsReaderScreen = ({navigation}) => {
                 onPress={() =>
                   dispatch(setReaderSettings('textSize', reader.textSize - 1))
                 }
-                style={{marginVertical: 0}}
+                style={{ marginVertical: 0 }}
               />
               <Text
                 style={{
@@ -389,7 +393,7 @@ const SettingsReaderScreen = ({navigation}) => {
                 onPress={() =>
                   dispatch(setReaderSettings('textSize', reader.textSize + 1))
                 }
-                style={{marginVertical: 0}}
+                style={{ marginVertical: 0 }}
               />
             </Row>
           </Row>
@@ -400,7 +404,7 @@ const SettingsReaderScreen = ({navigation}) => {
               marginVertical: 8,
             }}
           >
-            <Text style={{color: theme.textColorPrimary, fontSize: 16}}>
+            <Text style={{ color: theme.textColorPrimary, fontSize: 16 }}>
               Padding
             </Text>
             <Row>
@@ -412,7 +416,7 @@ const SettingsReaderScreen = ({navigation}) => {
                 onPress={() =>
                   dispatch(setReaderSettings('padding', reader.padding - 1))
                 }
-                style={{marginVertical: 0}}
+                style={{ marginVertical: 0 }}
               />
               <Text
                 style={{
@@ -430,7 +434,7 @@ const SettingsReaderScreen = ({navigation}) => {
                 onPress={() =>
                   dispatch(setReaderSettings('padding', reader.padding + 1))
                 }
-                style={{marginVertical: 0}}
+                style={{ marginVertical: 0 }}
               />
             </Row>
           </Row>
@@ -441,7 +445,7 @@ const SettingsReaderScreen = ({navigation}) => {
               marginVertical: 8,
             }}
           >
-            <Text style={{color: theme.textColorPrimary, fontSize: 16}}>
+            <Text style={{ color: theme.textColorPrimary, fontSize: 16 }}>
               Line height
             </Text>
             <Row>
@@ -455,7 +459,7 @@ const SettingsReaderScreen = ({navigation}) => {
                     setReaderSettings('lineHeight', reader.lineHeight - 0.1),
                   )
                 }
-                style={{marginVertical: 0}}
+                style={{ marginVertical: 0 }}
               />
               <Text
                 style={{
@@ -475,7 +479,7 @@ const SettingsReaderScreen = ({navigation}) => {
                     setReaderSettings('lineHeight', reader.lineHeight + 0.1),
                   )
                 }
-                style={{marginVertical: 0}}
+                style={{ marginVertical: 0 }}
               />
             </Row>
           </Row>
@@ -483,16 +487,16 @@ const SettingsReaderScreen = ({navigation}) => {
             <>
               <List.Divider theme={theme} />
               <List.SubHeader theme={theme}>Custom CSS</List.SubHeader>
-              <View style={{paddingHorizontal: 16, paddingBottom: 8}}>
+              <View style={{ paddingHorizontal: 16, paddingBottom: 8 }}>
                 <TextInput
-                  style={{color: theme.textColorPrimary, fontSize: 16}}
+                  style={{ color: theme.textColorPrimary, fontSize: 16 }}
                   value={customCSS}
                   onChangeText={text => setcustomCSS(text)}
                   placeholderTextColor={theme.textColorSecondary}
                   placeholder="Example: body { color: red; }"
                   multiline={true}
                 />
-                <View style={{flexDirection: 'row-reverse'}}>
+                <View style={{ flexDirection: 'row-reverse' }}>
                   <Button
                     uppercase={false}
                     color={theme.colorAccent}

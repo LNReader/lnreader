@@ -1,16 +1,16 @@
 import React from 'react';
-import {Pressable, StyleSheet, Text, View} from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import {List as PaperList, Divider as PaperDivider} from 'react-native-paper';
+import { List as PaperList, Divider as PaperDivider } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const ListSection = ({children}) => (
+const ListSection = ({ children }) => (
   <PaperList.Section style={styles.listSection}>{children}</PaperList.Section>
 );
 
-const ListSubHeader = ({children, theme}) => (
+const ListSubHeader = ({ children, theme }) => (
   <PaperList.Subheader
-    style={[styles.listSubHeader, {color: theme.colorAccent}]}
+    style={[styles.listSubHeader, { color: theme.colorAccent }]}
   >
     {children}
   </PaperList.Subheader>
@@ -30,12 +30,12 @@ const ListItem = ({
   <PaperList.Item
     title={title}
     style={style}
-    titleStyle={[{color: theme.textColorPrimary}, titleStyle]}
+    titleStyle={[{ color: theme.textColorPrimary }, titleStyle]}
     description={description}
-    descriptionStyle={{color: theme.textColorSecondary}}
+    descriptionStyle={{ color: theme.textColorSecondary }}
     descriptionNumberOfLines={1}
     left={() => (
-      <View style={{justifyContent: 'center'}}>
+      <View style={{ justifyContent: 'center' }}>
         {icon && (
           <PaperList.Icon
             color={theme.colorAccent}
@@ -53,7 +53,7 @@ const ListItem = ({
           name={right}
           color={iconColor || '#47a84a'}
           size={23}
-          style={{marginRight: 16, textAlignVertical: 'center'}}
+          style={{ marginRight: 16, textAlignVertical: 'center' }}
         />
       )
     }
@@ -62,14 +62,14 @@ const ListItem = ({
   />
 );
 
-const Divider = ({theme}) => (
-  <PaperDivider style={{backgroundColor: theme.dividerColor, height: 1}} />
+const Divider = ({ theme }) => (
+  <PaperDivider style={{ backgroundColor: theme.dividerColor, height: 1 }} />
 );
 
-const InfoItem = ({title, icon, theme}) => (
+const InfoItem = ({ title, icon, theme }) => (
   <PaperList.Item
     title={title}
-    titleStyle={{color: theme.textColorSecondary, fontSize: 14}}
+    titleStyle={{ color: theme.textColorSecondary, fontSize: 14 }}
     titleNumberOfLines={5}
     left={() =>
       icon && <PaperList.Icon color={theme.textColorSecondary} icon={icon} />
@@ -77,7 +77,7 @@ const InfoItem = ({title, icon, theme}) => (
   />
 );
 
-const ColorItem = ({title, description, theme, onPress}) => (
+const ColorItem = ({ title, description, theme, onPress }) => (
   <Pressable
     style={{
       padding: 16,
@@ -85,12 +85,14 @@ const ColorItem = ({title, description, theme, onPress}) => (
       justifyContent: 'space-between',
       alignItems: 'center',
     }}
-    android_ripple={{color: theme.rippleColor}}
+    android_ripple={{ color: theme.rippleColor }}
     onPress={onPress}
   >
     <View>
-      <Text style={{color: theme.textColorPrimary, fontSize: 16}}>{title}</Text>
-      <Text style={{color: theme.textColorSecondary}}>{description}</Text>
+      <Text style={{ color: theme.textColorPrimary, fontSize: 16 }}>
+        {title}
+      </Text>
+      <Text style={{ color: theme.textColorSecondary }}>{description}</Text>
     </View>
     <View
       style={{
@@ -104,8 +106,8 @@ const ColorItem = ({title, description, theme, onPress}) => (
   </Pressable>
 );
 
-const Icon = ({icon, theme}) => (
-  <PaperList.Icon color={theme.colorAccent} icon={icon} style={{margin: 0}} />
+const Icon = ({ icon, theme }) => (
+  <PaperList.Icon color={theme.colorAccent} icon={icon} style={{ margin: 0 }} />
 );
 
 export const List = {

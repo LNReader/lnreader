@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   FlatList,
   Pressable,
@@ -9,11 +9,11 @@ import {
 } from 'react-native';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {Button, Modal, Portal, TextInput} from 'react-native-paper';
-import {setNovel} from '../../../redux/novel/novel.actions';
-import {updateNovelInfo} from '../../../database/queries/NovelQueries';
+import { Button, Modal, Portal, TextInput } from 'react-native-paper';
+import { setNovel } from '../../../redux/novel/novel.actions';
+import { updateNovelInfo } from '../../../database/queries/NovelQueries';
 
-const EditInfoModal = ({theme, hideModal, modalVisible, novel, dispatch}) => {
+const EditInfoModal = ({ theme, hideModal, modalVisible, novel, dispatch }) => {
   const [info, setInfo] = useState(novel);
 
   const [tag, setTag] = useState('');
@@ -29,7 +29,7 @@ const EditInfoModal = ({theme, hideModal, modalVisible, novel, dispatch}) => {
 
   const removeTag = t => {
     let tags = info.genre.split(',').filter(item => item !== t);
-    setInfo({...info, genre: tags.join(',')});
+    setInfo({ ...info, genre: tags.join(',') });
   };
 
   const status = ['Ongoing', 'Hiatus', 'Completed', 'Unknown', 'Cancelled'];
@@ -41,10 +41,10 @@ const EditInfoModal = ({theme, hideModal, modalVisible, novel, dispatch}) => {
         onDismiss={hideModal}
         contentContainerStyle={[
           styles.modalContainer,
-          {backgroundColor: theme.colorPrimary},
+          { backgroundColor: theme.colorPrimary },
         ]}
       >
-        <Text style={[styles.modalTitle, {color: theme.textColorPrimary}]}>
+        <Text style={[styles.modalTitle, { color: theme.textColorPrimary }]}>
           Edit info
         </Text>
         <View
@@ -54,14 +54,14 @@ const EditInfoModal = ({theme, hideModal, modalVisible, novel, dispatch}) => {
             alignItems: 'center',
           }}
         >
-          <Text style={{color: theme.textColorSecondary}}>Status:</Text>
+          <Text style={{ color: theme.textColorSecondary }}>Status:</Text>
           <ScrollView
-            style={{marginLeft: 8}}
+            style={{ marginLeft: 8 }}
             horizontal
             showsHorizontalScrollIndicator={false}
           >
             {status.map(item => (
-              <View style={{borderRadius: 8, overflow: 'hidden'}} key={item}>
+              <View style={{ borderRadius: 8, overflow: 'hidden' }} key={item}>
                 <Pressable
                   style={{
                     backgroundColor:
@@ -72,7 +72,7 @@ const EditInfoModal = ({theme, hideModal, modalVisible, novel, dispatch}) => {
                   android_ripple={{
                     color: theme.rippleColor,
                   }}
-                  onPress={() => setInfo({...info, status: item})}
+                  onPress={() => setInfo({ ...info, status: item })}
                 >
                   <Text
                     style={{
@@ -91,40 +91,40 @@ const EditInfoModal = ({theme, hideModal, modalVisible, novel, dispatch}) => {
         </View>
         <TextInput
           placeholder={`Title: ${info.novelName}`}
-          style={{fontSize: 14}}
+          style={{ fontSize: 14 }}
           numberOfLines={1}
           mode="outlined"
           theme={textInputTheme}
-          onChangeText={text => setInfo({...info, novelName: text})}
+          onChangeText={text => setInfo({ ...info, novelName: text })}
           dense
         />
         <TextInput
           placeholder={`Author: ${info.author}`}
-          style={{fontSize: 14}}
+          style={{ fontSize: 14 }}
           numberOfLines={1}
           mode="outlined"
           theme={textInputTheme}
-          onChangeText={text => setInfo({...info, author: text})}
+          onChangeText={text => setInfo({ ...info, author: text })}
           dense
         />
         <TextInput
           placeholder={`Description: ${info.novelSummary.substring(0, 16)}...`}
-          style={{fontSize: 14}}
+          style={{ fontSize: 14 }}
           numberOfLines={1}
           mode="outlined"
-          onChangeText={text => setInfo({...info, novelSummary: text})}
+          onChangeText={text => setInfo({ ...info, novelSummary: text })}
           theme={textInputTheme}
           dense
         />
 
         <TextInput
           placeholder={'Add Tag'}
-          style={{fontSize: 14}}
+          style={{ fontSize: 14 }}
           numberOfLines={1}
           mode="outlined"
           onChangeText={text => setTag(text)}
           onSubmitEditing={() => {
-            setInfo({...info, genre: info.genre + ',' + tag});
+            setInfo({ ...info, genre: info.genre + ',' + tag });
             setTag('');
           }}
           theme={textInputTheme}
@@ -133,11 +133,11 @@ const EditInfoModal = ({theme, hideModal, modalVisible, novel, dispatch}) => {
 
         {info.genre !== null && info.genre !== '' && (
           <FlatList
-            contentContainerStyle={{marginVertical: 8}}
+            contentContainerStyle={{ marginVertical: 8 }}
             horizontal
             data={info.genre.split(',')}
             keyExtractor={item => item}
-            renderItem={({item}) => (
+            renderItem={({ item }) => (
               <GenreChip theme={theme} onPress={() => removeTag(item)}>
                 {item}
               </GenreChip>
@@ -145,18 +145,18 @@ const EditInfoModal = ({theme, hideModal, modalVisible, novel, dispatch}) => {
             showsHorizontalScrollIndicator={false}
           />
         )}
-        <View style={{flexDirection: 'row-reverse'}}>
+        <View style={{ flexDirection: 'row-reverse' }}>
           <Button
             labelStyle={{
               color: theme.colorAccent,
               letterSpacing: 0,
               textTransform: 'none',
             }}
-            theme={{colors: {primary: theme.colorAccent}}}
+            theme={{ colors: { primary: theme.colorAccent } }}
             onPress={() => {
               updateNovelInfo(info, novel.novelId);
               hideModal();
-              dispatch(setNovel({...novel, ...info}));
+              dispatch(setNovel({ ...novel, ...info }));
             }}
           >
             Save
@@ -167,7 +167,7 @@ const EditInfoModal = ({theme, hideModal, modalVisible, novel, dispatch}) => {
               letterSpacing: 0,
               textTransform: 'none',
             }}
-            theme={{colors: {primary: theme.colorAccent}}}
+            theme={{ colors: { primary: theme.colorAccent } }}
             onPress={hideModal}
           >
             Cancel
@@ -180,7 +180,7 @@ const EditInfoModal = ({theme, hideModal, modalVisible, novel, dispatch}) => {
 
 export default EditInfoModal;
 
-const GenreChip = ({children, theme, onPress}) => (
+const GenreChip = ({ children, theme, onPress }) => (
   <View
     style={{
       flex: 1,
@@ -208,7 +208,7 @@ const GenreChip = ({children, theme, onPress}) => (
       color={theme.colorAccent}
       size={16}
       onPress={onPress}
-      style={{marginLeft: 4}}
+      style={{ marginLeft: 4 }}
     />
   </View>
 );

@@ -1,9 +1,9 @@
 import React from 'react';
-import {View, Text, Image, StyleSheet} from 'react-native';
-import {TouchableRipple} from 'react-native-paper';
+import { View, Text, Image, StyleSheet } from 'react-native';
+import { TouchableRipple } from 'react-native-paper';
 
-const MigrationSourceCard = ({item, theme, noOfNovels, onPress}) => {
-  const {sourceName, icon, sourceLanguage} = item;
+const MigrationSourceCard = ({ item, theme, noOfNovels, onPress }) => {
+  const { sourceName, icon, sourceLanguage } = item;
 
   return (
     <TouchableRipple
@@ -12,7 +12,7 @@ const MigrationSourceCard = ({item, theme, noOfNovels, onPress}) => {
       rippleColor={theme.rippleColor}
     >
       <>
-        <Image source={{uri: icon}} style={styles.sourceIcon} />
+        <Image source={{ uri: icon }} style={styles.sourceIcon} />
         <View style={styles.sourceDetailsContainer}>
           <Text
             style={{

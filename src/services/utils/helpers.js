@@ -1,4 +1,4 @@
-import {useWindowDimensions} from 'react-native';
+import { useWindowDimensions } from 'react-native';
 
 export const parseChapterNumber = chapterName => {
   chapterName = chapterName.toLowerCase();

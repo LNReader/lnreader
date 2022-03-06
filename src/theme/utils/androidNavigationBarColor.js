@@ -1,6 +1,6 @@
-import {NativeModules, Platform} from 'react-native';
+import { NativeModules, Platform } from 'react-native';
 
-const {NavigationBarColor} = NativeModules;
+const { NavigationBarColor } = NativeModules;
 
 const changeNavigationBarColor = (
   color = String,
@@ -27,4 +27,4 @@ const showNavigationBar = () => {
   }
 };
 
-export {changeNavigationBarColor, hideNavigationBar, showNavigationBar};
+export { changeNavigationBarColor, hideNavigationBar, showNavigationBar };

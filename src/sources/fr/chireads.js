@@ -23,12 +23,12 @@ const popularNovels = async page => {
       .find('.news-list-tit h5 a')
       .attr('href');
 
-    const novel = {sourceId, novelName, novelCover, novelUrl};
+    const novel = { sourceId, novelName, novelCover, novelUrl };
 
     novels.push(novel);
   });
 
-  return {totalPages, novels};
+  return { totalPages, novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {
@@ -66,7 +66,7 @@ const parseNovelAndChapters = async novelUrl => {
     const releaseDate = null;
     const chapterUrl = loadedCheerio(this).attr('href');
 
-    chapters.push({chapterName, releaseDate, chapterUrl});
+    chapters.push({ chapterName, releaseDate, chapterUrl });
   });
 
   novel.chapters = chapters;
@@ -113,7 +113,7 @@ const searchNovels = async searchTerm => {
       .find('.news-list-tit h5 a')
       .attr('href');
 
-    const novel = {sourceId, novelName, novelCover, novelUrl};
+    const novel = { sourceId, novelName, novelCover, novelUrl };
 
     novels.push(novel);
   });

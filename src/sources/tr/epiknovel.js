@@ -34,7 +34,7 @@ const popularNovels = async page => {
 
   // console.log(novels);
 
-  return {novels, totalPages};
+  return { novels, totalPages };
 };
 
 const parseNovelAndChapters = async novelUrl => {
@@ -46,7 +46,7 @@ const parseNovelAndChapters = async novelUrl => {
 
   let loadedCheerio = cheerio.load(body);
 
-  let novel = {sourceId, sourceName, url, novelUrl};
+  let novel = { sourceId, sourceName, url, novelUrl };
 
   novel.novelName = loadedCheerio('h1#tables').text().trim();
 

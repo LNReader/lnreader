@@ -1,7 +1,7 @@
 import React from 'react';
-import {Pressable, StyleSheet, View} from 'react-native';
-import {IconButton} from 'react-native-paper';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import { Pressable, StyleSheet, View } from 'react-native';
+import { IconButton } from 'react-native-paper';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import FadeView from '../../../components/Common/CrossFadeView';
 
 const ChapterFooter = ({

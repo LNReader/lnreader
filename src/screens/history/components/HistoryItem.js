@@ -1,15 +1,21 @@
-import React, {useCallback} from 'react';
-import {Pressable, StyleSheet, View, Text} from 'react-native';
+import React, { useCallback } from 'react';
+import { Pressable, StyleSheet, View, Text } from 'react-native';
 
 import moment from 'moment';
 import FastImage from 'react-native-fast-image';
 
-import {parseChapterNumber} from '../../../services/utils/helpers';
-import {setNovel} from '../../../redux/novel/novel.actions';
-import {defaultCoverUri} from '../../../sources/helpers/constants';
-import {IconButton} from '../../../components/IconButton/IconButton';
+import { parseChapterNumber } from '../../../services/utils/helpers';
+import { setNovel } from '../../../redux/novel/novel.actions';
+import { defaultCoverUri } from '../../../sources/helpers/constants';
+import { IconButton } from '../../../components/IconButton/IconButton';
 
-const HistoryItem = ({history, theme, dispatch, navigation, deleteHistory}) => {
+const HistoryItem = ({
+  history,
+  theme,
+  dispatch,
+  navigation,
+  deleteHistory,
+}) => {
   const {
     historyId,
     historyTimeRead,
@@ -56,22 +62,25 @@ const HistoryItem = ({history, theme, dispatch, navigation, deleteHistory}) => {
   return (
     <Pressable
       onPress={navigateToNovel}
-      android_ripple={{color: theme.rippleColor}}
+      android_ripple={{ color: theme.rippleColor }}
     >
       <View style={styles.content}>
         <View style={styles.container}>
           <View>
-            <FastImage source={{uri}} style={styles.novelCover} />
+            <FastImage source={{ uri }} style={styles.novelCover} />
           </View>
           <View style={styles.textContainer}>
             <Text
-              style={[{color: theme.textColorPrimary}, styles.chapterTitle]}
+              style={[{ color: theme.textColorPrimary }, styles.chapterTitle]}
               numberOfLines={2}
             >
               {novelName}
             </Text>
             <Text
-              style={[{color: theme.textColorSecondary}, styles.chapterNumber]}
+              style={[
+                { color: theme.textColorSecondary },
+                styles.chapterNumber,
+              ]}
               numberOfLines={1}
             >
               {getChapterNumber()}
@@ -84,7 +93,7 @@ const HistoryItem = ({history, theme, dispatch, navigation, deleteHistory}) => {
             size={24}
             color={theme.textColorPrimary}
             onPress={() => deleteHistory(historyId)}
-            containerStyle={{marginLeft: 12}}
+            containerStyle={{ marginLeft: 12 }}
             theme={theme}
           />
           <IconButton
@@ -92,7 +101,7 @@ const HistoryItem = ({history, theme, dispatch, navigation, deleteHistory}) => {
             size={24}
             color={theme.textColorPrimary}
             onPress={navigateToChapter}
-            containerStyle={{marginLeft: 12}}
+            containerStyle={{ marginLeft: 12 }}
             theme={theme}
           />
         </View>

@@ -1,22 +1,22 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {StyleSheet, View, ActivityIndicator} from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { StyleSheet, View, ActivityIndicator } from 'react-native';
 
 import * as WebBrowser from 'expo-web-browser';
-import {useDispatch} from 'react-redux';
+import { useDispatch } from 'react-redux';
 
-import {useTheme, useLibrary, useSettings} from '../../hooks/reduxHooks';
-import {setAppSettings} from '../../redux/settings/settings.actions';
-import {getSource} from '../../sources/sources';
-import {showToast} from '../../hooks/showToast';
+import { useTheme, useLibrary, useSettings } from '../../hooks/reduxHooks';
+import { setAppSettings } from '../../redux/settings/settings.actions';
+import { getSource } from '../../sources/sources';
+import { showToast } from '../../hooks/showToast';
 
-import {Searchbar} from '../../components/Searchbar/Searchbar';
-import {LoadingScreen} from '../../components/LoadingScreen/LoadingScreen';
+import { Searchbar } from '../../components/Searchbar/Searchbar';
+import { LoadingScreen } from '../../components/LoadingScreen/LoadingScreen';
 import NovelCover from '../../components/NovelCover';
 import NovelList from '../../components/NovelList';
-import {ErrorView} from '../../components/ErrorView/ErrorView';
+import { ErrorView } from '../../components/ErrorView/ErrorView';
 
-const SourceScreen = ({navigation, route}) => {
-  const {sourceId, sourceName, url} = route.params;
+const SourceScreen = ({ navigation, route }) => {
+  const { sourceId, sourceName, url } = route.params;
 
   const theme = useTheme();
   const library = useLibrary();
@@ -24,7 +24,7 @@ const SourceScreen = ({navigation, route}) => {
   const dispatch = useDispatch();
 
   const settings = useSettings();
-  const {displayMode} = settings;
+  const { displayMode } = settings;
 
   const [loading, setLoading] = useState(true);
   const [novels, setNovels] = useState([]);
@@ -100,7 +100,7 @@ const SourceScreen = ({navigation, route}) => {
     }
   };
 
-  const renderItem = ({item}) => (
+  const renderItem = ({ item }) => (
     <NovelCover
       item={item}
       onPress={() =>
@@ -148,7 +148,9 @@ const SourceScreen = ({navigation, route}) => {
     displayMode === 0 ? 1 : displayMode === 1 ? 2 : displayMode === 2 && 0;
 
   return (
-    <View style={[styles.container, {backgroundColor: theme.colorPrimaryDark}]}>
+    <View
+      style={[styles.container, { backgroundColor: theme.colorPrimaryDark }]}
+    >
       <Searchbar
         theme={theme}
         placeholder={`Search ${sourceName}`}
@@ -183,7 +185,7 @@ const SourceScreen = ({navigation, route}) => {
             !searchText &&
             page < totalPages &&
             novels.length && (
-              <View style={{paddingVertical: 16}}>
+              <View style={{ paddingVertical: 16 }}>
                 <ActivityIndicator color={theme.colorAccent} />
               </View>
             )

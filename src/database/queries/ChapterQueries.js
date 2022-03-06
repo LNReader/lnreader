@@ -1,5 +1,5 @@
 import * as SQLite from 'expo-sqlite';
-import {getSource} from '../../sources/sources';
+import { getSource } from '../../sources/sources';
 const db = SQLite.openDatabase('lnreader.db');
 
 const insertChaptersQuery =
@@ -47,7 +47,7 @@ export const getChapters = (novelId, sort, filter) => {
       tx.executeSql(
         getChaptersQuery(sort, filter),
         [novelId],
-        (txObj, {rows: {_array}}) => {
+        (txObj, { rows: { _array } }) => {
           resolve(_array);
         },
         (txObj, error) => {
@@ -270,7 +270,7 @@ export const getLastReadChapter = async novelId => {
       tx.executeSql(
         getLastReadChapterQuery,
         [novelId],
-        (txObj, {rows}) => resolve(rows.item(0)),
+        (txObj, { rows }) => resolve(rows.item(0)),
         (txObj, error) => {
           // console.log('Error ', error)
         },
@@ -340,7 +340,7 @@ export const getDownloadedChapters = () => {
       tx.executeSql(
         getDownloadedChaptersQuery,
         null,
-        (txObj, {rows: {_array}}) => {
+        (txObj, { rows: { _array } }) => {
           resolve(_array);
         },
         (txObj, error) => {

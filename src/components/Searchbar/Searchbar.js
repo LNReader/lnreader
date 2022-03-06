@@ -1,8 +1,14 @@
-import React, {useRef} from 'react';
-import {StyleSheet, View, TextInput, StatusBar, Pressable} from 'react-native';
+import React, { useRef } from 'react';
+import {
+  StyleSheet,
+  View,
+  TextInput,
+  StatusBar,
+  Pressable,
+} from 'react-native';
 
-import {Row} from '../Common';
-import {IconButton} from '../IconButton/IconButton';
+import { Row } from '../Common';
+import { IconButton } from '../IconButton/IconButton';
 
 export const Searchbar = ({
   theme,
@@ -21,22 +27,26 @@ export const Searchbar = ({
     <View style={styles.searchBar}>
       <Pressable
         onPress={() => searchRef.current.focus()}
-        style={[styles.pressable, {backgroundColor: theme.searchBarColor}]}
-        android_ripple={{color: theme.rippleColor}}
+        style={[styles.pressable, { backgroundColor: theme.searchBarColor }]}
+        android_ripple={{ color: theme.rippleColor }}
       >
-        <Row style={{flex: 1}}>
+        <Row style={{ flex: 1 }}>
           {backAction && (
             <IconButton
               icon={backAction}
               color={theme.textColorPrimary}
               onPress={onBackAction}
               theme={theme}
-              containerStyle={{marginLeft: 0}}
+              containerStyle={{ marginLeft: 0 }}
             />
           )}
           <TextInput
             ref={searchRef}
-            style={{fontSize: 16, color: theme.textColorPrimary, marginLeft: 4}}
+            style={{
+              fontSize: 16,
+              color: theme.textColorPrimary,
+              marginLeft: 4,
+            }}
             placeholder={placeholder}
             placeholderTextColor={theme.textColorSecondary}
             onChangeText={onChangeText}
@@ -60,7 +70,7 @@ export const Searchbar = ({
               color={action.color ?? theme.textColorPrimary}
               onPress={action.onPress}
               theme={theme}
-              containerStyle={{marginRight: 0, marginLeft: 16}}
+              containerStyle={{ marginRight: 0, marginLeft: 16 }}
             />
           ))}
       </Pressable>

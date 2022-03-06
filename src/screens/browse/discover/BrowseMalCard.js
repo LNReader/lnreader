@@ -1,11 +1,11 @@
 import React from 'react';
-import {StyleSheet, Pressable, Text, View} from 'react-native';
+import { StyleSheet, Pressable, Text, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 
-const GenreChip = ({children, theme}) => (
-  <View style={{flexDirection: 'row'}}>
+const GenreChip = ({ children, theme }) => (
+  <View style={{ flexDirection: 'row' }}>
     <Text
-      style={[styles.genreChip, {color: theme.textColorSecondary}]}
+      style={[styles.genreChip, { color: theme.textColorSecondary }]}
       numberOfLines={2}
     >
       <Text
@@ -24,7 +24,7 @@ const GenreChip = ({children, theme}) => (
   </View>
 );
 
-const BrowseMalCard = ({novel, theme, onPress}) => {
+const BrowseMalCard = ({ novel, theme, onPress }) => {
   return (
     <View
       style={{
@@ -45,7 +45,7 @@ const BrowseMalCard = ({novel, theme, onPress}) => {
         }}
       >
         <FastImage
-          source={{uri: novel.novelCover}}
+          source={{ uri: novel.novelCover }}
           style={{
             width: 130,
             height: 180,
@@ -60,15 +60,18 @@ const BrowseMalCard = ({novel, theme, onPress}) => {
             paddingVertical: 8,
           }}
         >
-          <Text style={{color: theme.textColorPrimary, fontSize: 17}}>
+          <Text style={{ color: theme.textColorPrimary, fontSize: 17 }}>
             {novel.novelName}
           </Text>
           <GenreChip theme={theme}>{novel.score}</GenreChip>
           {novel.info && (
             <>
-              <View style={{flexDirection: 'row'}}>
+              <View style={{ flexDirection: 'row' }}>
                 <Text
-                  style={[styles.genreChip, {color: theme.textColorSecondary}]}
+                  style={[
+                    styles.genreChip,
+                    { color: theme.textColorSecondary },
+                  ]}
                 >
                   <Text
                     style={[
@@ -91,7 +94,10 @@ const BrowseMalCard = ({novel, theme, onPress}) => {
                 }}
               >
                 <Text
-                  style={[styles.genreChip, {color: theme.textColorSecondary}]}
+                  style={[
+                    styles.genreChip,
+                    { color: theme.textColorSecondary },
+                  ]}
                 >
                   <Text
                     style={[

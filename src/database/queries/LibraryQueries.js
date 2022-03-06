@@ -28,7 +28,7 @@ export const getLibrary = (sort, filter) => {
       tx.executeSql(
         getLibraryQuery(sort, filter),
         null,
-        (txObj, {rows: {_array}}) => {
+        (txObj, { rows: { _array } }) => {
           // console.log(_array);
           resolve(_array);
         },
@@ -69,7 +69,7 @@ export const searchLibrary = (searchText, sort, filter) => {
       tx.executeSql(
         searchLibraryQuery(searchText, sort, filter),
         null,
-        (txObj, {rows: {_array}}) => resolve(_array),
+        (txObj, { rows: { _array } }) => resolve(_array),
         (txObj, error) => {
           // console.log('Error ', error);
         },

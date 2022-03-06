@@ -1,9 +1,9 @@
-import {GET_UPDATES, SET_LAST_UPDATE_TIME} from './updates.types';
+import { GET_UPDATES, SET_LAST_UPDATE_TIME } from './updates.types';
 
-import {getUpdates} from '../../database/queries/UpdateQueries';
+import { getUpdates } from '../../database/queries/UpdateQueries';
 
-import {showToast} from '../../hooks/showToast';
-import {updateLibrary} from '../../services/updates/updates';
+import { showToast } from '../../hooks/showToast';
+import { updateLibrary } from '../../services/updates/updates';
 
 export const getUpdatesAction = () => async dispatch => {
   const updates = await getUpdates();
@@ -30,13 +30,13 @@ export const getUpdatesAction = () => async dispatch => {
     };
   });
 
-  dispatch({type: GET_UPDATES, payload: groupedUpdates});
+  dispatch({ type: GET_UPDATES, payload: groupedUpdates });
 };
 
 export const updateLibraryAction = () => async (dispatch, getState) => {
   showToast('Updating library');
 
-  dispatch({type: SET_LAST_UPDATE_TIME, payload: Date.now()});
+  dispatch({ type: SET_LAST_UPDATE_TIME, payload: Date.now() });
 
   const {
     downloadNewChapters = false,

@@ -1,5 +1,5 @@
 import cheerio from 'react-native-cheerio';
-import {Status} from '../helpers/constants';
+import { Status } from '../helpers/constants';
 
 const baseUrl = 'https://reaperscans.com.br/';
 
@@ -40,7 +40,7 @@ const popularNovels = async page => {
     novels.push(novel);
   });
 
-  return {totalPages, novels};
+  return { totalPages, novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {
@@ -51,7 +51,7 @@ const parseNovelAndChapters = async novelUrl => {
 
   let loadedCheerio = cheerio.load(body);
 
-  let novel = {sourceId, url, sourceName};
+  let novel = { sourceId, url, sourceName };
 
   loadedCheerio('.post-title > h3 > span').remove();
 
@@ -100,7 +100,7 @@ const parseNovelAndChapters = async novelUrl => {
 
     const chapterUrl = loadedCheerio(this).find('a').attr('href');
 
-    const chapter = {chapterName, releaseDate, chapterUrl};
+    const chapter = { chapterName, releaseDate, chapterUrl };
 
     novelChapters.push(chapter);
   });

@@ -1,10 +1,10 @@
-import React, {useState} from 'react';
-import {StyleSheet, View, Text} from 'react-native';
-import {Portal, Modal, Button} from 'react-native-paper';
+import React, { useState } from 'react';
+import { StyleSheet, View, Text } from 'react-native';
+import { Portal, Modal, Button } from 'react-native-paper';
 import * as Linking from 'expo-linking';
-import {useTheme} from '../hooks/reduxHooks';
+import { useTheme } from '../hooks/reduxHooks';
 
-const NewUpdateDialog = ({newVersion}) => {
+const NewUpdateDialog = ({ newVersion }) => {
   const [newUpdateDialog, showNewUpdateDialog] = useState(true);
 
   const theme = useTheme();
@@ -16,13 +16,13 @@ const NewUpdateDialog = ({newVersion}) => {
         onDismiss={() => showNewUpdateDialog(false)}
         contentContainerStyle={[
           styles.containerStyle,
-          {backgroundColor: theme.colorPrimaryDark},
+          { backgroundColor: theme.colorPrimaryDark },
         ]}
       >
-        <Text style={[styles.modalHeader, {color: theme.textColorPrimary}]}>
+        <Text style={[styles.modalHeader, { color: theme.textColorPrimary }]}>
           {`New update available ${newVersion.tag_name}`}
         </Text>
-        <Text style={{color: theme.textColorSecondary, fontSize: 16}}>
+        <Text style={{ color: theme.textColorSecondary, fontSize: 16 }}>
           {newVersion.body}
         </Text>
         <View
@@ -38,7 +38,7 @@ const NewUpdateDialog = ({newVersion}) => {
               letterSpacing: 0,
               textTransform: 'none',
             }}
-            theme={{colors: {primary: theme.colorAccent}}}
+            theme={{ colors: { primary: theme.colorAccent } }}
             onPress={() => showNewUpdateDialog(false)}
           >
             Cancel
@@ -49,7 +49,7 @@ const NewUpdateDialog = ({newVersion}) => {
               letterSpacing: 0,
               textTransform: 'none',
             }}
-            theme={{colors: {primary: theme.colorAccent}}}
+            theme={{ colors: { primary: theme.colorAccent } }}
             onPress={() => Linking.openURL(newVersion.downloadUrl)}
           >
             Install

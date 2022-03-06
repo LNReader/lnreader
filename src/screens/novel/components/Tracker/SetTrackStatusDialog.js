@@ -1,6 +1,6 @@
 import React from 'react';
-import {StyleSheet, Text} from 'react-native';
-import {Modal} from 'react-native-paper';
+import { StyleSheet, Text } from 'react-native';
+import { Modal } from 'react-native-paper';
 import {
   RadioButton,
   RadioButtonGroup,
@@ -27,10 +27,10 @@ const SetTrackStatusDialog = ({
       onDismiss={() => setTrackStatusDialog(false)}
       contentContainerStyle={[
         styles.containerStyle,
-        {backgroundColor: theme.colorPrimary},
+        { backgroundColor: theme.colorPrimary },
       ]}
     >
-      <Text style={[styles.dialogTitle, {color: theme.textColorPrimary}]}>
+      <Text style={[styles.dialogTitle, { color: theme.textColorPrimary }]}>
         Status
       </Text>
       <RadioButtonGroup

@@ -15,12 +15,12 @@ const popularNovels = async page => {
       'https://api.skynovels.net/api/get-image/' + res.image + '/novels/false';
     const novelUrl = res.id + '/' + res.nvl_name + '/';
 
-    const novel = {sourceId: 24, novelName, novelUrl, novelCover};
+    const novel = { sourceId: 24, novelName, novelUrl, novelCover };
 
     novels.push(novel);
   });
 
-  return {totalPages, novels};
+  return { totalPages, novels };
 };
 
 const parseNovelAndChapters = async novUrl => {
@@ -63,7 +63,7 @@ const parseNovelAndChapters = async novUrl => {
       const releaseDate = new Date(chapter.createdAt).toDateString();
       const chapterUrl = chapter.id + '/' + chapter.chp_name;
 
-      const chap = {chapterName, releaseDate, chapterUrl};
+      const chap = { chapterName, releaseDate, chapterUrl };
 
       novelChapters.push(chap);
     });
@@ -123,7 +123,7 @@ const searchNovels = async searchTerm => {
       'https://api.skynovels.net/api/get-image/' + res.image + '/novels/false';
     const novelUrl = res.id + '/' + res.nvl_name + '/';
 
-    const novel = {sourceId: 24, novelName, novelUrl, novelCover};
+    const novel = { sourceId: 24, novelName, novelUrl, novelCover };
 
     novels.push(novel);
   });

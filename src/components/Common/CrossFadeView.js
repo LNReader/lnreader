@@ -1,8 +1,8 @@
 /* eslint-disable no-bitwise */
 
 import PropTypes from 'prop-types';
-import React, {PureComponent, Children} from 'react';
-import {View, Animated, StyleSheet} from 'react-native';
+import React, { PureComponent, Children } from 'react';
+import { View, Animated, StyleSheet } from 'react-native';
 
 export default class FadeView extends PureComponent {
   static defaultProps = {
@@ -30,7 +30,7 @@ export default class FadeView extends PureComponent {
     this.renderChild = this.renderChild.bind(this);
     this.mounted = false;
 
-    let {active} = this.props;
+    let { active } = this.props;
 
     this.state = {
       progress: new Animated.Value(Number(active)),
@@ -46,11 +46,11 @@ export default class FadeView extends PureComponent {
     this.mounted = false;
   }
 
-  UNSAFE_componentWillReceiveProps({active, animationDuration}) {
-    let {progress} = this.state;
+  UNSAFE_componentWillReceiveProps({ active, animationDuration }) {
+    let { progress } = this.state;
 
     if (active ^ this.props.active) {
-      this.setState({animating: true});
+      this.setState({ animating: true });
 
       Animated.timing(progress, {
         toValue: Number(active),
@@ -58,15 +58,15 @@ export default class FadeView extends PureComponent {
         useNativeDriver: true,
       }).start(() => {
         if (this.mounted) {
-          this.setState({animating: false});
+          this.setState({ animating: false });
         }
       });
     }
   }
 
   renderChild(child, index) {
-    let {active, removeHiddenSubviews} = this.props;
-    let {animating, progress} = this.state;
+    let { active, removeHiddenSubviews } = this.props;
+    let { animating, progress } = this.state;
 
     let opacity = progress.interpolate({
       inputRange: [0, 1],
@@ -85,7 +85,7 @@ export default class FadeView extends PureComponent {
 
     return (
       <Animated.View
-        style={[styles.container, {opacity}]}
+        style={[styles.container, { opacity }]}
         pointerEvents={pointerEvents}
       >
         {child}
@@ -94,7 +94,7 @@ export default class FadeView extends PureComponent {
   }
 
   render() {
-    let {children, ...props} = this.props;
+    let { children, ...props } = this.props;
 
     return <View {...props}>{Children.map(children, this.renderChild)}</View>;
   }

@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 
-import {Modal, Portal, Switch, TextInput} from 'react-native-paper';
+import { Modal, Portal, Switch, TextInput } from 'react-native-paper';
 
 const JumpToChapterModal = ({
   theme,
@@ -80,10 +80,10 @@ const JumpToChapterModal = ({
         onDismiss={onDismiss}
         contentContainerStyle={[
           styles.modalContainer,
-          {backgroundColor: theme.colorPrimary},
+          { backgroundColor: theme.colorPrimary },
         ]}
       >
-        <Text style={[styles.modalTitle, {color: theme.textColorPrimary}]}>
+        <Text style={[styles.modalTitle, { color: theme.textColorPrimary }]}>
           Jump to Chapter
         </Text>
         <TextInput
@@ -107,7 +107,7 @@ const JumpToChapterModal = ({
             marginTop: 4,
           }}
         >
-          <Text style={{color: theme.textColorPrimary}}>Chapter Name</Text>
+          <Text style={{ color: theme.textColorPrimary }}>Chapter Name</Text>
           <Switch
             value={mode}
             onValueChange={() => setMode(!mode)}

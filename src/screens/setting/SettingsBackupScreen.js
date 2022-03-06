@@ -1,16 +1,16 @@
 import React from 'react';
 
-import {Appbar} from '../../components/Appbar';
-import {List} from '../../components/List';
-import {ScreenContainer} from '../../components/Common';
+import { Appbar } from '../../components/Appbar';
+import { List } from '../../components/List';
+import { ScreenContainer } from '../../components/Common';
 
-import {useTheme} from '../../hooks/reduxHooks';
+import { useTheme } from '../../hooks/reduxHooks';
 import {
   createFullBackup,
   restoreFullBackup,
 } from '../../services/backup/backup';
 
-const BackupSettings = ({navigation}) => {
+const BackupSettings = ({ navigation }) => {
   const theme = useTheme();
 
   return (

@@ -1,16 +1,16 @@
-import React, {useState} from 'react';
-import {ScrollView, Text} from 'react-native';
+import React, { useState } from 'react';
+import { ScrollView, Text } from 'react-native';
 
-import {useDispatch} from 'react-redux';
+import { useDispatch } from 'react-redux';
 
-import {Appbar} from '../../components/Appbar';
-import {ScreenContainer} from '../../components/Common';
-import {List} from '../../components/List';
-import {ThemePicker} from '../../components/ThemePicker/ThemePicker';
+import { Appbar } from '../../components/Appbar';
+import { ScreenContainer } from '../../components/Common';
+import { List } from '../../components/List';
+import { ThemePicker } from '../../components/ThemePicker/ThemePicker';
 import SwitchSetting from '../../components/Switch/Switch';
 import ColorPickerModal from '../../components/ColorPickerModal';
 
-import {useSettings, useTheme} from '../../hooks/reduxHooks';
+import { useSettings, useTheme } from '../../hooks/reduxHooks';
 import {
   setAccentColor,
   setAmoledMode,
@@ -55,7 +55,7 @@ const darkThemes = [
   oceanicTheme,
 ];
 
-const AppearanceSettings = ({navigation}) => {
+const AppearanceSettings = ({ navigation }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
 
@@ -95,7 +95,7 @@ const AppearanceSettings = ({navigation}) => {
   return (
     <ScreenContainer theme={theme}>
       <Appbar title="Appearance" onBackAction={navigation.goBack} />
-      <ScrollView style={{flex: 1}}>
+      <ScrollView style={{ flex: 1 }}>
         <List.Section>
           <List.SubHeader theme={theme}>App theme</List.SubHeader>
           <Text

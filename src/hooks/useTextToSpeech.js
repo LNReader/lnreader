@@ -1,10 +1,10 @@
-import {useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import Tts from 'react-native-tts';
-import {htmlToText} from '../sources/helpers/htmlToText';
+import { htmlToText } from '../sources/helpers/htmlToText';
 
 export const useTextToSpeech = html => {
   const [ttsStatus, setTtsStatus] = useState();
-  const [ttsPosition, setTtsPosition] = useState({end: 0});
+  const [ttsPosition, setTtsPosition] = useState({ end: 0 });
 
   let text = htmlToText(html);
 
@@ -22,7 +22,7 @@ export const useTextToSpeech = html => {
 
   const startTts = () => {
     if (ttsStatus === 'progress') {
-      setTtsPosition({end: 0});
+      setTtsPosition({ end: 0 });
       setTtsStatus('finish');
       Tts.stop();
       return;

@@ -1,10 +1,10 @@
 import * as Notifications from 'expo-notifications';
 import BackgroundService from 'react-native-background-actions';
 
-import {getLibrary} from '../../database/queries/LibraryQueries';
+import { getLibrary } from '../../database/queries/LibraryQueries';
 
-import {showToast} from '../../hooks/showToast';
-import {updateNovel} from './LibraryUpdateQueries';
+import { showToast } from '../../hooks/showToast';
+import { updateNovel } from './LibraryUpdateQueries';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => {
@@ -19,7 +19,7 @@ Notifications.setNotificationHandler({
 const sleep = time => new Promise(resolve => setTimeout(() => resolve(), time));
 
 const updateLibrary = async options => {
-  const {onlyUpdateOngoingNovels} = options;
+  const { onlyUpdateOngoingNovels } = options;
 
   let libraryNovels = await getLibrary();
 
@@ -31,11 +31,11 @@ const updateLibrary = async options => {
     taskName: 'Library Update',
     taskTitle: 'Updating library',
     taskDesc: '(0/' + libraryNovels.length + ')',
-    taskIcon: {name: 'notification_icon', type: 'drawable'},
+    taskIcon: { name: 'notification_icon', type: 'drawable' },
     color: '#00adb5',
-    parameters: {delay: 1000},
+    parameters: { delay: 1000 },
     linkingURI: 'lnreader://updates',
-    progressBar: {max: libraryNovels.length, value: 0},
+    progressBar: { max: libraryNovels.length, value: 0 },
   };
 
   const libraryUpdateBackgroundAction = async taskData =>
@@ -63,7 +63,7 @@ const updateLibrary = async options => {
             await BackgroundService.updateNotification({
               taskTitle: libraryNovels[i].novelName,
               taskDesc: '(' + (i + 1) + '/' + libraryNovels.length + ')',
-              progressBar: {max: libraryNovels.length, value: i + 1},
+              progressBar: { max: libraryNovels.length, value: i + 1 },
             });
 
             /**
@@ -106,4 +106,4 @@ const updateLibrary = async options => {
   }
 };
 
-export {updateLibrary};
+export { updateLibrary };

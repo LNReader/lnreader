@@ -1,4 +1,4 @@
-import React, {memo, useCallback} from 'react';
+import React, { memo, useCallback } from 'react';
 import {
   StyleSheet,
   View,
@@ -7,14 +7,14 @@ import {
   Pressable,
 } from 'react-native';
 
-import {LinearGradient} from 'expo-linear-gradient';
+import { LinearGradient } from 'expo-linear-gradient';
 import FastImage from 'react-native-fast-image';
 
 import ListView from './ListView';
 
-import {useDeviceOrientation} from '../services/utils/helpers';
-import {useSettings} from '../hooks/reduxHooks';
-import {defaultCoverUri} from '../sources/helpers/constants';
+import { useDeviceOrientation } from '../services/utils/helpers';
+import { useSettings } from '../hooks/reduxHooks';
+import { defaultCoverUri } from '../sources/helpers/constants';
 
 const NovelCover = ({
   item,
@@ -25,7 +25,7 @@ const NovelCover = ({
   onLongPress,
   selectedNovels,
 }) => {
-  const {displayMode, novelsPerRow, showDownloadBadges, showUnreadBadges} =
+  const { displayMode, novelsPerRow, showDownloadBadges, showUnreadBadges } =
     useSettings();
 
   const window = useWindowDimensions();
@@ -64,7 +64,7 @@ const NovelCover = ({
       ]}
     >
       <Pressable
-        android_ripple={{color: theme.colorAccent}}
+        android_ripple={{ color: theme.colorAccent }}
         style={styles.opac}
         onPress={
           selectedNovels && selectedNovels.length > 0 ? selectNovel : onPress
@@ -90,10 +90,10 @@ const NovelCover = ({
           )}
         </View>
         <FastImage
-          source={{uri}}
+          source={{ uri }}
           style={[
-            {height: getHeight(), borderRadius: 4},
-            libraryStatus && {opacity: 0.5},
+            { height: getHeight(), borderRadius: 4 },
+            libraryStatus && { opacity: 0.5 },
           ]}
         />
         <View style={styles.compactTitleContainer}>
@@ -141,7 +141,7 @@ const NovelCover = ({
 
 export default memo(NovelCover);
 
-const ComfortableTitle = ({theme, novelName}) => (
+const ComfortableTitle = ({ theme, novelName }) => (
   <Text
     numberOfLines={2}
     style={[
@@ -156,7 +156,7 @@ const ComfortableTitle = ({theme, novelName}) => (
   </Text>
 );
 
-const CompactTitle = ({novelName}) => (
+const CompactTitle = ({ novelName }) => (
   <View style={styles.titleContainer}>
     <LinearGradient
       colors={['transparent', 'rgba(0,0,0,0.7)']}
@@ -169,7 +169,7 @@ const CompactTitle = ({novelName}) => (
           {
             color: 'rgba(255,255,255,1)',
             textShadowColor: 'rgba(0, 0, 0, 0.75)',
-            textShadowOffset: {width: -1, height: 1},
+            textShadowOffset: { width: -1, height: 1 },
             textShadowRadius: 10,
           },
         ]}
@@ -180,7 +180,7 @@ const CompactTitle = ({novelName}) => (
   </View>
 );
 
-const InLibraryBadge = ({theme}) => (
+const InLibraryBadge = ({ theme }) => (
   <Text
     style={[
       styles.inLibraryBadge,

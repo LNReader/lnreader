@@ -1,5 +1,5 @@
 import cheerio from 'react-native-cheerio';
-import {defaultCoverUri} from '../helpers/constants';
+import { defaultCoverUri } from '../helpers/constants';
 
 const baseUrl = 'https://www.novelhall.com/';
 
@@ -37,7 +37,7 @@ const popularNovels = async page => {
       novels.push(novel);
     });
 
-  return {totalPages, novels};
+  return { totalPages, novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

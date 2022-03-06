@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {createStackNavigator} from '@react-navigation/stack';
+import { createStackNavigator } from '@react-navigation/stack';
 
 // Screens
 import About from '../screens/more/About';
@@ -16,7 +16,7 @@ import AppearanceSettings from '../screens/setting/SettingsAppearanceScreen';
 
 const Stack = createStackNavigator();
 
-const stackNavigatorConfig = {headerShown: false};
+const stackNavigatorConfig = { headerShown: false };
 
 const SettingsStack = () => (
   <Stack.Navigator screenOptions={stackNavigatorConfig}>

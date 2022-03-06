@@ -41,7 +41,7 @@ const popularNovels = async page => {
     novels.push(novel);
   });
 
-  return {totalPages, novels};
+  return { totalPages, novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {
@@ -177,7 +177,7 @@ const searchNovels = async searchTerm => {
     const novelCover = item.thumbnail;
     const novelUrl = item.permalink.replace('https://www.mtlnovel.com/', '');
 
-    const novel = {sourceId: 5, novelName, novelCover, novelUrl};
+    const novel = { sourceId: 5, novelName, novelCover, novelUrl };
 
     novels.push(novel);
   });

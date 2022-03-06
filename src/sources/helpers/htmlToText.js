@@ -1,5 +1,5 @@
 const htmlToText = (html, options = {}) => {
-  const {removeLineBreaks = true} = options;
+  const { removeLineBreaks = true } = options;
 
   if (!html) {
     return "Chapter is empty.\n\nReport if it's available in webview.";
@@ -263,4 +263,4 @@ let ENTITIES_MAP = {
   apos: 39,
 };
 
-export {htmlToText};
+export { htmlToText };

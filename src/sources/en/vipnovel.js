@@ -30,7 +30,7 @@ const popularNovels = async page => {
     novels.push(novel);
   });
 
-  return {totalPages, novels};
+  return { totalPages, novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {
@@ -96,7 +96,7 @@ const parseNovelAndChapters = async novelUrl => {
 
   let novelChapters = [];
 
-  const data = await fetch(`${url}ajax/chapters/`, {method: 'POST'});
+  const data = await fetch(`${url}ajax/chapters/`, { method: 'POST' });
   const text = await data.text();
 
   loadedCheerio = cheerio.load(text);
@@ -119,7 +119,7 @@ const parseNovelAndChapters = async novelUrl => {
       .attr('href')
       .replace(url, '');
 
-    const chapter = {chapterName, releaseDate, chapterUrl};
+    const chapter = { chapterName, releaseDate, chapterUrl };
 
     // console.log(chapterUrl);
 

@@ -1,12 +1,12 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 
-import {Portal, Modal} from 'react-native-paper';
+import { Portal, Modal } from 'react-native-paper';
 
-import {RadioButton} from '../../../components/RadioButton/RadioButton';
+import { RadioButton } from '../../../components/RadioButton/RadioButton';
 
-import {setReaderSettings} from '../../../redux/settings/settings.actions';
-import {fonts} from '../../../services/utils/constants';
+import { setReaderSettings } from '../../../redux/settings/settings.actions';
+import { fonts } from '../../../services/utils/constants';
 
 const FontPickerModal = ({
   theme,
@@ -22,7 +22,7 @@ const FontPickerModal = ({
         onDismiss={hideModal}
         contentContainerStyle={[
           styles.containerStyle,
-          {backgroundColor: theme.colorPrimaryDark},
+          { backgroundColor: theme.colorPrimaryDark },
         ]}
       >
         {fonts.map(item => (
@@ -33,7 +33,7 @@ const FontPickerModal = ({
               dispatch(setReaderSettings('fontFamily', item.fontFamily))
             }
             label={item.name}
-            labelStyle={{fontFamily: item.fontFamily}}
+            labelStyle={{ fontFamily: item.fontFamily }}
             theme={theme}
           />
         ))}

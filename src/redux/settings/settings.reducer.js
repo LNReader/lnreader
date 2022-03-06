@@ -129,11 +129,11 @@ const initialState = {
 };
 
 const settingsReducer = (state = initialState, action) => {
-  const {type, payload} = action;
+  const { type, payload } = action;
 
   switch (type) {
     case SET_APP_THEME:
-      return {...state, theme: themes[payload]};
+      return { ...state, theme: themes[payload] };
     case SET_NOVELS_PER_ROW:
       return {
         ...state,

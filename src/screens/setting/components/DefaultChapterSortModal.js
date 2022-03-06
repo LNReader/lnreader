@@ -1,10 +1,10 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 
-import {Portal, Modal} from 'react-native-paper';
-import {SortItem} from '../../../components/Checkbox/Checkbox';
+import { Portal, Modal } from 'react-native-paper';
+import { SortItem } from '../../../components/Checkbox/Checkbox';
 
-import {setAppSettings} from '../../../redux/settings/settings.actions';
+import { setAppSettings } from '../../../redux/settings/settings.actions';
 
 const DefaultChapterSortModal = ({
   theme,
@@ -20,7 +20,7 @@ const DefaultChapterSortModal = ({
         onDismiss={hideDisplayModal}
         contentContainerStyle={[
           styles.containerStyle,
-          {backgroundColor: theme.colorPrimaryDark},
+          { backgroundColor: theme.colorPrimaryDark },
         ]}
       >
         <SortItem

@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef, useCallback} from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import {
   StyleSheet,
   View,
@@ -9,9 +9,9 @@ import {
   Dimensions,
 } from 'react-native';
 
-import {useDispatch} from 'react-redux';
-import {IconButton, Portal} from 'react-native-paper';
-import {useKeepAwake} from 'expo-keep-awake';
+import { useDispatch } from 'react-redux';
+import { IconButton, Portal } from 'react-native-paper';
+import { useKeepAwake } from 'expo-keep-awake';
 import {
   changeNavigationBarColor,
   hideNavigationBar,
@@ -23,8 +23,8 @@ import {
   getNextChapterFromDB,
   getPrevChapterFromDB,
 } from '../../database/queries/ChapterQueries';
-import {fetchChapter} from '../../services/Source/source';
-import {showToast} from '../../hooks/showToast';
+import { fetchChapter } from '../../services/Source/source';
+import { showToast } from '../../hooks/showToast';
 import {
   usePosition,
   useReaderSettings,
@@ -32,11 +32,11 @@ import {
   useTheme,
   useTrackingStatus,
 } from '../../hooks/reduxHooks';
-import {updateChaptersRead} from '../../redux/tracker/tracker.actions';
-import {readerBackground, readerTextColor} from './utils/readerStyles';
-import {markChapterReadAction} from '../../redux/novel/novel.actions';
-import {saveScrollPosition} from '../../redux/preferences/preference.actions';
-import {parseChapterNumber} from '../../services/utils/helpers';
+import { updateChaptersRead } from '../../redux/tracker/tracker.actions';
+import { readerBackground, readerTextColor } from './utils/readerStyles';
+import { markChapterReadAction } from '../../redux/novel/novel.actions';
+import { saveScrollPosition } from '../../redux/preferences/preference.actions';
+import { parseChapterNumber } from '../../services/utils/helpers';
 
 import ReaderAppbar from './components/ReaderAppbar';
 import ReaderBottomSheet from './components/ReaderBottomSheet/ReaderBottomSheet';
@@ -46,18 +46,18 @@ import ReaderSeekBar from './components/ReaderSeekBar';
 import EmptyView from '../../components/EmptyView';
 
 import GestureRecognizer from 'react-native-swipe-gestures';
-import {LoadingScreen} from '../../components/LoadingScreen/LoadingScreen';
-import {insertHistory} from '../../database/queries/HistoryQueries';
-import {SET_LAST_READ} from '../../redux/preferences/preference.types';
-import {setAppSettings} from '../../redux/settings/settings.actions';
-import {useBatteryLevel} from 'react-native-device-info';
+import { LoadingScreen } from '../../components/LoadingScreen/LoadingScreen';
+import { insertHistory } from '../../database/queries/HistoryQueries';
+import { SET_LAST_READ } from '../../redux/preferences/preference.types';
+import { setAppSettings } from '../../redux/settings/settings.actions';
+import { useBatteryLevel } from 'react-native-device-info';
 import moment from 'moment';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import TextReader from './components/TextReader';
 import WebViewReader from './components/WebViewReader';
-import {useTextToSpeech} from '../../hooks/useTextToSpeech';
+import { useTextToSpeech } from '../../hooks/useTextToSpeech';
 
-const Chapter = ({route, navigation}) => {
+const Chapter = ({ route, navigation }) => {
   useKeepAwake();
 
   const {
@@ -100,7 +100,7 @@ const Chapter = ({route, navigation}) => {
 
   const [hidden, setHidden] = useState(true);
 
-  const {tracker, trackedNovels} = useTrackingStatus();
+  const { tracker, trackedNovels } = useTrackingStatus();
   const position = usePosition(novelId, chapterId);
 
   const isTracked = trackedNovels.find(obj => obj.novelId === novelId);
@@ -159,7 +159,7 @@ const Chapter = ({route, navigation}) => {
         insertHistory(novelId, chapterId);
         dispatch({
           type: SET_LAST_READ,
-          payload: {novelId, chapterId},
+          payload: { novelId, chapterId },
         });
       }
     }, // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -213,7 +213,7 @@ const Chapter = ({route, navigation}) => {
 
   const isCloseToBottom = useCallback(
     // eslint-disable-next-line no-shadow
-    ({layoutMeasurement, contentOffset, contentSize}) => {
+    ({ layoutMeasurement, contentOffset, contentSize }) => {
       const paddingToBottom = 40;
       return (
         layoutMeasurement.height + contentOffset.y >=
@@ -235,7 +235,7 @@ const Chapter = ({route, navigation}) => {
       );
   };
 
-  const onScroll = useCallback(({nativeEvent}) => {
+  const onScroll = useCallback(({ nativeEvent }) => {
     const offsetY = nativeEvent.contentOffset.y;
     const pos =
       nativeEvent.contentOffset.y + nativeEvent.layoutMeasurement.height;
@@ -337,7 +337,7 @@ const Chapter = ({route, navigation}) => {
   const enableWebView = () =>
     dispatch(setAppSettings('useWebViewForChapter', !useWebViewForChapter));
 
-  const onWebViewNavigationStateChange = async ({url}) => {
+  const onWebViewNavigationStateChange = async ({ url }) => {
     if ((sourceId === 50 || sourceId === 62) && url !== 'about:blank') {
       setLoading(true);
       const res = await fetchChapter(sourceId, novelUrl, url);
@@ -370,17 +370,20 @@ const Chapter = ({route, navigation}) => {
           onSwipeRight={swipeGestures && navigateToPrevChapter}
           onSwipeLeft={swipeGestures && navigateToNextChapter}
           config={config}
-          style={{flex: 1}}
+          style={{ flex: 1 }}
         >
           <ScrollView
             ref={ref => (scrollViewRef.current = ref)}
-            contentContainerStyle={[styles.screenContainer, {backgroundColor}]}
+            contentContainerStyle={[
+              styles.screenContainer,
+              { backgroundColor },
+            ]}
             onScroll={onScroll}
             onContentSizeChange={(x, y) => setContentSize(y)}
             showsVerticalScrollIndicator={false}
           >
             {error ? (
-              <View style={{flex: 1, justifyContent: 'center'}}>
+              <View style={{ flex: 1, justifyContent: 'center' }}>
                 <EmptyView
                   icon="Σ(ಠ_ಠ)"
                   description={error}
@@ -393,7 +396,7 @@ const Chapter = ({route, navigation}) => {
                   <IconButton
                     icon="reload"
                     size={25}
-                    style={{margin: 0, marginTop: 16}}
+                    style={{ margin: 0, marginTop: 16 }}
                     color={
                       readerSettings.textColor ||
                       readerTextColor(readerSettings.theme)
@@ -419,12 +422,12 @@ const Chapter = ({route, navigation}) => {
               <LoadingScreen theme={theme} />
             ) : (
               <TouchableWithoutFeedback
-                style={{flex: 1}}
+                style={{ flex: 1 }}
                 onPress={hideHeader}
                 onLayout={scrollToSavedProgress}
               >
                 {useWebViewForChapter ? (
-                  <View style={{flex: 1}}>
+                  <View style={{ flex: 1 }}>
                     <WebViewReader
                       reader={readerSettings}
                       html={chapter.chapterText}
@@ -504,14 +507,14 @@ const Chapter = ({route, navigation}) => {
           <View
             style={[
               styles.scrollPercentageContainer,
-              {backgroundColor},
+              { backgroundColor },
               !fullScreenMode && {
                 paddingBottom: insets.bottom,
               },
             ]}
           >
             {showBatteryAndTime && (
-              <Text style={{color: readerSettings.textColor}}>
+              <Text style={{ color: readerSettings.textColor }}>
                 {Math.ceil(batteryLevel * 100) + '%'}
               </Text>
             )}
@@ -527,7 +530,7 @@ const Chapter = ({route, navigation}) => {
               </Text>
             )}
             {showBatteryAndTime && (
-              <Text style={{color: readerSettings.textColor}}>
+              <Text style={{ color: readerSettings.textColor }}>
                 {moment(currentTime).format('h:mm')}
               </Text>
             )}
@@ -541,7 +544,7 @@ const Chapter = ({route, navigation}) => {
 export default Chapter;
 
 const styles = StyleSheet.create({
-  screenContainer: {flexGrow: 1},
+  screenContainer: { flexGrow: 1 },
   scrollPercentageContainer: {
     width: '100%',
     position: 'absolute',

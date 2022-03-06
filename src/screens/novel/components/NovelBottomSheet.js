@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -6,14 +6,14 @@ import {
   Animated,
   useWindowDimensions,
 } from 'react-native';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
+import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import Bottomsheet from 'rn-sliding-up-panel';
 
-import {Checkbox, SortItem} from '../../../components/Checkbox/Checkbox';
+import { Checkbox, SortItem } from '../../../components/Checkbox/Checkbox';
 
-import {showChapterTitlesAction} from '../../../redux/novel/novel.actions';
+import { showChapterTitlesAction } from '../../../redux/novel/novel.actions';
 
 const ChaptersSettingsSheet = ({
   bottomSheetRef,
@@ -25,7 +25,7 @@ const ChaptersSettingsSheet = ({
   theme,
   showChapterTitles,
 }) => {
-  const {bottom} = useSafeAreaInsets();
+  const { bottom } = useSafeAreaInsets();
 
   const bottomSheetHeight = 220 + bottom;
 
@@ -38,7 +38,7 @@ const ChaptersSettingsSheet = ({
   const [animatedValue] = useState(new Animated.Value(0));
 
   const FirstRoute = () => (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       <Checkbox
         theme={theme}
         label="Downloaded"
@@ -86,7 +86,7 @@ const ChaptersSettingsSheet = ({
   );
 
   const SecondRoute = () => (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       <SortItem
         label="By source"
         status={sort === 'ORDER BY chapterId ASC' ? 'asc' : 'desc'}
@@ -101,7 +101,7 @@ const ChaptersSettingsSheet = ({
   );
 
   const ThirdRoute = () => (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       <Checkbox
         status={!showChapterTitles}
         label="Source title"
@@ -127,18 +127,18 @@ const ChaptersSettingsSheet = ({
 
   const [index, setIndex] = useState(0);
   const [routes] = useState([
-    {key: 'first', title: 'Filter'},
-    {key: 'second', title: 'Sort'},
-    {key: 'third', title: 'Display'},
+    { key: 'first', title: 'Filter' },
+    { key: 'second', title: 'Sort' },
+    { key: 'third', title: 'Display' },
   ]);
 
   const renderTabBar = props => (
     <TabBar
       {...props}
-      indicatorStyle={{backgroundColor: theme.colorAccent}}
-      style={{backgroundColor: theme.colorPrimary, elevation: 0}}
-      renderLabel={({route, focused, color}) => (
-        <Text style={{color}}>{route.title}</Text>
+      indicatorStyle={{ backgroundColor: theme.colorAccent }}
+      style={{ backgroundColor: theme.colorPrimary, elevation: 0 }}
+      renderLabel={({ route, focused, color }) => (
+        <Text style={{ color }}>{route.title}</Text>
       )}
       inactiveColor={theme.textColorSecondary}
       activeColor={theme.colorAccent}
@@ -150,23 +150,23 @@ const ChaptersSettingsSheet = ({
     <Bottomsheet
       animatedValue={animatedValue}
       ref={bottomSheetRef}
-      draggableRange={{top: bottomSheetHeight, bottom: 0}}
+      draggableRange={{ top: bottomSheetHeight, bottom: 0 }}
       snappingPoints={[0, bottomSheetHeight]}
       backdropOpacity={0.5}
     >
       <View
         style={[
           styles.contentContainer,
-          {backgroundColor: theme.colorPrimaryDark},
+          { backgroundColor: theme.colorPrimaryDark },
         ]}
       >
         <TabView
-          navigationState={{index, routes}}
+          navigationState={{ index, routes }}
           renderTabBar={renderTabBar}
           renderScene={renderScene}
           onIndexChange={setIndex}
-          initialLayout={{width: layout.width}}
-          style={{borderTopRightRadius: 8, borderTopLeftRadius: 8}}
+          initialLayout={{ width: layout.width }}
+          style={{ borderTopRightRadius: 8, borderTopLeftRadius: 8 }}
         />
       </View>
     </Bottomsheet>

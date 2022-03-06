@@ -1,4 +1,4 @@
-import {getSource} from '../../sources/sources';
+import { getSource } from '../../sources/sources';
 
 export const fetchNovel = async (sourceId, novelUrl) => {
   const source = getSource(sourceId);

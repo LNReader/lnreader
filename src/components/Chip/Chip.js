@@ -1,17 +1,17 @@
 import React from 'react';
-import {View, Text, Pressable, StyleSheet} from 'react-native';
+import { View, Text, Pressable, StyleSheet } from 'react-native';
 
 import PropTypes from 'prop-types';
 
-export const Chip = ({label, onPress, theme}) => {
+export const Chip = ({ label, onPress, theme }) => {
   return (
-    <View style={[styles.container, {backgroundColor: theme.colorPrimary}]}>
+    <View style={[styles.container, { backgroundColor: theme.colorPrimary }]}>
       <Pressable
         style={styles.content}
         onPress={onPress}
-        android_ripple={{color: theme.rippleColor}}
+        android_ripple={{ color: theme.rippleColor }}
       >
-        <Text style={[styles.label, {color: theme.textColorSecondary}]}>
+        <Text style={[styles.label, { color: theme.textColorSecondary }]}>
           {label}
         </Text>
       </Pressable>

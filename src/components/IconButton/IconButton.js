@@ -1,5 +1,5 @@
 import React from 'react';
-import {Pressable, StyleSheet, ViewPropTypes} from 'react-native';
+import { Pressable, StyleSheet, ViewPropTypes } from 'react-native';
 import PropTypes from 'prop-types';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -14,7 +14,7 @@ export const IconButton = ({
 }) => (
   <Pressable
     style={[styles.container, containerStyle]}
-    android_ripple={{color: theme.rippleColor, borderless: true, radius: 20}}
+    android_ripple={{ color: theme.rippleColor, borderless: true, radius: 20 }}
     onPress={onPress}
   >
     <MaterialCommunityIcons name={icon} size={size} color={color} />

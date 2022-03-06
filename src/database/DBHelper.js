@@ -13,7 +13,7 @@ import {
   createHistoryTableQuery,
   createChapterIdIndexQuery,
 } from './tables/HistoryTable';
-import {createDownloadTableQuery} from './tables/DownloadTable';
+import { createDownloadTableQuery } from './tables/DownloadTable';
 import {
   createUpdatesTableQuery,
   // updatesSeedDataQuery,

@@ -1,11 +1,11 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 
-import {Portal, Modal} from 'react-native-paper';
+import { Portal, Modal } from 'react-native-paper';
 
-import {RadioButton} from '../../../components/RadioButton/RadioButton';
+import { RadioButton } from '../../../components/RadioButton/RadioButton';
 
-import {setAppSettings} from '../../../redux/settings/settings.actions';
+import { setAppSettings } from '../../../redux/settings/settings.actions';
 
 const DisplayModeModal = ({
   theme,
@@ -15,10 +15,10 @@ const DisplayModeModal = ({
   displayModalVisible,
 }) => {
   const displayModes = [
-    {displayMode: 0, label: 'Compact Grid'},
-    {displayMode: 1, label: 'Comfortable Grid'},
-    {displayMode: 3, label: 'No Title Grid'},
-    {displayMode: 2, label: 'List'},
+    { displayMode: 0, label: 'Compact Grid' },
+    { displayMode: 1, label: 'Comfortable Grid' },
+    { displayMode: 3, label: 'No Title Grid' },
+    { displayMode: 2, label: 'List' },
   ];
 
   const renderCheckboxes = () => {
@@ -42,7 +42,7 @@ const DisplayModeModal = ({
         onDismiss={hideDisplayModal}
         contentContainerStyle={[
           styles.containerStyle,
-          {backgroundColor: theme.colorPrimaryDark},
+          { backgroundColor: theme.colorPrimaryDark },
         ]}
       >
         {renderCheckboxes()}

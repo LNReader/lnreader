@@ -18,7 +18,7 @@ export const getUpdates = async () => {
       tx.executeSql(
         getUpdatesQuery,
         null,
-        (txObj, {rows: {_array}}) => {
+        (txObj, { rows: { _array } }) => {
           resolve(_array);
         },
         (txObj, error) => {

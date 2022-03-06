@@ -1,5 +1,5 @@
 import cheerio from 'react-native-cheerio';
-import {htmlToText} from '../helpers/htmlToText';
+import { htmlToText } from '../helpers/htmlToText';
 
 const baseUrl = 'https://novelasligera.com/';
 
@@ -36,7 +36,7 @@ const popularNovels = async page => {
     }
   });
 
-  return {totalPages, novels};
+  return { totalPages, novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {
@@ -104,7 +104,7 @@ const parseNovelAndChapters = async novelUrl => {
         .attr('href')
         .replace(baseUrl + 'novela/', '');
 
-      const chapter = {chapterName, releaseDate, chapterUrl};
+      const chapter = { chapterName, releaseDate, chapterUrl };
 
       novelChapters.push(chapter);
     });
@@ -132,7 +132,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   loadedCheerio('.wp-post-navigation').remove();
 
   let chapterText = loadedCheerio('.entry-content').html();
-  chapterText = htmlToText(chapterText, {preserveNewlines: true});
+  chapterText = htmlToText(chapterText, { preserveNewlines: true });
 
   const chapter = {
     sourceId: 26,
@@ -180,7 +180,7 @@ const searchNovels = async searchTerm => {
     novels.push(novel);
   });
 
-  novels = [{...novels[1]}];
+  novels = [{ ...novels[1] }];
 
   return novels;
 };

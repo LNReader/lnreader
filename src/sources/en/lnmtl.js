@@ -1,6 +1,6 @@
 import cheerio from 'react-native-cheerio';
-import {showToast} from '../../hooks/showToast';
-import {htmlToText} from '../helpers/htmlToText';
+import { showToast } from '../../hooks/showToast';
+import { htmlToText } from '../helpers/htmlToText';
 
 const baseUrl = 'https://lnmtl.com/';
 
@@ -32,7 +32,7 @@ const popularNovels = async page => {
     novels.push(novel);
   });
 
-  return {totalPages, novels};
+  return { totalPages, novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {
@@ -138,7 +138,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   }
 
   chapterText =
-    chapterName + '\n\n' + htmlToText(chapterText, {removeLineBreaks: false});
+    chapterName + '\n\n' + htmlToText(chapterText, { removeLineBreaks: false });
 
   const chapter = {
     sourceId: 37,

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {Menu} from 'react-native-paper';
+import { Menu } from 'react-native-paper';
 import {
   ChapterDownloadingButton,
   DeleteChapterButton,
@@ -27,7 +27,7 @@ export const DownloadButton = ({
         anchor={
           <DeleteChapterButton theme={theme} onPress={showDeleteChapterMenu} />
         }
-        contentStyle={{backgroundColor: theme.menuColor}}
+        contentStyle={{ backgroundColor: theme.menuColor }}
       >
         <Menu.Item
           onPress={() => {
@@ -35,7 +35,7 @@ export const DownloadButton = ({
             hideDeleteChapterMenu();
           }}
           title="Delete"
-          titleStyle={{color: theme.textColorPrimary}}
+          titleStyle={{ color: theme.textColorPrimary }}
         />
       </Menu>
     );

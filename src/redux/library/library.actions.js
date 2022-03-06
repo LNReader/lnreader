@@ -4,11 +4,14 @@ import {
   SET_LIBRARY_LOADING,
   SORT_FILTER_LIBRARY,
 } from './library.types';
-import {getLibrary, searchLibrary} from '../../database/queries/LibraryQueries';
+import {
+  getLibrary,
+  searchLibrary,
+} from '../../database/queries/LibraryQueries';
 
 export const getLibraryAction =
   (sort, filter) => async (dispatch, getState) => {
-    const {downloadedOnlyMode = false} = getState().settingsReducer;
+    const { downloadedOnlyMode = false } = getState().settingsReducer;
 
     const res = await getLibrary(
       sort,
@@ -32,7 +35,7 @@ export const searchLibraryAction =
   };
 
 export const filterLibrary = (sort, filter) => async dispatch => {
-  dispatch({type: SORT_FILTER_LIBRARY, payload: {sort, filter}});
+  dispatch({ type: SORT_FILTER_LIBRARY, payload: { sort, filter } });
 
   const res = await getLibrary(sort, filter);
 

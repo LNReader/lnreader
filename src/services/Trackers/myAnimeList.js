@@ -75,7 +75,7 @@ export const searchNovels = async (novelName, bearerToken) => {
     'Content-Type': 'application/x-www-form-urlencoded',
   };
 
-  const res = await fetch(searchrl, {method: 'GET', headers});
+  const res = await fetch(searchrl, { method: 'GET', headers });
   const searchResults = await res.json();
 
   return searchResults;
@@ -89,7 +89,7 @@ export const findListItem = async (malId, bearerToken) => {
     'Content-Type': 'application/x-www-form-urlencoded',
   };
 
-  const res = await fetch(url, {method: 'GET', headers});
+  const res = await fetch(url, { method: 'GET', headers });
   const listItem = await res.json();
 
   if (!listItem.my_list_status) {
