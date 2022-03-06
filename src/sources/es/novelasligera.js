@@ -1,4 +1,4 @@
-import cheerio from 'react-native-cheerio';
+import * as cheerio from 'cheerio';
 import { htmlToText } from '../helpers/htmlToText';
 
 const baseUrl = 'https://novelasligera.com/';

@@ -1,5 +1,5 @@
 import moment from 'moment';
-import cheerio from 'react-native-cheerio';
+import * as cheerio from 'cheerio';
 import { defaultCoverUri, Status } from '../../helpers/constants';
 import { parseMadaraDate } from '../../helpers/parseDate';
 

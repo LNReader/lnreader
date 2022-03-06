@@ -1,5 +1,4 @@
-import cheerio from 'react-native-cheerio';
-
+import * as cheerio from 'cheerio';
 const scrapeTopNovels = async pageNo => {
   const url =
     'https://myanimelist.net/topmanga.php?type=lightnovels&limit=' + pageNo;

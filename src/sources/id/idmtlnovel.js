@@ -1,4 +1,4 @@
-import cheerio from 'react-native-cheerio';
+import * as cheerio from 'cheerio';
 
 const sourceId = 81;
 const baseUrl = 'https://id.mtlnovel.com';
@@ -60,9 +60,12 @@ const parseNovelAndChapters = async novelUrl => {
 
   let loadedCheerio = cheerio.load(body);
 
-  let novel = { sourceId, url, novelUrl };
-
-  novel.sourceName = 'MTLNovel';
+  let novel = {
+    sourceId,
+    sourceName: 'MTLNovel (Id)',
+    url,
+    novelUrl,
+  };
 
   novel.novelName = loadedCheerio('h1.entry-title').text();
 
@@ -93,8 +96,6 @@ const parseNovelAndChapters = async novelUrl => {
     .next()
     .text()
     .replace('Genre:', '');
-
-  novel.artist = null;
 
   const chapterListUrl = url + '/chapter-list/';
 

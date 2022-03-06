@@ -1,5 +1,4 @@
-import cheerio from 'react-native-cheerio';
-
+import * as cheerio from 'cheerio';
 import moment from 'moment';
 
 const baseUrl = 'https://www.novelpassion.com/';

@@ -1,14 +1,12 @@
-import cheerio from 'react-native-cheerio';
+import * as cheerio from 'cheerio';
+import { SourceChapter, SourceChapterItem, SourceNovelItem } from '../types';
 
 const sourceId = 2;
-
 const sourceName = 'ReadLightNovel';
-
 const baseUrl = 'https://www.readlightnovel.me';
-
 const searchUrl = 'https://www.readlightnovel.me/detailed-search';
 
-const popularNovels = async page => {
+const popularNovels = async (page: number) => {
   let totalPages = 1751;
   const url = `${baseUrl}/top-novels/most-viewed/${page}`;
 
@@ -17,30 +15,33 @@ const popularNovels = async page => {
 
   const loadedCheerio = cheerio.load(body);
 
-  const novels = [];
+  const novels: SourceNovelItem[] = [];
 
   loadedCheerio('.top-novel-block').each(function () {
-    const novelName = loadedCheerio(this).find('h2 > a').text();
-    const novelCover = loadedCheerio(this).find('img').attr('src');
     const novelUrl = loadedCheerio(this)
       .find('h2 > a')
       .attr('href')
-      .replace(`${baseUrl}/`, '');
+      ?.replace(`${baseUrl}/`, '');
 
-    const novel = {
-      sourceId,
-      novelName,
-      novelCover,
-      novelUrl,
-    };
+    if (novelUrl) {
+      const novelName = loadedCheerio(this).find('h2 > a').text();
+      const novelCover = loadedCheerio(this).find('img').attr('src');
 
-    novels.push(novel);
+      const novel = {
+        sourceId,
+        novelName,
+        novelCover,
+        novelUrl,
+      };
+
+      novels.push(novel);
+    }
   });
 
   return { totalPages, novels };
 };
 
-const parseNovelAndChapters = async novelUrl => {
+const parseNovelAndChapters = async (novelUrl: string) => {
   const url = `${baseUrl}/${novelUrl}`;
 
   const result = await fetch(url);
@@ -82,7 +83,7 @@ const parseNovelAndChapters = async novelUrl => {
     }
   });
 
-  let chapters = [];
+  let chapters: SourceChapterItem[] = [];
 
   loadedCheerio('.panel').each(function () {
     let volumeName = loadedCheerio(this).find('h4.panel-title').text();
@@ -90,26 +91,28 @@ const parseNovelAndChapters = async novelUrl => {
     loadedCheerio(this)
       .find('ul.chapter-chs > li')
       .each(function () {
-        let chapterName = loadedCheerio(this).find('a').text();
-
-        const releaseDate = null;
-
         const chapterUrl = loadedCheerio(this)
           .find('a')
           .attr('href')
-          .replace(`${baseUrl}/${novelUrl}/`, '');
+          ?.replace(`${baseUrl}/${novelUrl}/`, '');
 
-        if (volumeName.includes('Volume')) {
-          chapterName = volumeName + ' ' + chapterName;
+        if (chapterUrl) {
+          let chapterName = loadedCheerio(this).find('a').text();
+
+          const releaseDate = null;
+
+          if (volumeName.includes('Volume')) {
+            chapterName = volumeName + ' ' + chapterName;
+          }
+
+          const chapter = {
+            chapterName,
+            releaseDate,
+            chapterUrl,
+          };
+
+          chapters.push(chapter);
         }
-
-        const chapter = {
-          chapterName,
-          releaseDate,
-          chapterUrl,
-        };
-
-        chapters.push(chapter);
       });
   });
 
@@ -131,7 +134,7 @@ const parseNovelAndChapters = async novelUrl => {
   return novel;
 };
 
-const parseChapter = async (novelUrl, chapterUrl) => {
+const parseChapter = async (novelUrl: string, chapterUrl: string) => {
   const url = `${baseUrl}/${novelUrl}/${chapterUrl}/`;
 
   const result = await fetch(url);
@@ -158,9 +161,9 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     'div[style="float:left;margin-top:15px;margin-bottom:15px;"]',
   ).remove();
 
-  let chapterText = loadedCheerio('.desc').html();
+  const chapterText = loadedCheerio('.desc').html() || '';
 
-  const chapter = {
+  const chapter: SourceChapter = {
     sourceId: 2,
     novelUrl,
     chapterUrl,
@@ -171,7 +174,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   return chapter;
 };
 
-const searchNovels = async searchTerm => {
+const searchNovels = async (searchTerm: string) => {
   const formData = new FormData();
   formData.append('keyword', searchTerm);
   formData.append('search', 1);
@@ -184,27 +187,29 @@ const searchNovels = async searchTerm => {
 
   const loadedCheerio = cheerio.load(body);
 
-  let novels = [];
+  let novels: SourceNovelItem[] = [];
 
   loadedCheerio('.top-novel-block').each(function () {
-    const novelName = loadedCheerio(this)
-      .find('.top-novel-header > h2 > a')
-      .text();
-    const novelCover = loadedCheerio(this).find('img').attr('src');
-
     const novelUrl = loadedCheerio(this)
       .find('.top-novel-header > h2 > a')
       .attr('href')
-      .replace(`${baseUrl}/`, '');
+      ?.replace(`${baseUrl}/`, '');
 
-    const novel = {
-      sourceId,
-      novelName,
-      novelCover,
-      novelUrl,
-    };
+    if (novelUrl) {
+      const novelName = loadedCheerio(this)
+        .find('.top-novel-header > h2 > a')
+        .text();
+      const novelCover = loadedCheerio(this).find('img').attr('src');
 
-    novels.push(novel);
+      const novel = {
+        sourceId,
+        novelName,
+        novelCover,
+        novelUrl,
+      };
+
+      novels.push(novel);
+    }
   });
 
   return novels;

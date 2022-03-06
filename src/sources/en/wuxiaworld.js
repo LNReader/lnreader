@@ -1,4 +1,4 @@
-import cheerio from 'react-native-cheerio';
+import * as cheerio from 'cheerio';
 
 const baseUrl = 'https://www.wuxiaworld.com/';
 
@@ -35,15 +35,12 @@ const parseNovelAndChapters = async novelUrl => {
 
   const loadedCheerio = cheerio.load(body);
 
-  let novel = {};
-
-  novel.sourceId = 7;
-
-  novel.sourceName = 'WuxiaWorld';
-
-  novel.url = url;
-
-  novel.novelUrl = novelUrl;
+  let novel = {
+    sourceId: 7,
+    sourceName: 'WuxiaWorld',
+    url,
+    novelUrl,
+  };
 
   novel.novelName = loadedCheerio('h2').text();
 
@@ -78,9 +75,7 @@ const parseNovelAndChapters = async novelUrl => {
 
   novel.status = null;
 
-  novel.status = loadedCheerio('div.fr-view.pt-10').text().includes('Complete')
-    ? 'Completed'
-    : 'Ongoing';
+  novel.status = loadedCheerio('div.fr-view.pt-10').text().includes('Complete');
 
   let novelChapters = [];
 

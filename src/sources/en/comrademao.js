@@ -1,5 +1,4 @@
-import cheerio from 'react-native-cheerio';
-
+import * as cheerio from 'cheerio';
 const sourceId = 27;
 
 const sourceName = 'Comrade Mao';

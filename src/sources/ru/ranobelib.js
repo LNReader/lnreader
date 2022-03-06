@@ -1,4 +1,4 @@
-import cheerio from 'react-native-cheerio';
+import * as cheerio from 'cheerio';
 
 const sourceId = 93;
 const sourceName = 'RanobeLib';
@@ -42,13 +42,6 @@ const parseNovelAndChapters = async novelUrl => {
     sourceName,
     url: novelUrl,
     novelUrl,
-    novelName: '',
-    novelCover: '',
-    author: null,
-    status: null,
-    genre: null,
-    summary: null,
-    chapters: [],
   };
 
   novel.novelName = loadedCheerio('.media-name__main').text().trim();

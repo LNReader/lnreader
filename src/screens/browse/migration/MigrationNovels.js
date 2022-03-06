@@ -15,7 +15,7 @@ import MigrationNovelList from './MigrationNovelList';
 import { Appbar } from '../../../components/Appbar';
 
 import { ScreenContainer } from '../../../components/Common';
-import { getSource } from '../../../sources/sources';
+import { sourceManager } from '../../../sources/sourceManager';
 
 const MigrationNovels = ({ navigation, route }) => {
   const { sourceId, novelName } = route.params;
@@ -57,7 +57,7 @@ const MigrationNovels = ({ navigation, route }) => {
     migrationSources.map(async item => {
       if (isMounted.current === true) {
         try {
-          const source = getSource(item.sourceId);
+          const source = sourceManager(item.sourceId);
           const data = await source.searchNovels(novelName);
 
           setSearchResults(prevState =>

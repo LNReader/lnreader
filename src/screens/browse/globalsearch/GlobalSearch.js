@@ -11,7 +11,7 @@ import { ScreenContainer } from '../../../components/Common';
 import GlobalSearchSourceItem from './GlobalSearchSourceItem';
 
 import { useLibrary, useSettings, useTheme } from '../../../hooks/reduxHooks';
-import { getSource } from '../../../sources/sources';
+import { sourceManager } from '../../../sources/sourceManager';
 
 const GlobalSearch = ({ route, navigation }) => {
   const theme = useTheme();
@@ -76,7 +76,7 @@ const GlobalSearch = ({ route, navigation }) => {
     globalSearchSources.map(async item => {
       if (isMounted.current === true) {
         try {
-          const source = getSource(item.sourceId);
+          const source = sourceManager(item.sourceId);
           const data = await source.searchNovels(encodeURI(searchText));
 
           setSearchResults(prevState =>

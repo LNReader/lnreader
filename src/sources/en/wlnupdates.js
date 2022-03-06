@@ -1,4 +1,4 @@
-import cheerio from 'react-native-cheerio';
+import * as cheerio from 'cheerio';
 import { Status } from '../helpers/constants';
 import NovelUpdatesScraper from './novelupdates';
 

@@ -1,4 +1,4 @@
-import cheerio from 'react-native-cheerio';
+import * as cheerio from 'cheerio';
 import { Status } from '../helpers/constants';
 
 const sourceId = 83;
@@ -48,13 +48,6 @@ const parseNovelAndChapters = async novelUrl => {
     sourceName,
     url,
     novelUrl,
-    novelName: '',
-    novelCover: '',
-    author: '',
-    status: Status.UNKNOWN,
-    genre: '',
-    summary: null,
-    chapters: [],
   };
 
   novel.novelName = loadedCheerio('p.booktitle').text().trim();

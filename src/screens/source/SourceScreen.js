@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 
 import { useTheme, useLibrary, useSettings } from '../../hooks/reduxHooks';
 import { setAppSettings } from '../../redux/settings/settings.actions';
-import { getSource } from '../../sources/sources';
+import { sourceManager } from '../../sources/sourceManager';
 import { showToast } from '../../hooks/showToast';
 
 import { Searchbar } from '../../components/Searchbar/Searchbar';
@@ -49,7 +49,7 @@ const SourceScreen = ({ navigation, route }) => {
     if (isMounted.current === true) {
       try {
         if (page <= totalPages) {
-          const source = getSource(sourceId);
+          const source = sourceManager(sourceId);
           const res = await source.popularNovels(page);
           setNovels(prevState => [...prevState, ...res.novels]);
           setTotalPages(res.totalPages);
@@ -67,7 +67,7 @@ const SourceScreen = ({ navigation, route }) => {
   const getSearchResults = async () => {
     try {
       setLoading(true);
-      const source = getSource(sourceId);
+      const source = sourceManager(sourceId);
       const res = await source.searchNovels(searchText);
       setNovels(res);
       setLoading(false);

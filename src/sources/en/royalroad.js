@@ -1,5 +1,4 @@
-import cheerio from 'react-native-cheerio';
-
+import * as cheerio from 'cheerio';
 import { parseMadaraDate } from '../helpers/parseDate';
 import { Status } from '../helpers/constants';
 

@@ -1,4 +1,4 @@
-import cheerio from 'react-native-cheerio';
+import * as cheerio from 'cheerio';
 import { defaultCoverUri, Status } from '../helpers/constants';
 
 const sourceId = 89;

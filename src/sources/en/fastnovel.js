@@ -1,4 +1,4 @@
-import cheerio from 'react-native-cheerio';
+import * as cheerio from 'cheerio';
 
 const baseUrl = 'https://fastnovel.net';
 const searchUrl = 'https://fastnovel.net/search/';
@@ -40,15 +40,12 @@ const parseNovelAndChapters = async novelUrl => {
 
   const loadedCheerio = cheerio.load(body);
 
-  let novel = {};
-
-  novel.sourceId = 3;
-
-  novel.sourceName = 'FastNovel';
-
-  novel.url = url;
-
-  novel.novelUrl = novelUrl;
+  let novel = {
+    sourceId: 3,
+    sourceName: 'FastNovel',
+    url,
+    novelUrl,
+  };
 
   novel.novelName = loadedCheerio('h1').text();
 

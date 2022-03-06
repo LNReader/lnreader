@@ -1,5 +1,4 @@
-import cheerio from 'react-native-cheerio';
-
+import * as cheerio from 'cheerio';
 const baseUrl = 'http://www.tapread.com';
 
 // let headers = new Headers({

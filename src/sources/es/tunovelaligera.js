@@ -1,4 +1,4 @@
-import cheerio from 'react-native-cheerio';
+import * as cheerio from 'cheerio';
 import { defaultCoverUri, Status } from '../helpers/constants';
 
 const sourceId = 23;
@@ -48,9 +48,12 @@ const parseNovelAndChapters = async novelUrl => {
 
   let loadedCheerio = cheerio.load(body);
 
-  let novel = { sourceId, sourceName, url };
-
-  novel.novelUrl = novelUrl;
+  let novel = {
+    sourceId,
+    sourceName,
+    url,
+    novelUrl,
+  };
 
   loadedCheerio('.manga-title-badges').remove();
 

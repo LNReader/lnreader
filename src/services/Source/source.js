@@ -1,7 +1,7 @@
-import { getSource } from '../../sources/sources';
+import { sourceManager } from '../../sources/sourceManager';
 
 export const fetchNovel = async (sourceId, novelUrl) => {
-  const source = getSource(sourceId);
+  const source = sourceManager(sourceId);
 
   const res = await source.parseNovelAndChapters(novelUrl);
 
@@ -25,7 +25,7 @@ export const fetchNovel = async (sourceId, novelUrl) => {
 };
 
 export const fetchChapter = async (sourceId, novelUrl, chapterUrl) => {
-  const source = getSource(sourceId);
+  const source = sourceManager(sourceId);
 
   let chapter = await source.parseChapter(novelUrl, chapterUrl);
 
@@ -33,7 +33,7 @@ export const fetchChapter = async (sourceId, novelUrl, chapterUrl) => {
 };
 
 export const fetchChapters = async (sourceId, novelUrl) => {
-  const source = getSource(sourceId);
+  const source = sourceManager(sourceId);
 
   const res = await source.parseNovelAndChapters(novelUrl);
 

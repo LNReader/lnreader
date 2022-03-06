@@ -1,4 +1,4 @@
-import cheerio from 'react-native-cheerio';
+import * as cheerio from 'cheerio';
 import NovelUpdatesScraper from './novelupdates';
 
 const sourceId = 72;

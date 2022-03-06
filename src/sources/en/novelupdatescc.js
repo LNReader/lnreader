@@ -1,5 +1,4 @@
-import cheerio from 'react-native-cheerio';
-
+import * as cheerio from 'cheerio';
 const baseUrl = 'https://www.novelupdates.cc/';
 
 const popularNovels = async page => {

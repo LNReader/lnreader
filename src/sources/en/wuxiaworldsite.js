@@ -1,5 +1,4 @@
-import cheerio from 'react-native-cheerio';
-
+import * as cheerio from 'cheerio';
 const baseUrl = 'https://wuxiaworldsite.co/';
 const searchUrl = 'https://wuxiaworldsite.co/search/';
 

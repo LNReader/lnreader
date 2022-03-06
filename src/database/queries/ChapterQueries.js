@@ -1,5 +1,5 @@
 import * as SQLite from 'expo-sqlite';
-import { getSource } from '../../sources/sources';
+import { sourceManager } from '../../sources/sourceManager';
 const db = SQLite.openDatabase('lnreader.db');
 
 const insertChaptersQuery =
@@ -208,7 +208,7 @@ export const downloadChapter = async (
   chapterUrl,
   chapterId,
 ) => {
-  const source = getSource(sourceId);
+  const source = sourceManager(sourceId);
 
   const chapter = await source.parseChapter(novelUrl, chapterUrl);
 

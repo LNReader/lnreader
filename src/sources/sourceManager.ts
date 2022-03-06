@@ -105,8 +105,25 @@ import {
 } from './multisrc/readwn/ReadwnGenerator';
 import SakuraNovelScraper from './id/sakuranovel';
 
-export const getSource = sourceId => {
-  const scrapers = {
+import { SourceChapter, SourceNovel, SourceNovelItem } from './types';
+
+interface PopularNovelsResponse {
+  totalPages: number;
+  novels: SourceNovelItem[];
+}
+
+interface Scraper {
+  popularNovels: (pageNo: number) => Promise<PopularNovelsResponse>;
+  parseNovelAndChapters: (novelUrl: string) => Promise<SourceNovel>;
+  parseChapter: (
+    novelUrl: string,
+    chapterUrl: string,
+  ) => Promise<SourceChapter>;
+  searchNovels: (searchTerm: string) => Promise<SourceNovelItem[]>;
+}
+
+export const sourceManager = (sourceId: number): Scraper => {
+  const scrapers: Record<number, Scraper> = {
     1: BoxNovelScraper,
     2: ReadLightNovelScraper,
     3: fastNovelScraper,

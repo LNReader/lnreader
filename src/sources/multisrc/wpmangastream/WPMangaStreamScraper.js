@@ -1,5 +1,4 @@
-import cheerio from 'react-native-cheerio';
-
+import * as cheerio from 'cheerio';
 class WPMangaStreamScraper {
   constructor(sourceId, baseUrl, sourceName) {
     this.sourceId = sourceId;

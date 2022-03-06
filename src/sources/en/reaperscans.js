@@ -1,4 +1,4 @@
-import cheerio from 'react-native-cheerio';
+import * as cheerio from 'cheerio';
 import { Status } from '../helpers/constants';
 
 const baseUrl = 'https://reaperscans.com';
@@ -51,7 +51,12 @@ const parseNovelAndChapters = async novelUrl => {
 
   const loadedCheerio = cheerio.load(body);
 
-  let novel = { sourceId, url, sourceName };
+  let novel = {
+    sourceId,
+    sourceName,
+    url,
+    novelUrl,
+  };
 
   loadedCheerio('.post-title > h3 > span').remove();
 
