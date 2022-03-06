@@ -257,3 +257,12 @@ export const Novel4UpScraper = new MadaraScraper(
   false,
   2,
 );
+
+export const TeamXNovelScraper = new MadaraScraper(
+  107,
+  'https://teamxnovel.com/',
+  'TeamXNovel',
+  getPath(107),
+  false,
+  2,
+);
