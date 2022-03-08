@@ -12,6 +12,7 @@ import updatesReducer from './updates/updates.reducer';
 import trackerReducer from './tracker/tracker.reducer';
 import preferenceReducer from './preferences/preference.reducer';
 import downloadsReducer from './downloads/downloads.reducer';
+import downloadsReducerV2 from './downloads/downloadsSlice';
 
 const persistConfig = {
   key: 'root',
@@ -30,6 +31,7 @@ const reducers = combineReducers({
   trackerReducer,
   preferenceReducer,
   downloadsReducer,
+  downloadsReducerV2,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducers);

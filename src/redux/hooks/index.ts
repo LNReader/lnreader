@@ -26,3 +26,6 @@ export const useSavedChapterData = (chapterId: number) =>
     (state: RootState) =>
       state.localStorageReducer.chapterData[chapterId] || {},
   );
+
+export const useDownloadQueue = () =>
+  useAppSelector((state: RootState) => state.downloadsReducer.downloadQueue);

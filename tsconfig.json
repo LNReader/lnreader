@@ -12,6 +12,10 @@
     "target": "esnext",
     "resolveJsonModule": true
   },
+  "baseUrl": "./src",
+  "paths": {
+    "@components/*": ["components/*"]
+  },
   "exclude": [
     "node_modules",
     "babel.config.js",
