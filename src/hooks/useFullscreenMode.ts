@@ -2,19 +2,22 @@ import { useCallback, useEffect } from 'react';
 import { StatusBar } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import { useReaderSettings, useTheme } from '../redux/hooks';
+import { useReaderSettingsV1, useSettingsV1, useThemeV1 } from '../redux/hooks';
 import {
   changeNavigationBarColor,
   hideNavigationBar,
   showNavigationBar,
 } from '../theme/NativeModules/NavigationBarColor';
-
-import { ColorScheme } from '../theme/types';
+import { readerBackground } from '../screens/reader/utils/readerStyles';
 
 const useFullscreenMode = () => {
   const { addListener } = useNavigation();
-  const { backgroundColor, fullScreenMode } = useReaderSettings();
-  const theme = useTheme();
+  const readerSettings = useReaderSettingsV1();
+  const { fullScreenMode } = useSettingsV1();
+
+  const backgroundColor = readerBackground(readerSettings.theme);
+
+  const theme = useThemeV1();
 
   const setImmersiveMode = useCallback(() => {
     if (fullScreenMode) {
@@ -38,9 +41,7 @@ const useFullscreenMode = () => {
   useEffect(() => {
     const unsubscribe = addListener('beforeRemove', () => {
       showStatusAndNavBar();
-      StatusBar.setBarStyle(
-        theme.type === ColorScheme.LIGHT ? 'dark-content' : 'light-content',
-      );
+      StatusBar.setBarStyle(theme.statusBar);
     });
 
     return unsubscribe;

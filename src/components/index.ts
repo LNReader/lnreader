@@ -5,3 +5,5 @@ export { default as Container } from './Container/Container';
 export { default as ErrorScreenV2 } from './ErrorScreenV2/ErrorScreenV2';
 export { default as EmptyView } from './EmptyView/EmptyView';
 export { default as NovelList } from './NovelList/NovelList';
+export { default as Chip } from './Chip/Chip';
+export { default as Button } from './Button/Button';

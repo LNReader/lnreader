@@ -2,8 +2,8 @@ import React, { useRef } from 'react';
 import { Pressable, StyleSheet, View, TextInput } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { ThemeType } from '../../theme/types';
 import { IconButtonV2 } from '..';
+import { ThemeTypeV1 } from '../../theme/v1/theme/types';
 
 interface RightIcon {
   iconName: string;
@@ -21,7 +21,7 @@ interface SearcbarProps {
   handleBackAction?: () => void;
   clearSearchbar: () => void;
   onLeftIconPress?: () => void;
-  theme: ThemeType;
+  theme: ThemeTypeV1;
 }
 
 const Searchbar: React.FC<SearcbarProps> = ({
@@ -46,7 +46,7 @@ const Searchbar: React.FC<SearcbarProps> = ({
     <View
       style={[
         styles.searchbarContainer,
-        { marginTop, backgroundColor: theme.surface },
+        { marginTop, backgroundColor: theme.searchBarColor },
       ]}
     >
       <Pressable

@@ -1,12 +1,12 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 
-import { ThemeType } from '../../theme/types';
+import { ThemeTypeV1 } from '../../theme/v1/theme/types';
 
 interface EmptyViewProps {
   icon?: string;
   description: string;
-  theme: ThemeType;
+  theme: ThemeTypeV1;
 }
 
 const EmptyView: React.FC<EmptyViewProps> = ({ icon, description, theme }) => (

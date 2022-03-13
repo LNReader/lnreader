@@ -14,7 +14,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { easeGradient } from 'react-native-easing-gradient';
 import FastImage from 'react-native-fast-image';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import { Chip } from '../../../../components/Chip/Chip';
+import { Chip } from '../../../../components';
 
 const NovelInfoContainer = ({ children }) => (
   <View style={styles.novelInfoContainer}>{children}</View>
@@ -253,7 +253,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   novelAuthor: {
-    marginVertical: 5,
+    marginVertical: 6,
     fontSize: 14,
     fontWeight: 'bold',
   },

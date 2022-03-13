@@ -2,11 +2,11 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Container } from '..';
 
-import { ThemeType } from '../../theme/types';
+import { ThemeTypeV1 } from '../../theme/v1/theme/types';
 
 interface ErrorScreenProps {
   error?: string;
-  theme: ThemeType;
+  theme: ThemeTypeV1;
 }
 
 const ErrorScreen: React.FC<ErrorScreenProps> = ({ error, theme }) => {

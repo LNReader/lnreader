@@ -8,11 +8,11 @@ import {
 import React, { useState } from 'react';
 
 import { ChapterItem, Update } from '../../../../database/types';
-import { ThemeType } from '../../../../theme/types';
 import FastImage from 'react-native-fast-image';
 import { IconButtonV2 } from '../../../../components';
 import { useDownloadQueue } from '../../../../redux/hooks';
 import { Menu } from 'react-native-paper';
+import { ThemeTypeV1 } from '../../../../theme/v1/theme/types';
 
 interface UpdateCardProps {
   item: Update;
@@ -31,7 +31,7 @@ interface UpdateCardProps {
     chapter: ChapterItem,
   ) => void;
   handleDeleteChapter: (chapterId: number, chapterName: string) => void;
-  theme: ThemeType;
+  theme: ThemeTypeV1;
 }
 
 const UpdateCard: React.FC<UpdateCardProps> = ({
@@ -44,7 +44,7 @@ const UpdateCard: React.FC<UpdateCardProps> = ({
 }) => {
   const titleColor = item.read ? theme.textColorHint : theme.textColorPrimary;
   const chapterNameColor = item.bookmark
-    ? theme.primary
+    ? theme.colorAccent
     : item.read
     ? theme.textColorHint
     : theme.textColorSecondary;
@@ -107,6 +107,7 @@ const UpdateCard: React.FC<UpdateCardProps> = ({
               item as ChapterItem,
             )
           }
+          color={theme.textColorHint}
           theme={theme}
         />
       ) : (
@@ -121,7 +122,7 @@ const UpdateCard: React.FC<UpdateCardProps> = ({
               theme={theme}
             />
           }
-          contentStyle={{ backgroundColor: theme.surface }}
+          contentStyle={{ backgroundColor: theme.menuColor }}
         >
           <Menu.Item
             onPress={() =>

@@ -9,7 +9,7 @@ import { IconButtonV2 } from '../../../../components';
 import { parseChapterNumber } from '../../../../utils/parseChapterNumber';
 
 import { History } from '../../../../database/types';
-import { ThemeType } from '../../../../theme/types';
+import { ThemeTypeV1 } from '../../../../theme/v1/theme/types';
 
 interface HistoryCardProps {
   history: History;
@@ -29,7 +29,7 @@ interface HistoryCardProps {
     novelName: string,
     novelCover: string,
   ) => void;
-  theme: ThemeType;
+  theme: ThemeTypeV1;
 }
 
 const HistoryCard: React.FC<HistoryCardProps> = ({

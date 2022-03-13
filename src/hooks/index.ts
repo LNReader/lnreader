@@ -6,3 +6,4 @@ export { default as useChapter } from './useChapter';
 export { default as useNextAndPrevChapter } from './useNextAndPrevChapter';
 export { default as useDeviceOrientation } from './useDeviceOrientation';
 export { default as useNovelCoverHeight } from './useNovelCoverHeight';
+export { default as useNovelTrackerInfo } from './useNovelTrackerInfo';

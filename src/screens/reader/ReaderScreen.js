@@ -3,7 +3,6 @@ import {
   StyleSheet,
   View,
   Text,
-  StatusBar,
   ScrollView,
   TouchableWithoutFeedback,
   Dimensions,
@@ -12,16 +11,11 @@ import {
 import { useDispatch } from 'react-redux';
 import { IconButton, Portal } from 'react-native-paper';
 import { useKeepAwake } from 'expo-keep-awake';
-import {
-  changeNavigationBarColor,
-  hideNavigationBar,
-  showNavigationBar,
-} from '../../theme/utils/androidNavigationBarColor';
 
 import {
   getChapterFromDB,
-  getNextChapterFromDB,
-  getPrevChapterFromDB,
+  getNextChapter,
+  getPrevChapter,
 } from '../../database/queries/ChapterQueries';
 import { fetchChapter } from '../../services/Source/source';
 import { showToast } from '../../hooks/showToast';
@@ -146,8 +140,8 @@ const Chapter = ({ route, navigation }) => {
   const [prevChapter, setPrevChapter] = useState({});
 
   const setPrevAndNextChap = async () => {
-    const nextChap = await getNextChapterFromDB(novelId, chapterId);
-    const prevChap = await getPrevChapterFromDB(novelId, chapterId);
+    const nextChap = await getNextChapter(novelId, chapterId);
+    const prevChap = await getPrevChapter(novelId, chapterId);
 
     setNextChapter(nextChap);
     setPrevChapter(prevChap);
@@ -163,13 +157,6 @@ const Chapter = ({ route, navigation }) => {
         payload: { novelId, chapterId },
       });
     }
-  }, []);
-
-  useEffect(() => {
-    navigation.addListener('beforeRemove', e => {
-      StatusBar.setHidden(false);
-      showNavigationBar();
-    });
   }, []);
 
   useEffect(() => {

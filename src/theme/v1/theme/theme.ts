@@ -3,9 +3,9 @@ import {
   DividerColors,
   PrimaryColors,
   RippleColors,
-  StatusBarStyle,
   TextColors,
 } from './colors';
+import { StatusbarStyle } from './types';
 
 /**
  * Light
@@ -24,7 +24,7 @@ export const lightTheme = {
   filterColor: '#FFC107',
   colorDisabled: 'rgba(220,220,220,255)',
   colorButtonText: '#FFFFFF',
-  statusBar: StatusBarStyle.DARK,
+  statusBar: StatusbarStyle.DARK,
 };
 
 /**
@@ -43,7 +43,7 @@ export const darkTheme = {
   dividerColor: DividerColors.DARK,
   colorDisabled: PrimaryColors.dark.colorPrimary,
   colorButtonText: '#FFFFFF',
-  statusBar: StatusBarStyle.LIGHT,
+  statusBar: StatusbarStyle.LIGHT,
 };
 
 /**
@@ -61,7 +61,7 @@ export const midnightDuskTheme = {
   dividerColor: DividerColors.DARK,
   colorDisabled: '#201F27',
   colorButtonText: '#FFFFFF',
-  statusBar: StatusBarStyle.LIGHT,
+  statusBar: StatusbarStyle.LIGHT,
   ...TextColors.dark,
 };
 
@@ -82,7 +82,7 @@ export const greenAppleTheme = {
   dividerColor: DividerColors.DARK,
   colorDisabled: 'rgba(57,57,57,255)',
   colorButtonText: '#000000',
-  statusBar: StatusBarStyle.LIGHT,
+  statusBar: StatusbarStyle.LIGHT,
 };
 
 /**
@@ -101,7 +101,7 @@ export const strawberryDaiquiri = {
   dividerColor: DividerColors.DARK,
   colorDisabled: 'rgba(57,57,57,255)',
   colorButtonText: '#FFFFFF',
-  statusBar: StatusBarStyle.LIGHT,
+  statusBar: StatusbarStyle.LIGHT,
   ...TextColors.dark,
 };
 
@@ -118,7 +118,7 @@ export const irisBlueTheme = {
   dividerColor: DividerColors.DARK,
   colorDisabled: '#393e46',
   colorButtonText: '#16151D',
-  statusBar: StatusBarStyle.LIGHT,
+  statusBar: StatusbarStyle.LIGHT,
 };
 
 /**
@@ -137,7 +137,7 @@ export const takoTheme = {
   dividerColor: DividerColors.DARK,
   colorDisabled: '#484861',
   colorButtonText: PrimaryColors.tako.colorPrimaryDark,
-  statusBar: StatusBarStyle.LIGHT,
+  statusBar: StatusbarStyle.LIGHT,
   ...TextColors.dark,
 };
 
@@ -157,7 +157,7 @@ export const yinYangTheme = {
   dividerColor: DividerColors.DARK,
   colorDisabled: PrimaryColors.dark.colorPrimary,
   colorButtonText: '#000000',
-  statusBar: StatusBarStyle.LIGHT,
+  statusBar: StatusbarStyle.LIGHT,
   ...TextColors.dark,
 };
 
@@ -173,7 +173,7 @@ export const yangTheme = {
   dividerColor: DividerColors.LIGHT,
   colorDisabled: PrimaryColors.light.colorPrimary,
   colorButtonText: '#FFFFFF',
-  statusBar: StatusBarStyle.DARK,
+  statusBar: StatusbarStyle.DARK,
   ...TextColors.light,
 };
 /**
@@ -192,7 +192,7 @@ export const oceanicTheme = {
   dividerColor: DividerColors.DARK,
   colorDisabled: PrimaryColors.oceanic.colorPrimary,
   colorButtonText: '#FFFFFF',
-  statusBar: StatusBarStyle.LIGHT,
+  statusBar: StatusbarStyle.LIGHT,
   ...TextColors.dark,
 };
 
@@ -212,7 +212,7 @@ export const springBlossomTheme = {
   filterColor: '#FFC107',
   colorDisabled: PrimaryColors.springBlossom.colorPrimary,
   colorButtonText: '#FFFFFF',
-  statusBar: StatusBarStyle.DARK,
+  statusBar: StatusbarStyle.DARK,
 };
 
 export const yotsubaTheme = {
@@ -229,7 +229,7 @@ export const yotsubaTheme = {
   filterColor: '#FFC107',
   colorDisabled: PrimaryColors.light.colorPrimary,
   colorButtonText: '#FFFFFF',
-  statusBar: StatusBarStyle.DARK,
+  statusBar: StatusbarStyle.DARK,
 };
 
 export const takoLightTheme = {
@@ -245,13 +245,13 @@ export const takoLightTheme = {
   filterColor: '#FFC107',
   colorDisabled: PrimaryColors.tako_light.colorPrimary,
   colorButtonText: '#F3B375',
-  statusBar: StatusBarStyle.DARK,
+  statusBar: StatusbarStyle.DARK,
 };
 
 export const colorsAmoled = {
   ...PrimaryColors.amoled,
   ...TextColors.dark,
-  statusBar: StatusBarStyle.LIGHT,
+  statusBar: StatusbarStyle.LIGHT,
   searchBarColor: '#000000',
   menuColor: '#242529',
   filterColor: '#FFEB3B',
@@ -276,5 +276,5 @@ export const tealTheme = {
   dividerColor: DividerColors.DARK,
   colorDisabled: PrimaryColors.dark.colorPrimary,
   colorButtonText: '#000000',
-  statusBar: StatusBarStyle.LIGHT,
+  statusBar: StatusbarStyle.LIGHT,
 };

@@ -12,7 +12,7 @@ import {
 import HistoryCard from './components/HistoryCard/HistoryCard';
 
 import { useSearch, useHistory } from '../../hooks';
-import { useTheme } from '../../redux/hooks';
+import { useThemeV1 } from '../../redux/hooks';
 
 import { dateFormats } from '../../utils/constants/dateFormats';
 import { convertDateToISOString } from '../../database/utils/convertDateToISOString';
@@ -20,7 +20,7 @@ import { convertDateToISOString } from '../../database/utils/convertDateToISOStr
 import { History } from '../../database/types';
 
 const HistoryScreen = () => {
-  const theme = useTheme();
+  const theme = useThemeV1();
   const { navigate } = useNavigation();
 
   const {

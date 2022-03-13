@@ -33,9 +33,9 @@ import {
   bookmarkChapter,
   markPreviuschaptersRead,
   markPreviousChaptersUnread,
-  getNextChapterFromDB,
+  getNextChapter,
 } from '../../database/queries/ChapterQueries';
-import { deleteNovelUpdates } from '../../database/queries/UpdateQueries';
+import { deleteUpdateFromDb } from '../../database/queries/UpdateQueries';
 import {
   SAVE_SCROLL_POSITION,
   SET_CHAPTER_LIST_PREF,
@@ -155,7 +155,7 @@ export const followNovelAction = novel => async dispatch => {
   await followNovel(novel.followed, novel.novelId);
 
   if (!novel.followNovel) {
-    deleteNovelUpdates(novel.novelId);
+    deleteUpdateFromDb(novel.novelId);
   }
 
   dispatch({
@@ -195,7 +195,7 @@ export const markChapterReadAction = (chapterId, novelId) => async dispatch => {
     payload: { chapterId },
   });
 
-  const nextChapter = await getNextChapterFromDB(novelId, chapterId);
+  const nextChapter = await getNextChapter(novelId, chapterId);
 
   dispatch({
     type: SET_LAST_READ,

@@ -2,7 +2,7 @@ import React from 'react';
 import { Pressable, StyleSheet, View, ViewStyle } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { ThemeType } from '../../theme/types';
+import { ThemeTypeV1 } from '../../theme/v1/theme/types';
 
 type Props = {
   name: string;
@@ -11,7 +11,7 @@ type Props = {
   disabled?: boolean;
   padding?: number;
   onPress?: () => void;
-  theme: ThemeType;
+  theme: ThemeTypeV1;
   style?: ViewStyle;
 };
 
@@ -35,7 +35,7 @@ const IconButton: React.FC<Props> = ({
       <MaterialCommunityIcons
         name={name}
         size={size}
-        color={disabled ? theme.textColorHint : color || theme.primary}
+        color={disabled ? theme.textColorHint : color || theme.textColorPrimary}
       />
     </Pressable>
   </View>

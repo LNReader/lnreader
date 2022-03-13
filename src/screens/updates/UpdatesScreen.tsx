@@ -15,7 +15,7 @@ import { convertDateToISOString } from '../../database/utils/convertDateToISOStr
 import { ChapterItem, Update } from '../../database/types';
 
 import { useSearch, useUpdates } from '../../hooks';
-import { useAppDispatch, useTheme } from '../../redux/hooks';
+import { useAppDispatch, useThemeV1 } from '../../redux/hooks';
 import { dateFormats } from '../../utils/constants/dateFormats';
 import UpdateCard from './components/UpdateCard/UpdateCard';
 import { updateLibraryAction } from '../../redux/updates/updates.actions';
@@ -25,7 +25,7 @@ import {
 } from '../../redux/novel/novel.actions';
 
 const UpdatesScreen = () => {
-  const theme = useTheme();
+  const theme = useThemeV1();
   const { navigate } = useNavigation();
   const dispatch = useAppDispatch();
 
@@ -178,8 +178,8 @@ const UpdatesScreen = () => {
             <RefreshControl
               refreshing={false}
               onRefresh={() => dispatch(updateLibraryAction())}
-              colors={[theme.onPrimary]}
-              progressBackgroundColor={theme.primary}
+              colors={[theme.textColorPrimary]}
+              progressBackgroundColor={theme.colorAccent}
             />
           }
         />

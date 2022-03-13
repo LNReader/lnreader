@@ -1,11 +1,11 @@
-import React, { memo } from 'react';
-import { View, Text, StyleSheet, Clipboard, Pressable } from 'react-native';
+import React, { memo, useMemo } from 'react';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 
-import * as WebBrowser from 'expo-web-browser';
 import { IconButton } from 'react-native-paper';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { followNovelAction } from '../../../../redux/novel/novel.actions';
-import { useTrackingStatus, useSettings } from '../../../../hooks/reduxHooks';
+import { useSettings } from '../../../../hooks/reduxHooks';
 import { showToast } from '../../../../hooks/showToast';
 
 import {
@@ -15,23 +15,13 @@ import {
   NovelInfoContainer,
   NovelThumbnail,
   NovelTitle,
-  FollowButton,
-  TrackerButton,
   NovelGenres,
 } from './NovelInfoComponents';
 import { Row } from '../../../../components/Common';
-import NovelSummary from './NovelSummary';
 import ReadButton from './ReadButton';
-
-// const getStatusIcon = status => {
-//   const icons = {
-//     Ongoing: 'clock-outline',
-//     Completed: 'check-all',
-//     Unknown: 'help',
-//   };
-
-//   return icons[status] || icons.Unknown;
-// };
+import NovelSummary from '../NovelSummary/NovelSummary';
+import NovelScreenButtonGroup from '../NovelScreenButtonGroup/NovelScreenButtonGroup';
+import { useAppDispatch } from '../../../../redux/hooks';
 
 const NovelInfoHeader = ({
   item,
@@ -39,7 +29,6 @@ const NovelInfoHeader = ({
   theme,
   filter,
   loading,
-  dispatch,
   chapters,
   lastRead,
   navigation,
@@ -48,15 +37,9 @@ const NovelInfoHeader = ({
   novelBottomSheetRef,
   deleteDownloadsSnackbar,
 }) => {
-  const { tracker, trackedNovels } = useTrackingStatus();
-
-  let isTracked = false;
-
-  if (!loading) {
-    isTracked = trackedNovels.find(obj => obj.novelId === novel.novelId);
-  }
-
   const { hideBackdrop = false } = useSettings();
+
+  const dispatch = useAppDispatch();
 
   const getNovelCoverUrl = () => {
     const defaultCover =
@@ -77,8 +60,17 @@ const NovelInfoHeader = ({
     }
   };
 
+  const getStatusIcon = useMemo(
+    () => ({
+      Ongoing: 'clock-outline',
+      Completed: 'check-all',
+      Unknown: 'help',
+    }),
+    [],
+  );
+
   return (
-    <View>
+    <>
       <CoverImage
         source={{ uri: getNovelCoverUrl() }}
         theme={theme}
@@ -110,12 +102,12 @@ const NovelInfoHeader = ({
                 {!loading && novel.author ? novel.author : 'Unknown author'}
               </NovelAuthor>
               <Row>
-                {/* <MaterialCommunityIcons
-                  name={loading ? 'help' : getStatusIcon(novel.status)}
-                  size={16}
+                <MaterialCommunityIcons
+                  name={getStatusIcon[novel.status]}
+                  size={14}
                   color={theme.textColorSecondary}
-                  style={{marginRight: 4}}
-                /> */}
+                  style={{ marginRight: 4 }}
+                />
                 <NovelInfo theme={theme}>
                   {!loading
                     ? (novel.status || 'Unknown status') + ' • ' + novel.source
@@ -128,113 +120,23 @@ const NovelInfoHeader = ({
       </CoverImage>
       {!loading && (
         <>
-          <Row
-            style={{
-              justifyContent: 'space-around',
-              paddingHorizontal: 16,
-              flex: 1,
-              marginTop: 12,
+          <NovelScreenButtonGroup
+            novel={novel}
+            handleFollowNovel={() => {
+              dispatch(followNovelAction(novel));
+              if (
+                novel.followed &&
+                chapters.some(chapter => chapter.downloaded === 1)
+              ) {
+                deleteDownloadsSnackbar.showModal();
+              }
             }}
-          >
-            <FollowButton
-              theme={theme}
-              followed={novel.followed}
-              onPress={() => {
-                dispatch(followNovelAction(novel));
-                if (
-                  novel.followed &&
-                  chapters.some(chapter => chapter.downloaded === 1)
-                ) {
-                  deleteDownloadsSnackbar.showModal();
-                }
-              }}
-            />
-            {tracker && (
-              <TrackerButton
-                theme={theme}
-                isTracked={isTracked}
-                onPress={() => trackerSheetRef.current.show()}
-              />
-            )}
-            <View
-              style={{
-                borderRadius: 4,
-                overflow: 'hidden',
-                flex: 1,
-              }}
-            >
-              <Pressable
-                android_ripple={{
-                  color: theme.rippleColor,
-                  borderless: false,
-                }}
-                onPress={() =>
-                  navigation.navigate('MigrateNovel', {
-                    sourceId: novel.sourceId,
-                    novelName: novel.novelName,
-                  })
-                }
-                style={{
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  paddingBottom: 8,
-                }}
-              >
-                <IconButton
-                  icon="swap-vertical-variant"
-                  color={theme.textColorHint}
-                  size={24}
-                  style={{ margin: 0 }}
-                />
-                <Text
-                  style={{
-                    fontSize: 12,
-                    color: theme.textColorHint,
-                  }}
-                >
-                  Migrate
-                </Text>
-              </Pressable>
-            </View>
-            <View
-              style={{
-                borderRadius: 4,
-                overflow: 'hidden',
-                flex: 1,
-              }}
-            >
-              <Pressable
-                android_ripple={{
-                  color: theme.rippleColor,
-                  borderless: false,
-                }}
-                onPress={() => WebBrowser.openBrowserAsync(novel.sourceUrl)}
-                style={{
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  paddingBottom: 8,
-                }}
-              >
-                <IconButton
-                  icon="earth"
-                  color={theme.textColorHint}
-                  size={24}
-                  style={{ margin: 0 }}
-                />
-                <Text
-                  style={{
-                    fontSize: 12,
-                    color: theme.textColorHint,
-                  }}
-                >
-                  WebView
-                </Text>
-              </Pressable>
-            </View>
-          </Row>
+            handleTrackerSheet={() => trackerSheetRef.current.show()}
+            theme={theme}
+          />
           <NovelSummary
             summary={novel.novelSummary}
-            followed={novel.followed}
+            isExpanded={!novel.followed}
             theme={theme}
           />
           {novel.genre ? (
@@ -263,7 +165,7 @@ const NovelInfoHeader = ({
           </Pressable>
         </>
       )}
-    </View>
+    </>
   );
 };
 

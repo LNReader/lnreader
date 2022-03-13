@@ -10,7 +10,7 @@ const presetThemes = [
   { value: 5, backgroundColor: '#2B2C30', textColor: '#CCCCCC' },
 ];
 
-export const readerBackground = val => {
+export const readerBackground = (val): string => {
   const backgroundColor = {
     1: '#000000',
     2: '#FFFFFF',
