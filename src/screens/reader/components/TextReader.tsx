@@ -1,5 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import {
+  StatusBar,
+  StyleSheet,
+  Text,
+  useWindowDimensions,
+  View,
+} from 'react-native';
 import RenderHtml from 'react-native-render-html';
 import sanitizeHtml from 'sanitize-html';
 
@@ -62,7 +68,8 @@ const TextReader: React.FC<TextReaderProps> = ({
           },
         }}
         baseStyle={{
-          padding: `${reader.padding}%`,
+          paddingHorizontal: `${reader.padding}%`,
+          paddingTop: (StatusBar.currentHeight || 0) + 16,
         }}
       />
       <View style={styles.navigationContainer}>
