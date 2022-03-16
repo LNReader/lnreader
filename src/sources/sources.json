@@ -726,5 +726,12 @@
     "sourceName": "AllNovelFull",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/allnovelfull/icon.png?raw=true",
     "lang": "English"
+  },
+  {
+    "sourceId": 109,
+    "sourceName": "ReadFreeNovel",
+    "url": "https://www.readfreenovel.com",
+    "lang": "English",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/readlightnovel/icon.png?raw=true"
   }
 ]
