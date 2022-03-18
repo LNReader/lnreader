@@ -25,6 +25,11 @@ const getPath = extensionId => {
     80: { novels: 'manga', novel: 'manga', chapter: 'manga' },
     91: { novels: 'novel', novel: 'novel', chapter: 'novel' },
     96: { novels: 'serie', novel: 'serie', chapter: 'serie' },
+    110: {
+      novels: 'light-novel',
+      novel: 'light-novel',
+      chapter: 'light-novel',
+    },
   };
 
   return (
@@ -265,4 +270,13 @@ export const TeamXNovelScraper = new MadaraScraper(
   getPath(107),
   true,
   3,
+);
+
+export const TurkceLightNovelsScraper = new MadaraScraper(
+  110,
+  'https://turkcelightnovels.com/',
+  'TurkceLightNovels',
+  getPath(110),
+  false,
+  2,
 );

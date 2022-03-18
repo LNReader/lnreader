@@ -733,5 +733,12 @@
     "url": "https://www.readfreenovel.com",
     "lang": "English",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/readlightnovel/icon.png?raw=true"
+  },
+  {
+    "sourceId": 110,
+    "sourceName": "TurkceLightNovels",
+    "url": "https://turkcelightnovels.com/",
+    "lang": "Turkish",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/tr/TurkceLightNovels/icon.png?raw=true"
   }
 ]

@@ -63,6 +63,7 @@ import {
   WebNovelLoverScraper,
   WuxiaWorldDotSiteScraper,
   ZinnNovelScraper,
+  TurkceLightNovelsScraper,
 } from './multisrc/madara/MadaraGenerator';
 import WuxiaBlogScraper from './en/wuxiablog';
 import WuxiaCityScraper from './en/wuxiacity';
@@ -232,6 +233,7 @@ export const sourceManager = (sourceId: number): Scraper => {
     107: TeamXNovelScraper,
     108: AllNovelFullScraper,
     109: ReadFreeNovelScraper,
+    110: TurkceLightNovelsScraper,
   };
 
   return scrapers[sourceId];
