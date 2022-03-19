@@ -1,14 +1,14 @@
 {
-  "library": "Library",
+  "library": "Bibliothek",
   "libraryScreen": {
     "searchbar": "Search library",
     "empty": "Your library is empty. Add series to your library from Browse."
   },
-  "updates": "Updates",
+  "updates": "Neu",
   "updatesScreen": {
     "searchbar": "Search updates"
   },
-  "history": "History",
+  "history": "Verlauf",
   "historyScreen": {
     "searchbar": "Search history"
   },
