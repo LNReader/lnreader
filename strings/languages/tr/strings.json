@@ -2,7 +2,30 @@
   "library": "Kitaplık",
   "libraryScreen": {
     "searchbar": "Kitaplıkta ara",
-    "empty": "Kitaplığın boş. Göz at yerinden kitaplığına light novel ekleyebilirsin."
+    "empty": "Kitaplığın boş. Göz at yerinden kitaplığına light novel ekleyebilirsin.",
+    "bottomSheet": {
+      "filters": {
+        "downloaded": "Downloaded",
+        "unread": "Unread",
+        "completed": "Completed"
+      },
+      "sortOrders": {
+        "dateAdded": "Date added",
+        "alphabetically": "Alphabetically",
+        "totalChapters": "Total chapters"
+      },
+      "display": {
+        "displayMode": "Display mode",
+        "compact": "Compact grid",
+        "comfortable": "Comfortable grid",
+        "noTitle": "No title grid",
+        "list": "List",
+        "badges": "Badges",
+        "downloadBadges": "Download badges",
+        "unreadBadges": "Unread badges",
+        "showNoOfItems": "Show number of items"
+      }
+    }
   },
   "updates": "Güncellemeler",
   "updatesScreen": {
