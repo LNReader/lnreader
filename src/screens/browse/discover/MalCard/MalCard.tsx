@@ -1,6 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { StyleSheet, Text, View, Image, Pressable } from 'react-native';
+import { getString } from '../../../../../strings/translations';
 import { Button } from '../../../../components';
 import { ButtonVariation } from '../../../../components/Button/Button';
 
@@ -30,7 +31,7 @@ const MalCard: React.FC<Props> = ({ theme }) => {
       </View>
       <View style={styles.flexRow}>
         <Button
-          title="Browse"
+          title={getString('browse')}
           variation={ButtonVariation.CLEAR}
           textColor={theme.colorAccent}
           onPress={() => navigate('BrowseMal' as never)}

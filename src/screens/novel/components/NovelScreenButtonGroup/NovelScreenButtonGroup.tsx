@@ -7,6 +7,7 @@ import { NovelInfo } from '../../../../database/types';
 import { useNavigation } from '@react-navigation/native';
 import { useNovelTrackerInfo } from '../../../../hooks';
 import { ThemeTypeV1 } from '../../../../theme/v1/theme/types';
+import { getString } from '../../../../../strings/translations';
 
 interface NovelScreenButtonGroupProps {
   novel: NovelInfo;
@@ -54,7 +55,9 @@ const NovelScreenButtonGroup: React.FC<NovelScreenButtonGroupProps> = ({
             size={24}
           />
           <Text style={[styles.buttonLabel, { color: followButtonColor }]}>
-            {followed ? 'In library' : 'Add to library'}
+            {getString(
+              followed ? 'novelScreen.inLibaray' : 'novelScreen.addToLibaray',
+            )}
           </Text>
         </Pressable>
       </View>
@@ -88,7 +91,7 @@ const NovelScreenButtonGroup: React.FC<NovelScreenButtonGroupProps> = ({
             size={24}
           />
           <Text style={[styles.buttonLabel, { color: theme.textColorHint }]}>
-            Migrate
+            {getString('novelScreen.migrate')}
           </Text>
         </Pressable>
       </View>

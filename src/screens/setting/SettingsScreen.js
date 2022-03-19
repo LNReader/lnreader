@@ -1,5 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
+import { getString } from '../../../strings/translations';
 
 import { Appbar } from '../../components/Appbar';
 import { List } from '../../components/List';
@@ -19,7 +20,7 @@ const SettingsScreen = ({ navigation }) => {
         }}
       >
         <List.Item
-          title="General"
+          title={getString('moreScreen.settingsScreen.generalSettings')}
           icon="tune"
           onPress={() =>
             navigation.navigate('SettingsStack', {
@@ -29,7 +30,7 @@ const SettingsScreen = ({ navigation }) => {
           theme={theme}
         />
         <List.Item
-          title="Reader"
+          title={getString('moreScreen.settingsScreen.readerSettings')}
           icon="book-open-outline"
           onPress={() =>
             navigation.navigate('SettingsStack', {

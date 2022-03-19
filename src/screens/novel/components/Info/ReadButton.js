@@ -1,7 +1,8 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 
-import { Button } from 'react-native-paper';
+import { getString } from '../../../../../strings/translations';
+import { Button } from '../../../../components';
 import { useSettings } from '../../../../hooks/reduxHooks';
 
 const ReadButton = ({ navigation, novel, chapters, theme, lastRead }) => {
@@ -25,27 +26,26 @@ const ReadButton = ({ navigation, novel, chapters, theme, lastRead }) => {
       chapters.length > 0 &&
       (lastRead ? (
         <Button
-          color="white"
-          style={[{ backgroundColor: theme.colorAccent }, styles.startButton]}
-          uppercase={false}
-          labelStyle={{
-            letterSpacing: 0,
-            color: theme.colorButtonText,
-          }}
+          title={`${
+            novel.unread
+              ? 'Start reading'
+              : getString('novelScreen.continueReading')
+          } ${lastRead.chapterName}`}
+          margin={16}
+          theme={theme}
           onPress={navigateToLastReadChapter}
-        >
-          {novel.unread ? 'Start reading ' : 'Continue reading '}
-          {lastRead.chapterName}
-        </Button>
+        />
       ) : (
         <Button
-          color={theme.textColorHint}
-          style={[styles.startButton, { backgroundColor: theme.colorDisabled }]}
-          uppercase={false}
-          labelStyle={{ letterSpacing: 0 }}
-        >
-          All chapters read
-        </Button>
+          title={`${
+            novel.unread
+              ? 'All chapters read'
+              : getString('novelScreen.continueReading')
+          } ${lastRead.chapterName}`}
+          margin={16}
+          color={theme.colorDisabled}
+          theme={theme}
+        />
       ))
     );
   } else {

@@ -22,6 +22,7 @@ import { Searchbar } from '../../components/Searchbar/Searchbar';
 import EmptyView from '../../components/EmptyView';
 import SourceCard from './SourceCard/SourceCard';
 import MalCard from './discover/MalCard/MalCard';
+import { getString } from '../../../strings/translations';
 
 const Browse = ({ navigation }) => {
   const [refreshing, setRefreshing] = useState(false);
@@ -102,7 +103,7 @@ const Browse = ({ navigation }) => {
     >
       <Searchbar
         theme={theme}
-        placeholder="Search Source"
+        placeholder={getString('browseScreen.searchbar')}
         backAction="magnify"
         searchText={searchText}
         onChangeText={onChangeText}

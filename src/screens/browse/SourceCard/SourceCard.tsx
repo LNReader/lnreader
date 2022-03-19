@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image, Pressable } from 'react-native';
+import { getString } from '../../../../strings/translations';
 import { Button, IconButtonV2 } from '../../../components';
 import { ButtonVariation } from '../../../components/Button/Button';
 
@@ -39,7 +40,7 @@ const SourceCard: React.FC<Props> = ({
     </View>
     <View style={styles.flexRow}>
       <Button
-        title="Browse"
+        title={getString('browse')}
         variation={ButtonVariation.CLEAR}
         textColor={theme.colorAccent}
         onPress={() => navigateToSource(source)}

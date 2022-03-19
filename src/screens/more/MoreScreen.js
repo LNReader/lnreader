@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 import { Switch } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
+import { getString } from '../../../strings/translations';
 
 import { ScreenContainer } from '../../components/Common';
 import { List } from '../../components/List';
@@ -126,7 +127,7 @@ const MoreScreen = ({ navigation }) => {
           />
           <List.Divider theme={theme} />
           <List.Item
-            title="Settings"
+            title={getString('moreScreen.settings')}
             icon="cog-outline"
             onPress={() =>
               navigation.navigate('MoreStack', {

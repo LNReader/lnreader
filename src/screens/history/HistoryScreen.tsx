@@ -18,6 +18,7 @@ import { dateFormats } from '../../utils/constants/dateFormats';
 import { convertDateToISOString } from '../../database/utils/convertDateToISOString';
 
 import { History } from '../../database/types';
+import { getString } from '../../../strings/translations';
 
 const HistoryScreen = () => {
   const theme = useThemeV1();
@@ -111,7 +112,7 @@ const HistoryScreen = () => {
     <>
       <SearchbarV2
         searchText={searchText}
-        placeholder="Search history"
+        placeholder={getString('historyScreen.searchbar')}
         leftIcon="magnify"
         onChangeText={onChangeText}
         clearSearchbar={clearSearchbar}

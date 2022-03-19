@@ -22,6 +22,7 @@ import ReadButton from './ReadButton';
 import NovelSummary from '../NovelSummary/NovelSummary';
 import NovelScreenButtonGroup from '../NovelScreenButtonGroup/NovelScreenButtonGroup';
 import { useAppDispatch } from '../../../../redux/hooks';
+import { getString } from '../../../../../strings/translations';
 
 const NovelInfoHeader = ({
   item,
@@ -155,7 +156,7 @@ const NovelInfoHeader = ({
             android_ripple={{ color: theme.rippleColor }}
           >
             <Text style={[{ color: theme.textColorPrimary }, styles.chapters]}>
-              {`${chapters.length} chapters`}
+              {`${chapters.length} ${getString('novelScreen.chapters')}`}
             </Text>
             <IconButton
               icon="filter-variant"

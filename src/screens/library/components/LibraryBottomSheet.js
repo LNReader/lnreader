@@ -16,6 +16,7 @@ import { setAppSettings } from '../../../redux/settings/settings.actions';
 import { Checkbox, SortItem } from '../../../components/Checkbox/Checkbox';
 import { RadioButton } from '../../../components/RadioButton/RadioButton';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { getString } from '../../../../strings/translations';
 
 const LibrarySheet = ({
   bottomSheetRef,
@@ -204,9 +205,9 @@ const LibrarySheet = ({
 
   const [index, setIndex] = useState(0);
   const [routes] = useState([
-    { key: 'first', title: 'Filter' },
-    { key: 'second', title: 'Sort' },
-    { key: 'third', title: 'Display' },
+    { key: 'first', title: getString('novelScreen.bottomSheet.filter') },
+    { key: 'second', title: getString('novelScreen.bottomSheet.sort') },
+    { key: 'third', title: getString('novelScreen.bottomSheet.display') },
   ]);
 
   const renderTabBar = props => (

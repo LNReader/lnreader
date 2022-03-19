@@ -23,6 +23,7 @@ import {
   deleteChapterAction,
   downloadChapterAction,
 } from '../../redux/novel/novel.actions';
+import { getString } from '../../../strings/translations';
 
 const UpdatesScreen = () => {
   const theme = useThemeV1();
@@ -128,7 +129,7 @@ const UpdatesScreen = () => {
       <SearchbarV2
         searchText={searchText}
         clearSearchbar={handleClearSearchbar}
-        placeholder="Search updates"
+        placeholder={getString('updatesScreen.searchbar')}
         onChangeText={onChangeText}
         leftIcon="magnify"
         theme={theme}

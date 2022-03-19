@@ -10,6 +10,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import Bottomsheet from 'rn-sliding-up-panel';
+import { getString } from '../../../../strings/translations';
 
 import { Checkbox, SortItem } from '../../../components/Checkbox/Checkbox';
 
@@ -127,9 +128,9 @@ const ChaptersSettingsSheet = ({
 
   const [index, setIndex] = useState(0);
   const [routes] = useState([
-    { key: 'first', title: 'Filter' },
-    { key: 'second', title: 'Sort' },
-    { key: 'third', title: 'Display' },
+    { key: 'first', title: getString('novelScreen.bottomSheet.filter') },
+    { key: 'second', title: getString('novelScreen.bottomSheet.sort') },
+    { key: 'third', title: getString('novelScreen.bottomSheet.display') },
   ]);
 
   const renderTabBar = props => (

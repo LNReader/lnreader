@@ -10,6 +10,7 @@ import Browse from '../screens/browse/BrowseScreen';
 import More from '../screens/more/MoreScreen';
 
 import { useSettings, useTheme } from '../hooks/reduxHooks';
+import { getString } from '../../strings/translations';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -29,7 +30,7 @@ const BottomNavigator = () => {
       shifting={!showLabelsInNav}
     >
       <Tab.Screen
-        name="Library"
+        name={getString('library')}
         component={Library}
         options={{
           tabBarIcon: ({ color }) => (
@@ -43,7 +44,7 @@ const BottomNavigator = () => {
       />
       {showUpdatesTab && (
         <Tab.Screen
-          name="Updates"
+          name={getString('updates')}
           component={Updates}
           options={{
             tabBarIcon: ({ color }) => (
@@ -58,7 +59,7 @@ const BottomNavigator = () => {
       )}
       {showHistoryTab && (
         <Tab.Screen
-          name="History"
+          name={getString('history')}
           component={History}
           options={{
             tabBarIcon: ({ color }) => (
@@ -68,7 +69,7 @@ const BottomNavigator = () => {
         />
       )}
       <Tab.Screen
-        name="Browse"
+        name={getString('browse')}
         component={Browse}
         options={{
           tabBarIcon: ({ color }) => (
@@ -81,7 +82,7 @@ const BottomNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="More"
+        name={getString('more')}
         component={More}
         options={{
           tabBarIcon: ({ color }) => (

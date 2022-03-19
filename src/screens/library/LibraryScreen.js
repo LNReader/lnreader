@@ -33,6 +33,7 @@ import {
 } from '../../database/queries/ChapterQueries';
 import { unfollowNovel } from '../../database/queries/NovelQueries';
 import { Banner } from './components/Banner';
+import { getString } from '../../../strings/translations';
 
 const LibraryScreen = ({ navigation }) => {
   const theme = useTheme();
@@ -125,10 +126,7 @@ const LibraryScreen = ({ navigation }) => {
 
   const listEmptyComponent = () =>
     searchText === '' && (
-      <EmptyView
-        icon="Σ(ಠ_ಠ)"
-        description="Your library is empty. Add series to your library from Browse."
-      />
+      <EmptyView icon="Σ(ಠ_ಠ)" description={getString('libraryScreen.empty')} />
     );
 
   return (
@@ -139,7 +137,7 @@ const LibraryScreen = ({ navigation }) => {
         <Searchbar
           placeholder={
             selectedNovels.length === 0
-              ? `Search Library ${
+              ? `${getString('libraryScreen.searchbar')} ${
                   showNumberOfNovels ? '(' + novels.length + ')' : ''
                 }`
               : `${selectedNovels.length} selected`

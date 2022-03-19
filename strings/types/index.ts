@@ -8,6 +8,16 @@ export interface StringMap {
   'libraryScreen.searchbar': 'string';
   'more': 'string';
   'moreScreen.settings': 'string';
+  'moreScreen.settingsScreen.generalSettings': 'string';
+  'moreScreen.settingsScreen.readerSettings': 'string';
+  'novelScreen.addToLibaray': 'string';
+  'novelScreen.bottomSheet.display': 'string';
+  'novelScreen.bottomSheet.filter': 'string';
+  'novelScreen.bottomSheet.sort': 'string';
+  'novelScreen.chapters': 'string';
+  'novelScreen.continueReading': 'string';
+  'novelScreen.inLibaray': 'string';
+  'novelScreen.migrate': 'string';
   'updates': 'string';
   'updatesScreen.searchbar': 'string';
 }

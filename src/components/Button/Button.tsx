@@ -56,6 +56,7 @@ const Button: React.FC<Props> = ({
               ? theme.colorButtonText
               : theme.textColorPrimary,
           }}
+          numberOfLines={1}
         >
           {title}
         </Text>
@@ -68,15 +69,16 @@ export default Button;
 
 const styles = StyleSheet.create({
   button: {
-    height: 40,
+    minHeight: 40,
     justifyContent: 'center',
     borderRadius: 50,
     overflow: 'hidden',
   },
   pressable: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 12,
+    paddingVertical: 8,
     paddingHorizontal: 24,
   },
   outlined: {
