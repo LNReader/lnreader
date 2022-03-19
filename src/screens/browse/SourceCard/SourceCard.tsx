@@ -1,0 +1,85 @@
+import React from 'react';
+import { StyleSheet, Text, View, Image, Pressable } from 'react-native';
+import { Button, IconButtonV2 } from '../../../components';
+import { ButtonVariation } from '../../../components/Button/Button';
+
+import { Source } from '../../../sources/types';
+import { ThemeTypeV1 } from '../../../theme/v1/theme/types';
+
+interface Props {
+  source: Source;
+  isPinned: boolean;
+  theme: ThemeTypeV1;
+  onTogglePinSource: (sourceId: number) => void;
+  navigateToSource: (source: Source) => void;
+}
+
+const SourceCard: React.FC<Props> = ({
+  source,
+  isPinned,
+  navigateToSource,
+  onTogglePinSource,
+  theme,
+}) => (
+  <Pressable
+    style={styles.container}
+    onPress={() => navigateToSource(source)}
+    android_ripple={{ color: theme.rippleColor }}
+  >
+    <View style={styles.flexRow}>
+      <Image source={{ uri: source.icon }} style={styles.icon} />
+      <View style={styles.details}>
+        <Text style={{ color: theme.textColorPrimary }}>
+          {source.sourceName}
+        </Text>
+        <Text style={[{ color: theme.textColorSecondary }, styles.lang]}>
+          {source.lang}
+        </Text>
+      </View>
+    </View>
+    <View style={styles.flexRow}>
+      <Button
+        title="Browse"
+        variation={ButtonVariation.CLEAR}
+        textColor={theme.colorAccent}
+        onPress={() => navigateToSource(source)}
+        theme={theme}
+        margin={0}
+      />
+      <IconButtonV2
+        name={isPinned ? 'pin' : 'pin-outline'}
+        size={22}
+        color={isPinned ? theme.colorAccent : theme.textColorSecondary}
+        onPress={() => onTogglePinSource(source.sourceId)}
+        theme={theme}
+      />
+    </View>
+  </Pressable>
+);
+
+export default SourceCard;
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 16,
+    paddingVertical: 12,
+  },
+  icon: {
+    height: 40,
+    width: 40,
+    borderRadius: 4,
+  },
+  details: {
+    marginLeft: 16,
+  },
+  lang: {
+    fontSize: 12,
+  },
+  flexRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+});

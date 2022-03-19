@@ -6,11 +6,10 @@ import * as WebBrowser from 'expo-web-browser';
 import { Searchbar } from '../../../components/Searchbar/Searchbar';
 import { ErrorView } from '../../../components/ErrorView/ErrorView';
 
-import { useTheme /*, useSettings */ } from '../../../hooks/reduxHooks';
+import { useTheme } from '../../../hooks/reduxHooks';
 import { showToast } from '../../../hooks/showToast';
-// import {useDeviceOrientation} from '../../../services/utils/helpers';
 import { scrapeSearchResults, scrapeTopNovels } from './MyAnimeListScraper';
-import BrowseMalCard from './BrowseMalCard';
+import MalNovelCard from './MalNovelCard/MalNovelCard';
 
 const BrowseMalScreen = ({ navigation, route }) => {
   const theme = useTheme();
@@ -66,7 +65,7 @@ const BrowseMalScreen = ({ navigation, route }) => {
   }, []);
 
   const renderItem = ({ item }) => (
-    <BrowseMalCard
+    <MalNovelCard
       novel={item}
       theme={theme}
       onPress={() =>

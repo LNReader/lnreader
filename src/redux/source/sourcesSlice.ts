@@ -3,6 +3,19 @@ import sourceList from '../../sources/sources.json';
 
 import { Source } from '../../sources/types';
 
+const enum SourceLanguages {
+  EN = 'English',
+  ES = 'Spanish',
+  JP = 'Japanese',
+  ZH = 'Chinese',
+  AR = 'Arabic',
+  ID = 'Indonesian',
+  RU = 'Russian',
+  TR = 'Turkish',
+  FR = 'French',
+  PT = 'Portuguese (Brazil)',
+}
+
 interface SourcesState {
   allSources: Source[];
   pinnedSources: number[];

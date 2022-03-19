@@ -159,9 +159,14 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 };
 
 const searchNovels = async searchTerm => {
-  const url = `${baseUrl}lnwsearchlive?inputContent=${searchTerm}`;
+  const url = `${baseUrl}lnsearchlive`;
 
-  const result = await fetch(url, { method: 'GET', headers });
+  console.log(url);
+
+  let formData = new FormData();
+  formData.append('inputContent', searchTerm);
+
+  const result = await fetch(url, { method: 'POST', headers, body: formData });
   const body = await result.text();
 
   let loadedCheerio = cheerio.load(body);

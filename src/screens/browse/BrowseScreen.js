@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -12,15 +12,16 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import {
   getSourcesAction,
+  pinSourceAction,
   searchSourcesAction,
 } from '../../redux/source/source.actions';
 import { useSettings, useTheme } from '../../hooks/reduxHooks';
 import { showToast } from '../../hooks/showToast';
 
 import { Searchbar } from '../../components/Searchbar/Searchbar';
-import SourceItem from './components/SourceItem';
 import EmptyView from '../../components/EmptyView';
-import DiscoverCard from './discover/DiscoverCard';
+import SourceCard from './SourceCard/SourceCard';
+import MalCard from './discover/MalCard/MalCard';
 
 const Browse = ({ navigation }) => {
   const [refreshing, setRefreshing] = useState(false);
@@ -68,12 +69,23 @@ const Browse = ({ navigation }) => {
     dispatch(searchSourcesAction(text));
   };
 
+  const navigateToSource = useCallback(
+    source =>
+      navigation.navigate('Extension', {
+        sourceId: source.sourceId,
+        sourceName: source.sourceName,
+        url: source.url,
+      }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
+  );
+
   const renderItem = ({ item }) => (
-    <SourceItem
-      item={item}
+    <SourceCard
+      source={item}
       isPinned={isPinned(item.sourceId)}
-      dispatch={dispatch}
-      navigation={navigation}
+      navigateToSource={navigateToSource}
+      onTogglePinSource={sourceId => dispatch(pinSourceAction(sourceId))}
       theme={theme}
     />
   );
@@ -122,14 +134,7 @@ const Browse = ({ navigation }) => {
             {showMyAnimeList && (
               <>
                 <Header title="Discover" />
-                {showMyAnimeList && (
-                  <DiscoverCard
-                    label="MyAnimeList"
-                    onPress={() => navigation.navigate('BrowseMal')}
-                    icon={require('../../../assets/mal.png')}
-                    theme={theme}
-                  />
-                )}
+                {showMyAnimeList && <MalCard theme={theme} />}
               </>
             )}
             {pinnedSources.length > 0 && (

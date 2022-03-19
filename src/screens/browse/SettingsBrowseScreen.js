@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { Switch } from 'react-native-paper';
@@ -25,18 +25,22 @@ const BrowseSettings = ({ navigation }) => {
     state => state.sourceReducer,
   );
 
-  const languages = [
-    'English',
-    'Spanish',
-    'Japanese',
-    'Chinese',
-    'Arabic',
-    'Indonesian',
-    'Russian',
-    'Turkish',
-    'French',
-    'Portuguese (Brazil)',
-  ].sort();
+  const languages = useMemo(
+    () =>
+      [
+        'English',
+        'Spanish',
+        'Japanese',
+        'Chinese',
+        'Arabic',
+        'Indonesian',
+        'Russian',
+        'Turkish',
+        'French',
+        'Portuguese (Brazil)',
+      ].sort(),
+    [],
+  );
 
   const { searchAllSources = false, onlyShowPinnedSources = false } =
     useSettings();
