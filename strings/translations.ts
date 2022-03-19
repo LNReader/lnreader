@@ -1,9 +1,9 @@
 import * as Localization from 'expo-localization';
 import i18n from 'i18n-js';
 
-import en from './languages/en/en.json';
-import es from './languages/es/es.json';
-import tr from './languages/tr/tr.json';
+import en from './languages/en/strings.json';
+import es from './languages/es/strings.json';
+import tr from './languages/tr/strings.json';
 
 import { StringMap } from './types';
 
