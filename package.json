@@ -7,7 +7,8 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "prettier": "prettier --write \"./src/**/*.{js,jsx,ts,tsx,css}\""
+    "prettier": "prettier --write \"./src/**/*.{js,jsx,ts,tsx,css}\"",
+    "buildRelease": "cd android && gradlew clean && gradlew assembleRelease"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.15.11",
