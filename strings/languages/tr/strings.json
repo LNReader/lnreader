@@ -1,40 +1,40 @@
 {
-  "library": "Library",
+  "library": "Kitaplık",
   "libraryScreen": {
-    "searchbar": "Search library",
-    "empty": "Your library is empty. Add series to your library from Browse."
+    "searchbar": "Kitaplıkta ara",
+    "empty": "Kitaplığın boş. Göz at yerinden kitaplığına light novel ekleyebilirsin."
   },
-  "updates": "Updates",
+  "updates": "Güncellemeler",
   "updatesScreen": {
-    "searchbar": "Search updates"
+    "searchbar": "Güncellemelerde ara"
   },
-  "history": "History",
+  "history": "Geçmiş",
   "historyScreen": {
-    "searchbar": "Search history"
+    "searchbar": "Geçmişte ara"
   },
-  "browse": "Browse",
+  "browse": "Göz at",
   "browseScreen": {
-    "searchbar": "Search sources"
+    "searchbar": "Kaynak ara"
   },
   "novelScreen": {
-    "addToLibaray": "Add to library",
-    "inLibaray": "In library",
-    "continueReading": "Continue reading",
-    "chapters": "chapters",
-    "migrate": "Migrate",
+    "addToLibaray": "Kitaplığa ekle",
+    "inLibaray": "Kitaplıkta",
+    "continueReading": "Okumaya devam et",
+    "chapters": "bölüm",
+    "migrate": "Taşın",
     "bottomSheet": {
-      "filter": "Filter",
-      "sort": "Sort",
-      "display": "Display"
+      "filter": "Filtre",
+      "sort": "Sırala",
+      "display": "Ekran"
     }
   },
-  "more": "More",
+  "more": "Daha fazla",
   "moreScreen": {
-    "settings": "Settings",
+    "settings": "Ayarlar",
     "settingsScreen": {
-      "generalSettings": "General",
+      "generalSettings": "Genel",
       "generalSettingsScreen": {},
-      "readerSettings": "Reader",
+      "readerSettings": "Okuyucu",
       "readerSettingsScreen": {}
     }
   }

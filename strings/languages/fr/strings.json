@@ -1,5 +1,5 @@
 {
-  "library": "Library",
+  "library": "Bibliothèque",
   "libraryScreen": {
     "searchbar": "Search library",
     "empty": "Your library is empty. Add series to your library from Browse."
@@ -8,7 +8,7 @@
   "updatesScreen": {
     "searchbar": "Search updates"
   },
-  "history": "History",
+  "history": "Historique",
   "historyScreen": {
     "searchbar": "Search history"
   },
