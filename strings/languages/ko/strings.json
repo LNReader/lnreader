@@ -1,11 +1,41 @@
 {
   "library": "Library",
   "libraryScreen": {
-    "searchbar": "Search Library turkish",
+    "searchbar": "Search library",
     "empty": "Your library is empty. Add series to your library from Browse."
+  },
+  "updates": "Updates",
+  "updatesScreen": {
+    "searchbar": "Search updates"
   },
   "history": "History",
   "historyScreen": {
-    "searchbar": "Search History"
+    "searchbar": "Search history"
+  },
+  "browse": "Browse",
+  "browseScreen": {
+    "searchbar": "Search sources"
+  },
+  "novelScreen": {
+    "addToLibaray": "Add to library",
+    "inLibaray": "In library",
+    "continueReading": "Continue reading",
+    "chapters": "chapters",
+    "migrate": "Migrate",
+    "bottomSheet": {
+      "filter": "Filter",
+      "sort": "Sort",
+      "display": "Display"
+    }
+  },
+  "more": "More",
+  "moreScreen": {
+    "settings": "Settings",
+    "settingsScreen": {
+      "generalSettings": "General",
+      "generalSettingsScreen": {},
+      "readerSettings": "Reader",
+      "readerSettingsScreen": {}
+    }
   }
 }
