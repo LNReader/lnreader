@@ -2,7 +2,30 @@
   "library": "Library",
   "libraryScreen": {
     "searchbar": "Search library",
-    "empty": "Your library is empty. Add series to your library from Browse."
+    "empty": "Your library is empty. Add series to your library from Browse.",
+    "bottomSheet": {
+      "filters": {
+        "downloaded": "Downloaded",
+        "unread": "Unread",
+        "completed": "Completed"
+      },
+      "sortOrders": {
+        "dateAdded": "Date added",
+        "alphabetically": "Alphabetically",
+        "totalChapters": "Total chapters"
+      },
+      "display": {
+        "displayMode": "Display mode",
+        "compact": "Compact grid",
+        "comfortable": "Comfortable grid",
+        "noTitle": "No title grid",
+        "list": "List",
+        "badges": "Badges",
+        "downloadBadges": "Download badges",
+        "unreadBadges": "Unread badges",
+        "showNoOfItems": "Show number of items"
+      }
+    }
   },
   "updates": "Updates",
   "updatesScreen": {
