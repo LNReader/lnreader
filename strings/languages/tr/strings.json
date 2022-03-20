@@ -5,25 +5,25 @@
     "empty": "Kitaplığın boş. Göz at yerinden kitaplığına light novel ekleyebilirsin.",
     "bottomSheet": {
       "filters": {
-        "downloaded": "Downloaded",
-        "unread": "Unread",
-        "completed": "Completed"
+        "downloaded": "İndirilen",
+        "unread": "Okunmamış",
+        "completed": "Tamamlanmış"
       },
       "sortOrders": {
-        "dateAdded": "Date added",
-        "alphabetically": "Alphabetically",
-        "totalChapters": "Total chapters"
+        "dateAdded": "Eklendiği tarih",
+        "alphabetically": "Alfabetik",
+        "totalChapters": "Toplam bölüm"
       },
       "display": {
-        "displayMode": "Display mode",
-        "compact": "Compact grid",
-        "comfortable": "Comfortable grid",
-        "noTitle": "No title grid",
-        "list": "List",
-        "badges": "Badges",
-        "downloadBadges": "Download badges",
-        "unreadBadges": "Unread badges",
-        "showNoOfItems": "Show number of items"
+        "displayMode": "Görüntüleme modu",
+        "compact": "Kompakt ızgara",
+        "comfortable": "Rahat ızgara",
+        "noTitle": "Başlıksız ızgara",
+        "list": "Liste",
+        "badges": "Rozetler",
+        "downloadBadges": "Rozetleri indir",
+        "unreadBadges": "Okunmamış rozetler",
+        "showNoOfItems": "Öğelerin sayısını göster"
       }
     }
   },
