@@ -1,63 +1,63 @@
 {
-  "library": "Library",
+  "library": "المكتبة",
   "libraryScreen": {
-    "searchbar": "Search library",
-    "empty": "Your library is empty. Add series to your library from Browse.",
+    "searchbar": "البحث في المكتبة",
+    "empty": "مكتبتك فارغة، أضف رواية الى مكتبتك من خلال \"تصفح\".",
     "bottomSheet": {
       "filters": {
-        "downloaded": "Downloaded",
-        "unread": "Unread",
-        "completed": "Completed"
+        "downloaded": "التحميلات",
+        "unread": "غير مقروء",
+        "completed": "مكتمل"
       },
       "sortOrders": {
-        "dateAdded": "Date added",
-        "alphabetically": "Alphabetically",
-        "totalChapters": "Total chapters"
+        "dateAdded": "تاريخ الإضافة",
+        "alphabetically": "حسب الترتيب الأبجدي",
+        "totalChapters": "مجموع الفصول"
       },
       "display": {
-        "displayMode": "Display mode",
-        "compact": "Compact grid",
-        "comfortable": "Comfortable grid",
-        "noTitle": "No title grid",
-        "list": "List",
-        "badges": "Badges",
-        "downloadBadges": "Download badges",
-        "unreadBadges": "Unread badges",
-        "showNoOfItems": "Show number of items"
+        "displayMode": "نمط العرض",
+        "compact": "الشبكة المدمجة",
+        "comfortable": "الشبكة المريحة",
+        "noTitle": "شبكة اللا عنوان",
+        "list": "القائمة",
+        "badges": "الأوسمة",
+        "downloadBadges": "تحميل الاوسمة",
+        "unreadBadges": "شارات الغير مقروء",
+        "showNoOfItems": "إظهار عدد العناصر"
       }
     }
   },
-  "updates": "Updates",
+  "updates": "التحديثات",
   "updatesScreen": {
-    "searchbar": "Search updates"
+    "searchbar": "البحث في التحديثات"
   },
-  "history": "History",
+  "history": "السجل",
   "historyScreen": {
-    "searchbar": "Search history"
+    "searchbar": "سجل البحث"
   },
-  "browse": "Browse",
+  "browse": "تصفح",
   "browseScreen": {
-    "searchbar": "Search sources"
+    "searchbar": "البحث في المصادر"
   },
   "novelScreen": {
-    "addToLibaray": "Add to library",
-    "inLibaray": "In library",
-    "continueReading": "Continue reading",
-    "chapters": "chapters",
-    "migrate": "Migrate",
+    "addToLibaray": "إضافة إلى المكتبة",
+    "inLibaray": "في المكتبة",
+    "continueReading": "متابعة القراءة",
+    "chapters": "الفصول",
+    "migrate": "نقل",
     "bottomSheet": {
-      "filter": "Filter",
-      "sort": "Sort",
-      "display": "Display"
+      "filter": "التصفية",
+      "sort": "الفرز",
+      "display": "العرض"
     }
   },
-  "more": "More",
+  "more": "المزيد",
   "moreScreen": {
-    "settings": "Settings",
+    "settings": "الإعدادات",
     "settingsScreen": {
-      "generalSettings": "General",
+      "generalSettings": "العامة",
       "generalSettingsScreen": {},
-      "readerSettings": "Reader",
+      "readerSettings": "القارئ",
       "readerSettingsScreen": {}
     }
   }
