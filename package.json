@@ -79,6 +79,7 @@
     "@types/lodash": "^4.14.179",
     "@types/react-native": "^0.66.15",
     "@types/react-test-renderer": "^17.0.1",
+    "@types/sanitize-html": "^2.6.2",
     "@typescript-eslint/eslint-plugin": "^5.10.2",
     "@typescript-eslint/parser": "^5.10.2",
     "eslint": "^7.32.0",

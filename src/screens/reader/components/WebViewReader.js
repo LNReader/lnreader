@@ -4,7 +4,7 @@ import { StatusBar, StyleSheet, View } from 'react-native';
 import WebView from 'react-native-webview';
 
 import { readerBackground } from '../utils/readerStyles';
-import { cleanHtml } from '../../../sources/helpers/cleanHtml';
+import { sanitizeChapterText } from '../utils/sanitizeChapterText';
 
 const WebViewReader = ({
   html,
@@ -15,7 +15,7 @@ const WebViewReader = ({
 }) => {
   const backgroundColor = readerBackground(reader.theme);
 
-  const chapterText = cleanHtml(html);
+  const chapterText = sanitizeChapterText(html);
 
   return (
     <View style={styles.container}>
@@ -69,14 +69,12 @@ const WebViewReader = ({
                       
                       @font-face {
                         font-family: ${reader.fontFamily};
-                        src: url("file:///android_asset/fonts/${
-                          reader.fontFamily
-                        }.ttf");
+                        src: url("file:///android_asset/fonts/${reader.fontFamily}.ttf");
                       }
                     </style>
                   </head>
                   <body>
-                    ${cleanHtml(chapterText)}
+                    ${chapterText}
                   </body>
                 </html>
                 `,

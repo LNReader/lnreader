@@ -305,8 +305,8 @@ const styles = StyleSheet.create({
   badgeContainer: {
     position: 'absolute',
     zIndex: 1,
-    top: 8,
-    left: 8,
+    top: 10,
+    left: 10,
     flexDirection: 'row',
   },
 });

@@ -3,16 +3,18 @@ import {
   StatusBar,
   StyleSheet,
   Text,
+  TextStyle,
+  TextStyleAndroid,
   useWindowDimensions,
   View,
 } from 'react-native';
 import RenderHtml from 'react-native-render-html';
-import sanitizeHtml from 'sanitize-html';
 
 import { Button } from '../../../components';
 import { ThemeTypeV1 } from '../../../theme/v1/theme/types';
 import { ChapterItem } from '../../../database/types';
 import { readerBackground } from '../utils/readerStyles';
+import { sanitizeChapterText } from '../utils/sanitizeChapterText';
 
 interface TextReaderProps {
   text: string;
@@ -29,6 +31,7 @@ interface TextReaderProps {
   };
   chapterName: string;
   nextChapter: ChapterItem;
+  textSelectable: boolean;
   navigateToNextChapter: () => void;
 }
 
@@ -38,15 +41,12 @@ const TextReader: React.FC<TextReaderProps> = ({
   reader,
   chapterName,
   nextChapter,
+  textSelectable,
   navigateToNextChapter,
 }) => {
   const { width } = useWindowDimensions();
 
-  const html = sanitizeHtml(text, {
-    allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img']),
-    allowedAttributes: { 'img': ['src'] },
-    allowedSchemes: ['data', 'http', 'https'],
-  });
+  const html = sanitizeChapterText(text);
 
   return (
     <>
@@ -59,8 +59,9 @@ const TextReader: React.FC<TextReaderProps> = ({
             fontFamily: reader.fontFamily,
             lineHeight: reader.textSize * reader.lineHeight,
             fontSize: reader.textSize,
+            textAlign: reader.textAlign,
           },
-          selectable: true,
+          selectable: textSelectable,
         }}
         defaultViewProps={{
           style: {

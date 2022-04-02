@@ -74,10 +74,6 @@ const Chapter = ({ route, navigation }) => {
   const readerSettings = useReaderSettings();
   const insets = useSafeAreaInsets();
 
-  const [ttsStatus, ttsPosition, startTts, pauseTts] = useTextToSpeech(
-    chapter?.chapterText,
-  );
-
   const {
     showScrollPercentage = true,
     fullScreenMode = true,
@@ -158,6 +154,10 @@ const Chapter = ({ route, navigation }) => {
       });
     }
   }, []);
+
+  const [ttsStatus, ttsPosition, startTts, pauseTts] = useTextToSpeech(
+    chapter?.chapterText,
+  );
 
   useEffect(() => {
     setPrevAndNextChap();
@@ -318,7 +318,7 @@ const Chapter = ({ route, navigation }) => {
       <>
         <ReaderAppbar
           novelName={novelName}
-          chapterName={chapterName}
+          chapterName={chapterName || chapter.chapterName}
           chapterId={chapterId}
           bookmark={bookmark}
           textToSpeech={ttsStatus}
@@ -408,7 +408,7 @@ const Chapter = ({ route, navigation }) => {
                     <TextReader
                       text={chapter.chapterText}
                       reader={readerSettings}
-                      chapterName={chapterName}
+                      chapterName={chapterName || chapter.chapterName}
                       textSelectable={textSelectable}
                       theme={theme}
                       nextChapter={nextChapter}

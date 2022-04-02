@@ -154,6 +154,7 @@ const SettingsReaderScreen = ({ navigation }) => {
               style={{
                 backgroundColor: readerBackground(reader.theme),
                 padding: `${reader.padding}%`,
+                height: 500,
               }}
             >
               <Text
