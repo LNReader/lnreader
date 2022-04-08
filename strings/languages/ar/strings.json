@@ -29,7 +29,8 @@
   },
   "updates": "التحديثات",
   "updatesScreen": {
-    "searchbar": "البحث في التحديثات"
+    "searchbar": "البحث في التحديثات",
+    "lastUpdatedAt": "Library last updated:"
   },
   "history": "السجل",
   "historyScreen": {
