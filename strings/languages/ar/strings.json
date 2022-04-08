@@ -1,40 +1,64 @@
 {
-  "library": "Library",
+  "library": "المكتبة",
   "libraryScreen": {
-    "searchbar": "Search library",
-    "empty": "Your library is empty. Add series to your library from Browse."
-  },
-  "updates": "Updates",
-  "updatesScreen": {
-    "searchbar": "Search updates"
-  },
-  "history": "History",
-  "historyScreen": {
-    "searchbar": "Search history"
-  },
-  "browse": "Browse",
-  "browseScreen": {
-    "searchbar": "Search sources"
-  },
-  "novelScreen": {
-    "addToLibaray": "Add to library",
-    "inLibaray": "In library",
-    "continueReading": "Continue reading",
-    "chapters": "chapters",
-    "migrate": "Migrate",
+    "searchbar": "البحث في المكتبة",
+    "empty": "مكتبتك فارغة، أضف رواية الى مكتبتك من خلال \"تصفح\".",
     "bottomSheet": {
-      "filter": "Filter",
-      "sort": "Sort",
-      "display": "Display"
+      "filters": {
+        "downloaded": "التحميلات",
+        "unread": "غير مقروء",
+        "completed": "مكتمل"
+      },
+      "sortOrders": {
+        "dateAdded": "تاريخ الإضافة",
+        "alphabetically": "حسب الترتيب الأبجدي",
+        "totalChapters": "مجموع الفصول"
+      },
+      "display": {
+        "displayMode": "نمط العرض",
+        "compact": "الشبكة المدمجة",
+        "comfortable": "الشبكة المريحة",
+        "noTitle": "شبكة اللا عنوان",
+        "list": "القائمة",
+        "badges": "الأوسمة",
+        "downloadBadges": "تحميل الاوسمة",
+        "unreadBadges": "شارات الغير مقروء",
+        "showNoOfItems": "إظهار عدد العناصر"
+      }
     }
   },
-  "more": "More",
+  "updates": "التحديثات",
+  "updatesScreen": {
+    "searchbar": "البحث في التحديثات",
+    "lastUpdatedAt": "Library last updated:"
+  },
+  "history": "السجل",
+  "historyScreen": {
+    "searchbar": "سجل البحث"
+  },
+  "browse": "تصفح",
+  "browseScreen": {
+    "searchbar": "البحث في المصادر"
+  },
+  "novelScreen": {
+    "addToLibaray": "إضافة إلى المكتبة",
+    "inLibaray": "في المكتبة",
+    "continueReading": "متابعة القراءة",
+    "chapters": "الفصول",
+    "migrate": "نقل",
+    "bottomSheet": {
+      "filter": "التصفية",
+      "sort": "الفرز",
+      "display": "العرض"
+    }
+  },
+  "more": "المزيد",
   "moreScreen": {
-    "settings": "Settings",
+    "settings": "الإعدادات",
     "settingsScreen": {
-      "generalSettings": "General",
+      "generalSettings": "العامة",
       "generalSettingsScreen": {},
-      "readerSettings": "Reader",
+      "readerSettings": "القارئ",
       "readerSettingsScreen": {}
     }
   }
