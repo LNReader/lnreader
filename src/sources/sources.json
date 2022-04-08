@@ -751,8 +751,15 @@
   {
     "sourceId": 112,
     "sourceName": "FreeNovelUpdates",
-    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/freenovelupdates.png?raw=true",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/freenovelupdates/icon.png?raw=true",
     "url": "https://www.freenovelupdates.com/",
+    "lang": "English"
+  },
+  {
+    "sourceId": 113,
+    "sourceName": "NovelsCafe",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/novelscafe/icon.png?raw=true",
+    "url": "https://novelscafe.com",
     "lang": "English"
   }
 ]

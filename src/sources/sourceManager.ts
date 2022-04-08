@@ -112,6 +112,7 @@ import { SourceChapter, SourceNovel, SourceNovelItem } from './types';
 import AllNovelFullScraper from './en/allnovelfull';
 import ReadFreeNovelScraper from './en/readfreenovel';
 import FreeNovelUpdatesScraper from './en/freenovelupdates';
+import NovelsCafeScraper from './en/NovelsCafe';
 
 interface PopularNovelsResponse {
   totalPages: number;
@@ -238,6 +239,7 @@ export const sourceManager = (sourceId: number): Scraper => {
     110: TurkceLightNovelsScraper,
     111: NovelOwlScraper,
     112: FreeNovelUpdatesScraper,
+    113: NovelsCafeScraper,
   };
 
   return scrapers[sourceId];
