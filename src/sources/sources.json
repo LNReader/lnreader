@@ -747,5 +747,12 @@
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/novelowl.png?raw=true",
     "url": "https://novelowl.com/",
     "lang": "English"
+  },
+  {
+    "sourceId": 112,
+    "sourceName": "FreeNovelUpdates",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/freenovelupdates.png?raw=true",
+    "url": "https://www.freenovelupdates.com/",
+    "lang": "English"
   }
 ]
