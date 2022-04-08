@@ -29,7 +29,8 @@
   },
   "updates": "Güncellemeler",
   "updatesScreen": {
-    "searchbar": "Güncellemelerde ara"
+    "searchbar": "Güncellemelerde ara",
+    "lastUpdatedAt": "Library last updated:"
   },
   "history": "Geçmiş",
   "historyScreen": {
