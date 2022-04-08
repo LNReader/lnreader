@@ -761,5 +761,12 @@
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/novelscafe/icon.png?raw=true",
     "url": "https://novelscafe.com",
     "lang": "English"
+  },
+  {
+    "sourceId": 114,
+    "sourceName": "LightNovelReader",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/lightnovelreader/icon.png?raw=true",
+    "url": "https://lightnovelreader.org",
+    "lang": "English"
   }
 ]
