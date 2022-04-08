@@ -29,7 +29,8 @@
   },
   "updates": "Обновления",
   "updatesScreen": {
-    "searchbar": "Поиск обновлений"
+    "searchbar": "Поиск обновлений",
+    "lastUpdatedAt": "Library last updated:"
   },
   "history": "История",
   "historyScreen": {
