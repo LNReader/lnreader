@@ -114,6 +114,7 @@ import ReadFreeNovelScraper from './en/readfreenovel';
 import FreeNovelUpdatesScraper from './en/freenovelupdates';
 import NovelsCafeScraper from './en/NovelsCafe';
 import LightNovelReaderScraper from './en/LightNovelReader';
+import HakoLightNovelScraper from './vi/HakoLightNovel';
 
 interface PopularNovelsResponse {
   totalPages: number;
@@ -242,6 +243,7 @@ export const sourceManager = (sourceId: number): Scraper => {
     112: FreeNovelUpdatesScraper,
     113: NovelsCafeScraper,
     114: LightNovelReaderScraper,
+    115: HakoLightNovelScraper,
   };
 
   return scrapers[sourceId];

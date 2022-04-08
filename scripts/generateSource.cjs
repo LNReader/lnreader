@@ -17,6 +17,7 @@ const getLanguageCode = language => {
     Turkish: 'tr',
     Chinese: 'cn',
     Japanese: 'jp',
+    Vietnamese: 'vi',
   };
 
   return codes[language];
@@ -70,7 +71,9 @@ try {
       loadedCheerio('${
         source.popularNovels.selectors.novelList
       }').each(function () {
-        let novelUrl = loadedCheerio(this).find('a').attr('href');
+        let novelUrl = loadedCheerio(this).find('${
+          source.popularNovels.selectors.novelUrl
+        }').attr('href');
     
         if (novelUrl && !isUrlAbsolute(novelUrl)) {
           novelUrl = baseUrl + novelUrl;
@@ -164,7 +167,7 @@ try {
           }').text().trim();
           const releaseDate = ${
             source.novelAndChapters.selectors.releaseDate
-              ? `loadedCheerio(this).find('${source.novelAndChapters.selectors.releaseDate}');`
+              ? `loadedCheerio(this).find('${source.novelAndChapters.selectors.releaseDate}').text();`
               : null
           }
     
@@ -275,7 +278,10 @@ try {
     });
 
     fs.writeFile(
-      path.resolve(process.cwd(), `src/sources/en/${source.sourceName}.ts`),
+      path.resolve(
+        process.cwd(),
+        `src/sources/${getLanguageCode(source.lang)}/${source.sourceName}.ts`,
+      ),
       formatContent,
       error => {
         if (error) {

@@ -768,5 +768,12 @@
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/lightnovelreader/icon.png?raw=true",
     "url": "https://lightnovelreader.org",
     "lang": "English"
+  },
+  {
+    "sourceId": 115,
+    "sourceName": "HakoLightNovel",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/vi/hakolightnovel/icon.png?raw=true",
+    "url": "https://ln.hako.re",
+    "lang": "Vietnamese"
   }
 ]

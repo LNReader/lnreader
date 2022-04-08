@@ -38,6 +38,7 @@ const BrowseSettings = ({ navigation }) => {
         'Turkish',
         'French',
         'Portuguese (Brazil)',
+        'Vietnamese',
       ].sort(),
     [],
   );
