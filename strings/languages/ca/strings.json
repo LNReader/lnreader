@@ -29,7 +29,8 @@
   },
   "updates": "Updates",
   "updatesScreen": {
-    "searchbar": "Search updates"
+    "searchbar": "Search updates",
+    "lastUpdatedAt": "Library last updated:"
   },
   "history": "History",
   "historyScreen": {
