@@ -6,7 +6,7 @@ export const createNovelTableQuery = `
     sourceId INTEGER NOT NULL,
     source TEXT NOT NULL,
     novelName TEXT NOT NULL,
-    novelCover TEXT NOT NULL, 
+    novelCover TEXT, 
     novelSummary TEXT, 
     author TEXT, 
     artist TEXT, 

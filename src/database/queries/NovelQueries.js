@@ -23,7 +23,7 @@ export const insertNovel = async novel => {
           novel.sourceId,
           novel.source,
           novel.novelName,
-          novel.novelCover,
+          novel.novelCover || '',
           novel.novelSummary,
           novel.author,
           novel.artist,
