@@ -238,3 +238,10 @@ export const TurkceLightNovelsScraper = new MadaraScraper(
     'lang': 'Turkish',
   },
 );
+
+export const NovelOwlScraper = new MadaraScraper(
+  111,
+  'https://novelowl.com/',
+  'NovelOwl',
+  { 'totalPages': 208, 'useNewChapterEndpoint': true },
+);

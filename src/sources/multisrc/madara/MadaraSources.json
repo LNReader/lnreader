@@ -239,5 +239,14 @@
       "totalPages": 2,
       "lang": "Turkish"
     }
+  },
+  {
+    "sourceId": 111,
+    "baseUrl": "https://novelowl.com/",
+    "sourceName": "NovelOwl",
+    "options": {
+      "totalPages": 208,
+      "useNewChapterEndpoint": true
+    }
   }
 ]

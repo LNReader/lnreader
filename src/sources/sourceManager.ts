@@ -64,6 +64,7 @@ import {
   MeioNovelScraper,
   TipNovelScraper,
   FreeNovelMeScraper,
+  NovelOwlScraper,
 } from './multisrc/madara/MadaraGenerator';
 import WuxiaBlogScraper from './en/wuxiablog';
 import WuxiaCityScraper from './en/wuxiacity';
@@ -234,6 +235,7 @@ export const sourceManager = (sourceId: number): Scraper => {
     108: AllNovelFullScraper,
     109: ReadFreeNovelScraper,
     110: TurkceLightNovelsScraper,
+    111: NovelOwlScraper,
   };
 
   return scrapers[sourceId];
