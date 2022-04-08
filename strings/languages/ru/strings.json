@@ -1,40 +1,64 @@
 {
-  "library": "Library",
+  "library": "Библиотека",
   "libraryScreen": {
-    "searchbar": "Search library",
-    "empty": "Your library is empty. Add series to your library from Browse."
-  },
-  "updates": "Updates",
-  "updatesScreen": {
-    "searchbar": "Search updates"
-  },
-  "history": "History",
-  "historyScreen": {
-    "searchbar": "Search history"
-  },
-  "browse": "Browse",
-  "browseScreen": {
-    "searchbar": "Search sources"
-  },
-  "novelScreen": {
-    "addToLibaray": "Add to library",
-    "inLibaray": "In library",
-    "continueReading": "Continue reading",
-    "chapters": "chapters",
-    "migrate": "Migrate",
+    "searchbar": "Поиск в библиотеке",
+    "empty": "Библиотека пуста. Добавьте новеллы из меню «Источники».",
     "bottomSheet": {
-      "filter": "Filter",
-      "sort": "Sort",
-      "display": "Display"
+      "filters": {
+        "downloaded": "Загружено",
+        "unread": "Не прочитано",
+        "completed": "Завершено"
+      },
+      "sortOrders": {
+        "dateAdded": "По дате добавления",
+        "alphabetically": "По алфавиту",
+        "totalChapters": "Всего глав"
+      },
+      "display": {
+        "displayMode": "Режим отображения",
+        "compact": "Компактная сетка",
+        "comfortable": "Комфортная сетка",
+        "noTitle": "Без заголовка сетки",
+        "list": "Список",
+        "badges": "Значки",
+        "downloadBadges": "Загрузить значки",
+        "unreadBadges": "Непрочитанные значки",
+        "showNoOfItems": "Показывать количество элементов"
+      }
     }
   },
-  "more": "More",
+  "updates": "Обновления",
+  "updatesScreen": {
+    "searchbar": "Поиск обновлений",
+    "lastUpdatedAt": "Library last updated:"
+  },
+  "history": "История",
+  "historyScreen": {
+    "searchbar": "Поиск в истории"
+  },
+  "browse": "Обзор",
+  "browseScreen": {
+    "searchbar": "Поиск источника"
+  },
+  "novelScreen": {
+    "addToLibaray": "Добавить в библиотеку",
+    "inLibaray": "В библиотеке",
+    "continueReading": "Продолжить чтение",
+    "chapters": "главы",
+    "migrate": "Перенос",
+    "bottomSheet": {
+      "filter": "Фильтр",
+      "sort": "Сортировка",
+      "display": "Вид"
+    }
+  },
+  "more": "Ещё",
   "moreScreen": {
-    "settings": "Settings",
+    "settings": "Настройки",
     "settingsScreen": {
-      "generalSettings": "General",
+      "generalSettings": "Основные",
       "generalSettingsScreen": {},
-      "readerSettings": "Reader",
+      "readerSettings": "Чтение",
       "readerSettingsScreen": {}
     }
   }
