@@ -3,8 +3,6 @@ import {
   StatusBar,
   StyleSheet,
   Text,
-  TextStyle,
-  TextStyleAndroid,
   useWindowDimensions,
   View,
 } from 'react-native';

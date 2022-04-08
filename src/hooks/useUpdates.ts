@@ -4,13 +4,16 @@ import { getUpdatesFromDb } from '../database/queries/UpdateQueries';
 
 import { useFocusEffect } from '@react-navigation/native';
 import { Update } from '../database/types';
-import { useDownloadQueue } from '../redux/hooks';
+import { useAppSelector, useDownloadQueue } from '../redux/hooks';
 
 const useUpdates = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [updates, setUpdates] = useState<Update[]>([]);
   const [searchResults, setSearchResults] = useState<Update[]>([]);
 
+  const { lastUpdateTime = null, showLastUpdateTime = false } = useAppSelector(
+    state => state.updatesReducer,
+  );
   const downloadQueue = useDownloadQueue();
 
   const [error, setError] = useState('');
@@ -56,6 +59,8 @@ const useUpdates = () => {
     searchResults,
     clearSearchResults,
     searchUpdates,
+    lastUpdateTime,
+    showLastUpdateTime,
     error,
   };
 };

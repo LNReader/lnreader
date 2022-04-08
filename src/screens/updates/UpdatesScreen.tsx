@@ -1,6 +1,6 @@
+import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import moment from 'moment';
-import React from 'react';
 import { RefreshControl, SectionList, StyleSheet, Text } from 'react-native';
 
 import {
@@ -24,6 +24,7 @@ import {
   downloadChapterAction,
 } from '../../redux/novel/novel.actions';
 import { getString } from '../../../strings/translations';
+import { ThemeTypeV1 } from '../../theme/v1/theme/types';
 
 const UpdatesScreen = () => {
   const theme = useThemeV1();
@@ -36,6 +37,8 @@ const UpdatesScreen = () => {
     searchResults,
     clearSearchResults,
     searchUpdates,
+    lastUpdateTime,
+    showLastUpdateTime,
     error,
   } = useUpdates();
 
@@ -146,6 +149,11 @@ const UpdatesScreen = () => {
         <ErrorScreenV2 error={error} theme={theme} />
       ) : (
         <SectionList
+          ListHeaderComponent={
+            showLastUpdateTime && lastUpdateTime ? (
+              <LastUpdateTime lastUpdateTime={lastUpdateTime} theme={theme} />
+            ) : null
+          }
           contentContainerStyle={styles.listContainer}
           keyExtractor={item => item.chapterId.toString()}
           sections={groupUpdatesByDate(
@@ -191,6 +199,15 @@ const UpdatesScreen = () => {
 
 export default UpdatesScreen;
 
+const LastUpdateTime: React.FC<{ lastUpdateTime: Date; theme: ThemeTypeV1 }> =
+  ({ lastUpdateTime, theme }) => (
+    <Text style={[styles.lastUpdateTime, { color: theme.textColorSecondary }]}>
+      {`${getString('updatesScreen.lastUpdatedAt')} ${moment(
+        lastUpdateTime,
+      ).fromNow()}`}
+    </Text>
+  );
+
 const styles = StyleSheet.create({
   listContainer: {
     flexGrow: 1,
@@ -198,5 +215,10 @@ const styles = StyleSheet.create({
   dateHeader: {
     paddingHorizontal: 16,
     paddingVertical: 8,
+  },
+  lastUpdateTime: {
+    paddingHorizontal: 16,
+    paddingVertical: 4,
+    textAlign: 'center',
   },
 });

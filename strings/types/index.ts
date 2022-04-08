@@ -20,4 +20,5 @@ export interface StringMap {
   'novelScreen.migrate': 'string';
   'updates': 'string';
   'updatesScreen.searchbar': 'string';
+  'updatesScreen.lastUpdatedAt': 'string';
 }

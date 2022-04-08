@@ -83,7 +83,8 @@ const useContinueReading = (chapters, novelId) => {
   // If the last read chapter is 100% done, set the next chapter as the 'last read'.
   // If all chapters are read, then set the last chapter in the list as the last read (Fixed bug)
   if (!lastReadChapter) {
-    lastReadChapter = chapters.find(obj => obj.read === 0) || chapters[chapters.length - 1];
+    lastReadChapter =
+      chapters.find(obj => obj.read === 0) || chapters[chapters.length - 1];
   }
 
   return { lastReadChapter, position };
