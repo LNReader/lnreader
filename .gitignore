@@ -73,3 +73,4 @@ web-build/
 # @end expo-cli
 
 .vscode/
+src/sources/en/generators/

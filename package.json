@@ -11,6 +11,7 @@
     "buildRelease": "cd android && gradlew clean && gradlew assembleRelease",
     "sources:madara": "node scripts/generateMadaraSource.cjs && prettier --write {src/sources/multisrc/madara/MadaraGenerator.ts,src/sources/sources.json}",
     "source:generator": "node scripts/generateSource.cjs",
+    "strings": "node scripts/stringTypes.cjs",
     "prepare": "husky install"
   },
   "dependencies": {
