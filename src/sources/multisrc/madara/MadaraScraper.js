@@ -4,20 +4,17 @@ import { defaultCoverUri, Status } from '../../helpers/constants';
 import { parseMadaraDate } from '../../helpers/parseDate';
 
 class MadaraScraper {
-  constructor(
-    sourceId,
-    baseUrl,
-    sourceName,
-    path,
-    useNewChapterEndpoint = false,
-    totalPages = 100,
-  ) {
+  constructor(sourceId, baseUrl, sourceName, options = {}) {
     this.sourceId = sourceId;
     this.baseUrl = baseUrl;
     this.sourceName = sourceName;
-    this.path = path;
-    this.useNewChapterEndpoint = useNewChapterEndpoint;
-    this.totalPages = totalPages;
+    this.path = options.path || {
+      novels: 'novel',
+      novel: 'novel',
+      chapter: 'novel',
+    };
+    this.useNewChapterEndpoint = options.useNewChapterEndpoint || false;
+    this.totalPages = options.totalPages || 100;
   }
 
   async popularNovels(page) {

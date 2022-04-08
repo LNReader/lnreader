@@ -1,0 +1,243 @@
+[
+  {
+    "sourceId": 1,
+    "baseUrl": "https://boxnovel.com/",
+    "sourceName": "BoxNovel",
+    "options": {
+      "useNewChapterEndpoint": true
+    }
+  },
+  {
+    "sourceId": 38,
+    "baseUrl": "https://skynovel.org/",
+    "sourceName": "SkyNovel",
+    "options": {
+      "path": { "novels": "manga", "novel": "manga", "chapter": "manga" }
+    }
+  },
+  {
+    "sourceId": 39,
+    "baseUrl": "https://novelcake.com/",
+    "sourceName": "NovelCake",
+    "options": {
+      "path": { "novels": "series", "novel": "series", "chapter": "series" }
+    }
+  },
+  {
+    "sourceId": 40,
+    "baseUrl": "https://novelsrock.com/",
+    "sourceName": "NovelsRock",
+    "options": {
+      "path": { "novels": "novels", "novel": "novel", "chapter": "novel" }
+    }
+  },
+  {
+    "sourceId": 41,
+    "baseUrl": "https://zinnovel.com/",
+    "sourceName": "ZinnNovel",
+    "options": {
+      "path": { "novels": "manga", "novel": "manga", "chapter": "manga" }
+    }
+  },
+  {
+    "sourceId": 42,
+    "baseUrl": "https://noveltranslate.com/",
+    "sourceName": "NovelTranslate",
+    "options": {
+      "path": { "novels": "all-novels", "novel": "manga", "chapter": "manga" }
+    }
+  },
+  {
+    "sourceId": 43,
+    "baseUrl": "https://www.lunarletters.com/",
+    "sourceName": "LunarLetters",
+    "options": {
+      "path": { "novels": "series", "novel": "series", "chapter": "series" },
+      "useNewChapterEndpoint": true
+    }
+  },
+  {
+    "sourceId": 44,
+    "baseUrl": "https://sleepytranslations.com/",
+    "sourceName": "SleepyTranslations",
+    "options": {
+      "path": { "novels": "series", "novel": "series", "chapter": "series" },
+      "useNewChapterEndpoint": true
+    }
+  },
+  {
+    "sourceId": 45,
+    "baseUrl": "https://freenovel.me/",
+    "sourceName": "FreeNovelMe"
+  },
+  {
+    "sourceId": 46,
+    "baseUrl": "https://1stkissnovel.love/",
+    "sourceName": "FirstKissNovel"
+  },
+  {
+    "sourceId": 47,
+    "baseUrl": "https://daonovel.com/",
+    "sourceName": "DaoNovel",
+    "options": {
+      "path": { "novels": "novel-list", "novel": "novel", "chapter": "novel" },
+      "useNewChapterEndpoint": true
+    }
+  },
+  {
+    "sourceId": 55,
+    "baseUrl": "https://mostnovel.com/",
+    "sourceName": "MostNovel",
+    "options": {
+      "path": { "novels": "manga", "novel": "manga", "chapter": "manga" }
+    }
+  },
+  {
+    "sourceId": 56,
+    "baseUrl": "https://www.novelmultiverse.com/",
+    "sourceName": "NovelMultiverse"
+  },
+  {
+    "sourceId": 57,
+    "baseUrl": "https://lightnovelheaven.com/",
+    "sourceName": "LightNovelHeaven",
+    "options": {
+      "path": { "novels": "series", "novel": "series", "chapter": "series" },
+      "useNewChapterEndpoint": true
+    }
+  },
+  {
+    "sourceId": 58,
+    "baseUrl": "https://lightnovelshub.com/",
+    "sourceName": "LightNovelsHub",
+    "options": {
+      "useNewChapterEndpoint": true
+    }
+  },
+  {
+    "sourceId": 60,
+    "baseUrl": "https://meionovel.id/",
+    "sourceName": "MeioNovel",
+    "options": {
+      "useNewChapterEndpoint": true,
+      "lang": "Indonesian"
+    }
+  },
+  {
+    "sourceId": 61,
+    "baseUrl": "https://www.webnovelover.com/",
+    "sourceName": "WebNovelLover"
+  },
+  {
+    "sourceId": 63,
+    "baseUrl": "https://tipnovel.com/",
+    "sourceName": "TipNovel",
+    "options": {
+      "useNewChapterEndpoint": true
+    }
+  },
+  {
+    "sourceId": 64,
+    "baseUrl": "https://clicknovel.net/",
+    "sourceName": "ClickNovel"
+  },
+  {
+    "sourceId": 65,
+    "baseUrl": "https://readwebnovels.net/",
+    "sourceName": "ReadWebNovels"
+  },
+  {
+    "sourceId": 66,
+    "baseUrl": "https://wbnovel.com/",
+    "sourceName": "WBNovel"
+  },
+  {
+    "sourceId": 74,
+    "baseUrl": "https://wuxiaworld.site/",
+    "sourceName": "WuxiaWorld.Site"
+  },
+  {
+    "sourceId": 75,
+    "baseUrl": "https://mysticalmerries.com/",
+    "sourceName": "MysticalSeries",
+    "options": {
+      "path": { "novels": "series", "novel": "series", "chapter": "series" },
+      "useNewChapterEndpoint": true
+    }
+  },
+  {
+    "sourceId": 84,
+    "baseUrl": "https://morenovel.net/",
+    "sourceName": "MoreNovel",
+    "options": {
+      "useNewChapterEndpoint": true,
+      "lang": "Indonesian"
+    }
+  },
+  {
+    "sourceId": 91,
+    "baseUrl": "https://www.onlymtl.com/",
+    "sourceName": "OnlyMTL"
+  },
+  {
+    "sourceId": 96,
+    "baseUrl": "https://hizomanga.com/",
+    "sourceName": "HizoManga",
+    "options": {
+      "path": { "novels": "serie", "novel": "serie", "chapter": "serie" },
+      "useNewChapterEndpoint": true,
+      "lang": "Arabic"
+    }
+  },
+  {
+    "sourceId": 98,
+    "baseUrl": "https://latestnovel.net/",
+    "sourceName": "LatestNovel",
+    "options": {
+      "totalPages": 130
+    }
+  },
+  {
+    "sourceId": 101,
+    "baseUrl": "https://ar-mtl.club/",
+    "sourceName": "ArMTL",
+    "options": {
+      "totalPages": 1,
+      "useNewChapterEndpoint": true,
+      "lang": "Arabic"
+    }
+  },
+  {
+    "sourceId": 104,
+    "baseUrl": "https://novel4up.com/",
+    "sourceName": "Novel4Up",
+    "options": {
+      "totalPages": 2,
+      "lang": "Arabic"
+    }
+  },
+  {
+    "sourceId": 107,
+    "baseUrl": "https://teamxnovel.com/",
+    "sourceName": "TeamXNovel",
+    "options": {
+      "useNewChapterEndpoint": true,
+      "totalPages": 3,
+      "lang": "Arabic"
+    }
+  },
+  {
+    "sourceId": 110,
+    "baseUrl": "https://turkcelightnovels.com/",
+    "sourceName": "TurkceLightNovels",
+    "options": {
+      "path": {
+        "novels": "light-novel",
+        "novel": "light-novel",
+        "chapter": "light-novel"
+      },
+      "totalPages": 2,
+      "lang": "Turkish"
+    }
+  }
+]

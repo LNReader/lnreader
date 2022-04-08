@@ -1,282 +1,240 @@
+/**
+ * This file is auto-generated
+ */
+
 import MadaraScraper from './MadaraScraper';
-
-const getPath = extensionId => {
-  const path = {
-    38: { novels: 'manga', novel: 'manga', chapter: 'manga' },
-    39: { novels: 'series', novel: 'series', chapter: 'series' },
-    40: { novels: 'novels', novel: 'novel', chapter: 'novel' },
-    41: { novels: 'manga', novel: 'manga', chapter: 'manga' },
-    42: { novels: 'all-novels', novel: 'manga', chapter: 'manga' },
-    43: { novels: 'series', novel: 'series', chapter: 'series' },
-    44: { novels: 'series', novel: 'series', chapter: 'series' },
-    45: { novels: 'novel', novel: 'novel', chapter: 'novel' },
-    46: { novels: 'novel', novel: 'novel', chapter: 'novel' },
-    47: { novels: 'novel-list', novel: 'novel', chapter: 'novel' },
-    55: { novels: 'manga', novel: 'manga', chapter: 'manga' },
-    56: { novels: 'novel', novel: 'novel', chapter: 'novel' },
-    57: { novels: 'series', novel: 'series', chapter: 'series' },
-    58: { novels: 'novel', novel: 'novel', chapter: 'novel' },
-    59: { novels: 'novel', novel: 'novels', chapter: 'novel' },
-    60: { novels: 'novel', novel: 'novel', chapter: 'novel' },
-    61: { novels: 'novel', novel: 'novel', chapter: 'novel' },
-    62: { novels: 'novel', novel: 'novel', chapter: 'novel' },
-    63: { novels: 'novel', novel: 'novel', chapter: 'novel' },
-    75: { novels: 'series', novel: 'series', chapter: 'series' },
-    80: { novels: 'manga', novel: 'manga', chapter: 'manga' },
-    91: { novels: 'novel', novel: 'novel', chapter: 'novel' },
-    96: { novels: 'serie', novel: 'serie', chapter: 'serie' },
-    110: {
-      novels: 'light-novel',
-      novel: 'light-novel',
-      chapter: 'light-novel',
-    },
-  };
-
-  return (
-    path[extensionId] || {
-      novels: 'novel',
-      novel: 'novel',
-      chapter: 'novel',
-    }
-  );
-};
 
 export const BoxNovelScraper = new MadaraScraper(
   1,
   'https://boxnovel.com/',
   'BoxNovel',
-  getPath(1),
-  true,
+  { 'useNewChapterEndpoint': true },
 );
 
 export const SkyNovelScraper = new MadaraScraper(
   38,
   'https://skynovel.org/',
   'SkyNovel',
-  getPath(38),
+  { 'path': { 'novels': 'manga', 'novel': 'manga', 'chapter': 'manga' } },
 );
 
 export const NovelCakeScraper = new MadaraScraper(
   39,
   'https://novelcake.com/',
   'NovelCake',
-  getPath(39),
+  { 'path': { 'novels': 'series', 'novel': 'series', 'chapter': 'series' } },
 );
 
 export const NovelsRockScraper = new MadaraScraper(
   40,
   'https://novelsrock.com/',
   'NovelsRock',
-  getPath(40),
+  { 'path': { 'novels': 'novels', 'novel': 'novel', 'chapter': 'novel' } },
 );
 
 export const ZinnNovelScraper = new MadaraScraper(
   41,
   'https://zinnovel.com/',
   'ZinnNovel',
-  getPath(41),
+  { 'path': { 'novels': 'manga', 'novel': 'manga', 'chapter': 'manga' } },
 );
 
 export const NovelTranslateScraper = new MadaraScraper(
   42,
   'https://noveltranslate.com/',
   'NovelTranslate',
-  getPath(42),
+  { 'path': { 'novels': 'all-novels', 'novel': 'manga', 'chapter': 'manga' } },
 );
 
 export const LunarLettersScraper = new MadaraScraper(
   43,
   'https://www.lunarletters.com/',
   'LunarLetters',
-  getPath(43),
-  true,
+  {
+    'path': { 'novels': 'series', 'novel': 'series', 'chapter': 'series' },
+    'useNewChapterEndpoint': true,
+  },
 );
 
 export const SleepyTranslationsScraper = new MadaraScraper(
   44,
   'https://sleepytranslations.com/',
   'SleepyTranslations',
-  getPath(44),
-  true,
+  {
+    'path': { 'novels': 'series', 'novel': 'series', 'chapter': 'series' },
+    'useNewChapterEndpoint': true,
+  },
 );
 
-export const FreeNovelScraper = new MadaraScraper(
+export const FreeNovelMeScraper = new MadaraScraper(
   45,
   'https://freenovel.me/',
   'FreeNovelMe',
-  getPath(45),
 );
 
 export const FirstKissNovelScraper = new MadaraScraper(
   46,
   'https://1stkissnovel.love/',
-  '1stKissNovel',
-  getPath(46),
+  'FirstKissNovel',
 );
 
 export const DaoNovelScraper = new MadaraScraper(
   47,
   'https://daonovel.com/',
   'DaoNovel',
-  getPath(47),
-  true,
+  {
+    'path': { 'novels': 'novel-list', 'novel': 'novel', 'chapter': 'novel' },
+    'useNewChapterEndpoint': true,
+  },
 );
 
 export const MostNovelScraper = new MadaraScraper(
   55,
   'https://mostnovel.com/',
   'MostNovel',
-  getPath(55),
+  { 'path': { 'novels': 'manga', 'novel': 'manga', 'chapter': 'manga' } },
 );
 
 export const NovelMultiverseScraper = new MadaraScraper(
   56,
   'https://www.novelmultiverse.com/',
   'NovelMultiverse',
-  getPath(56),
 );
 
 export const LightNovelHeavenScraper = new MadaraScraper(
   57,
   'https://lightnovelheaven.com/',
   'LightNovelHeaven',
-  getPath(57),
-  true,
+  {
+    'path': { 'novels': 'series', 'novel': 'series', 'chapter': 'series' },
+    'useNewChapterEndpoint': true,
+  },
 );
 
 export const LightNovelsHubScraper = new MadaraScraper(
   58,
   'https://lightnovelshub.com/',
   'LightNovelsHub',
-  getPath(58),
-  true,
+  { 'useNewChapterEndpoint': true },
 );
 
-export const MeionNovelScraper = new MadaraScraper(
+export const MeioNovelScraper = new MadaraScraper(
   60,
   'https://meionovel.id/',
   'MeioNovel',
-  getPath(60),
-  true,
-  1,
+  { 'useNewChapterEndpoint': true, 'lang': 'Indonesian' },
 );
 
 export const WebNovelLoverScraper = new MadaraScraper(
   61,
   'https://www.webnovelover.com/',
   'WebNovelLover',
-  getPath(61),
 );
 
-export const BoxNovelOnlineScraper = new MadaraScraper(
+export const TipNovelScraper = new MadaraScraper(
   63,
   'https://tipnovel.com/',
   'TipNovel',
-  getPath(63),
-  true,
+  { 'useNewChapterEndpoint': true },
 );
 
 export const ClickNovelScraper = new MadaraScraper(
   64,
   'https://clicknovel.net/',
   'ClickNovel',
-  getPath(64),
 );
 
 export const ReadWebNovelsScraper = new MadaraScraper(
   65,
   'https://readwebnovels.net/',
   'ReadWebNovels',
-  getPath(65),
 );
 
 export const WBNovelScraper = new MadaraScraper(
   66,
   'https://wbnovel.com/',
   'WBNovel',
-  getPath(66),
 );
 
 export const WuxiaWorldDotSiteScraper = new MadaraScraper(
   74,
   'https://wuxiaworld.site/',
   'WuxiaWorld.Site',
-  getPath(74),
 );
 
 export const MysticalSeriesScraper = new MadaraScraper(
   75,
   'https://mysticalmerries.com/',
   'MysticalSeries',
-  getPath(75),
-  true,
+  {
+    'path': { 'novels': 'series', 'novel': 'series', 'chapter': 'series' },
+    'useNewChapterEndpoint': true,
+  },
 );
 
 export const MoreNovelScraper = new MadaraScraper(
   84,
   'https://morenovel.net/',
   'MoreNovel',
-  getPath(84),
-  true,
+  { 'useNewChapterEndpoint': true, 'lang': 'Indonesian' },
 );
 
 export const OnlyMTLScraper = new MadaraScraper(
   91,
   'https://www.onlymtl.com/',
   'OnlyMTL',
-  getPath(91),
 );
 
 export const HizoMangaScraper = new MadaraScraper(
   96,
   'https://hizomanga.com/',
   'HizoManga',
-  getPath(96),
-  true,
-  56,
+  {
+    'path': { 'novels': 'serie', 'novel': 'serie', 'chapter': 'serie' },
+    'useNewChapterEndpoint': true,
+    'lang': 'Arabic',
+  },
 );
 
 export const LatestNovelScraper = new MadaraScraper(
   98,
   'https://latestnovel.net/',
   'LatestNovel',
-  getPath(98),
-  false,
-  130,
+  { 'totalPages': 130 },
 );
 
 export const ArMTLScraper = new MadaraScraper(
   101,
   'https://ar-mtl.club/',
   'ArMTL',
-  getPath(101),
-  true,
-  1,
+  { 'totalPages': 1, 'useNewChapterEndpoint': true, 'lang': 'Arabic' },
 );
 
 export const Novel4UpScraper = new MadaraScraper(
   104,
   'https://novel4up.com/',
   'Novel4Up',
-  getPath(104),
-  false,
-  2,
+  { 'totalPages': 2, 'lang': 'Arabic' },
 );
 
 export const TeamXNovelScraper = new MadaraScraper(
   107,
   'https://teamxnovel.com/',
   'TeamXNovel',
-  getPath(107),
-  true,
-  3,
+  { 'useNewChapterEndpoint': true, 'totalPages': 3, 'lang': 'Arabic' },
 );
 
 export const TurkceLightNovelsScraper = new MadaraScraper(
   110,
   'https://turkcelightnovels.com/',
   'TurkceLightNovels',
-  getPath(110),
-  false,
-  2,
+  {
+    'path': {
+      'novels': 'light-novel',
+      'novel': 'light-novel',
+      'chapter': 'light-novel',
+    },
+    'totalPages': 2,
+    'lang': 'Turkish',
+  },
 );
