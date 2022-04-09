@@ -5,7 +5,8 @@ const baseUrl = 'https://renovels.org/';
 
 const popularNovels = async page => {
   const totalPages = 20;
-  const url = 'https://api.renovels.org/api/titles/last-chapters/?&count=20&page=' + page;
+  const url =
+    'https://api.renovels.org/api/titles/last-chapters/?&count=20&page=' + page;
   const result = await fetch(url);
   let body = await result.json();
 
@@ -36,7 +37,9 @@ const parseNovelAndChapters = async novelUrl => {
     novelUrl,
   };
 
-  const chapterResult = await fetch(`https://api.renovels.org/api/titles/chapters/?branch_id=${body.content.id}&count=100&page=1`);
+  const chapterResult = await fetch(
+    `https://api.renovels.org/api/titles/chapters/?branch_id=${body.content.id}&count=100&page=1`,
+  );
   let volumes = await chapterResult.json();
   let chapters = [];
 
@@ -44,7 +47,10 @@ const parseNovelAndChapters = async novelUrl => {
     const chapterName =
       `Том ${item.tome} Глава ${item.chapter} ${item.name}`?.trim();
     const releaseDate = item.upload_date;
-    const chapterUrl = 'https://api.renovels.org/api/titles/chapters/' + item.branches[0].id + '/';
+    const chapterUrl =
+      'https://api.renovels.org/api/titles/chapters/' +
+      item.branches[0].id +
+      '/';
 
     chapters.push({ chapterName, releaseDate, chapterUrl });
   });
