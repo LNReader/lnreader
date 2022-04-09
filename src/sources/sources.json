@@ -775,5 +775,12 @@
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/vi/hakolightnovel/icon.png?raw=true",
     "url": "https://ln.hako.re",
     "lang": "Vietnamese"
+  },
+  {
+    "sourceId": 116,
+    "sourceName": "Renovels",
+    "url": "https://renovels.org",
+    "lang": "Russian",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/ru/renovels/icon.png?raw=true"
   }
 ]
