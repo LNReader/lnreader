@@ -1,12 +1,13 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { Appbar } from 'react-native-paper';
+import { IconButtonV2 } from '../../../components';
 import FadeView from '../../../components/Common/CrossFadeView';
 import { bookmarkChapterAction } from '../../../redux/novel/novel.actions';
 
-const ChapterAppbar = ({
-  navigation,
+const ReaderAppbar = ({
   bookmark,
   novelName,
   chapterId,
@@ -19,27 +20,24 @@ const ChapterAppbar = ({
   textToSpeechPosition,
   pauseTts,
 }) => {
+  const { goBack } = useNavigation();
   const [bookmarked, setBookmarked] = useState(bookmark);
 
   return (
-    <FadeView
-      style={{
-        flex: 1,
-        position: 'absolute',
-        width: '100%',
-        top: 0,
-        zIndex: 1,
-      }}
-      active={hide}
-      animationDuration={150}
-    >
-      <View style={{ flex: 1, backgroundColor: `${theme.colorPrimary}E6` }}>
-        <Appbar.Header style={{ backgroundColor: 'transparent', elevation: 0 }}>
-          <Appbar.BackAction
-            onPress={navigation.goBack}
+    <FadeView style={styles.container} active={hide} animationDuration={150}>
+      <View
+        style={[
+          { backgroundColor: `${theme.colorPrimary}E6` },
+          styles.appbarContainer,
+        ]}
+      >
+        <Appbar.Header style={styles.appbar}>
+          <IconButtonV2
+            name="arrow-left"
+            onPress={goBack}
             color={theme.textColorPrimary}
             size={26}
-            style={{ marginRight: 0 }}
+            theme={theme}
           />
           <Appbar.Content
             title={novelName}
@@ -57,7 +55,6 @@ const ChapterAppbar = ({
                 : theme.textColorPrimary
             }
           />
-
           {textToSpeechPosition.end > 0 && (
             <Appbar.Action
               icon={textToSpeech === 'paused' ? 'play' : 'pause'}
@@ -67,7 +64,7 @@ const ChapterAppbar = ({
             />
           )}
 
-          <Appbar.Action
+          <IconButtonV2
             icon={bookmarked ? 'bookmark' : 'bookmark-outline'}
             size={24}
             onPress={() => {
@@ -75,6 +72,7 @@ const ChapterAppbar = ({
               setBookmarked(!bookmarked);
             }}
             color={theme.textColorPrimary}
+            theme={theme}
           />
         </Appbar.Header>
       </View>
@@ -82,4 +80,21 @@ const ChapterAppbar = ({
   );
 };
 
-export default ChapterAppbar;
+export default ReaderAppbar;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    position: 'absolute',
+    width: '100%',
+    top: 0,
+    zIndex: 1,
+  },
+  appbarContainer: {
+    flex: 1,
+  },
+  appbar: {
+    backgroundColor: 'transparent',
+    elevation: 0,
+  },
+});

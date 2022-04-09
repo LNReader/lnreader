@@ -16,9 +16,6 @@ const ChapterFooter = ({
   prevChapter,
   useWebViewForChapter,
   enableSwipeGestures,
-  autoScroll,
-  enableWebView,
-  enableAutoScroll,
 }) => {
   const rippleConfig = {
     color: theme.rippleColor,
@@ -29,22 +26,15 @@ const ChapterFooter = ({
   const insets = useSafeAreaInsets();
 
   return (
-    <FadeView
-      style={{
-        position: 'absolute',
-        zIndex: 2,
-        bottom: 0,
-        width: '100%',
-      }}
-      active={hide}
-      animationDuration={150}
-    >
+    <FadeView style={styles.footer} active={hide} animationDuration={150}>
       <View
-        style={{
-          backgroundColor: `${theme.colorPrimary}E6`,
-          flexDirection: 'row',
-          paddingBottom: insets.bottom,
-        }}
+        style={[
+          {
+            backgroundColor: `${theme.colorPrimary}E6`,
+            paddingBottom: insets.bottom,
+          },
+          styles.buttonsContainer,
+        ]}
       >
         <Pressable
           android_ripple={rippleConfig}
@@ -72,18 +62,6 @@ const ChapterFooter = ({
         </Pressable>
         {!useWebViewForChapter && (
           <>
-            {/* <Pressable
-              android_ripple={rippleConfig}
-              style={styles.buttonStyles}
-              onPress={enableAutoScroll}
-            >
-              <IconButton
-                icon="chevron-triple-down"
-                disabled={!autoScroll}
-                size={26}
-                color={theme.textColorPrimary}
-              />
-            </Pressable> */}
             <Pressable
               android_ripple={rippleConfig}
               style={styles.buttonStyles}
@@ -97,18 +75,6 @@ const ChapterFooter = ({
             </Pressable>
           </>
         )}
-        {/* <Pressable
-          android_ripple={rippleConfig}
-          style={styles.buttonStyles}
-          onPress={enableWebView}
-        >
-          <IconButton
-            icon="language-html5"
-            disabled={!useWebViewForChapter}
-            size={26}
-            color={theme.textColorPrimary}
-          />
-        </Pressable> */}
         <Pressable
           android_ripple={rippleConfig}
           style={styles.buttonStyles}
@@ -137,7 +103,7 @@ const ChapterFooter = ({
   );
 };
 
-export default ChapterFooter;
+export default React.memo(ChapterFooter);
 
 const styles = StyleSheet.create({
   buttonStyles: {
@@ -146,5 +112,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 8,
     paddingBottom: 4,
+  },
+  footer: {
+    position: 'absolute',
+    zIndex: 2,
+    bottom: 0,
+    width: '100%',
+  },
+  buttonsContainer: {
+    flexDirection: 'row',
   },
 });

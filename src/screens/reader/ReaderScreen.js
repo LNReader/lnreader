@@ -13,7 +13,6 @@ import { IconButton, Portal } from 'react-native-paper';
 import { useKeepAwake } from 'expo-keep-awake';
 
 import {
-  getChapterFromDB,
   getNextChapter,
   getPrevChapter,
 } from '../../database/queries/ChapterQueries';
@@ -51,6 +50,7 @@ import TextReader from './components/TextReader';
 import WebViewReader from './components/WebViewReader';
 import { useTextToSpeech } from '../../hooks/useTextToSpeech';
 import { useFullscreenMode } from '../../hooks';
+import { getChapterFromDb } from '../../database/queries/DownloadQueries';
 
 const Chapter = ({ route, navigation }) => {
   useKeepAwake();
@@ -110,7 +110,7 @@ const Chapter = ({ route, navigation }) => {
   const getChapter = async id => {
     try {
       if (id) {
-        const chapterDownloaded = await getChapterFromDB(chapterId);
+        const chapterDownloaded = await getChapterFromDb(chapterId);
 
         if (chapterDownloaded) {
           setChapter(chapterDownloaded);
@@ -453,6 +453,7 @@ const Chapter = ({ route, navigation }) => {
         )}
         <ReaderFooter
           theme={theme}
+          novelUrl={novelUrl}
           swipeGestures={swipeGestures}
           enableSwipeGestures={enableSwipeGestures}
           enableWebView={enableWebView}
