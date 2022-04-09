@@ -157,7 +157,7 @@ const searchNovels = async (searchTerm: string) => {
 
   const novels: SourceNovelItem[] = [];
 
-  loadedCheerio('main.row > .thumb-item-flow').each(function () {
+  loadedCheerio('div.row > .thumb-item-flow').each(function () {
     let novelUrl = loadedCheerio(this)
       .find('div.thumb_attr.series-title > a')
       .attr('href');
