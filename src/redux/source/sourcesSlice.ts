@@ -1,18 +1,18 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import sourceList from '../../sources/sources.json';
+import AllSources from '../../sources/sources.json';
 
 import { Source } from '../../sources/types';
 
 interface SourcesState {
   allSources: Source[];
-  pinnedSources: number[];
+  pinnedSourceIds: number[];
   lastUsed: number | null;
   languageFilters: string[];
 }
 
 const initialState: SourcesState = {
-  allSources: [],
-  pinnedSources: [],
+  allSources: AllSources,
+  pinnedSourceIds: [],
   lastUsed: null,
   languageFilters: ['English'],
 };
@@ -22,37 +22,39 @@ export const sourcesSlice = createSlice({
   initialState,
   reducers: {
     getSourcesAction: state => {
-      let sources: Source[] = sourceList;
-
-      sources = sources.sort((a, b) =>
-        a.sourceName.localeCompare(b.sourceName),
-      );
-
-      sources = sources.filter(
+      const sources = AllSources.filter(
         source => state.languageFilters.indexOf(source.lang) !== -1,
-      );
+      ).sort((a, b) => a.sourceName.localeCompare(b.sourceName));
 
       state.allSources = sources;
     },
     searchSourcesAction: (state, action: PayloadAction<string>) => {
-      state.allSources = sourceList.filter(
-        (source: Source) =>
-          source.sourceName
-            .toLowerCase()
-            .includes(action.payload.toLowerCase()) &&
-          state.languageFilters.indexOf(source.lang) !== -1,
-      );
+      state.allSources = AllSources.filter(
+        source => state.languageFilters.indexOf(source.lang) !== -1,
+      )
+        .sort((a, b) => a.sourceName.localeCompare(b.sourceName))
+        .filter(
+          (source: Source) =>
+            source.sourceName
+              .toLowerCase()
+              .includes(action.payload.toLowerCase()) &&
+            state.languageFilters.indexOf(source.lang) !== -1,
+        );
     },
     setLastUsedSource: (state, action: PayloadAction<{ sourceId: number }>) => {
       state.lastUsed = action.payload.sourceId;
     },
     togglePinSource: (state, action: PayloadAction<number>) => {
-      if (state.pinnedSources.indexOf(action.payload) > -1) {
-        state.pinnedSources = state.pinnedSources.filter(
+      if (state?.pinnedSourceIds === undefined) {
+        state.pinnedSourceIds = [];
+      }
+
+      if (state.pinnedSourceIds?.indexOf(action.payload) > -1) {
+        state.pinnedSourceIds = state.pinnedSourceIds.filter(
           source => source !== action.payload,
         );
       } else {
-        state.pinnedSources = [...state.pinnedSources, action.payload];
+        state.pinnedSourceIds = [...state.pinnedSourceIds, action.payload];
       }
     },
     toggleLanguageFilter: (

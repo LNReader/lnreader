@@ -22,8 +22,6 @@ const strings = fs.readFileSync(
   'utf8',
 );
 
-console.log(flatten(JSON.parse(strings, '')));
-
 const stringTypes = `/**\n * This file is auto-generated\n */\n\n
 
 export interface StringMap ${JSON.stringify(flatten(JSON.parse(strings)))}

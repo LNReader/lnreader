@@ -27,7 +27,13 @@ export interface StringMap {
   'history': 'string';
   'historyScreen.searchbar': 'string';
   'browse': 'string';
+  'browseScreen.discover': 'string';
   'browseScreen.searchbar': 'string';
+  'browseScreen.globalSearch': 'string';
+  'browseScreen.listEmpty': 'string';
+  'browseScreen.lastUsed': 'string';
+  'browseScreen.pinned': 'string';
+  'browseScreen.all': 'string';
   'novelScreen.addToLibaray': 'string';
   'novelScreen.inLibaray': 'string';
   'novelScreen.continueReading': 'string';
@@ -40,4 +46,9 @@ export interface StringMap {
   'moreScreen.settings': 'string';
   'moreScreen.settingsScreen.generalSettings': 'string';
   'moreScreen.settingsScreen.readerSettings': 'string';
+  'moreScreen.settingsScreen.browseSettings': 'string';
+  'moreScreen.settingsScreen.browseSettingsScreen.onlyShowPinnedSources': 'string';
+  'moreScreen.settingsScreen.browseSettingsScreen.languages': 'string';
+  'moreScreen.settingsScreen.browseSettingsScreen.searchAllSources': 'string';
+  'moreScreen.settingsScreen.browseSettingsScreen.searchAllWarning': 'string';
 }

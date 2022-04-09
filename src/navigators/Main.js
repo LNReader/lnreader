@@ -19,7 +19,7 @@ import MoreStack from './MoreStack';
  */
 import Novel from '../screens/novel/NovelScreen';
 import Reader from '../screens/reader/ReaderScreen';
-import Extension from '../screens/source/SourceScreen';
+import SourceScreen from '../screens/source/SourceScreen';
 import GlobalSearch from '../screens/browse/globalsearch/GlobalSearch';
 import Migration from '../screens/browse/migration/Migration';
 import SourceNovels from '../screens/browse/SourceNovels';
@@ -27,7 +27,7 @@ import MigrateNovel from '../screens/browse/migration/MigrationNovels';
 
 import MalTopNovels from '../screens/browse/discover/MalTopNovels';
 import NewUpdateDialog from '../components/NewUpdateDialog';
-import BrowseSettings from '../screens/browse/SettingsBrowseScreen';
+import BrowseSettings from '../screens/browse/BrowseSettings';
 
 const Stack = createStackNavigator();
 
@@ -53,7 +53,7 @@ const MainNavigator = () => {
         <Stack.Screen name="Novel" component={Novel} />
         <Stack.Screen name="Chapter" component={Reader} />
         <Stack.Screen name="MoreStack" component={MoreStack} />
-        <Stack.Screen name="Extension" component={Extension} />
+        <Stack.Screen name="SourceScreen" component={SourceScreen} />
         <Stack.Screen name="BrowseMal" component={MalTopNovels} />
         <Stack.Screen name="BrowseSettings" component={BrowseSettings} />
         <Stack.Screen name="GlobalSearch" component={GlobalSearch} />

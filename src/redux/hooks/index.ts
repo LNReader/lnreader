@@ -15,14 +15,20 @@ export const useThemeV1 = () =>
     (state: RootState) => state.settingsReducer.theme,
   ) as ThemeTypeV1;
 
+export const useSettingsV1 = () =>
+  useAppSelector((state: RootState) => state.settingsReducer);
+
+export const useSettingsV2 = () =>
+  useAppSelector((state: RootState) => state.settingsReducerV2);
+
+export const useBrowseSettings = () =>
+  useAppSelector((state: RootState) => state.settingsReducerV2.browse) || {};
+
 export const useAppearanceSettings = () =>
   useAppSelector((state: RootState) => state.settingsReducerV2.appearance);
 
 export const useReaderSettings = () =>
   useAppSelector((state: RootState) => state.settingsReducerV2.reader);
-
-export const useSettingsV1 = () =>
-  useAppSelector((state: RootState) => state.settingsReducer);
 
 export const useReaderSettingsV1 = () =>
   useAppSelector((state: RootState) => state.settingsReducer.reader);
@@ -41,3 +47,6 @@ export const useSavedChapterData = (chapterId: number) =>
 
 export const useDownloadQueue = () =>
   useAppSelector((state: RootState) => state.downloadsReducer.downloadQueue);
+
+export const useSourcesReducer = () =>
+  useAppSelector((state: RootState) => state.sourceReducerV2);

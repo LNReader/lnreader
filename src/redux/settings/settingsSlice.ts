@@ -1,8 +1,8 @@
-import { StatusBar } from 'react-native';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { ColorScheme, ThemeType } from '../../theme/types';
+import { ThemeType } from '../../theme/types';
 import { defaultDarkTheme } from '../../theme/dark';
+import { BrowseSettingsMap } from './types';
 
 export enum DisplayModes {
   Compact = 'compact',
@@ -18,10 +18,10 @@ export enum TextAlignments {
   Right = 'right',
 }
 
-interface ReaderTheme {
-  backgroundColor: string;
-  textColor: string;
-}
+// interface ReaderTheme {
+//   backgroundColor: string;
+//   textColor: string;
+// }
 
 interface SettingsState {
   appearance: {
@@ -63,6 +63,11 @@ interface SettingsState {
   app: {
     incognitoMode: boolean;
     downloadOnlyMode: boolean;
+  };
+  browse: {
+    onlyShowPinnedSources: boolean;
+    showMyAnimeList: boolean;
+    searchAllSources: boolean;
   };
 }
 
@@ -107,142 +112,30 @@ const initialState: SettingsState = {
     incognitoMode: false,
     downloadOnlyMode: false,
   },
+  browse: {
+    onlyShowPinnedSources: false,
+    showMyAnimeList: true,
+    searchAllSources: false,
+  },
 };
 
 export const settingsSlice = createSlice({
   name: 'settingsReducerV2',
   initialState,
   reducers: {
-    setTheme: (state, action: PayloadAction<ThemeType>) => {
-      StatusBar.setBarStyle(
-        action.payload.type === ColorScheme.DARK
-          ? 'light-content'
-          : 'dark-content',
-      );
-      state.appearance.theme = action.payload;
-    },
-    setAmoledMode: state => {
-      state.appearance.theme.background = '#000000';
-      state.appearance.theme.surface = '#000000';
-      state.appearance.theme.surfaceVariant = '#000000';
-    },
-    setDisplayMode: (state, action: PayloadAction<DisplayModes>) => {
-      state.appearance.displayMode = action.payload;
-    },
-    setGridSizPotrait: (state, action: PayloadAction<number>) => {
-      state.appearance.novelsPerRowPotrait = action.payload;
-    },
-    toggleShowUpdatesTab: state => {
-      state.appearance.showUpdatesTab = !state.appearance.showUpdatesTab;
-    },
-    toggleShowHistoryTab: state => {
-      state.appearance.showHistoryTab = !state.appearance.showHistoryTab;
-    },
-    toggleShowLabelsInNav: state => {
-      state.appearance.showLabelsInNav = !state.appearance.showLabelsInNav;
-    },
-    setReaderTheme: (state, action: PayloadAction<ReaderTheme>) => {
-      state.reader.backgroundColor = action.payload.backgroundColor;
-      state.reader.textColor = action.payload.textColor;
-    },
-    setReaderFont: (state, action: PayloadAction<{ fontFamily: string }>) => {
-      state.reader.fontFamily = action.payload.fontFamily;
-    },
-    setReaderPadding: (
+    setBrowseSettings: (
       state,
-      action: PayloadAction<{ paddingHorizontal: number }>,
+      action: PayloadAction<{ key: keyof BrowseSettingsMap; value: any }>,
     ) => {
-      state.reader.paddingHorizontal = action.payload.paddingHorizontal;
-    },
-    setReaderFontSize: (state, action: PayloadAction<{ fontSize: number }>) => {
-      state.reader.fontSize = action.payload.fontSize;
-    },
-    setReaderLineHeight: (
-      state,
-      action: PayloadAction<{ lineHeight: number }>,
-    ) => {
-      state.reader.lineHeight = action.payload.lineHeight;
-    },
-    setCustomCSS: (state, action: PayloadAction<{ customCSS: string }>) => {
-      state.reader.customCSS = action.payload.customCSS;
-    },
-    toggleReaderFullScreenMode: state => {
-      state.reader.fullScreenMode = !state.reader.fullScreenMode;
-    },
-    toggleWebViewReader: state => {
-      state.reader.useWebViewReader = !state.reader.useWebViewReader;
-    },
-    setLibraryFilter: (state, action: PayloadAction<{ filter: string }>) => {
-      if (state.library.filters.includes(action.payload.filter)) {
-        state.library.filters = state.library.filters.filter(
-          item => item !== action.payload.filter,
-        );
-      } else {
-        state.library.filters = [
-          ...state.library.filters,
-          action.payload.filter,
-        ];
+      if (state?.browse === undefined) {
+        state.browse = initialState.browse;
       }
-    },
-    setLibrarySortOrder: (state, action: PayloadAction<{ sort: string }>) => {
-      state.library.sort = action.payload.sort;
-    },
-    toggleShowUnreadBadge: state => {
-      state.library.showUnreadBadge = !state.library.showUnreadBadge;
-    },
-    toggleShowDownloadsBadge: state => {
-      state.library.showDownloadsBadge = !state.library.showDownloadsBadge;
-    },
-    toggleShowProgressPercentage: state => {
-      state.reader.showProgressPercentage =
-        !state.reader.showProgressPercentage;
-    },
-    toggleUpdateLibraryOnLaunch: state => {
-      state.library.updateLibraryOnLaunch =
-        !state.library.updateLibraryOnLaunch;
-    },
-    toggleUpdateNovelMetadata: state => {
-      state.updates.updateNovelMetadata = !state.updates.updateNovelMetadata;
-    },
-    toggleOnlyUpdateOngoingNovels: state => {
-      state.updates.onlyUpdateOngoingNovels =
-        !state.updates.onlyUpdateOngoingNovels;
-    },
-    toggleShowLastUpdateTime: state => {
-      state.updates.showLastUpdateTime = !state.updates.showLastUpdateTime;
-    },
-    toggleUseSwipeGestures: state => {
-      state.reader.useSwipeGestures = !state.reader.useSwipeGestures;
+
+      state.browse[action.payload.key] = action.payload.value;
     },
   },
 });
 
-export const {
-  setTheme,
-  setDisplayMode,
-  toggleShowUpdatesTab,
-  toggleShowHistoryTab,
-  toggleShowLabelsInNav,
-  setReaderTheme,
-  setReaderFont,
-  setReaderPadding,
-  setReaderFontSize,
-  setReaderLineHeight,
-  setCustomCSS,
-  toggleReaderFullScreenMode,
-  setLibraryFilter,
-  setLibrarySortOrder,
-  toggleShowUnreadBadge,
-  toggleShowDownloadsBadge,
-  setAmoledMode,
-  toggleWebViewReader,
-  toggleShowProgressPercentage,
-  setGridSizPotrait,
-  toggleUpdateLibraryOnLaunch,
-  toggleOnlyUpdateOngoingNovels,
-  toggleUpdateNovelMetadata,
-  toggleShowLastUpdateTime,
-  toggleUseSwipeGestures,
-} = settingsSlice.actions;
+export const { setBrowseSettings } = settingsSlice.actions;
 
 export default settingsSlice.reducer;

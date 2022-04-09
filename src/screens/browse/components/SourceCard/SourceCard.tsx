@@ -1,11 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image, Pressable } from 'react-native';
-import { getString } from '../../../../strings/translations';
-import { Button, IconButtonV2 } from '../../../components';
-import { ButtonVariation } from '../../../components/Button/Button';
+import { getString } from '../../../../../strings/translations';
+import { Button, IconButtonV2 } from '../../../../components';
+import { ButtonVariation } from '../../../../components/Button/Button';
 
-import { Source } from '../../../sources/types';
-import { ThemeTypeV1 } from '../../../theme/v1/theme/types';
+import { Source } from '../../../../sources/types';
+import { ThemeTypeV1 } from '../../../../theme/v1/theme/types';
 
 interface Props {
   source: Source;
