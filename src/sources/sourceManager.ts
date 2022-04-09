@@ -75,6 +75,8 @@ import { KolNovelScraper } from './multisrc/wpmangastream/WPMangaStreamGenerator
 import WLNUpdatesScraper from './en/wlnupdates';
 import ReaperScansScraper from './en/reaperscans';
 import RanobeHubScraper from './ru/ranobehub';
+import RanobeLibScraper from './ru/ranobelib';
+import RenovelsScraper from './ru/renovels';
 import ArNovelScraper from './ar/arnovel';
 import DivineDaoLibraryScraper from './en/divinedaolibrary';
 import NovelOnlineFullScraper from './en/novelonlinefull';
@@ -97,7 +99,6 @@ import RewayatArScraper from './ar/rewayatar';
 import MTLCornerScraper from './en/mtlcorner';
 import NitroScansScraper from './en/nitroscans';
 import NovelForestScraper from './en/novelforest';
-import RanobeLibScraper from './ru/ranobelib';
 import NovelPubScraper from './en/novelpub';
 import BestLightNovel from './en/bestlightnovel';
 import NovelFullMeScraper from './en/NovelFullMe';
@@ -244,6 +245,7 @@ export const sourceManager = (sourceId: number): Scraper => {
     113: NovelsCafeScraper,
     114: LightNovelReaderScraper,
     115: HakoLightNovelScraper,
+    116: RenovelsScraper,
   };
 
   return scrapers[sourceId];
