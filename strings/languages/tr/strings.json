@@ -38,7 +38,13 @@
   },
   "browse": "Göz at",
   "browseScreen": {
-    "searchbar": "Kaynak ara"
+    "discover": "Discover",
+    "searchbar": "Kaynak ara",
+    "globalSearch": "Global search",
+    "listEmpty": "Enable languages from settings",
+    "lastUsed": "Last used",
+    "pinned": "Pinned",
+    "all": "All"
   },
   "novelScreen": {
     "addToLibaray": "Kitaplığa ekle",
@@ -59,7 +65,14 @@
       "generalSettings": "Genel",
       "generalSettingsScreen": {},
       "readerSettings": "Okuyucu",
-      "readerSettingsScreen": {}
+      "readerSettingsScreen": {},
+      "browseSettings": "Browse Settings",
+      "browseSettingsScreen": {
+        "onlyShowPinnedSources": "Only show pinned sources",
+        "languages": "Languages",
+        "searchAllSources": "Search all sources",
+        "searchAllWarning": "Searching a large number of sources may freeze the app till searching is finished."
+      }
     }
   }
 }
