@@ -38,7 +38,13 @@
   },
   "browse": "تصفح",
   "browseScreen": {
-    "searchbar": "البحث في المصادر"
+    "discover": "Discover",
+    "searchbar": "البحث في المصادر",
+    "globalSearch": "Global search",
+    "listEmpty": "Enable languages from settings",
+    "lastUsed": "Last used",
+    "pinned": "Pinned",
+    "all": "All"
   },
   "novelScreen": {
     "addToLibaray": "إضافة إلى المكتبة",
@@ -59,7 +65,14 @@
       "generalSettings": "العامة",
       "generalSettingsScreen": {},
       "readerSettings": "القارئ",
-      "readerSettingsScreen": {}
+      "readerSettingsScreen": {},
+      "browseSettings": "Browse Settings",
+      "browseSettingsScreen": {
+        "onlyShowPinnedSources": "Only show pinned sources",
+        "languages": "Languages",
+        "searchAllSources": "Search all sources",
+        "searchAllWarning": "Searching a large number of sources may freeze the app till searching is finished."
+      }
     }
   }
 }
