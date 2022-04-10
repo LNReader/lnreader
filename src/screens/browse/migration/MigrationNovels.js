@@ -16,6 +16,7 @@ import { Appbar } from '../../../components/Appbar';
 
 import { ScreenContainer } from '../../../components/Common';
 import { sourceManager } from '../../../sources/sourceManager';
+import { useBrowseSettings, useSourcesReducer } from '../../../redux/hooks';
 
 const MigrationNovels = ({ navigation, route }) => {
   const { sourceId, novelName } = route.params;
@@ -25,23 +26,18 @@ const MigrationNovels = ({ navigation, route }) => {
 
   const [progress, setProgress] = useState(0);
   const [searchResults, setSearchResults] = useState('');
-  const { searchAllSources = false } = useSettings();
-  let {
-    sources,
-    pinned,
-    filters = [],
-  } = useSelector(state => state.sourceReducer);
-  sources = sources.filter(source => filters.indexOf(source.lang) === -1);
 
   const library = useLibrary();
 
-  const pinnedSources = sources.filter(
-    source =>
-      pinned.indexOf(source.sourceId) !== -1 && source.sourceId !== sourceId,
-  );
+  const { allSources, pinnedSourceIds = [] } = useSourcesReducer();
+
+  const isPinned = id => pinnedSourceIds.indexOf(id) > -1;
+  const pinnedSources = allSources.filter(source => isPinned(source.sourceId));
+
+  const { searchAllSources = false } = useBrowseSettings();
 
   const getSearchResults = async () => {
-    let migrationSources = searchAllSources ? sources : pinnedSources;
+    let migrationSources = searchAllSources ? allSources : pinnedSources;
 
     setSearchResults(
       migrationSources.map(item => ({
@@ -138,12 +134,12 @@ const MigrationNovels = ({ navigation, route }) => {
         data={searchResults}
         keyExtractor={item => item.sourceId.toString()}
         renderItem={renderItem}
-        extraData={pinned}
+        extraData={pinnedSources}
         ListEmptyComponent={
           <EmptyView
             icon="__φ(．．)"
             description={`Search a novel in your pinned sources ${
-              pinned.length === 0 ? '(No sources pinned)' : ''
+              pinnedSources.length === 0 ? '(No sources pinned)' : ''
             }`}
           />
         }

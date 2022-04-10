@@ -10,6 +10,7 @@ import {
 } from '../../redux/source/sourcesSlice';
 import {
   useAppDispatch,
+  useBrowseSettings,
   useSourcesReducer,
   useThemeV1,
 } from '../../redux/hooks';
@@ -18,6 +19,7 @@ import { useSearch } from '../../hooks';
 import SourceCard from './components/SourceCard/SourceCard';
 import { getString } from '../../../strings/translations';
 import { Source } from '../../sources/types';
+import MalCard from './discover/MalCard/MalCard';
 
 const BrowseScreen = () => {
   const { navigate } = useNavigation();
@@ -42,6 +44,8 @@ const BrowseScreen = () => {
     languageFilters = ['English'],
     lastUsed,
   } = useSourcesReducer();
+
+  const { showMyAnimeList = true } = useBrowseSettings();
 
   useEffect(() => {
     dispatch(getSourcesAction());
@@ -97,40 +101,55 @@ const BrowseScreen = () => {
           theme={theme}
         />
       ) : (
-        <SectionList
-          sections={[
-            {
-              header: getString('browseScreen.lastUsed'),
-              data: lastUsedSource,
-            },
-            { header: getString('browseScreen.pinned'), data: pinnedSources },
-            { header: getString('browseScreen.all'), data: allSources },
-          ]}
-          keyExtractor={(_, index) => index.toString()}
-          renderSectionHeader={({ section: { header, data } }) =>
-            data.length > 0 ? (
+        <>
+          {showMyAnimeList && (
+            <>
               <Text
                 style={[
                   styles.sectionHeader,
                   { color: theme.textColorSecondary },
                 ]}
               >
-                {header}
+                {getString('browseScreen.discover')}
               </Text>
-            ) : null
-          }
-          renderItem={({ item }) => (
-            <SourceCard
-              source={item}
-              isPinned={isPinned(item.sourceId)}
-              navigateToSource={navigateToSource}
-              onTogglePinSource={sourceId =>
-                dispatch(togglePinSource(sourceId))
-              }
-              theme={theme}
-            />
+              {showMyAnimeList && <MalCard theme={theme} />}
+            </>
           )}
-        />
+          <SectionList
+            sections={[
+              {
+                header: getString('browseScreen.lastUsed'),
+                data: lastUsedSource,
+              },
+              { header: getString('browseScreen.pinned'), data: pinnedSources },
+              { header: getString('browseScreen.all'), data: allSources },
+            ]}
+            keyExtractor={(_, index) => index.toString()}
+            renderSectionHeader={({ section: { header, data } }) =>
+              data.length > 0 ? (
+                <Text
+                  style={[
+                    styles.sectionHeader,
+                    { color: theme.textColorSecondary },
+                  ]}
+                >
+                  {header}
+                </Text>
+              ) : null
+            }
+            renderItem={({ item }) => (
+              <SourceCard
+                source={item}
+                isPinned={isPinned(item.sourceId)}
+                navigateToSource={navigateToSource}
+                onTogglePinSource={sourceId =>
+                  dispatch(togglePinSource(sourceId))
+                }
+                theme={theme}
+              />
+            )}
+          />
+        </>
       )}
     </>
   );

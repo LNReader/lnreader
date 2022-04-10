@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { FlatList } from 'react-native';
 
 import { ProgressBar } from 'react-native-paper';
-import { useSelector } from 'react-redux';
 
 import { Searchbar } from '../../../components/Searchbar/Searchbar';
 import EmptyView from '../../../components/EmptyView';
@@ -10,8 +9,9 @@ import EmptyView from '../../../components/EmptyView';
 import { ScreenContainer } from '../../../components/Common';
 import GlobalSearchSourceItem from './GlobalSearchSourceItem';
 
-import { useLibrary, useSettings, useTheme } from '../../../hooks/reduxHooks';
+import { useLibrary, useTheme } from '../../../hooks/reduxHooks';
 import { sourceManager } from '../../../sources/sourceManager';
+import { useBrowseSettings, useSourcesReducer } from '../../../redux/hooks';
 
 const GlobalSearch = ({ route, navigation }) => {
   const theme = useTheme();
@@ -20,18 +20,12 @@ const GlobalSearch = ({ route, navigation }) => {
   if (route.params) {
     novelName = route.params.novelName;
   }
+  const { allSources, pinnedSourceIds = [] } = useSourcesReducer();
 
-  let {
-    sources,
-    pinned,
-    filters = [],
-  } = useSelector(state => state.sourceReducer);
-  sources = sources.filter(source => filters.indexOf(source.lang) === -1);
+  const isPinned = sourceId => pinnedSourceIds.indexOf(sourceId) > -1;
+  const pinnedSources = allSources.filter(source => isPinned(source.sourceId));
 
-  const pinnedSources = sources.filter(
-    source => pinned.indexOf(source.sourceId) !== -1,
-  );
-  const { searchAllSources = false } = useSettings();
+  const { searchAllSources = false } = useBrowseSettings();
 
   const [searchText, setSearchText] = useState(novelName);
   const [searchResults, setSearchResults] = useState([]);
@@ -60,7 +54,7 @@ const GlobalSearch = ({ route, navigation }) => {
   const onSubmitEditing = async () => {
     setProgress(0);
 
-    let globalSearchSources = searchAllSources ? sources : pinnedSources;
+    let globalSearchSources = searchAllSources ? allSources : pinnedSources;
 
     setSearchResults(
       globalSearchSources.map(item => ({
@@ -134,14 +128,14 @@ const GlobalSearch = ({ route, navigation }) => {
         data={searchResults}
         keyExtractor={item => item.sourceId.toString()}
         renderItem={renderItem}
-        extraData={pinned}
+        extraData={pinnedSources}
         ListEmptyComponent={
           <EmptyView
             icon="__φ(．．)"
             description={`Search a novel in ${
               searchAllSources
                 ? 'all sources'
-                : pinned.length === 0
+                : pinnedSources.length === 0
                 ? 'pinned sources\n(No sources pinned)'
                 : 'pinned sources'
             }`}

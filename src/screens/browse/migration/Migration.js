@@ -1,23 +1,22 @@
 import React from 'react';
 import { StyleSheet, View, FlatList, Text } from 'react-native';
 
-import { useSelector } from 'react-redux';
-
 import { Appbar } from '../../../components/Appbar';
 import MigrationSourceItem from './MigrationSourceItem';
 
 import { useLibrary, useTheme } from '../../../hooks/reduxHooks';
+import { useSourcesReducer } from '../../../redux/hooks';
 
 const GlobalSearch = ({ navigation }) => {
   const theme = useTheme();
 
   const library = useLibrary();
-  let { sources } = useSelector(state => state.sourceReducer);
+  let { allSources } = useSourcesReducer();
 
   const novelsPerSource = sourceId =>
     library.filter(novel => novel.sourceId === sourceId).length;
 
-  sources = sources.filter(
+  sources = allSources.filter(
     source =>
       library.filter(novel => novel.sourceId === source.sourceId).length,
   );
