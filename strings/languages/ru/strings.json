@@ -30,7 +30,7 @@
   "updates": "Обновления",
   "updatesScreen": {
     "searchbar": "Поиск обновлений",
-    "lastUpdatedAt": "Library last updated:"
+    "lastUpdatedAt": "Последнее обновление библиотеки:"
   },
   "history": "История",
   "historyScreen": {
@@ -38,7 +38,13 @@
   },
   "browse": "Обзор",
   "browseScreen": {
-    "searchbar": "Поиск источника"
+    "discover": "Узнайте больше",
+    "searchbar": "Поиск источника",
+    "globalSearch": "Глобальный поиск",
+    "listEmpty": "Включите языки в настройках",
+    "lastUsed": "Последнее использование",
+    "pinned": "Закреплено",
+    "all": "Все"
   },
   "novelScreen": {
     "addToLibaray": "Добавить в библиотеку",
@@ -59,7 +65,14 @@
       "generalSettings": "Основные",
       "generalSettingsScreen": {},
       "readerSettings": "Чтение",
-      "readerSettingsScreen": {}
+      "readerSettingsScreen": {},
+      "browseSettings": "Настройки обзора",
+      "browseSettingsScreen": {
+        "onlyShowPinnedSources": "Показывать только закрепленные источники",
+        "languages": "Языки",
+        "searchAllSources": "Поиск по всем источникам",
+        "searchAllWarning": "Поиск по большому количеству источников может привести к зависанию приложения, пока поиск не завершится."
+      }
     }
   }
 }
