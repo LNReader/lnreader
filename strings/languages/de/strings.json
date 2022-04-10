@@ -38,7 +38,13 @@
   },
   "browse": "Browse",
   "browseScreen": {
-    "searchbar": "Search sources"
+    "discover": "Discover",
+    "searchbar": "Search sources",
+    "globalSearch": "Global search",
+    "listEmpty": "Enable languages from settings",
+    "lastUsed": "Last used",
+    "pinned": "Pinned",
+    "all": "All"
   },
   "novelScreen": {
     "addToLibaray": "Add to library",
@@ -59,7 +65,14 @@
       "generalSettings": "General",
       "generalSettingsScreen": {},
       "readerSettings": "Reader",
-      "readerSettingsScreen": {}
+      "readerSettingsScreen": {},
+      "browseSettings": "Browse Settings",
+      "browseSettingsScreen": {
+        "onlyShowPinnedSources": "Only show pinned sources",
+        "languages": "Languages",
+        "searchAllSources": "Search all sources",
+        "searchAllWarning": "Searching a large number of sources may freeze the app till searching is finished."
+      }
     }
   }
 }
