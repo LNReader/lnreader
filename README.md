@@ -17,6 +17,10 @@
   <a href="https://github.com/LNReader/lnreader/releases/latest">
     <img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/LNReader/lnreader">
   </a>
+  <a href="https://github.com/LNReader/lnreader-preview/releases/latest">
+    <img alt="GitHub release (latest SemVer)" src="https://img.shields.io/github/v/release/LNReader/lnreader-preview?color=red&label=preview">
+  </a>
+  <a title="Crowdin" target="_blank" href="https://crowdin.com/project/lnreader"><img src="https://badges.crowdin.net/lnreader/localized.svg"></a>
   <a href="https://github.com/LNReader/lnreader/blob/main/LICENSE">
     <img alt="GitHub" src="https://img.shields.io/github/license/LNReader/lnreader">
   </a>
