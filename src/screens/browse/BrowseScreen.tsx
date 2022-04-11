@@ -1,5 +1,5 @@
 import { SectionList, StyleSheet, Text } from 'react-native';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 
 import { EmptyView, SearchbarV2 } from '../../components';
 import {
@@ -45,7 +45,8 @@ const BrowseScreen = () => {
     lastUsed,
   } = useSourcesReducer();
 
-  const { showMyAnimeList = true } = useBrowseSettings();
+  const { showMyAnimeList = true, onlyShowPinnedSources = false } =
+    useBrowseSettings();
 
   useEffect(() => {
     dispatch(getSourcesAction());
@@ -70,29 +71,34 @@ const BrowseScreen = () => {
     dispatch(setLastUsedSource({ sourceId: source.sourceId }));
   }, []);
 
+  const searchbarActions = useMemo(
+    () => [
+      {
+        iconName: 'book-search',
+        onPress: () => navigate('GlobalSearch' as never),
+      },
+      {
+        iconName: 'swap-vertical-variant',
+        onPress: () => navigate('Migration' as never),
+      },
+      {
+        iconName: 'cog-outline',
+        onPress: () => navigate('BrowseSettings' as never),
+      },
+    ],
+    [],
+  );
+
   return (
     <>
       <SearchbarV2
         searchText={searchText}
-        placeholder="Search sources"
+        placeholder={getString('browseScreen.searchbar')}
         leftIcon="magnify"
         onChangeText={onChangeText}
         clearSearchbar={handleClearSearchbar}
         theme={theme}
-        rightIcons={[
-          {
-            iconName: 'book-search',
-            onPress: () => navigate('GlobalSearch' as never),
-          },
-          {
-            iconName: 'swap-vertical-variant',
-            onPress: () => navigate('Migration' as never),
-          },
-          {
-            iconName: 'cog-outline',
-            onPress: () => navigate('BrowseSettings' as never),
-          },
-        ]}
+        rightIcons={searchbarActions}
       />
       {allSources.length === 0 ? (
         <EmptyView
@@ -122,7 +128,10 @@ const BrowseScreen = () => {
                 data: lastUsedSource,
               },
               { header: getString('browseScreen.pinned'), data: pinnedSources },
-              { header: getString('browseScreen.all'), data: allSources },
+              {
+                header: getString('browseScreen.all'),
+                data: onlyShowPinnedSources ? [] : allSources,
+              },
             ]}
             keyExtractor={(_, index) => index.toString()}
             renderSectionHeader={({ section: { header, data } }) =>
