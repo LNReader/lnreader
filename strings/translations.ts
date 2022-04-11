@@ -6,11 +6,12 @@ import es from './languages/es/strings.json';
 import tr from './languages/tr/strings.json';
 import ru from './languages/ru/strings.json';
 import ar from './languages/ar/strings.json';
+import uk from './languages/uk/strings.json';
 
 import { StringMap } from './types';
 
 i18n.fallbacks = true;
-i18n.translations = { en, es, tr, ru, ar };
+i18n.translations = { en, es, tr, ru, ar, uk };
 i18n.locale = Localization.locale;
 
 export const getString = (stringKey: keyof StringMap) => i18n.t(stringKey);
