@@ -30,7 +30,7 @@
   "updates": "Güncellemeler",
   "updatesScreen": {
     "searchbar": "Güncellemelerde ara",
-    "lastUpdatedAt": "Library last updated:"
+    "lastUpdatedAt": "Kitaplık son güncelleme:"
   },
   "history": "Geçmiş",
   "historyScreen": {
@@ -38,13 +38,13 @@
   },
   "browse": "Göz at",
   "browseScreen": {
-    "discover": "Discover",
+    "discover": "Keşfet",
     "searchbar": "Kaynak ara",
-    "globalSearch": "Global search",
-    "listEmpty": "Enable languages from settings",
-    "lastUsed": "Last used",
-    "pinned": "Pinned",
-    "all": "All"
+    "globalSearch": "Genel arama",
+    "listEmpty": "Ayarlardan dilleri etkinleştirin",
+    "lastUsed": "Son kullanılan",
+    "pinned": "Sabitlenmiş",
+    "all": "Tümü"
   },
   "novelScreen": {
     "addToLibaray": "Kitaplığa ekle",
@@ -66,12 +66,12 @@
       "generalSettingsScreen": {},
       "readerSettings": "Okuyucu",
       "readerSettingsScreen": {},
-      "browseSettings": "Browse Settings",
+      "browseSettings": "Göz Atma Seçenekleri",
       "browseSettingsScreen": {
-        "onlyShowPinnedSources": "Only show pinned sources",
-        "languages": "Languages",
-        "searchAllSources": "Search all sources",
-        "searchAllWarning": "Searching a large number of sources may freeze the app till searching is finished."
+        "onlyShowPinnedSources": "Yalnızca sabitlenmiş kaynakları göster",
+        "languages": "Diller",
+        "searchAllSources": "Tüm kaynaklarda ara",
+        "searchAllWarning": "Büyük miktarda kaynaklarda arama yapmak işlem bitene kadar uygulamayı dondurabilir."
       }
     }
   }
