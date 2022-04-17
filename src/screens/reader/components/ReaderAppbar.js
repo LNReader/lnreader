@@ -65,7 +65,7 @@ const ReaderAppbar = ({
           )}
 
           <IconButtonV2
-            icon={bookmarked ? 'bookmark' : 'bookmark-outline'}
+            name={bookmarked ? 'bookmark' : 'bookmark-outline'}
             size={24}
             onPress={() => {
               dispatch(bookmarkChapterAction([{ bookmark, chapterId }]));
@@ -73,6 +73,7 @@ const ReaderAppbar = ({
             }}
             color={theme.textColorPrimary}
             theme={theme}
+            style={styles.bookmark}
           />
         </Appbar.Header>
       </View>
@@ -96,5 +97,8 @@ const styles = StyleSheet.create({
   appbar: {
     backgroundColor: 'transparent',
     elevation: 0,
+  },
+  bookmark: {
+    marginRight: 4,
   },
 });
