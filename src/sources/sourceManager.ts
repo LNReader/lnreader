@@ -77,6 +77,7 @@ import ReaperScansScraper from './en/reaperscans';
 import JaomixScraper from './ru/jaomix';
 import RanobeHubScraper from './ru/ranobehub';
 import RanobeLibScraper from './ru/ranobelib';
+import RanobeRFScraper from './ru/ranoberf';
 import RenovelsScraper from './ru/renovels';
 import RulateScraper from './ru/rulate';
 import ArNovelScraper from './ar/arnovel';
@@ -250,6 +251,7 @@ export const sourceManager = (sourceId: number): Scraper => {
     116: RenovelsScraper,
     117: JaomixScraper,
     118: RulateScraper,
+    119: RanobeRFScraper,
   };
 
   return scrapers[sourceId];

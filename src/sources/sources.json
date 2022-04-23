@@ -796,5 +796,12 @@
     "url": "https://tl.rulate.ru",
     "lang": "Russian",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/ru/rulate/icon.png?raw=true"
+  },
+  {
+    "sourceId": 119,
+    "sourceName": "РанобэРФ",
+    "url": "https://ранобэ.рф",
+    "lang": "Russian",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/ru/ranoberf/icon.png?raw=true"
   }
 ]
