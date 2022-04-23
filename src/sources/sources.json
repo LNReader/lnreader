@@ -789,5 +789,12 @@
     "url": "https://jaomix.ru",
     "lang": "Russian",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/ru/jaomix/icon.png?raw=true"
+  },
+  {
+    "sourceId": 118,
+    "sourceName": "Rulate",
+    "url": "https://tl.rulate.ru",
+    "lang": "Russian",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/ru/rulate/icon.png?raw=true"
   }
 ]

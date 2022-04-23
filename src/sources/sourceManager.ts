@@ -78,6 +78,7 @@ import JaomixScraper from './ru/jaomix';
 import RanobeHubScraper from './ru/ranobehub';
 import RanobeLibScraper from './ru/ranobelib';
 import RenovelsScraper from './ru/renovels';
+import RulateScraper from './ru/rulate';
 import ArNovelScraper from './ar/arnovel';
 import DivineDaoLibraryScraper from './en/divinedaolibrary';
 import NovelOnlineFullScraper from './en/novelonlinefull';
@@ -248,6 +249,7 @@ export const sourceManager = (sourceId: number): Scraper => {
     115: HakoLightNovelScraper,
     116: RenovelsScraper,
     117: JaomixScraper,
+    118: RulateScraper,
   };
 
   return scrapers[sourceId];
