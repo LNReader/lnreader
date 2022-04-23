@@ -18,9 +18,7 @@ const popularNovels = async page => {
 
   loadedCheerio('.media-card-wrap').each(function () {
     const novelName = loadedCheerio(this).find('.media-card__title').text();
-    const novelCover = loadedCheerio(this)
-      .find('a.media-card')
-      .attr('data-src');
+    const novelCover = baseUrl + loadedCheerio(this).find('a.media-card').attr('data-src');
     const novelUrl = loadedCheerio(this).find('a.media-card').attr('href');
 
     const novel = { sourceId, novelName, novelCover, novelUrl };
@@ -93,10 +91,9 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   const loadedCheerio = cheerio.load(body);
 
   loadedCheerio('.reader-container img').each(function () {
-    if (!loadedCheerio(this).attr('src')?.startsWith('http')) {
-      const src = loadedCheerio(this).attr('src');
-
-      loadedCheerio(this).attr('src', `http://ranobelib.me${src}`);
+    if (!loadedCheerio(this).attr('data-src')?.startsWith('http')) {
+      const src = loadedCheerio(this).attr('data-src');
+      loadedCheerio(this).attr('data-src', `https://ranobelib.me${src}`);
     }
   });
 
@@ -130,9 +127,7 @@ const searchNovels = async searchTerm => {
 
   loadedCheerio('.media-card-wrap').each(function () {
     const novelName = loadedCheerio(this).find('.media-card__title').text();
-    const novelCover = loadedCheerio(this)
-      .find('a.media-card')
-      .attr('data-src');
+    const novelCover = baseUrl + loadedCheerio(this).find('a.media-card').attr('data-src');
     const novelUrl = loadedCheerio(this).find('a.media-card').attr('href');
 
     const novel = { sourceId, novelName, novelCover, novelUrl };
