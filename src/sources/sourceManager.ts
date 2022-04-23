@@ -74,6 +74,7 @@ import YushuboScraper from './ch/yushubo';
 import { KolNovelScraper } from './multisrc/wpmangastream/WPMangaStreamGenerator';
 import WLNUpdatesScraper from './en/wlnupdates';
 import ReaperScansScraper from './en/reaperscans';
+import JaomixScraper from './ru/jaomix';
 import RanobeHubScraper from './ru/ranobehub';
 import RanobeLibScraper from './ru/ranobelib';
 import RenovelsScraper from './ru/renovels';
@@ -246,6 +247,7 @@ export const sourceManager = (sourceId: number): Scraper => {
     114: LightNovelReaderScraper,
     115: HakoLightNovelScraper,
     116: RenovelsScraper,
+    117: JaomixScraper,
   };
 
   return scrapers[sourceId];
