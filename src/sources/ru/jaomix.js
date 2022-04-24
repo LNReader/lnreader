@@ -146,7 +146,7 @@ const searchNovels = async searchTerm => {
     const novel = { sourceId, novelName, novelCover, novelUrl };
     novels.push(novel);
   });
-  
+
   return novels;
 };
 
