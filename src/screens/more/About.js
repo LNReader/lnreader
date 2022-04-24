@@ -59,6 +59,14 @@ const AboutScreen = ({ navigation }) => {
             }
             theme={theme}
           />
+          <List.Item
+            title="Help translate"
+            description="https://crowdin.com/project/lnreader"
+            onPress={() =>
+              Linking.openURL('https://crowdin.com/project/lnreader')
+            }
+            theme={theme}
+          />
         </List.Section>
       </ScrollView>
     </ScreenContainer>
