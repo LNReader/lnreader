@@ -155,6 +155,8 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 
     let isTumblr = result.url.toLowerCase().includes('tumblr');
 
+    let isWattpad = result.url.toLowerCase().includes('wattpad');
+
     /**
      * Checks if its a wwordpress site
      */
@@ -191,6 +193,8 @@ const parseChapter = async (novelUrl, chapterUrl) => {
       chapterText = loadedCheerio('.chapter').html();
     } else if (isScribbleHub) {
       chapterText = loadedCheerio('div.chp_raw').html();
+    } else if (isWattpad) {
+      chapterText = loadedCheerio('.container  pre').html();
     } else if (isWordPress) {
       /**
        * Remove wordpress bloat tags
