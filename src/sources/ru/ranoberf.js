@@ -47,11 +47,13 @@ const parseNovelAndChapters = async novelUrl => {
   let chapters = [];
 
   json.props.pageProps.book.chapters.map(item => {
-    const chapterName = item.title
+    const chapterName = item.title;
     const releaseDate = item.publishedAt;
     const chapterUrl = baseUrl + item.url;
 
-    if (!item.isDonate) chapters.push({ chapterName, releaseDate, chapterUrl });
+    if (!item.isDonate) {
+      chapters.push({ chapterName, releaseDate, chapterUrl });
+    }
   });
 
   novel.chapters = chapters.reverse();
@@ -66,10 +68,10 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   let json = loadedCheerio('#__NEXT_DATA__').html();
   json = JSON.parse(json);
 
-  const chapterName = json.props.pageProps.chapter.title
+  const chapterName = json.props.pageProps.chapter.title;
   let temp = cheerio.load(json.props.pageProps.chapter.content.text);
 
-  temp('img').each(function() {
+  temp('img').each(function () {
     if (!loadedCheerio(this).attr('src')?.startsWith('http')) {
       let src = loadedCheerio(this).attr('src');
       loadedCheerio(this).attr('src', baseUrl + src);

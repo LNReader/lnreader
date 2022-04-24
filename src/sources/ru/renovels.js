@@ -33,17 +33,21 @@ const parseNovelAndChapters = async novelUrl => {
     sourceName,
     url: baseUrl + 'novel/' + body.content.dir,
     novelName: body.content.rus_name,
-    novelCover: 'https://api.renovels.org' + body.content.img?.high || body.content.img?.low,
+    novelCover:
+      'https://api.renovels.org' + body.content.img?.high ||
+      body.content.img?.low,
     summary: htmlToText(body.content.description),
     novelUrl,
   };
 
-  let all = (body.content.count_chapters / 100 + 1) ^ 0
+  let all = (body.content.count_chapters / 100 + 1) ^ 0;
   let chapters = [];
 
   for (let i = 0; i < all; i++) {
     let chapterResult = await fetch(
-      `https://api.renovels.org/api/titles/chapters/?branch_id=${body.content.branches[0].id}&count=100&page=${i + 1}`,
+      `https://api.renovels.org/api/titles/chapters/?branch_id=${
+        body.content.branches[0].id
+      }&count=100&page=${i + 1}`,
     );
     let volumes = await chapterResult.json();
 
@@ -51,9 +55,12 @@ const parseNovelAndChapters = async novelUrl => {
       const chapterName =
         `Том ${item.tome} Глава ${item.chapter} ${item.name}`?.trim();
       const releaseDate = item.upload_date;
-      const chapterUrl = 'https://api.renovels.org/api/titles/chapters/' + item.id + '/';
+      const chapterUrl =
+        'https://api.renovels.org/api/titles/chapters/' + item.id + '/';
 
-      if (!item.is_paid) chapters.push({ chapterName, releaseDate, chapterUrl });
+      if (!item.is_paid) {
+        chapters.push({ chapterName, releaseDate, chapterUrl });
+      }
     });
   }
 

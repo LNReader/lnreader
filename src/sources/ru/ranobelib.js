@@ -18,7 +18,8 @@ const popularNovels = async page => {
 
   loadedCheerio('.media-card-wrap').each(function () {
     const novelName = loadedCheerio(this).find('.media-card__title').text();
-    const novelCover = baseUrl + loadedCheerio(this).find('a.media-card').attr('data-src');
+    const novelCover =
+      baseUrl + loadedCheerio(this).find('a.media-card').attr('data-src');
     const novelUrl = loadedCheerio(this).find('a.media-card').attr('href');
 
     const novel = { sourceId, novelName, novelCover, novelUrl };
@@ -127,7 +128,8 @@ const searchNovels = async searchTerm => {
 
   loadedCheerio('.media-card-wrap').each(function () {
     const novelName = loadedCheerio(this).find('.media-card__title').text();
-    const novelCover = baseUrl + loadedCheerio(this).find('a.media-card').attr('data-src');
+    const novelCover =
+      baseUrl + loadedCheerio(this).find('a.media-card').attr('data-src');
     const novelUrl = loadedCheerio(this).find('a.media-card').attr('href');
 
     const novel = { sourceId, novelName, novelCover, novelUrl };
