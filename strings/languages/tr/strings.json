@@ -30,7 +30,7 @@
   "updates": "Güncellemeler",
   "updatesScreen": {
     "searchbar": "Güncellemelerde ara",
-    "lastUpdatedAt": "Library last updated:"
+    "lastUpdatedAt": "Kitaplık son güncelleme:"
   },
   "history": "Geçmiş",
   "historyScreen": {
@@ -38,7 +38,13 @@
   },
   "browse": "Göz at",
   "browseScreen": {
-    "searchbar": "Kaynak ara"
+    "discover": "Keşfet",
+    "searchbar": "Kaynak ara",
+    "globalSearch": "Genel arama",
+    "listEmpty": "Ayarlardan dilleri etkinleştirin",
+    "lastUsed": "Son kullanılan",
+    "pinned": "Sabitlenmiş",
+    "all": "Tümü"
   },
   "novelScreen": {
     "addToLibaray": "Kitaplığa ekle",
@@ -59,7 +65,14 @@
       "generalSettings": "Genel",
       "generalSettingsScreen": {},
       "readerSettings": "Okuyucu",
-      "readerSettingsScreen": {}
+      "readerSettingsScreen": {},
+      "browseSettings": "Göz Atma Seçenekleri",
+      "browseSettingsScreen": {
+        "onlyShowPinnedSources": "Yalnızca sabitlenmiş kaynakları göster",
+        "languages": "Diller",
+        "searchAllSources": "Tüm kaynaklarda ara",
+        "searchAllWarning": "Büyük miktarda kaynaklarda arama yapmak işlem bitene kadar uygulamayı dondurabilir."
+      }
     }
   }
 }

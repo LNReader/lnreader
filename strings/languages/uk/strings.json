@@ -1,65 +1,78 @@
 {
-  "library": "Library",
+  "library": "Бібліотека",
   "libraryScreen": {
-    "searchbar": "Search library",
-    "empty": "Your library is empty. Add series to your library from Browse.",
+    "searchbar": "Пошук у бібліотеці",
+    "empty": "Ваша бібліотека порожня. Додайте новели з Огляду.",
     "bottomSheet": {
       "filters": {
-        "downloaded": "Downloaded",
-        "unread": "Unread",
-        "completed": "Completed"
+        "downloaded": "Завантажено",
+        "unread": "Не прочитано",
+        "completed": "Завершено"
       },
       "sortOrders": {
-        "dateAdded": "Date added",
-        "alphabetically": "Alphabetically",
-        "totalChapters": "Total chapters"
+        "dateAdded": "За датою додання",
+        "alphabetically": "За алфавітом",
+        "totalChapters": "За загальною кількістю розділів"
       },
       "display": {
-        "displayMode": "Display mode",
-        "compact": "Compact grid",
-        "comfortable": "Comfortable grid",
-        "noTitle": "No title grid",
-        "list": "List",
-        "badges": "Badges",
-        "downloadBadges": "Download badges",
-        "unreadBadges": "Unread badges",
-        "showNoOfItems": "Show number of items"
+        "displayMode": "Режим відображення",
+        "compact": "Компактна сітка",
+        "comfortable": "Комфортна сітка",
+        "noTitle": "Сітка без заголовка",
+        "list": "Список",
+        "badges": "Мітки",
+        "downloadBadges": "Завантажено",
+        "unreadBadges": "Не прочитано",
+        "showNoOfItems": "Показати кількість елементів"
       }
     }
   },
-  "updates": "Updates",
+  "updates": "Оновлення",
   "updatesScreen": {
-    "searchbar": "Search updates",
-    "lastUpdatedAt": "Library last updated:"
+    "searchbar": "Пошук оновлень",
+    "lastUpdatedAt": "Останнє оновлення бібліотеки:"
   },
-  "history": "History",
+  "history": "Історія",
   "historyScreen": {
-    "searchbar": "Search history"
+    "searchbar": "Шукати в історії"
   },
-  "browse": "Browse",
+  "browse": "Огляд",
   "browseScreen": {
-    "searchbar": "Search sources"
+    "discover": "Огляд",
+    "searchbar": "Шукати джерела",
+    "globalSearch": "Глобальний пошук",
+    "listEmpty": "Увімкнути мови з налаштувань",
+    "lastUsed": "Останнє використане",
+    "pinned": "Закріплено",
+    "all": "Всі"
   },
   "novelScreen": {
-    "addToLibaray": "Add to library",
-    "inLibaray": "In library",
-    "continueReading": "Continue reading",
-    "chapters": "chapters",
-    "migrate": "Migrate",
+    "addToLibaray": "Додати до бібліотеки",
+    "inLibaray": "У бібліотеці",
+    "continueReading": "Продовжити читання",
+    "chapters": "розділи",
+    "migrate": "Перенести",
     "bottomSheet": {
-      "filter": "Filter",
-      "sort": "Sort",
-      "display": "Display"
+      "filter": "Фільтр",
+      "sort": "Сортувати",
+      "display": "Відображення"
     }
   },
-  "more": "More",
+  "more": "Більше",
   "moreScreen": {
-    "settings": "Settings",
+    "settings": "Налаштування",
     "settingsScreen": {
-      "generalSettings": "General",
+      "generalSettings": "Загальне",
       "generalSettingsScreen": {},
-      "readerSettings": "Reader",
-      "readerSettingsScreen": {}
+      "readerSettings": "Читалка",
+      "readerSettingsScreen": {},
+      "browseSettings": "Налаштування джерел",
+      "browseSettingsScreen": {
+        "onlyShowPinnedSources": "Відображати лише закріплені джерела",
+        "languages": "Мови",
+        "searchAllSources": "Шукати у всіх джерелах",
+        "searchAllWarning": "Пошук у великій кількості джерел може викликати зависання програми до закінчення пошуку."
+      }
     }
   }
 }
