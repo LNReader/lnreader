@@ -2,6 +2,7 @@ import React, { memo, useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 
 import FastImage from 'react-native-fast-image';
+import { coverPlaceholderColor } from '../../../theme/colors';
 import { DownloadButton } from './DownloadButton';
 
 const UpdateCard = ({
@@ -26,12 +27,7 @@ const UpdateCard = ({
       <>
         <Pressable onPress={onPressCover}>
           <FastImage
-            source={{
-              uri:
-                item.novelCover && !item.novelCover.startsWith('/')
-                  ? item.novelCover
-                  : 'https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true',
-            }}
+            source={{ uri: item.novelCover }}
             style={styles.updateIcon}
           />
         </Pressable>
@@ -93,6 +89,7 @@ const styles = StyleSheet.create({
     width: 42,
     height: 42,
     borderRadius: 4,
+    backgroundColor: coverPlaceholderColor,
   },
   chapterDetails: {
     flex: 1,

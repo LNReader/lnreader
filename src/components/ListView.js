@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, Pressable } from 'react-native';
 
 import FastImage from 'react-native-fast-image';
 import { defaultCoverUri } from '../sources/helpers/constants';
+import { coverPlaceholderColor } from '../theme/colors';
 
 const ListView = ({
   item,
@@ -14,11 +15,6 @@ const ListView = ({
   isSelected,
   onLongPress,
 }) => {
-  const uri =
-    item.novelCover && !item.novelCover.startsWith('/')
-      ? item.novelCover
-      : defaultCoverUri;
-
   return (
     <Pressable
       android_ripple={{ color: theme.rippleColor }}
@@ -31,7 +27,7 @@ const ListView = ({
     >
       <FastImage
         source={{
-          uri,
+          uri: item.novelCover,
         }}
         style={[styles.extensionIcon, inLibraryBadge && { opacity: 0.5 }]}
       />
@@ -64,6 +60,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 4,
+    backgroundColor: coverPlaceholderColor,
   },
   novelName: {
     flex: 1,

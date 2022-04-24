@@ -10,6 +10,7 @@ import { parseChapterNumber } from '../../../../utils/parseChapterNumber';
 
 import { History } from '../../../../database/types';
 import { ThemeTypeV1 } from '../../../../theme/v1/theme/types';
+import { coverPlaceholderColor } from '../../../../theme/colors';
 
 interface HistoryCardProps {
   history: History;
@@ -128,6 +129,7 @@ const styles = StyleSheet.create({
     height: 80,
     width: 56,
     borderRadius: 4,
+    backgroundColor: coverPlaceholderColor,
   },
   detailsContainer: {
     flex: 1,

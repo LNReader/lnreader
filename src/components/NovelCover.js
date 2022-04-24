@@ -15,6 +15,7 @@ import ListView from './ListView';
 import { useDeviceOrientation } from '../services/utils/helpers';
 import { useSettings } from '../hooks/reduxHooks';
 import { defaultCoverUri } from '../sources/helpers/constants';
+import { coverPlaceholderColor } from '../theme/colors';
 
 const NovelCover = ({
   item,
@@ -43,10 +44,7 @@ const NovelCover = ({
 
   const selectNovel = () => onLongPress && onLongPress(item.novelId);
 
-  const uri =
-    item.novelCover && !item.novelCover.startsWith('/')
-      ? item.novelCover
-      : defaultCoverUri;
+  const uri = item.novelCover;
 
   return displayMode !== 2 ? (
     <View
@@ -92,7 +90,11 @@ const NovelCover = ({
         <FastImage
           source={{ uri }}
           style={[
-            { height: getHeight(), borderRadius: 4 },
+            {
+              height: getHeight(),
+              borderRadius: 4,
+              backgroundColor: coverPlaceholderColor,
+            },
             libraryStatus && { opacity: 0.5 },
           ]}
         />

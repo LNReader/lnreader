@@ -118,12 +118,19 @@ const UpdatesScreen = () => {
       } as never,
     );
 
-  const navigateToNovel = (sourceId: number, novelUrl: string) =>
+  const navigateToNovel = (
+    sourceId: number,
+    novelUrl: string,
+    novelName: string,
+    novelCover: string,
+  ) =>
     navigate(
       'Novel' as never,
       {
         sourceId,
         novelUrl,
+        novelName,
+        novelCover,
       } as never,
     );
 

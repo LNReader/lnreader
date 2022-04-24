@@ -5,6 +5,7 @@ import { Button, IconButtonV2 } from '../../../../components';
 import { ButtonVariation } from '../../../../components/Button/Button';
 
 import { Source } from '../../../../sources/types';
+import { coverPlaceholderColor } from '../../../../theme/colors';
 import { ThemeTypeV1 } from '../../../../theme/v1/theme/types';
 
 interface Props {
@@ -72,6 +73,7 @@ const styles = StyleSheet.create({
     height: 40,
     width: 40,
     borderRadius: 4,
+    backgroundColor: coverPlaceholderColor,
   },
   details: {
     marginLeft: 16,

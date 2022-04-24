@@ -42,25 +42,6 @@ const NovelInfoHeader = ({
 
   const dispatch = useAppDispatch();
 
-  const getNovelCoverUrl = () => {
-    const defaultCover =
-      'https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true';
-
-    if (loading) {
-      if (item.novelCover && !item.novelCover.startsWith('/')) {
-        return item.novelCover;
-      } else {
-        return defaultCover;
-      }
-    } else {
-      if (novel.novelCover && !novel.novelCover.startsWith('/')) {
-        return novel.novelCover;
-      } else {
-        return defaultCover;
-      }
-    }
-  };
-
   const getStatusIcon = useMemo(
     () => ({
       Ongoing: 'clock-outline',
@@ -73,13 +54,13 @@ const NovelInfoHeader = ({
   return (
     <>
       <CoverImage
-        source={{ uri: getNovelCoverUrl() }}
+        source={{ uri: !loading ? novel.novelCover : item.novelCover }}
         theme={theme}
         hideBackdrop={hideBackdrop}
       >
         <NovelInfoContainer>
           <NovelThumbnail
-            source={{ uri: getNovelCoverUrl() }}
+            source={{ uri: !loading ? novel.novelCover : item.novelCover }}
             theme={theme}
             setCustomNovelCover={setCustomNovelCover}
           />

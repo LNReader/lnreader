@@ -13,6 +13,7 @@ import { IconButtonV2 } from '../../../../components';
 import { useDownloadQueue } from '../../../../redux/hooks';
 import { Menu } from 'react-native-paper';
 import { ThemeTypeV1 } from '../../../../theme/v1/theme/types';
+import { coverPlaceholderColor } from '../../../../theme/colors';
 
 interface UpdateCardProps {
   item: Update;
@@ -24,7 +25,12 @@ interface UpdateCardProps {
     chapterUrl: string,
     isBookmarked: number,
   ) => void;
-  navigateToNovel: (sourceId: number, novelUrl: string) => void;
+  navigateToNovel: (
+    sourceId: number,
+    novelUrl: string,
+    novelName: string,
+    novelCover: string,
+  ) => void;
   handleDownloadChapter: (
     sourceId: number,
     novelUrl: string,
@@ -74,7 +80,14 @@ const UpdateCard: React.FC<UpdateCardProps> = ({
     >
       <View style={styles.imageContainer}>
         <Pressable
-          onPress={() => navigateToNovel(item.sourceId, item.novelUrl)}
+          onPress={() =>
+            navigateToNovel(
+              item.sourceId,
+              item.novelUrl,
+              item.novelName,
+              item.novelCover,
+            )
+          }
         >
           <FastImage source={{ uri: item.novelCover }} style={styles.cover} />
         </Pressable>
@@ -150,6 +163,7 @@ const styles = StyleSheet.create({
     height: 40,
     width: 40,
     borderRadius: 4,
+    backgroundColor: coverPlaceholderColor,
   },
   imageContainer: {
     flex: 1,

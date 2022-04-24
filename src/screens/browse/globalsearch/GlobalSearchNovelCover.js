@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text, Image, Pressable } from 'react-native';
 import { defaultCoverUri } from '../../../sources/helpers/constants';
+import { coverPlaceholderColor } from '../../../theme/colors';
 
 const GlobalSearchNovelCover = ({
   novel,
@@ -11,8 +12,7 @@ const GlobalSearchNovelCover = ({
 }) => {
   const { novelName, novelCover } = novel;
 
-  const uri =
-    novelCover && !novelCover.startsWith('/') ? novelCover : defaultCoverUri;
+  const uri = novelCover;
 
   return (
     <View style={styles.container}>
@@ -56,6 +56,7 @@ const styles = StyleSheet.create({
     height: 150,
     width: 115,
     borderRadius: 4,
+    backgroundColor: coverPlaceholderColor,
   },
   title: {
     fontFamily: 'pt-sans-bold',

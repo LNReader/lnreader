@@ -15,6 +15,7 @@ import { easeGradient } from 'react-native-easing-gradient';
 import FastImage from 'react-native-fast-image';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { Chip } from '../../../../components';
+import { coverPlaceholderColor } from '../../../../theme/colors';
 
 const NovelInfoContainer = ({ children }) => (
   <View style={styles.novelInfoContainer}>{children}</View>
@@ -39,13 +40,17 @@ const CoverImage = ({ children, source, theme, hideBackdrop }) => {
             backgroundColor: `${theme.colorPrimaryDark}B4`,
           }}
         >
-          <LinearGradient
-            colors={colors}
-            locations={locations}
-            style={styles.linearGradient}
-          >
-            {children}
-          </LinearGradient>
+          {source.uri ? (
+            <LinearGradient
+              colors={colors}
+              locations={locations}
+              style={styles.linearGradient}
+            >
+              {children}
+            </LinearGradient>
+          ) : (
+            children
+          )}
         </View>
       </FastImage>
     );
@@ -242,12 +247,14 @@ const styles = StyleSheet.create({
   },
   linearGradient: {
     height: 271,
+    flex: 1,
   },
   novelThumbnail: {
     height: 150,
     width: 100,
     marginHorizontal: 4,
     borderRadius: 6,
+    backgroundColor: coverPlaceholderColor,
   },
   novelTitle: {
     fontSize: 18,
