@@ -782,5 +782,26 @@
     "url": "https://renovels.org",
     "lang": "Russian",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/ru/renovels/icon.png?raw=true"
+  },
+  {
+    "sourceId": 117,
+    "sourceName": "Jaomix",
+    "url": "https://jaomix.ru",
+    "lang": "Russian",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/ru/jaomix/icon.png?raw=true"
+  },
+  {
+    "sourceId": 118,
+    "sourceName": "Rulate",
+    "url": "https://tl.rulate.ru",
+    "lang": "Russian",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/ru/rulate/icon.png?raw=true"
+  },
+  {
+    "sourceId": 119,
+    "sourceName": "РанобэРФ",
+    "url": "https://ранобэ.рф",
+    "lang": "Russian",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/ru/ranoberf/icon.png?raw=true"
   }
 ]
