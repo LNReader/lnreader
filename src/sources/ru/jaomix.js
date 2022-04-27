@@ -1,4 +1,5 @@
 import * as cheerio from 'cheerio';
+import { Status } from '../helpers/constants';
 
 const sourceId = 117;
 const sourceName = 'Jaomix';
@@ -47,6 +48,19 @@ const parseNovelAndChapters = async novelUrl => {
   novel.novelName = loadedCheerio('div[class="desc-book"] > h1').text().trim();
   novel.novelCover = loadedCheerio('div[class="img-book"] > img').attr('src');
   novel.summary = loadedCheerio('div[id="desc-tab"]').text().trim();
+
+  loadedCheerio('#info-book > p').each(function () {
+    let text = loadedCheerio(this).text().replace(/,/g, '').split(' ');
+    if (text[0] === 'Автор:') {
+      novel.author = text.splice(1).join(' ');
+    } else if (text[0] === 'Жанры:') {
+      novel.genre = text.splice(1).join(',');
+    } else if (text[0] === 'Статус:') {
+      novel.status = text.includes('продолжается')
+        ? Status.ONGOING
+        : Status.COMPLETED;
+    }
+  });
 
   const termid = loadedCheerio('div[class="like-but"]').attr('id');
   const chapters = [];
@@ -103,12 +117,6 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   const body = await result.text();
   const loadedCheerio = cheerio.load(body);
 
-  loadedCheerio('img').each(function () {
-    if (!loadedCheerio(this).attr('src')?.startsWith('http')) {
-      let src = loadedCheerio(this).attr('src');
-      loadedCheerio(this).attr('src', baseUrl + src);
-    }
-  });
   loadedCheerio('div[class="adblock-service"]').remove();
   const chapterName = loadedCheerio('h1[class="entry-title"]').html();
   const chapterText = loadedCheerio('div[class="entry-content"]').html();

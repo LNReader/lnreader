@@ -49,11 +49,29 @@ const parseNovelAndChapters = async novelUrl => {
 
   novel.summary = loadedCheerio('.book-description__text').text().trim();
 
-  novel.genre = '';
-
-  novel.status = Status.UNKNOWN;
-
   novel.author = loadedCheerio('.book-author').text().trim();
+
+  loadedCheerio('div[class="book-meta-table"] > div').each(function () {
+    let name = loadedCheerio(this)
+      .find('div[class="book-meta-key"]')
+      .text()
+      .trim();
+
+    if (name === 'Статус перевода') {
+      novel.status = loadedCheerio(this)
+        .find('div[class="book-meta-value"]')
+        .text()
+        .includes('процессе')
+        ? Status.ONGOING
+        : Status.COMPLETED;
+    } else if (name === 'Жанр') {
+      novel.genre = loadedCheerio(this)
+        .find('div[class="book-meta-value book-tags"]')
+        .text()
+        .trim()
+        .replace(/[\n\r]+/g, ',');
+    }
+  });
 
   let novelChapters = [];
 
