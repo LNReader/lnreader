@@ -1,4 +1,5 @@
 import * as cheerio from 'cheerio';
+import { Status } from '../helpers/constants';
 
 const sourceId = 93;
 const sourceName = 'RanobeLib';
@@ -49,11 +50,31 @@ const parseNovelAndChapters = async novelUrl => {
 
   novel.summary = loadedCheerio('.media-description__text').text().trim();
 
-  novel.author = loadedCheerio(
-    '#main-page > div > div.container.container_responsive > div > div.media-sidebar > div.media-info-list.paper > a:nth-child(4) > div.media-info-list__value',
-  )
+  novel.genre = loadedCheerio('div[class="media-tags"]')
     .text()
-    .trim();
+    .trim()
+    .replace(/[\n\r]+/g, ',')
+    .replace(/  /g, '');
+
+  loadedCheerio(
+    'div[class="media-info-list paper"] > [class="media-info-list__item"]',
+  ).each(function () {
+    let name = loadedCheerio(this)
+      .find('div[class="media-info-list__title"]')
+      .text();
+
+    if (name === 'Статус перевода') {
+      novel.status =
+        loadedCheerio(this).find('div:nth-child(2)').text().trim() ===
+        'Продолжается'
+          ? Status.ONGOING
+          : Status.COMPLETED;
+    } else if (name === 'Автор') {
+      novel.author = loadedCheerio(this).find('div:nth-child(2)').text().trim();
+    } else if (name === 'Художник') {
+      novel.artist = loadedCheerio(this).find('div:nth-child(2)').text().trim();
+    }
+  });
 
   let chapters = [];
 

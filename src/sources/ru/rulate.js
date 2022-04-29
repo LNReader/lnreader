@@ -1,4 +1,5 @@
 import * as cheerio from 'cheerio';
+import { Status } from '../helpers/constants';
 
 const sourceId = 118;
 const sourceName = 'Rulate';
@@ -6,11 +7,15 @@ const sourceName = 'Rulate';
 const baseUrl = 'https://tl.rulate.ru';
 
 const popularNovels = async page => {
-  const totalPages = 50;
-  const result = await fetch(`${baseUrl}/site/login?page=${page}`);
+  const result = await fetch(baseUrl + '/site/login?page=' + page);
   const body = await result.text();
 
   const loadedCheerio = cheerio.load(body);
+  const totalPages = parseInt(
+    loadedCheerio('li[class="last"] > a').attr('href')?.replace(/[^\d]/g, '') ||
+      '250',
+    10,
+  );
   let novels = [];
 
   loadedCheerio('.imged > li').each(function () {
@@ -44,7 +49,43 @@ const parseNovelAndChapters = async novelUrl => {
   novel.novelCover =
     baseUrl + loadedCheerio('div[class="images"] > div img').attr('src');
   novel.summary = loadedCheerio('#Info > div:nth-child(3)').text().trim();
+  novel.genre = [];
+
   let chapters = [];
+
+  loadedCheerio('div[class="span5"] > p').each(function () {
+    switch (loadedCheerio(this).find('strong').text()) {
+      case 'Автор:':
+        novel.author = loadedCheerio(this).find('em > a').text().trim();
+        break;
+      case 'Выпуск:':
+        novel.status =
+          loadedCheerio(this).find('em').text().trim() === 'продолжается'
+            ? Status.ONGOING
+            : Status.COMPLETED;
+        break;
+      case 'Тэги:':
+        loadedCheerio(this)
+          .find('em > a')
+          .each(function () {
+            novel.genre.push(loadedCheerio(this).text());
+          });
+        break;
+      case 'Жанры:':
+        loadedCheerio(this)
+          .find('em > a')
+          .each(function () {
+            novel.genre.push(loadedCheerio(this).text());
+          });
+        break;
+    }
+  });
+
+  if (novel.genre.length > 0) {
+    novel.genre = novel.genre.reverse().join(',');
+  } else {
+    novel.genre = '';
+  }
 
   loadedCheerio('table > tbody > tr.chapter_row').each(function () {
     const chapterName = loadedCheerio(this)

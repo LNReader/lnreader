@@ -1,5 +1,6 @@
 import * as cheerio from 'cheerio';
 import { htmlToText } from '../helpers/htmlToText';
+import { Status } from '../helpers/constants';
 
 const sourceId = 119;
 const sourceName = 'РанобэРФ';
@@ -42,8 +43,13 @@ const parseNovelAndChapters = async novelUrl => {
     novelName: json.props.pageProps.book.title,
     novelCover: baseUrl + json.props.pageProps.book.verticalImage.url,
     summary: htmlToText(json.props.pageProps.book.description),
-    author: json.props.pageProps.book?.author || null,
+    author: json.props.pageProps.book?.author,
+    genre: json.props.pageProps.book.genres.map(item => item.title).join(','),
+    status: json.props.pageProps.book.additionalInfo.includes('Активен')
+      ? Status.ONGOING
+      : Status.COMPLETED,
   };
+
   let chapters = [];
 
   json.props.pageProps.book.chapters.map(item => {
