@@ -120,7 +120,7 @@ const restoreFromBackupQuery =
   'INSERT INTO novels (novelUrl, sourceUrl, sourceId, source, novelName, novelCover, novelSummary, author, artist, status, genre, followed, unread) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
 export const restoreLibrary = async novel => {
-  return new Promise((resolve, reject) =>
+  return new Promise((resolve, reject) => {
     db.transaction(tx =>
       tx.executeSql(
         restoreFromBackupQuery,
@@ -141,14 +141,19 @@ export const restoreLibrary = async novel => {
         ],
         async (txObj, { insertId }) => {
           const chapters = await fetchChapters(novel.sourceId, novel.novelUrl);
-          await insertChapters(insertId, chapters);
+
+          if (chapters) {
+            await insertChapters(insertId, chapters);
+
+            resolve();
+          }
         },
         (txObj, error) => {
-          // console.log('Error ', error)
+          resolve();
         },
       ),
-    ),
-  );
+    );
+  });
 };
 
 const migrateNovelQuery =
