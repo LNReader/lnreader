@@ -62,7 +62,9 @@ const parseNovelAndChapters = async novelUrl => {
       .text()
       .replace(`${novel.novelName} – `, '')
       .replace('Bahasa Indonesia', '')
+      .replace(/\s+/g, ' ')
       .trim();
+
     const releaseDate = loadedCheerio(this)
       .find('a span')
       .first()
@@ -85,7 +87,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   let loadedCheerio = cheerio.load(body);
 
   const chapterName = loadedCheerio('.title-chapter').text();
-  const chapterText = loadedCheerio('.reader-areas').html();
+  const chapterText = loadedCheerio('.reader-area').html();
 
   const chapter = {
     sourceId,
