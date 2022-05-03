@@ -26,7 +26,11 @@ const NovelScreenButtonGroup: React.FC<NovelScreenButtonGroupProps> = ({
   const { navigate } = useNavigation();
   const followButtonColor = followed ? theme.colorAccent : theme.textColorHint;
 
-  const { isTracked } = useNovelTrackerInfo(novel.novelId);
+  const { isTracked, isTrackerAvailable } = useNovelTrackerInfo(novel.novelId);
+
+  const trackerButtonColor = isTracked
+    ? theme.colorAccent
+    : theme.textColorHint;
 
   const handleOpenWebView = async () => {
     WebBrowser.openBrowserAsync(sourceUrl);
@@ -61,7 +65,7 @@ const NovelScreenButtonGroup: React.FC<NovelScreenButtonGroupProps> = ({
           </Text>
         </Pressable>
       </View>
-      {isTracked ? (
+      {isTrackerAvailable ? (
         <View style={styles.buttonContainer}>
           <Pressable
             android_ripple={{ color: theme.rippleColor }}
@@ -70,10 +74,10 @@ const NovelScreenButtonGroup: React.FC<NovelScreenButtonGroupProps> = ({
           >
             <MaterialCommunityIcons
               name={isTracked ? 'check' : 'sync'}
-              color={theme.textColorHint}
+              color={trackerButtonColor}
               size={24}
             />
-            <Text style={[styles.buttonLabel, { color: theme.textColorHint }]}>
+            <Text style={[styles.buttonLabel, { color: trackerButtonColor }]}>
               {isTracked ? 'Tracked' : 'Tracking'}
             </Text>
           </Pressable>

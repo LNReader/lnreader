@@ -1,13 +1,13 @@
 import { useAppSelector } from '../redux/hooks';
 
 const useNovelTrackerInfo = (novelId: number) => {
-  const { trackedNovels } = useAppSelector(state => state.trackerReducer);
+  const tracker = useAppSelector(state => state.trackerReducer) as any;
 
-  const isTracked = trackedNovels.find(
+  const isTracked = tracker.trackedNovels.find(
     (novel: any) => novel.novelId === novelId,
   );
 
-  return { isTracked };
+  return { isTracked, isTrackerAvailable: tracker };
 };
 
 export default useNovelTrackerInfo;
