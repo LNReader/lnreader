@@ -6,7 +6,6 @@ on:
 jobs:
   build-android:
     name: Build app
-    needs: install-and-test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
