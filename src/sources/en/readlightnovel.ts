@@ -4,7 +4,7 @@ import { SourceChapter, SourceChapterItem, SourceNovelItem } from '../types';
 const sourceId = 2;
 const sourceName = 'ReadLightNovel';
 const baseUrl = 'https://www.readlightnovel.me';
-const searchUrl = 'https://www.readlightnovel.me/detailed-search';
+const searchUrl = 'https://www.readlightnovel.me/detailed-search-rln';
 
 const popularNovels = async (page: number) => {
   let totalPages = 1751;

@@ -85,7 +85,7 @@ const parseNovelAndChapters = async (novelUrl: string) => {
     : undefined;
 
   novel.summary = loadedCheerio(
-    'body > section:nth-child(4) > div > div > div.col-12.col-xl-9 > div > div:nth-child(3) > div',
+    'body > section:nth-child(4) > div > div > div.col-12.col-xl-9 > div > div:nth-child(5)',
   )
     .text()
     .trim();
@@ -156,7 +156,7 @@ const parseChapter = async (novelUrl: string, chapterUrl: string) => {
 };
 
 const searchNovels = async (searchTerm: string) => {
-  const url = `${baseUrl}/detailed-search`;
+  const url = `${baseUrl}/detailed-search-lnr`;
 
   const formData = new FormData();
   formData.append('keyword', searchTerm);
