@@ -6,7 +6,7 @@ const sourceId = 86;
 const sourceName = 'NovelRingan';
 
 const baseUrl = 'https://novelringan.com/';
-const searchUrl = `${baseUrl}advanced-search`;
+const coverUriPrefix = 'https://i0.wp.com/novelringan.com/wp-content/uploads/';
 
 const popularNovels = async page => {
   let totalPages = 402;
@@ -21,7 +21,8 @@ const popularNovels = async page => {
 
   loadedCheerio('article.post').each(function () {
     const novelName = loadedCheerio(this).find('.entry-title').text()?.trim();
-    const novelCover = loadedCheerio(this).find('img').attr('src');
+    const novelCover =
+      coverUriPrefix + loadedCheerio(this).find('img').attr('data-sxrx');
     const novelUrl = loadedCheerio(this).find('h2 > a').attr('href');
 
     const novel = {
@@ -61,7 +62,8 @@ const parseNovelAndChapters = async novelUrl => {
   };
 
   novel.novelName = loadedCheerio('.entry-title').text()?.trim();
-  novel.novelCover = loadedCheerio('img.ts-post-image').attr('src');
+  novel.novelCover =
+    coverUriPrefix + loadedCheerio('img.ts-post-image').attr('data-sxrx');
   novel.summary = loadedCheerio(
     'body > div.site-container > div > main > article > div > div.maininfo > span > p',
   ).text();
@@ -137,7 +139,9 @@ const searchNovels = async searchTerm => {
 
   loadedCheerio('article.post').each(function () {
     const novelName = loadedCheerio(this).find('.entry-title').text();
-    const novelCover = loadedCheerio(this).find('img').attr('src');
+    const novelCover =
+      coverUriPrefix + loadedCheerio(this).find('img').attr('data-sxrx');
+
     const novelUrl = loadedCheerio(this).find('h2 > a').attr('href');
 
     const novel = {
