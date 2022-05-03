@@ -100,13 +100,13 @@ const BrowseScreen = () => {
         theme={theme}
         rightIcons={searchbarActions}
       />
-      {allSources.length === 0 ? (
+      {languageFilters.length === 0 ? (
         <EmptyView
           icon="(･Д･。"
           description={getString('browseScreen.listEmpty')}
           theme={theme}
         />
-      ) : (
+      ) : allSources.length === 0 ? null : (
         <>
           {showMyAnimeList && (
             <>
