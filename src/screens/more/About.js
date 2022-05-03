@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import { List } from '../../components/List';
 import { ScreenContainer } from '../../components/Common';
 import { MoreHeader } from './components/MoreHeader';
-import { appversion, releasedt } from '../../utils/utils';
+import { appVersion, releaseDate } from '../../utils/versionUtils';
 
 const AboutScreen = ({ navigation }) => {
   const theme = useSelector(state => state.settingsReducer.theme);
@@ -24,14 +24,14 @@ const AboutScreen = ({ navigation }) => {
         <List.Section>
           <List.Item
             title="Version"
-            description={`Stable ${appversion} (${releasedt})`}
+            description={`Stable ${appVersion} (${releaseDate})`}
             theme={theme}
           />
           <List.Item
             title="What's new"
             onPress={() =>
               Linking.openURL(
-                `https://github.com/LNReader/lnreader/releases/tag/v${appversion}`,
+                `https://github.com/LNReader/lnreader/releases/tag/v${appVersion}`,
               )
             }
             theme={theme}
