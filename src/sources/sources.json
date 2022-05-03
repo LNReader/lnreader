@@ -803,5 +803,12 @@
     "url": "https://ранобэ.рф",
     "lang": "Russian",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/ru/ranoberf/icon.png?raw=true"
+  },
+  {
+    "sourceId": 120,
+    "url": "https://mtnovel.com/",
+    "sourceName": "MT Novel",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/allnovelfull/icon.png?raw=true",
+    "lang": "English"
   }
 ]
