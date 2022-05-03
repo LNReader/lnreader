@@ -122,7 +122,7 @@ export const MeioNovelScraper = new MadaraScraper(
   60,
   'https://meionovel.id/',
   'MeioNovel',
-  { 'useNewChapterEndpoint': true, 'lang': 'Indonesian' },
+  { 'useNewChapterEndpoint': true, 'lang': 'Indonesian', 'totalPages': 35 },
 );
 
 export const WebNovelLoverScraper = new MadaraScraper(
