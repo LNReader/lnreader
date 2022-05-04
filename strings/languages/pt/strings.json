@@ -1,77 +1,77 @@
 {
-  "library": "Library",
+  "library": "Biblioteca",
   "libraryScreen": {
-    "searchbar": "Search library",
-    "empty": "Your library is empty. Add series to your library from Browse.",
+    "searchbar": "Pesquisar na biblioteca",
+    "empty": "Sua biblioteca está vazia. Adicione séries à sua biblioteca pelo Navegador.",
     "bottomSheet": {
       "filters": {
-        "downloaded": "Downloaded",
-        "unread": "Unread",
-        "completed": "Completed"
+        "downloaded": "Baixados",
+        "unread": "Não lidos",
+        "completed": "Concluídos"
       },
       "sortOrders": {
-        "dateAdded": "Date added",
-        "alphabetically": "Alphabetically",
-        "totalChapters": "Total chapters"
+        "dateAdded": "Data adicionado",
+        "alphabetically": "Em Ordem Alfabética",
+        "totalChapters": "Total de capítulos"
       },
       "display": {
-        "displayMode": "Display mode",
-        "compact": "Compact grid",
-        "comfortable": "Comfortable grid",
-        "noTitle": "No title grid",
-        "list": "List",
-        "badges": "Badges",
-        "downloadBadges": "Download badges",
-        "unreadBadges": "Unread badges",
-        "showNoOfItems": "Show number of items"
+        "displayMode": "Modo de exibição",
+        "compact": "Grade compacta",
+        "comfortable": "Grade confortável",
+        "noTitle": "Grade sem títulos",
+        "list": "Lista",
+        "badges": "Emblemas",
+        "downloadBadges": "Baixar emblemas",
+        "unreadBadges": "Emblemas não lidos",
+        "showNoOfItems": "Mostrar número de itens"
       }
     }
   },
-  "updates": "Updates",
+  "updates": "Atualizações",
   "updatesScreen": {
-    "searchbar": "Search updates",
-    "lastUpdatedAt": "Library last updated:"
+    "searchbar": "Procurar por atualizações",
+    "lastUpdatedAt": "Biblioteca atualizada pela última vez:"
   },
-  "history": "History",
+  "history": "Histórico",
   "historyScreen": {
-    "searchbar": "Search history"
+    "searchbar": "Histórico de pesquisa"
   },
-  "browse": "Browse",
+  "browse": "Navegar",
   "browseScreen": {
-    "discover": "Discover",
-    "searchbar": "Search sources",
-    "globalSearch": "Global search",
-    "listEmpty": "Enable languages from settings",
-    "lastUsed": "Last used",
-    "pinned": "Pinned",
-    "all": "All"
+    "discover": "Descubra",
+    "searchbar": "Pesquisar nas fontes",
+    "globalSearch": "Pesquisa global",
+    "listEmpty": "Habilitar idiomas a partir das configurações",
+    "lastUsed": "Usado por último",
+    "pinned": "Fixado",
+    "all": "Todos"
   },
   "novelScreen": {
-    "addToLibaray": "Add to library",
-    "inLibaray": "In library",
-    "continueReading": "Continue reading",
-    "chapters": "chapters",
-    "migrate": "Migrate",
+    "addToLibaray": "Adicionar à biblioteca",
+    "inLibaray": "Na biblioteca",
+    "continueReading": "Continuar lendo",
+    "chapters": "Capítulos",
+    "migrate": "Migrar",
     "bottomSheet": {
-      "filter": "Filter",
-      "sort": "Sort",
-      "display": "Display"
+      "filter": "Filtro",
+      "sort": "Ordenar por",
+      "display": "Exibir"
     }
   },
-  "more": "More",
+  "more": "Mais",
   "moreScreen": {
-    "settings": "Settings",
+    "settings": "Configurações",
     "settingsScreen": {
-      "generalSettings": "General",
+      "generalSettings": "Geral",
       "generalSettingsScreen": {},
-      "readerSettings": "Reader",
+      "readerSettings": "Leitor de texto",
       "readerSettingsScreen": {},
-      "browseSettings": "Browse Settings",
+      "browseSettings": "Configurações de navegação",
       "browseSettingsScreen": {
-        "onlyShowPinnedSources": "Only show pinned sources",
-        "languages": "Languages",
-        "searchAllSources": "Search all sources",
-        "searchAllWarning": "Searching a large number of sources may freeze the app till searching is finished."
+        "onlyShowPinnedSources": "Mostrar apenas fontes fixadas",
+        "languages": "Idiomas",
+        "searchAllSources": "Pesquisar em todas as fontes",
+        "searchAllWarning": "Procurar em um grande número de fontes pode congelar o aplicativo até que a procura termine."
       }
     }
   }
