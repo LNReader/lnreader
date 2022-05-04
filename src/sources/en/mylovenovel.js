@@ -48,6 +48,7 @@ const parseNovelAndChapters = async novelUrl => {
     sourceName,
     url,
     novelUrl,
+    chapters: [],
   };
 
   novel.novelName = loadedCheerio('p.booktitle').text().trim();
