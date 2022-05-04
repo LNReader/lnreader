@@ -7,7 +7,7 @@ const useNovelTrackerInfo = (novelId: number) => {
     (novel: any) => novel.novelId === novelId,
   );
 
-  return { isTracked, isTrackerAvailable: tracker };
+  return { isTracked, isTrackerAvailable: tracker.tracker };
 };
 
 export default useNovelTrackerInfo;
