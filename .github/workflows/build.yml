@@ -5,7 +5,7 @@ on:
       - main
 jobs:
   build-android:
-    name: Build app
+    name: Build App
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -33,6 +33,11 @@ jobs:
       - name: Build Android Release
         run: |
           cd android && ./gradlew assembleRelease --no-daemon
+
+      - name: Set Env
+        run: |
+          commit_count=$(git rev-list --count HEAD)
+          echo "COMMIT_COUNT=$commit_count" >> $GITHUB_ENV
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
