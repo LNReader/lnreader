@@ -249,5 +249,23 @@
       "totalPages": 208,
       "useNewChapterEndpoint": true
     }
+  },
+  {
+    "sourceId": 121,
+    "baseUrl": "https://www.sonicmtl.com/",
+    "sourceName": "SonicMTL",
+    "options": {
+      "totalPages": 17,
+      "useNewChapterEndpoint": true
+    }
+  },
+  {
+    "sourceId": 122,
+    "baseUrl": "https://mtlnovel.club/",
+    "sourceName": "MTLNovel.Club",
+    "options": {
+      "totalPages": 35,
+      "useNewChapterEndpoint": true
+    }
   }
 ]

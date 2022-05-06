@@ -810,5 +810,19 @@
     "sourceName": "MT Novel",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/src/en/allnovelfull/icon.png?raw=true",
     "lang": "English"
+  },
+  {
+    "sourceId": 121,
+    "sourceName": "SonicMTL",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/sonicmtl.png?raw=true",
+    "url": "https://www.sonicmtl.com/",
+    "lang": "English"
+  },
+  {
+    "sourceId": 122,
+    "sourceName": "MTLNovel.Club",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/mtlnovel.club.png?raw=true",
+    "url": "https://mtlnovel.club/",
+    "lang": "English"
   }
 ]

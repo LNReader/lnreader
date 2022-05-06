@@ -245,3 +245,17 @@ export const NovelOwlScraper = new MadaraScraper(
   'NovelOwl',
   { 'totalPages': 208, 'useNewChapterEndpoint': true },
 );
+
+export const SonicMTLScraper = new MadaraScraper(
+  121,
+  'https://www.sonicmtl.com/',
+  'SonicMTL',
+  { 'totalPages': 17, 'useNewChapterEndpoint': true },
+);
+
+export const MTLNovelDotClubScraper = new MadaraScraper(
+  122,
+  'https://mtlnovel.club/',
+  'MTLNovel.Club',
+  { 'totalPages': 35, 'useNewChapterEndpoint': true },
+);
