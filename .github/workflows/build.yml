@@ -36,8 +36,8 @@ jobs:
 
       - name: Set Env
         run: |
-          commit_count=$(git rev-list --count HEAD)
-          echo "COMMIT_COUNT=$commit_count" >> $GITHUB_ENV
+          set -x
+          echo "COMMIT_COUNT=$(git rev-list --count HEAD)" >> $GITHUB_ENV
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
