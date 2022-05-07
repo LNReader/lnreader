@@ -1,3 +1,5 @@
+export const coverPlaceholderColor = '#8888881F';
+
 const AccentColors = {
   default: '#2979FF',
   defaultDark: '#3399FF',

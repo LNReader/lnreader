@@ -14,7 +14,6 @@ import ListView from './ListView';
 
 import { useDeviceOrientation } from '../services/utils/helpers';
 import { useSettings } from '../hooks/reduxHooks';
-import { defaultCoverUri } from '../sources/helpers/constants';
 import { coverPlaceholderColor } from '../theme/colors';
 
 const NovelCover = ({

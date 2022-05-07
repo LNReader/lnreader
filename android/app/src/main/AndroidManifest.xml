@@ -30,26 +30,6 @@
 		android:allowBackup="true"
 		android:theme="@style/AppTheme"
 		android:usesCleartextTraffic="true">
-    
-		<meta-data
-			android:name="expo.modules.updates.EXPO_UPDATE_URL"
-			android:value="https://exp.host/@rajarsheechatterjee/LNReader"/>
-    	
-		<meta-data
-			android:name="expo.modules.updates.EXPO_SDK_VERSION"
-			android:value="41.0.0"/>
-    
-		<meta-data
-			android:name="expo.modules.updates.ENABLED"
-			android:value="false"/>
-	
-		<meta-data
-			android:name="expo.modules.updates.EXPO_UPDATES_CHECK_ON_LAUNCH"
-			android:value="ALWAYS"/>
-	
-		<meta-data
-			android:name="expo.modules.updates.EXPO_UPDATES_LAUNCH_WAIT_MS"
-			android:value="0"/>
 	
 		<meta-data
 			android:name="expo.modules.notifications.default_notification_icon"
