@@ -1,4 +1,8 @@
 {
+  "common": {
+    "cancel": "İptal",
+    "ok": "Tamam"
+  },
   "library": "Kitaplık",
   "libraryScreen": {
     "searchbar": "Kitaplıkta ara",
@@ -34,7 +38,8 @@
   },
   "history": "Geçmiş",
   "historyScreen": {
-    "searchbar": "Geçmişte ara"
+    "searchbar": "Geçmişte ara",
+    "clearHistorWarning": "Emin misin? Tüm geçmiş kaybolacak."
   },
   "browse": "Göz at",
   "browseScreen": {
@@ -45,6 +50,23 @@
     "lastUsed": "Son kullanılan",
     "pinned": "Sabitlenmiş",
     "all": "Tümü"
+  },
+  "readerScreen": {
+    "bottomSheet": {
+      "textSize": "Metin boyutu",
+      "color": "Renk",
+      "textAlign": "Metin Hızası",
+      "lineHeight": "Satır Yüksekliği",
+      "fontStyle": "Yazı tipi stili",
+      "fullscreen": "Tam ekran",
+      "renderHml": "HTML'yi Render'le",
+      "autoscroll": "Otomatik Kaydırma",
+      "verticalSeekbar": "Dikey Arama Çubuğu",
+      "showBatteryAndTime": "Pili ve saati göster",
+      "showProgressPercentage": "İlerleme yüzdesini göster",
+      "swipeGestures": "Bölümler arasında gezinmek için sola/sağa kaydırın",
+      "allowTextSelection": "Yazı seçmeye izin ver"
+    }
   },
   "novelScreen": {
     "addToLibaray": "Kitaplığa ekle",
