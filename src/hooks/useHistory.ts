@@ -27,7 +27,10 @@ const useHistory = () => {
     }
   };
 
-  const clearAllHistory = () => deleteAllHistory();
+  const clearAllHistory = () => {
+    deleteAllHistory();
+    getHistory();
+  };
 
   const removeChapterFromHistory = async (historyId: number) => {
     deleteChapterHistory(historyId);
@@ -39,6 +42,7 @@ const useHistory = () => {
       getHistory();
     }, []),
   );
+
   return {
     isLoading,
     history,

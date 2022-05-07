@@ -1,4 +1,8 @@
 {
+  "common": {
+    "cancel": "Cancel",
+    "ok": "Ok"
+  },
   "library": "Library",
   "libraryScreen": {
     "searchbar": "Search library",
@@ -34,7 +38,8 @@
   },
   "history": "History",
   "historyScreen": {
-    "searchbar": "Search history"
+    "searchbar": "Search history",
+    "clearHistorWarning": "Are you sure? All history will be lost."
   },
   "browse": "Browse",
   "browseScreen": {

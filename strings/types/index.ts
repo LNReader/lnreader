@@ -3,6 +3,8 @@
  */
 
 export interface StringMap {
+  'common.cancel': 'string';
+  'common.ok': 'string';
   'library': 'string';
   'libraryScreen.searchbar': 'string';
   'libraryScreen.empty': 'string';
@@ -26,6 +28,7 @@ export interface StringMap {
   'updatesScreen.lastUpdatedAt': 'string';
   'history': 'string';
   'historyScreen.searchbar': 'string';
+  'historyScreen.clearHistorWarning': 'string';
   'browse': 'string';
   'browseScreen.discover': 'string';
   'browseScreen.searchbar': 'string';

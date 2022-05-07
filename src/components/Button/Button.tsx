@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View, ViewStyle } from 'react-native';
 import React from 'react';
 
 import { ThemeType } from '../../theme/types';
@@ -14,31 +14,31 @@ interface Props {
   title: string;
   textColor?: string;
   onPress?: () => void;
-  margin?: number;
   theme: ThemeType;
+  style?: ViewStyle;
 }
 
 const Button: React.FC<Props> = ({
   variation = ButtonVariation.DEFAULT,
   title,
   textColor,
-  margin = 0,
   onPress,
   theme,
+  style,
 }) => {
   return (
     <View
       style={[
         styles.button,
-        { margin },
-        variation === 'outlined'
+        variation === ButtonVariation.OUTLINED
           ? {
               ...styles.outlined,
               borderColor: theme.textColorHint,
             }
-          : variation !== 'clear' && {
+          : variation !== ButtonVariation.CLEAR && {
               backgroundColor: theme.colorAccent,
             },
+        style,
       ]}
     >
       <Pressable
@@ -50,10 +50,10 @@ const Button: React.FC<Props> = ({
           style={{
             color: textColor
               ? textColor
-              : variation === 'outlined'
+              : variation === ButtonVariation.OUTLINED
               ? theme.colorAccent
-              : variation === 'default'
-              ? theme.colorButtonText
+              : variation === ButtonVariation.CLEAR
+              ? theme.colorAccent
               : theme.textColorPrimary,
           }}
           numberOfLines={1}
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingVertical: 8,
-    paddingHorizontal: 24,
+    paddingHorizontal: 16,
   },
   outlined: {
     borderWidth: 1,

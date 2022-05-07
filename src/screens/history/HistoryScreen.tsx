@@ -2,23 +2,25 @@ import React, { useState } from 'react';
 import { StyleSheet, SectionList, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import moment from 'moment';
+import { Portal } from 'react-native-paper';
 
 import {
   EmptyView,
   ErrorScreenV2,
   LoadingScreenV2,
   SearchbarV2,
-} from '../../components';
+} from '../../components/index';
 import HistoryCard from './components/HistoryCard/HistoryCard';
 
-import { useSearch, useHistory } from '../../hooks';
+import { useSearch, useHistory, useBoolean } from '@hooks/index';
 import { useTheme } from '../../redux/hooks';
 
 import { dateFormats } from '../../utils/constants/dateFormats';
 import { convertDateToISOString } from '../../database/utils/convertDateToISOString';
 
 import { History } from '../../database/types';
-import { getString } from '../../../strings/translations';
+import { getString } from '@strings/translations';
+import ClearHistoryDialog from './components/ClearHistoryDialog';
 
 const HistoryScreen = () => {
   const theme = useTheme();
@@ -108,6 +110,12 @@ const HistoryScreen = () => {
       } as never,
     );
 
+  const {
+    value: clearHistoryDialogVisible,
+    setTrue: openClearHistoryDialog,
+    setFalse: closeClearHistoryDialog,
+  } = useBoolean();
+
   return (
     <>
       <SearchbarV2
@@ -119,7 +127,7 @@ const HistoryScreen = () => {
         rightIcons={[
           {
             iconName: 'delete-sweep-outline',
-            onPress: clearAllHistory,
+            onPress: openClearHistoryDialog,
           },
         ]}
         theme={theme}
@@ -158,6 +166,14 @@ const HistoryScreen = () => {
               />
             }
           />
+          <Portal>
+            <ClearHistoryDialog
+              visible={clearHistoryDialogVisible}
+              onSubmit={clearAllHistory}
+              onDismiss={closeClearHistoryDialog}
+              theme={theme}
+            />
+          </Portal>
         </>
       )}
     </>

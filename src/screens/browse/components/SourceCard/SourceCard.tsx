@@ -46,7 +46,6 @@ const SourceCard: React.FC<Props> = ({
         textColor={theme.colorAccent}
         onPress={() => navigateToSource(source)}
         theme={theme}
-        margin={0}
       />
       <IconButtonV2
         name={isPinned ? 'pin' : 'pin-outline'}

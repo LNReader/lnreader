@@ -36,7 +36,6 @@ const MalCard: React.FC<Props> = ({ theme }) => {
           textColor={theme.colorAccent}
           onPress={() => navigate('BrowseMal' as never)}
           theme={theme}
-          margin={0}
         />
       </View>
     </Pressable>
