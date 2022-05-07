@@ -1,4 +1,8 @@
 {
+  "common": {
+    "cancel": "Cancel",
+    "ok": "Ok"
+  },
   "library": "Библиотека",
   "libraryScreen": {
     "searchbar": "Поиск в библиотеке",
@@ -34,7 +38,8 @@
   },
   "history": "История",
   "historyScreen": {
-    "searchbar": "Поиск в истории"
+    "searchbar": "Поиск в истории",
+    "clearHistorWarning": "Are you sure? All history will be lost."
   },
   "browse": "Обзор",
   "browseScreen": {
@@ -45,6 +50,23 @@
     "lastUsed": "Последнее использование",
     "pinned": "Закреплено",
     "all": "Все"
+  },
+  "readerScreen": {
+    "bottomSheet": {
+      "textSize": "Text size",
+      "color": "Color",
+      "textAlign": "Text align",
+      "lineHeight": "Line Height",
+      "fontStyle": "Font style",
+      "fullscreen": "Fullscreen",
+      "renderHml": "Render HTML",
+      "autoscroll": "AutoScroll",
+      "verticalSeekbar": "Vertical Seekbar",
+      "showBatteryAndTime": "Show battery and time",
+      "showProgressPercentage": "Show progress percentage",
+      "swipeGestures": "Swipe left/right to navigate between chapters",
+      "allowTextSelection": "Allow text selection"
+    }
   },
   "novelScreen": {
     "addToLibaray": "Добавить в библиотеку",
