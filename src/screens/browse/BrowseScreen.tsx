@@ -108,19 +108,6 @@ const BrowseScreen = () => {
         />
       ) : allSources.length === 0 ? null : (
         <>
-          {showMyAnimeList && (
-            <>
-              <Text
-                style={[
-                  styles.sectionHeader,
-                  { color: theme.textColorSecondary },
-                ]}
-              >
-                {getString('browseScreen.discover')}
-              </Text>
-              {showMyAnimeList && <MalCard theme={theme} />}
-            </>
-          )}
           <SectionList
             sections={[
               {
@@ -133,6 +120,21 @@ const BrowseScreen = () => {
                 data: onlyShowPinnedSources ? [] : allSources,
               },
             ]}
+            ListHeaderComponent={
+              showMyAnimeList && (
+                <>
+                  <Text
+                    style={[
+                      styles.sectionHeader,
+                      { color: theme.textColorSecondary },
+                    ]}
+                  >
+                    {getString('browseScreen.discover')}
+                  </Text>
+                  {showMyAnimeList && <MalCard theme={theme} />}
+                </>
+              )
+            }
             keyExtractor={(_, index) => index.toString()}
             renderSectionHeader={({ section: { header, data } }) =>
               data.length > 0 ? (
