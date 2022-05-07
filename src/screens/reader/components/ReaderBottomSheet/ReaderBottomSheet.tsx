@@ -15,13 +15,14 @@ import {
 } from '../../../../redux/hooks';
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
 import { getString } from '../../../../../strings/translations';
-import ReaderSheetPreferenceItem from './ReaderSheetPreferenceItem';
 import { setAppSettings } from '../../../../redux/settings/settings.actions';
+
+import ReaderSheetPreferenceItem from './ReaderSheetPreferenceItem';
 import TextSizeSlider from './TextSizeSlider';
 import ReaderThemeSelector from './ReaderThemeSelector';
 import ReaderTextAlignSelector from './ReaderTextAlignSelector';
 import ReaderLineHeight from './ReaderLineHeight';
-import ReaderFontPicker from './ReaderBottomSheetFontPicker';
+import ReaderFontPicker from './ReaderFontPicker';
 
 const ReaderTab: React.FC = () => {
   return (

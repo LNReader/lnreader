@@ -49,7 +49,7 @@ import WebViewReader from './components/WebViewReader';
 import { useTextToSpeech } from '../../hooks/useTextToSpeech';
 import { useFullscreenMode } from '../../hooks';
 import { getChapterFromDb } from '../../database/queries/DownloadQueries';
-import ReaderBottomSheetV2 from './components/ReaderBottomSheetV2/ReaderBottomSheetV2';
+import ReaderBottomSheetV2 from './components/ReaderBottomSheet/ReaderBottomSheet';
 import { useReaderSettings } from '../../redux/hooks';
 
 const Chapter = ({ route, navigation }) => {
