@@ -2,12 +2,13 @@ import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { IconButton } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { isUrlAbsolute } from '../../../utils/isAbsoluteUrl';
 import FadeView from '../../../components/Common/CrossFadeView';
+import * as WebBrowser from 'expo-web-browser';
 
 const ChapterFooter = ({
   hide,
   theme,
-  swipeGestures,
   readerSheetRef,
   scrollViewRef,
   navigateToNextChapter,
@@ -15,7 +16,7 @@ const ChapterFooter = ({
   nextChapter,
   prevChapter,
   useWebViewForChapter,
-  enableSwipeGestures,
+  chapterUrl,
 }) => {
   const rippleConfig = {
     color: theme.rippleColor,
@@ -48,18 +49,15 @@ const ChapterFooter = ({
             color={theme.textColorPrimary}
           />
         </Pressable>
-        <Pressable
-          android_ripple={rippleConfig}
-          style={styles.buttonStyles}
-          onPress={enableSwipeGestures}
-        >
-          <IconButton
-            icon="gesture-swipe"
-            disabled={!swipeGestures}
-            size={26}
-            color={theme.textColorPrimary}
-          />
-        </Pressable>
+        {isUrlAbsolute(chapterUrl) ? (
+          <Pressable
+            android_ripple={rippleConfig}
+            style={styles.buttonStyles}
+            onPress={() => WebBrowser.openBrowserAsync(chapterUrl)}
+          >
+            <IconButton icon="earth" size={26} color={theme.textColorPrimary} />
+          </Pressable>
+        ) : null}
         {!useWebViewForChapter && (
           <>
             <Pressable

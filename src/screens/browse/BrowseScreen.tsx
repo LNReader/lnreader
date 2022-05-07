@@ -121,7 +121,7 @@ const BrowseScreen = () => {
               },
             ]}
             ListHeaderComponent={
-              showMyAnimeList && (
+              showMyAnimeList ? (
                 <>
                   <Text
                     style={[
@@ -133,7 +133,7 @@ const BrowseScreen = () => {
                   </Text>
                   {showMyAnimeList && <MalCard theme={theme} />}
                 </>
-              )
+              ) : null
             }
             keyExtractor={(_, index) => index.toString()}
             renderSectionHeader={({ section: { header, data } }) =>

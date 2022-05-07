@@ -439,8 +439,7 @@ const Chapter = ({ route, navigation }) => {
         <ReaderFooter
           theme={theme}
           novelUrl={novelUrl}
-          swipeGestures={swipeGestures}
-          enableSwipeGestures={enableSwipeGestures}
+          chapterUrl={chapterUrl}
           enableWebView={enableWebView}
           dispatch={dispatch}
           nextChapter={nextChapter}
