@@ -34,18 +34,22 @@ const MalNovelCard: React.FC<Props> = ({ novel, onPress, theme }) => {
               {novel.score}
             </Text>
           </Text>
-          <Text style={[styles.small, { color: theme.textColorPrimary }]}>
-            Type:{' '}
-            <Text style={{ color: theme.textColorSecondary }}>
-              {novel.info[1]}
+          {novel?.info?.[1] ? (
+            <Text style={[styles.small, { color: theme.textColorPrimary }]}>
+              Type:{' '}
+              <Text style={{ color: theme.textColorSecondary }}>
+                {novel.info[1]}
+              </Text>
             </Text>
-          </Text>
-          <Text style={[styles.small, { color: theme.textColorPrimary }]}>
-            Published:{' '}
-            <Text style={{ color: theme.textColorSecondary }}>
-              {novel.info[2]}
+          ) : null}
+          {novel?.info?.[2] ? (
+            <Text style={[styles.small, { color: theme.textColorPrimary }]}>
+              Published:{' '}
+              <Text style={{ color: theme.textColorSecondary }}>
+                {novel.info[2]}
+              </Text>
             </Text>
-          </Text>
+          ) : null}
         </View>
       </Pressable>
     </View>
@@ -73,7 +77,7 @@ const styles = StyleSheet.create({
   },
   infoContainer: {
     flex: 1,
-    padding: 8,
+    padding: 16,
   },
   title: {
     marginBottom: 4,
