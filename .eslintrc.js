@@ -13,7 +13,6 @@ module.exports = {
         'react-native/no-inline-styles': 'warn',
         'no-console': 'warn',
         'react-hooks/exhaustive-deps': 'warn',
-        'no-unused-vars': ['warn'],
       },
     },
   ],

@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
@@ -10,12 +11,16 @@
     "noEmit": true,
     "strict": true,
     "target": "esnext",
-    "resolveJsonModule": true
+    "noUnusedLocals": true,
+    "resolveJsonModule": true,
+    "paths": {
+      "@components/*": ["./src/components/*"],
+      "@hooks/*": ["./src/hooks/*"],
+      "@screens/*": ["'./src/screens/*"],
+      "@strings/*": ["./strings/*"]
+    }
   },
-  "baseUrl": "./src",
-  "paths": {
-    "@components/*": ["components/*"]
-  },
+  "include": ["src/"],
   "exclude": [
     "node_modules",
     "babel.config.js",
