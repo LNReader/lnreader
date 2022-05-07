@@ -1,4 +1,8 @@
 {
+  "common": {
+    "cancel": "Cancel",
+    "ok": "Ok"
+  },
   "library": "Bibliothek",
   "libraryScreen": {
     "searchbar": "Search library",
@@ -34,7 +38,8 @@
   },
   "history": "Verlauf",
   "historyScreen": {
-    "searchbar": "Search history"
+    "searchbar": "Search history",
+    "clearHistorWarning": "Are you sure? All history will be lost."
   },
   "browse": "Browse",
   "browseScreen": {
@@ -45,6 +50,23 @@
     "lastUsed": "Last used",
     "pinned": "Pinned",
     "all": "All"
+  },
+  "readerScreen": {
+    "bottomSheet": {
+      "textSize": "Text size",
+      "color": "Color",
+      "textAlign": "Text align",
+      "lineHeight": "Line Height",
+      "fontStyle": "Font style",
+      "fullscreen": "Fullscreen",
+      "renderHml": "Render HTML",
+      "autoscroll": "AutoScroll",
+      "verticalSeekbar": "Vertical Seekbar",
+      "showBatteryAndTime": "Show battery and time",
+      "showProgressPercentage": "Show progress percentage",
+      "swipeGestures": "Swipe left/right to navigate between chapters",
+      "allowTextSelection": "Allow text selection"
+    }
   },
   "novelScreen": {
     "addToLibaray": "Add to library",
