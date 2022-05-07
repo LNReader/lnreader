@@ -2,14 +2,14 @@ import React, { ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { List as PaperList, Divider as PaperDivider } from 'react-native-paper';
-import { ThemeTypeV1 } from '../../theme/v1/theme/types';
+import { ThemeType } from '../../theme/types';
 
 interface ListItemProps {
   title: string;
   description?: string | null;
   icon?: string;
   onPress?: () => void;
-  theme: ThemeTypeV1;
+  theme: ThemeType;
 }
 
 const Section = ({ children }: { children: ReactNode }) => (
@@ -21,7 +21,7 @@ const SubHeader = ({
   theme,
 }: {
   children: ReactNode;
-  theme: ThemeTypeV1;
+  theme: ThemeType;
 }) => (
   <PaperList.Subheader style={{ color: theme.colorAccent }}>
     {children}
@@ -56,7 +56,7 @@ const Item: React.FC<ListItemProps> = ({
   />
 );
 
-const Divider = ({ theme }: { theme: ThemeTypeV1 }) => (
+const Divider = ({ theme }: { theme: ThemeType }) => (
   <PaperDivider
     style={[styles.divider, { backgroundColor: theme.dividerColor }]}
   />
@@ -69,7 +69,7 @@ const InfoItem = ({
 }: {
   title: string;
   icon: string;
-  theme: ThemeTypeV1;
+  theme: ThemeType;
 }) => (
   <PaperList.Item
     title={title}

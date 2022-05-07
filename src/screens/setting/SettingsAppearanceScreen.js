@@ -34,7 +34,7 @@ import {
   yangTheme,
   yinYangTheme,
   yotsubaTheme,
-} from '../../theme/v1/theme/theme';
+} from '../../theme/theme';
 
 const lightThemes = [
   lightTheme,

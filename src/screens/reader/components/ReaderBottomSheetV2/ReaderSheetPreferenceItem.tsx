@@ -1,17 +1,17 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text } from 'react-native';
-import { Switch } from 'react-native-paper';
 
+import { Switch } from 'react-native-paper';
 import { ThemeType } from '../../../../theme/types';
 
-interface Props {
+interface ReaderSheetPreferenceItemProps {
   label: string;
   value: boolean;
   onPress: () => void;
   theme: ThemeType;
 }
 
-const ReaderSheetPreferenceItem: React.FC<Props> = ({
+const ReaderSheetPreferenceItem: React.FC<ReaderSheetPreferenceItemProps> = ({
   label,
   value,
   onPress,
@@ -23,8 +23,10 @@ const ReaderSheetPreferenceItem: React.FC<Props> = ({
       android_ripple={{ color: theme.rippleColor }}
       onPress={onPress}
     >
-      <Text style={{ color: theme.onSurface }}>{label}</Text>
-      <Switch value={value} onValueChange={onPress} color={theme.primary} />
+      <Text style={[styles.label, { color: theme.textColorSecondary }]}>
+        {label}
+      </Text>
+      <Switch value={value} onValueChange={onPress} color={theme.colorAccent} />
     </Pressable>
   );
 };
@@ -38,5 +40,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 16,
     paddingVertical: 12,
+  },
+  label: {
+    flex: 1,
+    paddingRight: 16,
   },
 });

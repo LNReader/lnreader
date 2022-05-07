@@ -21,11 +21,7 @@ import {
 } from '../../components/Common/ToggleButton';
 import { List } from '../../components/List';
 
-import {
-  useReaderSettings,
-  useSettings,
-  useTheme,
-} from '../../hooks/reduxHooks';
+import { useSettings, useTheme } from '../../hooks/reduxHooks';
 import {
   setAppSettings,
   setReaderSettings,
@@ -39,6 +35,7 @@ import { useModal } from '../../hooks/useModal';
 import SwitchSetting from '../../components/Switch/Switch';
 import FontPickerModal from './components/FontPickerModal';
 import { fonts } from '../../services/utils/constants';
+import { useReaderSettings } from '../../redux/hooks';
 
 const presetThemes = [
   {

@@ -1,16 +1,10 @@
 import { useSelector } from 'react-redux';
-import { darkTheme } from '../theme/v1/theme/theme';
+import { darkTheme } from '../theme/theme';
 
 const useTheme = () => {
   const theme = useSelector(state => state.settingsReducer.theme);
 
   return theme || darkTheme;
-};
-
-const useReaderSettings = () => {
-  const readerSettings = useSelector(state => state.settingsReducer.reader);
-
-  return readerSettings;
 };
 
 const useSettings = () => {
@@ -118,7 +112,6 @@ const useLibraryFilters = () => {
 
 export {
   useTheme,
-  useReaderSettings,
   useLibrary,
   useSettings,
   usePreferences,

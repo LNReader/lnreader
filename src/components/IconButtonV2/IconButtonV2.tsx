@@ -2,7 +2,7 @@ import React from 'react';
 import { Pressable, StyleSheet, View, ViewStyle } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { ThemeTypeV1 } from '../../theme/v1/theme/types';
+import { ThemeType } from '../../theme/types';
 
 type Props = {
   name: string;
@@ -11,7 +11,7 @@ type Props = {
   disabled?: boolean;
   padding?: number;
   onPress?: () => void;
-  theme: ThemeTypeV1;
+  theme: ThemeType;
   style?: ViewStyle;
 };
 

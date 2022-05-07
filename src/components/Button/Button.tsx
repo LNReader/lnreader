@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 
-import { ThemeTypeV1 } from '../../theme/v1/theme/types';
+import { ThemeType } from '../../theme/types';
 
 export enum ButtonVariation {
   DEFAULT = 'default',
@@ -15,7 +15,7 @@ interface Props {
   textColor?: string;
   onPress?: () => void;
   margin?: number;
-  theme: ThemeTypeV1;
+  theme: ThemeType;
 }
 
 const Button: React.FC<Props> = ({

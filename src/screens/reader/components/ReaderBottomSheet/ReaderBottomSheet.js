@@ -17,7 +17,7 @@ import {
   ToggleColorButton,
 } from '../../../../components/Common/ToggleButton';
 import { ReaderBottomSheetSwitch } from './components/ReaderBottomSheetSwitch';
-import { ReaderBottomSheetFontPicker } from './components/ReaderBottomSheetFontPicker';
+import { ReaderBottomSheetFontPicker } from '../ReaderBottomSheetV2/ReaderBottomSheetFontPicker';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const ReaderSheet = ({

@@ -1,5 +1,5 @@
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
-import { ThemeTypeV1 } from '../../theme/v1/theme/types';
+import { ThemeType } from '../../theme/types';
 import type { RootState, AppDispatch } from '../store';
 
 export const useAppDispatch = () => useDispatch<AppDispatch>();
@@ -7,13 +7,8 @@ export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
 export const useTheme = () =>
   useAppSelector(
-    (state: RootState) => state.settingsReducerV2.appearance.theme,
-  );
-
-export const useThemeV1 = () =>
-  useAppSelector(
     (state: RootState) => state.settingsReducer.theme,
-  ) as ThemeTypeV1;
+  ) as ThemeType;
 
 export const useSettingsV1 = () =>
   useAppSelector((state: RootState) => state.settingsReducer);
@@ -28,9 +23,6 @@ export const useAppearanceSettings = () =>
   useAppSelector((state: RootState) => state.settingsReducerV2.appearance);
 
 export const useReaderSettings = () =>
-  useAppSelector((state: RootState) => state.settingsReducerV2.reader);
-
-export const useReaderSettingsV1 = () =>
   useAppSelector((state: RootState) => state.settingsReducer.reader);
 
 export const useLibrarySettings = () =>

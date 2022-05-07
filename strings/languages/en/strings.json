@@ -46,6 +46,23 @@
     "pinned": "Pinned",
     "all": "All"
   },
+  "readerScreen": {
+    "bottomSheet": {
+      "textSize": "Text size",
+      "color": "Color",
+      "textAlign": "Text align",
+      "lineHeight": "Line Height",
+      "fontStyle": "Font style",
+      "fullscreen": "Fullscreen",
+      "renderHml": "Render HTML",
+      "autoscroll": "AutoScroll",
+      "verticalSeekbar": "Vertical Seekbar",
+      "showBatteryAndTime": "Show battery and time",
+      "showProgressPercentage": "Show progress percentage",
+      "swipeGestures": "Swipe left/right to navigate between chapters",
+      "allowTextSelection": "Allow text selection"
+    }
+  },
   "novelScreen": {
     "addToLibaray": "Add to library",
     "inLibaray": "In library",

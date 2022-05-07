@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { ThemeType } from '../../theme/types';
-import { defaultDarkTheme } from '../../theme/dark';
+// import { defaultDarkTheme } from '../../theme/dark';
 import { BrowseSettingsMap } from './types';
 
 export enum DisplayModes {
@@ -25,7 +24,7 @@ export enum TextAlignments {
 
 interface SettingsState {
   appearance: {
-    theme: ThemeType;
+    // theme: ThemeType;
     displayMode: DisplayModes;
     novelsPerRowPotrait: number;
     novelsPerRowLandscape: number;
@@ -73,7 +72,7 @@ interface SettingsState {
 
 const initialState: SettingsState = {
   appearance: {
-    theme: defaultDarkTheme,
+    // theme: defaultDarkTheme,
     displayMode: DisplayModes.Compact,
     novelsPerRowPotrait: 3,
     novelsPerRowLandscape: 6,

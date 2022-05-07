@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { ThemeTypeV1 } from '../../../../theme/v1/theme/types';
+import { ThemeType } from '../../../../theme/types';
 
 interface NovelSummaryProps {
   summary: string;
   isExpanded: boolean;
-  theme: ThemeTypeV1;
+  theme: ThemeType;
 }
 
 const NovelSummary: React.FC<NovelSummaryProps> = ({

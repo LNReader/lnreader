@@ -12,7 +12,7 @@ import FastImage from 'react-native-fast-image';
 import { IconButtonV2 } from '../../../../components';
 import { useDownloadQueue } from '../../../../redux/hooks';
 import { Menu } from 'react-native-paper';
-import { ThemeTypeV1 } from '../../../../theme/v1/theme/types';
+import { ThemeType } from '../../../../theme/types';
 import { coverPlaceholderColor } from '../../../../theme/colors';
 
 interface UpdateCardProps {
@@ -37,7 +37,7 @@ interface UpdateCardProps {
     chapter: ChapterItem,
   ) => void;
   handleDeleteChapter: (chapterId: number, chapterName: string) => void;
-  theme: ThemeTypeV1;
+  theme: ThemeType;
 }
 
 const UpdateCard: React.FC<UpdateCardProps> = ({

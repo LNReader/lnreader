@@ -1,21 +1,37 @@
 import React from 'react';
 import { Pressable, View } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { ThemeType } from '../../theme/types';
 
-export const ToggleButton = ({ icon, selected, theme, color, onPress }) => (
+interface ToggleButtonProps {
+  icon: string;
+  selected: boolean;
+  theme: ThemeType;
+  color?: string;
+  onPress: () => void;
+}
+
+export const ToggleButton: React.FC<ToggleButtonProps> = ({
+  icon,
+  selected,
+  theme,
+  color,
+  onPress,
+}) => (
   <View
     style={{
-      borderRadius: 8,
+      borderRadius: 6,
       overflow: 'hidden',
-      marginHorizontal: 4,
+      marginHorizontal: 6,
     }}
   >
     <Pressable
       android_ripple={{ color: theme.rippleColor }}
       style={{
-        padding: 10,
+        padding: 8,
         alignItems: 'center',
         justifyContent: 'center',
+        backgroundColor: selected ? theme.rippleColor : 'transparent',
       }}
       onPress={onPress}
     >
@@ -30,7 +46,14 @@ export const ToggleButton = ({ icon, selected, theme, color, onPress }) => (
   </View>
 );
 
-export const ToggleColorButton = ({
+interface ToggleColorButtonProps {
+  selected: boolean;
+  backgroundColor: string;
+  textColor: string;
+  onPress: () => void;
+}
+
+export const ToggleColorButton: React.FC<ToggleColorButtonProps> = ({
   selected,
   backgroundColor,
   textColor,

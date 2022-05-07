@@ -6,12 +6,12 @@ import * as WebBrowser from 'expo-web-browser';
 import { NovelInfo } from '../../../../database/types';
 import { useNavigation } from '@react-navigation/native';
 import { useNovelTrackerInfo } from '../../../../hooks';
-import { ThemeTypeV1 } from '../../../../theme/v1/theme/types';
+import { ThemeType } from '../../../../theme/types';
 import { getString } from '../../../../../strings/translations';
 
 interface NovelScreenButtonGroupProps {
   novel: NovelInfo;
-  theme: ThemeTypeV1;
+  theme: ThemeType;
   handleTrackerSheet: () => void;
   handleFollowNovel: () => void;
 }
