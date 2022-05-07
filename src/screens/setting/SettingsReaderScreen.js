@@ -8,7 +8,7 @@ import {
   KeyboardAvoidingView,
   View,
 } from 'react-native';
-import { Button, IconButton } from 'react-native-paper';
+import { IconButton } from 'react-native-paper';
 import WebView from 'react-native-webview';
 import { useDispatch } from 'react-redux';
 
@@ -35,18 +35,23 @@ import { useModal } from '../../hooks/useModal';
 import SwitchSetting from '../../components/Switch/Switch';
 import FontPickerModal from './components/FontPickerModal';
 import { fonts } from '../../services/utils/constants';
-import { useReaderSettings } from '../../redux/hooks';
+import { useReaderSettings, useSettingsV2 } from '../../redux/hooks';
+import { Button } from '@components/index';
+import { ButtonVariation } from '@components/Button/Button';
+import {
+  deleteCustomReaderTheme,
+  saveCustomReaderTheme,
+} from '../../redux/settings/settingsSlice';
 
 const presetThemes = [
   {
-    value: 1,
     backgroundColor: '#000000',
     textColor: 'rgba(255,255,255,0.7)',
   },
-  { value: 2, backgroundColor: '#FFFFFF', textColor: '#111111' },
-  { value: 3, backgroundColor: '#F7DFC6', textColor: '#593100' },
-  { value: 4, backgroundColor: '#292832', textColor: '#CCCCCC' },
-  { value: 5, backgroundColor: '#2B2C30', textColor: '#CCCCCC' },
+  { backgroundColor: '#FFFFFF', textColor: '#111111' },
+  { backgroundColor: '#F7DFC6', textColor: '#593100' },
+  { backgroundColor: '#292832', textColor: '#CCCCCC' },
+  { backgroundColor: '#2B2C30', textColor: '#CCCCCC' },
 ];
 
 const textAlignments = [
@@ -62,13 +67,16 @@ const SettingsReaderScreen = ({ navigation }) => {
   const reader = useReaderSettings();
 
   const {
+    reader: { customThemes = [] },
+  } = useSettingsV2();
+
+  const {
     useWebViewForChapter = false,
     verticalSeekbar = true,
     swipeGestures = true,
     fullScreenMode = true,
     showScrollPercentage = true,
     showBatteryAndTime = false,
-
     autoScrollInterval = 10,
   } = useSettings();
 
@@ -85,6 +93,8 @@ const SettingsReaderScreen = ({ navigation }) => {
   };
 
   const [customCSS, setcustomCSS] = useState(reader.customCSS);
+
+  const readerThemes = [...customThemes, ...presetThemes];
 
   return (
     <>
@@ -288,10 +298,13 @@ const SettingsReaderScreen = ({ navigation }) => {
               showsHorizontalScrollIndicator={false}
             >
               <Row>
-                {presetThemes.map(item => (
+                {readerThemes.map((item, index) => (
                   <ToggleColorButton
-                    key={item.value}
-                    selected={reader.theme === item.backgroundColor}
+                    key={index}
+                    selected={
+                      reader.theme === item.backgroundColor &&
+                      reader.textColor === item.textColor
+                    }
                     backgroundColor={item.backgroundColor}
                     textColor={item.textColor}
                     onPress={() => {
@@ -319,6 +332,52 @@ const SettingsReaderScreen = ({ navigation }) => {
             onPress={readerTextColorModal.showModal}
             theme={theme}
           />
+          {!readerThemes.some(
+            item =>
+              item.backgroundColor === reader.theme &&
+              item.textColor === reader.textColor,
+          ) ? (
+            <Button
+              style={{ margin: 16 }}
+              va
+              theme={theme}
+              title="Save Custom Theme"
+              variation={ButtonVariation.CLEAR}
+              onPress={() =>
+                dispatch(
+                  saveCustomReaderTheme({
+                    theme: {
+                      backgroundColor: reader.theme,
+                      textColor: reader.textColor,
+                    },
+                  }),
+                )
+              }
+            />
+          ) : null}
+          {customThemes.some(
+            item =>
+              item.backgroundColor === reader.theme &&
+              item.textColor === reader.textColor,
+          ) ? (
+            <Button
+              style={{ margin: 16 }}
+              va
+              theme={theme}
+              title="Delete Custom Theme"
+              variation={ButtonVariation.CLEAR}
+              onPress={() =>
+                dispatch(
+                  deleteCustomReaderTheme({
+                    theme: {
+                      backgroundColor: reader.theme,
+                      textColor: reader.textColor,
+                    },
+                  }),
+                )
+              }
+            />
+          ) : null}
           <Pressable style={styles.pressableListItem}>
             <View>
               <Text style={{ color: theme.textColorPrimary, fontSize: 16 }}>
@@ -496,24 +555,23 @@ const SettingsReaderScreen = ({ navigation }) => {
                 />
                 <View style={{ flexDirection: 'row-reverse' }}>
                   <Button
-                    uppercase={false}
-                    color={theme.colorAccent}
+                    theme={theme}
                     onPress={() =>
                       dispatch(setReaderSettings('customCSS', customCSS))
                     }
-                  >
-                    Save
-                  </Button>
+                    style={{ marginLeft: 8 }}
+                    title="Save"
+                    variation={ButtonVariation.CLEAR}
+                  />
                   <Button
-                    uppercase={false}
-                    color={theme.colorAccent}
+                    theme={theme}
                     onPress={() => {
                       setcustomCSS('');
                       dispatch(setReaderSettings('customCSS', ''));
                     }}
-                  >
-                    Clear
-                  </Button>
+                    title="Clear"
+                    variation={ButtonVariation.CLEAR}
+                  />
                 </View>
               </View>
             </>

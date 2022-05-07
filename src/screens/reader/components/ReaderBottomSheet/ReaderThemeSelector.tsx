@@ -5,6 +5,7 @@ import { setReaderSettings } from '../../../../redux/settings/settings.actions';
 import {
   useAppDispatch,
   useReaderSettings,
+  useSettingsV2,
   useTheme,
 } from '../../../../redux/hooks';
 import { ToggleColorButton } from '../../../../components/Common/ToggleButton';
@@ -13,33 +14,34 @@ import { getString } from '../../../../../strings/translations';
 const ReaderThemeSelector = () => {
   const dispatch = useAppDispatch();
   const theme = useTheme();
+  const {
+    reader: { customThemes = [] },
+  } = useSettingsV2();
 
   const { theme: backgroundColor, textColor } = useReaderSettings();
 
   return (
     <View style={styles.container}>
-      <Text style={{ color: theme.textColorSecondary }}>
+      <Text style={[{ color: theme.textColorSecondary }, styles.title]}>
         {getString('readerScreen.bottomSheet.color')}
       </Text>
-      <View style={styles.selectContainer}>
-        <ScrollView horizontal={true}>
-          {presetReaderThemes.map((item, index) => (
-            <ToggleColorButton
-              key={index}
-              selected={
-                backgroundColor === item.backgroundColor &&
-                textColor === item.textColor
-              }
-              backgroundColor={item.backgroundColor}
-              textColor={item.textColor}
-              onPress={() => {
-                dispatch(setReaderSettings('theme', item.backgroundColor));
-                dispatch(setReaderSettings('textColor', item.textColor));
-              }}
-            />
-          ))}
-        </ScrollView>
-      </View>
+      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+        {[...customThemes, ...presetReaderThemes].map((item, index) => (
+          <ToggleColorButton
+            key={index}
+            selected={
+              backgroundColor === item.backgroundColor &&
+              textColor === item.textColor
+            }
+            backgroundColor={item.backgroundColor}
+            textColor={item.textColor}
+            onPress={() => {
+              dispatch(setReaderSettings('theme', item.backgroundColor));
+              dispatch(setReaderSettings('textColor', item.textColor));
+            }}
+          />
+        ))}
+      </ScrollView>
     </View>
   );
 };
@@ -54,7 +56,7 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     paddingHorizontal: 16,
   },
-  selectContainer: {
-    marginLeft: 16,
+  title: {
+    marginRight: 16,
   },
 });

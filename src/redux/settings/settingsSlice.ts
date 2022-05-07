@@ -2,9 +2,16 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { BrowseSettingsMap } from './types';
 
+export interface ReaderTheme {
+  backgroundColor: string;
+  textColor: string;
+}
+
 interface SettingsState {
   appearance: {};
-  reader: {};
+  reader: {
+    customThemes: ReaderTheme[];
+  };
   library: {};
   updates: {};
   app: {};
@@ -17,7 +24,9 @@ interface SettingsState {
 
 const initialState: SettingsState = {
   appearance: {},
-  reader: {},
+  reader: {
+    customThemes: [],
+  },
   library: {},
   updates: {},
   app: {},
@@ -42,9 +51,35 @@ export const settingsSlice = createSlice({
 
       state.browse[action.payload.key] = action.payload.value;
     },
+    saveCustomReaderTheme: (
+      state,
+      action: PayloadAction<{ theme: ReaderTheme }>,
+    ) => {
+      state.reader.customThemes = [
+        ...(state.reader.customThemes || []),
+        action.payload.theme,
+      ];
+    },
+    deleteCustomReaderTheme: (
+      state,
+      action: PayloadAction<{ theme: ReaderTheme }>,
+    ) => {
+      const customTheme = action.payload.theme;
+      state.reader.customThemes = state.reader.customThemes.filter(
+        theme =>
+          !(
+            theme.backgroundColor === customTheme.backgroundColor &&
+            theme.textColor === customTheme.textColor
+          ),
+      );
+    },
   },
 });
 
-export const { setBrowseSettings } = settingsSlice.actions;
+export const {
+  setBrowseSettings,
+  saveCustomReaderTheme,
+  deleteCustomReaderTheme,
+} = settingsSlice.actions;
 
 export default settingsSlice.reducer;

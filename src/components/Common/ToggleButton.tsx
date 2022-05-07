@@ -79,9 +79,11 @@ export const ToggleColorButton: React.FC<ToggleColorButtonProps> = ({
       }}
       onPress={onPress}
     >
-      {selected && (
-        <MaterialCommunityIcons name="check" color={textColor} size={24} />
-      )}
+      <MaterialCommunityIcons
+        name={selected ? 'check' : 'format-color-text'}
+        color={textColor}
+        size={24}
+      />
     </Pressable>
   </View>
 );
