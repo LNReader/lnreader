@@ -20,7 +20,6 @@ import { fetchChapter } from '../../services/Source/source';
 import { showToast } from '../../hooks/showToast';
 import {
   usePosition,
-  useReaderSettings,
   useSettings,
   useTheme,
   useTrackingStatus,
@@ -32,7 +31,6 @@ import { saveScrollPosition } from '../../redux/preferences/preference.actions';
 import { parseChapterNumber } from '../../utils/parseChapterNumber';
 
 import ReaderAppbar from './components/ReaderAppbar';
-import ReaderBottomSheet from './components/ReaderBottomSheet/ReaderBottomSheet';
 import ReaderFooter from './components/ReaderFooter';
 import ReaderSeekBar from './components/ReaderSeekBar';
 
@@ -51,6 +49,8 @@ import WebViewReader from './components/WebViewReader';
 import { useTextToSpeech } from '../../hooks/useTextToSpeech';
 import { useFullscreenMode } from '../../hooks';
 import { getChapterFromDb } from '../../database/queries/DownloadQueries';
+import ReaderBottomSheetV2 from './components/ReaderBottomSheet/ReaderBottomSheet';
+import { useReaderSettings } from '../../redux/hooks';
 
 const Chapter = ({ route, navigation }) => {
   useKeepAwake();
@@ -77,7 +77,7 @@ const Chapter = ({ route, navigation }) => {
   const {
     showScrollPercentage = true,
     fullScreenMode = true,
-    swipeGestures = true,
+    swipeGestures = false,
     incognitoMode = false,
     textSelectable = false,
     useWebViewForChapter = false,
@@ -422,22 +422,7 @@ const Chapter = ({ route, navigation }) => {
         </GestureRecognizer>
 
         <Portal>
-          <ReaderBottomSheet
-            theme={theme}
-            reader={readerSettings}
-            dispatch={dispatch}
-            navigation={navigation}
-            bottomSheetRef={readerSheetRef}
-            verticalSeekbar={verticalSeekbar}
-            selectText={textSelectable}
-            autoScroll={autoScroll}
-            useWebViewForChapter={useWebViewForChapter}
-            showScrollPercentage={showScrollPercentage}
-            showBatteryAndTime={showBatteryAndTime}
-            fullScreenMode={fullScreenMode}
-            swipeGestures={swipeGestures}
-            enableSwipeGestures={enableSwipeGestures}
-          />
+          <ReaderBottomSheetV2 bottomSheetRef={readerSheetRef} />
         </Portal>
         {!useWebViewForChapter && (
           <ReaderSeekBar

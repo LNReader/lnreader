@@ -6,7 +6,7 @@ import {
   useAppDispatch,
   useBrowseSettings,
   useSourcesReducer,
-  useThemeV1,
+  useTheme,
 } from '../../redux/hooks';
 import { useNavigation } from '@react-navigation/native';
 import { getString } from '../../../strings/translations';
@@ -15,7 +15,7 @@ import { toggleLanguageFilter } from '../../redux/source/sourcesSlice';
 import { setBrowseSettings } from '../../redux/settings/settingsSlice';
 
 const BrowseSettings = () => {
-  const theme = useThemeV1();
+  const theme = useTheme();
   const { goBack } = useNavigation();
   const dispatch = useAppDispatch();
 

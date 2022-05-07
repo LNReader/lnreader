@@ -1,11 +1,11 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { ThemeTypeV1 } from '../../theme/v1/theme/types';
+import { ThemeType } from '../../theme/types';
 
 interface ChipProps {
   label: string;
-  theme: ThemeTypeV1;
+  theme: ThemeType;
 }
 
 const Chip: React.FC<ChipProps> = ({ label, theme }) => (

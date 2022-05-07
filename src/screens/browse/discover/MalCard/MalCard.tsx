@@ -5,10 +5,10 @@ import { getString } from '../../../../../strings/translations';
 import { Button } from '../../../../components';
 import { ButtonVariation } from '../../../../components/Button/Button';
 
-import { ThemeTypeV1 } from '../../../../theme/v1/theme/types';
+import { ThemeType } from '../../../../theme/types';
 
 interface Props {
-  theme: ThemeTypeV1;
+  theme: ThemeType;
 }
 
 const MalCard: React.FC<Props> = ({ theme }) => {

@@ -23,7 +23,7 @@ import {
   yotsubaTheme,
   takoLightTheme,
   tealTheme,
-} from '../../theme/v1/theme/theme';
+} from '../../theme/theme.ts';
 
 const themes = {
   1: lightTheme,
@@ -107,7 +107,7 @@ const initialState = {
    */
 
   fullScreenMode: true,
-  swipeGestures: true,
+  swipeGestures: false,
   showScrollPercentage: true,
   useWebViewForChapter: false,
   showBatteryAndTime: false,
@@ -117,8 +117,8 @@ const initialState = {
   verticalSeekbar: true,
 
   reader: {
-    theme: 1,
-    textColor: 'rgba(255,255,255,0.7)',
+    theme: '#292832',
+    textColor: '#CCCCCC',
     textSize: 16,
     textAlign: 'left',
     padding: 5,

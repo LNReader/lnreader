@@ -12,7 +12,7 @@ import {
   useAppDispatch,
   useBrowseSettings,
   useSourcesReducer,
-  useThemeV1,
+  useTheme,
 } from '../../redux/hooks';
 import { useNavigation } from '@react-navigation/native';
 import { useSearch } from '../../hooks';
@@ -23,7 +23,7 @@ import MalCard from './discover/MalCard/MalCard';
 
 const BrowseScreen = () => {
   const { navigate } = useNavigation();
-  const theme = useThemeV1();
+  const theme = useTheme();
   const dispatch = useAppDispatch();
 
   const { searchText, setSearchText, clearSearchbar } = useSearch();

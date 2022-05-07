@@ -2,12 +2,12 @@ import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 
-import { ThemeTypeV1 } from '../../../../theme/v1/theme/types';
+import { ThemeType } from '../../../../theme/types';
 
 interface Props {
   novel: { novelName: string; novelCover: string; score: string; info: string };
   onPress: () => void;
-  theme: ThemeTypeV1;
+  theme: ThemeType;
 }
 
 const MalNovelCard: React.FC<Props> = ({ novel, onPress, theme }) => {

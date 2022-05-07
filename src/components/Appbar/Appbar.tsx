@@ -2,12 +2,12 @@ import React from 'react';
 import { StatusBar } from 'react-native';
 
 import { Appbar as PaperAppbar } from 'react-native-paper';
-import { ThemeTypeV1 } from '../../theme/v1/theme/types';
+import { ThemeType } from '../../theme/types';
 
 interface AppbarProps {
   title: string;
   handleGoBack: () => void;
-  theme: ThemeTypeV1;
+  theme: ThemeType;
 }
 
 const Appbar: React.FC<AppbarProps> = ({ title, handleGoBack, theme }) => (

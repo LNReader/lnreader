@@ -9,14 +9,14 @@ import {
 import RenderHtml from 'react-native-render-html';
 
 import { Button } from '../../../components';
-import { ThemeTypeV1 } from '../../../theme/v1/theme/types';
+import { ThemeType } from '../../../theme/types';
 import { ChapterItem } from '../../../database/types';
 import { readerBackground } from '../utils/readerStyles';
 import { sanitizeChapterText } from '../utils/sanitizeChapterText';
 
 interface TextReaderProps {
   text: string;
-  theme: ThemeTypeV1;
+  theme: ThemeType;
   reader: {
     theme: number | string;
     textColor: string;

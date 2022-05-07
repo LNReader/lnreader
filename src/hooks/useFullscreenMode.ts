@@ -2,7 +2,7 @@ import { useCallback, useEffect } from 'react';
 import { StatusBar } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import { useReaderSettingsV1, useSettingsV1, useThemeV1 } from '../redux/hooks';
+import { useReaderSettings, useSettingsV1, useTheme } from '../redux/hooks';
 import {
   changeNavigationBarColor,
   hideNavigationBar,
@@ -12,12 +12,12 @@ import { readerBackground } from '../screens/reader/utils/readerStyles';
 
 const useFullscreenMode = () => {
   const { addListener } = useNavigation();
-  const readerSettings = useReaderSettingsV1();
+  const readerSettings = useReaderSettings();
   const { fullScreenMode } = useSettingsV1();
 
   const backgroundColor = readerBackground(readerSettings.theme);
 
-  const theme = useThemeV1();
+  const theme = useTheme();
 
   const setImmersiveMode = useCallback(() => {
     if (fullScreenMode) {

@@ -6,12 +6,12 @@ import { ButtonVariation } from '../../../../components/Button/Button';
 
 import { Source } from '../../../../sources/types';
 import { coverPlaceholderColor } from '../../../../theme/colors';
-import { ThemeTypeV1 } from '../../../../theme/v1/theme/types';
+import { ThemeType } from '../../../../theme/types';
 
 interface Props {
   source: Source;
   isPinned: boolean;
-  theme: ThemeTypeV1;
+  theme: ThemeType;
   onTogglePinSource: (sourceId: number) => void;
   navigateToSource: (source: Source) => void;
 }

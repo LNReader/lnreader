@@ -2,14 +2,14 @@ import React from 'react';
 import { Pressable, StyleSheet, View, Text } from 'react-native';
 
 import { Switch } from 'react-native-paper';
-import { ThemeTypeV1 } from '../../theme/v1/theme/types';
+import { ThemeType } from '../../theme/types';
 
 interface SwitchItemProps {
   value: boolean;
   label: string;
   description?: string;
   onPress: () => void;
-  theme: ThemeTypeV1;
+  theme: ThemeType;
 }
 
 const SwitchItem: React.FC<SwitchItemProps> = ({

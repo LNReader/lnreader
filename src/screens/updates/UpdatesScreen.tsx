@@ -15,7 +15,7 @@ import { convertDateToISOString } from '../../database/utils/convertDateToISOStr
 import { ChapterItem, Update } from '../../database/types';
 
 import { useSearch, useUpdates } from '../../hooks';
-import { useAppDispatch, useThemeV1 } from '../../redux/hooks';
+import { useAppDispatch, useTheme } from '../../redux/hooks';
 import { dateFormats } from '../../utils/constants/dateFormats';
 import UpdateCard from './components/UpdateCard/UpdateCard';
 import { updateLibraryAction } from '../../redux/updates/updates.actions';
@@ -24,10 +24,10 @@ import {
   downloadChapterAction,
 } from '../../redux/novel/novel.actions';
 import { getString } from '../../../strings/translations';
-import { ThemeTypeV1 } from '../../theme/v1/theme/types';
+import { ThemeType } from '../../theme/types';
 
 const UpdatesScreen = () => {
-  const theme = useThemeV1();
+  const theme = useTheme();
   const { navigate } = useNavigation();
   const dispatch = useAppDispatch();
 
@@ -206,14 +206,16 @@ const UpdatesScreen = () => {
 
 export default UpdatesScreen;
 
-const LastUpdateTime: React.FC<{ lastUpdateTime: Date; theme: ThemeTypeV1 }> =
-  ({ lastUpdateTime, theme }) => (
-    <Text style={[styles.lastUpdateTime, { color: theme.textColorSecondary }]}>
-      {`${getString('updatesScreen.lastUpdatedAt')} ${moment(
-        lastUpdateTime,
-      ).fromNow()}`}
-    </Text>
-  );
+const LastUpdateTime: React.FC<{ lastUpdateTime: Date; theme: ThemeType }> = ({
+  lastUpdateTime,
+  theme,
+}) => (
+  <Text style={[styles.lastUpdateTime, { color: theme.textColorSecondary }]}>
+    {`${getString('updatesScreen.lastUpdatedAt')} ${moment(
+      lastUpdateTime,
+    ).fromNow()}`}
+  </Text>
+);
 
 const styles = StyleSheet.create({
   listContainer: {

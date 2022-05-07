@@ -1,41 +1,23 @@
-export enum ColorScheme {
-  LIGHT = 'light',
-  DARK = 'dark',
+export enum StatusbarStyle {
+  LIGHT = 'light-content',
+  DARK = 'dark-content',
 }
 
 export interface ThemeType {
   id: number;
   name: string;
-  type: ColorScheme;
-  primary: string;
-  onPrimary: string;
-  primaryContainer: string;
-  onPrimaryContainer: string;
-  secondary: string;
-  onSecondary: string;
-  secondaryContainer: string;
-  onSecondaryContainer: string;
-  tertiary: string;
-  onTertiary: string;
-  tertiaryContainer: string;
-  onTertiaryContainer: string;
-  background: string;
-  onBackground: string;
-  surface: string;
-  onSurface: string;
-  surfaceVariant: string;
-  onSurfaceVariant: string;
-  outline: string;
-  inverseOnSurface: string;
-  inverseSurface: string;
-  primaryInverse: string;
-  error: string;
-  errorContainer: string;
-  onError: string;
-  onErrorContainer: string;
+  colorPrimaryDark: string;
+  colorPrimary: string;
+  colorAccent: string;
+  rippleColor: string;
+  searchBarColor: string;
+  menuColor: string;
+  dividerColor: string;
+  filterColor: string;
+  colorDisabled: string;
+  colorButtonText: string;
   textColorPrimary: string;
   textColorSecondary: string;
   textColorHint: string;
-  rippleColor: string;
-  divider: string;
+  statusBar: StatusbarStyle;
 }

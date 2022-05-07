@@ -2,9 +2,9 @@ import React from 'react';
 import { StyleSheet, ActivityIndicator } from 'react-native';
 
 import { Container } from '..';
-import { ThemeTypeV1 } from '../../theme/v1/theme/types';
+import { ThemeType } from '../../theme/types';
 
-const LoadingScreen: React.FC<{ theme: ThemeTypeV1 }> = ({ theme }) => (
+const LoadingScreen: React.FC<{ theme: ThemeType }> = ({ theme }) => (
   <Container>
     <ActivityIndicator
       size={50}
