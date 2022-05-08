@@ -8,7 +8,7 @@ const sourceName = 'ReaperScans';
 
 const popularNovels = async page => {
   let url = `${baseUrl}/all-series/novels/`;
-  let totalPages = 1;
+  let totalPages = 2;
 
   const result = await fetch(url);
   const body = await result.text();
@@ -140,7 +140,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 };
 
 const searchNovels = async searchTerm => {
-  const url = `${baseUrl}?s=${searchTerm}&post_type=wp-manga`;
+  const url = `${baseUrl}?s=${searchTerm}&post_type=wp-manga&genre%5B%5D=novel`;
 
   const result = await fetch(url);
   const body = await result.text();
