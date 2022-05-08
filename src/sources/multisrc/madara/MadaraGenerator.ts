@@ -76,6 +76,7 @@ export const FirstKissNovelScraper = new MadaraScraper(
   46,
   'https://1stkissnovel.love/',
   'FirstKissNovel',
+  { 'useNewChapterEndpoint': true },
 );
 
 export const DaoNovelScraper = new MadaraScraper(

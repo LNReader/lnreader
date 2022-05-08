@@ -73,7 +73,10 @@
   {
     "sourceId": 46,
     "baseUrl": "https://1stkissnovel.love/",
-    "sourceName": "FirstKissNovel"
+    "sourceName": "FirstKissNovel",
+    "options": {
+      "useNewChapterEndpoint": true
+    }
   },
   {
     "sourceId": 47,
