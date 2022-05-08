@@ -42,7 +42,7 @@ const ReaderAppbar = ({
           <Appbar.Content
             title={novelName}
             titleStyle={{ color: theme.textColorPrimary }}
-            subtitle={chapterName}
+            subtitle={chapterName?.trim()}
             subtitleStyle={{ color: theme.textColorSecondary }}
           />
           <Appbar.Action

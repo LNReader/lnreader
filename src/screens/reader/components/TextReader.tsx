@@ -8,17 +8,18 @@ import {
 } from 'react-native';
 import RenderHtml from 'react-native-render-html';
 
-import { Button } from '../../../components';
+import { TextAlignments } from '@screens/settings/SettingsReaderScreen/SettingsReaderScreen';
+import { Button } from '@components/index';
 import { ThemeType } from '../../../theme/types';
 import { ChapterItem } from '../../../database/types';
-import { readerBackground } from '../utils/readerStyles';
 import { sanitizeChapterText } from '../utils/sanitizeChapterText';
+import { getString } from '@strings/translations';
 
 interface TextReaderProps {
   text: string;
   theme: ThemeType;
   reader: {
-    theme: number | string;
+    theme: string;
     textColor: string;
     textSize: number;
     textAlign: string;
@@ -57,13 +58,13 @@ const TextReader: React.FC<TextReaderProps> = ({
             fontFamily: reader.fontFamily,
             lineHeight: reader.textSize * reader.lineHeight,
             fontSize: reader.textSize,
-            textAlign: reader.textAlign,
+            textAlign: reader.textAlign as TextAlignments,
           },
           selectable: textSelectable,
         }}
         defaultViewProps={{
           style: {
-            backgroundColor: readerBackground(reader.theme),
+            backgroundColor: reader.theme,
           },
         }}
         baseStyle={{
@@ -73,7 +74,7 @@ const TextReader: React.FC<TextReaderProps> = ({
       />
       <View style={styles.navigationContainer}>
         <Text style={[styles.finishedChapterText, { color: reader.textColor }]}>
-          Finished: {chapterName}
+          {`${getString('readerScreen.finished')}: ${chapterName?.trim()}`}
         </Text>
         {nextChapter ? (
           <Button
@@ -84,7 +85,7 @@ const TextReader: React.FC<TextReaderProps> = ({
           />
         ) : (
           <Text style={[{ color: reader.textColor }, styles.noNextChapterText]}>
-            There's no next chapter
+            {getString('readerScreen.noNextChapter')}
           </Text>
         )}
       </View>
@@ -102,6 +103,7 @@ const styles = StyleSheet.create({
   navigationContainer: {
     marginTop: 32,
     marginBottom: 16,
+    paddingHorizontal: 16,
   },
   finishedChapterText: {
     textAlign: 'center',
@@ -121,10 +123,10 @@ const styles = StyleSheet.create({
   },
   noNextChapterText: {
     fontSize: 16,
-    paddingVertical: 8,
+    paddingVertical: 16,
     textAlign: 'center',
   },
   nextButton: {
-    margin: 16,
+    marginVertical: 16,
   },
 });

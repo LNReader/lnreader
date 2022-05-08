@@ -55,6 +55,8 @@
     "all": "All"
   },
   "readerScreen": {
+    "finished": "Finished",
+    "noNextChapter": "There's no next chapter",
     "bottomSheet": {
       "textSize": "Text size",
       "color": "Color",

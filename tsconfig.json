@@ -16,7 +16,7 @@
     "paths": {
       "@components/*": ["./src/components/*"],
       "@hooks/*": ["./src/hooks/*"],
-      "@screens/*": ["'./src/screens/*"],
+      "@screens/*": ["./src/screens/*"],
       "@strings/*": ["./strings/*"],
       "@redux/*": ["./src/redux/*"]
     }

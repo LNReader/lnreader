@@ -25,7 +25,6 @@ import {
   useTrackingStatus,
 } from '../../hooks/reduxHooks';
 import { updateChaptersRead } from '../../redux/tracker/tracker.actions';
-import { readerBackground, readerTextColor } from './utils/readerStyles';
 import { markChapterReadAction } from '../../redux/novel/novel.actions';
 import { saveScrollPosition } from '../../redux/preferences/preference.actions';
 import { parseChapterNumber } from '../../utils/parseChapterNumber';
@@ -41,9 +40,6 @@ import { LoadingScreen } from '../../components/LoadingScreen/LoadingScreen';
 import { insertHistory } from '../../database/queries/HistoryQueries';
 import { SET_LAST_READ } from '../../redux/preferences/preference.types';
 import { setAppSettings } from '../../redux/settings/settings.actions';
-import { useBatteryLevel } from 'react-native-device-info';
-import moment from 'moment';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import TextReader from './components/TextReader';
 import WebViewReader from './components/WebViewReader';
 import { useTextToSpeech } from '../../hooks/useTextToSpeech';
@@ -52,6 +48,7 @@ import { getChapterFromDb } from '../../database/queries/DownloadQueries';
 import ReaderBottomSheetV2 from './components/ReaderBottomSheet/ReaderBottomSheet';
 import { useReaderSettings } from '../../redux/hooks';
 import { defaultTo } from 'lodash';
+import BottomInfoBar from './components/BottomInfoBar/BottomInfoBar';
 
 const Chapter = ({ route, navigation }) => {
   useKeepAwake();
@@ -73,16 +70,12 @@ const Chapter = ({ route, navigation }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const readerSettings = useReaderSettings();
-  const insets = useSafeAreaInsets();
 
   const {
-    showScrollPercentage = true,
-    fullScreenMode = true,
     swipeGestures = false,
     incognitoMode = false,
     textSelectable = false,
     useWebViewForChapter = false,
-    showBatteryAndTime = false,
     autoScroll = false,
     autoScrollInterval = 10,
     autoScrollOffset = null,
@@ -90,8 +83,6 @@ const Chapter = ({ route, navigation }) => {
   } = useSettings();
 
   const { setImmersiveMode, showStatusAndNavBar } = useFullscreenMode();
-
-  const batteryLevel = useBatteryLevel();
 
   const [hidden, setHidden] = useState(true);
 
@@ -164,16 +155,6 @@ const Chapter = ({ route, navigation }) => {
   useEffect(() => {
     setPrevAndNextChap();
   }, [chapter]);
-
-  const [currentTime, setCurrentTime] = useState();
-
-  useEffect(() => {
-    const timeInterval = setInterval(() => {
-      setCurrentTime(new Date().toISOString());
-    }, 60000);
-
-    return () => clearInterval(timeInterval);
-  }, []);
 
   const [currentOffset, setCurrentOffset] = useState(position?.position || 0);
 
@@ -310,7 +291,7 @@ const Chapter = ({ route, navigation }) => {
     }
   };
 
-  const backgroundColor = readerBackground(readerSettings.theme);
+  const backgroundColor = readerSettings.theme;
 
   return (
     <>
@@ -351,35 +332,20 @@ const Chapter = ({ route, navigation }) => {
                 <EmptyView
                   icon="Σ(ಠ_ಠ)"
                   description={error}
-                  style={{
-                    color:
-                      readerSettings.textColor ||
-                      readerTextColor(readerSettings.theme),
-                  }}
+                  style={{ color: readerSettings.textColor }}
                 >
                   <IconButton
                     icon="reload"
                     size={25}
                     style={{ margin: 0, marginTop: 16 }}
-                    color={
-                      readerSettings.textColor ||
-                      readerTextColor(readerSettings.theme)
-                    }
+                    color={readerSettings.textColor}
                     onPress={() => {
                       getChapter(chapterId);
                       setLoading(true);
                       setError();
                     }}
                   />
-                  <Text
-                    style={{
-                      color:
-                        readerSettings.textColor ||
-                        readerTextColor(readerSettings.theme),
-                    }}
-                  >
-                    Retry
-                  </Text>
+                  <Text style={{ color: readerSettings.textColor }}>Retry</Text>
                 </EmptyView>
               </View>
             ) : loading ? (
@@ -419,7 +385,7 @@ const Chapter = ({ route, navigation }) => {
             )}
           </ScrollView>
         </GestureRecognizer>
-
+        <BottomInfoBar scrollPercentage={scrollPercentage} />
         <Portal>
           <ReaderBottomSheetV2 bottomSheetRef={readerSheetRef} />
         </Portal>
@@ -452,39 +418,6 @@ const Chapter = ({ route, navigation }) => {
           scrollViewRef={scrollViewRef}
           enableAutoScroll={enableAutoScroll}
         />
-        {(showScrollPercentage || showBatteryAndTime) && (
-          <View
-            style={[
-              styles.scrollPercentageContainer,
-              { backgroundColor },
-              !fullScreenMode && {
-                paddingBottom: insets.bottom,
-              },
-            ]}
-          >
-            {showBatteryAndTime && (
-              <Text style={{ color: readerSettings.textColor }}>
-                {Math.ceil(batteryLevel * 100) + '%'}
-              </Text>
-            )}
-            {showScrollPercentage && (
-              <Text
-                style={{
-                  flex: 1,
-                  color: readerSettings.textColor,
-                  textAlign: 'center',
-                }}
-              >
-                {scrollPercentage + '%'}
-              </Text>
-            )}
-            {showBatteryAndTime && (
-              <Text style={{ color: readerSettings.textColor }}>
-                {moment(currentTime).format('h:mm')}
-              </Text>
-            )}
-          </View>
-        )}
       </>
     </>
   );

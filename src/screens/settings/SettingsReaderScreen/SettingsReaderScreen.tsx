@@ -56,7 +56,7 @@ import {
 
 const READER_HEIGHT = 400;
 
-type TextAlignments =
+export type TextAlignments =
   | 'left'
   | 'center'
   | 'auto'
