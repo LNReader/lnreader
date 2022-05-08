@@ -7,8 +7,10 @@ const sourceName = 'Renovels';
 const baseUrl = 'https://renovels.org';
 
 const popularNovels = async page => {
-  const totalPages = 20;
-  const url = baseUrl + '/api/titles/last-chapters/?&count=20&page=' + page;
+  const url =
+    baseUrl +
+    '/api/search/catalog/?count=30&ordering=-chapter_date&page=' +
+    page;
   const result = await fetch(url);
   let body = await result.json();
 
@@ -21,6 +23,7 @@ const popularNovels = async page => {
     novels.push({ sourceId, novelName, novelCover, novelUrl });
   });
 
+  let totalPages = body.props.total_pages;
   return { totalPages, novels };
 };
 
