@@ -52,10 +52,10 @@ const styles = StyleSheet.create({
   },
   labelContainer: {
     flex: 1,
+    justifyContent: 'center',
   },
   label: {
     fontSize: 16,
-    textAlignVertical: 'center',
   },
   switch: {
     marginLeft: 8,

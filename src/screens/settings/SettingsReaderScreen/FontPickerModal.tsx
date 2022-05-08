@@ -3,29 +3,38 @@ import { StyleSheet } from 'react-native';
 
 import { Portal, Modal } from 'react-native-paper';
 
-import { RadioButton } from '../../../components/RadioButton/RadioButton';
+import { RadioButton } from '@components/RadioButton/RadioButton';
 
+import { useAppDispatch, useTheme } from '@redux/hooks';
 import { setReaderSettings } from '../../../redux/settings/settings.actions';
-import { fonts } from '../../../services/utils/constants';
 
-const FontPickerModal = ({
-  theme,
-  dispatch,
+import { readerFonts } from '../../../utils/constants/readerConstants';
+
+interface FontPickerModalProps {
+  visible: boolean;
+  onDismiss: () => void;
+  currentFont: string;
+}
+
+const FontPickerModal: React.FC<FontPickerModalProps> = ({
   currentFont,
-  hideModal,
+  onDismiss,
   visible,
 }) => {
+  const theme = useTheme();
+  const dispatch = useAppDispatch();
+
   return (
     <Portal>
       <Modal
         visible={visible}
-        onDismiss={hideModal}
+        onDismiss={onDismiss}
         contentContainerStyle={[
           styles.containerStyle,
           { backgroundColor: theme.colorPrimaryDark },
         ]}
       >
-        {fonts.map(item => (
+        {readerFonts.map(item => (
           <RadioButton
             key={item.fontFamily}
             status={currentFont === item.fontFamily}

@@ -51,6 +51,7 @@ import { useFullscreenMode } from '../../hooks';
 import { getChapterFromDb } from '../../database/queries/DownloadQueries';
 import ReaderBottomSheetV2 from './components/ReaderBottomSheet/ReaderBottomSheet';
 import { useReaderSettings } from '../../redux/hooks';
+import { defaultTo } from 'lodash';
 
 const Chapter = ({ route, navigation }) => {
   useKeepAwake();
@@ -84,6 +85,7 @@ const Chapter = ({ route, navigation }) => {
     showBatteryAndTime = false,
     autoScroll = false,
     autoScrollInterval = 10,
+    autoScrollOffset = null,
     verticalSeekbar = true,
   } = useSettings();
 
@@ -182,11 +184,15 @@ const Chapter = ({ route, navigation }) => {
       scrollTimeout = setTimeout(() => {
         scrollViewRef.current.scrollTo({
           x: 0,
-          y: currentOffset + Dimensions.get('window').height,
+          y:
+            currentOffset +
+            defaultTo(autoScrollOffset, Dimensions.get('window').height),
           animated: true,
         });
         setCurrentOffset(
-          prevState => prevState + Dimensions.get('window').height,
+          prevState =>
+            prevState +
+            defaultTo(autoScrollOffset, Dimensions.get('window').height),
         );
       }, autoScrollInterval * 1000);
     }
@@ -288,13 +294,6 @@ const Chapter = ({ route, navigation }) => {
           bookmark: nextChapter.bookmark,
         })
       : showToast("There's no next chapter");
-
-  const enableSwipeGestures = () => {
-    dispatch(setAppSettings('swipeGestures', !swipeGestures));
-    showToast(
-      swipeGestures ? 'Swipe gestures disabled' : 'Swipe gestured enabled',
-    );
-  };
 
   const enableAutoScroll = () =>
     dispatch(setAppSettings('autoScroll', !autoScroll));
@@ -408,7 +407,7 @@ const Chapter = ({ route, navigation }) => {
                     <TextReader
                       text={chapter.chapterText}
                       reader={readerSettings}
-                      chapterName={chapterName || chapter.chapterName}
+                      chapterName={chapter.chapterName || chapterName}
                       textSelectable={textSelectable}
                       theme={theme}
                       nextChapter={nextChapter}

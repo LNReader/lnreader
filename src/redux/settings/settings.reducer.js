@@ -51,7 +51,7 @@ const themes = {
  * 3 -> No title
  */
 
-const initialState = {
+export const initialState = {
   /**
    * General settings
    */
@@ -113,6 +113,7 @@ const initialState = {
   showBatteryAndTime: false,
   autoScroll: false,
   autoScrollInterval: 10,
+  autoScrollOffset: null,
   textSelectable: false,
   verticalSeekbar: true,
 

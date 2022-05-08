@@ -12,6 +12,7 @@ module.exports = function (api) {
             '@hooks': './src/hooks',
             '@screens': './src/screens',
             '@strings': './strings',
+            '@redux': './src/redux',
           },
           extensions: ['.ios.js', '.android.js', '.js', '.ts', '.tsx', '.json'],
         },

@@ -5,6 +5,9 @@
 export interface StringMap {
   'common.cancel': 'string';
   'common.ok': 'string';
+  'common.save': 'string';
+  'common.clear': 'string';
+  'common.reset': 'string';
   'library': 'string';
   'libraryScreen.searchbar': 'string';
   'libraryScreen.empty': 'string';
@@ -61,7 +64,19 @@ export interface StringMap {
   'more': 'string';
   'moreScreen.settings': 'string';
   'moreScreen.settingsScreen.generalSettings': 'string';
-  'moreScreen.settingsScreen.readerSettings': 'string';
+  'moreScreen.settingsScreen.readerSettings.title': 'string';
+  'moreScreen.settingsScreen.readerSettings.readerTheme': 'string';
+  'moreScreen.settingsScreen.readerSettings.preset': 'string';
+  'moreScreen.settingsScreen.readerSettings.backgroundColor': 'string';
+  'moreScreen.settingsScreen.readerSettings.textColor': 'string';
+  'moreScreen.settingsScreen.readerSettings.backgroundColorModal': 'string';
+  'moreScreen.settingsScreen.readerSettings.textColorModal': 'string';
+  'moreScreen.settingsScreen.readerSettings.verticalSeekbarDesc': 'string';
+  'moreScreen.settingsScreen.readerSettings.autoScrollInterval': 'string';
+  'moreScreen.settingsScreen.readerSettings.autoScrollOffset': 'string';
+  'moreScreen.settingsScreen.readerSettings.saveCustomTheme': 'string';
+  'moreScreen.settingsScreen.readerSettings.deleteCustomTheme': 'string';
+  'moreScreen.settingsScreen.readerSettings.customCSS': 'string';
   'moreScreen.settingsScreen.browseSettings': 'string';
   'moreScreen.settingsScreen.browseSettingsScreen.onlyShowPinnedSources': 'string';
   'moreScreen.settingsScreen.browseSettingsScreen.languages': 'string';

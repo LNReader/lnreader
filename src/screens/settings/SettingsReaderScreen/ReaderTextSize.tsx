@@ -1,52 +1,43 @@
 import { StyleSheet, Text, TextStyle, View } from 'react-native';
 import React from 'react';
 
-import {
-  useAppDispatch,
-  useReaderSettings,
-  useTheme,
-} from '../../../../redux/hooks';
-import { IconButtonV2 } from '../../../../components';
-import { setReaderSettings } from '../../../../redux/settings/settings.actions';
-import { getString } from '../../../../../strings/translations';
+import { useAppDispatch, useReaderSettings, useTheme } from '@redux/hooks';
+import { IconButtonV2 } from '@components/index';
+import { setReaderSettings } from '@redux/settings/settings.actions';
+import { getString } from '@strings/translations';
 
-interface ReaderLineHeightProps {
+interface ReaderTextSizeProps {
   labelStyle?: TextStyle | TextStyle[];
 }
 
-const ReaderLineHeight: React.FC<ReaderLineHeightProps> = ({ labelStyle }) => {
+const ReaderTextSize: React.FC<ReaderTextSizeProps> = ({ labelStyle }) => {
   const theme = useTheme();
   const dispatch = useAppDispatch();
 
-  const { lineHeight } = useReaderSettings();
+  const { textSize } = useReaderSettings();
 
   return (
     <View style={styles.container}>
       <Text style={[{ color: theme.textColorSecondary }, labelStyle]}>
-        {getString('readerScreen.bottomSheet.lineHeight')}
+        {getString('readerScreen.bottomSheet.textSize')}
       </Text>
       <View style={styles.buttonContainer}>
         <IconButtonV2
           name="minus"
           color={theme.colorAccent}
           size={26}
-          disabled={lineHeight <= 1.3}
-          onPress={() =>
-            dispatch(setReaderSettings('lineHeight', lineHeight - 0.1))
-          }
+          disabled={textSize <= 0}
+          onPress={() => dispatch(setReaderSettings('textSize', textSize - 1))}
           theme={theme}
         />
         <Text style={[styles.value, { color: theme.textColorPrimary }]}>
-          {`${Math.round(lineHeight * 10) / 10}%`}
+          {textSize}
         </Text>
         <IconButtonV2
           name="plus"
           color={theme.colorAccent}
           size={26}
-          disabled={lineHeight >= 2}
-          onPress={() =>
-            dispatch(setReaderSettings('lineHeight', lineHeight + 0.1))
-          }
+          onPress={() => dispatch(setReaderSettings('textSize', textSize + 1))}
           theme={theme}
         />
       </View>
@@ -54,7 +45,7 @@ const ReaderLineHeight: React.FC<ReaderLineHeightProps> = ({ labelStyle }) => {
   );
 };
 
-export default ReaderLineHeight;
+export default ReaderTextSize;
 
 const styles = StyleSheet.create({
   container: {

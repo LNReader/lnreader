@@ -155,7 +155,7 @@ const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
     () => [
       {
         key: 'first',
-        title: getString('moreScreen.settingsScreen.readerSettings'),
+        title: getString('moreScreen.settingsScreen.readerSettings.title'),
       },
       {
         key: 'second',

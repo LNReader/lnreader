@@ -33,7 +33,14 @@ const ReaderFontPicker = () => {
         {readerFonts.map(item => (
           <View
             key={item.fontFamily}
-            style={[styles.container, { backgroundColor: theme.rippleColor }]}
+            style={[
+              styles.container,
+              {
+                backgroundColor: isSelected(item)
+                  ? theme.rippleColor
+                  : theme.searchBarColor,
+              },
+            ]}
           >
             <Pressable
               style={styles.content}
@@ -57,8 +64,8 @@ const ReaderFontPicker = () => {
                     color: isSelected(item)
                       ? theme.colorAccent
                       : theme.textColorPrimary,
-                    marginLeft: isSelected(item) ? 4 : 0,
                   },
+                  isSelected(item) && styles.mLeft,
                 ]}
               >
                 {item.name}
@@ -101,5 +108,8 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 16,
+  },
+  mLeft: {
+    marginLeft: 4,
   },
 });

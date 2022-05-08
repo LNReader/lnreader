@@ -17,7 +17,8 @@
       "@components/*": ["./src/components/*"],
       "@hooks/*": ["./src/hooks/*"],
       "@screens/*": ["'./src/screens/*"],
-      "@strings/*": ["./strings/*"]
+      "@strings/*": ["./strings/*"],
+      "@redux/*": ["./src/redux/*"]
     }
   },
   "include": ["src/"],

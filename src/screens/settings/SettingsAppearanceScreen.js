@@ -8,7 +8,7 @@ import { ScreenContainer } from '../../components/Common';
 import { List } from '../../components/List';
 import { ThemePicker } from '../../components/ThemePicker/ThemePicker';
 import SwitchSetting from '../../components/Switch/Switch';
-import ColorPickerModal from '../../components/ColorPickerModal';
+import ColorPickerModal from '../../components/ColorPickerModal/ColorPickerModal';
 
 import { useSettings, useTheme } from '../../hooks/reduxHooks';
 import {

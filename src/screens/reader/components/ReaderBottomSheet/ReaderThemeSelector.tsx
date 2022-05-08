@@ -1,6 +1,5 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, TextStyle, View } from 'react-native';
 import React from 'react';
-import { presetReaderThemes } from '../../../../theme/reader/presets';
 import { setReaderSettings } from '../../../../redux/settings/settings.actions';
 import {
   useAppDispatch,
@@ -10,8 +9,17 @@ import {
 } from '../../../../redux/hooks';
 import { ToggleColorButton } from '../../../../components/Common/ToggleButton';
 import { getString } from '../../../../../strings/translations';
+import { presetReaderThemes } from '../../../../utils/constants/readerConstants';
 
-const ReaderThemeSelector = () => {
+interface ReaderThemeSelectorProps {
+  label?: string;
+  labelStyle?: TextStyle | TextStyle[];
+}
+
+const ReaderThemeSelector: React.FC<ReaderThemeSelectorProps> = ({
+  label,
+  labelStyle,
+}) => {
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const {
@@ -22,10 +30,16 @@ const ReaderThemeSelector = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={[{ color: theme.textColorSecondary }, styles.title]}>
-        {getString('readerScreen.bottomSheet.color')}
+      <Text
+        style={[{ color: theme.textColorSecondary }, styles.title, labelStyle]}
+      >
+        {label || getString('readerScreen.bottomSheet.color')}
       </Text>
-      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+      <ScrollView
+        horizontal={true}
+        contentContainerStyle={styles.scrollView}
+        showsHorizontalScrollIndicator={false}
+      >
         {[...customThemes, ...presetReaderThemes].map((item, index) => (
           <ToggleColorButton
             key={index}
@@ -58,5 +72,9 @@ const styles = StyleSheet.create({
   },
   title: {
     marginRight: 16,
+  },
+  scrollView: {
+    flexGrow: 1,
+    justifyContent: 'flex-end',
   },
 });

@@ -78,6 +78,7 @@ const HistoryScreen = () => {
     novelName: string,
     chapterId: number,
     chapterUrl: string,
+    chapterName: string,
     bookmark: number,
   ) =>
     navigate(
@@ -89,6 +90,7 @@ const HistoryScreen = () => {
         chapterId,
         chapterUrl,
         bookmark,
+        chapterName,
       } as never,
     );
 

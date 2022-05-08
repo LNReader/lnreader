@@ -4,15 +4,15 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 // Screens
 import About from '../screens/more/About';
-import Settings from '../screens/setting/SettingsScreen';
-import TrackerSettings from '../screens/setting/SettingsTrackerScreen';
-import ReaderSettings from '../screens/setting/SettingsReaderScreen';
-import BackupSettings from '../screens/setting/SettingsBackupScreen';
-import AdvancedSettings from '../screens/setting/SettingsAdvancedScreen';
-import GeneralSettings from '../screens/setting/SettingsGeneralScreen';
+import Settings from '../screens/settings/SettingsScreen';
+import TrackerSettings from '../screens/settings/SettingsTrackerScreen';
+import ReaderSettings from '../screens/settings/SettingsReaderScreen/SettingsReaderScreen';
+import BackupSettings from '../screens/settings/SettingsBackupScreen';
+import AdvancedSettings from '../screens/settings/SettingsAdvancedScreen';
+import GeneralSettings from '../screens/settings/SettingsGeneralScreen';
 import DownloadQueue from '../screens/more/DownloadQueueScreen';
 import Downloads from '../screens/more/DownloadsScreen';
-import AppearanceSettings from '../screens/setting/SettingsAppearanceScreen';
+import AppearanceSettings from '../screens/settings/SettingsAppearanceScreen';
 
 const Stack = createStackNavigator();
 

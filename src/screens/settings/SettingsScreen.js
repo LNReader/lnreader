@@ -30,7 +30,7 @@ const SettingsScreen = ({ navigation }) => {
           theme={theme}
         />
         <List.Item
-          title={getString('moreScreen.settingsScreen.readerSettings')}
+          title={getString('moreScreen.settingsScreen.readerSettings.title')}
           icon="book-open-outline"
           onPress={() =>
             navigation.navigate('SettingsStack', {

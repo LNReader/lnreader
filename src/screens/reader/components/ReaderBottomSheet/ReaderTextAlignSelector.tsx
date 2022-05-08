@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TextStyle, View } from 'react-native';
 import React from 'react';
 
 import { setReaderSettings } from '../../../../redux/settings/settings.actions';
@@ -11,7 +11,13 @@ import { textAlignments } from '../../../../utils/constants/readerConstants';
 import { ToggleButton } from '../../../../components/Common/ToggleButton';
 import { getString } from '../../../../../strings/translations';
 
-const ReaderTextAlignSelector = () => {
+interface ReaderTextAlignSelectorProps {
+  labelStyle?: TextStyle | TextStyle[];
+}
+
+const ReaderTextAlignSelector: React.FC<ReaderTextAlignSelectorProps> = ({
+  labelStyle,
+}) => {
   const theme = useTheme();
   const dispatch = useAppDispatch();
 
@@ -19,7 +25,7 @@ const ReaderTextAlignSelector = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={{ color: theme.textColorSecondary }}>
+      <Text style={[{ color: theme.textColorSecondary }, labelStyle]}>
         {getString('readerScreen.bottomSheet.textAlign')}
       </Text>
       <View style={styles.buttonContainer}>

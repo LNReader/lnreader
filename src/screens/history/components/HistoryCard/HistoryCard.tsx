@@ -20,6 +20,7 @@ interface HistoryCardProps {
     novelName: string,
     chapterId: number,
     chapterUrl: string,
+    chapterName: string,
     isBookmarked: number,
   ) => void;
   handleRemoveFromHistory: (historyId: number) => void;
@@ -105,6 +106,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
               novelName,
               chapterId,
               chapterUrl,
+              chapterName,
               bookmark,
             )
           }

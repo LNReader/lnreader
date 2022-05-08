@@ -2,33 +2,46 @@ import React, { useState } from 'react';
 import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { Modal, Portal, TextInput } from 'react-native-paper';
+import { ThemeType } from '../../theme/types';
 
-const ColorPickerModal = ({
+interface ColorPickerModalProps {
+  visible: boolean;
+  title: string;
+  color: string;
+  onSubmit: (val: string) => void;
+  closeModal: () => void;
+  theme: ThemeType;
+  showAccentColors?: boolean;
+}
+
+const ColorPickerModal: React.FC<ColorPickerModalProps> = ({
   theme,
   color,
   title,
   onSubmit,
-  hideModal,
-  modalVisible,
+  closeModal,
+  visible,
   showAccentColors,
 }) => {
-  const [text, setText] = useState(color);
-  const [error, setError] = useState();
+  const [text, setText] = useState<string>(color);
+  const [error, setError] = useState<string | null>();
 
   const onDismiss = () => {
-    hideModal();
-    setText();
-    setError();
+    closeModal();
+    if (error) {
+      setText(color);
+    }
+    setError(null);
   };
 
-  const onChangeText = txt => setText(txt);
+  const onChangeText = (txt: string) => setText(txt);
 
   const onSubmitEditing = () => {
-    const re = /^#([0-9a-f]{6}|[0-9a-f]{3})$/i;
+    const re = /^#([0-9a-f]{8}|[0-9a-f]{6}|[0-9a-f]{3})$/i;
 
     if (text.match(re)) {
       onSubmit(text);
-      hideModal();
+      closeModal();
     } else {
       setError('Enter a valid hex color code');
     }
@@ -69,7 +82,7 @@ const ColorPickerModal = ({
   return (
     <Portal>
       <Modal
-        visible={modalVisible}
+        visible={visible}
         onDismiss={onDismiss}
         contentContainerStyle={[
           styles.modalContainer,
@@ -79,7 +92,7 @@ const ColorPickerModal = ({
         <Text style={[styles.modalTitle, { color: theme.textColorPrimary }]}>
           {title}
         </Text>
-        {showAccentColors && (
+        {showAccentColors ? (
           <FlatList
             contentContainerStyle={{ marginBottom: 8 }}
             data={accentColors}
@@ -110,7 +123,7 @@ const ColorPickerModal = ({
               </View>
             )}
           />
-        )}
+        ) : null}
         <TextInput
           value={text}
           defaultValue={color}
@@ -121,7 +134,7 @@ const ColorPickerModal = ({
           theme={textInputTheme}
           underlineColor={theme.textColorHint}
           dense
-          error={error}
+          error={Boolean(error)}
         />
         <Text style={styles.errorText}>{error}</Text>
       </Modal>

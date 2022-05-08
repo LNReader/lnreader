@@ -10,3 +10,4 @@ export { default as Button } from './Button/Button';
 export { default as Appbar } from './Appbar/Appbar';
 export { default as SwitchItem } from './SwitchItem/SwitchItem';
 export { default as List } from './List/List';
+export { default as ColorPreferenceItem } from './ColorPreferenceItem/ColorPreferenceItem';
