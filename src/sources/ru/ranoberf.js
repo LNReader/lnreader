@@ -57,7 +57,7 @@ const parseNovelAndChapters = async novelUrl => {
     const releaseDate = item.publishedAt;
     const chapterUrl = baseUrl + item.url;
 
-    if (!item.isDonate) {
+    if (!item.isDonate || item.isUserPaid) {
       chapters.push({ chapterName, releaseDate, chapterUrl });
     }
   });

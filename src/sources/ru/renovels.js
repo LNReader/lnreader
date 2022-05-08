@@ -72,7 +72,7 @@ const parseNovelAndChapters = async novelUrl => {
       const releaseDate = item.upload_date;
       const chapterUrl = baseUrl + '/api/titles/chapters/' + item.id + '/';
 
-      if (!item.is_paid) {
+      if (!item.is_paid || item.is_bought) {
         chapters.push({ chapterName, releaseDate, chapterUrl });
       }
     });
