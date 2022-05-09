@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { Pressable, StyleSheet, View, TextInput } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { IconButtonV2 } from '..';
+import IconButtonV2 from '../IconButtonV2/IconButtonV2';
 import { ThemeType } from '../../theme/types';
 
 interface RightIcon {

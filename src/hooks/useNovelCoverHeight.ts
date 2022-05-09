@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useWindowDimensions } from 'react-native';
 
-import { useDeviceOrientation } from '../hooks';
+import useDeviceOrientation from './useDeviceOrientation';
 import { DeviceOrientation } from '../hooks/useDeviceOrientation';
 import { useAppearanceSettings } from '../redux/hooks';
 
