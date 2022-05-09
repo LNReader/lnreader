@@ -2,9 +2,9 @@
   "common": {
     "cancel": "İptal",
     "ok": "Tamam",
-    "save": "Save",
-    "clear": "Clear",
-    "reset": "Reset"
+    "save": "Kaydet",
+    "clear": "Temizle",
+    "reset": "Sıfırla"
   },
   "library": "Kitaplık",
   "libraryScreen": {
@@ -55,21 +55,21 @@
     "all": "Tümü"
   },
   "readerScreen": {
-    "finished": "Finished",
-    "noNextChapter": "There's no next chapter",
+    "finished": "Biten",
+    "noNextChapter": "Başka bölüm yok",
     "bottomSheet": {
-      "textSize": "Metin boyutu",
+      "textSize": "Yazı boyutu",
       "color": "Renk",
-      "textAlign": "Metin Hızası",
+      "textAlign": "Yazı Hızası",
       "lineHeight": "Satır Yüksekliği",
-      "fontStyle": "Yazı tipi stili",
+      "fontStyle": "Yazı tipi",
       "fullscreen": "Tam ekran",
       "renderHml": "HTML'yi Render'le",
       "autoscroll": "Otomatik Kaydırma",
       "verticalSeekbar": "Dikey Arama Çubuğu",
       "showBatteryAndTime": "Pili ve saati göster",
       "showProgressPercentage": "İlerleme yüzdesini göster",
-      "swipeGestures": "Swipe left or right to navigate between chapters",
+      "swipeGestures": "Bölümler arası gezinmek için sol veya sağa doğru kaydırın",
       "allowTextSelection": "Yazı seçmeye izin ver"
     }
   },
@@ -92,19 +92,19 @@
       "generalSettings": "Genel",
       "generalSettingsScreen": {},
       "readerSettings": {
-        "title": "Reader",
-        "readerTheme": "Reader theme",
-        "preset": "Preset",
-        "backgroundColor": "Background color",
-        "textColor": "Text color",
-        "backgroundColorModal": "Reader background color",
-        "textColorModal": "Reader text color",
-        "verticalSeekbarDesc": "Switch between vertical and horizontal seekbar",
-        "autoScrollInterval": "Auto scroll interval (in seconds)",
-        "autoScrollOffset": "Auto scroll offset (screen height by default)",
-        "saveCustomTheme": "Save custom theme",
-        "deleteCustomTheme": "Delete custom theme",
-        "customCSS": "Custom CSS"
+        "title": "Okuyucu",
+        "readerTheme": "Okuyucu teması",
+        "preset": "Öntanımlı",
+        "backgroundColor": "Arka plan rengi",
+        "textColor": "Yazı rengi",
+        "backgroundColorModal": "Okuyucu arka plan rengi",
+        "textColorModal": "Okuyucu yazı rengi",
+        "verticalSeekbarDesc": "Dikey ve yatay arama çubuğu arasında geçiş yap",
+        "autoScrollInterval": "Otomatik kaydırma süresi (saniye olarak)",
+        "autoScrollOffset": "Otomatik kaydırma konumu (varsayılan olarak ekran yüksekliği)",
+        "saveCustomTheme": "Özel temayı kaydet",
+        "deleteCustomTheme": "Özel temayı sil",
+        "customCSS": "Özel CSS"
       },
       "browseSettings": "Göz Atma Seçenekleri",
       "browseSettingsScreen": {
