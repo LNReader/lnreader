@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { Container } from '..';
 
 import { ThemeType } from '../../theme/types';
 
@@ -11,14 +10,12 @@ interface ErrorScreenProps {
 
 const ErrorScreen: React.FC<ErrorScreenProps> = ({ error, theme }) => {
   return (
-    <Container>
-      <View style={styles.container}>
-        <Text style={[styles.icon, { color: theme.textColorHint }]}>ಥ_ಥ</Text>
-        <Text style={[styles.error, { color: theme.textColorHint }]}>
-          {error}
-        </Text>
-      </View>
-    </Container>
+    <View style={styles.container}>
+      <Text style={[styles.icon, { color: theme.textColorHint }]}>ಥ_ಥ</Text>
+      <Text style={[styles.error, { color: theme.textColorHint }]}>
+        {error}
+      </Text>
+    </View>
   );
 };
 
