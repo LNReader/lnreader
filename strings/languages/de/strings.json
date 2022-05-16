@@ -1,31 +1,31 @@
 {
   "common": {
-    "cancel": "Cancel",
+    "cancel": "Abbrechen",
     "ok": "Ok",
-    "save": "Save",
-    "clear": "Clear",
-    "reset": "Reset"
+    "save": "Sichern",
+    "clear": "Leeren",
+    "reset": "Zurücksetzen"
   },
   "library": "Bibliothek",
   "libraryScreen": {
-    "searchbar": "Search library",
-    "empty": "Your library is empty. Add series to your library from Browse.",
+    "searchbar": "Bibliothek durchsuchen",
+    "empty": "Deine Bibliothek ist leer. Füge Serien über Browse zu deiner Bibliothek hinzu.",
     "bottomSheet": {
       "filters": {
-        "downloaded": "Downloaded",
-        "unread": "Unread",
-        "completed": "Completed"
+        "downloaded": "Heruntergeladen",
+        "unread": "Ungelesen",
+        "completed": "Fertig"
       },
       "sortOrders": {
-        "dateAdded": "Date added",
-        "alphabetically": "Alphabetically",
-        "totalChapters": "Total chapters"
+        "dateAdded": "Hinzugefügt am",
+        "alphabetically": "Alphabetisch",
+        "totalChapters": "Gesamte Kapitel"
       },
       "display": {
-        "displayMode": "Display mode",
-        "compact": "Compact grid",
-        "comfortable": "Comfortable grid",
-        "noTitle": "No title grid",
+        "displayMode": "Anzeigemodus",
+        "compact": "Kompaktes Raster",
+        "comfortable": "Komfortables Raster",
+        "noTitle": "Kein-Titel Raster",
         "list": "List",
         "badges": "Badges",
         "downloadBadges": "Download badges",
