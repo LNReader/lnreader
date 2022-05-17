@@ -26,55 +26,55 @@
         "compact": "Kompaktes Raster",
         "comfortable": "Komfortables Raster",
         "noTitle": "Kein-Titel Raster",
-        "list": "List",
-        "badges": "Badges",
+        "list": "Liste",
+        "badges": "Abzeichen",
         "downloadBadges": "Download badges",
         "unreadBadges": "Unread badges",
-        "showNoOfItems": "Show number of items"
+        "showNoOfItems": "Anzahl der Elemente"
       }
     }
   },
   "updates": "Neu",
   "updatesScreen": {
-    "searchbar": "Search updates",
-    "lastUpdatedAt": "Library last updated:"
+    "searchbar": "Nach Updates suchen",
+    "lastUpdatedAt": "Bibliothek zuletzt aktualisiert:"
   },
   "history": "Verlauf",
   "historyScreen": {
-    "searchbar": "Search history",
-    "clearHistorWarning": "Are you sure? All history will be lost."
+    "searchbar": "Suchverlauf",
+    "clearHistorWarning": "Bist du sicher? Der gesamte Verlauf geht verloren."
   },
-  "browse": "Browse",
+  "browse": "Durchsuchen",
   "browseScreen": {
-    "discover": "Discover",
-    "searchbar": "Search sources",
-    "globalSearch": "Global search",
-    "listEmpty": "Enable languages from settings",
-    "lastUsed": "Last used",
-    "pinned": "Pinned",
-    "all": "All"
+    "discover": "Entdecke",
+    "searchbar": "Quellen durchsuchen",
+    "globalSearch": "Globale Suche",
+    "listEmpty": "Sprachen in Einstellungen aktivieren",
+    "lastUsed": "Zuletzt genutzt",
+    "pinned": "Angeheftet",
+    "all": "Alle"
   },
   "readerScreen": {
-    "finished": "Finished",
-    "noNextChapter": "There's no next chapter",
+    "finished": "Beendet",
+    "noNextChapter": "Es gibt kein weiteres Kapitel",
     "bottomSheet": {
-      "textSize": "Text size",
-      "color": "Color",
-      "textAlign": "Text align",
-      "lineHeight": "Line Height",
-      "fontStyle": "Font style",
-      "fullscreen": "Fullscreen",
-      "renderHml": "Render HTML",
-      "autoscroll": "AutoScroll",
-      "verticalSeekbar": "Vertical Seekbar",
-      "showBatteryAndTime": "Show battery and time",
-      "showProgressPercentage": "Show progress percentage",
-      "swipeGestures": "Swipe left or right to navigate between chapters",
-      "allowTextSelection": "Allow text selection"
+      "textSize": "Schriftgröße",
+      "color": "Farbe",
+      "textAlign": "Textausrichtung",
+      "lineHeight": "Zeilenhöhe",
+      "fontStyle": "Schriftart",
+      "fullscreen": "Vollbildmodus",
+      "renderHml": "HTML anzeigen",
+      "autoscroll": "Auto-Scroll",
+      "verticalSeekbar": "Vertikale Suchleiste",
+      "showBatteryAndTime": "Akku und Zeit anzeigen",
+      "showProgressPercentage": "Zeige Fortschritt in Prozent",
+      "swipeGestures": "Nach links oder rechts wischen, um zwischen den Kapiteln zu wechseln",
+      "allowTextSelection": "Textauswahl erlauben"
     }
   },
   "novelScreen": {
-    "addToLibaray": "Add to library",
+    "addToLibaray": "Zur Bibliothek hinzufügen",
     "inLibaray": "In library",
     "continueReading": "Continue reading",
     "chapters": "chapters",
