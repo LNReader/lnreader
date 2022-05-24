@@ -1,10 +1,10 @@
 {
   "common": {
-    "cancel": "Cancel",
-    "ok": "Ok",
-    "save": "Save",
-    "clear": "Clear",
-    "reset": "Reset"
+    "cancel": "Отменить",
+    "ok": "Ок",
+    "save": "Сохранить",
+    "clear": "Очистить",
+    "reset": "Сбросить"
   },
   "library": "Библиотека",
   "libraryScreen": {
@@ -42,7 +42,7 @@
   "history": "История",
   "historyScreen": {
     "searchbar": "Поиск в истории",
-    "clearHistorWarning": "Are you sure? All history will be lost."
+    "clearHistorWarning": "Вы уверены? Вся история будет потеряна."
   },
   "browse": "Обзор",
   "browseScreen": {
@@ -56,12 +56,12 @@
   },
   "readerScreen": {
     "finished": "Finished",
-    "noNextChapter": "There's no next chapter",
+    "noNextChapter": "Следующей главы нет",
     "bottomSheet": {
-      "textSize": "Text size",
-      "color": "Color",
-      "textAlign": "Text align",
-      "lineHeight": "Line Height",
+      "textSize": "Размер текста",
+      "color": "Цвет",
+      "textAlign": "Выравнивание текста",
+      "lineHeight": "Высота строки",
       "fontStyle": "Font style",
       "fullscreen": "Fullscreen",
       "renderHml": "Render HTML",
