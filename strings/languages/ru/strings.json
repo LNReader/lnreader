@@ -1,4 +1,11 @@
 {
+  "common": {
+    "cancel": "Отменить",
+    "ok": "Ок",
+    "save": "Сохранить",
+    "clear": "Очистить",
+    "reset": "Сбросить"
+  },
   "library": "Библиотека",
   "libraryScreen": {
     "searchbar": "Поиск в библиотеке",
@@ -34,7 +41,8 @@
   },
   "history": "История",
   "historyScreen": {
-    "searchbar": "Поиск в истории"
+    "searchbar": "Поиск в истории",
+    "clearHistorWarning": "Вы уверены? Вся история будет потеряна."
   },
   "browse": "Обзор",
   "browseScreen": {
@@ -45,6 +53,25 @@
     "lastUsed": "Последнее использование",
     "pinned": "Закреплено",
     "all": "Все"
+  },
+  "readerScreen": {
+    "finished": "Завершено",
+    "noNextChapter": "Следующей главы нет",
+    "bottomSheet": {
+      "textSize": "Размер текста",
+      "color": "Цвет",
+      "textAlign": "Выравнивание текста",
+      "lineHeight": "Высота строки",
+      "fontStyle": "Шрифт",
+      "fullscreen": "Полноэкранный",
+      "renderHml": "Рендер HTML",
+      "autoscroll": "Автопрокрутка",
+      "verticalSeekbar": "Вертикальная панель навигации",
+      "showBatteryAndTime": "Показывать батарею и время",
+      "showProgressPercentage": "Показывать процент прогресса",
+      "swipeGestures": "Проведите влево или вправо для перехода между главами",
+      "allowTextSelection": "Разрешить выделение текста"
+    }
   },
   "novelScreen": {
     "addToLibaray": "Добавить в библиотеку",
@@ -64,8 +91,21 @@
     "settingsScreen": {
       "generalSettings": "Основные",
       "generalSettingsScreen": {},
-      "readerSettings": "Чтение",
-      "readerSettingsScreen": {},
+      "readerSettings": {
+        "title": "Чтение",
+        "readerTheme": "Тема при чтении",
+        "preset": "Предустановка",
+        "backgroundColor": "Цвет фона",
+        "textColor": "Цвет текста",
+        "backgroundColorModal": "Цвет фона при чтении",
+        "textColorModal": "Цвет текста при чтении",
+        "verticalSeekbarDesc": "Переключение между вертикальной и горизонтальной панелями навигации",
+        "autoScrollInterval": "Интервал автопрокрутки (в секундах)",
+        "autoScrollOffset": "Смещение автопрокрутки (высота экрана по умолчанию)",
+        "saveCustomTheme": "Сохранить пользовательскую тему",
+        "deleteCustomTheme": "Удалить пользовательскую тему",
+        "customCSS": "Пользовательские CSS"
+      },
       "browseSettings": "Настройки обзора",
       "browseSettingsScreen": {
         "onlyShowPinnedSources": "Показывать только закрепленные источники",

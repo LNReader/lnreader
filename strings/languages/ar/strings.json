@@ -1,4 +1,11 @@
 {
+  "common": {
+    "cancel": "Cancel",
+    "ok": "Ok",
+    "save": "Save",
+    "clear": "Clear",
+    "reset": "Reset"
+  },
   "library": "المكتبة",
   "libraryScreen": {
     "searchbar": "البحث في المكتبة",
@@ -34,7 +41,8 @@
   },
   "history": "السجل",
   "historyScreen": {
-    "searchbar": "سجل البحث"
+    "searchbar": "سجل البحث",
+    "clearHistorWarning": "Are you sure? All history will be lost."
   },
   "browse": "تصفح",
   "browseScreen": {
@@ -45,6 +53,25 @@
     "lastUsed": "Last used",
     "pinned": "Pinned",
     "all": "All"
+  },
+  "readerScreen": {
+    "finished": "Finished",
+    "noNextChapter": "There's no next chapter",
+    "bottomSheet": {
+      "textSize": "Text size",
+      "color": "Color",
+      "textAlign": "Text align",
+      "lineHeight": "Line Height",
+      "fontStyle": "Font style",
+      "fullscreen": "Fullscreen",
+      "renderHml": "Render HTML",
+      "autoscroll": "AutoScroll",
+      "verticalSeekbar": "Vertical Seekbar",
+      "showBatteryAndTime": "Show battery and time",
+      "showProgressPercentage": "Show progress percentage",
+      "swipeGestures": "Swipe left or right to navigate between chapters",
+      "allowTextSelection": "Allow text selection"
+    }
   },
   "novelScreen": {
     "addToLibaray": "إضافة إلى المكتبة",
@@ -64,8 +91,21 @@
     "settingsScreen": {
       "generalSettings": "العامة",
       "generalSettingsScreen": {},
-      "readerSettings": "القارئ",
-      "readerSettingsScreen": {},
+      "readerSettings": {
+        "title": "Reader",
+        "readerTheme": "Reader theme",
+        "preset": "Preset",
+        "backgroundColor": "Background color",
+        "textColor": "Text color",
+        "backgroundColorModal": "Reader background color",
+        "textColorModal": "Reader text color",
+        "verticalSeekbarDesc": "Switch between vertical and horizontal seekbar",
+        "autoScrollInterval": "Auto scroll interval (in seconds)",
+        "autoScrollOffset": "Auto scroll offset (screen height by default)",
+        "saveCustomTheme": "Save custom theme",
+        "deleteCustomTheme": "Delete custom theme",
+        "customCSS": "Custom CSS"
+      },
       "browseSettings": "Browse Settings",
       "browseSettingsScreen": {
         "onlyShowPinnedSources": "Only show pinned sources",

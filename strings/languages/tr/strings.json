@@ -1,4 +1,11 @@
 {
+  "common": {
+    "cancel": "İptal",
+    "ok": "Tamam",
+    "save": "Kaydet",
+    "clear": "Temizle",
+    "reset": "Sıfırla"
+  },
   "library": "Kitaplık",
   "libraryScreen": {
     "searchbar": "Kitaplıkta ara",
@@ -34,7 +41,8 @@
   },
   "history": "Geçmiş",
   "historyScreen": {
-    "searchbar": "Geçmişte ara"
+    "searchbar": "Geçmişte ara",
+    "clearHistorWarning": "Emin misin? Tüm geçmiş kaybolacak."
   },
   "browse": "Göz at",
   "browseScreen": {
@@ -45,6 +53,25 @@
     "lastUsed": "Son kullanılan",
     "pinned": "Sabitlenmiş",
     "all": "Tümü"
+  },
+  "readerScreen": {
+    "finished": "Biten",
+    "noNextChapter": "Başka bölüm yok",
+    "bottomSheet": {
+      "textSize": "Yazı boyutu",
+      "color": "Renk",
+      "textAlign": "Yazı Hızası",
+      "lineHeight": "Satır Yüksekliği",
+      "fontStyle": "Yazı tipi",
+      "fullscreen": "Tam ekran",
+      "renderHml": "HTML'yi Render'le",
+      "autoscroll": "Otomatik Kaydırma",
+      "verticalSeekbar": "Dikey Arama Çubuğu",
+      "showBatteryAndTime": "Pili ve saati göster",
+      "showProgressPercentage": "İlerleme yüzdesini göster",
+      "swipeGestures": "Bölümler arası gezinmek için sol veya sağa doğru kaydırın",
+      "allowTextSelection": "Yazı seçmeye izin ver"
+    }
   },
   "novelScreen": {
     "addToLibaray": "Kitaplığa ekle",
@@ -64,8 +91,21 @@
     "settingsScreen": {
       "generalSettings": "Genel",
       "generalSettingsScreen": {},
-      "readerSettings": "Okuyucu",
-      "readerSettingsScreen": {},
+      "readerSettings": {
+        "title": "Okuyucu",
+        "readerTheme": "Okuyucu teması",
+        "preset": "Öntanımlı",
+        "backgroundColor": "Arka plan rengi",
+        "textColor": "Yazı rengi",
+        "backgroundColorModal": "Okuyucu arka plan rengi",
+        "textColorModal": "Okuyucu yazı rengi",
+        "verticalSeekbarDesc": "Dikey ve yatay arama çubuğu arasında geçiş yap",
+        "autoScrollInterval": "Otomatik kaydırma süresi (saniye olarak)",
+        "autoScrollOffset": "Otomatik kaydırma konumu (varsayılan olarak ekran yüksekliği)",
+        "saveCustomTheme": "Özel temayı kaydet",
+        "deleteCustomTheme": "Özel temayı sil",
+        "customCSS": "Özel CSS"
+      },
       "browseSettings": "Göz Atma Seçenekleri",
       "browseSettingsScreen": {
         "onlyShowPinnedSources": "Yalnızca sabitlenmiş kaynakları göster",
