@@ -18,7 +18,7 @@ const popularNovels = async page => {
 
   body.content.map(item => {
     const novelName = item.rus_name;
-    const novelCover = baseUrl + item.img.mid;
+    const novelCover = baseUrl + (item.img?.high || item.img.low);
     const novelUrl = item.dir;
     novels.push({ sourceId, novelName, novelCover, novelUrl });
   });
@@ -105,7 +105,7 @@ const searchNovels = async searchTerm => {
 
   body.content.map(item => {
     const novelName = item.rus_name;
-    const novelCover = baseUrl + item.img.mid;
+    const novelCover = baseUrl + (item.img?.high || item.img.low);
     const novelUrl = item.dir;
     const novel = { sourceId, novelName, novelCover, novelUrl };
     novels.push(novel);
