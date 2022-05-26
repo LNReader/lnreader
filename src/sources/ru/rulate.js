@@ -9,7 +9,6 @@ const baseUrl = 'https://tl.rulate.ru';
 const popularNovels = async page => {
   const result = await fetch(baseUrl + '/site/login?page=' + page);
   const body = await result.text();
-
   const loadedCheerio = cheerio.load(body);
   const totalPages = parseInt(
     loadedCheerio('li[class="last"] > a').attr('href')?.replace(/[^\d]/g, '') ||
@@ -32,7 +31,19 @@ const popularNovels = async page => {
 };
 
 const parseNovelAndChapters = async novelUrl => {
-  const result = await fetch(baseUrl + novelUrl);
+  let result = await fetch(baseUrl + novelUrl);
+  if (result.url.includes('mature?path=')) {
+    const formData = new FormData();
+    formData.append('path', novelUrl);
+    formData.append('ok', 'Да');
+
+    await fetch(result.url, {
+      method: 'POST',
+      body: formData,
+    });
+
+    result = await fetch(baseUrl + novelUrl);
+  }
   const body = await result.text();
   const loadedCheerio = cheerio.load(body);
 
@@ -107,7 +118,19 @@ const parseNovelAndChapters = async novelUrl => {
 };
 
 const parseChapter = async (novelUrl, chapterUrl) => {
-  const result = await fetch(baseUrl + chapterUrl);
+  let result = await fetch(baseUrl + chapterUrl);
+  if (result.url.includes('mature?path=')) {
+    const formData = new FormData();
+    formData.append('path', novelUrl);
+    formData.append('ok', 'Да');
+
+    await fetch(result.url, {
+      method: 'POST',
+      body: formData,
+    });
+
+    result = await fetch(baseUrl + chapterUrl);
+  }
   const body = await result.text();
   const loadedCheerio = cheerio.load(body);
 

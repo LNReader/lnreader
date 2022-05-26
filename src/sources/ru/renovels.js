@@ -7,8 +7,10 @@ const sourceName = 'Renovels';
 const baseUrl = 'https://renovels.org';
 
 const popularNovels = async page => {
-  const totalPages = 20;
-  const url = baseUrl + '/api/titles/last-chapters/?&count=20&page=' + page;
+  const url =
+    baseUrl +
+    '/api/search/catalog/?count=30&ordering=-chapter_date&page=' +
+    page;
   const result = await fetch(url);
   let body = await result.json();
 
@@ -16,11 +18,12 @@ const popularNovels = async page => {
 
   body.content.map(item => {
     const novelName = item.rus_name;
-    const novelCover = baseUrl + item.img.mid;
+    const novelCover = baseUrl + (item.img?.high || item.img.low);
     const novelUrl = item.dir;
     novels.push({ sourceId, novelName, novelCover, novelUrl });
   });
 
+  let totalPages = body.props.total_pages;
   return { totalPages, novels };
 };
 
@@ -69,7 +72,7 @@ const parseNovelAndChapters = async novelUrl => {
       const releaseDate = item.upload_date;
       const chapterUrl = baseUrl + '/api/titles/chapters/' + item.id + '/';
 
-      if (!item.is_paid) {
+      if (!item.is_paid || item.is_bought) {
         chapters.push({ chapterName, releaseDate, chapterUrl });
       }
     });
@@ -102,7 +105,7 @@ const searchNovels = async searchTerm => {
 
   body.content.map(item => {
     const novelName = item.rus_name;
-    const novelCover = baseUrl + item.img.mid;
+    const novelCover = baseUrl + (item.img?.high || item.img.low);
     const novelUrl = item.dir;
     const novel = { sourceId, novelName, novelCover, novelUrl };
     novels.push(novel);

@@ -8,8 +8,7 @@ const sourceName = 'РанобэРФ';
 const baseUrl = 'https://ранобэ.рф';
 
 const popularNovels = async page => {
-  const totalPages = 9;
-  const result = await fetch(baseUrl + '/?page=' + page);
+  const result = await fetch(baseUrl + '/books?order=popular&page=' + page);
   const body = await result.text();
 
   const loadedCheerio = cheerio.load(body);
@@ -24,6 +23,7 @@ const popularNovels = async page => {
     novels.push({ sourceId, novelName, novelCover, novelUrl });
   });
 
+  let totalPages = json.props.pageProps.totalData.pagesData.pageCount;
   return { totalPages, novels };
 };
 
@@ -57,7 +57,7 @@ const parseNovelAndChapters = async novelUrl => {
     const releaseDate = item.publishedAt;
     const chapterUrl = baseUrl + item.url;
 
-    if (!item.isDonate) {
+    if (!item.isDonate || item.isUserPaid) {
       chapters.push({ chapterName, releaseDate, chapterUrl });
     }
   });
