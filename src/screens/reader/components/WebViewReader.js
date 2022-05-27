@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { StatusBar, StyleSheet, View } from 'react-native';
 
 import WebView from 'react-native-webview';
@@ -12,14 +12,32 @@ const WebViewReader = ({
   reader,
   onScroll,
   onWebViewNavigationStateChange,
+  layoutHeight,
+  webViewScroll,
 }) => {
   const backgroundColor = readerBackground(reader.theme);
 
   const chapterText = sanitizeChapterText(html);
 
+  const webViewRef = useRef(null);
+
+  useEffect(() => {
+    if (webViewRef.current && webViewScroll > 0) {
+      webViewRef.current.injectJavaScript(`scroll=()=>{
+        const p = ${webViewScroll};
+        const h = document.body.scrollHeight;
+        const s = (h*p)/100;
+        const lh = ${Math.trunc(layoutHeight)};
+        const xs = s - 1.3*lh;
+        window.scrollTo({top: xs, left:0, behavior:"smooth"});
+      };scroll()`);
+    }
+  }, [webViewScroll]);
+
   return (
     <View style={styles.container}>
       <WebView
+        ref={webViewRef}
         style={{ backgroundColor }}
         originWhitelist={['*']}
         scalesPageToFit={true}

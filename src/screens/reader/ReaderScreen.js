@@ -222,14 +222,18 @@ const Chapter = ({ route, navigation }) => {
     }
   }, []);
 
+  const [webViewScroll, setWebViewScroll] = useState(scrollPercentage);
+
   const scrollToSavedProgress = useCallback(event => {
     if (position && firstLayout) {
-      position.percentage < 100 &&
+      if (position.percentage < 100) {
         scrollViewRef.current.scrollTo({
           x: 0,
           y: position.position,
           animated: false,
         });
+        setWebViewStartScroll(position.percentage);
+      }
       setFirstLayout(false);
     }
   }, []);
@@ -359,6 +363,8 @@ const Chapter = ({ route, navigation }) => {
                 {useWebViewForChapter ? (
                   <View style={{ flex: 1 }}>
                     <WebViewReader
+                      layoutHeight={Dimensions.get('window').height}
+                      webViewScroll={webViewScroll}
                       reader={readerSettings}
                       html={chapter.chapterText}
                       onScroll={onScroll}
