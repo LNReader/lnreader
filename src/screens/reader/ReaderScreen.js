@@ -232,7 +232,7 @@ const Chapter = ({ route, navigation }) => {
           y: position.position,
           animated: false,
         });
-        setWebViewStartScroll(position.percentage);
+        setWebViewScroll(position.percentage);
       }
       setFirstLayout(false);
     }
