@@ -23,7 +23,7 @@ const getChapterUrl = (id, chn) =>
 
 // Because syosetu does not have any covers, I did a replacement for them
 const novelCover =
-  'https://raw.githubusercontent.com/skillgg/lnreader-sources/main/src/jp/syosetu/not_found.png';
+  'https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true';
 
 // ID of this extension
 const sourceId = 36;
