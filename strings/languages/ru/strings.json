@@ -28,15 +28,15 @@
         "noTitle": "Без заголовка сетки",
         "list": "Список",
         "badges": "Значки",
-        "downloadBadges": "Загрузить значки",
-        "unreadBadges": "Непрочитанные значки",
+        "downloadBadges": "Загружено Значки",
+        "unreadBadges": "Не прочитано Значки",
         "showNoOfItems": "Показывать количество элементов"
       }
     }
   },
   "updates": "Обновления",
   "updatesScreen": {
-    "searchbar": "Поиск обновлений",
+    "searchbar": "Поиск в обновлениях",
     "lastUpdatedAt": "Последнее обновление библиотеки:"
   },
   "history": "История",
