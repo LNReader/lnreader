@@ -100,7 +100,6 @@ import RiwayatScraper from './ar/riwayat';
 import NovelRinganScraper from './id/novelringan';
 import IndoWebNovelScraper from './id/indowebnovel';
 import ChireadsScraper from './fr/chireads';
-import RewayatArScraper from './ar/rewayatar';
 import MTLCornerScraper from './en/mtlcorner';
 import NitroScansScraper from './en/nitroscans';
 import NovelForestScraper from './en/novelforest';
@@ -192,7 +191,6 @@ export const sourceManager = (sourceId: number): Scraper => {
     51: RanobesScraper,
     52: YushuboScraper,
     53: KolNovelScraper,
-    54: RewayatArScraper,
     55: MostNovelScraper,
     56: NovelMultiverseScraper,
     57: LightNovelHeavenScraper,
