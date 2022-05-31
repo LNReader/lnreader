@@ -108,7 +108,10 @@ const EditInfoModal = ({ theme, hideModal, modalVisible, novel, dispatch }) => {
           dense
         />
         <TextInput
-          placeholder={`Description: ${info.novelSummary.substring(0, 16)}...`}
+          placeholder={`Description: ${info?.novelSummary?.substring(
+            0,
+            16,
+          )}...`}
           style={{ fontSize: 14 }}
           numberOfLines={1}
           mode="outlined"
