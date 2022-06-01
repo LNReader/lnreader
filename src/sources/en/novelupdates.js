@@ -225,7 +225,8 @@ const parseChapter = async (novelUrl, chapterUrl) => {
         loadedCheerio('.main-content').html() ||
         loadedCheerio('article.post').html() ||
         loadedCheerio('.content').html() ||
-        loadedCheerio('#content').html();
+        loadedCheerio('#content').html() ||
+        loadedCheerio('.page-body').html();
     } else if (isWebNovel) {
       chapterText = loadedCheerio('.cha-words').html();
 
