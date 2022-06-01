@@ -2,9 +2,9 @@
   "common": {
     "cancel": "Cancel",
     "ok": "Ok",
-    "save": "Save",
+    "save": "تثبيت",
     "clear": "Clear",
-    "reset": "Reset"
+    "reset": "إعادة تعيين"
   },
   "library": "المكتبة",
   "libraryScreen": {
@@ -37,12 +37,12 @@
   "updates": "التحديثات",
   "updatesScreen": {
     "searchbar": "البحث في التحديثات",
-    "lastUpdatedAt": "Library last updated:"
+    "lastUpdatedAt": "آخر تحديث للمكتبة:"
   },
   "history": "السجل",
   "historyScreen": {
     "searchbar": "سجل البحث",
-    "clearHistorWarning": "Are you sure? All history will be lost."
+    "clearHistorWarning": "هل أنت متأكد؟ سيتم مسح كل التاريخ."
   },
   "browse": "تصفح",
   "browseScreen": {
