@@ -70,14 +70,14 @@ const GeneralTab: React.FC = () => {
         value={fullScreenMode}
         theme={theme}
       />
+      <ReaderSheetPreferenceItem
+        label={getString('readerScreen.bottomSheet.autoscroll')}
+        onPress={() => dispatch(setAppSettings('autoScroll', !autoScroll))}
+        value={autoScroll}
+        theme={theme}
+      />
       {!useWebViewForChapter ? (
         <>
-          <ReaderSheetPreferenceItem
-            label={getString('readerScreen.bottomSheet.autoscroll')}
-            onPress={() => dispatch(setAppSettings('autoScroll', !autoScroll))}
-            value={autoScroll}
-            theme={theme}
-          />
           <ReaderSheetPreferenceItem
             label={getString('readerScreen.bottomSheet.verticalSeekbar')}
             onPress={() =>

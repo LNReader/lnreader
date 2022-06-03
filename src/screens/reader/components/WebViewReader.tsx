@@ -30,7 +30,7 @@ type WebViewReaderProps = {
   onScroll(): void;
   onWebViewNavigationStateChange(): void;
   layoutHeight: number;
-  webViewScroll: { percentage: number; type: 'smooth' | 'instant' };
+  webViewScroll: { percentage: number; type: 'smooth' | 'instant' | 'exact' };
   setScrollPercentage: React.Dispatch<React.SetStateAction<number>>;
   scrollPercentage: number;
 };
@@ -64,11 +64,15 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = ({
         const s = (h*p)/100;
         const lh = ${Math.trunc(layoutHeight)};
         const xs = s - 1.2*lh;
-        window.scrollTo({top: p === 100 ? h : xs, left:0, behavior:"${
-          webViewScroll.type
-        }"});
+        const type = "${webViewScroll.type}";
+        if(type === 'exact')
+          window.scrollTo({top: p, left:0, behavior:'smooth'});
+        else
+          window.scrollTo({top: p === 100 ? h : xs, left:0, behavior:type});
       })()`);
-      setScrollPercentage(webViewScroll.percentage || 0);
+      if (webViewScroll.type !== 'exact') {
+        setScrollPercentage(webViewScroll.percentage || 0);
+      }
     }
   }, [webViewScroll]);
 

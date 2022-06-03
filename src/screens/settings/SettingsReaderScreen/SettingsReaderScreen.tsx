@@ -222,52 +222,13 @@ const SettingsReaderScreen = () => {
           }
           theme={theme}
         />
-        {!useWebViewForChapter ? (
-          <SwitchItem
-            label={getString('readerScreen.bottomSheet.autoscroll')}
-            value={autoScroll}
-            onPress={() => dispatch(setAppSettings('autoScroll', !autoScroll))}
-            theme={theme}
-          />
-        ) : null}
-        {useWebViewForChapter ? (
-          <>
-            <List.Divider theme={theme} />
-            <List.SubHeader theme={theme}>
-              {getString('moreScreen.settingsScreen.readerSettings.customCSS')}
-            </List.SubHeader>
-            <View style={styles.customCSSContainer}>
-              <TextInput
-                style={[{ color: theme.textColorPrimary }, styles.fontSizeL]}
-                value={customCSS}
-                onChangeText={text => setcustomCSS(text)}
-                placeholderTextColor={theme.textColorSecondary}
-                placeholder="Example: body { color: red; }"
-                multiline={true}
-              />
-              <View style={styles.customCSSButtons}>
-                <Button
-                  theme={theme}
-                  onPress={() =>
-                    dispatch(setReaderSettings('customCSS', customCSS))
-                  }
-                  style={styles.marginLeftS}
-                  title={getString('common.save')}
-                  variation={ButtonVariation.OUTLINED}
-                />
-                <Button
-                  theme={theme}
-                  onPress={() => {
-                    setcustomCSS('');
-                    dispatch(setReaderSettings('customCSS', ''));
-                  }}
-                  title={getString('common.clear')}
-                  variation={ButtonVariation.OUTLINED}
-                />
-              </View>
-            </View>
-          </>
-        ) : autoScroll ? (
+        <SwitchItem
+          label={getString('readerScreen.bottomSheet.autoscroll')}
+          value={autoScroll}
+          onPress={() => dispatch(setAppSettings('autoScroll', !autoScroll))}
+          theme={theme}
+        />
+        {autoScroll ? (
           <>
             <List.Divider theme={theme} />
             <List.SubHeader theme={theme}>
@@ -334,7 +295,44 @@ const SettingsReaderScreen = () => {
             ) : null}
           </>
         ) : null}
-
+        {useWebViewForChapter ? (
+          <>
+            <List.Divider theme={theme} />
+            <List.SubHeader theme={theme}>
+              {getString('moreScreen.settingsScreen.readerSettings.customCSS')}
+            </List.SubHeader>
+            <View style={styles.customCSSContainer}>
+              <TextInput
+                style={[{ color: theme.textColorPrimary }, styles.fontSizeL]}
+                value={customCSS}
+                onChangeText={text => setcustomCSS(text)}
+                placeholderTextColor={theme.textColorSecondary}
+                placeholder="Example: body { color: red; }"
+                multiline={true}
+              />
+              <View style={styles.customCSSButtons}>
+                <Button
+                  theme={theme}
+                  onPress={() =>
+                    dispatch(setReaderSettings('customCSS', customCSS))
+                  }
+                  style={styles.marginLeftS}
+                  title={getString('common.save')}
+                  variation={ButtonVariation.OUTLINED}
+                />
+                <Button
+                  theme={theme}
+                  onPress={() => {
+                    setcustomCSS('');
+                    dispatch(setReaderSettings('customCSS', ''));
+                  }}
+                  title={getString('common.clear')}
+                  variation={ButtonVariation.OUTLINED}
+                />
+              </View>
+            </View>
+          </>
+        ) : null}
         <List.Divider theme={theme} />
         <List.SubHeader theme={theme}>
           {getString('novelScreen.bottomSheet.display')}

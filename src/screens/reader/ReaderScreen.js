@@ -161,15 +161,24 @@ const Chapter = ({ route, navigation }) => {
   let scrollTimeout;
 
   useEffect(() => {
-    if (!useWebViewForChapter && scrollPercentage !== 100 && autoScroll) {
+    if (scrollPercentage !== 100 && autoScroll) {
       scrollTimeout = setTimeout(() => {
-        scrollViewRef.current.scrollTo({
-          x: 0,
-          y:
-            currentOffset +
-            defaultTo(autoScrollOffset, Dimensions.get('window').height),
-          animated: true,
-        });
+        if (useWebViewForChapter) {
+          setWebViewScroll({
+            percentage:
+              currentOffset +
+              defaultTo(autoScrollOffset, Dimensions.get('window').height),
+            type: 'exact',
+          });
+        } else {
+          scrollViewRef.current.scrollTo({
+            x: 0,
+            y:
+              currentOffset +
+              defaultTo(autoScrollOffset, Dimensions.get('window').height),
+            animated: true,
+          });
+        }
         setCurrentOffset(
           prevState =>
             prevState +
