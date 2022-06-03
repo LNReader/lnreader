@@ -87,7 +87,6 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = ({
           const event = ev.nativeEvent.data;
           switch (event) {
             case 'hide':
-              console.log(theme.colorAccent, theme.colorButtonText, theme);
               onPress?.();
               break;
             case 'next':

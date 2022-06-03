@@ -299,8 +299,6 @@ const Chapter = ({ route, navigation }) => {
 
   const backgroundColor = readerSettings.theme;
 
-  console.log(scrollPercentage);
-
   return (
     <>
       <>
