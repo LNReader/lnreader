@@ -1,6 +1,8 @@
 import React, { memo, useMemo } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 
+import Clipboard from '@react-native-community/clipboard';
+
 import { IconButton } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
