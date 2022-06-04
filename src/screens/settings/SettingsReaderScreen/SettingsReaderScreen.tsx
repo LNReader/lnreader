@@ -72,6 +72,8 @@ const SettingsReaderScreen = () => {
   const readerSettings = useReaderSettings();
   const {
     useWebViewForChapter = false,
+    wvUseNewSwipes = false,
+    wvShowSwipeMargins = true,
     verticalSeekbar = true,
     swipeGestures = false,
     autoScroll = false,
@@ -222,6 +224,33 @@ const SettingsReaderScreen = () => {
           }
           theme={theme}
         />
+        {swipeGestures && useWebViewForChapter ? (
+          <>
+            <SwitchItem
+              label={'WebView Swipe Detection'}
+              description={
+                'It is highly experimantable and may work worse than the original!'
+              }
+              value={wvUseNewSwipes}
+              theme={theme}
+              onPress={() =>
+                dispatch(setAppSettings('wvUseNewSwipes', !wvUseNewSwipes))
+              }
+            />
+            {wvUseNewSwipes ? (
+              <SwitchItem
+                label={'Show swipe margins'}
+                value={wvShowSwipeMargins}
+                theme={theme}
+                onPress={() =>
+                  dispatch(
+                    setAppSettings('wvShowSwipeMargins', !wvShowSwipeMargins),
+                  )
+                }
+              />
+            ) : null}
+          </>
+        ) : null}
         <SwitchItem
           label={getString('readerScreen.bottomSheet.autoscroll')}
           value={autoScroll}

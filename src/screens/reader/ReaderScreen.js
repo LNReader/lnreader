@@ -76,6 +76,8 @@ const Chapter = ({ route, navigation }) => {
     incognitoMode = false,
     textSelectable = false,
     useWebViewForChapter = false,
+    wvUseNewSwipes = false,
+    wvShowSwipeMargins = true,
     autoScroll = false,
     autoScrollInterval = 10,
     autoScrollOffset = null,
@@ -327,8 +329,16 @@ const Chapter = ({ route, navigation }) => {
           pauseTts={pauseTts}
         />
         <GestureRecognizer
-          onSwipeRight={swipeGestures && navigateToPrevChapter}
-          onSwipeLeft={swipeGestures && navigateToNextChapter}
+          onSwipeRight={
+            swipeGestures &&
+            (!useWebViewForChapter || !wvUseNewSwipes) &&
+            navigateToPrevChapter
+          }
+          onSwipeLeft={
+            swipeGestures &&
+            (!useWebViewForChapter || !wvUseNewSwipes) &&
+            navigateToNextChapter
+          }
           config={config}
           style={{ flex: 1 }}
         >
@@ -382,11 +392,14 @@ const Chapter = ({ route, navigation }) => {
                       chapterName={chapter.chapterName || chapterName}
                       nextChapter={nextChapter}
                       navigateToNextChapter={navigateToNextChapter}
+                      navigateToPrevChapter={navigateToPrevChapter}
                       onScroll={onScroll}
                       onPress={hideHeader}
                       onWebViewNavigationStateChange={
                         onWebViewNavigationStateChange
                       }
+                      swipeGestures={swipeGestures && wvUseNewSwipes}
+                      wvShowSwipeMargins={wvShowSwipeMargins}
                       theme={theme}
                     />
                   </View>
