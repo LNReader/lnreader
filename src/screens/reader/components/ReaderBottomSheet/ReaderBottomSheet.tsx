@@ -76,18 +76,14 @@ const GeneralTab: React.FC = () => {
         value={autoScroll}
         theme={theme}
       />
-      {!useWebViewForChapter ? (
-        <>
-          <ReaderSheetPreferenceItem
-            label={getString('readerScreen.bottomSheet.verticalSeekbar')}
-            onPress={() =>
-              dispatch(setAppSettings('verticalSeekbar', !verticalSeekbar))
-            }
-            value={verticalSeekbar}
-            theme={theme}
-          />
-        </>
-      ) : null}
+      <ReaderSheetPreferenceItem
+        label={getString('readerScreen.bottomSheet.verticalSeekbar')}
+        onPress={() =>
+          dispatch(setAppSettings('verticalSeekbar', !verticalSeekbar))
+        }
+        value={verticalSeekbar}
+        theme={theme}
+      />
       <ReaderSheetPreferenceItem
         label={getString('readerScreen.bottomSheet.showBatteryAndTime')}
         onPress={() =>
