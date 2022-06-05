@@ -76,6 +76,8 @@ const Chapter = ({ route, navigation }) => {
     incognitoMode = false,
     textSelectable = false,
     useWebViewForChapter = false,
+    wvUseNewSwipes = false,
+    wvShowSwipeMargins = true,
     autoScroll = false,
     autoScrollInterval = 10,
     autoScrollOffset = null,
@@ -161,15 +163,24 @@ const Chapter = ({ route, navigation }) => {
   let scrollTimeout;
 
   useEffect(() => {
-    if (!useWebViewForChapter && scrollPercentage !== 100 && autoScroll) {
+    if (scrollPercentage !== 100 && autoScroll) {
       scrollTimeout = setTimeout(() => {
-        scrollViewRef.current.scrollTo({
-          x: 0,
-          y:
-            currentOffset +
-            defaultTo(autoScrollOffset, Dimensions.get('window').height),
-          animated: true,
-        });
+        if (useWebViewForChapter) {
+          setWebViewScroll({
+            percentage:
+              currentOffset +
+              defaultTo(autoScrollOffset, Dimensions.get('window').height),
+            type: 'exact',
+          });
+        } else {
+          scrollViewRef.current.scrollTo({
+            x: 0,
+            y:
+              currentOffset +
+              defaultTo(autoScrollOffset, Dimensions.get('window').height),
+            animated: true,
+          });
+        }
         setCurrentOffset(
           prevState =>
             prevState +
@@ -232,7 +243,9 @@ const Chapter = ({ route, navigation }) => {
           y: position.position,
           animated: false,
         });
-        setWebViewScroll(position.percentage);
+        if (useWebViewForChapter) {
+          setWebViewScroll({ percentage: position.percentage, type: 'smooth' });
+        }
       }
       setFirstLayout(false);
     }
@@ -316,8 +329,16 @@ const Chapter = ({ route, navigation }) => {
           pauseTts={pauseTts}
         />
         <GestureRecognizer
-          onSwipeRight={swipeGestures && navigateToPrevChapter}
-          onSwipeLeft={swipeGestures && navigateToNextChapter}
+          onSwipeRight={
+            swipeGestures &&
+            (!useWebViewForChapter || !wvUseNewSwipes) &&
+            navigateToPrevChapter
+          }
+          onSwipeLeft={
+            swipeGestures &&
+            (!useWebViewForChapter || !wvUseNewSwipes) &&
+            navigateToNextChapter
+          }
           config={config}
           style={{ flex: 1 }}
         >
@@ -357,7 +378,6 @@ const Chapter = ({ route, navigation }) => {
             ) : (
               <TouchableWithoutFeedback
                 style={{ flex: 1 }}
-                onPress={hideHeader}
                 onLayout={scrollToSavedProgress}
               >
                 {useWebViewForChapter ? (
@@ -365,18 +385,28 @@ const Chapter = ({ route, navigation }) => {
                     <WebViewReader
                       layoutHeight={Dimensions.get('window').height}
                       webViewScroll={webViewScroll}
+                      setScrollPercentage={setScrollPercentage}
+                      scrollPercentage={scrollPercentage}
                       reader={readerSettings}
                       html={chapter.chapterText}
+                      chapterName={chapter.chapterName || chapterName}
+                      nextChapter={nextChapter}
+                      navigateToNextChapter={navigateToNextChapter}
+                      navigateToPrevChapter={navigateToPrevChapter}
                       onScroll={onScroll}
+                      onPress={hideHeader}
                       onWebViewNavigationStateChange={
                         onWebViewNavigationStateChange
                       }
+                      swipeGestures={swipeGestures && wvUseNewSwipes}
+                      wvShowSwipeMargins={wvShowSwipeMargins}
                       theme={theme}
                     />
                   </View>
                 ) : (
                   <View>
                     <TextReader
+                      onPress={hideHeader}
                       text={chapter.chapterText}
                       reader={readerSettings}
                       chapterName={chapter.chapterName || chapterName}
@@ -395,18 +425,18 @@ const Chapter = ({ route, navigation }) => {
         <Portal>
           <ReaderBottomSheetV2 bottomSheetRef={readerSheetRef} />
         </Portal>
-        {!useWebViewForChapter && (
-          <ReaderSeekBar
-            theme={theme}
-            hide={hidden}
-            setLoading={setLoading}
-            contentSize={contentSize}
-            scrollViewRef={scrollViewRef}
-            scrollPercentage={scrollPercentage}
-            setScrollPercentage={setScrollPercentage}
-            verticalSeekbar={verticalSeekbar}
-          />
-        )}
+        <ReaderSeekBar
+          theme={theme}
+          hide={hidden}
+          setLoading={setLoading}
+          contentSize={contentSize}
+          scrollViewRef={scrollViewRef}
+          scrollPercentage={scrollPercentage}
+          setScrollPercentage={setScrollPercentage}
+          setWebViewScroll={setWebViewScroll}
+          useWebViewForChapter={useWebViewForChapter}
+          verticalSeekbar={verticalSeekbar}
+        />
         <ReaderFooter
           theme={theme}
           novelUrl={novelUrl}

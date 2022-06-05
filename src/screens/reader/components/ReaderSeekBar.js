@@ -13,10 +13,15 @@ const VerticalScrollbar = ({
   setLoading,
   scrollViewRef,
   verticalSeekbar,
+  setWebViewScroll,
+  useWebViewForChapter,
 }) => {
   const { bottom } = useSafeAreaInsets();
 
   const onSlidingComplete = value => {
+    if (useWebViewForChapter) {
+      return setWebViewScroll({ percentage: value, type: 'instant' });
+    }
     setLoading(true);
     scrollViewRef.current.scrollTo({
       x: 0,

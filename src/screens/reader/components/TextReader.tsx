@@ -14,6 +14,7 @@ import { ThemeType } from '../../../theme/types';
 import { ChapterItem } from '../../../database/types';
 import { sanitizeChapterText } from '../utils/sanitizeChapterText';
 import { getString } from '@strings/translations';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 interface TextReaderProps {
   text: string;
@@ -32,6 +33,7 @@ interface TextReaderProps {
   nextChapter: ChapterItem;
   textSelectable: boolean;
   navigateToNextChapter: () => void;
+  onPress(): void;
 }
 
 const TextReader: React.FC<TextReaderProps> = ({
@@ -42,6 +44,7 @@ const TextReader: React.FC<TextReaderProps> = ({
   nextChapter,
   textSelectable,
   navigateToNextChapter,
+  onPress,
 }) => {
   const { width } = useWindowDimensions();
 
@@ -49,46 +52,52 @@ const TextReader: React.FC<TextReaderProps> = ({
 
   return (
     <>
-      <RenderHtml
-        contentWidth={width}
-        source={{ html }}
-        defaultTextProps={{
-          style: {
-            color: reader.textColor,
-            fontFamily: reader.fontFamily,
-            lineHeight: reader.textSize * reader.lineHeight,
-            fontSize: reader.textSize,
-            textAlign: reader.textAlign as TextAlignments,
-          },
-          selectable: textSelectable,
-        }}
-        defaultViewProps={{
-          style: {
-            backgroundColor: reader.theme,
-          },
-        }}
-        baseStyle={{
-          paddingHorizontal: `${reader.padding}%`,
-          paddingTop: (StatusBar.currentHeight || 0) + 16,
-        }}
-      />
-      <View style={styles.navigationContainer}>
-        <Text style={[styles.finishedChapterText, { color: reader.textColor }]}>
-          {`${getString('readerScreen.finished')}: ${chapterName?.trim()}`}
-        </Text>
-        {nextChapter ? (
-          <Button
-            title={`Next: ${nextChapter.chapterName}`}
-            onPress={navigateToNextChapter}
-            theme={theme}
-            style={styles.nextButton}
-          />
-        ) : (
-          <Text style={[{ color: reader.textColor }, styles.noNextChapterText]}>
-            {getString('readerScreen.noNextChapter')}
+      <TouchableWithoutFeedback onPress={onPress}>
+        <RenderHtml
+          contentWidth={width}
+          source={{ html }}
+          defaultTextProps={{
+            style: {
+              color: reader.textColor,
+              fontFamily: reader.fontFamily,
+              lineHeight: reader.textSize * reader.lineHeight,
+              fontSize: reader.textSize,
+              textAlign: reader.textAlign as TextAlignments,
+            },
+            selectable: textSelectable,
+          }}
+          defaultViewProps={{
+            style: {
+              backgroundColor: reader.theme,
+            },
+          }}
+          baseStyle={{
+            paddingHorizontal: `${reader.padding}%`,
+            paddingTop: (StatusBar.currentHeight || 0) + 16,
+          }}
+        />
+        <View style={styles.navigationContainer}>
+          <Text
+            style={[styles.finishedChapterText, { color: reader.textColor }]}
+          >
+            {`${getString('readerScreen.finished')}: ${chapterName?.trim()}`}
           </Text>
-        )}
-      </View>
+          {nextChapter ? (
+            <Button
+              title={`Next: ${nextChapter.chapterName}`}
+              onPress={navigateToNextChapter}
+              theme={theme}
+              style={styles.nextButton}
+            />
+          ) : (
+            <Text
+              style={[{ color: reader.textColor }, styles.noNextChapterText]}
+            >
+              {getString('readerScreen.noNextChapter')}
+            </Text>
+          )}
+        </View>
+      </TouchableWithoutFeedback>
     </>
   );
 };
