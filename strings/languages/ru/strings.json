@@ -4,7 +4,8 @@
     "ok": "Ок",
     "save": "Сохранить",
     "clear": "Очистить",
-    "reset": "Сбросить"
+    "reset": "Сбросить",
+    "search": "Search"
   },
   "library": "Библиотека",
   "libraryScreen": {
@@ -114,5 +115,8 @@
         "searchAllWarning": "Поиск по большому количеству источников может привести к зависанию приложения, пока поиск не завершится."
       }
     }
+  },
+  "sourceScreen": {
+    "noResultsFound": "No results found"
   }
 }
