@@ -4,7 +4,8 @@
     "ok": "Ок",
     "save": "Зберегти",
     "clear": "Очистити",
-    "reset": "Скинути"
+    "reset": "Скинути",
+    "search": "Search"
   },
   "library": "Бібліотека",
   "libraryScreen": {
@@ -114,5 +115,8 @@
         "searchAllWarning": "Пошук у великій кількості джерел може викликати зависання програми до закінчення пошуку."
       }
     }
+  },
+  "sourceScreen": {
+    "noResultsFound": "No results found"
   }
 }
