@@ -4,7 +4,8 @@
     "ok": "Tamam",
     "save": "Kaydet",
     "clear": "Temizle",
-    "reset": "Sıfırla"
+    "reset": "Sıfırla",
+    "search": "Search"
   },
   "library": "Kitaplık",
   "libraryScreen": {
@@ -114,5 +115,8 @@
         "searchAllWarning": "Büyük miktarda kaynaklarda arama yapmak işlem bitene kadar uygulamayı dondurabilir."
       }
     }
+  },
+  "sourceScreen": {
+    "noResultsFound": "No results found"
   }
 }
