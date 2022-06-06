@@ -4,55 +4,56 @@
     "ok": "Ok",
     "save": "Save",
     "clear": "Clear",
-    "reset": "Reset"
+    "reset": "Reset",
+    "search": "Search"
   },
-  "library": "Biblioteca",
+  "library": "Library",
   "libraryScreen": {
-    "searchbar": "Pesquisar na biblioteca",
-    "empty": "Sua biblioteca está vazia. Adicione séries à sua biblioteca pelo Navegador.",
+    "searchbar": "Search library",
+    "empty": "Your library is empty. Add series to your library from Browse.",
     "bottomSheet": {
       "filters": {
-        "downloaded": "Baixados",
-        "unread": "Não lidos",
-        "completed": "Concluídos"
+        "downloaded": "Downloaded",
+        "unread": "Unread",
+        "completed": "Completed"
       },
       "sortOrders": {
-        "dateAdded": "Data adicionado",
-        "alphabetically": "Em Ordem Alfabética",
-        "totalChapters": "Total de capítulos"
+        "dateAdded": "Date added",
+        "alphabetically": "Alphabetically",
+        "totalChapters": "Total chapters"
       },
       "display": {
-        "displayMode": "Modo de exibição",
-        "compact": "Grade compacta",
-        "comfortable": "Grade confortável",
-        "noTitle": "Grade sem títulos",
-        "list": "Lista",
-        "badges": "Emblemas",
-        "downloadBadges": "Baixar emblemas",
-        "unreadBadges": "Emblemas não lidos",
-        "showNoOfItems": "Mostrar número de itens"
+        "displayMode": "Display mode",
+        "compact": "Compact grid",
+        "comfortable": "Comfortable grid",
+        "noTitle": "No title grid",
+        "list": "List",
+        "badges": "Badges",
+        "downloadBadges": "Download badges",
+        "unreadBadges": "Unread badges",
+        "showNoOfItems": "Show number of items"
       }
     }
   },
-  "updates": "Atualizações",
+  "updates": "Updates",
   "updatesScreen": {
-    "searchbar": "Procurar por atualizações",
-    "lastUpdatedAt": "Biblioteca atualizada pela última vez:"
+    "searchbar": "Search updates",
+    "lastUpdatedAt": "Library last updated:"
   },
-  "history": "Histórico",
+  "history": "History",
   "historyScreen": {
-    "searchbar": "Histórico de pesquisa",
+    "searchbar": "Search history",
     "clearHistorWarning": "Are you sure? All history will be lost."
   },
-  "browse": "Navegar",
+  "browse": "Browse",
   "browseScreen": {
-    "discover": "Descubra",
-    "searchbar": "Pesquisar nas fontes",
-    "globalSearch": "Pesquisa global",
-    "listEmpty": "Habilitar idiomas a partir das configurações",
-    "lastUsed": "Usado por último",
-    "pinned": "Fixado",
-    "all": "Todos"
+    "discover": "Discover",
+    "searchbar": "Search sources",
+    "globalSearch": "Global search",
+    "listEmpty": "Enable languages from settings",
+    "lastUsed": "Last used",
+    "pinned": "Pinned",
+    "all": "All"
   },
   "readerScreen": {
     "finished": "Finished",
@@ -74,22 +75,22 @@
     }
   },
   "novelScreen": {
-    "addToLibaray": "Adicionar à biblioteca",
-    "inLibaray": "Na biblioteca",
-    "continueReading": "Continuar lendo",
-    "chapters": "Capítulos",
-    "migrate": "Migrar",
+    "addToLibaray": "Add to library",
+    "inLibaray": "In library",
+    "continueReading": "Continue reading",
+    "chapters": "chapters",
+    "migrate": "Migrate",
     "bottomSheet": {
-      "filter": "Filtro",
-      "sort": "Ordenar por",
-      "display": "Exibir"
+      "filter": "Filter",
+      "sort": "Sort",
+      "display": "Display"
     }
   },
-  "more": "Mais",
+  "more": "More",
   "moreScreen": {
-    "settings": "Configurações",
+    "settings": "Settings",
     "settingsScreen": {
-      "generalSettings": "Geral",
+      "generalSettings": "General",
       "generalSettingsScreen": {},
       "readerSettings": {
         "title": "Reader",
@@ -106,13 +107,16 @@
         "deleteCustomTheme": "Delete custom theme",
         "customCSS": "Custom CSS"
       },
-      "browseSettings": "Configurações de navegação",
+      "browseSettings": "Browse Settings",
       "browseSettingsScreen": {
-        "onlyShowPinnedSources": "Mostrar apenas fontes fixadas",
-        "languages": "Idiomas",
-        "searchAllSources": "Pesquisar em todas as fontes",
-        "searchAllWarning": "Procurar em um grande número de fontes pode congelar o aplicativo até que a procura termine."
+        "onlyShowPinnedSources": "Only show pinned sources",
+        "languages": "Languages",
+        "searchAllSources": "Search all sources",
+        "searchAllWarning": "Searching a large number of sources may freeze the app till searching is finished."
       }
     }
+  },
+  "sourceScreen": {
+    "noResultsFound": "No results found"
   }
 }
