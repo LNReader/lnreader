@@ -4,7 +4,8 @@
     "ok": "Ok",
     "save": "Save",
     "clear": "Clear",
-    "reset": "Reset"
+    "reset": "Reset",
+    "search": "Search"
   },
   "library": "Library",
   "libraryScreen": {
@@ -114,5 +115,8 @@
         "searchAllWarning": "Searching a large number of sources may freeze the app till searching is finished."
       }
     }
+  },
+  "sourceScreen": {
+    "noResultsFound": "No results found"
   }
 }
