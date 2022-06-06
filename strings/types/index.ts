@@ -8,6 +8,7 @@ export interface StringMap {
   'common.save': 'string';
   'common.clear': 'string';
   'common.reset': 'string';
+  'common.search': 'string';
   'library': 'string';
   'libraryScreen.searchbar': 'string';
   'libraryScreen.empty': 'string';
@@ -84,4 +85,5 @@ export interface StringMap {
   'moreScreen.settingsScreen.browseSettingsScreen.languages': 'string';
   'moreScreen.settingsScreen.browseSettingsScreen.searchAllSources': 'string';
   'moreScreen.settingsScreen.browseSettingsScreen.searchAllWarning': 'string';
+  'sourceScreen.noResultsFound': 'string';
 }

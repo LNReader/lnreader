@@ -19,7 +19,7 @@ import MoreStack from './MoreStack';
  */
 import Novel from '../screens/novel/NovelScreen';
 import Reader from '../screens/reader/ReaderScreen';
-import SourceScreen from '../screens/source/SourceScreen';
+import BrowseSourceScreen from '../screens/BrowseSourceScreen/BrowseSourceScreen';
 import GlobalSearch from '../screens/browse/globalsearch/GlobalSearch';
 import Migration from '../screens/browse/migration/Migration';
 import SourceNovels from '../screens/browse/SourceNovels';
@@ -53,7 +53,7 @@ const MainNavigator = () => {
         <Stack.Screen name="Novel" component={Novel} />
         <Stack.Screen name="Chapter" component={Reader} />
         <Stack.Screen name="MoreStack" component={MoreStack} />
-        <Stack.Screen name="SourceScreen" component={SourceScreen} />
+        <Stack.Screen name="SourceScreen" component={BrowseSourceScreen} />
         <Stack.Screen name="BrowseMal" component={MalTopNovels} />
         <Stack.Screen name="BrowseSettings" component={BrowseSettings} />
         <Stack.Screen name="GlobalSearch" component={GlobalSearch} />
