@@ -5,7 +5,7 @@
     "save": "Kaydet",
     "clear": "Temizle",
     "reset": "Sıfırla",
-    "search": "Search"
+    "search": "Ara"
   },
   "library": "Kitaplık",
   "libraryScreen": {
@@ -117,6 +117,6 @@
     }
   },
   "sourceScreen": {
-    "noResultsFound": "No results found"
+    "noResultsFound": "Sonuç bulunamadı"
   }
 }
