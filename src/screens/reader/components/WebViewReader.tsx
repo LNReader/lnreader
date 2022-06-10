@@ -43,6 +43,8 @@ type WebViewReaderProps = {
   scrollPercentage: number;
   swipeGestures: boolean;
   wvShowSwipeMargins: boolean;
+  scrollPage: string | null;
+  setScrollPage: React.Dispatch<React.SetStateAction<string | null>>;
 };
 
 const WebViewReader: FunctionComponent<WebViewReaderProps> = ({
@@ -62,6 +64,8 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = ({
   scrollPercentage,
   swipeGestures,
   wvShowSwipeMargins,
+  scrollPage,
+  setScrollPage,
 }) => {
   const backgroundColor = readerBackground(reader.theme);
 
@@ -70,6 +74,25 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = ({
   const webViewRef = useRef<WebView>(null);
 
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (scrollPage) {
+      if (scrollPage === 'up') {
+        webViewRef.current?.injectJavaScript(`(()=>{
+          window.scrollTo({top:document.body.scrollTop - ${Math.trunc(
+            layoutHeight,
+          )},left:0,behavior:'smooth'});
+        })()`);
+      } else {
+        webViewRef.current?.injectJavaScript(`(()=>{
+          window.scrollTo({top:document.body.scrollTop + ${Math.trunc(
+            layoutHeight,
+          )},left:0,behavior:'smooth'});
+        })()`);
+      }
+      setScrollPage(null);
+    }
+  }, [scrollPage]);
 
   useEffect(() => {
     if (webViewRef.current && webViewScroll.percentage !== scrollPercentage) {
