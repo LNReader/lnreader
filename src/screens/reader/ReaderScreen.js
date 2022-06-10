@@ -82,6 +82,7 @@ const Chapter = ({ route, navigation }) => {
     useWebViewForChapter = false,
     wvUseNewSwipes = false,
     wvShowSwipeMargins = true,
+    wvUseVolumeButtons = false,
     autoScroll = false,
     autoScrollInterval = 10,
     autoScrollOffset = null,
@@ -109,23 +110,36 @@ const Chapter = ({ route, navigation }) => {
   const [scrollPage, setScrollPage] = useState(null);
 
   useEffect(() => {
-    VolumeButtonListener.connect();
-    VolumeButtonListener.preventDefault();
-    const emmiter = new NativeEventEmitter(NativeModules.VolumeButtonListener);
-    emmiter.removeAllListeners('VolumeUp');
-    emmiter.removeAllListeners('VolumeDown');
-    const upSub = emmiter.addListener('VolumeUp', e => {
-      setScrollPage('up');
-    });
-    const downSub = emmiter.addListener('VolumeDown', e => {
-      setScrollPage('down');
-    });
-    return () => {
-      VolumeButtonListener.disconnect();
-      upSub?.remove();
-      downSub?.remove();
-    };
+    VolumeButtonListener.disconnect();
+    if (useWebViewForChapter && wvUseVolumeButtons) {
+      VolumeButtonListener.connect();
+      VolumeButtonListener.preventDefault();
+      const emmiter = new NativeEventEmitter(
+        NativeModules.VolumeButtonListener,
+      );
+      emmiter.removeAllListeners('VolumeUp');
+      emmiter.removeAllListeners('VolumeDown');
+      const upSub = emmiter.addListener('VolumeUp', e => {
+        setScrollPage('up');
+      });
+      const downSub = emmiter.addListener('VolumeDown', e => {
+        setScrollPage('down');
+      });
+      return () => {
+        VolumeButtonListener.disconnect();
+        upSub?.remove();
+        downSub?.remove();
+      };
+    }
   }, []);
+
+  useEffect(() => {
+    if (wvUseVolumeButtons) {
+      VolumeButtonListener.connect();
+    } else {
+      VolumeButtonListener.disconnect();
+    }
+  }, [wvUseVolumeButtons]);
 
   const getChapter = async id => {
     try {
@@ -278,8 +292,14 @@ const Chapter = ({ route, navigation }) => {
 
   const hideHeader = () => {
     if (!hidden) {
+      if (useWebViewForChapter && wvUseVolumeButtons) {
+        VolumeButtonListener.connect();
+      }
       setImmersiveMode();
     } else {
+      if (useWebViewForChapter && wvUseVolumeButtons) {
+        VolumeButtonListener.disconnect();
+      }
       showStatusAndNavBar();
     }
     setHidden(!hidden);

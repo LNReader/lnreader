@@ -46,6 +46,7 @@ const GeneralTab: React.FC = () => {
     verticalSeekbar,
     showBatteryAndTime,
     showScrollPercentage,
+    wvUseVolumeButtons = false,
     swipeGestures = false,
     textSelectable,
   } = useSettingsV1();
@@ -110,13 +111,22 @@ const GeneralTab: React.FC = () => {
         value={swipeGestures}
         theme={theme}
       />
-      {!useWebViewForChapter && (
+      {!useWebViewForChapter ? (
         <ReaderSheetPreferenceItem
           label={getString('readerScreen.bottomSheet.allowTextSelection')}
           onPress={() =>
             dispatch(setAppSettings('textSelectable', !textSelectable))
           }
           value={textSelectable}
+          theme={theme}
+        />
+      ) : (
+        <ReaderSheetPreferenceItem
+          label={'Volume buttons scroll'}
+          onPress={() =>
+            dispatch(setAppSettings('wvUseVolumeButtons', !wvUseVolumeButtons))
+          }
+          value={wvUseVolumeButtons}
           theme={theme}
         />
       )}

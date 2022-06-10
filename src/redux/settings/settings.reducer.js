@@ -112,6 +112,7 @@ export const initialState = {
   useWebViewForChapter: false,
   wvUseNewSwipes: false,
   wvShowSwipeMargins: true,
+  wvUseVolumeButtons: false,
   showBatteryAndTime: false,
   autoScroll: false,
   autoScrollInterval: 10,
