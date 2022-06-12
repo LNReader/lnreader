@@ -34,6 +34,8 @@ import {
   yangTheme,
   yinYangTheme,
   yotsubaTheme,
+  sapphireDuskTheme,
+  chocolateStrawberriesTheme,
 } from '../../theme/theme';
 
 const lightThemes = [
@@ -53,6 +55,8 @@ const darkThemes = [
   yinYangTheme,
   irisBlueTheme,
   oceanicTheme,
+  sapphireDuskTheme,
+  chocolateStrawberriesTheme,
 ];
 
 const AppearanceSettings = ({ navigation }) => {

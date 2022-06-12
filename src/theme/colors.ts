@@ -16,6 +16,8 @@ const AccentColors = {
   yotsuba: '#FC8C5C',
   tako_light: '#66577E',
   teal: '#40E0D0',
+  sapphireDusk: '#80b8d1',
+  chocolateStrawberries: '#e14e4e',
 };
 
 const RippleColors = {
@@ -33,6 +35,8 @@ const RippleColors = {
   yotsuba: 'rgba(252, 140, 92,0.12)',
   tako_light: 'rgba(102, 87, 126,0.12)',
   teal: 'rgba(64, 224, 208,0.12)',
+  sapphireDusk: '#80b8d11e',
+  chocolateStrawberries: '#e14e4e1e',
 };
 
 const StatusBarStyle = {
@@ -89,6 +93,14 @@ const PrimaryColors = {
   tako_light: {
     colorPrimary: '#F7F5FF',
     colorPrimaryDark: '#F2EDF7',
+  },
+  sapphireDusk: {
+    colorPrimary: '#1d2528',
+    colorPrimaryDark: '#14191b',
+  },
+  chocolateStrawberries: {
+    colorPrimary: '#2B2320',
+    colorPrimaryDark: '#1a1716',
   },
 };
 

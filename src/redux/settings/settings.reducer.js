@@ -23,6 +23,8 @@ import {
   yotsubaTheme,
   takoLightTheme,
   tealTheme,
+  sapphireDuskTheme,
+  chocolateStrawberriesTheme,
 } from '../../theme/theme.ts';
 
 const themes = {
@@ -40,6 +42,8 @@ const themes = {
   12: yotsubaTheme,
   13: takoLightTheme,
   14: tealTheme,
+  15: sapphireDuskTheme,
+  16: chocolateStrawberriesTheme,
 };
 
 /**

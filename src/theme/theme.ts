@@ -278,3 +278,35 @@ export const tealTheme = {
   colorButtonText: '#000000',
   statusBar: StatusbarStyle.LIGHT,
 };
+
+export const sapphireDuskTheme = {
+  id: 15,
+  name: 'Sapphire Dusk',
+  ...PrimaryColors.sapphireDusk,
+  ...TextColors.dark,
+  colorAccent: AccentColors.sapphireDusk,
+  rippleColor: RippleColors.sapphireDusk,
+  searchBarColor: PrimaryColors.sapphireDusk.colorPrimary,
+  menuColor: '#242529',
+  filterColor: '#FFEB3B',
+  dividerColor: DividerColors.DARK,
+  colorDisabled: PrimaryColors.dark.colorPrimary,
+  colorButtonText: '#000000',
+  statusBar: StatusbarStyle.LIGHT,
+};
+
+export const chocolateStrawberriesTheme = {
+  id: 16,
+  name: 'Chocolate Strawberries',
+  ...PrimaryColors.chocolateStrawberries,
+  ...TextColors.dark,
+  colorAccent: AccentColors.chocolateStrawberries,
+  rippleColor: RippleColors.chocolateStrawberries,
+  searchBarColor: PrimaryColors.chocolateStrawberries.colorPrimary,
+  menuColor: '#242529',
+  filterColor: '#FFEB3B',
+  dividerColor: DividerColors.DARK,
+  colorDisabled: PrimaryColors.dark.colorPrimary,
+  colorButtonText: '#000000',
+  statusBar: StatusbarStyle.LIGHT,
+};
