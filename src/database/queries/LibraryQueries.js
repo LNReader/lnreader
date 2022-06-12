@@ -2,7 +2,7 @@ import * as SQLite from 'expo-sqlite';
 const db = SQLite.openDatabase('lnreader.db');
 
 const getLibraryQuery = (sort, filter) => `
-    SELECT novels.*, C.chaptersUnread, D.chaptersDownloaded
+    SELECT novels.*, C.chaptersUnread, D.chaptersDownloaded, H.lastReadAt
     FROM novels
     LEFT JOIN (
         SELECT chapters.novelId, COUNT(*) AS chaptersUnread 
@@ -18,6 +18,14 @@ const getLibraryQuery = (sort, filter) => `
         GROUP BY chapters.novelId
     ) AS D
     ON novels.novelId = D.novelId
+    LEFT JOIN (
+        SELECT history.historyNovelId as novelId, historyTimeRead AS lastReadAt
+        FROM history
+        GROUP BY history.historyNovelId
+        HAVING history.historyTimeRead = MAX(history.historyTimeRead)
+        ORDER BY history.historyTimeRead DESC
+    ) AS H
+    ON novels.novelId = H.novelId
     WHERE novels.followed = 1 ${filter ? 'AND ' + filter : ''}
     ${sort ? 'ORDER BY ' + sort : ''}
     `;
@@ -29,7 +37,7 @@ export const getLibrary = (sort, filter) => {
         getLibraryQuery(sort, filter),
         null,
         (txObj, { rows: { _array } }) => {
-          // console.log(_array);
+          // console.log(JSON.stringify(_array, null, 2));
           resolve(_array);
         },
         (txObj, error) => {
@@ -42,7 +50,7 @@ export const getLibrary = (sort, filter) => {
 
 const searchLibraryQuery = (searchText, sort, filter) =>
   `
-    SELECT novels.*, C.chaptersUnread, D.chaptersDownloaded
+    SELECT novels.*, C.chaptersUnread, D.chaptersDownloaded, H.lastReadAt
     FROM novels
     LEFT JOIN (
         SELECT chapters.novelId, COUNT(*) AS chaptersUnread 
@@ -58,6 +66,14 @@ const searchLibraryQuery = (searchText, sort, filter) =>
         GROUP BY chapters.novelId
     ) AS D
     ON novels.novelId = D.novelId
+    LEFT JOIN (
+        SELECT history.historyNovelId as novelId, historyTimeRead AS lastReadAt
+        FROM history
+        GROUP BY history.historyNovelId
+        HAVING history.historyTimeRead = MAX(history.historyTimeRead)
+        ORDER BY history.historyTimeRead DESC
+    ) AS H
+    ON novels.novelId = H.novelId
     WHERE novels.followed = 1 AND novelName LIKE '%${searchText}%'  ${
     filter ? 'AND ' + filter : ''
   }

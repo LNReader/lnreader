@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -68,33 +68,41 @@ const LibrarySheet = ({
     </View>
   );
 
-  const sortOrders = [
-    {
-      label: 'Date Added',
-      ASC: 'novels.novelId ASC',
-      DESC: 'novels.novelId DESC',
-    },
-    {
-      label: 'Alphabetically',
-      ASC: 'novels.novelName ASC',
-      DESC: 'novels.novelName DESC',
-    },
-    {
-      label: 'Unread',
-      ASC: 'novels.unread ASC',
-      DESC: 'novels.unread DESC',
-    },
-    {
-      label: 'Downloaded',
-      ASC: 'chaptersDownloaded ASC',
-      DESC: 'chaptersDownloaded DESC',
-    },
-    {
-      label: 'Total Chapters',
-      ASC: 'chaptersUnread ASC',
-      DESC: 'chaptersUnread DESC',
-    },
-  ];
+  const sortOrders = useMemo(
+    () => [
+      {
+        label: 'Last Read',
+        ASC: 'lastReadAt ASC',
+        DESC: 'lastReadAt DESC',
+      },
+      {
+        label: 'Alphabetically',
+        ASC: 'novels.novelName ASC',
+        DESC: 'novels.novelName DESC',
+      },
+      {
+        label: 'Unread',
+        ASC: 'novels.unread ASC',
+        DESC: 'novels.unread DESC',
+      },
+      {
+        label: 'Downloaded',
+        ASC: 'chaptersDownloaded ASC',
+        DESC: 'chaptersDownloaded DESC',
+      },
+      {
+        label: 'Total Chapters',
+        ASC: 'chaptersUnread ASC',
+        DESC: 'chaptersUnread DESC',
+      },
+      {
+        label: 'Date Added',
+        ASC: 'novels.novelId ASC',
+        DESC: 'novels.novelId DESC',
+      },
+    ],
+    [],
+  );
 
   const SecondRoute = () => (
     <View style={{ flex: 1 }}>
