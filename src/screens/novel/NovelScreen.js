@@ -57,6 +57,7 @@ import { pickCustomNovelCover } from '../../database/queries/NovelQueries';
 import FadeView from '../../components/Common/CrossFadeView';
 import { useModal } from '../../hooks/useModal';
 import DownloadCustomChapterModal from './components/DownloadCustomChapterModal';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const Novel = ({ route, navigation }) => {
   const item = route.params;
@@ -64,6 +65,9 @@ const Novel = ({ route, navigation }) => {
 
   const theme = useTheme();
   const dispatch = useDispatch();
+  const { top: topInset } = useSafeAreaInsets();
+  const progressViewOffset = topInset + 32;
+
   const { novel, chapters, loading, updating } = useNovel();
   const { downloadQueue } = useSelector(state => state.downloadsReducer);
 
@@ -107,6 +111,7 @@ const Novel = ({ route, navigation }) => {
 
   const refreshControl = () => (
     <RefreshControl
+      progressViewOffset={progressViewOffset}
       onRefresh={onRefresh}
       refreshing={updating}
       colors={[theme.textColorPrimary]}
