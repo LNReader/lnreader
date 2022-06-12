@@ -9,7 +9,7 @@ import {
 
 const sourceId = 115;
 const sourceName = 'HakoLightNovel';
-const baseUrl = 'https://ln.hako.re';
+const baseUrl = 'https://ln.hako.vn';
 
 const popularNovels = async (page: number) => {
   const totalPages = 49;
@@ -33,7 +33,9 @@ const popularNovels = async (page: number) => {
 
     if (novelUrl) {
       const novelName = loadedCheerio(this).find('.series-title').text().trim();
-      let novelCover = loadedCheerio(this).find('img').attr('src');
+      let novelCover = loadedCheerio(this)
+        .find('.img-in-ratio')
+        .attr('data-bg');
 
       if (novelCover && !isUrlAbsolute(novelCover)) {
         novelCover = baseUrl + novelCover;
@@ -168,7 +170,9 @@ const searchNovels = async (searchTerm: string) => {
 
     if (novelUrl) {
       const novelName = loadedCheerio(this).find('.series-title').text();
-      let novelCover = loadedCheerio(this).find('img').attr('src');
+      let novelCover = loadedCheerio(this)
+        .find('.img-in-ratio')
+        .attr('data-bg');
 
       if (novelCover && !isUrlAbsolute(novelCover)) {
         novelCover = baseUrl + novelCover;
