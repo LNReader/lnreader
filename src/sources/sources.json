@@ -817,5 +817,12 @@
     "icon": "https://github.com/LNReader/lnreader-sources/blob/master/icons/multisrc/madara/icons/mtlnovel.club.png?raw=true",
     "url": "https://mtlnovel.club/",
     "lang": "English"
+  },
+  {
+    "sourceId": 123,
+    "sourceName": "Liebe Schnee Hiver Novel",
+    "url": "https://lshnovel.com/",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/master/icons/multisrc/wpmangastream/icons/lshnovel.png?raw=true",
+    "lang": "Turkish"
   }
 ]

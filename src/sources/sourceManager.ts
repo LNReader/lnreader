@@ -73,7 +73,10 @@ import WuxiaCityScraper from './en/wuxiacity';
 import NovelUpdatesScraper from './en/novelupdates';
 import RanobesScraper from './en/ranobes';
 import YushuboScraper from './ch/yushubo';
-import { KolNovelScraper } from './multisrc/wpmangastream/WPMangaStreamGenerator';
+import {
+  KolNovelScraper,
+  LiebeSchneeHiverNovelScraper,
+} from './multisrc/wpmangastream/WPMangaStreamGenerator';
 import WLNUpdatesScraper from './en/wlnupdates';
 import ReaperScansScraper from './en/reaperscans';
 import JaomixScraper from './ru/jaomix';
@@ -266,6 +269,7 @@ export const sourceManager = (sourceId: number): Scraper => {
     120: MTNovelScraper,
     121: SonicMTLScraper,
     122: MTLNovelDotClubScraper,
+    123: LiebeSchneeHiverNovelScraper,
   };
 
   return scrapers[sourceId];
