@@ -126,7 +126,7 @@ const ColorPickerModal: React.FC<ColorPickerModalProps> = ({
         ) : null}
         <TextInput
           value={text}
-          defaultValue={color}
+          defaultValue={typeof color === 'string' ? color : ''}
           placeholder="Hex Color Code (E.g. #3399FF)"
           onChangeText={onChangeText}
           onSubmitEditing={onSubmitEditing}

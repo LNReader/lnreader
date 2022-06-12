@@ -176,7 +176,6 @@ const SettingsReaderScreen = () => {
               backgroundColor: readerBackgroundColor,
             }}
             nestedScrollEnabled={true}
-            m
             source={{
               html: `
               <html>
