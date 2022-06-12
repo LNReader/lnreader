@@ -24,7 +24,7 @@ export const Checkbox = ({ label, status, onPress, disabled, theme }) => (
       uncheckedColor={theme.textColorSecondary}
       disabled={disabled}
     />
-    <Text style={{ color: theme.textColorPrimary, marginLeft: 12 }}>
+    <Text style={{ color: theme.textColorSecondary, marginLeft: 12 }}>
       {label}
     </Text>
   </Pressable>

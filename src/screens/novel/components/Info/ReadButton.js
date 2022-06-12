@@ -32,6 +32,7 @@ const ReadButton = ({ navigation, novel, chapters, theme, lastRead }) => {
               : getString('novelScreen.continueReading')
           } ${lastRead.chapterName}`}
           style={{ margin: 16 }}
+          textColor={theme.colorButtonText}
           theme={theme}
           onPress={navigateToLastReadChapter}
         />
@@ -44,6 +45,7 @@ const ReadButton = ({ navigation, novel, chapters, theme, lastRead }) => {
           } ${lastRead.chapterName}`}
           style={{ margin: 16 }}
           color={theme.colorDisabled}
+          textColor={theme.colorButtonText}
           theme={theme}
         />
       ))

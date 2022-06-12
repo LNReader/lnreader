@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { SelectedFilter, SourceFilter } from 'src/sources/types/filterTypes';
 import { sourceManager } from '../../sources/sourceManager';
 import { SourceNovelItem } from '../../sources/types';
 
@@ -12,21 +13,29 @@ export const useBrowseSource = (
 
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
+  const [filterValues, setFilterValues] = useState<SourceFilter[]>();
+  const [selectedFilters, setSelectedFilters] = useState<
+    SelectedFilter | undefined
+  >();
 
   const isScreenMounted = useRef(true);
 
   const hasNextPage = currentPage <= totalPages;
 
   const fetchNovels = useCallback(
-    async (page: number) => {
+    async (page: number, filters?: SelectedFilter) => {
       if (isScreenMounted.current === true) {
         try {
-          const res = await sourceManager(sourceId).popularNovels(
-            page,
+          const source = sourceManager(sourceId);
+          const res = await source.popularNovels(page, {
             showLatestNovels,
+            filters,
+          });
+          setNovels(prevState =>
+            page === 1 ? res.novels : [...prevState, ...res.novels],
           );
-          setNovels(prevState => [...prevState, ...res.novels]);
           setTotalPages(res.totalPages);
+          setFilterValues(source.filters);
         } catch (err: unknown) {
           setError(`Error: ${err}`);
         } finally {
@@ -42,7 +51,7 @@ export const useBrowseSource = (
   };
 
   useEffect(() => {
-    fetchNovels(currentPage);
+    fetchNovels(currentPage, selectedFilters);
   }, [fetchNovels, currentPage]);
 
   /**
@@ -54,7 +63,25 @@ export const useBrowseSource = (
     };
   }, []);
 
-  return { isLoading, novels, hasNextPage, fetchNextPage, error };
+  const clearFilters = useCallback(() => setSelectedFilters(undefined), []);
+
+  const setFilters = (filters: SelectedFilter) => {
+    setIsLoading(true);
+    setCurrentPage(1);
+    fetchNovels(1, filters);
+    setSelectedFilters(filters);
+  };
+
+  return {
+    isLoading,
+    novels,
+    hasNextPage,
+    fetchNextPage,
+    error,
+    filterValues,
+    setFilters,
+    clearFilters,
+  };
 };
 
 export const useSearchSource = (sourceId: number) => {

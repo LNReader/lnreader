@@ -121,17 +121,22 @@ import NovelsCafeScraper from './en/NovelsCafe';
 import LightNovelReaderScraper from './en/LightNovelReader';
 import HakoLightNovelScraper from './vi/HakoLightNovel';
 import MTNovelScraper from './en/mtnovel';
-import { SourceFilter } from './types/filterTypes';
+import { SelectedFilter, SourceFilter } from './types/filterTypes';
 
 interface PopularNovelsResponse {
   totalPages: number;
   novels: SourceNovelItem[];
 }
 
+export interface SourceOptions {
+  showLatestNovels?: boolean;
+  filters?: SelectedFilter;
+}
+
 interface Scraper {
   popularNovels: (
     pageNo: number,
-    showLatestNovels?: boolean,
+    options?: SourceOptions,
   ) => Promise<PopularNovelsResponse>;
   parseNovelAndChapters: (novelUrl: string) => Promise<SourceNovel>;
   parseChapter: (

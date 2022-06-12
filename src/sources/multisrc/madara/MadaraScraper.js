@@ -17,7 +17,7 @@ class MadaraScraper {
     this.totalPages = options.totalPages || 100;
   }
 
-  async popularNovels(page, showLatestNovels) {
+  async popularNovels(page, { showLatestNovels }) {
     const sortOrder = showLatestNovels
       ? '?m_orderby=latest'
       : '/?m_orderby=rating';

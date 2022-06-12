@@ -11,6 +11,9 @@ export enum FilterInputs {
 
 export interface SourceFilter {
   key: string;
+  label: string;
   values: FilterValue[];
   inputType: FilterInputs;
 }
+
+export type SelectedFilter = Record<string, string | string[]>;

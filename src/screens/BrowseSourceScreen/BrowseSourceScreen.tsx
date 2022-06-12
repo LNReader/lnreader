@@ -1,7 +1,9 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import * as WebBrowser from 'expo-web-browser';
 
+import { FAB, Portal } from 'react-native-paper';
+import Bottomsheet from 'rn-sliding-up-panel';
 import {
   Container,
   LoadingScreenV2,
@@ -11,6 +13,7 @@ import {
 } from '@components/index';
 import NovelList from '@components/NovelList';
 import NovelCover from '@components/NovelCover';
+import FilterBottomSheet from './components/BottomSheet';
 
 import { useSearch } from '../../hooks';
 import { useTheme } from '../../redux/hooks';
@@ -20,6 +23,7 @@ import { useLibrary } from '@hooks/reduxHooks';
 import { LibraryNovelInfo } from '../../database/types';
 import { SourceNovelItem } from '../../sources/types';
 import { getString } from '@strings/translations';
+import { StyleSheet } from 'react-native';
 
 interface BrowseSourceScreenProps {
   route: {
@@ -43,8 +47,16 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
     showLatestNovels,
   } = route.params;
 
-  const { isLoading, novels, hasNextPage, fetchNextPage, error } =
-    useBrowseSource(sourceId, showLatestNovels);
+  const {
+    isLoading,
+    novels,
+    hasNextPage,
+    fetchNextPage,
+    error,
+    filterValues,
+    setFilters,
+    clearFilters,
+  } = useBrowseSource(sourceId, showLatestNovels);
 
   const {
     isSearching,
@@ -91,6 +103,8 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
     [sourceId],
   );
 
+  const filterSheetRef = useRef<Bottomsheet | null>(null);
+
   return (
     <Container>
       <SearchbarV2
@@ -132,8 +146,37 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
           }
         />
       )}
+      {!showLatestNovels && filterValues?.length ? (
+        <>
+          <FAB
+            icon={'filter-variant'}
+            style={[styles.filterFab, { backgroundColor: theme.colorAccent }]}
+            label={'Filter'}
+            uppercase={false}
+            color={theme.colorButtonText}
+            onPress={() => filterSheetRef?.current?.show()}
+          />
+          <Portal>
+            <FilterBottomSheet
+              filterSheetRef={filterSheetRef}
+              filtersValues={filterValues}
+              setFilters={setFilters}
+              clearFilters={clearFilters}
+            />
+          </Portal>
+        </>
+      ) : null}
     </Container>
   );
 };
 
 export default BrowseSourceScreen;
+
+const styles = StyleSheet.create({
+  filterFab: {
+    position: 'absolute',
+    margin: 16,
+    right: 0,
+    bottom: 16,
+  },
+});

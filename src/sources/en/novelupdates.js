@@ -1,4 +1,6 @@
 import * as cheerio from 'cheerio';
+import { defaultTo } from 'lodash';
+import { FilterInputs } from '../types/filterTypes';
 const sourceId = 50;
 
 const sourceName = 'Novel Updates';
@@ -10,12 +12,45 @@ let headers = new Headers({
     "'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36",
 });
 
-const popularNovels = async (page, showLatestNovels) => {
+const getPopularNovelsUrl = (page, { showLatestNovels, filters }) => {
+  let url = `${baseUrl}${
+    filters
+      ? 'series-finder'
+      : showLatestNovels
+      ? 'latest-series'
+      : 'series-ranking'
+  }/`;
+
+  if (!filters) {
+    url += '?rank=week';
+  } else {
+    url += '?sf=1';
+  }
+
+  if (filters?.novelType?.length) {
+    url += '&nt=' + filters?.novelType.join(',');
+  }
+
+  if (filters?.genres?.length) {
+    url += '&gi=' + filters?.genres.join(',') + '&mgi=and';
+  }
+
+  if (filters?.language?.length) {
+    url += '&org=' + filters?.language.join(',');
+  }
+
+  url += '&sort=' + defaultTo(filters?.sort, 'sdate');
+
+  url += '&order=' + defaultTo(filters?.order, 'desc');
+
+  url += '&pg=' + page;
+
+  return url;
+};
+
+const popularNovels = async (page, { showLatestNovels, filters }) => {
   const totalPages = 100;
-  let url =
-    `${baseUrl}${
-      showLatestNovels ? 'latest-series/' : 'series-ranking'
-    }/?rank=week&pg=` + page;
+  const url = getPopularNovelsUrl(page, { showLatestNovels, filters });
 
   const result = await fetch(url, {
     method: 'GET',
@@ -308,11 +343,75 @@ const searchNovels = async searchTerm => {
   return novels;
 };
 
+const filters = [
+  {
+    key: 'sort',
+    label: 'Sort Results By',
+    values: [
+      { label: 'Last Updated', value: 'sdate' },
+      { label: 'Rating', value: 'srate' },
+      { label: 'Rank', value: 'srank' },
+      { label: 'Reviews', value: 'sreview' },
+      { label: 'Chapters', value: 'srel' },
+      { label: 'Title', value: 'abc' },
+      { label: 'Readers', value: 'sread' },
+      { label: 'Frequency', value: 'sfrel' },
+    ],
+    inputType: FilterInputs.Picker,
+  },
+  {
+    key: 'order',
+    label: 'Order',
+    values: [
+      { label: 'Descending', value: 'desc' },
+      { label: 'Ascending', value: 'asc' },
+    ],
+    inputType: FilterInputs.Picker,
+  },
+  {
+    key: 'language',
+    label: 'Language',
+    values: [
+      { label: 'Chinese', value: '495' },
+      { label: 'Japanese', value: '496' },
+      { label: 'Korean', value: '497' },
+    ],
+    inputType: FilterInputs.Checkbox,
+  },
+  {
+    key: 'novelType',
+    label: 'Novel Type',
+    values: [
+      { label: 'Light Novel', value: '2443' },
+      { label: 'Published Novel', value: '26874' },
+      { label: 'Web Novel', value: '2444' },
+    ],
+    inputType: FilterInputs.Checkbox,
+  },
+  {
+    key: 'genres',
+    label: 'Genres',
+    values: [
+      { label: 'Adventure', value: 8 },
+      { label: 'Historical', value: 330 },
+      { label: 'School Life', value: 6 },
+      { label: 'Sports', value: 1357 },
+      { label: 'Adult', value: 280 },
+      { label: 'Horror', value: 343 },
+      { label: 'Sci-fi', value: 11 },
+      { label: 'Romance', value: 15 },
+      { label: 'Mystery', value: 245 },
+    ],
+    inputType: FilterInputs.Checkbox,
+  },
+];
+
 const NovelUpdatesScraper = {
   popularNovels,
   parseNovelAndChapters,
   parseChapter,
   searchNovels,
+  filters,
 };
 
 export default NovelUpdatesScraper;

@@ -1,16 +1,21 @@
 import * as cheerio from 'cheerio';
+import { defaultTo, isNumber } from 'lodash';
+import { SourceOptions } from '../sourceManager';
 import { SourceChapter, SourceChapterItem, SourceNovelItem } from '../types';
-import { SourceFilter } from '../types/filterTypes';
+import { FilterInputs, SourceFilter } from '../types/filterTypes';
 
 const sourceId = 2;
 const sourceName = 'ReadLightNovel';
 const baseUrl = 'https://www.readlightnovel.me';
 const searchUrl = 'https://www.readlightnovel.me/detailed-search-rln';
 
-const popularNovels = async (page: number, showLatestNovels?: boolean) => {
-  let totalPages = 1751;
-  const url = `${baseUrl}/top-novels/${
-    showLatestNovels ? 'new' : 'most-viewed'
+const popularNovels = async (page: number, options?: SourceOptions) => {
+  const url = `${baseUrl}/${
+    options?.filters?.genre ? 'genre/' + options?.filters?.genre : 'top-novels'
+  }/${
+    options?.showLatestNovels
+      ? 'new'
+      : defaultTo(options?.filters?.sort, 'most-viewed')
   }/${page}`;
 
   const result = await fetch(url);
@@ -19,6 +24,17 @@ const popularNovels = async (page: number, showLatestNovels?: boolean) => {
   const loadedCheerio = cheerio.load(body);
 
   const novels: SourceNovelItem[] = [];
+
+  let totalPages: string | number | undefined = loadedCheerio(
+    '.pagination.pull-right > li',
+  )
+    .last()
+    .find('a')
+    .attr('href')
+    ?.split('/')
+    .pop();
+
+  totalPages = isNumber(totalPages) ? totalPages : 1;
 
   loadedCheerio('.top-novel-block').each(function () {
     const novelUrl = loadedCheerio(this)
@@ -218,7 +234,29 @@ const searchNovels = async (searchTerm: string) => {
   return novels;
 };
 
-export const filters: SourceFilter[] = [];
+export const filters: SourceFilter[] = [
+  {
+    inputType: FilterInputs.Picker,
+    key: 'genre',
+    label: 'Genre ',
+    values: [
+      { label: 'Any', value: '' },
+      { label: 'Action', value: 'action' },
+      { label: 'Adventure', value: 'adventure' },
+      { label: 'Billionaire', value: 'billionaire' },
+    ],
+  },
+  {
+    inputType: FilterInputs.Picker,
+    key: 'sort',
+    label: 'Sort By',
+    values: [
+      { label: 'Most Viewed', value: 'most-viewed' },
+      { label: 'Top Rated', value: 'top-rated' },
+      { label: 'New', value: 'new' },
+    ],
+  },
+];
 
 const ReadLightNovelScraper = {
   popularNovels,
