@@ -1,9 +1,11 @@
 package com.rajarsheechatterjee.LNReader;
+
 import android.content.res.Configuration;
 import android.content.Intent;
 
 import android.os.Bundle;
 import android.graphics.Color;
+import android.view.KeyEvent;
 import android.view.WindowManager;
 import android.os.Build;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.view.Window;
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
+import com.rajarsheechatterjee.VolumeButtonListener.VolumeButtonListener;
 import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
 
 import expo.modules.splashscreen.singletons.SplashScreen;
@@ -31,24 +34,53 @@ public class MainActivity extends ReactActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-      // SplashScreen.show(...) has to be called after super.onCreate(...)
-      // Below line is handled by '@expo/configure-splash-screen' command and it's discouraged to modify it manually
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-          WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
-          layoutParams.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
-          getWindow().setAttributes(layoutParams);
-      }
+        // SplashScreen.show(...) has to be called after super.onCreate(...)
+        // Below line is handled by '@expo/configure-splash-screen' command and it's discouraged to modify it manually
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+            layoutParams.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
+            getWindow().setAttributes(layoutParams);
+        }
 
-      Window w = getWindow();
-      w.setStatusBarColor(Color.TRANSPARENT);
-      w.setNavigationBarColor(Color.TRANSPARENT);
-      w.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+        Window w = getWindow();
+        w.setStatusBarColor(Color.TRANSPARENT);
+        w.setNavigationBarColor(Color.TRANSPARENT);
+        w.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
 
-      super.onCreate(null);
-      SplashScreen.show(this, SplashScreenImageResizeMode.COVER, ReactRootView.class, false);
+        super.onCreate(null);
+        SplashScreen.show(this, SplashScreenImageResizeMode.COVER, ReactRootView.class, false);
 
     }
 
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (VolumeButtonListener.isActive()) {
+
+            int action = event.getAction();
+            int keyCode = event.getKeyCode();
+            switch (keyCode) {
+                case KeyEvent.KEYCODE_VOLUME_UP:
+                    if (action == KeyEvent.ACTION_DOWN) {
+                        // volup
+                        VolumeButtonListener.up();
+                        if (!VolumeButtonListener.prevent)
+                            return super.dispatchKeyEvent(event);
+                    }
+                    return true;
+                case KeyEvent.KEYCODE_VOLUME_DOWN:
+                    if (action == KeyEvent.ACTION_DOWN) {
+                        //voldown
+                        VolumeButtonListener.down();
+                        if (!VolumeButtonListener.prevent)
+                            return super.dispatchKeyEvent(event);
+                    }
+                    return true;
+                default:
+                    return super.dispatchKeyEvent(event);
+            }
+        }
+        return super.dispatchKeyEvent(event);
+    }
 
     /**
      * Returns the name of the main component registered from JavaScript.
@@ -68,4 +100,5 @@ public class MainActivity extends ReactActivity {
             }
         };
     }
+
 }

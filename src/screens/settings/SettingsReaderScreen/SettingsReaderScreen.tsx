@@ -74,6 +74,7 @@ const SettingsReaderScreen = () => {
     useWebViewForChapter = false,
     wvUseNewSwipes = false,
     wvShowSwipeMargins = true,
+    wvUseVolumeButtons = false,
     verticalSeekbar = true,
     swipeGestures = false,
     autoScroll = false,
@@ -216,6 +217,18 @@ const SettingsReaderScreen = () => {
           }
           theme={theme}
         />
+        {useWebViewForChapter ? (
+          <SwitchItem
+            label={'Volume buttons scroll'}
+            value={wvUseVolumeButtons}
+            onPress={() =>
+              dispatch(
+                setAppSettings('wvUseVolumeButtons', !wvUseVolumeButtons),
+              )
+            }
+            theme={theme}
+          />
+        ) : null}
         <SwitchItem
           label={getString('readerScreen.bottomSheet.swipeGestures')}
           value={swipeGestures}

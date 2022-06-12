@@ -6,7 +6,11 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
   Dimensions,
+  NativeModules,
+  NativeEventEmitter,
 } from 'react-native';
+
+import VolumeButtonListener from './../../utils/volumeButtonListener';
 
 import { useDispatch } from 'react-redux';
 import { IconButton, Portal } from 'react-native-paper';
@@ -78,6 +82,7 @@ const Chapter = ({ route, navigation }) => {
     useWebViewForChapter = false,
     wvUseNewSwipes = false,
     wvShowSwipeMargins = true,
+    wvUseVolumeButtons = false,
     autoScroll = false,
     autoScrollInterval = 10,
     autoScrollOffset = null,
@@ -101,6 +106,40 @@ const Chapter = ({ route, navigation }) => {
   const [firstLayout, setFirstLayout] = useState(true);
 
   const [contentSize, setContentSize] = useState(0);
+
+  const [scrollPage, setScrollPage] = useState(null);
+
+  useEffect(() => {
+    VolumeButtonListener.disconnect();
+    if (useWebViewForChapter && wvUseVolumeButtons) {
+      VolumeButtonListener.connect();
+      VolumeButtonListener.preventDefault();
+      const emmiter = new NativeEventEmitter(
+        NativeModules.VolumeButtonListener,
+      );
+      emmiter.removeAllListeners('VolumeUp');
+      emmiter.removeAllListeners('VolumeDown');
+      const upSub = emmiter.addListener('VolumeUp', e => {
+        setScrollPage('up');
+      });
+      const downSub = emmiter.addListener('VolumeDown', e => {
+        setScrollPage('down');
+      });
+      return () => {
+        VolumeButtonListener.disconnect();
+        upSub?.remove();
+        downSub?.remove();
+      };
+    }
+  }, []);
+
+  useEffect(() => {
+    if (wvUseVolumeButtons) {
+      VolumeButtonListener.connect();
+    } else {
+      VolumeButtonListener.disconnect();
+    }
+  }, [wvUseVolumeButtons]);
 
   const getChapter = async id => {
     try {
@@ -253,8 +292,14 @@ const Chapter = ({ route, navigation }) => {
 
   const hideHeader = () => {
     if (!hidden) {
+      if (useWebViewForChapter && wvUseVolumeButtons) {
+        VolumeButtonListener.connect();
+      }
       setImmersiveMode();
     } else {
+      if (useWebViewForChapter && wvUseVolumeButtons) {
+        VolumeButtonListener.disconnect();
+      }
       showStatusAndNavBar();
     }
     setHidden(!hidden);
@@ -398,6 +443,8 @@ const Chapter = ({ route, navigation }) => {
                       onWebViewNavigationStateChange={
                         onWebViewNavigationStateChange
                       }
+                      scrollPage={scrollPage}
+                      setScrollPage={setScrollPage}
                       swipeGestures={swipeGestures && wvUseNewSwipes}
                       wvShowSwipeMargins={wvShowSwipeMargins}
                       theme={theme}
