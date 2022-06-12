@@ -49,6 +49,7 @@ const GeneralTab: React.FC = () => {
     wvUseVolumeButtons = false,
     swipeGestures = false,
     textSelectable,
+    removeExtraParagraphSpacing = false,
   } = useSettingsV1();
 
   return (
@@ -109,6 +110,19 @@ const GeneralTab: React.FC = () => {
           dispatch(setAppSettings('swipeGestures', !swipeGestures))
         }
         value={swipeGestures}
+        theme={theme}
+      />
+      <ReaderSheetPreferenceItem
+        label={'Remove extra paragraph spacing'}
+        onPress={() =>
+          dispatch(
+            setAppSettings(
+              'removeExtraParagraphSpacing',
+              !removeExtraParagraphSpacing,
+            ),
+          )
+        }
+        value={removeExtraParagraphSpacing}
         theme={theme}
       />
       {!useWebViewForChapter ? (

@@ -9,7 +9,6 @@ import { ChapterItem } from 'src/database/types';
 import { ThemeType } from 'src/theme/types';
 
 import { readerBackground } from '../utils/readerStyles';
-import { sanitizeChapterText } from '../utils/sanitizeChapterText';
 
 type WebViewPostEvent = {
   type: string;
@@ -68,8 +67,6 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = ({
   setScrollPage,
 }) => {
   const backgroundColor = readerBackground(reader.theme);
-
-  const chapterText = sanitizeChapterText(html);
 
   const webViewRef = useRef<WebView>(null);
 
@@ -249,7 +246,7 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = ({
                   <body>
                   <!-- You have to use ' or \` in onClick because JSON.stringify() uses " and it would terminate the string! -->
                     <chapter ${onClickWebViewPostMessage({ type: 'hide' })}>
-                      ${chapterText}
+                      ${html}
                     </chapter>
                     <div class="infoText">
                     ${getString(

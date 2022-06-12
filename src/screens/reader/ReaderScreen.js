@@ -53,6 +53,7 @@ import ReaderBottomSheetV2 from './components/ReaderBottomSheet/ReaderBottomShee
 import { useReaderSettings } from '../../redux/hooks';
 import { defaultTo } from 'lodash';
 import BottomInfoBar from './components/BottomInfoBar/BottomInfoBar';
+import { sanitizeChapterText } from './utils/sanitizeChapterText';
 
 const Chapter = ({ route, navigation }) => {
   useKeepAwake();
@@ -87,6 +88,7 @@ const Chapter = ({ route, navigation }) => {
     autoScrollInterval = 10,
     autoScrollOffset = null,
     verticalSeekbar = true,
+    removeExtraParagraphSpacing = false,
   } = useSettings();
 
   const { setImmersiveMode, showStatusAndNavBar } = useFullscreenMode();
@@ -355,6 +357,10 @@ const Chapter = ({ route, navigation }) => {
 
   const backgroundColor = readerSettings.theme;
 
+  const chapterText = sanitizeChapterText(chapter.chapterText, {
+    removeExtraParagraphSpacing,
+  });
+
   return (
     <>
       <>
@@ -433,7 +439,7 @@ const Chapter = ({ route, navigation }) => {
                       setScrollPercentage={setScrollPercentage}
                       scrollPercentage={scrollPercentage}
                       reader={readerSettings}
-                      html={chapter.chapterText}
+                      html={chapterText}
                       chapterName={chapter.chapterName || chapterName}
                       nextChapter={nextChapter}
                       navigateToNextChapter={navigateToNextChapter}
@@ -454,7 +460,7 @@ const Chapter = ({ route, navigation }) => {
                   <View>
                     <TextReader
                       onPress={hideHeader}
-                      text={chapter.chapterText}
+                      text={chapterText}
                       reader={readerSettings}
                       chapterName={chapter.chapterName || chapterName}
                       textSelectable={textSelectable}

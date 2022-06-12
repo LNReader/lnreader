@@ -123,6 +123,7 @@ export const initialState = {
   autoScrollOffset: null,
   textSelectable: false,
   verticalSeekbar: true,
+  removeExtraParagraphSpacing: false,
 
   reader: {
     theme: '#292832',

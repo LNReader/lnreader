@@ -12,7 +12,6 @@ import { TextAlignments } from '@screens/settings/SettingsReaderScreen/SettingsR
 import { Button } from '@components/index';
 import { ThemeType } from '../../../theme/types';
 import { ChapterItem } from '../../../database/types';
-import { sanitizeChapterText } from '../utils/sanitizeChapterText';
 import { getString } from '@strings/translations';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
@@ -48,14 +47,12 @@ const TextReader: React.FC<TextReaderProps> = ({
 }) => {
   const { width } = useWindowDimensions();
 
-  const html = sanitizeChapterText(text);
-
   return (
     <>
       <TouchableWithoutFeedback onPress={onPress}>
         <RenderHtml
           contentWidth={width}
-          source={{ html }}
+          source={{ html: text }}
           defaultTextProps={{
             style: {
               color: reader.textColor,

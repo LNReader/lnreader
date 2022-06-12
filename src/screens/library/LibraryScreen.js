@@ -259,11 +259,13 @@ const styles = StyleSheet.create({
   },
   globalSearch: {
     marginHorizontal: 16,
-    borderRadius: 4,
+    marginTop: 8,
+    marginBottom: 16,
+    borderRadius: 50,
     overflow: 'hidden',
   },
   globalSearchBtn: {
     alignItems: 'center',
-    paddingVertical: 8,
+    paddingVertical: 12,
   },
 });
