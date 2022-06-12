@@ -62,14 +62,14 @@ const parseNovelAndChapters = async (novelUrl: string) => {
 
   loadedCheerio('.novel-detail-item').each(function () {
     const detailName = loadedCheerio(this)
-      .find('.novel-detail-header > h6')
-      .text();
+      .find('.novel-detail-header ')
+      .text()
+      .trim();
     const detail = loadedCheerio(this).find('.novel-detail-body').text().trim();
 
     switch (detailName) {
       case 'Genre':
         genre = detail.trim().replace(/\s{2,}/g, ',');
-
         break;
       case 'Author(s)':
         author = detail;
