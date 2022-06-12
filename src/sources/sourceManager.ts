@@ -121,6 +121,7 @@ import NovelsCafeScraper from './en/NovelsCafe';
 import LightNovelReaderScraper from './en/LightNovelReader';
 import HakoLightNovelScraper from './vi/HakoLightNovel';
 import MTNovelScraper from './en/mtnovel';
+import { SourceFilter } from './types/filterTypes';
 
 interface PopularNovelsResponse {
   totalPages: number;
@@ -128,13 +129,17 @@ interface PopularNovelsResponse {
 }
 
 interface Scraper {
-  popularNovels: (pageNo: number) => Promise<PopularNovelsResponse>;
+  popularNovels: (
+    pageNo: number,
+    showLatestNovels?: boolean,
+  ) => Promise<PopularNovelsResponse>;
   parseNovelAndChapters: (novelUrl: string) => Promise<SourceNovel>;
   parseChapter: (
     novelUrl: string,
     chapterUrl: string,
   ) => Promise<SourceChapter>;
   searchNovels: (searchTerm: string) => Promise<SourceNovelItem[]>;
+  filters?: SourceFilter[];
 }
 
 export const sourceManager = (sourceId: number): Scraper => {

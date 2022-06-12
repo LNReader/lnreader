@@ -59,17 +59,21 @@ const BrowseScreen = () => {
     ? allSources.filter(source => source.sourceId === lastUsed)
     : [];
 
-  const navigateToSource = useCallback((source: Source) => {
-    navigate(
-      'SourceScreen' as never,
-      {
-        sourceId: source.sourceId,
-        sourceName: source.sourceName,
-        url: source.url,
-      } as never,
-    );
-    dispatch(setLastUsedSource({ sourceId: source.sourceId }));
-  }, []);
+  const navigateToSource = useCallback(
+    (source: Source, showLatestNovels?: boolean) => {
+      navigate(
+        'SourceScreen' as never,
+        {
+          sourceId: source.sourceId,
+          sourceName: source.sourceName,
+          url: source.url,
+          showLatestNovels,
+        } as never,
+      );
+      dispatch(setLastUsedSource({ sourceId: source.sourceId }));
+    },
+    [],
+  );
 
   const searchbarActions = useMemo(
     () => [

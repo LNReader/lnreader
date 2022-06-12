@@ -2,7 +2,10 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { sourceManager } from '../../sources/sourceManager';
 import { SourceNovelItem } from '../../sources/types';
 
-export const useBrowseSource = (sourceId: number) => {
+export const useBrowseSource = (
+  sourceId: number,
+  showLatestNovels?: boolean,
+) => {
   const [isLoading, setIsLoading] = useState(true);
   const [novels, setNovels] = useState<SourceNovelItem[]>([]);
   const [error, setError] = useState<string>();
@@ -18,7 +21,10 @@ export const useBrowseSource = (sourceId: number) => {
     async (page: number) => {
       if (isScreenMounted.current === true) {
         try {
-          const res = await sourceManager(sourceId).popularNovels(page);
+          const res = await sourceManager(sourceId).popularNovels(
+            page,
+            showLatestNovels,
+          );
           setNovels(prevState => [...prevState, ...res.novels]);
           setTotalPages(res.totalPages);
         } catch (err: unknown) {

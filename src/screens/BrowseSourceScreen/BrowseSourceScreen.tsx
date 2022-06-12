@@ -27,6 +27,7 @@ interface BrowseSourceScreenProps {
       sourceId: number;
       sourceName: string;
       url: string;
+      showLatestNovels?: boolean;
     };
   };
 }
@@ -35,10 +36,15 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
   const theme = useTheme();
   const { navigate, goBack } = useNavigation();
 
-  const { sourceId, sourceName, url: sourceUrl } = route.params;
+  const {
+    sourceId,
+    sourceName,
+    url: sourceUrl,
+    showLatestNovels,
+  } = route.params;
 
   const { isLoading, novels, hasNextPage, fetchNextPage, error } =
-    useBrowseSource(sourceId);
+    useBrowseSource(sourceId, showLatestNovels);
 
   const {
     isSearching,

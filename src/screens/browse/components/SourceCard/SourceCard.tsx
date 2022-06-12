@@ -13,7 +13,7 @@ interface Props {
   isPinned: boolean;
   theme: ThemeType;
   onTogglePinSource: (sourceId: number) => void;
-  navigateToSource: (source: Source) => void;
+  navigateToSource: (source: Source, showLatestNovels?: boolean) => void;
 }
 
 const SourceCard: React.FC<Props> = ({
@@ -41,10 +41,10 @@ const SourceCard: React.FC<Props> = ({
     </View>
     <View style={styles.flexRow}>
       <Button
-        title={getString('browse')}
+        title={getString('browseScreen.latest')}
         variation={ButtonVariation.CLEAR}
         textColor={theme.colorAccent}
-        onPress={() => navigateToSource(source)}
+        onPress={() => navigateToSource(source, true)}
         theme={theme}
       />
       <IconButtonV2

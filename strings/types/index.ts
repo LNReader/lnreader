@@ -41,6 +41,7 @@ export interface StringMap {
   'browseScreen.lastUsed': 'string';
   'browseScreen.pinned': 'string';
   'browseScreen.all': 'string';
+  'browseScreen.latest': 'string';
   'readerScreen.finished': 'string';
   'readerScreen.noNextChapter': 'string';
   'readerScreen.bottomSheet.textSize': 'string';

@@ -1,14 +1,17 @@
 import * as cheerio from 'cheerio';
 import { SourceChapter, SourceChapterItem, SourceNovelItem } from '../types';
+import { SourceFilter } from '../types/filterTypes';
 
 const sourceId = 2;
 const sourceName = 'ReadLightNovel';
 const baseUrl = 'https://www.readlightnovel.me';
 const searchUrl = 'https://www.readlightnovel.me/detailed-search-rln';
 
-const popularNovels = async (page: number) => {
+const popularNovels = async (page: number, showLatestNovels?: boolean) => {
   let totalPages = 1751;
-  const url = `${baseUrl}/top-novels/most-viewed/${page}`;
+  const url = `${baseUrl}/top-novels/${
+    showLatestNovels ? 'new' : 'most-viewed'
+  }/${page}`;
 
   const result = await fetch(url);
   const body = await result.text();
@@ -215,11 +218,14 @@ const searchNovels = async (searchTerm: string) => {
   return novels;
 };
 
+export const filters: SourceFilter[] = [];
+
 const ReadLightNovelScraper = {
   popularNovels,
   parseNovelAndChapters,
   parseChapter,
   searchNovels,
+  filters,
 };
 
 export default ReadLightNovelScraper;

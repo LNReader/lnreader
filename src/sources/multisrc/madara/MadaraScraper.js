@@ -17,9 +17,12 @@ class MadaraScraper {
     this.totalPages = options.totalPages || 100;
   }
 
-  async popularNovels(page) {
-    let url =
-      this.baseUrl + this.path.novels + '/page/' + page + '/?m_orderby=rating';
+  async popularNovels(page, showLatestNovels) {
+    const sortOrder = showLatestNovels
+      ? '?m_orderby=latest'
+      : '/?m_orderby=rating';
+
+    let url = this.baseUrl + this.path.novels + '/page/' + page + sortOrder;
     let sourceId = this.sourceId;
 
     const result = await fetch(url);
