@@ -71,7 +71,7 @@ const GlobalSearch = ({ route, navigation }) => {
       if (isMounted.current === true) {
         try {
           const source = sourceManager(item.sourceId);
-          const data = await source.searchNovels(encodeURI(searchText));
+          const data = await source.searchNovels(searchText);
 
           setSearchResults(prevState =>
             prevState.map(sourceItem =>
