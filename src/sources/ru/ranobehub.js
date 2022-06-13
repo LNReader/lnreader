@@ -24,8 +24,8 @@ const popularNovels = async (page, { showLatestNovels, filters }) => {
   if (filters?.tags?.length) {
     url += '&tags:positive=' + filters?.tags.join(',');
   }
-  url += '&take=40'
-  
+  url += '&take=40';
+
   const result = await fetch(url);
   const body = await result.json();
 
