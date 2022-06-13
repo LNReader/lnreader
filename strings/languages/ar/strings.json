@@ -2,9 +2,10 @@
   "common": {
     "cancel": "Cancel",
     "ok": "Ok",
-    "save": "Save",
+    "save": "تثبيت",
     "clear": "Clear",
-    "reset": "Reset"
+    "reset": "إعادة تعيين",
+    "search": "Search"
   },
   "library": "المكتبة",
   "libraryScreen": {
@@ -37,12 +38,12 @@
   "updates": "التحديثات",
   "updatesScreen": {
     "searchbar": "البحث في التحديثات",
-    "lastUpdatedAt": "Library last updated:"
+    "lastUpdatedAt": "آخر تحديث للمكتبة:"
   },
   "history": "السجل",
   "historyScreen": {
     "searchbar": "سجل البحث",
-    "clearHistorWarning": "Are you sure? All history will be lost."
+    "clearHistorWarning": "هل أنت متأكد؟ سيتم مسح كل التاريخ."
   },
   "browse": "تصفح",
   "browseScreen": {
@@ -52,7 +53,8 @@
     "listEmpty": "Enable languages from settings",
     "lastUsed": "Last used",
     "pinned": "Pinned",
-    "all": "All"
+    "all": "All",
+    "latest": "Latest"
   },
   "readerScreen": {
     "finished": "Finished",
@@ -114,5 +116,8 @@
         "searchAllWarning": "Searching a large number of sources may freeze the app till searching is finished."
       }
     }
+  },
+  "sourceScreen": {
+    "noResultsFound": "No results found"
   }
 }

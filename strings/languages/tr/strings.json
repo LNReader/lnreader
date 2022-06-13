@@ -4,7 +4,8 @@
     "ok": "Tamam",
     "save": "Kaydet",
     "clear": "Temizle",
-    "reset": "Sıfırla"
+    "reset": "Sıfırla",
+    "search": "Ara"
   },
   "library": "Kitaplık",
   "libraryScreen": {
@@ -52,7 +53,8 @@
     "listEmpty": "Ayarlardan dilleri etkinleştirin",
     "lastUsed": "Son kullanılan",
     "pinned": "Sabitlenmiş",
-    "all": "Tümü"
+    "all": "Tümü",
+    "latest": "Latest"
   },
   "readerScreen": {
     "finished": "Biten",
@@ -114,5 +116,8 @@
         "searchAllWarning": "Büyük miktarda kaynaklarda arama yapmak işlem bitene kadar uygulamayı dondurabilir."
       }
     }
+  },
+  "sourceScreen": {
+    "noResultsFound": "Sonuç bulunamadı"
   }
 }

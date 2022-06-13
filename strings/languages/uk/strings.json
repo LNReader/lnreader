@@ -1,10 +1,11 @@
 {
   "common": {
-    "cancel": "Cancel",
-    "ok": "Ok",
-    "save": "Save",
-    "clear": "Clear",
-    "reset": "Reset"
+    "cancel": "Скасувати",
+    "ok": "Ок",
+    "save": "Зберегти",
+    "clear": "Очистити",
+    "reset": "Скинути",
+    "search": "Search"
   },
   "library": "Бібліотека",
   "libraryScreen": {
@@ -42,7 +43,7 @@
   "history": "Історія",
   "historyScreen": {
     "searchbar": "Шукати в історії",
-    "clearHistorWarning": "Are you sure? All history will be lost."
+    "clearHistorWarning": "Ви впевнені? Вся історія буде втрачена."
   },
   "browse": "Огляд",
   "browseScreen": {
@@ -52,25 +53,26 @@
     "listEmpty": "Увімкнути мови з налаштувань",
     "lastUsed": "Останнє використане",
     "pinned": "Закріплено",
-    "all": "Всі"
+    "all": "Всі",
+    "latest": "Latest"
   },
   "readerScreen": {
-    "finished": "Finished",
-    "noNextChapter": "There's no next chapter",
+    "finished": "Завершено",
+    "noNextChapter": "Наступний розділ не знайдено",
     "bottomSheet": {
-      "textSize": "Text size",
-      "color": "Color",
-      "textAlign": "Text align",
+      "textSize": "Розмір тексту",
+      "color": "Колір",
+      "textAlign": "Вирівнювання тексту",
       "lineHeight": "Line Height",
-      "fontStyle": "Font style",
-      "fullscreen": "Fullscreen",
-      "renderHml": "Render HTML",
-      "autoscroll": "AutoScroll",
+      "fontStyle": "Стиль шрифту",
+      "fullscreen": "Повноекранний режим",
+      "renderHml": "Рендер HTML",
+      "autoscroll": "Автопрокрутка",
       "verticalSeekbar": "Vertical Seekbar",
-      "showBatteryAndTime": "Show battery and time",
-      "showProgressPercentage": "Show progress percentage",
-      "swipeGestures": "Swipe left or right to navigate between chapters",
-      "allowTextSelection": "Allow text selection"
+      "showBatteryAndTime": "Показувати стан батареї | час",
+      "showProgressPercentage": "Показувати прогрес",
+      "swipeGestures": "Проведіть вліво або вправо для навігації між главами",
+      "allowTextSelection": "Дозволити виділяти текст"
     }
   },
   "novelScreen": {
@@ -95,16 +97,16 @@
         "title": "Reader",
         "readerTheme": "Reader theme",
         "preset": "Preset",
-        "backgroundColor": "Background color",
-        "textColor": "Text color",
+        "backgroundColor": "Колір тла",
+        "textColor": "Колір тексту",
         "backgroundColorModal": "Reader background color",
         "textColorModal": "Reader text color",
         "verticalSeekbarDesc": "Switch between vertical and horizontal seekbar",
-        "autoScrollInterval": "Auto scroll interval (in seconds)",
+        "autoScrollInterval": "Інтервал автопрокрутки (в секундах)",
         "autoScrollOffset": "Auto scroll offset (screen height by default)",
-        "saveCustomTheme": "Save custom theme",
-        "deleteCustomTheme": "Delete custom theme",
-        "customCSS": "Custom CSS"
+        "saveCustomTheme": "Зберегти тему",
+        "deleteCustomTheme": "Видалити тему",
+        "customCSS": "Довільний CSS"
       },
       "browseSettings": "Налаштування джерел",
       "browseSettingsScreen": {
@@ -114,5 +116,8 @@
         "searchAllWarning": "Пошук у великій кількості джерел може викликати зависання програми до закінчення пошуку."
       }
     }
+  },
+  "sourceScreen": {
+    "noResultsFound": "No results found"
   }
 }

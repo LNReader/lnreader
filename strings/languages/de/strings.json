@@ -4,7 +4,8 @@
     "ok": "Ok",
     "save": "Sichern",
     "clear": "Leeren",
-    "reset": "Zurücksetzen"
+    "reset": "Zurücksetzen",
+    "search": "Search"
   },
   "library": "Bibliothek",
   "libraryScreen": {
@@ -52,7 +53,8 @@
     "listEmpty": "Sprachen in Einstellungen aktivieren",
     "lastUsed": "Zuletzt genutzt",
     "pinned": "Angeheftet",
-    "all": "Alle"
+    "all": "Alle",
+    "latest": "Latest"
   },
   "readerScreen": {
     "finished": "Beendet",
@@ -65,7 +67,7 @@
       "fontStyle": "Schriftart",
       "fullscreen": "Vollbildmodus",
       "renderHml": "HTML anzeigen",
-      "autoscroll": "Auto-Scroll",
+      "autoscroll": "AutoScroll",
       "verticalSeekbar": "Vertikale Suchleiste",
       "showBatteryAndTime": "Akku und Zeit anzeigen",
       "showProgressPercentage": "Zeige Fortschritt in Prozent",
@@ -114,5 +116,8 @@
         "searchAllWarning": "Searching a large number of sources may freeze the app till searching is finished."
       }
     }
+  },
+  "sourceScreen": {
+    "noResultsFound": "No results found"
   }
 }

@@ -4,7 +4,8 @@
     "ok": "Ok",
     "save": "Save",
     "clear": "Clear",
-    "reset": "Reset"
+    "reset": "Reset",
+    "search": "Search"
   },
   "library": "Bibliothèque",
   "libraryScreen": {
@@ -52,7 +53,8 @@
     "listEmpty": "Enable languages from settings",
     "lastUsed": "Last used",
     "pinned": "Pinned",
-    "all": "All"
+    "all": "All",
+    "latest": "Latest"
   },
   "readerScreen": {
     "finished": "Finished",
@@ -114,5 +116,8 @@
         "searchAllWarning": "Searching a large number of sources may freeze the app till searching is finished."
       }
     }
+  },
+  "sourceScreen": {
+    "noResultsFound": "No results found"
   }
 }

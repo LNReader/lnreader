@@ -4,7 +4,8 @@
     "ok": "Ok",
     "save": "Save",
     "clear": "Clear",
-    "reset": "Reset"
+    "reset": "Reset",
+    "search": "Search"
   },
   "library": "Biblioteca",
   "libraryScreen": {
@@ -52,7 +53,8 @@
     "listEmpty": "Habilitar idiomas a partir das configurações",
     "lastUsed": "Usado por último",
     "pinned": "Fixado",
-    "all": "Todos"
+    "all": "Todos",
+    "latest": "Latest"
   },
   "readerScreen": {
     "finished": "Finished",
@@ -114,5 +116,8 @@
         "searchAllWarning": "Procurar em um grande número de fontes pode congelar o aplicativo até que a procura termine."
       }
     }
+  },
+  "sourceScreen": {
+    "noResultsFound": "No results found"
   }
 }
