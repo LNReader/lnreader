@@ -53,7 +53,8 @@
     "listEmpty": "Enable languages from settings",
     "lastUsed": "Last used",
     "pinned": "Pinned",
-    "all": "All"
+    "all": "All",
+    "latest": "Latest"
   },
   "readerScreen": {
     "finished": "Finished",
