@@ -53,7 +53,8 @@
     "listEmpty": "Sprachen in Einstellungen aktivieren",
     "lastUsed": "Zuletzt genutzt",
     "pinned": "Angeheftet",
-    "all": "Alle"
+    "all": "Alle",
+    "latest": "Latest"
   },
   "readerScreen": {
     "finished": "Beendet",
