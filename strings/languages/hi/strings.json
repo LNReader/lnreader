@@ -1,0 +1,123 @@
+{
+  "common": {
+    "cancel": "Cancel",
+    "ok": "Ok",
+    "save": "Save",
+    "clear": "Clear",
+    "reset": "Reset",
+    "search": "Search"
+  },
+  "library": "Library",
+  "libraryScreen": {
+    "searchbar": "Search library",
+    "empty": "Your library is empty. Add series to your library from Browse.",
+    "bottomSheet": {
+      "filters": {
+        "downloaded": "Downloaded",
+        "unread": "Unread",
+        "completed": "Completed"
+      },
+      "sortOrders": {
+        "dateAdded": "Date added",
+        "alphabetically": "Alphabetically",
+        "totalChapters": "Total chapters"
+      },
+      "display": {
+        "displayMode": "Display mode",
+        "compact": "Compact grid",
+        "comfortable": "Comfortable grid",
+        "noTitle": "No title grid",
+        "list": "List",
+        "badges": "Badges",
+        "downloadBadges": "Download badges",
+        "unreadBadges": "Unread badges",
+        "showNoOfItems": "Show number of items"
+      }
+    }
+  },
+  "updates": "Updates",
+  "updatesScreen": {
+    "searchbar": "Search updates",
+    "lastUpdatedAt": "Library last updated:"
+  },
+  "history": "History",
+  "historyScreen": {
+    "searchbar": "Search history",
+    "clearHistorWarning": "Are you sure? All history will be lost."
+  },
+  "browse": "Browse",
+  "browseScreen": {
+    "discover": "Discover",
+    "searchbar": "Search sources",
+    "globalSearch": "Global search",
+    "listEmpty": "Enable languages from settings",
+    "lastUsed": "Last used",
+    "pinned": "Pinned",
+    "all": "All",
+    "latest": "Latest"
+  },
+  "readerScreen": {
+    "finished": "Finished",
+    "noNextChapter": "There's no next chapter",
+    "bottomSheet": {
+      "textSize": "Text size",
+      "color": "Color",
+      "textAlign": "Text align",
+      "lineHeight": "Line Height",
+      "fontStyle": "Font style",
+      "fullscreen": "Fullscreen",
+      "renderHml": "Render HTML",
+      "autoscroll": "AutoScroll",
+      "verticalSeekbar": "Vertical Seekbar",
+      "showBatteryAndTime": "Show battery and time",
+      "showProgressPercentage": "Show progress percentage",
+      "swipeGestures": "Swipe left or right to navigate between chapters",
+      "allowTextSelection": "Allow text selection"
+    }
+  },
+  "novelScreen": {
+    "addToLibaray": "Add to library",
+    "inLibaray": "In library",
+    "continueReading": "Continue reading",
+    "chapters": "chapters",
+    "migrate": "Migrate",
+    "bottomSheet": {
+      "filter": "Filter",
+      "sort": "Sort",
+      "display": "Display"
+    }
+  },
+  "more": "More",
+  "moreScreen": {
+    "settings": "Settings",
+    "settingsScreen": {
+      "generalSettings": "General",
+      "generalSettingsScreen": {},
+      "readerSettings": {
+        "title": "Reader",
+        "readerTheme": "Reader theme",
+        "preset": "Preset",
+        "backgroundColor": "Background color",
+        "textColor": "Text color",
+        "backgroundColorModal": "Reader background color",
+        "textColorModal": "Reader text color",
+        "verticalSeekbarDesc": "Switch between vertical and horizontal seekbar",
+        "autoScrollInterval": "Auto scroll interval (in seconds)",
+        "autoScrollOffset": "Auto scroll offset (screen height by default)",
+        "saveCustomTheme": "Save custom theme",
+        "deleteCustomTheme": "Delete custom theme",
+        "customCSS": "Custom CSS"
+      },
+      "browseSettings": "Browse Settings",
+      "browseSettingsScreen": {
+        "onlyShowPinnedSources": "Only show pinned sources",
+        "languages": "Languages",
+        "searchAllSources": "Search all sources",
+        "searchAllWarning": "Searching a large number of sources may freeze the app till searching is finished."
+      }
+    }
+  },
+  "sourceScreen": {
+    "noResultsFound": "No results found"
+  }
+}
