@@ -26,7 +26,7 @@ const ColorPreferenceItem: React.FC<ColorPreferenceItemProps> = ({
         {label}
       </Text>
       <Text style={{ color: theme.textColorSecondary }}>
-        {description?.toUpperCase()}
+        {description?.toUpperCase?.()}
       </Text>
     </View>
     <View style={[{ backgroundColor: description }, styles.colorPreview]} />
