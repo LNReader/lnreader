@@ -1,13 +1,27 @@
 import * as cheerio from 'cheerio';
+import { defaultTo } from 'lodash';
 import { Status } from '../helpers/constants';
+import { FilterInputs } from '../types/filterTypes';
 
 const sourceId = 117;
 const sourceName = 'Jaomix';
 
 const baseUrl = 'https://jaomix.ru';
 
-const popularNovels = async page => {
-  const result = await fetch(baseUrl + '/?gpage=' + page);
+const popularNovels = async (page, { showLatestNovels, filters }) => {
+  let url = baseUrl + '/?search=&sortby=';
+  url += defaultTo(filters?.sort, showLatestNovels ? 'upd' : 'count');
+
+  if (filters?.type?.length) {
+    url += filters.type.map(i => `&lang[]=${i}`).join('');
+  }
+
+  if (filters?.genres?.length) {
+    url += filters.genres.map(i => `&genre[]=${i}`).join('');
+  }
+
+  url += `&page=${page}`;
+  const result = await fetch(url);
   const totalPages = 50;
   let body = await result.text();
 
@@ -118,7 +132,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   const loadedCheerio = cheerio.load(body);
 
   loadedCheerio('div[class="adblock-service"]').remove();
-  const chapterName = loadedCheerio('h1[class="entry-title"]').html();
+  const chapterName = loadedCheerio('h1[class="entry-title"]').text();
   const chapterText = loadedCheerio('div[class="entry-content"]').html();
 
   const chapter = {
@@ -158,11 +172,89 @@ const searchNovels = async searchTerm => {
   return novels;
 };
 
+const filters = [
+  {
+    key: 'sort',
+    label: 'Сортировка',
+    values: [
+      { label: 'Имя', value: 'alphabet' },
+      { label: 'Просмотры', value: 'count' },
+      { label: 'Дате добавления', value: 'new' },
+      { label: 'Дате обновления', value: 'upd' },
+    ],
+    inputType: FilterInputs.Picker,
+  },
+  {
+    key: 'type',
+    label: 'Тип',
+    values: [
+      { label: 'Английский', value: 'Английский' },
+      { label: 'Китайский', value: 'Китайский' },
+      { label: 'Корейский', value: 'Корейский' },
+      { label: 'Японский', value: 'Японский' },
+      ,
+    ],
+    inputType: FilterInputs.Checkbox,
+  },
+  {
+    key: 'genres',
+    label: 'Жанры',
+    values: [
+      { label: 'Adult', value: 'Adult' },
+      { label: 'Ecchi', value: 'Ecchi' },
+      { label: 'Josei', value: 'Josei' },
+      { label: 'Lolicon', value: 'Lolicon' },
+      { label: 'Mature', value: 'Mature' },
+      { label: 'Sci-fi', value: 'Sci-fi' },
+      { label: 'Shoujo', value: 'Shoujo' },
+      { label: 'Wuxia', value: 'Wuxia' },
+      { label: 'Xianxia', value: 'Xianxia' },
+      { label: 'Xuanhuan', value: 'Xuanhuan' },
+      { label: 'Yaoi', value: 'Yaoi' },
+      { label: 'Боевые Искусства', value: 'Боевые Искусства' },
+      { label: 'Виртуальный Мир', value: 'Виртуальный Мир' },
+      { label: 'Гарем', value: 'Гарем' },
+      { label: 'Детектив', value: 'Детектив' },
+      { label: 'Драма', value: 'Драма' },
+      { label: 'Игра', value: 'Игра' },
+      { label: 'Исторический', value: 'Исторический' },
+      { label: 'Истории из жизни', value: 'Истории из жизни' },
+      { label: 'История', value: 'История' },
+      { label: 'Комедия', value: 'Комедия' },
+      { label: 'Меха', value: 'Меха' },
+      { label: 'Мистика', value: 'Мистика' },
+      { label: 'Научная Фантастика', value: 'Научная Фантастика' },
+      { label: 'Повседневность', value: 'Повседневность' },
+      { label: 'Постапокалипсис', value: 'Постапокалипсис' },
+      { label: 'Приключения', value: 'Приключения' },
+      { label: 'Психология', value: 'Психология' },
+      { label: 'Романтика', value: 'Романтика' },
+      { label: 'Сверхъестественное', value: 'Сверхъестественное' },
+      { label: 'Сёнэн', value: 'Сёнэн' },
+      { label: 'Сёнэн-ай', value: 'Сёнэн-ай' },
+      { label: 'Спорт', value: 'Спорт' },
+      { label: 'Сэйнэн', value: 'Сэйнэн' },
+      { label: 'Сюаньхуа', value: 'Сюаньхуа' },
+      { label: 'Трагедия', value: 'Трагедия' },
+      { label: 'Триллер', value: 'Триллер' },
+      { label: 'Фантастика', value: 'Фантастика' },
+      { label: 'Фэнтези', value: 'Фэнтези' },
+      { label: 'Хоррор', value: 'Хоррор' },
+      { label: 'Школьная жизнь', value: 'Школьная жизнь' },
+      { label: 'Шоунен', value: 'Шоунен' },
+      { label: 'Экшн', value: 'Экшн' },
+      { label: 'Этти', value: 'Этти' },
+    ],
+    inputType: FilterInputs.Checkbox,
+  },
+];
+
 const JaomixScraper = {
   popularNovels,
   parseNovelAndChapters,
   parseChapter,
   searchNovels,
+  filters,
 };
 
 export default JaomixScraper;

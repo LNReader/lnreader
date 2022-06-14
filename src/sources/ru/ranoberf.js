@@ -1,14 +1,23 @@
 import * as cheerio from 'cheerio';
+import { defaultTo } from 'lodash';
 import { htmlToText } from '../helpers/htmlToText';
 import { Status } from '../helpers/constants';
+import { FilterInputs } from '../types/filterTypes';
 
 const sourceId = 119;
 const sourceName = 'РанобэРФ';
 
 const baseUrl = 'https://ранобэ.рф';
 
-const popularNovels = async page => {
-  const result = await fetch(baseUrl + '/books?order=popular&page=' + page);
+const popularNovels = async (page, { showLatestNovels, filters }) => {
+  let url = baseUrl + '/books?order=';
+  url += defaultTo(
+    filters?.sort,
+    showLatestNovels ? 'lastPublishedChapter' : 'popular',
+  );
+  url += '&page=' + page;
+
+  const result = await fetch(url);
   const body = await result.text();
 
   const loadedCheerio = cheerio.load(body);
@@ -18,8 +27,8 @@ const popularNovels = async page => {
 
   json.props.pageProps.totalData.items.map(item => {
     const novelName = item.title;
-    const novelCover = baseUrl + item.verticalImage.url;
-    const novelUrl = baseUrl + item.url;
+    const novelCover = baseUrl + item.verticalImage?.url;
+    const novelUrl = baseUrl + '/' + item.slug;
     novels.push({ sourceId, novelName, novelCover, novelUrl });
   });
 
@@ -104,19 +113,34 @@ const searchNovels = async searchTerm => {
 
   body.items.map(item => {
     const novelName = item.title;
-    const novelCover = baseUrl + item.verticalImage.url;
-    const novelUrl = baseUrl + item.url;
+    const novelCover = baseUrl + item.verticalImage?.url;
+    const novelUrl = baseUrl + '/' + item.slug;
     novels.push({ sourceId, novelName, novelCover, novelUrl });
   });
 
   return novels;
 };
 
+const filters = [
+  {
+    key: 'sort',
+    label: 'Сортировка',
+    values: [
+      { label: 'Рейтинг', value: 'popular' },
+      { label: 'Дате добавления', value: 'new' },
+      { label: 'Дате обновления', value: 'lastPublishedChapter' },
+      { label: 'Законченные', value: 'completed' },
+    ],
+    inputType: FilterInputs.Picker,
+  },
+];
+
 const RanobeRFScraper = {
   popularNovels,
   parseNovelAndChapters,
   parseChapter,
   searchNovels,
+  filters,
 };
 
 export default RanobeRFScraper;
