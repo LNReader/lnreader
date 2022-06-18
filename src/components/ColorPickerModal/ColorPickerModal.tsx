@@ -117,7 +117,7 @@ const ColorPickerModal: React.FC<ColorPickerModalProps> = ({
                   }}
                   onPress={() => {
                     onSubmit(item);
-                    hideModal();
+                    closeModal();
                   }}
                 />
               </View>

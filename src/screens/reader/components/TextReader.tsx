@@ -84,6 +84,7 @@ const TextReader: React.FC<TextReaderProps> = ({
               title={`Next: ${nextChapter.chapterName}`}
               onPress={navigateToNextChapter}
               theme={theme}
+              textColor={theme.colorButtonText}
               style={styles.nextButton}
             />
           ) : (
@@ -133,6 +134,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   nextButton: {
-    marginVertical: 16,
+    marginTop: 16,
+    marginBottom: 32,
   },
 });

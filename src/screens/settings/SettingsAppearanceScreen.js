@@ -237,8 +237,8 @@ const AppearanceSettings = ({ navigation }) => {
 
       <ColorPickerModal
         title="Accent color"
-        modalVisible={accentColorModal}
-        hideModal={hideAccentColorModal}
+        visible={accentColorModal}
+        closeModal={hideAccentColorModal}
         color={theme.colorAccent}
         onSubmit={onSubmit}
         theme={theme}

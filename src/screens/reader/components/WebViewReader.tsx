@@ -190,14 +190,16 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = ({
                       .nextButton,
                       .infoText {
                         width: 100%;
-                        min-height: 40;
                         border-radius: 50px;
-                        padding-vertical: 8;
-                        padding-horizontal: 24;
                         border-width: 1;
                         color: ${theme.colorButtonText};
                         background-color: ${theme.colorAccent};
-                        font-size: 0.8em;
+                        font-family: ${reader.fontFamily};
+                        font-size: 16px;
+                        border-width: 0;
+                      }
+                      .nextButton {
+                        min-height: 40px
                       }
                       .infoText {
                         background-color: transparent;
@@ -205,10 +207,12 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = ({
                         border: none;
                         margin: 0px;
                         color: inherit;
+                        padding-top: 16px;
+                        padding-bottom: 16px;
                       }
                       .pos,.posl,.posr {
                         background-color: #ff000055;
-                        color: blue;
+                        color: white;
                         position: fixed;
                         z-index: 99;
                         height: 100vh;
@@ -217,16 +221,17 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = ({
                         justify-content: center;
                         align-items:center;
                         width: 100px;
+                        font-weight: bold;
+                        -webkit-text-stroke-width: 1px;
+                        -webkit-text-stroke-color: black;
                       }
                       .posl {
                         background-color: #00ff0055;
-                        color: red;
                         font-size: 2em;
                         text-align: center;
                       }
                       .posr {
                         background-color: #0000ff55;
-                        color: red;
                         font-size: 2em;
                         text-align: center;
                       }
@@ -270,8 +275,8 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = ({
                         ${
                           wvShowSwipeMargins
                             ? `<div class='pos'> </div>
-                        <div class='posr'>=></div>
-                        <div class='posl'><=</div>`
+                        <div class='posr'>Swipe Left</div>
+                        <div class='posl'>Swipe Right</div>`
                             : ''
                         }
                         <script>
