@@ -824,5 +824,33 @@
     "url": "https://lshnovel.com/",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/master/icons/multisrc/wpmangastream/icons/lshnovel.png?raw=true",
     "lang": "Turkish"
+  },
+  {
+    "sourceId": 124,
+    "sourceName": "Noobchan Translation",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/noobchantranslation.png?raw=true",
+    "url": "https://noobchan.xyz/",
+    "lang": "English"
+  },
+  {
+    "sourceId": 125,
+    "sourceName": "Guavaread",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/guavaread.png?raw=true",
+    "url": "https://guavaread.com/",
+    "lang": "English"
+  },
+  {
+    "sourceId": 126,
+    "sourceName": "Sweet Escape Translations",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/sweetescapetranslations.png?raw=true",
+    "url": "https://sweetescapetranslations.com/",
+    "lang": "English"
+  },
+  {
+    "sourceId": 127,
+    "sourceName": "Fans Translations",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/fanstranslations.png?raw=true",
+    "url": "https://fanstranslations.com/",
+    "lang": "English"
   }
 ]

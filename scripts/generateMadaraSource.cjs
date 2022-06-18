@@ -5,7 +5,10 @@ const MadaraSources = require('../src/sources/multisrc/madara/MadaraSources.json
 const AllSources = require('../src/sources/sources.json');
 
 const getScraperName = scraperName => {
-  let name = scraperName.replace(/\./g, 'Dot').replace('1st', 'First');
+  let name = scraperName
+    .replace(/\s+/g, '')
+    .replace(/\./g, 'Dot')
+    .replace('1st', 'First');
 
   return name;
 };
@@ -40,7 +43,9 @@ MadaraSources.forEach(madaraSource => {
     allSourcesContent.push({
       sourceId: madaraSource.sourceId,
       sourceName: madaraSource.sourceName,
-      icon: `https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/${madaraSource.sourceName.toLowerCase()}.png?raw=true`,
+      icon: `https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/${madaraSource.sourceName
+        .replace(/\s+/g, '')
+        .toLowerCase()}.png?raw=true`,
       url: madaraSource.baseUrl,
       lang: madaraSource.options.lang || 'English',
     });

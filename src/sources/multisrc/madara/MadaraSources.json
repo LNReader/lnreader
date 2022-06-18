@@ -270,5 +270,42 @@
       "totalPages": 35,
       "useNewChapterEndpoint": true
     }
+  },
+  {
+    "sourceId": 124,
+    "baseUrl": "https://noobchan.xyz/",
+    "sourceName": "Noobchan Translation",
+    "options": {
+      "totalPages": 1,
+      "useNewChapterEndpoint": true
+    }
+  },
+  {
+    "sourceId": 125,
+    "baseUrl": "https://guavaread.com/",
+    "sourceName": "Guavaread",
+    "options": {
+      "totalPages": 2,
+      "useNewChapterEndpoint": true
+    }
+  },
+  {
+    "sourceId": 126,
+    "baseUrl": "https://sweetescapetranslations.com/",
+    "sourceName": "Sweet Escape Translations",
+    "options": {
+      "totalPages": 1,
+      "useNewChapterEndpoint": false,
+      "path": { "novels": "manga", "novel": "manga", "chapter": "manga" }
+    }
+  },
+  {
+    "sourceId": 127,
+    "baseUrl": "https://fanstranslations.com/",
+    "sourceName": "Fans Translations",
+    "options": {
+      "totalPages": 10,
+      "useNewChapterEndpoint": true
+    }
   }
 ]

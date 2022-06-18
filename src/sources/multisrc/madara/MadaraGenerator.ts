@@ -260,3 +260,35 @@ export const MTLNovelDotClubScraper = new MadaraScraper(
   'MTLNovel.Club',
   { 'totalPages': 35, 'useNewChapterEndpoint': true },
 );
+
+export const NoobchanTranslationScraper = new MadaraScraper(
+  124,
+  'https://noobchan.xyz/',
+  'Noobchan Translation',
+  { 'totalPages': 1, 'useNewChapterEndpoint': true },
+);
+
+export const GuavareadScraper = new MadaraScraper(
+  125,
+  'https://guavaread.com/',
+  'Guavaread',
+  { 'totalPages': 2, 'useNewChapterEndpoint': true },
+);
+
+export const SweetEscapeTranslationsScraper = new MadaraScraper(
+  126,
+  'https://sweetescapetranslations.com/',
+  'Sweet Escape Translations',
+  {
+    'totalPages': 1,
+    'useNewChapterEndpoint': false,
+    'path': { 'novels': 'manga', 'novel': 'manga', 'chapter': 'manga' },
+  },
+);
+
+export const FansTranslationsScraper = new MadaraScraper(
+  127,
+  'https://fanstranslations.com/',
+  'Fans Translations',
+  { 'totalPages': 10, 'useNewChapterEndpoint': true },
+);
