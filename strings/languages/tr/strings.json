@@ -119,5 +119,10 @@
   },
   "sourceScreen": {
     "noResultsFound": "Sonuç bulunamadı"
+  },
+  "globalSearch": {
+    "searchIn": "Search a novel in",
+    "allSources": "all sources",
+    "pinnedSources": "pinned sources"
   }
 }
