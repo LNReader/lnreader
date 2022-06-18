@@ -1,4 +1,6 @@
 import * as cheerio from 'cheerio';
+import { defaultCoverUri } from '../helpers/constants';
+
 const sourceId = 70;
 
 const sourceName = 'Divine Dao Library';
@@ -49,8 +51,7 @@ const parseNovelAndChapters = async novelUrl => {
   novel.novelName = loadedCheerio('h1.entry-title').text().trim();
 
   novel.novelCover =
-    loadedCheerio('.entry-content').find('img').attr('src') ||
-    'https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true';
+    loadedCheerio('.entry-content').find('img').attr('src') || defaultCoverUri;
 
   novel.summary = loadedCheerio('#main > article > div > p:nth-child(6)')
     .text()

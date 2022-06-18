@@ -2,11 +2,13 @@ import * as cheerio from 'cheerio';
 import { defaultTo } from 'lodash';
 import { Status } from '../helpers/constants';
 import { FilterInputs } from '../types/filterTypes';
+import { showToast } from '../../hooks/showToast';
 
 const sourceId = 93;
 const sourceName = 'RanobeLib';
 
 const baseUrl = 'https://ranobelib.me';
+const staticUrl = 'https://staticlib.me';
 
 const popularNovels = async (page, { showLatestNovels, filters }) => {
   const totalPages = 29;
@@ -52,7 +54,7 @@ const popularNovels = async (page, { showLatestNovels, filters }) => {
   loadedCheerio('.media-card-wrap').each(function () {
     const novelName = loadedCheerio(this).find('.media-card__title').text();
     const novelCover =
-      baseUrl + loadedCheerio(this).find('a.media-card').attr('data-src');
+      staticUrl + loadedCheerio(this).find('a.media-card').attr('data-src');
     const novelUrl = loadedCheerio(this).find('a.media-card').attr('href');
 
     const novel = { sourceId, novelName, novelCover, novelUrl };
@@ -145,10 +147,13 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   const loadedCheerio = cheerio.load(body);
 
   loadedCheerio('.reader-container img').each(function () {
-    if (!loadedCheerio(this).attr('data-src')?.startsWith('http')) {
-      const src = loadedCheerio(this).attr('data-src');
-      loadedCheerio(this).attr('data-src', baseUrl + src);
+    let src = loadedCheerio(this).attr('data-src');
+    if (src?.startsWith('http')) {
+      loadedCheerio(this).attr('data-src', src.replace(baseUrl, staticUrl));
+    } else {
+      loadedCheerio(this).attr('data-src', staticUrl + src);
     }
+    showToast(loadedCheerio(this).attr('data-src'));
   });
 
   const chapterName = loadedCheerio(
@@ -182,7 +187,7 @@ const searchNovels = async searchTerm => {
   loadedCheerio('.media-card-wrap').each(function () {
     const novelName = loadedCheerio(this).find('.media-card__title').text();
     const novelCover =
-      baseUrl + loadedCheerio(this).find('a.media-card').attr('data-src');
+      staticUrl + loadedCheerio(this).find('a.media-card').attr('data-src');
     const novelUrl = loadedCheerio(this).find('a.media-card').attr('href');
 
     const novel = { sourceId, novelName, novelCover, novelUrl };

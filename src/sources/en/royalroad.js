@@ -1,6 +1,6 @@
 import * as cheerio from 'cheerio';
 import { parseMadaraDate } from '../helpers/parseDate';
-import { Status } from '../helpers/constants';
+import { Status, defaultCoverUri } from '../helpers/constants';
 
 const baseUrl = 'https://www.royalroad.com/';
 
@@ -23,8 +23,7 @@ const popularNovels = async page => {
     let novelCover = loadedCheerio(this).find('img').attr('src');
 
     if (novelCover === '/Content/Images/nocover-new-min.png') {
-      novelCover =
-        'https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true';
+      novelCover = defaultCoverUri;
     }
     let novelUrl = loadedCheerio(this)
       .find('h2.fiction-title > a')
@@ -68,8 +67,7 @@ const parseNovelAndChapters = async novelUrl => {
   let novelCover = loadedCheerio('img.thumbnail').attr('src');
 
   if (novelCover === '/Content/Images/nocover-new-min.png') {
-    novelCover =
-      'https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true';
+    novelCover = defaultCoverUri;
   }
 
   novel.novelCover = novelCover;

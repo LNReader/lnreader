@@ -19,8 +19,8 @@ const popularNovels = async (page, { showLatestNovels, filters }) => {
   if (filters?.genres?.length) {
     url += filters.genres.map(i => `&genre[]=${i}`).join('');
   }
-
   url += `&page=${page}`;
+
   const result = await fetch(url);
   const totalPages = 50;
   let body = await result.text();

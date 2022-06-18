@@ -1,5 +1,5 @@
 import * as cheerio from 'cheerio';
-import { Status } from '../helpers/constants';
+import { Status, defaultCoverUri } from '../helpers/constants';
 import NovelUpdatesScraper from './novelupdates';
 
 const sourceId = 62;
@@ -30,9 +30,7 @@ const popularNovels = async page => {
   loadedCheerio('table').find('tr').first().remove();
 
   loadedCheerio('tr').each(function (res) {
-    const novelCover =
-      'https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true';
-
+    const novelCover = defaultCoverUri;
     const novelName = loadedCheerio(this).find('td > a').text();
     const novelUrl =
       'https://www.wlnupdates.com' +
@@ -71,8 +69,7 @@ const parseNovelAndChapters = async novelUrl => {
 
   novel.novelName = loadedCheerio('h2').text();
 
-  novel.novelCover =
-    'https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true';
+  novel.novelCover = defaultCoverUri;
 
   novel.author = loadedCheerio('.multiitem#author')
     .text()
@@ -156,8 +153,7 @@ const searchNovels = async searchTerm => {
   let novels = [];
 
   loadedCheerio('tr').each(function () {
-    const novelCover =
-      'https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true';
+    const novelCover = defaultCoverUri;
     const novelName = loadedCheerio(this).find('td > a').text();
     const novelUrl =
       'https://www.wlnupdates.com' +
