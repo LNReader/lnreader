@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 
-const useSearch = () => {
-  const [searchText, setSearchText] = useState<string>('');
+const useSearch = (defaultSearchText?: string) => {
+  const [searchText, setSearchText] = useState<string>(defaultSearchText || '');
   const clearSearchbar = useCallback(() => setSearchText(''), []);
 
   return { searchText, setSearchText, clearSearchbar };

@@ -69,7 +69,7 @@ const BrowseMalScreen = ({ navigation, route }) => {
       novel={item}
       theme={theme}
       onPress={() =>
-        navigation.navigate('GlobalSearch', {
+        navigation.navigate('GlobalSearchScreen', {
           novelName: item.novelName,
         })
       }

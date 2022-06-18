@@ -87,4 +87,7 @@ export interface StringMap {
   'moreScreen.settingsScreen.browseSettingsScreen.searchAllSources': 'string';
   'moreScreen.settingsScreen.browseSettingsScreen.searchAllWarning': 'string';
   'sourceScreen.noResultsFound': 'string';
+  'globalSearch.searchIn': 'string';
+  'globalSearch.allSources': 'string';
+  'globalSearch.pinnedSources': 'string';
 }

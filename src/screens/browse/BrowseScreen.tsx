@@ -79,7 +79,7 @@ const BrowseScreen = () => {
     () => [
       {
         iconName: 'book-search',
-        onPress: () => navigate('GlobalSearch' as never),
+        onPress: () => navigate('GlobalSearchScreen' as never),
       },
       {
         iconName: 'swap-vertical-variant',

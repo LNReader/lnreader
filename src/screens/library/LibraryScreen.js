@@ -185,8 +185,8 @@ const LibraryScreen = ({ navigation }) => {
               <View style={styles.globalSearch}>
                 <Pressable
                   onPress={() =>
-                    navigation.navigate('GlobalSearch', {
-                      novelName: searchText,
+                    navigation.navigate('GlobalSearchScreen', {
+                      searchText,
                     })
                   }
                   android_ripple={{ color: theme.rippleColor }}

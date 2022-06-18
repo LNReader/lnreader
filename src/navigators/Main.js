@@ -20,7 +20,7 @@ import MoreStack from './MoreStack';
 import Novel from '../screens/novel/NovelScreen';
 import Reader from '../screens/reader/ReaderScreen';
 import BrowseSourceScreen from '../screens/BrowseSourceScreen/BrowseSourceScreen';
-import GlobalSearch from '../screens/browse/globalsearch/GlobalSearch';
+import GlobalSearchScreen from '../screens/GlobalSearchScreen/GlobalSearchScreen';
 import Migration from '../screens/browse/migration/Migration';
 import SourceNovels from '../screens/browse/SourceNovels';
 import MigrateNovel from '../screens/browse/migration/MigrationNovels';
@@ -35,10 +35,14 @@ const MainNavigator = () => {
   const theme = useTheme();
 
   useEffect(() => {
-    setTimeout(async () => {
+    const timer = setTimeout(async () => {
       await SplashScreen.hideAsync();
       setBarColor(theme);
     }, 500);
+
+    return () => {
+      clearTimeout(timer);
+    };
   }, [theme]);
 
   const { isNewVersion, latestRelease } = useGithubUpdateChecker() || {};
@@ -56,7 +60,10 @@ const MainNavigator = () => {
         <Stack.Screen name="SourceScreen" component={BrowseSourceScreen} />
         <Stack.Screen name="BrowseMal" component={MalTopNovels} />
         <Stack.Screen name="BrowseSettings" component={BrowseSettings} />
-        <Stack.Screen name="GlobalSearch" component={GlobalSearch} />
+        <Stack.Screen
+          name="GlobalSearchScreen"
+          component={GlobalSearchScreen}
+        />
         <Stack.Screen name="Migration" component={Migration} />
         <Stack.Screen name="SourceNovels" component={SourceNovels} />
         <Stack.Screen name="MigrateNovel" component={MigrateNovel} />

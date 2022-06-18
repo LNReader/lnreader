@@ -119,5 +119,10 @@
   },
   "sourceScreen": {
     "noResultsFound": "No results found"
+  },
+  "globalSearch": {
+    "searchIn": "Search a novel in",
+    "allSources": "all sources",
+    "pinnedSources": "pinned sources"
   }
 }

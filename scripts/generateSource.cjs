@@ -254,7 +254,7 @@ try {
     
       return novels;`
         : `
-      showToast('Search is not available in this source')
+      showToast('${source.sourceName}: Search is not available in this source')
       
       return [];
       `
