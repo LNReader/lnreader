@@ -1,4 +1,6 @@
 import * as cheerio from 'cheerio';
+import { defaultCoverUri } from '../helpers/constants';
+
 // get given page of search (if pagenum is 0 or >100 (max possible on site) see first page)
 const searchUrl = (pagenum, order) => {
   return `https://yomou.syosetu.com/search.php?order=${order || 'hyoka'}${
@@ -22,8 +24,7 @@ const getChapterUrl = (id, chn) =>
   `https://ncode.syosetu.com/${id}${chn === 'oneshot' ? '' : `/${chn}`}`;
 
 // Because syosetu does not have any covers, I did a replacement for them
-const novelCover =
-  'https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true';
+const novelCover = defaultCoverUri;
 
 // ID of this extension
 const sourceId = 36;

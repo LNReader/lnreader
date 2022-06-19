@@ -1,5 +1,6 @@
 import * as cheerio from 'cheerio';
 import NovelUpdatesScraper from './novelupdates';
+import { defaultCoverUri } from '../helpers/constants';
 
 const sourceId = 72;
 const sourceName = 'LightNovelUpdates';
@@ -48,8 +49,7 @@ const parseNovelAndChapters = async novelUrl => {
 
   novel.novelName = loadedCheerio('.post-title > h1').text().trim();
   novel.novelCover =
-    loadedCheerio('.summary_image > a > img').attr('src') ||
-    'https://github.com/LNReader/lnreader-sources/blob/main/src/coverNotAvailable.jpg?raw=true';
+    loadedCheerio('.summary_image > a > img').attr('src') || defaultCoverUri;
 
   loadedCheerio('.post-content_item').each(function () {
     const detailName = loadedCheerio(this)

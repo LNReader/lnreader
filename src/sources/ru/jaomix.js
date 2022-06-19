@@ -19,8 +19,8 @@ const popularNovels = async (page, { showLatestNovels, filters }) => {
   if (filters?.genres?.length) {
     url += filters.genres.map(i => `&genre[]=${i}`).join('');
   }
-
   url += `&page=${page}`;
+
   const result = await fetch(url);
   const totalPages = 50;
   let body = await result.text();
@@ -217,8 +217,8 @@ const filters = [
       { label: 'Детектив', value: 'Детектив' },
       { label: 'Драма', value: 'Драма' },
       { label: 'Игра', value: 'Игра' },
-      { label: 'Исторический', value: 'Исторический' },
       { label: 'Истории из жизни', value: 'Истории из жизни' },
+      { label: 'Исторический', value: 'Исторический' },
       { label: 'История', value: 'История' },
       { label: 'Комедия', value: 'Комедия' },
       { label: 'Меха', value: 'Меха' },
@@ -229,9 +229,9 @@ const filters = [
       { label: 'Приключения', value: 'Приключения' },
       { label: 'Психология', value: 'Психология' },
       { label: 'Романтика', value: 'Романтика' },
-      { label: 'Сверхъестественное', value: 'Сверхъестественное' },
       { label: 'Сёнэн', value: 'Сёнэн' },
       { label: 'Сёнэн-ай', value: 'Сёнэн-ай' },
+      { label: 'Сверхъестественное', value: 'Сверхъестественное' },
       { label: 'Спорт', value: 'Спорт' },
       { label: 'Сэйнэн', value: 'Сэйнэн' },
       { label: 'Сюаньхуа', value: 'Сюаньхуа' },

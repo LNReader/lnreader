@@ -1,7 +1,7 @@
 import * as cheerio from 'cheerio';
 import { defaultTo } from 'lodash';
 import { htmlToText } from '../helpers/htmlToText';
-import { Status } from '../helpers/constants';
+import { Status, defaultCoverUri } from '../helpers/constants';
 import { FilterInputs } from '../types/filterTypes';
 
 const sourceId = 119;
@@ -27,8 +27,10 @@ const popularNovels = async (page, { showLatestNovels, filters }) => {
 
   json.props.pageProps.totalData.items.map(item => {
     const novelName = item.title;
-    const novelCover = baseUrl + item.verticalImage?.url;
     const novelUrl = baseUrl + '/' + item.slug;
+    const novelCover = item?.verticalImage?.url
+      ? baseUrl + item.verticalImage.url
+      : defaultCoverUri;
     novels.push({ sourceId, novelName, novelCover, novelUrl });
   });
 
@@ -50,9 +52,11 @@ const parseNovelAndChapters = async novelUrl => {
     url: novelUrl,
     novelUrl,
     novelName: json.props.pageProps.book.title,
-    novelCover: baseUrl + json.props.pageProps.book.verticalImage.url,
+    novelCover: json.props.pageProps.book?.verticalImage?.url
+      ? baseUrl + json.props.pageProps.book.verticalImage.url
+      : defaultCoverUri,
     summary: htmlToText(json.props.pageProps.book.description),
-    author: json.props.pageProps.book?.author,
+    author: json.props.pageProps.book?.author || '',
     genre: json.props.pageProps.book.genres.map(item => item.title).join(','),
     status: json.props.pageProps.book.additionalInfo.includes('Активен')
       ? Status.ONGOING
@@ -113,8 +117,10 @@ const searchNovels = async searchTerm => {
 
   body.items.map(item => {
     const novelName = item.title;
-    const novelCover = baseUrl + item.verticalImage?.url;
     const novelUrl = baseUrl + '/' + item.slug;
+    const novelCover = item?.verticalImage?.url
+      ? baseUrl + item.verticalImage.url
+      : defaultCoverUri;
     novels.push({ sourceId, novelName, novelCover, novelUrl });
   });
 
