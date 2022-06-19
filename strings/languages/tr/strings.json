@@ -121,8 +121,12 @@
     "noResultsFound": "Sonuç bulunamadı"
   },
   "globalSearch": {
-    "searchIn": "Search a novel in",
-    "allSources": "all sources",
-    "pinnedSources": "pinned sources"
+    "searchIn": "Şurada bir novel arayın",
+    "allSources": "tüm kaynaklarda",
+    "pinnedSources": "sabitlenmiş kaynaklarda"
+  },
+  "advancedSettings": {
+    "deleteReadChapters": "Delete read chapters",
+    "deleteReadChaptersDialogTitle": "Are you sure? All chapters marked as read will be deleted."
   }
 }
