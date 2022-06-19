@@ -39,6 +39,10 @@ const getPopularNovelsUrl = (page, { showLatestNovels, filters }) => {
     url += '&org=' + filters?.language.join(',');
   }
 
+  if (filters?.storyStatus) {
+    url += '&ss=' + filters?.storyStatus;
+  }
+
   url += '&sort=' + defaultTo(filters?.sort, 'sdate');
 
   url += '&order=' + defaultTo(filters?.order, 'desc');
@@ -369,12 +373,29 @@ const filters = [
     inputType: FilterInputs.Picker,
   },
   {
+    key: 'storyStatus',
+    label: 'Story Status (Translation)',
+    values: [
+      { label: 'All', value: '' },
+      { label: 'Completed', value: '2' },
+      { label: 'Ongoing', value: '3' },
+      { label: 'Hiatus', value: '4' },
+    ],
+    inputType: FilterInputs.Picker,
+  },
+  {
     key: 'language',
     label: 'Language',
     values: [
-      { label: 'Chinese', value: '495' },
-      { label: 'Japanese', value: '496' },
-      { label: 'Korean', value: '497' },
+      { label: 'Chinese', value: 495 },
+      { label: 'Filipino', value: 9181 },
+      { label: 'Indonesian', value: 9179 },
+      { label: 'Japanese', value: 496 },
+      { label: 'Khmer', value: 18657 },
+      { label: 'Korean', value: 497 },
+      { label: 'Malaysian', value: 9183 },
+      { label: 'Thai', value: 9954 },
+      { label: 'Vietnamese', value: 9177 },
     ],
     inputType: FilterInputs.Checkbox,
   },
@@ -392,15 +413,41 @@ const filters = [
     key: 'genres',
     label: 'Genres',
     values: [
-      { label: 'Adventure', value: 8 },
-      { label: 'Historical', value: 330 },
-      { label: 'School Life', value: 6 },
-      { label: 'Sports', value: 1357 },
+      { label: 'Action', value: 8 },
       { label: 'Adult', value: 280 },
+      { label: 'Adventure', value: 13 },
+      { label: 'Comedy', value: 17 },
+      { label: 'Drama', value: 9 },
+      { label: 'Ecchi', value: 292 },
+      { label: 'Fantasy', value: 5 },
+      { label: 'Gender Bender', value: 168 },
+      { label: 'Harem', value: 3 },
+      { label: 'Historical', value: 330 },
       { label: 'Horror', value: 343 },
-      { label: 'Sci-fi', value: 11 },
-      { label: 'Romance', value: 15 },
+      { label: 'Josei', value: 324 },
+      { label: 'Martial Arts', value: 14 },
+      { label: 'Mature', value: 4 },
+      { label: 'Mecha', value: 10 },
       { label: 'Mystery', value: 245 },
+      { label: 'Psychoical', value: 486 },
+      { label: 'Romance', value: 15 },
+      { label: 'School Life', value: 6 },
+      { label: 'Sci-fi', value: 11 },
+      { label: 'Seinen', value: 18 },
+      { label: 'Shoujo', value: 157 },
+      { label: 'Shoujo Ai', value: 851 },
+      { label: 'Shounen', value: 12 },
+      { label: 'Shounen Ai', value: 1692 },
+      { label: 'Slice of Life', value: 7 },
+      { label: 'Smut', value: 281 },
+      { label: 'Sports', value: 1357 },
+      { label: 'Supernatural', value: 16 },
+      { label: 'Tragedy', value: 132 },
+      { label: 'Wuxia', value: 479 },
+      { label: 'Xianxia', value: 480 },
+      { label: 'Xuanhuan', value: 3954 },
+      { label: 'Yaoi', value: 560 },
+      { label: 'Yuri', value: 922 },
     ],
     inputType: FilterInputs.Checkbox,
   },

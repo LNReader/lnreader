@@ -37,7 +37,7 @@ export const useBrowseSource = (
           setTotalPages(res.totalPages);
           setFilterValues(source.filters);
         } catch (err: unknown) {
-          setError(`Error: ${err}`);
+          setError(`${err}`);
         } finally {
           setIsLoading(false);
         }
@@ -96,7 +96,7 @@ export const useSearchSource = (sourceId: number) => {
         const res = await sourceManager(sourceId).searchNovels(searchTerm);
         setSearchResults(res);
       } catch (err) {
-        setSearchError(`Error: ${err}`);
+        setSearchError(`${err}`);
       } finally {
         setIsSearching(false);
       }

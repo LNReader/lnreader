@@ -4,7 +4,13 @@ import { Checkbox as PaperCheckbox } from 'react-native-paper';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-export const Checkbox = ({ label, status, onPress, disabled, theme }) => (
+export const Checkbox = ({
+  label,
+  status,
+  onPress,
+  disabled = false,
+  theme,
+}) => (
   <Pressable
     android_ripple={{ color: theme.rippleColor }}
     style={styles.pressable}

@@ -32,5 +32,7 @@ const styles = StyleSheet.create({
   },
   error: {
     marginTop: 16,
+    paddingHorizontal: 16,
+    textAlign: 'center',
   },
 });

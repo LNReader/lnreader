@@ -167,6 +167,7 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
         <FlatList
           contentContainerStyle={styles.filterContainer}
           data={filtersValues}
+          keyExtractor={item => item.key}
           renderItem={({ item }: { item: SourceFilter }) => (
             <FilterItem
               filter={item}
