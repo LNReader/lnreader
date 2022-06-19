@@ -12,6 +12,10 @@ import { showToast } from '../../hooks/showToast';
 import { deleteNovelCache } from '../../database/queries/NovelQueries';
 import { clearUpdates } from '../../database/queries/UpdateQueries';
 import { clearCoverCache } from '../../services/utils/coverCache';
+import { getString } from '@strings/translations';
+import useBoolean from '@hooks/useBoolean';
+import ConfirmationDialog from '@components/ConfirmationDialog/ConfirmationDialog';
+import { deleteReadChaptersFromDb } from '../../database/queries/DownloadQueries';
 
 const AdvancedSettings = ({ navigation }) => {
   const theme = useTheme();
@@ -26,6 +30,12 @@ const AdvancedSettings = ({ navigation }) => {
   const [clearUpdatesDialog, setClearUpdatesDialog] = useState(false);
   const showClearUpdatesDialog = () => setClearUpdatesDialog(true);
   const hideClearUpdatesDialog = () => setClearUpdatesDialog(false);
+
+  const {
+    value: deleteReadChaptersDialog,
+    setTrue: showDeleteReadChaptersDialog,
+    setFalse: hideDeleteReadChaptersDialog,
+  } = useBoolean();
 
   return (
     <ScreenContainer theme={theme}>
@@ -50,8 +60,20 @@ const AdvancedSettings = ({ navigation }) => {
           onPress={clearCoverCache}
           theme={theme}
         />
+        <List.Item
+          title={getString('advancedSettings.deleteReadChapters')}
+          onPress={showDeleteReadChaptersDialog}
+          theme={theme}
+        />
       </List.Section>
       <Portal>
+        <ConfirmationDialog
+          title={getString('advancedSettings.deleteReadChaptersDialogTitle')}
+          visible={deleteReadChaptersDialog}
+          onSubmit={deleteReadChaptersFromDb}
+          onDismiss={hideDeleteReadChaptersDialog}
+          theme={theme}
+        />
         <Dialog
           visible={clearDatabaseDialog}
           onDismiss={hideClearDatabaseDialog}

@@ -83,3 +83,52 @@ export const getChapterFromDb = async (
     }),
   );
 };
+
+const deleteReadChaptersFromDbQuery = `
+DELETE FROM 
+  downloads 
+WHERE 
+  downloads.downloadChapterId IN (
+    SELECT 
+      chapters.chapterId 
+    FROM 
+      downloads 
+      INNER JOIN chapters ON chapters.chapterId = downloads.downloadChapterId 
+    WHERE 
+      chapters.read = 1
+  );
+`;
+
+let updateChaptersDeletedQuery = `
+UPDATE 
+  chapters 
+SET 
+  downloaded = 0 
+WHERE 
+  chapters.chapterId IN (
+    SELECT 
+      downloads.downloadChapterId 
+    FROM 
+      downloads 
+      INNER JOIN chapters ON chapters.chapterId = downloads.downloadChapterId 
+    WHERE 
+      chapters.read = 1
+  );
+`;
+
+export const deleteReadChaptersFromDb = (chapterId: number) => {
+  db.transaction(tx => {
+    tx.executeSql(
+      updateChaptersDeletedQuery,
+      [],
+      (txObj, res) => {},
+      (txObj, error) => showToast(error.message),
+    );
+    tx.executeSql(
+      deleteReadChaptersFromDbQuery,
+      [],
+      (txObj, res) => showToast('Deleted read chapters.'),
+      (txObj, error) => showToast(error.message),
+    );
+  });
+};

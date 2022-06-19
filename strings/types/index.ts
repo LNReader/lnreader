@@ -90,4 +90,6 @@ export interface StringMap {
   'globalSearch.searchIn': 'string';
   'globalSearch.allSources': 'string';
   'globalSearch.pinnedSources': 'string';
+  'advancedSettings.deleteReadChapters': 'string';
+  'advancedSettings.deleteReadChaptersDialogTitle': 'string';
 }
