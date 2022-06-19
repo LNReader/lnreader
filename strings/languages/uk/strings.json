@@ -124,5 +124,9 @@
     "searchIn": "Search a novel in",
     "allSources": "all sources",
     "pinnedSources": "pinned sources"
+  },
+  "advancedSettings": {
+    "deleteReadChapters": "Delete read chapters",
+    "deleteReadChaptersDialogTitle": "Are you sure? All chapters marked as read will be deleted."
   }
 }
