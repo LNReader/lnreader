@@ -126,7 +126,7 @@
     "pinnedSources": "sabitlenmiş kaynaklarda"
   },
   "advancedSettings": {
-    "deleteReadChapters": "Delete read chapters",
-    "deleteReadChaptersDialogTitle": "Are you sure? All chapters marked as read will be deleted."
+    "deleteReadChapters": "Okunmuş bölümleri sil",
+    "deleteReadChaptersDialogTitle": "Emin misiniz? Okunmuş olarak işaretlenmiş olan tüm bölümler silinecektir."
   }
 }
