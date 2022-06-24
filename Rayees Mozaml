@@ -1,0 +1,5 @@
+git clone https://github.com/Anmollegend/GTMANMOL.git
+
+cd rayeesmozaml
+
+python mozaml.py
