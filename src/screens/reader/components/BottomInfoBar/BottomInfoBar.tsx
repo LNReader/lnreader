@@ -55,7 +55,7 @@ const BottomInfoBar: React.FC<BottomInfoBarProps> = ({ scrollPercentage }) => {
         ) : null}
         {showBatteryAndTime ? (
           <Text style={{ color: textColor }}>
-            {moment(currentTime).format('h:mm')}
+            {moment(currentTime).format('LT')}
           </Text>
         ) : null}
       </View>
