@@ -58,7 +58,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
   const chapterNoAndTime = useMemo(
     () =>
       `Chapter ${parseChapterNumber(chapterName)} • ${moment(historyTimeRead)
-        .format('h:mm a')
+        .format('LT')
         .toUpperCase()}`,
     [chapterName, historyTimeRead],
   );

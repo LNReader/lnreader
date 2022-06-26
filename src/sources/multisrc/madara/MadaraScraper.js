@@ -160,7 +160,7 @@ class MadaraScraper {
          * Insert current date
          */
 
-        releaseDate = moment().format('MMMM DD, YYYY');
+        releaseDate = moment().format('LL');
       }
 
       let chapterUrl = loadedCheerio(this).find('a').attr('href').split('/');
