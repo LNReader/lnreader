@@ -852,5 +852,12 @@
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/fanstranslations.png?raw=true",
     "url": "https://fanstranslations.com/",
     "lang": "English"
-  }
+  },
+  {
+    "sourceId": 128,
+    "url": "https://noveltop1.com/",
+    "sourceName": "NovelTop1",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/master/icons/src/en/noveltop1/icon.png?raw=true",
+    "lang": "English"
+  },
 ]

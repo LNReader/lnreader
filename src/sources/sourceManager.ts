@@ -128,6 +128,7 @@ import NovelsCafeScraper from './en/NovelsCafe';
 import LightNovelReaderScraper from './en/LightNovelReader';
 import HakoLightNovelScraper from './vi/HakoLightNovel';
 import MTNovelScraper from './en/mtnovel';
+import NovelTop1Scraper from './en/noveltop1';
 import { SelectedFilter, SourceFilter } from './types/filterTypes';
 
 interface PopularNovelsResponse {
@@ -278,6 +279,7 @@ export const sourceManager = (sourceId: number): Scraper => {
     125: GuavareadScraper,
     126: SweetEscapeTranslationsScraper,
     127: FansTranslationsScraper,
+    128: NovelTop1Scraper,
   };
 
   return scrapers[sourceId];

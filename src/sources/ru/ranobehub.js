@@ -1,8 +1,10 @@
+import moment from 'moment';
 import * as cheerio from 'cheerio';
 import { defaultTo } from 'lodash';
 import { Status } from '../helpers/constants';
 import { htmlToText } from '../helpers/htmlToText';
 import { FilterInputs } from '../types/filterTypes';
+
 const sourceId = 69;
 
 const sourceName = 'RanobeHub';
@@ -90,7 +92,7 @@ const parseNovelAndChapters = async novelUrl => {
       novelChapters.push({
         chapterName: chapter.name,
         chapterUrl: chapter.url,
-        releaseDate: null,
+        releaseDate: moment(parseInt(chapter.changed_at) * 1000).format('LLL'),
       }),
     ),
   );
@@ -162,7 +164,7 @@ const searchNovels = async searchTerm => {
         novelUrl: novel.url.match(
           /https:\/\/ranobehub\.org\/ranobe\/(.*?)\?utm_source=search_name&utm_medium=search&utm_campaign=search_using/,
         )[1],
-        novelCover: novel.image,
+        novelCover: novel.image.replace('/small', '/medium'),
       }),
     );
 

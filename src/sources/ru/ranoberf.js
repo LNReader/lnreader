@@ -1,3 +1,4 @@
+import moment from 'moment';
 import * as cheerio from 'cheerio';
 import { defaultTo } from 'lodash';
 import { htmlToText } from '../helpers/htmlToText';
@@ -67,7 +68,7 @@ const parseNovelAndChapters = async novelUrl => {
 
   json.props.pageProps.book.chapters.map(item => {
     const chapterName = item.title;
-    const releaseDate = item.publishedAt;
+    const releaseDate = moment(item.publishedAt).format('LLL');
     const chapterUrl = baseUrl + item.url;
 
     if (!item.isDonate || item.isUserPaid) {

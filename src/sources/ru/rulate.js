@@ -127,12 +127,18 @@ const parseNovelAndChapters = async novelUrl => {
       .find('td[class="t"] > a')
       .text()
       .trim();
-    const releaseDate = null;
+    const releaseDate = loadedCheerio(this)
+      .find('td > span')
+      .attr('title')
+      ?.trim();
     const chapterUrl = loadedCheerio(this)
       .find('td[class="t"] > a')
       .attr('href');
 
-    if (loadedCheerio(this).find('td > span[class="disabled"]').length < 1) {
+    if (
+      loadedCheerio(this).find('td > span[class="disabled"]').length < 1 &&
+      releaseDate
+    ) {
       chapters.push({ chapterName, releaseDate, chapterUrl });
     }
   });

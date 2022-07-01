@@ -4,5 +4,5 @@ export const dateFormats = {
   nextWeek: 'dddd',
   lastDay: '[Yesterday]',
   lastWeek: '[Last] dddd',
-  sameElse: 'DD/MM/YYYY',
+  sameElse: 'L',
 };
