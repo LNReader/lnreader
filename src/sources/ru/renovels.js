@@ -2,6 +2,7 @@ import { FilterInputs } from '../types/filterTypes';
 import { htmlToText } from '../helpers/htmlToText';
 import { Status } from '../helpers/constants';
 import { defaultTo } from 'lodash';
+import moment from 'moment';
 
 const sourceId = 116;
 const sourceName = 'Renovels';
@@ -92,7 +93,7 @@ const parseNovelAndChapters = async novelUrl => {
     volumes.content.map(item => {
       const chapterName =
         `Том ${item.tome} Глава ${item.chapter} ${item.name}`?.trim();
-      const releaseDate = item.upload_date;
+      const releaseDate = moment(item.upload_date).format('LLL');
       const chapterUrl = baseUrl + '/api/titles/chapters/' + item.id + '/';
 
       if (!item.is_paid || item.is_bought) {
