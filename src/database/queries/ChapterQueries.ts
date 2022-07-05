@@ -2,6 +2,10 @@ import * as SQLite from 'expo-sqlite';
 import { showToast } from '../../hooks/showToast';
 import { sourceManager } from '../../sources/sourceManager';
 import { ChapterItem } from '../types';
+
+import * as cheerio from 'cheerio';
+import RNFetchBlob from 'rn-fetch-blob';
+
 const db = SQLite.openDatabase('lnreader.db');
 
 const insertChaptersQuery =
@@ -243,6 +247,46 @@ export const isChapterDownloaded = async (chapterId: number) => {
 const downloadChapterQuery =
   'INSERT INTO downloads (downloadChapterId, chapterName, chapterText) VALUES (?, ?, ?)';
 
+const downloadImages = async (
+  html: string,
+  sourceId: number,
+  chapterId: number,
+): Promise<string> => {
+  try {
+    const loadedCheerio = cheerio.load(html);
+    const imgs = loadedCheerio('img').toArray();
+    for (let i = 0; i < imgs.length; i++) {
+      const elem = loadedCheerio(imgs[i]);
+      const url = elem.attr('src');
+      if (url) {
+        const imageb64 = (await RNFetchBlob.fetch('GET', url)).base64();
+        if (
+          !(await RNFetchBlob.fs.exists(
+            `${RNFetchBlob.fs.dirs.DownloadDir}/LNReader`,
+          ))
+        ) {
+          await RNFetchBlob.fs.mkdir(
+            `${RNFetchBlob.fs.dirs.DownloadDir}/LNReader`,
+          );
+        }
+        const fileurl = `${RNFetchBlob.fs.dirs.DownloadDir}/LNReader/${sourceId}_${chapterId}#${i}.b64.png`;
+        elem.replaceWith(
+          `<img type="file" src="${url}" file-src="${fileurl}" file-id="${i}">`,
+        );
+        const exists = await RNFetchBlob.fs.exists(fileurl);
+        if (!exists) {
+          RNFetchBlob.fs.createFile(fileurl, imageb64, 'utf8');
+        } else {
+          RNFetchBlob.fs.writeFile(fileurl, imageb64, 'utf8');
+        }
+      }
+    }
+    return loadedCheerio.html();
+  } catch (e) {
+    return html;
+  }
+};
+
 export const downloadChapter = async (
   sourceId: number,
   novelUrl: string,
@@ -253,13 +297,17 @@ export const downloadChapter = async (
 
   const chapter = await source.parseChapter(novelUrl, chapterUrl);
 
+  const imagedChapterText =
+    chapter.chapterText &&
+    (await downloadImages(chapter.chapterText, sourceId, chapterId));
+
   db.transaction(tx => {
     tx.executeSql('UPDATE chapters SET downloaded = 1 WHERE chapterId = ?', [
       chapterId,
     ]);
     tx.executeSql(
       downloadChapterQuery,
-      [chapterId, chapter.chapterName, chapter.chapterText],
+      [chapterId, chapter.chapterName, imagedChapterText],
       (_txObj, _res) => {
         // console.log(`Downloaded Chapter ${chapter.chapterUrl}`);
       },
@@ -271,10 +319,24 @@ export const downloadChapter = async (
   });
 };
 
-export const deleteChapter = async (chapterId: number) => {
+export const deleteChapter = async (sourceId: number, chapterId: number) => {
   const updateIsDownloadedQuery =
     'UPDATE chapters SET downloaded = 0 WHERE chapterId=?';
   const deleteChapterQuery = 'DELETE FROM downloads WHERE downloadChapterId=?';
+
+  const path = `${RNFetchBlob.fs.dirs.DownloadDir}/LNReader/`;
+  const files = await RNFetchBlob.fs.ls(path);
+  files.forEach(file => {
+    const ex = /(.*?)_(.*?)#(.*?)/.exec(file);
+    if (ex) {
+      if (
+        parseInt(ex[1], 10) === sourceId &&
+        parseInt(ex[2], 10) === chapterId
+      ) {
+        RNFetchBlob.fs.unlink(`${path}${file}`);
+      }
+    }
+  });
 
   db.transaction(tx => {
     tx.executeSql(

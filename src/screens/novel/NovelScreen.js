@@ -135,7 +135,7 @@ const Novel = ({ route, navigation }) => {
     );
 
   const deleteChapter = (chapterId, chapterName) =>
-    dispatch(deleteChapterAction(chapterId, chapterName));
+    dispatch(deleteChapterAction(sourceId, chapterId, chapterName));
 
   const isSelected = chapterId => {
     return selected.some(obj => obj.chapterId === chapterId);

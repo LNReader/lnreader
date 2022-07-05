@@ -10,7 +10,10 @@ export const sanitizeChapterText = (
 ): string => {
   let text = sanitizeHtml(html, {
     allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img']),
-    allowedAttributes: { 'img': ['src'], 'a': ['href'] },
+    allowedAttributes: {
+      'img': ['src', 'type', 'file-src', 'file-id'],
+      'a': ['href'],
+    },
     allowedSchemes: ['data', 'http', 'https'],
   });
 

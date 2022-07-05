@@ -10,6 +10,8 @@ import { ThemeType } from 'src/theme/types';
 
 import { readerBackground } from '../utils/readerStyles';
 
+import RNFetchBlob from 'rn-fetch-blob';
+
 type WebViewPostEvent = {
   type: string;
   data?: { [key: string]: string };
@@ -122,6 +124,7 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = ({
         ref={webViewRef}
         style={{ backgroundColor }}
         originWhitelist={['*']}
+        onLoad={() => {}}
         scalesPageToFit={true}
         showsVerticalScrollIndicator={false}
         onScroll={onScroll}
@@ -130,7 +133,6 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = ({
         javaScriptEnabled={true}
         onMessage={ev => {
           const event: WebViewPostEvent = JSON.parse(ev.nativeEvent.data);
-          // console.log('WVEvent', event);
           switch (event.type) {
             case 'hide':
               onPress();
@@ -149,6 +151,22 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = ({
               break;
             case 'left':
               navigateToPrevChapter();
+              break;
+            case 'fileimg':
+              if (event.data) {
+                const { url, id } = event.data;
+                if (url) {
+                  if (id) {
+                    RNFetchBlob.fs.readFile(url, 'utf8').then(data => {
+                      webViewRef.current?.injectJavaScript(`  
+                      imgDatas[${id}] = "${data}"
+                      `);
+                    });
+                  } else {
+                    // no imageid
+                  }
+                }
+              }
               break;
           }
         }}
@@ -249,10 +267,26 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = ({
                     </style>
                   </head>
                   <body>
-                  <!-- You have to use ' or \` in onClick because JSON.stringify() uses " and it would terminate the string! -->
                     <chapter ${onClickWebViewPostMessage({ type: 'hide' })}>
                       ${html}
                     </chapter>
+                    <script>
+                    let proxyHandlerObj = {
+                      set:function(target,property,value,receiver) {
+                        if(property!=="length"){
+                          if(!isNaN(parseInt(property,10))){
+                            document.querySelector("img[file-id='"+property+"']").src="data:image/png;base64,"+value;
+                          }
+                        }
+                        return (target[property] = value);
+                      }
+                    };
+                    
+                    let imgDatas = new Proxy([],proxyHandlerObj);
+                    [...document.querySelectorAll("img")].forEach(img=>{
+                      window.ReactNativeWebView.postMessage(JSON.stringify({type:"fileimg", data:{url:img.getAttribute("file-src"), id:img.getAttribute("file-id")}}))
+                    })
+                    </script>
                     <div class="infoText">
                     ${getString(
                       'readerScreen.finished',

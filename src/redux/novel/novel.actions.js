@@ -400,8 +400,8 @@ export const downloadAllChaptersAction =
   };
 
 export const deleteChapterAction =
-  (chapterId, chapterName) => async dispatch => {
-    await deleteChapter(chapterId);
+  (sourceId, chapterId, chapterName) => async dispatch => {
+    await deleteChapter(sourceId, chapterId);
 
     dispatch({
       type: CHAPTER_DELETED,
