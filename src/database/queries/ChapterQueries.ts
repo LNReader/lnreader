@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 import * as SQLite from 'expo-sqlite';
 import { showToast } from '../../hooks/showToast';
 import { sourceManager } from '../../sources/sourceManager';
@@ -9,10 +7,13 @@ const db = SQLite.openDatabase('lnreader.db');
 const insertChaptersQuery =
   'INSERT INTO chapters (chapterUrl, chapterName, releaseDate, novelId) values (?, ?, ?, ?)';
 
-export const insertChapters = async (novelId, chapters) => {
-  db.transaction(tx => {
-    chapters.map(
-      chapter =>
+export const insertChapters = async (
+  novelId: number,
+  chapters: ChapterItem[],
+) => {
+  db.transaction(
+    tx => {
+      chapters.map(chapter =>
         tx.executeSql(
           insertChaptersQuery,
           [
@@ -21,8 +22,8 @@ export const insertChapters = async (novelId, chapters) => {
             chapter.releaseDate,
             novelId,
           ],
-          (txObj, res) => {},
-          (txObj, error) => {},
+          (_txObj, _res) => {},
+          (_txObj, _error) => false,
           // console.log(
           //     "Error ",
           //     error,
@@ -32,30 +33,33 @@ export const insertChapters = async (novelId, chapters) => {
           //     novelId
           // )
         ),
-      (txObj, res) => {
-        // console.log('Success');
-      },
-      (txObj, error) => {
-        // console.log('Error ', error)
-      },
-    );
-  });
+      );
+    },
+    _err => {
+      // console.log('Error', err);
+    },
+    () => {
+      // console.log('Success ')
+    },
+  );
 };
 
 const getChaptersQuery = (sort = 'ORDER BY chapterId ASC', filter = '') =>
   `SELECT * FROM chapters WHERE novelId = ? ${filter} ${sort}`;
 
-export const getChapters = (novelId, sort, filter) => {
-  return new Promise((resolve, reject) =>
+export const getChapters = (novelId: number, sort: string, filter: string) => {
+  return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
         getChaptersQuery(sort, filter),
         [novelId],
-        (txObj, { rows: { _array } }) => {
+        (txObj, { rows }) => {
+          const _array = (rows as any)._array;
           resolve(_array);
         },
-        (txObj, error) => {
+        (_txObj, _error) => {
           // console.log('Error ', error)
+          return false;
         },
       );
     }),
@@ -64,8 +68,8 @@ export const getChapters = (novelId, sort, filter) => {
 
 const getChapterQuery = 'SELECT * FROM downloads WHERE downloadChapterId = ?';
 
-export const getChapterFromDB = async chapterId => {
-  return new Promise((resolve, reject) =>
+export const getChapterFromDB = async (chapterId: number) => {
+  return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
         getChapterQuery,
@@ -73,8 +77,9 @@ export const getChapterFromDB = async chapterId => {
         (txObj, results) => {
           resolve(results.rows.item(0));
         },
-        (txObj, error) => {
+        (_txObj, _error) => {
           // console.log('Error ', error)
+          return false;
         },
       );
     }),
@@ -96,13 +101,17 @@ export const getPrevChapter = (
   novelId: number,
   chapterId: number,
 ): Promise<ChapterItem> => {
-  return new Promise((resolve, reject) =>
+  return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
         getPrevChapterQuery,
         [novelId, chapterId],
-        (txObj, results) => resolve(results.rows.item(results.rows.length - 1)),
-        (txObj, error) => showToast(error.message),
+        (_txObj, results) =>
+          resolve(results.rows.item(results.rows.length - 1)),
+        (_txObj, error) => {
+          showToast(error.message);
+          return false;
+        },
       );
     }),
   );
@@ -123,13 +132,16 @@ export const getNextChapter = (
   novelId: number,
   chapterId: number,
 ): Promise<ChapterItem> => {
-  return new Promise((resolve, reject) =>
+  return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
         getNextChapterQuery,
         [novelId, chapterId],
-        (txObj, results) => resolve(results.rows.item(0)),
-        (txObj, error) => showToast(error.message),
+        (_txObj, results) => resolve(results.rows.item(0)),
+        (_txObj, error) => {
+          showToast(error.message);
+          return false;
+        },
       );
     }),
   );
@@ -138,14 +150,15 @@ export const getNextChapter = (
 const markChapterReadQuery =
   'UPDATE chapters SET `read` = 1 WHERE chapterId = ?';
 
-export const markChapterRead = async chapterId => {
+export const markChapterRead = async (chapterId: number) => {
   db.transaction(tx => {
     tx.executeSql(
       markChapterReadQuery,
       [chapterId],
-      (txObj, res) => {},
-      (txObj, error) => {
+      (_txObj, _res) => {},
+      (_txObj, _error) => {
         // console.log(error)
+        return false;
       },
     );
   });
@@ -154,14 +167,15 @@ export const markChapterRead = async chapterId => {
 const markChapterUnreadQuery =
   'UPDATE chapters SET `read` = 0 WHERE chapterId = ?';
 
-export const markChapterUnread = async chapterId => {
+export const markChapterUnread = async (chapterId: number) => {
   db.transaction(tx => {
     tx.executeSql(
       markChapterUnreadQuery,
       [chapterId],
-      (txObj, res) => {},
-      (txObj, error) => {
+      (_txObj, _res) => {},
+      (_txObj, _error) => {
         // console.log(error)
+        return false;
       },
     );
   });
@@ -170,14 +184,15 @@ export const markChapterUnread = async chapterId => {
 const markAllChaptersReadQuery =
   'UPDATE chapters SET `read` = 1 WHERE novelId = ?';
 
-export const markAllChaptersRead = async novelId => {
+export const markAllChaptersRead = async (novelId: number) => {
   db.transaction(tx => {
     tx.executeSql(
       markAllChaptersReadQuery,
       [novelId],
-      (txObj, res) => {},
-      (txObj, error) => {
+      (_txObj, _res) => {},
+      (_txObj, _error) => {
         // console.log(error)
+        return false;
       },
     );
   });
@@ -186,14 +201,15 @@ export const markAllChaptersRead = async novelId => {
 const markAllChaptersUnreadQuery =
   'UPDATE chapters SET `read` = 0 WHERE novelId = ?';
 
-export const markAllChaptersUnread = async novelId => {
+export const markAllChaptersUnread = async (novelId: number) => {
   db.transaction(tx => {
     tx.executeSql(
       markAllChaptersUnreadQuery,
       [novelId],
-      (txObj, res) => {},
-      (txObj, error) => {
+      (_txObj, _res) => {},
+      (_txObj, _error) => {
         // console.log(error)
+        return false;
       },
     );
   });
@@ -202,8 +218,8 @@ export const markAllChaptersUnread = async novelId => {
 const isChapterDownloadedQuery =
   'SELECT * FROM downloads WHERE downloadChapterId=?';
 
-export const isChapterDownloaded = async chapterId => {
-  return new Promise((resolve, reject) =>
+export const isChapterDownloaded = async (chapterId: number) => {
+  return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
         isChapterDownloadedQuery,
@@ -215,8 +231,9 @@ export const isChapterDownloaded = async chapterId => {
             resolve(false);
           }
         },
-        (txObj, error) => {
+        (_txObj, _error) => {
           // console.log('Error ', error)
+          return false;
         },
       );
     }),
@@ -227,10 +244,10 @@ const downloadChapterQuery =
   'INSERT INTO downloads (downloadChapterId, chapterName, chapterText) VALUES (?, ?, ?)';
 
 export const downloadChapter = async (
-  sourceId,
-  novelUrl,
-  chapterUrl,
-  chapterId,
+  sourceId: number,
+  novelUrl: string,
+  chapterUrl: string,
+  chapterId: number,
 ) => {
   const source = sourceManager(sourceId);
 
@@ -243,17 +260,18 @@ export const downloadChapter = async (
     tx.executeSql(
       downloadChapterQuery,
       [chapterId, chapter.chapterName, chapter.chapterText],
-      (txObj, res) => {
+      (_txObj, _res) => {
         // console.log(`Downloaded Chapter ${chapter.chapterUrl}`);
       },
-      (txObj, error) => {
+      (_txObj, _error) => {
         // console.log('Error ', error)
+        return false;
       },
     );
   });
 };
 
-export const deleteChapter = async chapterId => {
+export const deleteChapter = async (chapterId: number) => {
   const updateIsDownloadedQuery =
     'UPDATE chapters SET downloaded = 0 WHERE chapterId=?';
   const deleteChapterQuery = 'DELETE FROM downloads WHERE downloadChapterId=?';
@@ -262,19 +280,21 @@ export const deleteChapter = async chapterId => {
     tx.executeSql(
       updateIsDownloadedQuery,
       [chapterId],
-      (txObj, res) => {},
-      (txObj, error) => {
+      (_txObj, _res) => {},
+      (_txObj, _error) => {
         // console.log('Error ', error)
+        return false;
       },
     );
     tx.executeSql(
       deleteChapterQuery,
       [chapterId],
-      (txObj, res) => {
+      (_txObj, _res) => {
         // console.log('Chapter deleted');
       },
-      (txObj, error) => {
+      (_txObj, _error) => {
         // console.log('Error ', error)
+        return false;
       },
     );
   });
@@ -288,15 +308,16 @@ const getLastReadChapterQuery = `
     WHERE history.historyNovelId = ?
 `;
 
-export const getLastReadChapter = async novelId => {
-  return new Promise((resolve, reject) => {
+export const getLastReadChapter = async (novelId: number) => {
+  return new Promise(resolve => {
     db.transaction(tx => {
       tx.executeSql(
         getLastReadChapterQuery,
         [novelId],
         (txObj, { rows }) => resolve(rows.item(0)),
-        (txObj, error) => {
+        (_txObj, _error) => {
           // console.log('Error ', error)
+          return false;
         },
       );
     });
@@ -306,14 +327,15 @@ export const getLastReadChapter = async novelId => {
 const bookmarkChapterQuery =
   'UPDATE chapters SET bookmark = ? WHERE chapterId = ?';
 
-export const bookmarkChapter = async (bookmark, chapterId) => {
+export const bookmarkChapter = async (bookmark: boolean, chapterId: number) => {
   db.transaction(tx => {
     tx.executeSql(
       bookmarkChapterQuery,
       [!bookmark, chapterId],
-      (txObj, res) => {},
-      (txObj, error) => {
+      (_txObj, _res) => {},
+      (_txObj, _error) => {
         // console.log('Error ', error)
+        return false;
       },
     );
   });
@@ -322,14 +344,18 @@ export const bookmarkChapter = async (bookmark, chapterId) => {
 const markPreviuschaptersReadQuery =
   'UPDATE chapters SET `read` = 1 WHERE chapterId < ? AND novelId = ?';
 
-export const markPreviuschaptersRead = async (chapterId, novelId) => {
+export const markPreviuschaptersRead = async (
+  chapterId: number,
+  novelId: number,
+) => {
   db.transaction(tx => {
     tx.executeSql(
       markPreviuschaptersReadQuery,
       [chapterId, novelId],
-      (txObj, res) => {},
-      (txObj, error) => {
+      (_txObj, _res) => {},
+      (_txObj, _error) => {
         // console.log(error)
+        return false;
       },
     );
   });
@@ -338,14 +364,18 @@ export const markPreviuschaptersRead = async (chapterId, novelId) => {
 const markPreviousChaptersUnreadQuery =
   'UPDATE chapters SET `read` = 0 WHERE chapterId < ? AND novelId = ?';
 
-export const markPreviousChaptersUnread = async (chapterId, novelId) => {
+export const markPreviousChaptersUnread = async (
+  chapterId: number,
+  novelId: number,
+) => {
   db.transaction(tx => {
     tx.executeSql(
       markPreviousChaptersUnreadQuery,
       [chapterId, novelId],
-      (txObj, res) => {},
-      (txObj, error) => {
+      (_txObj, _res) => {},
+      (_txObj, _error) => {
         // console.log(error)
+        return false;
       },
     );
   });
@@ -359,16 +389,18 @@ const getDownloadedChaptersQuery = `
     WHERE chapters.downloaded = 1`;
 
 export const getDownloadedChapters = () => {
-  return new Promise((resolve, reject) =>
+  return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
         getDownloadedChaptersQuery,
-        null,
-        (txObj, { rows: { _array } }) => {
+        undefined,
+        (txObj, { rows }) => {
+          const _array = (rows as any)._array;
           resolve(_array);
         },
-        (txObj, error) => {
+        (_txObj, _error) => {
           // console.log('Error ', error)
+          return false;
         },
       );
     }),
