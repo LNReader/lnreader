@@ -110,9 +110,11 @@ const parseNovelAndChapters = async novelUrl => {
   novel.novelCover = loadedCheerio('.seriesimg > img').attr('src');
 
   novel.author = loadedCheerio('#showauthors').text().trim();
-
-  novel.genre = loadedCheerio('#seriesgenre').text().trim().replace(/\s/g, ',');
-
+  novel.genre = loadedCheerio('#seriesgenre')
+    .children('a')
+    .map((i, el) => loadedCheerio(el).text())
+    .toArray()
+    .join(',');
   novel.status = loadedCheerio('#editstatus').text().includes('Ongoing')
     ? 'Ongoing'
     : 'Completed';
