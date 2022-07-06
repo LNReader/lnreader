@@ -5,7 +5,7 @@
     "save": "Сохранить",
     "clear": "Очистить",
     "reset": "Сбросить",
-    "search": "Искать"
+    "search": "Поиск"
   },
   "library": "Библиотека",
   "libraryScreen": {
@@ -118,15 +118,15 @@
     }
   },
   "sourceScreen": {
-    "noResultsFound": "No results found"
+    "noResultsFound": "Ничего не найдено"
   },
   "globalSearch": {
-    "searchIn": "Search a novel in",
-    "allSources": "all sources",
-    "pinnedSources": "pinned sources"
+    "searchIn": "Поиск новеллы в",
+    "allSources": "все источники",
+    "pinnedSources": "закреплённые источники"
   },
   "advancedSettings": {
-    "deleteReadChapters": "Delete read chapters",
-    "deleteReadChaptersDialogTitle": "Are you sure? All chapters marked as read will be deleted."
+    "deleteReadChapters": "Удалять прочитанные главы",
+    "deleteReadChaptersDialogTitle": "Вы уверены? Все главы, помеченные как прочитанные, будут удалены."
   }
 }
