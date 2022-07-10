@@ -247,9 +247,35 @@ export const isChapterDownloaded = async (chapterId: number) => {
 const downloadChapterQuery =
   'INSERT INTO downloads (downloadChapterId, chapterName, chapterText) VALUES (?, ?, ?)';
 
+const createImageFolder = async (
+  path: string,
+  data?: {
+    sourceId: number;
+    novelId: number;
+    chapterId: number;
+  },
+): Promise<string> => {
+  const mkdirIfNot = async (p: string) => {
+    if (!(await RNFetchBlob.fs.exists(p))) {
+      await RNFetchBlob.fs.mkdir(p);
+    }
+  };
+  await mkdirIfNot(path);
+  if (data) {
+    const { sourceId, novelId, chapterId } = data;
+    await mkdirIfNot(`${path}/${sourceId}/`);
+    await mkdirIfNot(`${path}/${sourceId}/${novelId}/`);
+    await mkdirIfNot(`${path}/${sourceId}/${novelId}/${chapterId}/`);
+    return `${path}/${sourceId}/${novelId}/${chapterId}/`;
+  } else {
+    return path;
+  }
+};
+
 const downloadImages = async (
   html: string,
   sourceId: number,
+  novelId: number,
   chapterId: number,
 ): Promise<string> => {
   try {
@@ -260,16 +286,13 @@ const downloadImages = async (
       const url = elem.attr('src');
       if (url) {
         const imageb64 = (await RNFetchBlob.fetch('GET', url)).base64();
-        if (
-          !(await RNFetchBlob.fs.exists(
+        const fileurl =
+          (await createImageFolder(
             `${RNFetchBlob.fs.dirs.DownloadDir}/LNReader`,
-          ))
-        ) {
-          await RNFetchBlob.fs.mkdir(
-            `${RNFetchBlob.fs.dirs.DownloadDir}/LNReader`,
-          );
-        }
-        const fileurl = `${RNFetchBlob.fs.dirs.DownloadDir}/LNReader/${sourceId}_${chapterId}#${i}.b64.png`;
+            { sourceId, novelId, chapterId },
+          )) +
+          i +
+          '.b64.png';
         elem.replaceWith(
           `<img type="file" src="${url}" file-src="${fileurl}" file-id="${i}">`,
         );
@@ -290,6 +313,7 @@ const downloadImages = async (
 export const downloadChapter = async (
   sourceId: number,
   novelUrl: string,
+  novelId: number,
   chapterUrl: string,
   chapterId: number,
 ) => {
@@ -299,7 +323,7 @@ export const downloadChapter = async (
 
   const imagedChapterText =
     chapter.chapterText &&
-    (await downloadImages(chapter.chapterText, sourceId, chapterId));
+    (await downloadImages(chapter.chapterText, sourceId, novelId, chapterId));
 
   db.transaction(tx => {
     tx.executeSql('UPDATE chapters SET downloaded = 1 WHERE chapterId = ?', [
@@ -319,24 +343,31 @@ export const downloadChapter = async (
   });
 };
 
-export const deleteChapter = async (sourceId: number, chapterId: number) => {
+export const deleteChapter = async (
+  sourceId: number,
+  novelId: number,
+  chapterId: number,
+) => {
   const updateIsDownloadedQuery =
     'UPDATE chapters SET downloaded = 0 WHERE chapterId=?';
   const deleteChapterQuery = 'DELETE FROM downloads WHERE downloadChapterId=?';
 
-  const path = `${RNFetchBlob.fs.dirs.DownloadDir}/LNReader/`;
+  const path = `${RNFetchBlob.fs.dirs.DownloadDir}/LNReader`;
+  await createImageFolder(path);
   const files = await RNFetchBlob.fs.ls(path);
-  files.forEach(file => {
-    const ex = /(.*?)_(.*?)#(.*?)/.exec(file);
+  for (let i = 0; i < files.length; i++) {
+    const ex = /(.*?)_(.*?)#(.*?)/.exec(files[i]);
     if (ex) {
       if (
         parseInt(ex[1], 10) === sourceId &&
         parseInt(ex[2], 10) === chapterId
       ) {
-        RNFetchBlob.fs.unlink(`${path}${file}`);
+        if (await RNFetchBlob.fs.exists(`${path}${files[i]}`)) {
+          RNFetchBlob.fs.unlink(`${path}${files[i]}`);
+        }
       }
     }
-  });
+  }
 
   db.transaction(tx => {
     tx.executeSql(

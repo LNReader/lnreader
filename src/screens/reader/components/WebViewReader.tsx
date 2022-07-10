@@ -48,26 +48,46 @@ type WebViewReaderProps = {
   setScrollPage: React.Dispatch<React.SetStateAction<string | null>>;
 };
 
-const WebViewReader: FunctionComponent<WebViewReaderProps> = ({
-  html,
-  theme,
-  reader,
-  onScroll,
-  onWebViewNavigationStateChange,
-  layoutHeight,
-  webViewScroll,
-  nextChapter,
-  chapterName,
-  onPress,
-  navigateToNextChapter,
-  navigateToPrevChapter,
-  setScrollPercentage,
-  scrollPercentage,
-  swipeGestures,
-  wvShowSwipeMargins,
-  scrollPage,
-  setScrollPage,
-}) => {
+function useTraceUpdate(props: any) {
+  const prev = useRef(props);
+  useEffect(() => {
+    const changedProps: { [key: string]: [any, any] } = Object.entries(
+      props,
+    ).reduce((ps: any, [k, v]) => {
+      if (prev.current[k] !== v) {
+        ps[k] = [prev.current[k], v];
+      }
+      return ps;
+    }, {});
+    if (Object.keys(changedProps).length > 0) {
+      console.log('Changed props:', Object.keys(changedProps));
+    }
+    prev.current = props;
+  });
+}
+
+const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
+  const {
+    html,
+    theme,
+    reader,
+    onScroll,
+    onWebViewNavigationStateChange,
+    layoutHeight,
+    webViewScroll,
+    nextChapter,
+    chapterName,
+    onPress,
+    navigateToNextChapter,
+    navigateToPrevChapter,
+    setScrollPercentage,
+    scrollPercentage,
+    swipeGestures,
+    wvShowSwipeMargins,
+    scrollPage,
+    setScrollPage,
+  } = props;
+  useTraceUpdate(props);
   const backgroundColor = readerBackground(reader.theme);
 
   const webViewRef = useRef<WebView>(null);
@@ -124,7 +144,17 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = ({
         ref={webViewRef}
         style={{ backgroundColor }}
         originWhitelist={['*']}
-        onLoad={() => {}}
+        injectedJavaScript={`
+        const p = ${webViewScroll.percentage};
+        const h = document.body.scrollHeight;
+        const s = (h*p)/100;
+        const lh = ${Math.trunc(layoutHeight)};
+        const xs = s - 1.2*lh;
+        const type = "${webViewScroll.type}";
+        if(type === 'exact')
+          window.scrollTo({top: p, left:0, behavior:'smooth'});
+        else
+        window.scrollTo({top: p === 100 ? h : xs, left:0, behavior:type});`}
         scalesPageToFit={true}
         showsVerticalScrollIndicator={false}
         onScroll={onScroll}
@@ -133,6 +163,7 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = ({
         javaScriptEnabled={true}
         onMessage={ev => {
           const event: WebViewPostEvent = JSON.parse(ev.nativeEvent.data);
+          console.log('WVEvent:', event);
           switch (event.type) {
             case 'hide':
               onPress();
@@ -152,19 +183,37 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = ({
             case 'left':
               navigateToPrevChapter();
               break;
-            case 'fileimg':
+            case 'imgfiles':
               if (event.data) {
-                const { url, id } = event.data;
-                if (url) {
-                  if (id) {
-                    RNFetchBlob.fs.readFile(url, 'utf8').then(data => {
-                      webViewRef.current?.injectJavaScript(`  
-                      imgDatas[${id}] = "${data}"
-                      `);
-                    });
-                  } else {
-                    // no imageid
+                if (Array.isArray(event.data)) {
+                  const promises: Promise<{ data: any; id: number }>[] = [];
+                  for (let i = 0; i < event.data.length; i++) {
+                    const { url, id } = event.data[i];
+                    console.log(url, id);
+                    if (url) {
+                      if (id) {
+                        promises.push(
+                          RNFetchBlob.fs
+                            .readFile(url, 'utf8')
+                            .then(d => ({ data: d, id })),
+                        );
+                      } else {
+                        // no imageid
+                      }
+                    }
                   }
+                  Promise.all(promises).then(datas => {
+                    const inject = datas.reduce((p, data) => {
+                      console.log(
+                        `document.querySelector("img[file-id='${data.id}']").src="data:image/png;base64,`,
+                      );
+                      return (
+                        p +
+                        `document.querySelector("img[file-id='${data.id}']").src="data:image/png;base64,${data.data}";`
+                      );
+                    }, '');
+                    webViewRef.current?.injectJavaScript(inject);
+                  });
                 }
               }
               break;
@@ -271,21 +320,10 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = ({
                       ${html}
                     </chapter>
                     <script>
-                    let proxyHandlerObj = {
-                      set:function(target,property,value,receiver) {
-                        if(property!=="length"){
-                          if(!isNaN(parseInt(property,10))){
-                            document.querySelector("img[file-id='"+property+"']").src="data:image/png;base64,"+value;
-                          }
-                        }
-                        return (target[property] = value);
-                      }
-                    };
-                    
-                    let imgDatas = new Proxy([],proxyHandlerObj);
-                    [...document.querySelectorAll("img")].forEach(img=>{
-                      window.ReactNativeWebView.postMessage(JSON.stringify({type:"fileimg", data:{url:img.getAttribute("file-src"), id:img.getAttribute("file-id")}}))
-                    })
+                    const imgs = [...document.querySelectorAll("img")].map(img=>{
+                      return {url:img.getAttribute("file-src"), id:img.getAttribute("file-id")}
+                    });
+                    window.ReactNativeWebView.postMessage(JSON.stringify({type:"imgfiles",data:imgs}));
                     </script>
                     <div class="infoText">
                     ${getString(

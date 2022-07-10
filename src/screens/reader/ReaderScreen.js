@@ -276,21 +276,27 @@ const Chapter = ({ route, navigation }) => {
 
   const [webViewScroll, setWebViewScroll] = useState(scrollPercentage);
 
-  const scrollToSavedProgress = useCallback(event => {
-    if (position && firstLayout) {
-      if (position.percentage < 100) {
-        scrollViewRef.current.scrollTo({
-          x: 0,
-          y: position.position,
-          animated: false,
-        });
-        if (useWebViewForChapter) {
-          setWebViewScroll({ percentage: position.percentage, type: 'smooth' });
+  const scrollToSavedProgress = useCallback(
+    event => {
+      if (position && firstLayout) {
+        if (position.percentage < 100) {
+          scrollViewRef.current.scrollTo({
+            x: 0,
+            y: position.position,
+            animated: false,
+          });
+          if (useWebViewForChapter) {
+            setWebViewScroll({
+              percentage: position.percentage,
+              type: 'smooth',
+            });
+          }
         }
+        setFirstLayout(false);
       }
-      setFirstLayout(false);
-    }
-  }, []);
+    },
+    [nextChapter],
+  );
 
   const hideHeader = () => {
     if (!hidden) {
@@ -442,8 +448,8 @@ const Chapter = ({ route, navigation }) => {
                       html={chapterText}
                       chapterName={chapter.chapterName || chapterName}
                       nextChapter={nextChapter}
-                      navigateToNextChapter={navigateToNextChapter}
-                      navigateToPrevChapter={navigateToPrevChapter}
+                      navigateToNextChapter={() => navigateToNextChapter()}
+                      navigateToPrevChapter={() => navigateToPrevChapter()}
                       onScroll={onScroll}
                       onPress={hideHeader}
                       onWebViewNavigationStateChange={

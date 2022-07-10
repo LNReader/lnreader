@@ -270,7 +270,7 @@ export const markChapterUnreadAction =
   };
 
 export const downloadChapterAction =
-  (sourceId, novelUrl, chapterUrl, chapterName, chapterId) =>
+  (sourceId, novelUrl, novelId, chapterUrl, chapterName, chapterId) =>
   async dispatch => {
     // dispatch({
     //     type: CHAPTER_DOWNLOADING,
@@ -281,7 +281,7 @@ export const downloadChapterAction =
       payload: [{ chapterId, chapterName }],
     });
 
-    await downloadChapter(sourceId, novelUrl, chapterUrl, chapterId);
+    await downloadChapter(sourceId, novelUrl, novelId, chapterUrl, chapterId);
 
     dispatch({
       type: CHAPTER_DOWNLOADED,
@@ -356,6 +356,7 @@ export const downloadAllChaptersAction =
                   await downloadChapter(
                     sourceId,
                     novelUrl,
+                    novelId,
                     chapters[i].chapterUrl,
                     chapters[i].chapterId,
                   );

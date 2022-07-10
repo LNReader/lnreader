@@ -51,6 +51,7 @@ export const resumeDownloads = chapters => async dispatch => {
             await downloadChapter(
               chapters[i].sourceId,
               chapters[i].novelUrl,
+              chapters[i].novelId,
               chapters[i].chapterUrl,
               chapters[i].chapterId,
             );

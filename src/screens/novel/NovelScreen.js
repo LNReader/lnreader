@@ -128,6 +128,7 @@ const Novel = ({ route, navigation }) => {
       downloadChapterAction(
         sourceId,
         novelUrl,
+        novelId,
         chapterUrl,
         chapterName,
         chapterId,
