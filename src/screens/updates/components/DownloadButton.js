@@ -47,6 +47,7 @@ export const DownloadButton = ({
           downloadChapter(
             chapter.sourceId,
             chapter.novelUrl,
+            chapter.novelId,
             chapter.chapterUrl,
             chapter.chapterName,
             chapter.chapterId,

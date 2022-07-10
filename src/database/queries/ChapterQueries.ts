@@ -352,9 +352,10 @@ export const deleteChapter = async (
     'UPDATE chapters SET downloaded = 0 WHERE chapterId=?';
   const deleteChapterQuery = 'DELETE FROM downloads WHERE downloadChapterId=?';
 
-  const path = `${RNFetchBlob.fs.dirs.DownloadDir}/LNReader`;
-  await createImageFolder(path);
-  const files = await RNFetchBlob.fs.ls(path);
+  const path = `${RNFetchBlob.fs.dirs.DownloadDir}/LNReader/`;
+  const files = await RNFetchBlob.fs.ls(
+    await createImageFolder(path, { sourceId, novelId, chapterId }),
+  );
   for (let i = 0; i < files.length; i++) {
     const ex = /(.*?)_(.*?)#(.*?)/.exec(files[i]);
     if (ex) {

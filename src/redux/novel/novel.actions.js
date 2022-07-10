@@ -269,6 +269,16 @@ export const markChapterUnreadAction =
     });
   };
 
+/**
+ *
+ * @param {number} sourceId
+ * @param {string} novelUrl
+ * @param {number} novelId
+ * @param {string} chapterUrl
+ * @param {string} chapterName
+ * @param {number} chapterId
+ * @returns
+ */
 export const downloadChapterAction =
   (sourceId, novelUrl, novelId, chapterUrl, chapterName, chapterId) =>
   async dispatch => {
@@ -291,6 +301,13 @@ export const downloadChapterAction =
     ToastAndroid.show(`Downloaded ${chapterName}`, ToastAndroid.SHORT);
   };
 
+/**
+ *
+ * @param {number} sourceId
+ * @param {string} novelUrl
+ * @param {import("./../../database/types").ChapterItem[]} chaps
+ * @returns
+ */
 export const downloadAllChaptersAction =
   (sourceId, novelUrl, chaps) => async (dispatch, getState) => {
     try {
@@ -356,7 +373,7 @@ export const downloadAllChaptersAction =
                   await downloadChapter(
                     sourceId,
                     novelUrl,
-                    novelId,
+                    chapters[i].novelId,
                     chapters[i].chapterUrl,
                     chapters[i].chapterId,
                   );
@@ -401,8 +418,8 @@ export const downloadAllChaptersAction =
   };
 
 export const deleteChapterAction =
-  (sourceId, chapterId, chapterName) => async dispatch => {
-    await deleteChapter(sourceId, chapterId);
+  (sourceId, novelId, chapterId, chapterName) => async dispatch => {
+    await deleteChapter(sourceId, novelId, chapterId);
 
     dispatch({
       type: CHAPTER_DELETED,
@@ -412,18 +429,26 @@ export const deleteChapterAction =
     showToast(`Deleted ${chapterName}`);
   };
 
-export const deleteAllChaptersAction = chapters => async dispatch => {
-  await chapters.map(chapter => {
-    deleteChapter(chapter.chapterId);
+/**
+ *
+ * @param {number} sourceId
+ * @param {import("../../database/types").ChapterItem[]} chapters
+ * @returns
+ */
+export const deleteAllChaptersAction =
+  (sourceId, chapters) => async dispatch => {
+    await Promise.all(
+      chapters.map(async chapter => {
+        await deleteChapter(sourceId, chapter.novelId, chapter.chapterId);
 
-    dispatch({
-      type: CHAPTER_DELETED,
-      payload: chapter.chapterId,
-    });
-  });
-
-  showToast('Chapters deleted');
-};
+        dispatch({
+          type: CHAPTER_DELETED,
+          payload: chapter.chapterId,
+        });
+      }),
+    );
+    showToast('Chapters deleted');
+  };
 
 export const updateNovelAction =
   (sourceId, novelUrl, novelId, sort, filter) => async (dispatch, getState) => {

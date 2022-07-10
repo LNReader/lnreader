@@ -136,7 +136,7 @@ const Novel = ({ route, navigation }) => {
     );
 
   const deleteChapter = (chapterId, chapterName) =>
-    dispatch(deleteChapterAction(sourceId, chapterId, chapterName));
+    dispatch(deleteChapterAction(sourceId, novelId, chapterId, chapterName));
 
   const isSelected = chapterId => {
     return selected.some(obj => obj.chapterId === chapterId);
@@ -478,7 +478,9 @@ const Novel = ({ route, navigation }) => {
                   titleStyle={{
                     color: theme.textColorPrimary,
                   }}
-                  onPress={() => dispatch(deleteAllChaptersAction(chapters))}
+                  onPress={() =>
+                    dispatch(deleteAllChaptersAction(sourceId, chapters))
+                  }
                 />
               </Menu>
 
@@ -600,7 +602,7 @@ const Novel = ({ route, navigation }) => {
               selected.some(obj => obj.downloaded === 1) && {
                 icon: 'trash-can-outline',
                 onPress: () => {
-                  dispatch(deleteAllChaptersAction(selected));
+                  dispatch(deleteAllChaptersAction(sourceId, selected));
                   setSelected([]);
                 },
               },
@@ -647,7 +649,7 @@ const Novel = ({ route, navigation }) => {
             action={{
               label: 'Delete',
               onPress: () => {
-                dispatch(deleteAllChaptersAction(chapters));
+                dispatch(deleteAllChaptersAction(sourceId, chapters));
               },
             }}
             theme={{ colors: { accent: theme.colorAccent } }}
