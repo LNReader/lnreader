@@ -69,7 +69,13 @@ const updateNovel = async (sourceId, novelUrl, novelId, options) => {
         (txObj, { insertId }) => {
           if (insertId !== -1) {
             if (downloadNewChapters) {
-              downloadChapter(sourceId, novelUrl, chapterUrl, insertId);
+              downloadChapter(
+                sourceId,
+                novelUrl,
+                novelId,
+                chapterUrl,
+                insertId,
+              );
             }
             insertUpdate(tx, insertId, novelId);
           }

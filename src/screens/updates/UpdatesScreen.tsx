@@ -83,20 +83,26 @@ const UpdatesScreen = () => {
   const handleDownloadChapter = (
     sourceId: number,
     novelUrl: string,
+    novelId: number,
     chapter: ChapterItem,
   ) =>
     dispatch(
       downloadChapterAction(
         sourceId,
         novelUrl,
+        novelId,
         chapter.chapterUrl,
         chapter.chapterName,
         chapter.chapterId,
       ),
     );
 
-  const handleDeleteChapter = (chapterId: number, chapterName: string) =>
-    dispatch(deleteChapterAction(chapterId, chapterName));
+  const handleDeleteChapter = (
+    sourceId: number,
+    novelId: number,
+    chapterId: number,
+    chapterName: string,
+  ) => dispatch(deleteChapterAction(sourceId, novelId, chapterId, chapterName));
 
   const navigateToChapter = (
     sourceId: number,

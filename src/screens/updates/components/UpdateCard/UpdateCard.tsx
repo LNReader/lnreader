@@ -34,9 +34,15 @@ interface UpdateCardProps {
   handleDownloadChapter: (
     sourceId: number,
     novelUrl: string,
+    novelId: number,
     chapter: ChapterItem,
   ) => void;
-  handleDeleteChapter: (chapterId: number, chapterName: string) => void;
+  handleDeleteChapter: (
+    sourceId: number,
+    novelId: number,
+    chapterId: number,
+    chapterName: string,
+  ) => void;
   theme: ThemeType;
 }
 
@@ -117,6 +123,7 @@ const UpdateCard: React.FC<UpdateCardProps> = ({
             handleDownloadChapter(
               item.sourceId,
               item.novelUrl,
+              item.novelId,
               item as ChapterItem,
             )
           }
@@ -139,7 +146,12 @@ const UpdateCard: React.FC<UpdateCardProps> = ({
         >
           <Menu.Item
             onPress={() =>
-              handleDeleteChapter(item.chapterId, item.chapterName)
+              handleDeleteChapter(
+                item.sourceId,
+                item.novelId,
+                item.chapterId,
+                item.chapterName,
+              )
             }
             title="Delete"
             titleStyle={{ color: theme.textColorPrimary }}
