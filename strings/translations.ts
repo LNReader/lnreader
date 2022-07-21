@@ -20,11 +20,12 @@ import uk from './languages/uk/strings.json';
 import pt from './languages/pt/strings.json';
 import de from './languages/de/strings.json';
 import it from './languages/it/strings.json';
+import zh from './languages/zh/strings.json';
 
 import { StringMap } from './types';
 
 i18n.fallbacks = true;
-i18n.translations = { en, es, tr, ru, ar, uk, pt, de, it };
+i18n.translations = { en, es, tr, ru, ar, uk, pt, de, it, zh };
 i18n.locale = Localization.locale;
 moment.locale(Localization.locale);
 
