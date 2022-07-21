@@ -292,3 +292,10 @@ export const FansTranslationsScraper = new MadaraScraper(
   'Fans Translations',
   { 'totalPages': 10, 'useNewChapterEndpoint': true },
 );
+
+export const RiwyatScraper = new MadaraScraper(
+  130,
+  'https://riwyat.com/',
+  'Riwyat',
+  { 'totalPages': 12, 'useNewChapterEndpoint': true, 'lang': 'Arabic' },
+);

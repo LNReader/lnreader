@@ -307,5 +307,15 @@
       "totalPages": 10,
       "useNewChapterEndpoint": true
     }
+  },
+  {
+    "sourceId": 130,
+    "baseUrl": "https://riwyat.com/",
+    "sourceName": "Riwyat",
+    "options": {
+      "totalPages": 12,
+      "useNewChapterEndpoint": true,
+      "lang": "Arabic"
+    }
   }
 ]

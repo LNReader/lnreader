@@ -866,5 +866,12 @@
     "sourceName": "Light Novels Brasil",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/master/icons/multisrc/wpmangastream/icons/lightnovelbrasil.png?raw=true",
     "lang": "Portuguese (Brazil)"
+  },
+  {
+    "sourceId": 130,
+    "sourceName": "Riwyat",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/riwyat.png?raw=true",
+    "url": "https://riwyat.com/",
+    "lang": "Arabic"
   }
 ]

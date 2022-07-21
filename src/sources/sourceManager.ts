@@ -71,6 +71,7 @@ import {
   GuavareadScraper,
   SweetEscapeTranslationsScraper,
   FansTranslationsScraper,
+  RiwyatScraper,
 } from './multisrc/madara/MadaraGenerator';
 import WuxiaBlogScraper from './en/wuxiablog';
 import WuxiaCityScraper from './en/wuxiacity';
@@ -282,6 +283,7 @@ export const sourceManager = (sourceId: number): Scraper => {
     127: FansTranslationsScraper,
     128: NovelTop1Scraper,
     129: LightNovelsBrasilScraper,
+    130: RiwyatScraper,
   };
 
   return scrapers[sourceId];
