@@ -1,132 +1,132 @@
 {
   "common": {
-    "cancel": "Cancel",
-    "ok": "Ok",
-    "save": "Save",
-    "clear": "Clear",
-    "reset": "Reset",
-    "search": "Search"
+    "cancel": "Cancelar",
+    "ok": "Confirmar",
+    "save": "Salvar",
+    "clear": "Limpar",
+    "reset": "Resetar",
+    "search": "Pesquisar"
   },
-  "library": "Library",
+  "library": "Biblioteca",
   "libraryScreen": {
-    "searchbar": "Search library",
-    "empty": "Your library is empty. Add series to your library from Browse.",
+    "searchbar": "Pesquisar na biblioteca",
+    "empty": "Sua biblioteca está vazia. Adicione séries à sua biblioteca pelo Navegador.",
     "bottomSheet": {
       "filters": {
-        "downloaded": "Downloaded",
-        "unread": "Unread",
-        "completed": "Completed"
+        "downloaded": "Baixados",
+        "unread": "Não lidos",
+        "completed": "Concluídos"
       },
       "sortOrders": {
-        "dateAdded": "Date added",
-        "alphabetically": "Alphabetically",
-        "totalChapters": "Total chapters"
+        "dateAdded": "Data adicionado",
+        "alphabetically": "Em Ordem Alfabética",
+        "totalChapters": "Total de capítulos"
       },
       "display": {
-        "displayMode": "Display mode",
-        "compact": "Compact grid",
-        "comfortable": "Comfortable grid",
-        "noTitle": "No title grid",
-        "list": "List",
-        "badges": "Badges",
-        "downloadBadges": "Download badges",
-        "unreadBadges": "Unread badges",
-        "showNoOfItems": "Show number of items"
+        "displayMode": "Modo de exibição",
+        "compact": "Grade compacta",
+        "comfortable": "Grade confortável",
+        "noTitle": "Grade sem títulos",
+        "list": "Lista",
+        "badges": "Emblemas",
+        "downloadBadges": "Baixar emblemas",
+        "unreadBadges": "Emblemas não lidos",
+        "showNoOfItems": "Mostrar número de itens"
       }
     }
   },
-  "updates": "Updates",
+  "updates": "Atualizações",
   "updatesScreen": {
-    "searchbar": "Search updates",
-    "lastUpdatedAt": "Library last updated:"
+    "searchbar": "Procurar por atualizações",
+    "lastUpdatedAt": "Biblioteca atualizada pela última vez:"
   },
-  "history": "History",
+  "history": "Histórico",
   "historyScreen": {
-    "searchbar": "Search history",
-    "clearHistorWarning": "Are you sure? All history will be lost."
+    "searchbar": "Histórico de pesquisa",
+    "clearHistorWarning": "Você tem certeza? Todo o histórico será perdido."
   },
-  "browse": "Browse",
+  "browse": "Navegar",
   "browseScreen": {
-    "discover": "Discover",
-    "searchbar": "Search sources",
-    "globalSearch": "Global search",
-    "listEmpty": "Enable languages from settings",
-    "lastUsed": "Last used",
-    "pinned": "Pinned",
-    "all": "All",
-    "latest": "Latest"
+    "discover": "Descubra",
+    "searchbar": "Pesquisar nas fontes",
+    "globalSearch": "Pesquisa global",
+    "listEmpty": "Habilitar idiomas a partir das configurações",
+    "lastUsed": "Usado por último",
+    "pinned": "Fixado",
+    "all": "Todos",
+    "latest": "Mais recentes"
   },
   "readerScreen": {
-    "finished": "Finished",
-    "noNextChapter": "There's no next chapter",
+    "finished": "Finalizado",
+    "noNextChapter": "Não há próximo capítulo",
     "bottomSheet": {
-      "textSize": "Text size",
-      "color": "Color",
-      "textAlign": "Text align",
-      "lineHeight": "Line Height",
-      "fontStyle": "Font style",
-      "fullscreen": "Fullscreen",
-      "renderHml": "Render HTML",
-      "autoscroll": "AutoScroll",
-      "verticalSeekbar": "Vertical Seekbar",
-      "showBatteryAndTime": "Show battery and time",
-      "showProgressPercentage": "Show progress percentage",
-      "swipeGestures": "Swipe left or right to navigate between chapters",
-      "allowTextSelection": "Allow text selection"
+      "textSize": "Tamanho do texto",
+      "color": "Cor",
+      "textAlign": "Alinhamento de texto",
+      "lineHeight": "Altura da linha",
+      "fontStyle": "Estilo da fonte",
+      "fullscreen": "Tela cheia",
+      "renderHml": "Renderizar HTML",
+      "autoscroll": "Rolagem automática",
+      "verticalSeekbar": "Barra de Busca Vertical",
+      "showBatteryAndTime": "Mostrar bateria e hora",
+      "showProgressPercentage": "Exibir porcentagem do progresso",
+      "swipeGestures": "Deslize para esquerda/direita para navegar entre capítulos",
+      "allowTextSelection": "Permitir seleção de texto"
     }
   },
   "novelScreen": {
-    "addToLibaray": "Add to library",
-    "inLibaray": "In library",
-    "continueReading": "Continue reading",
-    "chapters": "chapters",
-    "migrate": "Migrate",
+    "addToLibaray": "Adicionar à biblioteca",
+    "inLibaray": "Na biblioteca",
+    "continueReading": "Continuar lendo",
+    "chapters": "Capítulos",
+    "migrate": "Migrar",
     "bottomSheet": {
-      "filter": "Filter",
-      "sort": "Sort",
-      "display": "Display"
+      "filter": "Filtro",
+      "sort": "Ordenar por",
+      "display": "Exibir"
     }
   },
-  "more": "More",
+  "more": "Mais",
   "moreScreen": {
-    "settings": "Settings",
+    "settings": "Configurações",
     "settingsScreen": {
-      "generalSettings": "General",
+      "generalSettings": "Geral",
       "generalSettingsScreen": {},
       "readerSettings": {
-        "title": "Reader",
-        "readerTheme": "Reader theme",
-        "preset": "Preset",
-        "backgroundColor": "Background color",
-        "textColor": "Text color",
-        "backgroundColorModal": "Reader background color",
-        "textColorModal": "Reader text color",
-        "verticalSeekbarDesc": "Switch between vertical and horizontal seekbar",
-        "autoScrollInterval": "Auto scroll interval (in seconds)",
-        "autoScrollOffset": "Auto scroll offset (screen height by default)",
-        "saveCustomTheme": "Save custom theme",
-        "deleteCustomTheme": "Delete custom theme",
-        "customCSS": "Custom CSS"
+        "title": "Leitor",
+        "readerTheme": "Tema do leitor",
+        "preset": "Predefinição",
+        "backgroundColor": "Cor de fundo",
+        "textColor": "Cor do Texto",
+        "backgroundColorModal": "Cor de fundo do  leitor",
+        "textColorModal": "Cor do texto do leitor",
+        "verticalSeekbarDesc": "Alternar entre barra de busca vertical e horizontal",
+        "autoScrollInterval": "Intervalo de rolagem automática (em segundos)",
+        "autoScrollOffset": "Deslocamento automático de rolagem (altura padrão da tela)",
+        "saveCustomTheme": "Salvar tema personalizado",
+        "deleteCustomTheme": "Excluir tema personalizado",
+        "customCSS": "CSS Personalizado"
       },
-      "browseSettings": "Browse Settings",
+      "browseSettings": "Configurações de navegação",
       "browseSettingsScreen": {
-        "onlyShowPinnedSources": "Only show pinned sources",
-        "languages": "Languages",
-        "searchAllSources": "Search all sources",
-        "searchAllWarning": "Searching a large number of sources may freeze the app till searching is finished."
+        "onlyShowPinnedSources": "Mostrar apenas fontes fixadas",
+        "languages": "Idiomas",
+        "searchAllSources": "Pesquisar em todas as fontes",
+        "searchAllWarning": "Procurar em um grande número de fontes pode congelar o aplicativo até que a procura termine."
       }
     }
   },
   "sourceScreen": {
-    "noResultsFound": "No results found"
+    "noResultsFound": "Nenhum resultado encontrado"
   },
   "globalSearch": {
-    "searchIn": "Search a novel in",
-    "allSources": "all sources",
-    "pinnedSources": "pinned sources"
+    "searchIn": "Procurar uma novel em",
+    "allSources": "todas as fontes",
+    "pinnedSources": "fontes fixadas"
   },
   "advancedSettings": {
-    "deleteReadChapters": "Delete read chapters",
-    "deleteReadChaptersDialogTitle": "Are you sure? All chapters marked as read will be deleted."
+    "deleteReadChapters": "Excluir capítulos lidos",
+    "deleteReadChaptersDialogTitle": "Você tem certeza? Todos os capítulos marcados como lidos serão excluídos."
   }
 }
