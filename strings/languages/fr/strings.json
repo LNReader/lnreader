@@ -1,123 +1,132 @@
 {
   "common": {
-    "cancel": "Cancel",
+    "cancel": "Annuler",
     "ok": "Ok",
-    "save": "Save",
-    "clear": "Clear",
-    "reset": "Reset",
-    "search": "Search"
+    "save": "Sauvegarder",
+    "clear": "Nettoyez",
+    "reset": "Réinitialiser",
+    "search": "Recherchez"
   },
   "library": "Bibliothèque",
   "libraryScreen": {
-    "searchbar": "Search library",
-    "empty": "Your library is empty. Add series to your library from Browse.",
+    "searchbar": "Rechercher dans la bibliothèque",
+    "empty": "Votre bibliothèque est vide. Ajouter des séries à votre bibliothèque à partir de Parcourir",
     "bottomSheet": {
       "filters": {
-        "downloaded": "Downloaded",
-        "unread": "Unread",
-        "completed": "Completed"
+        "downloaded": "Téléchargé",
+        "unread": "Non lu",
+        "completed": "Complété"
       },
       "sortOrders": {
-        "dateAdded": "Date added",
-        "alphabetically": "Alphabetically",
-        "totalChapters": "Total chapters"
+        "dateAdded": "Date ajoutée",
+        "alphabetically": "Alphabétiquement",
+        "totalChapters": "Nombre total de chapitres"
       },
       "display": {
-        "displayMode": "Display mode",
-        "compact": "Compact grid",
-        "comfortable": "Comfortable grid",
-        "noTitle": "No title grid",
-        "list": "List",
+        "displayMode": "Mode d'affichage",
+        "compact": "Grille compacte",
+        "comfortable": "Grille confortable",
+        "noTitle": "Grille sans titre",
+        "list": "Liste",
         "badges": "Badges",
-        "downloadBadges": "Download badges",
-        "unreadBadges": "Unread badges",
-        "showNoOfItems": "Show number of items"
+        "downloadBadges": "Télécharger les badges",
+        "unreadBadges": "Badges non lus",
+        "showNoOfItems": "Afficher le nombre d'éléments"
       }
     }
   },
-  "updates": "Updates",
+  "updates": "Mises à jour",
   "updatesScreen": {
-    "searchbar": "Search updates",
-    "lastUpdatedAt": "Library last updated:"
+    "searchbar": "Rechercher des mises à jour",
+    "lastUpdatedAt": "Dernière mise à jour de la bibliothèque :"
   },
   "history": "Historique",
   "historyScreen": {
-    "searchbar": "Search history",
-    "clearHistorWarning": "Are you sure? All history will be lost."
+    "searchbar": "Historique des recherches",
+    "clearHistorWarning": "Êtes-vous sûr? Tout l'historique sera perdu."
   },
-  "browse": "Browse",
+  "browse": "Parcourir",
   "browseScreen": {
-    "discover": "Discover",
-    "searchbar": "Search sources",
-    "globalSearch": "Global search",
-    "listEmpty": "Enable languages from settings",
-    "lastUsed": "Last used",
-    "pinned": "Pinned",
-    "all": "All",
-    "latest": "Latest"
+    "discover": "Découvrir",
+    "searchbar": "Rechercher des sources",
+    "globalSearch": "Recherche globale",
+    "listEmpty": "Activer les langues à partir des paramètres",
+    "lastUsed": "Dernière utilisation",
+    "pinned": "Épinglé",
+    "all": "Tout",
+    "latest": "Dernier"
   },
   "readerScreen": {
-    "finished": "Finished",
-    "noNextChapter": "There's no next chapter",
+    "finished": "Terminé",
+    "noNextChapter": "Il n'y a pas de prochain chapitre",
     "bottomSheet": {
-      "textSize": "Text size",
-      "color": "Color",
-      "textAlign": "Text align",
-      "lineHeight": "Line Height",
-      "fontStyle": "Font style",
-      "fullscreen": "Fullscreen",
-      "renderHml": "Render HTML",
-      "autoscroll": "AutoScroll",
-      "verticalSeekbar": "Vertical Seekbar",
-      "showBatteryAndTime": "Show battery and time",
-      "showProgressPercentage": "Show progress percentage",
-      "swipeGestures": "Swipe left or right to navigate between chapters",
-      "allowTextSelection": "Allow text selection"
+      "textSize": "Taille du texte",
+      "color": "Couleur",
+      "textAlign": "Alignement du texte",
+      "lineHeight": "Hauteur de la ligne",
+      "fontStyle": "Style de police",
+      "fullscreen": "Plein écran",
+      "renderHml": "Rendre l'HTML",
+      "autoscroll": "Scroll automatique",
+      "verticalSeekbar": "Barre de recherche verticale",
+      "showBatteryAndTime": "Afficher la batterie et l'heure",
+      "showProgressPercentage": "Afficher le pourcentage de progression",
+      "swipeGestures": "Balayez vers la gauche ou la droite pour passer d'un chapitre à l'autre.",
+      "allowTextSelection": "Permettre la sélection du texte"
     }
   },
   "novelScreen": {
-    "addToLibaray": "Add to library",
-    "inLibaray": "In library",
-    "continueReading": "Continue reading",
-    "chapters": "chapters",
-    "migrate": "Migrate",
+    "addToLibaray": "Ajouter à la bibliothèque",
+    "inLibaray": "En bibliothèque",
+    "continueReading": "Continuer la lecture",
+    "chapters": "chapitres",
+    "migrate": "Migrer",
     "bottomSheet": {
-      "filter": "Filter",
-      "sort": "Sort",
-      "display": "Display"
+      "filter": "Filtre",
+      "sort": "Trier",
+      "display": "Afficher"
     }
   },
-  "more": "More",
+  "more": "Suite",
   "moreScreen": {
-    "settings": "Settings",
+    "settings": "Paramètres",
     "settingsScreen": {
-      "generalSettings": "General",
+      "generalSettings": "Général",
       "generalSettingsScreen": {},
       "readerSettings": {
-        "title": "Reader",
-        "readerTheme": "Reader theme",
-        "preset": "Preset",
-        "backgroundColor": "Background color",
-        "textColor": "Text color",
-        "backgroundColorModal": "Reader background color",
-        "textColorModal": "Reader text color",
-        "verticalSeekbarDesc": "Switch between vertical and horizontal seekbar",
-        "autoScrollInterval": "Auto scroll interval (in seconds)",
-        "autoScrollOffset": "Auto scroll offset (screen height by default)",
-        "saveCustomTheme": "Save custom theme",
-        "deleteCustomTheme": "Delete custom theme",
-        "customCSS": "Custom CSS"
+        "title": "Lecteur",
+        "readerTheme": "Thème du lecteur",
+        "preset": "Préréglage",
+        "backgroundColor": "Couleur de fond",
+        "textColor": "Couleur du texte",
+        "backgroundColorModal": "Couleur de fond du lecteur",
+        "textColorModal": "Couleur du texte du lecteur",
+        "verticalSeekbarDesc": "Basculer de la barre de recherche verticale à horizontale",
+        "autoScrollInterval": "Intervalle du scroll automatique (en secondes)",
+        "autoScrollOffset": "Valeur du scroll automatique (hauteur de l'écran par défaut)",
+        "saveCustomTheme": "Sauvegarder le thème personnalisé",
+        "deleteCustomTheme": "Supprimer le thème personnalisé",
+        "customCSS": "CSS personnalisé"
       },
-      "browseSettings": "Browse Settings",
+      "browseSettings": "Parcourir les paramètres",
       "browseSettingsScreen": {
-        "onlyShowPinnedSources": "Only show pinned sources",
-        "languages": "Languages",
-        "searchAllSources": "Search all sources",
-        "searchAllWarning": "Searching a large number of sources may freeze the app till searching is finished."
+        "onlyShowPinnedSources": "Afficher uniquement les sources épinglées",
+        "languages": "Langues",
+        "searchAllSources": "Rechercher toutes les sources",
+        "searchAllWarning": "La recherche d'un grand nombre de sources peut bloquer l'application jusqu'à la fin de la recherche.."
       }
     }
   },
   "sourceScreen": {
-    "noResultsFound": "No results found"
+    "noResultsFound": "Aucun résultat trouvé"
+  },
+  "globalSearch": {
+    "searchIn": "Rechercher un novel dans",
+    "allSources": "toutes les sources",
+    "pinnedSources": "sources épinglées"
+  },
+  "advancedSettings": {
+    "deleteReadChapters": "Supprimer les chapitres lus",
+    "deleteReadChaptersDialogTitle": "Êtes-vous sûr? Tous les chapitres marqués comme lus seront supprimés"
   }
 }

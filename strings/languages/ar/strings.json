@@ -1,11 +1,11 @@
 {
   "common": {
-    "cancel": "Cancel",
-    "ok": "Ok",
+    "cancel": "الغاء",
+    "ok": "حسنآ",
     "save": "تثبيت",
-    "clear": "Clear",
+    "clear": "تنضيف",
     "reset": "إعادة تعيين",
-    "search": "Search"
+    "search": "بحث"
   },
   "library": "المكتبة",
   "libraryScreen": {
@@ -47,32 +47,32 @@
   },
   "browse": "تصفح",
   "browseScreen": {
-    "discover": "Discover",
+    "discover": "استكشف",
     "searchbar": "البحث في المصادر",
-    "globalSearch": "Global search",
-    "listEmpty": "Enable languages from settings",
-    "lastUsed": "Last used",
-    "pinned": "Pinned",
-    "all": "All",
-    "latest": "Latest"
+    "globalSearch": "بحث عام",
+    "listEmpty": "تفعيل اللغات من الاعدادات",
+    "lastUsed": "اخر استخدام",
+    "pinned": "مثبت",
+    "all": "الجميع",
+    "latest": "الاخير"
   },
   "readerScreen": {
-    "finished": "Finished",
-    "noNextChapter": "There's no next chapter",
+    "finished": "انتهى",
+    "noNextChapter": "لا يوجد فصل اخر",
     "bottomSheet": {
-      "textSize": "Text size",
-      "color": "Color",
-      "textAlign": "Text align",
-      "lineHeight": "Line Height",
-      "fontStyle": "Font style",
-      "fullscreen": "Fullscreen",
-      "renderHml": "Render HTML",
-      "autoscroll": "AutoScroll",
-      "verticalSeekbar": "Vertical Seekbar",
-      "showBatteryAndTime": "Show battery and time",
-      "showProgressPercentage": "Show progress percentage",
-      "swipeGestures": "Swipe left or right to navigate between chapters",
-      "allowTextSelection": "Allow text selection"
+      "textSize": "حجم الخط",
+      "color": "اللون",
+      "textAlign": "اتجاه النص",
+      "lineHeight": "ارتفاع الخط",
+      "fontStyle": "نمط الخط",
+      "fullscreen": "تكبير الشاشة",
+      "renderHml": "عرض HTML",
+      "autoscroll": "تدوير تلقائي",
+      "verticalSeekbar": "شريط البحث العمودي",
+      "showBatteryAndTime": "اضهر البطارية والوقت",
+      "showProgressPercentage": "النسبة المئوية للتقدم",
+      "swipeGestures": "اسحب لليسار أو لليمين للتبديل بين علامات التبويب",
+      "allowTextSelection": "السماح باختيار النص"
     }
   },
   "novelScreen": {
@@ -94,30 +94,39 @@
       "generalSettings": "العامة",
       "generalSettingsScreen": {},
       "readerSettings": {
-        "title": "Reader",
-        "readerTheme": "Reader theme",
-        "preset": "Preset",
-        "backgroundColor": "Background color",
-        "textColor": "Text color",
-        "backgroundColorModal": "Reader background color",
-        "textColorModal": "Reader text color",
-        "verticalSeekbarDesc": "Switch between vertical and horizontal seekbar",
-        "autoScrollInterval": "Auto scroll interval (in seconds)",
-        "autoScrollOffset": "Auto scroll offset (screen height by default)",
-        "saveCustomTheme": "Save custom theme",
-        "deleteCustomTheme": "Delete custom theme",
-        "customCSS": "Custom CSS"
+        "title": "القارئ",
+        "readerTheme": "سمة القارئ",
+        "preset": "اعدادات جاهزة",
+        "backgroundColor": "لون الخلفية",
+        "textColor": "لون النص",
+        "backgroundColorModal": "لون خلفية القراءة",
+        "textColorModal": "لون نص القراءة",
+        "verticalSeekbarDesc": "التبديل بين شريط البحث العمودي والأفقي",
+        "autoScrollInterval": "فترة التمرير التلقائي (بالثواني)",
+        "autoScrollOffset": "تمرير إزاحة تلقائية (ارتفاع الشاشة افتراضي)",
+        "saveCustomTheme": "حفظ السمة المخصصة",
+        "deleteCustomTheme": "حذف السمة المخصصة",
+        "customCSS": "تنسيقات CSS مخصصة"
       },
-      "browseSettings": "Browse Settings",
+      "browseSettings": "تصفح الإعدادات",
       "browseSettingsScreen": {
-        "onlyShowPinnedSources": "Only show pinned sources",
-        "languages": "Languages",
-        "searchAllSources": "Search all sources",
-        "searchAllWarning": "Searching a large number of sources may freeze the app till searching is finished."
+        "onlyShowPinnedSources": "إظهار المصادر المثبتة فقط",
+        "languages": "اللغات",
+        "searchAllSources": "البحث في جميع المصادر",
+        "searchAllWarning": "البحث عن عدد كبير من المصادر قد يجمد التطبيق حتى الانتهاء من البحث."
       }
     }
   },
   "sourceScreen": {
-    "noResultsFound": "No results found"
+    "noResultsFound": "لم يتم العثور على أي نتائج"
+  },
+  "globalSearch": {
+    "searchIn": "البحث في رواية",
+    "allSources": "جميع المصادر",
+    "pinnedSources": "المصادر المثبتة"
+  },
+  "advancedSettings": {
+    "deleteReadChapters": "حذف الفصول المقروءة",
+    "deleteReadChaptersDialogTitle": "هل أنت متأكد؟ سيتم حذف جميع الفصول المعلَّمة كمقروءة."
   }
 }

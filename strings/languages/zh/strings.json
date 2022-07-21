@@ -1,123 +1,132 @@
 {
   "common": {
-    "cancel": "Cancel",
-    "ok": "Ok",
-    "save": "Save",
-    "clear": "Clear",
-    "reset": "Reset",
-    "search": "Search"
+    "cancel": "取消",
+    "ok": "确定",
+    "save": "保存",
+    "clear": "清除",
+    "reset": "重置",
+    "search": "搜索"
   },
-  "library": "Library",
+  "library": "书库",
   "libraryScreen": {
-    "searchbar": "Search library",
-    "empty": "Your library is empty. Add series to your library from Browse.",
+    "searchbar": "搜索书库",
+    "empty": "您的库是空的。从浏览添加丛书到您的库里。",
     "bottomSheet": {
       "filters": {
-        "downloaded": "Downloaded",
-        "unread": "Unread",
-        "completed": "Completed"
+        "downloaded": "已下载",
+        "unread": "未读",
+        "completed": "已完成"
       },
       "sortOrders": {
-        "dateAdded": "Date added",
-        "alphabetically": "Alphabetically",
-        "totalChapters": "Total chapters"
+        "dateAdded": "日期已添加",
+        "alphabetically": "按字母排序",
+        "totalChapters": "章节总数"
       },
       "display": {
-        "displayMode": "Display mode",
-        "compact": "Compact grid",
-        "comfortable": "Comfortable grid",
-        "noTitle": "No title grid",
-        "list": "List",
-        "badges": "Badges",
-        "downloadBadges": "Download badges",
-        "unreadBadges": "Unread badges",
-        "showNoOfItems": "Show number of items"
+        "displayMode": "显示模式",
+        "compact": "紧凑网格",
+        "comfortable": "可变网格",
+        "noTitle": "无标题网格",
+        "list": "列表",
+        "badges": "徽章",
+        "downloadBadges": "下载徽章",
+        "unreadBadges": "未读徽章",
+        "showNoOfItems": "显示条目数量"
       }
     }
   },
-  "updates": "Updates",
+  "updates": "更新",
   "updatesScreen": {
-    "searchbar": "Search updates",
-    "lastUpdatedAt": "Library last updated:"
+    "searchbar": "搜索更新",
+    "lastUpdatedAt": "最近更新的库："
   },
-  "history": "History",
+  "history": "历史",
   "historyScreen": {
-    "searchbar": "Search history",
-    "clearHistorWarning": "Are you sure? All history will be lost."
+    "searchbar": "搜索历史记录",
+    "clearHistorWarning": "您确定吗？所有历史记录都将删除。"
   },
-  "browse": "Browse",
+  "browse": "浏览",
   "browseScreen": {
-    "discover": "Discover",
-    "searchbar": "Search sources",
-    "globalSearch": "Global search",
-    "listEmpty": "Enable languages from settings",
-    "lastUsed": "Last used",
-    "pinned": "Pinned",
-    "all": "All",
-    "latest": "Latest"
+    "discover": "发现",
+    "searchbar": "搜索资源",
+    "globalSearch": "全局搜索",
+    "listEmpty": "从设置中启用语言",
+    "lastUsed": "最近使用",
+    "pinned": "已固定",
+    "all": "全部",
+    "latest": "最新"
   },
   "readerScreen": {
-    "finished": "Finished",
-    "noNextChapter": "There's no next chapter",
+    "finished": "已完成",
+    "noNextChapter": "没有下一章节",
     "bottomSheet": {
-      "textSize": "Text size",
-      "color": "Color",
-      "textAlign": "Text align",
-      "lineHeight": "Line Height",
-      "fontStyle": "Font style",
-      "fullscreen": "Fullscreen",
-      "renderHml": "Render HTML",
-      "autoscroll": "AutoScroll",
-      "verticalSeekbar": "Vertical Seekbar",
-      "showBatteryAndTime": "Show battery and time",
-      "showProgressPercentage": "Show progress percentage",
-      "swipeGestures": "Swipe left or right to navigate between chapters",
-      "allowTextSelection": "Allow text selection"
+      "textSize": "文本大小",
+      "color": "颜色",
+      "textAlign": "文本对齐",
+      "lineHeight": "行高",
+      "fontStyle": "字体样式",
+      "fullscreen": "全屏",
+      "renderHml": "渲染HTML",
+      "autoscroll": "自动滚动",
+      "verticalSeekbar": "垂直进度条",
+      "showBatteryAndTime": "显示电池和时间",
+      "showProgressPercentage": "显示进度百分比",
+      "swipeGestures": "向左或向右滑动以导航章节",
+      "allowTextSelection": "允许选择文本"
     }
   },
   "novelScreen": {
-    "addToLibaray": "Add to library",
-    "inLibaray": "In library",
-    "continueReading": "Continue reading",
-    "chapters": "chapters",
-    "migrate": "Migrate",
+    "addToLibaray": "添加到书库",
+    "inLibaray": "在书库中",
+    "continueReading": "继续阅读",
+    "chapters": "章节",
+    "migrate": "迁移",
     "bottomSheet": {
-      "filter": "Filter",
-      "sort": "Sort",
-      "display": "Display"
+      "filter": "筛选",
+      "sort": "排序",
+      "display": "显示"
     }
   },
-  "more": "More",
+  "more": "更多",
   "moreScreen": {
-    "settings": "Settings",
+    "settings": "设置",
     "settingsScreen": {
-      "generalSettings": "General",
+      "generalSettings": "常规",
       "generalSettingsScreen": {},
       "readerSettings": {
-        "title": "Reader",
-        "readerTheme": "Reader theme",
-        "preset": "Preset",
-        "backgroundColor": "Background color",
-        "textColor": "Text color",
-        "backgroundColorModal": "Reader background color",
-        "textColorModal": "Reader text color",
-        "verticalSeekbarDesc": "Switch between vertical and horizontal seekbar",
-        "autoScrollInterval": "Auto scroll interval (in seconds)",
-        "autoScrollOffset": "Auto scroll offset (screen height by default)",
-        "saveCustomTheme": "Save custom theme",
-        "deleteCustomTheme": "Delete custom theme",
-        "customCSS": "Custom CSS"
+        "title": "阅读器",
+        "readerTheme": "阅读器主题",
+        "preset": "预设值",
+        "backgroundColor": "背景颜色",
+        "textColor": "文字颜色",
+        "backgroundColorModal": "阅读器背景颜色",
+        "textColorModal": "阅读器文本颜色",
+        "verticalSeekbarDesc": "切换垂直和水平进度条",
+        "autoScrollInterval": "自动滚动间隔(以秒计)",
+        "autoScrollOffset": "自动滚动偏移(默认屏幕高度)",
+        "saveCustomTheme": "保存自定义主题",
+        "deleteCustomTheme": "删除自定义主题",
+        "customCSS": "自定义 CSS"
       },
-      "browseSettings": "Browse Settings",
+      "browseSettings": "浏览设置",
       "browseSettingsScreen": {
-        "onlyShowPinnedSources": "Only show pinned sources",
-        "languages": "Languages",
-        "searchAllSources": "Search all sources",
-        "searchAllWarning": "Searching a large number of sources may freeze the app till searching is finished."
+        "onlyShowPinnedSources": "仅显示已经置顶的源",
+        "languages": "语言",
+        "searchAllSources": "搜索所有源",
+        "searchAllWarning": "搜索大量的源可能会在搜索完成之前程序无法操作。"
       }
     }
   },
   "sourceScreen": {
-    "noResultsFound": "No results found"
+    "noResultsFound": "未找到相应结果"
+  },
+  "globalSearch": {
+    "searchIn": "搜索小说在",
+    "allSources": "所有源",
+    "pinnedSources": "置顶的源"
+  },
+  "advancedSettings": {
+    "deleteReadChapters": "Delete read chapters",
+    "deleteReadChaptersDialogTitle": "Are you sure? All chapters marked as read will be deleted."
   }
 }

@@ -5,7 +5,7 @@
     "save": "Зберегти",
     "clear": "Очистити",
     "reset": "Скинути",
-    "search": "Search"
+    "search": "Пошук"
   },
   "library": "Бібліотека",
   "libraryScreen": {
@@ -54,7 +54,7 @@
     "lastUsed": "Останнє використане",
     "pinned": "Закріплено",
     "all": "Всі",
-    "latest": "Latest"
+    "latest": "Останні"
   },
   "readerScreen": {
     "finished": "Завершено",
@@ -63,12 +63,12 @@
       "textSize": "Розмір тексту",
       "color": "Колір",
       "textAlign": "Вирівнювання тексту",
-      "lineHeight": "Line Height",
+      "lineHeight": "Висота рядка",
       "fontStyle": "Стиль шрифту",
       "fullscreen": "Повноекранний режим",
       "renderHml": "Рендер HTML",
       "autoscroll": "Автопрокрутка",
-      "verticalSeekbar": "Vertical Seekbar",
+      "verticalSeekbar": "Вертикальна навігаційна панель",
       "showBatteryAndTime": "Показувати стан батареї | час",
       "showProgressPercentage": "Показувати прогрес",
       "swipeGestures": "Проведіть вліво або вправо для навігації між главами",
@@ -94,14 +94,14 @@
       "generalSettings": "Загальне",
       "generalSettingsScreen": {},
       "readerSettings": {
-        "title": "Reader",
-        "readerTheme": "Reader theme",
-        "preset": "Preset",
+        "title": "Тайтл",
+        "readerTheme": "Тема читання",
+        "preset": "Передустановка",
         "backgroundColor": "Колір тла",
         "textColor": "Колір тексту",
-        "backgroundColorModal": "Reader background color",
-        "textColorModal": "Reader text color",
-        "verticalSeekbarDesc": "Switch between vertical and horizontal seekbar",
+        "backgroundColorModal": "Колір фону при читанні",
+        "textColorModal": "Колір тексту при читанні",
+        "verticalSeekbarDesc": "Перемикання між вертикальною та горизонтальною панелями навігації",
         "autoScrollInterval": "Інтервал автопрокрутки (в секундах)",
         "autoScrollOffset": "Auto scroll offset (screen height by default)",
         "saveCustomTheme": "Зберегти тему",
@@ -119,5 +119,14 @@
   },
   "sourceScreen": {
     "noResultsFound": "No results found"
+  },
+  "globalSearch": {
+    "searchIn": "Search a novel in",
+    "allSources": "all sources",
+    "pinnedSources": "pinned sources"
+  },
+  "advancedSettings": {
+    "deleteReadChapters": "Delete read chapters",
+    "deleteReadChaptersDialogTitle": "Are you sure? All chapters marked as read will be deleted."
   }
 }

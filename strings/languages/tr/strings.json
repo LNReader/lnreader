@@ -54,7 +54,7 @@
     "lastUsed": "Son kullanılan",
     "pinned": "Sabitlenmiş",
     "all": "Tümü",
-    "latest": "Latest"
+    "latest": "En son"
   },
   "readerScreen": {
     "finished": "Biten",
@@ -119,5 +119,14 @@
   },
   "sourceScreen": {
     "noResultsFound": "Sonuç bulunamadı"
+  },
+  "globalSearch": {
+    "searchIn": "Şurada bir novel arayın",
+    "allSources": "tüm kaynaklarda",
+    "pinnedSources": "sabitlenmiş kaynaklarda"
+  },
+  "advancedSettings": {
+    "deleteReadChapters": "Okunmuş bölümleri sil",
+    "deleteReadChaptersDialogTitle": "Emin misiniz? Okunmuş olarak işaretlenmiş olan tüm bölümler silinecektir."
   }
 }
