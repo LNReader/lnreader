@@ -12,3 +12,10 @@ export const LiebeSchneeHiverNovelScraper = new WPMangaStreamScraper(
   'Liebe Schnee Hiver Novel',
   { totalPages: 1 },
 );
+
+export const LightNovelsBrasilScraper = new WPMangaStreamScraper(
+  129,
+  'https://lightnovelbrasil.com/',
+  'Light Novels Brasil',
+  { totalPages: 5 },
+);

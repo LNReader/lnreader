@@ -69,11 +69,14 @@ class WPMangaStreamScraper {
       switch (detailName) {
         case 'المؤلف:':
         case 'Yazar:':
+        case 'Autor:':
           novel.author = detail;
           break;
+        case 'Status:':
         case 'Seviye:':
           novel.status = detail;
           break;
+        case 'Tipo:':
         case 'Tür:':
           novel.genre = detail?.replace(/\s/g, ',');
           break;

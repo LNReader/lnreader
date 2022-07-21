@@ -860,4 +860,11 @@
     "icon": "https://github.com/LNReader/lnreader-sources/blob/master/icons/src/en/noveltop1/icon.png?raw=true",
     "lang": "English"
   },
+  {
+    "sourceId": 129,
+    "url": "https://lightnovelbrasil.com/",
+    "sourceName": "Light Novels Brasil",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/master/icons/multisrc/wpmangastream/icons/lightnovelbrasil.png?raw=true",
+    "lang": "Portuguese (Brazil)"
+  }
 ]
