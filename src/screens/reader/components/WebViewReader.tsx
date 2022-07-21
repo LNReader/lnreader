@@ -48,24 +48,6 @@ type WebViewReaderProps = {
   setScrollPage: React.Dispatch<React.SetStateAction<string | null>>;
 };
 
-function useTraceUpdate(props: any) {
-  const prev = useRef(props);
-  useEffect(() => {
-    const changedProps: { [key: string]: [any, any] } = Object.entries(
-      props,
-    ).reduce((ps: any, [k, v]) => {
-      if (prev.current[k] !== v) {
-        ps[k] = [prev.current[k], v];
-      }
-      return ps;
-    }, {});
-    if (Object.keys(changedProps).length > 0) {
-      console.log('Changed props:', Object.keys(changedProps));
-    }
-    prev.current = props;
-  });
-}
-
 const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
   const {
     html,
@@ -87,7 +69,7 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
     scrollPage,
     setScrollPage,
   } = props;
-  useTraceUpdate(props);
+
   const backgroundColor = readerBackground(reader.theme);
 
   const webViewRef = useRef<WebView>(null);
@@ -163,7 +145,7 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
         javaScriptEnabled={true}
         onMessage={ev => {
           const event: WebViewPostEvent = JSON.parse(ev.nativeEvent.data);
-          console.log('WVEvent:', event);
+          // console.log('WVEvent:', event);
           switch (event.type) {
             case 'hide':
               onPress();
@@ -189,7 +171,7 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
                   const promises: Promise<{ data: any; id: number }>[] = [];
                   for (let i = 0; i < event.data.length; i++) {
                     const { url, id } = event.data[i];
-                    console.log(url, id);
+                    // console.log(url, id);
                     if (url) {
                       if (id) {
                         promises.push(
@@ -204,9 +186,9 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
                   }
                   Promise.all(promises).then(datas => {
                     const inject = datas.reduce((p, data) => {
-                      console.log(
-                        `document.querySelector("img[file-id='${data.id}']").src="data:image/png;base64,`,
-                      );
+                      // console.log(
+                      //   `document.querySelector("img[file-id='${data.id}']").src="data:image/png;base64,`,
+                      // );
                       return (
                         p +
                         `document.querySelector("img[file-id='${data.id}']").src="data:image/png;base64,${data.data}";`
