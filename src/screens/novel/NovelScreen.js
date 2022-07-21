@@ -84,6 +84,7 @@ const Novel = ({ route, navigation }) => {
   const {
     useFabForContinueReading = false,
     defaultChapterSort = 'ORDER BY chapterId ASC',
+    disableHapticFeedback = false,
   } = useSettings();
 
   const {
@@ -158,7 +159,9 @@ const Novel = ({ route, navigation }) => {
 
   const onSelectLongPress = chapter => {
     if (selected.length === 0) {
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+      if (!disableHapticFeedback) {
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+      }
       setSelected(sel => [...sel, chapter]);
     } else {
       /**

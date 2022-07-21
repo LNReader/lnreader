@@ -61,6 +61,7 @@ export const initialState = {
    */
 
   incognitoMode: false,
+  disableHapticFeedback: false,
 
   /**
    * Appearence settings

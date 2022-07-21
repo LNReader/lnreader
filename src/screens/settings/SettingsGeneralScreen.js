@@ -30,6 +30,7 @@ const GenralSettings = ({ navigation }) => {
     onlyUpdateOngoingNovels = false,
     defaultChapterSort = 'ORDER BY chapterId ASC',
     refreshNovelMetadata = false,
+    disableHapticFeedback = false,
   } = useSettings();
 
   const { showLastUpdateTime = true } = useSelector(
@@ -146,6 +147,18 @@ const GenralSettings = ({ navigation }) => {
             onPress={() =>
               dispatch(
                 setAppSettings('downloadNewChapters', !downloadNewChapters),
+              )
+            }
+            theme={theme}
+          />
+          <List.Divider theme={theme} />
+          <List.SubHeader theme={theme}>General</List.SubHeader>
+          <SwitchSetting
+            label="Disable haptic feedback"
+            value={disableHapticFeedback}
+            onPress={() =>
+              dispatch(
+                setAppSettings('disableHapticFeedback', !disableHapticFeedback),
               )
             }
             theme={theme}

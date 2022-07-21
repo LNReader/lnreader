@@ -44,6 +44,7 @@ const LibraryScreen = ({ navigation }) => {
     incognitoMode = false,
     updateLibraryOnLaunch = false,
     downloadedOnlyMode = false,
+    disableHapticFeedback = false,
   } = useSettings();
 
   const bottomSheetRef = useRef(null);
@@ -94,7 +95,9 @@ const LibraryScreen = ({ navigation }) => {
 
   const selectNovel = novelId => {
     if (selectedNovels.indexOf(novelId) === -1) {
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+      if (!disableHapticFeedback) {
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+      }
       setSelectedNovels(prevState => [...prevState, novelId]);
     } else {
       setSelectedNovels(prevState => prevState.filter(id => id !== novelId));
