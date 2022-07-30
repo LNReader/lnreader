@@ -187,6 +187,10 @@ class MadaraScraper {
 
     const loadedCheerio = cheerio.load(body);
 
+    if (sourceId === 130) {
+      loadedCheerio('font').remove();
+    }
+
     let chapterName =
       loadedCheerio('.text-center').text() ||
       loadedCheerio('#chapter-heading').text();
