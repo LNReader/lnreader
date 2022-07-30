@@ -30,7 +30,6 @@ interface TextReaderProps {
   };
   chapterName: string;
   nextChapter: ChapterItem;
-  textSelectable: boolean;
   navigateToNextChapter: () => void;
   onPress(): void;
 }
@@ -41,7 +40,6 @@ const TextReader: React.FC<TextReaderProps> = ({
   reader,
   chapterName,
   nextChapter,
-  textSelectable,
   navigateToNextChapter,
   onPress,
 }) => {
@@ -61,7 +59,6 @@ const TextReader: React.FC<TextReaderProps> = ({
               fontSize: reader.textSize,
               textAlign: reader.textAlign as TextAlignments,
             },
-            selectable: textSelectable,
           }}
           defaultViewProps={{
             style: {

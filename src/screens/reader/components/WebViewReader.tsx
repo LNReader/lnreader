@@ -32,7 +32,6 @@ type WebViewReaderProps = {
   };
   chapterName: string;
   nextChapter: ChapterItem;
-  textSelectable: boolean;
   navigateToNextChapter(): void;
   navigateToPrevChapter(): void;
   onPress(): void;

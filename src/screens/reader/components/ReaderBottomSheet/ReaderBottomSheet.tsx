@@ -48,7 +48,6 @@ const GeneralTab: React.FC = () => {
     showScrollPercentage,
     wvUseVolumeButtons = false,
     swipeGestures = false,
-    textSelectable,
     removeExtraParagraphSpacing = false,
   } = useSettingsV1();
 
@@ -125,16 +124,7 @@ const GeneralTab: React.FC = () => {
         value={removeExtraParagraphSpacing}
         theme={theme}
       />
-      {!useWebViewForChapter ? (
-        <ReaderSheetPreferenceItem
-          label={getString('readerScreen.bottomSheet.allowTextSelection')}
-          onPress={() =>
-            dispatch(setAppSettings('textSelectable', !textSelectable))
-          }
-          value={textSelectable}
-          theme={theme}
-        />
-      ) : (
+      {useWebViewForChapter ? (
         <ReaderSheetPreferenceItem
           label={'Volume buttons scroll'}
           onPress={() =>
@@ -143,7 +133,7 @@ const GeneralTab: React.FC = () => {
           value={wvUseVolumeButtons}
           theme={theme}
         />
-      )}
+      ) : null}
     </View>
   );
 };

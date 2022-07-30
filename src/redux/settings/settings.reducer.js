@@ -122,7 +122,6 @@ export const initialState = {
   autoScroll: false,
   autoScrollInterval: 10,
   autoScrollOffset: null,
-  textSelectable: false,
   verticalSeekbar: true,
   removeExtraParagraphSpacing: false,
 

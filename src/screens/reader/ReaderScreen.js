@@ -79,7 +79,6 @@ const Chapter = ({ route, navigation }) => {
   const {
     swipeGestures = false,
     incognitoMode = false,
-    textSelectable = false,
     useWebViewForChapter = false,
     wvUseNewSwipes = false,
     wvShowSwipeMargins = true,
@@ -469,7 +468,6 @@ const Chapter = ({ route, navigation }) => {
                       text={chapterText}
                       reader={readerSettings}
                       chapterName={chapter.chapterName || chapterName}
-                      textSelectable={textSelectable}
                       theme={theme}
                       nextChapter={nextChapter}
                       navigateToNextChapter={navigateToNextChapter}
