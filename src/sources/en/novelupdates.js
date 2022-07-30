@@ -201,6 +201,10 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 
     let isWattpad = result.url.toLowerCase().includes('wattpad');
 
+    let isTravisTranslation = result.url
+      .toLowerCase()
+      .includes('travistranslations');
+
     /**
      * Checks if its a wwordpress site
      */
@@ -239,6 +243,8 @@ const parseChapter = async (novelUrl, chapterUrl) => {
       chapterText = loadedCheerio('div.chp_raw').html();
     } else if (isWattpad) {
       chapterText = loadedCheerio('.container  pre').html();
+    } else if (isTravisTranslation) {
+      chapterText = loadedCheerio('.reader-content').html();
     } else if (isWordPress) {
       /**
        * Remove wordpress bloat tags
