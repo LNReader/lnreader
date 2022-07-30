@@ -299,3 +299,10 @@ export const RiwyatScraper = new MadaraScraper(
   'Riwyat',
   { 'totalPages': 12, 'useNewChapterEndpoint': true, 'lang': 'Arabic' },
 );
+
+export const NovelsticScraper = new MadaraScraper(
+  131,
+  'https://novelstic.com/',
+  'Novelstic',
+  { 'totalPages': 69, 'useNewChapterEndpoint': true, 'lang': 'English' },
+);

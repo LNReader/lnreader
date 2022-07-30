@@ -317,5 +317,15 @@
       "useNewChapterEndpoint": true,
       "lang": "Arabic"
     }
+  },
+  {
+    "sourceId": 131,
+    "baseUrl": "https://novelstic.com/",
+    "sourceName": "Novelstic",
+    "options": {
+      "totalPages": 69,
+      "useNewChapterEndpoint": true,
+      "lang": "English"
+    }
   }
 ]
