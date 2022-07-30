@@ -9,6 +9,8 @@ export interface StringMap {
   'common.clear': 'string';
   'common.reset': 'string';
   'common.search': 'string';
+  'common.install': 'string';
+  'common.newUpdateAvailable': 'string';
   'library': 'string';
   'libraryScreen.searchbar': 'string';
   'libraryScreen.empty': 'string';
