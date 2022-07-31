@@ -5,7 +5,9 @@
     "save": "Sauvegarder",
     "clear": "Nettoyez",
     "reset": "Réinitialiser",
-    "search": "Recherchez"
+    "search": "Recherchez",
+    "install": "Install",
+    "newUpdateAvailable": "New update available"
   },
   "library": "Bibliothèque",
   "libraryScreen": {
