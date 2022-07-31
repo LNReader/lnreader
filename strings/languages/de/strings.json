@@ -5,7 +5,9 @@
     "save": "Sichern",
     "clear": "Leeren",
     "reset": "Zurücksetzen",
-    "search": "Search"
+    "search": "Search",
+    "install": "Install",
+    "newUpdateAvailable": "New update available"
   },
   "library": "Bibliothek",
   "libraryScreen": {
