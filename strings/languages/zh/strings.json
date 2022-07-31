@@ -5,7 +5,9 @@
     "save": "保存",
     "clear": "清除",
     "reset": "重置",
-    "search": "搜索"
+    "search": "搜索",
+    "install": "Install",
+    "newUpdateAvailable": "New update available"
   },
   "library": "书库",
   "libraryScreen": {
