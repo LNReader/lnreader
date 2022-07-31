@@ -5,7 +5,9 @@
     "save": "Kaydet",
     "clear": "Temizle",
     "reset": "Sıfırla",
-    "search": "Ara"
+    "search": "Ara",
+    "install": "Install",
+    "newUpdateAvailable": "New update available"
   },
   "library": "Kitaplık",
   "libraryScreen": {
