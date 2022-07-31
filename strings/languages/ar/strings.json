@@ -5,7 +5,9 @@
     "save": "تثبيت",
     "clear": "تنضيف",
     "reset": "إعادة تعيين",
-    "search": "بحث"
+    "search": "بحث",
+    "install": "Install",
+    "newUpdateAvailable": "New update available"
   },
   "library": "المكتبة",
   "libraryScreen": {
