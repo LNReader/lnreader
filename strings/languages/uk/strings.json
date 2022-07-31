@@ -5,7 +5,9 @@
     "save": "Зберегти",
     "clear": "Очистити",
     "reset": "Скинути",
-    "search": "Пошук"
+    "search": "Пошук",
+    "install": "Install",
+    "newUpdateAvailable": "New update available"
   },
   "library": "Бібліотека",
   "libraryScreen": {
