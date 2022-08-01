@@ -9,6 +9,16 @@ dayjs.extend(customParseFormat);
 dayjs.extend(relativeTime);
 dayjs.extend(calendar);
 
+import 'dayjs/locale/es';
+import 'dayjs/locale/tr';
+import 'dayjs/locale/ru';
+import 'dayjs/locale/ar';
+import 'dayjs/locale/uk';
+import 'dayjs/locale/pt';
+import 'dayjs/locale/de';
+import 'dayjs/locale/it';
+import 'dayjs/locale/zh';
+
 import en from './languages/en/strings.json';
 import es from './languages/es/strings.json';
 import tr from './languages/tr/strings.json';
