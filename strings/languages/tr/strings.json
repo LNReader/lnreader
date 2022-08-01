@@ -6,8 +6,8 @@
     "clear": "Temizle",
     "reset": "Sıfırla",
     "search": "Ara",
-    "install": "Install",
-    "newUpdateAvailable": "New update available"
+    "install": "Yükle",
+    "newUpdateAvailable": "Yeni güncelleme var"
   },
   "library": "Kitaplık",
   "libraryScreen": {
