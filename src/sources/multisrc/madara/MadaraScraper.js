@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
 import * as cheerio from 'cheerio';
 import { defaultCoverUri, Status } from '../../helpers/constants';
 import { parseMadaraDate } from '../../helpers/parseDate';
@@ -160,7 +160,7 @@ class MadaraScraper {
          * Insert current date
          */
 
-        releaseDate = moment().format('LL');
+        releaseDate = dayjs().format('LL');
       }
 
       let chapterUrl = loadedCheerio(this).find('a').attr('href').split('/');

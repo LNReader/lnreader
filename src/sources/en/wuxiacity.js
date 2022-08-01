@@ -1,5 +1,5 @@
 import * as cheerio from 'cheerio';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 const sourceId = 49;
 
@@ -99,7 +99,7 @@ const parseNovelAndChapters = async novelUrl => {
       releaseDate.setDate(releaseDate.getDate() - timeAgo);
     }
 
-    releaseDate = moment(releaseDate).format('MM/DD/YY');
+    releaseDate = dayjs(releaseDate).format('L');
 
     const chapterUrl = loadedCheerio(this)
       .find('a')

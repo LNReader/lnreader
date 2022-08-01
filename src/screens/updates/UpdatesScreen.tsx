@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { RefreshControl, SectionList, StyleSheet, Text } from 'react-native';
 
 import {
@@ -178,7 +178,7 @@ const UpdatesScreen = () => {
             <Text
               style={[styles.dateHeader, { color: theme.textColorSecondary }]}
             >
-              {moment(date).calendar(null, dateFormats)}
+              {dayjs(date).calendar(null, dateFormats)}
             </Text>
           )}
           renderItem={({ item }) => (
@@ -219,7 +219,7 @@ const LastUpdateTime: React.FC<{ lastUpdateTime: Date; theme: ThemeType }> = ({
   theme,
 }) => (
   <Text style={[styles.lastUpdateTime, { color: theme.textColorSecondary }]}>
-    {`${getString('updatesScreen.lastUpdatedAt')} ${moment(
+    {`${getString('updatesScreen.lastUpdatedAt')} ${dayjs(
       lastUpdateTime,
     ).fromNow()}`}
   </Text>

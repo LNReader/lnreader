@@ -6,7 +6,7 @@ import BackgroundService from 'react-native-background-actions';
 import { restoreLibrary } from '../../../database/queries/NovelQueries';
 import { getLibrary } from '../../../database/queries/LibraryQueries';
 import { showToast } from '../../../hooks/showToast';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 const sleep = time => new Promise(resolve => setTimeout(() => resolve(), time));
 
@@ -33,7 +33,7 @@ export const createBackup = async () => {
 
     const uri = permissions.directoryUri;
 
-    const date = moment().format('YYYY-MM-DD');
+    const date = dayjs().format('YYYY-MM-DD');
 
     const fileName = 'lnreader_backup_' + date;
 

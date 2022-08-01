@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, SectionList, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { Portal } from 'react-native-paper';
 
 import {
@@ -150,7 +150,7 @@ const HistoryScreen = () => {
               <Text
                 style={[styles.dateHeader, { color: theme.textColorSecondary }]}
               >
-                {moment(date).calendar(null, dateFormats)}
+                {dayjs(date).calendar(null, dateFormats)}
               </Text>
             )}
             renderItem={({ item }) => (

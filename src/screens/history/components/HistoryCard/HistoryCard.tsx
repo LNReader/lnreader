@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import moment from 'moment';
+import dayjs from 'dayjs';
 import FastImage from 'react-native-fast-image';
 
 import { IconButtonV2 } from '../../../../components';
@@ -58,7 +58,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
 
   const chapterNoAndTime = useMemo(
     () =>
-      `Chapter ${parseChapterNumber(chapterName)} • ${moment(historyTimeRead)
+      `Chapter ${parseChapterNumber(chapterName)} • ${dayjs(historyTimeRead)
         .format('LT')
         .toUpperCase()}`,
     [chapterName, historyTimeRead],
