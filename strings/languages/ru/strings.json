@@ -6,8 +6,8 @@
     "clear": "Очистить",
     "reset": "Сбросить",
     "search": "Поиск",
-    "install": "Install",
-    "newUpdateAvailable": "New update available"
+    "install": "Установить",
+    "newUpdateAvailable": "Доступно новое обновление"
   },
   "library": "Библиотека",
   "libraryScreen": {
