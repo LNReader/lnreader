@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
 import * as cheerio from 'cheerio';
 import { defaultTo } from 'lodash';
 import { Status } from '../helpers/constants';
@@ -128,7 +128,7 @@ const parseNovelAndChapters = async novelUrl => {
   chaptersJson.chapters.list.map(item => {
     const chapterName =
       `Том ${item.chapter_volume} Глава ${item.chapter_number} ${item.chapter_name}`?.trim();
-    const releaseDate = moment(item.chapter_created_at).format('LLL');
+    const releaseDate = dayjs(item.chapter_created_at).format('LLL');
     const chapterUrl = `${baseUrl}/${novelSlug}/v${item.chapter_volume}/c${item.chapter_number}`;
 
     chapters.push({ chapterName, releaseDate, chapterUrl });

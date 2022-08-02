@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 export const parseMadaraDate = date => {
   let releaseDate = date;
@@ -21,7 +21,7 @@ export const parseMadaraDate = date => {
       releaseDate.setMonth(releaseDate.getMonth() - timeAgo);
     }
 
-    releaseDate = moment(releaseDate).format('LL');
+    releaseDate = dayjs(releaseDate).format('LL');
   }
 
   return releaseDate;

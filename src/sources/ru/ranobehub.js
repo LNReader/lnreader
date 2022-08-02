@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
 import * as cheerio from 'cheerio';
 import { defaultTo } from 'lodash';
 import { Status } from '../helpers/constants';
@@ -92,7 +92,7 @@ const parseNovelAndChapters = async novelUrl => {
       novelChapters.push({
         chapterName: chapter.name,
         chapterUrl: chapter.url,
-        releaseDate: moment(parseInt(chapter.changed_at) * 1000).format('LLL'),
+        releaseDate: dayjs(parseInt(chapter.changed_at) * 1000).format('LLL'),
       }),
     ),
   );

@@ -1,5 +1,5 @@
 import * as cheerio from 'cheerio';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { showToast } from '../../hooks/showToast';
 
 const sourceId = 51;
@@ -120,7 +120,7 @@ const parseNovelAndChapters = async novelUrl => {
       releaseDate.setDate(releaseDate.getDate() - timeAgo);
     }
 
-    releaseDate = moment(releaseDate).format('MM/DD/YY');
+    releaseDate = dayjs(releaseDate).format('L');
 
     const chapterUrl = loadedCheerio(this)
       .find('a')
@@ -164,7 +164,7 @@ const parseNovelAndChapters = async novelUrl => {
   //             releaseDate.setDate(releaseDate.getDate() - timeAgo);
   //         }
 
-  //         releaseDate = moment(releaseDate).format("MM/DD/YY");
+  //         releaseDate = dayjs(releaseDate).format("L");
 
   //         const chapterUrl = $(this)
   //             .find("a")

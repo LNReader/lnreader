@@ -1,5 +1,5 @@
 import * as cheerio from 'cheerio';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 const sourceId = 27;
 
@@ -73,7 +73,7 @@ const parseNovelAndChapters = async novelUrl => {
   loadedCheerio('#chapterlist')
     .find('li')
     .each(function () {
-      const releaseDate = moment(
+      const releaseDate = dayjs(
         loadedCheerio(this).find('.chapterdate').text(),
       ).format('LL');
       const chapterName = loadedCheerio(this).find('.chapternum').text();

@@ -1,4 +1,5 @@
 import { FilterInputs } from '../types/filterTypes';
+import { htmlToText } from '../helpers/htmlToText';
 import { Status } from '../helpers/constants';
 import * as cheerio from 'cheerio';
 import { defaultTo } from 'lodash';
@@ -83,11 +84,14 @@ const parseNovelAndChapters = async novelUrl => {
     .trim();
   novel.novelCover =
     baseUrl + loadedCheerio('div[class="images"] > div img').attr('src');
-  novel.summary = loadedCheerio('#Info > div:nth-child(3)').text().trim();
+  novel.summary = loadedCheerio('#Info > div:nth-child(3)').html();
   novel.genre = [];
 
-  let chapters = [];
+  if (novel?.summary) {
+    novel.summary = htmlToText(novel.summary);
+  }
 
+  let chapters = [];
   loadedCheerio('div[class="span5"] > p').each(function () {
     switch (loadedCheerio(this).find('strong').text()) {
       case 'Автор:':

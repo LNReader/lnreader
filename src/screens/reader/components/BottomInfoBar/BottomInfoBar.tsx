@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { useBatteryLevel } from 'react-native-device-info';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 import { useReaderSettings, useSettingsV1 } from '@redux/hooks';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -55,7 +55,7 @@ const BottomInfoBar: React.FC<BottomInfoBarProps> = ({ scrollPercentage }) => {
         ) : null}
         {showBatteryAndTime ? (
           <Text style={{ color: textColor }}>
-            {moment(currentTime).format('LT')}
+            {dayjs(currentTime).format('LT')}
           </Text>
         ) : null}
       </View>
