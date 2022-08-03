@@ -94,4 +94,10 @@ export interface StringMap {
   'globalSearch.pinnedSources': 'string';
   'advancedSettings.deleteReadChapters': 'string';
   'advancedSettings.deleteReadChaptersDialogTitle': 'string';
+  'date.calendar.sameDay': 'string';
+  'date.calendar.nextDay': 'string';
+  'date.calendar.nextWeek': 'string';
+  'date.calendar.lastDay': 'string';
+  'date.calendar.lastWeek': 'string';
+  'date.calendar.sameElse': 'string';
 }

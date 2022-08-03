@@ -16,7 +16,6 @@ import { ChapterItem, Update } from '../../database/types';
 
 import { useSearch, useUpdates } from '../../hooks';
 import { useAppDispatch, useTheme } from '../../redux/hooks';
-import { dateFormats } from '../../utils/constants/dateFormats';
 import UpdateCard from './components/UpdateCard/UpdateCard';
 import { updateLibraryAction } from '../../redux/updates/updates.actions';
 import {
@@ -178,7 +177,7 @@ const UpdatesScreen = () => {
             <Text
               style={[styles.dateHeader, { color: theme.textColorSecondary }]}
             >
-              {dayjs(date).calendar(null, dateFormats)}
+              {dayjs(date).calendar()}
             </Text>
           )}
           renderItem={({ item }) => (
