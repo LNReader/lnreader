@@ -62,11 +62,15 @@ const parseNovelAndChapters = async novelUrl => {
 
   novel.author = loadedCheerio('span[class="tag_list"] > a').text();
 
-  const chapterListUrl = loadedCheerio(
+  let chapterListUrl = loadedCheerio(
     'div.r-fullstory-btns a[title~=оглавление]',
   ).attr('href');
 
-  const chaptersHtml = await fetch(baseUrl + chapterListUrl);
+  if (!chapterListUrl?.startsWith('http')) {
+    chapterListUrl = baseUrl + chapterListUrl;
+  }
+
+  const chaptersHtml = await fetch(chapterListUrl);
   const chaptersHtmlToString = await chaptersHtml.text();
 
   loadedCheerio = cheerio.load(chaptersHtmlToString);
@@ -77,9 +81,7 @@ const parseNovelAndChapters = async novelUrl => {
 
   for (i = 0; i < all; i++) {
     if (i > 0) {
-      let chapterHtml = await fetch(
-        baseUrl + chapterListUrl + 'page/' + (i + 1),
-      );
+      let chapterHtml = await fetch(chapterListUrl + 'page/' + (i + 1));
       let chapterHtmlToString = await chapterHtml.text();
       loadedCheerio = cheerio.load(chapterHtmlToString);
     }
