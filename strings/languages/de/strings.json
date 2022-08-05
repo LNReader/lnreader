@@ -130,5 +130,15 @@
   "advancedSettings": {
     "deleteReadChapters": "Delete read chapters",
     "deleteReadChaptersDialogTitle": "Are you sure? All chapters marked as read will be deleted."
+  },
+  "date": {
+    "calendar": {
+      "sameDay": "[Today]",
+      "nextDay": "[Tomorrow]",
+      "nextWeek": "dddd",
+      "lastDay": "[Yesterday]",
+      "lastWeek": "[Last] dddd",
+      "sameElse": "LL"
+    }
   }
 }
