@@ -78,6 +78,7 @@ import WuxiaBlogScraper from './en/wuxiablog';
 import WuxiaCityScraper from './en/wuxiacity';
 import NovelUpdatesScraper from './en/novelupdates';
 import RanobesScraper from './en/ranobes';
+import RanobesruScraper from './ru/ranobes';
 import YushuboScraper from './ch/yushubo';
 import {
   KolNovelScraper,
@@ -286,6 +287,7 @@ export const sourceManager = (sourceId: number): Scraper => {
     129: LightNovelsBrasilScraper,
     130: RiwyatScraper,
     131: NovelsticScraper,
+    132: RanobesruScraper,
   };
 
   return scrapers[sourceId];

@@ -880,5 +880,12 @@
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/novelstic.png?raw=true",
     "url": "https://novelstic.com/",
     "lang": "English"
+  },
+  {
+    "sourceId": 132,
+    "url": "https://ranobes.com/",
+    "sourceName": "Ranobes",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/master/icons/src/en/ranobes/icon.png?raw=true",
+    "lang": "Russian"
   }
 ]

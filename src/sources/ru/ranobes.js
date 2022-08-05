@@ -1,20 +1,19 @@
 import * as cheerio from 'cheerio';
-import dayjs from 'dayjs';
 
-const sourceId = 51;
+const sourceId = 132;
 const sourceName = 'Ranobes';
 
-const baseUrl = 'https://ranobes.net';
+const baseUrl = 'https://ranobes.com';
 
 const popularNovels = async page => {
-  let url = `${baseUrl}/novels/page/${page}/`;
+  let url = `${baseUrl}/ranobe/page/${page}/`;
 
   const result = await fetch(url);
   const body = await result.text();
 
   let loadedCheerio = cheerio.load(body);
   const totalPages = parseInt(
-    loadedCheerio('.pages > a:last-child').text() || '200',
+    loadedCheerio('.pages > a:last-child').text() || '30',
     10,
   );
   let novels = [];
@@ -59,14 +58,12 @@ const parseNovelAndChapters = async novelUrl => {
 
   novel.novelCover = baseUrl + loadedCheerio('.poster > a > img').attr('src');
 
-  novel.summary = loadedCheerio('div[id="fs-info"] div[class="moreless__full"]')
-    .text()
-    .trim();
+  novel.summary = loadedCheerio('div[itemprop="description"]').text().trim();
 
   novel.author = loadedCheerio('span[class="tag_list"] > a').text();
 
   let chapterListUrl = loadedCheerio(
-    'div.r-fullstory-chapters-foot a[title~=contents]',
+    'div.r-fullstory-btns a[title~=оглавление]',
   ).attr('href');
 
   if (!chapterListUrl?.startsWith('http')) {
@@ -77,25 +74,23 @@ const parseNovelAndChapters = async novelUrl => {
   const chaptersHtmlToString = await chaptersHtml.text();
 
   loadedCheerio = cheerio.load(chaptersHtmlToString);
-  let json = loadedCheerio('#dle-content > script:nth-child(3)').html();
-  let data = JSON.parse(json.replace('window.__DATA__ =', ''));
-
   let novelChapters = [];
 
-  for (i = 0; i < data.pages_count; i++) {
+  let all = loadedCheerio('div.pages a:last-child').text();
+  all = parseInt(all || '1', 10);
+
+  for (i = 0; i < all; i++) {
     if (i > 0) {
       let chapterHtml = await fetch(chapterListUrl + 'page/' + (i + 1));
       let chapterHtmlToString = await chapterHtml.text();
       loadedCheerio = cheerio.load(chapterHtmlToString);
-      json = loadedCheerio('#dle-content > script:nth-child(3)').html();
-      data = JSON.parse(json.replace('window.__DATA__ =', ''));
     }
 
-    data.chapters.forEach(chapter => {
+    loadedCheerio('div[class="cat_block cat_line"] a').each(function () {
       novelChapters.push({
-        chapterName: chapter.title,
-        releaseDate: dayjs(chapter.date).format('LLL'),
-        chapterUrl: chapter.link,
+        chapterName: loadedCheerio(this).attr('title'),
+        releaseDate: null,
+        chapterUrl: loadedCheerio(this).attr('href'),
       });
     });
   }

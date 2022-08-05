@@ -15,7 +15,6 @@ import HistoryCard from './components/HistoryCard/HistoryCard';
 import { useSearch, useHistory, useBoolean } from '@hooks/index';
 import { useTheme } from '../../redux/hooks';
 
-import { dateFormats } from '../../utils/constants/dateFormats';
 import { convertDateToISOString } from '../../database/utils/convertDateToISOString';
 
 import { History } from '../../database/types';
@@ -150,7 +149,7 @@ const HistoryScreen = () => {
               <Text
                 style={[styles.dateHeader, { color: theme.textColorSecondary }]}
               >
-                {dayjs(date).calendar(null, dateFormats)}
+                {dayjs(date).calendar()}
               </Text>
             )}
             renderItem={({ item }) => (
