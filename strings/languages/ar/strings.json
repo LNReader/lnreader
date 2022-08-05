@@ -130,5 +130,15 @@
   "advancedSettings": {
     "deleteReadChapters": "حذف الفصول المقروءة",
     "deleteReadChaptersDialogTitle": "هل أنت متأكد؟ سيتم حذف جميع الفصول المعلَّمة كمقروءة."
+  },
+  "date": {
+    "calendar": {
+      "sameDay": "[Today]",
+      "nextDay": "[Tomorrow]",
+      "nextWeek": "dddd",
+      "lastDay": "[Yesterday]",
+      "lastWeek": "[Last] dddd",
+      "sameElse": "LL"
+    }
   }
 }
