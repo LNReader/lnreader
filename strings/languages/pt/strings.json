@@ -133,10 +133,10 @@
   },
   "date": {
     "calendar": {
-      "sameDay": "[Today]",
-      "nextDay": "[Tomorrow]",
+      "sameDay": "[Hoje]",
+      "nextDay": "[Amanhã]",
       "nextWeek": "dddd",
-      "lastDay": "[Yesterday]",
+      "lastDay": "[Ontem]",
       "lastWeek": "[Last] dddd",
       "sameElse": "LL"
     }
