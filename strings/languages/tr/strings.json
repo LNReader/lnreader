@@ -133,11 +133,11 @@
   },
   "date": {
     "calendar": {
-      "sameDay": "[Today]",
-      "nextDay": "[Tomorrow]",
+      "sameDay": "[Bugün]",
+      "nextDay": "[Yarın]",
       "nextWeek": "dddd",
-      "lastDay": "[Yesterday]",
-      "lastWeek": "[Last] dddd",
+      "lastDay": "[Dün]",
+      "lastWeek": "[Geçen] dddd",
       "sameElse": "LL"
     }
   }
