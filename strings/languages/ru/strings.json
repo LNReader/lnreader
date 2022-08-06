@@ -133,11 +133,11 @@
   },
   "date": {
     "calendar": {
-      "sameDay": "[Today]",
-      "nextDay": "[Tomorrow]",
+      "sameDay": "[Сегодня]",
+      "nextDay": "[Завтра]",
       "nextWeek": "dddd",
-      "lastDay": "[Yesterday]",
-      "lastWeek": "[Last] dddd",
+      "lastDay": "[Вчера]",
+      "lastWeek": "[В прошлый] dddd",
       "sameElse": "LL"
     }
   }
