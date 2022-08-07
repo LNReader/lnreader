@@ -9,6 +9,7 @@ import {
   NativeModules,
   NativeEventEmitter,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import VolumeButtonListener from './../../utils/volumeButtonListener';
 
@@ -398,85 +399,92 @@ const Chapter = ({ route, navigation }) => {
           config={config}
           style={{ flex: 1 }}
         >
-          <ScrollView
-            ref={ref => (scrollViewRef.current = ref)}
-            contentContainerStyle={[
-              styles.screenContainer,
-              { backgroundColor },
-            ]}
-            onScroll={onScroll}
-            onContentSizeChange={(x, y) => setContentSize(y)}
-            showsVerticalScrollIndicator={false}
+          <SafeAreaView
+            edges={['top']}
+            style={{ flex: 1, backgroundColor: backgroundColor }}
           >
-            {error ? (
-              <View style={{ flex: 1, justifyContent: 'center' }}>
-                <EmptyView
-                  icon="Σ(ಠ_ಠ)"
-                  description={error}
-                  style={{ color: readerSettings.textColor }}
+            <ScrollView
+              ref={ref => (scrollViewRef.current = ref)}
+              contentContainerStyle={[
+                styles.screenContainer,
+                { backgroundColor },
+              ]}
+              onScroll={onScroll}
+              onContentSizeChange={(x, y) => setContentSize(y)}
+              showsVerticalScrollIndicator={false}
+            >
+              {error ? (
+                <View style={{ flex: 1, justifyContent: 'center' }}>
+                  <EmptyView
+                    icon="Σ(ಠ_ಠ)"
+                    description={error}
+                    style={{ color: readerSettings.textColor }}
+                  >
+                    <IconButton
+                      icon="reload"
+                      size={25}
+                      style={{ margin: 0, marginTop: 16 }}
+                      color={readerSettings.textColor}
+                      onPress={() => {
+                        getChapter(chapterId);
+                        setLoading(true);
+                        setError();
+                      }}
+                    />
+                    <Text style={{ color: readerSettings.textColor }}>
+                      Retry
+                    </Text>
+                  </EmptyView>
+                </View>
+              ) : loading ? (
+                <LoadingScreen theme={theme} />
+              ) : (
+                <TouchableWithoutFeedback
+                  style={{ flex: 1 }}
+                  onLayout={scrollToSavedProgress}
                 >
-                  <IconButton
-                    icon="reload"
-                    size={25}
-                    style={{ margin: 0, marginTop: 16 }}
-                    color={readerSettings.textColor}
-                    onPress={() => {
-                      getChapter(chapterId);
-                      setLoading(true);
-                      setError();
-                    }}
-                  />
-                  <Text style={{ color: readerSettings.textColor }}>Retry</Text>
-                </EmptyView>
-              </View>
-            ) : loading ? (
-              <LoadingScreen theme={theme} />
-            ) : (
-              <TouchableWithoutFeedback
-                style={{ flex: 1 }}
-                onLayout={scrollToSavedProgress}
-              >
-                {useWebViewForChapter ? (
-                  <View style={{ flex: 1 }}>
-                    <WebViewReader
-                      layoutHeight={Dimensions.get('window').height}
-                      webViewScroll={webViewScroll}
-                      setScrollPercentage={setScrollPercentage}
-                      scrollPercentage={scrollPercentage}
-                      reader={readerSettings}
-                      html={chapterText}
-                      chapterName={chapter.chapterName || chapterName}
-                      nextChapter={nextChapter}
-                      navigateToNextChapter={() => navigateToNextChapter()}
-                      navigateToPrevChapter={() => navigateToPrevChapter()}
-                      onScroll={onScroll}
-                      onPress={hideHeader}
-                      onWebViewNavigationStateChange={
-                        onWebViewNavigationStateChange
-                      }
-                      scrollPage={scrollPage}
-                      setScrollPage={setScrollPage}
-                      swipeGestures={swipeGestures && wvUseNewSwipes}
-                      wvShowSwipeMargins={wvShowSwipeMargins}
-                      theme={theme}
-                    />
-                  </View>
-                ) : (
-                  <View>
-                    <TextReader
-                      onPress={hideHeader}
-                      text={chapterText}
-                      reader={readerSettings}
-                      chapterName={chapter.chapterName || chapterName}
-                      theme={theme}
-                      nextChapter={nextChapter}
-                      navigateToNextChapter={navigateToNextChapter}
-                    />
-                  </View>
-                )}
-              </TouchableWithoutFeedback>
-            )}
-          </ScrollView>
+                  {useWebViewForChapter ? (
+                    <View style={{ flex: 1 }}>
+                      <WebViewReader
+                        layoutHeight={Dimensions.get('window').height}
+                        webViewScroll={webViewScroll}
+                        setScrollPercentage={setScrollPercentage}
+                        scrollPercentage={scrollPercentage}
+                        reader={readerSettings}
+                        html={chapterText}
+                        chapterName={chapter.chapterName || chapterName}
+                        nextChapter={nextChapter}
+                        navigateToNextChapter={() => navigateToNextChapter()}
+                        navigateToPrevChapter={() => navigateToPrevChapter()}
+                        onScroll={onScroll}
+                        onPress={hideHeader}
+                        onWebViewNavigationStateChange={
+                          onWebViewNavigationStateChange
+                        }
+                        scrollPage={scrollPage}
+                        setScrollPage={setScrollPage}
+                        swipeGestures={swipeGestures && wvUseNewSwipes}
+                        wvShowSwipeMargins={wvShowSwipeMargins}
+                        theme={theme}
+                      />
+                    </View>
+                  ) : (
+                    <View>
+                      <TextReader
+                        onPress={hideHeader}
+                        text={chapterText}
+                        reader={readerSettings}
+                        chapterName={chapter.chapterName || chapterName}
+                        theme={theme}
+                        nextChapter={nextChapter}
+                        navigateToNextChapter={navigateToNextChapter}
+                      />
+                    </View>
+                  )}
+                </TouchableWithoutFeedback>
+              )}
+            </ScrollView>
+          </SafeAreaView>
         </GestureRecognizer>
         <BottomInfoBar scrollPercentage={scrollPercentage} />
         <Portal>
