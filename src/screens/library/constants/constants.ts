@@ -5,6 +5,7 @@ export enum LibraryFilter {
   Unread = 'unread = 1',
   Completed = 'chaptersUnread IS NULL',
   DownloadedOnly = 'AND chaptersDownloaded > 0',
+  Started = 'unread = 0',
 }
 
 export const libraryFilterList = [
@@ -15,6 +16,10 @@ export const libraryFilterList = [
   {
     label: getString('libraryScreen.bottomSheet.filters.unread'),
     filter: LibraryFilter.Unread,
+  },
+  {
+    label: getString('libraryScreen.bottomSheet.filters.started'),
+    filter: LibraryFilter.Started,
   },
   {
     label: getString('libraryScreen.bottomSheet.filters.completed'),

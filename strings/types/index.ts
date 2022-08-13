@@ -21,6 +21,7 @@ export interface StringMap {
   'libraryScreen.bottomSheet.filters.downloaded': 'string';
   'libraryScreen.bottomSheet.filters.unread': 'string';
   'libraryScreen.bottomSheet.filters.completed': 'string';
+  'libraryScreen.bottomSheet.filters.started': 'string';
   'libraryScreen.bottomSheet.sortOrders.dateAdded': 'string';
   'libraryScreen.bottomSheet.sortOrders.alphabetically': 'string';
   'libraryScreen.bottomSheet.sortOrders.totalChapters': 'string';

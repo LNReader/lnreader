@@ -609,7 +609,7 @@ const Novel = ({ route, navigation }) => {
           ref={ref => (flatlistRef.current = ref)}
           estimatedItemSize={100}
           data={!loading && chapters}
-          extraData={downloadQueue}
+          extraData={[downloadQueue, selected]}
           keyExtractor={keyExtractor}
           removeClippedSubviews={true}
           maxToRenderPerBatch={5}

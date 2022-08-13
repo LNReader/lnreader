@@ -39,7 +39,7 @@ const FirstRoute = () => {
   return (
     <View style={{ flex: 1 }}>
       <FlashList
-        estimatedItemSize={3}
+        estimatedItemSize={4}
         extraData={[filter]}
         data={libraryFilterList}
         renderItem={({ item }) => (

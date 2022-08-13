@@ -21,7 +21,8 @@
       "filters": {
         "downloaded": "Downloaded",
         "unread": "Unread",
-        "completed": "Completed"
+        "completed": "Completed",
+        "started": "Started"
       },
       "sortOrders": {
         "dateAdded": "Date added",
