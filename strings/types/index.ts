@@ -14,6 +14,7 @@ export interface StringMap {
   'common.categories': 'string';
   'common.add': 'string';
   'common.edit': 'string';
+  'common.name': 'string';
   'library': 'string';
   'libraryScreen.searchbar': 'string';
   'libraryScreen.empty': 'string';
@@ -97,6 +98,12 @@ export interface StringMap {
   'globalSearch.pinnedSources': 'string';
   'advancedSettings.deleteReadChapters': 'string';
   'advancedSettings.deleteReadChaptersDialogTitle': 'string';
+  'date.calendar.sameDay': 'string';
+  'date.calendar.nextDay': 'string';
+  'date.calendar.nextWeek': 'string';
+  'date.calendar.lastDay': 'string';
+  'date.calendar.lastWeek': 'string';
+  'date.calendar.sameElse': 'string';
   'categories.addCategories': 'string';
   'categories.editCategories': 'string';
   'categories.setCategories': 'string';
@@ -104,12 +111,7 @@ export interface StringMap {
   'categories.emptyMsg': 'string';
   'categories.deleteModal.header': 'string';
   'categories.deleteModal.desc': 'string';
+  'categories.duplicateError': 'string';
   'settings.icognitoMode': 'string';
   'settings.downloadedOnly': 'string';
-  'date.calendar.sameDay': 'string';
-  'date.calendar.nextDay': 'string';
-  'date.calendar.nextWeek': 'string';
-  'date.calendar.lastDay': 'string';
-  'date.calendar.lastWeek': 'string';
-  'date.calendar.sameElse': 'string';
 }

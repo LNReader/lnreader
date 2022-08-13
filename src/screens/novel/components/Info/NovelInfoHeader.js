@@ -166,7 +166,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 4,
     fontSize: 16,
-    fontWeight: 'bold',
   },
   bottomsheet: {
     flexDirection: 'row',

@@ -10,7 +10,8 @@
     "newUpdateAvailable": "New update available",
     "categories": "Categories",
     "add": "Add",
-    "edit": "Edit"
+    "edit": "Edit",
+    "name": "Name"
   },
   "library": "Library",
   "libraryScreen": {
@@ -153,7 +154,8 @@
     "deleteModal": {
       "header": "Delete category",
       "desc": "Do you wish to delete category"
-    }
+    },
+    "duplicateError": "A category with this name already exists!"
   },
   "settings": {
     "icognitoMode": "Incognito mode",

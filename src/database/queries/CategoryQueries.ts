@@ -59,3 +59,23 @@ export const updateCategory = (
       txnErrorCallback,
     ),
   );
+
+const isCategoryNameDuplicateQuery = `
+  SELECT COUNT(*) as isDuplicate FROM categories WHERE name = ?
+	`;
+
+export const isCategoryNameDuplicate = (
+  categoryName: string,
+): Promise<boolean> => {
+  return new Promise(resolve =>
+    db.transaction(tx => {
+      tx.executeSql(
+        isCategoryNameDuplicateQuery,
+        [categoryName],
+        (txObj, { rows: { _array } }) =>
+          resolve(Boolean(_array[0]?.isDuplicate)),
+        txnErrorCallback,
+      );
+    }),
+  );
+};

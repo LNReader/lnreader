@@ -8,10 +8,12 @@ import { Button } from '@components/index';
 import { Category } from 'src/database/types';
 import {
   createCategory,
+  isCategoryNameDuplicate,
   updateCategory,
 } from '../../../database/queries/CategoryQueries';
 import { useTheme } from '@redux/hooks';
 import { getString } from '@strings/translations';
+import { showToast } from '@hooks/showToast';
 
 interface AddCategoryModalProps {
   isEditMode?: boolean;
@@ -71,14 +73,19 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
             title={getString('common.add')}
             theme={theme}
             variation={ButtonVariation.CLEAR}
-            onPress={() => {
-              if (isEditMode && category) {
-                updateCategory(category?.id, categoryName);
+            onPress={async () => {
+              if (await isCategoryNameDuplicate(categoryName)) {
+                showToast(getString('categories.duplicateError'));
               } else {
-                createCategory(categoryName);
+                if (isEditMode && category) {
+                  updateCategory(category?.id, categoryName);
+                } else {
+                  createCategory(categoryName);
+                }
+                onSuccess();
               }
+              setCategoryName('');
               closeModal();
-              onSuccess();
             }}
           />
           <Button
