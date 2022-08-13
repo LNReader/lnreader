@@ -103,7 +103,7 @@ export default Searchbar;
 const styles = StyleSheet.create({
   searchbarContainer: {
     marginHorizontal: 16,
-    marginBottom: 16,
+    marginBottom: 12,
     minHeight: 46,
     borderRadius: 50,
     overflow: 'hidden',

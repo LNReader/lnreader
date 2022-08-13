@@ -13,7 +13,8 @@ export const createNovelTableQuery = `
     status TEXT, 
     genre TEXT, 
     followed INTEGER DEFAULT 0, 
-    unread INTEGER DEFAULT 1
+    unread INTEGER DEFAULT 1,
+    categoryIds TEXT DEFAULT "[1]"
     )`;
 
 export const createUrlIndexQuery =
@@ -21,3 +22,6 @@ export const createUrlIndexQuery =
 
 export const createLibraryIndexQuery =
   'CREATE INDEX IF NOT EXISTS novelFollowedIndex ON novels(followed)';
+
+export const addCategoryColumnQuery =
+  'ALTER TABLE novels ADD COLUMN categoryIds TEXT DEFAULT "[1]"';

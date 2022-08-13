@@ -15,14 +15,18 @@ import { setAppSettings } from '../../redux/settings/settings.actions';
 import { SHOW_LAST_UPDATE_TIME } from '../../redux/updates/updates.types';
 import { useModal } from '../../hooks/useModal';
 import DefaultChapterSortModal from './components/DefaultChapterSortModal';
+import {
+  DisplayModes,
+  displayModesList,
+} from '@screens/library/constants/constants';
+import { useLibrarySettings } from '@hooks/useSettings';
 
 const GenralSettings = ({ navigation }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
 
-  const { displayMode, novelsPerRow } = useSelector(
-    state => state.settingsReducer,
-  );
+  const { displayMode = DisplayModes.Comfortable, novelsPerRow = 3 } =
+    useLibrarySettings();
 
   const {
     updateLibraryOnLaunch = false,
@@ -36,17 +40,6 @@ const GenralSettings = ({ navigation }) => {
   const { showLastUpdateTime = true } = useSelector(
     state => state.updatesReducer,
   );
-
-  const displayModeLabel = () => {
-    const label = {
-      0: 'Compact Grid',
-      1: 'Comfortable Grid',
-      2: 'List',
-      3: 'No Title Grid',
-    };
-
-    return label[displayMode] || label[0];
-  };
 
   /**
    * Display Mode Modal
@@ -68,7 +61,7 @@ const GenralSettings = ({ navigation }) => {
           <List.SubHeader theme={theme}>Display</List.SubHeader>
           <List.Item
             title="Display Mode"
-            description={displayModeLabel()}
+            description={displayModesList[displayMode].label}
             onPress={displayModalRef.showModal}
             theme={theme}
           />
@@ -169,7 +162,6 @@ const GenralSettings = ({ navigation }) => {
         displayMode={displayMode}
         displayModalVisible={displayModalRef.visible}
         hideDisplayModal={displayModalRef.hideModal}
-        dispatch={dispatch}
         theme={theme}
       />
       <DefaultChapterSortModal
@@ -180,7 +172,6 @@ const GenralSettings = ({ navigation }) => {
         theme={theme}
       />
       <GridSizeModal
-        dispatch={dispatch}
         novelsPerRow={novelsPerRow}
         gridSizeModalVisible={gridSizeModalRef.visible}
         hideGridSizeModal={gridSizeModalRef.hideModal}

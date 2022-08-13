@@ -18,12 +18,12 @@ import FilterBottomSheet from './components/BottomSheet';
 import { useSearch } from '../../hooks';
 import { useTheme } from '../../redux/hooks';
 import { useBrowseSource, useSearchSource } from './useBrowseSource';
-import { useLibrary } from '@hooks/reduxHooks';
 
 import { LibraryNovelInfo } from '../../database/types';
 import { SourceNovelItem } from '../../sources/types';
 import { getString } from '@strings/translations';
 import { StyleSheet } from 'react-native';
+import { useLibraryNovels } from '@screens/library/hooks/useLibrary';
 
 interface BrowseSourceScreenProps {
   route: {
@@ -81,7 +81,7 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
     WebBrowser.openBrowserAsync(sourceUrl);
   };
 
-  const library = useLibrary();
+  const { library } = useLibraryNovels();
 
   const novelInLibrary = (novelUrl: string) =>
     library?.some(

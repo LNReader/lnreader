@@ -13,13 +13,13 @@ import * as SplashScreen from 'expo-splash-screen';
 
 import Main from './src/navigators/Main';
 
-import { createDB } from './src/database/db';
+import { createDatabase } from './src/database/db';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 const App = () => {
   useEffect(() => {
     SplashScreen.preventAutoHideAsync();
-    createDB();
+    createDatabase();
   }, []);
 
   return (

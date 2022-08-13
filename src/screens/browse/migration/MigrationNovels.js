@@ -7,7 +7,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import { ProgressBar } from 'react-native-paper';
-import { useLibrary, useSettings, useTheme } from '../../../hooks/reduxHooks';
+import { useSettings, useTheme } from '../../../hooks/reduxHooks';
 import { useSelector } from 'react-redux';
 
 import EmptyView from '../../../components/EmptyView';
@@ -17,6 +17,7 @@ import { Appbar } from '../../../components/Appbar';
 import { ScreenContainer } from '../../../components/Common';
 import { sourceManager } from '../../../sources/sourceManager';
 import { useBrowseSettings, useSourcesReducer } from '../../../redux/hooks';
+import { useLibraryNovels } from '@screens/library/hooks/useLibrary';
 
 const MigrationNovels = ({ navigation, route }) => {
   const { sourceId, novelName } = route.params;
@@ -27,7 +28,7 @@ const MigrationNovels = ({ navigation, route }) => {
   const [progress, setProgress] = useState(0);
   const [searchResults, setSearchResults] = useState('');
 
-  const library = useLibrary();
+  const { library } = useLibraryNovels();
 
   const { allSources, pinnedSourceIds = [] } = useSourcesReducer();
 

@@ -11,12 +11,17 @@ export interface StringMap {
   'common.search': 'string';
   'common.install': 'string';
   'common.newUpdateAvailable': 'string';
+  'common.categories': 'string';
+  'common.add': 'string';
+  'common.edit': 'string';
+  'common.name': 'string';
   'library': 'string';
   'libraryScreen.searchbar': 'string';
   'libraryScreen.empty': 'string';
   'libraryScreen.bottomSheet.filters.downloaded': 'string';
   'libraryScreen.bottomSheet.filters.unread': 'string';
   'libraryScreen.bottomSheet.filters.completed': 'string';
+  'libraryScreen.bottomSheet.filters.started': 'string';
   'libraryScreen.bottomSheet.sortOrders.dateAdded': 'string';
   'libraryScreen.bottomSheet.sortOrders.alphabetically': 'string';
   'libraryScreen.bottomSheet.sortOrders.totalChapters': 'string';
@@ -100,4 +105,15 @@ export interface StringMap {
   'date.calendar.lastDay': 'string';
   'date.calendar.lastWeek': 'string';
   'date.calendar.sameElse': 'string';
+  'categories.addCategories': 'string';
+  'categories.editCategories': 'string';
+  'categories.setCategories': 'string';
+  'categories.header': 'string';
+  'categories.emptyMsg': 'string';
+  'categories.setModalEmptyMsg': 'string';
+  'categories.deleteModal.header': 'string';
+  'categories.deleteModal.desc': 'string';
+  'categories.duplicateError': 'string';
+  'settings.icognitoMode': 'string';
+  'settings.downloadedOnly': 'string';
 }

@@ -13,6 +13,7 @@ import GeneralSettings from '../screens/settings/SettingsGeneralScreen';
 import DownloadQueue from '../screens/more/DownloadQueueScreen';
 import Downloads from '../screens/more/DownloadsScreen';
 import AppearanceSettings from '../screens/settings/SettingsAppearanceScreen';
+import CategoriesScreen from '@screens/Categories/CategoriesScreen';
 
 const Stack = createStackNavigator();
 
@@ -36,6 +37,7 @@ const MoreStack = () => (
     <Stack.Screen name="About" component={About} />
     <Stack.Screen name="DownloadQueue" component={DownloadQueue} />
     <Stack.Screen name="Downloads" component={Downloads} />
+    <Stack.Screen name="Categories" component={CategoriesScreen} />
   </Stack.Navigator>
 );
 

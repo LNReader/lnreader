@@ -1,5 +1,13 @@
-import { Pressable, StyleSheet, Text, View, ViewStyle } from 'react-native';
-import React from 'react';
+import {
+  Pressable,
+  StyleProp,
+  StyleSheet,
+  Text,
+  TextStyle,
+  View,
+  ViewStyle,
+} from 'react-native';
+import React, { useMemo } from 'react';
 
 import { ThemeType } from '../../theme/types';
 
@@ -16,6 +24,7 @@ interface Props {
   onPress?: () => void;
   theme: ThemeType;
   style?: ViewStyle;
+  disabled?: boolean;
 }
 
 const Button: React.FC<Props> = ({
@@ -25,7 +34,23 @@ const Button: React.FC<Props> = ({
   onPress,
   theme,
   style,
+  disabled,
 }) => {
+  const textStyles: StyleProp<TextStyle> = useMemo(
+    () => ({
+      color: disabled
+        ? theme.textColorHint
+        : textColor
+        ? textColor
+        : variation === ButtonVariation.OUTLINED
+        ? theme.colorAccent
+        : variation === ButtonVariation.CLEAR
+        ? theme.colorAccent
+        : theme.textColorPrimary,
+    }),
+    [],
+  );
+
   return (
     <View
       style={[
@@ -45,19 +70,9 @@ const Button: React.FC<Props> = ({
         style={styles.pressable}
         onPress={onPress}
         android_ripple={{ color: theme.rippleColor }}
+        disabled={disabled}
       >
-        <Text
-          style={{
-            color: textColor
-              ? textColor
-              : variation === ButtonVariation.OUTLINED
-              ? theme.colorAccent
-              : variation === ButtonVariation.CLEAR
-              ? theme.colorAccent
-              : theme.textColorPrimary,
-          }}
-          numberOfLines={1}
-        >
+        <Text style={textStyles} numberOfLines={1}>
           {title}
         </Text>
       </Pressable>

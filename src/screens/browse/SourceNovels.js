@@ -1,14 +1,15 @@
 import React from 'react';
 import { StyleSheet, View, FlatList, Text } from 'react-native';
-import { useLibrary, useTheme } from '../../hooks/reduxHooks';
+import { useTheme } from '../../hooks/reduxHooks';
 
 import { Appbar } from '../../components/Appbar';
 import ListView from '../../components/ListView';
+import { useLibraryNovels } from '@screens/library/hooks/useLibrary';
 
 const SourceNovels = ({ navigation, route }) => {
   const sourceId = route.params;
   const theme = useTheme();
-  const library = useLibrary();
+  const library = useLibraryNovels();
 
   const sourceNovels = library.filter(novel => novel.sourceId === sourceId);
 

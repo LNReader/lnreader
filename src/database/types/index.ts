@@ -11,11 +11,13 @@ export interface NovelInfo {
   author?: string;
   status?: string;
   followed: number;
+  categoryIds: string;
 }
 
 export interface LibraryNovelInfo extends NovelInfo {
   chaptersUnread: number;
   chaptersDownloaded: number;
+  categoryId: number;
 }
 
 export interface ChapterItem {
@@ -65,4 +67,10 @@ export interface Update {
   updateTime: string;
   bookmark: number;
   releaseDate: string;
+}
+
+export interface Category {
+  id: number;
+  name: string;
+  lastUpdatedAt: Date;
 }

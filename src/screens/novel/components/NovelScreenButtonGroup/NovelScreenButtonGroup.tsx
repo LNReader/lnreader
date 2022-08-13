@@ -5,9 +5,11 @@ import * as WebBrowser from 'expo-web-browser';
 
 import { NovelInfo } from '../../../../database/types';
 import { useNavigation } from '@react-navigation/native';
-import { useNovelTrackerInfo } from '../../../../hooks';
+import { useBoolean, useNovelTrackerInfo } from '../../../../hooks';
 import { ThemeType } from '../../../../theme/types';
 import { getString } from '../../../../../strings/translations';
+import { Portal } from 'react-native-paper';
+import SetCategoryModal from '../SetCategoriesModal';
 
 interface NovelScreenButtonGroupProps {
   novel: NovelInfo;
@@ -45,77 +47,94 @@ const NovelScreenButtonGroup: React.FC<NovelScreenButtonGroupProps> = ({
       } as never,
     );
 
+  const {
+    value: setCategoryModalVisible,
+    setTrue: showSetCategoryModal,
+    setFalse: closeSetCategoryModal,
+  } = useBoolean();
+
   return (
-    <View style={styles.buttonGroupContainer}>
-      <View style={styles.buttonContainer}>
-        <Pressable
-          android_ripple={{ color: theme.rippleColor }}
-          onPress={handleFollowNovel}
-          style={styles.button}
-        >
-          <MaterialCommunityIcons
-            name={followed ? 'heart' : 'heart-outline'}
-            color={followButtonColor}
-            size={24}
-          />
-          <Text style={[styles.buttonLabel, { color: followButtonColor }]}>
-            {getString(
-              followed ? 'novelScreen.inLibaray' : 'novelScreen.addToLibaray',
-            )}
-          </Text>
-        </Pressable>
-      </View>
-      {isTrackerAvailable ? (
+    <>
+      <View style={styles.buttonGroupContainer}>
         <View style={styles.buttonContainer}>
           <Pressable
             android_ripple={{ color: theme.rippleColor }}
-            onPress={handleTrackerSheet}
+            onPress={handleFollowNovel}
+            onLongPress={showSetCategoryModal}
             style={styles.button}
           >
             <MaterialCommunityIcons
-              name={isTracked ? 'check' : 'sync'}
-              color={trackerButtonColor}
+              name={followed ? 'heart' : 'heart-outline'}
+              color={followButtonColor}
               size={24}
             />
-            <Text style={[styles.buttonLabel, { color: trackerButtonColor }]}>
-              {isTracked ? 'Tracked' : 'Tracking'}
+            <Text style={[styles.buttonLabel, { color: followButtonColor }]}>
+              {getString(
+                followed ? 'novelScreen.inLibaray' : 'novelScreen.addToLibaray',
+              )}
             </Text>
           </Pressable>
         </View>
-      ) : null}
-      <View style={styles.buttonContainer}>
-        <Pressable
-          android_ripple={{ color: theme.rippleColor }}
-          onPress={handleMigrateNovel}
-          style={styles.button}
-        >
-          <MaterialCommunityIcons
-            name="swap-vertical-variant"
-            color={theme.textColorHint}
-            size={24}
-          />
-          <Text style={[styles.buttonLabel, { color: theme.textColorHint }]}>
-            {getString('novelScreen.migrate')}
-          </Text>
-        </Pressable>
+        {isTrackerAvailable ? (
+          <View style={styles.buttonContainer}>
+            <Pressable
+              android_ripple={{ color: theme.rippleColor }}
+              onPress={handleTrackerSheet}
+              style={styles.button}
+            >
+              <MaterialCommunityIcons
+                name={isTracked ? 'check' : 'sync'}
+                color={trackerButtonColor}
+                size={24}
+              />
+              <Text style={[styles.buttonLabel, { color: trackerButtonColor }]}>
+                {isTracked ? 'Tracked' : 'Tracking'}
+              </Text>
+            </Pressable>
+          </View>
+        ) : null}
+        <View style={styles.buttonContainer}>
+          <Pressable
+            android_ripple={{ color: theme.rippleColor }}
+            onPress={handleMigrateNovel}
+            style={styles.button}
+          >
+            <MaterialCommunityIcons
+              name="swap-vertical-variant"
+              color={theme.textColorHint}
+              size={24}
+            />
+            <Text style={[styles.buttonLabel, { color: theme.textColorHint }]}>
+              {getString('novelScreen.migrate')}
+            </Text>
+          </Pressable>
+        </View>
+        <View style={styles.buttonContainer}>
+          <Pressable
+            android_ripple={{ color: theme.rippleColor }}
+            onPress={handleOpenWebView}
+            style={styles.button}
+          >
+            <MaterialCommunityIcons
+              name="earth"
+              color={theme.textColorHint}
+              size={24}
+            />
+            <Text style={[styles.buttonLabel, { color: theme.textColorHint }]}>
+              WebView
+            </Text>
+          </Pressable>
+        </View>
       </View>
-      <View style={styles.buttonContainer}>
-        <Pressable
-          android_ripple={{ color: theme.rippleColor }}
-          onPress={handleOpenWebView}
-          style={styles.button}
-        >
-          <MaterialCommunityIcons
-            name="earth"
-            color={theme.textColorHint}
-            size={24}
-          />
-          <Text style={[styles.buttonLabel, { color: theme.textColorHint }]}>
-            WebView
-          </Text>
-        </Pressable>
-      </View>
-    </View>
+      <Portal>
+        <SetCategoryModal
+          novelId={novel.novelId}
+          currentCategoryIds={JSON.parse(novel.categoryIds) as number[]}
+          closeModal={closeSetCategoryModal}
+          visible={setCategoryModalVisible}
+        />
+      </Portal>
+    </>
   );
 };
 

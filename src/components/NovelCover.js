@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo, useMemo } from 'react';
 import {
   StyleSheet,
   View,
@@ -13,8 +13,9 @@ import FastImage from 'react-native-fast-image';
 import ListView from './ListView';
 
 import { useDeviceOrientation } from '../services/utils/helpers';
-import { useSettings } from '../hooks/reduxHooks';
 import { coverPlaceholderColor } from '../theme/colors';
+import { useLibrarySettings } from '@hooks/useSettings';
+import { DisplayModes } from '@screens/library/constants/constants';
 
 const NovelCover = ({
   item,
@@ -25,31 +26,36 @@ const NovelCover = ({
   onLongPress,
   selectedNovels,
 }) => {
-  const { displayMode, novelsPerRow, showDownloadBadges, showUnreadBadges } =
-    useSettings();
+  const {
+    displayMode = DisplayModes.Comfortable,
+    showDownloadBadges = true,
+    showUnreadBadges = true,
+    novelsPerRow = 3,
+  } = useLibrarySettings();
 
   const window = useWindowDimensions();
 
   const orientation = useDeviceOrientation();
 
-  const getNovelsPerRow = () =>
-    orientation === 'landscape' ? 6 : novelsPerRow;
+  const numColumns = useMemo(
+    () => (orientation === 'landscape' ? 6 : novelsPerRow),
+    [orientation, novelsPerRow],
+  );
 
-  const getHeight = useCallback(
-    () => (window.width / getNovelsPerRow()) * (4 / 3),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
+  const coverHeight = useMemo(
+    () => (window.width / numColumns) * (4 / 3),
+    [numColumns],
   );
 
   const selectNovel = () => onLongPress && onLongPress(item.novelId);
 
   const uri = item.novelCover;
 
-  return displayMode !== 2 ? (
+  return displayMode !== DisplayModes.List ? (
     <View
       style={[
         {
-          flex: 1 / getNovelsPerRow(),
+          flex: 1 / numColumns,
           borderRadius: 6,
           overflow: 'hidden',
           margin: 2,
@@ -90,7 +96,7 @@ const NovelCover = ({
           source={{ uri }}
           style={[
             {
-              height: getHeight(),
+              height: coverHeight,
               borderRadius: 4,
               backgroundColor: coverPlaceholderColor,
             },
@@ -98,9 +104,11 @@ const NovelCover = ({
           ]}
         />
         <View style={styles.compactTitleContainer}>
-          {displayMode === 0 && <CompactTitle novelName={item.novelName} />}
+          {displayMode === DisplayModes.Compact && (
+            <CompactTitle novelName={item.novelName} />
+          )}
         </View>
-        {displayMode === 1 && (
+        {displayMode === DisplayModes.Comfortable && (
           <ComfortableTitle novelName={item.novelName} theme={theme} />
         )}
       </Pressable>

@@ -66,8 +66,8 @@ const EditInfoModal = ({ theme, hideModal, modalVisible, novel, dispatch }) => {
                   style={{
                     backgroundColor:
                       info.status === item ? theme.rippleColor : 'transparent',
-                    paddingVertical: 4,
-                    paddingHorizontal: 8,
+                    paddingVertical: 6,
+                    paddingHorizontal: 12,
                   }}
                   android_ripple={{
                     color: theme.rippleColor,
@@ -188,9 +188,9 @@ const GenreChip = ({ children, theme, onPress }) => (
     style={{
       flex: 1,
       flexDirection: 'row',
-      borderRadius: 50,
-      paddingVertical: 4,
-      paddingHorizontal: 8,
+      borderRadius: 8,
+      paddingVertical: 6,
+      paddingHorizontal: 16,
       marginVertical: 4,
       marginRight: 8,
       justifyContent: 'center',
@@ -200,6 +200,7 @@ const GenreChip = ({ children, theme, onPress }) => (
   >
     <Text
       style={{
+        fontSize: 12,
         color: theme.textColorSecondary,
         textTransform: 'capitalize',
       }}
@@ -207,9 +208,9 @@ const GenreChip = ({ children, theme, onPress }) => (
       {children}
     </Text>
     <MaterialCommunityIcons
-      name="close-circle"
+      name="close"
       color={theme.colorAccent}
-      size={16}
+      size={18}
       onPress={onPress}
       style={{ marginLeft: 4 }}
     />

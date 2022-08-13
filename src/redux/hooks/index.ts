@@ -25,6 +25,7 @@ export const useAppearanceSettings = () =>
 export const useReaderSettings = () =>
   useAppSelector((state: RootState) => state.settingsReducer.reader);
 
+/** @deprecated */
 export const useLibrarySettings = () =>
   useAppSelector((state: RootState) => state.settingsReducerV2.library);
 

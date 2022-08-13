@@ -262,7 +262,6 @@ const styles = StyleSheet.create({
   novelAuthor: {
     marginVertical: 6,
     fontSize: 14,
-    fontWeight: 'bold',
   },
   novelInfo: {
     fontSize: 14,

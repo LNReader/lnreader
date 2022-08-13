@@ -1,7 +1,8 @@
-import React, { useCallback } from 'react';
+import { useLibrarySettings } from '@hooks/useSettings';
+import { DisplayModes } from '@screens/library/constants/constants';
+import React, { useCallback, useMemo } from 'react';
 import { StyleSheet, FlatList } from 'react-native';
 
-import { useSettings } from '../hooks/reduxHooks';
 import { useDeviceOrientation } from '../services/utils/helpers';
 
 const NovelList = ({
@@ -13,12 +14,15 @@ const NovelList = ({
   ListEmptyComponent,
   ListFooterComponent,
 }) => {
-  const { displayMode, novelsPerRow } = useSettings();
+  const { displayMode = DisplayModes.Comfortable, novelsPerRow = 3 } =
+    useLibrarySettings();
 
   const orientation = useDeviceOrientation();
 
-  const getNovelsPerRow = () => {
-    if (displayMode === 2) {
+  const isListView = displayMode === DisplayModes.List;
+
+  const numColumns = useMemo(() => {
+    if (isListView) {
       return 1;
     }
 
@@ -27,18 +31,19 @@ const NovelList = ({
     } else {
       return novelsPerRow;
     }
-  };
+  }, [isListView, orientation, novelsPerRow]);
 
   const keyExtractor = useCallback(item => item.sourceId + item.novelUrl, []);
 
   return (
     <FlatList
+      estimatedItemSize={100}
       contentContainerStyle={[
+        !isListView && styles.listView,
         styles.flatListCont,
-        displayMode !== 2 && { paddingHorizontal: 4 },
       ]}
-      numColumns={getNovelsPerRow()}
-      key={[orientation, getNovelsPerRow()]}
+      numColumns={numColumns}
+      key={[orientation, numColumns]}
       data={data}
       keyExtractor={keyExtractor}
       renderItem={renderItem}
@@ -57,5 +62,8 @@ const styles = StyleSheet.create({
   flatListCont: {
     flexGrow: 1,
     paddingBottom: 56,
+  },
+  listView: {
+    paddingHorizontal: 4,
   },
 });

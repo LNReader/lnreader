@@ -1,14 +1,20 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import {
   StyleSheet,
   View,
-  FlatList,
   RefreshControl,
   StatusBar,
   Dimensions,
   Share,
   Text,
 } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
 
 import {
   Provider,
@@ -135,6 +141,76 @@ const Novel = ({ route, navigation }) => {
         chapterId,
       ),
     );
+
+  const actions = useMemo(() => {
+    const list = [];
+
+    if (selected.some(obj => obj.downloaded === 0)) {
+      list.push({
+        icon: 'download-outline',
+        onPress: () => {
+          dispatch(
+            downloadAllChaptersAction(novel.sourceId, novel.novelUrl, selected),
+          );
+          setSelected([]);
+        },
+      });
+    }
+    if (selected.some(obj => obj.downloaded === 1)) {
+      list.push({
+        icon: 'trash-can-outline',
+        onPress: () => {
+          dispatch(deleteAllChaptersAction(sourceId, selected));
+          setSelected([]);
+        },
+      });
+    }
+
+    list.push({
+      icon: 'bookmark-outline',
+      onPress: () => {
+        dispatch(bookmarkChapterAction(selected));
+        setSelected([]);
+      },
+    });
+
+    if (selected.some(obj => obj.read === 0)) {
+      list.push({
+        icon: 'check',
+        onPress: () => {
+          dispatch(markChaptersRead(selected, novel.novelId, sort, filter));
+          setSelected([]);
+        },
+      });
+    }
+
+    if (selected.some(obj => obj.read === 1)) {
+      list.push({
+        icon: 'check-outline',
+        onPress: () => {
+          dispatch(markChapterUnreadAction(selected, novel.novelId));
+          setSelected([]);
+        },
+      });
+    }
+
+    if (selected.length === 1) {
+      list.push({
+        icon: 'playlist-check',
+        onPress: () => {
+          dispatch(
+            markPreviousChaptersReadAction(
+              selected[0].chapterId,
+              selected[0].novelId,
+            ),
+          );
+          setSelected([]);
+        },
+      });
+    }
+
+    return list;
+  }, [selected]);
 
   const deleteChapter = (chapterId, chapterName) =>
     dispatch(deleteChapterAction(sourceId, novelId, chapterId, chapterName));
@@ -529,9 +605,11 @@ const Novel = ({ route, navigation }) => {
             </Row>
           </View>
         )}
-        <FlatList
+        <FlashList
           ref={ref => (flatlistRef.current = ref)}
+          estimatedItemSize={100}
           data={!loading && chapters}
+          extraData={[downloadQueue, selected]}
           keyExtractor={keyExtractor}
           removeClippedSubviews={true}
           maxToRenderPerBatch={5}
@@ -588,63 +666,7 @@ const Novel = ({ route, navigation }) => {
             active={selected.length > 0}
             theme={theme}
             style={{ marginBottom: 24 }}
-            actions={[
-              selected.some(obj => obj.downloaded === 0) && {
-                icon: 'download-outline',
-                onPress: () => {
-                  dispatch(
-                    downloadAllChaptersAction(
-                      novel.sourceId,
-                      novel.novelUrl,
-                      selected,
-                    ),
-                  );
-                  setSelected([]);
-                },
-              },
-              selected.some(obj => obj.downloaded === 1) && {
-                icon: 'trash-can-outline',
-                onPress: () => {
-                  dispatch(deleteAllChaptersAction(sourceId, selected));
-                  setSelected([]);
-                },
-              },
-              {
-                icon: 'bookmark-outline',
-                onPress: () => {
-                  dispatch(bookmarkChapterAction(selected));
-                  setSelected([]);
-                },
-              },
-              selected.some(obj => obj.read === 0) && {
-                icon: 'check',
-                onPress: () => {
-                  dispatch(
-                    markChaptersRead(selected, novel.novelId, sort, filter),
-                  );
-                  setSelected([]);
-                },
-              },
-              selected.some(obj => obj.read === 1) && {
-                icon: 'check-outline',
-                onPress: () => {
-                  dispatch(markChapterUnreadAction(selected, novel.novelId));
-                  setSelected([]);
-                },
-              },
-              selected.length === 1 && {
-                icon: 'playlist-check',
-                onPress: () => {
-                  dispatch(
-                    markPreviousChaptersReadAction(
-                      selected[0].chapterId,
-                      selected[0].novelId,
-                    ),
-                  );
-                  setSelected([]);
-                },
-              },
-            ]}
+            actions={actions}
           />
           <Snackbar
             visible={deleteDownloadsSnackbar.visible}

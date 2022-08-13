@@ -1,8 +1,25 @@
 import React from 'react';
-import { Pressable, StyleSheet, Text } from 'react-native';
+import {
+  Pressable,
+  StyleProp,
+  StyleSheet,
+  Text,
+  TextStyle,
+  ViewStyle,
+} from 'react-native';
 import { RadioButton as PaperRadioButton } from 'react-native-paper';
+import { ThemeType } from '../../theme/types';
 
-export const RadioButton = ({
+interface Props {
+  label: string;
+  status: boolean;
+  onPress: () => void;
+  style?: StyleProp<ViewStyle>;
+  labelStyle?: StyleProp<TextStyle>;
+  theme: ThemeType;
+}
+
+export const RadioButton: React.FC<Props> = ({
   label,
   status,
   onPress,
@@ -17,12 +34,13 @@ export const RadioButton = ({
   >
     <PaperRadioButton
       status={status ? 'checked' : 'unchecked'}
+      value={label}
       onPress={onPress}
       color={theme.colorAccent}
       uncheckedColor={theme.textColorSecondary}
     />
     <Text
-      style={[labelStyle, { color: theme.textColorPrimary, marginLeft: 12 }]}
+      style={[styles.label, labelStyle, { color: theme.textColorSecondary }]}
     >
       {label}
     </Text>
@@ -40,5 +58,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 24,
     alignSelf: 'center',
+  },
+  label: {
+    marginLeft: 12,
   },
 });
