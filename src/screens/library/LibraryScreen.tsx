@@ -15,7 +15,7 @@ import { Banner } from './components/Banner';
 import { Actionbar } from '@components/Actionbar/Actionbar';
 
 import { useLibrary } from './hooks/useLibrary';
-import { useAppDispatch, useTheme } from '@redux/hooks';
+import { useTheme } from '@redux/hooks';
 import useSearch from '@hooks/useSearch';
 import { getString } from '@strings/translations';
 import { Portal } from 'react-native-paper';

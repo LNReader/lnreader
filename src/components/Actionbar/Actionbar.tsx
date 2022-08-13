@@ -1,5 +1,4 @@
 import { useTheme } from '@redux/hooks';
-import { FlashList } from '@shopify/flash-list';
 import React from 'react';
 import {
   Dimensions,
@@ -11,7 +10,6 @@ import {
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { IconButton } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type Action = {

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { FAB, Portal } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';

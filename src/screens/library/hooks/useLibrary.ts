@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import { defaultTo } from 'lodash';
 
 import { getCategoriesFromDb } from '../../../database/queries/CategoryQueries';
 import { getLibrary as getLibraryFromDb } from '../../../database/queries/LibraryQueries';
