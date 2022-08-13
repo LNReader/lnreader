@@ -13,12 +13,6 @@ const useSettings = () => {
   return settings;
 };
 
-const useLibrary = () => {
-  const library = useSelector(state => state.libraryReducer.novels);
-
-  return library;
-};
-
 const useNovel = () => {
   const novel = useSelector(state => state.novelReducer);
 
@@ -104,15 +98,8 @@ const useTrackingStatus = () => {
   return tracker;
 };
 
-const useLibraryFilters = () => {
-  const filters = useSelector(state => state.libraryReducer.filters);
-
-  return filters;
-};
-
 export {
   useTheme,
-  useLibrary,
   useSettings,
   usePreferences,
   useContinueReading,
@@ -120,6 +107,5 @@ export {
   useNovel,
   useChapter,
   useSavedSettings,
-  useLibraryFilters,
   usePosition,
 };

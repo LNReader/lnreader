@@ -6,29 +6,30 @@ import {
   ScrollView,
 } from 'react-native';
 import { Switch } from 'react-native-paper';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { getString } from '../../../strings/translations';
 
 import { ScreenContainer } from '../../components/Common';
 import { List } from '../../components/List';
 
-import { useSettings, useTheme } from '../../hooks/reduxHooks';
-import { setAppSettings } from '../../redux/settings/settings.actions';
+import { useTheme } from '../../hooks/reduxHooks';
 import { MoreHeader } from './components/MoreHeader';
+import { useLibrarySettings } from '@hooks/useSettings';
 
 const MoreScreen = ({ navigation }) => {
   const theme = useTheme();
   const { downloadQueue } = useSelector(state => state.downloadsReducer);
-  const { incognitoMode = false, downloadedOnlyMode = false } = useSettings();
-  const dispatch = useDispatch();
+  const {
+    incognitoMode = false,
+    downloadedOnlyMode = false,
+    setLibrarySettings,
+  } = useLibrarySettings();
 
-  const enableIncognitoMode = () => {
-    dispatch(setAppSettings('incognitoMode', !incognitoMode));
-  };
+  const enableDownloadedOnlyMode = () =>
+    setLibrarySettings({ downloadedOnlyMode: !downloadedOnlyMode });
 
-  const enableDownloadedOnlyMode = () => {
-    dispatch(setAppSettings('downloadedOnlyMode', !downloadedOnlyMode));
-  };
+  const enableIncognitoMode = () =>
+    setLibrarySettings({ incognitoMode: !incognitoMode });
 
   return (
     <ScreenContainer theme={theme}>
@@ -121,6 +122,16 @@ const MoreScreen = ({ navigation }) => {
             onPress={() =>
               navigation.navigate('MoreStack', {
                 screen: 'Downloads',
+              })
+            }
+            theme={theme}
+          />
+          <List.Item
+            title={getString('common.categories')}
+            icon="label-outline"
+            onPress={() =>
+              navigation.navigate('MoreStack', {
+                screen: 'Categories',
               })
             }
             theme={theme}

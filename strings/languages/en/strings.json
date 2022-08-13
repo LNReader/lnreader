@@ -7,7 +7,10 @@
     "reset": "Reset",
     "search": "Search",
     "install": "Install",
-    "newUpdateAvailable": "New update available"
+    "newUpdateAvailable": "New update available",
+    "categories": "Categories",
+    "add": "Add",
+    "edit": "Edit"
   },
   "library": "Library",
   "libraryScreen": {
@@ -28,7 +31,7 @@
         "displayMode": "Display mode",
         "compact": "Compact grid",
         "comfortable": "Comfortable grid",
-        "noTitle": "No title grid",
+        "noTitle": "Cover only grid",
         "list": "List",
         "badges": "Badges",
         "downloadBadges": "Download badges",
@@ -140,5 +143,20 @@
       "lastWeek": "[Last] dddd",
       "sameElse": "LL"
     }
+  },
+  "categories": {
+    "addCategories": "Add category",
+    "editCategories": "Edit category",
+    "setCategories": "Set category",
+    "header": "Edit Categories",
+    "emptyMsg": "You have no categories. Tap the plus button to create one for organizing your library",
+    "deleteModal": {
+      "header": "Delete category",
+      "desc": "Do you wish to delete category"
+    }
+  },
+  "settings": {
+    "icognitoMode": "Incognito mode",
+    "downloadedOnly": "Downloaded only"
   }
 }

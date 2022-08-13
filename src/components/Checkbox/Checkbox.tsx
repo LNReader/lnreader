@@ -1,19 +1,39 @@
 import React from 'react';
-import { Pressable, StyleSheet, Text } from 'react-native';
+import {
+  Pressable,
+  StyleProp,
+  StyleSheet,
+  Text,
+  TextStyle,
+  ViewStyle,
+} from 'react-native';
 import { Checkbox as PaperCheckbox } from 'react-native-paper';
-
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-export const Checkbox = ({
+import { ThemeType } from '../../theme/types';
+
+interface CheckboxProps {
+  label: string;
+  status: boolean | 'indeterminate';
+  onPress?: () => void;
+  disabled?: boolean;
+  theme: ThemeType;
+  viewStyle?: StyleProp<ViewStyle>;
+  labelStyle?: StyleProp<TextStyle>;
+}
+
+export const Checkbox: React.FC<CheckboxProps> = ({
   label,
   status,
-  onPress,
-  disabled = false,
   theme,
+  disabled,
+  onPress,
+  viewStyle,
+  labelStyle,
 }) => (
   <Pressable
     android_ripple={{ color: theme.rippleColor }}
-    style={styles.pressable}
+    style={[styles.pressable, viewStyle]}
     onPress={onPress}
     disabled={disabled}
   >
@@ -27,10 +47,19 @@ export const Checkbox = ({
       }
       onPress={onPress}
       color={theme.colorAccent}
+      theme={{
+        colors: { disabled: theme.textColorSecondary },
+      }}
       uncheckedColor={theme.textColorSecondary}
       disabled={disabled}
     />
-    <Text style={{ color: theme.textColorSecondary, marginLeft: 12 }}>
+    <Text
+      style={[
+        styles.defaultLabel,
+        { color: theme.textColorSecondary },
+        labelStyle,
+      ]}
+    >
       {label}
     </Text>
   </Pressable>
@@ -65,5 +94,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 24,
     alignSelf: 'center',
+  },
+  defaultLabel: {
+    marginLeft: 12,
   },
 });

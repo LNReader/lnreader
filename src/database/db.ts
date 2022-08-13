@@ -3,6 +3,7 @@ import {
   createNovelTableQuery,
   createUrlIndexQuery,
   createLibraryIndexQuery,
+  addCategoryColumnQuery,
 } from './tables/NovelTable';
 import {
   createChapterTableQuery,
@@ -15,6 +16,11 @@ import {
 } from './tables/HistoryTable';
 import { createDownloadTableQuery } from './tables/DownloadTable';
 import { createUpdatesTableQuery } from './tables/UpdateTable';
+import {
+  createCategoriesTable,
+  createCategorydIndexQuery,
+  createDefaultCategory,
+} from './tables/CategoryTable';
 
 const dbName = 'lnreader.db';
 
@@ -27,6 +33,9 @@ export const createDB = () => {
     tx.executeSql(createHistoryTableQuery);
     tx.executeSql(createDownloadTableQuery);
     tx.executeSql(createUpdatesTableQuery);
+    tx.executeSql(createCategoriesTable);
+    tx.executeSql(addCategoryColumnQuery);
+    tx.executeSql(createDefaultCategory);
 
     /**
      * Indexes
@@ -36,6 +45,7 @@ export const createDB = () => {
     tx.executeSql(createNovelIdIndexQuery);
     tx.executeSql(createUnreadChaptersIndexQuery);
     tx.executeSql(createChapterIdIndexQuery);
+    tx.executeSql(createCategorydIndexQuery);
   });
 };
 
@@ -46,5 +56,6 @@ export const deleteDb = () => {
     tx.executeSql('DROP TABLE history');
     tx.executeSql('DROP TABLE downloads');
     tx.executeSql('DROP TABLE updates');
+    tx.executeSql('DROP TABLE categories');
   });
 };

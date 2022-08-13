@@ -1,39 +1,19 @@
+import { displayModesList } from '@screens/library/constants/constants';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 
 import { Portal, Modal } from 'react-native-paper';
 
 import { RadioButton } from '../../../components/RadioButton/RadioButton';
-
-import { setAppSettings } from '../../../redux/settings/settings.actions';
+import { useLibrarySettings } from '@hooks/useSettings';
 
 const DisplayModeModal = ({
   theme,
-  dispatch,
   displayMode,
   hideDisplayModal,
   displayModalVisible,
 }) => {
-  const displayModes = [
-    { displayMode: 0, label: 'Compact Grid' },
-    { displayMode: 1, label: 'Comfortable Grid' },
-    { displayMode: 3, label: 'No Title Grid' },
-    { displayMode: 2, label: 'List' },
-  ];
-
-  const renderCheckboxes = () => {
-    return displayModes.map(mode => (
-      <RadioButton
-        key={mode.displayMode}
-        status={displayMode === mode.displayMode}
-        onPress={() =>
-          dispatch(setAppSettings('displayMode', mode.displayMode))
-        }
-        label={mode.label}
-        theme={theme}
-      />
-    ));
-  };
+  const { setLibrarySettings } = useLibrarySettings();
 
   return (
     <Portal>
@@ -45,7 +25,15 @@ const DisplayModeModal = ({
           { backgroundColor: theme.colorPrimaryDark },
         ]}
       >
-        {renderCheckboxes()}
+        {displayModesList.map(mode => (
+          <RadioButton
+            key={mode.displayMode}
+            status={displayMode === mode.value}
+            onPress={() => setLibrarySettings({ displayMode: mode.value })}
+            label={mode.label}
+            theme={theme}
+          />
+        ))}
       </Modal>
     </Portal>
   );

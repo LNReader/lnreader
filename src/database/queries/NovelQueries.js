@@ -8,6 +8,7 @@ import { fetchChapters, fetchNovel } from '../../services/Source/source';
 import { insertChapters } from './ChapterQueries';
 
 import { showToast } from '../../hooks/showToast';
+import { txnErrorCallback } from '../utils/helpers';
 
 const insertNovelQuery =
   'INSERT INTO novels (novelUrl, sourceUrl, sourceId, source, novelName, novelCover, novelSummary, author, artist, status, genre) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
@@ -242,6 +243,28 @@ export const updateNovelInfo = async (info, novelId) => {
       (txObj, error) => {
         // console.log('Error ', error)
       },
+    );
+  });
+};
+
+export const updateNovelCategoryById = async (novelId, categoryId) => {
+  db.transaction(tx => {
+    tx.executeSql(
+      'UPDATE novels SET categoryId = ? WHERE novelId = ?',
+      [categoryId, novelId],
+      (txObj, res) => {},
+      txnErrorCallback,
+    );
+  });
+};
+
+export const updateNovelCategoryByIds = async (novelIds, categoryId) => {
+  db.transaction(tx => {
+    novelIds.map(novelId =>
+      tx.executeSql('UPDATE novels SET categoryId = ? WHERE novelId = ?', [
+        categoryId,
+        novelId,
+      ]),
     );
   });
 };

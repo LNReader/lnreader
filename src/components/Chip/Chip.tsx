@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   chipContainer: {
     overflow: 'hidden',
     borderRadius: 8,
-    height: 28,
+    height: 32,
     marginRight: 8,
   },
   pressable: {

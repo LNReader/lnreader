@@ -41,7 +41,6 @@ import {
   SET_CHAPTER_LIST_PREF,
   SET_LAST_READ,
 } from '../preferences/preference.types';
-import { GET_LIBRARY_NOVELS } from '../library/library.types';
 import { getLibrary } from '../../database/queries/LibraryQueries';
 import { showToast } from '../../hooks/showToast';
 
@@ -163,12 +162,12 @@ export const followNovelAction = novel => async dispatch => {
     payload: { novelUrl: novel.novelUrl, followed: !novel.followed },
   });
 
-  const res = await getLibrary();
+  // const res = await getLibrary();
 
-  dispatch({
-    type: GET_LIBRARY_NOVELS,
-    payload: res,
-  });
+  // dispatch({
+  //   type: GET_LIBRARY_NOVELS,
+  //   payload: res,
+  // });
 
   showToast(!novel.followed ? 'Added to library' : 'Removed from library');
 };

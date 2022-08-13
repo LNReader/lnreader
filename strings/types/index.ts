@@ -11,6 +11,9 @@ export interface StringMap {
   'common.search': 'string';
   'common.install': 'string';
   'common.newUpdateAvailable': 'string';
+  'common.categories': 'string';
+  'common.add': 'string';
+  'common.edit': 'string';
   'library': 'string';
   'libraryScreen.searchbar': 'string';
   'libraryScreen.empty': 'string';
@@ -94,6 +97,15 @@ export interface StringMap {
   'globalSearch.pinnedSources': 'string';
   'advancedSettings.deleteReadChapters': 'string';
   'advancedSettings.deleteReadChaptersDialogTitle': 'string';
+  'categories.addCategories': 'string';
+  'categories.editCategories': 'string';
+  'categories.setCategories': 'string';
+  'categories.header': 'string';
+  'categories.emptyMsg': 'string';
+  'categories.deleteModal.header': 'string';
+  'categories.deleteModal.desc': 'string';
+  'settings.icognitoMode': 'string';
+  'settings.downloadedOnly': 'string';
   'date.calendar.sameDay': 'string';
   'date.calendar.nextDay': 'string';
   'date.calendar.nextWeek': 'string';

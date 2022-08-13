@@ -5,15 +5,16 @@ import { Portal, Modal } from 'react-native-paper';
 
 import { RadioButton } from '../../../components/RadioButton/RadioButton';
 
-import { setNovelsPerRow } from '../../../redux/settings/settings.actions';
+import { useLibrarySettings } from '@hooks/useSettings';
 
 const GridSizeModal = ({
-  dispatch,
   novelsPerRow,
   gridSizeModalVisible,
   hideGridSizeModal,
   theme,
 }) => {
+  const { setLibrarySettings } = useLibrarySettings();
+
   const gridSizes = {
     5: 'XS',
     4: 'S',
@@ -43,9 +44,9 @@ const GridSizeModal = ({
         {Object.keys(gridSizes).map(item => (
           <RadioButton
             key={item}
-            status={item === novelsPerRow}
+            status={item == novelsPerRow}
             label={gridSizes[item]}
-            onPress={() => dispatch(setNovelsPerRow(item))}
+            onPress={() => setLibrarySettings({ novelsPerRow: item })}
             theme={theme}
             style={{ paddingHorizontal: 20 }}
           />
