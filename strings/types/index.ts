@@ -109,6 +109,7 @@ export interface StringMap {
   'categories.setCategories': 'string';
   'categories.header': 'string';
   'categories.emptyMsg': 'string';
+  'categories.setModalEmptyMsg': 'string';
   'categories.deleteModal.header': 'string';
   'categories.deleteModal.desc': 'string';
   'categories.duplicateError': 'string';

@@ -148,9 +148,10 @@
   "categories": {
     "addCategories": "Add category",
     "editCategories": "Edit category",
-    "setCategories": "Set category",
+    "setCategories": "Set categories",
     "header": "Edit Categories",
     "emptyMsg": "You have no categories. Tap the plus button to create one for organizing your library",
+    "setModalEmptyMsg": "You have no categories. Tap the Edit button to create one for organizing your library",
     "deleteModal": {
       "header": "Delete category",
       "desc": "Do you wish to delete category"

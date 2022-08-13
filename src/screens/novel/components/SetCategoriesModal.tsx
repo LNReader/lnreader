@@ -15,27 +15,31 @@ import {
   updateNovelCategoryById,
   updateNovelCategoryByIds,
 } from '../../../database/queries/NovelQueries';
-import { isArray } from 'lodash';
+import { isArray, xor } from 'lodash';
 
 interface SetCategoryModalProps {
   novelId: number | number[];
   visible: boolean;
-  currentCategoryId: number;
+  currentCategoryIds: number[];
+  onEditCategories?: () => void;
   closeModal: () => void;
   onSuccess?: () => void | Promise<void>;
 }
 
 const SetCategoryModal: React.FC<SetCategoryModalProps> = ({
   novelId,
-  currentCategoryId,
+  currentCategoryIds,
   closeModal,
   visible,
   onSuccess,
+  onEditCategories,
 }) => {
   const theme = useTheme();
   const { navigate } = useNavigation();
 
-  const [selectedCategory, setSelectedCategory] = useState(currentCategoryId);
+  const [selectedCategories, setSelectedCategories] = useState([
+    ...currentCategoryIds,
+  ]);
   const [categories, setCategories] = useState<Category[]>();
 
   const getCategories = async () => {
@@ -45,15 +49,22 @@ const SetCategoryModal: React.FC<SetCategoryModalProps> = ({
     setCategories(res);
   };
 
+  const handleCloseModal = () => {
+    setSelectedCategories([]);
+    closeModal();
+  };
+
   useEffect(() => {
-    getCategories();
-  }, []);
+    if (visible) {
+      getCategories();
+    }
+  }, [visible]);
 
   return (
     <Portal>
       <Modal
         visible={visible}
-        onDismiss={closeModal}
+        onDismiss={handleCloseModal}
         contentContainerStyle={[
           styles.modalContainer,
           { backgroundColor: theme.colorPrimary },
@@ -66,53 +77,62 @@ const SetCategoryModal: React.FC<SetCategoryModalProps> = ({
           data={categories}
           renderItem={({ item }) => (
             <Checkbox
-              status={selectedCategory === item.id}
+              status={selectedCategories.includes(item.id)}
               label={item.name}
               onPress={() =>
-                setSelectedCategory(
-                  !(selectedCategory === item.id) ? item.id : 1,
-                )
+                setSelectedCategories(prevValues => xor(prevValues, [item.id]))
               }
               viewStyle={styles.checkboxView}
               theme={theme}
             />
           )}
+          ListEmptyComponent={
+            <Text
+              style={[styles.emptyState, { color: theme.textColorSecondary }]}
+            >
+              {getString('categories.setModalEmptyMsg')}
+            </Text>
+          }
         />
         <View style={styles.btnContainer}>
           <Button
             title={getString('common.edit')}
             theme={theme}
             variation={ButtonVariation.CLEAR}
-            onPress={() =>
+            onPress={() => {
               navigate(
                 'MoreStack' as never,
                 {
                   screen: 'Categories',
                 } as never,
-              )
-            }
+              );
+              handleCloseModal();
+              onEditCategories?.();
+            }}
           />
           <View style={styles.flex} />
           <Button
             title={getString('common.cancel')}
             theme={theme}
             variation={ButtonVariation.CLEAR}
-            onPress={closeModal}
+            onPress={handleCloseModal}
           />
-          <Button
-            title={getString('common.ok')}
-            theme={theme}
-            variation={ButtonVariation.CLEAR}
-            onPress={() => {
-              if (isArray(novelId)) {
-                updateNovelCategoryByIds(novelId, selectedCategory);
-              } else {
-                updateNovelCategoryById(novelId, selectedCategory);
-              }
-              closeModal();
-              onSuccess();
-            }}
-          />
+          {categories?.length ? (
+            <Button
+              title={getString('common.ok')}
+              theme={theme}
+              variation={ButtonVariation.CLEAR}
+              onPress={() => {
+                if (isArray(novelId)) {
+                  updateNovelCategoryByIds(novelId, selectedCategories);
+                } else {
+                  updateNovelCategoryById(novelId, selectedCategories);
+                }
+                handleCloseModal();
+                onSuccess?.();
+              }}
+            />
+          ) : null}
         </View>
       </Modal>
     </Portal>
@@ -142,5 +162,8 @@ const styles = StyleSheet.create({
   },
   checkboxView: {
     paddingHorizontal: 20,
+  },
+  emptyState: {
+    paddingHorizontal: 24,
   },
 });

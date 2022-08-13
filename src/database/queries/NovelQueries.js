@@ -9,6 +9,7 @@ import { insertChapters } from './ChapterQueries';
 
 import { showToast } from '../../hooks/showToast';
 import { txnErrorCallback } from '../utils/helpers';
+import { noop } from 'lodash';
 
 const insertNovelQuery =
   'INSERT INTO novels (novelUrl, sourceUrl, sourceId, source, novelName, novelCover, novelSummary, author, artist, status, genre) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
@@ -247,24 +248,26 @@ export const updateNovelInfo = async (info, novelId) => {
   });
 };
 
-export const updateNovelCategoryById = async (novelId, categoryId) => {
+export const updateNovelCategoryById = async (novelId, categoryIds) => {
   db.transaction(tx => {
     tx.executeSql(
-      'UPDATE novels SET categoryId = ? WHERE novelId = ?',
-      [categoryId, novelId],
-      (txObj, res) => {},
+      'UPDATE novels SET categoryIds = ? WHERE novelId = ?',
+      [JSON.stringify(categoryIds), novelId],
+      noop,
       txnErrorCallback,
     );
   });
 };
 
-export const updateNovelCategoryByIds = async (novelIds, categoryId) => {
+export const updateNovelCategoryByIds = async (novelIds, categoryIds) => {
   db.transaction(tx => {
     novelIds.map(novelId =>
-      tx.executeSql('UPDATE novels SET categoryId = ? WHERE novelId = ?', [
-        categoryId,
-        novelId,
-      ]),
+      tx.executeSql(
+        'UPDATE novels SET categoryIds = ? WHERE novelId = ?',
+        [JSON.stringify(categoryIds), novelId],
+        noop,
+        txnErrorCallback,
+      ),
     );
   });
 };

@@ -159,8 +159,9 @@ const LibraryScreen = () => {
       />
       <SetCategoryModal
         novelId={selectedNovelIds}
-        currentCategoryId={0}
+        currentCategoryIds={[0]}
         closeModal={closeSetCategoryModal}
+        onEditCategories={() => setSelectedNovelIds([])}
         visible={setCategoryModalVisible}
         onSuccess={() => {
           setSelectedNovelIds([]);

@@ -129,7 +129,7 @@ const NovelScreenButtonGroup: React.FC<NovelScreenButtonGroupProps> = ({
       <Portal>
         <SetCategoryModal
           novelId={novel.novelId}
-          currentCategoryId={novel.categoryId}
+          currentCategoryIds={JSON.parse(novel.categoryIds) as number[]}
           closeModal={closeSetCategoryModal}
           visible={setCategoryModalVisible}
         />

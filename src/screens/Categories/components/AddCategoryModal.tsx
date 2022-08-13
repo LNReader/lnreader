@@ -60,7 +60,7 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
           )}
         </Text>
         <TextInput
-          value={categoryName}
+          defaultValue={categoryName}
           placeholder={getString('common.name')}
           onChangeText={setCategoryName}
           mode="outlined"

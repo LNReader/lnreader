@@ -32,8 +32,15 @@ export const useLibrary = ({ searchText }: { searchText?: string }) => {
 
     const res = categories.map(category => ({
       ...category,
-      novels: novels.filter(novel => novel.categoryId === category.id),
+      novels: novels.filter(novel =>
+        JSON.parse(novel.categoryIds).includes(category.id),
+      ),
     }));
+
+    // Remove default category if empty
+    if (res.length > 1 && !res[0].novels.length) {
+      res.shift();
+    }
 
     setLibrary(res);
     setIsLoading(false);
