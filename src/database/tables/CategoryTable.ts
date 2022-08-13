@@ -1,4 +1,4 @@
-export const createCategoriesTable = `
+export const createCategoriesTableQuery = `
     CREATE TABLE IF NOT EXISTS categories(
         id INTEGER PRIMARY KEY AUTOINCREMENT, 
         name TEXT NOT NULL,
@@ -6,7 +6,7 @@ export const createCategoriesTable = `
       )
   `;
 
-export const createDefaultCategory =
+export const createDefaultCategoryQuery =
   'INSERT INTO categories (id, name) VALUES (1, "Default");';
 
 export const createCategorydIndexQuery =

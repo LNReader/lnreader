@@ -17,29 +17,47 @@ import {
 import { createDownloadTableQuery } from './tables/DownloadTable';
 import { createUpdatesTableQuery } from './tables/UpdateTable';
 import {
-  createCategoriesTable,
+  createCategoriesTableQuery,
   createCategorydIndexQuery,
-  createDefaultCategory,
+  createDefaultCategoryQuery,
 } from './tables/CategoryTable';
+import {
+  dbTxnErrorCallback,
+  txnErrorCallbackWithoutToast,
+} from './utils/helpers';
+import { noop } from 'lodash';
 
 const dbName = 'lnreader.db';
 
 const db = SQLite.openDatabase(dbName);
 
-export const createDB = () => {
+const createTables = () => {
   db.transaction(tx => {
-    tx.executeSql(createNovelTableQuery);
+    tx.executeSql(createCategoriesTableQuery, [], () => {
+      tx.executeSql(
+        createDefaultCategoryQuery,
+        undefined,
+        noop,
+        txnErrorCallbackWithoutToast,
+      );
+    });
+    tx.executeSql(createNovelTableQuery, [], () => {
+      tx.executeSql(
+        addCategoryColumnQuery,
+        undefined,
+        noop,
+        txnErrorCallbackWithoutToast,
+      );
+    });
     tx.executeSql(createChapterTableQuery);
     tx.executeSql(createHistoryTableQuery);
     tx.executeSql(createDownloadTableQuery);
     tx.executeSql(createUpdatesTableQuery);
-    tx.executeSql(createCategoriesTable);
-    tx.executeSql(addCategoryColumnQuery);
-    tx.executeSql(createDefaultCategory);
+  });
+};
 
-    /**
-     * Indexes
-     */
+const createIndexes = () => {
+  db.transaction(tx => {
     tx.executeSql(createUrlIndexQuery);
     tx.executeSql(createLibraryIndexQuery);
     tx.executeSql(createNovelIdIndexQuery);
@@ -49,13 +67,25 @@ export const createDB = () => {
   });
 };
 
-export const deleteDb = () => {
-  db.transaction(tx => {
-    tx.executeSql('DROP TABLE novels');
-    tx.executeSql('DROP TABLE chapters');
-    tx.executeSql('DROP TABLE history');
-    tx.executeSql('DROP TABLE downloads');
-    tx.executeSql('DROP TABLE updates');
-    tx.executeSql('DROP TABLE categories');
-  });
+export const createDatabase = async () => {
+  createTables();
+  createIndexes();
+};
+
+/**
+ * For Testing
+ */
+export const deleteDatabase = () => {
+  db.transaction(
+    tx => {
+      tx.executeSql('DROP TABLE novels');
+      tx.executeSql('DROP TABLE chapters');
+      tx.executeSql('DROP TABLE history');
+      tx.executeSql('DROP TABLE downloads');
+      tx.executeSql('DROP TABLE updates');
+      tx.executeSql('DROP TABLE categories');
+    },
+    dbTxnErrorCallback,
+    noop,
+  );
 };

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 
 import { getCategoriesFromDb } from '../../../database/queries/CategoryQueries';
@@ -22,6 +22,8 @@ export const useLibrary = ({ searchText }: { searchText?: string }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   const getLibrary = async () => {
+    setIsLoading(true);
+
     const categories = await getCategoriesFromDb();
     const novels = await getLibraryFromDb({
       searchText,
@@ -48,7 +50,6 @@ export const useLibrary = ({ searchText }: { searchText?: string }) => {
 
   useFocusEffect(
     useCallback(() => {
-      setIsLoading(true);
       getLibrary();
     }, [searchText, filter, sortOrder, downloadedOnlyMode]),
   );
@@ -65,9 +66,11 @@ export const useLibraryNovels = () => {
     setLibrary(novels);
   };
 
-  useEffect(() => {
-    getLibrary();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      getLibrary();
+    }, []),
+  );
 
   return { library };
 };

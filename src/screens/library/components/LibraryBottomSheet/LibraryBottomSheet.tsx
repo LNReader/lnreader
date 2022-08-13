@@ -82,7 +82,7 @@ const SecondRoute = () => {
                 ? 'asc'
                 : sortOrder === item.DESC
                 ? 'desc'
-                : null
+                : undefined
             }
             onPress={() =>
               setLibrarySettings({

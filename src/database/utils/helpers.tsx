@@ -8,3 +8,10 @@ export const txnErrorCallback = (
   showToast(error.message);
   return false;
 };
+
+export const txnErrorCallbackWithoutToast = (): boolean => {
+  return false;
+};
+
+export const dbTxnErrorCallback = (error: SQLError): void =>
+  showToast(error.message);
