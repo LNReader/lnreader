@@ -40,6 +40,7 @@ const BrowseScreen = () => {
 
   const {
     allSources,
+    searchResults,
     pinnedSourceIds = [],
     languageFilters = ['English'],
     lastUsed,
@@ -93,6 +94,44 @@ const BrowseScreen = () => {
     [],
   );
 
+  const sections = useMemo(() => {
+    const list = [
+      {
+        header: getString('browseScreen.lastUsed'),
+        data: lastUsedSource,
+      },
+    ];
+
+    if (pinnedSourceIds) {
+      list.push({
+        header: getString('browseScreen.pinned'),
+        data: pinnedSources,
+      });
+    }
+
+    if (!onlyShowPinnedSources) {
+      if (searchText) {
+        list.push({
+          header: getString('common.searchResults'),
+          data: searchResults,
+        });
+      } else {
+        list.push({
+          header: getString('browseScreen.all'),
+          data: allSources,
+        });
+      }
+    }
+
+    return list;
+  }, [
+    lastUsedSource,
+    pinnedSourceIds,
+    onlyShowPinnedSources,
+    JSON.stringify(searchResults),
+    searchText,
+  ]);
+
   return (
     <>
       <SearchbarV2
@@ -113,17 +152,7 @@ const BrowseScreen = () => {
       ) : allSources.length === 0 ? null : (
         <>
           <SectionList
-            sections={[
-              {
-                header: getString('browseScreen.lastUsed'),
-                data: lastUsedSource,
-              },
-              { header: getString('browseScreen.pinned'), data: pinnedSources },
-              {
-                header: getString('browseScreen.all'),
-                data: onlyShowPinnedSources ? [] : allSources,
-              },
-            ]}
+            sections={sections}
             ListHeaderComponent={
               showMyAnimeList ? (
                 <>

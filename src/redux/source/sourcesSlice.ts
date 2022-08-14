@@ -5,6 +5,7 @@ import { Source } from '../../sources/types';
 
 interface SourcesState {
   allSources: Source[];
+  searchResults: Source[];
   pinnedSourceIds: number[];
   lastUsed: number | null;
   languageFilters: string[];
@@ -12,6 +13,7 @@ interface SourcesState {
 
 const initialState: SourcesState = {
   allSources: AllSources,
+  searchResults: [],
   pinnedSourceIds: [],
   lastUsed: null,
   languageFilters: ['English'],
@@ -29,17 +31,13 @@ export const sourcesSlice = createSlice({
       state.allSources = sources;
     },
     searchSourcesAction: (state, action: PayloadAction<string>) => {
-      state.allSources = AllSources.filter(
-        source => state.languageFilters.indexOf(source.lang) !== -1,
-      )
-        .sort((a, b) => a.sourceName.localeCompare(b.sourceName))
-        .filter(
-          (source: Source) =>
-            source.sourceName
-              .toLowerCase()
-              .includes(action.payload.toLowerCase()) &&
-            state.languageFilters.indexOf(source.lang) !== -1,
-        );
+      if (state?.pinnedSourceIds === undefined) {
+        state.pinnedSourceIds = [];
+      }
+
+      state.searchResults = state.allSources.filter((source: Source) =>
+        source.sourceName.toLowerCase().includes(action.payload.toLowerCase()),
+      );
     },
     setLastUsedSource: (state, action: PayloadAction<{ sourceId: number }>) => {
       state.lastUsed = action.payload.sourceId;

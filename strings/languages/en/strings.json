@@ -13,7 +13,8 @@
     "edit": "Edit",
     "name": "Name",
     "searchFor": "Search for",
-    "globally": "globally"
+    "globally": "globally",
+    "searchResults": "Search results"
   },
   "library": "Library",
   "libraryScreen": {
