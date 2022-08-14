@@ -7,7 +7,14 @@
     "reset": "Réinitialiser",
     "search": "Recherchez",
     "install": "Install",
-    "newUpdateAvailable": "New update available"
+    "newUpdateAvailable": "New update available",
+    "categories": "Categories",
+    "add": "Add",
+    "edit": "Edit",
+    "name": "Name",
+    "searchFor": "Search for",
+    "globally": "globally",
+    "searchResults": "Search results"
   },
   "library": "Bibliothèque",
   "libraryScreen": {
@@ -17,7 +24,8 @@
       "filters": {
         "downloaded": "Téléchargé",
         "unread": "Non lu",
-        "completed": "Complété"
+        "completed": "Complété",
+        "started": "Started"
       },
       "sortOrders": {
         "dateAdded": "Date ajoutée",
@@ -28,7 +36,7 @@
         "displayMode": "Mode d'affichage",
         "compact": "Grille compacte",
         "comfortable": "Grille confortable",
-        "noTitle": "Grille sans titre",
+        "noTitle": "Cover only grid",
         "list": "Liste",
         "badges": "Badges",
         "downloadBadges": "Télécharger les badges",
@@ -56,7 +64,9 @@
     "lastUsed": "Dernière utilisation",
     "pinned": "Épinglé",
     "all": "Tout",
-    "latest": "Dernier"
+    "latest": "Dernier",
+    "addedToLibrary": "Added to library",
+    "removeFromLibrary": "Removed from library"
   },
   "readerScreen": {
     "finished": "Terminé",
@@ -83,6 +93,7 @@
     "continueReading": "Continuer la lecture",
     "chapters": "chapitres",
     "migrate": "Migrer",
+    "noSummary": "No summary",
     "bottomSheet": {
       "filter": "Filtre",
       "sort": "Trier",
@@ -140,5 +151,22 @@
       "lastWeek": "[Last] dddd",
       "sameElse": "LL"
     }
+  },
+  "categories": {
+    "addCategories": "Add category",
+    "editCategories": "Rename category",
+    "setCategories": "Set categories",
+    "header": "Edit Categories",
+    "emptyMsg": "You have no categories. Tap the plus button to create one for organizing your library",
+    "setModalEmptyMsg": "You have no categories. Tap the Edit button to create one for organizing your library",
+    "deleteModal": {
+      "header": "Delete category",
+      "desc": "Do you wish to delete category"
+    },
+    "duplicateError": "A category with this name already exists!"
+  },
+  "settings": {
+    "icognitoMode": "Incognito mode",
+    "downloadedOnly": "Downloaded only"
   }
 }
