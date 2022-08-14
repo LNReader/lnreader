@@ -7,7 +7,14 @@
     "reset": "Сбросить",
     "search": "Поиск",
     "install": "Установить",
-    "newUpdateAvailable": "Доступно новое обновление"
+    "newUpdateAvailable": "Доступно новое обновление",
+    "categories": "Categories",
+    "add": "Add",
+    "edit": "Edit",
+    "name": "Name",
+    "searchFor": "Search for",
+    "globally": "globally",
+    "searchResults": "Search results"
   },
   "library": "Библиотека",
   "libraryScreen": {
@@ -17,7 +24,8 @@
       "filters": {
         "downloaded": "Загружено",
         "unread": "Не прочитано",
-        "completed": "Завершено"
+        "completed": "Завершено",
+        "started": "Started"
       },
       "sortOrders": {
         "dateAdded": "По дате добавления",
@@ -28,7 +36,7 @@
         "displayMode": "Режим отображения",
         "compact": "Компактная сетка",
         "comfortable": "Комфортная сетка",
-        "noTitle": "Сетка без заголовков",
+        "noTitle": "Cover only grid",
         "list": "Список",
         "badges": "Значки",
         "downloadBadges": "Загружено Значки",
@@ -56,7 +64,9 @@
     "lastUsed": "Последнее использование",
     "pinned": "Закреплено",
     "all": "Все",
-    "latest": "Последние"
+    "latest": "Последние",
+    "addedToLibrary": "Added to library",
+    "removeFromLibrary": "Removed from library"
   },
   "readerScreen": {
     "finished": "Завершено",
@@ -83,6 +93,7 @@
     "continueReading": "Продолжить чтение",
     "chapters": "главы",
     "migrate": "Перенос",
+    "noSummary": "No summary",
     "bottomSheet": {
       "filter": "Фильтр",
       "sort": "Сортировка",
@@ -140,5 +151,22 @@
       "lastWeek": "[В прошлый] dddd",
       "sameElse": "LL"
     }
+  },
+  "categories": {
+    "addCategories": "Add category",
+    "editCategories": "Rename category",
+    "setCategories": "Set categories",
+    "header": "Edit Categories",
+    "emptyMsg": "You have no categories. Tap the plus button to create one for organizing your library",
+    "setModalEmptyMsg": "You have no categories. Tap the Edit button to create one for organizing your library",
+    "deleteModal": {
+      "header": "Delete category",
+      "desc": "Do you wish to delete category"
+    },
+    "duplicateError": "A category with this name already exists!"
+  },
+  "settings": {
+    "icognitoMode": "Incognito mode",
+    "downloadedOnly": "Downloaded only"
   }
 }
