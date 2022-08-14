@@ -7,8 +7,9 @@ import {
   TabBar,
   TabView,
 } from 'react-native-tab-view';
+import { useNavigation } from '@react-navigation/native';
 
-import { LoadingScreenV2, SearchbarV2 } from '@components/index';
+import { LoadingScreenV2, SearchbarV2, Button } from '@components/index';
 import { LibraryView } from './components/LibraryListView';
 import LibraryBottomSheet from './components/LibraryBottomSheet/LibraryBottomSheet';
 import { Banner } from './components/Banner';
@@ -28,6 +29,7 @@ import { unfollowNovel } from '../../database/queries/NovelQueries';
 import SetCategoryModal from '@screens/novel/components/SetCategoriesModal';
 import useBoolean from '@hooks/useBoolean';
 import { debounce } from 'lodash';
+import { ButtonVariation } from '@components/Button/Button';
 
 type State = NavigationState<{
   key: string;
@@ -37,6 +39,7 @@ type State = NavigationState<{
 const LibraryScreen = () => {
   const theme = useTheme();
   const { searchText, setSearchText, clearSearchbar } = useSearch();
+  const { navigate } = useNavigation();
   const {
     showNumberOfNovels = false,
     downloadedOnlyMode = false,
@@ -147,12 +150,30 @@ const LibraryScreen = () => {
           isLoading ? (
             <LoadingScreenV2 theme={theme} />
           ) : (
-            <LibraryView
-              categoryId={route.id}
-              novels={route.novels}
-              selectedNovelIds={selectedNovelIds}
-              setSelectedNovelIds={setSelectedNovelIds}
-            />
+            <>
+              {searchText ? (
+                <Button
+                  title={`${getString(
+                    'common.searchFor',
+                  )} "${searchText}" ${getString('common.globally')}`}
+                  theme={theme}
+                  variation={ButtonVariation.CLEAR}
+                  style={styles.globalSearchBtn}
+                  labelStyle={styles.globalSearchBtnLabel}
+                  onPress={() =>
+                    navigate('GlobalSearchScreen', {
+                      searchText,
+                    })
+                  }
+                />
+              ) : null}
+              <LibraryView
+                categoryId={route.id}
+                novels={route.novels}
+                selectedNovelIds={selectedNovelIds}
+                setSelectedNovelIds={setSelectedNovelIds}
+              />
+            </>
           )
         }
         onIndexChange={setIndex}
@@ -214,5 +235,12 @@ const styles = StyleSheet.create({
   tabBar: {
     elevation: 0,
     borderBottomWidth: 1,
+  },
+  globalSearchBtn: {
+    margin: 16,
+  },
+  globalSearchBtnLabel: {
+    fontWeight: 'bold',
+    // fontSize: 13,
   },
 });

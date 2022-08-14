@@ -15,6 +15,8 @@ export interface StringMap {
   'common.add': 'string';
   'common.edit': 'string';
   'common.name': 'string';
+  'common.searchFor': 'string';
+  'common.globally': 'string';
   'library': 'string';
   'libraryScreen.searchbar': 'string';
   'libraryScreen.empty': 'string';

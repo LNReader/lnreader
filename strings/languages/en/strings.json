@@ -11,7 +11,9 @@
     "categories": "Categories",
     "add": "Add",
     "edit": "Edit",
-    "name": "Name"
+    "name": "Name",
+    "searchFor": "Search for",
+    "globally": "globally"
   },
   "library": "Library",
   "libraryScreen": {

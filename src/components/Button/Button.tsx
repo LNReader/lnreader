@@ -24,6 +24,7 @@ interface Props {
   onPress?: () => void;
   theme: ThemeType;
   style?: ViewStyle;
+  labelStyle?: StyleProp<TextStyle>;
   disabled?: boolean;
 }
 
@@ -35,6 +36,7 @@ const Button: React.FC<Props> = ({
   theme,
   style,
   disabled,
+  labelStyle,
 }) => {
   const textStyles: StyleProp<TextStyle> = useMemo(
     () => ({
@@ -72,7 +74,7 @@ const Button: React.FC<Props> = ({
         android_ripple={{ color: theme.rippleColor }}
         disabled={disabled}
       >
-        <Text style={textStyles} numberOfLines={1}>
+        <Text style={[textStyles, labelStyle]} numberOfLines={1}>
           {title}
         </Text>
       </Pressable>

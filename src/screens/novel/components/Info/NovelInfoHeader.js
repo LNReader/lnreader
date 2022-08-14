@@ -71,7 +71,7 @@ const NovelInfoHeader = ({
               theme={theme}
               onPress={() =>
                 navigation.navigate('GlobalSearchScreen', {
-                  novelName: item.novelName,
+                  searchText: item.novelName,
                 })
               }
               onLongPress={() => {
