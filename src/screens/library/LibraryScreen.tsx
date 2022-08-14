@@ -148,6 +148,7 @@ const LibraryScreen = () => {
             <LoadingScreenV2 theme={theme} />
           ) : (
             <LibraryView
+              categoryId={route.id}
               novels={route.novels}
               selectedNovelIds={selectedNovelIds}
               setSelectedNovelIds={setSelectedNovelIds}

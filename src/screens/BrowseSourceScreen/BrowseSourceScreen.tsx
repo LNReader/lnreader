@@ -142,7 +142,9 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
             }
           }}
           ListFooterComponent={
-            hasNextPage && !searchText && <LoadingMoreIndicator theme={theme} />
+            hasNextPage && !searchText ? (
+              <LoadingMoreIndicator theme={theme} />
+            ) : undefined
           }
         />
       )}

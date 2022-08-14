@@ -74,9 +74,15 @@ export const getLibrary = ({
   );
 };
 
-const getLibraryNovelsQuery = 'SELECT * FROM novels WHERE followed = 1';
+export const getLibraryNovelsFromDb = (
+  onlyOngoingNovels?: boolean,
+): Promise<NovelInfo[]> => {
+  let getLibraryNovelsQuery = 'SELECT * FROM novels WHERE followed = 1';
 
-export const getLibraryNovelsFromDb = (): Promise<NovelInfo[]> => {
+  if (onlyOngoingNovels) {
+    getLibraryNovelsQuery += ' AND status NOT LIKE "Completed"';
+  }
+
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(

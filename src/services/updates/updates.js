@@ -1,6 +1,7 @@
 import * as Notifications from 'expo-notifications';
 import BackgroundService from 'react-native-background-actions';
 
+import { getCategoryNovelsFromDb } from '../../database/queries/NovelQueriesV2';
 import { getLibraryNovelsFromDb } from '../../database/queries/LibraryQueries';
 
 import { showToast } from '../../hooks/showToast';
@@ -19,12 +20,17 @@ Notifications.setNotificationHandler({
 const sleep = time => new Promise(resolve => setTimeout(() => resolve(), time));
 
 const updateLibrary = async options => {
-  const { onlyUpdateOngoingNovels } = options;
+  const { onlyUpdateOngoingNovels, categoryId } = options;
 
-  let libraryNovels = await getLibraryNovelsFromDb();
+  let libraryNovels = [];
 
-  if (onlyUpdateOngoingNovels) {
-    libraryNovels = libraryNovels.filter(item => item.status !== 'Completed');
+  if (categoryId) {
+    libraryNovels = await getCategoryNovelsFromDb(
+      categoryId,
+      onlyUpdateOngoingNovels,
+    );
+  } else {
+    libraryNovels = await getLibraryNovelsFromDb(onlyUpdateOngoingNovels);
   }
 
   const notificationOptions = {
