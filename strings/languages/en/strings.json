@@ -91,6 +91,7 @@
     "continueReading": "Continue reading",
     "chapters": "chapters",
     "migrate": "Migrate",
+    "noSummary": "No summary",
     "bottomSheet": {
       "filter": "Filter",
       "sort": "Sort",

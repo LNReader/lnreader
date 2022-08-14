@@ -72,6 +72,7 @@ export interface StringMap {
   'novelScreen.continueReading': 'string';
   'novelScreen.chapters': 'string';
   'novelScreen.migrate': 'string';
+  'novelScreen.noSummary': 'string';
   'novelScreen.bottomSheet.filter': 'string';
   'novelScreen.bottomSheet.sort': 'string';
   'novelScreen.bottomSheet.display': 'string';

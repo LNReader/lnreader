@@ -1,3 +1,4 @@
+import { getString } from '@strings/translations';
 import React, { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -19,7 +20,11 @@ const NovelSummary: React.FC<NovelSummaryProps> = ({
   const iconBackground = `${theme.colorPrimaryDark}D1`;
 
   const [expanded, setExpanded] = useState(isExpanded);
-  const toggleExpanded = () => setExpanded(!expanded);
+  const toggleExpanded = () => {
+    if (summary) {
+      setExpanded(!expanded);
+    }
+  };
 
   const bottom = expanded ? 0 : 4;
   const containerBottomPadding = expanded ? 24 : 8;
@@ -36,24 +41,26 @@ const NovelSummary: React.FC<NovelSummaryProps> = ({
         style={[styles.summaryText, { color: textColor }]}
         numberOfLines={expanded ? Number.MAX_SAFE_INTEGER : 3}
       >
-        {summary}
+        {summary || getString('novelScreen.noSummary')}
       </Text>
-      <View
-        style={[
-          styles.iconContainer,
-          {
-            backgroundColor: iconBackground,
-            bottom,
-          },
-        ]}
-      >
-        <MaterialCommunityIcons
-          name={expanded ? 'chevron-up' : 'chevron-down'}
-          color={theme.textColorPrimary}
-          size={24}
-          style={[{ backgroundColor: theme.colorPrimaryDark }, styles.icon]}
-        />
-      </View>
+      {summary ? (
+        <View
+          style={[
+            styles.iconContainer,
+            {
+              backgroundColor: iconBackground,
+              bottom,
+            },
+          ]}
+        >
+          <MaterialCommunityIcons
+            name={expanded ? 'chevron-up' : 'chevron-down'}
+            color={theme.textColorPrimary}
+            size={24}
+            style={[{ backgroundColor: theme.colorPrimaryDark }, styles.icon]}
+          />
+        </View>
+      ) : null}
     </Pressable>
   );
 };

@@ -116,7 +116,6 @@ const NovelTitle = ({ theme, children, onLongPress, onPress }) => (
   <Text
     onLongPress={onLongPress}
     onPress={onPress}
-    numberOfLines={2}
     style={[styles.novelTitle, { color: theme.textColorPrimary }]}
   >
     {children}
@@ -124,10 +123,7 @@ const NovelTitle = ({ theme, children, onLongPress, onPress }) => (
 );
 
 const NovelAuthor = ({ theme, children }) => (
-  <Text
-    style={[styles.novelAuthor, { color: theme.textColorSecondary }]}
-    numberOfLines={2}
-  >
+  <Text style={[styles.novelAuthor, { color: theme.textColorSecondary }]}>
     {children}
   </Text>
 );
@@ -242,11 +238,8 @@ const styles = StyleSheet.create({
     marginBottom: 0,
     paddingTop: 90,
   },
-  coverImage: {
-    height: 270,
-  },
+  coverImage: {},
   linearGradient: {
-    height: 271,
     flex: 1,
   },
   novelThumbnail: {
