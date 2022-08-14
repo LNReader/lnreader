@@ -1,5 +1,5 @@
 import * as cheerio from 'cheerio';
-const baseUrl = 'https://www.wuxiaworld.co/';
+const baseUrl = 'https://m.wuxiaworld.co/';
 
 const popularNovels = async page => {
   let totalPages = 1;
