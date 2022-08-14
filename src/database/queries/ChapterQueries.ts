@@ -343,6 +343,34 @@ export const downloadChapter = async (
   });
 };
 
+const deleteDownloadedImages = async (
+  sourceId: number,
+  novelId: number,
+  chapterId: number,
+) => {
+  try {
+    const path = `${RNFetchBlob.fs.dirs.DownloadDir}/LNReader/`;
+    const files = await RNFetchBlob.fs.ls(
+      await createImageFolder(path, { sourceId, novelId, chapterId }),
+    );
+    for (let i = 0; i < files.length; i++) {
+      const ex = /(.*?)_(.*?)#(.*?)/.exec(files[i]);
+      if (ex) {
+        if (
+          parseInt(ex[1], 10) === sourceId &&
+          parseInt(ex[2], 10) === chapterId
+        ) {
+          if (await RNFetchBlob.fs.exists(`${path}${files[i]}`)) {
+            RNFetchBlob.fs.unlink(`${path}${files[i]}`);
+          }
+        }
+      }
+    }
+  } catch (error) {
+    showToast(error.message);
+  }
+};
+
 export const deleteChapter = async (
   sourceId: number,
   novelId: number,
@@ -352,23 +380,7 @@ export const deleteChapter = async (
     'UPDATE chapters SET downloaded = 0 WHERE chapterId=?';
   const deleteChapterQuery = 'DELETE FROM downloads WHERE downloadChapterId=?';
 
-  const path = `${RNFetchBlob.fs.dirs.DownloadDir}/LNReader/`;
-  const files = await RNFetchBlob.fs.ls(
-    await createImageFolder(path, { sourceId, novelId, chapterId }),
-  );
-  for (let i = 0; i < files.length; i++) {
-    const ex = /(.*?)_(.*?)#(.*?)/.exec(files[i]);
-    if (ex) {
-      if (
-        parseInt(ex[1], 10) === sourceId &&
-        parseInt(ex[2], 10) === chapterId
-      ) {
-        if (await RNFetchBlob.fs.exists(`${path}${files[i]}`)) {
-          RNFetchBlob.fs.unlink(`${path}${files[i]}`);
-        }
-      }
-    }
-  }
+  await deleteDownloadedImages(sourceId, novelId, chapterId);
 
   db.transaction(tx => {
     tx.executeSql(
