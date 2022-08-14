@@ -60,17 +60,17 @@ export default GridSizeModal;
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 20,
+    paddingVertical: 24,
     margin: 20,
-    borderRadius: 6,
+    borderRadius: 28,
   },
   modalHeader: {
-    paddingHorizontal: 20,
+    paddingHorizontal: 24,
     fontSize: 18,
     marginBottom: 10,
   },
   modalDescription: {
-    paddingHorizontal: 20,
+    paddingHorizontal: 24,
     marginBottom: 16,
   },
   slider: {

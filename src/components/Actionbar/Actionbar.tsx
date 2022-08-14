@@ -37,7 +37,11 @@ export const Actionbar: React.FC<ActionbarProps> = ({
       <View
         style={[
           styles.actionbarContainer,
-          { backgroundColor: theme.colorPrimary, paddingBottom: bottom },
+          {
+            backgroundColor: theme.colorPrimary,
+            minHeight: 80 + bottom,
+            paddingBottom: bottom,
+          },
           viewStyle,
         ]}
       >
@@ -70,7 +74,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: Dimensions.get('window').width,
     bottom: 0,
-    minHeight: 86,
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
     elevation: 1,

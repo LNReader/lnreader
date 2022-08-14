@@ -5,7 +5,7 @@ import { Modal, Portal, TextInput } from 'react-native-paper';
 import { ButtonVariation } from '@components/Button/Button';
 import { Button } from '@components/index';
 
-import { Category } from 'src/database/types';
+import { Category } from '../../../database/types';
 import {
   createCategory,
   isCategoryNameDuplicate,
@@ -60,17 +60,17 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
           )}
         </Text>
         <TextInput
+          autoFocus
           defaultValue={categoryName}
           placeholder={getString('common.name')}
           onChangeText={setCategoryName}
           mode="outlined"
           theme={textInputTheme}
           underlineColor={theme.textColorHint}
-          dense
         />
         <View style={styles.btnContainer}>
           <Button
-            title={getString('common.add')}
+            title={getString(isEditMode ? 'common.ok' : 'common.add')}
             theme={theme}
             variation={ButtonVariation.CLEAR}
             onPress={async () => {

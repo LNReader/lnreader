@@ -41,7 +41,6 @@ import {
   SET_CHAPTER_LIST_PREF,
   SET_LAST_READ,
 } from '../preferences/preference.types';
-import { getLibrary } from '../../database/queries/LibraryQueries';
 import { showToast } from '../../hooks/showToast';
 
 import * as Notifications from 'expo-notifications';

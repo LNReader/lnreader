@@ -1,7 +1,7 @@
 import * as Notifications from 'expo-notifications';
 import BackgroundService from 'react-native-background-actions';
 
-import { getLibrary } from '../../database/queries/LibraryQueries';
+import { getLibraryNovelsFromDb } from '../../database/queries/LibraryQueries';
 
 import { showToast } from '../../hooks/showToast';
 import { updateNovel } from './LibraryUpdateQueries';
@@ -21,7 +21,7 @@ const sleep = time => new Promise(resolve => setTimeout(() => resolve(), time));
 const updateLibrary = async options => {
   const { onlyUpdateOngoingNovels } = options;
 
-  let libraryNovels = await getLibrary();
+  let libraryNovels = await getLibraryNovelsFromDb();
 
   if (onlyUpdateOngoingNovels) {
     libraryNovels = libraryNovels.filter(item => item.status !== 'Completed');

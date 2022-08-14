@@ -5,8 +5,8 @@ import React, { useRef, useEffect, FunctionComponent } from 'react';
 import { StatusBar, StyleSheet, View } from 'react-native';
 
 import WebView from 'react-native-webview';
-import { ChapterItem } from 'src/database/types';
-import { ThemeType } from 'src/theme/types';
+import { ChapterItem } from '../../../database/types';
+import { ThemeType } from '../../../theme/types';
 
 import { readerBackground } from '../utils/readerStyles';
 

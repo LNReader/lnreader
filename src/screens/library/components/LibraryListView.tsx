@@ -7,7 +7,7 @@ import { EmptyView } from '@components/index';
 import NovelCover from '@components/NovelCover';
 import NovelList from '@components/NovelList';
 
-import { LibraryNovelInfo } from 'src/database/types';
+import { LibraryNovelInfo } from '../../../database/types';
 
 import { setNovel } from '@redux/novel/novel.actions';
 

@@ -27,7 +27,7 @@ const DisplayModeModal = ({
       >
         {displayModesList.map(mode => (
           <RadioButton
-            key={mode.displayMode}
+            key={mode.value}
             status={displayMode === mode.value}
             onPress={() => setLibrarySettings({ displayMode: mode.value })}
             label={mode.label}
@@ -45,6 +45,6 @@ const styles = StyleSheet.create({
   containerStyle: {
     paddingVertical: 20,
     margin: 20,
-    borderRadius: 6,
+    borderRadius: 28,
   },
 });

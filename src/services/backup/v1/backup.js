@@ -4,7 +4,10 @@ import * as Notifications from 'expo-notifications';
 import BackgroundService from 'react-native-background-actions';
 
 import { restoreLibrary } from '../../../database/queries/NovelQueries';
-import { getLibrary } from '../../../database/queries/LibraryQueries';
+import {
+  getLibraryNo,
+  getLibraryNovelsFromDb,
+} from '../../../database/queries/LibraryQueries';
 import { showToast } from '../../../hooks/showToast';
 import dayjs from 'dayjs';
 
@@ -22,7 +25,7 @@ Notifications.setNotificationHandler({
 
 export const createBackup = async () => {
   try {
-    const novels = await getLibrary();
+    const novels = await getLibraryNovelsFromDb();
 
     const permissions =
       await StorageAccessFramework.requestDirectoryPermissionsAsync();
@@ -49,7 +52,7 @@ export const createBackup = async () => {
         JSON.stringify(novels),
       );
 
-      showToast('Backup created');
+      showToast(`Backup created ${fileName}`);
     }
   } catch (error) {
     showToast(error.message);

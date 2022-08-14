@@ -148,7 +148,7 @@
   },
   "categories": {
     "addCategories": "Add category",
-    "editCategories": "Edit category",
+    "editCategories": "Rename category",
     "setCategories": "Set categories",
     "header": "Edit Categories",
     "emptyMsg": "You have no categories. Tap the plus button to create one for organizing your library",

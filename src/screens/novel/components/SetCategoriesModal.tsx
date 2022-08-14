@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, FlatList, StyleSheet, Text, View } from 'react-native';
 import { Modal, Portal } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 
@@ -146,18 +146,19 @@ const styles = StyleSheet.create({
     margin: 30,
     paddingVertical: 32,
     borderRadius: 32,
+    maxHeight: (Dimensions.get('window').height * 3) / 4,
   },
   modalTitle: {
     paddingHorizontal: 24,
     fontSize: 24,
-    marginBottom: 16,
+    marginBottom: 20,
   },
   flex: {
     flex: 1,
   },
   btnContainer: {
     paddingHorizontal: 24,
-    marginTop: 24,
+    marginTop: 20,
     flexDirection: 'row',
   },
   checkboxView: {

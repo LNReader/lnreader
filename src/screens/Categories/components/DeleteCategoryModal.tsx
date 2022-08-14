@@ -5,7 +5,7 @@ import { Modal, Portal } from 'react-native-paper';
 import { ButtonVariation } from '@components/Button/Button';
 import { Button } from '@components/index';
 
-import { Category } from 'src/database/types';
+import { Category } from '../../../database/types';
 import { deleteCategoryById } from '../../../database/queries/CategoryQueries';
 import { useTheme } from '@redux/hooks';
 import { getString } from '@strings/translations';

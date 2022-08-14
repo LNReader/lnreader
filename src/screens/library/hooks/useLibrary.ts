@@ -2,9 +2,12 @@ import { useCallback, useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 
 import { getCategoriesFromDb } from '../../../database/queries/CategoryQueries';
-import { getLibrary as getLibraryFromDb } from '../../../database/queries/LibraryQueries';
+import {
+  getLibrary as getLibraryFromDb,
+  getLibraryNovelsFromDb,
+} from '../../../database/queries/LibraryQueries';
 
-import { Category, LibraryNovelInfo } from 'src/database/types';
+import { Category, LibraryNovelInfo, NovelInfo } from '../../../database/types';
 
 import { useLibrarySettings } from '@hooks/useSettings';
 import { LibrarySortOrder } from '../constants/constants';
@@ -24,13 +27,15 @@ export const useLibrary = ({ searchText }: { searchText?: string }) => {
   const getLibrary = async () => {
     setIsLoading(true);
 
-    const categories = await getCategoriesFromDb();
-    const novels = await getLibraryFromDb({
-      searchText,
-      filter,
-      sortOrder,
-      downloadedOnlyMode,
-    });
+    const [categories, novels] = await Promise.all([
+      getCategoriesFromDb(),
+      getLibraryFromDb({
+        searchText,
+        filter,
+        sortOrder,
+        downloadedOnlyMode,
+      }),
+    ]);
 
     const res = categories.map(category => ({
       ...category,
@@ -58,10 +63,10 @@ export const useLibrary = ({ searchText }: { searchText?: string }) => {
 };
 
 export const useLibraryNovels = () => {
-  const [library, setLibrary] = useState<LibraryNovelInfo[]>([]);
+  const [library, setLibrary] = useState<NovelInfo[]>([]);
 
   const getLibrary = async () => {
-    const novels = await getLibraryFromDb({});
+    const novels = await getLibraryNovelsFromDb();
 
     setLibrary(novels);
   };

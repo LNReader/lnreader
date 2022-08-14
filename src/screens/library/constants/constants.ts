@@ -3,7 +3,7 @@ import { getString } from '@strings/translations';
 export enum LibraryFilter {
   Downloaded = 'chaptersDownloaded > 0',
   Unread = 'unread = 1',
-  Completed = 'chaptersUnread IS NULL',
+  Completed = "status LIKE 'Completed'",
   DownloadedOnly = 'AND chaptersDownloaded > 0',
   Started = 'unread = 0',
 }
@@ -38,6 +38,8 @@ export enum LibrarySortOrder {
   TotalChapters_DESC = 'chaptersUnread DESC',
   DateAdded_ASC = 'novelId ASC',
   DateAdded_DESC = 'novelId DESC',
+  LastRead_ASC = 'lastReadAt ASC',
+  LastRead_DESC = 'lastReadAt DESC',
 }
 
 export const librarySortOrderList = [
@@ -45,6 +47,11 @@ export const librarySortOrderList = [
     label: 'Alphabetically',
     ASC: LibrarySortOrder.Alphabetically_ASC,
     DESC: LibrarySortOrder.Alphabetically_DESC,
+  },
+  {
+    label: 'Last Read',
+    ASC: LibrarySortOrder.LastRead_ASC,
+    DESC: LibrarySortOrder.LastRead_DESC,
   },
   {
     label: 'Unread',

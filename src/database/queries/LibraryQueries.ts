@@ -1,6 +1,6 @@
 import { LibraryFilter } from '@screens/library/constants/constants';
 import * as SQLite from 'expo-sqlite';
-import { LibraryNovelInfo } from '../types';
+import { LibraryNovelInfo, NovelInfo } from '../types';
 import { txnErrorCallback } from '../utils/helpers';
 
 const db = SQLite.openDatabase('lnreader.db');
@@ -66,6 +66,21 @@ export const getLibrary = ({
     db.transaction(tx => {
       tx.executeSql(
         query,
+        undefined,
+        (txObj, { rows: { _array } }) => resolve(_array),
+        txnErrorCallback,
+      );
+    }),
+  );
+};
+
+const getLibraryNovelsQuery = 'SELECT * FROM novels WHERE followed = 1';
+
+export const getLibraryNovelsFromDb = (): Promise<NovelInfo[]> => {
+  return new Promise(resolve =>
+    db.transaction(tx => {
+      tx.executeSql(
+        getLibraryNovelsQuery,
         undefined,
         (txObj, { rows: { _array } }) => resolve(_array),
         txnErrorCallback,
