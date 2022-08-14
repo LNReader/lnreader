@@ -7,7 +7,14 @@
     "reset": "Скинути",
     "search": "Пошук",
     "install": "Install",
-    "newUpdateAvailable": "New update available"
+    "newUpdateAvailable": "New update available",
+    "categories": "Categories",
+    "add": "Add",
+    "edit": "Edit",
+    "name": "Name",
+    "searchFor": "Search for",
+    "globally": "globally",
+    "searchResults": "Search results"
   },
   "library": "Бібліотека",
   "libraryScreen": {
@@ -17,7 +24,8 @@
       "filters": {
         "downloaded": "Завантажено",
         "unread": "Не прочитано",
-        "completed": "Завершено"
+        "completed": "Завершено",
+        "started": "Started"
       },
       "sortOrders": {
         "dateAdded": "За датою додання",
@@ -28,7 +36,7 @@
         "displayMode": "Режим відображення",
         "compact": "Компактна сітка",
         "comfortable": "Комфортна сітка",
-        "noTitle": "Сітка без заголовка",
+        "noTitle": "Cover only grid",
         "list": "Список",
         "badges": "Мітки",
         "downloadBadges": "Завантажено",
@@ -56,7 +64,9 @@
     "lastUsed": "Останнє використане",
     "pinned": "Закріплено",
     "all": "Всі",
-    "latest": "Останні"
+    "latest": "Останні",
+    "addedToLibrary": "Added to library",
+    "removeFromLibrary": "Removed from library"
   },
   "readerScreen": {
     "finished": "Завершено",
@@ -83,6 +93,7 @@
     "continueReading": "Продовжити читання",
     "chapters": "розділи",
     "migrate": "Перенести",
+    "noSummary": "No summary",
     "bottomSheet": {
       "filter": "Фільтр",
       "sort": "Сортувати",
@@ -140,5 +151,22 @@
       "lastWeek": "[Last] dddd",
       "sameElse": "LL"
     }
+  },
+  "categories": {
+    "addCategories": "Add category",
+    "editCategories": "Rename category",
+    "setCategories": "Set categories",
+    "header": "Edit Categories",
+    "emptyMsg": "You have no categories. Tap the plus button to create one for organizing your library",
+    "setModalEmptyMsg": "You have no categories. Tap the Edit button to create one for organizing your library",
+    "deleteModal": {
+      "header": "Delete category",
+      "desc": "Do you wish to delete category"
+    },
+    "duplicateError": "A category with this name already exists!"
+  },
+  "settings": {
+    "icognitoMode": "Incognito mode",
+    "downloadedOnly": "Downloaded only"
   }
 }
