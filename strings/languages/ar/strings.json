@@ -7,7 +7,14 @@
     "reset": "إعادة تعيين",
     "search": "بحث",
     "install": "Install",
-    "newUpdateAvailable": "New update available"
+    "newUpdateAvailable": "New update available",
+    "categories": "Categories",
+    "add": "Add",
+    "edit": "Edit",
+    "name": "Name",
+    "searchFor": "Search for",
+    "globally": "globally",
+    "searchResults": "Search results"
   },
   "library": "المكتبة",
   "libraryScreen": {
@@ -17,7 +24,8 @@
       "filters": {
         "downloaded": "التحميلات",
         "unread": "غير مقروء",
-        "completed": "مكتمل"
+        "completed": "مكتمل",
+        "started": "Started"
       },
       "sortOrders": {
         "dateAdded": "تاريخ الإضافة",
@@ -28,7 +36,7 @@
         "displayMode": "نمط العرض",
         "compact": "الشبكة المدمجة",
         "comfortable": "الشبكة المريحة",
-        "noTitle": "شبكة اللا عنوان",
+        "noTitle": "Cover only grid",
         "list": "القائمة",
         "badges": "الأوسمة",
         "downloadBadges": "تحميل الاوسمة",
@@ -56,7 +64,9 @@
     "lastUsed": "اخر استخدام",
     "pinned": "مثبت",
     "all": "الجميع",
-    "latest": "الاخير"
+    "latest": "الاخير",
+    "addedToLibrary": "Added to library",
+    "removeFromLibrary": "Removed from library"
   },
   "readerScreen": {
     "finished": "انتهى",
@@ -83,6 +93,7 @@
     "continueReading": "متابعة القراءة",
     "chapters": "الفصول",
     "migrate": "نقل",
+    "noSummary": "No summary",
     "bottomSheet": {
       "filter": "التصفية",
       "sort": "الفرز",
@@ -140,5 +151,22 @@
       "lastWeek": "[Last] dddd",
       "sameElse": "LL"
     }
+  },
+  "categories": {
+    "addCategories": "Add category",
+    "editCategories": "Rename category",
+    "setCategories": "Set categories",
+    "header": "Edit Categories",
+    "emptyMsg": "You have no categories. Tap the plus button to create one for organizing your library",
+    "setModalEmptyMsg": "You have no categories. Tap the Edit button to create one for organizing your library",
+    "deleteModal": {
+      "header": "Delete category",
+      "desc": "Do you wish to delete category"
+    },
+    "duplicateError": "A category with this name already exists!"
+  },
+  "settings": {
+    "icognitoMode": "Incognito mode",
+    "downloadedOnly": "Downloaded only"
   }
 }
