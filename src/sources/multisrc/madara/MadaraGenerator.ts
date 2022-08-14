@@ -313,3 +313,17 @@ export const NovelsticScraper = new MadaraScraper(
   'Novelstic',
   { 'totalPages': 69, 'useNewChapterEndpoint': true, 'lang': 'English' },
 );
+
+export const NeoSekaiTranslationsScraper = new MadaraScraper(
+  133,
+  'https://www.neosekaitranslations.com/',
+  'NeoSekai Translations',
+  { 'totalPages': 1, 'lang': 'English' },
+);
+
+export const MTLDashNovelScraper = new MadaraScraper(
+  134,
+  'https://mtl-novel.com/',
+  'MTL-Novel',
+  { 'totalPages': 51, 'lang': 'English', 'orderBy': 'latest' },
+);

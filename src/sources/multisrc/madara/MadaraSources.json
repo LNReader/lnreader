@@ -337,5 +337,24 @@
       "useNewChapterEndpoint": true,
       "lang": "English"
     }
+  },
+  {
+    "sourceId": 133,
+    "baseUrl": "https://www.neosekaitranslations.com/",
+    "sourceName": "NeoSekai Translations",
+    "options": {
+      "totalPages": 1,
+      "lang": "English"
+    }
+  },
+  {
+    "sourceId": 134,
+    "baseUrl": "https://mtl-novel.com/",
+    "sourceName": "MTL-Novel",
+    "options": {
+      "totalPages": 51,
+      "lang": "English",
+      "orderBy": "latest"
+    }
   }
 ]

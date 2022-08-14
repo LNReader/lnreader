@@ -880,5 +880,19 @@
     "sourceName": "Ranobes",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/master/icons/src/en/ranobes/icon.png?raw=true",
     "lang": "Russian"
+  },
+  {
+    "sourceId": 133,
+    "sourceName": "NeoSekai Translations",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/neosekaitranslations.png?raw=true",
+    "url": "https://www.neosekaitranslations.com/",
+    "lang": "English"
+  },
+  {
+    "sourceId": 134,
+    "sourceName": "MTL-Novel",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/mtl-novel.png?raw=true",
+    "url": "https://mtl-novel.com/",
+    "lang": "English"
   }
 ]

@@ -1,5 +1,7 @@
 const path = require('path');
 const fs = require('fs');
+const prettier = require('prettier');
+const prettierConfig = require('../.prettierrc');
 
 const MadaraSources = require('../src/sources/multisrc/madara/MadaraSources.json');
 const AllSources = require('../src/sources/sources.json');
@@ -7,6 +9,7 @@ const AllSources = require('../src/sources/sources.json');
 const getScraperName = scraperName => {
   let name = scraperName
     .replace(/\s+/g, '')
+    .replace(/-/g, 'Dash')
     .replace(/\./g, 'Dot')
     .replace('1st', 'First');
 
@@ -24,6 +27,11 @@ MadaraSources.forEach(source => {
     )}Scraper = new MadaraScraper(${source.sourceId}, "${source.baseUrl}", "${
       source.sourceName
     }", ${source.options ? JSON.stringify(source.options) : ''});\n\n`;
+});
+
+content = prettier.format(content, {
+  parser: 'typescript',
+  ...prettierConfig,
 });
 
 fs.writeFile(
@@ -51,6 +59,12 @@ MadaraSources.forEach(madaraSource => {
     });
 
     allSourcesContent = JSON.stringify(allSourcesContent);
+
+    allSourcesContent = prettier.format(allSourcesContent, {
+      parser: 'json5',
+      quoteProps: 'preserve',
+      trailingComma: 'none',
+    });
 
     fs.writeFile(
       path.resolve(process.cwd(), 'src/sources/sources.json'),
