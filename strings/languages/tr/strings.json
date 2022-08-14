@@ -7,7 +7,14 @@
     "reset": "Sıfırla",
     "search": "Ara",
     "install": "Yükle",
-    "newUpdateAvailable": "Yeni güncelleme var"
+    "newUpdateAvailable": "Yeni güncelleme var",
+    "categories": "Categories",
+    "add": "Add",
+    "edit": "Edit",
+    "name": "Name",
+    "searchFor": "Search for",
+    "globally": "globally",
+    "searchResults": "Search results"
   },
   "library": "Kitaplık",
   "libraryScreen": {
@@ -17,7 +24,8 @@
       "filters": {
         "downloaded": "İndirilen",
         "unread": "Okunmamış",
-        "completed": "Tamamlanmış"
+        "completed": "Tamamlanmış",
+        "started": "Started"
       },
       "sortOrders": {
         "dateAdded": "Eklendiği tarih",
@@ -28,7 +36,7 @@
         "displayMode": "Görüntüleme modu",
         "compact": "Kompakt ızgara",
         "comfortable": "Rahat ızgara",
-        "noTitle": "Başlıksız ızgara",
+        "noTitle": "Cover only grid",
         "list": "Liste",
         "badges": "Rozetler",
         "downloadBadges": "İndirilen LN'ler için rozet göster",
@@ -56,7 +64,9 @@
     "lastUsed": "Son kullanılan",
     "pinned": "Sabitlenmiş",
     "all": "Tümü",
-    "latest": "En son"
+    "latest": "En son",
+    "addedToLibrary": "Added to library",
+    "removeFromLibrary": "Removed from library"
   },
   "readerScreen": {
     "finished": "Biten",
@@ -83,6 +93,7 @@
     "continueReading": "Okumaya devam et",
     "chapters": "bölüm",
     "migrate": "Taşın",
+    "noSummary": "No summary",
     "bottomSheet": {
       "filter": "Filtre",
       "sort": "Sırala",
@@ -140,5 +151,22 @@
       "lastWeek": "[Geçen] dddd",
       "sameElse": "LL"
     }
+  },
+  "categories": {
+    "addCategories": "Add category",
+    "editCategories": "Rename category",
+    "setCategories": "Set categories",
+    "header": "Edit Categories",
+    "emptyMsg": "You have no categories. Tap the plus button to create one for organizing your library",
+    "setModalEmptyMsg": "You have no categories. Tap the Edit button to create one for organizing your library",
+    "deleteModal": {
+      "header": "Delete category",
+      "desc": "Do you wish to delete category"
+    },
+    "duplicateError": "A category with this name already exists!"
+  },
+  "settings": {
+    "icognitoMode": "Incognito mode",
+    "downloadedOnly": "Downloaded only"
   }
 }
