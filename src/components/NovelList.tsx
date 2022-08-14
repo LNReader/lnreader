@@ -7,17 +7,17 @@ import {
   FlatListProps,
   ListRenderItem,
 } from 'react-native';
-import { SourceNovel } from 'src/sources/types';
+import { SourceNovelItem } from '../sources/types';
 import { LibraryNovelInfo, NovelInfo } from '../database/types';
 
 import { useDeviceOrientation } from '../services/utils/helpers';
 
 export type NovelListRenderItem = ListRenderItem<
-  LibraryNovelInfo | NovelInfo | SourceNovel
+  LibraryNovelInfo | NovelInfo | SourceNovelItem
 >;
 
 const NovelList: React.FC<
-  FlatListProps<LibraryNovelInfo | NovelInfo | SourceNovel>
+  FlatListProps<LibraryNovelInfo | NovelInfo | SourceNovelItem>
 > = props => {
   const { displayMode = DisplayModes.Comfortable, novelsPerRow = 3 } =
     useLibrarySettings();

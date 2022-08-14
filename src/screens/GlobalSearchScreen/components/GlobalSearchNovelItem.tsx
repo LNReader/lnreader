@@ -7,24 +7,30 @@ import { coverPlaceholderColor } from '../../../theme/colors';
 
 import { SourceNovelItem } from '../../../sources/types';
 import { ThemeType } from '../../../theme/types';
+import { getString } from '@strings/translations';
 
 interface Props {
   novel: SourceNovelItem;
   navigateToNovel: (novel: SourceNovelItem) => void;
   theme: ThemeType;
+  onLongPress?: () => void;
+  inLibrary?: boolean;
 }
 
 const GlobalSearchNovelItem: React.FC<Props> = ({
   novel,
   navigateToNovel,
   theme,
+  onLongPress,
+  inLibrary,
 }) => {
   const novelItemDimensions = useMemo(
     () => ({
       width: Dimensions.get('window').width / 3 - 16,
       height: ((Dimensions.get('window').width / 3 - 16) * 4) / 3,
+      opacity: inLibrary ? 0.5 : 1,
     }),
-    [],
+    [inLibrary],
   );
 
   return (
@@ -33,11 +39,25 @@ const GlobalSearchNovelItem: React.FC<Props> = ({
         style={styles.pressable}
         android_ripple={{ color: theme.rippleColor }}
         onPress={() => navigateToNovel(novel)}
+        onLongPress={onLongPress}
       >
         <FastImage
           source={{ uri: novel.novelCover }}
           style={[styles.novelCover, { ...novelItemDimensions }]}
         />
+        {inLibrary ? (
+          <Text
+            style={[
+              styles.inLibraryBadge,
+              {
+                backgroundColor: theme.colorAccent,
+                color: theme.colorButtonText,
+              },
+            ]}
+          >
+            {getString('novelScreen.inLibaray')}
+          </Text>
+        ) : null}
         <Text
           style={[
             { color: theme.textColorPrimary, width: novelItemDimensions.width },
@@ -74,5 +94,14 @@ const styles = StyleSheet.create({
   novelCover: {
     borderRadius: 4,
     backgroundColor: coverPlaceholderColor,
+  },
+  inLibraryBadge: {
+    position: 'absolute',
+    top: 8,
+    left: 8,
+    fontSize: 12,
+    paddingVertical: 2,
+    paddingHorizontal: 4,
+    borderRadius: 4,
   },
 });

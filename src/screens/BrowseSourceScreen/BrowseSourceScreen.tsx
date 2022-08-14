@@ -19,11 +19,12 @@ import { useSearch } from '../../hooks';
 import { useTheme } from '../../redux/hooks';
 import { useBrowseSource, useSearchSource } from './useBrowseSource';
 
-import { LibraryNovelInfo } from '../../database/types';
 import { SourceNovelItem } from '../../sources/types';
 import { getString } from '@strings/translations';
 import { StyleSheet } from 'react-native';
-import { useLibraryNovels } from '@screens/library/hooks/useLibrary';
+import { useLibraryNovels } from '../../screens/library/hooks/useLibrary';
+import { insertNovelInLibrary } from '../../database/queries/NovelQueriesV2';
+import { LibraryNovelInfo } from '../../database/types';
 
 interface BrowseSourceScreenProps {
   route: {
@@ -81,12 +82,11 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
     WebBrowser.openBrowserAsync(sourceUrl);
   };
 
-  const { library } = useLibraryNovels();
+  const { library, setLibrary } = useLibraryNovels();
 
   const novelInLibrary = (novelUrl: string) =>
     library?.some(
-      (novel: LibraryNovelInfo) =>
-        novel.novelUrl === novelUrl && novel.sourceId === sourceId,
+      novel => novel.novelUrl === novelUrl && novel.sourceId === sourceId,
     );
 
   const navigateToNovel = useCallback(
@@ -128,14 +128,38 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
       ) : (
         <NovelList
           data={novelList}
-          renderItem={({ item }) => (
-            <NovelCover
-              item={item}
-              theme={theme}
-              libraryStatus={novelInLibrary(item.novelUrl)}
-              onPress={() => navigateToNovel(item)}
-            />
-          )}
+          renderItem={({ item }) => {
+            const inLibrary = novelInLibrary(item.novelUrl);
+
+            return (
+              <NovelCover
+                item={item}
+                theme={theme}
+                libraryStatus={inLibrary}
+                onPress={() => navigateToNovel(item)}
+                onLongPress={() => {
+                  setLibrary(prevValues => {
+                    if (inLibrary) {
+                      return [
+                        ...prevValues.filter(
+                          novel => novel.novelUrl !== item.novelUrl,
+                        ),
+                      ];
+                    } else {
+                      return [
+                        ...prevValues,
+                        {
+                          novelUrl: item.novelUrl,
+                          sourceId,
+                        } as LibraryNovelInfo,
+                      ];
+                    }
+                  });
+                  insertNovelInLibrary(sourceId, item.novelUrl, inLibrary);
+                }}
+              />
+            );
+          }}
           onEndReached={() => {
             if (hasNextPage && !searchText) {
               fetchNextPage();

@@ -77,5 +77,5 @@ export const useLibraryNovels = () => {
     }, []),
   );
 
-  return { library };
+  return { library, setLibrary };
 };

@@ -16,6 +16,9 @@ import { getString } from '@strings/translations';
 import { useTheme } from '@redux/hooks';
 import { GlobalSearchResult } from '../hooks/useGlobalSearch';
 import GlobalSearchNovelItem from './GlobalSearchNovelItem';
+import { useLibraryNovels } from '@screens/library/hooks/useLibrary';
+import { insertNovelInLibrary } from '../../../database/queries/NovelQueriesV2';
+import { LibraryNovelInfo } from '../../../database/types';
 
 interface GlobalSearchResultsListProps {
   searchResults: GlobalSearchResult[];
@@ -29,6 +32,12 @@ const GlobalSearchResultsList: React.FC<GlobalSearchResultsListProps> = ({
   const theme = useTheme();
   const navigation = useNavigation<StackNavigationProp<any>>();
   const keyExtractor = useCallback(item => item.source.sourceId.toString(), []);
+  const { library, setLibrary } = useLibraryNovels();
+
+  const novelInLibrary = (sourceId: number, novelUrl: string) =>
+    library?.some(
+      novel => novel.novelUrl === novelUrl && novel.sourceId === sourceId,
+    );
 
   const errorColor = useMemo(
     () => (theme.statusBar === 'dark-content' ? '#B3261E' : '#F2B8B5'),
@@ -104,13 +113,45 @@ const GlobalSearchResultsList: React.FC<GlobalSearchResultsListProps> = ({
                     {getString('sourceScreen.noResultsFound')}
                   </Text>
                 }
-                renderItem={({ item: novelItem }) => (
-                  <GlobalSearchNovelItem
-                    novel={novelItem}
-                    navigateToNovel={navigateToNovel}
-                    theme={theme}
-                  />
-                )}
+                renderItem={({ item: novelItem }) => {
+                  const inLibrary = novelInLibrary(
+                    novelItem.sourceId,
+                    novelItem.novelUrl,
+                  );
+
+                  return (
+                    <GlobalSearchNovelItem
+                      novel={novelItem}
+                      inLibrary={inLibrary}
+                      navigateToNovel={navigateToNovel}
+                      theme={theme}
+                      onLongPress={() => {
+                        setLibrary(prevValues => {
+                          if (inLibrary) {
+                            return [
+                              ...prevValues.filter(
+                                novel => novel.novelUrl !== novelItem.novelUrl,
+                              ),
+                            ];
+                          } else {
+                            return [
+                              ...prevValues,
+                              {
+                                novelUrl: novelItem.novelUrl,
+                                sourceId: novelItem.sourceId,
+                              } as LibraryNovelInfo,
+                            ];
+                          }
+                        });
+                        insertNovelInLibrary(
+                          novelItem.sourceId,
+                          novelItem.novelUrl,
+                          inLibrary,
+                        );
+                      }}
+                    />
+                  );
+                }}
               />
             )}
           </View>

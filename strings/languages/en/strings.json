@@ -64,7 +64,9 @@
     "lastUsed": "Last used",
     "pinned": "Pinned",
     "all": "All",
-    "latest": "Latest"
+    "latest": "Latest",
+    "addedToLibrary": "Added to library",
+    "removeFromLibrary": "Removed from library"
   },
   "readerScreen": {
     "finished": "Finished",
