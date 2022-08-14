@@ -65,6 +65,10 @@ const parseNovelAndChapters = async novelUrl => {
 
   novel.author = loadedCheerio('span[class="tag_list"] > a').text();
 
+  novel.status = loadedCheerio(
+    '#fs-info > div.r-fullstory-spec > ul:nth-child(1) > li:nth-child(1) > span > a',
+  ).text();
+
   let chapterListUrl = loadedCheerio(
     'div.r-fullstory-chapters-foot a[title~=contents]',
   ).attr('href');
