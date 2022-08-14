@@ -170,9 +170,7 @@ const UpdatesScreen = () => {
           }
           contentContainerStyle={styles.listContainer}
           keyExtractor={item => item.chapterId.toString()}
-          sections={groupUpdatesByDate(
-            searchResults.length > 0 ? searchResults : updates,
-          )}
+          sections={groupUpdatesByDate(searchText ? searchResults : updates)}
           renderSectionHeader={({ section: { date } }) => (
             <Text
               style={[styles.dateHeader, { color: theme.textColorSecondary }]}
