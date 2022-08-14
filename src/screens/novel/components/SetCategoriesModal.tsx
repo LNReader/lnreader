@@ -49,11 +49,6 @@ const SetCategoryModal: React.FC<SetCategoryModalProps> = ({
     setCategories(res);
   };
 
-  const handleCloseModal = () => {
-    setSelectedCategories([]);
-    closeModal();
-  };
-
   useEffect(() => {
     if (visible) {
       getCategories();
@@ -64,7 +59,10 @@ const SetCategoryModal: React.FC<SetCategoryModalProps> = ({
     <Portal>
       <Modal
         visible={visible}
-        onDismiss={handleCloseModal}
+        onDismiss={() => {
+          closeModal();
+          setSelectedCategories(currentCategoryIds);
+        }}
         contentContainerStyle={[
           styles.modalContainer,
           { backgroundColor: theme.colorPrimary },
@@ -106,7 +104,7 @@ const SetCategoryModal: React.FC<SetCategoryModalProps> = ({
                   screen: 'Categories',
                 } as never,
               );
-              handleCloseModal();
+              closeModal();
               onEditCategories?.();
             }}
           />
@@ -115,7 +113,10 @@ const SetCategoryModal: React.FC<SetCategoryModalProps> = ({
             title={getString('common.cancel')}
             theme={theme}
             variation={ButtonVariation.CLEAR}
-            onPress={handleCloseModal}
+            onPress={() => {
+              closeModal();
+              setSelectedCategories(currentCategoryIds);
+            }}
           />
           {categories?.length ? (
             <Button
@@ -128,7 +129,7 @@ const SetCategoryModal: React.FC<SetCategoryModalProps> = ({
                 } else {
                   updateNovelCategoryById(novelId, selectedCategories);
                 }
-                handleCloseModal();
+                closeModal();
                 onSuccess?.();
               }}
             />

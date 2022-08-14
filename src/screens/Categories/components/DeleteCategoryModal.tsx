@@ -9,6 +9,7 @@ import { Category } from '../../../database/types';
 import { deleteCategoryById } from '../../../database/queries/CategoryQueries';
 import { useTheme } from '@redux/hooks';
 import { getString } from '@strings/translations';
+import { resetCategoryIdsToDefault } from '../../../database/queries/NovelQueriesV2';
 
 interface DeleteCategoryModalProps {
   category: Category;
@@ -49,6 +50,7 @@ const DeleteCategoryModal: React.FC<DeleteCategoryModalProps> = ({
             variation={ButtonVariation.CLEAR}
             onPress={() => {
               deleteCategoryById(category.id);
+              resetCategoryIdsToDefault(category.id);
               closeModal();
               onSuccess();
             }}

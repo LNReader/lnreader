@@ -160,7 +160,7 @@ const LibraryScreen = () => {
       />
       <SetCategoryModal
         novelId={selectedNovelIds}
-        currentCategoryIds={[0]}
+        currentCategoryIds={[]}
         closeModal={closeSetCategoryModal}
         onEditCategories={() => setSelectedNovelIds([])}
         visible={setCategoryModalVisible}
