@@ -118,6 +118,16 @@
     }
   },
   {
+    "sourceId": 59,
+    "baseUrl": "https://arnovel.me/",
+    "sourceName": "ArNovel",
+    "options": {
+      "useNewChapterEndpoint": true,
+      "totalPages": 25,
+      "lang": "Arabic"
+    }
+  },
+  {
     "sourceId": 60,
     "baseUrl": "https://meionovel.id/",
     "sourceName": "MeioNovel",

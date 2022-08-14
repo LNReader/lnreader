@@ -119,6 +119,13 @@ export const LightNovelsHubScraper = new MadaraScraper(
   { 'useNewChapterEndpoint': true },
 );
 
+export const ArNovelScraper = new MadaraScraper(
+  59,
+  'https://arnovel.me/',
+  'ArNovel',
+  { 'useNewChapterEndpoint': true, 'totalPages': 25, 'lang': 'Arabic' },
+);
+
 export const MeioNovelScraper = new MadaraScraper(
   60,
   'https://meionovel.id/',

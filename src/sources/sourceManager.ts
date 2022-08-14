@@ -73,6 +73,7 @@ import {
   FansTranslationsScraper,
   RiwyatScraper,
   NovelsticScraper,
+  ArNovelScraper,
 } from './multisrc/madara/MadaraGenerator';
 import WuxiaBlogScraper from './en/wuxiablog';
 import WuxiaCityScraper from './en/wuxiacity';
@@ -93,7 +94,6 @@ import RanobeLibScraper from './ru/ranobelib';
 import RanobeRFScraper from './ru/ranoberf';
 import RenovelsScraper from './ru/renovels';
 import RulateScraper from './ru/rulate';
-import ArNovelScraper from './ar/arnovel';
 import DivineDaoLibraryScraper from './en/divinedaolibrary';
 import NovelOnlineFullScraper from './en/novelonlinefull';
 import LightNovelUpdatesScraper from './en/lightnovelupdates';
@@ -107,7 +107,6 @@ import IdMtlNovelScraper from './id/idmtlnovel';
 import WoopReadScraper from './en/woopread';
 import MTLReaderScraper from './en/mtlreader';
 import MyLoveNovelScraper from './en/mylovenovel';
-import RiwayatScraper from './ar/riwayat';
 import NovelRinganScraper from './id/novelringan';
 import IndoWebNovelScraper from './id/indowebnovel';
 import ChireadsScraper from './fr/chireads';
@@ -243,7 +242,6 @@ export const sourceManager = (sourceId: number): Scraper => {
     82: MTLReaderScraper,
     83: MyLoveNovelScraper,
     84: MoreNovelScraper,
-    85: RiwayatScraper,
     86: NovelRinganScraper,
     87: IndoWebNovelScraper,
     88: ChireadsScraper,
