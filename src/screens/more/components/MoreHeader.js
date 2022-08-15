@@ -8,11 +8,10 @@ export const MoreHeader = ({ title, navigation, theme, goBack }) => (
       title={title}
       onBackAction={goBack && navigation.goBack}
       style={{ elevation: 0 }}
+      mode="small"
     />
     <View style={{ overflow: 'hidden', paddingBottom: 4 }}>
-      <View
-        style={[styles.logoContainer, { backgroundColor: theme.colorPrimary }]}
-      >
+      <View style={[styles.logoContainer, { backgroundColor: theme.surface }]}>
         <Image
           source={require('../../../../assets/logo.png')}
           style={[styles.logo, { tintColor: theme.textColorPrimary }]}

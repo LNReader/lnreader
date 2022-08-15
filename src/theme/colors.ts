@@ -1,4 +1,14 @@
+import color from 'color';
+
 export const coverPlaceholderColor = '#8888881F';
+
+export const dividerColor: (isDark: boolean) => string = isDark =>
+  color(isDark ? '#FFFFFF' : '#000000')
+    .alpha(0.12)
+    .string();
+
+export const filterColor: (isDark: boolean) => string = isDark =>
+  isDark ? '#FFC107' : '#FFC107';
 
 const AccentColors = {
   default: '#2979FF',

@@ -5,14 +5,13 @@ import {
   ProgressBar,
   Appbar as MaterialAppbar,
   Menu,
+  overlay,
 } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Appbar } from '../../components/Appbar';
-import { ScreenContainer } from '../../components/Common';
-import EmptyView from '../../components/EmptyView';
 
-import { useTheme } from '../../hooks/reduxHooks';
+import { useTheme } from '@hooks/useTheme';
 
 import {
   cancelDownload,
@@ -22,6 +21,7 @@ import {
 
 import BackgroundService from 'react-native-background-actions';
 import { showToast } from '../../hooks/showToast';
+import { EmptyView } from '@components/index';
 
 const DownloadQueue = ({ navigation }) => {
   const theme = useTheme();
@@ -36,7 +36,7 @@ const DownloadQueue = ({ navigation }) => {
   const [fab, setFab] = useState(BackgroundService.isRunning());
 
   return (
-    <ScreenContainer theme={theme}>
+    <>
       <Appbar title="Download queue" onBackAction={navigation.goBack}>
         <Menu
           visible={visible}
@@ -48,7 +48,7 @@ const DownloadQueue = ({ navigation }) => {
               onPress={openMenu}
             />
           }
-          contentStyle={{ backgroundColor: theme.menuColor }}
+          contentStyle={{ backgroundColor: overlay(2, theme.surface) }}
         >
           <Menu.Item
             onPress={() => {
@@ -75,18 +75,18 @@ const DownloadQueue = ({ navigation }) => {
             <ProgressBar
               indeterminate={BackgroundService.isRunning() ? true : false}
               progress={!BackgroundService.isRunning() && 0}
-              color={theme.colorAccent}
+              color={theme.primary}
               style={{ marginTop: 8 }}
             />
           </View>
         )}
         ListEmptyComponent={
-          <EmptyView icon="(･o･;)" description="No downloads" />
+          <EmptyView icon="(･o･;)" description="No downloads" theme={theme} />
         }
       />
       {downloadQueue.length > 0 && (
         <FAB
-          style={[styles.fab, { backgroundColor: theme.colorAccent }]}
+          style={[styles.fab, { backgroundColor: theme.primary }]}
           color={theme.textColorPrimary}
           label={fab ? 'Pause' : 'Resume'}
           uppercase={false}
@@ -100,7 +100,7 @@ const DownloadQueue = ({ navigation }) => {
           }}
         />
       )}
-    </ScreenContainer>
+    </>
   );
 };
 

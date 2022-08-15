@@ -8,8 +8,9 @@ import {
   ViewStyle,
 } from 'react-native';
 import React, { useMemo } from 'react';
+import color from 'color';
 
-import { ThemeType } from '../../theme/types';
+import { MD3ThemeType } from '../../theme/types';
 
 export enum ButtonVariation {
   DEFAULT = 'default',
@@ -22,7 +23,7 @@ interface Props {
   title: string;
   textColor?: string;
   onPress?: () => void;
-  theme: ThemeType;
+  theme: MD3ThemeType;
   style?: ViewStyle;
   labelStyle?: StyleProp<TextStyle>;
   disabled?: boolean;
@@ -45,10 +46,10 @@ const Button: React.FC<Props> = ({
         : textColor
         ? textColor
         : variation === ButtonVariation.OUTLINED
-        ? theme.colorAccent
+        ? theme.primary
         : variation === ButtonVariation.CLEAR
-        ? theme.colorAccent
-        : theme.textColorPrimary,
+        ? theme.primary
+        : theme.onSecondary,
     }),
     [],
   );
@@ -63,7 +64,7 @@ const Button: React.FC<Props> = ({
               borderColor: theme.textColorHint,
             }
           : variation !== ButtonVariation.CLEAR && {
-              backgroundColor: theme.colorAccent,
+              backgroundColor: theme.secondary,
             },
         style,
       ]}
@@ -71,7 +72,7 @@ const Button: React.FC<Props> = ({
       <Pressable
         style={styles.pressable}
         onPress={onPress}
-        android_ripple={{ color: theme.rippleColor }}
+        android_ripple={{ color: color(theme.primary).alpha(0.12).string() }}
         disabled={disabled}
       >
         <Text style={[textStyles, labelStyle]} numberOfLines={1}>

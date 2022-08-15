@@ -1,5 +1,6 @@
 import React from 'react';
 import { Dimensions, View, Text, StyleSheet } from 'react-native';
+import color from 'color';
 
 import Slider from '@react-native-community/slider';
 import { useDeviceOrientation } from '../../../services/utils/helpers';
@@ -42,12 +43,12 @@ const VerticalScrollbar = ({
       <View
         style={[
           styles.verticalSliderContainer,
-          { backgroundColor: `${theme.colorPrimary}E6` },
+          { backgroundColor: color(theme.surface).alpha(0.9).string() },
         ]}
       >
         <Text
           style={{
-            color: theme.textColorPrimary,
+            color: theme.onSurface,
             marginLeft: 16,
             transform: [{ rotate: '-90deg' }],
           }}
@@ -64,13 +65,13 @@ const VerticalScrollbar = ({
           step={1}
           value={scrollPercentage}
           onSlidingComplete={onSlidingComplete}
-          thumbTintColor={theme.colorAccent}
-          minimumTrackTintColor={theme.colorAccent}
-          maximumTrackTintColor={theme.textColorPrimary}
+          thumbTintColor={theme.primary}
+          minimumTrackTintColor={theme.primary}
+          maximumTrackTintColor={theme.onSurface}
         />
         <Text
           style={{
-            color: theme.textColorPrimary,
+            color: theme.onSurface,
             marginRight: 16,
             transform: [{ rotate: '-90deg' }],
           }}
@@ -84,7 +85,10 @@ const VerticalScrollbar = ({
       <View
         style={[
           styles.horizontalSliderContainer,
-          { backgroundColor: `${theme.colorPrimary}E6`, bottom: 80 + bottom },
+          {
+            backgroundColor: color(theme.surface).alpha(0.9).string(),
+            bottom: 80 + bottom,
+          },
         ]}
       >
         <Text
@@ -105,9 +109,9 @@ const VerticalScrollbar = ({
           step={1}
           value={scrollPercentage}
           onSlidingComplete={onSlidingComplete}
-          thumbTintColor={theme.colorAccent}
-          minimumTrackTintColor={theme.colorAccent}
-          maximumTrackTintColor={theme.textColorPrimary}
+          thumbTintColor={theme.primary}
+          minimumTrackTintColor={theme.primary}
+          maximumTrackTintColor={theme.onSurface}
         />
         <Text
           style={{

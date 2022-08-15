@@ -12,7 +12,8 @@ import { LibraryNovelInfo } from '../../../database/types';
 import { setNovel } from '@redux/novel/novel.actions';
 
 import { getString } from '@strings/translations';
-import { useAppDispatch, useTheme } from '@redux/hooks';
+import { useAppDispatch } from '@redux/hooks';
+import { useTheme } from '@hooks/useTheme';
 import { updateLibraryAction } from '@redux/updates/updates.actions';
 
 interface Props {
@@ -75,8 +76,8 @@ export const LibraryView: React.FC<Props> = ({
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            colors={[theme.colorButtonText]}
-            progressBackgroundColor={theme.colorAccent}
+            colors={[theme.onPrimary]}
+            progressBackgroundColor={theme.primary}
           />
         }
       />

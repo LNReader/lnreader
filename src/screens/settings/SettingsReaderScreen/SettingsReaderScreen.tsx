@@ -31,12 +31,12 @@ import ReaderLineHeight from '../../../screens/reader/components/ReaderBottomShe
 import ReaderTextSize from './ReaderTextSize';
 
 import {
-  useTheme,
   useReaderSettings,
   useSettingsV1,
   useAppDispatch,
   useSettingsV2,
 } from '@redux/hooks';
+import { useTheme } from '@hooks/useTheme';
 import { getString } from '@strings/translations';
 import {
   setAppSettings,

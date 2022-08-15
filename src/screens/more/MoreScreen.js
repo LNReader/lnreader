@@ -12,9 +12,9 @@ import { getString } from '../../../strings/translations';
 import { ScreenContainer } from '../../components/Common';
 import { List } from '../../components/List';
 
-import { useTheme } from '../../hooks/reduxHooks';
 import { MoreHeader } from './components/MoreHeader';
 import { useLibrarySettings } from '@hooks/useSettings';
+import { useTheme } from '@hooks/useTheme';
 
 const MoreScreen = ({ navigation }) => {
   const theme = useTheme();
@@ -57,7 +57,7 @@ const MoreScreen = ({ navigation }) => {
                 >
                   Downloaded only
                 </Text>
-                <Text style={{ color: theme.textColorSecondary }}>
+                <Text style={{ color: theme.onSurfaceVariant }}>
                   Filters all novels in your library
                 </Text>
               </View>
@@ -65,7 +65,7 @@ const MoreScreen = ({ navigation }) => {
             <Switch
               value={downloadedOnlyMode}
               onValueChange={enableDownloadedOnlyMode}
-              color={theme.colorAccent}
+              color={theme.primary}
               style={{ marginRight: 8 }}
             />
           </Pressable>
@@ -90,7 +90,7 @@ const MoreScreen = ({ navigation }) => {
                 >
                   Incognito mode
                 </Text>
-                <Text style={{ color: theme.textColorSecondary }}>
+                <Text style={{ color: theme.onSurfaceVariant }}>
                   Pauses reading history
                 </Text>
               </View>
@@ -98,7 +98,7 @@ const MoreScreen = ({ navigation }) => {
             <Switch
               value={incognitoMode}
               onValueChange={enableIncognitoMode}
-              color={theme.colorAccent}
+              color={theme.primary}
               style={{ marginRight: 8 }}
             />
           </Pressable>

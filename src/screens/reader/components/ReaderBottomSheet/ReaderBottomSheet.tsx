@@ -6,13 +6,11 @@ import {
   View,
 } from 'react-native';
 import React, { LegacyRef, useMemo, useState } from 'react';
+import color from 'color';
 
 import Bottomsheet from 'rn-sliding-up-panel';
-import {
-  useAppDispatch,
-  useSettingsV1,
-  useTheme,
-} from '../../../../redux/hooks';
+import { useAppDispatch, useSettingsV1 } from '../../../../redux/hooks';
+import { useTheme } from '@hooks/useTheme';
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
 import { getString } from '../../../../../strings/translations';
 import { setAppSettings } from '../../../../redux/settings/settings.actions';
@@ -23,6 +21,8 @@ import ReaderThemeSelector from './ReaderThemeSelector';
 import ReaderTextAlignSelector from './ReaderTextAlignSelector';
 import ReaderLineHeight from './ReaderLineHeight';
 import ReaderFontPicker from './ReaderFontPicker';
+import { overlay } from 'react-native-paper';
+import { dividerColor } from '../../../../theme/colors';
 
 const ReaderTab: React.FC = () => {
   return (
@@ -150,8 +150,8 @@ const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
 
   const [animatedValue] = useState(new Animated.Value(0));
 
-  const tabHeaderColor = theme.colorPrimary;
-  const backgroundColor = theme.colorPrimaryDark;
+  const tabHeaderColor = overlay(2, theme.surface);
+  const backgroundColor = tabHeaderColor;
 
   const renderScene = SceneMap({
     first: ReaderTab,
@@ -178,14 +178,21 @@ const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
   const renderTabBar = (props: any) => (
     <TabBar
       {...props}
-      indicatorStyle={{ backgroundColor: theme.colorAccent }}
-      style={[{ backgroundColor: tabHeaderColor }, styles.tabBar]}
+      indicatorStyle={{ backgroundColor: theme.primary }}
+      style={[
+        {
+          backgroundColor: tabHeaderColor,
+          borderBottomColor: dividerColor(theme.isDark),
+          borderBottomWidth: 1,
+        },
+        styles.tabBar,
+      ]}
       renderLabel={({ route, color }) => (
         <Text style={{ color }}>{route.title}</Text>
       )}
       inactiveColor={theme.textColorSecondary}
-      activeColor={theme.colorAccent}
-      pressColor={theme.rippleColor}
+      activeColor={theme.primary}
+      pressColor={color(theme.primary).alpha(0.12).string()}
     />
   );
 

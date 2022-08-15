@@ -13,9 +13,10 @@ import { Appbar } from '../../components/Appbar';
 import { useSelector, useDispatch } from 'react-redux';
 import { List } from '../../components/List';
 import { removeTracker, setTracker } from '../../redux/tracker/tracker.actions';
+import { useTheme } from '@hooks/useTheme';
 
 const TrackerScreen = ({ navigation }) => {
-  const theme = useSelector(state => state.settingsReducer.theme);
+  const theme = useTheme();
   const tracker = useSelector(state => state.trackerReducer.tracker);
   const dispatch = useDispatch();
 
@@ -30,7 +31,7 @@ const TrackerScreen = ({ navigation }) => {
       <View
         style={{
           flex: 1,
-          backgroundColor: theme.colorPrimaryDark,
+          backgroundColor: theme.background,
           paddingVertical: 8,
         }}
       >
@@ -96,7 +97,7 @@ const TrackerScreen = ({ navigation }) => {
               padding: 20,
               margin: 20,
               borderRadius: 6,
-              backgroundColor: theme.colorPrimaryDark,
+              backgroundColor: theme.background,
             }}
           >
             <Text
@@ -116,7 +117,7 @@ const TrackerScreen = ({ navigation }) => {
               <Button
                 style={{ marginTop: 30 }}
                 labelStyle={{
-                  color: theme.colorAccent,
+                  color: theme.primary,
                   letterSpacing: 0,
                   textTransform: 'none',
                 }}
@@ -127,7 +128,7 @@ const TrackerScreen = ({ navigation }) => {
               <Button
                 style={{ marginTop: 30 }}
                 labelStyle={{
-                  color: theme.colorAccent,
+                  color: theme.primary,
                   letterSpacing: 0,
                   textTransform: 'none',
                 }}

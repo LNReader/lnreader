@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import color from 'color';
 
 import dayjs from 'dayjs';
 import FastImage from 'react-native-fast-image';
@@ -9,7 +10,7 @@ import { IconButtonV2 } from '../../../../components';
 import { parseChapterNumber } from '../../../../utils/parseChapterNumber';
 
 import { History } from '../../../../database/types';
-import { ThemeType } from '../../../../theme/types';
+import { MD3ThemeType } from '../../../../theme/types';
 import { coverPlaceholderColor } from '../../../../theme/colors';
 
 interface HistoryCardProps {
@@ -32,7 +33,7 @@ interface HistoryCardProps {
     novelName: string,
     novelCover: string,
   ) => void;
-  theme: ThemeType;
+  theme: MD3ThemeType;
 }
 
 const HistoryCard: React.FC<HistoryCardProps> = ({
@@ -67,7 +68,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
   return (
     <Pressable
       style={styles.container}
-      android_ripple={{ color: theme.rippleColor }}
+      android_ripple={{ color: color(theme.primary).alpha(0.12).string() }}
       onPress={() =>
         handleNavigateToNovel(
           sourceId,
@@ -83,7 +84,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
         <View style={styles.detailsContainer}>
           <Text
             numberOfLines={2}
-            style={[{ color: theme.textColorPrimary }, styles.novelName]}
+            style={[{ color: theme.onSurface }, styles.novelName]}
           >
             {novelName}
           </Text>

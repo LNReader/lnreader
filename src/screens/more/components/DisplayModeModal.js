@@ -2,7 +2,7 @@ import { displayModesList } from '@screens/library/constants/constants';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 
-import { Portal, Modal } from 'react-native-paper';
+import { Portal, Modal, overlay } from 'react-native-paper';
 
 import { RadioButton } from '../../../components/RadioButton/RadioButton';
 import { useLibrarySettings } from '@hooks/useSettings';
@@ -22,7 +22,7 @@ const DisplayModeModal = ({
         onDismiss={hideDisplayModal}
         contentContainerStyle={[
           styles.containerStyle,
-          { backgroundColor: theme.colorPrimaryDark },
+          { backgroundColor: overlay(2, theme.surface) },
         ]}
       >
         {displayModesList.map(mode => (

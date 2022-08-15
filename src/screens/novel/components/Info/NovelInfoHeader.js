@@ -1,5 +1,6 @@
 import React, { memo, useMemo } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
+import color from 'color';
 
 import Clipboard from '@react-native-community/clipboard';
 
@@ -25,6 +26,7 @@ import NovelSummary from '../NovelSummary/NovelSummary';
 import NovelScreenButtonGroup from '../NovelScreenButtonGroup/NovelScreenButtonGroup';
 import { useAppDispatch } from '../../../../redux/hooks';
 import { getString } from '../../../../../strings/translations';
+import { filterColor } from '../../../../theme/colors';
 
 const NovelInfoHeader = ({
   item,
@@ -136,14 +138,18 @@ const NovelInfoHeader = ({
           <Pressable
             style={styles.bottomsheet}
             onPress={() => novelBottomSheetRef.current.show()}
-            android_ripple={{ color: theme.rippleColor }}
+            android_ripple={{
+              color: color(theme.primary).alpha(0.12).string(),
+            }}
           >
             <Text style={[{ color: theme.textColorPrimary }, styles.chapters]}>
               {`${chapters.length} ${getString('novelScreen.chapters')}`}
             </Text>
             <IconButton
               icon="filter-variant"
-              color={filter ? theme.filterColor : theme.textColorPrimary}
+              iconColor={
+                filter ? filterColor(theme.isDark) : theme.textColorPrimary
+              }
               size={24}
             />
           </Pressable>

@@ -2,20 +2,32 @@ import React from 'react';
 import { StatusBar } from 'react-native';
 
 import { Appbar as PaperAppbar } from 'react-native-paper';
-import { ThemeType } from '../../theme/types';
+import { MD3ThemeType } from '../../theme/types';
 
 interface AppbarProps {
   title: string;
   handleGoBack: () => void;
-  theme: ThemeType;
+  theme: MD3ThemeType;
+  mode?: 'small' | 'medium' | 'large' | 'center-aligned';
 }
 
-const Appbar: React.FC<AppbarProps> = ({ title, handleGoBack, theme }) => (
+const Appbar: React.FC<AppbarProps> = ({
+  title,
+  handleGoBack,
+  theme,
+  mode = 'large',
+}) => (
   <PaperAppbar.Header
-    style={{ backgroundColor: theme.colorPrimary }}
+    style={{ backgroundColor: theme.surface }}
     statusBarHeight={StatusBar.currentHeight}
+    mode={mode}
   >
-    {handleGoBack && <PaperAppbar.BackAction onPress={handleGoBack} />}
+    {handleGoBack && (
+      <PaperAppbar.BackAction
+        onPress={handleGoBack}
+        iconColor={theme.textColorPrimary}
+      />
+    )}
     <PaperAppbar.Content
       title={title}
       titleStyle={{ color: theme.textColorPrimary }}

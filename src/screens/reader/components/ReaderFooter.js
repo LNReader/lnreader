@@ -5,6 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { isUrlAbsolute } from '../../../utils/isAbsoluteUrl';
 import FadeView from '../../../components/Common/CrossFadeView';
 import * as WebBrowser from 'expo-web-browser';
+import color from 'color';
 
 const ChapterFooter = ({
   hide,
@@ -31,7 +32,7 @@ const ChapterFooter = ({
       <View
         style={[
           {
-            backgroundColor: `${theme.colorPrimary}E6`,
+            backgroundColor: color(theme.surface).alpha(0.9).string(),
             paddingBottom: insets.bottom,
           },
           styles.buttonsContainer,
@@ -46,7 +47,7 @@ const ChapterFooter = ({
             icon="chevron-left"
             size={26}
             disabled={!prevChapter}
-            color={theme.textColorPrimary}
+            iconColor={theme.onSurface}
           />
         </Pressable>
         {isUrlAbsolute(chapterUrl) ? (
@@ -55,7 +56,7 @@ const ChapterFooter = ({
             style={styles.buttonStyles}
             onPress={() => WebBrowser.openBrowserAsync(chapterUrl)}
           >
-            <IconButton icon="earth" size={26} color={theme.textColorPrimary} />
+            <IconButton icon="earth" size={26} iconColor={theme.onSurface} />
           </Pressable>
         ) : null}
         {!useWebViewForChapter && (
@@ -68,7 +69,7 @@ const ChapterFooter = ({
               <IconButton
                 icon="format-vertical-align-top"
                 size={26}
-                color={theme.textColorPrimary}
+                iconColor={theme.onSurface}
               />
             </Pressable>
           </>
@@ -81,7 +82,7 @@ const ChapterFooter = ({
           <IconButton
             icon="cog-outline"
             size={26}
-            color={theme.textColorPrimary}
+            iconColor={theme.onSurface}
           />
         </Pressable>
         <Pressable
@@ -93,7 +94,7 @@ const ChapterFooter = ({
             icon="chevron-right"
             size={26}
             disabled={!nextChapter}
-            color={theme.textColorPrimary}
+            iconColor={theme.onSurface}
           />
         </Pressable>
       </View>

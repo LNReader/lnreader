@@ -14,7 +14,8 @@ import {
   getDownloadedChapters,
 } from '../../database/queries/ChapterQueries';
 
-import { useTheme } from '../../hooks/reduxHooks';
+import { useTheme } from '@hooks/useTheme';
+
 import {
   deleteChapterAction,
   downloadChapterAction,
@@ -123,7 +124,7 @@ const Downloads = ({ navigation }) => {
         {chapters.length > 0 && (
           <MaterialAppbar.Action
             icon="delete-sweep"
-            color={theme.textColorPrimary}
+            iconColor={theme.textColorPrimary}
             onPress={showDialog}
           />
         )}

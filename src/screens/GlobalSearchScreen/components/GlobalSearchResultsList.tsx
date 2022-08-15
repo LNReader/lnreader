@@ -7,13 +7,15 @@ import {
   View,
 } from 'react-native';
 import React, { useCallback, useMemo } from 'react';
+import color from 'color';
 
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { getString } from '@strings/translations';
-import { useTheme } from '@redux/hooks';
+import { useTheme } from '@hooks/useTheme';
+
 import { GlobalSearchResult } from '../hooks/useGlobalSearch';
 import GlobalSearchNovelItem from './GlobalSearchNovelItem';
 import { useLibraryNovels } from '@screens/library/hooks/useLibrary';
@@ -39,10 +41,7 @@ const GlobalSearchResultsList: React.FC<GlobalSearchResultsListProps> = ({
       novel => novel.novelUrl === novelUrl && novel.sourceId === sourceId,
     );
 
-  const errorColor = useMemo(
-    () => (theme.statusBar === 'dark-content' ? '#B3261E' : '#F2B8B5'),
-    [],
-  );
+  const errorColor = useMemo(() => (theme.isDark ? '#B3261E' : '#F2B8B5'), []);
 
   const navigateToNovel = useCallback(
     item => navigation.push('Novel', item),
@@ -58,7 +57,9 @@ const GlobalSearchResultsList: React.FC<GlobalSearchResultsListProps> = ({
         <>
           <View>
             <Pressable
-              android_ripple={{ color: theme.rippleColor }}
+              android_ripple={{
+                color: color(theme.primary).alpha(0.12).string(),
+              }}
               style={styles.sourceHeader}
               onPress={() =>
                 navigation.navigate('SourceScreen', {
@@ -87,10 +88,7 @@ const GlobalSearchResultsList: React.FC<GlobalSearchResultsListProps> = ({
               />
             </Pressable>
             {item.isLoading ? (
-              <ActivityIndicator
-                color={theme.colorAccent}
-                style={styles.loading}
-              />
+              <ActivityIndicator color={theme.primary} style={styles.loading} />
             ) : item.error ? (
               <Text style={[styles.error, { color: errorColor }]}>
                 {item.error}

@@ -8,6 +8,7 @@ import {
   TabView,
 } from 'react-native-tab-view';
 import { useNavigation } from '@react-navigation/native';
+import color from 'color';
 
 import { LoadingScreenV2, SearchbarV2, Button } from '@components/index';
 import { LibraryView } from './components/LibraryListView';
@@ -16,7 +17,7 @@ import { Banner } from './components/Banner';
 import { Actionbar } from '@components/Actionbar/Actionbar';
 
 import { useLibrary } from './hooks/useLibrary';
-import { useTheme } from '@redux/hooks';
+import { useTheme } from '@hooks/useTheme';
 import useSearch from '@hooks/useSearch';
 import { getString } from '@strings/translations';
 import { Portal } from 'react-native-paper';
@@ -69,11 +70,13 @@ const LibraryScreen = () => {
     <TabBar
       {...props}
       scrollEnabled
-      indicatorStyle={{ backgroundColor: theme.colorAccent }}
+      indicatorStyle={{ backgroundColor: theme.primary }}
       style={[
         {
-          backgroundColor: theme.colorPrimaryDark,
-          borderBottomColor: theme.dividerColor,
+          backgroundColor: theme.surface,
+          borderBottomColor: color(theme.isDark ? '#FFFFFF' : '#000000')
+            .alpha(0.12)
+            .string(),
         },
         styles.tabBar,
       ]}
@@ -82,9 +85,9 @@ const LibraryScreen = () => {
           showNumberOfNovels ? '(' + (route as any).novels.length + ')' : ''
         }`}</Text>
       )}
-      inactiveColor={theme.textColorSecondary}
-      activeColor={theme.colorAccent}
-      pressColor={theme.rippleColor}
+      inactiveColor={theme.secondary}
+      activeColor={theme.primary}
+      pressColor={color(theme.primary).alpha(0.12).rgb().string()}
     />
   );
 
@@ -132,7 +135,8 @@ const LibraryScreen = () => {
           icon="incognito"
           label={getString('settings.icognitoMode')}
           theme={theme}
-          backgroundColor={theme.colorAccent}
+          backgroundColor={theme.tertiary}
+          textColor={theme.onTertiary}
         />
       )}
       <TabView
@@ -161,9 +165,12 @@ const LibraryScreen = () => {
                   style={styles.globalSearchBtn}
                   labelStyle={styles.globalSearchBtnLabel}
                   onPress={() =>
-                    navigate('GlobalSearchScreen', {
-                      searchText,
-                    })
+                    navigate(
+                      'GlobalSearchScreen' as never,
+                      {
+                        searchText,
+                      } as never,
+                    )
                   }
                 />
               ) : null}
@@ -241,6 +248,5 @@ const styles = StyleSheet.create({
   },
   globalSearchBtnLabel: {
     fontWeight: 'bold',
-    // fontSize: 13,
   },
 });

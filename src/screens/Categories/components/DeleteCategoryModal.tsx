@@ -7,7 +7,8 @@ import { Button } from '@components/index';
 
 import { Category } from '../../../database/types';
 import { deleteCategoryById } from '../../../database/queries/CategoryQueries';
-import { useTheme } from '@redux/hooks';
+import { useTheme } from '@hooks/useTheme';
+
 import { getString } from '@strings/translations';
 import { resetCategoryIdsToDefault } from '../../../database/queries/NovelQueriesV2';
 

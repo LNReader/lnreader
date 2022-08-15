@@ -1,5 +1,6 @@
 import React, { memo, useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
+import color from 'color';
 
 import { Row } from '../../../components/Common';
 
@@ -34,12 +35,12 @@ const ChapterItem = ({
       style={[
         styles.chapterCardContainer,
         isSelected(chapterId) && {
-          backgroundColor: theme.rippleColor,
+          backgroundColor: color(theme.primary).alpha(0.12).string(),
         },
       ]}
       onPress={() => onSelectPress(chapter, () => navigateToChapter(chapter))}
       onLongPress={() => onSelectLongPress(chapter)}
-      android_ripple={{ color: theme.rippleColor }}
+      android_ripple={{ color: color(theme.primary).alpha(0.12).string() }}
     >
       <Row style={{ flex: 1, overflow: 'hidden' }}>
         {!!bookmark && <ChapterBookmarkButton theme={theme} />}
@@ -49,7 +50,7 @@ const ChapterItem = ({
               color: read
                 ? theme.textColorHint
                 : bookmark
-                ? theme.colorAccent
+                ? theme.primary
                 : theme.textColorPrimary,
             }}
             numberOfLines={1}
@@ -72,7 +73,7 @@ const ChapterItem = ({
                   color: read
                     ? theme.textColorHint
                     : bookmark
-                    ? theme.colorAccent
+                    ? theme.primary
                     : theme.textColorSecondary,
                   fontSize: 12,
                 }}
@@ -103,8 +104,8 @@ export default memo(ChapterItem);
 
 const styles = StyleSheet.create({
   chapterCardContainer: {
-    paddingHorizontal: 15,
-    paddingVertical: 7,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',

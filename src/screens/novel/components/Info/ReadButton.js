@@ -1,5 +1,4 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
 
 import { getString } from '../../../../../strings/translations';
 import { Button } from '../../../../components';
@@ -32,20 +31,18 @@ const ReadButton = ({ navigation, novel, chapters, theme, lastRead }) => {
               : getString('novelScreen.continueReading')
           } ${lastRead.chapterName}`}
           style={{ margin: 16 }}
-          textColor={theme.colorButtonText}
           theme={theme}
           onPress={navigateToLastReadChapter}
         />
       ) : (
         <Button
+          disabled
           title={`${
             novel.unread
               ? 'All chapters read'
               : getString('novelScreen.continueReading')
           } ${lastRead.chapterName}`}
           style={{ margin: 16 }}
-          color={theme.colorDisabled}
-          textColor={theme.colorButtonText}
           theme={theme}
         />
       ))
@@ -56,12 +53,3 @@ const ReadButton = ({ navigation, novel, chapters, theme, lastRead }) => {
 };
 
 export default ReadButton;
-
-const styles = StyleSheet.create({
-  startButton: {
-    marginTop: 16,
-    marginBottom: 8,
-    marginHorizontal: 16,
-    borderRadius: 50,
-  },
-});

@@ -8,7 +8,8 @@ import {
   ViewStyle,
 } from 'react-native';
 import { RadioButton as PaperRadioButton } from 'react-native-paper';
-import { ThemeType } from '../../theme/types';
+import { MD3ThemeType } from '../../theme/types';
+import color from 'color';
 
 interface Props {
   label: string;
@@ -16,7 +17,7 @@ interface Props {
   onPress: () => void;
   style?: StyleProp<ViewStyle>;
   labelStyle?: StyleProp<TextStyle>;
-  theme: ThemeType;
+  theme: MD3ThemeType;
 }
 
 export const RadioButton: React.FC<Props> = ({
@@ -28,7 +29,7 @@ export const RadioButton: React.FC<Props> = ({
   theme,
 }) => (
   <Pressable
-    android_ripple={{ color: theme.rippleColor }}
+    android_ripple={{ color: color(theme.primary).alpha(0.12).string() }}
     style={[styles.pressable, style]}
     onPress={onPress}
   >
@@ -36,12 +37,10 @@ export const RadioButton: React.FC<Props> = ({
       status={status ? 'checked' : 'unchecked'}
       value={label}
       onPress={onPress}
-      color={theme.colorAccent}
+      color={theme.primary}
       uncheckedColor={theme.textColorSecondary}
     />
-    <Text
-      style={[styles.label, labelStyle, { color: theme.textColorSecondary }]}
-    >
+    <Text style={[styles.label, labelStyle, { color: theme.onSurface }]}>
       {label}
     </Text>
   </Pressable>

@@ -12,7 +12,7 @@ export const RadioButton = ({ value, label, theme, labelStyle }) => (
   <View style={styles.radioButtonContainer}>
     <MaterialRadioButton
       value={value}
-      color={theme.colorAccent}
+      color={theme.primary}
       uncheckedColor={theme.textColorSecondary}
     />
     <Text

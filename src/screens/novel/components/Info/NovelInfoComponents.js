@@ -8,7 +8,7 @@ import {
   Dimensions,
   StatusBar,
 } from 'react-native';
-
+import color from 'color';
 import { IconButton, Portal } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import { easeGradient } from 'react-native-easing-gradient';
@@ -25,7 +25,7 @@ const CoverImage = ({ children, source, theme, hideBackdrop }) => {
   const { colors, locations } = easeGradient({
     colorStops: {
       0: { color: 'rgba(0,0,0,0)' },
-      1: { color: theme.colorPrimaryDark },
+      1: { color: theme.background },
     },
   });
 
@@ -37,7 +37,7 @@ const CoverImage = ({ children, source, theme, hideBackdrop }) => {
         <View
           style={{
             flex: 1,
-            backgroundColor: `${theme.colorPrimaryDark}B4`,
+            backgroundColor: `${theme.background}B4`,
           }}
         >
           {source.uri ? (
@@ -116,21 +116,21 @@ const NovelTitle = ({ theme, children, onLongPress, onPress }) => (
   <Text
     onLongPress={onLongPress}
     onPress={onPress}
-    style={[styles.novelTitle, { color: theme.textColorPrimary }]}
+    style={[styles.novelTitle, { color: theme.onBackground }]}
   >
     {children}
   </Text>
 );
 
 const NovelAuthor = ({ theme, children }) => (
-  <Text style={[styles.novelAuthor, { color: theme.textColorSecondary }]}>
+  <Text style={[styles.novelAuthor, { color: theme.onSurfaceVariant }]}>
     {children}
   </Text>
 );
 
 const NovelInfo = ({ theme, children }) => (
   <Text
-    style={[styles.novelInfo, { color: theme.textColorSecondary }]}
+    style={[styles.novelInfo, { color: theme.onSurfaceVariant }]}
     numberOfLines={1}
   >
     {children}
@@ -141,7 +141,7 @@ const FollowButton = ({ theme, onPress, followed }) => (
   <View style={{ borderRadius: 4, overflow: 'hidden', flex: 1 }}>
     <Pressable
       android_ripple={{
-        color: theme.rippleColor,
+        color: color(theme.primary).alpha(0.12).string(),
         borderless: false,
       }}
       onPress={onPress}
@@ -153,14 +153,14 @@ const FollowButton = ({ theme, onPress, followed }) => (
     >
       <IconButton
         icon={followed ? 'heart' : 'heart-outline'}
-        color={followed ? theme.colorAccent : theme.textColorHint}
+        iconColor={followed ? theme.primary : theme.textColorHint}
         size={24}
         style={{ margin: 0 }}
       />
       <Text
         style={{
           fontSize: 12,
-          color: followed ? theme.colorAccent : theme.textColorHint,
+          color: followed ? theme.primary : theme.textColorHint,
         }}
       >
         {followed ? 'In Library' : 'Add to library'}
@@ -185,14 +185,14 @@ const TrackerButton = ({ theme, isTracked, onPress }) => (
     >
       <IconButton
         icon={isTracked ? 'check' : 'sync'}
-        color={isTracked ? theme.colorAccent : theme.textColorHint}
+        iconColor={isTracked ? theme.primary : theme.textColorHint}
         size={24}
         style={{ margin: 0 }}
       />
       <Text
         style={{
           fontSize: 12,
-          color: isTracked ? theme.colorAccent : theme.textColorHint,
+          color: isTracked ? theme.primary : theme.textColorHint,
         }}
       >
         {isTracked ? 'Tracked' : 'Tracking'}

@@ -25,9 +25,9 @@ import { showToast } from '../../hooks/showToast';
 import {
   usePosition,
   useSettings,
-  useTheme,
   useTrackingStatus,
 } from '../../hooks/reduxHooks';
+import { useTheme } from '@hooks/useTheme';
 import { updateChaptersRead } from '../../redux/tracker/tracker.actions';
 import { markChapterReadAction } from '../../redux/novel/novel.actions';
 import { saveScrollPosition } from '../../redux/preferences/preference.actions';
@@ -40,7 +40,6 @@ import ReaderSeekBar from './components/ReaderSeekBar';
 import EmptyView from '../../components/EmptyView';
 
 import GestureRecognizer from 'react-native-swipe-gestures';
-import { LoadingScreen } from '../../components/LoadingScreen/LoadingScreen';
 import { insertHistory } from '../../database/queries/HistoryQueries';
 import { SET_LAST_READ } from '../../redux/preferences/preference.types';
 import { setAppSettings } from '../../redux/settings/settings.actions';
@@ -54,6 +53,7 @@ import { useReaderSettings } from '../../redux/hooks';
 import { defaultTo } from 'lodash';
 import BottomInfoBar from './components/BottomInfoBar/BottomInfoBar';
 import { sanitizeChapterText } from './utils/sanitizeChapterText';
+import { LoadingScreenV2 } from '@components/index';
 
 const Chapter = ({ route, navigation }) => {
   useKeepAwake();
@@ -419,7 +419,7 @@ const Chapter = ({ route, navigation }) => {
                     icon="reload"
                     size={25}
                     style={{ margin: 0, marginTop: 16 }}
-                    color={readerSettings.textColor}
+                    iconColor={readerSettings.textColor}
                     onPress={() => {
                       getChapter(chapterId);
                       setLoading(true);
@@ -430,7 +430,7 @@ const Chapter = ({ route, navigation }) => {
                 </EmptyView>
               </View>
             ) : loading ? (
-              <LoadingScreen theme={theme} />
+              <LoadingScreenV2 theme={theme} />
             ) : (
               <TouchableWithoutFeedback
                 style={{ flex: 1 }}

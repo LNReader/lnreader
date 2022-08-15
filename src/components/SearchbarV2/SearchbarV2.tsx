@@ -1,9 +1,10 @@
 import React, { useRef } from 'react';
 import { Pressable, StyleSheet, View, TextInput } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import color from 'color';
 
 import IconButtonV2 from '../IconButtonV2/IconButtonV2';
-import { ThemeType } from '../../theme/types';
+import { MD3ThemeType } from '../../theme/types';
 
 interface RightIcon {
   iconName: string;
@@ -21,7 +22,7 @@ interface SearcbarProps {
   handleBackAction?: () => void;
   clearSearchbar: () => void;
   onLeftIconPress?: () => void;
-  theme: ThemeType;
+  theme: MD3ThemeType;
 }
 
 const Searchbar: React.FC<SearcbarProps> = ({
@@ -46,17 +47,20 @@ const Searchbar: React.FC<SearcbarProps> = ({
     <View
       style={[
         styles.searchbarContainer,
-        { marginTop, backgroundColor: theme.searchBarColor },
+        {
+          marginTop,
+          backgroundColor: color(theme.primary).alpha(0.08).string(),
+        },
       ]}
     >
       <Pressable
         onPress={focusSearchbar}
-        android_ripple={{ color: theme.rippleColor }}
+        android_ripple={{ color: color(theme.primary).alpha(12).toString() }}
         style={[styles.searchbar]}
       >
         <IconButtonV2
           name={handleBackAction ? 'arrow-left' : leftIcon}
-          color={theme.textColorPrimary}
+          color={theme.onSurface}
           onPress={() => {
             if (handleBackAction) {
               handleBackAction();
@@ -69,9 +73,9 @@ const Searchbar: React.FC<SearcbarProps> = ({
 
         <TextInput
           ref={searchbarRef}
-          style={[styles.textInput, { color: theme.textColorPrimary }]}
+          style={[styles.textInput, { color: theme.onSurface }]}
           placeholder={placeholder}
-          placeholderTextColor={theme.textColorSecondary}
+          placeholderTextColor={theme.onSurface}
           onChangeText={onChangeText}
           onSubmitEditing={onSubmitEditing}
           defaultValue={searchText}
@@ -79,7 +83,7 @@ const Searchbar: React.FC<SearcbarProps> = ({
         {searchText !== '' ? (
           <IconButtonV2
             name="close"
-            color={theme.textColorPrimary}
+            color={theme.onSurface}
             onPress={clearSearchbar}
             theme={theme}
           />
@@ -88,7 +92,7 @@ const Searchbar: React.FC<SearcbarProps> = ({
           <IconButtonV2
             key={index}
             name={icon.iconName}
-            color={icon.color || theme.textColorPrimary}
+            color={icon.color || theme.onSurface}
             onPress={icon.onPress}
             theme={theme}
           />

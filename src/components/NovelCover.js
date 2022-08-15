@@ -6,10 +6,10 @@ import {
   useWindowDimensions,
   Pressable,
 } from 'react-native';
+import color from 'color';
 
 import { LinearGradient } from 'expo-linear-gradient';
 import FastImage from 'react-native-fast-image';
-
 import ListView from './ListView';
 
 import { useDeviceOrientation } from '../services/utils/helpers';
@@ -61,13 +61,13 @@ const NovelCover = ({
           margin: 2,
         },
         isSelected && {
-          backgroundColor: theme.colorAccent,
+          backgroundColor: theme.primary,
           opacity: 0.8,
         },
       ]}
     >
       <Pressable
-        android_ripple={{ color: theme.colorAccent }}
+        android_ripple={{ color: color(theme.primary).alpha(0.12).string() }}
         style={styles.opac}
         onPress={
           selectedNovels && selectedNovels.length > 0 ? selectNovel : onPress
@@ -81,6 +81,7 @@ const NovelCover = ({
               showUnreadBadges={showUnreadBadges}
               chaptersDownloaded={item.chaptersDownloaded}
               chaptersUnread={item.chaptersUnread}
+              theme={theme}
             />
           )}
           {showUnreadBadges && item.chaptersUnread && (
@@ -120,6 +121,7 @@ const NovelCover = ({
         showDownloadBadges &&
         item.chaptersDownloaded && (
           <DownloadBadge
+            theme={theme}
             showUnreadBadges={showUnreadBadges}
             chaptersDownloaded={item.chaptersDownloaded}
             chaptersUnread={item.chaptersUnread}
@@ -194,8 +196,8 @@ const InLibraryBadge = ({ theme }) => (
     style={[
       styles.inLibraryBadge,
       {
-        backgroundColor: theme.colorAccent,
-        color: theme.colorButtonText,
+        backgroundColor: theme.primary,
+        color: theme.onPrimary,
         borderRadius: 4,
       },
     ]}
@@ -221,8 +223,8 @@ const UnreadBadge = ({
         borderRadius: 4,
       },
       {
-        backgroundColor: theme.colorAccent,
-        color: theme.colorButtonText,
+        backgroundColor: theme.primary,
+        color: theme.onPrimary,
       },
     ]}
   >
@@ -234,6 +236,7 @@ const DownloadBadge = ({
   chaptersDownloaded,
   showUnreadBadges,
   chaptersUnread,
+  theme,
 }) => (
   <Text
     style={[
@@ -244,6 +247,10 @@ const DownloadBadge = ({
       },
       !showUnreadBadges && {
         borderRadius: 4,
+      },
+      {
+        backgroundColor: theme.tertiary,
+        color: theme.onTertiary,
       },
     ]}
   >
@@ -284,16 +291,13 @@ const styles = StyleSheet.create({
   },
 
   downloadBadge: {
-    backgroundColor: '#2979FF',
-    color: '#FFFFFF',
     borderTopLeftRadius: 4,
     borderBottomLeftRadius: 4,
     paddingTop: 2,
-    paddingHorizontal: 4,
+    paddingHorizontal: 5,
     fontSize: 12,
   },
   unreadBadge: {
-    color: '#FFFFFF',
     borderTopRightRadius: 4,
     borderBottomRightRadius: 4,
     paddingTop: 2,

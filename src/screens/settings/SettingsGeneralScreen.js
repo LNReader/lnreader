@@ -10,7 +10,8 @@ import SwitchSetting from '../../components/Switch/Switch';
 import DisplayModeModal from '../more/components/DisplayModeModal';
 import GridSizeModal from '../more/components/GridSizeModal';
 
-import { useSettings, useTheme } from '../../hooks/reduxHooks';
+import { useSettings } from '../../hooks/reduxHooks';
+import { useTheme } from '@hooks/useTheme';
 import { setAppSettings } from '../../redux/settings/settings.actions';
 import { SHOW_LAST_UPDATE_TIME } from '../../redux/updates/updates.types';
 import { useModal } from '../../hooks/useModal';
@@ -54,7 +55,7 @@ const GenralSettings = ({ navigation }) => {
   const defaultChapterSortModal = useModal();
 
   return (
-    <ScreenContainer theme={theme}>
+    <>
       <Appbar title="General" onBackAction={navigation.goBack} />
       <ScrollView contentContainerStyle={{ paddingBottom: 32 }}>
         <List.Section>
@@ -177,7 +178,7 @@ const GenralSettings = ({ navigation }) => {
         hideGridSizeModal={gridSizeModalRef.hideModal}
         theme={theme}
       />
-    </ScreenContainer>
+    </>
   );
 };
 

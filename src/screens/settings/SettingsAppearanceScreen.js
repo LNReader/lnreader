@@ -4,64 +4,55 @@ import { ScrollView, Text } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import { Appbar } from '../../components/Appbar';
-import { ScreenContainer } from '../../components/Common';
 import { List } from '../../components/List';
 import { ThemePicker } from '../../components/ThemePicker/ThemePicker';
 import SwitchSetting from '../../components/Switch/Switch';
 import ColorPickerModal from '../../components/ColorPickerModal/ColorPickerModal';
 
-import { useSettings, useTheme } from '../../hooks/reduxHooks';
+import { useSettings } from '../../hooks/reduxHooks';
+import { useTheme } from '@hooks/useTheme';
+import { setAppSettings } from '../../redux/settings/settings.actions';
 import {
-  setAccentColor,
-  setAmoledMode,
-  setAppSettings,
-  setAppTheme,
-  setRippleColor,
-} from '../../redux/settings/settings.actions';
+  defaultTheme,
+  midnightDusk,
+  tealTurquoise,
+  yotsubaTheme,
+  lavenderTheme,
+  strawberryDaiquiriTheme,
+  takoTheme,
+} from '../../theme/md3';
 
 import {
-  darkTheme,
-  greenAppleTheme,
-  irisBlueTheme,
-  lightTheme,
-  midnightDuskTheme,
-  oceanicTheme,
-  springBlossomTheme,
-  strawberryDaiquiri,
-  takoLightTheme,
-  takoTheme,
-  tealTheme,
-  yangTheme,
-  yinYangTheme,
-  yotsubaTheme,
-  sapphireDuskTheme,
-  chocolateStrawberriesTheme,
-} from '../../theme/theme';
+  useMMKVBoolean,
+  useMMKVObject,
+  useMMKVString,
+} from 'react-native-mmkv';
 
 const lightThemes = [
-  lightTheme,
-  springBlossomTheme,
-  takoLightTheme,
-  yangTheme,
-  yotsubaTheme,
+  defaultTheme.light,
+  midnightDusk.light,
+  tealTurquoise.light,
+  yotsubaTheme.light,
+  lavenderTheme.light,
+  strawberryDaiquiriTheme.light,
+  takoTheme.light,
 ];
 const darkThemes = [
-  darkTheme,
-  midnightDuskTheme,
-  strawberryDaiquiri,
-  takoTheme,
-  greenAppleTheme,
-  tealTheme,
-  yinYangTheme,
-  irisBlueTheme,
-  oceanicTheme,
-  sapphireDuskTheme,
-  chocolateStrawberriesTheme,
+  defaultTheme.dark,
+  midnightDusk.dark,
+  tealTurquoise.dark,
+  yotsubaTheme.dark,
+  lavenderTheme.dark,
+  strawberryDaiquiriTheme.dark,
+  takoTheme.dark,
 ];
 
 const AppearanceSettings = ({ navigation }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
+  const [, setTheme] = useMMKVObject('APP_THEME');
+  const [isAmoledBlack, setAmoledBlack] = useMMKVBoolean('AMOLED_BLACK');
+  const [, setCustomAccentColor] = useMMKVString('CUSTOM_ACCENT_COLOR');
 
   const {
     showHistoryTab = true,
@@ -78,26 +69,8 @@ const AppearanceSettings = ({ navigation }) => {
   const showAccentColorModal = () => setAccentColorModal(true);
   const hideAccentColorModal = () => setAccentColorModal(false);
 
-  const hexToRgb = hex => {
-    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result
-      ? {
-          r: parseInt(result[1], 16),
-          g: parseInt(result[2], 16),
-          b: parseInt(result[3], 16),
-        }
-      : null;
-  };
-
-  const onSubmit = val => {
-    dispatch(setAccentColor(val));
-    const rgb = hexToRgb(val);
-    const rgbaColor = `rgba(${rgb.r},${rgb.g},${rgb.b},0.12)`;
-    dispatch(setRippleColor(rgbaColor));
-  };
-
   return (
-    <ScreenContainer theme={theme}>
+    <>
       <Appbar title="Appearance" onBackAction={navigation.goBack} />
       <ScrollView style={{ flex: 1 }}>
         <List.Section>
@@ -125,7 +98,10 @@ const AppearanceSettings = ({ navigation }) => {
                 key={item.id}
                 currentTheme={theme}
                 theme={item}
-                onPress={() => dispatch(setAppTheme(item.id))}
+                onPress={() => {
+                  setTheme(item);
+                  setCustomAccentColor(undefined);
+                }}
               />
             ))}
           </ScrollView>
@@ -152,34 +128,24 @@ const AppearanceSettings = ({ navigation }) => {
                 key={item.id}
                 currentTheme={theme}
                 theme={item}
-                onPress={() => dispatch(setAppTheme(item.id))}
+                onPress={() => {
+                  setTheme(item);
+                  setCustomAccentColor(undefined);
+                }}
               />
             ))}
           </ScrollView>
-          {theme.statusBar === 'light-content' && (
+          {theme.isDark && (
             <SwitchSetting
               label="Pure black dark mode"
-              value={
-                theme.colorPrimary === '#000000' &&
-                theme.colorPrimaryDark === '#000000'
-              }
-              onPress={() =>
-                dispatch(
-                  setAmoledMode(
-                    theme.id,
-                    !(
-                      theme.colorPrimary === '#000000' &&
-                      theme.colorPrimaryDark === '#000000'
-                    ),
-                  ),
-                )
-              }
+              value={isAmoledBlack}
+              onPress={() => setAmoledBlack(prevVal => !prevVal)}
               theme={theme}
             />
           )}
           <List.ColorItem
             title="Accent Color"
-            description={theme.colorAccent.toUpperCase()}
+            description={theme.primary.toUpperCase()}
             onPress={showAccentColorModal}
             theme={theme}
           />
@@ -239,12 +205,12 @@ const AppearanceSettings = ({ navigation }) => {
         title="Accent color"
         visible={accentColorModal}
         closeModal={hideAccentColorModal}
-        color={theme.colorAccent}
-        onSubmit={onSubmit}
+        color={theme.primary}
+        onSubmit={val => setCustomAccentColor(val)}
         theme={theme}
         showAccentColors={true}
       />
-    </ScreenContainer>
+    </>
   );
 };
 

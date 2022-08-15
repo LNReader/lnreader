@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, ToastAndroid } from 'react-native';
-import { Portal } from 'react-native-paper';
+import { overlay, Portal } from 'react-native-paper';
 import Bottomsheet from 'rn-sliding-up-panel';
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -119,7 +119,7 @@ const TrackSheet = ({ bottomSheetRef, novelId, novelName, theme }) => {
         <View
           style={[
             styles.contentContainer,
-            { backgroundColor: theme.colorPrimaryDark },
+            { backgroundColor: overlay(2, theme.surface) },
           ]}
         >
           {!trackItem ? (

@@ -1,9 +1,9 @@
 import React, { LegacyRef, useState } from 'react';
 import { Animated, Pressable, StyleSheet, Text, View } from 'react-native';
-
+import color from 'color';
 import Bottomsheet from 'rn-sliding-up-panel';
 
-import { useTheme } from '@redux/hooks';
+import { useTheme } from '@hooks/useTheme';
 import {
   FilterInputs,
   SelectedFilter,
@@ -12,11 +12,12 @@ import {
 import { FlatList } from 'react-native-gesture-handler';
 import { Button, IconButtonV2 } from '@components/index';
 import { ButtonVariation } from '@components/Button/Button';
-import { coverPlaceholderColor } from '../../../theme/colors';
+import { dividerColor } from '../../../theme/colors';
 import { Checkbox } from '@components/Checkbox/Checkbox';
 import { defaultTo } from 'lodash';
 import { Picker } from '@react-native-picker/picker';
 import useBoolean from '@hooks/useBoolean';
+import { overlay } from 'react-native-paper';
 
 const insertOrRemoveIntoArray = (array: string[], val: string): string[] =>
   array.indexOf(val) > -1 ? array.filter(ele => ele !== val) : [...array, val];
@@ -74,7 +75,7 @@ const FilterItem: React.FC<FilterItemProps> = ({
         <Pressable
           style={styles.checkboxHeader}
           onPress={toggleCard}
-          android_ripple={{ color: theme.rippleColor }}
+          android_ripple={{ color: color(theme.primary).alpha(0.12).string() }}
         >
           <Text
             style={[styles.filterLabel, { color: theme.textColorSecondary }]}
@@ -117,7 +118,7 @@ const FilterItem: React.FC<FilterItemProps> = ({
 interface BottomSheetProps {
   filtersValues: SourceFilter[] | undefined;
   filterSheetRef: LegacyRef<Bottomsheet> | null;
-  setFilters: React.Dispatch<React.SetStateAction<SelectedFilter | undefined>>;
+  setFilters: (filters?: SelectedFilter) => void;
   clearFilters: () => void;
 }
 
@@ -143,8 +144,18 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
       backdropOpacity={0.3}
       height={600}
     >
-      <View style={[styles.container, { backgroundColor: theme.colorPrimary }]}>
-        <View style={styles.buttonContainer}>
+      <View
+        style={[
+          styles.container,
+          { backgroundColor: overlay(2, theme.surface) },
+        ]}
+      >
+        <View
+          style={[
+            styles.buttonContainer,
+            { borderBottomColor: dividerColor(theme.isDark) },
+          ]}
+        >
           <Button
             title={'Reset'}
             variation={ButtonVariation.CLEAR}
@@ -195,7 +206,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 12,
     paddingHorizontal: 16,
-    borderBottomColor: coverPlaceholderColor,
     borderBottomWidth: 1,
   },
   filterContainer: {

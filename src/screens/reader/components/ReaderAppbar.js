@@ -1,6 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
+import color from 'color';
 
 import { Appbar } from 'react-native-paper';
 import { IconButtonV2 } from '../../../components';
@@ -27,7 +28,7 @@ const ReaderAppbar = ({
     <FadeView style={styles.container} active={hide} animationDuration={150}>
       <View
         style={[
-          { backgroundColor: `${theme.colorPrimary}E6` },
+          { backgroundColor: color(theme.surface).alpha(0.9).string() },
           styles.appbarContainer,
         ]}
       >
@@ -35,13 +36,13 @@ const ReaderAppbar = ({
           <IconButtonV2
             name="arrow-left"
             onPress={goBack}
-            color={theme.textColorPrimary}
+            iconColor={theme.onSurface}
             size={26}
             theme={theme}
           />
           <Appbar.Content
             title={novelName}
-            titleStyle={{ color: theme.textColorPrimary }}
+            titleStyle={{ color: theme.onSurface }}
             subtitle={chapterName?.trim()}
             subtitleStyle={{ color: theme.textColorSecondary }}
           />
@@ -49,10 +50,8 @@ const ReaderAppbar = ({
             icon="volume-high"
             size={24}
             onPress={tts}
-            color={
-              textToSpeech === 'progress'
-                ? theme.colorAccent
-                : theme.textColorPrimary
+            iconColor={
+              textToSpeech === 'progress' ? theme.colorAccent : theme.onSurface
             }
           />
           {textToSpeechPosition.end > 0 && (
@@ -60,7 +59,7 @@ const ReaderAppbar = ({
               icon={textToSpeech === 'paused' ? 'play' : 'pause'}
               size={24}
               onPress={pauseTts}
-              color={theme.textColorPrimary}
+              iconColor={theme.onSurface}
             />
           )}
 
@@ -71,7 +70,7 @@ const ReaderAppbar = ({
               dispatch(bookmarkChapterAction([{ bookmark, chapterId }]));
               setBookmarked(!bookmarked);
             }}
-            color={theme.textColorPrimary}
+            iconColor={theme.onSurface}
             theme={theme}
             style={styles.bookmark}
           />

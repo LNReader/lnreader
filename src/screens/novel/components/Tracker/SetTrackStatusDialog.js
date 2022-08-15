@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text } from 'react-native';
-import { Modal } from 'react-native-paper';
+import { Modal, overlay } from 'react-native-paper';
 import {
   RadioButton,
   RadioButtonGroup,
@@ -27,7 +27,7 @@ const SetTrackStatusDialog = ({
       onDismiss={() => setTrackStatusDialog(false)}
       contentContainerStyle={[
         styles.containerStyle,
-        { backgroundColor: theme.colorPrimary },
+        { backgroundColor: overlay(2, theme.surface) },
       ]}
     >
       <Text style={[styles.dialogTitle, { color: theme.textColorPrimary }]}>
@@ -55,11 +55,11 @@ export default SetTrackStatusDialog;
 const styles = StyleSheet.create({
   containerStyle: {
     margin: 30,
-    padding: 20,
-    borderRadius: 8,
+    padding: 24,
+    borderRadius: 28,
   },
   dialogTitle: {
-    fontSize: 18,
+    fontSize: 24,
     marginBottom: 16,
   },
 });

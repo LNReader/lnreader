@@ -7,6 +7,7 @@ import {
   useWindowDimensions,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import color from 'color';
 
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import Bottomsheet from 'rn-sliding-up-panel';
@@ -15,6 +16,8 @@ import { getString } from '../../../../strings/translations';
 import { Checkbox, SortItem } from '../../../components/Checkbox/Checkbox';
 
 import { showChapterTitlesAction } from '../../../redux/novel/novel.actions';
+import { overlay } from 'react-native-paper';
+import { dividerColor } from '../../../theme/colors';
 
 const ChaptersSettingsSheet = ({
   bottomSheetRef,
@@ -43,7 +46,7 @@ const ChaptersSettingsSheet = ({
       <Checkbox
         theme={theme}
         label="Downloaded"
-        color={theme.colorAccent}
+        color={theme.primary}
         status={filter.match('AND downloaded=1')}
         onPress={() =>
           filter.match('AND downloaded=1')
@@ -54,7 +57,7 @@ const ChaptersSettingsSheet = ({
       <Checkbox
         theme={theme}
         label="Unread"
-        color={theme.colorAccent}
+        color={theme.primary}
         status={
           filter.match('AND `read`=0')
             ? true
@@ -75,7 +78,7 @@ const ChaptersSettingsSheet = ({
       <Checkbox
         theme={theme}
         label="Bookmarked"
-        color={theme.colorAccent}
+        color={theme.primary}
         status={filter.match('AND bookmark=1')}
         onPress={() => {
           filter.match('AND bookmark=1')
@@ -136,14 +139,19 @@ const ChaptersSettingsSheet = ({
   const renderTabBar = props => (
     <TabBar
       {...props}
-      indicatorStyle={{ backgroundColor: theme.colorAccent }}
-      style={{ backgroundColor: theme.colorPrimary, elevation: 0 }}
+      indicatorStyle={{ backgroundColor: theme.primary }}
+      style={{
+        backgroundColor: overlay(2, theme.surface),
+        borderBottomWidth: 1,
+        borderBottomColor: dividerColor(theme.isDark),
+        elevation: 0,
+      }}
       renderLabel={({ route, focused, color }) => (
         <Text style={{ color }}>{route.title}</Text>
       )}
       inactiveColor={theme.textColorSecondary}
-      activeColor={theme.colorAccent}
-      pressColor={theme.rippleColor}
+      activeColor={theme.primary}
+      pressColor={color(theme.primary).alpha(0.12).string()}
     />
   );
 
@@ -158,7 +166,7 @@ const ChaptersSettingsSheet = ({
       <View
         style={[
           styles.contentContainer,
-          { backgroundColor: theme.colorPrimaryDark },
+          { backgroundColor: overlay(2, theme.surface) },
         ]}
       >
         <TabView

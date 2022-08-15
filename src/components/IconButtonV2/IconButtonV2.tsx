@@ -1,8 +1,9 @@
 import React from 'react';
 import { Pressable, StyleSheet, View, ViewStyle } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Color from 'color';
 
-import { ThemeType } from '../../theme/types';
+import { MD3ThemeType } from '../../theme/types';
 
 type Props = {
   name: string;
@@ -11,7 +12,7 @@ type Props = {
   disabled?: boolean;
   padding?: number;
   onPress?: () => void;
-  theme: ThemeType;
+  theme: MD3ThemeType;
   style?: ViewStyle;
 };
 
@@ -30,7 +31,7 @@ const IconButton: React.FC<Props> = ({
       style={[styles.pressable, { padding }]}
       onPress={onPress}
       disabled={disabled}
-      android_ripple={{ color: theme.rippleColor }}
+      android_ripple={{ color: Color(theme.primary).alpha(0.12).string() }}
     >
       <MaterialCommunityIcons
         name={name}

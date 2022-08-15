@@ -12,8 +12,8 @@ import {
   useAppDispatch,
   useBrowseSettings,
   useSourcesReducer,
-  useTheme,
 } from '../../redux/hooks';
+import { useTheme } from '@hooks/useTheme';
 import { useNavigation } from '@react-navigation/native';
 import { useSearch } from '../../hooks';
 import SourceCard from './components/SourceCard/SourceCard';

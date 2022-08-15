@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import { setBarColor } from '../theme/utils/setBarColor';
-import { useTheme } from '../hooks/reduxHooks';
+import { useTheme } from '../hooks/useTheme';
 import { useGithubUpdateChecker } from '../hooks/githubUpdateChecker';
 import * as SplashScreen from 'expo-splash-screen';
 
@@ -43,14 +43,12 @@ const MainNavigator = () => {
     return () => {
       clearTimeout(timer);
     };
-  }, [theme]);
+  }, [theme.id]);
 
   const { isNewVersion, latestRelease } = useGithubUpdateChecker() || {};
 
   return (
-    <NavigationContainer
-      theme={{ colors: { background: theme.colorPrimaryDark } }}
-    >
+    <NavigationContainer theme={{ colors: { background: theme.background } }}>
       {isNewVersion && <NewUpdateDialog newVersion={latestRelease} />}
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="BottomNavigator" component={BottomNavigator} />

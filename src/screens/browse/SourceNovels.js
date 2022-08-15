@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, FlatList, Text } from 'react-native';
-import { useTheme } from '../../hooks/reduxHooks';
+import { useTheme } from '@hooks/useTheme';
 
 import { Appbar } from '../../components/Appbar';
 import ListView from '../../components/ListView';

@@ -5,6 +5,8 @@ import FastImage from 'react-native-fast-image';
 import { defaultCoverUri } from '../sources/helpers/constants';
 import { coverPlaceholderColor } from '../theme/colors';
 
+import color from 'color';
+
 const ListView = ({
   item,
   downloadBadge,
@@ -17,10 +19,12 @@ const ListView = ({
 }) => {
   return (
     <Pressable
-      android_ripple={{ color: theme.rippleColor }}
+      android_ripple={{ color: color(theme.primary).alpha(0.12).string() }}
       style={[
         styles.listView,
-        isSelected && { backgroundColor: theme.rippleColor },
+        isSelected && {
+          backgroundColor: color(theme.primary).alpha(0.12).string(),
+        },
       ]}
       onPress={onPress}
       onLongPress={onLongPress}
