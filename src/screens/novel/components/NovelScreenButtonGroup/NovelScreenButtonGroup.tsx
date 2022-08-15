@@ -6,14 +6,14 @@ import * as WebBrowser from 'expo-web-browser';
 import { NovelInfo } from '../../../../database/types';
 import { useNavigation } from '@react-navigation/native';
 import { useBoolean, useNovelTrackerInfo } from '../../../../hooks';
-import { ThemeType } from '../../../../theme/types';
+import { MD3ThemeType } from '../../../../theme/types';
 import { getString } from '../../../../../strings/translations';
 import { Portal } from 'react-native-paper';
 import SetCategoryModal from '../SetCategoriesModal';
 
 interface NovelScreenButtonGroupProps {
   novel: NovelInfo;
-  theme: ThemeType;
+  theme: MD3ThemeType;
   handleTrackerSheet: () => void;
   handleFollowNovel: () => void;
 }
@@ -26,13 +26,11 @@ const NovelScreenButtonGroup: React.FC<NovelScreenButtonGroupProps> = ({
 }) => {
   const { followed, sourceUrl } = novel;
   const { navigate } = useNavigation();
-  const followButtonColor = followed ? theme.colorAccent : theme.textColorHint;
+  const followButtonColor = followed ? theme.primary : theme.textColorHint;
 
   const { isTracked, isTrackerAvailable } = useNovelTrackerInfo(novel.novelId);
 
-  const trackerButtonColor = isTracked
-    ? theme.colorAccent
-    : theme.textColorHint;
+  const trackerButtonColor = isTracked ? theme.primary : theme.textColorHint;
 
   const handleOpenWebView = async () => {
     WebBrowser.openBrowserAsync(sourceUrl);

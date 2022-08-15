@@ -5,7 +5,7 @@ import { getString } from '../../../strings/translations';
 import { Appbar } from '../../components/Appbar';
 import { List } from '../../components/List';
 
-import { useTheme } from '../../hooks/reduxHooks';
+import { useTheme } from '@hooks/useTheme';
 
 const SettingsScreen = ({ navigation }) => {
   const theme = useTheme();
@@ -13,12 +13,7 @@ const SettingsScreen = ({ navigation }) => {
   return (
     <>
       <Appbar title="Settings" onBackAction={navigation.goBack} />
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: theme.colorPrimaryDark,
-        }}
-      >
+      <View style={{ flex: 1, backgroundColor: theme.background }}>
         <List.Item
           title={getString('moreScreen.settingsScreen.generalSettings')}
           icon="tune"

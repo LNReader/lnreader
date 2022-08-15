@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, StyleSheet } from 'react-native';
 
-import { Portal, Modal } from 'react-native-paper';
+import { Portal, Modal, overlay } from 'react-native-paper';
 
 import { RadioButton } from '../../../components/RadioButton/RadioButton';
 
@@ -30,7 +30,7 @@ const GridSizeModal = ({
         onDismiss={hideGridSizeModal}
         contentContainerStyle={[
           styles.container,
-          { backgroundColor: theme.colorPrimaryDark },
+          { backgroundColor: overlay(2, theme.surface) },
         ]}
       >
         <Text style={[styles.modalHeader, { color: theme.textColorPrimary }]}>
@@ -66,11 +66,12 @@ const styles = StyleSheet.create({
   },
   modalHeader: {
     paddingHorizontal: 24,
-    fontSize: 18,
+    fontSize: 24,
     marginBottom: 10,
   },
   modalDescription: {
     paddingHorizontal: 24,
+    fontSize: 16,
     marginBottom: 16,
   },
   slider: {

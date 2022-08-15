@@ -1,4 +1,4 @@
-import { useTheme } from '@redux/hooks';
+import { useTheme } from '@hooks/useTheme';
 import React from 'react';
 import {
   Dimensions,
@@ -9,8 +9,10 @@ import {
   ViewProps,
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import color from 'color';
 
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { overlay } from 'react-native-paper';
 
 type Action = {
   icon: string;
@@ -38,7 +40,9 @@ export const Actionbar: React.FC<ActionbarProps> = ({
         style={[
           styles.actionbarContainer,
           {
-            backgroundColor: theme.colorPrimary,
+            backgroundColor: theme.isDark
+              ? overlay(2, theme.surface)
+              : theme.secondaryContainer,
             minHeight: 80 + bottom,
             paddingBottom: bottom,
           },
@@ -50,14 +54,14 @@ export const Actionbar: React.FC<ActionbarProps> = ({
             key={id}
             android_ripple={{
               radius: 50,
-              color: theme.rippleColor,
+              color: color(theme.primary).alpha(0.12).string(),
               borderless: true,
             }}
             onPress={onPress}
           >
             <MaterialCommunityIcons
               name={icon}
-              color={theme.textColorPrimary}
+              color={theme.onSurface}
               size={24}
             />
           </Pressable>

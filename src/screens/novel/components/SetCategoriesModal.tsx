@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Dimensions, FlatList, StyleSheet, Text, View } from 'react-native';
-import { Modal, Portal } from 'react-native-paper';
+import { Modal, overlay, Portal } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 
 import { ButtonVariation } from '@components/Button/Button';
 import { Button } from '@components/index';
 
-import { useTheme } from '@redux/hooks';
+import { useTheme } from '@hooks/useTheme';
+
 import { getString } from '@strings/translations';
 import { getCategoriesFromDb } from '../../../database/queries/CategoryQueries';
 import { Category } from '../../../database/types';
@@ -65,7 +66,7 @@ const SetCategoryModal: React.FC<SetCategoryModalProps> = ({
         }}
         contentContainerStyle={[
           styles.modalContainer,
-          { backgroundColor: theme.colorPrimary },
+          { backgroundColor: overlay(2, theme.surface) },
         ]}
       >
         <Text style={[styles.modalTitle, { color: theme.textColorPrimary }]}>

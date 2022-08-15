@@ -2,22 +2,22 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { ThemeType } from '../../../theme/types';
+import { MD3ThemeType } from '../../../theme/types';
 
 interface Props {
   label: string;
   icon?: string;
   backgroundColor?: string;
   textColor?: string;
-  theme: ThemeType;
+  theme: MD3ThemeType;
 }
 
 export const Banner: React.FC<Props> = ({
   label,
   icon,
   theme,
-  backgroundColor = theme.colorAccent,
-  textColor = theme.colorButtonText,
+  backgroundColor = theme.primary,
+  textColor = theme.onPrimary,
 }) => (
   <View style={[{ backgroundColor }, styles.container]}>
     {icon ? (

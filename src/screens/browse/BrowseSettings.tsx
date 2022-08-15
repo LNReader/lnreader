@@ -6,8 +6,8 @@ import {
   useAppDispatch,
   useBrowseSettings,
   useSourcesReducer,
-  useTheme,
 } from '../../redux/hooks';
+import { useTheme } from '@hooks/useTheme';
 import { useNavigation } from '@react-navigation/native';
 import { getString } from '../../../strings/translations';
 import { languages } from '../../utils/constants/languages';

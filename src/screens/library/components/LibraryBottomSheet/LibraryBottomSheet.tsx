@@ -8,9 +8,10 @@ import {
 } from 'react-native';
 import Bottomsheet from 'rn-sliding-up-panel';
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
+import color from 'color';
 
 import { useLibrarySettings } from '@hooks/useSettings';
-import { useTheme } from '@redux/hooks';
+import { useTheme } from '@hooks/useTheme';
 import { getString } from '@strings/translations';
 import { Checkbox, SortItem } from '@components/Checkbox/Checkbox';
 import {
@@ -23,6 +24,7 @@ import {
 } from '@screens/library/constants/constants';
 import { FlashList } from '@shopify/flash-list';
 import { RadioButton } from '@components/RadioButton/RadioButton';
+import { overlay } from 'react-native-paper';
 
 interface LibraryBottomSheetProps {
   bottomSheetRef: LegacyRef<Bottomsheet> | null;
@@ -172,11 +174,13 @@ const LibraryBottomSheet: React.FC<LibraryBottomSheetProps> = ({
   const renderTabBar = (props: any) => (
     <TabBar
       {...props}
-      indicatorStyle={{ backgroundColor: theme.colorAccent }}
+      indicatorStyle={{ backgroundColor: theme.primary }}
       style={[
         {
-          backgroundColor: theme.colorPrimary,
-          borderBottomColor: theme.dividerColor,
+          backgroundColor: overlay(2, theme.surface),
+          borderBottomColor: color(theme.isDark ? '#FFFFFF' : '#000000')
+            .alpha(0.12)
+            .string(),
         },
         styles.tabBar,
       ]}
@@ -184,8 +188,8 @@ const LibraryBottomSheet: React.FC<LibraryBottomSheetProps> = ({
         <Text style={{ color }}>{route.title}</Text>
       )}
       inactiveColor={theme.textColorSecondary}
-      activeColor={theme.colorAccent}
-      pressColor={theme.rippleColor}
+      activeColor={theme.primary}
+      pressColor={color(theme.primary).alpha(0.12).string()}
     />
   );
 
@@ -216,7 +220,10 @@ const LibraryBottomSheet: React.FC<LibraryBottomSheetProps> = ({
       height={600}
     >
       <View
-        style={[styles.bottomSheetCtn, { backgroundColor: theme.colorPrimary }]}
+        style={[
+          styles.bottomSheetCtn,
+          { backgroundColor: overlay(2, theme.surface) },
+        ]}
       >
         <TabView
           navigationState={{ index, routes }}

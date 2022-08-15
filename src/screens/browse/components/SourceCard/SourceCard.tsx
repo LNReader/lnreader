@@ -1,17 +1,19 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image, Pressable } from 'react-native';
+import color from 'color';
+
 import { getString } from '../../../../../strings/translations';
 import { Button, IconButtonV2 } from '../../../../components';
 import { ButtonVariation } from '../../../../components/Button/Button';
 
 import { Source } from '../../../../sources/types';
 import { coverPlaceholderColor } from '../../../../theme/colors';
-import { ThemeType } from '../../../../theme/types';
+import { MD3ThemeType } from '../../../../theme/types';
 
 interface Props {
   source: Source;
   isPinned: boolean;
-  theme: ThemeType;
+  theme: MD3ThemeType;
   onTogglePinSource: (sourceId: number) => void;
   navigateToSource: (source: Source, showLatestNovels?: boolean) => void;
 }
@@ -26,7 +28,7 @@ const SourceCard: React.FC<Props> = ({
   <Pressable
     style={styles.container}
     onPress={() => navigateToSource(source)}
-    android_ripple={{ color: theme.rippleColor }}
+    android_ripple={{ color: color(theme.primary).alpha(0.12).string() }}
   >
     <View style={styles.flexRow}>
       <Image source={{ uri: source.icon }} style={styles.icon} />
@@ -43,14 +45,14 @@ const SourceCard: React.FC<Props> = ({
       <Button
         title={getString('browseScreen.latest')}
         variation={ButtonVariation.CLEAR}
-        textColor={theme.colorAccent}
+        textColor={theme.primary}
         onPress={() => navigateToSource(source, true)}
         theme={theme}
       />
       <IconButtonV2
         name={isPinned ? 'pin' : 'pin-outline'}
         size={22}
-        color={isPinned ? theme.colorAccent : theme.textColorSecondary}
+        color={isPinned ? theme.primary : theme.textColorSecondary}
         onPress={() => onTogglePinSource(source.sourceId)}
         theme={theme}
       />

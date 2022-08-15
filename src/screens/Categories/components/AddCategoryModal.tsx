@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { Modal, Portal, TextInput } from 'react-native-paper';
+import { Modal, overlay, Portal, TextInput } from 'react-native-paper';
 
 import { ButtonVariation } from '@components/Button/Button';
 import { Button } from '@components/index';
@@ -11,7 +11,8 @@ import {
   isCategoryNameDuplicate,
   updateCategory,
 } from '../../../database/queries/CategoryQueries';
-import { useTheme } from '@redux/hooks';
+import { useTheme } from '@hooks/useTheme';
+
 import { getString } from '@strings/translations';
 import { showToast } from '@hooks/showToast';
 
@@ -35,7 +36,7 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
 
   const textInputTheme = {
     colors: {
-      primary: theme.colorAccent,
+      primary: theme.primary,
       placeholder: theme.textColorHint,
       text: theme.textColorPrimary,
       background: 'transparent',
@@ -49,7 +50,7 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
         onDismiss={closeModal}
         contentContainerStyle={[
           styles.modalContainer,
-          { backgroundColor: theme.colorPrimary },
+          { backgroundColor: overlay(2, theme.surface) },
         ]}
       >
         <Text style={[styles.modalTitle, { color: theme.textColorPrimary }]}>

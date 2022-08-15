@@ -6,4 +6,5 @@ import { StatusBar } from 'react-native';
  * @param theme
  */
 
-export const setBarColor = theme => StatusBar.setBarStyle(theme.statusBar);
+export const setBarColor = theme =>
+  StatusBar.setBarStyle(theme.isDark ? 'light-content' : 'dark-content');

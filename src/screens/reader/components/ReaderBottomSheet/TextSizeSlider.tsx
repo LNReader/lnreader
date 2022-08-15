@@ -1,11 +1,8 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 
-import {
-  useAppDispatch,
-  useReaderSettings,
-  useTheme,
-} from '../../../../redux/hooks';
+import { useAppDispatch, useReaderSettings } from '../../../../redux/hooks';
+import { useTheme } from '@hooks/useTheme';
 import Slider from '@react-native-community/slider';
 import { setReaderSettings } from '../../../../redux/settings/settings.actions';
 import { getString } from '../../../../../strings/translations';
@@ -29,9 +26,9 @@ const TextSizeSlider: React.FC = () => {
         minimumValue={12}
         maximumValue={20}
         step={1}
-        minimumTrackTintColor={theme.colorAccent}
+        minimumTrackTintColor={theme.primary}
         maximumTrackTintColor={TRACK_TINT_COLOR}
-        thumbTintColor={theme.colorAccent}
+        thumbTintColor={theme.primary}
         onSlidingComplete={value =>
           dispatch(setReaderSettings('textSize', value))
         }

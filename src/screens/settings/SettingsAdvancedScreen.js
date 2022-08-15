@@ -3,10 +3,9 @@ import React, { useState } from 'react';
 import { Button, Dialog, Portal } from 'react-native-paper';
 
 import { Appbar } from '../../components/Appbar';
-import { ScreenContainer } from '../../components/Common';
 import { List } from '../../components/List';
 
-import { useTheme } from '../../hooks/reduxHooks';
+import { useTheme } from '@hooks/useTheme';
 import { showToast } from '../../hooks/showToast';
 
 import { deleteNovelCache } from '../../database/queries/NovelQueries';
@@ -38,7 +37,7 @@ const AdvancedSettings = ({ navigation }) => {
   } = useBoolean();
 
   return (
-    <ScreenContainer theme={theme}>
+    <>
       <Appbar title="Advanced" onBackAction={() => navigation.goBack()} />
       <List.Section>
         <List.SubHeader theme={theme}>Data Management</List.SubHeader>
@@ -153,7 +152,7 @@ const AdvancedSettings = ({ navigation }) => {
           </Dialog.Actions>
         </Dialog>
       </Portal>
-    </ScreenContainer>
+    </>
   );
 };
 

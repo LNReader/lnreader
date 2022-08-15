@@ -24,6 +24,7 @@ import {
   Menu,
   FAB,
   Snackbar,
+  overlay,
 } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Haptics from 'expo-haptics';
@@ -47,10 +48,9 @@ import {
   useNovel,
   usePreferences,
   useSettings,
-  useTheme,
 } from '../../hooks/reduxHooks';
 import { showToast } from '../../hooks/showToast';
-
+import { useTheme } from '@hooks/useTheme';
 import ChapterItem from './components/ChapterItem';
 import NovelInfoHeader from './components/Info/NovelInfoHeader';
 import NovelBottomSheet from './components/NovelBottomSheet';
@@ -121,8 +121,8 @@ const Novel = ({ route, navigation }) => {
       progressViewOffset={progressViewOffset}
       onRefresh={onRefresh}
       refreshing={updating}
-      colors={[theme.textColorPrimary]}
-      progressBackgroundColor={theme.colorPrimary}
+      colors={[theme.primary]}
+      progressBackgroundColor={theme.onPrimary}
     />
   );
 
@@ -338,9 +338,7 @@ const Novel = ({ route, navigation }) => {
 
   return (
     <Provider>
-      <View
-        style={[styles.container, { backgroundColor: theme.colorPrimaryDark }]}
-      >
+      <View style={[styles.container, { backgroundColor: theme.background }]}>
         <FadeView
           style={{
             position: 'absolute',
@@ -353,7 +351,9 @@ const Novel = ({ route, navigation }) => {
         >
           <View
             style={{
-              backgroundColor: theme.colorPrimary,
+              backgroundColor: theme.isDark
+                ? overlay(2, theme.surface)
+                : theme.secondaryContainer,
               paddingTop: StatusBar.currentHeight,
               flexDirection: 'row',
               alignItems: 'center',
@@ -362,7 +362,7 @@ const Novel = ({ route, navigation }) => {
           >
             <Appbar.Action
               icon="close"
-              color={theme.textColorPrimary}
+              iconColor={theme.onBackground}
               onPress={() => setSelected([])}
             />
             <Appbar.Content
@@ -372,7 +372,7 @@ const Novel = ({ route, navigation }) => {
 
             <Appbar.Action
               icon="select-all"
-              color={theme.textColorPrimary}
+              iconColor={theme.onBackground}
               onPress={() => {
                 setSelected(chapters);
               }}
@@ -392,7 +392,7 @@ const Novel = ({ route, navigation }) => {
           >
             <IconButton
               icon="arrow-left"
-              color={theme.textColorPrimary}
+              iconColor={theme.onBackground}
               size={24}
               style={{ marginTop: StatusBar.currentHeight + 8 }}
               onPress={() => navigation.goBack()}
@@ -400,7 +400,7 @@ const Novel = ({ route, navigation }) => {
             <Row>
               <IconButton
                 icon="share-variant"
-                color={theme.textColorPrimary}
+                iconColor={theme.onBackground}
                 size={21}
                 style={{
                   marginTop: StatusBar.currentHeight + 8,
@@ -413,7 +413,7 @@ const Novel = ({ route, navigation }) => {
               />
               <IconButton
                 icon="text-box-search-outline"
-                color={theme.textColorPrimary}
+                iconColor={theme.onBackground}
                 size={21}
                 style={{
                   marginTop: StatusBar.currentHeight + 8,
@@ -427,7 +427,7 @@ const Novel = ({ route, navigation }) => {
                 anchor={
                   <IconButton
                     icon="download-outline"
-                    color={theme.textColorPrimary}
+                    iconColor={theme.onBackground}
                     size={24}
                     style={{
                       marginTop: StatusBar.currentHeight + 8,
@@ -436,12 +436,12 @@ const Novel = ({ route, navigation }) => {
                   />
                 }
                 contentStyle={{
-                  backgroundColor: theme.menuColor,
+                  backgroundColor: overlay(2, theme.surface),
                 }}
               >
                 <Menu.Item
                   title="Next chapter"
-                  style={{ backgroundColor: theme.menuColor }}
+                  style={{ backgroundColor: overlay(2, theme.surface) }}
                   titleStyle={{
                     color: theme.textColorPrimary,
                   }}
@@ -464,7 +464,7 @@ const Novel = ({ route, navigation }) => {
                 />
                 <Menu.Item
                   title="Next 5 chapter"
-                  style={{ backgroundColor: theme.menuColor }}
+                  style={{ backgroundColor: overlay(2, theme.surface) }}
                   titleStyle={{
                     color: theme.textColorPrimary,
                   }}
@@ -487,7 +487,7 @@ const Novel = ({ route, navigation }) => {
                 />
                 <Menu.Item
                   title="Next 10 chapter"
-                  style={{ backgroundColor: theme.menuColor }}
+                  style={{ backgroundColor: overlay(2, theme.surface) }}
                   titleStyle={{
                     color: theme.textColorPrimary,
                   }}
@@ -510,7 +510,7 @@ const Novel = ({ route, navigation }) => {
                 />
                 <Menu.Item
                   title="Custom"
-                  style={{ backgroundColor: theme.menuColor }}
+                  style={{ backgroundColor: overlay(2, theme.surface) }}
                   titleStyle={{ color: theme.textColorPrimary }}
                   onPress={() => {
                     downloadCustomChapterModal.showModal();
@@ -519,7 +519,7 @@ const Novel = ({ route, navigation }) => {
                 />
                 <Menu.Item
                   title="Unread"
-                  style={{ backgroundColor: theme.menuColor }}
+                  style={{ backgroundColor: overlay(2, theme.surface) }}
                   titleStyle={{
                     color: theme.textColorPrimary,
                   }}
@@ -536,7 +536,7 @@ const Novel = ({ route, navigation }) => {
                 />
                 <Menu.Item
                   title="All"
-                  style={{ backgroundColor: theme.menuColor }}
+                  style={{ backgroundColor: overlay(2, theme.surface) }}
                   titleStyle={{
                     color: theme.textColorPrimary,
                   }}
@@ -553,7 +553,7 @@ const Novel = ({ route, navigation }) => {
                 />
                 <Menu.Item
                   title="Delete downloads"
-                  style={{ backgroundColor: theme.menuColor }}
+                  style={{ backgroundColor: overlay(2, theme.surface) }}
                   titleStyle={{
                     color: theme.textColorPrimary,
                   }}
@@ -569,7 +569,7 @@ const Novel = ({ route, navigation }) => {
                 anchor={
                   <IconButton
                     icon="dots-vertical"
-                    color={theme.textColorPrimary}
+                    iconColor={theme.onBackground}
                     size={21}
                     style={{
                       marginTop: StatusBar.currentHeight + 8,
@@ -579,12 +579,12 @@ const Novel = ({ route, navigation }) => {
                   />
                 }
                 contentStyle={{
-                  backgroundColor: theme.menuColor,
+                  backgroundColor: overlay(2, theme.surface),
                 }}
               >
                 <Menu.Item
                   title="Edit info"
-                  style={{ backgroundColor: theme.menuColor }}
+                  style={{ backgroundColor: overlay(2, theme.surface) }}
                   titleStyle={{
                     color: theme.textColorPrimary,
                   }}
@@ -595,7 +595,7 @@ const Novel = ({ route, navigation }) => {
                 />
                 <Menu.Item
                   title="Edit cover"
-                  style={{ backgroundColor: theme.menuColor }}
+                  style={{ backgroundColor: overlay(2, theme.surface) }}
                   titleStyle={{
                     color: theme.textColorPrimary,
                   }}
@@ -641,9 +641,9 @@ const Novel = ({ route, navigation }) => {
           chapters.length > 0 &&
           lastReadChapter && (
             <FAB
-              style={[styles.fab, { backgroundColor: theme.colorAccent }]}
+              style={[styles.fab, { backgroundColor: theme.primary }]}
               small
-              color={theme.colorButtonText}
+              color={theme.onPrimary}
               uppercase={false}
               label={novel.unread ? 'Start' : 'Resume'}
               icon="play"
@@ -677,8 +677,8 @@ const Novel = ({ route, navigation }) => {
                 dispatch(deleteAllChaptersAction(sourceId, chapters));
               },
             }}
-            theme={{ colors: { accent: theme.colorAccent } }}
-            style={{ backgroundColor: theme.colorPrimary, marginBottom: 32 }}
+            theme={{ colors: { accent: theme.primary } }}
+            style={{ backgroundColor: theme.primary, marginBottom: 32 }}
           >
             <Text style={{ color: theme.textColorPrimary }}>
               Delete downloaded chapters?

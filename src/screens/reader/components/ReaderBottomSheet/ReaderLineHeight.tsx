@@ -1,11 +1,8 @@
 import { StyleSheet, Text, TextStyle, View } from 'react-native';
 import React from 'react';
 
-import {
-  useAppDispatch,
-  useReaderSettings,
-  useTheme,
-} from '../../../../redux/hooks';
+import { useAppDispatch, useReaderSettings } from '../../../../redux/hooks';
+import { useTheme } from '@hooks/useTheme';
 import { IconButtonV2 } from '../../../../components';
 import { setReaderSettings } from '../../../../redux/settings/settings.actions';
 import { getString } from '../../../../../strings/translations';
@@ -28,7 +25,7 @@ const ReaderLineHeight: React.FC<ReaderLineHeightProps> = ({ labelStyle }) => {
       <View style={styles.buttonContainer}>
         <IconButtonV2
           name="minus"
-          color={theme.colorAccent}
+          color={theme.primary}
           size={26}
           disabled={lineHeight <= 1.3}
           onPress={() =>
@@ -41,7 +38,7 @@ const ReaderLineHeight: React.FC<ReaderLineHeightProps> = ({ labelStyle }) => {
         </Text>
         <IconButtonV2
           name="plus"
-          color={theme.colorAccent}
+          color={theme.primary}
           size={26}
           disabled={lineHeight >= 2}
           onPress={() =>

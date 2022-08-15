@@ -1,15 +1,16 @@
 import React, { ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
+import color from 'color';
 
 import { List as PaperList, Divider as PaperDivider } from 'react-native-paper';
-import { ThemeType } from '../../theme/types';
+import { MD3ThemeType } from '../../theme/types';
 
 interface ListItemProps {
   title: string;
   description?: string | null;
   icon?: string;
   onPress?: () => void;
-  theme: ThemeType;
+  theme: MD3ThemeType;
 }
 
 const Section = ({ children }: { children: ReactNode }) => (
@@ -21,9 +22,9 @@ const SubHeader = ({
   theme,
 }: {
   children: ReactNode;
-  theme: ThemeType;
+  theme: MD3ThemeType;
 }) => (
-  <PaperList.Subheader style={{ color: theme.colorAccent }}>
+  <PaperList.Subheader style={{ color: theme.primary }}>
     {children}
   </PaperList.Subheader>
 );
@@ -44,7 +45,7 @@ const Item: React.FC<ListItemProps> = ({
       <View style={styles.iconContainer}>
         {icon && (
           <PaperList.Icon
-            color={theme.colorAccent}
+            color={theme.primary}
             icon={icon}
             style={styles.icon}
           />
@@ -52,11 +53,11 @@ const Item: React.FC<ListItemProps> = ({
       </View>
     )}
     onPress={onPress}
-    rippleColor={theme.rippleColor}
+    rippleColor={color(theme.primary).alpha(0.12).string()}
   />
 );
 
-const Divider = ({ theme }: { theme: ThemeType }) => (
+const Divider = ({ theme }: { theme: MD3ThemeType }) => (
   <PaperDivider
     style={[styles.divider, { backgroundColor: theme.dividerColor }]}
   />
@@ -69,7 +70,7 @@ const InfoItem = ({
 }: {
   title: string;
   icon: string;
-  theme: ThemeType;
+  theme: MD3ThemeType;
 }) => (
   <PaperList.Item
     title={title}

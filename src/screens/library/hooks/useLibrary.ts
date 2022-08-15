@@ -25,7 +25,9 @@ export const useLibrary = ({ searchText }: { searchText?: string }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   const getLibrary = async () => {
-    setIsLoading(true);
+    if (searchText) {
+      setIsLoading(true);
+    }
 
     const [categories, novels] = await Promise.all([
       getCategoriesFromDb(),
@@ -45,7 +47,7 @@ export const useLibrary = ({ searchText }: { searchText?: string }) => {
     }));
 
     // Remove default category if empty
-    if (res.length > 1 && !res[0].novels.length) {
+    if (res.length > 1 && !res[0].novels.length && !searchText) {
       res.shift();
     }
 

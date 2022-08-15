@@ -6,7 +6,7 @@ import { ScreenContainer } from '../../components/Common';
 
 import { createBackup, restoreBackup } from '../../services/backup/v1/backup';
 
-import { useTheme } from '../../hooks/reduxHooks';
+import { useTheme } from '@hooks/useTheme';
 
 const BackupSettings = ({ navigation }) => {
   const theme = useTheme();

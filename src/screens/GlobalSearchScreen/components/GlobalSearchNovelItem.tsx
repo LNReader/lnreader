@@ -1,18 +1,18 @@
 import { Dimensions, Pressable, StyleSheet, Text, View } from 'react-native';
 import React, { useMemo } from 'react';
-
+import color from 'color';
 import FastImage from 'react-native-fast-image';
 
 import { coverPlaceholderColor } from '../../../theme/colors';
 
 import { SourceNovelItem } from '../../../sources/types';
-import { ThemeType } from '../../../theme/types';
+import { MD3ThemeType } from '../../../theme/types';
 import { getString } from '@strings/translations';
 
 interface Props {
   novel: SourceNovelItem;
   navigateToNovel: (novel: SourceNovelItem) => void;
-  theme: ThemeType;
+  theme: MD3ThemeType;
   onLongPress?: () => void;
   inLibrary?: boolean;
 }
@@ -37,7 +37,7 @@ const GlobalSearchNovelItem: React.FC<Props> = ({
     <View style={styles.novelItem}>
       <Pressable
         style={styles.pressable}
-        android_ripple={{ color: theme.rippleColor }}
+        android_ripple={{ color: color(theme.primary).alpha(0.12).string() }}
         onPress={() => navigateToNovel(novel)}
         onLongPress={onLongPress}
       >
@@ -50,8 +50,8 @@ const GlobalSearchNovelItem: React.FC<Props> = ({
             style={[
               styles.inLibraryBadge,
               {
-                backgroundColor: theme.colorAccent,
-                color: theme.colorButtonText,
+                backgroundColor: theme.primary,
+                color: theme.onPrimary,
               },
             ]}
           >

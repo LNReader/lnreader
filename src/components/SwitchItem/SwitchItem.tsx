@@ -1,15 +1,16 @@
 import React from 'react';
 import { Pressable, StyleSheet, View, Text } from 'react-native';
+import color from 'color';
 
 import { Switch } from 'react-native-paper';
-import { ThemeType } from '../../theme/types';
+import { MD3ThemeType } from '../../theme/types';
 
 interface SwitchItemProps {
   value: boolean;
   label: string;
   description?: string;
   onPress: () => void;
-  theme: ThemeType;
+  theme: MD3ThemeType;
 }
 
 const SwitchItem: React.FC<SwitchItemProps> = ({
@@ -20,7 +21,7 @@ const SwitchItem: React.FC<SwitchItemProps> = ({
   value,
 }) => (
   <Pressable
-    android_ripple={{ color: theme.rippleColor }}
+    android_ripple={{ color: color(theme.primary).alpha(0.12).string() }}
     style={[styles.container]}
     onPress={onPress}
   >
@@ -35,7 +36,7 @@ const SwitchItem: React.FC<SwitchItemProps> = ({
     <Switch
       value={value}
       onValueChange={onPress}
-      color={theme.colorAccent}
+      color={theme.primary}
       style={styles.switch}
     />
   </Pressable>

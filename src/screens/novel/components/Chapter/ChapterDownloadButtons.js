@@ -60,7 +60,7 @@ export const DownloadChapterButton = ({ theme, onPress }) => (
   <IconButton
     icon="arrow-down-circle-outline"
     animated
-    color={theme.textColorHint}
+    iconColor={theme.textColorHint}
     size={25}
     onPress={onPress}
     style={{ margin: 2 }}
@@ -71,7 +71,7 @@ export const DeleteChapterButton = ({ theme, onPress }) => (
   <IconButton
     icon="check-circle"
     animated
-    color={theme.textColorPrimary}
+    iconColor={theme.textColorPrimary}
     size={25}
     onPress={onPress}
     style={{ margin: 2 }}
@@ -81,7 +81,7 @@ export const DeleteChapterButton = ({ theme, onPress }) => (
 export const ChapterBookmarkButton = ({ theme }) => (
   <IconButton
     icon="bookmark"
-    color={theme.colorAccent}
+    iconColor={theme.primary}
     size={18}
     style={{ marginLeft: 2 }}
   />

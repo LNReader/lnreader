@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { Modal, Portal, TextInput } from 'react-native-paper';
-import { ThemeType } from '../../theme/types';
+import { Modal, overlay, Portal, TextInput } from 'react-native-paper';
+import { MD3ThemeType } from '../../theme/types';
 
 interface ColorPickerModalProps {
   visible: boolean;
@@ -10,7 +10,7 @@ interface ColorPickerModalProps {
   color: string;
   onSubmit: (val: string) => void;
   closeModal: () => void;
-  theme: ThemeType;
+  theme: MD3ThemeType;
   showAccentColors?: boolean;
 }
 
@@ -86,7 +86,7 @@ const ColorPickerModal: React.FC<ColorPickerModalProps> = ({
         onDismiss={onDismiss}
         contentContainerStyle={[
           styles.modalContainer,
-          { backgroundColor: theme.colorPrimary },
+          { backgroundColor: overlay(2, theme.surface) },
         ]}
       >
         <Text style={[styles.modalTitle, { color: theme.textColorPrimary }]}>
@@ -147,11 +147,11 @@ export default ColorPickerModal;
 const styles = StyleSheet.create({
   modalContainer: {
     margin: 30,
-    padding: 20,
-    borderRadius: 8,
+    padding: 24,
+    borderRadius: 28,
   },
   modalTitle: {
-    fontSize: 18,
+    fontSize: 24,
     marginBottom: 16,
   },
   errorText: {

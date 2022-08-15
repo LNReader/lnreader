@@ -1,5 +1,6 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import color from 'color';
 
 import { List as PaperList, Divider as PaperDivider } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -9,9 +10,7 @@ const ListSection = ({ children }) => (
 );
 
 const ListSubHeader = ({ children, theme }) => (
-  <PaperList.Subheader
-    style={[styles.listSubHeader, { color: theme.colorAccent }]}
-  >
+  <PaperList.Subheader style={[styles.listSubHeader, { color: theme.primary }]}>
     {children}
   </PaperList.Subheader>
 );
@@ -30,7 +29,7 @@ const ListItem = ({
   <PaperList.Item
     title={title}
     style={style}
-    titleStyle={[{ color: theme.textColorPrimary }, titleStyle]}
+    titleStyle={[{ color: theme.onSurface }, titleStyle]}
     description={description}
     descriptionStyle={{ color: theme.textColorSecondary }}
     descriptionNumberOfLines={1}
@@ -38,7 +37,7 @@ const ListItem = ({
       <View style={{ justifyContent: 'center' }}>
         {icon && (
           <PaperList.Icon
-            color={theme.colorAccent}
+            color={theme.primary}
             icon={icon}
             style={{
               marginVertical: 0,
@@ -58,12 +57,20 @@ const ListItem = ({
       )
     }
     onPress={onPress}
-    rippleColor={theme.rippleColor}
+    rippleColor={color(theme.primary).alpha(0.12).string()}
   />
 );
 
 const Divider = ({ theme }) => (
-  <PaperDivider style={{ backgroundColor: theme.dividerColor, height: 1 }} />
+  <PaperDivider
+    style={{
+      backgroundColor: color(theme.isDark ? '#FFFFFF' : '#000000')
+        .alpha(0.12)
+        .rgb()
+        .string(),
+      height: 1,
+    }}
+  />
 );
 
 const InfoItem = ({ title, icon, theme }) => (
@@ -85,13 +92,11 @@ const ColorItem = ({ title, description, theme, onPress }) => (
       justifyContent: 'space-between',
       alignItems: 'center',
     }}
-    android_ripple={{ color: theme.rippleColor }}
+    android_ripple={{ color: color(theme.primary).alpha(0.12).string() }}
     onPress={onPress}
   >
     <View>
-      <Text style={{ color: theme.textColorPrimary, fontSize: 16 }}>
-        {title}
-      </Text>
+      <Text style={{ color: theme.onSurface, fontSize: 16 }}>{title}</Text>
       <Text style={{ color: theme.textColorSecondary }}>{description}</Text>
     </View>
     <View
@@ -107,7 +112,7 @@ const ColorItem = ({ title, description, theme, onPress }) => (
 );
 
 const Icon = ({ icon, theme }) => (
-  <PaperList.Icon color={theme.colorAccent} icon={icon} style={{ margin: 0 }} />
+  <PaperList.Icon color={theme.primary} icon={icon} style={{ margin: 0 }} />
 );
 
 export const List = {

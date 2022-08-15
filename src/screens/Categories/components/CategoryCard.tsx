@@ -3,10 +3,10 @@ import React from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { Category } from '../../../database/types';
-import { useTheme } from '@redux/hooks';
+import { useTheme } from '@hooks/useTheme';
 import AddCategoryModal from './AddCategoryModal';
 import useBoolean from '@hooks/useBoolean';
-import { Portal } from 'react-native-paper';
+import { overlay, Portal } from 'react-native-paper';
 import IconButton from '@components/IconButtonV2/IconButtonV2';
 import DeleteCategoryModal from './DeleteCategoryModal';
 
@@ -35,19 +35,28 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
 
   return (
     <>
-      <View style={[styles.cardCtn, { backgroundColor: theme.colorPrimary }]}>
+      <View
+        style={[
+          styles.cardCtn,
+          {
+            backgroundColor: theme.isDark
+              ? overlay(2, theme.surface)
+              : theme.secondaryContainer,
+          },
+        ]}
+      >
         <MaterialCommunityIcons
           name="label-outline"
-          color={theme.textColorPrimary}
+          color={theme.onSurface}
           size={24}
         />
-        <Text style={[styles.name, { color: theme.textColorPrimary }]}>
+        <Text style={[styles.name, { color: theme.onSurface }]}>
           {category.name}
         </Text>
         <View style={styles.flex} />
         <IconButton
           name="pencil-outline"
-          color={theme.textColorPrimary}
+          color={theme.onSurface}
           style={styles.manageBtn}
           onPress={showCategoryModal}
           size={24}
@@ -55,7 +64,7 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
         />
         <IconButton
           name="delete-outline"
-          color={theme.textColorPrimary}
+          color={theme.onSurface}
           style={styles.manageBtn}
           onPress={showDeleteCategoryModal}
           size={24}

@@ -15,7 +15,7 @@ import { convertDateToISOString } from '../../database/utils/convertDateToISOStr
 import { ChapterItem, Update } from '../../database/types';
 
 import { useSearch, useUpdates } from '../../hooks';
-import { useAppDispatch, useTheme } from '../../redux/hooks';
+import { useAppDispatch } from '../../redux/hooks';
 import UpdateCard from './components/UpdateCard/UpdateCard';
 import { updateLibraryAction } from '../../redux/updates/updates.actions';
 import {
@@ -23,7 +23,8 @@ import {
   downloadChapterAction,
 } from '../../redux/novel/novel.actions';
 import { getString } from '../../../strings/translations';
-import { ThemeType } from '../../theme/types';
+import { MD3ThemeType } from '../../theme/types';
+import { useTheme } from '@hooks/useTheme';
 
 const UpdatesScreen = () => {
   const theme = useTheme();
@@ -172,9 +173,7 @@ const UpdatesScreen = () => {
           keyExtractor={item => item.chapterId.toString()}
           sections={groupUpdatesByDate(searchText ? searchResults : updates)}
           renderSectionHeader={({ section: { date } }) => (
-            <Text
-              style={[styles.dateHeader, { color: theme.textColorSecondary }]}
-            >
+            <Text style={[styles.dateHeader, { color: theme.onSurface }]}>
               {dayjs(date).calendar()}
             </Text>
           )}
@@ -199,8 +198,8 @@ const UpdatesScreen = () => {
             <RefreshControl
               refreshing={false}
               onRefresh={() => dispatch(updateLibraryAction())}
-              colors={[theme.textColorPrimary]}
-              progressBackgroundColor={theme.colorAccent}
+              colors={[theme.onPrimary]}
+              progressBackgroundColor={theme.primary}
             />
           }
         />
@@ -211,16 +210,14 @@ const UpdatesScreen = () => {
 
 export default UpdatesScreen;
 
-const LastUpdateTime: React.FC<{ lastUpdateTime: Date; theme: ThemeType }> = ({
-  lastUpdateTime,
-  theme,
-}) => (
-  <Text style={[styles.lastUpdateTime, { color: theme.textColorSecondary }]}>
-    {`${getString('updatesScreen.lastUpdatedAt')} ${dayjs(
-      lastUpdateTime,
-    ).fromNow()}`}
-  </Text>
-);
+const LastUpdateTime: React.FC<{ lastUpdateTime: Date; theme: MD3ThemeType }> =
+  ({ lastUpdateTime, theme }) => (
+    <Text style={[styles.lastUpdateTime, { color: theme.onSurface }]}>
+      {`${getString('updatesScreen.lastUpdatedAt')} ${dayjs(
+        lastUpdateTime,
+      ).fromNow()}`}
+    </Text>
+  );
 
 const styles = StyleSheet.create({
   listContainer: {
@@ -232,7 +229,7 @@ const styles = StyleSheet.create({
   },
   lastUpdateTime: {
     paddingHorizontal: 16,
-    paddingVertical: 4,
+    paddingVertical: 8,
     textAlign: 'center',
   },
 });

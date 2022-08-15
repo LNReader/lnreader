@@ -6,13 +6,14 @@ import {
   View,
 } from 'react-native';
 import React, { useState } from 'react';
+import color from 'color';
 
 import { ChapterItem, Update } from '../../../../database/types';
 import FastImage from 'react-native-fast-image';
 import { IconButtonV2 } from '../../../../components';
 import { useDownloadQueue } from '../../../../redux/hooks';
 import { Menu } from 'react-native-paper';
-import { ThemeType } from '../../../../theme/types';
+import { MD3ThemeType } from '../../../../theme/types';
 import { coverPlaceholderColor } from '../../../../theme/colors';
 
 interface UpdateCardProps {
@@ -44,7 +45,7 @@ interface UpdateCardProps {
     chapterId: number,
     chapterName: string,
   ) => void;
-  theme: ThemeType;
+  theme: MD3ThemeType;
 }
 
 const UpdateCard: React.FC<UpdateCardProps> = ({
@@ -73,7 +74,7 @@ const UpdateCard: React.FC<UpdateCardProps> = ({
   return (
     <Pressable
       style={styles.container}
-      android_ripple={{ color: theme.rippleColor }}
+      android_ripple={{ color: color(theme.primary).alpha(0.12).string() }}
       onPress={() =>
         navigateToChapter(
           item.sourceId,

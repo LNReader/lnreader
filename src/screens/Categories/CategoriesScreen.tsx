@@ -8,7 +8,7 @@ import AddCategoryModal from './components/AddCategoryModal';
 
 import { getCategoriesFromDb } from '../../database/queries/CategoryQueries';
 import useBoolean from '@hooks/useBoolean';
-import { useTheme } from '@redux/hooks';
+import { useTheme } from '@hooks/useTheme';
 import { getString } from '@strings/translations';
 
 import { Category } from '../../database/types';
@@ -67,8 +67,8 @@ const CategoriesScreen = () => {
         />
       )}
       <FAB
-        style={[styles.fab, { backgroundColor: theme.colorAccent }]}
-        color={theme.colorButtonText}
+        style={[styles.fab, { backgroundColor: theme.primary }]}
+        color={theme.onPrimary}
         label={getString('common.add')}
         uppercase={false}
         onPress={showCategoryModal}

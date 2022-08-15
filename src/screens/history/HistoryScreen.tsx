@@ -13,7 +13,7 @@ import {
 import HistoryCard from './components/HistoryCard/HistoryCard';
 
 import { useSearch, useHistory, useBoolean } from '@hooks/index';
-import { useTheme } from '../../redux/hooks';
+import { useTheme } from '@hooks/useTheme';
 
 import { convertDateToISOString } from '../../database/utils/convertDateToISOString';
 
@@ -146,9 +146,7 @@ const HistoryScreen = () => {
             sections={groupHistoryByDate(searchText ? searchResults : history)}
             keyExtractor={item => item.chapterId.toString()}
             renderSectionHeader={({ section: { date } }) => (
-              <Text
-                style={[styles.dateHeader, { color: theme.textColorSecondary }]}
-              >
+              <Text style={[styles.dateHeader, { color: theme.onSurface }]}>
                 {dayjs(date).calendar()}
               </Text>
             )}

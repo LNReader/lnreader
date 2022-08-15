@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text } from 'react-native';
-import { Modal } from 'react-native-paper';
+import { Modal, overlay } from 'react-native-paper';
 import {
   RadioButton,
   RadioButtonGroup,
@@ -37,7 +37,7 @@ const SetTrackScoreDialog = ({
       onDismiss={() => setTrackScoreDialog(false)}
       contentContainerStyle={[
         styles.containerStyle,
-        { backgroundColor: theme.colorPrimary },
+        { backgroundColor: overlay(2, theme.surface) },
       ]}
       theme={{ colors: { backdrop: 'rgba(0,0,0,0.25)' } }}
     >
@@ -66,11 +66,11 @@ export default SetTrackScoreDialog;
 const styles = StyleSheet.create({
   containerStyle: {
     margin: 30,
-    padding: 20,
-    borderRadius: 8,
+    padding: 24,
+    borderRadius: 28,
   },
   dialogTitle: {
-    fontSize: 18,
+    fontSize: 24,
     marginBottom: 16,
   },
 });

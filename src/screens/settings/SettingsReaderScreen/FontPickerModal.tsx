@@ -1,11 +1,11 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 
-import { Portal, Modal } from 'react-native-paper';
-
+import { Portal, Modal, overlay } from 'react-native-paper';
 import { RadioButton } from '@components/RadioButton/RadioButton';
 
-import { useAppDispatch, useTheme } from '@redux/hooks';
+import { useAppDispatch } from '@redux/hooks';
+import { useTheme } from '@hooks/useTheme';
 import { setReaderSettings } from '../../../redux/settings/settings.actions';
 
 import { readerFonts } from '../../../utils/constants/readerConstants';
@@ -31,7 +31,7 @@ const FontPickerModal: React.FC<FontPickerModalProps> = ({
         onDismiss={onDismiss}
         contentContainerStyle={[
           styles.containerStyle,
-          { backgroundColor: theme.colorPrimaryDark },
+          { backgroundColor: overlay(2, theme.surface) },
         ]}
       >
         {readerFonts.map(item => (
@@ -55,8 +55,8 @@ export default FontPickerModal;
 
 const styles = StyleSheet.create({
   containerStyle: {
-    paddingVertical: 20,
+    paddingVertical: 24,
     margin: 20,
-    borderRadius: 6,
+    borderRadius: 28,
   },
 });

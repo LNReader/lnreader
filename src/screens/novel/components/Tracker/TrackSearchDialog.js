@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Image, ActivityIndicator } from 'react-native';
-import { Button, Modal, TextInput, TouchableRipple } from 'react-native-paper';
+import {
+  Button,
+  Modal,
+  overlay,
+  TextInput,
+  TouchableRipple,
+} from 'react-native-paper';
 import { searchNovels } from '../../../../services/Trackers/myAnimeList';
 import { useSelector, useDispatch } from 'react-redux';
 import { ScrollView } from 'react-native-gesture-handler';
 import { trackNovel } from '../../../../redux/tracker/tracker.actions';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import color from 'color';
 
 const TrackSearchDialog = ({
   trackSearchDialog,
@@ -41,19 +48,19 @@ const TrackSearchDialog = ({
         { flexDirection: 'row', borderRadius: 4, margin: 8 },
         selectedNovel &&
           selectedNovel.id === item.node.id && {
-            backgroundColor: theme.rippleColor,
+            backgroundColor: color(theme.primary).alpha(0.12).string(),
           },
       ]}
       key={item.node.id}
       onPress={() => setSelectedNovel(item.node)}
-      rippleColor={theme.rippleColor}
+      rippleColor={color(theme.primary).alpha(0.12).string()}
       borderless
     >
       <>
         {selectedNovel && selectedNovel.id === item.node.id && (
           <MaterialCommunityIcons
             name="check-circle"
-            color={theme.colorAccent}
+            color={theme.primary}
             size={24}
             style={{
               position: 'absolute',
@@ -90,7 +97,7 @@ const TrackSearchDialog = ({
       onDismiss={() => setTrackSearchDialog(false)}
       contentContainerStyle={[
         styles.containerStyle,
-        { backgroundColor: theme.colorPrimary },
+        { backgroundColor: overlay(2, theme.surface) },
       ]}
       theme={{ colors: { backdrop: 'rgba(0,0,0,0.25)' } }}
     >
@@ -100,11 +107,11 @@ const TrackSearchDialog = ({
         onSubmitEditing={getSearchresults}
         theme={{
           colors: {
-            primary: theme.colorAccent,
+            primary: theme.primary,
             text: theme.textColorPrimary,
-            background: 'transparent',
           },
         }}
+        style={{ backgroundColor: 'transparent' }}
         underlineColor={theme.textColorHint}
         right={
           <TextInput.Icon
@@ -117,7 +124,7 @@ const TrackSearchDialog = ({
       <ScrollView style={{ flexGrow: 1, maxHeight: 500, marginVertical: 8 }}>
         {loading ? (
           <ActivityIndicator
-            color={theme.colorAccent}
+            color={theme.primary}
             size={45}
             style={{ margin: 16 }}
           />
@@ -136,11 +143,11 @@ const TrackSearchDialog = ({
       >
         <Button
           labelStyle={{
-            color: theme.colorAccent,
+            color: theme.primary,
             letterSpacing: 0,
             textTransform: 'none',
           }}
-          theme={{ colors: { primary: theme.colorAccent } }}
+          theme={{ colors: { primary: theme.primary } }}
           onPress={() => setSelectedNovel(null)}
         >
           Remove
@@ -148,22 +155,22 @@ const TrackSearchDialog = ({
         <View style={{ flexDirection: 'row' }}>
           <Button
             labelStyle={{
-              color: theme.colorAccent,
+              color: theme.primary,
               letterSpacing: 0,
               textTransform: 'none',
             }}
-            theme={{ colors: { primary: theme.colorAccent } }}
+            theme={{ colors: { primary: theme.primary } }}
             onPress={() => setTrackSearchDialog(false)}
           >
             Cancel
           </Button>
           <Button
             labelStyle={{
-              color: theme.colorAccent,
+              color: theme.primary,
               letterSpacing: 0,
               textTransform: 'none',
             }}
-            theme={{ colors: { primary: theme.colorAccent } }}
+            theme={{ colors: { primary: theme.primary } }}
             onPress={() => {
               if (selectedNovel) {
                 dispatch(

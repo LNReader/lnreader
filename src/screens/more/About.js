@@ -8,9 +8,10 @@ import { List } from '../../components/List';
 import { ScreenContainer } from '../../components/Common';
 import { MoreHeader } from './components/MoreHeader';
 import { appVersion, releaseDate } from '../../utils/versionUtils';
+import { useTheme } from '@hooks/useTheme';
 
 const AboutScreen = ({ navigation }) => {
-  const theme = useSelector(state => state.settingsReducer.theme);
+  const theme = useTheme();
 
   return (
     <ScreenContainer theme={theme}>
@@ -24,14 +25,14 @@ const AboutScreen = ({ navigation }) => {
         <List.Section>
           <List.Item
             title="Version"
-            description={`Stable ${appVersion} (${releaseDate})`}
+            description={`Preview ${appVersion}.2 (14/0/22 08:00 PM)`}
             theme={theme}
           />
           <List.Item
             title="What's new"
             onPress={() =>
               Linking.openURL(
-                `https://github.com/LNReader/lnreader/releases/tag/v${appVersion}`,
+                `https://github.com/LNReader/lnreader-preview/releases/tag/v${appVersion}.2`,
               )
             }
             theme={theme}

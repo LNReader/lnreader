@@ -1,14 +1,10 @@
 import React from 'react';
 import { StyleSheet, ActivityIndicator } from 'react-native';
 
-import { ThemeType } from '../../theme/types';
+import { MD3ThemeType } from '../../theme/types';
 
-const LoadingScreen: React.FC<{ theme: ThemeType }> = ({ theme }) => (
-  <ActivityIndicator
-    size={50}
-    color={theme.colorAccent}
-    style={styles.indicator}
-  />
+const LoadingScreen: React.FC<{ theme: MD3ThemeType }> = ({ theme }) => (
+  <ActivityIndicator size={50} color={theme.primary} style={styles.indicator} />
 );
 
 export default LoadingScreen;

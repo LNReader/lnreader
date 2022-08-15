@@ -2,11 +2,8 @@ import { StyleSheet, Text, TextStyle, View } from 'react-native';
 import React from 'react';
 
 import { setReaderSettings } from '../../../../redux/settings/settings.actions';
-import {
-  useAppDispatch,
-  useReaderSettings,
-  useTheme,
-} from '../../../../redux/hooks';
+import { useAppDispatch, useReaderSettings } from '../../../../redux/hooks';
+import { useTheme } from '@hooks/useTheme';
 import { textAlignments } from '../../../../utils/constants/readerConstants';
 import { ToggleButton } from '../../../../components/Common/ToggleButton';
 import { getString } from '../../../../../strings/translations';

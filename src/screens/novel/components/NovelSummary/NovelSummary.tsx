@@ -3,12 +3,12 @@ import React, { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { ThemeType } from '../../../../theme/types';
+import { MD3ThemeType } from '../../../../theme/types';
 
 interface NovelSummaryProps {
   summary: string;
   isExpanded: boolean;
-  theme: ThemeType;
+  theme: MD3ThemeType;
 }
 
 const NovelSummary: React.FC<NovelSummaryProps> = ({
@@ -16,8 +16,8 @@ const NovelSummary: React.FC<NovelSummaryProps> = ({
   isExpanded,
   theme,
 }) => {
-  const textColor = theme.textColorSecondary;
-  const iconBackground = `${theme.colorPrimaryDark}D1`;
+  const textColor = theme.onSurfaceVariant;
+  const iconBackground = `${theme.background}D1`;
 
   const [expanded, setExpanded] = useState(isExpanded);
   const toggleExpanded = () => {
@@ -55,9 +55,9 @@ const NovelSummary: React.FC<NovelSummaryProps> = ({
         >
           <MaterialCommunityIcons
             name={expanded ? 'chevron-up' : 'chevron-down'}
-            color={theme.textColorPrimary}
+            color={theme.onBackground}
             size={24}
-            style={[{ backgroundColor: theme.colorPrimaryDark }, styles.icon]}
+            style={[{ backgroundColor: theme.background }, styles.icon]}
           />
         </View>
       ) : null}

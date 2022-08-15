@@ -16,7 +16,7 @@ import NovelCover from '@components/NovelCover';
 import FilterBottomSheet from './components/BottomSheet';
 
 import { useSearch } from '../../hooks';
-import { useTheme } from '../../redux/hooks';
+import { useTheme } from '@hooks/useTheme';
 import { useBrowseSource, useSearchSource } from './useBrowseSource';
 
 import { SourceNovelItem } from '../../sources/types';
@@ -176,10 +176,10 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
         <>
           <FAB
             icon={'filter-variant'}
-            style={[styles.filterFab, { backgroundColor: theme.colorAccent }]}
+            style={[styles.filterFab, { backgroundColor: theme.primary }]}
             label={'Filter'}
             uppercase={false}
-            color={theme.colorButtonText}
+            color={theme.onPrimary}
             onPress={() => filterSheetRef?.current?.show()}
           />
           <Portal>

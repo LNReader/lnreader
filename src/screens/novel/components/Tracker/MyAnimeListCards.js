@@ -4,6 +4,9 @@ import { TouchableRipple, IconButton } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
 import { untrackNovel } from '../../../../redux/tracker/tracker.actions';
 
+import color from 'color';
+import { dividerColor } from '../../../../theme/colors';
+
 export const AddMalTrackingCard = ({ theme, setTrackSearchDialog }) => (
   <View style={styles.addCardContainer}>
     <Image
@@ -22,13 +25,16 @@ export const AddMalTrackingCard = ({ theme, setTrackSearchDialog }) => (
     >
       <Pressable
         style={styles.rippleContainer}
-        android_ripple={{ color: theme.rippleColor, borderless: true }}
+        android_ripple={{
+          color: color(theme.primary).alpha(0.12).string(),
+          borderless: true,
+        }}
         onPress={() => setTrackSearchDialog(true)}
       >
         <Text
           style={{
             textAlignVertical: 'center',
-            color: theme.colorAccent,
+            color: theme.primary,
           }}
         >
           Add Tracking
@@ -49,13 +55,11 @@ export const MalTrackItemCard = ({
   const dispatch = useDispatch();
 
   return (
-    <View
-      style={[styles.cardContainer, { backgroundColor: theme.colorPrimary }]}
-    >
+    <View style={[styles.cardContainer, { backgroundColor: theme.surface }]}>
       <View
         style={[
           styles.titleContainer,
-          { borderBottomColor: theme.dividerColor },
+          { borderBottomColor: dividerColor(theme.isDark) },
         ]}
       >
         <Image
@@ -78,11 +82,11 @@ export const MalTrackItemCard = ({
         <TouchableRipple
           style={[
             styles.listItemLeft,
-            { borderRightColor: theme.dividerColor },
+            { borderRightColor: dividerColor(theme.isDark) },
           ]}
           borderless
           onPress={() => setTrackStatusDialog(true)}
-          rippleColor={theme.rippleColor}
+          rippleColor={color(theme.primary).alpha(0.12).string()}
         >
           <Text style={[styles.listItem, { color: theme.textColorSecondary }]}>
             {getStatus(trackItem.my_list_status.status)}
@@ -92,7 +96,7 @@ export const MalTrackItemCard = ({
           style={{ flex: 1 }}
           borderless
           onPress={() => setTrackChaptersDialog(true)}
-          rippleColor={theme.rippleColor}
+          rippleColor={color(theme.primary).alpha(0.12).string()}
         >
           <Text style={[styles.listItem, { color: theme.textColorSecondary }]}>
             {`${trackItem.my_list_status.num_chapters_read}/${
@@ -103,11 +107,11 @@ export const MalTrackItemCard = ({
         <TouchableRipple
           style={[
             styles.listItemRight,
-            { borderLeftColor: theme.dividerColor },
+            { borderLeftColor: dividerColor(theme.isDark) },
           ]}
           borderless
           onPress={() => setTrackScoreDialog(true)}
-          rippleColor={theme.rippleColor}
+          rippleColor={color(theme.primary).alpha(0.12).string()}
         >
           <Text style={[styles.listItem, { color: theme.textColorSecondary }]}>
             {trackItem.my_list_status.score === 0
