@@ -8,13 +8,13 @@
     "search": "Ara",
     "install": "Yükle",
     "newUpdateAvailable": "Yeni güncelleme var",
-    "categories": "Categories",
-    "add": "Add",
-    "edit": "Edit",
-    "name": "Name",
-    "searchFor": "Search for",
-    "globally": "globally",
-    "searchResults": "Search results"
+    "categories": "Kategoriler",
+    "add": "Ekle",
+    "edit": "Düzenle",
+    "name": "Ad",
+    "searchFor": "Şunu ara",
+    "globally": "global olarak",
+    "searchResults": "Arama sonuçları"
   },
   "library": "Kitaplık",
   "libraryScreen": {
@@ -25,7 +25,7 @@
         "downloaded": "İndirilen",
         "unread": "Okunmamış",
         "completed": "Tamamlanmış",
-        "started": "Started"
+        "started": "Başlanmış"
       },
       "sortOrders": {
         "dateAdded": "Eklendiği tarih",
@@ -36,7 +36,7 @@
         "displayMode": "Görüntüleme modu",
         "compact": "Kompakt ızgara",
         "comfortable": "Rahat ızgara",
-        "noTitle": "Cover only grid",
+        "noTitle": "Yalnızca kapak ızgara",
         "list": "Liste",
         "badges": "Rozetler",
         "downloadBadges": "İndirilen LN'ler için rozet göster",
@@ -65,8 +65,8 @@
     "pinned": "Sabitlenmiş",
     "all": "Tümü",
     "latest": "En son",
-    "addedToLibrary": "Added to library",
-    "removeFromLibrary": "Removed from library"
+    "addedToLibrary": "Kitaplığa eklendi",
+    "removeFromLibrary": "Kitaplıktan kaldırıldı"
   },
   "readerScreen": {
     "finished": "Biten",
@@ -93,7 +93,7 @@
     "continueReading": "Okumaya devam et",
     "chapters": "bölüm",
     "migrate": "Taşın",
-    "noSummary": "No summary",
+    "noSummary": "Özet bilgisi yok",
     "bottomSheet": {
       "filter": "Filtre",
       "sort": "Sırala",
@@ -153,20 +153,20 @@
     }
   },
   "categories": {
-    "addCategories": "Add category",
-    "editCategories": "Rename category",
-    "setCategories": "Set categories",
-    "header": "Edit Categories",
-    "emptyMsg": "You have no categories. Tap the plus button to create one for organizing your library",
-    "setModalEmptyMsg": "You have no categories. Tap the Edit button to create one for organizing your library",
+    "addCategories": "Kategori ekle",
+    "editCategories": "Kategoriyi yeniden adlandır",
+    "setCategories": "Kategorileri ayarla",
+    "header": "Kategorileri Düzenle",
+    "emptyMsg": "Kategoriniz bulunmuyor.  Kitaplığınızı düzenlemek için bir tane oluşturmak için artı butonuna basın",
+    "setModalEmptyMsg": "Kategoriniz bulunmuyor.  Kitaplığınızı düzenlemek üzere bir tane oluşturmak için Düzenle butonuna basın",
     "deleteModal": {
-      "header": "Delete category",
-      "desc": "Do you wish to delete category"
+      "header": "Kategoriyi sil",
+      "desc": "Şu kategoriyi silmek istiyor musunuz:"
     },
-    "duplicateError": "A category with this name already exists!"
+    "duplicateError": "Bu ada sahip bir kategori zaten var!"
   },
   "settings": {
-    "icognitoMode": "Incognito mode",
-    "downloadedOnly": "Downloaded only"
+    "icognitoMode": "Gizli mod",
+    "downloadedOnly": "Yalnızca indirilenler"
   }
 }
