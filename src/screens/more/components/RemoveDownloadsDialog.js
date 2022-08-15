@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Button, Dialog, Portal } from 'react-native-paper';
+import { Button, Dialog, overlay, Portal } from 'react-native-paper';
 
 const RemoveDownloadsDialog = ({
   dialogVisible,
@@ -15,7 +15,7 @@ const RemoveDownloadsDialog = ({
         onDismiss={hideDialog}
         style={{
           borderRadius: 6,
-          backgroundColor: theme.colorPrimary,
+          backgroundColor: overlay(2, theme.surface),
         }}
       >
         <Dialog.Title
@@ -30,7 +30,7 @@ const RemoveDownloadsDialog = ({
         <Dialog.Actions>
           <Button
             uppercase={false}
-            theme={{ colors: { primary: theme.colorAccent } }}
+            theme={{ colors: { primary: theme.primary } }}
             onPress={hideDialog}
             labelStyle={{ letterSpacing: 0 }}
           >
@@ -38,7 +38,7 @@ const RemoveDownloadsDialog = ({
           </Button>
           <Button
             uppercase={false}
-            theme={{ colors: { primary: theme.colorAccent } }}
+            theme={{ colors: { primary: theme.primary } }}
             onPress={onSubmit}
             labelStyle={{ letterSpacing: 0 }}
           >

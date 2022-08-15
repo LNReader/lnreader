@@ -31,6 +31,7 @@ import SetCategoryModal from '@screens/novel/components/SetCategoriesModal';
 import useBoolean from '@hooks/useBoolean';
 import { debounce } from 'lodash';
 import { ButtonVariation } from '@components/Button/Button';
+import { useBackHandler } from '@hooks/useBackHandler';
 
 type State = NavigationState<{
   key: string;
@@ -57,6 +58,15 @@ const LibraryScreen = () => {
 
   const { library, refetchLibrary, isLoading } = useLibrary({ searchText });
   const [selectedNovelIds, setSelectedNovelIds] = useState<number[]>([]);
+
+  useBackHandler(() => {
+    if (selectedNovelIds.length) {
+      setSelectedNovelIds([]);
+      return true;
+    }
+
+    return false;
+  });
 
   const layout = useWindowDimensions();
 

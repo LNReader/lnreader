@@ -28,11 +28,16 @@ import MigrateNovel from '../screens/browse/migration/MigrationNovels';
 import MalTopNovels from '../screens/browse/discover/MalTopNovels';
 import NewUpdateDialog from '../components/NewUpdateDialog';
 import BrowseSettings from '../screens/browse/BrowseSettings';
+import { useAppDispatch } from '@redux/hooks';
+import { updateLibraryAction } from '@redux/updates/updates.actions';
+import { useSettings } from '@hooks/reduxHooks';
 
 const Stack = createStackNavigator();
 
 const MainNavigator = () => {
   const theme = useTheme();
+  const dispatch = useAppDispatch();
+  const { updateLibraryOnLaunch = false } = useSettings();
 
   useEffect(() => {
     const timer = setTimeout(async () => {
@@ -44,6 +49,12 @@ const MainNavigator = () => {
       clearTimeout(timer);
     };
   }, [theme.id]);
+
+  useEffect(() => {
+    if (updateLibraryOnLaunch) {
+      dispatch(updateLibraryAction());
+    }
+  }, []);
 
   const { isNewVersion, latestRelease } = useGithubUpdateChecker() || {};
 

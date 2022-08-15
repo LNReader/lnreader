@@ -19,7 +19,7 @@ export const getCategoryNovelsFromDb = async (
     * 
   FROM 
     novels 
-  WHERE 
+  WHERE (
       categoryIds LIKE '[${categoryId}]' 
     OR 
       categoryIds LIKE '[${categoryId},%' 
@@ -27,6 +27,9 @@ export const getCategoryNovelsFromDb = async (
       categoryIds LIKE '%,${categoryId}]' 
     OR 
       categoryIds LIKE '%,${categoryId},%'
+    )
+    AND
+      followed = 1
   `;
 
   if (onlyOngoingNovels) {
