@@ -4,6 +4,7 @@ import color from 'color';
 
 import { List as PaperList, Divider as PaperDivider } from 'react-native-paper';
 import { MD3ThemeType } from '../../theme/types';
+import { dividerColor } from '../../theme/colors';
 
 interface ListItemProps {
   title: string;
@@ -59,7 +60,7 @@ const Item: React.FC<ListItemProps> = ({
 
 const Divider = ({ theme }: { theme: MD3ThemeType }) => (
   <PaperDivider
-    style={[styles.divider, { backgroundColor: theme.dividerColor }]}
+    style={[styles.divider, { backgroundColor: dividerColor(theme.isDark) }]}
   />
 );
 

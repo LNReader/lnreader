@@ -51,7 +51,7 @@ const MoreScreen = ({ navigation }) => {
               <View style={{ marginLeft: 16 }}>
                 <Text
                   style={{
-                    color: theme.onSurface,
+                    color: theme.textColorPrimary,
                     fontSize: 16,
                   }}
                 >
@@ -84,7 +84,7 @@ const MoreScreen = ({ navigation }) => {
               <View style={{ marginLeft: 16 }}>
                 <Text
                   style={{
-                    color: theme.onSurface,
+                    color: theme.textColorPrimary,
                     fontSize: 16,
                   }}
                 >

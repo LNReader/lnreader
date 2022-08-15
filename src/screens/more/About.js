@@ -2,7 +2,6 @@ import React from 'react';
 import { ScrollView } from 'react-native';
 
 import * as Linking from 'expo-linking';
-import { useSelector } from 'react-redux';
 
 import { List } from '../../components/List';
 import { ScreenContainer } from '../../components/Common';
@@ -25,14 +24,14 @@ const AboutScreen = ({ navigation }) => {
         <List.Section>
           <List.Item
             title="Version"
-            description={`Preview ${appVersion}.2 (14/0/22 08:00 PM)`}
+            description={`Preview ${appVersion} (${releaseDate})`}
             theme={theme}
           />
           <List.Item
             title="What's new"
             onPress={() =>
               Linking.openURL(
-                `https://github.com/LNReader/lnreader-preview/releases/tag/v${appVersion}.2`,
+                `https://github.com/LNReader/lnreader-preview/releases/tag/v${appVersion}`,
               )
             }
             theme={theme}

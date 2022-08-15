@@ -16,7 +16,7 @@ const SwitchSetting = ({ label, description, onPress, theme, icon, value }) => (
       <View style={[icon && { marginLeft: 16 }]}>
         <Text
           style={{
-            color: theme.onBackground,
+            color: theme.textColorPrimary,
             fontSize: 16,
             flex: 1,
             textAlignVertical: 'center',

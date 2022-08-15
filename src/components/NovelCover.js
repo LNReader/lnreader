@@ -121,6 +121,7 @@ const NovelCover = ({
         showDownloadBadges &&
         item.chaptersDownloaded && (
           <DownloadBadge
+            theme={theme}
             showUnreadBadges={showUnreadBadges}
             chaptersDownloaded={item.chaptersDownloaded}
             chaptersUnread={item.chaptersUnread}

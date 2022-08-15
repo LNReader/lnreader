@@ -49,7 +49,7 @@ const Button: React.FC<Props> = ({
         ? theme.primary
         : variation === ButtonVariation.CLEAR
         ? theme.primary
-        : theme.textColorPrimary,
+        : theme.onSecondary,
     }),
     [],
   );
@@ -64,7 +64,7 @@ const Button: React.FC<Props> = ({
               borderColor: theme.textColorHint,
             }
           : variation !== ButtonVariation.CLEAR && {
-              backgroundColor: theme.primaryInverse,
+              backgroundColor: theme.secondary,
             },
         style,
       ]}

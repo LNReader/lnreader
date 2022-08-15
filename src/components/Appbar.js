@@ -23,12 +23,12 @@ export const Appbar = ({
       {onBackAction && (
         <MaterialAppbar.BackAction
           onPress={onBackAction}
-          iconColor={theme.onSurface}
+          iconColor={theme.textColorPrimary}
         />
       )}
       <MaterialAppbar.Content
         title={title}
-        titleStyle={{ color: theme.onSurface }}
+        titleStyle={{ color: theme.textColorPrimary }}
       />
       {children}
     </MaterialAppbar.Header>

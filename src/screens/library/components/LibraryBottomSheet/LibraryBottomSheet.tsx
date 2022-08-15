@@ -25,6 +25,7 @@ import {
 import { FlashList } from '@shopify/flash-list';
 import { RadioButton } from '@components/RadioButton/RadioButton';
 import { overlay } from 'react-native-paper';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface LibraryBottomSheetProps {
   bottomSheetRef: LegacyRef<Bottomsheet> | null;
@@ -209,15 +210,19 @@ const LibraryBottomSheet: React.FC<LibraryBottomSheetProps> = ({
     third: ThirdRoute,
   });
 
+  const { bottom } = useSafeAreaInsets();
+
+  const bottomSheetHeight = 480 + bottom;
+
   return (
     <Bottomsheet
       animatedValue={animatedValue}
       ref={bottomSheetRef}
-      draggableRange={{ top: 480, bottom: 0 }}
-      snappingPoints={[0, 480]}
+      draggableRange={{ top: bottomSheetHeight, bottom: 0 }}
+      snappingPoints={[0, bottomSheetHeight]}
       showBackdrop={true}
       backdropOpacity={0.3}
-      height={600}
+      height={bottomSheetHeight}
     >
       <View
         style={[

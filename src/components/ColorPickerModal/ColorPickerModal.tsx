@@ -47,15 +47,6 @@ const ColorPickerModal: React.FC<ColorPickerModalProps> = ({
     }
   };
 
-  const textInputTheme = {
-    colors: {
-      primary: color,
-      placeholder: theme.textColorHint,
-      text: theme.textColorPrimary,
-      background: 'transparent',
-    },
-  };
-
   const accentColors = [
     '#EF5350',
     '#EC407A',
@@ -131,7 +122,7 @@ const ColorPickerModal: React.FC<ColorPickerModalProps> = ({
           onChangeText={onChangeText}
           onSubmitEditing={onSubmitEditing}
           mode="outlined"
-          theme={textInputTheme}
+          theme={{ colors: { ...theme } }}
           underlineColor={theme.textColorHint}
           dense
           error={Boolean(error)}

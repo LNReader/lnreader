@@ -25,12 +25,12 @@ const Appbar: React.FC<AppbarProps> = ({
     {handleGoBack && (
       <PaperAppbar.BackAction
         onPress={handleGoBack}
-        iconColor={theme.onSurface}
+        iconColor={theme.textColorPrimary}
       />
     )}
     <PaperAppbar.Content
       title={title}
-      titleStyle={{ color: theme.onSurface }}
+      titleStyle={{ color: theme.textColorPrimary }}
     />
   </PaperAppbar.Header>
 );

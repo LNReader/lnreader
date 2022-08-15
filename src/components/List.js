@@ -29,7 +29,7 @@ const ListItem = ({
   <PaperList.Item
     title={title}
     style={style}
-    titleStyle={[{ color: theme.onSurface }, titleStyle]}
+    titleStyle={[{ color: theme.textColorPrimary }, titleStyle]}
     description={description}
     descriptionStyle={{ color: theme.textColorSecondary }}
     descriptionNumberOfLines={1}
@@ -96,7 +96,9 @@ const ColorItem = ({ title, description, theme, onPress }) => (
     onPress={onPress}
   >
     <View>
-      <Text style={{ color: theme.onSurface, fontSize: 16 }}>{title}</Text>
+      <Text style={{ color: theme.textColorPrimary, fontSize: 16 }}>
+        {title}
+      </Text>
       <Text style={{ color: theme.textColorSecondary }}>{description}</Text>
     </View>
     <View
@@ -131,6 +133,7 @@ const styles = StyleSheet.create({
     marginVertical: 0,
   },
   listSubHeader: {
+    fontWeight: 'bold',
     paddingBottom: 5,
   },
 });
