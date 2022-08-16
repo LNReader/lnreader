@@ -356,5 +356,41 @@
       "lang": "English",
       "orderBy": "latest"
     }
+  },
+  {
+    "sourceId": 135,
+    "baseUrl": "https://zetrotranslation.com/",
+    "sourceName": "Zetro Translation",
+    "options": {
+      "totalPages": 1,
+      "lang": "English"
+    }
+  },
+  {
+    "sourceId": 136,
+    "baseUrl": "https://nocturnetls.net/",
+    "sourceName": "Nocturne Translations",
+    "options": {
+      "totalPages": 9,
+      "lang": "English"
+    }
+  },
+  {
+    "sourceId": 137,
+    "baseUrl": "https://asadatranslations.com/",
+    "sourceName": "Asada Translation",
+    "options": {
+      "totalPages": 1,
+      "lang": "English"
+    }
+  },
+  {
+    "sourceId": 138,
+    "baseUrl": "https://sugarbbscan.com/",
+    "sourceName": "Sugar Babies",
+    "options": {
+      "totalPages": 3,
+      "lang": "English"
+    }
   }
 ]

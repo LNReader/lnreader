@@ -76,6 +76,10 @@ import {
   ArNovelScraper,
   NeoSekaiTranslationsScraper,
   MTLDashNovelScraper,
+  ZetroTranslationScraper,
+  NocturneScraper,
+  AsadaTranslationScraper,
+  SugarBabiesScraper,
 } from './multisrc/madara/MadaraGenerator';
 import WuxiaBlogScraper from './en/wuxiablog';
 import WuxiaCityScraper from './en/wuxiacity';
@@ -290,6 +294,10 @@ export const sourceManager = (sourceId: number): Scraper => {
     132: RanobesruScraper,
     133: NeoSekaiTranslationsScraper,
     134: MTLDashNovelScraper,
+    135: ZetroTranslationScraper,
+    136: NocturneScraper,
+    137: AsadaTranslationScraper,
+    138: SugarBabiesScraper,
   };
 
   return scrapers[sourceId];
