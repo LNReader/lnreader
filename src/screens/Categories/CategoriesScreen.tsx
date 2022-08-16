@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { FlatList, StyleSheet } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { FAB, Portal } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
@@ -6,14 +6,17 @@ import { useNavigation } from '@react-navigation/native';
 import { Appbar, EmptyView } from '@components/index';
 import AddCategoryModal from './components/AddCategoryModal';
 
-import { getCategoriesFromDb } from '../../database/queries/CategoryQueries';
+import {
+  getCategoriesFromDb,
+  updateCategoryOrderInDb,
+} from '../../database/queries/CategoryQueries';
 import useBoolean from '@hooks/useBoolean';
 import { useTheme } from '@hooks/useTheme';
 import { getString } from '@strings/translations';
 
 import { Category } from '../../database/types';
-import { FlashList } from '@shopify/flash-list';
 import CategoryCard from './components/CategoryCard';
+import { orderBy } from 'lodash';
 
 const CategoriesScreen = () => {
   const theme = useTheme();
@@ -24,8 +27,7 @@ const CategoriesScreen = () => {
 
   const getCategories = async () => {
     try {
-      const res = await getCategoriesFromDb();
-      res.shift(); // Remove Default Category
+      let res = await getCategoriesFromDb({ getDefaultCategory: false });
 
       setCategories(res);
     } catch (err) {
@@ -36,6 +38,36 @@ const CategoriesScreen = () => {
   useEffect(() => {
     getCategories();
   }, []);
+
+  const updateCategorySort = (
+    categoryId: number,
+    currentIndex: number,
+    newIndex: number,
+  ) => {
+    const updatedOrderCategories = orderBy(
+      categories?.map(category => {
+        if (category.sort === newIndex) {
+          return {
+            ...category,
+            sort: currentIndex,
+          };
+        }
+
+        if (category.id === categoryId) {
+          return {
+            ...category,
+            sort: newIndex,
+          };
+        }
+
+        return category;
+      }),
+      'sort',
+    );
+
+    setCategories(updatedOrderCategories);
+    updateCategoryOrderInDb(updatedOrderCategories || []);
+  };
 
   const {
     value: categoryModalVisible,
@@ -51,12 +83,17 @@ const CategoriesScreen = () => {
         theme={theme}
       />
       {categories?.length ? (
-        <FlashList
-          estimatedItemSize={10}
+        <FlatList
           data={categories}
           contentContainerStyle={styles.contentCtn}
-          renderItem={({ item }) => (
-            <CategoryCard category={item} getCategories={getCategories} />
+          renderItem={({ item, index }) => (
+            <CategoryCard
+              category={item}
+              getCategories={getCategories}
+              categoryIndex={index}
+              updateCategorySort={updateCategorySort}
+              totalCategories={categories.length}
+            />
           )}
         />
       ) : (

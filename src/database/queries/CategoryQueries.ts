@@ -4,15 +4,29 @@ import { Category } from '../types';
 import { txnErrorCallback } from '../utils/helpers';
 const db = SQLite.openDatabase('lnreader.db');
 
+interface GetCategoryOptions {
+  getDefaultCategory?: boolean;
+}
+
 const getCategoriesQuery = `
   SELECT * FROM categories
 	`;
 
-export const getCategoriesFromDb = (): Promise<Category[]> => {
+export const getCategoriesFromDb = (
+  options?: GetCategoryOptions,
+): Promise<Category[]> => {
+  let query = getCategoriesQuery;
+
+  if (options?.getDefaultCategory === false) {
+    query += 'WHERE id > 1 ORDER BY sort NULLS LAST';
+  } else {
+    query += ' ORDER BY CASE WHEN id > 1 THEN 1 ELSE 0 END, sort NULLS LAST';
+  }
+
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
-        getCategoriesQuery,
+        query,
         [],
         (txObj, { rows }) => resolve((rows as any)._array),
         txnErrorCallback,
@@ -79,3 +93,19 @@ export const isCategoryNameDuplicate = (
     }),
   );
 };
+
+const updateCategoryOrderQuery = `
+  UPDATE categories SET sort = ? WHERE id = ?
+	`;
+
+export const updateCategoryOrderInDb = (categories: Category[]): void =>
+  db.transaction(tx => {
+    categories.map(category => {
+      tx.executeSql(
+        updateCategoryOrderQuery,
+        [category.sort, category.id],
+        noop,
+        txnErrorCallback,
+      );
+    });
+  });

@@ -11,6 +11,7 @@ import { useTheme } from '@hooks/useTheme';
 
 import { getString } from '@strings/translations';
 import { resetCategoryIdsToDefault } from '../../../database/queries/NovelQueriesV2';
+import { getDialogBackground } from '../../../theme/colors';
 
 interface DeleteCategoryModalProps {
   category: Category;
@@ -34,7 +35,7 @@ const DeleteCategoryModal: React.FC<DeleteCategoryModalProps> = ({
         onDismiss={closeModal}
         contentContainerStyle={[
           styles.modalContainer,
-          { backgroundColor: theme.colorPrimary },
+          { backgroundColor: getDialogBackground(theme) },
         ]}
       >
         <Text style={[styles.modalTitle, { color: theme.textColorPrimary }]}>

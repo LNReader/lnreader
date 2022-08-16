@@ -17,6 +17,7 @@ import {
 import { createDownloadTableQuery } from './tables/DownloadTable';
 import { createUpdatesTableQuery } from './tables/UpdateTable';
 import {
+  addCategorySortColumnQuery,
   createCategoriesTableQuery,
   createCategorydIndexQuery,
   createDefaultCategoryQuery,
@@ -34,6 +35,12 @@ const db = SQLite.openDatabase(dbName);
 const createTables = () => {
   db.transaction(tx => {
     tx.executeSql(createCategoriesTableQuery, [], () => {
+      tx.executeSql(
+        addCategorySortColumnQuery,
+        undefined,
+        noop,
+        txnErrorCallbackWithoutToast,
+      );
       tx.executeSql(
         createDefaultCategoryQuery,
         undefined,

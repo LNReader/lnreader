@@ -31,7 +31,11 @@ const IconButton: React.FC<Props> = ({
       style={[styles.pressable, { padding }]}
       onPress={onPress}
       disabled={disabled}
-      android_ripple={{ color: Color(theme.primary).alpha(0.12).string() }}
+      android_ripple={
+        onPress
+          ? { color: Color(theme.primary).alpha(0.12).string() }
+          : undefined
+      }
     >
       <MaterialCommunityIcons
         name={name}

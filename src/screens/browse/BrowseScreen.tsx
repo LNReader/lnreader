@@ -111,7 +111,7 @@ const BrowseScreen = () => {
 
     if (!onlyShowPinnedSources) {
       if (searchText) {
-        list.push({
+        list.unshift({
           header: getString('common.searchResults'),
           data: searchResults,
         });
