@@ -14,14 +14,16 @@
     "noUnusedLocals": true,
     "resolveJsonModule": true,
     "paths": {
-      "@components/*": ["./src/components/*"],
-      "@hooks/*": ["./src/hooks/*"],
-      "@screens/*": ["./src/screens/*"],
-      "@strings/*": ["./strings/*"],
-      "@redux/*": ["./src/redux/*"]
+      "@components": ["src/components/index"],
+      "@components/*": ["src/components/*"],
+      "@database/*": ["src/database/*"],
+      "@hooks/*": ["src/hooks/*"],
+      "@screens/*": ["src/screens/*"],
+      "@strings/*": ["strings/*"],
+      "@redux/*": ["src/redux/*"],
+      "@theme/*": ["src/theme/*"]
     }
   },
-  "include": ["src/"],
   "exclude": [
     "node_modules",
     "babel.config.js",
