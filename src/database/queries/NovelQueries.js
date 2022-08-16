@@ -248,30 +248,6 @@ export const updateNovelInfo = async (info, novelId) => {
   });
 };
 
-export const updateNovelCategoryById = async (novelId, categoryIds) => {
-  db.transaction(tx => {
-    tx.executeSql(
-      'UPDATE novels SET categoryIds = ? WHERE novelId = ?',
-      [JSON.stringify(categoryIds), novelId],
-      noop,
-      txnErrorCallback,
-    );
-  });
-};
-
-export const updateNovelCategoryByIds = async (novelIds, categoryIds) => {
-  db.transaction(tx => {
-    novelIds.map(novelId =>
-      tx.executeSql(
-        'UPDATE novels SET categoryIds = ? WHERE novelId = ?',
-        [JSON.stringify(categoryIds), novelId],
-        noop,
-        txnErrorCallback,
-      ),
-    );
-  });
-};
-
 export const pickCustomNovelCover = async novelId => {
   const image = await DocumentPicker.getDocumentAsync({ type: 'image/*' });
 

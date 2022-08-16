@@ -170,3 +170,33 @@ export const insertNovelInLibrary = async (
     });
   }
 };
+
+export const updateNovelCategoryById = async (
+  novelId: number,
+  categoryIds: number[],
+) => {
+  db.transaction(tx => {
+    tx.executeSql(
+      'UPDATE novels SET categoryIds = ? WHERE novelId = ?',
+      [JSON.stringify(categoryIds.length ? categoryIds : [1]), novelId],
+      noop,
+      txnErrorCallback,
+    );
+  });
+};
+
+export const updateNovelCategoryByIds = async (
+  novelIds: number[],
+  categoryIds: number[],
+) => {
+  db.transaction(tx => {
+    novelIds.map(novelId =>
+      tx.executeSql(
+        'UPDATE novels SET categoryIds = ? WHERE novelId = ?',
+        [JSON.stringify(categoryIds.length ? categoryIds : [1]), novelId],
+        noop,
+        txnErrorCallback,
+      ),
+    );
+  });
+};

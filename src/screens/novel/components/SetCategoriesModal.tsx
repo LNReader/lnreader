@@ -12,11 +12,11 @@ import { getString } from '@strings/translations';
 import { getCategoriesFromDb } from '../../../database/queries/CategoryQueries';
 import { Category } from '../../../database/types';
 import { Checkbox } from '@components/Checkbox/Checkbox';
+import { isArray, xor } from 'lodash';
 import {
   updateNovelCategoryById,
   updateNovelCategoryByIds,
-} from '../../../database/queries/NovelQueries';
-import { isArray, xor } from 'lodash';
+} from '@database/queries/NovelQueriesV2';
 
 interface SetCategoryModalProps {
   novelId: number | number[];
