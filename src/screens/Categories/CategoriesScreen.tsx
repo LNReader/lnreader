@@ -27,7 +27,8 @@ const CategoriesScreen = () => {
 
   const getCategories = async () => {
     try {
-      let res = await getCategoriesFromDb({ getDefaultCategory: false });
+      let res = await getCategoriesFromDb();
+      res.shift();
 
       setCategories(res);
     } catch (err) {
