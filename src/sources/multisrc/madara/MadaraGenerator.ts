@@ -327,3 +327,39 @@ export const MTLDashNovelScraper = new MadaraScraper(
   'MTL-Novel',
   { 'totalPages': 51, 'lang': 'English', 'orderBy': 'latest' },
 );
+
+export const ZetroTranslationScraper = new MadaraScraper(
+  135,
+  'https://zetrotranslation.com/',
+  'Zetro Translation',
+  { 'totalPages': 1, 'lang': 'English' },
+);
+
+export const NocturneScraper = new MadaraScraper(
+  136,
+  'https://nocturnetls.net/',
+  'Nocturne Translations',
+  {
+    'totalPages': 9,
+    'lang': 'English',
+    'path': { 'novels': 'novels', 'novel': 'novels', 'chapter': 'novels' },
+  },
+);
+
+export const AsadaTranslationScraper = new MadaraScraper(
+  137,
+  'https://asadatranslations.com/',
+  'Asada Translation',
+  { 'totalPages': 1, 'lang': 'English' },
+);
+
+export const SugarBabiesScraper = new MadaraScraper(
+  138,
+  'https://sugarbbscan.com/',
+  'Sugar Babies',
+  {
+    'totalPages': 3,
+    'lang': 'English',
+    'path': { 'novels': 'series', 'novel': 'series', 'chapter': 'series' },
+  },
+);

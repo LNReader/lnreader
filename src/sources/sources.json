@@ -894,5 +894,33 @@
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/mtl-novel.png?raw=true",
     "url": "https://mtl-novel.com/",
     "lang": "English"
+  },
+  {
+    "sourceId": 135,
+    "sourceName": "Zetro Translation",
+    "icon": "https://zetrotranslation.com/wp-content/uploads/2020/12/logo_red-e1607700845220.png",
+    "url": "https://zetrotranslation.com/",
+    "lang": "English"
+  },
+  {
+    "sourceId": 136,
+    "sourceName": "Nocturne Translations",
+    "icon": "https://nocturnetls.net/wp-content/uploads/2017/10/nocturne_mask-with-sheen.png",
+    "url": "https://nocturnetls.net/",
+    "lang": "English"
+  },
+  {
+    "sourceId": 137,
+    "sourceName": "Asada Translations",
+    "icon": "https://asadatranslations.com/wp-content/uploads/2020/05/asada-1.png",
+    "url": "https://asadatranslations.com/",
+    "lang": "English"
+  },
+  {
+    "sourceId": 138,
+    "sourceName": "Sugar Babies",
+    "icon": "https://sugarbbscan.com/wp-content/uploads/2021/03/sda.png",
+    "url": "https://sugarbbscan.com/",
+    "lang": "English"
   }
 ]
