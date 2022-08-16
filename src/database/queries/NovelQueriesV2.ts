@@ -70,9 +70,9 @@ export const insertNovelInLibrary = async (
   novelUrl: string,
   inLibrary: boolean,
 ) => {
-  showToast(getString('browseScreen.removeFromLibrary'));
-
   if (inLibrary) {
+    showToast(getString('browseScreen.removeFromLibrary'));
+
     db.transaction(tx => {
       tx.executeSql(
         `
