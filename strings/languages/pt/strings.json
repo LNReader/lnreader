@@ -9,12 +9,12 @@
     "install": "Instalar",
     "newUpdateAvailable": "Nova atualização disponível",
     "categories": "Categorias",
-    "add": "Add",
-    "edit": "Edit",
-    "name": "Name",
-    "searchFor": "Search for",
-    "globally": "globally",
-    "searchResults": "Search results"
+    "add": "Adicionar",
+    "edit": "Editar",
+    "name": "Nome",
+    "searchFor": "Pesquisar por",
+    "globally": "globalmente",
+    "searchResults": "Resultados da busca"
   },
   "library": "Biblioteca",
   "libraryScreen": {
@@ -25,7 +25,7 @@
         "downloaded": "Baixados",
         "unread": "Não lidos",
         "completed": "Concluídos",
-        "started": "Started"
+        "started": "Iniciado"
       },
       "sortOrders": {
         "dateAdded": "Data adicionado",
@@ -36,7 +36,7 @@
         "displayMode": "Modo de exibição",
         "compact": "Grade compacta",
         "comfortable": "Grade confortável",
-        "noTitle": "Cover only grid",
+        "noTitle": "Grade somente da capa",
         "list": "Lista",
         "badges": "Emblemas",
         "downloadBadges": "Baixar emblemas",
@@ -65,8 +65,8 @@
     "pinned": "Fixado",
     "all": "Todos",
     "latest": "Mais recentes",
-    "addedToLibrary": "Added to library",
-    "removeFromLibrary": "Removed from library"
+    "addedToLibrary": "Adicionado à biblioteca",
+    "removeFromLibrary": "Removido da biblioteca"
   },
   "readerScreen": {
     "finished": "Finalizado",
@@ -93,7 +93,7 @@
     "continueReading": "Continuar lendo",
     "chapters": "Capítulos",
     "migrate": "Migrar",
-    "noSummary": "No summary",
+    "noSummary": "Nenhum resumo",
     "bottomSheet": {
       "filter": "Filtro",
       "sort": "Ordenar por",
@@ -153,20 +153,20 @@
     }
   },
   "categories": {
-    "addCategories": "Add category",
-    "editCategories": "Rename category",
-    "setCategories": "Set categories",
-    "header": "Edit Categories",
-    "emptyMsg": "You have no categories. Tap the plus button to create one for organizing your library",
-    "setModalEmptyMsg": "You have no categories. Tap the Edit button to create one for organizing your library",
+    "addCategories": "Adicionar categoria",
+    "editCategories": "Renomear Categoria",
+    "setCategories": "Definir categorias",
+    "header": "Editar categorias",
+    "emptyMsg": "Você não possui categorias. Toque no botão de mais para criar uma para organizar sua biblioteca",
+    "setModalEmptyMsg": "Você não possui categorias. Toque no botão de editar para criar uma para organizar sua biblioteca",
     "deleteModal": {
-      "header": "Delete category",
-      "desc": "Do you wish to delete category"
+      "header": "Deletar categoria",
+      "desc": "Você quer deletar esta categoria"
     },
-    "duplicateError": "A category with this name already exists!"
+    "duplicateError": "Uma categoria com esse nome já existe!"
   },
   "settings": {
-    "icognitoMode": "Incognito mode",
-    "downloadedOnly": "Downloaded only"
+    "icognitoMode": "Modo anônimo",
+    "downloadedOnly": "Apenas baixados"
   }
 }
