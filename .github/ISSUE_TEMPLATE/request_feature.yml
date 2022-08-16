@@ -2,7 +2,7 @@
 
 name: Feature request
 description: Suggest a feature to improve LNReader
-labels: [Feature request]
+labels: [Feature Request]
 body:
   - type: textarea
     id: feature-description
