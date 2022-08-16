@@ -36,9 +36,9 @@ export const createBackup = async () => {
 
     const uri = permissions.directoryUri;
 
-    const date = dayjs().format('YYYY-MM-DD');
+    const datetime = dayjs().format('YYYY-MM-DD_HH:mm');
 
-    const fileName = 'lnreader_backup_' + date;
+    const fileName = 'lnreader_backup_' + datetime;
 
     if (uri) {
       const fileUri = await StorageAccessFramework.createFileAsync(
