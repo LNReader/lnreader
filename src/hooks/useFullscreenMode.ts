@@ -1,14 +1,15 @@
 import { useCallback, useEffect } from 'react';
 import { StatusBar } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-
-import { useReaderSettings, useSettingsV1, useTheme } from '../redux/hooks';
+import color from 'color';
+import { useReaderSettings, useSettingsV1 } from '../redux/hooks';
 import {
   changeNavigationBarColor,
   hideNavigationBar,
   showNavigationBar,
 } from '../theme/NativeModules/NavigationBarColor';
 import { readerBackground } from '../screens/reader/utils/readerStyles';
+import { useTheme } from './useTheme';
 
 const useFullscreenMode = () => {
   const { addListener } = useNavigation();
@@ -24,6 +25,9 @@ const useFullscreenMode = () => {
       StatusBar.setHidden(true);
       hideNavigationBar();
     } else {
+      StatusBar.setBarStyle(
+        color(backgroundColor).isDark() ? 'light-content' : 'dark-content',
+      );
       StatusBar.setBackgroundColor(backgroundColor);
       changeNavigationBarColor(backgroundColor as any);
     }
@@ -41,7 +45,7 @@ const useFullscreenMode = () => {
   useEffect(() => {
     const unsubscribe = addListener('beforeRemove', () => {
       showStatusAndNavBar();
-      StatusBar.setBarStyle(theme.statusBar);
+      StatusBar.setBarStyle(theme.isDark ? 'light-content' : 'dark-content');
     });
 
     return unsubscribe;
