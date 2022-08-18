@@ -20,7 +20,7 @@ export const lavenderTheme = {
     surface: '#EDE2FF',
     onSurface: '#1B1B22',
     surfaceVariant: '#B9B0CC',
-    onSurfaceVariant: '#D849454E',
+    onSurfaceVariant: 'rgba(73,69,78,0.847)',
     outline: '#7B46AF',
     inverseOnSurface: '#F3EFF4',
     inverseSurface: '#313033',
