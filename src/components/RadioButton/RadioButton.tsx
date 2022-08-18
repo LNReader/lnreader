@@ -14,7 +14,7 @@ import color from 'color';
 interface Props {
   label: string;
   status: boolean;
-  onPress: () => void;
+  onPress?: () => void;
   style?: StyleProp<ViewStyle>;
   labelStyle?: StyleProp<TextStyle>;
   theme: MD3ThemeType;

@@ -6,3 +6,6 @@ export { default as useChapter } from './useChapter';
 export { default as useNextAndPrevChapter } from './useNextAndPrevChapter';
 export { default as useNovelTrackerInfo } from './useNovelTrackerInfo';
 export { default as useBoolean } from './useBoolean';
+export { useTheme } from './useTheme';
+export { default as useCategories } from './useCategories';
+export { useCategorySettings, useLibrarySettings } from './useSettings';

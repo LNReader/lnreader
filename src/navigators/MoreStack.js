@@ -14,6 +14,7 @@ import DownloadQueue from '../screens/more/DownloadQueueScreen';
 import Downloads from '../screens/more/DownloadsScreen';
 import AppearanceSettings from '../screens/settings/SettingsAppearanceScreen';
 import CategoriesScreen from '@screens/Categories/CategoriesScreen';
+import LibrarySettings from '@screens/settings/SettingsLibraryScreen/SettingsLibraryScreen';
 
 const Stack = createStackNavigator();
 
@@ -28,6 +29,7 @@ const SettingsStack = () => (
     <Stack.Screen name="BackupSettings" component={BackupSettings} />
     <Stack.Screen name="AppearanceSettings" component={AppearanceSettings} />
     <Stack.Screen name="AdvancedSettings" component={AdvancedSettings} />
+    <Stack.Screen name="LibrarySettings" component={LibrarySettings} />
   </Stack.Navigator>
 );
 

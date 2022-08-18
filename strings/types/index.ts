@@ -120,6 +120,7 @@ export interface StringMap {
   'categories.deleteModal.header': 'string';
   'categories.deleteModal.desc': 'string';
   'categories.duplicateError': 'string';
+  'categories.defaultCategory': 'string';
   'settings.icognitoMode': 'string';
   'settings.downloadedOnly': 'string';
 }

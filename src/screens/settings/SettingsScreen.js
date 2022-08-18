@@ -25,6 +25,26 @@ const SettingsScreen = ({ navigation }) => {
           theme={theme}
         />
         <List.Item
+          title="Appearance"
+          icon="palette-outline"
+          onPress={() =>
+            navigation.navigate('SettingsStack', {
+              screen: 'AppearanceSettings',
+            })
+          }
+          theme={theme}
+        />
+        <List.Item
+          title={getString('library')}
+          icon="book-variant-multiple"
+          onPress={() =>
+            navigation.navigate('SettingsStack', {
+              screen: 'LibrarySettings',
+            })
+          }
+          theme={theme}
+        />
+        <List.Item
           title={getString('moreScreen.settingsScreen.readerSettings.title')}
           icon="book-open-outline"
           onPress={() =>
@@ -50,16 +70,6 @@ const SettingsScreen = ({ navigation }) => {
           onPress={() =>
             navigation.navigate('SettingsStack', {
               screen: 'BackupSettings',
-            })
-          }
-          theme={theme}
-        />
-        <List.Item
-          title="Appearance"
-          icon="palette-outline"
-          onPress={() =>
-            navigation.navigate('SettingsStack', {
-              screen: 'AppearanceSettings',
             })
           }
           theme={theme}

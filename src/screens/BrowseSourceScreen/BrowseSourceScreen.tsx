@@ -15,7 +15,7 @@ import NovelList from '@components/NovelList';
 import NovelCover from '@components/NovelCover';
 import FilterBottomSheet from './components/BottomSheet';
 
-import { useSearch } from '../../hooks';
+import { useCategorySettings, useSearch } from '../../hooks';
 import { useTheme } from '@hooks/useTheme';
 import { useBrowseSource, useSearchSource } from './useBrowseSource';
 
@@ -59,6 +59,7 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
     clearFilters,
   } = useBrowseSource(sourceId, showLatestNovels);
 
+  const { defaultCategoryId = 1 } = useCategorySettings();
   const {
     isSearching,
     searchResults,
@@ -155,7 +156,12 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
                       ];
                     }
                   });
-                  insertNovelInLibrary(sourceId, item.novelUrl, inLibrary);
+                  insertNovelInLibrary(
+                    sourceId,
+                    item.novelUrl,
+                    inLibrary,
+                    defaultCategoryId,
+                  );
                 }}
               />
             );

@@ -64,6 +64,7 @@ import FadeView from '../../components/Common/CrossFadeView';
 import DownloadCustomChapterModal from './components/DownloadCustomChapterModal';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import useBoolean from '@hooks/useBoolean';
+import { useCategorySettings } from '@hooks/useSettings';
 
 const Novel = ({ route, navigation }) => {
   const item = route.params;
@@ -104,9 +105,19 @@ const Novel = ({ route, navigation }) => {
     novel.novelId,
   );
 
+  const { defaultCategoryId = 1 } = useCategorySettings();
+
   useEffect(() => {
     dispatch(
-      getNovelAction(followed, sourceId, novelUrl, novelId, sort, filter),
+      getNovelAction(
+        followed,
+        sourceId,
+        novelUrl,
+        novelId,
+        sort,
+        filter,
+        defaultCategoryId,
+      ),
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getNovelAction]);

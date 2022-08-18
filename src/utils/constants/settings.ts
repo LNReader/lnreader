@@ -15,3 +15,9 @@ export interface LibrarySettings {
   incognitoMode?: boolean;
   downloadedOnlyMode?: boolean;
 }
+
+export interface CategorySettings {
+  defaultCategoryId?: number;
+  includedCategoriesInUpdate?: number[];
+  excludedCategoriesInUpdate?: number[];
+}
