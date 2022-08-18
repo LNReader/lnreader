@@ -12,20 +12,17 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { Button, Modal, Portal, TextInput } from 'react-native-paper';
 import { setNovel } from '../../../redux/novel/novel.actions';
 import { updateNovelInfo } from '../../../database/queries/NovelQueries';
+import {
+  dividerColor,
+  getDialogBackground,
+  getRippleColor,
+} from '@theme/colors';
+import { getString } from '@strings/translations';
 
 const EditInfoModal = ({ theme, hideModal, modalVisible, novel, dispatch }) => {
   const [info, setInfo] = useState(novel);
 
   const [tag, setTag] = useState('');
-
-  const textInputTheme = {
-    colors: {
-      primary: theme.colorAccent,
-      placeholder: theme.textColorHint,
-      text: theme.textColorPrimary,
-      background: theme.colorPrimary,
-    },
-  };
 
   const removeTag = t => {
     let tags = info.genre.split(',').filter(item => item !== t);
@@ -41,7 +38,7 @@ const EditInfoModal = ({ theme, hideModal, modalVisible, novel, dispatch }) => {
         onDismiss={hideModal}
         contentContainerStyle={[
           styles.modalContainer,
-          { backgroundColor: theme.colorPrimary },
+          { backgroundColor: getDialogBackground(theme) },
         ]}
       >
         <Text style={[styles.modalTitle, { color: theme.textColorPrimary }]}>
@@ -65,12 +62,14 @@ const EditInfoModal = ({ theme, hideModal, modalVisible, novel, dispatch }) => {
                 <Pressable
                   style={{
                     backgroundColor:
-                      info.status === item ? theme.rippleColor : 'transparent',
+                      info.status === item
+                        ? getRippleColor(theme.primary)
+                        : 'transparent',
                     paddingVertical: 6,
                     paddingHorizontal: 12,
                   }}
                   android_ripple={{
-                    color: theme.rippleColor,
+                    color: getRippleColor(theme.primary),
                   }}
                   onPress={() => setInfo({ ...info, status: item })}
                 >
@@ -78,7 +77,7 @@ const EditInfoModal = ({ theme, hideModal, modalVisible, novel, dispatch }) => {
                     style={{
                       color:
                         info.status === item
-                          ? theme.colorAccent
+                          ? theme.primary
                           : theme.textColorSecondary,
                     }}
                   >
@@ -94,7 +93,7 @@ const EditInfoModal = ({ theme, hideModal, modalVisible, novel, dispatch }) => {
           style={{ fontSize: 14 }}
           numberOfLines={1}
           mode="outlined"
-          theme={textInputTheme}
+          theme={{ colors: { ...theme } }}
           onChangeText={text => setInfo({ ...info, novelName: text })}
           dense
         />
@@ -103,7 +102,7 @@ const EditInfoModal = ({ theme, hideModal, modalVisible, novel, dispatch }) => {
           style={{ fontSize: 14 }}
           numberOfLines={1}
           mode="outlined"
-          theme={textInputTheme}
+          theme={{ colors: { ...theme } }}
           onChangeText={text => setInfo({ ...info, author: text })}
           dense
         />
@@ -116,7 +115,7 @@ const EditInfoModal = ({ theme, hideModal, modalVisible, novel, dispatch }) => {
           numberOfLines={1}
           mode="outlined"
           onChangeText={text => setInfo({ ...info, novelSummary: text })}
-          theme={textInputTheme}
+          theme={{ colors: { ...theme } }}
           dense
         />
 
@@ -130,7 +129,7 @@ const EditInfoModal = ({ theme, hideModal, modalVisible, novel, dispatch }) => {
             setInfo({ ...info, genre: info.genre + ',' + tag });
             setTag('');
           }}
-          theme={textInputTheme}
+          theme={{ colors: { ...theme } }}
           dense
         />
 
@@ -151,29 +150,29 @@ const EditInfoModal = ({ theme, hideModal, modalVisible, novel, dispatch }) => {
         <View style={{ flexDirection: 'row-reverse' }}>
           <Button
             labelStyle={{
-              color: theme.colorAccent,
+              color: theme.primary,
               letterSpacing: 0,
               textTransform: 'none',
             }}
-            theme={{ colors: { primary: theme.colorAccent } }}
+            theme={{ colors: { primary: theme.primary } }}
             onPress={() => {
               updateNovelInfo(info, novel.novelId);
               hideModal();
               dispatch(setNovel({ ...novel, ...info }));
             }}
           >
-            Save
+            {getString('common.save')}
           </Button>
           <Button
             labelStyle={{
-              color: theme.colorAccent,
+              color: theme.primary,
               letterSpacing: 0,
               textTransform: 'none',
             }}
-            theme={{ colors: { primary: theme.colorAccent } }}
+            theme={{ colors: { primary: theme.primary } }}
             onPress={hideModal}
           >
-            Cancel
+            {getString('common.cancel')}
           </Button>
         </View>
       </Modal>
@@ -195,7 +194,7 @@ const GenreChip = ({ children, theme, onPress }) => (
       marginRight: 8,
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: theme.dividerColor,
+      backgroundColor: dividerColor(theme.isDark),
     }}
   >
     <Text
@@ -209,7 +208,7 @@ const GenreChip = ({ children, theme, onPress }) => (
     </Text>
     <MaterialCommunityIcons
       name="close"
-      color={theme.colorAccent}
+      color={theme.primary}
       size={18}
       onPress={onPress}
       style={{ marginLeft: 4 }}

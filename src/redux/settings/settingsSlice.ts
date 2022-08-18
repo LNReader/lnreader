@@ -1,3 +1,7 @@
+/**
+ * @deprecated
+ */
+
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { BrowseSettingsMap } from './types';

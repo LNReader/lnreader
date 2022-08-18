@@ -8,12 +8,13 @@ import {
   getAccessToken,
   malTokenWatcher,
 } from '../../services/Trackers/myAnimeList';
-import { Appbar } from '../../components/Appbar';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { List } from '../../components/List';
 import { removeTracker, setTracker } from '../../redux/tracker/tracker.actions';
 import { useTheme } from '@hooks/useTheme';
+import { Appbar } from '@components';
+import { getDialogBackground } from '@theme/colors';
 
 const TrackerScreen = ({ navigation }) => {
   const theme = useTheme();
@@ -27,7 +28,11 @@ const TrackerScreen = ({ navigation }) => {
 
   return (
     <Provider>
-      <Appbar title="Tracking" onBackAction={() => navigation.goBack()} />
+      <Appbar
+        title="Tracking"
+        handleGoBack={() => navigation.goBack()}
+        theme={theme}
+      />
       <View
         style={{
           flex: 1,
@@ -97,7 +102,7 @@ const TrackerScreen = ({ navigation }) => {
               padding: 20,
               margin: 20,
               borderRadius: 6,
-              backgroundColor: theme.background,
+              backgroundColor: getDialogBackground(theme),
             }}
           >
             <Text

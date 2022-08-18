@@ -1,4 +1,4 @@
-import { ReaderTheme } from 'src/redux/settings/settingsSlice';
+import { ReaderTheme } from '@redux/settings/settingsSlice';
 
 export const presetReaderThemes: ReaderTheme[] = [
   { backgroundColor: '#f5f5fa', textColor: '#111111' },

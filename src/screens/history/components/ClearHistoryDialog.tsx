@@ -3,10 +3,8 @@ import { StyleSheet } from 'react-native';
 
 import { getString } from '@strings/translations';
 
-import { Dialog, Portal } from 'react-native-paper';
+import { Button, Dialog, Portal } from 'react-native-paper';
 import { MD3ThemeType } from '../../../theme/types';
-import { Button } from '@components/index';
-import { ButtonVariation } from '@components/Button/Button';
 
 interface ClearHistoryDialogProps {
   visible: boolean;
@@ -28,28 +26,17 @@ const ClearHistoryDialog: React.FC<ClearHistoryDialogProps> = ({
 
   return (
     <Portal>
-      <Dialog
-        visible={visible}
-        onDismiss={onDismiss}
-        style={[styles.container, { backgroundColor: theme.surface }]}
-      >
+      <Dialog visible={visible} onDismiss={onDismiss} style={styles.container}>
         <Dialog.Title style={[styles.title, { color: theme.textColorPrimary }]}>
           {getString('historyScreen.clearHistorWarning')}
         </Dialog.Title>
         <Dialog.Actions>
-          <Button
-            theme={theme}
-            onPress={onDismiss}
-            title={getString('common.cancel')}
-            variation={ButtonVariation.CLEAR}
-          />
-          <Button
-            theme={theme}
-            onPress={handleOnSubmit}
-            title={getString('common.ok')}
-            variation={ButtonVariation.CLEAR}
-            style={styles.button}
-          />
+          <Button theme={{ colors: { ...theme } }} onPress={onDismiss}>
+            {getString('common.cancel')}
+          </Button>
+          <Button theme={{ colors: { ...theme } }} onPress={handleOnSubmit}>
+            {getString('common.ok')}
+          </Button>
         </Dialog.Actions>
       </Dialog>
     </Portal>

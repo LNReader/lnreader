@@ -5,10 +5,9 @@ import { Appbar as MaterialAppbar } from 'react-native-paper';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Appbar } from '../../components/Appbar';
 import { ScreenContainer } from '../../components/Common';
 import EmptyView from '../../components/EmptyView';
-import { LoadingScreen } from '../../components/LoadingScreen/LoadingScreen';
+import { Appbar, LoadingScreenV2 } from '@components';
 import {
   deleteDownloads,
   getDownloadedChapters,
@@ -120,7 +119,7 @@ const Downloads = ({ navigation }) => {
 
   return (
     <ScreenContainer theme={theme}>
-      <Appbar title="Downloads" onBackAction={navigation.goBack}>
+      <Appbar title="Downloads" handleGoBack={navigation.goBack} theme={theme}>
         {chapters.length > 0 && (
           <MaterialAppbar.Action
             icon="delete-sweep"
@@ -130,7 +129,7 @@ const Downloads = ({ navigation }) => {
         )}
       </Appbar>
       {loading ? (
-        <LoadingScreen theme={theme} />
+        <LoadingScreenV2 theme={theme} />
       ) : (
         <FlatList
           contentContainerStyle={styles.flatList}

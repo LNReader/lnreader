@@ -6,7 +6,7 @@ import { StatusBar, StyleSheet, View } from 'react-native';
 
 import WebView from 'react-native-webview';
 import { ChapterItem } from '../../../database/types';
-import { ThemeType } from '../../../theme/types';
+import { MD3ThemeType } from '../../../theme/types';
 
 import { readerBackground } from '../utils/readerStyles';
 
@@ -19,7 +19,7 @@ type WebViewPostEvent = {
 
 type WebViewReaderProps = {
   html: string;
-  theme: ThemeType;
+  theme: MD3ThemeType;
   reader: {
     theme: string;
     textColor: string;
@@ -227,7 +227,7 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
                         margin-bottom: 20px;
                       }
                       a {
-                        color: ${theme.colorAccent};
+                        color: ${theme.primary};
                       }
                       img {
                         display: block;
@@ -241,7 +241,7 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
                         border-radius: 50px;
                         border-width: 1;
                         color: ${theme.colorButtonText};
-                        background-color: ${theme.colorAccent};
+                        background-color: ${theme.primary};
                         font-family: ${reader.fontFamily};
                         font-size: 16px;
                         border-width: 0;

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { StyleSheet, Text, useWindowDimensions } from 'react-native';
 import Bottomsheet from 'rn-sliding-up-panel';
 import {
@@ -29,7 +29,7 @@ import {
 import { unfollowNovel } from '../../database/queries/NovelQueries';
 import SetCategoryModal from '@screens/novel/components/SetCategoriesModal';
 import useBoolean from '@hooks/useBoolean';
-import { debounce } from 'lodash';
+import { debounce, intersection } from 'lodash';
 import { ButtonVariation } from '@components/Button/Button';
 import { useBackHandler } from '@hooks/useBackHandler';
 
@@ -112,6 +112,20 @@ const LibraryScreen = () => {
     setFalse: closeSetCategoryModal,
   } = useBoolean();
 
+  const selectedNovelCategoryIds = useMemo(() => {
+    let categoryIds: number[][] = [];
+
+    library.map(category =>
+      category.novels
+        .filter(novel => selectedNovelIds.includes(novel.novelId))
+        .map(novel => {
+          categoryIds.push(JSON.parse(novel.categoryIds));
+        }),
+    );
+
+    return intersection(...categoryIds);
+  }, [selectedNovelIds]);
+
   return (
     <>
       <SearchbarV2
@@ -126,10 +140,18 @@ const LibraryScreen = () => {
         onChangeText={onChangeText}
         leftIcon={selectedNovelIds.length ? 'close' : 'magnify'}
         rightIcons={[
-          {
-            iconName: 'filter-variant',
-            onPress: () => bottomSheetRef.current?.show(),
-          },
+          selectedNovelIds.length
+            ? {
+                iconName: 'select-all',
+                onPress: () =>
+                  setSelectedNovelIds(
+                    library[index].novels.map(novel => novel.novelId),
+                  ),
+              }
+            : {
+                iconName: 'filter-variant',
+                onPress: () => bottomSheetRef.current?.show(),
+              },
         ]}
         theme={theme}
       />
@@ -198,7 +220,7 @@ const LibraryScreen = () => {
       />
       <SetCategoryModal
         novelId={selectedNovelIds}
-        currentCategoryIds={[]}
+        currentCategoryIds={selectedNovelCategoryIds}
         closeModal={closeSetCategoryModal}
         onEditCategories={() => setSelectedNovelIds([])}
         visible={setCategoryModalVisible}

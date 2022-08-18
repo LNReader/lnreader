@@ -3,9 +3,7 @@ import { ScrollView } from 'react-native';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Appbar } from '../../components/Appbar';
 import { List } from '../../components/List';
-import { ScreenContainer } from '../../components/Common';
 import SwitchSetting from '../../components/Switch/Switch';
 import DisplayModeModal from '../more/components/DisplayModeModal';
 import GridSizeModal from '../more/components/GridSizeModal';
@@ -14,13 +12,14 @@ import { useSettings } from '../../hooks/reduxHooks';
 import { useTheme } from '@hooks/useTheme';
 import { setAppSettings } from '../../redux/settings/settings.actions';
 import { SHOW_LAST_UPDATE_TIME } from '../../redux/updates/updates.types';
-import { useModal } from '../../hooks/useModal';
 import DefaultChapterSortModal from './components/DefaultChapterSortModal';
 import {
   DisplayModes,
   displayModesList,
 } from '@screens/library/constants/constants';
 import { useLibrarySettings } from '@hooks/useSettings';
+import useBoolean from '@hooks/useBoolean';
+import { Appbar } from '@components';
 
 const GenralSettings = ({ navigation }) => {
   const theme = useTheme();
@@ -45,31 +44,31 @@ const GenralSettings = ({ navigation }) => {
   /**
    * Display Mode Modal
    */
-  const displayModalRef = useModal();
+  const displayModalRef = useBoolean();
 
   /**
    * Grid Size Modal
    */
-  const gridSizeModalRef = useModal();
+  const gridSizeModalRef = useBoolean();
 
-  const defaultChapterSortModal = useModal();
+  const defaultChapterSortModal = useBoolean();
 
   return (
     <>
-      <Appbar title="General" onBackAction={navigation.goBack} />
+      <Appbar title="General" handleGoBack={navigation.goBack} theme={theme} />
       <ScrollView contentContainerStyle={{ paddingBottom: 32 }}>
         <List.Section>
           <List.SubHeader theme={theme}>Display</List.SubHeader>
           <List.Item
             title="Display Mode"
             description={displayModesList[displayMode].label}
-            onPress={displayModalRef.showModal}
+            onPress={displayModalRef.setTrue}
             theme={theme}
           />
           <List.Item
             title="Items per row in library"
             description={`${novelsPerRow} items per row`}
-            onPress={gridSizeModalRef.showModal}
+            onPress={gridSizeModalRef.setTrue}
             theme={theme}
           />
           <List.Divider theme={theme} />
@@ -93,7 +92,7 @@ const GenralSettings = ({ navigation }) => {
                 ? '(Ascending)'
                 : '(Descending)'
             }`}
-            onPress={defaultChapterSortModal.showModal}
+            onPress={defaultChapterSortModal.setTrue}
             theme={theme}
           />
           <List.Divider theme={theme} />
@@ -161,21 +160,21 @@ const GenralSettings = ({ navigation }) => {
       </ScrollView>
       <DisplayModeModal
         displayMode={displayMode}
-        displayModalVisible={displayModalRef.visible}
-        hideDisplayModal={displayModalRef.hideModal}
+        displayModalVisible={displayModalRef.value}
+        hideDisplayModal={displayModalRef.setFalse}
         theme={theme}
       />
       <DefaultChapterSortModal
         defaultChapterSort={defaultChapterSort}
-        displayModalVisible={defaultChapterSortModal.visible}
-        hideDisplayModal={defaultChapterSortModal.hideModal}
+        displayModalVisible={defaultChapterSortModal.value}
+        hideDisplayModal={defaultChapterSortModal.setFalse}
         dispatch={dispatch}
         theme={theme}
       />
       <GridSizeModal
         novelsPerRow={novelsPerRow}
-        gridSizeModalVisible={gridSizeModalRef.visible}
-        hideGridSizeModal={gridSizeModalRef.hideModal}
+        gridSizeModalVisible={gridSizeModalRef.value}
+        hideGridSizeModal={gridSizeModalRef.setFalse}
         theme={theme}
       />
     </>

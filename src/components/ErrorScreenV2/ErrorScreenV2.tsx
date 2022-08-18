@@ -1,11 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { ThemeType } from '../../theme/types';
+import { MD3ThemeType } from '@theme/types';
 
 interface ErrorScreenProps {
   error?: string;
-  theme: ThemeType;
+  theme: MD3ThemeType;
 }
 
 const ErrorScreen: React.FC<ErrorScreenProps> = ({ error, theme }) => {

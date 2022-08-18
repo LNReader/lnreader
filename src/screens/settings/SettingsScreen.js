@@ -2,17 +2,17 @@ import React from 'react';
 import { View } from 'react-native';
 import { getString } from '../../../strings/translations';
 
-import { Appbar } from '../../components/Appbar';
 import { List } from '../../components/List';
 
 import { useTheme } from '@hooks/useTheme';
+import { Appbar } from '@components';
 
 const SettingsScreen = ({ navigation }) => {
   const theme = useTheme();
 
   return (
     <>
-      <Appbar title="Settings" onBackAction={navigation.goBack} />
+      <Appbar title="Settings" handleGoBack={navigation.goBack} theme={theme} />
       <View style={{ flex: 1, backgroundColor: theme.background }}>
         <List.Item
           title={getString('moreScreen.settingsScreen.generalSettings')}

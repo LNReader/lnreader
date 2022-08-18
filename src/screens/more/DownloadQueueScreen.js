@@ -9,8 +9,6 @@ import {
 } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Appbar } from '../../components/Appbar';
-
 import { useTheme } from '@hooks/useTheme';
 
 import {
@@ -21,7 +19,7 @@ import {
 
 import BackgroundService from 'react-native-background-actions';
 import { showToast } from '../../hooks/showToast';
-import { EmptyView } from '@components/index';
+import { Appbar, EmptyView } from '@components';
 
 const DownloadQueue = ({ navigation }) => {
   const theme = useTheme();
@@ -37,7 +35,11 @@ const DownloadQueue = ({ navigation }) => {
 
   return (
     <>
-      <Appbar title="Download queue" onBackAction={navigation.goBack}>
+      <Appbar
+        title="Download queue"
+        handleGoBack={navigation.goBack}
+        theme={theme}
+      >
         <Menu
           visible={visible}
           onDismiss={closeMenu}

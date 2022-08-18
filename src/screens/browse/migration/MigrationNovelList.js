@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 import { StyleSheet, FlatList, Text, View } from 'react-native';
 
-import { Portal, Modal, Button } from 'react-native-paper';
+import { Portal, Modal } from 'react-native-paper';
 
 import GlobalSearchNovelCover from '../globalsearch/GlobalSearchNovelCover';
 
 import { migrateNovel } from '../../../database/queries/NovelQueries';
 import { showToast } from '../../../hooks/showToast';
+import { getDialogBackground } from '@theme/colors';
+import { Button } from '@components';
+import { ButtonVariation } from '@components/Button/Button';
+import { getString } from '@strings/translations';
 
 const MigrationNovelList = ({ data, theme, library, navigation }) => {
   const [selectedNovel, setSelectedNovel] = useState(false);
@@ -67,16 +71,17 @@ const MigrationNovelList = ({ data, theme, library, navigation }) => {
           visible={migrateNovelDialog}
           onDismiss={hideMigrateNovelDialog}
           contentContainerStyle={{
-            padding: 20,
+            padding: 24,
             margin: 20,
-            borderRadius: 6,
-            backgroundColor: theme.colorPrimaryDark,
+            borderRadius: 28,
+            backgroundColor: getDialogBackground(theme),
           }}
         >
           <Text
             style={{
               color: theme.textColorPrimary,
               fontSize: 18,
+              marginBottom: 16,
             }}
           >
             {`Migrate ${selectedNovel.novelName}?`}
@@ -88,24 +93,15 @@ const MigrationNovelList = ({ data, theme, library, navigation }) => {
             }}
           >
             <Button
-              style={{ marginTop: 30 }}
-              labelStyle={{
-                color: theme.colorAccent,
-                letterSpacing: 0,
-                textTransform: 'none',
-              }}
+              variation={ButtonVariation.CLEAR}
+              theme={theme}
               onPress={hideMigrateNovelDialog}
-            >
-              Cancel
-            </Button>
+              title={getString('common.cancel')}
+            />
             <Button
-              style={{ marginTop: 30 }}
-              labelStyle={{
-                color: theme.colorAccent,
-                letterSpacing: 0,
-                textTransform: 'none',
-              }}
-              theme={{ colors: { primary: theme.colorAccent } }}
+              Button
+              variation={ButtonVariation.CLEAR}
+              theme={theme}
               onPress={async () => {
                 hideMigrateNovelDialog();
                 await migrateNovel(
@@ -114,9 +110,8 @@ const MigrationNovelList = ({ data, theme, library, navigation }) => {
                 );
                 showToast(`${selectedNovel.novelName} migrated to new source.`);
               }}
-            >
-              Migrate
-            </Button>
+              title={getString('novelScreen.migrate')}
+            />
           </View>
         </Modal>
       </Portal>

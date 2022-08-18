@@ -5,11 +5,11 @@ import {
   useAppDispatch,
   useReaderSettings,
   useSettingsV2,
-  useTheme,
 } from '../../../../redux/hooks';
 import { ToggleColorButton } from '../../../../components/Common/ToggleButton';
 import { getString } from '../../../../../strings/translations';
 import { presetReaderThemes } from '../../../../utils/constants/readerConstants';
+import { useTheme } from '@hooks/useTheme';
 
 interface ReaderThemeSelectorProps {
   label?: string;

@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { Appbar } from '../../components/Appbar';
 import { List } from '../../components/List';
 import { ScreenContainer } from '../../components/Common';
 
 import { createBackup, restoreBackup } from '../../services/backup/v1/backup';
 
 import { useTheme } from '@hooks/useTheme';
+import { Appbar } from '@components';
 
 const BackupSettings = ({ navigation }) => {
   const theme = useTheme();
@@ -14,7 +14,11 @@ const BackupSettings = ({ navigation }) => {
   return (
     <>
       <ScreenContainer theme={theme}>
-        <Appbar title="Backup" onBackAction={() => navigation.goBack()} />
+        <Appbar
+          title="Backup"
+          handleGoBack={() => navigation.goBack()}
+          theme={theme}
+        />
         <List.Section>
           <List.SubHeader theme={theme}>Backup</List.SubHeader>
           <List.Item

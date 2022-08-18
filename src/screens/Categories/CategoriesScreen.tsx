@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { FAB, Portal } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 
-import { Appbar, EmptyView } from '@components/index';
+import { Appbar, EmptyView, LoadingScreenV2 } from '@components/index';
 import AddCategoryModal from './components/AddCategoryModal';
 
 import {
@@ -22,6 +22,7 @@ const CategoriesScreen = () => {
   const theme = useTheme();
   const { goBack } = useNavigation();
 
+  const [isLoading, setIsLoading] = useState(true);
   const [categories, setCategories] = useState<Category[]>();
   const [error, setError] = useState();
 
@@ -33,6 +34,8 @@ const CategoriesScreen = () => {
       setCategories(res);
     } catch (err) {
       setError(error?.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -83,7 +86,9 @@ const CategoriesScreen = () => {
         handleGoBack={goBack}
         theme={theme}
       />
-      {categories?.length ? (
+      {isLoading ? (
+        <LoadingScreenV2 theme={theme} />
+      ) : (
         <FlatList
           data={categories}
           contentContainerStyle={styles.contentCtn}
@@ -93,15 +98,16 @@ const CategoriesScreen = () => {
               getCategories={getCategories}
               categoryIndex={index}
               updateCategorySort={updateCategorySort}
-              totalCategories={categories.length}
+              totalCategories={categories?.length || 0}
             />
           )}
-        />
-      ) : (
-        <EmptyView
-          icon="Σ(ಠ_ಠ)"
-          description={getString('categories.emptyMsg')}
-          theme={theme}
+          ListEmptyComponent={
+            <EmptyView
+              icon="Σ(ಠ_ಠ)"
+              description={getString('categories.emptyMsg')}
+              theme={theme}
+            />
+          }
         />
       )}
       <FAB

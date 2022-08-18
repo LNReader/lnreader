@@ -1,13 +1,13 @@
 import React from 'react';
 import { ActivityIndicator, StyleSheet } from 'react-native';
-import { ThemeType } from '../../theme/types';
+import { MD3ThemeType } from '../../theme/types';
 
 interface Props {
-  theme: ThemeType;
+  theme: MD3ThemeType;
 }
 
 const LoadingMoreIndicator: React.FC<Props> = ({ theme }) => (
-  <ActivityIndicator color={theme.colorAccent} style={styles.indicator} />
+  <ActivityIndicator color={theme.primary} style={styles.indicator} />
 );
 
 export default LoadingMoreIndicator;

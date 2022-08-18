@@ -34,15 +34,6 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
   const theme = useTheme();
   const [categoryName, setCategoryName] = useState(category?.name || '');
 
-  const textInputTheme = {
-    colors: {
-      primary: theme.primary,
-      placeholder: theme.textColorHint,
-      text: theme.textColorPrimary,
-      background: 'transparent',
-    },
-  };
-
   return (
     <Portal>
       <Modal
@@ -66,8 +57,8 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
           placeholder={getString('common.name')}
           onChangeText={setCategoryName}
           mode="outlined"
-          theme={textInputTheme}
           underlineColor={theme.textColorHint}
+          theme={{ colors: { ...theme } }}
         />
         <View style={styles.btnContainer}>
           <Button
