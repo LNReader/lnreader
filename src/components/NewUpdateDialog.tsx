@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Text, Dimensions } from 'react-native';
 import { Portal, Modal } from 'react-native-paper';
 import * as Linking from 'expo-linking';
-import { useTheme } from '../hooks/reduxHooks';
 import { ScrollView } from 'react-native-gesture-handler';
 import Button, { ButtonVariation } from './Button/Button';
 import { getString } from '@strings/translations';
 import Markdown from 'react-native-markdown-display';
+import { dividerColor, getDialogBackground } from '@theme/colors';
+import { useTheme } from '@hooks/useTheme';
 
 interface NewUpdateDialogProps {
   newVersion: {
@@ -30,7 +31,7 @@ const NewUpdateDialog: React.FC<NewUpdateDialogProps> = ({ newVersion }) => {
         onDismiss={() => showNewUpdateDialog(false)}
         contentContainerStyle={[
           styles.containerStyle,
-          { backgroundColor: theme.colorPrimaryDark },
+          { backgroundColor: getDialogBackground(theme) },
         ]}
       >
         <Text style={[styles.modalHeader, { color: theme.textColorPrimary }]}>
@@ -45,11 +46,11 @@ const NewUpdateDialog: React.FC<NewUpdateDialogProps> = ({ newVersion }) => {
                 paddingVertical: 8,
               },
               hr: {
-                backgroundColor: theme.dividerColor,
+                backgroundColor: dividerColor(theme.isDark),
                 marginVertical: 16,
               },
               code_inline: {
-                backgroundColor: theme.colorPrimaryDark,
+                backgroundColor: getDialogBackground(theme),
               },
             }}
           >

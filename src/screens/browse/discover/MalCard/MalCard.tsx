@@ -1,14 +1,15 @@
 import { useNavigation } from '@react-navigation/native';
+import { getRippleColor } from '@theme/colors';
 import React from 'react';
 import { StyleSheet, Text, View, Image, Pressable } from 'react-native';
 import { getString } from '../../../../../strings/translations';
 import { Button } from '../../../../components';
 import { ButtonVariation } from '../../../../components/Button/Button';
 
-import { ThemeType } from '../../../../theme/types';
+import { MD3ThemeType } from '../../../../theme/types';
 
 interface Props {
-  theme: ThemeType;
+  theme: MD3ThemeType;
 }
 
 const MalCard: React.FC<Props> = ({ theme }) => {
@@ -18,7 +19,7 @@ const MalCard: React.FC<Props> = ({ theme }) => {
     <Pressable
       style={styles.container}
       onPress={() => navigate('BrowseMal' as never)}
-      android_ripple={{ color: theme.rippleColor }}
+      android_ripple={{ color: getRippleColor(theme.primary) }}
     >
       <View style={styles.flexRow}>
         <Image
@@ -33,7 +34,7 @@ const MalCard: React.FC<Props> = ({ theme }) => {
         <Button
           title={getString('browse')}
           variation={ButtonVariation.CLEAR}
-          textColor={theme.colorAccent}
+          textColor={theme.primary}
           onPress={() => navigate('BrowseMal' as never)}
           theme={theme}
         />

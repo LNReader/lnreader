@@ -1,12 +1,12 @@
 import React from 'react';
 import { StyleSheet, View, FlatList, Text } from 'react-native';
 
-import { Appbar } from '../../../components/Appbar';
 import MigrationSourceItem from './MigrationSourceItem';
 
-import { useTheme } from '../../../hooks/reduxHooks';
+import { useTheme } from '@hooks/useTheme';
 import { useSourcesReducer } from '../../../redux/hooks';
 import { useLibraryNovels } from '@screens/library/hooks/useLibrary';
+import { Appbar } from '@components';
 
 const GlobalSearch = ({ navigation }) => {
   const theme = useTheme();
@@ -41,7 +41,11 @@ const GlobalSearch = ({ navigation }) => {
     <View
       style={[styles.container, { backgroundColor: theme.colorPrimaryDark }]}
     >
-      <Appbar title="Select Source" onBackAction={navigation.goBack} />
+      <Appbar
+        title="Select Source"
+        handleGoBack={navigation.goBack}
+        theme={theme}
+      />
       <FlatList
         data={sources}
         contentContainerStyle={{ paddingBottom: 48 }}

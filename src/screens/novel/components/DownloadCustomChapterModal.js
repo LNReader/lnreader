@@ -1,3 +1,4 @@
+import { getDialogBackground } from '@theme/colors';
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput } from 'react-native';
 
@@ -48,7 +49,7 @@ const DownloadCustomChapterModal = ({
         onDismiss={onDismiss}
         contentContainerStyle={[
           styles.modalContainer,
-          { backgroundColor: theme.colorPrimary },
+          { backgroundColor: getDialogBackground(theme) },
         ]}
       >
         <Text style={[styles.modalTitle, { color: theme.textColorPrimary }]}>
@@ -59,14 +60,14 @@ const DownloadCustomChapterModal = ({
             icon="chevron-double-left"
             animated
             size={24}
-            color={theme.colorAccent}
+            iconColor={theme.primary}
             onPress={() => text > 9 && setText(prevState => prevState - 10)}
           />
           <IconButton
             icon="chevron-left"
             animated
             size={24}
-            color={theme.colorAccent}
+            iconColor={theme.primary}
             onPress={() => text > 0 && setText(prevState => prevState - 1)}
           />
           <TextInput
@@ -80,14 +81,14 @@ const DownloadCustomChapterModal = ({
             icon="chevron-right"
             animated
             size={24}
-            color={theme.colorAccent}
+            iconColor={theme.primary}
             onPress={() => setText(prevState => prevState + 1)}
           />
           <IconButton
             icon="chevron-double-right"
             animated
             size={24}
-            color={theme.colorAccent}
+            iconColor={theme.primary}
             onPress={() => setText(prevState => prevState + 10)}
           />
         </View>

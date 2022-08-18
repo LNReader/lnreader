@@ -49,7 +49,7 @@ const FilterItem: React.FC<FilterItemProps> = ({
           style={styles.picker}
           mode="dropdown"
           selectedValue={selectedFilters?.[filter.key] as string}
-          dropdownIconRippleColor={theme.colorAccent}
+          dropdownIconRippleColor={theme.primary}
           onValueChange={(itemValue: string) =>
             setSelectedFilters(prevFilters => ({
               ...prevFilters,

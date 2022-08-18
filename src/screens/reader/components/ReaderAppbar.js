@@ -51,7 +51,7 @@ const ReaderAppbar = ({
             size={24}
             onPress={tts}
             iconColor={
-              textToSpeech === 'progress' ? theme.colorAccent : theme.onSurface
+              textToSpeech === 'progress' ? theme.primary : theme.onSurface
             }
           />
           {textToSpeechPosition.end > 0 && (

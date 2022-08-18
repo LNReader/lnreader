@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 import { Button, Dialog, Portal } from 'react-native-paper';
 
-import { Appbar } from '../../components/Appbar';
 import { List } from '../../components/List';
 
 import { useTheme } from '@hooks/useTheme';
@@ -15,6 +14,8 @@ import { getString } from '@strings/translations';
 import useBoolean from '@hooks/useBoolean';
 import ConfirmationDialog from '@components/ConfirmationDialog/ConfirmationDialog';
 import { deleteReadChaptersFromDb } from '../../database/queries/DownloadQueries';
+import { getDialogBackground } from '@theme/colors';
+import { Appbar } from '@components';
 
 const AdvancedSettings = ({ navigation }) => {
   const theme = useTheme();
@@ -38,7 +39,11 @@ const AdvancedSettings = ({ navigation }) => {
 
   return (
     <>
-      <Appbar title="Advanced" onBackAction={() => navigation.goBack()} />
+      <Appbar
+        title="Advanced"
+        handleGoBack={() => navigation.goBack()}
+        theme={theme}
+      />
       <List.Section>
         <List.SubHeader theme={theme}>Data Management</List.SubHeader>
         <List.Item
@@ -77,8 +82,8 @@ const AdvancedSettings = ({ navigation }) => {
           visible={clearDatabaseDialog}
           onDismiss={hideClearDatabaseDialog}
           style={{
-            borderRadius: 6,
-            backgroundColor: theme.colorPrimary,
+            borderRadius: 28,
+            backgroundColor: getDialogBackground(theme),
           }}
         >
           <Dialog.Title
@@ -95,20 +100,20 @@ const AdvancedSettings = ({ navigation }) => {
           <Dialog.Actions>
             <Button
               uppercase={false}
-              theme={{ colors: { primary: theme.colorAccent } }}
+              theme={{ colors: { primary: theme.primary } }}
               onPress={hideClearDatabaseDialog}
             >
-              Cancel
+              {getString('common.cancel')}
             </Button>
             <Button
               uppercase={false}
-              theme={{ colors: { primary: theme.colorAccent } }}
+              theme={{ colors: { primary: theme.primary } }}
               onPress={() => {
                 deleteNovelCache();
                 hideClearDatabaseDialog();
               }}
             >
-              Ok
+              {getString('common.ok')}
             </Button>
           </Dialog.Actions>
         </Dialog>
@@ -116,8 +121,8 @@ const AdvancedSettings = ({ navigation }) => {
           visible={clearUpdatesDialog}
           onDismiss={hideClearUpdatesDialog}
           style={{
-            borderRadius: 6,
-            backgroundColor: theme.colorPrimary,
+            borderRadius: 28,
+            backgroundColor: getDialogBackground(theme),
           }}
         >
           <Dialog.Title
@@ -133,14 +138,14 @@ const AdvancedSettings = ({ navigation }) => {
           <Dialog.Actions>
             <Button
               uppercase={false}
-              theme={{ colors: { primary: theme.colorAccent } }}
+              theme={{ colors: { primary: theme.primary } }}
               onPress={hideClearUpdatesDialog}
             >
               Cancel
             </Button>
             <Button
               uppercase={false}
-              theme={{ colors: { primary: theme.colorAccent } }}
+              theme={{ colors: { primary: theme.primary } }}
               onPress={() => {
                 clearUpdates();
                 showToast('Updates cleared.');

@@ -3,13 +3,13 @@ import { StyleSheet, View, ActivityIndicator, FlatList } from 'react-native';
 
 import * as WebBrowser from 'expo-web-browser';
 
-import { Searchbar } from '../../../components/Searchbar/Searchbar';
 import { ErrorView } from '../../../components/ErrorView/ErrorView';
+import { LoadingScreenV2, SearchbarV2 } from '@components';
 
-import { useTheme } from '../../../hooks/reduxHooks';
 import { showToast } from '../../../hooks/showToast';
 import { scrapeSearchResults, scrapeTopNovels } from './MyAnimeListScraper';
 import MalNovelCard from './MalNovelCard/MalNovelCard';
+import { useTheme } from '@hooks/useTheme';
 
 const BrowseMalScreen = ({ navigation, route }) => {
   const theme = useTheme();
@@ -126,26 +126,24 @@ const BrowseMalScreen = ({ navigation, route }) => {
     <View
       style={[styles.container, { backgroundColor: theme.colorPrimaryDark }]}
     >
-      <Searchbar
+      <SearchbarV2
         theme={theme}
         placeholder="Search MyAnimeList"
-        backAction="arrow-left"
-        onBackAction={() => navigation.goBack()}
+        leftIcon="arrow-left"
+        handleBackAction={() => navigation.goBack()}
         searchText={searchText}
         onChangeText={text => setSearchText(text)}
         onSubmitEditing={getSearchResults}
         clearSearchbar={clearSearchbar}
-        actions={[
+        rightIcons={[
           {
-            icon: 'earth',
+            iconName: 'earth',
             onPress: () => WebBrowser.openBrowserAsync(malUrl),
           },
         ]}
       />
       {loading ? (
-        <View style={{ flex: 1, justifyContent: 'center' }}>
-          <ActivityIndicator size={60} color={theme.colorAccent} />
-        </View>
+        <LoadingScreenV2 theme={theme} />
       ) : (
         <FlatList
           contentContainerStyle={styles.novelsContainer}
@@ -162,7 +160,7 @@ const BrowseMalScreen = ({ navigation, route }) => {
           ListFooterComponent={
             !searchText && (
               <View style={{ paddingVertical: 16 }}>
-                <ActivityIndicator color={theme.colorAccent} />
+                <ActivityIndicator color={theme.primary} />
               </View>
             )
           }

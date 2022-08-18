@@ -7,17 +7,16 @@ import {
   StyleSheet,
 } from 'react-native';
 import { ProgressBar } from 'react-native-paper';
-import { useSettings, useTheme } from '../../../hooks/reduxHooks';
-import { useSelector } from 'react-redux';
+import { useTheme } from '@hooks/useTheme';
 
 import EmptyView from '../../../components/EmptyView';
 import MigrationNovelList from './MigrationNovelList';
-import { Appbar } from '../../../components/Appbar';
 
 import { ScreenContainer } from '../../../components/Common';
 import { sourceManager } from '../../../sources/sourceManager';
 import { useBrowseSettings, useSourcesReducer } from '../../../redux/hooks';
 import { useLibraryNovels } from '@screens/library/hooks/useLibrary';
+import { Appbar } from '@components';
 
 const MigrationNovels = ({ navigation, route }) => {
   const { sourceId, novelName } = route.params;
@@ -95,7 +94,7 @@ const MigrationNovels = ({ navigation, route }) => {
   }, []);
 
   const colorError = {
-    color: theme.statusBar === 'dark-content' ? '#B3261E' : '#F2B8B5',
+    color: theme.isDark ? '#F2B8B5' : '#B3261E',
   };
 
   const renderItem = ({ item }) => (
@@ -110,7 +109,7 @@ const MigrationNovels = ({ navigation, route }) => {
         <Text style={[styles.error, colorError]}>{item.error}</Text>
       ) : item.loading ? (
         <ActivityIndicator
-          color={theme.colorAccent}
+          color={theme.primary}
           style={{ marginVertical: 16 }}
         />
       ) : (
@@ -126,9 +125,13 @@ const MigrationNovels = ({ navigation, route }) => {
 
   return (
     <ScreenContainer theme={theme}>
-      <Appbar title={novelName} onBackAction={navigation.goBack} />
+      <Appbar
+        title={novelName}
+        handleGoBack={navigation.goBack}
+        theme={theme}
+      />
       {progress > 0 && (
-        <ProgressBar color={theme.colorAccent} progress={progress} />
+        <ProgressBar color={theme.primary} progress={progress} />
       )}
       <FlatList
         contentContainerStyle={{ flexGrow: 1, padding: 4 }}

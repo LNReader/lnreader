@@ -1,24 +1,28 @@
+import { getDialogBackground, getRippleColor } from '@theme/colors';
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 
-import { ThemeType } from '../../../../theme/types';
+import { MD3ThemeType } from '../../../../theme/types';
 
 interface Props {
   novel: { novelName: string; novelCover: string; score: string; info: string };
   onPress: () => void;
-  theme: ThemeType;
+  theme: MD3ThemeType;
 }
 
 const MalNovelCard: React.FC<Props> = ({ novel, onPress, theme }) => {
   return (
-    <View style={[styles.container, { backgroundColor: theme.colorPrimary }]}>
+    <View
+      style={[
+        styles.container,
+        { backgroundColor: getDialogBackground(theme) },
+      ]}
+    >
       <Pressable
         style={styles.pressable}
         onPress={onPress}
-        android_ripple={{
-          color: theme.rippleColor,
-        }}
+        android_ripple={{ color: getRippleColor(theme.primary) }}
       >
         <FastImage source={{ uri: novel.novelCover }} style={styles.cover} />
         <View style={styles.infoContainer}>
@@ -71,7 +75,6 @@ const styles = StyleSheet.create({
   },
   cover: {
     width: 100,
-    height: 130,
     borderTopLeftRadius: 8,
     borderBottomLeftRadius: 8,
   },

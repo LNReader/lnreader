@@ -1,3 +1,4 @@
+import { getDialogBackground } from '@theme/colors';
 import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
@@ -64,15 +65,6 @@ const JumpToChapterModal = ({
 
   const onChangeText = txt => setText(txt);
 
-  const textInputTheme = {
-    colors: {
-      primary: theme.colorAccent,
-      placeholder: theme.textColorHint,
-      text: theme.textColorPrimary,
-      background: theme.colorPrimary,
-    },
-  };
-
   return (
     <Portal>
       <Modal
@@ -80,7 +72,7 @@ const JumpToChapterModal = ({
         onDismiss={onDismiss}
         contentContainerStyle={[
           styles.modalContainer,
-          { backgroundColor: theme.colorPrimary },
+          { backgroundColor: getDialogBackground(theme) },
         ]}
       >
         <Text style={[styles.modalTitle, { color: theme.textColorPrimary }]}>
@@ -94,7 +86,7 @@ const JumpToChapterModal = ({
           onChangeText={onChangeText}
           onSubmitEditing={onSubmit}
           mode="outlined"
-          theme={textInputTheme}
+          theme={{ colors: { ...theme } }}
           underlineColor={theme.textColorHint}
           dense
           error={error}
@@ -111,7 +103,7 @@ const JumpToChapterModal = ({
           <Switch
             value={mode}
             onValueChange={() => setMode(!mode)}
-            color={theme.colorAccent}
+            color={theme.primary}
           />
         </View>
       </Modal>

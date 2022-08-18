@@ -114,7 +114,7 @@ const NovelInfoHeader = ({
                 novel.followed &&
                 chapters.some(chapter => chapter.downloaded === 1)
               ) {
-                deleteDownloadsSnackbar.showModal();
+                deleteDownloadsSnackbar.setTrue();
               }
             }}
             handleTrackerSheet={() => trackerSheetRef.current.show()}

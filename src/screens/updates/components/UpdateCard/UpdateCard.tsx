@@ -14,7 +14,10 @@ import { IconButtonV2 } from '../../../../components';
 import { useDownloadQueue } from '../../../../redux/hooks';
 import { Menu } from 'react-native-paper';
 import { MD3ThemeType } from '../../../../theme/types';
-import { coverPlaceholderColor } from '../../../../theme/colors';
+import {
+  coverPlaceholderColor,
+  getDialogBackground,
+} from '../../../../theme/colors';
 
 interface UpdateCardProps {
   item: Update;
@@ -58,7 +61,7 @@ const UpdateCard: React.FC<UpdateCardProps> = ({
 }) => {
   const titleColor = item.read ? theme.textColorHint : theme.textColorPrimary;
   const chapterNameColor = item.bookmark
-    ? theme.colorAccent
+    ? theme.primary
     : item.read
     ? theme.textColorHint
     : theme.textColorSecondary;
@@ -145,7 +148,7 @@ const UpdateCard: React.FC<UpdateCardProps> = ({
               theme={theme}
             />
           }
-          contentStyle={{ backgroundColor: theme.menuColor }}
+          contentStyle={{ backgroundColor: getDialogBackground(theme) }}
         >
           <Menu.Item
             onPress={() =>

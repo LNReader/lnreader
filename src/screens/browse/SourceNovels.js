@@ -2,14 +2,14 @@ import React from 'react';
 import { StyleSheet, View, FlatList, Text } from 'react-native';
 import { useTheme } from '@hooks/useTheme';
 
-import { Appbar } from '../../components/Appbar';
 import ListView from '../../components/ListView';
 import { useLibraryNovels } from '@screens/library/hooks/useLibrary';
+import { Appbar } from '@components';
 
 const SourceNovels = ({ navigation, route }) => {
   const sourceId = route.params;
   const theme = useTheme();
-  const library = useLibraryNovels();
+  const { library } = useLibraryNovels();
 
   const sourceNovels = library.filter(novel => novel.sourceId === sourceId);
 
@@ -30,7 +30,11 @@ const SourceNovels = ({ navigation, route }) => {
     <View
       style={[styles.container, { backgroundColor: theme.colorPrimaryDark }]}
     >
-      <Appbar title="Select Novel" onBackAction={() => navigation.goBack()} />
+      <Appbar
+        title="Select Novel"
+        handleGoBack={navigation.goBack}
+        theme={theme}
+      />
       <FlatList
         data={sourceNovels}
         keyExtractor={item => item.novelId.toString()}

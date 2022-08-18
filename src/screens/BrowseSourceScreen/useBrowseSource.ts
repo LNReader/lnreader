@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { SelectedFilter, SourceFilter } from 'src/sources/types/filterTypes';
+import { SelectedFilter, SourceFilter } from '../../sources/types/filterTypes';
 import { sourceManager } from '../../sources/sourceManager';
 import { SourceNovelItem } from '../../sources/types';
 

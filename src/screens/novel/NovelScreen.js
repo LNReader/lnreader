@@ -61,9 +61,9 @@ import { Actionbar } from '../../components/Actionbar/Actionbar';
 import EditInfoModal from './components/EditInfoModal';
 import { pickCustomNovelCover } from '../../database/queries/NovelQueries';
 import FadeView from '../../components/Common/CrossFadeView';
-import { useModal } from '../../hooks/useModal';
 import DownloadCustomChapterModal from './components/DownloadCustomChapterModal';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import useBoolean from '@hooks/useBoolean';
 
 const Novel = ({ route, navigation }) => {
   const item = route.params;
@@ -85,7 +85,7 @@ const Novel = ({ route, navigation }) => {
   let novelBottomSheetRef = useRef(null);
   let trackerSheetRef = useRef(null);
 
-  const deleteDownloadsSnackbar = useModal();
+  const deleteDownloadsSnackbar = useBoolean();
 
   const {
     useFabForContinueReading = false,
@@ -334,7 +334,7 @@ const Novel = ({ route, navigation }) => {
   );
 
   const [editInfoModal, showEditInfoModal] = useState(false);
-  const downloadCustomChapterModal = useModal();
+  const downloadCustomChapterModal = useBoolean();
 
   return (
     <Provider>
@@ -513,7 +513,7 @@ const Novel = ({ route, navigation }) => {
                   style={{ backgroundColor: overlay(2, theme.surface) }}
                   titleStyle={{ color: theme.textColorPrimary }}
                   onPress={() => {
-                    downloadCustomChapterModal.showModal();
+                    downloadCustomChapterModal.setTrue();
                     showDownloadMenu(false);
                   }}
                 />
@@ -669,8 +669,8 @@ const Novel = ({ route, navigation }) => {
             actions={actions}
           />
           <Snackbar
-            visible={deleteDownloadsSnackbar.visible}
-            onDismiss={deleteDownloadsSnackbar.hideModal}
+            visible={deleteDownloadsSnackbar.value}
+            onDismiss={deleteDownloadsSnackbar.setFalse}
             action={{
               label: 'Delete',
               onPress: () => {
@@ -703,8 +703,8 @@ const Novel = ({ route, navigation }) => {
               dispatch={dispatch}
             />
             <DownloadCustomChapterModal
-              modalVisible={downloadCustomChapterModal.visible}
-              hideModal={downloadCustomChapterModal.hideModal}
+              modalVisible={downloadCustomChapterModal.value}
+              hideModal={downloadCustomChapterModal.setFalse}
               novel={novel}
               chapters={chapters}
               theme={theme}
