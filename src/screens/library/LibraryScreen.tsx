@@ -126,10 +126,18 @@ const LibraryScreen = () => {
         onChangeText={onChangeText}
         leftIcon={selectedNovelIds.length ? 'close' : 'magnify'}
         rightIcons={[
-          {
-            iconName: 'filter-variant',
-            onPress: () => bottomSheetRef.current?.show(),
-          },
+          selectedNovelIds.length
+            ? {
+                iconName: 'select-all',
+                onPress: () =>
+                  setSelectedNovelIds(
+                    library[index].novels.map(novel => novel.novelId),
+                  ),
+              }
+            : {
+                iconName: 'filter-variant',
+                onPress: () => bottomSheetRef.current?.show(),
+              },
         ]}
         theme={theme}
       />
