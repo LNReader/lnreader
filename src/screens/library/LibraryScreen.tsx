@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { StyleSheet, Text, useWindowDimensions } from 'react-native';
 import Bottomsheet from 'rn-sliding-up-panel';
 import {
@@ -29,7 +29,7 @@ import {
 import { unfollowNovel } from '../../database/queries/NovelQueries';
 import SetCategoryModal from '@screens/novel/components/SetCategoriesModal';
 import useBoolean from '@hooks/useBoolean';
-import { debounce } from 'lodash';
+import { debounce, intersection } from 'lodash';
 import { ButtonVariation } from '@components/Button/Button';
 import { useBackHandler } from '@hooks/useBackHandler';
 
@@ -111,6 +111,20 @@ const LibraryScreen = () => {
     setTrue: showSetCategoryModal,
     setFalse: closeSetCategoryModal,
   } = useBoolean();
+
+  const selectedNovelCategoryIds = useMemo(() => {
+    let categoryIds: number[][] = [];
+
+    library.map(category =>
+      category.novels
+        .filter(novel => selectedNovelIds.includes(novel.novelId))
+        .map(novel => {
+          categoryIds.push(JSON.parse(novel.categoryIds));
+        }),
+    );
+
+    return intersection(...categoryIds);
+  }, [selectedNovelIds]);
 
   return (
     <>
@@ -206,7 +220,7 @@ const LibraryScreen = () => {
       />
       <SetCategoryModal
         novelId={selectedNovelIds}
-        currentCategoryIds={[]}
+        currentCategoryIds={selectedNovelCategoryIds}
         closeModal={closeSetCategoryModal}
         onEditCategories={() => setSelectedNovelIds([])}
         visible={setCategoryModalVisible}

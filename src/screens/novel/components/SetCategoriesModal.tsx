@@ -38,9 +38,8 @@ const SetCategoryModal: React.FC<SetCategoryModalProps> = ({
   const theme = useTheme();
   const { navigate } = useNavigation();
 
-  const [selectedCategories, setSelectedCategories] = useState([
-    ...currentCategoryIds,
-  ]);
+  const [selectedCategories, setSelectedCategories] =
+    useState(currentCategoryIds);
   const [categories, setCategories] = useState<Category[]>();
 
   const getCategories = async () => {
@@ -55,6 +54,10 @@ const SetCategoryModal: React.FC<SetCategoryModalProps> = ({
       getCategories();
     }
   }, [visible]);
+
+  useEffect(() => {
+    setSelectedCategories(currentCategoryIds);
+  }, [JSON.stringify(currentCategoryIds)]);
 
   return (
     <Portal>
