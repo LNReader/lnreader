@@ -156,14 +156,15 @@
     "addCategories": "Kategori ekle",
     "editCategories": "Kategoriyi yeniden adlandır",
     "setCategories": "Kategorileri ayarla",
-    "header": "Kategorileri Düzenle",
+    "header": "Edit categories",
     "emptyMsg": "Kategoriniz bulunmuyor.  Kitaplığınızı düzenlemek için bir tane oluşturmak için artı butonuna basın",
     "setModalEmptyMsg": "Kategoriniz bulunmuyor.  Kitaplığınızı düzenlemek üzere bir tane oluşturmak için Düzenle butonuna basın",
     "deleteModal": {
       "header": "Kategoriyi sil",
       "desc": "Şu kategoriyi silmek istiyor musunuz:"
     },
-    "duplicateError": "Bu ada sahip bir kategori zaten var!"
+    "duplicateError": "Bu ada sahip bir kategori zaten var!",
+    "defaultCategory": "Default category"
   },
   "settings": {
     "icognitoMode": "Gizli mod",
