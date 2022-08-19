@@ -156,14 +156,15 @@
     "addCategories": "Add category",
     "editCategories": "Rename category",
     "setCategories": "Set categories",
-    "header": "Edit Categories",
+    "header": "Edit categories",
     "emptyMsg": "You have no categories. Tap the plus button to create one for organizing your library",
     "setModalEmptyMsg": "You have no categories. Tap the Edit button to create one for organizing your library",
     "deleteModal": {
       "header": "Delete category",
       "desc": "Do you wish to delete category"
     },
-    "duplicateError": "A category with this name already exists!"
+    "duplicateError": "A category with this name already exists!",
+    "defaultCategory": "Default category"
   },
   "settings": {
     "icognitoMode": "Incognito mode",
