@@ -6,15 +6,15 @@
     "clear": "تنضيف",
     "reset": "إعادة تعيين",
     "search": "بحث",
-    "install": "Install",
-    "newUpdateAvailable": "New update available",
-    "categories": "Categories",
-    "add": "Add",
-    "edit": "Edit",
-    "name": "Name",
-    "searchFor": "Search for",
-    "globally": "globally",
-    "searchResults": "Search results"
+    "install": "تثبيت",
+    "newUpdateAvailable": "تحديث جديد متاح",
+    "categories": "تصنيفات",
+    "add": "إضافة",
+    "edit": "تعديل",
+    "name": "اسم",
+    "searchFor": "بحث عن",
+    "globally": "عالمي",
+    "searchResults": "نتائج البحث"
   },
   "library": "المكتبة",
   "libraryScreen": {
@@ -25,7 +25,7 @@
         "downloaded": "التحميلات",
         "unread": "غير مقروء",
         "completed": "مكتمل",
-        "started": "Started"
+        "started": "بدأت"
       },
       "sortOrders": {
         "dateAdded": "تاريخ الإضافة",
@@ -36,7 +36,7 @@
         "displayMode": "نمط العرض",
         "compact": "الشبكة المدمجة",
         "comfortable": "الشبكة المريحة",
-        "noTitle": "Cover only grid",
+        "noTitle": "تغطية الشبكة فقط",
         "list": "القائمة",
         "badges": "الأوسمة",
         "downloadBadges": "تحميل الاوسمة",
@@ -65,8 +65,8 @@
     "pinned": "مثبت",
     "all": "الجميع",
     "latest": "الاخير",
-    "addedToLibrary": "Added to library",
-    "removeFromLibrary": "Removed from library"
+    "addedToLibrary": "تمت الإضافة إلى المكتبة",
+    "removeFromLibrary": "تمت إزالته من المكتبة"
   },
   "readerScreen": {
     "finished": "انتهى",
@@ -93,7 +93,7 @@
     "continueReading": "متابعة القراءة",
     "chapters": "الفصول",
     "migrate": "نقل",
-    "noSummary": "No summary",
+    "noSummary": "لا يوجد ملخص",
     "bottomSheet": {
       "filter": "التصفية",
       "sort": "الفرز",
@@ -144,29 +144,30 @@
   },
   "date": {
     "calendar": {
-      "sameDay": "[Today]",
-      "nextDay": "[Tomorrow]",
-      "nextWeek": "dddd",
-      "lastDay": "[Yesterday]",
-      "lastWeek": "[Last] dddd",
-      "sameElse": "LL"
+      "sameDay": "اليوم",
+      "nextDay": "الغد",
+      "nextWeek": "الأسبوع القادم",
+      "lastDay": "بالأمس",
+      "lastWeek": "الأسبوع الماضي",
+      "sameElse": "نفس الشيء"
     }
   },
   "categories": {
-    "addCategories": "Add category",
-    "editCategories": "Rename category",
-    "setCategories": "Set categories",
-    "header": "Edit Categories",
-    "emptyMsg": "You have no categories. Tap the plus button to create one for organizing your library",
-    "setModalEmptyMsg": "You have no categories. Tap the Edit button to create one for organizing your library",
+    "addCategories": "إضافة تصنيف",
+    "editCategories": "إعادة تسمية التصنيف",
+    "setCategories": "حدد التصنيف",
+    "header": "تعديل التصنيف",
+    "emptyMsg": "ليس لديك تصنيف. اضغط على زر علامة الزائد لإنشاء واحد لتنظيم مكتبتك",
+    "setModalEmptyMsg": "ليس لديك تصنيف. اضغط على زر تعديل لإنشاء واحد لتنظيم مكتبتك",
     "deleteModal": {
-      "header": "Delete category",
-      "desc": "Do you wish to delete category"
+      "header": "حذف التصنيف",
+      "desc": "هل ترغب في حذف التصنيف"
     },
-    "duplicateError": "A category with this name already exists!"
+    "duplicateError": "يوجد تصنيف بهذا الاسم بالفعل!",
+    "defaultCategory": "التصنيف الافتراضي"
   },
   "settings": {
-    "icognitoMode": "Incognito mode",
-    "downloadedOnly": "Downloaded only"
+    "icognitoMode": "الوضع المخفي",
+    "downloadedOnly": "التنزيلات فقط"
   }
 }
