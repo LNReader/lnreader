@@ -156,7 +156,7 @@
     "addCategories": "Adicionar categoria",
     "editCategories": "Renomear Categoria",
     "setCategories": "Definir categorias",
-    "header": "Edit categories",
+    "header": "Editar categorias",
     "emptyMsg": "Você não possui categorias. Toque no botão de mais para criar uma para organizar sua biblioteca",
     "setModalEmptyMsg": "Você não possui categorias. Toque no botão de editar para criar uma para organizar sua biblioteca",
     "deleteModal": {
@@ -164,7 +164,7 @@
       "desc": "Você quer deletar esta categoria"
     },
     "duplicateError": "Uma categoria com esse nome já existe!",
-    "defaultCategory": "Default category"
+    "defaultCategory": "Categoria padrão"
   },
   "settings": {
     "icognitoMode": "Modo anônimo",
