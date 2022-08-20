@@ -12,7 +12,7 @@ import { txnErrorCallback } from '../utils/helpers';
 import { noop } from 'lodash';
 
 const insertNovelQuery =
-  'INSERT INTO novels (novelUrl, sourceUrl, sourceId, source, novelName, novelCover, novelSummary, author, artist, status, genre) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+  'INSERT INTO novels (novelUrl, sourceUrl, sourceId, source, novelName, novelCover, novelSummary, author, artist, status, genre, categoryIds) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
 export const insertNovel = async novel => {
   return new Promise((resolve, reject) =>
@@ -31,11 +31,10 @@ export const insertNovel = async novel => {
           novel.artist,
           novel.status,
           novel.genre,
+          JSON.stringify(novel.categoryIds),
         ],
         (txObj, { insertId }) => resolve(insertId),
-        (txObj, error) => {
-          // console.log('Error ', error)
-        },
+        txnErrorCallback,
       ),
     ),
   );

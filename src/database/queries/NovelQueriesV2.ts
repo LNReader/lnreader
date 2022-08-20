@@ -69,6 +69,7 @@ export const insertNovelInLibrary = async (
   sourceId: number,
   novelUrl: string,
   inLibrary: boolean,
+  defaultCategoryId: number,
 ) => {
   if (inLibrary) {
     showToast(getString('browseScreen.removeFromLibrary'));
@@ -131,10 +132,11 @@ export const insertNovelInLibrary = async (
           artist, 
           status, 
           genre, 
-          followed 
+          followed,
+          categoryIds
         ) 
       VALUES
-        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)`,
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?)`,
         [
           novel.novelUrl,
           novel.sourceUrl,
@@ -147,6 +149,7 @@ export const insertNovelInLibrary = async (
           novel.artist,
           novel.status,
           novel.genre,
+          JSON.stringify([defaultCategoryId]),
         ],
         (txObj, { insertId }) => {
           novel.chapters?.map(chapter => {
