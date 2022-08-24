@@ -33,12 +33,13 @@ const popularNovels = async (page, { showLatestNovels, filters }) => {
   const result = await fetch(url);
   const body = await result.text();
   const loadedCheerio = cheerio.load(body);
-  const totalPages = parseInt(
+
+  let totalPages =
     loadedCheerio('div[class="pagination"] > ul > li:last-child > a')
       .attr('href')
-      .split('/Book_page/')[1] || '250',
-    10,
-  );
+      ?.split('/Book_page/')[1] || '1';
+
+  totalPages = parseInt(totalPages, 10);
   let novels = [];
 
   loadedCheerio(

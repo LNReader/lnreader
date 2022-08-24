@@ -1,3 +1,4 @@
+import { Status } from '../helpers/constants';
 import * as cheerio from 'cheerio';
 import dayjs from 'dayjs';
 
@@ -65,9 +66,23 @@ const parseNovelAndChapters = async novelUrl => {
 
   novel.author = loadedCheerio('span[class="tag_list"] > a').text();
 
-  novel.status = loadedCheerio(
-    '#fs-info > div.r-fullstory-spec > ul:nth-child(1) > li:nth-child(1) > span > a',
-  ).text();
+  novel.status =
+    loadedCheerio(
+      '#fs-info > div.r-fullstory-spec > ul:nth-child(1) > li:nth-child(1) > span > a',
+    ).text() === 'Ongoing'
+      ? Status.ONGOING
+      : Status.COMPLETED;
+
+  let tags =
+    loadedCheerio('#mc-fs-genre > div:nth-child(1)').text().trim() +
+    ', ' +
+    loadedCheerio(
+      '#mc-fs-keyw > div:nth-child(1) > div:nth-child(1) > div:nth-child(1)',
+    )
+      .text()
+      .trim();
+
+  novel.genre = tags.replace(/, /g, ',');
 
   let chapterListUrl = loadedCheerio(
     'div.r-fullstory-chapters-foot a[title~=contents]',
