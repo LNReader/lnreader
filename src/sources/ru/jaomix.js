@@ -46,10 +46,10 @@ const popularNovels = async (page, { showLatestNovels, filters }) => {
   let totalPages =
     loadedCheerio('.pagi-home > span:nth-child(2) > a:last-child')
       .attr('href')
-      ?.replace(/[^0-9]/g, "") || '1';
+      ?.replace(/[^0-9]/g, '') || '1';
 
   totalPages = parseInt(totalPages, 10);
-  
+
   return { totalPages, novels };
 };
 
