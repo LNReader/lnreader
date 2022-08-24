@@ -198,7 +198,6 @@ const filters = [
       { label: 'Китайский', value: 'Китайский' },
       { label: 'Корейский', value: 'Корейский' },
       { label: 'Японский', value: 'Японский' },
-      ,
     ],
     inputType: FilterInputs.Checkbox,
   },
