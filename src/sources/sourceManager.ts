@@ -100,6 +100,7 @@ import RanobeLibScraper from './ru/ranobelib';
 import RanobeRFScraper from './ru/ranoberf';
 import RenovelsScraper from './ru/renovels';
 import RulateScraper from './ru/rulate';
+import FicbookScraper from './ru/ficbook';
 import DivineDaoLibraryScraper from './en/divinedaolibrary';
 import NovelOnlineFullScraper from './en/novelonlinefull';
 import LightNovelUpdatesScraper from './en/lightnovelupdates';
@@ -298,6 +299,7 @@ export const sourceManager = (sourceId: number): Scraper => {
     136: NocturneScraper,
     137: AsadaTranslationScraper,
     138: SugarBabiesScraper,
+    139: FicbookScraper,
   };
 
   return scrapers[sourceId];

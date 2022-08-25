@@ -35,7 +35,7 @@ const getUpdatesFromDbQuery = `
     WHERE 
       date(updates.updateTime) > date('now','-3 months')
     ORDER BY 
-      updates.updateTime DESC
+      updates.updateTime DESC, chapters.releaseDate DESC
     `;
 
 export const getUpdatesFromDb = async (): Promise<Update[]> => {
