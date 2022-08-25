@@ -8,13 +8,13 @@
     "search": "Поиск",
     "install": "Установить",
     "newUpdateAvailable": "Доступно новое обновление",
-    "categories": "Categories",
-    "add": "Add",
-    "edit": "Edit",
-    "name": "Name",
-    "searchFor": "Search for",
-    "globally": "globally",
-    "searchResults": "Search results"
+    "categories": "Категории",
+    "add": "Добавить",
+    "edit": "Изменить",
+    "name": "Название",
+    "searchFor": "Искать",
+    "globally": "глобально",
+    "searchResults": "Результаты поиска"
   },
   "library": "Библиотека",
   "libraryScreen": {
@@ -36,7 +36,7 @@
         "displayMode": "Режим отображения",
         "compact": "Компактная сетка",
         "comfortable": "Комфортная сетка",
-        "noTitle": "Cover only grid",
+        "noTitle": "Только сетка обложки",
         "list": "Список",
         "badges": "Значки",
         "downloadBadges": "Загружено Значки",
@@ -65,8 +65,8 @@
     "pinned": "Закреплено",
     "all": "Все",
     "latest": "Последние",
-    "addedToLibrary": "Added to library",
-    "removeFromLibrary": "Removed from library"
+    "addedToLibrary": "Добавлено в библиотеку",
+    "removeFromLibrary": "Удалено из библиотеки"
   },
   "readerScreen": {
     "finished": "Завершено",
@@ -153,21 +153,21 @@
     }
   },
   "categories": {
-    "addCategories": "Add category",
-    "editCategories": "Rename category",
-    "setCategories": "Set categories",
-    "header": "Edit categories",
-    "emptyMsg": "You have no categories. Tap the plus button to create one for organizing your library",
-    "setModalEmptyMsg": "You have no categories. Tap the Edit button to create one for organizing your library",
+    "addCategories": "Добавить категорию",
+    "editCategories": "Переименовать категорию",
+    "setCategories": "Установить категории",
+    "header": "Изменить категорию",
+    "emptyMsg": "У вас нет категорий. Нажмите кнопку плюс, чтобы создать её для организации вашей библиотеки",
+    "setModalEmptyMsg": "У вас нет категорий. Нажмите кнопку Правка, чтобы создать ее для организации вашей библиотеки",
     "deleteModal": {
-      "header": "Delete category",
+      "header": "Удалить категорию",
       "desc": "Do you wish to delete category"
     },
     "duplicateError": "A category with this name already exists!",
     "defaultCategory": "Default category"
   },
   "settings": {
-    "icognitoMode": "Incognito mode",
+    "icognitoMode": "Режим инкогнито",
     "downloadedOnly": "Downloaded only"
   }
 }
