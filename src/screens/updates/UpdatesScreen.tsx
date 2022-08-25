@@ -210,14 +210,16 @@ const UpdatesScreen = () => {
 
 export default UpdatesScreen;
 
-const LastUpdateTime: React.FC<{ lastUpdateTime: Date; theme: MD3ThemeType }> =
-  ({ lastUpdateTime, theme }) => (
-    <Text style={[styles.lastUpdateTime, { color: theme.onSurface }]}>
-      {`${getString('updatesScreen.lastUpdatedAt')} ${dayjs(
-        lastUpdateTime,
-      ).fromNow()}`}
-    </Text>
-  );
+const LastUpdateTime: React.FC<{
+  lastUpdateTime: Date;
+  theme: MD3ThemeType;
+}> = ({ lastUpdateTime, theme }) => (
+  <Text style={[styles.lastUpdateTime, { color: theme.onSurface }]}>
+    {`${getString('updatesScreen.lastUpdatedAt')} ${dayjs(
+      lastUpdateTime,
+    ).fromNow()}`}
+  </Text>
+);
 
 const styles = StyleSheet.create({
   listContainer: {

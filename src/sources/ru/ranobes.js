@@ -1,4 +1,6 @@
+import { Status } from '../helpers/constants';
 import * as cheerio from 'cheerio';
+import dayjs from 'dayjs';
 
 const sourceId = 132;
 const sourceName = 'Ranobes';
@@ -62,9 +64,19 @@ const parseNovelAndChapters = async novelUrl => {
 
   novel.author = loadedCheerio('span[class="tag_list"] > a').text();
 
-  novel.status = loadedCheerio(
-    '#fs-info > div.r-fullstory-spec > ul:nth-child(1) > li:nth-child(4) > span > a',
-  ).text();
+  novel.status =
+    loadedCheerio(
+      '#fs-info > div.r-fullstory-spec > ul:nth-child(1) > li:nth-child(4) > span > a',
+    ).text() === 'В процессе'
+      ? Status.ONGOING
+      : Status.COMPLETED;
+
+  let tags =
+    loadedCheerio('div[itemprop="genre"]').text().trim() +
+    ', ' +
+    loadedCheerio('div[itemprop="keywords"]').text().trim();
+
+  novel.genre = tags.replace(/, /g, ',');
 
   let chapterListUrl = loadedCheerio(
     'div.r-fullstory-btns a[title~=оглавление]',
@@ -91,9 +103,22 @@ const parseNovelAndChapters = async novelUrl => {
     }
 
     loadedCheerio('div[class="cat_block cat_line"] a').each(function () {
+      let date = loadedCheerio(this).find('span > small').text();
+      let timeAgo = date.match(/\d+/);
+
+      if (date.includes('Сегодня')) {
+        date = dayjs().hour(timeAgo[0]).minute(timeAgo[1]).format('LLL');
+      } else if (date.includes('Вчера')) {
+        date = dayjs()
+          .subtract(1, 'day')
+          .hour(timeAgo[0])
+          .minute(timeAgo[1])
+          .format('LLL');
+      }
+
       novelChapters.push({
         chapterName: loadedCheerio(this).attr('title'),
-        releaseDate: null,
+        releaseDate: date.replace(' в ', ' г., '),
         chapterUrl: loadedCheerio(this).attr('href'),
       });
     });

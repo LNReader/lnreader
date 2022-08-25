@@ -922,5 +922,12 @@
     "icon": "https://sugarbbscan.com/wp-content/uploads/2021/03/sda.png",
     "url": "https://sugarbbscan.com/",
     "lang": "English"
+  },
+  {
+    "sourceId": 139,
+    "sourceName": "Книга Фанфиков",
+    "url": "https://ficbook.net/",
+    "lang": "Russian",
+    "icon": "https://ficbook.net/android-chrome-512x512.png"
   }
 ]
