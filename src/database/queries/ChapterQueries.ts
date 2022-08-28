@@ -5,6 +5,7 @@ import { ChapterItem } from '../types';
 
 import * as cheerio from 'cheerio';
 import RNFetchBlob from 'rn-fetch-blob';
+import { txnErrorCallback } from '@database/utils/helpers';
 
 const db = SQLite.openDatabase('lnreader.db');
 
@@ -317,30 +318,41 @@ export const downloadChapter = async (
   chapterUrl: string,
   chapterId: number,
 ) => {
-  const source = sourceManager(sourceId);
+  try {
+    const source = sourceManager(sourceId);
 
-  const chapter = await source.parseChapter(novelUrl, chapterUrl);
+    const chapter = await source.parseChapter(novelUrl, chapterUrl);
 
-  const imagedChapterText =
-    chapter.chapterText &&
-    (await downloadImages(chapter.chapterText, sourceId, novelId, chapterId));
+    if (chapter.chapterText?.length) {
+      const imagedChapterText =
+        chapter.chapterText &&
+        (await downloadImages(
+          chapter.chapterText,
+          sourceId,
+          novelId,
+          chapterId,
+        ));
 
-  db.transaction(tx => {
-    tx.executeSql('UPDATE chapters SET downloaded = 1 WHERE chapterId = ?', [
-      chapterId,
-    ]);
-    tx.executeSql(
-      downloadChapterQuery,
-      [chapterId, chapter.chapterName, imagedChapterText],
-      (_txObj, _res) => {
-        // console.log(`Downloaded Chapter ${chapter.chapterUrl}`);
-      },
-      (_txObj, _error) => {
-        // console.log('Error ', error)
-        return false;
-      },
-    );
-  });
+      db.transaction(tx => {
+        tx.executeSql(
+          'UPDATE chapters SET downloaded = 1 WHERE chapterId = ?',
+          [chapterId],
+        );
+        tx.executeSql(
+          downloadChapterQuery,
+          [chapterId, chapter.chapterName, imagedChapterText],
+          (_txObj, _res) => {
+            return true;
+          },
+          txnErrorCallback,
+        );
+      });
+    } else {
+      throw new Error("Either chapter is empty or the app couldn't scrape it");
+    }
+  } catch (error) {
+    throw error;
+  }
 };
 
 const deleteDownloadedImages = async (

@@ -1,9 +1,9 @@
+import { useTheme } from '@hooks/useTheme';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { useSelector } from 'react-redux';
 
 const EmptyView = ({ icon, description, style, children, iconStyle }) => {
-  const theme = useSelector(state => state.settingsReducer.theme);
+  const theme = useTheme();
 
   return (
     <View style={styles.emptyViewContainer}>

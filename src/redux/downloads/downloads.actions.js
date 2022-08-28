@@ -47,20 +47,30 @@ export const resumeDownloads = chapters => async dispatch => {
         i++
       ) {
         if (BackgroundService.isRunning()) {
-          if (!chapters[i].downloaded) {
-            await downloadChapter(
-              chapters[i].sourceId,
-              chapters[i].novelUrl,
-              chapters[i].novelId,
-              chapters[i].chapterUrl,
-              chapters[i].chapterId,
-            );
-          }
+          try {
+            if (!chapters[i].downloaded) {
+              await downloadChapter(
+                chapters[i].sourceId,
+                chapters[i].novelUrl,
+                chapters[i].novelId,
+                chapters[i].chapterUrl,
+                chapters[i].chapterId,
+              );
+            }
 
-          dispatch({
-            type: CHAPTER_DOWNLOADED,
-            payload: chapters[i].chapterId,
-          });
+            dispatch({
+              type: CHAPTER_DOWNLOADED,
+              payload: chapters[i].chapterId,
+            });
+          } catch (error) {
+            Notifications.scheduleNotificationAsync({
+              content: {
+                title: chapters[i].chapterName,
+                body: `Download failed: ${error.message}`,
+              },
+              trigger: null,
+            });
+          }
 
           await BackgroundService.updateNotification({
             taskTitle: chapters[i].chapterName,

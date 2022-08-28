@@ -43,7 +43,7 @@ const TextReader: React.FC<TextReaderProps> = ({
   navigateToNextChapter,
   onPress,
 }) => {
-  const { width } = useWindowDimensions();
+  const { width, height } = useWindowDimensions();
 
   return (
     <>
@@ -63,6 +63,7 @@ const TextReader: React.FC<TextReaderProps> = ({
           defaultViewProps={{
             style: {
               backgroundColor: reader.theme,
+              minHeight: height - 160,
             },
           }}
           baseStyle={{

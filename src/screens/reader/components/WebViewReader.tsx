@@ -2,7 +2,7 @@ import { useAppDispatch } from '@redux/hooks';
 import { setAppSettings } from '@redux/settings/settings.actions';
 import { getString } from '@strings/translations';
 import React, { useRef, useEffect, FunctionComponent } from 'react';
-import { StatusBar, StyleSheet, View } from 'react-native';
+import { StatusBar, StyleSheet, useWindowDimensions, View } from 'react-native';
 
 import WebView from 'react-native-webview';
 import { ChapterItem } from '../../../database/types';
@@ -68,6 +68,8 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
     scrollPage,
     setScrollPage,
   } = props;
+
+  const { height } = useWindowDimensions();
 
   const backgroundColor = readerBackground(reader.theme);
 
@@ -240,14 +242,18 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
                         width: 100%;
                         border-radius: 50px;
                         border-width: 1;
-                        color: ${theme.colorButtonText};
+                        color: ${theme.onPrimary};
                         background-color: ${theme.primary};
                         font-family: ${reader.fontFamily};
                         font-size: 16px;
                         border-width: 0;
                       }
                       .nextButton {
-                        min-height: 40px
+                        min-height: 40px;
+                        text-overflow: ellipsis;
+                        overflow: hidden;
+                        white-space: nowrap;
+                        padding: 0 16px;
                       }
                       .infoText {
                         background-color: transparent;
@@ -283,6 +289,10 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
                         font-size: 2em;
                         text-align: center;
                       }
+                      .chapterCtn {
+                        min-height: ${height - 160};
+                        margin-bottom: auto;
+                      }
                     </style>
                     
                     <style>
@@ -297,9 +307,11 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
                     </style>
                   </head>
                   <body>
-                    <chapter ${onClickWebViewPostMessage({ type: 'hide' })}>
+                    <div class="chapterCtn">
+                      <chapter ${onClickWebViewPostMessage({ type: 'hide' })}>
                       ${html}
-                    </chapter>
+                      </chapter>
+                    </div>
                     <script>
                     const imgs = [...document.querySelectorAll("img")].map(img=>{
                       return {url:img.getAttribute("file-src"), id:img.getAttribute("file-id")}
