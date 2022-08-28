@@ -290,7 +290,7 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
                         text-align: center;
                       }
                       .chapterCtn {
-                        min-height: ${height - 160};
+                        min-height: ${height - 140};
                         margin-bottom: auto;
                       }
                     </style>
@@ -307,8 +307,10 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
                     </style>
                   </head>
                   <body>
-                    <div class="chapterCtn">
-                      <chapter ${onClickWebViewPostMessage({ type: 'hide' })}>
+                    <div class="chapterCtn" ${onClickWebViewPostMessage({
+                      type: 'hide',
+                    })}>
+                      <chapter>
                       ${html}
                       </chapter>
                     </div>

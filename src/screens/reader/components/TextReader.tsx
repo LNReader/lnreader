@@ -63,12 +63,12 @@ const TextReader: React.FC<TextReaderProps> = ({
           defaultViewProps={{
             style: {
               backgroundColor: reader.theme,
-              minHeight: height - 160,
             },
           }}
           baseStyle={{
             paddingHorizontal: `${reader.padding}%`,
             paddingTop: (StatusBar.currentHeight || 0) + 16,
+            minHeight: height - 100,
           }}
         />
         <View style={styles.navigationContainer}>
