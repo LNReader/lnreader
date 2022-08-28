@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import color from 'color';
 
-import { Appbar } from 'react-native-paper';
+import { Appbar, Text } from 'react-native-paper';
 import { IconButtonV2 } from '../../../components';
 import FadeView from '../../../components/Common/CrossFadeView';
 import { bookmarkChapterAction } from '../../../redux/novel/novel.actions';
@@ -40,12 +40,20 @@ const ReaderAppbar = ({
             size={26}
             theme={theme}
           />
-          <Appbar.Content
-            title={novelName}
-            titleStyle={{ color: theme.onSurface }}
-            subtitle={chapterName?.trim()}
-            subtitleStyle={{ color: theme.textColorSecondary }}
-          />
+          <View style={styles.content}>
+            <Text
+              style={[styles.title, { color: theme.textColorPrimary }]}
+              numberOfLines={1}
+            >
+              {novelName}
+            </Text>
+            <Text
+              style={[styles.subtitle, { color: theme.textColorSecondary }]}
+              numberOfLines={1}
+            >
+              {chapterName}
+            </Text>
+          </View>
           <Appbar.Action
             icon="volume-high"
             size={24}
@@ -99,5 +107,14 @@ const styles = StyleSheet.create({
   },
   bookmark: {
     marginRight: 4,
+  },
+  content: {
+    flex: 1,
+  },
+  title: {
+    fontSize: 20,
+  },
+  subtitle: {
+    fontSize: 16,
   },
 });
