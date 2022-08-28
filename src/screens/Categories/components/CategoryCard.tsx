@@ -148,10 +148,12 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   nameCtn: {
+    flex: 1,
     marginLeft: 8,
+    paddingRight: 16,
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 4,
+    paddingVertical: 4,
   },
   buttonsCtn: {
     flexDirection: 'row',
