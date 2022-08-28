@@ -372,7 +372,8 @@
     "sourceName": "Nocturne Translations",
     "options": {
       "totalPages": 9,
-      "lang": "English"
+      "lang": "English",
+      "path": { "novels": "novels", "novel": "novels", "chapter": "novels" }
     }
   },
   {
@@ -391,6 +392,27 @@
     "options": {
       "totalPages": 3,
       "lang": "English"
+    }
+  },
+  {
+    "sourceId": 140,
+    "baseUrl": "https://novelroom.net/",
+    "sourceName": "Novelroom.net",
+    "options": {
+      "totalPages": 125,
+      "lang": "English",
+      "path": { "novels": "manga", "novel": "manga", "chapter": "manga" }
+    }
+  },
+  {
+    "sourceId": 141,
+    "baseUrl": "https://novelr18.com/",
+    "sourceName": "NovelR18 ",
+    "options": {
+      "totalPages": 10,
+      "lang": "English",
+      "path": { "novels": "novel", "novel": "manga", "chapter": "manga" },
+      "useNewChapterEndpoint": true
     }
   }
 ]

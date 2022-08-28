@@ -929,5 +929,19 @@
     "url": "https://ficbook.net/",
     "lang": "Russian",
     "icon": "https://ficbook.net/android-chrome-512x512.png"
+  },
+  {
+    "sourceId": 140,
+    "sourceName": "Novelroom.net",
+    "icon": "https://novelroom.net/wp-content/uploads/2022/03/full_crop.jpg",
+    "url": "https://novelroom.net/",
+    "lang": "English"
+  },
+  {
+    "sourceId": 141,
+    "sourceName": "NovelR18 ",
+    "icon": "https://novelr18.com/wp-content/uploads/2017/10/logo_.png",
+    "url": "https://novelr18.com/",
+    "lang": "English"
   }
 ]
