@@ -72,7 +72,7 @@ const NovelInfoHeader = ({
             <NovelTitle
               theme={theme}
               onPress={() =>
-                navigation.navigate('GlobalSearchScreen', {
+                navigation.replace('GlobalSearchScreen', {
                   searchText: item.novelName,
                 })
               }

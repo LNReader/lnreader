@@ -366,25 +366,30 @@ export const downloadAllChaptersAction =
               i++
             ) {
               if (BackgroundService.isRunning()) {
-                // dispatch({
-                //     type: CHAPTER_DOWNLOADING,
-                //     payload: chapters[i].chapterId,
-                // });
+                try {
+                  if (!chapters[i].downloaded) {
+                    await downloadChapter(
+                      sourceId,
+                      novelUrl,
+                      chapters[i].novelId,
+                      chapters[i].chapterUrl,
+                      chapters[i].chapterId,
+                    );
+                  }
 
-                if (!chapters[i].downloaded) {
-                  await downloadChapter(
-                    sourceId,
-                    novelUrl,
-                    chapters[i].novelId,
-                    chapters[i].chapterUrl,
-                    chapters[i].chapterId,
-                  );
+                  dispatch({
+                    type: CHAPTER_DOWNLOADED,
+                    payload: chapters[i].chapterId,
+                  });
+                } catch (error) {
+                  Notifications.scheduleNotificationAsync({
+                    content: {
+                      title: chapters[i].chapterName,
+                      body: `Download failed: ${error.message}`,
+                    },
+                    trigger: null,
+                  });
                 }
-
-                dispatch({
-                  type: CHAPTER_DOWNLOADED,
-                  payload: chapters[i].chapterId,
-                });
 
                 await BackgroundService.updateNotification({
                   taskTitle: chapters[i].chapterName,

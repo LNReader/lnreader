@@ -335,7 +335,7 @@ export const ZetroTranslationScraper = new MadaraScraper(
   { 'totalPages': 1, 'lang': 'English' },
 );
 
-export const NocturneScraper = new MadaraScraper(
+export const NocturneTranslationsScraper = new MadaraScraper(
   136,
   'https://nocturnetls.net/',
   'Nocturne Translations',
@@ -357,9 +357,28 @@ export const SugarBabiesScraper = new MadaraScraper(
   138,
   'https://sugarbbscan.com/',
   'Sugar Babies',
+  { 'totalPages': 3, 'lang': 'English' },
+);
+
+export const NovelroomDotnetScraper = new MadaraScraper(
+  140,
+  'https://novelroom.net/',
+  'Novelroom.net',
   {
-    'totalPages': 3,
+    'totalPages': 125,
     'lang': 'English',
-    'path': { 'novels': 'series', 'novel': 'series', 'chapter': 'series' },
+    'path': { 'novels': 'manga', 'novel': 'manga', 'chapter': 'manga' },
+  },
+);
+
+export const NovelR18Scraper = new MadaraScraper(
+  141,
+  'https://novelr18.com/',
+  'NovelR18 ',
+  {
+    'totalPages': 10,
+    'lang': 'English',
+    'path': { 'novels': 'novel', 'novel': 'manga', 'chapter': 'manga' },
+    'useNewChapterEndpoint': true,
   },
 );

@@ -16,6 +16,7 @@ const Appbar: React.FC<AppbarProps> = ({
   handleGoBack,
   theme,
   mode = 'large',
+  children,
 }) => (
   <PaperAppbar.Header
     style={{ backgroundColor: theme.surface }}
@@ -32,6 +33,7 @@ const Appbar: React.FC<AppbarProps> = ({
       title={title}
       titleStyle={{ color: theme.textColorPrimary }}
     />
+    {children}
   </PaperAppbar.Header>
 );
 

@@ -43,7 +43,7 @@ const TextReader: React.FC<TextReaderProps> = ({
   navigateToNextChapter,
   onPress,
 }) => {
-  const { width } = useWindowDimensions();
+  const { width, height } = useWindowDimensions();
 
   return (
     <>
@@ -68,6 +68,7 @@ const TextReader: React.FC<TextReaderProps> = ({
           baseStyle={{
             paddingHorizontal: `${reader.padding}%`,
             paddingTop: (StatusBar.currentHeight || 0) + 16,
+            minHeight: height - 100,
           }}
         />
         <View style={styles.navigationContainer}>

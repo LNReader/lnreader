@@ -688,8 +688,8 @@ const Novel = ({ route, navigation }) => {
                 dispatch(deleteAllChaptersAction(sourceId, chapters));
               },
             }}
-            theme={{ colors: { accent: theme.primary } }}
-            style={{ backgroundColor: theme.primary, marginBottom: 32 }}
+            theme={{ colors: { primary: theme.primary } }}
+            style={{ backgroundColor: theme.surface, marginBottom: 32 }}
           >
             <Text style={{ color: theme.textColorPrimary }}>
               Delete downloaded chapters?

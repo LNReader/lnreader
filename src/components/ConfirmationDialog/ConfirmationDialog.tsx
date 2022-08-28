@@ -1,17 +1,18 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { getString } from '@strings/translations';
 
 import { Dialog, Portal } from 'react-native-paper';
-import { ThemeType } from '../../theme/types';
+import { MD3ThemeType } from '../../theme/types';
 import { Button } from '@components/index';
 import { ButtonVariation } from '@components/Button/Button';
+import { getDialogBackground } from '@theme/colors';
 
 interface ConfirmationDialogProps {
   title: string;
   visible: boolean;
-  theme: ThemeType;
+  theme: MD3ThemeType;
   onSubmit: () => void;
   onDismiss: () => void;
 }
@@ -33,26 +34,28 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
       <Dialog
         visible={visible}
         onDismiss={onDismiss}
-        style={[styles.container, { backgroundColor: theme.colorPrimary }]}
+        style={[
+          styles.container,
+          { backgroundColor: getDialogBackground(theme) },
+        ]}
       >
         <Dialog.Title style={[styles.title, { color: theme.textColorPrimary }]}>
           {title}
         </Dialog.Title>
-        <Dialog.Actions>
+        <View style={styles.buttonCtn}>
+          <Button
+            theme={theme}
+            onPress={handleOnSubmit}
+            title={getString('common.ok')}
+            variation={ButtonVariation.CLEAR}
+          />
           <Button
             theme={theme}
             onPress={onDismiss}
             title={getString('common.cancel')}
             variation={ButtonVariation.CLEAR}
           />
-          <Button
-            theme={theme}
-            onPress={handleOnSubmit}
-            title={getString('common.ok')}
-            variation={ButtonVariation.CLEAR}
-            style={styles.button}
-          />
-        </Dialog.Actions>
+        </View>
       </Dialog>
     </Portal>
   );
@@ -62,13 +65,14 @@ export default ConfirmationDialog;
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: 8,
+    borderRadius: 28,
   },
   title: {
     letterSpacing: 0,
     fontSize: 16,
   },
-  button: {
-    marginLeft: 4,
+  buttonCtn: {
+    flexDirection: 'row-reverse',
+    padding: 16,
   },
 });

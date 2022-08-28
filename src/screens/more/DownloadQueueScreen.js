@@ -46,7 +46,7 @@ const DownloadQueue = ({ navigation }) => {
           anchor={
             <MaterialAppbar.Action
               icon="dots-vertical"
-              color={theme.textColorPrimary}
+              iconColor={theme.textColorPrimary}
               onPress={openMenu}
             />
           }
@@ -66,7 +66,7 @@ const DownloadQueue = ({ navigation }) => {
         </Menu>
       </Appbar>
       <FlatList
-        contentContainerStyle={{ flexGrow: 1 }}
+        contentContainerStyle={{ flexGrow: 1, paddingBottom: 100 }}
         keyExtractor={item => item.chapterId.toString()}
         data={downloadQueue}
         renderItem={({ item }) => (
@@ -89,7 +89,7 @@ const DownloadQueue = ({ navigation }) => {
       {downloadQueue.length > 0 && (
         <FAB
           style={[styles.fab, { backgroundColor: theme.primary }]}
-          color={theme.textColorPrimary}
+          color={theme.onPrimary}
           label={fab ? 'Pause' : 'Resume'}
           uppercase={false}
           small
@@ -113,6 +113,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     margin: 16,
     right: 0,
-    bottom: 0,
+    bottom: 16,
   },
 });

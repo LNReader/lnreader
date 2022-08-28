@@ -76,7 +76,10 @@ const AppearanceSettings = ({ navigation }) => {
         handleGoBack={navigation.goBack}
         theme={theme}
       />
-      <ScrollView style={{ flex: 1 }}>
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={{ paddingBottom: 40 }}
+      >
         <List.Section>
           <List.SubHeader theme={theme}>App theme</List.SubHeader>
           <Text

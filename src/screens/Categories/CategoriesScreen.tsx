@@ -49,8 +49,8 @@ const CategoriesScreen = () => {
     newIndex: number,
   ) => {
     const updatedOrderCategories = orderBy(
-      categories?.map(category => {
-        if (category.sort === newIndex) {
+      categories?.map((category, index) => {
+        if (category.sort === newIndex || newIndex === index) {
           return {
             ...category,
             sort: currentIndex,

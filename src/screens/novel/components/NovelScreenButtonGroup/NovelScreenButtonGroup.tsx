@@ -10,6 +10,7 @@ import { MD3ThemeType } from '../../../../theme/types';
 import { getString } from '../../../../../strings/translations';
 import { Portal } from 'react-native-paper';
 import SetCategoryModal from '../SetCategoriesModal';
+import { getRippleColor } from '@theme/colors';
 
 interface NovelScreenButtonGroupProps {
   novel: NovelInfo;
@@ -56,7 +57,7 @@ const NovelScreenButtonGroup: React.FC<NovelScreenButtonGroupProps> = ({
       <View style={styles.buttonGroupContainer}>
         <View style={styles.buttonContainer}>
           <Pressable
-            android_ripple={{ color: theme.rippleColor }}
+            android_ripple={{ color: getRippleColor(theme.primary) }}
             onPress={handleFollowNovel}
             onLongPress={showSetCategoryModal}
             style={styles.button}
@@ -76,7 +77,7 @@ const NovelScreenButtonGroup: React.FC<NovelScreenButtonGroupProps> = ({
         {isTrackerAvailable ? (
           <View style={styles.buttonContainer}>
             <Pressable
-              android_ripple={{ color: theme.rippleColor }}
+              android_ripple={{ color: getRippleColor(theme.primary) }}
               onPress={handleTrackerSheet}
               style={styles.button}
             >
@@ -93,7 +94,7 @@ const NovelScreenButtonGroup: React.FC<NovelScreenButtonGroupProps> = ({
         ) : null}
         <View style={styles.buttonContainer}>
           <Pressable
-            android_ripple={{ color: theme.rippleColor }}
+            android_ripple={{ color: getRippleColor(theme.primary) }}
             onPress={handleMigrateNovel}
             style={styles.button}
           >
@@ -109,7 +110,7 @@ const NovelScreenButtonGroup: React.FC<NovelScreenButtonGroupProps> = ({
         </View>
         <View style={styles.buttonContainer}>
           <Pressable
-            android_ripple={{ color: theme.rippleColor }}
+            android_ripple={{ color: getRippleColor(theme.primary) }}
             onPress={handleOpenWebView}
             style={styles.button}
           >

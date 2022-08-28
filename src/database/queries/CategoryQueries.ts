@@ -5,7 +5,7 @@ import { txnErrorCallback } from '../utils/helpers';
 const db = SQLite.openDatabase('lnreader.db');
 
 const getCategoriesQuery = `
-  SELECT * FROM categories ORDER BY CASE WHEN id > 1 THEN 1 ELSE 0 END, sort NULLS LAST
+  SELECT * FROM categories ORDER BY CASE WHEN id > 1 THEN 1 ELSE 0 END, IFNULL(sort, 9999)
 	`;
 
 export const getCategoriesFromDb = (): Promise<Category[]> => {
