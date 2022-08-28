@@ -123,7 +123,11 @@ const LibraryScreen = () => {
         }),
     );
 
-    return intersection(...categoryIds);
+    const selectedCategoryIds = intersection(...categoryIds).filter(
+      id => id !== 1,
+    );
+
+    return selectedCategoryIds;
   }, [selectedNovelIds]);
 
   return (
