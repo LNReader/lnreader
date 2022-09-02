@@ -5,7 +5,16 @@
     "save": "Сохранить",
     "clear": "Очистить",
     "reset": "Сбросить",
-    "search": "Поиск"
+    "search": "Поиск",
+    "install": "Установить",
+    "newUpdateAvailable": "Доступно новое обновление",
+    "categories": "Категории",
+    "add": "Добавить",
+    "edit": "Изменить",
+    "name": "Название",
+    "searchFor": "Искать",
+    "globally": "глобально",
+    "searchResults": "Результаты поиска"
   },
   "library": "Библиотека",
   "libraryScreen": {
@@ -15,7 +24,8 @@
       "filters": {
         "downloaded": "Загружено",
         "unread": "Не прочитано",
-        "completed": "Завершено"
+        "completed": "Завершено",
+        "started": "Started"
       },
       "sortOrders": {
         "dateAdded": "По дате добавления",
@@ -26,7 +36,7 @@
         "displayMode": "Режим отображения",
         "compact": "Компактная сетка",
         "comfortable": "Комфортная сетка",
-        "noTitle": "Сетка без заголовков",
+        "noTitle": "Только сетка обложки",
         "list": "Список",
         "badges": "Значки",
         "downloadBadges": "Загружено Значки",
@@ -54,7 +64,9 @@
     "lastUsed": "Последнее использование",
     "pinned": "Закреплено",
     "all": "Все",
-    "latest": "Последние"
+    "latest": "Последние",
+    "addedToLibrary": "Добавлено в библиотеку",
+    "removeFromLibrary": "Удалено из библиотеки"
   },
   "readerScreen": {
     "finished": "Завершено",
@@ -81,6 +93,7 @@
     "continueReading": "Продолжить чтение",
     "chapters": "главы",
     "migrate": "Перенос",
+    "noSummary": "No summary",
     "bottomSheet": {
       "filter": "Фильтр",
       "sort": "Сортировка",
@@ -128,5 +141,33 @@
   "advancedSettings": {
     "deleteReadChapters": "Удалять прочитанные главы",
     "deleteReadChaptersDialogTitle": "Вы уверены? Все главы, помеченные как прочитанные, будут удалены."
+  },
+  "date": {
+    "calendar": {
+      "sameDay": "[Сегодня]",
+      "nextDay": "[Завтра]",
+      "nextWeek": "dddd",
+      "lastDay": "[Вчера]",
+      "lastWeek": "[В прошлый] dddd",
+      "sameElse": "LL"
+    }
+  },
+  "categories": {
+    "addCategories": "Добавить категорию",
+    "editCategories": "Переименовать категорию",
+    "setCategories": "Установить категории",
+    "header": "Изменить категорию",
+    "emptyMsg": "У вас нет категорий. Нажмите кнопку плюс, чтобы создать её для организации вашей библиотеки",
+    "setModalEmptyMsg": "У вас нет категорий. Нажмите кнопку Правка, чтобы создать ее для организации вашей библиотеки",
+    "deleteModal": {
+      "header": "Удалить категорию",
+      "desc": "Do you wish to delete category"
+    },
+    "duplicateError": "A category with this name already exists!",
+    "defaultCategory": "Default category"
+  },
+  "settings": {
+    "icognitoMode": "Режим инкогнито",
+    "downloadedOnly": "Downloaded only"
   }
 }

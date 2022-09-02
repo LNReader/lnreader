@@ -5,7 +5,16 @@
     "save": "Kaydet",
     "clear": "Temizle",
     "reset": "Sıfırla",
-    "search": "Ara"
+    "search": "Ara",
+    "install": "Yükle",
+    "newUpdateAvailable": "Yeni güncelleme var",
+    "categories": "Kategoriler",
+    "add": "Ekle",
+    "edit": "Düzenle",
+    "name": "Ad",
+    "searchFor": "Şunu ara",
+    "globally": "global olarak",
+    "searchResults": "Arama sonuçları"
   },
   "library": "Kitaplık",
   "libraryScreen": {
@@ -15,7 +24,8 @@
       "filters": {
         "downloaded": "İndirilen",
         "unread": "Okunmamış",
-        "completed": "Tamamlanmış"
+        "completed": "Tamamlanmış",
+        "started": "Başlanmış"
       },
       "sortOrders": {
         "dateAdded": "Eklendiği tarih",
@@ -26,7 +36,7 @@
         "displayMode": "Görüntüleme modu",
         "compact": "Kompakt ızgara",
         "comfortable": "Rahat ızgara",
-        "noTitle": "Başlıksız ızgara",
+        "noTitle": "Yalnızca kapak ızgara",
         "list": "Liste",
         "badges": "Rozetler",
         "downloadBadges": "İndirilen LN'ler için rozet göster",
@@ -54,7 +64,9 @@
     "lastUsed": "Son kullanılan",
     "pinned": "Sabitlenmiş",
     "all": "Tümü",
-    "latest": "En son"
+    "latest": "En son",
+    "addedToLibrary": "Kitaplığa eklendi",
+    "removeFromLibrary": "Kitaplıktan kaldırıldı"
   },
   "readerScreen": {
     "finished": "Biten",
@@ -81,6 +93,7 @@
     "continueReading": "Okumaya devam et",
     "chapters": "bölüm",
     "migrate": "Taşın",
+    "noSummary": "Özet bilgisi yok",
     "bottomSheet": {
       "filter": "Filtre",
       "sort": "Sırala",
@@ -128,5 +141,33 @@
   "advancedSettings": {
     "deleteReadChapters": "Okunmuş bölümleri sil",
     "deleteReadChaptersDialogTitle": "Emin misiniz? Okunmuş olarak işaretlenmiş olan tüm bölümler silinecektir."
+  },
+  "date": {
+    "calendar": {
+      "sameDay": "[Bugün]",
+      "nextDay": "[Yarın]",
+      "nextWeek": "dddd",
+      "lastDay": "[Dün]",
+      "lastWeek": "[Geçen] dddd",
+      "sameElse": "LL"
+    }
+  },
+  "categories": {
+    "addCategories": "Kategori ekle",
+    "editCategories": "Kategoriyi yeniden adlandır",
+    "setCategories": "Kategorileri ayarla",
+    "header": "Kategorileri düzenle",
+    "emptyMsg": "Kategoriniz bulunmuyor.  Kitaplığınızı düzenlemek için bir tane oluşturmak için artı butonuna basın",
+    "setModalEmptyMsg": "Kategoriniz bulunmuyor.  Kitaplığınızı düzenlemek üzere bir tane oluşturmak için Düzenle butonuna basın",
+    "deleteModal": {
+      "header": "Kategoriyi sil",
+      "desc": "Şu kategoriyi silmek istiyor musunuz:"
+    },
+    "duplicateError": "Bu ada sahip bir kategori zaten var!",
+    "defaultCategory": "Varsayılan kategori"
+  },
+  "settings": {
+    "icognitoMode": "Gizli mod",
+    "downloadedOnly": "Yalnızca indirilenler"
   }
 }

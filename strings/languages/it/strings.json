@@ -5,7 +5,16 @@
     "save": "Salva",
     "clear": "Clear",
     "reset": "Reset",
-    "search": "Search"
+    "search": "Search",
+    "install": "Install",
+    "newUpdateAvailable": "New update available",
+    "categories": "Categories",
+    "add": "Add",
+    "edit": "Edit",
+    "name": "Name",
+    "searchFor": "Search for",
+    "globally": "globally",
+    "searchResults": "Search results"
   },
   "library": "Library",
   "libraryScreen": {
@@ -15,7 +24,8 @@
       "filters": {
         "downloaded": "Downloaded",
         "unread": "Unread",
-        "completed": "Completed"
+        "completed": "Completed",
+        "started": "Started"
       },
       "sortOrders": {
         "dateAdded": "Date added",
@@ -26,7 +36,7 @@
         "displayMode": "Display mode",
         "compact": "Compact grid",
         "comfortable": "Comfortable grid",
-        "noTitle": "No title grid",
+        "noTitle": "Cover only grid",
         "list": "List",
         "badges": "Badges",
         "downloadBadges": "Download badges",
@@ -54,7 +64,9 @@
     "lastUsed": "Last used",
     "pinned": "Pinned",
     "all": "All",
-    "latest": "Latest"
+    "latest": "Latest",
+    "addedToLibrary": "Added to library",
+    "removeFromLibrary": "Removed from library"
   },
   "readerScreen": {
     "finished": "Finished",
@@ -81,6 +93,7 @@
     "continueReading": "Continue reading",
     "chapters": "chapters",
     "migrate": "Migrate",
+    "noSummary": "No summary",
     "bottomSheet": {
       "filter": "Filter",
       "sort": "Sort",
@@ -128,5 +141,33 @@
   "advancedSettings": {
     "deleteReadChapters": "Delete read chapters",
     "deleteReadChaptersDialogTitle": "Are you sure? All chapters marked as read will be deleted."
+  },
+  "date": {
+    "calendar": {
+      "sameDay": "[Today]",
+      "nextDay": "[Tomorrow]",
+      "nextWeek": "dddd",
+      "lastDay": "[Yesterday]",
+      "lastWeek": "[Last] dddd",
+      "sameElse": "LL"
+    }
+  },
+  "categories": {
+    "addCategories": "Add category",
+    "editCategories": "Rename category",
+    "setCategories": "Set categories",
+    "header": "Edit categories",
+    "emptyMsg": "You have no categories. Tap the plus button to create one for organizing your library",
+    "setModalEmptyMsg": "You have no categories. Tap the Edit button to create one for organizing your library",
+    "deleteModal": {
+      "header": "Delete category",
+      "desc": "Do you wish to delete category"
+    },
+    "duplicateError": "A category with this name already exists!",
+    "defaultCategory": "Default category"
+  },
+  "settings": {
+    "icognitoMode": "Incognito mode",
+    "downloadedOnly": "Downloaded only"
   }
 }

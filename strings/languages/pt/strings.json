@@ -5,7 +5,16 @@
     "save": "Salvar",
     "clear": "Limpar",
     "reset": "Resetar",
-    "search": "Pesquisar"
+    "search": "Pesquisar",
+    "install": "Instalar",
+    "newUpdateAvailable": "Nova atualização disponível",
+    "categories": "Categorias",
+    "add": "Adicionar",
+    "edit": "Editar",
+    "name": "Nome",
+    "searchFor": "Pesquisar por",
+    "globally": "globalmente",
+    "searchResults": "Resultados da busca"
   },
   "library": "Biblioteca",
   "libraryScreen": {
@@ -15,7 +24,8 @@
       "filters": {
         "downloaded": "Baixados",
         "unread": "Não lidos",
-        "completed": "Concluídos"
+        "completed": "Concluídos",
+        "started": "Iniciado"
       },
       "sortOrders": {
         "dateAdded": "Data adicionado",
@@ -26,7 +36,7 @@
         "displayMode": "Modo de exibição",
         "compact": "Grade compacta",
         "comfortable": "Grade confortável",
-        "noTitle": "Grade sem títulos",
+        "noTitle": "Grade somente da capa",
         "list": "Lista",
         "badges": "Emblemas",
         "downloadBadges": "Baixar emblemas",
@@ -54,7 +64,9 @@
     "lastUsed": "Usado por último",
     "pinned": "Fixado",
     "all": "Todos",
-    "latest": "Mais recentes"
+    "latest": "Mais recentes",
+    "addedToLibrary": "Adicionado à biblioteca",
+    "removeFromLibrary": "Removido da biblioteca"
   },
   "readerScreen": {
     "finished": "Finalizado",
@@ -81,6 +93,7 @@
     "continueReading": "Continuar lendo",
     "chapters": "Capítulos",
     "migrate": "Migrar",
+    "noSummary": "Nenhum resumo",
     "bottomSheet": {
       "filter": "Filtro",
       "sort": "Ordenar por",
@@ -128,5 +141,33 @@
   "advancedSettings": {
     "deleteReadChapters": "Excluir capítulos lidos",
     "deleteReadChaptersDialogTitle": "Você tem certeza? Todos os capítulos marcados como lidos serão excluídos."
+  },
+  "date": {
+    "calendar": {
+      "sameDay": "[Hoje]",
+      "nextDay": "[Amanhã]",
+      "nextWeek": "dddd",
+      "lastDay": "[Ontem]",
+      "lastWeek": "[Last] dddd",
+      "sameElse": "LL"
+    }
+  },
+  "categories": {
+    "addCategories": "Adicionar categoria",
+    "editCategories": "Renomear Categoria",
+    "setCategories": "Definir categorias",
+    "header": "Editar categorias",
+    "emptyMsg": "Você não possui categorias. Toque no botão de mais para criar uma para organizar sua biblioteca",
+    "setModalEmptyMsg": "Você não possui categorias. Toque no botão de editar para criar uma para organizar sua biblioteca",
+    "deleteModal": {
+      "header": "Deletar categoria",
+      "desc": "Você quer deletar esta categoria"
+    },
+    "duplicateError": "Uma categoria com esse nome já existe!",
+    "defaultCategory": "Categoria padrão"
+  },
+  "settings": {
+    "icognitoMode": "Modo anônimo",
+    "downloadedOnly": "Apenas baixados"
   }
 }
