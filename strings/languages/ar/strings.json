@@ -5,7 +5,16 @@
     "save": "تثبيت",
     "clear": "تنضيف",
     "reset": "إعادة تعيين",
-    "search": "بحث"
+    "search": "بحث",
+    "install": "تثبيت",
+    "newUpdateAvailable": "تحديث جديد متاح",
+    "categories": "تصنيفات",
+    "add": "إضافة",
+    "edit": "تعديل",
+    "name": "اسم",
+    "searchFor": "بحث عن",
+    "globally": "عالمي",
+    "searchResults": "نتائج البحث"
   },
   "library": "المكتبة",
   "libraryScreen": {
@@ -15,7 +24,8 @@
       "filters": {
         "downloaded": "التحميلات",
         "unread": "غير مقروء",
-        "completed": "مكتمل"
+        "completed": "مكتمل",
+        "started": "بدأت"
       },
       "sortOrders": {
         "dateAdded": "تاريخ الإضافة",
@@ -26,7 +36,7 @@
         "displayMode": "نمط العرض",
         "compact": "الشبكة المدمجة",
         "comfortable": "الشبكة المريحة",
-        "noTitle": "شبكة اللا عنوان",
+        "noTitle": "تغطية الشبكة فقط",
         "list": "القائمة",
         "badges": "الأوسمة",
         "downloadBadges": "تحميل الاوسمة",
@@ -54,7 +64,9 @@
     "lastUsed": "اخر استخدام",
     "pinned": "مثبت",
     "all": "الجميع",
-    "latest": "الاخير"
+    "latest": "الاخير",
+    "addedToLibrary": "تمت الإضافة إلى المكتبة",
+    "removeFromLibrary": "تمت إزالته من المكتبة"
   },
   "readerScreen": {
     "finished": "انتهى",
@@ -81,6 +93,7 @@
     "continueReading": "متابعة القراءة",
     "chapters": "الفصول",
     "migrate": "نقل",
+    "noSummary": "لا يوجد ملخص",
     "bottomSheet": {
       "filter": "التصفية",
       "sort": "الفرز",
@@ -128,5 +141,33 @@
   "advancedSettings": {
     "deleteReadChapters": "حذف الفصول المقروءة",
     "deleteReadChaptersDialogTitle": "هل أنت متأكد؟ سيتم حذف جميع الفصول المعلَّمة كمقروءة."
+  },
+  "date": {
+    "calendar": {
+      "sameDay": "اليوم",
+      "nextDay": "الغد",
+      "nextWeek": "الأسبوع القادم",
+      "lastDay": "بالأمس",
+      "lastWeek": "الأسبوع الماضي",
+      "sameElse": "نفس الشيء"
+    }
+  },
+  "categories": {
+    "addCategories": "إضافة تصنيف",
+    "editCategories": "إعادة تسمية التصنيف",
+    "setCategories": "حدد التصنيف",
+    "header": "تعديل التصنيف",
+    "emptyMsg": "ليس لديك تصنيف. اضغط على زر علامة الزائد لإنشاء واحد لتنظيم مكتبتك",
+    "setModalEmptyMsg": "ليس لديك تصنيف. اضغط على زر تعديل لإنشاء واحد لتنظيم مكتبتك",
+    "deleteModal": {
+      "header": "حذف التصنيف",
+      "desc": "هل ترغب في حذف التصنيف"
+    },
+    "duplicateError": "يوجد تصنيف بهذا الاسم بالفعل!",
+    "defaultCategory": "التصنيف الافتراضي"
+  },
+  "settings": {
+    "icognitoMode": "الوضع المخفي",
+    "downloadedOnly": "التنزيلات فقط"
   }
 }
