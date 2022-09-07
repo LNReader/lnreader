@@ -140,7 +140,7 @@ android {
         applicationId 'com.rajarsheechatterjee.LNReader'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        // Generated version code. Supports versions up to 128.128.256
+        // Generated version code. Supports versions up to 1024.1024.2048
         versionCode ((((versionMajor << 10) | versionMinor) << 11) | versionPatch)
         versionName "$versionMajor.$versionMinor.$versionPatch"
     }
