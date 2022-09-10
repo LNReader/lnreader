@@ -96,6 +96,7 @@ import {
 } from './multisrc/wpmangastream/WPMangaStreamGenerator';
 import WLNUpdatesScraper from './en/wlnupdates';
 import ReaperScansScraper from './en/reaperscans';
+import AuthorTodayScraper from './ru/authortoday';
 import JaomixScraper from './ru/jaomix';
 import RanobeHubScraper from './ru/ranobehub';
 import RanobeLibScraper from './ru/ranobelib';
@@ -304,6 +305,7 @@ export const sourceManager = (sourceId: number): Scraper => {
     139: FicbookScraper,
     140: NovelroomDotnetScraper,
     141: NovelR18Scraper,
+    142: AuthorTodayScraper,
   };
 
   return scrapers[sourceId];
