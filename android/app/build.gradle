@@ -122,6 +122,12 @@ def jscFlavor = 'org.webkit:android-jsc:+'
  */
 def enableHermes = project.ext.react.get("enableHermes", false);
 
+ext {
+    versionMajor = 1
+    versionMinor = 1
+    versionPatch = 13
+}
+
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
@@ -134,8 +140,9 @@ android {
         applicationId 'com.rajarsheechatterjee.LNReader'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.1.13"
+        // Generated version code. Supports versions up to 1024.1024.2048
+        versionCode ((((versionMajor << 10) | versionMinor) << 11) | versionPatch)
+        versionName "$versionMajor.$versionMinor.$versionPatch"
     }
     splits {
         abi {
