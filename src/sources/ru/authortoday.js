@@ -55,12 +55,12 @@ const popularNovels = async (page, { showLatestNovels, filters }) => {
 };
 
 const parseNovelAndChapters = async novelUrl => {
-  const result = await fetch(`${apiUrl}v1/work/${novelUrl}/details`, {
+  let result = await fetch(`${apiUrl}v1/work/${novelUrl}/details`, {
     headers: {
       Authorization: token,
     },
   });
-  const json = await result.json();
+  let json = await result.json();
 
   let novel = {
     sourceId,
@@ -86,9 +86,16 @@ const parseNovelAndChapters = async novelUrl => {
     ? 'Примечания автора:\n' + htmlToText(json.authorNotes)
     : '';
 
+  // all chapters
+  result = await fetch(`${apiUrl}v1/work/${novelUrl}/content`, {
+    headers: {
+      Authorization: token,
+    },
+  });
+  json = await result.json();
   let chapters = [];
 
-  json?.chapters?.forEach(chapter => {
+  json?.forEach(chapter => {
     if (chapter?.isAvailable && !chapter?.isDraft) {
       chapters.push({
         chapterName: chapter.title,
@@ -112,6 +119,15 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     },
   });
   const json = await result.json();
+
+  if (json?.code) {
+    return {
+      sourceId,
+      novelUrl,
+      chapterUrl,
+      chapterText: json.code + '\n' + json?.message,
+    };
+  }
 
   let key = json.key.split('').reverse().join('') + '@_@' + UserId;
   let text = '';
