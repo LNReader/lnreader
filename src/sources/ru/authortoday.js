@@ -141,8 +141,8 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   let loadedCheerio = cheerio.load(text);
   loadedCheerio('img').each(function () {
     if (!loadedCheerio(this).attr('src')?.startsWith('http')) {
-      let url = baseUrl + loadedCheerio(this).attr('src');
-      loadedCheerio(this).attr('src', url);
+      let src = loadedCheerio(this).attr('src');
+      loadedCheerio(this).attr('src', baseUrl + src);
     }
   });
 

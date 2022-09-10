@@ -92,7 +92,9 @@ const parseNovelAndChapters = async novelUrl => {
       novelChapters.push({
         chapterName: chapter.name,
         chapterUrl: chapter.url,
-        releaseDate: dayjs(parseInt(chapter.changed_at) * 1000).format('LLL'),
+        releaseDate: dayjs(parseInt(chapter.changed_at, 10) * 1000).format(
+          'LLL',
+        ),
       }),
     ),
   );
