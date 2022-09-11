@@ -6,15 +6,15 @@
     "clear": "Очистити",
     "reset": "Скинути",
     "search": "Пошук",
-    "install": "Install",
-    "newUpdateAvailable": "New update available",
-    "categories": "Categories",
-    "add": "Add",
-    "edit": "Edit",
-    "name": "Name",
-    "searchFor": "Search for",
-    "globally": "globally",
-    "searchResults": "Search results"
+    "install": "Встановити",
+    "newUpdateAvailable": "Доступне нове оновлення",
+    "categories": "Категорії",
+    "add": "Додати",
+    "edit": "Редагувати",
+    "name": "Назва",
+    "searchFor": "Шукати",
+    "globally": "глобально",
+    "searchResults": "Результати пошуку"
   },
   "library": "Бібліотека",
   "libraryScreen": {
@@ -25,7 +25,7 @@
         "downloaded": "Завантажено",
         "unread": "Не прочитано",
         "completed": "Завершено",
-        "started": "Started"
+        "started": "Почато"
       },
       "sortOrders": {
         "dateAdded": "За датою додання",
@@ -36,7 +36,7 @@
         "displayMode": "Режим відображення",
         "compact": "Компактна сітка",
         "comfortable": "Комфортна сітка",
-        "noTitle": "Cover only grid",
+        "noTitle": "Тільки обкладинки",
         "list": "Список",
         "badges": "Мітки",
         "downloadBadges": "Завантажено",
@@ -65,8 +65,8 @@
     "pinned": "Закріплено",
     "all": "Всі",
     "latest": "Останні",
-    "addedToLibrary": "Added to library",
-    "removeFromLibrary": "Removed from library"
+    "addedToLibrary": "Додано до бібліотеки",
+    "removeFromLibrary": "Вилучено з бібліотеки"
   },
   "readerScreen": {
     "finished": "Завершено",
@@ -93,7 +93,7 @@
     "continueReading": "Продовжити читання",
     "chapters": "розділи",
     "migrate": "Перенести",
-    "noSummary": "No summary",
+    "noSummary": "Немає зведених відомостей",
     "bottomSheet": {
       "filter": "Фільтр",
       "sort": "Сортувати",
@@ -116,7 +116,7 @@
         "textColorModal": "Колір тексту при читанні",
         "verticalSeekbarDesc": "Перемикання між вертикальною та горизонтальною панелями навігації",
         "autoScrollInterval": "Інтервал автопрокрутки (в секундах)",
-        "autoScrollOffset": "Auto scroll offset (screen height by default)",
+        "autoScrollOffset": "Зсув автоматичної прокрутки (висота екрану за замовчуванням)",
         "saveCustomTheme": "Зберегти тему",
         "deleteCustomTheme": "Видалити тему",
         "customCSS": "Довільний CSS"
@@ -131,43 +131,43 @@
     }
   },
   "sourceScreen": {
-    "noResultsFound": "No results found"
+    "noResultsFound": "Нічого не знайдено"
   },
   "globalSearch": {
-    "searchIn": "Search a novel in",
-    "allSources": "all sources",
-    "pinnedSources": "pinned sources"
+    "searchIn": "Пошук новели в",
+    "allSources": "всі джерела",
+    "pinnedSources": "закріплені джерела"
   },
   "advancedSettings": {
-    "deleteReadChapters": "Delete read chapters",
-    "deleteReadChaptersDialogTitle": "Are you sure? All chapters marked as read will be deleted."
+    "deleteReadChapters": "Вилучити прочитані глави",
+    "deleteReadChaptersDialogTitle": "Ви впевнені? Всі глави, позначені як прочитані, будуть видалені."
   },
   "date": {
     "calendar": {
-      "sameDay": "[Today]",
-      "nextDay": "[Tomorrow]",
+      "sameDay": "[Сьогодні]",
+      "nextDay": "[Завтра]",
       "nextWeek": "dddd",
-      "lastDay": "[Yesterday]",
-      "lastWeek": "[Last] dddd",
+      "lastDay": "[Вчора]",
+      "lastWeek": "[У минулий] dddd",
       "sameElse": "LL"
     }
   },
   "categories": {
-    "addCategories": "Add category",
-    "editCategories": "Rename category",
-    "setCategories": "Set categories",
-    "header": "Edit categories",
-    "emptyMsg": "You have no categories. Tap the plus button to create one for organizing your library",
-    "setModalEmptyMsg": "You have no categories. Tap the Edit button to create one for organizing your library",
+    "addCategories": "Додати категорію",
+    "editCategories": "Перейменувати категорію",
+    "setCategories": "Встановити категорії",
+    "header": "Редагувати категорії",
+    "emptyMsg": "У вас немає категорій. Натисніть на \"+\" щоб створити нову категорію для організації вашої бібліотеки",
+    "setModalEmptyMsg": "У вас немає категорій. Натисніть кнопку Редагувати, щоб створити нову для організації вашої бібліотеки",
     "deleteModal": {
-      "header": "Delete category",
-      "desc": "Do you wish to delete category"
+      "header": "Видалити категорію",
+      "desc": "Ви бажаєте видалити цю категорію"
     },
-    "duplicateError": "A category with this name already exists!",
-    "defaultCategory": "Default category"
+    "duplicateError": "Категорія з такою назвою вже існує!",
+    "defaultCategory": "Категорія за замовчуванням"
   },
   "settings": {
-    "icognitoMode": "Incognito mode",
-    "downloadedOnly": "Downloaded only"
+    "icognitoMode": "Режим інкогніто",
+    "downloadedOnly": "Тільки завантажені"
   }
 }
