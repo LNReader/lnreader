@@ -113,7 +113,6 @@ const parseNovelAndChapters = async novelUrl => {
 
       chapters.push({ chapterName, releaseDate, chapterUrl });
     });
-    chapters = chapters.reverse();
   }
   novel.chapters = chapters;
   return novel;

@@ -898,28 +898,28 @@
   {
     "sourceId": 135,
     "sourceName": "Zetro Translation",
-    "icon": "https://zetrotranslation.com/wp-content/uploads/2020/12/logo_red-e1607700845220.png",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/icons/multisrc/madara/icons/zetrotranslation.png?raw=true",
     "url": "https://zetrotranslation.com/",
     "lang": "English"
   },
   {
     "sourceId": 136,
     "sourceName": "Nocturne Translations",
-    "icon": "https://nocturnetls.net/wp-content/uploads/2017/10/nocturne_mask-with-sheen.png",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/icons/multisrc/madara/icons/nocturnetls.webp?raw=true",
     "url": "https://nocturnetls.net/",
     "lang": "English"
   },
   {
     "sourceId": 137,
     "sourceName": "Asada Translations",
-    "icon": "https://asadatranslations.com/wp-content/uploads/2020/05/asada-1.png",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/icons/multisrc/madara/icons/asadatranslations.png?raw=true",
     "url": "https://asadatranslations.com/",
     "lang": "English"
   },
   {
     "sourceId": 138,
     "sourceName": "Sugar Babies",
-    "icon": "https://sugarbbscan.com/wp-content/uploads/2021/03/sda.png",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/icons/multisrc/madara/icons/sugarbbscan.png?raw=true",
     "url": "https://sugarbbscan.com/",
     "lang": "English"
   },
@@ -928,20 +928,27 @@
     "sourceName": "Книга Фанфиков",
     "url": "https://ficbook.net/",
     "lang": "Russian",
-    "icon": "https://ficbook.net/android-chrome-512x512.png"
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/icons/src/ru/ficbook/icon.png?raw=true"
   },
   {
     "sourceId": 140,
     "sourceName": "Novelroom.net",
-    "icon": "https://novelroom.net/wp-content/uploads/2022/03/full_crop.jpg",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/icons/multisrc/madara/icons/novelroom.png?raw=true",
     "url": "https://novelroom.net/",
     "lang": "English"
   },
   {
     "sourceId": 141,
-    "sourceName": "NovelR18 ",
-    "icon": "https://novelr18.com/wp-content/uploads/2017/10/logo_.png",
+    "sourceName": "NovelR18",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/icons/multisrc/madara/icons/novelr18.png?raw=true",
     "url": "https://novelr18.com/",
     "lang": "English"
+  },
+  {
+    "sourceId": 142,
+    "sourceName": "Автор Тудей",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/icons/src/ru/authortoday/icon.png?raw=true",
+    "url": "https://author.today/",
+    "lang": "Russian"
   }
 ]
