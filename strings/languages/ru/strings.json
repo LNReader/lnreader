@@ -146,7 +146,7 @@
     "calendar": {
       "sameDay": "[Сегодня]",
       "nextDay": "[Завтра]",
-      "nextWeek": "dddd",
+      "nextWeek": "дддд",
       "lastDay": "[Вчера]",
       "lastWeek": "[В прошлый] dddd",
       "sameElse": "LL"
@@ -168,6 +168,6 @@
   },
   "settings": {
     "icognitoMode": "Режим инкогнито",
-    "downloadedOnly": "Только загруженные"
+    "downloadedOnly": "Только загруженные главы"
   }
 }
