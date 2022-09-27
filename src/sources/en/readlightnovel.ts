@@ -1,5 +1,5 @@
 import * as cheerio from 'cheerio';
-import { defaultTo, isNumber } from 'lodash';
+import { defaultTo } from 'lodash';
 import { SourceOptions } from '../sourceManager';
 import { SourceChapter, SourceChapterItem, SourceNovelItem } from '../types';
 import { FilterInputs, SourceFilter } from '../types/filterTypes';

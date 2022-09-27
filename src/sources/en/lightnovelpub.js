@@ -16,6 +16,11 @@ const popularNovels = async page => {
   const result = await fetch(url, { method: 'GET', headers });
   const body = await result.text();
 
+  if (body.includes('Cloudflare')) {
+    throw Error(
+      "The app cannot bypass the source's Cloudflare protection. Either wait for them to lower the protection or migrate.",
+    );
+  }
   const loadedCheerio = cheerio.load(body);
 
   let novels = [];
@@ -142,6 +147,12 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   const result = await fetch(url, { method: 'GET', headers });
   const body = await result.text();
 
+  if (body.includes('Cloudflare')) {
+    throw Error(
+      "The app cannot bypass the source's Cloudflare protection. Either wait for them to lower the protection or migrate.",
+    );
+  }
+
   const loadedCheerio = cheerio.load(body);
 
   const chapterName = loadedCheerio('h2').text();
@@ -160,8 +171,6 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 
 const searchNovels = async searchTerm => {
   const url = `${baseUrl}lnsearchlive`;
-
-  console.log(url);
 
   let formData = new FormData();
   formData.append('inputContent', searchTerm);
