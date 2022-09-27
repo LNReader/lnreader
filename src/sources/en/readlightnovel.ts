@@ -34,7 +34,7 @@ const popularNovels = async (page: number, options?: SourceOptions) => {
     ?.split('/')
     .pop();
 
-  totalPages = isNumber(totalPages) ? totalPages : 1;
+  totalPages = Number(totalPages) || 1;
 
   loadedCheerio('.top-novel-block').each(function () {
     const novelUrl = loadedCheerio(this)
