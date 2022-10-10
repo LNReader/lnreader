@@ -414,5 +414,14 @@
       "path": { "novels": "novel", "novel": "manga", "chapter": "manga" },
       "useNewChapterEndpoint": true
     }
+  },
+  {
+    "sourceId": 143,
+    "baseUrl": "https://www.webnoveloku.com/",
+    "sourceName": "WebNovelOku ",
+    "options": {
+      "totalPages": 1,
+      "lang": "Turkish"
+    }
   }
 ]

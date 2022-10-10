@@ -82,6 +82,7 @@ import {
   NocturneTranslationsScraper,
   NovelroomDotnetScraper,
   NovelR18Scraper,
+  WebNovelOkuScraper,
 } from './multisrc/madara/MadaraGenerator';
 import WuxiaBlogScraper from './en/wuxiablog';
 import WuxiaCityScraper from './en/wuxiacity';
@@ -306,6 +307,7 @@ export const sourceManager = (sourceId: number): Scraper => {
     140: NovelroomDotnetScraper,
     141: NovelR18Scraper,
     142: AuthorTodayScraper,
+    143: WebNovelOkuScraper,
   };
 
   return scrapers[sourceId];

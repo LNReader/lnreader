@@ -382,3 +382,10 @@ export const NovelR18Scraper = new MadaraScraper(
     'useNewChapterEndpoint': true,
   },
 );
+
+export const WebNovelOkuScraper = new MadaraScraper(
+  143,
+  'https://www.webnoveloku.com/',
+  'WebNovelOku ',
+  { 'totalPages': 1, 'lang': 'Turkish' },
+);
