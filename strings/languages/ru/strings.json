@@ -25,7 +25,7 @@
         "downloaded": "Загружено",
         "unread": "Не прочитано",
         "completed": "Завершено",
-        "started": "Started"
+        "started": "Начато"
       },
       "sortOrders": {
         "dateAdded": "По дате добавления",
@@ -93,7 +93,7 @@
     "continueReading": "Продолжить чтение",
     "chapters": "главы",
     "migrate": "Перенос",
-    "noSummary": "No summary",
+    "noSummary": "Нет сводки",
     "bottomSheet": {
       "filter": "Фильтр",
       "sort": "Сортировка",
@@ -146,10 +146,10 @@
     "calendar": {
       "sameDay": "[Сегодня]",
       "nextDay": "[Завтра]",
-      "nextWeek": "dddd",
+      "nextWeek": "дддд",
       "lastDay": "[Вчера]",
       "lastWeek": "[В прошлый] dddd",
-      "sameElse": "LL"
+      "sameElse": "ЛЛ"
     }
   },
   "categories": {
@@ -158,16 +158,16 @@
     "setCategories": "Установить категории",
     "header": "Изменить категорию",
     "emptyMsg": "У вас нет категорий. Нажмите кнопку плюс, чтобы создать её для организации вашей библиотеки",
-    "setModalEmptyMsg": "У вас нет категорий. Нажмите кнопку Правка, чтобы создать ее для организации вашей библиотеки",
+    "setModalEmptyMsg": "У вас нет категорий. Нажмите кнопку Изменить, чтобы создать ее для организации вашей библиотеки",
     "deleteModal": {
       "header": "Удалить категорию",
-      "desc": "Do you wish to delete category"
+      "desc": "Вы хотите удалить эту категорию"
     },
-    "duplicateError": "A category with this name already exists!",
-    "defaultCategory": "Default category"
+    "duplicateError": "Категория с таким названием уже существует!",
+    "defaultCategory": "Категория по умолчанию"
   },
   "settings": {
     "icognitoMode": "Режим инкогнито",
-    "downloadedOnly": "Downloaded only"
+    "downloadedOnly": "Только загруженные главы"
   }
 }

@@ -1,42 +1,42 @@
 {
   "common": {
-    "cancel": "Cancel",
+    "cancel": "Batal",
     "ok": "Ya",
     "save": "Simpan",
     "clear": "Clear",
     "reset": "Reset",
     "search": "Search",
-    "install": "Install",
-    "newUpdateAvailable": "New update available",
-    "categories": "Categories",
-    "add": "Add",
-    "edit": "Edit",
-    "name": "Name",
-    "searchFor": "Search for",
-    "globally": "globally",
-    "searchResults": "Search results"
+    "install": "Pasang",
+    "newUpdateAvailable": "Pembaruan terbaru tersedia",
+    "categories": "Kategori",
+    "add": "Tambahkan",
+    "edit": "Ubah",
+    "name": "Nama",
+    "searchFor": "Pencarian untuk",
+    "globally": "menyeluruh",
+    "searchResults": "Hasil pencarian"
   },
   "library": "Library",
   "libraryScreen": {
-    "searchbar": "Search library",
-    "empty": "Your library is empty. Add series to your library from Browse.",
+    "searchbar": "Cari di pustaka",
+    "empty": "Pustaka kamu kosong. Tambahkan serial ke pustaka kamu dari Jelajah.",
     "bottomSheet": {
       "filters": {
-        "downloaded": "Downloaded",
-        "unread": "Unread",
-        "completed": "Completed",
-        "started": "Started"
+        "downloaded": "Terunduh",
+        "unread": "Belum terbaca",
+        "completed": "Selesai",
+        "started": "Dimulai"
       },
       "sortOrders": {
-        "dateAdded": "Date added",
-        "alphabetically": "Alphabetically",
-        "totalChapters": "Total chapters"
+        "dateAdded": "Tanggal ditambahkan",
+        "alphabetically": "Menurut abjad",
+        "totalChapters": "Jumlah bab"
       },
       "display": {
-        "displayMode": "Display mode",
-        "compact": "Compact grid",
-        "comfortable": "Comfortable grid",
-        "noTitle": "Cover only grid",
+        "displayMode": "Mode tampilan",
+        "compact": "Baris tersusun rapat",
+        "comfortable": "Baris nyaman",
+        "noTitle": "Baris hanya sampul",
         "list": "List",
         "badges": "Badges",
         "downloadBadges": "Download badges",
@@ -65,109 +65,109 @@
     "pinned": "Pinned",
     "all": "All",
     "latest": "Latest",
-    "addedToLibrary": "Added to library",
-    "removeFromLibrary": "Removed from library"
+    "addedToLibrary": "Telah ditambahkan ke koleksi",
+    "removeFromLibrary": "Dihapus dari koleksi"
   },
   "readerScreen": {
-    "finished": "Finished",
-    "noNextChapter": "There's no next chapter",
+    "finished": "Selesai",
+    "noNextChapter": "Tidak ada bab selanjutnya",
     "bottomSheet": {
-      "textSize": "Text size",
-      "color": "Color",
-      "textAlign": "Text align",
-      "lineHeight": "Line Height",
-      "fontStyle": "Font style",
-      "fullscreen": "Fullscreen",
-      "renderHml": "Render HTML",
-      "autoscroll": "AutoScroll",
-      "verticalSeekbar": "Vertical Seekbar",
-      "showBatteryAndTime": "Show battery and time",
-      "showProgressPercentage": "Show progress percentage",
-      "swipeGestures": "Swipe left or right to navigate between chapters",
-      "allowTextSelection": "Allow text selection"
+      "textSize": "Ukuran teks",
+      "color": "Warna",
+      "textAlign": "Perataan teks",
+      "lineHeight": "Jarak antar baris",
+      "fontStyle": "Gaya huruf",
+      "fullscreen": "Layar penuh",
+      "renderHml": "Tampilkan HTML",
+      "autoscroll": "Gulung otomatis",
+      "verticalSeekbar": "Bilah pencarian vertikal",
+      "showBatteryAndTime": "Tampilkan baterai dan waktu",
+      "showProgressPercentage": "Tampilkan persentase proses",
+      "swipeGestures": "Gesek ke kiri atau kanan untuk menavigasi antara bab",
+      "allowTextSelection": "Izinkan pemilihan teks"
     }
   },
   "novelScreen": {
-    "addToLibaray": "Add to library",
-    "inLibaray": "In library",
-    "continueReading": "Continue reading",
-    "chapters": "chapters",
-    "migrate": "Migrate",
-    "noSummary": "No summary",
+    "addToLibaray": "Tambahkan ke koleksi",
+    "inLibaray": "Di koleksi",
+    "continueReading": "Lanjutkan membaca",
+    "chapters": "bab",
+    "migrate": "Pindah",
+    "noSummary": "Tidak ada rangkuman",
     "bottomSheet": {
-      "filter": "Filter",
-      "sort": "Sort",
-      "display": "Display"
+      "filter": "Sortir",
+      "sort": "Menyortir",
+      "display": "Tampilan"
     }
   },
-  "more": "More",
+  "more": "Lainnya",
   "moreScreen": {
-    "settings": "Settings",
+    "settings": "Setelan",
     "settingsScreen": {
-      "generalSettings": "General",
+      "generalSettings": "Umum",
       "generalSettingsScreen": {},
       "readerSettings": {
-        "title": "Reader",
-        "readerTheme": "Reader theme",
-        "preset": "Preset",
-        "backgroundColor": "Background color",
-        "textColor": "Text color",
-        "backgroundColorModal": "Reader background color",
-        "textColorModal": "Reader text color",
-        "verticalSeekbarDesc": "Switch between vertical and horizontal seekbar",
-        "autoScrollInterval": "Auto scroll interval (in seconds)",
-        "autoScrollOffset": "Auto scroll offset (screen height by default)",
-        "saveCustomTheme": "Save custom theme",
-        "deleteCustomTheme": "Delete custom theme",
-        "customCSS": "Custom CSS"
+        "title": "Pembaca",
+        "readerTheme": "Tema pembaca",
+        "preset": "Prasetel",
+        "backgroundColor": "Warna latar belakang",
+        "textColor": "Warna teks",
+        "backgroundColorModal": "Warna latar belakang pembaca",
+        "textColorModal": "Warna teks pembaca",
+        "verticalSeekbarDesc": "Beralih antara bar pencarian vertikal dan horizontal",
+        "autoScrollInterval": "Interval menggulir otomatis (dalam detik)",
+        "autoScrollOffset": "Offset gulir otomatis (tinggi layar secara default)",
+        "saveCustomTheme": "Simpan kostumisasi tema",
+        "deleteCustomTheme": "Hapus kostumisasi tema",
+        "customCSS": "Kostumisasi CSS"
       },
-      "browseSettings": "Browse Settings",
+      "browseSettings": "Pengaturan Setelan",
       "browseSettingsScreen": {
-        "onlyShowPinnedSources": "Only show pinned sources",
-        "languages": "Languages",
-        "searchAllSources": "Search all sources",
-        "searchAllWarning": "Searching a large number of sources may freeze the app till searching is finished."
+        "onlyShowPinnedSources": "Hanya tampilkan sumber disematkan",
+        "languages": "Bahasa",
+        "searchAllSources": "Cari semua sumber",
+        "searchAllWarning": "Mencari dari banyak sumber mungkin akan membuat aplikasi hang sampai pencarian selesai."
       }
     }
   },
   "sourceScreen": {
-    "noResultsFound": "No results found"
+    "noResultsFound": "Tidak ada hasil ditemukan"
   },
   "globalSearch": {
-    "searchIn": "Search a novel in",
-    "allSources": "all sources",
-    "pinnedSources": "pinned sources"
+    "searchIn": "Cari novel di",
+    "allSources": "semua sumber",
+    "pinnedSources": "sumber disematkan"
   },
   "advancedSettings": {
-    "deleteReadChapters": "Delete read chapters",
-    "deleteReadChaptersDialogTitle": "Are you sure? All chapters marked as read will be deleted."
+    "deleteReadChapters": "Hapus bab yang telah dibaca",
+    "deleteReadChaptersDialogTitle": "Apakah kamu yakin? Semua bab ditandai sebagai sudah dibaca akan dihapus."
   },
   "date": {
     "calendar": {
-      "sameDay": "[Today]",
-      "nextDay": "[Tomorrow]",
+      "sameDay": "[Hari ini]",
+      "nextDay": "[Besok]",
       "nextWeek": "dddd",
-      "lastDay": "[Yesterday]",
-      "lastWeek": "[Last] dddd",
+      "lastDay": "[Kemarin]",
+      "lastWeek": "dddd [Kemarin]",
       "sameElse": "LL"
     }
   },
   "categories": {
-    "addCategories": "Add category",
-    "editCategories": "Rename category",
-    "setCategories": "Set categories",
-    "header": "Edit categories",
-    "emptyMsg": "You have no categories. Tap the plus button to create one for organizing your library",
-    "setModalEmptyMsg": "You have no categories. Tap the Edit button to create one for organizing your library",
+    "addCategories": "Tambah kategori",
+    "editCategories": "Ganti nama kategori",
+    "setCategories": "Mengatur kategori",
+    "header": "Ubah kategori",
+    "emptyMsg": "Kamu tidak memiliki kategori. Tekan tombol tambah untuk membuat satu untuk merapikan koleksimu",
+    "setModalEmptyMsg": "Kamu tidak memiliki kategori. Tekan tombol Ganti untuk membuat satu untuk merapikan koleksi kamu",
     "deleteModal": {
-      "header": "Delete category",
-      "desc": "Do you wish to delete category"
+      "header": "Hapus kategori",
+      "desc": "Apakah Kamu ingin untuk menghapus kategori ini"
     },
-    "duplicateError": "A category with this name already exists!",
-    "defaultCategory": "Default category"
+    "duplicateError": "Kategori dengan nama ini sudah ada!",
+    "defaultCategory": "Kategori default"
   },
   "settings": {
-    "icognitoMode": "Incognito mode",
-    "downloadedOnly": "Downloaded only"
+    "icognitoMode": "Mode penyamaran",
+    "downloadedOnly": "Terunduh saja"
   }
 }
