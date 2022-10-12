@@ -1,12 +1,12 @@
 {
   "common": {
-    "cancel": "Cancel",
+    "cancel": "キャンセル",
     "ok": "Ok",
-    "save": "Save",
+    "save": "保存",
     "clear": "Clear",
     "reset": "Reset",
-    "search": "Search",
-    "install": "Install",
+    "search": "検索",
+    "install": "インストール",
     "newUpdateAvailable": "New update available",
     "categories": "Categories",
     "add": "Add",
