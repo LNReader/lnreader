@@ -33,3 +33,14 @@ jobs:
       - name: Build Android Release
         run: |
           cd android && ./gradlew assembleRelease --no-daemon
+
+      - name: Set Env
+        run: |
+          set -x
+          echo "COMMIT_COUNT=$(git rev-list --count HEAD)" >> $GITHUB_ENV
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: LNReader-r${{ env.COMMIT_COUNT }}
+          path: android/app/build/outputs/apk/release/app-release.apk
