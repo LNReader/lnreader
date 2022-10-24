@@ -162,6 +162,7 @@ export const WBNovelScraper = new MadaraScraper(
   66,
   'https://wbnovel.com/',
   'WBNovel',
+  { 'lang': 'Indonesian' },
 );
 
 export const WuxiaWorldDotSiteScraper = new MadaraScraper(

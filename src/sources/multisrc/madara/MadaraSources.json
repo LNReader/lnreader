@@ -163,7 +163,8 @@
   {
     "sourceId": 66,
     "baseUrl": "https://wbnovel.com/",
-    "sourceName": "WBNovel"
+    "sourceName": "WBNovel",
+    "options": { "lang": "Indonesian" }
   },
   {
     "sourceId": 74,
