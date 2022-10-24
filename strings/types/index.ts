@@ -100,6 +100,13 @@ export interface StringMap {
   'moreScreen.settingsScreen.browseSettingsScreen.searchAllSources': 'string';
   'moreScreen.settingsScreen.browseSettingsScreen.searchAllWarning': 'string';
   'sourceScreen.noResultsFound': 'string';
+  'statsScreen.title': 'string';
+  'statsScreen.titlesInLibrary': 'string';
+  'statsScreen.readChapters': 'string';
+  'statsScreen.unreadChapters': 'string';
+  'statsScreen.downloadedChapters': 'string';
+  'statsScreen.genreDistribution': 'string';
+  'statsScreen.statusDistribution': 'string';
   'globalSearch.searchIn': 'string';
   'globalSearch.allSources': 'string';
   'globalSearch.pinnedSources': 'string';
