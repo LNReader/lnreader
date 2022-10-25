@@ -133,6 +133,15 @@
   "sourceScreen": {
     "noResultsFound": "Нічого не знайдено"
   },
+  "statsScreen": {
+    "title": "Statistics",
+    "titlesInLibrary": "Titles in library",
+    "readChapters": "Read chapters",
+    "unreadChapters": "Unread chapters",
+    "downloadedChapters": "Downloaded chapters",
+    "genreDistribution": "Genre distribution",
+    "statusDistribution": "Status distribution"
+  },
   "globalSearch": {
     "searchIn": "Пошук новели в",
     "allSources": "всі джерела",
