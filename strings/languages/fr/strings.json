@@ -133,6 +133,15 @@
   "sourceScreen": {
     "noResultsFound": "Aucun résultat trouvé"
   },
+  "statsScreen": {
+    "title": "Statistics",
+    "titlesInLibrary": "Titles in library",
+    "readChapters": "Read chapters",
+    "unreadChapters": "Unread chapters",
+    "downloadedChapters": "Downloaded chapters",
+    "genreDistribution": "Genre distribution",
+    "statusDistribution": "Status distribution"
+  },
   "globalSearch": {
     "searchIn": "Rechercher un novel dans",
     "allSources": "toutes les sources",
