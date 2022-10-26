@@ -146,10 +146,10 @@
     "calendar": {
       "sameDay": "[Сегодня]",
       "nextDay": "[Завтра]",
-      "nextWeek": "дддд",
+      "nextWeek": "dddd",
       "lastDay": "[Вчера]",
       "lastWeek": "[В прошлый] dddd",
-      "sameElse": "ЛЛ"
+      "sameElse": "LL"
     }
   },
   "categories": {
