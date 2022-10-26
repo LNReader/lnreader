@@ -146,10 +146,14 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   const loadedCheerio = cheerio.load(body);
 
   loadedCheerio('.reader-container img').each(function () {
-    if (!loadedCheerio(this).attr('data-src')?.startsWith('http')) {
-      const src = loadedCheerio(this).attr('data-src');
-      loadedCheerio(this).attr('data-src', baseUrl + src);
+    let url =
+      loadedCheerio(this).attr('data-src') || loadedCheerio(this).attr('src');
+    if (!url?.startsWith('http')) {
+      loadedCheerio(this).attr('src', baseUrl + url);
+    } else {
+      loadedCheerio(this).attr('src', url);
     }
+    loadedCheerio(this).removeAttr('data-src');
   });
 
   const chapterName = loadedCheerio(
