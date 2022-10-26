@@ -146,10 +146,8 @@
     "calendar": {
       "sameDay": "[Hari ini]",
       "nextDay": "[Besok]",
-      "nextWeek": "dddd",
       "lastDay": "[Kemarin]",
       "lastWeek": "dddd [Kemarin]",
-      "sameElse": "LL"
     }
   },
   "categories": {

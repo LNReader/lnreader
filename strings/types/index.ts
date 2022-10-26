@@ -114,10 +114,8 @@ export interface StringMap {
   'advancedSettings.deleteReadChaptersDialogTitle': 'string';
   'date.calendar.sameDay': 'string';
   'date.calendar.nextDay': 'string';
-  'date.calendar.nextWeek': 'string';
   'date.calendar.lastDay': 'string';
   'date.calendar.lastWeek': 'string';
-  'date.calendar.sameElse': 'string';
   'categories.addCategories': 'string';
   'categories.editCategories': 'string';
   'categories.setCategories': 'string';
