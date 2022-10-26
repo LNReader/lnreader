@@ -44,8 +44,8 @@ export const getString = (stringKey: keyof StringMap) => i18n.t(stringKey);
 dayjs.Ls[dayjs.locale()].calendar = {
   sameDay: getString('date.calendar.sameDay'),
   nextDay: getString('date.calendar.nextDay'),
-  nextWeek: getString('date.calendar.nextWeek'),
+  nextWeek: 'dddd',
   lastDay: getString('date.calendar.lastDay'),
   lastWeek: getString('date.calendar.lastWeek'),
-  sameElse: getString('date.calendar.sameElse'),
+  sameElse: 'LL',
 };

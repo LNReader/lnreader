@@ -146,10 +146,8 @@
     "calendar": {
       "sameDay": "اليوم",
       "nextDay": "الغد",
-      "nextWeek": "الأسبوع القادم",
       "lastDay": "بالأمس",
       "lastWeek": "الأسبوع الماضي",
-      "sameElse": "نفس الشيء"
     }
   },
   "categories": {

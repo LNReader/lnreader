@@ -146,10 +146,8 @@
     "calendar": {
       "sameDay": "[Сьогодні]",
       "nextDay": "[Завтра]",
-      "nextWeek": "dddd",
       "lastDay": "[Вчора]",
       "lastWeek": "[У минулий] dddd",
-      "sameElse": "LL"
     }
   },
   "categories": {
