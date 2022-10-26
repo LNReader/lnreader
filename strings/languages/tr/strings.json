@@ -134,13 +134,13 @@
     "noResultsFound": "Sonuç bulunamadı"
   },
   "statsScreen": {
-    "title": "Statistics",
-    "titlesInLibrary": "Titles in library",
-    "readChapters": "Read chapters",
-    "unreadChapters": "Unread chapters",
-    "downloadedChapters": "Downloaded chapters",
-    "genreDistribution": "Genre distribution",
-    "statusDistribution": "Status distribution"
+    "title": "İstatistikler",
+    "titlesInLibrary": "Kitaplıktaki başlıklar",
+    "readChapters": "Okunan bölüm",
+    "unreadChapters": "Okunmamış bölüm",
+    "downloadedChapters": "İndirilmiş bölüm",
+    "genreDistribution": "Tür dağıtımı",
+    "statusDistribution": "Durum dağıtımı"
   },
   "globalSearch": {
     "searchIn": "Şurada bir novel arayın",
