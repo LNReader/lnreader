@@ -40,7 +40,7 @@
         "list": "Liste",
         "badges": "Rozetler",
         "downloadBadges": "İndirilen LN'ler için rozet göster",
-        "unreadBadges": "Okunmamış rozetler",
+        "unreadBadges": "Okunmamış LN'ler için rozet göster",
         "showNoOfItems": "Öğelerin sayısını göster"
       }
     }
