@@ -141,9 +141,11 @@ export const getNovelGenresFromDb = async (): Promise<LibraryStats> => {
           let genres: string[] = [];
 
           _array.forEach((item: { genre: string }) => {
-            const novelGenres = item.genre.split(/\s*,\s*/);
+            const novelGenres = item.genre?.split(/\s*,\s*/);
 
-            genres.push(...novelGenres);
+            if (novelGenres?.length) {
+              genres.push(...novelGenres);
+            }
           });
 
           resolve({ genres: countBy(genres) });

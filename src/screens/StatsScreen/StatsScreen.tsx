@@ -80,7 +80,10 @@ const StatsScreen = () => {
   return (
     <>
       {Header}
-      <ScrollView style={styles.screenCtn}>
+      <ScrollView
+        style={styles.screenCtn}
+        contentContainerStyle={styles.contentCtn}
+      >
         <Text style={[styles.header, { color: theme.textColorSecondary }]}>
           {getString('moreScreen.settingsScreen.generalSettings')}
         </Text>
@@ -140,6 +143,10 @@ export const StatsCard: React.FC<{ label: string; value?: number }> = ({
 }) => {
   const theme = useTheme();
 
+  if (!label) {
+    return null;
+  }
+
   return (
     <View
       style={[
@@ -173,6 +180,8 @@ const styles = StyleSheet.create({
   },
   screenCtn: {
     paddingHorizontal: 16,
+  },
+  contentCtn: {
     paddingBottom: 40,
   },
   statsRow: {
