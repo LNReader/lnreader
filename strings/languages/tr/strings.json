@@ -13,7 +13,7 @@
     "edit": "Düzenle",
     "name": "Ad",
     "searchFor": "Şunu ara",
-    "globally": "global olarak",
+    "globally": "küresel",
     "searchResults": "Arama sonuçları"
   },
   "library": "Kitaplık",
@@ -25,7 +25,7 @@
         "downloaded": "İndirilen",
         "unread": "Okunmamış",
         "completed": "Tamamlanmış",
-        "started": "Başlanmış"
+        "started": "Başladı"
       },
       "sortOrders": {
         "dateAdded": "Eklendiği tarih",
@@ -136,9 +136,9 @@
   "statsScreen": {
     "title": "İstatistikler",
     "titlesInLibrary": "Kitaplıktaki başlıklar",
-    "readChapters": "Okunan bölüm",
-    "unreadChapters": "Okunmamış bölüm",
-    "downloadedChapters": "İndirilmiş bölüm",
+    "readChapters": "Okunan bölümler",
+    "unreadChapters": "Okunmamış bölümler",
+    "downloadedChapters": "İndirilmiş bölümler",
     "genreDistribution": "Tür dağıtımı",
     "statusDistribution": "Durum dağıtımı"
   },
@@ -164,7 +164,7 @@
     "editCategories": "Kategoriyi yeniden adlandır",
     "setCategories": "Kategorileri ayarla",
     "header": "Kategorileri düzenle",
-    "emptyMsg": "Kategoriniz bulunmuyor.  Kitaplığınızı düzenlemek için bir tane oluşturmak için artı butonuna basın",
+    "emptyMsg": "Hiç kategoriniz yok. Kitaplığınızı düzenlemek üzere bir tane oluşturmak için artı düğmesine dokunun",
     "setModalEmptyMsg": "Kategoriniz bulunmuyor.  Kitaplığınızı düzenlemek üzere bir tane oluşturmak için Düzenle butonuna basın",
     "deleteModal": {
       "header": "Kategoriyi sil",
