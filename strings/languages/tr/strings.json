@@ -165,7 +165,7 @@
     "setCategories": "Kategorileri ayarla",
     "header": "Kategorileri düzenle",
     "emptyMsg": "Hiç kategoriniz yok. Kitaplığınızı düzenlemek üzere bir tane oluşturmak için artı düğmesine dokunun",
-    "setModalEmptyMsg": "Kategoriniz bulunmuyor.  Kitaplığınızı düzenlemek üzere bir tane oluşturmak için Düzenle butonuna basın",
+    "setModalEmptyMsg": "Hiç kategoriniz yok. Kitaplığınızı düzenlemek üzere bir tane oluşturmak için Düzenle düğmesine dokunun",
     "deleteModal": {
       "header": "Kategoriyi sil",
       "desc": "Şu kategoriyi silmek istiyor musunuz:"
