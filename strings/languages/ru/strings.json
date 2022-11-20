@@ -134,11 +134,11 @@
     "noResultsFound": "Ничего не найдено"
   },
   "statsScreen": {
-    "title": "Statistics",
+    "title": "Статистика",
     "titlesInLibrary": "Titles in library",
     "readChapters": "Read chapters",
     "unreadChapters": "Unread chapters",
-    "downloadedChapters": "Downloaded chapters",
+    "downloadedChapters": "Загруженные главы",
     "genreDistribution": "Распределение по жанру",
     "statusDistribution": "Status distribution"
   },
