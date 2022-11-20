@@ -28,7 +28,7 @@ export const sanitizeChapterText = (
     let nameOnLine = findChapterName(firstLines, options?.chapterName);
 
     if (options?.showChapterName && nameOnLine == -1) {
-      text = '<h1>' + options?.chapterName + '</h1>' + text;
+      text = '<h2>' + options?.chapterName + '</h2>' + text;
     }else if(!options?.showChapterName && nameOnLine != -1){
       let toDeleteText =0;
       for (let i=0; i<= nameOnLine;i++){
