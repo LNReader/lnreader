@@ -72,6 +72,7 @@ export const initialState = {
   autoScrollOffset: null,
   verticalSeekbar: true,
   removeExtraParagraphSpacing: false,
+  showChapterName: true,
 
   reader: {
     theme: '#292832',

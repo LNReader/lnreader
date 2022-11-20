@@ -49,6 +49,7 @@ const GeneralTab: React.FC = () => {
     wvUseVolumeButtons = false,
     swipeGestures = false,
     removeExtraParagraphSpacing = false,
+    showChapterName = true
   } = useSettingsV1();
 
   return (
@@ -122,6 +123,19 @@ const GeneralTab: React.FC = () => {
           )
         }
         value={removeExtraParagraphSpacing}
+        theme={theme}
+      />
+      <ReaderSheetPreferenceItem
+        label={'Show Chapter Name'}
+        onPress={() =>
+          dispatch(
+            setAppSettings(
+              'showChapterName',
+              !showChapterName,
+            ),
+          )
+        }
+        value={showChapterName}
         theme={theme}
       />
       {useWebViewForChapter ? (

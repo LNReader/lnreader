@@ -88,6 +88,7 @@ const Chapter = ({ route, navigation }) => {
     autoScrollOffset = null,
     verticalSeekbar = true,
     removeExtraParagraphSpacing = false,
+    showChapterName = true,
   } = useSettings();
 
   const { setImmersiveMode, showStatusAndNavBar } = useFullscreenMode();
@@ -361,9 +362,9 @@ const Chapter = ({ route, navigation }) => {
   };
 
   const backgroundColor = readerSettings.theme;
-
+  
   const chapterText = sanitizeChapterText(chapter.chapterText, {
-    removeExtraParagraphSpacing,
+    removeExtraParagraphSpacing, showChapterName, chapterName,
   });
 
   return (
