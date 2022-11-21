@@ -162,6 +162,7 @@ export const WBNovelScraper = new MadaraScraper(
   66,
   'https://wbnovel.com/',
   'WBNovel',
+  { 'lang': 'Indonesian' },
 );
 
 export const WuxiaWorldDotSiteScraper = new MadaraScraper(
@@ -381,4 +382,11 @@ export const NovelR18Scraper = new MadaraScraper(
     'path': { 'novels': 'novel', 'novel': 'manga', 'chapter': 'manga' },
     'useNewChapterEndpoint': true,
   },
+);
+
+export const WebNovelOkuScraper = new MadaraScraper(
+  143,
+  'https://www.webnoveloku.com/',
+  'WebNovelOku ',
+  { 'totalPages': 1, 'lang': 'Turkish' },
 );

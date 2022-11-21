@@ -136,6 +136,16 @@ const MoreScreen = ({ navigation }) => {
             }
             theme={theme}
           />
+          <List.Item
+            title={getString('statsScreen.title')}
+            icon="google-analytics"
+            onPress={() =>
+              navigation.navigate('MoreStack', {
+                screen: 'Statistics',
+              })
+            }
+            theme={theme}
+          />
           <List.Divider theme={theme} />
           <List.Item
             title={getString('moreScreen.settings')}

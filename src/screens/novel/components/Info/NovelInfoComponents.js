@@ -202,7 +202,7 @@ const TrackerButton = ({ theme, isTracked, onPress }) => (
 );
 
 const NovelGenres = ({ theme, genre }) => {
-  const data = genre.split(',');
+  const data = genre.split(/,\s*/);
 
   const renderItem = ({ item }) => <Chip label={item} theme={theme} />;
 

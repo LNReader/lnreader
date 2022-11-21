@@ -232,6 +232,7 @@ const styles = StyleSheet.create({
   lastUpdateTime: {
     paddingHorizontal: 16,
     paddingVertical: 8,
-    textAlign: 'center',
+    fontSize: 12,
+    fontStyle: 'italic',
   },
 });

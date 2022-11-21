@@ -37,7 +37,7 @@ const popularNovels = async (page, { showLatestNovels, filters }) => {
   let totalPages =
     loadedCheerio('div[class="pagination"] > ul > li:last-child > a')
       .attr('href')
-      ?.split('/Book_page/')[1] || '1';
+      ?.split('/Book_page/')[1] || '0';
 
   totalPages = parseInt(totalPages, 10);
   let novels = [];
