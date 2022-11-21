@@ -1,5 +1,5 @@
 import sanitizeHtml from 'sanitize-html';
-import { sanitizeChapterTitle } from './sanitizeChapterTitle';
+import { sanitizeChapterName } from './sanitizeChapterName';
 
 interface Options {
   removeExtraParagraphSpacing?: boolean;
@@ -25,7 +25,7 @@ export const sanitizeChapterText = (
       text = text.replace(/<\s*br[^>]*>/gi, '\n').replace(/\n{2,}/g, '\n\n');
     }
     if (options?.chapterName) {
-      text = sanitizeChapterTitle(
+      text = sanitizeChapterName(
         text,
         options.showChapterName,
         options.chapterName,

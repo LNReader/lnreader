@@ -49,7 +49,7 @@ const GeneralTab: React.FC = () => {
     wvUseVolumeButtons = false,
     swipeGestures = false,
     removeExtraParagraphSpacing = false,
-    showChapterName = true
+    showChapterName = true,
   } = useSettingsV1();
 
   return (
@@ -126,14 +126,9 @@ const GeneralTab: React.FC = () => {
         theme={theme}
       />
       <ReaderSheetPreferenceItem
-        label={'Show Chapter Name'}
+        label={getString('readerScreen.bottomSheet.showChapterName')}
         onPress={() =>
-          dispatch(
-            setAppSettings(
-              'showChapterName',
-              !showChapterName,
-            ),
-          )
+          dispatch(setAppSettings('showChapterName', !showChapterName))
         }
         value={showChapterName}
         theme={theme}

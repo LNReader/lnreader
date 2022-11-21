@@ -84,7 +84,8 @@
       "showBatteryAndTime": "Afficher la batterie et l'heure",
       "showProgressPercentage": "Afficher le pourcentage de progression",
       "swipeGestures": "Balayez vers la gauche ou la droite pour passer d'un chapitre à l'autre.",
-      "allowTextSelection": "Permettre la sélection du texte"
+      "allowTextSelection": "Permettre la sélection du texte",
+      "showChapterName": "Show chapter name"
     }
   },
   "novelScreen": {

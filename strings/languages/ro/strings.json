@@ -84,7 +84,8 @@
       "showBatteryAndTime": "Show battery and time",
       "showProgressPercentage": "Show progress percentage",
       "swipeGestures": "Swipe left or right to navigate between chapters",
-      "allowTextSelection": "Allow text selection"
+      "allowTextSelection": "Allow text selection",
+      "showChapterName": "Show chapter name"
     }
   },
   "novelScreen": {

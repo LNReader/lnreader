@@ -84,7 +84,8 @@
       "showBatteryAndTime": "Показывать батарею и время",
       "showProgressPercentage": "Показывать процент прогресса",
       "swipeGestures": "Проведите влево или вправо для перехода между главами",
-      "allowTextSelection": "Разрешить выделение текста"
+      "allowTextSelection": "Разрешить выделение текста",
+      "showChapterName": "Show chapter name"
     }
   },
   "novelScreen": {

@@ -84,7 +84,8 @@
       "showBatteryAndTime": "Tampilkan baterai dan waktu",
       "showProgressPercentage": "Tampilkan persentase proses",
       "swipeGestures": "Gesek ke kiri atau kanan untuk menavigasi antara bab",
-      "allowTextSelection": "Izinkan pemilihan teks"
+      "allowTextSelection": "Izinkan pemilihan teks",
+      "showChapterName": "Show chapter name"
     }
   },
   "novelScreen": {

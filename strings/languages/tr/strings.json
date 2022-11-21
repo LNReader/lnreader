@@ -84,7 +84,8 @@
       "showBatteryAndTime": "Pili ve saati göster",
       "showProgressPercentage": "İlerleme yüzdesini göster",
       "swipeGestures": "Bölümler arası gezinmek için sol veya sağa doğru kaydırın",
-      "allowTextSelection": "Yazı seçmeye izin ver"
+      "allowTextSelection": "Yazı seçmeye izin ver",
+      "showChapterName": "Show chapter name"
     }
   },
   "novelScreen": {

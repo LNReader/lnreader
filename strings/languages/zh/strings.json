@@ -84,7 +84,8 @@
       "showBatteryAndTime": "显示电池和时间",
       "showProgressPercentage": "显示进度百分比",
       "swipeGestures": "向左或向右滑动以导航章节",
-      "allowTextSelection": "允许选择文本"
+      "allowTextSelection": "允许选择文本",
+      "showChapterName": "Show chapter name"
     }
   },
   "novelScreen": {

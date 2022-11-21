@@ -84,7 +84,8 @@
       "showBatteryAndTime": "Akku und Zeit anzeigen",
       "showProgressPercentage": "Zeige Fortschritt in Prozent",
       "swipeGestures": "Nach links oder rechts wischen, um zwischen den Kapiteln zu wechseln",
-      "allowTextSelection": "Textauswahl erlauben"
+      "allowTextSelection": "Textauswahl erlauben",
+      "showChapterName": "Kapitel Name anzeigen"
     }
   },
   "novelScreen": {

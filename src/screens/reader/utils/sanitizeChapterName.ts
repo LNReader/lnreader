@@ -1,4 +1,4 @@
-export const sanitizeChapterTitle = (
+export const sanitizeChapterName = (
   text: string,
   showChapterName: boolean | undefined,
   sourceChapterName: string,

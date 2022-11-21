@@ -84,7 +84,8 @@
       "showBatteryAndTime": "اضهر البطارية والوقت",
       "showProgressPercentage": "النسبة المئوية للتقدم",
       "swipeGestures": "اسحب لليسار أو لليمين للتبديل بين علامات التبويب",
-      "allowTextSelection": "السماح باختيار النص"
+      "allowTextSelection": "السماح باختيار النص",
+      "showChapterName": "Show chapter name"
     }
   },
   "novelScreen": {

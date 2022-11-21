@@ -84,7 +84,8 @@
       "showBatteryAndTime": "Показувати стан батареї | час",
       "showProgressPercentage": "Показувати прогрес",
       "swipeGestures": "Проведіть вліво або вправо для навігації між главами",
-      "allowTextSelection": "Дозволити виділяти текст"
+      "allowTextSelection": "Дозволити виділяти текст",
+      "showChapterName": "Show chapter name"
     }
   },
   "novelScreen": {
