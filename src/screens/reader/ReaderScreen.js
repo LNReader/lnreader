@@ -362,9 +362,10 @@ const Chapter = ({ route, navigation }) => {
   };
 
   const backgroundColor = readerSettings.theme;
-  
   const chapterText = sanitizeChapterText(chapter.chapterText, {
-    removeExtraParagraphSpacing, showChapterName, chapterName,
+    removeExtraParagraphSpacing,
+    showChapterName,
+    chapterName,
   });
 
   return (
