@@ -44,7 +44,7 @@ const findChapterName = (lines: Array<string>, chapterName: string) => {
   return -1;
 };
 const takeName = (chapterName: string): Array<string> => {
-  let res = chapterName.split(/(.*\d)\W*(.*)/gm);
+  let res = chapterName.split(/(.*\d)\W+(.*)/gm);
   if (res[2] === '' || res[2] === ' ') {
     res[1] = '';
     res[2] = chapterName;
