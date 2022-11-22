@@ -452,51 +452,36 @@ export const deleteAllChaptersAction =
           res();
         }
 
-        const pendingCallbackLimit = 10;
-
-        if (downloaded.length > pendingCallbackLimit) {
-          /**
-           * @type {Promise<void>[][]}
-           */
-          const removeBatches = [];
-          for (let i = 0; i < downloaded.length; i++) {
-            if (i % pendingCallbackLimit === 0) {
-              removeBatches.push([]);
-            }
-            removeBatches[removeBatches.length - 1].push(
-              new Promise(resolveRemoval => {
-                (async () => {
-                  const chapter = downloaded[i];
-                  await deleteChapter(
-                    sourceId,
-                    chapter.novelId,
-                    chapter.chapterId,
-                  );
-
-                  dispatch({
-                    type: CHAPTER_DELETED,
-                    payload: chapter.chapterId,
-                  });
-                  resolveRemoval();
-                })();
-              }),
-            );
+        const coccurent = 5;
+        /**
+         * @type {Promise<void>[][]}
+         */
+        const removeBatches = [];
+        for (let i = 0; i < downloaded.length; i++) {
+          if (i % coccurent === 0) {
+            removeBatches.push([]);
           }
-          for (const rb of removeBatches) {
-            await Promise.all(rb);
-            console.log('Removed batch #1');
-          }
-        } else {
-          await Promise.all(
-            chapters.map(async chapter => {
-              await deleteChapter(sourceId, chapter.novelId, chapter.chapterId);
+          removeBatches[removeBatches.length - 1].push(
+            new Promise(resolveRemoval => {
+              (async () => {
+                const chapter = downloaded[i];
+                await deleteChapter(
+                  sourceId,
+                  chapter.novelId,
+                  chapter.chapterId,
+                );
 
-              dispatch({
-                type: CHAPTER_DELETED,
-                payload: chapter.chapterId,
-              });
+                dispatch({
+                  type: CHAPTER_DELETED,
+                  payload: chapter.chapterId,
+                });
+                resolveRemoval();
+              })();
             }),
           );
+        }
+        for (const rb of removeBatches) {
+          await Promise.all(rb);
         }
         res();
       })();

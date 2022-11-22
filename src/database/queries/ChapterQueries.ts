@@ -416,7 +416,6 @@ export const deleteChapter = async (
       },
     );
   });
-  console.log('removed from SQL', sourceId, novelId, chapterId);
 };
 
 const getLastReadChapterQuery = `
