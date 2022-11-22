@@ -379,7 +379,7 @@ const deleteDownloadedImages = async (
       }
     }
   } catch (error) {
-    showToast(error.message);
+    showToast((error as Error).message);
   }
 };
 
@@ -416,6 +416,7 @@ export const deleteChapter = async (
       },
     );
   });
+  console.log('removed from SQL', sourceId, novelId, chapterId);
 };
 
 const getLastReadChapterQuery = `
