@@ -447,7 +447,6 @@ export const deleteAllChaptersAction =
     await new Promise((res, rej) => {
       (async () => {
         const downloaded = chapters.filter(f => !!f.downloaded);
-        console.log('dL', downloaded.length);
         if (downloaded.length === 0) {
           res();
         }
