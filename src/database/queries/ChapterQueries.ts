@@ -379,7 +379,7 @@ const deleteDownloadedImages = async (
       }
     }
   } catch (error) {
-    showToast(error.message);
+    showToast((error as Error).message);
   }
 };
 
