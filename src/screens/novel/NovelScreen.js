@@ -282,13 +282,17 @@ const Novel = ({ route, navigation }) => {
     }
   };
 
-  const navigateToChapter = chapter =>
+  const navigateToChapter = chapter => {
     navigation.navigate('Chapter', {
-      sourceId,
-      novelUrl,
-      novelName,
-      ...chapter,
+      currentChapter: {
+        sourceId,
+        novelUrl,
+        novelName,
+        ...chapter,
+      },
+      chapters,
     });
+  };
 
   const showProgressPercentage = chapter => {
     const savedProgress =

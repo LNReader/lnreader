@@ -54,8 +54,31 @@ import { defaultTo } from 'lodash';
 import BottomInfoBar from './components/BottomInfoBar/BottomInfoBar';
 import { sanitizeChapterText } from './utils/sanitizeChapterText';
 import { LoadingScreenV2 } from '@components/index';
+import ChapterDrawer from './components/ChapterDrawer';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { Drawer } from 'react-native-paper';
+import color from 'color';
+import { NavigationContainer } from '@react-navigation/native';
+
+const DrawerNav = createDrawerNavigator();
 
 const Chapter = ({ route, navigation }) => {
+  return (
+    <DrawerNav.Navigator
+      route={route}
+      drawerContent={props => <ChapterDrawer {...props} />}
+    >
+      <DrawerNav.Screen
+        name="ChapterContent"
+        initialParams={route.params}
+        options={{ headerShown: false }}
+        component={ChapterContent}
+      />
+    </DrawerNav.Navigator>
+  );
+};
+
+const ChapterContent = ({ route, navigation }) => {
   useKeepAwake();
 
   const {
@@ -67,8 +90,7 @@ const Chapter = ({ route, navigation }) => {
     novelName,
     chapterName,
     bookmark,
-  } = route.params;
-
+  } = route.params.currentChapter;
   let scrollViewRef = useRef(null);
   let readerSheetRef = useRef(null);
 
@@ -386,9 +408,10 @@ const Chapter = ({ route, navigation }) => {
         />
         <GestureRecognizer
           onSwipeRight={
-            swipeGestures &&
-            (!useWebViewForChapter || !wvUseNewSwipes) &&
-            navigateToPrevChapter
+            navigation.openDrawer
+            // swipeGestures &&
+            // (!useWebViewForChapter || !wvUseNewSwipes) &&
+            // navigateToPrevChapter
           }
           onSwipeLeft={
             swipeGestures &&
