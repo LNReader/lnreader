@@ -1,12 +1,12 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Drawer, Text } from 'react-native-paper';
+import { Drawer, Text, TouchableRipple } from 'react-native-paper';
 import color from 'color';
 import { useTheme } from '@hooks/useTheme';
 import { FlashList } from '@shopify/flash-list';
 import { DrawerItem } from '@react-navigation/drawer';
 
-const ChapterDrawer = props => {
+const ChapterDrawer = ({ state, navigation, descriptors }) => {
   const theme = useTheme();
   const styles = StyleSheet.create({
     drawer: {
@@ -17,22 +17,34 @@ const ChapterDrawer = props => {
     drawerElement: {
       color: theme.textColorPrimary,
       overflow: 'visible',
-      paddingLeft: 0,
+      paddingLeft: 5,
       width: 240,
       height: '100%',
+      textAlignVertical: 'center',
     },
     drawerElementContainer: {
       backgroundColor: color(theme.surface).alpha(0.5).string(),
       height: 50,
       margin: 5,
+      marginLeft: 20,
+      marginRight: 10,
+      borderRadius: 10,
+      borderColor: color(theme.secondaryContainer).alpha(0.5).string(),
+      borderWidth: 2,
     },
   });
 
-  const chapters = props.state.routes[0].params.chapters;
+  const chapters = state.routes[0].params.chapters;
   const { sourceId, novelUrl, novelName } =
-    props.state.routes[0].params.currentChapter;
+    state.routes[0].params.currentChapter;
+  const indexOfCurrentChapter = chapters.findIndex(el => {
+    if (el.chapterId === state.routes[0].params.currentChapter.chapterId) {
+      return true;
+    }
+  });
+
   const changeChapter = item => {
-    props.navigation.replace('Chapter', {
+    navigation.replace('Chapter', {
       currentChapter: {
         sourceId,
         novelUrl,
@@ -42,34 +54,30 @@ const ChapterDrawer = props => {
       chapters,
     });
   };
-  const renderItem = ({ item, index }) => {
+  const renderItem = ({ item }) => {
     return (
-      <DrawerItem
-        label={item.chapterName.replace('Chapter ', '')}
-        labelStyle={styles.drawerElement}
+      <TouchableRipple
+        rippleColor={theme.secondary}
         style={styles.drawerElementContainer}
         onPress={() => changeChapter(item)}
-      />
+        borderless={true}
+      >
+        <Text style={styles.drawerElement}>
+          {item.chapterName.replace('Chapter ', '')}
+        </Text>
+      </TouchableRipple>
     );
   };
+  
   return (
-    // <DrawerContentScrollView contentContainerStyle={styles.drawer}>
     <View style={styles.drawer}>
       <FlashList
         data={chapters}
         renderItem={renderItem}
         estimatedItemSize={56}
-        initialScrollIndex={chapters.findIndex(el => {
-          if (
-            el.chapterId ===
-            props.state.routes[0].params.currentChapter.chapterId
-          ) {
-            return true;
-          }
-        })}
+        initialScrollIndex={indexOfCurrentChapter}
       />
     </View>
-    // </DrawerContentScrollView>
   );
 };
 
