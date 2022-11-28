@@ -68,7 +68,11 @@ const ChapterDrawer = ({ state, navigation, descriptors }) => {
       </TouchableRipple>
     );
   };
-  
+  const listFooter = () => {
+    return (
+      
+    )
+  };
   return (
     <View style={styles.drawer}>
       <FlashList
@@ -76,6 +80,7 @@ const ChapterDrawer = ({ state, navigation, descriptors }) => {
         renderItem={renderItem}
         estimatedItemSize={56}
         initialScrollIndex={indexOfCurrentChapter}
+        ListFooterComponent={listFooter}
       />
     </View>
   );
