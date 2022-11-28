@@ -9,14 +9,17 @@ const ReadButton = ({ navigation, novel, chapters, theme, lastRead }) => {
 
   const navigateToLastReadChapter = () => {
     navigation.navigate('Chapter', {
-      chapterId: lastRead.chapterId,
-      chapterUrl: lastRead.chapterUrl,
-      novelUrl: novel.novelUrl,
-      novelId: lastRead.novelId,
-      sourceId: novel.sourceId,
-      chapterName: lastRead.chapterName,
-      novelName: novel.novelName,
-      bookmark: lastRead.bookmark,
+      currentChapter: {
+        chapterId: lastRead.chapterId,
+        chapterUrl: lastRead.chapterUrl,
+        novelUrl: novel.novelUrl,
+        novelId: lastRead.novelId,
+        sourceId: novel.sourceId,
+        chapterName: lastRead.chapterName,
+        novelName: novel.novelName,
+        bookmark: lastRead.bookmark,
+      },
+      chapters,
     });
   };
 

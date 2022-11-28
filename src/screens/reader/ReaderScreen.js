@@ -56,16 +56,13 @@ import { sanitizeChapterText } from './utils/sanitizeChapterText';
 import { LoadingScreenV2 } from '@components/index';
 import ChapterDrawer from './components/ChapterDrawer';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { Drawer } from 'react-native-paper';
-import color from 'color';
-import { NavigationContainer } from '@react-navigation/native';
 
 const DrawerNav = createDrawerNavigator();
 
 const Chapter = ({ route, navigation }) => {
   return (
     <DrawerNav.Navigator
-      route={route}
+      params={route.params}
       drawerContent={props => <ChapterDrawer {...props} />}
     >
       <DrawerNav.Screen
@@ -80,7 +77,7 @@ const Chapter = ({ route, navigation }) => {
 
 const ChapterContent = ({ route, navigation }) => {
   useKeepAwake();
-
+  const params = route.params;
   const {
     sourceId,
     chapterId,
@@ -90,7 +87,7 @@ const ChapterContent = ({ route, navigation }) => {
     novelName,
     chapterName,
     bookmark,
-  } = route.params.currentChapter;
+  } = params.currentChapter;
   let scrollViewRef = useRef(null);
   let readerSheetRef = useRef(null);
 
@@ -339,33 +336,39 @@ const ChapterContent = ({ route, navigation }) => {
     directionalOffsetThreshold: 80,
   };
 
-  const navigateToPrevChapter = () =>
+  const navigateToPrevChapter = () => {
+    const currentChapter = {
+      ...params.currentChapter,
+
+      chapterUrl: prevChapter.chapterUrl,
+      chapterId: prevChapter.chapterId,
+      chapterName: prevChapter.chapterName,
+      bookmark: prevChapter.bookmark,
+    };
     prevChapter
       ? navigation.replace('Chapter', {
-          chapterUrl: prevChapter.chapterUrl,
-          chapterId: prevChapter.chapterId,
-          sourceId,
-          novelUrl,
-          novelId,
-          chapterName: prevChapter.chapterName,
-          novelName,
-          bookmark: prevChapter.bookmark,
+          ...params,
+          currentChapter,
         })
       : showToast("There's no previous chapter");
+  };
 
-  const navigateToNextChapter = () =>
+  const navigateToNextChapter = () => {
+    const currentChapter = {
+      ...params.currentChapter,
+
+      chapterUrl: nextChapter.chapterUrl,
+      chapterId: nextChapter.chapterId,
+      chapterName: nextChapter.chapterName,
+      bookmark: nextChapter.bookmark,
+    };
     nextChapter
       ? navigation.replace('Chapter', {
-          chapterUrl: nextChapter.chapterUrl,
-          sourceId,
-          novelUrl,
-          novelId,
-          chapterId: nextChapter.chapterId,
-          chapterName: nextChapter.chapterName,
-          novelName,
-          bookmark: nextChapter.bookmark,
+          ...params,
+          currentChapter,
         })
       : showToast("There's no next chapter");
+  };
 
   const enableAutoScroll = () =>
     dispatch(setAppSettings('autoScroll', !autoScroll));
@@ -375,10 +378,7 @@ const ChapterContent = ({ route, navigation }) => {
 
   const onWebViewNavigationStateChange = async ({ url }) => {
     if ((sourceId === 50 || sourceId === 62) && url !== 'about:blank') {
-      setLoading(true);
-      const res = await fetchChapter(sourceId, novelUrl, url);
-      setChapter(res);
-      setLoading(false);
+      navigateToNextChapter();
     }
   };
 
@@ -387,7 +387,10 @@ const ChapterContent = ({ route, navigation }) => {
   const chapterText = sanitizeChapterText(chapter.chapterText, {
     removeExtraParagraphSpacing,
   });
-
+  const openDrawer = () => {
+    navigation.openDrawer();
+    setHidden(true);
+  };
   return (
     <>
       <>
@@ -408,7 +411,7 @@ const ChapterContent = ({ route, navigation }) => {
         />
         <GestureRecognizer
           onSwipeRight={
-            navigation.openDrawer
+            !loading && openDrawer
             // swipeGestures &&
             // (!useWebViewForChapter || !wvUseNewSwipes) &&
             // navigateToPrevChapter
