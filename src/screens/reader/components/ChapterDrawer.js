@@ -70,7 +70,7 @@ const ChapterDrawer = ({ state, navigation, descriptors }) => {
   };
   const listFooter = () => {
     return (
-      
+      <Text></Text>
     )
   };
   return (
