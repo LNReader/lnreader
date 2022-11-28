@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Drawer, Text, TouchableRipple } from 'react-native-paper';
 import color from 'color';
 import { useTheme } from '@hooks/useTheme';
 import { FlashList } from '@shopify/flash-list';
-import { DrawerItem } from '@react-navigation/drawer';
+import { Button } from '@components/index';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const ChapterDrawer = ({ state, navigation, descriptors }) => {
   const theme = useTheme();
@@ -32,15 +34,46 @@ const ChapterDrawer = ({ state, navigation, descriptors }) => {
       borderColor: color(theme.secondaryContainer).alpha(0.5).string(),
       borderWidth: 2,
     },
+    button: {
+      margin: 10,
+      marginLeft: 20,
+      marginTop: 5,
+    },
+    transition: {
+      width: '100%',
+      height: 30,
+      zIndex: 2,
+      marginBottom: -30,
+    },
   });
 
+  let listRef = useRef();
   const chapters = state.routes[0].params.chapters;
-  const { sourceId, novelUrl, novelName } =
-    state.routes[0].params.currentChapter;
+  const [buttonProperties, setButtonProperties] = useState({
+    up: {
+      text: 'Scroll to top',
+      func: () => {
+        listRef.current.scrollToIndex({ index: 0, animated: true });
+      },
+    },
+    down: {
+      text: 'Scroll to bottom',
+      func: () => {
+        listRef.current.scrollToEnd({
+          animated: true,
+        });
+      },
+    },
+  });
+
+  const {
+    sourceId,
+    novelUrl,
+    novelName,
+    chapterId: currentChapterId,
+  } = state.routes[0].params.currentChapter;
   const indexOfCurrentChapter = chapters.findIndex(el => {
-    if (el.chapterId === state.routes[0].params.currentChapter.chapterId) {
-      return true;
-    }
+    return el.chapterId === state.routes[0].params.currentChapter.chapterId;
   });
 
   const changeChapter = item => {
@@ -68,21 +101,90 @@ const ChapterDrawer = ({ state, navigation, descriptors }) => {
       </TouchableRipple>
     );
   };
-  const listFooter = () => {
+  const ListFooter = () => {
     return (
-      <Text></Text>
-    )
+      <>
+        <Button
+          theme={theme}
+          style={styles.button}
+          title={buttonProperties.up.text}
+          onPress={() => buttonProperties.up.func()}
+        />
+        <Button
+          theme={theme}
+          style={styles.button}
+          title={buttonProperties.down.text}
+          onPress={buttonProperties.down.func}
+        />
+      </>
+    );
+  };
+  const checkViewableItems = ({ viewableItems }) => {
+    let up = {
+      text: 'Scroll to top',
+      func: () => {
+        listRef.current.scrollToIndex({ index: 0, animated: true });
+      },
+    };
+    let down = {
+      text: 'Scroll to bottom',
+      func: () => {
+        listRef.current.scrollToEnd({
+          animated: true,
+        });
+      },
+    };
+    let visible = viewableItems.find(({ item }) => {
+      return item.chapterId === currentChapterId;
+    });
+    if (!visible && viewableItems) {
+      try {
+        if (viewableItems[3].item.chapterId < currentChapterId) {
+          down = {
+            text: 'Scroll to current chapter',
+            func: () => {
+              listRef.current.scrollToIndex({
+                index: indexOfCurrentChapter,
+                animated: true,
+              });
+            },
+          };
+        } else {
+          up = {
+            text: 'Scroll to current chapter',
+            func: () => {
+              listRef.current.scrollToIndex({
+                index: indexOfCurrentChapter,
+                animated: true,
+              });
+            },
+          };
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    setButtonProperties({
+      up: up,
+      down: down,
+    });
   };
   return (
-    <View style={styles.drawer}>
+    <SafeAreaView style={styles.drawer}>
+      <LinearGradient
+        style={styles.transition}
+        colors={[theme.surface, 'rgba(0,0,0, 0)']}
+      />
       <FlashList
+        ref={ref => (listRef.current = ref)}
+        onViewableItemsChanged={checkViewableItems}
         data={chapters}
         renderItem={renderItem}
         estimatedItemSize={56}
         initialScrollIndex={indexOfCurrentChapter}
-        ListFooterComponent={listFooter}
       />
-    </View>
+      <ListFooter />
+    </SafeAreaView>
   );
 };
 
