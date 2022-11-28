@@ -664,14 +664,17 @@ const Novel = ({ route, navigation }) => {
               icon="play"
               onPress={() =>
                 navigation.navigate('Chapter', {
-                  chapterId: lastReadChapter.chapterId,
-                  chapterUrl: lastReadChapter.chapterUrl,
-                  novelUrl: novel.novelUrl,
-                  novelId: lastReadChapter.novelId,
-                  sourceId: novel.sourceId,
-                  chapterName: lastReadChapter.chapterName,
-                  novelName: novel.novelName,
-                  bookmark: lastReadChapter.bookmark,
+                  currentChapter: {
+                    chapterId: lastReadChapter.chapterId,
+                    chapterUrl: lastReadChapter.chapterUrl,
+                    novelUrl: novel.novelUrl,
+                    novelId: lastReadChapter.novelId,
+                    sourceId: novel.sourceId,
+                    chapterName: lastReadChapter.chapterName,
+                    novelName: novel.novelName,
+                    bookmark: lastReadChapter.bookmark,
+                  },
+                  chapters,
                 })
               }
             />
