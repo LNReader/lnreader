@@ -88,10 +88,16 @@ const ChapterDrawer = ({ state, navigation, descriptors }) => {
     });
   };
   const renderItem = ({ item }) => {
+    let current = {};
+    if (item.chapterId === currentChapterId) {
+      current = {
+        backgroundColor: color(theme.secondaryContainer).alpha(0.5).string(),
+      };
+    }
     return (
       <TouchableRipple
         rippleColor={theme.secondary}
-        style={styles.drawerElementContainer}
+        style={[styles.drawerElementContainer, current]}
         onPress={() => changeChapter(item)}
         borderless={true}
       >
