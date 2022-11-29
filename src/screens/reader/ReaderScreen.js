@@ -64,6 +64,9 @@ const Chapter = ({ route, navigation }) => {
     <DrawerNav.Navigator
       params={route.params}
       drawerContent={props => <ChapterDrawer {...props} />}
+      screenOptions={{
+        swipeEdgeWidth: 20,
+      }}
     >
       <DrawerNav.Screen
         name="ChapterContent"
@@ -333,7 +336,7 @@ const ChapterContent = ({ route, navigation }) => {
 
   const config = {
     velocityThreshold: 0.3,
-    directionalOffsetThreshold: 80,
+    directionalOffsetThreshold: 50,
   };
 
   const navigateToPrevChapter = () => {
