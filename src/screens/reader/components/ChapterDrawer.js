@@ -5,11 +5,15 @@ import color from 'color';
 import { useTheme } from '@hooks/useTheme';
 import { FlashList } from '@shopify/flash-list';
 import { Button } from '@components/index';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 
 const ChapterDrawer = ({ state, navigation, descriptors }) => {
   const theme = useTheme();
+  const insets = useSafeAreaInsets();
   const styles = StyleSheet.create({
     drawer: {
       flex: 1,
@@ -19,31 +23,46 @@ const ChapterDrawer = ({ state, navigation, descriptors }) => {
     drawerElement: {
       color: theme.textColorPrimary,
       overflow: 'visible',
-      paddingLeft: 5,
       width: 240,
       height: '100%',
       textAlignVertical: 'center',
+      paddingHorizontal: 6,
     },
     drawerElementContainer: {
       backgroundColor: color(theme.surface).alpha(0.5).string(),
       height: 50,
       margin: 5,
-      marginLeft: 20,
-      marginRight: 10,
+      marginHorizontal: 15,
       borderRadius: 10,
       borderColor: color(theme.secondaryContainer).alpha(0.5).string(),
       borderWidth: 2,
     },
     button: {
-      margin: 10,
-      marginLeft: 20,
+      marginBottom: 10,
+      marginHorizontal: 20,
       marginTop: 5,
+    },
+    header: {
+      height: insets.top,
+      width: '100%',
+      backgroundColor: theme.surface,
+    },
+    footer: {
+      zIndex: 4,
+      paddingBottom: insets.bottom,
+      backgroundColor: theme.surface,
     },
     transition: {
       width: '100%',
       height: 30,
       zIndex: 2,
+    },
+    t_down: {
+      marginTop: -30,
+    },
+    t_up: {
       marginBottom: -30,
+      paddingTop: insets.top,
     },
   });
 
@@ -77,7 +96,7 @@ const ChapterDrawer = ({ state, navigation, descriptors }) => {
   });
 
   const changeChapter = item => {
-    navigation.replace('Chapter', {
+    navigation.replace(/Chapter/i, {
       currentChapter: {
         sourceId,
         novelUrl,
@@ -107,21 +126,38 @@ const ChapterDrawer = ({ state, navigation, descriptors }) => {
       </TouchableRipple>
     );
   };
+  const ListHeader = () => {
+    return (
+      <>
+        <View style={styles.header} />
+        <LinearGradient
+          style={[styles.t_up, styles.transition]}
+          colors={[theme.surface, 'rgba(0,0,0, 0)']}
+        />
+      </>
+    );
+  };
   const ListFooter = () => {
     return (
       <>
-        <Button
-          theme={theme}
-          style={styles.button}
-          title={buttonProperties.up.text}
-          onPress={() => buttonProperties.up.func()}
+        <LinearGradient
+          style={[styles.t_down, styles.transition]}
+          colors={['rgba(0,0,0, 0)', theme.surface]}
         />
-        <Button
-          theme={theme}
-          style={styles.button}
-          title={buttonProperties.down.text}
-          onPress={buttonProperties.down.func}
-        />
+        <View style={styles.footer}>
+          <Button
+            theme={theme}
+            style={styles.button}
+            title={buttonProperties.up.text}
+            onPress={() => buttonProperties.up.func()}
+          />
+          <Button
+            theme={theme}
+            style={styles.button}
+            title={buttonProperties.down.text}
+            onPress={buttonProperties.down.func}
+          />
+        </View>
       </>
     );
   };
@@ -144,7 +180,6 @@ const ChapterDrawer = ({ state, navigation, descriptors }) => {
       let visible = viewableItems.find(({ item }) => {
         return item.chapterId === currentChapterId;
       });
-      console.log(viewableItems.length);
       if (!visible) {
         if (viewableItems[0].item.chapterId < currentChapterId) {
           down = {
@@ -175,11 +210,8 @@ const ChapterDrawer = ({ state, navigation, descriptors }) => {
     }
   };
   return (
-    <SafeAreaView style={styles.drawer}>
-      <LinearGradient
-        style={styles.transition}
-        colors={[theme.surface, 'rgba(0,0,0, 0)']}
-      />
+    <View style={styles.drawer}>
+      <ListHeader />
       <FlashList
         ref={ref => (listRef.current = ref)}
         onViewableItemsChanged={checkViewableItems}
@@ -189,7 +221,7 @@ const ChapterDrawer = ({ state, navigation, descriptors }) => {
         initialScrollIndex={indexOfCurrentChapter}
       />
       <ListFooter />
-    </SafeAreaView>
+    </View>
   );
 };
 
