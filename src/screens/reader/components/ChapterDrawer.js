@@ -140,12 +140,13 @@ const ChapterDrawer = ({ state, navigation, descriptors }) => {
         });
       },
     };
-    let visible = viewableItems.find(({ item }) => {
-      return item.chapterId === currentChapterId;
-    });
-    if (!visible && viewableItems) {
-      try {
-        if (viewableItems[3].item.chapterId < currentChapterId) {
+    if (viewableItems.length !== 0) {
+      let visible = viewableItems.find(({ item }) => {
+        return item.chapterId === currentChapterId;
+      });
+      console.log(viewableItems.length);
+      if (!visible) {
+        if (viewableItems[0].item.chapterId < currentChapterId) {
           down = {
             text: 'Scroll to current chapter',
             func: () => {
@@ -166,14 +167,12 @@ const ChapterDrawer = ({ state, navigation, descriptors }) => {
             },
           };
         }
-      } catch (e) {
-        console.error(e);
       }
+      setButtonProperties({
+        up: up,
+        down: down,
+      });
     }
-    setButtonProperties({
-      up: up,
-      down: down,
-    });
   };
   return (
     <SafeAreaView style={styles.drawer}>
