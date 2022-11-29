@@ -414,10 +414,9 @@ const ChapterContent = ({ route, navigation }) => {
         />
         <GestureRecognizer
           onSwipeRight={
-            !loading && openDrawer
-            // swipeGestures &&
-            // (!useWebViewForChapter || !wvUseNewSwipes) &&
-            // navigateToPrevChapter
+            swipeGestures &&
+            (!useWebViewForChapter || !wvUseNewSwipes) &&
+            navigateToPrevChapter
           }
           onSwipeLeft={
             swipeGestures &&
