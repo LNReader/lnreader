@@ -125,7 +125,7 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
     <View style={styles.container}>
       <WebView
         ref={webViewRef}
-        style={[{ backgroundColor }, { marginLeft: reader.padding + '%' }]} //! Important since else the drawer wouldn't work
+        style={{ backgroundColor }}
         originWhitelist={['*']}
         injectedJavaScript={`
         const p = ${webViewScroll.percentage};
@@ -214,6 +214,7 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
                         word-wrap: break-word;
                       }
                       body {
+                        padding-left: ${reader.padding}%;
                         padding-right: ${reader.padding}%;
                         padding-bottom: 30px;
                         

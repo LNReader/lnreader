@@ -391,6 +391,11 @@ const ChapterContent = ({ route, navigation }) => {
   const chapterText = sanitizeChapterText(chapter.chapterText, {
     removeExtraParagraphSpacing,
   });
+
+  const openDrawer = () => {
+    navigation.openDrawer();
+    setHidden(true);
+  };
   return (
     <>
       <>
@@ -535,6 +540,7 @@ const ChapterContent = ({ route, navigation }) => {
           readerSheetRef={readerSheetRef}
           scrollViewRef={scrollViewRef}
           enableAutoScroll={enableAutoScroll}
+          openDrawer={openDrawer}
         />
       </>
     </>

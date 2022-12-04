@@ -18,6 +18,7 @@ const ChapterFooter = ({
   prevChapter,
   useWebViewForChapter,
   chapterUrl,
+  openDrawer,
 }) => {
   const rippleConfig = {
     color: theme.rippleColor,
@@ -74,6 +75,17 @@ const ChapterFooter = ({
             </Pressable>
           </>
         )}
+        <Pressable
+          android_ripple={rippleConfig}
+          style={styles.buttonStyles}
+          onPress={() => openDrawer()}
+        >
+          <IconButton
+            icon="format-horizontal-align-right"
+            size={26}
+            iconColor={theme.onSurface}
+          />
+        </Pressable>
         <Pressable
           android_ripple={rippleConfig}
           style={styles.buttonStyles}
