@@ -72,9 +72,9 @@ const JumpToChapterModal = ({
       <TouchableRipple
         rippleColor={theme.secondary}
         onPress={() => extraData(item)}
-        style={[styles.drawerElementContainer]}
+        style={[styles.listElementContainer]}
       >
-        <Text style={[{ color: theme.textColorPrimary }, styles.drawerElement]}>
+        <Text style={[{ color: theme.textColorPrimary }, styles.listElement]}>
           {item.chapterName}
         </Text>
       </TouchableRipple>
@@ -220,14 +220,14 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 2,
   },
-  drawerElement: {
+  listElement: {
     overflow: 'visible',
-    width: 240,
+    width: '100%',
     height: '100%',
     textAlignVertical: 'center',
     paddingHorizontal: 6,
   },
-  drawerElementContainer: {
+  listElementContainer: {
     height: 50,
     marginVertical: 5,
   },
