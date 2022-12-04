@@ -2,16 +2,15 @@ import { FlashList } from '@shopify/flash-list';
 import { getDialogBackground } from '@theme/colors';
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
+import color from 'color';
 
 import {
   Modal,
   Portal,
-  Provider,
   Switch,
   TextInput,
   TouchableRipple,
   Text,
-  useTheme,
 } from 'react-native-paper';
 
 const JumpToChapterModal = ({
@@ -23,9 +22,8 @@ const JumpToChapterModal = ({
   novel,
   chapterListRef,
 }) => {
-  const paperTheme = useTheme();
   const [mode, setMode] = useState(false);
-  const [openChapter, setOpenChapter] = useState(true);
+  const [openChapter, setOpenChapter] = useState(false);
 
   const [text, setText] = useState();
   const [error, setError] = useState();
@@ -35,9 +33,12 @@ const JumpToChapterModal = ({
     hideModal();
     setText();
     setError();
+    setResult({ chapters: [] });
+    setMode(false);
+    setOpenChapter(false);
   };
   const navigateToChapter = chap => {
-    hideModal();
+    onDismiss();
     navigation.navigate('Chapter', {
       sourceId: novel.sourceId,
       novelUrl: novel.novelUrl,
@@ -51,7 +52,7 @@ const JumpToChapterModal = ({
   };
 
   const scrollToChapter = chap => {
-    hideModal();
+    onDismiss();
     chapterListRef.scrollToItem({
       animated: true,
       item: chap,
@@ -59,7 +60,7 @@ const JumpToChapterModal = ({
   };
 
   const scrollToIndex = index => {
-    hideModal();
+    onDismiss();
     chapterListRef.scrollToIndex({
       animated: true,
       index: index,
@@ -67,15 +68,13 @@ const JumpToChapterModal = ({
   };
 
   const renderItem = ({ item, extraData }) => {
-    console.log(
-      JSON.stringify({ ...paperTheme, colors: { ...theme } }, null, 2),
-    );
     return (
       <TouchableRipple
+        rippleColor={theme.secondary}
         onPress={() => extraData(item)}
-        theme={{ ...paperTheme, colors: { ...theme } }}
+        style={[styles.drawerElementContainer]}
       >
-        <Text style={{ color: theme.textColorPrimary }}>
+        <Text style={[{ color: theme.textColorPrimary }, styles.drawerElement]}>
           {item.chapterName}
         </Text>
       </TouchableRipple>
@@ -164,7 +163,22 @@ const JumpToChapterModal = ({
             color={theme.primary}
           />
         </View>
-        <View style={{ height: result.chapters.length === 0 ? 3 : 300 }}>
+        <View
+          style={
+            result.chapters.length === 0
+              ? { height: 3 }
+              : [
+                  {
+                    height: 300,
+                    backgroundColor: color(theme.surface).alpha(0.5).string(),
+                    borderColor: color(theme.secondaryContainer)
+                      .alpha(0.5)
+                      .string(),
+                  },
+                  styles.flashlist,
+                ]
+          }
+        >
           <FlashList
             estimatedItemSize={70}
             data={result.chapters}
@@ -199,7 +213,19 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   flashlist: {
-    height: 'auto',
-    maxHeight: 400,
+    marginVertical: 10,
+    borderRadius: 10,
+    borderWidth: 2,
+  },
+  drawerElement: {
+    overflow: 'visible',
+    width: 240,
+    height: '100%',
+    textAlignVertical: 'center',
+    paddingHorizontal: 6,
+  },
+  drawerElementContainer: {
+    height: 50,
+    marginVertical: 5,
   },
 });
