@@ -123,7 +123,13 @@ const ChapterDrawer = ({ state, navigation }) => {
         borderless={true}
       >
         <Text style={styles.drawerElement}>
-          {item.chapterName.replace(/Chapter /i, '')}
+          {item.chapterName.trim().startsWith('Vol') ||
+          item.chapterName.trim().startsWith('vol')
+            ? item.chapterName
+                .replace(/chapter/i, 'Ch')
+                .replace(/volume/i, 'Vol')
+                .trim()
+            : item.chapterName.replace(/chapter/i, '').trim()}
         </Text>
       </TouchableRipple>
     );
