@@ -7,6 +7,7 @@ import { FlashList } from '@shopify/flash-list';
 import { Button } from '@components/index';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
+import { getString } from '@strings/translations';
 
 const ChapterDrawer = ({ state, navigation }) => {
   const theme = useTheme();
@@ -80,13 +81,13 @@ const ChapterDrawer = ({ state, navigation }) => {
 
   const [buttonProperties, setButtonProperties] = useState({
     up: {
-      text: 'Scroll to top',
+      text: getString('readerScreen.drawer.scrollToTop'),
       func: () => {
         listRef.current.scrollToIndex({ index: 0, animated: true });
       },
     },
     down: {
-      text: 'Scroll to bottom',
+      text: getString('readerScreen.drawer.scrollToBottom'),
       func: () => {
         listRef.current.scrollToEnd({
           animated: true,
@@ -164,13 +165,13 @@ const ChapterDrawer = ({ state, navigation }) => {
   };
   const checkViewableItems = ({ viewableItems }) => {
     let up = {
-      text: 'Scroll to top',
+      text: getString('readerScreen.drawer.scrollToTop'),
       func: () => {
         listRef.current.scrollToIndex({ index: 0, animated: true });
       },
     };
     let down = {
-      text: 'Scroll to bottom',
+      text: getString('readerScreen.drawer.scrollToBottom'),
       func: () => {
         listRef.current.scrollToEnd({
           animated: true,
@@ -184,7 +185,7 @@ const ChapterDrawer = ({ state, navigation }) => {
       if (!visible) {
         if (viewableItems[0].item.chapterId < currentChapterId) {
           down = {
-            text: 'Scroll to current chapter',
+            text: getString('readerScreen.drawer.scrollToCurrentChapter'),
             func: () => {
               listRef.current.scrollToIndex({
                 index: scrollToIndex,
@@ -194,7 +195,7 @@ const ChapterDrawer = ({ state, navigation }) => {
           };
         } else {
           up = {
-            text: 'Scroll to current chapter',
+            text: getString('readerScreen.drawer.scrollToCurrentChapter'),
             func: () => {
               listRef.current.scrollToIndex({
                 index: scrollToIndex,
