@@ -57,15 +57,16 @@ import { LoadingScreenV2 } from '@components/index';
 import ChapterDrawer from './components/ChapterDrawer';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
-const DrawerNav = createDrawerNavigator();
-
-const Chapter = ({ route, navigation }) => {
+const Chapter = ({ route }) => {
+  const { chapterDrawer = true } = useSettings();
+  const DrawerNav = createDrawerNavigator();
   return (
     <DrawerNav.Navigator
       params={route.params}
       drawerContent={props => <ChapterDrawer {...props} />}
       screenOptions={{
         swipeEdgeWidth: 60,
+        swipeEnabled: chapterDrawer,
       }}
     >
       <DrawerNav.Screen
