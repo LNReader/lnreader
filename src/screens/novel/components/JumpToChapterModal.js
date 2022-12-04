@@ -1,8 +1,18 @@
+import { FlashList } from '@shopify/flash-list';
 import { getDialogBackground } from '@theme/colors';
 import React, { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
-import { Modal, Portal, Switch, TextInput } from 'react-native-paper';
+import {
+  Modal,
+  Portal,
+  Provider,
+  Switch,
+  TextInput,
+  TouchableRipple,
+  Text,
+  useTheme,
+} from 'react-native-paper';
 
 const JumpToChapterModal = ({
   theme,
@@ -11,52 +21,98 @@ const JumpToChapterModal = ({
   chapters,
   navigation,
   novel,
+  chapterListRef,
 }) => {
-  const [mode, setMode] = useState(0);
+  const paperTheme = useTheme();
+  const [mode, setMode] = useState(false);
+  const [openChapter, setOpenChapter] = useState(true);
 
   const [text, setText] = useState();
   const [error, setError] = useState();
+  const [result, setResult] = useState({ chapters: [] });
 
   const onDismiss = () => {
     hideModal();
     setText();
     setError();
   };
+  const navigateToChapter = chap => {
+    hideModal();
+    navigation.navigate('Chapter', {
+      sourceId: novel.sourceId,
+      novelUrl: novel.novelUrl,
+      novelId: novel.novelId,
+      chapterId: chap.chapterId,
+      chapterUrl: chap.chapterUrl,
+      chapterName: chap.chapterName,
+      novelName: novel.novelName,
+      bookmark: chap.bookmark,
+    });
+  };
+
+  const scrollToChapter = chap => {
+    hideModal();
+    chapterListRef.scrollToItem({
+      animated: true,
+      item: chap,
+    });
+  };
+
+  const scrollToIndex = index => {
+    hideModal();
+    chapterListRef.scrollToIndex({
+      animated: true,
+      index: index,
+    });
+  };
+
+  const renderItem = ({ item, extraData }) => {
+    console.log(
+      JSON.stringify({ ...paperTheme, colors: { ...theme } }, null, 2),
+    );
+    return (
+      <TouchableRipple
+        onPress={() => extraData(item)}
+        theme={{ ...paperTheme, colors: { ...theme } }}
+      >
+        <Text style={{ color: theme.textColorPrimary }}>
+          {item.chapterName}
+        </Text>
+      </TouchableRipple>
+    );
+  };
 
   const onSubmit = () => {
     if (!mode) {
       if (text > 0 && text <= chapters.length) {
-        navigation.navigate('Chapter', {
-          sourceId: novel.sourceId,
-          novelUrl: novel.novelUrl,
-          novelId: novel.novelId,
-          chapterId: chapters[text - 1].chapterId,
-          chapterUrl: chapters[text - 1].chapterUrl,
-          chapterName: chapters[text - 1].chapterName,
-          novelName: novel.novelName,
-          bookmark: chapters[text - 1].bookmark,
-        });
-        hideModal();
+        if (openChapter) {
+          navigateToChapter(chapters[text - 1]);
+        } else {
+          scrollToIndex(text - 1);
+        }
       } else {
         setError(`Enter a valid chapter number (≤ ${chapters.length})`);
       }
     } else {
-      const chapter = chapters.find(chap =>
-        chap.chapterName.toLowerCase().includes(text.toLowerCase()),
-      );
-
+      const chapter = chapters.filter(chap => {
+        if (chap.chapterName.toLowerCase().includes(text.toLowerCase())) {
+          return chap;
+        }
+      });
       if (chapter) {
-        navigation.navigate('Chapter', {
-          sourceId: novel.sourceId,
-          novelUrl: novel.novelUrl,
-          novelId: chapter.novelId,
-          chapterId: chapter.chapterId,
-          chapterUrl: chapter.chapterUrl,
-          chapterName: chapter.chapterName,
-          novelName: novel.novelName,
-          bookmark: chapter.bookmark,
-        });
-        hideModal();
+        if (chapter.length === 1) {
+          if (openChapter) {
+            navigateToChapter(chapter);
+          } else {
+            scrollToChapter(chapter);
+          }
+        } else {
+          if (openChapter) {
+            setResult({ chapters: chapter, func: navigateToChapter });
+          } else {
+            setResult({ chapters: chapter, func: scrollToChapter });
+          }
+        }
       } else {
         setError('Enter a valid chapter name');
       }
@@ -92,18 +148,28 @@ const JumpToChapterModal = ({
           error={error}
         />
         <Text style={styles.errorText}>{error}</Text>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            marginTop: 4,
-          }}
-        >
+        <View style={styles.switch}>
+          <Text style={{ color: theme.textColorPrimary }}>Open Chapter</Text>
+          <Switch
+            value={openChapter}
+            onValueChange={() => setOpenChapter(!openChapter)}
+            color={theme.primary}
+          />
+        </View>
+        <View style={styles.switch}>
           <Text style={{ color: theme.textColorPrimary }}>Chapter Name</Text>
           <Switch
             value={mode}
             onValueChange={() => setMode(!mode)}
             color={theme.primary}
+          />
+        </View>
+        <View style={{ height: result.chapters.length === 0 ? 3 : 300 }}>
+          <FlashList
+            estimatedItemSize={70}
+            data={result.chapters}
+            extraData={result?.func}
+            renderItem={renderItem}
           />
         </View>
       </Modal>
@@ -126,5 +192,14 @@ const styles = StyleSheet.create({
   errorText: {
     color: '#FF0033',
     paddingTop: 8,
+  },
+  switch: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 4,
+  },
+  flashlist: {
+    height: 'auto',
+    maxHeight: 400,
   },
 });
