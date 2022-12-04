@@ -146,10 +146,8 @@
     "calendar": {
       "sameDay": "[Hoje]",
       "nextDay": "[Amanhã]",
-      "nextWeek": "dddd",
       "lastDay": "[Ontem]",
       "lastWeek": "[Last] dddd",
-      "sameElse": "LL"
     }
   },
   "categories": {

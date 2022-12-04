@@ -146,10 +146,8 @@
     "calendar": {
       "sameDay": "[Bugün]",
       "nextDay": "[Yarın]",
-      "nextWeek": "dddd",
       "lastDay": "[Dün]",
       "lastWeek": "[Geçen] dddd",
-      "sameElse": "LL"
     }
   },
   "categories": {

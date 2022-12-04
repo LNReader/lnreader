@@ -444,16 +444,57 @@ export const deleteChapterAction =
  */
 export const deleteAllChaptersAction =
   (sourceId, chapters) => async dispatch => {
-    await Promise.all(
-      chapters.map(async chapter => {
-        await deleteChapter(sourceId, chapter.novelId, chapter.chapterId);
+    await new Promise((res, rej) => {
+      (async () => {
+        const downloaded = chapters.filter(f => !!f.downloaded);
+        if (downloaded.length === 0) {
+          res();
+        }
 
-        dispatch({
-          type: CHAPTER_DELETED,
-          payload: chapter.chapterId,
-        });
-      }),
-    );
+        const coccurent = 5;
+        /**
+         * @type {Promise<void>[][]}
+         */
+        const removeBatches = [];
+        for (let i = 0; i < downloaded.length; i++) {
+          if (i % coccurent === 0) {
+            removeBatches.push([]);
+          }
+          removeBatches[removeBatches.length - 1].push(
+            new Promise(resolveRemoval => {
+              (async () => {
+                const chapter = downloaded[i];
+                await deleteChapter(
+                  sourceId,
+                  chapter.novelId,
+                  chapter.chapterId,
+                );
+
+                dispatch({
+                  type: CHAPTER_DELETED,
+                  payload: chapter.chapterId,
+                });
+                resolveRemoval();
+              })();
+            }),
+          );
+        }
+        for (const rb of removeBatches) {
+          await Promise.all(rb);
+        }
+        res();
+      })();
+    });
+    // await Promise.all(
+    //   chapters.map(async chapter => {
+    //     await deleteChapter(sourceId, chapter.novelId, chapter.chapterId);
+
+    //     dispatch({
+    //       type: CHAPTER_DELETED,
+    //       payload: chapter.chapterId,
+    //     });
+    //   }),
+    // );
     showToast('Chapters deleted');
   };
 

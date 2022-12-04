@@ -1,9 +1,9 @@
 import * as cheerio from 'cheerio';
-const baseUrl = 'https://noveltrench.com/';
+const baseUrl = 'https://novelhard.com/';
 
 const popularNovels = async page => {
   let totalPages = 270;
-  let url = baseUrl + 'manga/page/' + page;
+  let url = baseUrl + 'novel/page/' + page;
 
   const result = await fetch(url);
   const body = await result.text();
@@ -17,7 +17,7 @@ const popularNovels = async page => {
     const novelCover = loadedCheerio(this).find('img').attr('data-src');
 
     let novelUrl = loadedCheerio(this).find('.h5 > a').attr('href');
-    novelUrl = novelUrl.replace(`${baseUrl}manga/`, '');
+    novelUrl = novelUrl.replace(`${baseUrl}novel/`, '');
 
     const novel = {
       sourceId: 9,
@@ -33,7 +33,7 @@ const popularNovels = async page => {
 };
 
 const parseNovelAndChapters = async novelUrl => {
-  const url = `${baseUrl}manga/${novelUrl}`;
+  const url = `${baseUrl}novel/${novelUrl}`;
 
   const result = await fetch(url);
   const body = await result.text();
@@ -123,7 +123,7 @@ const parseNovelAndChapters = async novelUrl => {
 };
 
 const parseChapter = async (novelUrl, chapterUrl) => {
-  const url = `${baseUrl}manga/${novelUrl}${chapterUrl}`;
+  const url = `${baseUrl}novel/${novelUrl}${chapterUrl}`;
 
   const result = await fetch(url);
   const body = await result.text();
@@ -158,7 +158,7 @@ const searchNovels = async searchTerm => {
     const novelCover = loadedCheerio(this).find('img').attr('data-src');
 
     let novelUrl = loadedCheerio(this).find('.h4 > a').attr('href');
-    novelUrl = novelUrl.replace(`${baseUrl}manga/`, '');
+    novelUrl = novelUrl.replace(`${baseUrl}novel/`, '');
 
     const novel = {
       sourceId: 9,

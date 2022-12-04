@@ -47,7 +47,7 @@ const popularNovels = async (page, { showLatestNovels, filters }) => {
     });
   });
 
-  const totalPages = body.pagination?.lastPage || 1;
+  const totalPages = body.pagination?.lastPage || 0;
 
   return { novels, totalPages };
 };
@@ -92,7 +92,9 @@ const parseNovelAndChapters = async novelUrl => {
       novelChapters.push({
         chapterName: chapter.name,
         chapterUrl: chapter.url,
-        releaseDate: dayjs(parseInt(chapter.changed_at) * 1000).format('LLL'),
+        releaseDate: dayjs(parseInt(chapter.changed_at, 10) * 1000).format(
+          'LLL',
+        ),
       }),
     ),
   );
@@ -103,10 +105,7 @@ const parseNovelAndChapters = async novelUrl => {
 };
 
 const parseChapter = async (novelUrl, chapterUrl) => {
-  const url = chapterUrl;
-  const chapterId = chapterUrl.split('/')[4];
-
-  const result = await fetch(url);
+  const result = await fetch(chapterUrl);
   const body = await result.text();
 
   let loadedCheerio = cheerio.load(body);
@@ -120,9 +119,8 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   ).each(function () {
     if (!loadedCheerio(this).attr('src')?.startsWith('http')) {
       const dataMediaId = loadedCheerio(this).attr('data-media-id');
-      const newSrc = `${baseUrl}api/media/${dataMediaId}`;
 
-      loadedCheerio(this).attr('src', newSrc);
+      loadedCheerio(this).attr('src', `${baseUrl}api/media/${dataMediaId}`);
     }
   });
 
