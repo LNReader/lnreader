@@ -98,7 +98,7 @@ const JumpToChapterModal = ({
           return chap;
         }
       });
-      if (chapter) {
+      if (chapter && chapter.length !== chapters.length) {
         if (chapter.length === 1) {
           if (openChapter) {
             navigateToChapter(chapter);
@@ -118,7 +118,10 @@ const JumpToChapterModal = ({
     }
   };
 
-  const onChangeText = txt => setText(txt);
+  const onChangeText = txt => {
+    setText(txt);
+    setResult({ chapters: [] });
+  };
 
   return (
     <Portal>
