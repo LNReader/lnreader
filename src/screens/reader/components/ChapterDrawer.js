@@ -75,6 +75,8 @@ const ChapterDrawer = ({ state, navigation }) => {
   const indexOfCurrentChapter = chapters.findIndex(el => {
     return el.chapterId === currentChapterId;
   });
+  const scrollToIndex =
+    indexOfCurrentChapter >= 2 ? indexOfCurrentChapter - 2 : 0;
 
   const [buttonProperties, setButtonProperties] = useState({
     up: {
@@ -185,7 +187,7 @@ const ChapterDrawer = ({ state, navigation }) => {
             text: 'Scroll to current chapter',
             func: () => {
               listRef.current.scrollToIndex({
-                index: indexOfCurrentChapter,
+                index: scrollToIndex,
                 animated: true,
               });
             },
@@ -195,7 +197,7 @@ const ChapterDrawer = ({ state, navigation }) => {
             text: 'Scroll to current chapter',
             func: () => {
               listRef.current.scrollToIndex({
-                index: indexOfCurrentChapter,
+                index: scrollToIndex,
                 animated: true,
               });
             },
@@ -216,8 +218,8 @@ const ChapterDrawer = ({ state, navigation }) => {
         onViewableItemsChanged={checkViewableItems}
         data={chapters}
         renderItem={renderItem}
-        estimatedItemSize={56}
-        initialScrollIndex={indexOfCurrentChapter}
+        estimatedItemSize={60}
+        initialScrollIndex={scrollToIndex}
       />
       <ListFooter />
     </View>
