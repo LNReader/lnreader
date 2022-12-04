@@ -65,7 +65,7 @@ const Chapter = ({ route, navigation }) => {
       params={route.params}
       drawerContent={props => <ChapterDrawer {...props} />}
       screenOptions={{
-        swipeEdgeWidth: 20,
+        swipeEdgeWidth: 60,
       }}
     >
       <DrawerNav.Screen

@@ -23,18 +23,26 @@ const JumpToChapterModal = ({
     setError();
   };
 
+  const selectFewerProps = obj => {
+    const { chapterId, chapterName, chapterUrl } = obj;
+    return { chapterId, chapterName, chapterUrl };
+  };
+
   const onSubmit = () => {
     if (!mode) {
       if (text > 0 && text <= chapters.length) {
         navigation.navigate('Chapter', {
-          sourceId: novel.sourceId,
-          novelUrl: novel.novelUrl,
-          novelId: novel.novelId,
-          chapterId: chapters[text - 1].chapterId,
-          chapterUrl: chapters[text - 1].chapterUrl,
-          chapterName: chapters[text - 1].chapterName,
-          novelName: novel.novelName,
-          bookmark: chapters[text - 1].bookmark,
+          currentChapter: {
+            sourceId: novel.sourceId,
+            novelUrl: novel.novelUrl,
+            novelId: novel.novelId,
+            chapterId: chapters[text - 1].chapterId,
+            chapterUrl: chapters[text - 1].chapterUrl,
+            chapterName: chapters[text - 1].chapterName,
+            novelName: novel.novelName,
+            bookmark: chapters[text - 1].bookmark,
+          },
+          chapters: chapters.map(selectFewerProps),
         });
         hideModal();
       } else {
@@ -47,14 +55,17 @@ const JumpToChapterModal = ({
 
       if (chapter) {
         navigation.navigate('Chapter', {
-          sourceId: novel.sourceId,
-          novelUrl: novel.novelUrl,
-          novelId: chapter.novelId,
-          chapterId: chapter.chapterId,
-          chapterUrl: chapter.chapterUrl,
-          chapterName: chapter.chapterName,
-          novelName: novel.novelName,
-          bookmark: chapter.bookmark,
+          currentChapter: {
+            sourceId: novel.sourceId,
+            novelUrl: novel.novelUrl,
+            novelId: chapter.novelId,
+            chapterId: chapter.chapterId,
+            chapterUrl: chapter.chapterUrl,
+            chapterName: chapter.chapterName,
+            novelName: novel.novelName,
+            bookmark: chapter.bookmark,
+          },
+          chapters: chapters.map(selectFewerProps),
         });
         hideModal();
       } else {

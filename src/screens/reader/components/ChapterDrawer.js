@@ -1,17 +1,14 @@
 import React, { useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Drawer, Text, TouchableRipple } from 'react-native-paper';
+import { Text, TouchableRipple } from 'react-native-paper';
 import color from 'color';
 import { useTheme } from '@hooks/useTheme';
 import { FlashList } from '@shopify/flash-list';
 import { Button } from '@components/index';
-import {
-  SafeAreaView,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 
-const ChapterDrawer = ({ state, navigation, descriptors }) => {
+const ChapterDrawer = ({ state, navigation }) => {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
   const styles = StyleSheet.create({
@@ -68,6 +65,17 @@ const ChapterDrawer = ({ state, navigation, descriptors }) => {
 
   let listRef = useRef();
   const chapters = state.routes[0].params.chapters;
+  const {
+    sourceId,
+    novelUrl,
+    novelName,
+    novelId,
+    chapterId: currentChapterId,
+  } = state.routes[0].params.currentChapter;
+  const indexOfCurrentChapter = chapters.findIndex(el => {
+    return el.chapterId === currentChapterId;
+  });
+
   const [buttonProperties, setButtonProperties] = useState({
     up: {
       text: 'Scroll to top',
@@ -85,22 +93,13 @@ const ChapterDrawer = ({ state, navigation, descriptors }) => {
     },
   });
 
-  const {
-    sourceId,
-    novelUrl,
-    novelName,
-    chapterId: currentChapterId,
-  } = state.routes[0].params.currentChapter;
-  const indexOfCurrentChapter = chapters.findIndex(el => {
-    return el.chapterId === state.routes[0].params.currentChapter.chapterId;
-  });
-
   const changeChapter = item => {
-    navigation.replace(/Chapter/i, {
+    navigation.replace('Chapter', {
       currentChapter: {
         sourceId,
         novelUrl,
         novelName,
+        novelId,
         ...item,
       },
       chapters,
@@ -121,7 +120,7 @@ const ChapterDrawer = ({ state, navigation, descriptors }) => {
         borderless={true}
       >
         <Text style={styles.drawerElement}>
-          {item.chapterName.replace('Chapter ', '')}
+          {item.chapterName.replace(/Chapter /i, '')}
         </Text>
       </TouchableRipple>
     );

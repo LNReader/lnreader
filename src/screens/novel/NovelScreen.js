@@ -281,6 +281,10 @@ const Novel = ({ route, navigation }) => {
       }
     }
   };
+  const selectFewerProps = obj => {
+    const { chapterId, chapterName, chapterUrl } = obj;
+    return { chapterId, chapterName, chapterUrl };
+  };
 
   const navigateToChapter = chapter => {
     navigation.navigate('Chapter', {
@@ -290,7 +294,7 @@ const Novel = ({ route, navigation }) => {
         novelName,
         ...chapter,
       },
-      chapters,
+      chapters: chapters.map(selectFewerProps),
     });
   };
 
@@ -674,7 +678,7 @@ const Novel = ({ route, navigation }) => {
                     novelName: novel.novelName,
                     bookmark: lastReadChapter.bookmark,
                   },
-                  chapters,
+                  chapters: chapters.map(selectFewerProps),
                 })
               }
             />
