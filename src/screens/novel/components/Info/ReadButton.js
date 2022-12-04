@@ -6,6 +6,10 @@ import { useSettings } from '../../../../hooks/reduxHooks';
 
 const ReadButton = ({ navigation, novel, chapters, theme, lastRead }) => {
   const { useFabForContinueReading = false } = useSettings();
+  const selectFewerProps = obj => {
+    const { chapterId, chapterName, chapterUrl } = obj;
+    return { chapterId, chapterName, chapterUrl };
+  };
 
   const navigateToLastReadChapter = () => {
     navigation.navigate('Chapter', {
@@ -19,7 +23,7 @@ const ReadButton = ({ navigation, novel, chapters, theme, lastRead }) => {
         novelName: novel.novelName,
         bookmark: lastRead.bookmark,
       },
-      chapters,
+      chapters: chapters.map(selectFewerProps),
     });
   };
 

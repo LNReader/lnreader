@@ -125,7 +125,7 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
     <View style={styles.container}>
       <WebView
         ref={webViewRef}
-        style={[{ backgroundColor }, { marginLeft: reader.padding + '%' }]}
+        style={[{ backgroundColor }, { marginLeft: reader.padding + '%' }]} //! Important since else the drawer wouldn't work
         originWhitelist={['*']}
         injectedJavaScript={`
         const p = ${webViewScroll.percentage};
