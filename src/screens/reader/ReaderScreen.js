@@ -341,35 +341,25 @@ const ChapterContent = ({ route, navigation }) => {
   };
 
   const navigateToPrevChapter = () => {
-    const currentChapter = {
-      ...params.currentChapter,
-
-      chapterUrl: prevChapter.chapterUrl,
-      chapterId: prevChapter.chapterId,
-      chapterName: prevChapter.chapterName,
-      bookmark: prevChapter.bookmark,
-    };
     prevChapter
       ? navigation.replace('Chapter', {
           ...params,
-          currentChapter,
+          chapterUrl: prevChapter.chapterUrl,
+          chapterId: prevChapter.chapterId,
+          chapterName: prevChapter.chapterName,
+          bookmark: prevChapter.bookmark,
         })
       : showToast("There's no previous chapter");
   };
 
   const navigateToNextChapter = () => {
-    const currentChapter = {
-      ...params.currentChapter,
-
-      chapterUrl: nextChapter.chapterUrl,
-      chapterId: nextChapter.chapterId,
-      chapterName: nextChapter.chapterName,
-      bookmark: nextChapter.bookmark,
-    };
     nextChapter
       ? navigation.replace('Chapter', {
           ...params,
-          currentChapter,
+          chapterUrl: nextChapter.chapterUrl,
+          chapterId: nextChapter.chapterId,
+          chapterName: nextChapter.chapterName,
+          bookmark: nextChapter.bookmark,
         })
       : showToast("There's no next chapter");
   };

@@ -141,7 +141,10 @@ const GeneralTab: React.FC = () => {
           )}
           onPress={() =>
             dispatch(
-              setAppSettings('chapterDrawer', !useChapterDrawerSwipeNavigation),
+              setAppSettings(
+                'useChapterDrawerSwipeNavigation',
+                !useChapterDrawerSwipeNavigation,
+              ),
             )
           }
           value={useChapterDrawerSwipeNavigation}

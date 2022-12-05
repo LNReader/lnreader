@@ -99,14 +99,11 @@ const ChapterDrawer = ({ state, navigation }) => {
 
   const changeChapter = item => {
     navigation.replace('Chapter', {
-      currentChapter: {
-        sourceId,
-        novelUrl,
-        novelName,
-        novelId,
-        ...item,
-      },
-      chapters,
+      sourceId,
+      novelUrl,
+      novelName,
+      novelId,
+      ...item,
     });
   };
   const renderItem = ({ item }) => {
