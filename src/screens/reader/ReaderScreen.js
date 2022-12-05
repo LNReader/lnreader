@@ -91,7 +91,7 @@ const ChapterContent = ({ route, navigation }) => {
     novelName,
     chapterName,
     bookmark,
-  } = params.currentChapter;
+  } = params;
   let scrollViewRef = useRef(null);
   let readerSheetRef = useRef(null);
 

@@ -1,3 +1,4 @@
+import { openChapter } from '@screens/reader/utils/handleNavigateChapter';
 import React from 'react';
 
 import { getString } from '../../../../../strings/translations';
@@ -6,25 +7,9 @@ import { useSettings } from '../../../../hooks/reduxHooks';
 
 const ReadButton = ({ navigation, novel, chapters, theme, lastRead }) => {
   const { useFabForContinueReading = false } = useSettings();
-  const selectFewerProps = obj => {
-    const { chapterId, chapterName, chapterUrl } = obj;
-    return { chapterId, chapterName, chapterUrl };
-  };
 
   const navigateToLastReadChapter = () => {
-    navigation.navigate('Chapter', {
-      currentChapter: {
-        chapterId: lastRead.chapterId,
-        chapterUrl: lastRead.chapterUrl,
-        novelUrl: novel.novelUrl,
-        novelId: lastRead.novelId,
-        sourceId: novel.sourceId,
-        chapterName: lastRead.chapterName,
-        novelName: novel.novelName,
-        bookmark: lastRead.bookmark,
-      },
-      chapters: chapters.map(selectFewerProps),
-    });
+    navigation.navigate('Chapter', openChapter(novel, lastRead));
   };
 
   if (!useFabForContinueReading) {

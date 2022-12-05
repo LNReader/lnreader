@@ -8,6 +8,7 @@ import { Button } from '@components/index';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { getString } from '@strings/translations';
+import { useNovel } from '@hooks/reduxHooks';
 
 const ChapterDrawer = ({ state, navigation }) => {
   const theme = useTheme();
@@ -65,14 +66,14 @@ const ChapterDrawer = ({ state, navigation }) => {
   });
 
   let listRef = useRef();
-  const chapters = state.routes[0].params.chapters;
+  const { chapters } = useNovel();
   const {
     sourceId,
     novelUrl,
     novelName,
     novelId,
     chapterId: currentChapterId,
-  } = state.routes[0].params.currentChapter;
+  } = state.routes[0].params;
   const indexOfCurrentChapter = chapters.findIndex(el => {
     return el.chapterId === currentChapterId;
   });

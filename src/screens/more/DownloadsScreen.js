@@ -22,6 +22,7 @@ import {
 
 import UpdatesItem from '../updates/components/UpdatesItem';
 import RemoveDownloadsDialog from './components/RemoveDownloadsDialog';
+import { openChapter } from '@screens/reader/utils/handleNavigateChapter';
 
 const Downloads = ({ navigation }) => {
   const theme = useTheme();
@@ -54,17 +55,7 @@ const Downloads = ({ navigation }) => {
   }, []);
 
   const onPress = useCallback(
-    item =>
-      navigation.navigate('Chapter', {
-        chapterId: item.chapterId,
-        chapterUrl: item.chapterUrl,
-        sourceId: item.sourceId,
-        novelUrl: item.novelUrl,
-        chapterName: item.chapterName,
-        novelId: item.novelId,
-        novelName: item.novelName,
-        bookmark: item.bookmark,
-      }),
+    item => navigation.navigate('Chapter', openChapter(item, item)),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
