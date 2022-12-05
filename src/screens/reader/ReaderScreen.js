@@ -58,7 +58,7 @@ import ChapterDrawer from './components/ChapterDrawer';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 const Chapter = ({ route }) => {
-  const { chapterDrawer = true } = useSettings();
+  const { useChapterDrawerSwipeNavigation = true } = useSettings();
   const DrawerNav = createDrawerNavigator();
   return (
     <DrawerNav.Navigator
@@ -66,7 +66,7 @@ const Chapter = ({ route }) => {
       drawerContent={props => <ChapterDrawer {...props} />}
       screenOptions={{
         swipeEdgeWidth: 60,
-        swipeEnabled: chapterDrawer,
+        swipeEnabled: useChapterDrawerSwipeNavigation,
       }}
     >
       <DrawerNav.Screen

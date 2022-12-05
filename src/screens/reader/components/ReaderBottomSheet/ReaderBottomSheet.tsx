@@ -49,7 +49,7 @@ const GeneralTab: React.FC = () => {
     wvUseVolumeButtons = false,
     swipeGestures = false,
     removeExtraParagraphSpacing = false,
-    chapterDrawer = true,
+    useChapterDrawerSwipeNavigation = true,
   } = useSettingsV1();
 
   return (
@@ -125,14 +125,6 @@ const GeneralTab: React.FC = () => {
         value={removeExtraParagraphSpacing}
         theme={theme}
       />
-      <ReaderSheetPreferenceItem
-        label={getString('readerScreen.bottomSheet.chapterDrawer')}
-        onPress={() =>
-          dispatch(setAppSettings('chapterDrawer', !chapterDrawer))
-        }
-        value={chapterDrawer}
-        theme={theme}
-      />
       {useWebViewForChapter ? (
         <ReaderSheetPreferenceItem
           label={'Volume buttons scroll'}
@@ -142,7 +134,20 @@ const GeneralTab: React.FC = () => {
           value={wvUseVolumeButtons}
           theme={theme}
         />
-      ) : null}
+      ) : (
+        <ReaderSheetPreferenceItem
+          label={getString(
+            'readerScreen.bottomSheet.useChapterDrawerSwipeNavigation',
+          )}
+          onPress={() =>
+            dispatch(
+              setAppSettings('chapterDrawer', !useChapterDrawerSwipeNavigation),
+            )
+          }
+          value={useChapterDrawerSwipeNavigation}
+          theme={theme}
+        />
+      )}
     </View>
   );
 };
