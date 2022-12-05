@@ -382,7 +382,10 @@ const ChapterContent = ({ route, navigation }) => {
 
   const onWebViewNavigationStateChange = async ({ url }) => {
     if ((sourceId === 50 || sourceId === 62) && url !== 'about:blank') {
-      navigateToNextChapter();
+      setLoading(true);
+      const res = await fetchChapter(sourceId, novelUrl, url);
+      setChapter(res);
+      setLoading(false);
     }
   };
 
