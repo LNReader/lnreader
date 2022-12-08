@@ -13,57 +13,7 @@ import { useNovel } from '@hooks/reduxHooks';
 const ChapterDrawer = ({ state, navigation }) => {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
-  const styles = StyleSheet.create({
-    drawer: {
-      flex: 1,
-      backgroundColor: color(theme.surface).alpha(0.9).string(),
-      color: color(theme.textColorPrimary).toString(),
-    },
-    drawerElement: {
-      color: theme.textColorPrimary,
-      overflow: 'visible',
-      width: 240,
-      height: '100%',
-      textAlignVertical: 'center',
-      paddingHorizontal: 6,
-    },
-    drawerElementContainer: {
-      backgroundColor: color(theme.surface).alpha(0.5).string(),
-      height: 50,
-      margin: 5,
-      marginHorizontal: 15,
-      borderRadius: 10,
-      borderColor: color(theme.secondaryContainer).alpha(0.5).string(),
-      borderWidth: 2,
-    },
-    button: {
-      marginBottom: 10,
-      marginHorizontal: 20,
-      marginTop: 5,
-    },
-    header: {
-      height: insets.top,
-      width: '100%',
-      backgroundColor: theme.surface,
-    },
-    footer: {
-      zIndex: 4,
-      paddingBottom: insets.bottom,
-      backgroundColor: theme.surface,
-    },
-    transition: {
-      width: '100%',
-      height: 30,
-      zIndex: 2,
-    },
-    t_down: {
-      marginTop: -30,
-    },
-    t_up: {
-      marginBottom: -30,
-      paddingTop: insets.top,
-    },
-  });
+  const styles = createStylesheet(theme, insets);
 
   let listRef = useRef();
   const { chapters } = useNovel();
@@ -220,6 +170,60 @@ const ChapterDrawer = ({ state, navigation }) => {
       <ListFooter />
     </View>
   );
+};
+
+const createStylesheet = (theme, insets) => {
+  return StyleSheet.create({
+    drawer: {
+      flex: 1,
+      backgroundColor: color(theme.surface).alpha(0.9).string(),
+      color: color(theme.textColorPrimary).toString(),
+    },
+    drawerElement: {
+      color: theme.textColorPrimary,
+      overflow: 'visible',
+      width: 240,
+      height: '100%',
+      textAlignVertical: 'center',
+      paddingHorizontal: 6,
+    },
+    drawerElementContainer: {
+      backgroundColor: color(theme.surface).alpha(0.5).string(),
+      height: 50,
+      margin: 5,
+      marginHorizontal: 15,
+      borderRadius: 10,
+      borderColor: color(theme.secondaryContainer).alpha(0.5).string(),
+      borderWidth: 2,
+    },
+    button: {
+      marginBottom: 10,
+      marginHorizontal: 20,
+      marginTop: 5,
+    },
+    header: {
+      height: insets.top,
+      width: '100%',
+      backgroundColor: theme.surface,
+    },
+    footer: {
+      zIndex: 4,
+      paddingBottom: insets.bottom,
+      backgroundColor: theme.surface,
+    },
+    transition: {
+      width: '100%',
+      height: 30,
+      zIndex: 2,
+    },
+    t_down: {
+      marginTop: -30,
+    },
+    t_up: {
+      marginBottom: -30,
+      paddingTop: insets.top,
+    },
+  });
 };
 
 export default ChapterDrawer;

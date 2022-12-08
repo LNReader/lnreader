@@ -1,4 +1,4 @@
-import { openChapter } from '@screens/reader/utils/handleNavigateChapter';
+import { openChapter } from '@utils/handleNavigateParams';
 import React from 'react';
 
 import { getString } from '../../../../../strings/translations';

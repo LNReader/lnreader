@@ -65,7 +65,7 @@ import DownloadCustomChapterModal from './components/DownloadCustomChapterModal'
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import useBoolean from '@hooks/useBoolean';
 import { useCategorySettings } from '@hooks/useSettings';
-import { openChapter } from '../reader/utils/handleNavigateChapter';
+import { openChapter } from '../../utils/handleNavigateParams';
 
 const Novel = ({ route, navigation }) => {
   const item = route.params;

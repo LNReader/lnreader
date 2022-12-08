@@ -25,6 +25,14 @@ import {
 import { getString } from '../../../strings/translations';
 import { MD3ThemeType } from '../../theme/types';
 import { useTheme } from '@hooks/useTheme';
+import {
+  openChapter,
+  openChapterChapterTypes,
+  openChapterNovelTypes,
+  openChapterFunctionTypes,
+  openNovel,
+  openNovelProps,
+} from '@utils/handleNavigateParams';
 
 const UpdatesScreen = () => {
   const theme = useTheme();
@@ -105,42 +113,16 @@ const UpdatesScreen = () => {
   ) => dispatch(deleteChapterAction(sourceId, novelId, chapterId, chapterName));
 
   const navigateToChapter = (
-    sourceId: number,
-    novelId: number,
-    novelName: string,
-    novelUrl: string,
-    chapterId: number,
-    chapterUrl: string,
-    isBookmarked: number,
+    novel: openChapterNovelTypes,
+    chapter: openChapterChapterTypes,
   ) =>
     navigate(
       'Chapter' as never,
-      {
-        sourceId,
-        novelId,
-        novelName,
-        novelUrl,
-        chapterId,
-        chapterUrl,
-        isBookmarked,
-      } as never,
+      openChapter(novel, chapter) as openChapterFunctionTypes as never,
     );
 
-  const navigateToNovel = (
-    sourceId: number,
-    novelUrl: string,
-    novelName: string,
-    novelCover: string,
-  ) =>
-    navigate(
-      'Novel' as never,
-      {
-        sourceId,
-        novelUrl,
-        novelName,
-        novelCover,
-      } as never,
-    );
+  const navigateToNovel = (novel: openNovelProps) =>
+    navigate('Novel' as never, openNovel(novel) as openNovelProps as never);
 
   return (
     <>

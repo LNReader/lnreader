@@ -1,4 +1,4 @@
-import { openChapter } from '@screens/reader/utils/handleNavigateChapter';
+import { openChapter } from '@utils/handleNavigateParams';
 import { getDialogBackground } from '@theme/colors';
 import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
@@ -22,11 +22,6 @@ const JumpToChapterModal = ({
     hideModal();
     setText();
     setError();
-  };
-
-  const selectFewerProps = obj => {
-    const { chapterId, chapterName, chapterUrl } = obj;
-    return { chapterId, chapterName, chapterUrl };
   };
 
   const onSubmit = () => {

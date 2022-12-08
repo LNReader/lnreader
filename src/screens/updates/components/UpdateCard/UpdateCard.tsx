@@ -18,24 +18,19 @@ import {
   coverPlaceholderColor,
   getDialogBackground,
 } from '../../../../theme/colors';
+import {
+  openChapterChapterTypes,
+  openChapterNovelTypes,
+  openNovelProps,
+} from '@utils/handleNavigateParams';
 
 interface UpdateCardProps {
   item: Update;
   navigateToChapter: (
-    sourceId: number,
-    novelId: number,
-    novelName: string,
-    novelUrl: string,
-    chapterId: number,
-    chapterUrl: string,
-    isBookmarked: number,
+    novel: openChapterNovelTypes,
+    chapter: openChapterChapterTypes,
   ) => void;
-  navigateToNovel: (
-    sourceId: number,
-    novelUrl: string,
-    novelName: string,
-    novelCover: string,
-  ) => void;
+  navigateToNovel: (novel: openNovelProps) => void;
   handleDownloadChapter: (
     sourceId: number,
     novelUrl: string,
@@ -78,29 +73,12 @@ const UpdateCard: React.FC<UpdateCardProps> = ({
     <Pressable
       style={styles.container}
       android_ripple={{ color: color(theme.primary).alpha(0.12).string() }}
-      onPress={() =>
-        navigateToChapter(
-          item.sourceId,
-          item.novelId,
-          item.novelName,
-          item.novelUrl,
-          item.chapterId,
-          item.chapterUrl,
-          item.bookmark,
-        )
-      }
+      onPress={() => {
+        navigateToChapter(item, item);
+      }}
     >
       <View style={styles.imageContainer}>
-        <Pressable
-          onPress={() =>
-            navigateToNovel(
-              item.sourceId,
-              item.novelUrl,
-              item.novelName,
-              item.novelCover,
-            )
-          }
-        >
+        <Pressable onPress={() => navigateToNovel(item)}>
           <FastImage source={{ uri: item.novelCover }} style={styles.cover} />
         </Pressable>
         <View style={styles.nameContainer}>

@@ -20,6 +20,14 @@ import { convertDateToISOString } from '../../database/utils/convertDateToISOStr
 import { History } from '../../database/types';
 import { getString } from '@strings/translations';
 import ClearHistoryDialog from './components/ClearHistoryDialog';
+import {
+  openChapter,
+  openChapterChapterTypes,
+  openChapterNovelTypes,
+  openChapterFunctionTypes,
+  openNovel,
+  openNovelProps,
+} from '@utils/handleNavigateParams';
 
 const HistoryScreen = () => {
   const theme = useTheme();
@@ -72,46 +80,16 @@ const HistoryScreen = () => {
   };
 
   const handleNavigateToChapter = (
-    sourceId: number,
-    novelId: number,
-    novelName: string,
-    novelUrl: string,
-    chapterId: number,
-    chapterUrl: string,
-    chapterName: string,
-    bookmark: number,
+    novel: openChapterNovelTypes,
+    chapter: openChapterChapterTypes,
   ) =>
     navigate(
       'Chapter' as never,
-      {
-        sourceId,
-        novelId,
-        novelName,
-        novelUrl,
-        chapterId,
-        chapterUrl,
-        bookmark,
-        chapterName,
-      } as never,
+      openChapter(novel, chapter) as openChapterFunctionTypes as never,
     );
 
-  const handleNavigateToNovel = (
-    sourceId: number,
-    novelId: number,
-    novelUrl: string,
-    novelName: string,
-    novelCover: string,
-  ) =>
-    navigate(
-      'Novel' as never,
-      {
-        sourceId,
-        novelId,
-        novelUrl,
-        novelName,
-        novelCover,
-      } as never,
-    );
+  const handleNavigateToNovel = (novel: openNovelProps) =>
+    navigate('Novel' as never, openNovel(novel) as openNovelProps as never);
 
   const {
     value: clearHistoryDialogVisible,
