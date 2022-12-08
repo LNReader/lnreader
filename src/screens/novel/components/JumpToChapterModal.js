@@ -27,13 +27,13 @@ const JumpToChapterModal = ({
 
   const [text, setText] = useState();
   const [error, setError] = useState();
-  const [result, setResult] = useState({ chapters: [] });
+  const [result, setResult] = useState([]);
 
   const onDismiss = () => {
     hideModal();
     setText();
     setError();
-    setResult({ chapters: [] });
+    setResult([]);
     setMode(false);
     setOpenChapter(false);
   };
@@ -56,6 +56,7 @@ const JumpToChapterModal = ({
     chapterListRef.scrollToItem({
       animated: true,
       item: chap,
+      viewOffset: 91,
     });
   };
 
@@ -64,17 +65,29 @@ const JumpToChapterModal = ({
     chapterListRef.scrollToIndex({
       animated: true,
       index: index,
+      viewOffset: 91,
     });
+  };
+
+  const executeFunction = item => {
+    if (openChapter) {
+      navigateToChapter(item);
+    } else {
+      scrollToChapter(item);
+    }
   };
 
   const renderItem = ({ item, extraData }) => {
     return (
       <TouchableRipple
         rippleColor={theme.secondary}
-        onPress={() => extraData(item)}
+        onPress={() => executeFunction(item)}
         style={[styles.listElementContainer]}
       >
-        <Text style={[{ color: theme.textColorPrimary }, styles.listElement]}>
+        <Text
+          numberOfLines={1}
+          style={[{ color: theme.textColorPrimary }, styles.listElement]}
+        >
           {item.chapterName}
         </Text>
       </TouchableRipple>
@@ -85,42 +98,40 @@ const JumpToChapterModal = ({
     if (!mode) {
       if (text > 0 && text <= chapters.length) {
         if (openChapter) {
-          navigateToChapter(chapters[text - 1]);
-        } else {
-          scrollToIndex(text - 1);
+          return navigateToChapter(chapters[text - 1]);
         }
-      } else {
-        setError(`Enter a valid chapter number (≤ ${chapters.length})`);
+        return scrollToIndex(text - 1);
       }
-    } else {
-      const chapter = chapters.filter(chap => {
-        if (chap.chapterName.toLowerCase().includes(text.toLowerCase())) {
-          return chap;
-        }
-      });
-      if (chapter && chapter.length !== chapters.length) {
-        if (chapter.length === 1) {
-          if (openChapter) {
-            navigateToChapter(chapter);
-          } else {
-            scrollToChapter(chapter);
-          }
-        } else {
-          if (openChapter) {
-            setResult({ chapters: chapter, func: navigateToChapter });
-          } else {
-            setResult({ chapters: chapter, func: scrollToChapter });
-          }
-        }
-      } else {
-        setError('Enter a valid chapter name');
-      }
+      return setError(
+        `Enter a valid chapter number (${
+          text <= 0 ? '≤ 0' : '≤ ' + chapters.length
+        })`,
+      );
     }
+    const chapter = chapters.filter(chap => {
+      if (chap.chapterName.toLowerCase().includes(text.toLowerCase())) {
+        return chap;
+      }
+    });
+    if (chapter?.[0] && chapter.length !== chapters.length) {
+      setError();
+      if (chapter.length === 1) {
+        if (openChapter) {
+          return navigateToChapter(chapter[0]);
+        }
+        return scrollToChapter(chapter[0]);
+      }
+      if (openChapter) {
+        return setResult(chapter);
+      }
+      return setResult(chapter);
+    }
+    setError('Enter a valid chapter name');
   };
 
   const onChangeText = txt => {
     setText(txt);
-    setResult({ chapters: [] });
+    setResult([]);
   };
 
   return (
@@ -168,7 +179,7 @@ const JumpToChapterModal = ({
         </View>
         <View
           style={
-            result.chapters.length === 0
+            result?.length === 0
               ? { height: 3 }
               : [
                   {
@@ -184,8 +195,8 @@ const JumpToChapterModal = ({
         >
           <FlashList
             estimatedItemSize={70}
-            data={result.chapters}
-            extraData={result?.func}
+            data={result}
+            extraData={openChapter}
             renderItem={renderItem}
           />
         </View>
@@ -216,19 +227,18 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   flashlist: {
-    marginVertical: 10,
+    marginTop: 10,
     borderRadius: 10,
     borderWidth: 2,
   },
   listElement: {
-    overflow: 'visible',
+    overflow: 'hidden',
     width: '100%',
     height: '100%',
     textAlignVertical: 'center',
     paddingHorizontal: 6,
   },
   listElementContainer: {
-    height: 50,
-    marginVertical: 5,
+    height: 40,
   },
 });
