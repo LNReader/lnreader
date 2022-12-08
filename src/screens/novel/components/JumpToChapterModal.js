@@ -3,6 +3,7 @@ import { getDialogBackground } from '@theme/colors';
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import color from 'color';
+import { getString } from '@strings/translations';
 
 import {
   Modal,
@@ -77,7 +78,7 @@ const JumpToChapterModal = ({
     }
   };
 
-  const renderItem = ({ item, extraData }) => {
+  const renderItem = ({ item }) => {
     return (
       <TouchableRipple
         rippleColor={theme.secondary}
@@ -103,9 +104,8 @@ const JumpToChapterModal = ({
         return scrollToIndex(text - 1);
       }
       return setError(
-        `Enter a valid chapter number (${
-          text <= 0 ? '≤ 0' : '≤ ' + chapters.length
-        })`,
+        getString('novelScreen.jumpToChapterModal.error.validChapterNumber') +
+          ` (${text <= 0 ? '≤ 0' : '≤ ' + chapters.length})`,
       );
     }
     const chapter = chapters.filter(chap => {
@@ -126,7 +126,9 @@ const JumpToChapterModal = ({
       }
       return setResult(chapter);
     }
-    setError('Enter a valid chapter name');
+    setError(
+      getString('novelScreen.jumpToChapterModal.error.validChapterName'),
+    );
   };
 
   const onChangeText = txt => {
@@ -145,12 +147,15 @@ const JumpToChapterModal = ({
         ]}
       >
         <Text style={[styles.modalTitle, { color: theme.textColorPrimary }]}>
-          Jump to Chapter
+          {getString('novelScreen.jumpToChapterModal.jumpToChapter')}
         </Text>
         <TextInput
           value={text}
           placeholder={
-            mode ? 'Chapter Name' : `Chapter Number (≤ ${chapters.length})`
+            mode
+              ? getString('novelScreen.jumpToChapterModal.chapterName')
+              : getString('novelScreen.jumpToChapterModal.chapterNumber') +
+                ` (≤ ${chapters.length})`
           }
           onChangeText={onChangeText}
           onSubmitEditing={onSubmit}
@@ -162,7 +167,9 @@ const JumpToChapterModal = ({
         />
         <Text style={styles.errorText}>{error}</Text>
         <View style={styles.switch}>
-          <Text style={{ color: theme.textColorPrimary }}>Open Chapter</Text>
+          <Text style={{ color: theme.textColorPrimary }}>
+            {getString('novelScreen.jumpToChapterModal.openChapter')}
+          </Text>
           <Switch
             value={openChapter}
             onValueChange={() => setOpenChapter(!openChapter)}
@@ -170,7 +177,9 @@ const JumpToChapterModal = ({
           />
         </View>
         <View style={styles.switch}>
-          <Text style={{ color: theme.textColorPrimary }}>Chapter Name</Text>
+          <Text style={{ color: theme.textColorPrimary }}>
+            {getString('novelScreen.jumpToChapterModal.chapterName')}
+          </Text>
           <Switch
             value={mode}
             onValueChange={() => setMode(!mode)}
