@@ -113,6 +113,8 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 
   const loadedCheerio = cheerio.load(body);
 
+  loadedCheerio('.entry-content div[style="display:none"]').remove();
+
   const chapterName = loadedCheerio('.entry-title').text();
   const chapterText = loadedCheerio('.entry-content').html();
 
