@@ -1,35 +1,66 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Text, TouchableRipple } from 'react-native-paper';
 import color from 'color';
 import { useTheme } from '@hooks/useTheme';
 import { FlashList } from '@shopify/flash-list';
-import { Button } from '@components/index';
+import { Button, LoadingScreenV2 } from '@components/index';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { getString } from '@strings/translations';
-import { useNovel } from '@hooks/reduxHooks';
+import { useNovel, useSettings, usePreferences } from '@hooks/reduxHooks';
+import { useDispatch } from 'react-redux';
+import { setNovel, getNovelAction } from '@redux/novel/novel.actions';
 
-const ChapterDrawer = ({ state, navigation }) => {
+const ChapterDrawer = ({ state: st, navigation }) => {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
   const styles = createStylesheet(theme, insets);
-
   let listRef = useRef();
-  const { chapters } = useNovel();
+
+  const dispatch = useDispatch();
   const {
     sourceId,
     novelUrl,
     novelName,
     novelId,
     chapterId: currentChapterId,
-  } = state.routes[0].params;
-  const indexOfCurrentChapter = chapters.findIndex(el => {
-    return el.chapterId === currentChapterId;
-  });
-  const scrollToIndex =
-    indexOfCurrentChapter >= 2 ? indexOfCurrentChapter - 2 : 0;
-
+  } = st.routes[0].params;
+  const { defaultChapterSort = 'ORDER BY chapterId ASC' } = useSettings();
+  const { sort = defaultChapterSort, filter = '' } = usePreferences(novelId);
+  const { chapters, novel } = useNovel();
+  useEffect(() => {
+    if (chapters.length < 1 || novelId !== novel.novelId) {
+      dispatch(setNovel({ sourceId, novelUrl, novelName, novelId }));
+      dispatch(
+        getNovelAction(true, sourceId, novelUrl, novelId, sort, filter, 1),
+      );
+    }
+  }, [
+    chapters.length,
+    defaultChapterSort,
+    dispatch,
+    filter,
+    novel.novelId,
+    novelId,
+    novelName,
+    novelUrl,
+    sort,
+    sourceId,
+  ]);
+  const listAscending = sort === 'ORDER BY chapterId ASC';
+  const scrollToIndex = useMemo(() => {
+    if (chapters.length < 1) {
+      return;
+    }
+    const indexOfCurrentChapter = chapters.findIndex(el => {
+      return el.chapterId === currentChapterId;
+    });
+    let res;
+    res = indexOfCurrentChapter >= 2 ? indexOfCurrentChapter - 2 : 0;
+    listRef.current?.scrollToIndex?.(res);
+    return res;
+  }, [chapters, currentChapterId, listAscending]);
   const [buttonProperties, setButtonProperties] = useState({
     up: {
       text: getString('readerScreen.drawer.scrollToTop'),
@@ -57,6 +88,7 @@ const ChapterDrawer = ({ state, navigation }) => {
     });
   };
   const renderItem = ({ item }) => {
+    let current = {};
     if (item.chapterId === currentChapterId) {
       current = {
         backgroundColor: color(theme.secondaryContainer).alpha(0.5).string(),
@@ -65,11 +97,13 @@ const ChapterDrawer = ({ state, navigation }) => {
     return (
       <TouchableRipple
         rippleColor={theme.secondary}
-        style={styles.drawerElementContainer}
+        style={[styles.drawerElementContainer, current]}
         onPress={() => changeChapter(item)}
         borderless={true}
       >
-        <Text style={styles.drawerElement}>{item.chapterName}</Text>
+        <Text numberOfLines={2} style={styles.drawerElement}>
+          {item.chapterName}
+        </Text>
       </TouchableRipple>
     );
   };
@@ -128,7 +162,11 @@ const ChapterDrawer = ({ state, navigation }) => {
         return item.chapterId === currentChapterId;
       });
       if (!visible) {
-        if (viewableItems[0].item.chapterId < currentChapterId) {
+        if (
+          listAscending
+            ? viewableItems[0].item.chapterId < currentChapterId
+            : viewableItems[0].item.chapterId > currentChapterId
+        ) {
           down = {
             text: getString('readerScreen.drawer.scrollToCurrentChapter'),
             func: () => {
@@ -159,14 +197,18 @@ const ChapterDrawer = ({ state, navigation }) => {
   return (
     <View style={styles.drawer}>
       <ListHeader />
-      <FlashList
-        ref={ref => (listRef.current = ref)}
-        onViewableItemsChanged={checkViewableItems}
-        data={chapters}
-        renderItem={renderItem}
-        estimatedItemSize={60}
-        initialScrollIndex={scrollToIndex}
-      />
+      {scrollToIndex !== undefined ? (
+        <FlashList
+          ref={ref => (listRef.current = ref)}
+          onViewableItemsChanged={checkViewableItems}
+          data={chapters}
+          renderItem={renderItem}
+          estimatedItemSize={60}
+          initialScrollIndex={scrollToIndex}
+        />
+      ) : (
+        <LoadingScreenV2 theme={theme} />
+      )}
       <ListFooter />
     </View>
   );

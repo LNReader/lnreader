@@ -23,6 +23,7 @@ import {
 import { fetchChapter } from '../../services/Source/source';
 import { showToast } from '../../hooks/showToast';
 import {
+  useNovel,
   usePosition,
   useSettings,
   useTrackingStatus,

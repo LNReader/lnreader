@@ -50,8 +50,6 @@ export const LibraryView: React.FC<Props> = ({
           dispatch(setNovel(item));
         }
       }}
-      libraryStatus={undefined}
-      selectedNovels={undefined}
     />
   );
 
