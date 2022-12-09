@@ -4,7 +4,7 @@ const baseUrl = 'https://readnovelfull.com';
 
 const popularNovels = async page => {
   let totalPages = 61;
-  const url = `${baseUrl}/most-popular-novel?page=${page}`;
+  const url = `${baseUrl}/novel-list/most-popular-novel?page=${page}`;
 
   const result = await fetch(url);
   const body = await result.text();
@@ -137,7 +137,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 };
 
 const searchNovels = async searchTerm => {
-  const searchUrl = 'https://readnovelfull.com/search?keyword=';
+  const searchUrl = 'https://readnovelfull.com/novel-list/search?keyword=';
 
   const url = `${searchUrl}${searchTerm}`;
 
