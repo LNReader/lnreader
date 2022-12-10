@@ -219,8 +219,10 @@ const createStylesheet = (theme, insets) => {
       borderBottomColor: dividerColor(theme.isDark),
     },
     chapterCtn: {
+      flex: 1,
       paddingHorizontal: 20,
       paddingVertical: 10,
+      justifyContent: 'center',
     },
     chapterNameCtn: {
       fontSize: 12,
@@ -235,6 +237,7 @@ const createStylesheet = (theme, insets) => {
       marginHorizontal: 16,
       borderRadius: 50,
       overflow: 'hidden',
+      minHeight: 48,
     },
     button: {
       marginBottom: 12,
@@ -242,6 +245,7 @@ const createStylesheet = (theme, insets) => {
       marginTop: 4,
     },
     footer: {
+      marginTop: 4,
       paddingTop: 8,
       paddingBottom: insets.bottom,
       borderTopWidth: 1,
