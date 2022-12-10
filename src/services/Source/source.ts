@@ -1,4 +1,5 @@
 import { sourceManager } from '../../sources/sourceManager';
+import { unifiedParser } from './unifiedParser';
 
 export const fetchNovel = async (sourceId: number, novelUrl: string) => {
   const source = sourceManager(sourceId);
@@ -33,7 +34,7 @@ export const fetchChapter = async (
 
   let chapter = await source.parseChapter(novelUrl, chapterUrl);
 
-  return chapter;
+  return unifiedParser(chapter);
 };
 
 export const fetchChapters = async (sourceId: number, novelUrl: string) => {

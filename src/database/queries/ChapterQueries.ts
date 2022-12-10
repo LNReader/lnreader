@@ -1,11 +1,11 @@
 import * as SQLite from 'expo-sqlite';
 import { showToast } from '../../hooks/showToast';
-import { sourceManager } from '../../sources/sourceManager';
 import { ChapterItem } from '../types';
 
 import * as cheerio from 'cheerio';
 import RNFetchBlob from 'rn-fetch-blob';
 import { txnErrorCallback } from '@database/utils/helpers';
+import { fetchChapter } from '../../services/Source/source';
 
 const db = SQLite.openDatabase('lnreader.db');
 
@@ -319,9 +319,7 @@ export const downloadChapter = async (
   chapterId: number,
 ) => {
   try {
-    const source = sourceManager(sourceId);
-
-    const chapter = await source.parseChapter(novelUrl, chapterUrl);
+    const chapter = await fetchChapter(sourceId, novelUrl, chapterUrl);
 
     if (chapter.chapterText?.length) {
       const imagedChapterText =
