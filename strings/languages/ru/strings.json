@@ -133,6 +133,15 @@
   "sourceScreen": {
     "noResultsFound": "Ничего не найдено"
   },
+  "statsScreen": {
+    "title": "Статистика",
+    "titlesInLibrary": "Titles in library",
+    "readChapters": "Read chapters",
+    "unreadChapters": "Unread chapters",
+    "downloadedChapters": "Загруженные главы",
+    "genreDistribution": "Распределение по жанру",
+    "statusDistribution": "Status distribution"
+  },
   "globalSearch": {
     "searchIn": "Поиск новеллы в",
     "allSources": "все источники",
@@ -147,7 +156,7 @@
       "sameDay": "[Сегодня]",
       "nextDay": "[Завтра]",
       "lastDay": "[Вчера]",
-      "lastWeek": "[В прошлый] dddd",
+      "lastWeek": "[В прошлый] dddd"
     }
   },
   "categories": {

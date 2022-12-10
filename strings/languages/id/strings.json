@@ -133,6 +133,15 @@
   "sourceScreen": {
     "noResultsFound": "Tidak ada hasil ditemukan"
   },
+  "statsScreen": {
+    "title": "Statistics",
+    "titlesInLibrary": "Titles in library",
+    "readChapters": "Read chapters",
+    "unreadChapters": "Unread chapters",
+    "downloadedChapters": "Downloaded chapters",
+    "genreDistribution": "Genre distribution",
+    "statusDistribution": "Status distribution"
+  },
   "globalSearch": {
     "searchIn": "Cari novel di",
     "allSources": "semua sumber",

@@ -13,7 +13,7 @@
     "edit": "Düzenle",
     "name": "Ad",
     "searchFor": "Şunu ara",
-    "globally": "global olarak",
+    "globally": "küresel",
     "searchResults": "Arama sonuçları"
   },
   "library": "Kitaplık",
@@ -25,7 +25,7 @@
         "downloaded": "İndirilen",
         "unread": "Okunmamış",
         "completed": "Tamamlanmış",
-        "started": "Başlanmış"
+        "started": "Başladı"
       },
       "sortOrders": {
         "dateAdded": "Eklendiği tarih",
@@ -40,7 +40,7 @@
         "list": "Liste",
         "badges": "Rozetler",
         "downloadBadges": "İndirilen LN'ler için rozet göster",
-        "unreadBadges": "Okunmamış rozetler",
+        "unreadBadges": "Okunmamış LN'ler için rozet göster",
         "showNoOfItems": "Öğelerin sayısını göster"
       }
     }
@@ -133,6 +133,15 @@
   "sourceScreen": {
     "noResultsFound": "Sonuç bulunamadı"
   },
+  "statsScreen": {
+    "title": "İstatistikler",
+    "titlesInLibrary": "Kitaplıktaki başlıklar",
+    "readChapters": "Okunan bölümler",
+    "unreadChapters": "Okunmamış bölümler",
+    "downloadedChapters": "İndirilmiş bölümler",
+    "genreDistribution": "Tür dağıtımı",
+    "statusDistribution": "Durum dağıtımı"
+  },
   "globalSearch": {
     "searchIn": "Şurada bir novel arayın",
     "allSources": "tüm kaynaklarda",
@@ -155,8 +164,8 @@
     "editCategories": "Kategoriyi yeniden adlandır",
     "setCategories": "Kategorileri ayarla",
     "header": "Kategorileri düzenle",
-    "emptyMsg": "Kategoriniz bulunmuyor.  Kitaplığınızı düzenlemek için bir tane oluşturmak için artı butonuna basın",
-    "setModalEmptyMsg": "Kategoriniz bulunmuyor.  Kitaplığınızı düzenlemek üzere bir tane oluşturmak için Düzenle butonuna basın",
+    "emptyMsg": "Hiç kategoriniz yok. Kitaplığınızı düzenlemek üzere bir tane oluşturmak için artı düğmesine dokunun",
+    "setModalEmptyMsg": "Hiç kategoriniz yok. Kitaplığınızı düzenlemek üzere bir tane oluşturmak için Düzenle düğmesine dokunun",
     "deleteModal": {
       "header": "Kategoriyi sil",
       "desc": "Şu kategoriyi silmek istiyor musunuz:"
