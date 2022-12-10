@@ -43,6 +43,10 @@ export interface SourceChapter {
   chapterText?: string;
 }
 
+export interface ParsedChapter extends SourceChapter {
+  chapterPrefix?: string;
+}
+
 export enum Status {
   Unknown = 'Unknown',
   Ongoing = 'Ongoing',
