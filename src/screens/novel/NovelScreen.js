@@ -618,7 +618,7 @@ const Novel = ({ route, navigation }) => {
         )}
         <FlashList
           ref={ref => (flatlistRef.current = ref)}
-          estimatedItemSize={100}
+          estimatedItemSize={61.1}
           data={!loading && chapters}
           extraData={[downloadQueue, selected]}
           keyExtractor={keyExtractor}
@@ -698,6 +698,7 @@ const Novel = ({ route, navigation }) => {
               theme={theme}
               chapters={chapters}
               novel={novel}
+              chapterListRef={flatlistRef.current}
               navigation={navigation}
             />
             <EditInfoModal
