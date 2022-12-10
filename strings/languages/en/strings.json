@@ -84,7 +84,13 @@
       "showBatteryAndTime": "Show battery and time",
       "showProgressPercentage": "Show progress percentage",
       "swipeGestures": "Swipe left or right to navigate between chapters",
-      "allowTextSelection": "Allow text selection"
+      "allowTextSelection": "Allow text selection",
+      "useChapterDrawerSwipeNavigation": "Swipe right to open drawer"
+    },
+    "drawer": {
+      "scrollToCurrentChapter": "Scroll to current chapter",
+      "scrollToTop": "Scroll to top",
+      "scrollToBottom": "Scroll to bottom"
     }
   },
   "novelScreen": {
@@ -156,7 +162,7 @@
       "sameDay": "[Today]",
       "nextDay": "[Tomorrow]",
       "lastDay": "[Yesterday]",
-      "lastWeek": "[Last] dddd",
+      "lastWeek": "[Last] dddd"
     }
   },
   "categories": {

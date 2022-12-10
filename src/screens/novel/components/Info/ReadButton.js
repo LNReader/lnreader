@@ -1,3 +1,4 @@
+import { openChapter } from '@utils/handleNavigateParams';
 import React from 'react';
 
 import { getString } from '../../../../../strings/translations';
@@ -8,16 +9,7 @@ const ReadButton = ({ navigation, novel, chapters, theme, lastRead }) => {
   const { useFabForContinueReading = false } = useSettings();
 
   const navigateToLastReadChapter = () => {
-    navigation.navigate('Chapter', {
-      chapterId: lastRead.chapterId,
-      chapterUrl: lastRead.chapterUrl,
-      novelUrl: novel.novelUrl,
-      novelId: lastRead.novelId,
-      sourceId: novel.sourceId,
-      chapterName: lastRead.chapterName,
-      novelName: novel.novelName,
-      bookmark: lastRead.bookmark,
-    });
+    navigation.navigate('Chapter', openChapter(novel, lastRead));
   };
 
   if (!useFabForContinueReading) {

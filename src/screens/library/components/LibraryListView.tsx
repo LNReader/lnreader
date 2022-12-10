@@ -15,6 +15,7 @@ import { getString } from '@strings/translations';
 import { useAppDispatch } from '@redux/hooks';
 import { useTheme } from '@hooks/useTheme';
 import { updateLibraryAction } from '@redux/updates/updates.actions';
+import { openNovel } from '@utils/handleNavigateParams';
 
 interface Props {
   categoryId: number;
@@ -45,7 +46,7 @@ export const LibraryView: React.FC<Props> = ({
         if (selectedNovelIds.length) {
           setSelectedNovelIds(xor(selectedNovelIds, [item.novelId]));
         } else {
-          navigate('Novel' as never, item as never);
+          navigate('Novel' as never, openNovel(item) as never);
           dispatch(setNovel(item));
         }
       }}

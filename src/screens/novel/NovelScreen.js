@@ -65,6 +65,7 @@ import DownloadCustomChapterModal from './components/DownloadCustomChapterModal'
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import useBoolean from '@hooks/useBoolean';
 import { useCategorySettings } from '@hooks/useSettings';
+import { openChapter } from '../../utils/handleNavigateParams';
 
 const Novel = ({ route, navigation }) => {
   const item = route.params;
@@ -282,13 +283,12 @@ const Novel = ({ route, navigation }) => {
     }
   };
 
-  const navigateToChapter = chapter =>
-    navigation.navigate('Chapter', {
-      sourceId,
-      novelUrl,
-      novelName,
-      ...chapter,
-    });
+  const navigateToChapter = chapter => {
+    navigation.navigate(
+      'Chapter',
+      openChapter({ sourceId, novelUrl, novelName }, chapter),
+    );
+  };
 
   const showProgressPercentage = chapter => {
     const savedProgress =
@@ -658,18 +658,12 @@ const Novel = ({ route, navigation }) => {
               uppercase={false}
               label={novel.unread ? 'Start' : 'Resume'}
               icon="play"
-              onPress={() =>
-                navigation.navigate('Chapter', {
-                  chapterId: lastReadChapter.chapterId,
-                  chapterUrl: lastReadChapter.chapterUrl,
-                  novelUrl: novel.novelUrl,
-                  novelId: lastReadChapter.novelId,
-                  sourceId: novel.sourceId,
-                  chapterName: lastReadChapter.chapterName,
-                  novelName: novel.novelName,
-                  bookmark: lastReadChapter.bookmark,
-                })
-              }
+              onPress={() => {
+                navigation.navigate(
+                  'Chapter',
+                  openChapter(novel, lastReadChapter),
+                );
+              }}
             />
           )}
         <Portal>

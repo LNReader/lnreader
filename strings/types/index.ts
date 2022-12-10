@@ -69,6 +69,7 @@ export interface StringMap {
   'readerScreen.bottomSheet.showProgressPercentage': 'string';
   'readerScreen.bottomSheet.swipeGestures': 'string';
   'readerScreen.bottomSheet.allowTextSelection': 'string';
+  'readerScreen.bottomSheet.useChapterDrawerSwipeNavigation': 'string';
   'novelScreen.addToLibaray': 'string';
   'novelScreen.inLibaray': 'string';
   'novelScreen.continueReading': 'string';

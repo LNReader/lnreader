@@ -1,3 +1,4 @@
+import { openChapter } from '@utils/handleNavigateParams';
 import { getDialogBackground } from '@theme/colors';
 import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
@@ -26,16 +27,7 @@ const JumpToChapterModal = ({
   const onSubmit = () => {
     if (!mode) {
       if (text > 0 && text <= chapters.length) {
-        navigation.navigate('Chapter', {
-          sourceId: novel.sourceId,
-          novelUrl: novel.novelUrl,
-          novelId: novel.novelId,
-          chapterId: chapters[text - 1].chapterId,
-          chapterUrl: chapters[text - 1].chapterUrl,
-          chapterName: chapters[text - 1].chapterName,
-          novelName: novel.novelName,
-          bookmark: chapters[text - 1].bookmark,
-        });
+        navigation.navigate('Chapter', openChapter(novel, chapters[text - 1]));
         hideModal();
       } else {
         setError(`Enter a valid chapter number (≤ ${chapters.length})`);
@@ -46,16 +38,7 @@ const JumpToChapterModal = ({
       );
 
       if (chapter) {
-        navigation.navigate('Chapter', {
-          sourceId: novel.sourceId,
-          novelUrl: novel.novelUrl,
-          novelId: chapter.novelId,
-          chapterId: chapter.chapterId,
-          chapterUrl: chapter.chapterUrl,
-          chapterName: chapter.chapterName,
-          novelName: novel.novelName,
-          bookmark: chapter.bookmark,
-        });
+        navigation.navigate('Chapter', openChapter(novel, chapter));
         hideModal();
       } else {
         setError('Enter a valid chapter name');

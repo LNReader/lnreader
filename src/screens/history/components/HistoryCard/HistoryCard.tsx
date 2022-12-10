@@ -12,27 +12,20 @@ import { parseChapterNumber } from '../../../../utils/parseChapterNumber';
 import { History } from '../../../../database/types';
 import { MD3ThemeType } from '../../../../theme/types';
 import { coverPlaceholderColor } from '../../../../theme/colors';
+import {
+  openChapterChapterTypes,
+  openChapterNovelTypes,
+  openNovelProps,
+} from '@utils/handleNavigateParams';
 
 interface HistoryCardProps {
   history: History;
   handleNavigateToChapter: (
-    sourceId: number,
-    novelId: number,
-    novelName: string,
-    novelUrl: string,
-    chapterId: number,
-    chapterUrl: string,
-    chapterName: string,
-    isBookmarked: number,
+    novel: openChapterNovelTypes,
+    chapter: openChapterChapterTypes,
   ) => void;
   handleRemoveFromHistory: (historyId: number) => void;
-  handleNavigateToNovel: (
-    sourceId: number,
-    novelId: number,
-    novelUrl: string,
-    novelName: string,
-    novelCover: string,
-  ) => void;
+  handleNavigateToNovel: (novel: openNovelProps) => void;
   theme: MD3ThemeType;
 }
 
@@ -70,13 +63,13 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
       style={styles.container}
       android_ripple={{ color: color(theme.primary).alpha(0.12).string() }}
       onPress={() =>
-        handleNavigateToNovel(
+        handleNavigateToNovel({
           sourceId,
           novelId,
           novelUrl,
           novelName,
           novelCover,
-        )
+        })
       }
     >
       <View style={styles.imageAndNameContainer}>
@@ -103,14 +96,14 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
           name="play"
           onPress={() =>
             handleNavigateToChapter(
-              sourceId,
-              novelId,
-              novelName,
-              novelUrl,
-              chapterId,
-              chapterUrl,
-              chapterName,
-              bookmark,
+              { sourceId, novelName, novelUrl },
+              {
+                novelId,
+                chapterId,
+                chapterUrl,
+                chapterName,
+                bookmark,
+              },
             )
           }
           theme={theme}

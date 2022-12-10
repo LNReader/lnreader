@@ -49,6 +49,7 @@ const GeneralTab: React.FC = () => {
     wvUseVolumeButtons = false,
     swipeGestures = false,
     removeExtraParagraphSpacing = false,
+    useChapterDrawerSwipeNavigation = true,
   } = useSettingsV1();
 
   return (
@@ -133,7 +134,23 @@ const GeneralTab: React.FC = () => {
           value={wvUseVolumeButtons}
           theme={theme}
         />
-      ) : null}
+      ) : (
+        <ReaderSheetPreferenceItem
+          label={getString(
+            'readerScreen.bottomSheet.useChapterDrawerSwipeNavigation',
+          )}
+          onPress={() =>
+            dispatch(
+              setAppSettings(
+                'useChapterDrawerSwipeNavigation',
+                !useChapterDrawerSwipeNavigation,
+              ),
+            )
+          }
+          value={useChapterDrawerSwipeNavigation}
+          theme={theme}
+        />
+      )}
     </View>
   );
 };
