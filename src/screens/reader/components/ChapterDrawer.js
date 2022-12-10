@@ -208,7 +208,6 @@ const createStylesheet = (theme, insets) => {
     drawer: {
       flex: 1,
       backgroundColor: theme.surface,
-      color: color(theme.primary).alpha(0.08).string(),
       paddingTop: 48,
     },
     headerCtn: {
@@ -217,6 +216,7 @@ const createStylesheet = (theme, insets) => {
       fontWeight: 'bold',
       borderBottomWidth: 1,
       borderBottomColor: dividerColor(theme.isDark),
+      color: theme.textColorPrimary,
     },
     chapterCtn: {
       flex: 1,
@@ -227,6 +227,7 @@ const createStylesheet = (theme, insets) => {
     chapterNameCtn: {
       fontSize: 12,
       marginBottom: 2,
+      color: theme.textColorPrimary,
     },
     releaseDateCtn: {
       fontSize: 10,
