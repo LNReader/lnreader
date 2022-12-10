@@ -18,6 +18,7 @@ export interface StringMap {
   'common.searchFor': 'string';
   'common.globally': 'string';
   'common.searchResults': 'string';
+  'common.chapters': 'string';
   'library': 'string';
   'libraryScreen.searchbar': 'string';
   'libraryScreen.empty': 'string';
@@ -70,6 +71,9 @@ export interface StringMap {
   'readerScreen.bottomSheet.swipeGestures': 'string';
   'readerScreen.bottomSheet.allowTextSelection': 'string';
   'readerScreen.bottomSheet.useChapterDrawerSwipeNavigation': 'string';
+  'readerScreen.drawer.scrollToCurrentChapter': 'string';
+  'readerScreen.drawer.scrollToTop': 'string';
+  'readerScreen.drawer.scrollToBottom': 'string';
   'novelScreen.addToLibaray': 'string';
   'novelScreen.inLibaray': 'string';
   'novelScreen.continueReading': 'string';

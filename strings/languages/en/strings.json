@@ -14,7 +14,8 @@
     "name": "Name",
     "searchFor": "Search for",
     "globally": "globally",
-    "searchResults": "Search results"
+    "searchResults": "Search results",
+    "chapters": "Chapters"
   },
   "library": "Library",
   "libraryScreen": {

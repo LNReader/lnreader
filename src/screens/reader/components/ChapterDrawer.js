@@ -1,16 +1,16 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Text, TouchableRipple } from 'react-native-paper';
+import { StyleSheet, View, Pressable } from 'react-native';
+import { Text } from 'react-native-paper';
 import color from 'color';
 import { useTheme } from '@hooks/useTheme';
 import { FlashList } from '@shopify/flash-list';
 import { Button, LoadingScreenV2 } from '@components/index';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { LinearGradient } from 'expo-linear-gradient';
 import { getString } from '@strings/translations';
 import { useNovel, useSettings, usePreferences } from '@hooks/reduxHooks';
 import { useDispatch } from 'react-redux';
 import { setNovel, getNovelAction } from '@redux/novel/novel.actions';
+import { dividerColor } from '@theme/colors';
 
 const ChapterDrawer = ({ state: st, navigation }) => {
   const theme = useTheme();
@@ -87,59 +87,48 @@ const ChapterDrawer = ({ state: st, navigation }) => {
       ...item,
     });
   };
-  const renderItem = ({ item }) => {
-    let current = {};
-    if (item.chapterId === currentChapterId) {
-      current = {
-        backgroundColor: color(theme.secondaryContainer).alpha(0.5).string(),
-      };
-    }
-    return (
-      <TouchableRipple
-        rippleColor={theme.secondary}
-        style={[styles.drawerElementContainer, current]}
+  const renderItem = ({ item }) => (
+    <View
+      style={[
+        styles.drawerElementContainer,
+        item.chapterId === currentChapterId && {
+          backgroundColor: color(theme.primary).alpha(0.12).string(),
+        },
+      ]}
+    >
+      <Pressable
+        android_ripple={{ color: color(theme.primary).alpha(0.12).string() }}
         onPress={() => changeChapter(item)}
-        borderless={true}
+        style={styles.chapterCtn}
       >
-        <Text numberOfLines={2} style={styles.drawerElement}>
+        <Text numberOfLines={1} style={styles.chapterNameCtn}>
           {item.chapterName}
         </Text>
-      </TouchableRipple>
-    );
-  };
-  const ListHeader = () => {
-    return (
-      <>
-        <View style={styles.header} />
-        <LinearGradient
-          style={[styles.t_up, styles.transition]}
-          colors={[theme.surface, 'rgba(0,0,0, 0)']}
-        />
-      </>
-    );
-  };
+        {item.releaseDate && (
+          <Text style={styles.releaseDateCtn}>{item.releaseDate}</Text>
+        )}
+      </Pressable>
+    </View>
+  );
+
   const ListFooter = () => {
     return (
-      <>
-        <LinearGradient
-          style={[styles.t_down, styles.transition]}
-          colors={['rgba(0,0,0, 0)', theme.surface]}
+      <View style={styles.footer}>
+        <Button
+          theme={theme}
+          style={styles.button}
+          title={buttonProperties.up.text}
+          labelStyle={styles.btnLabel}
+          onPress={buttonProperties.up.func}
         />
-        <View style={styles.footer}>
-          <Button
-            theme={theme}
-            style={styles.button}
-            title={buttonProperties.up.text}
-            onPress={() => buttonProperties.up.func()}
-          />
-          <Button
-            theme={theme}
-            style={styles.button}
-            title={buttonProperties.down.text}
-            onPress={buttonProperties.down.func}
-          />
-        </View>
-      </>
+        <Button
+          theme={theme}
+          style={styles.button}
+          title={buttonProperties.down.text}
+          labelStyle={styles.btnLabel}
+          onPress={buttonProperties.down.func}
+        />
+      </View>
     );
   };
   const checkViewableItems = ({ viewableItems }) => {
@@ -196,7 +185,7 @@ const ChapterDrawer = ({ state: st, navigation }) => {
   };
   return (
     <View style={styles.drawer}>
-      <ListHeader />
+      <Text style={styles.headerCtn}>{getString('common.chapters')}</Text>
       {scrollToIndex !== undefined ? (
         <FlashList
           ref={ref => (listRef.current = ref)}
@@ -218,52 +207,48 @@ const createStylesheet = (theme, insets) => {
   return StyleSheet.create({
     drawer: {
       flex: 1,
-      backgroundColor: color(theme.surface).alpha(0.9).string(),
-      color: color(theme.textColorPrimary).toString(),
+      backgroundColor: theme.surface,
+      color: color(theme.primary).alpha(0.08).string(),
+      paddingTop: 48,
     },
-    drawerElement: {
-      color: theme.textColorPrimary,
-      overflow: 'visible',
-      width: 240,
-      height: '100%',
-      textAlignVertical: 'center',
-      paddingHorizontal: 6,
+    headerCtn: {
+      padding: 16,
+      marginBottom: 4,
+      fontWeight: 'bold',
+      borderBottomWidth: 1,
+      borderBottomColor: dividerColor(theme.isDark),
+    },
+    chapterCtn: {
+      paddingHorizontal: 20,
+      paddingVertical: 10,
+    },
+    chapterNameCtn: {
+      fontSize: 12,
+      marginBottom: 2,
+    },
+    releaseDateCtn: {
+      fontSize: 10,
+      color: theme.textColorSecondary,
     },
     drawerElementContainer: {
-      backgroundColor: color(theme.surface).alpha(0.5).string(),
-      height: 50,
-      margin: 5,
-      marginHorizontal: 15,
-      borderRadius: 10,
-      borderColor: color(theme.secondaryContainer).alpha(0.5).string(),
-      borderWidth: 2,
+      margin: 4,
+      marginHorizontal: 16,
+      borderRadius: 50,
+      overflow: 'hidden',
     },
     button: {
-      marginBottom: 10,
-      marginHorizontal: 20,
-      marginTop: 5,
-    },
-    header: {
-      height: insets.top,
-      width: '100%',
-      backgroundColor: theme.surface,
+      marginBottom: 12,
+      marginHorizontal: 16,
+      marginTop: 4,
     },
     footer: {
-      zIndex: 4,
+      paddingTop: 8,
       paddingBottom: insets.bottom,
-      backgroundColor: theme.surface,
+      borderTopWidth: 1,
+      borderTopColor: dividerColor(theme.isDark),
     },
-    transition: {
-      width: '100%',
-      height: 30,
-      zIndex: 2,
-    },
-    t_down: {
-      marginTop: -30,
-    },
-    t_up: {
-      marginBottom: -30,
-      paddingTop: insets.top,
+    btnLabel: {
+      fontWeight: 'bold',
     },
   });
 };
