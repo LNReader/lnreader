@@ -3,10 +3,9 @@ import sanitize from 'sanitize-html';
 import { defaultTo } from 'lodash';
 import { getChapterFromDb } from '../database/queries/DownloadQueries';
 
-import { sourceManager } from '../sources/sourceManager';
-
 import { DownloadedChapter } from '../database/types';
 import { SourceChapter } from '../sources/types';
+import { fetchChapter } from '../services/Source/source';
 
 type Chapter = SourceChapter | DownloadedChapter;
 
@@ -25,7 +24,7 @@ const useChapter = (
       let res: Chapter = await getChapterFromDb(chapterId);
 
       if (!res) {
-        res = await sourceManager(sourceId).parseChapter(novelUrl, chapterUrl);
+        res = await fetchChapter(sourceId, novelUrl, chapterUrl);
       }
 
       let chapterText = sanitize(
