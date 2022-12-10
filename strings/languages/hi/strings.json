@@ -133,6 +133,15 @@
   "sourceScreen": {
     "noResultsFound": "No results found"
   },
+  "statsScreen": {
+    "title": "Statistics",
+    "titlesInLibrary": "Titles in library",
+    "readChapters": "Read chapters",
+    "unreadChapters": "Unread chapters",
+    "downloadedChapters": "Downloaded chapters",
+    "genreDistribution": "Genre distribution",
+    "statusDistribution": "Status distribution"
+  },
   "globalSearch": {
     "searchIn": "Search a novel in",
     "allSources": "all sources",
@@ -146,10 +155,8 @@
     "calendar": {
       "sameDay": "[Today]",
       "nextDay": "[Tomorrow]",
-      "nextWeek": "dddd",
       "lastDay": "[Yesterday]",
       "lastWeek": "[Last] dddd",
-      "sameElse": "LL"
     }
   },
   "categories": {

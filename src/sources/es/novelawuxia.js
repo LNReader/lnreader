@@ -1,5 +1,5 @@
 import * as cheerio from 'cheerio';
-const baseUrl = 'http://www.novelawuxia.com/';
+const baseUrl = 'http://www.reinowuxia.com/';
 
 function getNovelName(y) {
   return y.replace(/-/g, ' ').replace(/(?:^|\s)\S/g, a => a.toUpperCase());
@@ -123,11 +123,9 @@ const parseNovelAndChapters = async novelUrl => {
           if (
             chapterName &&
             chapterUrl &&
-            chapterUrl.includes(novelUrl.replace('.html', '')) &&
+            chapterUrl.includes(novelUrl.replace('.html/', '')) &&
             !novelChapters.some(chap => chap.chapterName === chapterName)
           ) {
-            chapterUrl = chapterUrl.replace(baseUrl, '');
-
             const chapter = {
               chapterName,
               releaseDate,
@@ -146,7 +144,7 @@ const parseNovelAndChapters = async novelUrl => {
 };
 
 const parseChapter = async (novelUrl, chapterUrl) => {
-  const url = `${baseUrl}${novelUrl}/${chapterUrl}`;
+  const url = chapterUrl;
 
   const result = await fetch(url);
   const body = await result.text();

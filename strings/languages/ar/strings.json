@@ -3,7 +3,7 @@
     "cancel": "الغاء",
     "ok": "حسنآ",
     "save": "تثبيت",
-    "clear": "تنضيف",
+    "clear": "تنظيف",
     "reset": "إعادة تعيين",
     "search": "بحث",
     "install": "تثبيت",
@@ -133,6 +133,15 @@
   "sourceScreen": {
     "noResultsFound": "لم يتم العثور على أي نتائج"
   },
+  "statsScreen": {
+    "title": "Statistics",
+    "titlesInLibrary": "Titles in library",
+    "readChapters": "Read chapters",
+    "unreadChapters": "Unread chapters",
+    "downloadedChapters": "الفصول التي تم تحميلها",
+    "genreDistribution": "Genre distribution",
+    "statusDistribution": "Status distribution"
+  },
   "globalSearch": {
     "searchIn": "البحث في رواية",
     "allSources": "جميع المصادر",
@@ -146,10 +155,8 @@
     "calendar": {
       "sameDay": "اليوم",
       "nextDay": "الغد",
-      "nextWeek": "الأسبوع القادم",
       "lastDay": "بالأمس",
       "lastWeek": "الأسبوع الماضي",
-      "sameElse": "نفس الشيء"
     }
   },
   "categories": {

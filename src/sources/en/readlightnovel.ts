@@ -1,5 +1,5 @@
 import * as cheerio from 'cheerio';
-import { defaultTo, isNumber } from 'lodash';
+import { defaultTo } from 'lodash';
 import { SourceOptions } from '../sourceManager';
 import { SourceChapter, SourceChapterItem, SourceNovelItem } from '../types';
 import { FilterInputs, SourceFilter } from '../types/filterTypes';
@@ -7,7 +7,7 @@ import { FilterInputs, SourceFilter } from '../types/filterTypes';
 const sourceId = 2;
 const sourceName = 'ReadLightNovel';
 const baseUrl = 'https://www.readlightnovel.me';
-const searchUrl = 'https://www.readlightnovel.me/detailed-search-rln';
+const searchUrl = 'https://www.readlightnovel.me/detailed-search-210922';
 
 const popularNovels = async (page: number, options?: SourceOptions) => {
   const url = `${baseUrl}/${
@@ -34,7 +34,7 @@ const popularNovels = async (page: number, options?: SourceOptions) => {
     ?.split('/')
     .pop();
 
-  totalPages = isNumber(totalPages) ? totalPages : 1;
+  totalPages = Number(totalPages) || 1;
 
   loadedCheerio('.top-novel-block').each(function () {
     const novelUrl = loadedCheerio(this)

@@ -23,6 +23,7 @@ import {
 import { fetchChapter } from '../../services/Source/source';
 import { showToast } from '../../hooks/showToast';
 import {
+  useNovel,
   usePosition,
   useSettings,
   useTrackingStatus,
@@ -54,10 +55,34 @@ import { defaultTo } from 'lodash';
 import BottomInfoBar from './components/BottomInfoBar/BottomInfoBar';
 import { sanitizeChapterText } from './utils/sanitizeChapterText';
 import { LoadingScreenV2 } from '@components/index';
+import ChapterDrawer from './components/ChapterDrawer';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 
-const Chapter = ({ route, navigation }) => {
+const Chapter = ({ route }) => {
+  const { useChapterDrawerSwipeNavigation = true } = useSettings();
+  const DrawerNav = createDrawerNavigator();
+  return (
+    <DrawerNav.Navigator
+      params={route.params}
+      drawerContent={props => <ChapterDrawer {...props} />}
+      screenOptions={{
+        swipeEdgeWidth: 60,
+        swipeEnabled: useChapterDrawerSwipeNavigation,
+      }}
+    >
+      <DrawerNav.Screen
+        name="ChapterContent"
+        initialParams={route.params}
+        options={{ headerShown: false }}
+        component={ChapterContent}
+      />
+    </DrawerNav.Navigator>
+  );
+};
+
+const ChapterContent = ({ route, navigation }) => {
   useKeepAwake();
-
+  const params = route.params;
   const {
     sourceId,
     chapterId,
@@ -67,8 +92,7 @@ const Chapter = ({ route, navigation }) => {
     novelName,
     chapterName,
     bookmark,
-  } = route.params;
-
+  } = params;
   let scrollViewRef = useRef(null);
   let readerSheetRef = useRef(null);
 
@@ -314,36 +338,32 @@ const Chapter = ({ route, navigation }) => {
 
   const config = {
     velocityThreshold: 0.3,
-    directionalOffsetThreshold: 80,
+    directionalOffsetThreshold: 50,
   };
 
-  const navigateToPrevChapter = () =>
+  const navigateToPrevChapter = () => {
     prevChapter
       ? navigation.replace('Chapter', {
+          ...params,
           chapterUrl: prevChapter.chapterUrl,
           chapterId: prevChapter.chapterId,
-          sourceId,
-          novelUrl,
-          novelId,
           chapterName: prevChapter.chapterName,
-          novelName,
           bookmark: prevChapter.bookmark,
         })
       : showToast("There's no previous chapter");
+  };
 
-  const navigateToNextChapter = () =>
+  const navigateToNextChapter = () => {
     nextChapter
       ? navigation.replace('Chapter', {
+          ...params,
           chapterUrl: nextChapter.chapterUrl,
-          sourceId,
-          novelUrl,
-          novelId,
           chapterId: nextChapter.chapterId,
           chapterName: nextChapter.chapterName,
-          novelName,
           bookmark: nextChapter.bookmark,
         })
       : showToast("There's no next chapter");
+  };
 
   const enableAutoScroll = () =>
     dispatch(setAppSettings('autoScroll', !autoScroll));
@@ -366,6 +386,10 @@ const Chapter = ({ route, navigation }) => {
     removeExtraParagraphSpacing,
   });
 
+  const openDrawer = () => {
+    navigation.openDrawer();
+    setHidden(true);
+  };
   return (
     <>
       <>
@@ -510,6 +534,7 @@ const Chapter = ({ route, navigation }) => {
           readerSheetRef={readerSheetRef}
           scrollViewRef={scrollViewRef}
           enableAutoScroll={enableAutoScroll}
+          openDrawer={openDrawer}
         />
       </>
     </>

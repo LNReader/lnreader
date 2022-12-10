@@ -1,4 +1,5 @@
 import { FlashList } from '@shopify/flash-list';
+import { openChapter } from '@utils/handleNavigateParams';
 import { getDialogBackground } from '@theme/colors';
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';

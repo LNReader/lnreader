@@ -74,3 +74,14 @@ export interface Category {
   lastUpdatedAt: Date;
   sort: number | null;
 }
+
+export interface LibraryStats {
+  novelsCount?: number;
+  chaptersCount?: number;
+  chaptersRead?: number;
+  chaptersUnread?: number;
+  chaptersDownloaded?: number;
+  sourcesCount?: number;
+  genres?: Record<string, number>;
+  status?: Record<string, number>;
+}

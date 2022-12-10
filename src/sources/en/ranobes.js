@@ -8,7 +8,7 @@ const sourceName = 'Ranobes';
 const baseUrl = 'https://ranobes.net';
 
 const popularNovels = async page => {
-  let url = `${baseUrl}/novels/page/${page}/`;
+  let url = `${baseUrl}/novels1/page/${page}/`;
 
   const result = await fetch(url);
   const body = await result.text();

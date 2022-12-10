@@ -11,6 +11,7 @@ import { getDialogBackground } from '@theme/colors';
 import { Button } from '@components';
 import { ButtonVariation } from '@components/Button/Button';
 import { getString } from '@strings/translations';
+import { openNovel } from '@utils/handleNavigateParams';
 
 const MigrationNovelList = ({ data, theme, library, navigation }) => {
   const [selectedNovel, setSelectedNovel] = useState(false);
@@ -28,10 +29,13 @@ const MigrationNovelList = ({ data, theme, library, navigation }) => {
       theme={theme}
       onPress={() => showModal(item.sourceId, item.novelUrl, item.novelName)}
       onLongPress={() =>
-        navigation.navigate('Novel', {
-          ...item,
-          sourceId: item.sourceId,
-        })
+        navigation.navigate(
+          'Novel',
+          openNovel({
+            ...item,
+            sourceId: item.sourceId,
+          }),
+        )
       }
       inLibrary={inLibrary(item.sourceId, item.novelUrl)}
     />

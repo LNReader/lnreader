@@ -6,15 +6,15 @@
     "clear": "Nettoyez",
     "reset": "Réinitialiser",
     "search": "Recherchez",
-    "install": "Install",
-    "newUpdateAvailable": "New update available",
-    "categories": "Categories",
-    "add": "Add",
-    "edit": "Edit",
-    "name": "Name",
-    "searchFor": "Search for",
-    "globally": "globally",
-    "searchResults": "Search results"
+    "install": "Installer",
+    "newUpdateAvailable": "Nouvelle mise à jour disponible",
+    "categories": "Catégories",
+    "add": "Ajouter",
+    "edit": "Modifier",
+    "name": "Nom",
+    "searchFor": "Rechercher",
+    "globally": "globalement",
+    "searchResults": "Résultats de la recherche"
   },
   "library": "Bibliothèque",
   "libraryScreen": {
@@ -25,7 +25,7 @@
         "downloaded": "Téléchargé",
         "unread": "Non lu",
         "completed": "Complété",
-        "started": "Started"
+        "started": "Commencé"
       },
       "sortOrders": {
         "dateAdded": "Date ajoutée",
@@ -65,8 +65,8 @@
     "pinned": "Épinglé",
     "all": "Tout",
     "latest": "Dernier",
-    "addedToLibrary": "Added to library",
-    "removeFromLibrary": "Removed from library"
+    "addedToLibrary": "Ajouté à la bibliothèque",
+    "removeFromLibrary": "Supprimé de la bibliothèque"
   },
   "readerScreen": {
     "finished": "Terminé",
@@ -93,7 +93,7 @@
     "continueReading": "Continuer la lecture",
     "chapters": "chapitres",
     "migrate": "Migrer",
-    "noSummary": "No summary",
+    "noSummary": "Aucun résumé",
     "bottomSheet": {
       "filter": "Filtre",
       "sort": "Trier",
@@ -133,6 +133,15 @@
   "sourceScreen": {
     "noResultsFound": "Aucun résultat trouvé"
   },
+  "statsScreen": {
+    "title": "Statistiques",
+    "titlesInLibrary": "Titles in library",
+    "readChapters": "Read chapters",
+    "unreadChapters": "Chapitres non lus",
+    "downloadedChapters": "Chapitres téléchargés",
+    "genreDistribution": "Répartition par genres",
+    "statusDistribution": "Status distribution"
+  },
   "globalSearch": {
     "searchIn": "Rechercher un novel dans",
     "allSources": "toutes les sources",
@@ -144,30 +153,28 @@
   },
   "date": {
     "calendar": {
-      "sameDay": "[Today]",
-      "nextDay": "[Tomorrow]",
-      "nextWeek": "dddd",
-      "lastDay": "[Yesterday]",
-      "lastWeek": "[Last] dddd",
-      "sameElse": "LL"
+      "sameDay": "[Aujourd'hui]",
+      "nextDay": "[Demain]",
+      "lastDay": "[Hier]",
+      "lastWeek": "[Derniers] dddd"
     }
   },
   "categories": {
-    "addCategories": "Add category",
-    "editCategories": "Rename category",
-    "setCategories": "Set categories",
-    "header": "Edit categories",
+    "addCategories": "Ajouter une catégorie",
+    "editCategories": "Renommer la catégorie",
+    "setCategories": "Définir les catégories",
+    "header": "Modifier les catégories",
     "emptyMsg": "You have no categories. Tap the plus button to create one for organizing your library",
     "setModalEmptyMsg": "You have no categories. Tap the Edit button to create one for organizing your library",
     "deleteModal": {
-      "header": "Delete category",
-      "desc": "Do you wish to delete category"
+      "header": "Supprimer la catégorie",
+      "desc": "Voulez-vous supprimer cette catégorie"
     },
-    "duplicateError": "A category with this name already exists!",
-    "defaultCategory": "Default category"
+    "duplicateError": "Une catégorie avec ce nom existe déjà !",
+    "defaultCategory": "Catégorie par défaut"
   },
   "settings": {
-    "icognitoMode": "Incognito mode",
-    "downloadedOnly": "Downloaded only"
+    "icognitoMode": "Navigation privée",
+    "downloadedOnly": "Téléchargés seulement"
   }
 }

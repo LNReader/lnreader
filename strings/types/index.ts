@@ -18,6 +18,7 @@ export interface StringMap {
   'common.searchFor': 'string';
   'common.globally': 'string';
   'common.searchResults': 'string';
+  'common.chapters': 'string';
   'library': 'string';
   'libraryScreen.searchbar': 'string';
   'libraryScreen.empty': 'string';
@@ -69,6 +70,10 @@ export interface StringMap {
   'readerScreen.bottomSheet.showProgressPercentage': 'string';
   'readerScreen.bottomSheet.swipeGestures': 'string';
   'readerScreen.bottomSheet.allowTextSelection': 'string';
+  'readerScreen.bottomSheet.useChapterDrawerSwipeNavigation': 'string';
+  'readerScreen.drawer.scrollToCurrentChapter': 'string';
+  'readerScreen.drawer.scrollToTop': 'string';
+  'readerScreen.drawer.scrollToBottom': 'string';
   'novelScreen.addToLibaray': 'string';
   'novelScreen.inLibaray': 'string';
   'novelScreen.continueReading': 'string';
@@ -100,6 +105,13 @@ export interface StringMap {
   'moreScreen.settingsScreen.browseSettingsScreen.searchAllSources': 'string';
   'moreScreen.settingsScreen.browseSettingsScreen.searchAllWarning': 'string';
   'sourceScreen.noResultsFound': 'string';
+  'statsScreen.title': 'string';
+  'statsScreen.titlesInLibrary': 'string';
+  'statsScreen.readChapters': 'string';
+  'statsScreen.unreadChapters': 'string';
+  'statsScreen.downloadedChapters': 'string';
+  'statsScreen.genreDistribution': 'string';
+  'statsScreen.statusDistribution': 'string';
   'globalSearch.searchIn': 'string';
   'globalSearch.allSources': 'string';
   'globalSearch.pinnedSources': 'string';
@@ -107,10 +119,8 @@ export interface StringMap {
   'advancedSettings.deleteReadChaptersDialogTitle': 'string';
   'date.calendar.sameDay': 'string';
   'date.calendar.nextDay': 'string';
-  'date.calendar.nextWeek': 'string';
   'date.calendar.lastDay': 'string';
   'date.calendar.lastWeek': 'string';
-  'date.calendar.sameElse': 'string';
   'categories.addCategories': 'string';
   'categories.editCategories': 'string';
   'categories.setCategories': 'string';
