@@ -10,14 +10,14 @@ import RenderHtml from 'react-native-render-html';
 
 import { TextAlignments } from '@screens/settings/SettingsReaderScreen/SettingsReaderScreen';
 import { Button } from '@components/index';
-import { ThemeType } from '../../../theme/types';
+import { MD3ThemeType } from '../../../theme/types';
 import { ChapterItem } from '../../../database/types';
 import { getString } from '@strings/translations';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 interface TextReaderProps {
   text: string;
-  theme: ThemeType;
+  theme: MD3ThemeType;
   reader: {
     theme: string;
     textColor: string;

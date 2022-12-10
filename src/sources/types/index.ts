@@ -30,6 +30,7 @@ export interface SourceNovel {
   genre?: string;
   summary?: string;
   author?: string;
+  artist?: string;
   status?: string;
   chapters?: SourceChapterItem[];
 }
