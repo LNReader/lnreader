@@ -211,6 +211,7 @@ const createStylesheet = (theme, insets) => {
       paddingTop: 48,
     },
     headerCtn: {
+      fontSize: 16,
       padding: 16,
       marginBottom: 4,
       fontWeight: 'bold',
@@ -235,8 +236,10 @@ const createStylesheet = (theme, insets) => {
     },
     drawerElementContainer: {
       margin: 4,
-      marginHorizontal: 16,
-      borderRadius: 50,
+      marginLeft: 0,
+      marginRight: 16,
+      borderTopRightRadius: 50,
+      borderBottomRightRadius: 50,
       overflow: 'hidden',
       minHeight: 48,
     },
