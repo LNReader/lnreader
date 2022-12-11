@@ -14,7 +14,9 @@
     "name": "اسم",
     "searchFor": "بحث عن",
     "globally": "عالمي",
-    "searchResults": "نتائج البحث"
+    "searchResults": "نتائج البحث",
+    "chapters": "Chapters",
+    "submit": "Submit"
   },
   "library": "المكتبة",
   "libraryScreen": {
@@ -84,7 +86,13 @@
       "showBatteryAndTime": "اضهر البطارية والوقت",
       "showProgressPercentage": "النسبة المئوية للتقدم",
       "swipeGestures": "اسحب لليسار أو لليمين للتبديل بين علامات التبويب",
-      "allowTextSelection": "السماح باختيار النص"
+      "allowTextSelection": "السماح باختيار النص",
+      "useChapterDrawerSwipeNavigation": "Swipe right to open drawer"
+    },
+    "drawer": {
+      "scrollToCurrentChapter": "Scroll to current chapter",
+      "scrollToTop": "Scroll to top",
+      "scrollToBottom": "Scroll to bottom"
     }
   },
   "novelScreen": {
@@ -98,6 +106,16 @@
       "filter": "التصفية",
       "sort": "الفرز",
       "display": "العرض"
+    },
+    "jumpToChapterModal": {
+      "jumpToChapter": "Jump to Chapter",
+      "openChapter": "Open Chapter",
+      "chapterName": "Chapter Name",
+      "chapterNumber": "Chapter Number",
+      "error": {
+        "validChapterName": "Enter a valid chapter name",
+        "validChapterNumber": "Enter a valid chapter number"
+      }
     }
   },
   "more": "المزيد",
@@ -156,7 +174,7 @@
       "sameDay": "اليوم",
       "nextDay": "الغد",
       "lastDay": "بالأمس",
-      "lastWeek": "الأسبوع الماضي",
+      "lastWeek": "الأسبوع الماضي"
     }
   },
   "categories": {
