@@ -14,7 +14,9 @@
     "name": "Naam",
     "searchFor": "Zoek naar",
     "globally": "globaal",
-    "searchResults": "Zoekresultaten"
+    "searchResults": "Zoekresultaten",
+    "chapters": "Chapters",
+    "submit": "Submit"
   },
   "library": "Bibliotheek",
   "libraryScreen": {
@@ -84,7 +86,13 @@
       "showBatteryAndTime": "Toon batterij en tijd",
       "showProgressPercentage": "Voortgangspercentage weergeven",
       "swipeGestures": "Veeg naar links of rechts om tussen de hoofdstukken te navigeren",
-      "allowTextSelection": "Tekstselectie toestaan"
+      "allowTextSelection": "Tekstselectie toestaan",
+      "useChapterDrawerSwipeNavigation": "Swipe right to open drawer"
+    },
+    "drawer": {
+      "scrollToCurrentChapter": "Scroll to current chapter",
+      "scrollToTop": "Scroll to top",
+      "scrollToBottom": "Scroll to bottom"
     }
   },
   "novelScreen": {
@@ -98,6 +106,16 @@
       "filter": "Filter",
       "sort": "Sorteer",
       "display": "Weergave"
+    },
+    "jumpToChapterModal": {
+      "jumpToChapter": "Jump to Chapter",
+      "openChapter": "Open Chapter",
+      "chapterName": "Chapter Name",
+      "chapterNumber": "Chapter Number",
+      "error": {
+        "validChapterName": "Enter a valid chapter name",
+        "validChapterNumber": "Enter a valid chapter number"
+      }
     }
   },
   "more": "Meer",
