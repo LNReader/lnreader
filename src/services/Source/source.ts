@@ -5,7 +5,8 @@ export const fetchNovel = async (sourceId: number, novelUrl: string) => {
   const source = sourceManager(sourceId);
 
   const res = await source.parseNovelAndChapters(novelUrl);
-
+  console.log(JSON.stringify(res.chapters, null, 2).substring(0, 1000));
+  const chapters = res.chapters?.map(unifiedParser);
   const novel = {
     novelUrl: res.novelUrl,
     sourceUrl: res.url,
@@ -19,7 +20,7 @@ export const fetchNovel = async (sourceId: number, novelUrl: string) => {
     status: res.status,
     genre: res.genre,
     followed: 0,
-    chapters: res.chapters,
+    chapters: chapters,
   };
 
   return novel;
