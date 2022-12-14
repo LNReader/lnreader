@@ -1,8 +1,17 @@
-import { ParsedChapter, SourceChapter } from 'src/sources/types';
+import {
+  ParsedChapter,
+  SourceChapter,
+  SourceChapterItem,
+} from 'src/sources/types';
 
-export const unifiedParser = (chapter: SourceChapter): ParsedChapter => {
+export const unifiedParser = (
+  chapter: SourceChapter | SourceChapterItem,
+): ParsedChapter => {
   const chapterName = chapter.chapterName;
-  console.log("🚀 ~ file: unifiedParser.ts:5 ~ unifiedParser ~ chapterName", chapterName)
+  console.log(
+    '🚀 ~ file: unifiedParser.ts:5 ~ unifiedParser ~ chapterName',
+    chapterName,
+  );
   const chapterText = chapter.chapterText;
   const chapterPrefix = '';
   return {
