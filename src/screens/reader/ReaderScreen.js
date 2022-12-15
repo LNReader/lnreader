@@ -57,6 +57,9 @@ import { sanitizeChapterText } from './utils/sanitizeChapterText';
 import { LoadingScreenV2 } from '@components/index';
 import ChapterDrawer from './components/ChapterDrawer';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import SkeletonLoading from './components/SkeletonPlaceholder';
+import LoadingRect from './components/SkeletonPlaceholder';
+import SkeletonLines from './components/SkeletonLines';
 
 const Chapter = ({ route }) => {
   const { useChapterDrawerSwipeNavigation = true } = useSettings();
@@ -453,8 +456,17 @@ const ChapterContent = ({ route, navigation }) => {
                   <Text style={{ color: readerSettings.textColor }}>Retry</Text>
                 </EmptyView>
               </View>
-            ) : loading ? (
-              <LoadingScreenV2 theme={theme} />
+            ) : true ? (
+              <SkeletonLines
+                style={[
+                  {
+                    margin: `${readerSettings.padding}%`,
+                    backgroundColor: readerSettings.textColor,
+                    lineHeight: readerSettings.lineHeight,
+                    textSize: readerSettings.textSize,
+                  },
+                ]}
+              />
             ) : (
               <TouchableWithoutFeedback
                 style={{ flex: 1 }}
