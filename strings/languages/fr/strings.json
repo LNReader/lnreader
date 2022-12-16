@@ -158,7 +158,7 @@
     "unreadChapters": "Chapitres non lus",
     "downloadedChapters": "Chapitres téléchargés",
     "genreDistribution": "Répartition par genres",
-    "statusDistribution": "Status distribution"
+    "statusDistribution": "Répartition de l'état"
   },
   "globalSearch": {
     "searchIn": "Rechercher un novel dans",
@@ -182,8 +182,8 @@
     "editCategories": "Renommer la catégorie",
     "setCategories": "Définir les catégories",
     "header": "Modifier les catégories",
-    "emptyMsg": "You have no categories. Tap the plus button to create one for organizing your library",
-    "setModalEmptyMsg": "You have no categories. Tap the Edit button to create one for organizing your library",
+    "emptyMsg": "Vous n'avez pas de catégories. Appuyez sur le bouton + pour en créer une pour organiser votre bibliothèque",
+    "setModalEmptyMsg": "Vous n'avez pas de catégories. Appuyez sur le bouton Modifier pour en créer une pour organiser votre bibliothèque",
     "deleteModal": {
       "header": "Supprimer la catégorie",
       "desc": "Voulez-vous supprimer cette catégorie"
