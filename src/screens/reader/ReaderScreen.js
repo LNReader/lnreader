@@ -456,16 +456,14 @@ const ChapterContent = ({ route, navigation }) => {
                   <Text style={{ color: readerSettings.textColor }}>Retry</Text>
                 </EmptyView>
               </View>
-            ) : true ? (
+            ) : loading ? (
               <SkeletonLines
-                style={[
-                  {
-                    margin: `${readerSettings.padding}%`,
-                    backgroundColor: readerSettings.textColor,
-                    lineHeight: readerSettings.lineHeight,
-                    textSize: readerSettings.textSize,
-                  },
-                ]}
+                containerMargin={readerSettings.padding + '%'}
+                containerHeight={'100%'}
+                containerWidth={'100%'}
+                color={readerSettings.textColor}
+                textSize={readerSettings.textSize}
+                lineHeight={readerSettings.lineHeight}
               />
             ) : (
               <TouchableWithoutFeedback

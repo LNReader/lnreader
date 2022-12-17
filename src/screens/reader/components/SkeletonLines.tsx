@@ -1,31 +1,40 @@
-import React from 'react';
-import LoadingRect from './SkeletonPlaceholder';
+import React, { memo } from 'react';
 import { View, Dimensions } from 'react-native';
+import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder';
+import { LinearGradient } from 'expo-linear-gradient';
+import { clockRunning } from 'react-native-reanimated';
 
-const SkeletonLines = (props: {
+const SkeletonLines = ({
+  width,
+  lineHeight,
+  textSize,
+  containerWidth,
+  containerHeight,
+  containerMargin,
+  color,
+  highlightColor,
+}: {
   width?: string | number;
-  height?: string | number;
-  style?: Array<any>;
+  lineHeight: number;
+  textSize: number;
+  containerWidth: string | number;
+  containerHeight: string | number;
+  containerMargin?: string | number;
+  color?: string;
+  highlightColor?: string;
 }) => {
-  const width = props.width === undefined ? '100%' : props.width;
-  const style = {
-    lineHeight: 1.5,
-    textSize: 16,
-    ...props?.style?.[0],
-  };
-  const height =
-    props.height === undefined ? Dimensions.get('window').height : props.height;
+  const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient);
 
   const createLines = () => {
-    let availableHeight: number = isNaN(Number(height))
-      ? Number(String(height).replace('%', ''))
-      : Number(height);
+    let availableHeight: number = percentToNumberV(containerHeight) - 10;
     let res: boolean[] = [];
     let numberOfLongLines = 0;
-    while (availableHeight > style.lineHeight * style.textSize) {
+    const height = textSize * lineHeight;
+
+    while (availableHeight > height) {
       if (Math.random() * 4 > 1 && numberOfLongLines <= 5) {
         res = [...res, true];
-        availableHeight -= style.lineHeight * style.textSize;
+        availableHeight -= height;
         numberOfLongLines++;
       } else {
         res = [...res, false];
@@ -36,38 +45,54 @@ const SkeletonLines = (props: {
     return res;
   };
   const lines = createLines();
-  const renderLoadingRect = (item: boolean, index: number) => {
-    if (lines?.[index + 1] !== undefined && !lines[index + 1]) {
-      console.log(index, 'ran');
 
+  const renderLoadingRect = (item: boolean, index: number) => {
+    const skeletonWidth = width ? width : percentToNumberH('90%');
+    const skeletonHeight = textSize;
+    if (typeof color !== 'string') {
+      color = '#ebebeb';
+    }
+    if (typeof highlightColor !== 'string') {
+      highlightColor = '#c5c5c5';
+    }
+    if (lines?.[index + 1] !== undefined && !lines[index + 1]) {
       return (
-        <LoadingRect
+        <ShimmerPlaceHolder
           key={index}
-          style={{ ...style, marginBottom: 0, marginLeft: 0, marginRight: 0 }}
+          style={{
+            marginBottom: textSize * (lineHeight - 1),
+            marginLeft: 0,
+            marginRight: 0,
+            borderRadius: 8,
+          }}
           width={
-            String(width)
-              ? Math.random() * Number(String(width).replace('%', '')) + '%'
-              : Math.random() * Number(width)
+            typeof width === 'string'
+              ? percentToNumberH(skeletonWidth) * Math.random() + '%'
+              : Math.random() * skeletonWidth
           }
-          height={style.lineHeight * style.textSize}
+          height={skeletonHeight}
         />
       );
     }
 
     if (item) {
-      console.log(index, 'long');
-
       return (
-        <LoadingRect
+        <ShimmerPlaceHolder
           key={index}
-          style={{ ...style, marginBottom: 0, marginLeft: 0, marginRight: 0 }}
-          width={width}
-          height={style.lineHeight * style.textSize}
+          style={{
+            marginBottom: textSize * (lineHeight - 1),
+            marginLeft: 0,
+            marginRight: 0,
+            borderRadius: 8,
+            backgroundColor: color,
+          }}
+          shimmerColors={[color, highlightColor, color]}
+          width={skeletonWidth}
+          height={skeletonHeight}
         />
       );
     } else {
-      console.log(index, 'wh');
-      return <View style={{ height: 16 }} />;
+      return <View key={index} style={{ height: 16 }} />;
     }
   };
 
@@ -75,10 +100,10 @@ const SkeletonLines = (props: {
     <View
       style={{
         position: 'relative',
-        width: width,
-        height: height,
-        ...style,
+        width: containerWidth,
+        height: containerHeight,
         backgroundColor: 'transparent',
+        margin: containerMargin,
       }}
     >
       {lines.map(renderLoadingRect)}
@@ -86,4 +111,26 @@ const SkeletonLines = (props: {
   );
 };
 
-export default SkeletonLines;
+const percentToNumberV = (number: number | string): number => {
+  if (isNaN(Number(number))) {
+    return (
+      Dimensions.get('window').height *
+      (Number(String(number).replace('%', '')) / 100)
+    );
+  } else {
+    return Number(number);
+  }
+};
+
+const percentToNumberH = (number: number | string): number => {
+  if (isNaN(Number(number))) {
+    return (
+      Dimensions.get('window').width *
+      (Number(String(number).replace('%', '')) / 100)
+    );
+  } else {
+    return Number(number);
+  }
+};
+
+export default memo(SkeletonLines);
