@@ -10,7 +10,6 @@
     <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
     <item name="android:navigationBarColor">#202125</item>
     <item name="android:statusBarColor">#202125</item>
-    
   </style>
   <style name="Theme.App.SplashScreen" parent="Theme.AppCompat.Light.NoActionBar">
     <!-- Below line is handled by '@expo/configure-splash-screen' command and it's discouraged to modify it manually -->
