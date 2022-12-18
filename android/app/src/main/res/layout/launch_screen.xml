@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#202125"
+    android:background="#1B1B1E"
     android:scaleType="centerCrop"
     android:gravity="center"
     android:layout_gravity="center"

@@ -19,7 +19,6 @@ import LottieSplashScreen from 'react-native-lottie-splash-screen';
 const App = () => {
   useEffect(() => {
     LottieSplashScreen.hide();
-    console.log("hello");
     createDatabase();
   }, []);
 
