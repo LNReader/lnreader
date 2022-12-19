@@ -35,6 +35,7 @@ import { useBackHandler } from '@hooks/useBackHandler';
 import { openChapter } from '@utils/handleNavigateParams';
 import useHistory from '@hooks/useHistory';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useSettings } from '@hooks/reduxHooks';
 
 type State = NavigationState<{
   key: string;
@@ -49,8 +50,9 @@ const LibraryScreen = () => {
     showNumberOfNovels = false,
     downloadedOnlyMode = false,
     incognitoMode = false,
-    useLibraryFAB = true,
   } = useLibrarySettings();
+
+  const { useLibraryFAB = false } = useSettings();
 
   const { isLoading: isHistoryLoading, history, error } = useHistory();
 
