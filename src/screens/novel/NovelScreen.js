@@ -73,7 +73,7 @@ const Novel = ({ route, navigation }) => {
 
   const theme = useTheme();
   const dispatch = useDispatch();
-  const { top: topInset } = useSafeAreaInsets();
+  const { top: topInset, bottom: bottomInset } = useSafeAreaInsets();
   const progressViewOffset = topInset + 32;
 
   const { novel, chapters, loading, updating } = useNovel();
@@ -652,7 +652,10 @@ const Novel = ({ route, navigation }) => {
           chapters.length > 0 &&
           lastReadChapter && (
             <FAB
-              style={[styles.fab, { backgroundColor: theme.primary }]}
+              style={[
+                styles.fab,
+                { backgroundColor: theme.primary, marginBottom: bottomInset },
+              ]}
               small
               color={theme.onPrimary}
               uppercase={false}
