@@ -19,6 +19,7 @@ export interface StringMap {
   'common.globally': 'string';
   'common.searchResults': 'string';
   'common.chapters': 'string';
+  'common.submit': 'string';
   'library': 'string';
   'libraryScreen.searchbar': 'string';
   'libraryScreen.empty': 'string';
@@ -83,6 +84,12 @@ export interface StringMap {
   'novelScreen.bottomSheet.filter': 'string';
   'novelScreen.bottomSheet.sort': 'string';
   'novelScreen.bottomSheet.display': 'string';
+  'novelScreen.jumpToChapterModal.jumpToChapter': 'string';
+  'novelScreen.jumpToChapterModal.openChapter': 'string';
+  'novelScreen.jumpToChapterModal.chapterName': 'string';
+  'novelScreen.jumpToChapterModal.chapterNumber': 'string';
+  'novelScreen.jumpToChapterModal.error.validChapterName': 'string';
+  'novelScreen.jumpToChapterModal.error.validChapterNumber': 'string';
   'more': 'string';
   'moreScreen.settings': 'string';
   'moreScreen.settingsScreen.generalSettings': 'string';

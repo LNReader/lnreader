@@ -698,7 +698,6 @@ const Novel = ({ route, navigation }) => {
             <JumpToChapterModal
               modalVisible={jumpToChapterModal}
               hideModal={() => showJumpToChapterModal(false)}
-              theme={theme}
               chapters={chapters}
               novel={novel}
               chapterListRef={flatlistRef.current}

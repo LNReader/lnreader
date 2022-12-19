@@ -1,22 +1,16 @@
 import { FlashList } from '@shopify/flash-list';
-import { openChapter } from '@utils/handleNavigateParams';
-import { getDialogBackground } from '@theme/colors';
+import { dividerColor, getDialogBackground } from '@theme/colors';
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import color from 'color';
+import { StyleSheet, View, Pressable } from 'react-native';
 import { getString } from '@strings/translations';
+import { Button } from '@components';
+import color from 'color';
 
-import {
-  Modal,
-  Portal,
-  Switch,
-  TextInput,
-  TouchableRipple,
-  Text,
-} from 'react-native-paper';
+import { Modal, Portal, Switch, TextInput, Text } from 'react-native-paper';
+import { useTheme } from '@hooks/useTheme';
+import { ButtonVariation } from '@components/Button/Button';
 
 const JumpToChapterModal = ({
-  theme,
   hideModal,
   modalVisible,
   chapters,
@@ -24,6 +18,8 @@ const JumpToChapterModal = ({
   novel,
   chapterListRef,
 }) => {
+  const theme = useTheme();
+
   const [mode, setMode] = useState(false);
   const [openChapter, setOpenChapter] = useState(false);
 
@@ -36,8 +32,6 @@ const JumpToChapterModal = ({
     setText();
     setError();
     setResult([]);
-    setMode(false);
-    setOpenChapter(false);
   };
   const navigateToChapter = chap => {
     onDismiss();
@@ -81,24 +75,29 @@ const JumpToChapterModal = ({
 
   const renderItem = ({ item }) => {
     return (
-      <TouchableRipple
-        rippleColor={theme.secondary}
+      <Pressable
+        android_ripple={{ color: color(theme.primary).alpha(0.12).string() }}
         onPress={() => executeFunction(item)}
-        style={[styles.listElementContainer]}
+        style={styles.listElementContainer}
       >
-        <Text
-          numberOfLines={1}
-          style={[{ color: theme.textColorPrimary }, styles.listElement]}
-        >
+        <Text numberOfLines={1} style={{ color: theme.textColorPrimary }}>
           {item.chapterName}
         </Text>
-      </TouchableRipple>
+        {item.releaseDate && (
+          <Text
+            numberOfLines={1}
+            style={[{ color: theme.textColorSecondary }, styles.dateCtn]}
+          >
+            {item.releaseDate}
+          </Text>
+        )}
+      </Pressable>
     );
   };
 
   const onSubmit = () => {
     if (!mode) {
-      if (text > 0 && text <= chapters.length) {
+      if (Number(text) && text > 0 && text <= chapters.length) {
         if (openChapter) {
           return navigateToChapter(chapters[text - 1]);
         }
@@ -108,34 +107,35 @@ const JumpToChapterModal = ({
         getString('novelScreen.jumpToChapterModal.error.validChapterNumber') +
           ` (${text <= 0 ? '≤ 0' : '≤ ' + chapters.length})`,
       );
-    }
-    const chapter = chapters.filter(chap => {
-      if (chap.chapterName.toLowerCase().includes(text.toLowerCase())) {
-        return chap;
+    } else {
+      const chapter = chapters.filter(chap =>
+        chap.chapterName.toLowerCase().includes(text?.toLowerCase()),
+      );
+
+      if (!chapter.length) {
+        setError(
+          getString('novelScreen.jumpToChapterModal.error.validChapterName'),
+        );
+        return;
       }
-    });
-    if (chapter?.[0] && chapter.length !== chapters.length) {
-      setError();
+
       if (chapter.length === 1) {
         if (openChapter) {
           return navigateToChapter(chapter[0]);
         }
         return scrollToChapter(chapter[0]);
       }
-      if (openChapter) {
-        return setResult(chapter);
-      }
+
       return setResult(chapter);
     }
-    setError(
-      getString('novelScreen.jumpToChapterModal.error.validChapterName'),
-    );
   };
 
   const onChangeText = txt => {
     setText(txt);
     setResult([]);
   };
+
+  const errorColor = !theme.isDark ? '#B3261E' : '#F2B8B5';
 
   return (
     <Portal>
@@ -147,67 +147,78 @@ const JumpToChapterModal = ({
           { backgroundColor: getDialogBackground(theme) },
         ]}
       >
-        <Text style={[styles.modalTitle, { color: theme.textColorPrimary }]}>
-          {getString('novelScreen.jumpToChapterModal.jumpToChapter')}
-        </Text>
-        <TextInput
-          value={text}
-          placeholder={
-            mode
-              ? getString('novelScreen.jumpToChapterModal.chapterName')
-              : getString('novelScreen.jumpToChapterModal.chapterNumber') +
-                ` (≤ ${chapters.length})`
-          }
-          onChangeText={onChangeText}
-          onSubmitEditing={onSubmit}
-          mode="outlined"
-          theme={{ colors: { ...theme } }}
-          underlineColor={theme.textColorHint}
-          dense
-          error={error}
-        />
-        <Text style={styles.errorText}>{error}</Text>
-        <View style={styles.switch}>
-          <Text style={{ color: theme.textColorPrimary }}>
-            {getString('novelScreen.jumpToChapterModal.openChapter')}
+        <View style={styles.modalHeaderCtn}>
+          <Text style={[styles.modalTitle, { color: theme.textColorPrimary }]}>
+            {getString('novelScreen.jumpToChapterModal.jumpToChapter')}
           </Text>
-          <Switch
-            value={openChapter}
-            onValueChange={() => setOpenChapter(!openChapter)}
-            color={theme.primary}
+          <TextInput
+            value={text}
+            placeholder={
+              mode
+                ? getString('novelScreen.jumpToChapterModal.chapterName')
+                : getString('novelScreen.jumpToChapterModal.chapterNumber') +
+                  ` (≤ ${chapters.length})`
+            }
+            onChangeText={onChangeText}
+            onSubmitEditing={onSubmit}
+            mode="outlined"
+            theme={{ colors: { ...theme } }}
+            underlineColor={theme.textColorHint}
+            dense
+            error={error}
           />
+          <Text style={[styles.errorText, { color: errorColor }]}>{error}</Text>
+          <View style={styles.switch}>
+            <Text style={{ color: theme.textColorPrimary }}>
+              {getString('novelScreen.jumpToChapterModal.openChapter')}
+            </Text>
+            <Switch
+              value={openChapter}
+              onValueChange={() => setOpenChapter(!openChapter)}
+              color={theme.primary}
+            />
+          </View>
+          <View style={styles.switch}>
+            <Text style={{ color: theme.textColorPrimary }}>
+              {getString('novelScreen.jumpToChapterModal.chapterName')}
+            </Text>
+            <Switch
+              value={mode}
+              onValueChange={() => setMode(!mode)}
+              color={theme.primary}
+            />
+          </View>
         </View>
-        <View style={styles.switch}>
-          <Text style={{ color: theme.textColorPrimary }}>
-            {getString('novelScreen.jumpToChapterModal.chapterName')}
-          </Text>
-          <Switch
-            value={mode}
-            onValueChange={() => setMode(!mode)}
-            color={theme.primary}
+        {result.length ? (
+          <View
+            style={[
+              styles.flashlist,
+              { borderColor: dividerColor(theme.isDark) },
+            ]}
+          >
+            <FlashList
+              estimatedItemSize={70}
+              data={result}
+              extraData={openChapter}
+              renderItem={renderItem}
+              contentContainerStyle={styles.listContentCtn}
+            />
+          </View>
+        ) : null}
+        <View style={styles.modalFooterCtn}>
+          <Button
+            title={getString('common.submit')}
+            textColor={theme.primary}
+            theme={theme}
+            onPress={onSubmit}
+            variation={ButtonVariation.CLEAR}
           />
-        </View>
-        <View
-          style={
-            result?.length === 0
-              ? { height: 3 }
-              : [
-                  {
-                    height: 300,
-                    backgroundColor: color(theme.surface).alpha(0.5).string(),
-                    borderColor: color(theme.secondaryContainer)
-                      .alpha(0.5)
-                      .string(),
-                  },
-                  styles.flashlist,
-                ]
-          }
-        >
-          <FlashList
-            estimatedItemSize={70}
-            data={result}
-            extraData={openChapter}
-            renderItem={renderItem}
+          <Button
+            title={getString('common.cancel')}
+            textColor={theme.primary}
+            theme={theme}
+            onPress={hideModal}
+            variation={ButtonVariation.CLEAR}
           />
         </View>
       </Modal>
@@ -220,35 +231,47 @@ export default JumpToChapterModal;
 const styles = StyleSheet.create({
   modalContainer: {
     margin: 30,
+    borderRadius: 32,
+  },
+  modalHeaderCtn: {
     padding: 20,
-    borderRadius: 8,
+    paddingTop: 32,
+    paddingBottom: 0,
+  },
+  modalFooterCtn: {
+    flexDirection: 'row-reverse',
+    paddingHorizontal: 20,
+    paddingTop: 8,
+    paddingBottom: 32,
   },
   modalTitle: {
-    fontSize: 18,
+    fontSize: 24,
     marginBottom: 16,
   },
   errorText: {
-    color: '#FF0033',
-    paddingTop: 8,
+    paddingTop: 12,
   },
   switch: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 4,
+    alignItems: 'center',
+    marginVertical: 8,
   },
   flashlist: {
-    marginTop: 10,
-    borderRadius: 10,
-    borderWidth: 2,
+    marginTop: 8,
+    height: 300,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
   },
-  listElement: {
-    overflow: 'hidden',
-    width: '100%',
-    height: '100%',
-    textAlignVertical: 'center',
-    paddingHorizontal: 6,
+  listContentCtn: {
+    paddingVertical: 8,
+  },
+  dateCtn: {
+    fontSize: 12,
+    marginTop: 2,
   },
   listElementContainer: {
-    height: 40,
+    paddingHorizontal: 20,
+    paddingVertical: 12,
   },
 });

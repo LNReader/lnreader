@@ -6,4 +6,5 @@
   <color name="colorPrimaryDark">#202125</color>
   <color name="navigationBarColor">#202125</color>
   <color name="notification_icon_color">#00adb5</color>
+  <color name="ic_launcher_background">#222831</color>
 </resources>
