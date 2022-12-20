@@ -16,7 +16,5 @@
     <!-- Customize your splash screen theme here -->
     <!-- <item name="icon">@drawable/no_icon</item> -->
     <item name="android:windowBackground">@drawable/splashscreen</item>
-    <item name="android:navigationBarColor">@color/colorPrimaryDark</item>
-    <item name="android:statusBarColor">@color/colorPrimaryDark</item>
   </style>
 </resources>

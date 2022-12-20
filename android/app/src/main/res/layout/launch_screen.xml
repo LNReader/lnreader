@@ -9,6 +9,7 @@
     android:gravity="center"
     android:orientation="vertical"
     android:scaleType="centerCrop"
+    android:navigationBarColor="#333333"
     tools:context=".MainActivity">
 
     <com.airbnb.lottie.LottieAnimationView
