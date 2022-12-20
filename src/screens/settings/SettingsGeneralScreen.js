@@ -35,6 +35,7 @@ const GenralSettings = ({ navigation }) => {
     defaultChapterSort = 'ORDER BY chapterId ASC',
     refreshNovelMetadata = false,
     disableHapticFeedback = false,
+    useLibraryFAB = false,
   } = useSettings();
 
   const { showLastUpdateTime = true } = useSelector(
@@ -80,6 +81,14 @@ const GenralSettings = ({ navigation }) => {
               dispatch(
                 setAppSettings('updateLibraryOnLaunch', !updateLibraryOnLaunch),
               )
+            }
+            theme={theme}
+          />
+          <SwitchSetting
+            label="Use FAB in Library"
+            value={useLibraryFAB}
+            onPress={() =>
+              dispatch(setAppSettings('useLibraryFAB', !useLibraryFAB))
             }
             theme={theme}
           />
