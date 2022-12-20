@@ -11,6 +11,13 @@
     <item name="android:navigationBarColor">@color/colorPrimaryDark</item>
     <item name="android:statusBarColor">@color/colorPrimaryDark</item>
   </style>
+  <style name="SplashScreenTheme" parent="SplashScreen_SplashTheme">
+    <item name="android:statusBarColor">@color/colorPrimaryDark</item>
+    <item name="android:windowActionBar">false</item>
+    <item name="android:windowNoTitle">true</item>
+    <item name="android:windowFullscreen">true</item>
+    <item name="android:navigationBarColor">@color/colorPrimaryDark</item>
+</style>
   <style name="Theme.App.SplashScreen" parent="AppTheme">
     <!-- Below line is handled by '@expo/configure-splash-screen' command and it's discouraged to modify it manually -->
     <!-- Customize your splash screen theme here -->
