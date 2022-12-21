@@ -15,8 +15,8 @@
     "searchFor": "Искать",
     "globally": "глобально",
     "searchResults": "Результаты поиска",
-    "chapters": "Chapters",
-    "submit": "Submit"
+    "chapters": "Главы",
+    "submit": "Продолжить"
   },
   "library": "Библиотека",
   "libraryScreen": {
@@ -90,9 +90,9 @@
       "useChapterDrawerSwipeNavigation": "Swipe right to open drawer"
     },
     "drawer": {
-      "scrollToCurrentChapter": "Scroll to current chapter",
-      "scrollToTop": "Scroll to top",
-      "scrollToBottom": "Scroll to bottom"
+      "scrollToCurrentChapter": "Прокрутка к текущей главе",
+      "scrollToTop": "Прокрутить вверх",
+      "scrollToBottom": "Прокрутить вниз"
     }
   },
   "novelScreen": {
@@ -108,13 +108,13 @@
       "display": "Вид"
     },
     "jumpToChapterModal": {
-      "jumpToChapter": "Jump to Chapter",
-      "openChapter": "Open Chapter",
-      "chapterName": "Chapter Name",
-      "chapterNumber": "Chapter Number",
+      "jumpToChapter": "Перейти к главе",
+      "openChapter": "Открыть главу",
+      "chapterName": "Название главы",
+      "chapterNumber": "Номер главы",
       "error": {
-        "validChapterName": "Enter a valid chapter name",
-        "validChapterNumber": "Enter a valid chapter number"
+        "validChapterName": "Введите допустимое название главы",
+        "validChapterNumber": "Введите действительный номер главы"
       }
     }
   },
@@ -153,12 +153,12 @@
   },
   "statsScreen": {
     "title": "Статистика",
-    "titlesInLibrary": "Titles in library",
-    "readChapters": "Read chapters",
-    "unreadChapters": "Unread chapters",
+    "titlesInLibrary": "Названия в библиотеке",
+    "readChapters": "Читать главы",
+    "unreadChapters": "Непрочитанные главы",
     "downloadedChapters": "Загруженные главы",
     "genreDistribution": "Распределение по жанру",
-    "statusDistribution": "Status distribution"
+    "statusDistribution": "Распределение статуса"
   },
   "globalSearch": {
     "searchIn": "Поиск новеллы в",
