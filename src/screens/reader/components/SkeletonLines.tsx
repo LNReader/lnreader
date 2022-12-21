@@ -1,8 +1,7 @@
 import React, { memo } from 'react';
-import { View, Dimensions } from 'react-native';
+import { View, Dimensions, StyleSheet } from 'react-native';
 import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder';
 import { LinearGradient } from 'expo-linear-gradient';
-import { clockRunning } from 'react-native-reanimated';
 
 const SkeletonLines = ({
   width,
@@ -24,6 +23,13 @@ const SkeletonLines = ({
   highlightColor?: string;
 }) => {
   const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient);
+  const styles = createStyleSheet(
+    containerWidth,
+    containerHeight,
+    containerMargin === undefined ? 0 : containerMargin,
+    lineHeight,
+    textSize,
+  );
 
   const createLines = () => {
     let availableHeight: number = percentToNumberV(containerHeight) - 10;
@@ -47,7 +53,9 @@ const SkeletonLines = ({
   const lines = createLines();
 
   const renderLoadingRect = (item: boolean, index: number) => {
-    const skeletonWidth = width ? width : percentToNumberH('90%');
+    const skeletonWidth: number = width
+      ? Number(width)
+      : percentToNumberH('90%');
     const skeletonHeight = textSize;
     if (typeof color !== 'string') {
       color = '#ebebeb';
@@ -56,19 +64,17 @@ const SkeletonLines = ({
       highlightColor = '#c5c5c5';
     }
     if (lines?.[index + 1] !== undefined && !lines[index + 1]) {
+      let randomNumber: number = Math.random();
+      randomNumber < 0.1 ? (randomNumber = 0.1) : null;
       return (
         <ShimmerPlaceHolder
           key={index}
-          style={{
-            marginBottom: textSize * (lineHeight - 1),
-            marginLeft: 0,
-            marginRight: 0,
-            borderRadius: 8,
-          }}
+          style={styles.lineDefault}
+          shimmerColors={[color, highlightColor, color]}
           width={
             typeof width === 'string'
-              ? percentToNumberH(skeletonWidth) * Math.random() + '%'
-              : Math.random() * skeletonWidth
+              ? percentToNumberH(skeletonWidth) * randomNumber + '%'
+              : randomNumber * skeletonWidth
           }
           height={skeletonHeight}
         />
@@ -79,36 +85,18 @@ const SkeletonLines = ({
       return (
         <ShimmerPlaceHolder
           key={index}
-          style={{
-            marginBottom: textSize * (lineHeight - 1),
-            marginLeft: 0,
-            marginRight: 0,
-            borderRadius: 8,
-            backgroundColor: color,
-          }}
+          style={styles.lineDefault}
           shimmerColors={[color, highlightColor, color]}
           width={skeletonWidth}
           height={skeletonHeight}
         />
       );
     } else {
-      return <View key={index} style={{ height: 16 }} />;
+      return <View key={index} style={styles.gap} />;
     }
   };
 
-  return (
-    <View
-      style={{
-        position: 'relative',
-        width: containerWidth,
-        height: containerHeight,
-        backgroundColor: 'transparent',
-        margin: containerMargin,
-      }}
-    >
-      {lines.map(renderLoadingRect)}
-    </View>
-  );
+  return <View style={styles.container}>{lines.map(renderLoadingRect)}</View>;
 };
 
 const percentToNumberV = (number: number | string): number => {
@@ -131,6 +119,34 @@ const percentToNumberH = (number: number | string): number => {
   } else {
     return Number(number);
   }
+};
+
+const createStyleSheet = (
+  containerWidth: number | string,
+  containerHeight: number | string,
+  containerMargin: number | string,
+  lineHeight: number,
+  textSize: number,
+) => {
+  return StyleSheet.create({
+    container: {
+      position: 'relative',
+      width: containerWidth,
+      height: containerHeight,
+      backgroundColor: 'transparent',
+      margin: containerMargin,
+    },
+    lineDefault: {
+      marginLeft: 0,
+      marginRight: 0,
+      borderRadius: 8,
+      marginBottom: textSize * (lineHeight - 1),
+    },
+    gap: {
+      height: textSize * (lineHeight - 1),
+      margin: 8,
+    },
+  });
 };
 
 export default memo(SkeletonLines);
