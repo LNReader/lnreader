@@ -31,6 +31,7 @@ export const initialState = {
    */
 
   downloadedOnlyMode: false,
+  useLibraryFAB: false,
 
   /**
    * Browse settings

@@ -40,8 +40,10 @@ const Searchbar: React.FC<SearcbarProps> = ({
   const searchbarRef = useRef<any>(null);
   const focusSearchbar = () => searchbarRef.current.focus();
 
-  const { top } = useSafeAreaInsets();
+  const { top, right, left } = useSafeAreaInsets();
   const marginTop = top + 8;
+  const marginRight = right + 16;
+  const marginLeft = left + 16;
 
   return (
     <View
@@ -49,6 +51,8 @@ const Searchbar: React.FC<SearcbarProps> = ({
         styles.searchbarContainer,
         {
           marginTop,
+          marginRight,
+          marginLeft,
           backgroundColor: color(theme.primary).alpha(0.08).string(),
         },
       ]}
