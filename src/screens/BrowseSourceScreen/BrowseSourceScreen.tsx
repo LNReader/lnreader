@@ -6,7 +6,6 @@ import { FAB, Portal } from 'react-native-paper';
 import Bottomsheet from 'rn-sliding-up-panel';
 import {
   Container,
-  LoadingScreenV2,
   LoadingMoreIndicator,
   ErrorScreenV2,
   SearchbarV2,
