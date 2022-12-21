@@ -57,8 +57,6 @@ import { sanitizeChapterText } from './utils/sanitizeChapterText';
 import { LoadingScreenV2 } from '@components/index';
 import ChapterDrawer from './components/ChapterDrawer';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import SkeletonLoading from './components/SkeletonPlaceholder';
-import LoadingRect from './components/SkeletonPlaceholder';
 import SkeletonLines from './components/SkeletonLines';
 import color from 'color';
 
