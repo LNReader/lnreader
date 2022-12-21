@@ -25,6 +25,7 @@ import { StyleSheet } from 'react-native';
 import { useLibraryNovels } from '../../screens/library/hooks/useLibrary';
 import { insertNovelInLibrary } from '../../database/queries/NovelQueriesV2';
 import { LibraryNovelInfo } from '../../database/types';
+import SourceScreenLoading from '@screens/browse/loadingAnimation/SourceScreenLoading';
 
 interface BrowseSourceScreenProps {
   route: {
@@ -119,8 +120,8 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
         rightIcons={[{ iconName: 'earth', onPress: handleOpenWebView }]}
         theme={theme}
       />
-      {isLoading || isSearching ? (
-        <LoadingScreenV2 theme={theme} />
+      {isLoading || isSearching || false ? (
+        <SourceScreenLoading theme={theme} />
       ) : errorMessage || novelList.length === 0 ? (
         <ErrorScreenV2
           error={errorMessage || getString('sourceScreen.noResultsFound')}
