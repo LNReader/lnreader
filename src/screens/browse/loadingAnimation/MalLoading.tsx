@@ -68,6 +68,7 @@ const createStyleSheet = (theme: MD3ThemeType) => {
       //   height: 150,
       backgroundColor: 'transparent',
       marginBottom: 8,
+      marginTop: -3,
       overflow: 'hidden',
     },
     loadingContainer: {

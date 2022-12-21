@@ -68,10 +68,12 @@ const createStyleSheet = () => {
       flexGrow: 1,
       marginHorizontal: 4,
       marginBottom: 8,
+      marginTop: 2,
       overflow: 'hidden',
     },
     loadingContainer: {
       padding: 4.8,
+      marginBottom: 4,
       width: 124.2,
       height: 229.1,
       overflow: 'hidden',
