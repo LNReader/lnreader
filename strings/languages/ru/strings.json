@@ -87,7 +87,7 @@
       "showProgressPercentage": "Показывать процент прогресса",
       "swipeGestures": "Проведите влево или вправо для перехода между главами",
       "allowTextSelection": "Разрешить выделение текста",
-      "useChapterDrawerSwipeNavigation": "Swipe right to open drawer"
+      "useChapterDrawerSwipeNavigation": "Проведите вправо, чтобы открыть"
     },
     "drawer": {
       "scrollToCurrentChapter": "Прокрутка к текущей главе",
