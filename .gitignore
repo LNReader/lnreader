@@ -74,3 +74,4 @@ web-build/
 
 .vscode/
 src/sources/en/generators/
+.fake
