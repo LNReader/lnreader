@@ -6,7 +6,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { setBarColor } from '../theme/utils/setBarColor';
 import { useTheme } from '../hooks/useTheme';
 import { useGithubUpdateChecker } from '../hooks/githubUpdateChecker';
-import * as SplashScreen from 'expo-splash-screen';
 
 /**
  * Navigators
@@ -41,7 +40,6 @@ const MainNavigator = () => {
 
   useEffect(() => {
     const timer = setTimeout(async () => {
-      await SplashScreen.hideAsync();
       setBarColor(theme);
     }, 500);
 
