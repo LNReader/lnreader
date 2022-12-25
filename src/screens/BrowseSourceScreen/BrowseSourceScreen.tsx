@@ -119,7 +119,7 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
         rightIcons={[{ iconName: 'earth', onPress: handleOpenWebView }]}
         theme={theme}
       />
-      {isLoading || isSearching || false ? (
+      {isLoading || isSearching ? (
         <SourceScreenLoading theme={theme} />
       ) : errorMessage || novelList.length === 0 ? (
         <ErrorScreenV2
