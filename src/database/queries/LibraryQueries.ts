@@ -55,7 +55,7 @@ export const getLibrary = ({
   }
 
   if (searchText) {
-    query += ` AND novelName LIKE '%${searchText}%'`;
+    query += ` AND novelName LIKE '%${searchText.replace(/'/g, "\\'")}%'`;
   }
 
   if (sortOrder) {
