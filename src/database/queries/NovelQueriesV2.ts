@@ -156,11 +156,12 @@ export const insertNovelInLibrary = async (
             tx.executeSql(
               `
           INSERT INTO chapters 
-            (chapterUrl, chapterName, releaseDate, novelId) 
+            (chapterUrl, chapterPrefix, chapterName, releaseDate, novelId) 
           VALUES 
-            (?, ?, ?, ?)`,
+            (?, ?, ?, ?, ?)`,
               [
                 chapter.chapterUrl,
+                chapter.chapterPrefix,
                 chapter.chapterName,
                 chapter.releaseDate,
                 insertId,

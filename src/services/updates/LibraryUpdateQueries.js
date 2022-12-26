@@ -61,11 +61,12 @@ const updateNovel = async (sourceId, novelUrl, novelId, options) => {
 
   db.transaction(tx => {
     novel.chapters.map(chapter => {
-      const { chapterName, chapterUrl, releaseDate } = chapter;
+      const { chapterPrefix, chapterName, chapterUrl, releaseDate } = chapter;
+      console.log("🚀 ~ file: LibraryUpdateQueries.js:65 ~ updateNovel ~ chapter", chapter)
 
       tx.executeSql(
-        'INSERT OR IGNORE INTO chapters (chapterUrl, chapterName, releaseDate, novelId) values (?, ?, ?, ?)',
-        [chapterUrl, chapterName, releaseDate, novelId],
+        'INSERT OR IGNORE INTO chapters (chapterUrl, chapterPrefix, chapterName, releaseDate, novelId) values (?, ?, ?, ?, ?)',
+        [chapterUrl, chapterPrefix, chapterName, releaseDate, novelId],
         (txObj, { insertId }) => {
           if (insertId !== -1) {
             if (downloadNewChapters) {

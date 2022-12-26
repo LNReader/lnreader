@@ -19,13 +19,13 @@ export const unifiedParser = async (
   };
 };
 
-export const unifiedParserMap = async (
-  chapter: SourceChapterItem,
-): Promise<ParsedChapterItem> => {
-  const [chapterName, chapterPrefix] = parseName(chapter.chapterName);
+export const unifiedParserMap = (
+  item: SourceChapterItem,
+): ParsedChapterItem => {
+  const [chapterName, chapterPrefix] = parseName(item.chapterName);
 
   return {
-    ...chapter,
+    ...item,
     chapterName: chapterName,
     chapterPrefix: chapterPrefix,
   };
@@ -33,35 +33,48 @@ export const unifiedParserMap = async (
 
 const parseName = (chapterName: string): Array<string> => {
   const prefixRegex =
-    /(?:[c]\w+\s\d+[.]*\d*)|(?:[v]\w+\s\d+[.]*\d*\W*[c]\w+\s\d+[.]*\d*|[v]\w+\s\d+[.]*\d*)/i;
+    /(?:[c]\w*\s*\d+[.]*\d*\s*|[v]\w*\s*\d+[.]*\d*\W*[c]\w*\s*\d+[.]*\d*\s*|[v]\w*\s*\d+[.]*\d*\s*)/i;
 
   let chapterPrefix = prefixRegex.exec(String(chapterName));
   if (chapterPrefix === null) {
     return [chapterName];
   }
-  // TODO new ChapterName
-  console.log(
-    '🚀 ~ file: unifiedParser.ts:35 ~ chapterPrefix',
-    chapterPrefix?.[0],
+  let newChapterName = chapterName
+    .substring(
+      chapterPrefix.index + chapterPrefix[0].length,
+      chapterName.length,
+    )
+    .trim();
+  newChapterName = newChapterName.replace(
+    /[-:]+\s*[-:]+|[-:]+(?=\d*|\w*)/i,
+    '',
   );
-  return [chapterName, chapterPrefix[0]];
+
+  return [newChapterName.trim(), chapterPrefix[0].trim()];
 };
 
 /*
 ? prefixRegex is a regex witch returns the Prefix of the chapter with the    following examples:
 
+The Charm of Soul Pets Chapter 3 - Coerced into Death
 Chapter 46 - Even One Worthy Friend Can Be Enough
 Chapter 46 Even One Worthy Friend Can Be Enough
 Chapter 46.22 - Even One Worthy Friend Can Be Enough
 Chapter 46 - Even One Worthy Friend Can Be Enough 23
 Chapter 46 - 1 Even One Worthy Friend Can Be Enough
+Chapter 46: - 1 Even One Worthy Friend Can Be Enough
+Chapter 46:- 1 Even One Worthy Friend Can Be Enough
 Chapter 46 - "Even One Worthy Friend Can Be Enough
 Chapter 46 23 Even One Worthy Friend Can Be Enough
 Volume 2 Chapter 46 - Even One Worthy Friend Can Be Enough
 Volume 2 Chapter 46 - Even One Worthy Friend Can Be Enough 23
 Volume 2 Chapter 46 - 1 Even One Worthy Friend Can Be Enough
 Volume 2 - Chapter 46 - 1 Even One Worthy Friend Can Be Enough
+Volume 2 - Chapter 46 : 1 Even One Worthy Friend Can Be Enough
+Volume 2 - Chapter 46: 1 Even One Worthy Friend Can Be Enough
 Volume 2 Chapter 46 - "Even One Worthy Friend Can Be Enough
 Volume 2 Chapter 46 23 Even One Worthy Friend Can Be Enough
 Volume 2 23 Even One Worthy Friend Can Be Enough
+Chapter 23
+C23
 */

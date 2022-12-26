@@ -1,8 +1,7 @@
 import { useWindowDimensions } from 'react-native';
 
 export const parseChapterNumber = chapterName => {
-  chapterName = chapterName.toLowerCase();
-  chapterName = chapterName.replace(/volume (\d+)|v(\d+)/, '');
+  chapterName = chapterName.replace(/volume (\d+)|v(\d+)/i, '');
 
   const basic = chapterName.match(/[ch]i (\d+)/);
   const occurrence = chapterName.match(/\d+/);

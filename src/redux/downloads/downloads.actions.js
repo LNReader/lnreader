@@ -19,7 +19,7 @@ export const resumeDownloads = chapters => async dispatch => {
 
   const options = {
     taskName: 'Library Update',
-    taskTitle: chapters[0].chapterName,
+    taskTitle: chapters[0].chapterPrefix + ' ' + chapters[0].chapterName,
     taskDesc: '0/' + chapters.length,
     taskIcon: {
       name: 'notification_icon',
@@ -65,7 +65,8 @@ export const resumeDownloads = chapters => async dispatch => {
           } catch (error) {
             Notifications.scheduleNotificationAsync({
               content: {
-                title: chapters[i].chapterName,
+                title:
+                  chapters[i].chapterPrefix + ' ' + chapters[i].chapterName,
                 body: `Download failed: ${error.message}`,
               },
               trigger: null,
@@ -73,7 +74,8 @@ export const resumeDownloads = chapters => async dispatch => {
           }
 
           await BackgroundService.updateNotification({
-            taskTitle: chapters[i].chapterName,
+            taskTitle:
+              chapters[i].chapterPrefix + ' ' + chapters[i].chapterName,
             taskDesc: i + 1 + '/' + chapters.length,
             progressBar: {
               max: chapters.length,
