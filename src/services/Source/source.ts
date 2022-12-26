@@ -6,7 +6,8 @@ export const fetchNovel = async (sourceId: number, novelUrl: string) => {
 
   const res = await source.parseNovelAndChapters(novelUrl);
 
-  const chapters = await res.chapters?.map(unifiedParserMap);
+  const chapters = res.chapters?.map(unifiedParserMap);
+
   const novel = {
     novelUrl: res.novelUrl,
     sourceUrl: res.url,
@@ -20,7 +21,7 @@ export const fetchNovel = async (sourceId: number, novelUrl: string) => {
     status: res.status,
     genre: res.genre,
     followed: 0,
-    chapters: res.chapters,
+    chapters: chapters,
   };
 
   return novel;
@@ -34,6 +35,7 @@ export const fetchChapter = async (
   const source = sourceManager(sourceId);
 
   let chapter = await source.parseChapter(novelUrl, chapterUrl);
+  chapter = await unifiedParser(chapter);
 
   return unifiedParser(chapter);
 };
@@ -43,7 +45,7 @@ export const fetchChapters = async (sourceId: number, novelUrl: string) => {
 
   const res = await source.parseNovelAndChapters(novelUrl);
 
-  const chapters = res.chapters;
+  const chapters = res.chapters?.map(unifiedParserMap);
 
   return chapters;
 };

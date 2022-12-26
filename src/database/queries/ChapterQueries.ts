@@ -10,12 +10,14 @@ import { fetchChapter } from '../../services/Source/source';
 const db = SQLite.openDatabase('lnreader.db');
 
 const insertChaptersQuery =
-  'INSERT INTO chapters (chapterUrl, chapterName, releaseDate, novelId) values (?, ?, ?, ?)';
+  'INSERT INTO chapters (chapterUrl, chapterPrefix, chapterName, releaseDate, novelId) values (?, ?, ?, ?, ?)';
 
 export const insertChapters = async (
   novelId: number,
   chapters: ChapterItem[],
 ) => {
+  console.log('Hey');
+
   db.transaction(
     tx => {
       chapters.map(chapter =>
@@ -23,6 +25,7 @@ export const insertChapters = async (
           insertChaptersQuery,
           [
             chapter.chapterUrl,
+            chapter.chapterPrefix,
             chapter.chapterName,
             chapter.releaseDate,
             novelId,
@@ -246,7 +249,7 @@ export const isChapterDownloaded = async (chapterId: number) => {
 };
 
 const downloadChapterQuery =
-  'INSERT INTO downloads (downloadChapterId, chapterName, chapterText) VALUES (?, ?, ?)';
+  'INSERT INTO downloads (downloadChapterId, chapterPrefix, chapterName, chapterText) VALUES (?, ?, ?, ?)';
 
 const createImageFolder = async (
   path: string,
@@ -336,10 +339,14 @@ export const downloadChapter = async (
           'UPDATE chapters SET downloaded = 1 WHERE chapterId = ?',
           [chapterId],
         );
-        console.log(chapter.chapterName);
         tx.executeSql(
           downloadChapterQuery,
-          [chapterId, chapter.chapterName, imagedChapterText],
+          [
+            chapterId,
+            chapter.chapterPrefix,
+            chapter.chapterName,
+            imagedChapterText,
+          ],
           (_txObj, _res) => {
             return true;
           },

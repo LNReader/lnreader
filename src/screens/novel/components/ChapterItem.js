@@ -24,7 +24,8 @@ const ChapterItem = ({
   navigateToChapter,
   showProgressPercentage,
 }) => {
-  const { chapterId, chapterName, read, releaseDate, bookmark } = chapter;
+  const { chapterId, chapterName, chapterPrefix, read, releaseDate, bookmark } =
+    chapter;
 
   const [deleteChapterMenu, setDeleteChapterMenu] = useState(false);
   const showDeleteChapterMenu = () => setDeleteChapterMenu(true);
@@ -59,7 +60,7 @@ const ChapterItem = ({
               ? parseChapterNumber(chapterName)
                 ? 'Chapter ' + parseChapterNumber(chapterName)
                 : 'Chapter ' + index
-              : chapterName}
+              : chapterPrefix + ' ' + chapterName}
           </Text>
           <View
             style={{

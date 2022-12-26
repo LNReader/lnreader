@@ -23,6 +23,7 @@ export interface ChapterItem {
   chapterId: number;
   novelId: number;
   chapterUrl: string;
+  chapterPrefix: string;
   chapterName: string;
   releaseDate?: string;
   read: number;
