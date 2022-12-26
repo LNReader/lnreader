@@ -6,4 +6,7 @@ includeUnimodulesProjects()
 apply from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle");
 applyNativeModulesSettingsGradle(settings)
 
+include ':react-native-lottie-splash-screen'
+project(':react-native-lottie-splash-screen').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-lottie-splash-screen/android')
+
 include ':app'

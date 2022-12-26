@@ -20,7 +20,7 @@ import { useLibrary } from './hooks/useLibrary';
 import { useTheme } from '@hooks/useTheme';
 import useSearch from '@hooks/useSearch';
 import { getString } from '@strings/translations';
-import { Portal } from 'react-native-paper';
+import { FAB, Portal } from 'react-native-paper';
 import { useLibrarySettings } from '@hooks/useSettings';
 import {
   markAllChaptersRead,
@@ -32,6 +32,10 @@ import useBoolean from '@hooks/useBoolean';
 import { debounce, intersection } from 'lodash';
 import { ButtonVariation } from '@components/Button/Button';
 import { useBackHandler } from '@hooks/useBackHandler';
+import { openChapter } from '@utils/handleNavigateParams';
+import useHistory from '@hooks/useHistory';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useSettings } from '@hooks/reduxHooks';
 
 type State = NavigationState<{
   key: string;
@@ -47,6 +51,12 @@ const LibraryScreen = () => {
     downloadedOnlyMode = false,
     incognitoMode = false,
   } = useLibrarySettings();
+
+  const { useLibraryFAB = false } = useSettings();
+
+  const { isLoading: isHistoryLoading, history, error } = useHistory();
+
+  const { right: rightInset } = useSafeAreaInsets();
 
   const onChangeText = debounce((text: string) => {
     setSearchText(text);
@@ -222,6 +232,29 @@ const LibraryScreen = () => {
         onIndexChange={setIndex}
         initialLayout={{ width: layout.width }}
       />
+      {useLibraryFAB &&
+        !isHistoryLoading &&
+        history &&
+        history.length !== 0 &&
+        !error && (
+          <FAB
+            style={[
+              styles.fab,
+              { backgroundColor: theme.primary, marginRight: rightInset + 16 },
+            ]}
+            small
+            color={theme.onPrimary}
+            uppercase={false}
+            label={'Resume'}
+            icon="play"
+            onPress={() => {
+              navigate(
+                'Chapter' as never,
+                openChapter(history[0], history[0]) as never,
+              );
+            }}
+          />
+        )}
       <SetCategoryModal
         novelId={selectedNovelIds}
         currentCategoryIds={selectedNovelCategoryIds}
@@ -284,5 +317,11 @@ const styles = StyleSheet.create({
   },
   globalSearchBtnLabel: {
     fontWeight: 'bold',
+  },
+  fab: {
+    position: 'absolute',
+    margin: 16,
+    right: 0,
+    bottom: 0,
   },
 });

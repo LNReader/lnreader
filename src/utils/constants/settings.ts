@@ -14,6 +14,7 @@ export interface LibrarySettings {
   novelsPerRow?: number;
   incognitoMode?: boolean;
   downloadedOnlyMode?: boolean;
+  useLibraryFAB?: boolean;
 }
 
 export interface CategorySettings {
