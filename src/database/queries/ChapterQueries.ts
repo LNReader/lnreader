@@ -336,6 +336,7 @@ export const downloadChapter = async (
           'UPDATE chapters SET downloaded = 1 WHERE chapterId = ?',
           [chapterId],
         );
+        console.log(chapter.chapterName);
         tx.executeSql(
           downloadChapterQuery,
           [chapterId, chapter.chapterName, imagedChapterText],
