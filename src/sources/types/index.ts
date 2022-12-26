@@ -39,11 +39,14 @@ export interface SourceChapter {
   sourceId: number;
   novelUrl: string;
   chapterUrl: string;
-  chapterName?: string;
+  chapterName: string;
   chapterText?: string;
 }
 
 export interface ParsedChapter extends SourceChapter {
+  chapterPrefix?: string;
+}
+export interface ParsedChapterItem extends SourceChapterItem {
   chapterPrefix?: string;
 }
 
