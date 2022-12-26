@@ -1,16 +1,14 @@
 import React, { memo } from 'react';
-import { View, Dimensions, StyleSheet } from 'react-native';
-import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder';
-import { LinearGradient } from 'expo-linear-gradient';
+import { View, StyleSheet } from 'react-native';
 import { MD3ThemeType } from '@theme/types';
 import color from 'color';
+import LoadingNovel from './LoadingNovel';
 
 interface Props {
   theme: MD3ThemeType;
 }
 
 const MalLoading: React.FC<Props> = ({ theme }) => {
-  const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient);
   const styles = createStyleSheet();
 
   const highlightColor = color(theme.primary).alpha(0.08).string();
@@ -26,27 +24,12 @@ const MalLoading: React.FC<Props> = ({ theme }) => {
     let randomNumber = Math.random();
     randomNumber < 0.1 ? (randomNumber = 0) : null;
     return (
-      <View key={index} style={styles.loadingContainer}>
-        <ShimmerPlaceHolder
-          style={styles.picture}
-          shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
-          height={174.5}
-          width={114.5}
-        />
-
-        <ShimmerPlaceHolder
-          style={styles.text}
-          shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
-          height={16}
-          width={114.4}
-        />
-        <ShimmerPlaceHolder
-          style={styles.text}
-          shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
-          height={16}
-          width={randomNumber * 114.4}
-        />
-      </View>
+      <LoadingNovel
+        key={index}
+        backgroundColor={backgroundColor}
+        highlightColor={highlightColor}
+        pictureHeight={174.5}
+      />
     );
   };
   const renderLoading = (item: number, index: number) => {
@@ -71,28 +54,10 @@ const createStyleSheet = () => {
       marginTop: 2,
       overflow: 'hidden',
     },
-    loadingContainer: {
-      padding: 4.8,
-      marginBottom: 4,
-      width: 124.2,
-      height: 229.1,
-      overflow: 'hidden',
-    },
-    text: {
-      borderRadius: 8,
-      marginTop: 5,
-    },
-    loadingText: {
-      margin: 10,
-      height: 10,
-      width: Dimensions.get('window').width - 140,
-    },
     row: {
       flexDirection: 'row',
-      justifyContent: 'space-between',
-    },
-    picture: {
-      borderRadius: 4,
+      justifyContent: 'space-around',
+      paddingHorizontal: 1,
     },
   });
 };
