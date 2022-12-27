@@ -214,6 +214,7 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
                         word-wrap: break-word;
                       }
                       body {
+                        margin: 0px;
                         padding-left: ${reader.padding}%;
                         padding-right: ${reader.padding}%;
                         padding-bottom: 30px;
