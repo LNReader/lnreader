@@ -14,8 +14,9 @@ import Bottomsheet from 'rn-sliding-up-panel';
 import { getString } from '../../../../strings/translations';
 
 import { Checkbox, SortItem } from '../../../components/Checkbox/Checkbox';
+import { RadioButton } from '../../../components/RadioButton/RadioButton';
 
-import { showChapterTitlesAction } from '../../../redux/novel/novel.actions';
+import { showGeneratedChapterNumberAction } from '../../../redux/novel/novel.actions';
 import { overlay } from 'react-native-paper';
 import { dividerColor } from '../../../theme/colors';
 
@@ -27,7 +28,7 @@ const ChaptersSettingsSheet = ({
   sort,
   filter,
   theme,
-  showChapterTitles,
+  showGeneratedChapterNumber,
 }) => {
   const { bottom } = useSafeAreaInsets();
 
@@ -107,15 +108,11 @@ const ChaptersSettingsSheet = ({
   const ThirdRoute = () => (
     <View style={{ flex: 1 }}>
       <Checkbox
-        status={!showChapterTitles}
-        label="Source title"
-        onPress={() => dispatch(showChapterTitlesAction(novelId, false))}
-        theme={theme}
-      />
-      <Checkbox
-        status={showChapterTitles}
-        label="Chapter number"
-        onPress={() => dispatch(showChapterTitlesAction(novelId, true))}
+        status={showGeneratedChapterNumber}
+        label="Use generated Chapter number"
+        onPress={() =>
+          dispatch(showGeneratedChapterNumberAction(novelId, true))
+        }
         theme={theme}
       />
     </View>
