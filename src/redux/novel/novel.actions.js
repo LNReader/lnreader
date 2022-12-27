@@ -530,12 +530,8 @@ export const updateNovelAction =
     await updateNovel(sourceId, novelUrl, novelId, options);
 
     let novel = await getNovel(sourceId, novelUrl);
-    console.log(
-      '🚀 ~ file: LibraryUpdateQueries.js:57 ~ updateNovel ~ novel',
-      JSON.stringify(novel, null, 2),
-    );
+
     let chapters = await getChapters(novel.novelId, sort, filter);
-    console.log('🚀 ~ file: novel.actions.js:534 ~ chapters', chapters);
 
     dispatch({
       type: UPDATE_NOVEL,

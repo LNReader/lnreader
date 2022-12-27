@@ -46,7 +46,7 @@ const parseName = (chapterName: string): Array<string> => {
     )
     .trim();
   newChapterName = newChapterName.replace(
-    /[-:]+\s*[-:]+|[-:]+(?=\d*|\w*)/i,
+    /[-–‐‑‒—⁃﹣:]+\s*[-–‐‑‒—⁃﹣:]+|[-–‐‑‒—⁃﹣:]+(?=\d*|\w*)/i,
     '',
   );
 

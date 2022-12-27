@@ -57,9 +57,7 @@ const ChapterItem = ({
             numberOfLines={1}
           >
             {showChapterTitles
-              ? parseChapterNumber(chapterName)
-                ? 'Chapter ' + parseChapterNumber(chapterName)
-                : 'Chapter ' + index
+              ? chapterPrefix
               : chapterPrefix + ' ' + chapterName}
           </Text>
           <View
