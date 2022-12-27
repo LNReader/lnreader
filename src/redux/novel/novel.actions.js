@@ -15,6 +15,8 @@ import {
   BOOKMARK_CHAPTER,
   MARK_PREVIOUS_CHAPTERS_READ,
   MARK_PREVIOUS_CHAPTERS_UNREAD,
+  SET_NOVEL_CHAPTER_PREFIX,
+  SET_NOVEL_CHAPTER_PREFIX_STYLE,
 } from './novel.types';
 
 import { fetchNovel } from '../../services/Source/source';
@@ -151,6 +153,29 @@ export const showGeneratedChapterTitleAction =
     dispatch({
       type: SET_NOVEL_SETTINGS,
       payload: { novelId, value: value },
+    });
+  };
+
+export const showChapterPrefixAction = (novelId, prefix) => async dispatch => {
+  dispatch({
+    type: SET_NOVEL_CHAPTER_PREFIX,
+    payload: { novelId, prefix: prefix },
+  });
+};
+
+export const chapterPrefixStyleAction =
+  (novelId, prefixStyle) => async dispatch => {
+    dispatch({
+      type: SET_NOVEL_CHAPTER_PREFIX_STYLE,
+      payload: { novelId, prefixStyle: prefixStyle },
+    });
+  };
+
+export const chapterTitleSeperatorAction =
+  (novelId, chapterTitleSeperator) => async dispatch => {
+    dispatch({
+      type: SET_NOVEL_CHAPTER_PREFIX_STYLE,
+      payload: { novelId, chapterTitleSeperator: chapterTitleSeperator },
     });
   };
 

@@ -15,9 +15,14 @@ import { getString } from '../../../../strings/translations';
 
 import { Checkbox, SortItem } from '../../../components/Checkbox/Checkbox';
 
-import { showGeneratedChapterTitleAction } from '../../../redux/novel/novel.actions';
+import {
+  chapterPrefixStyleAction as chapterPrefixStyleAction,
+  showChapterPrefixAction,
+  showGeneratedChapterTitleAction,
+} from '../../../redux/novel/novel.actions';
 import { overlay } from 'react-native-paper';
 import { dividerColor } from '../../../theme/colors';
+import { RadioButton } from '@components';
 
 const ChaptersSettingsSheet = ({
   bottomSheetRef,
@@ -28,6 +33,8 @@ const ChaptersSettingsSheet = ({
   filter,
   theme,
   showGeneratedChapterTitle,
+  showChapterPrefix,
+  chapterPrefixStyle,
 }) => {
   const { bottom } = useSafeAreaInsets();
 
@@ -109,22 +116,43 @@ const ChaptersSettingsSheet = ({
       <Checkbox
         status={showGeneratedChapterTitle}
         label="Use generated Chapter title"
-        onPress={() => dispatch(showGeneratedChapterTitleAction(novelId, true))}
+        onPress={() =>
+          dispatch(
+            showGeneratedChapterTitleAction(
+              novelId,
+              !showGeneratedChapterTitle,
+            ),
+          )
+        }
         theme={theme}
       />
       <Checkbox
-        status={showGeneratedChapterTitle}
+        disabled={showGeneratedChapterTitle}
+        status={showChapterPrefix}
         label="Show Prefix"
-        onPress={() => dispatch(showGeneratedChapterTitleAction(novelId, true))}
+        onPress={() =>
+          dispatch(showChapterPrefixAction(novelId, !showChapterPrefix))
+        }
         theme={theme}
       />
       <View style={styles.indent}>
-        <Checkbox
-          disabled={!showGeneratedChapterTitle}
-          status={showGeneratedChapterTitle}
-          label="Use generated Chapter title"
+        <RadioButton
+          disabled={!showChapterPrefix || showGeneratedChapterTitle}
+          status={Object.is(chapterPrefixStyle[0], 'Volume ')}
+          label="Volume xx Chapter xx"
+          onPress={() => {
+            dispatch(
+              chapterPrefixStyleAction(novelId, ['Volume ', 'Chapter ']),
+            );
+          }}
+          theme={theme}
+        />
+        <RadioButton
+          disabled={!showChapterPrefix || showGeneratedChapterTitle}
+          status={Object.is(chapterPrefixStyle[0], 'Vol. ')}
+          label="Vol. xx Ch. xx"
           onPress={() =>
-            dispatch(showGeneratedChapterTitleAction(novelId, true))
+            dispatch(chapterPrefixStyleAction(novelId, ['Vol. ', 'Ch. ']))
           }
           theme={theme}
         />
@@ -214,6 +242,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   indent: {
-    marginLeft: 40,
+    paddingLeft: 40,
   },
 });

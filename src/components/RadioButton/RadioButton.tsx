@@ -18,6 +18,7 @@ interface Props {
   style?: StyleProp<ViewStyle>;
   labelStyle?: StyleProp<TextStyle>;
   theme: MD3ThemeType;
+  disabled: boolean;
 }
 
 export const RadioButton: React.FC<Props> = ({
@@ -27,11 +28,13 @@ export const RadioButton: React.FC<Props> = ({
   style,
   labelStyle,
   theme,
+  disabled,
 }) => (
   <Pressable
     android_ripple={{ color: color(theme.primary).alpha(0.12).string() }}
     style={[styles.pressable, style]}
     onPress={onPress}
+    disabled={disabled}
   >
     <PaperRadioButton
       status={status ? 'checked' : 'unchecked'}
@@ -39,6 +42,7 @@ export const RadioButton: React.FC<Props> = ({
       onPress={onPress}
       color={theme.primary}
       uncheckedColor={theme.textColorSecondary}
+      disabled={disabled}
     />
     <Text style={[styles.label, labelStyle, { color: theme.onSurface }]}>
       {label}

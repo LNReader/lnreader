@@ -32,7 +32,7 @@ import { useTheme } from '@hooks/useTheme';
 import { updateChaptersRead } from '../../redux/tracker/tracker.actions';
 import { markChapterReadAction } from '../../redux/novel/novel.actions';
 import { saveScrollPosition } from '../../redux/preferences/preference.actions';
-import { parseChapterPrefix } from '../../utils/parseChapterNumber';
+import { parseChapterPrefix } from '../../utils/parseChapterTitle';
 
 import ReaderAppbar from './components/ReaderAppbar';
 import ReaderFooter from './components/ReaderFooter';

@@ -130,7 +130,7 @@ const NovelInfoHeader = ({
           ) : null}
           <ReadButton
             novel={novel}
-            chapters={chapters}
+            chaptersLength={chapters.length}
             navigation={navigation}
             theme={theme}
             lastRead={lastRead}

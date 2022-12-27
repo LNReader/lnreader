@@ -7,7 +7,7 @@ import FastImage from 'react-native-fast-image';
 
 import { IconButtonV2 } from '../../../../components';
 
-import { parseChapterPrefix } from '../../../../utils/parseChapterNumber';
+import { parseChapterPrefix } from '../../../../utils/parseChapterTitle';
 
 import { History } from '../../../../database/types';
 import { MD3ThemeType } from '../../../../theme/types';

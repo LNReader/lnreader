@@ -1,6 +1,8 @@
+import { usePreferences } from '@hooks/reduxHooks';
+
 export const parseChapterPrefix = (
   chapterPrefix: string,
-  newPrefix: Array<string | null>,
+  newPrefix?: Array<string | null>,
 ) => {
   if (chapterPrefix) {
     if (newPrefix?.[0]) {
@@ -21,9 +23,10 @@ export const parseChapterPrefix = (
 };
 
 export const parseChapterTitle = (
-  chapterPrefix: string,
-  chapterName: string,
+  chapterPrefix: string | undefined,
+  chapterName: string | undefined,
   newPrefix: Array<string | null>,
+  seperator?: string,
 ) => {
   let chapterTitle;
   if (chapterPrefix) {
@@ -40,8 +43,35 @@ export const parseChapterTitle = (
   } else {
     return -1;
   }
-  if (chapterName && newPrefix?.[2]) {
-    return chapterTitle + newPrefix?.[2] + chapterName;
+  if (chapterName) {
+    if (seperator) {
+      return chapterTitle + seperator + chapterName;
+    }
+    return chapterTitle + ' ' + chapterName;
   }
+  return chapterTitle;
+};
+
+export const useChapterTitle = (
+  chapterPrefix: string | undefined,
+  chapterName: string | undefined,
+  novelId: number,
+) => {
+  const {
+    showChapterPrefix = true,
+    chapterPrefixStyle = ['Volume ', 'Chapter '],
+    chapterTitleSeperator = ' - ',
+  } = usePreferences(novelId);
+  if (!showChapterPrefix) {
+    return chapterName;
+  }
+
+  let chapterTitle = parseChapterTitle(
+    chapterPrefix,
+    chapterName,
+    chapterPrefixStyle,
+    chapterTitleSeperator,
+  );
+
   return chapterTitle;
 };
