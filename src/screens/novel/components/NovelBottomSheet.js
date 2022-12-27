@@ -16,7 +16,7 @@ import { getString } from '../../../../strings/translations';
 import { Checkbox, SortItem } from '../../../components/Checkbox/Checkbox';
 import { RadioButton } from '../../../components/RadioButton/RadioButton';
 
-import { showGeneratedChapterNumberAction } from '../../../redux/novel/novel.actions';
+import { showGeneratedChapterTitleAction } from '../../../redux/novel/novel.actions';
 import { overlay } from 'react-native-paper';
 import { dividerColor } from '../../../theme/colors';
 
@@ -28,7 +28,7 @@ const ChaptersSettingsSheet = ({
   sort,
   filter,
   theme,
-  showGeneratedChapterNumber,
+  showGeneratedChapterTitle,
 }) => {
   const { bottom } = useSafeAreaInsets();
 
@@ -108,10 +108,10 @@ const ChaptersSettingsSheet = ({
   const ThirdRoute = () => (
     <View style={{ flex: 1 }}>
       <Checkbox
-        status={showGeneratedChapterNumber}
-        label="Use generated Chapter number"
+        status={showGeneratedChapterTitle}
+        label="Use generated Chapter title"
         onPress={() =>
-          dispatch(showGeneratedChapterNumberAction(novelId, true))
+          dispatch(showGeneratedChapterTitleAction(novelId, true))
         }
         theme={theme}
       />

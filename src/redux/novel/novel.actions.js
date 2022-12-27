@@ -146,7 +146,7 @@ export const sortAndFilterChapters =
     });
   };
 
-export const showGeneratedChapterNumberAction = (novelId, value) => async dispatch => {
+export const showGeneratedChapterTitleAction = (novelId, value) => async dispatch => {
   dispatch({
     type: SET_NOVEL_SETTINGS,
     payload: { novelId, value: value },

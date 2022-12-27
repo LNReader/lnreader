@@ -14,7 +14,7 @@ const ChapterItem = ({
   chapter,
   theme,
   index,
-  showGeneratedChapterNumber,
+  showGeneratedChapterTitle,
   downloadQueue,
   downloadChapter,
   deleteChapter,
@@ -56,7 +56,7 @@ const ChapterItem = ({
             }}
             numberOfLines={1}
           >
-            {showGeneratedChapterNumber
+            {showGeneratedChapterTitle
               ? 'Chapter ' + index
               : chapterPrefix + ' ' + chapterName}
           </Text>

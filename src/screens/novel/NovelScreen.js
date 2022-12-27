@@ -99,7 +99,7 @@ const Novel = ({ route, navigation }) => {
   const {
     sort = defaultChapterSort,
     filter = '',
-    showGeneratedChapterNumber = false,
+    showGeneratedChapterTitle = false,
   } = usePreferences(novel.novelId);
 
   let { lastReadChapter, position } = useContinueReading(
@@ -333,7 +333,7 @@ const Novel = ({ route, navigation }) => {
       theme={theme}
       chapter={it}
       index={index}
-      showGeneratedChapterNumber={showGeneratedChapterNumber}
+      showGeneratedChapterTitle={showGeneratedChapterTitle}
       downloadQueue={downloadQueue}
       deleteChapter={deleteChapter}
       downloadChapter={downloadChapter}
@@ -728,7 +728,7 @@ const Novel = ({ route, navigation }) => {
               sort={sort}
               theme={theme}
               filter={filter}
-              showGeneratedChapterNumber={showGeneratedChapterNumber}
+              showGeneratedChapterTitle={showGeneratedChapterTitle}
             />
             <TrackSheet
               bottomSheetRef={trackerSheetRef}
