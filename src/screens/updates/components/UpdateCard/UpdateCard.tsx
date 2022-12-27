@@ -41,6 +41,7 @@ interface UpdateCardProps {
     sourceId: number,
     novelId: number,
     chapterId: number,
+    chapterPrefix: string,
     chapterName: string,
   ) => void;
   theme: MD3ThemeType;
@@ -134,6 +135,7 @@ const UpdateCard: React.FC<UpdateCardProps> = ({
                 item.sourceId,
                 item.novelId,
                 item.chapterId,
+                item.chapterPrefix,
                 item.chapterName,
               )
             }

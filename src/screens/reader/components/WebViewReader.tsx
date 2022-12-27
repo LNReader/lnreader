@@ -30,7 +30,7 @@ type WebViewReaderProps = {
     lineHeight: number;
     customCSS: string;
   };
-  chapterName: string;
+  chapterTitle: string;
   nextChapter: ChapterItem;
   navigateToNextChapter(): void;
   navigateToPrevChapter(): void;
@@ -57,7 +57,7 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
     layoutHeight,
     webViewScroll,
     nextChapter,
-    chapterName,
+    chapterTitle,
     onPress,
     navigateToNextChapter,
     navigateToPrevChapter,
@@ -323,7 +323,7 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
                     <div class="infoText">
                     ${getString(
                       'readerScreen.finished',
-                    )}: ${chapterName?.trim()}
+                    )}: ${chapterTitle?.trim()}
                     </div>
                     ${
                       nextChapter
