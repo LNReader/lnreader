@@ -4,11 +4,11 @@ import color from 'color';
 
 import { Row } from '../../../components/Common';
 
-import { parseChapterNumber } from '../../../services/utils/helpers';
 import {
   ChapterBookmarkButton,
   DownloadButton,
 } from './Chapter/ChapterDownloadButtons';
+import { useChapterTitle } from '@utils/parseChapterTitle';
 
 const ChapterItem = ({
   chapter,
@@ -23,6 +23,7 @@ const ChapterItem = ({
   onSelectLongPress,
   navigateToChapter,
   showProgressPercentage,
+  novelId,
 }) => {
   const { chapterId, chapterName, chapterPrefix, read, releaseDate, bookmark } =
     chapter;
@@ -30,6 +31,7 @@ const ChapterItem = ({
   const [deleteChapterMenu, setDeleteChapterMenu] = useState(false);
   const showDeleteChapterMenu = () => setDeleteChapterMenu(true);
   const hideDeleteChapterMenu = () => setDeleteChapterMenu(false);
+  const chapterTitle = useChapterTitle(chapterPrefix, chapterName, novelId);
 
   return (
     <Pressable
@@ -43,7 +45,7 @@ const ChapterItem = ({
       onLongPress={() => onSelectLongPress(chapter)}
       android_ripple={{ color: color(theme.primary).alpha(0.12).string() }}
     >
-      <Row style={{ flex: 1, overflow: 'hidden' }}>
+      <Row style={styles.row}>
         {!!bookmark && <ChapterBookmarkButton theme={theme} />}
         <View>
           <Text
@@ -57,25 +59,22 @@ const ChapterItem = ({
             numberOfLines={1}
           >
             {showGeneratedChapterTitle
-              ? 'Chapter ' + index
-              : chapterPrefix + ' ' + chapterName}
+              ? 'Chapter ' + (index + 1)
+              : chapterTitle}
           </Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              marginTop: 5,
-            }}
-          >
+          <View style={styles.chapter}>
             {releaseDate ? (
               <Text
-                style={{
-                  color: read
-                    ? theme.textColorHint
-                    : bookmark
-                    ? theme.primary
-                    : theme.textColorSecondary,
-                  fontSize: 12,
-                }}
+                style={[
+                  {
+                    color: read
+                      ? theme.textColorHint
+                      : bookmark
+                      ? theme.primary
+                      : theme.textColorSecondary,
+                  },
+                  styles.text,
+                ]}
                 numberOfLines={1}
               >
                 {releaseDate}
@@ -108,5 +107,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  row: {
+    flex: 1,
+    overflow: 'hidden',
+  },
+  chapter: {
+    flexDirection: 'row',
+    marginTop: 5,
+  },
+  text: {
+    fontSize: 12,
   },
 });

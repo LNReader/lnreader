@@ -11,6 +11,7 @@ export interface NovelInfo {
   author?: string;
   status?: string;
   followed: number;
+  unread: boolean;
 }
 
 export interface LibraryNovelInfo extends NovelInfo {

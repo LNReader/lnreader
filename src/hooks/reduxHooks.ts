@@ -1,36 +1,42 @@
+import { ChapterItem, LibraryNovelInfo, NovelInfo } from '@database/types';
 import { useSelector } from 'react-redux';
+import { RootState } from '@redux/store';
+import { SourceNovel } from 'src/sources/types';
 
 const useSettings = () => {
-  const settings = useSelector(state => state.settingsReducer);
+  const settings = useSelector((state: RootState) => state.settingsReducer);
 
   return settings;
 };
 
 const useNovel = () => {
-  const novel = useSelector(state => state.novelReducer);
+  const novel = useSelector((state: RootState) => state.novelReducer);
 
   return novel;
 };
 
 const useChapter = () => {
-  const chapter = useSelector(state => state.chapterReducer);
+  const chapter = useSelector((state: RootState) => state.chapterReducer);
 
   return chapter;
 };
 
-const useFindNovel = novelId => {
-  let novel = useSelector(state => state.preferenceReducer.novelSettings);
+const useFindNovel = (novelId: number) => {
+  let novel = useSelector(
+    (state: RootState) => state.preferenceReducer.novelSettings,
+  );
   novel = novel[novelId];
 
   return novel;
 };
 
-const usePreferences = novelId => {
+const usePreferences = (novelId: number) => {
   let sort,
     filter,
     position,
     showGeneratedChapterTitle,
     showChapterPrefix,
+    chapterTitleSeperator,
     chapterPrefixStyle;
 
   const novel = useFindNovel(novelId);
@@ -42,6 +48,7 @@ const usePreferences = novelId => {
     showGeneratedChapterTitle = novel.showGeneratedChapterTitle;
     showChapterPrefix = novel.showChapterPrefix;
     chapterPrefixStyle = novel.chapterPrefixStyle;
+    chapterTitleSeperator = novel.chapterTitleSeperator;
   }
 
   return {
@@ -51,23 +58,25 @@ const usePreferences = novelId => {
     showGeneratedChapterTitle,
     showChapterPrefix,
     chapterPrefixStyle,
+    chapterTitleSeperator,
   };
 };
 
 const useSavedSettings = () => {
-  const settings = useSelector(state => state.preferenceReducer.novelSettings);
+  const settings = useSelector(
+    (state: RootState) => state.preferenceReducer.novelSettings,
+  );
 
   return settings;
 };
 
-const useContinueReading = (chapters, novelId) => {
-  let lastReadChapter, chapterId, novel, position;
+const useContinueReading = (chapters: Array<ChapterItem>, novelId: number) => {
+  let lastReadChapter, chapterId: number, novel, position;
 
   novel = useFindNovel(novelId);
-  if (novel) {
-    chapterId = novel.lastRead;
-    position = novel.position;
-  }
+
+  chapterId = novel?.lastRead;
+  position = novel?.position;
 
   if (chapterId) {
     lastReadChapter = chapters.find(
@@ -85,7 +94,7 @@ const useContinueReading = (chapters, novelId) => {
   return { lastReadChapter, position };
 };
 
-const usePosition = (novelId, chapterId) => {
+const usePosition = (novelId: number, chapterId: number) => {
   let novel, position;
 
   novel = useFindNovel(novelId);
@@ -100,7 +109,7 @@ const usePosition = (novelId, chapterId) => {
 };
 
 const useTrackingStatus = () => {
-  const tracker = useSelector(state => state.trackerReducer);
+  const tracker = useSelector((state: RootState) => state.trackerReducer);
 
   return tracker;
 };
