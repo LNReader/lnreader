@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { StyleSheet, View, Pressable } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
-import color from 'color';
 import { useTheme } from '@hooks/useTheme';
 import { FlashList } from '@shopify/flash-list';
 import { Button, LoadingScreenV2 } from '@components/index';
@@ -11,6 +10,7 @@ import { useNovel, useSettings, usePreferences } from '@hooks/reduxHooks';
 import { useDispatch } from 'react-redux';
 import { setNovel, getNovelAction } from '@redux/novel/novel.actions';
 import { dividerColor } from '@theme/colors';
+import DrawerChapterItem from './DrawerChapterItem';
 
 const ChapterDrawer = ({ state: st, navigation }) => {
   const theme = useTheme();
@@ -87,29 +87,17 @@ const ChapterDrawer = ({ state: st, navigation }) => {
       ...item,
     });
   };
-  const renderItem = ({ item }) => (
-    <View
-      style={[
-        styles.drawerElementContainer,
-        item.chapterId === currentChapterId && {
-          backgroundColor: color(theme.primary).alpha(0.12).string(),
-        },
-      ]}
-    >
-      <Pressable
-        android_ripple={{ color: color(theme.primary).alpha(0.12).string() }}
-        onPress={() => changeChapter(item)}
-        style={styles.chapterCtn}
-      >
-        <Text numberOfLines={1} style={styles.chapterNameCtn}>
-          {item.chapterName}
-        </Text>
-        {item.releaseDate && (
-          <Text style={styles.releaseDateCtn}>{item.releaseDate}</Text>
-        )}
-      </Pressable>
-    </View>
-  );
+  const renderItem = ({ item }) => {
+    return (
+      <DrawerChapterItem
+        item={item}
+        theme={theme}
+        currentChapterId={currentChapterId}
+        novelId={novelId}
+        changeChapter={changeChapter}
+      />
+    );
+  };
 
   const ListFooter = () => {
     return (
@@ -218,30 +206,6 @@ const createStylesheet = (theme, insets) => {
       borderBottomWidth: 1,
       borderBottomColor: dividerColor(theme.isDark),
       color: theme.textColorPrimary,
-    },
-    chapterCtn: {
-      flex: 1,
-      paddingHorizontal: 20,
-      paddingVertical: 10,
-      justifyContent: 'center',
-    },
-    chapterNameCtn: {
-      fontSize: 12,
-      marginBottom: 2,
-      color: theme.textColorPrimary,
-    },
-    releaseDateCtn: {
-      fontSize: 10,
-      color: theme.textColorSecondary,
-    },
-    drawerElementContainer: {
-      margin: 4,
-      marginLeft: 0,
-      marginRight: 16,
-      borderTopRightRadius: 50,
-      borderBottomRightRadius: 50,
-      overflow: 'hidden',
-      minHeight: 48,
     },
     button: {
       marginBottom: 12,

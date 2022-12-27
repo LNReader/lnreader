@@ -321,9 +321,9 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
                     window.ReactNativeWebView.postMessage(JSON.stringify({type:"imgfiles",data:imgs}));
                     </script>
                     <div class="infoText">
-                    ${getString(
-                      'readerScreen.finished',
-                    )}: ${chapterTitle?.trim()}
+                    ${getString('readerScreen.finished')}:
+                    <br>
+                    ${chapterTitle}
                     </div>
                     ${
                       nextChapter

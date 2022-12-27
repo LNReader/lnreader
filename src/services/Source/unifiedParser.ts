@@ -9,7 +9,13 @@ export const unifiedParser = async (
   chapter: SourceChapter,
 ): Promise<ParsedChapter> => {
   const [chapterName, chapterPrefix] = parseName(chapter.chapterName);
-  const chapterText = chapter.chapterText;
+  let re = new RegExp(
+    '<\\w+>\\s*' + chapterPrefix + '.{0,6}' + chapterName + '.{0,3}<[/]\\w+>',
+    'i',
+  );
+  const chapterText = chapter.chapterText
+    ?.replace(re, '')
+    .replace(/<\w+>(<.{0,40}>)?<[/]\w+>/i, '');
 
   return {
     ...chapter,
