@@ -27,9 +27,9 @@ const ReadButton: React.FC<ReadButtonProps> = ({
 }) => {
   const { useFabForContinueReading = false } = useSettings();
   const chapterTitle = useChapterTitle(
-    lastRead.chapterPrefix,
-    lastRead.chapterName,
-    novel.novelId,
+    lastRead?.chapterPrefix,
+    lastRead?.chapterName,
+    novel?.novelId,
   );
 
   const navigateToLastReadChapter = () => {

@@ -105,7 +105,6 @@ const ChapterContent = ({ route, navigation }) => {
   const dispatch = useDispatch();
   const readerSettings = useReaderSettings();
   const chapterTitle = useChapterTitle(chapterPrefix, chapterName, novelId);
-  console.log(chapterTitle);
   const {
     swipeGestures = false,
     useWebViewForChapter = false,

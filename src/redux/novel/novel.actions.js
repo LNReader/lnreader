@@ -17,6 +17,7 @@ import {
   MARK_PREVIOUS_CHAPTERS_UNREAD,
   SET_NOVEL_CHAPTER_PREFIX,
   SET_NOVEL_CHAPTER_PREFIX_STYLE,
+  SET_NOVEL_CHAPTER_TITLE_SEPERATOR,
 } from './novel.types';
 
 import { fetchNovel } from '../../services/Source/source';
@@ -174,7 +175,7 @@ export const chapterPrefixStyleAction =
 export const chapterTitleSeperatorAction =
   (novelId, chapterTitleSeperator) => async dispatch => {
     dispatch({
-      type: SET_NOVEL_CHAPTER_PREFIX_STYLE,
+      type: SET_NOVEL_CHAPTER_TITLE_SEPERATOR,
       payload: { novelId, chapterTitleSeperator: chapterTitleSeperator },
     });
   };

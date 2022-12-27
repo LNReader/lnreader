@@ -103,6 +103,7 @@ const Novel = ({ route, navigation }) => {
     showGeneratedChapterTitle = false,
     showChapterPrefix = true,
     chapterPrefixStyle = ['Volume ', 'Chapter '],
+    chapterTitleSeperator = true,
   } = usePreferences(novel.novelId);
 
   let { lastReadChapter, position } = useContinueReading(
@@ -750,6 +751,7 @@ const Novel = ({ route, navigation }) => {
               showGeneratedChapterTitle={showGeneratedChapterTitle}
               showChapterPrefix={showChapterPrefix}
               chapterPrefixStyle={chapterPrefixStyle}
+              chapterTitleSeperator={chapterTitleSeperator}
             />
             <TrackSheet
               bottomSheetRef={trackerSheetRef}

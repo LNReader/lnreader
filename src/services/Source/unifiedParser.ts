@@ -15,7 +15,7 @@ export const unifiedParser = async (
   );
   const chapterText = chapter.chapterText
     ?.replace(re, '')
-    .replace(/<\w+>(<.{0,40}>)?<[/]\w+>/i, '');
+    .replace(/<\w+>\S*<[/]\w+>/i, '');
 
   return {
     ...chapter,
