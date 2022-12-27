@@ -26,7 +26,13 @@ export const DownloadButton = ({
         contentStyle={{ backgroundColor: theme.menuColor }}
       >
         <Menu.Item
-          onPress={() => deleteChapter(chapter.chapterId, chapter.chapterName)}
+          onPress={() =>
+            deleteChapter(
+              chapter.chapterId,
+              chapter.chapterPrefix,
+              chapter.chapterName,
+            )
+          }
           title="Delete"
           titleStyle={{ color: theme.textColorPrimary }}
         />
@@ -39,6 +45,7 @@ export const DownloadButton = ({
         onPress={() =>
           downloadChapter(
             chapter.chapterUrl,
+            chapter.chapterPrefix,
             chapter.chapterName,
             chapter.chapterId,
           )

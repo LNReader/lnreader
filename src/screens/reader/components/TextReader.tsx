@@ -28,7 +28,7 @@ interface TextReaderProps {
     lineHeight: number;
     customCSS: string;
   };
-  chapterName: string;
+  chapterTitle: string;
   nextChapter: ChapterItem;
   navigateToNextChapter: () => void;
   onPress(): void;
@@ -38,7 +38,7 @@ const TextReader: React.FC<TextReaderProps> = ({
   text,
   theme,
   reader,
-  chapterName,
+  chapterTitle,
   nextChapter,
   navigateToNextChapter,
   onPress,
@@ -75,7 +75,7 @@ const TextReader: React.FC<TextReaderProps> = ({
           <Text
             style={[styles.finishedChapterText, { color: reader.textColor }]}
           >
-            {`${getString('readerScreen.finished')}: ${chapterName?.trim()}`}
+            {`${getString('readerScreen.finished')}: ${chapterTitle?.trim()}`}
           </Text>
           {nextChapter ? (
             <Button

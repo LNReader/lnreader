@@ -32,7 +32,7 @@ import { useTheme } from '@hooks/useTheme';
 import { updateChaptersRead } from '../../redux/tracker/tracker.actions';
 import { markChapterReadAction } from '../../redux/novel/novel.actions';
 import { saveScrollPosition } from '../../redux/preferences/preference.actions';
-import { parseChapterNumber } from '../../utils/parseChapterNumber';
+import { parseChapterPrefix } from '../../utils/parseChapterNumber';
 
 import ReaderAppbar from './components/ReaderAppbar';
 import ReaderFooter from './components/ReaderFooter';
@@ -90,6 +90,7 @@ const ChapterContent = ({ route, navigation }) => {
     novelId,
     novelUrl,
     novelName,
+    chapterPrefix,
     chapterName,
     bookmark,
   } = params;
@@ -268,7 +269,7 @@ const ChapterContent = ({ route, navigation }) => {
   );
 
   const updateTracker = () => {
-    const chapterNumber = parseChapterNumber(chapterName);
+    const chapterNumber = parseChapterPrefix(chapterName);
 
     isTracked &&
       chapterNumber &&
@@ -347,6 +348,7 @@ const ChapterContent = ({ route, navigation }) => {
           ...params,
           chapterUrl: prevChapter.chapterUrl,
           chapterId: prevChapter.chapterId,
+          chapterPrefix: prevChapter.chapterPrefix,
           chapterName: prevChapter.chapterName,
           bookmark: prevChapter.bookmark,
         })
@@ -359,6 +361,7 @@ const ChapterContent = ({ route, navigation }) => {
           ...params,
           chapterUrl: nextChapter.chapterUrl,
           chapterId: nextChapter.chapterId,
+          chapterPrefix: nextChapter.chapterPrefix,
           chapterName: nextChapter.chapterName,
           bookmark: nextChapter.bookmark,
         })
@@ -469,7 +472,7 @@ const ChapterContent = ({ route, navigation }) => {
                       scrollPercentage={scrollPercentage}
                       reader={readerSettings}
                       html={chapterText}
-                      chapterName={chapter.chapterName || chapterName}
+                      chapterTitle={chapter.chapterName || chapterName}
                       nextChapter={nextChapter}
                       navigateToNextChapter={() => navigateToNextChapter()}
                       navigateToPrevChapter={() => navigateToPrevChapter()}

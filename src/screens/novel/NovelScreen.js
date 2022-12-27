@@ -143,13 +143,14 @@ const Novel = ({ route, navigation }) => {
 
   const keyExtractor = useCallback(i => i.chapterId.toString(), []);
 
-  const downloadChapter = (chapterUrl, chapterName, chapterId) =>
+  const downloadChapter = (chapterUrl, chapterPrefix, chapterName, chapterId) =>
     dispatch(
       downloadChapterAction(
         sourceId,
         novelUrl,
         novelId,
         chapterUrl,
+        chapterPrefix,
         chapterName,
         chapterId,
       ),
@@ -225,8 +226,16 @@ const Novel = ({ route, navigation }) => {
     return list;
   }, [selected]);
 
-  const deleteChapter = (chapterId, chapterName) =>
-    dispatch(deleteChapterAction(sourceId, novelId, chapterId, chapterName));
+  const deleteChapter = (chapterId, chapterPrefix, chapterName) =>
+    dispatch(
+      deleteChapterAction(
+        sourceId,
+        novelId,
+        chapterId,
+        chapterPrefix,
+        chapterName,
+      ),
+    );
 
   const isSelected = chapterId => {
     return selected.some(obj => obj.chapterId === chapterId);
