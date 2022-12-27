@@ -26,7 +26,12 @@ const useFindNovel = novelId => {
 };
 
 const usePreferences = novelId => {
-  let sort, filter, position, showGeneratedChapterTitle;
+  let sort,
+    filter,
+    position,
+    showGeneratedChapterTitle,
+    showChapterPrefix,
+    chapterPrefixStyle;
 
   const novel = useFindNovel(novelId);
 
@@ -35,9 +40,18 @@ const usePreferences = novelId => {
     filter = novel.filter;
     position = novel.position;
     showGeneratedChapterTitle = novel.showGeneratedChapterTitle;
+    showChapterPrefix = novel.showChapterPrefix;
+    chapterPrefixStyle = novel.chapterPrefixStyle;
   }
 
-  return { sort, filter, position, showGeneratedChapterTitle };
+  return {
+    sort,
+    filter,
+    position,
+    showGeneratedChapterTitle,
+    showChapterPrefix,
+    chapterPrefixStyle,
+  };
 };
 
 const useSavedSettings = () => {

@@ -154,6 +154,20 @@ export const showGeneratedChapterTitleAction =
     });
   };
 
+export const showChapterPrefixAction = (novelId, value) => async dispatch => {
+  dispatch({
+    type: SET_NOVEL_SETTINGS,
+    payload: { novelId, prefix: value },
+  });
+};
+
+export const ChapterPrefixStyleAction = (novelId, value) => async dispatch => {
+  dispatch({
+    type: SET_NOVEL_SETTINGS,
+    payload: { novelId, prefixStyle: value },
+  });
+};
+
 export const followNovelAction = novel => async dispatch => {
   await followNovel(novel.followed, novel.novelId);
 
