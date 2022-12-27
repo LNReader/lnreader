@@ -112,6 +112,23 @@ const ChaptersSettingsSheet = ({
         onPress={() => dispatch(showGeneratedChapterTitleAction(novelId, true))}
         theme={theme}
       />
+      <Checkbox
+        status={showGeneratedChapterTitle}
+        label="Show Prefix"
+        onPress={() => dispatch(showGeneratedChapterTitleAction(novelId, true))}
+        theme={theme}
+      />
+      <View style={styles.indent}>
+        <Checkbox
+          disabled={!showGeneratedChapterTitle}
+          status={showGeneratedChapterTitle}
+          label="Use generated Chapter title"
+          onPress={() =>
+            dispatch(showGeneratedChapterTitleAction(novelId, true))
+          }
+          theme={theme}
+        />
+      </View>
     </View>
   );
 
@@ -195,5 +212,8 @@ const styles = StyleSheet.create({
   },
   view: {
     flex: 1,
+  },
+  indent: {
+    marginLeft: 40,
   },
 });
