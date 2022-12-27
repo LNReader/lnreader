@@ -7,7 +7,7 @@ import FastImage from 'react-native-fast-image';
 
 import { IconButtonV2 } from '../../../../components';
 
-import { parseChapterNumber } from '../../../../utils/parseChapterNumber';
+import { parseChapterPrefix } from '../../../../utils/parseChapterNumber';
 
 import { History } from '../../../../database/types';
 import { MD3ThemeType } from '../../../../theme/types';
@@ -43,6 +43,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
     novelName,
     novelUrl,
     chapterId,
+    chapterPrefix,
     chapterName,
     novelCover,
     historyTimeRead,
@@ -52,10 +53,12 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
 
   const chapterNoAndTime = useMemo(
     () =>
-      `Chapter ${parseChapterNumber(chapterName)} • ${dayjs(historyTimeRead)
+      `${parseChapterPrefix(chapterPrefix, [null, 'Chapter '])} • ${dayjs(
+        historyTimeRead,
+      )
         .format('LT')
         .toUpperCase()}`,
-    [chapterName, historyTimeRead],
+    [chapterPrefix, historyTimeRead],
   );
 
   return (
@@ -101,6 +104,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
                 novelId,
                 chapterId,
                 chapterUrl,
+                chapterPrefix,
                 chapterName,
                 bookmark,
               },

@@ -100,7 +100,7 @@ const Novel = ({ route, navigation }) => {
   const {
     sort = defaultChapterSort,
     filter = '',
-    showChapterTitles = false,
+    showGeneratedChapterTitle = false,
   } = usePreferences(novel.novelId);
 
   let { lastReadChapter, position } = useContinueReading(
@@ -144,13 +144,14 @@ const Novel = ({ route, navigation }) => {
 
   const keyExtractor = useCallback(i => i.chapterId.toString(), []);
 
-  const downloadChapter = (chapterUrl, chapterName, chapterId) =>
+  const downloadChapter = (chapterUrl, chapterPrefix, chapterName, chapterId) =>
     dispatch(
       downloadChapterAction(
         sourceId,
         novelUrl,
         novelId,
         chapterUrl,
+        chapterPrefix,
         chapterName,
         chapterId,
       ),
@@ -226,8 +227,16 @@ const Novel = ({ route, navigation }) => {
     return list;
   }, [selected]);
 
-  const deleteChapter = (chapterId, chapterName) =>
-    dispatch(deleteChapterAction(sourceId, novelId, chapterId, chapterName));
+  const deleteChapter = (chapterId, chapterPrefix, chapterName) =>
+    dispatch(
+      deleteChapterAction(
+        sourceId,
+        novelId,
+        chapterId,
+        chapterPrefix,
+        chapterName,
+      ),
+    );
 
   const isSelected = chapterId => {
     return selected.some(obj => obj.chapterId === chapterId);
@@ -338,7 +347,7 @@ const Novel = ({ route, navigation }) => {
       theme={theme}
       chapter={it}
       index={index}
-      showChapterTitles={showChapterTitles}
+      showGeneratedChapterTitle={showGeneratedChapterTitle}
       downloadQueue={downloadQueue}
       deleteChapter={deleteChapter}
       downloadChapter={downloadChapter}
@@ -736,7 +745,7 @@ const Novel = ({ route, navigation }) => {
               sort={sort}
               theme={theme}
               filter={filter}
-              showChapterTitles={showChapterTitles}
+              showGeneratedChapterTitle={showGeneratedChapterTitle}
             />
             <TrackSheet
               bottomSheetRef={trackerSheetRef}

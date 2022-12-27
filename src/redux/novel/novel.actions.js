@@ -146,12 +146,13 @@ export const sortAndFilterChapters =
     });
   };
 
-export const showChapterTitlesAction = (novelId, value) => async dispatch => {
-  dispatch({
-    type: SET_NOVEL_SETTINGS,
-    payload: { novelId, value: value },
-  });
-};
+export const showGeneratedChapterTitleAction =
+  (novelId, value) => async dispatch => {
+    dispatch({
+      type: SET_NOVEL_SETTINGS,
+      payload: { novelId, value: value },
+    });
+  };
 
 export const followNovelAction = novel => async dispatch => {
   await followNovel(novel.followed, novel.novelId);
@@ -450,7 +451,7 @@ export const deleteChapterAction =
       payload: chapterId,
     });
 
-    showToast(`Deleted ${chapters[0].chapterPrefix + ' ' + chapterName}`);
+    showToast(`Deleted ${chapterPrefix + ' ' + chapterName}`);
   };
 
 /**
@@ -530,6 +531,7 @@ export const updateNovelAction =
     await updateNovel(sourceId, novelUrl, novelId, options);
 
     let novel = await getNovel(sourceId, novelUrl);
+
     let chapters = await getChapters(novel.novelId, sort, filter);
 
     dispatch({

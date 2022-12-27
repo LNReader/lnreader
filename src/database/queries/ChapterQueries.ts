@@ -16,8 +16,6 @@ export const insertChapters = async (
   novelId: number,
   chapters: ChapterItem[],
 ) => {
-  console.log('Hey');
-
   db.transaction(
     tx => {
       chapters.map(chapter =>
@@ -66,7 +64,7 @@ export const getChapters = (novelId: number, sort: string, filter: string) => {
           resolve(_array);
         },
         (_txObj, _error) => {
-          // console.log('Error ', error)
+          // console.log('Error ', _error);
           return false;
         },
       );

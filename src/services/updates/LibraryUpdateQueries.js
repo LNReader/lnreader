@@ -62,7 +62,6 @@ const updateNovel = async (sourceId, novelUrl, novelId, options) => {
   db.transaction(tx => {
     novel.chapters.map(chapter => {
       const { chapterPrefix, chapterName, chapterUrl, releaseDate } = chapter;
-      console.log("🚀 ~ file: LibraryUpdateQueries.js:65 ~ updateNovel ~ chapter", chapter)
 
       tx.executeSql(
         'INSERT OR IGNORE INTO chapters (chapterUrl, chapterPrefix, chapterName, releaseDate, novelId) values (?, ?, ?, ?, ?)',

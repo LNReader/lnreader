@@ -41,6 +41,7 @@ const JumpToChapterModal = ({
       novelId: novel.novelId,
       chapterId: chap.chapterId,
       chapterUrl: chap.chapterUrl,
+      chapterPrefix: chap.chapterPrefix,
       chapterName: chap.chapterName,
       novelName: novel.novelName,
       bookmark: chap.bookmark,

@@ -46,7 +46,7 @@ const parseName = (chapterName: string): Array<string> => {
     )
     .trim();
   newChapterName = newChapterName.replace(
-    /[-:]+\s*[-:]+|[-:]+(?=\d*|\w*)/i,
+    /[-–‐‑‒—⁃﹣:]+\s*[-–‐‑‒—⁃﹣:]+|[-–‐‑‒—⁃﹣:]+(?=\d*|\w*)/i,
     '',
   );
 
@@ -77,4 +77,5 @@ Volume 2 Chapter 46 23 Even One Worthy Friend Can Be Enough
 Volume 2 23 Even One Worthy Friend Can Be Enough
 Chapter 23
 C23
+Chapter 209 – Meeting Yan Shuo again
 */

@@ -12,7 +12,7 @@ const ReaderAppbar = ({
   bookmark,
   novelName,
   chapterId,
-  chapterName,
+  chapterTitle,
   hide,
   dispatch,
   tts,
@@ -51,7 +51,7 @@ const ReaderAppbar = ({
               style={[styles.subtitle, { color: theme.textColorSecondary }]}
               numberOfLines={1}
             >
-              {chapterName}
+              {chapterTitle}
             </Text>
           </View>
           <Appbar.Action
