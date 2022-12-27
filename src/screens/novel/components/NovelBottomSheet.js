@@ -7,14 +7,13 @@ import {
   useWindowDimensions,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import color from 'color';
+import Color from 'color';
 
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import Bottomsheet from 'rn-sliding-up-panel';
 import { getString } from '../../../../strings/translations';
 
 import { Checkbox, SortItem } from '../../../components/Checkbox/Checkbox';
-import { RadioButton } from '../../../components/RadioButton/RadioButton';
 
 import { showGeneratedChapterTitleAction } from '../../../redux/novel/novel.actions';
 import { overlay } from 'react-native-paper';
@@ -43,7 +42,7 @@ const ChaptersSettingsSheet = ({
   const [animatedValue] = useState(new Animated.Value(0));
 
   const FirstRoute = () => (
-    <View style={{ flex: 1 }}>
+    <View style={styles.view}>
       <Checkbox
         theme={theme}
         label="Downloaded"
@@ -91,7 +90,7 @@ const ChaptersSettingsSheet = ({
   );
 
   const SecondRoute = () => (
-    <View style={{ flex: 1 }}>
+    <View style={styles.view}>
       <SortItem
         label="By source"
         status={sort === 'ORDER BY chapterId ASC' ? 'asc' : 'desc'}
@@ -106,13 +105,11 @@ const ChaptersSettingsSheet = ({
   );
 
   const ThirdRoute = () => (
-    <View style={{ flex: 1 }}>
+    <View style={styles.view}>
       <Checkbox
         status={showGeneratedChapterTitle}
         label="Use generated Chapter title"
-        onPress={() =>
-          dispatch(showGeneratedChapterTitleAction(novelId, true))
-        }
+        onPress={() => dispatch(showGeneratedChapterTitleAction(novelId, true))}
         theme={theme}
       />
     </View>
@@ -137,18 +134,19 @@ const ChaptersSettingsSheet = ({
     <TabBar
       {...props}
       indicatorStyle={{ backgroundColor: theme.primary }}
-      style={{
-        backgroundColor: overlay(2, theme.surface),
-        borderBottomWidth: 1,
-        borderBottomColor: dividerColor(theme.isDark),
-        elevation: 0,
-      }}
+      style={[
+        {
+          backgroundColor: overlay(2, theme.surface),
+          borderBottomColor: dividerColor(theme.isDark),
+        },
+        styles.tabBar,
+      ]}
       renderLabel={({ route, focused, color }) => (
         <Text style={{ color }}>{route.title}</Text>
       )}
       inactiveColor={theme.textColorSecondary}
       activeColor={theme.primary}
-      pressColor={color(theme.primary).alpha(0.12).string()}
+      pressColor={Color(theme.primary).alpha(0.12).string()}
     />
   );
 
@@ -172,7 +170,7 @@ const ChaptersSettingsSheet = ({
           renderScene={renderScene}
           onIndexChange={setIndex}
           initialLayout={{ width: layout.width }}
-          style={{ borderTopRightRadius: 8, borderTopLeftRadius: 8 }}
+          style={styles.tabView}
         />
       </View>
     </Bottomsheet>
@@ -186,5 +184,16 @@ const styles = StyleSheet.create({
     flex: 1,
     borderTopRightRadius: 8,
     borderTopLeftRadius: 8,
+  },
+  tabBar: {
+    borderBottomWidth: 1,
+    elevation: 0,
+  },
+  tabView: {
+    borderTopRightRadius: 8,
+    borderTopLeftRadius: 8,
+  },
+  view: {
+    flex: 1,
   },
 });
