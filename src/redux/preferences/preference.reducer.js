@@ -43,7 +43,7 @@ const novelReducer = (state = initialState, action) => {
           ...state.novelSettings,
           [payload.novelId]: {
             ...state.novelSettings[payload.novelId],
-            showGeneratedChapterNumber: payload.value,
+            showGeneratedChapterTitle: payload.value,
           },
         },
       };
