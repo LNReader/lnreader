@@ -1,36 +1,26 @@
-interface oCProps {
-  novel: {
-    novelUrl: string;
-    sourceId: number;
-    novelName: string;
-  };
-  chapter: {
-    chapterId: number;
-    chapterUrl: string;
-    novelId: number;
-    chapterPrefix: string;
-    chapterName: string;
-    bookmark: number;
-  };
-}
-export type openChapterChapterTypes = oCProps['chapter'];
-export type openChapterNovelTypes = oCProps['novel'];
-export type openChapterFunctionTypes = oCProps['novel'] & oCProps['chapter'];
+import { ChapterItem, NovelInfo } from '@database/types';
+
+export type openChapterFunctionTypes = NovelInfo & ChapterItem;
 
 export function openChapter(
-  novel: openChapterNovelTypes,
-  chapter: openChapterChapterTypes,
+  novel: NovelInfo,
+  chapter: ChapterItem,
 ): openChapterFunctionTypes {
   return {
     novelUrl: novel.novelUrl,
     sourceId: novel.sourceId,
     novelName: novel.novelName,
+    source: novel?.source,
+    sourceUrl: novel?.sourceUrl,
+    followed: novel?.followed,
     chapterId: chapter.chapterId,
     chapterUrl: chapter.chapterUrl,
     novelId: chapter.novelId,
     chapterPrefix: chapter.chapterPrefix,
     chapterName: chapter.chapterName,
     bookmark: chapter.bookmark,
+    read: chapter?.read,
+    downloaded: chapter?.downloaded,
   };
 }
 export interface openNovelProps {

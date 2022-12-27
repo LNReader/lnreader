@@ -15,6 +15,8 @@ import {
   BOOKMARK_CHAPTER,
   MARK_PREVIOUS_CHAPTERS_READ,
   MARK_PREVIOUS_CHAPTERS_UNREAD,
+  SET_NOVEL_CHAPTER_PREFIX,
+  SET_NOVEL_CHAPTER_PREFIX_STYLE,
 } from './novel.types';
 
 import { fetchNovel } from '../../services/Source/source';
@@ -154,19 +156,28 @@ export const showGeneratedChapterTitleAction =
     });
   };
 
-export const showChapterPrefixAction = (novelId, value) => async dispatch => {
+export const showChapterPrefixAction = (novelId, prefix) => async dispatch => {
   dispatch({
-    type: SET_NOVEL_SETTINGS,
-    payload: { novelId, prefix: value },
+    type: SET_NOVEL_CHAPTER_PREFIX,
+    payload: { novelId, prefix: prefix },
   });
 };
 
-export const ChapterPrefixStyleAction = (novelId, value) => async dispatch => {
-  dispatch({
-    type: SET_NOVEL_SETTINGS,
-    payload: { novelId, prefixStyle: value },
-  });
-};
+export const chapterPrefixStyleAction =
+  (novelId, prefixStyle) => async dispatch => {
+    dispatch({
+      type: SET_NOVEL_CHAPTER_PREFIX_STYLE,
+      payload: { novelId, prefixStyle: prefixStyle },
+    });
+  };
+
+export const chapterTitleSeperatorAction =
+  (novelId, chapterTitleSeperator) => async dispatch => {
+    dispatch({
+      type: SET_NOVEL_CHAPTER_PREFIX_STYLE,
+      payload: { novelId, chapterTitleSeperator: chapterTitleSeperator },
+    });
+  };
 
 export const followNovelAction = novel => async dispatch => {
   await followNovel(novel.followed, novel.novelId);

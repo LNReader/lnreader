@@ -344,6 +344,7 @@ const Novel = ({ route, navigation }) => {
       theme={theme}
       chapter={it}
       index={index}
+      novelId={novel.novelId}
       showGeneratedChapterTitle={showGeneratedChapterTitle}
       downloadQueue={downloadQueue}
       deleteChapter={deleteChapter}
@@ -358,7 +359,6 @@ const Novel = ({ route, navigation }) => {
 
   const [editInfoModal, showEditInfoModal] = useState(false);
   const downloadCustomChapterModal = useBoolean();
-
   return (
     <Provider>
       <View style={[styles.container, { backgroundColor: theme.background }]}>

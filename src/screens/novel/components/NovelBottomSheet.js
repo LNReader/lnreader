@@ -16,7 +16,7 @@ import { getString } from '../../../../strings/translations';
 import { Checkbox, SortItem } from '../../../components/Checkbox/Checkbox';
 
 import {
-  ChapterPrefixStyleAction as chapterPrefixStyleAction,
+  chapterPrefixStyleAction as chapterPrefixStyleAction,
   showChapterPrefixAction,
   showGeneratedChapterTitleAction,
 } from '../../../redux/novel/novel.actions';
@@ -127,6 +127,7 @@ const ChaptersSettingsSheet = ({
         theme={theme}
       />
       <Checkbox
+        disabled={showGeneratedChapterTitle}
         status={showChapterPrefix}
         label="Show Prefix"
         onPress={() =>
@@ -136,9 +137,9 @@ const ChaptersSettingsSheet = ({
       />
       <View style={styles.indent}>
         <RadioButton
-          disabled={!showChapterPrefix}
+          disabled={!showChapterPrefix || showGeneratedChapterTitle}
           status={Object.is(chapterPrefixStyle[0], 'Volume ')}
-          label="Volume 00 Chapter 00"
+          label="Volume xx Chapter xx"
           onPress={() => {
             dispatch(
               chapterPrefixStyleAction(novelId, ['Volume ', 'Chapter ']),
@@ -147,9 +148,9 @@ const ChaptersSettingsSheet = ({
           theme={theme}
         />
         <RadioButton
-          disabled={!showChapterPrefix}
+          disabled={!showChapterPrefix || showGeneratedChapterTitle}
           status={Object.is(chapterPrefixStyle[0], 'Vol. ')}
-          label="Vol. 00 Ch. 00"
+          label="Vol. xx Ch. xx"
           onPress={() =>
             dispatch(chapterPrefixStyleAction(novelId, ['Vol. ', 'Ch. ']))
           }
