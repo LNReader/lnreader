@@ -60,10 +60,22 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   </Pressable>
 );
 
-export const SortItem = ({ label, status, onPress, theme }) => (
+interface SortItemProps {
+  label: string;
+  status: string;
+  onPress?: () => void;
+  theme: MD3ThemeType;
+}
+
+export const SortItem: React.FC<SortItemProps> = ({
+  label,
+  status,
+  onPress,
+  theme,
+}) => (
   <Pressable
     android_ripple={{ color: color(theme.primary).alpha(0.12).string() }}
-    style={[styles.pressable, { paddingVertical: 16, paddingLeft: 64 }]}
+    style={[styles.pressable, styles.SortItemPressable]}
     onPress={onPress}
   >
     {status && (
@@ -84,6 +96,10 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  SortItemPressable: {
+    paddingVertical: 16,
+    paddingLeft: 64,
   },
   icon: {
     position: 'absolute',
