@@ -30,15 +30,15 @@ export const parseChapterTitle = (
 ) => {
   let chapterTitle;
   if (chapterPrefix) {
-    if (newPrefix?.[0]) {
+    if (newPrefix?.[0] || newPrefix?.[0] === '') {
       chapterTitle = chapterPrefix.replace(/[v]\w*\s*/i, newPrefix[0]);
     } else {
       chapterTitle = chapterPrefix.replace(/[v]\w*\s*\d+/i, '');
     }
-    if (newPrefix?.[1]) {
-      chapterTitle = chapterPrefix.replace(/[c]\w*\s*/i, newPrefix[1]);
+    if (newPrefix?.[1] || newPrefix?.[1] === '') {
+      chapterTitle = chapterTitle.replace(/[c]\w*\s*/i, newPrefix[1]);
     } else {
-      chapterTitle = chapterPrefix.replace(/[v]\w*\s*\d+/i, '');
+      chapterTitle = chapterTitle.replace(/[v]\w*\s*\d+/i, '');
     }
   } else {
     return -1;
@@ -49,7 +49,7 @@ export const parseChapterTitle = (
     }
     return chapterTitle + ' ' + chapterName;
   }
-  return chapterTitle;
+  return chapterTitle.trim();
 };
 
 export const useChapterTitle = (
@@ -60,7 +60,7 @@ export const useChapterTitle = (
   const {
     showChapterPrefix = true,
     chapterPrefixStyle = ['Volume ', 'Chapter '],
-    chapterTitleSeperator = ' - ',
+    chapterTitleSeperator = true,
   } = usePreferences(novelId);
   if (!showChapterPrefix) {
     return chapterName;

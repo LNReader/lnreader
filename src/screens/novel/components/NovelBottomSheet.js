@@ -160,6 +160,14 @@ const ChaptersSettingsSheet = ({
           }
           theme={theme}
         />
+        <RadioButton
+          style={styles.indent}
+          disabled={!showChapterPrefix || showGeneratedChapterTitle}
+          status={Object.is(chapterPrefixStyle[0], '')}
+          label="xx xx"
+          onPress={() => dispatch(chapterPrefixStyleAction(novelId, ['', ' ']))}
+          theme={theme}
+        />
         <Checkbox
           viewStyle={styles.indent}
           disabled={!showChapterPrefix || showGeneratedChapterTitle}
