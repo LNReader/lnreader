@@ -75,7 +75,8 @@ const TextReader: React.FC<TextReaderProps> = ({
           <Text
             style={[styles.finishedChapterText, { color: reader.textColor }]}
           >
-            {`${getString('readerScreen.finished')}: ${chapterTitle?.trim()}`}
+            {`${getString('readerScreen.finished')}:\n`}
+            {chapterTitle}
           </Text>
           {nextChapter ? (
             <Button

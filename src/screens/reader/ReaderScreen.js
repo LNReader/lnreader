@@ -32,7 +32,10 @@ import { useTheme } from '@hooks/useTheme';
 import { updateChaptersRead } from '../../redux/tracker/tracker.actions';
 import { markChapterReadAction } from '../../redux/novel/novel.actions';
 import { saveScrollPosition } from '../../redux/preferences/preference.actions';
-import { parseChapterPrefix } from '../../utils/parseChapterTitle';
+import {
+  parseChapterPrefix,
+  useChapterTitle,
+} from '../../utils/parseChapterTitle';
 
 import ReaderAppbar from './components/ReaderAppbar';
 import ReaderFooter from './components/ReaderFooter';
@@ -100,7 +103,8 @@ const ChapterContent = ({ route, navigation }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const readerSettings = useReaderSettings();
-
+  const chapterTitle = useChapterTitle(chapterPrefix, chapterName, novelId);
+  console.log(chapterTitle);
   const {
     swipeGestures = false,
     incognitoMode = false,
@@ -398,7 +402,7 @@ const ChapterContent = ({ route, navigation }) => {
       <>
         <ReaderAppbar
           novelName={novelName}
-          chapterName={chapterName || chapter.chapterName}
+          chapterTitle={chapterTitle}
           chapterId={chapterId}
           bookmark={bookmark}
           textToSpeech={ttsStatus}
@@ -472,7 +476,7 @@ const ChapterContent = ({ route, navigation }) => {
                       scrollPercentage={scrollPercentage}
                       reader={readerSettings}
                       html={chapterText}
-                      chapterTitle={chapter.chapterName || chapterName}
+                      chapterTitle={chapterTitle}
                       nextChapter={nextChapter}
                       navigateToNextChapter={() => navigateToNextChapter()}
                       navigateToPrevChapter={() => navigateToPrevChapter()}
@@ -494,7 +498,7 @@ const ChapterContent = ({ route, navigation }) => {
                       onPress={hideHeader}
                       text={chapterText}
                       reader={readerSettings}
-                      chapterName={chapter.chapterName || chapterName}
+                      chapterTitle={chapterTitle}
                       theme={theme}
                       nextChapter={nextChapter}
                       navigateToNextChapter={navigateToNextChapter}
