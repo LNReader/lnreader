@@ -17,6 +17,7 @@ import { Checkbox, SortItem } from '../../../components/Checkbox/Checkbox';
 
 import {
   chapterPrefixStyleAction as chapterPrefixStyleAction,
+  chapterTitleSeperatorAction,
   showChapterPrefixAction,
   showGeneratedChapterTitleAction,
 } from '../../../redux/novel/novel.actions';
@@ -35,10 +36,11 @@ const ChaptersSettingsSheet = ({
   showGeneratedChapterTitle,
   showChapterPrefix,
   chapterPrefixStyle,
+  chapterTitleSeperator,
 }) => {
   const { bottom } = useSafeAreaInsets();
 
-  const bottomSheetHeight = 220 + bottom;
+  const bottomSheetHeight = 320 + bottom;
 
   const sortChapters = val =>
     dispatch(sortAndFilterChapters(novelId, val, filter));
@@ -135,8 +137,9 @@ const ChaptersSettingsSheet = ({
         }
         theme={theme}
       />
-      <View style={styles.indent}>
+      <View>
         <RadioButton
+          style={styles.indent}
           disabled={!showChapterPrefix || showGeneratedChapterTitle}
           status={Object.is(chapterPrefixStyle[0], 'Volume ')}
           label="Volume xx Chapter xx"
@@ -148,11 +151,24 @@ const ChaptersSettingsSheet = ({
           theme={theme}
         />
         <RadioButton
+          style={styles.indent}
           disabled={!showChapterPrefix || showGeneratedChapterTitle}
           status={Object.is(chapterPrefixStyle[0], 'Vol. ')}
           label="Vol. xx Ch. xx"
           onPress={() =>
             dispatch(chapterPrefixStyleAction(novelId, ['Vol. ', 'Ch. ']))
+          }
+          theme={theme}
+        />
+        <Checkbox
+          viewStyle={styles.indent}
+          disabled={!showChapterPrefix || showGeneratedChapterTitle}
+          status={chapterTitleSeperator}
+          label="Use Seperator"
+          onPress={() =>
+            dispatch(
+              chapterTitleSeperatorAction(novelId, !chapterTitleSeperator),
+            )
           }
           theme={theme}
         />
@@ -242,6 +258,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   indent: {
-    paddingLeft: 40,
+    paddingLeft: 56,
   },
 });

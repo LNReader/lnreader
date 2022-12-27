@@ -81,7 +81,7 @@ const novelReducer = (state = initialState, action) => {
           ...state.novelSettings,
           [payload.novelId]: {
             ...state.novelSettings[payload.novelId],
-            chapterTitleSeperator: payload.titleSeperator,
+            chapterTitleSeperator: payload.chapterTitleSeperator,
           },
         },
       };

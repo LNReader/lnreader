@@ -26,7 +26,7 @@ export const parseChapterTitle = (
   chapterPrefix: string | undefined,
   chapterName: string | undefined,
   newPrefix: Array<string | null>,
-  seperator?: string,
+  seperator?: boolean,
 ) => {
   let chapterTitle;
   if (chapterPrefix) {
@@ -45,7 +45,7 @@ export const parseChapterTitle = (
   }
   if (chapterName) {
     if (seperator) {
-      return chapterTitle + seperator + chapterName;
+      return chapterTitle + ' - ' + chapterName;
     }
     return chapterTitle + ' ' + chapterName;
   }
