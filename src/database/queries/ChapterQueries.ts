@@ -12,7 +12,7 @@ const db = SQLite.openDatabase('lnreader.db');
 
 const upgradeDatabaseQuery = `
   SELECT chapterId, chapterName FROM chapters;
-	ALTER TABLE chapters ADD COLUMN chapterPrefix TEXT NOT NULL DEFAULT '';
+	ALTER TABLE chapters ADD COLUMN chapterPrefix TEXT DEFAULT '';
 	`;
 
 const insertUpgradedValuesDatabaseQuery = `

@@ -37,17 +37,20 @@ export const parseChapterTitle = (
     }
     if (newPrefix?.[1] || newPrefix?.[1] === '') {
       chapterTitle = chapterTitle.replace(/[c]\w*\s*/i, newPrefix[1]);
+      if (chapterTitle.charAt(0) !== 'C' && newPrefix?.[1] !== '') {
+        chapterTitle = newPrefix[1] + chapterTitle;
+      }
     } else {
       chapterTitle = chapterTitle.replace(/[v]\w*\s*\d+/i, '');
     }
   } else {
-    return -1;
+    return chapterName;
   }
   if (chapterName) {
     if (seperator) {
-      return chapterTitle + ' - ' + chapterName;
+      return (chapterTitle + ' - ' + chapterName).trim();
     }
-    return chapterTitle + ' ' + chapterName;
+    return (chapterTitle + ' ' + chapterName).trim();
   }
   return chapterTitle.trim();
 };

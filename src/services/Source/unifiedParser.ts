@@ -39,7 +39,7 @@ export const unifiedParserMap = (
 
 const parseName = (chapterName: string): Array<string> => {
   const prefixRegex =
-    /(?:[c]\w*\s*\d+[.]*\d*\s*|[v]\w*\s*\d+[.]*\d*\W*[c]\w*\s*\d+[.]*\d*\s*|[v]\w*\s*\d+[.]*\d*\s*)/i;
+    /(?:[c]\w*\s*\d+[.]*\d*\s*|[v]\w*\s*\d+[.]*\d*\W*[c]\w*\s*\d+[.]*\d*\s*|[v]\w*\s*\d+[.]*\d*\s*|\d+\s*(?=[-–‐‑‒—⁃﹣:])|(?<!.+)\s*\d+\s*(?!.+))/i;
 
   let chapterPrefix = prefixRegex.exec(String(chapterName));
   if (chapterPrefix === null) {
@@ -62,6 +62,7 @@ const parseName = (chapterName: string): Array<string> => {
 /*
 ? prefixRegex is a regex witch returns the Prefix of the chapter with the    following examples:
 
+22
 The Charm of Soul Pets Chapter 3 - Coerced into Death
 Chapter 46 - Even One Worthy Friend Can Be Enough
 Chapter 46 Even One Worthy Friend Can Be Enough
@@ -84,4 +85,5 @@ Volume 2 23 Even One Worthy Friend Can Be Enough
 Chapter 23
 C23
 Chapter 209 – Meeting Yan Shuo again
+209 – Meeting Yan Shuo again
 */
