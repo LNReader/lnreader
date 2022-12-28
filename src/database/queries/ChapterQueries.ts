@@ -38,13 +38,13 @@ export const upgradeDatabase = () => {
             },
           );
         });
+        showToast('Upgrade successfull.\n Restart required.');
       },
       (txObj, error) => {
         showToast(error.message);
         return false;
       },
     );
-    showToast('Upgrade successfull.\n Restart required.');
   });
 };
 
