@@ -1,11 +1,4 @@
-import {
-  ActivityIndicator,
-  FlatList,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 import React, { useCallback, useMemo } from 'react';
 import color from 'color';
 
@@ -21,6 +14,7 @@ import GlobalSearchNovelItem from './GlobalSearchNovelItem';
 import { useLibraryNovels } from '@screens/library/hooks/useLibrary';
 import { insertNovelInLibrary } from '../../../database/queries/NovelQueriesV2';
 import { LibraryNovelInfo } from '../../../database/types';
+import GlobalSearchLoading from '@screens/browse/loadingAnimation/GlobalSearchLoading';
 
 interface GlobalSearchResultsListProps {
   searchResults: GlobalSearchResult[];
@@ -88,7 +82,7 @@ const GlobalSearchResultsList: React.FC<GlobalSearchResultsListProps> = ({
               />
             </Pressable>
             {item.isLoading ? (
-              <ActivityIndicator color={theme.primary} style={styles.loading} />
+              <GlobalSearchLoading theme={theme} />
             ) : item.error ? (
               <Text style={[styles.error, { color: errorColor }]}>
                 {item.error}
@@ -167,12 +161,6 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     paddingTop: 8,
     paddingBottom: 60,
-  },
-  loading: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: 16,
   },
   sourceHeader: {
     flexDirection: 'row',
