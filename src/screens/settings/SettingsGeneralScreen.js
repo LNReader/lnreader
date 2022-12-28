@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -21,6 +21,7 @@ import {
 import { useLibrarySettings } from '@hooks/useSettings';
 import useBoolean from '@hooks/useBoolean';
 import { Appbar } from '@components';
+import DefaultChapterTitleSeperatorModal from './components/DefaultChapterTitleSeperatorModal';
 
 const GenralSettings = ({ navigation }) => {
   const theme = useTheme();
@@ -39,9 +40,8 @@ const GenralSettings = ({ navigation }) => {
     defaultShowChapterPrefix = true,
     defaultChapterSort = 'ORDER BY chapterId ASC',
     defaultChapterPrefixStyle = ['Volume ', 'Chapter '],
-    defaultChapterTitleSeperator = true,
+    defaultChapterTitleSeperator = ' - ',
   } = useSettings();
-
   const { showLastUpdateTime = true } = useSelector(
     state => state.updatesReducer,
   );
@@ -128,7 +128,7 @@ const GenralSettings = ({ navigation }) => {
             description={`Seperator: ${
               defaultChapterTitleSeperator === false ? 'None' : 'Show'
             }`}
-            onPress={defaultChapterTitleModal.setTrue}
+            onPress={defaultChapterTitleSeperatorModal.setTrue}
             theme={theme}
           />
           <List.Divider theme={theme} />
@@ -212,6 +212,13 @@ const GenralSettings = ({ navigation }) => {
         defaultChapterPrefixStyle={defaultChapterPrefixStyle}
         displayModalVisible={defaultChapterTitleModal.value}
         hideDisplayModal={defaultChapterTitleModal.setFalse}
+        dispatch={dispatch}
+        theme={theme}
+      />
+      <DefaultChapterTitleSeperatorModal
+        defaultChapterTitleSeperator={defaultChapterTitleSeperator}
+        displayModalVisible={defaultChapterTitleSeperatorModal.value}
+        hideDisplayModal={defaultChapterTitleSeperatorModal.setFalse}
         dispatch={dispatch}
         theme={theme}
       />
