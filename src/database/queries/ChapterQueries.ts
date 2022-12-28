@@ -26,6 +26,8 @@ export const upgradeDatabase = () => {
       upgradeDatabaseQuery,
       [],
       (_txObj, _res) => {
+        console.log(JSON.stringify(_res,null,2))
+        showToast('Please Wait ...');
         chapters = _res.rows._array.map(unifiedParserMap);
         chapters.forEach(item => {
           tx.executeSql(
