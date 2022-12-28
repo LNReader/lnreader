@@ -3,7 +3,7 @@ const createChapterTableQuery = `
     chapterId INTEGER PRIMARY KEY AUTOINCREMENT,
     chapterUrl TEXT,
     novelId INTEGER NOT NULL,
-    chapterPrefix TEXT NOT NULL,
+    chapterPrefix TEXT NOT NULL DEFAULT '',
     chapterName TEXT NOT NULL,
     releaseDate TEXT,
     bookmark BOOLEAN NOT NULL DEFAULT 0, 

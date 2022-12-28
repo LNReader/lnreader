@@ -6,8 +6,47 @@ import * as cheerio from 'cheerio';
 import RNFetchBlob from 'rn-fetch-blob';
 import { txnErrorCallback } from '@database/utils/helpers';
 import { fetchChapter } from '../../services/Source/source';
+import { unifiedParserMap } from '../../services/Source/unifiedParser';
 
 const db = SQLite.openDatabase('lnreader.db');
+
+const upgradeDatabaseQuery = `
+	ALTER TABLE chapters ADD COLUMN chapterPrefix TEXT NOT NULL DEFAULT '';
+  SELECT chapterId, chapterName FROM chapters;
+	`;
+
+const insertUpgradedValuesDatabaseQuery = `
+      UPDATE chapters SET chapterPrefix = ?, chapterName = ? WHERE chapterId = ?;
+    `;
+
+export const upgradeDatabase = () => {
+  let chapters: ChapterItem[];
+  db.transaction(tx => {
+    tx.executeSql(
+      upgradeDatabaseQuery,
+      [],
+      (_txObj, _res) => {
+        chapters = _res.rows._array.map(unifiedParserMap);
+        chapters.forEach(item => {
+          tx.executeSql(
+            insertUpgradedValuesDatabaseQuery,
+            [item.chapterPrefix, item.chapterName, item.chapterId],
+            (_txObj, _res) => {},
+            (txObj, error) => {
+              showToast(error.message);
+              return false;
+            },
+          );
+        });
+      },
+      (txObj, error) => {
+        showToast(error.message);
+        return false;
+      },
+    );
+    showToast('Upgrade successfull.\n Restart required.');
+  });
+};
 
 const insertChaptersQuery =
   'INSERT INTO chapters (chapterUrl, chapterPrefix, chapterName, releaseDate, novelId) values (?, ?, ?, ?, ?)';

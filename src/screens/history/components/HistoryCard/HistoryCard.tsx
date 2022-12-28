@@ -9,21 +9,14 @@ import { IconButtonV2 } from '../../../../components';
 
 import { parseChapterPrefix } from '../../../../utils/parseChapterTitle';
 
-import { History } from '../../../../database/types';
+import { ChapterItem, History, NovelInfo } from '../../../../database/types';
 import { MD3ThemeType } from '../../../../theme/types';
 import { coverPlaceholderColor } from '../../../../theme/colors';
-import {
-  openChapterChapterTypes,
-  openChapterNovelTypes,
-  openNovelProps,
-} from '@utils/handleNavigateParams';
+import { openNovelProps } from '@utils/handleNavigateParams';
 
 interface HistoryCardProps {
   history: History;
-  handleNavigateToChapter: (
-    novel: openChapterNovelTypes,
-    chapter: openChapterChapterTypes,
-  ) => void;
+  handleNavigateToChapter: (novel: NovelInfo, chapter: ChapterItem) => void;
   handleRemoveFromHistory: (historyId: number) => void;
   handleNavigateToNovel: (novel: openNovelProps) => void;
   theme: MD3ThemeType;
