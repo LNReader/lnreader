@@ -6,7 +6,6 @@ import { FAB, Portal } from 'react-native-paper';
 import Bottomsheet from 'rn-sliding-up-panel';
 import {
   Container,
-  LoadingScreenV2,
   LoadingMoreIndicator,
   ErrorScreenV2,
   SearchbarV2,
@@ -25,6 +24,7 @@ import { StyleSheet } from 'react-native';
 import { useLibraryNovels } from '../../screens/library/hooks/useLibrary';
 import { insertNovelInLibrary } from '../../database/queries/NovelQueriesV2';
 import { LibraryNovelInfo } from '../../database/types';
+import SourceScreenLoading from '@screens/browse/loadingAnimation/SourceScreenLoading';
 
 interface BrowseSourceScreenProps {
   route: {
@@ -120,7 +120,7 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
         theme={theme}
       />
       {isLoading || isSearching ? (
-        <LoadingScreenV2 theme={theme} />
+        <SourceScreenLoading theme={theme} />
       ) : errorMessage || novelList.length === 0 ? (
         <ErrorScreenV2
           error={errorMessage || getString('sourceScreen.noResultsFound')}
