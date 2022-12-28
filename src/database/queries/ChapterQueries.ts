@@ -11,8 +11,8 @@ import { unifiedParserMap } from '../../services/Source/unifiedParser';
 const db = SQLite.openDatabase('lnreader.db');
 
 const upgradeDatabaseQuery = `
-	ALTER TABLE chapters ADD COLUMN chapterPrefix TEXT NOT NULL DEFAULT '';
   SELECT chapterId, chapterName FROM chapters;
+	ALTER TABLE chapters ADD COLUMN chapterPrefix TEXT NOT NULL DEFAULT '';
 	`;
 
 const insertUpgradedValuesDatabaseQuery = `
