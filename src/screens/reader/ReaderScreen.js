@@ -57,6 +57,8 @@ import { sanitizeChapterText } from './utils/sanitizeChapterText';
 import { LoadingScreenV2 } from '@components/index';
 import ChapterDrawer from './components/ChapterDrawer';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import SkeletonLines from './components/SkeletonLines';
+import color from 'color';
 
 const Chapter = ({ route }) => {
   const { useChapterDrawerSwipeNavigation = true } = useSettings();
@@ -431,6 +433,7 @@ const ChapterContent = ({ route, navigation }) => {
             onScroll={onScroll}
             onContentSizeChange={(x, y) => setContentSize(y)}
             showsVerticalScrollIndicator={false}
+            scrollEnabled={!loading}
           >
             {error ? (
               <View style={{ flex: 1, justifyContent: 'center' }}>
@@ -454,7 +457,27 @@ const ChapterContent = ({ route, navigation }) => {
                 </EmptyView>
               </View>
             ) : loading ? (
-              <LoadingScreenV2 theme={theme} />
+              <SkeletonLines
+                containerMargin={readerSettings.padding + '%'}
+                containerHeight={'100%'}
+                containerWidth={'100%'}
+                color={
+                  color(backgroundColor).isDark()
+                    ? color(backgroundColor).luminosity() !== 0
+                      ? color(backgroundColor).lighten(0.1).toString()
+                      : color(backgroundColor).negate().darken(0.98).toString()
+                    : color(backgroundColor).darken(0.04).toString()
+                }
+                highlightColor={
+                  color(backgroundColor).isDark()
+                    ? color(backgroundColor).luminosity() !== 0
+                      ? color(backgroundColor).lighten(0.4).toString()
+                      : color(backgroundColor).negate().darken(0.92).toString()
+                    : color(backgroundColor).darken(0.08).toString()
+                }
+                textSize={readerSettings.textSize}
+                lineHeight={readerSettings.lineHeight}
+              />
             ) : (
               <TouchableWithoutFeedback
                 style={{ flex: 1 }}

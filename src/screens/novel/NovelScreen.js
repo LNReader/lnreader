@@ -66,6 +66,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import useBoolean from '@hooks/useBoolean';
 import { useCategorySettings } from '@hooks/useSettings';
 import { openChapter } from '../../utils/handleNavigateParams';
+import NovelScreenLoading from './components/LoadingAnimation/NovelScreenLoading';
 
 const Novel = ({ route, navigation }) => {
   const item = route.params;
@@ -350,6 +351,7 @@ const Novel = ({ route, navigation }) => {
   return (
     <Provider>
       <View style={[styles.container, { backgroundColor: theme.background }]}>
+        {loading && <NovelScreenLoading theme={theme} />}
         <FadeView
           style={{
             position: 'absolute',
@@ -616,37 +618,39 @@ const Novel = ({ route, navigation }) => {
             </Row>
           </View>
         )}
-        <FlashList
-          ref={ref => (flatlistRef.current = ref)}
-          estimatedItemSize={61.1}
-          data={!loading && chapters}
-          extraData={[downloadQueue, selected]}
-          keyExtractor={keyExtractor}
-          removeClippedSubviews={true}
-          maxToRenderPerBatch={5}
-          windowSize={15}
-          initialNumToRender={7}
-          renderItem={renderItem}
-          contentContainerStyle={{ paddingBottom: 100 }}
-          ListHeaderComponent={
-            <NovelInfoHeader
-              item={item}
-              novel={novel}
-              theme={theme}
-              filter={filter}
-              loading={loading}
-              lastRead={lastReadChapter}
-              setCustomNovelCover={setCustomNovelCover}
-              dispatch={dispatch}
-              chapters={chapters}
-              navigation={navigation}
-              trackerSheetRef={trackerSheetRef}
-              novelBottomSheetRef={novelBottomSheetRef}
-              deleteDownloadsSnackbar={deleteDownloadsSnackbar}
-            />
-          }
-          refreshControl={refreshControl()}
-        />
+        <View style={{ minHeight: 3, flex: 1 }}>
+          <FlashList
+            ref={ref => (flatlistRef.current = ref)}
+            estimatedItemSize={61.1}
+            data={!loading && chapters}
+            extraData={[downloadQueue, selected]}
+            keyExtractor={keyExtractor}
+            removeClippedSubviews={true}
+            maxToRenderPerBatch={5}
+            windowSize={15}
+            initialNumToRender={7}
+            renderItem={renderItem}
+            contentContainerStyle={{ paddingBottom: 100 }}
+            ListHeaderComponent={
+              <NovelInfoHeader
+                item={item}
+                novel={novel}
+                theme={theme}
+                filter={filter}
+                loading={loading}
+                lastRead={lastReadChapter}
+                setCustomNovelCover={setCustomNovelCover}
+                dispatch={dispatch}
+                chapters={chapters}
+                navigation={navigation}
+                trackerSheetRef={trackerSheetRef}
+                novelBottomSheetRef={novelBottomSheetRef}
+                deleteDownloadsSnackbar={deleteDownloadsSnackbar}
+              />
+            }
+            refreshControl={refreshControl()}
+          />
+        </View>
         {useFabForContinueReading &&
           !loading &&
           chapters.length > 0 &&

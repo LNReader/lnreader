@@ -10,6 +10,7 @@ import { showToast } from '../../../hooks/showToast';
 import { scrapeSearchResults, scrapeTopNovels } from './MyAnimeListScraper';
 import MalNovelCard from './MalNovelCard/MalNovelCard';
 import { useTheme } from '@hooks/useTheme';
+import MalLoading from '../loadingAnimation/MalLoading';
 
 const BrowseMalScreen = ({ navigation, route }) => {
   const theme = useTheme();
@@ -143,7 +144,7 @@ const BrowseMalScreen = ({ navigation, route }) => {
         ]}
       />
       {loading ? (
-        <LoadingScreenV2 theme={theme} />
+        <MalLoading theme={theme} />
       ) : (
         <FlatList
           contentContainerStyle={styles.novelsContainer}
