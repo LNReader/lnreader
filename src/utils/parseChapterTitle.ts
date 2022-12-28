@@ -31,12 +31,18 @@ export const parseChapterTitle = (
   let chapterTitle;
   if (chapterPrefix) {
     if (newPrefix?.[0] || newPrefix?.[0] === '') {
-      chapterTitle = chapterPrefix.replace(/[v]\w*\s*/i, newPrefix[0]);
+      chapterTitle = chapterPrefix.replace(
+        /[v][a-zA-Z]*\s*(?=\d+)/i,
+        newPrefix[0],
+      );
     } else {
       chapterTitle = chapterPrefix.replace(/[v]\w*\s*\d+/i, '');
     }
     if (newPrefix?.[1] || newPrefix?.[1] === '') {
-      chapterTitle = chapterTitle.replace(/[c]\w*\s*/i, newPrefix[1]);
+      chapterTitle = chapterTitle.replace(
+        /[c][a-zA-Z]*\s*(?=\d+)/i,
+        newPrefix[1],
+      );
       if (chapterTitle.charAt(0) !== 'C' && newPrefix?.[1] !== '') {
         chapterTitle = newPrefix[1] + chapterTitle;
       }
