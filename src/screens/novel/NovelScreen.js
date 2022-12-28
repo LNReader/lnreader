@@ -94,15 +94,18 @@ const Novel = ({ route, navigation }) => {
     useFabForContinueReading = false,
     defaultChapterSort = 'ORDER BY chapterId ASC',
     disableHapticFeedback = false,
+    defaultShowChapterPrefix = true,
+    defaultChapterPrefixStyle = ['Volume ', 'Chapter '],
+    defaultChapterTitleSeperator = true,
   } = useSettings();
 
   const {
     sort = defaultChapterSort,
     filter = '',
     showGeneratedChapterTitle = false,
-    showChapterPrefix = true,
-    chapterPrefixStyle = ['Volume ', 'Chapter '],
-    chapterTitleSeperator = true,
+    showChapterPrefix = defaultShowChapterPrefix,
+    chapterPrefixStyle = defaultChapterPrefixStyle,
+    chapterTitleSeperator = defaultChapterTitleSeperator,
   } = usePreferences(novel.novelId);
 
   let { lastReadChapter, position } = useContinueReading(

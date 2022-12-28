@@ -55,6 +55,9 @@ export const initialState = {
 
   hideBackdrop: false,
   defaultChapterSort: 'ORDER BY chapterId ASC',
+  defaultShowChapterPrefix: true,
+  defaultChapterPrefixStyle: ['Volume ', 'Chapter '],
+  defaultChapterTitleSeperator: true,
 
   /**
    * Reader settings

@@ -13,6 +13,7 @@ import { useTheme } from '@hooks/useTheme';
 import { setAppSettings } from '../../redux/settings/settings.actions';
 import { SHOW_LAST_UPDATE_TIME } from '../../redux/updates/updates.types';
 import DefaultChapterSortModal from './components/DefaultChapterSortModal';
+import DefaultChapterTitleModal from './components/DefaultChapterTitleModal';
 import {
   DisplayModes,
   displayModesList,
@@ -32,10 +33,13 @@ const GenralSettings = ({ navigation }) => {
     updateLibraryOnLaunch = false,
     downloadNewChapters = false,
     onlyUpdateOngoingNovels = false,
-    defaultChapterSort = 'ORDER BY chapterId ASC',
     refreshNovelMetadata = false,
     disableHapticFeedback = false,
     useLibraryFAB = false,
+    defaultShowChapterPrefix = true,
+    defaultChapterSort = 'ORDER BY chapterId ASC',
+    defaultChapterPrefixStyle = ['Volume ', 'Chapter '],
+    defaultChapterTitleSeperator = true,
   } = useSettings();
 
   const { showLastUpdateTime = true } = useSelector(
@@ -53,6 +57,8 @@ const GenralSettings = ({ navigation }) => {
   const gridSizeModalRef = useBoolean();
 
   const defaultChapterSortModal = useBoolean();
+  const defaultChapterTitleModal = useBoolean();
+  const defaultChapterTitleSeperatorModal = useBoolean();
 
   return (
     <>
@@ -102,6 +108,27 @@ const GenralSettings = ({ navigation }) => {
                 : '(Descending)'
             }`}
             onPress={defaultChapterSortModal.setTrue}
+            theme={theme}
+          />
+          <List.Item
+            title="Default chapter title prefix style"
+            description={`Style: ${
+              defaultShowChapterPrefix === false
+                ? 'None'
+                : defaultChapterPrefixStyle[0] +
+                  'xx ' +
+                  defaultChapterPrefixStyle[1] +
+                  'xx'
+            }`}
+            onPress={defaultChapterTitleModal.setTrue}
+            theme={theme}
+          />
+          <List.Item
+            title="Default chapter title seperator"
+            description={`Seperator: ${
+              defaultChapterTitleSeperator === false ? 'None' : 'Show'
+            }`}
+            onPress={defaultChapterTitleModal.setTrue}
             theme={theme}
           />
           <List.Divider theme={theme} />
@@ -177,6 +204,14 @@ const GenralSettings = ({ navigation }) => {
         defaultChapterSort={defaultChapterSort}
         displayModalVisible={defaultChapterSortModal.value}
         hideDisplayModal={defaultChapterSortModal.setFalse}
+        dispatch={dispatch}
+        theme={theme}
+      />
+      <DefaultChapterTitleModal
+        defaultShowChapterPrefix={defaultShowChapterPrefix}
+        defaultChapterPrefixStyle={defaultChapterPrefixStyle}
+        displayModalVisible={defaultChapterTitleModal.value}
+        hideDisplayModal={defaultChapterTitleModal.setFalse}
         dispatch={dispatch}
         theme={theme}
       />
