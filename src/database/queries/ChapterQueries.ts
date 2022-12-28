@@ -6,8 +6,61 @@ import * as cheerio from 'cheerio';
 import RNFetchBlob from 'rn-fetch-blob';
 import { txnErrorCallback } from '@database/utils/helpers';
 import { fetchChapter } from '../../services/Source/source';
+import { unifiedParserMap } from '../../services/Source/unifiedParser';
 
 const db = SQLite.openDatabase('lnreader.db');
+
+const upgradeDatabaseQuery = `
+	ALTER TABLE chapters ADD COLUMN chapterPrefix TEXT DEFAULT '';
+	`;
+
+const selectUpgradeValuesDatabaseQuery = `
+  SELECT chapterId, chapterName FROM chapters;
+	`;
+
+const insertUpgradedValuesDatabaseQuery = `
+      UPDATE chapters SET chapterPrefix = ?, chapterName = ? WHERE chapterId = ?;
+    `;
+
+export const upgradeDatabase = () => {
+  let chapters: ChapterItem[];
+  db.transaction(tx => {
+    tx.executeSql(
+      upgradeDatabaseQuery,
+      [],
+      (_txObj, _res) => {},
+      (txObj, error) => {
+        showToast(error.message);
+        return false;
+      },
+    );
+    tx.executeSql(
+      selectUpgradeValuesDatabaseQuery,
+      [],
+      (_txObj, _res) => {
+        console.log(JSON.stringify(_res,null,2))
+        showToast('Please Wait ...');
+        chapters = _res.rows._array.map(unifiedParserMap);
+        chapters.forEach(item => {
+          tx.executeSql(
+            insertUpgradedValuesDatabaseQuery,
+            [item.chapterPrefix, item.chapterName, item.chapterId],
+            (_txObj, _res) => {},
+            (txObj, error) => {
+              showToast(error.message);
+              return false;
+            },
+          );
+        });
+        showToast('Upgrade successfull.\n Restart required.');
+      },
+      (txObj, error) => {
+        showToast(error.message);
+        return false;
+      },
+    );
+  });
+};
 
 const insertChaptersQuery =
   'INSERT INTO chapters (chapterUrl, chapterPrefix, chapterName, releaseDate, novelId) values (?, ?, ?, ?, ?)';

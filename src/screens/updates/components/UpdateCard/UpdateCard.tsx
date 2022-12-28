@@ -8,7 +8,7 @@ import {
 import React, { useState } from 'react';
 import color from 'color';
 
-import { ChapterItem, Update } from '../../../../database/types';
+import { ChapterItem, NovelInfo, Update } from '../../../../database/types';
 import FastImage from 'react-native-fast-image';
 import { IconButtonV2 } from '../../../../components';
 import { useDownloadQueue } from '../../../../redux/hooks';
@@ -18,18 +18,12 @@ import {
   coverPlaceholderColor,
   getDialogBackground,
 } from '../../../../theme/colors';
-import {
-  openChapterChapterTypes,
-  openChapterNovelTypes,
-  openNovelProps,
-} from '@utils/handleNavigateParams';
+import { openNovelProps } from '@utils/handleNavigateParams';
+import { useChapterTitle } from '@utils/parseChapterTitle';
 
 interface UpdateCardProps {
   item: Update;
-  navigateToChapter: (
-    novel: openChapterNovelTypes,
-    chapter: openChapterChapterTypes,
-  ) => void;
+  navigateToChapter: (novel: NovelInfo, chapter: ChapterItem) => void;
   navigateToNovel: (novel: openNovelProps) => void;
   handleDownloadChapter: (
     sourceId: number,
@@ -68,6 +62,11 @@ const UpdateCard: React.FC<UpdateCardProps> = ({
     (chapter: ChapterItem) => chapter.chapterId === item.chapterId,
   );
 
+  const chapterTitle = useChapterTitle(
+    item.chapterPrefix,
+    item.chapterName,
+    item.novelId,
+  );
   const [menu, setMenu] = useState(false);
 
   return (
@@ -90,7 +89,7 @@ const UpdateCard: React.FC<UpdateCardProps> = ({
             style={[styles.chapterName, { color: chapterNameColor }]}
             numberOfLines={1}
           >
-            {item.chapterName}
+            {chapterTitle}
           </Text>
         </View>
       </View>

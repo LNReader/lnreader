@@ -16,6 +16,7 @@ import ConfirmationDialog from '@components/ConfirmationDialog/ConfirmationDialo
 import { deleteReadChaptersFromDb } from '../../database/queries/DownloadQueries';
 import { getDialogBackground } from '@theme/colors';
 import { Appbar } from '@components';
+import { upgradeDatabase } from '@database/queries/ChapterQueries';
 
 const AdvancedSettings = ({ navigation }) => {
   const theme = useTheme();
@@ -67,6 +68,12 @@ const AdvancedSettings = ({ navigation }) => {
         <List.Item
           title={getString('advancedSettings.deleteReadChapters')}
           onPress={showDeleteReadChaptersDialog}
+          theme={theme}
+        />
+        <List.Item
+          title="Upgrade database"
+          description="Upgrade database for post 1.1.13"
+          onPress={upgradeDatabase}
           theme={theme}
         />
       </List.Section>

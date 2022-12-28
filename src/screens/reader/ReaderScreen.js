@@ -105,6 +105,7 @@ const ChapterContent = ({ route, navigation }) => {
   const dispatch = useDispatch();
   const readerSettings = useReaderSettings();
   const chapterTitle = useChapterTitle(chapterPrefix, chapterName, novelId);
+  const parsedChapterPrefix = useChapterTitle(chapterPrefix, '', novelId);
   const {
     swipeGestures = false,
     useWebViewForChapter = false,
@@ -504,7 +505,7 @@ const ChapterContent = ({ route, navigation }) => {
                       paddingBottom: 0 * 0,
                     }}
                   >
-                    {chapterPrefix}
+                    {parsedChapterPrefix}
                   </Text>
                   <Text
                     style={{
