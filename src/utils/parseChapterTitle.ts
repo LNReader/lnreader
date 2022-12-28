@@ -1,4 +1,4 @@
-import { usePreferences } from '@hooks/reduxHooks';
+import { usePreferences, useSettings } from '@hooks/reduxHooks';
 
 export const parseChapterPrefix = (
   chapterPrefix: string,
@@ -61,9 +61,14 @@ export const useChapterTitle = (
   novelId: number,
 ) => {
   const {
-    showChapterPrefix = true,
-    chapterPrefixStyle = ['Volume ', 'Chapter '],
-    chapterTitleSeperator = true,
+    defaultShowChapterPrefix = true,
+    defaultChapterPrefixStyle = ['Volume ', 'Chapter '],
+    defaultChapterTitleSeperator = true,
+  } = useSettings();
+  const {
+    showChapterPrefix = defaultShowChapterPrefix,
+    chapterPrefixStyle = defaultChapterPrefixStyle,
+    chapterTitleSeperator = defaultChapterTitleSeperator,
   } = usePreferences(novelId);
   if (!showChapterPrefix) {
     return chapterName;
