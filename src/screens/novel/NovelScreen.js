@@ -97,7 +97,7 @@ const Novel = ({ route, navigation }) => {
     disableHapticFeedback = false,
     defaultShowChapterPrefix = true,
     defaultChapterPrefixStyle = ['Volume ', 'Chapter '],
-    defaultChapterTitleSeperator = true,
+    defaultChapterTitleSeperator = ' - ',
   } = useSettings();
 
   const {

@@ -26,7 +26,7 @@ export const parseChapterTitle = (
   chapterPrefix: string | undefined,
   chapterName: string | undefined,
   newPrefix: Array<string | null>,
-  seperator?: boolean,
+  seperator?: string,
 ) => {
   let chapterTitle;
   if (chapterPrefix) {
@@ -47,8 +47,8 @@ export const parseChapterTitle = (
     return chapterName;
   }
   if (chapterName) {
-    if (seperator) {
-      return (chapterTitle + ' - ' + chapterName).trim();
+    if (seperator || seperator === '') {
+      return (chapterTitle + seperator + chapterName).trim();
     }
     return (chapterTitle + ' ' + chapterName).trim();
   }
@@ -63,7 +63,7 @@ export const useChapterTitle = (
   const {
     defaultShowChapterPrefix = true,
     defaultChapterPrefixStyle = ['Volume ', 'Chapter '],
-    defaultChapterTitleSeperator = true,
+    defaultChapterTitleSeperator = ' - ',
   } = useSettings();
   const {
     showChapterPrefix = defaultShowChapterPrefix,

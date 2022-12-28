@@ -6,15 +6,12 @@ import React, { useState } from 'react';
 import { StyleSheet, View, TextInput, Text } from 'react-native';
 
 import { Portal, Modal, overlay } from 'react-native-paper';
-import { Dispatch } from 'redux';
-
-import { setAppSettings } from '../../../redux/settings/settings.actions';
 
 interface DefaultChapterTitleSeperatorModalProps {
   theme: MD3ThemeType;
   defaultChapterTitleSeperator: string;
   displayModalVisible: boolean;
-  dispatch: Dispatch<any>;
+  dispatchAction: (val: string) => void;
   hideDisplayModal: () => void;
 }
 
@@ -23,7 +20,7 @@ const DefaultChapterTitleSeperatorModal: React.FC<DefaultChapterTitleSeperatorMo
     theme,
     defaultChapterTitleSeperator,
     displayModalVisible,
-    dispatch,
+    dispatchAction,
     hideDisplayModal,
   }) => {
     const styles = createStyles(theme);
@@ -37,11 +34,9 @@ const DefaultChapterTitleSeperatorModal: React.FC<DefaultChapterTitleSeperatorMo
 
     const handleSave = () => {
       if (spaceAroundSeparator) {
-        dispatch(
-          setAppSettings('defaultChapterTitleSeperator', ' ' + text + ' '),
-        );
+        dispatchAction(' ' + text + ' ');
       } else {
-        dispatch(setAppSettings('defaultChapterTitleSeperator', text));
+        dispatchAction(text);
       }
       hideDisplayModal();
     };

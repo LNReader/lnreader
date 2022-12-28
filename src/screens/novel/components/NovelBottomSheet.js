@@ -23,7 +23,9 @@ import {
 } from '../../../redux/novel/novel.actions';
 import { overlay } from 'react-native-paper';
 import { dividerColor } from '../../../theme/colors';
-import { RadioButton } from '@components';
+import { List, RadioButton } from '@components';
+import DefaultChapterTitleSeperatorModal from '@screens/settings/components/DefaultChapterTitleSeperatorModal';
+import useBoolean from '@hooks/useBoolean';
 
 const ChaptersSettingsSheet = ({
   bottomSheetRef,
@@ -40,7 +42,7 @@ const ChaptersSettingsSheet = ({
 }) => {
   const { bottom } = useSafeAreaInsets();
 
-  const bottomSheetHeight = 320 + bottom;
+  const bottomSheetHeight = 350 + bottom;
 
   const sortChapters = val =>
     dispatch(sortAndFilterChapters(novelId, val, filter));
@@ -113,76 +115,89 @@ const ChaptersSettingsSheet = ({
     </View>
   );
 
-  const ThirdRoute = () => (
-    <View style={styles.view}>
-      <Checkbox
-        status={showGeneratedChapterTitle}
-        label="Use generated Chapter title"
-        onPress={() =>
-          dispatch(
-            showGeneratedChapterTitleAction(
-              novelId,
-              !showGeneratedChapterTitle,
-            ),
-          )
-        }
-        theme={theme}
-      />
-      <Checkbox
-        disabled={showGeneratedChapterTitle}
-        status={showChapterPrefix}
-        label="Show Prefix"
-        onPress={() =>
-          dispatch(showChapterPrefixAction(novelId, !showChapterPrefix))
-        }
-        theme={theme}
-      />
-      <View>
-        <RadioButton
-          style={styles.indent}
-          disabled={!showChapterPrefix || showGeneratedChapterTitle}
-          status={Object.is(chapterPrefixStyle[0], 'Volume ')}
-          label="Volume xx Chapter xx"
-          onPress={() => {
-            dispatch(
-              chapterPrefixStyleAction(novelId, ['Volume ', 'Chapter ']),
-            );
-          }}
-          theme={theme}
-        />
-        <RadioButton
-          style={styles.indent}
-          disabled={!showChapterPrefix || showGeneratedChapterTitle}
-          status={Object.is(chapterPrefixStyle[0], 'Vol. ')}
-          label="Vol. xx Ch. xx"
-          onPress={() =>
-            dispatch(chapterPrefixStyleAction(novelId, ['Vol. ', 'Ch. ']))
-          }
-          theme={theme}
-        />
-        <RadioButton
-          style={styles.indent}
-          disabled={!showChapterPrefix || showGeneratedChapterTitle}
-          status={Object.is(chapterPrefixStyle[0], '')}
-          label="xx xx"
-          onPress={() => dispatch(chapterPrefixStyleAction(novelId, ['', ' ']))}
-          theme={theme}
-        />
+  const ThirdRoute = () => {
+    const chapterTitleSeperatorModal = useBoolean();
+    const dispatchAction = val => {
+      dispatch(chapterTitleSeperatorAction(novelId, val));
+    };
+    return (
+      <View style={styles.view}>
         <Checkbox
-          viewStyle={styles.indent}
-          disabled={!showChapterPrefix || showGeneratedChapterTitle}
-          status={chapterTitleSeperator}
-          label="Use Seperator"
+          status={showGeneratedChapterTitle}
+          label="Use generated Chapter title"
           onPress={() =>
             dispatch(
-              chapterTitleSeperatorAction(novelId, !chapterTitleSeperator),
+              showGeneratedChapterTitleAction(
+                novelId,
+                !showGeneratedChapterTitle,
+              ),
             )
           }
           theme={theme}
         />
+        <Checkbox
+          disabled={showGeneratedChapterTitle}
+          status={showChapterPrefix}
+          label="Show Prefix"
+          onPress={() =>
+            dispatch(showChapterPrefixAction(novelId, !showChapterPrefix))
+          }
+          theme={theme}
+        />
+        <View>
+          <RadioButton
+            style={styles.indent}
+            disabled={!showChapterPrefix || showGeneratedChapterTitle}
+            status={Object.is(chapterPrefixStyle[0], 'Volume ')}
+            label="Volume xx Chapter xx"
+            onPress={() => {
+              dispatch(
+                chapterPrefixStyleAction(novelId, ['Volume ', 'Chapter ']),
+              );
+            }}
+            theme={theme}
+          />
+          <RadioButton
+            style={styles.indent}
+            disabled={!showChapterPrefix || showGeneratedChapterTitle}
+            status={Object.is(chapterPrefixStyle[0], 'Vol. ')}
+            label="Vol. xx Ch. xx"
+            onPress={() =>
+              dispatch(chapterPrefixStyleAction(novelId, ['Vol. ', 'Ch. ']))
+            }
+            theme={theme}
+          />
+          <RadioButton
+            style={styles.indent}
+            disabled={!showChapterPrefix || showGeneratedChapterTitle}
+            status={Object.is(chapterPrefixStyle[0], '')}
+            label="xx xx"
+            onPress={() =>
+              dispatch(chapterPrefixStyleAction(novelId, ['', ' ']))
+            }
+            theme={theme}
+          />
+          <View style={{ paddingLeft: 50 }}>
+            <List.Item
+              viewStyle={styles.indent}
+              disabled={!showChapterPrefix || showGeneratedChapterTitle}
+              description={`Seperator: ${chapterTitleSeperator}`}
+              title="Choose seperator"
+              onPress={chapterTitleSeperatorModal.setTrue}
+              theme={theme}
+            />
+          </View>
+        </View>
+        <DefaultChapterTitleSeperatorModal
+          defaultChapterTitleSeperator={chapterTitleSeperator}
+          displayModalVisible={chapterTitleSeperatorModal.value}
+          hideDisplayModal={chapterTitleSeperatorModal.setFalse}
+          dispatchAction={dispatchAction}
+          theme={theme}
+        />
       </View>
-    </View>
-  );
+    );
+  };
 
   const renderScene = SceneMap({
     first: FirstRoute,

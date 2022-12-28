@@ -60,6 +60,10 @@ const GenralSettings = ({ navigation }) => {
   const defaultChapterTitleModal = useBoolean();
   const defaultChapterTitleSeperatorModal = useBoolean();
 
+  const dispatchAction = val => {
+    dispatch(setAppSettings('defaultChapterTitleSeperator', val));
+  };
+
   return (
     <>
       <Appbar title="General" handleGoBack={navigation.goBack} theme={theme} />
@@ -125,9 +129,7 @@ const GenralSettings = ({ navigation }) => {
           />
           <List.Item
             title="Default chapter title seperator"
-            description={`Seperator: ${
-              defaultChapterTitleSeperator === false ? 'None' : 'Show'
-            }`}
+            description={`Seperator: ${defaultChapterTitleSeperator}`}
             onPress={defaultChapterTitleSeperatorModal.setTrue}
             theme={theme}
           />
@@ -219,7 +221,7 @@ const GenralSettings = ({ navigation }) => {
         defaultChapterTitleSeperator={defaultChapterTitleSeperator}
         displayModalVisible={defaultChapterTitleSeperatorModal.value}
         hideDisplayModal={defaultChapterTitleSeperatorModal.setFalse}
-        dispatch={dispatch}
+        dispatchAction={dispatchAction}
         theme={theme}
       />
       <GridSizeModal
