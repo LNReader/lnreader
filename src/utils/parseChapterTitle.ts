@@ -1,3 +1,4 @@
+import { ChapterItem } from '@database/types';
 import { usePreferences, useSettings } from '@hooks/reduxHooks';
 
 export const parseChapterPrefix = (
@@ -88,4 +89,54 @@ export const useChapterTitle = (
   );
 
   return chapterTitle;
+};
+
+export const useMultipleChapterTitles = (
+  chapters: Array<ChapterItem>,
+  novelId: number,
+): Array<string | undefined> => {
+  const {
+    defaultShowChapterPrefix = true,
+    defaultChapterPrefixStyle = ['Volume ', 'Chapter '],
+    defaultChapterTitleSeperator = ' - ',
+  } = useSettings();
+  const {
+    showChapterPrefix = defaultShowChapterPrefix,
+    chapterPrefixStyle = defaultChapterPrefixStyle,
+    chapterTitleSeperator = defaultChapterTitleSeperator,
+  } = usePreferences(novelId);
+  const chapterTitles = chapters.map(item => {
+    if (!showChapterPrefix) {
+      return item.chapterName;
+    }
+    return parseChapterTitle(
+      item.chapterPrefix,
+      item.chapterName,
+      chapterPrefixStyle,
+      chapterTitleSeperator,
+    );
+  });
+  return chapterTitles;
+};
+
+export const useMultipleChapterTitlesWithoutNovel = (
+  chapters: Array<ChapterItem>,
+): Array<string | undefined> => {
+  const {
+    defaultShowChapterPrefix = true,
+    defaultChapterPrefixStyle = ['Volume ', 'Chapter '],
+    defaultChapterTitleSeperator = ' - ',
+  } = useSettings();
+  const chapterTitles = chapters.map(item => {
+    if (!defaultShowChapterPrefix) {
+      return item.chapterName;
+    }
+    return parseChapterTitle(
+      item.chapterPrefix,
+      item.chapterName,
+      defaultChapterPrefixStyle,
+      defaultChapterTitleSeperator,
+    );
+  });
+  return chapterTitles;
 };

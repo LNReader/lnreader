@@ -8,12 +8,12 @@ import {
   ChapterBookmarkButton,
   DownloadButton,
 } from './Chapter/ChapterDownloadButtons';
-import { useChapterTitle } from '@utils/parseChapterTitle';
 
 const ChapterItem = ({
   chapter,
   theme,
   index,
+  chapterTitle,
   showGeneratedChapterTitle,
   downloadQueue,
   downloadChapter,
@@ -25,13 +25,11 @@ const ChapterItem = ({
   showProgressPercentage,
   novelId,
 }) => {
-  const { chapterId, chapterName, chapterPrefix, read, releaseDate, bookmark } =
-    chapter;
+  const { chapterId, read, releaseDate, bookmark } = chapter;
 
   const [deleteChapterMenu, setDeleteChapterMenu] = useState(false);
   const showDeleteChapterMenu = () => setDeleteChapterMenu(true);
   const hideDeleteChapterMenu = () => setDeleteChapterMenu(false);
-  const chapterTitle = useChapterTitle(chapterPrefix, chapterName, novelId);
 
   return (
     <Pressable
