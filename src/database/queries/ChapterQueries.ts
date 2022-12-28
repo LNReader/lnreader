@@ -11,8 +11,11 @@ import { unifiedParserMap } from '../../services/Source/unifiedParser';
 const db = SQLite.openDatabase('lnreader.db');
 
 const upgradeDatabaseQuery = `
-  SELECT chapterId, chapterName FROM chapters;
 	ALTER TABLE chapters ADD COLUMN chapterPrefix TEXT DEFAULT '';
+	`;
+
+const selectUpgradeValuesDatabaseQuery = `
+  SELECT chapterId, chapterName FROM chapters;
 	`;
 
 const insertUpgradedValuesDatabaseQuery = `
@@ -24,6 +27,15 @@ export const upgradeDatabase = () => {
   db.transaction(tx => {
     tx.executeSql(
       upgradeDatabaseQuery,
+      [],
+      (_txObj, _res) => {},
+      (txObj, error) => {
+        showToast(error.message);
+        return false;
+      },
+    );
+    tx.executeSql(
+      selectUpgradeValuesDatabaseQuery,
       [],
       (_txObj, _res) => {
         console.log(JSON.stringify(_res,null,2))
