@@ -67,6 +67,7 @@ import useBoolean from '@hooks/useBoolean';
 import { useCategorySettings } from '@hooks/useSettings';
 import { openChapter } from '../../utils/handleNavigateParams';
 import NovelScreenLoading from './components/LoadingAnimation/NovelScreenLoading';
+import { useMultipleChapterTitles } from '@utils/parseChapterTitle';
 
 const Novel = ({ route, navigation }) => {
   const item = route.params;
@@ -78,6 +79,7 @@ const Novel = ({ route, navigation }) => {
   const progressViewOffset = topInset + 32;
 
   const { novel, chapters, loading, updating } = useNovel();
+  const chapterTitles = useMultipleChapterTitles(chapters, novel.novelId);
 
   const { downloadQueue } = useSelector(state => state.downloadsReducer);
 
@@ -97,7 +99,7 @@ const Novel = ({ route, navigation }) => {
     disableHapticFeedback = false,
     defaultShowChapterPrefix = true,
     defaultChapterPrefixStyle = ['Volume ', 'Chapter '],
-    defaultChapterTitleSeperator = true,
+    defaultChapterTitleSeperator = ' - ',
   } = useSettings();
 
   const {
@@ -353,6 +355,7 @@ const Novel = ({ route, navigation }) => {
       theme={theme}
       chapter={it}
       index={index}
+      chapterTitle={chapterTitles[index]}
       novelId={novel.novelId}
       showGeneratedChapterTitle={showGeneratedChapterTitle}
       downloadQueue={downloadQueue}

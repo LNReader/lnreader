@@ -11,6 +11,7 @@ import { useDispatch } from 'react-redux';
 import { setNovel, getNovelAction } from '@redux/novel/novel.actions';
 import { dividerColor } from '@theme/colors';
 import DrawerChapterItem from './DrawerChapterItem';
+import { useMultipleChapterTitles } from '@utils/parseChapterTitle';
 
 const ChapterDrawer = ({ state: st, navigation }) => {
   const theme = useTheme();
@@ -29,6 +30,7 @@ const ChapterDrawer = ({ state: st, navigation }) => {
   const { defaultChapterSort = 'ORDER BY chapterId ASC' } = useSettings();
   const { sort = defaultChapterSort, filter = '' } = usePreferences(novelId);
   const { chapters, novel } = useNovel();
+  const chapterTitles = useMultipleChapterTitles(chapters, novel.novelId);
   useEffect(() => {
     if (chapters.length < 1 || novelId !== novel.novelId) {
       dispatch(setNovel({ sourceId, novelUrl, novelName, novelId }));
@@ -87,13 +89,13 @@ const ChapterDrawer = ({ state: st, navigation }) => {
       ...item,
     });
   };
-  const renderItem = ({ item }) => {
+  const renderItem = ({ item, index }) => {
     return (
       <DrawerChapterItem
         item={item}
+        chapterTitle={chapterTitles[index]}
         theme={theme}
         currentChapterId={currentChapterId}
-        novelId={novelId}
         changeChapter={changeChapter}
       />
     );
