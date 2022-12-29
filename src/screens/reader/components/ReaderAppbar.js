@@ -12,7 +12,6 @@ const ReaderAppbar = ({
   bookmark,
   novelName,
   chapterId,
-  chapterTitle,
   hide,
   dispatch,
   tts,
@@ -20,6 +19,7 @@ const ReaderAppbar = ({
   theme,
   textToSpeechPosition,
   pauseTts,
+  chapterTitle,
 }) => {
   const { goBack } = useNavigation();
   const [bookmarked, setBookmarked] = useState(bookmark);

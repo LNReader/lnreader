@@ -18,6 +18,7 @@ export function openChapter(
     novelId: chapter.novelId,
     chapterPrefix: chapter.chapterPrefix,
     chapterName: chapter.chapterName,
+    chapterTitle: chapter.chapterTitle,
     bookmark: chapter.bookmark,
     read: chapter?.read,
     downloaded: chapter?.downloaded,

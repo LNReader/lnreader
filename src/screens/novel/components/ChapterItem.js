@@ -8,13 +8,11 @@ import {
   ChapterBookmarkButton,
   DownloadButton,
 } from './Chapter/ChapterDownloadButtons';
+import { useChapterTitle } from '@utils/parseChapterTitle';
 
 const ChapterItem = ({
   chapter,
   theme,
-  index,
-  chapterTitle,
-  showGeneratedChapterTitle,
   downloadQueue,
   downloadChapter,
   deleteChapter,
@@ -23,10 +21,11 @@ const ChapterItem = ({
   onSelectLongPress,
   navigateToChapter,
   showProgressPercentage,
-  novelId,
+  chapterTitleOptions,
+  index,
 }) => {
   const { chapterId, read, releaseDate, bookmark } = chapter;
-
+  const chapterTitle = useChapterTitle(chapter, index, chapterTitleOptions);
   const [deleteChapterMenu, setDeleteChapterMenu] = useState(false);
   const showDeleteChapterMenu = () => setDeleteChapterMenu(true);
   const hideDeleteChapterMenu = () => setDeleteChapterMenu(false);
@@ -56,9 +55,7 @@ const ChapterItem = ({
             }}
             numberOfLines={1}
           >
-            {showGeneratedChapterTitle
-              ? 'Chapter ' + (index + 1)
-              : chapterTitle}
+            {chapterTitle}
           </Text>
           <View style={styles.chapter}>
             {releaseDate ? (

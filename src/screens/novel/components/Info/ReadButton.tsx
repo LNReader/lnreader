@@ -1,6 +1,5 @@
 import { MD3ThemeType } from '@theme/types';
 import { openChapter } from '@utils/handleNavigateParams';
-import { useChapterTitle } from '@utils/parseChapterTitle';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
@@ -15,6 +14,7 @@ type ReadButtonProps = {
   novel: NovelInfo;
   chaptersLength: number;
   lastRead: ChapterItem;
+  chapterTitle: string;
   theme: MD3ThemeType;
 };
 
@@ -23,14 +23,10 @@ const ReadButton: React.FC<ReadButtonProps> = ({
   novel,
   chaptersLength,
   lastRead,
+  chapterTitle,
   theme,
 }) => {
   const { useFabForContinueReading = false } = useSettings();
-  const chapterTitle = useChapterTitle(
-    lastRead?.chapterPrefix,
-    lastRead?.chapterName,
-    novel?.novelId,
-  );
 
   const navigateToLastReadChapter = () => {
     navigation.navigate('Chapter', openChapter(novel, lastRead));

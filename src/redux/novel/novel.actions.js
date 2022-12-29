@@ -304,21 +304,12 @@ export const markChapterUnreadAction =
  * @param {string} novelUrl
  * @param {number} novelId
  * @param {string} chapterUrl
- * @param {string} chapterPrefix
- * @param {string} chapterName
+ * @param {string} chapterTitle
  * @param {number} chapterId
  * @returns
  */
 export const downloadChapterAction =
-  (
-    sourceId,
-    novelUrl,
-    novelId,
-    chapterUrl,
-    chapterPrefix,
-    chapterName,
-    chapterId,
-  ) =>
+  (sourceId, novelUrl, novelId, chapterUrl, chapterTitle, chapterId) =>
   async dispatch => {
     // dispatch({
     //     type: CHAPTER_DOWNLOADING,
@@ -326,7 +317,7 @@ export const downloadChapterAction =
     // });
     dispatch({
       type: SET_DOWNLOAD_QUEUE,
-      payload: [{ chapterId, chapterPrefix, chapterName }],
+      payload: [{ chapterId, chapterTitle }],
     });
 
     await downloadChapter(sourceId, novelUrl, novelId, chapterUrl, chapterId);
@@ -336,10 +327,7 @@ export const downloadChapterAction =
       payload: chapterId,
     });
 
-    ToastAndroid.show(
-      `Downloaded ${chapterPrefix + ' ' + chapterName}`,
-      ToastAndroid.SHORT,
-    );
+    ToastAndroid.show(`Downloaded ${chapterTitle}`, ToastAndroid.SHORT);
   };
 
 /**
@@ -377,7 +365,7 @@ export const downloadAllChaptersAction =
 
         const options = {
           taskName: 'Library Update',
-          taskTitle: chapters[0].chapterPrefix + ' ' + chapters[0].chapterName,
+          taskTitle: chapters[0].chapterTitle,
           taskDesc: '0/' + chapters.length,
           taskIcon: {
             name: 'notification_icon',
@@ -413,6 +401,7 @@ export const downloadAllChaptersAction =
                       chapters[i].novelId,
                       chapters[i].chapterUrl,
                       chapters[i].chapterId,
+                      chapters[i].chapterTitle,
                     );
                   }
 
@@ -434,8 +423,7 @@ export const downloadAllChaptersAction =
                 }
 
                 await BackgroundService.updateNotification({
-                  taskTitle:
-                    chapters[i].chapterPrefix + ' ' + chapters[i].chapterName,
+                  taskTitle: chapters[i].chapterTitle,
                   taskDesc: i + 1 + '/' + chapters.length,
                   progressBar: {
                     max: chapters.length,
@@ -468,8 +456,7 @@ export const downloadAllChaptersAction =
   };
 
 export const deleteChapterAction =
-  (sourceId, novelId, chapterId, chapterPrefix, chapterName) =>
-  async dispatch => {
+  (sourceId, novelId, chapterId, chapterTitle) => async dispatch => {
     await deleteChapter(sourceId, novelId, chapterId);
 
     dispatch({
@@ -477,7 +464,7 @@ export const deleteChapterAction =
       payload: chapterId,
     });
 
-    showToast(`Deleted ${chapterPrefix + ' ' + chapterName}`);
+    showToast(`Deleted ${chapterTitle}`);
   };
 
 /**

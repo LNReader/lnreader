@@ -3,7 +3,8 @@ export const createDownloadTableQuery = `
         downloadId INTEGER PRIMARY KEY AUTOINCREMENT, 
         downloadChapterId INTEGER NOT NULL, 
         chapterPrefix TEXT, 
-        chapterName TEXT, 
+        chapterName TEXT,
+        chapterTitle TEXT, 
         chapterText TEXT, 
         FOREIGN KEY (downloadChapterId) REFERENCES chapters(chapterId) ON DELETE CASCADE
       )

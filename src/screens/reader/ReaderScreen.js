@@ -24,6 +24,7 @@ import { fetchChapter } from '../../services/Source/source';
 import { showToast } from '../../hooks/showToast';
 import {
   usePosition,
+  usePreferences,
   useSettings,
   useTrackingStatus,
 } from '../../hooks/reduxHooks';
@@ -56,11 +57,11 @@ import { useReaderSettings } from '../../redux/hooks';
 import { defaultTo } from 'lodash';
 import BottomInfoBar from './components/BottomInfoBar/BottomInfoBar';
 import { sanitizeChapterText } from './utils/sanitizeChapterText';
-import { LoadingScreenV2 } from '@components/index';
 import ChapterDrawer from './components/Drawer/ChapterDrawer';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import SkeletonLines from './components/SkeletonLines';
 import color from 'color';
+import { openChapter } from '@utils/handleNavigateParams';
 
 const Chapter = ({ route }) => {
   const { useChapterDrawerSwipeNavigation = true } = useSettings();
@@ -100,12 +101,12 @@ const ChapterContent = ({ route, navigation }) => {
   } = params;
   let scrollViewRef = useRef(null);
   let readerSheetRef = useRef(null);
-
   const theme = useTheme();
   const dispatch = useDispatch();
   const readerSettings = useReaderSettings();
-  const chapterTitle = useChapterTitle(chapterPrefix, chapterName, novelId);
-  const parsedChapterPrefix = useChapterTitle(chapterPrefix, '', novelId);
+  const [parsedChapterPrefix, setParsedChapterPrefix] = useState('');
+  const [chapter, setChapter] = useState({});
+
   const {
     swipeGestures = false,
     useWebViewForChapter = false,
@@ -117,8 +118,31 @@ const ChapterContent = ({ route, navigation }) => {
     autoScrollOffset = null,
     verticalSeekbar = true,
     removeExtraParagraphSpacing = false,
+    defaultShowChapterPrefix = true,
+    defaultChapterPrefixStyle = ['Volume ', 'Chapter '],
+    defaultChapterTitleSeperator = ' - ',
   } = useSettings();
   const { incognitoMode } = useLibrarySettings();
+
+  const {
+    showGeneratedChapterTitle = false,
+    showChapterPrefix = defaultShowChapterPrefix,
+    chapterPrefixStyle = defaultChapterPrefixStyle,
+    chapterTitleSeperator = defaultChapterTitleSeperator,
+  } = usePreferences(novelId);
+
+  const chapterTitleOptions = {
+    showGeneratedChapterTitle: showGeneratedChapterTitle,
+    showChapterPrefix: showChapterPrefix,
+    chapterPrefixStyle: chapterPrefixStyle,
+    chapterTitleSeperator: chapterTitleSeperator,
+  };
+  const chapterTitle = useChapterTitle(chapter, 1, chapterTitleOptions);
+  useEffect(() => {
+    setParsedChapterPrefix(
+      parseChapterPrefix(chapterPrefix, chapterPrefixStyle),
+    );
+  }, [chapterPrefixStyle, chapterPrefix]);
 
   const { setImmersiveMode, showStatusAndNavBar } = useFullscreenMode();
 
@@ -129,7 +153,6 @@ const ChapterContent = ({ route, navigation }) => {
 
   const isTracked = trackedNovels.find(obj => obj.novelId === novelId);
 
-  const [chapter, setChapter] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
 
@@ -203,7 +226,6 @@ const ChapterContent = ({ route, navigation }) => {
   const setPrevAndNextChap = async () => {
     const nextChap = await getNextChapter(novelId, chapterId);
     const prevChap = await getPrevChapter(novelId, chapterId);
-
     setNextChapter(nextChap);
     setPrevChapter(prevChap);
   };
@@ -232,6 +254,7 @@ const ChapterContent = ({ route, navigation }) => {
 
   useEffect(() => {
     setPrevAndNextChap();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chapter]);
 
   const [currentOffset, setCurrentOffset] = useState(position?.position || 0);
@@ -355,27 +378,13 @@ const ChapterContent = ({ route, navigation }) => {
 
   const navigateToPrevChapter = () => {
     prevChapter
-      ? navigation.replace('Chapter', {
-          ...params,
-          chapterUrl: prevChapter.chapterUrl,
-          chapterId: prevChapter.chapterId,
-          chapterPrefix: prevChapter.chapterPrefix,
-          chapterName: prevChapter.chapterName,
-          bookmark: prevChapter.bookmark,
-        })
+      ? navigation.replace('Chapter', openChapter(params, prevChapter))
       : showToast("There's no previous chapter");
   };
 
   const navigateToNextChapter = () => {
     nextChapter
-      ? navigation.replace('Chapter', {
-          ...params,
-          chapterUrl: nextChapter.chapterUrl,
-          chapterId: nextChapter.chapterId,
-          chapterPrefix: nextChapter.chapterPrefix,
-          chapterName: nextChapter.chapterName,
-          bookmark: nextChapter.bookmark,
-        })
+      ? navigation.replace('Chapter', openChapter(params, nextChapter))
       : showToast("There's no next chapter");
   };
 
@@ -544,17 +553,15 @@ const ChapterContent = ({ route, navigation }) => {
                       />
                     </View>
                   ) : (
-                    <View>
-                      <TextReader
-                        onPress={hideHeader}
-                        text={chapterText}
-                        reader={readerSettings}
-                        chapterTitle={chapterTitle}
-                        theme={theme}
-                        nextChapter={nextChapter}
-                        navigateToNextChapter={navigateToNextChapter}
-                      />
-                    </View>
+                    <TextReader
+                      onPress={hideHeader}
+                      text={chapterText}
+                      reader={readerSettings}
+                      chapterTitle={chapterTitle}
+                      theme={theme}
+                      nextChapter={nextChapter}
+                      navigateToNextChapter={navigateToNextChapter}
+                    />
                   )}
                 </>
               </TouchableWithoutFeedback>

@@ -1,7 +1,6 @@
-import { ChapterItem, LibraryNovelInfo, NovelInfo } from '@database/types';
+import { ChapterItem } from '@database/types';
 import { useSelector } from 'react-redux';
 import { RootState } from '@redux/store';
-import { SourceNovel } from 'src/sources/types';
 
 const useSettings = () => {
   const settings = useSelector((state: RootState) => state.settingsReducer);

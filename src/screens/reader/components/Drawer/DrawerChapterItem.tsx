@@ -1,5 +1,9 @@
 import { ChapterItem } from '@database/types';
 import { MD3ThemeType } from '@theme/types';
+import {
+  chapterTitleOptionsType,
+  useChapterTitle,
+} from '@utils/parseChapterTitle';
 import color from 'color';
 import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
@@ -8,18 +12,21 @@ import { Text } from 'react-native-paper';
 interface DrawerChapterItemProps {
   item: ChapterItem;
   theme: MD3ThemeType;
-  chapterTitle: string;
+  index: number;
+  chapterTitleOptions: chapterTitleOptionsType;
   currentChapterId: number;
   changeChapter: (item: ChapterItem) => void;
 }
 
 const DrawerChapterItem: React.FC<DrawerChapterItemProps> = ({
   item,
+  index,
+  chapterTitleOptions,
   theme,
-  chapterTitle,
   currentChapterId,
   changeChapter,
 }) => {
+  const chapterTitle = useChapterTitle(item, index, chapterTitleOptions);
   const styles = createStylesheet(theme);
   return (
     <View

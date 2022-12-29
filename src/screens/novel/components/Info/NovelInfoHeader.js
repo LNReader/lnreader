@@ -27,6 +27,7 @@ import NovelScreenButtonGroup from '../NovelScreenButtonGroup/NovelScreenButtonG
 import { useAppDispatch } from '../../../../redux/hooks';
 import { getString } from '../../../../../strings/translations';
 import { filterColor } from '../../../../theme/colors';
+import { useChapterTitle } from '@utils/parseChapterTitle';
 
 const NovelInfoHeader = ({
   item,
@@ -41,10 +42,17 @@ const NovelInfoHeader = ({
   setCustomNovelCover,
   novelBottomSheetRef,
   deleteDownloadsSnackbar,
+  chapterTitleOptions,
 }) => {
   const { hideBackdrop = false } = useSettings();
 
   const dispatch = useAppDispatch();
+
+  const chapterTitle = useChapterTitle(
+    lastRead,
+    chapters.indexOf(lastRead),
+    chapterTitleOptions,
+  );
 
   const getStatusIcon = useMemo(
     () => ({
@@ -133,6 +141,7 @@ const NovelInfoHeader = ({
             chaptersLength={chapters.length}
             navigation={navigation}
             theme={theme}
+            chapterTitle={chapterTitle}
             lastRead={lastRead}
           />
           <Pressable

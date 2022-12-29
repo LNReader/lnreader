@@ -8,7 +8,7 @@ import {
 export const unifiedParser = async (
   chapter: SourceChapter,
 ): Promise<ParsedChapter> => {
-  const [chapterName, chapterPrefix] = parseName(chapter.chapterName);
+  const [chapterPrefix, chapterName] = parseName(chapter.chapterName);
   let re = new RegExp(
     '<\\w+>\\s*' + chapterPrefix + '.{0,6}' + chapterName + '.{0,3}<[/]\\w+>',
     'i',
@@ -28,7 +28,7 @@ export const unifiedParser = async (
 export const unifiedParserMap = (
   item: SourceChapterItem,
 ): ParsedChapterItem => {
-  const [chapterName, chapterPrefix] = parseName(item.chapterName);
+  const [chapterPrefix, chapterName] = parseName(item.chapterName);
 
   return {
     ...item,
@@ -43,7 +43,7 @@ const parseName = (chapterName: string): Array<string> => {
 
   let chapterPrefix = prefixRegex.exec(String(chapterName));
   if (chapterPrefix === null) {
-    return [chapterName];
+    return ['', chapterName.trim()];
   }
   let newChapterName = chapterName
     .substring(
@@ -56,7 +56,7 @@ const parseName = (chapterName: string): Array<string> => {
     '',
   );
 
-  return [newChapterName.trim(), chapterPrefix[0].trim()];
+  return [chapterPrefix[0].trim(), newChapterName.trim()];
 };
 
 /*

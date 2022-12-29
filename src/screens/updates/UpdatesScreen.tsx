@@ -100,8 +100,7 @@ const UpdatesScreen = () => {
         novelUrl,
         novelId,
         chapter.chapterUrl,
-        chapter.chapterPrefix,
-        chapter.chapterName,
+        chapter.chapterTitle,
         chapter.chapterId,
       ),
     );
@@ -110,18 +109,9 @@ const UpdatesScreen = () => {
     sourceId: number,
     novelId: number,
     chapterId: number,
-    chapterName: string,
-    chapterPrefix: string,
+    chapterTitle: string,
   ) =>
-    dispatch(
-      deleteChapterAction(
-        sourceId,
-        novelId,
-        chapterId,
-        chapterPrefix,
-        chapterName,
-      ),
-    );
+    dispatch(deleteChapterAction(sourceId, novelId, chapterId, chapterTitle));
 
   const navigateToChapter = (
     novel: openChapterNovelTypes,
