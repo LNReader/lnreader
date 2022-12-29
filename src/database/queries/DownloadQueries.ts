@@ -14,7 +14,7 @@ const db = SQLite.openDatabase('lnreader.db');
 
 const downloadChapterQuery = `
   INSERT INTO 
-      downloads (downloadChapterId, chapterPrefix, chapterName, chapterText)
+      downloads (downloadChapterId, chapterPrefix, chapterName, chapterTitle, chapterText)
   VALUES
     (?, ?, ?, ?)
 	`;
@@ -35,6 +35,7 @@ export const fetchAndInsertChapterInDb = async (
         chapterId,
         chapter.chapterPrefix,
         chapter.chapterName,
+        chapter.chapterTitle,
         chapter.chapterText,
       ],
       (txObj, res) => {},

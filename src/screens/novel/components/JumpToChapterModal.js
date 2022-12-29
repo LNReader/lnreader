@@ -43,6 +43,7 @@ const JumpToChapterModal = ({
       chapterUrl: chap.chapterUrl,
       chapterPrefix: chap.chapterPrefix,
       chapterName: chap.chapterName,
+      chapterTitle: chap.chapterTitle,
       novelName: novel.novelName,
       bookmark: chap.bookmark,
     });

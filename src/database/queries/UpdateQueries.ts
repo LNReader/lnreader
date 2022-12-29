@@ -14,6 +14,7 @@ const getUpdatesFromDbQuery = `
       chapters.chapterUrl,
       chapters.chapterPrefix, 
       chapters.chapterName,
+      chapters.chapterTitle,
       chapters.bookmark,
       chapters.releaseDate,
       novels.novelUrl, 

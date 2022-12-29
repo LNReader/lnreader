@@ -152,7 +152,13 @@ const Novel = ({ route, navigation }) => {
 
   const keyExtractor = useCallback(i => i.chapterId.toString(), []);
 
-  const downloadChapter = (chapterUrl, chapterPrefix, chapterName, chapterId) =>
+  const downloadChapter = (
+    chapterUrl,
+    chapterPrefix,
+    chapterName,
+    chapterTitle,
+    chapterId,
+  ) =>
     dispatch(
       downloadChapterAction(
         sourceId,
@@ -161,6 +167,7 @@ const Novel = ({ route, navigation }) => {
         chapterUrl,
         chapterPrefix,
         chapterName,
+        chapterTitle,
         chapterId,
       ),
     );
@@ -235,7 +242,7 @@ const Novel = ({ route, navigation }) => {
     return list;
   }, [selected]);
 
-  const deleteChapter = (chapterId, chapterPrefix, chapterName) =>
+  const deleteChapter = (chapterId, chapterPrefix, chapterName, chapterTitle) =>
     dispatch(
       deleteChapterAction(
         sourceId,
@@ -243,6 +250,7 @@ const Novel = ({ route, navigation }) => {
         chapterId,
         chapterPrefix,
         chapterName,
+        chapterTitle,
       ),
     );
 

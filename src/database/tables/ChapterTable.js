@@ -5,6 +5,7 @@ const createChapterTableQuery = `
     novelId INTEGER NOT NULL,
     chapterPrefix TEXT DEFAULT '',
     chapterName TEXT NOT NULL,
+    chapterTitle TEXT DEFAULT '',
     releaseDate TEXT,
     bookmark BOOLEAN NOT NULL DEFAULT 0, 
     \`read\` INTEGER NOT NULL DEFAULT 0, 

@@ -26,6 +26,7 @@ export interface ChapterItem {
   chapterUrl: string;
   chapterPrefix: string;
   chapterName: string;
+  chapterTitle: string;
   releaseDate?: string;
   read: number;
   bookmark: number;
@@ -37,6 +38,7 @@ export interface DownloadedChapter {
   downloadChapterId: number;
   chapterPrefix: string | null;
   chapterName: string | null;
+  chapterTitle: string | null;
   chapterText: string;
 }
 
@@ -50,6 +52,7 @@ export interface History {
   novelCover: string;
   chapterPrefix: string;
   chapterName: string;
+  chapterTitle: string;
   chapterUrl: string;
   historyTimeRead: string;
   bookmark: number;
@@ -66,6 +69,7 @@ export interface Update {
   chapterUrl: string;
   chapterPrefix: string;
   chapterName: string;
+  chapterTitle: string;
   downloaded: number;
   read: number;
   updateTime: string;

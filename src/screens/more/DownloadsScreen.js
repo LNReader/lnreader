@@ -73,6 +73,7 @@ const Downloads = ({ navigation }) => {
     chapterUrl,
     chapterPrefix,
     chapterName,
+    chapterTitle,
     chapterId,
   ) =>
     dispatch(
@@ -83,11 +84,17 @@ const Downloads = ({ navigation }) => {
         chapterUrl,
         chapterPrefix,
         chapterName,
+        chapterTitle,
         chapterId,
       ),
     );
 
-  const deleteChapter = (chapterId, chapterPrefix, chapterName) => {
+  const deleteChapter = (
+    chapterId,
+    chapterPrefix,
+    chapterName,
+    chapterTitle,
+  ) => {
     dispatch(
       deleteChapterAction(
         sourceId,
@@ -95,6 +102,7 @@ const Downloads = ({ navigation }) => {
         chapterId,
         chapterPrefix,
         chapterName,
+        chapterTitle,
       ),
     );
     setChapters(chaps => chaps.filter(item => item.chapterId !== chapterId));

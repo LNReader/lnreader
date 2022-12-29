@@ -45,6 +45,7 @@ export interface SourceChapter {
 
 export interface ParsedChapter extends SourceChapter {
   chapterPrefix?: string;
+  chapterTitle?: string;
 }
 export interface ParsedChapterItem extends SourceChapterItem {
   chapterPrefix?: string;

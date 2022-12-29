@@ -7,11 +7,12 @@ import RNFetchBlob from 'rn-fetch-blob';
 import { txnErrorCallback } from '@database/utils/helpers';
 import { fetchChapter } from '../../services/Source/source';
 import { unifiedParserMap } from '../../services/Source/unifiedParser';
+import { RootState } from '@redux/store';
 
 const db = SQLite.openDatabase('lnreader.db');
 
 const upgradeDatabaseQuery = `
-	ALTER TABLE chapters ADD COLUMN chapterPrefix TEXT DEFAULT '';
+	ALTER TABLE chapters ADD COLUMN chapterPrefix, chapterTitle TEXT DEFAULT '';
 	`;
 
 const selectUpgradeValuesDatabaseQuery = `
@@ -62,7 +63,7 @@ export const upgradeDatabase = () => {
 };
 
 const insertChaptersQuery =
-  'INSERT INTO chapters (chapterUrl, chapterPrefix, chapterName, releaseDate, novelId) values (?, ?, ?, ?, ?)';
+  'INSERT INTO chapters (chapterUrl, chapterPrefix, chapterName, chapterTitle, releaseDate, novelId) values (?, ?, ?, ?, ?, ?)';
 
 export const insertChapters = async (
   novelId: number,
@@ -77,6 +78,7 @@ export const insertChapters = async (
             chapter.chapterUrl,
             chapter.chapterPrefix,
             chapter.chapterName,
+            chapter.chapterTitle,
             chapter.releaseDate,
             novelId,
           ],
@@ -299,7 +301,7 @@ export const isChapterDownloaded = async (chapterId: number) => {
 };
 
 const downloadChapterQuery =
-  'INSERT INTO downloads (downloadChapterId, chapterPrefix, chapterName, chapterText) VALUES (?, ?, ?, ?)';
+  'INSERT INTO downloads (downloadChapterId, chapterPrefix, chapterName, chapterTitle, chapterText) VALUES (?, ?, ?, ?, ?)';
 
 const createImageFolder = async (
   path: string,
@@ -395,6 +397,7 @@ export const downloadChapter = async (
             chapterId,
             chapter.chapterPrefix,
             chapter.chapterName,
+            chapter.chapterTitle,
             imagedChapterText,
           ],
           (_txObj, _res) => {

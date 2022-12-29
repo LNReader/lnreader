@@ -35,6 +35,7 @@ export const DownloadButton = ({
               chapter.chapterId,
               chapter.chapterPrefix,
               chapter.chapterName,
+              chapter.chapterTitle,
             );
             hideDeleteChapterMenu();
           }}
@@ -55,6 +56,7 @@ export const DownloadButton = ({
             chapter.chapterUrl,
             chapter.chapterPrefix,
             chapter.chapterName,
+            chapter.chapterTitle,
             chapter.chapterId,
           )
         }

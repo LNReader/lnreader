@@ -96,6 +96,7 @@ const ChapterContent = ({ route, navigation }) => {
     novelName,
     chapterPrefix,
     chapterName,
+    chapterTitle,
     bookmark,
   } = params;
   let scrollViewRef = useRef(null);
@@ -104,7 +105,7 @@ const ChapterContent = ({ route, navigation }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const readerSettings = useReaderSettings();
-  const chapterTitle = useChapterTitle(chapterPrefix, chapterName, novelId);
+  const chapterTitleO = useChapterTitle(chapterPrefix, chapterName, novelId);
   const parsedChapterPrefix = useChapterTitle(chapterPrefix, '', novelId);
   const {
     swipeGestures = false,
@@ -355,6 +356,7 @@ const ChapterContent = ({ route, navigation }) => {
           chapterId: prevChapter.chapterId,
           chapterPrefix: prevChapter.chapterPrefix,
           chapterName: prevChapter.chapterName,
+          chapterTitle: prevChapter.chapterTitle,
           bookmark: prevChapter.bookmark,
         })
       : showToast("There's no previous chapter");
@@ -368,6 +370,7 @@ const ChapterContent = ({ route, navigation }) => {
           chapterId: nextChapter.chapterId,
           chapterPrefix: nextChapter.chapterPrefix,
           chapterName: nextChapter.chapterName,
+          chapterTitle: nextChapter.chapterTitle,
           bookmark: nextChapter.bookmark,
         })
       : showToast("There's no next chapter");
@@ -382,7 +385,7 @@ const ChapterContent = ({ route, navigation }) => {
   const onWebViewNavigationStateChange = async ({ url }) => {
     if ((sourceId === 50 || sourceId === 62) && url !== 'about:blank') {
       setLoading(true);
-      const res = await fetchChapter(sourceId, novelUrl, url);
+      const res = await fetchChapter( sourceId, novelUrl, url);
       setChapter(res);
       setLoading(false);
     }
@@ -403,7 +406,7 @@ const ChapterContent = ({ route, navigation }) => {
       <>
         <ReaderAppbar
           novelName={novelName}
-          chapterTitle={chapterTitle}
+          chapterTitleO={chapterTitleO}
           chapterId={chapterId}
           bookmark={bookmark}
           textToSpeech={ttsStatus}
@@ -521,7 +524,7 @@ const ChapterContent = ({ route, navigation }) => {
                         scrollPercentage={scrollPercentage}
                         reader={readerSettings}
                         html={chapterText}
-                        chapterTitle={chapterTitle}
+                        chapterTitleO={chapterTitleO}
                         nextChapter={nextChapter}
                         navigateToNextChapter={() => navigateToNextChapter()}
                         navigateToPrevChapter={() => navigateToPrevChapter()}
@@ -543,7 +546,7 @@ const ChapterContent = ({ route, navigation }) => {
                         onPress={hideHeader}
                         text={chapterText}
                         reader={readerSettings}
-                        chapterTitle={chapterTitle}
+                        chapterTitleO={chapterTitleO}
                         theme={theme}
                         nextChapter={nextChapter}
                         navigateToNextChapter={navigateToNextChapter}
