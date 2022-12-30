@@ -89,36 +89,25 @@ const Downloads = ({ navigation }) => {
       ),
     );
 
-  const deleteChapter = (
-    chapterId,
-    chapterPrefix,
-    chapterName,
-    chapterTitle,
-  ) => {
-    dispatch(
-      deleteChapterAction(
-        sourceId,
-        novelId,
-        chapterId,
-        chapterPrefix,
-        chapterName,
-        chapterTitle,
-      ),
-    );
+  const deleteChapter = (sourceId, novelId, chapterId, chapterTitle) => {
+    dispatch(deleteChapterAction(sourceId, novelId, chapterId, chapterTitle));
     setChapters(chaps => chaps.filter(item => item.chapterId !== chapterId));
   };
 
-  const renderItem = ({ item }) => (
-    <UpdatesItem
-      item={item}
-      theme={theme}
-      onPress={() => onPress(item)}
-      onPressCover={() => onPressCover(item)}
-      downloadQueue={downloadQueue}
-      deleteChapter={deleteChapter}
-      downloadChapter={downloadChapter}
-    />
-  );
+  const renderItem = ({ item }) => {
+    console.log(item);
+    return (
+      <UpdatesItem
+        item={item}
+        theme={theme}
+        onPress={() => onPress(item)}
+        onPressCover={() => onPressCover(item)}
+        downloadQueue={downloadQueue}
+        deleteChapter={deleteChapter}
+        downloadChapter={downloadChapter}
+      />
+    );
+  };
 
   return (
     <ScreenContainer theme={theme}>

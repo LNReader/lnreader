@@ -80,7 +80,7 @@ const TextReader: React.FC<TextReaderProps> = ({
           </Text>
           {nextChapter ? (
             <Button
-              title={`Next: ${nextChapter.chapterName}`}
+              title={`Next: ${nextChapter.chapterTitle}`}
               onPress={navigateToNextChapter}
               theme={theme}
               textColor={theme.colorButtonText}

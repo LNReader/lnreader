@@ -56,11 +56,11 @@ import { useReaderSettings } from '../../redux/hooks';
 import { defaultTo } from 'lodash';
 import BottomInfoBar from './components/BottomInfoBar/BottomInfoBar';
 import { sanitizeChapterText } from './utils/sanitizeChapterText';
-import { LoadingScreenV2 } from '@components/index';
 import ChapterDrawer from './components/Drawer/ChapterDrawer';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import SkeletonLines from './components/SkeletonLines';
 import color from 'color';
+import { openChapter } from '@utils/handleNavigateParams';
 
 const Chapter = ({ route }) => {
   const { useChapterDrawerSwipeNavigation = true } = useSettings();
@@ -204,7 +204,7 @@ const ChapterContent = ({ route, navigation }) => {
   const setPrevAndNextChap = async () => {
     const nextChap = await getNextChapter(novelId, chapterId);
     const prevChap = await getPrevChapter(novelId, chapterId);
-
+    console.log('setPrevAndNextChap', nextChap);
     setNextChapter(nextChap);
     setPrevChapter(prevChap);
   };
@@ -227,6 +227,8 @@ const ChapterContent = ({ route, navigation }) => {
 
   useEffect(() => {
     setPrevAndNextChap();
+    console.log(JSON.stringify({ ...chapter, chapterText: '' }, null, 2));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chapter]);
 
   const [currentOffset, setCurrentOffset] = useState(position?.position || 0);
@@ -350,29 +352,13 @@ const ChapterContent = ({ route, navigation }) => {
 
   const navigateToPrevChapter = () => {
     prevChapter
-      ? navigation.replace('Chapter', {
-          ...params,
-          chapterUrl: prevChapter.chapterUrl,
-          chapterId: prevChapter.chapterId,
-          chapterPrefix: prevChapter.chapterPrefix,
-          chapterName: prevChapter.chapterName,
-          chapterTitle: prevChapter.chapterTitle,
-          bookmark: prevChapter.bookmark,
-        })
+      ? navigation.replace('Chapter', openChapter(params, prevChapter))
       : showToast("There's no previous chapter");
   };
 
   const navigateToNextChapter = () => {
     nextChapter
-      ? navigation.replace('Chapter', {
-          ...params,
-          chapterUrl: nextChapter.chapterUrl,
-          chapterId: nextChapter.chapterId,
-          chapterPrefix: nextChapter.chapterPrefix,
-          chapterName: nextChapter.chapterName,
-          chapterTitle: nextChapter.chapterTitle,
-          bookmark: nextChapter.bookmark,
-        })
+      ? navigation.replace('Chapter', openChapter(params, nextChapter))
       : showToast("There's no next chapter");
   };
 
@@ -385,7 +371,7 @@ const ChapterContent = ({ route, navigation }) => {
   const onWebViewNavigationStateChange = async ({ url }) => {
     if ((sourceId === 50 || sourceId === 62) && url !== 'about:blank') {
       setLoading(true);
-      const res = await fetchChapter( sourceId, novelUrl, url);
+      const res = await fetchChapter(sourceId, novelUrl, url);
       setChapter(res);
       setLoading(false);
     }
@@ -406,7 +392,7 @@ const ChapterContent = ({ route, navigation }) => {
       <>
         <ReaderAppbar
           novelName={novelName}
-          chapterTitleO={chapterTitleO}
+          chapterTitle={chapterTitle}
           chapterId={chapterId}
           bookmark={bookmark}
           textToSpeech={ttsStatus}
@@ -524,7 +510,7 @@ const ChapterContent = ({ route, navigation }) => {
                         scrollPercentage={scrollPercentage}
                         reader={readerSettings}
                         html={chapterText}
-                        chapterTitleO={chapterTitleO}
+                        chapterTitle={chapterTitle}
                         nextChapter={nextChapter}
                         navigateToNextChapter={() => navigateToNextChapter()}
                         navigateToPrevChapter={() => navigateToPrevChapter()}
@@ -541,17 +527,15 @@ const ChapterContent = ({ route, navigation }) => {
                       />
                     </View>
                   ) : (
-                    <View>
-                      <TextReader
-                        onPress={hideHeader}
-                        text={chapterText}
-                        reader={readerSettings}
-                        chapterTitleO={chapterTitleO}
-                        theme={theme}
-                        nextChapter={nextChapter}
-                        navigateToNextChapter={navigateToNextChapter}
-                      />
-                    </View>
+                    <TextReader
+                      onPress={hideHeader}
+                      text={chapterText}
+                      reader={readerSettings}
+                      chapterTitle={chapterTitle}
+                      theme={theme}
+                      nextChapter={nextChapter}
+                      navigateToNextChapter={navigateToNextChapter}
+                    />
                   )}
                 </>
               </TouchableWithoutFeedback>

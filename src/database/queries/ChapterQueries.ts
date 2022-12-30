@@ -7,7 +7,6 @@ import RNFetchBlob from 'rn-fetch-blob';
 import { txnErrorCallback } from '@database/utils/helpers';
 import { fetchChapter } from '../../services/Source/source';
 import { unifiedParserMap } from '../../services/Source/unifiedParser';
-import { RootState } from '@redux/store';
 
 const db = SQLite.openDatabase('lnreader.db');
 
@@ -606,3 +605,22 @@ export const updateChapterDeletedQuery = `
     downloaded = 0
   WHERE 
     chapterId = ?`;
+
+const setChapterTitlesQuery = `
+    UPDATE chapters SET chapterTitle = ?
+    WHERE chapterId = ?`;
+
+export const setChapterTitleInDB = async (
+  chapterTitle: string,
+  chapterId: number,
+) =>
+  db.transaction(tx => {
+    tx.executeSql(
+      setChapterTitlesQuery,
+      [chapterTitle, chapterId],
+      (_txObj, _res) => {},
+      (_txObj, _error) => {
+        return false;
+      },
+    );
+  });

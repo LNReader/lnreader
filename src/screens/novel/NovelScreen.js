@@ -67,7 +67,7 @@ import useBoolean from '@hooks/useBoolean';
 import { useCategorySettings } from '@hooks/useSettings';
 import { openChapter } from '../../utils/handleNavigateParams';
 import NovelScreenLoading from './components/LoadingAnimation/NovelScreenLoading';
-import { useMultipleChapterTitles } from '@utils/parseChapterTitle';
+import { setChapterTitles } from '@utils/parseChapterTitle';
 
 const Novel = ({ route, navigation }) => {
   const item = route.params;
@@ -78,8 +78,11 @@ const Novel = ({ route, navigation }) => {
   const { top: topInset, bottom: bottomInset } = useSafeAreaInsets();
   const progressViewOffset = topInset + 32;
 
-  const { novel, chapters, loading, updating } = useNovel();
-  const chapterTitles = useMultipleChapterTitles(chapters, novel.novelId);
+  const { novel, chapters: c, loading, updating } = useNovel();
+  const [chapterTitles, setChapterTitle] = useState();
+  const chapters = c.map((it, index) => {
+    return { ...it, chapterTitle: chapterTitles?.[index] };
+  });
 
   const { downloadQueue } = useSelector(state => state.downloadsReducer);
 
@@ -115,8 +118,27 @@ const Novel = ({ route, navigation }) => {
     chapters,
     novel.novelId,
   );
-
-  const { defaultCategoryId = 1 } = useCategorySettings();
+  useEffect(() => {
+    if (!updating && chapters.length > 0) {
+      setChapterTitle(
+        setChapterTitles(
+          c,
+          chapterPrefixStyle,
+          showGeneratedChapterTitle,
+          showChapterPrefix,
+          chapterTitleSeperator,
+        ),
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    chapters.length,
+    updating,
+    chapterPrefixStyle,
+    chapterTitleSeperator,
+    showChapterPrefix,
+    showGeneratedChapterTitle,
+  ]);
 
   useEffect(() => {
     dispatch(
@@ -133,6 +155,7 @@ const Novel = ({ route, navigation }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getNovelAction]);
 
+  const { defaultCategoryId = 1 } = useCategorySettings();
   const onRefresh = () => {
     dispatch(updateNovelAction(sourceId, novelUrl, novelId, sort, filter));
     showToast(`Updated ${novelName}`);
@@ -242,17 +265,8 @@ const Novel = ({ route, navigation }) => {
     return list;
   }, [selected]);
 
-  const deleteChapter = (chapterId, chapterPrefix, chapterName, chapterTitle) =>
-    dispatch(
-      deleteChapterAction(
-        sourceId,
-        novelId,
-        chapterId,
-        chapterPrefix,
-        chapterName,
-        chapterTitle,
-      ),
-    );
+  const deleteChapter = (chapterId, chapterTitle) =>
+    dispatch(deleteChapterAction(sourceId, novelId, chapterId, chapterTitle));
 
   const isSelected = chapterId => {
     return selected.some(obj => obj.chapterId === chapterId);
@@ -354,14 +368,11 @@ const Novel = ({ route, navigation }) => {
     showExtraMenu(false);
   };
 
-  const renderItem = ({ item: it, index }) => (
+  const renderItem = ({ item: it }) => (
     <ChapterItem
       theme={theme}
       chapter={it}
-      index={index}
-      chapterTitle={chapterTitles[index]}
-      novelId={novel.novelId}
-      showGeneratedChapterTitle={showGeneratedChapterTitle}
+      chapterTitle={it.chapterTitle}
       downloadQueue={downloadQueue}
       deleteChapter={deleteChapter}
       downloadChapter={downloadChapter}

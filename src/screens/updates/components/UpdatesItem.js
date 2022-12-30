@@ -57,7 +57,7 @@ const UpdateCard = ({
               }}
               numberOfLines={1}
             >
-              {item.chapterName}
+              {item.chapterTitle}
             </Text>
           </View>
           <DownloadButton

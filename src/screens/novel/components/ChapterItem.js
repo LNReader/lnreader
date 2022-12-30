@@ -12,9 +12,7 @@ import {
 const ChapterItem = ({
   chapter,
   theme,
-  index,
   chapterTitle,
-  showGeneratedChapterTitle,
   downloadQueue,
   downloadChapter,
   deleteChapter,
@@ -23,7 +21,6 @@ const ChapterItem = ({
   onSelectLongPress,
   navigateToChapter,
   showProgressPercentage,
-  novelId,
 }) => {
   const { chapterId, read, releaseDate, bookmark } = chapter;
 
@@ -56,9 +53,7 @@ const ChapterItem = ({
             }}
             numberOfLines={1}
           >
-            {showGeneratedChapterTitle
-              ? 'Chapter ' + (index + 1)
-              : chapterTitle}
+            {chapterTitle}
           </Text>
           <View style={styles.chapter}>
             {releaseDate ? (

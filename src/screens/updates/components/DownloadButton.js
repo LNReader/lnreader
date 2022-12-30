@@ -32,9 +32,9 @@ export const DownloadButton = ({
         <Menu.Item
           onPress={() => {
             deleteChapter(
+              chapter.sourceId,
+              chapter.novelId,
               chapter.chapterId,
-              chapter.chapterPrefix,
-              chapter.chapterName,
               chapter.chapterTitle,
             );
             hideDeleteChapterMenu();
@@ -54,8 +54,6 @@ export const DownloadButton = ({
             chapter.novelUrl,
             chapter.novelId,
             chapter.chapterUrl,
-            chapter.chapterPrefix,
-            chapter.chapterName,
             chapter.chapterTitle,
             chapter.chapterId,
           )

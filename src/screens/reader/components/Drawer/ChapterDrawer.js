@@ -11,7 +11,8 @@ import { useDispatch } from 'react-redux';
 import { setNovel, getNovelAction } from '@redux/novel/novel.actions';
 import { dividerColor } from '@theme/colors';
 import DrawerChapterItem from './DrawerChapterItem';
-import { useMultipleChapterTitles } from '@utils/parseChapterTitle';
+import { setChapterTitles } from '@utils/parseChapterTitle';
+import { openChapter } from '@utils/handleNavigateParams';
 
 const ChapterDrawer = ({ state: st, navigation }) => {
   const theme = useTheme();
@@ -27,10 +28,45 @@ const ChapterDrawer = ({ state: st, navigation }) => {
     novelId,
     chapterId: currentChapterId,
   } = st.routes[0].params;
-  const { defaultChapterSort = 'ORDER BY chapterId ASC' } = useSettings();
-  const { sort = defaultChapterSort, filter = '' } = usePreferences(novelId);
-  const { chapters, novel } = useNovel();
-  const chapterTitles = useMultipleChapterTitles(chapters, novel.novelId);
+  const {
+    defaultChapterSort = 'ORDER BY chapterId ASC',
+    defaultShowChapterPrefix = true,
+    defaultChapterPrefixStyle = ['Volume ', 'Chapter '],
+    defaultChapterTitleSeperator = ' - ',
+  } = useSettings();
+
+  const {
+    sort = defaultChapterSort,
+    filter = '',
+    showGeneratedChapterTitle = false,
+    showChapterPrefix = defaultShowChapterPrefix,
+    chapterPrefixStyle = defaultChapterPrefixStyle,
+    chapterTitleSeperator = defaultChapterTitleSeperator,
+  } = usePreferences(novelId);
+
+  const { chapters: c, novel } = useNovel();
+  const [chapters, setChapters] = useState(c);
+  useEffect(() => {
+    if (chapters.length > 0) {
+      setChapters(
+        setChapterTitles(
+          chapters,
+          chapterPrefixStyle,
+          showGeneratedChapterTitle,
+          showChapterPrefix,
+          chapterTitleSeperator,
+        ),
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    chapters.length,
+    chapterPrefixStyle,
+    chapterTitleSeperator,
+    showChapterPrefix,
+    showGeneratedChapterTitle,
+  ]);
+
   useEffect(() => {
     if (chapters.length < 1 || novelId !== novel.novelId) {
       dispatch(setNovel({ sourceId, novelUrl, novelName, novelId }));
@@ -50,7 +86,9 @@ const ChapterDrawer = ({ state: st, navigation }) => {
     sort,
     sourceId,
   ]);
+
   const listAscending = sort === 'ORDER BY chapterId ASC';
+
   const scrollToIndex = useMemo(() => {
     if (chapters.length < 1) {
       return;
@@ -62,7 +100,7 @@ const ChapterDrawer = ({ state: st, navigation }) => {
     res = indexOfCurrentChapter >= 2 ? indexOfCurrentChapter - 2 : 0;
     listRef.current?.scrollToIndex?.(res);
     return res;
-  }, [chapters, currentChapterId, listAscending]);
+  }, [chapters, currentChapterId]);
   const [buttonProperties, setButtonProperties] = useState({
     up: {
       text: getString('readerScreen.drawer.scrollToTop'),
@@ -81,19 +119,16 @@ const ChapterDrawer = ({ state: st, navigation }) => {
   });
 
   const changeChapter = item => {
-    navigation.replace('Chapter', {
-      sourceId,
-      novelUrl,
-      novelName,
-      novelId,
-      ...item,
-    });
+    navigation.replace(
+      'Chapter',
+      openChapter({ sourceId, novelUrl, novelName, novelId }, item),
+    );
   };
-  const renderItem = ({ item, index }) => {
+  const renderItem = ({ item }) => {
     return (
       <DrawerChapterItem
         item={item}
-        chapterTitle={chapterTitles[index]}
+        chapterTitle={item.chapterTitle}
         theme={theme}
         currentChapterId={currentChapterId}
         changeChapter={changeChapter}
