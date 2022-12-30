@@ -52,6 +52,7 @@
     "react-native-background-actions": "^2.6.5",
     "react-native-device-info": "^8.4.7",
     "react-native-easing-gradient": "^1.0.0",
+    "react-native-error-boundary": "^1.1.16",
     "react-native-fast-image": "^8.5.11",
     "react-native-gesture-handler": "~1.10.2",
     "react-native-lottie-splash-screen": "^1.0.1",

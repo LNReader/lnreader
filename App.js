@@ -15,6 +15,7 @@ import Main from './src/navigators/Main';
 import { createDatabase } from './src/database/db';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import LottieSplashScreen from 'react-native-lottie-splash-screen';
+import AppErrorBoundary from '@components/AppErrorBoundary/AppErrorBoundary';
 
 const App = () => {
   useEffect(() => {
@@ -23,16 +24,18 @@ const App = () => {
   }, []);
 
   return (
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <SafeAreaProvider>
-          <PaperProvider>
-            <StatusBar translucent={true} backgroundColor="transparent" />
-            <Main />
-          </PaperProvider>
-        </SafeAreaProvider>
-      </PersistGate>
-    </Provider>
+    <AppErrorBoundary>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <SafeAreaProvider>
+            <PaperProvider>
+              <StatusBar translucent={true} backgroundColor="transparent" />
+              <Main />
+            </PaperProvider>
+          </SafeAreaProvider>
+        </PersistGate>
+      </Provider>
+    </AppErrorBoundary>
   );
 };
 
