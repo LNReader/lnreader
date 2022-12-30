@@ -1,7 +1,7 @@
 import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 
-import { Appbar } from '@components';
+import { Appbar, List } from '@components';
 
 export const MoreHeader = ({ title, navigation, theme, goBack }) => (
   <>
@@ -19,6 +19,7 @@ export const MoreHeader = ({ title, navigation, theme, goBack }) => (
         />
       </View>
     </View>
+    <List.Divider theme={theme} />
   </>
 );
 
@@ -27,7 +28,6 @@ const styles = StyleSheet.create({
     paddingTop: 16,
     paddingBottom: 24,
     alignItems: 'center',
-    elevation: 4,
   },
   logo: {
     height: 80,

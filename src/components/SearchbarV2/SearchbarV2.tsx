@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
   searchbarContainer: {
     marginHorizontal: 16,
     marginBottom: 12,
-    minHeight: 46,
+    minHeight: 56,
     borderRadius: 50,
     overflow: 'hidden',
     zIndex: 1,

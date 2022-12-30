@@ -1,6 +1,6 @@
 import React from 'react';
-
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Color from 'color';
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 
 import Library from '../screens/library/LibraryScreen';
 import Updates from '../screens/updates/UpdatesScreen';
@@ -10,9 +10,7 @@ import More from '../screens/more/MoreScreen';
 
 import { useSettings } from '../hooks/reduxHooks';
 import { getString } from '../../strings/translations';
-import createMaterialBottomTabNavigator from './BottomNavigation/createMaterialBottomTabNavigator';
 import { useTheme } from '@hooks/useTheme';
-import Color from 'color';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -27,15 +25,14 @@ const BottomNavigator = () => {
 
   return (
     <Tab.Navigator
-      theme={{
-        colors: {
-          ...theme,
-          background: theme.background,
-          elevation: {
-            level2: Color(theme.primary).alpha(0.08).string(),
-          },
-        },
+      barStyle={{
+        backgroundColor: Color(theme.surface)
+          .mix(Color(theme.primary), 0.08)
+          .rgb()
+          .string(),
       }}
+      theme={{ colors: theme }}
+      activeColor={theme.primary}
       shifting={!showLabelsInNav}
     >
       <Tab.Screen

@@ -47,7 +47,7 @@ import { setAppSettings } from '../../redux/settings/settings.actions';
 import TextReader from './components/TextReader';
 import WebViewReader from './components/WebViewReader';
 import { useTextToSpeech } from '../../hooks/useTextToSpeech';
-import { useFullscreenMode } from '../../hooks';
+import { useFullscreenMode, useLibrarySettings } from '../../hooks';
 import { getChapterFromDb } from '../../database/queries/DownloadQueries';
 import ReaderBottomSheetV2 from './components/ReaderBottomSheet/ReaderBottomSheet';
 import { useReaderSettings } from '../../redux/hooks';
@@ -104,7 +104,6 @@ const ChapterContent = ({ route, navigation }) => {
 
   const {
     swipeGestures = false,
-    incognitoMode = false,
     useWebViewForChapter = false,
     wvUseNewSwipes = false,
     wvShowSwipeMargins = true,
@@ -115,6 +114,7 @@ const ChapterContent = ({ route, navigation }) => {
     verticalSeekbar = true,
     removeExtraParagraphSpacing = false,
   } = useSettings();
+  const { incognitoMode } = useLibrarySettings();
 
   const { setImmersiveMode, showStatusAndNavBar } = useFullscreenMode();
 

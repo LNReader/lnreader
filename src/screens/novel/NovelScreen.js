@@ -253,6 +253,10 @@ const Novel = ({ route, navigation }) => {
       }
       setSelected(sel => [...sel, chapter]);
     } else {
+      if (selected.length === chapters.length) {
+        return;
+      }
+
       /**
        * Select custom range
        */

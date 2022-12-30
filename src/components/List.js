@@ -28,7 +28,7 @@ const ListItem = ({
 }) => (
   <PaperList.Item
     title={title}
-    style={style}
+    style={[{ paddingHorizontal: 16 }, style]}
     titleStyle={[{ color: theme.textColorPrimary }, titleStyle]}
     description={description}
     descriptionStyle={{ color: theme.textColorSecondary }}

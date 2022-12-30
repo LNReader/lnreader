@@ -75,6 +75,7 @@ const InfoItem = ({
 }) => (
   <PaperList.Item
     title={title}
+    style={{ paddingHorizontal: 16 }}
     titleStyle={[{ color: theme.textColorSecondary }, styles.infoItem]}
     titleNumberOfLines={5}
     left={() =>
