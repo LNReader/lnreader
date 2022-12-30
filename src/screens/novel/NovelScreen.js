@@ -78,6 +78,7 @@ const Novel = ({ route, navigation }) => {
   const progressViewOffset = topInset + 32;
 
   const { novel, chapters, loading, updating } = useNovel();
+
   const { downloadQueue } = useSelector(state => state.downloadsReducer);
 
   const [selected, setSelected] = useState([]);

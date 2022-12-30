@@ -1,21 +1,23 @@
 import * as SQLite from 'expo-sqlite';
 import { showToast } from '../../hooks/showToast';
-import { sourceManager } from '../../sources/sourceManager';
 import { ChapterItem } from '../types';
 
 import * as cheerio from 'cheerio';
 import RNFetchBlob from 'rn-fetch-blob';
 import { txnErrorCallback } from '@database/utils/helpers';
+import { fetchChapter } from '../../services/Source/source';
 
 const db = SQLite.openDatabase('lnreader.db');
 
 const insertChaptersQuery =
-  'INSERT INTO chapters (chapterUrl, chapterName, releaseDate, novelId) values (?, ?, ?, ?)';
+  'INSERT INTO chapters (chapterUrl, chapterPrefix, chapterName, releaseDate, novelId) values (?, ?, ?, ?, ?)';
 
 export const insertChapters = async (
   novelId: number,
   chapters: ChapterItem[],
 ) => {
+  console.log('Hey');
+
   db.transaction(
     tx => {
       chapters.map(chapter =>
@@ -23,6 +25,7 @@ export const insertChapters = async (
           insertChaptersQuery,
           [
             chapter.chapterUrl,
+            chapter.chapterPrefix,
             chapter.chapterName,
             chapter.releaseDate,
             novelId,
@@ -246,7 +249,7 @@ export const isChapterDownloaded = async (chapterId: number) => {
 };
 
 const downloadChapterQuery =
-  'INSERT INTO downloads (downloadChapterId, chapterName, chapterText) VALUES (?, ?, ?)';
+  'INSERT INTO downloads (downloadChapterId, chapterPrefix, chapterName, chapterText) VALUES (?, ?, ?, ?)';
 
 const createImageFolder = async (
   path: string,
@@ -319,9 +322,7 @@ export const downloadChapter = async (
   chapterId: number,
 ) => {
   try {
-    const source = sourceManager(sourceId);
-
-    const chapter = await source.parseChapter(novelUrl, chapterUrl);
+    const chapter = await fetchChapter(sourceId, novelUrl, chapterUrl);
 
     if (chapter.chapterText?.length) {
       const imagedChapterText =
@@ -340,7 +341,12 @@ export const downloadChapter = async (
         );
         tx.executeSql(
           downloadChapterQuery,
-          [chapterId, chapter.chapterName, imagedChapterText],
+          [
+            chapterId,
+            chapter.chapterPrefix,
+            chapter.chapterName,
+            imagedChapterText,
+          ],
           (_txObj, _res) => {
             return true;
           },

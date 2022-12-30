@@ -1,9 +1,12 @@
 import { sourceManager } from '../../sources/sourceManager';
+import { unifiedParser, unifiedParserMap } from './unifiedParser';
 
-export const fetchNovel = async (sourceId, novelUrl) => {
+export const fetchNovel = async (sourceId: number, novelUrl: string) => {
   const source = sourceManager(sourceId);
 
   const res = await source.parseNovelAndChapters(novelUrl);
+
+  const chapters = res.chapters?.map(unifiedParserMap);
 
   const novel = {
     novelUrl: res.novelUrl,
@@ -18,26 +21,31 @@ export const fetchNovel = async (sourceId, novelUrl) => {
     status: res.status,
     genre: res.genre,
     followed: 0,
-    chapters: res.chapters,
+    chapters: chapters,
   };
 
   return novel;
 };
 
-export const fetchChapter = async (sourceId, novelUrl, chapterUrl) => {
+export const fetchChapter = async (
+  sourceId: number,
+  novelUrl: string,
+  chapterUrl: string,
+) => {
   const source = sourceManager(sourceId);
 
   let chapter = await source.parseChapter(novelUrl, chapterUrl);
+  chapter = await unifiedParser(chapter);
 
-  return chapter;
+  return unifiedParser(chapter);
 };
 
-export const fetchChapters = async (sourceId, novelUrl) => {
+export const fetchChapters = async (sourceId: number, novelUrl: string) => {
   const source = sourceManager(sourceId);
 
   const res = await source.parseNovelAndChapters(novelUrl);
 
-  const chapters = res.chapters;
+  const chapters = res.chapters?.map(unifiedParserMap);
 
   return chapters;
 };

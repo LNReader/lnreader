@@ -30,6 +30,7 @@ export interface SourceNovel {
   genre?: string;
   summary?: string;
   author?: string;
+  artist?: string;
   status?: string;
   chapters?: SourceChapterItem[];
 }
@@ -38,8 +39,15 @@ export interface SourceChapter {
   sourceId: number;
   novelUrl: string;
   chapterUrl: string;
-  chapterName?: string;
+  chapterName: string;
   chapterText?: string;
+}
+
+export interface ParsedChapter extends SourceChapter {
+  chapterPrefix?: string;
+}
+export interface ParsedChapterItem extends SourceChapterItem {
+  chapterPrefix?: string;
 }
 
 export enum Status {

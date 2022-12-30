@@ -8,6 +8,7 @@ interface oCProps {
     chapterId: number;
     chapterUrl: string;
     novelId: number;
+    chapterPrefix: string;
     chapterName: string;
     bookmark: number;
   };
@@ -27,6 +28,7 @@ export function openChapter(
     chapterId: chapter.chapterId,
     chapterUrl: chapter.chapterUrl,
     novelId: chapter.novelId,
+    chapterPrefix: chapter.chapterPrefix,
     chapterName: chapter.chapterName,
     bookmark: chapter.bookmark,
   };

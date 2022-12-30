@@ -1,4 +1,5 @@
 export interface MD3ThemeType {
+  colorButtonText: string;
   id: number;
   name: string;
   isDark: boolean;

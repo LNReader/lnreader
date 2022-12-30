@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import * as SQLite from 'expo-sqlite';
+import { fetchChapter } from '../../services/Source/source';
 import { showToast } from '../../hooks/showToast';
-import { sourceManager } from '../../sources/sourceManager';
 import { DownloadedChapter } from '../types';
 
 import {
@@ -14,9 +14,9 @@ const db = SQLite.openDatabase('lnreader.db');
 
 const downloadChapterQuery = `
   INSERT INTO 
-      downloads (downloadChapterId, chapterName, chapterText)
+      downloads (downloadChapterId, chapterPrefix, chapterName, chapterText)
   VALUES
-    (?, ?, ?)
+    (?, ?, ?, ?)
 	`;
 
 export const fetchAndInsertChapterInDb = async (
@@ -25,16 +25,18 @@ export const fetchAndInsertChapterInDb = async (
   chapterId: number,
   chapterUrl: string,
 ) => {
-  const chapter = await sourceManager(sourceId).parseChapter(
-    novelUrl,
-    chapterUrl,
-  );
+  const chapter = await fetchChapter(sourceId, novelUrl, chapterUrl);
 
   db.transaction(tx => {
     tx.executeSql(updateChapterDownloadedQuery, [chapterId]);
     tx.executeSql(
       downloadChapterQuery,
-      [chapterId, chapter.chapterName, chapter.chapterText],
+      [
+        chapterId,
+        chapter.chapterPrefix,
+        chapter.chapterName,
+        chapter.chapterText,
+      ],
       (txObj, res) => {},
       (_txObj, error) => showToast(error),
     );

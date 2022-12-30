@@ -218,6 +218,12 @@ const ChapterContent = ({ route, navigation }) => {
 
   const [ttsStatus, ttsPosition, startTts, pauseTts] = useTextToSpeech(
     chapter?.chapterText,
+    () => {
+      if (!incognitoMode) {
+        dispatch(markChapterReadAction(chapterId, novelId));
+        updateTracker();
+      }
+    },
   );
 
   useEffect(() => {

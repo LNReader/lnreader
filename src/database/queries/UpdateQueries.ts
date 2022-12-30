@@ -11,7 +11,8 @@ const getUpdatesFromDbQuery = `
       chapters.chapterId, 
       chapters.read, 
       chapters.downloaded, 
-      chapters.chapterUrl, 
+      chapters.chapterUrl,
+      chapters.chapterPrefix, 
       chapters.chapterName,
       chapters.bookmark,
       chapters.releaseDate,
@@ -35,7 +36,7 @@ const getUpdatesFromDbQuery = `
     WHERE 
       date(updates.updateTime) > date('now','-3 months')
     ORDER BY 
-      updates.updateTime DESC, chapters.chapterName DESC, chapters.releaseDate DESC
+      updates.updateTime DESC, chapters.chapterPrefix DESC, chapters.releaseDate DESC
     `;
 
 export const getUpdatesFromDb = async (): Promise<Update[]> => {
