@@ -1,6 +1,6 @@
 import { setChapterTitleInDB } from '@database/queries/ChapterQueries';
 import { ChapterItem } from '@database/types';
-import { usePreferences, useSettings } from '@hooks/reduxHooks';
+import { useEffect, useState } from 'react';
 
 export const parseChapterPrefix = (
   chapterPrefix: string,
@@ -25,42 +25,95 @@ export const parseChapterPrefix = (
 };
 
 export const parseChapterTitle = (
-  chapterPrefix: string | undefined,
-  chapterName: string | undefined,
-  newPrefix: Array<string | null>,
+  chapterPrefix: string,
+  chapterName: string,
+  chapterPrefixStyle: Array<string>,
+  generatedChapterTitle: boolean,
+  showChapterPrefix: boolean,
+  index: number,
   seperator?: string,
 ) => {
-  let chapterTitle;
-  if (chapterPrefix) {
-    if (newPrefix?.[0] || newPrefix?.[0] === '') {
-      chapterTitle = chapterPrefix.replace(
-        /[v][a-zA-Z]*\s*(?=\d+)/i,
-        newPrefix[0],
-      );
-    } else {
-      chapterTitle = chapterPrefix.replace(/[v]\w*\s*\d+/i, '');
-    }
-    if (newPrefix?.[1] || newPrefix?.[1] === '') {
-      chapterTitle = chapterTitle.replace(
-        /[c][a-zA-Z]*\s*(?=\d+)/i,
-        newPrefix[1],
-      );
-      if (chapterTitle.charAt(0) !== 'C' && newPrefix?.[1] !== '') {
-        chapterTitle = newPrefix[1] + chapterTitle;
-      }
-    } else {
-      chapterTitle = chapterTitle.replace(/[v]\w*\s*\d+/i, '');
-    }
-  } else {
+  if (generatedChapterTitle) {
+    return chapterPrefixStyle[1] + (index + 1);
+  }
+  if (!chapterPrefix || !showChapterPrefix) {
     return chapterName;
   }
-  if (chapterName) {
-    if (seperator || seperator === '') {
-      return (chapterTitle + seperator + chapterName).trim();
-    }
-    return (chapterTitle + ' ' + chapterName).trim();
+  let chapterTitle;
+
+  if (chapterPrefixStyle?.[0] || chapterPrefixStyle?.[0] === '') {
+    chapterTitle = chapterPrefix.replace(
+      /[v][a-zA-Z]*\s*(?=\d+)/i,
+      chapterPrefixStyle[0],
+    );
+  } else {
+    chapterTitle = chapterPrefix.replace(/[v]\w*\s*\d+/i, '');
   }
-  return chapterTitle.trim();
+  if (chapterPrefixStyle?.[1] || chapterPrefixStyle?.[1] === '') {
+    chapterTitle = chapterTitle.replace(
+      /[c][a-zA-Z]*\s*(?=\d+)/i,
+      chapterPrefixStyle[1],
+    );
+    if (chapterTitle.charAt(0) !== 'C' && chapterPrefixStyle?.[1] !== '') {
+      chapterTitle = chapterPrefixStyle[1] + chapterTitle;
+    }
+  } else {
+    chapterTitle = chapterTitle.replace(/[v]\w*\s*\d+/i, '');
+  }
+
+  if (!chapterName) {
+    return chapterTitle.trim();
+  }
+  if (seperator || seperator === '') {
+    return (chapterTitle + seperator + chapterName).trim();
+  }
+  return (chapterTitle + ' ' + chapterName).trim();
+};
+
+export interface chapterTitleOptionsType {
+  chapterPrefixStyle: Array<string>;
+  showGeneratedChapterTitle: boolean;
+  showChapterPrefix: boolean;
+  chapterTitleSeperator: string;
+}
+
+export const useChapterTitle = (
+  chapter: ChapterItem,
+  index: number,
+  chapterTitleOptions: chapterTitleOptionsType,
+) => {
+  const {
+    chapterPrefixStyle,
+    showGeneratedChapterTitle,
+    showChapterPrefix,
+    chapterTitleSeperator,
+  } = chapterTitleOptions;
+  const { chapterPrefix, chapterName, chapterId } = chapter;
+  const [chapterTitle, setChapterTitle] = useState('');
+  useEffect(() => {
+    const chapTitle = parseChapterTitle(
+      chapterPrefix,
+      chapterName,
+      chapterPrefixStyle,
+      showGeneratedChapterTitle,
+      showChapterPrefix,
+      index,
+      chapterTitleSeperator,
+    );
+
+    setChapterTitleInDB(chapTitle, chapterId);
+    setChapterTitle(chapTitle);
+  }, [
+    chapterPrefix,
+    chapterName,
+    chapterPrefixStyle,
+    chapterTitleSeperator,
+    index,
+    showChapterPrefix,
+    showGeneratedChapterTitle,
+    chapterId,
+  ]);
+  return chapterTitle;
 };
 
 export const parseChapterTitleV2 = (
@@ -135,83 +188,4 @@ export const setChapterTitles = (
     res.push(item.chapterTitle);
   });
   return res;
-};
-
-export const useChapterTitle = (
-  chapterPrefix: string | undefined,
-  chapterName: string | undefined,
-  novelId: number,
-) => {
-  const {
-    defaultShowChapterPrefix = true,
-    defaultChapterPrefixStyle = ['Volume ', 'Chapter '],
-    defaultChapterTitleSeperator = ' - ',
-  } = useSettings();
-  const {
-    showChapterPrefix = defaultShowChapterPrefix,
-    chapterPrefixStyle = defaultChapterPrefixStyle,
-    chapterTitleSeperator = defaultChapterTitleSeperator,
-  } = usePreferences(novelId);
-  if (!showChapterPrefix) {
-    return chapterName;
-  }
-
-  let chapterTitle = parseChapterTitle(
-    chapterPrefix,
-    chapterName,
-    chapterPrefixStyle,
-    chapterTitleSeperator,
-  );
-
-  return chapterTitle;
-};
-
-export const useMultipleChapterTitles = (
-  chapters: Array<ChapterItem>,
-  novelId: number,
-): Array<string | undefined> => {
-  const {
-    defaultShowChapterPrefix = true,
-    defaultChapterPrefixStyle = ['Volume ', 'Chapter '],
-    defaultChapterTitleSeperator = ' - ',
-  } = useSettings();
-  const {
-    showChapterPrefix = defaultShowChapterPrefix,
-    chapterPrefixStyle = defaultChapterPrefixStyle,
-    chapterTitleSeperator = defaultChapterTitleSeperator,
-  } = usePreferences(novelId);
-  const chapterTitles = chapters.map(item => {
-    if (!showChapterPrefix) {
-      return item.chapterName;
-    }
-    return parseChapterTitle(
-      item.chapterPrefix,
-      item.chapterName,
-      chapterPrefixStyle,
-      chapterTitleSeperator,
-    );
-  });
-  return chapterTitles;
-};
-
-export const useMultipleChapterTitlesWithoutNovel = (
-  chapters: Array<ChapterItem>,
-): Array<string | undefined> => {
-  const {
-    defaultShowChapterPrefix = true,
-    defaultChapterPrefixStyle = ['Volume ', 'Chapter '],
-    defaultChapterTitleSeperator = ' - ',
-  } = useSettings();
-  const chapterTitles = chapters.map(item => {
-    if (!defaultShowChapterPrefix) {
-      return item.chapterName;
-    }
-    return parseChapterTitle(
-      item.chapterPrefix,
-      item.chapterName,
-      defaultChapterPrefixStyle,
-      defaultChapterTitleSeperator,
-    );
-  });
-  return chapterTitles;
 };

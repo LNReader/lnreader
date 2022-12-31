@@ -44,28 +44,14 @@ const ChapterDrawer = ({ state: st, navigation }) => {
     chapterTitleSeperator = defaultChapterTitleSeperator,
   } = usePreferences(novelId);
 
-  const { chapters: c, novel } = useNovel();
-  const [chapters, setChapters] = useState(c);
-  useEffect(() => {
-    if (chapters.length > 0) {
-      setChapters(
-        setChapterTitles(
-          chapters,
-          chapterPrefixStyle,
-          showGeneratedChapterTitle,
-          showChapterPrefix,
-          chapterTitleSeperator,
-        ),
-      );
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    chapters.length,
-    chapterPrefixStyle,
-    chapterTitleSeperator,
-    showChapterPrefix,
-    showGeneratedChapterTitle,
-  ]);
+  const chapterTitleOptions = {
+    showGeneratedChapterTitle: showGeneratedChapterTitle,
+    showChapterPrefix: showChapterPrefix,
+    chapterPrefixStyle: chapterPrefixStyle,
+    chapterTitleSeperator: chapterTitleSeperator,
+  };
+
+  const { chapters, novel } = useNovel();
 
   useEffect(() => {
     if (chapters.length < 1 || novelId !== novel.novelId) {
@@ -124,11 +110,12 @@ const ChapterDrawer = ({ state: st, navigation }) => {
       openChapter({ sourceId, novelUrl, novelName, novelId }, item),
     );
   };
-  const renderItem = ({ item }) => {
+  const renderItem = ({ item, index }) => {
     return (
       <DrawerChapterItem
         item={item}
-        chapterTitle={item.chapterTitle}
+        index={index}
+        chapterTitleOptions={chapterTitleOptions}
         theme={theme}
         currentChapterId={currentChapterId}
         changeChapter={changeChapter}

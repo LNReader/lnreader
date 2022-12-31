@@ -105,7 +105,6 @@ const ChapterContent = ({ route, navigation }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const readerSettings = useReaderSettings();
-  const chapterTitleO = useChapterTitle(chapterPrefix, chapterName, novelId);
   const parsedChapterPrefix = useChapterTitle(chapterPrefix, '', novelId);
   const {
     swipeGestures = false,

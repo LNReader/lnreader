@@ -67,7 +67,6 @@ import useBoolean from '@hooks/useBoolean';
 import { useCategorySettings } from '@hooks/useSettings';
 import { openChapter } from '../../utils/handleNavigateParams';
 import NovelScreenLoading from './components/LoadingAnimation/NovelScreenLoading';
-import { setChapterTitles } from '@utils/parseChapterTitle';
 
 const Novel = ({ route, navigation }) => {
   const item = route.params;
@@ -78,11 +77,7 @@ const Novel = ({ route, navigation }) => {
   const { top: topInset, bottom: bottomInset } = useSafeAreaInsets();
   const progressViewOffset = topInset + 32;
 
-  const { novel, chapters: c, loading, updating } = useNovel();
-  const [chapterTitles, setChapterTitle] = useState();
-  const chapters = c.map((it, index) => {
-    return { ...it, chapterTitle: chapterTitles?.[index] };
-  });
+  const { novel, chapters, loading, updating } = useNovel();
 
   const { downloadQueue } = useSelector(state => state.downloadsReducer);
 
@@ -114,31 +109,17 @@ const Novel = ({ route, navigation }) => {
     chapterTitleSeperator = defaultChapterTitleSeperator,
   } = usePreferences(novel.novelId);
 
+  const chapterTitleOptions = {
+    showGeneratedChapterTitle: showGeneratedChapterTitle,
+    showChapterPrefix: showChapterPrefix,
+    chapterPrefixStyle: chapterPrefixStyle,
+    chapterTitleSeperator: chapterTitleSeperator,
+  };
+
   let { lastReadChapter, position } = useContinueReading(
     chapters,
     novel.novelId,
   );
-  useEffect(() => {
-    if (!updating && chapters.length > 0) {
-      setChapterTitle(
-        setChapterTitles(
-          c,
-          chapterPrefixStyle,
-          showGeneratedChapterTitle,
-          showChapterPrefix,
-          chapterTitleSeperator,
-        ),
-      );
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    chapters.length,
-    updating,
-    chapterPrefixStyle,
-    chapterTitleSeperator,
-    showChapterPrefix,
-    showGeneratedChapterTitle,
-  ]);
 
   useEffect(() => {
     dispatch(
@@ -263,6 +244,7 @@ const Novel = ({ route, navigation }) => {
     }
 
     return list;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selected]);
 
   const deleteChapter = (chapterId, chapterTitle) =>
@@ -368,11 +350,10 @@ const Novel = ({ route, navigation }) => {
     showExtraMenu(false);
   };
 
-  const renderItem = ({ item: it }) => (
+  const renderItem = ({ item: it, index }) => (
     <ChapterItem
       theme={theme}
       chapter={it}
-      chapterTitle={it.chapterTitle}
       downloadQueue={downloadQueue}
       deleteChapter={deleteChapter}
       downloadChapter={downloadChapter}
@@ -381,6 +362,8 @@ const Novel = ({ route, navigation }) => {
       onSelectLongPress={onSelectLongPress}
       navigateToChapter={navigateToChapter}
       showProgressPercentage={showProgressPercentage}
+      chapterTitleOptions={chapterTitleOptions}
+      index={index}
     />
   );
 
@@ -684,6 +667,7 @@ const Novel = ({ route, navigation }) => {
                 trackerSheetRef={trackerSheetRef}
                 novelBottomSheetRef={novelBottomSheetRef}
                 deleteDownloadsSnackbar={deleteDownloadsSnackbar}
+                chapterTitleOptions={chapterTitleOptions}
               />
             }
             refreshControl={refreshControl()}

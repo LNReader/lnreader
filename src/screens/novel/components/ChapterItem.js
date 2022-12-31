@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import color from 'color';
 
@@ -8,11 +8,11 @@ import {
   ChapterBookmarkButton,
   DownloadButton,
 } from './Chapter/ChapterDownloadButtons';
+import { useChapterTitle } from '@utils/parseChapterTitle';
 
 const ChapterItem = ({
   chapter,
   theme,
-  chapterTitle,
   downloadQueue,
   downloadChapter,
   deleteChapter,
@@ -21,9 +21,11 @@ const ChapterItem = ({
   onSelectLongPress,
   navigateToChapter,
   showProgressPercentage,
+  chapterTitleOptions,
+  index,
 }) => {
   const { chapterId, read, releaseDate, bookmark } = chapter;
-
+  const chapterTitle = useChapterTitle(chapter, index, chapterTitleOptions);
   const [deleteChapterMenu, setDeleteChapterMenu] = useState(false);
   const showDeleteChapterMenu = () => setDeleteChapterMenu(true);
   const hideDeleteChapterMenu = () => setDeleteChapterMenu(false);
