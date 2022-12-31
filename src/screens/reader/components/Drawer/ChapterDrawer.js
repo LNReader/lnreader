@@ -11,7 +11,6 @@ import { useDispatch } from 'react-redux';
 import { setNovel, getNovelAction } from '@redux/novel/novel.actions';
 import { dividerColor } from '@theme/colors';
 import DrawerChapterItem from './DrawerChapterItem';
-import { setChapterTitles } from '@utils/parseChapterTitle';
 import { openChapter } from '@utils/handleNavigateParams';
 
 const ChapterDrawer = ({ state: st, navigation }) => {

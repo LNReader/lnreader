@@ -24,6 +24,7 @@ import { fetchChapter } from '../../services/Source/source';
 import { showToast } from '../../hooks/showToast';
 import {
   usePosition,
+  usePreferences,
   useSettings,
   useTrackingStatus,
 } from '../../hooks/reduxHooks';
@@ -96,16 +97,16 @@ const ChapterContent = ({ route, navigation }) => {
     novelName,
     chapterPrefix,
     chapterName,
-    chapterTitle,
     bookmark,
   } = params;
   let scrollViewRef = useRef(null);
   let readerSheetRef = useRef(null);
-
   const theme = useTheme();
   const dispatch = useDispatch();
   const readerSettings = useReaderSettings();
-  const parsedChapterPrefix = useChapterTitle(chapterPrefix, '', novelId);
+  const [parsedChapterPrefix, setParsedChapterPrefix] = useState('');
+  const [chapter, setChapter] = useState({});
+
   const {
     swipeGestures = false,
     incognitoMode = false,
@@ -118,7 +119,30 @@ const ChapterContent = ({ route, navigation }) => {
     autoScrollOffset = null,
     verticalSeekbar = true,
     removeExtraParagraphSpacing = false,
+    defaultShowChapterPrefix = true,
+    defaultChapterPrefixStyle = ['Volume ', 'Chapter '],
+    defaultChapterTitleSeperator = ' - ',
   } = useSettings();
+
+  const {
+    showGeneratedChapterTitle = false,
+    showChapterPrefix = defaultShowChapterPrefix,
+    chapterPrefixStyle = defaultChapterPrefixStyle,
+    chapterTitleSeperator = defaultChapterTitleSeperator,
+  } = usePreferences(novelId);
+
+  const chapterTitleOptions = {
+    showGeneratedChapterTitle: showGeneratedChapterTitle,
+    showChapterPrefix: showChapterPrefix,
+    chapterPrefixStyle: chapterPrefixStyle,
+    chapterTitleSeperator: chapterTitleSeperator,
+  };
+  const chapterTitle = useChapterTitle(chapter, 1, chapterTitleOptions);
+  useEffect(() => {
+    setParsedChapterPrefix(
+      parseChapterPrefix(chapterPrefix, chapterPrefixStyle),
+    );
+  }, [chapterPrefixStyle, chapterPrefix]);
 
   const { setImmersiveMode, showStatusAndNavBar } = useFullscreenMode();
 
@@ -129,7 +153,6 @@ const ChapterContent = ({ route, navigation }) => {
 
   const isTracked = trackedNovels.find(obj => obj.novelId === novelId);
 
-  const [chapter, setChapter] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
 
@@ -203,7 +226,6 @@ const ChapterContent = ({ route, navigation }) => {
   const setPrevAndNextChap = async () => {
     const nextChap = await getNextChapter(novelId, chapterId);
     const prevChap = await getPrevChapter(novelId, chapterId);
-    console.log('setPrevAndNextChap', nextChap);
     setNextChapter(nextChap);
     setPrevChapter(prevChap);
   };
@@ -226,7 +248,6 @@ const ChapterContent = ({ route, navigation }) => {
 
   useEffect(() => {
     setPrevAndNextChap();
-    console.log(JSON.stringify({ ...chapter, chapterText: '' }, null, 2));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chapter]);
 
