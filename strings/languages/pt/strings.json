@@ -15,8 +15,8 @@
     "searchFor": "Pesquisar por",
     "globally": "globalmente",
     "searchResults": "Resultados da busca",
-    "chapters": "Chapters",
-    "submit": "Submit"
+    "chapters": "Capítulos",
+    "submit": "Aplicar"
   },
   "library": "Biblioteca",
   "libraryScreen": {
@@ -87,12 +87,12 @@
       "showProgressPercentage": "Exibir porcentagem do progresso",
       "swipeGestures": "Deslize para esquerda/direita para navegar entre capítulos",
       "allowTextSelection": "Permitir seleção de texto",
-      "useChapterDrawerSwipeNavigation": "Swipe right to open drawer"
+      "useChapterDrawerSwipeNavigation": "Deslize para a direita para abrir a gaveta"
     },
     "drawer": {
-      "scrollToCurrentChapter": "Scroll to current chapter",
-      "scrollToTop": "Scroll to top",
-      "scrollToBottom": "Scroll to bottom"
+      "scrollToCurrentChapter": "Rolar para o capítulo atual",
+      "scrollToTop": "Rolar para o topo",
+      "scrollToBottom": "Rolar para baixo"
     }
   },
   "novelScreen": {
