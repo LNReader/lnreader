@@ -156,21 +156,13 @@ const Novel = ({ route, navigation }) => {
 
   const keyExtractor = useCallback(i => i.chapterId.toString(), []);
 
-  const downloadChapter = (
-    chapterUrl,
-    chapterPrefix,
-    chapterName,
-    chapterTitle,
-    chapterId,
-  ) =>
+  const downloadChapter = (chapterUrl, chapterTitle, chapterId) =>
     dispatch(
       downloadChapterAction(
         sourceId,
         novelUrl,
         novelId,
         chapterUrl,
-        chapterPrefix,
-        chapterName,
         chapterTitle,
         chapterId,
       ),

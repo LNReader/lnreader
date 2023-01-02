@@ -71,8 +71,6 @@ const Downloads = ({ navigation }) => {
     novelUrl,
     novelId,
     chapterUrl,
-    chapterPrefix,
-    chapterName,
     chapterTitle,
     chapterId,
   ) =>
@@ -82,8 +80,6 @@ const Downloads = ({ navigation }) => {
         novelUrl,
         novelId,
         chapterUrl,
-        chapterPrefix,
-        chapterName,
         chapterTitle,
         chapterId,
       ),

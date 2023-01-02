@@ -20,6 +20,7 @@ import {
 } from '../../../../theme/colors';
 import { openNovelProps } from '@utils/handleNavigateParams';
 import { useChapterTitle } from '@utils/parseChapterTitle';
+import { usePreferences, useSettings } from '@hooks/reduxHooks';
 
 interface UpdateCardProps {
   item: Update;
@@ -35,8 +36,7 @@ interface UpdateCardProps {
     sourceId: number,
     novelId: number,
     chapterId: number,
-    chapterPrefix: string,
-    chapterName: string,
+    chapterTitle: string,
   ) => void;
   theme: MD3ThemeType;
 }
@@ -62,11 +62,27 @@ const UpdateCard: React.FC<UpdateCardProps> = ({
     (chapter: ChapterItem) => chapter.chapterId === item.chapterId,
   );
 
-  const chapterTitle = useChapterTitle(
-    item.chapterPrefix,
-    item.chapterName,
-    item.novelId,
-  );
+  const {
+    defaultShowChapterPrefix = true,
+    defaultChapterPrefixStyle = ['Volume ', 'Chapter '],
+    defaultChapterTitleSeperator = ' - ',
+  } = useSettings();
+
+  const {
+    showGeneratedChapterTitle = false,
+    showChapterPrefix = defaultShowChapterPrefix,
+    chapterPrefixStyle = defaultChapterPrefixStyle,
+    chapterTitleSeperator = defaultChapterTitleSeperator,
+  } = usePreferences(item.novelId);
+
+  const chapterTitleOptions = {
+    showGeneratedChapterTitle: showGeneratedChapterTitle,
+    showChapterPrefix: showChapterPrefix,
+    chapterPrefixStyle: chapterPrefixStyle,
+    chapterTitleSeperator: chapterTitleSeperator,
+  };
+  // TODO fix index
+  const chapterTitle = useChapterTitle(item, 0, chapterTitleOptions);
   const [menu, setMenu] = useState(false);
 
   return (
@@ -104,12 +120,10 @@ const UpdateCard: React.FC<UpdateCardProps> = ({
           name="arrow-down-circle-outline"
           size={25}
           onPress={() =>
-            handleDownloadChapter(
-              item.sourceId,
-              item.novelUrl,
-              item.novelId,
-              item as ChapterItem,
-            )
+            handleDownloadChapter(item.sourceId, item.novelUrl, item.novelId, {
+              ...item,
+              chapterTitle: chapterTitle,
+            } as ChapterItem)
           }
           color={theme.textColorHint}
           theme={theme}
@@ -134,8 +148,7 @@ const UpdateCard: React.FC<UpdateCardProps> = ({
                 item.sourceId,
                 item.novelId,
                 item.chapterId,
-                item.chapterPrefix,
-                item.chapterName,
+                chapterTitle,
               )
             }
             title="Delete"

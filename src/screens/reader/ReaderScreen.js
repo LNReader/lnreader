@@ -144,26 +144,6 @@ const ChapterContent = ({ route, navigation }) => {
     );
   }, [chapterPrefixStyle, chapterPrefix]);
 
-  const {
-    showGeneratedChapterTitle = false,
-    showChapterPrefix = defaultShowChapterPrefix,
-    chapterPrefixStyle = defaultChapterPrefixStyle,
-    chapterTitleSeperator = defaultChapterTitleSeperator,
-  } = usePreferences(novelId);
-
-  const chapterTitleOptions = {
-    showGeneratedChapterTitle: showGeneratedChapterTitle,
-    showChapterPrefix: showChapterPrefix,
-    chapterPrefixStyle: chapterPrefixStyle,
-    chapterTitleSeperator: chapterTitleSeperator,
-  };
-  const chapterTitle = useChapterTitle(chapter, 1, chapterTitleOptions);
-  useEffect(() => {
-    setParsedChapterPrefix(
-      parseChapterPrefix(chapterPrefix, chapterPrefixStyle),
-    );
-  }, [chapterPrefixStyle, chapterPrefix]);
-
   const { setImmersiveMode, showStatusAndNavBar } = useFullscreenMode();
 
   const [hidden, setHidden] = useState(true);

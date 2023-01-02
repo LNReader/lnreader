@@ -12,7 +12,7 @@ import {
 
 import { convertDateToISOString } from '../../database/utils/convertDateToISOString';
 
-import { ChapterItem, Update } from '../../database/types';
+import { ChapterItem, NovelInfo, Update } from '../../database/types';
 
 import { useSearch, useUpdates } from '../../hooks';
 import { useAppDispatch } from '../../redux/hooks';
@@ -27,8 +27,6 @@ import { MD3ThemeType } from '../../theme/types';
 import { useTheme } from '@hooks/useTheme';
 import {
   openChapter,
-  openChapterChapterTypes,
-  openChapterNovelTypes,
   openChapterFunctionTypes,
   openNovel,
   openNovelProps,
@@ -113,10 +111,7 @@ const UpdatesScreen = () => {
   ) =>
     dispatch(deleteChapterAction(sourceId, novelId, chapterId, chapterTitle));
 
-  const navigateToChapter = (
-    novel: openChapterNovelTypes,
-    chapter: openChapterChapterTypes,
-  ) =>
+  const navigateToChapter = (novel: NovelInfo, chapter: ChapterItem) =>
     navigate(
       'Chapter' as never,
       openChapter(novel, chapter) as openChapterFunctionTypes as never,
