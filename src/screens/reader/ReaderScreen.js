@@ -119,7 +119,7 @@ const ChapterContent = ({ route, navigation }) => {
     verticalSeekbar = true,
     removeExtraParagraphSpacing = false,
     defaultShowChapterPrefix = true,
-    defaultChapterPrefixStyle = ['Volume ', 'Chapter '],
+    defaultChapterPrefixStyle = ['Volume ', ' Chapter '],
     defaultChapterTitleSeperator = ' - ',
   } = useSettings();
   const { incognitoMode } = useLibrarySettings();

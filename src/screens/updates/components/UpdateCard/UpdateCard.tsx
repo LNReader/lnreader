@@ -64,7 +64,7 @@ const UpdateCard: React.FC<UpdateCardProps> = ({
 
   const {
     defaultShowChapterPrefix = true,
-    defaultChapterPrefixStyle = ['Volume ', 'Chapter '],
+    defaultChapterPrefixStyle = ['Volume ', ' Chapter '],
     defaultChapterTitleSeperator = ' - ',
   } = useSettings();
 

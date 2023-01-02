@@ -30,7 +30,7 @@ const ChapterDrawer = ({ state: st, navigation }) => {
   const {
     defaultChapterSort = 'ORDER BY chapterId ASC',
     defaultShowChapterPrefix = true,
-    defaultChapterPrefixStyle = ['Volume ', 'Chapter '],
+    defaultChapterPrefixStyle = ['Volume ', ' Chapter '],
     defaultChapterTitleSeperator = ' - ',
   } = useSettings();
 

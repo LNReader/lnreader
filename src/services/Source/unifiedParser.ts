@@ -39,15 +39,16 @@ export const unifiedParserMap = (
 
 const parseName = (chapterName: string): Array<string> => {
   const prefixRegex =
-    /(?:[c]\w*\s*\d+[.]*\d*\s*|[v]\w*\s*\d+[.]*\d*\W*[c]\w*\s*\d+[.]*\d*\s*|[v]\w*\s*\d+[.]*\d*\s*|\d+\s*(?=[-–‐‑‒—⁃﹣:])|(?<!.+)\s*\d+\s*(?!.+))/i;
+    /(?<!\d+.*)[a-zA-Z]*(?:\s*\d+\s+[-–‐‑‒—⁃﹣:]*\s*[a-zA-Z]+)?\s*\d+[.]?\d*\s*/i;
+  // Old Regex /(?:[c]\w*\s*\d+[.]*\d*\s*|[v]\w*\s*\d+[.]*\d*\W*[c]\w*\s*\d+[.]*\d*\s*|[v]\w*\s*\d+[.]*\d*\s*|\d+\s*(?=[-–‐‑‒—⁃﹣:])|(?<!.+)\s*\d+\s*(?!.+))/i;
 
-  let chapterPrefix = prefixRegex.exec(String(chapterName));
-  if (chapterPrefix === null) {
+  let chapterPrefixRegExArray = prefixRegex.exec(String(chapterName));
+  if (chapterPrefixRegExArray === null) {
     return ['', chapterName.trim()];
   }
   let newChapterName = chapterName
     .substring(
-      chapterPrefix.index + chapterPrefix[0].length,
+      chapterPrefixRegExArray.index + chapterPrefixRegExArray[0].length,
       chapterName.length,
     )
     .trim();
@@ -55,8 +56,11 @@ const parseName = (chapterName: string): Array<string> => {
     /[-–‐‑‒—⁃﹣:]+\s*[-–‐‑‒—⁃﹣:]+|[-–‐‑‒—⁃﹣:]+(?=\d*|\w*)/i,
     '',
   );
+  let chapterPrefix = chapterPrefixRegExArray[0]
+    .replace(/[^0-9.]+/gi, ' ')
+    .trim();
 
-  return [chapterPrefix[0].trim(), newChapterName.trim()];
+  return [chapterPrefix, newChapterName.trim()];
 };
 
 /*

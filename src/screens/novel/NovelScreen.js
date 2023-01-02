@@ -96,7 +96,7 @@ const Novel = ({ route, navigation }) => {
     defaultChapterSort = 'ORDER BY chapterId ASC',
     disableHapticFeedback = false,
     defaultShowChapterPrefix = true,
-    defaultChapterPrefixStyle = ['Volume ', 'Chapter '],
+    defaultChapterPrefixStyle = ['Volume ', ' Chapter '],
     defaultChapterTitleSeperator = ' - ',
   } = useSettings();
 

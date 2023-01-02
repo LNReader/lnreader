@@ -39,7 +39,7 @@ const GenralSettings = ({ navigation }) => {
     useLibraryFAB = false,
     defaultShowChapterPrefix = true,
     defaultChapterSort = 'ORDER BY chapterId ASC',
-    defaultChapterPrefixStyle = ['Volume ', 'Chapter '],
+    defaultChapterPrefixStyle = ['Volume ', ' Chapter '],
     defaultChapterTitleSeperator = ' - ',
   } = useSettings();
   const { showLastUpdateTime = true } = useSelector(

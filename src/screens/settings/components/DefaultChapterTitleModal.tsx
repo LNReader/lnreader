@@ -72,7 +72,7 @@ const DefaultChapterTitleModal: React.FC<DefaultChapterTitleModalProps> = ({
             label="Vol. xx Ch. xx"
             onPress={() =>
               dispatch(
-                setAppSettings('defaultChapterPrefixStyle', ['Vol. ', 'Ch. ']),
+                setAppSettings('defaultChapterPrefixStyle', ['Vol. ', ' Ch. ']),
               )
             }
             theme={theme}

@@ -13,13 +13,8 @@ const db = SQLite.openDatabase('lnreader.db');
 const upgradeDatabaseQuery = [
   `
 	ALTER TABLE chapters ADD COLUMN chapterPrefix TEXT DEFAULT '';`,
-  `
-  ALTER TABLE chapters ADD COLUMN chapterTitle TEXT DEFAULT '';`,
-  `
+  ` 
   ALTER TABLE downloads ADD COLUMN chapterPrefix TEXT DEFAULT '';`,
-  `
-  ALTER TABLE downloads ADD COLUMN chapterTitle TEXT DEFAULT ',';
-	`,
 ];
 
 const selectUpgradeValuesDatabaseQuery = `
@@ -44,24 +39,6 @@ export const upgradeDatabase = () => {
     );
     tx.executeSql(
       upgradeDatabaseQuery[1],
-      [],
-      (_txObj, _res) => {},
-      (txObj, error) => {
-        showToast(error.message);
-        return false;
-      },
-    );
-    tx.executeSql(
-      upgradeDatabaseQuery[2],
-      [],
-      (_txObj, _res) => {},
-      (txObj, error) => {
-        showToast(error.message);
-        return false;
-      },
-    );
-    tx.executeSql(
-      upgradeDatabaseQuery[3],
       [],
       (_txObj, _res) => {},
       (txObj, error) => {

@@ -152,7 +152,7 @@ const ChaptersSettingsSheet = ({
             label="Volume xx Chapter xx"
             onPress={() => {
               dispatch(
-                chapterPrefixStyleAction(novelId, ['Volume ', 'Chapter ']),
+                chapterPrefixStyleAction(novelId, ['Volume ', ' Chapter ']),
               );
             }}
             theme={theme}
@@ -163,7 +163,7 @@ const ChaptersSettingsSheet = ({
             status={Object.is(chapterPrefixStyle[0], 'Vol. ')}
             label="Vol. xx Ch. xx"
             onPress={() =>
-              dispatch(chapterPrefixStyleAction(novelId, ['Vol. ', 'Ch. ']))
+              dispatch(chapterPrefixStyleAction(novelId, ['Vol. ', ' Ch. ']))
             }
             theme={theme}
           />

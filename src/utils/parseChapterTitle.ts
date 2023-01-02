@@ -20,7 +20,7 @@ export const parseChapterPrefix = (
     }
     return (chapterPrefix = chapterPrefix.replace(/[c]\w*\s*/i, '').trim());
   } else {
-    return -1;
+    return '';
   }
 };
 
@@ -41,24 +41,11 @@ export const parseChapterTitle = (
   }
   let chapterTitle;
 
-  if (chapterPrefixStyle?.[0] || chapterPrefixStyle?.[0] === '') {
-    chapterTitle = chapterPrefix.replace(
-      /[v][a-zA-Z]*\s*(?=\d+)/i,
-      chapterPrefixStyle[0],
-    );
+  if (chapterPrefix.search(' ') !== -1) {
+    chapterTitle =
+      chapterPrefixStyle[0] + chapterPrefix.replace(' ', chapterPrefixStyle[1]);
   } else {
-    chapterTitle = chapterPrefix.replace(/[v]\w*\s*\d+/i, '');
-  }
-  if (chapterPrefixStyle?.[1] || chapterPrefixStyle?.[1] === '') {
-    chapterTitle = chapterTitle.replace(
-      /[c][a-zA-Z]*\s*(?=\d+)/i,
-      chapterPrefixStyle[1],
-    );
-    if (chapterTitle.charAt(0) !== 'C' && chapterPrefixStyle?.[1] !== '') {
-      chapterTitle = chapterPrefixStyle[1] + chapterTitle;
-    }
-  } else {
-    chapterTitle = chapterTitle.replace(/[v]\w*\s*\d+/i, '');
+    chapterTitle = chapterPrefixStyle[1] + chapterPrefix;
   }
 
   if (!chapterName) {
