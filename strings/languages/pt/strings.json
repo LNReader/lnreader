@@ -108,13 +108,13 @@
       "display": "Exibir"
     },
     "jumpToChapterModal": {
-      "jumpToChapter": "Jump to Chapter",
-      "openChapter": "Open Chapter",
-      "chapterName": "Chapter Name",
-      "chapterNumber": "Chapter Number",
+      "jumpToChapter": "Pular para o Capítulo",
+      "openChapter": "Abrir Capítulo",
+      "chapterName": "Nome do capítulo",
+      "chapterNumber": "Número do capítulo",
       "error": {
-        "validChapterName": "Enter a valid chapter name",
-        "validChapterNumber": "Enter a valid chapter number"
+        "validChapterName": "Insira um nome de capítulo válido",
+        "validChapterNumber": "Insira um número de capítulo válido"
       }
     }
   },
@@ -152,13 +152,13 @@
     "noResultsFound": "Nenhum resultado encontrado"
   },
   "statsScreen": {
-    "title": "Statistics",
-    "titlesInLibrary": "Titles in library",
-    "readChapters": "Read chapters",
-    "unreadChapters": "Unread chapters",
-    "downloadedChapters": "Downloaded chapters",
-    "genreDistribution": "Genre distribution",
-    "statusDistribution": "Status distribution"
+    "title": "Estatísticas",
+    "titlesInLibrary": "Títulos na biblioteca",
+    "readChapters": "Capítulos lidos",
+    "unreadChapters": "Capítulos não lidos",
+    "downloadedChapters": "Capítulos baixados",
+    "genreDistribution": "Categoria de gêneros",
+    "statusDistribution": "Distribuição de status"
   },
   "globalSearch": {
     "searchIn": "Procurar uma novel em",
