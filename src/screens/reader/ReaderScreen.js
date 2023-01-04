@@ -33,6 +33,7 @@ import { updateChaptersRead } from '../../redux/tracker/tracker.actions';
 import { markChapterReadAction } from '../../redux/novel/novel.actions';
 import { saveScrollPosition } from '../../redux/preferences/preference.actions';
 import {
+  parseChapterNumber,
   parseChapterPrefix,
   useChapterTitle,
 } from '../../utils/parseChapterTitle';
@@ -303,7 +304,7 @@ const ChapterContent = ({ route, navigation }) => {
   );
 
   const updateTracker = () => {
-    const chapterNumber = parseChapterPrefix(chapterName);
+    const chapterNumber = parseChapterNumber(chapterPrefix);
 
     isTracked &&
       chapterNumber &&

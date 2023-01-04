@@ -4,7 +4,6 @@ export const createDownloadTableQuery = `
         downloadChapterId INTEGER NOT NULL, 
         chapterPrefix TEXT, 
         chapterName TEXT,
-        chapterTitle TEXT, 
         chapterText TEXT, 
         FOREIGN KEY (downloadChapterId) REFERENCES chapters(chapterId) ON DELETE CASCADE
       )

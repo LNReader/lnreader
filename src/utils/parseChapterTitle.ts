@@ -1,24 +1,35 @@
-import { setChapterTitleInDB } from '@database/queries/ChapterQueries';
 import { ChapterItem } from '@database/types';
 import { useEffect, useState } from 'react';
 
 export const parseChapterPrefix = (
   chapterPrefix: string,
-  newPrefix?: Array<string | null>,
+  chapterPrefixStyle: Array<string>,
 ) => {
   if (chapterPrefix) {
-    if (newPrefix?.[0]) {
-      chapterPrefix = chapterPrefix.replace(/[v]\w*\s*/i, newPrefix[0]);
+    let chapterTitle;
+
+    if (chapterPrefix.search(' ') !== -1) {
+      chapterTitle =
+        chapterPrefixStyle[0] +
+        chapterPrefix.replace(' ', chapterPrefixStyle[1]);
     } else {
-      chapterPrefix = chapterPrefix.replace(/[v]\w*\s*\d+/i, '');
+      chapterTitle = chapterPrefixStyle[1] + chapterPrefix;
     }
-    if (newPrefix?.[1]) {
-      return (chapterPrefix = chapterPrefix.replace(
-        /[c]\w*\s*/i,
-        newPrefix[1],
-      ));
+    return chapterTitle.trim();
+  } else {
+    return '';
+  }
+};
+export const parseChapterNumber = (chapterPrefix: string) => {
+  if (chapterPrefix) {
+    let chapterNumber;
+
+    if (chapterPrefix.search(' ') !== -1) {
+      chapterNumber = chapterPrefix.replace(/.*\s+/, '');
+    } else {
+      chapterNumber = chapterPrefix;
     }
-    return (chapterPrefix = chapterPrefix.replace(/[c]\w*\s*/i, '').trim());
+    return chapterNumber.trim();
   } else {
     return '';
   }
@@ -91,7 +102,6 @@ export const useChapterTitle = (
         chapterTitleSeperator,
       );
 
-      setChapterTitleInDB(chapTitle, chapterId);
       setChapterTitle(chapTitle);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

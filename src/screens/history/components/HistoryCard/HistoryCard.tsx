@@ -46,7 +46,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
 
   const chapterNoAndTime = useMemo(
     () =>
-      `${parseChapterPrefix(chapterPrefix, [null, 'Chapter '])} • ${dayjs(
+      `${parseChapterPrefix(chapterPrefix, ['Volume ', ' Chapter '])} • ${dayjs(
         historyTimeRead,
       )
         .format('LT')

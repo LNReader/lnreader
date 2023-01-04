@@ -91,7 +91,6 @@ const Downloads = ({ navigation }) => {
   };
 
   const renderItem = ({ item }) => {
-    console.log(item);
     return (
       <UpdatesItem
         item={item}
