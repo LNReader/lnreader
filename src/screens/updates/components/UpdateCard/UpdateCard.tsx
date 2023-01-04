@@ -81,8 +81,8 @@ const UpdateCard: React.FC<UpdateCardProps> = ({
     chapterPrefixStyle: chapterPrefixStyle,
     chapterTitleSeperator: chapterTitleSeperator,
   };
-  // TODO fix index
-  const chapterTitle = useChapterTitle(item, 0, chapterTitleOptions);
+
+  const chapterTitle = useChapterTitle(item, chapterTitleOptions);
   const [menu, setMenu] = useState(false);
 
   return (

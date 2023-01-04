@@ -24,8 +24,9 @@ const ChapterItem = ({
   chapterTitleOptions,
   index,
 }) => {
+  const chapterTitle = useChapterTitle(chapter, chapterTitleOptions, index);
+  chapter = Object.assign(chapter, { chapterTitle: chapterTitle });
   const { chapterId, read, releaseDate, bookmark } = chapter;
-  const chapterTitle = useChapterTitle(chapter, index, chapterTitleOptions);
   const [deleteChapterMenu, setDeleteChapterMenu] = useState(false);
   const showDeleteChapterMenu = () => setDeleteChapterMenu(true);
   const hideDeleteChapterMenu = () => setDeleteChapterMenu(false);

@@ -26,7 +26,7 @@ const DrawerChapterItem: React.FC<DrawerChapterItemProps> = ({
   currentChapterId,
   changeChapter,
 }) => {
-  const chapterTitle = useChapterTitle(item, index, chapterTitleOptions);
+  const chapterTitle = useChapterTitle(item, chapterTitleOptions, index);
   const styles = createStylesheet(theme);
   return (
     <View

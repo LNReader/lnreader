@@ -50,8 +50,8 @@ const NovelInfoHeader = ({
 
   const chapterTitle = useChapterTitle(
     lastRead,
-    chapters.indexOf(lastRead),
     chapterTitleOptions,
+    chapters.indexOf(lastRead),
   );
 
   const getStatusIcon = useMemo(

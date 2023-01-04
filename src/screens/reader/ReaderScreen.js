@@ -138,7 +138,7 @@ const ChapterContent = ({ route, navigation }) => {
     chapterPrefixStyle: chapterPrefixStyle,
     chapterTitleSeperator: chapterTitleSeperator,
   };
-  const chapterTitle = useChapterTitle(chapter, 1, chapterTitleOptions);
+  const chapterTitle = useChapterTitle(chapter, chapterTitleOptions);
   useEffect(() => {
     setParsedChapterPrefix(
       parseChapterPrefix(chapterPrefix, chapterPrefixStyle),

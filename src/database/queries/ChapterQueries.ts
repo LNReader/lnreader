@@ -74,7 +74,7 @@ export const upgradeDatabase = () => {
 };
 
 const insertChaptersQuery =
-  'INSERT INTO chapters (chapterUrl, chapterPrefix, chapterName, chapterTitle, releaseDate, novelId) values (?, ?, ?, ?, ?, ?)';
+  'INSERT INTO chapters (chapterUrl, chapterPrefix, chapterName, releaseDate, novelId) values (?, ?, ?, ?, ?)';
 
 export const insertChapters = async (
   novelId: number,
@@ -89,7 +89,6 @@ export const insertChapters = async (
             chapter.chapterUrl,
             chapter.chapterPrefix,
             chapter.chapterName,
-            chapter.chapterTitle,
             chapter.releaseDate,
             novelId,
           ],
@@ -312,7 +311,7 @@ export const isChapterDownloaded = async (chapterId: number) => {
 };
 
 const downloadChapterQuery =
-  'INSERT INTO downloads (downloadChapterId, chapterPrefix, chapterName, chapterTitle, chapterText) VALUES (?, ?, ?, ?, ?)';
+  'INSERT INTO downloads (downloadChapterId, chapterPrefix, chapterName, chapterText) VALUES (?, ?, ?, ?)';
 
 const createImageFolder = async (
   path: string,
@@ -408,7 +407,6 @@ export const downloadChapter = async (
             chapterId,
             chapter.chapterPrefix,
             chapter.chapterName,
-            chapter.chapterTitle,
             imagedChapterText,
           ],
           (_txObj, _res) => {
@@ -617,22 +615,3 @@ export const updateChapterDeletedQuery = `
     downloaded = 0
   WHERE 
     chapterId = ?`;
-
-const setChapterTitlesQuery = `
-    UPDATE chapters SET chapterTitle = ?
-    WHERE chapterId = ?`;
-
-export const setChapterTitleInDB = async (
-  chapterTitle: string,
-  chapterId: number,
-) =>
-  db.transaction(tx => {
-    tx.executeSql(
-      setChapterTitlesQuery,
-      [chapterTitle, chapterId],
-      (_txObj, _res) => {},
-      (_txObj, _error) => {
-        return false;
-      },
-    );
-  });

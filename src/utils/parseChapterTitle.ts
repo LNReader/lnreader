@@ -4,7 +4,12 @@ import { useEffect, useState } from 'react';
 export const parseChapterPrefix = (
   chapterPrefix: string,
   chapterPrefixStyle: Array<string>,
+  generatedChapterTitle?: boolean,
+  index?: number,
 ) => {
+  if (generatedChapterTitle && index !== undefined) {
+    return chapterPrefixStyle[1] + (index + 1);
+  }
   if (chapterPrefix) {
     let chapterTitle;
 
@@ -41,10 +46,10 @@ export const parseChapterTitle = (
   chapterPrefixStyle: Array<string>,
   generatedChapterTitle: boolean,
   showChapterPrefix: boolean,
-  index: number,
   seperator?: string,
+  index?: number,
 ) => {
-  if (generatedChapterTitle) {
+  if (generatedChapterTitle && index !== undefined) {
     return chapterPrefixStyle[1] + (index + 1);
   }
   if (!chapterPrefix || !showChapterPrefix) {
@@ -77,8 +82,8 @@ export interface chapterTitleOptionsType {
 
 export const useChapterTitle = (
   chapter: ChapterItem,
-  index: number,
   chapterTitleOptions: chapterTitleOptionsType,
+  index?: number,
 ) => {
   const {
     chapterPrefixStyle,
@@ -98,8 +103,8 @@ export const useChapterTitle = (
         chapterPrefixStyle,
         showGeneratedChapterTitle,
         showChapterPrefix,
-        index,
         chapterTitleSeperator,
+        index,
       );
 
       setChapterTitle(chapTitle);
