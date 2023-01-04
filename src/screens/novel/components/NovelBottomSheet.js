@@ -26,6 +26,7 @@ import { dividerColor } from '../../../theme/colors';
 import { List, RadioButton } from '@components';
 import DefaultChapterTitleSeperatorModal from '@screens/settings/components/DefaultChapterTitleSeperatorModal';
 import useBoolean from '@hooks/useBoolean';
+import ChapterTitleStyleModal from './ChapterTitleStyleModal';
 
 const ChaptersSettingsSheet = ({
   bottomSheetRef,
@@ -117,8 +118,12 @@ const ChaptersSettingsSheet = ({
 
   const ThirdRoute = () => {
     const chapterTitleSeperatorModal = useBoolean();
-    const dispatchAction = val => {
+    const chapterTitleStyleModal = useBoolean();
+    const dispatchActionTitleSeperator = val => {
       dispatch(chapterTitleSeperatorAction(novelId, val));
+    };
+    const dispatchActionTitleStyle = val => {
+      dispatch(chapterPrefixStyleAction(novelId, val));
     };
     return (
       <View style={styles.view}>
@@ -167,11 +172,12 @@ const ChaptersSettingsSheet = ({
           />
           <RadioButton
             style={styles.indent}
-            status={Object.is(chapterPrefixStyle[0], '')}
-            label="xx xx"
-            onPress={() =>
-              dispatch(chapterPrefixStyleAction(novelId, ['', ' ']))
+            status={
+              !Object.is(chapterPrefixStyle[0], 'Volume ') &&
+              !Object.is(chapterPrefixStyle[0], 'Vol. ')
             }
+            label="Custom"
+            onPress={chapterTitleStyleModal.setTrue}
             theme={theme}
           />
           <View style={{ paddingLeft: 50 }}>
@@ -189,7 +195,14 @@ const ChaptersSettingsSheet = ({
           defaultChapterTitleSeperator={chapterTitleSeperator}
           displayModalVisible={chapterTitleSeperatorModal.value}
           hideDisplayModal={chapterTitleSeperatorModal.setFalse}
-          dispatchAction={dispatchAction}
+          dispatchAction={dispatchActionTitleSeperator}
+          theme={theme}
+        />
+        <ChapterTitleStyleModal
+          status={chapterPrefixStyle}
+          displayModalVisible={chapterTitleStyleModal.value}
+          hideDisplayModal={chapterTitleStyleModal.setFalse}
+          dispatchAction={dispatchActionTitleStyle}
           theme={theme}
         />
       </View>

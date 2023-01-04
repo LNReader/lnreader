@@ -120,7 +120,7 @@ const GenralSettings = ({ navigation }) => {
               defaultShowChapterPrefix === false
                 ? 'None'
                 : defaultChapterPrefixStyle[0] +
-                  'xx ' +
+                  'xx' +
                   defaultChapterPrefixStyle[1] +
                   'xx'
             }`}
