@@ -147,7 +147,6 @@ const ChaptersSettingsSheet = ({
         <View>
           <RadioButton
             style={styles.indent}
-            disabled={!showChapterPrefix || showGeneratedChapterTitle}
             status={Object.is(chapterPrefixStyle[0], 'Volume ')}
             label="Volume xx Chapter xx"
             onPress={() => {
@@ -159,7 +158,6 @@ const ChaptersSettingsSheet = ({
           />
           <RadioButton
             style={styles.indent}
-            disabled={!showChapterPrefix || showGeneratedChapterTitle}
             status={Object.is(chapterPrefixStyle[0], 'Vol. ')}
             label="Vol. xx Ch. xx"
             onPress={() =>
@@ -169,7 +167,6 @@ const ChaptersSettingsSheet = ({
           />
           <RadioButton
             style={styles.indent}
-            disabled={!showChapterPrefix || showGeneratedChapterTitle}
             status={Object.is(chapterPrefixStyle[0], '')}
             label="xx xx"
             onPress={() =>

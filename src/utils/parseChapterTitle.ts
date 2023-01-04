@@ -1,14 +1,33 @@
 import { ChapterItem } from '@database/types';
 import { useEffect, useState } from 'react';
 
+export const parseChapterNumber = (chapterPrefix: string) => {
+  if (chapterPrefix) {
+    let chapterNumber;
+
+    if (chapterPrefix.search(' ') !== -1) {
+      chapterNumber = chapterPrefix.replace(/.*\s+/, '');
+    } else {
+      chapterNumber = chapterPrefix;
+    }
+    return chapterNumber.trim();
+  } else {
+    return '';
+  }
+};
+
 export const parseChapterPrefix = (
   chapterPrefix: string,
   chapterPrefixStyle: Array<string>,
+  showChapterPrefix?: boolean,
   generatedChapterTitle?: boolean,
   index?: number,
 ) => {
   if (generatedChapterTitle && index !== undefined) {
-    return chapterPrefixStyle[1] + (index + 1);
+    return (chapterPrefixStyle[1] + (index + 1)).trim();
+  }
+  if (showChapterPrefix === false) {
+    return '';
   }
   if (chapterPrefix) {
     let chapterTitle;
@@ -25,20 +44,6 @@ export const parseChapterPrefix = (
     return '';
   }
 };
-export const parseChapterNumber = (chapterPrefix: string) => {
-  if (chapterPrefix) {
-    let chapterNumber;
-
-    if (chapterPrefix.search(' ') !== -1) {
-      chapterNumber = chapterPrefix.replace(/.*\s+/, '');
-    } else {
-      chapterNumber = chapterPrefix;
-    }
-    return chapterNumber.trim();
-  } else {
-    return '';
-  }
-};
 
 export const parseChapterTitle = (
   chapterPrefix: string,
@@ -50,7 +55,7 @@ export const parseChapterTitle = (
   index?: number,
 ) => {
   if (generatedChapterTitle && index !== undefined) {
-    return chapterPrefixStyle[1] + (index + 1);
+    return (chapterPrefixStyle[1] + (index + 1)).trim();
   }
   if (!chapterPrefix || !showChapterPrefix) {
     return chapterName;

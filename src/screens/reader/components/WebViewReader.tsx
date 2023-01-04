@@ -11,6 +11,10 @@ import { MD3ThemeType } from '../../../theme/types';
 import { readerBackground } from '../utils/readerStyles';
 
 import RNFetchBlob from 'rn-fetch-blob';
+import {
+  chapterTitleOptionsType,
+  useChapterTitle,
+} from '@utils/parseChapterTitle';
 
 type WebViewPostEvent = {
   type: string;
@@ -45,6 +49,8 @@ type WebViewReaderProps = {
   wvShowSwipeMargins: boolean;
   scrollPage: string | null;
   setScrollPage: React.Dispatch<React.SetStateAction<string | null>>;
+  chapterTitleOptions: chapterTitleOptionsType;
+  chapterIndex: number;
 };
 
 const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
@@ -67,7 +73,14 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
     wvShowSwipeMargins,
     scrollPage,
     setScrollPage,
+    chapterTitleOptions,
+    chapterIndex,
   } = props;
+  const nextChapterTitle = useChapterTitle(
+    nextChapter,
+    chapterTitleOptions,
+    chapterIndex,
+  );
 
   const { height } = useWindowDimensions();
 
@@ -217,7 +230,7 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
                         margin: 0px;
                         padding-left: ${reader.padding}%;
                         padding-right: ${reader.padding}%;
-                        padding-bottom: 30px;
+                        padding-bottom: 50px;
                         
                         font-size: ${reader.textSize}px;
                         color: ${reader.textColor};
@@ -331,7 +344,7 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
                         ? `<button class="nextButton" ${onClickWebViewPostMessage(
                             { type: 'next' },
                           )}>
-                      Next: ${nextChapter.chapterName}
+                      Next: ${nextChapterTitle}
                     </button>`
                         : `<div class="infoText">${getString(
                             'readerScreen.noNextChapter',

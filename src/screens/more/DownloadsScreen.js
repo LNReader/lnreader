@@ -23,6 +23,7 @@ import {
 import UpdatesItem from '../updates/components/UpdatesItem';
 import RemoveDownloadsDialog from './components/RemoveDownloadsDialog';
 import { openChapter, openNovel } from '@utils/handleNavigateParams';
+import UpdateCard from '@screens/updates/components/UpdateCard/UpdateCard';
 
 const Downloads = ({ navigation }) => {
   const theme = useTheme();
@@ -92,7 +93,7 @@ const Downloads = ({ navigation }) => {
 
   const renderItem = ({ item }) => {
     return (
-      <UpdatesItem
+      <UpdateCard
         item={item}
         theme={theme}
         onPress={() => onPress(item)}

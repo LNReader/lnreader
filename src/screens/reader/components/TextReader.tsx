@@ -14,6 +14,10 @@ import { MD3ThemeType } from '../../../theme/types';
 import { ChapterItem } from '../../../database/types';
 import { getString } from '@strings/translations';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import {
+  chapterTitleOptionsType,
+  useChapterTitle,
+} from '@utils/parseChapterTitle';
 
 interface TextReaderProps {
   text: string;
@@ -32,6 +36,8 @@ interface TextReaderProps {
   nextChapter: ChapterItem;
   navigateToNextChapter: () => void;
   onPress(): void;
+  chapterTitleOptions: chapterTitleOptionsType;
+  chapterIndex: number;
 }
 
 const TextReader: React.FC<TextReaderProps> = ({
@@ -42,8 +48,15 @@ const TextReader: React.FC<TextReaderProps> = ({
   nextChapter,
   navigateToNextChapter,
   onPress,
+  chapterTitleOptions,
+  chapterIndex,
 }) => {
   const { width, height } = useWindowDimensions();
+  const nextChapterTitle = useChapterTitle(
+    nextChapter,
+    chapterTitleOptions,
+    chapterIndex,
+  );
 
   return (
     <>
@@ -80,7 +93,7 @@ const TextReader: React.FC<TextReaderProps> = ({
           </Text>
           {nextChapter ? (
             <Button
-              title={`Next: ${nextChapter.chapterTitle}`}
+              title={`Next: ${nextChapterTitle}`}
               onPress={navigateToNextChapter}
               theme={theme}
               textColor={theme.colorButtonText}

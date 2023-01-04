@@ -1,3 +1,4 @@
+import { useChapterTitle } from '@utils/parseChapterTitle';
 import React, { memo, useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 

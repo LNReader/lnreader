@@ -23,6 +23,7 @@ import {
 import { fetchChapter } from '../../services/Source/source';
 import { showToast } from '../../hooks/showToast';
 import {
+  useNovel,
   usePosition,
   usePreferences,
   useSettings,
@@ -67,6 +68,10 @@ import { openChapter } from '@utils/handleNavigateParams';
 const Chapter = ({ route }) => {
   const { useChapterDrawerSwipeNavigation = true } = useSettings();
   const DrawerNav = createDrawerNavigator();
+  const { chapters } = useNovel();
+  const chapterIndex = chapters.findIndex(element => {
+    return element.chapterId === route.params.chapterId;
+  });
   return (
     <DrawerNav.Navigator
       params={route.params}
@@ -78,7 +83,9 @@ const Chapter = ({ route }) => {
     >
       <DrawerNav.Screen
         name="ChapterContent"
-        initialParams={route.params}
+        initialParams={Object.assign(route.params, {
+          chapterIndex: chapterIndex,
+        })}
         options={{ headerShown: false }}
         component={ChapterContent}
       />
@@ -99,6 +106,7 @@ const ChapterContent = ({ route, navigation }) => {
     chapterPrefix,
     chapterName,
     bookmark,
+    chapterIndex,
   } = params;
   let scrollViewRef = useRef(null);
   let readerSheetRef = useRef(null);
@@ -138,12 +146,28 @@ const ChapterContent = ({ route, navigation }) => {
     chapterPrefixStyle: chapterPrefixStyle,
     chapterTitleSeperator: chapterTitleSeperator,
   };
-  const chapterTitle = useChapterTitle(chapter, chapterTitleOptions);
+  const chapterTitle = useChapterTitle(
+    chapter,
+    chapterTitleOptions,
+    chapterIndex,
+  );
   useEffect(() => {
     setParsedChapterPrefix(
-      parseChapterPrefix(chapterPrefix, chapterPrefixStyle),
+      parseChapterPrefix(
+        chapterPrefix,
+        chapterPrefixStyle,
+        showChapterPrefix,
+        showGeneratedChapterTitle,
+        chapterIndex,
+      ),
     );
-  }, [chapterPrefixStyle, chapterPrefix]);
+  }, [
+    chapterPrefixStyle,
+    chapterPrefix,
+    showChapterPrefix,
+    showGeneratedChapterTitle,
+    chapterIndex,
+  ]);
 
   const { setImmersiveMode, showStatusAndNavBar } = useFullscreenMode();
 
@@ -354,7 +378,7 @@ const ChapterContent = ({ route, navigation }) => {
         setFirstLayout(false);
       }
     },
-    [nextChapter],
+    [chapterId],
   );
 
   const hideHeader = () => {
@@ -505,55 +529,59 @@ const ChapterContent = ({ route, navigation }) => {
                 style={{ flex: 1 }}
                 onLayout={scrollToSavedProgress}
               >
-                <>
-                  <Text
-                    style={{
-                      color: readerSettings.textColor,
-                      fontSize: readerSettings.textSize * 1.3,
-                      fontFamily: readerSettings.fontFamily,
-                      padding: readerSettings.padding + '%',
-                      paddingBottom: 0 * 0,
-                    }}
-                  >
-                    {parsedChapterPrefix}
-                  </Text>
-                  <Text
-                    style={{
-                      color: readerSettings.textColor,
-                      fontSize: readerSettings.textSize * 1.5,
-                      fontFamily: readerSettings.fontFamily,
-                      padding: readerSettings.padding + '%',
-                      paddingVertical: 0 * 0,
-                    }}
-                  >
-                    {chapterName}
-                  </Text>
-                  {useWebViewForChapter ? (
-                    <View style={{ flex: 1 }}>
-                      <WebViewReader
-                        layoutHeight={Dimensions.get('window').height}
-                        webViewScroll={webViewScroll}
-                        setScrollPercentage={setScrollPercentage}
-                        scrollPercentage={scrollPercentage}
-                        reader={readerSettings}
-                        html={chapterText}
-                        chapterTitle={chapterTitle}
-                        nextChapter={nextChapter}
-                        navigateToNextChapter={() => navigateToNextChapter()}
-                        navigateToPrevChapter={() => navigateToPrevChapter()}
-                        onScroll={onScroll}
-                        onPress={hideHeader}
-                        onWebViewNavigationStateChange={
-                          onWebViewNavigationStateChange
-                        }
-                        scrollPage={scrollPage}
-                        setScrollPage={setScrollPage}
-                        swipeGestures={swipeGestures && wvUseNewSwipes}
-                        wvShowSwipeMargins={wvShowSwipeMargins}
-                        theme={theme}
-                      />
-                    </View>
-                  ) : (
+                {useWebViewForChapter ? (
+                  <View style={{ flex: 1 }}>
+                    <WebViewReader
+                      layoutHeight={Dimensions.get('window').height}
+                      webViewScroll={webViewScroll}
+                      setScrollPercentage={setScrollPercentage}
+                      scrollPercentage={scrollPercentage}
+                      reader={readerSettings}
+                      html={chapterText}
+                      chapterTitle={chapterTitle}
+                      nextChapter={nextChapter}
+                      navigateToNextChapter={() => navigateToNextChapter()}
+                      navigateToPrevChapter={() => navigateToPrevChapter()}
+                      onScroll={onScroll}
+                      onPress={hideHeader}
+                      onWebViewNavigationStateChange={
+                        onWebViewNavigationStateChange
+                      }
+                      scrollPage={scrollPage}
+                      setScrollPage={setScrollPage}
+                      swipeGestures={swipeGestures && wvUseNewSwipes}
+                      wvShowSwipeMargins={wvShowSwipeMargins}
+                      theme={theme}
+                      chapterTitleOptions={chapterTitleOptions}
+                      chapterIndex={chapterIndex}
+                    />
+                  </View>
+                ) : (
+                  <View>
+                    <Text
+                      style={{
+                        color: readerSettings.textColor,
+                        fontSize: readerSettings.textSize * 1.3,
+                        fontFamily: readerSettings.fontFamily,
+                        padding: readerSettings.padding + '%',
+                        paddingBottom: 0 * 0,
+                      }}
+                    >
+                      {showGeneratedChapterTitle ? null : parsedChapterPrefix}
+                    </Text>
+                    <Text
+                      style={{
+                        color: readerSettings.textColor,
+                        fontSize: readerSettings.textSize * 1.5,
+                        fontFamily: readerSettings.fontFamily,
+                        padding: readerSettings.padding + '%',
+                        paddingVertical: 0 * 0,
+                      }}
+                    >
+                      {showGeneratedChapterTitle
+                        ? parsedChapterPrefix
+                        : chapterName}
+                    </Text>
                     <TextReader
                       onPress={hideHeader}
                       text={chapterText}
@@ -562,9 +590,11 @@ const ChapterContent = ({ route, navigation }) => {
                       theme={theme}
                       nextChapter={nextChapter}
                       navigateToNextChapter={navigateToNextChapter}
+                      chapterTitleOptions={chapterTitleOptions}
+                      chapterIndex={chapterIndex}
                     />
-                  )}
-                </>
+                  </View>
+                )}
               </TouchableWithoutFeedback>
             )}
           </ScrollView>
