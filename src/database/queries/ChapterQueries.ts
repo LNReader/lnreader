@@ -38,19 +38,19 @@ const insertUpgradedValuesDatabaseQuery = `
     `;
 
 const selectUpgradeDownloadValuesDatabaseQuery = `
-  SELECT chapterId, chapterName FROM downloads;
+  SELECT downloadId, chapterName FROM downloads;
 	`;
 
 const insertUpgradedDownloadValuesDatabaseQuery = `
-      UPDATE downloads SET chapterPrefix = ?, chapterName = ? WHERE chapterId = ?;
+      UPDATE downloads SET chapterPrefix = ?, chapterName = ? WHERE downloadId = ?;
     `;
 
 export const upgradeDatabase = () => {
   let chapters: ChapterItem[];
   db.transaction(
     tx => {
-      executeSql(tx, upgradeDatabaseQuery[0]);
       executeSql(tx, upgradeDatabaseQuery[1]);
+      executeSql(tx, upgradeDatabaseQuery[0]);
       tx.executeSql(
         selectUpgradeValuesDatabaseQuery,
         [],
@@ -68,7 +68,6 @@ export const upgradeDatabase = () => {
               },
             );
           });
-          showToast('Upgrade successfull.\n Restart required.');
         },
         (txObj, error) => {
           showToast(error.message);
@@ -79,7 +78,6 @@ export const upgradeDatabase = () => {
         selectUpgradeDownloadValuesDatabaseQuery,
         [],
         (_txObj, _res) => {
-          showToast('Please Wait ...');
           chapters = _res.rows._array.map(unifiedParserMap);
           chapters.forEach(item => {
             tx.executeSql(

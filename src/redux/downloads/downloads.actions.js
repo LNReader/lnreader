@@ -16,10 +16,9 @@ export const pauseDownloads = () => async dispatch => {
 
 export const resumeDownloads = chapters => async dispatch => {
   showToast('Download resumed');
-
   const options = {
     taskName: 'Library Update',
-    taskTitle: chapters[0].chapterPrefix + ' ' + chapters[0].chapterName,
+    taskTitle: chapters[0].chapterTitle,
     taskDesc: '0/' + chapters.length,
     taskIcon: {
       name: 'notification_icon',
@@ -65,17 +64,15 @@ export const resumeDownloads = chapters => async dispatch => {
           } catch (error) {
             Notifications.scheduleNotificationAsync({
               content: {
-                title:
-                  chapters[i].chapterPrefix + ' ' + chapters[i].chapterName,
-                body: `Download failed: ${error.message}`,
+                title: chapters[i].chapterTitle,
+                body: `Download failed1: ${error.message}`,
               },
               trigger: null,
             });
           }
 
           await BackgroundService.updateNotification({
-            taskTitle:
-              chapters[i].chapterPrefix + ' ' + chapters[i].chapterName,
+            taskTitle: chapters[i].chapterTitle,
             taskDesc: i + 1 + '/' + chapters.length,
             progressBar: {
               max: chapters.length,

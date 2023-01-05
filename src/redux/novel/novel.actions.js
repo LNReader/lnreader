@@ -317,7 +317,9 @@ export const downloadChapterAction =
     // });
     dispatch({
       type: SET_DOWNLOAD_QUEUE,
-      payload: [{ chapterId, chapterTitle }],
+      payload: [
+        { sourceId, novelUrl, novelId, chapterUrl, chapterTitle, chapterId },
+      ],
     });
 
     await downloadChapter(sourceId, novelUrl, novelId, chapterUrl, chapterId);

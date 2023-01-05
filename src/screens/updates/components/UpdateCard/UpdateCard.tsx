@@ -99,7 +99,7 @@ const UpdateCard: React.FC<UpdateCardProps> = ({
         </View>
       </View>
       <DownloadButton
-        chapter={item}
+        chapter={{ ...item, chapterTitle: chapterTitle }}
         deleteChapter={handleDeleteChapter}
         downloadChapter={handleDownloadChapter}
         downloadQueue={downloadQueue}
