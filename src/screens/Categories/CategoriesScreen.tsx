@@ -17,6 +17,7 @@ import { getString } from '@strings/translations';
 import { Category } from '../../database/types';
 import CategoryCard from './components/CategoryCard';
 import { orderBy } from 'lodash';
+import CategorySkeletonLoading from './components/CategorySkeletonLoading';
 
 const CategoriesScreen = () => {
   const theme = useTheme();
@@ -78,7 +79,6 @@ const CategoriesScreen = () => {
     setTrue: showCategoryModal,
     setFalse: closeCategoryModal,
   } = useBoolean();
-
   return (
     <>
       <Appbar
@@ -86,8 +86,8 @@ const CategoriesScreen = () => {
         handleGoBack={goBack}
         theme={theme}
       />
-      {isLoading ? (
-        <LoadingScreenV2 theme={theme} />
+      {false ? (
+        <CategorySkeletonLoading width={360.7} height={89.5} theme={theme} />
       ) : (
         <FlatList
           data={categories}

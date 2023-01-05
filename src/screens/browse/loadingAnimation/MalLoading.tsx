@@ -3,8 +3,8 @@ import { View, Dimensions, StyleSheet } from 'react-native';
 import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MD3ThemeType } from '@theme/types';
-import color from 'color';
 import { getDialogBackground } from '@theme/colors';
+import getLoadingColors from '@utils/getLoadingColors';
 
 interface Props {
   theme: MD3ThemeType;
@@ -14,14 +14,7 @@ const MalLoading: React.FC<Props> = ({ theme }) => {
   const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient);
   const styles = createStyleSheet(theme);
 
-  const highlightColor = color(theme.primary).alpha(0.08).string();
-  let backgroundColor = theme.surface;
-
-  backgroundColor = color(backgroundColor).isDark()
-    ? color(backgroundColor).luminosity() !== 0
-      ? color(backgroundColor).lighten(0.1).toString()
-      : color(backgroundColor).negate().darken(0.98).toString()
-    : color(backgroundColor).darken(0.04).toString();
+  const [highlightColor, backgroundColor] = getLoadingColors(theme);
 
   const renderLoadingRect = (item: number, index: number) => {
     let randomNumber = Math.random();

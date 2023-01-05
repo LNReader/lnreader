@@ -4,7 +4,7 @@ import { StyleSheet, View, ActivityIndicator, FlatList } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
 
 import { ErrorView } from '../../../components/ErrorView/ErrorView';
-import { LoadingScreenV2, SearchbarV2 } from '@components';
+import { SearchbarV2 } from '@components';
 
 import { showToast } from '../../../hooks/showToast';
 import { scrapeSearchResults, scrapeTopNovels } from './MyAnimeListScraper';
