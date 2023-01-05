@@ -12,7 +12,7 @@ import {
 
 import { convertDateToISOString } from '../../database/utils/convertDateToISOString';
 
-import { ChapterItem, NovelInfo, Update } from '../../database/types';
+import { ChapterItem, Update } from '../../database/types';
 
 import { useSearch, useUpdates } from '../../hooks';
 import { useAppDispatch } from '../../redux/hooks';

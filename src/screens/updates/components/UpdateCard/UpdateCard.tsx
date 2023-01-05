@@ -2,7 +2,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import React, { useState } from 'react';
 import color from 'color';
 
-import { ChapterItem, NovelInfo, Update } from '../../../../database/types';
+import { ChapterItem, Update } from '../../../../database/types';
 import FastImage from 'react-native-fast-image';
 
 import { useDownloadQueue } from '../../../../redux/hooks';
@@ -21,7 +21,9 @@ interface UpdateCardProps {
     sourceId: number,
     novelUrl: string,
     novelId: number,
-    chapter: ChapterItem,
+    chapterUrl: string,
+    chapterTitle: string,
+    chapterId: number,
   ) => void;
   handleDeleteChapter: (
     sourceId: number,
