@@ -28,6 +28,7 @@ import {
   openNovel,
   openNovelProps,
 } from '@utils/handleNavigateParams';
+import HistorySkeletonLoading from './components/HistorySkeletonLoading';
 
 const HistoryScreen = () => {
   const theme = useTheme();
@@ -113,8 +114,8 @@ const HistoryScreen = () => {
         ]}
         theme={theme}
       />
-      {isLoading ? (
-        <LoadingScreenV2 theme={theme} />
+      {true ? (
+        <HistorySkeletonLoading theme={theme} />
       ) : error ? (
         <ErrorScreenV2 error={error} theme={theme} />
       ) : (
