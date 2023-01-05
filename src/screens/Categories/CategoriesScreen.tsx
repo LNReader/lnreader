@@ -86,7 +86,7 @@ const CategoriesScreen = () => {
         handleGoBack={goBack}
         theme={theme}
       />
-      {false ? (
+      {isLoading ? (
         <CategorySkeletonLoading width={360.7} height={89.5} theme={theme} />
       ) : (
         <FlatList

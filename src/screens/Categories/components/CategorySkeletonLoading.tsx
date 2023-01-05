@@ -11,12 +11,12 @@ interface Props {
   theme: MD3ThemeType;
 }
 
-const NovelScreenLoading: React.FC<Props> = ({ height, width, theme }) => {
+const CategorySkeletonLoading: React.FC<Props> = ({ height, width, theme }) => {
   const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient);
 
   const [highlightColor, backgroundColor] = getLoadingColors(theme);
 
-  const renderLoadingChapter = (item: number, index: number) => {
+  const renderLoadingCard = (item: number, index: number) => {
     return (
       <View key={index}>
         <ShimmerPlaceHolder
@@ -34,9 +34,7 @@ const NovelScreenLoading: React.FC<Props> = ({ height, width, theme }) => {
     items.push(0);
   }
 
-  return (
-    <View style={styles.contentCtn}>{items.map(renderLoadingChapter)}</View>
-  );
+  return <View style={styles.contentCtn}>{items.map(renderLoadingCard)}</View>;
 };
 
 const styles = StyleSheet.create({
@@ -51,4 +49,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default memo(NovelScreenLoading);
+export default memo(CategorySkeletonLoading);
