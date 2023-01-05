@@ -114,7 +114,7 @@ const HistoryScreen = () => {
         ]}
         theme={theme}
       />
-      {true ? (
+      {isLoading ? (
         <HistorySkeletonLoading theme={theme} />
       ) : error ? (
         <ErrorScreenV2 error={error} theme={theme} />
