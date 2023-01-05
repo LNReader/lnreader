@@ -37,36 +37,71 @@ const insertUpgradedValuesDatabaseQuery = `
       UPDATE chapters SET chapterPrefix = ?, chapterName = ? WHERE chapterId = ?;
     `;
 
+const selectUpgradeDownloadValuesDatabaseQuery = `
+  SELECT chapterId, chapterName FROM downloads;
+	`;
+
+const insertUpgradedDownloadValuesDatabaseQuery = `
+      UPDATE downloads SET chapterPrefix = ?, chapterName = ? WHERE chapterId = ?;
+    `;
+
 export const upgradeDatabase = () => {
   let chapters: ChapterItem[];
-  db.transaction(tx => {
-    executeSql(tx, upgradeDatabaseQuery[0]);
-    executeSql(tx, upgradeDatabaseQuery[1]);
-    tx.executeSql(
-      selectUpgradeValuesDatabaseQuery,
-      [],
-      (_txObj, _res) => {
-        showToast('Please Wait ...');
-        chapters = _res.rows._array.map(unifiedParserMap);
-        chapters.forEach(item => {
-          tx.executeSql(
-            insertUpgradedValuesDatabaseQuery,
-            [item.chapterPrefix, item.chapterName, item.chapterId],
-            (_txObj, _res) => {},
-            (txObj, error) => {
-              showToast(error.message);
-              return false;
-            },
-          );
-        });
-        showToast('Upgrade successfull.\n Restart required.');
-      },
-      (txObj, error) => {
-        showToast(error.message);
-        return false;
-      },
-    );
-  });
+  db.transaction(
+    tx => {
+      executeSql(tx, upgradeDatabaseQuery[0]);
+      executeSql(tx, upgradeDatabaseQuery[1]);
+      tx.executeSql(
+        selectUpgradeValuesDatabaseQuery,
+        [],
+        (_txObj, _res) => {
+          showToast('Please Wait ...');
+          chapters = _res.rows._array.map(unifiedParserMap);
+          chapters.forEach(item => {
+            tx.executeSql(
+              insertUpgradedValuesDatabaseQuery,
+              [item.chapterPrefix, item.chapterName, item.chapterId],
+              (_txObj, _res) => {},
+              (txObj, error) => {
+                showToast(error.message);
+                return false;
+              },
+            );
+          });
+          showToast('Upgrade successfull.\n Restart required.');
+        },
+        (txObj, error) => {
+          showToast(error.message);
+          return false;
+        },
+      );
+      tx.executeSql(
+        selectUpgradeDownloadValuesDatabaseQuery,
+        [],
+        (_txObj, _res) => {
+          showToast('Please Wait ...');
+          chapters = _res.rows._array.map(unifiedParserMap);
+          chapters.forEach(item => {
+            tx.executeSql(
+              insertUpgradedDownloadValuesDatabaseQuery,
+              [item.chapterPrefix, item.chapterName, item.chapterId],
+              (_txObj, _res) => {},
+              (txObj, error) => {
+                showToast(error.message);
+                return false;
+              },
+            );
+          });
+        },
+        (txObj, error) => {
+          showToast(error.message);
+          return false;
+        },
+      );
+    },
+    error => showToast(error.message),
+    () => showToast('Upgrade successfull.\n Restart required.'),
+  );
 };
 
 const insertChaptersQuery =

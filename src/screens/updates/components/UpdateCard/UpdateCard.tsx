@@ -1,30 +1,21 @@
-import {
-  ActivityIndicator,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import React, { useState } from 'react';
 import color from 'color';
 
 import { ChapterItem, NovelInfo, Update } from '../../../../database/types';
 import FastImage from 'react-native-fast-image';
-import { IconButtonV2 } from '../../../../components';
+
 import { useDownloadQueue } from '../../../../redux/hooks';
-import { Menu } from 'react-native-paper';
 import { MD3ThemeType } from '../../../../theme/types';
-import {
-  coverPlaceholderColor,
-  getDialogBackground,
-} from '../../../../theme/colors';
+import { coverPlaceholderColor } from '../../../../theme/colors';
 import { openNovelProps } from '@utils/handleNavigateParams';
 import { useChapterTitle } from '@utils/parseChapterTitle';
 import { usePreferences, useSettings } from '@hooks/reduxHooks';
+import { DownloadButton } from '../DownloadButton';
 
 interface UpdateCardProps {
   item: Update;
-  navigateToChapter: (novel: NovelInfo, chapter: ChapterItem) => void;
+  navigateToChapter: (chapter: ChapterItem) => void;
   navigateToNovel: (novel: openNovelProps) => void;
   handleDownloadChapter: (
     sourceId: number,
@@ -58,10 +49,6 @@ const UpdateCard: React.FC<UpdateCardProps> = ({
 
   const downloadQueue = useDownloadQueue();
 
-  const isDownloading = downloadQueue.some(
-    (chapter: ChapterItem) => chapter.chapterId === item.chapterId,
-  );
-
   const {
     defaultShowChapterPrefix = true,
     defaultChapterPrefixStyle = ['Volume ', ' Chapter '],
@@ -83,14 +70,16 @@ const UpdateCard: React.FC<UpdateCardProps> = ({
   };
 
   const chapterTitle = useChapterTitle(item, chapterTitleOptions);
-  const [menu, setMenu] = useState(false);
+  const [deleteChapterMenu, setDeleteChapterMenu] = useState(false);
+  const showDeleteChapterMenu = () => setDeleteChapterMenu(true);
+  const hideDeleteChapterMenu = () => setDeleteChapterMenu(false);
 
   return (
     <Pressable
       style={styles.container}
       android_ripple={{ color: color(theme.primary).alpha(0.12).string() }}
       onPress={() => {
-        navigateToChapter(item, item);
+        navigateToChapter(item);
       }}
     >
       <View style={styles.imageContainer}>
@@ -109,53 +98,16 @@ const UpdateCard: React.FC<UpdateCardProps> = ({
           </Text>
         </View>
       </View>
-      {isDownloading ? (
-        <ActivityIndicator
-          color={theme.textColorHint}
-          size={26}
-          style={styles.downloading}
-        />
-      ) : !item.downloaded ? (
-        <IconButtonV2
-          name="arrow-down-circle-outline"
-          size={25}
-          onPress={() =>
-            handleDownloadChapter(item.sourceId, item.novelUrl, item.novelId, {
-              ...item,
-              chapterTitle: chapterTitle,
-            } as ChapterItem)
-          }
-          color={theme.textColorHint}
-          theme={theme}
-        />
-      ) : (
-        <Menu
-          visible={menu}
-          onDismiss={() => setMenu(false)}
-          anchor={
-            <IconButtonV2
-              name="check-circle"
-              size={25}
-              onPress={() => setMenu(true)}
-              theme={theme}
-            />
-          }
-          contentStyle={{ backgroundColor: getDialogBackground(theme) }}
-        >
-          <Menu.Item
-            onPress={() =>
-              handleDeleteChapter(
-                item.sourceId,
-                item.novelId,
-                item.chapterId,
-                chapterTitle,
-              )
-            }
-            title="Delete"
-            titleStyle={{ color: theme.textColorPrimary }}
-          />
-        </Menu>
-      )}
+      <DownloadButton
+        chapter={item}
+        deleteChapter={handleDeleteChapter}
+        downloadChapter={handleDownloadChapter}
+        downloadQueue={downloadQueue}
+        deleteChapterMenu={deleteChapterMenu}
+        showDeleteChapterMenu={showDeleteChapterMenu}
+        hideDeleteChapterMenu={hideDeleteChapterMenu}
+        theme={theme}
+      />
     </Pressable>
   );
 };

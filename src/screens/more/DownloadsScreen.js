@@ -20,7 +20,6 @@ import {
   downloadChapterAction,
 } from '../../redux/novel/novel.actions';
 
-import UpdatesItem from '../updates/components/UpdatesItem';
 import RemoveDownloadsDialog from './components/RemoveDownloadsDialog';
 import { openChapter, openNovel } from '@utils/handleNavigateParams';
 import UpdateCard from '@screens/updates/components/UpdateCard/UpdateCard';
@@ -55,13 +54,13 @@ const Downloads = ({ navigation }) => {
     getChapters();
   }, []);
 
-  const onPress = useCallback(
+  const navigateToChapter = useCallback(
     item => navigation.navigate('Chapter', openChapter(item, item)),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
 
-  const onPressCover = useCallback(
+  const navigateToNovel = useCallback(
     item => navigation.navigate('Novel', openNovel(item)),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
@@ -96,11 +95,11 @@ const Downloads = ({ navigation }) => {
       <UpdateCard
         item={item}
         theme={theme}
-        onPress={() => onPress(item)}
-        onPressCover={() => onPressCover(item)}
+        navigateToChapter={navigateToChapter}
+        navigateToNovel={navigateToNovel}
         downloadQueue={downloadQueue}
-        deleteChapter={deleteChapter}
-        downloadChapter={downloadChapter}
+        handleDeleteChapter={deleteChapter}
+        handleDownloadChapter={downloadChapter}
       />
     );
   };
