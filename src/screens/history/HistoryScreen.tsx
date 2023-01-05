@@ -4,12 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import dayjs from 'dayjs';
 import { Portal } from 'react-native-paper';
 
-import {
-  EmptyView,
-  ErrorScreenV2,
-  LoadingScreenV2,
-  SearchbarV2,
-} from '../../components/index';
+import { EmptyView, ErrorScreenV2, SearchbarV2 } from '../../components/index';
 import HistoryCard from './components/HistoryCard/HistoryCard';
 
 import { useSearch, useHistory, useBoolean } from '@hooks/index';
@@ -114,7 +109,7 @@ const HistoryScreen = () => {
         ]}
         theme={theme}
       />
-      {true ? (
+      {isLoading ? (
         <HistorySkeletonLoading theme={theme} />
       ) : error ? (
         <ErrorScreenV2 error={error} theme={theme} />
