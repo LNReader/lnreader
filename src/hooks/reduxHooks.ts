@@ -14,19 +14,25 @@ const useNovel = () => {
   return novel;
 };
 
-const useChapter = () => {
-  const chapter = useSelector((state: RootState) => state.chapterReducer);
+interface novelSettings {
+  sort: string;
+  filter: string;
+  showGeneratedChapterTitle: boolean;
+  showChapterPrefix: boolean;
+  chapterPrefixStyle: Array<string>;
+  chapterTitleSeperator: string;
+  lastRead: number;
+  position: Object;
+}
 
-  return chapter;
-};
-
-const useFindNovel = (novelId: number) => {
+const useFindNovel = (novelId: number): novelSettings => {
   let novel = useSelector(
     (state: RootState) => state.preferenceReducer.novelSettings,
   );
-  novel = novel[novelId];
 
-  return novel;
+  let resNovel: novelSettings = novel[novelId];
+
+  return resNovel;
 };
 
 const usePreferences = (novelId: number) => {
@@ -119,7 +125,6 @@ export {
   useContinueReading,
   useTrackingStatus,
   useNovel,
-  useChapter,
   useSavedSettings,
   usePosition,
 };

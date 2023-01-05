@@ -65,7 +65,7 @@ export const resumeDownloads = chapters => async dispatch => {
             Notifications.scheduleNotificationAsync({
               content: {
                 title: chapters[i].chapterTitle,
-                body: `Download failed1: ${error.message}`,
+                body: `Download failed: ${error.message}`,
               },
               trigger: null,
             });

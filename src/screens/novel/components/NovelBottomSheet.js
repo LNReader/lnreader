@@ -151,7 +151,6 @@ const ChaptersSettingsSheet = ({
         />
         <View>
           <RadioButton
-            style={styles.indent}
             status={Object.is(chapterPrefixStyle[0], 'Volume ')}
             label="Volume xx Chapter xx"
             onPress={() => {
@@ -162,7 +161,6 @@ const ChaptersSettingsSheet = ({
             theme={theme}
           />
           <RadioButton
-            style={styles.indent}
             status={Object.is(chapterPrefixStyle[0], 'Vol. ')}
             label="Vol. xx Ch. xx"
             onPress={() =>
@@ -171,7 +169,6 @@ const ChaptersSettingsSheet = ({
             theme={theme}
           />
           <RadioButton
-            style={styles.indent}
             status={
               !Object.is(chapterPrefixStyle[0], 'Volume ') &&
               !Object.is(chapterPrefixStyle[0], 'Vol. ')
@@ -180,9 +177,8 @@ const ChaptersSettingsSheet = ({
             onPress={chapterTitleStyleModal.setTrue}
             theme={theme}
           />
-          <View style={{ paddingLeft: 50 }}>
+          <View style={styles.indent}>
             <List.Item
-              viewStyle={styles.indent}
               disabled={!showChapterPrefix || showGeneratedChapterTitle}
               description={`Seperator: ${chapterTitleSeperator}`}
               title="Choose seperator"
@@ -291,6 +287,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   indent: {
-    paddingLeft: 56,
+    marginTop: -2,
+    paddingLeft: 48,
   },
 });

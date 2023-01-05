@@ -53,10 +53,7 @@ import TextReader from './components/TextReader';
 import WebViewReader from './components/WebViewReader';
 import { useTextToSpeech } from '../../hooks/useTextToSpeech';
 import { useFullscreenMode, useLibrarySettings } from '../../hooks';
-import {
-  getChapterFromDb,
-  getDownloadsDb,
-} from '../../database/queries/DownloadQueries';
+import { getChapterFromDb } from '../../database/queries/DownloadQueries';
 import ReaderBottomSheetV2 from './components/ReaderBottomSheet/ReaderBottomSheet';
 import { useReaderSettings } from '../../redux/hooks';
 import { defaultTo } from 'lodash';
