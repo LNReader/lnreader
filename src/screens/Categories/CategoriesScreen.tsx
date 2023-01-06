@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { FAB, Portal } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 
-import { Appbar, EmptyView, LoadingScreenV2 } from '@components/index';
+import { Appbar, EmptyView } from '@components/index';
 import AddCategoryModal from './components/AddCategoryModal';
 
 import {
