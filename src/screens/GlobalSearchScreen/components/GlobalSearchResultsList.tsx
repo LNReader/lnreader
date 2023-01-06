@@ -14,7 +14,8 @@ import GlobalSearchNovelItem from './GlobalSearchNovelItem';
 import { useLibraryNovels } from '@screens/library/hooks/useLibrary';
 import { insertNovelInLibrary } from '../../../database/queries/NovelQueriesV2';
 import { LibraryNovelInfo } from '../../../database/types';
-import GlobalSearchLoading from '@screens/browse/loadingAnimation/GlobalSearchLoading';
+import GlobalSearchSkeletonLoading from '@screens/browse/loadingAnimation/GlobalSearchSkeletonLoading';
+import { useCategorySettings } from '@hooks/useSettings';
 
 interface GlobalSearchResultsListProps {
   searchResults: GlobalSearchResult[];
@@ -29,6 +30,7 @@ const GlobalSearchResultsList: React.FC<GlobalSearchResultsListProps> = ({
   const navigation = useNavigation<StackNavigationProp<any>>();
   const keyExtractor = useCallback(item => item.source.sourceId.toString(), []);
   const { library, setLibrary } = useLibraryNovels();
+  const { defaultCategoryId = 1 } = useCategorySettings();
 
   const novelInLibrary = (sourceId: number, novelUrl: string) =>
     library?.some(
@@ -82,7 +84,7 @@ const GlobalSearchResultsList: React.FC<GlobalSearchResultsListProps> = ({
               />
             </Pressable>
             {item.isLoading ? (
-              <GlobalSearchLoading theme={theme} />
+              <GlobalSearchSkeletonLoading theme={theme} />
             ) : item.error ? (
               <Text style={[styles.error, { color: errorColor }]}>
                 {item.error}
@@ -139,6 +141,7 @@ const GlobalSearchResultsList: React.FC<GlobalSearchResultsListProps> = ({
                           novelItem.sourceId,
                           novelItem.novelUrl,
                           inLibrary,
+                          defaultCategoryId,
                         );
                       }}
                     />

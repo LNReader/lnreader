@@ -8,7 +8,7 @@ interface Props {
   theme: MD3ThemeType;
 }
 
-const GlobalSearchLoading: React.FC<Props> = ({ theme }) => {
+const GlobalSearchSkeletonLoading: React.FC<Props> = ({ theme }) => {
   const styles = createStyleSheet();
 
   const [highlightColor, backgroundColor] = getLoadingColors(theme);
@@ -45,4 +45,4 @@ const createStyleSheet = () => {
   });
 };
 
-export default memo(GlobalSearchLoading);
+export default memo(GlobalSearchSkeletonLoading);

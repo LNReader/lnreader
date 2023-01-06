@@ -17,7 +17,7 @@ import { sourceManager } from '../../../sources/sourceManager';
 import { useBrowseSettings, useSourcesReducer } from '../../../redux/hooks';
 import { useLibraryNovels } from '@screens/library/hooks/useLibrary';
 import { Appbar } from '@components';
-import GlobalSearchLoading from '../loadingAnimation/GlobalSearchLoading';
+import GlobalSearchSkeletonLoading from '../loadingAnimation/GlobalSearchSkeletonLoading';
 
 const MigrationNovels = ({ navigation, route }) => {
   const { sourceId, novelName } = route.params;
@@ -109,7 +109,7 @@ const MigrationNovels = ({ navigation, route }) => {
       {item.error ? (
         <Text style={[styles.error, colorError]}>{item.error}</Text>
       ) : item.loading ? (
-        <GlobalSearchLoading theme={theme} />
+        <GlobalSearchSkeletonLoading theme={theme} />
       ) : (
         <MigrationNovelList
           data={item.novels}
