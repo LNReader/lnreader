@@ -24,7 +24,7 @@ import { StyleSheet } from 'react-native';
 import { useLibraryNovels } from '../../screens/library/hooks/useLibrary';
 import { insertNovelInLibrary } from '../../database/queries/NovelQueriesV2';
 import { LibraryNovelInfo } from '../../database/types';
-import SourceScreenLoading from '@screens/browse/loadingAnimation/SourceScreenLoading';
+import SourceScreenSkeletonLoading from '@screens/browse/loadingAnimation/SourceScreenSkeletonLoading';
 
 interface BrowseSourceScreenProps {
   route: {
@@ -120,7 +120,7 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
         theme={theme}
       />
       {isLoading || isSearching ? (
-        <SourceScreenLoading theme={theme} />
+        <SourceScreenSkeletonLoading theme={theme} />
       ) : errorMessage || novelList.length === 0 ? (
         <ErrorScreenV2
           error={errorMessage || getString('sourceScreen.noResultsFound')}
