@@ -1,14 +1,11 @@
-import {
-  Animated,
-  StyleSheet,
-  Text,
-  useWindowDimensions,
-  View,
-} from 'react-native';
-import React, { LegacyRef, useMemo, useState } from 'react';
+import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import React, { Ref, useCallback, useMemo, useState } from 'react';
 import color from 'color';
 
-import Bottomsheet from '@gorhom/bottom-sheet';
+import Bottomsheet, {
+  BottomSheetBackdrop,
+  BottomSheetView,
+} from '@gorhom/bottom-sheet';
 import { useAppDispatch, useSettingsV1 } from '../../../../redux/hooks';
 import { useTheme } from '@hooks/useTheme';
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
@@ -23,6 +20,7 @@ import ReaderLineHeight from './ReaderLineHeight';
 import ReaderFontPicker from './ReaderFontPicker';
 import { overlay } from 'react-native-paper';
 import { dividerColor } from '../../../../theme/colors';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const ReaderTab: React.FC = () => {
   return (
@@ -156,16 +154,14 @@ const GeneralTab: React.FC = () => {
 };
 
 interface ReaderBottomSheetV2Props {
-  bottomSheetRef: LegacyRef<Bottomsheet> | null;
+  bottomSheetRef: Ref<Bottomsheet> | null;
 }
 
 const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
   bottomSheetRef,
 }) => {
   const theme = useTheme();
-  // const { bottom: bottomInset } = useSafeAreaInsets();
-
-  const [animatedValue] = useState(new Animated.Value(0));
+  const { bottom } = useSafeAreaInsets();
 
   const tabHeaderColor = overlay(2, theme.surface);
   const backgroundColor = tabHeaderColor;
@@ -212,20 +208,25 @@ const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
       pressColor={color(theme.primary).alpha(0.12).string()}
     />
   );
+  const renderBackdrop = useCallback(
+    props => <BottomSheetBackdrop {...props} disappearsOnIndex={0} />,
+    [],
+  );
 
   return (
     <Bottomsheet
-      // animatedValue={animatedValue}
-      // draggableRange={{ top: 600, bottom: 0 }}
+      // snapPoints need 0.1 since backdrop won't dissapear
       index={-1}
-      snapPoints={[400, 600]}
-      enablePanDownToClose
-      // showBackdrop={true}
-      // backdropOpacity={0}
-      // height={600}
-      // ref={bottomSheetRef}
+      backdropComponent={renderBackdrop}
+      snapPoints={[0.1, 320, 520]}
+      enablePanDownToClose={true}
+      ref={bottomSheetRef}
+      handleStyle={{ display: 'none' }}
+      bottomInset={bottom}
     >
-      <View style={[styles.bottomSheetContainer, { backgroundColor }]}>
+      <BottomSheetView
+        style={[styles.bottomSheetContainer, { backgroundColor }]}
+      >
         <TabView
           navigationState={{ index, routes }}
           renderTabBar={renderTabBar}
@@ -234,7 +235,7 @@ const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
           initialLayout={{ width: layout.width }}
           style={styles.tabView}
         />
-      </View>
+      </BottomSheetView>
     </Bottomsheet>
   );
 };

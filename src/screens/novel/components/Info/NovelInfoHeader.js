@@ -137,7 +137,7 @@ const NovelInfoHeader = ({
           />
           <Pressable
             style={styles.bottomsheet}
-            onPress={() => novelBottomSheetRef.current.show()}
+            onPress={() => novelBottomSheetRef.current.expand()}
             android_ripple={{
               color: color(theme.primary).alpha(0.12).string(),
             }}

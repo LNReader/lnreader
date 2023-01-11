@@ -1,16 +1,13 @@
-import React, { useState } from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-  Animated,
-  useWindowDimensions,
-} from 'react-native';
+import React, { useCallback, useState } from 'react';
+import { StyleSheet, View, Text, useWindowDimensions } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import color from 'color';
 
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
-import Bottomsheet from 'rn-sliding-up-panel';
+import BottomSheet, {
+  BottomSheetBackdrop,
+  BottomSheetView,
+} from '@gorhom/bottom-sheet';
 import { getString } from '../../../../strings/translations';
 
 import { Checkbox, SortItem } from '../../../components/Checkbox/Checkbox';
@@ -31,15 +28,11 @@ const ChaptersSettingsSheet = ({
 }) => {
   const { bottom } = useSafeAreaInsets();
 
-  const bottomSheetHeight = 220 + bottom;
-
   const sortChapters = val =>
     dispatch(sortAndFilterChapters(novelId, val, filter));
 
   const filterChapters = val =>
     dispatch(sortAndFilterChapters(novelId, sort, val));
-
-  const [animatedValue] = useState(new Animated.Value(0));
 
   const FirstRoute = () => (
     <View style={{ flex: 1 }}>
@@ -155,15 +148,22 @@ const ChaptersSettingsSheet = ({
     />
   );
 
+  const renderBackdrop = useCallback(
+    props => <BottomSheetBackdrop {...props} disappearsOnIndex={0} />,
+    [],
+  );
+
   return (
-    <Bottomsheet
-      animatedValue={animatedValue}
+    <BottomSheet
+      index={-1}
+      backdropComponent={renderBackdrop}
+      snapPoints={[0.1, 220]}
+      enablePanDownToClose={true}
       ref={bottomSheetRef}
-      draggableRange={{ top: bottomSheetHeight, bottom: 0 }}
-      snappingPoints={[0, bottomSheetHeight]}
-      backdropOpacity={0.5}
+      handleStyle={{ display: 'none' }}
+      bottomInset={bottom}
     >
-      <View
+      <BottomSheetView
         style={[
           styles.contentContainer,
           { backgroundColor: overlay(2, theme.surface) },
@@ -177,8 +177,8 @@ const ChaptersSettingsSheet = ({
           initialLayout={{ width: layout.width }}
           style={{ borderTopRightRadius: 8, borderTopLeftRadius: 8 }}
         />
-      </View>
-    </Bottomsheet>
+      </BottomSheetView>
+    </BottomSheet>
   );
 };
 

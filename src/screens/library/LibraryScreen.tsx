@@ -1,6 +1,6 @@
 import React, { useMemo, useRef, useState } from 'react';
 import { StyleSheet, Text, useWindowDimensions } from 'react-native';
-import Bottomsheet from 'rn-sliding-up-panel';
+import BottomSheet from '@gorhom/bottom-sheet';
 import {
   NavigationState,
   SceneRendererProps,
@@ -82,7 +82,7 @@ const LibraryScreen = () => {
 
   const [index, setIndex] = useState(0);
 
-  const bottomSheetRef = useRef<Bottomsheet | null>(null);
+  const bottomSheetRef = useRef<BottomSheet | null>(null);
 
   const renderTabBar = (
     props: SceneRendererProps & { navigationState: State },
@@ -164,7 +164,7 @@ const LibraryScreen = () => {
               }
             : {
                 iconName: 'filter-variant',
-                onPress: () => bottomSheetRef.current?.show(),
+                onPress: () => bottomSheetRef.current?.expand(),
               },
         ]}
         theme={theme}
