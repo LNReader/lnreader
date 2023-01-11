@@ -8,7 +8,7 @@ import {
 import React, { LegacyRef, useMemo, useState } from 'react';
 import color from 'color';
 
-import Bottomsheet from 'rn-sliding-up-panel';
+import Bottomsheet from '@gorhom/bottom-sheet';
 import { useAppDispatch, useSettingsV1 } from '../../../../redux/hooks';
 import { useTheme } from '@hooks/useTheme';
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
@@ -215,13 +215,15 @@ const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
 
   return (
     <Bottomsheet
-      animatedValue={animatedValue}
-      ref={bottomSheetRef}
-      draggableRange={{ top: 600, bottom: 0 }}
-      snappingPoints={[0, 400, 600]}
-      showBackdrop={true}
-      backdropOpacity={0}
-      height={600}
+      // animatedValue={animatedValue}
+      // draggableRange={{ top: 600, bottom: 0 }}
+      index={-1}
+      snapPoints={[400, 600]}
+      enablePanDownToClose
+      // showBackdrop={true}
+      // backdropOpacity={0}
+      // height={600}
+      // ref={bottomSheetRef}
     >
       <View style={[styles.bottomSheetContainer, { backgroundColor }]}>
         <TabView

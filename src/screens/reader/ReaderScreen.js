@@ -54,7 +54,6 @@ import { useReaderSettings } from '../../redux/hooks';
 import { defaultTo } from 'lodash';
 import BottomInfoBar from './components/BottomInfoBar/BottomInfoBar';
 import { sanitizeChapterText } from './utils/sanitizeChapterText';
-import { LoadingScreenV2 } from '@components/index';
 import ChapterDrawer from './components/ChapterDrawer';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import SkeletonLines from './components/SkeletonLines';
@@ -402,19 +401,17 @@ const ChapterContent = ({ route, navigation }) => {
     <>
       <>
         <ReaderAppbar
-          novelName={novelName}
-          chapterName={chapterName || chapter.chapterName}
-          chapterId={chapterId}
           bookmark={bookmark}
-          textToSpeech={ttsStatus}
-          tts={startTts}
-          readerSheetRef={readerSheetRef}
+          novelName={novelName}
+          chapterId={chapterId}
+          chapterName={chapterName || chapter.chapterName}
           hide={hidden}
-          navigation={navigation}
           dispatch={dispatch}
-          theme={theme}
+          tts={startTts}
+          textToSpeech={ttsStatus}
           textToSpeechPosition={ttsPosition}
           pauseTts={pauseTts}
+          theme={theme}
         />
         <GestureRecognizer
           onSwipeRight={

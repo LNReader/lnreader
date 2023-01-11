@@ -17,9 +17,9 @@ const ReaderAppbar = ({
   dispatch,
   tts,
   textToSpeech,
-  theme,
   textToSpeechPosition,
   pauseTts,
+  theme,
 }) => {
   const { goBack } = useNavigation();
   const [bookmarked, setBookmarked] = useState(bookmark);
