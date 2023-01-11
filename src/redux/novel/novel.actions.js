@@ -257,10 +257,7 @@ export const markPreviousChaptersUnreadAction =
   };
 
 export const markChapterUnreadAction =
-  (chapters, novelId) => async (dispatch, getState) => {
-    const { sort = 'ORDER BY chapterId ASC', filter = '' } =
-      getState().preferenceReducer.novelSettings[novelId];
-
+  (chapters, novelId, sort, filter) => async dispatch => {
     chapters.map(chapter => markChapterUnread(chapter.chapterId));
 
     const chaps = await getChapters(novelId, sort, filter);
