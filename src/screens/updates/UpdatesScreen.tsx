@@ -3,12 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import dayjs from 'dayjs';
 import { RefreshControl, SectionList, StyleSheet, Text } from 'react-native';
 
-import {
-  EmptyView,
-  ErrorScreenV2,
-  LoadingScreenV2,
-  SearchbarV2,
-} from '../../components';
+import { EmptyView, ErrorScreenV2, SearchbarV2 } from '../../components';
 
 import { convertDateToISOString } from '../../database/utils/convertDateToISOString';
 
@@ -33,6 +28,7 @@ import {
   openNovel,
   openNovelProps,
 } from '@utils/handleNavigateParams';
+import UpdatesSkeletonLoading from './components/UpdatesSkeletonLoading';
 
 const UpdatesScreen = () => {
   const theme = useTheme();
@@ -141,7 +137,7 @@ const UpdatesScreen = () => {
         ]}
       />
       {isLoading ? (
-        <LoadingScreenV2 theme={theme} />
+        <UpdatesSkeletonLoading theme={theme} />
       ) : error ? (
         <ErrorScreenV2 error={error} theme={theme} />
       ) : (

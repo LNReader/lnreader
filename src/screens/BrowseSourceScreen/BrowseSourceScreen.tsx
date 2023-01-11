@@ -4,12 +4,7 @@ import * as WebBrowser from 'expo-web-browser';
 
 import { FAB, Portal } from 'react-native-paper';
 import Bottomsheet from 'rn-sliding-up-panel';
-import {
-  Container,
-  LoadingMoreIndicator,
-  ErrorScreenV2,
-  SearchbarV2,
-} from '@components/index';
+import { Container, ErrorScreenV2, SearchbarV2 } from '@components/index';
 import NovelList from '@components/NovelList';
 import NovelCover from '@components/NovelCover';
 import FilterBottomSheet from './components/BottomSheet';
@@ -24,7 +19,7 @@ import { StyleSheet } from 'react-native';
 import { useLibraryNovels } from '../../screens/library/hooks/useLibrary';
 import { insertNovelInLibrary } from '../../database/queries/NovelQueriesV2';
 import { LibraryNovelInfo } from '../../database/types';
-import SourceScreenLoading from '@screens/browse/loadingAnimation/SourceScreenLoading';
+import SourceScreenSkeletonLoading from '@screens/browse/loadingAnimation/SourceScreenSkeletonLoading';
 
 interface BrowseSourceScreenProps {
   route: {
@@ -120,7 +115,7 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
         theme={theme}
       />
       {isLoading || isSearching ? (
-        <SourceScreenLoading theme={theme} />
+        <SourceScreenSkeletonLoading theme={theme} />
       ) : errorMessage || novelList.length === 0 ? (
         <ErrorScreenV2
           error={errorMessage || getString('sourceScreen.noResultsFound')}
@@ -173,7 +168,7 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
           }}
           ListFooterComponent={
             hasNextPage && !searchText ? (
-              <LoadingMoreIndicator theme={theme} />
+              <SourceScreenSkeletonLoading theme={theme} />
             ) : undefined
           }
         />

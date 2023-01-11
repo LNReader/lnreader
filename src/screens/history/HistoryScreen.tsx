@@ -4,12 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import dayjs from 'dayjs';
 import { Portal } from 'react-native-paper';
 
-import {
-  EmptyView,
-  ErrorScreenV2,
-  LoadingScreenV2,
-  SearchbarV2,
-} from '../../components/index';
+import { EmptyView, ErrorScreenV2, SearchbarV2 } from '../../components/index';
 import HistoryCard from './components/HistoryCard/HistoryCard';
 
 import { useSearch, useHistory, useBoolean } from '@hooks/index';
@@ -28,6 +23,7 @@ import {
   openNovel,
   openNovelProps,
 } from '@utils/handleNavigateParams';
+import HistorySkeletonLoading from './components/HistorySkeletonLoading';
 
 const HistoryScreen = () => {
   const theme = useTheme();
@@ -114,7 +110,7 @@ const HistoryScreen = () => {
         theme={theme}
       />
       {isLoading ? (
-        <LoadingScreenV2 theme={theme} />
+        <HistorySkeletonLoading theme={theme} />
       ) : error ? (
         <ErrorScreenV2 error={error} theme={theme} />
       ) : (

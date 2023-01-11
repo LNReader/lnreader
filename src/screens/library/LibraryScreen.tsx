@@ -10,7 +10,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import color from 'color';
 
-import { LoadingScreenV2, SearchbarV2, Button } from '@components/index';
+import { SearchbarV2, Button } from '@components/index';
 import { LibraryView } from './components/LibraryListView';
 import LibraryBottomSheet from './components/LibraryBottomSheet/LibraryBottomSheet';
 import { Banner } from './components/Banner';
@@ -36,6 +36,7 @@ import { openChapter } from '@utils/handleNavigateParams';
 import useHistory from '@hooks/useHistory';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useSettings } from '@hooks/reduxHooks';
+import SourceScreenSkeletonLoading from '@screens/browse/loadingAnimation/SourceScreenSkeletonLoading';
 
 type State = NavigationState<{
   key: string;
@@ -198,7 +199,7 @@ const LibraryScreen = () => {
         renderTabBar={renderTabBar}
         renderScene={({ route }) =>
           isLoading ? (
-            <LoadingScreenV2 theme={theme} />
+            <SourceScreenSkeletonLoading theme={theme} />
           ) : (
             <>
               {searchText ? (

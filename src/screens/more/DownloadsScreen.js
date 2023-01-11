@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { ScreenContainer } from '../../components/Common';
 import EmptyView from '../../components/EmptyView';
-import { Appbar, LoadingScreenV2 } from '@components';
+import { Appbar } from '@components';
 import {
   deleteDownloads,
   getDownloadedChapters,
@@ -23,6 +23,7 @@ import {
 import UpdatesItem from '../updates/components/UpdatesItem';
 import RemoveDownloadsDialog from './components/RemoveDownloadsDialog';
 import { openChapter, openNovel } from '@utils/handleNavigateParams';
+import UpdatesSkeletonLoading from '@screens/updates/components/UpdatesSkeletonLoading';
 
 const Downloads = ({ navigation }) => {
   const theme = useTheme();
@@ -114,7 +115,7 @@ const Downloads = ({ navigation }) => {
         )}
       </Appbar>
       {loading ? (
-        <LoadingScreenV2 theme={theme} />
+        <UpdatesSkeletonLoading theme={theme} />
       ) : (
         <FlatList
           contentContainerStyle={styles.flatList}

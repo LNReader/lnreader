@@ -201,7 +201,9 @@ const Novel = ({ route, navigation }) => {
       list.push({
         icon: 'check-outline',
         onPress: () => {
-          dispatch(markChapterUnreadAction(selected, novel.novelId));
+          dispatch(
+            markChapterUnreadAction(selected, novel.novelId, sort, filter),
+          );
           setSelected([]);
         },
       });
