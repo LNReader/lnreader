@@ -229,6 +229,7 @@ const LibraryBottomSheet: React.FC<LibraryBottomSheetProps> = ({
       ref={bottomSheetRef}
       handleStyle={{ display: 'none' }}
       bottomInset={bottom}
+      containerHeight={480}
     >
       <BottomSheetView
         style={[

@@ -162,6 +162,7 @@ const ChaptersSettingsSheet = ({
       ref={bottomSheetRef}
       handleStyle={{ display: 'none' }}
       bottomInset={bottom}
+      containerHeight={220}
     >
       <BottomSheetView
         style={[

@@ -223,6 +223,7 @@ const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
       ref={bottomSheetRef}
       handleStyle={{ display: 'none' }}
       bottomInset={bottom}
+      containerHeight={520}
     >
       <BottomSheetView
         style={[styles.bottomSheetContainer, { backgroundColor }]}
