@@ -117,7 +117,7 @@ const NovelInfoHeader = ({
                 deleteDownloadsSnackbar.setTrue();
               }
             }}
-            handleTrackerSheet={() => trackerSheetRef.current.show()}
+            handleTrackerSheet={() => trackerSheetRef.current.expand()}
             theme={theme}
           />
           <NovelSummary
