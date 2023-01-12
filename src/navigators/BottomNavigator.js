@@ -32,7 +32,7 @@ const BottomNavigator = () => {
           .string(),
       }}
       theme={{ colors: theme }}
-      activeColor={theme.primary}
+      activeColor={theme.onSecondaryContainer}
       shifting={!showLabelsInNav}
     >
       <Tab.Screen
