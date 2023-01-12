@@ -1,12 +1,5 @@
-import React, { LegacyRef, useMemo, useState } from 'react';
-import {
-  Animated,
-  StyleSheet,
-  Text,
-  useWindowDimensions,
-  View,
-} from 'react-native';
-import Bottomsheet from 'rn-sliding-up-panel';
+import React, { Ref, useMemo, useState } from 'react';
+import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
 import color from 'color';
 
@@ -25,10 +18,14 @@ import {
 import { FlashList } from '@shopify/flash-list';
 import { RadioButton } from '@components/RadioButton/RadioButton';
 import { overlay } from 'react-native-paper';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import {
+  default as BottomSheetType,
+  BottomSheetView,
+} from '@gorhom/bottom-sheet';
+import BottomSheet from '@components/BottomSheet/BottomSheet';
 
 interface LibraryBottomSheetProps {
-  bottomSheetRef: LegacyRef<Bottomsheet> | null;
+  bottomSheetRef: Ref<BottomSheetType> | null;
 }
 
 const FirstRoute = () => {
@@ -168,7 +165,6 @@ const LibraryBottomSheet: React.FC<LibraryBottomSheetProps> = ({
   bottomSheetRef,
 }) => {
   const theme = useTheme();
-  const [animatedValue] = useState(new Animated.Value(0));
 
   const layout = useWindowDimensions();
 
@@ -210,21 +206,14 @@ const LibraryBottomSheet: React.FC<LibraryBottomSheetProps> = ({
     third: ThirdRoute,
   });
 
-  const { bottom } = useSafeAreaInsets();
-
-  const bottomSheetHeight = 480 + bottom;
-
   return (
-    <Bottomsheet
-      animatedValue={animatedValue}
-      ref={bottomSheetRef}
-      draggableRange={{ top: bottomSheetHeight, bottom: 0 }}
-      snappingPoints={[0, bottomSheetHeight]}
-      showBackdrop={true}
-      backdropOpacity={0.3}
-      height={bottomSheetHeight}
+    <BottomSheet
+      bottomSheetRef={bottomSheetRef}
+      snapPoints={[520]}
+      height={520}
+      theme={theme}
     >
-      <View
+      <BottomSheetView
         style={[
           styles.bottomSheetCtn,
           { backgroundColor: overlay(2, theme.surface) },
@@ -238,8 +227,8 @@ const LibraryBottomSheet: React.FC<LibraryBottomSheetProps> = ({
           initialLayout={{ width: layout.width }}
           style={styles.tabView}
         />
-      </View>
-    </Bottomsheet>
+      </BottomSheetView>
+    </BottomSheet>
   );
 };
 

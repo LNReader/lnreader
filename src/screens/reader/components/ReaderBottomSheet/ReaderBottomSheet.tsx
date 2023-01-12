@@ -1,14 +1,12 @@
-import {
-  Animated,
-  StyleSheet,
-  Text,
-  useWindowDimensions,
-  View,
-} from 'react-native';
-import React, { LegacyRef, useMemo, useState } from 'react';
+import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import React, { Ref, useMemo, useState } from 'react';
 import color from 'color';
 
-import Bottomsheet from 'rn-sliding-up-panel';
+import {
+  default as BottomSheetType,
+  BottomSheetView,
+} from '@gorhom/bottom-sheet';
+import BottomSheet from '@components/BottomSheet/BottomSheet';
 import { useAppDispatch, useSettingsV1 } from '../../../../redux/hooks';
 import { useTheme } from '@hooks/useTheme';
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
@@ -156,16 +154,13 @@ const GeneralTab: React.FC = () => {
 };
 
 interface ReaderBottomSheetV2Props {
-  bottomSheetRef: LegacyRef<Bottomsheet> | null;
+  bottomSheetRef: Ref<BottomSheetType> | null;
 }
 
 const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
   bottomSheetRef,
 }) => {
   const theme = useTheme();
-  // const { bottom: bottomInset } = useSafeAreaInsets();
-
-  const [animatedValue] = useState(new Animated.Value(0));
 
   const tabHeaderColor = overlay(2, theme.surface);
   const backgroundColor = tabHeaderColor;
@@ -214,16 +209,15 @@ const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
   );
 
   return (
-    <Bottomsheet
-      animatedValue={animatedValue}
-      ref={bottomSheetRef}
-      draggableRange={{ top: 600, bottom: 0 }}
-      snappingPoints={[0, 400, 600]}
-      showBackdrop={true}
-      backdropOpacity={0}
-      height={600}
+    <BottomSheet
+      bottomSheetRef={bottomSheetRef}
+      snapPoints={[360, 560]}
+      height={560}
+      theme={theme}
     >
-      <View style={[styles.bottomSheetContainer, { backgroundColor }]}>
+      <BottomSheetView
+        style={[styles.bottomSheetContainer, { backgroundColor }]}
+      >
         <TabView
           navigationState={{ index, routes }}
           renderTabBar={renderTabBar}
@@ -232,8 +226,8 @@ const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
           initialLayout={{ width: layout.width }}
           style={styles.tabView}
         />
-      </View>
-    </Bottomsheet>
+      </BottomSheetView>
+    </BottomSheet>
   );
 };
 
