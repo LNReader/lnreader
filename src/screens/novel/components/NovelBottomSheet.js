@@ -24,8 +24,6 @@ const ChaptersSettingsSheet = ({
   theme,
   showChapterTitles,
 }) => {
-  const { bottom } = useSafeAreaInsets();
-
   const sortChapters = val =>
     dispatch(sortAndFilterChapters(novelId, val, filter));
 

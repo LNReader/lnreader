@@ -33,7 +33,6 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
       enablePanDownToClose={true}
       ref={bottomSheetRef}
       handleStyle={styles.handle}
-    //   bottomInset={bottom}
       containerHeight={height + bottom}
       containerStyle={{ paddingBottom: bottom }}
       backgroundStyle={{ backgroundColor: overlay(2, theme.surface) }}

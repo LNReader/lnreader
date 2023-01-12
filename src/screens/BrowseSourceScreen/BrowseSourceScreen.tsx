@@ -3,11 +3,11 @@ import { useNavigation } from '@react-navigation/native';
 import * as WebBrowser from 'expo-web-browser';
 
 import { FAB, Portal } from 'react-native-paper';
-import Bottomsheet from 'rn-sliding-up-panel';
 import { Container, ErrorScreenV2, SearchbarV2 } from '@components/index';
 import NovelList from '@components/NovelList';
 import NovelCover from '@components/NovelCover';
-import FilterBottomSheet from './components/BottomSheet';
+import Bottomsheet from '@gorhom/bottom-sheet';
+import FilterBottomSheet from './components/FilterBottomSheet';
 
 import { useCategorySettings, useSearch } from '../../hooks';
 import { useTheme } from '@hooks/useTheme';
@@ -20,6 +20,7 @@ import { useLibraryNovels } from '../../screens/library/hooks/useLibrary';
 import { insertNovelInLibrary } from '../../database/queries/NovelQueriesV2';
 import { LibraryNovelInfo } from '../../database/types';
 import SourceScreenSkeletonLoading from '@screens/browse/loadingAnimation/SourceScreenSkeletonLoading';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface BrowseSourceScreenProps {
   route: {
@@ -99,8 +100,8 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
     [sourceId],
   );
 
+  const { bottom } = useSafeAreaInsets();
   const filterSheetRef = useRef<Bottomsheet | null>(null);
-
   return (
     <Container>
       <SearchbarV2
@@ -173,15 +174,19 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
           }
         />
       )}
+
       {!showLatestNovels && filterValues?.length ? (
         <>
           <FAB
             icon={'filter-variant'}
-            style={[styles.filterFab, { backgroundColor: theme.primary }]}
+            style={[
+              styles.filterFab,
+              { backgroundColor: theme.primary, marginBottom: bottom },
+            ]}
             label={'Filter'}
             uppercase={false}
             color={theme.onPrimary}
-            onPress={() => filterSheetRef?.current?.show()}
+            onPress={() => filterSheetRef?.current?.expand()}
           />
           <Portal>
             <FilterBottomSheet

@@ -1,7 +1,9 @@
-import React, { LegacyRef, useState } from 'react';
-import { Animated, Pressable, StyleSheet, Text, View } from 'react-native';
+import React, { Ref, useState } from 'react';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import color from 'color';
-import Bottomsheet from 'rn-sliding-up-panel';
+
+import BottomSheet from '../../../components/BottomSheet/BottomSheet';
+import BottomSheetType, { BottomSheetView } from '@gorhom/bottom-sheet';
 
 import { useTheme } from '@hooks/useTheme';
 import {
@@ -116,41 +118,37 @@ const FilterItem: React.FC<FilterItemProps> = ({
 };
 
 interface BottomSheetProps {
+  filterSheetRef: Ref<BottomSheetType> | null;
   filtersValues: SourceFilter[] | undefined;
-  filterSheetRef: LegacyRef<Bottomsheet> | null;
   setFilters: (filters?: SelectedFilter) => void;
   clearFilters: () => void;
 }
 
-const BottomSheet: React.FC<BottomSheetProps> = ({
+const FilterBottomSheet: React.FC<BottomSheetProps> = ({
   filterSheetRef,
   filtersValues,
   clearFilters,
   setFilters,
 }) => {
   const theme = useTheme();
-  const [animatedValue] = useState(new Animated.Value(0));
   const [selectedFilters, setSelectedFilters] = useState<
     SelectedFilter | undefined
   >();
 
   return (
-    <Bottomsheet
-      animatedValue={animatedValue}
-      ref={filterSheetRef}
-      draggableRange={{ top: 600, bottom: 0 }}
-      snappingPoints={[0, 400, 600]}
-      showBackdrop={true}
-      backdropOpacity={0.3}
+    <BottomSheet
+      bottomSheetRef={filterSheetRef}
+      snapPoints={[400, 600]}
       height={600}
+      theme={theme}
     >
-      <View
+      <BottomSheetView
         style={[
           styles.container,
           { backgroundColor: overlay(2, theme.surface) },
         ]}
       >
-        <View
+        <BottomSheetView
           style={[
             styles.buttonContainer,
             { borderBottomColor: dividerColor(theme.isDark) },
@@ -167,14 +165,14 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
           />
           <Button
             title={'Filter'}
-            textColor={theme.colorButtonText}
+            textColor={theme.textColorPrimary}
             onPress={() => {
               setFilters(selectedFilters);
-              filterSheetRef?.current?.hide();
+              filterSheetRef?.current?.collapse();
             }}
             theme={theme}
           />
-        </View>
+        </BottomSheetView>
         <FlatList
           contentContainerStyle={styles.filterContainer}
           data={filtersValues}
@@ -187,12 +185,12 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
             />
           )}
         />
-      </View>
-    </Bottomsheet>
+      </BottomSheetView>
+    </BottomSheet>
   );
 };
 
-export default BottomSheet;
+export default FilterBottomSheet;
 
 const styles = StyleSheet.create({
   container: {
