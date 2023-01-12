@@ -1,11 +1,12 @@
 import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
-import React, { Ref, useCallback, useMemo, useState } from 'react';
+import React, { Ref, useMemo, useState } from 'react';
 import color from 'color';
 
-import Bottomsheet, {
-  BottomSheetBackdrop,
+import {
+  default as BottomSheetType,
   BottomSheetView,
 } from '@gorhom/bottom-sheet';
+import BottomSheet from '@components/BottomSheet/BottomSheet';
 import { useAppDispatch, useSettingsV1 } from '../../../../redux/hooks';
 import { useTheme } from '@hooks/useTheme';
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
@@ -20,7 +21,6 @@ import ReaderLineHeight from './ReaderLineHeight';
 import ReaderFontPicker from './ReaderFontPicker';
 import { overlay } from 'react-native-paper';
 import { dividerColor } from '../../../../theme/colors';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const ReaderTab: React.FC = () => {
   return (
@@ -154,14 +154,13 @@ const GeneralTab: React.FC = () => {
 };
 
 interface ReaderBottomSheetV2Props {
-  bottomSheetRef: Ref<Bottomsheet> | null;
+  bottomSheetRef: Ref<BottomSheetType> | null;
 }
 
 const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
   bottomSheetRef,
 }) => {
   const theme = useTheme();
-  const { bottom } = useSafeAreaInsets();
 
   const tabHeaderColor = overlay(2, theme.surface);
   const backgroundColor = tabHeaderColor;
@@ -208,22 +207,13 @@ const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
       pressColor={color(theme.primary).alpha(0.12).string()}
     />
   );
-  const renderBackdrop = useCallback(
-    props => <BottomSheetBackdrop {...props} disappearsOnIndex={0} />,
-    [],
-  );
 
   return (
-    <Bottomsheet
-      // snapPoints need 0.1 since backdrop won't dissapear
-      index={-1}
-      backdropComponent={renderBackdrop}
-      snapPoints={[0.1, 320, 520]}
-      enablePanDownToClose={true}
-      ref={bottomSheetRef}
-      handleStyle={{ display: 'none' }}
-      bottomInset={bottom}
-      containerHeight={520}
+    <BottomSheet
+      bottomSheetRef={bottomSheetRef}
+      snapPoints={[360, 560]}
+      height={560}
+      theme={theme}
     >
       <BottomSheetView
         style={[styles.bottomSheetContainer, { backgroundColor }]}
@@ -237,7 +227,7 @@ const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
           style={styles.tabView}
         />
       </BottomSheetView>
-    </Bottomsheet>
+    </BottomSheet>
   );
 };
 

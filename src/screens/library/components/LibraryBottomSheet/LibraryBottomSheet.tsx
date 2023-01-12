@@ -1,11 +1,5 @@
-import React, { Ref, useCallback, useMemo, useState } from 'react';
-import {
-  Animated,
-  StyleSheet,
-  Text,
-  useWindowDimensions,
-  View,
-} from 'react-native';
+import React, { Ref, useMemo, useState } from 'react';
+import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
 import color from 'color';
 
@@ -24,14 +18,14 @@ import {
 import { FlashList } from '@shopify/flash-list';
 import { RadioButton } from '@components/RadioButton/RadioButton';
 import { overlay } from 'react-native-paper';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import Bottomsheet, {
-  BottomSheetBackdrop,
+import {
+  default as BottomSheetType,
   BottomSheetView,
 } from '@gorhom/bottom-sheet';
+import BottomSheet from '@components/BottomSheet/BottomSheet';
 
 interface LibraryBottomSheetProps {
-  bottomSheetRef: Ref<Bottomsheet> | null;
+  bottomSheetRef: Ref<BottomSheetType> | null;
 }
 
 const FirstRoute = () => {
@@ -212,24 +206,12 @@ const LibraryBottomSheet: React.FC<LibraryBottomSheetProps> = ({
     third: ThirdRoute,
   });
 
-  const { bottom } = useSafeAreaInsets();
-
-  const renderBackdrop = useCallback(
-    props => <BottomSheetBackdrop {...props} disappearsOnIndex={0} />,
-    [],
-  );
-
   return (
-    <Bottomsheet
-      // snapPoints need 0.1 since backdrop won't dissapear
-      index={-1}
-      backdropComponent={renderBackdrop}
-      snapPoints={[0.1, 480]}
-      enablePanDownToClose={true}
-      ref={bottomSheetRef}
-      handleStyle={{ display: 'none' }}
-      bottomInset={bottom}
-      containerHeight={480}
+    <BottomSheet
+      bottomSheetRef={bottomSheetRef}
+      snapPoints={[520]}
+      height={520}
+      theme={theme}
     >
       <BottomSheetView
         style={[
@@ -246,7 +228,7 @@ const LibraryBottomSheet: React.FC<LibraryBottomSheetProps> = ({
           style={styles.tabView}
         />
       </BottomSheetView>
-    </Bottomsheet>
+    </BottomSheet>
   );
 };
 

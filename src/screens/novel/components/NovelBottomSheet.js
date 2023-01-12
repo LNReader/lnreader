@@ -1,13 +1,11 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View, Text, useWindowDimensions } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import color from 'color';
 
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
-import BottomSheet, {
-  BottomSheetBackdrop,
-  BottomSheetView,
-} from '@gorhom/bottom-sheet';
+import { BottomSheetView } from '@gorhom/bottom-sheet';
+import BottomSheet from '@components/BottomSheet/BottomSheet';
 import { getString } from '../../../../strings/translations';
 
 import { Checkbox, SortItem } from '../../../components/Checkbox/Checkbox';
@@ -148,21 +146,12 @@ const ChaptersSettingsSheet = ({
     />
   );
 
-  const renderBackdrop = useCallback(
-    props => <BottomSheetBackdrop {...props} disappearsOnIndex={0} />,
-    [],
-  );
-
   return (
     <BottomSheet
-      index={-1}
-      backdropComponent={renderBackdrop}
-      snapPoints={[0.1, 220]}
-      enablePanDownToClose={true}
-      ref={bottomSheetRef}
-      handleStyle={{ display: 'none' }}
-      bottomInset={bottom}
-      containerHeight={220 + bottom}
+      snapPoints={[240]}
+      bottomSheetRef={bottomSheetRef}
+      height={220}
+      theme={theme}
     >
       <BottomSheetView
         style={[
