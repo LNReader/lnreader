@@ -97,7 +97,7 @@ const parseNovelAndChapters = async novelUrl => {
 };
 
 const parseChapter = async (novelUrl, chapterUrl) => {
-  const result = await fetch(baseUrl + chapterUrl);
+  const result = await fetch(chapterUrl);
   const body = await result.text();
   const loadedCheerio = cheerio.load(body);
 
