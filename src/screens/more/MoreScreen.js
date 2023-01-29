@@ -32,7 +32,7 @@ const MoreScreen = ({ navigation }) => {
     setLibrarySettings({ incognitoMode: !incognitoMode });
 
   return (
-    <ScreenContainer theme={theme}>
+    <>
       <MoreHeader title="More" navigation={navigation} theme={theme} />
       <ScrollView style={{ flex: 1 }}>
         <List.Section>
@@ -169,7 +169,7 @@ const MoreScreen = ({ navigation }) => {
           />
         </List.Section>
       </ScrollView>
-    </ScreenContainer>
+    </>
   );
 };
 

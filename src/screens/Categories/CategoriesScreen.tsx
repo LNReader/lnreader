@@ -139,6 +139,7 @@ const styles = StyleSheet.create({
     bottom: 16,
   },
   contentCtn: {
+    flexGrow: 1,
     paddingVertical: 16,
     paddingBottom: 100,
   },

@@ -1,14 +1,86 @@
 export const dummyHTML = `
-	<p>  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean lobortis, diam sed malesuada bibendum, nulla libero scelerisque sapien, nec interdum nisl ipsum ac ipsum. In lacinia eros ut quam commodo, in finibus augue ultricies. Vestibulum ex purus, condimentum eget sem at, molestie semper mi. Mauris ac feugiat quam. Pellentesque sagittis bibendum nibh eu lacinia. Aenean rhoncus, velit sit amet mollis egestas, diam turpis ornare velit, a dictum elit velit in erat. Quisque luctus in sem a vulputate.
-  </p>
-  <p>  Pellentesque id tempus orci, non finibus tortor. Suspendisse in neque non eros eleifend hendrerit vitae a lacus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nunc interdum magna nulla, eget pharetra arcu dapibus eu. Pellentesque sed lectus sit amet sem porta lacinia. Curabitur consectetur dolor in nibh varius, ac placerat erat pellentesque. Proin in justo condimentum, fermentum lacus eget, ultrices ante. Fusce tempor blandit erat nec mollis. Vivamus in leo et nunc consectetur elementum nec ac lectus.
-  </p>  
-  <p>  In consectetur libero tempor metus interdum, sit amet viverra leo dapibus. Nullam tincidunt justo hendrerit lorem maximus, eu pretium erat fringilla. Nulla scelerisque leo at enim convallis, a elementum velit laoreet. Aliquam quis vestibulum quam. Morbi ut sollicitudin mi, et laoreet elit. Vivamus mattis, nulla at blandit sodales, lectus lacus luctus metus, non euismod neque urna vel nisl. Quisque vitae ante vitae orci tempus egestas quis eu nibh. Phasellus eget nulla non velit tincidunt fringilla eget nec libero. Morbi tempor erat quis rutrum condimentum.
-  </p>  
-  <p>  Cras sem magna, tempus sed urna eget, scelerisque tincidunt tortor. Cras euismod turpis libero, ut condimentum nulla ultrices id. Phasellus faucibus, elit ut imperdiet euismod, enim dui volutpat turpis, in tincidunt ex ligula non felis. Praesent erat erat, ultrices ut imperdiet sed, congue eu leo. Aliquam viverra fringilla ultrices. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent ac malesuada massa. Cras eu augue in dui venenatis laoreet sit amet eget sem. Nullam malesuada sapien felis, et varius neque auctor eu.
-  </p>  
-  <p>  Sed vestibulum facilisis libero, in aliquet mauris lobortis et. In vitae lectus id risus cursus dictum at ac mi. Praesent ac lectus eget nunc elementum pellentesque. Ut at dui magna. Aliquam mattis posuere gravida. Morbi volutpat, dolor quis varius tincidunt, quam nulla vulputate libero, eu sagittis dui odio et magna. Sed luctus lectus ante, sit amet ultrices ligula convallis vitae. Sed efficitur libero nec quam porta, et fringilla turpis egestas. Nulla facilisi. Duis leo tellus, porta non enim eu, tincidunt cursus lorem.
-  </p>
+<h1>Lorem ipsum dolor sit amet consectetuer adipiscing 
+elit</h1>
+<p>Lorem ipsum dolor sit amet, consectetuer adipiscing 
+elit. Aenean commodo ligula eget dolor. Aenean massa 
+<strong>strong</strong>. Cum sociis natoque penatibus 
+et magnis dis parturient montes, nascetur ridiculus 
+mus. Donec quam felis, ultricies nec, pellentesque 
+eu, pretium quis, sem. Nulla consequat massa quis 
+enim. Donec pede justo, fringilla vel, aliquet nec, 
+vulputate eget, arcu. In enim justo, rhoncus ut, 
+imperdiet a, venenatis vitae, justo. Nullam dictum 
+felis eu pede <a class="external ext" href="#">link</a> 
+mollis pretium. Integer tincidunt. Cras dapibus. 
+Vivamus elementum semper nisi. Aenean vulputate 
+eleifend tellus. Aenean leo ligula, porttitor eu, 
+consequat vitae, eleifend ac, enim. Aliquam lorem ante, 
+dapibus in, viverra quis, feugiat a, tellus. Phasellus 
+viverra nulla ut metus varius laoreet. Quisque rutrum. 
+Aenean imperdiet. Etiam ultricies nisi vel augue. 
+Curabitur ullamcorper ultricies nisi.</p>
+<h1>Lorem ipsum dolor sit amet consectetuer adipiscing 
+elit</h1>
+<h2>Aenean commodo ligula eget dolor aenean massa</h2>
+<p>Lorem ipsum dolor sit amet, consectetuer adipiscing 
+elit. Aenean commodo ligula eget dolor. Aenean massa. 
+Cum sociis natoque penatibus et magnis dis parturient 
+montes, nascetur ridiculus mus. Donec quam felis, 
+ultricies nec, pellentesque eu, pretium quis, sem.</p>
+<h2>Aenean commodo ligula eget dolor aenean massa</h2>
+<p>Lorem ipsum dolor sit amet, consectetuer adipiscing 
+elit. Aenean commodo ligula eget dolor. Aenean massa. 
+Cum sociis natoque penatibus et magnis dis parturient 
+montes, nascetur ridiculus mus. Donec quam felis, 
+ultricies nec, pellentesque eu, pretium quis, sem.</p>
+<ul>
+  <li>Lorem ipsum dolor sit amet consectetuer.</li>
+  <li>Aenean commodo ligula eget dolor.</li>
+  <li>Aenean massa cum sociis natoque penatibus.</li>
+</ul>
+<p>Lorem ipsum dolor sit amet, consectetuer adipiscing 
+elit. Aenean commodo ligula eget dolor. Aenean massa. 
+Cum sociis natoque penatibus et magnis dis parturient 
+montes, nascetur ridiculus mus. Donec quam felis, 
+ultricies nec, pellentesque eu, pretium quis, sem.</p>
+
+<p>Lorem ipsum dolor sit amet, consectetuer adipiscing 
+elit. Aenean commodo ligula eget dolor. Aenean massa. 
+Cum sociis natoque penatibus et magnis dis parturient 
+montes, nascetur ridiculus mus. Donec quam felis, 
+ultricies nec, pellentesque eu, pretium quis, sem.</p>
+<table class="data">
+  <tr>
+    <th>Entry Header 1</th>
+    <th>Entry Header 2</th>
+    <th>Entry Header 3</th>
+    <th>Entry Header 4</th>
+  </tr>
+  <tr>
+    <td>Entry First Line 1</td>
+    <td>Entry First Line 2</td>
+    <td>Entry First Line 3</td>
+    <td>Entry First Line 4</td>
+  </tr>
+  <tr>
+    <td>Entry Line 1</td>
+    <td>Entry Line 2</td>
+    <td>Entry Line 3</td>
+    <td>Entry Line 4</td>
+  </tr>
+  <tr>
+    <td>Entry Last Line 1</td>
+    <td>Entry Last Line 2</td>
+    <td>Entry Last Line 3</td>
+    <td>Entry Last Line 4</td>
+  </tr>
+</table>
+<p>Lorem ipsum dolor sit amet, consectetuer adipiscing 
+elit. Aenean commodo ligula eget dolor. Aenean massa. 
+Cum sociis natoque penatibus et magnis dis parturient 
+montes, nascetur ridiculus mus. Donec quam felis, 
+ultricies nec, pellentesque eu, pretium quis, sem.</p> 
+
 `;
 
 export const dummyText =

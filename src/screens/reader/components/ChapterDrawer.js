@@ -104,7 +104,7 @@ const ChapterDrawer = ({ state: st, navigation }) => {
         <Text numberOfLines={1} style={styles.chapterNameCtn}>
           {item.chapterName}
         </Text>
-        {item.releaseDate && (
+        {item?.releaseDate && (
           <Text style={styles.releaseDateCtn}>{item.releaseDate}</Text>
         )}
       </Pressable>

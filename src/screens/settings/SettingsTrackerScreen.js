@@ -10,10 +10,9 @@ import {
 } from '../../services/Trackers/myAnimeList';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { List } from '../../components/List';
 import { removeTracker, setTracker } from '../../redux/tracker/tracker.actions';
 import { useTheme } from '@hooks/useTheme';
-import { Appbar } from '@components';
+import { Appbar, List } from '@components';
 import { getDialogBackground } from '@theme/colors';
 
 const TrackerScreen = ({ navigation }) => {

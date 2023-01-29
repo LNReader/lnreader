@@ -143,7 +143,7 @@ export const restoreLibrary = async novel => {
         async (txObj, { insertId }) => {
           const chapters = await fetchChapters(novel.sourceId, novel.novelUrl);
 
-          if (chapters) {
+          if (chapters.length) {
             await insertChapters(insertId, chapters);
 
             resolve();

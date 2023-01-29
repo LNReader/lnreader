@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 
 import { Button, Dialog, Portal } from 'react-native-paper';
 
-import { List } from '../../components/List';
-
 import { useTheme } from '@hooks/useTheme';
 import { showToast } from '../../hooks/showToast';
 
@@ -15,7 +13,7 @@ import useBoolean from '@hooks/useBoolean';
 import ConfirmationDialog from '@components/ConfirmationDialog/ConfirmationDialog';
 import { deleteReadChaptersFromDb } from '../../database/queries/DownloadQueries';
 import { getDialogBackground } from '@theme/colors';
-import { Appbar } from '@components';
+import { Appbar, List } from '@components';
 
 const AdvancedSettings = ({ navigation }) => {
   const theme = useTheme();

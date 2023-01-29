@@ -6,22 +6,21 @@ import { ChapterItem } from '../types';
 import * as cheerio from 'cheerio';
 import RNFetchBlob from 'rn-fetch-blob';
 import { txnErrorCallback } from '@database/utils/helpers';
-import { isNull } from 'lodash';
 
 const db = SQLite.openDatabase('lnreader.db');
-
-let insertChaptersQuery = `
-INSERT INTO chapters (
-  chapterUrl, chapterName, releaseDate, 
-  novelId
-) 
-VALUES 
-`;
 
 export const insertChapters = async (
   novelId: number,
   chapters: ChapterItem[],
 ) => {
+  let insertChaptersQuery = `
+  INSERT INTO chapters (
+    chapterUrl, chapterName, releaseDate, 
+    novelId
+  ) 
+  VALUES 
+  `;
+
   const valuesArr: string[] = [];
 
   chapters?.forEach(chapter => {
@@ -29,7 +28,7 @@ export const insertChapters = async (
       `(
         "${chapter.chapterUrl}", 
         "${chapter.chapterName}", 
-        ${isNull(chapter.releaseDate) ? 'NULL' : `"${chapter.releaseDate}"`}, 
+        "${chapter.releaseDate || ''}", 
         ${novelId}
       )`,
     );
