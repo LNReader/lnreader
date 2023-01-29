@@ -52,8 +52,9 @@ const popularNovels = async (page, { showLatestNovels, filters }) => {
 
   loadedCheerio('.media-card-wrap').each(function () {
     const novelName = loadedCheerio(this).find('.media-card__title').text();
-    const novelCover =
-      baseUrl + loadedCheerio(this).find('a.media-card').attr('data-src');
+    const novelCover = loadedCheerio(this)
+      .find('a.media-card')
+      .attr('data-src');
     const novelUrl = loadedCheerio(this).find('a.media-card').attr('href');
 
     const novel = { sourceId, novelName, novelCover, novelUrl };
@@ -175,24 +176,15 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 };
 
 const searchNovels = async searchTerm => {
-  const url = `${baseUrl}/manga-list?sort=rate&dir=desc&page=1&name=${searchTerm}`;
-
-  const result = await fetch(url);
-  const body = await result.text();
-
-  let loadedCheerio = cheerio.load(body);
-
+  const result = await fetch(`${baseUrl}/search?q=${searchTerm}&type=manga`);
+  const body = await result.json();
   let novels = [];
 
-  loadedCheerio('.media-card-wrap').each(function () {
-    const novelName = loadedCheerio(this).find('.media-card__title').text();
-    const novelCover =
-      baseUrl + loadedCheerio(this).find('a.media-card').attr('data-src');
-    const novelUrl = loadedCheerio(this).find('a.media-card').attr('href');
-
-    const novel = { sourceId, novelName, novelCover, novelUrl };
-
-    novels.push(novel);
+  body.map(novel => {
+    const novelName = novel?.rus_name || novel.name;
+    const novelUrl = novel?.href || baseUrl + '/' + novel.slug;
+    const novelCover = novel.coverImage;
+    novels.push({ sourceId, novelName, novelCover, novelUrl });
   });
 
   return novels;

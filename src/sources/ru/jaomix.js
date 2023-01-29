@@ -82,58 +82,22 @@ const parseNovelAndChapters = async novelUrl => {
     }
   });
 
-  const termid = loadedCheerio('div[class="like-but"]').attr('id');
   const chapters = [];
 
-  let formData = new FormData();
-  formData.append('action', 'toc');
-  formData.append('selectall', termid);
-
-  let doc = await fetch(baseUrl + '/wp-admin/admin-ajax.php', {
-    method: 'POST',
-    body: formData,
-  });
-  let results2 = await doc.text();
-  let loadedCheerio2 = cheerio.load(results2);
-  let page = loadedCheerio2('option').length;
-
-  for (let i = 0; i < page; i++) {
-    if (i == 0) {
-      loadedCheerio2 = loadedCheerio;
-    } else {
-      formData = new FormData();
-      formData.append('action', 'toc');
-      formData.append('page', i);
-      formData.append('termid', termid);
-      doc = await fetch(baseUrl + '/wp-admin/admin-ajax.php', {
-        method: 'POST',
-        body: formData,
-      });
-      results2 = await doc.text();
-      loadedCheerio2 = cheerio.load(results2);
-    }
-
-    loadedCheerio2(
-      'div[class="hiddenstab active"] > div > div[class="flex-dow-txt"]',
-    ).each(function () {
-      const chapterName = loadedCheerio2(this)
-        .find('div[class="title"] > a')
-        .attr('title');
-      const releaseDate = loadedCheerio2(this).find('time').text();
-      const chapterUrl = loadedCheerio2(this)
-        .find('div[class="title"] > a')
-        .attr('href');
-
-      chapters.push({ chapterName, releaseDate, chapterUrl });
+  loadedCheerio('.download-chapter div.title').each(function () {
+    chapters.push({
+      chapterName: loadedCheerio(this).find('a').attr('title'),
+      releaseDate: loadedCheerio(this).find('time').text(),
+      chapterUrl: loadedCheerio(this).find('a').attr('href'),
     });
-  }
+  });
 
   novel.chapters = chapters.reverse();
   return novel;
 };
 
 const parseChapter = async (novelUrl, chapterUrl) => {
-  const result = await fetch(baseUrl + chapterUrl);
+  const result = await fetch(chapterUrl);
   const body = await result.text();
   const loadedCheerio = cheerio.load(body);
 
