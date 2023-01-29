@@ -51,7 +51,7 @@
     "qs": "^6.10.3",
     "react": "16.13.1",
     "react-dom": "16.13.1",
-    "react-native": "^0.64.3",
+    "react-native": "^0.71.1",
     "react-native-background-actions": "^2.6.5",
     "react-native-device-info": "^8.4.7",
     "react-native-easing-gradient": "^1.0.0",
