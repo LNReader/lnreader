@@ -3,11 +3,11 @@ import { ScrollView } from 'react-native';
 
 import * as Linking from 'expo-linking';
 
-import { List } from '../../components/List';
 import { ScreenContainer } from '../../components/Common';
 import { MoreHeader } from './components/MoreHeader';
 import { appVersion, releaseDate } from '../../utils/versionUtils';
 import { useTheme } from '@hooks/useTheme';
+import { List } from '@components';
 
 const AboutScreen = ({ navigation }) => {
   const theme = useTheme();

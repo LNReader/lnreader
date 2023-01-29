@@ -145,11 +145,7 @@ class MadaraScraper {
     }
 
     loadedCheerio('.wp-manga-chapter').each(function () {
-      const chapterName = loadedCheerio(this)
-        .find('a')
-        .text()
-        .replace(/[\t\n]/g, '')
-        .trim();
+      const chapterName = loadedCheerio(this).find('a').text().trim();
 
       let releaseDate = null;
       releaseDate = loadedCheerio(this)
@@ -199,7 +195,9 @@ class MadaraScraper {
       loadedCheerio('#chapter-heading').text();
 
     let chapterText =
-      loadedCheerio('.text-left').html() || loadedCheerio('.text-right').html();
+      loadedCheerio('.text-left').html() ||
+      loadedCheerio('.text-right').html() ||
+      loadedCheerio('.entry-content').html();
 
     const chapter = {
       sourceId,

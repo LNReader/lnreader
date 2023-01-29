@@ -3,7 +3,6 @@ import { ScrollView } from 'react-native';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { List } from '../../components/List';
 import SwitchSetting from '../../components/Switch/Switch';
 import DisplayModeModal from '../more/components/DisplayModeModal';
 import GridSizeModal from '../more/components/GridSizeModal';
@@ -19,7 +18,7 @@ import {
 } from '@screens/library/constants/constants';
 import { useLibrarySettings } from '@hooks/useSettings';
 import useBoolean from '@hooks/useBoolean';
-import { Appbar } from '@components';
+import { Appbar, List } from '@components';
 
 const GenralSettings = ({ navigation }) => {
   const theme = useTheme();

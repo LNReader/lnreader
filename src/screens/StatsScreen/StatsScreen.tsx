@@ -119,7 +119,7 @@ const StatsScreen = () => {
         </Text>
         <Row style={[styles.statsRow, styles.genreRow]}>
           {Object.entries(stats.genres || {}).map(item => (
-            <StatsCard label={item[0]} value={item[1]} />
+            <StatsCard key={item[0]} label={item[0]} value={item[1]} />
           ))}
         </Row>
         <Text style={[styles.header, { color: theme.textColorSecondary }]}>
@@ -127,7 +127,7 @@ const StatsScreen = () => {
         </Text>
         <Row style={[styles.statsRow, styles.genreRow]}>
           {Object.entries(stats.status || {}).map(item => (
-            <StatsCard label={item[0]} value={item[1]} />
+            <StatsCard key={item[0]} label={item[0]} value={item[1]} />
           ))}
         </Row>
       </ScrollView>

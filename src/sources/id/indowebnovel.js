@@ -64,11 +64,13 @@ const parseNovelAndChapters = async novelUrl => {
 
   novel.status = loadedCheerio('.status').text().trim();
 
-  novel.genre = loadedCheerio('.series-genres')
-    .each(function () {
-      return loadedCheerio(this).find('a').text().trim();
-    })
-    ?.toString();
+  novel.genre = [];
+
+  loadedCheerio('.series-genres').each(function () {
+    novel.genre.push(loadedCheerio(this).find('a').text().trim());
+  });
+
+  novel.genre = novel.genre.toString();
 
   let chapters = [];
 

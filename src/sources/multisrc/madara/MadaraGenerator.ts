@@ -358,7 +358,11 @@ export const SugarBabiesScraper = new MadaraScraper(
   138,
   'https://sugarbbscan.com/',
   'Sugar Babies',
-  { 'totalPages': 3, 'lang': 'English' },
+  {
+    'totalPages': 3,
+    'lang': 'English',
+    'path': { 'novels': 'series', 'novel': 'series', 'chapter': 'series' },
+  },
 );
 
 export const NovelroomDotnetScraper = new MadaraScraper(

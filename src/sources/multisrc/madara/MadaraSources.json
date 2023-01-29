@@ -392,7 +392,8 @@
     "sourceName": "Sugar Babies",
     "options": {
       "totalPages": 3,
-      "lang": "English"
+      "lang": "English",
+      "path": { "novels": "series", "novel": "series", "chapter": "series" }
     }
   },
   {

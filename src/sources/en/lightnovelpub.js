@@ -6,8 +6,6 @@ const baseUrl = 'https://www.lightnovelpub.com/';
 const headers = new Headers({
   Accept: 'application/json',
   'Content-Type': 'application/json',
-  'User-Agent':
-    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36',
 });
 
 const popularNovels = async page => {
@@ -102,8 +100,10 @@ const parseNovelAndChapters = async novelUrl => {
     for (let i = 1; i <= lastPage; i++) {
       const chaptersUrl = `${novelUrl}/chapters/page-${i}`;
 
-      const chaptersRequest = await fetch(chaptersUrl, { headers });
-      const chaptersHtml = await chaptersRequest.text();
+      const chaptersHtml = await fetchHtml({
+        url: chaptersUrl,
+        init: { headers },
+      });
 
       loadedCheerio = cheerio.load(chaptersHtml);
 
@@ -137,7 +137,6 @@ const parseNovelAndChapters = async novelUrl => {
 
 const parseChapter = async (novelUrl, chapterUrl) => {
   const url = chapterUrl;
-
   const body = await fetchHtml({ url, sourceId });
 
   const loadedCheerio = cheerio.load(body);
@@ -162,8 +161,10 @@ const searchNovels = async searchTerm => {
   let formData = new FormData();
   formData.append('inputContent', searchTerm);
 
-  const result = await fetch(url, { method: 'POST', headers, body: formData });
-  const body = await result.text();
+  const body = await fetchHtml({
+    url,
+    init: { method: 'POST', headers, body: formData },
+  });
 
   let loadedCheerio = cheerio.load(body);
 

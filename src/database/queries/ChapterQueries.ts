@@ -9,6 +9,15 @@ import { txnErrorCallback } from '@database/utils/helpers';
 
 const db = SQLite.openDatabase('lnreader.db');
 
+const insertChaptersQuery = `
+INSERT INTO chapters (
+  chapterUrl, chapterName, releaseDate, 
+  novelId
+) 
+values 
+  (?, ?, ?, ?)
+`;
+
 export const insertChapters = async (
   novelId: number,
   chapters?: ChapterItem[],
@@ -17,32 +26,16 @@ export const insertChapters = async (
     return;
   }
 
-  let insertChaptersQuery = `
-  INSERT INTO chapters (
-    chapterUrl, chapterName, releaseDate, 
-    novelId
-  ) 
-  VALUES 
-  `;
-
-  const valuesArr: string[] = [];
-
-  chapters?.forEach(chapter => {
-    valuesArr.push(
-      `(
-        "${chapter.chapterUrl}", 
-        "${chapter.chapterName}", 
-        "${chapter.releaseDate || ''}", 
-        ${novelId}
-      )`,
+  db.transaction(tx => {
+    chapters.map(chapter =>
+      tx.executeSql(insertChaptersQuery, [
+        chapter.chapterUrl,
+        chapter.chapterName,
+        chapter.releaseDate,
+        novelId,
+      ]),
     );
   });
-
-  insertChaptersQuery += valuesArr.toString() + ';';
-
-  db.transaction(tx =>
-    tx.executeSql(insertChaptersQuery, undefined, undefined, txnErrorCallback),
-  );
 };
 
 const getChaptersQuery = (sort = 'ORDER BY chapterId ASC', filter = '') =>
@@ -254,7 +247,10 @@ const createImageFolder = async (
       await RNFetchBlob.fs.mkdir(p);
     }
   };
+
   await mkdirIfNot(path);
+  await RNFetchBlob.fs.createFile(path, '.nomedia', 'utf8');
+
   if (data) {
     const { sourceId, novelId, chapterId } = data;
     await mkdirIfNot(`${path}/${sourceId}/`);
@@ -371,9 +367,7 @@ const deleteDownloadedImages = async (
         }
       }
     }
-  } catch (error) {
-    showToast((error as Error).message);
-  }
+  } catch (error) {}
 };
 
 export const deleteChapter = async (
@@ -424,7 +418,7 @@ export const deleteChapters = async (
     .toString();
 
   const updateIsDownloadedQuery = `UPDATE chapters SET downloaded = 0 WHERE chapterId IN (${chapterIdsString})`;
-  const deleteChapterQuery = `DELETE FROM downloads WHERE downloadChapterId = (${chapterIdsString})`;
+  const deleteChapterQuery = `DELETE FROM downloads WHERE downloadChapterId IN (${chapterIdsString})`;
 
   await Promise.all(
     chapters?.map(chapter =>

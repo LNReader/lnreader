@@ -1,7 +1,7 @@
 import React from 'react';
 import { ActivityIndicator } from 'react-native';
 
-import { IconButton, Menu } from 'react-native-paper';
+import { IconButton, Menu, overlay } from 'react-native-paper';
 
 export const DownloadButton = ({
   downloadQueue,
@@ -23,7 +23,7 @@ export const DownloadButton = ({
         anchor={
           <DeleteChapterButton theme={theme} onPress={showDeleteChapterMenu} />
         }
-        contentStyle={{ backgroundColor: theme.menuColor }}
+        contentStyle={{ backgroundColor: overlay(2, theme.surface) }}
       >
         <Menu.Item
           onPress={() => deleteChapter(chapter.chapterId, chapter.chapterName)}

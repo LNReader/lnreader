@@ -14,9 +14,11 @@ import ConfirmationDialog from '@components/ConfirmationDialog/ConfirmationDialo
 import { deleteReadChaptersFromDb } from '../../database/queries/DownloadQueries';
 import { getDialogBackground } from '@theme/colors';
 import { Appbar, List } from '@components';
+import useSourceStorage from '@hooks/useSourceStorage';
 
 const AdvancedSettings = ({ navigation }) => {
   const theme = useTheme();
+  const { clearCookies } = useSourceStorage({});
 
   /**
    * Confirm Clear Database Dialog
@@ -67,6 +69,7 @@ const AdvancedSettings = ({ navigation }) => {
           onPress={showDeleteReadChaptersDialog}
           theme={theme}
         />
+        <List.Item title="Clear cookies" onPress={clearCookies} theme={theme} />
       </List.Section>
       <Portal>
         <ConfirmationDialog

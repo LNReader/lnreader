@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Menu } from 'react-native-paper';
+import { Menu, overlay } from 'react-native-paper';
 import {
   ChapterDownloadingButton,
   DeleteChapterButton,
@@ -27,7 +27,7 @@ export const DownloadButton = ({
         anchor={
           <DeleteChapterButton theme={theme} onPress={showDeleteChapterMenu} />
         }
-        contentStyle={{ backgroundColor: theme.menuColor }}
+        contentStyle={{ backgroundColor: overlay(2, theme.surface) }}
       >
         <Menu.Item
           onPress={() => {

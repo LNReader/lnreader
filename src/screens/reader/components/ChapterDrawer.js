@@ -237,10 +237,9 @@ const createStylesheet = (theme, insets) => {
     },
     drawerElementContainer: {
       margin: 4,
-      marginLeft: 0,
+      marginLeft: 16,
       marginRight: 16,
       borderRadius: 50,
-      // borderBottomRightRadius: 50,
       overflow: 'hidden',
       minHeight: 48,
     },

@@ -250,7 +250,7 @@ const styles = StyleSheet.create({
     backgroundColor: coverPlaceholderColor,
   },
   novelTitle: {
-    fontSize: 18,
+    fontSize: 20,
   },
   novelAuthor: {
     marginVertical: 6,
