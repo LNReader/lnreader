@@ -11,6 +11,7 @@ export interface NovelInfo {
   author?: string;
   status?: string;
   followed: number;
+  categoryIds: string;
 }
 
 export interface LibraryNovelInfo extends NovelInfo {

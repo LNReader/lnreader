@@ -91,7 +91,6 @@ import RanobesScraper from './en/ranobes';
 import RanobesruScraper from './ru/ranobes';
 import YushuboScraper from './ch/yushubo';
 import {
-  KolNovelScraper,
   LiebeSchneeHiverNovelScraper,
   LightNovelsBrasilScraper,
 } from './multisrc/wpmangastream/WPMangaStreamGenerator';
@@ -144,6 +143,7 @@ import HakoLightNovelScraper from './vi/HakoLightNovel';
 import MTNovelScraper from './en/mtnovel';
 import NovelTop1Scraper from './en/noveltop1';
 import { SelectedFilter, SourceFilter } from './types/filterTypes';
+import KolNovelScraper from './ar/KolNovel';
 
 interface PopularNovelsResponse {
   totalPages: number;

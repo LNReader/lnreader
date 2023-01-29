@@ -1,3 +1,4 @@
+import { fetchHtml } from '@utils/fetch/fetch';
 import * as cheerio from 'cheerio';
 
 const baseUrl = 'https://fastnovel.net';
@@ -7,8 +8,7 @@ const popularNovels = async page => {
   let totalPages = 39;
   const url = `${baseUrl}/list/most-popular.html?page=${page}`;
 
-  const result = await fetch(url);
-  const body = await result.text();
+  const body = await fetchHtml({ url, sourceId });
 
   const loadedCheerio = cheerio.load(body);
 
@@ -35,8 +35,7 @@ const popularNovels = async page => {
 const parseNovelAndChapters = async novelUrl => {
   const url = `${baseUrl}/${novelUrl}/`;
 
-  const result = await fetch(url);
-  const body = await result.text();
+  const body = await fetchHtml({ url, sourceId });
 
   const loadedCheerio = cheerio.load(body);
 
@@ -105,8 +104,7 @@ const parseNovelAndChapters = async novelUrl => {
 const parseChapter = async (novelUrl, chapterUrl) => {
   const url = `${baseUrl}/${novelUrl}/${chapterUrl}`;
 
-  const result = await fetch(url);
-  const body = await result.text();
+  const body = await fetchHtml({ url, sourceId });
 
   const loadedCheerio = cheerio.load(body);
 
@@ -127,8 +125,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 const searchNovels = async searchTerm => {
   const url = `${searchUrl}${searchTerm}`;
 
-  const result = await fetch(url);
-  const body = await result.text();
+  const body = await fetchHtml({ url, sourceId });
 
   const loadedCheerio = cheerio.load(body);
 

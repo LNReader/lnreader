@@ -1,3 +1,4 @@
+import { fetchHtml } from '@utils/fetch/fetch';
 import * as cheerio from 'cheerio';
 
 const sourceId = 103;
@@ -9,8 +10,7 @@ const popularNovels = async page => {
   const totalPages = 8;
   const url = `${baseUrl}advanced-search/page/${page}/?title&author&yearx&status&type&order=rating&country%5B0%5D=china&country%5B1%5D=jepang&country%5B2%5D=unknown`;
 
-  const result = await fetch(url);
-  const body = await result.text();
+  const body = await fetchHtml({ url, sourceId });
 
   const loadedCheerio = cheerio.load(body);
 
@@ -35,8 +35,7 @@ const popularNovels = async page => {
 };
 
 const parseNovelAndChapters = async novelUrl => {
-  const result = await fetch(novelUrl);
-  const body = await result.text();
+  const body = await fetchHtml({ url: novelUrl, sourceId });
 
   let loadedCheerio = cheerio.load(body);
 
@@ -81,8 +80,7 @@ const parseNovelAndChapters = async novelUrl => {
 };
 
 const parseChapter = async (novelUrl, chapterUrl) => {
-  const result = await fetch(chapterUrl);
-  const body = await result.text();
+  const body = await fetchHtml({ url: chapterUrl, sourceId });
 
   let loadedCheerio = cheerio.load(body);
 
@@ -103,8 +101,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 const searchNovels = async searchTerm => {
   const url = `${baseUrl}?s=${searchTerm}`;
 
-  const result = await fetch(url);
-  const body = await result.text();
+  const body = await fetchHtml({ url, sourceId });
 
   let loadedCheerio = cheerio.load(body);
 

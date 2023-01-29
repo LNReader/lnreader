@@ -34,7 +34,11 @@ const NovelScreenButtonGroup: React.FC<NovelScreenButtonGroupProps> = ({
   const trackerButtonColor = isTracked ? theme.primary : theme.textColorHint;
 
   const handleOpenWebView = async () => {
-    WebBrowser.openBrowserAsync(sourceUrl);
+    navigate('WebviewScreen', {
+      sourceId: novel.sourceId,
+      name: novel.source,
+      url: sourceUrl,
+    });
   };
 
   const handleMigrateNovel = () =>

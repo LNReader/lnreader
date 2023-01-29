@@ -22,7 +22,8 @@ export const sanitizeChapterText = (
       text = text.replace(/<\s*br[^>]*>/gi, '\n').replace(/\n{2,}/g, '\n\n');
     }
   } else {
-    text = "Chapter not available .\n\nReport if it's available in webview.";
+    text =
+      "Chapter not available.\n\nReport on <a href='https://github.com/LNReader/lnreader-sources/issues/new/choose'>github</a> if it's available in webview.";
   }
 
   return text;

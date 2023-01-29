@@ -1,6 +1,5 @@
 import React, { useCallback, useRef } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import * as WebBrowser from 'expo-web-browser';
 
 import { FAB, Portal } from 'react-native-paper';
 import { Container, ErrorScreenV2, SearchbarV2 } from '@components/index';
@@ -76,7 +75,11 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
   };
 
   const handleOpenWebView = async () => {
-    WebBrowser.openBrowserAsync(sourceUrl);
+    navigate('WebviewScreen', {
+      sourceId,
+      name: sourceName,
+      url: sourceUrl,
+    });
   };
 
   const { library, setLibrary } = useLibraryNovels();

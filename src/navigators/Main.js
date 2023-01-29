@@ -30,6 +30,7 @@ import BrowseSettings from '../screens/browse/BrowseSettings';
 import { useAppDispatch } from '@redux/hooks';
 import { updateLibraryAction } from '@redux/updates/updates.actions';
 import { useSettings } from '@hooks/reduxHooks';
+import WebviewScreen from '@screens/WebviewScreen/WebviewScreen';
 
 const Stack = createStackNavigator();
 
@@ -74,6 +75,7 @@ const MainNavigator = () => {
         <Stack.Screen name="Migration" component={Migration} />
         <Stack.Screen name="SourceNovels" component={SourceNovels} />
         <Stack.Screen name="MigrateNovel" component={MigrateNovel} />
+        <Stack.Screen name="WebviewScreen" component={WebviewScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

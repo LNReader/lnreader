@@ -1,3 +1,4 @@
+import { fetchHtml } from '@utils/fetch/fetch';
 import * as cheerio from 'cheerio';
 const baseUrl = 'https://foxaholic.com/';
 
@@ -5,8 +6,7 @@ const popularNovels = async page => {
   let totalPages = 5;
   let url = baseUrl + 'novel/page/' + page + '/?m_orderby=rating';
 
-  const result = await fetch(url);
-  const body = await result.text();
+  const body = await fetchHtml({ url, sourceId });
 
   const loadedCheerio = cheerio.load(body);
 
@@ -38,8 +38,7 @@ const popularNovels = async page => {
 const parseNovelAndChapters = async novelUrl => {
   const url = `${baseUrl}novel/${novelUrl}`;
 
-  const result = await fetch(url);
-  const body = await result.text();
+  const body = await fetchHtml({ url, sourceId });
 
   let loadedCheerio = cheerio.load(body);
 
@@ -134,8 +133,7 @@ const parseNovelAndChapters = async novelUrl => {
 const parseChapter = async (novelUrl, chapterUrl) => {
   const url = `${baseUrl}novel/${novelUrl}${chapterUrl}/`;
 
-  const result = await fetch(url);
-  const body = await result.text();
+  const body = await fetchHtml({ url, sourceId });
 
   const loadedCheerio = cheerio.load(body);
 
@@ -155,8 +153,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 const searchNovels = async searchTerm => {
   const url = `${baseUrl}?s=${searchTerm}&post_type=wp-manga`;
 
-  const result = await fetch(url);
-  const body = await result.text();
+  const body = await fetchHtml({ url, sourceId });
 
   const loadedCheerio = cheerio.load(body);
 

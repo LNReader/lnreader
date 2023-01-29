@@ -1,3 +1,4 @@
+import { fetchHtml } from '@utils/fetch/fetch';
 import * as cheerio from 'cheerio';
 const sourceId = 15;
 const baseUrl = 'https://www.lightnovelpub.com/';
@@ -13,14 +14,8 @@ const popularNovels = async page => {
   const totalPages = 33;
   const url = baseUrl + 'browse/all/popular/all/' + page;
 
-  const result = await fetch(url, { method: 'GET', headers });
-  const body = await result.text();
+  const body = await fetchHtml({ url, sourceId });
 
-  if (body.includes('Cloudflare')) {
-    throw Error(
-      "The app cannot bypass the source's Cloudflare protection. Either wait for them to lower the protection or migrate.",
-    );
-  }
   const loadedCheerio = cheerio.load(body);
 
   let novels = [];
@@ -50,8 +45,7 @@ const popularNovels = async page => {
 const parseNovelAndChapters = async novelUrl => {
   const url = novelUrl;
 
-  const result = await fetch(url, { method: 'GET', headers });
-  const body = await result.text();
+  const body = await fetchHtml({ url, sourceId });
 
   let loadedCheerio = cheerio.load(body);
 
@@ -144,14 +138,7 @@ const parseNovelAndChapters = async novelUrl => {
 const parseChapter = async (novelUrl, chapterUrl) => {
   const url = chapterUrl;
 
-  const result = await fetch(url, { method: 'GET', headers });
-  const body = await result.text();
-
-  if (body.includes('Cloudflare')) {
-    throw Error(
-      "The app cannot bypass the source's Cloudflare protection. Either wait for them to lower the protection or migrate.",
-    );
-  }
+  const body = await fetchHtml({ url, sourceId });
 
   const loadedCheerio = cheerio.load(body);
 

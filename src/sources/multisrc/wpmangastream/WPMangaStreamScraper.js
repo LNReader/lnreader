@@ -1,3 +1,4 @@
+import { fetchHtml } from '@utils/fetch/fetch';
 import * as cheerio from 'cheerio';
 class WPMangaStreamScraper {
   constructor(sourceId, baseUrl, sourceName, options) {
@@ -13,8 +14,7 @@ class WPMangaStreamScraper {
     let url = this.baseUrl + 'series/?page=' + page + '&status=&order=popular';
     let sourceId = this.sourceId;
 
-    const result = await fetch(url);
-    const body = await result.text();
+    const body = await fetchHtml({ url, sourceId });
 
     const loadedCheerio = cheerio.load(body);
 
@@ -43,8 +43,7 @@ class WPMangaStreamScraper {
   async parseNovelAndChapters(novelUrl) {
     const url = novelUrl;
 
-    const result = await fetch(url);
-    const body = await result.text();
+    const body = await fetchHtml({ url, sourceId });
 
     let loadedCheerio = cheerio.load(body);
 
@@ -112,8 +111,7 @@ class WPMangaStreamScraper {
 
     const url = chapterUrl;
 
-    const result = await fetch(url);
-    const body = await result.text();
+    const body = await fetchHtml({ url, sourceId });
 
     const loadedCheerio = cheerio.load(body);
 
@@ -134,8 +132,7 @@ class WPMangaStreamScraper {
   async searchNovels(searchTerm) {
     const url = `${this.baseUrl}?s=${searchTerm}`;
 
-    const result = await fetch(url);
-    const body = await result.text();
+    const body = await fetchHtml({ url, sourceId });
 
     const loadedCheerio = cheerio.load(body);
 

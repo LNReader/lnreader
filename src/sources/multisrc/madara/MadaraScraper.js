@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import * as cheerio from 'cheerio';
 import { defaultCoverUri, Status } from '../../helpers/constants';
 import { parseMadaraDate } from '../../helpers/parseDate';
+import { fetchHtml } from '@utils/fetch/fetch';
 
 class MadaraScraper {
   constructor(sourceId, baseUrl, sourceName, options = {}) {
@@ -25,8 +26,7 @@ class MadaraScraper {
     let url = this.baseUrl + this.path.novels + '/page/' + page + sortOrder;
     let sourceId = this.sourceId;
 
-    const result = await fetch(url);
-    const body = await result.text();
+    const body = await fetchHtml({ url, sourceId });
 
     const loadedCheerio = cheerio.load(body);
 
@@ -61,8 +61,7 @@ class MadaraScraper {
   async parseNovelAndChapters(novelUrl) {
     const url = `${this.baseUrl}${this.path.novel}/${novelUrl}/`;
 
-    const result = await fetch(url);
-    const body = await result.text();
+    const body = await fetchHtml({ url, sourceId });
 
     let loadedCheerio = cheerio.load(body);
 
@@ -126,11 +125,14 @@ class MadaraScraper {
       formData.append('action', 'manga_get_chapters');
       formData.append('manga', novelId);
 
-      const data = await fetch(this.baseUrl + 'wp-admin/admin-ajax.php', {
-        method: 'POST',
-        body: formData,
+      html = await fetchHtml({
+        url: this.baseUrl + 'wp-admin/admin-ajax.php',
+        init: {
+          method: 'POST',
+          body: formData,
+        },
+        sourceId: this.sourceId,
       });
-      html = await data.text();
     } else {
       const data = await fetch(url + 'ajax/chapters/', { method: 'POST' });
       html = await data.text();
@@ -182,8 +184,7 @@ class MadaraScraper {
 
     const url = `${this.baseUrl}${this.path.chapter}/${novelUrl}/${chapterUrl}`;
 
-    const result = await fetch(url);
-    const body = await result.text();
+    const body = await fetchHtml({ url, sourceId });
 
     const loadedCheerio = cheerio.load(body);
 
@@ -212,8 +213,7 @@ class MadaraScraper {
   async searchNovels(searchTerm) {
     const url = `${this.baseUrl}?s=${searchTerm}&post_type=wp-manga`;
 
-    const result = await fetch(url);
-    const body = await result.text();
+    const body = await fetchHtml({ url, sourceId });
 
     const loadedCheerio = cheerio.load(body);
 
