@@ -1,5 +1,4 @@
 import * as cheerio from 'cheerio';
-import { Status } from '../helpers/constants';
 
 const sourceId = 87;
 const sourceName = 'IndoWebNovel';
@@ -17,10 +16,10 @@ const popularNovels = async page => {
 
   let novels = [];
 
-  loadedCheerio('.entry-content .wpp_col').each(function () {
-    const novelName = loadedCheerio(this).find('h3').text();
-    const novelCover = loadedCheerio(this).find('img').attr('src');
-    const novelUrl = loadedCheerio(this).find('h3 > a').attr('href');
+  loadedCheerio('.novellist-blc li').each(function () {
+    const novelName = loadedCheerio(this).find('a').text();
+    const novelCover = null;
+    const novelUrl = loadedCheerio(this).find('a').attr('href');
 
     const novel = {
       sourceId,
@@ -57,32 +56,23 @@ const parseNovelAndChapters = async novelUrl => {
     chapters: [],
   };
 
-  novel.novelName = loadedCheerio('.entry-title').text().trim();
+  novel.novelName = loadedCheerio('.series-title').text().trim();
 
-  novel.novelCover = loadedCheerio('.lightnovel-thumb img').attr('src');
+  novel.novelCover = loadedCheerio('.series-thumb > img').attr('src');
 
-  novel.summary = loadedCheerio('.lightnovel-synopsis p').text().trim();
+  novel.summary = loadedCheerio('.series-synops').text().trim();
 
-  const statusSelector = loadedCheerio('div.lightnovel-info > p:nth-child(4)')
-    .text()
-    ?.replace('Status :', '')
-    .trim();
+  novel.status = loadedCheerio('.status').text().trim();
 
-  novel.status =
-    statusSelector === 'Aktif'
-      ? Status.ONGOING
-      : statusSelector === 'Tamat'
-      ? Status.COMPLETED
-      : Status.UNKNOWN;
-
-  novel.genre = loadedCheerio('div.lightnovel-info > p:nth-child(5)')
-    .text()
-    ?.replace('Genres :', '')
-    .trim();
+  novel.genre = loadedCheerio('.series-genres')
+    .each(function () {
+      return loadedCheerio(this).find('a').text().trim();
+    })
+    ?.toString();
 
   let chapters = [];
 
-  loadedCheerio('.lightnovel-episode li').each(function () {
+  loadedCheerio('.series-chapterlist li').each(function () {
     const chapterName = loadedCheerio(this).find('a').text().trim();
     const releaseDate = null;
     const chapterUrl = loadedCheerio(this).find('a').attr('href');
@@ -103,8 +93,8 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 
   let loadedCheerio = cheerio.load(body);
 
-  const chapterName = loadedCheerio('.entry-title').text();
-  const chapterText = loadedCheerio('.123').html();
+  const chapterName = loadedCheerio('.title-chapter').text();
+  const chapterText = loadedCheerio('.reader').html();
 
   const chapter = {
     sourceId,
@@ -127,10 +117,10 @@ const searchNovels = async searchTerm => {
 
   let novels = [];
 
-  loadedCheerio('.entry-content .wpp_col').each(function () {
-    const novelName = loadedCheerio(this).find('h3').text();
-    const novelCover = loadedCheerio(this).find('img').attr('src');
-    const novelUrl = loadedCheerio(this).find('h3 > a').attr('href');
+  loadedCheerio('.novellist-blc li').each(function () {
+    const novelName = loadedCheerio(this).find('a').text();
+    const novelCover = null;
+    const novelUrl = loadedCheerio(this).find('a').attr('href');
 
     const novel = {
       sourceId,
