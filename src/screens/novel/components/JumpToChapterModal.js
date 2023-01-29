@@ -83,14 +83,14 @@ const JumpToChapterModal = ({
         <Text numberOfLines={1} style={{ color: theme.textColorPrimary }}>
           {item.chapterName}
         </Text>
-        {item.releaseDate && (
+        {item?.releaseDate ? (
           <Text
             numberOfLines={1}
             style={[{ color: theme.textColorSecondary }, styles.dateCtn]}
           >
             {item.releaseDate}
           </Text>
-        )}
+        ) : null}
       </Pressable>
     );
   };

@@ -61,7 +61,7 @@ class MadaraScraper {
   async parseNovelAndChapters(novelUrl) {
     const url = `${this.baseUrl}${this.path.novel}/${novelUrl}/`;
 
-    const body = await fetchHtml({ url, sourceId });
+    const body = await fetchHtml({ url, sourceId: this.sourceId });
 
     let loadedCheerio = cheerio.load(body);
 
@@ -134,8 +134,10 @@ class MadaraScraper {
         sourceId: this.sourceId,
       });
     } else {
-      const data = await fetch(url + 'ajax/chapters/', { method: 'POST' });
-      html = await data.text();
+      html = await fetchHtml({
+        url: url + 'ajax/chapters/',
+        init: { method: 'POST' },
+      });
     }
 
     if (html !== '0') {
@@ -212,13 +214,13 @@ class MadaraScraper {
 
   async searchNovels(searchTerm) {
     const url = `${this.baseUrl}?s=${searchTerm}&post_type=wp-manga`;
+    let sourceId = this.sourceId;
 
     const body = await fetchHtml({ url, sourceId });
 
     const loadedCheerio = cheerio.load(body);
 
     let novels = [];
-    let sourceId = this.sourceId;
 
     loadedCheerio('.c-tabs-item__content').each(function () {
       const novelName = loadedCheerio(this).find('.post-title').text().trim();

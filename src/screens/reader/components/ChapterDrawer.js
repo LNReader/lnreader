@@ -104,9 +104,9 @@ const ChapterDrawer = ({ state: st, navigation }) => {
         <Text numberOfLines={1} style={styles.chapterNameCtn}>
           {item.chapterName}
         </Text>
-        {item?.releaseDate && (
+        {item?.releaseDate ? (
           <Text style={styles.releaseDateCtn}>{item.releaseDate}</Text>
-        )}
+        ) : null}
       </Pressable>
     </View>
   );
@@ -183,6 +183,7 @@ const ChapterDrawer = ({ state: st, navigation }) => {
       });
     }
   };
+
   return (
     <View style={styles.drawer}>
       <Text style={styles.headerCtn}>{getString('common.chapters')}</Text>
@@ -238,8 +239,8 @@ const createStylesheet = (theme, insets) => {
       margin: 4,
       marginLeft: 0,
       marginRight: 16,
-      borderTopRightRadius: 50,
-      borderBottomRightRadius: 50,
+      borderRadius: 50,
+      // borderBottomRightRadius: 50,
       overflow: 'hidden',
       minHeight: 48,
     },

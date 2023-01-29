@@ -1,6 +1,7 @@
 import { fetchHtml } from '@utils/fetch/fetch';
 import * as cheerio from 'cheerio';
 
+const sourceId = 3;
 const baseUrl = 'https://fastnovel.net';
 const searchUrl = 'https://fastnovel.net/search/';
 
@@ -20,7 +21,7 @@ const popularNovels = async page => {
     const novelUrl = loadedCheerio(this).find('a').attr('href').substring(1);
 
     const novel = {
-      sourceId: 3,
+      sourceId,
       novelName,
       novelCover,
       novelUrl,
@@ -40,7 +41,7 @@ const parseNovelAndChapters = async novelUrl => {
   const loadedCheerio = cheerio.load(body);
 
   let novel = {
-    sourceId: 3,
+    sourceId,
     sourceName: 'FastNovel',
     url,
     novelUrl,
@@ -112,7 +113,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 
   let chapterText = loadedCheerio('#chapter-body').html();
   const chapter = {
-    sourceId: 3,
+    sourceId,
     novelUrl,
     chapterUrl,
     chapterName,
@@ -137,7 +138,7 @@ const searchNovels = async searchTerm => {
     const novelUrl = loadedCheerio(this).find('a').attr('href').substring(1);
 
     const novel = {
-      sourceId: 3,
+      sourceId,
       novelName,
       novelCover,
       novelUrl,

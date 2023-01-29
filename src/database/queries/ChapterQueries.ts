@@ -11,8 +11,12 @@ const db = SQLite.openDatabase('lnreader.db');
 
 export const insertChapters = async (
   novelId: number,
-  chapters: ChapterItem[],
+  chapters?: ChapterItem[],
 ) => {
+  if (!chapters?.length) {
+    return;
+  }
+
   let insertChaptersQuery = `
   INSERT INTO chapters (
     chapterUrl, chapterName, releaseDate, 
