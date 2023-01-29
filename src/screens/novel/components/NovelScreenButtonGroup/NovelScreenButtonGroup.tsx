@@ -1,7 +1,6 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import * as WebBrowser from 'expo-web-browser';
 
 import { NovelInfo } from '../../../../database/types';
 import { useNavigation } from '@react-navigation/native';
