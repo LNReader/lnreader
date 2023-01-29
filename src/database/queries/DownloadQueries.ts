@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
+import { txnErrorCallback } from '@database/utils/helpers';
 import * as SQLite from 'expo-sqlite';
 import { showToast } from '../../hooks/showToast';
 import { sourceManager } from '../../sources/sourceManager';
@@ -36,7 +37,7 @@ export const fetchAndInsertChapterInDb = async (
       downloadChapterQuery,
       [chapterId, chapter.chapterName, chapter.chapterText],
       (txObj, res) => {},
-      (_txObj, error) => showToast(error),
+      txnErrorCallback,
     );
   });
 };
@@ -55,7 +56,7 @@ export const deleteChapterFromDb = (chapterId: number) => {
       deleteChapterFromDbQuery,
       [chapterId],
       (txObj, res) => {},
-      (_txObj, error) => showToast(error.message),
+      txnErrorCallback,
     );
   });
 };
@@ -122,13 +123,13 @@ export const deleteReadChaptersFromDb = (chapterId: number) => {
       updateChaptersDeletedQuery,
       [],
       (txObj, res) => {},
-      (txObj, error) => showToast(error.message),
+      txnErrorCallback,
     );
     tx.executeSql(
       deleteReadChaptersFromDbQuery,
       [],
       (txObj, res) => showToast('Deleted read chapters.'),
-      (txObj, error) => showToast(error.message),
+      txnErrorCallback,
     );
   });
 };

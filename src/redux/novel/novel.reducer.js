@@ -117,6 +117,14 @@ const novelReducer = (state = initialState, action) => {
             : chapter,
         ),
       };
+    case CHAPTER_DELETED:
+      return {
+        ...state,
+        chapters: state.chapters.map(chapter => ({
+          ...chapter,
+          downloaded: 0,
+        })),
+      };
     case UPDATE_LAST_READ:
       return {
         ...state,

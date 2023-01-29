@@ -9,43 +9,35 @@ import { txnErrorCallback } from '@database/utils/helpers';
 
 const db = SQLite.openDatabase('lnreader.db');
 
-const insertChaptersQuery =
-  'INSERT INTO chapters (chapterUrl, chapterName, releaseDate, novelId) values (?, ?, ?, ?)';
+let insertChaptersQuery = `
+INSERT INTO chapters (
+  chapterUrl, chapterName, releaseDate, 
+  novelId
+) 
+VALUES 
+`;
 
 export const insertChapters = async (
   novelId: number,
   chapters: ChapterItem[],
 ) => {
-  db.transaction(
-    tx => {
-      chapters.map(chapter =>
-        tx.executeSql(
-          insertChaptersQuery,
-          [
-            chapter.chapterUrl,
-            chapter.chapterName,
-            chapter.releaseDate,
-            novelId,
-          ],
-          (_txObj, _res) => {},
-          (_txObj, _error) => false,
-          // console.log(
-          //     "Error ",
-          //     error,
-          //     " Chapter URL: ",
-          //     chapter.chapterUrl,
-          //     " Novel ID ",
-          //     novelId
-          // )
-        ),
-      );
-    },
-    _err => {
-      // console.log('Error', err);
-    },
-    () => {
-      // console.log('Success ')
-    },
+  const valuesArr: string[] = [];
+
+  chapters?.forEach(chapter => {
+    valuesArr.push(
+      `(
+        "${chapter.chapterUrl}", 
+        "${chapter.chapterName}", 
+        "${chapter.releaseDate || ''}", 
+        ${novelId}
+      )`,
+    );
+  });
+
+  insertChaptersQuery += valuesArr.toString() + ';';
+
+  db.transaction(tx =>
+    tx.executeSql(insertChaptersQuery, undefined, undefined, txnErrorCallback),
   );
 };
 
@@ -62,10 +54,7 @@ export const getChapters = (novelId: number, sort: string, filter: string) => {
           const _array = (rows as any)._array;
           resolve(_array);
         },
-        (_txObj, _error) => {
-          // console.log('Error ', error)
-          return false;
-        },
+        txnErrorCallback,
       );
     }),
   );
@@ -415,6 +404,38 @@ export const deleteChapter = async (
         return false;
       },
     );
+  });
+};
+
+export const deleteChapters = async (
+  sourceId: number,
+  chapters?: ChapterItem[],
+) => {
+  if (!chapters?.length) {
+    return;
+  }
+
+  const chapterIdsString = chapters
+    ?.map(chapter => chapter.chapterId)
+    .toString();
+
+  const updateIsDownloadedQuery = `UPDATE chapters SET downloaded = 0 WHERE chapterId IN (${chapterIdsString})`;
+  const deleteChapterQuery = `DELETE FROM downloads WHERE downloadChapterId = (${chapterIdsString})`;
+
+  await Promise.all(
+    chapters?.map(chapter =>
+      deleteDownloadedImages(sourceId, chapter.novelId, chapter.chapterId),
+    ),
+  );
+
+  db.transaction(tx => {
+    tx.executeSql(
+      updateIsDownloadedQuery,
+      undefined,
+      undefined,
+      txnErrorCallback,
+    );
+    tx.executeSql(deleteChapterQuery, undefined, undefined, txnErrorCallback);
   });
 };
 

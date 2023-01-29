@@ -15,6 +15,7 @@ import {
   BOOKMARK_CHAPTER,
   MARK_PREVIOUS_CHAPTERS_READ,
   MARK_PREVIOUS_CHAPTERS_UNREAD,
+  ALL_CHAPTER_DELETED,
 } from './novel.types';
 
 import { fetchNovel } from '../../services/Source/source';
@@ -34,6 +35,7 @@ import {
   markPreviuschaptersRead,
   markPreviousChaptersUnread,
   getNextChapter,
+  deleteChapters,
 } from '../../database/queries/ChapterQueries';
 import { deleteUpdateFromDb } from '../../database/queries/UpdateQueries';
 import {
@@ -441,57 +443,14 @@ export const deleteChapterAction =
  */
 export const deleteAllChaptersAction =
   (sourceId, chapters) => async dispatch => {
-    await new Promise((res, rej) => {
-      (async () => {
-        const downloaded = chapters.filter(f => !!f.downloaded);
-        if (downloaded.length === 0) {
-          res();
-        }
+    const chapterIds = chapters.map(chapter => chapter.chapterId);
+    await deleteChapters(sourceId, chapters);
 
-        const coccurent = 5;
-        /**
-         * @type {Promise<void>[][]}
-         */
-        const removeBatches = [];
-        for (let i = 0; i < downloaded.length; i++) {
-          if (i % coccurent === 0) {
-            removeBatches.push([]);
-          }
-          removeBatches[removeBatches.length - 1].push(
-            new Promise(resolveRemoval => {
-              (async () => {
-                const chapter = downloaded[i];
-                await deleteChapter(
-                  sourceId,
-                  chapter.novelId,
-                  chapter.chapterId,
-                );
-
-                dispatch({
-                  type: CHAPTER_DELETED,
-                  payload: chapter.chapterId,
-                });
-                resolveRemoval();
-              })();
-            }),
-          );
-        }
-        for (const rb of removeBatches) {
-          await Promise.all(rb);
-        }
-        res();
-      })();
+    dispatch({
+      type: ALL_CHAPTER_DELETED,
+      payload: chapterIds,
     });
-    // await Promise.all(
-    //   chapters.map(async chapter => {
-    //     await deleteChapter(sourceId, chapter.novelId, chapter.chapterId);
 
-    //     dispatch({
-    //       type: CHAPTER_DELETED,
-    //       payload: chapter.chapterId,
-    //     });
-    //   }),
-    // );
     showToast('Chapters deleted');
   };
 
