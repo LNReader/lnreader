@@ -154,6 +154,7 @@
   "statsScreen": {
     "title": "Statistieken",
     "titlesInLibrary": "Titels in bibliotheek",
+    "totalChapters": "Total chapters",
     "readChapters": "Lees hoofdstukken",
     "unreadChapters": "Ongelezen hoofdstukken",
     "downloadedChapters": "Gedownloade hoofdstukken",
