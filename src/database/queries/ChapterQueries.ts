@@ -29,7 +29,7 @@ export const insertChapters = async (
       `(
         "${chapter.chapterUrl}", 
         "${chapter.chapterName}", 
-        ${isNull(chapter.releaseDate) ? 'NULL' : chapter.releaseDate}, 
+        ${isNull(chapter.releaseDate) ? 'NULL' : `"${chapter.releaseDate}"`}, 
         ${novelId}
       )`,
     );
