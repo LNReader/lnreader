@@ -13,8 +13,10 @@
     "edit": "Düzenle",
     "name": "Ad",
     "searchFor": "Şunu ara",
-    "globally": "küresel",
-    "searchResults": "Arama sonuçları"
+    "globally": "global olarak",
+    "searchResults": "Arama sonuçları",
+    "chapters": "Bölüm",
+    "submit": "Gönder"
   },
   "library": "Kitaplık",
   "libraryScreen": {
@@ -25,7 +27,7 @@
         "downloaded": "İndirilen",
         "unread": "Okunmamış",
         "completed": "Tamamlanmış",
-        "started": "Başladı"
+        "started": "Başlanmış"
       },
       "sortOrders": {
         "dateAdded": "Eklendiği tarih",
@@ -84,7 +86,13 @@
       "showBatteryAndTime": "Pili ve saati göster",
       "showProgressPercentage": "İlerleme yüzdesini göster",
       "swipeGestures": "Bölümler arası gezinmek için sol veya sağa doğru kaydırın",
-      "allowTextSelection": "Yazı seçmeye izin ver"
+      "allowTextSelection": "Yazı seçmeye izin ver",
+      "useChapterDrawerSwipeNavigation": "Çekmeceyi açmak için sağa kaydırın"
+    },
+    "drawer": {
+      "scrollToCurrentChapter": "Mevcut bölüme kaydır",
+      "scrollToTop": "Yukarı kaydır",
+      "scrollToBottom": "Alta kaydır"
     }
   },
   "novelScreen": {
@@ -98,6 +106,16 @@
       "filter": "Filtre",
       "sort": "Sırala",
       "display": "Ekran"
+    },
+    "jumpToChapterModal": {
+      "jumpToChapter": "Bölüme Atla",
+      "openChapter": "Bölümü Aç",
+      "chapterName": "Bölüm Adı",
+      "chapterNumber": "Bölüm Sayısı",
+      "error": {
+        "validChapterName": "Geçerli bir bölüm adı girin",
+        "validChapterNumber": "Geçerli bir bölüm sayısı girin"
+      }
     }
   },
   "more": "Daha fazla",
@@ -135,12 +153,12 @@
   },
   "statsScreen": {
     "title": "İstatistikler",
-    "titlesInLibrary": "Kitaplıktaki başlıklar",
-    "readChapters": "Okunan bölümler",
-    "unreadChapters": "Okunmamış bölümler",
-    "downloadedChapters": "İndirilmiş bölümler",
-    "genreDistribution": "Tür dağıtımı",
-    "statusDistribution": "Durum dağıtımı"
+    "titlesInLibrary": "Kitaplıktaki başlık",
+    "readChapters": "Okunan bölüm",
+    "unreadChapters": "Okunmamış bölüm",
+    "downloadedChapters": "İndirilmiş bölüm",
+    "genreDistribution": "Tür dağılımı",
+    "statusDistribution": "Durum dağılımı"
   },
   "globalSearch": {
     "searchIn": "Şurada bir novel arayın",
@@ -156,7 +174,7 @@
       "sameDay": "[Bugün]",
       "nextDay": "[Yarın]",
       "lastDay": "[Dün]",
-      "lastWeek": "[Geçen] dddd",
+      "lastWeek": "[Geçen] dddd"
     }
   },
   "categories": {
@@ -164,8 +182,8 @@
     "editCategories": "Kategoriyi yeniden adlandır",
     "setCategories": "Kategorileri ayarla",
     "header": "Kategorileri düzenle",
-    "emptyMsg": "Hiç kategoriniz yok. Kitaplığınızı düzenlemek üzere bir tane oluşturmak için artı düğmesine dokunun",
-    "setModalEmptyMsg": "Hiç kategoriniz yok. Kitaplığınızı düzenlemek üzere bir tane oluşturmak için Düzenle düğmesine dokunun",
+    "emptyMsg": "Kategoriniz bulunmuyor.  Kitaplığınızı düzenlemek için bir tane oluşturmak için artı butonuna basın",
+    "setModalEmptyMsg": "Hiç kategoriniz yok. Kitaplığınızı düzenlemek üzere bir tane oluşturmak için Düzenle düğmesine dokunun.",
     "deleteModal": {
       "header": "Kategoriyi sil",
       "desc": "Şu kategoriyi silmek istiyor musunuz:"

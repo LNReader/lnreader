@@ -14,7 +14,9 @@
     "name": "Nama",
     "searchFor": "Pencarian untuk",
     "globally": "menyeluruh",
-    "searchResults": "Hasil pencarian"
+    "searchResults": "Hasil pencarian",
+    "chapters": "Bab",
+    "submit": "Submit"
   },
   "library": "Library",
   "libraryScreen": {
@@ -84,7 +86,13 @@
       "showBatteryAndTime": "Tampilkan baterai dan waktu",
       "showProgressPercentage": "Tampilkan persentase proses",
       "swipeGestures": "Gesek ke kiri atau kanan untuk menavigasi antara bab",
-      "allowTextSelection": "Izinkan pemilihan teks"
+      "allowTextSelection": "Izinkan pemilihan teks",
+      "useChapterDrawerSwipeNavigation": "Swipe right to open drawer"
+    },
+    "drawer": {
+      "scrollToCurrentChapter": "Scroll to current chapter",
+      "scrollToTop": "Scroll to top",
+      "scrollToBottom": "Scroll to bottom"
     }
   },
   "novelScreen": {
@@ -98,6 +106,16 @@
       "filter": "Sortir",
       "sort": "Menyortir",
       "display": "Tampilan"
+    },
+    "jumpToChapterModal": {
+      "jumpToChapter": "Jump to Chapter",
+      "openChapter": "Open Chapter",
+      "chapterName": "Chapter Name",
+      "chapterNumber": "Chapter Number",
+      "error": {
+        "validChapterName": "Enter a valid chapter name",
+        "validChapterNumber": "Enter a valid chapter number"
+      }
     }
   },
   "more": "Lainnya",
@@ -156,7 +174,7 @@
       "sameDay": "[Hari ini]",
       "nextDay": "[Besok]",
       "lastDay": "[Kemarin]",
-      "lastWeek": "dddd [Kemarin]",
+      "lastWeek": "dddd [Kemarin]"
     }
   },
   "categories": {

@@ -14,7 +14,9 @@
     "name": "Название",
     "searchFor": "Искать",
     "globally": "глобально",
-    "searchResults": "Результаты поиска"
+    "searchResults": "Результаты поиска",
+    "chapters": "Главы",
+    "submit": "Продолжить"
   },
   "library": "Библиотека",
   "libraryScreen": {
@@ -84,7 +86,13 @@
       "showBatteryAndTime": "Показывать батарею и время",
       "showProgressPercentage": "Показывать процент прогресса",
       "swipeGestures": "Проведите влево или вправо для перехода между главами",
-      "allowTextSelection": "Разрешить выделение текста"
+      "allowTextSelection": "Разрешить выделение текста",
+      "useChapterDrawerSwipeNavigation": "Проведите вправо, чтобы открыть"
+    },
+    "drawer": {
+      "scrollToCurrentChapter": "Прокрутка к текущей главе",
+      "scrollToTop": "Прокрутить вверх",
+      "scrollToBottom": "Прокрутить вниз"
     }
   },
   "novelScreen": {
@@ -98,6 +106,16 @@
       "filter": "Фильтр",
       "sort": "Сортировка",
       "display": "Вид"
+    },
+    "jumpToChapterModal": {
+      "jumpToChapter": "Перейти к главе",
+      "openChapter": "Открыть главу",
+      "chapterName": "Название главы",
+      "chapterNumber": "Номер главы",
+      "error": {
+        "validChapterName": "Введите допустимое название главы",
+        "validChapterNumber": "Введите действительный номер главы"
+      }
     }
   },
   "more": "Ещё",
@@ -135,12 +153,12 @@
   },
   "statsScreen": {
     "title": "Статистика",
-    "titlesInLibrary": "Titles in library",
-    "readChapters": "Read chapters",
-    "unreadChapters": "Unread chapters",
+    "titlesInLibrary": "Названия в библиотеке",
+    "readChapters": "Прочитанные главы",
+    "unreadChapters": "Непрочитанные главы",
     "downloadedChapters": "Загруженные главы",
     "genreDistribution": "Распределение по жанру",
-    "statusDistribution": "Status distribution"
+    "statusDistribution": "Распределение статуса"
   },
   "globalSearch": {
     "searchIn": "Поиск новеллы в",

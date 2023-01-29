@@ -14,7 +14,9 @@
     "name": "Nom",
     "searchFor": "Rechercher",
     "globally": "globalement",
-    "searchResults": "Résultats de la recherche"
+    "searchResults": "Résultats de la recherche",
+    "chapters": "Chapitres",
+    "submit": "Soumettre"
   },
   "library": "Bibliothèque",
   "libraryScreen": {
@@ -36,7 +38,7 @@
         "displayMode": "Mode d'affichage",
         "compact": "Grille compacte",
         "comfortable": "Grille confortable",
-        "noTitle": "Cover only grid",
+        "noTitle": "Grille de couverture uniquement",
         "list": "Liste",
         "badges": "Badges",
         "downloadBadges": "Télécharger les badges",
@@ -84,7 +86,13 @@
       "showBatteryAndTime": "Afficher la batterie et l'heure",
       "showProgressPercentage": "Afficher le pourcentage de progression",
       "swipeGestures": "Balayez vers la gauche ou la droite pour passer d'un chapitre à l'autre.",
-      "allowTextSelection": "Permettre la sélection du texte"
+      "allowTextSelection": "Permettre la sélection du texte",
+      "useChapterDrawerSwipeNavigation": "Balayez vers la droite pour ouvrir le tiroir"
+    },
+    "drawer": {
+      "scrollToCurrentChapter": "Défiler vers le chapitre actuel",
+      "scrollToTop": "Défiler en haut",
+      "scrollToBottom": "Défiler jusqu'en bas"
     }
   },
   "novelScreen": {
@@ -98,6 +106,16 @@
       "filter": "Filtre",
       "sort": "Trier",
       "display": "Afficher"
+    },
+    "jumpToChapterModal": {
+      "jumpToChapter": "Aller au chapitre",
+      "openChapter": "Ouvrir le chapitre",
+      "chapterName": "Nom du Chapitre",
+      "chapterNumber": "Numéro du chapitre",
+      "error": {
+        "validChapterName": "Entrez un nom de chapitre valide",
+        "validChapterNumber": "Entrez un numéro de chapitre valide"
+      }
     }
   },
   "more": "Suite",
@@ -135,12 +153,12 @@
   },
   "statsScreen": {
     "title": "Statistiques",
-    "titlesInLibrary": "Titles in library",
-    "readChapters": "Read chapters",
+    "titlesInLibrary": "Titres dans la bibliothèque",
+    "readChapters": "Chapitres Lu",
     "unreadChapters": "Chapitres non lus",
     "downloadedChapters": "Chapitres téléchargés",
     "genreDistribution": "Répartition par genres",
-    "statusDistribution": "Status distribution"
+    "statusDistribution": "Répartition de l'état"
   },
   "globalSearch": {
     "searchIn": "Rechercher un novel dans",
@@ -164,8 +182,8 @@
     "editCategories": "Renommer la catégorie",
     "setCategories": "Définir les catégories",
     "header": "Modifier les catégories",
-    "emptyMsg": "You have no categories. Tap the plus button to create one for organizing your library",
-    "setModalEmptyMsg": "You have no categories. Tap the Edit button to create one for organizing your library",
+    "emptyMsg": "Vous n'avez pas de catégories. Appuyez sur le bouton + pour en créer une pour organiser votre bibliothèque",
+    "setModalEmptyMsg": "Vous n'avez pas de catégories. Appuyez sur le bouton Modifier pour en créer une pour organiser votre bibliothèque",
     "deleteModal": {
       "header": "Supprimer la catégorie",
       "desc": "Voulez-vous supprimer cette catégorie"

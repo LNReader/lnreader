@@ -5,16 +5,18 @@
     "save": "Sichern",
     "clear": "Leeren",
     "reset": "Zurücksetzen",
-    "search": "Search",
-    "install": "Install",
-    "newUpdateAvailable": "New update available",
-    "categories": "Categories",
-    "add": "Add",
-    "edit": "Edit",
+    "search": "Suchen",
+    "install": "Installieren",
+    "newUpdateAvailable": "Neues Update verfügbar",
+    "categories": "Kategorien",
+    "add": "Hinzufügen",
+    "edit": "Bearbeiten",
     "name": "Name",
-    "searchFor": "Search for",
-    "globally": "globally",
-    "searchResults": "Search results"
+    "searchFor": "Suche nach",
+    "globally": "global",
+    "searchResults": "Suchergebnisse",
+    "chapters": "Kapitel",
+    "submit": "Bestätigen"
   },
   "library": "Bibliothek",
   "libraryScreen": {
@@ -25,7 +27,7 @@
         "downloaded": "Heruntergeladen",
         "unread": "Ungelesen",
         "completed": "Fertig",
-        "started": "Started"
+        "started": "Begonnen"
       },
       "sortOrders": {
         "dateAdded": "Hinzugefügt am",
@@ -36,11 +38,11 @@
         "displayMode": "Anzeigemodus",
         "compact": "Kompaktes Raster",
         "comfortable": "Komfortables Raster",
-        "noTitle": "Cover only grid",
+        "noTitle": "Nur Raster abdecken",
         "list": "Liste",
         "badges": "Abzeichen",
-        "downloadBadges": "Download badges",
-        "unreadBadges": "Unread badges",
+        "downloadBadges": "Download Markierung",
+        "unreadBadges": "Ungelesen Markierung",
         "showNoOfItems": "Anzahl der Elemente"
       }
     }
@@ -64,9 +66,9 @@
     "lastUsed": "Zuletzt genutzt",
     "pinned": "Angeheftet",
     "all": "Alle",
-    "latest": "Latest",
-    "addedToLibrary": "Added to library",
-    "removeFromLibrary": "Removed from library"
+    "latest": "Aktuell",
+    "addedToLibrary": "Zur Bibliothek hinzugefügt",
+    "removeFromLibrary": "Aus der Bibliothek entfernt"
   },
   "readerScreen": {
     "finished": "Beendet",
@@ -84,66 +86,82 @@
       "showBatteryAndTime": "Akku und Zeit anzeigen",
       "showProgressPercentage": "Zeige Fortschritt in Prozent",
       "swipeGestures": "Nach links oder rechts wischen, um zwischen den Kapiteln zu wechseln",
-      "allowTextSelection": "Textauswahl erlauben"
+      "allowTextSelection": "Textauswahl erlauben",
+      "useChapterDrawerSwipeNavigation": "Swipe right to open drawer"
+    },
+    "drawer": {
+      "scrollToCurrentChapter": "Scroll to current chapter",
+      "scrollToTop": "Scroll to top",
+      "scrollToBottom": "Scroll to bottom"
     }
   },
   "novelScreen": {
     "addToLibaray": "Zur Bibliothek hinzufügen",
-    "inLibaray": "In library",
-    "continueReading": "Continue reading",
-    "chapters": "chapters",
-    "migrate": "Migrate",
-    "noSummary": "No summary",
+    "inLibaray": "In der Bibliothek",
+    "continueReading": "Weiterlesen",
+    "chapters": "Kapitel",
+    "migrate": "Migrieren",
+    "noSummary": "Keine Beschreibung",
     "bottomSheet": {
       "filter": "Filter",
-      "sort": "Sort",
-      "display": "Display"
+      "sort": "Sortieren",
+      "display": "Darstellung"
+    },
+    "jumpToChapterModal": {
+      "jumpToChapter": "Jump to Chapter",
+      "openChapter": "Open Chapter",
+      "chapterName": "Chapter Name",
+      "chapterNumber": "Chapter Number",
+      "error": {
+        "validChapterName": "Enter a valid chapter name",
+        "validChapterNumber": "Enter a valid chapter number"
+      }
     }
   },
-  "more": "More",
+  "more": "Mehr",
   "moreScreen": {
-    "settings": "Settings",
+    "settings": "Einstellungen",
     "settingsScreen": {
-      "generalSettings": "General",
+      "generalSettings": "Allgemein",
       "generalSettingsScreen": {},
       "readerSettings": {
         "title": "Reader",
-        "readerTheme": "Reader theme",
-        "preset": "Preset",
-        "backgroundColor": "Background color",
-        "textColor": "Text color",
-        "backgroundColorModal": "Reader background color",
-        "textColorModal": "Reader text color",
-        "verticalSeekbarDesc": "Switch between vertical and horizontal seekbar",
-        "autoScrollInterval": "Auto scroll interval (in seconds)",
-        "autoScrollOffset": "Auto scroll offset (screen height by default)",
-        "saveCustomTheme": "Save custom theme",
-        "deleteCustomTheme": "Delete custom theme",
-        "customCSS": "Custom CSS"
+        "readerTheme": "Reader Theme",
+        "preset": "Vorlage",
+        "backgroundColor": "Hintergrundfarbe",
+        "textColor": "Textfarbe",
+        "backgroundColorModal": "Reader Hintergrundfarbe",
+        "textColorModal": "Reader Textfarbe",
+        "verticalSeekbarDesc": "Zwischen vertikaler und horizontaler Suchleiste wechseln",
+        "autoScrollInterval": "AutoScroll Intervall (in Sekunden)",
+        "autoScrollOffset": "AutoScroll Versatz (standardmäßig Bildschirmhöhe)",
+        "saveCustomTheme": "Benutzerdefiniertes Theme speichern",
+        "deleteCustomTheme": "Benutzerdefiniertes Theme löschen",
+        "customCSS": "Benutzerdefiniertes CSS"
       },
-      "browseSettings": "Browse Settings",
+      "browseSettings": "Einstellungen durchsuchen",
       "browseSettingsScreen": {
-        "onlyShowPinnedSources": "Only show pinned sources",
-        "languages": "Languages",
-        "searchAllSources": "Search all sources",
-        "searchAllWarning": "Searching a large number of sources may freeze the app till searching is finished."
+        "onlyShowPinnedSources": "Nur angepinnte Quellen anzeigen",
+        "languages": "Sprachen",
+        "searchAllSources": "Alle Quellen durchsuchen",
+        "searchAllWarning": "Das Durchsuchen einer großen Anzahl an Quellen kann die App einfrieren, bis die Suche beendet wurde."
       }
     }
   },
   "sourceScreen": {
-    "noResultsFound": "No results found"
+    "noResultsFound": "Keine Ergebnisse gefunden"
   },
   "statsScreen": {
-    "title": "Statistics",
-    "titlesInLibrary": "Titles in library",
-    "readChapters": "Read chapters",
-    "unreadChapters": "Unread chapters",
-    "downloadedChapters": "Downloaded chapters",
-    "genreDistribution": "Genre distribution",
-    "statusDistribution": "Status distribution"
+    "title": "Statistiken",
+    "titlesInLibrary": "Bücher in der Bibliothek",
+    "readChapters": "Gelesene Kapitel",
+    "unreadChapters": "Ungelesene Kapitel",
+    "downloadedChapters": "Heruntergeladene Kapitel",
+    "genreDistribution": "Genreverteilung",
+    "statusDistribution": "Statusverteilung"
   },
   "globalSearch": {
-    "searchIn": "Search a novel in",
+    "searchIn": "Suche ein Buch in",
     "allSources": "all sources",
     "pinnedSources": "pinned sources"
   },
@@ -156,7 +174,7 @@
       "sameDay": "[Today]",
       "nextDay": "[Tomorrow]",
       "lastDay": "[Yesterday]",
-      "lastWeek": "[Last] dddd",
+      "lastWeek": "[Last] dddd"
     }
   },
   "categories": {

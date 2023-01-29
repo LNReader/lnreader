@@ -1,20 +1,22 @@
 {
   "common": {
-    "cancel": "Cancel",
+    "cancel": "Hủy",
     "ok": "Ok",
-    "save": "Save",
-    "clear": "Clear",
-    "reset": "Reset",
-    "search": "Search",
-    "install": "Install",
-    "newUpdateAvailable": "New update available",
-    "categories": "Categories",
-    "add": "Add",
-    "edit": "Edit",
-    "name": "Name",
-    "searchFor": "Search for",
+    "save": "Lưu",
+    "clear": "Xóa",
+    "reset": "Thiết lập lại",
+    "search": "Tìm kiếm",
+    "install": "Cài đặt",
+    "newUpdateAvailable": "Đã có bản cập nhật mới",
+    "categories": "Danh mục",
+    "add": "Thêm",
+    "edit": "Chỉnh sửa",
+    "name": "Tên",
+    "searchFor": "Tìm kiếm",
     "globally": "globally",
-    "searchResults": "Search results"
+    "searchResults": "Search results",
+    "chapters": "Chapters",
+    "submit": "Submit"
   },
   "library": "Library",
   "libraryScreen": {
@@ -84,7 +86,13 @@
       "showBatteryAndTime": "Show battery and time",
       "showProgressPercentage": "Show progress percentage",
       "swipeGestures": "Swipe left or right to navigate between chapters",
-      "allowTextSelection": "Allow text selection"
+      "allowTextSelection": "Allow text selection",
+      "useChapterDrawerSwipeNavigation": "Swipe right to open drawer"
+    },
+    "drawer": {
+      "scrollToCurrentChapter": "Scroll to current chapter",
+      "scrollToTop": "Scroll to top",
+      "scrollToBottom": "Scroll to bottom"
     }
   },
   "novelScreen": {
@@ -98,6 +106,16 @@
       "filter": "Filter",
       "sort": "Sort",
       "display": "Display"
+    },
+    "jumpToChapterModal": {
+      "jumpToChapter": "Jump to Chapter",
+      "openChapter": "Open Chapter",
+      "chapterName": "Chapter Name",
+      "chapterNumber": "Chapter Number",
+      "error": {
+        "validChapterName": "Enter a valid chapter name",
+        "validChapterNumber": "Enter a valid chapter number"
+      }
     }
   },
   "more": "More",
@@ -156,7 +174,7 @@
       "sameDay": "[Today]",
       "nextDay": "[Tomorrow]",
       "lastDay": "[Yesterday]",
-      "lastWeek": "[Last] dddd",
+      "lastWeek": "[Last] dddd"
     }
   },
   "categories": {
