@@ -54,7 +54,7 @@ import {
   readerFonts,
 } from '../../../utils/constants/readerConstants';
 
-const READER_HEIGHT = 400;
+const READER_HEIGHT = 360;
 
 export type TextAlignments =
   | 'left'
@@ -117,7 +117,6 @@ const SettingsReaderScreen = () => {
   const textReaderContainerStyle: ViewStyle = {
     padding: `${readerSettings.padding}%`,
     backgroundColor: readerBackgroundColor,
-    height: READER_HEIGHT,
   };
 
   const textReaderStyle: TextStyle = {
@@ -160,21 +159,17 @@ const SettingsReaderScreen = () => {
   return (
     <>
       <Appbar
+        mode="small"
         title={getString('moreScreen.settingsScreen.readerSettings.title')}
         handleGoBack={navigation.goBack}
         theme={theme}
       />
-      <ScrollView
-        style={styles.flex}
-        contentContainerStyle={styles.bottomInset}
-      >
+
+      <View style={{ height: READER_HEIGHT }}>
         {useWebViewForChapter ? (
           <WebView
             originWhitelist={['*']}
-            style={{
-              height: READER_HEIGHT,
-              backgroundColor: readerBackgroundColor,
-            }}
+            style={{ backgroundColor: readerBackgroundColor }}
             nestedScrollEnabled={true}
             source={{
               html: `
@@ -195,6 +190,12 @@ const SettingsReaderScreen = () => {
             <Text style={textReaderStyle}>{dummyText}</Text>
           </View>
         )}
+      </View>
+
+      <ScrollView
+        style={styles.flex}
+        contentContainerStyle={styles.bottomInset}
+      >
         <SwitchItem
           label={getString('readerScreen.bottomSheet.renderHml')}
           value={useWebViewForChapter}
