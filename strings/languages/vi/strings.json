@@ -154,6 +154,7 @@
   "statsScreen": {
     "title": "Statistics",
     "titlesInLibrary": "Titles in library",
+    "totalChapters": "Total chapters",
     "readChapters": "Read chapters",
     "unreadChapters": "Unread chapters",
     "downloadedChapters": "Downloaded chapters",
