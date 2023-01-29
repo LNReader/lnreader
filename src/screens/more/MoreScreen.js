@@ -138,7 +138,7 @@ const MoreScreen = ({ navigation }) => {
           />
           <List.Item
             title={getString('statsScreen.title')}
-            icon="google-analytics"
+            icon="chart-line"
             onPress={() =>
               navigation.navigate('MoreStack', {
                 screen: 'Statistics',

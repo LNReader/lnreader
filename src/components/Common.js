@@ -18,7 +18,7 @@ const ScreenContainer = ({ children, theme }) => {
   );
 };
 
-const Row = ({ children, style }) => (
+const Row = ({ children, style = {} }) => (
   <View style={[styles.row, style]}>{children}</View>
 );
 

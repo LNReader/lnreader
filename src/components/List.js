@@ -28,24 +28,26 @@ const ListItem = ({
 }) => (
   <PaperList.Item
     title={title}
-    style={[{ paddingHorizontal: 16 }, style]}
+    style={[{ paddingHorizontal: 16, paddingVertical: 12 }, style]}
     titleStyle={[{ color: theme.textColorPrimary }, titleStyle]}
     description={description}
     descriptionStyle={{ color: theme.textColorSecondary }}
     descriptionNumberOfLines={1}
-    left={() => (
-      <View style={{ justifyContent: 'center' }}>
-        {icon && (
-          <PaperList.Icon
-            color={theme.primary}
-            icon={icon}
-            style={{
-              marginVertical: 0,
-            }}
-          />
-        )}
-      </View>
-    )}
+    left={
+      icon
+        ? () => (
+            <View style={{ justifyContent: 'center' }}>
+              <PaperList.Icon
+                color={theme.primary}
+                icon={icon}
+                style={{
+                  marginVertical: 0,
+                }}
+              />
+            </View>
+          )
+        : undefined
+    }
     right={() =>
       right && (
         <MaterialCommunityIcons

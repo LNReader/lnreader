@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { ScreenContainer } from '../../components/Common';
 import EmptyView from '../../components/EmptyView';
-import { Appbar } from '@components';
+import { Appbar, List } from '@components';
 import {
   deleteDownloads,
   getDownloadedChapters,
@@ -114,6 +114,10 @@ const Downloads = ({ navigation }) => {
           />
         )}
       </Appbar>
+      <List.InfoItem
+        title="Downloads are saved in a SQLite Database."
+        theme={theme}
+      />
       {loading ? (
         <UpdatesSkeletonLoading theme={theme} />
       ) : (

@@ -97,13 +97,13 @@ const StatsScreen = () => {
             value={stats.chaptersRead}
           />
           <StatsCard
-            label={getString('statsScreen.unreadChapters')}
+            label={getString('statsScreen.totalChapters')}
             value={stats.chaptersCount}
           />
         </Row>
         <Row style={styles.statsRow}>
           <StatsCard
-            label={getString('statsScreen.downloadedChapters')}
+            label={getString('statsScreen.unreadChapters')}
             value={stats.chaptersUnread}
           />
           <StatsCard

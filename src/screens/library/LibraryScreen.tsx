@@ -1,5 +1,5 @@
 import React, { useMemo, useRef, useState } from 'react';
-import { StyleSheet, Text, useWindowDimensions } from 'react-native';
+import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
 import {
   NavigationState,
@@ -37,6 +37,7 @@ import useHistory from '@hooks/useHistory';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useSettings } from '@hooks/reduxHooks';
 import SourceScreenSkeletonLoading from '@screens/browse/loadingAnimation/SourceScreenSkeletonLoading';
+import { Row } from '@components/Common';
 
 type State = NavigationState<{
   key: string;
@@ -102,9 +103,20 @@ const LibraryScreen = () => {
         styles.tabBar,
       ]}
       renderLabel={({ route, color }) => (
-        <Text style={{ color }}>{`${route.title} ${
-          showNumberOfNovels ? '(' + (route as any).novels.length + ')' : ''
-        }`}</Text>
+        <Row>
+          <Text style={{ color }}>{route.title}</Text>
+          <View
+            style={[styles.badgeCtn, { backgroundColor: theme.surfaceVariant }]}
+          >
+            {showNumberOfNovels && (
+              <Text
+                style={[styles.badgetText, { color: theme.onSurfaceVariant }]}
+              >
+                {(route as any)?.novels.length}
+              </Text>
+            )}
+          </View>
+        </Row>
       )}
       inactiveColor={theme.secondary}
       activeColor={theme.primary}
@@ -324,5 +336,13 @@ const styles = StyleSheet.create({
     margin: 16,
     right: 0,
     bottom: 0,
+  },
+  badgeCtn: {
+    borderRadius: 50,
+    marginHorizontal: 6,
+    paddingHorizontal: 6,
+  },
+  badgetText: {
+    fontSize: 12,
   },
 });

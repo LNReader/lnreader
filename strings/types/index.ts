@@ -114,6 +114,7 @@ export interface StringMap {
   'sourceScreen.noResultsFound': 'string';
   'statsScreen.title': 'string';
   'statsScreen.titlesInLibrary': 'string';
+  'statsScreen.totalChapters': 'string';
   'statsScreen.readChapters': 'string';
   'statsScreen.unreadChapters': 'string';
   'statsScreen.downloadedChapters': 'string';

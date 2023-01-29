@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import color from 'color';
+import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { List as PaperList, Divider as PaperDivider } from 'react-native-paper';
 import { MD3ThemeType } from '../../theme/types';
@@ -66,22 +67,23 @@ const Divider = ({ theme }: { theme: MD3ThemeType }) => (
 
 const InfoItem = ({
   title,
-  icon,
+  icon = 'information-outline',
   theme,
 }: {
   title: string;
   icon: string;
   theme: MD3ThemeType;
 }) => (
-  <PaperList.Item
-    title={title}
-    style={{ paddingHorizontal: 16 }}
-    titleStyle={[{ color: theme.textColorSecondary }, styles.infoItem]}
-    titleNumberOfLines={5}
-    left={() =>
-      icon && <PaperList.Icon color={theme.textColorSecondary} icon={icon} />
-    }
-  />
+  <View style={styles.infoCtn}>
+    <MaterialIcon size={20} color={theme.onSurfaceVariant} name={icon} />
+    <Text style={[styles.infoMsg, { color: theme.onSurfaceVariant }]}>
+      {title}
+    </Text>
+  </View>
+);
+
+const Icon = ({ icon, theme }: { icon: string; theme: MD3ThemeType }) => (
+  <PaperList.Icon color={theme.primary} icon={icon} style={{ margin: 0 }} />
 );
 
 export default {
@@ -90,6 +92,7 @@ export default {
   Item,
   Divider,
   InfoItem,
+  Icon,
 };
 
 const styles = StyleSheet.create({
@@ -106,7 +109,12 @@ const styles = StyleSheet.create({
   icon: {
     marginVertical: 0,
   },
-  infoItem: {
-    fontSize: 14,
+  infoCtn: {
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+  },
+  infoMsg: {
+    marginTop: 12,
+    fontSize: 12,
   },
 });

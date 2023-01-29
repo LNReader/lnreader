@@ -6,6 +6,7 @@ import { ChapterItem } from '../types';
 import * as cheerio from 'cheerio';
 import RNFetchBlob from 'rn-fetch-blob';
 import { txnErrorCallback } from '@database/utils/helpers';
+import { isNull } from 'lodash';
 
 const db = SQLite.openDatabase('lnreader.db');
 
@@ -28,7 +29,7 @@ export const insertChapters = async (
       `(
         "${chapter.chapterUrl}", 
         "${chapter.chapterName}", 
-        "${chapter.releaseDate || ''}", 
+        ${isNull(chapter.releaseDate) ? 'NULL' : chapter.releaseDate}, 
         ${novelId}
       )`,
     );
