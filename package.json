@@ -1,6 +1,6 @@
 {
   "name": "lnreader",
-  "version": "1.1.13",
+  "version": "1.1.14",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -8,7 +8,8 @@
     "start": "react-native start",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "prettier": "prettier --write \"./src/**/*.{js,jsx,ts,tsx}\"",
-    "buildRelease": "cd android && gradlew clean && gradlew assembleRelease",
+    "buildRelease": "cd android && ./gradlew clean && ./gradlew assembleRelease",
+    "open": "open ./android/app/build/outputs/apk/release/",
     "sources:madara": "node scripts/generateMadaraSource.cjs",
     "source:generator": "node scripts/generateSource.cjs",
     "strings": "node scripts/stringTypes.cjs",

@@ -125,7 +125,7 @@ def enableHermes = project.ext.react.get("enableHermes", false);
 ext {
     versionMajor = 1
     versionMinor = 1
-    versionPatch = 13
+    versionPatch = 14
 }
 
 android {
