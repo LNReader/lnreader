@@ -1,3 +1,4 @@
+import CookieManager from '@react-native-cookies/cookies';
 import { useMMKVObject } from 'react-native-mmkv';
 import { MMKVStorage } from '@utils/mmkv/mmkv';
 import { showToast } from './showToast';
@@ -38,7 +39,8 @@ const useSourceStorage = ({ sourceId = -1 }: { sourceId?: number }) => {
     //     }),
     //   );
     // }
-
+    CookieManager.clearAll();
+    CookieManager.clearAll(true); //clears cookies in webkit
     setValues({});
     showToast('Cookies cleared');
   };
