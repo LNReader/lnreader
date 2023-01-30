@@ -8,6 +8,7 @@ const sourceId = 93;
 const sourceName = 'RanobeLib';
 
 const baseUrl = 'https://ranobelib.me';
+var ui = null;
 
 const popularNovels = async (page, { showLatestNovels, filters }) => {
   const totalPages = 29;
@@ -47,7 +48,7 @@ const popularNovels = async (page, { showLatestNovels, filters }) => {
   const body = await result.text();
 
   const loadedCheerio = cheerio.load(body);
-
+  ui = loadedCheerio('a.header-right-menu__item').attr("href")?.replace?.(/[^0-9]/g, "");
   let novels = [];
 
   loadedCheerio('.media-card-wrap').each(function () {
@@ -123,25 +124,32 @@ const parseNovelAndChapters = async novelUrl => {
     ?.slice(0, -1);
 
   chaptersJson = JSON.parse(chaptersJson);
-
+  ui = chaptersJson?.user?.id;
   const novelSlug = chaptersJson.manga.slug;
 
-  chaptersJson.chapters.list.map(item => {
-    const chapterName =
-      `Том ${item.chapter_volume} Глава ${item.chapter_number} ${item.chapter_name}`?.trim();
-    const releaseDate = dayjs(item.chapter_created_at).format('LLL');
-    const chapterUrl = `${baseUrl}/${novelSlug}/v${item.chapter_volume}/c${item.chapter_number}`;
+  let branch_id = chaptersJson.chapters.branches
+    .flatMap?.(branch => branch.teams)
+    .find?.(team => team.is_active)?.branch_id;
 
-    chapters.push({ chapterName, releaseDate, chapterUrl });
+  chaptersJson.chapters.list.forEach(chapter => {
+    if (!branch_id || chapter?.branch_id == branch_id) {
+      chapters.push({
+        chapterName:
+          `Том ${chapter.chapter_volume} Глава ${chapter.chapter_number} ${chapter.chapter_name}`?.trim(),
+        releaseDate: dayjs(chapter.chapter_created_at).format('LLL'),
+        chapterUrl:
+          `${baseUrl}/${novelSlug}/v${chapter.chapter_volume}/c${chapter.chapter_number}?bid=` +
+          (chapter?.branch_id || ''),
+      });
+    }
   });
 
   novel.chapters = chapters.reverse();
-
   return novel;
 };
 
 const parseChapter = async (novelUrl, chapterUrl) => {
-  const result = await fetch(chapterUrl);
+  const result = await fetch(chapterUrl + (ui ? `&ui=${ui}` : ''));
   const body = await result.text();
 
   const loadedCheerio = cheerio.load(body);
@@ -180,7 +188,7 @@ const searchNovels = async searchTerm => {
   const body = await result.json();
   let novels = [];
 
-  body.map(novel => {
+  body.forEach(novel => {
     const novelName = novel?.rus_name || novel.name;
     const novelUrl = novel?.href || baseUrl + '/' + novel.slug;
     const novelCover = novel.coverImage;
