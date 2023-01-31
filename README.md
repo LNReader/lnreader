@@ -9,7 +9,7 @@
 </p>
 <div align="center">
   <a href="https://github.com/LNReader/lnreader/actions/workflows/build.yml">
-    <img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/LNReader/lnreader/CI">
+    <img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/LNReader/lnreader/build.yml?branch=main">
   </a>
   <a href="https://discord.gg/QdcWN4MD63">
     <img alt="Discord Chat" src="https://img.shields.io/discord/835746409357246465.svg?logo=discord&logoColor=white&logoWidth=20&labelColor=7289DA&label=Discord&color=17cf48">
