@@ -13,24 +13,24 @@
     "edit": "Chỉnh sửa",
     "name": "Tên",
     "searchFor": "Tìm kiếm",
-    "globally": "globally",
-    "searchResults": "Search results",
-    "chapters": "Chapters",
-    "submit": "Submit"
+    "globally": "toàn cầu",
+    "searchResults": "Kết quả tìm kiếm",
+    "chapters": "Các chương",
+    "submit": "Gửi"
   },
-  "library": "Library",
+  "library": "Thư viện",
   "libraryScreen": {
-    "searchbar": "Search library",
-    "empty": "Your library is empty. Add series to your library from Browse.",
+    "searchbar": "Tìm kiếm Thư viện",
+    "empty": "Thư viện của bạn hiện đang trống. Hãy thêm các tác phẩm vào thư viện từ Thanh công cụ Tìm kiếm.",
     "bottomSheet": {
       "filters": {
-        "downloaded": "Downloaded",
-        "unread": "Unread",
-        "completed": "Completed",
-        "started": "Started"
+        "downloaded": "Đã tải về",
+        "unread": "Chưa đọc",
+        "completed": "Đã hoàn thành",
+        "started": "Đã đọc"
       },
       "sortOrders": {
-        "dateAdded": "Date added",
+        "dateAdded": "Ngày được thêm",
         "alphabetically": "Alphabetically",
         "totalChapters": "Total chapters"
       },
