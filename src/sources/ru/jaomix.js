@@ -9,7 +9,7 @@ const sourceName = 'Jaomix';
 const baseUrl = 'https://jaomix.ru';
 
 const popularNovels = async (page, { showLatestNovels, filters }) => {
-  let url = baseUrl + '/?search=&sortby=';
+  let url = baseUrl + '/?searchrn&sortby=';
   url += defaultTo(filters?.sort, showLatestNovels ? 'upd' : 'count');
 
   if (filters?.type?.length) {
@@ -117,7 +117,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 };
 
 const searchNovels = async searchTerm => {
-  const url = `${baseUrl}/?search=${searchTerm}&but=%D0%9F%D0%BE%D0%B8%D1%81%D0%BA+%D0%BF%D0%BE+%D0%BD%D0%B0%D0%B7%D0%B2%D0%B0%D0%BD%D0%B8%D1%8E&sortby=new`;
+  const url = `${baseUrl}/?searchrn=${searchTerm}&but=Поиск по названию&sortby=upd`;
   const result = await fetch(url);
   let body = await result.text();
   const loadedCheerio = cheerio.load(body);

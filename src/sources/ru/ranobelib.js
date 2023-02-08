@@ -48,7 +48,9 @@ const popularNovels = async (page, { showLatestNovels, filters }) => {
   const body = await result.text();
 
   const loadedCheerio = cheerio.load(body);
-  ui = loadedCheerio('a.header-right-menu__item').attr("href")?.replace?.(/[^0-9]/g, "");
+  ui = loadedCheerio('a.header-right-menu__item')
+    .attr('href')
+    ?.replace?.(/[^0-9]/g, '');
   let novels = [];
 
   loadedCheerio('.media-card-wrap').each(function () {
@@ -127,21 +129,15 @@ const parseNovelAndChapters = async novelUrl => {
   ui = chaptersJson?.user?.id;
   const novelSlug = chaptersJson.manga.slug;
 
-  let branch_id = chaptersJson.chapters.branches
-    .flatMap?.(branch => branch.teams)
-    .find?.(team => team.is_active)?.branch_id;
-
   chaptersJson.chapters.list.forEach(chapter => {
-    if (!branch_id || chapter?.branch_id == branch_id) {
-      chapters.push({
-        chapterName:
-          `Том ${chapter.chapter_volume} Глава ${chapter.chapter_number} ${chapter.chapter_name}`?.trim(),
-        releaseDate: dayjs(chapter.chapter_created_at).format('LLL'),
-        chapterUrl:
-          `${baseUrl}/${novelSlug}/v${chapter.chapter_volume}/c${chapter.chapter_number}?bid=` +
-          (chapter?.branch_id || ''),
-      });
-    }
+    chapters.push({
+      chapterName:
+        `Том ${chapter.chapter_volume} Глава ${chapter.chapter_number} ${chapter.chapter_name}`?.trim(),
+      releaseDate: dayjs(chapter.chapter_created_at).format('LLL'),
+      chapterUrl:
+        `${baseUrl}/${novelSlug}/v${chapter.chapter_volume}/c${chapter.chapter_number}?bid=` +
+        (chapter?.branch_id || ''),
+    });
   });
 
   novel.chapters = chapters.reverse();
