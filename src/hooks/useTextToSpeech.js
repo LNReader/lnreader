@@ -1,57 +1,37 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Tts from 'react-native-tts';
-import { htmlToText } from '../sources/helpers/htmlToText';
 
-export const useTextToSpeech = (html, markChapterAdRead) => {
-  const [ttsStatus, setTtsStatus] = useState();
-  const [ttsPosition, setTtsPosition] = useState({ end: 0 });
-
-  let text = htmlToText(html);
-
+export const useTextToSpeech = (sentences, markChapterAsRead) => {
+  const [ttsStatus, setTtsStatus] = useState({});
+  const ttsPosition = useRef(0);
   useEffect(() => {
-    Tts.addEventListener('tts-start', () => setTtsStatus('start'));
-    Tts.addEventListener('tts-progress', event => {
-      setTtsStatus('progress');
-      setTtsPosition(event);
-    });
     Tts.addEventListener('tts-finish', () => {
-      setTtsStatus('finish');
-      markChapterAdRead();
+      if (ttsPosition.current == sentences.length - 1) {
+        markChapterAsRead();
+        setTtsStatus('finish');
+      }
+      ttsPosition.current = ttsPosition.current + 1;
     });
-    Tts.addEventListener('tts-cancel', () => setTtsStatus('paused'));
-
-    return () => Tts.stop();
-  }, []);
+    return () => {
+      Tts.removeAllListeners('tts-finish');
+      Tts.stop();
+    };
+  }, [sentences.length]);
+  // for the first time rendering, chapter was not loaded.
+  // then htmlToText function would return
+  // "Chapter is empty.\n\nReport if it's available in webview." (length = 3)
 
   const startTts = () => {
     if (ttsStatus === 'progress') {
-      setTtsPosition({ end: 0 });
-      setTtsStatus('finish');
+      setTtsStatus('paused');
       Tts.stop();
       return;
     }
 
-    if (text.length >= 3999) {
-      const splitNChars = (txt, num) => {
-        let result = [];
-        for (let i = 0; i < txt.length; i += num) {
-          result.push(txt.substr(i, num));
-        }
-        return result;
-      };
-
-      let splitMe = splitNChars(text, 3999);
-
-      splitMe.forEach(value => {
-        Tts.speak(value, {
-          androidParams: {
-            KEY_PARAM_STREAM: 'STREAM_MUSIC',
-          },
-        });
-      });
-    } else {
-      Tts.stop();
-      Tts.speak(text, {
+    setTtsStatus('progress');
+    Tts.stop();
+    for (let i = ttsPosition.current; i < sentences.length; i++) {
+      Tts.speak(sentences[i], {
         androidParams: {
           KEY_PARAM_STREAM: 'STREAM_MUSIC',
         },
@@ -59,42 +39,5 @@ export const useTextToSpeech = (html, markChapterAdRead) => {
     }
   };
 
-  const pauseTts = () => {
-    if (ttsStatus === 'progress') {
-      setTtsStatus('paused');
-      Tts.stop();
-      return;
-    } else {
-      text = text.slice(ttsPosition.end);
-
-      if (text.length >= 3999) {
-        const splitNChars = (txt, num) => {
-          let result = [];
-          for (let i = 0; i < txt.length; i += num) {
-            result.push(txt.substr(i, num));
-          }
-          return result;
-        };
-
-        let splitMe = splitNChars(text, 3999);
-
-        splitMe.forEach(value => {
-          Tts.speak(value, {
-            androidParams: {
-              KEY_PARAM_STREAM: 'STREAM_MUSIC',
-            },
-          });
-        });
-      } else {
-        Tts.stop();
-        Tts.speak(text, {
-          androidParams: {
-            KEY_PARAM_STREAM: 'STREAM_MUSIC',
-          },
-        });
-      }
-    }
-  };
-
-  return [ttsStatus, ttsPosition, startTts, pauseTts];
+  return [ttsStatus, startTts];
 };

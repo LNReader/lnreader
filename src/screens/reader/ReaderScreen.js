@@ -58,6 +58,7 @@ import ChapterDrawer from './components/ChapterDrawer';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import SkeletonLines from './components/SkeletonLines';
 import color from 'color';
+import { htmlToText } from '../../sources/helpers/htmlToText';
 
 const Chapter = ({ route }) => {
   const { useChapterDrawerSwipeNavigation = true } = useSettings();
@@ -215,8 +216,8 @@ const ChapterContent = ({ route, navigation }) => {
     }
   }, []);
 
-  const [ttsStatus, ttsPosition, startTts, pauseTts] = useTextToSpeech(
-    chapter?.chapterText,
+  const [ttsStatus, startTts] = useTextToSpeech(
+    htmlToText(chapter?.chapterText).split('\n'),
     () => {
       if (!incognitoMode) {
         dispatch(markChapterReadAction(chapterId, novelId));
@@ -409,8 +410,6 @@ const ChapterContent = ({ route, navigation }) => {
           dispatch={dispatch}
           tts={startTts}
           textToSpeech={ttsStatus}
-          textToSpeechPosition={ttsPosition}
-          pauseTts={pauseTts}
           theme={theme}
         />
         <GestureRecognizer

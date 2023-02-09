@@ -17,8 +17,6 @@ const ReaderAppbar = ({
   dispatch,
   tts,
   textToSpeech,
-  textToSpeechPosition,
-  pauseTts,
   theme,
 }) => {
   const { goBack } = useNavigation();
@@ -55,21 +53,13 @@ const ReaderAppbar = ({
             </Text>
           </View>
           <Appbar.Action
-            icon="volume-high"
+            icon={textToSpeech === 'progress' ? 'pause' : 'volume-high'}
             size={24}
             onPress={tts}
             iconColor={
               textToSpeech === 'progress' ? theme.primary : theme.onSurface
             }
           />
-          {textToSpeechPosition.end > 0 && (
-            <Appbar.Action
-              icon={textToSpeech === 'paused' ? 'play' : 'pause'}
-              size={24}
-              onPress={pauseTts}
-              iconColor={theme.onSurface}
-            />
-          )}
 
           <IconButtonV2
             name={bookmarked ? 'bookmark' : 'bookmark-outline'}
