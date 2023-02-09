@@ -129,6 +129,7 @@ const ChapterContent = ({ route, navigation }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
 
+  const percentageOfDeviceHeight = useRef(100); //default to 100%
   const [scrollPercentage, setScrollPercentage] = useState(0);
   const [firstLayout, setFirstLayout] = useState(true);
 
@@ -307,24 +308,32 @@ const ChapterContent = ({ route, navigation }) => {
 
   const [webViewScroll, setWebViewScroll] = useState(scrollPercentage);
 
-  const scrollToSavedProgress = useCallback(
-    event => {
-      if (position && firstLayout) {
-        if (position.percentage < 100) {
-          scrollViewRef.current.scrollTo({
-            x: 0,
-            y: position.position,
-            animated: false,
+  const scrollToSavedProgress = () => {
+    if (position && firstLayout) {
+      if (position.percentage < 100) {
+        scrollViewRef.current.scrollTo({
+          x: 0,
+          y: position.position,
+          animated: false,
+        });
+        if (useWebViewForChapter) {
+          setWebViewScroll({
+            percentage: position.percentage,
+            type: 'smooth',
           });
-          if (useWebViewForChapter) {
-            setWebViewScroll({
-              percentage: position.percentage,
-              type: 'smooth',
-            });
-          }
         }
-        setFirstLayout(false);
       }
+      setFirstLayout(false);
+    }
+  };
+
+  const onLayoutProcessing = useCallback(
+    event => {
+      scrollToSavedProgress();
+      percentageOfDeviceHeight.current = Math.round(
+        (Dimensions.get('window').height / event.nativeEvent.layout.height) *
+          100,
+      );
     },
     [nextChapter],
   );
@@ -483,7 +492,7 @@ const ChapterContent = ({ route, navigation }) => {
             ) : (
               <TouchableWithoutFeedback
                 style={{ flex: 1 }}
-                onLayout={scrollToSavedProgress}
+                onLayout={onLayoutProcessing}
               >
                 {useWebViewForChapter ? (
                   <View style={{ flex: 1 }}>
@@ -532,13 +541,13 @@ const ChapterContent = ({ route, navigation }) => {
           <ReaderBottomSheetV2 bottomSheetRef={readerSheetRef} />
         </Portal>
         <ReaderSeekBar
+          percentageOfDeviceHeight={percentageOfDeviceHeight.current}
           theme={theme}
           hide={hidden}
           setLoading={setLoading}
           contentSize={contentSize}
           scrollViewRef={scrollViewRef}
           scrollPercentage={scrollPercentage}
-          setScrollPercentage={setScrollPercentage}
           setWebViewScroll={setWebViewScroll}
           useWebViewForChapter={useWebViewForChapter}
           verticalSeekbar={verticalSeekbar}
