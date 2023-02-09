@@ -129,11 +129,9 @@ const ChapterContent = ({ route, navigation }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
 
-  const percentageOfDeviceHeight = useRef(100); //default to 100%
+  const percentageOfDeviceHeight = useRef(99); //default to 99%
   const [scrollPercentage, setScrollPercentage] = useState(0);
   const [firstLayout, setFirstLayout] = useState(true);
-
-  const [contentSize, setContentSize] = useState(0);
 
   const [scrollPage, setScrollPage] = useState(null);
 
@@ -185,24 +183,10 @@ const ChapterContent = ({ route, navigation }) => {
 
         setChapter(res);
       }
-
-      setLoading(false);
     } catch (e) {
       setError(e.message);
-      setLoading(false);
       showToast(e.message);
     }
-  };
-
-  const [nextChapter, setNextChapter] = useState({});
-  const [prevChapter, setPrevChapter] = useState({});
-
-  const setPrevAndNextChap = async () => {
-    const nextChap = await getNextChapter(novelId, chapterId);
-    const prevChap = await getPrevChapter(novelId, chapterId);
-
-    setNextChapter(nextChap);
-    setPrevChapter(prevChap);
   };
 
   useEffect(() => {
@@ -217,6 +201,8 @@ const ChapterContent = ({ route, navigation }) => {
     }
   }, []);
 
+  const [[nextChapter, prevChapter], setAdjacentChapter] = useState([]);
+
   const [ttsStatus, startTts] = useTextToSpeech(
     htmlToText(chapter?.chapterText).split('\n'),
     () => {
@@ -227,6 +213,13 @@ const ChapterContent = ({ route, navigation }) => {
     },
   );
 
+  const setPrevAndNextChap = async () => {
+    const nextChap = await getNextChapter(novelId, chapterId);
+    const prevChap = await getPrevChapter(novelId, chapterId);
+
+    setAdjacentChapter([nextChap, prevChap]);
+    setLoading(false);
+  };
   useEffect(() => {
     setPrevAndNextChap();
   }, [chapter]);
@@ -308,32 +301,30 @@ const ChapterContent = ({ route, navigation }) => {
 
   const [webViewScroll, setWebViewScroll] = useState(scrollPercentage);
 
-  const scrollToSavedProgress = () => {
-    if (position && firstLayout) {
-      if (position.percentage < 100) {
-        scrollViewRef.current.scrollTo({
-          x: 0,
-          y: position.position,
-          animated: false,
-        });
-        if (useWebViewForChapter) {
-          setWebViewScroll({
-            percentage: position.percentage,
-            type: 'smooth',
-          });
-        }
-      }
-      setFirstLayout(false);
-    }
-  };
-
   const onLayoutProcessing = useCallback(
     event => {
+      const scrollToSavedProgress = () => {
+        if (position && firstLayout) {
+          if (position.percentage < 100) {
+            scrollViewRef.current.scrollTo({
+              x: 0,
+              y: position.position,
+              animated: false,
+            });
+            if (useWebViewForChapter) {
+              setWebViewScroll({
+                percentage: position.percentage,
+                type: 'smooth',
+              });
+            }
+          }
+          setFirstLayout(false);
+        }
+      };
       scrollToSavedProgress();
-      percentageOfDeviceHeight.current = Math.round(
+      percentageOfDeviceHeight.current =
         (Dimensions.get('window').height / event.nativeEvent.layout.height) *
-          100,
-      );
+        100;
     },
     [nextChapter],
   );
@@ -442,7 +433,6 @@ const ChapterContent = ({ route, navigation }) => {
               { backgroundColor },
             ]}
             onScroll={onScroll}
-            onContentSizeChange={(x, y) => setContentSize(y)}
             showsVerticalScrollIndicator={false}
             scrollEnabled={!loading}
           >
@@ -545,7 +535,6 @@ const ChapterContent = ({ route, navigation }) => {
           theme={theme}
           hide={hidden}
           setLoading={setLoading}
-          contentSize={contentSize}
           scrollViewRef={scrollViewRef}
           scrollPercentage={scrollPercentage}
           setWebViewScroll={setWebViewScroll}

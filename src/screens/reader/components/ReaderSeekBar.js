@@ -11,7 +11,6 @@ const VerticalScrollbar = ({
   theme,
   hide,
   setLoading,
-  contentSize,
   scrollViewRef,
   scrollPercentage,
   setWebViewScroll,
@@ -26,7 +25,10 @@ const VerticalScrollbar = ({
     setLoading(true);
     scrollViewRef.current.scrollTo({
       x: 0,
-      y: Math.round(((value - percentageOfDeviceHeight) * contentSize) / 100),
+      y: Math.round(
+        (value - percentageOfDeviceHeight) *
+          (Dimensions.get('window').height / percentageOfDeviceHeight),
+      ),
       animated: false,
     });
     setLoading(false);
@@ -60,7 +62,7 @@ const VerticalScrollbar = ({
             flex: 1,
             height: 40,
           }}
-          minimumValue={percentageOfDeviceHeight}
+          minimumValue={Math.round(percentageOfDeviceHeight)}
           maximumValue={100}
           step={1}
           value={scrollPercentage}
