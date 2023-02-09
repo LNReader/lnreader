@@ -7,18 +7,18 @@ import { useDeviceOrientation } from '../../../services/utils/helpers';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const VerticalScrollbar = ({
+  percentageOfDeviceHeight,
   theme,
   hide,
-  contentSize,
-  scrollPercentage,
   setLoading,
+  contentSize,
   scrollViewRef,
-  verticalSeekbar,
+  scrollPercentage,
   setWebViewScroll,
   useWebViewForChapter,
+  verticalSeekbar,
 }) => {
   const { bottom } = useSafeAreaInsets();
-
   const onSlidingComplete = value => {
     if (useWebViewForChapter) {
       return setWebViewScroll({ percentage: value, type: 'instant' });
@@ -26,7 +26,7 @@ const VerticalScrollbar = ({
     setLoading(true);
     scrollViewRef.current.scrollTo({
       x: 0,
-      y: Math.round((value * contentSize) / 100),
+      y: Math.round(((value - percentageOfDeviceHeight) * contentSize) / 100),
       animated: false,
     });
     setLoading(false);
@@ -60,7 +60,7 @@ const VerticalScrollbar = ({
             flex: 1,
             height: 40,
           }}
-          minimumValue={0}
+          minimumValue={percentageOfDeviceHeight}
           maximumValue={100}
           step={1}
           value={scrollPercentage}
