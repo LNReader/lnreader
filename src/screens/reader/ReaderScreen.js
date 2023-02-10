@@ -486,6 +486,7 @@ const ChapterContent = ({ route, navigation }) => {
                 {useWebViewForChapter ? (
                   <View style={{ flex: 1 }}>
                     <WebViewReader
+                      chapter={chapter}
                       layoutHeight={Dimensions.get('window').height}
                       webViewScroll={webViewScroll}
                       setScrollPercentage={setScrollPercentage}

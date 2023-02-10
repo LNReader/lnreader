@@ -10,7 +10,6 @@ const VerticalScrollbar = ({
   percentageOfDeviceHeight,
   theme,
   hide,
-  setLoading,
   scrollViewRef,
   scrollPercentage,
   setWebViewScroll,

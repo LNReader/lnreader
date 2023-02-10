@@ -18,6 +18,7 @@ type WebViewPostEvent = {
 };
 
 type WebViewReaderProps = {
+  chapter: ChapterItem;
   html: string;
   theme: MD3ThemeType;
   reader: {
@@ -49,6 +50,7 @@ type WebViewReaderProps = {
 
 const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
   const {
+    chapter,
     html,
     theme,
     reader,
@@ -310,7 +312,9 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
                     <div class="chapterCtn" ${onClickWebViewPostMessage({
                       type: 'hide',
                     })}>
-                      <chapter>
+                      <chapter data-novel-id='${
+                        chapter.novelId
+                      }' data-chapter-id='${chapter.chapterId}'>
                       ${html}
                       </chapter>
                     </div>
