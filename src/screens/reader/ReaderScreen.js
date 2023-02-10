@@ -432,9 +432,8 @@ const ChapterContent = ({ route, navigation }) => {
               styles.screenContainer,
               { backgroundColor },
             ]}
-            onScroll={onScroll}
+            onScroll={!loading && onScroll}
             showsVerticalScrollIndicator={false}
-            scrollEnabled={!loading}
           >
             {error ? (
               <View style={{ flex: 1, justifyContent: 'center' }}>
