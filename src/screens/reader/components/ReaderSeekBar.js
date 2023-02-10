@@ -22,7 +22,6 @@ const VerticalScrollbar = ({
     if (useWebViewForChapter) {
       return setWebViewScroll({ percentage: value, type: 'instant' });
     }
-    setLoading(true);
     scrollViewRef.current.scrollTo({
       x: 0,
       y: Math.round(
@@ -31,7 +30,6 @@ const VerticalScrollbar = ({
       ),
       animated: false,
     });
-    setLoading(false);
   };
 
   const screenOrientation = useDeviceOrientation();
