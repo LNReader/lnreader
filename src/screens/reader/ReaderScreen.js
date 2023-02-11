@@ -327,7 +327,7 @@ const ChapterContent = ({ route, navigation }) => {
           100;
       }
     },
-    [nextChapter],
+    [nextChapter, useWebViewForChapter],
   );
 
   const hideHeader = () => {

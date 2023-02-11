@@ -2,7 +2,7 @@ import { useAppDispatch } from '@redux/hooks';
 import { setAppSettings } from '@redux/settings/settings.actions';
 import { getString } from '@strings/translations';
 import React, { useRef, useEffect, FunctionComponent } from 'react';
-import { StatusBar, StyleSheet, useWindowDimensions, View } from 'react-native';
+import { StatusBar, StyleSheet, View } from 'react-native';
 
 import WebView from 'react-native-webview';
 import { ChapterItem } from '../../../database/types';
@@ -70,9 +70,6 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
     scrollPage,
     setScrollPage,
   } = props;
-
-  const { height } = useWindowDimensions();
-
   const backgroundColor = readerBackground(reader.theme);
 
   const webViewRef = useRef<WebView>(null);
@@ -97,7 +94,6 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
       setScrollPage(null);
     }
   }, [scrollPage]);
-
   useEffect(() => {
     if (webViewRef.current && webViewScroll.percentage !== scrollPercentage) {
       webViewRef.current.injectJavaScript(`(()=>{
@@ -226,6 +222,9 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
                         line-height: ${reader.lineHeight};
                         font-family: ${reader.fontFamily};
                       }
+                      chapter{
+                        display: block;
+                      }
                       hr {
                         margin-top: 20px;
                         margin-bottom: 20px;
@@ -292,7 +291,7 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
                         text-align: center;
                       }
                       .chapterCtn {
-                        min-height: ${height - 140};
+                        min-height: ${layoutHeight - 140};
                         margin-bottom: auto;
                       }
                     </style>
@@ -312,10 +311,11 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
                     <div class="chapterCtn" ${onClickWebViewPostMessage({
                       type: 'hide',
                     })}>
-                      <chapter data-novel-id='${
-                        chapter.novelId
-                      }' data-chapter-id='${chapter.chapterId}'>
-                      ${html}
+                      <chapter 
+                        data-novel-id='${chapter.novelId}'
+                        data-chapter-id='${chapter.chapterId}'
+                      >
+                        ${html}
                       </chapter>
                     </div>
                     <script>
