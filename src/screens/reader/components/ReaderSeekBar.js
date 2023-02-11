@@ -11,18 +11,35 @@ const VerticalScrollbar = ({
   theme,
   hide,
   scrollViewRef,
+  webViewRef = { webViewRef },
   scrollPercentage,
+  setScrollPercentage,
   verticalSeekbar,
+  useWebViewForChapter,
 }) => {
   const { bottom } = useSafeAreaInsets();
   const onSlidingComplete = value => {
-    scrollViewRef.current.scrollTo({
-      x: 0,
-      y: Math.round(
-        ((value - minScroll) * Dimensions.get('window').height) / minScroll,
-      ),
-      animated: false,
-    });
+    if (useWebViewForChapter) {
+      webViewRef.current.injectJavaScript(`(()=>{
+        const p = ${value - minScroll};
+        const h = document.body.scrollHeight;
+        const s = (h*p)/100;
+        const type = "smooth";
+        if(type === 'exact')
+          window.scrollTo({top: p, left:0, behavior:'smooth'});
+        else
+        window.scrollTo({top: p === 100 ? h : s, left:0, behavior:type});
+      })()`);
+    } else {
+      scrollViewRef.current.scrollTo({
+        x: 0,
+        y: Math.round(
+          ((value - minScroll) * Dimensions.get('window').height) / minScroll,
+        ),
+        animated: false,
+      });
+    }
+    setScrollPercentage(value);
   };
   const screenOrientation = useDeviceOrientation();
 
@@ -96,10 +113,10 @@ const VerticalScrollbar = ({
             flex: 1,
             height: 40,
           }}
-          minimumValue={0}
+          minimumValue={Math.round(minScroll)}
           maximumValue={100}
           step={1}
-          value={scrollPercentage}
+          value={scrollPercentage || Math.round(minScroll)}
           onSlidingComplete={onSlidingComplete}
           thumbTintColor={theme.primary}
           minimumTrackTintColor={theme.primary}

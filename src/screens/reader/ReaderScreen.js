@@ -96,6 +96,7 @@ const ChapterContent = ({ route, navigation }) => {
     bookmark,
   } = params;
   let scrollViewRef = useRef(null);
+  let webViewRef = useRef(null);
   let readerSheetRef = useRef(null);
 
   const theme = useTheme();
@@ -133,7 +134,6 @@ const ChapterContent = ({ route, navigation }) => {
   const [scrollPercentage, setScrollPercentage] = useState(0);
   const [firstLayout, setFirstLayout] = useState(true);
   const [scrollPage, setScrollPage] = useState(null);
-
   useEffect(() => {
     VolumeButtonListener.disconnect();
     if (useWebViewForChapter && wvUseVolumeButtons) {
@@ -308,6 +308,7 @@ const ChapterContent = ({ route, navigation }) => {
         minScroll.current =
           (Dimensions.get('window').height / event.nativeEvent.layout.height) *
           100;
+        setScrollPercentage(Math.round(minScroll.current));
       }
     },
     [nextChapter, useWebViewForChapter],
@@ -469,6 +470,8 @@ const ChapterContent = ({ route, navigation }) => {
                     <WebViewReader
                       chapter={chapter}
                       layoutHeight={Dimensions.get('window').height}
+                      webViewRef={webViewRef}
+                      minScroll={minScroll}
                       setScrollPercentage={setScrollPercentage}
                       scrollPercentage={scrollPercentage}
                       reader={readerSettings}
@@ -477,7 +480,6 @@ const ChapterContent = ({ route, navigation }) => {
                       nextChapter={nextChapter}
                       navigateToNextChapter={() => navigateToNextChapter()}
                       navigateToPrevChapter={() => navigateToPrevChapter()}
-                      onScroll={onScroll}
                       onPress={hideHeader}
                       onWebViewNavigationStateChange={
                         onWebViewNavigationStateChange
@@ -516,8 +518,11 @@ const ChapterContent = ({ route, navigation }) => {
           hide={hidden}
           setLoading={setLoading}
           scrollViewRef={scrollViewRef}
+          webViewRef={webViewRef}
           scrollPercentage={scrollPercentage}
+          setScrollPercentage={setScrollPercentage}
           verticalSeekbar={verticalSeekbar}
+          useWebViewForChapter={useWebViewForChapter}
         />
         <ReaderFooter
           theme={theme}
