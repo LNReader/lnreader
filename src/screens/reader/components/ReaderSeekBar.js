@@ -7,7 +7,7 @@ import { useDeviceOrientation } from '../../../services/utils/helpers';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const VerticalScrollbar = ({
-  percentageOfDeviceHeight,
+  minScroll,
   theme,
   hide,
   scrollViewRef,
@@ -24,13 +24,11 @@ const VerticalScrollbar = ({
     scrollViewRef.current.scrollTo({
       x: 0,
       y: Math.round(
-        (value - percentageOfDeviceHeight) *
-          (Dimensions.get('window').height / percentageOfDeviceHeight),
+        ((value - minScroll) * Dimensions.get('window').height) / minScroll,
       ),
       animated: false,
     });
   };
-
   const screenOrientation = useDeviceOrientation();
 
   if (hide) {
@@ -52,17 +50,17 @@ const VerticalScrollbar = ({
             transform: [{ rotate: '-90deg' }],
           }}
         >
-          {scrollPercentage}
+          {scrollPercentage || Math.round(minScroll)}
         </Text>
         <Slider
           style={{
             flex: 1,
             height: 40,
           }}
-          minimumValue={Math.round(percentageOfDeviceHeight)}
+          minimumValue={Math.round(minScroll)}
           maximumValue={100}
           step={1}
-          value={scrollPercentage}
+          value={scrollPercentage || Math.round(minScroll)}
           onSlidingComplete={onSlidingComplete}
           thumbTintColor={theme.primary}
           minimumTrackTintColor={theme.primary}

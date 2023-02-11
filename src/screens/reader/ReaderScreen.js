@@ -129,10 +129,9 @@ const ChapterContent = ({ route, navigation }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
 
-  const percentageOfDeviceHeight = useRef(99); //default to 99%
+  const minScroll = useRef(0);
   const [scrollPercentage, setScrollPercentage] = useState(0);
   const [firstLayout, setFirstLayout] = useState(true);
-
   const [scrollPage, setScrollPage] = useState(null);
 
   useEffect(() => {
@@ -322,9 +321,11 @@ const ChapterContent = ({ route, navigation }) => {
         }
       };
       scrollToSavedProgress();
-      percentageOfDeviceHeight.current =
-        (Dimensions.get('window').height / event.nativeEvent.layout.height) *
-        100;
+      if (!useWebViewForChapter) {
+        minScroll.current =
+          (Dimensions.get('window').height / event.nativeEvent.layout.height) *
+          100;
+      }
     },
     [nextChapter],
   );
@@ -375,9 +376,6 @@ const ChapterContent = ({ route, navigation }) => {
 
   const enableAutoScroll = () =>
     dispatch(setAppSettings('autoScroll', !autoScroll));
-
-  const enableWebView = () =>
-    dispatch(setAppSettings('useWebViewForChapter', !useWebViewForChapter));
 
   const onWebViewNavigationStateChange = async ({ url }) => {
     if ((sourceId === 50 || sourceId === 62) && url !== 'about:blank') {
@@ -531,7 +529,7 @@ const ChapterContent = ({ route, navigation }) => {
           <ReaderBottomSheetV2 bottomSheetRef={readerSheetRef} />
         </Portal>
         <ReaderSeekBar
-          percentageOfDeviceHeight={percentageOfDeviceHeight.current}
+          minScroll={minScroll.current}
           theme={theme}
           hide={hidden}
           setLoading={setLoading}
@@ -545,7 +543,6 @@ const ChapterContent = ({ route, navigation }) => {
           theme={theme}
           novelUrl={novelUrl}
           chapterUrl={chapterUrl}
-          enableWebView={enableWebView}
           dispatch={dispatch}
           nextChapter={nextChapter}
           prevChapter={prevChapter}
