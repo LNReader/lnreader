@@ -230,22 +230,13 @@ const ChapterContent = ({ route, navigation }) => {
   useEffect(() => {
     if (scrollPercentage !== 100 && autoScroll) {
       scrollTimeout = setTimeout(() => {
-        if (useWebViewForChapter) {
-          setWebViewScroll({
-            percentage:
-              currentOffset +
-              defaultTo(autoScrollOffset, Dimensions.get('window').height),
-            type: 'exact',
-          });
-        } else {
-          scrollViewRef.current.scrollTo({
-            x: 0,
-            y:
-              currentOffset +
-              defaultTo(autoScrollOffset, Dimensions.get('window').height),
-            animated: true,
-          });
-        }
+        scrollViewRef.current.scrollTo({
+          x: 0,
+          y:
+            currentOffset +
+            defaultTo(autoScrollOffset, Dimensions.get('window').height),
+          animated: true,
+        });
         setCurrentOffset(
           prevState =>
             prevState +
@@ -298,8 +289,6 @@ const ChapterContent = ({ route, navigation }) => {
     }
   }, []);
 
-  const [webViewScroll, setWebViewScroll] = useState(scrollPercentage);
-
   const onLayoutProcessing = useCallback(
     event => {
       const scrollToSavedProgress = () => {
@@ -310,12 +299,6 @@ const ChapterContent = ({ route, navigation }) => {
               y: position.position,
               animated: false,
             });
-            if (useWebViewForChapter) {
-              setWebViewScroll({
-                percentage: position.percentage,
-                type: 'smooth',
-              });
-            }
           }
           setFirstLayout(false);
         }
@@ -486,7 +469,6 @@ const ChapterContent = ({ route, navigation }) => {
                     <WebViewReader
                       chapter={chapter}
                       layoutHeight={Dimensions.get('window').height}
-                      webViewScroll={webViewScroll}
                       setScrollPercentage={setScrollPercentage}
                       scrollPercentage={scrollPercentage}
                       reader={readerSettings}
@@ -535,8 +517,6 @@ const ChapterContent = ({ route, navigation }) => {
           setLoading={setLoading}
           scrollViewRef={scrollViewRef}
           scrollPercentage={scrollPercentage}
-          setWebViewScroll={setWebViewScroll}
-          useWebViewForChapter={useWebViewForChapter}
           verticalSeekbar={verticalSeekbar}
         />
         <ReaderFooter

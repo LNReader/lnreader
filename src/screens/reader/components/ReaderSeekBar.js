@@ -12,15 +12,10 @@ const VerticalScrollbar = ({
   hide,
   scrollViewRef,
   scrollPercentage,
-  setWebViewScroll,
-  useWebViewForChapter,
   verticalSeekbar,
 }) => {
   const { bottom } = useSafeAreaInsets();
   const onSlidingComplete = value => {
-    if (useWebViewForChapter) {
-      return setWebViewScroll({ percentage: value, type: 'instant' });
-    }
     scrollViewRef.current.scrollTo({
       x: 0,
       y: Math.round(

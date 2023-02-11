@@ -39,8 +39,6 @@ type WebViewReaderProps = {
   onScroll(): void;
   onWebViewNavigationStateChange(): void;
   layoutHeight: number;
-  webViewScroll: { percentage: number; type: 'smooth' | 'instant' | 'exact' };
-  setScrollPercentage: React.Dispatch<React.SetStateAction<number>>;
   scrollPercentage: number;
   swipeGestures: boolean;
   wvShowSwipeMargins: boolean;
@@ -57,13 +55,11 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
     onScroll,
     onWebViewNavigationStateChange,
     layoutHeight,
-    webViewScroll,
     nextChapter,
     chapterName,
     onPress,
     navigateToNextChapter,
     navigateToPrevChapter,
-    setScrollPercentage,
     scrollPercentage,
     swipeGestures,
     wvShowSwipeMargins,
@@ -94,25 +90,6 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
       setScrollPage(null);
     }
   }, [scrollPage]);
-  useEffect(() => {
-    if (webViewRef.current && webViewScroll.percentage !== scrollPercentage) {
-      webViewRef.current.injectJavaScript(`(()=>{
-        const p = ${webViewScroll.percentage};
-        const h = document.body.scrollHeight;
-        const s = (h*p)/100;
-        const lh = ${Math.trunc(layoutHeight)};
-        const xs = s - 1.2*lh;
-        const type = "${webViewScroll.type}";
-        if(type === 'exact')
-          window.scrollTo({top: p, left:0, behavior:'smooth'});
-        else
-          window.scrollTo({top: p === 100 ? h : xs, left:0, behavior:type});
-      })()`);
-      if (webViewScroll.type !== 'exact') {
-        setScrollPercentage(webViewScroll.percentage || 0);
-      }
-    }
-  }, [webViewScroll]);
 
   const onClickWebViewPostMessage = (event: WebViewPostEvent) =>
     "onClick='window.ReactNativeWebView.postMessage(`" +
@@ -126,12 +103,12 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
         style={{ backgroundColor }}
         originWhitelist={['*']}
         injectedJavaScript={`
-        const p = ${webViewScroll.percentage};
+        const p = ${scrollPercentage};
         const h = document.body.scrollHeight;
         const s = (h*p)/100;
         const lh = ${Math.trunc(layoutHeight)};
         const xs = s - 1.2*lh;
-        const type = "${webViewScroll.type}";
+        const type = "smooth";
         if(type === 'exact')
           window.scrollTo({top: p, left:0, behavior:'smooth'});
         else
@@ -185,9 +162,6 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
                   }
                   Promise.all(promises).then(datas => {
                     const inject = datas.reduce((p, data) => {
-                      // console.log(
-                      //   `document.querySelector("img[file-id='${data.id}']").src="data:image/png;base64,`,
-                      // );
                       return (
                         p +
                         `document.querySelector("img[file-id='${data.id}']").src="data:image/png;base64,${data.data}";`
