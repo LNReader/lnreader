@@ -135,6 +135,7 @@ const ChapterContent = ({ route, navigation }) => {
   });
   const [firstLayout, setFirstLayout] = useState(true);
   const [scrollPage, setScrollPage] = useState(null);
+
   useEffect(() => {
     VolumeButtonListener.disconnect();
     if (useWebViewForChapter && wvUseVolumeButtons) {
@@ -174,14 +175,16 @@ const ChapterContent = ({ route, navigation }) => {
 
         if (chapterDownloaded) {
           setChapter(chapterDownloaded);
+          setLoading(false);
         } else {
           const res = await fetchChapter(sourceId, novelUrl, chapterUrl);
           setChapter(res);
+          setLoading(false);
         }
       } else {
         const res = await fetchChapter(sourceId, novelUrl, chapterUrl);
-
         setChapter(res);
+        setLoading(false);
       }
     } catch (e) {
       setError(e.message);
@@ -203,6 +206,16 @@ const ChapterContent = ({ route, navigation }) => {
 
   const [[nextChapter, prevChapter], setAdjacentChapter] = useState([]);
 
+  useEffect(() => {
+    const setPrevAndNextChap = async () => {
+      const nextChap = await getNextChapter(novelId, chapterId);
+      const prevChap = await getPrevChapter(novelId, chapterId);
+
+      setAdjacentChapter([nextChap, prevChap]);
+    };
+    setPrevAndNextChap();
+  }, [chapter]);
+
   const [ttsStatus, startTts] = useTextToSpeech(
     htmlToText(chapter?.chapterText).split('\n'),
     () => {
@@ -212,17 +225,6 @@ const ChapterContent = ({ route, navigation }) => {
       }
     },
   );
-
-  const setPrevAndNextChap = async () => {
-    const nextChap = await getNextChapter(novelId, chapterId);
-    const prevChap = await getPrevChapter(novelId, chapterId);
-
-    setAdjacentChapter([nextChap, prevChap]);
-    setLoading(false);
-  };
-  useEffect(() => {
-    setPrevAndNextChap();
-  }, [chapter]);
 
   const [currentOffset, setCurrentOffset] = useState(position?.position || 0);
 
@@ -249,17 +251,6 @@ const ChapterContent = ({ route, navigation }) => {
     return () => clearTimeout(scrollTimeout);
   }, [autoScroll, currentOffset]);
 
-  const isCloseToBottom = useCallback(
-    ({ layoutMeasurement, contentOffset, contentSize }) => {
-      const paddingToBottom = 40;
-      return (
-        layoutMeasurement.height + contentOffset.y >=
-        contentSize.height - paddingToBottom
-      );
-    },
-    [],
-  );
-
   const updateTracker = () => {
     const chapterNumber = parseChapterNumber(chapterName);
 
@@ -272,6 +263,18 @@ const ChapterContent = ({ route, navigation }) => {
       );
   };
 
+  const doSaveProgress = (offsetY, percentage) => {
+    if (!incognitoMode) {
+      dispatch(saveScrollPosition(offsetY, percentage, chapterId, novelId));
+    }
+
+    if (!incognitoMode && percentage >= 97) {
+      // a relative number
+      dispatch(markChapterReadAction(chapterId, novelId));
+      updateTracker();
+    }
+  };
+
   const onScroll = useCallback(({ nativeEvent }) => {
     const offsetY = nativeEvent.contentOffset.y;
     const pos =
@@ -279,43 +282,51 @@ const ChapterContent = ({ route, navigation }) => {
 
     const percentage = Math.round((pos / nativeEvent.contentSize.height) * 100);
     setCurrentScroll({ offsetY: offsetY, percentage: percentage });
-    if (!incognitoMode) {
-      dispatch(saveScrollPosition(offsetY, percentage, chapterId, novelId));
-    }
-
-    if (!incognitoMode && isCloseToBottom(nativeEvent)) {
-      dispatch(markChapterReadAction(chapterId, novelId));
-      updateTracker();
-    }
+    doSaveProgress(offsetY, percentage);
   }, []);
 
   const onLayoutProcessing = useCallback(
     event => {
       const scrollToSavedProgress = () => {
-        if (position && firstLayout) {
-          if (position.percentage < 100) {
+        if (firstLayout) {
+          if (position) {
+            if (position.percentage < 100) {
+              useWebViewForChapter
+                ? webViewRef.current.injectJavaScript(`(()=>{
+                window.scrollTo({top: ${position.position}, left:0, behavior:"instant"});
+              })()`)
+                : scrollViewRef.current.scrollTo({
+                    x: 0,
+                    y: position.position,
+                    animated: false,
+                  });
+            }
+            setFirstLayout(false);
+          }
+        } else {
+          if (useWebViewForChapter) {
+            webViewRef.current.injectJavaScript(`(()=>{
+              window.scrollTo({top: ${currentScroll.offsetY}, left:0, behavior:"instant"});
+            })()`);
+          } else {
+            setCurrentScroll({
+              offsetY: position.position,
+              percentage: position.percentage,
+            });
             scrollViewRef.current.scrollTo({
               x: 0,
               y: position.position,
               animated: false,
             });
           }
-          setFirstLayout(false);
         }
       };
+
       scrollToSavedProgress();
       if (!useWebViewForChapter) {
         minScroll.current =
           (Dimensions.get('window').height / event.nativeEvent.layout.height) *
           100;
-        if (position) {
-          setCurrentScroll({
-            offsetY: position.position,
-            percentage: position.percentage,
-          });
-        } else {
-          setCurrentScroll({ offsetY: 0, percentage: 0 });
-        }
       }
     },
     [nextChapter, useWebViewForChapter],
@@ -486,6 +497,7 @@ const ChapterContent = ({ route, navigation }) => {
                       onPress={hideHeader}
                       setCurrentScroll={setCurrentScroll}
                       setScrollPage={setScrollPage}
+                      doSaveProgress={doSaveProgress}
                       navigateToNextChapter={() => navigateToNextChapter()}
                       navigateToPrevChapter={() => navigateToPrevChapter()}
                       onWebViewNavigationStateChange={
@@ -510,7 +522,7 @@ const ChapterContent = ({ route, navigation }) => {
             )}
           </ScrollView>
         </GestureRecognizer>
-        <BottomInfoBar scrollPercentage={currentScroll.percentage} />
+        <BottomInfoBar scrollPercentage={currentScroll.percentage || 0} />
         <Portal>
           <ReaderBottomSheetV2 bottomSheetRef={readerSheetRef} />
         </Portal>

@@ -38,12 +38,13 @@ type WebViewReaderProps = {
   scrollPage: string | null;
   wvShowSwipeMargins: boolean;
   nextChapter: ChapterItem;
-  webViewRef: React.RefObject<WebView>;
+  webViewRef: React.MutableRefObject<WebView>;
   onPress(): void;
   setCurrentScroll: React.Dispatch<
     React.SetStateAction<{ offSetY: number; percentage: number }>
   >;
   setScrollPage: React.Dispatch<React.SetStateAction<string | null>>;
+  doSaveProgress(offSetY: number, percentage: number): void;
   navigateToNextChapter(): void;
   navigateToPrevChapter(): void;
   onWebViewNavigationStateChange(): void;
@@ -67,6 +68,7 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
     onPress,
     setCurrentScroll,
     setScrollPage,
+    doSaveProgress,
     navigateToNextChapter,
     navigateToPrevChapter,
     onWebViewNavigationStateChange,
@@ -170,10 +172,13 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
               break;
             case 'scrollend':
               if (event.data) {
+                const offSetY = Number(event.data?.offSetY);
+                const percentage = Math.round(Number(event.data?.percentage));
                 setCurrentScroll({
-                  offSetY: Number(event.data?.offSetY),
-                  percentage: Math.round(Number(event.data?.percentage)),
+                  offSetY: offSetY,
+                  percentage: percentage,
                 });
+                doSaveProgress(offSetY, percentage);
               }
               break;
             case 'height':
