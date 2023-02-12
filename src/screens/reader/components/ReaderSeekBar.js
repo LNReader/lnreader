@@ -24,11 +24,7 @@ const VerticalScrollbar = ({
     );
     if (useWebViewForChapter) {
       webViewRef.current.injectJavaScript(`(()=>{
-        const p = ${value - minScroll};
-        const h = document.body.scrollHeight;
-        const s = (h*p)/100;
-        const type = "smooth";
-        window.scrollTo({top: p === 100 ? h : s, left:0, behavior:type});
+        window.scrollTo({top: ${offsetY}, left:0, behavior:"smooth"});
       })()`);
     } else {
       scrollViewRef.current.scrollTo({

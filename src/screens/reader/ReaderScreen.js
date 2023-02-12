@@ -292,20 +292,7 @@ const ChapterContent = ({ route, navigation }) => {
   const onLayoutProcessing = useCallback(
     event => {
       const scrollToSavedProgress = () => {
-        if (firstLayout) {
-          if (position) {
-            useWebViewForChapter
-              ? webViewRef.current.injectJavaScript(`(()=>{
-                window.scrollTo({top: ${position.position}, left:0, behavior:"instant"});
-              })()`)
-              : scrollViewRef.current.scrollTo({
-                  x: 0,
-                  y: position.position,
-                  animated: false,
-                });
-            setFirstLayout(false);
-          }
-        } else {
+        if (position) {
           if (useWebViewForChapter) {
             webViewRef.current.injectJavaScript(`(()=>{
               window.scrollTo({top: ${position.position}, left:0, behavior:"instant"});
@@ -317,6 +304,9 @@ const ChapterContent = ({ route, navigation }) => {
               animated: false,
             });
           }
+        }
+        if (firstLayout) {
+          setFirstLayout(false);
         }
       };
 
