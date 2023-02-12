@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native';
 
 import { Portal, Modal, overlay } from 'react-native-paper';
 
-import { RadioButton } from '../../../components/RadioButton/RadioButton';
+import { RadioButton } from '../../../../components/RadioButton/RadioButton';
 import { useLibrarySettings } from '@hooks/useSettings';
 
 const DisplayModeModal = ({

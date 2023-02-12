@@ -3,29 +3,37 @@ import { ScrollView } from 'react-native';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import SwitchSetting from '../../components/Switch/Switch';
-import DisplayModeModal from '../more/components/DisplayModeModal';
-import GridSizeModal from '../more/components/GridSizeModal';
+import SwitchSetting from '../../../components/Switch/Switch';
+import DisplayModeModal from './modals/DisplayModeModal';
+import GridSizeModal from './modals/GridSizeModal';
 
-import { useSettings } from '../../hooks/reduxHooks';
+import { useSettings } from '../../../hooks/reduxHooks';
 import { useTheme } from '@hooks/useTheme';
-import { setAppSettings } from '../../redux/settings/settings.actions';
-import { SHOW_LAST_UPDATE_TIME } from '../../redux/updates/updates.types';
-import DefaultChapterSortModal from './components/DefaultChapterSortModal';
+import { setAppSettings } from '../../../redux/settings/settings.actions';
+import { SHOW_LAST_UPDATE_TIME } from '../../../redux/updates/updates.types';
+import DefaultChapterSortModal from '../components/DefaultChapterSortModal';
 import {
   DisplayModes,
   displayModesList,
+  LibrarySortOrder,
 } from '@screens/library/constants/constants';
 import { useLibrarySettings } from '@hooks/useSettings';
 import useBoolean from '@hooks/useBoolean';
 import { Appbar, List } from '@components';
+import NovelSortModal from './modals/NovelSortModal';
 
 const GenralSettings = ({ navigation }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
 
-  const { displayMode = DisplayModes.Comfortable, novelsPerRow = 3 } =
-    useLibrarySettings();
+  const {
+    displayMode = DisplayModes.Comfortable,
+    novelsPerRow = 3,
+    showDownloadBadges = true,
+    showNumberOfNovels = false,
+    showUnreadBadges = true,
+    sortOrder = LibrarySortOrder.DateAdded_DESC,
+  } = useLibrarySettings();
 
   const {
     updateLibraryOnLaunch = false,
@@ -41,6 +49,26 @@ const GenralSettings = ({ navigation }) => {
     state => state.updatesReducer,
   );
 
+  const generateNovelBadgesDescription = () => {
+    let res = [];
+    if (showDownloadBadges) {
+      res.push('Download');
+    }
+    if (showUnreadBadges) {
+      if (res.length !== 0) {
+        res.push(', ');
+      }
+      res.push('Unread');
+    }
+    if (showNumberOfNovels) {
+      if (res.length !== 0) {
+        res.push(', ');
+      }
+      res.push('Number of Items');
+    }
+    return res;
+  };
+
   /**
    * Display Mode Modal
    */
@@ -51,8 +79,19 @@ const GenralSettings = ({ navigation }) => {
    */
   const gridSizeModalRef = useBoolean();
 
+  /**
+   * Novel Badges Modal
+   */
+  const novelBadgesModalRef = useBoolean();
+  const novelBadgesDescription = generateNovelBadgesDescription();
+  /**
+   * Novel Sort Modal
+   */
+  const novelSortModalRef = useBoolean();
+  /**
+   * Chapter Sort Modal
+   */
   const defaultChapterSortModal = useBoolean();
-
   return (
     <>
       <Appbar title="General" handleGoBack={navigation.goBack} theme={theme} />
@@ -69,6 +108,18 @@ const GenralSettings = ({ navigation }) => {
             title="Items per row in library"
             description={`${novelsPerRow} items per row`}
             onPress={gridSizeModalRef.setTrue}
+            theme={theme}
+          />
+          <List.Item
+            title="Novel Badges"
+            description={novelBadgesDescription}
+            onPress={novelBadgesModalRef.setTrue}
+            theme={theme}
+          />
+          <List.Item
+            title="Novel Sort"
+            description={sortOrder.replace('novelId ', '')}
+            onPress={novelSortModalRef.setTrue}
             theme={theme}
           />
           <List.Divider theme={theme} />
@@ -183,6 +234,18 @@ const GenralSettings = ({ navigation }) => {
         novelsPerRow={novelsPerRow}
         gridSizeModalVisible={gridSizeModalRef.value}
         hideGridSizeModal={gridSizeModalRef.setFalse}
+        theme={theme}
+      />
+      <NovelBadgesModal
+        novelsPerRow={novelsPerRow}
+        novelBadgesModalVisible={novelBadgesModalRef.value}
+        hideNovelBadgesModal={novelBadgesModalRef.setFalse}
+        theme={theme}
+      />
+      <NovelSortModal
+        novelsPerRow={novelsPerRow}
+        novelSortModalVisible={novelSortModalRef.value}
+        hideNovelSortModal={novelSortModalRef.setFalse}
         theme={theme}
       />
     </>

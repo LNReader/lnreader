@@ -3,31 +3,22 @@ import { Text, StyleSheet } from 'react-native';
 
 import { Portal, Modal, overlay } from 'react-native-paper';
 
-import { RadioButton } from '../../../components/RadioButton/RadioButton';
+import { RadioButton } from '../../../../components/RadioButton/RadioButton';
 
 import { useLibrarySettings } from '@hooks/useSettings';
 
-const GridSizeModal = ({
+const NovelSortModal = ({
   novelsPerRow,
-  gridSizeModalVisible,
-  hideGridSizeModal,
+  novelSortModalVisible,
+  hideNovelSortModal,
   theme,
 }) => {
   const { setLibrarySettings } = useLibrarySettings();
-
-  const gridSizes = {
-    5: 'XS',
-    4: 'S',
-    3: 'M',
-    2: 'L',
-    1: 'XL',
-  };
-
   return (
     <Portal>
       <Modal
-        visible={gridSizeModalVisible}
-        onDismiss={hideGridSizeModal}
+        visible={novelSortModalVisible}
+        onDismiss={hideNovelSortModal}
         contentContainerStyle={[
           styles.container,
           { backgroundColor: overlay(2, theme.surface) },
@@ -56,7 +47,7 @@ const GridSizeModal = ({
   );
 };
 
-export default GridSizeModal;
+export default NovelSortModal;
 
 const styles = StyleSheet.create({
   container: {
