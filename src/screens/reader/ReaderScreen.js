@@ -208,9 +208,10 @@ const ChapterContent = ({ route, navigation }) => {
 
   useEffect(() => {
     const setPrevAndNextChap = async () => {
-      const nextChap = await getNextChapter(novelId, chapterId);
-      const prevChap = await getPrevChapter(novelId, chapterId);
-
+      const [nextChap, prevChap] = await Promise.all([
+        getNextChapter(novelId, chapterId),
+        getPrevChapter(novelId, chapterId),
+      ]);
       setAdjacentChapter([nextChap, prevChap]);
     };
     setPrevAndNextChap();
