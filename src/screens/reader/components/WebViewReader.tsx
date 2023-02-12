@@ -2,7 +2,7 @@ import { useAppDispatch } from '@redux/hooks';
 import { setAppSettings } from '@redux/settings/settings.actions';
 import { getString } from '@strings/translations';
 import React, { useEffect, FunctionComponent } from 'react';
-import { StatusBar, StyleSheet, View, ScrollView } from 'react-native';
+import { StatusBar, StyleSheet, View } from 'react-native';
 
 import WebView from 'react-native-webview';
 import { ChapterItem } from '../../../database/types';
@@ -17,9 +17,9 @@ type WebViewPostEvent = {
 };
 
 type WebViewReaderProps = {
+  theme: MD3ThemeType;
   chapter: ChapterItem;
   html: string;
-  theme: MD3ThemeType;
   reader: {
     theme: string;
     textColor: string;
@@ -31,44 +31,43 @@ type WebViewReaderProps = {
     customCSS: string;
   };
   chapterName: string;
-  nextChapter: ChapterItem;
-  navigateToNextChapter(): void;
-  navigateToPrevChapter(): void;
-  onPress(): void;
-  onWebViewNavigationStateChange(): void;
   layoutHeight: number;
-  webViewRef: any;
+  swipeGestures: boolean;
   minScroll: any;
   scrollPercentage: number;
-  setScrollPercentage: React.Dispatch<React.SetStateAction<number>>;
-  scrollViewRef: React.RefObject<ScrollView>;
-  swipeGestures: boolean;
-  wvShowSwipeMargins: boolean;
   scrollPage: string | null;
+  wvShowSwipeMargins: boolean;
+  nextChapter: ChapterItem;
+  webViewRef: any;
+  onPress(): void;
+  setScrollPercentage: React.Dispatch<React.SetStateAction<number>>;
   setScrollPage: React.Dispatch<React.SetStateAction<string | null>>;
+  navigateToNextChapter(): void;
+  navigateToPrevChapter(): void;
+  onWebViewNavigationStateChange(): void;
 };
 
 const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
   const {
+    theme,
     chapter,
     html,
-    theme,
     reader,
-    onWebViewNavigationStateChange,
-    layoutHeight,
-    nextChapter,
     chapterName,
-    onPress,
-    navigateToNextChapter,
-    navigateToPrevChapter,
-    webViewRef,
+    layoutHeight,
+    swipeGestures,
     minScroll,
     scrollPercentage,
-    setScrollPercentage,
-    swipeGestures,
-    wvShowSwipeMargins,
     scrollPage,
+    wvShowSwipeMargins,
+    nextChapter,
+    webViewRef,
+    onPress,
+    setScrollPercentage,
     setScrollPage,
+    navigateToNextChapter,
+    navigateToPrevChapter,
+    onWebViewNavigationStateChange,
   } = props;
   const backgroundColor = readerBackground(reader.theme);
 
@@ -180,7 +179,7 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
               if (event.data) {
                 const contentHeight = Math.round(Number(event.data));
                 minScroll.current = (layoutHeight / contentHeight) * 100;
-                if (scrollPercentage == 0) {
+                if (scrollPercentage === 0) {
                   setScrollPercentage(Math.round(minScroll.current));
                 }
               }

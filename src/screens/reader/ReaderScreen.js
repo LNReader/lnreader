@@ -23,7 +23,6 @@ import {
 import { fetchChapter } from '../../services/Source/source';
 import { showToast } from '../../hooks/showToast';
 import {
-  useNovel,
   usePosition,
   useSettings,
   useTrackingStatus,
@@ -43,7 +42,6 @@ import EmptyView from '../../components/EmptyView';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import { insertHistory } from '../../database/queries/HistoryQueries';
 import { SET_LAST_READ } from '../../redux/preferences/preference.types';
-import { setAppSettings } from '../../redux/settings/settings.actions';
 import TextReader from './components/TextReader';
 import WebViewReader from './components/WebViewReader';
 import { useTextToSpeech } from '../../hooks/useTextToSpeech';
@@ -358,9 +356,6 @@ const ChapterContent = ({ route, navigation }) => {
       : showToast("There's no next chapter");
   };
 
-  const enableAutoScroll = () =>
-    dispatch(setAppSettings('autoScroll', !autoScroll));
-
   const onWebViewNavigationStateChange = async ({ url }) => {
     if ((sourceId === 50 || sourceId === 62) && url !== 'about:blank') {
       setLoading(true);
@@ -371,7 +366,6 @@ const ChapterContent = ({ route, navigation }) => {
   };
 
   const backgroundColor = readerSettings.theme;
-
   const chapterText = sanitizeChapterText(chapter.chapterText, {
     removeExtraParagraphSpacing,
   });
@@ -409,7 +403,7 @@ const ChapterContent = ({ route, navigation }) => {
           style={{ flex: 1 }}
         >
           <ScrollView
-            ref={ref => (scrollViewRef.current = ref)}
+            ref={scrollViewRef}
             contentContainerStyle={[
               styles.screenContainer,
               { backgroundColor },
@@ -468,38 +462,38 @@ const ChapterContent = ({ route, navigation }) => {
                 {useWebViewForChapter ? (
                   <View style={{ flex: 1 }}>
                     <WebViewReader
+                      theme={theme}
                       chapter={chapter}
-                      layoutHeight={Dimensions.get('window').height}
-                      webViewRef={webViewRef}
-                      minScroll={minScroll}
-                      setScrollPercentage={setScrollPercentage}
-                      scrollPercentage={scrollPercentage}
-                      reader={readerSettings}
                       html={chapterText}
+                      reader={readerSettings}
                       chapterName={chapter.chapterName || chapterName}
+                      layoutHeight={Dimensions.get('window').height}
+                      swipeGestures={swipeGestures && wvUseNewSwipes}
+                      minScroll={minScroll}
+                      scrollPercentage={scrollPercentage}
+                      scrollPage={scrollPage}
+                      wvShowSwipeMargins={wvShowSwipeMargins}
                       nextChapter={nextChapter}
+                      webViewRef={webViewRef}
+                      onPress={hideHeader}
+                      setScrollPercentage={setScrollPercentage}
+                      setScrollPage={setScrollPage}
                       navigateToNextChapter={() => navigateToNextChapter()}
                       navigateToPrevChapter={() => navigateToPrevChapter()}
-                      onPress={hideHeader}
                       onWebViewNavigationStateChange={
                         onWebViewNavigationStateChange
                       }
-                      scrollPage={scrollPage}
-                      setScrollPage={setScrollPage}
-                      swipeGestures={swipeGestures && wvUseNewSwipes}
-                      wvShowSwipeMargins={wvShowSwipeMargins}
-                      theme={theme}
                     />
                   </View>
                 ) : (
                   <View>
                     <TextReader
-                      onPress={hideHeader}
+                      theme={theme}
+                      chapterName={chapter.chapterName || chapterName}
                       text={chapterText}
                       reader={readerSettings}
-                      chapterName={chapter.chapterName || chapterName}
-                      theme={theme}
                       nextChapter={nextChapter}
+                      onPress={hideHeader}
                       navigateToNextChapter={navigateToNextChapter}
                     />
                   </View>
@@ -513,32 +507,27 @@ const ChapterContent = ({ route, navigation }) => {
           <ReaderBottomSheetV2 bottomSheetRef={readerSheetRef} />
         </Portal>
         <ReaderSeekBar
-          minScroll={minScroll.current}
-          theme={theme}
           hide={hidden}
-          setLoading={setLoading}
+          theme={theme}
+          verticalSeekbar={verticalSeekbar}
+          scrollPercentage={scrollPercentage}
+          useWebViewForChapter={useWebViewForChapter}
+          minScroll={minScroll.current}
           scrollViewRef={scrollViewRef}
           webViewRef={webViewRef}
-          scrollPercentage={scrollPercentage}
           setScrollPercentage={setScrollPercentage}
-          verticalSeekbar={verticalSeekbar}
-          useWebViewForChapter={useWebViewForChapter}
         />
         <ReaderFooter
+          hide={hidden}
           theme={theme}
-          novelUrl={novelUrl}
           chapterUrl={chapterUrl}
-          dispatch={dispatch}
           nextChapter={nextChapter}
           prevChapter={prevChapter}
-          hide={hidden}
-          autoScroll={autoScroll}
           useWebViewForChapter={useWebViewForChapter}
-          navigateToNextChapter={navigateToNextChapter}
-          navigateToPrevChapter={navigateToPrevChapter}
           readerSheetRef={readerSheetRef}
           scrollViewRef={scrollViewRef}
-          enableAutoScroll={enableAutoScroll}
+          navigateToNextChapter={navigateToNextChapter}
+          navigateToPrevChapter={navigateToPrevChapter}
           openDrawer={openDrawer}
         />
       </>

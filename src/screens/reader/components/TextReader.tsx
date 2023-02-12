@@ -10,14 +10,15 @@ import RenderHtml from 'react-native-render-html';
 
 import { TextAlignments } from '@screens/settings/SettingsReaderScreen/SettingsReaderScreen';
 import { Button } from '@components/index';
-import { ThemeType } from '../../../theme/types';
+import { MD3ThemeType } from '../../../theme/types';
 import { ChapterItem } from '../../../database/types';
 import { getString } from '@strings/translations';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 interface TextReaderProps {
+  theme: MD3ThemeType;
+  chapterName: string;
   text: string;
-  theme: ThemeType;
   reader: {
     theme: string;
     textColor: string;
@@ -28,20 +29,19 @@ interface TextReaderProps {
     lineHeight: number;
     customCSS: string;
   };
-  chapterName: string;
   nextChapter: ChapterItem;
-  navigateToNextChapter: () => void;
   onPress(): void;
+  navigateToNextChapter: () => void;
 }
 
 const TextReader: React.FC<TextReaderProps> = ({
   text,
   theme,
-  reader,
   chapterName,
+  reader,
   nextChapter,
-  navigateToNextChapter,
   onPress,
+  navigateToNextChapter,
 }) => {
   const { width, height } = useWindowDimensions();
 
@@ -82,7 +82,7 @@ const TextReader: React.FC<TextReaderProps> = ({
               title={`Next: ${nextChapter.chapterName}`}
               onPress={navigateToNextChapter}
               theme={theme}
-              textColor={theme.colorButtonText}
+              textColor={theme.colorButtonText} // what is this prop ?
               style={styles.nextButton}
             />
           ) : (

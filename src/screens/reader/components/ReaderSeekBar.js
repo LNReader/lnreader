@@ -7,15 +7,15 @@ import { useDeviceOrientation } from '../../../services/utils/helpers';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const VerticalScrollbar = ({
-  minScroll,
-  theme,
   hide,
-  scrollViewRef,
-  webViewRef = { webViewRef },
-  scrollPercentage,
-  setScrollPercentage,
+  theme,
+  minScroll,
   verticalSeekbar,
+  scrollPercentage,
   useWebViewForChapter,
+  scrollViewRef,
+  webViewRef,
+  setScrollPercentage,
 }) => {
   const { bottom } = useSafeAreaInsets();
   const onSlidingComplete = value => {
