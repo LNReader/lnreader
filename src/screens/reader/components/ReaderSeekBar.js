@@ -11,35 +11,33 @@ const VerticalScrollbar = ({
   theme,
   minScroll,
   verticalSeekbar,
-  scrollPercentage,
+  currentScroll,
   useWebViewForChapter,
   scrollViewRef,
   webViewRef,
-  setScrollPercentage,
+  setCurrentScroll,
 }) => {
   const { bottom } = useSafeAreaInsets();
   const onSlidingComplete = value => {
+    let offsetY = Math.round(
+      ((value - minScroll) * Dimensions.get('window').height) / minScroll,
+    );
     if (useWebViewForChapter) {
       webViewRef.current.injectJavaScript(`(()=>{
         const p = ${value - minScroll};
         const h = document.body.scrollHeight;
         const s = (h*p)/100;
         const type = "smooth";
-        if(type === 'exact')
-          window.scrollTo({top: p, left:0, behavior:'smooth'});
-        else
         window.scrollTo({top: p === 100 ? h : s, left:0, behavior:type});
       })()`);
     } else {
       scrollViewRef.current.scrollTo({
         x: 0,
-        y: Math.round(
-          ((value - minScroll) * Dimensions.get('window').height) / minScroll,
-        ),
+        y: offsetY,
         animated: false,
       });
     }
-    setScrollPercentage(value);
+    setCurrentScroll({ offsetY: offsetY, percentage: value });
   };
   const screenOrientation = useDeviceOrientation();
 
@@ -62,7 +60,7 @@ const VerticalScrollbar = ({
             transform: [{ rotate: '-90deg' }],
           }}
         >
-          {scrollPercentage || Math.round(minScroll)}
+          {currentScroll.percentage || Math.round(minScroll)}
         </Text>
         <Slider
           style={{
@@ -72,7 +70,7 @@ const VerticalScrollbar = ({
           minimumValue={Math.round(minScroll)}
           maximumValue={100}
           step={1}
-          value={scrollPercentage || Math.round(minScroll)}
+          value={currentScroll.percentage || Math.round(minScroll)}
           onSlidingComplete={onSlidingComplete}
           thumbTintColor={theme.primary}
           minimumTrackTintColor={theme.primary}
@@ -106,7 +104,7 @@ const VerticalScrollbar = ({
             marginLeft: 16,
           }}
         >
-          {scrollPercentage}
+          {currentScroll.percentage}
         </Text>
         <Slider
           style={{
@@ -116,7 +114,7 @@ const VerticalScrollbar = ({
           minimumValue={Math.round(minScroll)}
           maximumValue={100}
           step={1}
-          value={scrollPercentage || Math.round(minScroll)}
+          value={currentScroll.percentage || Math.round(minScroll)}
           onSlidingComplete={onSlidingComplete}
           thumbTintColor={theme.primary}
           minimumTrackTintColor={theme.primary}

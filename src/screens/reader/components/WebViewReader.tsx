@@ -34,13 +34,15 @@ type WebViewReaderProps = {
   layoutHeight: number;
   swipeGestures: boolean;
   minScroll: any;
-  scrollPercentage: number;
+  currentScroll: { offSetY: number; percentage: number };
   scrollPage: string | null;
   wvShowSwipeMargins: boolean;
   nextChapter: ChapterItem;
-  webViewRef: any;
+  webViewRef: React.RefObject<WebView>;
   onPress(): void;
-  setScrollPercentage: React.Dispatch<React.SetStateAction<number>>;
+  setCurrentScroll: React.Dispatch<
+    React.SetStateAction<{ offSetY: number; percentage: number }>
+  >;
   setScrollPage: React.Dispatch<React.SetStateAction<string | null>>;
   navigateToNextChapter(): void;
   navigateToPrevChapter(): void;
@@ -57,13 +59,13 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
     layoutHeight,
     swipeGestures,
     minScroll,
-    scrollPercentage,
+    currentScroll,
     scrollPage,
     wvShowSwipeMargins,
     nextChapter,
     webViewRef,
     onPress,
-    setScrollPercentage,
+    setCurrentScroll,
     setScrollPage,
     navigateToNextChapter,
     navigateToPrevChapter,
@@ -103,15 +105,12 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
         style={{ backgroundColor }}
         originWhitelist={['*']}
         injectedJavaScript={`
-        const p = ${scrollPercentage};
+        const p = ${currentScroll.percentage};
         const h = document.body.scrollHeight;
         const s = (h*p)/100;
         const lh = ${layoutHeight};
         const xs = s - lh;
         const type = "smooth";
-        if(type === 'exact')
-          window.scrollTo({top: p, left:0, behavior:'smooth'});
-        else
         window.scrollTo({top: p === 100 ? h : xs, left:0, behavior:type});`}
         scalesPageToFit={true}
         showsVerticalScrollIndicator={false}
@@ -171,16 +170,21 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
               break;
             case 'scrollend':
               if (event.data) {
-                const percentage = Math.round(Number(event.data));
-                setScrollPercentage(percentage);
+                setCurrentScroll({
+                  offSetY: Number(event.data?.offSetY),
+                  percentage: Math.round(Number(event.data?.percentage)),
+                });
               }
               break;
             case 'height':
               if (event.data) {
                 const contentHeight = Math.round(Number(event.data));
                 minScroll.current = (layoutHeight / contentHeight) * 100;
-                if (scrollPercentage === 0) {
-                  setScrollPercentage(Math.round(minScroll.current));
+                if (currentScroll.percentage === 0) {
+                  setCurrentScroll({
+                    offSetY: 0,
+                    percentage: Math.round(Number(event.data?.percentage)),
+                  });
                 }
               }
           }
@@ -318,7 +322,10 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
                           JSON.stringify(
                             {
                               type:"scrollend",
-                              data:(window.pageYOffset+${layoutHeight})/document.body.scrollHeight*100
+                              data:{
+                                offSetY: window.pageYOffset,
+                                percentage: (window.pageYOffset+${layoutHeight})/document.body.scrollHeight*100,
+                              }
                             }
                           )
                         );

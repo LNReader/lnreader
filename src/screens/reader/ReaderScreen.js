@@ -129,7 +129,10 @@ const ChapterContent = ({ route, navigation }) => {
   const [error, setError] = useState();
 
   const minScroll = useRef(0);
-  const [scrollPercentage, setScrollPercentage] = useState(0);
+  const [currentScroll, setCurrentScroll] = useState({
+    offsetY: 0,
+    percentage: 0,
+  });
   const [firstLayout, setFirstLayout] = useState(true);
   const [scrollPage, setScrollPage] = useState(null);
   useEffect(() => {
@@ -226,7 +229,7 @@ const ChapterContent = ({ route, navigation }) => {
   let scrollTimeout;
 
   useEffect(() => {
-    if (scrollPercentage !== 100 && autoScroll) {
+    if (currentScroll.percentage !== 100 && autoScroll) {
       scrollTimeout = setTimeout(() => {
         scrollViewRef.current.scrollTo({
           x: 0,
@@ -275,8 +278,7 @@ const ChapterContent = ({ route, navigation }) => {
       nativeEvent.contentOffset.y + nativeEvent.layoutMeasurement.height;
 
     const percentage = Math.round((pos / nativeEvent.contentSize.height) * 100);
-    setScrollPercentage(percentage);
-
+    setCurrentScroll({ offsetY: offsetY, percentage: percentage });
     if (!incognitoMode) {
       dispatch(saveScrollPosition(offsetY, percentage, chapterId, novelId));
     }
@@ -306,7 +308,14 @@ const ChapterContent = ({ route, navigation }) => {
         minScroll.current =
           (Dimensions.get('window').height / event.nativeEvent.layout.height) *
           100;
-        setScrollPercentage(Math.round(minScroll.current));
+        if (position) {
+          setCurrentScroll({
+            offsetY: position.position,
+            percentage: position.percentage,
+          });
+        } else {
+          setCurrentScroll({ offsetY: 0, percentage: 0 });
+        }
       }
     },
     [nextChapter, useWebViewForChapter],
@@ -369,7 +378,6 @@ const ChapterContent = ({ route, navigation }) => {
   const chapterText = sanitizeChapterText(chapter.chapterText, {
     removeExtraParagraphSpacing,
   });
-
   const openDrawer = () => {
     navigation.openDrawer();
     setHidden(true);
@@ -470,13 +478,13 @@ const ChapterContent = ({ route, navigation }) => {
                       layoutHeight={Dimensions.get('window').height}
                       swipeGestures={swipeGestures && wvUseNewSwipes}
                       minScroll={minScroll}
-                      scrollPercentage={scrollPercentage}
+                      currentScroll={currentScroll}
                       scrollPage={scrollPage}
                       wvShowSwipeMargins={wvShowSwipeMargins}
                       nextChapter={nextChapter}
                       webViewRef={webViewRef}
                       onPress={hideHeader}
-                      setScrollPercentage={setScrollPercentage}
+                      setCurrentScroll={setCurrentScroll}
                       setScrollPage={setScrollPage}
                       navigateToNextChapter={() => navigateToNextChapter()}
                       navigateToPrevChapter={() => navigateToPrevChapter()}
@@ -502,7 +510,7 @@ const ChapterContent = ({ route, navigation }) => {
             )}
           </ScrollView>
         </GestureRecognizer>
-        <BottomInfoBar scrollPercentage={scrollPercentage} />
+        <BottomInfoBar scrollPercentage={currentScroll.percentage} />
         <Portal>
           <ReaderBottomSheetV2 bottomSheetRef={readerSheetRef} />
         </Portal>
@@ -510,12 +518,12 @@ const ChapterContent = ({ route, navigation }) => {
           hide={hidden}
           theme={theme}
           verticalSeekbar={verticalSeekbar}
-          scrollPercentage={scrollPercentage}
+          currentScroll={currentScroll}
           useWebViewForChapter={useWebViewForChapter}
           minScroll={minScroll.current}
           scrollViewRef={scrollViewRef}
           webViewRef={webViewRef}
-          setScrollPercentage={setScrollPercentage}
+          setCurrentScroll={setCurrentScroll}
         />
         <ReaderFooter
           hide={hidden}
