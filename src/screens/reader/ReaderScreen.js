@@ -282,7 +282,11 @@ const ChapterContent = ({ route, navigation }) => {
 
     const percentage = Math.round((pos / nativeEvent.contentSize.height) * 100);
     setCurrentScroll({ offsetY: offsetY, percentage: percentage });
-    doSaveProgress(offsetY, percentage);
+    if (
+      nativeEvent.contentSize.height != nativeEvent.layoutMeasurement.height
+    ) {
+      doSaveProgress(offsetY, percentage);
+    }
   }, []);
 
   const onLayoutProcessing = useCallback(
@@ -290,29 +294,23 @@ const ChapterContent = ({ route, navigation }) => {
       const scrollToSavedProgress = () => {
         if (firstLayout) {
           if (position) {
-            if (position.percentage < 100) {
-              useWebViewForChapter
-                ? webViewRef.current.injectJavaScript(`(()=>{
+            useWebViewForChapter
+              ? webViewRef.current.injectJavaScript(`(()=>{
                 window.scrollTo({top: ${position.position}, left:0, behavior:"instant"});
               })()`)
-                : scrollViewRef.current.scrollTo({
-                    x: 0,
-                    y: position.position,
-                    animated: false,
-                  });
-            }
+              : scrollViewRef.current.scrollTo({
+                  x: 0,
+                  y: position.position,
+                  animated: false,
+                });
             setFirstLayout(false);
           }
         } else {
           if (useWebViewForChapter) {
             webViewRef.current.injectJavaScript(`(()=>{
-              window.scrollTo({top: ${currentScroll.offsetY}, left:0, behavior:"instant"});
+              window.scrollTo({top: ${position.position}, left:0, behavior:"instant"});
             })()`);
           } else {
-            setCurrentScroll({
-              offsetY: position.position,
-              percentage: position.percentage,
-            });
             scrollViewRef.current.scrollTo({
               x: 0,
               y: position.position,

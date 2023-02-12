@@ -76,7 +76,6 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
   const backgroundColor = readerBackground(reader.theme);
 
   const dispatch = useAppDispatch();
-
   useEffect(() => {
     if (scrollPage) {
       if (scrollPage === 'up') {
@@ -178,7 +177,9 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
                   offSetY: offSetY,
                   percentage: percentage,
                 });
-                doSaveProgress(offSetY, percentage);
+                if (offSetY) {
+                  doSaveProgress(offSetY, percentage);
+                }
               }
               break;
             case 'height':
