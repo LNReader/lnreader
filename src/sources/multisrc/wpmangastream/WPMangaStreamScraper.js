@@ -43,7 +43,7 @@ class WPMangaStreamScraper {
   async parseNovelAndChapters(novelUrl) {
     const url = novelUrl;
 
-    const body = await fetchHtml({ url, sourceId });
+    const body = await fetchHtml({ url, sourceId: this.sourceId });
 
     let loadedCheerio = cheerio.load(body);
 
@@ -131,13 +131,13 @@ class WPMangaStreamScraper {
 
   async searchNovels(searchTerm) {
     const url = `${this.baseUrl}?s=${searchTerm}`;
+    const sourceId = this.sourceId;
 
     const body = await fetchHtml({ url, sourceId });
 
     const loadedCheerio = cheerio.load(body);
 
     let novels = [];
-    let sourceId = this.sourceId;
 
     loadedCheerio('article.bs').each(function () {
       const novelName = loadedCheerio(this).find('.ntitle').text().trim();
