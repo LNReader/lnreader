@@ -93,6 +93,7 @@ import YushuboScraper from './ch/yushubo';
 import {
   LiebeSchneeHiverNovelScraper,
   LightNovelsBrasilScraper,
+  NobleMtlScraper,
 } from './multisrc/wpmangastream/WPMangaStreamGenerator';
 import WLNUpdatesScraper from './en/wlnupdates';
 import ReaperScansScraper from './en/reaperscans';
@@ -308,6 +309,7 @@ export const sourceManager = (sourceId: number): Scraper => {
     141: NovelR18Scraper,
     142: AuthorTodayScraper,
     143: WebNovelOkuScraper,
+    144: NobleMtlScraper,
   };
 
   return scrapers[sourceId];

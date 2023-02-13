@@ -1,5 +1,12 @@
 import WPMangaStreamScraper from './WPMangaStreamScraper';
 
+export const NobleMtlScraper = new WPMangaStreamScraper(
+  144,
+  'https://noblemtl.com/',
+  'Noble Machine translations',
+  { totalPages: 14 },
+);
+
 export const LiebeSchneeHiverNovelScraper = new WPMangaStreamScraper(
   123,
   'https://lshnovel.com/',

@@ -953,9 +953,16 @@
   },
   {
     "sourceId": 143,
-    "sourceName": "WebNovelOku ",
+    "sourceName": "WebNovelOku",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/multisrc/madara/icons/webnoveloku.png?raw=true",
     "url": "https://www.webnoveloku.com/",
     "lang": "Turkish"
+  },
+  {
+    "sourceId": 144,
+    "sourceName": "Noble Machine translations",
+    "icon": "https://i1.wp.com/noblemtl.com/wp-content/uploads/2022/07/cropped-Noble-192x192.png",
+    "url": "https://noblemtl.com/",
+    "lang": "English"
   }
 ]
