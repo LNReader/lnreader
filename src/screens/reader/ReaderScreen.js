@@ -170,25 +170,16 @@ const ChapterContent = ({ route, navigation }) => {
 
   const getChapter = async id => {
     try {
-      if (id) {
-        const chapterDownloaded = await getChapterFromDb(chapterId);
-
-        if (chapterDownloaded) {
-          setChapter(chapterDownloaded);
-          setLoading(false);
-        } else {
-          const res = await fetchChapter(sourceId, novelUrl, chapterUrl);
-          setChapter(res);
-          setLoading(false);
-        }
-      } else {
-        const res = await fetchChapter(sourceId, novelUrl, chapterUrl);
-        setChapter(res);
-        setLoading(false);
+      let result = null;
+      if (!(id && (result = await getChapterFromDb(id)))) {
+        result = await fetchChapter(sourceId, novelUrl, chapterUrl);
       }
+      setChapter(result);
     } catch (e) {
       setError(e.message);
       showToast(e.message);
+    } finally {
+      setLoading(false);
     }
   };
 
