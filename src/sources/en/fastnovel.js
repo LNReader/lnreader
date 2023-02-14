@@ -2,12 +2,12 @@ import { fetchHtml } from '@utils/fetch/fetch';
 import * as cheerio from 'cheerio';
 
 const sourceId = 3;
-const baseUrl = 'https://fastnovel.net';
-const searchUrl = 'https://fastnovel.net/search/';
+const baseUrl = 'https://fastnovel.org';
+const searchUrl = 'https://fastnovel.org/search/';
 
 const popularNovels = async page => {
   let totalPages = 39;
-  const url = `${baseUrl}/list/most-popular.html?page=${page}`;
+  const url = `${baseUrl}/sort/p/?page=${page}`;
 
   const body = await fetchHtml({ url, sourceId });
 
@@ -15,10 +15,12 @@ const popularNovels = async page => {
 
   let novels = [];
 
-  loadedCheerio('.film-item').each(function () {
-    const novelName = loadedCheerio(this).find('.name').text();
-    const novelCover = loadedCheerio(this).find('.img').attr('data-original');
-    const novelUrl = loadedCheerio(this).find('a').attr('href').substring(1);
+  loadedCheerio('.list-novel .row').each(function () {
+    const novelName = loadedCheerio(this).find('h3.novel-title > a').text();
+    const novelCover = loadedCheerio(this).find('img.cover').attr('src');
+    const novelUrl = loadedCheerio(this)
+      .find('h3.novel-title > a')
+      .attr('href');
 
     const novel = {
       sourceId,
@@ -34,11 +36,10 @@ const popularNovels = async page => {
 };
 
 const parseNovelAndChapters = async novelUrl => {
-  const url = `${baseUrl}/${novelUrl}/`;
-
+  const url = `${novelUrl}/`;
   const body = await fetchHtml({ url, sourceId });
 
-  const loadedCheerio = cheerio.load(body);
+  let loadedCheerio = cheerio.load(body);
 
   let novel = {
     sourceId,
@@ -47,71 +48,80 @@ const parseNovelAndChapters = async novelUrl => {
     novelUrl,
   };
 
-  novel.novelName = loadedCheerio('h1').text();
+  novel.novelName = loadedCheerio('div.book > img').attr('alt');
 
-  novel.novelCover = loadedCheerio('.book-cover').attr('data-original');
+  novel.novelCover = loadedCheerio('div.book > img').attr('src');
 
-  novel.summary = loadedCheerio('div.film-content > p').text();
+  novel.summary = loadedCheerio('div.desc-text').text().trim();
 
-  novel.author = loadedCheerio('li > label')
+  novel.author = loadedCheerio('ul.info > li > h3')
     .filter(function () {
       return loadedCheerio(this).text().trim() === 'Author:';
+    })
+    .siblings()
+    .text();
+  novel.genre = loadedCheerio('ul.info > li')
+    .filter(function () {
+      return loadedCheerio(this).find('h3').text().trim() === 'Genre:';
+    })
+    .text()
+    .trim()
+    .replace('Genre:', '')
+    .trim();
+
+  novel.status = loadedCheerio('ul.info > li > h3')
+    .filter(function () {
+      return loadedCheerio(this).text().trim() === 'Status:';
     })
     .next()
     .text();
 
-  novel.genre = loadedCheerio('li')
-    .filter(function () {
-      return loadedCheerio(this).find('label').text().trim() === 'Genre:';
-    })
-    .text()
-    .replace('Genre:', '');
+  const novelId = loadedCheerio('#rating').attr('data-novel-id');
 
-  novel.artist = null;
+  const getChapters = async id => {
+    const chapterListUrl = baseUrl + '/ajax/chapter-option?novelId=' + id;
 
-  novel.status = null;
+    const data = await fetch(chapterListUrl);
+    const chapters = await data.text();
 
-  novel.status = loadedCheerio('li')
-    .filter(function () {
-      return loadedCheerio(this).find('label').text().trim() === 'Status:';
-    })
-    .text()
-    .includes('Completed')
-    ? 'Completed'
-    : 'Ongoing';
+    loadedCheerio = cheerio.load(chapters);
 
-  let novelChapters = [];
+    let novelChapters = [];
 
-  loadedCheerio('.chapter').each(function () {
-    const chapterName = loadedCheerio(this).text();
-    const releaseDate = null;
-    let chapterUrl = loadedCheerio(this).attr('href');
-    chapterUrl = chapterUrl.replace(`/${novelUrl}/`, '');
+    loadedCheerio('select > option').each(function () {
+      let chapterName = loadedCheerio(this).text();
+      let releaseDate = null;
+      let chapterUrl = loadedCheerio(this).attr('value');
 
-    const chapter = {
-      chapterName,
-      releaseDate,
-      chapterUrl,
-    };
+      if (chapterUrl) {
+        novelChapters.push({
+          chapterName,
+          releaseDate,
+          chapterUrl,
+        });
+      }
+    });
 
-    novelChapters.push(chapter);
-  });
+    return novelChapters;
+  };
 
-  novel.chapters = novelChapters;
+  if (novelId) {
+    novel.chapters = await getChapters(novelId);
+  }
 
   return novel;
 };
 
 const parseChapter = async (novelUrl, chapterUrl) => {
-  const url = `${baseUrl}/${novelUrl}/${chapterUrl}`;
+  const url = `${chapterUrl}`;
 
   const body = await fetchHtml({ url, sourceId });
 
   const loadedCheerio = cheerio.load(body);
 
-  const chapterName = loadedCheerio('.episode-name').text();
+  const chapterName = loadedCheerio('.chr-text').text();
 
-  let chapterText = loadedCheerio('#chapter-body').html();
+  let chapterText = loadedCheerio('#chr-content').html();
   const chapter = {
     sourceId,
     novelUrl,
@@ -124,27 +134,30 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 };
 
 const searchNovels = async searchTerm => {
-  const url = `${searchUrl}${searchTerm}`;
-
-  const body = await fetchHtml({ url, sourceId });
+  const url = searchUrl + '?keyword=' + searchTerm;
+  const result = await fetch(url);
+  const body = await result.text();
 
   const loadedCheerio = cheerio.load(body);
 
   let novels = [];
 
-  loadedCheerio('.film-item').each(function () {
-    const novelName = loadedCheerio(this).find('div.title > p.name').text();
-    const novelCover = loadedCheerio(this).find('.img').attr('data-original');
-    const novelUrl = loadedCheerio(this).find('a').attr('href').substring(1);
+  loadedCheerio('div.col-novel-main > div.list-novel > .row').each(function () {
+    const novelUrl = loadedCheerio(this)
+      .find('h3.novel-title > a')
+      .attr('href');
 
-    const novel = {
-      sourceId,
-      novelName,
-      novelCover,
-      novelUrl,
-    };
+    const novelName = loadedCheerio(this).find('h3.novel-title > a').text();
+    const novelCover = loadedCheerio(this).find('img').attr('src');
 
-    novels.push(novel);
+    if (novelUrl) {
+      novels.push({
+        sourceId,
+        novelUrl,
+        novelName,
+        novelCover,
+      });
+    }
   });
 
   return novels;
