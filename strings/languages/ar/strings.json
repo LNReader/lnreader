@@ -15,7 +15,7 @@
     "searchFor": "بحث عن",
     "globally": "عالمي",
     "searchResults": "نتائج البحث",
-    "chapters": "Chapters",
+    "chapters": "فصولا",
     "submit": "Submit"
   },
   "library": "المكتبة",
@@ -87,7 +87,7 @@
       "showProgressPercentage": "النسبة المئوية للتقدم",
       "swipeGestures": "اسحب لليسار أو لليمين للتبديل بين علامات التبويب",
       "allowTextSelection": "السماح باختيار النص",
-      "useChapterDrawerSwipeNavigation": "Swipe right to open drawer"
+      "useChapterDrawerSwipeNavigation": "مرر يمينا لفتح الكاميرا"
     },
     "drawer": {
       "scrollToCurrentChapter": "Scroll to current chapter",
@@ -154,6 +154,7 @@
   "statsScreen": {
     "title": "Statistics",
     "titlesInLibrary": "Titles in library",
+    "totalChapters": "Total chapters",
     "readChapters": "Read chapters",
     "unreadChapters": "Unread chapters",
     "downloadedChapters": "الفصول التي تم تحميلها",

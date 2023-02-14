@@ -6,17 +6,17 @@
     "clear": "清除",
     "reset": "重置",
     "search": "搜索",
-    "install": "Install",
-    "newUpdateAvailable": "New update available",
-    "categories": "Categories",
-    "add": "Add",
-    "edit": "Edit",
-    "name": "Name",
+    "install": "安装",
+    "newUpdateAvailable": "新的更新可用",
+    "categories": "类别",
+    "add": "添加",
+    "edit": "编辑",
+    "name": "名称",
     "searchFor": "Search for",
     "globally": "globally",
-    "searchResults": "Search results",
-    "chapters": "Chapters",
-    "submit": "Submit"
+    "searchResults": "搜索结果",
+    "chapters": "章节",
+    "submit": "确定"
   },
   "library": "书库",
   "libraryScreen": {
@@ -27,10 +27,10 @@
         "downloaded": "已下载",
         "unread": "未读",
         "completed": "已完成",
-        "started": "Started"
+        "started": "已开始"
       },
       "sortOrders": {
-        "dateAdded": "日期已添加",
+        "dateAdded": "添加日期",
         "alphabetically": "按字母排序",
         "totalChapters": "章节总数"
       },
@@ -38,7 +38,7 @@
         "displayMode": "显示模式",
         "compact": "紧凑网格",
         "comfortable": "可变网格",
-        "noTitle": "Cover only grid",
+        "noTitle": "仅封面网格",
         "list": "列表",
         "badges": "徽章",
         "downloadBadges": "下载徽章",
@@ -67,8 +67,8 @@
     "pinned": "已固定",
     "all": "全部",
     "latest": "最新",
-    "addedToLibrary": "Added to library",
-    "removeFromLibrary": "Removed from library"
+    "addedToLibrary": "添加到书库",
+    "removeFromLibrary": "从书库移除"
   },
   "readerScreen": {
     "finished": "已完成",
@@ -87,12 +87,12 @@
       "showProgressPercentage": "显示进度百分比",
       "swipeGestures": "向左或向右滑动以导航章节",
       "allowTextSelection": "允许选择文本",
-      "useChapterDrawerSwipeNavigation": "Swipe right to open drawer"
+      "useChapterDrawerSwipeNavigation": "向右滑动以打开抽屉栏"
     },
     "drawer": {
-      "scrollToCurrentChapter": "Scroll to current chapter",
-      "scrollToTop": "Scroll to top",
-      "scrollToBottom": "Scroll to bottom"
+      "scrollToCurrentChapter": "滚动到当前章节",
+      "scrollToTop": "滚动到顶部",
+      "scrollToBottom": "滚动到底部"
     }
   },
   "novelScreen": {
@@ -101,20 +101,20 @@
     "continueReading": "继续阅读",
     "chapters": "章节",
     "migrate": "迁移",
-    "noSummary": "No summary",
+    "noSummary": "无简介",
     "bottomSheet": {
       "filter": "筛选",
       "sort": "排序",
       "display": "显示"
     },
     "jumpToChapterModal": {
-      "jumpToChapter": "Jump to Chapter",
-      "openChapter": "Open Chapter",
-      "chapterName": "Chapter Name",
-      "chapterNumber": "Chapter Number",
+      "jumpToChapter": "跳转到章节",
+      "openChapter": "打开章节",
+      "chapterName": "章节名",
+      "chapterNumber": "章节编号",
       "error": {
-        "validChapterName": "Enter a valid chapter name",
-        "validChapterNumber": "Enter a valid chapter number"
+        "validChapterName": "输入有效的章节名",
+        "validChapterNumber": "输入有效的章节编号"
       }
     }
   },
@@ -152,13 +152,14 @@
     "noResultsFound": "未找到相应结果"
   },
   "statsScreen": {
-    "title": "Statistics",
+    "title": "统计数据",
     "titlesInLibrary": "Titles in library",
-    "readChapters": "Read chapters",
-    "unreadChapters": "Unread chapters",
-    "downloadedChapters": "Downloaded chapters",
-    "genreDistribution": "Genre distribution",
-    "statusDistribution": "Status distribution"
+    "totalChapters": "统计数据",
+    "readChapters": "已读章节",
+    "unreadChapters": "未读章节",
+    "downloadedChapters": "已下载章节",
+    "genreDistribution": "流派分布",
+    "statusDistribution": "状态分布"
   },
   "globalSearch": {
     "searchIn": "搜索小说在",
@@ -166,8 +167,8 @@
     "pinnedSources": "置顶的源"
   },
   "advancedSettings": {
-    "deleteReadChapters": "Delete read chapters",
-    "deleteReadChaptersDialogTitle": "Are you sure? All chapters marked as read will be deleted."
+    "deleteReadChapters": "删除已读章节",
+    "deleteReadChaptersDialogTitle": "您确定吗？所有标记为已读的章节都将被删除。"
   },
   "date": {
     "calendar": {
@@ -178,21 +179,21 @@
     }
   },
   "categories": {
-    "addCategories": "Add category",
-    "editCategories": "Rename category",
-    "setCategories": "Set categories",
-    "header": "Edit categories",
-    "emptyMsg": "You have no categories. Tap the plus button to create one for organizing your library",
-    "setModalEmptyMsg": "You have no categories. Tap the Edit button to create one for organizing your library",
+    "addCategories": "添加类别",
+    "editCategories": "重命名类别",
+    "setCategories": "设置类别",
+    "header": "编辑类别",
+    "emptyMsg": "您目前还没有类别。点击加号按钮来创建一个类别以组织您的书库",
+    "setModalEmptyMsg": "您目前还没有类别。点击编辑按钮来创建一个类别以组织您的书库",
     "deleteModal": {
-      "header": "Delete category",
-      "desc": "Do you wish to delete category"
+      "header": "删除类别",
+      "desc": "你想要删除此类别吗"
     },
-    "duplicateError": "A category with this name already exists!",
-    "defaultCategory": "Default category"
+    "duplicateError": "已存在同名类别！",
+    "defaultCategory": "默认类别"
   },
   "settings": {
-    "icognitoMode": "Incognito mode",
-    "downloadedOnly": "Downloaded only"
+    "icognitoMode": "无痕模式",
+    "downloadedOnly": "仅已下载"
   }
 }

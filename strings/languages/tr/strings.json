@@ -154,6 +154,7 @@
   "statsScreen": {
     "title": "İstatistikler",
     "titlesInLibrary": "Kitaplıktaki başlık",
+    "totalChapters": "Total chapters",
     "readChapters": "Okunan bölüm",
     "unreadChapters": "Okunmamış bölüm",
     "downloadedChapters": "İndirilmiş bölüm",

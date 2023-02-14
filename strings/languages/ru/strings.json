@@ -154,6 +154,7 @@
   "statsScreen": {
     "title": "Статистика",
     "titlesInLibrary": "Названия в библиотеке",
+    "totalChapters": "Всего глав",
     "readChapters": "Прочитанные главы",
     "unreadChapters": "Непрочитанные главы",
     "downloadedChapters": "Загруженные главы",

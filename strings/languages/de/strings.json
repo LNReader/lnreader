@@ -154,6 +154,7 @@
   "statsScreen": {
     "title": "Statistiken",
     "titlesInLibrary": "Bücher in der Bibliothek",
+    "totalChapters": "Total chapters",
     "readChapters": "Gelesene Kapitel",
     "unreadChapters": "Ungelesene Kapitel",
     "downloadedChapters": "Heruntergeladene Kapitel",
