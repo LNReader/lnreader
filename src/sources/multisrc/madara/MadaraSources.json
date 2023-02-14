@@ -378,15 +378,6 @@
     }
   },
   {
-    "sourceId": 137,
-    "baseUrl": "https://asadatranslations.com/",
-    "sourceName": "Asada Translation",
-    "options": {
-      "totalPages": 1,
-      "lang": "English"
-    }
-  },
-  {
     "sourceId": 138,
     "baseUrl": "https://sugarbbscan.com/",
     "sourceName": "Sugar Babies",

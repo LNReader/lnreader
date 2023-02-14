@@ -347,13 +347,6 @@ export const NocturneTranslationsScraper = new MadaraScraper(
   },
 );
 
-export const AsadaTranslationScraper = new MadaraScraper(
-  137,
-  'https://asadatranslations.com/',
-  'Asada Translation',
-  { 'totalPages': 1, 'lang': 'English' },
-);
-
 export const SugarBabiesScraper = new MadaraScraper(
   138,
   'https://sugarbbscan.com/',
