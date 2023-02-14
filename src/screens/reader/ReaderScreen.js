@@ -220,31 +220,37 @@ const ChapterContent = ({ route, navigation }) => {
 
   let scrollTimeout;
 
+  const scrollTo = useCallback(
+    (offsetY, animated) => {
+      if (useWebViewForChapter) {
+        webViewRef?.current.injectJavaScript(`(()=>{
+        window.scrollTo(
+          {
+            left:0,
+            top:${offsetY}, 
+            behavior:'${animated ? 'smooth' : 'instant'}',
+          }
+          );
+      })()`);
+      } else {
+        scrollViewRef?.current.scrollTo({
+          x: 0,
+          y: offsetY,
+          animated: animated,
+        });
+      }
+    },
+    [scrollViewRef, webViewRef, useWebViewForChapter],
+  );
+
   useEffect(() => {
     if (position && position.percentage !== 100 && autoScroll) {
       scrollTimeout = setTimeout(() => {
-        if (useWebViewForChapter) {
-          webViewRef.current.injectJavaScript(`(()=>{
-            window.scrollTo(
-              {
-                top: ${
-                  position.position +
-                  defaultTo(autoScrollOffset, Dimensions.get('window').height)
-                }, 
-                left:0, 
-                behavior:"smooth"
-              }
-            );
-          })()`);
-        } else {
-          scrollViewRef.current.scrollTo({
-            x: 0,
-            y:
-              position.position +
-              defaultTo(autoScrollOffset, Dimensions.get('window').height),
-            animated: true,
-          });
-        }
+        scrollTo(
+          position.position +
+            defaultTo(autoScrollOffset, Dimensions.get('window').height),
+          true,
+        );
       }, autoScrollInterval * 1000);
     }
 
@@ -281,7 +287,7 @@ const ChapterContent = ({ route, navigation }) => {
       nativeEvent.contentOffset.y + nativeEvent.layoutMeasurement.height;
 
     const percentage = Math.round((pos / nativeEvent.contentSize.height) * 100);
-    if (offsetY != 0 && percentage != 100) {
+    if (!(offsetY == 0 && percentage == 100)) {
       // because the content is set to 0 when closing layout (i guess)
       setCurrentScroll({ offsetY: offsetY, percentage: percentage });
     }
@@ -297,17 +303,7 @@ const ChapterContent = ({ route, navigation }) => {
     event => {
       const scrollToSavedProgress = () => {
         if (position) {
-          if (useWebViewForChapter) {
-            webViewRef.current.injectJavaScript(`(()=>{
-              window.scrollTo({top: ${position.position}, left:0, behavior:"instant"});
-            })()`);
-          } else {
-            scrollViewRef.current.scrollTo({
-              x: 0,
-              y: position.position,
-              animated: false,
-            });
-          }
+          scrollTo(position.position, false);
         }
         if (firstLayout) {
           setFirstLayout(false);
@@ -480,6 +476,7 @@ const ChapterContent = ({ route, navigation }) => {
                       nextChapter={nextChapter}
                       webViewRef={webViewRef}
                       onPress={hideHeader}
+                      scrollTo={scrollTo}
                       setCurrentScroll={setCurrentScroll}
                       setScrollPage={setScrollPage}
                       doSaveProgress={doSaveProgress}
@@ -513,12 +510,10 @@ const ChapterContent = ({ route, navigation }) => {
         <ReaderSeekBar
           hide={hidden}
           theme={theme}
+          minScroll={minScroll.current}
           verticalSeekbar={verticalSeekbar}
           currentScroll={currentScroll}
-          useWebViewForChapter={useWebViewForChapter}
-          minScroll={minScroll.current}
-          scrollViewRef={scrollViewRef}
-          webViewRef={webViewRef}
+          scrollTo={scrollTo}
           setCurrentScroll={setCurrentScroll}
         />
         <ReaderFooter
@@ -529,7 +524,7 @@ const ChapterContent = ({ route, navigation }) => {
           prevChapter={prevChapter}
           useWebViewForChapter={useWebViewForChapter}
           readerSheetRef={readerSheetRef}
-          scrollViewRef={scrollViewRef}
+          scrollTo={scrollTo}
           navigateToChapterBySwipe={navigateToChapterBySwipe}
           openDrawer={openDrawer}
         />

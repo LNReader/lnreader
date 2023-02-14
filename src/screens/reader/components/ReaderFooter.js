@@ -13,9 +13,8 @@ const ChapterFooter = ({
   chapterUrl,
   nextChapter,
   prevChapter,
-  useWebViewForChapter,
   readerSheetRef,
-  scrollViewRef,
+  scrollTo,
   navigateToChapterBySwipe,
   openDrawer,
 }) => {
@@ -59,21 +58,19 @@ const ChapterFooter = ({
             <IconButton icon="earth" size={26} iconColor={theme.onSurface} />
           </Pressable>
         ) : null}
-        {!useWebViewForChapter && (
-          <>
-            <Pressable
-              android_ripple={rippleConfig}
-              style={styles.buttonStyles}
-              onPress={() => scrollViewRef.current.scrollTo({})}
-            >
-              <IconButton
-                icon="format-vertical-align-top"
-                size={26}
-                iconColor={theme.onSurface}
-              />
-            </Pressable>
-          </>
-        )}
+        <>
+          <Pressable
+            android_ripple={rippleConfig}
+            style={styles.buttonStyles}
+            onPress={() => scrollTo(0, true)}
+          >
+            <IconButton
+              icon="format-vertical-align-top"
+              size={26}
+              iconColor={theme.onSurface}
+            />
+          </Pressable>
+        </>
         <Pressable
           android_ripple={rippleConfig}
           style={styles.buttonStyles}

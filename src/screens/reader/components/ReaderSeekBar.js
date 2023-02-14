@@ -12,9 +12,7 @@ const VerticalScrollbar = ({
   minScroll,
   verticalSeekbar,
   currentScroll,
-  useWebViewForChapter,
-  scrollViewRef,
-  webViewRef,
+  scrollTo,
   setCurrentScroll,
 }) => {
   const { bottom } = useSafeAreaInsets();
@@ -22,17 +20,8 @@ const VerticalScrollbar = ({
     let offsetY = Math.round(
       ((value - minScroll) * Dimensions.get('window').height) / minScroll,
     );
-    if (useWebViewForChapter) {
-      webViewRef.current.injectJavaScript(`(()=>{
-        window.scrollTo({top: ${offsetY}, left:0, behavior:"smooth"});
-      })()`);
-    } else {
-      scrollViewRef.current.scrollTo({
-        x: 0,
-        y: offsetY,
-        animated: false,
-      });
-    }
+    scrollTo(offsetY, true);
+    // smooth in textview is weir, but... @@
     setCurrentScroll({ offsetY: offsetY, percentage: value });
   };
   const screenOrientation = useDeviceOrientation();

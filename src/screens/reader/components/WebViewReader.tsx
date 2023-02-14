@@ -40,6 +40,7 @@ type WebViewReaderProps = {
   nextChapter: ChapterItem;
   webViewRef: React.MutableRefObject<WebView>;
   onPress(): void;
+  scrollTo(offSetY: number, animated: boolean): void;
   setCurrentScroll: React.Dispatch<
     React.SetStateAction<{ offSetY: number; percentage: number }>
   >;
@@ -65,6 +66,7 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
     nextChapter,
     webViewRef,
     onPress,
+    scrollTo,
     setCurrentScroll,
     setScrollPage,
     doSaveProgress,
@@ -77,17 +79,9 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
   useEffect(() => {
     if (scrollPage) {
       if (scrollPage === 'up') {
-        webViewRef.current?.injectJavaScript(`(()=>{
-          window.scrollTo({top:document.body.scrollTop - ${Math.trunc(
-            layoutHeight,
-          )},left:0,behavior:'smooth'});
-        })()`);
+        scrollTo(currentScroll.offSetY - layoutHeight, true);
       } else {
-        webViewRef.current?.injectJavaScript(`(()=>{
-          window.scrollTo({top:document.body.scrollTop + ${Math.trunc(
-            layoutHeight,
-          )},left:0,behavior:'smooth'});
-        })()`);
+        scrollTo(currentScroll.offSetY + layoutHeight, true);
       }
       setScrollPage(null);
     }
