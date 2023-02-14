@@ -23,7 +23,6 @@ import {
 import { fetchChapter } from '../../services/Source/source';
 import { showToast } from '../../hooks/showToast';
 import {
-  useNovel,
   usePosition,
   useSettings,
   useTrackingStatus,
@@ -43,7 +42,6 @@ import EmptyView from '../../components/EmptyView';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import { insertHistory } from '../../database/queries/HistoryQueries';
 import { SET_LAST_READ } from '../../redux/preferences/preference.types';
-import { setAppSettings } from '../../redux/settings/settings.actions';
 import TextReader from './components/TextReader';
 import WebViewReader from './components/WebViewReader';
 import { useTextToSpeech } from '../../hooks/useTextToSpeech';
@@ -96,6 +94,7 @@ const ChapterContent = ({ route, navigation }) => {
     bookmark,
   } = params;
   let scrollViewRef = useRef(null);
+  let webViewRef = useRef(null);
   let readerSheetRef = useRef(null);
 
   const theme = useTheme();
@@ -129,11 +128,12 @@ const ChapterContent = ({ route, navigation }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
 
-  const [scrollPercentage, setScrollPercentage] = useState(0);
+  const minScroll = useRef(0);
+  const [currentScroll, setCurrentScroll] = useState({
+    offsetY: 0,
+    percentage: 0,
+  });
   const [firstLayout, setFirstLayout] = useState(true);
-
-  const [contentSize, setContentSize] = useState(0);
-
   const [scrollPage, setScrollPage] = useState(null);
 
   useEffect(() => {
@@ -170,38 +170,17 @@ const ChapterContent = ({ route, navigation }) => {
 
   const getChapter = async id => {
     try {
-      if (id) {
-        const chapterDownloaded = await getChapterFromDb(chapterId);
-
-        if (chapterDownloaded) {
-          setChapter(chapterDownloaded);
-        } else {
-          const res = await fetchChapter(sourceId, novelUrl, chapterUrl);
-          setChapter(res);
-        }
-      } else {
-        const res = await fetchChapter(sourceId, novelUrl, chapterUrl);
-
-        setChapter(res);
+      let result = null;
+      if (!(id && (result = await getChapterFromDb(id)))) {
+        result = await fetchChapter(sourceId, novelUrl, chapterUrl);
       }
-
-      setLoading(false);
+      setChapter(result);
     } catch (e) {
       setError(e.message);
-      setLoading(false);
       showToast(e.message);
+    } finally {
+      setLoading(false);
     }
-  };
-
-  const [nextChapter, setNextChapter] = useState({});
-  const [prevChapter, setPrevChapter] = useState({});
-
-  const setPrevAndNextChap = async () => {
-    const nextChap = await getNextChapter(novelId, chapterId);
-    const prevChap = await getPrevChapter(novelId, chapterId);
-
-    setNextChapter(nextChap);
-    setPrevChapter(prevChap);
   };
 
   useEffect(() => {
@@ -216,6 +195,19 @@ const ChapterContent = ({ route, navigation }) => {
     }
   }, []);
 
+  const [[nextChapter, prevChapter], setAdjacentChapter] = useState([]);
+
+  useEffect(() => {
+    const setPrevAndNextChap = async () => {
+      const [nextChap, prevChap] = await Promise.all([
+        getNextChapter(novelId, chapterId),
+        getPrevChapter(novelId, chapterId),
+      ]);
+      setAdjacentChapter([nextChap, prevChap]);
+    };
+    setPrevAndNextChap();
+  }, [chapter]);
+
   const [ttsStatus, startTts] = useTextToSpeech(
     htmlToText(chapter?.chapterText).split('\n'),
     () => {
@@ -226,33 +218,20 @@ const ChapterContent = ({ route, navigation }) => {
     },
   );
 
-  useEffect(() => {
-    setPrevAndNextChap();
-  }, [chapter]);
-
   const [currentOffset, setCurrentOffset] = useState(position?.position || 0);
 
   let scrollTimeout;
 
   useEffect(() => {
-    if (scrollPercentage !== 100 && autoScroll) {
+    if (currentScroll.percentage !== 100 && autoScroll) {
       scrollTimeout = setTimeout(() => {
-        if (useWebViewForChapter) {
-          setWebViewScroll({
-            percentage:
-              currentOffset +
-              defaultTo(autoScrollOffset, Dimensions.get('window').height),
-            type: 'exact',
-          });
-        } else {
-          scrollViewRef.current.scrollTo({
-            x: 0,
-            y:
-              currentOffset +
-              defaultTo(autoScrollOffset, Dimensions.get('window').height),
-            animated: true,
-          });
-        }
+        scrollViewRef.current.scrollTo({
+          x: 0,
+          y:
+            currentOffset +
+            defaultTo(autoScrollOffset, Dimensions.get('window').height),
+          animated: true,
+        });
         setCurrentOffset(
           prevState =>
             prevState +
@@ -263,17 +242,6 @@ const ChapterContent = ({ route, navigation }) => {
 
     return () => clearTimeout(scrollTimeout);
   }, [autoScroll, currentOffset]);
-
-  const isCloseToBottom = useCallback(
-    ({ layoutMeasurement, contentOffset, contentSize }) => {
-      const paddingToBottom = 40;
-      return (
-        layoutMeasurement.height + contentOffset.y >=
-        contentSize.height - paddingToBottom
-      );
-    },
-    [],
-  );
 
   const updateTracker = () => {
     const chapterNumber = parseChapterNumber(chapterName);
@@ -287,46 +255,65 @@ const ChapterContent = ({ route, navigation }) => {
       );
   };
 
+  const doSaveProgress = (offsetY, percentage) => {
+    if (!incognitoMode) {
+      dispatch(saveScrollPosition(offsetY, percentage, chapterId, novelId));
+    }
+
+    if (!incognitoMode && percentage >= 97) {
+      // a relative number
+      dispatch(markChapterReadAction(chapterId, novelId));
+      updateTracker();
+    }
+  };
+
   const onScroll = useCallback(({ nativeEvent }) => {
     const offsetY = nativeEvent.contentOffset.y;
     const pos =
       nativeEvent.contentOffset.y + nativeEvent.layoutMeasurement.height;
 
     const percentage = Math.round((pos / nativeEvent.contentSize.height) * 100);
-    setScrollPercentage(percentage);
-
-    if (!incognitoMode) {
-      dispatch(saveScrollPosition(offsetY, percentage, chapterId, novelId));
+    if (offsetY != 0 && percentage != 100) {
+      // because the content is set to 0 when closing layout (i guess)
+      setCurrentScroll({ offsetY: offsetY, percentage: percentage });
     }
-
-    if (!incognitoMode && isCloseToBottom(nativeEvent)) {
-      dispatch(markChapterReadAction(chapterId, novelId));
-      updateTracker();
+    if (
+      nativeEvent.contentSize.height != nativeEvent.layoutMeasurement.height &&
+      nativeEvent.contentSize.height > 0
+    ) {
+      doSaveProgress(offsetY, percentage);
     }
   }, []);
 
-  const [webViewScroll, setWebViewScroll] = useState(scrollPercentage);
-
-  const scrollToSavedProgress = useCallback(
+  const onLayoutProcessing = useCallback(
     event => {
-      if (position && firstLayout) {
-        if (position.percentage < 100) {
-          scrollViewRef.current.scrollTo({
-            x: 0,
-            y: position.position,
-            animated: false,
-          });
+      const scrollToSavedProgress = () => {
+        if (position) {
           if (useWebViewForChapter) {
-            setWebViewScroll({
-              percentage: position.percentage,
-              type: 'smooth',
+            webViewRef.current.injectJavaScript(`(()=>{
+              window.scrollTo({top: ${position.position}, left:0, behavior:"instant"});
+            })()`);
+          } else {
+            scrollViewRef.current.scrollTo({
+              x: 0,
+              y: position.position,
+              animated: false,
             });
           }
         }
-        setFirstLayout(false);
+        if (firstLayout) {
+          setFirstLayout(false);
+        }
+      };
+
+      scrollToSavedProgress();
+      if (!useWebViewForChapter) {
+        minScroll.current =
+          (Dimensions.get('window').height / event.nativeEvent.layout.height) *
+          100;
       }
     },
-    [nextChapter],
+    [nextChapter, useWebViewForChapter],
   );
 
   const hideHeader = () => {
@@ -373,12 +360,6 @@ const ChapterContent = ({ route, navigation }) => {
       : showToast("There's no next chapter");
   };
 
-  const enableAutoScroll = () =>
-    dispatch(setAppSettings('autoScroll', !autoScroll));
-
-  const enableWebView = () =>
-    dispatch(setAppSettings('useWebViewForChapter', !useWebViewForChapter));
-
   const onWebViewNavigationStateChange = async ({ url }) => {
     if ((sourceId === 50 || sourceId === 62) && url !== 'about:blank') {
       setLoading(true);
@@ -389,11 +370,9 @@ const ChapterContent = ({ route, navigation }) => {
   };
 
   const backgroundColor = readerSettings.theme;
-
   const chapterText = sanitizeChapterText(chapter.chapterText, {
     removeExtraParagraphSpacing,
   });
-
   const openDrawer = () => {
     navigation.openDrawer();
     setHidden(true);
@@ -427,15 +406,13 @@ const ChapterContent = ({ route, navigation }) => {
           style={{ flex: 1 }}
         >
           <ScrollView
-            ref={ref => (scrollViewRef.current = ref)}
+            ref={scrollViewRef}
             contentContainerStyle={[
               styles.screenContainer,
               { backgroundColor },
             ]}
-            onScroll={onScroll}
-            onContentSizeChange={(x, y) => setContentSize(y)}
+            onScroll={!loading && onScroll}
             showsVerticalScrollIndicator={false}
-            scrollEnabled={!loading}
           >
             {error ? (
               <View style={{ flex: 1, justifyContent: 'center' }}>
@@ -483,42 +460,44 @@ const ChapterContent = ({ route, navigation }) => {
             ) : (
               <TouchableWithoutFeedback
                 style={{ flex: 1 }}
-                onLayout={scrollToSavedProgress}
+                onLayout={onLayoutProcessing}
               >
                 {useWebViewForChapter ? (
                   <View style={{ flex: 1 }}>
                     <WebViewReader
-                      layoutHeight={Dimensions.get('window').height}
-                      webViewScroll={webViewScroll}
-                      setScrollPercentage={setScrollPercentage}
-                      scrollPercentage={scrollPercentage}
-                      reader={readerSettings}
+                      theme={theme}
+                      chapter={chapter}
                       html={chapterText}
+                      reader={readerSettings}
                       chapterName={chapter.chapterName || chapterName}
+                      layoutHeight={Dimensions.get('window').height}
+                      swipeGestures={swipeGestures && wvUseNewSwipes}
+                      minScroll={minScroll}
+                      currentScroll={currentScroll}
+                      scrollPage={scrollPage}
+                      wvShowSwipeMargins={wvShowSwipeMargins}
                       nextChapter={nextChapter}
+                      webViewRef={webViewRef}
+                      onPress={hideHeader}
+                      setCurrentScroll={setCurrentScroll}
+                      setScrollPage={setScrollPage}
+                      doSaveProgress={doSaveProgress}
                       navigateToNextChapter={() => navigateToNextChapter()}
                       navigateToPrevChapter={() => navigateToPrevChapter()}
-                      onScroll={onScroll}
-                      onPress={hideHeader}
                       onWebViewNavigationStateChange={
                         onWebViewNavigationStateChange
                       }
-                      scrollPage={scrollPage}
-                      setScrollPage={setScrollPage}
-                      swipeGestures={swipeGestures && wvUseNewSwipes}
-                      wvShowSwipeMargins={wvShowSwipeMargins}
-                      theme={theme}
                     />
                   </View>
                 ) : (
                   <View>
                     <TextReader
-                      onPress={hideHeader}
+                      theme={theme}
+                      chapterName={chapter.chapterName || chapterName}
                       text={chapterText}
                       reader={readerSettings}
-                      chapterName={chapter.chapterName || chapterName}
-                      theme={theme}
                       nextChapter={nextChapter}
+                      onPress={hideHeader}
                       navigateToNextChapter={navigateToNextChapter}
                     />
                   </View>
@@ -527,38 +506,32 @@ const ChapterContent = ({ route, navigation }) => {
             )}
           </ScrollView>
         </GestureRecognizer>
-        <BottomInfoBar scrollPercentage={scrollPercentage} />
+        <BottomInfoBar scrollPercentage={currentScroll.percentage || 0} />
         <Portal>
           <ReaderBottomSheetV2 bottomSheetRef={readerSheetRef} />
         </Portal>
         <ReaderSeekBar
-          theme={theme}
           hide={hidden}
-          setLoading={setLoading}
-          contentSize={contentSize}
-          scrollViewRef={scrollViewRef}
-          scrollPercentage={scrollPercentage}
-          setScrollPercentage={setScrollPercentage}
-          setWebViewScroll={setWebViewScroll}
-          useWebViewForChapter={useWebViewForChapter}
+          theme={theme}
           verticalSeekbar={verticalSeekbar}
+          currentScroll={currentScroll}
+          useWebViewForChapter={useWebViewForChapter}
+          minScroll={minScroll.current}
+          scrollViewRef={scrollViewRef}
+          webViewRef={webViewRef}
+          setCurrentScroll={setCurrentScroll}
         />
         <ReaderFooter
+          hide={hidden}
           theme={theme}
-          novelUrl={novelUrl}
           chapterUrl={chapterUrl}
-          enableWebView={enableWebView}
-          dispatch={dispatch}
           nextChapter={nextChapter}
           prevChapter={prevChapter}
-          hide={hidden}
-          autoScroll={autoScroll}
           useWebViewForChapter={useWebViewForChapter}
-          navigateToNextChapter={navigateToNextChapter}
-          navigateToPrevChapter={navigateToPrevChapter}
           readerSheetRef={readerSheetRef}
           scrollViewRef={scrollViewRef}
-          enableAutoScroll={enableAutoScroll}
+          navigateToNextChapter={navigateToNextChapter}
+          navigateToPrevChapter={navigateToPrevChapter}
           openDrawer={openDrawer}
         />
       </>

@@ -10,14 +10,14 @@ import color from 'color';
 const ChapterFooter = ({
   hide,
   theme,
+  chapterUrl,
+  nextChapter,
+  prevChapter,
+  useWebViewForChapter,
   readerSheetRef,
   scrollViewRef,
   navigateToNextChapter,
   navigateToPrevChapter,
-  nextChapter,
-  prevChapter,
-  useWebViewForChapter,
-  chapterUrl,
   openDrawer,
 }) => {
   const rippleConfig = {

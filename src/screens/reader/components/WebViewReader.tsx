@@ -1,8 +1,8 @@
 import { useAppDispatch } from '@redux/hooks';
 import { setAppSettings } from '@redux/settings/settings.actions';
 import { getString } from '@strings/translations';
-import React, { useRef, useEffect, FunctionComponent } from 'react';
-import { StatusBar, StyleSheet, useWindowDimensions, View } from 'react-native';
+import React, { useEffect, FunctionComponent } from 'react';
+import { StatusBar, StyleSheet, View } from 'react-native';
 
 import WebView from 'react-native-webview';
 import { ChapterItem } from '../../../database/types';
@@ -11,15 +11,15 @@ import { MD3ThemeType } from '../../../theme/types';
 import { readerBackground } from '../utils/readerStyles';
 
 import RNFetchBlob from 'rn-fetch-blob';
-
 type WebViewPostEvent = {
   type: string;
   data?: { [key: string]: string };
 };
 
 type WebViewReaderProps = {
-  html: string;
   theme: MD3ThemeType;
+  chapter: ChapterItem;
+  html: string;
   reader: {
     theme: string;
     textColor: string;
@@ -31,52 +31,51 @@ type WebViewReaderProps = {
     customCSS: string;
   };
   chapterName: string;
+  layoutHeight: number;
+  swipeGestures: boolean;
+  minScroll: any;
+  currentScroll: { offSetY: number; percentage: number };
+  scrollPage: string | null;
+  wvShowSwipeMargins: boolean;
   nextChapter: ChapterItem;
+  webViewRef: React.MutableRefObject<WebView>;
+  onPress(): void;
+  setCurrentScroll: React.Dispatch<
+    React.SetStateAction<{ offSetY: number; percentage: number }>
+  >;
+  setScrollPage: React.Dispatch<React.SetStateAction<string | null>>;
+  doSaveProgress(offSetY: number, percentage: number): void;
   navigateToNextChapter(): void;
   navigateToPrevChapter(): void;
-  onPress(): void;
-  onScroll(): void;
   onWebViewNavigationStateChange(): void;
-  layoutHeight: number;
-  webViewScroll: { percentage: number; type: 'smooth' | 'instant' | 'exact' };
-  setScrollPercentage: React.Dispatch<React.SetStateAction<number>>;
-  scrollPercentage: number;
-  swipeGestures: boolean;
-  wvShowSwipeMargins: boolean;
-  scrollPage: string | null;
-  setScrollPage: React.Dispatch<React.SetStateAction<string | null>>;
 };
 
 const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
   const {
-    html,
     theme,
+    chapter,
+    html,
     reader,
-    onScroll,
-    onWebViewNavigationStateChange,
-    layoutHeight,
-    webViewScroll,
-    nextChapter,
     chapterName,
+    layoutHeight,
+    swipeGestures,
+    minScroll,
+    currentScroll,
+    scrollPage,
+    wvShowSwipeMargins,
+    nextChapter,
+    webViewRef,
     onPress,
+    setCurrentScroll,
+    setScrollPage,
+    doSaveProgress,
     navigateToNextChapter,
     navigateToPrevChapter,
-    setScrollPercentage,
-    scrollPercentage,
-    swipeGestures,
-    wvShowSwipeMargins,
-    scrollPage,
-    setScrollPage,
+    onWebViewNavigationStateChange,
   } = props;
-
-  const { height } = useWindowDimensions();
-
   const backgroundColor = readerBackground(reader.theme);
 
-  const webViewRef = useRef<WebView>(null);
-
   const dispatch = useAppDispatch();
-
   useEffect(() => {
     if (scrollPage) {
       if (scrollPage === 'up') {
@@ -96,31 +95,10 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
     }
   }, [scrollPage]);
 
-  useEffect(() => {
-    if (webViewRef.current && webViewScroll.percentage !== scrollPercentage) {
-      webViewRef.current.injectJavaScript(`(()=>{
-        const p = ${webViewScroll.percentage};
-        const h = document.body.scrollHeight;
-        const s = (h*p)/100;
-        const lh = ${Math.trunc(layoutHeight)};
-        const xs = s - 1.2*lh;
-        const type = "${webViewScroll.type}";
-        if(type === 'exact')
-          window.scrollTo({top: p, left:0, behavior:'smooth'});
-        else
-          window.scrollTo({top: p === 100 ? h : xs, left:0, behavior:type});
-      })()`);
-      if (webViewScroll.type !== 'exact') {
-        setScrollPercentage(webViewScroll.percentage || 0);
-      }
-    }
-  }, [webViewScroll]);
-
   const onClickWebViewPostMessage = (event: WebViewPostEvent) =>
     "onClick='window.ReactNativeWebView.postMessage(`" +
     JSON.stringify(event) +
     "`)'";
-
   return (
     <View style={styles.container}>
       <WebView
@@ -128,25 +106,14 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
         style={{ backgroundColor }}
         originWhitelist={['*']}
         injectedJavaScript={`
-        const p = ${webViewScroll.percentage};
-        const h = document.body.scrollHeight;
-        const s = (h*p)/100;
-        const lh = ${Math.trunc(layoutHeight)};
-        const xs = s - 1.2*lh;
-        const type = "${webViewScroll.type}";
-        if(type === 'exact')
-          window.scrollTo({top: p, left:0, behavior:'smooth'});
-        else
-        window.scrollTo({top: p === 100 ? h : xs, left:0, behavior:type});`}
+        window.scrollTo({top: ${currentScroll.offSetY}, left:0, behavior:"smooth"});`}
         scalesPageToFit={true}
         showsVerticalScrollIndicator={false}
-        onScroll={onScroll}
         onNavigationStateChange={onWebViewNavigationStateChange}
         nestedScrollEnabled={true}
         javaScriptEnabled={true}
         onMessage={ev => {
           const event: WebViewPostEvent = JSON.parse(ev.nativeEvent.data);
-          // console.log('WVEvent:', event);
           switch (event.type) {
             case 'hide':
               onPress();
@@ -172,7 +139,6 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
                   const promises: Promise<{ data: any; id: number }>[] = [];
                   for (let i = 0; i < event.data.length; i++) {
                     const { url, id } = event.data[i];
-                    // console.log(url, id);
                     if (url) {
                       if (id) {
                         promises.push(
@@ -187,9 +153,6 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
                   }
                   Promise.all(promises).then(datas => {
                     const inject = datas.reduce((p, data) => {
-                      // console.log(
-                      //   `document.querySelector("img[file-id='${data.id}']").src="data:image/png;base64,`,
-                      // );
                       return (
                         p +
                         `document.querySelector("img[file-id='${data.id}']").src="data:image/png;base64,${data.data}";`
@@ -200,6 +163,30 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
                 }
               }
               break;
+            case 'scrollend':
+              if (event.data) {
+                const offSetY = Number(event.data?.offSetY);
+                const percentage = Math.round(Number(event.data?.percentage));
+                setCurrentScroll({
+                  offSetY: offSetY,
+                  percentage: percentage,
+                });
+                if (offSetY) {
+                  doSaveProgress(offSetY, percentage);
+                }
+              }
+              break;
+            case 'height':
+              if (event.data) {
+                const contentHeight = Math.round(Number(event.data));
+                minScroll.current = (layoutHeight / contentHeight) * 100;
+                if (currentScroll.percentage === 0) {
+                  setCurrentScroll({
+                    offSetY: 0,
+                    percentage: Math.round(Number(event.data?.percentage)),
+                  });
+                }
+              }
           }
         }}
         source={{
@@ -209,6 +196,7 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
                     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
                     <style>
                       html {
+                        scroll-behavior: smooth;
                         overflow-x: hidden;
                         padding-top: ${StatusBar.currentHeight};
                         word-wrap: break-word;
@@ -223,6 +211,9 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
                         text-align: ${reader.textAlign};
                         line-height: ${reader.lineHeight};
                         font-family: ${reader.fontFamily};
+                      }
+                      chapter{
+                        display: block;
                       }
                       hr {
                         margin-top: 20px;
@@ -290,7 +281,7 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
                         text-align: center;
                       }
                       .chapterCtn {
-                        min-height: ${height - 140};
+                        min-height: ${layoutHeight - 140};
                         margin-bottom: auto;
                       }
                     </style>
@@ -310,15 +301,49 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
                     <div class="chapterCtn" ${onClickWebViewPostMessage({
                       type: 'hide',
                     })}>
-                      <chapter>
-                      ${html}
+                      <chapter 
+                        data-novel-id='${chapter.novelId}'
+                        data-chapter-id='${chapter.chapterId}'
+                      >
+                        ${html}
                       </chapter>
                     </div>
                     <script>
+                    const chapterElement = document.querySelector('chapter');
                     const imgs = [...document.querySelectorAll("img")].map(img=>{
                       return {url:img.getAttribute("file-src"), id:img.getAttribute("file-id")}
                     });
                     window.ReactNativeWebView.postMessage(JSON.stringify({type:"imgfiles",data:imgs}));
+                    var scrollTimeout;
+                    window.addEventListener("scroll", (event) => {
+                      window.clearTimeout( scrollTimeout );
+                      scrollTimeout = setTimeout(() => {
+                        window.ReactNativeWebView.postMessage(
+                          JSON.stringify(
+                            {
+                              type:"scrollend",
+                              data:{
+                                offSetY: window.pageYOffset,
+                                percentage: (window.pageYOffset+${layoutHeight})/document.body.scrollHeight*100,
+                              }
+                            }
+                          )
+                        );
+                      }, 66);
+                    });
+                    let loadInterval = setInterval(() => {
+                      window.ReactNativeWebView.postMessage(
+                        JSON.stringify(
+                          {
+                            type:"height",
+                            data:Number(window.getComputedStyle(chapterElement).height.replace('px',''))
+                          }
+                          )
+                        );
+                    }, 500);
+                    setTimeout(() => {
+                      clearInterval( loadInterval );
+                    }, 2000);
                     </script>
                     <div class="infoText">
                     ${getString(
