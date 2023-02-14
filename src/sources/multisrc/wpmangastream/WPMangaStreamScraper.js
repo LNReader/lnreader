@@ -7,6 +7,7 @@ class WPMangaStreamScraper {
     this.sourceName = sourceName;
     this.language = options?.language;
     this.totalPages = options?.totalPages;
+    this.reverseChapters = options?.reverseChapters;
   }
 
   async popularNovels(page) {
@@ -102,6 +103,10 @@ class WPMangaStreamScraper {
       });
 
     novel.chapters = novelChapters;
+
+    if (this.reverseChapters) {
+      novel.chapters.reverse();
+    }
 
     return novel;
   }
