@@ -221,7 +221,7 @@ const ChapterContent = ({ route, navigation }) => {
   let scrollTimeout;
 
   useEffect(() => {
-    if (position.percentage !== 100 && autoScroll) {
+    if (position && position.percentage !== 100 && autoScroll) {
       scrollTimeout = setTimeout(() => {
         if (useWebViewForChapter) {
           webViewRef.current.injectJavaScript(`(()=>{
@@ -249,7 +249,7 @@ const ChapterContent = ({ route, navigation }) => {
     }
 
     return () => clearTimeout(scrollTimeout);
-  }, [autoScroll, position.position, useWebViewForChapter]);
+  }, [autoScroll, position?.position, useWebViewForChapter]);
 
   const updateTracker = () => {
     const chapterNumber = parseChapterNumber(chapterName);
@@ -344,28 +344,30 @@ const ChapterContent = ({ route, navigation }) => {
     directionalOffsetThreshold: 50,
   };
 
-  const navigateToPrevChapter = () => {
-    prevChapter
+  const navigateToChapterBySwipe = name => {
+    let chapter;
+    if (name === 'SWIPE_LEFT') {
+      chapter = nextChapter;
+    } else if (name === 'SWIPE_RIGHT') {
+      chapter = prevChapter;
+    } else {
+      return;
+    }
+    // you can add more condition for friendly usage. for example: if(name === "SWIPE_LEFT" || name === "right")
+    showToast('Loading...'); // for better experience :D
+    chapter
       ? navigation.replace('Chapter', {
           ...params,
-          chapterUrl: prevChapter.chapterUrl,
-          chapterId: prevChapter.chapterId,
-          chapterName: prevChapter.chapterName,
-          bookmark: prevChapter.bookmark,
+          chapterUrl: chapter.chapterUrl,
+          chapterId: chapter.chapterId,
+          chapterName: chapter.chapterName,
+          bookmark: chapter.bookmark,
         })
-      : showToast("There's no previous chapter");
-  };
-
-  const navigateToNextChapter = () => {
-    nextChapter
-      ? navigation.replace('Chapter', {
-          ...params,
-          chapterUrl: nextChapter.chapterUrl,
-          chapterId: nextChapter.chapterId,
-          chapterName: nextChapter.chapterName,
-          bookmark: nextChapter.bookmark,
-        })
-      : showToast("There's no next chapter");
+      : showToast(
+          name === 'SWIPE_LEFT'
+            ? "There's no next chapter"
+            : "There's no previous chapter",
+        );
   };
 
   const onWebViewNavigationStateChange = async ({ url }) => {
@@ -400,16 +402,7 @@ const ChapterContent = ({ route, navigation }) => {
           theme={theme}
         />
         <GestureRecognizer
-          onSwipeRight={
-            swipeGestures &&
-            (!useWebViewForChapter || !wvUseNewSwipes) &&
-            navigateToPrevChapter
-          }
-          onSwipeLeft={
-            swipeGestures &&
-            (!useWebViewForChapter || !wvUseNewSwipes) &&
-            navigateToNextChapter
-          }
+          onSwipe={navigateToChapterBySwipe}
           config={config}
           style={{ flex: 1 }}
         >
@@ -490,8 +483,7 @@ const ChapterContent = ({ route, navigation }) => {
                       setCurrentScroll={setCurrentScroll}
                       setScrollPage={setScrollPage}
                       doSaveProgress={doSaveProgress}
-                      navigateToNextChapter={() => navigateToNextChapter()}
-                      navigateToPrevChapter={() => navigateToPrevChapter()}
+                      navigateToChapterBySwipe={navigateToChapterBySwipe}
                       onWebViewNavigationStateChange={
                         onWebViewNavigationStateChange
                       }
@@ -506,7 +498,7 @@ const ChapterContent = ({ route, navigation }) => {
                       reader={readerSettings}
                       nextChapter={nextChapter}
                       onPress={hideHeader}
-                      navigateToNextChapter={navigateToNextChapter}
+                      navigateToChapterBySwipe={navigateToChapterBySwipe}
                     />
                   </View>
                 )}
@@ -538,8 +530,7 @@ const ChapterContent = ({ route, navigation }) => {
           useWebViewForChapter={useWebViewForChapter}
           readerSheetRef={readerSheetRef}
           scrollViewRef={scrollViewRef}
-          navigateToNextChapter={navigateToNextChapter}
-          navigateToPrevChapter={navigateToPrevChapter}
+          navigateToChapterBySwipe={navigateToChapterBySwipe}
           openDrawer={openDrawer}
         />
       </>

@@ -16,8 +16,7 @@ const ChapterFooter = ({
   useWebViewForChapter,
   readerSheetRef,
   scrollViewRef,
-  navigateToNextChapter,
-  navigateToPrevChapter,
+  navigateToChapterBySwipe,
   openDrawer,
 }) => {
   const rippleConfig = {
@@ -42,7 +41,7 @@ const ChapterFooter = ({
         <Pressable
           android_ripple={rippleConfig}
           style={styles.buttonStyles}
-          onPress={navigateToPrevChapter}
+          onPress={() => navigateToChapterBySwipe('SWIPE_RIGHT')}
         >
           <IconButton
             icon="chevron-left"
@@ -100,7 +99,7 @@ const ChapterFooter = ({
         <Pressable
           android_ripple={rippleConfig}
           style={styles.buttonStyles}
-          onPress={navigateToNextChapter}
+          onPress={() => navigateToChapterBySwipe('SWIPE_LEFT')}
         >
           <IconButton
             icon="chevron-right"

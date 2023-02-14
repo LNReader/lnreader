@@ -45,8 +45,7 @@ type WebViewReaderProps = {
   >;
   setScrollPage: React.Dispatch<React.SetStateAction<string | null>>;
   doSaveProgress(offSetY: number, percentage: number): void;
-  navigateToNextChapter(): void;
-  navigateToPrevChapter(): void;
+  navigateToChapterBySwipe(name: string): void;
   onWebViewNavigationStateChange(): void;
 };
 
@@ -69,8 +68,7 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
     setCurrentScroll,
     setScrollPage,
     doSaveProgress,
-    navigateToNextChapter,
-    navigateToPrevChapter,
+    navigateToChapterBySwipe,
     onWebViewNavigationStateChange,
   } = props;
   const backgroundColor = readerBackground(reader.theme);
@@ -119,19 +117,19 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
               onPress();
               break;
             case 'next':
-              navigateToNextChapter();
+              navigateToChapterBySwipe('SWIPE_LEFT');
               break;
             case 'prev':
-              navigateToPrevChapter();
+              navigateToChapterBySwipe('SWIPE_RIGHT');
               break;
             case 'noswipes':
               dispatch(setAppSettings('wvShowSwipeMargins', false));
               break;
             case 'right':
-              navigateToNextChapter();
+              navigateToChapterBySwipe('SWIPE_LEFT');
               break;
             case 'left':
-              navigateToPrevChapter();
+              navigateToChapterBySwipe('SWIPE_RIGHT');
               break;
             case 'imgfiles':
               if (event.data) {
@@ -336,7 +334,7 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
                         JSON.stringify(
                           {
                             type:"height",
-                            data:Number(window.getComputedStyle(chapterElement).height.replace('px',''))
+                            data:document.body.scrollHeight
                           }
                           )
                         );

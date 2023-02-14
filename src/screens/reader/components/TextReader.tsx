@@ -31,7 +31,7 @@ interface TextReaderProps {
   };
   nextChapter: ChapterItem;
   onPress(): void;
-  navigateToNextChapter: () => void;
+  navigateToChapterBySwipe: (name: string) => void;
 }
 
 const TextReader: React.FC<TextReaderProps> = ({
@@ -41,7 +41,7 @@ const TextReader: React.FC<TextReaderProps> = ({
   reader,
   nextChapter,
   onPress,
-  navigateToNextChapter,
+  navigateToChapterBySwipe,
 }) => {
   const { width, height } = useWindowDimensions();
 
@@ -80,9 +80,8 @@ const TextReader: React.FC<TextReaderProps> = ({
           {nextChapter ? (
             <Button
               title={`Next: ${nextChapter.chapterName}`}
-              onPress={navigateToNextChapter}
+              onPress={() => navigateToChapterBySwipe('SWIPE_LEFT')}
               theme={theme}
-              textColor={theme.colorButtonText} // what is this prop ?
               style={styles.nextButton}
             />
           ) : (
