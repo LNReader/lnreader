@@ -144,8 +144,8 @@
   },
   {
     "sourceId": 63,
-    "baseUrl": "https://tipnovel.com/",
-    "sourceName": "TipNovel",
+    "baseUrl": "https://cratenovel.com/",
+    "sourceName": "CrateNovel",
     "options": {
       "useNewChapterEndpoint": true
     }

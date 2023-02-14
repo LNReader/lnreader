@@ -139,10 +139,10 @@ export const WebNovelLoverScraper = new MadaraScraper(
   'WebNovelLover',
 );
 
-export const TipNovelScraper = new MadaraScraper(
+export const CrateNovelScraper = new MadaraScraper(
   63,
-  'https://tipnovel.com/',
-  'TipNovel',
+  'https://cratenovel.com/',
+  'CrateNovel',
   { 'useNewChapterEndpoint': true },
 );
 
