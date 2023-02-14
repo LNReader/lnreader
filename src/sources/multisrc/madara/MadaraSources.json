@@ -83,7 +83,7 @@
     "baseUrl": "https://daonovel.com/",
     "sourceName": "DaoNovel",
     "options": {
-      "path": { "novels": "novel-list", "novel": "novel", "chapter": "novel" },
+      "path": { "novels": "novels-list", "novel": "novels", "chapter": "novels" },
       "useNewChapterEndpoint": true
     }
   },
