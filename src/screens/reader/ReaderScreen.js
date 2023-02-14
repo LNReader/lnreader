@@ -273,9 +273,13 @@ const ChapterContent = ({ route, navigation }) => {
       nativeEvent.contentOffset.y + nativeEvent.layoutMeasurement.height;
 
     const percentage = Math.round((pos / nativeEvent.contentSize.height) * 100);
-    setCurrentScroll({ offsetY: offsetY, percentage: percentage });
+    if (offsetY != 0 && percentage != 100) {
+      // because the content is set to 0 when closing layout (i guess)
+      setCurrentScroll({ offsetY: offsetY, percentage: percentage });
+    }
     if (
-      nativeEvent.contentSize.height != nativeEvent.layoutMeasurement.height
+      nativeEvent.contentSize.height != nativeEvent.layoutMeasurement.height &&
+      nativeEvent.contentSize.height > 0
     ) {
       doSaveProgress(offsetY, percentage);
     }
