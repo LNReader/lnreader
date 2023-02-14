@@ -26,6 +26,8 @@ export const insertChapters = async (
     return;
   }
 
+  console.log(chapters);
+
   db.transaction(tx => {
     chapters.map(chapter =>
       tx.executeSql(insertChaptersQuery, [

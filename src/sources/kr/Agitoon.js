@@ -1,6 +1,4 @@
-import { fetchHtml } from '@utils/fetch/fetch';
 import * as cheerio from 'cheerio';
-import { SourceChapter, SourceNovel, SourceNovelItem } from '../types';
 
 const sourceId = 145;
 const sourceName = 'Agitoon';
@@ -21,7 +19,7 @@ const popularNovels = async page => {
   const novels = resJson.list.map(novel => {
     return {
       sourceId,
-      novelUrl: baseUrl + '/novel/list/' + novel.wr_id,
+      novelUrl: baseUrl + 'novel/list/' + novel.wr_id,
       novelName: novel.wr_subject,
       novelCover: baseUrl + novel.np_dir + '/thumbnail/' + novel.np_thumbnail,
     };
@@ -31,11 +29,79 @@ const popularNovels = async page => {
 };
 
 const parseNovelAndChapters = async novelUrl => {
-  return null;
+  const novelId = novelUrl.split('/').reverse()[0];
+
+  // cheerio
+  const result = await fetch(novelUrl);
+  const body = await result.text();
+
+  const loadedCheerio = cheerio.load(body, { decodeEntities: false });
+  const novelName = loadedCheerio('h5.pt-2').text();
+  const summary = loadedCheerio('.pt-1.mt-1.pb-1.mb-1').text();
+  const author = loadedCheerio('.post-item-list-cate-v')
+    .first()
+    .text()
+    .split(' : ')
+    .reverse()[0];
+  const novelCover =
+    baseUrl.slice(0, baseUrl.length - 1) +
+    loadedCheerio('div.col-5.pr-0.pl-0 img').attr('src');
+
+  // normal REST HTTP requests
+  let chapters = [];
+
+  const res = await fetch('https://agit501.xyz/novel/list.update.php', {
+    headers: {
+      'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+    },
+    body: `mode=get_data_novel_list_c&wr_id_p=${novelId}&page_no=1&cnt_list=10000&order_type=Asc`,
+    method: 'POST',
+  });
+
+  const resJson = await res.json();
+
+  chapters = resJson.list.map(chapter => {
+    return {
+      //chapterName: chapter.wr_subject,
+      chapterName: 'simple',
+      chapterUrl: baseUrl + `novel/view/${novelId}/2`,
+      releaseDate: chapter.wr_datetime,
+    };
+  });
+
+ // console.log(chapters);
+
+  const novel = {
+    sourceId,
+    sourceName,
+    url: novelUrl,
+    genre: '',
+    novelUrl,
+    novelName,
+    novelCover,
+    summary,
+    author,
+    status: '',
+    chapters,
+  };
+
+ // console.log(novel);
+  return novel;
 };
 
 const parseChapter = async (novelUrl, chapterUrl) => {
-  return null;
+  console.log(novelUrl);
+  console.log(chapterUrl);
+
+  const chapter = {
+    sourceId: 123,
+    novelUrl: '',
+    chapterUrl: '',
+    chapterName: 'chp name',
+    chapterText: 'chp body',
+  };
+
+  return chapter;
 };
 
 const searchNovels = async searchTerm => {
