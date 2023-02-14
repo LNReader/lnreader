@@ -84,7 +84,7 @@ export const DaoNovelScraper = new MadaraScraper(
   'https://daonovel.com/',
   'DaoNovel',
   {
-    'path': { 'novels': 'novel-list', 'novel': 'novel', 'chapter': 'novel' },
+    'path': { 'novels': 'novels-list', 'novel': 'novels', 'chapter': 'novels' },
     'useNewChapterEndpoint': true,
   },
 );
