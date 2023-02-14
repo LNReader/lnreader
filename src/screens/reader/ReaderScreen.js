@@ -218,30 +218,38 @@ const ChapterContent = ({ route, navigation }) => {
     },
   );
 
-  const [currentOffset, setCurrentOffset] = useState(position?.position || 0);
-
   let scrollTimeout;
 
   useEffect(() => {
-    if (currentScroll.percentage !== 100 && autoScroll) {
+    if (position.percentage !== 100 && autoScroll) {
       scrollTimeout = setTimeout(() => {
-        scrollViewRef.current.scrollTo({
-          x: 0,
-          y:
-            currentOffset +
-            defaultTo(autoScrollOffset, Dimensions.get('window').height),
-          animated: true,
-        });
-        setCurrentOffset(
-          prevState =>
-            prevState +
-            defaultTo(autoScrollOffset, Dimensions.get('window').height),
-        );
+        if (useWebViewForChapter) {
+          webViewRef.current.injectJavaScript(`(()=>{
+            window.scrollTo(
+              {
+                top: ${
+                  position.position +
+                  defaultTo(autoScrollOffset, Dimensions.get('window').height)
+                }, 
+                left:0, 
+                behavior:"smooth"
+              }
+            );
+          })()`);
+        } else {
+          scrollViewRef.current.scrollTo({
+            x: 0,
+            y:
+              position.position +
+              defaultTo(autoScrollOffset, Dimensions.get('window').height),
+            animated: true,
+          });
+        }
       }, autoScrollInterval * 1000);
     }
 
     return () => clearTimeout(scrollTimeout);
-  }, [autoScroll, currentOffset]);
+  }, [autoScroll, position.position, useWebViewForChapter]);
 
   const updateTracker = () => {
     const chapterNumber = parseChapterNumber(chapterName);
