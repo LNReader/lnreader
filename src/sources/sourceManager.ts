@@ -11,7 +11,6 @@ import vipNovelScraper from './en/vipnovel';
 import kissLightNovelScraper from './en/kisslightnovels';
 import WuxiaWorldSiteScraper from './en/wuxiaworldsite';
 import FreeWebNovelScraper from './en/freewebnovel';
-import JPMTLScraper from './en/jpmtl';
 import lightNovelPubScraper from './en/lightnovelpub';
 import WuxiaWorldCoScraper from './en/wuxiaworldco';
 import novelUpdatesCcScraper from './en/novelupdatescc';
@@ -184,7 +183,6 @@ export const sourceManager = (sourceId: number): Scraper => {
     11: kissLightNovelScraper,
     12: WuxiaWorldSiteScraper,
     13: FreeWebNovelScraper,
-    14: JPMTLScraper,
     15: lightNovelPubScraper,
     16: WuxiaWorldCoScraper,
     17: tapReadScraper,
