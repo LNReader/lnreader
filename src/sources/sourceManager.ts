@@ -8,7 +8,6 @@ import WuxiaWorldScraper from './en/wuxiaworld';
 import novelFullScraper from './en/novelfull';
 import novelTrenchScraper from './en/noveltrench';
 import vipNovelScraper from './en/vipnovel';
-import kissLightNovelScraper from './en/kisslightnovels';
 import WuxiaWorldSiteScraper from './en/wuxiaworldsite';
 import FreeWebNovelScraper from './en/freewebnovel';
 import lightNovelPubScraper from './en/lightnovelpub';
@@ -180,7 +179,6 @@ export const sourceManager = (sourceId: number): Scraper => {
     8: novelFullScraper,
     9: novelTrenchScraper,
     10: vipNovelScraper,
-    11: kissLightNovelScraper,
     12: WuxiaWorldSiteScraper,
     13: FreeWebNovelScraper,
     15: lightNovelPubScraper,
