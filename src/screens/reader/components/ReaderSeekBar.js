@@ -13,16 +13,12 @@ const VerticalScrollbar = ({
   verticalSeekbar,
   currentScroll,
   scrollTo,
-  setCurrentScroll,
 }) => {
   const { bottom } = useSafeAreaInsets();
   const onSlidingComplete = value => {
-    let offsetY = Math.round(
-      ((value - minScroll) * Dimensions.get('window').height) / minScroll,
-    );
+    let offsetY =
+      ((value - minScroll) * Dimensions.get('window').height) / minScroll;
     scrollTo(offsetY, true);
-    // smooth in textview is weir, but... @@
-    setCurrentScroll({ offsetY: offsetY, percentage: value });
   };
   const screenOrientation = useDeviceOrientation();
 

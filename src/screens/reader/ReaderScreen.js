@@ -281,7 +281,9 @@ const ChapterContent = ({ route, navigation }) => {
     }
   };
 
+  var setScrollTimeout;
   const onScroll = useCallback(({ nativeEvent }) => {
+    clearTimeout(setScrollTimeout);
     const offsetY = nativeEvent.contentOffset.y;
     const pos =
       nativeEvent.contentOffset.y + nativeEvent.layoutMeasurement.height;
@@ -289,13 +291,10 @@ const ChapterContent = ({ route, navigation }) => {
     const percentage = Math.round((pos / nativeEvent.contentSize.height) * 100);
     if (!(offsetY == 0 && percentage == 100)) {
       // because the content is set to 0 when closing layout (i guess)
-      setCurrentScroll({ offsetY: offsetY, percentage: percentage });
-    }
-    if (
-      nativeEvent.contentSize.height != nativeEvent.layoutMeasurement.height &&
-      nativeEvent.contentSize.height > 0
-    ) {
-      doSaveProgress(offsetY, percentage);
+      setScrollTimeout = setTimeout(() => {
+        setCurrentScroll({ offsetY: offsetY, percentage: percentage });
+        doSaveProgress(offsetY, percentage);
+      }, 50);
     }
   }, []);
 
@@ -514,7 +513,6 @@ const ChapterContent = ({ route, navigation }) => {
           verticalSeekbar={verticalSeekbar}
           currentScroll={currentScroll}
           scrollTo={scrollTo}
-          setCurrentScroll={setCurrentScroll}
         />
         <ReaderFooter
           hide={hidden}

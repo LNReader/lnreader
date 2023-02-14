@@ -301,7 +301,6 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
                       </chapter>
                     </div>
                     <script>
-                    const chapterElement = document.querySelector('chapter');
                     const imgs = [...document.querySelectorAll("img")].map(img=>{
                       return {url:img.getAttribute("file-src"), id:img.getAttribute("file-id")}
                     });
@@ -321,7 +320,7 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
                             }
                           )
                         );
-                      }, 66);
+                      }, 100);
                     });
                     let loadInterval = setInterval(() => {
                       window.ReactNativeWebView.postMessage(
