@@ -5,6 +5,7 @@ export const languages = [
   'French',
   'Indonesian',
   'Japanese',
+  'Korean',
   'Portuguese (Brazil)',
   'Russian',
   'Spanish',
