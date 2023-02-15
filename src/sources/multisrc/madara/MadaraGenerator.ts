@@ -227,13 +227,6 @@ export const TurkceLightNovelsScraper = new MadaraScraper(
   },
 );
 
-export const NovelOwlScraper = new MadaraScraper(
-  111,
-  'https://novelowl.com/',
-  'NovelOwl',
-  { 'totalPages': 208, 'useNewChapterEndpoint': true },
-);
-
 export const SonicMTLScraper = new MadaraScraper(
   121,
   'https://www.sonicmtl.com/',
