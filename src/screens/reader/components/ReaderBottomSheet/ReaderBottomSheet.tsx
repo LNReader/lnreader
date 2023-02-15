@@ -38,7 +38,6 @@ const GeneralTab: React.FC = () => {
   const theme = useTheme();
   const dispatch = useAppDispatch();
   const {
-    useWebViewForChapter,
     fullScreenMode,
     autoScroll,
     verticalSeekbar,
@@ -113,32 +112,29 @@ const GeneralTab: React.FC = () => {
         value={removeExtraParagraphSpacing}
         theme={theme}
       />
-      {useWebViewForChapter ? (
-        <ReaderSheetPreferenceItem
-          label={'Volume buttons scroll'}
-          onPress={() =>
-            dispatch(setAppSettings('wvUseVolumeButtons', !wvUseVolumeButtons))
-          }
-          value={wvUseVolumeButtons}
-          theme={theme}
-        />
-      ) : (
-        <ReaderSheetPreferenceItem
-          label={getString(
-            'readerScreen.bottomSheet.useChapterDrawerSwipeNavigation',
-          )}
-          onPress={() =>
-            dispatch(
-              setAppSettings(
-                'useChapterDrawerSwipeNavigation',
-                !useChapterDrawerSwipeNavigation,
-              ),
-            )
-          }
-          value={useChapterDrawerSwipeNavigation}
-          theme={theme}
-        />
-      )}
+      <ReaderSheetPreferenceItem
+        label={'Volume buttons scroll'}
+        onPress={() =>
+          dispatch(setAppSettings('wvUseVolumeButtons', !wvUseVolumeButtons))
+        }
+        value={wvUseVolumeButtons}
+        theme={theme}
+      />
+      <ReaderSheetPreferenceItem
+        label={getString(
+          'readerScreen.bottomSheet.useChapterDrawerSwipeNavigation',
+        )}
+        onPress={() =>
+          dispatch(
+            setAppSettings(
+              'useChapterDrawerSwipeNavigation',
+              !useChapterDrawerSwipeNavigation,
+            ),
+          )
+        }
+        value={useChapterDrawerSwipeNavigation}
+        theme={theme}
+      />
     </View>
   );
 };

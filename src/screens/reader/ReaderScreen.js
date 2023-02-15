@@ -103,7 +103,6 @@ const ChapterContent = ({ route, navigation }) => {
 
   const {
     swipeGestures = false,
-    useWebViewForChapter = true,
     wvShowSwipeMargins = true,
     wvUseVolumeButtons = false,
     autoScroll = false,
@@ -137,7 +136,7 @@ const ChapterContent = ({ route, navigation }) => {
 
   useEffect(() => {
     VolumeButtonListener.disconnect();
-    if (useWebViewForChapter && wvUseVolumeButtons) {
+    if (wvUseVolumeButtons) {
       VolumeButtonListener.connect();
       VolumeButtonListener.preventDefault();
       const emmiter = new NativeEventEmitter(
@@ -221,8 +220,7 @@ const ChapterContent = ({ route, navigation }) => {
 
   const scrollTo = useCallback(
     (offsetY, animated) => {
-      if (useWebViewForChapter) {
-        webViewRef?.current.injectJavaScript(`(()=>{
+      webViewRef?.current.injectJavaScript(`(()=>{
         window.scrollTo(
           {
             left:0,
@@ -231,15 +229,8 @@ const ChapterContent = ({ route, navigation }) => {
           }
           );
       })()`);
-      } else {
-        scrollViewRef?.current.scrollTo({
-          x: 0,
-          y: offsetY,
-          animated: animated,
-        });
-      }
     },
-    [scrollViewRef, webViewRef, useWebViewForChapter],
+    [scrollViewRef, webViewRef],
   );
 
   useEffect(() => {
@@ -254,7 +245,7 @@ const ChapterContent = ({ route, navigation }) => {
     }
 
     return () => clearTimeout(scrollTimeout);
-  }, [autoScroll, position?.position, useWebViewForChapter]);
+  }, [autoScroll, position?.position]);
 
   const updateTracker = () => {
     const chapterNumber = parseChapterNumber(chapterName);
@@ -309,23 +300,18 @@ const ChapterContent = ({ route, navigation }) => {
       };
 
       scrollToSavedProgress();
-      if (!useWebViewForChapter) {
-        minScroll.current =
-          (Dimensions.get('window').height / event.nativeEvent.layout.height) *
-          100;
-      }
     },
-    [nextChapter, useWebViewForChapter],
+    [nextChapter],
   );
 
   const hideHeader = () => {
     if (!hidden) {
-      if (useWebViewForChapter && wvUseVolumeButtons) {
+      if (wvUseVolumeButtons) {
         VolumeButtonListener.connect();
       }
       setImmersiveMode();
     } else {
-      if (useWebViewForChapter && wvUseVolumeButtons) {
+      if (wvUseVolumeButtons) {
         VolumeButtonListener.disconnect();
       }
       showStatusAndNavBar();

@@ -2,9 +2,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  TextStyle,
   View,
-  ViewStyle,
   ScrollView,
   useWindowDimensions,
 } from 'react-native';
@@ -43,7 +41,7 @@ import {
   setReaderSettings,
 } from '@redux/settings/settings.actions';
 
-import { dummyHTML, dummyText } from './utils';
+import { dummyHTML } from './utils';
 import useBoolean from '@hooks/useBoolean';
 import {
   deleteCustomReaderTheme,
@@ -71,7 +69,6 @@ const SettingsReaderScreen = () => {
 
   const readerSettings = useReaderSettings();
   const {
-    useWebViewForChapter = false,
     wvShowSwipeMargins = true,
     wvUseVolumeButtons = false,
     verticalSeekbar = true,
@@ -113,19 +110,6 @@ const SettingsReaderScreen = () => {
 
   const readerBackgroundColor = readerSettings.theme;
 
-  const textReaderContainerStyle: ViewStyle = {
-    padding: `${readerSettings.padding}%`,
-    backgroundColor: readerBackgroundColor,
-  };
-
-  const textReaderStyle: TextStyle = {
-    fontFamily: readerSettings.fontFamily,
-    fontSize: readerSettings.textSize,
-    textAlign: readerSettings.textAlign as TextAlignments,
-    lineHeight: readerSettings.textSize * readerSettings.lineHeight,
-    color: readerSettings.textColor,
-  };
-
   const readerBackgroundModal = useBoolean();
   const readerTextColorModal = useBoolean();
   const readerFontPickerModal = useBoolean();
@@ -165,30 +149,24 @@ const SettingsReaderScreen = () => {
       />
 
       <View style={{ height: READER_HEIGHT }}>
-        {useWebViewForChapter ? (
-          <WebView
-            originWhitelist={['*']}
-            style={{ backgroundColor: readerBackgroundColor }}
-            nestedScrollEnabled={true}
-            source={{
-              html: `
-              <html>
-                <head>
-                  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-                  ${webViewCSS}
-                </head>
-                <body>
-                  ${dummyHTML}
-                </body>
-              </html>
-              `,
-            }}
-          />
-        ) : (
-          <View style={textReaderContainerStyle}>
-            <Text style={textReaderStyle}>{dummyText}</Text>
-          </View>
-        )}
+        <WebView
+          originWhitelist={['*']}
+          style={{ backgroundColor: readerBackgroundColor }}
+          nestedScrollEnabled={true}
+          source={{
+            html: `
+            <html>
+              <head>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+                ${webViewCSS}
+              </head>
+              <body>
+                ${dummyHTML}
+              </body>
+            </html>
+            `,
+          }}
+        />
       </View>
 
       <ScrollView
@@ -206,18 +184,14 @@ const SettingsReaderScreen = () => {
           }
           theme={theme}
         />
-        {useWebViewForChapter ? (
-          <SwitchItem
-            label={'Volume buttons scroll'}
-            value={wvUseVolumeButtons}
-            onPress={() =>
-              dispatch(
-                setAppSettings('wvUseVolumeButtons', !wvUseVolumeButtons),
-              )
-            }
-            theme={theme}
-          />
-        ) : null}
+        <SwitchItem
+          label={'Volume buttons scroll'}
+          value={wvUseVolumeButtons}
+          onPress={() =>
+            dispatch(setAppSettings('wvUseVolumeButtons', !wvUseVolumeButtons))
+          }
+          theme={theme}
+        />
         <SwitchItem
           label={getString('readerScreen.bottomSheet.swipeGestures')}
           value={swipeGestures}
@@ -311,44 +285,42 @@ const SettingsReaderScreen = () => {
             ) : null}
           </>
         ) : null}
-        {useWebViewForChapter ? (
-          <>
-            <List.Divider theme={theme} />
-            <List.SubHeader theme={theme}>
-              {getString('moreScreen.settingsScreen.readerSettings.customCSS')}
-            </List.SubHeader>
-            <View style={styles.customCSSContainer}>
-              <TextInput
-                style={[{ color: theme.textColorPrimary }, styles.fontSizeL]}
-                value={customCSS}
-                onChangeText={text => setcustomCSS(text)}
-                placeholderTextColor={theme.textColorSecondary}
-                placeholder="Example: body { color: red; }"
-                multiline={true}
+        <>
+          <List.Divider theme={theme} />
+          <List.SubHeader theme={theme}>
+            {getString('moreScreen.settingsScreen.readerSettings.customCSS')}
+          </List.SubHeader>
+          <View style={styles.customCSSContainer}>
+            <TextInput
+              style={[{ color: theme.textColorPrimary }, styles.fontSizeL]}
+              value={customCSS}
+              onChangeText={text => setcustomCSS(text)}
+              placeholderTextColor={theme.textColorSecondary}
+              placeholder="Example: body { color: red; }"
+              multiline={true}
+            />
+            <View style={styles.customCSSButtons}>
+              <Button
+                theme={theme}
+                onPress={() =>
+                  dispatch(setReaderSettings('customCSS', customCSS))
+                }
+                style={styles.marginLeftS}
+                title={getString('common.save')}
+                variation={ButtonVariation.OUTLINED}
               />
-              <View style={styles.customCSSButtons}>
-                <Button
-                  theme={theme}
-                  onPress={() =>
-                    dispatch(setReaderSettings('customCSS', customCSS))
-                  }
-                  style={styles.marginLeftS}
-                  title={getString('common.save')}
-                  variation={ButtonVariation.OUTLINED}
-                />
-                <Button
-                  theme={theme}
-                  onPress={() => {
-                    setcustomCSS('');
-                    dispatch(setReaderSettings('customCSS', ''));
-                  }}
-                  title={getString('common.clear')}
-                  variation={ButtonVariation.OUTLINED}
-                />
-              </View>
+              <Button
+                theme={theme}
+                onPress={() => {
+                  setcustomCSS('');
+                  dispatch(setReaderSettings('customCSS', ''));
+                }}
+                title={getString('common.clear')}
+                variation={ButtonVariation.OUTLINED}
+              />
             </View>
-          </>
-        ) : null}
+          </View>
+        </>
         <List.Divider theme={theme} />
         <List.SubHeader theme={theme}>
           {getString('novelScreen.bottomSheet.display')}
