@@ -117,7 +117,6 @@ import MyLoveNovelScraper from './en/mylovenovel';
 import NovelRinganScraper from './id/novelringan';
 import IndoWebNovelScraper from './id/indowebnovel';
 import ChireadsScraper from './fr/chireads';
-import MTLCornerScraper from './en/mtlcorner';
 import NitroScansScraper from './en/nitroscans';
 import NovelForestScraper from './en/novelforest';
 import NovelPubScraper from './en/novelpub';
@@ -250,7 +249,6 @@ export const sourceManager = (sourceId: number): Scraper => {
     86: NovelRinganScraper, // @ts-ignore
     87: IndoWebNovelScraper, // @ts-ignore
     88: ChireadsScraper, // @ts-ignore
-    89: MTLCornerScraper, // @ts-ignore
     90: NitroScansScraper, // @ts-ignore
     91: OnlyMTLScraper, // @ts-ignore
     92: NovelForestScraper, // @ts-ignore
