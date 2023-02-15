@@ -301,8 +301,9 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
                       </chapter>
                     </div>
                     <script>
-                    const imgs = [...document.querySelectorAll("img")].map(img=>{
-                      return {url:img.getAttribute("file-src"), id:img.getAttribute("file-id")}
+                    const imgs = [...document.querySelectorAll("img")].map((img, index)=>{
+                      img.setAttribute("id", "file-id-" + index);
+                      return {url:img.getAttribute("src"), id:img.getAttribute("id")}
                     });
                     window.ReactNativeWebView.postMessage(JSON.stringify({type:"imgfiles",data:imgs}));
                     var scrollTimeout;

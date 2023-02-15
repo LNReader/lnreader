@@ -397,7 +397,7 @@ const ChapterContent = ({ route, navigation }) => {
           theme={theme}
         />
         <GestureRecognizer
-          onSwipe={navigateToChapterBySwipe}
+          onSwipe={swipeGestures && !wvUseNewSwipes && navigateToChapterBySwipe}
           config={config}
           style={{ flex: 1 }}
         >
