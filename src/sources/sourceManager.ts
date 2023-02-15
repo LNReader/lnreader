@@ -282,8 +282,7 @@ export const sourceManager = (sourceId: number): Scraper => {
     141: NovelR18Scraper, // @ts-ignore
     142: AuthorTodayScraper, // @ts-ignore
     143: WebNovelOkuScraper, // @ts-ignore
-    144: NobleMtlScraper,
-    145: AgitoonScraper,
+    144: NobleMtlScraper, // @ts-ignore
   };
 
   return scrapers[sourceId];
