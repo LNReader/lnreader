@@ -16,14 +16,6 @@
     }
   },
   {
-    "sourceId": 39,
-    "baseUrl": "https://novelcake.com/",
-    "sourceName": "NovelCake",
-    "options": {
-      "path": { "novels": "series", "novel": "series", "chapter": "series" }
-    }
-  },
-  {
     "sourceId": 40,
     "baseUrl": "https://novelsrock.com/",
     "sourceName": "NovelsRock",

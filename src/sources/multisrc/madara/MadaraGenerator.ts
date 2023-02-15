@@ -18,13 +18,6 @@ export const SkyNovelScraper = new MadaraScraper(
   { 'path': { 'novels': 'manga', 'novel': 'manga', 'chapter': 'manga' } },
 );
 
-export const NovelCakeScraper = new MadaraScraper(
-  39,
-  'https://novelcake.com/',
-  'NovelCake',
-  { 'path': { 'novels': 'series', 'novel': 'series', 'chapter': 'series' } },
-);
-
 export const NovelsRockScraper = new MadaraScraper(
   40,
   'https://novelsrock.com/',
