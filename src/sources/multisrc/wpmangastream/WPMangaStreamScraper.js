@@ -25,7 +25,7 @@ class WPMangaStreamScraper {
       const novelName = loadedCheerio(this).find('.ntitle').text().trim();
       let image = loadedCheerio(this).find('img');
       const novelCover = image.attr('data-src') || image.attr('src');
-      
+
       const novelUrl = loadedCheerio(this).find('a').attr('href');
 
       const novel = {
@@ -59,8 +59,10 @@ class WPMangaStreamScraper {
     novel.novelUrl = novelUrl;
 
     novel.novelName = loadedCheerio('.entry-title').text();
-    
-    novel.novelCover = loadedCheerio('img.wp-post-image').attr('data-src') || loadedCheerio('img.wp-post-image').attr('src');
+
+    novel.novelCover =
+      loadedCheerio('img.wp-post-image').attr('data-src') ||
+      loadedCheerio('img.wp-post-image').attr('src');
 
     loadedCheerio('div.spe > span').each(function () {
       const detailName = loadedCheerio(this).find('b').text().trim();
