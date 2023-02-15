@@ -342,92 +342,84 @@ const ChapterContent = ({ route, navigation }) => {
         <GestureRecognizer
           onSwipe={swipeGestures && navigateToChapterBySwipe}
           config={config}
-          style={{ flex: 1 }}
+          style={[{ flex: 1 }, { backgroundColor }]}
         >
-          <ScrollView
-            contentContainerStyle={[
-              styles.screenContainer,
-              { backgroundColor },
-            ]}
-            showsVerticalScrollIndicator={false}
-          >
-            {error ? (
-              <View style={{ flex: 1, justifyContent: 'center' }}>
-                <EmptyView
-                  icon="Σ(ಠ_ಠ)"
-                  description={error}
-                  style={{ color: readerSettings.textColor }}
-                >
-                  <IconButton
-                    icon="reload"
-                    size={25}
-                    style={{ margin: 0, marginTop: 16 }}
-                    iconColor={readerSettings.textColor}
-                    onPress={() => {
-                      getChapter(chapterId);
-                      setLoading(true);
-                      setError();
-                    }}
-                  />
-                  <Text style={{ color: readerSettings.textColor }}>Retry</Text>
-                </EmptyView>
-              </View>
-            ) : loading ? (
-              <SkeletonLines
-                containerMargin={readerSettings.padding + '%'}
-                containerHeight={'100%'}
-                containerWidth={'100%'}
-                color={
-                  color(backgroundColor).isDark()
-                    ? color(backgroundColor).luminosity() !== 0
-                      ? color(backgroundColor).lighten(0.1).toString()
-                      : color(backgroundColor).negate().darken(0.98).toString()
-                    : color(backgroundColor).darken(0.04).toString()
-                }
-                highlightColor={
-                  color(backgroundColor).isDark()
-                    ? color(backgroundColor).luminosity() !== 0
-                      ? color(backgroundColor).lighten(0.4).toString()
-                      : color(backgroundColor).negate().darken(0.92).toString()
-                    : color(backgroundColor).darken(0.08).toString()
-                }
-                textSize={readerSettings.textSize}
-                lineHeight={readerSettings.lineHeight}
-              />
-            ) : (
-              <TouchableWithoutFeedback
-                style={{ flex: 1 }}
-                onLayout={() => scrollTo(position?.position)}
+          {error ? (
+            <View style={{ flex: 1, justifyContent: 'center' }}>
+              <EmptyView
+                icon="Σ(ಠ_ಠ)"
+                description={error}
+                style={{ color: readerSettings.textColor }}
               >
-                <View style={{ flex: 1 }}>
-                  <WebViewReader
-                    theme={theme}
-                    chapter={chapter}
-                    html={chapterText}
-                    reader={readerSettings}
-                    chapterName={chapter.chapterName || chapterName}
-                    layoutHeight={Dimensions.get('window').height}
-                    swipeGestures={swipeGestures}
-                    minScroll={minScroll}
-                    currentScroll={currentScroll}
-                    scrollPage={scrollPage}
-                    wvShowSwipeMargins={wvShowSwipeMargins}
-                    nextChapter={nextChapter}
-                    webViewRef={webViewRef}
-                    onPress={hideHeader}
-                    scrollTo={scrollTo}
-                    setCurrentScroll={setCurrentScroll}
-                    setScrollPage={setScrollPage}
-                    doSaveProgress={doSaveProgress}
-                    navigateToChapterBySwipe={navigateToChapterBySwipe}
-                    onWebViewNavigationStateChange={
-                      onWebViewNavigationStateChange
-                    }
-                  />
-                </View>
-              </TouchableWithoutFeedback>
-            )}
-          </ScrollView>
+                <IconButton
+                  icon="reload"
+                  size={25}
+                  style={{ margin: 0, marginTop: 16 }}
+                  iconColor={readerSettings.textColor}
+                  onPress={() => {
+                    getChapter(chapterId);
+                    setLoading(true);
+                    setError();
+                  }}
+                />
+                <Text style={{ color: readerSettings.textColor }}>Retry</Text>
+              </EmptyView>
+            </View>
+          ) : loading ? (
+            <SkeletonLines
+              containerMargin={readerSettings.padding + '%'}
+              containerHeight={'100%'}
+              containerWidth={'100%'}
+              color={
+                color(backgroundColor).isDark()
+                  ? color(backgroundColor).luminosity() !== 0
+                    ? color(backgroundColor).lighten(0.1).toString()
+                    : color(backgroundColor).negate().darken(0.98).toString()
+                  : color(backgroundColor).darken(0.04).toString()
+              }
+              highlightColor={
+                color(backgroundColor).isDark()
+                  ? color(backgroundColor).luminosity() !== 0
+                    ? color(backgroundColor).lighten(0.4).toString()
+                    : color(backgroundColor).negate().darken(0.92).toString()
+                  : color(backgroundColor).darken(0.08).toString()
+              }
+              textSize={readerSettings.textSize}
+              lineHeight={readerSettings.lineHeight}
+            />
+          ) : (
+            <TouchableWithoutFeedback
+              style={{ flex: 1 }}
+              onLayout={() => scrollTo(position?.position)}
+            >
+              <View style={{ flex: 1 }}>
+                <WebViewReader
+                  theme={theme}
+                  chapter={chapter}
+                  html={chapterText}
+                  reader={readerSettings}
+                  chapterName={chapter.chapterName || chapterName}
+                  layoutHeight={Dimensions.get('window').height}
+                  swipeGestures={swipeGestures}
+                  minScroll={minScroll}
+                  currentScroll={currentScroll}
+                  scrollPage={scrollPage}
+                  wvShowSwipeMargins={wvShowSwipeMargins}
+                  nextChapter={nextChapter}
+                  webViewRef={webViewRef}
+                  onPress={hideHeader}
+                  scrollTo={scrollTo}
+                  setCurrentScroll={setCurrentScroll}
+                  setScrollPage={setScrollPage}
+                  doSaveProgress={doSaveProgress}
+                  navigateToChapterBySwipe={navigateToChapterBySwipe}
+                  onWebViewNavigationStateChange={
+                    onWebViewNavigationStateChange
+                  }
+                />
+              </View>
+            </TouchableWithoutFeedback>
+          )}
         </GestureRecognizer>
         <BottomInfoBar scrollPercentage={currentScroll.percentage || 0} />
         <Portal>
@@ -458,20 +450,3 @@ const ChapterContent = ({ route, navigation }) => {
 };
 
 export default Chapter;
-
-const styles = StyleSheet.create({
-  screenContainer: { flexGrow: 1 },
-  scrollPercentageContainer: {
-    width: '100%',
-    position: 'absolute',
-    paddingVertical: 4,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    zIndex: 1,
-    flexDirection: 'row',
-    paddingHorizontal: 32,
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-});
