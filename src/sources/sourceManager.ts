@@ -39,7 +39,6 @@ import {
   FirstKissNovelScraper,
   HizoMangaScraper,
   LightNovelHeavenScraper,
-  LightNovelsHubScraper,
   LunarLettersScraper,
   MoreNovelScraper,
   MostNovelScraper,
@@ -166,143 +165,142 @@ interface Scraper {
   searchNovels: (searchTerm: string) => Promise<SourceNovelItem[]>;
   filters?: SourceFilter[];
 }
-
 export const sourceManager = (sourceId: number): Scraper => {
   const scrapers: Record<number, Scraper> = {
-    1: BoxNovelScraper,
-    2: ReadLightNovelScraper,
-    3: fastNovelScraper,
-    4: readNovelFullScraper,
-    5: mtlNovelScraper,
-    6: novelhallScraper,
-    7: WuxiaWorldScraper,
-    8: novelFullScraper,
-    9: novelTrenchScraper,
-    10: vipNovelScraper,
-    12: WuxiaWorldSiteScraper,
-    13: FreeWebNovelScraper,
-    15: lightNovelPubScraper,
-    16: WuxiaWorldCoScraper,
-    17: tapReadScraper,
-    18: novelUpdatesCcScraper,
-    19: readLightNovelCcScraper,
-    20: WuxiaWorldCloudScraper,
-    21: WoopReadScraper,
-    22: FoxaHolicScraper,
-    23: TuNovelaLigeraScraper,
-    24: SkyNovelsScraper,
-    25: EinharjarProjectScraper,
-    26: NovelasLigeraScraper,
-    27: ComradeMaoScraper,
-    28: YuukiTlsScraper,
-    29: HasuTlScraper,
-    30: OasisTranslationsScraper,
-    31: NovelaWuxiaScraper,
-    33: NovelPassionScraper,
-    34: RoyalRoadScraper,
-    35: ScribbleHubScraper,
-    36: SyosetuScraper,
-    37: LNMTLScraper,
-    38: SkyNovelScraper,
-    39: NovelCakeScraper,
-    40: NovelsRockScraper,
-    41: ZinnNovelScraper,
-    42: NovelTranslateScraper,
-    43: LunarLettersScraper,
-    44: SleepyTranslationsScraper,
-    45: FreeNovelMeScraper,
-    46: FirstKissNovelScraper,
-    47: DaoNovelScraper,
-    48: WuxiaBlogScraper,
-    49: WuxiaCityScraper,
-    50: NovelUpdatesScraper,
-    51: RanobesScraper,
-    52: YushuboScraper,
-    53: KolNovelScraper,
-    55: MostNovelScraper,
-    56: NovelMultiverseScraper,
-    57: LightNovelHeavenScraper,
-    58: LightNovelsHubScraper,
-    59: ArNovelScraper,
-    60: MeioNovelScraper,
-    61: WebNovelLoverScraper,
-    62: WLNUpdatesScraper,
-    63: CrateNovelScraper,
-    64: ClickNovelScraper,
-    65: ReadWebNovelsScraper,
-    66: WBNovelScraper,
-    67: ReaperScansScraper,
-    68: ReadwnScraper,
-    69: RanobeHubScraper,
-    70: DivineDaoLibraryScraper,
-    71: NovelOnlineFullScraper,
-    72: LightNovelUpdatesScraper,
-    73: EpikNovelScraper,
-    74: WuxiaWorldDotSiteScraper,
-    75: MysticalSeriesScraper,
-    76: TravisTranslationsScraper,
-    77: NovelDeGlaceScraper,
-    78: RainOfSnowScraper,
-    79: ReaperScansBrScraper,
-    80: ArthurScansScraper,
-    81: IdMtlNovelScraper,
-    82: MTLReaderScraper,
-    83: MyLoveNovelScraper,
-    84: MoreNovelScraper,
-    86: NovelRinganScraper,
-    87: IndoWebNovelScraper,
-    88: ChireadsScraper,
-    89: MTLCornerScraper,
-    90: NitroScansScraper,
-    91: OnlyMTLScraper,
-    92: NovelForestScraper,
-    93: RanobeLibScraper,
-    94: NovelPubScraper,
-    95: BestLightNovel,
-    96: HizoMangaScraper,
-    97: NovelFullMeScraper,
-    98: LightNovelFullScraper,
-    99: NovelmtScraper,
-    100: LtnovelScraper,
-    101: ArMTLScraper,
-    103: SakuraNovelScraper,
-    104: Novel4UpScraper,
-    107: TeamXNovelScraper,
-    108: AllNovelFullScraper,
-    109: ReadFreeNovelScraper,
-    110: TurkceLightNovelsScraper,
-    111: NovelOwlScraper,
-    112: FreeNovelUpdatesScraper,
-    113: NovelsCafeScraper,
-    114: LightNovelReaderScraper,
-    115: HakoLightNovelScraper,
-    116: RenovelsScraper,
-    117: JaomixScraper,
-    118: RulateScraper,
-    119: RanobeRFScraper,
-    120: MTNovelScraper,
-    121: SonicMTLScraper,
-    122: MTLNovelDotClubScraper,
-    123: LiebeSchneeHiverNovelScraper,
-    124: NoobchanTranslationScraper,
-    125: GuavareadScraper,
-    126: SweetEscapeTranslationsScraper,
-    127: FansTranslationsScraper,
-    128: NovelTop1Scraper,
-    129: LightNovelsBrasilScraper,
-    130: RiwyatScraper,
-    131: NovelsticScraper,
-    132: RanobesruScraper,
-    133: NeoSekaiTranslationsScraper,
-    134: MTLDashNovelScraper,
-    135: ZetroTranslationScraper,
-    136: NocturneTranslationsScraper,
-    138: SugarBabiesScraper,
-    139: FicbookScraper,
-    140: NovelroomDotnetScraper,
-    141: NovelR18Scraper,
-    142: AuthorTodayScraper,
-    143: WebNovelOkuScraper,
+    // @ts-ignore
+    1: BoxNovelScraper, // @ts-ignore
+    2: ReadLightNovelScraper, // @ts-ignore
+    3: fastNovelScraper, // @ts-ignore
+    4: readNovelFullScraper, // @ts-ignore
+    5: mtlNovelScraper, // @ts-ignore
+    6: novelhallScraper, // @ts-ignore
+    7: WuxiaWorldScraper, // @ts-ignore
+    8: novelFullScraper, // @ts-ignore
+    9: novelTrenchScraper, // @ts-ignore
+    10: vipNovelScraper, // @ts-ignore
+    12: WuxiaWorldSiteScraper, // @ts-ignore
+    13: FreeWebNovelScraper, // @ts-ignore
+    15: lightNovelPubScraper, // @ts-ignore
+    16: WuxiaWorldCoScraper, // @ts-ignore
+    17: tapReadScraper, // @ts-ignore
+    18: novelUpdatesCcScraper, // @ts-ignore
+    19: readLightNovelCcScraper, // @ts-ignore
+    20: WuxiaWorldCloudScraper, // @ts-ignore
+    21: WoopReadScraper, // @ts-ignore
+    22: FoxaHolicScraper, // @ts-ignore
+    23: TuNovelaLigeraScraper, // @ts-ignore
+    24: SkyNovelsScraper, // @ts-ignore
+    25: EinharjarProjectScraper, // @ts-ignore
+    26: NovelasLigeraScraper, // @ts-ignore
+    27: ComradeMaoScraper, // @ts-ignore
+    28: YuukiTlsScraper, // @ts-ignore
+    29: HasuTlScraper, // @ts-ignore
+    30: OasisTranslationsScraper, // @ts-ignore
+    31: NovelaWuxiaScraper, // @ts-ignore
+    33: NovelPassionScraper, // @ts-ignore
+    34: RoyalRoadScraper, // @ts-ignore
+    35: ScribbleHubScraper, // @ts-ignore
+    36: SyosetuScraper, // @ts-ignore
+    37: LNMTLScraper, // @ts-ignore
+    38: SkyNovelScraper, // @ts-ignore
+    39: NovelCakeScraper, // @ts-ignore
+    40: NovelsRockScraper, // @ts-ignore
+    41: ZinnNovelScraper, // @ts-ignore
+    42: NovelTranslateScraper, // @ts-ignore
+    43: LunarLettersScraper, // @ts-ignore
+    44: SleepyTranslationsScraper, // @ts-ignore
+    45: FreeNovelMeScraper, // @ts-ignore
+    46: FirstKissNovelScraper, // @ts-ignore
+    47: DaoNovelScraper, // @ts-ignore
+    48: WuxiaBlogScraper, // @ts-ignore
+    49: WuxiaCityScraper, // @ts-ignore
+    50: NovelUpdatesScraper, // @ts-ignore
+    51: RanobesScraper, // @ts-ignore
+    52: YushuboScraper, // @ts-ignore
+    53: KolNovelScraper, // @ts-ignore
+    55: MostNovelScraper, // @ts-ignore
+    56: NovelMultiverseScraper, // @ts-ignore
+    57: LightNovelHeavenScraper, // @ts-ignore
+    59: ArNovelScraper, // @ts-ignore
+    60: MeioNovelScraper, // @ts-ignore
+    61: WebNovelLoverScraper, // @ts-ignore
+    62: WLNUpdatesScraper, // @ts-ignore
+    63: CrateNovelScraper, // @ts-ignore
+    64: ClickNovelScraper, // @ts-ignore
+    65: ReadWebNovelsScraper, // @ts-ignore
+    66: WBNovelScraper, // @ts-ignore
+    67: ReaperScansScraper, // @ts-ignore
+    68: ReadwnScraper, // @ts-ignore
+    69: RanobeHubScraper, // @ts-ignore
+    70: DivineDaoLibraryScraper, // @ts-ignore
+    71: NovelOnlineFullScraper, // @ts-ignore
+    72: LightNovelUpdatesScraper, // @ts-ignore
+    73: EpikNovelScraper, // @ts-ignore
+    74: WuxiaWorldDotSiteScraper, // @ts-ignore
+    75: MysticalSeriesScraper, // @ts-ignore
+    76: TravisTranslationsScraper, // @ts-ignore
+    77: NovelDeGlaceScraper, // @ts-ignore
+    78: RainOfSnowScraper, // @ts-ignore
+    79: ReaperScansBrScraper, // @ts-ignore
+    80: ArthurScansScraper, // @ts-ignore
+    81: IdMtlNovelScraper, // @ts-ignore
+    82: MTLReaderScraper, // @ts-ignore
+    83: MyLoveNovelScraper, // @ts-ignore
+    84: MoreNovelScraper, // @ts-ignore
+    86: NovelRinganScraper, // @ts-ignore
+    87: IndoWebNovelScraper, // @ts-ignore
+    88: ChireadsScraper, // @ts-ignore
+    89: MTLCornerScraper, // @ts-ignore
+    90: NitroScansScraper, // @ts-ignore
+    91: OnlyMTLScraper, // @ts-ignore
+    92: NovelForestScraper, // @ts-ignore
+    93: RanobeLibScraper, // @ts-ignore
+    94: NovelPubScraper, // @ts-ignore
+    95: BestLightNovel, // @ts-ignore
+    96: HizoMangaScraper, // @ts-ignore
+    97: NovelFullMeScraper, // @ts-ignore
+    98: LightNovelFullScraper, // @ts-ignore
+    99: NovelmtScraper, // @ts-ignore
+    100: LtnovelScraper, // @ts-ignore
+    101: ArMTLScraper, // @ts-ignore
+    103: SakuraNovelScraper, // @ts-ignore
+    104: Novel4UpScraper, // @ts-ignore
+    107: TeamXNovelScraper, // @ts-ignore
+    108: AllNovelFullScraper, // @ts-ignore
+    109: ReadFreeNovelScraper, // @ts-ignore
+    110: TurkceLightNovelsScraper, // @ts-ignore
+    111: NovelOwlScraper, // @ts-ignore
+    112: FreeNovelUpdatesScraper, // @ts-ignore
+    113: NovelsCafeScraper, // @ts-ignore
+    114: LightNovelReaderScraper, // @ts-ignore
+    115: HakoLightNovelScraper, // @ts-ignore
+    116: RenovelsScraper, // @ts-ignore
+    117: JaomixScraper, // @ts-ignore
+    118: RulateScraper, // @ts-ignore
+    119: RanobeRFScraper, // @ts-ignore
+    120: MTNovelScraper, // @ts-ignore
+    121: SonicMTLScraper, // @ts-ignore
+    122: MTLNovelDotClubScraper, // @ts-ignore
+    123: LiebeSchneeHiverNovelScraper, // @ts-ignore
+    124: NoobchanTranslationScraper, // @ts-ignore
+    125: GuavareadScraper, // @ts-ignore
+    126: SweetEscapeTranslationsScraper, // @ts-ignore
+    127: FansTranslationsScraper, // @ts-ignore
+    128: NovelTop1Scraper, // @ts-ignore
+    129: LightNovelsBrasilScraper, // @ts-ignore
+    130: RiwyatScraper, // @ts-ignore
+    131: NovelsticScraper, // @ts-ignore
+    132: RanobesruScraper, // @ts-ignore
+    133: NeoSekaiTranslationsScraper, // @ts-ignore
+    134: MTLDashNovelScraper, // @ts-ignore
+    135: ZetroTranslationScraper, // @ts-ignore
+    136: NocturneTranslationsScraper, // @ts-ignore
+    138: SugarBabiesScraper, // @ts-ignore
+    139: FicbookScraper, // @ts-ignore
+    140: NovelroomDotnetScraper, // @ts-ignore
+    141: NovelR18Scraper, // @ts-ignore
+    142: AuthorTodayScraper, // @ts-ignore
+    143: WebNovelOkuScraper, // @ts-ignore
     144: NobleMtlScraper,
   };
 
