@@ -123,7 +123,6 @@ import SakuraNovelScraper from './id/sakuranovel';
 
 import { SourceChapter, SourceNovel, SourceNovelItem } from './types';
 import AllNovelFullScraper from './en/allnovelfull';
-import ReadFreeNovelScraper from './en/readfreenovel';
 import FreeNovelUpdatesScraper from './en/freenovelupdates';
 import LightNovelReaderScraper from './en/LightNovelReader';
 import HakoLightNovelScraper from './vi/HakoLightNovel';
@@ -250,7 +249,6 @@ export const sourceManager = (sourceId: number): Scraper => {
     104: Novel4UpScraper, // @ts-ignore
     107: TeamXNovelScraper, // @ts-ignore
     108: AllNovelFullScraper, // @ts-ignore
-    109: ReadFreeNovelScraper, // @ts-ignore
     110: TurkceLightNovelsScraper, // @ts-ignore
     112: FreeNovelUpdatesScraper, // @ts-ignore
     114: LightNovelReaderScraper, // @ts-ignore
