@@ -205,13 +205,6 @@ export const HizoMangaScraper = new MadaraScraper(
   },
 );
 
-export const LatestNovelScraper = new MadaraScraper(
-  98,
-  'https://latestnovel.net/',
-  'LatestNovel',
-  { 'totalPages': 130 },
-);
-
 export const ArMTLScraper = new MadaraScraper(
   101,
   'https://ar-mtl.club/',

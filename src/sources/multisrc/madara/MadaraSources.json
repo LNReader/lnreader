@@ -205,14 +205,6 @@
     }
   },
   {
-    "sourceId": 98,
-    "baseUrl": "https://latestnovel.net/",
-    "sourceName": "LatestNovel",
-    "options": {
-      "totalPages": 130
-    }
-  },
-  {
     "sourceId": 101,
     "baseUrl": "https://ar-mtl.club/",
     "sourceName": "ArMTL",

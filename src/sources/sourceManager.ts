@@ -30,6 +30,7 @@ import RoyalRoadScraper from './en/royalroad';
 import ScribbleHubScraper from './en/scribblehub';
 import SyosetuScraper from './jp/syosetu';
 import LNMTLScraper from './en/lnmtl';
+import LightNovelFullScraper from './en/lightnovelfull';
 import {
   ArMTLScraper,
   BoxNovelScraper,
@@ -37,7 +38,6 @@ import {
   DaoNovelScraper,
   FirstKissNovelScraper,
   HizoMangaScraper,
-  LatestNovelScraper,
   LightNovelHeavenScraper,
   LightNovelsHubScraper,
   LunarLettersScraper,
@@ -261,7 +261,7 @@ export const sourceManager = (sourceId: number): Scraper => {
     95: BestLightNovel,
     96: HizoMangaScraper,
     97: NovelFullMeScraper,
-    98: LatestNovelScraper,
+    98: LightNovelFullScraper,
     99: NovelmtScraper,
     100: LtnovelScraper,
     101: ArMTLScraper,
