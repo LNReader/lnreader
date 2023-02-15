@@ -70,7 +70,7 @@ const parseNovelAndChapters = async novelUrl => {
   )
     .text()
     .trim();
-    console.log(novel.status);
+  console.log(novel.status);
 
   novel.genre = loadedCheerio(
     'main > div.container > div > div.col-lg-3.col-md-4 > div:nth-child(4) > div.panel-body > ul',

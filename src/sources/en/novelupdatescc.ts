@@ -114,7 +114,7 @@ const parseNovelAndChapters = async (novelUrl: string) => {
   };
 
   if (novelId) {
-    //novel.chapters = await getChapters(novelId);
+    novel.chapters = await getChapters(novelId);
   }
 
   return novel;

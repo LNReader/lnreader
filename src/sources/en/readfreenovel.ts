@@ -6,7 +6,7 @@ const sourceName = 'ReadFreeNovel';
 const baseUrl = 'https://www.readfreenovel.com';
 
 const popularNovels = async (page: number) => {
-  let totalPages = 1534;
+  let totalPages = page;
   const url = `${baseUrl}/s/search.html`;
 
   const result = await fetch(url);
