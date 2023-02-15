@@ -4,11 +4,10 @@ import { SourceChapter, SourceChapterItem, SourceNovelItem } from '../types';
 const sourceId = 109;
 const sourceName = 'ReadFreeNovel';
 const baseUrl = 'https://www.readfreenovel.com';
-const searchUrl = 'https://www.readfreenovel.com/detailed-search';
 
 const popularNovels = async (page: number) => {
   let totalPages = 1534;
-  const url = `${baseUrl}/top-novel/${page}`;
+  const url = `${baseUrl}/s/search.html`;
 
   const result = await fetch(url);
   const body = await result.text();
@@ -17,10 +16,12 @@ const popularNovels = async (page: number) => {
 
   const novels: SourceNovelItem[] = [];
 
-  loadedCheerio('.top-novel-block').each(function () {
-    const novelUrl = baseUrl + loadedCheerio(this).find('h2 > a').attr('href');
+  loadedCheerio('.books > a').each(function () {
+    const novelUrl = loadedCheerio(this).attr('href');
 
-    const novelName = loadedCheerio(this).find('h2 > a').text();
+    const novelName = loadedCheerio(this)
+      .find('div.b > p:nth-child(1) > i')
+      .text();
     const novelCover = baseUrl + loadedCheerio(this).find('img').attr('src');
 
     const novel = {
@@ -48,8 +49,7 @@ const parseNovelAndChapters = async (novelUrl: string) => {
 
   const novelName = loadedCheerio('.block-title > h1').text();
 
-  const novelCover =
-    baseUrl + loadedCheerio('.novel-cover > a > img').attr('src');
+  const novelCover = loadedCheerio('img').attr('src');
 
   let author, artist, genre, summary, status;
 
@@ -64,7 +64,7 @@ const parseNovelAndChapters = async (novelUrl: string) => {
         genre = detail.trim().replace(/\s{2,}/g, ',');
 
         break;
-      case 'Author(s)':
+      case 'Author':
         author = detail;
         break;
       case 'Artist(s)':
@@ -81,30 +81,20 @@ const parseNovelAndChapters = async (novelUrl: string) => {
 
   let chapters: SourceChapterItem[] = [];
 
-  loadedCheerio('.panel').each(function () {
-    let volumeName = loadedCheerio(this).find('h4.panel-title').text();
+  loadedCheerio('.l > a').each(function () {
+    const chapterUrl = baseUrl + loadedCheerio(this).attr('href');
 
-    loadedCheerio(this)
-      .find('ul.chapter-chs > li')
-      .each(function () {
-        const chapterUrl = baseUrl + loadedCheerio(this).find('a').attr('href');
+    let chapterName = loadedCheerio(this).text();
 
-        let chapterName = loadedCheerio(this).find('a').text();
+    const releaseDate = null;
 
-        const releaseDate = null;
+    const chapter = {
+      chapterName,
+      releaseDate,
+      chapterUrl,
+    };
 
-        if (volumeName.includes('Volume')) {
-          chapterName = volumeName + ' ' + chapterName;
-        }
-
-        const chapter = {
-          chapterName,
-          releaseDate,
-          chapterUrl,
-        };
-
-        chapters.push(chapter);
-      });
+    chapters.push(chapter);
   });
 
   novel = {
@@ -133,11 +123,7 @@ const parseChapter = async (novelUrl: string, chapterUrl: string) => {
 
   const loadedCheerio = cheerio.load(body);
 
-  loadedCheerio('.block-title > h1').find('a').remove();
-
-  const chapterName = loadedCheerio('.block-title > h1')
-    .text()
-    .replace(' - ', '');
+  const chapterName = loadedCheerio('b.t').text();
 
   loadedCheerio('.alert').remove();
   loadedCheerio('.hidden').remove();
@@ -152,7 +138,8 @@ const parseChapter = async (novelUrl: string, chapterUrl: string) => {
     'div[style="float:left;margin-top:15px;margin-bottom:15px;"]',
   ).remove();
 
-  const chapterText = loadedCheerio('.desc').html() || '';
+  const chapterText =
+    loadedCheerio('main > article > :nth-child(3)').html() || '';
 
   const chapter: SourceChapter = {
     sourceId: 2,
@@ -166,24 +153,20 @@ const parseChapter = async (novelUrl: string, chapterUrl: string) => {
 };
 
 const searchNovels = async (searchTerm: string) => {
-  const formData = new FormData();
-  formData.append('keyword', searchTerm);
-  formData.append('search', 1);
+  const url = `${baseUrl}/s/search.html?q=${searchTerm}`;
 
-  const result = await fetch(searchUrl, { method: 'POST', body: formData });
+  const result = await fetch(url);
   const body = await result.text();
 
   const loadedCheerio = cheerio.load(body);
 
-  let novels: SourceNovelItem[] = [];
+  const novels: SourceNovelItem[] = [];
 
-  loadedCheerio('.top-novel-block').each(function () {
-    const novelUrl =
-      baseUrl +
-      loadedCheerio(this).find('.top-novel-header > h2 > a').attr('href');
+  loadedCheerio('.books > a').each(function () {
+    const novelUrl = loadedCheerio(this).attr('href');
 
     const novelName = loadedCheerio(this)
-      .find('.top-novel-header > h2 > a')
+      .find('div.b > p:nth-child(1) > i')
       .text();
     const novelCover = baseUrl + loadedCheerio(this).find('img').attr('src');
 
@@ -197,7 +180,7 @@ const searchNovels = async (searchTerm: string) => {
     novels.push(novel);
   });
 
-  return novels;
+  return { novels };
 };
 
 const ReadFreeNovelScraper = {
