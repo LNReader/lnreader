@@ -42,7 +42,6 @@ import EmptyView from '../../components/EmptyView';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import { insertHistory } from '../../database/queries/HistoryQueries';
 import { SET_LAST_READ } from '../../redux/preferences/preference.types';
-import TextReader from './components/TextReader';
 import WebViewReader from './components/WebViewReader';
 import { useTextToSpeech } from '../../hooks/useTextToSpeech';
 import { useFullscreenMode, useLibrarySettings } from '../../hooks';
