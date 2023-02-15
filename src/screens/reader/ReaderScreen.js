@@ -104,7 +104,6 @@ const ChapterContent = ({ route, navigation }) => {
   const {
     swipeGestures = false,
     useWebViewForChapter = false,
-    wvUseNewSwipes = false,
     wvShowSwipeMargins = true,
     wvUseVolumeButtons = false,
     autoScroll = false,
@@ -397,7 +396,7 @@ const ChapterContent = ({ route, navigation }) => {
           theme={theme}
         />
         <GestureRecognizer
-          onSwipe={swipeGestures && !wvUseNewSwipes && navigateToChapterBySwipe}
+          onSwipe={swipeGestures && navigateToChapterBySwipe}
           config={config}
           style={{ flex: 1 }}
         >
@@ -467,7 +466,7 @@ const ChapterContent = ({ route, navigation }) => {
                       reader={readerSettings}
                       chapterName={chapter.chapterName || chapterName}
                       layoutHeight={Dimensions.get('window').height}
-                      swipeGestures={swipeGestures && wvUseNewSwipes}
+                      swipeGestures={swipeGestures}
                       minScroll={minScroll}
                       currentScroll={currentScroll}
                       scrollPage={scrollPage}

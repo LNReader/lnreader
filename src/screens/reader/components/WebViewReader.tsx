@@ -143,15 +143,19 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
                       }
                     }
                   }
-                  Promise.all(promises).then(datas => {
-                    const inject = datas.reduce((p, data) => {
-                      return (
-                        p +
-                        `document.querySelector("img[file-id='${data.id}']").src="data:image/png;base64,${data.data}";`
-                      );
-                    }, '');
-                    webViewRef.current?.injectJavaScript(inject);
-                  });
+                  Promise.all(promises)
+                    .then(datas => {
+                      const inject = datas.reduce((p, data) => {
+                        return (
+                          p +
+                          `document.querySelector("img[file-id='${data.id}']").src="data:image/png;base64,${data.data}";`
+                        );
+                      }, '');
+                      webViewRef.current?.injectJavaScript(inject);
+                    })
+                    .catch(e => {
+                      e; // CloudFlare is too strong :D
+                    });
                 }
               }
               break;
