@@ -203,13 +203,6 @@
     "lang": "Spanish"
   },
   {
-    "sourceId": 33,
-    "url": "https://www.novelpassion.com/",
-    "sourceName": "NovelPassion",
-    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/icons/src/en/novelpassion/icon.png?raw=true",
-    "lang": "English"
-  },
-  {
     "sourceId": 34,
     "url": "https://www.royalroad.com/",
     "sourceName": "Royal Road",

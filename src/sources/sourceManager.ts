@@ -25,7 +25,6 @@ import YuukiTlsScraper from './es/yuukitls';
 import NovelaWuxiaScraper from './es/novelawuxia';
 import OasisTranslationsScraper from './es/oasistranslations';
 import HasuTlScraper from './es/hasutl';
-import NovelPassionScraper from './en/novelpassion';
 import RoyalRoadScraper from './en/royalroad';
 import ScribbleHubScraper from './en/scribblehub';
 import SyosetuScraper from './jp/syosetu';
@@ -194,7 +193,6 @@ export const sourceManager = (sourceId: number): Scraper => {
     29: HasuTlScraper, // @ts-ignore
     30: OasisTranslationsScraper, // @ts-ignore
     31: NovelaWuxiaScraper, // @ts-ignore
-    33: NovelPassionScraper, // @ts-ignore
     34: RoyalRoadScraper, // @ts-ignore
     35: ScribbleHubScraper, // @ts-ignore
     36: SyosetuScraper, // @ts-ignore
