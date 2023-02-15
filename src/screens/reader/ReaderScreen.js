@@ -404,7 +404,7 @@ const ChapterContent = ({ route, navigation }) => {
             ) : (
               <TouchableWithoutFeedback
                 style={{ flex: 1 }}
-                onLayout={() => scrollTo(position.position, true)}
+                onLayout={() => scrollTo(position?.position, true)}
               >
                 <View style={{ flex: 1 }}>
                   <WebViewReader

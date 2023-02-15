@@ -97,8 +97,6 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
         ref={webViewRef}
         style={{ backgroundColor }}
         originWhitelist={['*']}
-        injectedJavaScript={`
-        window.scrollTo({top: ${currentScroll.offSetY}, left:0, behavior:"smooth"});`}
         scalesPageToFit={true}
         showsVerticalScrollIndicator={false}
         onNavigationStateChange={onWebViewNavigationStateChange}
