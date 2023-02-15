@@ -75,7 +75,7 @@ const parseNovelAndChapters = async novelUrl => {
     return {
       chapterId: chapter.wr_id,
       chapterName: chapter.wr_subject,
-      chapterUrl: baseUrl + `novel/view/${chapterId}/2`,
+      chapterUrl: baseUrl + `novel/view/${chapter.wr_id}/2`,
       releaseDate: chapter.wr_datetime,
     };
   });
