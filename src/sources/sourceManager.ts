@@ -130,7 +130,6 @@ import { SourceChapter, SourceNovel, SourceNovelItem } from './types';
 import AllNovelFullScraper from './en/allnovelfull';
 import ReadFreeNovelScraper from './en/readfreenovel';
 import FreeNovelUpdatesScraper from './en/freenovelupdates';
-import NovelsCafeScraper from './en/NovelsCafe';
 import LightNovelReaderScraper from './en/LightNovelReader';
 import HakoLightNovelScraper from './vi/HakoLightNovel';
 import NovelFullScraper from './en/novelfulldotnet';
@@ -263,7 +262,6 @@ export const sourceManager = (sourceId: number): Scraper => {
     109: ReadFreeNovelScraper, // @ts-ignore
     110: TurkceLightNovelsScraper, // @ts-ignore
     112: FreeNovelUpdatesScraper, // @ts-ignore
-    113: NovelsCafeScraper, // @ts-ignore
     114: LightNovelReaderScraper, // @ts-ignore
     115: HakoLightNovelScraper, // @ts-ignore
     116: RenovelsScraper, // @ts-ignore
