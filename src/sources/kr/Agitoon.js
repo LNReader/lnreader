@@ -122,7 +122,36 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 };
 
 const searchNovels = async searchTerm => {
-  return null;
+  console.log('search...');
+
+  const rawResults = await fetch('https://agit501.xyz/novel/search.php', {
+    headers: {
+      'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+    },
+    body: `mode=get_data_novel_list_p_sch&search_novel=${searchTerm}&list_limit=0`,
+    method: 'POST',
+  });
+
+  const results = await rawResults.json();
+  //console.log(results);
+  if (!results.list && results.list.length() === 0) {
+    console.log('no result...');
+    return [];
+  }
+  //console.log(results.list);
+  const novels = results.list.map(result => {
+    //console.log(result);
+    return {
+      sourceId,
+      novelUrl: baseUrl + 'novel/list/' + result.wr_id,
+      novelName: result.wr_subject,
+      novelCover: baseUrl + result.np_dir + '/thumbnail/' + result.np_thumbnail,
+    };
+  });
+
+  console.log(novels);
+
+  return novels;
 };
 
 const AgitoonScraper = {
