@@ -110,14 +110,6 @@
     }
   },
   {
-    "sourceId": 58,
-    "baseUrl": "https://lightnovelshub.com/",
-    "sourceName": "LightNovelsHub",
-    "options": {
-      "useNewChapterEndpoint": true
-    }
-  },
-  {
     "sourceId": 59,
     "baseUrl": "https://arnovel.me/",
     "sourceName": "ArNovel",
