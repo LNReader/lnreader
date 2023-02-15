@@ -145,6 +145,7 @@ import MTNovelScraper from './en/mtnovel';
 import NovelTop1Scraper from './en/noveltop1';
 import { SelectedFilter, SourceFilter } from './types/filterTypes';
 import KolNovelScraper from './ar/KolNovel';
+import AgitoonScraper from './kr/Agitoon';
 
 interface PopularNovelsResponse {
   totalPages: number;
@@ -310,6 +311,7 @@ export const sourceManager = (sourceId: number): Scraper => {
     142: AuthorTodayScraper,
     143: WebNovelOkuScraper,
     144: NobleMtlScraper,
+    145: AgitoonScraper,
   };
 
   return scrapers[sourceId];

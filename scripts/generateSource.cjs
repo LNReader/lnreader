@@ -18,6 +18,7 @@ const getLanguageCode = language => {
     Chinese: 'cn',
     Japanese: 'jp',
     Vietnamese: 'vi',
+    Korean: 'kr',
   };
 
   return codes[language];
