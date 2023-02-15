@@ -14,7 +14,6 @@ import WuxiaWorldCoScraper from './en/wuxiaworldco';
 import novelUpdatesCcScraper from './en/novelupdatescc';
 import readLightNovelCcScraper from './en/readlightnovelcc';
 import tapReadScraper from './en/tapread';
-import WuxiaWorldCloudScraper from './en/wuxiaworldcloud';
 import FoxaHolicScraper from './en/foxaholic';
 import EinharjarProjectScraper from './es/einherjarproject';
 import TuNovelaLigeraScraper from './es/tunovelaligera';
@@ -177,7 +176,6 @@ export const sourceManager = (sourceId: number): Scraper => {
     17: tapReadScraper, // @ts-ignore
     18: novelUpdatesCcScraper, // @ts-ignore
     19: readLightNovelCcScraper, // @ts-ignore
-    20: WuxiaWorldCloudScraper, // @ts-ignore
     21: WoopReadScraper, // @ts-ignore
     22: FoxaHolicScraper, // @ts-ignore
     23: TuNovelaLigeraScraper, // @ts-ignore

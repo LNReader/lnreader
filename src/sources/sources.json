@@ -112,13 +112,6 @@
     "lang": "English"
   },
   {
-    "sourceId": 20,
-    "url": "http://wuxiaworld.cloud/",
-    "sourceName": "WuxiaWorld.cloud",
-    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/icons/src/en/wuxiaworldcloud/icon.png?raw=true",
-    "lang": "English"
-  },
-  {
     "sourceId": 21,
     "url": "https://woopread.com/",
     "sourceName": "WoopRead",
