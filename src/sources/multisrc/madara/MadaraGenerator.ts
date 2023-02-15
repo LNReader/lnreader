@@ -112,13 +112,6 @@ export const LightNovelHeavenScraper = new MadaraScraper(
   },
 );
 
-export const LightNovelsHubScraper = new MadaraScraper(
-  58,
-  'https://lightnovelshub.com/',
-  'LightNovelsHub',
-  { 'useNewChapterEndpoint': true },
-);
-
 export const ArNovelScraper = new MadaraScraper(
   59,
   'https://arnovel.me/',
