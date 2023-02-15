@@ -47,7 +47,6 @@ import {
   NovelTranslateScraper,
   OnlyMTLScraper,
   ReadWebNovelsScraper,
-  SkyNovelScraper,
   SleepyTranslationsScraper,
   WBNovelScraper,
   WebNovelLoverScraper,
@@ -194,7 +193,6 @@ export const sourceManager = (sourceId: number): Scraper => {
     35: ScribbleHubScraper, // @ts-ignore
     36: SyosetuScraper, // @ts-ignore
     37: LNMTLScraper, // @ts-ignore
-    38: SkyNovelScraper, // @ts-ignore
     41: ZinnNovelScraper, // @ts-ignore
     42: NovelTranslateScraper, // @ts-ignore
     43: LunarLettersScraper, // @ts-ignore

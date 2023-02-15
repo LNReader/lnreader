@@ -8,14 +8,6 @@
     }
   },
   {
-    "sourceId": 38,
-    "baseUrl": "https://skynovel.org/",
-    "sourceName": "SkyNovel",
-    "options": {
-      "path": { "novels": "manga", "novel": "manga", "chapter": "manga" }
-    }
-  },
-  {
     "sourceId": 41,
     "baseUrl": "https://zinnovel.com/",
     "sourceName": "ZinnNovel",
