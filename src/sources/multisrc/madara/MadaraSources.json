@@ -67,7 +67,11 @@
     "baseUrl": "https://daonovel.com/",
     "sourceName": "DaoNovel",
     "options": {
-      "path": { "novels": "novels-list", "novel": "novels", "chapter": "novels" },
+      "path": {
+        "novels": "novels-list",
+        "novel": "novels",
+        "chapter": "novels"
+      },
       "useNewChapterEndpoint": true
     }
   },
@@ -168,7 +172,10 @@
   {
     "sourceId": 91,
     "baseUrl": "https://www.onlymtl.com/",
-    "sourceName": "OnlyMTL"
+    "sourceName": "OnlyMTL",
+    "options": {
+      "useNewChapterEndpoint": true
+    }
   },
   {
     "sourceId": 96,
