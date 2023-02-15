@@ -693,13 +693,6 @@
     "lang": "English"
   },
   {
-    "sourceId": 113,
-    "sourceName": "NovelsCafe",
-    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/icons/src/en/novelscafe/icon.png?raw=true",
-    "url": "https://novelscafe.com",
-    "lang": "English"
-  },
-  {
     "sourceId": 114,
     "sourceName": "LightNovelReader",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/icons/src/en/lightnovelreader/icon.png?raw=true",
