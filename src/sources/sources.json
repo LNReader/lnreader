@@ -574,13 +574,6 @@
     "lang": "French"
   },
   {
-    "sourceId": 89,
-    "url": "https://mtlcorner.com/",
-    "sourceName": "MTLCorner",
-    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/icons/src/en/mtlcorner/icon.png?raw=true",
-    "lang": "English"
-  },
-  {
     "sourceId": 90,
     "url": "https://nitroscans.com/",
     "sourceName": "NitroScans",
