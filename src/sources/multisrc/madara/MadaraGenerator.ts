@@ -171,6 +171,7 @@ export const OnlyMTLScraper = new MadaraScraper(
   91,
   'https://www.onlymtl.com/',
   'OnlyMTL',
+  { 'useNewChapterEndpoint': true },
 );
 
 export const HizoMangaScraper = new MadaraScraper(
