@@ -693,13 +693,6 @@
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/icons/src/tr/TurkceLightNovels/icon.png?raw=true"
   },
   {
-    "sourceId": 111,
-    "sourceName": "NovelOwl",
-    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/icons/multisrc/madara/icons/novelowl.png?raw=true",
-    "url": "https://novelowl.com/",
-    "lang": "English"
-  },
-  {
     "sourceId": 112,
     "sourceName": "FreeNovelUpdates",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/icons/src/en/freenovelupdates/icon.png?raw=true",

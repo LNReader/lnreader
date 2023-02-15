@@ -60,7 +60,6 @@ import {
   MeioNovelScraper,
   CrateNovelScraper,
   FreeNovelMeScraper,
-  NovelOwlScraper,
   SonicMTLScraper,
   MTLNovelDotClubScraper,
   NoobchanTranslationScraper,
@@ -266,7 +265,6 @@ export const sourceManager = (sourceId: number): Scraper => {
     108: AllNovelFullScraper, // @ts-ignore
     109: ReadFreeNovelScraper, // @ts-ignore
     110: TurkceLightNovelsScraper, // @ts-ignore
-    111: NovelOwlScraper, // @ts-ignore
     112: FreeNovelUpdatesScraper, // @ts-ignore
     113: NovelsCafeScraper, // @ts-ignore
     114: LightNovelReaderScraper, // @ts-ignore
