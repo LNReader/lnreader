@@ -137,7 +137,7 @@ import FreeNovelUpdatesScraper from './en/freenovelupdates';
 import NovelsCafeScraper from './en/NovelsCafe';
 import LightNovelReaderScraper from './en/LightNovelReader';
 import HakoLightNovelScraper from './vi/HakoLightNovel';
-import MTNovelScraper from './en/mtnovel';
+import NovelFullScraper from './en/novelfulldotnet';
 import NovelTop1Scraper from './en/noveltop1';
 import { SelectedFilter, SourceFilter } from './types/filterTypes';
 import KolNovelScraper from './ar/KolNovel';
@@ -279,7 +279,7 @@ export const sourceManager = (sourceId: number): Scraper => {
     117: JaomixScraper, // @ts-ignore
     118: RulateScraper, // @ts-ignore
     119: RanobeRFScraper, // @ts-ignore
-    120: MTNovelScraper, // @ts-ignore
+    120: NovelFullScraper, // @ts-ignore
     121: SonicMTLScraper, // @ts-ignore
     122: MTLNovelDotClubScraper, // @ts-ignore
     123: LiebeSchneeHiverNovelScraper, // @ts-ignore

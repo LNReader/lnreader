@@ -7,8 +7,8 @@ import {
 } from '../types';
 
 const sourceId = 120;
-const sourceName = 'MT Novel';
-const baseUrl = 'https://mtnovel.com';
+const sourceName = 'NovelFull.net';
+const baseUrl = 'https://novelfull.net';
 
 const popularNovels = async (page: number) => {
   let totalPages = 22;
@@ -175,11 +175,11 @@ const searchNovels = async (searchTerm: string) => {
   return novels;
 };
 
-const MTNovelScraper = {
+const NovelFullScraper = {
   popularNovels,
   parseNovelAndChapters,
   parseChapter,
   searchNovels,
 };
 
-export default MTNovelScraper;
+export default NovelFullScraper;
