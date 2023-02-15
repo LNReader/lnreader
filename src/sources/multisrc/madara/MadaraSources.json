@@ -141,7 +141,10 @@
   {
     "sourceId": 74,
     "baseUrl": "https://wuxiaworld.site/",
-    "sourceName": "WuxiaWorld.Site"
+    "sourceName": "WuxiaWorld.Site",
+    "options": {
+      "useNewChapterEndpoint": true
+    }
   },
   {
     "sourceId": 75,
