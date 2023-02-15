@@ -16,14 +16,6 @@
     }
   },
   {
-    "sourceId": 40,
-    "baseUrl": "https://novelsrock.com/",
-    "sourceName": "NovelsRock",
-    "options": {
-      "path": { "novels": "novels", "novel": "novel", "chapter": "novel" }
-    }
-  },
-  {
     "sourceId": 41,
     "baseUrl": "https://zinnovel.com/",
     "sourceName": "ZinnNovel",

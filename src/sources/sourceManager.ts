@@ -45,7 +45,6 @@ import {
   Novel4UpScraper,
   TeamXNovelScraper,
   NovelMultiverseScraper,
-  NovelsRockScraper,
   NovelTranslateScraper,
   OnlyMTLScraper,
   ReadWebNovelsScraper,
@@ -198,7 +197,6 @@ export const sourceManager = (sourceId: number): Scraper => {
     36: SyosetuScraper, // @ts-ignore
     37: LNMTLScraper, // @ts-ignore
     38: SkyNovelScraper, // @ts-ignore
-    40: NovelsRockScraper, // @ts-ignore
     41: ZinnNovelScraper, // @ts-ignore
     42: NovelTranslateScraper, // @ts-ignore
     43: LunarLettersScraper, // @ts-ignore
