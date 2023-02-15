@@ -338,6 +338,7 @@
     "sourceName": "MTL-Novel",
     "options": {
       "totalPages": 51,
+      "useNewChapterEndpoint": true,
       "lang": "English",
       "orderBy": "latest"
     }
