@@ -196,16 +196,6 @@ const SettingsReaderScreen = () => {
         contentContainerStyle={styles.bottomInset}
       >
         <SwitchItem
-          label={getString('readerScreen.bottomSheet.renderHml')}
-          value={useWebViewForChapter}
-          onPress={() =>
-            dispatch(
-              setAppSettings('useWebViewForChapter', !useWebViewForChapter),
-            )
-          }
-          theme={theme}
-        />
-        <SwitchItem
           label={getString('readerScreen.bottomSheet.verticalSeekbar')}
           description={getString(
             'moreScreen.settingsScreen.readerSettings.verticalSeekbarDesc',

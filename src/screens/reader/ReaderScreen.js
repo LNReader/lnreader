@@ -103,7 +103,7 @@ const ChapterContent = ({ route, navigation }) => {
 
   const {
     swipeGestures = false,
-    useWebViewForChapter = false,
+    useWebViewForChapter = true,
     wvShowSwipeMargins = true,
     wvUseVolumeButtons = false,
     autoScroll = false,
@@ -457,46 +457,32 @@ const ChapterContent = ({ route, navigation }) => {
                 style={{ flex: 1 }}
                 onLayout={onLayoutProcessing}
               >
-                {useWebViewForChapter ? (
-                  <View style={{ flex: 1 }}>
-                    <WebViewReader
-                      theme={theme}
-                      chapter={chapter}
-                      html={chapterText}
-                      reader={readerSettings}
-                      chapterName={chapter.chapterName || chapterName}
-                      layoutHeight={Dimensions.get('window').height}
-                      swipeGestures={swipeGestures}
-                      minScroll={minScroll}
-                      currentScroll={currentScroll}
-                      scrollPage={scrollPage}
-                      wvShowSwipeMargins={wvShowSwipeMargins}
-                      nextChapter={nextChapter}
-                      webViewRef={webViewRef}
-                      onPress={hideHeader}
-                      scrollTo={scrollTo}
-                      setCurrentScroll={setCurrentScroll}
-                      setScrollPage={setScrollPage}
-                      doSaveProgress={doSaveProgress}
-                      navigateToChapterBySwipe={navigateToChapterBySwipe}
-                      onWebViewNavigationStateChange={
-                        onWebViewNavigationStateChange
-                      }
-                    />
-                  </View>
-                ) : (
-                  <View>
-                    <TextReader
-                      theme={theme}
-                      chapterName={chapter.chapterName || chapterName}
-                      text={chapterText}
-                      reader={readerSettings}
-                      nextChapter={nextChapter}
-                      onPress={hideHeader}
-                      navigateToChapterBySwipe={navigateToChapterBySwipe}
-                    />
-                  </View>
-                )}
+                <View style={{ flex: 1 }}>
+                  <WebViewReader
+                    theme={theme}
+                    chapter={chapter}
+                    html={chapterText}
+                    reader={readerSettings}
+                    chapterName={chapter.chapterName || chapterName}
+                    layoutHeight={Dimensions.get('window').height}
+                    swipeGestures={swipeGestures}
+                    minScroll={minScroll}
+                    currentScroll={currentScroll}
+                    scrollPage={scrollPage}
+                    wvShowSwipeMargins={wvShowSwipeMargins}
+                    nextChapter={nextChapter}
+                    webViewRef={webViewRef}
+                    onPress={hideHeader}
+                    scrollTo={scrollTo}
+                    setCurrentScroll={setCurrentScroll}
+                    setScrollPage={setScrollPage}
+                    doSaveProgress={doSaveProgress}
+                    navigateToChapterBySwipe={navigateToChapterBySwipe}
+                    onWebViewNavigationStateChange={
+                      onWebViewNavigationStateChange
+                    }
+                  />
+                </View>
               </TouchableWithoutFeedback>
             )}
           </ScrollView>
@@ -519,7 +505,6 @@ const ChapterContent = ({ route, navigation }) => {
           chapterUrl={chapterUrl}
           nextChapter={nextChapter}
           prevChapter={prevChapter}
-          useWebViewForChapter={useWebViewForChapter}
           readerSheetRef={readerSheetRef}
           scrollTo={scrollTo}
           navigateToChapterBySwipe={navigateToChapterBySwipe}

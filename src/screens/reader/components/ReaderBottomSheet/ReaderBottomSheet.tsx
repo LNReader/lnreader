@@ -53,16 +53,6 @@ const GeneralTab: React.FC = () => {
   return (
     <View>
       <ReaderSheetPreferenceItem
-        label={getString('readerScreen.bottomSheet.renderHml')}
-        onPress={() =>
-          dispatch(
-            setAppSettings('useWebViewForChapter', !useWebViewForChapter),
-          )
-        }
-        value={useWebViewForChapter}
-        theme={theme}
-      />
-      <ReaderSheetPreferenceItem
         label={getString('readerScreen.bottomSheet.fullscreen')}
         onPress={() =>
           dispatch(setAppSettings('fullScreenMode', !fullScreenMode))
