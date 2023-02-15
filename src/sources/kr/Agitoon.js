@@ -61,15 +61,17 @@ const parseNovelAndChapters = async novelUrl => {
   const resJson = await res.json();
 
   chapters = resJson.list.map(chapter => {
+    let chapterId = chapter.wr_id;
+    let chapterName = chapter.wr_subject;
+    let chapterUrl = baseUrl + `novel/view/${chapterId}/2`;
+    let releaseDate = chapter.wr_datetime;
     return {
-      //chapterName: chapter.wr_subject,
-      chapterName: 'simple',
-      chapterUrl: baseUrl + `novel/view/${novelId}/2`,
-      releaseDate: chapter.wr_datetime,
+      chapterId,
+      chapterName,
+      chapterUrl,
+      releaseDate,
     };
   });
-
- // console.log(chapters);
 
   const novel = {
     sourceId,
@@ -84,21 +86,36 @@ const parseNovelAndChapters = async novelUrl => {
     status: '',
     chapters,
   };
-
- // console.log(novel);
   return novel;
 };
 
 const parseChapter = async (novelUrl, chapterUrl) => {
-  console.log(novelUrl);
-  console.log(chapterUrl);
+  const result = await fetch(chapterUrl);
+  const body = await result.text();
+
+  const loadedCheerio = cheerio.load(body);
+
+  const title = loadedCheerio('div > div.col-12 > h2').text();
+  const contentTag = loadedCheerio('#id_wr_content > p');
+
+  let content = '';
+  contentTag.each((index, element) => {
+    content += loadedCheerio(element).text();
+    content += '<br />';
+  });
+
+  // gets rid of the popup thingy
+  content = content.replace(
+    '팝업메뉴는 빈공간을 더치하거나 스크룰시 사라집니다',
+    '',
+  );
 
   const chapter = {
-    sourceId: 123,
-    novelUrl: '',
-    chapterUrl: '',
-    chapterName: 'chp name',
-    chapterText: 'chp body',
+    sourceId,
+    novelUrl,
+    chapterUrl,
+    chapterName: title,
+    chapterText: content,
   };
 
   return chapter;
