@@ -11,13 +11,6 @@ export const BoxNovelScraper = new MadaraScraper(
   { 'useNewChapterEndpoint': true },
 );
 
-export const SkyNovelScraper = new MadaraScraper(
-  38,
-  'https://skynovel.org/',
-  'SkyNovel',
-  { 'path': { 'novels': 'manga', 'novel': 'manga', 'chapter': 'manga' } },
-);
-
 export const ZinnNovelScraper = new MadaraScraper(
   41,
   'https://zinnovel.com/',
