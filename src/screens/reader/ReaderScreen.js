@@ -93,7 +93,6 @@ const ChapterContent = ({ route, navigation }) => {
     chapterName,
     bookmark,
   } = params;
-  let scrollViewRef = useRef(null);
   let webViewRef = useRef(null);
   let readerSheetRef = useRef(null);
 
@@ -131,7 +130,6 @@ const ChapterContent = ({ route, navigation }) => {
     offsetY: 0,
     percentage: 0,
   });
-  const [firstLayout, setFirstLayout] = useState(true);
   const [scrollPage, setScrollPage] = useState(null);
 
   useEffect(() => {
@@ -230,7 +228,7 @@ const ChapterContent = ({ route, navigation }) => {
           );
       })()`);
     },
-    [scrollViewRef, webViewRef],
+    [webViewRef],
   );
 
   useEffect(() => {
@@ -270,39 +268,6 @@ const ChapterContent = ({ route, navigation }) => {
       updateTracker();
     }
   };
-
-  var setScrollTimeout;
-  const onScroll = useCallback(({ nativeEvent }) => {
-    clearTimeout(setScrollTimeout);
-    const offsetY = nativeEvent.contentOffset.y;
-    const pos =
-      nativeEvent.contentOffset.y + nativeEvent.layoutMeasurement.height;
-
-    const percentage = Math.round((pos / nativeEvent.contentSize.height) * 100);
-    if (!(offsetY == 0 && percentage == 100)) {
-      // because the content is set to 0 when closing layout (i guess)
-      setScrollTimeout = setTimeout(() => {
-        setCurrentScroll({ offsetY: offsetY, percentage: percentage });
-        doSaveProgress(offsetY, percentage);
-      }, 50);
-    }
-  }, []);
-
-  const onLayoutProcessing = useCallback(
-    event => {
-      const scrollToSavedProgress = () => {
-        if (position) {
-          scrollTo(position.position, false);
-        }
-        if (firstLayout) {
-          setFirstLayout(false);
-        }
-      };
-
-      scrollToSavedProgress();
-    },
-    [nextChapter],
-  );
 
   const hideHeader = () => {
     if (!hidden) {
@@ -387,12 +352,10 @@ const ChapterContent = ({ route, navigation }) => {
           style={{ flex: 1 }}
         >
           <ScrollView
-            ref={scrollViewRef}
             contentContainerStyle={[
               styles.screenContainer,
               { backgroundColor },
             ]}
-            onScroll={!loading && onScroll}
             showsVerticalScrollIndicator={false}
           >
             {error ? (
@@ -441,7 +404,7 @@ const ChapterContent = ({ route, navigation }) => {
             ) : (
               <TouchableWithoutFeedback
                 style={{ flex: 1 }}
-                onLayout={onLayoutProcessing}
+                onLayout={() => scrollTo(position.position, true)}
               >
                 <View style={{ flex: 1 }}>
                   <WebViewReader
