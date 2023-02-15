@@ -21,21 +21,40 @@ import 'dayjs/locale/de';
 import 'dayjs/locale/it';
 import 'dayjs/locale/zh';
 
+import ar from './languages/ar_SA/strings.json';
+import de from './languages/de_DE/strings.json';
 import en from './languages/en/strings.json';
-import es from './languages/es/strings.json';
-import tr from './languages/tr/strings.json';
-import ru from './languages/ru/strings.json';
-import ar from './languages/ar/strings.json';
-import uk from './languages/uk/strings.json';
-import pt from './languages/pt/strings.json';
-import de from './languages/de/strings.json';
-import it from './languages/it/strings.json';
-import zh from './languages/zh/strings.json';
+import es from './languages/es_ES/strings.json';
+import it from './languages/it_IT/strings.json';
+import ja from './languages/ja_JP/strings.json';
+import pt from './languages/pt_PT/strings.json';
+import ptBr from './languages/pt_BR/strings.json';
+import ru from './languages/ru_RU/strings.json';
+import tr from './languages/tr_TR/strings.json';
+import uk from './languages/uk_UA/strings.json';
+import vi from './languages/vi_VN/strings.json';
+import zhCn from './languages/zh_CN/strings.json';
+import zhTw from './languages/zh_TW/strings.json';
 
 import { StringMap } from './types';
 
 i18n.fallbacks = true;
-i18n.translations = { en, es, tr, ru, ar, uk, pt, de, it, zh };
+i18n.translations = {
+  en,
+  es,
+  tr,
+  ru,
+  ar,
+  uk,
+  pt,
+  'pt-BR': ptBr,
+  de,
+  it,
+  'zh-CN': zhCn,
+  'zh-TW': zhTw,
+  vi,
+  ja,
+};
 i18n.locale = Localization.locale;
 dayjs.locale(Localization.locale);
 

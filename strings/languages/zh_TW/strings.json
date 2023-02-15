@@ -1,0 +1,199 @@
+{
+  "common": {
+    "cancel": "取消",
+    "ok": "确定",
+    "save": "保存",
+    "clear": "清除",
+    "reset": "重置",
+    "search": "搜索",
+    "install": "Install",
+    "newUpdateAvailable": "New update available",
+    "categories": "Categories",
+    "add": "Add",
+    "edit": "Edit",
+    "name": "Name",
+    "searchFor": "Search for",
+    "globally": "globally",
+    "searchResults": "Search results",
+    "chapters": "Chapters",
+    "submit": "Submit"
+  },
+  "library": "书库",
+  "libraryScreen": {
+    "searchbar": "搜索书库",
+    "empty": "您的库是空的。从浏览添加丛书到您的库里。",
+    "bottomSheet": {
+      "filters": {
+        "downloaded": "已下载",
+        "unread": "未读",
+        "completed": "已完成",
+        "started": "Started"
+      },
+      "sortOrders": {
+        "dateAdded": "日期已添加",
+        "alphabetically": "按字母排序",
+        "totalChapters": "章节总数"
+      },
+      "display": {
+        "displayMode": "显示模式",
+        "compact": "紧凑网格",
+        "comfortable": "可变网格",
+        "noTitle": "Cover only grid",
+        "list": "列表",
+        "badges": "徽章",
+        "downloadBadges": "下载徽章",
+        "unreadBadges": "未读徽章",
+        "showNoOfItems": "显示条目数量"
+      }
+    }
+  },
+  "updates": "更新",
+  "updatesScreen": {
+    "searchbar": "搜索更新",
+    "lastUpdatedAt": "最近更新的库："
+  },
+  "history": "历史",
+  "historyScreen": {
+    "searchbar": "搜索历史记录",
+    "clearHistorWarning": "您确定吗？所有历史记录都将删除。"
+  },
+  "browse": "浏览",
+  "browseScreen": {
+    "discover": "发现",
+    "searchbar": "搜索资源",
+    "globalSearch": "全局搜索",
+    "listEmpty": "从设置中启用语言",
+    "lastUsed": "最近使用",
+    "pinned": "已固定",
+    "all": "全部",
+    "latest": "最新",
+    "addedToLibrary": "Added to library",
+    "removeFromLibrary": "Removed from library"
+  },
+  "readerScreen": {
+    "finished": "已完成",
+    "noNextChapter": "没有下一章节",
+    "bottomSheet": {
+      "textSize": "文本大小",
+      "color": "颜色",
+      "textAlign": "文本对齐",
+      "lineHeight": "行高",
+      "fontStyle": "字体样式",
+      "fullscreen": "全屏",
+      "renderHml": "渲染HTML",
+      "autoscroll": "自动滚动",
+      "verticalSeekbar": "垂直进度条",
+      "showBatteryAndTime": "显示电池和时间",
+      "showProgressPercentage": "显示进度百分比",
+      "swipeGestures": "向左或向右滑动以导航章节",
+      "allowTextSelection": "允许选择文本",
+      "useChapterDrawerSwipeNavigation": "Swipe right to open drawer"
+    },
+    "drawer": {
+      "scrollToCurrentChapter": "Scroll to current chapter",
+      "scrollToTop": "Scroll to top",
+      "scrollToBottom": "Scroll to bottom"
+    }
+  },
+  "novelScreen": {
+    "addToLibaray": "添加到书库",
+    "inLibaray": "在书库中",
+    "continueReading": "继续阅读",
+    "chapters": "章节",
+    "migrate": "迁移",
+    "noSummary": "No summary",
+    "bottomSheet": {
+      "filter": "筛选",
+      "sort": "排序",
+      "display": "显示"
+    },
+    "jumpToChapterModal": {
+      "jumpToChapter": "Jump to Chapter",
+      "openChapter": "Open Chapter",
+      "chapterName": "Chapter Name",
+      "chapterNumber": "Chapter Number",
+      "error": {
+        "validChapterName": "Enter a valid chapter name",
+        "validChapterNumber": "Enter a valid chapter number"
+      }
+    }
+  },
+  "more": "更多",
+  "moreScreen": {
+    "settings": "设置",
+    "settingsScreen": {
+      "generalSettings": "常规",
+      "generalSettingsScreen": {},
+      "readerSettings": {
+        "title": "阅读器",
+        "readerTheme": "阅读器主题",
+        "preset": "预设值",
+        "backgroundColor": "背景颜色",
+        "textColor": "文字颜色",
+        "backgroundColorModal": "阅读器背景颜色",
+        "textColorModal": "阅读器文本颜色",
+        "verticalSeekbarDesc": "切换垂直和水平进度条",
+        "autoScrollInterval": "自动滚动间隔(以秒计)",
+        "autoScrollOffset": "自动滚动偏移(默认屏幕高度)",
+        "saveCustomTheme": "保存自定义主题",
+        "deleteCustomTheme": "删除自定义主题",
+        "customCSS": "自定义 CSS"
+      },
+      "browseSettings": "浏览设置",
+      "browseSettingsScreen": {
+        "onlyShowPinnedSources": "仅显示已经置顶的源",
+        "languages": "语言",
+        "searchAllSources": "搜索所有源",
+        "searchAllWarning": "搜索大量的源可能会在搜索完成之前程序无法操作。"
+      }
+    }
+  },
+  "sourceScreen": {
+    "noResultsFound": "未找到相应结果"
+  },
+  "statsScreen": {
+    "title": "Statistics",
+    "titlesInLibrary": "Titles in library",
+    "totalChapters": "Total chapters",
+    "readChapters": "Read chapters",
+    "unreadChapters": "Unread chapters",
+    "downloadedChapters": "Downloaded chapters",
+    "genreDistribution": "Genre distribution",
+    "statusDistribution": "Status distribution"
+  },
+  "globalSearch": {
+    "searchIn": "搜索小说在",
+    "allSources": "所有源",
+    "pinnedSources": "置顶的源"
+  },
+  "advancedSettings": {
+    "deleteReadChapters": "Delete read chapters",
+    "deleteReadChaptersDialogTitle": "Are you sure? All chapters marked as read will be deleted."
+  },
+  "date": {
+    "calendar": {
+      "sameDay": "[Today]",
+      "nextDay": "[Tomorrow]",
+      "lastDay": "[Yesterday]",
+      "lastWeek": "[Last] dddd"
+    }
+  },
+  "categories": {
+    "addCategories": "Add category",
+    "editCategories": "Rename category",
+    "setCategories": "Set categories",
+    "header": "Edit categories",
+    "emptyMsg": "You have no categories. Tap the plus button to create one for organizing your library",
+    "setModalEmptyMsg": "You have no categories. Tap the Edit button to create one for organizing your library",
+    "deleteModal": {
+      "header": "Delete category",
+      "desc": "Do you wish to delete category"
+    },
+    "duplicateError": "A category with this name already exists!",
+    "defaultCategory": "Default category"
+  },
+  "settings": {
+    "icognitoMode": "Incognito mode",
+    "downloadedOnly": "Downloaded only"
+  }
+}
