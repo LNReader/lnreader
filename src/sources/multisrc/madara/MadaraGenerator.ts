@@ -141,6 +141,7 @@ export const WuxiaWorldDotSiteScraper = new MadaraScraper(
   74,
   'https://wuxiaworld.site/',
   'WuxiaWorld.Site',
+  { 'useNewChapterEndpoint': true },
 );
 
 export const MysticalSeriesScraper = new MadaraScraper(
