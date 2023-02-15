@@ -5,17 +5,20 @@ const sourceName = 'Agitoon';
 const baseUrl = 'https://agit501.xyz/';
 
 const popularNovels = async page => {
-  const totalPages = 1;
+  const totalPages = 20;
+  const list_limit = 20 * (page - 1);
+  const day = new Date().getDay();
 
-  const res = await fetch('https://agit501.xyz/novel/index.update.php', {
+  const res = await fetch(baseUrl + 'novel/index.update.php', {
     headers: {
       'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
     },
-    body: 'mode=get_data_novel_list_p&novel_menu=3&np_day=2&np_rank=0&np_distributor=0&np_genre=00&np_order=1&np_genre_ex_1=00&np_genre_ex_2=00&list_limit=0&is_query_first=true',
+    body: `mode=get_data_novel_list_p&novel_menu=3&np_day=${day}&np_rank=1&np_distributor=0&np_genre=00&np_order=1&np_genre_ex_1=00&np_genre_ex_2=00&list_limit=${list_limit}&is_query_first=true`,
     method: 'POST',
   });
 
   const resJson = await res.json();
+
   const novels = resJson.list.map(novel => {
     return {
       sourceId,
@@ -46,11 +49,19 @@ const parseNovelAndChapters = async novelUrl => {
   const novelCover =
     baseUrl.slice(0, baseUrl.length - 1) +
     loadedCheerio('div.col-5.pr-0.pl-0 img').attr('src');
+  const genresTag = loadedCheerio('.col-7 > .post-item-list-cate > span');
+  let genres = '';
+
+  genresTag.each((_, element) => {
+    genres += loadedCheerio(element).text();
+    genres += ', ';
+  });
+  genres = genres.slice(0, genres.length - 2);
 
   // normal REST HTTP requests
   let chapters = [];
 
-  const res = await fetch('https://agit501.xyz/novel/list.update.php', {
+  const res = await fetch(baseUrl + 'novel/list.update.php', {
     headers: {
       'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
     },
@@ -61,29 +72,25 @@ const parseNovelAndChapters = async novelUrl => {
   const resJson = await res.json();
 
   chapters = resJson.list.map(chapter => {
-    let chapterId = chapter.wr_id;
-    let chapterName = chapter.wr_subject;
-    let chapterUrl = baseUrl + `novel/view/${chapterId}/2`;
-    let releaseDate = chapter.wr_datetime;
     return {
-      chapterId,
-      chapterName,
-      chapterUrl,
-      releaseDate,
+      chapterId: chapter.wr_id,
+      chapterName: chapter.wr_subject,
+      chapterUrl: baseUrl + `novel/view/${chapterId}/2`,
+      releaseDate: chapter.wr_datetime,
     };
   });
 
   const novel = {
     sourceId,
     sourceName,
-    url: novelUrl,
-    genre: '',
     novelUrl,
     novelName,
     novelCover,
     summary,
     author,
     status: '',
+    genre: genres,
+    url: novelUrl,
     chapters,
   };
   return novel;
@@ -99,7 +106,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   const contentTag = loadedCheerio('#id_wr_content > p');
 
   let content = '';
-  contentTag.each((index, element) => {
+  contentTag.each((_, element) => {
     content += loadedCheerio(element).text();
     content += '<br />';
   });
@@ -122,8 +129,6 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 };
 
 const searchNovels = async searchTerm => {
-  console.log('search...');
-
   const rawResults = await fetch('https://agit501.xyz/novel/search.php', {
     headers: {
       'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -133,14 +138,12 @@ const searchNovels = async searchTerm => {
   });
 
   const results = await rawResults.json();
-  //console.log(results);
+
   if (!results.list && results.list.length() === 0) {
-    console.log('no result...');
     return [];
   }
-  //console.log(results.list);
+
   const novels = results.list.map(result => {
-    //console.log(result);
     return {
       sourceId,
       novelUrl: baseUrl + 'novel/list/' + result.wr_id,
@@ -148,8 +151,6 @@ const searchNovels = async searchTerm => {
       novelCover: baseUrl + result.np_dir + '/thumbnail/' + result.np_thumbnail,
     };
   });
-
-  console.log(novels);
 
   return novels;
 };
