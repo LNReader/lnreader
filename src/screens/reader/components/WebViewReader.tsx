@@ -1,7 +1,7 @@
 import { useAppDispatch } from '@redux/hooks';
 import { setAppSettings } from '@redux/settings/settings.actions';
 import { getString } from '@strings/translations';
-import React, { useEffect, FunctionComponent } from 'react';
+import React, { FunctionComponent } from 'react';
 import { StatusBar, StyleSheet, View } from 'react-native';
 
 import WebView from 'react-native-webview';
@@ -35,16 +35,13 @@ type WebViewReaderProps = {
   swipeGestures: boolean;
   minScroll: any;
   currentScroll: { offSetY: number; percentage: number };
-  scrollPage: string | null;
   wvShowSwipeMargins: boolean;
   nextChapter: ChapterItem;
   webViewRef: React.MutableRefObject<WebView>;
   onPress(): void;
-  scrollTo(offSetY: number): void;
   setCurrentScroll: React.Dispatch<
     React.SetStateAction<{ offSetY: number; percentage: number }>
   >;
-  setScrollPage: React.Dispatch<React.SetStateAction<string | null>>;
   doSaveProgress(offSetY: number, percentage: number): void;
   navigateToChapterBySwipe(name: string): void;
   onWebViewNavigationStateChange(): void;
@@ -61,14 +58,11 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
     swipeGestures,
     minScroll,
     currentScroll,
-    scrollPage,
     wvShowSwipeMargins,
     nextChapter,
     webViewRef,
     onPress,
-    scrollTo,
     setCurrentScroll,
-    setScrollPage,
     doSaveProgress,
     navigateToChapterBySwipe,
     onWebViewNavigationStateChange,
@@ -76,16 +70,6 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
   const backgroundColor = readerBackground(reader.theme);
 
   const dispatch = useAppDispatch();
-  useEffect(() => {
-    if (scrollPage) {
-      if (scrollPage === 'up') {
-        scrollTo(currentScroll.offSetY - layoutHeight);
-      } else {
-        scrollTo(currentScroll.offSetY + layoutHeight);
-      }
-      setScrollPage(null);
-    }
-  }, [scrollPage]);
 
   const onClickWebViewPostMessage = (event: WebViewPostEvent) =>
     "onClick='window.ReactNativeWebView.postMessage(`" +

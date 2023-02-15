@@ -157,6 +157,17 @@ const ChapterContent = ({ route, navigation }) => {
   }, []);
 
   useEffect(() => {
+    if (scrollPage) {
+      if (scrollPage === 'up') {
+        scrollTo(currentScroll.offSetY - Dimensions.get('window').height);
+      } else {
+        scrollTo(currentScroll.offSetY + Dimensions.get('window').height);
+      }
+      setScrollPage(null);
+    }
+  }, [scrollPage]);
+
+  useEffect(() => {
     if (wvUseVolumeButtons) {
       VolumeButtonListener.connect();
     } else {
@@ -403,14 +414,11 @@ const ChapterContent = ({ route, navigation }) => {
                   swipeGestures={swipeGestures}
                   minScroll={minScroll}
                   currentScroll={currentScroll}
-                  scrollPage={scrollPage}
                   wvShowSwipeMargins={wvShowSwipeMargins}
                   nextChapter={nextChapter}
                   webViewRef={webViewRef}
                   onPress={hideHeader}
-                  scrollTo={scrollTo}
                   setCurrentScroll={setCurrentScroll}
-                  setScrollPage={setScrollPage}
                   doSaveProgress={doSaveProgress}
                   navigateToChapterBySwipe={navigateToChapterBySwipe}
                   onWebViewNavigationStateChange={
