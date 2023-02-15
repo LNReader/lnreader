@@ -26,7 +26,6 @@ class WPMangaStreamScraper {
       let image = loadedCheerio(this).find('img');
       const novelCover = image.attr('data-src') || image.attr('src');
       
-
       const novelUrl = loadedCheerio(this).find('a').attr('href');
 
       const novel = {
