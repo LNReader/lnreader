@@ -56,13 +56,6 @@
     "lang": "English"
   },
   {
-    "sourceId": 9,
-    "url": "https://noveltrench.com/",
-    "sourceName": "NovelTrench",
-    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/icons/src/en/noveltrench/icon.png?raw=true",
-    "lang": "English"
-  },
-  {
     "sourceId": 10,
     "url": "https://vipnovel.com/",
     "sourceName": "VipNovel",
