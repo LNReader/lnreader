@@ -18,7 +18,7 @@ const VerticalScrollbar = ({
   const onSlidingComplete = value => {
     let offsetY =
       ((value - minScroll) * Dimensions.get('window').height) / minScroll;
-    scrollTo(offsetY, true);
+    scrollTo(offsetY);
   };
   const screenOrientation = useDeviceOrientation();
 

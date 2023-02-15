@@ -217,15 +217,9 @@ const ChapterContent = ({ route, navigation }) => {
   let scrollTimeout;
 
   const scrollTo = useCallback(
-    (offsetY, animated) => {
+    offsetY => {
       webViewRef?.current.injectJavaScript(`(()=>{
-        window.scrollTo(
-          {
-            left:0,
-            top:${offsetY}, 
-            behavior:'${animated ? 'smooth' : 'instant'}',
-          }
-          );
+        window.scrollTo({top:${offsetY},behavior:'smooth',})
       })()`);
     },
     [webViewRef],
@@ -237,7 +231,6 @@ const ChapterContent = ({ route, navigation }) => {
         scrollTo(
           position.position +
             defaultTo(autoScrollOffset, Dimensions.get('window').height),
-          true,
         );
       }, autoScrollInterval * 1000);
     }
@@ -404,7 +397,7 @@ const ChapterContent = ({ route, navigation }) => {
             ) : (
               <TouchableWithoutFeedback
                 style={{ flex: 1 }}
-                onLayout={() => scrollTo(position?.position, true)}
+                onLayout={() => scrollTo(position?.position)}
               >
                 <View style={{ flex: 1 }}>
                   <WebViewReader

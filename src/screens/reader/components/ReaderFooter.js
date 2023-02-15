@@ -62,7 +62,7 @@ const ChapterFooter = ({
           <Pressable
             android_ripple={rippleConfig}
             style={styles.buttonStyles}
-            onPress={() => scrollTo(0, true)}
+            onPress={() => scrollTo(0)}
           >
             <IconButton
               icon="format-vertical-align-top"
