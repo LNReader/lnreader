@@ -124,23 +124,27 @@ const ChapterContent = ({ route, navigation }) => {
     new NativeEventEmitter(NativeModules.VolumeButtonListener),
   );
 
-  useEffect(() => {
-    if (useVolumeButtons) {
-      VolumeButtonListener.connect();
-      VolumeButtonListener.preventDefault();
-      emmiter.current.addListener('VolumeUp', e => {
-        webViewRef.current?.injectJavaScript(`(()=>{
+  const connectVolumeButton = () => {
+    VolumeButtonListener.connect();
+    VolumeButtonListener.preventDefault();
+    emmiter.current.addListener('VolumeUp', e => {
+      webViewRef.current?.injectJavaScript(`(()=>{
           window.scrollBy({top:${-Dimensions.get('window')
             .height},behavior:'smooth',})
         })()`);
-      });
-      emmiter.current.addListener('VolumeDown', e => {
-        webViewRef.current?.injectJavaScript(`(()=>{
+    });
+    emmiter.current.addListener('VolumeDown', e => {
+      webViewRef.current?.injectJavaScript(`(()=>{
           window.scrollBy({top:${
             Dimensions.get('window').height
           },behavior:'smooth',})
         })()`);
-      });
+    });
+  };
+
+  useEffect(() => {
+    if (useVolumeButtons) {
+      connectVolumeButton();
     } else {
       VolumeButtonListener.disconnect();
       emmiter.current.removeAllListeners('VolumeUp');
@@ -153,6 +157,10 @@ const ChapterContent = ({ route, navigation }) => {
       emmiter.current.removeAllListeners('VolumeDown');
     };
   }, [useVolumeButtons, chapter]);
+
+  const onLayout = useCallback(e => {
+    setTimeout(() => connectVolumeButton());
+  }, []);
 
   const getChapter = async id => {
     try {
@@ -330,7 +338,7 @@ const ChapterContent = ({ route, navigation }) => {
           theme={theme}
         />
         <GestureRecognizer
-          onSwipe={swipeGestures && navigateToChapterBySwipe}
+          onLayout={useVolumeButtons && onLayout}
           config={config}
           style={[{ flex: 1 }, { backgroundColor }]}
         >
