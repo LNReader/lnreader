@@ -70,7 +70,7 @@ const SettingsReaderScreen = () => {
   const readerSettings = useReaderSettings();
   const {
     wvShowSwipeMargins = true,
-    wvUseVolumeButtons = false,
+    UseVolumeButtons = false,
     verticalSeekbar = true,
     swipeGestures = false,
     autoScroll = false,
@@ -186,9 +186,9 @@ const SettingsReaderScreen = () => {
         />
         <SwitchItem
           label={'Volume buttons scroll'}
-          value={wvUseVolumeButtons}
+          value={UseVolumeButtons}
           onPress={() =>
-            dispatch(setAppSettings('wvUseVolumeButtons', !wvUseVolumeButtons))
+            dispatch(setAppSettings('UseVolumeButtons', !UseVolumeButtons))
           }
           theme={theme}
         />

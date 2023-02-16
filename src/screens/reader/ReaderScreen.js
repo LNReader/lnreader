@@ -102,7 +102,7 @@ const ChapterContent = ({ route, navigation }) => {
   const {
     swipeGestures = false,
     wvShowSwipeMargins = true,
-    wvUseVolumeButtons = false,
+    UseVolumeButtons = false,
     autoScroll = false,
     autoScrollInterval = 10,
     autoScrollOffset = null,
@@ -129,50 +129,40 @@ const ChapterContent = ({ route, navigation }) => {
     offsetY: 0,
     percentage: 0,
   });
-  const [scrollPage, setScrollPage] = useState(null);
+
+  const emmiter = useRef(
+    new NativeEventEmitter(NativeModules.VolumeButtonListener),
+  );
 
   useEffect(() => {
-    VolumeButtonListener.disconnect();
-    if (wvUseVolumeButtons) {
+    if (UseVolumeButtons) {
       VolumeButtonListener.connect();
       VolumeButtonListener.preventDefault();
-      const emmiter = new NativeEventEmitter(
-        NativeModules.VolumeButtonListener,
-      );
-      emmiter.removeAllListeners('VolumeUp');
-      emmiter.removeAllListeners('VolumeDown');
-      const upSub = emmiter.addListener('VolumeUp', e => {
-        setScrollPage('up');
+      const upSub = emmiter.current.addListener('VolumeUp', e => {
+        webViewRef.current?.injectJavaScript(`(()=>{
+          window.scrollBy({top:${-Dimensions.get('window')
+            .height},behavior:'smooth',})
+        })()`);
       });
-      const downSub = emmiter.addListener('VolumeDown', e => {
-        setScrollPage('down');
+      const downSub = emmiter.current.addListener('VolumeDown', e => {
+        webViewRef.current?.injectJavaScript(`(()=>{
+          window.scrollBy({top:${
+            Dimensions.get('window').height
+          },behavior:'smooth',})
+        })()`);
       });
       return () => {
         VolumeButtonListener.disconnect();
         upSub?.remove();
         downSub?.remove();
       };
-    }
-  }, []);
-
-  useEffect(() => {
-    if (scrollPage) {
-      if (scrollPage === 'up') {
-        scrollTo(currentScroll.offSetY - Dimensions.get('window').height);
-      } else {
-        scrollTo(currentScroll.offSetY + Dimensions.get('window').height);
-      }
-      setScrollPage(null);
-    }
-  }, [scrollPage]);
-
-  useEffect(() => {
-    if (wvUseVolumeButtons) {
-      VolumeButtonListener.connect();
     } else {
       VolumeButtonListener.disconnect();
+      emmiter.current.removeAllListeners('VolumeUp');
+      emmiter.current.removeAllListeners('VolumeDown');
+      // this is just for sure, without it app still works properly
     }
-  }, [wvUseVolumeButtons]);
+  }, [UseVolumeButtons]);
 
   const getChapter = async id => {
     try {
@@ -274,14 +264,8 @@ const ChapterContent = ({ route, navigation }) => {
 
   const hideHeader = () => {
     if (!hidden) {
-      if (wvUseVolumeButtons) {
-        VolumeButtonListener.connect();
-      }
       setImmersiveMode();
     } else {
-      if (wvUseVolumeButtons) {
-        VolumeButtonListener.disconnect();
-      }
       showStatusAndNavBar();
     }
     setHidden(!hidden);

@@ -64,7 +64,7 @@ export const initialState = {
   swipeGestures: false,
   showScrollPercentage: true,
   wvShowSwipeMargins: true,
-  wvUseVolumeButtons: false,
+  UseVolumeButtons: false,
   showBatteryAndTime: false,
   autoScroll: false,
   autoScrollInterval: 10,
