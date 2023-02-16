@@ -354,9 +354,6 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
                           const noswipe = document.querySelector(".pos");
                           const lswipe = document.querySelector(".posl");
                           const rswipe = document.querySelector(".posr");
-                          // test
-                          window.ReactNativeWebView.postMessage('{"type":"test1"}')
-                          window.ReactNativeWebView.postMessage(JSON.stringify({type:"test2"}))
                           chapter.addEventListener("touchstart", startTouch, false);
                           chapter.addEventListener("touchmove", moveTouch, false);
                           var initialX = null;

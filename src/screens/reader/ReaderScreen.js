@@ -58,16 +58,11 @@ import color from 'color';
 import { htmlToText } from '../../sources/helpers/htmlToText';
 
 const Chapter = ({ route }) => {
-  const { useChapterDrawerSwipeNavigation = true } = useSettings();
   const DrawerNav = createDrawerNavigator();
   return (
     <DrawerNav.Navigator
       params={route.params}
       drawerContent={props => <ChapterDrawer {...props} />}
-      screenOptions={{
-        swipeEdgeWidth: 60,
-        swipeEnabled: useChapterDrawerSwipeNavigation,
-      }}
     >
       <DrawerNav.Screen
         name="ChapterContent"

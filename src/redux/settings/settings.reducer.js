@@ -71,7 +71,6 @@ export const initialState = {
   autoScrollOffset: null,
   verticalSeekbar: true,
   removeExtraParagraphSpacing: false,
-  useChapterDrawerSwipeNavigation: true,
 
   reader: {
     theme: '#292832',
