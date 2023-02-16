@@ -11,7 +11,7 @@ const VerticalScrollbar = ({
   theme,
   minScroll,
   verticalSeekbar,
-  currentScroll,
+  percentage,
   scrollTo,
 }) => {
   const { bottom } = useSafeAreaInsets();
@@ -41,7 +41,7 @@ const VerticalScrollbar = ({
             transform: [{ rotate: '-90deg' }],
           }}
         >
-          {currentScroll.percentage || Math.round(minScroll)}
+          {percentage || Math.round(minScroll)}
         </Text>
         <Slider
           style={{
@@ -51,7 +51,7 @@ const VerticalScrollbar = ({
           minimumValue={Math.round(minScroll)}
           maximumValue={100}
           step={1}
-          value={currentScroll.percentage || Math.round(minScroll)}
+          value={percentage || Math.round(minScroll)}
           onSlidingComplete={onSlidingComplete}
           thumbTintColor={theme.primary}
           minimumTrackTintColor={theme.primary}
@@ -85,7 +85,7 @@ const VerticalScrollbar = ({
             marginLeft: 16,
           }}
         >
-          {currentScroll.percentage}
+          {percentage || Math.round(minScroll)}
         </Text>
         <Slider
           style={{
@@ -95,7 +95,7 @@ const VerticalScrollbar = ({
           minimumValue={Math.round(minScroll)}
           maximumValue={100}
           step={1}
-          value={currentScroll.percentage || Math.round(minScroll)}
+          value={percentage || Math.round(minScroll)}
           onSlidingComplete={onSlidingComplete}
           thumbTintColor={theme.primary}
           minimumTrackTintColor={theme.primary}

@@ -112,18 +112,13 @@ const ChapterContent = ({ route, navigation }) => {
 
   const { tracker, trackedNovels } = useTrackingStatus();
   const position = usePosition(novelId, chapterId);
+  const minScroll = useRef(0);
 
   const isTracked = trackedNovels.find(obj => obj.novelId === novelId);
 
   const [chapter, setChapter] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
-
-  const minScroll = useRef(0);
-  const [currentScroll, setCurrentScroll] = useState({
-    offsetY: 0,
-    percentage: 0,
-  });
 
   const emmiter = useRef(
     new NativeEventEmitter(NativeModules.VolumeButtonListener),
@@ -397,12 +392,10 @@ const ChapterContent = ({ route, navigation }) => {
                   layoutHeight={Dimensions.get('window').height}
                   swipeGestures={swipeGestures}
                   minScroll={minScroll}
-                  currentScroll={currentScroll}
                   ShowSwipeMargins={ShowSwipeMargins}
                   nextChapter={nextChapter}
                   webViewRef={webViewRef}
                   onPress={hideHeader}
-                  setCurrentScroll={setCurrentScroll}
                   doSaveProgress={doSaveProgress}
                   navigateToChapterBySwipe={navigateToChapterBySwipe}
                   onWebViewNavigationStateChange={
@@ -413,7 +406,7 @@ const ChapterContent = ({ route, navigation }) => {
             </TouchableWithoutFeedback>
           )}
         </GestureRecognizer>
-        <BottomInfoBar scrollPercentage={currentScroll.percentage || 0} />
+        <BottomInfoBar scrollPercentage={position?.percentage || 0} />
         <Portal>
           <ReaderBottomSheetV2 bottomSheetRef={readerSheetRef} />
         </Portal>
@@ -422,7 +415,7 @@ const ChapterContent = ({ route, navigation }) => {
           theme={theme}
           minScroll={minScroll.current}
           verticalSeekbar={verticalSeekbar}
-          currentScroll={currentScroll}
+          percentage={position?.percentage}
           scrollTo={scrollTo}
         />
         <ReaderFooter

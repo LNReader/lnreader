@@ -34,14 +34,10 @@ type WebViewReaderProps = {
   layoutHeight: number;
   swipeGestures: boolean;
   minScroll: any;
-  currentScroll: { offSetY: number; percentage: number };
   ShowSwipeMargins: boolean;
   nextChapter: ChapterItem;
   webViewRef: React.MutableRefObject<WebView>;
   onPress(): void;
-  setCurrentScroll: React.Dispatch<
-    React.SetStateAction<{ offSetY: number; percentage: number }>
-  >;
   doSaveProgress(offSetY: number, percentage: number): void;
   navigateToChapterBySwipe(name: string): void;
   onWebViewNavigationStateChange(): void;
@@ -57,12 +53,10 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
     layoutHeight,
     swipeGestures,
     minScroll,
-    currentScroll,
     ShowSwipeMargins,
     nextChapter,
     webViewRef,
     onPress,
-    setCurrentScroll,
     doSaveProgress,
     navigateToChapterBySwipe,
     onWebViewNavigationStateChange,
@@ -145,25 +139,13 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
               if (event.data) {
                 const offSetY = Number(event.data?.offSetY);
                 const percentage = Math.round(Number(event.data?.percentage));
-                setCurrentScroll({
-                  offSetY: offSetY,
-                  percentage: percentage,
-                });
-                if (offSetY) {
-                  doSaveProgress(offSetY, percentage);
-                }
+                doSaveProgress(offSetY, percentage);
               }
               break;
             case 'height':
               if (event.data) {
                 const contentHeight = Math.round(Number(event.data));
                 minScroll.current = (layoutHeight / contentHeight) * 100;
-                if (currentScroll.percentage === 0) {
-                  setCurrentScroll({
-                    offSetY: 0,
-                    percentage: Math.round(Number(event.data?.percentage)),
-                  });
-                }
               }
           }
         }}
