@@ -90,7 +90,9 @@
       "showProgressPercentage": "Show progress percentage",
       "swipeGestures": "Swipe left or right to navigate between chapters",
       "allowTextSelection": "Allow text selection",
-      "useChapterDrawerSwipeNavigation": "Swipe right to open drawer"
+      "useChapterDrawerSwipeNavigation": "Swipe right to open drawer",
+      "removeExtraSpacing":"Remove extra paragraph spacing",
+      "volumeButtonsScroll":"Volume buttons scroll"
     },
     "drawer": {
       "scrollToCurrentChapter": "Scroll to current chapter",
