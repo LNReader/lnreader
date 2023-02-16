@@ -32,7 +32,10 @@
       "sortOrders": {
         "dateAdded": "Date added",
         "alphabetically": "Alphabetically",
-        "totalChapters": "Total chapters"
+        "totalChapters": "Total chapters",
+        "download": "Downloaded",
+        "unread": "Unread",
+        "lastRead": "Last Read"
       },
       "display": {
         "displayMode": "Display mode",

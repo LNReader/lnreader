@@ -6,19 +6,36 @@ import { Portal, Modal, overlay } from 'react-native-paper';
 import { RadioButton } from '../../../../components/RadioButton/RadioButton';
 
 import { useLibrarySettings } from '@hooks/useSettings';
+import { MD3ThemeType } from '@theme/types';
 
-const NovelSortModal = ({
+interface GridSizeModalProps {
+  novelsPerRow: number;
+  gridSizeModalVisible: boolean;
+  hideGridSizeModal: () => void;
+  theme: MD3ThemeType;
+}
+
+const GridSizeModal: React.FC<GridSizeModalProps> = ({
   novelsPerRow,
-  novelSortModalVisible,
-  hideNovelSortModal,
+  gridSizeModalVisible,
+  hideGridSizeModal,
   theme,
 }) => {
   const { setLibrarySettings } = useLibrarySettings();
+
+  const gridSizes = {
+    5: 'XS',
+    4: 'S',
+    3: 'M',
+    2: 'L',
+    1: 'XL',
+  };
+
   return (
     <Portal>
       <Modal
-        visible={novelSortModalVisible}
-        onDismiss={hideNovelSortModal}
+        visible={gridSizeModalVisible}
+        onDismiss={hideGridSizeModal}
         contentContainerStyle={[
           styles.container,
           { backgroundColor: overlay(2, theme.surface) },
@@ -32,22 +49,26 @@ const NovelSortModal = ({
         >
           {`${novelsPerRow} per row`}
         </Text>
-        {Object.keys(gridSizes).map(item => (
-          <RadioButton
-            key={item}
-            status={item == novelsPerRow}
-            label={gridSizes[item]}
-            onPress={() => setLibrarySettings({ novelsPerRow: item })}
-            theme={theme}
-            style={{ paddingHorizontal: 20 }}
-          />
-        ))}
+        {Object.keys(gridSizes).map(item => {
+          let it = Number(item);
+          return (
+            <RadioButton
+              key={item}
+              status={it === novelsPerRow}
+              // @ts-ignore
+              label={gridSizes[it]}
+              onPress={() => setLibrarySettings({ novelsPerRow: it })}
+              theme={theme}
+              style={styles.radiobutton}
+            />
+          );
+        })}
       </Modal>
     </Portal>
   );
 };
 
-export default NovelSortModal;
+export default GridSizeModal;
 
 const styles = StyleSheet.create({
   container: {
@@ -69,4 +90,5 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 40,
   },
+  radiobutton: { paddingHorizontal: 20 },
 });

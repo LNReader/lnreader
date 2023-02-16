@@ -30,6 +30,9 @@ export interface StringMap {
   'libraryScreen.bottomSheet.sortOrders.dateAdded': 'string';
   'libraryScreen.bottomSheet.sortOrders.alphabetically': 'string';
   'libraryScreen.bottomSheet.sortOrders.totalChapters': 'string';
+  'libraryScreen.bottomSheet.sortOrders.lastRead': 'string';
+  'libraryScreen.bottomSheet.sortOrders.unread': 'string';
+  'libraryScreen.bottomSheet.sortOrders.download': 'string';
   'libraryScreen.bottomSheet.display.displayMode': 'string';
   'libraryScreen.bottomSheet.display.compact': 'string';
   'libraryScreen.bottomSheet.display.comfortable': 'string';
