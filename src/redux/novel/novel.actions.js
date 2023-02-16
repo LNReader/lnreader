@@ -205,19 +205,6 @@ export const markChapterReadAction = (chapterId, novelId) => async dispatch => {
     type: SET_LAST_READ,
     payload: { novelId, chapterId: nextChapter.chapterId },
   });
-
-  /**
-   * Reset progress on marked read
-   */
-  dispatch({
-    type: SAVE_SCROLL_POSITION,
-    payload: {
-      position: 0,
-      percentage: 0,
-      chapterId,
-      novelId,
-    },
-  });
 };
 
 export const markPreviousChaptersReadAction =

@@ -42,7 +42,6 @@ import EmptyView from '../../components/EmptyView';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import { insertHistory } from '../../database/queries/HistoryQueries';
 import { SET_LAST_READ } from '../../redux/preferences/preference.types';
-import TextReader from './components/TextReader';
 import WebViewReader from './components/WebViewReader';
 import { useTextToSpeech } from '../../hooks/useTextToSpeech';
 import { useFullscreenMode, useLibrarySettings } from '../../hooks';
@@ -59,16 +58,11 @@ import color from 'color';
 import { htmlToText } from '../../sources/helpers/htmlToText';
 
 const Chapter = ({ route }) => {
-  const { useChapterDrawerSwipeNavigation = true } = useSettings();
   const DrawerNav = createDrawerNavigator();
   return (
     <DrawerNav.Navigator
       params={route.params}
       drawerContent={props => <ChapterDrawer {...props} />}
-      screenOptions={{
-        swipeEdgeWidth: 60,
-        swipeEnabled: useChapterDrawerSwipeNavigation,
-      }}
     >
       <DrawerNav.Screen
         name="ChapterContent"
@@ -93,7 +87,6 @@ const ChapterContent = ({ route, navigation }) => {
     chapterName,
     bookmark,
   } = params;
-  let scrollViewRef = useRef(null);
   let webViewRef = useRef(null);
   let readerSheetRef = useRef(null);
 
@@ -103,10 +96,8 @@ const ChapterContent = ({ route, navigation }) => {
 
   const {
     swipeGestures = false,
-    useWebViewForChapter = false,
-    wvUseNewSwipes = false,
-    wvShowSwipeMargins = true,
-    wvUseVolumeButtons = false,
+    showSwipeMargins = true,
+    useVolumeButtons = false,
     autoScroll = false,
     autoScrollInterval = 10,
     autoScrollOffset = null,
@@ -121,6 +112,7 @@ const ChapterContent = ({ route, navigation }) => {
 
   const { tracker, trackedNovels } = useTrackingStatus();
   const position = usePosition(novelId, chapterId);
+  const minScroll = useRef(0);
 
   const isTracked = trackedNovels.find(obj => obj.novelId === novelId);
 
@@ -128,45 +120,47 @@ const ChapterContent = ({ route, navigation }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
 
-  const minScroll = useRef(0);
-  const [currentScroll, setCurrentScroll] = useState({
-    offsetY: 0,
-    percentage: 0,
-  });
-  const [firstLayout, setFirstLayout] = useState(true);
-  const [scrollPage, setScrollPage] = useState(null);
+  const emmiter = useRef(
+    new NativeEventEmitter(NativeModules.VolumeButtonListener),
+  );
+
+  const connectVolumeButton = () => {
+    VolumeButtonListener.connect();
+    VolumeButtonListener.preventDefault();
+    emmiter.current.addListener('VolumeUp', e => {
+      webViewRef.current?.injectJavaScript(`(()=>{
+          window.scrollBy({top:${-Dimensions.get('window')
+            .height},behavior:'smooth',})
+        })()`);
+    });
+    emmiter.current.addListener('VolumeDown', e => {
+      webViewRef.current?.injectJavaScript(`(()=>{
+          window.scrollBy({top:${
+            Dimensions.get('window').height
+          },behavior:'smooth',})
+        })()`);
+    });
+  };
 
   useEffect(() => {
-    VolumeButtonListener.disconnect();
-    if (useWebViewForChapter && wvUseVolumeButtons) {
-      VolumeButtonListener.connect();
-      VolumeButtonListener.preventDefault();
-      const emmiter = new NativeEventEmitter(
-        NativeModules.VolumeButtonListener,
-      );
-      emmiter.removeAllListeners('VolumeUp');
-      emmiter.removeAllListeners('VolumeDown');
-      const upSub = emmiter.addListener('VolumeUp', e => {
-        setScrollPage('up');
-      });
-      const downSub = emmiter.addListener('VolumeDown', e => {
-        setScrollPage('down');
-      });
-      return () => {
-        VolumeButtonListener.disconnect();
-        upSub?.remove();
-        downSub?.remove();
-      };
-    }
-  }, []);
-
-  useEffect(() => {
-    if (wvUseVolumeButtons) {
-      VolumeButtonListener.connect();
+    if (useVolumeButtons) {
+      connectVolumeButton();
     } else {
       VolumeButtonListener.disconnect();
+      emmiter.current.removeAllListeners('VolumeUp');
+      emmiter.current.removeAllListeners('VolumeDown');
+      // this is just for sure, without it app still works properly
     }
-  }, [wvUseVolumeButtons]);
+    return () => {
+      VolumeButtonListener.disconnect();
+      emmiter.current.removeAllListeners('VolumeUp');
+      emmiter.current.removeAllListeners('VolumeDown');
+    };
+  }, [useVolumeButtons, chapter]);
+
+  const onLayout = useCallback(e => {
+    setTimeout(() => connectVolumeButton());
+  }, []);
 
   const getChapter = async id => {
     try {
@@ -218,30 +212,32 @@ const ChapterContent = ({ route, navigation }) => {
     },
   );
 
-  const [currentOffset, setCurrentOffset] = useState(position?.position || 0);
+  const scrollTo = useCallback(
+    offsetY => {
+      webViewRef?.current.injectJavaScript(`(()=>{
+        window.scrollTo({top:${offsetY},behavior:'smooth',})
+      })()`);
+    },
+    [webViewRef],
+  );
 
-  let scrollTimeout;
-
+  let scrollInterval;
   useEffect(() => {
-    if (currentScroll.percentage !== 100 && autoScroll) {
-      scrollTimeout = setTimeout(() => {
-        scrollViewRef.current.scrollTo({
-          x: 0,
-          y:
-            currentOffset +
-            defaultTo(autoScrollOffset, Dimensions.get('window').height),
-          animated: true,
-        });
-        setCurrentOffset(
-          prevState =>
-            prevState +
-            defaultTo(autoScrollOffset, Dimensions.get('window').height),
-        );
+    if (autoScroll) {
+      scrollInterval = setInterval(() => {
+        webViewRef.current?.injectJavaScript(`(()=>{
+          window.scrollBy({top:${defaultTo(
+            autoScrollOffset,
+            Dimensions.get('window').height,
+          )},behavior:'smooth'})
+        })()`);
       }, autoScrollInterval * 1000);
+    } else {
+      clearInterval(scrollInterval);
     }
 
-    return () => clearTimeout(scrollTimeout);
-  }, [autoScroll, currentOffset]);
+    return () => clearInterval(scrollInterval);
+  }, [autoScroll, webViewRef]);
 
   const updateTracker = () => {
     const chapterNumber = parseChapterNumber(chapterName);
@@ -255,77 +251,25 @@ const ChapterContent = ({ route, navigation }) => {
       );
   };
 
-  const doSaveProgress = (offsetY, percentage) => {
-    if (!incognitoMode) {
-      dispatch(saveScrollPosition(offsetY, percentage, chapterId, novelId));
-    }
+  const doSaveProgress = useCallback(
+    (offsetY, percentage) => {
+      if (!incognitoMode) {
+        dispatch(saveScrollPosition(offsetY, percentage, chapterId, novelId));
+      }
 
-    if (!incognitoMode && percentage >= 97) {
-      // a relative number
-      dispatch(markChapterReadAction(chapterId, novelId));
-      updateTracker();
-    }
-  };
-
-  const onScroll = useCallback(({ nativeEvent }) => {
-    const offsetY = nativeEvent.contentOffset.y;
-    const pos =
-      nativeEvent.contentOffset.y + nativeEvent.layoutMeasurement.height;
-
-    const percentage = Math.round((pos / nativeEvent.contentSize.height) * 100);
-    if (offsetY != 0 && percentage != 100) {
-      // because the content is set to 0 when closing layout (i guess)
-      setCurrentScroll({ offsetY: offsetY, percentage: percentage });
-    }
-    if (
-      nativeEvent.contentSize.height != nativeEvent.layoutMeasurement.height &&
-      nativeEvent.contentSize.height > 0
-    ) {
-      doSaveProgress(offsetY, percentage);
-    }
-  }, []);
-
-  const onLayoutProcessing = useCallback(
-    event => {
-      const scrollToSavedProgress = () => {
-        if (position) {
-          if (useWebViewForChapter) {
-            webViewRef.current.injectJavaScript(`(()=>{
-              window.scrollTo({top: ${position.position}, left:0, behavior:"instant"});
-            })()`);
-          } else {
-            scrollViewRef.current.scrollTo({
-              x: 0,
-              y: position.position,
-              animated: false,
-            });
-          }
-        }
-        if (firstLayout) {
-          setFirstLayout(false);
-        }
-      };
-
-      scrollToSavedProgress();
-      if (!useWebViewForChapter) {
-        minScroll.current =
-          (Dimensions.get('window').height / event.nativeEvent.layout.height) *
-          100;
+      if (!incognitoMode && percentage >= 97) {
+        // a relative number
+        dispatch(markChapterReadAction(chapterId, novelId));
+        updateTracker();
       }
     },
-    [nextChapter, useWebViewForChapter],
+    [chapter],
   );
 
   const hideHeader = () => {
     if (!hidden) {
-      if (useWebViewForChapter && wvUseVolumeButtons) {
-        VolumeButtonListener.connect();
-      }
       setImmersiveMode();
     } else {
-      if (useWebViewForChapter && wvUseVolumeButtons) {
-        VolumeButtonListener.disconnect();
-      }
       showStatusAndNavBar();
     }
     setHidden(!hidden);
@@ -336,28 +280,30 @@ const ChapterContent = ({ route, navigation }) => {
     directionalOffsetThreshold: 50,
   };
 
-  const navigateToPrevChapter = () => {
-    prevChapter
+  const navigateToChapterBySwipe = name => {
+    let chapter;
+    if (name === 'SWIPE_LEFT') {
+      chapter = nextChapter;
+    } else if (name === 'SWIPE_RIGHT') {
+      chapter = prevChapter;
+    } else {
+      return;
+    }
+    // you can add more condition for friendly usage. for example: if(name === "SWIPE_LEFT" || name === "right")
+    showToast('Loading...'); // for better experience :D
+    chapter
       ? navigation.replace('Chapter', {
           ...params,
-          chapterUrl: prevChapter.chapterUrl,
-          chapterId: prevChapter.chapterId,
-          chapterName: prevChapter.chapterName,
-          bookmark: prevChapter.bookmark,
+          chapterUrl: chapter.chapterUrl,
+          chapterId: chapter.chapterId,
+          chapterName: chapter.chapterName,
+          bookmark: chapter.bookmark,
         })
-      : showToast("There's no previous chapter");
-  };
-
-  const navigateToNextChapter = () => {
-    nextChapter
-      ? navigation.replace('Chapter', {
-          ...params,
-          chapterUrl: nextChapter.chapterUrl,
-          chapterId: nextChapter.chapterId,
-          chapterName: nextChapter.chapterName,
-          bookmark: nextChapter.bookmark,
-        })
-      : showToast("There's no next chapter");
+      : showToast(
+          name === 'SWIPE_LEFT'
+            ? "There's no next chapter"
+            : "There's no previous chapter",
+        );
   };
 
   const onWebViewNavigationStateChange = async ({ url }) => {
@@ -392,134 +338,93 @@ const ChapterContent = ({ route, navigation }) => {
           theme={theme}
         />
         <GestureRecognizer
-          onSwipeRight={
-            swipeGestures &&
-            (!useWebViewForChapter || !wvUseNewSwipes) &&
-            navigateToPrevChapter
-          }
-          onSwipeLeft={
-            swipeGestures &&
-            (!useWebViewForChapter || !wvUseNewSwipes) &&
-            navigateToNextChapter
-          }
+          onLayout={useVolumeButtons && onLayout}
           config={config}
-          style={{ flex: 1 }}
+          style={[{ flex: 1 }, { backgroundColor }]}
         >
-          <ScrollView
-            ref={scrollViewRef}
-            contentContainerStyle={[
-              styles.screenContainer,
-              { backgroundColor },
-            ]}
-            onScroll={!loading && onScroll}
-            showsVerticalScrollIndicator={false}
-          >
-            {error ? (
-              <View style={{ flex: 1, justifyContent: 'center' }}>
-                <EmptyView
-                  icon="Σ(ಠ_ಠ)"
-                  description={error}
-                  style={{ color: readerSettings.textColor }}
-                >
-                  <IconButton
-                    icon="reload"
-                    size={25}
-                    style={{ margin: 0, marginTop: 16 }}
-                    iconColor={readerSettings.textColor}
-                    onPress={() => {
-                      getChapter(chapterId);
-                      setLoading(true);
-                      setError();
-                    }}
-                  />
-                  <Text style={{ color: readerSettings.textColor }}>Retry</Text>
-                </EmptyView>
-              </View>
-            ) : loading ? (
-              <SkeletonLines
-                containerMargin={readerSettings.padding + '%'}
-                containerHeight={'100%'}
-                containerWidth={'100%'}
-                color={
-                  color(backgroundColor).isDark()
-                    ? color(backgroundColor).luminosity() !== 0
-                      ? color(backgroundColor).lighten(0.1).toString()
-                      : color(backgroundColor).negate().darken(0.98).toString()
-                    : color(backgroundColor).darken(0.04).toString()
-                }
-                highlightColor={
-                  color(backgroundColor).isDark()
-                    ? color(backgroundColor).luminosity() !== 0
-                      ? color(backgroundColor).lighten(0.4).toString()
-                      : color(backgroundColor).negate().darken(0.92).toString()
-                    : color(backgroundColor).darken(0.08).toString()
-                }
-                textSize={readerSettings.textSize}
-                lineHeight={readerSettings.lineHeight}
-              />
-            ) : (
-              <TouchableWithoutFeedback
-                style={{ flex: 1 }}
-                onLayout={onLayoutProcessing}
+          {error ? (
+            <View style={{ flex: 1, justifyContent: 'center' }}>
+              <EmptyView
+                icon="Σ(ಠ_ಠ)"
+                description={error}
+                style={{ color: readerSettings.textColor }}
               >
-                {useWebViewForChapter ? (
-                  <View style={{ flex: 1 }}>
-                    <WebViewReader
-                      theme={theme}
-                      chapter={chapter}
-                      html={chapterText}
-                      reader={readerSettings}
-                      chapterName={chapter.chapterName || chapterName}
-                      layoutHeight={Dimensions.get('window').height}
-                      swipeGestures={swipeGestures && wvUseNewSwipes}
-                      minScroll={minScroll}
-                      currentScroll={currentScroll}
-                      scrollPage={scrollPage}
-                      wvShowSwipeMargins={wvShowSwipeMargins}
-                      nextChapter={nextChapter}
-                      webViewRef={webViewRef}
-                      onPress={hideHeader}
-                      setCurrentScroll={setCurrentScroll}
-                      setScrollPage={setScrollPage}
-                      doSaveProgress={doSaveProgress}
-                      navigateToNextChapter={() => navigateToNextChapter()}
-                      navigateToPrevChapter={() => navigateToPrevChapter()}
-                      onWebViewNavigationStateChange={
-                        onWebViewNavigationStateChange
-                      }
-                    />
-                  </View>
-                ) : (
-                  <View>
-                    <TextReader
-                      theme={theme}
-                      chapterName={chapter.chapterName || chapterName}
-                      text={chapterText}
-                      reader={readerSettings}
-                      nextChapter={nextChapter}
-                      onPress={hideHeader}
-                      navigateToNextChapter={navigateToNextChapter}
-                    />
-                  </View>
-                )}
-              </TouchableWithoutFeedback>
-            )}
-          </ScrollView>
+                <IconButton
+                  icon="reload"
+                  size={25}
+                  style={{ margin: 0, marginTop: 16 }}
+                  iconColor={readerSettings.textColor}
+                  onPress={() => {
+                    getChapter(chapterId);
+                    setLoading(true);
+                    setError();
+                  }}
+                />
+                <Text style={{ color: readerSettings.textColor }}>Retry</Text>
+              </EmptyView>
+            </View>
+          ) : loading ? (
+            <SkeletonLines
+              containerMargin={readerSettings.padding + '%'}
+              containerHeight={'100%'}
+              containerWidth={'100%'}
+              color={
+                color(backgroundColor).isDark()
+                  ? color(backgroundColor).luminosity() !== 0
+                    ? color(backgroundColor).lighten(0.1).toString()
+                    : color(backgroundColor).negate().darken(0.98).toString()
+                  : color(backgroundColor).darken(0.04).toString()
+              }
+              highlightColor={
+                color(backgroundColor).isDark()
+                  ? color(backgroundColor).luminosity() !== 0
+                    ? color(backgroundColor).lighten(0.4).toString()
+                    : color(backgroundColor).negate().darken(0.92).toString()
+                  : color(backgroundColor).darken(0.08).toString()
+              }
+              textSize={readerSettings.textSize}
+              lineHeight={readerSettings.lineHeight}
+            />
+          ) : (
+            <TouchableWithoutFeedback
+              style={{ flex: 1 }}
+              onLayout={() => scrollTo(position?.position)}
+            >
+              <View style={{ flex: 1 }}>
+                <WebViewReader
+                  theme={theme}
+                  chapter={chapter}
+                  html={chapterText}
+                  reader={readerSettings}
+                  chapterName={chapter.chapterName || chapterName}
+                  layoutHeight={Dimensions.get('window').height}
+                  swipeGestures={swipeGestures}
+                  minScroll={minScroll}
+                  showSwipeMargins={showSwipeMargins}
+                  nextChapter={nextChapter}
+                  webViewRef={webViewRef}
+                  onPress={hideHeader}
+                  doSaveProgress={doSaveProgress}
+                  navigateToChapterBySwipe={navigateToChapterBySwipe}
+                  onWebViewNavigationStateChange={
+                    onWebViewNavigationStateChange
+                  }
+                />
+              </View>
+            </TouchableWithoutFeedback>
+          )}
         </GestureRecognizer>
-        <BottomInfoBar scrollPercentage={currentScroll.percentage || 0} />
+        <BottomInfoBar scrollPercentage={position?.percentage || 0} />
         <Portal>
           <ReaderBottomSheetV2 bottomSheetRef={readerSheetRef} />
         </Portal>
         <ReaderSeekBar
           hide={hidden}
           theme={theme}
-          verticalSeekbar={verticalSeekbar}
-          currentScroll={currentScroll}
-          useWebViewForChapter={useWebViewForChapter}
           minScroll={minScroll.current}
-          scrollViewRef={scrollViewRef}
-          webViewRef={webViewRef}
-          setCurrentScroll={setCurrentScroll}
+          verticalSeekbar={verticalSeekbar}
+          percentage={position?.percentage}
+          scrollTo={scrollTo}
         />
         <ReaderFooter
           hide={hidden}
@@ -527,11 +432,9 @@ const ChapterContent = ({ route, navigation }) => {
           chapterUrl={chapterUrl}
           nextChapter={nextChapter}
           prevChapter={prevChapter}
-          useWebViewForChapter={useWebViewForChapter}
           readerSheetRef={readerSheetRef}
-          scrollViewRef={scrollViewRef}
-          navigateToNextChapter={navigateToNextChapter}
-          navigateToPrevChapter={navigateToPrevChapter}
+          scrollTo={scrollTo}
+          navigateToChapterBySwipe={navigateToChapterBySwipe}
           openDrawer={openDrawer}
         />
       </>
@@ -540,20 +443,3 @@ const ChapterContent = ({ route, navigation }) => {
 };
 
 export default Chapter;
-
-const styles = StyleSheet.create({
-  screenContainer: { flexGrow: 1 },
-  scrollPercentageContainer: {
-    width: '100%',
-    position: 'absolute',
-    paddingVertical: 4,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    zIndex: 1,
-    flexDirection: 'row',
-    paddingHorizontal: 32,
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-});
