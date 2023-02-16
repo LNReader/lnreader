@@ -10,24 +10,24 @@
     "newUpdateAvailable": "Đã có bản cập nhật mới",
     "categories": "Danh mục",
     "add": "Thêm",
-    "edit": "Chỉnh sửa",
+    "edit": "Sửa",
     "name": "Tên",
     "searchFor": "Tìm kiếm",
     "globally": "toàn cầu",
     "searchResults": "Kết quả tìm kiếm",
-    "chapters": "Các chương",
+    "chapters": "Chương",
     "submit": "Gửi"
   },
   "library": "Thư viện",
   "libraryScreen": {
     "searchbar": "Tìm kiếm Thư viện",
-    "empty": "Thư viện của bạn hiện đang trống. Hãy thêm các truyện vào thư viện từ Thanh công cụ Tìm kiếm.",
+    "empty": "Không có gì cả. Hãy thêm truyện vào thư viện từ mục Tìm kiếm.",
     "bottomSheet": {
       "filters": {
         "downloaded": "Đã tải về",
         "unread": "Chưa đọc",
         "completed": "Đã hoàn thành",
-        "started": "Đã đọc"
+        "started": "Đã bắt đầu"
       },
       "sortOrders": {
         "dateAdded": "Ngày được thêm",
@@ -40,7 +40,7 @@
         "comfortable": "Tiện dụng",
         "noTitle": "Ảnh bìa",
         "list": "Danh sách",
-        "badges": "Dấu",
+        "badges": "Đánh dấu",
         "downloadBadges": "Dấu tải xuống",
         "unreadBadges": "Dấu chưa đọc",
         "showNoOfItems": "Hiện số lượng"
@@ -50,7 +50,7 @@
   "updates": "Cập nhật",
   "updatesScreen": {
     "searchbar": "Tìm kiếm bản cập nhật",
-    "lastUpdatedAt": "Lần cập nhật thư viện gần nhất:"
+    "lastUpdatedAt": "Thư viện được cập nhật:"
   },
   "history": "Lịch sử",
   "historyScreen": {
@@ -62,7 +62,7 @@
     "discover": "Khám phá",
     "searchbar": "Tìm nguồn truyện",
     "globalSearch": "Tìm kiếm toàn cầu",
-    "listEmpty": "Cho phép nhiều ngôn ngữ từ cài đặt",
+    "listEmpty": "Chọn ngôn ngữ",
     "lastUsed": "Lần sử dụng trước",
     "pinned": "Đã ghim",
     "all": "Tất cả",
@@ -72,22 +72,22 @@
   },
   "readerScreen": {
     "finished": "Đã hoàn thành",
-    "noNextChapter": "Không có chương mới",
+    "noNextChapter": "Không có chương kế tiếp",
     "bottomSheet": {
       "textSize": "Cỡ chữ",
-      "color": "Màu sắc",
-      "textAlign": "Căn chỉnh văn bản",
+      "color": "Màu chữ",
+      "textAlign": "Căn lề",
       "lineHeight": "Chiều cao dòng",
       "fontStyle": "Phông chữ",
       "fullscreen": "Toàn màn hình",
-      "renderHml": "Hiện thị bằng HTML - web",
+      "renderHml": "WebView",
       "autoscroll": "Cuộn tự động",
-      "verticalSeekbar": "Thanh tiến trình dọc",
-      "showBatteryAndTime": "Hiển thị thông tin về pin và thời gian",
-      "showProgressPercentage": "Phần trăm thực hiện",
-      "swipeGestures": "Vuốt sang trái hoặc phải để chuyển đổi giữa các chương",
+      "verticalSeekbar": "Thanh trạng thái dọc",
+      "showBatteryAndTime": "Hiển thị pin và thời gian",
+      "showProgressPercentage": "Hiện tiến trình",
+      "swipeGestures": "Vuốt để đổi chương",
       "allowTextSelection": "Cho phép bôi đen chữ",
-      "useChapterDrawerSwipeNavigation": "Vuốt qua phải để mở drawer"
+      "useChapterDrawerSwipeNavigation": "Vuốt phải để hiện danh sách"
     },
     "drawer": {
       "scrollToCurrentChapter": "Cuộn đến phần hiện tại",
@@ -97,10 +97,10 @@
   },
   "novelScreen": {
     "addToLibaray": "Thêm vào thư viện",
-    "inLibaray": "Trong Thư Viện",
+    "inLibaray": "Trong thư viện",
     "continueReading": "Tiếp tục đọc",
-    "chapters": "các chương",
-    "migrate": "Sát nhập",
+    "chapters": "chương",
+    "migrate": "Liên kết",
     "noSummary": "Không có tóm tắt",
     "bottomSheet": {
       "filter": "Bộ lọc",
@@ -118,11 +118,11 @@
       }
     }
   },
-  "more": "Nhiều hơn",
+  "more": "Thêm",
   "moreScreen": {
     "settings": "Cài đặt",
     "settingsScreen": {
-      "generalSettings": "Tổng quát",
+      "generalSettings": "Chung",
       "generalSettingsScreen": {},
       "readerSettings": {
         "title": "Trang đọc",
@@ -131,10 +131,10 @@
         "backgroundColor": "Màu nền",
         "textColor": "Màu chữ",
         "backgroundColorModal": "Màu nền của trang đọc",
-        "textColorModal": "Màu chữ của trang đọc",
-        "verticalSeekbarDesc": "Chuyển giữa thanh tiến trình dọc và ngang",
+        "textColorModal": "Màu chữ trang đọc",
+        "verticalSeekbarDesc": "Chuyển hướng thanh trạng thái dọc hoặc ngang",
         "autoScrollInterval": "Thời gian tự động cuộn (giây)",
-        "autoScrollOffset": "Tự động cuộn theo vị trí (mặc định là chiều cao màn hình)",
+        "autoScrollOffset": "Khoảng cách tự động cuộn (mặc định là chiều cao màn hình)",
         "saveCustomTheme": "Lưu tùy chỉnh giao diện",
         "deleteCustomTheme": "Xoá tuỳ chỉnh giao diện",
         "customCSS": "CSS Tùy chỉnh"
@@ -143,7 +143,7 @@
       "browseSettingsScreen": {
         "onlyShowPinnedSources": "Chỉ hiện nguồn được ghim",
         "languages": "Ngôn ngữ",
-        "searchAllSources": "Tìm toàn bộ nguồn truyện",
+        "searchAllSources": "Tìm trên tất cả các nguồn",
         "searchAllWarning": "Tìm kiếm lượng lớn nguồn có thể đóng băng app cho đến khi tìm kiếm hoàn thành."
       }
     }
@@ -158,8 +158,8 @@
     "readChapters": "Chương đã đọc",
     "unreadChapters": "Chương chưa đọc",
     "downloadedChapters": "Chương đã tải về",
-    "genreDistribution": "Thể loại cung cấp",
-    "statusDistribution": "Trạng thái cung cấp"
+    "genreDistribution": "Thể loại được thêm",
+    "statusDistribution": "Trạng thái được thêm"
   },
   "globalSearch": {
     "searchIn": "Tìm truyện ở",
@@ -168,7 +168,7 @@
   },
   "advancedSettings": {
     "deleteReadChapters": "Xóa chương đã đọc",
-    "deleteReadChaptersDialogTitle": "Bạn có chắc không? Toàn bộ chương được đánh dấu là đã đọc sẽ bị xoá."
+    "deleteReadChaptersDialogTitle": "Bạn có chắc không? Toàn bộ chương được đánh đã đọc sẽ bị xoá."
   },
   "date": {
     "calendar": {
@@ -184,13 +184,13 @@
     "setCategories": "Đặt danh mục",
     "header": "Chỉnh sửa danh mục",
     "emptyMsg": "Bạn không có danh mục nào. Hãy ấn vào nút thêm để tạo danh mục mới",
-    "setModalEmptyMsg": "Bạn không có thể danh mục. Hãy ấn vào nút chỉnh sửa để tạo danh mục mới",
+    "setModalEmptyMsg": "Bạn không có danh mục nào. Hãy ấn vào nút chỉnh sửa để tạo danh mục mới",
     "deleteModal": {
-      "header": "Xóa thế loại",
+      "header": "Xóa danh mục",
       "desc": "Bạn có muốn xóa danh mục này"
     },
     "duplicateError": "Danh mục với tên này đã tồn tại!",
-    "defaultCategory": "Danh mục mặc định"
+    "defaultCategory": "Mặc định"
   },
   "settings": {
     "icognitoMode": "Chế độ ẩn danh",
