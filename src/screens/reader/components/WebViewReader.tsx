@@ -34,7 +34,7 @@ type WebViewReaderProps = {
   layoutHeight: number;
   swipeGestures: boolean;
   minScroll: any;
-  ShowSwipeMargins: boolean;
+  showSwipeMargins: boolean;
   nextChapter: ChapterItem;
   webViewRef: React.MutableRefObject<WebView>;
   onPress(): void;
@@ -53,7 +53,7 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
     layoutHeight,
     swipeGestures,
     minScroll,
-    ShowSwipeMargins,
+    showSwipeMargins,
     nextChapter,
     webViewRef,
     onPress,
@@ -93,7 +93,7 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
               navigateToChapterBySwipe('SWIPE_RIGHT');
               break;
             case 'noswipes':
-              dispatch(setAppSettings('ShowSwipeMargins', false));
+              dispatch(setAppSettings('showSwipeMargins', false));
               break;
             case 'right':
               navigateToChapterBySwipe('SWIPE_LEFT');
@@ -325,7 +325,7 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
                       swipeGestures
                         ? `
                         ${
-                          ShowSwipeMargins
+                          showSwipeMargins
                             ? `<div class='pos'> </div>
                         <div class='posr'>Swipe Left</div>
                         <div class='posl'>Swipe Right</div>`
@@ -372,7 +372,7 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
                           };
                           
                           ${
-                            ShowSwipeMargins
+                            showSwipeMargins
                               ? `setTimeout(()=>{
                                   const width = Math.max(
                                     document.body.scrollWidth,

@@ -69,8 +69,8 @@ const SettingsReaderScreen = () => {
 
   const readerSettings = useReaderSettings();
   const {
-    ShowSwipeMargins = true,
-    UseVolumeButtons = false,
+    showSwipeMargins = true,
+    useVolumeButtons = false,
     verticalSeekbar = true,
     swipeGestures = false,
     autoScroll = false,
@@ -186,9 +186,9 @@ const SettingsReaderScreen = () => {
         />
         <SwitchItem
           label={'Volume buttons scroll'}
-          value={UseVolumeButtons}
+          value={useVolumeButtons}
           onPress={() =>
-            dispatch(setAppSettings('UseVolumeButtons', !UseVolumeButtons))
+            dispatch(setAppSettings('useVolumeButtons', !useVolumeButtons))
           }
           theme={theme}
         />
@@ -203,10 +203,10 @@ const SettingsReaderScreen = () => {
         {swipeGestures ? (
           <SwitchItem
             label={'Show swipe margins'}
-            value={ShowSwipeMargins}
+            value={showSwipeMargins}
             theme={theme}
             onPress={() =>
-              dispatch(setAppSettings('ShowSwipeMargins', !ShowSwipeMargins))
+              dispatch(setAppSettings('showSwipeMargins', !showSwipeMargins))
             }
           />
         ) : null}

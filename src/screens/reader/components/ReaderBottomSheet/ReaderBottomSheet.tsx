@@ -43,7 +43,7 @@ const GeneralTab: React.FC = () => {
     verticalSeekbar,
     showBatteryAndTime,
     showScrollPercentage,
-    UseVolumeButtons = false,
+    useVolumeButtons = false,
     swipeGestures = false,
     removeExtraParagraphSpacing = false,
   } = useSettingsV1();
@@ -114,9 +114,9 @@ const GeneralTab: React.FC = () => {
       <ReaderSheetPreferenceItem
         label={'Volume buttons scroll'}
         onPress={() =>
-          dispatch(setAppSettings('UseVolumeButtons', !UseVolumeButtons))
+          dispatch(setAppSettings('useVolumeButtons', !useVolumeButtons))
         }
-        value={UseVolumeButtons}
+        value={useVolumeButtons}
         theme={theme}
       />
     </View>

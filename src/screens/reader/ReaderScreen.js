@@ -96,8 +96,8 @@ const ChapterContent = ({ route, navigation }) => {
 
   const {
     swipeGestures = false,
-    ShowSwipeMargins = true,
-    UseVolumeButtons = false,
+    showSwipeMargins = true,
+    useVolumeButtons = false,
     autoScroll = false,
     autoScrollInterval = 10,
     autoScrollOffset = null,
@@ -125,34 +125,34 @@ const ChapterContent = ({ route, navigation }) => {
   );
 
   useEffect(() => {
-    if (UseVolumeButtons) {
+    if (useVolumeButtons) {
       VolumeButtonListener.connect();
       VolumeButtonListener.preventDefault();
-      const upSub = emmiter.current.addListener('VolumeUp', e => {
+      emmiter.current.addListener('VolumeUp', e => {
         webViewRef.current?.injectJavaScript(`(()=>{
           window.scrollBy({top:${-Dimensions.get('window')
             .height},behavior:'smooth',})
         })()`);
       });
-      const downSub = emmiter.current.addListener('VolumeDown', e => {
+      emmiter.current.addListener('VolumeDown', e => {
         webViewRef.current?.injectJavaScript(`(()=>{
           window.scrollBy({top:${
             Dimensions.get('window').height
           },behavior:'smooth',})
         })()`);
       });
-      return () => {
-        VolumeButtonListener.disconnect();
-        upSub?.remove();
-        downSub?.remove();
-      };
     } else {
       VolumeButtonListener.disconnect();
       emmiter.current.removeAllListeners('VolumeUp');
       emmiter.current.removeAllListeners('VolumeDown');
       // this is just for sure, without it app still works properly
     }
-  }, [UseVolumeButtons]);
+    return () => {
+      VolumeButtonListener.disconnect();
+      emmiter.current.removeAllListeners('VolumeUp');
+      emmiter.current.removeAllListeners('VolumeDown');
+    };
+  }, [useVolumeButtons, chapter]);
 
   const getChapter = async id => {
     try {
@@ -392,7 +392,7 @@ const ChapterContent = ({ route, navigation }) => {
                   layoutHeight={Dimensions.get('window').height}
                   swipeGestures={swipeGestures}
                   minScroll={minScroll}
-                  ShowSwipeMargins={ShowSwipeMargins}
+                  showSwipeMargins={showSwipeMargins}
                   nextChapter={nextChapter}
                   webViewRef={webViewRef}
                   onPress={hideHeader}
