@@ -21,8 +21,16 @@ import { useLibrarySettings } from '@hooks/useSettings';
 import useBoolean from '@hooks/useBoolean';
 import { Appbar, List } from '@components';
 import NovelSortModal from './modals/NovelSortModal';
+import NovelBadgesModal from './modals/NovelBadgesModal';
+import { RootState } from '@redux/store';
+import { NavigationState } from '@react-navigation/native';
+import { getString } from '@strings/translations';
 
-const GenralSettings = ({ navigation }) => {
+interface GenralSettingsProps {
+  navigation: NavigationState;
+}
+
+const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
 
@@ -35,6 +43,30 @@ const GenralSettings = ({ navigation }) => {
     sortOrder = LibrarySortOrder.DateAdded_DESC,
   } = useLibrarySettings();
 
+  const transformSortOrder = (text: string) => {
+    return text
+      .replace(
+        'lastReadAt',
+        getString('libraryScreen.bottomSheet.sortOrders.lastRead'),
+      )
+      .replace(
+        'novels.novelName',
+        getString('libraryScreen.bottomSheet.sortOrders.alphabetically'),
+      )
+      .replace(
+        'novels.unread',
+        getString('libraryScreen.bottomSheet.sortOrders.unread'),
+      )
+      .replace(
+        'chaptersDownloaded',
+        getString('libraryScreen.bottomSheet.sortOrders.download'),
+      )
+      .replace(
+        'novelId',
+        getString('libraryScreen.bottomSheet.sortOrders.dateAdded'),
+      );
+  };
+
   const {
     updateLibraryOnLaunch = false,
     downloadNewChapters = false,
@@ -46,7 +78,7 @@ const GenralSettings = ({ navigation }) => {
   } = useSettings();
 
   const { showLastUpdateTime = true } = useSelector(
-    state => state.updatesReducer,
+    (state: RootState) => state.updatesReducer,
   );
 
   const generateNovelBadgesDescription = () => {
@@ -94,6 +126,7 @@ const GenralSettings = ({ navigation }) => {
   const defaultChapterSortModal = useBoolean();
   return (
     <>
+      {/* @ts-ignore  */}
       <Appbar title="General" handleGoBack={navigation.goBack} theme={theme} />
       <ScrollView contentContainerStyle={{ paddingBottom: 32 }}>
         <List.Section>
@@ -112,13 +145,14 @@ const GenralSettings = ({ navigation }) => {
           />
           <List.Item
             title="Novel Badges"
+            // @ts-ignore
             description={novelBadgesDescription}
             onPress={novelBadgesModalRef.setTrue}
             theme={theme}
           />
           <List.Item
             title="Novel Sort"
-            description={sortOrder.replace('novelId ', '')}
+            description={transformSortOrder(sortOrder)}
             onPress={novelSortModalRef.setTrue}
             theme={theme}
           />
@@ -237,13 +271,11 @@ const GenralSettings = ({ navigation }) => {
         theme={theme}
       />
       <NovelBadgesModal
-        novelsPerRow={novelsPerRow}
         novelBadgesModalVisible={novelBadgesModalRef.value}
         hideNovelBadgesModal={novelBadgesModalRef.setFalse}
         theme={theme}
       />
       <NovelSortModal
-        novelsPerRow={novelsPerRow}
         novelSortModalVisible={novelSortModalRef.value}
         hideNovelSortModal={novelSortModalRef.setFalse}
         theme={theme}
