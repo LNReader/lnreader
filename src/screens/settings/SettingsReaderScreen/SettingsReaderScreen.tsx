@@ -83,6 +83,8 @@ const SettingsReaderScreen = () => {
     fullScreenMode = true,
     showScrollPercentage = true,
     showBatteryAndTime = false,
+    removeExtraParagraphSpacing = false,
+    useChapterDrawerSwipeNavigation = true,
   } = useSettingsV1();
 
   const {
@@ -219,7 +221,7 @@ const SettingsReaderScreen = () => {
         />
         {useWebViewForChapter ? (
           <SwitchItem
-            label={'Volume buttons scroll'}
+            label={getString('readerScreen.bottomSheet.volumeButtonsScroll')}
             value={wvUseVolumeButtons}
             onPress={() =>
               dispatch(
@@ -264,6 +266,34 @@ const SettingsReaderScreen = () => {
             ) : null}
           </>
         ) : null}
+        <SwitchItem
+          label={getString('readerScreen.bottomSheet.removeExtraSpacing')}
+          onPress={() =>
+            dispatch(
+              setAppSettings(
+                'removeExtraParagraphSpacing',
+                !removeExtraParagraphSpacing,
+              ),
+            )
+          }
+          value={removeExtraParagraphSpacing}
+          theme={theme}
+        />
+        <SwitchItem
+          label={getString(
+            'readerScreen.bottomSheet.useChapterDrawerSwipeNavigation',
+          )}
+          onPress={() =>
+            dispatch(
+              setAppSettings(
+                'useChapterDrawerSwipeNavigation',
+                !useChapterDrawerSwipeNavigation,
+              ),
+            )
+          }
+          value={useChapterDrawerSwipeNavigation}
+          theme={theme}
+        />
         <SwitchItem
           label={getString('readerScreen.bottomSheet.autoscroll')}
           value={autoScroll}

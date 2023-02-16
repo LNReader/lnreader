@@ -75,6 +75,8 @@ export interface StringMap {
   'readerScreen.bottomSheet.swipeGestures': 'string';
   'readerScreen.bottomSheet.allowTextSelection': 'string';
   'readerScreen.bottomSheet.useChapterDrawerSwipeNavigation': 'string';
+  'readerScreen.bottomSheet.removeExtraSpacing': 'string';
+  'readerScreen.bottomSheet.volumeButtonsScroll': 'string';
   'readerScreen.drawer.scrollToCurrentChapter': 'string';
   'readerScreen.drawer.scrollToTop': 'string';
   'readerScreen.drawer.scrollToBottom': 'string';
