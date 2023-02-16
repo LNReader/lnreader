@@ -63,7 +63,7 @@ export const initialState = {
   fullScreenMode: true,
   swipeGestures: false,
   showScrollPercentage: true,
-  wvShowSwipeMargins: true,
+  ShowSwipeMargins: true,
   UseVolumeButtons: false,
   showBatteryAndTime: false,
   autoScroll: false,

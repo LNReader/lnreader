@@ -69,7 +69,7 @@ const SettingsReaderScreen = () => {
 
   const readerSettings = useReaderSettings();
   const {
-    wvShowSwipeMargins = true,
+    ShowSwipeMargins = true,
     UseVolumeButtons = false,
     verticalSeekbar = true,
     swipeGestures = false,
@@ -203,12 +203,10 @@ const SettingsReaderScreen = () => {
         {swipeGestures ? (
           <SwitchItem
             label={'Show swipe margins'}
-            value={wvShowSwipeMargins}
+            value={ShowSwipeMargins}
             theme={theme}
             onPress={() =>
-              dispatch(
-                setAppSettings('wvShowSwipeMargins', !wvShowSwipeMargins),
-              )
+              dispatch(setAppSettings('ShowSwipeMargins', !ShowSwipeMargins))
             }
           />
         ) : null}

@@ -101,7 +101,7 @@ const ChapterContent = ({ route, navigation }) => {
 
   const {
     swipeGestures = false,
-    wvShowSwipeMargins = true,
+    ShowSwipeMargins = true,
     UseVolumeButtons = false,
     autoScroll = false,
     autoScrollInterval = 10,
@@ -397,7 +397,7 @@ const ChapterContent = ({ route, navigation }) => {
                   swipeGestures={swipeGestures}
                   minScroll={minScroll}
                   currentScroll={currentScroll}
-                  wvShowSwipeMargins={wvShowSwipeMargins}
+                  ShowSwipeMargins={ShowSwipeMargins}
                   nextChapter={nextChapter}
                   webViewRef={webViewRef}
                   onPress={hideHeader}
