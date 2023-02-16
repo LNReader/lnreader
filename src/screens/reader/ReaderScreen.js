@@ -248,17 +248,20 @@ const ChapterContent = ({ route, navigation }) => {
       );
   };
 
-  const doSaveProgress = (offsetY, percentage) => {
-    if (!incognitoMode) {
-      dispatch(saveScrollPosition(offsetY, percentage, chapterId, novelId));
-    }
+  const doSaveProgress = useCallback(
+    (offsetY, percentage) => {
+      if (!incognitoMode) {
+        dispatch(saveScrollPosition(offsetY, percentage, chapterId, novelId));
+      }
 
-    if (!incognitoMode && percentage >= 97) {
-      // a relative number
-      dispatch(markChapterReadAction(chapterId, novelId));
-      updateTracker();
-    }
-  };
+      if (!incognitoMode && percentage >= 97) {
+        // a relative number
+        dispatch(markChapterReadAction(chapterId, novelId));
+        updateTracker();
+      }
+    },
+    [chapter],
+  );
 
   const hideHeader = () => {
     if (!hidden) {
