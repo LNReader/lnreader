@@ -209,8 +209,6 @@ const ChapterContent = ({ route, navigation }) => {
     },
   );
 
-  let scrollTimeout;
-
   const scrollTo = useCallback(
     offsetY => {
       webViewRef?.current.injectJavaScript(`(()=>{
@@ -220,18 +218,23 @@ const ChapterContent = ({ route, navigation }) => {
     [webViewRef],
   );
 
+  let scrollInterval;
   useEffect(() => {
-    if (position && position.percentage !== 100 && autoScroll) {
-      scrollTimeout = setTimeout(() => {
-        scrollTo(
-          position.position +
-            defaultTo(autoScrollOffset, Dimensions.get('window').height),
-        );
+    if (autoScroll) {
+      scrollInterval = setInterval(() => {
+        webViewRef.current?.injectJavaScript(`(()=>{
+          window.scrollBy({top:${defaultTo(
+            autoScrollOffset,
+            Dimensions.get('window').height,
+          )},behavior:'smooth'})
+        })()`);
       }, autoScrollInterval * 1000);
+    } else {
+      clearInterval(scrollInterval);
     }
 
-    return () => clearTimeout(scrollTimeout);
-  }, [autoScroll, position?.position]);
+    return () => clearInterval(scrollInterval);
+  }, [autoScroll, webViewRef]);
 
   const updateTracker = () => {
     const chapterNumber = parseChapterNumber(chapterName);
