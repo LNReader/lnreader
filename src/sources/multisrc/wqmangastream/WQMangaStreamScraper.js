@@ -79,10 +79,15 @@ class WQMangaStreamScraper {
       }
     });
 
-    const siteText = loadedCheerio('.sertogenre').prop('innerHTML');
-    novel.genre = siteText.replace(/<a.*?>(.*?)<.*?>/g, '$1,').slice(0, -1);
+    novel.genre = loadedCheerio('.sertogenre')
+      .prop('innerHTML')
+      .replace(/<a.*?>(.*?)<.*?>/g, '$1,')
+      .slice(0, -1);
 
-    novel.summary = loadedCheerio('div.sersys > p').text();
+    novel.summary = loadedCheerio('.sersys')
+      .prop('innerHTML')
+      .replace(/(<.*?>)/g, '')
+      .replace(/(&.*;)/g, '\n');
 
     let novelChapters = [];
 
@@ -145,7 +150,8 @@ class WQMangaStreamScraper {
 
     loadedCheerio('article.maindet').each(function () {
       const novelName = loadedCheerio(this).find('h2').text();
-      const novelCover = loadedCheerio(this).find('img').attr('data-src');
+      let image = loadedCheerio(this).find('img');
+      const novelCover = image.attr('data-src') || image.attr('src');
       const novelUrl = loadedCheerio(this).find('h2 a').attr('href');
 
       const novel = {
