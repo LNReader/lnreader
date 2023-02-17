@@ -1,156 +1,146 @@
-import { useAppDispatch } from '@redux/hooks';
+import React from 'react';
+import { Dimensions, StatusBar } from 'react-native';
+import WebView, { WebViewProps } from 'react-native-webview';
+import RNFetchBlob from 'rn-fetch-blob';
+
+import { useTheme } from '@hooks/useTheme';
+import { ChapterItem } from '@database/types';
+import { useAppDispatch, useReaderSettings, useSettingsV1 } from '@redux/hooks';
 import { setAppSettings } from '@redux/settings/settings.actions';
 import { getString } from '@strings/translations';
-import React, { FunctionComponent } from 'react';
-import { StatusBar, StyleSheet, View } from 'react-native';
 
-import WebView from 'react-native-webview';
-import { ChapterItem } from '../../../database/types';
-import { MD3ThemeType } from '../../../theme/types';
-
-import { readerBackground } from '../utils/readerStyles';
-
-import RNFetchBlob from 'rn-fetch-blob';
 type WebViewPostEvent = {
   type: string;
   data?: { [key: string]: string };
 };
 
 type WebViewReaderProps = {
-  theme: MD3ThemeType;
   chapter: ChapterItem;
   html: string;
-  reader: {
-    theme: string;
-    textColor: string;
-    textSize: number;
-    textAlign: string;
-    padding: number;
-    fontFamily: string;
-    lineHeight: number;
-    customCSS: string;
-  };
   chapterName: string;
-  layoutHeight: number;
   swipeGestures: boolean;
   minScroll: any;
-  showSwipeMargins: boolean;
   nextChapter: ChapterItem;
   webViewRef: React.MutableRefObject<WebView>;
   onPress(): void;
   doSaveProgress(offSetY: number, percentage: number): void;
   navigateToChapterBySwipe(name: string): void;
   onWebViewNavigationStateChange(): void;
+  onLayout: WebViewProps['onLayout'];
 };
 
-const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
+const onClickWebViewPostMessage = (event: WebViewPostEvent) =>
+  "onClick='window.ReactNativeWebView.postMessage(`" +
+  JSON.stringify(event) +
+  "`)'";
+
+const WebViewReader: React.FC<WebViewReaderProps> = props => {
   const {
-    theme,
     chapter,
     html,
-    reader,
     chapterName,
-    layoutHeight,
     swipeGestures,
     minScroll,
-    showSwipeMargins,
     nextChapter,
     webViewRef,
     onPress,
+    onLayout,
     doSaveProgress,
     navigateToChapterBySwipe,
     onWebViewNavigationStateChange,
   } = props;
-  const backgroundColor = readerBackground(reader.theme);
 
   const dispatch = useAppDispatch();
+  const theme = useTheme();
+  const { showSwipeMargins } = useSettingsV1();
 
-  const onClickWebViewPostMessage = (event: WebViewPostEvent) =>
-    "onClick='window.ReactNativeWebView.postMessage(`" +
-    JSON.stringify(event) +
-    "`)'";
+  const readerSettings = useReaderSettings();
+  const { theme: backgroundColor } = readerSettings;
+
+  const layoutHeight = Dimensions.get('window').height;
+
   return (
-    <View style={styles.container}>
-      <WebView
-        ref={webViewRef}
-        style={{ backgroundColor }}
-        originWhitelist={['*']}
-        scalesPageToFit={true}
-        showsVerticalScrollIndicator={false}
-        onNavigationStateChange={onWebViewNavigationStateChange}
-        nestedScrollEnabled={true}
-        javaScriptEnabled={true}
-        onMessage={ev => {
-          const event: WebViewPostEvent = JSON.parse(ev.nativeEvent.data);
-          switch (event.type) {
-            case 'hide':
-              onPress();
-              break;
-            case 'next':
-              navigateToChapterBySwipe('SWIPE_LEFT');
-              break;
-            case 'prev':
-              navigateToChapterBySwipe('SWIPE_RIGHT');
-              break;
-            case 'noswipes':
-              dispatch(setAppSettings('showSwipeMargins', false));
-              break;
-            case 'right':
-              navigateToChapterBySwipe('SWIPE_LEFT');
-              break;
-            case 'left':
-              navigateToChapterBySwipe('SWIPE_RIGHT');
-              break;
-            case 'imgfiles':
-              if (event.data) {
-                if (Array.isArray(event.data)) {
-                  const promises: Promise<{ data: any; id: number }>[] = [];
-                  for (let i = 0; i < event.data.length; i++) {
-                    const { url, id } = event.data[i];
-                    if (url) {
-                      if (id) {
-                        promises.push(
-                          RNFetchBlob.fs
-                            .readFile(url, 'utf8')
-                            .then(d => ({ data: d, id })),
-                        );
-                      } else {
-                        // no imageid
-                      }
+    <WebView
+      ref={webViewRef}
+      style={{ backgroundColor }}
+      originWhitelist={['*']}
+      scalesPageToFit={true}
+      showsVerticalScrollIndicator={false}
+      onNavigationStateChange={onWebViewNavigationStateChange}
+      nestedScrollEnabled={true}
+      javaScriptEnabled={true}
+      onLayout={onLayout}
+      onMessage={ev => {
+        const event: WebViewPostEvent = JSON.parse(ev.nativeEvent.data);
+        switch (event.type) {
+          case 'hide':
+            onPress();
+            break;
+          case 'next':
+            navigateToChapterBySwipe('SWIPE_LEFT');
+            break;
+          case 'prev':
+            navigateToChapterBySwipe('SWIPE_RIGHT');
+            break;
+          case 'noswipes':
+            dispatch(setAppSettings('showSwipeMargins', false));
+            break;
+          case 'right':
+            navigateToChapterBySwipe('SWIPE_LEFT');
+            break;
+          case 'left':
+            navigateToChapterBySwipe('SWIPE_RIGHT');
+            break;
+          case 'imgfiles':
+            if (event.data) {
+              if (Array.isArray(event.data)) {
+                const promises: Promise<{ data: any; id: number }>[] = [];
+                for (let i = 0; i < event.data.length; i++) {
+                  const { url, id } = event.data[i];
+                  if (url) {
+                    if (id) {
+                      promises.push(
+                        RNFetchBlob.fs
+                          .readFile(url, 'utf8')
+                          .then(d => ({ data: d, id })),
+                      );
+                    } else {
+                      // no imageid
                     }
                   }
-                  Promise.all(promises)
-                    .then(datas => {
-                      const inject = datas.reduce((p, data) => {
-                        return (
-                          p +
-                          `document.querySelector("img[file-id='${data.id}']").src="data:image/png;base64,${data.data}";`
-                        );
-                      }, '');
-                      webViewRef.current?.injectJavaScript(inject);
-                    })
-                    .catch(e => {
-                      e; // CloudFlare is too strong :D
-                    });
                 }
+                Promise.all(promises)
+                  .then(datas => {
+                    const inject = datas.reduce((p, data) => {
+                      return (
+                        p +
+                        `document.querySelector("img[file-id='${data.id}']").src="data:image/png;base64,${data.data}";`
+                      );
+                    }, '');
+                    webViewRef.current?.injectJavaScript(inject);
+                  })
+                  .catch(e => {
+                    e; // CloudFlare is too strong :D
+                  });
               }
-              break;
-            case 'scrollend':
-              if (event.data) {
-                const offSetY = Number(event.data?.offSetY);
-                const percentage = Math.round(Number(event.data?.percentage));
-                doSaveProgress(offSetY, percentage);
-              }
-              break;
-            case 'height':
-              if (event.data) {
-                const contentHeight = Math.round(Number(event.data));
-                minScroll.current = (layoutHeight / contentHeight) * 100;
-              }
-          }
-        }}
-        source={{
-          html: `
+            }
+            break;
+          case 'scrollend':
+            if (event.data) {
+              const offSetY = Number(event.data?.offSetY);
+              const percentage = Math.round(Number(event.data?.percentage));
+              doSaveProgress(offSetY, percentage);
+            }
+            break;
+          case 'height':
+            if (event.data) {
+              const contentHeight = Math.round(Number(event.data));
+              minScroll.current = (layoutHeight / contentHeight) * 100;
+            }
+        }
+      }}
+      source={{
+        html: `
                 <html>
                   <head>
                     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
@@ -162,15 +152,15 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
                         word-wrap: break-word;
                       }
                       body {
-                        padding-left: ${reader.padding}%;
-                        padding-right: ${reader.padding}%;
-                        padding-bottom: 30px;
+                        padding-left: ${readerSettings.padding}%;
+                        padding-right: ${readerSettings.padding}%;
+                        padding-bottom: 40px;
                         
-                        font-size: ${reader.textSize}px;
-                        color: ${reader.textColor};
-                        text-align: ${reader.textAlign};
-                        line-height: ${reader.lineHeight};
-                        font-family: ${reader.fontFamily};
+                        font-size: ${readerSettings.textSize}px;
+                        color: ${readerSettings.textColor};
+                        text-align: ${readerSettings.textAlign};
+                        line-height: ${readerSettings.lineHeight};
+                        font-family: ${readerSettings.fontFamily};
                       }
                       chapter{
                         display: block;
@@ -195,7 +185,7 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
                         border-width: 1;
                         color: ${theme.onPrimary};
                         background-color: ${theme.primary};
-                        font-family: ${reader.fontFamily};
+                        font-family: ${readerSettings.fontFamily};
                         font-size: 16px;
                         border-width: 0;
                       }
@@ -247,12 +237,12 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
                     </style>
                     
                     <style>
-                      ${reader.customCSS}
+                      ${readerSettings.customCSS}
                       
                       @font-face {
-                        font-family: ${reader.fontFamily};
+                        font-family: ${readerSettings.fontFamily};
                         src: url("file:///android_asset/fonts/${
-                          reader.fontFamily
+                          readerSettings.fontFamily
                         }.ttf");
                       }
                     </style>
@@ -399,16 +389,9 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
                   </body>
                 </html>
                 `,
-        }}
-      />
-    </View>
+      }}
+    />
   );
 };
 
 export default WebViewReader;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});

@@ -6,12 +6,12 @@ import {
   SourceNovelItem,
 } from '../types';
 
-const sourceId = 120;
-const sourceName = 'MT Novel';
-const baseUrl = 'https://mtnovel.com';
+const sourceId = 98;
+const sourceName = 'LightNovelFull';
+const baseUrl = 'https://lightnovelfull.com/';
 
 const popularNovels = async (page: number) => {
-  let totalPages = 22;
+  let totalPages = 61;
   const url = `${baseUrl}/most-popular?page=${page}`;
 
   const result = await fetch(url);
@@ -21,10 +21,9 @@ const popularNovels = async (page: number) => {
 
   let novels: SourceNovelItem[] = [];
 
-  loadedCheerio('.list-truyen .row').each(function () {
+  loadedCheerio('.list-truyen > .row').each(function () {
     const novelName = loadedCheerio(this).find('h3.truyen-title > a').text();
-    const novelCover =
-      baseUrl + loadedCheerio(this).find('img.cover').attr('src');
+    const novelCover = loadedCheerio(this).find('img.cover').attr('src');
     const novelUrl =
       baseUrl + loadedCheerio(this).find('h3.truyen-title > a').attr('href');
 
@@ -58,7 +57,7 @@ const parseNovelAndChapters = async (novelUrl: string) => {
 
   novel.novelName = loadedCheerio('div.book > img').attr('alt');
 
-  novel.novelCover = baseUrl + loadedCheerio('div.book > img').attr('src');
+  novel.novelCover = loadedCheerio('div.book > img').attr('src');
 
   novel.summary = loadedCheerio('div.desc-text').text().trim();
 
@@ -83,10 +82,10 @@ const parseNovelAndChapters = async (novelUrl: string) => {
     .next()
     .text();
 
-  const novelId = loadedCheerio('#rating').attr('data-novel-id');
-
+  const novelId = novel.novelName;
+  //! Doesn't work since there are multiple pages and can't find source API
   const getChapters = async (id: string) => {
-    const chapterListUrl = baseUrl + '/ajax/chapter-option?novelId=' + id;
+    const chapterListUrl = baseUrl + '/ajax/update-views?novelId=' + id;
 
     const data = await fetch(chapterListUrl);
     const chapters = await data.text();
@@ -113,6 +112,7 @@ const parseNovelAndChapters = async (novelUrl: string) => {
 
     return novelChapters;
   };
+  console.log(novelId);
 
   if (novelId) {
     novel.chapters = await getChapters(novelId);
@@ -175,11 +175,11 @@ const searchNovels = async (searchTerm: string) => {
   return novels;
 };
 
-const MTNovelScraper = {
+const LightNovelFullScraper = {
   popularNovels,
   parseNovelAndChapters,
   parseChapter,
   searchNovels,
 };
 
-export default MTNovelScraper;
+export default LightNovelFullScraper;

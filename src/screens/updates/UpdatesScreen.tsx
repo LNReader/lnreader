@@ -139,7 +139,7 @@ const UpdatesScreen = () => {
       {isLoading ? (
         <UpdatesSkeletonLoading theme={theme} />
       ) : error ? (
-        <ErrorScreenV2 error={error} theme={theme} />
+        <ErrorScreenV2 error={error} />
       ) : (
         <SectionList
           ListHeaderComponent={

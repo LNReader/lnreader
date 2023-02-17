@@ -4,8 +4,8 @@ import { MD3ThemeType } from '@theme/types';
 import getLoadingColors from '@utils/getLoadingColors';
 import LoadingNovel from '@screens/browse/loadingAnimation/LoadingNovel';
 import { useLibrarySettings } from '@hooks/useSettings';
-import { useDeviceOrientation } from '../../../services/utils/helpers';
 import { DisplayModes } from '@screens/library/constants/constants';
+import { useDeviceOrientation } from '@hooks/useDeviceOrientation';
 
 interface Props {
   theme: MD3ThemeType;

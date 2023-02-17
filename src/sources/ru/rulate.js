@@ -2,7 +2,7 @@ import { FilterInputs } from '../types/filterTypes';
 import { htmlToText } from '../helpers/htmlToText';
 import { Status } from '../helpers/constants';
 import * as cheerio from 'cheerio';
-import { defaultTo } from 'lodash';
+import { defaultTo } from 'lodash-es';
 
 const sourceId = 118;
 const sourceName = 'Rulate';

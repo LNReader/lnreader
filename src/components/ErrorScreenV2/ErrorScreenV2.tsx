@@ -1,14 +1,17 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { MD3ThemeType } from '@theme/types';
+import { useTheme } from '@hooks/useTheme';
 
 interface ErrorScreenProps {
-  error?: string;
-  theme: MD3ThemeType;
+  error: string;
+  onRetry?: () => void;
+  retryIconColor?: string;
 }
 
-const ErrorScreen: React.FC<ErrorScreenProps> = ({ error, theme }) => {
+const ErrorScreen: React.FC<ErrorScreenProps> = ({ error }) => {
+  const theme = useTheme();
+
   return (
     <View style={styles.container}>
       <Text style={[styles.icon, { color: theme.textColorHint }]}>ಥ_ಥ</Text>

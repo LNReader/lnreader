@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import * as cheerio from 'cheerio';
-import { defaultTo } from 'lodash';
+import { defaultTo } from 'lodash-es';
 import { htmlToText } from '../helpers/htmlToText';
 import { Status, defaultCoverUri } from '../helpers/constants';
 import { FilterInputs } from '../types/filterTypes';

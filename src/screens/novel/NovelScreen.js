@@ -15,6 +15,7 @@ import {
   Text,
 } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
+import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
 import {
   Provider,
@@ -60,7 +61,6 @@ import JumpToChapterModal from './components/JumpToChapterModal';
 import { Actionbar } from '../../components/Actionbar/Actionbar';
 import EditInfoModal from './components/EditInfoModal';
 import { pickCustomNovelCover } from '../../database/queries/NovelQueries';
-import FadeView from '../../components/Common/CrossFadeView';
 import DownloadCustomChapterModal from './components/DownloadCustomChapterModal';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import useBoolean from '@hooks/useBoolean';
@@ -358,46 +358,6 @@ const Novel = ({ route, navigation }) => {
     <Provider>
       <View style={[styles.container, { backgroundColor: theme.background }]}>
         {loading && <NovelScreenLoading theme={theme} />}
-        <FadeView
-          style={{
-            position: 'absolute',
-            zIndex: 1,
-            width: Dimensions.get('window').width,
-            elevation: 2,
-          }}
-          active={selected.length === 0}
-          animationDuration={100}
-        >
-          <View
-            style={{
-              backgroundColor: theme.isDark
-                ? overlay(2, theme.surface)
-                : theme.secondaryContainer,
-              paddingTop: StatusBar.currentHeight,
-              flexDirection: 'row',
-              alignItems: 'center',
-              paddingBottom: 8,
-            }}
-          >
-            <Appbar.Action
-              icon="close"
-              iconColor={theme.onBackground}
-              onPress={() => setSelected([])}
-            />
-            <Appbar.Content
-              title={selected.length}
-              titleStyle={{ color: theme.textColorPrimary }}
-            />
-
-            <Appbar.Action
-              icon="select-all"
-              iconColor={theme.onBackground}
-              onPress={() => {
-                setSelected(chapters);
-              }}
-            />
-          </View>
-        </FadeView>
         {selected.length === 0 && (
           <View
             style={{
@@ -627,7 +587,7 @@ const Novel = ({ route, navigation }) => {
         <View style={{ minHeight: 3, flex: 1 }}>
           <FlashList
             ref={ref => (flatlistRef.current = ref)}
-            estimatedItemSize={61.1}
+            estimatedItemSize={64}
             data={!loading && chapters}
             extraData={[downloadQueue, selected]}
             keyExtractor={keyExtractor}
@@ -747,6 +707,47 @@ const Novel = ({ route, navigation }) => {
             />
           </Portal>
         )}
+        {selected.length > 0 ? (
+          <Animated.View
+            entering={FadeIn.duration(150)}
+            exiting={FadeOut.duration(150)}
+            style={{
+              position: 'absolute',
+              zIndex: 20,
+              width: Dimensions.get('window').width,
+              elevation: 2,
+            }}
+          >
+            <View
+              style={{
+                backgroundColor: theme.isDark
+                  ? overlay(2, theme.surface)
+                  : theme.secondaryContainer,
+                paddingTop: StatusBar.currentHeight,
+                flexDirection: 'row',
+                alignItems: 'center',
+                paddingBottom: 8,
+              }}
+            >
+              <Appbar.Action
+                icon="close"
+                iconColor={theme.onBackground}
+                onPress={() => setSelected([])}
+              />
+              <Appbar.Content
+                title={selected.length}
+                titleStyle={{ color: theme.textColorPrimary }}
+              />
+              <Appbar.Action
+                icon="select-all"
+                iconColor={theme.onBackground}
+                onPress={() => {
+                  setSelected(chapters);
+                }}
+              />
+            </View>
+          </Animated.View>
+        ) : null}
       </View>
     </Provider>
   );

@@ -5,13 +5,12 @@ import color from 'color';
 import dayjs from 'dayjs';
 import FastImage from 'react-native-fast-image';
 
-import { IconButtonV2 } from '../../../../components';
+import { IconButtonV2 } from '@components';
+import { parseChapterNumber } from '@utils/parseChapterNumber';
 
-import { parseChapterNumber } from '../../../../utils/parseChapterNumber';
-
-import { History } from '../../../../database/types';
-import { MD3ThemeType } from '../../../../theme/types';
-import { coverPlaceholderColor } from '../../../../theme/colors';
+import { History } from '@database/types';
+import { MD3ThemeType } from '@theme/types';
+import { coverPlaceholderColor } from '@theme/colors';
 import {
   openChapterChapterTypes,
   openChapterNovelTypes,

@@ -8,7 +8,6 @@ import {
   hideNavigationBar,
   showNavigationBar,
 } from '../theme/NativeModules/NavigationBarColor';
-import { readerBackground } from '../screens/reader/utils/readerStyles';
 import { useTheme } from './useTheme';
 
 const useFullscreenMode = () => {
@@ -16,7 +15,7 @@ const useFullscreenMode = () => {
   const readerSettings = useReaderSettings();
   const { fullScreenMode } = useSettingsV1();
 
-  const backgroundColor = readerBackground(readerSettings.theme);
+  const backgroundColor = readerSettings.theme;
 
   const theme = useTheme();
 

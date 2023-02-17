@@ -1,7 +1,7 @@
 import { FilterInputs } from '../types/filterTypes';
 import { htmlToText } from '../helpers/htmlToText';
 import { Status } from '../helpers/constants';
-import { defaultTo } from 'lodash';
+import { defaultTo } from 'lodash-es';
 import dayjs from 'dayjs';
 
 const sourceId = 116;

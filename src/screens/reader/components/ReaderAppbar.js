@@ -5,8 +5,9 @@ import color from 'color';
 
 import { Appbar, Text } from 'react-native-paper';
 import { IconButtonV2 } from '../../../components';
-import FadeView from '../../../components/Common/CrossFadeView';
 import { bookmarkChapterAction } from '../../../redux/novel/novel.actions';
+import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
+import { useAppDispatch } from '@redux/hooks';
 
 const ReaderAppbar = ({
   bookmark,
@@ -14,16 +15,24 @@ const ReaderAppbar = ({
   chapterId,
   chapterName,
   hide,
-  dispatch,
   tts,
   textToSpeech,
   theme,
 }) => {
+  const dispatch = useAppDispatch();
   const { goBack } = useNavigation();
   const [bookmarked, setBookmarked] = useState(bookmark);
 
+  if (hide) {
+    return null;
+  }
+
   return (
-    <FadeView style={styles.container} active={hide} animationDuration={150}>
+    <Animated.View
+      entering={FadeIn.duration(150)}
+      exiting={FadeOut.duration(150)}
+      style={styles.container}
+    >
       <View
         style={[
           { backgroundColor: color(theme.surface).alpha(0.9).string() },
@@ -74,7 +83,7 @@ const ReaderAppbar = ({
           />
         </Appbar.Header>
       </View>
-    </FadeView>
+    </Animated.View>
   );
 };
 

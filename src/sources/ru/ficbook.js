@@ -1,7 +1,7 @@
 import { Status, defaultCoverUri } from '../helpers/constants';
 import { FilterInputs } from '../types/filterTypes';
 import * as cheerio from 'cheerio';
-import { defaultTo } from 'lodash';
+import { defaultTo } from 'lodash-es';
 
 const sourceId = 139;
 const sourceName = 'Книга Фанфиков';
