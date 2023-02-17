@@ -99,7 +99,7 @@ const GeneralTab: React.FC = () => {
         theme={theme}
       />
       <ReaderSheetPreferenceItem
-        label={'Remove extra paragraph spacing'}
+        label={getString('readerScreen.bottomSheet.removeExtraSpacing')}
         onPress={() =>
           dispatch(
             setAppSettings(
@@ -112,7 +112,7 @@ const GeneralTab: React.FC = () => {
         theme={theme}
       />
       <ReaderSheetPreferenceItem
-        label={'Volume buttons scroll'}
+        label={getString('readerScreen.bottomSheet.volumeButtonsScroll')}
         onPress={() =>
           dispatch(setAppSettings('useVolumeButtons', !useVolumeButtons))
         }

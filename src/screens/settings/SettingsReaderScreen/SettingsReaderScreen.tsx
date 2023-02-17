@@ -185,7 +185,7 @@ const SettingsReaderScreen = () => {
           theme={theme}
         />
         <SwitchItem
-          label={'Volume buttons scroll'}
+          label={getString('readerScreen.bottomSheet.volumeButtonsScroll')}
           value={useVolumeButtons}
           onPress={() =>
             dispatch(setAppSettings('useVolumeButtons', !useVolumeButtons))
@@ -202,7 +202,7 @@ const SettingsReaderScreen = () => {
         />
         {swipeGestures ? (
           <SwitchItem
-            label={'Show swipe margins'}
+            label={getString('readerScreen.bottomSheet.showSwipeMargins')}
             value={showSwipeMargins}
             theme={theme}
             onPress={() =>
