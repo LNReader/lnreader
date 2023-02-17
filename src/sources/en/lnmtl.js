@@ -62,14 +62,15 @@ const parseNovelAndChapters = async novelUrl => {
   novel.summary = loadedCheerio('div.description').text().trim();
 
   novel.author = loadedCheerio(
-    'main > div:nth-child(3) > div > div.col-lg-3.col-md-4 > div:nth-child(2) > div.panel-body > dl:nth-child(1) > dd > span',
+    'main > div:nth-child(3) > div > div.col-lg-3.col-md-4 > div:nth-child(2) > div.panel-body > dl:nth-child(1) > dd > a > span',
   ).text();
 
   novel.status = loadedCheerio(
-    'main > div:nth-child(3) > div > div.col-lg-3.col-md-4 > div:nth-child(2) > div.panel-body > dl:nth-child(2) > dd',
+    'main > div:nth-child(3) > div > div.col-lg-3.col-md-4 > div:nth-child(2) > div.panel-body > dl:last-child > dd',
   )
     .text()
     .trim();
+  console.log(novel.status);
 
   novel.genre = loadedCheerio(
     'main > div.container > div > div.col-lg-3.col-md-4 > div:nth-child(4) > div.panel-body > ul',

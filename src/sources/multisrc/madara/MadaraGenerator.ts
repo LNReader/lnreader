@@ -11,27 +11,6 @@ export const BoxNovelScraper = new MadaraScraper(
   { 'useNewChapterEndpoint': true },
 );
 
-export const SkyNovelScraper = new MadaraScraper(
-  38,
-  'https://skynovel.org/',
-  'SkyNovel',
-  { 'path': { 'novels': 'manga', 'novel': 'manga', 'chapter': 'manga' } },
-);
-
-export const NovelCakeScraper = new MadaraScraper(
-  39,
-  'https://novelcake.com/',
-  'NovelCake',
-  { 'path': { 'novels': 'series', 'novel': 'series', 'chapter': 'series' } },
-);
-
-export const NovelsRockScraper = new MadaraScraper(
-  40,
-  'https://novelsrock.com/',
-  'NovelsRock',
-  { 'path': { 'novels': 'novels', 'novel': 'novel', 'chapter': 'novel' } },
-);
-
 export const ZinnNovelScraper = new MadaraScraper(
   41,
   'https://zinnovel.com/',
@@ -84,7 +63,7 @@ export const DaoNovelScraper = new MadaraScraper(
   'https://daonovel.com/',
   'DaoNovel',
   {
-    'path': { 'novels': 'novel-list', 'novel': 'novel', 'chapter': 'novel' },
+    'path': { 'novels': 'novels-list', 'novel': 'novels', 'chapter': 'novels' },
     'useNewChapterEndpoint': true,
   },
 );
@@ -112,13 +91,6 @@ export const LightNovelHeavenScraper = new MadaraScraper(
   },
 );
 
-export const LightNovelsHubScraper = new MadaraScraper(
-  58,
-  'https://lightnovelshub.com/',
-  'LightNovelsHub',
-  { 'useNewChapterEndpoint': true },
-);
-
 export const ArNovelScraper = new MadaraScraper(
   59,
   'https://arnovel.me/',
@@ -139,10 +111,10 @@ export const WebNovelLoverScraper = new MadaraScraper(
   'WebNovelLover',
 );
 
-export const TipNovelScraper = new MadaraScraper(
+export const CrateNovelScraper = new MadaraScraper(
   63,
-  'https://tipnovel.com/',
-  'TipNovel',
+  'https://cratenovel.com/',
+  'CrateNovel',
   { 'useNewChapterEndpoint': true },
 );
 
@@ -169,6 +141,7 @@ export const WuxiaWorldDotSiteScraper = new MadaraScraper(
   74,
   'https://wuxiaworld.site/',
   'WuxiaWorld.Site',
+  { 'useNewChapterEndpoint': true },
 );
 
 export const MysticalSeriesScraper = new MadaraScraper(
@@ -192,6 +165,7 @@ export const OnlyMTLScraper = new MadaraScraper(
   91,
   'https://www.onlymtl.com/',
   'OnlyMTL',
+  { 'useNewChapterEndpoint': true },
 );
 
 export const HizoMangaScraper = new MadaraScraper(
@@ -203,13 +177,6 @@ export const HizoMangaScraper = new MadaraScraper(
     'useNewChapterEndpoint': true,
     'lang': 'Arabic',
   },
-);
-
-export const LatestNovelScraper = new MadaraScraper(
-  98,
-  'https://latestnovel.net/',
-  'LatestNovel',
-  { 'totalPages': 130 },
 );
 
 export const ArMTLScraper = new MadaraScraper(
@@ -246,13 +213,6 @@ export const TurkceLightNovelsScraper = new MadaraScraper(
     'totalPages': 2,
     'lang': 'Turkish',
   },
-);
-
-export const NovelOwlScraper = new MadaraScraper(
-  111,
-  'https://novelowl.com/',
-  'NovelOwl',
-  { 'totalPages': 208, 'useNewChapterEndpoint': true },
 );
 
 export const SonicMTLScraper = new MadaraScraper(
@@ -345,13 +305,6 @@ export const NocturneTranslationsScraper = new MadaraScraper(
     'lang': 'English',
     'path': { 'novels': 'novels', 'novel': 'novels', 'chapter': 'novels' },
   },
-);
-
-export const AsadaTranslationScraper = new MadaraScraper(
-  137,
-  'https://asadatranslations.com/',
-  'Asada Translation',
-  { 'totalPages': 1, 'lang': 'English' },
 );
 
 export const SugarBabiesScraper = new MadaraScraper(

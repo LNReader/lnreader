@@ -85,13 +85,13 @@ const parseNovelAndChapters = async (novelUrl: string) => {
     : undefined;
 
   novel.summary = loadedCheerio(
-    'body > section:nth-child(4) > div > div > div.col-12.col-xl-9 > div > div:nth-child(5)',
+    'div.container > div > div.col-12.col-xl-9 > div > div:nth-child(5) > div',
   )
     .text()
     .trim();
 
   novel.author = loadedCheerio(
-    'body > section:nth-child(4) > div > div > div.col-12.col-xl-9 > div > div:nth-child(2) > div > div.novels-detail-right > ul > li:nth-child(6) > div.novels-detail-right-in-right',
+    'div.novels-detail-right > ul > li:nth-child(6) > .novels-detail-right-in-right > a',
   )
     .text()
     .trim();
@@ -104,7 +104,7 @@ const parseNovelAndChapters = async (novelUrl: string) => {
     .replace(/[\t\n ]+/g, ',');
 
   novel.status = loadedCheerio(
-    'body > section:nth-child(4) > div > div > div.col-12.col-xl-9 > div > div:nth-child(2) > div > div.novels-detail-right > ul > li:nth-child(2) > div.novels-detail-right-in-right',
+    'div.novels-detail-right > ul > li:nth-child(2) > .novels-detail-right-in-right',
   )
     .text()
     .trim();
@@ -155,41 +155,35 @@ const parseChapter = async (novelUrl: string, chapterUrl: string) => {
   return chapter;
 };
 
+interface searchData {
+  overview: string;
+  original_title: string;
+  link: string;
+  image: string;
+}
+
 const searchNovels = async (searchTerm: string) => {
-  const url = `${baseUrl}/detailed-search-lnr`;
+  const url = `${baseUrl}/search/autocomplete?dataType=json&query=${searchTerm}`;
 
-  const formData = new FormData();
-  formData.append('keyword', searchTerm);
-
-  const result = await fetch(url, { method: 'POST', body: formData });
-  const body = await result.text();
-
-  const loadedCheerio = cheerio.load(body);
+  const result = await fetch(url, { method: 'POST' });
+  const body = await result.json();
+  const data: searchData[] = body.results;
 
   const novels: SourceNovelItem[] = [];
 
-  loadedCheerio('.category-items.cm-list li').each(function () {
-    let novelUrl = loadedCheerio(this).find('.category-name > a').attr('href');
+  data.forEach(item => {
+    let novelUrl = item.link;
+    let novelName = item.original_title
+      .replace(/&#8220;|&#8221;/g, '"')
+      .replace(/&#[0-9]*;/g, ' ');
+    let novelCover = item.image;
 
-    if (novelUrl && !isUrlAbsolute(novelUrl)) {
-      novelUrl = baseUrl + novelUrl;
-    }
-
-    if (novelUrl) {
-      const novelName = loadedCheerio(this).find('.category-name').text();
-      let novelCover = loadedCheerio(this).find('img').attr('src');
-
-      if (novelCover && !isUrlAbsolute(novelCover)) {
-        novelCover = baseUrl + novelCover;
-      }
-
-      novels.push({
-        sourceId,
-        novelUrl,
-        novelName,
-        novelCover,
-      });
-    }
+    novels.push({
+      sourceId,
+      novelUrl,
+      novelName,
+      novelCover,
+    });
   });
 
   return novels;

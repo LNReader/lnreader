@@ -8,30 +8,6 @@
     }
   },
   {
-    "sourceId": 38,
-    "baseUrl": "https://skynovel.org/",
-    "sourceName": "SkyNovel",
-    "options": {
-      "path": { "novels": "manga", "novel": "manga", "chapter": "manga" }
-    }
-  },
-  {
-    "sourceId": 39,
-    "baseUrl": "https://novelcake.com/",
-    "sourceName": "NovelCake",
-    "options": {
-      "path": { "novels": "series", "novel": "series", "chapter": "series" }
-    }
-  },
-  {
-    "sourceId": 40,
-    "baseUrl": "https://novelsrock.com/",
-    "sourceName": "NovelsRock",
-    "options": {
-      "path": { "novels": "novels", "novel": "novel", "chapter": "novel" }
-    }
-  },
-  {
     "sourceId": 41,
     "baseUrl": "https://zinnovel.com/",
     "sourceName": "ZinnNovel",
@@ -83,7 +59,11 @@
     "baseUrl": "https://daonovel.com/",
     "sourceName": "DaoNovel",
     "options": {
-      "path": { "novels": "novel-list", "novel": "novel", "chapter": "novel" },
+      "path": {
+        "novels": "novels-list",
+        "novel": "novels",
+        "chapter": "novels"
+      },
       "useNewChapterEndpoint": true
     }
   },
@@ -106,14 +86,6 @@
     "sourceName": "LightNovelHeaven",
     "options": {
       "path": { "novels": "series", "novel": "series", "chapter": "series" },
-      "useNewChapterEndpoint": true
-    }
-  },
-  {
-    "sourceId": 58,
-    "baseUrl": "https://lightnovelshub.com/",
-    "sourceName": "LightNovelsHub",
-    "options": {
       "useNewChapterEndpoint": true
     }
   },
@@ -144,8 +116,8 @@
   },
   {
     "sourceId": 63,
-    "baseUrl": "https://tipnovel.com/",
-    "sourceName": "TipNovel",
+    "baseUrl": "https://cratenovel.com/",
+    "sourceName": "CrateNovel",
     "options": {
       "useNewChapterEndpoint": true
     }
@@ -169,7 +141,10 @@
   {
     "sourceId": 74,
     "baseUrl": "https://wuxiaworld.site/",
-    "sourceName": "WuxiaWorld.Site"
+    "sourceName": "WuxiaWorld.Site",
+    "options": {
+      "useNewChapterEndpoint": true
+    }
   },
   {
     "sourceId": 75,
@@ -192,7 +167,10 @@
   {
     "sourceId": 91,
     "baseUrl": "https://www.onlymtl.com/",
-    "sourceName": "OnlyMTL"
+    "sourceName": "OnlyMTL",
+    "options": {
+      "useNewChapterEndpoint": true
+    }
   },
   {
     "sourceId": 96,
@@ -202,14 +180,6 @@
       "path": { "novels": "serie", "novel": "serie", "chapter": "serie" },
       "useNewChapterEndpoint": true,
       "lang": "Arabic"
-    }
-  },
-  {
-    "sourceId": 98,
-    "baseUrl": "https://latestnovel.net/",
-    "sourceName": "LatestNovel",
-    "options": {
-      "totalPages": 130
     }
   },
   {
@@ -253,15 +223,6 @@
       },
       "totalPages": 2,
       "lang": "Turkish"
-    }
-  },
-  {
-    "sourceId": 111,
-    "baseUrl": "https://novelowl.com/",
-    "sourceName": "NovelOwl",
-    "options": {
-      "totalPages": 208,
-      "useNewChapterEndpoint": true
     }
   },
   {
@@ -354,6 +315,7 @@
     "sourceName": "MTL-Novel",
     "options": {
       "totalPages": 51,
+      "useNewChapterEndpoint": true,
       "lang": "English",
       "orderBy": "latest"
     }
@@ -375,15 +337,6 @@
       "totalPages": 9,
       "lang": "English",
       "path": { "novels": "novels", "novel": "novels", "chapter": "novels" }
-    }
-  },
-  {
-    "sourceId": 137,
-    "baseUrl": "https://asadatranslations.com/",
-    "sourceName": "Asada Translation",
-    "options": {
-      "totalPages": 1,
-      "lang": "English"
     }
   },
   {
