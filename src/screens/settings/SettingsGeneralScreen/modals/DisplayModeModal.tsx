@@ -1,13 +1,24 @@
-import { displayModesList } from '@screens/library/constants/constants';
+import {
+  DisplayModes,
+  displayModesList,
+} from '@screens/library/constants/constants';
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { Text, StyleSheet } from 'react-native';
 
 import { Portal, Modal, overlay } from 'react-native-paper';
 
-import { RadioButton } from '../../../components/RadioButton/RadioButton';
+import { RadioButton } from '../../../../components/RadioButton/RadioButton';
 import { useLibrarySettings } from '@hooks/useSettings';
+import { MD3ThemeType } from '@theme/types';
 
-const DisplayModeModal = ({
+interface DisplayModeModalProps {
+  displayMode: DisplayModes;
+  displayModalVisible: boolean;
+  hideDisplayModal: () => void;
+  theme: MD3ThemeType;
+}
+
+const DisplayModeModal: React.FC<DisplayModeModalProps> = ({
   theme,
   displayMode,
   hideDisplayModal,
@@ -25,6 +36,9 @@ const DisplayModeModal = ({
           { backgroundColor: overlay(2, theme.surface) },
         ]}
       >
+        <Text style={[styles.modalHeader, { color: theme.textColorPrimary }]}>
+          Display Mode
+        </Text>
         {displayModesList.map(mode => (
           <RadioButton
             key={mode.value}
@@ -46,5 +60,10 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     margin: 20,
     borderRadius: 28,
+  },
+  modalHeader: {
+    paddingHorizontal: 24,
+    fontSize: 24,
+    marginBottom: 10,
   },
 });
