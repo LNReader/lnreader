@@ -15,8 +15,9 @@
     "searchFor": "بحث عن",
     "globally": "عالمي",
     "searchResults": "نتائج البحث",
-    "chapters": "فصولا",
-    "submit": "Submit"
+    "chapters": "فصول",
+    "submit": "إرسال",
+    "retry": "Retry"
   },
   "library": "المكتبة",
   "libraryScreen": {
@@ -87,12 +88,12 @@
       "showProgressPercentage": "النسبة المئوية للتقدم",
       "swipeGestures": "اسحب لليسار أو لليمين للتبديل بين علامات التبويب",
       "allowTextSelection": "السماح باختيار النص",
-      "useChapterDrawerSwipeNavigation": "مرر يمينا لفتح الكاميرا"
+      "useChapterDrawerSwipeNavigation": "مرر يمينا لفتح القائمة الجانبية"
     },
     "drawer": {
-      "scrollToCurrentChapter": "Scroll to current chapter",
-      "scrollToTop": "Scroll to top",
-      "scrollToBottom": "Scroll to bottom"
+      "scrollToCurrentChapter": "التمرير إلى الفصل الحالي",
+      "scrollToTop": "التمرير إلى الأعلى",
+      "scrollToBottom": "التمرير للأسفل"
     }
   },
   "novelScreen": {
@@ -108,13 +109,13 @@
       "display": "العرض"
     },
     "jumpToChapterModal": {
-      "jumpToChapter": "Jump to Chapter",
-      "openChapter": "Open Chapter",
-      "chapterName": "Chapter Name",
-      "chapterNumber": "Chapter Number",
+      "jumpToChapter": "انتقل إلى الفصل",
+      "openChapter": "فتح الفصل",
+      "chapterName": "اسم الفصل",
+      "chapterNumber": "رقم الفصل",
       "error": {
-        "validChapterName": "Enter a valid chapter name",
-        "validChapterNumber": "Enter a valid chapter number"
+        "validChapterName": "أدخل اسم فصل صحيح",
+        "validChapterNumber": "أدخل رَقْم فصل صحيح"
       }
     }
   },
@@ -152,14 +153,14 @@
     "noResultsFound": "لم يتم العثور على أي نتائج"
   },
   "statsScreen": {
-    "title": "Statistics",
-    "titlesInLibrary": "Titles in library",
-    "totalChapters": "Total chapters",
-    "readChapters": "Read chapters",
-    "unreadChapters": "Unread chapters",
-    "downloadedChapters": "الفصول التي تم تحميلها",
-    "genreDistribution": "Genre distribution",
-    "statusDistribution": "Status distribution"
+    "title": "الإحصائيات",
+    "titlesInLibrary": "العناوين في المكتبة",
+    "totalChapters": "مجموع الفصول",
+    "readChapters": "الفصول المقروء",
+    "unreadChapters": "الفصول الغير مقروء",
+    "downloadedChapters": "الفصول المحملة",
+    "genreDistribution": "توزيع الأنواع",
+    "statusDistribution": "توزيع الحالات"
   },
   "globalSearch": {
     "searchIn": "البحث في رواية",
