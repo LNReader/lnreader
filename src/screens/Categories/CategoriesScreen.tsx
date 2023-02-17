@@ -16,7 +16,7 @@ import { getString } from '@strings/translations';
 
 import { Category } from '../../database/types';
 import CategoryCard from './components/CategoryCard';
-import { orderBy } from 'lodash';
+import { orderBy } from 'lodash-es';
 import CategorySkeletonLoading from './components/CategorySkeletonLoading';
 
 const CategoriesScreen = () => {

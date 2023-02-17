@@ -1,5 +1,5 @@
 import * as SQLite from 'expo-sqlite';
-import { noop } from 'lodash';
+import { noop } from 'lodash-es';
 import { Category } from '../types';
 import { txnErrorCallback } from '../utils/helpers';
 const db = SQLite.openDatabase('lnreader.db');

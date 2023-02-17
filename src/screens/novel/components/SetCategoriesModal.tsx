@@ -12,7 +12,7 @@ import { getString } from '@strings/translations';
 import { getCategoriesFromDb } from '../../../database/queries/CategoryQueries';
 import { Category } from '../../../database/types';
 import { Checkbox } from '@components/Checkbox/Checkbox';
-import { isArray, xor } from 'lodash';
+import { isArray, xor } from 'lodash-es';
 import {
   updateNovelCategoryById,
   updateNovelCategoryByIds,

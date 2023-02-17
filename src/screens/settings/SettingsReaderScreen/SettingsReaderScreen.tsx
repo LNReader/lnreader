@@ -9,7 +9,7 @@ import {
 import React, { useState } from 'react';
 
 import { useNavigation } from '@react-navigation/native';
-import { defaultTo } from 'lodash';
+import { defaultTo } from 'lodash-es';
 import WebView from 'react-native-webview';
 import { Portal } from 'react-native-paper';
 

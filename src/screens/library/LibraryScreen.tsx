@@ -29,7 +29,7 @@ import {
 import { unfollowNovel } from '../../database/queries/NovelQueries';
 import SetCategoryModal from '@screens/novel/components/SetCategoriesModal';
 import useBoolean from '@hooks/useBoolean';
-import { debounce, intersection } from 'lodash';
+import { debounce, intersection } from 'lodash-es';
 import { ButtonVariation } from '@components/Button/Button';
 import { useBackHandler } from '@hooks/useBackHandler';
 import { openChapter } from '@utils/handleNavigateParams';

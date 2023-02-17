@@ -16,7 +16,7 @@ import { Button, IconButtonV2 } from '@components/index';
 import { ButtonVariation } from '@components/Button/Button';
 import { dividerColor } from '../../../theme/colors';
 import { Checkbox } from '@components/Checkbox/Checkbox';
-import { defaultTo } from 'lodash';
+import { defaultTo } from 'lodash-es';
 import { Picker } from '@react-native-picker/picker';
 import useBoolean from '@hooks/useBoolean';
 import { overlay } from 'react-native-paper';

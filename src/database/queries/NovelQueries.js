@@ -9,7 +9,7 @@ import { insertChapters } from './ChapterQueries';
 
 import { showToast } from '../../hooks/showToast';
 import { txnErrorCallback } from '../utils/helpers';
-import { noop } from 'lodash';
+import { noop } from 'lodash-es';
 
 const insertNovelQuery =
   'INSERT INTO novels (novelUrl, sourceUrl, sourceId, source, novelName, novelCover, novelSummary, author, artist, status, genre, categoryIds) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { RefreshControl, View } from 'react-native';
-import { xor } from 'lodash';
+import { xor } from 'lodash-es';
 import { useNavigation } from '@react-navigation/native';
 
 import { EmptyView } from '@components/index';

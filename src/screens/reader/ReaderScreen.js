@@ -37,7 +37,7 @@ import { useFullscreenMode, useLibrarySettings } from '../../hooks';
 import { getChapterFromDb } from '../../database/queries/DownloadQueries';
 import ReaderBottomSheetV2 from './components/ReaderBottomSheet/ReaderBottomSheet';
 import { useReaderSettings } from '../../redux/hooks';
-import { defaultTo } from 'lodash';
+import { defaultTo } from 'lodash-es';
 import BottomInfoBar from './components/BottomInfoBar/BottomInfoBar';
 import { sanitizeChapterText } from './utils/sanitizeChapterText';
 import ChapterDrawer from './components/ChapterDrawer';

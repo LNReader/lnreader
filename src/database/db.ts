@@ -29,7 +29,7 @@ import {
   dbTxnErrorCallback,
   txnErrorCallbackWithoutToast,
 } from './utils/helpers';
-import { noop } from 'lodash';
+import { noop } from 'lodash-es';
 
 const dbName = 'lnreader.db';
 
