@@ -166,7 +166,7 @@ const searchNovels = async (searchTerm: string) => {
   const url = `${baseUrl}/search/autocomplete?dataType=json&query=${searchTerm}`;
 
   const result = await fetch(url, { method: 'POST' });
-  const body = await JSON.parse(await result.text());
+  const body = await result.json();
   const data: searchData[] = body.results;
 
   const novels: SourceNovelItem[] = [];
