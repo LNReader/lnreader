@@ -8,7 +8,6 @@ import { getString } from '@strings/translations';
 import { useTheme } from '@hooks';
 
 import { Category } from '@database/types';
-import { getDialogBackground } from '@theme/colors';
 
 interface DefaultCategoryDialogProps {
   visible: boolean;
@@ -31,9 +30,9 @@ const DefaultCategoryDialog: React.FC<DefaultCategoryDialogProps> = ({
     <Dialog
       visible={visible}
       onDismiss={hideDialog}
-      style={{ backgroundColor: getDialogBackground(theme) }}
+      style={{ backgroundColor: theme.overlay3 }}
     >
-      <Dialog.Title style={{ color: theme.textColorPrimary }}>
+      <Dialog.Title style={{ color: theme.onSurface }}>
         {getString('categories.defaultCategory')}
       </Dialog.Title>
       <FlatList

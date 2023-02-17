@@ -2,14 +2,14 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { MD3ThemeType } from '../../../theme/types';
+import { ThemeColors } from '../../../theme/types';
 
 interface Props {
   label: string;
   icon?: string;
   backgroundColor?: string;
   textColor?: string;
-  theme: MD3ThemeType;
+  theme: ThemeColors;
 }
 
 export const Banner: React.FC<Props> = ({

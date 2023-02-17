@@ -16,7 +16,7 @@ const MigrationSourceCard = ({ item, theme, noOfNovels, onPress }) => {
         <View style={styles.sourceDetailsContainer}>
           <Text
             style={{
-              color: theme.textColorPrimary,
+              color: theme.onSurface,
               fontSize: 14,
             }}
           >
@@ -24,7 +24,7 @@ const MigrationSourceCard = ({ item, theme, noOfNovels, onPress }) => {
           </Text>
           <Text
             style={{
-              color: theme.textColorSecondary,
+              color: theme.onSurfaceVariant,
               fontSize: 12,
             }}
           >

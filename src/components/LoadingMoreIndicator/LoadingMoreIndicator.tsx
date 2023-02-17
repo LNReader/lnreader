@@ -1,9 +1,9 @@
 import React from 'react';
 import { ActivityIndicator, StyleSheet } from 'react-native';
-import { MD3ThemeType } from '../../theme/types';
+import { ThemeColors } from '../../theme/types';
 
 interface Props {
-  theme: MD3ThemeType;
+  theme: ThemeColors;
 }
 
 const LoadingMoreIndicator: React.FC<Props> = ({ theme }) => (

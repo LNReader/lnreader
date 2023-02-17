@@ -30,7 +30,6 @@ import { unfollowNovel } from '../../database/queries/NovelQueries';
 import SetCategoryModal from '@screens/novel/components/SetCategoriesModal';
 import useBoolean from '@hooks/useBoolean';
 import { debounce, intersection } from 'lodash-es';
-import { ButtonVariation } from '@components/Button/Button';
 import { useBackHandler } from '@hooks/useBackHandler';
 import { openChapter } from '@utils/handleNavigateParams';
 import useHistory from '@hooks/useHistory';
@@ -120,7 +119,7 @@ const LibraryScreen = () => {
       )}
       inactiveColor={theme.secondary}
       activeColor={theme.primary}
-      pressColor={color(theme.primary).alpha(0.12).rgb().string()}
+      pressColor={theme.rippleColor}
     />
   );
 
@@ -219,10 +218,7 @@ const LibraryScreen = () => {
                   title={`${getString(
                     'common.searchFor',
                   )} "${searchText}" ${getString('common.globally')}`}
-                  theme={theme}
-                  variation={ButtonVariation.CLEAR}
                   style={styles.globalSearchBtn}
-                  labelStyle={styles.globalSearchBtnLabel}
                   onPress={() =>
                     navigate(
                       'GlobalSearchScreen' as never,
@@ -328,9 +324,7 @@ const styles = StyleSheet.create({
   globalSearchBtn: {
     margin: 16,
   },
-  globalSearchBtnLabel: {
-    fontWeight: 'bold',
-  },
+
   fab: {
     position: 'absolute',
     margin: 16,

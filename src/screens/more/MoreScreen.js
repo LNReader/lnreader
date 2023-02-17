@@ -9,8 +9,7 @@ import { Switch } from 'react-native-paper';
 import { useSelector } from 'react-redux';
 import { getString } from '../../../strings/translations';
 
-import { ScreenContainer } from '../../components/Common';
-import { List } from '../../components/List';
+import { List } from '@components';
 
 import { MoreHeader } from './components/MoreHeader';
 import { useLibrarySettings } from '@hooks/useSettings';
@@ -51,7 +50,7 @@ const MoreScreen = ({ navigation }) => {
               <View style={{ marginLeft: 16 }}>
                 <Text
                   style={{
-                    color: theme.textColorPrimary,
+                    color: theme.onSurface,
                     fontSize: 16,
                   }}
                 >
@@ -84,7 +83,7 @@ const MoreScreen = ({ navigation }) => {
               <View style={{ marginLeft: 16 }}>
                 <Text
                   style={{
-                    color: theme.textColorPrimary,
+                    color: theme.onSurface,
                     fontSize: 16,
                   }}
                 >

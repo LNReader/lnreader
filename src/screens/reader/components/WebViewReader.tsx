@@ -5,8 +5,7 @@ import RNFetchBlob from 'rn-fetch-blob';
 
 import { useTheme } from '@hooks/useTheme';
 import { ChapterItem } from '@database/types';
-import { useAppDispatch, useReaderSettings, useSettingsV1 } from '@redux/hooks';
-import { setAppSettings } from '@redux/settings/settings.actions';
+import { useReaderSettings } from '@redux/hooks';
 import { getString } from '@strings/translations';
 
 type WebViewPostEvent = {
@@ -50,9 +49,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
     onWebViewNavigationStateChange,
   } = props;
 
-  const dispatch = useAppDispatch();
   const theme = useTheme();
-  const { showSwipeMargins } = useSettingsV1();
 
   const readerSettings = useReaderSettings();
   const { theme: backgroundColor } = readerSettings;
@@ -80,15 +77,6 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
             navigateToChapterBySwipe('SWIPE_LEFT');
             break;
           case 'prev':
-            navigateToChapterBySwipe('SWIPE_RIGHT');
-            break;
-          case 'noswipes':
-            dispatch(setAppSettings('showSwipeMargins', false));
-            break;
-          case 'right':
-            navigateToChapterBySwipe('SWIPE_LEFT');
-            break;
-          case 'left':
             navigateToChapterBySwipe('SWIPE_RIGHT');
             break;
           case 'imgfiles':
@@ -205,31 +193,6 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                         padding-top: 16px;
                         padding-bottom: 16px;
                       }
-                      .pos,.posl,.posr {
-                        background-color: #ff000055;
-                        color: white;
-                        position: fixed;
-                        z-index: 99;
-                        height: 100vh;
-                        top: 0;
-                        display: none;
-                        justify-content: center;
-                        align-items:center;
-                        width: 100px;
-                        font-weight: bold;
-                        -webkit-text-stroke-width: 1px;
-                        -webkit-text-stroke-color: black;
-                      }
-                      .posl {
-                        background-color: #00ff0055;
-                        font-size: 2em;
-                        text-align: center;
-                      }
-                      .posr {
-                        background-color: #0000ff55;
-                        font-size: 2em;
-                        text-align: center;
-                      }
                       .chapterCtn {
                         min-height: ${layoutHeight - 140};
                         margin-bottom: auto;
@@ -314,76 +277,31 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                     ${
                       swipeGestures
                         ? `
-                        ${
-                          showSwipeMargins
-                            ? `<div class='pos'> </div>
-                        <div class='posr'>Swipe Left</div>
-                        <div class='posl'>Swipe Right</div>`
-                            : ''
-                        }
                         <script>
-                          const chapter = document.querySelector("chapter");
-                          const noswipe = document.querySelector(".pos");
-                          const lswipe = document.querySelector(".posl");
-                          const rswipe = document.querySelector(".posr");
-                          chapter.addEventListener("touchstart", startTouch, false);
-                          chapter.addEventListener("touchmove", moveTouch, false);
                           var initialX = null;
                           var initialY = null;
-                          function startTouch(e) {
-                            initialX = e.touches[0].clientX;
-                            initialY = e.touches[0].clientY;
-                          };
-                          function moveTouch(e) {
-                            const width = Math.max(
-                              document.body.scrollWidth,
-                              document.documentElement.scrollWidth,
-                              document.body.offsetWidth,
-                              document.documentElement.offsetWidth,
-                              document.documentElement.clientWidth
-                            );
+                          document.addEventListener("touchstart", e => {
+                            initialX = e.changedTouches[0].screenX;
+                            initialY = e.changedTouches[0].screenY;
+                          });
+                          document.addEventListener("touchend", e => {
                             if (initialX === null || initialY === null) return; 
-                            var currentX = e.touches[0].clientX;
-                            var currentY = e.touches[0].clientY;
-                            var diffX = initialX - currentX;
-                            var diffY = initialY - currentY;
+                            var currentX = e.changedTouches[0].screenX;
+                            var currentY = e.changedTouches[0].screenY;
+                            var diffX = currentX - initialX;
+                            var diffY = currentY - initialY;
                             if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 10) {
-                              if (diffX > 0) {
-                                if(initialX < width/2 - 50)
-                                  window.ReactNativeWebView.postMessage(JSON.stringify({type:"left"}))
+                              e.preventDefault();
+                              if (diffX < 0) {
+                                  window.ReactNativeWebView.postMessage(JSON.stringify({type:"next"}))
                               } else {
-                                if(initialX > width/2 + 50)
-                                  window.ReactNativeWebView.postMessage(JSON.stringify({type:"right"}))
+                                  window.ReactNativeWebView.postMessage(JSON.stringify({type:"prev"}))
                               }  
                             }
                             initialX = null;
                             initialY = null;
-                            e.preventDefault();
-                          };
-                          
-                          ${
-                            showSwipeMargins
-                              ? `setTimeout(()=>{
-                                  const width = Math.max(
-                                    document.body.scrollWidth,
-                                    document.documentElement.scrollWidth,
-                                    document.body.offsetWidth,
-                                    document.documentElement.offsetWidth,
-                                    document.documentElement.clientWidth
-                                  );
-                                  noswipe.style.left = width/2-50;
-                                  lswipe.style.left = 0;
-                                  lswipe.style.width = width/2-50 + "px";
-                                  rswipe.style.width = width/2-50 + "px";
-                                  rswipe.style.left = width/2+50;
-                                  noswipe.style.display = lswipe.style.display = rswipe.style.display = "flex";
-                                  window.ReactNativeWebView.postMessage(JSON.stringify({type:"noswipes"}));
-                                  setTimeout(()=>{
-                                    noswipe.style.display = lswipe.style.display = rswipe.style.display = "none";
-                                  }, 1000);
-                                }, 250);`
-                              : ''
-                          }</script>`
+                          });
+                          </script>`
                         : ''
                     }
                   </body>

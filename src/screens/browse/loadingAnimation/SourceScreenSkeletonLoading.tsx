@@ -1,6 +1,6 @@
 import React, { memo, useMemo } from 'react';
 import { View, StyleSheet, useWindowDimensions } from 'react-native';
-import { MD3ThemeType } from '@theme/types';
+import { ThemeColors } from '@theme/types';
 import getLoadingColors from '@utils/getLoadingColors';
 import LoadingNovel from '@screens/browse/loadingAnimation/LoadingNovel';
 import { useLibrarySettings } from '@hooks/useSettings';
@@ -8,7 +8,7 @@ import { DisplayModes } from '@screens/library/constants/constants';
 import { useDeviceOrientation } from '@hooks/useDeviceOrientation';
 
 interface Props {
-  theme: MD3ThemeType;
+  theme: ThemeColors;
 }
 
 const SourceScreenSkeletonLoading: React.FC<Props> = ({ theme }) => {

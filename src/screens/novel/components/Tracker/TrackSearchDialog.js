@@ -1,18 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Image, ActivityIndicator } from 'react-native';
-import {
-  Button,
-  Modal,
-  overlay,
-  TextInput,
-  TouchableRipple,
-} from 'react-native-paper';
+import { Modal, overlay, TextInput, TouchableRipple } from 'react-native-paper';
 import { searchNovels } from '../../../../services/Trackers/myAnimeList';
 import { useSelector, useDispatch } from 'react-redux';
 import { ScrollView } from 'react-native-gesture-handler';
 import { trackNovel } from '../../../../redux/tracker/tracker.actions';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import color from 'color';
+import { Button } from '@components';
 
 const TrackSearchDialog = ({
   trackSearchDialog,
@@ -77,7 +72,7 @@ const TrackSearchDialog = ({
         <Text
           style={{
             flex: 1,
-            color: theme.textColorPrimary,
+            color: theme.onSurface,
             marginLeft: 20,
             fontSize: 16,
             flexWrap: 'wrap',
@@ -108,14 +103,14 @@ const TrackSearchDialog = ({
         theme={{
           colors: {
             primary: theme.primary,
-            text: theme.textColorPrimary,
+            text: theme.onSurface,
           },
         }}
         style={{ backgroundColor: 'transparent' }}
-        underlineColor={theme.textColorHint}
+        underlineColor={theme.outline}
         right={
           <TextInput.Icon
-            color={theme.textColorSecondary}
+            color={theme.onSurfaceVariant}
             icon="close"
             onPress={() => setSearchText('')}
           />
@@ -141,36 +136,10 @@ const TrackSearchDialog = ({
           marginTop: 30,
         }}
       >
-        <Button
-          labelStyle={{
-            color: theme.primary,
-            letterSpacing: 0,
-            textTransform: 'none',
-          }}
-          theme={{ colors: { primary: theme.primary } }}
-          onPress={() => setSelectedNovel(null)}
-        >
-          Remove
-        </Button>
+        <Button onPress={() => setSelectedNovel(null)}>Remove</Button>
         <View style={{ flexDirection: 'row' }}>
+          <Button onPress={() => setTrackSearchDialog(false)}>Cancel</Button>
           <Button
-            labelStyle={{
-              color: theme.primary,
-              letterSpacing: 0,
-              textTransform: 'none',
-            }}
-            theme={{ colors: { primary: theme.primary } }}
-            onPress={() => setTrackSearchDialog(false)}
-          >
-            Cancel
-          </Button>
-          <Button
-            labelStyle={{
-              color: theme.primary,
-              letterSpacing: 0,
-              textTransform: 'none',
-            }}
-            theme={{ colors: { primary: theme.primary } }}
             onPress={() => {
               if (selectedNovel) {
                 dispatch(

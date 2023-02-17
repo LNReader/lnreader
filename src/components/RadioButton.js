@@ -13,14 +13,10 @@ export const RadioButton = ({ value, label, theme, labelStyle }) => (
     <MaterialRadioButton
       value={value}
       color={theme.primary}
-      uncheckedColor={theme.textColorSecondary}
+      uncheckedColor={theme.onSurfaceVariant}
     />
     <Text
-      style={[
-        styles.radioButtonLabel,
-        { color: theme.textColorPrimary },
-        labelStyle,
-      ]}
+      style={[styles.radioButtonLabel, { color: theme.onSurface }, labelStyle]}
     >
       {label}
     </Text>

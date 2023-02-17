@@ -42,7 +42,7 @@ const ChapterItem = ({
       ]}
       onPress={() => onSelectPress(chapter, () => navigateToChapter(chapter))}
       onLongPress={() => onSelectLongPress(chapter)}
-      android_ripple={{ color: color(theme.primary).alpha(0.12).string() }}
+      android_ripple={{ color: theme.rippleColor }}
     >
       <Row style={{ flex: 1, overflow: 'hidden' }}>
         {!!bookmark && <ChapterBookmarkButton theme={theme} />}
@@ -50,10 +50,10 @@ const ChapterItem = ({
           <Text
             style={{
               color: read
-                ? theme.textColorHint
+                ? theme.outline
                 : bookmark
                 ? theme.primary
-                : theme.textColorPrimary,
+                : theme.onSurface,
             }}
             numberOfLines={1}
           >
@@ -73,10 +73,10 @@ const ChapterItem = ({
               <Text
                 style={{
                   color: read
-                    ? theme.textColorHint
+                    ? theme.outline
                     : bookmark
                     ? theme.primary
-                    : theme.textColorSecondary,
+                    : theme.onSurfaceVariant,
                   fontSize: 12,
                 }}
                 numberOfLines={1}

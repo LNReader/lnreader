@@ -54,7 +54,7 @@ export const ThemePicker = ({ theme, currentTheme, onPress }) => (
         >
           <View
             style={{
-              backgroundColor: theme.textColorPrimary,
+              backgroundColor: theme.onSurface,
               width: 44,
               height: 10,
               marginLeft: 8,
@@ -66,7 +66,7 @@ export const ThemePicker = ({ theme, currentTheme, onPress }) => (
           <View
             style={{
               height: 18,
-              backgroundColor: theme.textColorSecondary,
+              backgroundColor: theme.onSurfaceVariant,
               borderRadius: 4,
             }}
           />
@@ -75,7 +75,7 @@ export const ThemePicker = ({ theme, currentTheme, onPress }) => (
               style={{
                 height: 10,
                 width: 44,
-                backgroundColor: theme.textColorPrimary,
+                backgroundColor: theme.onSurface,
                 borderRadius: 50,
               }}
             />
@@ -94,7 +94,7 @@ export const ThemePicker = ({ theme, currentTheme, onPress }) => (
               style={{
                 height: 10,
                 width: 24,
-                backgroundColor: theme.textColorSecondary,
+                backgroundColor: theme.onSurfaceVariant,
                 borderRadius: 50,
               }}
             />
@@ -102,7 +102,7 @@ export const ThemePicker = ({ theme, currentTheme, onPress }) => (
               style={{
                 height: 10,
                 width: 24,
-                backgroundColor: theme.textColorSecondary,
+                backgroundColor: theme.onSurfaceVariant,
                 borderRadius: 50,
                 marginLeft: 4,
               }}
@@ -134,7 +134,7 @@ export const ThemePicker = ({ theme, currentTheme, onPress }) => (
                 height: 12,
                 width: 12,
                 borderRadius: 50,
-                backgroundColor: theme.textColorPrimary,
+                backgroundColor: theme.onSurface,
                 opacity: 0.54,
               }}
             />
@@ -151,7 +151,7 @@ export const ThemePicker = ({ theme, currentTheme, onPress }) => (
                 height: 12,
                 width: 12,
                 borderRadius: 50,
-                backgroundColor: theme.textColorPrimary,
+                backgroundColor: theme.onSurface,
                 opacity: 0.54,
               }}
             />
@@ -161,7 +161,7 @@ export const ThemePicker = ({ theme, currentTheme, onPress }) => (
     </View>
     <Text
       style={{
-        color: currentTheme.textColorPrimary,
+        color: currentTheme.onSurface,
         fontSize: 12,
         paddingVertical: 4,
       }}

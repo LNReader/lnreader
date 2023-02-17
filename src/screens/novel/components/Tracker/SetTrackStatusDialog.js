@@ -30,7 +30,7 @@ const SetTrackStatusDialog = ({
         { backgroundColor: overlay(2, theme.surface) },
       ]}
     >
-      <Text style={[styles.dialogTitle, { color: theme.textColorPrimary }]}>
+      <Text style={[styles.dialogTitle, { color: theme.onSurface }]}>
         Status
       </Text>
       <RadioButtonGroup

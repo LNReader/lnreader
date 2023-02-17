@@ -42,7 +42,7 @@ const SourceNovels = ({ navigation, route }) => {
         ListEmptyComponent={
           <Text
             style={{
-              color: theme.textColorSecondary,
+              color: theme.onSurfaceVariant,
               padding: 20,
               textAlign: 'center',
             }}

@@ -1,13 +1,13 @@
 import React from 'react';
 import { Pressable, View } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { MD3ThemeType } from '../../theme/types';
+import { ThemeColors } from '../../theme/types';
 import Color from 'color';
 
 interface ToggleButtonProps {
   icon: string;
   selected: boolean;
-  theme: MD3ThemeType;
+  theme: ThemeColors;
   color?: string;
   onPress: () => void;
 }
@@ -27,7 +27,7 @@ export const ToggleButton: React.FC<ToggleButtonProps> = ({
     }}
   >
     <Pressable
-      android_ripple={{ color: Color(theme.primary).alpha(0.12).string() }}
+      android_ripple={{ color: theme.rippleColor }}
       style={{
         padding: 8,
         alignItems: 'center',
@@ -40,9 +40,7 @@ export const ToggleButton: React.FC<ToggleButtonProps> = ({
     >
       <MaterialCommunityIcons
         name={icon}
-        color={
-          selected ? theme.primary : color ? color : theme.textColorPrimary
-        }
+        color={selected ? theme.primary : color ? color : theme.onSurface}
         size={24}
       />
     </Pressable>

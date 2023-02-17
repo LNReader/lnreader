@@ -10,7 +10,6 @@ import { getString } from '@strings/translations';
 import { useNovel, useSettings, usePreferences } from '@hooks/reduxHooks';
 import { useDispatch } from 'react-redux';
 import { setNovel, getNovelAction } from '@redux/novel/novel.actions';
-import { dividerColor } from '@theme/colors';
 
 const ChapterDrawer = ({ state: st, navigation }) => {
   const theme = useTheme();
@@ -97,7 +96,7 @@ const ChapterDrawer = ({ state: st, navigation }) => {
       ]}
     >
       <Pressable
-        android_ripple={{ color: color(theme.primary).alpha(0.12).string() }}
+        android_ripple={{ color: theme.rippleColor }}
         onPress={() => changeChapter(item)}
         style={styles.chapterCtn}
       >
@@ -115,17 +114,15 @@ const ChapterDrawer = ({ state: st, navigation }) => {
     return (
       <View style={styles.footer}>
         <Button
-          theme={theme}
+          mode="contained"
           style={styles.button}
           title={buttonProperties.up.text}
-          labelStyle={styles.btnLabel}
           onPress={buttonProperties.up.func}
         />
         <Button
-          theme={theme}
+          mode="contained"
           style={styles.button}
           title={buttonProperties.down.text}
-          labelStyle={styles.btnLabel}
           onPress={buttonProperties.down.func}
         />
       </View>
@@ -217,8 +214,8 @@ const createStylesheet = (theme, insets) => {
       marginBottom: 4,
       fontWeight: 'bold',
       borderBottomWidth: 1,
-      borderBottomColor: dividerColor(theme.isDark),
-      color: theme.textColorPrimary,
+      borderBottomColor: theme.outline,
+      color: theme.onSurface,
     },
     chapterCtn: {
       flex: 1,
@@ -229,11 +226,11 @@ const createStylesheet = (theme, insets) => {
     chapterNameCtn: {
       fontSize: 12,
       marginBottom: 2,
-      color: theme.textColorPrimary,
+      color: theme.onSurface,
     },
     releaseDateCtn: {
       fontSize: 10,
-      color: theme.textColorSecondary,
+      color: theme.onSurfaceVariant,
     },
     drawerElementContainer: {
       margin: 4,
@@ -253,10 +250,7 @@ const createStylesheet = (theme, insets) => {
       paddingTop: 8,
       paddingBottom: insets.bottom,
       borderTopWidth: 1,
-      borderTopColor: dividerColor(theme.isDark),
-    },
-    btnLabel: {
-      fontWeight: 'bold',
+      borderTopColor: theme.outline,
     },
   });
 };

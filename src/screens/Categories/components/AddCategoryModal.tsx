@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Modal, overlay, Portal, TextInput } from 'react-native-paper';
 
-import { ButtonVariation } from '@components/Button/Button';
 import { Button } from '@components/index';
 
 import { Category } from '../../../database/types';
@@ -44,7 +43,7 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
           { backgroundColor: overlay(2, theme.surface) },
         ]}
       >
-        <Text style={[styles.modalTitle, { color: theme.textColorPrimary }]}>
+        <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
           {getString(
             isEditMode
               ? 'categories.editCategories'
@@ -57,14 +56,12 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
           placeholder={getString('common.name')}
           onChangeText={setCategoryName}
           mode="outlined"
-          underlineColor={theme.textColorHint}
+          underlineColor={theme.outline}
           theme={{ colors: { ...theme } }}
         />
         <View style={styles.btnContainer}>
           <Button
             title={getString(isEditMode ? 'common.ok' : 'common.add')}
-            theme={theme}
-            variation={ButtonVariation.CLEAR}
             onPress={async () => {
               if (await isCategoryNameDuplicate(categoryName)) {
                 showToast(getString('categories.duplicateError'));
@@ -80,12 +77,7 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
               closeModal();
             }}
           />
-          <Button
-            title={getString('common.cancel')}
-            theme={theme}
-            variation={ButtonVariation.CLEAR}
-            onPress={closeModal}
-          />
+          <Button title={getString('common.cancel')} onPress={closeModal} />
         </View>
       </Modal>
     </Portal>

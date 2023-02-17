@@ -22,7 +22,7 @@ const SetTrackChaptersDialog = ({
         { backgroundColor: overlay(2, theme.surface) },
       ]}
     >
-      <Text style={[styles.dialogTitle, { color: theme.textColorPrimary }]}>
+      <Text style={[styles.dialogTitle, { color: theme.onSurface }]}>
         Chapters
       </Text>
       <TextInput
@@ -34,12 +34,12 @@ const SetTrackChaptersDialog = ({
         theme={{
           colors: {
             primary: theme.primary,
-            placeholder: theme.textColorHint,
-            text: theme.textColorPrimary,
+            placeholder: theme.outline,
+            text: theme.onSurface,
             background: 'transparent',
           },
         }}
-        underlineColor={theme.textColorHint}
+        underlineColor={theme.outline}
       />
     </Modal>
   );

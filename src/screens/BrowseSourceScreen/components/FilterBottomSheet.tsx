@@ -1,6 +1,5 @@
 import React, { Ref, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import color from 'color';
 
 import BottomSheet from '../../../components/BottomSheet/BottomSheet';
 import BottomSheetType, { BottomSheetView } from '@gorhom/bottom-sheet';
@@ -13,8 +12,6 @@ import {
 } from '../../../sources/types/filterTypes';
 import { FlatList } from 'react-native-gesture-handler';
 import { Button, IconButtonV2 } from '@components/index';
-import { ButtonVariation } from '@components/Button/Button';
-import { dividerColor } from '../../../theme/colors';
 import { Checkbox } from '@components/Checkbox/Checkbox';
 import { defaultTo } from 'lodash-es';
 import { Picker } from '@react-native-picker/picker';
@@ -44,7 +41,7 @@ const FilterItem: React.FC<FilterItemProps> = ({
   if (filter.inputType === FilterInputs.Picker) {
     return (
       <View style={styles.pickerContainer}>
-        <Text style={[styles.pickerLabel, { color: theme.textColorSecondary }]}>
+        <Text style={[styles.pickerLabel, { color: theme.onSurfaceVariant }]}>
           {filter.label}
         </Text>
         <Picker
@@ -77,11 +74,9 @@ const FilterItem: React.FC<FilterItemProps> = ({
         <Pressable
           style={styles.checkboxHeader}
           onPress={toggleCard}
-          android_ripple={{ color: color(theme.primary).alpha(0.12).string() }}
+          android_ripple={{ color: theme.rippleColor }}
         >
-          <Text
-            style={[styles.filterLabel, { color: theme.textColorSecondary }]}
-          >
+          <Text style={[styles.filterLabel, { color: theme.onSurfaceVariant }]}>
             {filter.label}
           </Text>
           <IconButtonV2
@@ -149,28 +144,23 @@ const FilterBottomSheet: React.FC<BottomSheetProps> = ({
         ]}
       >
         <BottomSheetView
-          style={[
-            styles.buttonContainer,
-            { borderBottomColor: dividerColor(theme.isDark) },
-          ]}
+          style={[styles.buttonContainer, { borderBottomColor: theme.outline }]}
         >
           <Button
             title={'Reset'}
-            variation={ButtonVariation.CLEAR}
             onPress={() => {
               setSelectedFilters(undefined);
               clearFilters();
             }}
-            theme={theme}
           />
           <Button
             title={'Filter'}
-            textColor={theme.textColorPrimary}
+            textColor={theme.onSurface}
             onPress={() => {
               setFilters(selectedFilters);
               filterSheetRef?.current?.collapse();
             }}
-            theme={theme}
+            mode="contained"
           />
         </BottomSheetView>
         <FlatList

@@ -67,7 +67,7 @@ const NovelCover = ({
       ]}
     >
       <Pressable
-        android_ripple={{ color: color(theme.primary).alpha(0.12).string() }}
+        android_ripple={{ color: theme.rippleColor }}
         style={styles.opac}
         onPress={
           selectedNovels && selectedNovels.length > 0 ? selectNovel : onPress
@@ -158,7 +158,7 @@ const ComfortableTitle = ({ theme, novelName }) => (
     style={[
       styles.title,
       {
-        color: theme.textColorPrimary,
+        color: theme.onSurface,
         padding: 4,
       },
     ]}

@@ -14,10 +14,8 @@ const ErrorScreen: React.FC<ErrorScreenProps> = ({ error }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={[styles.icon, { color: theme.textColorHint }]}>ಥ_ಥ</Text>
-      <Text style={[styles.error, { color: theme.textColorHint }]}>
-        {error}
-      </Text>
+      <Text style={[styles.icon, { color: theme.outline }]}>ಥ_ಥ</Text>
+      <Text style={[styles.error, { color: theme.outline }]}>{error}</Text>
     </View>
   );
 };

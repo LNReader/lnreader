@@ -3,11 +3,19 @@ import { Text, StyleSheet } from 'react-native';
 
 import { Portal, Modal, overlay } from 'react-native-paper';
 
-import { RadioButton } from '../../../components/RadioButton/RadioButton';
+import { RadioButton } from '../../../../components/RadioButton/RadioButton';
 
 import { useLibrarySettings } from '@hooks/useSettings';
+import { ThemeColors } from '@theme/types';
 
-const GridSizeModal = ({
+interface GridSizeModalProps {
+  novelsPerRow: number;
+  gridSizeModalVisible: boolean;
+  hideGridSizeModal: () => void;
+  theme: ThemeColors;
+}
+
+const GridSizeModal: React.FC<GridSizeModalProps> = ({
   novelsPerRow,
   gridSizeModalVisible,
   hideGridSizeModal,
@@ -33,24 +41,28 @@ const GridSizeModal = ({
           { backgroundColor: overlay(2, theme.surface) },
         ]}
       >
-        <Text style={[styles.modalHeader, { color: theme.textColorPrimary }]}>
+        <Text style={[styles.modalHeader, { color: theme.onSurface }]}>
           Grid size
         </Text>
         <Text
-          style={[styles.modalDescription, { color: theme.textColorSecondary }]}
+          style={[styles.modalDescription, { color: theme.onSurfaceVariant }]}
         >
           {`${novelsPerRow} per row`}
         </Text>
-        {Object.keys(gridSizes).map(item => (
-          <RadioButton
-            key={item}
-            status={item == novelsPerRow}
-            label={gridSizes[item]}
-            onPress={() => setLibrarySettings({ novelsPerRow: item })}
-            theme={theme}
-            style={{ paddingHorizontal: 20 }}
-          />
-        ))}
+        {Object.keys(gridSizes).map(item => {
+          let it = Number(item);
+          return (
+            <RadioButton
+              key={item}
+              status={it === novelsPerRow}
+              // @ts-ignore
+              label={gridSizes[it]}
+              onPress={() => setLibrarySettings({ novelsPerRow: it })}
+              theme={theme}
+              style={styles.radiobutton}
+            />
+          );
+        })}
       </Modal>
     </Portal>
   );
@@ -78,4 +90,5 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 40,
   },
+  radiobutton: { paddingHorizontal: 20 },
 });

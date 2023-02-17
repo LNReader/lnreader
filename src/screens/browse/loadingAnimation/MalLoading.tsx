@@ -2,12 +2,12 @@ import React, { memo } from 'react';
 import { View, Dimensions, StyleSheet } from 'react-native';
 import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder';
 import { LinearGradient } from 'expo-linear-gradient';
-import { MD3ThemeType } from '@theme/types';
-import { getDialogBackground } from '@theme/colors';
+import { ThemeColors } from '@theme/types';
+
 import getLoadingColors from '@utils/getLoadingColors';
 
 interface Props {
-  theme: MD3ThemeType;
+  theme: ThemeColors;
 }
 
 const MalLoading: React.FC<Props> = ({ theme }) => {
@@ -53,7 +53,7 @@ const MalLoading: React.FC<Props> = ({ theme }) => {
   return <View style={styles.container}>{items.map(renderLoadingRect)}</View>;
 };
 
-const createStyleSheet = (theme: MD3ThemeType) => {
+const createStyleSheet = (theme: ThemeColors) => {
   return StyleSheet.create({
     container: {
       position: 'relative',
@@ -67,7 +67,7 @@ const createStyleSheet = (theme: MD3ThemeType) => {
     loadingContainer: {
       margin: 10,
       borderRadius: 8,
-      backgroundColor: getDialogBackground(theme),
+      backgroundColor: theme.overlay3,
       width: Dimensions.get('window').width - 20,
       overflow: 'hidden',
       flexDirection: 'row',

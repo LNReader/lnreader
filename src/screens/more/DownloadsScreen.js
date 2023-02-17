@@ -109,7 +109,7 @@ const Downloads = ({ navigation }) => {
         {chapters.length > 0 && (
           <MaterialAppbar.Action
             icon="delete-sweep"
-            iconColor={theme.textColorPrimary}
+            iconColor={theme.onSurface}
             onPress={showDialog}
           />
         )}

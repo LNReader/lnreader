@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import color from 'color';
 
 import dayjs from 'dayjs';
 import FastImage from 'react-native-fast-image';
@@ -9,7 +8,7 @@ import { IconButtonV2 } from '@components';
 import { parseChapterNumber } from '@utils/parseChapterNumber';
 
 import { History } from '@database/types';
-import { MD3ThemeType } from '@theme/types';
+import { ThemeColors } from '@theme/types';
 import { coverPlaceholderColor } from '@theme/colors';
 import {
   openChapterChapterTypes,
@@ -25,7 +24,7 @@ interface HistoryCardProps {
   ) => void;
   handleRemoveFromHistory: (historyId: number) => void;
   handleNavigateToNovel: (novel: openNovelProps) => void;
-  theme: MD3ThemeType;
+  theme: ThemeColors;
 }
 
 const HistoryCard: React.FC<HistoryCardProps> = ({
@@ -60,7 +59,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
   return (
     <Pressable
       style={styles.container}
-      android_ripple={{ color: color(theme.primary).alpha(0.12).string() }}
+      android_ripple={{ color: theme.rippleColor }}
       onPress={() =>
         handleNavigateToNovel({
           sourceId,
@@ -80,7 +79,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
           >
             {novelName}
           </Text>
-          <Text style={{ color: theme.textColorSecondary }}>
+          <Text style={{ color: theme.onSurfaceVariant }}>
             {chapterNoAndTime}
           </Text>
         </View>

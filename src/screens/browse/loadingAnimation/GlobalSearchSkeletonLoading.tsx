@@ -1,11 +1,11 @@
 import React, { memo } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { MD3ThemeType } from '@theme/types';
+import { ThemeColors } from '@theme/types';
 import LoadingNovel from './LoadingNovel';
 import getLoadingColors from '@utils/getLoadingColors';
 
 interface Props {
-  theme: MD3ThemeType;
+  theme: ThemeColors;
 }
 
 const GlobalSearchSkeletonLoading: React.FC<Props> = ({ theme }) => {

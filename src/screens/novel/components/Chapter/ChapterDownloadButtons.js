@@ -28,7 +28,7 @@ export const DownloadButton = ({
         <Menu.Item
           onPress={() => deleteChapter(chapter.chapterId, chapter.chapterName)}
           title="Delete"
-          titleStyle={{ color: theme.textColorPrimary }}
+          titleStyle={{ color: theme.onSurface }}
         />
       </Menu>
     );
@@ -50,7 +50,7 @@ export const DownloadButton = ({
 
 export const ChapterDownloadingButton = ({ theme }) => (
   <ActivityIndicator
-    color={theme.textColorHint}
+    color={theme.outline}
     size={25}
     style={{ margin: 3.5, padding: 5 }}
   />
@@ -60,7 +60,7 @@ export const DownloadChapterButton = ({ theme, onPress }) => (
   <IconButton
     icon="arrow-down-circle-outline"
     animated
-    iconColor={theme.textColorHint}
+    iconColor={theme.outline}
     size={25}
     onPress={onPress}
     style={{ margin: 2 }}
@@ -71,7 +71,7 @@ export const DeleteChapterButton = ({ theme, onPress }) => (
   <IconButton
     icon="check-circle"
     animated
-    iconColor={theme.textColorPrimary}
+    iconColor={theme.onSurface}
     size={25}
     onPress={onPress}
     style={{ margin: 2 }}

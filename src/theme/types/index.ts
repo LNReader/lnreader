@@ -14,6 +14,10 @@ export interface MD3ThemeType {
   onTertiary: string;
   tertiaryContainer: string;
   onTertiaryContainer: string;
+  error: string;
+  onError: string;
+  errorContainer: string;
+  onErrorContainer: string;
   background: string;
   onBackground: string;
   surface: string;
@@ -21,11 +25,20 @@ export interface MD3ThemeType {
   surfaceVariant: string;
   onSurfaceVariant: string;
   outline: string;
+  outlineVariant: string;
+  shadow: string;
+  scrim: string;
   inverseSurface: string;
   inverseOnSurface: string;
-  primaryInverse: string;
-  elevationOverlay: string;
-  textColorPrimary: string;
-  textColorSecondary: string;
-  textColorHint: string;
+  inversePrimary: string;
+  surfaceDisabled: string;
+  onSurfaceDisabled: string;
+  backdrop: string;
+}
+
+export interface ThemeColors extends MD3ThemeType {
+  rippleColor?: string;
+  surface2?: string;
+  overlay3?: string;
+  surfaceReader?: string;
 }

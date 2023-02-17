@@ -32,7 +32,7 @@ const GlobalSearch = ({ navigation }) => {
   );
 
   const ListHeaderComponent = (
-    <Text style={[{ color: theme.textColorSecondary }, styles.listHeader]}>
+    <Text style={[{ color: theme.onSurfaceVariant }, styles.listHeader]}>
       Select a Source To Migrate From
     </Text>
   );

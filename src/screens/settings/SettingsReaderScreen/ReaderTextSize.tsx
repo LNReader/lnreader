@@ -19,7 +19,7 @@ const ReaderTextSize: React.FC<ReaderTextSizeProps> = ({ labelStyle }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={[{ color: theme.textColorSecondary }, labelStyle]}>
+      <Text style={[{ color: theme.onSurfaceVariant }, labelStyle]}>
         {getString('readerScreen.bottomSheet.textSize')}
       </Text>
       <View style={styles.buttonContainer}>
@@ -31,7 +31,7 @@ const ReaderTextSize: React.FC<ReaderTextSizeProps> = ({ labelStyle }) => {
           onPress={() => dispatch(setReaderSettings('textSize', textSize - 1))}
           theme={theme}
         />
-        <Text style={[styles.value, { color: theme.textColorPrimary }]}>
+        <Text style={[styles.value, { color: theme.onSurface }]}>
           {textSize}
         </Text>
         <IconButtonV2

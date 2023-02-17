@@ -84,7 +84,7 @@ const StatsScreen = () => {
         style={styles.screenCtn}
         contentContainerStyle={styles.contentCtn}
       >
-        <Text style={[styles.header, { color: theme.textColorSecondary }]}>
+        <Text style={[styles.header, { color: theme.onSurfaceVariant }]}>
           {getString('moreScreen.settingsScreen.generalSettings')}
         </Text>
         <Row style={styles.statsRow}>
@@ -114,7 +114,7 @@ const StatsScreen = () => {
         <Row style={styles.statsRow}>
           <StatsCard label="Sources" value={stats.sourcesCount} />
         </Row>
-        <Text style={[styles.header, { color: theme.textColorSecondary }]}>
+        <Text style={[styles.header, { color: theme.onSurfaceVariant }]}>
           {getString('statsScreen.genreDistribution')}
         </Text>
         <Row style={[styles.statsRow, styles.genreRow]}>
@@ -122,7 +122,7 @@ const StatsScreen = () => {
             <StatsCard key={item[0]} label={item[0]} value={item[1]} />
           ))}
         </Row>
-        <Text style={[styles.header, { color: theme.textColorSecondary }]}>
+        <Text style={[styles.header, { color: theme.onSurfaceVariant }]}>
           {getString('statsScreen.statusDistribution')}
         </Text>
         <Row style={[styles.statsRow, styles.genreRow]}>
@@ -159,7 +159,7 @@ export const StatsCard: React.FC<{ label: string; value?: number }> = ({
       ]}
     >
       <Text style={[styles.statsVal, { color: theme.primary }]}>{value}</Text>
-      <Text style={{ color: theme.textColorPrimary }}> {label}</Text>
+      <Text style={{ color: theme.onSurface }}> {label}</Text>
     </View>
   );
 };

@@ -101,8 +101,8 @@ const MigrationNovels = ({ navigation, route }) => {
   const renderItem = ({ item }) => (
     <>
       <View style={{ padding: 8, paddingVertical: 16 }}>
-        <Text style={{ color: theme.textColorPrimary }}>{item.sourceName}</Text>
-        <Text style={{ color: theme.textColorSecondary, fontSize: 12 }}>
+        <Text style={{ color: theme.onSurface }}>{item.sourceName}</Text>
+        <Text style={{ color: theme.onSurfaceVariant, fontSize: 12 }}>
           {item.lang}
         </Text>
       </View>

@@ -1,16 +1,17 @@
+import { useNavigation } from '@react-navigation/native';
 import { openChapter } from '@utils/handleNavigateParams';
 import React from 'react';
 
-import { getString } from '../../../../../strings/translations';
-import { Button } from '../../../../components';
-import { useSettings } from '../../../../hooks/reduxHooks';
+import { Button } from '@components';
+import { useSettings } from '@hooks/reduxHooks';
+import { getString } from '@strings/translations';
 
-const ReadButton = ({ navigation, novel, chapters, theme, lastRead }) => {
+const ReadButton = ({ novel, chapters, lastRead }) => {
+  const { navigate } = useNavigation();
   const { useFabForContinueReading = false } = useSettings();
 
-  const navigateToLastReadChapter = () => {
-    navigation.navigate('Chapter', openChapter(novel, lastRead));
-  };
+  const navigateToLastReadChapter = () =>
+    navigate('Chapter', openChapter(novel, lastRead));
 
   if (!useFabForContinueReading) {
     return (
@@ -23,8 +24,8 @@ const ReadButton = ({ navigation, novel, chapters, theme, lastRead }) => {
               : getString('novelScreen.continueReading')
           } ${lastRead.chapterName}`}
           style={{ margin: 16 }}
-          theme={theme}
           onPress={navigateToLastReadChapter}
+          mode="contained"
         />
       ) : (
         <Button
@@ -35,7 +36,7 @@ const ReadButton = ({ navigation, novel, chapters, theme, lastRead }) => {
               : getString('novelScreen.continueReading')
           } ${lastRead.chapterName}`}
           style={{ margin: 16 }}
-          theme={theme}
+          mode="contained"
         />
       ))
     );

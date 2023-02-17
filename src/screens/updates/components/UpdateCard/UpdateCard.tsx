@@ -6,18 +6,14 @@ import {
   View,
 } from 'react-native';
 import React, { useState } from 'react';
-import color from 'color';
 
 import { ChapterItem, Update } from '../../../../database/types';
 import FastImage from 'react-native-fast-image';
 import { IconButtonV2 } from '../../../../components';
 import { useDownloadQueue } from '../../../../redux/hooks';
 import { Menu } from 'react-native-paper';
-import { MD3ThemeType } from '../../../../theme/types';
-import {
-  coverPlaceholderColor,
-  getDialogBackground,
-} from '../../../../theme/colors';
+import { ThemeColors } from '../../../../theme/types';
+import { coverPlaceholderColor } from '../../../../theme/colors';
 import {
   openChapterChapterTypes,
   openChapterNovelTypes,
@@ -43,7 +39,7 @@ interface UpdateCardProps {
     chapterId: number,
     chapterName: string,
   ) => void;
-  theme: MD3ThemeType;
+  theme: ThemeColors;
 }
 
 const UpdateCard: React.FC<UpdateCardProps> = ({
@@ -54,12 +50,12 @@ const UpdateCard: React.FC<UpdateCardProps> = ({
   handleDeleteChapter,
   theme,
 }) => {
-  const titleColor = item.read ? theme.textColorHint : theme.textColorPrimary;
+  const titleColor = item.read ? theme.outline : theme.onSurface;
   const chapterNameColor = item.bookmark
     ? theme.primary
     : item.read
-    ? theme.textColorHint
-    : theme.textColorSecondary;
+    ? theme.outline
+    : theme.onSurfaceVariant;
 
   const downloadQueue = useDownloadQueue();
 
@@ -72,7 +68,7 @@ const UpdateCard: React.FC<UpdateCardProps> = ({
   return (
     <Pressable
       style={styles.container}
-      android_ripple={{ color: color(theme.primary).alpha(0.12).string() }}
+      android_ripple={{ color: theme.rippleColor }}
       onPress={() => {
         navigateToChapter(item, item);
       }}
@@ -95,7 +91,7 @@ const UpdateCard: React.FC<UpdateCardProps> = ({
       </View>
       {isDownloading ? (
         <ActivityIndicator
-          color={theme.textColorHint}
+          color={theme.outline}
           size={26}
           style={styles.downloading}
         />
@@ -111,7 +107,7 @@ const UpdateCard: React.FC<UpdateCardProps> = ({
               item as ChapterItem,
             )
           }
-          color={theme.textColorHint}
+          color={theme.outline}
           theme={theme}
         />
       ) : (
@@ -126,7 +122,7 @@ const UpdateCard: React.FC<UpdateCardProps> = ({
               theme={theme}
             />
           }
-          contentStyle={{ backgroundColor: getDialogBackground(theme) }}
+          contentStyle={{ backgroundColor: theme.overlay3 }}
         >
           <Menu.Item
             onPress={() =>
@@ -138,7 +134,7 @@ const UpdateCard: React.FC<UpdateCardProps> = ({
               )
             }
             title="Delete"
-            titleStyle={{ color: theme.textColorPrimary }}
+            titleStyle={{ color: theme.onSurface }}
           />
         </Menu>
       )}

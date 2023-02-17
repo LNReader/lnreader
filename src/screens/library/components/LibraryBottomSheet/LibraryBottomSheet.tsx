@@ -108,7 +108,7 @@ const ThirdRoute = () => {
 
   return (
     <View style={{ flex: 1 }}>
-      <Text style={[styles.sectionHeader, { color: theme.textColorSecondary }]}>
+      <Text style={[styles.sectionHeader, { color: theme.onSurfaceVariant }]}>
         {getString('libraryScreen.bottomSheet.display.badges')}
       </Text>
       <Checkbox
@@ -141,7 +141,7 @@ const ThirdRoute = () => {
         }
         theme={theme}
       />
-      <Text style={[styles.sectionHeader, { color: theme.textColorSecondary }]}>
+      <Text style={[styles.sectionHeader, { color: theme.onSurfaceVariant }]}>
         {getString('libraryScreen.bottomSheet.display.displayMode')}
       </Text>
       <FlashList
@@ -184,7 +184,7 @@ const LibraryBottomSheet: React.FC<LibraryBottomSheetProps> = ({
       renderLabel={({ route, color }) => (
         <Text style={{ color }}>{route.title}</Text>
       )}
-      inactiveColor={theme.textColorSecondary}
+      inactiveColor={theme.onSurfaceVariant}
       activeColor={theme.primary}
       pressColor={color(theme.primary).alpha(0.12).string()}
     />

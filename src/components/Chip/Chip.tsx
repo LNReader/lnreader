@@ -1,13 +1,12 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import color from 'color';
 
-import { MD3ThemeType } from '../../theme/types';
+import { ThemeColors } from '../../theme/types';
 import { overlay } from 'react-native-paper';
 
 interface ChipProps {
   label: string;
-  theme: MD3ThemeType;
+  theme: ThemeColors;
 }
 
 const Chip: React.FC<ChipProps> = ({ label, theme }) => (
@@ -22,7 +21,7 @@ const Chip: React.FC<ChipProps> = ({ label, theme }) => (
     ]}
   >
     <Pressable
-      android_ripple={{ color: color(theme.primary).alpha(0.12).string() }}
+      android_ripple={{ color: theme.rippleColor }}
       style={styles.pressable}
     >
       <Text

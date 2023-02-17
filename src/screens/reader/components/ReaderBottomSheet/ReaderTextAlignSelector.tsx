@@ -22,7 +22,7 @@ const ReaderTextAlignSelector: React.FC<ReaderTextAlignSelectorProps> = ({
 
   return (
     <View style={styles.container}>
-      <Text style={[{ color: theme.textColorSecondary }, labelStyle]}>
+      <Text style={[{ color: theme.onSurfaceVariant }, labelStyle]}>
         {getString('readerScreen.bottomSheet.textAlign')}
       </Text>
       <View style={styles.buttonContainer}>

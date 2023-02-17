@@ -6,11 +6,11 @@ import { IconButton } from 'react-native-paper';
 
 export const ErrorView = ({ errorName, actions, theme }) => (
   <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-    <Text style={[styles.emptyViewIcon, { color: theme.textColorHint }]}>
+    <Text style={[styles.emptyViewIcon, { color: theme.outline }]}>
       {/* {icons[Math.floor(Math.random() * 5)]} */}
       ಥ_ಥ
     </Text>
-    <Text style={[styles.emptyViewText, { color: theme.textColorHint }]}>
+    <Text style={[styles.emptyViewText, { color: theme.outline }]}>
       {errorName}
     </Text>
     <View style={{ flexDirection: 'row' }}>
@@ -38,14 +38,14 @@ export const ErrorView = ({ errorName, actions, theme }) => (
           >
             <IconButton
               icon={action.icon}
-              color={theme.textColorHint}
+              color={theme.outline}
               size={24}
               style={{ margin: 0 }}
             />
             <Text
               style={{
                 fontSize: 12,
-                color: theme.textColorHint,
+                color: theme.outline,
               }}
             >
               {action.name}

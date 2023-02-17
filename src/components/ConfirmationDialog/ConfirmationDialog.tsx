@@ -4,15 +4,13 @@ import { StyleSheet, View } from 'react-native';
 import { getString } from '@strings/translations';
 
 import { Dialog, Portal } from 'react-native-paper';
-import { MD3ThemeType } from '../../theme/types';
+import { ThemeColors } from '../../theme/types';
 import { Button } from '@components/index';
-import { ButtonVariation } from '@components/Button/Button';
-import { getDialogBackground } from '@theme/colors';
 
 interface ConfirmationDialogProps {
   title: string;
   visible: boolean;
-  theme: MD3ThemeType;
+  theme: ThemeColors;
   onSubmit: () => void;
   onDismiss: () => void;
 }
@@ -34,27 +32,14 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
       <Dialog
         visible={visible}
         onDismiss={onDismiss}
-        style={[
-          styles.container,
-          { backgroundColor: getDialogBackground(theme) },
-        ]}
+        style={[styles.container, { backgroundColor: theme.overlay3 }]}
       >
-        <Dialog.Title style={[styles.title, { color: theme.textColorPrimary }]}>
+        <Dialog.Title style={[styles.title, { color: theme.onSurface }]}>
           {title}
         </Dialog.Title>
         <View style={styles.buttonCtn}>
-          <Button
-            theme={theme}
-            onPress={handleOnSubmit}
-            title={getString('common.ok')}
-            variation={ButtonVariation.CLEAR}
-          />
-          <Button
-            theme={theme}
-            onPress={onDismiss}
-            title={getString('common.cancel')}
-            variation={ButtonVariation.CLEAR}
-          />
+          <Button onPress={handleOnSubmit} title={getString('common.ok')} />
+          <Button onPress={onDismiss} title={getString('common.cancel')} />
         </View>
       </Dialog>
     </Portal>

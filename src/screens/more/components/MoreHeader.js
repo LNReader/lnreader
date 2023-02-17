@@ -15,7 +15,7 @@ export const MoreHeader = ({ title, navigation, theme, goBack }) => (
       <View style={[styles.logoContainer, { backgroundColor: theme.surface }]}>
         <Image
           source={require('../../../../assets/logo.png')}
-          style={[styles.logo, { tintColor: theme.textColorPrimary }]}
+          style={[styles.logo, { tintColor: theme.onSurface }]}
         />
       </View>
     </View>
