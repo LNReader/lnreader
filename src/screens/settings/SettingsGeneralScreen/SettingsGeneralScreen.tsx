@@ -73,15 +73,9 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
       res.push('Download');
     }
     if (showUnreadBadges) {
-      if (res.length !== 0) {
-        res.push(', ');
-      }
       res.push('Unread');
     }
     if (showNumberOfNovels) {
-      if (res.length !== 0) {
-        res.push(', ');
-      }
       res.push('Number of Items');
     }
     return res.join(', ');
