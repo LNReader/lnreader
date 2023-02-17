@@ -1,7 +1,7 @@
 import { useAppDispatch } from '@redux/hooks';
 import { setAppSettings } from '@redux/settings/settings.actions';
 import { getString } from '@strings/translations';
-import React, { useEffect, FunctionComponent } from 'react';
+import React, { FunctionComponent } from 'react';
 import { StatusBar, StyleSheet, View } from 'react-native';
 
 import WebView from 'react-native-webview';
@@ -34,19 +34,12 @@ type WebViewReaderProps = {
   layoutHeight: number;
   swipeGestures: boolean;
   minScroll: any;
-  currentScroll: { offSetY: number; percentage: number };
-  scrollPage: string | null;
-  wvShowSwipeMargins: boolean;
+  showSwipeMargins: boolean;
   nextChapter: ChapterItem;
   webViewRef: React.MutableRefObject<WebView>;
   onPress(): void;
-  setCurrentScroll: React.Dispatch<
-    React.SetStateAction<{ offSetY: number; percentage: number }>
-  >;
-  setScrollPage: React.Dispatch<React.SetStateAction<string | null>>;
   doSaveProgress(offSetY: number, percentage: number): void;
-  navigateToNextChapter(): void;
-  navigateToPrevChapter(): void;
+  navigateToChapterBySwipe(name: string): void;
   onWebViewNavigationStateChange(): void;
 };
 
@@ -60,40 +53,17 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
     layoutHeight,
     swipeGestures,
     minScroll,
-    currentScroll,
-    scrollPage,
-    wvShowSwipeMargins,
+    showSwipeMargins,
     nextChapter,
     webViewRef,
     onPress,
-    setCurrentScroll,
-    setScrollPage,
     doSaveProgress,
-    navigateToNextChapter,
-    navigateToPrevChapter,
+    navigateToChapterBySwipe,
     onWebViewNavigationStateChange,
   } = props;
   const backgroundColor = readerBackground(reader.theme);
 
   const dispatch = useAppDispatch();
-  useEffect(() => {
-    if (scrollPage) {
-      if (scrollPage === 'up') {
-        webViewRef.current?.injectJavaScript(`(()=>{
-          window.scrollTo({top:document.body.scrollTop - ${Math.trunc(
-            layoutHeight,
-          )},left:0,behavior:'smooth'});
-        })()`);
-      } else {
-        webViewRef.current?.injectJavaScript(`(()=>{
-          window.scrollTo({top:document.body.scrollTop + ${Math.trunc(
-            layoutHeight,
-          )},left:0,behavior:'smooth'});
-        })()`);
-      }
-      setScrollPage(null);
-    }
-  }, [scrollPage]);
 
   const onClickWebViewPostMessage = (event: WebViewPostEvent) =>
     "onClick='window.ReactNativeWebView.postMessage(`" +
@@ -105,8 +75,6 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
         ref={webViewRef}
         style={{ backgroundColor }}
         originWhitelist={['*']}
-        injectedJavaScript={`
-        window.scrollTo({top: ${currentScroll.offSetY}, left:0, behavior:"smooth"});`}
         scalesPageToFit={true}
         showsVerticalScrollIndicator={false}
         onNavigationStateChange={onWebViewNavigationStateChange}
@@ -119,19 +87,19 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
               onPress();
               break;
             case 'next':
-              navigateToNextChapter();
+              navigateToChapterBySwipe('SWIPE_LEFT');
               break;
             case 'prev':
-              navigateToPrevChapter();
+              navigateToChapterBySwipe('SWIPE_RIGHT');
               break;
             case 'noswipes':
-              dispatch(setAppSettings('wvShowSwipeMargins', false));
+              dispatch(setAppSettings('showSwipeMargins', false));
               break;
             case 'right':
-              navigateToNextChapter();
+              navigateToChapterBySwipe('SWIPE_LEFT');
               break;
             case 'left':
-              navigateToPrevChapter();
+              navigateToChapterBySwipe('SWIPE_RIGHT');
               break;
             case 'imgfiles':
               if (event.data) {
@@ -151,15 +119,19 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
                       }
                     }
                   }
-                  Promise.all(promises).then(datas => {
-                    const inject = datas.reduce((p, data) => {
-                      return (
-                        p +
-                        `document.querySelector("img[file-id='${data.id}']").src="data:image/png;base64,${data.data}";`
-                      );
-                    }, '');
-                    webViewRef.current?.injectJavaScript(inject);
-                  });
+                  Promise.all(promises)
+                    .then(datas => {
+                      const inject = datas.reduce((p, data) => {
+                        return (
+                          p +
+                          `document.querySelector("img[file-id='${data.id}']").src="data:image/png;base64,${data.data}";`
+                        );
+                      }, '');
+                      webViewRef.current?.injectJavaScript(inject);
+                    })
+                    .catch(e => {
+                      e; // CloudFlare is too strong :D
+                    });
                 }
               }
               break;
@@ -167,25 +139,13 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
               if (event.data) {
                 const offSetY = Number(event.data?.offSetY);
                 const percentage = Math.round(Number(event.data?.percentage));
-                setCurrentScroll({
-                  offSetY: offSetY,
-                  percentage: percentage,
-                });
-                if (offSetY) {
-                  doSaveProgress(offSetY, percentage);
-                }
+                doSaveProgress(offSetY, percentage);
               }
               break;
             case 'height':
               if (event.data) {
                 const contentHeight = Math.round(Number(event.data));
                 minScroll.current = (layoutHeight / contentHeight) * 100;
-                if (currentScroll.percentage === 0) {
-                  setCurrentScroll({
-                    offSetY: 0,
-                    percentage: Math.round(Number(event.data?.percentage)),
-                  });
-                }
               }
           }
         }}
@@ -309,9 +269,9 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
                       </chapter>
                     </div>
                     <script>
-                    const chapterElement = document.querySelector('chapter');
-                    const imgs = [...document.querySelectorAll("img")].map(img=>{
-                      return {url:img.getAttribute("file-src"), id:img.getAttribute("file-id")}
+                    const imgs = [...document.querySelectorAll("img")].map((img, index)=>{
+                      img.setAttribute("id", "file-id-" + index);
+                      return {url:img.getAttribute("src"), id:img.getAttribute("id")}
                     });
                     window.ReactNativeWebView.postMessage(JSON.stringify({type:"imgfiles",data:imgs}));
                     var scrollTimeout;
@@ -329,14 +289,14 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
                             }
                           )
                         );
-                      }, 66);
+                      }, 100);
                     });
                     let loadInterval = setInterval(() => {
                       window.ReactNativeWebView.postMessage(
                         JSON.stringify(
                           {
                             type:"height",
-                            data:Number(window.getComputedStyle(chapterElement).height.replace('px',''))
+                            data:document.body.scrollHeight
                           }
                           )
                         );
@@ -365,7 +325,7 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
                       swipeGestures
                         ? `
                         ${
-                          wvShowSwipeMargins
+                          showSwipeMargins
                             ? `<div class='pos'> </div>
                         <div class='posr'>Swipe Left</div>
                         <div class='posl'>Swipe Right</div>`
@@ -376,9 +336,6 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
                           const noswipe = document.querySelector(".pos");
                           const lswipe = document.querySelector(".posl");
                           const rswipe = document.querySelector(".posr");
-                          // test
-                          window.ReactNativeWebView.postMessage('{"type":"test1"}')
-                          window.ReactNativeWebView.postMessage(JSON.stringify({type:"test2"}))
                           chapter.addEventListener("touchstart", startTouch, false);
                           chapter.addEventListener("touchmove", moveTouch, false);
                           var initialX = null;
@@ -415,7 +372,7 @@ const WebViewReader: FunctionComponent<WebViewReaderProps> = props => {
                           };
                           
                           ${
-                            wvShowSwipeMargins
+                            showSwipeMargins
                               ? `setTimeout(()=>{
                                   const width = Math.max(
                                     document.body.scrollWidth,

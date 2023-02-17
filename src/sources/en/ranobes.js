@@ -58,9 +58,7 @@ const parseNovelAndChapters = async novelUrl => {
 
   novel.novelCover = baseUrl + loadedCheerio('.poster > a > img').attr('src');
 
-  novel.summary = loadedCheerio('div[id="fs-info"] div[class="moreless__full"]')
-    .text()
-    .trim();
+  novel.summary = loadedCheerio('.moreless').text();
 
   novel.author = loadedCheerio('span[class="tag_list"] > a').text();
 
