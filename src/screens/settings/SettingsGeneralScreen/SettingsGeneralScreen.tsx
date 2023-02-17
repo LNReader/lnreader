@@ -43,28 +43,14 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
     sortOrder = LibrarySortOrder.DateAdded_DESC,
   } = useLibrarySettings();
 
-  const transformSortOrder = (text: string) => {
-    return text
-      .replace(
-        'lastReadAt',
-        getString('libraryScreen.bottomSheet.sortOrders.lastRead'),
-      )
-      .replace(
-        'novels.novelName',
-        getString('libraryScreen.bottomSheet.sortOrders.alphabetically'),
-      )
-      .replace(
-        'novels.unread',
-        getString('libraryScreen.bottomSheet.sortOrders.unread'),
-      )
-      .replace(
-        'chaptersDownloaded',
-        getString('libraryScreen.bottomSheet.sortOrders.download'),
-      )
-      .replace(
-        'novelId',
-        getString('libraryScreen.bottomSheet.sortOrders.dateAdded'),
-      );
+  const sortOrderDisplay: string[] = sortOrder.split(' ');
+  const sortOrderNameMap = {
+    'lastReadAt': 'libraryScreen.bottomSheet.sortOrders.lastRead',
+    'novels.novelName': 'libraryScreen.bottomSheet.sortOrders.alphabetically',
+    'novels.unread': 'libraryScreen.bottomSheet.sortOrders.unread',
+    'chaptersDownloaded': 'libraryScreen.bottomSheet.sortOrders.download',
+    'novelId': 'libraryScreen.bottomSheet.sortOrders.dateAdded',
+    'chaptersUnread': 'libraryScreen.bottomSheet.sortOrders.totalChapters',
   };
 
   const {
@@ -98,7 +84,7 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
       }
       res.push('Number of Items');
     }
-    return res;
+    return res.join(', ');
   };
 
   /**
@@ -174,7 +160,11 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
             title={getString(
               'moreScreen.settingsScreen.generalSettingsScreen.novelSort',
             )}
-            description={transformSortOrder(sortOrder)}
+            description={
+              getString(sortOrderNameMap[sortOrderDisplay[0]]) +
+              ' ' +
+              sortOrderDisplay[1]
+            }
             onPress={novelSortModalRef.setTrue}
             theme={theme}
           />

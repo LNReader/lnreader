@@ -92,7 +92,8 @@
       "allowTextSelection": "Allow text selection",
       "useChapterDrawerSwipeNavigation": "Swipe right to open drawer",
       "removeExtraSpacing":"Remove extra paragraph spacing",
-      "volumeButtonsScroll":"Volume buttons scroll"
+      "volumeButtonsScroll":"Volume buttons scroll",
+      "showSwipeMargins": "Show swipe margins"
     },
     "drawer": {
       "scrollToCurrentChapter": "Scroll to current chapter",
