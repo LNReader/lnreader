@@ -46,8 +46,6 @@ const DeleteCategoryModal: React.FC<DeleteCategoryModalProps> = ({
         <View style={styles.btnContainer}>
           <Button
             title={getString('common.ok')}
-            theme={theme}
-            variation={ButtonVariation.CLEAR}
             onPress={() => {
               deleteCategoryById(category.id);
               resetCategoryIdsToDefault(category.id);
@@ -55,12 +53,7 @@ const DeleteCategoryModal: React.FC<DeleteCategoryModalProps> = ({
               onSuccess();
             }}
           />
-          <Button
-            title={getString('common.cancel')}
-            theme={theme}
-            variation={ButtonVariation.CLEAR}
-            onPress={closeModal}
-          />
+          <Button title={getString('common.cancel')} onPress={closeModal} />
         </View>
       </Modal>
     </Portal>

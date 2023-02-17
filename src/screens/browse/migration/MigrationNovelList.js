@@ -9,7 +9,6 @@ import { migrateNovel } from '../../../database/queries/NovelQueries';
 import { showToast } from '../../../hooks/showToast';
 
 import { Button } from '@components';
-import { ButtonVariation } from '@components/Button/Button';
 import { getString } from '@strings/translations';
 import { openNovel } from '@utils/handleNavigateParams';
 
