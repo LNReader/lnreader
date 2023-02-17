@@ -16,7 +16,8 @@
     "globally": "globaal",
     "searchResults": "Zoekresultaten",
     "chapters": "Chapters",
-    "submit": "Submit"
+    "submit": "Submit",
+    "retry": "Retry"
   },
   "library": "Bibliotheek",
   "libraryScreen": {
