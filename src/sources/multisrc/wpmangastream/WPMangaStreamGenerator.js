@@ -4,7 +4,7 @@ export const NobleMtlScraper = new WPMangaStreamScraper(
   144,
   'https://noblemtl.com/',
   'Noble Machine translations',
-  { totalPages: 14, reverseChapters: true },
+  { totalPages: 15, reverseChapters: true },
 );
 
 export const LiebeSchneeHiverNovelScraper = new WPMangaStreamScraper(

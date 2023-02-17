@@ -129,7 +129,10 @@ import HakoLightNovelScraper from './vi/HakoLightNovel';
 import NovelFullScraper from './en/novelfulldotnet';
 import NovelTop1Scraper from './en/noveltop1';
 import { SelectedFilter, SourceFilter } from './types/filterTypes';
-import KolNovelScraper from './ar/KolNovel';
+import {
+  KolNovelScraper,
+  PandaMtlScraper,
+} from './multisrc/wqmangastream/WQMangaStreamGenerator';
 import AgitoonScraper from './kr/Agitoon';
 
 interface PopularNovelsResponse {
@@ -281,7 +284,8 @@ export const sourceManager = (sourceId: number): Scraper => {
     142: AuthorTodayScraper, // @ts-ignore
     143: WebNovelOkuScraper, // @ts-ignore
     144: NobleMtlScraper, // @ts-ignore
-    145: AgitoonScraper,
+    145: AgitoonScraper, // @ts-ignore
+    146: PandaMtlScraper, // @ts-ignore
   };
 
   return scrapers[sourceId];

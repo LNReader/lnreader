@@ -866,5 +866,12 @@
     "icon": "https://agit501.xyz/asset/img/agit2.png?v=2",
     "url": "https://agit501.xyz/",
     "lang": "Korean"
+  },
+  {
+    "sourceId": 146,
+    "sourceName": "Panda Machine translations",
+    "icon": "https://pandamtl.com/wp-includes/images/w-logo-blue-white-bg.png",
+    "url": "https://pandamtl.com/",
+    "lang": "English"
   }
 ]
