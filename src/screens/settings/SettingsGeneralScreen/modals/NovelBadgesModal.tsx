@@ -6,12 +6,12 @@ import { Portal, Modal, overlay } from 'react-native-paper';
 import { useLibrarySettings } from '@hooks/useSettings';
 import { Checkbox } from '@components';
 import { getString } from '@strings/translations';
-import { MD3ThemeType } from '@theme/types';
+import { ThemeColors } from '@theme/types';
 
 interface NovelBadgesModalProps {
   novelBadgesModalVisible: boolean;
   hideNovelBadgesModal: () => void;
-  theme: MD3ThemeType;
+  theme: ThemeColors;
 }
 
 const NovelBadgesModal: React.FC<NovelBadgesModalProps> = ({
@@ -35,7 +35,7 @@ const NovelBadgesModal: React.FC<NovelBadgesModalProps> = ({
           { backgroundColor: overlay(2, theme.surface) },
         ]}
       >
-        <Text style={[styles.modalHeader, { color: theme.textColorPrimary }]}>
+        <Text style={[styles.modalHeader, { color: theme.onSurface }]}>
           {getString('libraryScreen.bottomSheet.display.badges')}
         </Text>
         <Checkbox

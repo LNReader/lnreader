@@ -1,22 +1,20 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 
-import { MD3ThemeType } from '../../theme/types';
+import { ThemeColors } from '../../theme/types';
 
 interface EmptyViewProps {
   icon?: string;
   description: string;
-  theme: MD3ThemeType;
+  theme: ThemeColors;
 }
 
 const EmptyView: React.FC<EmptyViewProps> = ({ icon, description, theme }) => (
   <View style={styles.container}>
     {icon ? (
-      <Text style={[styles.icon, { color: theme.textColorHint }]}>{icon}</Text>
+      <Text style={[styles.icon, { color: theme.outline }]}>{icon}</Text>
     ) : null}
-    <Text style={[styles.text, { color: theme.textColorHint }]}>
-      {description}
-    </Text>
+    <Text style={[styles.text, { color: theme.outline }]}>{description}</Text>
   </View>
 );
 

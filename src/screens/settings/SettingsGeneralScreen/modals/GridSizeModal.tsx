@@ -6,13 +6,13 @@ import { Portal, Modal, overlay } from 'react-native-paper';
 import { RadioButton } from '../../../../components/RadioButton/RadioButton';
 
 import { useLibrarySettings } from '@hooks/useSettings';
-import { MD3ThemeType } from '@theme/types';
+import { ThemeColors } from '@theme/types';
 
 interface GridSizeModalProps {
   novelsPerRow: number;
   gridSizeModalVisible: boolean;
   hideGridSizeModal: () => void;
-  theme: MD3ThemeType;
+  theme: ThemeColors;
 }
 
 const GridSizeModal: React.FC<GridSizeModalProps> = ({
@@ -41,11 +41,11 @@ const GridSizeModal: React.FC<GridSizeModalProps> = ({
           { backgroundColor: overlay(2, theme.surface) },
         ]}
       >
-        <Text style={[styles.modalHeader, { color: theme.textColorPrimary }]}>
+        <Text style={[styles.modalHeader, { color: theme.onSurface }]}>
           Grid size
         </Text>
         <Text
-          style={[styles.modalDescription, { color: theme.textColorSecondary }]}
+          style={[styles.modalDescription, { color: theme.onSurfaceVariant }]}
         >
           {`${novelsPerRow} per row`}
         </Text>

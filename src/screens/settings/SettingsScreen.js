@@ -1,11 +1,10 @@
 import React from 'react';
 import { View } from 'react-native';
-import { getString } from '../../../strings/translations';
 
-import { List } from '../../components/List';
-
+import { Appbar, List } from '@components';
 import { useTheme } from '@hooks/useTheme';
-import { Appbar } from '@components';
+
+import { getString } from '@strings/translations';
 
 const SettingsScreen = ({ navigation }) => {
   const theme = useTheme();

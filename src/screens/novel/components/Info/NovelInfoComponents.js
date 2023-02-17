@@ -153,14 +153,14 @@ const FollowButton = ({ theme, onPress, followed }) => (
     >
       <IconButton
         icon={followed ? 'heart' : 'heart-outline'}
-        iconColor={followed ? theme.primary : theme.textColorHint}
+        iconColor={followed ? theme.primary : theme.outline}
         size={24}
         style={{ margin: 0 }}
       />
       <Text
         style={{
           fontSize: 12,
-          color: followed ? theme.primary : theme.textColorHint,
+          color: followed ? theme.primary : theme.outline,
         }}
       >
         {followed ? 'In Library' : 'Add to library'}
@@ -185,14 +185,14 @@ const TrackerButton = ({ theme, isTracked, onPress }) => (
     >
       <IconButton
         icon={isTracked ? 'check' : 'sync'}
-        iconColor={isTracked ? theme.primary : theme.textColorHint}
+        iconColor={isTracked ? theme.primary : theme.outline}
         size={24}
         style={{ margin: 0 }}
       />
       <Text
         style={{
           fontSize: 12,
-          color: isTracked ? theme.primary : theme.textColorHint,
+          color: isTracked ? theme.primary : theme.outline,
         }}
       >
         {isTracked ? 'Tracked' : 'Tracking'}
@@ -204,7 +204,7 @@ const TrackerButton = ({ theme, isTracked, onPress }) => (
 const NovelGenres = ({ theme, genre }) => {
   const data = genre.split(/,\s*/);
 
-  const renderItem = ({ item }) => <Chip label={item} theme={theme} />;
+  const renderItem = ({ item }) => <Chip label={item} />;
 
   return (
     <FlatList

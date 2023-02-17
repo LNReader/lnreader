@@ -21,7 +21,7 @@ const ReaderFontPicker = () => {
 
   return (
     <View style={styles.row}>
-      <Text style={[{ color: theme.textColorSecondary }, styles.title]}>
+      <Text style={[{ color: theme.onSurfaceVariant }, styles.title]}>
         {getString('readerScreen.bottomSheet.fontStyle')}
       </Text>
       <FlatList
@@ -68,9 +68,7 @@ const ReaderFontPicker = () => {
               styles.label,
               {
                 fontFamily: item.fontFamily,
-                color: isSelected(item)
-                  ? theme.primary
-                  : theme.textColorPrimary,
+                color: isSelected(item) ? theme.primary : theme.onSurface,
               },
               isSelected(item) && styles.mLeft,
             ]}

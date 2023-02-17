@@ -1,7 +1,7 @@
-import { MD3ThemeType } from '@theme/types';
+import { ThemeColors } from '@theme/types';
 import color from 'color';
 
-const getLoadingColors = (theme: MD3ThemeType) => {
+const getLoadingColors = (theme: ThemeColors) => {
   const highlightColor = color(theme.primary).alpha(0.08).string();
   let backgroundColor = theme.surface;
 

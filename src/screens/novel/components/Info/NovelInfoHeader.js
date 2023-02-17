@@ -91,7 +91,7 @@ const NovelInfoHeader = ({
                 <MaterialCommunityIcons
                   name={getStatusIcon[novel.status] || getStatusIcon.Unknown}
                   size={14}
-                  color={theme.textColorSecondary}
+                  color={theme.onSurfaceVariant}
                   style={{ marginRight: 4 }}
                 />
                 <NovelInfo theme={theme}>
@@ -128,13 +128,7 @@ const NovelInfoHeader = ({
           {novel.genre ? (
             <NovelGenres theme={theme} genre={novel.genre} />
           ) : null}
-          <ReadButton
-            novel={novel}
-            chapters={chapters}
-            navigation={navigation}
-            theme={theme}
-            lastRead={lastRead}
-          />
+          <ReadButton novel={novel} chapters={chapters} lastRead={lastRead} />
           <Pressable
             style={styles.bottomsheet}
             onPress={() => novelBottomSheetRef.current.expand()}
@@ -142,14 +136,12 @@ const NovelInfoHeader = ({
               color: color(theme.primary).alpha(0.12).string(),
             }}
           >
-            <Text style={[{ color: theme.textColorPrimary }, styles.chapters]}>
+            <Text style={[{ color: theme.onSurface }, styles.chapters]}>
               {`${chapters.length} ${getString('novelScreen.chapters')}`}
             </Text>
             <IconButton
               icon="filter-variant"
-              iconColor={
-                filter ? filterColor(theme.isDark) : theme.textColorPrimary
-              }
+              iconColor={filter ? filterColor(theme.isDark) : theme.onSurface}
               size={24}
             />
           </Pressable>

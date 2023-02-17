@@ -40,7 +40,7 @@ export const DownloadButton = ({
             hideDeleteChapterMenu();
           }}
           title="Delete"
-          titleStyle={{ color: theme.textColorPrimary }}
+          titleStyle={{ color: theme.onSurface }}
         />
       </Menu>
     );

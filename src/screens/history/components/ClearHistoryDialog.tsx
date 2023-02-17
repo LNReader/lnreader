@@ -4,11 +4,11 @@ import { StyleSheet } from 'react-native';
 import { getString } from '@strings/translations';
 
 import { Button, Dialog, Portal } from 'react-native-paper';
-import { MD3ThemeType } from '../../../theme/types';
+import { ThemeColors } from '../../../theme/types';
 
 interface ClearHistoryDialogProps {
   visible: boolean;
-  theme: MD3ThemeType;
+  theme: ThemeColors;
   onSubmit: () => void;
   onDismiss: () => void;
 }
@@ -27,7 +27,7 @@ const ClearHistoryDialog: React.FC<ClearHistoryDialogProps> = ({
   return (
     <Portal>
       <Dialog visible={visible} onDismiss={onDismiss} style={styles.container}>
-        <Dialog.Title style={[styles.title, { color: theme.textColorPrimary }]}>
+        <Dialog.Title style={[styles.title, { color: theme.onSurface }]}>
           {getString('historyScreen.clearHistorWarning')}
         </Dialog.Title>
         <Dialog.Actions>

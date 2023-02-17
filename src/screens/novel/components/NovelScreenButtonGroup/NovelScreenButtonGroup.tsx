@@ -5,15 +5,14 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { NovelInfo } from '../../../../database/types';
 import { useNavigation } from '@react-navigation/native';
 import { useBoolean, useNovelTrackerInfo } from '../../../../hooks';
-import { MD3ThemeType } from '../../../../theme/types';
+import { ThemeColors } from '../../../../theme/types';
 import { getString } from '../../../../../strings/translations';
 import { Portal } from 'react-native-paper';
 import SetCategoryModal from '../SetCategoriesModal';
-import { getRippleColor } from '@theme/colors';
 
 interface NovelScreenButtonGroupProps {
   novel: NovelInfo;
-  theme: MD3ThemeType;
+  theme: ThemeColors;
   handleTrackerSheet: () => void;
   handleFollowNovel: () => void;
 }
@@ -26,11 +25,11 @@ const NovelScreenButtonGroup: React.FC<NovelScreenButtonGroupProps> = ({
 }) => {
   const { followed, sourceUrl } = novel;
   const { navigate } = useNavigation();
-  const followButtonColor = followed ? theme.primary : theme.textColorHint;
+  const followButtonColor = followed ? theme.primary : theme.outline;
 
   const { isTracked, isTrackerAvailable } = useNovelTrackerInfo(novel.novelId);
 
-  const trackerButtonColor = isTracked ? theme.primary : theme.textColorHint;
+  const trackerButtonColor = isTracked ? theme.primary : theme.outline;
 
   const handleOpenWebView = async () => {
     navigate('WebviewScreen', {
@@ -60,7 +59,7 @@ const NovelScreenButtonGroup: React.FC<NovelScreenButtonGroupProps> = ({
       <View style={styles.buttonGroupContainer}>
         <View style={styles.buttonContainer}>
           <Pressable
-            android_ripple={{ color: getRippleColor(theme.primary) }}
+            android_ripple={{ color: theme.rippleColor }}
             onPress={handleFollowNovel}
             onLongPress={showSetCategoryModal}
             style={styles.button}
@@ -80,7 +79,7 @@ const NovelScreenButtonGroup: React.FC<NovelScreenButtonGroupProps> = ({
         {isTrackerAvailable ? (
           <View style={styles.buttonContainer}>
             <Pressable
-              android_ripple={{ color: getRippleColor(theme.primary) }}
+              android_ripple={{ color: theme.rippleColor }}
               onPress={handleTrackerSheet}
               style={styles.button}
             >
@@ -97,32 +96,32 @@ const NovelScreenButtonGroup: React.FC<NovelScreenButtonGroupProps> = ({
         ) : null}
         <View style={styles.buttonContainer}>
           <Pressable
-            android_ripple={{ color: getRippleColor(theme.primary) }}
+            android_ripple={{ color: theme.rippleColor }}
             onPress={handleMigrateNovel}
             style={styles.button}
           >
             <MaterialCommunityIcons
               name="swap-vertical-variant"
-              color={theme.textColorHint}
+              color={theme.outline}
               size={24}
             />
-            <Text style={[styles.buttonLabel, { color: theme.textColorHint }]}>
+            <Text style={[styles.buttonLabel, { color: theme.outline }]}>
               {getString('novelScreen.migrate')}
             </Text>
           </Pressable>
         </View>
         <View style={styles.buttonContainer}>
           <Pressable
-            android_ripple={{ color: getRippleColor(theme.primary) }}
+            android_ripple={{ color: theme.rippleColor }}
             onPress={handleOpenWebView}
             style={styles.button}
           >
             <MaterialCommunityIcons
               name="earth"
-              color={theme.textColorHint}
+              color={theme.outline}
               size={24}
             />
-            <Text style={[styles.buttonLabel, { color: theme.textColorHint }]}>
+            <Text style={[styles.buttonLabel, { color: theme.outline }]}>
               WebView
             </Text>
           </Pressable>

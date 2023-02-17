@@ -9,16 +9,15 @@ import {
 } from 'react-native';
 import { Checkbox as PaperCheckbox } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import color from 'color';
 
-import { MD3ThemeType } from '../../theme/types';
+import { ThemeColors } from '../../theme/types';
 
 interface CheckboxProps {
   label: string;
   status: boolean | 'indeterminate';
   onPress?: () => void;
   disabled?: boolean;
-  theme: MD3ThemeType;
+  theme: ThemeColors;
   viewStyle?: StyleProp<ViewStyle>;
   labelStyle?: StyleProp<TextStyle>;
 }
@@ -33,7 +32,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   labelStyle,
 }) => (
   <Pressable
-    android_ripple={{ color: color(theme.primary).alpha(0.12).string() }}
+    android_ripple={{ color: theme.rippleColor }}
     style={[styles.pressable, viewStyle]}
     onPress={onPress}
     disabled={disabled}
@@ -49,9 +48,9 @@ export const Checkbox: React.FC<CheckboxProps> = ({
       onPress={onPress}
       color={theme.primary}
       theme={{
-        colors: { disabled: theme.textColorSecondary },
+        colors: { disabled: theme.onSurfaceVariant },
       }}
-      uncheckedColor={theme.textColorSecondary}
+      uncheckedColor={theme.onSurfaceVariant}
       disabled={disabled}
     />
     <Text style={[styles.defaultLabel, { color: theme.onSurface }, labelStyle]}>
@@ -62,7 +61,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
 
 export const SortItem = ({ label, status, onPress, theme }) => (
   <Pressable
-    android_ripple={{ color: color(theme.primary).alpha(0.12).string() }}
+    android_ripple={{ color: theme.rippleColor }}
     style={[styles.pressable, { paddingVertical: 16, paddingLeft: 64 }]}
     onPress={onPress}
   >

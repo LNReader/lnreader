@@ -1,14 +1,12 @@
 import { FlashList } from '@shopify/flash-list';
-import { dividerColor, getDialogBackground } from '@theme/colors';
+
 import React, { useState } from 'react';
 import { StyleSheet, View, Pressable } from 'react-native';
 import { getString } from '@strings/translations';
 import { Button } from '@components';
-import color from 'color';
 
 import { Modal, Portal, Switch, TextInput, Text } from 'react-native-paper';
 import { useTheme } from '@hooks/useTheme';
-import { ButtonVariation } from '@components/Button/Button';
 
 const JumpToChapterModal = ({
   hideModal,
@@ -76,17 +74,17 @@ const JumpToChapterModal = ({
   const renderItem = ({ item }) => {
     return (
       <Pressable
-        android_ripple={{ color: color(theme.primary).alpha(0.12).string() }}
+        android_ripple={{ color: theme.rippleColor }}
         onPress={() => executeFunction(item)}
         style={styles.listElementContainer}
       >
-        <Text numberOfLines={1} style={{ color: theme.textColorPrimary }}>
+        <Text numberOfLines={1} style={{ color: theme.onSurface }}>
           {item.chapterName}
         </Text>
         {item?.releaseDate ? (
           <Text
             numberOfLines={1}
-            style={[{ color: theme.textColorSecondary }, styles.dateCtn]}
+            style={[{ color: theme.onSurfaceVariant }, styles.dateCtn]}
           >
             {item.releaseDate}
           </Text>
@@ -144,11 +142,11 @@ const JumpToChapterModal = ({
         onDismiss={onDismiss}
         contentContainerStyle={[
           styles.modalContainer,
-          { backgroundColor: getDialogBackground(theme) },
+          { backgroundColor: theme.overlay3 },
         ]}
       >
         <View style={styles.modalHeaderCtn}>
-          <Text style={[styles.modalTitle, { color: theme.textColorPrimary }]}>
+          <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
             {getString('novelScreen.jumpToChapterModal.jumpToChapter')}
           </Text>
           <TextInput
@@ -163,13 +161,13 @@ const JumpToChapterModal = ({
             onSubmitEditing={onSubmit}
             mode="outlined"
             theme={{ colors: { ...theme } }}
-            underlineColor={theme.textColorHint}
+            underlineColor={theme.outline}
             dense
             error={error}
           />
           <Text style={[styles.errorText, { color: errorColor }]}>{error}</Text>
           <View style={styles.switch}>
-            <Text style={{ color: theme.textColorPrimary }}>
+            <Text style={{ color: theme.onSurface }}>
               {getString('novelScreen.jumpToChapterModal.openChapter')}
             </Text>
             <Switch
@@ -179,7 +177,7 @@ const JumpToChapterModal = ({
             />
           </View>
           <View style={styles.switch}>
-            <Text style={{ color: theme.textColorPrimary }}>
+            <Text style={{ color: theme.onSurface }}>
               {getString('novelScreen.jumpToChapterModal.chapterName')}
             </Text>
             <Switch
@@ -190,12 +188,7 @@ const JumpToChapterModal = ({
           </View>
         </View>
         {result.length ? (
-          <View
-            style={[
-              styles.flashlist,
-              { borderColor: dividerColor(theme.isDark) },
-            ]}
-          >
+          <View style={[styles.flashlist, { borderColor: theme.outline }]}>
             <FlashList
               estimatedItemSize={70}
               data={result}
@@ -206,20 +199,8 @@ const JumpToChapterModal = ({
           </View>
         ) : null}
         <View style={styles.modalFooterCtn}>
-          <Button
-            title={getString('common.submit')}
-            textColor={theme.primary}
-            theme={theme}
-            onPress={onSubmit}
-            variation={ButtonVariation.CLEAR}
-          />
-          <Button
-            title={getString('common.cancel')}
-            textColor={theme.primary}
-            theme={theme}
-            onPress={hideModal}
-            variation={ButtonVariation.CLEAR}
-          />
+          <Button title={getString('common.submit')} onPress={onSubmit} />
+          <Button title={getString('common.cancel')} onPress={hideModal} />
         </View>
       </Modal>
     </Portal>

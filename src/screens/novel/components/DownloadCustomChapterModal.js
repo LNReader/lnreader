@@ -1,4 +1,3 @@
-import { getDialogBackground } from '@theme/colors';
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput } from 'react-native';
 
@@ -49,10 +48,10 @@ const DownloadCustomChapterModal = ({
         onDismiss={onDismiss}
         contentContainerStyle={[
           styles.modalContainer,
-          { backgroundColor: getDialogBackground(theme) },
+          { backgroundColor: theme.overlay3 },
         ]}
       >
-        <Text style={[styles.modalTitle, { color: theme.textColorPrimary }]}>
+        <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
           Download custom amount
         </Text>
         <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
@@ -72,7 +71,7 @@ const DownloadCustomChapterModal = ({
           />
           <TextInput
             value={text.toString()}
-            style={{ color: theme.textColorPrimary, marginHorizontal: 4 }}
+            style={{ color: theme.onSurface, marginHorizontal: 4 }}
             keyboardType="numeric"
             onChangeText={onChangeText}
             onSubmitEditing={onSubmit}

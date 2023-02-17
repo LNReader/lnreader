@@ -1,18 +1,16 @@
 import React, { ReactNode } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import color from 'color';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { List as PaperList, Divider as PaperDivider } from 'react-native-paper';
-import { MD3ThemeType } from '../../theme/types';
-import { dividerColor } from '../../theme/colors';
+import { ThemeColors } from '../../theme/types';
 
 interface ListItemProps {
   title: string;
   description?: string | null;
   icon?: string;
   onPress?: () => void;
-  theme: MD3ThemeType;
+  theme: ThemeColors;
 }
 
 const Section = ({ children }: { children: ReactNode }) => (
@@ -24,7 +22,7 @@ const SubHeader = ({
   theme,
 }: {
   children: ReactNode;
-  theme: MD3ThemeType;
+  theme: ThemeColors;
 }) => (
   <PaperList.Subheader style={{ color: theme.primary }}>
     {children}
@@ -40,29 +38,28 @@ const Item: React.FC<ListItemProps> = ({
 }) => (
   <PaperList.Item
     title={title}
-    titleStyle={{ color: theme.textColorPrimary }}
+    titleStyle={{ color: theme.onSurface }}
     description={description}
-    descriptionStyle={{ color: theme.textColorSecondary }}
-    left={() => (
-      <View style={styles.iconContainer}>
-        {icon && (
-          <PaperList.Icon
-            color={theme.primary}
-            icon={icon}
-            style={styles.icon}
-          />
-        )}
-      </View>
-    )}
+    descriptionStyle={{ color: theme.onSurfaceVariant }}
+    left={
+      icon
+        ? () => (
+            <PaperList.Icon
+              color={theme.primary}
+              icon={icon}
+              style={styles.iconCtn}
+            />
+          )
+        : undefined
+    }
     onPress={onPress}
-    rippleColor={color(theme.primary).alpha(0.12).string()}
+    rippleColor={theme.rippleColor}
+    style={styles.listItemCtn}
   />
 );
 
-const Divider = ({ theme }: { theme: MD3ThemeType }) => (
-  <PaperDivider
-    style={[styles.divider, { backgroundColor: dividerColor(theme.isDark) }]}
-  />
+const Divider = ({ theme }: { theme: ThemeColors }) => (
+  <PaperDivider style={[styles.divider, { backgroundColor: theme.outline }]} />
 );
 
 const InfoItem = ({
@@ -72,7 +69,7 @@ const InfoItem = ({
 }: {
   title: string;
   icon: string;
-  theme: MD3ThemeType;
+  theme: ThemeColors;
 }) => (
   <View style={styles.infoCtn}>
     <MaterialIcon size={20} color={theme.onSurfaceVariant} name={icon} />
@@ -82,8 +79,35 @@ const InfoItem = ({
   </View>
 );
 
-const Icon = ({ icon, theme }: { icon: string; theme: MD3ThemeType }) => (
+const Icon = ({ icon, theme }: { icon: string; theme: ThemeColors }) => (
   <PaperList.Icon color={theme.primary} icon={icon} style={{ margin: 0 }} />
+);
+
+const ColorItem = ({ title, description, theme, onPress }) => (
+  <Pressable
+    style={{
+      padding: 16,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    }}
+    android_ripple={{ color: theme.rippleColor }}
+    onPress={onPress}
+  >
+    <View>
+      <Text style={{ color: theme.onSurface, fontSize: 16 }}>{title}</Text>
+      <Text style={{ color: theme.onSurfaceVariant }}>{description}</Text>
+    </View>
+    <View
+      style={{
+        backgroundColor: description,
+        height: 24,
+        width: 24,
+        borderRadius: 50,
+        marginRight: 16,
+      }}
+    />
+  </Pressable>
 );
 
 export default {
@@ -93,6 +117,7 @@ export default {
   Divider,
   InfoItem,
   Icon,
+  ColorItem,
 };
 
 const styles = StyleSheet.create({
@@ -102,12 +127,7 @@ const styles = StyleSheet.create({
   },
   divider: {
     height: 1,
-  },
-  iconContainer: {
-    justifyContent: 'center',
-  },
-  icon: {
-    marginVertical: 0,
+    opacity: 0.6,
   },
   infoCtn: {
     paddingVertical: 12,
@@ -116,5 +136,11 @@ const styles = StyleSheet.create({
   infoMsg: {
     marginTop: 12,
     fontSize: 12,
+  },
+  iconCtn: {
+    paddingLeft: 16,
+  },
+  listItemCtn: {
+    paddingVertical: 12,
   },
 });

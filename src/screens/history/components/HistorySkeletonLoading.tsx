@@ -2,11 +2,11 @@ import React, { memo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder';
 import { LinearGradient } from 'expo-linear-gradient';
-import { MD3ThemeType } from '@theme/types';
+import { ThemeColors } from '@theme/types';
 import getLoadingColors from '@utils/getLoadingColors';
 
 interface Props {
-  theme: MD3ThemeType;
+  theme: ThemeColors;
 }
 
 const HistorySkeletonLoading: React.FC<Props> = ({ theme }) => {

@@ -3,7 +3,6 @@ import { Dimensions, FlatList, StyleSheet, Text, View } from 'react-native';
 import { Modal, overlay, Portal } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 
-import { ButtonVariation } from '@components/Button/Button';
 import { Button } from '@components/index';
 
 import { useTheme } from '@hooks/useTheme';
@@ -72,7 +71,7 @@ const SetCategoryModal: React.FC<SetCategoryModalProps> = ({
           { backgroundColor: overlay(2, theme.surface) },
         ]}
       >
-        <Text style={[styles.modalTitle, { color: theme.textColorPrimary }]}>
+        <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
           {getString('categories.setCategories')}
         </Text>
         <FlatList
@@ -90,7 +89,7 @@ const SetCategoryModal: React.FC<SetCategoryModalProps> = ({
           )}
           ListEmptyComponent={
             <Text
-              style={[styles.emptyState, { color: theme.textColorSecondary }]}
+              style={[styles.emptyState, { color: theme.onSurfaceVariant }]}
             >
               {getString('categories.setModalEmptyMsg')}
             </Text>
@@ -99,8 +98,6 @@ const SetCategoryModal: React.FC<SetCategoryModalProps> = ({
         <View style={styles.btnContainer}>
           <Button
             title={getString('common.edit')}
-            theme={theme}
-            variation={ButtonVariation.CLEAR}
             onPress={() => {
               navigate(
                 'MoreStack' as never,
@@ -115,8 +112,6 @@ const SetCategoryModal: React.FC<SetCategoryModalProps> = ({
           <View style={styles.flex} />
           <Button
             title={getString('common.cancel')}
-            theme={theme}
-            variation={ButtonVariation.CLEAR}
             onPress={() => {
               closeModal();
               setSelectedCategories(currentCategoryIds);
@@ -125,8 +120,6 @@ const SetCategoryModal: React.FC<SetCategoryModalProps> = ({
           {categories?.length ? (
             <Button
               title={getString('common.ok')}
-              theme={theme}
-              variation={ButtonVariation.CLEAR}
               onPress={() => {
                 if (isArray(novelId)) {
                   updateNovelCategoryByIds(novelId, selectedCategories);

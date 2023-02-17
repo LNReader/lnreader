@@ -9,15 +9,12 @@ import {
 } from 'react-native';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Button, Modal, Portal, TextInput } from 'react-native-paper';
+import { Modal, Portal, TextInput } from 'react-native-paper';
 import { setNovel } from '../../../redux/novel/novel.actions';
 import { updateNovelInfo } from '../../../database/queries/NovelQueries';
-import {
-  dividerColor,
-  getDialogBackground,
-  getRippleColor,
-} from '@theme/colors';
+
 import { getString } from '@strings/translations';
+import { Button } from '@components';
 
 const EditInfoModal = ({ theme, hideModal, modalVisible, novel, dispatch }) => {
   const [info, setInfo] = useState(novel);
@@ -38,10 +35,10 @@ const EditInfoModal = ({ theme, hideModal, modalVisible, novel, dispatch }) => {
         onDismiss={hideModal}
         contentContainerStyle={[
           styles.modalContainer,
-          { backgroundColor: getDialogBackground(theme) },
+          { backgroundColor: theme.overlay3 },
         ]}
       >
-        <Text style={[styles.modalTitle, { color: theme.textColorPrimary }]}>
+        <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
           Edit info
         </Text>
         <View
@@ -51,7 +48,7 @@ const EditInfoModal = ({ theme, hideModal, modalVisible, novel, dispatch }) => {
             alignItems: 'center',
           }}
         >
-          <Text style={{ color: theme.textColorSecondary }}>Status:</Text>
+          <Text style={{ color: theme.onSurfaceVariant }}>Status:</Text>
           <ScrollView
             style={{ marginLeft: 8 }}
             horizontal
@@ -62,14 +59,12 @@ const EditInfoModal = ({ theme, hideModal, modalVisible, novel, dispatch }) => {
                 <Pressable
                   style={{
                     backgroundColor:
-                      info.status === item
-                        ? getRippleColor(theme.primary)
-                        : 'transparent',
+                      info.status === item ? theme.rippleColor : 'transparent',
                     paddingVertical: 6,
                     paddingHorizontal: 12,
                   }}
                   android_ripple={{
-                    color: getRippleColor(theme.primary),
+                    color: theme.rippleColor,
                   }}
                   onPress={() => setInfo({ ...info, status: item })}
                 >
@@ -78,7 +73,7 @@ const EditInfoModal = ({ theme, hideModal, modalVisible, novel, dispatch }) => {
                       color:
                         info.status === item
                           ? theme.primary
-                          : theme.textColorSecondary,
+                          : theme.onSurfaceVariant,
                     }}
                   >
                     {item}
@@ -149,12 +144,6 @@ const EditInfoModal = ({ theme, hideModal, modalVisible, novel, dispatch }) => {
         )}
         <View style={{ flexDirection: 'row-reverse' }}>
           <Button
-            labelStyle={{
-              color: theme.primary,
-              letterSpacing: 0,
-              textTransform: 'none',
-            }}
-            theme={{ colors: { primary: theme.primary } }}
             onPress={() => {
               updateNovelInfo(info, novel.novelId);
               hideModal();
@@ -163,17 +152,7 @@ const EditInfoModal = ({ theme, hideModal, modalVisible, novel, dispatch }) => {
           >
             {getString('common.save')}
           </Button>
-          <Button
-            labelStyle={{
-              color: theme.primary,
-              letterSpacing: 0,
-              textTransform: 'none',
-            }}
-            theme={{ colors: { primary: theme.primary } }}
-            onPress={hideModal}
-          >
-            {getString('common.cancel')}
-          </Button>
+          <Button onPress={hideModal}>{getString('common.cancel')}</Button>
         </View>
       </Modal>
     </Portal>
@@ -194,13 +173,13 @@ const GenreChip = ({ children, theme, onPress }) => (
       marginRight: 8,
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: dividerColor(theme.isDark),
+      backgroundColor: theme.outline,
     }}
   >
     <Text
       style={{
         fontSize: 12,
-        color: theme.textColorSecondary,
+        color: theme.onSurfaceVariant,
         textTransform: 'capitalize',
       }}
     >

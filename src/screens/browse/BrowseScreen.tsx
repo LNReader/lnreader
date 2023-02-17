@@ -159,7 +159,7 @@ const BrowseScreen = () => {
                   <Text
                     style={[
                       styles.sectionHeader,
-                      { color: theme.textColorSecondary },
+                      { color: theme.onSurfaceVariant },
                     ]}
                   >
                     {getString('browseScreen.discover')}
@@ -174,7 +174,7 @@ const BrowseScreen = () => {
                 <Text
                   style={[
                     styles.sectionHeader,
-                    { color: theme.textColorSecondary },
+                    { color: theme.onSurfaceVariant },
                   ]}
                 >
                   {header}

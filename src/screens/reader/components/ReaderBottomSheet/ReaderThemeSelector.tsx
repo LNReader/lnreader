@@ -31,7 +31,7 @@ const ReaderThemeSelector: React.FC<ReaderThemeSelectorProps> = ({
   return (
     <View style={styles.container}>
       <Text
-        style={[{ color: theme.textColorSecondary }, styles.title, labelStyle]}
+        style={[{ color: theme.onSurfaceVariant }, styles.title, labelStyle]}
       >
         {label || getString('readerScreen.bottomSheet.color')}
       </Text>

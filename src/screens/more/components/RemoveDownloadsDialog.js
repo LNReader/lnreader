@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { Button, Dialog, overlay, Portal } from 'react-native-paper';
+import { Button } from '@components';
+import { Dialog, overlay, Portal } from 'react-native-paper';
 
 const RemoveDownloadsDialog = ({
   dialogVisible,
@@ -22,28 +23,14 @@ const RemoveDownloadsDialog = ({
           style={{
             letterSpacing: 0,
             fontSize: 16,
-            color: theme.textColorPrimary,
+            color: theme.onSurface,
           }}
         >
           Are you sure? All downloaded chapters will be deleted.
         </Dialog.Title>
         <Dialog.Actions>
-          <Button
-            uppercase={false}
-            theme={{ colors: { primary: theme.primary } }}
-            onPress={hideDialog}
-            labelStyle={{ letterSpacing: 0 }}
-          >
-            Cancel
-          </Button>
-          <Button
-            uppercase={false}
-            theme={{ colors: { primary: theme.primary } }}
-            onPress={onSubmit}
-            labelStyle={{ letterSpacing: 0 }}
-          >
-            Ok
-          </Button>
+          <Button onPress={hideDialog}>Cancel</Button>
+          <Button onPress={onSubmit}>Ok</Button>
         </Dialog.Actions>
       </Dialog>
     </Portal>

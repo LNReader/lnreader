@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Modal, Portal } from 'react-native-paper';
 
-import { ButtonVariation } from '@components/Button/Button';
 import { Button } from '@components/index';
 
 import { Category } from '../../../database/types';
@@ -11,7 +10,6 @@ import { useTheme } from '@hooks/useTheme';
 
 import { getString } from '@strings/translations';
 import { resetCategoryIdsToDefault } from '../../../database/queries/NovelQueriesV2';
-import { getDialogBackground } from '../../../theme/colors';
 
 interface DeleteCategoryModalProps {
   category: Category;
@@ -35,13 +33,13 @@ const DeleteCategoryModal: React.FC<DeleteCategoryModalProps> = ({
         onDismiss={closeModal}
         contentContainerStyle={[
           styles.modalContainer,
-          { backgroundColor: getDialogBackground(theme) },
+          { backgroundColor: theme.overlay3 },
         ]}
       >
-        <Text style={[styles.modalTitle, { color: theme.textColorPrimary }]}>
+        <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
           {getString('categories.deleteModal.header')}
         </Text>
-        <Text style={[styles.modalDesc, { color: theme.textColorSecondary }]}>
+        <Text style={[styles.modalDesc, { color: theme.onSurfaceVariant }]}>
           {getString('categories.deleteModal.desc')}
           {` "${category.name}"?`}
         </Text>

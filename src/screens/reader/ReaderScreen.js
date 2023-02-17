@@ -28,7 +28,6 @@ import ReaderAppbar from './components/ReaderAppbar';
 import ReaderFooter from './components/ReaderFooter';
 import ReaderSeekBar from './components/ReaderSeekBar';
 
-import GestureRecognizer from 'react-native-swipe-gestures';
 import { insertHistory } from '../../database/queries/HistoryQueries';
 import { SET_LAST_READ } from '../../redux/preferences/preference.types';
 import WebViewReader from './components/WebViewReader';
@@ -264,11 +263,6 @@ const ChapterContent = ({ route, navigation }) => {
     setHidden(!hidden);
   };
 
-  const config = {
-    velocityThreshold: 0.3,
-    directionalOffsetThreshold: 50,
-  };
-
   const navigateToChapterBySwipe = name => {
     let chapter;
     if (name === 'SWIPE_LEFT') {
@@ -321,26 +315,25 @@ const ChapterContent = ({ route, navigation }) => {
 
   return (
     <>
-      <GestureRecognizer
-        onLayout={useVolumeButtons && onLayout}
-        config={config}
-        style={[{ flex: 1 }, { backgroundColor }]}
-      >
-        <WebViewReader
-          chapter={chapter}
-          html={chapterText}
-          chapterName={chapter.chapterName || chapterName}
-          swipeGestures={swipeGestures}
-          minScroll={minScroll}
-          nextChapter={nextChapter}
-          webViewRef={webViewRef}
-          onLayout={() => scrollTo(position?.position)}
-          onPress={hideHeader}
-          doSaveProgress={doSaveProgress}
-          navigateToChapterBySwipe={navigateToChapterBySwipe}
-          onWebViewNavigationStateChange={onWebViewNavigationStateChange}
-        />
-      </GestureRecognizer>
+      <WebViewReader
+        chapter={chapter}
+        html={chapterText}
+        chapterName={chapter.chapterName || chapterName}
+        swipeGestures={swipeGestures}
+        minScroll={minScroll}
+        nextChapter={nextChapter}
+        webViewRef={webViewRef}
+        onLayout={() => {
+          if (useVolumeButtons) {
+            onLayout();
+          }
+          scrollTo(position?.position);
+        }}
+        onPress={hideHeader}
+        doSaveProgress={doSaveProgress}
+        navigateToChapterBySwipe={navigateToChapterBySwipe}
+        onWebViewNavigationStateChange={onWebViewNavigationStateChange}
+      />
       <BottomInfoBar scrollPercentage={position?.percentage || 0} />
       <Portal>
         <ReaderBottomSheetV2 bottomSheetRef={readerSheetRef} />

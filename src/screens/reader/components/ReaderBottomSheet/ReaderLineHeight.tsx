@@ -19,7 +19,7 @@ const ReaderLineHeight: React.FC<ReaderLineHeightProps> = ({ labelStyle }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={[{ color: theme.textColorSecondary }, labelStyle]}>
+      <Text style={[{ color: theme.onSurfaceVariant }, labelStyle]}>
         {getString('readerScreen.bottomSheet.lineHeight')}
       </Text>
       <View style={styles.buttonContainer}>
@@ -33,7 +33,7 @@ const ReaderLineHeight: React.FC<ReaderLineHeightProps> = ({ labelStyle }) => {
           }
           theme={theme}
         />
-        <Text style={[styles.value, { color: theme.textColorPrimary }]}>
+        <Text style={[styles.value, { color: theme.onSurface }]}>
           {`${Math.round(lineHeight * 10) / 10}%`}
         </Text>
         <IconButtonV2

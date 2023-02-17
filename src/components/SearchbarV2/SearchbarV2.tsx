@@ -1,10 +1,9 @@
 import React, { useRef } from 'react';
 import { Pressable, StyleSheet, View, TextInput } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import color from 'color';
 
 import IconButtonV2 from '../IconButtonV2/IconButtonV2';
-import { MD3ThemeType } from '../../theme/types';
+import { ThemeColors } from '../../theme/types';
 
 interface RightIcon {
   iconName: string;
@@ -22,7 +21,7 @@ interface SearcbarProps {
   handleBackAction?: () => void;
   clearSearchbar: () => void;
   onLeftIconPress?: () => void;
-  theme: MD3ThemeType;
+  theme: ThemeColors;
 }
 
 const Searchbar: React.FC<SearcbarProps> = ({
@@ -53,13 +52,13 @@ const Searchbar: React.FC<SearcbarProps> = ({
           marginTop,
           marginRight,
           marginLeft,
-          backgroundColor: color(theme.primary).alpha(0.08).string(),
+          backgroundColor: theme.surface2,
         },
       ]}
     >
       <Pressable
         onPress={focusSearchbar}
-        android_ripple={{ color: color(theme.primary).alpha(12).toString() }}
+        android_ripple={{ color: theme.rippleColor }}
         style={[styles.searchbar]}
       >
         <IconButtonV2

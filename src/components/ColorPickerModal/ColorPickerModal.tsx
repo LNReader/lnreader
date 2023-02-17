@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { Modal, overlay, Portal, TextInput } from 'react-native-paper';
-import { MD3ThemeType } from '../../theme/types';
+import { ThemeColors } from '../../theme/types';
 
 interface ColorPickerModalProps {
   visible: boolean;
@@ -10,7 +10,7 @@ interface ColorPickerModalProps {
   color: string;
   onSubmit: (val: string) => void;
   closeModal: () => void;
-  theme: MD3ThemeType;
+  theme: ThemeColors;
   showAccentColors?: boolean;
 }
 
@@ -80,7 +80,7 @@ const ColorPickerModal: React.FC<ColorPickerModalProps> = ({
           { backgroundColor: overlay(2, theme.surface) },
         ]}
       >
-        <Text style={[styles.modalTitle, { color: theme.textColorPrimary }]}>
+        <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
           {title}
         </Text>
         {showAccentColors ? (
@@ -123,7 +123,7 @@ const ColorPickerModal: React.FC<ColorPickerModalProps> = ({
           onSubmitEditing={onSubmitEditing}
           mode="outlined"
           theme={{ colors: { ...theme } }}
-          underlineColor={theme.textColorHint}
+          underlineColor={theme.outline}
           dense
           error={Boolean(error)}
         />

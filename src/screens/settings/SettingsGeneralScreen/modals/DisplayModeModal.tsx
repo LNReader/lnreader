@@ -9,13 +9,13 @@ import { Portal, Modal, overlay } from 'react-native-paper';
 
 import { RadioButton } from '../../../../components/RadioButton/RadioButton';
 import { useLibrarySettings } from '@hooks/useSettings';
-import { MD3ThemeType } from '@theme/types';
+import { ThemeColors } from '@theme/types';
 
 interface DisplayModeModalProps {
   displayMode: DisplayModes;
   displayModalVisible: boolean;
   hideDisplayModal: () => void;
-  theme: MD3ThemeType;
+  theme: ThemeColors;
 }
 
 const DisplayModeModal: React.FC<DisplayModeModalProps> = ({
@@ -36,7 +36,7 @@ const DisplayModeModal: React.FC<DisplayModeModalProps> = ({
           { backgroundColor: overlay(2, theme.surface) },
         ]}
       >
-        <Text style={[styles.modalHeader, { color: theme.textColorPrimary }]}>
+        <Text style={[styles.modalHeader, { color: theme.onSurface }]}>
           Display Mode
         </Text>
         {displayModesList.map(mode => (

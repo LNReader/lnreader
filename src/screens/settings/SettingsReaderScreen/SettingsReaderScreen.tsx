@@ -23,7 +23,6 @@ import {
 import ReaderThemeSelector from '../../../screens/reader/components/ReaderBottomSheet/ReaderThemeSelector';
 import ReaderTextAlignSelector from '../../../screens/reader/components/ReaderBottomSheet/ReaderTextAlignSelector';
 import ColorPickerModal from '@components/ColorPickerModal/ColorPickerModal';
-import { ButtonVariation } from '@components/Button/Button';
 import FontPickerModal from './FontPickerModal';
 import ReaderLineHeight from '../../../screens/reader/components/ReaderBottomSheet/ReaderLineHeight';
 import ReaderTextSize from './ReaderTextSize';
@@ -136,7 +135,7 @@ const SettingsReaderScreen = () => {
 
   const { height: screenHeight } = useWindowDimensions();
 
-  const labelStyle = [styles.fontSizeL, { color: theme.textColorPrimary }];
+  const labelStyle = [styles.fontSizeL, { color: theme.onSurface }];
 
   return (
     <>
@@ -260,9 +259,7 @@ const SettingsReaderScreen = () => {
               <View style={styles.customCSSButtons}>
                 <Button
                   style={styles.customThemeButton}
-                  theme={theme}
                   title={getString('common.reset')}
-                  variation={ButtonVariation.OUTLINED}
                   onPress={() => {
                     dispatch(setAppSettings('autoScrollInterval', 10));
                     dispatch(setAppSettings('autoScrollOffset', null));
@@ -279,31 +276,27 @@ const SettingsReaderScreen = () => {
           </List.SubHeader>
           <View style={styles.customCSSContainer}>
             <TextInput
-              style={[{ color: theme.textColorPrimary }, styles.fontSizeL]}
+              style={[{ color: theme.onSurface }, styles.fontSizeL]}
               value={customCSS}
               onChangeText={text => setcustomCSS(text)}
-              placeholderTextColor={theme.textColorSecondary}
+              placeholderTextColor={theme.onSurfaceVariant}
               placeholder="Example: body { color: red; }"
               multiline={true}
             />
             <View style={styles.customCSSButtons}>
               <Button
-                theme={theme}
                 onPress={() =>
                   dispatch(setReaderSettings('customCSS', customCSS))
                 }
                 style={styles.marginLeftS}
                 title={getString('common.save')}
-                variation={ButtonVariation.OUTLINED}
               />
               <Button
-                theme={theme}
                 onPress={() => {
                   setcustomCSS('');
                   dispatch(setReaderSettings('customCSS', ''));
                 }}
                 title={getString('common.clear')}
-                variation={ButtonVariation.OUTLINED}
               />
             </View>
           </View>
@@ -366,11 +359,9 @@ const SettingsReaderScreen = () => {
           <View style={styles.customCSSButtons}>
             <Button
               style={styles.customThemeButton}
-              theme={theme}
               title={getString(
                 'moreScreen.settingsScreen.readerSettings.deleteCustomTheme',
               )}
-              variation={ButtonVariation.OUTLINED}
               onPress={() =>
                 dispatch(
                   deleteCustomReaderTheme({
@@ -387,11 +378,9 @@ const SettingsReaderScreen = () => {
           <View style={styles.customCSSButtons}>
             <Button
               style={styles.customThemeButton}
-              theme={theme}
               title={getString(
                 'moreScreen.settingsScreen.readerSettings.saveCustomTheme',
               )}
-              variation={ButtonVariation.OUTLINED}
               onPress={() =>
                 dispatch(
                   saveCustomReaderTheme({

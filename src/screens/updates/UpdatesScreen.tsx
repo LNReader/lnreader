@@ -18,7 +18,7 @@ import {
   downloadChapterAction,
 } from '../../redux/novel/novel.actions';
 import { getString } from '../../../strings/translations';
-import { MD3ThemeType } from '../../theme/types';
+import { ThemeColors } from '../../theme/types';
 import { useTheme } from '@hooks/useTheme';
 import {
   openChapter,
@@ -190,7 +190,7 @@ export default UpdatesScreen;
 
 const LastUpdateTime: React.FC<{
   lastUpdateTime: Date;
-  theme: MD3ThemeType;
+  theme: ThemeColors;
 }> = ({ lastUpdateTime, theme }) => (
   <Text style={[styles.lastUpdateTime, { color: theme.onSurface }]}>
     {`${getString('updatesScreen.lastUpdatedAt')} ${dayjs(

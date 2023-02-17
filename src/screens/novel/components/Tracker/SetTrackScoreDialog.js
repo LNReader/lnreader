@@ -41,7 +41,7 @@ const SetTrackScoreDialog = ({
       ]}
       theme={{ colors: { backdrop: 'rgba(0,0,0,0.25)' } }}
     >
-      <Text style={[styles.dialogTitle, { color: theme.textColorPrimary }]}>
+      <Text style={[styles.dialogTitle, { color: theme.onSurface }]}>
         Score
       </Text>
       <RadioButtonGroup

@@ -20,7 +20,6 @@ import ReaderTextAlignSelector from './ReaderTextAlignSelector';
 import ReaderLineHeight from './ReaderLineHeight';
 import ReaderFontPicker from './ReaderFontPicker';
 import { overlay } from 'react-native-paper';
-import { dividerColor } from '../../../../theme/colors';
 
 const ReaderTab: React.FC = () => {
   return (
@@ -164,7 +163,7 @@ const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
       style={[
         {
           backgroundColor: tabHeaderColor,
-          borderBottomColor: dividerColor(theme.isDark),
+          borderBottomColor: theme.outline,
           borderBottomWidth: 1,
         },
         styles.tabBar,
@@ -172,7 +171,7 @@ const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
       renderLabel={({ route, color }) => (
         <Text style={{ color }}>{route.title}</Text>
       )}
-      inactiveColor={theme.textColorSecondary}
+      inactiveColor={theme.onSurfaceVariant}
       activeColor={theme.primary}
       pressColor={color(theme.primary).alpha(0.12).string()}
     />

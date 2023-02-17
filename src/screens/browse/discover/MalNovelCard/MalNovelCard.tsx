@@ -1,55 +1,47 @@
-import { getDialogBackground, getRippleColor } from '@theme/colors';
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 
-import { MD3ThemeType } from '../../../../theme/types';
+import { ThemeColors } from '../../../../theme/types';
 
 interface Props {
   novel: { novelName: string; novelCover: string; score: string; info: string };
   onPress: () => void;
-  theme: MD3ThemeType;
+  theme: ThemeColors;
 }
 
 const MalNovelCard: React.FC<Props> = ({ novel, onPress, theme }) => {
   return (
-    <View
-      style={[
-        styles.container,
-        { backgroundColor: getDialogBackground(theme) },
-      ]}
-    >
+    <View style={[styles.container, { backgroundColor: theme.overlay3 }]}>
       <Pressable
         style={styles.pressable}
         onPress={onPress}
-        android_ripple={{ color: getRippleColor(theme.primary) }}
+        android_ripple={{ color: theme.rippleColor }}
       >
         <FastImage source={{ uri: novel.novelCover }} style={styles.cover} />
         <View style={styles.infoContainer}>
           <Text
-            style={[styles.title, { color: theme.textColorPrimary }]}
+            style={[styles.title, { color: theme.onSurface }]}
             numberOfLines={2}
           >
             {novel.novelName}
           </Text>
-          <Text style={[styles.small, { color: theme.textColorPrimary }]}>
+          <Text style={[styles.small, { color: theme.onSurface }]}>
             Score:{' '}
-            <Text style={{ color: theme.textColorSecondary }}>
-              {novel.score}
-            </Text>
+            <Text style={{ color: theme.onSurfaceVariant }}>{novel.score}</Text>
           </Text>
           {novel?.info?.[1] ? (
-            <Text style={[styles.small, { color: theme.textColorPrimary }]}>
+            <Text style={[styles.small, { color: theme.onSurface }]}>
               Type:{' '}
-              <Text style={{ color: theme.textColorSecondary }}>
+              <Text style={{ color: theme.onSurfaceVariant }}>
                 {novel.info[1]}
               </Text>
             </Text>
           ) : null}
           {novel?.info?.[2] ? (
-            <Text style={[styles.small, { color: theme.textColorPrimary }]}>
+            <Text style={[styles.small, { color: theme.onSurface }]}>
               Published:{' '}
-              <Text style={{ color: theme.textColorSecondary }}>
+              <Text style={{ color: theme.onSurfaceVariant }}>
                 {novel.info[2]}
               </Text>
             </Text>

@@ -25,12 +25,7 @@ const BottomNavigator = () => {
 
   return (
     <Tab.Navigator
-      barStyle={{
-        backgroundColor: Color(theme.surface)
-          .mix(Color(theme.primary), 0.08)
-          .rgb()
-          .string(),
-      }}
+      barStyle={{ backgroundColor: theme.surface2 }}
       theme={{ colors: theme }}
       activeColor={theme.onSecondaryContainer}
       shifting={!showLabelsInNav}

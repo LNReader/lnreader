@@ -42,7 +42,7 @@ const UpdateCard = ({
           <View style={styles.chapterDetails}>
             <Text
               style={{
-                color: item.read ? theme.textColorHint : theme.textColorPrimary,
+                color: item.read ? theme.outline : theme.onSurface,
               }}
               numberOfLines={1}
             >
@@ -50,9 +50,7 @@ const UpdateCard = ({
             </Text>
             <Text
               style={{
-                color: item.read
-                  ? theme.textColorHint
-                  : theme.textColorSecondary,
+                color: item.read ? theme.outline : theme.onSurfaceVariant,
                 fontSize: 12,
               }}
               numberOfLines={1}

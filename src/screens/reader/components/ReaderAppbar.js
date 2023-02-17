@@ -49,13 +49,13 @@ const ReaderAppbar = ({
           />
           <View style={styles.content}>
             <Text
-              style={[styles.title, { color: theme.textColorPrimary }]}
+              style={[styles.title, { color: theme.onSurface }]}
               numberOfLines={1}
             >
               {novelName}
             </Text>
             <Text
-              style={[styles.subtitle, { color: theme.textColorSecondary }]}
+              style={[styles.subtitle, { color: theme.onSurfaceVariant }]}
               numberOfLines={1}
             >
               {chapterName}

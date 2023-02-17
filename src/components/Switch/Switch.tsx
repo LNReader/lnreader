@@ -1,14 +1,13 @@
 import React from 'react';
 import { Pressable, StyleSheet, View, Text } from 'react-native';
-import color from 'color';
 import { Switch, List } from 'react-native-paper';
-import { MD3ThemeType } from '@theme/types';
+import { ThemeColors } from '@theme/types';
 
 interface SwitchProps {
   label: string;
   description?: string;
   onPress: () => void;
-  theme: MD3ThemeType;
+  theme: ThemeColors;
   icon?: string;
   value: boolean;
 }
@@ -49,7 +48,7 @@ const SwitchSetting: React.FC<SwitchProps> = ({
   return (
     <Pressable
       android_ripple={{
-        color: color(theme.primary).alpha(0.12).rgb().string(),
+        color: theme.rippleColor,
       }}
       style={styles.container}
       onPress={onPress}
@@ -59,13 +58,9 @@ const SwitchSetting: React.FC<SwitchProps> = ({
           <List.Icon color={theme.primary} icon={icon} style={styles.icon} />
         )}
         <View style={styles.textContainer}>
-          <Text style={[styles.text, { color: theme.textColorPrimary }]}>
-            {label}
-          </Text>
+          <Text style={[styles.text, { color: theme.onSurface }]}>{label}</Text>
           {description && (
-            <Text style={{ color: theme.textColorSecondary }}>
-              {description}
-            </Text>
+            <Text style={{ color: theme.onSurfaceVariant }}>{description}</Text>
           )}
         </View>
       </View>

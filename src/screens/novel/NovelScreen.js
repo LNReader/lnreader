@@ -306,7 +306,7 @@ const Novel = ({ route, navigation }) => {
       return (
         <Text
           style={{
-            color: theme.textColorHint,
+            color: theme.outline,
             fontSize: 12,
             marginLeft: chapter.releaseDate ? 5 : 0,
           }}
@@ -422,7 +422,7 @@ const Novel = ({ route, navigation }) => {
                   title="Next chapter"
                   style={{ backgroundColor: overlay(2, theme.surface) }}
                   titleStyle={{
-                    color: theme.textColorPrimary,
+                    color: theme.onSurface,
                   }}
                   onPress={() => {
                     dispatch(
@@ -445,7 +445,7 @@ const Novel = ({ route, navigation }) => {
                   title="Next 5 chapter"
                   style={{ backgroundColor: overlay(2, theme.surface) }}
                   titleStyle={{
-                    color: theme.textColorPrimary,
+                    color: theme.onSurface,
                   }}
                   onPress={() => {
                     dispatch(
@@ -468,7 +468,7 @@ const Novel = ({ route, navigation }) => {
                   title="Next 10 chapter"
                   style={{ backgroundColor: overlay(2, theme.surface) }}
                   titleStyle={{
-                    color: theme.textColorPrimary,
+                    color: theme.onSurface,
                   }}
                   onPress={() => {
                     dispatch(
@@ -490,7 +490,7 @@ const Novel = ({ route, navigation }) => {
                 <Menu.Item
                   title="Custom"
                   style={{ backgroundColor: overlay(2, theme.surface) }}
-                  titleStyle={{ color: theme.textColorPrimary }}
+                  titleStyle={{ color: theme.onSurface }}
                   onPress={() => {
                     downloadCustomChapterModal.setTrue();
                     showDownloadMenu(false);
@@ -500,7 +500,7 @@ const Novel = ({ route, navigation }) => {
                   title="Unread"
                   style={{ backgroundColor: overlay(2, theme.surface) }}
                   titleStyle={{
-                    color: theme.textColorPrimary,
+                    color: theme.onSurface,
                   }}
                   onPress={() => {
                     dispatch(
@@ -517,7 +517,7 @@ const Novel = ({ route, navigation }) => {
                   title="All"
                   style={{ backgroundColor: overlay(2, theme.surface) }}
                   titleStyle={{
-                    color: theme.textColorPrimary,
+                    color: theme.onSurface,
                   }}
                   onPress={() => {
                     dispatch(
@@ -534,7 +534,7 @@ const Novel = ({ route, navigation }) => {
                   title="Delete downloads"
                   style={{ backgroundColor: overlay(2, theme.surface) }}
                   titleStyle={{
-                    color: theme.textColorPrimary,
+                    color: theme.onSurface,
                   }}
                   onPress={() =>
                     dispatch(deleteAllChaptersAction(sourceId, chapters))
@@ -565,7 +565,7 @@ const Novel = ({ route, navigation }) => {
                   title="Edit info"
                   style={{ backgroundColor: overlay(2, theme.surface) }}
                   titleStyle={{
-                    color: theme.textColorPrimary,
+                    color: theme.onSurface,
                   }}
                   onPress={() => {
                     showEditInfoModal(true);
@@ -576,7 +576,7 @@ const Novel = ({ route, navigation }) => {
                   title="Edit cover"
                   style={{ backgroundColor: overlay(2, theme.surface) }}
                   titleStyle={{
-                    color: theme.textColorPrimary,
+                    color: theme.onSurface,
                   }}
                   onPress={setCustomNovelCover}
                 />
@@ -658,7 +658,7 @@ const Novel = ({ route, navigation }) => {
             theme={{ colors: { primary: theme.primary } }}
             style={{ backgroundColor: theme.surface, marginBottom: 32 }}
           >
-            <Text style={{ color: theme.textColorPrimary }}>
+            <Text style={{ color: theme.onSurface }}>
               Delete downloaded chapters?
             </Text>
           </Snackbar>
@@ -736,7 +736,7 @@ const Novel = ({ route, navigation }) => {
               />
               <Appbar.Content
                 title={selected.length}
-                titleStyle={{ color: theme.textColorPrimary }}
+                titleStyle={{ color: theme.onSurface }}
               />
               <Appbar.Action
                 icon="select-all"

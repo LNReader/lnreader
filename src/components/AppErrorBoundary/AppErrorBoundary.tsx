@@ -4,7 +4,6 @@ import ErrorBoundary from 'react-native-error-boundary';
 
 import { Button, List } from '@components';
 import { useTheme } from '@hooks';
-import { ButtonVariation } from '@components/Button/Button';
 
 interface ErrorFallbackProps {
   error: Error;
@@ -44,11 +43,10 @@ export const ErrorFallback: React.FC<ErrorFallbackProps> = ({
       </View>
       <List.Divider theme={theme} />
       <Button
-        variation={ButtonVariation.DEFAULT}
         onPress={resetError}
         title={'Restart the application'}
         style={styles.buttonCtn}
-        theme={theme}
+        mode="contained"
       />
     </View>
   );

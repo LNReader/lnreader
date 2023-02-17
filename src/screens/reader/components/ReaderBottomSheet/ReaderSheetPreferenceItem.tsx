@@ -1,14 +1,13 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text } from 'react-native';
-import color from 'color';
 import { Switch } from 'react-native-paper';
-import { MD3ThemeType } from '../../../../theme/types';
+import { ThemeColors } from '../../../../theme/types';
 
 interface ReaderSheetPreferenceItemProps {
   label: string;
   value: boolean;
   onPress: () => void;
-  theme: MD3ThemeType;
+  theme: ThemeColors;
 }
 
 const ReaderSheetPreferenceItem: React.FC<ReaderSheetPreferenceItemProps> = ({
@@ -20,10 +19,10 @@ const ReaderSheetPreferenceItem: React.FC<ReaderSheetPreferenceItemProps> = ({
   return (
     <Pressable
       style={styles.container}
-      android_ripple={{ color: color(theme.primary).alpha(0.12).string() }}
+      android_ripple={{ color: theme.rippleColor }}
       onPress={onPress}
     >
-      <Text style={[styles.label, { color: theme.textColorSecondary }]}>
+      <Text style={[styles.label, { color: theme.onSurfaceVariant }]}>
         {label}
       </Text>
       <Switch value={value} onValueChange={onPress} color={theme.primary} />
