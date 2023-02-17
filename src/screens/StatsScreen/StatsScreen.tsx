@@ -72,7 +72,7 @@ const StatsScreen = () => {
     return (
       <>
         {Header}
-        <ErrorScreenV2 theme={theme} />
+        <ErrorScreenV2 error={error} />
       </>
     );
   }

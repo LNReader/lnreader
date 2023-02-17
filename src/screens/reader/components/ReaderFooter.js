@@ -3,9 +3,9 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import { IconButton } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { isUrlAbsolute } from '../../../utils/isAbsoluteUrl';
-import FadeView from '../../../components/Common/CrossFadeView';
 import * as WebBrowser from 'expo-web-browser';
 import color from 'color';
+import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
 const ChapterFooter = ({
   hide,
@@ -26,8 +26,18 @@ const ChapterFooter = ({
 
   const insets = useSafeAreaInsets();
 
+  if (hide) {
+    return null;
+  }
+
   return (
-    <FadeView style={styles.footer} active={hide} animationDuration={150}>
+    <Animated.View
+      entering={FadeIn.duration(150)}
+      exiting={FadeOut.duration(150)}
+      style={styles.footer}
+      active={hide}
+      animationDuration={150}
+    >
       <View
         style={[
           {
@@ -106,7 +116,7 @@ const ChapterFooter = ({
           />
         </Pressable>
       </View>
-    </FadeView>
+    </Animated.View>
   );
 };
 

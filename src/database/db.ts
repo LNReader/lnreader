@@ -14,7 +14,10 @@ import {
   createHistoryTableQuery,
   createChapterIdIndexQuery,
 } from './tables/HistoryTable';
-import { createDownloadTableQuery } from './tables/DownloadTable';
+import {
+  createDownloadIdIndex,
+  createDownloadTableQuery,
+} from './tables/DownloadTable';
 import { createUpdatesTableQuery } from './tables/UpdateTable';
 import {
   addCategorySortColumnQuery,
@@ -71,6 +74,7 @@ const createIndexes = () => {
     tx.executeSql(createUnreadChaptersIndexQuery);
     tx.executeSql(createChapterIdIndexQuery);
     tx.executeSql(createCategorydIndexQuery);
+    tx.executeSql(createDownloadIdIndex);
   });
 };
 

@@ -12,7 +12,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import FastImage from 'react-native-fast-image';
 import ListView from './ListView';
 
-import { useDeviceOrientation } from '../services/utils/helpers';
+import { useDeviceOrientation } from '@hooks/useDeviceOrientation';
 import { coverPlaceholderColor } from '../theme/colors';
 import { useLibrarySettings } from '@hooks/useSettings';
 import { DisplayModes } from '@screens/library/constants/constants';

@@ -3,13 +3,13 @@ import { Dimensions, View, Text, StyleSheet } from 'react-native';
 import color from 'color';
 
 import Slider from '@react-native-community/slider';
-import { useDeviceOrientation } from '../../../services/utils/helpers';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useDeviceOrientation } from '@hooks/useDeviceOrientation';
 
 const VerticalScrollbar = ({
   hide,
   theme,
-  minScroll,
+  minScroll = 0,
   verticalSeekbar,
   percentage,
   scrollTo,

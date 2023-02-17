@@ -1,19 +1,10 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-  ScrollView,
-  TouchableWithoutFeedback,
-  Dimensions,
-  NativeModules,
-  NativeEventEmitter,
-} from 'react-native';
+import { Dimensions, NativeModules, NativeEventEmitter } from 'react-native';
 
 import VolumeButtonListener from './../../utils/volumeButtonListener';
 
 import { useDispatch } from 'react-redux';
-import { IconButton, Portal } from 'react-native-paper';
+import { Portal } from 'react-native-paper';
 import { useKeepAwake } from 'expo-keep-awake';
 
 import {
@@ -31,13 +22,11 @@ import { useTheme } from '@hooks/useTheme';
 import { updateChaptersRead } from '../../redux/tracker/tracker.actions';
 import { markChapterReadAction } from '../../redux/novel/novel.actions';
 import { saveScrollPosition } from '../../redux/preferences/preference.actions';
-import { parseChapterNumber } from '../../utils/parseChapterNumber';
+import { parseChapterNumber } from '@utils/parseChapterNumber';
 
 import ReaderAppbar from './components/ReaderAppbar';
 import ReaderFooter from './components/ReaderFooter';
 import ReaderSeekBar from './components/ReaderSeekBar';
-
-import EmptyView from '../../components/EmptyView';
 
 import GestureRecognizer from 'react-native-swipe-gestures';
 import { insertHistory } from '../../database/queries/HistoryQueries';
@@ -53,9 +42,9 @@ import BottomInfoBar from './components/BottomInfoBar/BottomInfoBar';
 import { sanitizeChapterText } from './utils/sanitizeChapterText';
 import ChapterDrawer from './components/ChapterDrawer';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import SkeletonLines from './components/SkeletonLines';
-import color from 'color';
 import { htmlToText } from '../../sources/helpers/htmlToText';
+import ChapterLoadingScreen from './ChapterLoadingScreen/ChapterLoadingScreen';
+import { ErrorScreenV2 } from '@components';
 
 const Chapter = ({ route }) => {
   const DrawerNav = createDrawerNavigator();
@@ -93,6 +82,7 @@ const ChapterContent = ({ route, navigation }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const readerSettings = useReaderSettings();
+  const { theme: backgroundColor } = readerSettings;
 
   const {
     swipeGestures = false,
@@ -110,10 +100,10 @@ const ChapterContent = ({ route, navigation }) => {
 
   const [hidden, setHidden] = useState(true);
 
-  const { tracker, trackedNovels } = useTrackingStatus();
   const position = usePosition(novelId, chapterId);
   const minScroll = useRef(0);
 
+  const { tracker, trackedNovels } = useTrackingStatus();
   const isTracked = trackedNovels.find(obj => obj.novelId === novelId);
 
   const [chapter, setChapter] = useState({});
@@ -290,7 +280,6 @@ const ChapterContent = ({ route, navigation }) => {
       return;
     }
     // you can add more condition for friendly usage. for example: if(name === "SWIPE_LEFT" || name === "right")
-    showToast('Loading...'); // for better experience :D
     chapter
       ? navigation.replace('Chapter', {
           ...params,
@@ -315,7 +304,6 @@ const ChapterContent = ({ route, navigation }) => {
     }
   };
 
-  const backgroundColor = readerSettings.theme;
   const chapterText = sanitizeChapterText(chapter.chapterText, {
     removeExtraParagraphSpacing,
   });
@@ -323,121 +311,71 @@ const ChapterContent = ({ route, navigation }) => {
     navigation.openDrawer();
     setHidden(true);
   };
+
+  if (loading) {
+    return <ChapterLoadingScreen />;
+  }
+
+  if (error) {
+    return <ErrorScreenV2 error={error} />;
+  }
+
   return (
     <>
-      <>
-        <ReaderAppbar
-          bookmark={bookmark}
-          novelName={novelName}
-          chapterId={chapterId}
-          chapterName={chapterName || chapter.chapterName}
-          hide={hidden}
-          dispatch={dispatch}
-          tts={startTts}
-          textToSpeech={ttsStatus}
-          theme={theme}
-        />
-        <GestureRecognizer
-          onLayout={useVolumeButtons && onLayout}
-          config={config}
-          style={[{ flex: 1 }, { backgroundColor }]}
-        >
-          {error ? (
-            <View style={{ flex: 1, justifyContent: 'center' }}>
-              <EmptyView
-                icon="Σ(ಠ_ಠ)"
-                description={error}
-                style={{ color: readerSettings.textColor }}
-              >
-                <IconButton
-                  icon="reload"
-                  size={25}
-                  style={{ margin: 0, marginTop: 16 }}
-                  iconColor={readerSettings.textColor}
-                  onPress={() => {
-                    getChapter(chapterId);
-                    setLoading(true);
-                    setError();
-                  }}
-                />
-                <Text style={{ color: readerSettings.textColor }}>Retry</Text>
-              </EmptyView>
-            </View>
-          ) : loading ? (
-            <SkeletonLines
-              containerMargin={readerSettings.padding + '%'}
-              containerHeight={'100%'}
-              containerWidth={'100%'}
-              color={
-                color(backgroundColor).isDark()
-                  ? color(backgroundColor).luminosity() !== 0
-                    ? color(backgroundColor).lighten(0.1).toString()
-                    : color(backgroundColor).negate().darken(0.98).toString()
-                  : color(backgroundColor).darken(0.04).toString()
-              }
-              highlightColor={
-                color(backgroundColor).isDark()
-                  ? color(backgroundColor).luminosity() !== 0
-                    ? color(backgroundColor).lighten(0.4).toString()
-                    : color(backgroundColor).negate().darken(0.92).toString()
-                  : color(backgroundColor).darken(0.08).toString()
-              }
-              textSize={readerSettings.textSize}
-              lineHeight={readerSettings.lineHeight}
-            />
-          ) : (
-            <TouchableWithoutFeedback
-              style={{ flex: 1 }}
-              onLayout={() => scrollTo(position?.position)}
-            >
-              <View style={{ flex: 1 }}>
-                <WebViewReader
-                  theme={theme}
-                  chapter={chapter}
-                  html={chapterText}
-                  reader={readerSettings}
-                  chapterName={chapter.chapterName || chapterName}
-                  layoutHeight={Dimensions.get('window').height}
-                  swipeGestures={swipeGestures}
-                  minScroll={minScroll}
-                  showSwipeMargins={showSwipeMargins}
-                  nextChapter={nextChapter}
-                  webViewRef={webViewRef}
-                  onPress={hideHeader}
-                  doSaveProgress={doSaveProgress}
-                  navigateToChapterBySwipe={navigateToChapterBySwipe}
-                  onWebViewNavigationStateChange={
-                    onWebViewNavigationStateChange
-                  }
-                />
-              </View>
-            </TouchableWithoutFeedback>
-          )}
-        </GestureRecognizer>
-        <BottomInfoBar scrollPercentage={position?.percentage || 0} />
-        <Portal>
-          <ReaderBottomSheetV2 bottomSheetRef={readerSheetRef} />
-        </Portal>
-        <ReaderSeekBar
-          hide={hidden}
-          theme={theme}
-          minScroll={minScroll.current}
-          verticalSeekbar={verticalSeekbar}
-          percentage={position?.percentage}
-          scrollTo={scrollTo}
-        />
-        <ReaderFooter
-          hide={hidden}
-          theme={theme}
-          chapterUrl={chapterUrl}
+      <GestureRecognizer
+        onLayout={useVolumeButtons && onLayout}
+        config={config}
+        style={[{ flex: 1 }, { backgroundColor }]}
+      >
+        <WebViewReader
+          chapter={chapter}
+          html={chapterText}
+          chapterName={chapter.chapterName || chapterName}
+          swipeGestures={swipeGestures}
+          minScroll={minScroll}
+          showSwipeMargins={showSwipeMargins}
           nextChapter={nextChapter}
-          prevChapter={prevChapter}
-          readerSheetRef={readerSheetRef}
-          scrollTo={scrollTo}
+          webViewRef={webViewRef}
+          onLayout={() => scrollTo(position?.position)}
+          onPress={hideHeader}
+          doSaveProgress={doSaveProgress}
           navigateToChapterBySwipe={navigateToChapterBySwipe}
-          openDrawer={openDrawer}
+          onWebViewNavigationStateChange={onWebViewNavigationStateChange}
         />
-      </>
+      </GestureRecognizer>
+      <BottomInfoBar scrollPercentage={position?.percentage || 0} />
+      <Portal>
+        <ReaderBottomSheetV2 bottomSheetRef={readerSheetRef} />
+      </Portal>
+      <ReaderAppbar
+        bookmark={bookmark}
+        novelName={novelName}
+        chapterId={chapterId}
+        chapterName={chapterName || chapter.chapterName}
+        hide={hidden}
+        tts={startTts}
+        textToSpeech={ttsStatus}
+        theme={theme}
+      />
+      <ReaderSeekBar
+        hide={hidden}
+        theme={theme}
+        minScroll={minScroll.current}
+        verticalSeekbar={verticalSeekbar}
+        percentage={position?.percentage}
+        scrollTo={scrollTo}
+      />
+      <ReaderFooter
+        hide={hidden}
+        theme={theme}
+        chapterUrl={chapterUrl}
+        nextChapter={nextChapter}
+        prevChapter={prevChapter}
+        readerSheetRef={readerSheetRef}
+        scrollTo={scrollTo}
+        navigateToChapterBySwipe={navigateToChapterBySwipe}
+        openDrawer={openDrawer}
+      />
     </>
   );
 };

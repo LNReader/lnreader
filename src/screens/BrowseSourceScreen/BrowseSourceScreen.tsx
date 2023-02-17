@@ -123,7 +123,6 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
       ) : errorMessage || novelList.length === 0 ? (
         <ErrorScreenV2
           error={errorMessage || getString('sourceScreen.noResultsFound')}
-          theme={theme}
         />
       ) : (
         <NovelList

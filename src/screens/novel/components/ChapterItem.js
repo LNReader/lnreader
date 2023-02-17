@@ -4,11 +4,11 @@ import color from 'color';
 
 import { Row } from '../../../components/Common';
 
-import { parseChapterNumber } from '../../../services/utils/helpers';
 import {
   ChapterBookmarkButton,
   DownloadButton,
 } from './Chapter/ChapterDownloadButtons';
+import { parseChapterNumber } from '@utils/parseChapterNumber';
 
 const ChapterItem = ({
   chapter,
@@ -29,6 +29,8 @@ const ChapterItem = ({
   const [deleteChapterMenu, setDeleteChapterMenu] = useState(false);
   const showDeleteChapterMenu = () => setDeleteChapterMenu(true);
   const hideDeleteChapterMenu = () => setDeleteChapterMenu(false);
+
+  const chapterNumber = parseChapterNumber(chapterName);
 
   return (
     <Pressable
@@ -56,8 +58,8 @@ const ChapterItem = ({
             numberOfLines={1}
           >
             {showChapterTitles
-              ? parseChapterNumber(chapterName)
-                ? 'Chapter ' + parseChapterNumber(chapterName)
+              ? chapterNumber
+                ? 'Chapter ' + chapterNumber
                 : 'Chapter ' + index
               : chapterName}
           </Text>
@@ -104,6 +106,7 @@ export default memo(ChapterItem);
 
 const styles = StyleSheet.create({
   chapterCardContainer: {
+    height: 64,
     paddingHorizontal: 16,
     paddingVertical: 8,
     flexDirection: 'row',

@@ -20,6 +20,7 @@ export interface StringMap {
   'common.searchResults': 'string';
   'common.chapters': 'string';
   'common.submit': 'string';
+  'common.retry': 'string';
   'library': 'string';
   'libraryScreen.searchbar': 'string';
   'libraryScreen.empty': 'string';
