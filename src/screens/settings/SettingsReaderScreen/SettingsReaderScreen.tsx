@@ -184,7 +184,7 @@ const SettingsReaderScreen = () => {
           theme={theme}
         />
         <SwitchItem
-          label={'Volume buttons scroll'}
+          label={getString('readerScreen.bottomSheet.volumeButtonsScroll')}
           value={useVolumeButtons}
           onPress={() =>
             dispatch(setAppSettings('useVolumeButtons', !useVolumeButtons))
