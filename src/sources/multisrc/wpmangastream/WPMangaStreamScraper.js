@@ -85,12 +85,10 @@ class WPMangaStreamScraper {
         case 'Seviye:':
           novel.status = status;
           break;
-        case 'Tipo:':
-        case 'Tür:':
-          novel.genre = detail?.replace(/\s/g, ',');
-          break;
       }
     });
+
+    novel.genre = loadedCheerio('.genxed').text().trim().replace(/\s/g, ',');
 
     novel.summary = loadedCheerio('div[itemprop="description"]').text().trim();
 

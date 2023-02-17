@@ -69,15 +69,18 @@ class WQMangaStreamScraper {
 
     loadedCheerio('div.serl:nth-child(3) > span').each(function () {
       const detailName = loadedCheerio(this).text().trim();
-      const detail = loadedCheerio(this).next().find('a').text();
+      const detail = loadedCheerio(this).next().prop('innerHTML');
 
       switch (detailName) {
         case 'الكاتب':
         case 'Author':
-          novel.author = detail;
+          novel.author = detail.replace(/<a.*?>(.*?)<.*?>/g, '$1');
           break;
       }
     });
+
+    const siteText = loadedCheerio('.sertogenre').prop('innerHTML');
+    novel.genre = siteText.replace(/<a.*?>(.*?)<.*?>/g, '$1,').slice(0, -1);
 
     novel.summary = loadedCheerio('div.sersys > p').text();
 
