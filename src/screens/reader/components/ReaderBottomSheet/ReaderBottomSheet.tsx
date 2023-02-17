@@ -38,30 +38,18 @@ const GeneralTab: React.FC = () => {
   const theme = useTheme();
   const dispatch = useAppDispatch();
   const {
-    useWebViewForChapter,
     fullScreenMode,
     autoScroll,
     verticalSeekbar,
     showBatteryAndTime,
     showScrollPercentage,
-    wvUseVolumeButtons = false,
+    useVolumeButtons = false,
     swipeGestures = false,
     removeExtraParagraphSpacing = false,
-    useChapterDrawerSwipeNavigation = true,
   } = useSettingsV1();
 
   return (
     <View>
-      <ReaderSheetPreferenceItem
-        label={getString('readerScreen.bottomSheet.renderHml')}
-        onPress={() =>
-          dispatch(
-            setAppSettings('useWebViewForChapter', !useWebViewForChapter),
-          )
-        }
-        value={useWebViewForChapter}
-        theme={theme}
-      />
       <ReaderSheetPreferenceItem
         label={getString('readerScreen.bottomSheet.fullscreen')}
         onPress={() =>
@@ -123,32 +111,14 @@ const GeneralTab: React.FC = () => {
         value={removeExtraParagraphSpacing}
         theme={theme}
       />
-      {useWebViewForChapter ? (
-        <ReaderSheetPreferenceItem
-          label={'Volume buttons scroll'}
-          onPress={() =>
-            dispatch(setAppSettings('wvUseVolumeButtons', !wvUseVolumeButtons))
-          }
-          value={wvUseVolumeButtons}
-          theme={theme}
-        />
-      ) : (
-        <ReaderSheetPreferenceItem
-          label={getString(
-            'readerScreen.bottomSheet.useChapterDrawerSwipeNavigation',
-          )}
-          onPress={() =>
-            dispatch(
-              setAppSettings(
-                'useChapterDrawerSwipeNavigation',
-                !useChapterDrawerSwipeNavigation,
-              ),
-            )
-          }
-          value={useChapterDrawerSwipeNavigation}
-          theme={theme}
-        />
-      )}
+      <ReaderSheetPreferenceItem
+        label={'Volume buttons scroll'}
+        onPress={() =>
+          dispatch(setAppSettings('useVolumeButtons', !useVolumeButtons))
+        }
+        value={useVolumeButtons}
+        theme={theme}
+      />
     </View>
   );
 };

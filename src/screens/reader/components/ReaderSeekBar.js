@@ -11,29 +11,14 @@ const VerticalScrollbar = ({
   theme,
   minScroll,
   verticalSeekbar,
-  currentScroll,
-  useWebViewForChapter,
-  scrollViewRef,
-  webViewRef,
-  setCurrentScroll,
+  percentage,
+  scrollTo,
 }) => {
   const { bottom } = useSafeAreaInsets();
   const onSlidingComplete = value => {
-    let offsetY = Math.round(
-      ((value - minScroll) * Dimensions.get('window').height) / minScroll,
-    );
-    if (useWebViewForChapter) {
-      webViewRef.current.injectJavaScript(`(()=>{
-        window.scrollTo({top: ${offsetY}, left:0, behavior:"smooth"});
-      })()`);
-    } else {
-      scrollViewRef.current.scrollTo({
-        x: 0,
-        y: offsetY,
-        animated: false,
-      });
-    }
-    setCurrentScroll({ offsetY: offsetY, percentage: value });
+    let offsetY =
+      ((value - minScroll) * Dimensions.get('window').height) / minScroll;
+    scrollTo(offsetY);
   };
   const screenOrientation = useDeviceOrientation();
 
@@ -56,7 +41,7 @@ const VerticalScrollbar = ({
             transform: [{ rotate: '-90deg' }],
           }}
         >
-          {currentScroll.percentage || Math.round(minScroll)}
+          {percentage || Math.round(minScroll)}
         </Text>
         <Slider
           style={{
@@ -66,7 +51,7 @@ const VerticalScrollbar = ({
           minimumValue={Math.round(minScroll)}
           maximumValue={100}
           step={1}
-          value={currentScroll.percentage || Math.round(minScroll)}
+          value={percentage || Math.round(minScroll)}
           onSlidingComplete={onSlidingComplete}
           thumbTintColor={theme.primary}
           minimumTrackTintColor={theme.primary}
@@ -100,7 +85,7 @@ const VerticalScrollbar = ({
             marginLeft: 16,
           }}
         >
-          {currentScroll.percentage}
+          {percentage || Math.round(minScroll)}
         </Text>
         <Slider
           style={{
@@ -110,7 +95,7 @@ const VerticalScrollbar = ({
           minimumValue={Math.round(minScroll)}
           maximumValue={100}
           step={1}
-          value={currentScroll.percentage || Math.round(minScroll)}
+          value={percentage || Math.round(minScroll)}
           onSlidingComplete={onSlidingComplete}
           thumbTintColor={theme.primary}
           minimumTrackTintColor={theme.primary}
