@@ -44,14 +44,14 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
   } = useLibrarySettings();
 
   const sortOrderDisplay: string[] = sortOrder.split(' ');
-  const sortOrderNameMap = {
-    'lastReadAt': 'libraryScreen.bottomSheet.sortOrders.lastRead',
-    'novels.novelName': 'libraryScreen.bottomSheet.sortOrders.alphabetically',
-    'novels.unread': 'libraryScreen.bottomSheet.sortOrders.unread',
-    'chaptersDownloaded': 'libraryScreen.bottomSheet.sortOrders.download',
-    'novelId': 'libraryScreen.bottomSheet.sortOrders.dateAdded',
-    'chaptersUnread': 'libraryScreen.bottomSheet.sortOrders.totalChapters',
-  };
+  const sortOrderNameMap = new Map<string, string>([
+    ['lastReadAt', 'libraryScreen.bottomSheet.sortOrders.lastRead'],
+    ['novels.novelName', 'libraryScreen.bottomSheet.sortOrders.alphabetically'],
+    ['novels.unread', 'libraryScreen.bottomSheet.sortOrders.unread'],
+    ['chaptersDownloaded', 'libraryScreen.bottomSheet.sortOrders.download'],
+    ['novelId', 'libraryScreen.bottomSheet.sortOrders.dateAdded'],
+    ['chaptersUnread', 'libraryScreen.bottomSheet.sortOrders.totalChapters'],
+  ]);
 
   const {
     updateLibraryOnLaunch = false,
@@ -161,7 +161,8 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
               'moreScreen.settingsScreen.generalSettingsScreen.novelSort',
             )}
             description={
-              getString(sortOrderNameMap[sortOrderDisplay[0]]) +
+              // @ts-ignore
+              getString(sortOrderNameMap.get(sortOrderDisplay[0])) +
               ' ' +
               sortOrderDisplay[1]
             }
