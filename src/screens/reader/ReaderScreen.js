@@ -86,7 +86,6 @@ const ChapterContent = ({ route, navigation }) => {
 
   const {
     swipeGestures = false,
-    showSwipeMargins = true,
     useVolumeButtons = false,
     autoScroll = false,
     autoScrollInterval = 10,
@@ -333,7 +332,6 @@ const ChapterContent = ({ route, navigation }) => {
           chapterName={chapter.chapterName || chapterName}
           swipeGestures={swipeGestures}
           minScroll={minScroll}
-          showSwipeMargins={showSwipeMargins}
           nextChapter={nextChapter}
           webViewRef={webViewRef}
           onLayout={() => scrollTo(position?.position)}
