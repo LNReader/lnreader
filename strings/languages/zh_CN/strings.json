@@ -16,7 +16,8 @@
     "globally": "globally",
     "searchResults": "搜索结果",
     "chapters": "章节",
-    "submit": "确定"
+    "submit": "确定",
+    "retry": "Retry"
   },
   "library": "书库",
   "libraryScreen": {
