@@ -15,7 +15,7 @@ const Button: React.FC<ButtonProps> = props => {
 
   return (
     <PaperButton {...props} theme={{ colors: theme }}>
-      {props.title}
+      {props.title || props.children}
     </PaperButton>
   );
 };

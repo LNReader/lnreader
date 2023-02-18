@@ -25,7 +25,6 @@ import {
   Menu,
   FAB,
   Snackbar,
-  overlay,
 } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Haptics from 'expo-haptics';
@@ -414,16 +413,12 @@ const Novel = ({ route, navigation }) => {
                     onPress={() => showDownloadMenu(true)}
                   />
                 }
-                contentStyle={{
-                  backgroundColor: overlay(2, theme.surface),
-                }}
+                contentStyle={{ backgroundColor: theme.surface2 }}
               >
                 <Menu.Item
                   title="Next chapter"
-                  style={{ backgroundColor: overlay(2, theme.surface) }}
-                  titleStyle={{
-                    color: theme.onSurface,
-                  }}
+                  style={{ backgroundColor: theme.surface2 }}
+                  titleStyle={{ color: theme.onSurface }}
                   onPress={() => {
                     dispatch(
                       downloadAllChaptersAction(
@@ -443,7 +438,7 @@ const Novel = ({ route, navigation }) => {
                 />
                 <Menu.Item
                   title="Next 5 chapter"
-                  style={{ backgroundColor: overlay(2, theme.surface) }}
+                  style={{ backgroundColor: theme.surface2 }}
                   titleStyle={{
                     color: theme.onSurface,
                   }}
@@ -466,7 +461,7 @@ const Novel = ({ route, navigation }) => {
                 />
                 <Menu.Item
                   title="Next 10 chapter"
-                  style={{ backgroundColor: overlay(2, theme.surface) }}
+                  style={{ backgroundColor: theme.surface2 }}
                   titleStyle={{
                     color: theme.onSurface,
                   }}
@@ -489,7 +484,7 @@ const Novel = ({ route, navigation }) => {
                 />
                 <Menu.Item
                   title="Custom"
-                  style={{ backgroundColor: overlay(2, theme.surface) }}
+                  style={{ backgroundColor: theme.surface2 }}
                   titleStyle={{ color: theme.onSurface }}
                   onPress={() => {
                     downloadCustomChapterModal.setTrue();
@@ -498,7 +493,7 @@ const Novel = ({ route, navigation }) => {
                 />
                 <Menu.Item
                   title="Unread"
-                  style={{ backgroundColor: overlay(2, theme.surface) }}
+                  style={{ backgroundColor: theme.surface2 }}
                   titleStyle={{
                     color: theme.onSurface,
                   }}
@@ -515,7 +510,7 @@ const Novel = ({ route, navigation }) => {
                 />
                 <Menu.Item
                   title="All"
-                  style={{ backgroundColor: overlay(2, theme.surface) }}
+                  style={{ backgroundColor: theme.surface2 }}
                   titleStyle={{
                     color: theme.onSurface,
                   }}
@@ -532,7 +527,7 @@ const Novel = ({ route, navigation }) => {
                 />
                 <Menu.Item
                   title="Delete downloads"
-                  style={{ backgroundColor: overlay(2, theme.surface) }}
+                  style={{ backgroundColor: theme.surface2 }}
                   titleStyle={{
                     color: theme.onSurface,
                   }}
@@ -558,12 +553,12 @@ const Novel = ({ route, navigation }) => {
                   />
                 }
                 contentStyle={{
-                  backgroundColor: overlay(2, theme.surface),
+                  backgroundColor: theme.surface2,
                 }}
               >
                 <Menu.Item
                   title="Edit info"
-                  style={{ backgroundColor: overlay(2, theme.surface) }}
+                  style={{ backgroundColor: theme.surface2 }}
                   titleStyle={{
                     color: theme.onSurface,
                   }}
@@ -574,7 +569,7 @@ const Novel = ({ route, navigation }) => {
                 />
                 <Menu.Item
                   title="Edit cover"
-                  style={{ backgroundColor: overlay(2, theme.surface) }}
+                  style={{ backgroundColor: theme.surface2 }}
                   titleStyle={{
                     color: theme.onSurface,
                   }}
@@ -716,36 +711,29 @@ const Novel = ({ route, navigation }) => {
               zIndex: 20,
               width: Dimensions.get('window').width,
               elevation: 2,
+              backgroundColor: theme.surface2,
+              paddingTop: StatusBar.currentHeight,
+              flexDirection: 'row',
+              alignItems: 'center',
+              paddingBottom: 8,
             }}
           >
-            <View
-              style={{
-                backgroundColor: theme.isDark
-                  ? overlay(2, theme.surface)
-                  : theme.secondaryContainer,
-                paddingTop: StatusBar.currentHeight,
-                flexDirection: 'row',
-                alignItems: 'center',
-                paddingBottom: 8,
+            <Appbar.Action
+              icon="close"
+              iconColor={theme.onBackground}
+              onPress={() => setSelected([])}
+            />
+            <Appbar.Content
+              title={`${selected.length}`}
+              titleStyle={{ color: theme.onSurface }}
+            />
+            <Appbar.Action
+              icon="select-all"
+              iconColor={theme.onBackground}
+              onPress={() => {
+                setSelected(chapters);
               }}
-            >
-              <Appbar.Action
-                icon="close"
-                iconColor={theme.onBackground}
-                onPress={() => setSelected([])}
-              />
-              <Appbar.Content
-                title={selected.length}
-                titleStyle={{ color: theme.onSurface }}
-              />
-              <Appbar.Action
-                icon="select-all"
-                iconColor={theme.onBackground}
-                onPress={() => {
-                  setSelected(chapters);
-                }}
-              />
-            </View>
+            />
           </Animated.View>
         ) : null}
       </View>

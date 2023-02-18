@@ -1,12 +1,12 @@
 import * as cheerio from 'cheerio';
+import { fetchHtml } from '@utils/fetch/fetch';
 const baseUrl = 'https://www.scribblehub.com/';
 
 const popularNovels = async page => {
   const totalPages = 326;
   let url = baseUrl + 'series-ranking/?sort=1&order=4&pg=' + page;
 
-  const result = await fetch(url);
-  const body = await result.text();
+  const body = await fetchHtml({ url, sourceId });
 
   const loadedCheerio = cheerio.load(body);
 
@@ -40,8 +40,7 @@ const popularNovels = async page => {
 const parseNovelAndChapters = async novelUrl => {
   const url = baseUrl + 'read/' + novelUrl;
 
-  const result = await fetch(url);
-  const body = await result.text();
+  const body = await fetchHtml({ url, sourceId });
 
   let loadedCheerio = cheerio.load(body);
 
@@ -120,8 +119,7 @@ const parseNovelAndChapters = async novelUrl => {
 const parseChapter = async (novelUrl, chapterUrl) => {
   const url = `${baseUrl}read/${novelUrl}/chapter/${chapterUrl}`;
 
-  const result = await fetch(url);
-  const body = await result.text();
+  const body = await fetchHtml({ url, sourceId });
 
   const loadedCheerio = cheerio.load(body);
 
@@ -143,8 +141,7 @@ const searchNovels = async searchTerm => {
   const url =
     'https://www.scribblehub.com/?s=' + searchTerm + '&post_type=fictionposts';
 
-  const result = await fetch(url);
-  const body = await result.text();
+  const body = await fetchHtml({ url, sourceId });
 
   const loadedCheerio = cheerio.load(body);
 

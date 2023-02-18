@@ -13,18 +13,12 @@ export const useSettingsV2 = () =>
 export const useBrowseSettings = () =>
   useAppSelector((state: RootState) => state.settingsReducerV2.browse) || {};
 
-export const useAppearanceSettings = () =>
-  useAppSelector((state: RootState) => state.settingsReducerV2.appearance);
-
 export const useReaderSettings = () =>
   useAppSelector((state: RootState) => state.settingsReducer.reader);
 
 /** @deprecated */
 export const useLibrarySettings = () =>
   useAppSelector((state: RootState) => state.settingsReducerV2.library);
-
-export const useUpdateSettings = () =>
-  useAppSelector((state: RootState) => state.settingsReducerV2.updates);
 
 export const useDownloadQueue = () =>
   useAppSelector((state: RootState) => state.downloadsReducer.downloadQueue);

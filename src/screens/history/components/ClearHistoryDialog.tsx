@@ -1,10 +1,10 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
+import { Dialog, Portal } from 'react-native-paper';
 
+import { Button } from '@components';
 import { getString } from '@strings/translations';
-
-import { Button, Dialog, Portal } from 'react-native-paper';
-import { ThemeColors } from '../../../theme/types';
+import { ThemeColors } from '@theme/types';
 
 interface ClearHistoryDialogProps {
   visible: boolean;
@@ -26,17 +26,17 @@ const ClearHistoryDialog: React.FC<ClearHistoryDialogProps> = ({
 
   return (
     <Portal>
-      <Dialog visible={visible} onDismiss={onDismiss} style={styles.container}>
+      <Dialog
+        visible={visible}
+        onDismiss={onDismiss}
+        style={[styles.container, { backgroundColor: theme.overlay3 }]}
+      >
         <Dialog.Title style={[styles.title, { color: theme.onSurface }]}>
           {getString('historyScreen.clearHistorWarning')}
         </Dialog.Title>
         <Dialog.Actions>
-          <Button theme={{ colors: { ...theme } }} onPress={onDismiss}>
-            {getString('common.cancel')}
-          </Button>
-          <Button theme={{ colors: { ...theme } }} onPress={handleOnSubmit}>
-            {getString('common.ok')}
-          </Button>
+          <Button onPress={onDismiss}>{getString('common.cancel')}</Button>
+          <Button onPress={handleOnSubmit}>{getString('common.ok')}</Button>
         </Dialog.Actions>
       </Dialog>
     </Portal>
@@ -47,7 +47,8 @@ export default ClearHistoryDialog;
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: 8,
+    margin: 20,
+    borderRadius: 28,
   },
   title: {
     letterSpacing: 0,
