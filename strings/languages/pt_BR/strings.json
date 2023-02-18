@@ -33,7 +33,10 @@
       "sortOrders": {
         "dateAdded": "Data adicionado",
         "alphabetically": "Em Ordem Alfabética",
-        "totalChapters": "Total de capítulos"
+        "totalChapters": "Total de capítulos",
+        "download": "Downloaded",
+        "unread": "Unread",
+        "lastRead": "Last Read"
       },
       "display": {
         "displayMode": "Modo de exibição",
@@ -88,7 +91,10 @@
       "showProgressPercentage": "Exibir porcentagem do progresso",
       "swipeGestures": "Deslize para esquerda/direita para navegar entre capítulos",
       "allowTextSelection": "Permitir seleção de texto",
-      "useChapterDrawerSwipeNavigation": "Deslize para a direita para abrir a gaveta"
+      "useChapterDrawerSwipeNavigation": "Deslize para a direita para abrir a gaveta",
+      "removeExtraSpacing": "Remove extra paragraph spacing",
+      "volumeButtonsScroll": "Volume buttons scroll",
+      "showSwipeMargins": "Show swipe margins"
     },
     "drawer": {
       "scrollToCurrentChapter": "Rolar para o capítulo atual",
@@ -124,7 +130,29 @@
     "settings": "Configurações",
     "settingsScreen": {
       "generalSettings": "Geral",
-      "generalSettingsScreen": {},
+      "generalSettingsScreen": {
+        "display": "Display",
+        "displayMode": "Display Mode",
+        "itemsPerRow": "Items per row",
+        "itemsPerRowLibrary": "Items per row in library",
+        "novelBadges": "Novel Badges",
+        "novelSort": "Novel Sort",
+        "updateLibrary": "Update library on launch",
+        "useFAB": "Use FAB in Library",
+        "novel": "Novel",
+        "chapterSort": "Default chapter sort",
+        "bySource": "By source",
+        "asc": "(Ascending)",
+        "desc": "(Descending)",
+        "globalUpdate": "Global update",
+        "updateOngoing": "Only update ongoing novels",
+        "refreshMetadata": "Automatically refresh metadata",
+        "refreshMetadataDescription": "Check for new cover and details when updating library",
+        "updateTime": "Show last update time",
+        "autoDownload": "Auto-download",
+        "downloadNewChapters": "Download new chapters",
+        "disableHapticFeedback": "Disable haptic feedback"
+      },
       "readerSettings": {
         "title": "Leitor",
         "readerTheme": "Tema do leitor",
