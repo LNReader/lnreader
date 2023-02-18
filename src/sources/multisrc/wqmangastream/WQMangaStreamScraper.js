@@ -1,6 +1,7 @@
-import { fetchHtml } from '@utils/fetch/fetch';
 import * as cheerio from 'cheerio';
-class WPMangaStreamScraper {
+import { fetchHtml } from '@utils/fetch/fetch';
+
+class WQMangaStreamScraper {
   constructor(sourceId, baseUrl, sourceName, options) {
     this.sourceId = sourceId;
     this.baseUrl = baseUrl;
@@ -21,12 +22,11 @@ class WPMangaStreamScraper {
 
     let novels = [];
 
-    loadedCheerio('article.bs').each(function () {
-      const novelName = loadedCheerio(this).find('.ntitle').text().trim();
+    loadedCheerio('article.maindet').each(function () {
+      const novelName = loadedCheerio(this).find('h2').text();
       let image = loadedCheerio(this).find('img');
       const novelCover = image.attr('data-src') || image.attr('src');
-
-      const novelUrl = loadedCheerio(this).find('a').attr('href');
+      const novelUrl = loadedCheerio(this).find('h2 a').attr('href');
 
       const novel = {
         sourceId,
@@ -43,8 +43,9 @@ class WPMangaStreamScraper {
 
   async parseNovelAndChapters(novelUrl) {
     const url = novelUrl;
+    let sourceId = this.sourceId;
 
-    const body = await fetchHtml({ url, sourceId: this.sourceId });
+    const body = await fetchHtml({ url, sourceId });
 
     let loadedCheerio = cheerio.load(body);
 
@@ -58,45 +59,35 @@ class WPMangaStreamScraper {
 
     novel.novelUrl = novelUrl;
 
-    novel.novelName = loadedCheerio('.entry-title').text();
+    novel.novelName = loadedCheerio('h1.entry-title').text();
 
     novel.novelCover =
       loadedCheerio('img.wp-post-image').attr('data-src') ||
       loadedCheerio('img.wp-post-image').attr('src');
 
-    loadedCheerio('div.spe > span').each(function () {
-      const detailName = loadedCheerio(this).find('b').text().trim();
-      const detail = loadedCheerio(this).find('b').next().text().trim();
-      const status = loadedCheerio(this)
-        .children('b') //select all the children
-        .remove() //remove all the children
-        .end() //again go back to selected element
-        .text()
-        .trim();
+    novel.status = loadedCheerio('div.sertostat > span').text().trim();
+
+    loadedCheerio('div.serl:nth-child(3) > span').each(function () {
+      const detailName = loadedCheerio(this).text().trim();
+      const detail = loadedCheerio(this).next().prop('innerHTML');
 
       switch (detailName) {
-        case 'المؤلف:':
-        case 'Yazar:':
-        case 'Autor:':
-        case 'Author:':
-          novel.author = detail;
-          break;
-        case 'Status:':
-        case 'Seviye:':
-          novel.status = status;
+        case 'الكاتب':
+        case 'Author':
+          novel.author = detail.replace(/<a.*?>(.*?)<.*?>/g, '$1');
           break;
       }
     });
 
-    novel.genre = loadedCheerio('.genxed').text().trim().replace(/\s/g, ',');
-
-    novel.summary = loadedCheerio('.entry-content')
-      .find('h3')
-      .remove()
-      .end()
+    novel.genre = loadedCheerio('.sertogenre')
       .prop('innerHTML')
-      .replace(/(<.*?>)/g, '\n')
-      .replace(/(&.*;)/g, '');
+      .replace(/<a.*?>(.*?)<.*?>/g, '$1,')
+      .slice(0, -1);
+
+    novel.summary = loadedCheerio('.sersys')
+      .prop('innerHTML')
+      .replace(/(<.*?>)/g, '')
+      .replace(/(&.*;)/g, '\n');
 
     let novelChapters = [];
 
@@ -134,7 +125,7 @@ class WPMangaStreamScraper {
     const loadedCheerio = cheerio.load(body);
 
     let chapterName = loadedCheerio('.entry-title').text();
-    let chapterText = loadedCheerio('div.epcontent').html();
+    let chapterText = loadedCheerio('.epcontent').html();
 
     const chapter = {
       sourceId,
@@ -157,10 +148,11 @@ class WPMangaStreamScraper {
 
     let novels = [];
 
-    loadedCheerio('article.bs').each(function () {
-      const novelName = loadedCheerio(this).find('.ntitle').text().trim();
-      const novelCover = loadedCheerio(this).find('img').attr('src');
-      const novelUrl = loadedCheerio(this).find('a').attr('href');
+    loadedCheerio('article.maindet').each(function () {
+      const novelName = loadedCheerio(this).find('h2').text();
+      let image = loadedCheerio(this).find('img');
+      const novelCover = image.attr('data-src') || image.attr('src');
+      const novelUrl = loadedCheerio(this).find('h2 a').attr('href');
 
       const novel = {
         sourceId,
@@ -176,4 +168,4 @@ class WPMangaStreamScraper {
   }
 }
 
-module.exports = WPMangaStreamScraper;
+module.exports = WQMangaStreamScraper;
