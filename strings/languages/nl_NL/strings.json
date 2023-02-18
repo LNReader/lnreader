@@ -33,7 +33,10 @@
       "sortOrders": {
         "dateAdded": "Datum toegevoegd",
         "alphabetically": "Alfabetisch",
-        "totalChapters": "Totaal aantal hoofdstukken"
+        "totalChapters": "Totaal aantal hoofdstukken",
+        "download": "Downloaded",
+        "unread": "Unread",
+        "lastRead": "Last Read"
       },
       "display": {
         "displayMode": "Weergavemodus",
@@ -88,7 +91,10 @@
       "showProgressPercentage": "Voortgangspercentage weergeven",
       "swipeGestures": "Veeg naar links of rechts om tussen de hoofdstukken te navigeren",
       "allowTextSelection": "Tekstselectie toestaan",
-      "useChapterDrawerSwipeNavigation": "Swipe right to open drawer"
+      "useChapterDrawerSwipeNavigation": "Swipe right to open drawer",
+      "removeExtraSpacing": "Remove extra paragraph spacing",
+      "volumeButtonsScroll": "Volume buttons scroll",
+      "showSwipeMargins": "Show swipe margins"
     },
     "drawer": {
       "scrollToCurrentChapter": "Scroll to current chapter",
@@ -124,7 +130,29 @@
     "settings": "Instellingen",
     "settingsScreen": {
       "generalSettings": "Algemeen",
-      "generalSettingsScreen": {},
+      "generalSettingsScreen": {
+        "display": "Display",
+        "displayMode": "Display Mode",
+        "itemsPerRow": "Items per row",
+        "itemsPerRowLibrary": "Items per row in library",
+        "novelBadges": "Novel Badges",
+        "novelSort": "Novel Sort",
+        "updateLibrary": "Update library on launch",
+        "useFAB": "Use FAB in Library",
+        "novel": "Novel",
+        "chapterSort": "Default chapter sort",
+        "bySource": "By source",
+        "asc": "(Ascending)",
+        "desc": "(Descending)",
+        "globalUpdate": "Global update",
+        "updateOngoing": "Only update ongoing novels",
+        "refreshMetadata": "Automatically refresh metadata",
+        "refreshMetadataDescription": "Check for new cover and details when updating library",
+        "updateTime": "Show last update time",
+        "autoDownload": "Auto-download",
+        "downloadNewChapters": "Download new chapters",
+        "disableHapticFeedback": "Disable haptic feedback"
+      },
       "readerSettings": {
         "title": "Lezer",
         "readerTheme": "Lezer thema",
