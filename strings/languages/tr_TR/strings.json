@@ -33,7 +33,10 @@
       "sortOrders": {
         "dateAdded": "Eklendiği tarih",
         "alphabetically": "Alfabetik",
-        "totalChapters": "Toplam bölüm"
+        "totalChapters": "Toplam bölüm",
+        "download": "Downloaded",
+        "unread": "Unread",
+        "lastRead": "Last Read"
       },
       "display": {
         "displayMode": "Görüntüleme modu",
@@ -88,7 +91,10 @@
       "showProgressPercentage": "İlerleme yüzdesini göster",
       "swipeGestures": "Bölümler arası gezinmek için sol veya sağa doğru kaydırın",
       "allowTextSelection": "Yazı seçmeye izin ver",
-      "useChapterDrawerSwipeNavigation": "Çekmeceyi açmak için sağa kaydırın"
+      "useChapterDrawerSwipeNavigation": "Çekmeceyi açmak için sağa kaydırın",
+      "removeExtraSpacing": "Remove extra paragraph spacing",
+      "volumeButtonsScroll": "Volume buttons scroll",
+      "showSwipeMargins": "Show swipe margins"
     },
     "drawer": {
       "scrollToCurrentChapter": "Mevcut bölüme kaydır",
@@ -124,7 +130,29 @@
     "settings": "Ayarlar",
     "settingsScreen": {
       "generalSettings": "Genel",
-      "generalSettingsScreen": {},
+      "generalSettingsScreen": {
+        "display": "Display",
+        "displayMode": "Display Mode",
+        "itemsPerRow": "Items per row",
+        "itemsPerRowLibrary": "Items per row in library",
+        "novelBadges": "Novel Badges",
+        "novelSort": "Novel Sort",
+        "updateLibrary": "Update library on launch",
+        "useFAB": "Use FAB in Library",
+        "novel": "Novel",
+        "chapterSort": "Default chapter sort",
+        "bySource": "By source",
+        "asc": "(Ascending)",
+        "desc": "(Descending)",
+        "globalUpdate": "Global update",
+        "updateOngoing": "Only update ongoing novels",
+        "refreshMetadata": "Automatically refresh metadata",
+        "refreshMetadataDescription": "Check for new cover and details when updating library",
+        "updateTime": "Show last update time",
+        "autoDownload": "Auto-download",
+        "downloadNewChapters": "Download new chapters",
+        "disableHapticFeedback": "Disable haptic feedback"
+      },
       "readerSettings": {
         "title": "Okuyucu",
         "readerTheme": "Okuyucu teması",
