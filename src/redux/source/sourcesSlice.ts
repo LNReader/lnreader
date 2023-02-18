@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import AllSources from '../../sources/sources.json';
 
 import { translations } from 'i18n-js';
-import { locale } from 'expo-localization';
+import { localization } from '../../../strings/translations';
 import { Source } from '../../sources/types';
 
 const languages = {
@@ -24,8 +24,8 @@ const languages = {
 // Hope you can do something to synchronize translation system.
 // Also take care of some case like vi-VN: Vietnamese not vi
 export const defaultLanguage =
-  locale in translations || locale.split('-')[0] in translations
-    ? languages[locale] || languages[locale.split('-')[0]]
+  localization in translations || localization.split('-')[0] in translations
+    ? languages[localization] || languages[localization.split('-')[0]]
     : 'English';
 // That's why this code is so long :(
 
