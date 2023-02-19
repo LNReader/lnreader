@@ -17,7 +17,7 @@
     "searchResults": "Результаты поиска",
     "chapters": "Главы",
     "submit": "Продолжить",
-    "retry": "Retry"
+    "retry": "Повторить"
   },
   "library": "Библиотека",
   "libraryScreen": {
@@ -34,9 +34,9 @@
         "dateAdded": "По дате добавления",
         "alphabetically": "По алфавиту",
         "totalChapters": "Всего глав",
-        "download": "Downloaded",
-        "unread": "Unread",
-        "lastRead": "Last Read"
+        "download": "Загружено",
+        "unread": "Непрочитанные",
+        "lastRead": "Последнее прочитанное"
       },
       "display": {
         "displayMode": "Режим отображения",
@@ -92,9 +92,9 @@
       "swipeGestures": "Проведите влево или вправо для перехода между главами",
       "allowTextSelection": "Разрешить выделение текста",
       "useChapterDrawerSwipeNavigation": "Проведите вправо, чтобы открыть",
-      "removeExtraSpacing": "Remove extra paragraph spacing",
-      "volumeButtonsScroll": "Volume buttons scroll",
-      "showSwipeMargins": "Show swipe margins"
+      "removeExtraSpacing": "Удалить дополнительный интервал параграфа",
+      "volumeButtonsScroll": "Прокрутка кноками громкости",
+      "showSwipeMargins": "Показать зоны прокрутки"
     },
     "drawer": {
       "scrollToCurrentChapter": "Прокрутка к текущей главе",
@@ -131,27 +131,27 @@
     "settingsScreen": {
       "generalSettings": "Основные",
       "generalSettingsScreen": {
-        "display": "Display",
-        "displayMode": "Display Mode",
-        "itemsPerRow": "Items per row",
-        "itemsPerRowLibrary": "Items per row in library",
-        "novelBadges": "Novel Badges",
-        "novelSort": "Novel Sort",
-        "updateLibrary": "Update library on launch",
-        "useFAB": "Use FAB in Library",
-        "novel": "Novel",
-        "chapterSort": "Default chapter sort",
-        "bySource": "By source",
-        "asc": "(Ascending)",
-        "desc": "(Descending)",
-        "globalUpdate": "Global update",
-        "updateOngoing": "Only update ongoing novels",
-        "refreshMetadata": "Automatically refresh metadata",
-        "refreshMetadataDescription": "Check for new cover and details when updating library",
-        "updateTime": "Show last update time",
-        "autoDownload": "Auto-download",
-        "downloadNewChapters": "Download new chapters",
-        "disableHapticFeedback": "Disable haptic feedback"
+        "display": "Вид",
+        "displayMode": "Режим Отображения",
+        "itemsPerRow": "элемента в ряду",
+        "itemsPerRowLibrary": "Количество элементов в ряду",
+        "novelBadges": "Иконки тайтлов",
+        "novelSort": "Сортировка тайтлов",
+        "updateLibrary": "Обновлять библиотеку при запуске",
+        "useFAB": "Использовать FAB в библиотеке",
+        "novel": "Тайтл",
+        "chapterSort": "Сортировка глав по умолчанию",
+        "bySource": "По источникам",
+        "asc": "(По возрастанию)",
+        "desc": "(По убыванию)",
+        "globalUpdate": "Обновить всё",
+        "updateOngoing": "Обновлять только онгоинги",
+        "refreshMetadata": "Автоматически обновлять метаданные",
+        "refreshMetadataDescription": "Проверять наличие новой обложки и описания при обновлении библиотеки",
+        "updateTime": "Показать время последнего обновления",
+        "autoDownload": "Автозагрузка",
+        "downloadNewChapters": "Скачивать новые главы",
+        "disableHapticFeedback": "Отключить виброотклик"
       },
       "readerSettings": {
         "title": "Чтение",
