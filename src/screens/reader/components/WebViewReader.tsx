@@ -14,11 +14,20 @@ type WebViewPostEvent = {
 };
 
 type WebViewReaderProps = {
-  chapter: ChapterItem;
+  chapterInfo: {
+    sourceId: string;
+    chapterId: string;
+    chapterUrl: string;
+    novelId: string;
+    novelUrl: string;
+    novelName: string;
+    chapterName: string;
+    bookmark: string;
+  };
   html: string;
   chapterName: string;
   swipeGestures: boolean;
-  minScroll: any;
+  minScroll: React.MutableRefObject<number>;
   nextChapter: ChapterItem;
   webViewRef: React.MutableRefObject<WebView>;
   onPress(): void;
@@ -35,7 +44,7 @@ const onClickWebViewPostMessage = (event: WebViewPostEvent) =>
 
 const WebViewReader: React.FC<WebViewReaderProps> = props => {
   const {
-    chapter,
+    chapterInfo,
     html,
     chapterName,
     swipeGestures,
@@ -83,14 +92,20 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
             if (event.data) {
               if (Array.isArray(event.data)) {
                 const promises: Promise<{ data: any; id: number }>[] = [];
+                const splitUrl = chapterInfo.novelUrl.split('/');
+                const protocol = splitUrl[0];
+                const domain = splitUrl[2];
+                const siteHeaders = {
+                  Referer: protocol + '//' + domain,
+                };
                 for (let i = 0; i < event.data.length; i++) {
                   const { url, id } = event.data[i];
                   if (url) {
                     if (id) {
                       promises.push(
-                        RNFetchBlob.fs
-                          .readFile(url, 'utf8')
-                          .then(d => ({ data: d, id })),
+                        RNFetchBlob.fetch('get', url, siteHeaders).then(
+                          res => ({ data: res.base64(), id }),
+                        ),
                       );
                     } else {
                       // no imageid
@@ -102,7 +117,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                     const inject = datas.reduce((p, data) => {
                       return (
                         p +
-                        `document.querySelector("img[file-id='${data.id}']").src="data:image/png;base64,${data.data}";`
+                        `document.getElementById("${data.id}").setAttribute("src", "data:image/png;base64,${data.data}");`
                       );
                     }, '');
                     webViewRef.current?.injectJavaScript(inject);
@@ -215,8 +230,8 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                       type: 'hide',
                     })}>
                       <chapter 
-                        data-novel-id='${chapter.novelId}'
-                        data-chapter-id='${chapter.chapterId}'
+                        data-novel-id='${chapterInfo.novelId}'
+                        data-chapter-id='${chapterInfo.chapterId}'
                       >
                         ${html}
                       </chapter>
