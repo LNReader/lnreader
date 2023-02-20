@@ -135,8 +135,8 @@ const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
   const backgroundColor = tabHeaderColor;
 
   const renderScene = SceneMap({
-    first: ReaderTab,
-    second: GeneralTab,
+    'readerTab': ReaderTab,
+    'generalTab': GeneralTab,
   });
 
   const layout = useWindowDimensions();
@@ -145,11 +145,11 @@ const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
   const routes = useMemo(
     () => [
       {
-        key: 'first',
+        key: 'readerTab',
         title: getString('moreScreen.settingsScreen.readerSettings.title'),
       },
       {
-        key: 'second',
+        key: 'generalTab',
         title: getString('moreScreen.settingsScreen.generalSettings'),
       },
     ],
