@@ -128,7 +128,8 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                       );
                     }, '');
                     webViewRef.current?.injectJavaScript(
-                      inject + 'sendHeight();',
+                      inject +
+                        'window.requestAnimationFrame(()=>sendHeight());',
                     );
                   })
                   .catch(e => {
@@ -246,14 +247,14 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                       </chapter>
                     </div>
                     <script>
-                    const readerType = document.querySelector("input[type='offline']")?.getAttribute("type");
-                    if(readerType === "offline"){
+                    const isOffline = !!document.querySelector("input[offline]")
+                    if(isOffline){
                       imgs = [...document.querySelectorAll("img")].map((img, index)=>{
                         img.setAttribute("file-id", index.toString());
                         return {url:img.getAttribute("file-path"), id:img.getAttribute("file-id")};
                       });
                       window.ReactNativeWebView.postMessage(JSON.stringify({type:"imgfiles",data:{imgs:imgs,type:"offline"}}));
-                    }else if("${headers !== undefined}" === "true"){
+                    }else if(${!!headers}){
                       imgs = [...document.querySelectorAll("img")].map((img, index)=>{
                         img.setAttribute("file-id", index.toString());
                         return {url:img.getAttribute("src"), id:img.getAttribute("file-id")};
@@ -261,38 +262,38 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                       window.ReactNativeWebView.postMessage(JSON.stringify({type:"imgfiles",data:{imgs:imgs,type:"online"}}));
                     }
                     var scrollTimeout;
-                    const sendHeight = () => {
-                      window.ReactNativeWebView.postMessage(
-                        JSON.stringify(
-                          {
-                            type:"scrollend",
-                            data:{
-                              offSetY: window.pageYOffset,
-                              percentage: (window.pageYOffset+${layoutHeight})/document.body.scrollHeight*100,
-                            }
-                          }
-                        )
-                      );
-                    }
+                    
                     window.addEventListener("scroll", (event) => {
                       window.clearTimeout( scrollTimeout );
                       scrollTimeout = setTimeout(() => {
-                        sendHeight();
+                        window.ReactNativeWebView.postMessage(
+                          JSON.stringify(
+                            {
+                              type:"scrollend",
+                              data:{
+                                offSetY: window.pageYOffset,
+                                percentage: (window.pageYOffset+${layoutHeight})/document.body.scrollHeight*100,
+                              }
+                            }
+                          )
+                        );
                       }, 100);
                     });
-
-                    let loadInterval = setInterval(() => {
+                    const sendHeight = () => {
                       window.ReactNativeWebView.postMessage(
                         JSON.stringify(
                           {
                             type:"height",
                             data:document.body.scrollHeight
                           }
-                          )
-                        );
+                        )
+                      );
+                    }
+                    let loadInterval = setInterval(() => {
+                      sendHeight();
                     }, 500);
                     setTimeout(() => {
-                      clearInterval( loadInterval );
+                      clearInterval(loadInterval);
                     }, 2000);
                     </script>
                     <div class="infoText">
