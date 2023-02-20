@@ -1,42 +1,42 @@
 {
   "common": {
-    "cancel": "Cancel",
+    "cancel": "Cancelar",
     "ok": "Ok",
-    "save": "Save",
-    "clear": "Clear",
-    "reset": "Reset",
-    "search": "Search",
-    "install": "Install",
-    "newUpdateAvailable": "New update available",
-    "categories": "Categories",
-    "add": "Add",
-    "edit": "Edit",
-    "name": "Name",
-    "searchFor": "Search for",
-    "globally": "globally",
-    "searchResults": "Search results",
-    "chapters": "Chapters",
-    "submit": "Submit",
-    "retry": "Retry"
+    "save": "Guardar",
+    "clear": "Limpiar",
+    "reset": "Reiniciar",
+    "search": "Buscar",
+    "install": "Instalar",
+    "newUpdateAvailable": "Nueva actualización disponible",
+    "categories": "Categorías",
+    "add": "Añadir",
+    "edit": "Editar",
+    "name": "Nombre",
+    "searchFor": "Buscar por",
+    "globally": "globalmente",
+    "searchResults": "Resultados de la búsqueda",
+    "chapters": "Capítulos",
+    "submit": "Enviar",
+    "retry": "Intentar nuevamente"
   },
-  "library": "Library",
+  "library": "Biblioteca",
   "libraryScreen": {
-    "searchbar": "Search library",
-    "empty": "Your library is empty. Add series to your library from Browse.",
+    "searchbar": "Buscar en la biblioteca",
+    "empty": "Tu biblioteca está vacía. Añade series a tu biblioteca desde el navegador.",
     "bottomSheet": {
       "filters": {
-        "downloaded": "Downloaded",
-        "unread": "Unread",
-        "completed": "Completed",
-        "started": "Started"
+        "downloaded": "Descargado",
+        "unread": "No leído",
+        "completed": "Terminado",
+        "started": "Iniciado"
       },
       "sortOrders": {
-        "dateAdded": "Date added",
-        "alphabetically": "Alphabetically",
-        "totalChapters": "Total chapters",
-        "download": "Downloaded",
-        "unread": "Unread",
-        "lastRead": "Last Read"
+        "dateAdded": "Fecha agregada",
+        "alphabetically": "Alfabéticamente",
+        "totalChapters": "Capítulos totales",
+        "download": "Descargado",
+        "unread": "No leído",
+        "lastRead": "Último leído"
       },
       "display": {
         "displayMode": "Display mode",
