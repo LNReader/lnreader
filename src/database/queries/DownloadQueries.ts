@@ -79,8 +79,8 @@ export const getChapterFromDb = async (
         getChapterFromDbQuery,
         [chapterId],
         (txObj, results) => resolve(results.rows.item(0)),
-        () => {
-          reject();
+        (_, error) => {
+          reject(error);
           return false;
         },
       );
