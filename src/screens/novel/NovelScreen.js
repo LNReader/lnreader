@@ -51,7 +51,7 @@ import {
 } from '../../hooks/reduxHooks';
 import { showToast } from '../../hooks/showToast';
 import { useTheme } from '@hooks/useTheme';
-import ChapterItem from './components/ChapterItem';
+import ChapterItemType from './components/ChapterItem';
 import NovelInfoHeader from './components/Info/NovelInfoHeader';
 import NovelBottomSheet from './components/NovelBottomSheet';
 import TrackSheet from './components/Tracker/TrackSheet';
@@ -142,15 +142,15 @@ const Novel = ({ route, navigation }) => {
 
   const keyExtractor = useCallback(i => i.chapterId.toString(), []);
 
-  const downloadChapter = (chapterUrl, chapterName, chapterId) =>
+  const downloadChapter = chapter =>
     dispatch(
       downloadChapterAction(
         sourceId,
         novelUrl,
         novelId,
-        chapterUrl,
-        chapterName,
-        chapterId,
+        chapter.chapterUrl,
+        chapter.chapterName,
+        chapter.chapterId,
       ),
     );
 
@@ -334,7 +334,7 @@ const Novel = ({ route, navigation }) => {
   };
 
   const renderItem = ({ item: it, index }) => (
-    <ChapterItem
+    <ChapterItemType
       theme={theme}
       chapter={it}
       index={index}

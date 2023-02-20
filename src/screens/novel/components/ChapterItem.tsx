@@ -10,7 +10,25 @@ import {
 } from './Chapter/ChapterDownloadButtons';
 import { parseChapterNumber } from '@utils/parseChapterNumber';
 
-const ChapterItem = ({
+import { ThemeColors } from '@theme/types';
+import { ChapterItemExtended } from '@database/types';
+
+interface ChapterItemProps {
+  chapter: ChapterItemExtended;
+  theme: ThemeColors;
+  index?: number;
+  downloadQueue: any;
+  showChapterTitles: boolean;
+  isSelected: (chapterId: number) => boolean;
+  downloadChapter: (chapter: ChapterItemExtended) => (dispatch: any) => void;
+  deleteChapter: (chapter: ChapterItemExtended) => (dispatch: any) => void;
+  onSelectPress?: (chapter: ChapterItemExtended, arg1: () => void) => void;
+  onSelectLongPress: (chapter: ChapterItemExtended) => void;
+  navigateToChapter: (chapter: ChapterItemExtended) => (dispatch: any) => void;
+  showProgressPercentage: (chapter: ChapterItemExtended) => void;
+}
+
+const ChapterItem: React.FC<ChapterItemProps> = ({
   chapter,
   theme,
   index,
@@ -26,9 +44,10 @@ const ChapterItem = ({
 }) => {
   const { chapterId, chapterName, read, releaseDate, bookmark } = chapter;
 
-  const [deleteChapterMenu, setDeleteChapterMenu] = useState(false);
-  const showDeleteChapterMenu = () => setDeleteChapterMenu(true);
-  const hideDeleteChapterMenu = () => setDeleteChapterMenu(false);
+  const [deleteChapterMenuVisible, setDeleteChapterMenuVisible] =
+    useState(false);
+  const showDeleteChapterMenu = () => setDeleteChapterMenuVisible(true);
+  const hideDeleteChapterMenu = () => setDeleteChapterMenuVisible(false);
 
   const chapterNumber = parseChapterNumber(chapterName);
 
@@ -36,15 +55,19 @@ const ChapterItem = ({
     <Pressable
       style={[
         styles.chapterCardContainer,
-        isSelected(chapterId) && {
+        isSelected?.(chapterId) && {
           backgroundColor: color(theme.primary).alpha(0.12).string(),
         },
       ]}
-      onPress={() => onSelectPress(chapter, () => navigateToChapter(chapter))}
-      onLongPress={() => onSelectLongPress(chapter)}
+      onPress={() => {
+        onSelectPress
+          ? onSelectPress(chapter, () => navigateToChapter(chapter))
+          : navigateToChapter(chapter);
+      }}
+      onLongPress={() => onSelectLongPress?.(chapter)}
       android_ripple={{ color: theme.rippleColor }}
     >
-      <Row style={{ flex: 1, overflow: 'hidden' }}>
+      <Row style={styles.row}>
         {!!bookmark && <ChapterBookmarkButton theme={theme} />}
         <View>
           <Text
@@ -63,28 +86,25 @@ const ChapterItem = ({
                 : 'Chapter ' + index
               : chapterName}
           </Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              marginTop: 5,
-            }}
-          >
+          <View style={styles.textRow}>
             {releaseDate ? (
               <Text
-                style={{
-                  color: read
-                    ? theme.outline
-                    : bookmark
-                    ? theme.primary
-                    : theme.onSurfaceVariant,
-                  fontSize: 12,
-                }}
+                style={[
+                  {
+                    color: read
+                      ? theme.outline
+                      : bookmark
+                      ? theme.primary
+                      : theme.onSurfaceVariant,
+                  },
+                  styles.text,
+                ]}
                 numberOfLines={1}
               >
                 {releaseDate}
               </Text>
             ) : null}
-            {showProgressPercentage(chapter)}
+            {showProgressPercentage?.(chapter)}
           </View>
         </View>
       </Row>
@@ -96,7 +116,7 @@ const ChapterItem = ({
         downloadChapter={downloadChapter}
         hideDeleteChapterMenu={hideDeleteChapterMenu}
         showDeleteChapterMenu={showDeleteChapterMenu}
-        deleteChapterMenu={deleteChapterMenu}
+        deleteChapterMenuVisible={deleteChapterMenuVisible}
       />
     </Pressable>
   );
@@ -113,4 +133,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  text: {
+    fontSize: 12,
+  },
+  textRow: {
+    flexDirection: 'row',
+    marginTop: 5,
+  },
+  row: { flex: 1, overflow: 'hidden' },
 });
