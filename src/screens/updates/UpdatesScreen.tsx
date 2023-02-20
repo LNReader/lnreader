@@ -29,10 +29,10 @@ import {
   openNovelProps,
 } from '@utils/handleNavigateParams';
 import UpdatesSkeletonLoading from './components/UpdatesSkeletonLoading';
+import UpdateNovelCard from './components/UpdateNovelCard';
 
 const UpdatesScreen = () => {
   const theme = useTheme();
-  const { navigate } = useNavigation();
   const dispatch = useAppDispatch();
 
   const {
@@ -59,15 +59,168 @@ const UpdatesScreen = () => {
   };
 
   const groupUpdatesByDate = (rawHistory: Update[]) => {
-    const dateGroups = rawHistory.reduce<Record<string, Update[]>>(
+    rawHistory2 = [
+    
+        {
+          "bookmark": 0,
+          "chapterId": 19891,
+          "chapterName": "Chapter 989 - What Is the Flaw?",
+          "chapterUrl": "https://bestlightnovel.com/novel_888141006/chapter_989",
+          "downloaded": 0,
+          "novelCover": "https://avatar.novelonlinefree.com/avatar_novels/26549-1580330253.jpg",
+          "novelId": 3,
+          "novelName": "National School Prince Is A Girl",
+          "novelUrl": "https://bestlightnovel.com/novel_888141006",
+          "read": 0,
+          "releaseDate": "Feb-19-20",
+          "sourceId": 95,
+          "updateId": 989,
+          "updateTime": "2023-02-18 19:51:38"
+        },
+        {
+          "bookmark": 0,
+          "chapterId": 19890,
+          "chapterName": "Chapter 988 - A Present from the Almighty to Jiu",
+          "chapterUrl": "https://bestlightnovel.com/novel_888141006/chapter_988",
+          "downloaded": 0,
+          "novelCover": "https://avatar.novelonlinefree.com/avatar_novels/26549-1580330253.jpg",
+          "novelId": 3,
+          "novelName": "National School Prince Is A Girl",
+          "novelUrl": "https://bestlightnovel.com/novel_888141006",
+          "read": 0,
+          "releaseDate": "Feb-18-20",
+          "sourceId": 95,
+          "updateId": 988,
+          "updateTime": "2023-02-18 19:51:38"
+        },
+        {
+          "bookmark": 0,
+          "chapterId": 19889,
+          "chapterName": "Chapter 987",
+          "chapterUrl": "https://bestlightnovel.com/novel_888141006/chapter_987",
+          "downloaded": 0,
+          "novelCover": "https://avatar.novelonlinefree.com/avatar_novels/26549-1580330253.jpg",
+          "novelId": 3,
+          "novelName": "National School Prince Is A Girl",
+          "novelUrl": "https://bestlightnovel.com/novel_888141006",
+          "read": 0,
+          "releaseDate": "Feb-18-20",
+          "sourceId": 95,
+          "updateId": 987,
+          "updateTime": "2023-02-18 19:51:38"
+        },
+        {
+          "bookmark": 0,
+          "chapterId": 19888,
+          "chapterName": "Chapter 986 - Peace",
+          "chapterUrl": "https://bestlightnovel.com/novel_888141006/chapter_986",
+          "downloaded": 0,
+          "novelCover": "https://avatar.novelonlinefree.com/avatar_novels/26549-1580330253.jpg",
+          "novelId": 3,
+          "novelName": "National School Prince Is A Girl",
+          "novelUrl": "https://bestlightnovel.com/novel_888141006",
+          "read": 0,
+          "releaseDate": "Feb-18-20",
+          "sourceId": 95,
+          "updateId": 986,
+          "updateTime": "2023-02-18 19:51:38"
+        },
+        {
+          "bookmark": 0,
+          "chapterId": 19887,
+          "chapterName": "Chapter 985 - Peace",
+          "chapterUrl": "https://bestlightnovel.com/novel_888141006/chapter_985",
+          "downloaded": 0,
+          "novelCover": "https://avatar.novelonlinefree.com/avatar_novels/26549-1580330253.jpg",
+          "novelId": 3,
+          "novelName": "National School Prince Is A Girl",
+          "novelUrl": "https://bestlightnovel.com/novel_888141006",
+          "read": 0,
+          "releaseDate": "Feb-18-20",
+          "sourceId": 95,
+          "updateId": 985,
+          "updateTime": "2023-02-18 19:51:38"
+        },
+        {
+          "bookmark": 0,
+          "chapterId": 19886,
+          "chapterName": "Chapter 984 - Peace",
+          "chapterUrl": "https://bestlightnovel.com/novel_888141006/chapter_984",
+          "downloaded": 0,
+          "novelCover": "https://avatar.novelonlinefree.com/avatar_novels/26549-1580330253.jpg",
+          "novelId": 3,
+          "novelName": "National School Prince Is A Girl",
+          "novelUrl": "https://bestlightnovel.com/novel_888141006",
+          "read": 0,
+          "releaseDate": "Feb-18-20",
+          "sourceId": 95,
+          "updateId": 984,
+          "updateTime": "2023-02-18 19:51:38"
+        },
+        {
+          "bookmark": 0,
+          "chapterId": 19885,
+          "chapterName": "Chapter 983 - : Sweet Intimateness",
+          "chapterUrl": "https://bestlightnovel.com/novel_888141006/chapter_983",
+          "downloaded": 0,
+          "novelCover": "https://avatar.novelonlinefree.com/avatar_novels/26549-1580330253.jpg",
+          "novelId": 3,
+          "novelName": "National School Prince Is A Girl",
+          "novelUrl": "https://bestlightnovel.com/novel_888141006",
+          "read": 0,
+          "releaseDate": "Feb-18-20",
+          "sourceId": 95,
+          "updateId": 983,
+          "updateTime": "2023-02-18 19:51:38"
+        },
+        {
+          "bookmark": 0,
+          "chapterId": 19884,
+          "chapterName": "Chapter 982 - Qin Mo Came to the Dormitory",
+          "chapterUrl": "https://bestlightnovel.com/novel_888141006/chapter_982",
+          "downloaded": 0,
+          "novelCover": "https://avatar.novelonlinefree.com/avatar_novels/26549-1580330253.jpg",
+          "novelId": 5,
+          "novelName": "National School Prince Is A Girl",
+          "novelUrl": "https://bestlightnovel.com/novel_888141006",
+          "read": 0,
+          "releaseDate": "Feb-18-20",
+          "sourceId": 95,
+          "updateId": 982,
+          "updateTime": "2023-02-18 19:51:38"
+        },
+        {
+          "bookmark": 0,
+          "chapterId": 19883,
+          "chapterName": "Chapter 981 - Qin Mo’s Suspicions",
+          "chapterUrl": "https://bestlightnovel.com/novel_888141006/chapter_981",
+          "downloaded": 0,
+          "novelCover": "https://avatar.novelonlinefree.com/avatar_novels/26549-1580330253.jpg",
+          "novelId": 5,
+          "novelName": "National School Prince Is A Girl",
+          "novelUrl": "https://bestlightnovel.com/novel_888141006",
+          "read": 0,
+          "releaseDate": "Feb-18-20",
+          "sourceId": 95,
+          "updateId": 981,
+          "updateTime": "2023-02-18 19:51:38"
+        }
+      ]
+    
+    ;
+    const dateGroups = rawHistory.reduce<Record<string, Update[][]>>(
       (groups, item) => {
         const date = convertDateToISOString(item.updateTime);
+        const novelId = item.novelId;
 
         if (!groups[date]) {
           groups[date] = [];
         }
+        if (!groups[date][novelId]) {
+          groups[date][novelId] = [];
+        }
 
-        groups[date].push(item);
+        groups[date][novelId].push(item);
 
         return groups;
       },
@@ -77,48 +230,12 @@ const UpdatesScreen = () => {
     const groupedHistory = Object.keys(dateGroups).map(date => {
       return {
         date,
-        data: dateGroups[date],
+        data: dateGroups[date].filter(val => val !== null),
       };
     });
 
     return groupedHistory;
   };
-
-  const handleDownloadChapter = (
-    sourceId: number,
-    novelUrl: string,
-    novelId: number,
-    chapter: ChapterItem,
-  ) =>
-    dispatch(
-      downloadChapterAction(
-        sourceId,
-        novelUrl,
-        novelId,
-        chapter.chapterUrl,
-        chapter.chapterName,
-        chapter.chapterId,
-      ),
-    );
-
-  const handleDeleteChapter = (
-    sourceId: number,
-    novelId: number,
-    chapterId: number,
-    chapterName: string,
-  ) => dispatch(deleteChapterAction(sourceId, novelId, chapterId, chapterName));
-
-  const navigateToChapter = (
-    novel: openChapterNovelTypes,
-    chapter: openChapterChapterTypes,
-  ) =>
-    navigate(
-      'Chapter' as never,
-      openChapter(novel, chapter) as openChapterFunctionTypes as never,
-    );
-
-  const navigateToNovel = (novel: openNovelProps) =>
-    navigate('Novel' as never, openNovel(novel) as openNovelProps as never);
 
   return (
     <>
@@ -148,13 +265,14 @@ const UpdatesScreen = () => {
             ) : null
           }
           contentContainerStyle={styles.listContainer}
-          keyExtractor={item => item.chapterId.toString()}
+          //keyExtractor={item => item.chapterId.toString()}
           sections={groupUpdatesByDate(searchText ? searchResults : updates)}
           renderSectionHeader={({ section: { date } }) => (
             <Text style={[styles.dateHeader, { color: theme.onSurface }]}>
               {dayjs(date).calendar()}
             </Text>
           )}
+          /*
           renderItem={({ item }) => (
             <UpdateCard
               item={item}
@@ -162,6 +280,15 @@ const UpdatesScreen = () => {
               navigateToNovel={navigateToNovel}
               handleDownloadChapter={handleDownloadChapter}
               handleDeleteChapter={handleDeleteChapter}
+              theme={theme}
+            />
+          )}
+          */
+          renderItem={({ item, index }) => (
+            <UpdateNovelCard
+              key={index}
+              item={item}
+              dispatch={dispatch}
               theme={theme}
             />
           )}
