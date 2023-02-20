@@ -111,9 +111,9 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                     const { url, id } = event.data.imgs[i];
                     if (url && id) {
                       promises.push(
-                        RNFetchBlob.fs
-                          .readFile(url, 'utf8')
-                          .then(base64 => ({ data: base64, id: id })),
+                        RNFetchBlob.fs.readFile(url, 'base64').then(base64 => {
+                          return { data: base64, id: id };
+                        }),
                       );
                     }
                   }
@@ -124,7 +124,8 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                     const inject = datas.reduce((p, data) => {
                       return (
                         p +
-                        `document.querySelector("img[file-id='${data.id}']").setAttribute("src", "data:image/jpg;base64,${data.data}");`
+                        `document.querySelector("img[file-id='${data.id}']").setAttribute("src", "data:image/jpg;base64,${data.data}");` +
+                        `document.querySelector("img[file-id='${data.id}']").classList.remove("loadIcon");`
                       );
                     }, '');
                     webViewRef.current?.injectJavaScript(
@@ -190,6 +191,20 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                         width: auto;
                         height: auto;
                         max-width: 100%;
+                      }
+                      img.loadIcon {
+                        display: block;
+                        animation: rotation 2s infinite linear;
+                        margin-inline: auto;
+                      }
+                      
+                      @keyframes rotation {
+                        100% {
+                          transform: rotate(360deg);
+                        }
+                        0% {
+                          transform: rotate(0deg);
+                        }
                       }
                       .nextButton,
                       .infoText {
@@ -257,7 +272,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                     }else if(${!!headers}){
                       imgs = [...document.querySelectorAll("img")].map((img, index)=>{
                         img.setAttribute("file-id", index.toString());
-                        return {url:img.getAttribute("src"), id:img.getAttribute("file-id")};
+                        return {url:img.getAttribute("delayed-src"), id:img.getAttribute("file-id")};
                       });
                       window.ReactNativeWebView.postMessage(JSON.stringify({type:"imgfiles",data:{imgs:imgs,type:"online"}}));
                     }

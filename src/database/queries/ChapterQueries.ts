@@ -6,6 +6,7 @@ import { ChapterItem } from '../types';
 import * as cheerio from 'cheerio';
 import RNFetchBlob from 'rn-fetch-blob';
 import { txnErrorCallback } from '@database/utils/helpers';
+import { LoadingImageSrc } from '@screens/reader/utils/LoadImage';
 
 const db = SQLite.openDatabase('lnreader.db');
 
@@ -243,13 +244,15 @@ const createImageFolder = async (
   },
 ): Promise<string> => {
   const mkdirIfNot = async (p: string) => {
+    const nomediaPath =
+      p + (p.charAt(p.length - 1) === '/' ? '' : '/') + '.nomedia';
     if (!(await RNFetchBlob.fs.exists(p))) {
       await RNFetchBlob.fs.mkdir(p);
+      await RNFetchBlob.fs.createFile(nomediaPath, ',', 'utf8');
     }
   };
 
   await mkdirIfNot(path);
-  await RNFetchBlob.fs.createFile(path, '.nomedia', 'utf8');
 
   if (data) {
     const { sourceId, novelId, chapterId } = data;
@@ -269,13 +272,16 @@ const downloadImages = async (
   chapterId: number,
 ): Promise<string> => {
   try {
+    const headers = sourceManager(sourceId)?.headers || {};
     const loadedCheerio = cheerio.load(html);
     const imgs = loadedCheerio('img').toArray();
     for (let i = 0; i < imgs.length; i++) {
       const elem = loadedCheerio(imgs[i]);
       const url = elem.attr('src');
       if (url) {
-        const imageb64 = (await RNFetchBlob.fetch('GET', url)).base64();
+        const imageb64 = (
+          await RNFetchBlob.fetch('GET', url, headers)
+        ).base64();
         const fileurl =
           (await createImageFolder(
             `${RNFetchBlob.fs.dirs.DownloadDir}/LNReader`,
@@ -284,16 +290,17 @@ const downloadImages = async (
           i +
           '.b64.png';
         elem.replaceWith(
-          `<img type="file" src="${url}" file-src="${fileurl}" file-id="${i}">`,
+          `<img src="${LoadingImageSrc}" class='loadIcon' file-path="${fileurl}">`,
         );
         const exists = await RNFetchBlob.fs.exists(fileurl);
         if (!exists) {
-          RNFetchBlob.fs.createFile(fileurl, imageb64, 'utf8');
+          RNFetchBlob.fs.createFile(fileurl, imageb64, 'base64');
         } else {
-          RNFetchBlob.fs.writeFile(fileurl, imageb64, 'utf8');
+          RNFetchBlob.fs.writeFile(fileurl, imageb64, 'base64');
         }
       }
     }
+    loadedCheerio('body').prepend("<input type='hidden' offline />");
     return loadedCheerio.html();
   } catch (e) {
     return html;
@@ -350,20 +357,16 @@ const deleteDownloadedImages = async (
   chapterId: number,
 ) => {
   try {
-    const path = `${RNFetchBlob.fs.dirs.DownloadDir}/LNReader/`;
-    const files = await RNFetchBlob.fs.ls(
-      await createImageFolder(path, { sourceId, novelId, chapterId }),
+    const path = await createImageFolder(
+      `${RNFetchBlob.fs.dirs.DownloadDir}/LNReader`,
+      { sourceId, novelId, chapterId },
     );
+    const files = await RNFetchBlob.fs.ls(path);
     for (let i = 0; i < files.length; i++) {
-      const ex = /(.*?)_(.*?)#(.*?)/.exec(files[i]);
+      const ex = /\.b64\.png/.exec(files[i]);
       if (ex) {
-        if (
-          parseInt(ex[1], 10) === sourceId &&
-          parseInt(ex[2], 10) === chapterId
-        ) {
-          if (await RNFetchBlob.fs.exists(`${path}${files[i]}`)) {
-            RNFetchBlob.fs.unlink(`${path}${files[i]}`);
-          }
+        if (await RNFetchBlob.fs.exists(`${path}${files[i]}`)) {
+          RNFetchBlob.fs.unlink(`${path}${files[i]}`);
         }
       }
     }

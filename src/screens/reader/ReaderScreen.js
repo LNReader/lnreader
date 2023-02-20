@@ -299,6 +299,7 @@ const ChapterContent = ({ route, navigation }) => {
 
   const chapterText = sanitizeChapterText(chapter.chapterText, {
     removeExtraParagraphSpacing,
+    sourceId: sourceId,
   });
   const openDrawer = () => {
     navigation.openDrawer();

@@ -72,8 +72,10 @@ export const isCategoryNameDuplicate = (
       tx.executeSql(
         isCategoryNameDuplicateQuery,
         [categoryName],
-        (txObj, { rows: { _array } }) =>
-          resolve(Boolean(_array[0]?.isDuplicate)),
+        (txObj, { rows }) => {
+          const { _array } = rows as any;
+          resolve(Boolean(_array[0]?.isDuplicate));
+        },
         txnErrorCallback,
       );
     }),
