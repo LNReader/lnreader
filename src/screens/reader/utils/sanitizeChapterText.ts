@@ -27,8 +27,12 @@ export const sanitizeChapterText = (
     if (options?.removeExtraParagraphSpacing) {
       text = text.replace(/<\s*br[^>]*>/gi, '\n').replace(/\n{2,}/g, '\n\n');
     }
-    if (options?.sourceId && sourceManager(options.sourceId).headers) {
-      const loadedCheerio = loadCheerio(text);
+    const loadedCheerio = loadCheerio(text);
+    if (
+      options?.sourceId &&
+      sourceManager(options.sourceId).headers &&
+      loadedCheerio('input[offline]').length === 0
+    ) {
       loadedCheerio('img').each((i, element) => {
         const src = loadedCheerio(element).attr('src');
         if (src) {
