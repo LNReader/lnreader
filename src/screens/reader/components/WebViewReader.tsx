@@ -8,6 +8,8 @@ import { ChapterItem } from '@database/types';
 import { useReaderSettings } from '@redux/hooks';
 import { getString } from '@strings/translations';
 
+import { sourceManager } from '../../../sources/sourceManager';
+
 type WebViewPostEvent = {
   type: string;
   data?: { [key: string]: string };
@@ -15,7 +17,7 @@ type WebViewPostEvent = {
 
 type WebViewReaderProps = {
   chapterInfo: {
-    sourceId: string;
+    sourceId: number;
     chapterId: string;
     chapterUrl: string;
     novelId: string;
@@ -64,7 +66,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
   const { theme: backgroundColor } = readerSettings;
 
   const layoutHeight = Dimensions.get('window').height;
-
+  const headers = sourceManager(chapterInfo.sourceId)?.headers;
   return (
     <WebView
       ref={webViewRef}
@@ -90,37 +92,44 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
             break;
           case 'imgfiles':
             if (event.data) {
-              if (Array.isArray(event.data)) {
+              if (Array.isArray(event.data.imgs)) {
                 const promises: Promise<{ data: any; id: number }>[] = [];
-                const splitUrl = chapterInfo.novelUrl.split('/');
-                const protocol = splitUrl[0];
-                const domain = splitUrl[2];
-                const siteHeaders = {
-                  Referer: protocol + '//' + domain,
-                };
-                for (let i = 0; i < event.data.length; i++) {
-                  const { url, id } = event.data[i];
-                  if (url) {
-                    if (id) {
+                if (event.data.type === 'online') {
+                  for (let i = 0; i < event.data.imgs.length; i++) {
+                    const { url, id } = event.data.imgs[i];
+                    if (url && id) {
                       promises.push(
-                        RNFetchBlob.fetch('get', url, siteHeaders).then(
-                          res => ({ data: res.base64(), id }),
-                        ),
+                        RNFetchBlob.fetch('get', url, headers).then(res => ({
+                          data: res.base64(),
+                          id: id,
+                        })),
                       );
-                    } else {
-                      // no imageid
+                    }
+                  }
+                } else {
+                  for (let i = 0; i < event.data.imgs.length; i++) {
+                    const { url, id } = event.data.imgs[i];
+                    if (url && id) {
+                      promises.push(
+                        RNFetchBlob.fs
+                          .readFile(url, 'utf8')
+                          .then(base64 => ({ data: base64, id: id })),
+                      );
                     }
                   }
                 }
+
                 Promise.all(promises)
                   .then(datas => {
                     const inject = datas.reduce((p, data) => {
                       return (
                         p +
-                        `document.getElementById("${data.id}").setAttribute("src", "data:image/png;base64,${data.data}");`
+                        `document.querySelector("img[file-id='${data.id}']").setAttribute("src", "data:image/jpg;base64,${data.data}");`
                       );
                     }, '');
-                    webViewRef.current?.injectJavaScript(inject);
+                    webViewRef.current?.injectJavaScript(
+                      inject + 'sendHeight();',
+                    );
                   })
                   .catch(e => {
                     e; // CloudFlare is too strong :D
@@ -237,28 +246,41 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                       </chapter>
                     </div>
                     <script>
-                    const imgs = [...document.querySelectorAll("img")].map((img, index)=>{
-                      img.setAttribute("id", "file-id-" + index);
-                      return {url:img.getAttribute("src"), id:img.getAttribute("id")}
-                    });
-                    window.ReactNativeWebView.postMessage(JSON.stringify({type:"imgfiles",data:imgs}));
+                    const readerType = document.querySelector("input[type='offline']")?.getAttribute("type");
+                    if(readerType === "offline"){
+                      imgs = [...document.querySelectorAll("img")].map((img, index)=>{
+                        img.setAttribute("file-id", index.toString());
+                        return {url:img.getAttribute("file-path"), id:img.getAttribute("file-id")};
+                      });
+                      window.ReactNativeWebView.postMessage(JSON.stringify({type:"imgfiles",data:{imgs:imgs,type:"offline"}}));
+                    }else if("${headers !== undefined}" === "true"){
+                      imgs = [...document.querySelectorAll("img")].map((img, index)=>{
+                        img.setAttribute("file-id", index.toString());
+                        return {url:img.getAttribute("src"), id:img.getAttribute("file-id")};
+                      });
+                      window.ReactNativeWebView.postMessage(JSON.stringify({type:"imgfiles",data:{imgs:imgs,type:"online"}}));
+                    }
                     var scrollTimeout;
+                    const sendHeight = () => {
+                      window.ReactNativeWebView.postMessage(
+                        JSON.stringify(
+                          {
+                            type:"scrollend",
+                            data:{
+                              offSetY: window.pageYOffset,
+                              percentage: (window.pageYOffset+${layoutHeight})/document.body.scrollHeight*100,
+                            }
+                          }
+                        )
+                      );
+                    }
                     window.addEventListener("scroll", (event) => {
                       window.clearTimeout( scrollTimeout );
                       scrollTimeout = setTimeout(() => {
-                        window.ReactNativeWebView.postMessage(
-                          JSON.stringify(
-                            {
-                              type:"scrollend",
-                              data:{
-                                offSetY: window.pageYOffset,
-                                percentage: (window.pageYOffset+${layoutHeight})/document.body.scrollHeight*100,
-                              }
-                            }
-                          )
-                        );
+                        sendHeight();
                       }, 100);
                     });
+
                     let loadInterval = setInterval(() => {
                       window.ReactNativeWebView.postMessage(
                         JSON.stringify(

@@ -190,11 +190,16 @@ const searchNovels = async (searchTerm: string) => {
   return novels;
 };
 
+const headers = {
+  Referer: 'https://docln.net/',
+};
+
 const HakoLightNovelScraper = {
   popularNovels,
   parseNovelAndChapters,
   parseChapter,
   searchNovels,
+  headers,
 };
 
 export default HakoLightNovelScraper;
