@@ -124,8 +124,8 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                     const inject = datas.reduce((p, data) => {
                       return (
                         p +
-                        `document.querySelector("img[file-id='${data.id}']").setAttribute("src", "data:image/jpg;base64,${data.data}");` +
-                        `document.querySelector("img[file-id='${data.id}']").classList.remove("loadIcon");`
+                        `document.querySelector("img[file-id='${data.id}']").setAttribute("src", "data:image/jpg;base64,${data.data}");
+                        document.querySelector("img[file-id='${data.id}']").classList.remove("loadIcon");`
                       );
                     }, '');
                     webViewRef.current?.injectJavaScript(
@@ -194,10 +194,13 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                       }
                       img.loadIcon {
                         display: block;
-                        animation: rotation 2s infinite linear;
+                        width: 64px;
+                        height: 64px;
+                        position: relative;
                         margin-inline: auto;
+                        border: none;
+                        animation: rotation 1s infinite linear;
                       }
-                      
                       @keyframes rotation {
                         100% {
                           transform: rotate(360deg);

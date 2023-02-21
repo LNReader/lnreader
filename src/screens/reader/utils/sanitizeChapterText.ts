@@ -16,7 +16,7 @@ export const sanitizeChapterText = (
   let text = sanitizeHtml(html, {
     allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img', 'input']),
     allowedAttributes: {
-      'img': ['src', 'type', 'file-path', 'file-id', 'offline'],
+      'img': ['src', 'type', 'file-path', 'file-id', 'offline', 'class'],
       'a': ['href'],
       'input': ['type', 'offline'],
     },
@@ -38,7 +38,6 @@ export const sanitizeChapterText = (
         if (src) {
           loadedCheerio(element).attr({
             'src': LoadingImageSrc,
-            'delayed-load': 'true',
             'class': 'loadIcon',
             'delayed-src': src,
           });

@@ -286,17 +286,37 @@ const downloadImages = async (
           (await createImageFolder(
             `${RNFetchBlob.fs.dirs.DownloadDir}/LNReader`,
             { sourceId, novelId, chapterId },
-          )) +
+          ).catch(() => {
+            showToast(
+              `Unexpected storage error!\nRemove ${fileurl} and try downloading again`,
+            );
+            return '--';
+          })) +
           i +
           '.b64.png';
+        if (fileurl.charAt(0) === '-') {
+          return loadedCheerio.html();
+        }
         elem.replaceWith(
-          `<img src="${LoadingImageSrc}" class='loadIcon' file-path="${fileurl}">`,
+          `<img class='loadIcon' src="${LoadingImageSrc}" file-path="${fileurl}">`,
         );
-        const exists = await RNFetchBlob.fs.exists(fileurl);
+        const exists = await RNFetchBlob.fs.exists(fileurl).catch(() => {
+          showToast(
+            `Unexpected storage error!\nRemove ${fileurl} and try downloading again`,
+          );
+        });
         if (!exists) {
-          RNFetchBlob.fs.createFile(fileurl, imageb64, 'base64');
+          RNFetchBlob.fs.createFile(fileurl, imageb64, 'base64').catch(() => {
+            showToast(
+              `Unexpected storage error!\nRemove ${fileurl} and try downloading again`,
+            );
+          });
         } else {
-          RNFetchBlob.fs.writeFile(fileurl, imageb64, 'base64');
+          RNFetchBlob.fs.writeFile(fileurl, imageb64, 'base64').catch(() => {
+            showToast(
+              `Unexpected storage error!\nRemove ${fileurl} and try downloading again`,
+            );
+          });
         }
       }
     }
