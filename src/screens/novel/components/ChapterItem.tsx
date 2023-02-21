@@ -1,5 +1,5 @@
 import React, { memo, useState } from 'react';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { View, Text, StyleSheet, Pressable, ViewStyle } from 'react-native';
 import color from 'color';
 
 import { Row } from '../../../components/Common';
@@ -19,13 +19,18 @@ interface ChapterItemProps {
   index?: number;
   downloadQueue: any;
   showChapterTitles: boolean;
-  isSelected: (chapterId: number) => boolean;
+  isSelected?: (chapterId: number) => boolean;
   downloadChapter: (chapter: ChapterItemExtended) => (dispatch: any) => void;
-  deleteChapter: (chapter: ChapterItemExtended) => (dispatch: any) => void;
+  deleteChapter: (
+    chapterId: number,
+    chapterName: string,
+  ) => (dispatch: any) => Promise<void>;
   onSelectPress?: (chapter: ChapterItemExtended, arg1: () => void) => void;
-  onSelectLongPress: (chapter: ChapterItemExtended) => void;
-  navigateToChapter: (chapter: ChapterItemExtended) => (dispatch: any) => void;
-  showProgressPercentage: (chapter: ChapterItemExtended) => void;
+  onSelectLongPress?: (chapter: ChapterItemExtended) => void;
+  navigateToChapter: (chapter: ChapterItemExtended) => void;
+  showProgressPercentage?: (chapter: ChapterItemExtended) => void;
+  containerStyle?: ViewStyle;
+  showDate?: boolean;
 }
 
 const ChapterItem: React.FC<ChapterItemProps> = ({
@@ -41,23 +46,25 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
   onSelectLongPress,
   navigateToChapter,
   showProgressPercentage,
+  containerStyle,
+  showDate,
 }) => {
   const { chapterId, chapterName, read, releaseDate, bookmark } = chapter;
-
   const [deleteChapterMenuVisible, setDeleteChapterMenuVisible] =
     useState(false);
   const showDeleteChapterMenu = () => setDeleteChapterMenuVisible(true);
   const hideDeleteChapterMenu = () => setDeleteChapterMenuVisible(false);
-
   const chapterNumber = parseChapterNumber(chapterName);
 
   return (
     <Pressable
+      key={chapterId.toString()}
       style={[
         styles.chapterCardContainer,
         isSelected?.(chapterId) && {
           backgroundColor: color(theme.primary).alpha(0.12).string(),
         },
+        containerStyle,
       ]}
       onPress={() => {
         onSelectPress
@@ -87,7 +94,7 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
               : chapterName}
           </Text>
           <View style={styles.textRow}>
-            {releaseDate ? (
+            {releaseDate && showDate ? (
               <Text
                 style={[
                   {

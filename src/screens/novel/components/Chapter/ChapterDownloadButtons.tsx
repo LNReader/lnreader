@@ -1,17 +1,20 @@
-import { ChapterItem, DownloadedChapter } from '@database/types';
+import { ChapterItemExtended } from '@database/types';
 import { MD3ThemeType } from '@theme/types';
 import React from 'react';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, StyleSheet } from 'react-native';
 
 import { IconButton, Menu, overlay } from 'react-native-paper';
 
 interface DownloadButtonProps {
-  downloadQueue: DownloadedChapter[];
-  chapter: ChapterItem;
+  downloadQueue: ChapterItemExtended[];
+  chapter: ChapterItemExtended;
   theme: MD3ThemeType;
   deleteChapterMenuVisible: boolean;
-  deleteChapter: Function;
-  downloadChapter: (arg: ChapterItem) => void;
+  deleteChapter: (
+    chapterId: number,
+    chapterName: string,
+  ) => (dispatch: any) => Promise<void>;
+  downloadChapter: (chapter: ChapterItemExtended) => (dispatch: any) => void;
   hideDeleteChapterMenu: () => void;
   showDeleteChapterMenu: () => void;
 }
@@ -28,7 +31,14 @@ export const DownloadButton: React.FC<DownloadButtonProps> = ({
 }) => {
   if (downloadQueue.some(chap => chap.chapterId === chapter.chapterId)) {
     return <ChapterDownloadingButton theme={theme} />;
-  } else if (chapter.downloaded === 1) {
+  } else if (chapter.downloaded === 0) {
+    return (
+      <DownloadChapterButton
+        theme={theme}
+        onPress={() => downloadChapter(chapter)}
+      />
+    );
+  } else {
     return (
       <Menu
         visible={deleteChapterMenuVisible}
@@ -39,57 +49,71 @@ export const DownloadButton: React.FC<DownloadButtonProps> = ({
         contentStyle={{ backgroundColor: overlay(2, theme.surface) }}
       >
         <Menu.Item
-          onPress={() => deleteChapter(chapter.chapterId, chapter.chapterName)}
+          onPress={() => {
+            deleteChapter(chapter.chapterId, chapter.chapterName);
+            hideDeleteChapterMenu();
+          }}
           title="Delete"
           titleStyle={{ color: theme.onSurface }}
         />
       </Menu>
     );
-  } else {
-    return (
-      <DownloadChapterButton
-        theme={theme}
-        onPress={() => downloadChapter(chapter)}
-      />
-    );
   }
 };
 
-export const ChapterDownloadingButton = ({ theme }) => (
+interface theme {
+  theme: MD3ThemeType;
+}
+type buttonPropType = theme & {
+  onPress: () => void;
+};
+export const ChapterDownloadingButton: React.FC<theme> = ({ theme }) => (
   <ActivityIndicator
     color={theme.outline}
     size={25}
-    style={{ margin: 3.5, padding: 5 }}
+    style={styles.activityIndicator}
   />
 );
 
-export const DownloadChapterButton = ({ theme, onPress }) => (
+export const DownloadChapterButton: React.FC<buttonPropType> = ({
+  theme,
+  onPress,
+}) => (
   <IconButton
     icon="arrow-down-circle-outline"
     animated
     iconColor={theme.outline}
     size={25}
     onPress={onPress}
-    style={{ margin: 2 }}
+    style={styles.iconButton}
   />
 );
 
-export const DeleteChapterButton = ({ theme, onPress }) => (
+export const DeleteChapterButton: React.FC<buttonPropType> = ({
+  theme,
+  onPress,
+}) => (
   <IconButton
     icon="check-circle"
     animated
     iconColor={theme.onSurface}
     size={25}
     onPress={onPress}
-    style={{ margin: 2 }}
+    style={styles.iconButton}
   />
 );
 
-export const ChapterBookmarkButton = ({ theme }) => (
+export const ChapterBookmarkButton: React.FC<theme> = ({ theme }) => (
   <IconButton
     icon="bookmark"
     iconColor={theme.primary}
     size={18}
-    style={{ marginLeft: 2 }}
+    style={styles.iconButtonLeft}
   />
 );
+
+const styles = StyleSheet.create({
+  activityIndicator: { margin: 3.5, padding: 5 },
+  iconButton: { margin: 2, zIndex: 30 },
+  iconButtonLeft: { marginLeft: 2 },
+});

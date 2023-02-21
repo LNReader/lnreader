@@ -18,21 +18,22 @@ import {
   downloadChapterAction,
 } from '@redux/novel/novel.actions';
 import { useNavigation } from '@react-navigation/native';
-import { useDownloadQueue } from '@redux/hooks';
 import ChapterItem from '@screens/novel/components/ChapterItem';
+import { useSelector } from 'react-redux';
+import { RootState } from '@redux/store';
 
 interface UpdateCardProps {
   item: Update[];
   dispatch: Dispatch<any>;
   theme: ThemeColors;
-  key: number;
+  keyProp: number;
 }
 
 const UpdateNovelCard: React.FC<UpdateCardProps> = ({
   item,
   dispatch,
   theme,
-  key,
+  keyProp,
 }) => {
   const { navigate } = useNavigation();
   const handleDownloadChapter = (chapter: ChapterItemExtended) =>
@@ -56,7 +57,6 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
         chapterName,
       ),
     );
-
   const navigateToChapter = (chapter: ChapterItemExtended) =>
     navigate(
       'Chapter' as never,
@@ -65,7 +65,10 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
 
   const navigateToNovel = (novel: openNovelProps) =>
     navigate('Novel' as never, openNovel(novel) as openNovelProps as never);
-  const downloadQueue = useDownloadQueue();
+
+  const { downloadQueue } = useSelector(
+    (state: RootState) => state.downloadsReducer,
+  );
 
   const BookCover = () => (
     <Pressable onPress={() => navigateToNovel(item[0])}>
@@ -75,7 +78,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
 
   return (
     <List.Accordion
-      key={key}
+      key={keyProp}
       title={item[0].novelName}
       left={BookCover}
       theme={{ colors: theme }}
@@ -83,9 +86,10 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
       description={item.length + ' new Chapters'}
     >
       <FlatList
-        key={'FL' + key}
+        key={'FL' + keyProp}
         data={item}
         keyExtractor={it => it.chapterId.toString()}
+        style={styles.flatList}
         renderItem={it => {
           return (
             <ChapterItem
@@ -96,6 +100,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
               downloadChapter={handleDownloadChapter}
               deleteChapter={handleDeleteChapter}
               navigateToChapter={navigateToChapter}
+              containerStyle={styles.chapterItem}
             />
           );
         }}
@@ -129,7 +134,6 @@ const styles = StyleSheet.create({
     marginLeft: 16,
     paddingRight: 16,
   },
-  name: {},
   chapterName: {
     marginTop: 4,
     fontSize: 12,
@@ -137,4 +141,6 @@ const styles = StyleSheet.create({
   downloading: {
     margin: 8,
   },
+  flatList: { marginLeft: -64 },
+  chapterItem: { paddingLeft: 48 },
 });
