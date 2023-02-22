@@ -50,9 +50,16 @@ const parseNovelAndChapters = async novelUrl => {
 
   novel.novelCover = loadedCheerio('.series-thumb img').attr('src');
 
-  novel.author = loadedCheerio(
-    '.series-infolist > li:nth-child(3) > span:nth-child(2)',
-  ).text();
+  loadedCheerio('.series-infolist > li').each(function () {
+    const detailName = loadedCheerio(this).find('b').text().trim();
+    const detail = loadedCheerio(this).find('b').next().text().trim();
+
+    switch (detailName) {
+      case 'Author':
+        novel.author = detail;
+        break;
+    }
+  });
 
   novel.status = loadedCheerio('.status').text().trim();
 

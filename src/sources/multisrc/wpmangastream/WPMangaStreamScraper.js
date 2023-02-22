@@ -90,7 +90,7 @@ class WPMangaStreamScraper {
 
     novel.genre = loadedCheerio('.genxed').text().trim().replace(/\s/g, ',');
 
-    novel.summary = loadedCheerio('.entry-content')
+    novel.summary = loadedCheerio('div[itemprop="description')
       .find('h3 , p.a')
       .remove()
       .end()
