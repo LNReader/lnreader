@@ -226,8 +226,15 @@ const Novel = ({ route, navigation }) => {
     return list;
   }, [selected]);
 
-  const deleteChapter = (chapterId, chapterName) =>
-    dispatch(deleteChapterAction(sourceId, novelId, chapterId, chapterName));
+  const deleteChapter = chapter =>
+    dispatch(
+      deleteChapterAction(
+        sourceId,
+        novelId,
+        chapter.chapterId,
+        chapter.chapterName,
+      ),
+    );
 
   const isSelected = chapterId => {
     return selected.some(obj => obj.chapterId === chapterId);

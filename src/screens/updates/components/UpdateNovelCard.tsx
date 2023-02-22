@@ -1,5 +1,5 @@
-import { FlatList, Pressable, StyleSheet, View } from 'react-native';
-import React from 'react';
+import { FlatList, StyleSheet, View } from 'react-native';
+import React, { useState } from 'react';
 
 import { ChapterItemExtended, Update } from '../../../database/types';
 import FastImage from 'react-native-fast-image';
@@ -26,16 +26,21 @@ interface UpdateCardProps {
   item: Update[];
   dispatch: Dispatch<any>;
   theme: ThemeColors;
+  descriptionText: string;
   keyProp: number;
+  removeItemFromList?: boolean;
 }
 
 const UpdateNovelCard: React.FC<UpdateCardProps> = ({
   item,
   dispatch,
   theme,
+  descriptionText,
   keyProp,
+  removeItemFromList,
 }) => {
   const { navigate } = useNavigation();
+  const [chapterList, setChapterList] = useState(item);
   const handleDownloadChapter = (chapter: ChapterItemExtended) =>
     dispatch(
       downloadChapterAction(
@@ -48,15 +53,21 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
       ),
     );
 
-  const handleDeleteChapter = (chapterId: number, chapterName: string) => {
+  const handleDeleteChapter = (chapter: ChapterItemExtended) => {
     dispatch(
       deleteChapterAction(
-        item[0].sourceId,
-        item[0].novelId,
-        chapterId,
-        chapterName,
+        chapter.sourceId,
+        chapter.novelId,
+        chapter.chapterId,
+        chapter.chapterName,
       ),
     );
+    if (removeItemFromList) {
+      //@ts-ignore
+      let index = item.indexOf(chapter);
+      item.splice(index, 1);
+      setChapterList(Array.from(item));
+    }
   };
 
   const navigateToChapter = (chapter: ChapterItemExtended) =>
@@ -72,49 +83,54 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
     (state: RootState) => state.downloadsReducer,
   );
 
-  const BookCover = () => (
-    <Pressable
-      style={[styles.coverContainer, styles.padding]}
-      onPress={() => navigateToNovel(item[0])}
-    >
-      <FastImage source={{ uri: item[0].novelCover }} style={styles.cover} />
-    </Pressable>
-  );
-  return (
-    <View style={styles.relativ} key={keyProp}>
-      <BookCover />
-      <List.Accordion
-        key={keyProp}
-        title={item[0].novelName}
-        left={() => <View style={styles.cover} />}
-        theme={{ colors: theme }}
-        style={[styles.container, styles.padding]}
-        description={item.length + ' new Chapters'}
-      >
-        <FlatList
-          key={'FL' + keyProp}
-          data={item}
-          keyExtractor={it => it.chapterId.toString()}
-          style={styles.flatList}
-          renderItem={it => {
-            return (
-              <ChapterItem
-                chapter={it.item}
-                theme={theme}
-                showChapterTitles={false}
-                downloadQueue={downloadQueue}
-                downloadChapter={handleDownloadChapter}
-                deleteChapter={handleDeleteChapter}
-                navigateToChapter={navigateToChapter}
-                containerStyle={styles.chapterItem}
-              />
-            );
-          }}
-          scrollEnabled={false}
+  const BookCover = () => {
+    return (
+      <View>
+        <FastImage
+          source={{ uri: chapterList[0].novelCover }}
+          style={styles.cover}
         />
-      </List.Accordion>
-    </View>
-  );
+      </View>
+    );
+  };
+  if (chapterList.length > 0) {
+    return (
+      <View style={styles.relativ} key={keyProp}>
+        <List.Accordion
+          key={keyProp}
+          title={chapterList[0].novelName}
+          left={BookCover}
+          theme={{ colors: theme }}
+          style={[styles.container, styles.padding]}
+          description={chapterList.length + ' ' + descriptionText}
+          onLongPress={() => navigateToNovel(chapterList[0])}
+        >
+          <FlatList
+            key={'FL' + keyProp}
+            data={chapterList}
+            keyExtractor={it => it.chapterId.toString()}
+            style={styles.flatList}
+            renderItem={it => {
+              return (
+                <ChapterItem
+                  chapter={it.item}
+                  theme={theme}
+                  showChapterTitles={false}
+                  downloadQueue={downloadQueue}
+                  downloadChapter={handleDownloadChapter}
+                  deleteChapter={handleDeleteChapter}
+                  navigateToChapter={navigateToChapter}
+                  containerStyle={styles.chapterItem}
+                />
+              );
+            }}
+            scrollEnabled={false}
+          />
+        </List.Accordion>
+      </View>
+    );
+  }
+  return null;
 };
 
 export default UpdateNovelCard;
@@ -130,12 +146,6 @@ const styles = StyleSheet.create({
   },
   container: {
     justifyContent: 'space-between',
-  },
-  coverContainer: {
-    position: 'absolute',
-    left: 0,
-    zIndex: 1,
-    justifyContent: 'center',
   },
   cover: {
     height: 40,

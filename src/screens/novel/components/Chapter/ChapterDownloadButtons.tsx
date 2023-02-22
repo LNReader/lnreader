@@ -10,7 +10,7 @@ interface DownloadButtonProps {
   chapter: ChapterItemExtended;
   theme: MD3ThemeType;
   deleteChapterMenuVisible: boolean;
-  deleteChapter: (chapterId: number, chapterName: string) => void;
+  deleteChapter: (chapter: ChapterItemExtended) => void;
   downloadChapter: (chapter: ChapterItemExtended) => (dispatch: any) => void;
   hideDeleteChapterMenu: () => void;
   showDeleteChapterMenu: () => void;
@@ -51,7 +51,7 @@ export const DownloadButton: React.FC<DownloadButtonProps> = ({
       >
         <Menu.Item
           onPress={() => {
-            deleteChapter(chapter.chapterId, chapter.chapterName);
+            deleteChapter(chapter);
             setDownloaded(0);
           }}
           title="Delete"
