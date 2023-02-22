@@ -194,11 +194,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                       }
                       img.loadIcon {
                         display: block;
-                        width: 64px;
-                        height: 64px;
-                        position: relative;
                         margin-inline: auto;
-                        border: none;
                         animation: rotation 1s infinite linear;
                       }
                       @keyframes rotation {
