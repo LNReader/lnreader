@@ -21,7 +21,7 @@ interface ChapterItemProps {
   showChapterTitles: boolean;
   isSelected?: (chapterId: number) => boolean;
   downloadChapter: (chapter: ChapterItemExtended) => (dispatch: any) => void;
-  deleteChapter: (chapterId: number, chapterName: string) => void;
+  deleteChapter: (chapter: ChapterItemExtended) => void;
   onSelectPress?: (chapter: ChapterItemExtended, arg1: () => void) => void;
   onSelectLongPress?: (chapter: ChapterItemExtended) => void;
   navigateToChapter: (chapter: ChapterItemExtended) => void;

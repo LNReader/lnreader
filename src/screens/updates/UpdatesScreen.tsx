@@ -113,6 +113,9 @@ const UpdatesScreen = () => {
               item={item}
               dispatch={dispatch}
               theme={theme}
+              descriptionText={
+                item.length === 1 ? 'new Chapter' : 'new Chapters'
+              }
             />
           )}
           ListEmptyComponent={
