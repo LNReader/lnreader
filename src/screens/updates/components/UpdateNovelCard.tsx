@@ -34,7 +34,6 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
   dispatch,
   theme,
   keyProp,
-  d,
 }) => {
   const { navigate } = useNavigation();
   const handleDownloadChapter = (chapter: ChapterItemExtended) =>
@@ -58,7 +57,6 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
         chapterName,
       ),
     );
-    d();
   };
 
   const navigateToChapter = (chapter: ChapterItemExtended) =>
@@ -82,9 +80,8 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
       <FastImage source={{ uri: item[0].novelCover }} style={styles.cover} />
     </Pressable>
   );
-  //console.log('Render');
   return (
-    <View style={styles.relativ}>
+    <View style={styles.relativ} key={keyProp}>
       <BookCover />
       <List.Accordion
         key={keyProp}
