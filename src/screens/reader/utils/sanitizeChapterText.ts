@@ -38,7 +38,7 @@ export const sanitizeChapterText = (
         if (src) {
           loadedCheerio(element).attr({
             'src': LoadingImageSrc,
-            'class': 'loadIcon',
+            'class': 'load-icon',
             'delayed-src': src,
           });
         }

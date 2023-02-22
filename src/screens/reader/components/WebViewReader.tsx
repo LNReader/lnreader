@@ -192,7 +192,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                         height: auto;
                         max-width: 100%;
                       }
-                      img.loadIcon {
+                      img.load-icon {
                         display: block;
                         margin-inline: auto;
                         animation: rotation 1s infinite linear;

@@ -298,7 +298,7 @@ const downloadImages = async (
           return loadedCheerio.html();
         }
         elem.replaceWith(
-          `<img class='loadIcon' src="${LoadingImageSrc}" file-path="${fileurl}">`,
+          `<img class='load-icon' src="${LoadingImageSrc}" file-path="${fileurl}">`,
         );
         const exists = await RNFetchBlob.fs.exists(fileurl).catch(() => {
           showToast(
