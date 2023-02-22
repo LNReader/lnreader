@@ -91,12 +91,12 @@ class WPMangaStreamScraper {
     novel.genre = loadedCheerio('.genxed').text().trim().replace(/\s/g, ',');
 
     novel.summary = loadedCheerio('.entry-content')
-      .find('h3')
+      .find('h3 , p.a')
       .remove()
       .end()
       .prop('innerHTML')
-      .replace(/(<.*?>)/g, '\n')
-      .replace(/(&.*;)/g, '');
+      .replace(/(<.*?>)/g, ' ')
+      .replace(/(&.*;)/g, '\n');
 
     let novelChapters = [];
 
