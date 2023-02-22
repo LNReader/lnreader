@@ -10,10 +10,7 @@ interface DownloadButtonProps {
   chapter: ChapterItemExtended;
   theme: MD3ThemeType;
   deleteChapterMenuVisible: boolean;
-  deleteChapter: (
-    chapterId: number,
-    chapterName: string,
-  ) => (dispatch: any) => Promise<void>;
+  deleteChapter: (chapterId: number, chapterName: string) => void;
   downloadChapter: (chapter: ChapterItemExtended) => (dispatch: any) => void;
   hideDeleteChapterMenu: () => void;
   showDeleteChapterMenu: () => void;

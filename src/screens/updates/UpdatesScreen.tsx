@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import dayjs from 'dayjs';
 import { RefreshControl, SectionList, StyleSheet, Text } from 'react-native';
 
@@ -73,11 +73,6 @@ const UpdatesScreen = () => {
 
     return groupedHistory;
   };
-  console.log(updates[0].downloaded);
-  const [d, setd] = useState(false);
-  const switchd = () => {
-    setd(!d);
-  };
   return (
     <>
       <SearchbarV2
@@ -106,7 +101,6 @@ const UpdatesScreen = () => {
             ) : null
           }
           contentContainerStyle={styles.listContainer}
-          //keyExtractor={item => item.chapterId.toString()}
           sections={groupUpdatesByDate(searchText ? searchResults : updates)}
           renderSectionHeader={({ section: { date } }) => (
             <Text style={[styles.dateHeader, { color: theme.onSurface }]}>
@@ -119,7 +113,6 @@ const UpdatesScreen = () => {
               item={item}
               dispatch={dispatch}
               theme={theme}
-              d={switchd}
             />
           )}
           ListEmptyComponent={
@@ -127,6 +120,7 @@ const UpdatesScreen = () => {
               icon="(˘･_･˘)"
               description="No recent updates"
               theme={theme}
+              key="dlkf"
             />
           }
           refreshControl={
