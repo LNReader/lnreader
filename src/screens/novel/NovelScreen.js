@@ -51,7 +51,7 @@ import {
 } from '../../hooks/reduxHooks';
 import { showToast } from '../../hooks/showToast';
 import { useTheme } from '@hooks/useTheme';
-import ChapterItemType from './components/ChapterItem';
+import ChapterItem from './components/ChapterItem';
 import NovelInfoHeader from './components/Info/NovelInfoHeader';
 import NovelBottomSheet from './components/NovelBottomSheet';
 import TrackSheet from './components/Tracker/TrackSheet';
@@ -334,7 +334,7 @@ const Novel = ({ route, navigation }) => {
   };
 
   const renderItem = ({ item: it, index }) => (
-    <ChapterItemType
+    <ChapterItem
       theme={theme}
       chapter={it}
       index={index}

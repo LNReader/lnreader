@@ -1,6 +1,6 @@
 import { ChapterItemExtended } from '@database/types';
 import { MD3ThemeType } from '@theme/types';
-import React from 'react';
+import React, { useState } from 'react';
 import { ActivityIndicator, StyleSheet } from 'react-native';
 
 import { IconButton, Menu, overlay } from 'react-native-paper';
@@ -29,13 +29,17 @@ export const DownloadButton: React.FC<DownloadButtonProps> = ({
   showDeleteChapterMenu,
   deleteChapterMenuVisible,
 }) => {
+  const [downloaded, setDownloaded] = useState(chapter.downloaded);
   if (downloadQueue.some(chap => chap.chapterId === chapter.chapterId)) {
     return <ChapterDownloadingButton theme={theme} />;
-  } else if (chapter.downloaded === 0) {
+  } else if (downloaded === 0) {
     return (
       <DownloadChapterButton
         theme={theme}
-        onPress={() => downloadChapter(chapter)}
+        onPress={() => {
+          downloadChapter(chapter);
+          setDownloaded(1);
+        }}
       />
     );
   } else {
@@ -51,7 +55,7 @@ export const DownloadButton: React.FC<DownloadButtonProps> = ({
         <Menu.Item
           onPress={() => {
             deleteChapter(chapter.chapterId, chapter.chapterName);
-            hideDeleteChapterMenu();
+            setDownloaded(0);
           }}
           title="Delete"
           titleStyle={{ color: theme.onSurface }}
@@ -114,6 +118,6 @@ export const ChapterBookmarkButton: React.FC<theme> = ({ theme }) => (
 
 const styles = StyleSheet.create({
   activityIndicator: { margin: 3.5, padding: 5 },
-  iconButton: { margin: 2, zIndex: 30 },
+  iconButton: { margin: 2 },
   iconButtonLeft: { marginLeft: 2 },
 });

@@ -1,4 +1,4 @@
-import { FlatList, Pressable, StyleSheet } from 'react-native';
+import { FlatList, Pressable, StyleSheet, View } from 'react-native';
 import React from 'react';
 
 import { ChapterItemExtended, Update } from '../../../database/types';
@@ -34,6 +34,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
   dispatch,
   theme,
   keyProp,
+  d,
 }) => {
   const { navigate } = useNavigation();
   const handleDownloadChapter = (chapter: ChapterItemExtended) =>
@@ -48,7 +49,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
       ),
     );
 
-  const handleDeleteChapter = (chapterId: number, chapterName: string) =>
+  const handleDeleteChapter = (chapterId: number, chapterName: string) => {
     dispatch(
       deleteChapterAction(
         item[0].sourceId,
@@ -57,6 +58,9 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
         chapterName,
       ),
     );
+    d();
+  };
+
   const navigateToChapter = (chapter: ChapterItemExtended) =>
     navigate(
       'Chapter' as never,
@@ -71,52 +75,70 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
   );
 
   const BookCover = () => (
-    <Pressable onPress={() => navigateToNovel(item[0])}>
+    <Pressable
+      style={[styles.coverContainer, styles.padding]}
+      onPress={() => navigateToNovel(item[0])}
+    >
       <FastImage source={{ uri: item[0].novelCover }} style={styles.cover} />
     </Pressable>
   );
-
+  //console.log('Render');
   return (
-    <List.Accordion
-      key={keyProp}
-      title={item[0].novelName}
-      left={BookCover}
-      theme={{ colors: theme }}
-      style={styles.container}
-      description={item.length + ' new Chapters'}
-    >
-      <FlatList
-        key={'FL' + keyProp}
-        data={item}
-        keyExtractor={it => it.chapterId.toString()}
-        style={styles.flatList}
-        renderItem={it => {
-          return (
-            <ChapterItem
-              chapter={it.item}
-              theme={theme}
-              showChapterTitles={false}
-              downloadQueue={downloadQueue}
-              downloadChapter={handleDownloadChapter}
-              deleteChapter={handleDeleteChapter}
-              navigateToChapter={navigateToChapter}
-              containerStyle={styles.chapterItem}
-            />
-          );
-        }}
-        scrollEnabled={false}
-      />
-    </List.Accordion>
+    <View style={styles.relativ}>
+      <BookCover />
+      <List.Accordion
+        key={keyProp}
+        title={item[0].novelName}
+        left={() => <View style={styles.cover} />}
+        theme={{ colors: theme }}
+        style={[styles.container, styles.padding]}
+        description={item.length + ' new Chapters'}
+      >
+        <FlatList
+          key={'FL' + keyProp}
+          data={item}
+          keyExtractor={it => it.chapterId.toString()}
+          style={styles.flatList}
+          renderItem={it => {
+            return (
+              <ChapterItem
+                chapter={it.item}
+                theme={theme}
+                showChapterTitles={false}
+                downloadQueue={downloadQueue}
+                downloadChapter={handleDownloadChapter}
+                deleteChapter={handleDeleteChapter}
+                navigateToChapter={navigateToChapter}
+                containerStyle={styles.chapterItem}
+              />
+            );
+          }}
+          scrollEnabled={false}
+        />
+      </List.Accordion>
+    </View>
   );
 };
 
 export default UpdateNovelCard;
 
 const styles = StyleSheet.create({
-  container: {
+  relativ: {
+    position: 'relative',
+  },
+  padding: {
     paddingHorizontal: 16,
-    paddingVertical: 12,
+    paddingVertical: 6,
+    height: 70,
+  },
+  container: {
     justifyContent: 'space-between',
+  },
+  coverContainer: {
+    position: 'absolute',
+    left: 0,
+    zIndex: 1,
+    justifyContent: 'center',
   },
   cover: {
     height: 40,
