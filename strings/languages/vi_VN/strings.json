@@ -17,7 +17,7 @@
     "searchResults": "Kết quả tìm kiếm",
     "chapters": "Chương",
     "submit": "Gửi",
-    "retry": "Retry"
+    "retry": "Thử lại"
   },
   "library": "Thư viện",
   "libraryScreen": {
@@ -34,9 +34,9 @@
         "dateAdded": "Ngày được thêm",
         "alphabetically": "Theo thứ tự từ điển",
         "totalChapters": "Toàn bộ chương",
-        "download": "Downloaded",
-        "unread": "Unread",
-        "lastRead": "Last Read"
+        "download": "Đã tải xuống",
+        "unread": "Chưa đọc",
+        "lastRead": "Lần đọc cuối"
       },
       "display": {
         "displayMode": "Trạng thái hiển thị",
@@ -92,9 +92,9 @@
       "swipeGestures": "Vuốt để đổi chương",
       "allowTextSelection": "Cho phép bôi đen chữ",
       "useChapterDrawerSwipeNavigation": "Vuốt phải để hiện danh sách",
-      "removeExtraSpacing": "Remove extra paragraph spacing",
-      "volumeButtonsScroll": "Volume buttons scroll",
-      "showSwipeMargins": "Show swipe margins"
+      "removeExtraSpacing": "Xoá khoảng trống thừa",
+      "volumeButtonsScroll": "Cuộn bằng nút âm lượng",
+      "showSwipeMargins": "Hiện khoảng vuốt"
     },
     "drawer": {
       "scrollToCurrentChapter": "Cuộn đến phần hiện tại",
@@ -131,27 +131,27 @@
     "settingsScreen": {
       "generalSettings": "Chung",
       "generalSettingsScreen": {
-        "display": "Display",
-        "displayMode": "Display Mode",
-        "itemsPerRow": "Items per row",
-        "itemsPerRowLibrary": "Items per row in library",
-        "novelBadges": "Novel Badges",
-        "novelSort": "Novel Sort",
-        "updateLibrary": "Update library on launch",
-        "useFAB": "Use FAB in Library",
-        "novel": "Novel",
-        "chapterSort": "Default chapter sort",
-        "bySource": "By source",
-        "asc": "(Ascending)",
-        "desc": "(Descending)",
-        "globalUpdate": "Global update",
-        "updateOngoing": "Only update ongoing novels",
-        "refreshMetadata": "Automatically refresh metadata",
-        "refreshMetadataDescription": "Check for new cover and details when updating library",
-        "updateTime": "Show last update time",
-        "autoDownload": "Auto-download",
-        "downloadNewChapters": "Download new chapters",
-        "disableHapticFeedback": "Disable haptic feedback"
+        "display": "Hiển thị",
+        "displayMode": "Chế độ Hiển thị",
+        "itemsPerRow": "Item trên hàng",
+        "itemsPerRowLibrary": "Item trên hàng trong thư viện",
+        "novelBadges": "Huy hiệu truyện",
+        "novelSort": "Sắp xếp truyện",
+        "updateLibrary": "Cập nhật thư viện khi khởi động",
+        "useFAB": "Sử dụng FAB trong thư viện",
+        "novel": "Truyện",
+        "chapterSort": "Sắp xếp mặc định",
+        "bySource": "Bởi nguồn",
+        "asc": "(Tăng dần)",
+        "desc": "(Giảm dần)",
+        "globalUpdate": "Cập nhật toàn bộ",
+        "updateOngoing": "Chỉ cập nhật truyện đang thực hiện",
+        "refreshMetadata": "Tự động làm mới metadata",
+        "refreshMetadataDescription": "Kiểm tra ảnh bìa và miêu tả khi cập nhật thự viện",
+        "updateTime": "Hiện lần cập nhật trước",
+        "autoDownload": "Tự động tải xuống",
+        "downloadNewChapters": "Tải chương mới",
+        "disableHapticFeedback": "Tắt phản hồi xúc giác"
       },
       "readerSettings": {
         "title": "Trang đọc",
