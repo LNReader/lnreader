@@ -18,6 +18,7 @@ import { useTheme } from '@hooks/useTheme';
 import RemoveDownloadsDialog from './components/RemoveDownloadsDialog';
 import UpdatesSkeletonLoading from '@screens/updates/components/UpdatesSkeletonLoading';
 import UpdateNovelCard from '@screens/updates/components/UpdateNovelCard';
+import { getString } from '@strings/translations';
 
 const Downloads = ({ navigation }) => {
   const theme = useTheme();
@@ -54,7 +55,12 @@ const Downloads = ({ navigation }) => {
   };
 
   const ListEmptyComponent = () =>
-    !loading && <EmptyView icon="(˘･_･˘)" description="No downloads" />;
+    !loading && (
+      <EmptyView
+        icon="(˘･_･˘)"
+        description={getString('downloadScreen.noDownloads')}
+      />
+    );
 
   useEffect(() => {
     getChapters();
@@ -67,7 +73,9 @@ const Downloads = ({ navigation }) => {
       dispatch={dispatch}
       theme={theme}
       descriptionText={
-        item.length === 1 ? 'downloaded Chapter' : 'downloaded Chapters'
+        item.length === 1
+          ? getString('downloadScreen.downloadChapter')
+          : getString('downloadScreen.downloadChapters')
       }
       removeItemFromList
     />
@@ -84,10 +92,7 @@ const Downloads = ({ navigation }) => {
           />
         )}
       </Appbar>
-      <List.InfoItem
-        title="Downloads are saved in a SQLite Database."
-        theme={theme}
-      />
+      <List.InfoItem title={getString('downloadScreen.dbInfo')} theme={theme} />
       {loading ? (
         <UpdatesSkeletonLoading theme={theme} />
       ) : (

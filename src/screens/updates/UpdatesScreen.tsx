@@ -114,16 +114,17 @@ const UpdatesScreen = () => {
               dispatch={dispatch}
               theme={theme}
               descriptionText={
-                item.length === 1 ? 'new Chapter' : 'new Chapters'
+                item.length === 1
+                  ? getString('updatesScreen.newChapter')
+                  : getString('updatesScreen.newChapters')
               }
             />
           )}
           ListEmptyComponent={
             <EmptyView
               icon="(˘･_･˘)"
-              description="No recent updates"
+              description={getString('updatesScreen.emptyView')}
               theme={theme}
-              key="dlkf"
             />
           }
           refreshControl={
