@@ -27,7 +27,6 @@ interface UpdateCardProps {
   dispatch: Dispatch<any>;
   theme: ThemeColors;
   descriptionText: string;
-  keyProp: number;
   removeItemFromList?: boolean;
 }
 
@@ -36,7 +35,6 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
   dispatch,
   theme,
   descriptionText,
-  keyProp,
   removeItemFromList,
 }) => {
   const { navigate } = useNavigation();
@@ -95,9 +93,8 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
   };
   if (chapterList.length > 0) {
     return (
-      <View style={styles.relativ} key={keyProp}>
+      <View style={styles.relativ}>
         <List.Accordion
-          key={keyProp}
           title={chapterList[0].novelName}
           left={BookCover}
           theme={{ colors: theme }}
@@ -106,7 +103,6 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
           onLongPress={() => navigateToNovel(chapterList[0])}
         >
           <FlatList
-            key={'FL' + keyProp}
             data={chapterList}
             keyExtractor={it => it.chapterId.toString()}
             style={styles.flatList}

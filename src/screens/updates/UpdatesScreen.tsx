@@ -107,9 +107,9 @@ const UpdatesScreen = () => {
               {dayjs(date).calendar()}
             </Text>
           )}
-          renderItem={({ item, index }) => (
+          keyExtractor={item => item[0].chapterId.toString()}
+          renderItem={({ item }) => (
             <UpdateNovelCard
-              keyProp={index}
               item={item}
               dispatch={dispatch}
               theme={theme}
