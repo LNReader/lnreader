@@ -21,7 +21,7 @@ const popularNovels = async page => {
       .find('.flexbox2-title span')
       .first()
       .text();
-    const novelCover = loadedCheerio(this).find('img').attr('data-src');
+    const novelCover = loadedCheerio(this).find('img').attr('src');
     const novelUrl = loadedCheerio(this)
       .find('.flexbox2-content > a')
       .attr('href');
@@ -48,7 +48,18 @@ const parseNovelAndChapters = async novelUrl => {
 
   novel.novelName = loadedCheerio('.series-title h2').text().trim();
 
-  novel.novelCover = loadedCheerio('.series-thumb img').attr('data-src');
+  novel.novelCover = loadedCheerio('.series-thumb img').attr('src');
+
+  novel.author = loadedCheerio(
+    '.series-infolist > li:nth-child(3) > span:nth-child(2)',
+  ).text();
+
+  novel.status = loadedCheerio('.status').text().trim();
+
+  novel.genre = loadedCheerio('.series-genres')
+    .prop('innerHTML')
+    .replace(/<.*?>(.*?)<.*?>/g, '$1,')
+    .slice(0, -1);
 
   novel.summary = loadedCheerio('.series-synops').text().trim();
 
@@ -85,7 +96,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   let loadedCheerio = cheerio.load(body);
 
   const chapterName = loadedCheerio('.title-chapter').text();
-  const chapterText = loadedCheerio('.reader-area').html();
+  const chapterText = loadedCheerio('.reader').html();
 
   const chapter = {
     sourceId,
@@ -112,7 +123,7 @@ const searchNovels = async searchTerm => {
       .find('.flexbox2-title span')
       .first()
       .text();
-    const novelCover = loadedCheerio(this).find('img').attr('data-src');
+    const novelCover = loadedCheerio(this).find('img').attr('src');
     const novelUrl = loadedCheerio(this)
       .find('.flexbox2-content > a')
       .attr('href');
