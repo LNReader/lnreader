@@ -873,5 +873,12 @@
     "icon": "https://pandamtl.com/wp-includes/images/w-logo-blue-white-bg.png",
     "url": "https://pandamtl.com/",
     "lang": "English"
+  },
+  {
+    "sourceId": 147,
+    "sourceName": "PawRead",
+    "icon": "https://www.pawread.com/favicon.ico",
+    "url": "https://pawread.com/",
+    "lang": "English"
   }
 ]
