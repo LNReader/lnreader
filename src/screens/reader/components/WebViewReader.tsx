@@ -303,12 +303,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                         )
                       );
                     }
-                    let loadInterval = setInterval(() => {
-                      sendHeight();
-                    }, 500);
-                    setTimeout(() => {
-                      clearInterval(loadInterval);
-                    }, 2000);
+                    window.requestAnimationFrame(()=>sendHeight());
                     </script>
                     <div class="infoText">
                     ${getString(
