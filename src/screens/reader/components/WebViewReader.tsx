@@ -125,7 +125,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                       return (
                         p +
                         `document.querySelector("img[file-id='${data.id}']").setAttribute("src", "data:image/jpg;base64,${data.data}");
-                        document.querySelector("img[file-id='${data.id}']").classList.remove("loadIcon");`
+                        document.querySelector("img[file-id='${data.id}']").classList.remove("load-icon");`
                       );
                     }, '');
                     webViewRef.current?.injectJavaScript(
