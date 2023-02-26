@@ -7,6 +7,11 @@ Contributions are welcome and are greatly appreciated!
 After forking to your own github org or account, do the following steps to get started:
 
 ```bash
+# prerequisites
+node --version <= 16.13.1   (for version management, get nvm [recommended])
+java sdk --version <= 11    (for version management, get jenv [optional])
+android sdk                 (https://developer.android.com/studio)
+
 # clone your fork to your local machine
 git clone https://github.com/<your-account-name>/lnreader.git
 
@@ -14,15 +19,18 @@ git clone https://github.com/<your-account-name>/lnreader.git
 cd lnreader
 
 # install dependencies
-npm install
+npm install --legacy-peer-deps
 
 # run metro for development
 npm start
+
+# OR build the apk (the built apk will be found in ~/lnreader/android/app/build/outputs/apk/release/)
+npm run buildRelease
 ```
 
 ### Developing on Android
 
-While the packager is running and you have an Android device or emulator connected to your computer, build and launch the Android app.
+While the packager is running (npm start) and you have an Android device or emulator connected to your computer (adb devices), build and launch the Android app.
 
 ```
 npm run android
