@@ -49,4 +49,4 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md)
 
 ## License
 
-[MIT ](https://github.com/rajarsheechatterjee/lnreader/blob/main/LICENSE)
+[MIT](https://github.com/rajarsheechatterjee/lnreader/blob/main/LICENSE)

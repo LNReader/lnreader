@@ -27,18 +27,24 @@ npm run buildRelease
 
 ### Developing on Android
 
-You will need an Android device or emulator connected to your computer (adb devices),
-as well as an IDE of your choice. (eg: vscode)
+You will need an Android device or emulator connected to your computer as well as an IDE of your choice. (eg: vscode)
 
 ```bash
+# prerequisites
+adb                         (https://developer.android.com/studio/command-line/adb)
+IDE
+
+# check if android device/emulator is connected
+adb devices
+
 # run metro for development
 npm start
 
-# then to view on your Android device (new terminal)
+# then to view on your android device (new terminal)
 npm run android
 ```
 
-To view any changes to the app with new code, save your code and press r on the metro terminal to
+To view any changes to the app with new code, save your code and press "r" on the metro terminal to
 reload it. The app on the android device/emulator will reload shortly.
 
 ### Style & Linting
