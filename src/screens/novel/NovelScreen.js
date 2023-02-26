@@ -140,8 +140,6 @@ const Novel = ({ route, navigation }) => {
 
   const [jumpToChapterModal, showJumpToChapterModal] = useState(false);
 
-  const keyExtractor = useCallback(i => i.chapterId.toString(), []);
-
   const downloadChapter = (chapterUrl, chapterName, chapterId) =>
     dispatch(
       downloadChapterAction(
@@ -585,12 +583,12 @@ const Novel = ({ route, navigation }) => {
             estimatedItemSize={64}
             data={!loading && chapters}
             extraData={[downloadQueue, selected]}
-            keyExtractor={keyExtractor}
             removeClippedSubviews={true}
             maxToRenderPerBatch={5}
             windowSize={15}
             initialNumToRender={7}
             renderItem={renderItem}
+            keyExtractor={(item, index) => 'chapter' + index}
             contentContainerStyle={{ paddingBottom: 100 }}
             ListHeaderComponent={
               <NovelInfoHeader

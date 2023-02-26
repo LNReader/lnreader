@@ -264,22 +264,22 @@ const ChapterContent = ({ route, navigation }) => {
   };
 
   const navigateToChapterBySwipe = name => {
-    let chapter;
+    let navChapter;
     if (name === 'SWIPE_LEFT') {
-      chapter = nextChapter;
+      navChapter = nextChapter;
     } else if (name === 'SWIPE_RIGHT') {
-      chapter = prevChapter;
+      navChapter = prevChapter;
     } else {
       return;
     }
     // you can add more condition for friendly usage. for example: if(name === "SWIPE_LEFT" || name === "right")
-    chapter
+    navChapter
       ? navigation.replace('Chapter', {
           ...params,
-          chapterUrl: chapter.chapterUrl,
-          chapterId: chapter.chapterId,
-          chapterName: chapter.chapterName,
-          bookmark: chapter.bookmark,
+          chapterUrl: navChapter.chapterUrl,
+          chapterId: navChapter.chapterId,
+          chapterName: navChapter.chapterName,
+          bookmark: navChapter.bookmark,
         })
       : showToast(
           name === 'SWIPE_LEFT'
@@ -299,6 +299,7 @@ const ChapterContent = ({ route, navigation }) => {
 
   const chapterText = sanitizeChapterText(chapter.chapterText, {
     removeExtraParagraphSpacing,
+    sourceId: sourceId,
   });
   const openDrawer = () => {
     navigation.openDrawer();
@@ -316,7 +317,7 @@ const ChapterContent = ({ route, navigation }) => {
   return (
     <>
       <WebViewReader
-        chapter={chapter}
+        chapterInfo={params}
         html={chapterText}
         chapterName={chapter.chapterName || chapterName}
         swipeGestures={swipeGestures}

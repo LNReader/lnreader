@@ -158,6 +158,7 @@ interface Scraper {
   ) => Promise<SourceChapter>;
   searchNovels: (searchTerm: string) => Promise<SourceNovelItem[]>;
   filters?: SourceFilter[];
+  headers?: { [key: string]: string };
 }
 export const sourceManager = (sourceId: number): Scraper => {
   const scrapers: Record<number, Scraper> = {

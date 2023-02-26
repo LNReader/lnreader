@@ -12,8 +12,8 @@ const sourceName = 'HakoLightNovel';
 const baseUrl = 'https://ln.hako.vn';
 
 const popularNovels = async (page: number) => {
-  const totalPages = 49;
-  const url = `${baseUrl}/danh-sach?page=${page}`;
+  const totalPages = 59;
+  const url = `${baseUrl}/danh-sach?truyendich=1&sapxep=topthang&page=${page}`;
 
   const result = await fetch(url);
   const body = await result.text();
@@ -73,7 +73,13 @@ const parseNovelAndChapters = async (novelUrl: string) => {
 
   novel.novelName = loadedCheerio('.series-name').text();
 
-  let novelCover = loadedCheerio('.img > img').attr('src');
+  const background = loadedCheerio('.series-cover > .a6-ratio > div').attr(
+    'style',
+  );
+  const novelCover = background?.substring(
+    background.indexOf('http'),
+    background.length - 2,
+  );
 
   novel.novelCover = novelCover
     ? isUrlAbsolute(novelCover)
@@ -190,11 +196,16 @@ const searchNovels = async (searchTerm: string) => {
   return novels;
 };
 
+const headers = {
+  Referer: 'https://docln.net/',
+};
+
 const HakoLightNovelScraper = {
   popularNovels,
   parseNovelAndChapters,
   parseChapter,
   searchNovels,
+  headers,
 };
 
 export default HakoLightNovelScraper;

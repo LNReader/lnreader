@@ -1,7 +1,33 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import AllSources from '../../sources/sources.json';
 
+import { translations } from 'i18n-js';
+import { localization } from '../../../strings/translations';
 import { Source } from '../../sources/types';
+
+const languages = {
+  'en': 'English',
+  'es': 'Spanish',
+  'tr': 'Turkish',
+  'ru': 'Russian',
+  'ar': 'Arabic',
+  'uk': 'Ukrainian',
+  'pt': 'Portuguese',
+  'pt-BR': 'Portuguese',
+  'de': 'German',
+  'it': 'Italian',
+  'zh-CN': 'Chinese',
+  'zh-TW': 'Chinese',
+  'vi': 'Vietnamese',
+  'ja': 'Japanese',
+};
+// Hope you can do something to synchronize translation system.
+// Also take care of some case like vi-VN: Vietnamese not vi
+export const defaultLanguage =
+  localization in translations || localization.split('-')[0] in translations
+    ? languages[localization] || languages[localization.split('-')[0]]
+    : 'English';
+// That's why this code is so long :(
 
 interface SourcesState {
   allSources: Source[];
@@ -16,7 +42,7 @@ const initialState: SourcesState = {
   searchResults: [],
   pinnedSourceIds: [],
   lastUsed: null,
-  languageFilters: ['English'],
+  languageFilters: [defaultLanguage],
 };
 
 export const sourcesSlice = createSlice({
