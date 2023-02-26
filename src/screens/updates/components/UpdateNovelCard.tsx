@@ -80,10 +80,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
   const { downloadQueue } = useSelector(
     (state: RootState) => state.downloadsReducer,
   );
-  if (chapterList.length === 2) {
-    item.shift();
-    setChapterList(item);
-  }
+
   const BookCover = () => {
     return (
       <FastImage
