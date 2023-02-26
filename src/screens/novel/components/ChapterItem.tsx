@@ -28,6 +28,8 @@ interface ChapterItemProps {
   showProgressPercentage?: (chapter: ChapterItemExtended) => void;
   containerStyle?: ViewStyle;
   showDate?: boolean;
+  left?: Function;
+  textSize?: number;
 }
 
 const ChapterItem: React.FC<ChapterItemProps> = ({
@@ -45,6 +47,8 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
   showProgressPercentage,
   containerStyle,
   showDate,
+  left,
+  textSize,
 }) => {
   const { chapterId, chapterName, read, releaseDate, bookmark } = chapter;
   const [deleteChapterMenuVisible, setDeleteChapterMenuVisible] =
@@ -72,16 +76,21 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
       android_ripple={{ color: theme.rippleColor }}
     >
       <Row style={styles.row}>
+        {left?.()}
         {!!bookmark && <ChapterBookmarkButton theme={theme} />}
         <View>
           <Text
-            style={{
-              color: read
-                ? theme.outline
-                : bookmark
-                ? theme.primary
-                : theme.onSurface,
-            }}
+            style={[
+              styles.title,
+              {
+                fontSize: textSize ?? 14,
+                color: read
+                  ? theme.outline
+                  : bookmark
+                  ? theme.primary
+                  : theme.onSurface,
+              },
+            ]}
             numberOfLines={1}
           >
             {showChapterTitles
@@ -136,6 +145,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  title: {
+    marginTop: 5,
   },
   text: {
     fontSize: 12,

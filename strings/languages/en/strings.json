@@ -55,7 +55,6 @@
   "updatesScreen": {
     "searchbar": "Search updates",
     "lastUpdatedAt": "Library last updated:",
-    "newChapter": "new Chapter",
     "newChapters": "new Chapters",
     "emptyView":"No recent updates"
   },
@@ -230,7 +229,6 @@
   },
   "downloadScreen": {
     "dbInfo": "Downloads are saved in a SQLite Database.",
-    "downloadChapter": "downloaded Chapter",
     "downloadChapters": "downloaded Chapters",
     "noDownloads": "No downloads"
   }

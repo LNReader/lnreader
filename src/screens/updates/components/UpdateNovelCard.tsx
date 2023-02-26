@@ -80,18 +80,19 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
   const { downloadQueue } = useSelector(
     (state: RootState) => state.downloadsReducer,
   );
-
+  if (chapterList.length === 2) {
+    item.shift();
+    setChapterList(item);
+  }
   const BookCover = () => {
     return (
-      <View>
-        <FastImage
-          source={{ uri: chapterList[0].novelCover }}
-          style={styles.cover}
-        />
-      </View>
+      <FastImage
+        source={{ uri: chapterList[0].novelCover }}
+        style={styles.cover}
+      />
     );
   };
-  if (chapterList.length > 0) {
+  if (chapterList.length > 1) {
     return (
       <View style={styles.relativ}>
         <List.Accordion
@@ -117,12 +118,34 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
                   deleteChapter={handleDeleteChapter}
                   navigateToChapter={navigateToChapter}
                   containerStyle={styles.chapterItem}
+                  onSelectLongPress={() => navigateToNovel(chapterList[0])}
                 />
               );
             }}
             scrollEnabled={false}
           />
         </List.Accordion>
+      </View>
+    );
+  } else if (chapterList.length > 0) {
+    return (
+      <View style={[styles.relativ]}>
+        <ChapterItem
+          chapter={chapterList[0]}
+          theme={theme}
+          showChapterTitles={false}
+          downloadQueue={downloadQueue}
+          downloadChapter={handleDownloadChapter}
+          deleteChapter={handleDeleteChapter}
+          navigateToChapter={navigateToChapter}
+          onSelectLongPress={() => navigateToNovel(chapterList[0])}
+          textSize={16}
+          left={() => (
+            <View style={styles.chapterCover}>
+              <BookCover />
+            </View>
+          )}
+        />
       </View>
     );
   }
@@ -137,8 +160,8 @@ const styles = StyleSheet.create({
   },
   padding: {
     paddingHorizontal: 16,
-    paddingVertical: 6,
-    height: 70,
+    paddingVertical: 3,
+    height: 64,
   },
   container: {
     justifyContent: 'space-between',
@@ -148,6 +171,9 @@ const styles = StyleSheet.create({
     width: 40,
     borderRadius: 4,
     backgroundColor: coverPlaceholderColor,
+  },
+  chapterCover: {
+    marginRight: 8,
   },
   imageContainer: {
     flex: 1,

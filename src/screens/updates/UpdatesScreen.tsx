@@ -113,11 +113,7 @@ const UpdatesScreen = () => {
               item={item}
               dispatch={dispatch}
               theme={theme}
-              descriptionText={
-                item.length === 1
-                  ? getString('updatesScreen.newChapter')
-                  : getString('updatesScreen.newChapters')
-              }
+              descriptionText={getString('updatesScreen.newChapters')}
             />
           )}
           ListEmptyComponent={
@@ -160,7 +156,8 @@ const styles = StyleSheet.create({
   },
   dateHeader: {
     paddingHorizontal: 16,
-    paddingVertical: 8,
+    paddingTop: 8,
+    paddingBottom: 2,
   },
   lastUpdateTime: {
     paddingHorizontal: 16,

@@ -72,11 +72,7 @@ const Downloads = ({ navigation }) => {
       item={item}
       dispatch={dispatch}
       theme={theme}
-      descriptionText={
-        item.length === 1
-          ? getString('downloadScreen.downloadChapter')
-          : getString('downloadScreen.downloadChapters')
-      }
+      descriptionText={getString('downloadScreen.downloadChapters')}
       removeItemFromList
     />
   );

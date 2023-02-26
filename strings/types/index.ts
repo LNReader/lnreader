@@ -46,7 +46,6 @@ export interface StringMap {
   'updates': 'string';
   'updatesScreen.searchbar': 'string';
   'updatesScreen.lastUpdatedAt': 'string';
-  'updatesScreen.newChapter': 'string';
   'updatesScreen.newChapters': 'string';
   'updatesScreen.emptyView': 'string';
   'history': 'string';
@@ -172,7 +171,6 @@ export interface StringMap {
   'settings.icognitoMode': 'string';
   'settings.downloadedOnly': 'string';
   'downloadScreen.dbInfo': 'string';
-  'downloadScreen.downloadChapter': 'string';
   'downloadScreen.downloadChapters': 'string';
   'downloadScreen.noDownloads': 'string';
 }
