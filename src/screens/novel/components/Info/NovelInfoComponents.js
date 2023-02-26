@@ -211,7 +211,7 @@ const NovelGenres = ({ theme, genre }) => {
       contentContainerStyle={styles.genreContainer}
       horizontal
       data={data}
-      keyExtractor={item => item}
+      keyExtractor={(item, index) => 'genre' + index}
       renderItem={renderItem}
       showsHorizontalScrollIndicator={false}
     />

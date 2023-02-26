@@ -8,17 +8,28 @@ import { ChapterItem } from '@database/types';
 import { useReaderSettings } from '@redux/hooks';
 import { getString } from '@strings/translations';
 
+import { sourceManager } from '../../../sources/sourceManager';
+
 type WebViewPostEvent = {
   type: string;
   data?: { [key: string]: string };
 };
 
 type WebViewReaderProps = {
-  chapter: ChapterItem;
+  chapterInfo: {
+    sourceId: number;
+    chapterId: string;
+    chapterUrl: string;
+    novelId: string;
+    novelUrl: string;
+    novelName: string;
+    chapterName: string;
+    bookmark: string;
+  };
   html: string;
   chapterName: string;
   swipeGestures: boolean;
-  minScroll: any;
+  minScroll: React.MutableRefObject<number>;
   nextChapter: ChapterItem;
   webViewRef: React.MutableRefObject<WebView>;
   onPress(): void;
@@ -35,7 +46,7 @@ const onClickWebViewPostMessage = (event: WebViewPostEvent) =>
 
 const WebViewReader: React.FC<WebViewReaderProps> = props => {
   const {
-    chapter,
+    chapterInfo,
     html,
     chapterName,
     swipeGestures,
@@ -55,7 +66,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
   const { theme: backgroundColor } = readerSettings;
 
   const layoutHeight = Dimensions.get('window').height;
-
+  const headers = sourceManager(chapterInfo.sourceId)?.headers;
   return (
     <WebView
       ref={webViewRef}
@@ -81,31 +92,46 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
             break;
           case 'imgfiles':
             if (event.data) {
-              if (Array.isArray(event.data)) {
+              if (Array.isArray(event.data.imgs)) {
                 const promises: Promise<{ data: any; id: number }>[] = [];
-                for (let i = 0; i < event.data.length; i++) {
-                  const { url, id } = event.data[i];
-                  if (url) {
-                    if (id) {
+                if (event.data.type === 'online') {
+                  for (let i = 0; i < event.data.imgs.length; i++) {
+                    const { url, id } = event.data.imgs[i];
+                    if (url && id) {
                       promises.push(
-                        RNFetchBlob.fs
-                          .readFile(url, 'utf8')
-                          .then(d => ({ data: d, id })),
+                        RNFetchBlob.fetch('get', url, headers).then(res => ({
+                          data: res.base64(),
+                          id: id,
+                        })),
                       );
-                    } else {
-                      // no imageid
+                    }
+                  }
+                } else {
+                  for (let i = 0; i < event.data.imgs.length; i++) {
+                    const { url, id } = event.data.imgs[i];
+                    if (url && id) {
+                      promises.push(
+                        RNFetchBlob.fs.readFile(url, 'base64').then(base64 => {
+                          return { data: base64, id: id };
+                        }),
+                      );
                     }
                   }
                 }
+
                 Promise.all(promises)
                   .then(datas => {
                     const inject = datas.reduce((p, data) => {
                       return (
                         p +
-                        `document.querySelector("img[file-id='${data.id}']").src="data:image/png;base64,${data.data}";`
+                        `document.querySelector("img[file-id='${data.id}']").setAttribute("src", "data:image/jpg;base64,${data.data}");
+                        document.querySelector("img[file-id='${data.id}']").classList.remove("load-icon");`
                       );
                     }, '');
-                    webViewRef.current?.injectJavaScript(inject);
+                    webViewRef.current?.injectJavaScript(
+                      inject +
+                        'window.requestAnimationFrame(()=>sendHeight());',
+                    );
                   })
                   .catch(e => {
                     e; // CloudFlare is too strong :D
@@ -166,6 +192,19 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                         height: auto;
                         max-width: 100%;
                       }
+                      img.load-icon {
+                        display: block;
+                        margin-inline: auto;
+                        animation: rotation 1s infinite linear;
+                      }
+                      @keyframes rotation {
+                        100% {
+                          transform: rotate(360deg);
+                        }
+                        0% {
+                          transform: rotate(0deg);
+                        }
+                      }
                       .nextButton,
                       .infoText {
                         width: 100%;
@@ -215,19 +254,29 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                       type: 'hide',
                     })}>
                       <chapter 
-                        data-novel-id='${chapter.novelId}'
-                        data-chapter-id='${chapter.chapterId}'
+                        data-novel-id='${chapterInfo.novelId}'
+                        data-chapter-id='${chapterInfo.chapterId}'
                       >
                         ${html}
                       </chapter>
                     </div>
                     <script>
-                    const imgs = [...document.querySelectorAll("img")].map((img, index)=>{
-                      img.setAttribute("id", "file-id-" + index);
-                      return {url:img.getAttribute("src"), id:img.getAttribute("id")}
-                    });
-                    window.ReactNativeWebView.postMessage(JSON.stringify({type:"imgfiles",data:imgs}));
+                    const isOffline = !!document.querySelector("input[offline]")
+                    if(isOffline){
+                      imgs = [...document.querySelectorAll("img")].map((img, index)=>{
+                        img.setAttribute("file-id", index.toString());
+                        return {url:img.getAttribute("file-path"), id:img.getAttribute("file-id")};
+                      });
+                      window.ReactNativeWebView.postMessage(JSON.stringify({type:"imgfiles",data:{imgs:imgs,type:"offline"}}));
+                    }else if(${!!headers}){
+                      imgs = [...document.querySelectorAll("img")].map((img, index)=>{
+                        img.setAttribute("file-id", index.toString());
+                        return {url:img.getAttribute("delayed-src"), id:img.getAttribute("file-id")};
+                      });
+                      window.ReactNativeWebView.postMessage(JSON.stringify({type:"imgfiles",data:{imgs:imgs,type:"online"}}));
+                    }
                     var scrollTimeout;
+                    
                     window.addEventListener("scroll", (event) => {
                       window.clearTimeout( scrollTimeout );
                       scrollTimeout = setTimeout(() => {
@@ -244,19 +293,17 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                         );
                       }, 100);
                     });
-                    let loadInterval = setInterval(() => {
+                    const sendHeight = () => {
                       window.ReactNativeWebView.postMessage(
                         JSON.stringify(
                           {
                             type:"height",
                             data:document.body.scrollHeight
                           }
-                          )
-                        );
-                    }, 500);
-                    setTimeout(() => {
-                      clearInterval( loadInterval );
-                    }, 2000);
+                        )
+                      );
+                    }
+                    window.requestAnimationFrame(()=>sendHeight());
                     </script>
                     <div class="infoText">
                     ${getString(

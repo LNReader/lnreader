@@ -27,6 +27,7 @@ const ReaderFontPicker = () => {
       <FlatList
         data={readerFonts}
         renderItem={FontChipItem}
+        keyExtractor={(item, index) => 'font' + index}
         horizontal={true}
         showsHorizontalScrollIndicator={false}
       />

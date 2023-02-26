@@ -134,6 +134,7 @@ import {
   PandaMtlScraper,
 } from './multisrc/wqmangastream/WQMangaStreamGenerator';
 import AgitoonScraper from './kr/Agitoon';
+import PawReadScraper from './en/pawread';
 
 interface PopularNovelsResponse {
   totalPages: number;
@@ -157,6 +158,7 @@ interface Scraper {
   ) => Promise<SourceChapter>;
   searchNovels: (searchTerm: string) => Promise<SourceNovelItem[]>;
   filters?: SourceFilter[];
+  headers?: { [key: string]: string };
 }
 export const sourceManager = (sourceId: number): Scraper => {
   const scrapers: Record<number, Scraper> = {
@@ -286,6 +288,7 @@ export const sourceManager = (sourceId: number): Scraper => {
     144: NobleMtlScraper, // @ts-ignore
     145: AgitoonScraper, // @ts-ignore
     146: PandaMtlScraper, // @ts-ignore
+    147: PawReadScraper, // @ts-ignore
   };
 
   return scrapers[sourceId];

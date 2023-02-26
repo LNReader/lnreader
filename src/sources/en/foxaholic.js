@@ -96,19 +96,6 @@ const parseNovelAndChapters = async novelUrl => {
 
   let novelChapters = [];
 
-  // const novelId = $('#manga-chapters-holder').attr('data-id');
-
-  // let formData = new FormData();
-  // formData.append('action', 'manga_get_chapters');
-  // formData.append('manga', novelId);
-
-  const data = await fetch(`${url}ajax/chapters/`, {
-    method: 'POST',
-  });
-  const text = await data.text();
-
-  loadedCheerio = cheerio.load(text);
-
   loadedCheerio('.wp-manga-chapter').each(function () {
     const chapterName = loadedCheerio(this)
       .find('a')
