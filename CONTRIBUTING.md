@@ -21,18 +21,19 @@ cd lnreader
 # install dependencies
 npm install --legacy-peer-deps
 
-# run metro for development
-npm start
-
-# OR build the apk (the built apk will be found in ~/lnreader/android/app/build/outputs/apk/release/)
+# build the apk (the built apk will be found in ~/lnreader/android/app/build/outputs/apk/release/)
 npm run buildRelease
 ```
 
 ### Developing on Android
 
-While the packager is running (npm start) and you have an Android device or emulator connected to your computer (adb devices), build and launch the Android app.
+You will need an Android device or emulator connected to your computer (adb devices), as well as an IDE of your choice.
 
-```
+```bash
+# run metro for development
+npm start
+
+# to view changes on your Android device
 npm run android
 ```
 
