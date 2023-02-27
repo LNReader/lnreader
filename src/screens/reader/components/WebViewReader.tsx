@@ -291,7 +291,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                             }
                           )
                         );
-                      }, 100);
+                      }, 50);
                     });
                     const sendHeight = () => {
                       window.ReactNativeWebView.postMessage(
