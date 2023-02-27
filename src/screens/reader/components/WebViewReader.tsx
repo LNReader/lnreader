@@ -71,6 +71,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
     <WebView
       ref={webViewRef}
       style={{ backgroundColor }}
+      allowFileAccess={true}
       originWhitelist={['*']}
       scalesPageToFit={true}
       showsVerticalScrollIndicator={false}
@@ -92,30 +93,17 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
             break;
           case 'imgfiles':
             if (event.data) {
-              if (Array.isArray(event.data.imgs)) {
+              if (Array.isArray(event.data)) {
                 const promises: Promise<{ data: any; id: number }>[] = [];
-                if (event.data.type === 'online') {
-                  for (let i = 0; i < event.data.imgs.length; i++) {
-                    const { url, id } = event.data.imgs[i];
-                    if (url && id) {
-                      promises.push(
-                        RNFetchBlob.fetch('get', url, headers).then(res => ({
-                          data: res.base64(),
-                          id: id,
-                        })),
-                      );
-                    }
-                  }
-                } else {
-                  for (let i = 0; i < event.data.imgs.length; i++) {
-                    const { url, id } = event.data.imgs[i];
-                    if (url && id) {
-                      promises.push(
-                        RNFetchBlob.fs.readFile(url, 'base64').then(base64 => {
-                          return { data: base64, id: id };
-                        }),
-                      );
-                    }
+                for (let i = 0; i < event.data.length; i++) {
+                  const { url, id } = event.data[i];
+                  if (url && id) {
+                    promises.push(
+                      RNFetchBlob.fetch('get', url, headers).then(res => ({
+                        data: res.base64(),
+                        id: id,
+                      })),
+                    );
                   }
                 }
 
@@ -261,22 +249,15 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                       </chapter>
                     </div>
                     <script>
-                    const isOffline = !!document.querySelector("input[offline]")
-                    if(isOffline){
-                      imgs = [...document.querySelectorAll("img")].map((img, index)=>{
-                        img.setAttribute("file-id", index.toString());
-                        return {url:img.getAttribute("file-path"), id:img.getAttribute("file-id")};
-                      });
-                      window.ReactNativeWebView.postMessage(JSON.stringify({type:"imgfiles",data:{imgs:imgs,type:"offline"}}));
-                    }else if(${!!headers}){
+                    if(!document.querySelector("input[offline]") && ${!!headers}){
                       imgs = [...document.querySelectorAll("img")].map((img, index)=>{
                         img.setAttribute("file-id", index.toString());
                         return {url:img.getAttribute("delayed-src"), id:img.getAttribute("file-id")};
                       });
-                      window.ReactNativeWebView.postMessage(JSON.stringify({type:"imgfiles",data:{imgs:imgs,type:"online"}}));
+                      window.ReactNativeWebView.postMessage(JSON.stringify({type:"imgfiles",data:imgs}));
                     }
+
                     var scrollTimeout;
-                    
                     window.addEventListener("scroll", (event) => {
                       window.clearTimeout( scrollTimeout );
                       scrollTimeout = setTimeout(() => {
@@ -303,7 +284,9 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                         )
                       );
                     }
-                    window.requestAnimationFrame(()=>sendHeight());
+                    window.onload = (e) => {
+                      sendHeight();
+                    };
                     </script>
                     <div class="infoText">
                     ${getString(

@@ -6,7 +6,6 @@ import { ChapterItem } from '../types';
 import * as cheerio from 'cheerio';
 import RNFetchBlob from 'rn-fetch-blob';
 import { txnErrorCallback } from '@database/utils/helpers';
-import { LoadingImageSrc } from '@screens/reader/utils/LoadImage';
 
 const db = SQLite.openDatabase('lnreader.db');
 
@@ -297,9 +296,7 @@ const downloadImages = async (
         if (fileurl.charAt(0) === '-') {
           return loadedCheerio.html();
         }
-        elem.replaceWith(
-          `<img class='load-icon' src="${LoadingImageSrc}" file-path="${fileurl}">`,
-        );
+        elem.attr('src', `file://${fileurl}`);
         const exists = await RNFetchBlob.fs.exists(fileurl).catch(() => {
           showToast(
             `Unexpected storage error!\nRemove ${fileurl} and try downloading again`,

@@ -16,11 +16,11 @@ export const sanitizeChapterText = (
   let text = sanitizeHtml(html, {
     allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img', 'input']),
     allowedAttributes: {
-      'img': ['src', 'type', 'file-path', 'file-id', 'offline', 'class'],
+      'img': ['src', 'class'],
       'a': ['href'],
       'input': ['type', 'offline'],
     },
-    allowedSchemes: ['data', 'http', 'https'],
+    allowedSchemes: ['data', 'http', 'https', 'file'],
   });
 
   if (text) {
@@ -49,6 +49,5 @@ export const sanitizeChapterText = (
     text =
       "Chapter is empty.\n\nReport on <a href='https://github.com/LNReader/lnreader-sources/issues/new/choose'>github</a> if it's available in webview.";
   }
-
   return text;
 };
