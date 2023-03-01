@@ -13,8 +13,20 @@ export const sanitizeChapterText = (
   html: string,
   options?: Options,
 ): string => {
+  if (html) {
+    html = html
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&amp;/g, '&');
+  }
   let text = sanitizeHtml(html, {
-    allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img', 'input']),
+    allowedTags: sanitizeHtml.defaults.allowedTags.concat([
+      'img',
+      'input',
+      'i',
+      'em',
+      'b',
+    ]),
     allowedAttributes: {
       'img': ['src', 'class'],
       'a': ['href'],
@@ -22,7 +34,6 @@ export const sanitizeChapterText = (
     },
     allowedSchemes: ['data', 'http', 'https', 'file'],
   });
-
   if (text) {
     if (options?.removeExtraParagraphSpacing) {
       text = text.replace(/<\s*br[^>]*>/gi, '\n').replace(/\n{2,}/g, '\n\n');
