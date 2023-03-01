@@ -54,7 +54,9 @@
   "updates": "Güncellemeler",
   "updatesScreen": {
     "searchbar": "Güncellemelerde ara",
-    "lastUpdatedAt": "Kitaplık son güncelleme:"
+    "lastUpdatedAt": "Kitaplık son güncelleme:",
+    "newChapters": "new Chapters",
+    "emptyView": "No recent updates"
   },
   "history": "Geçmiş",
   "historyScreen": {
@@ -224,5 +226,10 @@
   "settings": {
     "icognitoMode": "Gizli mod",
     "downloadedOnly": "Yalnızca indirilenler"
+  },
+  "downloadScreen": {
+    "dbInfo": "Downloads are saved in a SQLite Database.",
+    "downloadChapters": "downloaded Chapters",
+    "noDownloads": "No downloads"
   }
 }
