@@ -54,7 +54,9 @@
   "updates": "更新",
   "updatesScreen": {
     "searchbar": "搜索更新",
-    "lastUpdatedAt": "最近更新的库："
+    "lastUpdatedAt": "最近更新的库：",
+    "newChapters": "new Chapters",
+    "emptyView": "No recent updates"
   },
   "history": "历史",
   "historyScreen": {
@@ -224,5 +226,10 @@
   "settings": {
     "icognitoMode": "无痕模式",
     "downloadedOnly": "仅已下载"
+  },
+  "downloadScreen": {
+    "dbInfo": "Downloads are saved in a SQLite Database.",
+    "downloadChapters": "downloaded Chapters",
+    "noDownloads": "No downloads"
   }
 }
