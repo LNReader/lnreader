@@ -14,10 +14,7 @@ export const sanitizeChapterText = (
   options?: Options,
 ): string => {
   if (html) {
-    html = html
-      .replace(/&lt;/g, '<')
-      .replace(/&gt;/g, '>')
-      .replace(/&amp;/g, '&');
+    html = html.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
   }
   let text = sanitizeHtml(html, {
     allowedTags: sanitizeHtml.defaults.allowedTags.concat([
@@ -26,6 +23,7 @@ export const sanitizeChapterText = (
       'i',
       'em',
       'b',
+      'a',
     ]),
     allowedAttributes: {
       'img': ['src', 'class'],
