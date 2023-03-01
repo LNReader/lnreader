@@ -1,9 +1,9 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 
 import { Appbar as MaterialAppbar } from 'react-native-paper';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { ScreenContainer } from '../../components/Common';
 import EmptyView from '../../components/EmptyView';
@@ -15,25 +15,31 @@ import {
 
 import { useTheme } from '@hooks/useTheme';
 
-import {
-  deleteChapterAction,
-  downloadChapterAction,
-} from '../../redux/novel/novel.actions';
-
-import UpdatesItem from '../updates/components/UpdatesItem';
 import RemoveDownloadsDialog from './components/RemoveDownloadsDialog';
-import { openChapter, openNovel } from '@utils/handleNavigateParams';
 import UpdatesSkeletonLoading from '@screens/updates/components/UpdatesSkeletonLoading';
+import UpdateNovelCard from '@screens/updates/components/UpdateNovelCard';
+import { getString } from '@strings/translations';
 
 const Downloads = ({ navigation }) => {
   const theme = useTheme();
 
   const dispatch = useDispatch();
 
-  const { downloadQueue } = useSelector(state => state.downloadsReducer);
-
   const [loading, setLoading] = useState(true);
   const [chapters, setChapters] = useState([]);
+  const groupUpdatesByDate = chapters => {
+    const dateGroups = chapters.reduce((groups, item) => {
+      const novelId = item.novelId;
+      if (!groups[novelId]) {
+        groups[novelId] = [];
+      }
+
+      groups[novelId].push(item);
+
+      return groups;
+    }, {});
+    return Object.values(dateGroups);
+  };
 
   /**
    * Confirm Clear downloads Dialog
@@ -49,57 +55,25 @@ const Downloads = ({ navigation }) => {
   };
 
   const ListEmptyComponent = () =>
-    !loading && <EmptyView icon="(˘･_･˘)" description="No downloads" />;
+    !loading && (
+      <EmptyView
+        icon="(˘･_･˘)"
+        description={getString('downloadScreen.noDownloads')}
+      />
+    );
 
   useEffect(() => {
     getChapters();
   }, []);
 
-  const onPress = useCallback(
-    item => navigation.navigate('Chapter', openChapter(item, item)),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
-  );
-
-  const onPressCover = useCallback(
-    item => navigation.navigate('Novel', openNovel(item)),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
-  );
-
-  const downloadChapter = (
-    sourceId,
-    novelUrl,
-    novelId,
-    chapterUrl,
-    chapterName,
-    chapterId,
-  ) =>
-    dispatch(
-      downloadChapterAction(
-        sourceId,
-        novelUrl,
-        novelId,
-        chapterUrl,
-        chapterName,
-        chapterId,
-      ),
-    );
-
-  const deleteChapter = (sourceId, novelId, chapterId, chapterName) => {
-    dispatch(deleteChapterAction(sourceId, novelId, chapterId, chapterName));
-    setChapters(chaps => chaps.filter(item => item.chapterId !== chapterId));
-  };
-
-  const renderItem = ({ item }) => (
-    <UpdatesItem
+  const renderItem = ({ item, index }) => (
+    <UpdateNovelCard
+      keyProp={index}
       item={item}
+      dispatch={dispatch}
       theme={theme}
-      onPress={() => onPress(item)}
-      onPressCover={() => onPressCover(item)}
-      downloadQueue={downloadQueue}
-      deleteChapter={deleteChapter}
-      downloadChapter={downloadChapter}
+      descriptionText={getString('downloadScreen.downloadChapters')}
+      removeItemFromList
     />
   );
 
@@ -114,17 +88,14 @@ const Downloads = ({ navigation }) => {
           />
         )}
       </Appbar>
-      <List.InfoItem
-        title="Downloads are saved in a SQLite Database."
-        theme={theme}
-      />
+      <List.InfoItem title={getString('downloadScreen.dbInfo')} theme={theme} />
       {loading ? (
         <UpdatesSkeletonLoading theme={theme} />
       ) : (
         <FlatList
           contentContainerStyle={styles.flatList}
-          data={chapters}
-          keyExtractor={item => item.chapterId.toString()}
+          data={groupUpdatesByDate(chapters)}
+          //keyExtractor={item => item.chapterId.toString()}
           renderItem={renderItem}
           ListEmptyComponent={<ListEmptyComponent />}
         />

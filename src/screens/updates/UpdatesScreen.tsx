@@ -1,5 +1,4 @@
 import React from 'react';
-import { useNavigation } from '@react-navigation/native';
 import dayjs from 'dayjs';
 import { RefreshControl, SectionList, StyleSheet, Text } from 'react-native';
 
@@ -7,32 +6,20 @@ import { EmptyView, ErrorScreenV2, SearchbarV2 } from '../../components';
 
 import { convertDateToISOString } from '../../database/utils/convertDateToISOString';
 
-import { ChapterItem, Update } from '../../database/types';
+import { Update } from '../../database/types';
 
 import { useSearch, useUpdates } from '../../hooks';
 import { useAppDispatch } from '../../redux/hooks';
-import UpdateCard from './components/UpdateCard/UpdateCard';
 import { updateLibraryAction } from '../../redux/updates/updates.actions';
-import {
-  deleteChapterAction,
-  downloadChapterAction,
-} from '../../redux/novel/novel.actions';
+
 import { getString } from '../../../strings/translations';
 import { ThemeColors } from '../../theme/types';
 import { useTheme } from '@hooks/useTheme';
-import {
-  openChapter,
-  openChapterChapterTypes,
-  openChapterNovelTypes,
-  openChapterFunctionTypes,
-  openNovel,
-  openNovelProps,
-} from '@utils/handleNavigateParams';
 import UpdatesSkeletonLoading from './components/UpdatesSkeletonLoading';
+import UpdateNovelCard from './components/UpdateNovelCard';
 
 const UpdatesScreen = () => {
   const theme = useTheme();
-  const { navigate } = useNavigation();
   const dispatch = useAppDispatch();
 
   const {
@@ -47,7 +34,6 @@ const UpdatesScreen = () => {
   } = useUpdates();
 
   const { searchText, setSearchText, clearSearchbar } = useSearch();
-
   const onChangeText = (text: string) => {
     setSearchText(text);
     searchUpdates(text);
@@ -59,15 +45,19 @@ const UpdatesScreen = () => {
   };
 
   const groupUpdatesByDate = (rawHistory: Update[]) => {
-    const dateGroups = rawHistory.reduce<Record<string, Update[]>>(
+    const dateGroups = rawHistory.reduce<Record<string, Update[][]>>(
       (groups, item) => {
         const date = convertDateToISOString(item.updateTime);
+        const novelId = item.novelId;
 
         if (!groups[date]) {
           groups[date] = [];
         }
+        if (!groups[date][novelId]) {
+          groups[date][novelId] = [];
+        }
 
-        groups[date].push(item);
+        groups[date][novelId].push(item);
 
         return groups;
       },
@@ -77,49 +67,12 @@ const UpdatesScreen = () => {
     const groupedHistory = Object.keys(dateGroups).map(date => {
       return {
         date,
-        data: dateGroups[date],
+        data: dateGroups[date].filter(val => val !== null),
       };
     });
 
     return groupedHistory;
   };
-
-  const handleDownloadChapter = (
-    sourceId: number,
-    novelUrl: string,
-    novelId: number,
-    chapter: ChapterItem,
-  ) =>
-    dispatch(
-      downloadChapterAction(
-        sourceId,
-        novelUrl,
-        novelId,
-        chapter.chapterUrl,
-        chapter.chapterName,
-        chapter.chapterId,
-      ),
-    );
-
-  const handleDeleteChapter = (
-    sourceId: number,
-    novelId: number,
-    chapterId: number,
-    chapterName: string,
-  ) => dispatch(deleteChapterAction(sourceId, novelId, chapterId, chapterName));
-
-  const navigateToChapter = (
-    novel: openChapterNovelTypes,
-    chapter: openChapterChapterTypes,
-  ) =>
-    navigate(
-      'Chapter' as never,
-      openChapter(novel, chapter) as openChapterFunctionTypes as never,
-    );
-
-  const navigateToNovel = (novel: openNovelProps) =>
-    navigate('Novel' as never, openNovel(novel) as openNovelProps as never);
-
   return (
     <>
       <SearchbarV2
@@ -148,27 +101,25 @@ const UpdatesScreen = () => {
             ) : null
           }
           contentContainerStyle={styles.listContainer}
-          keyExtractor={item => item.chapterId.toString()}
           sections={groupUpdatesByDate(searchText ? searchResults : updates)}
           renderSectionHeader={({ section: { date } }) => (
             <Text style={[styles.dateHeader, { color: theme.onSurface }]}>
               {dayjs(date).calendar()}
             </Text>
           )}
+          keyExtractor={item => item[0].chapterId.toString()}
           renderItem={({ item }) => (
-            <UpdateCard
+            <UpdateNovelCard
               item={item}
-              navigateToChapter={navigateToChapter}
-              navigateToNovel={navigateToNovel}
-              handleDownloadChapter={handleDownloadChapter}
-              handleDeleteChapter={handleDeleteChapter}
+              dispatch={dispatch}
               theme={theme}
+              descriptionText={getString('updatesScreen.newChapters')}
             />
           )}
           ListEmptyComponent={
             <EmptyView
               icon="(˘･_･˘)"
-              description="No recent updates"
+              description={getString('updatesScreen.emptyView')}
               theme={theme}
             />
           }
@@ -205,7 +156,8 @@ const styles = StyleSheet.create({
   },
   dateHeader: {
     paddingHorizontal: 16,
-    paddingVertical: 8,
+    paddingTop: 8,
+    paddingBottom: 2,
   },
   lastUpdateTime: {
     paddingHorizontal: 16,

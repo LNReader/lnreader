@@ -54,7 +54,9 @@
   "updates": "Updates",
   "updatesScreen": {
     "searchbar": "Search updates",
-    "lastUpdatedAt": "Library last updated:"
+    "lastUpdatedAt": "Library last updated:",
+    "newChapters": "new Chapters",
+    "emptyView":"No recent updates"
   },
   "history": "History",
   "historyScreen": {
@@ -224,5 +226,10 @@
   "settings": {
     "icognitoMode": "Incognito mode",
     "downloadedOnly": "Downloaded only"
+  },
+  "downloadScreen": {
+    "dbInfo": "Downloads are saved in a SQLite Database.",
+    "downloadChapters": "downloaded Chapters",
+    "noDownloads": "No downloads"
   }
 }
