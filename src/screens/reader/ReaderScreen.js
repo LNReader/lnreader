@@ -335,7 +335,11 @@ const ChapterContent = ({ route, navigation }) => {
         navigateToChapterBySwipe={navigateToChapterBySwipe}
         onWebViewNavigationStateChange={onWebViewNavigationStateChange}
       />
-      <BottomInfoBar scrollPercentage={position?.percentage || 0} />
+      <BottomInfoBar
+        scrollPercentage={
+          position?.percentage || Math.round(minScroll.current) || 0
+        }
+      />
       <Portal>
         <ReaderBottomSheetV2 bottomSheetRef={readerSheetRef} />
       </Portal>
