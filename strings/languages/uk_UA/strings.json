@@ -54,7 +54,9 @@
   "updates": "Оновлення",
   "updatesScreen": {
     "searchbar": "Пошук оновлень",
-    "lastUpdatedAt": "Останнє оновлення бібліотеки:"
+    "lastUpdatedAt": "Останнє оновлення бібліотеки:",
+    "newChapters": "new Chapters",
+    "emptyView": "No recent updates"
   },
   "history": "Історія",
   "historyScreen": {
@@ -224,5 +226,10 @@
   "settings": {
     "icognitoMode": "Режим інкогніто",
     "downloadedOnly": "Тільки завантажені"
+  },
+  "downloadScreen": {
+    "dbInfo": "Downloads are saved in a SQLite Database.",
+    "downloadChapters": "downloaded Chapters",
+    "noDownloads": "No downloads"
   }
 }
