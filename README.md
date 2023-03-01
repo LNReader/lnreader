@@ -43,6 +43,10 @@ LNReader does not have any affiliation with the content providers available.
 
 Source requests should be created at [LNReader/lnreader-sources](https://github.com/LNReader/lnreader-sources).
 
+## Building & Contributing
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md)
+
 ## License
 
-[MIT ](https://github.com/rajarsheechatterjee/lnreader/blob/main/LICENSE)
+[MIT](https://github.com/rajarsheechatterjee/lnreader/blob/main/LICENSE)
