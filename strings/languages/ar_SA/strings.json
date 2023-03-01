@@ -54,7 +54,9 @@
   "updates": "التحديثات",
   "updatesScreen": {
     "searchbar": "البحث في التحديثات",
-    "lastUpdatedAt": "آخر تحديث للمكتبة:"
+    "lastUpdatedAt": "آخر تحديث للمكتبة:",
+    "newChapters": "new Chapters",
+    "emptyView": "No recent updates"
   },
   "history": "السجل",
   "historyScreen": {
@@ -224,5 +226,10 @@
   "settings": {
     "icognitoMode": "الوضع المخفي",
     "downloadedOnly": "التنزيلات فقط"
+  },
+  "downloadScreen": {
+    "dbInfo": "Downloads are saved in a SQLite Database.",
+    "downloadChapters": "downloaded Chapters",
+    "noDownloads": "No downloads"
   }
 }
