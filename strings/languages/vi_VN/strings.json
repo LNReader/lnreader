@@ -54,7 +54,9 @@
   "updates": "Cập nhật",
   "updatesScreen": {
     "searchbar": "Tìm kiếm bản cập nhật",
-    "lastUpdatedAt": "Thư viện được cập nhật:"
+    "lastUpdatedAt": "Thư viện được cập nhật:",
+    "newChapters": "new Chapters",
+    "emptyView": "No recent updates"
   },
   "history": "Lịch sử",
   "historyScreen": {
@@ -224,5 +226,10 @@
   "settings": {
     "icognitoMode": "Chế độ ẩn danh",
     "downloadedOnly": "Chỉ tải xuống"
+  },
+  "downloadScreen": {
+    "dbInfo": "Downloads are saved in a SQLite Database.",
+    "downloadChapters": "downloaded Chapters",
+    "noDownloads": "No downloads"
   }
 }
