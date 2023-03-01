@@ -33,7 +33,6 @@ const NovelInfoHeader = ({
   novel,
   theme,
   filter,
-  loading,
   chapters,
   lastRead,
   navigation,
@@ -58,13 +57,13 @@ const NovelInfoHeader = ({
   return (
     <>
       <CoverImage
-        source={{ uri: !loading ? novel.novelCover : item.novelCover }}
+        source={{ uri: novel.novelCover }}
         theme={theme}
         hideBackdrop={hideBackdrop}
       >
         <NovelInfoContainer>
           <NovelThumbnail
-            source={{ uri: !loading ? novel.novelCover : item.novelCover }}
+            source={{ uri: novel.novelCover }}
             theme={theme}
             setCustomNovelCover={setCustomNovelCover}
           />
@@ -85,7 +84,7 @@ const NovelInfoHeader = ({
             </NovelTitle>
             <>
               <NovelAuthor theme={theme}>
-                {!loading && novel.author ? novel.author : 'Unknown author'}
+                {novel.author || 'Unknown author'}
               </NovelAuthor>
               <Row>
                 <MaterialCommunityIcons
@@ -95,58 +94,52 @@ const NovelInfoHeader = ({
                   style={{ marginRight: 4 }}
                 />
                 <NovelInfo theme={theme}>
-                  {!loading
-                    ? (novel.status || 'Unknown status') + ' • ' + novel.source
-                    : 'Unknown status • Unknown source'}
+                  {(novel.status || 'Unknown status') + ' • ' + novel.source}
                 </NovelInfo>
               </Row>
             </>
           </View>
         </NovelInfoContainer>
       </CoverImage>
-      {!loading && (
-        <>
-          <NovelScreenButtonGroup
-            novel={novel}
-            handleFollowNovel={() => {
-              dispatch(followNovelAction(novel));
-              if (
-                novel.followed &&
-                chapters.some(chapter => chapter.downloaded === 1)
-              ) {
-                deleteDownloadsSnackbar.setTrue();
-              }
-            }}
-            handleTrackerSheet={() => trackerSheetRef.current.expand()}
-            theme={theme}
+      <>
+        <NovelScreenButtonGroup
+          novel={novel}
+          handleFollowNovel={() => {
+            dispatch(followNovelAction(novel));
+            if (
+              novel.followed &&
+              chapters.some(chapter => chapter.downloaded === 1)
+            ) {
+              deleteDownloadsSnackbar.setTrue();
+            }
+          }}
+          handleTrackerSheet={() => trackerSheetRef.current.expand()}
+          theme={theme}
+        />
+        <NovelSummary
+          summary={novel.novelSummary}
+          isExpanded={!novel.followed}
+          theme={theme}
+        />
+        {novel.genre ? <NovelGenres theme={theme} genre={novel.genre} /> : null}
+        <ReadButton novel={novel} chapters={chapters} lastRead={lastRead} />
+        <Pressable
+          style={styles.bottomsheet}
+          onPress={() => novelBottomSheetRef.current.expand()}
+          android_ripple={{
+            color: color(theme.primary).alpha(0.12).string(),
+          }}
+        >
+          <Text style={[{ color: theme.onSurface }, styles.chapters]}>
+            {`${chapters.length} ${getString('novelScreen.chapters')}`}
+          </Text>
+          <IconButton
+            icon="filter-variant"
+            iconColor={filter ? filterColor(theme.isDark) : theme.onSurface}
+            size={24}
           />
-          <NovelSummary
-            summary={novel.novelSummary}
-            isExpanded={!novel.followed}
-            theme={theme}
-          />
-          {novel.genre ? (
-            <NovelGenres theme={theme} genre={novel.genre} />
-          ) : null}
-          <ReadButton novel={novel} chapters={chapters} lastRead={lastRead} />
-          <Pressable
-            style={styles.bottomsheet}
-            onPress={() => novelBottomSheetRef.current.expand()}
-            android_ripple={{
-              color: color(theme.primary).alpha(0.12).string(),
-            }}
-          >
-            <Text style={[{ color: theme.onSurface }, styles.chapters]}>
-              {`${chapters.length} ${getString('novelScreen.chapters')}`}
-            </Text>
-            <IconButton
-              icon="filter-variant"
-              iconColor={filter ? filterColor(theme.isDark) : theme.onSurface}
-              size={24}
-            />
-          </Pressable>
-        </>
-      )}
+        </Pressable>
+      </>
     </>
   );
 };

@@ -359,11 +359,10 @@ const Novel = ({ route, navigation }) => {
     <Provider>
       <View style={[styles.container, { backgroundColor: theme.background }]}>
         <Portal>
-          {selected.length === 0 && (
+          {selected.length === 0 ? (
             <View
               style={{
                 position: 'absolute',
-                zIndex: 1,
                 height: StatusBar.currentHeight + 54,
                 width: '100%',
                 flexDirection: 'row',
@@ -580,13 +579,45 @@ const Novel = ({ route, navigation }) => {
                 </Menu>
               </Row>
             </View>
+          ) : (
+            <Animated.View
+              entering={FadeIn.duration(150)}
+              exiting={FadeOut.duration(150)}
+              style={{
+                position: 'absolute',
+                width: '100%',
+                elevation: 2,
+                backgroundColor: theme.surface2,
+                paddingTop: StatusBar.currentHeight,
+                flexDirection: 'row',
+                alignItems: 'center',
+                paddingBottom: 8,
+              }}
+            >
+              <Appbar.Action
+                icon="close"
+                iconColor={theme.onBackground}
+                onPress={() => setSelected([])}
+              />
+              <Appbar.Content
+                title={`${selected.length}`}
+                titleStyle={{ color: theme.onSurface }}
+              />
+              <Appbar.Action
+                icon="select-all"
+                iconColor={theme.onBackground}
+                onPress={() => {
+                  setSelected(chapters);
+                }}
+              />
+            </Animated.View>
           )}
         </Portal>
         <View style={{ minHeight: 3, flex: 1 }}>
           <FlashList
-            ref={ref => (flatlistRef.current = ref)}
+            ref={flatlistRef}
             estimatedItemSize={64}
-            data={!loading && chapters}
+            data={chapters}
             extraData={[downloadQueue, selected]}
             removeClippedSubviews={true}
             maxToRenderPerBatch={5}
@@ -601,7 +632,6 @@ const Novel = ({ route, navigation }) => {
                 novel={novel}
                 theme={theme}
                 filter={filter}
-                loading={loading}
                 lastRead={lastReadChapter}
                 setCustomNovelCover={setCustomNovelCover}
                 dispatch={dispatch}
@@ -700,40 +730,6 @@ const Novel = ({ route, navigation }) => {
             theme={theme}
           />
         </Portal>
-        {selected.length > 0 ? (
-          <Animated.View
-            entering={FadeIn.duration(150)}
-            exiting={FadeOut.duration(150)}
-            style={{
-              position: 'absolute',
-              zIndex: 20,
-              width: Dimensions.get('window').width,
-              elevation: 2,
-              backgroundColor: theme.surface2,
-              paddingTop: StatusBar.currentHeight,
-              flexDirection: 'row',
-              alignItems: 'center',
-              paddingBottom: 8,
-            }}
-          >
-            <Appbar.Action
-              icon="close"
-              iconColor={theme.onBackground}
-              onPress={() => setSelected([])}
-            />
-            <Appbar.Content
-              title={`${selected.length}`}
-              titleStyle={{ color: theme.onSurface }}
-            />
-            <Appbar.Action
-              icon="select-all"
-              iconColor={theme.onBackground}
-              onPress={() => {
-                setSelected(chapters);
-              }}
-            />
-          </Animated.View>
-        ) : null}
       </View>
     </Provider>
   );
