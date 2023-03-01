@@ -285,7 +285,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                       );
                     }
                     window.onload = (e) => {
-                      sendHeight();
+                      setTimeout(() => sendHeight(), 1000);
                     };
                     </script>
                     <div class="infoText">
