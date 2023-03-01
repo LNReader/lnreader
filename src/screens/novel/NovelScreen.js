@@ -351,10 +351,13 @@ const Novel = ({ route, navigation }) => {
   const [editInfoModal, showEditInfoModal] = useState(false);
   const downloadCustomChapterModal = useBoolean();
 
+  if (loading) {
+    return <NovelScreenLoading theme={theme} />;
+  }
+
   return (
     <Provider>
       <View style={[styles.container, { backgroundColor: theme.background }]}>
-        {loading && <NovelScreenLoading theme={theme} />}
         <Portal>
           {selected.length === 0 && (
             <View
@@ -612,28 +615,25 @@ const Novel = ({ route, navigation }) => {
             refreshControl={refreshControl()}
           />
         </View>
-        {useFabForContinueReading &&
-          !loading &&
-          chapters.length > 0 &&
-          lastReadChapter && (
-            <FAB
-              style={[
-                styles.fab,
-                { backgroundColor: theme.primary, marginBottom: bottomInset },
-              ]}
-              small
-              color={theme.onPrimary}
-              uppercase={false}
-              label={novel.unread ? 'Start' : 'Resume'}
-              icon="play"
-              onPress={() => {
-                navigation.navigate(
-                  'Chapter',
-                  openChapter(novel, lastReadChapter),
-                );
-              }}
-            />
-          )}
+        {useFabForContinueReading && chapters.length > 0 && lastReadChapter && (
+          <FAB
+            style={[
+              styles.fab,
+              { backgroundColor: theme.primary, marginBottom: bottomInset },
+            ]}
+            small
+            color={theme.onPrimary}
+            uppercase={false}
+            label={novel.unread ? 'Start' : 'Resume'}
+            icon="play"
+            onPress={() => {
+              navigation.navigate(
+                'Chapter',
+                openChapter(novel, lastReadChapter),
+              );
+            }}
+          />
+        )}
         <Portal>
           <Actionbar
             active={selected.length > 0}
@@ -658,50 +658,48 @@ const Novel = ({ route, navigation }) => {
             </Text>
           </Snackbar>
         </Portal>
-        {!loading && (
-          <Portal>
-            <JumpToChapterModal
-              modalVisible={jumpToChapterModal}
-              hideModal={() => showJumpToChapterModal(false)}
-              chapters={chapters}
-              novel={novel}
-              chapterListRef={flatlistRef.current}
-              navigation={navigation}
-            />
-            <EditInfoModal
-              modalVisible={editInfoModal}
-              hideModal={() => showEditInfoModal(false)}
-              novel={novel}
-              theme={theme}
-              dispatch={dispatch}
-            />
-            <DownloadCustomChapterModal
-              modalVisible={downloadCustomChapterModal.value}
-              hideModal={downloadCustomChapterModal.setFalse}
-              novel={novel}
-              chapters={chapters}
-              theme={theme}
-              dispatch={dispatch}
-            />
-            <NovelBottomSheet
-              novelUrl={novelUrl}
-              bottomSheetRef={novelBottomSheetRef}
-              dispatch={dispatch}
-              sortAndFilterChapters={sortAndFilterChapters}
-              novelId={novel.novelId}
-              sort={sort}
-              theme={theme}
-              filter={filter}
-              showChapterTitles={showChapterTitles}
-            />
-            <TrackSheet
-              bottomSheetRef={trackerSheetRef}
-              novelId={novel.novelId}
-              novelName={novel.novelName}
-              theme={theme}
-            />
-          </Portal>
-        )}
+        <Portal>
+          <JumpToChapterModal
+            modalVisible={jumpToChapterModal}
+            hideModal={() => showJumpToChapterModal(false)}
+            chapters={chapters}
+            novel={novel}
+            chapterListRef={flatlistRef.current}
+            navigation={navigation}
+          />
+          <EditInfoModal
+            modalVisible={editInfoModal}
+            hideModal={() => showEditInfoModal(false)}
+            novel={novel}
+            theme={theme}
+            dispatch={dispatch}
+          />
+          <DownloadCustomChapterModal
+            modalVisible={downloadCustomChapterModal.value}
+            hideModal={downloadCustomChapterModal.setFalse}
+            novel={novel}
+            chapters={chapters}
+            theme={theme}
+            dispatch={dispatch}
+          />
+          <NovelBottomSheet
+            novelUrl={novelUrl}
+            bottomSheetRef={novelBottomSheetRef}
+            dispatch={dispatch}
+            sortAndFilterChapters={sortAndFilterChapters}
+            novelId={novel.novelId}
+            sort={sort}
+            theme={theme}
+            filter={filter}
+            showChapterTitles={showChapterTitles}
+          />
+          <TrackSheet
+            bottomSheetRef={trackerSheetRef}
+            novelId={novel.novelId}
+            novelName={novel.novelName}
+            theme={theme}
+          />
+        </Portal>
         {selected.length > 0 ? (
           <Animated.View
             entering={FadeIn.duration(150)}
