@@ -37,7 +37,7 @@ const CoverImage = ({ children, source, theme, hideBackdrop }) => {
         <View
           style={{
             flex: 1,
-            backgroundColor: 'transperant',
+            backgroundColor: color(theme.background).alpha(0.7).string(),
           }}
         >
           {source.uri ? (
