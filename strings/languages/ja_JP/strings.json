@@ -54,7 +54,9 @@
   "updates": "更新",
   "updatesScreen": {
     "searchbar": "更新を検索",
-    "lastUpdatedAt": "ライブラリの最終更新日"
+    "lastUpdatedAt": "ライブラリの最終更新日",
+    "newChapters": "new Chapters",
+    "emptyView": "No recent updates"
   },
   "history": "履歴",
   "historyScreen": {
@@ -224,5 +226,10 @@
   "settings": {
     "icognitoMode": "シークレットモード",
     "downloadedOnly": "ダウンロードのみ"
+  },
+  "downloadScreen": {
+    "dbInfo": "Downloads are saved in a SQLite Database.",
+    "downloadChapters": "downloaded Chapters",
+    "noDownloads": "No downloads"
   }
 }
