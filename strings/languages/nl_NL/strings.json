@@ -54,7 +54,9 @@
   "updates": "Updates",
   "updatesScreen": {
     "searchbar": "Updates zoeken",
-    "lastUpdatedAt": "Bibliotheek laatst bijgewerkt:"
+    "lastUpdatedAt": "Bibliotheek laatst bijgewerkt:",
+    "newChapters": "new Chapters",
+    "emptyView": "No recent updates"
   },
   "history": "Geschiedenis",
   "historyScreen": {
@@ -224,5 +226,10 @@
   "settings": {
     "icognitoMode": "Incognito modus",
     "downloadedOnly": "Alleen gedownloaden"
+  },
+  "downloadScreen": {
+    "dbInfo": "Downloads are saved in a SQLite Database.",
+    "downloadChapters": "downloaded Chapters",
+    "noDownloads": "No downloads"
   }
 }
