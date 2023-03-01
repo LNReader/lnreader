@@ -339,35 +339,36 @@ const ChapterContent = ({ route, navigation }) => {
       <Portal>
         <ReaderBottomSheetV2 bottomSheetRef={readerSheetRef} />
       </Portal>
-      <ReaderAppbar
-        bookmark={bookmark}
-        novelName={novelName}
-        chapterId={chapterId}
-        chapterName={chapterName || chapter.chapterName}
-        hide={hidden}
-        tts={startTts}
-        textToSpeech={ttsStatus}
-        theme={theme}
-      />
-      <ReaderSeekBar
-        hide={hidden}
-        theme={theme}
-        minScroll={minScroll.current}
-        verticalSeekbar={verticalSeekbar}
-        percentage={position?.percentage}
-        scrollTo={scrollTo}
-      />
-      <ReaderFooter
-        hide={hidden}
-        theme={theme}
-        chapterUrl={chapterUrl}
-        nextChapter={nextChapter}
-        prevChapter={prevChapter}
-        readerSheetRef={readerSheetRef}
-        scrollTo={scrollTo}
-        navigateToChapterBySwipe={navigateToChapterBySwipe}
-        openDrawer={openDrawer}
-      />
+      {hidden ? null : (
+        <>
+          <ReaderAppbar
+            bookmark={bookmark}
+            novelName={novelName}
+            chapterId={chapterId}
+            chapterName={chapterName || chapter.chapterName}
+            tts={startTts}
+            textToSpeech={ttsStatus}
+            theme={theme}
+          />
+          <ReaderSeekBar
+            theme={theme}
+            minScroll={minScroll.current}
+            verticalSeekbar={verticalSeekbar}
+            percentage={position?.percentage}
+            scrollTo={scrollTo}
+          />
+          <ReaderFooter
+            theme={theme}
+            chapterUrl={chapterUrl}
+            nextChapter={nextChapter}
+            prevChapter={prevChapter}
+            readerSheetRef={readerSheetRef}
+            scrollTo={scrollTo}
+            navigateToChapterBySwipe={navigateToChapterBySwipe}
+            openDrawer={openDrawer}
+          />
+        </>
+      )}
     </>
   );
 };

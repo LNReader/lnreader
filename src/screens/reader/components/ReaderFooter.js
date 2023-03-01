@@ -8,7 +8,6 @@ import color from 'color';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
 const ChapterFooter = ({
-  hide,
   theme,
   chapterUrl,
   nextChapter,
@@ -26,16 +25,11 @@ const ChapterFooter = ({
 
   const insets = useSafeAreaInsets();
 
-  if (hide) {
-    return null;
-  }
-
   return (
     <Animated.View
       entering={FadeIn.duration(150)}
       exiting={FadeOut.duration(150)}
       style={styles.footer}
-      active={hide}
       animationDuration={150}
     >
       <View

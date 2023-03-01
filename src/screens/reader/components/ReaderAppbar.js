@@ -14,7 +14,6 @@ const ReaderAppbar = ({
   novelName,
   chapterId,
   chapterName,
-  hide,
   tts,
   textToSpeech,
   theme,
@@ -22,10 +21,6 @@ const ReaderAppbar = ({
   const dispatch = useAppDispatch();
   const { goBack } = useNavigation();
   const [bookmarked, setBookmarked] = useState(bookmark);
-
-  if (hide) {
-    return null;
-  }
 
   return (
     <Animated.View
