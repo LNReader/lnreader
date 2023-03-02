@@ -91,39 +91,17 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
           case 'prev':
             navigateToChapterBySwipe('SWIPE_RIGHT');
             break;
-          case 'imgfiles':
+          case 'imgfile':
             if (event.data) {
-              if (Array.isArray(event.data)) {
-                const promises: Promise<{ data: any; id: number }>[] = [];
-                for (let i = 0; i < event.data.length; i++) {
-                  const { url, id } = event.data[i];
-                  if (url && id) {
-                    promises.push(
-                      RNFetchBlob.fetch('get', url, headers).then(res => ({
-                        data: res.base64(),
-                        id: id,
-                      })),
-                    );
-                  }
-                }
-
-                Promise.all(promises)
-                  .then(datas => {
-                    const inject = datas.reduce((p, data) => {
-                      return (
-                        p +
-                        `document.querySelector("img[file-id='${data.id}']").setAttribute("src", "data:image/jpg;base64,${data.data}");
-                        document.querySelector("img[file-id='${data.id}']").classList.remove("load-icon");`
-                      );
-                    }, '');
-                    webViewRef.current?.injectJavaScript(
-                      inject +
-                        'window.requestAnimationFrame(()=>sendHeight());',
-                    );
-                  })
-                  .catch(e => {
-                    e; // CloudFlare is too strong :D
-                  });
+              if (typeof event.data === 'string') {
+                RNFetchBlob.fetch('get', event.data, headers).then(res => {
+                  const base64 = res.base64();
+                  webViewRef.current?.injectJavaScript(
+                    `document.querySelector("img[delayed-src='${event.data}']").src="data:image/jpg;base64,${base64}";
+                    document.querySelector("img[delayed-src='${event.data}']").classList.remove("load-icon");
+                    sendHeight(500);`,
+                  );
+                });
               }
             }
             break;
@@ -250,11 +228,9 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                     </div>
                     <script>
                     if(!document.querySelector("input[offline]") && ${!!headers}){
-                      imgs = [...document.querySelectorAll("img")].map((img, index)=>{
-                        img.setAttribute("file-id", index.toString());
-                        return {url:img.getAttribute("delayed-src"), id:img.getAttribute("file-id")};
+                      document.querySelectorAll("img").forEach(img => {
+                        window.ReactNativeWebView.postMessage(JSON.stringify({type:"imgfile",data:img.getAttribute("delayed-src")}));
                       });
-                      window.ReactNativeWebView.postMessage(JSON.stringify({type:"imgfiles",data:imgs}));
                     }
 
                     var scrollTimeout;
@@ -274,19 +250,17 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                         );
                       }, 100);
                     });
-                    const sendHeight = () => {
-                      window.ReactNativeWebView.postMessage(
-                        JSON.stringify(
-                          {
-                            type:"height",
-                            data:document.body.scrollHeight
-                          }
-                        )
+
+                    let sendHeightTimeout;
+                    const sendHeight = (timeOut) => {
+                      clearTimeout(sendHeightTimeout);
+                      sendHeightTimeout = setTimeout(
+                        window.ReactNativeWebView.postMessage(
+                          JSON.stringify({type:"height",data:document.body.scrollHeight})
+                        ), timeOut
                       );
                     }
-                    window.onload = (e) => {
-                      setTimeout(() => sendHeight(), 1000);
-                    };
+                    sendHeight(1000);
                     </script>
                     <div class="infoText">
                     ${getString(
