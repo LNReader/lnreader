@@ -36,6 +36,7 @@ import useHistory from '@hooks/useHistory';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useSettings } from '@hooks/reduxHooks';
 import SourceScreenSkeletonLoading from '@screens/browse/loadingAnimation/SourceScreenSkeletonLoading';
+import { Row } from '@components/Common';
 
 type State = NavigationState<{
   key: string;
@@ -100,29 +101,21 @@ const LibraryScreen = () => {
         },
         styles.tabBar,
       ]}
-      tabStyle={{ width: 120 }}
       renderLabel={({ route, color }) => (
-        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-          <Text style={{ color, fontSize: 12 }}>
-            {route.title.length > 15
-              ? route.title.substring(0, 12) + '...'
-              : route.title}
-          </Text>
-          {showNumberOfNovels && (
-            <View
-              style={[
-                styles.badgeCtn,
-                { backgroundColor: theme.surfaceVariant },
-              ]}
-            >
+        <Row>
+          <Text style={{ color }}>{route.title}</Text>
+          <View
+            style={[styles.badgeCtn, { backgroundColor: theme.surfaceVariant }]}
+          >
+            {showNumberOfNovels && (
               <Text
                 style={[styles.badgetText, { color: theme.onSurfaceVariant }]}
               >
                 {(route as any)?.novels.length}
               </Text>
-            </View>
-          )}
-        </View>
+            )}
+          </View>
+        </Row>
       )}
       inactiveColor={theme.secondary}
       activeColor={theme.primary}
@@ -235,25 +228,7 @@ const LibraryScreen = () => {
                     )
                   }
                 />
-              ) : (
-                <View
-                  style={[
-                    {
-                      backgroundColor: color(theme.primary).alpha(0.2).string(),
-                    },
-                    styles.cateInfoCtn,
-                  ]}
-                >
-                  <Text
-                    style={[
-                      { color: theme.onBackground, textAlign: 'center' },
-                      styles.cateInfo,
-                    ]}
-                  >
-                    {route.title}
-                  </Text>
-                </View>
-              )}
+              ) : null}
               <LibraryView
                 categoryId={route.id}
                 novels={route.novels}
@@ -358,22 +333,10 @@ const styles = StyleSheet.create({
   },
   badgeCtn: {
     borderRadius: 50,
-    marginLeft: 5,
-    paddingHorizontal: 5,
+    marginHorizontal: 6,
+    paddingHorizontal: 6,
   },
   badgetText: {
     fontSize: 12,
-  },
-  cateInfoCtn: {
-    marginTop: 5,
-    width: '100%',
-    alignSelf: 'center',
-    borderRadius: 10,
-  },
-  cateInfo: {
-    textAlign: 'center',
-    paddingVertical: 2,
-    fontSize: 16,
-    fontWeight: '700',
   },
 });
