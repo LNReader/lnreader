@@ -92,17 +92,15 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
             navigateToChapterBySwipe('SWIPE_RIGHT');
             break;
           case 'imgfile':
-            if (event.data) {
-              if (typeof event.data === 'string') {
-                RNFetchBlob.fetch('get', event.data, headers).then(res => {
-                  const base64 = res.base64();
-                  webViewRef.current?.injectJavaScript(
-                    `document.querySelector("img[delayed-src='${event.data}']").src="data:image/jpg;base64,${base64}";
-                    document.querySelector("img[delayed-src='${event.data}']").classList.remove("load-icon");
-                    sendHeight(500);`,
-                  );
-                });
-              }
+            if (event.data && typeof event.data === 'string') {
+              RNFetchBlob.fetch('get', event.data, headers).then(res => {
+                const base64 = res.base64();
+                webViewRef.current?.injectJavaScript(
+                  `document.querySelector("img[delayed-src='${event.data}']").src="data:image/jpg;base64,${base64}";
+                  document.querySelector("img[delayed-src='${event.data}']").classList.remove("load-icon");
+                  sendHeight(500);`,
+                );
+              });
             }
             break;
           case 'scrollend':
@@ -117,6 +115,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
               const contentHeight = Math.round(Number(event.data));
               minScroll.current = (layoutHeight / contentHeight) * 100;
             }
+            break;
         }
       }}
       source={{

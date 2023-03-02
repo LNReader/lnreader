@@ -325,9 +325,7 @@ const ChapterContent = ({ route, navigation }) => {
         nextChapter={nextChapter}
         webViewRef={webViewRef}
         onLayout={() => {
-          if (useVolumeButtons) {
-            onLayout();
-          }
+          useVolumeButtons && onLayout();
           scrollTo(position?.position);
         }}
         onPress={hideHeader}
@@ -343,7 +341,7 @@ const ChapterContent = ({ route, navigation }) => {
       <Portal>
         <ReaderBottomSheetV2 bottomSheetRef={readerSheetRef} />
       </Portal>
-      {hidden ? null : (
+      {!hidden && (
         <>
           <ReaderAppbar
             bookmark={bookmark}
