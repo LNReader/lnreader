@@ -169,6 +169,7 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
             label={getString(
               'moreScreen.settingsScreen.generalSettingsScreen.updateLibrary',
             )}
+            description={'Not recommended for low devices'}
             value={updateLibraryOnLaunch}
             onPress={() =>
               dispatch(
