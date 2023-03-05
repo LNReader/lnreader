@@ -6,8 +6,6 @@ const baseUrl = 'https://www.novelhall.com/';
 const sourceId = 6;
 
 const popularNovels = async page => {
-  let totalPages = 284;
-
   const url = baseUrl + 'completed-' + page + '.html';
 
   const result = await fetch(url);
@@ -37,7 +35,7 @@ const popularNovels = async page => {
       novels.push(novel);
     });
 
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

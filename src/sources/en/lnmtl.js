@@ -5,7 +5,6 @@ import { htmlToText } from '../helpers/htmlToText';
 const baseUrl = 'https://lnmtl.com/';
 
 const popularNovels = async page => {
-  const totalPages = 63;
   let url = baseUrl + 'novel?page=' + page;
 
   const result = await fetch(url);
@@ -32,7 +31,7 @@ const popularNovels = async page => {
     novels.push(novel);
   });
 
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

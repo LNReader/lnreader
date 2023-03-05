@@ -2,7 +2,6 @@ import * as cheerio from 'cheerio';
 const baseUrl = 'https://m.wuxiaworld.co/';
 
 const popularNovels = async page => {
-  let totalPages = 1;
   const result = await fetch(baseUrl);
   const body = await result.text();
 
@@ -26,7 +25,7 @@ const popularNovels = async page => {
     novels.push(novel);
   });
 
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

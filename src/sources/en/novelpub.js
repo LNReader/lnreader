@@ -12,7 +12,6 @@ const headers = new Headers({
 });
 
 const popularNovels = async page => {
-  let totalPages = 40;
   let url = baseUrl + 'browse/all/popular/all/' + page;
 
   const result = await fetch(url, { method: 'GET', headers });
@@ -36,7 +35,7 @@ const popularNovels = async page => {
     novels.push(novel);
   });
 
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

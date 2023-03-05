@@ -2,7 +2,6 @@ import * as cheerio from 'cheerio';
 const baseUrl = 'https://hasutl.wordpress.com/';
 
 const popularNovels = async page => {
-  let totalPages = 1;
   let url = baseUrl + 'light-novels-activas/';
 
   const result = await fetch(url);
@@ -31,7 +30,7 @@ const popularNovels = async page => {
     novels.push(novel);
   });
 
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

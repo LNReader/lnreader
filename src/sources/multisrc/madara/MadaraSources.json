@@ -95,7 +95,6 @@
     "sourceName": "ArNovel",
     "options": {
       "useNewChapterEndpoint": true,
-      "totalPages": 25,
       "lang": "Arabic"
     }
   },
@@ -105,8 +104,7 @@
     "sourceName": "MeioNovel",
     "options": {
       "useNewChapterEndpoint": true,
-      "lang": "Indonesian",
-      "totalPages": 35
+      "lang": "Indonesian"
     }
   },
   {
@@ -187,7 +185,6 @@
     "baseUrl": "https://ar-mtl.club/",
     "sourceName": "ArMTL",
     "options": {
-      "totalPages": 1,
       "useNewChapterEndpoint": true,
       "lang": "Arabic"
     }
@@ -197,7 +194,6 @@
     "baseUrl": "https://novel4up.com/",
     "sourceName": "Novel4Up",
     "options": {
-      "totalPages": 2,
       "lang": "Arabic"
     }
   },
@@ -207,7 +203,6 @@
     "sourceName": "TeamXNovel",
     "options": {
       "useNewChapterEndpoint": true,
-      "totalPages": 3,
       "lang": "Arabic"
     }
   },
@@ -221,7 +216,6 @@
         "novel": "light-novel",
         "chapter": "light-novel"
       },
-      "totalPages": 2,
       "lang": "Turkish"
     }
   },
@@ -230,7 +224,6 @@
     "baseUrl": "https://www.sonicmtl.com/",
     "sourceName": "SonicMTL",
     "options": {
-      "totalPages": 17,
       "useNewChapterEndpoint": true
     }
   },
@@ -239,7 +232,6 @@
     "baseUrl": "https://mtlnovel.club/",
     "sourceName": "MTLNovel.Club",
     "options": {
-      "totalPages": 35,
       "useNewChapterEndpoint": true
     }
   },
@@ -248,7 +240,6 @@
     "baseUrl": "https://noobchan.xyz/",
     "sourceName": "Noobchan Translation",
     "options": {
-      "totalPages": 1,
       "useNewChapterEndpoint": true
     }
   },
@@ -257,7 +248,6 @@
     "baseUrl": "https://guavaread.com/",
     "sourceName": "Guavaread",
     "options": {
-      "totalPages": 2,
       "useNewChapterEndpoint": true
     }
   },
@@ -266,7 +256,6 @@
     "baseUrl": "https://sweetescapetranslations.com/",
     "sourceName": "Sweet Escape Translations",
     "options": {
-      "totalPages": 1,
       "useNewChapterEndpoint": false,
       "path": { "novels": "manga", "novel": "manga", "chapter": "manga" }
     }
@@ -276,7 +265,6 @@
     "baseUrl": "https://fanstranslations.com/",
     "sourceName": "Fans Translations",
     "options": {
-      "totalPages": 10,
       "useNewChapterEndpoint": true
     }
   },
@@ -285,7 +273,6 @@
     "baseUrl": "https://riwyat.com/",
     "sourceName": "Riwyat",
     "options": {
-      "totalPages": 12,
       "useNewChapterEndpoint": true,
       "lang": "Arabic"
     }
@@ -295,7 +282,6 @@
     "baseUrl": "https://novelstic.com/",
     "sourceName": "Novelstic",
     "options": {
-      "totalPages": 69,
       "useNewChapterEndpoint": true,
       "lang": "English"
     }
@@ -305,7 +291,6 @@
     "baseUrl": "https://www.neosekaitranslations.com/",
     "sourceName": "NeoSekai Translations",
     "options": {
-      "totalPages": 1,
       "lang": "English"
     }
   },
@@ -314,7 +299,6 @@
     "baseUrl": "https://mtl-novel.com/",
     "sourceName": "MTL-Novel",
     "options": {
-      "totalPages": 51,
       "useNewChapterEndpoint": true,
       "lang": "English",
       "orderBy": "latest"
@@ -325,7 +309,6 @@
     "baseUrl": "https://zetrotranslation.com/",
     "sourceName": "Zetro Translation",
     "options": {
-      "totalPages": 1,
       "lang": "English"
     }
   },
@@ -334,7 +317,6 @@
     "baseUrl": "https://nocturnetls.net/",
     "sourceName": "Nocturne Translations",
     "options": {
-      "totalPages": 9,
       "lang": "English",
       "path": { "novels": "novels", "novel": "novels", "chapter": "novels" }
     }
@@ -344,7 +326,6 @@
     "baseUrl": "https://sugarbbscan.com/",
     "sourceName": "Sugar Babies",
     "options": {
-      "totalPages": 3,
       "lang": "English",
       "path": { "novels": "series", "novel": "series", "chapter": "series" }
     }
@@ -354,7 +335,6 @@
     "baseUrl": "https://novelroom.net/",
     "sourceName": "Novelroom.net",
     "options": {
-      "totalPages": 125,
       "lang": "English",
       "path": { "novels": "manga", "novel": "manga", "chapter": "manga" }
     }
@@ -364,7 +344,6 @@
     "baseUrl": "https://novelr18.com/",
     "sourceName": "NovelR18 ",
     "options": {
-      "totalPages": 10,
       "lang": "English",
       "path": { "novels": "novel", "novel": "manga", "chapter": "manga" },
       "useNewChapterEndpoint": true
@@ -375,7 +354,6 @@
     "baseUrl": "https://www.webnoveloku.com/",
     "sourceName": "WebNovelOku ",
     "options": {
-      "totalPages": 1,
       "lang": "Turkish"
     }
   }

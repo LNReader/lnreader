@@ -10,7 +10,6 @@ const sourceName = 'RanobeLib';
 const baseUrl = 'https://ranobelib.me';
 
 const popularNovels = async (page, { showLatestNovels, filters }) => {
-  const totalPages = 29;
   let url = `${baseUrl}/manga-list?sort=`;
   url += defaultTo(
     filters?.sort,
@@ -62,7 +61,7 @@ const popularNovels = async (page, { showLatestNovels, filters }) => {
     novels.push(novel);
   });
 
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

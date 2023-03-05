@@ -2,7 +2,6 @@ import * as cheerio from 'cheerio';
 const baseUrl = 'https://freewebnovel.com/';
 
 const popularNovels = async page => {
-  let totalPages = 30;
   let url = baseUrl + 'completed-novel/' + page;
 
   const result = await fetch(url);
@@ -32,7 +31,7 @@ const popularNovels = async page => {
     novels.push(novel);
   });
 
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

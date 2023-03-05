@@ -11,16 +11,14 @@ export const useBrowseSource = (
   const [novels, setNovels] = useState<SourceNovelItem[]>([]);
   const [error, setError] = useState<string>();
 
-  const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   const [filterValues, setFilterValues] = useState<SourceFilter[]>();
   const [selectedFilters, setSelectedFilters] = useState<
     SelectedFilter | undefined
   >();
+  const [hasNextPage, setHasNextPage] = useState(true);
 
   const isScreenMounted = useRef(true);
-
-  const hasNextPage = currentPage <= totalPages;
 
   const fetchNovels = useCallback(
     async (page: number, filters?: SelectedFilter) => {
@@ -34,7 +32,9 @@ export const useBrowseSource = (
           setNovels(prevState =>
             page === 1 ? res.novels : [...prevState, ...res.novels],
           );
-          setTotalPages(res.totalPages);
+          if (!res.novels.length) {
+            setHasNextPage(false);
+          }
           setFilterValues(source.filters);
         } catch (err: unknown) {
           setError(`${err}`);

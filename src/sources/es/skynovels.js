@@ -1,7 +1,6 @@
 const baseUrl = 'https://www.skynovels.net/';
 
 const popularNovels = async page => {
-  let totalPages = 1;
   const url = 'https://api.skynovels.net/api/novels?&q';
 
   const result = await fetch(url);
@@ -20,7 +19,7 @@ const popularNovels = async page => {
     novels.push(novel);
   });
 
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novUrl => {

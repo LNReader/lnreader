@@ -9,8 +9,6 @@ const sourceName = 'ArthurScans (Br)';
 const popularNovels = async page => {
   let url = baseUrl + '/manga/page/' + page + '/?m_orderby=rating';
 
-  const totalPages = 2;
-
   const result = await fetch(url);
   const body = await result.text();
 
@@ -39,7 +37,7 @@ const popularNovels = async page => {
     novels.push(novel);
   });
 
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

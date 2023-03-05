@@ -47,9 +47,7 @@ const popularNovels = async (page, { showLatestNovels, filters }) => {
     });
   });
 
-  const totalPages = body.pagination?.lastPage || 0;
-
-  return { novels, totalPages };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

@@ -4,7 +4,6 @@ import { htmlToText } from '../helpers/htmlToText';
 const baseUrl = 'https://novelasligera.com/';
 
 const popularNovels = async page => {
-  let totalPages = 1;
   let url = baseUrl;
 
   const result = await fetch(url);
@@ -36,7 +35,7 @@ const popularNovels = async page => {
     }
   });
 
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

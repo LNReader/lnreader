@@ -10,8 +10,6 @@ const popularNovels = async page => {
   let url =
     baseUrl + '/all-series/todas-as-series/page/' + page + '/?m_orderby=rating';
 
-  const totalPages = 1;
-
   const result = await fetch(url);
   const body = await result.text();
 
@@ -40,7 +38,7 @@ const popularNovels = async page => {
     novels.push(novel);
   });
 
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

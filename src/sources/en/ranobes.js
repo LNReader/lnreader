@@ -13,10 +13,7 @@ const popularNovels = async page => {
   const body = await fetchHtml({ url, sourceId });
 
   let loadedCheerio = cheerio.load(body);
-  const totalPages = parseInt(
-    loadedCheerio('.pages > a:last-child').text() || '200',
-    10,
-  );
+
   let novels = [];
 
   loadedCheerio('article.block.story.shortstory.mod-poster').each(function () {
@@ -39,7 +36,7 @@ const popularNovels = async page => {
     novels.push(novel);
   });
 
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

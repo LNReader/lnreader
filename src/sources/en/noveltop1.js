@@ -30,9 +30,8 @@ const popularNovels = async page => {
     const novel = { sourceId, novelName, novelCover, novelUrl };
     novels.push(novel);
   });
-  let totalPages = 100;
 
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

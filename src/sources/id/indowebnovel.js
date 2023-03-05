@@ -6,7 +6,6 @@ const sourceName = 'IndoWebNovel';
 const baseUrl = 'http://indowebnovel.id/';
 
 const popularNovels = async page => {
-  const totalPages = 1;
   const url = `${baseUrl}daftar-novel/`;
 
   const result = await fetch(url);
@@ -31,7 +30,7 @@ const popularNovels = async page => {
     novels.push(novel);
   });
 
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

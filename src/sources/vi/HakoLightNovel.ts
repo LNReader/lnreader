@@ -12,7 +12,6 @@ const sourceName = 'HakoLightNovel';
 const baseUrl = 'https://ln.hako.vn';
 
 const popularNovels = async (page: number) => {
-  const totalPages = 59;
   const url = `${baseUrl}/danh-sach?truyendich=1&sapxep=topthang&page=${page}`;
 
   const result = await fetch(url);
@@ -52,7 +51,7 @@ const popularNovels = async (page: number) => {
     }
   });
 
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async (novelUrl: string) => {

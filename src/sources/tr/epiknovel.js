@@ -7,7 +7,6 @@ const baseUrl = 'https://www.epiknovel.com/';
 
 const popularNovels = async page => {
   let url = baseUrl + 'seri-listesi?Sayfa=' + page;
-  const totalPages = 5;
 
   const result = await fetch(url);
   const body = await result.text();
@@ -33,7 +32,7 @@ const popularNovels = async page => {
 
   // console.log(novels);
 
-  return { novels, totalPages };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

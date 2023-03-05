@@ -5,7 +5,6 @@ import { Status, defaultCoverUri } from '../helpers/constants';
 const baseUrl = 'https://www.royalroad.com/';
 
 const popularNovels = async page => {
-  const totalPages = 1846;
   let url = baseUrl + 'fictions/best-rated?page=' + page;
 
   const result = await fetch(url);
@@ -40,7 +39,7 @@ const popularNovels = async page => {
     novels.push(novel);
   });
 
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

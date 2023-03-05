@@ -12,7 +12,6 @@ const sourceName = 'LightNovelReader';
 const baseUrl = 'https://lightnovelreader.org';
 
 const popularNovels = async (page: number) => {
-  const totalPages = 308;
   const url = `${baseUrl}/ranking/top-rated/${page}/`;
 
   const result = await fetch(url);
@@ -55,7 +54,7 @@ const popularNovels = async (page: number) => {
     },
   );
 
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async (novelUrl: string) => {

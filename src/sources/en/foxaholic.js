@@ -5,7 +5,6 @@ const sourceId = 22;
 const baseUrl = 'https://foxaholic.com/';
 
 const popularNovels = async page => {
-  let totalPages = 5;
   let url = baseUrl + 'novel/page/' + page + '/?m_orderby=rating';
 
   const body = await fetchHtml({ url, sourceId });
@@ -34,7 +33,7 @@ const popularNovels = async page => {
     novels.push(novel);
   });
 
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

@@ -7,7 +7,6 @@ const sourceName = 'SakuraNovel';
 const baseUrl = 'https://sakuranovel.id/';
 
 const popularNovels = async page => {
-  const totalPages = 8;
   const url = `${baseUrl}advanced-search/page/${page}/?title&author&yearx&status&type&order=rating&country%5B0%5D=china&country%5B1%5D=jepang&country%5B2%5D=unknown`;
 
   const body = await fetchHtml({ url, sourceId });
@@ -31,7 +30,7 @@ const popularNovels = async page => {
     novels.push(novel);
   });
 
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

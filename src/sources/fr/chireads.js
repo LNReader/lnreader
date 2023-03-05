@@ -5,7 +5,6 @@ const sourceName = 'Chireads';
 const baseUrl = 'https://chireads.com/';
 
 const popularNovels = async page => {
-  const totalPages = 2;
   const url = `${baseUrl}category/translatedtales/page/${page}/`;
 
   const result = await fetch(url);
@@ -27,7 +26,7 @@ const popularNovels = async page => {
     novels.push(novel);
   });
 
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

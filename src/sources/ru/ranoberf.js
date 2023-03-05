@@ -35,8 +35,7 @@ const popularNovels = async (page, { showLatestNovels, filters }) => {
     novels.push({ sourceId, novelName, novelCover, novelUrl });
   });
 
-  let totalPages = json.props.pageProps.totalData.pagesData.pageCount;
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

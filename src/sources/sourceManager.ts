@@ -137,7 +137,6 @@ import AgitoonScraper from './kr/Agitoon';
 import PawReadScraper from './en/pawread';
 
 interface PopularNovelsResponse {
-  totalPages: number;
   novels: SourceNovelItem[];
 }
 

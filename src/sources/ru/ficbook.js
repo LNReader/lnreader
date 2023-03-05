@@ -21,12 +21,7 @@ const popularNovels = async (page, { filters }) => {
   const body = await result.text();
 
   let loadedCheerio = cheerio.load(body);
-  const totalPages = parseInt(
-    loadedCheerio(
-      'nav.pagenav:nth-child(1) > div:nth-child(2) > b:nth-child(2)',
-    ).text() || '1',
-    10,
-  );
+
   let novels = [];
 
   loadedCheerio('article.fanfic-inline').each(function () {
@@ -48,7 +43,7 @@ const popularNovels = async (page, { filters }) => {
     novels.push(novel);
   });
 
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

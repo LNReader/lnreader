@@ -5,7 +5,6 @@ const sourceName = 'Agitoon';
 const baseUrl = 'https://agit501.xyz/';
 
 const popularNovels = async page => {
-  const totalPages = 20;
   const list_limit = 20 * (page - 1);
   const day = new Date().getDay();
 
@@ -28,7 +27,7 @@ const popularNovels = async page => {
     };
   });
 
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

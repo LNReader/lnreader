@@ -2,7 +2,6 @@ import * as cheerio from 'cheerio';
 const baseUrl = 'https://www.mtlnovel.com';
 
 const popularNovels = async page => {
-  let totalPages = 10;
   const url = `${baseUrl}/alltime-rank/page/${page}`;
 
   // console.log(url);
@@ -40,7 +39,7 @@ const popularNovels = async page => {
     novels.push(novel);
   });
 
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

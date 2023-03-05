@@ -7,7 +7,6 @@ const sourceName = 'TuNovelaLigera';
 const baseUrl = 'https://tunovelaligera.com/';
 
 const popularNovels = async page => {
-  let totalPages = 62;
   let url = baseUrl + 'novelas/page/' + page + '/?m_orderby=rating';
 
   const result = await fetch(url);
@@ -37,7 +36,7 @@ const popularNovels = async page => {
     novels.push(novel);
   });
 
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

@@ -7,12 +7,10 @@ class WQMangaStreamScraper {
     this.baseUrl = baseUrl;
     this.sourceName = sourceName;
     this.language = options?.language;
-    this.totalPages = options?.totalPages;
     this.reverseChapters = options?.reverseChapters;
   }
 
   async popularNovels(page) {
-    let totalPages = this.totalPages;
     let url = this.baseUrl + 'series/?page=' + page + '&status=&order=popular';
     let sourceId = this.sourceId;
 
@@ -38,7 +36,7 @@ class WQMangaStreamScraper {
       novels.push(novel);
     });
 
-    return { totalPages, novels };
+    return { novels };
   }
 
   async parseNovelAndChapters(novelUrl) {

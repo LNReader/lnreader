@@ -5,7 +5,6 @@ const sourceId = 35;
 const baseUrl = 'https://www.scribblehub.com/';
 
 const popularNovels = async page => {
-  const totalPages = 326;
   let url = baseUrl + 'series-ranking/?sort=1&order=4&pg=' + page;
 
   const body = await fetchHtml({ url, sourceId });
@@ -36,7 +35,7 @@ const popularNovels = async page => {
     novels.push(novel);
   });
 
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

@@ -3,7 +3,6 @@ const baseUrl = 'https://m.yushubo.com';
 
 const popularNovels = async page => {
   const url = `${baseUrl}/all/order/hits_week+desc.html?page=${page}`;
-  const totalPages = 5846;
 
   const result = await fetch(url, {
     headers: {
@@ -41,7 +40,7 @@ const popularNovels = async page => {
     novels.push(novel);
   });
 
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

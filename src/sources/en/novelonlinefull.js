@@ -8,7 +8,6 @@ const baseUrl = 'https://novelonlinefull.com/';
 const popularNovels = async page => {
   let url =
     baseUrl + 'novel_list?type=topview&category=all&state=all&page=' + page;
-  const totalPages = 2155;
 
   const result = await fetch(url);
   const body = await result.text();
@@ -34,7 +33,7 @@ const popularNovels = async page => {
     novels.push(novel);
   });
 
-  return { novels, totalPages };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

@@ -7,7 +7,6 @@ const sourceName = 'MyLoveNovel';
 const baseUrl = 'https://m.mylovenovel.com/';
 
 const popularNovels = async page => {
-  const totalPages = 909;
   const url = `${baseUrl}all-${page}.html`;
   const result = await fetch(url);
   const body = await result.text();
@@ -32,7 +31,7 @@ const popularNovels = async page => {
     novels.push(novel);
   });
 
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

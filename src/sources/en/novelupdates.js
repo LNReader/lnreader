@@ -53,7 +53,6 @@ const getPopularNovelsUrl = (page, { showLatestNovels, filters }) => {
 };
 
 const popularNovels = async (page, { showLatestNovels, filters }) => {
-  const totalPages = 100;
   const url = getPopularNovelsUrl(page, { showLatestNovels, filters });
 
   const result = await fetch(url, {
@@ -84,7 +83,7 @@ const popularNovels = async (page, { showLatestNovels, filters }) => {
     novels.push(novel);
   });
 
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {
