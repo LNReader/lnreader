@@ -54,8 +54,11 @@ const EditInfoModal = ({ theme, hideModal, modalVisible, novel, dispatch }) => {
             horizontal
             showsHorizontalScrollIndicator={false}
           >
-            {status.map(item => (
-              <View style={{ borderRadius: 8, overflow: 'hidden' }} key={item}>
+            {status.map((item, index) => (
+              <View
+                style={{ borderRadius: 8, overflow: 'hidden' }}
+                key={'novelInfo' + index}
+              >
                 <Pressable
                   style={{
                     backgroundColor:
@@ -133,7 +136,7 @@ const EditInfoModal = ({ theme, hideModal, modalVisible, novel, dispatch }) => {
             contentContainerStyle={{ marginVertical: 8 }}
             horizontal
             data={info.genre.split(',')}
-            keyExtractor={item => item}
+            keyExtractor={(item, index) => 'novelTag' + index}
             renderItem={({ item }) => (
               <GenreChip theme={theme} onPress={() => removeTag(item)}>
                 {item}

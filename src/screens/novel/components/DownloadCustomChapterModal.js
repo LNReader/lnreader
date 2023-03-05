@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput } from 'react-native';
 
-import { IconButton, Modal, Portal } from 'react-native-paper';
+import { Button, IconButton, Modal, Portal } from 'react-native-paper';
 import { downloadAllChaptersAction } from '../../../redux/novel/novel.actions';
 
 const DownloadCustomChapterModal = ({
@@ -91,6 +91,13 @@ const DownloadCustomChapterModal = ({
             onPress={() => setText(prevState => prevState + 10)}
           />
         </View>
+        <Button
+          onPress={onSubmit}
+          textColor={theme.onPrimary}
+          buttonColor={theme.primary}
+        >
+          Download
+        </Button>
       </Modal>
     </Portal>
   );

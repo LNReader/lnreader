@@ -37,7 +37,7 @@ const CoverImage = ({ children, source, theme, hideBackdrop }) => {
         <View
           style={{
             flex: 1,
-            backgroundColor: `${theme.background}B4`,
+            backgroundColor: color(theme.background).alpha(0.7).string(),
           }}
         >
           {source.uri ? (
@@ -57,7 +57,7 @@ const CoverImage = ({ children, source, theme, hideBackdrop }) => {
   }
 };
 
-const NovelThumbnail = ({ source, setCustomNovelCover }) => {
+const NovelThumbnail = ({ source, theme, setCustomNovelCover }) => {
   const [expanded, setExpanded] = useState(false);
 
   if (!expanded) {
@@ -70,23 +70,14 @@ const NovelThumbnail = ({ source, setCustomNovelCover }) => {
     return (
       <Portal>
         <IconButton
-          icon="close"
-          style={{
-            position: 'absolute',
-            top: StatusBar.currentHeight,
-            left: 0,
-            zIndex: 10,
-          }}
-          onPress={() => setExpanded(false)}
-        />
-        <IconButton
           icon="pencil-outline"
           style={{
             position: 'absolute',
-            top: StatusBar.currentHeight,
-            right: 0,
+            top: StatusBar.currentHeight + 10,
+            right: 10,
             zIndex: 10,
           }}
+          iconColor={theme.onBackground}
           onPress={setCustomNovelCover}
         />
         <Pressable

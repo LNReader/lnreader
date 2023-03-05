@@ -13,16 +13,25 @@ export const sanitizeChapterText = (
   html: string,
   options?: Options,
 ): string => {
+  if (html) {
+    html = html.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+  }
   let text = sanitizeHtml(html, {
-    allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img', 'input']),
+    allowedTags: sanitizeHtml.defaults.allowedTags.concat([
+      'img',
+      'input',
+      'i',
+      'em',
+      'b',
+      'a',
+    ]),
     allowedAttributes: {
-      'img': ['src', 'type', 'file-path', 'file-id', 'offline', 'class'],
+      'img': ['src', 'class'],
       'a': ['href'],
       'input': ['type', 'offline'],
     },
-    allowedSchemes: ['data', 'http', 'https'],
+    allowedSchemes: ['data', 'http', 'https', 'file'],
   });
-
   if (text) {
     if (options?.removeExtraParagraphSpacing) {
       text = text.replace(/<\s*br[^>]*>/gi, '\n').replace(/\n{2,}/g, '\n\n');
@@ -49,6 +58,5 @@ export const sanitizeChapterText = (
     text =
       "Chapter is empty.\n\nReport on <a href='https://github.com/LNReader/lnreader-sources/issues/new/choose'>github</a> if it's available in webview.";
   }
-
   return text;
 };

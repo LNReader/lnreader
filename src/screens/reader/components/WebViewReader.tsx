@@ -71,6 +71,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
     <WebView
       ref={webViewRef}
       style={{ backgroundColor }}
+      allowFileAccess={true}
       originWhitelist={['*']}
       scalesPageToFit={true}
       showsVerticalScrollIndicator={false}
@@ -90,53 +91,16 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
           case 'prev':
             navigateToChapterBySwipe('SWIPE_RIGHT');
             break;
-          case 'imgfiles':
-            if (event.data) {
-              if (Array.isArray(event.data.imgs)) {
-                const promises: Promise<{ data: any; id: number }>[] = [];
-                if (event.data.type === 'online') {
-                  for (let i = 0; i < event.data.imgs.length; i++) {
-                    const { url, id } = event.data.imgs[i];
-                    if (url && id) {
-                      promises.push(
-                        RNFetchBlob.fetch('get', url, headers).then(res => ({
-                          data: res.base64(),
-                          id: id,
-                        })),
-                      );
-                    }
-                  }
-                } else {
-                  for (let i = 0; i < event.data.imgs.length; i++) {
-                    const { url, id } = event.data.imgs[i];
-                    if (url && id) {
-                      promises.push(
-                        RNFetchBlob.fs.readFile(url, 'base64').then(base64 => {
-                          return { data: base64, id: id };
-                        }),
-                      );
-                    }
-                  }
-                }
-
-                Promise.all(promises)
-                  .then(datas => {
-                    const inject = datas.reduce((p, data) => {
-                      return (
-                        p +
-                        `document.querySelector("img[file-id='${data.id}']").setAttribute("src", "data:image/jpg;base64,${data.data}");
-                        document.querySelector("img[file-id='${data.id}']").classList.remove("load-icon");`
-                      );
-                    }, '');
-                    webViewRef.current?.injectJavaScript(
-                      inject +
-                        'window.requestAnimationFrame(()=>sendHeight());',
-                    );
-                  })
-                  .catch(e => {
-                    e; // CloudFlare is too strong :D
-                  });
-              }
+          case 'imgfile':
+            if (event.data && typeof event.data === 'string') {
+              RNFetchBlob.fetch('get', event.data, headers).then(res => {
+                const base64 = res.base64();
+                webViewRef.current?.injectJavaScript(
+                  `document.querySelector("img[delayed-src='${event.data}']").src="data:image/jpg;base64,${base64}";
+                  document.querySelector("img[delayed-src='${event.data}']").classList.remove("load-icon");
+                  sendHeight(500);`,
+                );
+              });
             }
             break;
           case 'scrollend':
@@ -151,6 +115,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
               const contentHeight = Math.round(Number(event.data));
               minScroll.current = (layoutHeight / contentHeight) * 100;
             }
+            break;
         }
       }}
       source={{
@@ -261,22 +226,13 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                       </chapter>
                     </div>
                     <script>
-                    const isOffline = !!document.querySelector("input[offline]")
-                    if(isOffline){
-                      imgs = [...document.querySelectorAll("img")].map((img, index)=>{
-                        img.setAttribute("file-id", index.toString());
-                        return {url:img.getAttribute("file-path"), id:img.getAttribute("file-id")};
+                    if(!document.querySelector("input[offline]") && ${!!headers}){
+                      document.querySelectorAll("img").forEach(img => {
+                        window.ReactNativeWebView.postMessage(JSON.stringify({type:"imgfile",data:img.getAttribute("delayed-src")}));
                       });
-                      window.ReactNativeWebView.postMessage(JSON.stringify({type:"imgfiles",data:{imgs:imgs,type:"offline"}}));
-                    }else if(${!!headers}){
-                      imgs = [...document.querySelectorAll("img")].map((img, index)=>{
-                        img.setAttribute("file-id", index.toString());
-                        return {url:img.getAttribute("delayed-src"), id:img.getAttribute("file-id")};
-                      });
-                      window.ReactNativeWebView.postMessage(JSON.stringify({type:"imgfiles",data:{imgs:imgs,type:"online"}}));
                     }
+
                     var scrollTimeout;
-                    
                     window.addEventListener("scroll", (event) => {
                       window.clearTimeout( scrollTimeout );
                       scrollTimeout = setTimeout(() => {
@@ -293,17 +249,17 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                         );
                       }, 100);
                     });
-                    const sendHeight = () => {
-                      window.ReactNativeWebView.postMessage(
-                        JSON.stringify(
-                          {
-                            type:"height",
-                            data:document.body.scrollHeight
-                          }
-                        )
+
+                    let sendHeightTimeout;
+                    const sendHeight = (timeOut) => {
+                      clearTimeout(sendHeightTimeout);
+                      sendHeightTimeout = setTimeout(
+                        window.ReactNativeWebView.postMessage(
+                          JSON.stringify({type:"height",data:document.body.scrollHeight})
+                        ), timeOut
                       );
                     }
-                    window.requestAnimationFrame(()=>sendHeight());
+                    sendHeight(1000);
                     </script>
                     <div class="infoText">
                     ${getString(
@@ -325,28 +281,19 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                       swipeGestures
                         ? `
                         <script>
-                          var initialX = null;
-                          var initialY = null;
+                          let initialX = null;
+                          let initialY = null;
                           document.addEventListener("touchstart", e => {
                             initialX = e.changedTouches[0].screenX;
                             initialY = e.changedTouches[0].screenY;
                           });
                           document.addEventListener("touchend", e => {
-                            if (initialX === null || initialY === null) return; 
-                            var currentX = e.changedTouches[0].screenX;
-                            var currentY = e.changedTouches[0].screenY;
-                            var diffX = currentX - initialX;
-                            var diffY = currentY - initialY;
+                            let diffX = e.changedTouches[0].screenX - initialX;
+                            let diffY = e.changedTouches[0].screenY - initialY;
                             if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 10) {
                               e.preventDefault();
-                              if (diffX < 0) {
-                                  window.ReactNativeWebView.postMessage(JSON.stringify({type:"next"}))
-                              } else {
-                                  window.ReactNativeWebView.postMessage(JSON.stringify({type:"prev"}))
-                              }  
+                              window.ReactNativeWebView.postMessage(JSON.stringify({type: diffX<0 ? "next" : "prev"}))
                             }
-                            initialX = null;
-                            initialY = null;
                           });
                           </script>`
                         : ''

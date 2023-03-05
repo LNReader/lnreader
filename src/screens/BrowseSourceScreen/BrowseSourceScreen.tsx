@@ -94,10 +94,8 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
       navigate(
         'Novel' as never,
         {
-          novelName: item.novelName,
-          novelCover: item.novelCover,
-          novelUrl: item.novelUrl,
-          sourceId,
+          ...item,
+          sourceId: sourceId,
         } as never,
       ),
     [sourceId],

@@ -7,7 +7,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDeviceOrientation } from '@hooks/useDeviceOrientation';
 
 const VerticalScrollbar = ({
-  hide,
   theme,
   minScroll = 0,
   verticalSeekbar,
@@ -21,10 +20,6 @@ const VerticalScrollbar = ({
     scrollTo(offsetY);
   };
   const screenOrientation = useDeviceOrientation();
-
-  if (hide) {
-    return null;
-  }
 
   if (screenOrientation === 'potrait' && verticalSeekbar) {
     return (
