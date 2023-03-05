@@ -80,11 +80,33 @@ const ChaptersSettingsSheet = ({
     <View style={{ flex: 1 }}>
       <SortItem
         label="By source"
-        status={sort === 'ORDER BY chapterId ASC' ? 'asc' : 'desc'}
+        status={
+          sort === 'ORDER BY chapterId ASC'
+            ? 'asc'
+            : sort === 'ORDER BY chapterId DESC'
+            ? 'desc'
+            : undefined
+        }
         onPress={() =>
           sort === 'ORDER BY chapterId ASC'
             ? sortChapters('ORDER BY chapterId DESC')
             : sortChapters('ORDER BY chapterId ASC')
+        }
+        theme={theme}
+      />
+      <SortItem
+        label="By chapter name"
+        status={
+          sort === 'ORDER BY chapterName ASC'
+            ? 'asc'
+            : sort === 'ORDER BY chapterName DESC'
+            ? 'desc'
+            : undefined
+        }
+        onPress={() =>
+          sort === 'ORDER BY chapterName ASC'
+            ? sortChapters('ORDER BY chapterName DESC')
+            : sortChapters('ORDER BY chapterName ASC')
         }
         theme={theme}
       />
