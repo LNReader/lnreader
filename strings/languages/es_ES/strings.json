@@ -1,38 +1,42 @@
 {
   "common": {
-    "cancel": "Cancel",
+    "cancel": "Cancelar",
     "ok": "Ok",
-    "save": "Save",
-    "clear": "Clear",
-    "reset": "Reset",
-    "search": "Search",
-    "install": "Install",
-    "newUpdateAvailable": "New update available",
-    "categories": "Categories",
-    "add": "Add",
-    "edit": "Edit",
-    "name": "Name",
-    "searchFor": "Search for",
-    "globally": "globally",
-    "searchResults": "Search results",
-    "chapters": "Chapters",
-    "submit": "Submit"
+    "save": "Guardar",
+    "clear": "Limpiar",
+    "reset": "Reiniciar",
+    "search": "Buscar",
+    "install": "Instalar",
+    "newUpdateAvailable": "Nueva actualización disponible",
+    "categories": "Categorías",
+    "add": "Añadir",
+    "edit": "Editar",
+    "name": "Nombre",
+    "searchFor": "Buscar por",
+    "globally": "globalmente",
+    "searchResults": "Resultados de la búsqueda",
+    "chapters": "Capítulos",
+    "submit": "Enviar",
+    "retry": "Intentar nuevamente"
   },
-  "library": "Library",
+  "library": "Biblioteca",
   "libraryScreen": {
-    "searchbar": "Search library",
-    "empty": "Your library is empty. Add series to your library from Browse.",
+    "searchbar": "Buscar en la biblioteca",
+    "empty": "Tu biblioteca está vacía. Añade series a tu biblioteca desde el navegador.",
     "bottomSheet": {
       "filters": {
-        "downloaded": "Downloaded",
-        "unread": "Unread",
-        "completed": "Completed",
-        "started": "Started"
+        "downloaded": "Descargado",
+        "unread": "No leído",
+        "completed": "Terminado",
+        "started": "Iniciado"
       },
       "sortOrders": {
-        "dateAdded": "Date added",
-        "alphabetically": "Alphabetically",
-        "totalChapters": "Total chapters"
+        "dateAdded": "Fecha agregada",
+        "alphabetically": "Alfabéticamente",
+        "totalChapters": "Capítulos totales",
+        "download": "Descargado",
+        "unread": "No leído",
+        "lastRead": "Último leído"
       },
       "display": {
         "displayMode": "Display mode",
@@ -50,7 +54,9 @@
   "updates": "Updates",
   "updatesScreen": {
     "searchbar": "Search updates",
-    "lastUpdatedAt": "Library last updated:"
+    "lastUpdatedAt": "Library last updated:",
+    "newChapters": "new Chapters",
+    "emptyView": "No recent updates"
   },
   "history": "History",
   "historyScreen": {
@@ -87,7 +93,10 @@
       "showProgressPercentage": "Show progress percentage",
       "swipeGestures": "Swipe left or right to navigate between chapters",
       "allowTextSelection": "Allow text selection",
-      "useChapterDrawerSwipeNavigation": "Swipe right to open drawer"
+      "useChapterDrawerSwipeNavigation": "Swipe right to open drawer",
+      "removeExtraSpacing": "Remove extra paragraph spacing",
+      "volumeButtonsScroll": "Volume buttons scroll",
+      "showSwipeMargins": "Show swipe margins"
     },
     "drawer": {
       "scrollToCurrentChapter": "Scroll to current chapter",
@@ -123,7 +132,29 @@
     "settings": "Settings",
     "settingsScreen": {
       "generalSettings": "General",
-      "generalSettingsScreen": {},
+      "generalSettingsScreen": {
+        "display": "Display",
+        "displayMode": "Display Mode",
+        "itemsPerRow": "Items per row",
+        "itemsPerRowLibrary": "Items per row in library",
+        "novelBadges": "Novel Badges",
+        "novelSort": "Novel Sort",
+        "updateLibrary": "Update library on launch",
+        "useFAB": "Use FAB in Library",
+        "novel": "Novel",
+        "chapterSort": "Default chapter sort",
+        "bySource": "By source",
+        "asc": "(Ascending)",
+        "desc": "(Descending)",
+        "globalUpdate": "Global update",
+        "updateOngoing": "Only update ongoing novels",
+        "refreshMetadata": "Automatically refresh metadata",
+        "refreshMetadataDescription": "Check for new cover and details when updating library",
+        "updateTime": "Show last update time",
+        "autoDownload": "Auto-download",
+        "downloadNewChapters": "Download new chapters",
+        "disableHapticFeedback": "Disable haptic feedback"
+      },
       "readerSettings": {
         "title": "Reader",
         "readerTheme": "Reader theme",
@@ -195,5 +226,10 @@
   "settings": {
     "icognitoMode": "Incognito mode",
     "downloadedOnly": "Downloaded only"
+  },
+  "downloadScreen": {
+    "dbInfo": "Downloads are saved in a SQLite Database.",
+    "downloadChapters": "downloaded Chapters",
+    "noDownloads": "No downloads"
   }
 }

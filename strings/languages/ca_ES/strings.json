@@ -16,7 +16,8 @@
     "globally": "globally",
     "searchResults": "Search results",
     "chapters": "Chapters",
-    "submit": "Submit"
+    "submit": "Submit",
+    "retry": "Retry"
   },
   "library": "Library",
   "libraryScreen": {
@@ -32,7 +33,10 @@
       "sortOrders": {
         "dateAdded": "Date added",
         "alphabetically": "Alphabetically",
-        "totalChapters": "Total chapters"
+        "totalChapters": "Total chapters",
+        "download": "Downloaded",
+        "unread": "Unread",
+        "lastRead": "Last Read"
       },
       "display": {
         "displayMode": "Display mode",
@@ -50,7 +54,9 @@
   "updates": "Updates",
   "updatesScreen": {
     "searchbar": "Search updates",
-    "lastUpdatedAt": "Library last updated:"
+    "lastUpdatedAt": "Library last updated:",
+    "newChapters": "new Chapters",
+    "emptyView": "No recent updates"
   },
   "history": "History",
   "historyScreen": {
@@ -87,7 +93,10 @@
       "showProgressPercentage": "Show progress percentage",
       "swipeGestures": "Swipe left or right to navigate between chapters",
       "allowTextSelection": "Allow text selection",
-      "useChapterDrawerSwipeNavigation": "Swipe right to open drawer"
+      "useChapterDrawerSwipeNavigation": "Swipe right to open drawer",
+      "removeExtraSpacing": "Remove extra paragraph spacing",
+      "volumeButtonsScroll": "Volume buttons scroll",
+      "showSwipeMargins": "Show swipe margins"
     },
     "drawer": {
       "scrollToCurrentChapter": "Scroll to current chapter",
@@ -123,7 +132,29 @@
     "settings": "Settings",
     "settingsScreen": {
       "generalSettings": "General",
-      "generalSettingsScreen": {},
+      "generalSettingsScreen": {
+        "display": "Display",
+        "displayMode": "Display Mode",
+        "itemsPerRow": "Items per row",
+        "itemsPerRowLibrary": "Items per row in library",
+        "novelBadges": "Novel Badges",
+        "novelSort": "Novel Sort",
+        "updateLibrary": "Update library on launch",
+        "useFAB": "Use FAB in Library",
+        "novel": "Novel",
+        "chapterSort": "Default chapter sort",
+        "bySource": "By source",
+        "asc": "(Ascending)",
+        "desc": "(Descending)",
+        "globalUpdate": "Global update",
+        "updateOngoing": "Only update ongoing novels",
+        "refreshMetadata": "Automatically refresh metadata",
+        "refreshMetadataDescription": "Check for new cover and details when updating library",
+        "updateTime": "Show last update time",
+        "autoDownload": "Auto-download",
+        "downloadNewChapters": "Download new chapters",
+        "disableHapticFeedback": "Disable haptic feedback"
+      },
       "readerSettings": {
         "title": "Reader",
         "readerTheme": "Reader theme",
@@ -195,5 +226,10 @@
   "settings": {
     "icognitoMode": "Incognito mode",
     "downloadedOnly": "Downloaded only"
+  },
+  "downloadScreen": {
+    "dbInfo": "Downloads are saved in a SQLite Database.",
+    "downloadChapters": "downloaded Chapters",
+    "noDownloads": "No downloads"
   }
 }

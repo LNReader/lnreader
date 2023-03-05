@@ -16,7 +16,8 @@
     "globally": "global olarak",
     "searchResults": "Arama sonuçları",
     "chapters": "Bölüm",
-    "submit": "Gönder"
+    "submit": "Gönder",
+    "retry": "Yeniden dene"
   },
   "library": "Kitaplık",
   "libraryScreen": {
@@ -32,7 +33,10 @@
       "sortOrders": {
         "dateAdded": "Eklendiği tarih",
         "alphabetically": "Alfabetik",
-        "totalChapters": "Toplam bölüm"
+        "totalChapters": "Toplam bölüm",
+        "download": "İndirilenler",
+        "unread": "Okunmamışlar",
+        "lastRead": "Son Okunanlar"
       },
       "display": {
         "displayMode": "Görüntüleme modu",
@@ -50,7 +54,9 @@
   "updates": "Güncellemeler",
   "updatesScreen": {
     "searchbar": "Güncellemelerde ara",
-    "lastUpdatedAt": "Kitaplık son güncelleme:"
+    "lastUpdatedAt": "Kitaplık son güncelleme:",
+    "newChapters": "new Chapters",
+    "emptyView": "No recent updates"
   },
   "history": "Geçmiş",
   "historyScreen": {
@@ -87,7 +93,10 @@
       "showProgressPercentage": "İlerleme yüzdesini göster",
       "swipeGestures": "Bölümler arası gezinmek için sol veya sağa doğru kaydırın",
       "allowTextSelection": "Yazı seçmeye izin ver",
-      "useChapterDrawerSwipeNavigation": "Çekmeceyi açmak için sağa kaydırın"
+      "useChapterDrawerSwipeNavigation": "Çekmeceyi açmak için sağa kaydırın",
+      "removeExtraSpacing": "Ekstra paragraf boşluklarını kaldır",
+      "volumeButtonsScroll": "Ses butonlarıyla kaydırma",
+      "showSwipeMargins": "Kaydırma kenar boşluklarını göster"
     },
     "drawer": {
       "scrollToCurrentChapter": "Mevcut bölüme kaydır",
@@ -123,7 +132,29 @@
     "settings": "Ayarlar",
     "settingsScreen": {
       "generalSettings": "Genel",
-      "generalSettingsScreen": {},
+      "generalSettingsScreen": {
+        "display": "Görünüm",
+        "displayMode": "Görünüm Modu",
+        "itemsPerRow": "Satır başına düşen öge",
+        "itemsPerRowLibrary": "Kitaplıkta satır başına düşen öge",
+        "novelBadges": "Novel Rozetleri",
+        "novelSort": "Novel Sıralaması",
+        "updateLibrary": "Açılışta kitaplığı güncelle",
+        "useFAB": "Kitaplıkta FAB kullan",
+        "novel": "Novel",
+        "chapterSort": "Varsayılan bölüm sıralaması",
+        "bySource": "Kaynağa göre",
+        "asc": "(Artan)",
+        "desc": "(Azalan)",
+        "globalUpdate": "Global güncelleme",
+        "updateOngoing": "Yalnızca devam eden novel'leri güncelle",
+        "refreshMetadata": "Üst veriyi otomatik olarak yenile",
+        "refreshMetadataDescription": "Kitaplığı güncellerken yeni kapak ve ayrıntıları denetle",
+        "updateTime": "Son güncelleme süresini göster",
+        "autoDownload": "Otomatik İndirme",
+        "downloadNewChapters": "Yeni bölümleri indir",
+        "disableHapticFeedback": "Dokunmatik geri bildirimi devre dışı bırak"
+      },
       "readerSettings": {
         "title": "Okuyucu",
         "readerTheme": "Okuyucu teması",
@@ -154,7 +185,7 @@
   "statsScreen": {
     "title": "İstatistikler",
     "titlesInLibrary": "Kitaplıktaki başlık",
-    "totalChapters": "Total chapters",
+    "totalChapters": "Toplam bölüm",
     "readChapters": "Okunan bölüm",
     "unreadChapters": "Okunmamış bölüm",
     "downloadedChapters": "İndirilmiş bölüm",
@@ -195,5 +226,10 @@
   "settings": {
     "icognitoMode": "Gizli mod",
     "downloadedOnly": "Yalnızca indirilenler"
+  },
+  "downloadScreen": {
+    "dbInfo": "Downloads are saved in a SQLite Database.",
+    "downloadChapters": "downloaded Chapters",
+    "noDownloads": "No downloads"
   }
 }

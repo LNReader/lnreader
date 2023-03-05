@@ -10,39 +10,43 @@
     "newUpdateAvailable": "Đã có bản cập nhật mới",
     "categories": "Danh mục",
     "add": "Thêm",
-    "edit": "Chỉnh sửa",
+    "edit": "Sửa",
     "name": "Tên",
     "searchFor": "Tìm kiếm",
     "globally": "toàn cầu",
     "searchResults": "Kết quả tìm kiếm",
-    "chapters": "Các chương",
-    "submit": "Gửi"
+    "chapters": "Chương",
+    "submit": "Gửi",
+    "retry": "Thử lại"
   },
   "library": "Thư viện",
   "libraryScreen": {
-    "searchbar": "Tìm kiếm Thư viện",
-    "empty": "Thư viện của bạn hiện đang trống. Hãy thêm các truyện vào thư viện từ Thanh công cụ Tìm kiếm.",
+    "searchbar": "Tìm trong Thư viện",
+    "empty": "Không có gì cả. Hãy thêm truyện vào thư viện từ mục Tìm kiếm.",
     "bottomSheet": {
       "filters": {
         "downloaded": "Đã tải về",
         "unread": "Chưa đọc",
         "completed": "Đã hoàn thành",
-        "started": "Đã đọc"
+        "started": "Đã bắt đầu"
       },
       "sortOrders": {
         "dateAdded": "Ngày được thêm",
         "alphabetically": "Theo thứ tự từ điển",
-        "totalChapters": "Toàn bộ chương"
+        "totalChapters": "Toàn bộ chương",
+        "download": "Đã tải xuống",
+        "unread": "Chưa đọc",
+        "lastRead": "Lần đọc cuối"
       },
       "display": {
-        "displayMode": "Trạng thái hiển thị",
+        "displayMode": "Chế độ Hiển thị",
         "compact": "Thu gọn",
         "comfortable": "Tiện dụng",
         "noTitle": "Ảnh bìa",
         "list": "Danh sách",
-        "badges": "Dấu",
-        "downloadBadges": "Dấu tải xuống",
-        "unreadBadges": "Dấu chưa đọc",
+        "badges": "Nhãn",
+        "downloadBadges": "Nhãn tải xuống",
+        "unreadBadges": "Nhãn chưa đọc",
         "showNoOfItems": "Hiện số lượng"
       }
     }
@@ -50,19 +54,21 @@
   "updates": "Cập nhật",
   "updatesScreen": {
     "searchbar": "Tìm kiếm bản cập nhật",
-    "lastUpdatedAt": "Lần cập nhật thư viện gần nhất:"
+    "lastUpdatedAt": "Lần cập nhật thư viện gần nhất:",
+    "newChapters": "chương mới",
+    "emptyView": "Chưa cập nhật mới"
   },
   "history": "Lịch sử",
   "historyScreen": {
-    "searchbar": "Lịch sử tìm kiếm",
-    "clearHistorWarning": "Bạn có chắc không? Toàn bộ lịch sử sẽ bị xoá bỏ."
+    "searchbar": "Tìm trong lịch sử",
+    "clearHistorWarning": "Bạn có chắc không? Toàn bộ lịch sử sẽ bị xoá."
   },
   "browse": "Tìm kiếm",
   "browseScreen": {
     "discover": "Khám phá",
     "searchbar": "Tìm nguồn truyện",
-    "globalSearch": "Tìm kiếm toàn cầu",
-    "listEmpty": "Cho phép nhiều ngôn ngữ từ cài đặt",
+    "globalSearch": "Tìm kiếm mở rộng",
+    "listEmpty": "Chọn ngôn ngữ",
     "lastUsed": "Lần sử dụng trước",
     "pinned": "Đã ghim",
     "all": "Tất cả",
@@ -71,36 +77,39 @@
     "removeFromLibrary": "Đã xoá khỏi thư viện"
   },
   "readerScreen": {
-    "finished": "Đã hoàn thành",
-    "noNextChapter": "Không có chương mới",
+    "finished": "Đã xong",
+    "noNextChapter": "Không có chương kế tiếp",
     "bottomSheet": {
       "textSize": "Cỡ chữ",
-      "color": "Màu sắc",
-      "textAlign": "Căn chỉnh văn bản",
+      "color": "Màu chữ",
+      "textAlign": "Căn lề",
       "lineHeight": "Chiều cao dòng",
       "fontStyle": "Phông chữ",
       "fullscreen": "Toàn màn hình",
-      "renderHml": "Hiện thị bằng HTML - web",
+      "renderHml": "WebView",
       "autoscroll": "Cuộn tự động",
-      "verticalSeekbar": "Thanh tiến trình dọc",
-      "showBatteryAndTime": "Hiển thị thông tin về pin và thời gian",
-      "showProgressPercentage": "Phần trăm thực hiện",
-      "swipeGestures": "Vuốt sang trái hoặc phải để chuyển đổi giữa các chương",
+      "verticalSeekbar": "Thanh trạng thái dọc",
+      "showBatteryAndTime": "Hiển thị pin và giờ",
+      "showProgressPercentage": "Hiện tiến trình",
+      "swipeGestures": "Vuốt để đổi chương",
       "allowTextSelection": "Cho phép bôi đen chữ",
-      "useChapterDrawerSwipeNavigation": "Vuốt qua phải để mở drawer"
+      "useChapterDrawerSwipeNavigation": "Vuốt phải để hiện danh sách",
+      "removeExtraSpacing": "Xoá khoảng trống thừa",
+      "volumeButtonsScroll": "Cuộn bằng nút âm lượng",
+      "showSwipeMargins": "Hiện khoảng vuốt"
     },
     "drawer": {
-      "scrollToCurrentChapter": "Cuộn đến phần hiện tại",
-      "scrollToTop": "Cuộn lên đầu",
-      "scrollToBottom": "Cuộn xuống cuối"
+      "scrollToCurrentChapter": "Chương hiện tại",
+      "scrollToTop": "Lên đầu",
+      "scrollToBottom": "Xuống cuối"
     }
   },
   "novelScreen": {
     "addToLibaray": "Thêm vào thư viện",
-    "inLibaray": "Trong Thư Viện",
+    "inLibaray": "Trong thư viện",
     "continueReading": "Tiếp tục đọc",
-    "chapters": "các chương",
-    "migrate": "Sát nhập",
+    "chapters": "chương",
+    "migrate": "Đồng bộ",
     "noSummary": "Không có tóm tắt",
     "bottomSheet": {
       "filter": "Bộ lọc",
@@ -109,7 +118,7 @@
     },
     "jumpToChapterModal": {
       "jumpToChapter": "Đi tới Chương",
-      "openChapter": "Mở Chương",
+      "openChapter": "Đọc luôn",
       "chapterName": "Tên Chương",
       "chapterNumber": "Chương Số",
       "error": {
@@ -118,12 +127,34 @@
       }
     }
   },
-  "more": "Nhiều hơn",
+  "more": "Khác",
   "moreScreen": {
     "settings": "Cài đặt",
     "settingsScreen": {
-      "generalSettings": "Tổng quát",
-      "generalSettingsScreen": {},
+      "generalSettings": "Chung",
+      "generalSettingsScreen": {
+        "display": "Hiển thị",
+        "displayMode": "Chế độ Hiển thị",
+        "itemsPerRow": "Truyện trên hàng",
+        "itemsPerRowLibrary": "Số truyện trên hàng trong thư viện",
+        "novelBadges": "Nhãn tiểu thuyết",
+        "novelSort": "Sắp xếp truyện",
+        "updateLibrary": "Cập nhật thư viện khi khởi động",
+        "useFAB": "Sử dụng FAB trong thư viện",
+        "novel": "Tiểu thuyết",
+        "chapterSort": "Sắp xếp mặc định",
+        "bySource": "Theo nguồn",
+        "asc": "(Tăng dần)",
+        "desc": "(Giảm dần)",
+        "globalUpdate": "Cập nhật toàn bộ",
+        "updateOngoing": "Chỉ cập nhật truyện đang thực hiện",
+        "refreshMetadata": "Tự động làm mới metadata",
+        "refreshMetadataDescription": "Kiểm tra ảnh bìa và mô tả khi cập nhật thự viện",
+        "updateTime": "Hiện lần cập nhật trước",
+        "autoDownload": "Tự động tải xuống",
+        "downloadNewChapters": "Tải chương mới",
+        "disableHapticFeedback": "Tắt phản hồi xúc giác"
+      },
       "readerSettings": {
         "title": "Trang đọc",
         "readerTheme": "Giao diện đọc",
@@ -131,10 +162,10 @@
         "backgroundColor": "Màu nền",
         "textColor": "Màu chữ",
         "backgroundColorModal": "Màu nền của trang đọc",
-        "textColorModal": "Màu chữ của trang đọc",
-        "verticalSeekbarDesc": "Chuyển giữa thanh tiến trình dọc và ngang",
+        "textColorModal": "Màu chữ trang đọc",
+        "verticalSeekbarDesc": "Chuyển hướng thanh trạng thái dọc hoặc ngang",
         "autoScrollInterval": "Thời gian tự động cuộn (giây)",
-        "autoScrollOffset": "Tự động cuộn theo vị trí (mặc định là chiều cao màn hình)",
+        "autoScrollOffset": "Khoảng cách tự động cuộn (mặc định chiều cao màn hình)",
         "saveCustomTheme": "Lưu tùy chỉnh giao diện",
         "deleteCustomTheme": "Xoá tuỳ chỉnh giao diện",
         "customCSS": "CSS Tùy chỉnh"
@@ -143,8 +174,8 @@
       "browseSettingsScreen": {
         "onlyShowPinnedSources": "Chỉ hiện nguồn được ghim",
         "languages": "Ngôn ngữ",
-        "searchAllSources": "Tìm toàn bộ nguồn truyện",
-        "searchAllWarning": "Tìm kiếm lượng lớn nguồn có thể đóng băng app cho đến khi tìm kiếm hoàn thành."
+        "searchAllSources": "Tìm trên tất cả các nguồn",
+        "searchAllWarning": "Tìm kiếm với lượng lớn nguồn có thể đóng băng ứng dụng cho đến khi tìm kiếm hoàn thành."
       }
     }
   },
@@ -153,13 +184,13 @@
   },
   "statsScreen": {
     "title": "Thống kê",
-    "titlesInLibrary": "Tiêu đề trong thư viện",
-    "totalChapters": "Toàn bộ chương",
+    "titlesInLibrary": "Tiêu đề",
+    "totalChapters": "Chương",
     "readChapters": "Chương đã đọc",
     "unreadChapters": "Chương chưa đọc",
     "downloadedChapters": "Chương đã tải về",
-    "genreDistribution": "Thể loại cung cấp",
-    "statusDistribution": "Trạng thái cung cấp"
+    "genreDistribution": "Thể loại",
+    "statusDistribution": "Trạng thái"
   },
   "globalSearch": {
     "searchIn": "Tìm truyện ở",
@@ -168,14 +199,14 @@
   },
   "advancedSettings": {
     "deleteReadChapters": "Xóa chương đã đọc",
-    "deleteReadChaptersDialogTitle": "Bạn có chắc không? Toàn bộ chương được đánh dấu là đã đọc sẽ bị xoá."
+    "deleteReadChaptersDialogTitle": "Bạn có chắc không? Toàn bộ chương được đánh đã đọc sẽ bị xoá."
   },
   "date": {
     "calendar": {
       "sameDay": "[Hôm nay]",
       "nextDay": "[Ngày mai]",
       "lastDay": "[Hôm qua]",
-      "lastWeek": "[Gần nhất]"
+      "lastWeek": "[Gần nhất] dddd"
     }
   },
   "categories": {
@@ -184,9 +215,9 @@
     "setCategories": "Đặt danh mục",
     "header": "Chỉnh sửa danh mục",
     "emptyMsg": "Bạn không có danh mục nào. Hãy ấn vào nút thêm để tạo danh mục mới",
-    "setModalEmptyMsg": "Bạn không có thể danh mục. Hãy ấn vào nút chỉnh sửa để tạo danh mục mới",
+    "setModalEmptyMsg": "Bạn không có danh mục nào. Hãy ấn vào nút chỉnh sửa để tạo danh mục mới",
     "deleteModal": {
-      "header": "Xóa thế loại",
+      "header": "Xóa danh mục",
       "desc": "Bạn có muốn xóa danh mục này"
     },
     "duplicateError": "Danh mục với tên này đã tồn tại!",
@@ -195,5 +226,10 @@
   "settings": {
     "icognitoMode": "Chế độ ẩn danh",
     "downloadedOnly": "Chỉ tải xuống"
+  },
+  "downloadScreen": {
+    "dbInfo": "Các chương tải về sẽ được lưu trong cơ sở dữ liệu SQLite.",
+    "downloadChapters": "chương đã tải về",
+    "noDownloads": "Không có tải xuống"
   }
 }

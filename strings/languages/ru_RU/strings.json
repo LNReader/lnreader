@@ -16,7 +16,8 @@
     "globally": "глобально",
     "searchResults": "Результаты поиска",
     "chapters": "Главы",
-    "submit": "Продолжить"
+    "submit": "Продолжить",
+    "retry": "Повторить"
   },
   "library": "Библиотека",
   "libraryScreen": {
@@ -32,7 +33,10 @@
       "sortOrders": {
         "dateAdded": "По дате добавления",
         "alphabetically": "По алфавиту",
-        "totalChapters": "Всего глав"
+        "totalChapters": "Всего глав",
+        "download": "Загружено",
+        "unread": "Непрочитанные",
+        "lastRead": "Последнее прочитанное"
       },
       "display": {
         "displayMode": "Режим отображения",
@@ -50,7 +54,9 @@
   "updates": "Обновления",
   "updatesScreen": {
     "searchbar": "Поиск в обновлениях",
-    "lastUpdatedAt": "Последнее обновление библиотеки:"
+    "lastUpdatedAt": "Последнее обновление библиотеки:",
+    "newChapters": "new Chapters",
+    "emptyView": "No recent updates"
   },
   "history": "История",
   "historyScreen": {
@@ -87,7 +93,10 @@
       "showProgressPercentage": "Показывать процент прогресса",
       "swipeGestures": "Проведите влево или вправо для перехода между главами",
       "allowTextSelection": "Разрешить выделение текста",
-      "useChapterDrawerSwipeNavigation": "Проведите вправо, чтобы открыть"
+      "useChapterDrawerSwipeNavigation": "Проведите вправо, чтобы открыть",
+      "removeExtraSpacing": "Удалить дополнительный интервал параграфа",
+      "volumeButtonsScroll": "Прокрутка кноками громкости",
+      "showSwipeMargins": "Показать зоны прокрутки"
     },
     "drawer": {
       "scrollToCurrentChapter": "Прокрутка к текущей главе",
@@ -123,7 +132,29 @@
     "settings": "Настройки",
     "settingsScreen": {
       "generalSettings": "Основные",
-      "generalSettingsScreen": {},
+      "generalSettingsScreen": {
+        "display": "Вид",
+        "displayMode": "Режим Отображения",
+        "itemsPerRow": "элемента в ряду",
+        "itemsPerRowLibrary": "Количество элементов в ряду",
+        "novelBadges": "Иконки тайтлов",
+        "novelSort": "Сортировка тайтлов",
+        "updateLibrary": "Обновлять библиотеку при запуске",
+        "useFAB": "Использовать FAB в библиотеке",
+        "novel": "Тайтл",
+        "chapterSort": "Сортировка глав по умолчанию",
+        "bySource": "По источникам",
+        "asc": "(По возрастанию)",
+        "desc": "(По убыванию)",
+        "globalUpdate": "Обновить всё",
+        "updateOngoing": "Обновлять только онгоинги",
+        "refreshMetadata": "Автоматически обновлять метаданные",
+        "refreshMetadataDescription": "Проверять наличие новой обложки и описания при обновлении библиотеки",
+        "updateTime": "Показать время последнего обновления",
+        "autoDownload": "Автозагрузка",
+        "downloadNewChapters": "Скачивать новые главы",
+        "disableHapticFeedback": "Отключить виброотклик"
+      },
       "readerSettings": {
         "title": "Чтение",
         "readerTheme": "Тема при чтении",
@@ -195,5 +226,10 @@
   "settings": {
     "icognitoMode": "Режим инкогнито",
     "downloadedOnly": "Только загруженные главы"
+  },
+  "downloadScreen": {
+    "dbInfo": "Downloads are saved in a SQLite Database.",
+    "downloadChapters": "downloaded Chapters",
+    "noDownloads": "No downloads"
   }
 }

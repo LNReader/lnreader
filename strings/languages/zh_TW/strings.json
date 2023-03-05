@@ -16,7 +16,8 @@
     "globally": "globally",
     "searchResults": "Search results",
     "chapters": "Chapters",
-    "submit": "Submit"
+    "submit": "Submit",
+    "retry": "Retry"
   },
   "library": "书库",
   "libraryScreen": {
@@ -32,7 +33,10 @@
       "sortOrders": {
         "dateAdded": "日期已添加",
         "alphabetically": "按字母排序",
-        "totalChapters": "章节总数"
+        "totalChapters": "章节总数",
+        "download": "Downloaded",
+        "unread": "Unread",
+        "lastRead": "Last Read"
       },
       "display": {
         "displayMode": "显示模式",
@@ -50,7 +54,9 @@
   "updates": "更新",
   "updatesScreen": {
     "searchbar": "搜索更新",
-    "lastUpdatedAt": "最近更新的库："
+    "lastUpdatedAt": "最近更新的库：",
+    "newChapters": "new Chapters",
+    "emptyView": "No recent updates"
   },
   "history": "历史",
   "historyScreen": {
@@ -87,7 +93,10 @@
       "showProgressPercentage": "显示进度百分比",
       "swipeGestures": "向左或向右滑动以导航章节",
       "allowTextSelection": "允许选择文本",
-      "useChapterDrawerSwipeNavigation": "Swipe right to open drawer"
+      "useChapterDrawerSwipeNavigation": "Swipe right to open drawer",
+      "removeExtraSpacing": "Remove extra paragraph spacing",
+      "volumeButtonsScroll": "Volume buttons scroll",
+      "showSwipeMargins": "Show swipe margins"
     },
     "drawer": {
       "scrollToCurrentChapter": "Scroll to current chapter",
@@ -123,7 +132,29 @@
     "settings": "设置",
     "settingsScreen": {
       "generalSettings": "常规",
-      "generalSettingsScreen": {},
+      "generalSettingsScreen": {
+        "display": "Display",
+        "displayMode": "Display Mode",
+        "itemsPerRow": "Items per row",
+        "itemsPerRowLibrary": "Items per row in library",
+        "novelBadges": "Novel Badges",
+        "novelSort": "Novel Sort",
+        "updateLibrary": "Update library on launch",
+        "useFAB": "Use FAB in Library",
+        "novel": "Novel",
+        "chapterSort": "Default chapter sort",
+        "bySource": "By source",
+        "asc": "(Ascending)",
+        "desc": "(Descending)",
+        "globalUpdate": "Global update",
+        "updateOngoing": "Only update ongoing novels",
+        "refreshMetadata": "Automatically refresh metadata",
+        "refreshMetadataDescription": "Check for new cover and details when updating library",
+        "updateTime": "Show last update time",
+        "autoDownload": "Auto-download",
+        "downloadNewChapters": "Download new chapters",
+        "disableHapticFeedback": "Disable haptic feedback"
+      },
       "readerSettings": {
         "title": "阅读器",
         "readerTheme": "阅读器主题",
@@ -195,5 +226,10 @@
   "settings": {
     "icognitoMode": "Incognito mode",
     "downloadedOnly": "Downloaded only"
+  },
+  "downloadScreen": {
+    "dbInfo": "Downloads are saved in a SQLite Database.",
+    "downloadChapters": "downloaded Chapters",
+    "noDownloads": "No downloads"
   }
 }

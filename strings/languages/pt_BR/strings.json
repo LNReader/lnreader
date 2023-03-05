@@ -16,7 +16,8 @@
     "globally": "globalmente",
     "searchResults": "Resultados da busca",
     "chapters": "Capítulos",
-    "submit": "Aplicar"
+    "submit": "Aplicar",
+    "retry": "Tente novamente"
   },
   "library": "Biblioteca",
   "libraryScreen": {
@@ -32,7 +33,10 @@
       "sortOrders": {
         "dateAdded": "Data adicionado",
         "alphabetically": "Em Ordem Alfabética",
-        "totalChapters": "Total de capítulos"
+        "totalChapters": "Total de capítulos",
+        "download": "Baixado",
+        "unread": "Não lido",
+        "lastRead": "Última leitura"
       },
       "display": {
         "displayMode": "Modo de exibição",
@@ -50,7 +54,9 @@
   "updates": "Atualizações",
   "updatesScreen": {
     "searchbar": "Procurar por atualizações",
-    "lastUpdatedAt": "Biblioteca atualizada pela última vez:"
+    "lastUpdatedAt": "Biblioteca atualizada pela última vez:",
+    "newChapters": "new Chapters",
+    "emptyView": "No recent updates"
   },
   "history": "Histórico",
   "historyScreen": {
@@ -87,7 +93,10 @@
       "showProgressPercentage": "Exibir porcentagem do progresso",
       "swipeGestures": "Deslize para esquerda/direita para navegar entre capítulos",
       "allowTextSelection": "Permitir seleção de texto",
-      "useChapterDrawerSwipeNavigation": "Deslize para a direita para abrir a gaveta"
+      "useChapterDrawerSwipeNavigation": "Deslize para a direita para abrir a gaveta",
+      "removeExtraSpacing": "Remover espaçamento extra dos parágrafos",
+      "volumeButtonsScroll": "Deslizar com os botões de volume",
+      "showSwipeMargins": "Mostrar margens de deslize"
     },
     "drawer": {
       "scrollToCurrentChapter": "Rolar para o capítulo atual",
@@ -123,7 +132,29 @@
     "settings": "Configurações",
     "settingsScreen": {
       "generalSettings": "Geral",
-      "generalSettingsScreen": {},
+      "generalSettingsScreen": {
+        "display": "Exibição",
+        "displayMode": "Modo de visualização",
+        "itemsPerRow": "Itens por linha",
+        "itemsPerRowLibrary": "Itens por linha na biblioteca",
+        "novelBadges": "Novel Badges",
+        "novelSort": "Ordem da novel",
+        "updateLibrary": "Atualizar biblioteca ao iniciar",
+        "useFAB": "Usar FAB na Biblioteca",
+        "novel": "Novel",
+        "chapterSort": "Ordenação padrão de capítulos",
+        "bySource": "Pela fonte",
+        "asc": "(Crescente)",
+        "desc": "(Decrescente)",
+        "globalUpdate": "Atualização global",
+        "updateOngoing": "Atualizar somente novels em andamento",
+        "refreshMetadata": "Atualizar os metadados automaticamente",
+        "refreshMetadataDescription": "Verificar por novas capas e detalhes durante a atualização da biblioteca",
+        "updateTime": "Mostrar horário da última atualização",
+        "autoDownload": "Download automático",
+        "downloadNewChapters": "Baixar novos capítulos",
+        "disableHapticFeedback": "Desativar o feedback tátil"
+      },
       "readerSettings": {
         "title": "Leitor",
         "readerTheme": "Tema do leitor",
@@ -195,5 +226,10 @@
   "settings": {
     "icognitoMode": "Modo anônimo",
     "downloadedOnly": "Apenas baixados"
+  },
+  "downloadScreen": {
+    "dbInfo": "Downloads are saved in a SQLite Database.",
+    "downloadChapters": "downloaded Chapters",
+    "noDownloads": "No downloads"
   }
 }
