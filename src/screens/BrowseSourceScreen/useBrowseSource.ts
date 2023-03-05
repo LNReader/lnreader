@@ -54,6 +54,11 @@ export const useBrowseSource = (
     fetchNovels(currentPage, selectedFilters);
   }, [fetchNovels, currentPage]);
 
+  const refetchNovels = () => {
+    setCurrentPage(1);
+    fetchNovels(1);
+  };
+
   /**
    * On screen unmount
    */
@@ -81,6 +86,7 @@ export const useBrowseSource = (
     filterValues,
     setFilters,
     clearFilters,
+    refetchNovels,
   };
 };
 

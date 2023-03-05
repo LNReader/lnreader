@@ -1,5 +1,7 @@
 import * as cheerio from 'cheerio';
 import { fetchHtml } from '@utils/fetch/fetch';
+
+const sourceId = 35;
 const baseUrl = 'https://www.scribblehub.com/';
 
 const popularNovels = async page => {
@@ -25,7 +27,7 @@ const popularNovels = async page => {
     novelUrl = novelUrl[4] + '-' + novelUrl[5];
 
     const novel = {
-      sourceId: 35,
+      sourceId,
       novelName,
       novelCover,
       novelUrl,
@@ -127,7 +129,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 
   let chapterText = loadedCheerio('div.chp_raw').html();
   const chapter = {
-    sourceId: 35,
+    sourceId,
     novelUrl,
     chapterUrl,
     chapterName,
@@ -160,7 +162,7 @@ const searchNovels = async searchTerm => {
     novelUrl = novelUrl[4] + '-' + novelUrl[5];
 
     const novel = {
-      sourceId: 35,
+      sourceId,
       novelName,
       novelCover,
       novelUrl,

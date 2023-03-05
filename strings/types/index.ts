@@ -31,9 +31,9 @@ export interface StringMap {
   'libraryScreen.bottomSheet.sortOrders.dateAdded': 'string';
   'libraryScreen.bottomSheet.sortOrders.alphabetically': 'string';
   'libraryScreen.bottomSheet.sortOrders.totalChapters': 'string';
-  'libraryScreen.bottomSheet.sortOrders.lastRead': 'string';
-  'libraryScreen.bottomSheet.sortOrders.unread': 'string';
   'libraryScreen.bottomSheet.sortOrders.download': 'string';
+  'libraryScreen.bottomSheet.sortOrders.unread': 'string';
+  'libraryScreen.bottomSheet.sortOrders.lastRead': 'string';
   'libraryScreen.bottomSheet.display.displayMode': 'string';
   'libraryScreen.bottomSheet.display.compact': 'string';
   'libraryScreen.bottomSheet.display.comfortable': 'string';
@@ -48,6 +48,7 @@ export interface StringMap {
   'updatesScreen.lastUpdatedAt': 'string';
   'updatesScreen.newChapters': 'string';
   'updatesScreen.emptyView': 'string';
+  'updatesScreen.updatesLower': 'string';
   'history': 'string';
   'historyScreen.searchbar': 'string';
   'historyScreen.clearHistorWarning': 'string';
@@ -104,24 +105,25 @@ export interface StringMap {
   'moreScreen.settingsScreen.generalSettings': 'string';
   'moreScreen.settingsScreen.generalSettingsScreen.display': 'string';
   'moreScreen.settingsScreen.generalSettingsScreen.displayMode': 'string';
-  'moreScreen.settingsScreen.generalSettingsScreen.itemsPerRowLibrary': 'string';
   'moreScreen.settingsScreen.generalSettingsScreen.itemsPerRow': 'string';
+  'moreScreen.settingsScreen.generalSettingsScreen.itemsPerRowLibrary': 'string';
   'moreScreen.settingsScreen.generalSettingsScreen.novelBadges': 'string';
   'moreScreen.settingsScreen.generalSettingsScreen.novelSort': 'string';
   'moreScreen.settingsScreen.generalSettingsScreen.updateLibrary': 'string';
   'moreScreen.settingsScreen.generalSettingsScreen.useFAB': 'string';
   'moreScreen.settingsScreen.generalSettingsScreen.novel': 'string';
   'moreScreen.settingsScreen.generalSettingsScreen.chapterSort': 'string';
+  'moreScreen.settingsScreen.generalSettingsScreen.bySource': 'string';
   'moreScreen.settingsScreen.generalSettingsScreen.asc': 'string';
   'moreScreen.settingsScreen.generalSettingsScreen.desc': 'string';
   'moreScreen.settingsScreen.generalSettingsScreen.globalUpdate': 'string';
   'moreScreen.settingsScreen.generalSettingsScreen.updateOngoing': 'string';
   'moreScreen.settingsScreen.generalSettingsScreen.refreshMetadata': 'string';
   'moreScreen.settingsScreen.generalSettingsScreen.refreshMetadataDescription': 'string';
+  'moreScreen.settingsScreen.generalSettingsScreen.updateTime': 'string';
   'moreScreen.settingsScreen.generalSettingsScreen.autoDownload': 'string';
   'moreScreen.settingsScreen.generalSettingsScreen.downloadNewChapters': 'string';
   'moreScreen.settingsScreen.generalSettingsScreen.disableHapticFeedback': 'string';
-  'moreScreen.settingsScreen.generalSettingsScreen.updateTime': 'string';
   'moreScreen.settingsScreen.readerSettings.title': 'string';
   'moreScreen.settingsScreen.readerSettings.readerTheme': 'string';
   'moreScreen.settingsScreen.readerSettings.preset': 'string';
@@ -173,4 +175,5 @@ export interface StringMap {
   'downloadScreen.dbInfo': 'string';
   'downloadScreen.downloadChapters': 'string';
   'downloadScreen.noDownloads': 'string';
+  'downloadScreen.downloadsLower': 'string';
 }

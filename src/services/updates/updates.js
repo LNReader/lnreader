@@ -7,16 +7,6 @@ import { getLibraryNovelsFromDb } from '../../database/queries/LibraryQueries';
 import { showToast } from '../../hooks/showToast';
 import { updateNovel } from './LibraryUpdateQueries';
 
-Notifications.setNotificationHandler({
-  handleNotification: async () => {
-    return {
-      shouldShowAlert: true,
-      shouldPlaySound: true,
-      shouldSetBadge: true,
-    };
-  },
-});
-
 const sleep = time => new Promise(resolve => setTimeout(() => resolve(), time));
 
 const updateLibrary = async options => {

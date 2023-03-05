@@ -1,5 +1,5 @@
-import React, { memo, useState } from 'react';
-import { View, Text, StyleSheet, Pressable, ViewStyle } from 'react-native';
+import React, { memo, ReactNode, useState } from 'react';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 import color from 'color';
 
 import { Row } from '../../../components/Common';
@@ -26,10 +26,10 @@ interface ChapterItemProps {
   onSelectLongPress?: (chapter: ChapterItemExtended) => void;
   navigateToChapter: (chapter: ChapterItemExtended) => void;
   showProgressPercentage?: (chapter: ChapterItemExtended) => void;
-  containerStyle?: ViewStyle;
-  showDate?: boolean;
-  left?: Function;
-  textSize?: number;
+  left?: ReactNode;
+
+  isUpdateCard?: boolean;
+  novelName?: string;
 }
 
 const ChapterItem: React.FC<ChapterItemProps> = ({
@@ -45,10 +45,9 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
   onSelectLongPress,
   navigateToChapter,
   showProgressPercentage,
-  containerStyle,
-  showDate,
   left,
-  textSize,
+  isUpdateCard,
+  novelName,
 }) => {
   const { chapterId, chapterName, read, releaseDate, bookmark } = chapter;
   const [deleteChapterMenuVisible, setDeleteChapterMenuVisible] =
@@ -65,7 +64,6 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
         isSelected?.(chapterId) && {
           backgroundColor: color(theme.primary).alpha(0.12).string(),
         },
-        containerStyle,
       ]}
       onPress={() => {
         onSelectPress
@@ -76,19 +74,31 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
       android_ripple={{ color: theme.rippleColor }}
     >
       <Row style={styles.row}>
-        {left?.()}
+        {left}
         {!!bookmark && <ChapterBookmarkButton theme={theme} />}
         <View>
+          {isUpdateCard && (
+            <Text
+              style={[
+                {
+                  fontSize: 14,
+                  color: read ? theme.outline : theme.onSurface,
+                },
+              ]}
+              numberOfLines={1}
+            >
+              {novelName}
+            </Text>
+          )}
           <Text
             style={[
-              styles.title,
               {
-                fontSize: textSize ?? 14,
+                fontSize: isUpdateCard ? 12 : 14,
                 color: read
                   ? theme.outline
                   : bookmark
                   ? theme.primary
-                  : theme.onSurface,
+                  : theme.onSurfaceVariant,
               },
             ]}
             numberOfLines={1}
@@ -100,7 +110,7 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
               : chapterName}
           </Text>
           <View style={styles.textRow}>
-            {releaseDate && showDate ? (
+            {releaseDate && !isUpdateCard ? (
               <Text
                 style={[
                   {
@@ -145,9 +155,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-  },
-  title: {
-    marginTop: 5,
   },
   text: {
     fontSize: 12,

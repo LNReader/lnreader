@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
   },
   divider: {
     height: 1,
-    opacity: 0.6,
+    opacity: 0.5,
   },
   infoCtn: {
     paddingVertical: 12,

@@ -111,9 +111,7 @@ const UpdatesScreen = () => {
           renderItem={({ item }) => (
             <UpdateNovelCard
               item={item}
-              dispatch={dispatch}
-              theme={theme}
-              descriptionText={getString('updatesScreen.newChapters')}
+              descriptionText={getString('updatesScreen.updatesLower')}
             />
           )}
           ListEmptyComponent={

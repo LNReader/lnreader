@@ -56,7 +56,8 @@
     "searchbar": "Search updates",
     "lastUpdatedAt": "Library last updated:",
     "newChapters": "new Chapters",
-    "emptyView":"No recent updates"
+    "emptyView": "No recent updates",
+    "updatesLower": "updates"
   },
   "history": "History",
   "historyScreen": {
@@ -94,8 +95,8 @@
       "swipeGestures": "Swipe left or right to navigate between chapters",
       "allowTextSelection": "Allow text selection",
       "useChapterDrawerSwipeNavigation": "Swipe right to open drawer",
-      "removeExtraSpacing":"Remove extra paragraph spacing",
-      "volumeButtonsScroll":"Volume buttons scroll",
+      "removeExtraSpacing": "Remove extra paragraph spacing",
+      "volumeButtonsScroll": "Volume buttons scroll",
       "showSwipeMargins": "Show swipe margins"
     },
     "drawer": {
@@ -135,24 +136,24 @@
       "generalSettingsScreen": {
         "display": "Display",
         "displayMode": "Display Mode",
-        "itemsPerRow":"Items per row",
-        "itemsPerRowLibrary":"Items per row in library",
-        "novelBadges":"Novel Badges",
-        "novelSort":"Novel Sort",
-        "updateLibrary":"Update library on launch",
-        "useFAB":"Use FAB in Library",
+        "itemsPerRow": "Items per row",
+        "itemsPerRowLibrary": "Items per row in library",
+        "novelBadges": "Novel Badges",
+        "novelSort": "Novel Sort",
+        "updateLibrary": "Update library on launch",
+        "useFAB": "Use FAB in Library",
         "novel": "Novel",
         "chapterSort": "Default chapter sort",
         "bySource": "By source",
         "asc": "(Ascending)",
-        "desc":"(Descending)",
+        "desc": "(Descending)",
         "globalUpdate": "Global update",
         "updateOngoing": "Only update ongoing novels",
-        "refreshMetadata":"Automatically refresh metadata",
-        "refreshMetadataDescription":"Check for new cover and details when updating library",
-        "updateTime":"Show last update time",
-        "autoDownload":"Auto-download",
-        "downloadNewChapters":"Download new chapters",
+        "refreshMetadata": "Automatically refresh metadata",
+        "refreshMetadataDescription": "Check for new cover and details when updating library",
+        "updateTime": "Show last update time",
+        "autoDownload": "Auto-download",
+        "downloadNewChapters": "Download new chapters",
         "disableHapticFeedback": "Disable haptic feedback"
       },
       "readerSettings": {
@@ -230,6 +231,7 @@
   "downloadScreen": {
     "dbInfo": "Downloads are saved in a SQLite Database.",
     "downloadChapters": "downloaded Chapters",
-    "noDownloads": "No downloads"
+    "noDownloads": "No downloads",
+    "downloadsLower": "downloads"
   }
 }

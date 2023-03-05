@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
 import { FAB, Portal } from 'react-native-paper';
@@ -8,7 +8,7 @@ import NovelCover from '@components/NovelCover';
 import Bottomsheet from '@gorhom/bottom-sheet';
 import FilterBottomSheet from './components/FilterBottomSheet';
 
-import { useCategorySettings, useSearch } from '../../hooks';
+import { useCategorySettings, usePreviousRouteName, useSearch } from '@hooks';
 import { useTheme } from '@hooks/useTheme';
 import { useBrowseSource, useSearchSource } from './useBrowseSource';
 
@@ -35,6 +35,7 @@ interface BrowseSourceScreenProps {
 const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
   const theme = useTheme();
   const { navigate, goBack } = useNavigation();
+  const previousScreen = usePreviousRouteName();
 
   const {
     sourceId,
@@ -52,6 +53,7 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
     filterValues,
     setFilters,
     clearFilters,
+    refetchNovels,
   } = useBrowseSource(sourceId, showLatestNovels);
 
   const { defaultCategoryId = 1 } = useCategorySettings();
@@ -73,6 +75,12 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
     clearSearchbar();
     clearSearchResults();
   };
+
+  useEffect(() => {
+    if (previousScreen === 'WebviewScreen') {
+      refetchNovels();
+    }
+  }, [previousScreen]);
 
   const handleOpenWebView = async () => {
     navigate('WebviewScreen', {

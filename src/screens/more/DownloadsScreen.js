@@ -68,11 +68,8 @@ const Downloads = ({ navigation }) => {
 
   const renderItem = ({ item, index }) => (
     <UpdateNovelCard
-      keyProp={index}
       item={item}
-      dispatch={dispatch}
-      theme={theme}
-      descriptionText={getString('downloadScreen.downloadChapters')}
+      descriptionText={getString('downloadScreen.downloadsLower')}
       removeItemFromList
     />
   );
