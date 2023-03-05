@@ -34,6 +34,7 @@ export interface StringMap {
   'libraryScreen.bottomSheet.sortOrders.download': 'string';
   'libraryScreen.bottomSheet.sortOrders.unread': 'string';
   'libraryScreen.bottomSheet.sortOrders.lastRead': 'string';
+  'libraryScreen.bottomSheet.sortOrders.lastUpdated': 'string';
   'libraryScreen.bottomSheet.display.displayMode': 'string';
   'libraryScreen.bottomSheet.display.compact': 'string';
   'libraryScreen.bottomSheet.display.comfortable': 'string';

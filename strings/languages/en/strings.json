@@ -36,7 +36,8 @@
         "totalChapters": "Total chapters",
         "download": "Downloaded",
         "unread": "Unread",
-        "lastRead": "Last Read"
+        "lastRead": "Last read",
+        "lastUpdated": "Last updated"
       },
       "display": {
         "displayMode": "Display mode",
