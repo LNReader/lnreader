@@ -36,7 +36,8 @@
         "totalChapters": "Toàn bộ chương",
         "download": "Đã tải xuống",
         "unread": "Chưa đọc",
-        "lastRead": "Lần đọc cuối"
+        "lastRead": "Last read",
+        "lastUpdated": "Last updated"
       },
       "display": {
         "displayMode": "Chế độ Hiển thị",
@@ -56,7 +57,8 @@
     "searchbar": "Tìm kiếm bản cập nhật",
     "lastUpdatedAt": "Lần cập nhật thư viện gần nhất:",
     "newChapters": "chương mới",
-    "emptyView": "Chưa cập nhật mới"
+    "emptyView": "Chưa cập nhật mới",
+    "updatesLower": "updates"
   },
   "history": "Lịch sử",
   "historyScreen": {
@@ -230,6 +232,7 @@
   "downloadScreen": {
     "dbInfo": "Các chương tải về sẽ được lưu trong cơ sở dữ liệu SQLite.",
     "downloadChapters": "chương đã tải về",
-    "noDownloads": "Không có tải xuống"
+    "noDownloads": "Không có tải xuống",
+    "downloadsLower": "downloads"
   }
 }
