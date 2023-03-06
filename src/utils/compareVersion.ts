@@ -15,8 +15,6 @@ export const smaller = (a: string, b: string): boolean => {
   return false;
 };
 
-export const bigger = (a: string, b: string): boolean => !smaller(a, b);
-
 export const equal = (a: string, b: string): boolean => {
   a = a.replace(/[^\d.]/g, '');
   b = b.replace(/[^\d.]/g, '');
@@ -32,3 +30,6 @@ export const equal = (a: string, b: string): boolean => {
   }
   return true;
 };
+
+export const bigger = (a: string, b: string): boolean =>
+  !smaller(a, b) && !equal(a, b);

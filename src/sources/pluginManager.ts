@@ -25,7 +25,7 @@ export enum ScraperStatus {
 }
 
 interface Scraper {
-  valid: () => ScraperStatus;
+  valid: () => Promise<string>;
   popularNovels: (
     pageNo: number,
     options?: SourceOptions,
@@ -43,7 +43,7 @@ interface Scraper {
     searchTerm: string,
     pageNo?: number,
   ) => Promise<SourceNovelItem[]>;
-  fetchImage: (url: string) => string; // base64
+  fetchImage: (url: string) => Promise<string>; // base64
   name: string;
   version: string;
   site: string;
@@ -65,6 +65,7 @@ export interface Plugin {
 
 const packages: Record<string, any> = {
   'cheerio': cheerio,
+  '../../src/scraperStatus': ScraperStatus,
 };
 
 const _require = (packageName: string) => {
@@ -93,13 +94,13 @@ const initPlugin = async (rawCode: string, path?: string) => {
     path:
       path || `${RNFetchBlob.fs.dirs.DownloadDir}/Plugins/${scraper.name}.js`,
     scraper: scraper,
-    status: scraper.valid() as ScraperStatus,
+    status: (await scraper.valid()) as ScraperStatus,
   };
   return plugin;
 };
 
 // get existing plugin in device
-const setupPlugin = async (path: string) => {
+export const setupPlugin = async (path: string) => {
   const rawCode = await RNFetchBlob.fs.readFile(path, 'utf8');
   const plugin = await initPlugin(rawCode, path);
   if (plugin) {
@@ -107,7 +108,7 @@ const setupPlugin = async (path: string) => {
   }
 };
 
-const installPlugin = async (url: string) => {
+export const installPlugin = async (url: string) => {
   try {
     RNFetchBlob.fetch('get', url)
       .then(res => res.text())
@@ -129,7 +130,7 @@ const installPlugin = async (url: string) => {
   }
 };
 
-const uninstallPlugin = async (path: string) => {
+export const uninstallPlugin = async (path: string) => {
   if (await RNFetchBlob.fs.exists(path)) {
     plugins = plugins.filter(element => element.path !== path);
     RNFetchBlob.fs.unlink(path);
@@ -138,7 +139,7 @@ const uninstallPlugin = async (path: string) => {
   }
 };
 
-const updatePlugin = async (plugin: Plugin) => {
+export const updatePlugin = async (plugin: Plugin) => {
   if (plugin.url) {
     installPlugin(plugin.url);
   } else {
@@ -146,15 +147,19 @@ const updatePlugin = async (plugin: Plugin) => {
   }
 };
 
-const collectPlugin = async () => {
+export const collectPlugins = async () => {
   const paths = await RNFetchBlob.fs.ls(
     `${RNFetchBlob.fs.dirs.DownloadDir}/Plugins`,
   );
-  for (let path in paths) {
-    if (await RNFetchBlob.fs.isDir(path)) {
-      setupPlugin(path);
+  for (let index in paths) {
+    if (!(await RNFetchBlob.fs.isDir(paths[index]))) {
+      setupPlugin(`${RNFetchBlob.fs.dirs.DownloadDir}/Plugins/${paths[index]}`);
     }
   }
+};
+
+export const getPlugin = (name: string) => {
+  return plugins.find(element => element.name === name);
 };
 
 export const PluginManager = {
@@ -163,5 +168,5 @@ export const PluginManager = {
   installPlugin,
   uninstallPlugin,
   updatePlugin,
-  collectPlugin,
+  collectPlugins,
 };
