@@ -21,7 +21,7 @@ export const parseMadaraDate = date => {
       releaseDate.setMonth(releaseDate.getMonth() - timeAgo);
     }
 
-    releaseDate = dayjs(releaseDate).format('LL');
+    releaseDate = dayjs(releaseDate).format('DD/MM/YYYY');
   }
 
   return releaseDate;

@@ -7,6 +7,9 @@ import { SelectedFilter, SourceFilter } from './types/filterTypes';
 
 // packages for plugins
 import * as cheerio from 'cheerio';
+import { Status as novelSatus } from './helpers/constants';
+import { htmlToText } from './helpers/htmlToText';
+import { parseMadaraDate } from './helpers/parseDate';
 
 interface PopularNovelsResponse {
   novels: SourceNovelItem[];
@@ -66,6 +69,9 @@ export interface Plugin {
 const packages: Record<string, any> = {
   'cheerio': cheerio,
   '../../src/scraperStatus': ScraperStatus,
+  '../../src/novelSatus': novelSatus,
+  '../../src/htmlToText': htmlToText,
+  '../../src/parseMadaraDate': parseMadaraDate,
 };
 
 const _require = (packageName: string) => {
