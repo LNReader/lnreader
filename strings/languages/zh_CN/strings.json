@@ -36,7 +36,8 @@
         "totalChapters": "章节总数",
         "download": "Downloaded",
         "unread": "Unread",
-        "lastRead": "Last Read"
+        "lastRead": "Last read",
+        "lastUpdated": "Last updated"
       },
       "display": {
         "displayMode": "显示模式",
@@ -56,7 +57,8 @@
     "searchbar": "搜索更新",
     "lastUpdatedAt": "最近更新的库：",
     "newChapters": "new Chapters",
-    "emptyView": "No recent updates"
+    "emptyView": "No recent updates",
+    "updatesLower": "updates"
   },
   "history": "历史",
   "historyScreen": {
@@ -230,6 +232,7 @@
   "downloadScreen": {
     "dbInfo": "Downloads are saved in a SQLite Database.",
     "downloadChapters": "downloaded Chapters",
-    "noDownloads": "No downloads"
+    "noDownloads": "No downloads",
+    "downloadsLower": "downloads"
   }
 }
