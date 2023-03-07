@@ -4,17 +4,16 @@ import { bigger } from '../utils/compareVersion';
 
 // packages for plugins
 import * as cheerio from 'cheerio';
-import { NovelStatus, ScraperStatus, Scraper, Plugin } from './types';
+import { NovelStatus, PluginStatus, Plugin, PluginItem } from './types';
 import { Languages } from '@utils/constants/languages';
 import { htmlToText } from './helpers/htmlToText';
 import { parseMadaraDate } from './helpers/parseDate';
 
-export const pluginsFolder =
-  RNFetchBlob.fs.dirs.DownloadDir + 'LNReader/Plugins';
+const pluginsFolder = RNFetchBlob.fs.dirs.DownloadDir + '/LNReader/Plugins';
 
 const packages: Record<string, any> = {
   'cheerio': cheerio,
-  '../../src/scraperStatus': ScraperStatus,
+  '../../src/pluginStatus': PluginStatus,
   '../../src/novelSatus': NovelStatus,
   '../../src/htmlToText': htmlToText,
   '../../src/parseMadaraDate': parseMadaraDate,
@@ -25,44 +24,33 @@ const _require = (packageName: string) => {
   return packages[packageName];
 };
 
-let plugins: Array<Plugin> = [];
-
 const initPlugin = async (rawCode: string, path?: string) => {
   const _module: any = { exports: {} };
-  let scraper: Scraper;
   try {
     Function('require', 'module', rawCode)(_require, _module); //eslint-disable-line
-    scraper = _module.exports;
+    _module.exports.path = path || `${pluginsFolder}/${_module.exports.id}`;
+    const plugin: Plugin = _module.exports;
+    return plugin;
   } catch (e) {
-    showToast('Some non-scraper files are found');
+    showToast('Some non-plugin files are found');
     return undefined;
   }
-
-  const plugin: Plugin = {
-    name: scraper.name,
-    version: scraper.version,
-    site: scraper.site,
-    lang: scraper.lang,
-    iconUrl: scraper.iconUrl,
-    url: scraper.url || undefined,
-    path: path || `${pluginsFolder}/${scraper.site}-${scraper.name}.js`,
-    //plugins cant have the same site so there's no overwriting when dowlooad
-    scraper: scraper,
-    status: (await scraper.valid()) as ScraperStatus,
-  };
-  return plugin;
 };
 
+let plugins: Record<string, Plugin> = {};
+const setPlugins = (_plugins: Record<string, Plugin>) => (plugins = _plugins);
+
 // get existing plugin in device
-export const setupPlugin = async (path: string) => {
+const setupPlugin = async (path: string) => {
   const rawCode = await RNFetchBlob.fs.readFile(path, 'utf8');
   const plugin = await initPlugin(rawCode, path);
   if (plugin) {
-    plugins.push(plugin);
+    return plugin;
   }
+  return undefined;
 };
 
-export const installPlugin = async (url: string) => {
+const installPlugin = async (url: string) => {
   try {
     RNFetchBlob.fetch('get', url)
       .then(res => res.text())
@@ -71,55 +59,71 @@ export const installPlugin = async (url: string) => {
         if (!plugin) {
           return;
         }
-        const oldPlugin = plugins.find(element => element.name === plugin.name);
+        const oldPlugin = plugins[plugin.id];
         if (!oldPlugin || bigger(plugin.version, oldPlugin.version)) {
-          plugins.push(plugin);
+          plugins[plugin.id] = plugin;
+          setPlugins(plugins);
           RNFetchBlob.fs.writeFile(plugin.path, rawCode, 'utf8');
         } else {
           showToast('This plugin is not newer than current plugin');
         }
       });
   } catch (e: any) {
-    // console.log(e);
+    showToast('Error');
   }
 };
 
-export const uninstallPlugin = async (path: string) => {
-  if (await RNFetchBlob.fs.exists(path)) {
-    plugins = plugins.filter(element => element.path !== path);
-    RNFetchBlob.fs.unlink(path);
+const uninstallPlugin = async (_plugin: PluginItem) => {
+  const plugin = plugins[_plugin.id];
+  if (plugin && (await RNFetchBlob.fs.exists(plugin.path))) {
+    const newPlugins: Record<string, Plugin> = {};
+    for (let id in plugins) {
+      if (plugins[id].path !== plugin.path) {
+        newPlugins[id] = plugins[id];
+      }
+    }
+    setPlugins(newPlugins);
+    RNFetchBlob.fs.unlink(plugin.path);
   } else {
     showToast('Plugin doesnt exist');
   }
 };
 
-export const updatePlugin = async (plugin: Plugin) => {
-  if (plugin.url) {
-    installPlugin(plugin.url);
-  } else {
-    showToast('This plugin doenst have the url');
-  }
+const updatePlugin = async (plugin: PluginItem) => {
+  installPlugin(plugin.url);
 };
 
-export const collectPlugins = async () => {
+const collectPlugins = async () => {
+  if (!(await RNFetchBlob.fs.exists(pluginsFolder))) {
+    return;
+  }
   const paths = await RNFetchBlob.fs.ls(pluginsFolder);
   for (let index = 0; index < paths.length; index++) {
     if (!(await RNFetchBlob.fs.isDir(paths[index]))) {
-      setupPlugin(`${pluginsFolder}/${paths[index]}`);
+      const plugin = await setupPlugin(`${pluginsFolder}/${paths[index]}`);
+      if (plugin) {
+        plugins[plugin.id] = plugin;
+      }
     }
   }
+  setPlugins(plugins);
 };
 
-export const getPlugin = (name: string) => {
-  return plugins.find(element => element.name === name);
+const fetchPlugins = async () => {
+  const availablePlugins: Record<Languages, Array<PluginItem>> = await fetch(
+    'https://raw.githubusercontent.com/nyagami/LNReader-plugins/master/plugins/plugins.json',
+  ).then(res => res.json());
+  return availablePlugins;
 };
 
-export const PluginManager = {
-  initPlugin,
-  setupPlugin,
+const getPlugin = (pluginId: string) => plugins[pluginId];
+
+export {
+  pluginsFolder,
+  getPlugin,
   installPlugin,
   uninstallPlugin,
   updatePlugin,
   collectPlugins,
-  getPlugin,
+  fetchPlugins,
 };
