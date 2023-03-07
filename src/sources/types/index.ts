@@ -1,4 +1,5 @@
 import { SelectedFilter, SourceFilter } from './filterTypes';
+import { Languages } from '@utils/constants/languages';
 
 export interface Source {
   sourceId: number;
@@ -53,7 +54,7 @@ export interface SourceOptions {
   filters?: SelectedFilter;
 }
 
-export enum Status {
+export enum NovelStatus {
   Unknown = 'Unknown',
   Ongoing = 'Ongoing',
   Completed = 'Completed',
@@ -93,6 +94,7 @@ export interface Scraper {
   name: string;
   version: string;
   site: string;
+  lang: Languages;
   iconUrl?: string;
   url?: string; // the host url for scapper
   filters?: SourceFilter[];
@@ -102,6 +104,7 @@ export interface Plugin {
   name: string;
   version: string;
   site: string;
+  lang: Languages;
   iconUrl?: string;
   path: string;
   url?: string;

@@ -4,16 +4,21 @@ import { bigger } from '../utils/compareVersion';
 
 // packages for plugins
 import * as cheerio from 'cheerio';
-import { Status as novelSatus, ScraperStatus, Scraper, Plugin } from './types';
+import { NovelStatus, ScraperStatus, Scraper, Plugin } from './types';
+import { Languages } from '@utils/constants/languages';
 import { htmlToText } from './helpers/htmlToText';
 import { parseMadaraDate } from './helpers/parseDate';
+
+export const pluginsFolder =
+  RNFetchBlob.fs.dirs.DownloadDir + 'LNReader/Plugins';
 
 const packages: Record<string, any> = {
   'cheerio': cheerio,
   '../../src/scraperStatus': ScraperStatus,
-  '../../src/novelSatus': novelSatus,
+  '../../src/novelSatus': NovelStatus,
   '../../src/htmlToText': htmlToText,
   '../../src/parseMadaraDate': parseMadaraDate,
+  '../../src/languages': Languages,
 };
 
 const _require = (packageName: string) => {
@@ -37,10 +42,11 @@ const initPlugin = async (rawCode: string, path?: string) => {
     name: scraper.name,
     version: scraper.version,
     site: scraper.site,
+    lang: scraper.lang,
     iconUrl: scraper.iconUrl,
     url: scraper.url || undefined,
-    path:
-      path || `${RNFetchBlob.fs.dirs.DownloadDir}/Plugins/${scraper.name}.js`,
+    path: path || `${pluginsFolder}/${scraper.site}-${scraper.name}.js`,
+    //plugins cant have the same site so there's no overwriting when dowlooad
     scraper: scraper,
     status: (await scraper.valid()) as ScraperStatus,
   };
@@ -96,12 +102,10 @@ export const updatePlugin = async (plugin: Plugin) => {
 };
 
 export const collectPlugins = async () => {
-  const paths = await RNFetchBlob.fs.ls(
-    `${RNFetchBlob.fs.dirs.DownloadDir}/Plugins`,
-  );
-  for (let index in paths) {
+  const paths = await RNFetchBlob.fs.ls(pluginsFolder);
+  for (let index = 0; index < paths.length; index++) {
     if (!(await RNFetchBlob.fs.isDir(paths[index]))) {
-      setupPlugin(`${RNFetchBlob.fs.dirs.DownloadDir}/Plugins/${paths[index]}`);
+      setupPlugin(`${pluginsFolder}/${paths[index]}`);
     }
   }
 };
@@ -117,4 +121,5 @@ export const PluginManager = {
   uninstallPlugin,
   updatePlugin,
   collectPlugins,
+  getPlugin,
 };
