@@ -2,69 +2,11 @@ import RNFetchBlob from 'rn-fetch-blob';
 import { showToast } from '../hooks/showToast';
 import { bigger } from '../utils/compareVersion';
 
-import { SourceChapter, SourceNovel, SourceNovelItem } from './types';
-import { SelectedFilter, SourceFilter } from './types/filterTypes';
-
 // packages for plugins
 import * as cheerio from 'cheerio';
-import { Status as novelSatus } from './helpers/constants';
+import { Status as novelSatus, ScraperStatus, Scraper, Plugin } from './types';
 import { htmlToText } from './helpers/htmlToText';
 import { parseMadaraDate } from './helpers/parseDate';
-
-interface PopularNovelsResponse {
-  novels: SourceNovelItem[];
-}
-
-export interface SourceOptions {
-  showLatestNovels?: boolean;
-  filters?: SelectedFilter;
-}
-
-export enum ScraperStatus {
-  BROKEN = 'BROKEN',
-  CANT_PARSE_CHAPTER = 'CANT PARSE CHAPTER',
-  CANT_FETCH_IMAGE = 'CANT FETCH IMAGE', //parse chapter with text only (image error)
-  OK = 'OK', //work perfectly
-}
-
-interface Scraper {
-  valid: () => Promise<string>;
-  popularNovels: (
-    pageNo: number,
-    options?: SourceOptions,
-  ) => Promise<PopularNovelsResponse>;
-  parseNovelAndChapters: (
-    novelUrl: string,
-    start?: number,
-    end?: number,
-  ) => Promise<SourceNovel>;
-  parseChapter: (
-    novelUrl: string,
-    chapterUrl: string,
-  ) => Promise<SourceChapter>;
-  searchNovels: (
-    searchTerm: string,
-    pageNo?: number,
-  ) => Promise<SourceNovelItem[]>;
-  fetchImage: (url: string) => Promise<string>; // base64
-  name: string;
-  version: string;
-  site: string;
-  iconUrl?: string;
-  url?: string; // the host url for scapper
-  filters?: SourceFilter[];
-}
-
-export interface Plugin {
-  name: string;
-  version: string;
-  site: string;
-  iconUrl?: string;
-  path: string;
-  url?: string;
-  scraper: Scraper;
-  status: ScraperStatus;
-}
 
 const packages: Record<string, any> = {
   'cheerio': cheerio,
