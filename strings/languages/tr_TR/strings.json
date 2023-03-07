@@ -36,8 +36,8 @@
         "totalChapters": "Toplam bölüm",
         "download": "İndirilenler",
         "unread": "Okunmamışlar",
-        "lastRead": "Last read",
-        "lastUpdated": "Last updated"
+        "lastRead": "Son okunma",
+        "lastUpdated": "Son güncellenme"
       },
       "display": {
         "displayMode": "Görüntüleme modu",
@@ -56,9 +56,9 @@
   "updatesScreen": {
     "searchbar": "Güncellemelerde ara",
     "lastUpdatedAt": "Kitaplık son güncelleme:",
-    "newChapters": "new Chapters",
-    "emptyView": "No recent updates",
-    "updatesLower": "updates"
+    "newChapters": "Yeni bölüm",
+    "emptyView": "Güncelleme yok",
+    "updatesLower": "güncellemeler"
   },
   "history": "Geçmiş",
   "historyScreen": {
@@ -230,9 +230,9 @@
     "downloadedOnly": "Yalnızca indirilenler"
   },
   "downloadScreen": {
-    "dbInfo": "Downloads are saved in a SQLite Database.",
-    "downloadChapters": "downloaded Chapters",
-    "noDownloads": "No downloads",
-    "downloadsLower": "downloads"
+    "dbInfo": "İndirilenler bir SQLite Veritabanında kaydedilmektedir.",
+    "downloadChapters": "İndirilen bölümler",
+    "noDownloads": "İndirme yok",
+    "downloadsLower": "İndirilenler"
   }
 }
