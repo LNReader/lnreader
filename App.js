@@ -16,6 +16,7 @@ import * as Notifications from 'expo-notifications';
 import { createDatabase } from '@database/db';
 import { persistor, store } from '@redux/store';
 import AppErrorBoundary from '@components/AppErrorBoundary/AppErrorBoundary';
+import { collectPlugins } from '@sources/pluginManager';
 
 import Main from './src/navigators/Main';
 
@@ -30,7 +31,8 @@ Notifications.setNotificationHandler({
 });
 
 const App = () => {
-  useEffect(() => {
+  useEffect(async () => {
+    await collectPlugins();
     LottieSplashScreen.hide();
     createDatabase();
   }, []);
