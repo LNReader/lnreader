@@ -75,6 +75,7 @@ export enum PluginStatus {
 export interface PluginItem {
   id: string;
   name: string;
+  lang: Languages;
   version: string;
   iconUrl: string;
   url: string; // the url of raw code
@@ -102,7 +103,6 @@ export interface Plugin extends PluginItem {
   ) => Promise<SourceNovelItem[]>;
   fetchImage: (url: string) => Promise<string>; // base64
   site: string;
-  lang: Languages;
   path: string;
   filters?: SourceFilter[];
 }
