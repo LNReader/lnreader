@@ -37,7 +37,7 @@
         "download": "Baixado",
         "unread": "Não lido",
         "lastRead": "Last read",
-        "lastUpdated": "Last updated"
+        "lastUpdated": "Últimas atualizações"
       },
       "display": {
         "displayMode": "Modo de exibição",
@@ -56,9 +56,9 @@
   "updatesScreen": {
     "searchbar": "Procurar por atualizações",
     "lastUpdatedAt": "Biblioteca atualizada pela última vez:",
-    "newChapters": "new Chapters",
-    "emptyView": "No recent updates",
-    "updatesLower": "updates"
+    "newChapters": "novo Capítulos",
+    "emptyView": "Sem atualizações recentes",
+    "updatesLower": "atualizações"
   },
   "history": "Histórico",
   "historyScreen": {
@@ -230,9 +230,9 @@
     "downloadedOnly": "Apenas baixados"
   },
   "downloadScreen": {
-    "dbInfo": "Downloads are saved in a SQLite Database.",
-    "downloadChapters": "downloaded Chapters",
-    "noDownloads": "No downloads",
-    "downloadsLower": "downloads"
+    "dbInfo": "Transferências são salvos em banco de dados SQLite.",
+    "downloadChapters": "Capítulos baixados",
+    "noDownloads": "Sem transferências",
+    "downloadsLower": "baixados"
   }
 }
