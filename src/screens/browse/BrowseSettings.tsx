@@ -10,7 +10,7 @@ import {
 import { useTheme } from '@hooks/useTheme';
 import { useNavigation } from '@react-navigation/native';
 import { getString } from '../../../strings/translations';
-import { languages } from '../../utils/constants/languages';
+import { availableLanguages } from '../../utils/constants/languages';
 import { toggleLanguageFilter } from '../../redux/source/sourcesSlice';
 import { setBrowseSettings } from '../../redux/settings/settingsSlice';
 
@@ -103,7 +103,7 @@ const BrowseSettings = () => {
           </>
         }
         keyExtractor={item => item}
-        data={languages}
+        data={availableLanguages}
         renderItem={({ item }) => (
           <SwitchItem
             label={item}

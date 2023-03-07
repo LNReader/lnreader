@@ -3,7 +3,6 @@ import React, { useCallback, useEffect, useMemo } from 'react';
 
 import { EmptyView, SearchbarV2 } from '../../components';
 import {
-  defaultLanguage,
   getSourcesAction,
   searchSourcesAction,
   setLastUsedSource,
@@ -43,7 +42,7 @@ const BrowseScreen = () => {
     allSources,
     searchResults,
     pinnedSourceIds = [],
-    languageFilters = [defaultLanguage || 'English'], //defaultLang cant be null, but just for sure
+    languageFilters = ['English'],
     lastUsed,
   } = useSourcesReducer();
 

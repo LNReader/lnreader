@@ -17,7 +17,7 @@ export const languages = [
 
 export enum Languages {
   Arabic = 'العربية',
-  Chinese = '"中文 (Zhōngwén), 汉语, 漢語',
+  Chinese = '中文 (Zhōngwén), 汉语, 漢語',
   English = 'English',
   French = 'français, langue française',
   Indonesian = 'Bahasa Indonesia',
@@ -29,3 +29,7 @@ export enum Languages {
   Turkish = 'Türkçe',
   Vietnamese = 'Tiếng Việt',
 }
+
+export const availableLanguages = Object.keys(Languages).map(
+  lang => Object.values(Languages)[Object.keys(Languages).indexOf(lang)],
+);
