@@ -64,15 +64,25 @@ export enum NovelStatus {
   OnHiatus = 'On Hiatus',
 }
 
-export enum ScraperStatus {
+export enum PluginStatus {
   BROKEN = 'BROKEN',
   CANT_PARSE_CHAPTER = 'CANT PARSE CHAPTER',
   CANT_FETCH_IMAGE = 'CANT FETCH IMAGE', //parse chapter with text only (image error)
   OK = 'OK', //work perfectly
 }
 
-export interface Scraper {
-  valid: () => Promise<string>;
+// this is for display in available plugins
+export interface PluginItem {
+  id: string;
+  name: string;
+  version: string;
+  iconUrl: string;
+  url: string; // the url of raw code
+  description: string;
+}
+
+export interface Plugin extends PluginItem {
+  valid: () => Promise<PluginStatus>;
   popularNovels: (
     pageNo: number,
     options?: SourceOptions,
@@ -91,23 +101,8 @@ export interface Scraper {
     pageNo?: number,
   ) => Promise<SourceNovelItem[]>;
   fetchImage: (url: string) => Promise<string>; // base64
-  name: string;
-  version: string;
   site: string;
   lang: Languages;
-  iconUrl?: string;
-  url?: string; // the host url for scapper
-  filters?: SourceFilter[];
-}
-
-export interface Plugin {
-  name: string;
-  version: string;
-  site: string;
-  lang: Languages;
-  iconUrl?: string;
   path: string;
-  url?: string;
-  scraper: Scraper;
-  status: ScraperStatus;
+  filters?: SourceFilter[];
 }
