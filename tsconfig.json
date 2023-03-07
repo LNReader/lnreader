@@ -23,7 +23,9 @@
       "@strings/*": ["strings/*"],
       "@redux/*": ["src/redux/*"],
       "@theme/*": ["src/theme/*"],
-      "@utils/*": ["src/utils/*"]
+      "@utils/*": ["src/utils/*"],
+      "@sources/*": ["src/sources/*"],
+      "@services/*": ["src/services/*"],
     }
   },
   "exclude": [
