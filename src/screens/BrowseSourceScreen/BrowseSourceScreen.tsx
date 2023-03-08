@@ -24,9 +24,9 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 interface BrowseSourceScreenProps {
   route: {
     params: {
-      sourceId: number;
-      sourceName: string;
-      url: string;
+      pluginId: string;
+      pluginName: string;
+      pluginUrl: string;
       showLatestNovels?: boolean;
     };
   };
@@ -37,12 +37,7 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
   const { navigate, goBack } = useNavigation();
   const previousScreen = usePreviousRouteName();
 
-  const {
-    sourceId,
-    sourceName,
-    url: sourceUrl,
-    showLatestNovels,
-  } = route.params;
+  const { pluginId, pluginName, pluginUrl, showLatestNovels } = route.params;
 
   const {
     isLoading,
@@ -54,7 +49,7 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
     setFilters,
     clearFilters,
     refetchNovels,
-  } = useBrowseSource(sourceId, showLatestNovels);
+  } = useBrowseSource(pluginId, showLatestNovels);
 
   const { defaultCategoryId = 1 } = useCategorySettings();
   const {
@@ -63,7 +58,7 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
     searchSource,
     clearSearchResults,
     searchError,
-  } = useSearchSource(sourceId);
+  } = useSearchSource(pluginId);
 
   const novelList = searchResults.length > 0 ? searchResults : novels;
   const errorMessage = error || searchError;
@@ -83,18 +78,22 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
   }, [previousScreen]);
 
   const handleOpenWebView = async () => {
-    navigate('WebviewScreen', {
-      sourceId,
-      name: sourceName,
-      url: sourceUrl,
-    });
+    navigate(
+      'WebviewScreen' as never,
+      {
+        pluginId,
+        name: pluginName,
+        url: pluginUrl,
+      } as never,
+    );
   };
 
   const { library, setLibrary } = useLibraryNovels();
 
   const novelInLibrary = (novelUrl: string) =>
     library?.some(
-      novel => novel.novelUrl === novelUrl && novel.sourceId === sourceId,
+      novel => novel.novelUrl === novelUrl,
+      // && novel.sourceId === pluginId,
     );
 
   const navigateToNovel = useCallback(
@@ -103,10 +102,10 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
         'Novel' as never,
         {
           ...item,
-          sourceId: sourceId,
+          sourceId: pluginId,
         } as never,
       ),
-    [sourceId],
+    [pluginId],
   );
 
   const { bottom } = useSafeAreaInsets();
@@ -116,7 +115,7 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
       <SearchbarV2
         searchText={searchText}
         leftIcon="magnify"
-        placeholder={`${getString('common.search')} ${sourceName}`}
+        placeholder={`${getString('common.search')} ${pluginName}`}
         onChangeText={onChangeText}
         onSubmitEditing={onSubmitEditing}
         clearSearchbar={handleClearSearchbar}
@@ -142,6 +141,7 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
                 theme={theme}
                 libraryStatus={inLibrary}
                 onPress={() => navigateToNovel(item)}
+                isSelected={false}
                 onLongPress={() => {
                   setLibrary(prevValues => {
                     if (inLibrary) {
@@ -155,13 +155,13 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
                         ...prevValues,
                         {
                           novelUrl: item.novelUrl,
-                          sourceId,
+                          pluginId,
                         } as LibraryNovelInfo,
                       ];
                     }
                   });
                   insertNovelInLibrary(
-                    sourceId,
+                    pluginId,
                     item.novelUrl,
                     inLibrary,
                     defaultCategoryId,

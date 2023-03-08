@@ -66,7 +66,7 @@ export const resetCategoryIdsToDefault = async (deletedCategoryId: number) => {
 };
 
 export const insertNovelInLibrary = async (
-  sourceId: number,
+  sourceId: string,
   novelUrl: string,
   inLibrary: boolean,
   defaultCategoryId: number,

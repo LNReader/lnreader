@@ -2,7 +2,7 @@ export interface NovelInfo {
   novelId: number;
   sourceUrl: string;
   novelUrl: string;
-  sourceId: number;
+  pluginId: string;
   source: string;
   novelName: string;
   novelCover?: string;

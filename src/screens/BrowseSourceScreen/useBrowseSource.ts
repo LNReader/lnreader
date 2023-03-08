@@ -1,10 +1,11 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { SelectedFilter, SourceFilter } from '../../sources/types/filterTypes';
-import { sourceManager } from '../../sources/sourceManager';
 import { SourceNovelItem } from '../../sources/types';
 
+import { getPlugin } from '@sources/pluginManager';
+
 export const useBrowseSource = (
-  sourceId: number,
+  pluginId: string,
   showLatestNovels?: boolean,
 ) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -24,8 +25,8 @@ export const useBrowseSource = (
     async (page: number, filters?: SelectedFilter) => {
       if (isScreenMounted.current === true) {
         try {
-          const source = sourceManager(sourceId);
-          const res = await source.popularNovels(page, {
+          const plugin = getPlugin(pluginId);
+          const res = await plugin.popularNovels(page, {
             showLatestNovels,
             filters,
           });
@@ -35,7 +36,7 @@ export const useBrowseSource = (
           if (!res.novels.length) {
             setHasNextPage(false);
           }
-          setFilterValues(source.filters);
+          setFilterValues(plugin.filters);
         } catch (err: unknown) {
           setError(`${err}`);
         } finally {
@@ -43,7 +44,7 @@ export const useBrowseSource = (
         }
       }
     },
-    [sourceId],
+    [pluginId],
   );
 
   const fetchNextPage = () => {
@@ -70,7 +71,7 @@ export const useBrowseSource = (
 
   const clearFilters = useCallback(() => setSelectedFilters(undefined), []);
 
-  const setFilters = (filters: SelectedFilter) => {
+  const setFilters = (filters?: SelectedFilter) => {
     setIsLoading(true);
     setCurrentPage(1);
     fetchNovels(1, filters);
@@ -90,7 +91,7 @@ export const useBrowseSource = (
   };
 };
 
-export const useSearchSource = (sourceId: number) => {
+export const useSearchSource = (pluginId: string) => {
   const [isSearching, setIsSearching] = useState(false);
   const [searchResults, setSearchResults] = useState<SourceNovelItem[]>([]);
   const [searchError, setSearchError] = useState<string>();
@@ -99,7 +100,7 @@ export const useSearchSource = (sourceId: number) => {
     async (searchTerm: string) => {
       try {
         setIsSearching(true);
-        const res = await sourceManager(sourceId).searchNovels(searchTerm);
+        const res = await getPlugin(pluginId).searchNovels(searchTerm);
         setSearchResults(res);
       } catch (err) {
         setSearchError(`${err}`);
@@ -107,7 +108,7 @@ export const useSearchSource = (sourceId: number) => {
         setIsSearching(false);
       }
     },
-    [sourceId],
+    [pluginId],
   );
 
   const clearSearchResults = useCallback(() => setSearchResults([]), []);
