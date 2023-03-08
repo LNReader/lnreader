@@ -1,51 +1,42 @@
 export interface NovelInfo {
-  novelId: number;
-  sourceUrl: string;
-  novelUrl: string;
+  id: number;
+  url: string;
   pluginId: string;
-  source: string;
-  novelName: string;
-  novelCover?: string;
-  novelSummary?: string;
-  genre?: string;
+  name: string;
+  cover?: string;
+  summary?: string;
   author?: string;
+  artist?: string;
   status?: string;
-  followed: number;
-  categoryIds: string;
+  genres?: string;
+  inLibrary: number;
 }
 
 export interface LibraryNovelInfo extends NovelInfo {
   chaptersUnread: number;
   chaptersDownloaded: number;
-  categoryIds: string;
 }
 
 export interface ChapterItem {
-  chapterId: number;
+  id: number;
   novelId: number;
-  chapterUrl: string;
-  chapterName: string;
-  releaseDate?: string;
-  read: number;
+  url: string;
+  name: string;
+  release?: string;
   bookmark: number;
-  downloaded: number;
-}
-export interface ChapterItemExtended extends ChapterItem {
-  novelId: number;
-  novelUrl: string;
-  pluginId: string;
-  novelName: string;
+  unread: number;
+  isDownloaded: number;
 }
 
 export interface DownloadedChapter {
-  downloadId: number;
-  downloadChapterId: number;
-  chapterName: string | null;
+  id: number;
+  chapterId: number;
   chapterText: string;
+  updateTime: string;
 }
 
 export interface History {
-  historyId: number;
+  id: number;
   pluginId: string;
   novelId: number;
   chapterId: number;
@@ -59,7 +50,7 @@ export interface History {
 }
 
 export interface Update {
-  updateId: number;
+  id: number;
   pluginId: string;
   novelId: number;
   novelName: string;
