@@ -7,6 +7,3 @@ export const createHistoryTableQuery = `
     FOREIGN KEY (historyChapterId) REFERENCES chapters(chapterId)
     ON DELETE CASCADE
     )`;
-
-export const createChapterIdIndexQuery =
-  'CREATE INDEX IF NOT EXISTS historyChapterIdIndex ON history(historyChapterId)';
