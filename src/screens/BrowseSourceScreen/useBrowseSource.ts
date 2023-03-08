@@ -26,6 +26,7 @@ export const useBrowseSource = (
       if (isScreenMounted.current === true) {
         try {
           const plugin = getPlugin(pluginId);
+          plugin.popularNovels(0); // temporary fix
           const res = await plugin.popularNovels(page, {
             showLatestNovels,
             filters,

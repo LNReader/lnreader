@@ -140,7 +140,7 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
                 item={item}
                 theme={theme}
                 libraryStatus={inLibrary}
-                onPress={() => navigateToNovel(item)}
+                onPress={() => navigateToNovel(item as SourceNovelItem)}
                 isSelected={false}
                 onLongPress={() => {
                   setLibrary(prevValues => {
@@ -167,6 +167,7 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
                     defaultCategoryId,
                   );
                 }}
+                selectedNovels={[]}
               />
             );
           }}

@@ -8,6 +8,7 @@ import { NovelStatus, PluginStatus, Plugin, PluginItem } from './types';
 import { Languages } from '@utils/constants/languages';
 import { htmlToText } from './helpers/htmlToText';
 import { parseMadaraDate } from './helpers/parseDate';
+import { isUrlAbsolute } from '@utils/isAbsoluteUrl';
 
 const pluginsFolder = RNFS.DownloadDirectoryPath + '/LNReader/Plugins';
 
@@ -15,9 +16,10 @@ const packages: Record<string, any> = {
   'cheerio': cheerio,
   '../../src/pluginStatus': PluginStatus,
   '../../src/novelSatus': NovelStatus,
+  '../../src/languages': Languages,
   '../../src/htmlToText': htmlToText,
   '../../src/parseMadaraDate': parseMadaraDate,
-  '../../src/languages': Languages,
+  '../../src/isAbsoluteUrl': isUrlAbsolute,
 };
 
 const _require = (packageName: string) => {

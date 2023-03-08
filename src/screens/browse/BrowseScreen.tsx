@@ -48,7 +48,6 @@ const BrowseScreen = () => {
 
   useEffect(() => {
     if (Object.keys(availablePlugins).length === 0) {
-      console.log('fetching');
       fetchPlugins().then(plugins => dispatch(fetchPluginsAction(plugins)));
     }
   }, []);
