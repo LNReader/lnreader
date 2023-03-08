@@ -1,7 +1,8 @@
 import { SectionList, StyleSheet, Text, RefreshControl } from 'react-native';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { TabView, SceneMap } from 'react-native-tab-view';
+import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 import { useNavigation } from '@react-navigation/native';
+import color from 'color';
 
 import {
   fetchPluginsAction,
@@ -276,6 +277,25 @@ const BrowseScreen = () => {
         navigationState={{ index, routes }}
         renderScene={renderScene}
         onIndexChange={setIndex}
+        renderTabBar={props => (
+          <TabBar
+            {...props}
+            indicatorStyle={{ backgroundColor: theme.primary }}
+            style={{
+              backgroundColor: theme.surface,
+              borderBottomColor: color(theme.isDark ? '#FFFFFF' : '#000000')
+                .alpha(0.12)
+                .string(),
+              borderBottomWidth: 1,
+            }}
+            renderLabel={({ route, color }) => (
+              <Text style={{ color }}>{route.title}</Text>
+            )}
+            inactiveColor={theme.secondary}
+            activeColor={theme.primary}
+            pressColor={theme.rippleColor}
+          />
+        )}
       />
     </>
   );
