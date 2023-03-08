@@ -78,7 +78,6 @@ export interface Update {
 export interface Category {
   id: number;
   name: string;
-  lastUpdatedAt: Date;
   sort: number | null;
 }
 
