@@ -4,6 +4,6 @@ export const createNovelCategoryTableQuery = `
     novel_id INTEGER NOT NULL,
     category_id INTEGER NOT NULL,
     FOREIGN KEY (novel_id) REFERENCES Novel(id),
-    FOREIGN KEY (category_id) REFERENCES Category(id) ON DELETE CASCADE,
+    FOREIGN KEY (category_id) REFERENCES Category(id) ON DELETE CASCADE
   )
 `;
