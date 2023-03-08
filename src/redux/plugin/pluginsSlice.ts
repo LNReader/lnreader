@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Languages } from '@utils/constants/languages';
-import { PluginItem } from '../../sources/types';
+import { PluginItem } from '@sources/types';
 
 interface PLuginsState {
   availablePlugins: Record<Languages, Array<PluginItem>>;
@@ -13,15 +13,15 @@ interface PLuginsState {
 
 const initialState: PLuginsState = {
   availablePlugins: {} as Record<Languages, Array<PluginItem>>,
-  installedPlugins: [],
+  installedPlugins: [] as Array<PluginItem>,
   languagesFilter: [Languages.English],
   lastUsed: null,
-  pinnedPlugins: [],
-  searchResults: [],
+  pinnedPlugins: [] as Array<PluginItem>,
+  searchResults: [] as Array<PluginItem>,
 };
 
 export const sourcesSlice = createSlice({
-  name: 'sourcesSlice',
+  name: 'pluginsSlice',
   initialState,
   reducers: {
     fetchPluginsAction: (
@@ -51,7 +51,7 @@ export const sourcesSlice = createSlice({
         action.payload,
       ];
     },
-    searchSourcesAction: (state, action: PayloadAction<string>) => {
+    searchPluginsAction: (state, action: PayloadAction<string>) => {
       let results = [] as Array<PluginItem>;
       for (let lang in state.availablePlugins) {
         const matchResuls = state.availablePlugins[lang as Languages].filter(
@@ -62,10 +62,10 @@ export const sourcesSlice = createSlice({
       }
       state.searchResults = results;
     },
-    setLastUsedSource: (state, action: PayloadAction<PluginItem>) => {
+    setLastUsedPlugin: (state, action: PayloadAction<PluginItem>) => {
       state.lastUsed = action.payload;
     },
-    togglePinSource: (state, action: PayloadAction<PluginItem>) => {
+    togglePinPlugin: (state, action: PayloadAction<PluginItem>) => {
       if (state.pinnedPlugins.find(plugin => plugin.id === action.payload.id)) {
         state.pinnedPlugins = state.pinnedPlugins.filter(
           plugin => plugin.id !== action.payload.id,
@@ -88,10 +88,10 @@ export const sourcesSlice = createSlice({
 
 export const {
   fetchPluginsAction,
-  togglePinSource,
+  togglePinPlugin,
   toggleLanguageFilter,
-  setLastUsedSource,
-  searchSourcesAction,
+  setLastUsedPlugin,
+  searchPluginsAction,
   installPluginAction,
   uninstallPluginAction,
 } = sourcesSlice.actions;

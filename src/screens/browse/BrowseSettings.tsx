@@ -1,17 +1,17 @@
 import { FlatList, StyleSheet } from 'react-native';
 import React from 'react';
-import { Appbar, List, SwitchItem } from '../../components';
+import { Appbar, List, SwitchItem } from '@components';
 
 import {
   useAppDispatch,
   useBrowseSettings,
-  useSourcesReducer,
+  usePluginReducer,
 } from '@redux/hooks';
 import { useTheme } from '@hooks/useTheme';
 import { useNavigation } from '@react-navigation/native';
-import { getString } from '../../../strings/translations';
-import { availableLanguages, Languages } from '@utils/constants/languages';
-import { toggleLanguageFilter } from '@redux/source/sourcesSlice';
+import { getString } from '@strings/translations';
+import { availableLanguages } from '@utils/constants/languages';
+import { toggleLanguageFilter } from '@redux/plugin/pluginsSlice';
 import { setBrowseSettings } from '@redux/settings/settingsSlice';
 
 const BrowseSettings = () => {
@@ -19,7 +19,7 @@ const BrowseSettings = () => {
   const { goBack } = useNavigation();
   const dispatch = useAppDispatch();
 
-  const { languagesFilter = [Languages.English] } = useSourcesReducer();
+  const { languagesFilter } = usePluginReducer();
   const {
     searchAllSources = false,
     showMyAnimeList = true,

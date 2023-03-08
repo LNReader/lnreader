@@ -4,7 +4,7 @@ import { persistStore, persistReducer, Storage } from 'redux-persist';
 
 import settingsReducer from './settings/settings.reducer';
 import settingsReducerV2 from './settings/settingsSlice';
-import sourceReducerV2 from './source/sourcesSlice';
+import pluginsReducer from './plugin/pluginsSlice';
 import novelReducer from './novel/novel.reducer';
 import updatesReducer from './updates/updates.reducer';
 import trackerReducer from './tracker/tracker.reducer';
@@ -35,7 +35,7 @@ const persistConfig = {
 const reducers = combineReducers({
   settingsReducer,
   settingsReducerV2,
-  sourceReducerV2,
+  pluginsReducer,
   novelReducer,
   updatesReducer,
   trackerReducer,

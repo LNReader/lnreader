@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image, Pressable } from 'react-native';
 
-import { getString } from '../../../../strings/translations';
-import { Button, IconButtonV2 } from '../../../components';
+import { getString } from '@strings/translations';
+import { Button, IconButtonV2 } from '@components';
 
 import { coverPlaceholderColor } from '@theme/colors';
 import { ThemeColors } from '@theme/types';

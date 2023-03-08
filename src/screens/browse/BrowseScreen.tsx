@@ -5,16 +5,16 @@ import { useNavigation } from '@react-navigation/native';
 
 import {
   fetchPluginsAction,
-  searchSourcesAction,
-  setLastUsedSource,
-  togglePinSource,
+  searchPluginsAction,
+  setLastUsedPlugin,
+  togglePinPlugin,
   installPluginAction,
   uninstallPluginAction,
-} from '@redux/source/sourcesSlice';
+} from '@redux/plugin/pluginsSlice';
 import {
   useAppDispatch,
   useBrowseSettings,
-  useSourcesReducer,
+  usePluginReducer,
 } from '@redux/hooks';
 
 import { useSearch } from '@hooks';
@@ -35,18 +35,19 @@ const BrowseScreen = () => {
   const [refreshing, setRefreshing] = useState(false);
   const { searchText, setSearchText, clearSearchbar } = useSearch();
   const {
-    availablePlugins = {} as Record<Languages, Array<PluginItem>>,
-    installedPlugins = [],
-    searchResults = [],
-    pinnedPlugins = [],
-    languagesFilter = ['English'],
+    availablePlugins,
+    installedPlugins,
+    searchResults,
+    pinnedPlugins,
+    languagesFilter,
     lastUsed,
-  } = useSourcesReducer();
+  } = usePluginReducer();
   const { showMyAnimeList = true, onlyShowPinnedSources = false } =
     useBrowseSettings();
 
   useEffect(() => {
     if (Object.keys(availablePlugins).length === 0) {
+      console.log('fetching');
       fetchPlugins().then(plugins => dispatch(fetchPluginsAction(plugins)));
     }
   }, []);
@@ -61,7 +62,7 @@ const BrowseScreen = () => {
 
   const onChangeText = (text: string) => {
     setSearchText(text);
-    dispatch(searchSourcesAction(text));
+    dispatch(searchPluginsAction(text));
   };
 
   const navigateToSource = useCallback(
@@ -75,7 +76,7 @@ const BrowseScreen = () => {
           showLatestNovels,
         } as never,
       );
-      dispatch(setLastUsedSource(plugin));
+      dispatch(setLastUsedPlugin(plugin));
     },
     [],
   );
@@ -221,7 +222,7 @@ const BrowseScreen = () => {
                   pinnedPlugins.find(plg => plg.id === item.id) !== undefined
                 }
                 navigateToSource={navigateToSource}
-                onTogglePinSource={plugin => dispatch(togglePinSource(plugin))}
+                onTogglePinSource={plugin => dispatch(togglePinPlugin(plugin))}
                 onInstallPlugin={plugin =>
                   dispatch(installPluginAction(plugin))
                 }
