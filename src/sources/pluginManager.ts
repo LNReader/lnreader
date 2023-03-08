@@ -38,7 +38,6 @@ const initPlugin = async (rawCode: string, path?: string) => {
 };
 
 let plugins: Record<string, Plugin> = {};
-const setPlugins = (_plugins: Record<string, Plugin>) => (plugins = _plugins);
 
 // get existing plugin in device
 const setupPlugin = async (path: string) => {
@@ -62,7 +61,6 @@ const installPlugin = async (url: string) => {
         const oldPlugin = plugins[plugin.id];
         if (!oldPlugin || bigger(plugin.version, oldPlugin.version)) {
           plugins[plugin.id] = plugin;
-          setPlugins(plugins);
           await RNFS.writeFile(plugin.path, rawCode, 'utf8');
         } else {
           showToast('This plugin is the newtest version');
@@ -76,13 +74,7 @@ const installPlugin = async (url: string) => {
 const uninstallPlugin = async (_plugin: PluginItem) => {
   const plugin = plugins[_plugin.id];
   if (plugin && (await RNFS.exists(plugin.path))) {
-    const newPlugins: Record<string, Plugin> = {};
-    for (let id in plugins) {
-      if (plugins[id].path !== plugin.path) {
-        newPlugins[id] = plugins[id];
-      }
-    }
-    setPlugins(newPlugins);
+    delete plugins[plugin.id];
     await RNFS.unlink(plugin.path);
   } else {
     showToast('Plugin doesnt exist');
@@ -99,15 +91,12 @@ const collectPlugins = async () => {
     return;
   }
   const paths = await RNFS.readDir(pluginsFolder);
-  paths.forEach(async pathItem => {
-    if (!(await RNFS.exists(pathItem.path))) {
-      const plugin = await setupPlugin(pathItem.path);
-      if (plugin) {
-        plugins[plugin.id] = plugin;
-      }
+  for (let i = 0; i < paths.length; i++) {
+    const plugin = await setupPlugin(paths[i].path);
+    if (plugin) {
+      plugins[plugin.id] = plugin;
     }
-  });
-  setPlugins(plugins);
+  }
 };
 
 const fetchPlugins = async () => {
