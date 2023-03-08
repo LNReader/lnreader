@@ -1,12 +1,9 @@
 export const createDownloadTableQuery = `
-    CREATE TABLE IF NOT EXISTS downloads(
-        downloadId INTEGER PRIMARY KEY AUTOINCREMENT, 
-        downloadChapterId INTEGER NOT NULL, 
-        chapterName TEXT, 
-        chapterText TEXT, 
-        FOREIGN KEY (downloadChapterId) REFERENCES chapters(chapterId) ON DELETE CASCADE
-      )
-  `;
-
-export const createDownloadIdIndex =
-  'CREATE INDEX IF NOT EXISTS downloadChapterIdIndex ON downloads(downloadChapterId)';
+  CREATE TABLE IF NOT EXISTS Download (
+      id INTEGER PRIMARY KEY AUTOINCREMENT, 
+      chapter_id INTEGER NOT NULL, 
+      chapter_text TEXT, 
+      update_time TEXT DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (chapter_id) REFERENCES Chapter(id) ON DELETE CASCADE
+  )
+`;
