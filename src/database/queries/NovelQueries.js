@@ -4,15 +4,15 @@ const db = SQLite.openDatabase('lnreader.db');
 import BackgroundService from 'react-native-background-actions';
 import * as DocumentPicker from 'expo-document-picker';
 
-import { fetchChapters, fetchNovel } from '../../services/Source/source';
+import { fetchChapters, fetchNovel } from '@services/Source/source';
 import { insertChapters } from './ChapterQueries';
 
-import { showToast } from '../../hooks/showToast';
+import { showToast } from '@hooks/showToast';
 import { txnErrorCallback } from '../utils/helpers';
 import { noop } from 'lodash-es';
 
 const insertNovelQuery =
-  'INSERT INTO novels (novelUrl, sourceUrl, sourceId, source, novelName, novelCover, novelSummary, author, artist, status, genre, categoryIds) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+  'INSERT INTO novels (novelUrl, pluginUrl, pluginId, pluginName, novelName, novelCover, novelSummary, author, artist, status, genre, categoryIds) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
 export const insertNovel = async novel => {
   return new Promise((resolve, reject) =>
@@ -22,7 +22,7 @@ export const insertNovel = async novel => {
         [
           novel.novelUrl,
           novel.sourceUrl,
-          novel.sourceId,
+          novel.pluginId,
           novel.source,
           novel.novelName,
           novel.novelCover || '',
@@ -89,12 +89,12 @@ export const checkNovelInCache = novelUrl => {
   );
 };
 
-export const getNovel = async (sourceId, novelUrl) => {
+export const getNovel = async (pluginId, novelUrl) => {
   return new Promise((resolve, reject) =>
     db.transaction(tx => {
       tx.executeSql(
-        'SELECT * FROM novels WHERE novelUrl = ? AND sourceId = ?',
-        [novelUrl, sourceId],
+        'SELECT * FROM novels WHERE novelUrl = ? AND pluginId = ?',
+        [novelUrl, pluginId],
         (txObj, { rows }) => resolve(rows.item(0)),
         (txObj, error) => {
           // console.log('Error ', error)
@@ -118,7 +118,7 @@ export const deleteNovelCache = () => {
 };
 
 const restoreFromBackupQuery =
-  'INSERT INTO novels (novelUrl, sourceUrl, sourceId, source, novelName, novelCover, novelSummary, author, artist, status, genre, followed, unread) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+  'INSERT INTO novels (novelUrl, sourceUrl, pluginId, source, novelName, novelCover, novelSummary, author, artist, status, genre, followed, unread) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
 export const restoreLibrary = async novel => {
   return new Promise((resolve, reject) => {
@@ -128,7 +128,7 @@ export const restoreLibrary = async novel => {
         [
           novel.novelUrl,
           novel.sourceUrl,
-          novel.sourceId,
+          novel.pluginId,
           novel.source,
           novel.novelName,
           novel.novelCover,
@@ -141,7 +141,7 @@ export const restoreLibrary = async novel => {
           novel.unread,
         ],
         async (txObj, { insertId }) => {
-          const chapters = await fetchChapters(novel.sourceId, novel.novelUrl);
+          const chapters = await fetchChapters(novel.pluginId, novel.novelUrl);
 
           if (chapters.length) {
             await insertChapters(insertId, chapters);
@@ -158,11 +158,11 @@ export const restoreLibrary = async novel => {
 };
 
 const migrateNovelQuery =
-  'INSERT INTO novels (novelUrl, sourceUrl, sourceId, source, novelName, novelCover, novelSummary, author, artist, status, genre, followed) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+  'INSERT INTO novels (novelUrl, sourceUrl, pluginId, source, novelName, novelCover, novelSummary, author, artist, status, genre, followed) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
-export const migrateNovel = async (sourceId, novelUrl) => {
+export const migrateNovel = async (pluginId, novelUrl) => {
   try {
-    const novel = await fetchNovel(sourceId, novelUrl);
+    const novel = await fetchNovel(pluginId, novelUrl);
 
     const options = {
       taskName: 'Migration',
@@ -191,7 +191,7 @@ export const migrateNovel = async (sourceId, novelUrl) => {
             [
               novel.novelUrl,
               novel.sourceUrl,
-              novel.sourceId,
+              novel.pluginId,
               novel.source,
               novel.novelName,
               novel.novelCover,
@@ -204,7 +204,7 @@ export const migrateNovel = async (sourceId, novelUrl) => {
             ],
             async (txObj, { insertId }) => {
               const chapters = await fetchChapters(
-                novel.sourceId,
+                novel.pluginId,
                 novel.novelUrl,
               );
               await insertChapters(insertId, chapters);

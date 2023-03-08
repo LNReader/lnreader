@@ -66,7 +66,7 @@ export const resetCategoryIdsToDefault = async (deletedCategoryId: number) => {
 };
 
 export const insertNovelInLibrary = async (
-  sourceId: string,
+  pluginId: string,
   novelUrl: string,
   inLibrary: boolean,
   defaultCategoryId: number,
@@ -80,11 +80,11 @@ export const insertNovelInLibrary = async (
       UPDATE novels SET
         followed = 0
       WHERE 
-        sourceId = ?
+        pluginId = ?
       AND
         novelUrl = ?
       `,
-        [sourceId, novelUrl],
+        [pluginId, novelUrl],
         noop,
         txnErrorCallback,
       );
@@ -101,11 +101,11 @@ export const insertNovelInLibrary = async (
         UPDATE novels SET
           followed = 1
         WHERE 
-          sourceId = ?
+          pluginId = ?
         AND
           novelUrl = ?
         `,
-          [sourceId, novelUrl],
+          [pluginId, novelUrl],
           noop,
           txnErrorCallback,
         );
@@ -114,7 +114,7 @@ export const insertNovelInLibrary = async (
       return;
     }
 
-    const novel = await fetchNovel(sourceId, novelUrl);
+    const novel = await fetchNovel(pluginId, novelUrl);
 
     db.transaction(tx => {
       tx.executeSql(
@@ -122,9 +122,9 @@ export const insertNovelInLibrary = async (
       INSERT INTO novels 
         (
           novelUrl, 
-          sourceUrl, 
-          sourceId, 
-          source, 
+          pluginUrl, 
+          pluginId, 
+          plugin, 
           novelName, 
           novelCover, 
           novelSummary, 
@@ -139,9 +139,9 @@ export const insertNovelInLibrary = async (
         (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?)`,
         [
           novel.novelUrl,
-          novel.sourceUrl,
-          novel.sourceId,
-          novel.source,
+          novel.pluginUrl,
+          novel.pluginId,
+          novel.pluginName,
           novel.novelName,
           novel.novelCover,
           novel.novelSummary,

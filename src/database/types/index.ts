@@ -33,7 +33,7 @@ export interface ChapterItem {
 export interface ChapterItemExtended extends ChapterItem {
   novelId: number;
   novelUrl: string;
-  sourceId: number;
+  pluginId: string;
   novelName: string;
 }
 
@@ -46,7 +46,7 @@ export interface DownloadedChapter {
 
 export interface History {
   historyId: number;
-  sourceId: number;
+  pluginId: string;
   novelId: number;
   chapterId: number;
   novelName: string;
@@ -60,7 +60,7 @@ export interface History {
 
 export interface Update {
   updateId: number;
-  sourceId: number;
+  pluginId: string;
   novelId: number;
   novelName: string;
   novelUrl: string;

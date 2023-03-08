@@ -41,7 +41,7 @@ import {
   useNovel,
   usePreferences,
   useSettings,
-} from '../../hooks/reduxHooks';
+} from '@hooks/reduxHooks';
 import { showToast } from '../../hooks/showToast';
 import { useTheme } from '@hooks/useTheme';
 import ChapterItem from './components/ChapterItem';
@@ -62,8 +62,7 @@ import NovelScreenLoading from './components/LoadingAnimation/NovelScreenLoading
 
 const Novel = ({ route, navigation }) => {
   const item = route.params;
-  const { sourceId, novelUrl, novelName, followed, novelId } = item;
-
+  const { pluginId, novelUrl, novelName, followed, novelId } = item;
   const theme = useTheme();
   const dispatch = useDispatch();
   const { top: topInset, bottom: bottomInset } = useSafeAreaInsets();
@@ -105,7 +104,7 @@ const Novel = ({ route, navigation }) => {
     dispatch(
       getNovelAction(
         followed,
-        sourceId,
+        pluginId,
         novelUrl,
         novelId,
         sort,
@@ -117,7 +116,7 @@ const Novel = ({ route, navigation }) => {
   }, [getNovelAction]);
 
   const onRefresh = () => {
-    dispatch(updateNovelAction(sourceId, novelUrl, novelId, sort, filter));
+    dispatch(updateNovelAction(pluginId, novelUrl, novelId, sort, filter));
     showToast(`Updated ${novelName}`);
   };
 
@@ -136,7 +135,7 @@ const Novel = ({ route, navigation }) => {
   const downloadChapter = chapter =>
     dispatch(
       downloadChapterAction(
-        sourceId,
+        pluginId,
         novelUrl,
         novelId,
         chapter.chapterUrl,
@@ -153,7 +152,7 @@ const Novel = ({ route, navigation }) => {
         icon: 'download-outline',
         onPress: () => {
           dispatch(
-            downloadAllChaptersAction(novel.sourceId, novel.novelUrl, selected),
+            downloadAllChaptersAction(novel.pluginId, novel.novelUrl, selected),
           );
           setSelected([]);
         },
@@ -163,7 +162,7 @@ const Novel = ({ route, navigation }) => {
       list.push({
         icon: 'trash-can-outline',
         onPress: () => {
-          dispatch(deleteAllChaptersAction(sourceId, selected));
+          dispatch(deleteAllChaptersAction(pluginId, selected));
           setSelected([]);
         },
       });
@@ -220,7 +219,7 @@ const Novel = ({ route, navigation }) => {
   const deleteChapter = chapter =>
     dispatch(
       deleteChapterAction(
-        sourceId,
+        pluginId,
         novelId,
         chapter.chapterId,
         chapter.chapterName,
@@ -290,7 +289,7 @@ const Novel = ({ route, navigation }) => {
   const navigateToChapter = chapter => {
     navigation.navigate(
       'Chapter',
-      openChapter({ sourceId, novelUrl, novelName }, chapter),
+      openChapter({ pluginId, novelUrl, novelName }, chapter),
     );
   };
 
@@ -423,7 +422,7 @@ const Novel = ({ route, navigation }) => {
                     onPress={() => {
                       dispatch(
                         downloadAllChaptersAction(
-                          novel.sourceId,
+                          novel.pluginId,
                           novel.novelUrl,
                           [
                             chapters.find(
@@ -446,7 +445,7 @@ const Novel = ({ route, navigation }) => {
                     onPress={() => {
                       dispatch(
                         downloadAllChaptersAction(
-                          novel.sourceId,
+                          novel.pluginId,
                           novel.novelUrl,
                           chapters
                             .filter(
@@ -469,7 +468,7 @@ const Novel = ({ route, navigation }) => {
                     onPress={() => {
                       dispatch(
                         downloadAllChaptersAction(
-                          novel.sourceId,
+                          novel.pluginId,
                           novel.novelUrl,
                           chapters
                             .filter(
@@ -501,7 +500,7 @@ const Novel = ({ route, navigation }) => {
                     onPress={() => {
                       dispatch(
                         downloadAllChaptersAction(
-                          novel.sourceId,
+                          novel.pluginId,
                           novel.novelUrl,
                           chapters.filter(chapter => !!chapter.read === false),
                         ),
@@ -518,7 +517,7 @@ const Novel = ({ route, navigation }) => {
                     onPress={() => {
                       dispatch(
                         downloadAllChaptersAction(
-                          novel.sourceId,
+                          novel.pluginId,
                           novel.novelUrl,
                           chapters,
                         ),
@@ -533,7 +532,7 @@ const Novel = ({ route, navigation }) => {
                       color: theme.onSurface,
                     }}
                     onPress={() =>
-                      dispatch(deleteAllChaptersAction(sourceId, chapters))
+                      dispatch(deleteAllChaptersAction(pluginId, chapters))
                     }
                   />
                 </Menu>
@@ -677,7 +676,7 @@ const Novel = ({ route, navigation }) => {
             action={{
               label: 'Delete',
               onPress: () => {
-                dispatch(deleteAllChaptersAction(sourceId, chapters));
+                dispatch(deleteAllChaptersAction(pluginId, chapters));
               },
             }}
             theme={{ colors: { primary: theme.primary } }}

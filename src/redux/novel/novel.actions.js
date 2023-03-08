@@ -18,12 +18,12 @@ import {
   ALL_CHAPTER_DELETED,
 } from './novel.types';
 
-import { fetchNovel } from '../../services/Source/source';
+import { fetchNovel } from '@services/Source/source';
 import {
   followNovel,
   insertNovel,
   getNovel,
-} from '../../database/queries/NovelQueries';
+} from '@database/queries/NovelQueries';
 import {
   getChapters,
   insertChapters,
@@ -36,26 +36,26 @@ import {
   markPreviousChaptersUnread,
   getNextChapter,
   deleteChapters,
-} from '../../database/queries/ChapterQueries';
-import { deleteUpdateFromDb } from '../../database/queries/UpdateQueries';
+} from '@database/queries/ChapterQueries';
+import { deleteUpdateFromDb } from '@database/queries/UpdateQueries';
 import {
   SET_CHAPTER_LIST_PREF,
   SET_LAST_READ,
 } from '../preferences/preference.types';
-import { showToast } from '../../hooks/showToast';
+import { showToast } from '@hooks/showToast';
 
 import * as Notifications from 'expo-notifications';
 
 import BackgroundService from 'react-native-background-actions';
 import { SET_DOWNLOAD_QUEUE } from '../downloads/donwloads.types';
-import { updateNovel } from '../../services/updates/LibraryUpdateQueries';
+import { updateNovel } from '@services/updates/LibraryUpdateQueries';
 
 export const setNovel = novel => async dispatch => {
   dispatch({ type: SET_NOVEL, payload: novel });
 };
 
 export const getNovelAction =
-  (followed, sourceId, novelUrl, novelId, sort, filter, defaultCategoryId) =>
+  (followed, pluginId, novelUrl, novelId, sort, filter, defaultCategoryId) =>
   async dispatch => {
     try {
       dispatch({ type: LOADING_NOVEL });
@@ -76,7 +76,7 @@ export const getNovelAction =
         /**
          * Check if novel is cached.
          */
-        let novel = await getNovel(sourceId, novelUrl);
+        let novel = await getNovel(pluginId, novelUrl);
 
         if (novel) {
           /**
@@ -91,8 +91,7 @@ export const getNovelAction =
           /**
            * Fetch novel from source.
            */
-          const fetchedNovel = await fetchNovel(sourceId, novelUrl);
-
+          const fetchedNovel = await fetchNovel(pluginId, novelUrl);
           /**
            * Insert novel in db.
            */
@@ -105,7 +104,7 @@ export const getNovelAction =
           /**
            * Get novel from db.
            */
-          novel = await getNovel(sourceId, novelUrl);
+          novel = await getNovel(pluginId, novelUrl);
           novel.chapters = await getChapters(novel.novelId, sort, filter);
 
           dispatch({
@@ -248,7 +247,7 @@ export const markChapterUnreadAction =
 
 /**
  *
- * @param {number} sourceId
+ * @param {string} pluginId
  * @param {string} novelUrl
  * @param {number} novelId
  * @param {string} chapterUrl
@@ -257,7 +256,7 @@ export const markChapterUnreadAction =
  * @returns
  */
 export const downloadChapterAction =
-  (sourceId, novelUrl, novelId, chapterUrl, chapterName, chapterId) =>
+  (pluginId, novelUrl, novelId, chapterUrl, chapterName, chapterId) =>
   async dispatch => {
     // dispatch({
     //     type: CHAPTER_DOWNLOADING,
@@ -268,7 +267,7 @@ export const downloadChapterAction =
       payload: [{ chapterId, chapterName }],
     });
 
-    await downloadChapter(sourceId, novelUrl, novelId, chapterUrl, chapterId);
+    await downloadChapter(pluginId, novelUrl, novelId, chapterUrl, chapterId);
 
     dispatch({
       type: CHAPTER_DOWNLOADED,
@@ -280,13 +279,13 @@ export const downloadChapterAction =
 
 /**
  *
- * @param {number} sourceId
+ * @param {string} pluginId
  * @param {string} novelUrl
  * @param {import("./../../database/types").ChapterItem[]} chaps
  * @returns
  */
 export const downloadAllChaptersAction =
-  (sourceId, novelUrl, chaps) => async (dispatch, getState) => {
+  (pluginId, novelUrl, chaps) => async (dispatch, getState) => {
     try {
       const downloadQueue = getState().downloadsReducer.downloadQueue;
       /**
@@ -304,7 +303,7 @@ export const downloadAllChaptersAction =
 
       chapters = chapters.map(chapter => ({
         ...chapter,
-        sourceId,
+        pluginId,
         novelUrl,
       }));
 
@@ -344,7 +343,7 @@ export const downloadAllChaptersAction =
                 try {
                   if (!chapters[i].downloaded) {
                     await downloadChapter(
-                      sourceId,
+                      pluginId,
                       novelUrl,
                       chapters[i].novelId,
                       chapters[i].chapterUrl,
@@ -400,8 +399,8 @@ export const downloadAllChaptersAction =
   };
 
 export const deleteChapterAction =
-  (sourceId, novelId, chapterId, chapterName) => async dispatch => {
-    await deleteChapter(sourceId, novelId, chapterId);
+  (pluginId, novelId, chapterId, chapterName) => async dispatch => {
+    await deleteChapter(pluginId, novelId, chapterId);
 
     dispatch({
       type: CHAPTER_DELETED,
@@ -413,14 +412,14 @@ export const deleteChapterAction =
 
 /**
  *
- * @param {number} sourceId
+ * @param {string} pluginId
  * @param {import("../../database/types").ChapterItem[]} chapters
  * @returns
  */
 export const deleteAllChaptersAction =
-  (sourceId, chapters) => async dispatch => {
+  (pluginId, chapters) => async dispatch => {
     const chapterIds = chapters.map(chapter => chapter.chapterId);
-    await deleteChapters(sourceId, chapters);
+    await deleteChapters(pluginId, chapters);
 
     dispatch({
       type: ALL_CHAPTER_DELETED,
@@ -431,7 +430,7 @@ export const deleteAllChaptersAction =
   };
 
 export const updateNovelAction =
-  (sourceId, novelUrl, novelId, sort, filter) => async (dispatch, getState) => {
+  (pluginId, novelUrl, novelId, sort, filter) => async (dispatch, getState) => {
     dispatch({ type: FETCHING_NOVEL });
 
     const { downloadNewChapters = false, refreshNovelMetadata = false } =
@@ -442,9 +441,9 @@ export const updateNovelAction =
       refreshNovelMetadata,
     };
 
-    await updateNovel(sourceId, novelUrl, novelId, options);
+    await updateNovel(pluginId, novelUrl, novelId, options);
 
-    let novel = await getNovel(sourceId, novelUrl);
+    let novel = await getNovel(pluginId, novelUrl);
     let chapters = await getChapters(novel.novelId, sort, filter);
 
     dispatch({

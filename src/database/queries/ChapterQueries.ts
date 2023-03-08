@@ -514,7 +514,7 @@ export const markPreviousChaptersUnread = async (
 };
 
 const getDownloadedChaptersQuery = `
-    SELECT chapters.*, novels.sourceId, novels.novelName, novels.novelCover, novels.novelUrl
+    SELECT chapters.*, novels.pluginId, novels.novelName, novels.novelCover, novels.novelUrl
     FROM chapters
     JOIN novels
     ON chapters.novelId = novels.novelId

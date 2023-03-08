@@ -9,7 +9,7 @@ import { ChapterItem } from '../database/types';
 import { showToast } from '../hooks/showToast';
 
 const useNextAndPrevChapter = (
-  sourceId: number,
+  pluginId: string,
   novelId: number,
   chapterId: number,
 ) => {
@@ -47,7 +47,7 @@ const useNextAndPrevChapter = (
           StackActions.replace(
             'ReaderScreen' as never,
             {
-              sourceId,
+              pluginId,
               novelId,
               chapterId: previousChapter?.chapterId,
               chapterUrl: previousChapter?.chapterUrl,
@@ -62,7 +62,7 @@ const useNextAndPrevChapter = (
           StackActions.replace(
             'ReaderScreen' as never,
             {
-              sourceId,
+              pluginId,
               novelId,
               chapterId: nextChapter?.chapterId,
               chapterUrl: nextChapter?.chapterUrl,

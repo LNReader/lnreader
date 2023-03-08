@@ -8,7 +8,7 @@ export const fetchNovel = async (pluginId, novelUrl) => {
   const novel = {
     novelUrl: res.novelUrl,
     pluginUrl: res.url,
-    plugin: res.pluginName,
+    pluginName: res.pluginName,
     pluginId: res.pluginId,
     novelName: res.novelName,
     novelCover: res.novelCover,

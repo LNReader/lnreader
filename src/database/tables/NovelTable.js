@@ -2,9 +2,9 @@ export const createNovelTableQuery = `
     CREATE TABLE IF NOT EXISTS novels(
     novelId INTEGER PRIMARY KEY AUTOINCREMENT,
     novelUrl TEXT NOT NULL,
-    sourceUrl TEXT UNIQUE NOT NULL,
-    sourceId INTEGER NOT NULL,
-    source TEXT NOT NULL,
+    pluginUrl TEXT UNIQUE NOT NULL,
+    pluginId INTEGER NOT NULL,
+    pluginName TEXT NOT NULL,
     novelName TEXT NOT NULL,
     novelCover TEXT, 
     novelSummary TEXT, 

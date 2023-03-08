@@ -37,7 +37,7 @@ const NovelList: React.FC<
     }
   }, [isListView, orientation, novelsPerRow]);
 
-  const keyExtractor = useCallback(item => item.sourceId + item.novelUrl, []);
+  const keyExtractor = useCallback(item => item.pluginId + item.novelUrl, []);
 
   return (
     <FlatList

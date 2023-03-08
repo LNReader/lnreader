@@ -2,7 +2,7 @@ import { SelectedFilter, SourceFilter } from './filterTypes';
 import { Languages } from '@utils/constants/languages';
 
 export interface Source {
-  sourceId: number;
+  pluginId: string;
   sourceName: string;
   url: string;
   lang: string;
@@ -11,7 +11,7 @@ export interface Source {
 }
 
 export interface SourceNovelItem {
-  sourceId: number;
+  pluginId: string;
   novelName: string;
   novelUrl: string;
   novelCover?: string;
@@ -24,7 +24,7 @@ export interface SourceChapterItem {
 }
 
 export interface SourceNovel {
-  sourceId: number;
+  pluginId: string;
   sourceName: string;
   url: string;
   novelUrl: string;
@@ -38,7 +38,7 @@ export interface SourceNovel {
 }
 
 export interface SourceChapter {
-  sourceId: number;
+  pluginId: string;
   novelUrl: string;
   chapterUrl: string;
   chapterName?: string;

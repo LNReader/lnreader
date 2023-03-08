@@ -6,7 +6,7 @@ import { txnErrorCallback } from '../utils/helpers';
 const db = SQLite.openDatabase('lnreader.db');
 
 const getLibraryStatsQuery = `
-  SELECT COUNT(*) as novelsCount, COUNT(DISTINCT sourceId) as sourcesCount
+  SELECT COUNT(*) as novelsCount, COUNT(DISTINCT pluginId) as sourcesCount
   FROM novels
   WHERE novels.followed = 1
   `;

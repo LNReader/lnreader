@@ -19,7 +19,7 @@ const getUpdatesFromDbQuery = `
       novels.novelId, 
       novels.novelCover, 
       novels.novelName, 
-      novels.sourceId, 
+      novels.pluginId, 
       updates.updateTime, 
       updates.updateId
     FROM 
