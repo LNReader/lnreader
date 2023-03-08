@@ -69,11 +69,6 @@ const BrowseScreen = () => {
   const { showMyAnimeList = true, onlyShowPinnedSources = false } =
     useBrowseSettings();
 
-  const isPinned = (plugin: PluginItem) =>
-    pinnedPlugins.find(plg => plg.id === plugin.id) !== undefined;
-  const isInstalled = (plugin: PluginItem) =>
-    installedPlugins.find(plg => plg.id === plugin.id) !== undefined;
-
   const navigateToSource = useCallback(
     (plugin: PluginItem, showLatestNovels?: boolean) => {
       navigate(
@@ -110,31 +105,25 @@ const BrowseScreen = () => {
 
   const availableSections = useMemo(() => {
     const list = [];
-
-    if (!onlyShowPinnedSources) {
-      if (searchText) {
-        list.unshift({
-          header: getString('common.searchResults'),
-          data: searchResults,
-        });
-      } else {
-        languagesFilter.forEach(lang => {
-          const plugins = availablePlugins[lang as Languages];
-          if (plugins) {
-            list.push({
-              header: lang,
-              data: plugins,
-            });
-          }
-        });
-      }
+    if (searchText) {
+      list.unshift({
+        header: getString('common.searchResults'),
+        data: searchResults,
+      });
+    } else {
+      languagesFilter.forEach(lang => {
+        const plugins = availablePlugins[lang as Languages];
+        if (plugins) {
+          list.push({
+            header: lang,
+            data: plugins,
+          });
+        }
+      });
     }
-
     return list;
   }, [
     lastUsed,
-    pinnedPlugins,
-    onlyShowPinnedSources,
     JSON.stringify(searchResults),
     availablePlugins,
     languagesFilter,
@@ -183,62 +172,10 @@ const BrowseScreen = () => {
     searchText,
   ]);
 
-  const availableRoute = () => (
-    <>
-      {languagesFilter.length === 0 ? (
-        <EmptyView
-          icon={'(･Д･。'}
-          description={getString('browseScreen.listEmpty')}
-          theme={theme}
-        />
-      ) : Object.keys(availablePlugins).length === 0 ? null : (
-        <>
-          <SectionList
-            sections={availableSections}
-            keyExtractor={(_, index) => index.toString()}
-            renderSectionHeader={({ section: { header, data } }) =>
-              data.length > 0 ? (
-                <Text
-                  style={[
-                    styles.sectionHeader,
-                    { color: theme.onSurfaceVariant },
-                  ]}
-                >
-                  {header}
-                </Text>
-              ) : null
-            }
-            renderItem={({ item }) => (
-              <SourceCard
-                installed={isInstalled(item)}
-                plugin={item}
-                isPinned={isPinned(item)}
-                navigateToSource={navigateToSource}
-                onTogglePinSource={plugin => dispatch(togglePinSource(plugin))}
-                onInstallPlugin={plugin =>
-                  dispatch(installPluginAction(plugin))
-                }
-                onUninstallPlugin={plugin =>
-                  dispatch(uninstallPluginAction(plugin))
-                }
-                theme={theme}
-              />
-            )}
-            refreshControl={
-              <RefreshControl
-                refreshing={refreshing}
-                onRefresh={onRefresh}
-                colors={[theme.onPrimary]}
-                progressBackgroundColor={theme.primary}
-              />
-            }
-          />
-        </>
-      )}
-    </>
-  );
-
-  const installedRoute = () => (
+  const route = (
+    sections: Array<{ header: string; data: Array<PluginItem> }>,
+    installTab: boolean,
+  ) => (
     <>
       {languagesFilter.length === 0 ? (
         <EmptyView
@@ -246,12 +183,12 @@ const BrowseScreen = () => {
           description={getString('browseScreen.listEmpty')}
           theme={theme}
         />
-      ) : installedPlugins.length === 0 ? null : (
+      ) : (
         <>
           <SectionList
-            sections={installedSections}
+            sections={sections}
             ListHeaderComponent={
-              showMyAnimeList ? (
+              showMyAnimeList && installTab ? (
                 <>
                   <Text
                     style={[
@@ -265,7 +202,7 @@ const BrowseScreen = () => {
                 </>
               ) : null
             }
-            keyExtractor={(_, index) => index.toString()}
+            keyExtractor={(_, index) => index.toString() + installTab}
             renderSectionHeader={({ section: { header, data } }) =>
               data.length > 0 ? (
                 <Text
@@ -280,9 +217,14 @@ const BrowseScreen = () => {
             }
             renderItem={({ item }) => (
               <SourceCard
-                installed={isInstalled(item)}
+                installed={
+                  installedPlugins.find(plg => plg.id === item.id) !== undefined
+                }
                 plugin={item}
-                isPinned={isPinned(item)}
+                isPinned={
+                  installTab &&
+                  pinnedPlugins.find(plg => plg.id === item.id) !== undefined
+                }
                 navigateToSource={navigateToSource}
                 onTogglePinSource={plugin => dispatch(togglePinSource(plugin))}
                 onInstallPlugin={plugin =>
@@ -294,6 +236,18 @@ const BrowseScreen = () => {
                 theme={theme}
               />
             )}
+            refreshControl={
+              installTab ? (
+                <></>
+              ) : (
+                <RefreshControl
+                  refreshing={refreshing}
+                  onRefresh={onRefresh}
+                  colors={[theme.onPrimary]}
+                  progressBackgroundColor={theme.primary}
+                />
+              )
+            }
           />
         </>
       )}
@@ -301,14 +255,14 @@ const BrowseScreen = () => {
   );
 
   const renderScene = SceneMap({
-    availableRoute: availableRoute,
-    installedRoute: installedRoute,
+    availableRoute: () => route(availableSections, false),
+    installedRoute: () => route(installedSections, true),
   });
 
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
-    { key: 'installedRoute', title: 'Installed Plugins' },
-    { key: 'availableRoute', title: 'Available Plugins' },
+    { key: 'installedRoute', title: 'Installed' },
+    { key: 'availableRoute', title: 'Available' },
   ]);
 
   return (
