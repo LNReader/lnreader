@@ -27,62 +27,12 @@ import ScribbleHubScraper from './en/scribblehub';
 import SyosetuScraper from './jp/syosetu';
 import LNMTLScraper from './en/lnmtl';
 import LightNovelFullScraper from './en/lightnovelfull';
-import {
-  ArMTLScraper,
-  BoxNovelScraper,
-  ClickNovelScraper,
-  DaoNovelScraper,
-  FirstKissNovelScraper,
-  HizoMangaScraper,
-  LightNovelHeavenScraper,
-  LunarLettersScraper,
-  MoreNovelScraper,
-  MostNovelScraper,
-  MysticalSeriesScraper,
-  Novel4UpScraper,
-  TeamXNovelScraper,
-  NovelMultiverseScraper,
-  NovelTranslateScraper,
-  OnlyMTLScraper,
-  ReadWebNovelsScraper,
-  SleepyTranslationsScraper,
-  WBNovelScraper,
-  WebNovelLoverScraper,
-  WuxiaWorldDotSiteScraper,
-  ZinnNovelScraper,
-  TurkceLightNovelsScraper,
-  MeioNovelScraper,
-  CrateNovelScraper,
-  FreeNovelMeScraper,
-  SonicMTLScraper,
-  MTLNovelDotClubScraper,
-  NoobchanTranslationScraper,
-  GuavareadScraper,
-  SweetEscapeTranslationsScraper,
-  FansTranslationsScraper,
-  RiwyatScraper,
-  NovelsticScraper,
-  ArNovelScraper,
-  NeoSekaiTranslationsScraper,
-  MTLDashNovelScraper,
-  ZetroTranslationScraper,
-  SugarBabiesScraper,
-  NocturneTranslationsScraper,
-  NovelroomDotnetScraper,
-  NovelR18Scraper,
-  WebNovelOkuScraper,
-} from './multisrc/madara/MadaraGenerator';
 import WuxiaBlogScraper from './en/wuxiablog';
 import WuxiaCityScraper from './en/wuxiacity';
 import NovelUpdatesScraper from './en/novelupdates';
 import RanobesScraper from './en/ranobes';
 import RanobesruScraper from './ru/ranobes';
 import YushuboScraper from './ch/yushubo';
-import {
-  LiebeSchneeHiverNovelScraper,
-  LightNovelsBrasilScraper,
-  NobleMtlScraper,
-} from './multisrc/wpmangastream/WPMangaStreamGenerator';
 import WLNUpdatesScraper from './en/wlnupdates';
 import ReaperScansScraper from './en/reaperscans';
 import AuthorTodayScraper from './ru/authortoday';
@@ -114,11 +64,6 @@ import NovelForestScraper from './en/novelforest';
 import NovelPubScraper from './en/novelpub';
 import BestLightNovel from './en/bestlightnovel';
 import NovelFullMeScraper from './en/NovelFullMe';
-import {
-  LtnovelScraper,
-  NovelmtScraper,
-  ReadwnScraper,
-} from './multisrc/readwn/ReadwnGenerator';
 import SakuraNovelScraper from './id/sakuranovel';
 
 import { SourceChapter, SourceNovel, SourceNovelItem } from './types';
@@ -129,10 +74,6 @@ import HakoLightNovelScraper from './vi/HakoLightNovel';
 import NovelFullScraper from './en/novelfulldotnet';
 import NovelTop1Scraper from './en/noveltop1';
 import { SelectedFilter, SourceFilter } from './types/filterTypes';
-import {
-  KolNovelScraper,
-  PandaMtlScraper,
-} from './multisrc/wqmangastream/WQMangaStreamGenerator';
 import AgitoonScraper from './kr/Agitoon';
 import PawReadScraper from './en/pawread';
 

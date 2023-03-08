@@ -87,7 +87,7 @@ const parseNovelAndChapters = async novelUrl => {
     .text()
     .trim()
     .replace(/[\n\r]+/g, ',')
-    .replace(/  /g, '');
+    .replace(/ {2}/g, '');
 
   loadedCheerio(
     'div[class="media-info-list paper"] > [class="media-info-list__item"]',
