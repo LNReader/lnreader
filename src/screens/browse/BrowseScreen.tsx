@@ -1,5 +1,5 @@
-import { SectionList, StyleSheet, Text } from 'react-native';
-import React, { useCallback, useEffect, useMemo } from 'react';
+import { SectionList, StyleSheet, Text, RefreshControl } from 'react-native';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { TabView, SceneMap } from 'react-native-tab-view';
 
 import { EmptyView, SearchbarV2 } from '../../components';
@@ -30,6 +30,15 @@ const BrowseScreen = () => {
   const { navigate } = useNavigation();
   const theme = useTheme();
   const dispatch = useAppDispatch();
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    fetchPlugins().then(plugins => {
+      dispatch(fetchPluginsAction(plugins));
+      setRefreshing(false);
+    });
+  };
 
   const { searchText, setSearchText, clearSearchbar } = useSearch();
 
@@ -215,6 +224,14 @@ const BrowseScreen = () => {
                 theme={theme}
               />
             )}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={onRefresh}
+                colors={[theme.onPrimary]}
+                progressBackgroundColor={theme.primary}
+              />
+            }
           />
         </>
       )}

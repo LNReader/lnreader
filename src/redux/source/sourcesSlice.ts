@@ -28,6 +28,12 @@ export const sourcesSlice = createSlice({
       state,
       action: PayloadAction<Record<Languages, Array<PluginItem>>>,
     ) => {
+      for (let key in action.payload) {
+        const lang = key as Languages;
+        action.payload[lang] = action.payload[lang].filter(
+          plugin => !state.installedPlugins.find(plg => plg.id === plugin.id),
+        );
+      }
       state.availablePlugins = action.payload;
     },
     installPluginAction: (state, action: PayloadAction<PluginItem>) => {
