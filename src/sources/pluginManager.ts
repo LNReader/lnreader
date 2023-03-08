@@ -1,4 +1,4 @@
-import RNFetchBlob from 'rn-fetch-blob';
+import RNFS from 'react-native-fs';
 import { showToast } from '../hooks/showToast';
 import { bigger } from '../utils/compareVersion';
 
@@ -9,7 +9,7 @@ import { Languages } from '@utils/constants/languages';
 import { htmlToText } from './helpers/htmlToText';
 import { parseMadaraDate } from './helpers/parseDate';
 
-const pluginsFolder = RNFetchBlob.fs.dirs.DownloadDir + '/LNReader/Plugins';
+const pluginsFolder = RNFS.DownloadDirectoryPath + '/LNReader/Plugins';
 
 const packages: Record<string, any> = {
   'cheerio': cheerio,
@@ -27,8 +27,8 @@ const _require = (packageName: string) => {
 const initPlugin = async (rawCode: string, path?: string) => {
   const _module: any = { exports: {} };
   try {
-    Function('require', 'module', rawCode)(_require, _module); //eslint-disable-line
-    _module.exports.path = path || `${pluginsFolder}/${_module.exports.id}`;
+    Function('require', 'module', rawCode)(_require, _module); // eslint-disable-line no-new-func
+    _module.exports.path = path || `${pluginsFolder}/${_module.exports.id}.js`;
     const plugin: Plugin = _module.exports;
     return plugin;
   } catch (e) {
@@ -42,7 +42,7 @@ const setPlugins = (_plugins: Record<string, Plugin>) => (plugins = _plugins);
 
 // get existing plugin in device
 const setupPlugin = async (path: string) => {
-  const rawCode = await RNFetchBlob.fs.readFile(path, 'utf8');
+  const rawCode = await RNFS.readFile(path, 'utf8');
   const plugin = await initPlugin(rawCode, path);
   if (plugin) {
     return plugin;
@@ -52,7 +52,7 @@ const setupPlugin = async (path: string) => {
 
 const installPlugin = async (url: string) => {
   try {
-    RNFetchBlob.fetch('get', url)
+    fetch(url)
       .then(res => res.text())
       .then(async rawCode => {
         const plugin = await initPlugin(rawCode);
@@ -63,9 +63,9 @@ const installPlugin = async (url: string) => {
         if (!oldPlugin || bigger(plugin.version, oldPlugin.version)) {
           plugins[plugin.id] = plugin;
           setPlugins(plugins);
-          RNFetchBlob.fs.writeFile(plugin.path, rawCode, 'utf8');
+          await RNFS.writeFile(plugin.path, rawCode, 'utf8');
         } else {
-          showToast('This plugin is not newer than current plugin');
+          showToast('This plugin is the newtest version');
         }
       });
   } catch (e: any) {
@@ -75,7 +75,7 @@ const installPlugin = async (url: string) => {
 
 const uninstallPlugin = async (_plugin: PluginItem) => {
   const plugin = plugins[_plugin.id];
-  if (plugin && (await RNFetchBlob.fs.exists(plugin.path))) {
+  if (plugin && (await RNFS.exists(plugin.path))) {
     const newPlugins: Record<string, Plugin> = {};
     for (let id in plugins) {
       if (plugins[id].path !== plugin.path) {
@@ -83,7 +83,7 @@ const uninstallPlugin = async (_plugin: PluginItem) => {
       }
     }
     setPlugins(newPlugins);
-    RNFetchBlob.fs.unlink(plugin.path);
+    await RNFS.unlink(plugin.path);
   } else {
     showToast('Plugin doesnt exist');
   }
@@ -94,18 +94,19 @@ const updatePlugin = async (plugin: PluginItem) => {
 };
 
 const collectPlugins = async () => {
-  if (!(await RNFetchBlob.fs.exists(pluginsFolder))) {
+  if (!(await RNFS.exists(pluginsFolder))) {
+    await RNFS.mkdir(pluginsFolder);
     return;
   }
-  const paths = await RNFetchBlob.fs.ls(pluginsFolder);
-  for (let index = 0; index < paths.length; index++) {
-    if (!(await RNFetchBlob.fs.isDir(paths[index]))) {
-      const plugin = await setupPlugin(`${pluginsFolder}/${paths[index]}`);
+  const paths = await RNFS.readDir(pluginsFolder);
+  paths.forEach(async pathItem => {
+    if (!(await RNFS.exists(pathItem.path))) {
+      const plugin = await setupPlugin(pathItem.path);
       if (plugin) {
         plugins[plugin.id] = plugin;
       }
     }
-  }
+  });
   setPlugins(plugins);
 };
 

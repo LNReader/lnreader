@@ -4,52 +4,96 @@ import { StyleSheet, Text, View, Image, Pressable } from 'react-native';
 import { getString } from '../../../../../strings/translations';
 import { Button, IconButtonV2 } from '../../../../components';
 
-import { Source } from '../../../../sources/types';
-import { coverPlaceholderColor } from '../../../../theme/colors';
-import { ThemeColors } from '../../../../theme/types';
+import { coverPlaceholderColor } from '@theme/colors';
+import { ThemeColors } from '@theme/types';
+
+import { PluginItem } from '@sources/types';
+import {
+  installPlugin,
+  uninstallPlugin,
+  updatePlugin,
+} from '@sources/pluginManager';
 
 interface Props {
-  source: Source;
+  installed: boolean;
+  plugin: PluginItem;
   isPinned: boolean;
   theme: ThemeColors;
-  onTogglePinSource: (sourceId: number) => void;
-  navigateToSource: (source: Source, showLatestNovels?: boolean) => void;
+  onTogglePinSource: (plugin: PluginItem) => void;
+  navigateToSource: (plugin: PluginItem, showLatestNovels?: boolean) => void;
+  onInstallPlugin: (plugin: PluginItem) => void;
+  onUninstallPlugin: (plugin: PluginItem) => void;
 }
 
 const SourceCard: React.FC<Props> = ({
-  source,
+  installed,
+  plugin,
   isPinned,
   navigateToSource,
   onTogglePinSource,
   theme,
+  onInstallPlugin,
+  onUninstallPlugin,
 }) => (
   <Pressable
     style={styles.container}
-    onPress={() => navigateToSource(source)}
+    onPress={() => navigateToSource(plugin)}
     android_ripple={{ color: theme.rippleColor }}
   >
     <View style={styles.flexRow}>
-      <Image source={{ uri: source.icon }} style={styles.icon} />
+      <Image source={{ uri: plugin.iconUrl }} style={styles.icon} />
       <View style={styles.details}>
-        <Text style={{ color: theme.onSurface }}>{source.sourceName}</Text>
+        <Text style={{ color: theme.onSurface }}>{plugin.name}</Text>
         <Text style={[{ color: theme.onSurfaceVariant }, styles.lang]}>
-          {source.lang}
+          {plugin.lang}
         </Text>
       </View>
     </View>
     <View style={styles.flexRow}>
-      <Button
-        title={getString('browseScreen.latest')}
-        textColor={theme.primary}
-        onPress={() => navigateToSource(source, true)}
-      />
-      <IconButtonV2
-        name={isPinned ? 'pin' : 'pin-outline'}
-        size={22}
-        color={isPinned ? theme.primary : theme.onSurfaceVariant}
-        onPress={() => onTogglePinSource(source.sourceId)}
-        theme={theme}
-      />
+      {installed ? (
+        <>
+          <Button
+            title={getString('browseScreen.latest')}
+            textColor={theme.primary}
+            onPress={() => navigateToSource(plugin, true)}
+          />
+          <IconButtonV2
+            name={isPinned ? 'pin' : 'pin-outline'}
+            size={22}
+            color={isPinned ? theme.primary : theme.onSurfaceVariant}
+            onPress={() => onTogglePinSource(plugin)}
+            theme={theme}
+          />
+          <IconButtonV2
+            name={'update'}
+            size={22}
+            color={theme.primary}
+            onPress={() => updatePlugin(plugin)}
+            theme={theme}
+          />
+          <IconButtonV2
+            name={'delete'}
+            size={22}
+            color={theme.primary}
+            onPress={() =>
+              uninstallPlugin(plugin).then(() => onUninstallPlugin(plugin))
+            }
+            theme={theme}
+          />
+        </>
+      ) : (
+        <>
+          <IconButtonV2
+            name={'download'}
+            size={22}
+            color={theme.primary}
+            onPress={() =>
+              installPlugin(plugin.url).then(() => onInstallPlugin(plugin))
+            }
+            theme={theme}
+          />
+        </>
+      )}
     </View>
   </Pressable>
 );

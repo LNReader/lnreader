@@ -6,20 +6,20 @@ import {
   useAppDispatch,
   useBrowseSettings,
   useSourcesReducer,
-} from '../../redux/hooks';
+} from '@redux/hooks';
 import { useTheme } from '@hooks/useTheme';
 import { useNavigation } from '@react-navigation/native';
 import { getString } from '../../../strings/translations';
-import { availableLanguages } from '../../utils/constants/languages';
-import { toggleLanguageFilter } from '../../redux/source/sourcesSlice';
-import { setBrowseSettings } from '../../redux/settings/settingsSlice';
+import { availableLanguages, Languages } from '@utils/constants/languages';
+import { toggleLanguageFilter } from '@redux/source/sourcesSlice';
+import { setBrowseSettings } from '@redux/settings/settingsSlice';
 
 const BrowseSettings = () => {
   const theme = useTheme();
   const { goBack } = useNavigation();
   const dispatch = useAppDispatch();
 
-  const { languageFilters } = useSourcesReducer();
+  const { languagesFilter = [Languages.English] } = useSourcesReducer();
   const {
     searchAllSources = false,
     showMyAnimeList = true,
@@ -107,8 +107,8 @@ const BrowseSettings = () => {
         renderItem={({ item }) => (
           <SwitchItem
             label={item}
-            value={languageFilters.indexOf(item) !== -1}
-            onPress={() => dispatch(toggleLanguageFilter({ language: item }))}
+            value={languagesFilter.indexOf(item) !== -1}
+            onPress={() => dispatch(toggleLanguageFilter(item))}
             theme={theme}
           />
         )}

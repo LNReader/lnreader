@@ -1,84 +1,93 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import AllSources from '../../sources/sources.json';
 import { Languages } from '@utils/constants/languages';
-import { Source } from '../../sources/types';
+import { PluginItem } from '../../sources/types';
 
-interface SourcesState {
-  allSources: Source[];
-  searchResults: Source[];
-  pinnedSourceIds: number[];
-  lastUsed: number | null;
-  languageFilters: string[];
+interface PLuginsState {
+  availablePlugins: Record<Languages, Array<PluginItem>>;
+  installedPlugins: Array<PluginItem>;
+  languagesFilter: Array<Languages>;
+  lastUsed: PluginItem | null;
+  pinnedPlugins: Array<PluginItem>;
+  searchResults: Array<PluginItem>;
 }
 
-const initialState: SourcesState = {
-  allSources: AllSources,
-  searchResults: [],
-  pinnedSourceIds: [],
+const initialState: PLuginsState = {
+  availablePlugins: {} as Record<Languages, Array<PluginItem>>,
+  installedPlugins: [],
+  languagesFilter: [Languages.English],
   lastUsed: null,
-  languageFilters: [Languages.English],
+  pinnedPlugins: [],
+  searchResults: [],
 };
 
 export const sourcesSlice = createSlice({
   name: 'sourcesSlice',
   initialState,
   reducers: {
-    getSourcesAction: state => {
-      const sources = AllSources.filter(
-        source => state.languageFilters.indexOf(source.lang) !== -1,
-      ).sort((a, b) => a.sourceName.localeCompare(b.sourceName));
-
-      state.allSources = sources;
+    fetchPluginsAction: (
+      state,
+      action: PayloadAction<Record<Languages, Array<PluginItem>>>,
+    ) => {
+      state.availablePlugins = action.payload;
+    },
+    installPluginAction: (state, action: PayloadAction<PluginItem>) => {
+      state.installedPlugins = [...state.installedPlugins, action.payload];
+      state.availablePlugins[action.payload.lang] = state.availablePlugins[
+        action.payload.lang
+      ].filter(plugin => plugin.id !== action.payload.id);
+    },
+    uninstallPluginAction: (state, action: PayloadAction<PluginItem>) => {
+      state.installedPlugins = state.installedPlugins.filter(
+        plugin => plugin.id !== action.payload.id,
+      );
+      state.availablePlugins[action.payload.lang] = [
+        ...state.availablePlugins[action.payload.lang],
+        action.payload,
+      ];
     },
     searchSourcesAction: (state, action: PayloadAction<string>) => {
-      if (state?.pinnedSourceIds === undefined) {
-        state.pinnedSourceIds = [];
+      let results = [] as Array<PluginItem>;
+      for (let lang in state.availablePlugins) {
+        const matchResuls = state.availablePlugins[lang as Languages].filter(
+          plugin =>
+            plugin.name.toLowerCase().includes(action.payload.toLowerCase()),
+        );
+        results = results.concat(matchResuls);
       }
-
-      state.searchResults = state.allSources.filter((source: Source) =>
-        source.sourceName.toLowerCase().includes(action.payload.toLowerCase()),
-      );
+      state.searchResults = results;
     },
-    setLastUsedSource: (state, action: PayloadAction<{ sourceId: number }>) => {
-      state.lastUsed = action.payload.sourceId;
+    setLastUsedSource: (state, action: PayloadAction<PluginItem>) => {
+      state.lastUsed = action.payload;
     },
-    togglePinSource: (state, action: PayloadAction<number>) => {
-      if (state?.pinnedSourceIds === undefined) {
-        state.pinnedSourceIds = [];
-      }
-
-      if (state.pinnedSourceIds?.indexOf(action.payload) > -1) {
-        state.pinnedSourceIds = state.pinnedSourceIds.filter(
-          source => source !== action.payload,
+    togglePinSource: (state, action: PayloadAction<PluginItem>) => {
+      if (state.pinnedPlugins.find(plugin => plugin.id === action.payload.id)) {
+        state.pinnedPlugins = state.pinnedPlugins.filter(
+          plugin => plugin.id !== action.payload.id,
         );
       } else {
-        state.pinnedSourceIds = [...state.pinnedSourceIds, action.payload];
+        state.pinnedPlugins = [...state.pinnedPlugins, action.payload];
       }
     },
-    toggleLanguageFilter: (
-      state,
-      action: PayloadAction<{ language: string }>,
-    ) => {
-      if (state.languageFilters.indexOf(action.payload.language) > -1) {
-        state.languageFilters = state.languageFilters.filter(
-          item => item !== action.payload.language,
+    toggleLanguageFilter: (state, action: PayloadAction<Languages>) => {
+      if (state.languagesFilter.indexOf(action.payload) > -1) {
+        state.languagesFilter = state.languagesFilter.filter(
+          lang => lang !== action.payload,
         );
       } else {
-        state.languageFilters = [
-          ...state.languageFilters,
-          action.payload.language,
-        ];
+        state.languagesFilter = [...state.languagesFilter, action.payload];
       }
     },
   },
 });
 
 export const {
-  getSourcesAction,
+  fetchPluginsAction,
   togglePinSource,
   toggleLanguageFilter,
   setLastUsedSource,
   searchSourcesAction,
+  installPluginAction,
+  uninstallPluginAction,
 } = sourcesSlice.actions;
 
 export default sourcesSlice.reducer;

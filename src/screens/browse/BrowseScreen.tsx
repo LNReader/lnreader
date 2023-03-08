@@ -1,25 +1,30 @@
 import { SectionList, StyleSheet, Text } from 'react-native';
 import React, { useCallback, useEffect, useMemo } from 'react';
+import { TabView, SceneMap } from 'react-native-tab-view';
 
 import { EmptyView, SearchbarV2 } from '../../components';
 import {
-  getSourcesAction,
+  fetchPluginsAction,
   searchSourcesAction,
   setLastUsedSource,
   togglePinSource,
-} from '../../redux/source/sourcesSlice';
+  installPluginAction,
+  uninstallPluginAction,
+} from '@redux/source/sourcesSlice';
 import {
   useAppDispatch,
   useBrowseSettings,
   useSourcesReducer,
-} from '../../redux/hooks';
+} from '@redux/hooks';
 import { useTheme } from '@hooks/useTheme';
 import { useNavigation } from '@react-navigation/native';
-import { useSearch } from '../../hooks';
+import { useSearch } from '@hooks';
 import SourceCard from './components/SourceCard/SourceCard';
 import { getString } from '../../../strings/translations';
-import { Source } from '../../sources/types';
+import { PluginItem } from '@sources/types';
 import MalCard from './discover/MalCard/MalCard';
+import { Languages } from '@utils/constants/languages';
+import { fetchPlugins } from '@sources/pluginManager';
 
 const BrowseScreen = () => {
   const { navigate } = useNavigation();
@@ -28,6 +33,20 @@ const BrowseScreen = () => {
 
   const { searchText, setSearchText, clearSearchbar } = useSearch();
 
+  const {
+    availablePlugins = {} as Record<Languages, Array<PluginItem>>,
+    installedPlugins = [],
+    searchResults = [],
+    pinnedPlugins = [],
+    languagesFilter = ['English'],
+    lastUsed,
+  } = useSourcesReducer();
+
+  useEffect(() => {
+    if (Object.keys(availablePlugins).length === 0) {
+      fetchPlugins().then(plugins => dispatch(fetchPluginsAction(plugins)));
+    }
+  }, []);
   const onChangeText = (text: string) => {
     setSearchText(text);
     dispatch(searchSourcesAction(text));
@@ -35,43 +54,29 @@ const BrowseScreen = () => {
 
   const handleClearSearchbar = () => {
     clearSearchbar();
-    dispatch(getSourcesAction());
+    // dispatch(getSourcesAction());
   };
-
-  const {
-    allSources,
-    searchResults,
-    pinnedSourceIds = [],
-    languageFilters = ['English'],
-    lastUsed,
-  } = useSourcesReducer();
 
   const { showMyAnimeList = true, onlyShowPinnedSources = false } =
     useBrowseSettings();
 
-  useEffect(() => {
-    dispatch(getSourcesAction());
-  }, [dispatch, languageFilters]);
-
-  const isPinned = (sourceId: number) => pinnedSourceIds.indexOf(sourceId) > -1;
-
-  const pinnedSources = allSources.filter(source => isPinned(source.sourceId));
-  const lastUsedSource = lastUsed
-    ? allSources.filter(source => source.sourceId === lastUsed)
-    : [];
+  const isPinned = (plugin: PluginItem) =>
+    pinnedPlugins.find(plg => plg.id === plugin.id) !== undefined;
+  const isInstalled = (plugin: PluginItem) =>
+    installedPlugins.find(plg => plg.id === plugin.id) !== undefined;
 
   const navigateToSource = useCallback(
-    (source: Source, showLatestNovels?: boolean) => {
+    (plugin: PluginItem, showLatestNovels?: boolean) => {
       navigate(
         'SourceScreen' as never,
         {
-          sourceId: source.sourceId,
-          sourceName: source.sourceName,
-          url: source.url,
+          pluginId: plugin.id,
+          name: plugin.name,
+          url: plugin.url,
           showLatestNovels,
         } as never,
       );
-      dispatch(setLastUsedSource({ sourceId: source.sourceId }));
+      dispatch(setLastUsedSource(plugin));
     },
     [],
   );
@@ -94,18 +99,51 @@ const BrowseScreen = () => {
     [],
   );
 
-  const sections = useMemo(() => {
-    const list = [
-      {
-        header: getString('browseScreen.lastUsed'),
-        data: lastUsedSource,
-      },
-    ];
+  const availableSections = useMemo(() => {
+    const list = [];
 
-    if (pinnedSourceIds) {
+    if (!onlyShowPinnedSources) {
+      if (searchText) {
+        list.unshift({
+          header: getString('common.searchResults'),
+          data: searchResults,
+        });
+      } else {
+        languagesFilter.forEach(lang => {
+          const plugins = availablePlugins[lang as Languages];
+          if (plugins) {
+            list.push({
+              header: lang,
+              data: plugins,
+            });
+          }
+        });
+      }
+    }
+
+    return list;
+  }, [
+    lastUsed,
+    pinnedPlugins,
+    onlyShowPinnedSources,
+    JSON.stringify(searchResults),
+    availablePlugins,
+    languagesFilter,
+    searchText,
+  ]);
+
+  const installedSections = useMemo(() => {
+    const list = [];
+    if (lastUsed) {
+      list.push({
+        header: getString('browseScreen.lastUsed'),
+        data: [lastUsed],
+      });
+    }
+    if (pinnedPlugins) {
       list.push({
         header: getString('browseScreen.pinned'),
-        data: pinnedSources,
+        data: pinnedPlugins,
       });
     }
 
@@ -116,43 +154,85 @@ const BrowseScreen = () => {
           data: searchResults,
         });
       } else {
-        list.push({
-          header: getString('browseScreen.all'),
-          data: allSources,
-        });
+        if (installedPlugins) {
+          list.push({
+            header: 'Installed plugins',
+            data: installedPlugins,
+          });
+        }
       }
     }
 
     return list;
   }, [
-    lastUsedSource,
-    pinnedSourceIds,
+    lastUsed,
+    pinnedPlugins,
     onlyShowPinnedSources,
     JSON.stringify(searchResults),
+    availablePlugins,
+    languagesFilter,
     searchText,
   ]);
 
-  return (
+  const availableRoute = () => (
     <>
-      <SearchbarV2
-        searchText={searchText}
-        placeholder={getString('browseScreen.searchbar')}
-        leftIcon="magnify"
-        onChangeText={onChangeText}
-        clearSearchbar={handleClearSearchbar}
-        theme={theme}
-        rightIcons={searchbarActions}
-      />
-      {languageFilters.length === 0 ? (
+      {languagesFilter.length === 0 ? (
+        <EmptyView
+          icon={'(･Д･。'}
+          description={getString('browseScreen.listEmpty')}
+          theme={theme}
+        />
+      ) : Object.keys(availablePlugins).length === 0 ? null : (
+        <>
+          <SectionList
+            sections={availableSections}
+            keyExtractor={(_, index) => index.toString()}
+            renderSectionHeader={({ section: { header, data } }) =>
+              data.length > 0 ? (
+                <Text
+                  style={[
+                    styles.sectionHeader,
+                    { color: theme.onSurfaceVariant },
+                  ]}
+                >
+                  {header}
+                </Text>
+              ) : null
+            }
+            renderItem={({ item }) => (
+              <SourceCard
+                installed={isInstalled(item)}
+                plugin={item}
+                isPinned={isPinned(item)}
+                navigateToSource={navigateToSource}
+                onTogglePinSource={plugin => dispatch(togglePinSource(plugin))}
+                onInstallPlugin={plugin =>
+                  dispatch(installPluginAction(plugin))
+                }
+                onUninstallPlugin={plugin =>
+                  dispatch(uninstallPluginAction(plugin))
+                }
+                theme={theme}
+              />
+            )}
+          />
+        </>
+      )}
+    </>
+  );
+
+  const installedRoute = () => (
+    <>
+      {languagesFilter.length === 0 ? (
         <EmptyView
           icon="(･Д･。"
           description={getString('browseScreen.listEmpty')}
           theme={theme}
         />
-      ) : allSources.length === 0 ? null : (
+      ) : installedPlugins.length === 0 ? null : (
         <>
           <SectionList
-            sections={sections}
+            sections={installedSections}
             ListHeaderComponent={
               showMyAnimeList ? (
                 <>
@@ -183,11 +263,16 @@ const BrowseScreen = () => {
             }
             renderItem={({ item }) => (
               <SourceCard
-                source={item}
-                isPinned={isPinned(item.sourceId)}
+                installed={isInstalled(item)}
+                plugin={item}
+                isPinned={isPinned(item)}
                 navigateToSource={navigateToSource}
-                onTogglePinSource={sourceId =>
-                  dispatch(togglePinSource(sourceId))
+                onTogglePinSource={plugin => dispatch(togglePinSource(plugin))}
+                onInstallPlugin={plugin =>
+                  dispatch(installPluginAction(plugin))
+                }
+                onUninstallPlugin={plugin =>
+                  dispatch(uninstallPluginAction(plugin))
                 }
                 theme={theme}
               />
@@ -195,6 +280,36 @@ const BrowseScreen = () => {
           />
         </>
       )}
+    </>
+  );
+
+  const renderScene = SceneMap({
+    availableRoute: availableRoute,
+    installedRoute: installedRoute,
+  });
+
+  const [index, setIndex] = React.useState(0);
+  const [routes] = React.useState([
+    { key: 'installedRoute', title: 'Installed Plugins' },
+    { key: 'availableRoute', title: 'Available Plugins' },
+  ]);
+
+  return (
+    <>
+      <SearchbarV2
+        searchText={searchText}
+        placeholder={getString('browseScreen.searchbar')}
+        leftIcon="magnify"
+        onChangeText={onChangeText}
+        clearSearchbar={handleClearSearchbar}
+        theme={theme}
+        rightIcons={searchbarActions}
+      />
+      <TabView
+        navigationState={{ index, routes }}
+        renderScene={renderScene}
+        onIndexChange={setIndex}
+      />
     </>
   );
 };
