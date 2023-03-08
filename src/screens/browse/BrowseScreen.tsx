@@ -1,8 +1,8 @@
 import { SectionList, StyleSheet, Text, RefreshControl } from 'react-native';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { TabView, SceneMap } from 'react-native-tab-view';
+import { useNavigation } from '@react-navigation/native';
 
-import { EmptyView, SearchbarV2 } from '../../components';
 import {
   fetchPluginsAction,
   searchSourcesAction,
@@ -16,21 +16,40 @@ import {
   useBrowseSettings,
   useSourcesReducer,
 } from '@redux/hooks';
-import { useTheme } from '@hooks/useTheme';
-import { useNavigation } from '@react-navigation/native';
+
 import { useSearch } from '@hooks';
-import SourceCard from './components/SourceCard/SourceCard';
-import { getString } from '../../../strings/translations';
-import { PluginItem } from '@sources/types';
-import MalCard from './discover/MalCard/MalCard';
-import { Languages } from '@utils/constants/languages';
+import { useTheme } from '@hooks/useTheme';
+import { getString } from '@strings/translations';
 import { fetchPlugins } from '@sources/pluginManager';
+
+import { Languages } from '@utils/constants/languages';
+import { PluginItem } from '@sources/types';
+import { EmptyView, SearchbarV2 } from '@components';
+import MalCard from './discover/MalCard/MalCard';
+import PluginCard from './components/PluginCard';
 
 const BrowseScreen = () => {
   const { navigate } = useNavigation();
-  const theme = useTheme();
   const dispatch = useAppDispatch();
+  const theme = useTheme();
   const [refreshing, setRefreshing] = useState(false);
+  const { searchText, setSearchText, clearSearchbar } = useSearch();
+  const {
+    availablePlugins = {} as Record<Languages, Array<PluginItem>>,
+    installedPlugins = [],
+    searchResults = [],
+    pinnedPlugins = [],
+    languagesFilter = ['English'],
+    lastUsed,
+  } = useSourcesReducer();
+  const { showMyAnimeList = true, onlyShowPinnedSources = false } =
+    useBrowseSettings();
+
+  useEffect(() => {
+    if (Object.keys(availablePlugins).length === 0) {
+      fetchPlugins().then(plugins => dispatch(fetchPluginsAction(plugins)));
+    }
+  }, []);
 
   const onRefresh = () => {
     setRefreshing(true);
@@ -40,34 +59,10 @@ const BrowseScreen = () => {
     });
   };
 
-  const { searchText, setSearchText, clearSearchbar } = useSearch();
-
-  const {
-    availablePlugins = {} as Record<Languages, Array<PluginItem>>,
-    installedPlugins = [],
-    searchResults = [],
-    pinnedPlugins = [],
-    languagesFilter = ['English'],
-    lastUsed,
-  } = useSourcesReducer();
-
-  useEffect(() => {
-    if (Object.keys(availablePlugins).length === 0) {
-      fetchPlugins().then(plugins => dispatch(fetchPluginsAction(plugins)));
-    }
-  }, []);
   const onChangeText = (text: string) => {
     setSearchText(text);
     dispatch(searchSourcesAction(text));
   };
-
-  const handleClearSearchbar = () => {
-    clearSearchbar();
-    // dispatch(getSourcesAction());
-  };
-
-  const { showMyAnimeList = true, onlyShowPinnedSources = false } =
-    useBrowseSettings();
 
   const navigateToSource = useCallback(
     (plugin: PluginItem, showLatestNovels?: boolean) => {
@@ -172,7 +167,7 @@ const BrowseScreen = () => {
     searchText,
   ]);
 
-  const route = (
+  const makeRoute = (
     sections: Array<{ header: string; data: Array<PluginItem> }>,
     installTab: boolean,
   ) => (
@@ -216,7 +211,7 @@ const BrowseScreen = () => {
               ) : null
             }
             renderItem={({ item }) => (
-              <SourceCard
+              <PluginCard
                 installed={
                   installedPlugins.find(plg => plg.id === item.id) !== undefined
                 }
@@ -255,8 +250,8 @@ const BrowseScreen = () => {
   );
 
   const renderScene = SceneMap({
-    availableRoute: () => route(availableSections, false),
-    installedRoute: () => route(installedSections, true),
+    availableRoute: () => makeRoute(availableSections, false),
+    installedRoute: () => makeRoute(installedSections, true),
   });
 
   const [index, setIndex] = React.useState(0);
@@ -272,7 +267,7 @@ const BrowseScreen = () => {
         placeholder={getString('browseScreen.searchbar')}
         leftIcon="magnify"
         onChangeText={onChangeText}
-        clearSearchbar={handleClearSearchbar}
+        clearSearchbar={clearSearchbar}
         theme={theme}
         rightIcons={searchbarActions}
       />

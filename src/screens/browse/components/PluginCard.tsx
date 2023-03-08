@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image, Pressable } from 'react-native';
 
-import { getString } from '../../../../../strings/translations';
-import { Button, IconButtonV2 } from '../../../../components';
+import { getString } from '../../../../strings/translations';
+import { Button, IconButtonV2 } from '../../../components';
 
 import { coverPlaceholderColor } from '@theme/colors';
 import { ThemeColors } from '@theme/types';
@@ -25,7 +25,7 @@ interface Props {
   onUninstallPlugin: (plugin: PluginItem) => void;
 }
 
-const SourceCard: React.FC<Props> = ({
+const PluginCard: React.FC<Props> = ({
   installed,
   plugin,
   isPinned,
@@ -98,7 +98,7 @@ const SourceCard: React.FC<Props> = ({
   </Pressable>
 );
 
-export default SourceCard;
+export default PluginCard;
 
 const styles = StyleSheet.create({
   container: {
