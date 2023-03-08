@@ -7,7 +7,7 @@ import {
   FlatListProps,
   ListRenderItem,
 } from 'react-native';
-import { SourceNovelItem } from '../sources/types';
+import { SourceNovelItem } from '@plugins/types';
 import { LibraryNovelInfo, NovelInfo } from '../database/types';
 import { useDeviceOrientation } from '@hooks/useDeviceOrientation';
 

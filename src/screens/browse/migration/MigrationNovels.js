@@ -9,18 +9,18 @@ import {
 import { ProgressBar } from 'react-native-paper';
 import { useTheme } from '@hooks/useTheme';
 
-import EmptyView from '../../../components/EmptyView';
+import EmptyView from '@components/EmptyView';
 import MigrationNovelList from './MigrationNovelList';
 
-import { ScreenContainer } from '../../../components/Common';
-import { sourceManager } from '../../../sources/sourceManager';
-import { useBrowseSettings, useSourcesReducer } from '../../../redux/hooks';
+import { ScreenContainer } from '@components/Common';
+import { getPlugin } from '@plugins/pluginManager';
+import { useBrowseSettings, usePluginReducer } from '@redux/hooks';
 import { useLibraryNovels } from '@screens/library/hooks/useLibrary';
 import { Appbar } from '@components';
 import GlobalSearchSkeletonLoading from '../loadingAnimation/GlobalSearchSkeletonLoading';
 
 const MigrationNovels = ({ navigation, route }) => {
-  const { sourceId, novelName } = route.params;
+  const { pluginId, novelName } = route.params;
   const theme = useTheme();
 
   const isMounted = React.useRef(true);
@@ -30,9 +30,9 @@ const MigrationNovels = ({ navigation, route }) => {
 
   const { library } = useLibraryNovels();
 
-  const { allSources, pinnedSourceIds = [] } = useSourcesReducer();
+  const { installedPlugins, pinnedPlugins } = usePluginReducer();
 
-  const isPinned = id => pinnedSourceIds.indexOf(id) > -1;
+  const isPinned = id => pinnedPlugins.find(plg => plg.id !== id);
   const pinnedSources = allSources.filter(source => isPinned(source.sourceId));
 
   const { searchAllSources = false } = useBrowseSettings();

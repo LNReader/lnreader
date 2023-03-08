@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import * as SQLite from 'expo-sqlite';
-import { showToast } from '../../hooks/showToast';
+import { showToast } from '@hooks/showToast';
 import { Update } from '../types';
 
 const db = SQLite.openDatabase('lnreader.db');

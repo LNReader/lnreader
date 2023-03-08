@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { SelectedFilter, SourceFilter } from '../../sources/types/filterTypes';
-import { SourceNovelItem } from '../../sources/types';
+import { SelectedFilter, SourceFilter } from '@plugins/types/filterTypes';
+import { SourceNovelItem } from '@plugins/types';
 
-import { getPlugin } from '@sources/pluginManager';
+import { getPlugin } from '@plugins/pluginManager';
 
 export const useBrowseSource = (
   pluginId: string,

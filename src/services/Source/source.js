@@ -1,15 +1,15 @@
-import { sourceManager } from '../../sources/sourceManager';
+import { getPlugin } from '@plugins/pluginManager';
 
-export const fetchNovel = async (sourceId, novelUrl) => {
-  const source = sourceManager(sourceId);
+export const fetchNovel = async (pluginId, novelUrl) => {
+  const plugin = getPlugin(pluginId);
 
-  const res = await source.parseNovelAndChapters(novelUrl);
+  const res = await plugin.parseNovelAndChapters(novelUrl);
 
   const novel = {
     novelUrl: res.novelUrl,
-    sourceUrl: res.url,
-    source: res.sourceName,
-    sourceId: res.sourceId,
+    pluginUrl: res.url,
+    plugin: res.pluginName,
+    pluginId: res.pluginId,
     novelName: res.novelName,
     novelCover: res.novelCover,
     novelSummary: res.summary,
@@ -24,18 +24,18 @@ export const fetchNovel = async (sourceId, novelUrl) => {
   return novel;
 };
 
-export const fetchChapter = async (sourceId, novelUrl, chapterUrl) => {
-  const source = sourceManager(sourceId);
+export const fetchChapter = async (pluginId, novelUrl, chapterUrl) => {
+  const plugin = getPlugin(pluginId);
 
-  let chapter = await source.parseChapter(novelUrl, chapterUrl);
+  let chapter = await plugin.parseChapter(novelUrl, chapterUrl);
 
   return chapter;
 };
 
-export const fetchChapters = async (sourceId, novelUrl) => {
-  const source = sourceManager(sourceId);
+export const fetchChapters = async (pluginId, novelUrl) => {
+  const plugin = getPlugin(pluginId);
 
-  const res = await source.parseNovelAndChapters(novelUrl);
+  const res = await plugin.parseNovelAndChapters(novelUrl);
 
   const chapters = res.chapters;
 

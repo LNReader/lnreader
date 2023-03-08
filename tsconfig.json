@@ -24,7 +24,7 @@
       "@redux/*": ["src/redux/*"],
       "@theme/*": ["src/theme/*"],
       "@utils/*": ["src/utils/*"],
-      "@sources/*": ["src/sources/*"],
+      "@plugins/*": ["src/plugins/*"],
       "@services/*": ["src/services/*"],
     }
   },

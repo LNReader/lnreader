@@ -20,10 +20,10 @@ import {
 import { useSearch } from '@hooks';
 import { useTheme } from '@hooks/useTheme';
 import { getString } from '@strings/translations';
-import { fetchPlugins } from '@sources/pluginManager';
+import { fetchPlugins } from '@plugins/pluginManager';
 
 import { Languages } from '@utils/constants/languages';
-import { PluginItem } from '@sources/types';
+import { PluginItem } from '@plugins/types';
 import { EmptyView, SearchbarV2 } from '@components';
 import MalCard from './discover/MalCard/MalCard';
 import PluginCard from './components/PluginCard';

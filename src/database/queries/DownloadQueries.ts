@@ -3,7 +3,7 @@
 import { txnErrorCallback } from '@database/utils/helpers';
 import * as SQLite from 'expo-sqlite';
 import { showToast } from '../../hooks/showToast';
-import { sourceManager } from '../../sources/sourceManager';
+import { getPlugin } from '@plugins/pluginManager';
 import { DownloadedChapter } from '../types';
 
 import {
@@ -21,15 +21,12 @@ const downloadChapterQuery = `
 	`;
 
 export const fetchAndInsertChapterInDb = async (
-  sourceId: number,
+  pluginId: string,
   novelUrl: string,
   chapterId: number,
   chapterUrl: string,
 ) => {
-  const chapter = await sourceManager(sourceId).parseChapter(
-    novelUrl,
-    chapterUrl,
-  );
+  const chapter = await getPlugin(pluginId).parseChapter(novelUrl, chapterUrl);
 
   db.transaction(tx => {
     tx.executeSql(updateChapterDownloadedQuery, [chapterId]);

@@ -7,12 +7,12 @@ import { Button, IconButtonV2 } from '@components';
 import { coverPlaceholderColor } from '@theme/colors';
 import { ThemeColors } from '@theme/types';
 
-import { PluginItem } from '@sources/types';
+import { PluginItem } from '@plugins/types';
 import {
   installPlugin,
   uninstallPlugin,
   updatePlugin,
-} from '@sources/pluginManager';
+} from '@plugins/pluginManager';
 
 interface Props {
   installed: boolean;

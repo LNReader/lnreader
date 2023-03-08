@@ -9,7 +9,7 @@ import {
   FilterInputs,
   SelectedFilter,
   SourceFilter,
-} from '@sources/types/filterTypes';
+} from '@plugins/types/filterTypes';
 import { FlatList } from 'react-native-gesture-handler';
 import { Button, IconButtonV2 } from '@components/index';
 import { Checkbox } from '@components/Checkbox/Checkbox';

@@ -14,7 +14,7 @@ module.exports = function (api) {
             '@strings': './strings',
             '@redux': './src/redux',
             '@services': './src/services',
-            '@sources': './src/sources',
+            '@plugins': './src/plugins',
             '@utils': './src/utils',
             '@theme': './src/theme',
           },

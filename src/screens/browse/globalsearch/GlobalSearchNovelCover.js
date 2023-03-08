@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text, Image, Pressable } from 'react-native';
-import { defaultCoverUri } from '../../../sources/helpers/constants';
-import { coverPlaceholderColor } from '../../../theme/colors';
+import { defaultCoverUri } from '@plugins/helpers/constants';
+import { coverPlaceholderColor } from '@theme/colors';
 
 const GlobalSearchNovelCover = ({
   novel,

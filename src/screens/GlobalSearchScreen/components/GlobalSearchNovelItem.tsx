@@ -2,10 +2,10 @@ import { Dimensions, Pressable, StyleSheet, Text, View } from 'react-native';
 import React, { useMemo } from 'react';
 import FastImage from 'react-native-fast-image';
 
-import { coverPlaceholderColor } from '../../../theme/colors';
+import { coverPlaceholderColor } from '@theme/colors';
 
-import { SourceNovelItem } from '../../../sources/types';
-import { ThemeColors } from '../../../theme/types';
+import { SourceNovelItem } from '@plugins/types';
+import { ThemeColors } from '@theme/types';
 import { getString } from '@strings/translations';
 
 interface Props {

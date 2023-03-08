@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Languages } from '@utils/constants/languages';
-import { PluginItem } from '@sources/types';
+import { PluginItem } from '@plugins/types';
 
 interface PLuginsState {
   availablePlugins: Record<Languages, Array<PluginItem>>;

@@ -1,11 +1,12 @@
+import RNFS from 'react-native-fs';
 import * as SQLite from 'expo-sqlite';
-import { showToast } from '../../hooks/showToast';
-import { sourceManager } from '../../sources/sourceManager';
+import { showToast } from '@hooks/showToast';
+import { getPlugin } from '@plugins/pluginManager';
 import { ChapterItem } from '../types';
 
 import * as cheerio from 'cheerio';
-import RNFetchBlob from 'rn-fetch-blob';
 import { txnErrorCallback } from '@database/utils/helpers';
+import { Plugin } from '@plugins/types';
 
 const db = SQLite.openDatabase('lnreader.db');
 
@@ -236,8 +237,8 @@ const downloadChapterQuery =
 
 const createImageFolder = async (
   path: string,
-  data?: {
-    sourceId: number;
+  data: {
+    pluginId: string;
     novelId: number;
     chapterId: number;
   },
@@ -245,47 +246,39 @@ const createImageFolder = async (
   const mkdirIfNot = async (p: string) => {
     const nomediaPath =
       p + (p.charAt(p.length - 1) === '/' ? '' : '/') + '.nomedia';
-    if (!(await RNFetchBlob.fs.exists(p))) {
-      await RNFetchBlob.fs.mkdir(p);
-      await RNFetchBlob.fs.createFile(nomediaPath, ',', 'utf8');
+    if (!(await RNFS.exists(p))) {
+      await RNFS.mkdir(p);
+      await RNFS.writeFile(nomediaPath, ',', 'utf8');
     }
   };
 
   await mkdirIfNot(path);
 
-  if (data) {
-    const { sourceId, novelId, chapterId } = data;
-    await mkdirIfNot(`${path}/${sourceId}/`);
-    await mkdirIfNot(`${path}/${sourceId}/${novelId}/`);
-    await mkdirIfNot(`${path}/${sourceId}/${novelId}/${chapterId}/`);
-    return `${path}/${sourceId}/${novelId}/${chapterId}/`;
-  } else {
-    return path;
-  }
+  const { pluginId, novelId, chapterId } = data;
+  await mkdirIfNot(`${path}/${pluginId}/${novelId}/${chapterId}/`);
+  return `${path}/${pluginId}/${novelId}/${chapterId}/`;
 };
 
 const downloadImages = async (
   html: string,
-  sourceId: number,
+  plugin: Plugin,
   novelId: number,
   chapterId: number,
 ): Promise<string> => {
   try {
-    const headers = sourceManager(sourceId)?.headers || {};
     const loadedCheerio = cheerio.load(html);
     const imgs = loadedCheerio('img').toArray();
     for (let i = 0; i < imgs.length; i++) {
       const elem = loadedCheerio(imgs[i]);
       const url = elem.attr('src');
       if (url) {
-        const imageb64 = (
-          await RNFetchBlob.fetch('GET', url, headers)
-        ).base64();
+        const imageb64 = await plugin.fetchImage(url);
         const fileurl =
-          (await createImageFolder(
-            `${RNFetchBlob.fs.dirs.DownloadDir}/LNReader`,
-            { sourceId, novelId, chapterId },
-          ).catch(() => {
+          (await createImageFolder(`${RNFS.DownloadDirectoryPath}/LNReader`, {
+            pluginId: plugin.id,
+            novelId,
+            chapterId,
+          }).catch(() => {
             showToast(
               `Unexpected storage error!\nRemove ${fileurl} and try downloading again`,
             );
@@ -297,24 +290,11 @@ const downloadImages = async (
           return loadedCheerio.html();
         }
         elem.attr('src', `file://${fileurl}`);
-        const exists = await RNFetchBlob.fs.exists(fileurl).catch(() => {
+        RNFS.writeFile(fileurl, imageb64, 'base64').catch(() => {
           showToast(
             `Unexpected storage error!\nRemove ${fileurl} and try downloading again`,
           );
         });
-        if (!exists) {
-          RNFetchBlob.fs.createFile(fileurl, imageb64, 'base64').catch(() => {
-            showToast(
-              `Unexpected storage error!\nRemove ${fileurl} and try downloading again`,
-            );
-          });
-        } else {
-          RNFetchBlob.fs.writeFile(fileurl, imageb64, 'base64').catch(() => {
-            showToast(
-              `Unexpected storage error!\nRemove ${fileurl} and try downloading again`,
-            );
-          });
-        }
       }
     }
     loadedCheerio('body').prepend("<input type='hidden' offline />");
@@ -325,26 +305,21 @@ const downloadImages = async (
 };
 
 export const downloadChapter = async (
-  sourceId: number,
+  pluginId: string,
   novelUrl: string,
   novelId: number,
   chapterUrl: string,
   chapterId: number,
 ) => {
   try {
-    const source = sourceManager(sourceId);
+    const plugin = getPlugin(pluginId);
 
-    const chapter = await source.parseChapter(novelUrl, chapterUrl);
+    const chapter = await plugin.parseChapter(novelUrl, chapterUrl);
 
     if (chapter.chapterText?.length) {
       const imagedChapterText =
         chapter.chapterText &&
-        (await downloadImages(
-          chapter.chapterText,
-          sourceId,
-          novelId,
-          chapterId,
-        ));
+        (await downloadImages(chapter.chapterText, plugin, novelId, chapterId));
 
       db.transaction(tx => {
         tx.executeSql(
@@ -369,29 +344,29 @@ export const downloadChapter = async (
 };
 
 const deleteDownloadedImages = async (
-  sourceId: number,
+  pluginId: string,
   novelId: number,
   chapterId: number,
 ) => {
   try {
     const path = await createImageFolder(
-      `${RNFetchBlob.fs.dirs.DownloadDir}/LNReader`,
-      { sourceId, novelId, chapterId },
+      `${RNFS.DownloadDirectoryPath}/LNReader`,
+      { pluginId, novelId, chapterId },
     );
-    const files = await RNFetchBlob.fs.ls(path);
+    const files = await RNFS.readDir(path);
     for (let i = 0; i < files.length; i++) {
-      const ex = /\.b64\.png/.exec(files[i]);
+      const ex = /\.b64\.png/.exec(files[i].path);
       if (ex) {
-        if (await RNFetchBlob.fs.exists(`${path}${files[i]}`)) {
-          RNFetchBlob.fs.unlink(`${path}${files[i]}`);
-        }
+        await RNFS.unlink(files[i].path);
       }
     }
-  } catch (error) {}
+  } catch (error) {
+    throw new Error('Cant delete chapter image folder');
+  }
 };
 
 export const deleteChapter = async (
-  sourceId: number,
+  pluginId: string,
   novelId: number,
   chapterId: number,
 ) => {
@@ -399,7 +374,7 @@ export const deleteChapter = async (
     'UPDATE chapters SET downloaded = 0 WHERE chapterId=?';
   const deleteChapterQuery = 'DELETE FROM downloads WHERE downloadChapterId=?';
 
-  await deleteDownloadedImages(sourceId, novelId, chapterId);
+  await deleteDownloadedImages(pluginId, novelId, chapterId);
 
   db.transaction(tx => {
     tx.executeSql(
@@ -426,7 +401,7 @@ export const deleteChapter = async (
 };
 
 export const deleteChapters = async (
-  sourceId: number,
+  pluginId: string,
   chapters?: ChapterItem[],
 ) => {
   if (!chapters?.length) {
@@ -442,7 +417,7 @@ export const deleteChapters = async (
 
   await Promise.all(
     chapters?.map(chapter =>
-      deleteDownloadedImages(sourceId, chapter.novelId, chapter.chapterId),
+      deleteDownloadedImages(pluginId, chapter.novelId, chapter.chapterId),
     ),
   );
 

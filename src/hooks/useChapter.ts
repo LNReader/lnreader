@@ -3,15 +3,15 @@ import sanitize from 'sanitize-html';
 import { defaultTo } from 'lodash-es';
 import { getChapterFromDb } from '../database/queries/DownloadQueries';
 
-import { sourceManager } from '../sources/sourceManager';
+import { getPlugin } from '@plugins/pluginManager';
 
 import { DownloadedChapter } from '../database/types';
-import { SourceChapter } from '../sources/types';
+import { SourceChapter } from '@plugins/types';
 
 type Chapter = SourceChapter | DownloadedChapter;
 
 const useChapter = (
-  sourceId: number,
+  pluginId: string,
   chapterId: number,
   chapterUrl: string,
   novelUrl: string,
@@ -25,7 +25,7 @@ const useChapter = (
       let res: Chapter = await getChapterFromDb(chapterId);
 
       if (!res) {
-        res = await sourceManager(sourceId).parseChapter(novelUrl, chapterUrl);
+        res = await getPlugin(pluginId).parseChapter(novelUrl, chapterUrl);
       }
 
       let chapterText = sanitize(
@@ -45,7 +45,7 @@ const useChapter = (
     } finally {
       setIsLoading(false);
     }
-  }, [sourceId, chapterId, chapterUrl, novelUrl]);
+  }, [pluginId, chapterId, chapterUrl, novelUrl]);
 
   useEffect(() => {
     getChapter();

@@ -102,6 +102,7 @@ export interface Plugin extends PluginItem {
     pageNo?: number,
   ) => Promise<SourceNovelItem[]>;
   fetchImage: (url: string) => Promise<string>; // base64
+  protected: boolean; // true if you cant host their resources in other sites
   site: string;
   path: string;
   filters?: SourceFilter[];

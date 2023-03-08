@@ -12,12 +12,12 @@ import { useCategorySettings, usePreviousRouteName, useSearch } from '@hooks';
 import { useTheme } from '@hooks/useTheme';
 import { useBrowseSource, useSearchSource } from './useBrowseSource';
 
-import { SourceNovelItem } from '../../sources/types';
+import { SourceNovelItem } from '@plugins/types';
 import { getString } from '@strings/translations';
 import { StyleSheet } from 'react-native';
-import { useLibraryNovels } from '../../screens/library/hooks/useLibrary';
-import { insertNovelInLibrary } from '../../database/queries/NovelQueriesV2';
-import { LibraryNovelInfo } from '../../database/types';
+import { useLibraryNovels } from '@screens/library/hooks/useLibrary';
+import { insertNovelInLibrary } from '@database/queries/NovelQueriesV2';
+import { LibraryNovelInfo } from '@database/types';
 import SourceScreenSkeletonLoading from '@screens/browse/loadingAnimation/SourceScreenSkeletonLoading';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 

@@ -1,14 +1,13 @@
 import React from 'react';
 import { Dimensions, StatusBar } from 'react-native';
 import WebView, { WebViewProps } from 'react-native-webview';
-import RNFetchBlob from 'rn-fetch-blob';
 
 import { useTheme } from '@hooks/useTheme';
 import { ChapterItem } from '@database/types';
 import { useReaderSettings } from '@redux/hooks';
 import { getString } from '@strings/translations';
 
-import { sourceManager } from '../../../sources/sourceManager';
+import { getPlugin } from '@plugins/pluginManager';
 
 type WebViewPostEvent = {
   type: string;
@@ -17,7 +16,7 @@ type WebViewPostEvent = {
 
 type WebViewReaderProps = {
   chapterInfo: {
-    sourceId: number;
+    pluginId: string;
     chapterId: string;
     chapterUrl: string;
     novelId: string;
@@ -66,7 +65,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
   const { theme: backgroundColor } = readerSettings;
 
   const layoutHeight = Dimensions.get('window').height;
-  const headers = sourceManager(chapterInfo.sourceId)?.headers;
+  const plugin = getPlugin(chapterInfo.pluginId);
   return (
     <WebView
       ref={webViewRef}
@@ -93,8 +92,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
             break;
           case 'imgfile':
             if (event.data && typeof event.data === 'string') {
-              RNFetchBlob.fetch('get', event.data, headers).then(res => {
-                const base64 = res.base64();
+              plugin.fetchImage(event.data).then(base64 => {
                 webViewRef.current?.injectJavaScript(
                   `document.querySelector("img[delayed-src='${event.data}']").src="data:image/jpg;base64,${base64}";
                   document.querySelector("img[delayed-src='${event.data}']").classList.remove("load-icon");
@@ -226,7 +224,9 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                       </chapter>
                     </div>
                     <script>
-                    if(!document.querySelector("input[offline]") && ${!!headers}){
+                    if(!document.querySelector("input[offline]") && ${
+                      plugin.protected
+                    }){
                       document.querySelectorAll("img").forEach(img => {
                         window.ReactNativeWebView.postMessage(JSON.stringify({type:"imgfile",data:img.getAttribute("delayed-src")}));
                       });
