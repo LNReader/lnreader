@@ -16,7 +16,7 @@ const dbName = 'lnreader.db';
 
 const db = SQLite.openDatabase(dbName);
 
-export const createTables = async () => {
+export const createTables = () => {
   db.transaction(tx => {
     tx.executeSql(createCategoriesTableQuery, [], () => {
       tx.executeSql(
