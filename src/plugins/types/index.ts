@@ -1,15 +1,6 @@
 import { SelectedFilter, SourceFilter } from './filterTypes';
 import { Languages } from '@utils/constants/languages';
 
-export interface Source {
-  pluginId: string;
-  sourceName: string;
-  url: string;
-  lang: string;
-  icon: string;
-  isNsfw?: boolean;
-}
-
 export interface SourceNovelItem {
   pluginId: string;
   novelName: string;
@@ -25,15 +16,16 @@ export interface SourceChapterItem {
 
 export interface SourceNovel {
   pluginId: string;
-  sourceName: string;
-  url: string;
+  pluginName: string;
   novelUrl: string;
   novelName?: string;
   novelCover?: string;
   genre?: string;
   summary?: string;
   author?: string;
+  artist?: string;
   status?: string;
+  inLibrary: number;
   chapters?: SourceChapterItem[];
 }
 
