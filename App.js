@@ -13,7 +13,7 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/lib/integration/react';
 import * as Notifications from 'expo-notifications';
 
-import { createDatabase } from '@database/db';
+import { createTables } from '@database/db';
 import { persistor, store } from '@redux/store';
 import AppErrorBoundary from '@components/AppErrorBoundary/AppErrorBoundary';
 import { collectPlugins } from '@plugins/pluginManager';
@@ -33,7 +33,7 @@ Notifications.setNotificationHandler({
 const App = () => {
   useEffect(async () => {
     await collectPlugins();
-    await createDatabase();
+    await createTables();
     LottieSplashScreen.hide();
   }, []);
 

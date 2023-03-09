@@ -5,6 +5,35 @@ import { txnErrorCallback } from '../utils/helpers';
 
 const db = SQLite.openDatabase('lnreader.db');
 
+export const getNovelsWithCatogory = (
+  categoryId: number,
+  onlyOngoingNovels?: boolean,
+): Promise<NovelInfo[]> => {
+  let query = `
+    SELECT
+    * 
+    FROM Novel
+    JOIN (
+        SELECT novel_id 
+            FROM NovelCategory WHERE categoryId = ?
+      ) as NC
+    ON Novel.id = NC.novelId
+  `;
+  if (onlyOngoingNovels) {
+    query += " AND status NOT LIKE 'Completed'";
+  }
+
+  return new Promise(resolve =>
+    db.transaction(tx => {
+      tx.executeSql(
+        query,
+        [categoryId],
+        (txObj, { rows }) => resolve((rows as any)._array),
+        txnErrorCallback,
+      );
+    }),
+  );
+};
 export const getLibraryNovelsFromDb = (
   onlyOngoingNovels?: boolean,
 ): Promise<NovelInfo[]> => {

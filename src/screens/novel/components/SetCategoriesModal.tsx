@@ -11,27 +11,23 @@ import { getString } from '@strings/translations';
 import { getCategoriesFromDb } from '../../../database/queries/CategoryQueries';
 import { Category } from '../../../database/types';
 import { Checkbox } from '@components/Checkbox/Checkbox';
-import { isArray, xor } from 'lodash-es';
-import {
-  updateNovelCategoryById,
-  updateNovelCategoryByIds,
-} from '@database/queries/NovelQueriesV2';
+import { xor } from 'lodash-es';
 
 interface SetCategoryModalProps {
-  novelId: number | number[];
+  // novelId: number | number[];
   visible: boolean;
   currentCategoryIds: number[];
   onEditCategories?: () => void;
   closeModal: () => void;
-  onSuccess?: () => void | Promise<void>;
+  // onSuccess?: () => void | Promise<void>;
 }
 
 const SetCategoryModal: React.FC<SetCategoryModalProps> = ({
-  novelId,
+  // novelId,
   currentCategoryIds,
   closeModal,
   visible,
-  onSuccess,
+  // onSuccess,
   onEditCategories,
 }) => {
   const theme = useTheme();
@@ -117,7 +113,7 @@ const SetCategoryModal: React.FC<SetCategoryModalProps> = ({
               setSelectedCategories(currentCategoryIds);
             }}
           />
-          {categories?.length ? (
+          {/* {categories?.length ? (
             <Button
               title={getString('common.ok')}
               onPress={() => {
@@ -130,7 +126,7 @@ const SetCategoryModal: React.FC<SetCategoryModalProps> = ({
                 onSuccess?.();
               }}
             />
-          ) : null}
+          ) : null} */}
         </View>
       </Modal>
     </Portal>

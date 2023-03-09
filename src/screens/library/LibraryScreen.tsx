@@ -26,7 +26,7 @@ import {
   markAllChaptersRead,
   markAllChaptersUnread,
 } from '../../database/queries/ChapterQueries';
-import { unfollowNovel } from '../../database/queries/NovelQueries';
+import { toggleNovelToLibrary } from '@database/queries/NovelQueries';
 import SetCategoryModal from '@screens/novel/components/SetCategoriesModal';
 import useBoolean from '@hooks/useBoolean';
 import { debounce, intersection } from 'lodash-es';
@@ -139,7 +139,7 @@ const LibraryScreen = () => {
 
     library.map(category =>
       category.novels
-        .filter(novel => selectedNovelIds.includes(novel.novelId))
+        .filter(novel => selectedNovelIds.includes(novel.id))
         .map(novel => {
           categoryIds.push(JSON.parse(novel.categoryIds));
         }),
@@ -303,7 +303,7 @@ const LibraryScreen = () => {
             {
               icon: 'delete-outline',
               onPress: () => {
-                selectedNovelIds.map(id => unfollowNovel(id));
+                selectedNovelIds.map(id => toggleNovelToLibrary(id));
                 setSelectedNovelIds([]);
               },
             },

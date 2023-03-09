@@ -1,8 +1,10 @@
 import * as Notifications from 'expo-notifications';
 import BackgroundService from 'react-native-background-actions';
 
-import { getCategoryNovelsFromDb } from '../../database/queries/NovelQueriesV2';
-import { getLibraryNovelsFromDb } from '../../database/queries/LibraryQueries';
+import {
+  getNovelsWithCatogory,
+  getLibraryNovelsFromDb,
+} from '../../database/queries/LibraryQueries';
 
 import { showToast } from '../../hooks/showToast';
 import { updateNovel } from './LibraryUpdateQueries';
@@ -15,7 +17,7 @@ const updateLibrary = async options => {
   let libraryNovels = [];
 
   if (categoryId) {
-    libraryNovels = await getCategoryNovelsFromDb(
+    libraryNovels = await getNovelsWithCatogory(
       categoryId,
       onlyUpdateOngoingNovels,
     );

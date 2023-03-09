@@ -1,6 +1,6 @@
 import { showToast } from '../../hooks/showToast';
 
-import { fetchNovel } from '../Source/source';
+import { fetchNovel } from '../plugin/fetch';
 import { downloadChapter } from '../../database/queries/ChapterQueries';
 
 import * as SQLite from 'expo-sqlite';

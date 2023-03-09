@@ -12,7 +12,6 @@ import { useTheme } from '@hooks/useTheme';
 import { GlobalSearchResult } from '../hooks/useGlobalSearch';
 import GlobalSearchNovelItem from './GlobalSearchNovelItem';
 import { useLibraryNovels } from '@screens/library/hooks/useLibrary';
-import { insertNovelInLibrary } from '../../../database/queries/NovelQueriesV2';
 import { LibraryNovelInfo } from '../../../database/types';
 import GlobalSearchSkeletonLoading from '@screens/browse/loadingAnimation/GlobalSearchSkeletonLoading';
 import { useCategorySettings } from '@hooks/useSettings';

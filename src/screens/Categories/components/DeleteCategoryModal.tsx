@@ -9,7 +9,6 @@ import { deleteCategoryById } from '../../../database/queries/CategoryQueries';
 import { useTheme } from '@hooks/useTheme';
 
 import { getString } from '@strings/translations';
-import { resetCategoryIdsToDefault } from '../../../database/queries/NovelQueriesV2';
 
 interface DeleteCategoryModalProps {
   category: Category;
@@ -48,7 +47,6 @@ const DeleteCategoryModal: React.FC<DeleteCategoryModalProps> = ({
             title={getString('common.ok')}
             onPress={() => {
               deleteCategoryById(category.id);
-              resetCategoryIdsToDefault(category.id);
               closeModal();
               onSuccess();
             }}
