@@ -2,7 +2,7 @@ export const createCategoriesTableQuery = `
   CREATE TABLE IF NOT EXISTS Category (
     id INTEGER PRIMARY KEY AUTOINCREMENT, 
     name TEXT NOT NULL,
-    sort INTEGER DEFAULT NULL
+    sort INTEGER AUTOINCREMENT
   )
 `;
 

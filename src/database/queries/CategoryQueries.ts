@@ -1,11 +1,12 @@
 import * as SQLite from 'expo-sqlite';
 import { noop } from 'lodash-es';
 import { Category } from '../types';
+import { showToast } from '@hooks/showToast';
 import { txnErrorCallback } from '../utils/helpers';
 const db = SQLite.openDatabase('lnreader.db');
 
 const getCategoriesQuery = `
-  SELECT * FROM categories ORDER BY CASE WHEN id > 1 THEN 1 ELSE 0 END, IFNULL(sort, 9999)
+  SELECT * FROM categories ORDER BY sort
 	`;
 
 export const getCategoriesFromDb = (): Promise<Category[]> => {
@@ -21,31 +22,25 @@ export const getCategoriesFromDb = (): Promise<Category[]> => {
   );
 };
 
-const createCategoryQuery = `
-  INSERT INTO categories (name) 
-  VALUES 
-    (?)
-	`;
+const createCategoryQuery = 'INSERT INTO categories (name) VALUES (?)';
 
 export const createCategory = (categoryName: string): void =>
   db.transaction(tx =>
     tx.executeSql(createCategoryQuery, [categoryName], noop, txnErrorCallback),
   );
 
-const deleteCategoryQuery = `
-  DELETE FROM category
-  WHERE 
-    id = ?
-	`;
+const deleteCategoryQuery = 'DELETE FROM category WHERE id = ?';
 
-export const deleteCategoryById = (categoryId: number): void =>
+export const deleteCategoryById = (categoryId: number): void => {
+  if (categoryId === 1) {
+    return showToast('You cant delete default category');
+  }
   db.transaction(tx =>
     tx.executeSql(deleteCategoryQuery, [categoryId], noop, txnErrorCallback),
   );
+};
 
-const updateCategoryQuery = `
-  UPDATE Category SET name = ? WHERE id = ?
-	`;
+const updateCategoryQuery = 'UPDATE Category SET name = ? WHERE id = ?';
 
 export const updateCategory = (
   categoryId: number,
@@ -82,9 +77,7 @@ export const isCategoryNameDuplicate = (
   );
 };
 
-const updateCategoryOrderQuery = `
-  UPDATE Category SET sort = ? WHERE id = ?
-	`;
+const updateCategoryOrderQuery = 'UPDATE Category SET sort = ? WHERE id = ?';
 
 export const updateCategoryOrderInDb = (categories: Category[]): void =>
   db.transaction(tx => {
