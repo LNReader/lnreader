@@ -1,7 +1,7 @@
 export const createNovelTableQuery = `
   CREATE TABLE IF NOT EXISTS Novel (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    url TEXT NOT NULL,
+    url TEXT NOT NULL UNIQUE,
     plugin_id TEXT NOT NULL,
     name TEXT NOT NULL,
     cover TEXT, 

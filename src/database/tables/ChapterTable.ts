@@ -2,7 +2,7 @@ export const createChapterTableQuery = `
     CREATE TABLE IF NOT EXISTS Chapter (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         novel_id INTEGER NOT NULL,
-        url TEXT NOT NULL,
+        url TEXT NOT NULL UNIQUE,
         name TEXT NOT NULL,
         release_time TEXT,
         bookmark INTEGER DEFAULT 0, 
