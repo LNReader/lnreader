@@ -52,7 +52,6 @@ export interface History {
 }
 
 export interface Update {
-  id: number;
   pluginId: string;
   novelId: number;
   novelName: string;
@@ -61,11 +60,8 @@ export interface Update {
   chapterId: number;
   chapterUrl: string;
   chapterName: string;
-  downloaded: number;
-  read: number;
   updateTime: string;
-  bookmark: number;
-  releaseDate: string;
+  releaseTime: string;
 }
 
 export interface Category {

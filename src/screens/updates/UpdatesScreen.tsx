@@ -2,18 +2,18 @@ import React from 'react';
 import dayjs from 'dayjs';
 import { RefreshControl, SectionList, StyleSheet, Text } from 'react-native';
 
-import { EmptyView, ErrorScreenV2, SearchbarV2 } from '../../components';
+import { EmptyView, ErrorScreenV2, SearchbarV2 } from '@components';
 
-import { convertDateToISOString } from '../../database/utils/convertDateToISOString';
+import { convertDateToISOString } from '@database/utils/convertDateToISOString';
 
-import { Update } from '../../database/types';
+import { Update } from '@database/types';
 
-import { useSearch, useUpdates } from '../../hooks';
-import { useAppDispatch } from '../../redux/hooks';
-import { updateLibraryAction } from '../../redux/updates/updates.actions';
+import { useSearch, useUpdates } from '@hooks';
+import { useAppDispatch } from '@redux/hooks';
+import { updateLibraryAction } from '@redux/updates/updates.actions';
 
-import { getString } from '../../../strings/translations';
-import { ThemeColors } from '../../theme/types';
+import { getString } from '@strings/translations';
+import { ThemeColors } from '@theme/types';
 import { useTheme } from '@hooks/useTheme';
 import UpdatesSkeletonLoading from './components/UpdatesSkeletonLoading';
 import UpdateNovelCard from './components/UpdateNovelCard';

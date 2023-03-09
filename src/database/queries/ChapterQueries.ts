@@ -8,6 +8,7 @@ import { SourceChapter } from '@plugins/types';
 import * as cheerio from 'cheerio';
 import { txnErrorCallback } from '@database/utils/helpers';
 import { Plugin } from '@plugins/types';
+import { Update } from '../types';
 
 const db = SQLite.openDatabase('lnreader.db');
 
@@ -542,18 +543,25 @@ export const deleteDownloads = async () => {
   });
 };
 
-export const updateChapterDownloadedQuery = `
-  UPDATE 
-    Chapter 
-  SET 
-    isDownloaded = 1
-  WHERE 
-    id = ?`;
+const getUpdatesQuery = `
+SELECT
+  pluginId, Novel.id as novelId, Novel.name as novelName, Novel.url as novelUrl, cover,
+  Chapter.id as chapterId, Chapter.url as chapterUrl, Chapter.name as chapterName, releaseTime,
+  updateTime
+FROM
+  Chapter
+JOIN
+  Novel
+ON Chapter.novel_id = Novel.id AND Chapter.is_downloaded = 1
+JOIN Download ON Chapter.id = Download.chapter_id
+`;
 
-export const updateChapterDeletedQuery = `
-  UPDATE 
-    Chapter_id 
-  SET 
-    isDownload = 0
-  WHERE 
-    chapterId = ?`;
+export const getUpdatesFromDb = (): Promise<Update[]> => {
+  return new Promise(resolve =>
+    db.transaction(tx => {
+      tx.executeSql(getUpdatesQuery, [], (txObj, { rows }) =>
+        resolve((rows as any)._array),
+      );
+    }),
+  );
+};
