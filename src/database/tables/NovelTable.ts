@@ -2,7 +2,7 @@ export const createNovelTableQuery = `
   CREATE TABLE IF NOT EXISTS Novel (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     url TEXT NOT NULL UNIQUE,
-    plugin_id TEXT NOT NULL,
+    pluginId TEXT NOT NULL,
     name TEXT NOT NULL,
     cover TEXT, 
     summary TEXT, 
@@ -10,6 +10,6 @@ export const createNovelTableQuery = `
     artist TEXT, 
     status TEXT, 
     genres TEXT,
-    in_libary INTEGER DEFAULT 0
+    inLibary INTEGER DEFAULT 0
   )
 `;
