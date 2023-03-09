@@ -11,7 +11,7 @@ import {
   getNextChapter,
   getPrevChapter,
 } from '../../database/queries/ChapterQueries';
-import { fetchChapter } from '../../services/Source/source';
+import { fetchChapter } from '../../services/plugin/fetch';
 import { showToast } from '../../hooks/showToast';
 import {
   usePosition,

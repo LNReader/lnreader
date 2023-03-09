@@ -150,13 +150,6 @@ export const followNovelAction = novel => async dispatch => {
     payload: { novelUrl: novel.novelUrl, followed: !novel.followed },
   });
 
-  // const res = await getLibrary();
-
-  // dispatch({
-  //   type: GET_LIBRARY_NOVELS,
-  //   payload: res,
-  // });
-
   showToast(!novel.followed ? 'Added to library' : 'Removed from library');
 };
 

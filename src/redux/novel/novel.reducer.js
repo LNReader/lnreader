@@ -28,7 +28,6 @@ const initialState = {
 
 const novelReducer = (state = initialState, action) => {
   const { type, payload } = action;
-  console.log(type);
   switch (type) {
     case LOADING_NOVEL:
       return { ...state, loading: true };

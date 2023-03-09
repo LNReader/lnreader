@@ -26,7 +26,6 @@ export const useBrowseSource = (
       if (isScreenMounted.current === true) {
         try {
           const plugin = getPlugin(pluginId);
-          plugin.popularNovels(0); // temporary fix
           const res = await plugin.popularNovels(page, {
             showLatestNovels,
             filters,
@@ -52,15 +51,6 @@ export const useBrowseSource = (
     hasNextPage && setCurrentPage(prevState => prevState + 1);
   };
 
-  useEffect(() => {
-    fetchNovels(currentPage, selectedFilters);
-  }, [fetchNovels, currentPage]);
-
-  const refetchNovels = () => {
-    setCurrentPage(1);
-    fetchNovels(1);
-  };
-
   /**
    * On screen unmount
    */
@@ -69,6 +59,15 @@ export const useBrowseSource = (
       isScreenMounted.current = false;
     };
   }, []);
+
+  useEffect(() => {
+    fetchNovels(currentPage, selectedFilters);
+  }, [fetchNovels, currentPage]);
+
+  const refetchNovels = () => {
+    setCurrentPage(1);
+    fetchNovels(1);
+  };
 
   const clearFilters = useCallback(() => setSelectedFilters(undefined), []);
 

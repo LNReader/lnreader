@@ -99,7 +99,6 @@ const Novel = ({ route, navigation }) => {
   );
 
   const { defaultCategoryId = 1 } = useCategorySettings();
-
   useEffect(() => {
     dispatch(
       getNovelAction(

@@ -32,6 +32,10 @@ const initPlugin = async (rawCode: string, path?: string) => {
     Function('require', 'module', rawCode)(_require, _module); // eslint-disable-line no-new-func
     _module.exports.path = path || `${pluginsFolder}/${_module.exports.id}.js`;
     const plugin: Plugin = _module.exports;
+    plugin.popularNovels(1);
+    plugin.parseNovelAndChapters('https://google.com');
+    plugin.parseChapter('https://google.com', 'https://google.com');
+    plugin.searchNovels('');
     return plugin;
   } catch (e) {
     showToast('Some non-plugin files are found');
