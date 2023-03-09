@@ -12,12 +12,12 @@ import { txnErrorCallback } from '../utils/helpers';
 import { noop } from 'lodash-es';
 import { getString } from '@strings/translations';
 
-import { NovelInfo } from '../types';
+import { NovelInfo, LibraryNovelInfo } from '../types';
 
 const insertNovelQuery =
   'INSERT INTO Novel (url, plugin_id, name, cover, summary, author, artist, status, genres, in_libary) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
-export const insertNovel = async (novel: NovelInfo) => {
+export const insertNovel = async (novel: NovelInfo): Promise<number> => {
   return new Promise(resolve =>
     db.transaction(tx =>
       tx.executeSql(
@@ -61,14 +61,15 @@ export const toggleNovelToLibrary = async (
   }
 };
 
-export const getNovel = async (novelUrl: string) => {
+export const getNovel = async (novelUrl: string): Promise<NovelInfo> => {
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
         'SELECT * FROM Novel WHERE url = ?',
         [novelUrl],
         (txObj, { rows }) => {
-          noop(txObj), resolve(rows.item(0));
+          noop(txObj);
+          resolve(rows.item(0));
         },
         txnErrorCallback,
       );
@@ -81,7 +82,7 @@ export const deleteNovelCache = () => {
     tx.executeSql(
       'DELETE FROM Novel WHERE in_library = 0',
       [],
-      () => showToast('Entries deleted'),
+      () => showToast('Category deleted'),
       txnErrorCallback,
     );
   });
@@ -222,4 +223,55 @@ export const pickCustomNovelCover = async (novelId: number) => {
     });
     return image.uri;
   }
+};
+
+const getCategoryNovelsQuery = `
+SELECT 
+NIL.id, NIL.url, NIL.plugin_id as pluginId, NIL.name, cover, status, in_library as inLibrary, 
+COUNT(unread) as chaptersUnread, COUNT(is_downloaded) as chaptersDownloaded 
+FROM 
+(
+  SELECT * FROM
+  Novel JOIN (
+    SELECT novel_id FROM NovelCategory WHERE category_id = ?
+  ) as NC ON Novel.id = NC.novel_id
+	WHERE in_library = 1
+)  as NIL JOIN Chapter ON NIL.id = Chapter.novel_id
+WHERE status NOT LIKE ?
+GROUP BY NIL.id
+`;
+
+export const getCategoryNovelsFromDb = async (
+  categoryId: number,
+  onlyOngoingNovels?: boolean,
+): Promise<LibraryNovelInfo[]> => {
+  return new Promise(resolve => {
+    db.transaction(tx => {
+      tx.executeSql(
+        getCategoryNovelsQuery,
+        [categoryId, onlyOngoingNovels || ''],
+        (txObj, { rows }) => {
+          noop(txObj);
+          resolve((rows as any)._array);
+        },
+        txnErrorCallback,
+      );
+    });
+  });
+};
+
+export const updateNovelCategoryById = async (
+  novelId: number,
+  categoryIds: number[],
+) => {
+  db.transaction(tx => {
+    categoryIds.forEach(categoryId => {
+      tx.executeSql(
+        'INSERT INTO NovelCategory (novel_id, category_id) VALUES (?, ?)',
+        [novelId, categoryId],
+        noop,
+        txnErrorCallback,
+      );
+    });
+  });
 };

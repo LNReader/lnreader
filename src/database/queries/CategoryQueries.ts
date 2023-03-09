@@ -33,7 +33,7 @@ export const createCategory = (categoryName: string): void =>
   );
 
 const deleteCategoryQuery = `
-  DELETE FROM categories 
+  DELETE FROM category
   WHERE 
     id = ?
 	`;
@@ -44,7 +44,7 @@ export const deleteCategoryById = (categoryId: number): void =>
   );
 
 const updateCategoryQuery = `
-  UPDATE categories SET name = ? WHERE id = ?
+  UPDATE Category SET name = ? WHERE id = ?
 	`;
 
 export const updateCategory = (
@@ -61,7 +61,7 @@ export const updateCategory = (
   );
 
 const isCategoryNameDuplicateQuery = `
-  SELECT COUNT(*) as isDuplicate FROM categories WHERE name = ?
+  SELECT COUNT(*) as isDuplicate FROM Category WHERE name = ?
 	`;
 
 export const isCategoryNameDuplicate = (
@@ -83,7 +83,7 @@ export const isCategoryNameDuplicate = (
 };
 
 const updateCategoryOrderQuery = `
-  UPDATE categories SET sort = ? WHERE id = ?
+  UPDATE Category SET sort = ? WHERE id = ?
 	`;
 
 export const updateCategoryOrderInDb = (categories: Category[]): void =>
