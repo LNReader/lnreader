@@ -12,7 +12,7 @@ import { txnErrorCallback } from '../utils/helpers';
 import { noop } from 'lodash-es';
 import { getString } from '@strings/translations';
 
-import { NovelInfo, LibraryNovelInfo } from '../types';
+import { NovelInfo } from '../types';
 
 const insertNovelQuery =
   'INSERT INTO Novel (url, plugin_id, name, cover, summary, author, artist, status, genres, in_libary) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
@@ -223,41 +223,6 @@ export const pickCustomNovelCover = async (novelId: number) => {
     });
     return image.uri;
   }
-};
-
-const getCategoryNovelsQuery = `
-SELECT 
-NIL.id, NIL.url, NIL.plugin_id as pluginId, NIL.name, cover, status, in_library as inLibrary, 
-COUNT(unread) as chaptersUnread, COUNT(is_downloaded) as chaptersDownloaded 
-FROM 
-(
-  SELECT * FROM
-  Novel JOIN (
-    SELECT novel_id FROM NovelCategory WHERE category_id = ?
-  ) as NC ON Novel.id = NC.novel_id
-	WHERE in_library = 1
-)  as NIL JOIN Chapter ON NIL.id = Chapter.novel_id
-WHERE status NOT LIKE ?
-GROUP BY NIL.id
-`;
-
-export const getCategoryNovelsFromDb = async (
-  categoryId: number,
-  onlyOngoingNovels?: boolean,
-): Promise<LibraryNovelInfo[]> => {
-  return new Promise(resolve => {
-    db.transaction(tx => {
-      tx.executeSql(
-        getCategoryNovelsQuery,
-        [categoryId, onlyOngoingNovels || ''],
-        (txObj, { rows }) => {
-          noop(txObj);
-          resolve((rows as any)._array);
-        },
-        txnErrorCallback,
-      );
-    });
-  });
 };
 
 export const updateNovelCategoryById = async (

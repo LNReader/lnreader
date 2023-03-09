@@ -1,3 +1,4 @@
+import { NovelStatus } from '@plugins/types';
 export interface NovelInfo {
   id: number;
   url: string;
@@ -7,12 +8,13 @@ export interface NovelInfo {
   summary?: string;
   author?: string;
   artist?: string;
-  status?: string;
+  status?: NovelStatus;
   genres?: string;
   inLibrary: number;
 }
 
 export interface LibraryNovelInfo extends NovelInfo {
+  category: string;
   chaptersUnread: number;
   chaptersDownloaded: number;
 }

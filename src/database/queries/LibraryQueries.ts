@@ -5,87 +5,10 @@ import { txnErrorCallback } from '../utils/helpers';
 
 const db = SQLite.openDatabase('lnreader.db');
 
-const getLibraryQuery = `
-    SELECT novels.*, C.chaptersUnread, D.chaptersDownloaded, H.lastReadAt, U.lastUpdatedAt
-    FROM novels
-    LEFT JOIN (
-        SELECT chapters.novelId, COUNT(*) AS chaptersUnread 
-        FROM chapters
-        WHERE chapters.read = 0
-        GROUP BY chapters.novelId
-    ) AS C
-    ON novels.novelId = C.novelId
-    LEFT JOIN (
-        SELECT chapters.novelId, COUNT(*) AS chaptersDownloaded 
-        FROM chapters
-        WHERE chapters.downloaded = 1
-        GROUP BY chapters.novelId
-    ) AS D
-    ON novels.novelId = D.novelId
-    LEFT JOIN (
-        SELECT history.historyNovelId as novelId, historyTimeRead AS lastReadAt
-        FROM history
-        GROUP BY history.historyNovelId
-        HAVING history.historyTimeRead = MAX(history.historyTimeRead)
-        ORDER BY history.historyTimeRead DESC
-    ) AS H
-    ON novels.novelId = H.novelId
-    LEFT JOIN (
-      SELECT updates.novelId, updateTime AS lastUpdatedAt
-      FROM updates
-      GROUP BY updates.novelId
-      HAVING updates.updateTime = MAX(updates.updateTime)
-      ORDER BY updates.updateTime DESC
-    ) AS U
-    ON novels.novelId = U.novelId
-    WHERE novels.followed = 1
-    `;
-
-export const getLibrary = ({
-  filter,
-  searchText,
-  sortOrder,
-  downloadedOnlyMode,
-}: {
-  sortOrder?: string;
-  filter?: string;
-  searchText?: string;
-  downloadedOnlyMode?: boolean;
-}): Promise<LibraryNovelInfo[]> => {
-  let query = getLibraryQuery;
-
-  if (filter) {
-    query += ` AND ${filter}`;
-  }
-
-  if (downloadedOnlyMode) {
-    query += ' ' + LibraryFilter.DownloadedOnly;
-  }
-
-  if (searchText) {
-    query += ` AND novelName LIKE '%${searchText}%'`;
-  }
-
-  if (sortOrder) {
-    query += ` ORDER BY ${sortOrder}`;
-  }
-
-  return new Promise(resolve =>
-    db.transaction(tx => {
-      tx.executeSql(
-        query,
-        undefined,
-        (txObj, { rows: { _array } }) => resolve(_array),
-        txnErrorCallback,
-      );
-    }),
-  );
-};
-
 export const getLibraryNovelsFromDb = (
   onlyOngoingNovels?: boolean,
 ): Promise<NovelInfo[]> => {
-  let getLibraryNovelsQuery = 'SELECT * FROM novels WHERE followed = 1';
+  let getLibraryNovelsQuery = 'SELECT * FROM Novel WHERE in_library = 1';
 
   if (onlyOngoingNovels) {
     getLibraryNovelsQuery += " AND status NOT LIKE 'Completed'";
@@ -96,7 +19,72 @@ export const getLibraryNovelsFromDb = (
       tx.executeSql(
         getLibraryNovelsQuery,
         undefined,
-        (txObj, { rows: { _array } }) => resolve(_array),
+        (txObj, { rows }) => resolve((rows as any)._array),
+        txnErrorCallback,
+      );
+    }),
+  );
+};
+
+const getLibraryWithCategoryQuery = `
+  SELECT 
+  NIL.*, chaptersUnread, chaptersDownloaded
+  FROM 
+  (
+    SELECT 
+    Novel.id, Novel.url, name, cover,  
+      Novel.plugin_id as pluginId, Novel.in_library as inLibrary, 
+      category 
+    FROM
+    Novel JOIN (
+      SELECT novel_id, name as category FROM (NovelCategory JOIN Category ON NovelCategory.category_id = Category.id)
+    ) as NC ON Novel.id = NC.novel_id
+    WHERE in_library = 1
+    GROUP BY Novel.id
+  ) as NIL 
+  JOIN 
+  (
+    SELECT COUNT(unread) as chaptersUnread, COUNT(is_downloaded) as chaptersDownloaded, novel_id
+      FROM
+      Chapter
+    GROUP BY novel_id
+  ) as C
+  ON NIL.id = C.novel_id 
+`;
+
+export const getLibraryWithCategory = ({
+  filter,
+  searchText,
+  sortOrder,
+  downloadedOnlyMode,
+}: {
+  sortOrder?: string;
+  filter?: string;
+  searchText?: string;
+  downloadedOnlyMode?: boolean;
+}): Promise<LibraryNovelInfo[]> => {
+  let query = getLibraryWithCategoryQuery;
+  if (filter) {
+    query += ` AND ${filter}`;
+  }
+
+  if (downloadedOnlyMode) {
+    query += ' ' + LibraryFilter.DownloadedOnly;
+  }
+
+  if (searchText) {
+    query += ` AND name LIKE '%${searchText}%'`;
+  }
+  if (sortOrder) {
+    query += `ORDER BY ${sortOrder}`;
+  }
+
+  return new Promise(resolve =>
+    db.transaction(tx => {
+      tx.executeSql(
+        query,
+        undefined,
+        (txObj, { rows }) => resolve((rows as any)._array),
         txnErrorCallback,
       );
     }),

@@ -6,7 +6,7 @@ import { txnErrorCallback } from '../utils/helpers';
 const db = SQLite.openDatabase('lnreader.db');
 
 const getCategoriesQuery = `
-  SELECT * FROM categories ORDER BY sort
+  SELECT * FROM Category ORDER BY sort
 	`;
 
 export const getCategoriesFromDb = (): Promise<Category[]> => {
@@ -22,14 +22,14 @@ export const getCategoriesFromDb = (): Promise<Category[]> => {
   );
 };
 
-const createCategoryQuery = 'INSERT INTO categories (name) VALUES (?)';
+const createCategoryQuery = 'INSERT INTO Category (name) VALUES (?)';
 
 export const createCategory = (categoryName: string): void =>
   db.transaction(tx =>
     tx.executeSql(createCategoryQuery, [categoryName], noop, txnErrorCallback),
   );
 
-const deleteCategoryQuery = 'DELETE FROM category WHERE id = ?';
+const deleteCategoryQuery = 'DELETE FROM Category WHERE id = ?';
 
 export const deleteCategoryById = (categoryId: number): void => {
   if (categoryId === 1) {
