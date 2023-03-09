@@ -8,7 +8,7 @@ import NovelCover from '@components/NovelCover';
 import Bottomsheet from '@gorhom/bottom-sheet';
 import FilterBottomSheet from './components/FilterBottomSheet';
 
-import { useCategorySettings, usePreviousRouteName, useSearch } from '@hooks';
+import { usePreviousRouteName, useSearch } from '@hooks';
 import { useTheme } from '@hooks/useTheme';
 import { useBrowseSource, useSearchSource } from './useBrowseSource';
 
@@ -16,7 +16,7 @@ import { SourceNovelItem } from '@plugins/types';
 import { getString } from '@strings/translations';
 import { StyleSheet } from 'react-native';
 import { useLibraryNovels } from '@screens/library/hooks/useLibrary';
-import { insertNovelInLibrary } from '@database/queries/NovelQueriesV2';
+import { toggleNovelToLibrary } from '@database/queries/NovelQueries';
 import { LibraryNovelInfo } from '@database/types';
 import SourceScreenSkeletonLoading from '@screens/browse/loadingAnimation/SourceScreenSkeletonLoading';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -51,7 +51,6 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
     refetchNovels,
   } = useBrowseSource(pluginId, showLatestNovels);
 
-  const { defaultCategoryId = 1 } = useCategorySettings();
   const {
     isSearching,
     searchResults,
@@ -92,7 +91,7 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
 
   const novelInLibrary = (novelUrl: string) =>
     library?.some(
-      novel => novel.novelUrl === novelUrl,
+      novel => novel.url === novelUrl,
       // && novel.sourceId === pluginId,
     );
 
@@ -102,7 +101,7 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
         'Novel' as never,
         {
           ...item,
-          sourceId: pluginId,
+          pluginId: pluginId,
         } as never,
       ),
     [pluginId],
@@ -133,7 +132,7 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
         <NovelList
           data={novelList}
           renderItem={({ item }) => {
-            const inLibrary = novelInLibrary(item.novelUrl);
+            const inLibrary = novelInLibrary(item.pluginId);
 
             return (
               <NovelCover
@@ -146,26 +145,19 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
                   setLibrary(prevValues => {
                     if (inLibrary) {
                       return [
-                        ...prevValues.filter(
-                          novel => novel.novelUrl !== item.novelUrl,
-                        ),
+                        ...prevValues.filter(novel => novel.url !== item.url),
                       ];
                     } else {
                       return [
                         ...prevValues,
                         {
-                          novelUrl: item.novelUrl,
+                          url: item.url,
                           pluginId,
                         } as LibraryNovelInfo,
                       ];
                     }
                   });
-                  insertNovelInLibrary(
-                    pluginId,
-                    item.novelUrl,
-                    inLibrary,
-                    defaultCategoryId,
-                  );
+                  toggleNovelToLibrary(item.id, inLibrary ? 1 : 0);
                 }}
                 selectedNovels={[]}
               />

@@ -45,12 +45,12 @@ export const insertNovel = async (novel: NovelInfo): Promise<number> => {
 };
 
 export const toggleNovelToLibrary = async (
-  novel: NovelInfo,
+  novelId: number,
   inLibrary: number,
 ) => {
   db.transaction(tx => {
     tx.executeSql('UPDATE Novel SET inLibrary = ? WHERE id = ?'),
-      [1 - inLibrary, novel.id], // novel.id is enough bc when you browse a novel, it must be in db (cache)
+      [1 - inLibrary, novelId],
       noop,
       txnErrorCallback;
   });

@@ -3,9 +3,10 @@ import { Languages } from '@utils/constants/languages';
 
 export interface SourceNovelItem {
   pluginId: string;
-  novelName: string;
-  novelUrl: string;
-  novelCover?: string;
+  id: number;
+  name: string;
+  url: string;
+  cover?: string;
 }
 
 export interface SourceChapterItem {
