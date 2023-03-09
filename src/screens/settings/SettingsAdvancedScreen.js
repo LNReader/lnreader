@@ -6,7 +6,6 @@ import { useTheme } from '@hooks/useTheme';
 import { showToast } from '../../hooks/showToast';
 
 import { deleteNovelCache } from '../../database/queries/NovelQueries';
-import { clearUpdates } from '../../database/queries/UpdateQueries';
 import { clearCoverCache } from '../../services/utils/coverCache';
 import { getString } from '@strings/translations';
 import useBoolean from '@hooks/useBoolean';
@@ -50,12 +49,6 @@ const AdvancedSettings = ({ navigation }) => {
           title="Clear database"
           description="Delete history for novels not in your library"
           onPress={showClearDatabaseDialog}
-          theme={theme}
-        />
-        <List.Item
-          title="Clear updates tab"
-          description="Clears chapter entries in updates tab"
-          onPress={showClearUpdatesDialog}
           theme={theme}
         />
         <List.Item
