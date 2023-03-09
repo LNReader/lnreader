@@ -61,7 +61,7 @@ const getLibraryWithCategoryQuery = `
   FROM 
   (
     SELECT 
-      Novel.*
+      Novel.*,
       category 
     FROM
     Novel JOIN (

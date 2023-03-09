@@ -10,6 +10,6 @@ export const createNovelTableQuery = `
     artist TEXT, 
     status TEXT, 
     genres TEXT,
-    inLibary INTEGER DEFAULT 0
+    inLibrary INTEGER DEFAULT 0
   )
 `;

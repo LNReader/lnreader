@@ -7,7 +7,7 @@ export const createCategoriesTableQuery = `
 `;
 
 export const createDefaultCategoryQuery =
-  'INSERT INTO Category (name, sort) VALUES ("Default", 0)';
+  'INSERT OR INTO Category (name, sort) VALUES ("Default", 0)';
 export const createCategoryTrigger = `
 CREATE TRIGGER IF NOT EXISTS add_category AFTER INSERT ON Category 
   BEGIN

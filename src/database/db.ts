@@ -19,12 +19,25 @@ const db = SQLite.openDatabase(dbName);
 export const createTables = async () => {
   db.transaction(tx => {
     tx.executeSql(createCategoriesTableQuery, [], () => {
-      tx.executeSql(createCategoryTrigger, undefined, noop, txnErrorCallback);
       tx.executeSql(
-        createDefaultCategoryQuery,
-        undefined,
-        noop,
-        txnErrorCallback,
+        'SELECT * FROM Category WHERE id = 1',
+        [],
+        (txObj, { rows }) => {
+          if ((rows as any)._array.length == 0) {
+            tx.executeSql(
+              createCategoryTrigger,
+              undefined,
+              noop,
+              txnErrorCallback,
+            );
+            tx.executeSql(
+              createDefaultCategoryQuery,
+              undefined,
+              noop,
+              txnErrorCallback,
+            );
+          }
+        },
       );
     });
     tx.executeSql(createNovelTableQuery);
