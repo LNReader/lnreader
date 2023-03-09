@@ -18,7 +18,7 @@ import {
   ALL_CHAPTER_DELETED,
 } from './novel.types';
 
-import { fetchNovel } from '@services/Source/source';
+import { fetchNovel } from '@services/plugin/fetch';
 import {
   followNovel,
   insertNovel,
@@ -37,7 +37,6 @@ import {
   getNextChapter,
   deleteChapters,
 } from '@database/queries/ChapterQueries';
-import { deleteUpdateFromDb } from '@database/queries/UpdateQueries';
 import {
   SET_CHAPTER_LIST_PREF,
   SET_LAST_READ,
@@ -77,7 +76,6 @@ export const getNovelAction =
          * Check if novel is cached.
          */
         let novel = await getNovel(pluginId, novelUrl);
-
         if (novel) {
           /**
            * Get chapters from db.
@@ -97,10 +95,11 @@ export const getNovelAction =
            */
           const fetchedNovelId = await insertNovel({
             ...fetchedNovel,
+            pluginId: pluginId,
             categoryIds: [defaultCategoryId],
           });
+          console.log(fetchedNovelId);
           await insertChapters(fetchedNovelId, fetchedNovel.chapters);
-
           /**
            * Get novel from db.
            */
@@ -145,10 +144,6 @@ export const showChapterTitlesAction = (novelId, value) => async dispatch => {
 
 export const followNovelAction = novel => async dispatch => {
   await followNovel(novel.followed, novel.novelId);
-
-  if (!novel.followNovel) {
-    deleteUpdateFromDb(novel.novelId);
-  }
 
   dispatch({
     type: UPDATE_IN_LIBRARY,
