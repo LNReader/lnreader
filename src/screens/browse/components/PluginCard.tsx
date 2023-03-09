@@ -37,7 +37,7 @@ const PluginCard: React.FC<Props> = ({
 }) => (
   <Pressable
     style={styles.container}
-    onPress={() => navigateToSource(plugin)}
+    onPress={() => installed && navigateToSource(plugin)}
     android_ripple={{ color: theme.rippleColor }}
   >
     <View style={styles.flexRow}>

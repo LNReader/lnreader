@@ -10,7 +10,7 @@ import { htmlToText } from './helpers/htmlToText';
 import { parseMadaraDate } from './helpers/parseDate';
 import { isUrlAbsolute } from '@utils/isAbsoluteUrl';
 
-const pluginsFolder = RNFS.DownloadDirectoryPath + '/LNReader/Plugins';
+const pluginsFolder = RNFS.ExternalDirectoryPath + '/Plugins';
 
 const packages: Record<string, any> = {
   'cheerio': cheerio,
