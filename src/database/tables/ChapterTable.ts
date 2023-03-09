@@ -4,7 +4,7 @@ export const createChapterTableQuery = `
         novel_id INTEGER NOT NULL,
         url TEXT NOT NULL,
         name TEXT NOT NULL,
-        release TEXT,
+        release_time TEXT,
         bookmark INTEGER DEFAULT 0, 
         unread INTEGER DEFAULT 1, 
         is_downloaded INTEGER DEFAULT 0,
