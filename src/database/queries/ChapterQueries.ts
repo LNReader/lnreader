@@ -3,6 +3,7 @@ import * as SQLite from 'expo-sqlite';
 import { showToast } from '@hooks/showToast';
 import { getPlugin } from '@plugins/pluginManager';
 import { ChapterItem } from '../types';
+import { SourceChapter } from '@plugins/types';
 
 import * as cheerio from 'cheerio';
 import { txnErrorCallback } from '@database/utils/helpers';
@@ -11,9 +12,8 @@ import { Plugin } from '@plugins/types';
 const db = SQLite.openDatabase('lnreader.db');
 
 const insertChaptersQuery = `
-INSERT INTO chapters (
-  chapterUrl, chapterName, releaseDate, 
-  novelId
+INSERT INTO Chapter (
+  url, name, release_time, novel_id
 ) 
 values 
   (?, ?, ?, ?)
@@ -30,17 +30,17 @@ export const insertChapters = async (
   db.transaction(tx => {
     chapters.map(chapter =>
       tx.executeSql(insertChaptersQuery, [
-        chapter.chapterUrl,
-        chapter.chapterName,
-        chapter.releaseDate,
+        chapter.url,
+        chapter.name,
+        chapter.release,
         novelId,
       ]),
     );
   });
 };
 
-const getChaptersQuery = (sort = 'ORDER BY chapterId ASC', filter = '') =>
-  `SELECT * FROM chapters WHERE novelId = ? ${filter} ${sort}`;
+const getChaptersQuery = (sort = 'ORDER BY id ASC', filter = '') =>
+  `SELECT * FROM Chapter WHERE novel_id = ? ${filter} ${sort}`;
 
 export const getChapters = (novelId: number, sort: string, filter: string) => {
   return new Promise(resolve =>
@@ -58,9 +58,12 @@ export const getChapters = (novelId: number, sort: string, filter: string) => {
   );
 };
 
-const getChapterQuery = 'SELECT * FROM downloads WHERE downloadChapterId = ?';
+const getChapterQuery =
+  'SELECT * FROM Chapter JOIN Download ON Chapter.id = Download.chapter_id WHERE Chapter.id = ?';
 
-export const getChapterFromDB = async (chapterId: number) => {
+export const getChapterFromDB = async (
+  chapterId: number,
+): Promise<SourceChapter> => {
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
@@ -82,11 +85,11 @@ const getPrevChapterQuery = `
   SELECT
     *
   FROM
-    chapters
+    Chapter
   WHERE
     novelId = ?
   AND
-    chapterId < ?
+    id < ?
   `;
 
 export const getPrevChapter = (
@@ -113,11 +116,11 @@ const getNextChapterQuery = `
   SELECT
     *
   FROM
-    chapters
+    Chapter
   WHERE
     novelId = ?
   AND
-  chapterId > ?
+    chapterId > ?
   `;
 
 export const getNextChapter = (
@@ -139,8 +142,7 @@ export const getNextChapter = (
   );
 };
 
-const markChapterReadQuery =
-  'UPDATE chapters SET `read` = 1 WHERE chapterId = ?';
+const markChapterReadQuery = 'UPDATE Chapter SET `unread` = 0 WHERE id = ?';
 
 export const markChapterRead = async (chapterId: number) => {
   db.transaction(tx => {
@@ -156,8 +158,7 @@ export const markChapterRead = async (chapterId: number) => {
   });
 };
 
-const markChapterUnreadQuery =
-  'UPDATE chapters SET `read` = 0 WHERE chapterId = ?';
+const markChapterUnreadQuery = 'UPDATE Chapter SET `unread` = 1 WHERE id = ?';
 
 export const markChapterUnread = async (chapterId: number) => {
   db.transaction(tx => {
@@ -174,7 +175,7 @@ export const markChapterUnread = async (chapterId: number) => {
 };
 
 const markAllChaptersReadQuery =
-  'UPDATE chapters SET `read` = 1 WHERE novelId = ?';
+  'UPDATE Chapter SET `unread` = 0 WHERE novelId = ?';
 
 export const markAllChaptersRead = async (novelId: number) => {
   db.transaction(tx => {
@@ -191,7 +192,7 @@ export const markAllChaptersRead = async (novelId: number) => {
 };
 
 const markAllChaptersUnreadQuery =
-  'UPDATE chapters SET `read` = 0 WHERE novelId = ?';
+  'UPDATE Chapter SET `unread` = 1 WHERE novelId = ?';
 
 export const markAllChaptersUnread = async (novelId: number) => {
   db.transaction(tx => {
@@ -207,8 +208,7 @@ export const markAllChaptersUnread = async (novelId: number) => {
   });
 };
 
-const isChapterDownloadedQuery =
-  'SELECT * FROM downloads WHERE downloadChapterId=?';
+const isChapterDownloadedQuery = 'SELECT * FROM Download WHERE id = ?';
 
 export const isChapterDownloaded = async (chapterId: number) => {
   return new Promise(resolve =>
@@ -233,7 +233,7 @@ export const isChapterDownloaded = async (chapterId: number) => {
 };
 
 const downloadChapterQuery =
-  'INSERT INTO downloads (downloadChapterId, chapterName, chapterText) VALUES (?, ?, ?)';
+  'INSERT INTO Download (chapterId, name, chapterText) VALUES (?, ?, ?)';
 
 const createImageFolder = async (
   path: string,
@@ -322,13 +322,12 @@ export const downloadChapter = async (
         (await downloadImages(chapter.chapterText, plugin, novelId, chapterId));
 
       db.transaction(tx => {
-        tx.executeSql(
-          'UPDATE chapters SET downloaded = 1 WHERE chapterId = ?',
-          [chapterId],
-        );
+        tx.executeSql('UPDATE Chapter SET isDownloaded = 1 WHERE id = ?', [
+          chapterId,
+        ]);
         tx.executeSql(
           downloadChapterQuery,
-          [chapterId, chapter.chapterName, imagedChapterText],
+          [chapterId, chapter.name, imagedChapterText],
           (_txObj, _res) => {
             return true;
           },
@@ -371,8 +370,8 @@ export const deleteChapter = async (
   chapterId: number,
 ) => {
   const updateIsDownloadedQuery =
-    'UPDATE chapters SET downloaded = 0 WHERE chapterId=?';
-  const deleteChapterQuery = 'DELETE FROM downloads WHERE downloadChapterId=?';
+    'UPDATE Chapter SET isDownloaded = 0 WHERE id = ?';
+  const deleteChapterQuery = 'DELETE FROM Download WHERE chapterId = ?';
 
   await deleteDownloadedImages(pluginId, novelId, chapterId);
 
@@ -408,16 +407,14 @@ export const deleteChapters = async (
     return;
   }
 
-  const chapterIdsString = chapters
-    ?.map(chapter => chapter.chapterId)
-    .toString();
+  const chapterIdsString = chapters?.map(chapter => chapter.id).toString();
 
-  const updateIsDownloadedQuery = `UPDATE chapters SET downloaded = 0 WHERE chapterId IN (${chapterIdsString})`;
-  const deleteChapterQuery = `DELETE FROM downloads WHERE downloadChapterId IN (${chapterIdsString})`;
+  const updateIsDownloadedQuery = `UPDATE Chapter SET isDownload = 0 WHERE id IN (${chapterIdsString})`;
+  const deleteChapterQuery = `DELETE FROM Download WHERE chapterId IN (${chapterIdsString})`;
 
   await Promise.all(
     chapters?.map(chapter =>
-      deleteDownloadedImages(pluginId, chapter.novelId, chapter.chapterId),
+      deleteDownloadedImages(pluginId, chapter.novelId, chapter.id),
     ),
   );
 
@@ -433,11 +430,11 @@ export const deleteChapters = async (
 };
 
 const getLastReadChapterQuery = `
-    SELECT chapters.*
-    FROM history
-    JOIN chapters
-    ON history.historyChapterId = chapters.chapterId
-    WHERE history.historyNovelId = ?
+    SELECT Chapter.*
+    FROM History
+    JOIN Chapter
+    ON History.chapterId = Chapter.id
+    WHERE Chapter.novelId = ?
 `;
 
 export const getLastReadChapter = async (novelId: number) => {
@@ -456,8 +453,7 @@ export const getLastReadChapter = async (novelId: number) => {
   });
 };
 
-const bookmarkChapterQuery =
-  'UPDATE chapters SET bookmark = ? WHERE chapterId = ?';
+const bookmarkChapterQuery = 'UPDATE Chapter SET bookmark = ? WHERE id = ?';
 
 export const bookmarkChapter = async (bookmark: boolean, chapterId: number) => {
   db.transaction(tx => {
@@ -474,7 +470,7 @@ export const bookmarkChapter = async (bookmark: boolean, chapterId: number) => {
 };
 
 const markPreviuschaptersReadQuery =
-  'UPDATE chapters SET `read` = 1 WHERE chapterId < ? AND novelId = ?';
+  'UPDATE Chapter SET `unread` = 0 WHERE id < ? AND novelId = ?';
 
 export const markPreviuschaptersRead = async (
   chapterId: number,
@@ -494,7 +490,7 @@ export const markPreviuschaptersRead = async (
 };
 
 const markPreviousChaptersUnreadQuery =
-  'UPDATE chapters SET `read` = 0 WHERE chapterId < ? AND novelId = ?';
+  'UPDATE Chapter SET `unread` = 1 WHERE id < ? AND novelId = ?';
 
 export const markPreviousChaptersUnread = async (
   chapterId: number,
@@ -514,11 +510,11 @@ export const markPreviousChaptersUnread = async (
 };
 
 const getDownloadedChaptersQuery = `
-    SELECT chapters.*, novels.pluginId, novels.novelName, novels.novelCover, novels.novelUrl
-    FROM chapters
-    JOIN novels
-    ON chapters.novelId = novels.novelId
-    WHERE chapters.downloaded = 1`;
+    SELECT Chapter.*, Novel.pluginId, Novel.name, Novel.cover, Novel.url
+    FROM Chapter
+    JOIN Novel
+    ON Chapter.novelId = Novel.id
+    WHERE Chapter.isDownloaded = 1`;
 
 export const getDownloadedChapters = () => {
   return new Promise(resolve =>
@@ -541,23 +537,23 @@ export const getDownloadedChapters = () => {
 
 export const deleteDownloads = async () => {
   db.transaction(tx => {
-    tx.executeSql('UPDATE chapters SET downloaded = 0');
-    tx.executeSql('DELETE FROM downloads; VACCUM;');
+    tx.executeSql('UPDATE Chapter SET isdownload = 0');
+    tx.executeSql('DELETE FROM Download; VACCUM;');
   });
 };
 
 export const updateChapterDownloadedQuery = `
   UPDATE 
-    chapters 
+    Chapter 
   SET 
-    downloaded = 1
+    isDownloaded = 1
   WHERE 
-    chapterId = ?`;
+    id = ?`;
 
 export const updateChapterDeletedQuery = `
   UPDATE 
-    chapters 
+    Chapter_id 
   SET 
-    downloaded = 0
+    isDownload = 0
   WHERE 
     chapterId = ?`;

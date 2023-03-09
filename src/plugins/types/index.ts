@@ -30,10 +30,9 @@ export interface SourceNovel {
 }
 
 export interface SourceChapter {
-  pluginId: string;
-  novelUrl: string;
-  chapterUrl: string;
-  chapterName?: string;
+  pluginId?: string;
+  url: string;
+  name?: string;
   chapterText?: string;
 }
 

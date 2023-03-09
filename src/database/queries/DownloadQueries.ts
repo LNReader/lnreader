@@ -2,7 +2,7 @@
 
 import { txnErrorCallback } from '@database/utils/helpers';
 import * as SQLite from 'expo-sqlite';
-import { showToast } from '../../hooks/showToast';
+import { showToast } from '@hooks/showToast';
 import { getPlugin } from '@plugins/pluginManager';
 import { DownloadedChapter } from '../types';
 
@@ -15,9 +15,9 @@ const db = SQLite.openDatabase('lnreader.db');
 
 const downloadChapterQuery = `
   INSERT INTO 
-      downloads (downloadChapterId, chapterName, chapterText)
+      Download (chapterId, chapterText)
   VALUES
-    (?, ?, ?)
+    (?, ?)
 	`;
 
 export const fetchAndInsertChapterInDb = async (
@@ -32,7 +32,7 @@ export const fetchAndInsertChapterInDb = async (
     tx.executeSql(updateChapterDownloadedQuery, [chapterId]);
     tx.executeSql(
       downloadChapterQuery,
-      [chapterId, chapter.chapterName, chapter.chapterText],
+      [chapterId, chapter.chapterText],
       (txObj, res) => {},
       txnErrorCallback,
     );
@@ -41,9 +41,9 @@ export const fetchAndInsertChapterInDb = async (
 
 const deleteChapterFromDbQuery = `
   DELETE FROM 
-    downloads
+    Download
   WHERE
-    downloadChapterId = ?
+    chapterId = ?
 	`;
 
 export const deleteChapterFromDb = (chapterId: number) => {
@@ -62,9 +62,9 @@ const getChapterFromDbQuery = `
   SELECT 
     * 
   FROM 
-    downloads 
+    Download 
   WHERE 
-    downloadChapterId = ?
+    chapterId = ?
   `;
 
 export const getChapterFromDb = async (
@@ -87,33 +87,33 @@ export const getChapterFromDb = async (
 
 const deleteReadChaptersFromDbQuery = `
 DELETE FROM 
-  downloads 
+  Download 
 WHERE 
-  downloads.downloadChapterId IN (
+  Download.chapterId IN (
     SELECT 
       chapters.chapterId 
     FROM 
-      downloads 
-      INNER JOIN chapters ON chapters.chapterId = downloads.downloadChapterId 
+      Download 
+      INNER JOIN Chapter ON Chapter.chapterId = Download.DownloadId 
     WHERE 
-      chapters.read = 1
+      Chapter.unread = 0
   );
 `;
 
 let updateChaptersDeletedQuery = `
 UPDATE 
-  chapters 
+  Chapter 
 SET 
-  downloaded = 0 
+  isDownloaded = 0 
 WHERE 
-  chapters.chapterId IN (
+  Chapter.id IN (
     SELECT 
-      downloads.downloadChapterId 
+      Download.chapterId 
     FROM 
-      downloads 
-      INNER JOIN chapters ON chapters.chapterId = downloads.downloadChapterId 
+      Download 
+      INNER JOIN Chapter ON Chapter.id = Download.chapterId 
     WHERE 
-      chapters.read = 1
+      Chapter.unread = 0
   );
 `;
 

@@ -8,7 +8,7 @@ const db = SQLite.openDatabase('lnreader.db');
 export const getLibraryNovelsFromDb = (
   onlyOngoingNovels?: boolean,
 ): Promise<NovelInfo[]> => {
-  let getLibraryNovelsQuery = 'SELECT * FROM Novel WHERE in_library = 1';
+  let getLibraryNovelsQuery = 'SELECT * FROM Novel WHERE inLibrary = 1';
 
   if (onlyOngoingNovels) {
     getLibraryNovelsQuery += " AND status NOT LIKE 'Completed'";
@@ -32,24 +32,23 @@ const getLibraryWithCategoryQuery = `
   FROM 
   (
     SELECT 
-    Novel.id, Novel.url, name, cover,  
-      Novel.plugin_id as pluginId, Novel.in_library as inLibrary, 
+      Novel.*
       category 
     FROM
     Novel JOIN (
-      SELECT novel_id, name as category FROM (NovelCategory JOIN Category ON NovelCategory.category_id = Category.id)
-    ) as NC ON Novel.id = NC.novel_id
-    WHERE in_library = 1
+      SELECT NovelId, name as category FROM (NovelCategory JOIN Category ON NovelCategory.categoryId = Category.id)
+    ) as NC ON Novel.id = NC.novelId
+    WHERE inLibrary = 1
     GROUP BY Novel.id
   ) as NIL 
   JOIN 
   (
-    SELECT COUNT(unread) as chaptersUnread, COUNT(is_downloaded) as chaptersDownloaded, novel_id
+    SELECT COUNT(unread) as chaptersUnread, COUNT(isDownloaded) as chaptersDownloaded, novelId
       FROM
       Chapter
-    GROUP BY novel_id
+    GROUP BY novelId
   ) as C
-  ON NIL.id = C.novel_id 
+  ON NIL.id = C.novelId 
 `;
 
 export const getLibraryWithCategory = ({

@@ -15,7 +15,7 @@ import { getString } from '@strings/translations';
 import { NovelInfo } from '../types';
 
 const insertNovelQuery =
-  'INSERT INTO Novel (url, plugin_id, name, cover, summary, author, artist, status, genres, in_libary) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+  'INSERT INTO Novel (url, pluginId, name, cover, summary, author, artist, status, genres, inLibary) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
 export const insertNovel = async (novel: NovelInfo): Promise<number> => {
   return new Promise(resolve =>
@@ -49,7 +49,7 @@ export const toggleNovelToLibrary = async (
   inLibrary: number,
 ) => {
   db.transaction(tx => {
-    tx.executeSql('UPDATE Novel SET in_library = ? WHERE id = ?'),
+    tx.executeSql('UPDATE Novel SET inLibrary = ? WHERE id = ?'),
       [1 - inLibrary, novel.id], // novel.id is enough bc when you browse a novel, it must be in db (cache)
       noop,
       txnErrorCallback;
@@ -80,7 +80,7 @@ export const getNovel = async (novelUrl: string): Promise<NovelInfo> => {
 export const deleteNovelCache = () => {
   db.transaction(tx => {
     tx.executeSql(
-      'DELETE FROM Novel WHERE in_library = 0',
+      'DELETE FROM Novel WHERE inLibrary = 0',
       [],
       () => showToast('Category deleted'),
       txnErrorCallback,
@@ -232,7 +232,7 @@ export const updateNovelCategoryById = async (
   db.transaction(tx => {
     categoryIds.forEach(categoryId => {
       tx.executeSql(
-        'INSERT INTO NovelCategory (novel_id, category_id) VALUES (?, ?)',
+        'INSERT INTO NovelCategory (novelId, categoryId) VALUES (?, ?)',
         [novelId, categoryId],
         noop,
         txnErrorCallback,
