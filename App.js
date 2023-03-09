@@ -32,9 +32,8 @@ Notifications.setNotificationHandler({
 });
 
 const App = () => {
-  useEffect(async () => {
-    await collectPlugins();
-    LottieSplashScreen.hide();
+  useEffect(() => {
+    collectPlugins().then(LottieSplashScreen.hide());
   }, []);
 
   return (

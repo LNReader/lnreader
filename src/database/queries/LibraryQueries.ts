@@ -57,7 +57,7 @@ export const getLibraryNovelsFromDb = (
 
 const getLibraryWithCategoryQuery = `
   SELECT 
-  NIL.*, chaptersUnread, chaptersDownloaded
+  NIL.*, chaptersUnread, chaptersDownloaded, lastReadAt, lastUpdatedAt
   FROM 
   (
     SELECT 
@@ -72,9 +72,13 @@ const getLibraryWithCategoryQuery = `
   ) as NIL 
   JOIN 
   (
-    SELECT COUNT(unread) as chaptersUnread, COUNT(isDownloaded) as chaptersDownloaded, novelId
+    SELECT COUNT(unread) as chaptersUnread, COUNT(isDownloaded) as chaptersDownloaded, novelId, MAX(readTime) as lastReadAt, MAX(updateTime) as lastUpdatedAt
       FROM
       Chapter
+      LEFT JOIN History
+      ON History.chapterId = Chapter.id
+      LEFT JOIN Download
+      ON Download.chapterId = Chapter.id
     GROUP BY novelId
   ) as C
   ON NIL.id = C.novelId 
@@ -92,8 +96,9 @@ export const getLibraryWithCategory = ({
   downloadedOnlyMode?: boolean;
 }): Promise<LibraryNovelInfo[]> => {
   let query = getLibraryWithCategoryQuery;
+
   if (filter) {
-    query += ` AND ${filter}`;
+    query += ` AND ${filter} `;
   }
 
   if (downloadedOnlyMode) {

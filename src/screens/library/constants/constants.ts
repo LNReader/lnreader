@@ -2,10 +2,10 @@ import { getString } from '@strings/translations';
 
 export enum LibraryFilter {
   Downloaded = 'chaptersDownloaded > 0',
-  Unread = 'unread = 1',
+  Unread = 'lastReadAt IS NULL',
   Completed = "status LIKE 'Completed'",
   DownloadedOnly = 'AND chaptersDownloaded > 0',
-  Started = 'unread = 0',
+  Started = 'lastReadAt IS NOT NULL',
 }
 
 export const libraryFilterList = [
@@ -27,17 +27,16 @@ export const libraryFilterList = [
   },
 ];
 
+// NIL: Novels in Library
 export enum LibrarySortOrder {
-  Alphabetically_ASC = 'novels.novelName ASC',
-  Alphabetically_DESC = 'novels.novelName DESC',
-  Unread_ASC = 'novels.unread ASC',
-  Unread_DESC = 'novels.unread DESC',
+  Alphabetically_ASC = 'name ASC',
+  Alphabetically_DESC = 'name DESC',
   Downloaded_ASC = 'chaptersDownloaded ASC',
   Downloaded_DESC = 'chaptersDownloaded DESC',
   TotalChapters_ASC = 'chaptersUnread ASC',
   TotalChapters_DESC = 'chaptersUnread DESC',
-  DateAdded_ASC = 'novelId ASC',
-  DateAdded_DESC = 'novelId DESC',
+  DateAdded_ASC = 'id ASC',
+  DateAdded_DESC = 'id DESC',
   LastRead_ASC = 'lastReadAt ASC',
   LastRead_DESC = 'lastReadAt DESC',
   LastUpdated_ASC = 'lastUpdatedAt ASC',
@@ -59,11 +58,6 @@ export const librarySortOrderList = [
     label: getString('libraryScreen.bottomSheet.sortOrders.lastUpdated'),
     ASC: LibrarySortOrder.LastUpdated_ASC,
     DESC: LibrarySortOrder.LastUpdated_DESC,
-  },
-  {
-    label: getString('libraryScreen.bottomSheet.sortOrders.unread'),
-    ASC: LibrarySortOrder.Unread_ASC,
-    DESC: LibrarySortOrder.Unread_DESC,
   },
   {
     label: getString('libraryScreen.bottomSheet.sortOrders.download'),
