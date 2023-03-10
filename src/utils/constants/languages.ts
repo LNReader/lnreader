@@ -1,18 +1,3 @@
-export const languages = [
-  'Arabic',
-  'Chinese',
-  'English',
-  'French',
-  'Indonesian',
-  'Japanese',
-  'Korean',
-  'Portuguese (Brazil)',
-  'Russian',
-  'Spanish',
-  'Turkish',
-  'Vietnamese',
-];
-
 //seacrh here https://pastebin.com/raw/ppdMS687
 
 export enum Languages {
