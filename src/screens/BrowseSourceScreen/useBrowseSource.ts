@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { SelectedFilter, SourceFilter } from '@plugins/types/filterTypes';
-import { SourceNovelItem } from '@plugins/types';
+import { NovelItem } from '@plugins/types';
 
 import { getPlugin } from '@plugins/pluginManager';
 
@@ -9,7 +9,7 @@ export const useBrowseSource = (
   showLatestNovels?: boolean,
 ) => {
   const [isLoading, setIsLoading] = useState(true);
-  const [novels, setNovels] = useState<SourceNovelItem[]>([]);
+  const [novels, setNovels] = useState<NovelItem[]>([]);
   const [error, setError] = useState<string>();
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -30,10 +30,8 @@ export const useBrowseSource = (
             showLatestNovels,
             filters,
           });
-          setNovels(prevState =>
-            page === 1 ? res.novels : [...prevState, ...res.novels],
-          );
-          if (!res.novels.length) {
+          setNovels(prevState => (page === 1 ? res : [...prevState, ...res]));
+          if (!res.length) {
             setHasNextPage(false);
           }
           setFilterValues(plugin.filters);
@@ -93,7 +91,7 @@ export const useBrowseSource = (
 
 export const useSearchSource = (pluginId: string) => {
   const [isSearching, setIsSearching] = useState(false);
-  const [searchResults, setSearchResults] = useState<SourceNovelItem[]>([]);
+  const [searchResults, setSearchResults] = useState<NovelItem[]>([]);
   const [searchError, setSearchError] = useState<string>();
 
   const searchSource = useCallback(

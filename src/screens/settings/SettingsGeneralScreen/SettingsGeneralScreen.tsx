@@ -57,7 +57,7 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
     updateLibraryOnLaunch = false,
     downloadNewChapters = false,
     onlyUpdateOngoingNovels = false,
-    defaultChapterSort = 'ORDER BY chapterId ASC',
+    defaultChapterSort = 'ORDER BY id ASC',
     refreshNovelMetadata = false,
     disableHapticFeedback = false,
     useLibraryFAB = false,
@@ -197,7 +197,7 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
               'moreScreen.settingsScreen.generalSettingsScreen.chapterSort',
             )}
             description={`By source ${
-              defaultChapterSort === 'ORDER BY chapterId ASC'
+              defaultChapterSort === 'ORDER BY id ASC'
                 ? getString(
                     'moreScreen.settingsScreen.generalSettingsScreen.asc',
                   )

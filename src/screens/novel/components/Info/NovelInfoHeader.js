@@ -37,7 +37,7 @@ const NovelInfoHeader = ({
   lastRead,
   navigation,
   trackerSheetRef,
-  setCustomNovelCover,
+  setCustomcover,
   novelBottomSheetRef,
   deleteDownloadsSnackbar,
 }) => {
@@ -53,34 +53,33 @@ const NovelInfoHeader = ({
     }),
     [],
   );
-
   return (
     <>
       <CoverImage
-        source={{ uri: novel.novelCover }}
+        source={{ uri: novel.cover }}
         theme={theme}
         hideBackdrop={hideBackdrop}
       >
         <NovelInfoContainer>
           <NovelThumbnail
-            source={{ uri: novel.novelCover }}
+            source={{ uri: novel.cover }}
             theme={theme}
-            setCustomNovelCover={setCustomNovelCover}
+            setCustomcover={setCustomcover}
           />
           <View style={styles.novelDetails}>
             <NovelTitle
               theme={theme}
               onPress={() =>
                 navigation.replace('GlobalSearchScreen', {
-                  searchText: item.novelName,
+                  searchText: item.name,
                 })
               }
               onLongPress={() => {
-                Clipboard.setString(item.novelName);
-                showToast('Copied to clipboard: ' + item.novelName);
+                Clipboard.setString(item.name);
+                showToast('Copied to clipboard: ' + item.name);
               }}
             >
-              {item.novelName}
+              {item.name}
             </NovelTitle>
             <>
               <NovelAuthor theme={theme}>
@@ -102,27 +101,29 @@ const NovelInfoHeader = ({
         </NovelInfoContainer>
       </CoverImage>
       <>
-        <NovelScreenButtonGroup
+        {/* <NovelScreenButtonGroup
           novel={novel}
           handleFollowNovel={() => {
             dispatch(followNovelAction(novel));
             if (
-              novel.followed &&
-              chapters.some(chapter => chapter.downloaded === 1)
+              novel.inLibrary &&
+              chapters.some(chapter => chapter.isDownloaded === 1)
             ) {
               deleteDownloadsSnackbar.setTrue();
             }
           }}
           handleTrackerSheet={() => trackerSheetRef.current.expand()}
           theme={theme}
-        />
+        /> */}
         <NovelSummary
-          summary={novel.novelSummary}
-          isExpanded={!novel.followed}
+          summary={novel.summary}
+          isExpanded={!novel.inLibrary}
           theme={theme}
         />
-        {novel.genre ? <NovelGenres theme={theme} genre={novel.genre} /> : null}
-        <ReadButton novel={novel} chapters={chapters} lastRead={lastRead} />
+        {novel.genres ? (
+          <NovelGenres theme={theme} genre={novel.genres} />
+        ) : null}
+        {/* <ReadButton novel={novel} chapters={chapters} /> */}
         <Pressable
           style={styles.bottomsheet}
           onPress={() => novelBottomSheetRef.current.expand()}

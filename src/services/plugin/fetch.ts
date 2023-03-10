@@ -1,25 +1,15 @@
 import { getPlugin } from '@plugins/pluginManager';
-import { SourceNovel } from '@plugins/types';
 
 export const fetchNovel = async (pluginId: string, novelUrl: string) => {
   const plugin = getPlugin(pluginId);
   const res = await plugin.parseNovelAndChapters(novelUrl);
-  return {
-    ...res,
-    inLibrary: 0,
-    pluginId: pluginId,
-    pluginName: plugin.name,
-  } as SourceNovel;
+  return res;
 };
 
-export const fetchChapter = async (
-  pluginId: string,
-  novelUrl: string,
-  chapterUrl: string,
-) => {
+export const fetchChapter = async (pluginId: string, chapterUrl: string) => {
   const plugin = getPlugin(pluginId);
 
-  let chapter = await plugin.parseChapter(novelUrl, chapterUrl);
+  let chapter = await plugin.parseChapter(chapterUrl);
 
   return chapter;
 };

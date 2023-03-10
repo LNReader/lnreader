@@ -7,9 +7,8 @@ const useSettings = () => {
 };
 
 const useNovel = () => {
-  const novel = useSelector(state => state.novelReducer);
-
-  return novel;
+  const { novel, chapters } = useSelector(state => state.novelReducer);
+  return { novel, chapters };
 };
 
 const useChapter = () => {

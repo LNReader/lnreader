@@ -21,12 +21,11 @@ import {
 import { fetchNovel } from '@services/plugin/fetch';
 import {
   followNovel,
-  insertNovel,
+  insertNovelandChapters,
   getNovel,
 } from '@database/queries/NovelQueries';
 import {
   getChapters,
-  insertChapters,
   markChapterRead,
   downloadChapter,
   deleteChapter,
@@ -50,66 +49,47 @@ import { SET_DOWNLOAD_QUEUE } from '../downloads/donwloads.types';
 import { updateNovel } from '@services/updates/LibraryUpdateQueries';
 
 export const setNovel = novel => async dispatch => {
-  dispatch({ type: SET_NOVEL, payload: novel });
+  dispatch({ type: SET_NOVEL, payload: { novel } });
 };
 
 export const getNovelAction =
-  (followed, pluginId, novelUrl, novelId, sort, filter, defaultCategoryId) =>
-  async dispatch => {
+  (pluginId, novelUrl, sort, filter, defaultCategoryId) => async dispatch => {
     try {
       dispatch({ type: LOADING_NOVEL });
 
-      if (followed === 1) {
-        /**
-         * If novel is followed directly get the chapters from db.
-         */
-        const chapters = await getChapters(novelId, sort, filter);
+      dispatch({ type: FETCHING_NOVEL });
 
+      /**
+       * Check if novel is cached.
+       */
+      let novel = await getNovel(novelUrl);
+      if (novel) {
+        /**
+         * Get chapters from db.
+         */
+        chapters = await getChapters(novel.id, sort, filter);
         dispatch({
-          type: GET_CHAPTERS,
-          payload: chapters,
+          type: GET_NOVEL,
+          payload: { novel, chapters },
         });
       } else {
-        dispatch({ type: FETCHING_NOVEL });
-
         /**
-         * Check if novel is cached.
+         * Fetch novel from source.
          */
-        let novel = await getNovel(pluginId, novelUrl);
-        if (novel) {
-          /**
-           * Get chapters from db.
-           */
-          novel.chapters = await getChapters(novel.novelId, sort, filter);
-          dispatch({
-            type: GET_NOVEL,
-            payload: novel,
-          });
-        } else {
-          /**
-           * Fetch novel from source.
-           */
-          const fetchedNovel = await fetchNovel(pluginId, novelUrl);
-          /**
-           * Insert novel in db.
-           */
-          const fetchedNovelId = await insertNovel({
-            ...fetchedNovel,
-            pluginId: pluginId,
-            categoryIds: [defaultCategoryId],
-          });
-          await insertChapters(fetchedNovelId, fetchedNovel.chapters);
-          /**
-           * Get novel from db.
-           */
-          novel = await getNovel(pluginId, novelUrl);
-          novel.chapters = await getChapters(novel.novelId, sort, filter);
-
-          dispatch({
-            type: GET_NOVEL,
-            payload: novel,
-          });
-        }
+        const fetchedNovel = await fetchNovel(pluginId, novelUrl);
+        /**
+         * Insert novel in db.
+         */
+        await insertNovelandChapters(pluginId, fetchedNovel);
+        /**
+         * Get novel from db.
+         */
+        novel = await getNovel(novelUrl);
+        chapters = await getChapters(novel.id, sort, filter);
+        dispatch({
+          type: GET_NOVEL,
+          payload: { novel, chapters },
+        });
       }
     } catch (error) {
       showToast(error.message);
@@ -125,7 +105,7 @@ export const sortAndFilterChapters =
 
     dispatch({
       type: GET_CHAPTERS,
-      payload: chapters,
+      payload: { chapters },
     });
 
     dispatch({
@@ -235,11 +215,11 @@ export const markChapterUnreadAction =
 /**
  *
  * @param {string} pluginId
- * @param {string} novelUrl
- * @param {number} novelId
- * @param {string} chapterUrl
- * @param {string} chapterName
- * @param {number} chapterId
+ * @param {string} url - Novel
+ * @param {number} id - Novel
+ * @param {string} url - Chapter
+ * @param {string} name - Chapter
+ * @param {number} id - Chapter
  * @returns
  */
 export const downloadChapterAction =

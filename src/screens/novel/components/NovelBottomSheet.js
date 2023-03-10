@@ -81,16 +81,16 @@ const ChaptersSettingsSheet = ({
       <SortItem
         label="By source"
         status={
-          sort === 'ORDER BY chapterId ASC'
+          sort === 'ORDER BY id ASC'
             ? 'asc'
-            : sort === 'ORDER BY chapterId DESC'
+            : sort === 'ORDER BY id DESC'
             ? 'desc'
             : undefined
         }
         onPress={() =>
-          sort === 'ORDER BY chapterId ASC'
-            ? sortChapters('ORDER BY chapterId DESC')
-            : sortChapters('ORDER BY chapterId ASC')
+          sort === 'ORDER BY id ASC'
+            ? sortChapters('ORDER BY id DESC')
+            : sortChapters('ORDER BY id ASC')
         }
         theme={theme}
       />

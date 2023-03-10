@@ -12,7 +12,7 @@ import { usePreviousRouteName, useSearch } from '@hooks';
 import { useTheme } from '@hooks/useTheme';
 import { useBrowseSource, useSearchSource } from './useBrowseSource';
 
-import { SourceNovelItem } from '@plugins/types';
+import { NovelItem } from '@plugins/types';
 import { getString } from '@strings/translations';
 import { StyleSheet } from 'react-native';
 import { useLibraryNovels } from '@screens/library/hooks/useLibrary';
@@ -96,7 +96,7 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
     );
 
   const navigateToNovel = useCallback(
-    (item: SourceNovelItem) =>
+    (item: NovelItem) =>
       navigate(
         'Novel' as never,
         {
@@ -132,14 +132,14 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
         <NovelList
           data={novelList}
           renderItem={({ item }) => {
-            const inLibrary = novelInLibrary(item.pluginId);
+            const inLibrary = novelInLibrary(item.url);
 
             return (
               <NovelCover
                 item={item}
                 theme={theme}
                 libraryStatus={inLibrary}
-                onPress={() => navigateToNovel(item as SourceNovelItem)}
+                onPress={() => navigateToNovel(item)}
                 isSelected={false}
                 onLongPress={() => {
                   setLibrary(prevValues => {
@@ -157,7 +157,7 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
                       ];
                     }
                   });
-                  toggleNovelToLibrary(item.id, inLibrary ? 1 : 0);
+                  toggleNovelToLibrary(item, inLibrary ? 1 : 0);
                 }}
                 selectedNovels={[]}
               />

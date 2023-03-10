@@ -47,9 +47,9 @@ const NovelCover = ({
     [numColumns],
   );
 
-  const selectNovel = () => onLongPress && onLongPress(item.novelId);
+  const selectNovel = () => onLongPress && onLongPress(item);
 
-  const uri = item.novelCover;
+  const uri = item.cover;
 
   return displayMode !== DisplayModes.List ? (
     <View
@@ -106,11 +106,11 @@ const NovelCover = ({
         />
         <View style={styles.compactTitleContainer}>
           {displayMode === DisplayModes.Compact && (
-            <CompactTitle novelName={item.novelName} />
+            <CompactTitle novelName={item.name} />
           )}
         </View>
         {displayMode === DisplayModes.Comfortable && (
-          <ComfortableTitle novelName={item.novelName} theme={theme} />
+          <ComfortableTitle novelName={item.name} theme={theme} />
         )}
       </Pressable>
     </View>

@@ -32,10 +32,6 @@ const initPlugin = async (rawCode: string, path?: string) => {
     Function('require', 'module', rawCode)(_require, _module); // eslint-disable-line no-new-func
     _module.exports.path = path || `${pluginsFolder}/${_module.exports.id}.js`;
     const plugin: Plugin = _module.exports;
-    plugin.popularNovels(1);
-    plugin.parseNovelAndChapters('https://google.com');
-    plugin.parseChapter('https://google.com', 'https://google.com');
-    plugin.searchNovels('');
     return plugin;
   } catch (e) {
     showToast('Some non-plugin files are found');
@@ -65,16 +61,26 @@ const installPlugin = async (url: string) => {
           return;
         }
         const oldPlugin = plugins[plugin.id];
-        if (!oldPlugin || bigger(plugin.version, oldPlugin.version)) {
+        if (oldPlugin) {
+          if (bigger(plugin.version, oldPlugin.version)) {
+            delete plugins[oldPlugin.id];
+            plugins[plugin.id] = plugin;
+            await RNFS.writeFile(plugin.path, rawCode, 'utf8');
+            return true;
+          } else {
+            showToast('This plugin is the newtest version');
+          }
+        } else {
           plugins[plugin.id] = plugin;
           await RNFS.writeFile(plugin.path, rawCode, 'utf8');
-        } else {
-          showToast('This plugin is the newtest version');
+          showToast('Downloaded!');
+          return true;
         }
       });
   } catch (e: any) {
     showToast('Error');
   }
+  return false;
 };
 
 const uninstallPlugin = async (_plugin: PluginItem) => {
@@ -88,7 +94,10 @@ const uninstallPlugin = async (_plugin: PluginItem) => {
 };
 
 const updatePlugin = async (plugin: PluginItem) => {
-  installPlugin(plugin.url);
+  const updated = await installPlugin(plugin.url);
+  if (updated) {
+    showToast('Updated!');
+  }
 };
 
 const collectPlugins = async () => {

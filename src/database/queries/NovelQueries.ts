@@ -58,8 +58,9 @@ export const insertNovelandChapters = async (
   pluginId: string,
   sourceNovel: SourceNovel,
 ) => {
+  console.log(sourceNovel.cover);
   const insertNovelQuery =
-    'INSERT OR REPLACE INTO Novel (url, pluginId, name, cover, summary, author, artist, status, genres) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    'INSERT INTO Novel (url, pluginId, name, cover, summary, author, artist, status, genres) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)';
   db.transaction(tx => {
     tx.executeSql(
       insertNovelQuery,
@@ -67,7 +68,6 @@ export const insertNovelandChapters = async (
         sourceNovel.url,
         pluginId,
         sourceNovel.name,
-        sourceNovel.cover,
         sourceNovel.cover,
         sourceNovel.summary,
         sourceNovel.author,
@@ -77,6 +77,7 @@ export const insertNovelandChapters = async (
       ],
       (txObj, resultSet) =>
         insertChapters(resultSet.insertId, sourceNovel.chapters),
+      txnErrorCallback,
     );
   });
 };
@@ -102,7 +103,7 @@ export const getNovel = async (novelUrl: string): Promise<NovelInfo> => {
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
-        'SELECT Novel.* FROM Novel WHERE Novel.url = ?',
+        'SELECT id, * FROM Novel WHERE url = ?',
         [novelUrl],
         (txObj, { rows }) => resolve(rows.item(0)),
         txnErrorCallback,

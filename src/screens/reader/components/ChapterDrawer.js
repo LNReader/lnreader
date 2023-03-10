@@ -25,7 +25,7 @@ const ChapterDrawer = ({ state: st, navigation }) => {
     novelId,
     chapterId: currentChapterId,
   } = st.routes[0].params;
-  const { defaultChapterSort = 'ORDER BY chapterId ASC' } = useSettings();
+  const { defaultChapterSort = 'ORDER BY id ASC' } = useSettings();
   const { sort = defaultChapterSort, filter = '' } = usePreferences(novelId);
   const { chapters, novel } = useNovel();
   useEffect(() => {
@@ -47,7 +47,7 @@ const ChapterDrawer = ({ state: st, navigation }) => {
     sort,
     sourceId,
   ]);
-  const listAscending = sort === 'ORDER BY chapterId ASC';
+  const listAscending = sort === 'ORDER BY id ASC';
   const scrollToIndex = useMemo(() => {
     if (chapters.length < 1) {
       return;

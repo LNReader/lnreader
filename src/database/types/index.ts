@@ -24,7 +24,7 @@ export interface ChapterInfo {
   novelId: number;
   url: string;
   name: string;
-  release?: string;
+  releaseTime?: string;
   bookmark: number;
   unread: number;
   isDownloaded: number;

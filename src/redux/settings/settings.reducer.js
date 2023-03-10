@@ -54,7 +54,7 @@ export const initialState = {
    */
 
   hideBackdrop: false,
-  defaultChapterSort: 'ORDER BY chapterId ASC',
+  defaultChapterSort: 'ORDER BY id ASC',
 
   /**
    * Reader settings

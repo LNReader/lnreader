@@ -32,11 +32,11 @@ const db = SQLite.openDatabase('lnreader.db');
   Get ChapterText on Reader => return @DownloadChapter (same as Chapter table)
 **/
 
-const insertChaptersQuery = `
+const insertChapterQuery = `
 INSERT INTO Chapter (
-  url, name, release_time, novel_id
+  url, name, releaseTime, novelId
 ) 
-values 
+Values 
   (?, ?, ?, ?)
 `;
 
@@ -47,23 +47,26 @@ export const insertChapters = async (
   if (!chapters?.length) {
     return;
   }
-
   db.transaction(tx => {
-    chapters.map(chapter =>
-      tx.executeSql(insertChaptersQuery, [
-        chapter.url,
-        chapter.name,
-        chapter.releaseTime,
-        novelId,
-      ]),
-    );
+    chapters.forEach(chapter => {
+      tx.executeSql(
+        insertChapterQuery,
+        [chapter.url, chapter.name, chapter.releaseTime, novelId],
+        noop,
+        txnErrorCallback,
+      );
+    });
   });
 };
 
 const getChaptersQuery = (sort = 'ORDER BY id ASC', filter = '') =>
-  `SELECT * FROM Chapter WHERE novelId = ? ${filter} ${sort}`;
+  `SELECT id, * FROM Chapter WHERE novelId = ? ${filter} ${sort}`;
 
-export const getChapters = (novelId: number, sort: string, filter: string) => {
+export const getChapters = (
+  novelId: number,
+  sort: string,
+  filter: string,
+): Promise<ChapterInfo[]> => {
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
@@ -77,7 +80,7 @@ export const getChapters = (novelId: number, sort: string, filter: string) => {
 };
 
 // downloaded chapter
-const getChapterQuery = 'SELECT * FROM Download Chapter.id = ?';
+const getChapterQuery = 'SELECT id, * FROM Download Chapter.id = ?';
 
 export const getChapterFromDB = async (
   chapterId: number,
@@ -99,7 +102,7 @@ export const getChapterFromDB = async (
 
 const getPrevChapterQuery = `
   SELECT
-    *
+    id, *
   FROM
     Chapter
   WHERE
@@ -127,13 +130,13 @@ export const getPrevChapter = (chapterId: number): Promise<ChapterInfo> => {
 
 const getNextChapterQuery = `
   SELECT
-    *
+    id, *
   FROM
     Chapter
   WHERE
     novelId = ?
   AND
-    chapterId > ?
+    id > ?
   `;
 
 export const getNextChapter = (chapterId: number): Promise<ChapterInfo> => {
@@ -391,7 +394,7 @@ export const deleteChapters = async (
 };
 
 const getLastReadChapterQuery = `
-    SELECT Chapter.*
+    SELECT Chapter.id, Chapter.*
     FROM History
     JOIN Chapter
     ON History.chapterId = Chapter.id
