@@ -3,14 +3,15 @@ export const createCategoriesTableQuery = `
     id INTEGER PRIMARY KEY AUTOINCREMENT, 
     name TEXT NOT NULL UNIQUE,
     sort INTEGER 
-  )
+  );
 `;
 
-export const createDefaultCategoryQuery =
-  'INSERT INTO Category (name, sort) VALUES ("Default", 0)';
-export const createCategoryTrigger = `
-CREATE TRIGGER IF NOT EXISTS add_category AFTER INSERT ON Category 
+export const createCategoryTriggerQuery = `
+  CREATE TRIGGER IF NOT EXISTS add_category AFTER INSERT ON Category
   BEGIN
     UPDATE Category SET sort = (SELECT MAX(sort) FROM Category) + 1 WHERE id = new.id;
-  END
+  END;
 `;
+
+export const createCategoryDefaultQuery =
+  'INSERT INTO Category (name, sort) VALUES ("Default", 0);';

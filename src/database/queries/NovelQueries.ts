@@ -11,11 +11,22 @@ import { showToast } from '@hooks/showToast';
 import { txnErrorCallback } from '../utils/helpers';
 import { noop } from 'lodash-es';
 import { getString } from '@strings/translations';
-
 import { NovelInfo } from '../types';
 
+/*
+  Browse novels with NovelItem (url - absolute, name, cover)
+  Get novels in Library with LibraryNovelItem (id, url, name, pluginId, cover, unreadChapters, downloadedChapters, lastReadAt, lastUpdatedAt)
+  NovelScreen will use NovelInfo (same as in Novel table)
+
+  Longpress to add Novel to Library -> Parse novel and chapters -> add
+  Longpress to remove Novel from Library -> only change inLibrary field of novel
+
+  Click "heart" to add or remove -> change inLibrary (because novel and chapters were already in db)
+  Auto create Novel Category @default (sort = 1) by Trigger
+*/
+
 const insertNovelQuery =
-  'INSERT INTO Novel (url, pluginId, name, cover, summary, author, artist, status, genres, inLibary) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+  'INSERT OR REPLACE INTO Novel (url, pluginId, name, cover, summary, author, artist, status, genres, inLibrary) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
 export const insertNovel = async (novel: NovelInfo): Promise<number> => {
   return new Promise(resolve =>
@@ -34,10 +45,7 @@ export const insertNovel = async (novel: NovelInfo): Promise<number> => {
           novel.genres,
           novel.inLibrary,
         ],
-        (txObj, resultSet) => {
-          noop(txObj);
-          resolve(resultSet.insertId);
-        },
+        (txObj, resultSet) => resolve(resultSet.insertId),
         txnErrorCallback,
       ),
     ),
@@ -62,15 +70,13 @@ export const toggleNovelToLibrary = async (
 };
 
 export const getNovel = async (novelUrl: string): Promise<NovelInfo> => {
+  console.log('fetch', novelUrl);
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
-        'SELECT * FROM Novel WHERE url = ?',
+        'SELECT Novel.* FROM Novel JOIN Chapter ON Novel.id = Chapter.id AND Novel.url = ? GROUP BY Novel.id',
         [novelUrl],
-        (txObj, { rows }) => {
-          noop(txObj);
-          resolve(rows.item(0));
-        },
+        (txObj, { rows }) => resolve(rows.item(0)),
         txnErrorCallback,
       );
     }),

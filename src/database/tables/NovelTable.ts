@@ -8,8 +8,8 @@ export const createNovelTableQuery = `
     summary TEXT, 
     author TEXT, 
     artist TEXT, 
-    status TEXT, 
+    status TEXT Default 'Unknown', 
     genres TEXT,
     inLibrary INTEGER DEFAULT 0
-  )
+  );
 `;

@@ -9,7 +9,7 @@ const getCategoriesQuery = `
   SELECT * FROM Category ORDER BY sort
 	`;
 
-export const getCategoriesFromDb = (): Promise<Category[]> => {
+export const getCategoriesFromDb = async (): Promise<Category[]> => {
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
