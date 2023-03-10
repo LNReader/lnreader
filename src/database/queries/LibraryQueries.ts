@@ -14,7 +14,7 @@ export const getNovelsWithCatogory = (
     * 
     FROM Novel
     JOIN (
-        SELECT novel_id 
+        SELECT novelId 
             FROM NovelCategory WHERE categoryId = ?
       ) as NC
     ON Novel.id = NC.novelId
@@ -34,6 +34,7 @@ export const getNovelsWithCatogory = (
     }),
   );
 };
+
 export const getLibraryNovelsFromDb = (
   onlyOngoingNovels?: boolean,
 ): Promise<NovelInfo[]> => {

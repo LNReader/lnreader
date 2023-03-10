@@ -1,14 +1,14 @@
 import { useCallback, useEffect, useState } from 'react';
 import sanitize from 'sanitize-html';
 import { defaultTo } from 'lodash-es';
-import { getChapterFromDb } from '../database/queries/DownloadQueries';
+import { getChapterFromDB } from '../database/queries/ChapterQueries';
 
 import { getPlugin } from '@plugins/pluginManager';
 
 import { DownloadedChapter } from '../database/types';
-import { SourceChapter } from '@plugins/types';
+import { ChapterItem } from '@plugins/types';
 
-type Chapter = SourceChapter | DownloadedChapter;
+type Chapter = ChapterItem | DownloadedChapter;
 
 const useChapter = (
   pluginId: string,
@@ -22,15 +22,15 @@ const useChapter = (
 
   const getChapter = useCallback(async () => {
     try {
-      let res: Chapter = await getChapterFromDb(chapterId);
-
+      let res: DownloadedChapter = await getChapterFromDB(chapterId);
+      let chapterText = '';
       if (!res) {
-        res = await getPlugin(pluginId).parseChapter(novelUrl, chapterUrl);
+        chapterText = await getPlugin(pluginId).parseChapter(chapterUrl);
       }
 
-      let chapterText = sanitize(
+      chapterText = sanitize(
         defaultTo(
-          res.chapterText,
+          res.chapterText || chapterText,
           "Chapter is empty. Report if it's available in WebView.",
         ),
       );

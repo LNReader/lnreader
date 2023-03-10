@@ -47,6 +47,9 @@ const PluginCard: React.FC<Props> = ({
         <Text style={[{ color: theme.onSurfaceVariant }, styles.lang]}>
           {plugin.lang}
         </Text>
+        <Text style={[{ color: theme.onSurfaceVariant }, styles.lang]}>
+          {'version: ' + plugin.version}
+        </Text>
       </View>
     </View>
     <View style={styles.flexRow}>
@@ -109,8 +112,8 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
   },
   icon: {
-    height: 40,
-    width: 40,
+    height: 45,
+    width: 45,
     borderRadius: 4,
     backgroundColor: coverPlaceholderColor,
   },

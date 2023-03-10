@@ -5,28 +5,30 @@ const db = SQLite.openDatabase('lnreader.db');
 import * as DocumentPicker from 'expo-document-picker';
 
 // import { fetchChapters, fetchNovel } from '@services/plugin/fetch';
-// import { insertChapters } from './ChapterQueries';
+import { insertChapters } from './ChapterQueries';
 
 import { showToast } from '@hooks/showToast';
 import { txnErrorCallback } from '../utils/helpers';
 import { noop } from 'lodash-es';
 import { getString } from '@strings/translations';
 import { NovelInfo } from '../types';
+import { SourceNovel } from '@plugins/types';
 
-/*
-  Browse novels with NovelItem (url - absolute, name, cover)
-  Get novels in Library with LibraryNovelItem (id, url, name, pluginId, cover, unreadChapters, downloadedChapters, lastReadAt, lastUpdatedAt)
-  NovelScreen will use NovelInfo (same as in Novel table)
+/**
+  * @param PluginType
+  Browse novels with @NovelItem (url - absolute, name, cover)
 
-  Longpress to add Novel to Library -> Parse novel and chapters -> add
-  Longpress to remove Novel from Library -> only change inLibrary field of novel
-
-  Click "heart" to add or remove -> change inLibrary (because novel and chapters were already in db)
-  Auto create Novel Category @default (sort = 1) by Trigger
-*/
+  * @param DatabaseType
+  Longpress to add Novel to Library | BrowseSource -> Parse novel and chapters ( @SourceNovel including @ChapterItem ) -> insert @Novel and @Chapters
+  Longpress to remove Novel from Library -> only change @inLibrary field of novel
+  Get novels in Library with @LibraryNovelInfo (id, url, name, pluginId, cover, unreadChapters, downloadedChapters, lastReadAt, lastUpdatedAt)
+  NovelScreen will use @NovelInfo (same as in Novel table)
+  Click "heart" to add or remove -> change @inLibrary (because novel and chapters were already in db)
+  Auto create Novel Category Default (@sort = 1) by Trigger
+**/
 
 const insertNovelQuery =
-  'INSERT OR REPLACE INTO Novel (url, pluginId, name, cover, summary, author, artist, status, genres, inLibrary) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+  'INSERT INTO Novel (url, pluginId, name, cover, summary, author, artist, status, genres, inLibrary) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
 export const insertNovel = async (novel: NovelInfo): Promise<number> => {
   return new Promise(resolve =>
@@ -52,7 +54,34 @@ export const insertNovel = async (novel: NovelInfo): Promise<number> => {
   );
 };
 
-export const toggleNovelToLibrary = async (
+export const insertNovelandChapters = async (
+  pluginId: string,
+  sourceNovel: SourceNovel,
+) => {
+  const insertNovelQuery =
+    'INSERT OR REPLACE INTO Novel (url, pluginId, name, cover, summary, author, artist, status, genres) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+  db.transaction(tx => {
+    tx.executeSql(
+      insertNovelQuery,
+      [
+        sourceNovel.url,
+        pluginId,
+        sourceNovel.name,
+        sourceNovel.cover,
+        sourceNovel.cover,
+        sourceNovel.summary,
+        sourceNovel.author,
+        sourceNovel.artist,
+        sourceNovel.status,
+        sourceNovel.genres,
+      ],
+      (txObj, resultSet) =>
+        insertChapters(resultSet.insertId, sourceNovel.chapters),
+    );
+  });
+};
+
+export const switchNovelToLibrary = async (
   novelId: number,
   inLibrary: number,
 ) => {
@@ -70,11 +99,10 @@ export const toggleNovelToLibrary = async (
 };
 
 export const getNovel = async (novelUrl: string): Promise<NovelInfo> => {
-  console.log('fetch', novelUrl);
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
-        'SELECT Novel.* FROM Novel JOIN Chapter ON Novel.id = Chapter.id AND Novel.url = ? GROUP BY Novel.id',
+        'SELECT Novel.* FROM Novel WHERE Novel.url = ?',
         [novelUrl],
         (txObj, { rows }) => resolve(rows.item(0)),
         txnErrorCallback,
@@ -88,7 +116,7 @@ export const deleteNovelCache = () => {
     tx.executeSql(
       'DELETE FROM Novel WHERE inLibrary = 0',
       [],
-      () => showToast('Category deleted'),
+      () => showToast('Cached novels deleted'),
       txnErrorCallback,
     );
   });

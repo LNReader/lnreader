@@ -98,7 +98,6 @@ export const getNovelAction =
             pluginId: pluginId,
             categoryIds: [defaultCategoryId],
           });
-          console.log(fetchedNovelId);
           await insertChapters(fetchedNovelId, fetchedNovel.chapters);
           /**
            * Get novel from db.

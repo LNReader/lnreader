@@ -10,7 +10,7 @@ import { clearCoverCache } from '../../services/utils/coverCache';
 import { getString } from '@strings/translations';
 import useBoolean from '@hooks/useBoolean';
 import ConfirmationDialog from '@components/ConfirmationDialog/ConfirmationDialog';
-import { deleteReadChaptersFromDb } from '../../database/queries/DownloadQueries';
+import { deleteReadChaptersFromDb } from '../../database/queries/ChapterQueries';
 
 import { Appbar, Button, List } from '@components';
 import useSourceStorage from '@hooks/useSourceStorage';

@@ -33,7 +33,7 @@ import { SET_LAST_READ } from '../../redux/preferences/preference.types';
 import WebViewReader from './components/WebViewReader';
 import { useTextToSpeech } from '../../hooks/useTextToSpeech';
 import { useFullscreenMode, useLibrarySettings } from '../../hooks';
-import { getChapterFromDb } from '../../database/queries/DownloadQueries';
+import { getChapterFromDb } from '../../database/queries/ChapterQueries';
 import ReaderBottomSheetV2 from './components/ReaderBottomSheet/ReaderBottomSheet';
 import { useReaderSettings } from '../../redux/hooks';
 import { defaultTo } from 'lodash-es';
