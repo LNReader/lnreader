@@ -19,7 +19,7 @@ export interface LibraryNovelInfo extends NovelInfo {
   chaptersDownloaded: number;
 }
 
-export interface ChapterItem {
+export interface ChapterInfo {
   id: number;
   novelId: number;
   url: string;
@@ -52,6 +52,7 @@ export interface History {
 }
 
 export interface Update {
+  id: number;
   pluginId: string;
   novelId: number;
   novelName: string;
@@ -67,7 +68,7 @@ export interface Update {
 export interface Category {
   id: number;
   name: string;
-  sort: number | null;
+  sort: number;
 }
 
 export interface LibraryStats {

@@ -1,44 +1,30 @@
 import { SelectedFilter, SourceFilter } from './filterTypes';
 import { Languages } from '@utils/constants/languages';
 
-export interface SourceNovelItem {
-  pluginId: string;
-  id: number;
+// id must be provided by SQLite
+
+export interface NovelItem {
   name: string;
-  url: string;
+  url: string; //must be absoulute
   cover?: string;
 }
 
-export interface SourceChapterItem {
-  chapterName: string;
-  chapterUrl: string;
-  releaseDate?: string | null;
+export interface ChapterItem {
+  name: string;
+  url: string; //must be absoulute
+  releaseTime?: string;
 }
 
 export interface SourceNovel {
-  pluginId: string;
-  pluginName: string;
-  novelUrl: string;
-  novelName?: string;
-  novelCover?: string;
-  genre?: string;
+  url: string; //must be absoulute
+  name: string;
+  cover?: string;
+  genres?: string;
   summary?: string;
   author?: string;
   artist?: string;
   status?: string;
-  inLibrary: number;
-  chapters?: SourceChapterItem[];
-}
-
-export interface SourceChapter {
-  pluginId?: string;
-  url: string;
-  name?: string;
-  chapterText?: string;
-}
-
-export interface PopularNovelsResponse {
-  novels: SourceNovelItem[];
+  chapters?: ChapterItem[];
 }
 
 export interface SourceOptions {
@@ -79,20 +65,14 @@ export interface Plugin extends PluginItem {
   popularNovels: (
     pageNo: number,
     options?: SourceOptions,
-  ) => Promise<PopularNovelsResponse>;
+  ) => Promise<NovelItem[]>;
   parseNovelAndChapters: (
     novelUrl: string,
     start?: number,
     end?: number,
   ) => Promise<SourceNovel>;
-  parseChapter: (
-    novelUrl: string,
-    chapterUrl: string,
-  ) => Promise<SourceChapter>;
-  searchNovels: (
-    searchTerm: string,
-    pageNo?: number,
-  ) => Promise<SourceNovelItem[]>;
+  parseChapter: (chapterUrl: string) => Promise<string>; // yes, just string
+  searchNovels: (searchTerm: string, pageNo?: number) => Promise<NovelItem[]>;
   fetchImage: (url: string) => Promise<string>; // base64
   protected: boolean; // true if you cant host their resources in other sites
   site: string;
