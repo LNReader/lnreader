@@ -22,7 +22,7 @@ const EditInfoModal = ({ theme, hideModal, modalVisible, novel, dispatch }) => {
   const [tag, setTag] = useState('');
 
   const removeTag = t => {
-    let tags = info.genre.split(',').filter(item => item !== t);
+    let tags = info.genres.split(',').filter(item => item !== t);
     setInfo({ ...info, genre: tags.join(',') });
   };
 
@@ -135,7 +135,7 @@ const EditInfoModal = ({ theme, hideModal, modalVisible, novel, dispatch }) => {
           <FlatList
             contentContainerStyle={{ marginVertical: 8 }}
             horizontal
-            data={info.genre.split(',')}
+            data={info.genres.split(',')}
             keyExtractor={(item, index) => 'novelTag' + index}
             renderItem={({ item }) => (
               <GenreChip theme={theme} onPress={() => removeTag(item)}>

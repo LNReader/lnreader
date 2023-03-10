@@ -87,11 +87,14 @@ const Novel = ({ route, navigation }) => {
     disableHapticFeedback,
   } = useSettings();
 
-  const { sort, filter, showChapterTitles } = usePreferences(novel.id);
-
+  const {
+    sort = defaultChapterSort,
+    filter = '',
+    showChapterTitles = false,
+  } = usePreferences(novel.novelId);
   let { lastReadChapter, position } = useContinueReading(chapters, novel.id);
 
-  const { defaultCategoryId } = useCategorySettings();
+  const { defaultCategoryId = 1 } = useCategorySettings();
   useEffect(() => {
     dispatch(getNovelAction(pluginId, url, sort, filter, defaultCategoryId));
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -140,7 +143,7 @@ const Novel = ({ route, navigation }) => {
         },
       });
     }
-    if (selected.some(obj => obj.idDownloaded === 1)) {
+    if (selected.some(obj => obj.isDownloaded === 1)) {
       list.push({
         icon: 'trash-can-outline',
         onPress: () => {
@@ -322,7 +325,7 @@ const Novel = ({ route, navigation }) => {
   return (
     <Provider>
       <View style={[styles.container, { backgroundColor: theme.background }]}>
-        {/* <Portal>
+        <Portal>
           {selected.length === 0 ? (
             <View
               style={{
@@ -386,17 +389,13 @@ const Novel = ({ route, navigation }) => {
                     titleStyle={{ color: theme.onSurface }}
                     onPress={() => {
                       dispatch(
-                        downloadAllChaptersAction(
-                          novel.pluginId,
-                          novel.url,
-                          [
-                            chapters.find(
-                              chapter =>
-                                !!chapter.unread === false &&
-                                !!chapter.isDownloaded === false,
-                            ),
-                          ],
-                        ),
+                        downloadAllChaptersAction(novel.pluginId, novel.url, [
+                          chapters.find(
+                            chapter =>
+                              !!chapter.unread === false &&
+                              !!chapter.isDownloaded === false,
+                          ),
+                        ]),
                       );
                       showDownloadMenu(false);
                     }}
@@ -467,7 +466,9 @@ const Novel = ({ route, navigation }) => {
                         downloadAllChaptersAction(
                           novel.pluginId,
                           novel.url,
-                          chapters.filter(chapter => !!chapter.unread === false),
+                          chapters.filter(
+                            chapter => !!chapter.unread === false,
+                          ),
                         ),
                       );
                       showDownloadMenu(false);
@@ -576,7 +577,7 @@ const Novel = ({ route, navigation }) => {
               />
             </Animated.View>
           )}
-        </Portal> */}
+        </Portal>
         <View style={{ minHeight: 3, flex: 1 }}>
           <FlashList
             ref={flatlistRef}
@@ -609,7 +610,7 @@ const Novel = ({ route, navigation }) => {
             refreshControl={refreshControl()}
           />
         </View>
-        {/* {useFabForContinueReading && chapters.length > 0 && lastReadChapter && (
+        {useFabForContinueReading && chapters.length > 0 && lastReadChapter && (
           <FAB
             style={[
               styles.fab,
@@ -627,8 +628,8 @@ const Novel = ({ route, navigation }) => {
               );
             }}
           />
-        )} */}
-        {/* <Portal>
+        )}
+        <Portal>
           <Actionbar
             active={selected.length > 0}
             theme={theme}
@@ -693,7 +694,7 @@ const Novel = ({ route, navigation }) => {
             novelName={novel.name}
             theme={theme}
           />
-        </Portal> */}
+        </Portal>
       </View>
     </Provider>
   );

@@ -56,7 +56,7 @@ const useContinueReading = (chapters, novelId) => {
 
   if (chapterId) {
     lastReadChapter = chapters.find(
-      obj => obj.chapterId === chapterId && obj.read === 0,
+      obj => obj.chapterId === chapterId && obj.unread === 1,
     );
   }
 

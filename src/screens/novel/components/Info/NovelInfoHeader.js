@@ -101,10 +101,10 @@ const NovelInfoHeader = ({
         </NovelInfoContainer>
       </CoverImage>
       <>
-        {/* <NovelScreenButtonGroup
+        <NovelScreenButtonGroup
           novel={novel}
           handleFollowNovel={() => {
-            dispatch(followNovelAction(novel));
+            dispatch(followNovelAction(novel, novel.pluginId));
             if (
               novel.inLibrary &&
               chapters.some(chapter => chapter.isDownloaded === 1)
@@ -114,7 +114,7 @@ const NovelInfoHeader = ({
           }}
           handleTrackerSheet={() => trackerSheetRef.current.expand()}
           theme={theme}
-        /> */}
+        />
         <NovelSummary
           summary={novel.summary}
           isExpanded={!novel.inLibrary}
@@ -123,7 +123,7 @@ const NovelInfoHeader = ({
         {novel.genres ? (
           <NovelGenres theme={theme} genre={novel.genres} />
         ) : null}
-        {/* <ReadButton novel={novel} chapters={chapters} /> */}
+        <ReadButton novel={novel} chapters={chapters} lastRead={lastRead} />
         <Pressable
           style={styles.bottomsheet}
           onPress={() => novelBottomSheetRef.current.expand()}

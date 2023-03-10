@@ -123,8 +123,8 @@ export const showChapterTitlesAction = (novelId, value) => async dispatch => {
   });
 };
 
-export const followNovelAction = (pluginId, novel) => async dispatch => {
-  await switchNovelToLibrary(pluginId, novel.url);
+export const followNovelAction = (novel, pluginId) => async dispatch => {
+  await switchNovelToLibrary(novel.url, pluginId);
 
   dispatch({
     type: UPDATE_IN_LIBRARY,

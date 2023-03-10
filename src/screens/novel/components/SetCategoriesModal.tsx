@@ -14,7 +14,7 @@ import { Checkbox } from '@components/Checkbox/Checkbox';
 import { xor } from 'lodash-es';
 
 interface SetCategoryModalProps {
-  // novelId: number | number[];
+  novelId: number | number[];
   visible: boolean;
   currentCategoryIds: number[];
   onEditCategories?: () => void;

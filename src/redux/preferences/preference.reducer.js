@@ -9,9 +9,8 @@ const initialState = {
   novelSettings: {},
 };
 
-const novelReducer = (state = initialState, action) => {
+const preferenceReducer = (state = initialState, action) => {
   const { type, payload } = action;
-
   switch (type) {
     case SET_LAST_READ:
       return {
@@ -69,4 +68,4 @@ const novelReducer = (state = initialState, action) => {
   }
 };
 
-export default novelReducer;
+export default preferenceReducer;

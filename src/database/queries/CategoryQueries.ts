@@ -22,6 +22,26 @@ export const getCategoriesFromDb = async (): Promise<Category[]> => {
   );
 };
 
+export const getNovelCategoriesQuery = `
+  SELECT * FROM 
+  Category JOIN NovelCategory 
+  JOIN Novel 
+  ON Category.id = NovelCategory.categoryId AND NovelCategory.novelId = ?
+`;
+
+export const getNovelCategories = (novelId: number): Promise<Category[]> => {
+  return new Promise(resolve => {
+    db.transaction(tx => {
+      tx.executeSql(
+        getNovelCategoriesQuery,
+        [novelId],
+        (txObj, { rows }) => resolve((rows as any)._array),
+        txnErrorCallback,
+      );
+    });
+  });
+};
+
 const createCategoryQuery = 'INSERT INTO Category (name) VALUES (?)';
 
 export const createCategory = (categoryName: string): void =>

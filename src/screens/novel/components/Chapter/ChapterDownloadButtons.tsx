@@ -1,4 +1,4 @@
-import { ChapterItemExtended } from '@database/types';
+import { ChapterInfo } from '@database/types';
 import { MD3ThemeType } from '@theme/types';
 import React, { useState } from 'react';
 import { ActivityIndicator, StyleSheet } from 'react-native';
@@ -6,12 +6,12 @@ import { ActivityIndicator, StyleSheet } from 'react-native';
 import { IconButton, Menu, overlay } from 'react-native-paper';
 
 interface DownloadButtonProps {
-  downloadQueue: ChapterItemExtended[];
-  chapter: ChapterItemExtended;
+  downloadQueue: ChapterInfo[];
+  chapter: ChapterInfo;
   theme: MD3ThemeType;
   deleteChapterMenuVisible: boolean;
-  deleteChapter: (chapter: ChapterItemExtended) => void;
-  downloadChapter: (chapter: ChapterItemExtended) => (dispatch: any) => void;
+  deleteChapter: (chapter: ChapterInfo) => void;
+  downloadChapter: (chapter: ChapterInfo) => (dispatch: any) => void;
   hideDeleteChapterMenu: () => void;
   showDeleteChapterMenu: () => void;
 }
@@ -26,8 +26,8 @@ export const DownloadButton: React.FC<DownloadButtonProps> = ({
   showDeleteChapterMenu,
   deleteChapterMenuVisible,
 }) => {
-  const [downloaded, setDownloaded] = useState(chapter.downloaded);
-  if (downloadQueue.some(chap => chap.chapterId === chapter.chapterId)) {
+  const [downloaded, setDownloaded] = useState(chapter.isDownloaded);
+  if (downloadQueue.some(chap => chap.id === chapter.id)) {
     return <ChapterDownloadingButton theme={theme} />;
   } else if (downloaded === 0) {
     return (

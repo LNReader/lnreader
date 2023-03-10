@@ -8,7 +8,7 @@ import { useBoolean, useNovelTrackerInfo } from '../../../../hooks';
 import { ThemeColors } from '../../../../theme/types';
 import { getString } from '../../../../../strings/translations';
 import { Portal } from 'react-native-paper';
-import SetCategoryModal from '../SetCategoriesModal';
+// import SetCategoryModal from '../SetCategoriesModal';
 
 interface NovelScreenButtonGroupProps {
   novel: NovelInfo;
@@ -23,35 +23,38 @@ const NovelScreenButtonGroup: React.FC<NovelScreenButtonGroupProps> = ({
   handleFollowNovel,
   theme,
 }) => {
-  const { followed, sourceUrl } = novel;
+  const { inLibrary } = novel;
   const { navigate } = useNavigation();
-  const followButtonColor = followed ? theme.primary : theme.outline;
+  const followButtonColor = inLibrary ? theme.primary : theme.outline;
 
-  const { isTracked, isTrackerAvailable } = useNovelTrackerInfo(novel.novelId);
+  const { isTracked, isTrackerAvailable } = useNovelTrackerInfo(novel.id);
 
   const trackerButtonColor = isTracked ? theme.primary : theme.outline;
 
   const handleOpenWebView = async () => {
-    navigate('WebviewScreen', {
-      sourceId: novel.sourceId,
-      name: novel.source,
-      url: sourceUrl,
-    });
+    navigate(
+      'WebviewScreen' as never,
+      {
+        sourceId: novel.pluginId,
+        name: novel.pluginId,
+        url: novel.url,
+      } as never,
+    );
   };
 
   const handleMigrateNovel = () =>
     navigate(
       'MigrateNovel' as never,
       {
-        sourceId: novel.sourceId,
-        novelName: novel.novelName,
+        sourceId: novel.id,
+        novelName: novel.name,
       } as never,
     );
 
   const {
-    value: setCategoryModalVisible,
+    // value: setCategoryModalVisible,
     setTrue: showSetCategoryModal,
-    setFalse: closeSetCategoryModal,
+    // setFalse: closeSetCategoryModal,
   } = useBoolean();
 
   return (
@@ -65,13 +68,15 @@ const NovelScreenButtonGroup: React.FC<NovelScreenButtonGroupProps> = ({
             style={styles.button}
           >
             <MaterialCommunityIcons
-              name={followed ? 'heart' : 'heart-outline'}
+              name={inLibrary ? 'heart' : 'heart-outline'}
               color={followButtonColor}
               size={24}
             />
             <Text style={[styles.buttonLabel, { color: followButtonColor }]}>
               {getString(
-                followed ? 'novelScreen.inLibaray' : 'novelScreen.addToLibaray',
+                inLibrary
+                  ? 'novelScreen.inLibaray'
+                  : 'novelScreen.addToLibaray',
               )}
             </Text>
           </Pressable>
@@ -128,12 +133,12 @@ const NovelScreenButtonGroup: React.FC<NovelScreenButtonGroupProps> = ({
         </View>
       </View>
       <Portal>
-        <SetCategoryModal
-          novelId={novel.novelId}
-          currentCategoryIds={JSON.parse(novel.categoryIds) as number[]}
+        {/* <SetCategoryModal
+          novelId={novel.id}
+          currentCategoryIds={JSON.parse(novel) as number[]}
           closeModal={closeSetCategoryModal}
           visible={setCategoryModalVisible}
-        />
+        /> */}
       </Portal>
     </>
   );
