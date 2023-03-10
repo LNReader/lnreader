@@ -13,6 +13,7 @@ import { noop } from 'lodash-es';
 import { getString } from '@strings/translations';
 import { NovelInfo } from '../types';
 import { SourceNovel } from '@plugins/types';
+import { fetchNovel } from '@services/plugin/fetch';
 
 /**
   * @param PluginType
@@ -58,7 +59,6 @@ export const insertNovelandChapters = async (
   pluginId: string,
   sourceNovel: SourceNovel,
 ) => {
-  console.log(sourceNovel.cover);
   const insertNovelQuery =
     'INSERT INTO Novel (url, pluginId, name, cover, summary, author, artist, status, genres) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)';
   db.transaction(tx => {
@@ -82,23 +82,6 @@ export const insertNovelandChapters = async (
   });
 };
 
-export const switchNovelToLibrary = async (
-  novelId: number,
-  inLibrary: number,
-) => {
-  db.transaction(tx => {
-    tx.executeSql('UPDATE Novel SET inLibrary = ? WHERE id = ?'),
-      [1 - inLibrary, novelId],
-      noop,
-      txnErrorCallback;
-  });
-  if (inLibrary === 1) {
-    showToast(getString('browseScreen.removeFromLibrary'));
-  } else {
-    showToast(getString('browseScreen.addedToLibrary'));
-  }
-};
-
 export const getNovel = async (novelUrl: string): Promise<NovelInfo> => {
   return new Promise(resolve =>
     db.transaction(tx => {
@@ -110,6 +93,35 @@ export const getNovel = async (novelUrl: string): Promise<NovelInfo> => {
       );
     }),
   );
+};
+
+export const switchNovelToLibrary = async (
+  novelUrl: string,
+  pluginId: string,
+) => {
+  const novel = await getNovel(novelUrl);
+  if (novel) {
+    db.transaction(tx => {
+      tx.executeSql('UPDATE Novel SET inLibrary = ? WHERE id = ?'),
+        [1 - novel.inLibrary, novel.id],
+        noop,
+        txnErrorCallback;
+    });
+    if (novel.inLibrary === 1) {
+      showToast(getString('browseScreen.removeFromLibrary'));
+    } else {
+      showToast(getString('browseScreen.addedToLibrary'));
+    }
+  } else {
+    const sourceNovel = await fetchNovel(pluginId, novelUrl);
+    insertNovelandChapters(pluginId, sourceNovel);
+    db.transaction(tx => {
+      tx.executeSql('UPDATE Novel SET inLibrary = ? WHERE url = ?'),
+        [1, novelUrl],
+        noop,
+        txnErrorCallback;
+    });
+  }
 };
 
 export const deleteNovelCache = () => {

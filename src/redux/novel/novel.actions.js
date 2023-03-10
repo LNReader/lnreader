@@ -20,7 +20,7 @@ import {
 
 import { fetchNovel } from '@services/plugin/fetch';
 import {
-  followNovel,
+  switchNovelToLibrary,
   insertNovelandChapters,
   getNovel,
 } from '@database/queries/NovelQueries';
@@ -52,8 +52,10 @@ export const setNovel = novel => async dispatch => {
   dispatch({ type: SET_NOVEL, payload: { novel } });
 };
 
+// Always use {} for payload
+
 export const getNovelAction =
-  (pluginId, novelUrl, sort, filter, defaultCategoryId) => async dispatch => {
+  (pluginId, novelUrl, sort, filter) => async dispatch => {
     try {
       dispatch({ type: LOADING_NOVEL });
 
@@ -121,26 +123,26 @@ export const showChapterTitlesAction = (novelId, value) => async dispatch => {
   });
 };
 
-export const followNovelAction = novel => async dispatch => {
-  await followNovel(novel.followed, novel.novelId);
+export const followNovelAction = (pluginId, novel) => async dispatch => {
+  await switchNovelToLibrary(pluginId, novel.url);
 
   dispatch({
     type: UPDATE_IN_LIBRARY,
-    payload: { novelUrl: novel.novelUrl, followed: !novel.followed },
+    payload: { novelUrl: novel.url, inLibrary: !novel.inLibrary },
   });
 
-  showToast(!novel.followed ? 'Added to library' : 'Removed from library');
+  showToast(!novel.inLibrary ? 'Added to library' : 'Removed from library');
 };
 
 export const bookmarkChapterAction = chapters => async dispatch => {
   chapters.map(chapter => {
-    bookmarkChapter(chapter.bookmark, chapter.chapterId);
+    bookmarkChapter(chapter.bookmark, chapter.id);
 
     dispatch({
       type: BOOKMARK_CHAPTER,
       payload: {
         bookmark: chapter.bookmark,
-        chapterId: chapter.chapterId,
+        chapterId: chapter.id,
       },
     });
   });
@@ -158,7 +160,7 @@ export const markChapterReadAction = (chapterId, novelId) => async dispatch => {
 
   dispatch({
     type: SET_LAST_READ,
-    payload: { novelId, chapterId: nextChapter.chapterId },
+    payload: { novelId, chapterId: nextChapter.id },
   });
 };
 
@@ -168,7 +170,7 @@ export const markPreviousChaptersReadAction =
 
     dispatch({
       type: MARK_PREVIOUS_CHAPTERS_READ,
-      payload: chapterId,
+      payload: { chapterId },
     });
 
     showToast('Marked previous chapters read');
@@ -177,13 +179,13 @@ export const markPreviousChaptersReadAction =
 export const markChaptersRead =
   (chapters, novelId, sort, filter) => async dispatch => {
     try {
-      chapters.map(chapter => markChapterRead(chapter.chapterId));
+      chapters.map(chapter => markChapterRead(chapter.id));
 
       const chaps = await getChapters(novelId, sort, filter);
 
       dispatch({
         type: GET_CHAPTERS,
-        payload: chaps,
+        payload: { chaps },
       });
     } catch (error) {
       showToast(error.message);
@@ -196,7 +198,7 @@ export const markPreviousChaptersUnreadAction =
 
     dispatch({
       type: MARK_PREVIOUS_CHAPTERS_UNREAD,
-      payload: chapterId,
+      payload: { chapterId },
     });
   };
 
@@ -208,37 +210,36 @@ export const markChapterUnreadAction =
 
     dispatch({
       type: GET_CHAPTERS,
-      payload: chaps,
+      payload: { chaps },
     });
   };
 
 /**
- *
+ * When propertise are stand alone, they should have prefix (novel | chapter)
  * @param {string} pluginId
- * @param {string} url - Novel
- * @param {number} id - Novel
- * @param {string} url - Chapter
- * @param {string} name - Chapter
- * @param {number} id - Chapter
+ * @param {string} novelUrl
+ * @param {number} novelId
+ * @param {string} chapterlUrl
+ * @param {string} chapterlName
+ * @param {number} chapterId
  * @returns
  */
 export const downloadChapterAction =
-  (pluginId, novelUrl, novelId, chapterUrl, chapterName, chapterId) =>
-  async dispatch => {
+  (pluginId, novelId, chapterUrl, chapterName, chapterId) => async dispatch => {
     // dispatch({
     //     type: CHAPTER_DOWNLOADING,
     //     payload: chapterId,
     // });
     dispatch({
       type: SET_DOWNLOAD_QUEUE,
-      payload: [{ chapterId, chapterName }],
+      payload: [{ id, name }],
     });
 
-    await downloadChapter(pluginId, novelUrl, novelId, chapterUrl, chapterId);
+    await downloadChapter(pluginId, novelId, chapterUrl, chapterId);
 
     dispatch({
       type: CHAPTER_DOWNLOADED,
-      payload: chapterId,
+      payload: { chapterId },
     });
 
     ToastAndroid.show(`Downloaded ${chapterName}`, ToastAndroid.SHORT);
@@ -258,14 +259,13 @@ export const downloadAllChaptersAction =
       /**
        * Filter downloaded chapters
        */
-      let chapters = chaps.filter(chapter => chapter.downloaded === 0);
+      let chapters = chaps.filter(chapter => chapter.isDownloaded === 0);
 
       /**
        * Filter chapters already in download queue
        */
       chapters = chapters.filter(
-        chapter =>
-          !downloadQueue.some(obj => obj.chapterId === chapter.chapterId),
+        chapter => !downloadQueue.some(obj => obj.id === chapter.id),
       );
 
       chapters = chapters.map(chapter => ({
@@ -279,7 +279,7 @@ export const downloadAllChaptersAction =
 
         const options = {
           taskName: 'Library Update',
-          taskTitle: chapters[0].chapterName,
+          taskTitle: chapters[0].name,
           taskDesc: '0/' + chapters.length,
           taskIcon: {
             name: 'notification_icon',
@@ -308,24 +308,23 @@ export const downloadAllChaptersAction =
             ) {
               if (BackgroundService.isRunning()) {
                 try {
-                  if (!chapters[i].downloaded) {
+                  if (!chapters[i].isDownloaded) {
                     await downloadChapter(
                       pluginId,
-                      novelUrl,
                       chapters[i].novelId,
-                      chapters[i].chapterUrl,
-                      chapters[i].chapterId,
+                      chapters[i].url,
+                      chapters[i].id,
                     );
                   }
 
                   dispatch({
                     type: CHAPTER_DOWNLOADED,
-                    payload: chapters[i].chapterId,
+                    payload: chapters[i].id,
                   });
                 } catch (error) {
                   Notifications.scheduleNotificationAsync({
                     content: {
-                      title: chapters[i].chapterName,
+                      title: chapters[i].name,
                       body: `Download failed: ${error.message}`,
                     },
                     trigger: null,
@@ -333,7 +332,7 @@ export const downloadAllChaptersAction =
                 }
 
                 await BackgroundService.updateNotification({
-                  taskTitle: chapters[i].chapterName,
+                  taskTitle: chapters[i].name,
                   taskDesc: i + 1 + '/' + chapters.length,
                   progressBar: {
                     max: chapters.length,
@@ -371,7 +370,7 @@ export const deleteChapterAction =
 
     dispatch({
       type: CHAPTER_DELETED,
-      payload: chapterId,
+      payload: { chapterId },
     });
 
     showToast(`Deleted ${chapterName}`);
@@ -385,12 +384,11 @@ export const deleteChapterAction =
  */
 export const deleteAllChaptersAction =
   (pluginId, chapters) => async dispatch => {
-    const chapterIds = chapters.map(chapter => chapter.chapterId);
+    const chapterIds = chapters.map(chapter => chapter.id);
     await deleteChapters(pluginId, chapters);
 
     dispatch({
       type: ALL_CHAPTER_DELETED,
-      payload: chapterIds,
     });
 
     showToast('Chapters deleted');

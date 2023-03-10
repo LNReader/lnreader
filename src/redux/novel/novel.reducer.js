@@ -1,7 +1,7 @@
 import {
   CHAPTER_DOWNLOADING,
   CHAPTER_DOWNLOADED,
-  CHAPTER_DELETED,
+  ALL_CHAPTER_DELETED,
   GET_CHAPTERS,
   LOADING_NOVEL,
   GET_NOVEL,
@@ -46,14 +46,14 @@ const novelReducer = (state = initialState, action) => {
     case GET_CHAPTERS:
       return {
         ...state,
-        chapters: payload,
+        chapters: payload.chapters,
         loading: false,
         updating: false,
       };
     case UPDATE_IN_LIBRARY:
       return {
         ...state,
-        novel: { ...state.novel, followed: payload.followed },
+        novel: { ...state.novel, inLibrary: payload.inLibrary },
       };
     case UPDATE_NOVEL:
       return {
@@ -67,8 +67,8 @@ const novelReducer = (state = initialState, action) => {
       return {
         ...state,
         chapters: state.chapters.map(chapter =>
-          chapter.chapterId === payload.chapterId
-            ? { ...chapter, read: 1 }
+          chapter.id === payload.chapterId
+            ? { ...chapter, unread: 0 }
             : chapter,
         ),
       };
@@ -76,8 +76,8 @@ const novelReducer = (state = initialState, action) => {
       return {
         ...state,
         chapters: state.chapters.map(chapter =>
-          chapter.chapterId === payload.chapterId
-            ? { ...chapter, read: 0 }
+          chapter.id === payload.chapterId
+            ? { ...chapter, unread: 1 }
             : chapter,
         ),
       };
@@ -85,7 +85,7 @@ const novelReducer = (state = initialState, action) => {
       return {
         ...state,
         chapters: state.chapters.map(chapter =>
-          chapter.chapterId === payload.chapterId
+          chapter.id === payload.chapterId
             ? { ...chapter, bookmark: !payload.bookmark }
             : chapter,
         ),
@@ -99,8 +99,8 @@ const novelReducer = (state = initialState, action) => {
       return {
         ...state,
         chapters: state.chapters.map(chapter =>
-          chapter.chapterId === payload
-            ? { ...chapter, downloaded: 1 }
+          chapter.id === payload.chapterId
+            ? { ...chapter, idDownloaded: 1 }
             : chapter,
         ),
         downloading: state.downloading.filter(
@@ -111,17 +111,17 @@ const novelReducer = (state = initialState, action) => {
       return {
         ...state,
         chapters: state.chapters.map(chapter =>
-          chapter.chapterId === payload
-            ? { ...chapter, downloaded: 0 }
+          chapter.id === payload.chapterId
+            ? { ...chapter, isDownloaded: 0 }
             : chapter,
         ),
       };
-    case CHAPTER_DELETED:
+    case ALL_CHAPTER_DELETED:
       return {
         ...state,
         chapters: state.chapters.map(chapter => ({
           ...chapter,
-          downloaded: 0,
+          isDownloaded: 0,
         })),
       };
     case UPDATE_LAST_READ:
@@ -134,14 +134,14 @@ const novelReducer = (state = initialState, action) => {
       return {
         ...state,
         chapters: state.chapters.map(chapter =>
-          chapter.chapterId < payload ? { ...chapter, read: 1 } : chapter,
+          chapter.id < payload.chapterId ? { ...chapter, unread: 0 } : chapter,
         ),
       };
     case MARK_PREVIOUS_CHAPTERS_UNREAD:
       return {
         ...state,
         chapters: state.chapters.map(chapter =>
-          chapter.chapterId < payload ? { ...chapter, read: 0 } : chapter,
+          chapter.id < payload.chapterId ? { ...chapter, unread: 1 } : chapter,
         ),
       };
     case NOVEL_ERROR:
