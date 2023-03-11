@@ -31,7 +31,6 @@ import { useTextToSpeech } from '@hooks/useTextToSpeech';
 import { useFullscreenMode, useLibrarySettings } from '@hooks';
 import { getChapterFromDB } from '@database/queries/ChapterQueries';
 import ReaderBottomSheetV2 from './components/ReaderBottomSheet/ReaderBottomSheet';
-import { useReaderSettings } from '@redux/hooks';
 import { defaultTo } from 'lodash-es';
 import BottomInfoBar from './components/BottomInfoBar/BottomInfoBar';
 import { sanitizeChapterText } from './utils/sanitizeChapterText';
@@ -67,7 +66,6 @@ const ChapterContent = ({ route, navigation }) => {
 
   const theme = useTheme();
   const dispatch = useDispatch();
-  const readerSettings = useReaderSettings();
 
   const {
     swipeGestures = false,
@@ -88,7 +86,7 @@ const ChapterContent = ({ route, navigation }) => {
   const minScroll = useRef(0);
 
   const { tracker, trackedNovels } = useTrackingStatus();
-  const isTracked = trackedNovels.find(obj => obj.novel.id === novel.id);
+  const isTracked = trackedNovels.find(obj => obj.novel.id === chapter.novelId);
 
   const [sourceChapter, setChapter] = useState({ ...chapter });
   const [loading, setLoading] = useState(true);
@@ -171,8 +169,8 @@ const ChapterContent = ({ route, navigation }) => {
   useEffect(() => {
     const setPrevAndNextChap = async () => {
       const [nextChap, prevChap] = await Promise.all([
-        getNextChapter(novel.id, chapter.id),
-        getPrevChapter(novel.id, chapter.id),
+        getNextChapter(chapter.novelId, chapter.id),
+        getPrevChapter(chapter.novelId, chapter.id),
       ]);
       setAdjacentChapter([nextChap, prevChap]);
     };
@@ -183,7 +181,7 @@ const ChapterContent = ({ route, navigation }) => {
     htmlToText(sourceChapter.chapterText).split('\n'),
     () => {
       if (!incognitoMode) {
-        dispatch(markChapterReadAction(chapter.id, novel.id));
+        dispatch(markChapterReadAction(chapter.id, chapter.novelId));
         updateTracker();
       }
     },
@@ -231,12 +229,14 @@ const ChapterContent = ({ route, navigation }) => {
   const doSaveProgress = useCallback(
     (offsetY, percentage) => {
       if (!incognitoMode) {
-        dispatch(saveScrollPosition(offsetY, percentage, chapter.id, novel.id));
+        dispatch(
+          saveScrollPosition(offsetY, percentage, chapter.id, chapter.novelId),
+        );
       }
 
       if (!incognitoMode && percentage >= 97) {
         // a relative number
-        dispatch(markChapterReadAction(chapter.id, novel.id));
+        dispatch(markChapterReadAction(chapter.id, chapter.novelId));
         updateTracker();
       }
     },

@@ -120,8 +120,8 @@ export const getPrevChapter = (
         [novelId, chapterId],
         (_txObj, results) =>
           resolve(results.rows.item(results.rows.length - 1)),
-        (_txObj, error) => {
-          showToast(error.message);
+        () => {
+          showToast("There's no previous chapter");
           return false;
         },
       );
@@ -150,8 +150,8 @@ export const getNextChapter = (
         getNextChapterQuery,
         [novelId, chapterId],
         (_txObj, results) => resolve(results.rows.item(0)),
-        (_txObj, error) => {
-          showToast(error.message);
+        () => {
+          showToast("There's no next Chapter");
           return false;
         },
       );

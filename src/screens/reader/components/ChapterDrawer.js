@@ -9,7 +9,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getString } from '@strings/translations';
 import { useNovel, useSettings, usePreferences } from '@hooks/reduxHooks';
 import { useDispatch } from 'react-redux';
-import { setNovel, getNovelAction } from '@redux/novel/novel.actions';
+import { getNovelAction } from '@redux/novel/novel.actions';
 
 const ChapterDrawer = ({ state: st, navigation }) => {
   const theme = useTheme();
@@ -17,16 +17,17 @@ const ChapterDrawer = ({ state: st, navigation }) => {
   const styles = createStylesheet(theme, insets);
   let listRef = useRef();
   const dispatch = useDispatch();
-  const { chapter, novel } = st.routes[0].params;
+  const { chapter, novel: novelItem } = st.routes[0].params;
   const { defaultChapterSort = 'ORDER BY id ASC' } = useSettings();
-  const { sort = defaultChapterSort, filter = '' } = usePreferences(novel.id);
-  const { chapters } = useNovel();
+  const { sort = defaultChapterSort, filter = '' } = usePreferences(
+    chapter.novelId,
+  );
+  const { novel, chapters } = useNovel();
   useEffect(() => {
-    if (chapters.length < 1 || chapter.novelId !== novel.id) {
-      dispatch(setNovel(novel));
-      dispatch(getNovelAction(novel.pluginId, novel.url, sort, filter));
+    if (chapter.novelId !== novel.id || chapters.length === 0) {
+      dispatch(getNovelAction(novelItem.pluginId, novelItem.url, sort, filter));
     }
-  }, [chapters.length, defaultChapterSort, dispatch, filter, novel, chapter]);
+  }, [defaultChapterSort, dispatch, filter, novelItem, chapter]);
   const listAscending = sort === 'ORDER BY id ASC';
   const scrollToIndex = useMemo(() => {
     if (chapters.length < 1) {
@@ -40,6 +41,7 @@ const ChapterDrawer = ({ state: st, navigation }) => {
     listRef.current?.scrollToIndex?.(res);
     return res;
   }, [chapters, chapter.id, listAscending]);
+
   const [buttonProperties, setButtonProperties] = useState({
     up: {
       text: getString('readerScreen.drawer.scrollToTop'),
@@ -59,7 +61,7 @@ const ChapterDrawer = ({ state: st, navigation }) => {
 
   const changeChapter = item => {
     navigation.replace('Chapter', {
-      novel: novel,
+      novel: novelItem,
       chapter: item,
     });
   };
