@@ -67,7 +67,7 @@ const Novel = ({ route, navigation }) => {
   const { top: topInset, bottom: bottomInset } = useSafeAreaInsets();
   const progressViewOffset = topInset + 32;
 
-  const { novel, chapters = [], loading, updating } = useNovel();
+  const { novel, chapters, loading, updating } = useNovel();
   const { downloadQueue } = useSelector(state => state.downloadsReducer);
 
   const [selected, setSelected] = useState([]);
@@ -92,10 +92,7 @@ const Novel = ({ route, navigation }) => {
     showChapterTitles = false,
   } = usePreferences(novel.id);
 
-  let { lastReadChapter = chapters[0], position } = useContinueReading(
-    chapters,
-    novel.id,
-  );
+  let { lastReadChapter, position } = useContinueReading(chapters, novel.id);
   useEffect(() => {
     dispatch(getNovelAction(pluginId, url, sort, filter));
   }, [getNovelAction]);
@@ -221,7 +218,7 @@ const Novel = ({ route, navigation }) => {
       }
       setSelected(sel => [...sel, chapter]);
     } else {
-      if (selected.length === chapters?.length) {
+      if (selected.length === chapters.length) {
         return;
       }
 
@@ -586,7 +583,6 @@ const Novel = ({ route, navigation }) => {
             contentContainerStyle={{ paddingBottom: 100 }}
             ListHeaderComponent={
               <NovelInfoHeader
-                item={item}
                 novel={novel}
                 theme={theme}
                 filter={filter}

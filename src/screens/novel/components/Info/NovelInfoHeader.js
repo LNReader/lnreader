@@ -29,7 +29,6 @@ import { getString } from '../../../../../strings/translations';
 import { filterColor } from '../../../../theme/colors';
 
 const NovelInfoHeader = ({
-  item,
   novel,
   theme,
   filter,
@@ -71,15 +70,15 @@ const NovelInfoHeader = ({
               theme={theme}
               onPress={() =>
                 navigation.replace('GlobalSearchScreen', {
-                  searchText: item.name,
+                  searchText: novel.name,
                 })
               }
               onLongPress={() => {
-                Clipboard.setString(item.name);
-                showToast('Copied to clipboard: ' + item.name);
+                Clipboard.setString(novel.name);
+                showToast('Copied to clipboard: ' + novel.name);
               }}
             >
-              {item.name}
+              {novel.name}
             </NovelTitle>
             <>
               <NovelAuthor theme={theme}>
