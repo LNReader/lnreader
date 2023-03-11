@@ -80,6 +80,7 @@ export const initialState = {
     fontFamily: '',
     lineHeight: 1.5,
     customCSS: '',
+    customJS: '',
   },
 };
 
