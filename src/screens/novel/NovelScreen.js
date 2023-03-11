@@ -61,14 +61,13 @@ import { openChapter } from '../../utils/handleNavigateParams';
 import NovelScreenLoading from './components/LoadingAnimation/NovelScreenLoading';
 
 const Novel = ({ route, navigation }) => {
-  const item = route.params;
-  const { name, cover, url, pluginId } = item;
+  const { name, url, pluginId } = route.params;
   const theme = useTheme();
   const dispatch = useDispatch();
   const { top: topInset, bottom: bottomInset } = useSafeAreaInsets();
   const progressViewOffset = topInset + 32;
 
-  const { novel, chapters, loading, updating } = useNovel();
+  const { novel, chapters = [], loading, updating } = useNovel();
   const { downloadQueue } = useSelector(state => state.downloadsReducer);
 
   const [selected, setSelected] = useState([]);
@@ -97,15 +96,13 @@ const Novel = ({ route, navigation }) => {
     chapters,
     novel.id,
   );
-  const { defaultCategoryId = 1 } = useCategorySettings();
   useEffect(() => {
     dispatch(getNovelAction(pluginId, url, sort, filter));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getNovelAction]);
 
   const onRefresh = () => {
     dispatch(updateNovelAction(pluginId, url, novel.id, sort, filter));
-    showToast(`Updated ${novelName}`);
+    showToast(`Updated ${name}`);
   };
 
   const refreshControl = () => (
@@ -259,10 +256,7 @@ const Novel = ({ route, navigation }) => {
     }
   };
   const navigateToChapter = chapter => {
-    navigation.navigate(
-      'Chapter',
-      openChapter({ novel: novel, chapter: chapter }),
-    );
+    navigation.navigate('Chapter', { novel: novel, chapter: chapter });
   };
 
   const showProgressPercentage = chapter => {
@@ -286,13 +280,13 @@ const Novel = ({ route, navigation }) => {
   };
 
   const setCustomNovelCover = async () => {
-    const cover = await pickCustomNovelCover(novel.id);
+    const newCover = await pickCustomNovelCover(novel.id);
 
-    if (cover) {
+    if (newCover) {
       dispatch(
         setNovel({
           ...novel,
-          cover: cover,
+          cover: newCover,
         }),
       );
     }

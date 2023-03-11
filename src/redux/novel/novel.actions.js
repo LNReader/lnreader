@@ -160,7 +160,7 @@ export const markChapterReadAction = (chapterId, novelId) => async dispatch => {
 
   dispatch({
     type: SET_LAST_READ,
-    payload: { novelId, chapterId: nextChapter.id },
+    payload: { lastRead: nextChapter },
   });
 };
 

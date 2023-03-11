@@ -68,7 +68,6 @@ const ChapterContent = ({ route, navigation }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const readerSettings = useReaderSettings();
-  const { theme: backgroundColor } = readerSettings;
 
   const {
     swipeGestures = false,
@@ -137,9 +136,9 @@ const ChapterContent = ({ route, navigation }) => {
     setTimeout(() => connectVolumeButton());
   }, []);
 
-  const getChapter = async id => {
+  const getChapter = async () => {
     try {
-      const downloaded = false;
+      const downloaded = await getChapterFromDB(chapter.id);
       if (downloaded) {
         sourceChapter.chapterText = downloaded.chapterText;
       } else {
@@ -163,13 +162,12 @@ const ChapterContent = ({ route, navigation }) => {
       insertHistory(chapter.id);
       dispatch({
         type: SET_LAST_READ,
-        payload: { novelId: novel.id, chapterId: chapter.id },
+        payload: { lastRead: chapter },
       });
     }
   }, []);
 
   const [[nextChapter, prevChapter], setAdjacentChapter] = useState([]);
-
   useEffect(() => {
     const setPrevAndNextChap = async () => {
       const [nextChap, prevChap] = await Promise.all([
@@ -266,11 +264,8 @@ const ChapterContent = ({ route, navigation }) => {
     // you can add more condition for friendly usage. for example: if(name === "SWIPE_LEFT" || name === "right")
     navChapter
       ? navigation.replace('Chapter', {
-          ...params,
-          chapterUrl: navChapter.url,
-          chapterId: navChapter.id,
-          chapterName: navChapter.name,
-          bookmark: navChapter.bookmark,
+          novel: novel,
+          chapter: navChapter,
         })
       : showToast(
           name === 'SWIPE_LEFT'

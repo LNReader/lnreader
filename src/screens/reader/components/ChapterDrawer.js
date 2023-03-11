@@ -19,14 +19,12 @@ const ChapterDrawer = ({ state: st, navigation }) => {
   const dispatch = useDispatch();
   const { chapter, novel } = st.routes[0].params;
   const { defaultChapterSort = 'ORDER BY id ASC' } = useSettings();
-  const { chapters } = useNovel();
   const { sort = defaultChapterSort, filter = '' } = usePreferences(novel.id);
+  const { chapters } = useNovel();
   useEffect(() => {
     if (chapters.length < 1 || chapter.novelId !== novel.id) {
       dispatch(setNovel(novel));
-      dispatch(
-        getNovelAction(true, novel.pluginId, novel.url, sort, filter, 1),
-      );
+      dispatch(getNovelAction(novel.pluginId, novel.url, sort, filter));
     }
   }, [chapters.length, defaultChapterSort, dispatch, filter, novel, chapter]);
   const listAscending = sort === 'ORDER BY id ASC';
@@ -61,18 +59,15 @@ const ChapterDrawer = ({ state: st, navigation }) => {
 
   const changeChapter = item => {
     navigation.replace('Chapter', {
-      pluginId,
-      novelUrl,
-      novelName,
-      novelId,
-      ...item,
+      novel: novel,
+      chapter: item,
     });
   };
   const renderItem = ({ item }) => (
     <View
       style={[
         styles.drawerElementContainer,
-        item.chapterId === chapter.id && {
+        item.id === chapter.id && {
           backgroundColor: color(theme.primary).alpha(0.12).string(),
         },
       ]}
@@ -83,10 +78,10 @@ const ChapterDrawer = ({ state: st, navigation }) => {
         style={styles.chapterCtn}
       >
         <Text numberOfLines={1} style={styles.chapterNameCtn}>
-          {item.chapterName}
+          {item.name}
         </Text>
         {item?.releaseDate ? (
-          <Text style={styles.releaseDateCtn}>{item.releaseDate}</Text>
+          <Text style={styles.releaseDateCtn}>{item.releaseTime}</Text>
         ) : null}
       </Pressable>
     </View>
@@ -127,13 +122,13 @@ const ChapterDrawer = ({ state: st, navigation }) => {
     };
     if (viewableItems.length !== 0) {
       let visible = viewableItems.find(({ item }) => {
-        return item.chapterId === chapter.id;
+        return item.id === chapter.id;
       });
       if (!visible) {
         if (
           listAscending
-            ? viewableItems[0].item.chapterId < chapter.id
-            : viewableItems[0].item.chapterId > chapter.id
+            ? viewableItems[0].item.id < chapter.id
+            : viewableItems[0].item.id > chapter.id
         ) {
           down = {
             text: getString('readerScreen.drawer.scrollToCurrentChapter'),

@@ -108,12 +108,15 @@ const getPrevChapterQuery = `
     id < ?
   `;
 
-export const getPrevChapter = (chapterId: number): Promise<ChapterInfo> => {
+export const getPrevChapter = (
+  novelId: number,
+  chapterId: number,
+): Promise<ChapterInfo> => {
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
         getPrevChapterQuery,
-        [chapterId],
+        [novelId, chapterId],
         (_txObj, results) =>
           resolve(results.rows.item(results.rows.length - 1)),
         (_txObj, error) => {
@@ -136,12 +139,15 @@ const getNextChapterQuery = `
     id > ?
   `;
 
-export const getNextChapter = (chapterId: number): Promise<ChapterInfo> => {
+export const getNextChapter = (
+  novelId: number,
+  chapterId: number,
+): Promise<ChapterInfo> => {
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
         getNextChapterQuery,
-        [chapterId],
+        [novelId, chapterId],
         (_txObj, results) => resolve(results.rows.item(0)),
         (_txObj, error) => {
           showToast(error.message);

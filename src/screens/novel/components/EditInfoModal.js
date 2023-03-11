@@ -21,8 +21,8 @@ const EditInfoModal = ({ theme, hideModal, modalVisible, novel, dispatch }) => {
 
   const [tag, setTag] = useState('');
   const removeTag = t => {
-    let tags = info.genres?.split(',').filter(item => item !== t);
-    setInfo({ ...info, genre: tags.join(',') });
+    let tags = info.genres.split(',').filter(item => item !== t);
+    setInfo({ ...info, genres: tags.join(',') });
   };
 
   const status = ['Ongoing', 'Hiatus', 'Completed', 'Unknown', 'Cancelled'];
@@ -86,12 +86,12 @@ const EditInfoModal = ({ theme, hideModal, modalVisible, novel, dispatch }) => {
           </ScrollView>
         </View>
         <TextInput
-          placeholder={`Title: ${info.novelName}`}
+          placeholder={`Title: ${info.name}`}
           style={{ fontSize: 14 }}
           numberOfLines={1}
           mode="outlined"
           theme={{ colors: { ...theme } }}
-          onChangeText={text => setInfo({ ...info, novelName: text })}
+          onChangeText={text => setInfo({ ...info, name: text })}
           dense
         />
         <TextInput
@@ -104,11 +104,11 @@ const EditInfoModal = ({ theme, hideModal, modalVisible, novel, dispatch }) => {
           dense
         />
         <TextInput
-          placeholder={`Description: ${info.novelSummary?.substring(0, 16)}...`}
+          placeholder={`Description: ${info.summary?.substring(0, 16)}...`}
           style={{ fontSize: 14 }}
           numberOfLines={1}
           mode="outlined"
-          onChangeText={text => setInfo({ ...info, novelSummary: text })}
+          onChangeText={text => setInfo({ ...info, summary: text })}
           theme={{ colors: { ...theme } }}
           dense
         />
@@ -144,7 +144,7 @@ const EditInfoModal = ({ theme, hideModal, modalVisible, novel, dispatch }) => {
         <View style={{ flexDirection: 'row-reverse' }}>
           <Button
             onPress={() => {
-              updateNovelInfo(info, novel.novelId);
+              updateNovelInfo(info, novel.id);
               hideModal();
               dispatch(setNovel({ ...novel, ...info }));
             }}

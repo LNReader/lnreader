@@ -121,7 +121,7 @@ const NovelInfoHeader = ({
           theme={theme}
         />
         {novel.genres ? (
-          <NovelGenres theme={theme} genre={novel.genres} />
+          <NovelGenres theme={theme} genres={novel.genres} />
         ) : null}
         <ReadButton novel={novel} chapters={chapters} lastRead={lastRead} />
         <Pressable

@@ -17,8 +17,8 @@ const preferenceReducer = (state = initialState, action) => {
         ...state,
         novelSettings: {
           ...state.novelSettings,
-          [payload.novelId]: {
-            ...state.novelSettings[payload.novelId],
+          [payload.lastRead.novelId]: {
+            ...state.novelSettings[payload.lastRead.novelId],
             lastRead: payload.lastRead,
           },
         },

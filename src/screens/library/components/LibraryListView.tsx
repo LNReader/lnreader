@@ -38,13 +38,11 @@ export const LibraryView: React.FC<Props> = ({
     <NovelCover
       item={item}
       theme={theme}
-      isSelected={selectedNovelIds.includes(item.novelId)}
-      onLongPress={() =>
-        setSelectedNovelIds(xor(selectedNovelIds, [item.novelId]))
-      }
+      isSelected={selectedNovelIds.includes(item.id)}
+      onLongPress={() => setSelectedNovelIds(xor(selectedNovelIds, [item.id]))}
       onPress={() => {
         if (selectedNovelIds.length) {
-          setSelectedNovelIds(xor(selectedNovelIds, [item.novelId]));
+          setSelectedNovelIds(xor(selectedNovelIds, [item.id]));
         } else {
           navigate('Novel' as never, openNovel(item) as never);
           dispatch(setNovel(item));

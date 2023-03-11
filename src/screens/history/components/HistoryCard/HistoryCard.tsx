@@ -47,7 +47,6 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
     chapterUrl,
     bookmark,
   } = history;
-
   const chapterNoAndTime = useMemo(
     () =>
       `Chapter ${parseChapterNumber(chapterName)} • ${dayjs(readTime)
@@ -94,13 +93,13 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
           name="play"
           onPress={() =>
             handleNavigateToChapter(
-              { pluginId, name: novelName, url: novelUrl },
+              { url: novelUrl, pluginId: pluginId, name: novelName },
               {
-                novelId,
                 id: chapterId,
                 url: chapterUrl,
+                novelId: novelId,
                 name: chapterName,
-                bookmark,
+                bookmark: bookmark,
               },
             )
           }

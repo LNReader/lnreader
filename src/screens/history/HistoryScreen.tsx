@@ -16,7 +16,6 @@ import { History } from '../../database/types';
 import { getString } from '@strings/translations';
 import ClearHistoryDialog from './components/ClearHistoryDialog';
 import {
-  openChapter,
   openChapterChapterTypes,
   openChapterNovelTypes,
   openNovel,
@@ -77,7 +76,8 @@ const HistoryScreen = () => {
   const handleNavigateToChapter = (
     novel: openChapterNovelTypes,
     chapter: openChapterChapterTypes,
-  ) => navigate('Chapter' as never, openChapter(novel, chapter) as never);
+  ) =>
+    navigate('Chapter' as never, { novel: novel, chapter: chapter } as never);
 
   const handleNavigateToNovel = (novel: openNovelProps) =>
     navigate('Novel' as never, openNovel(novel) as openNovelProps as never);

@@ -7,19 +7,18 @@ import * as SQLite from 'expo-sqlite';
 const db = SQLite.openDatabase('lnreader.db');
 
 const updateNovelMetadata = async (novelId, novel) => {
-  const { novelName, novelCover, novelSummary, author, artist, genre, status } =
-    novel;
+  const { name, cover, summary, author, artist, genres, status } = novel;
 
   db.transaction(tx => {
     tx.executeSql(
-      'UPDATE novels SET novelName = ?, novelCover = ?, novelSummary = ?, author = ?, artist = ?, genre = ?, status = ? WHERE novelId = ?',
+      'UPDATE Novel SET name = ?, cover = ?, summary = ?, author = ?, artist = ?, genres = ?, status = ? WHERE id = ?',
       [
-        novelName,
-        novelCover,
-        novelSummary,
+        name,
+        cover,
+        summary || ' ',
         author,
         artist,
-        genre,
+        genres || '',
         status,
         novelId,
       ],
@@ -30,12 +29,12 @@ const updateNovelMetadata = async (novelId, novel) => {
 };
 
 const updateNovelCover = async (novelId, novel) => {
-  const { novelCover } = novel;
+  const { cover } = novel;
 
   db.transaction(tx => {
     tx.executeSql(
-      'UPDATE novels SET novelCover = ? WHERE novelId = ?',
-      [novelCover, novelId],
+      'UPDATE Novel SET cover = ? WHERE id = ?',
+      [cover, novelId],
       (txObj, res) => {},
       (txObj, error) => showToast(`Error: ${error}`),
     );
