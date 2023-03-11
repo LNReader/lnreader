@@ -20,7 +20,6 @@ const EditInfoModal = ({ theme, hideModal, modalVisible, novel, dispatch }) => {
   const [info, setInfo] = useState(novel);
 
   const [tag, setTag] = useState('');
-
   const removeTag = t => {
     let tags = info.genres?.split(',').filter(item => item !== t);
     setInfo({ ...info, genre: tags.join(',') });
@@ -105,10 +104,7 @@ const EditInfoModal = ({ theme, hideModal, modalVisible, novel, dispatch }) => {
           dense
         />
         <TextInput
-          placeholder={`Description: ${info?.novelSummary?.substring(
-            0,
-            16,
-          )}...`}
+          placeholder={`Description: ${info.novelSummary?.substring(0, 16)}...`}
           style={{ fontSize: 14 }}
           numberOfLines={1}
           mode="outlined"
@@ -131,11 +127,11 @@ const EditInfoModal = ({ theme, hideModal, modalVisible, novel, dispatch }) => {
           dense
         />
 
-        {info.genres !== null && info.genres !== '' && (
+        {info.genres !== undefined && info.genres !== '' && (
           <FlatList
             contentContainerStyle={{ marginVertical: 8 }}
             horizontal
-            data={info.genres.split(',')}
+            data={info.genres?.split(',')}
             keyExtractor={(item, index) => 'novelTag' + index}
             renderItem={({ item }) => (
               <GenreChip theme={theme} onPress={() => removeTag(item)}>

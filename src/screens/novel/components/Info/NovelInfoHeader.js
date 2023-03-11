@@ -123,7 +123,7 @@ const NovelInfoHeader = ({
         {novel.genres ? (
           <NovelGenres theme={theme} genre={novel.genres} />
         ) : null}
-        {/* <ReadButton novel={novel} chapters={chapters} lastRead={lastRead} /> */}
+        <ReadButton novel={novel} chapters={chapters} lastRead={lastRead} />
         <Pressable
           style={styles.bottomsheet}
           onPress={() => novelBottomSheetRef.current.expand()}

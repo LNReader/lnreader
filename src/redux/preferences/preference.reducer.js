@@ -6,7 +6,7 @@ import {
 } from './preference.types';
 
 const initialState = {
-  novelSettings: {},
+  novelSettings: {}, // {[novelId]: {lastRead, sort, filter, showChapterTitles, position {[chapterId]: position, percentage}}}
 };
 
 const preferenceReducer = (state = initialState, action) => {
@@ -19,7 +19,7 @@ const preferenceReducer = (state = initialState, action) => {
           ...state.novelSettings,
           [payload.novelId]: {
             ...state.novelSettings[payload.novelId],
-            lastRead: payload.chapterId,
+            lastRead: payload.lastRead,
           },
         },
       };
@@ -42,7 +42,7 @@ const preferenceReducer = (state = initialState, action) => {
           ...state.novelSettings,
           [payload.novelId]: {
             ...state.novelSettings[payload.novelId],
-            showChapterTitles: payload.value,
+            showChapterTitles: payload.showChapterTitles,
           },
         },
       };

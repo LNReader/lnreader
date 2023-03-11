@@ -82,7 +82,7 @@ export const getChapters = (
 // downloaded chapter
 const getChapterQuery = 'SELECT chapterText FROM Download Chapter.id = ?';
 
-export const getChapterFromDB = async (
+export const getChapterFromDB = (
   chapterId: number,
 ): Promise<DownloadedChapter> => {
   return new Promise(resolve =>
@@ -91,10 +91,7 @@ export const getChapterFromDB = async (
         getChapterQuery,
         [chapterId],
         (txObj, { rows }) => resolve(rows.item(0)),
-        (_txObj, _error) => {
-          // console.log('Error ', error)
-          return false;
-        },
+        txnErrorCallback,
       );
     }),
   );
@@ -284,11 +281,12 @@ const downloadImages = async (
   }
 };
 
+// novelId for determine folder %LNReaderDownloadDir%/novelId/ChapterId/
 export const downloadChapter = async (
   pluginId: string,
   novelId: number,
-  chapterUrl: string,
   chapterId: number,
+  chapterUrl: string,
 ) => {
   try {
     const plugin = getPlugin(pluginId);

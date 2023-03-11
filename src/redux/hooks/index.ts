@@ -21,7 +21,7 @@ export const useLibrarySettings = () =>
   useAppSelector((state: RootState) => state.settingsReducerV2.library);
 
 export const useDownloadQueue = () =>
-  useAppSelector((state: RootState) => state.downloadsReducer.downloadQueue);
+  useAppSelector((state: RootState) => state.downloadsReducer);
 
 export const usePluginReducer = () =>
   useAppSelector((state: RootState) => state.pluginsReducer);

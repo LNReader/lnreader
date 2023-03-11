@@ -35,7 +35,7 @@ import {
   setNovel,
   sortAndFilterChapters,
   updateNovelAction,
-} from '../../redux/novel/novel.actions';
+} from '@redux/novel/novel.actions';
 import {
   useContinueReading,
   useNovel,
@@ -91,15 +91,15 @@ const Novel = ({ route, navigation }) => {
     sort = defaultChapterSort,
     filter = '',
     showChapterTitles = false,
-  } = usePreferences(novel.novelId);
+  } = usePreferences(novel.id);
 
-  let { lastReadChapter, position } = useContinueReading(
+  let { lastReadChapter = chapters[0], position } = useContinueReading(
     chapters,
-    novel.novelId,
+    novel.id,
   );
   const { defaultCategoryId = 1 } = useCategorySettings();
   useEffect(() => {
-    dispatch(getNovelAction(pluginId, url, sort, filter, defaultCategoryId));
+    dispatch(getNovelAction(pluginId, url, sort, filter));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getNovelAction]);
 
@@ -124,7 +124,6 @@ const Novel = ({ route, navigation }) => {
     dispatch(
       downloadChapterAction(
         pluginId,
-        url,
         novel.id,
         chapter.url,
         chapter.name,
@@ -262,7 +261,7 @@ const Novel = ({ route, navigation }) => {
   const navigateToChapter = chapter => {
     navigation.navigate(
       'Chapter',
-      openChapter({ pluginId, url, name }, chapter),
+      openChapter({ novel: novel, chapter: chapter }),
     );
   };
 
@@ -394,7 +393,7 @@ const Novel = ({ route, navigation }) => {
                         downloadAllChaptersAction(novel.pluginId, novel.url, [
                           chapters.find(
                             chapter =>
-                              !!chapter.unread === false &&
+                              !!chapter.unread === true &&
                               !!chapter.isDownloaded === false,
                           ),
                         ]),
@@ -416,7 +415,7 @@ const Novel = ({ route, navigation }) => {
                           chapters
                             .filter(
                               chapter =>
-                                !!chapter.unread === false &&
+                                !!chapter.unread === true &&
                                 !!chapter.idDownloaded === false,
                             )
                             .slice(0, 5),
@@ -439,7 +438,7 @@ const Novel = ({ route, navigation }) => {
                           chapters
                             .filter(
                               chapter =>
-                                !!chapter.unread === false &&
+                                !!chapter.unread === true &&
                                 !!chapter.Downloaded === false,
                             )
                             .slice(0, 10),
@@ -468,9 +467,7 @@ const Novel = ({ route, navigation }) => {
                         downloadAllChaptersAction(
                           novel.pluginId,
                           novel.url,
-                          chapters.filter(
-                            chapter => !!chapter.unread === false,
-                          ),
+                          chapters.filter(chapter => !!chapter.unread === true),
                         ),
                       );
                       showDownloadMenu(false);
@@ -591,7 +588,7 @@ const Novel = ({ route, navigation }) => {
             windowSize={15}
             initialNumToRender={7}
             renderItem={renderItem}
-            keyExtractor={(item, index) => 'chapter' + index}
+            keyExtractor={(item, index) => 'chapter' + item.id + index}
             contentContainerStyle={{ paddingBottom: 100 }}
             ListHeaderComponent={
               <NovelInfoHeader

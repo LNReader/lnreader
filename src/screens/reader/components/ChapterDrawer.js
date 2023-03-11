@@ -17,48 +17,31 @@ const ChapterDrawer = ({ state: st, navigation }) => {
   const styles = createStylesheet(theme, insets);
   let listRef = useRef();
   const dispatch = useDispatch();
-  const {
-    pluginId,
-    novelUrl,
-    novelName,
-    novelId,
-    chapterId: currentChapterId,
-  } = st.routes[0].params;
+  const { chapter, novel } = st.routes[0].params;
   const { defaultChapterSort = 'ORDER BY id ASC' } = useSettings();
-  const { sort = defaultChapterSort, filter = '' } = usePreferences(novelId);
-  const { chapters, novel } = useNovel();
+  const { chapters } = useNovel();
+  const { sort = defaultChapterSort, filter = '' } = usePreferences(novel.id);
   useEffect(() => {
-    if (chapters.length < 1 || novelId !== novel.novelId) {
-      dispatch(setNovel({ pluginId, novelUrl, novelName, novelId }));
+    if (chapters.length < 1 || chapter.novelId !== novel.id) {
+      dispatch(setNovel(novel));
       dispatch(
-        getNovelAction(true, pluginId, novelUrl, novelId, sort, filter, 1),
+        getNovelAction(true, novel.pluginId, novel.url, sort, filter, 1),
       );
     }
-  }, [
-    chapters.length,
-    defaultChapterSort,
-    dispatch,
-    filter,
-    novel.novelId,
-    novelId,
-    novelName,
-    novelUrl,
-    sort,
-    pluginId,
-  ]);
+  }, [chapters.length, defaultChapterSort, dispatch, filter, novel, chapter]);
   const listAscending = sort === 'ORDER BY id ASC';
   const scrollToIndex = useMemo(() => {
     if (chapters.length < 1) {
       return;
     }
     const indexOfCurrentChapter = chapters.findIndex(el => {
-      return el.chapterId === currentChapterId;
+      return el.id === chapter.id;
     });
     let res;
     res = indexOfCurrentChapter >= 2 ? indexOfCurrentChapter - 2 : 0;
     listRef.current?.scrollToIndex?.(res);
     return res;
-  }, [chapters, currentChapterId, listAscending]);
+  }, [chapters, chapter.id, listAscending]);
   const [buttonProperties, setButtonProperties] = useState({
     up: {
       text: getString('readerScreen.drawer.scrollToTop'),
@@ -89,7 +72,7 @@ const ChapterDrawer = ({ state: st, navigation }) => {
     <View
       style={[
         styles.drawerElementContainer,
-        item.chapterId === currentChapterId && {
+        item.chapterId === chapter.id && {
           backgroundColor: color(theme.primary).alpha(0.12).string(),
         },
       ]}
@@ -144,13 +127,13 @@ const ChapterDrawer = ({ state: st, navigation }) => {
     };
     if (viewableItems.length !== 0) {
       let visible = viewableItems.find(({ item }) => {
-        return item.chapterId === currentChapterId;
+        return item.chapterId === chapter.id;
       });
       if (!visible) {
         if (
           listAscending
-            ? viewableItems[0].item.chapterId < currentChapterId
-            : viewableItems[0].item.chapterId > currentChapterId
+            ? viewableItems[0].item.chapterId < chapter.id
+            : viewableItems[0].item.chapterId > chapter.id
         ) {
           down = {
             text: getString('readerScreen.drawer.scrollToCurrentChapter'),

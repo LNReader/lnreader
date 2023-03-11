@@ -3,7 +3,7 @@ import { Dimensions, StatusBar } from 'react-native';
 import WebView, { WebViewProps } from 'react-native-webview';
 
 import { useTheme } from '@hooks/useTheme';
-import { ChapterItem } from '@database/types';
+import { ChapterInfo, NovelInfo } from '@database/types';
 import { useReaderSettings } from '@redux/hooks';
 import { getString } from '@strings/translations';
 
@@ -15,21 +15,12 @@ type WebViewPostEvent = {
 };
 
 type WebViewReaderProps = {
-  chapterInfo: {
-    pluginId: string;
-    chapterId: string;
-    chapterUrl: string;
-    novelId: string;
-    novelUrl: string;
-    novelName: string;
-    chapterName: string;
-    bookmark: string;
-  };
+  chapterInfo: { novel: NovelInfo; chapter: ChapterInfo };
   html: string;
   chapterName: string;
   swipeGestures: boolean;
   minScroll: React.MutableRefObject<number>;
-  nextChapter: ChapterItem;
+  nextChapter: ChapterInfo;
   webViewRef: React.MutableRefObject<WebView>;
   onPress(): void;
   doSaveProgress(offSetY: number, percentage: number): void;
@@ -60,12 +51,12 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
   } = props;
 
   const theme = useTheme();
-
+  const { novel, chapter } = chapterInfo;
   const readerSettings = useReaderSettings();
   const { theme: backgroundColor } = readerSettings;
 
   const layoutHeight = Dimensions.get('window').height;
-  const plugin = getPlugin(chapterInfo.pluginId);
+  const plugin = getPlugin(novel?.pluginId);
   return (
     <WebView
       ref={webViewRef}
@@ -218,8 +209,8 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                       type: 'hide',
                     })}>
                       <chapter 
-                        data-novel-id='${chapterInfo.novelId}'
-                        data-chapter-id='${chapterInfo.chapterId}'
+                        data-novel-id='${chapter.novelId}'
+                        data-chapter-id='${chapter.id}'
                       >
                         ${html}
                       </chapter>
@@ -272,7 +263,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                         ? `<button class="nextButton" ${onClickWebViewPostMessage(
                             { type: 'next' },
                           )}>
-                      Next: ${nextChapter.chapterName}
+                      Next: ${nextChapter.name}
                     </button>`
                         : `<div class="infoText">${getString(
                             'readerScreen.noNextChapter',

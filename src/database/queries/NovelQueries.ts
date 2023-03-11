@@ -69,11 +69,11 @@ export const insertNovelandChapters = async (
         pluginId,
         sourceNovel.name,
         sourceNovel.cover,
-        sourceNovel.summary,
+        sourceNovel.summary || '',
         sourceNovel.author,
         sourceNovel.artist,
         sourceNovel.status,
-        sourceNovel.genres,
+        sourceNovel.genres || '',
       ],
       (txObj, resultSet) =>
         insertChapters(resultSet.insertId, sourceNovel.chapters),
@@ -247,7 +247,14 @@ export const updateNovelInfo = async (info: NovelInfo) => {
   db.transaction(tx => {
     tx.executeSql(
       'UPDATE Novel SET name = ?, summary = ?, author = ?, genres = ?, status = ? WHERE id = ?',
-      [info.name, info.summary, info.author, info.genres, info.status, info.id],
+      [
+        info.name,
+        info.summary || '',
+        info.author,
+        info.genres || '',
+        info.status,
+        info.id,
+      ],
       noop,
       txnErrorCallback,
     );

@@ -24,7 +24,9 @@ const initialState = {
   chapters: [],
   loading: true,
   updating: false,
-  downloading: [],
+  downloading: [], // Array<ChapterInfo (id, name,)>
+  lastRead: undefined, // ChapterInfo (id, name,)
+  inLibrary: false,
 };
 
 const novelReducer = (state = initialState, action) => {
@@ -94,7 +96,7 @@ const novelReducer = (state = initialState, action) => {
     case CHAPTER_DOWNLOADING:
       return {
         ...state,
-        downloading: [...state.downloading, payload],
+        downloading: [...state.downloading, payload.downloadingChapter],
       };
     case CHAPTER_DOWNLOADED:
       return {
@@ -105,7 +107,7 @@ const novelReducer = (state = initialState, action) => {
             : chapter,
         ),
         downloading: state.downloading.filter(
-          chapterId => chapterId !== payload,
+          chapter => chapter.id !== payload.chapterId,
         ),
       };
     case CHAPTER_DELETED:
@@ -128,7 +130,7 @@ const novelReducer = (state = initialState, action) => {
     case UPDATE_LAST_READ:
       return {
         ...state,
-        novel: { ...state.novel, lastRead: payload },
+        novel: { ...state.novel, lastRead: payload.lastRead },
       };
 
     case MARK_PREVIOUS_CHAPTERS_READ:

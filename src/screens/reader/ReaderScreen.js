@@ -11,31 +11,27 @@ import {
   getNextChapter,
   getPrevChapter,
 } from '../../database/queries/ChapterQueries';
-import { fetchChapter } from '../../services/plugin/fetch';
-import { showToast } from '../../hooks/showToast';
-import {
-  usePosition,
-  useSettings,
-  useTrackingStatus,
-} from '../../hooks/reduxHooks';
+import { fetchChapter } from '@services/plugin/fetch';
+import { showToast } from '@hooks/showToast';
+import { usePosition, useSettings, useTrackingStatus } from '@hooks/reduxHooks';
 import { useTheme } from '@hooks/useTheme';
-import { updateChaptersRead } from '../../redux/tracker/tracker.actions';
-import { markChapterReadAction } from '../../redux/novel/novel.actions';
-import { saveScrollPosition } from '../../redux/preferences/preference.actions';
+import { updateChaptersRead } from '@redux/tracker/tracker.actions';
+import { markChapterReadAction } from '@redux/novel/novel.actions';
+import { saveScrollPosition } from '@redux/preferences/preference.actions';
 import { parseChapterNumber } from '@utils/parseChapterNumber';
 
 import ReaderAppbar from './components/ReaderAppbar';
 import ReaderFooter from './components/ReaderFooter';
 import ReaderSeekBar from './components/ReaderSeekBar';
 
-import { insertHistory } from '../../database/queries/HistoryQueries';
-import { SET_LAST_READ } from '../../redux/preferences/preference.types';
+import { insertHistory } from '@database/queries/HistoryQueries';
+import { SET_LAST_READ } from '@redux/preferences/preference.types';
 import WebViewReader from './components/WebViewReader';
-import { useTextToSpeech } from '../../hooks/useTextToSpeech';
-import { useFullscreenMode, useLibrarySettings } from '../../hooks';
-import { getChapterFromDb } from '../../database/queries/ChapterQueries';
+import { useTextToSpeech } from '@hooks/useTextToSpeech';
+import { useFullscreenMode, useLibrarySettings } from '@hooks';
+import { getChapterFromDB } from '@database/queries/ChapterQueries';
 import ReaderBottomSheetV2 from './components/ReaderBottomSheet/ReaderBottomSheet';
-import { useReaderSettings } from '../../redux/hooks';
+import { useReaderSettings } from '@redux/hooks';
 import { defaultTo } from 'lodash-es';
 import BottomInfoBar from './components/BottomInfoBar/BottomInfoBar';
 import { sanitizeChapterText } from './utils/sanitizeChapterText';
@@ -65,16 +61,7 @@ const Chapter = ({ route }) => {
 const ChapterContent = ({ route, navigation }) => {
   useKeepAwake();
   const params = route.params;
-  const {
-    pluginId,
-    chapterId,
-    chapterUrl,
-    novelId,
-    novelUrl,
-    novelName,
-    chapterName,
-    bookmark,
-  } = params;
+  const { novel, chapter } = params;
   let webViewRef = useRef(null);
   let readerSheetRef = useRef(null);
 
@@ -98,13 +85,13 @@ const ChapterContent = ({ route, navigation }) => {
 
   const [hidden, setHidden] = useState(true);
 
-  const position = usePosition(novelId, chapterId);
+  const position = usePosition(chapter.id, chapter.id);
   const minScroll = useRef(0);
 
   const { tracker, trackedNovels } = useTrackingStatus();
-  const isTracked = trackedNovels.find(obj => obj.novelId === novelId);
+  const isTracked = trackedNovels.find(obj => obj.novel.id === novel.id);
 
-  const [chapter, setChapter] = useState({ ...params });
+  const [sourceChapter, setChapter] = useState({ ...chapter });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
 
@@ -152,12 +139,16 @@ const ChapterContent = ({ route, navigation }) => {
 
   const getChapter = async id => {
     try {
-      let result = null;
-      if (!(id && (result = await getChapterFromDb(id)))) {
-        result = await fetchChapter(chapterUrl);
+      const downloaded = false;
+      if (downloaded) {
+        sourceChapter.chapterText = downloaded.chapterText;
+      } else {
+        sourceChapter.chapterText = await fetchChapter(
+          novel.pluginId,
+          chapter.url,
+        );
       }
-      chapter.chapterText = result;
-      setChapter(chapter);
+      setChapter(sourceChapter);
     } catch (e) {
       setError(e.message);
       showToast(e.message);
@@ -167,13 +158,12 @@ const ChapterContent = ({ route, navigation }) => {
   };
 
   useEffect(() => {
-    getChapter(chapterId);
-
+    getChapter(chapter.id);
     if (!incognitoMode) {
-      insertHistory(chapterId);
+      insertHistory(chapter.id);
       dispatch({
         type: SET_LAST_READ,
-        payload: { novelId, chapterId },
+        payload: { novelId: novel.id, chapterId: chapter.id },
       });
     }
   }, []);
@@ -183,8 +173,8 @@ const ChapterContent = ({ route, navigation }) => {
   useEffect(() => {
     const setPrevAndNextChap = async () => {
       const [nextChap, prevChap] = await Promise.all([
-        getNextChapter(novelId, chapterId),
-        getPrevChapter(novelId, chapterId),
+        getNextChapter(novel.id, chapter.id),
+        getPrevChapter(novel.id, chapter.id),
       ]);
       setAdjacentChapter([nextChap, prevChap]);
     };
@@ -192,10 +182,10 @@ const ChapterContent = ({ route, navigation }) => {
   }, [chapter]);
 
   const [ttsStatus, startTts] = useTextToSpeech(
-    htmlToText(chapter?.chapterText).split('\n'),
+    htmlToText(sourceChapter.chapterText).split('\n'),
     () => {
       if (!incognitoMode) {
-        dispatch(markChapterReadAction(chapterId, novelId));
+        dispatch(markChapterReadAction(chapter.id, novel.id));
         updateTracker();
       }
     },
@@ -229,7 +219,7 @@ const ChapterContent = ({ route, navigation }) => {
   }, [autoScroll, webViewRef]);
 
   const updateTracker = () => {
-    const chapterNumber = parseChapterNumber(chapterName);
+    const chapterNumber = parseChapterNumber(chapter.name);
 
     isTracked &&
       chapterNumber &&
@@ -243,12 +233,12 @@ const ChapterContent = ({ route, navigation }) => {
   const doSaveProgress = useCallback(
     (offsetY, percentage) => {
       if (!incognitoMode) {
-        dispatch(saveScrollPosition(offsetY, percentage, chapterId, novelId));
+        dispatch(saveScrollPosition(offsetY, percentage, chapter.id, novel.id));
       }
 
       if (!incognitoMode && percentage >= 97) {
         // a relative number
-        dispatch(markChapterReadAction(chapterId, novelId));
+        dispatch(markChapterReadAction(chapter.id, novel.id));
         updateTracker();
       }
     },
@@ -292,16 +282,16 @@ const ChapterContent = ({ route, navigation }) => {
   const onWebViewNavigationStateChange = async ({ url }) => {
     if (url !== 'about:blank') {
       setLoading(true);
-      const res = await fetchChapter(pluginId, novelUrl, url);
-      chapter.chapterText = res;
-      setChapter(chapter);
+      const res = await fetchChapter(novel.pluginId, chapter.url);
+      sourceChapter.chapterText = res;
+      setChapter(sourceChapter);
       setLoading(false);
     }
   };
 
-  const chapterText = sanitizeChapterText(chapter.chapterText, {
+  const chapterText = sanitizeChapterText(sourceChapter.chapterText, {
     removeExtraParagraphSpacing,
-    pluginId: pluginId,
+    pluginId: novel.pluginId,
   });
   const openDrawer = () => {
     navigation.openDrawer();
@@ -319,9 +309,9 @@ const ChapterContent = ({ route, navigation }) => {
   return (
     <>
       <WebViewReader
-        chapterInfo={params}
+        chapterInfo={{ novel, chapter }}
         html={chapterText}
-        chapterName={chapterName}
+        chapterName={chapter.name}
         swipeGestures={swipeGestures}
         minScroll={minScroll}
         nextChapter={nextChapter}
@@ -346,10 +336,10 @@ const ChapterContent = ({ route, navigation }) => {
       {!hidden && (
         <>
           <ReaderAppbar
-            bookmark={bookmark}
-            novelName={novelName}
-            chapterId={chapterId}
-            chapterName={chapterName}
+            bookmark={chapter.bookmark}
+            novelName={novel.name}
+            chapterId={chapter.id}
+            chapterName={chapter.name}
             tts={startTts}
             textToSpeech={ttsStatus}
             theme={theme}
@@ -363,7 +353,7 @@ const ChapterContent = ({ route, navigation }) => {
           />
           <ReaderFooter
             theme={theme}
-            chapterUrl={chapterUrl}
+            chapterUrl={chapter.url}
             nextChapter={nextChapter}
             prevChapter={prevChapter}
             readerSheetRef={readerSheetRef}

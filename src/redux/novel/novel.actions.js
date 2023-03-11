@@ -119,7 +119,7 @@ export const sortAndFilterChapters =
 export const showChapterTitlesAction = (novelId, value) => async dispatch => {
   dispatch({
     type: SET_NOVEL_SETTINGS,
-    payload: { novelId, value: value },
+    payload: { novelId, showChapterTitles: value },
   });
 };
 
@@ -128,7 +128,7 @@ export const followNovelAction = (novel, pluginId) => async dispatch => {
 
   dispatch({
     type: UPDATE_IN_LIBRARY,
-    payload: { novelUrl: novel.url, inLibrary: !novel.inLibrary },
+    payload: { inLibrary: !novel.inLibrary },
   });
 
   showToast(!novel.inLibrary ? 'Added to library' : 'Removed from library');
@@ -226,13 +226,13 @@ export const markChapterUnreadAction =
  */
 export const downloadChapterAction =
   (pluginId, novelId, chapterUrl, chapterName, chapterId) => async dispatch => {
-    // dispatch({
-    //     type: CHAPTER_DOWNLOADING,
-    //     payload: chapterId,
-    // });
+    dispatch({
+      type: CHAPTER_DOWNLOADING,
+      payload: { downloadingChapter: { id: chapterId, name: chapterName } },
+    });
     dispatch({
       type: SET_DOWNLOAD_QUEUE,
-      payload: [{ id, name }],
+      payload: [{ id: chapterId, name: chapterName }],
     });
 
     await downloadChapter(pluginId, novelId, chapterUrl, chapterId);
@@ -249,7 +249,7 @@ export const downloadChapterAction =
  *
  * @param {string} pluginId
  * @param {string} novelUrl
- * @param {import("./../../database/types").ChapterItem[]} chaps
+ * @param {import("../../database/types").ChapterItem[]} chaps
  * @returns
  */
 export const downloadAllChaptersAction =
@@ -312,14 +312,14 @@ export const downloadAllChaptersAction =
                     await downloadChapter(
                       pluginId,
                       chapters[i].novelId,
-                      chapters[i].url,
                       chapters[i].id,
+                      chapters[i].url,
                     );
                   }
 
                   dispatch({
                     type: CHAPTER_DOWNLOADED,
-                    payload: chapters[i].id,
+                    payload: { chapterId: chapters[i].id },
                   });
                 } catch (error) {
                   Notifications.scheduleNotificationAsync({
@@ -384,7 +384,6 @@ export const deleteChapterAction =
  */
 export const deleteAllChaptersAction =
   (pluginId, chapters) => async dispatch => {
-    const chapterIds = chapters.map(chapter => chapter.id);
     await deleteChapters(pluginId, chapters);
 
     dispatch({

@@ -16,7 +16,7 @@ import { NovelItem } from '@plugins/types';
 import { getString } from '@strings/translations';
 import { StyleSheet } from 'react-native';
 import { useLibraryNovels } from '@screens/library/hooks/useLibrary';
-import { toggleNovelToLibrary } from '@database/queries/NovelQueries';
+import { switchNovelToLibrary } from '@database/queries/NovelQueries';
 import { LibraryNovelInfo } from '@database/types';
 import SourceScreenSkeletonLoading from '@screens/browse/loadingAnimation/SourceScreenSkeletonLoading';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -156,7 +156,7 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
                       ];
                     }
                   });
-                  toggleNovelToLibrary(item, inLibrary ? 1 : 0);
+                  switchNovelToLibrary(item.url, pluginId);
                 }}
                 selectedNovels={[]}
               />

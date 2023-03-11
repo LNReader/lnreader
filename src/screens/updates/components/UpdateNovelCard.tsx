@@ -1,7 +1,7 @@
 import { FlatList, Pressable, StyleSheet, View } from 'react-native';
 import React, { useCallback, useState } from 'react';
 
-import { ChapterItemExtended, Update } from '../../../database/types';
+import { ChapterInfo, Update } from '../../../database/types';
 import FastImage from 'react-native-fast-image';
 import { List } from 'react-native-paper';
 import { coverPlaceholderColor } from '../../../theme/colors';
@@ -55,7 +55,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
   const [chapterList, setChapterList] = useState(item);
 
   const handleDownloadChapter = useCallback(
-    (chapter: ChapterItemExtended) =>
+    (chapter: ChapterInfo) =>
       dispatch(
         downloadChapterAction(
           chapter.pluginId,
@@ -68,7 +68,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
     [],
   );
 
-  const handleDeleteChapter = useCallback((chapter: ChapterItemExtended) => {
+  const handleDeleteChapter = useCallback((chapter: ChapterInfo) => {
     dispatch(
       deleteChapterAction(
         chapter.pluginId,
@@ -86,7 +86,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
   }, []);
 
   const navigateToChapter = useCallback(
-    (chapter: ChapterItemExtended) =>
+    (chapter: ChapterInfo) =>
       navigate(
         'Chapter' as never,
         openChapter(chapter, chapter) as openChapterFunctionTypes as never,

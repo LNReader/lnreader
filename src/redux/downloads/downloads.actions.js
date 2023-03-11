@@ -51,16 +51,15 @@ export const resumeDownloads = (pluginId, chapters) => async dispatch => {
             if (!chapters[i].isDownloaded) {
               await downloadChapter(
                 pluginId,
-                chapters[i].novelUrl,
                 chapters[i].novelId,
-                chapters[i].url,
                 chapters[i].id,
+                chapters[i].url,
               );
             }
 
             dispatch({
               type: CHAPTER_DOWNLOADED,
-              payload: chapters[i].id,
+              payload: { chapterId: chapters[i].id },
             });
           } catch (error) {
             Notifications.scheduleNotificationAsync({

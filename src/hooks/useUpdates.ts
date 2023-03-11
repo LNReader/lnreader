@@ -13,7 +13,7 @@ const useUpdates = () => {
   const { lastUpdateTime = null, showLastUpdateTime = false } = useAppSelector(
     state => state.updatesReducer,
   );
-  const downloadQueue = useDownloadQueue();
+  const { downloadQueue } = useDownloadQueue();
 
   const [error, setError] = useState('');
 
