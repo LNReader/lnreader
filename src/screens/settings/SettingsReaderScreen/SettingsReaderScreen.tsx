@@ -132,6 +132,7 @@ const SettingsReaderScreen = () => {
     autoScrollInterval === 10 && autoScrollOffset === null;
 
   const [customCSS, setcustomCSS] = useState(readerSettings.customCSS);
+  const [customJS, setcustomJS] = useState(readerSettings.customJS);
 
   const { height: screenHeight } = useWindowDimensions();
 
@@ -160,6 +161,10 @@ const SettingsReaderScreen = () => {
               </head>
               <body>
                 ${dummyHTML}
+                <script>
+                  async function fn(){${readerSettings.customJS}}
+                  document.addEventListener("DOMContentLoaded", fn);
+                </script>
               </body>
             </html>
             `,
@@ -295,6 +300,38 @@ const SettingsReaderScreen = () => {
                 onPress={() => {
                   setcustomCSS('');
                   dispatch(setReaderSettings('customCSS', ''));
+                }}
+                title={getString('common.clear')}
+              />
+            </View>
+          </View>
+
+          <List.Divider theme={theme} />
+          <List.SubHeader theme={theme}>
+            {/* {getString('moreScreen.settingsScreen.readerSettings.customJS')} */}
+            {'Custom JS'}
+          </List.SubHeader>
+          <View style={styles.customCSSContainer}>
+            <TextInput
+              style={[{ color: theme.onSurface }, styles.fontSizeL]}
+              value={customJS}
+              onChangeText={text => setcustomJS(text)}
+              placeholderTextColor={theme.onSurfaceVariant}
+              placeholder="Example: document.getElementById('example');"
+              multiline={true}
+            />
+            <View style={styles.customCSSButtons}>
+              <Button
+                onPress={() =>
+                  dispatch(setReaderSettings('customJS', customJS))
+                }
+                style={styles.marginLeftS}
+                title={getString('common.save')}
+              />
+              <Button
+                onPress={() => {
+                  setcustomJS('');
+                  dispatch(setReaderSettings('customJS', ''));
                 }}
                 title={getString('common.clear')}
               />

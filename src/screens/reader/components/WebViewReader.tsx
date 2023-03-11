@@ -215,6 +215,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                     </style>
                   </head>
                   <body>
+
                     <div class="chapterCtn" ${onClickWebViewPostMessage({
                       type: 'hide',
                     })}>
@@ -298,6 +299,11 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                           </script>`
                         : ''
                     }
+
+                    <script>
+                      async function fn(){${readerSettings.customJS}}
+                      document.addEventListener("DOMContentLoaded", fn);
+                    </script>
                   </body>
                 </html>
                 `,
