@@ -30,7 +30,6 @@ const CategoriesScreen = () => {
   const getCategories = async () => {
     try {
       let res = await getCategoriesFromDb();
-      console.log('cate', res);
 
       setCategories(res);
     } catch (err) {

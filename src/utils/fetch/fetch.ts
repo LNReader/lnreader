@@ -6,21 +6,21 @@ export const defaultUserAgentString =
 interface FetchParams {
   url: string;
   init?: RequestInit;
-  sourceId?: number;
+  pluginId?: string;
 }
 
 export const fetchApi = async ({
   url,
   init,
-  sourceId,
+  pluginId,
 }: FetchParams): Promise<Response> => {
   const headers = new Headers({
     ...init?.headers,
     'User-Agent': defaultUserAgentString,
   });
 
-  if (sourceId) {
-    const { cookies = '' } = getSourceStorage(sourceId);
+  if (pluginId) {
+    const { cookies = '' } = getSourceStorage(pluginId);
 
     if (cookies) {
       headers.append('cookie', cookies);

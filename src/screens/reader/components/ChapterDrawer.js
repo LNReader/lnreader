@@ -16,10 +16,9 @@ const ChapterDrawer = ({ state: st, navigation }) => {
   const insets = useSafeAreaInsets();
   const styles = createStylesheet(theme, insets);
   let listRef = useRef();
-
   const dispatch = useDispatch();
   const {
-    sourceId,
+    pluginId,
     novelUrl,
     novelName,
     novelId,
@@ -30,9 +29,9 @@ const ChapterDrawer = ({ state: st, navigation }) => {
   const { chapters, novel } = useNovel();
   useEffect(() => {
     if (chapters.length < 1 || novelId !== novel.novelId) {
-      dispatch(setNovel({ sourceId, novelUrl, novelName, novelId }));
+      dispatch(setNovel({ pluginId, novelUrl, novelName, novelId }));
       dispatch(
-        getNovelAction(true, sourceId, novelUrl, novelId, sort, filter, 1),
+        getNovelAction(true, pluginId, novelUrl, novelId, sort, filter, 1),
       );
     }
   }, [
@@ -45,7 +44,7 @@ const ChapterDrawer = ({ state: st, navigation }) => {
     novelName,
     novelUrl,
     sort,
-    sourceId,
+    pluginId,
   ]);
   const listAscending = sort === 'ORDER BY id ASC';
   const scrollToIndex = useMemo(() => {
@@ -79,7 +78,7 @@ const ChapterDrawer = ({ state: st, navigation }) => {
 
   const changeChapter = item => {
     navigation.replace('Chapter', {
-      sourceId,
+      pluginId,
       novelUrl,
       novelName,
       novelId,

@@ -80,7 +80,7 @@ export const getChapters = (
 };
 
 // downloaded chapter
-const getChapterQuery = 'SELECT id, * FROM Download Chapter.id = ?';
+const getChapterQuery = 'SELECT chapterText FROM Download Chapter.id = ?';
 
 export const getChapterFromDB = async (
   chapterId: number,

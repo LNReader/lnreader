@@ -27,13 +27,13 @@ const GlobalSearchResultsList: React.FC<GlobalSearchResultsListProps> = ({
 }) => {
   const theme = useTheme();
   const navigation = useNavigation<StackNavigationProp<any>>();
-  const keyExtractor = useCallback(item => item.source.sourceId.toString(), []);
+  const keyExtractor = useCallback(item => item.source.pluginId.toString(), []);
   const { library, setLibrary } = useLibraryNovels();
   const { defaultCategoryId = 1 } = useCategorySettings();
 
-  const novelInLibrary = (sourceId: number, novelUrl: string) =>
+  const novelInLibrary = (pluginId: string, novelUrl: string) =>
     library?.some(
-      novel => novel.novelUrl === novelUrl && novel.sourceId === sourceId,
+      novel => novel.url === novelUrl && novel.pluginId === pluginId,
     );
 
   const errorColor = useMemo(() => (theme.isDark ? '#B3261E' : '#F2B8B5'), []);
@@ -58,7 +58,7 @@ const GlobalSearchResultsList: React.FC<GlobalSearchResultsListProps> = ({
               style={styles.sourceHeader}
               onPress={() =>
                 navigation.navigate('SourceScreen', {
-                  sourceId: item.source.sourceId,
+                  pluginId: item.source.pluginId,
                   sourceName: item.source.sourceName,
                   url: item.source.url,
                 })
@@ -91,7 +91,7 @@ const GlobalSearchResultsList: React.FC<GlobalSearchResultsListProps> = ({
                 horizontal
                 contentContainerStyle={styles.novelsContainer}
                 keyExtractor={novelItem =>
-                  novelItem.novelUrl + novelItem.sourceId
+                  novelItem.novelUrl + novelItem.pluginId
                 }
                 data={item.novels}
                 ListEmptyComponent={
@@ -106,7 +106,7 @@ const GlobalSearchResultsList: React.FC<GlobalSearchResultsListProps> = ({
                 }
                 renderItem={({ item: novelItem }) => {
                   const inLibrary = novelInLibrary(
-                    novelItem.sourceId,
+                    novelItem.pluginId,
                     novelItem.novelUrl,
                   );
 
@@ -129,13 +129,13 @@ const GlobalSearchResultsList: React.FC<GlobalSearchResultsListProps> = ({
                               ...prevValues,
                               {
                                 novelUrl: novelItem.novelUrl,
-                                sourceId: novelItem.sourceId,
+                                pluginId: novelItem.pluginId,
                               } as LibraryNovelInfo,
                             ];
                           }
                         });
                         insertNovelInLibrary(
-                          novelItem.sourceId,
+                          novelItem.pluginId,
                           novelItem.novelUrl,
                           inLibrary,
                           defaultCategoryId,

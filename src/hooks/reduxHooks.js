@@ -47,25 +47,24 @@ const useSavedSettings = () => {
 
 const useContinueReading = (chapters, novelId) => {
   let lastReadChapter, chapterId, novel, position;
-
   novel = useFindNovel(novelId);
   if (novel) {
     chapterId = novel.lastRead;
     position = novel.position;
   }
 
-  if (chapterId) {
-    lastReadChapter = chapters.find(
-      obj => obj.chapterId === chapterId && obj.unread === 1,
-    );
-  }
+  // if (chapterId) {
+  //   lastReadChapter = chapters.find(
+  //     obj => obj.chapterId === chapterId && obj.unread === 1,
+  //   );
+  // }
 
   // If the last read chapter is 100% done, set the next chapter as the 'last read'.
   // If all chapters are read, then set the last chapter in the list as the last read (Fixed bug)
-  if (!lastReadChapter) {
-    lastReadChapter =
-      chapters.find(obj => obj.read === 0) || chapters[chapters.length - 1];
-  }
+  // if (!lastReadChapter) {
+  //   lastReadChapter =
+  //     chapters.find(obj => obj.read === 0) || chapters[chapters.length - 1];
+  // }
 
   return { lastReadChapter, position };
 };

@@ -100,7 +100,7 @@ export const restoreBackup = async () => {
 
                 if (
                   nextNovelIndex in novels &&
-                  novels[nextNovelIndex].sourceId === novels[i].sourceId
+                  novels[nextNovelIndex].pluginId === novels[i].pluginId
                 ) {
                   await sleep(taskData.delay);
                 }

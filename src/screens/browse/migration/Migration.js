@@ -14,20 +14,20 @@ const GlobalSearch = ({ navigation }) => {
   const { library } = useLibraryNovels();
   let { allSources } = useSourcesReducer();
 
-  const novelsPerSource = sourceId =>
-    library.filter(novel => novel.sourceId === sourceId).length;
+  const novelsPerSource = pluginId =>
+    library.filter(novel => novel.pluginId === pluginId).length;
 
   sources = allSources.filter(
     source =>
-      library.filter(novel => novel.sourceId === source.sourceId).length,
+      library.filter(novel => novel.pluginId === source.pluginId).length,
   );
 
   const renderItem = ({ item }) => (
     <MigrationSourceItem
       item={item}
       theme={theme}
-      noOfNovels={novelsPerSource(item.sourceId)}
-      onPress={() => navigation.navigate('SourceNovels', item.sourceId)}
+      noOfNovels={novelsPerSource(item.pluginId)}
+      onPress={() => navigation.navigate('SourceNovels', item.pluginId)}
     />
   );
 
@@ -49,7 +49,7 @@ const GlobalSearch = ({ navigation }) => {
       <FlatList
         data={sources}
         contentContainerStyle={{ paddingBottom: 48 }}
-        keyExtractor={item => item.sourceId.toString()}
+        keyExtractor={item => item.pluginId.toString()}
         renderItem={renderItem}
         ListHeaderComponent={ListHeaderComponent}
       />

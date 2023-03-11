@@ -22,7 +22,7 @@ const EditInfoModal = ({ theme, hideModal, modalVisible, novel, dispatch }) => {
   const [tag, setTag] = useState('');
 
   const removeTag = t => {
-    let tags = info.genres.split(',').filter(item => item !== t);
+    let tags = info.genres?.split(',').filter(item => item !== t);
     setInfo({ ...info, genre: tags.join(',') });
   };
 
@@ -124,14 +124,14 @@ const EditInfoModal = ({ theme, hideModal, modalVisible, novel, dispatch }) => {
           mode="outlined"
           onChangeText={text => setTag(text)}
           onSubmitEditing={() => {
-            setInfo({ ...info, genre: info.genre + ',' + tag });
+            setInfo({ ...info, genres: info.genres + ',' + tag });
             setTag('');
           }}
           theme={{ colors: { ...theme } }}
           dense
         />
 
-        {info.genre !== null && info.genre !== '' && (
+        {info.genres !== null && info.genres !== '' && (
           <FlatList
             contentContainerStyle={{ marginVertical: 8 }}
             horizontal

@@ -91,8 +91,7 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
 
   const novelInLibrary = (novelUrl: string) =>
     library?.some(
-      novel => novel.url === novelUrl,
-      // && novel.sourceId === pluginId,
+      novel => novel.url === novelUrl && novel.pluginId === pluginId,
     );
 
   const navigateToNovel = useCallback(

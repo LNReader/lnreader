@@ -66,7 +66,7 @@ const ChapterContent = ({ route, navigation }) => {
   useKeepAwake();
   const params = route.params;
   const {
-    sourceId,
+    pluginId,
     chapterId,
     chapterUrl,
     novelId,
@@ -104,7 +104,7 @@ const ChapterContent = ({ route, navigation }) => {
   const { tracker, trackedNovels } = useTrackingStatus();
   const isTracked = trackedNovels.find(obj => obj.novelId === novelId);
 
-  const [chapter, setChapter] = useState({});
+  const [chapter, setChapter] = useState({ ...params });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
 
@@ -154,9 +154,10 @@ const ChapterContent = ({ route, navigation }) => {
     try {
       let result = null;
       if (!(id && (result = await getChapterFromDb(id)))) {
-        result = await fetchChapter(sourceId, novelUrl, chapterUrl);
+        result = await fetchChapter(chapterUrl);
       }
-      setChapter(result);
+      chapter.chapterText = result;
+      setChapter(chapter);
     } catch (e) {
       setError(e.message);
       showToast(e.message);
@@ -169,7 +170,7 @@ const ChapterContent = ({ route, navigation }) => {
     getChapter(chapterId);
 
     if (!incognitoMode) {
-      insertHistory(novelId, chapterId);
+      insertHistory(chapterId);
       dispatch({
         type: SET_LAST_READ,
         payload: { novelId, chapterId },
@@ -276,9 +277,9 @@ const ChapterContent = ({ route, navigation }) => {
     navChapter
       ? navigation.replace('Chapter', {
           ...params,
-          chapterUrl: navChapter.chapterUrl,
-          chapterId: navChapter.chapterId,
-          chapterName: navChapter.chapterName,
+          chapterUrl: navChapter.url,
+          chapterId: navChapter.id,
+          chapterName: navChapter.name,
           bookmark: navChapter.bookmark,
         })
       : showToast(
@@ -289,17 +290,18 @@ const ChapterContent = ({ route, navigation }) => {
   };
 
   const onWebViewNavigationStateChange = async ({ url }) => {
-    if ((sourceId === 50 || sourceId === 62) && url !== 'about:blank') {
+    if (url !== 'about:blank') {
       setLoading(true);
-      const res = await fetchChapter(sourceId, novelUrl, url);
-      setChapter(res);
+      const res = await fetchChapter(pluginId, novelUrl, url);
+      chapter.chapterText = res;
+      setChapter(chapter);
       setLoading(false);
     }
   };
 
   const chapterText = sanitizeChapterText(chapter.chapterText, {
     removeExtraParagraphSpacing,
-    sourceId: sourceId,
+    pluginId: pluginId,
   });
   const openDrawer = () => {
     navigation.openDrawer();
@@ -319,7 +321,7 @@ const ChapterContent = ({ route, navigation }) => {
       <WebViewReader
         chapterInfo={params}
         html={chapterText}
-        chapterName={chapter.chapterName || chapterName}
+        chapterName={chapterName}
         swipeGestures={swipeGestures}
         minScroll={minScroll}
         nextChapter={nextChapter}
@@ -347,7 +349,7 @@ const ChapterContent = ({ route, navigation }) => {
             bookmark={bookmark}
             novelName={novelName}
             chapterId={chapterId}
-            chapterName={chapterName || chapter.chapterName}
+            chapterName={chapterName}
             tts={startTts}
             textToSpeech={ttsStatus}
             theme={theme}

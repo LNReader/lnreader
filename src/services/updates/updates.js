@@ -49,7 +49,7 @@ const updateLibrary = async options => {
              * Update chapters
              */
             await updateNovel(
-              libraryNovels[i].sourceId,
+              libraryNovels[i].pluginId,
               libraryNovels[i].novelUrl,
               libraryNovels[i].novelId,
               options,
@@ -83,8 +83,8 @@ const updateLibrary = async options => {
 
             if (
               nextNovelIndex in libraryNovels &&
-              libraryNovels[nextNovelIndex].sourceId ===
-                libraryNovels[i].sourceId
+              libraryNovels[nextNovelIndex].pluginId ===
+                libraryNovels[i].pluginId
             ) {
               await sleep(taskData.delay);
             }

@@ -33,7 +33,7 @@ const MigrationNovels = ({ navigation, route }) => {
   const { installedPlugins, pinnedPlugins } = usePluginReducer();
 
   const isPinned = id => pinnedPlugins.find(plg => plg.id !== id);
-  const pinnedSources = allSources.filter(source => isPinned(source.sourceId));
+  const pinnedSources = allSources.filter(source => isPinned(source.pluginId));
 
   const { searchAllSources = false } = useBrowseSettings();
 
@@ -42,7 +42,7 @@ const MigrationNovels = ({ navigation, route }) => {
 
     setSearchResults(
       migrationSources.map(item => ({
-        sourceId: item.sourceId,
+        pluginId: item.pluginId,
         sourceName: item.sourceName,
         lang: item.lang,
         loading: true,
@@ -54,12 +54,12 @@ const MigrationNovels = ({ navigation, route }) => {
     migrationSources.map(async item => {
       if (isMounted.current === true) {
         try {
-          const source = sourceManager(item.sourceId);
+          const source = sourceManager(item.pluginId);
           const data = await source.searchNovels(novelName);
 
           setSearchResults(prevState =>
             prevState.map(sourceItem =>
-              sourceItem.sourceId === item.sourceId
+              sourceItem.pluginId === item.pluginId
                 ? { ...sourceItem, novels: data, loading: false }
                 : { ...sourceItem },
             ),
@@ -67,7 +67,7 @@ const MigrationNovels = ({ navigation, route }) => {
         } catch (e) {
           setSearchResults(prevState =>
             prevState.map(sourceItem =>
-              sourceItem.sourceId === item.sourceId
+              sourceItem.pluginId === item.pluginId
                 ? {
                     ...sourceItem,
                     loading: false,
@@ -134,7 +134,7 @@ const MigrationNovels = ({ navigation, route }) => {
       <FlatList
         contentContainerStyle={{ flexGrow: 1, padding: 4 }}
         data={searchResults}
-        keyExtractor={item => item.sourceId.toString()}
+        keyExtractor={item => item.pluginId.toString()}
         renderItem={renderItem}
         extraData={pinnedSources}
         ListEmptyComponent={

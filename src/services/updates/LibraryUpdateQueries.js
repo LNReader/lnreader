@@ -50,10 +50,10 @@ const insertUpdate = async (tx, chapterId, novelId) =>
     (txOBJ, error) => {},
   );
 
-const updateNovel = async (sourceId, novelUrl, novelId, options) => {
+const updateNovel = async (pluginId, novelUrl, novelId, options) => {
   const { downloadNewChapters, refreshNovelMetadata } = options;
 
-  let novel = await fetchNovel(sourceId, novelUrl);
+  let novel = await fetchNovel(pluginId, novelUrl);
 
   if (refreshNovelMetadata) {
     updateNovelMetadata(novelId, novel);
@@ -70,7 +70,7 @@ const updateNovel = async (sourceId, novelUrl, novelId, options) => {
           if (insertId !== -1) {
             if (downloadNewChapters) {
               downloadChapter(
-                sourceId,
+                pluginId,
                 novelUrl,
                 novelId,
                 chapterUrl,

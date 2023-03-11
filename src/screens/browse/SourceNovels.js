@@ -7,11 +7,11 @@ import { useLibraryNovels } from '@screens/library/hooks/useLibrary';
 import { Appbar } from '@components';
 
 const SourceNovels = ({ navigation, route }) => {
-  const sourceId = route.params;
+  const pluginId = route.params;
   const theme = useTheme();
   const { library } = useLibraryNovels();
 
-  const sourceNovels = library.filter(novel => novel.sourceId === sourceId);
+  const sourceNovels = library.filter(novel => novel.pluginId === pluginId);
 
   const renderItem = ({ item }) => (
     <ListView
@@ -19,7 +19,7 @@ const SourceNovels = ({ navigation, route }) => {
       theme={theme}
       onPress={() =>
         navigation.navigate('MigrateNovel', {
-          sourceId: item.sourceId,
+          pluginId: item.pluginId,
           novelName: item.novelName,
         })
       }

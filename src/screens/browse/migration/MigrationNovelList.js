@@ -19,32 +19,32 @@ const MigrationNovelList = ({ data, theme, library, navigation }) => {
   const showMigrateNovelDialog = () => setMigrateNovelDialog(true);
   const hideMigrateNovelDialog = () => setMigrateNovelDialog(false);
 
-  const inLibrary = (sourceId, novelUrl) =>
-    library.some(obj => obj.novelUrl === novelUrl && obj.sourceId === sourceId);
+  const inLibrary = (pluginId, novelUrl) =>
+    library.some(obj => obj.novelUrl === novelUrl && obj.pluginId === pluginId);
 
   const renderItem = ({ item }) => (
     <GlobalSearchNovelCover
       novel={item}
       theme={theme}
-      onPress={() => showModal(item.sourceId, item.novelUrl, item.novelName)}
+      onPress={() => showModal(item.pluginId, item.novelUrl, item.novelName)}
       onLongPress={() =>
         navigation.navigate(
           'Novel',
           openNovel({
             ...item,
-            sourceId: item.sourceId,
+            pluginId: item.pluginId,
           }),
         )
       }
-      inLibrary={inLibrary(item.sourceId, item.novelUrl)}
+      inLibrary={inLibrary(item.pluginId, item.novelUrl)}
     />
   );
 
-  const showModal = (sourceId, novelUrl, novelName) => {
-    if (inLibrary(sourceId, novelUrl)) {
+  const showModal = (pluginId, novelUrl, novelName) => {
+    if (inLibrary(pluginId, novelUrl)) {
       showToast('Novel already in library');
     } else {
-      setSelectedNovel({ sourceId, novelUrl, novelName });
+      setSelectedNovel({ pluginId, novelUrl, novelName });
       showMigrateNovelDialog();
     }
   };
@@ -55,7 +55,7 @@ const MigrationNovelList = ({ data, theme, library, navigation }) => {
         contentContainerStyle={styles.flatListCont}
         horizontal={true}
         data={data}
-        keyExtractor={item => item.sourceId + item.novelUrl}
+        keyExtractor={item => item.pluginId + item.novelUrl}
         renderItem={renderItem}
         ListEmptyComponent={
           <Text
@@ -104,7 +104,7 @@ const MigrationNovelList = ({ data, theme, library, navigation }) => {
               onPress={async () => {
                 hideMigrateNovelDialog();
                 await migrateNovel(
-                  selectedNovel.sourceId,
+                  selectedNovel.pluginId,
                   selectedNovel.novelUrl,
                 );
                 showToast(`${selectedNovel.novelName} migrated to new source.`);

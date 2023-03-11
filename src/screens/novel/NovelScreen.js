@@ -92,8 +92,11 @@ const Novel = ({ route, navigation }) => {
     filter = '',
     showChapterTitles = false,
   } = usePreferences(novel.novelId);
-  let { lastReadChapter, position } = useContinueReading(chapters, novel.id);
 
+  let { lastReadChapter, position } = useContinueReading(
+    chapters,
+    novel.novelId,
+  );
   const { defaultCategoryId = 1 } = useCategorySettings();
   useEffect(() => {
     dispatch(getNovelAction(pluginId, url, sort, filter, defaultCategoryId));
@@ -222,7 +225,7 @@ const Novel = ({ route, navigation }) => {
       }
       setSelected(sel => [...sel, chapter]);
     } else {
-      if (selected.length === chapters.length) {
+      if (selected.length === chapters?.length) {
         return;
       }
 
@@ -256,7 +259,6 @@ const Novel = ({ route, navigation }) => {
       }
     }
   };
-
   const navigateToChapter = chapter => {
     navigation.navigate(
       'Chapter',
@@ -610,7 +612,7 @@ const Novel = ({ route, navigation }) => {
             refreshControl={refreshControl()}
           />
         </View>
-        {useFabForContinueReading && chapters.length > 0 && lastReadChapter && (
+        {useFabForContinueReading && chapters?.length > 0 && lastReadChapter && (
           <FAB
             style={[
               styles.fab,

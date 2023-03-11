@@ -58,12 +58,11 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
     (chapter: ChapterItemExtended) =>
       dispatch(
         downloadChapterAction(
-          chapter.sourceId,
-          chapter.novelUrl,
+          chapter.pluginId,
           chapter.novelId,
-          chapter.chapterUrl,
-          chapter.chapterName,
-          chapter.chapterId,
+          chapter.url,
+          chapter.name,
+          chapter.id,
         ),
       ),
     [],
@@ -72,7 +71,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
   const handleDeleteChapter = useCallback((chapter: ChapterItemExtended) => {
     dispatch(
       deleteChapterAction(
-        chapter.sourceId,
+        chapter.pluginId,
         chapter.novelId,
         chapter.chapterId,
         chapter.chapterName,

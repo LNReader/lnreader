@@ -116,7 +116,7 @@ const collectPlugins = async () => {
 
 const fetchPlugins = async () => {
   const availablePlugins: Record<Languages, Array<PluginItem>> = await fetch(
-    'https://raw.githubusercontent.com/nyagami/LNReader-plugins/master/plugins/plugins.json',
+    'https://raw.githubusercontent.com/nyagami/LNReader-plugins/master/plugins/plugins.json?newtest=true',
   ).then(res => res.json());
   return availablePlugins;
 };

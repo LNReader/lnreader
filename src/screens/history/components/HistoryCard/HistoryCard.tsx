@@ -36,7 +36,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
 }) => {
   const {
     historyId,
-    sourceId,
+    pluginId,
     novelId,
     novelName,
     novelUrl,
@@ -62,7 +62,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
       android_ripple={{ color: theme.rippleColor }}
       onPress={() =>
         handleNavigateToNovel({
-          sourceId,
+          pluginId,
           novelId,
           novelUrl,
           novelName,
@@ -94,7 +94,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
           name="play"
           onPress={() =>
             handleNavigateToChapter(
-              { sourceId, novelName, novelUrl },
+              { pluginId, novelName, novelUrl },
               {
                 novelId,
                 chapterId,

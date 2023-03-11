@@ -123,7 +123,7 @@ const NovelInfoHeader = ({
         {novel.genres ? (
           <NovelGenres theme={theme} genre={novel.genres} />
         ) : null}
-        <ReadButton novel={novel} chapters={chapters} lastRead={lastRead} />
+        {/* <ReadButton novel={novel} chapters={chapters} lastRead={lastRead} /> */}
         <Pressable
           style={styles.bottomsheet}
           onPress={() => novelBottomSheetRef.current.expand()}
@@ -132,7 +132,7 @@ const NovelInfoHeader = ({
           }}
         >
           <Text style={[{ color: theme.onSurface }, styles.chapters]}>
-            {`${chapters.length} ${getString('novelScreen.chapters')}`}
+            {`${chapters?.length} ${getString('novelScreen.chapters')}`}
           </Text>
           <IconButton
             icon="filter-variant"

@@ -185,7 +185,7 @@ export const markChaptersRead =
 
       dispatch({
         type: GET_CHAPTERS,
-        payload: { chaps },
+        payload: { chapters: chaps },
       });
     } catch (error) {
       showToast(error.message);
@@ -210,7 +210,7 @@ export const markChapterUnreadAction =
 
     dispatch({
       type: GET_CHAPTERS,
-      payload: { chaps },
+      payload: { chapters: chaps },
     });
   };
 
