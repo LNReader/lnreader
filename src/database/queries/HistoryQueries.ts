@@ -37,7 +37,7 @@ export const getHistoryFromDb = async () => {
 export const insertHistory = async (chapterId: number) => {
   db.transaction(tx => {
     tx.executeSql(
-      "INSERT OR REPLACE INTO History (chapterId, readTime) VALUES (?, ?, (datetime('now','localtime')))",
+      "INSERT OR REPLACE INTO History (chapterId, readTime) VALUES (?, (datetime('now','localtime')))",
       [chapterId],
       noop,
       txnErrorCallback,
