@@ -35,7 +35,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
   theme,
 }) => {
   const {
-    historyId,
+    id,
     pluginId,
     novelId,
     novelName,
@@ -43,17 +43,17 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
     chapterId,
     chapterName,
     novelCover,
-    historyTimeRead,
+    readTime,
     chapterUrl,
     bookmark,
   } = history;
 
   const chapterNoAndTime = useMemo(
     () =>
-      `Chapter ${parseChapterNumber(chapterName)} • ${dayjs(historyTimeRead)
+      `Chapter ${parseChapterNumber(chapterName)} • ${dayjs(readTime)
         .format('LT')
         .toUpperCase()}`,
-    [chapterName, historyTimeRead],
+    [chapterName, readTime],
   );
 
   return (
@@ -63,10 +63,10 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
       onPress={() =>
         handleNavigateToNovel({
           pluginId,
-          novelId,
-          novelUrl,
-          novelName,
-          novelCover,
+          id: novelId,
+          url: novelUrl,
+          name: novelName,
+          cover: novelCover,
         })
       }
     >
@@ -88,18 +88,18 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
         <IconButtonV2
           name="delete-outline"
           theme={theme}
-          onPress={() => handleRemoveFromHistory(historyId)}
+          onPress={() => handleRemoveFromHistory(id)}
         />
         <IconButtonV2
           name="play"
           onPress={() =>
             handleNavigateToChapter(
-              { pluginId, novelName, novelUrl },
+              { pluginId, name: novelName, url: novelUrl },
               {
                 novelId,
-                chapterId,
-                chapterUrl,
-                chapterName,
+                id: chapterId,
+                url: chapterUrl,
+                name: chapterName,
                 bookmark,
               },
             )

@@ -47,7 +47,7 @@ export interface History {
   novelCover: string;
   chapterName: string;
   chapterUrl: string;
-  historyTimeRead: string;
+  readTime: string;
   bookmark: number;
 }
 
