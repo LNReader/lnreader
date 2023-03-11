@@ -16,7 +16,7 @@ const HistorySkeletonLoading: React.FC<Props> = ({ theme }) => {
 
   const renderLoadingChapter = (item: number, index: number) => {
     return (
-      <>
+      <View key={'historyLoading' + item}>
         {index === 0 || Math.random() > 0.6 ? (
           <ShimmerPlaceHolder
             style={styles.date}
@@ -63,13 +63,13 @@ const HistorySkeletonLoading: React.FC<Props> = ({ theme }) => {
             />
           </View>
         </View>
-      </>
+      </View>
     );
   };
 
   const items = [];
   for (let index = 0; index < Math.random() * 3 + 3; index++) {
-    items.push(0);
+    items.push(index);
   }
 
   return <View>{items.map(renderLoadingChapter)}</View>;
