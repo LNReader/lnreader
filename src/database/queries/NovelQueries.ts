@@ -28,33 +28,6 @@ import { fetchNovel } from '@services/plugin/fetch';
   Auto create Novel Category Default (@sort = 1) by Trigger
 **/
 
-const insertNovelQuery =
-  'INSERT INTO Novel (url, pluginId, name, cover, summary, author, artist, status, genres, inLibrary) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-
-export const insertNovel = async (novel: NovelInfo): Promise<number> => {
-  return new Promise(resolve =>
-    db.transaction(tx =>
-      tx.executeSql(
-        insertNovelQuery,
-        [
-          novel.url,
-          novel.pluginId,
-          novel.name,
-          novel.cover,
-          novel.summary || '',
-          novel.author,
-          novel.artist,
-          novel.status,
-          novel.genres || '',
-          novel.inLibrary,
-        ],
-        (txObj, resultSet) => resolve(resultSet.insertId),
-        txnErrorCallback,
-      ),
-    ),
-  );
-};
-
 export const insertNovelandChapters = async (
   pluginId: string,
   sourceNovel: SourceNovel,
@@ -100,12 +73,11 @@ export const switchNovelToLibrary = async (
   pluginId: string,
 ) => {
   const novel = await getNovel(novelUrl);
-  const inLibrary = 1 - novel.inLibrary;
   if (novel) {
     db.transaction(tx => {
       tx.executeSql(
         'UPDATE Novel SET inLibrary = ? WHERE id = ?',
-        [inLibrary, novel.id],
+        [1 - novel.inLibrary, novel.id],
         noop,
         txnErrorCallback,
       );

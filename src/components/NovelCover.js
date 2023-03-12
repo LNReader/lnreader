@@ -6,7 +6,6 @@ import {
   useWindowDimensions,
   Pressable,
 } from 'react-native';
-import color from 'color';
 
 import { LinearGradient } from 'expo-linear-gradient';
 import FastImage from 'react-native-fast-image';
@@ -47,7 +46,7 @@ const NovelCover = ({
     [numColumns],
   );
 
-  const selectNovel = () => onLongPress && onLongPress(item);
+  const selectNovel = () => onLongPress(item);
 
   const uri = item.cover;
 

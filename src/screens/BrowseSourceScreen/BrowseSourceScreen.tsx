@@ -17,7 +17,7 @@ import { getString } from '@strings/translations';
 import { StyleSheet } from 'react-native';
 import { useLibraryNovels } from '@screens/library/hooks/useLibrary';
 import { switchNovelToLibrary } from '@database/queries/NovelQueries';
-import { LibraryNovelInfo } from '@database/types';
+import { NovelInfo } from '@database/types';
 import SourceScreenSkeletonLoading from '@screens/browse/loadingAnimation/SourceScreenSkeletonLoading';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -90,9 +90,7 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
   const { library, setLibrary } = useLibraryNovels();
 
   const novelInLibrary = (novelUrl: string) =>
-    library?.some(
-      novel => novel.url === novelUrl && novel.pluginId === pluginId,
-    );
+    library?.some(novel => novel.url === novelUrl);
 
   const navigateToNovel = useCallback(
     (item: NovelItem) =>
@@ -150,9 +148,9 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
                       return [
                         ...prevValues,
                         {
-                          url: item.url,
-                          pluginId,
-                        } as LibraryNovelInfo,
+                          ...item,
+                          inLibrary: 1,
+                        } as NovelInfo,
                       ];
                     }
                   });
