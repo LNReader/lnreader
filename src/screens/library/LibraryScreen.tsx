@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
 import {
@@ -26,12 +26,11 @@ import {
   markAllChaptersRead,
   markAllChaptersUnread,
 } from '../../database/queries/ChapterQueries';
-import { toggleNovelToLibrary } from '@database/queries/NovelQueries';
-import SetCategoryModal from '@screens/novel/components/SetCategoriesModal';
+import { removeNovelsFromLibrary } from '@database/queries/NovelQueries';
+// import SetCategoryModal from '@screens/novel/components/SetCategoriesModal';
 import useBoolean from '@hooks/useBoolean';
-import { debounce, intersection } from 'lodash-es';
+import { debounce } from 'lodash-es';
 import { useBackHandler } from '@hooks/useBackHandler';
-import { openChapter } from '@utils/handleNavigateParams';
 import useHistory from '@hooks/useHistory';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useSettings } from '@hooks/reduxHooks';
@@ -129,28 +128,28 @@ const LibraryScreen = () => {
       : `${selectedNovelIds.length} selected`;
 
   const {
-    value: setCategoryModalVisible,
+    // value: setCategoryModalVisible,
     setTrue: showSetCategoryModal,
-    setFalse: closeSetCategoryModal,
+    // setFalse: closeSetCategoryModal,
   } = useBoolean();
 
-  const selectedNovelCategoryIds = useMemo(() => {
-    let categoryIds: number[][] = [];
+  // const selectedNovelCategoryIds = useMemo(() => {
+  //   let categoryIds: number[][] = [];
 
-    library.map(category =>
-      category.novels
-        .filter(novel => selectedNovelIds.includes(novel.id))
-        .map(novel => {
-          categoryIds.push(JSON.parse(novel.categoryIds));
-        }),
-    );
+  //   library.map(category =>
+  //     category.novels
+  //       .filter(novel => selectedNovelIds.includes(novel.id))
+  //       .map(novel => {
+  //         categoryIds.push(JSON.parse(novel.categoryIds));
+  //       }),
+  //   );
 
-    const selectedCategoryIds = intersection(...categoryIds).filter(
-      id => id !== 1,
-    );
+  //   const selectedCategoryIds = intersection(...categoryIds).filter(
+  //     id => id !== 1,
+  //   );
 
-    return selectedCategoryIds;
-  }, [selectedNovelIds]);
+  //   return selectedCategoryIds;
+  // }, [selectedNovelIds]);
 
   return (
     <>
@@ -171,7 +170,7 @@ const LibraryScreen = () => {
                 iconName: 'select-all',
                 onPress: () =>
                   setSelectedNovelIds(
-                    library[index].novels.map(novel => novel.novelId),
+                    library[index].novels.map(novel => novel.id),
                   ),
               }
             : {
@@ -259,12 +258,25 @@ const LibraryScreen = () => {
             onPress={() => {
               navigate(
                 'Chapter' as never,
-                openChapter(history[0], history[0]) as never,
+                {
+                  novel: {
+                    id: history[0].novelId,
+                    url: history[0].novelUrl,
+                    pluginId: history[0].pluginId,
+                    name: history[0].novelName,
+                  },
+                  chapter: {
+                    id: history[0].chapterId,
+                    url: history[0].chapterUrl,
+                    name: history[0].chapterName,
+                    novelId: history[0].novelId,
+                  },
+                } as never,
               );
             }}
           />
         )}
-      <SetCategoryModal
+      {/* <SetCategoryModal
         novelId={selectedNovelIds}
         currentCategoryIds={selectedNovelCategoryIds}
         closeModal={closeSetCategoryModal}
@@ -274,7 +286,7 @@ const LibraryScreen = () => {
           setSelectedNovelIds([]);
           refetchLibrary();
         }}
-      />
+      /> */}
       <Portal>
         <LibraryBottomSheet bottomSheetRef={bottomSheetRef} />
         <Actionbar
@@ -303,8 +315,9 @@ const LibraryScreen = () => {
             {
               icon: 'delete-outline',
               onPress: () => {
-                selectedNovelIds.map(id => toggleNovelToLibrary(id));
+                removeNovelsFromLibrary(selectedNovelIds);
                 setSelectedNovelIds([]);
+                refetchLibrary();
               },
             },
           ]}

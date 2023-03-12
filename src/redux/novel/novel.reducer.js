@@ -26,7 +26,7 @@ const initialState = {
   updating: false,
   downloading: [], // Array<ChapterInfo (id, name,)>
   lastRead: undefined, // ChapterInfo (id, name,)
-  inLibrary: number,
+  inLibrary: false,
 };
 
 const novelReducer = (state = initialState, action) => {

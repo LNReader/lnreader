@@ -99,6 +99,14 @@ export const switchNovelToLibrary = async (
   }
 };
 
+export const removeNovelsFromLibrary = (novelIds: Array<number>) => {
+  db.transaction(tx => {
+    tx.executeSql(
+      `UPDATE Novel SET inLibrary = 0 WHERE id IN (${novelIds.join(', ')})`,
+    );
+  });
+};
+
 export const deleteNovelCache = () => {
   db.transaction(tx => {
     tx.executeSql(
