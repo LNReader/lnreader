@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet } from 'react-native';
+import { FlatList, StyleSheet, View, Text } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { FAB, Portal } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
@@ -42,33 +42,19 @@ const CategoriesScreen = () => {
   useEffect(() => {
     getCategories();
   }, []);
-
-  const updateCategorySort = (
-    categoryId: number,
-    currentIndex: number,
-    newIndex: number,
-  ) => {
+  const updateCategorySort = (currentIndex: number, newIndex: number) => {
     const updatedOrderCategories = orderBy(
       categories?.map((category, index) => {
-        if (category.sort === newIndex || newIndex === index) {
-          return {
-            ...category,
-            sort: currentIndex,
-          };
+        if (index === currentIndex) {
+          return { ...category, sort: newIndex + 1 }; // + 1 because in db, sort start from 1
         }
-
-        if (category.id === categoryId) {
-          return {
-            ...category,
-            sort: newIndex,
-          };
+        if (index === newIndex) {
+          return { ...category, sort: currentIndex + 1 };
         }
-
         return category;
       }),
       'sort',
     );
-
     setCategories(updatedOrderCategories);
     updateCategoryOrderInDb(updatedOrderCategories || []);
   };
@@ -85,6 +71,11 @@ const CategoriesScreen = () => {
         handleGoBack={goBack}
         theme={theme}
       />
+      <View style={{ marginLeft: 16 }}>
+        <Text style={{ color: theme.onBackground }}>
+          {'The first order one is default category'}
+        </Text>
+      </View>
       {isLoading ? (
         <CategorySkeletonLoading width={360.7} height={89.5} theme={theme} />
       ) : (

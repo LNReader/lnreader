@@ -24,7 +24,6 @@ const DeleteCategoryModal: React.FC<DeleteCategoryModalProps> = ({
   onSuccess,
 }) => {
   const theme = useTheme();
-
   return (
     <Portal>
       <Modal
@@ -46,7 +45,7 @@ const DeleteCategoryModal: React.FC<DeleteCategoryModalProps> = ({
           <Button
             title={getString('common.ok')}
             onPress={() => {
-              deleteCategoryById(category.id);
+              deleteCategoryById(category);
               closeModal();
               onSuccess();
             }}

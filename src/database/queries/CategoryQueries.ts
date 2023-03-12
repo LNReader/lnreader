@@ -51,12 +51,12 @@ export const createCategory = (categoryName: string): void =>
 
 const deleteCategoryQuery = 'DELETE FROM Category WHERE id = ?';
 
-export const deleteCategoryById = (categoryId: number): void => {
-  if (categoryId === 1) {
+export const deleteCategoryById = (category: Category): void => {
+  if (category.sort === 1) {
     return showToast('You cant delete default category');
   }
   db.transaction(tx =>
-    tx.executeSql(deleteCategoryQuery, [categoryId], noop, txnErrorCallback),
+    tx.executeSql(deleteCategoryQuery, [category.id], noop, txnErrorCallback),
   );
 };
 

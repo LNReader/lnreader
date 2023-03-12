@@ -81,6 +81,15 @@ export const switchNovelToLibrary = async (
         noop,
         txnErrorCallback,
       );
+      // only deleting action, because adding already had a trigger
+      if (novel.inLibrary === 1) {
+        tx.executeSql(
+          'DELETE FROM NovelCategory WHERE novelId = ?',
+          [novel.id],
+          noop,
+          txnErrorCallback,
+        );
+      }
     });
     if (novel.inLibrary === 1) {
       showToast(getString('browseScreen.removeFromLibrary'));
@@ -102,7 +111,10 @@ export const switchNovelToLibrary = async (
 export const removeNovelsFromLibrary = (novelIds: Array<number>) => {
   db.transaction(tx => {
     tx.executeSql(
-      `UPDATE Novel SET inLibrary = 0 WHERE id IN (${novelIds.join(', ')})`,
+      `
+      UPDATE Novel SET inLibrary = 0 WHERE id IN (${novelIds.join(', ')});
+      DELETE FROM NovelCategory WHERE novelId IN (${novelIds.join(', ')});
+      `,
     );
   });
 };

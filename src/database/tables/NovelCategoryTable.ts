@@ -12,6 +12,6 @@ export const createNovelCategoryTableQuery = `
 export const createNovelCategoryTriggerQuery = `
   CREATE TRIGGER IF NOT EXISTS add_novel_category AFTER INSERT ON Novel
   BEGIN
-    INSERT INTO NovelCategory (novelId, categoryId) VALUES (new.id, (SELECT DISTINCT sort FROM Category WHERE sort = 1));
+    INSERT INTO NovelCategory (novelId, categoryId) VALUES (new.id, (SELECT DISTINCT id FROM Category WHERE sort = 1));
   END;
 `;

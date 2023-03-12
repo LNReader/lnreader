@@ -42,9 +42,7 @@ const SettingsLibraryScreen = () => {
         />
         <List.Item
           title={getString('categories.defaultCategory')}
-          description={
-            categories.find(category => category.id === defaultCategoryId)?.name
-          }
+          description={categories.find(category => category.sort === 1)?.name}
           onPress={defaultCategoryDialog.setTrue}
           theme={theme}
         />
