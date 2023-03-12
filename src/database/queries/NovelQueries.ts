@@ -41,11 +41,11 @@ export const insertNovel = async (novel: NovelInfo): Promise<number> => {
           novel.pluginId,
           novel.name,
           novel.cover,
-          novel.summary,
+          novel.summary || '',
           novel.author,
           novel.artist,
           novel.status,
-          novel.genres,
+          novel.genres || '',
           novel.inLibrary,
         ],
         (txObj, resultSet) => resolve(resultSet.insertId),
@@ -100,12 +100,15 @@ export const switchNovelToLibrary = async (
   pluginId: string,
 ) => {
   const novel = await getNovel(novelUrl);
+  const inLibrary = 1 - novel.inLibrary;
   if (novel) {
     db.transaction(tx => {
-      tx.executeSql('UPDATE Novel SET inLibrary = ? WHERE id = ?'),
-        [1 - novel.inLibrary, novel.id],
+      tx.executeSql(
+        'UPDATE Novel SET inLibrary = ? WHERE id = ?',
+        [inLibrary, novel.id],
         noop,
-        txnErrorCallback;
+        txnErrorCallback,
+      );
     });
     if (novel.inLibrary === 1) {
       showToast(getString('browseScreen.removeFromLibrary'));
@@ -116,8 +119,8 @@ export const switchNovelToLibrary = async (
     const sourceNovel = await fetchNovel(pluginId, novelUrl);
     insertNovelandChapters(pluginId, sourceNovel);
     db.transaction(tx => {
-      tx.executeSql('UPDATE Novel SET inLibrary = ? WHERE url = ?'),
-        [1, novelUrl],
+      tx.executeSql('UPDATE Novel SET inLibrary = 1 WHERE url = ?'),
+        [novelUrl],
         noop,
         txnErrorCallback;
     });

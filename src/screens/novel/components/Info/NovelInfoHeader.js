@@ -92,7 +92,7 @@ const NovelInfoHeader = ({
                   style={{ marginRight: 4 }}
                 />
                 <NovelInfo theme={theme}>
-                  {(novel.status || 'Unknown status') + ' • ' + novel.source}
+                  {(novel.status || 'Unknown status') + ' • ' + novel.pluginId}
                 </NovelInfo>
               </Row>
             </>

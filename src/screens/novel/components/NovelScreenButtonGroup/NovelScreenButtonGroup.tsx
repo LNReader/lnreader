@@ -46,7 +46,7 @@ const NovelScreenButtonGroup: React.FC<NovelScreenButtonGroupProps> = ({
     navigate(
       'MigrateNovel' as never,
       {
-        pluginId: novel.id,
+        pluginId: novel.pluginId,
         novelName: novel.name,
       } as never,
     );

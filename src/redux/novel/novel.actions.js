@@ -123,15 +123,12 @@ export const showChapterTitlesAction = (novelId, value) => async dispatch => {
   });
 };
 
-export const followNovelAction = (novel, pluginId) => async dispatch => {
-  await switchNovelToLibrary(novel.url, pluginId);
-
+export const followNovelAction = novel => async dispatch => {
+  await switchNovelToLibrary(novel.url, novel.pluginId);
   dispatch({
     type: UPDATE_IN_LIBRARY,
-    payload: { inLibrary: !novel.inLibrary },
+    payload: { inLibrary: 1 - novel.inLibrary },
   });
-
-  showToast(!novel.inLibrary ? 'Added to library' : 'Removed from library');
 };
 
 export const bookmarkChapterAction = chapters => async dispatch => {
