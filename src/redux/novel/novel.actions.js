@@ -95,7 +95,7 @@ export const getNovelAction =
       }
     } catch (error) {
       showToast(error.message);
-      // dispatch({ type: NOVEL_ERROR });
+      dispatch({ type: NOVEL_ERROR });
     }
   };
 
