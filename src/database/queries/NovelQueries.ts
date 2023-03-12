@@ -28,30 +28,35 @@ import { fetchNovel } from '@services/plugin/fetch';
   Auto create Novel Category Default (@sort = 1) by Trigger
 **/
 
-export const insertNovelandChapters = async (
+export const insertNovelandChapters = (
   pluginId: string,
   sourceNovel: SourceNovel,
-) => {
+): Promise<number> => {
   const insertNovelQuery =
     'INSERT INTO Novel (url, pluginId, name, cover, summary, author, artist, status, genres) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)';
-  db.transaction(tx => {
-    tx.executeSql(
-      insertNovelQuery,
-      [
-        sourceNovel.url,
-        pluginId,
-        sourceNovel.name,
-        sourceNovel.cover,
-        sourceNovel.summary || '',
-        sourceNovel.author,
-        sourceNovel.artist,
-        sourceNovel.status,
-        sourceNovel.genres || '',
-      ],
-      (txObj, resultSet) =>
-        insertChapters(resultSet.insertId, sourceNovel.chapters),
-      txnErrorCallback,
-    );
+  return new Promise(resolve => {
+    db.transaction(tx => {
+      tx.executeSql(
+        insertNovelQuery,
+        [
+          sourceNovel.url,
+          pluginId,
+          sourceNovel.name,
+          sourceNovel.cover,
+          sourceNovel.summary || '',
+          sourceNovel.author,
+          sourceNovel.artist,
+          sourceNovel.status,
+          sourceNovel.genres || '',
+        ],
+        (txObj, resultSet) => {
+          insertChapters(resultSet.insertId, sourceNovel.chapters).then(() =>
+            resolve(resultSet.insertId),
+          );
+        },
+        txnErrorCallback,
+      );
+    });
   });
 };
 
@@ -68,6 +73,9 @@ export const getNovel = async (novelUrl: string): Promise<NovelInfo> => {
   );
 };
 
+// if query is insert novel || add to library => add default category name for it
+// else remove all it's categories
+
 export const switchNovelToLibrary = async (
   novelUrl: string,
   pluginId: string,
@@ -81,28 +89,35 @@ export const switchNovelToLibrary = async (
         noop,
         txnErrorCallback,
       );
-      // only deleting action, because adding already had a trigger
       if (novel.inLibrary === 1) {
         tx.executeSql(
           'DELETE FROM NovelCategory WHERE novelId = ?',
           [novel.id],
-          noop,
+          () => showToast(getString('browseScreen.removeFromLibrary')),
+          txnErrorCallback,
+        );
+      } else {
+        tx.executeSql(
+          'INSERT INTO NovelCategory (novelId, categoryId) VALUES (?, (SELECT DISTINCT id FROM Category WHERE sort = 1))',
+          [novel.id],
+          () => showToast(getString('browseScreen.addedToLibrary')),
           txnErrorCallback,
         );
       }
     });
-    if (novel.inLibrary === 1) {
-      showToast(getString('browseScreen.removeFromLibrary'));
-    } else {
-      showToast(getString('browseScreen.addedToLibrary'));
-    }
   } else {
     const sourceNovel = await fetchNovel(pluginId, novelUrl);
-    insertNovelandChapters(pluginId, sourceNovel);
+    const novelId = await insertNovelandChapters(pluginId, sourceNovel);
     db.transaction(tx => {
       tx.executeSql(
         'UPDATE Novel SET inLibrary = 1 WHERE url = ?',
         [novelUrl],
+        () => showToast(getString('browseScreen.addedToLibrary')),
+        txnErrorCallback,
+      );
+      tx.executeSql(
+        'INSERT INTO NovelCategory (novelId, categoryId) VALUES (?, (SELECT DISTINCT id FROM Category WHERE sort = 1))',
+        [novelId],
         noop,
         txnErrorCallback,
       );

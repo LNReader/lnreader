@@ -8,10 +8,3 @@ export const createNovelCategoryTableQuery = `
     FOREIGN KEY (categoryId) REFERENCES Category(id) ON DELETE CASCADE
   );
 `;
-
-export const createNovelCategoryTriggerQuery = `
-  CREATE TRIGGER IF NOT EXISTS add_novel_category AFTER INSERT ON Novel
-  BEGIN
-    INSERT INTO NovelCategory (novelId, categoryId) VALUES (new.id, (SELECT DISTINCT id FROM Category WHERE sort = 1));
-  END;
-`;

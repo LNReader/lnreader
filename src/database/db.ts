@@ -5,10 +5,7 @@ import {
   createCategoryTriggerQuery,
 } from './tables/CategoryTable';
 import { createNovelTableQuery } from './tables/NovelTable';
-import {
-  createNovelCategoryTableQuery,
-  createNovelCategoryTriggerQuery,
-} from './tables/NovelCategoryTable';
+import { createNovelCategoryTableQuery } from './tables/NovelCategoryTable';
 import { createChapterTableQuery } from './tables/ChapterTable';
 import { createHistoryTableQuery } from './tables/HistoryTable';
 import { createDownloadTableQuery } from './tables/DownloadTable';
@@ -20,16 +17,14 @@ const dbName = 'lnreader.db';
 const db = SQLite.openDatabase(dbName);
 
 export const createTables = () => {
-  db.exec([{ sql: 'PRAGMA foreign_keys = ON;', args: [] }], false, () => {});
+  db.exec([{ sql: 'PRAGMA foreign_keys = ON', args: [] }], false, () => {});
   db.transaction(tx => {
     tx.executeSql(createNovelTableQuery);
     tx.executeSql(createCategoriesTableQuery, [], () => {
       tx.executeSql(createCategoryTriggerQuery);
       tx.executeSql(createCategoryDefaultQuery);
     });
-    tx.executeSql(createNovelCategoryTableQuery, [], () => {
-      tx.executeSql(createNovelCategoryTriggerQuery);
-    });
+    tx.executeSql(createNovelCategoryTableQuery);
     tx.executeSql(createChapterTableQuery);
     tx.executeSql(createHistoryTableQuery);
     tx.executeSql(createDownloadTableQuery);

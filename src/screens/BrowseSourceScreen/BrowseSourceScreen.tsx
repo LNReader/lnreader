@@ -138,7 +138,8 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
                 libraryStatus={inLibrary}
                 onPress={() => navigateToNovel(item)}
                 isSelected={false}
-                onLongPress={() => {
+                onLongPress={async () => {
+                  await switchNovelToLibrary(item.url, pluginId);
                   setLibrary(prevValues => {
                     if (inLibrary) {
                       return [
@@ -154,7 +155,6 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
                       ];
                     }
                   });
-                  switchNovelToLibrary(item.url, pluginId);
                 }}
                 selectedNovels={[]}
               />
