@@ -27,7 +27,7 @@ import {
   markAllChaptersUnread,
 } from '../../database/queries/ChapterQueries';
 import { removeNovelsFromLibrary } from '@database/queries/NovelQueries';
-// import SetCategoryModal from '@screens/novel/components/SetCategoriesModal';
+import SetCategoryModal from '@screens/novel/components/SetCategoriesModal';
 import useBoolean from '@hooks/useBoolean';
 import { debounce } from 'lodash-es';
 import { useBackHandler } from '@hooks/useBackHandler';
@@ -68,7 +68,6 @@ const LibraryScreen = () => {
 
   const { library, refetchLibrary, isLoading } = useLibrary({ searchText });
   const [selectedNovelIds, setSelectedNovelIds] = useState<number[]>([]);
-
   useBackHandler(() => {
     if (selectedNovelIds.length) {
       setSelectedNovelIds([]);
@@ -128,28 +127,10 @@ const LibraryScreen = () => {
       : `${selectedNovelIds.length} selected`;
 
   const {
-    // value: setCategoryModalVisible,
+    value: setCategoryModalVisible,
     setTrue: showSetCategoryModal,
-    // setFalse: closeSetCategoryModal,
+    setFalse: closeSetCategoryModal,
   } = useBoolean();
-
-  // const selectedNovelCategoryIds = useMemo(() => {
-  //   let categoryIds: number[][] = [];
-
-  //   library.map(category =>
-  //     category.novels
-  //       .filter(novel => selectedNovelIds.includes(novel.id))
-  //       .map(novel => {
-  //         categoryIds.push(JSON.parse(novel.categoryIds));
-  //       }),
-  //   );
-
-  //   const selectedCategoryIds = intersection(...categoryIds).filter(
-  //     id => id !== 1,
-  //   );
-
-  //   return selectedCategoryIds;
-  // }, [selectedNovelIds]);
 
   return (
     <>
@@ -276,9 +257,8 @@ const LibraryScreen = () => {
             }}
           />
         )}
-      {/* <SetCategoryModal
-        novelId={selectedNovelIds}
-        currentCategoryIds={selectedNovelCategoryIds}
+      <SetCategoryModal
+        novelIds={selectedNovelIds}
         closeModal={closeSetCategoryModal}
         onEditCategories={() => setSelectedNovelIds([])}
         visible={setCategoryModalVisible}
@@ -286,7 +266,7 @@ const LibraryScreen = () => {
           setSelectedNovelIds([]);
           refetchLibrary();
         }}
-      /> */}
+      />
       <Portal>
         <LibraryBottomSheet bottomSheetRef={bottomSheetRef} />
         <Actionbar

@@ -2,6 +2,7 @@ export const createCategoriesTableQuery = `
   CREATE TABLE IF NOT EXISTS Category (
     id INTEGER PRIMARY KEY AUTOINCREMENT, 
     name TEXT NOT NULL UNIQUE,
+    sort INTEGER
   );
 `;
 
@@ -13,4 +14,4 @@ export const createCategoryTriggerQuery = `
 `;
 
 export const createCategoryDefaultQuery =
-  'INSERT INTO Category (name, sort) VALUES ("Default", 0) WHERE NOT EXISTS (SELECT id FROM Category WHERE sort = 1)';
+  'INSERT OR IGNORE INTO Category (id, name, sort) VALUES (IFNULL((SELECT MAX(id) FROM Category), 1), "Default", 0)';

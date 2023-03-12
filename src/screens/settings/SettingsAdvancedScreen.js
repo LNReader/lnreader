@@ -3,14 +3,14 @@ import React, { useState } from 'react';
 import { Dialog, Portal } from 'react-native-paper';
 
 import { useTheme } from '@hooks/useTheme';
-import { showToast } from '../../hooks/showToast';
+import { showToast } from '@hooks/showToast';
 
-import { deleteNovelCache } from '../../database/queries/NovelQueries';
-import { clearCoverCache } from '../../services/utils/coverCache';
+import { deleteNovelCache } from '@database/queries/NovelQueries';
+import { clearCoverCache } from '@services/utils/coverCache';
 import { getString } from '@strings/translations';
 import useBoolean from '@hooks/useBoolean';
 import ConfirmationDialog from '@components/ConfirmationDialog/ConfirmationDialog';
-import { deleteReadChaptersFromDb } from '../../database/queries/ChapterQueries';
+import { deleteReadChaptersFromDb } from '@database/queries/ChapterQueries';
 
 import { Appbar, Button, List } from '@components';
 import useSourceStorage from '@hooks/useSourceStorage';
@@ -49,6 +49,12 @@ const AdvancedSettings = ({ navigation }) => {
           title="Clear database"
           description="Delete history for novels not in your library"
           onPress={showClearDatabaseDialog}
+          theme={theme}
+        />
+        <List.Item
+          title="Clear updates tab"
+          description="Clears chapter entries in updates tab"
+          onPress={showClearUpdatesDialog}
           theme={theme}
         />
         <List.Item
@@ -102,6 +108,37 @@ const AdvancedSettings = ({ navigation }) => {
               }}
             >
               {getString('common.ok')}
+            </Button>
+          </Dialog.Actions>
+        </Dialog>
+        <Dialog
+          visible={clearUpdatesDialog}
+          onDismiss={hideClearUpdatesDialog}
+          style={{
+            borderRadius: 28,
+            backgroundColor: theme.overlay3,
+          }}
+        >
+          <Dialog.Title
+            style={{
+              letterSpacing: 0,
+              fontSize: 16,
+              lineHeight: 16 * 1.5,
+              color: theme.onSurface,
+            }}
+          >
+            Are you sure? Updates tab will be cleared.
+          </Dialog.Title>
+          <Dialog.Actions>
+            <Button onPress={hideClearUpdatesDialog}>Cancel</Button>
+            <Button
+              onPress={() => {
+                clearUpdates();
+                showToast('Updates cleared.');
+                hideClearUpdatesDialog();
+              }}
+            >
+              Ok
             </Button>
           </Dialog.Actions>
         </Dialog>

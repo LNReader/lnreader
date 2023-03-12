@@ -19,7 +19,6 @@ import AppErrorBoundary from '@components/AppErrorBoundary/AppErrorBoundary';
 import { collectPlugins } from '@plugins/pluginManager';
 
 import Main from './src/navigators/Main';
-
 createTables();
 Notifications.setNotificationHandler({
   handleNotification: async () => {

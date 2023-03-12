@@ -69,9 +69,8 @@ const getLibraryWithCategoryQuery = `
       SELECT NovelId, name as category FROM (NovelCategory JOIN Category ON NovelCategory.categoryId = Category.id)
     ) as NC ON Novel.id = NC.novelId
     WHERE inLibrary = 1
-    GROUP BY Novel.id
   ) as NIL 
-  JOIN 
+  LEFT JOIN 
   (
     SELECT COUNT(unread) as chaptersUnread, COUNT(isDownloaded) as chaptersDownloaded, novelId, MAX(readTime) as lastReadAt, MAX(updateTime) as lastUpdatedAt
       FROM
@@ -97,7 +96,6 @@ export const getLibraryWithCategory = ({
   downloadedOnlyMode?: boolean;
 }): Promise<LibraryNovelInfo[]> => {
   let query = getLibraryWithCategoryQuery;
-
   if (filter) {
     query += ` AND ${filter} `;
   }
