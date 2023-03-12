@@ -10,8 +10,8 @@ import {
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Modal, Portal, TextInput } from 'react-native-paper';
-import { setNovel } from '../../../redux/novel/novel.actions';
-import { updateNovelInfo } from '../../../database/queries/NovelQueries';
+import { setNovel } from '@redux/novel/novel.actions';
+import { updateNovelInfo } from '@database/queries/NovelQueries';
 
 import { getString } from '@strings/translations';
 import { Button } from '@components';

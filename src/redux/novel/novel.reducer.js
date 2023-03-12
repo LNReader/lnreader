@@ -37,7 +37,7 @@ const novelReducer = (state = initialState, action) => {
     case FETCHING_NOVEL:
       return { ...state, updating: true };
     case SET_NOVEL:
-      return { ...state, novel: payload.novel, chapters: payload.chapters };
+      return { ...state, novel: payload.novel };
     case GET_NOVEL:
       return {
         ...state,

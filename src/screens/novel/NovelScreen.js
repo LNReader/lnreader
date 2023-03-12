@@ -345,7 +345,7 @@ const Novel = ({ route, navigation }) => {
                   }}
                   onPress={() =>
                     Share.share({
-                      message: novel.sourceUrl,
+                      message: novel.url,
                     })
                   }
                 />
