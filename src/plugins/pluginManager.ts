@@ -4,6 +4,7 @@ import { bigger } from '../utils/compareVersion';
 
 // packages for plugins
 import * as cheerio from 'cheerio';
+import axios from 'axios';
 import { NovelStatus, PluginStatus, Plugin, PluginItem } from './types';
 import { Languages } from '@utils/constants/languages';
 import { htmlToText } from './helpers/htmlToText';
@@ -14,24 +15,28 @@ const pluginsFolder = RNFS.ExternalDirectoryPath + '/Plugins';
 
 const packages: Record<string, any> = {
   'cheerio': cheerio,
-  '../../src/pluginStatus': PluginStatus,
-  '../../src/novelSatus': NovelStatus,
-  '../../src/languages': Languages,
-  '../../src/htmlToText': htmlToText,
-  '../../src/parseMadaraDate': parseMadaraDate,
-  '../../src/isAbsoluteUrl': isUrlAbsolute,
+  'axios': axios,
+  '@libs/pluginStatus': PluginStatus,
+  '@libs/novelSatus': NovelStatus,
+  '@libs/languages': Languages,
+  '@libs/htmlToText': htmlToText,
+  '@libs/parseMadaraDate': parseMadaraDate,
+  '@libs/isAbsoluteUrl': isUrlAbsolute,
 };
 
 const _require = (packageName: string) => {
   return packages[packageName];
 };
 
-const initPlugin = async (rawCode: string, path?: string) => {
-  const _module: any = { exports: {} };
+const initPlugin = (rawCode: string, path?: string) => {
   try {
-    Function('require', 'module', rawCode)(_require, _module); // eslint-disable-line no-new-func
-    _module.exports.path = path || `${pluginsFolder}/${_module.exports.id}.js`;
-    const plugin: Plugin = _module.exports;
+    /* eslint no-new-func: "off", curly: "error" */
+    const plugin: Plugin = Function(
+      'require',
+      'module',
+      `${rawCode}; return module.exports;`,
+    )(_require, {});
+    plugin.path = path || `${pluginsFolder}/${plugin.id}.js`;
     return plugin;
   } catch (e) {
     showToast('Some non-plugin files are found');
@@ -56,7 +61,7 @@ const installPlugin = async (url: string) => {
     fetch(url)
       .then(res => res.text())
       .then(async rawCode => {
-        const plugin = await initPlugin(rawCode);
+        const plugin = initPlugin(rawCode);
         if (!plugin) {
           return;
         }
