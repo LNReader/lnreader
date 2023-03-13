@@ -23,6 +23,7 @@ interface Props {
   navigateToSource: (plugin: PluginItem, showLatestNovels?: boolean) => void;
   onInstallPlugin: (plugin: PluginItem) => void;
   onUninstallPlugin: (plugin: PluginItem) => void;
+  onUpdatePlugin: (plugin: PluginItem) => void;
 }
 
 const PluginCard: React.FC<Props> = ({
@@ -34,6 +35,7 @@ const PluginCard: React.FC<Props> = ({
   theme,
   onInstallPlugin,
   onUninstallPlugin,
+  onUpdatePlugin,
 }) => (
   <Pressable
     style={styles.container}
@@ -71,7 +73,13 @@ const PluginCard: React.FC<Props> = ({
             name={'update'}
             size={22}
             color={theme.primary}
-            onPress={() => updatePlugin(plugin)}
+            onPress={() => {
+              updatePlugin(plugin).then(updated => {
+                if (updated) {
+                  onUpdatePlugin(updated);
+                }
+              });
+            }}
             theme={theme}
           />
           <IconButtonV2

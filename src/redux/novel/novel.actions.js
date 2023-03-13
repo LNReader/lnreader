@@ -8,6 +8,7 @@ import {
   SET_NOVEL,
   UPDATE_IN_LIBRARY,
   CHAPTER_READ,
+  CHAPTER_DOWNLOADING,
   CHAPTER_DOWNLOADED,
   CHAPTER_DELETED,
   UPDATE_NOVEL,
@@ -225,14 +226,30 @@ export const downloadChapterAction =
   (pluginId, novelId, chapterUrl, chapterName, chapterId) => async dispatch => {
     dispatch({
       type: CHAPTER_DOWNLOADING,
-      payload: { downloadingChapter: { id: chapterId, name: chapterName } },
+      payload: {
+        downloadingChapter: {
+          id: chapterId,
+          novelId: novelId,
+          name: chapterName,
+          pluginId: pluginId,
+          url: chapterUrl,
+        },
+      },
     });
     dispatch({
       type: SET_DOWNLOAD_QUEUE,
-      payload: [{ id: chapterId, name: chapterName }],
+      payload: [
+        {
+          id: chapterId,
+          novelId: novelId,
+          name: chapterName,
+          pluginId: pluginId,
+          url: chapterUrl,
+        },
+      ],
     });
 
-    await downloadChapter(pluginId, novelId, chapterUrl, chapterId);
+    await downloadChapter(pluginId, novelId, chapterId, chapterUrl);
 
     dispatch({
       type: CHAPTER_DOWNLOADED,
@@ -268,7 +285,6 @@ export const downloadAllChaptersAction =
       chapters = chapters.map(chapter => ({
         ...chapter,
         pluginId,
-        novelUrl,
       }));
 
       if (chapters.length > 0) {

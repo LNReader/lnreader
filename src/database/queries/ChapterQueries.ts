@@ -7,7 +7,7 @@ import { ChapterItem } from '@plugins/types';
 
 import * as cheerio from 'cheerio';
 import { txnErrorCallback } from '@database/utils/helpers';
-import { Plugin } from '@plugins/types';
+import { PluginWorker } from '@plugins/types';
 import { Update } from '../types';
 import { noop } from 'lodash-es';
 
@@ -245,7 +245,7 @@ const createImageFolder = async (
 
 const downloadImages = async (
   html: string,
-  plugin: Plugin,
+  plugin: PluginWorker,
   novelId: number,
   chapterId: number,
 ): Promise<string> => {
@@ -297,9 +297,7 @@ export const downloadChapter = async (
 ) => {
   try {
     const plugin = getPlugin(pluginId);
-
     const chapterText = await plugin.parseChapter(chapterUrl);
-
     if (chapterText?.length) {
       const imagedChapterText =
         chapterText &&

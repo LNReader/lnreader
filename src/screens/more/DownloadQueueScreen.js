@@ -24,7 +24,6 @@ import { Appbar, EmptyView } from '@components';
 const DownloadQueue = ({ navigation }) => {
   const theme = useTheme();
   const { downloadQueue } = useSelector(state => state.downloadsReducer);
-
   const dispatch = useDispatch();
 
   const [visible, setVisible] = useState(false);
@@ -67,11 +66,11 @@ const DownloadQueue = ({ navigation }) => {
       </Appbar>
       <FlatList
         contentContainerStyle={{ flexGrow: 1, paddingBottom: 100 }}
-        keyExtractor={item => item.chapterId.toString()}
+        keyExtractor={item => item.id.toString()}
         data={downloadQueue}
         renderItem={({ item }) => (
           <View style={{ padding: 16 }}>
-            <Text style={{ color: theme.onSurface }}>{item.chapterName}</Text>
+            <Text style={{ color: theme.onSurface }}>{item.name}</Text>
             <ProgressBar
               indeterminate={BackgroundService.isRunning() ? true : false}
               progress={!BackgroundService.isRunning() && 0}

@@ -11,6 +11,7 @@ import {
   togglePinPlugin,
   installPluginAction,
   uninstallPluginAction,
+  updatePluginAction,
 } from '@redux/plugin/pluginsSlice';
 import {
   useAppDispatch,
@@ -123,6 +124,7 @@ const BrowseScreen = () => {
     JSON.stringify(searchResults),
     availablePlugins,
     languagesFilter,
+    availablePlugins,
     searchText,
   ]);
 
@@ -164,7 +166,7 @@ const BrowseScreen = () => {
     onlyShowPinnedSources,
     JSON.stringify(searchResults),
     availablePlugins,
-    languagesFilter,
+    installedPlugins,
     searchText,
   ]);
 
@@ -229,6 +231,7 @@ const BrowseScreen = () => {
                 onUninstallPlugin={plugin =>
                   dispatch(uninstallPluginAction(plugin))
                 }
+                onUpdatePlugin={plugin => dispatch(updatePluginAction(plugin))}
                 theme={theme}
               />
             )}

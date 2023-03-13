@@ -4,8 +4,13 @@ import { bigger } from '../utils/compareVersion';
 
 // packages for plugins
 import * as cheerio from 'cheerio';
-import axios from 'axios';
-import { NovelStatus, PluginStatus, Plugin, PluginItem } from './types';
+import {
+  NovelStatus,
+  PluginStatus,
+  Plugin,
+  PluginItem,
+  PluginWorker,
+} from './types';
 import { Languages } from '@utils/constants/languages';
 import { htmlToText } from './helpers/htmlToText';
 import { parseMadaraDate } from './helpers/parseDate';
@@ -15,7 +20,6 @@ const pluginsFolder = RNFS.ExternalDirectoryPath + '/Plugins';
 
 const packages: Record<string, any> = {
   'cheerio': cheerio,
-  'axios': axios,
   '@libs/pluginStatus': PluginStatus,
   '@libs/novelSatus': NovelStatus,
   '@libs/languages': Languages,
@@ -37,14 +41,14 @@ const initPlugin = (rawCode: string, path?: string) => {
       `${rawCode}; return module.exports;`,
     )(_require, {});
     plugin.path = path || `${pluginsFolder}/${plugin.id}.js`;
-    return plugin;
+    return new PluginWorker(plugin);
   } catch (e) {
     showToast('Some non-plugin files are found');
     return undefined;
   }
 };
 
-let plugins: Record<string, Plugin> = {};
+let plugins: Record<string, PluginWorker> = {};
 
 // get existing plugin in device
 const setupPlugin = async (path: string) => {
@@ -56,7 +60,7 @@ const setupPlugin = async (path: string) => {
   return undefined;
 };
 
-const installPlugin = async (url: string) => {
+const installPlugin = async (url: string): Promise<Plugin | undefined> => {
   try {
     fetch(url)
       .then(res => res.text())
@@ -71,7 +75,7 @@ const installPlugin = async (url: string) => {
             delete plugins[oldPlugin.id];
             plugins[plugin.id] = plugin;
             await RNFS.writeFile(plugin.path, rawCode, 'utf8');
-            return true;
+            return plugin;
           } else {
             showToast('This plugin is the newtest version');
           }
@@ -79,13 +83,13 @@ const installPlugin = async (url: string) => {
           plugins[plugin.id] = plugin;
           await RNFS.writeFile(plugin.path, rawCode, 'utf8');
           showToast('Downloaded!');
-          return true;
+          return plugin;
         }
       });
   } catch (e: any) {
     showToast('Error');
   }
-  return false;
+  return undefined;
 };
 
 const uninstallPlugin = async (_plugin: PluginItem) => {
@@ -103,6 +107,7 @@ const updatePlugin = async (plugin: PluginItem) => {
   if (updated) {
     showToast('Updated!');
   }
+  return updated;
 };
 
 const collectPlugins = async () => {

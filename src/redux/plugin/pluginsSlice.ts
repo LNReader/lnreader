@@ -51,6 +51,11 @@ export const sourcesSlice = createSlice({
         action.payload,
       ];
     },
+    updatePluginAction: (state, action: PayloadAction<PluginItem>) => {
+      state.installedPlugins = state.installedPlugins.filter(plugin =>
+        plugin.id === action.payload.id ? action.payload : plugin,
+      );
+    },
     searchPluginsAction: (state, action: PayloadAction<string>) => {
       let results = [] as Array<PluginItem>;
       for (let lang in state.availablePlugins) {
@@ -60,6 +65,11 @@ export const sourcesSlice = createSlice({
         );
         results = results.concat(matchResuls);
       }
+      results = results.concat(
+        state.installedPlugins.filter(plugin =>
+          plugin.name.toLowerCase().includes(action.payload.toLowerCase()),
+        ),
+      );
       state.searchResults = results;
     },
     setLastUsedPlugin: (state, action: PayloadAction<PluginItem>) => {
@@ -94,6 +104,7 @@ export const {
   searchPluginsAction,
   installPluginAction,
   uninstallPluginAction,
+  updatePluginAction,
 } = sourcesSlice.actions;
 
 export default sourcesSlice.reducer;

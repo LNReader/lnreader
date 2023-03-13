@@ -79,3 +79,116 @@ export interface Plugin extends PluginItem {
   path: string;
   filters?: SourceFilter[];
 }
+
+export class PluginWorker {
+  private instance: Plugin;
+  id: string;
+  name: string;
+  site: string;
+  version: string;
+  path: string;
+  filters?: SourceFilter[];
+  protected: boolean;
+  shareVar: any;
+
+  constructor(plugin: Plugin) {
+    this.instance = plugin;
+    this.id = plugin.id;
+    this.name = plugin.name;
+    this.site = plugin.site;
+    this.version = plugin.version;
+    this.path = plugin.path;
+    this.filters = plugin.filters;
+    this.protected = plugin.protected || false;
+  }
+
+  /** re-send request @max times ( @timeOut per one ) if object is undefined **/
+  sendRequestTimeOut = (
+    action: CallableFunction,
+    max: number,
+    timeOut: number,
+    onError?: CallableFunction,
+  ) => {
+    if (max === 0) {
+      return onError?.();
+    }
+    action();
+    setTimeout(() => {
+      if (this.shareVar === undefined) {
+        this.sendRequestTimeOut(action, max - 1, timeOut);
+      }
+    }, timeOut);
+  };
+
+  popularNovels = (
+    pageNo: number,
+    options?: SourceOptions,
+  ): Promise<NovelItem[]> => {
+    this.shareVar = undefined;
+    return new Promise(resolve => {
+      this.sendRequestTimeOut(
+        () =>
+          this.instance.popularNovels(pageNo, options).then(res => {
+            this.shareVar = res;
+            resolve(res);
+          }),
+        2,
+        300,
+      );
+    });
+  };
+
+  parseNovelAndChapters = (novelUrl: string): Promise<SourceNovel> => {
+    this.shareVar = undefined;
+    return new Promise(resolve => {
+      this.sendRequestTimeOut(
+        () =>
+          this.instance.parseNovelAndChapters(novelUrl).then(res => {
+            this.shareVar = res;
+            resolve(res);
+          }),
+        2,
+        300,
+      );
+    });
+  };
+
+  parseChapter = async (chapterUrl: string): Promise<string> => {
+    this.shareVar = undefined;
+    return await new Promise(resolve => {
+      this.sendRequestTimeOut(
+        () =>
+          this.instance.parseChapter(chapterUrl).then(res => {
+            this.shareVar = res;
+            resolve(res);
+          }),
+        2,
+        200,
+        () => {
+          console.log('error');
+          resolve('cant download');
+        },
+      );
+    });
+  };
+
+  searchNovels = (searchTerm: string): Promise<NovelItem[]> => {
+    this.shareVar = undefined;
+    return new Promise(resolve => {
+      this.sendRequestTimeOut(
+        () =>
+          this.instance.searchNovels(searchTerm).then(res => {
+            this.shareVar = res;
+            resolve(res);
+          }),
+        2,
+        300,
+      );
+    });
+  };
+
+  fetchImage = async (url: string) => {
+    const base64 = await fetch(url).then(res => res.text());
+    return base64;
+  };
+}
