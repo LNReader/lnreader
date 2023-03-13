@@ -13,7 +13,7 @@ const getLibraryStatsQuery = `
 
 const getChaptersReadCountQuery = `
   SELECT COUNT(*) as chaptersRead
-  FROM Chatper
+  FROM Chapter
   JOIN Novel
   ON Chapter.novelId = Novel.id
   WHERE Chapter.unread = 0 AND Novel.inLibrary = 1
@@ -31,8 +31,8 @@ const getChaptersUnreadCountQuery = `
   SELECT COUNT(*) as chaptersUnread
   FROM Chapter
   JOIN Novel
-  ON Chapter.novelId = Novel.novelId
-  WHERE Chapter.read = 0 AND Novel.inLibrary = 1
+  ON Chapter.novelId = Novel.id
+  WHERE Chapter.unread = 1 AND Novel.inLibrary = 1
   `;
 
 const getChaptersDownloadedCountQuery = `
@@ -140,8 +140,8 @@ export const getNovelGenresFromDb = async (): Promise<LibraryStats> => {
         (txObj, { rows }) => {
           let genres: string[] = [];
 
-          (rows as any)._array.forEach((item: { genre: string }) => {
-            const novelGenres = item.genre?.split(/\s*,\s*/);
+          (rows as any)._array.forEach((item: { genres: string }) => {
+            const novelGenres = item.genres?.split(/\s*,\s*/);
 
             if (novelGenres?.length) {
               genres.push(...novelGenres);
