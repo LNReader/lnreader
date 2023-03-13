@@ -8,7 +8,7 @@ import { useDeviceOrientation } from '@hooks/useDeviceOrientation';
 
 const VerticalScrollbar = ({
   theme,
-  minScroll = 0,
+  minScroll,
   verticalSeekbar,
   percentage,
   scrollTo,
