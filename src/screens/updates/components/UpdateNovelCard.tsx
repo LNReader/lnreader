@@ -1,16 +1,11 @@
 import { FlatList, Pressable, StyleSheet, View } from 'react-native';
 import React, { useCallback, useState } from 'react';
 
-import { ChapterInfo, Update } from '../../../database/types';
+import { ChapterInfo, Update } from '@database/types';
 import FastImage from 'react-native-fast-image';
 import { List } from 'react-native-paper';
-import { coverPlaceholderColor } from '../../../theme/colors';
-import {
-  openChapter,
-  openChapterFunctionTypes,
-  openNovel,
-  openNovelProps,
-} from '@utils/handleNavigateParams';
+import { coverPlaceholderColor } from '@theme/colors';
+import { openNovel } from '@utils/handleNavigateParams';
 import {
   deleteChapterAction,
   downloadChapterAction,
@@ -73,8 +68,8 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
       deleteChapterAction(
         chapter.pluginId,
         chapter.novelId,
-        chapter.chapterId,
-        chapter.chapterName,
+        chapter.id,
+        chapter.name,
       ),
     );
     if (removeItemFromList) {
@@ -89,7 +84,14 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
     (chapter: ChapterInfo) =>
       navigate(
         'Chapter' as never,
-        openChapter(chapter, chapter) as openChapterFunctionTypes as never,
+        {
+          novel: {
+            url: chapter.novelUrl,
+            pluginId: chapter.pluginId,
+            name: chapter.novelName,
+          },
+          chapter: chapter,
+        } as never,
       ),
     [],
   );
@@ -97,7 +99,13 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
   const navigateToNovel = () =>
     navigate(
       'Novel' as never,
-      openNovel(chapterList[0]) as openNovelProps as never,
+      openNovel({
+        pluginId: chapterList[0].pluginId,
+        id: chapterList[0].novelId,
+        url: chapterList[0].novelUrl,
+        name: chapterList[0].novelName,
+        cover: chapterList[0].novelCover,
+      }) as never,
     );
 
   const { downloadQueue } = useSelector(
@@ -168,7 +176,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
           <View style={styles.novelCover}>
             <NovelCover
               navigateToNovel={navigateToNovel}
-              uri={chapterList[0].novelCover}
+              uri={chapterList[0].cover}
             />
           </View>
         }

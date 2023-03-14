@@ -165,7 +165,6 @@ export class PluginWorker {
         2,
         200,
         () => {
-          console.log('error');
           resolve('cant download');
         },
       );

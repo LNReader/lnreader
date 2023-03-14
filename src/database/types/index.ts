@@ -28,6 +28,11 @@ export interface ChapterInfo {
   bookmark: number;
   unread: number;
   isDownloaded: number;
+
+  // download screen need this :)
+  pluginId: string;
+  novelName: string;
+  novelUrl: string;
 }
 
 export interface DownloadedChapter {

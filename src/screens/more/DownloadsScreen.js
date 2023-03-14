@@ -92,7 +92,7 @@ const Downloads = ({ navigation }) => {
         <FlatList
           contentContainerStyle={styles.flatList}
           data={groupUpdatesByDate(chapters)}
-          //keyExtractor={item => item.chapterId.toString()}
+          keyExtractor={(item, index) => 'downloadGroup' + index}
           renderItem={renderItem}
           ListEmptyComponent={<ListEmptyComponent />}
         />

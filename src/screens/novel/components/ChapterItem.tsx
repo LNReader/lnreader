@@ -2,7 +2,7 @@ import React, { memo, ReactNode, useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import color from 'color';
 
-import { Row } from '../../../components/Common';
+import { Row } from '@components/Common';
 
 import {
   ChapterBookmarkButton,
