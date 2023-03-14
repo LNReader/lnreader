@@ -30,7 +30,6 @@ export const LibraryView: React.FC<Props> = ({
   const theme = useTheme();
   const { navigate } = useNavigation();
   const dispatch = useAppDispatch();
-
   const renderItem = ({ item }: { item: LibraryNovelInfo }) => (
     <NovelCover
       item={item}

@@ -61,7 +61,6 @@ const ChapterContent = ({ route, navigation }) => {
   useKeepAwake();
   const params = route.params;
   const { novel, chapter } = params;
-  console.log(params);
   let webViewRef = useRef(null);
   let readerSheetRef = useRef(null);
 
