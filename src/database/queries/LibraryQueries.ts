@@ -72,22 +72,14 @@ const getLibraryWithCategoryQuery = `
   ) as NIL 
   JOIN 
   (
-    SELECT SUM(unread) as chaptersUnread, SUM(isDownloaded) as chaptersDownloaded, id as ChapterId, novelId
+    SELECT SUM(unread) as chaptersUnread, SUM(isDownloaded) as chaptersDownloaded, novelId, MAX(readTime) as lastReadAt, MAX(updateTime) as lastUpdatedAt
     FROM Chapter
+    LEFT JOIN History
+    ON History.chapterId = Chapter.id
+    LEFT JOIN Download
+    ON Download.chapterId = Chapter.id
     GROUP BY novelId
   ) as C ON NIL.id = C.novelId
-  LEFT JOIN
-  (
-    SELECT MAX(readTime) as lastReadAt, MAX(updateTime) as lastUpdatedAt, novelId
-      FROM
-      Chapter
-      JOIN History
-      ON History.chapterId = Chapter.id
-      JOIN Download
-      ON Download.chapterId = Chapter.id
-    GROUP BY novelId
-  ) as Time
-  ON NIL.id = Time.novelId 
 `;
 
 export const getLibraryWithCategory = ({
