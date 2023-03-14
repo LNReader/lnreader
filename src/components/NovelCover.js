@@ -49,7 +49,6 @@ const NovelCover = ({
   const selectNovel = () => onLongPress(item);
 
   const uri = item.cover;
-
   return displayMode !== DisplayModes.List ? (
     <View
       style={[
@@ -75,7 +74,7 @@ const NovelCover = ({
       >
         <View style={styles.badgeContainer}>
           {libraryStatus && <InLibraryBadge theme={theme} />}
-          {showDownloadBadges && item.chaptersDownloaded && (
+          {showDownloadBadges && item.chaptersDownloaded > 0 && (
             <DownloadBadge
               showUnreadBadges={showUnreadBadges}
               chaptersDownloaded={item.chaptersDownloaded}
@@ -83,7 +82,7 @@ const NovelCover = ({
               theme={theme}
             />
           )}
-          {showUnreadBadges && item.chaptersUnread && (
+          {showUnreadBadges && item.chaptersUnread > 0 && (
             <UnreadBadge
               theme={theme}
               chaptersDownloaded={item.chaptersDownloaded}
