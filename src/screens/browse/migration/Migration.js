@@ -4,7 +4,7 @@ import { StyleSheet, View, FlatList, Text } from 'react-native';
 import MigrationSourceItem from './MigrationSourceItem';
 
 import { useTheme } from '@hooks/useTheme';
-import { useSourcesReducer } from '../../../redux/hooks';
+import { usePluginReducer } from '@redux/hooks';
 import { useLibraryNovels } from '@screens/library/hooks/useLibrary';
 import { Appbar } from '@components';
 
@@ -12,21 +12,20 @@ const GlobalSearch = ({ navigation }) => {
   const theme = useTheme();
 
   const { library } = useLibraryNovels();
-  let { allSources } = useSourcesReducer();
+  let { installedPlugins } = usePluginReducer();
 
   const novelsPerSource = pluginId =>
     library.filter(novel => novel.pluginId === pluginId).length;
 
-  sources = allSources.filter(
-    source =>
-      library.filter(novel => novel.pluginId === source.pluginId).length,
+  plugins = installedPlugins.filter(
+    plugin => library.filter(novel => novel.pluginId === plugin.id).length,
   );
 
   const renderItem = ({ item }) => (
     <MigrationSourceItem
       item={item}
       theme={theme}
-      noOfNovels={novelsPerSource(item.pluginId)}
+      noOfNovels={novelsPerSource(item.id)}
       onPress={() => navigation.navigate('SourceNovels', item.pluginId)}
     />
   );
@@ -47,9 +46,9 @@ const GlobalSearch = ({ navigation }) => {
         theme={theme}
       />
       <FlatList
-        data={sources}
+        data={plugins}
         contentContainerStyle={{ paddingBottom: 48 }}
-        keyExtractor={item => item.pluginId.toString()}
+        keyExtractor={item => item.id}
         renderItem={renderItem}
         ListHeaderComponent={ListHeaderComponent}
       />
