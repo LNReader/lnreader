@@ -17,7 +17,7 @@
     "searchResults": "Suchergebnisse",
     "chapters": "Kapitel",
     "submit": "Bestätigen",
-    "retry": "Retry"
+    "retry": "Erneut versuchen"
   },
   "library": "Bibliothek",
   "libraryScreen": {
@@ -34,10 +34,10 @@
         "dateAdded": "Hinzugefügt am",
         "alphabetically": "Alphabetisch",
         "totalChapters": "Gesamte Kapitel",
-        "download": "Downloaded",
-        "unread": "Unread",
-        "lastRead": "Last read",
-        "lastUpdated": "Last updated"
+        "download": "Heruntergeladen",
+        "unread": "Ungelesen",
+        "lastRead": "Zuletzt gelesen",
+        "lastUpdated": "Zuletzt aktualisiert"
       },
       "display": {
         "displayMode": "Anzeigemodus",
@@ -56,7 +56,7 @@
   "updatesScreen": {
     "searchbar": "Nach Updates suchen",
     "lastUpdatedAt": "Bibliothek zuletzt aktualisiert:",
-    "newChapters": "new Chapters",
+    "newChapters": "Neue Kapitel",
     "emptyView": "No recent updates",
     "updatesLower": "updates"
   },
