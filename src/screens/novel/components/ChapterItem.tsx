@@ -49,6 +49,7 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
   isUpdateCard,
   novelName,
 }) => {
+  // :(
   const { id, name, unread, releaseTime, bookmark } = chapter;
   const [deleteChapterMenuVisible, setDeleteChapterMenuVisible] =
     useState(false);
@@ -58,7 +59,7 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
 
   return (
     <Pressable
-      key={id.toString()}
+      key={'chapterItem' + id}
       style={[
         styles.chapterCardContainer,
         isSelected?.(id) && {

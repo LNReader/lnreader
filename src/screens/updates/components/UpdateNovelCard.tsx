@@ -43,6 +43,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
   descriptionText,
   removeItemFromList,
 }) => {
+  console.log(item);
   const { navigate } = useNavigation();
   const dispatch = useAppDispatch();
   const theme = useTheme();
@@ -111,7 +112,6 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
   const { downloadQueue } = useSelector(
     (state: RootState) => state.downloadsReducer,
   );
-
   if (chapterList.length > 1) {
     return (
       <List.Accordion
@@ -120,7 +120,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
         left={() => (
           <NovelCover
             navigateToNovel={navigateToNovel}
-            uri={chapterList[0].novelCover}
+            uri={chapterList[0].cover}
           />
         )}
         descriptionStyle={{ fontSize: 12 }}
@@ -131,7 +131,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
       >
         <FlatList
           data={chapterList}
-          keyExtractor={it => it.chapterId.toString()}
+          keyExtractor={it => 'update' + it.novelId + it.id || it.chapterId}
           style={styles.chapterList}
           renderItem={it => {
             return (
@@ -149,7 +149,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
                   <View style={styles.novelCover}>
                     <NovelCover
                       navigateToNovel={navigateToNovel}
-                      uri={chapterList[0].novelCover}
+                      uri={chapterList[0].cover}
                     />
                   </View>
                 }

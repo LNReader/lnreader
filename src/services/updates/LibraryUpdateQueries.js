@@ -43,7 +43,7 @@ const updateNovelCover = async (novelId, novel) => {
 
 const insertUpdate = async (tx, chapterId, novelId) =>
   tx.executeSql(
-    "INSERT OR IGNORE INTO updates (chapterId, novelId, updateTime) values (?, ?, (datetime('now','localtime')))",
+    "INSERT OR IGNORE INTO updates (chapterId, updateTime) values (?, (datetime('now','localtime')))",
     [chapterId, novelId],
     (txOBJ, res) => {},
     (txOBJ, error) => {},
@@ -60,21 +60,15 @@ const updateNovel = async (pluginId, novelUrl, novelId, options) => {
 
   db.transaction(tx => {
     novel.chapters.map(chapter => {
-      const { chapterName, chapterUrl, releaseDate } = chapter;
+      const { name, url, releaseTime } = chapter;
 
       tx.executeSql(
-        'INSERT OR IGNORE INTO chapters (chapterUrl, chapterName, releaseDate, novelId) values (?, ?, ?, ?)',
-        [chapterUrl, chapterName, releaseDate, novelId],
+        'INSERT OR IGNORE INTO chapters (url, name, releaseTime, novelId) values (?, ?, ?, ?)',
+        [url, chapterName, releaseTime, id],
         (txObj, { insertId }) => {
           if (insertId !== -1) {
             if (downloadNewChapters) {
-              downloadChapter(
-                pluginId,
-                novelUrl,
-                novelId,
-                chapterUrl,
-                insertId,
-              );
+              downloadChapter(pluginId, id, chapterUrl, url);
             }
             insertUpdate(tx, insertId, novelId);
           }

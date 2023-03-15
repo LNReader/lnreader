@@ -32,7 +32,6 @@ const UpdatesScreen = () => {
     showLastUpdateTime,
     error,
   } = useUpdates();
-
   const { searchText, setSearchText, clearSearchbar } = useSearch();
   const onChangeText = (text: string) => {
     setSearchText(text);
@@ -107,7 +106,7 @@ const UpdatesScreen = () => {
               {dayjs(date).calendar()}
             </Text>
           )}
-          keyExtractor={item => item[0].chapterId.toString()}
+          keyExtractor={item => 'updatedGroup' + item[0].novelId}
           renderItem={({ item }) => (
             <UpdateNovelCard
               item={item}

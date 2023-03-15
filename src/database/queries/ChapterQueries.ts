@@ -518,8 +518,8 @@ FROM
   Chapter
 JOIN
   Novel
-ON Chapter.novel_id = Novel.id AND Chapter.is_downloaded = 1
-JOIN Download ON Chapter.id = Download.chapter_id
+ON Chapter.novelId = Novel.id AND Chapter.isDownloaded = 1
+JOIN Download ON Chapter.id = Download.chapterId
 `;
 
 export const getUpdatesFromDb = (): Promise<Update[]> => {

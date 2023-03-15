@@ -50,8 +50,8 @@ const updateLibrary = async options => {
              */
             await updateNovel(
               libraryNovels[i].pluginId,
-              libraryNovels[i].novelUrl,
-              libraryNovels[i].novelId,
+              libraryNovels[i].url,
+              libraryNovels[i].id,
               options,
             );
 
@@ -59,7 +59,7 @@ const updateLibrary = async options => {
              * Update notification
              */
             await BackgroundService.updateNotification({
-              taskTitle: libraryNovels[i].novelName,
+              taskTitle: libraryNovels[i].name,
               taskDesc: '(' + (i + 1) + '/' + libraryNovels.length + ')',
               progressBar: { max: libraryNovels.length, value: i + 1 },
             });
@@ -90,7 +90,7 @@ const updateLibrary = async options => {
             }
           }
         } catch (error) {
-          showToast(libraryNovels[i].novelName + ': ' + error.message);
+          showToast(libraryNovels[i].name + ': ' + error.message);
           continue;
         }
       }
