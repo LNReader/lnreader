@@ -1,10 +1,10 @@
 import * as SQLite from 'expo-sqlite';
 const db = SQLite.openDatabase('lnreader.db');
 
-// import BackgroundService from 'react-native-background-actions';
+import BackgroundService from 'react-native-background-actions';
 import * as DocumentPicker from 'expo-document-picker';
 
-// import { fetchChapters, fetchNovel } from '@services/plugin/fetch';
+import { fetchChapters, fetchNovel } from '@services/plugin/fetch';
 import { insertChapters } from './ChapterQueries';
 
 import { showToast } from '@hooks/showToast';
@@ -13,7 +13,6 @@ import { noop } from 'lodash-es';
 import { getString } from '@strings/translations';
 import { NovelInfo } from '../types';
 import { SourceNovel } from '@plugins/types';
-import { fetchNovel } from '@services/plugin/fetch';
 
 /**
   * @param PluginType
@@ -187,73 +186,68 @@ export const deleteNovelCache = () => {
 //   });
 // };
 
-// const migrateNovelQuery =
-//   'INSERT INTO Novel (url, plugin_id, name, cover, summary, author, artist, status, genres, in_libary) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+const migrateNovelQuery =
+  'INSERT INTO Novel (url, plugin_id, name, cover, summary, author, artist, status, genres, in_libary) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
-// export const migrateNovel = async (pluginId: string, novelUrl: string) => {
-//   try {
-//     const novel = await fetchNovel(pluginId, novelUrl);
+export const migrateNovel = async (pluginId: string, novelUrl: string) => {
+  try {
+    const novel = await fetchNovel(pluginId, novelUrl);
 
-//     const options = {
-//       taskName: 'Migration',
-//       taskTitle: `Migrating ${novel.novelName} to new source`,
-//       taskDesc: novel.pluginName,
-//       taskIcon: {
-//         name: 'notification_icon',
-//         type: 'drawable',
-//       },
-//       color: '#00adb5',
-//       parameters: {
-//         delay: 1000,
-//       },
-//       progressBar: {
-//         max: 1,
-//         value: 0,
-//         indeterminate: true,
-//       },
-//     };
+    const options = {
+      taskName: 'Migration',
+      taskTitle: `Migrating ${novel.name} to new source`,
+      taskDesc: pluginId,
+      taskIcon: {
+        name: 'notification_icon',
+        type: 'drawable',
+      },
+      color: '#00adb5',
+      parameters: {
+        delay: 1000,
+      },
+      progressBar: {
+        max: 1,
+        value: 0,
+        indeterminate: true,
+      },
+    };
 
-//     const veryIntensiveTask = async () => {
-//       await new Promise(async resolve => {
-//         db.transaction(tx =>
-//           tx.executeSql(
-//             migrateNovelQuery,
-//             [
-//               novel.novelUrl,
-//               novel.sourceUrl,
-//               novel.pluginId,
-//               novel.source,
-//               novel.novelName,
-//               novel.novelCover,
-//               novel.novelSummary,
-//               novel.author,
-//               novel.artist,
-//               novel.status,
-//               novel.genre,
-//               1,
-//             ],
-//             async (txObj, { insertId }) => {
-//               const chapters = await fetchChapters(
-//                 novel.pluginId,
-//                 novel.novelUrl,
-//               );
-//               await insertChapters(insertId, chapters);
-//               resolve();
-//             },
-//             txnErrorCallback
-//           ),
-//         );
-//       });
-//     };
+    const veryIntensiveTask = async () => {
+      await new Promise(async resolve => {
+        db.transaction(tx =>
+          tx.executeSql(
+            migrateNovelQuery,
+            [
+              novel.url,
+              pluginId,
+              novel.name,
+              novel.cover,
+              novel.summary || '',
+              novel.author,
+              novel.artist,
+              novel.status,
+              novel.genres || '',
+              1,
+            ],
+            async (txObj, { insertId }) => {
+              const chapters = await fetchChapters(pluginId, novel.url);
+              await insertChapters(insertId, chapters);
+              resolve(novel.name);
+            },
+            txnErrorCallback,
+          ),
+        );
+      });
+    };
 
-//     await BackgroundService.start(veryIntensiveTask, options);
-//     await BackgroundService.updateNotification({
-//       progressBar: { value: 1, indeterminate: false },
-//     });
-//   } catch (error) {
-//     showToast(error.message);
-//   }
-// };
+    await BackgroundService.start(veryIntensiveTask, options);
+    await BackgroundService.updateNotification({
+      progressBar: { max: 5, value: 1, indeterminate: false },
+    });
+  } catch (error: any) {
+    showToast(error.message);
+  }
+};
 
 export const updateNovelInfo = async (info: NovelInfo) => {
   db.transaction(tx => {
