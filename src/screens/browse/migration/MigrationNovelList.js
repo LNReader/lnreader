@@ -1,50 +1,42 @@
 import React, { useState } from 'react';
 import { StyleSheet, FlatList, Text, View } from 'react-native';
-
 import { Portal, Modal } from 'react-native-paper';
-
+import { getNovelAction } from '@redux/novel/novel.actions';
 import GlobalSearchNovelCover from '../globalsearch/GlobalSearchNovelCover';
 
-import { migrateNovel } from '../../../database/queries/NovelQueries';
-import { showToast } from '../../../hooks/showToast';
+import { migrateNovel } from '@database/queries/NovelQueries';
+import { showToast } from '@hooks/showToast';
 
 import { Button } from '@components';
 import { getString } from '@strings/translations';
 import { openNovel } from '@utils/handleNavigateParams';
 
 const MigrationNovelList = ({ data, theme, library, navigation }) => {
-  const [selectedNovel, setSelectedNovel] = useState(false);
-
+  const pluginId = data.id;
+  const [selectedNovel, setSelectedNovel] = useState({});
   const [migrateNovelDialog, setMigrateNovelDialog] = useState(false);
   const showMigrateNovelDialog = () => setMigrateNovelDialog(true);
   const hideMigrateNovelDialog = () => setMigrateNovelDialog(false);
 
-  const inLibrary = (pluginId, novelUrl) =>
-    library.some(obj => obj.novelUrl === novelUrl && obj.pluginId === pluginId);
+  const inLibrary = url => library.some(obj => obj.url === url);
 
   const renderItem = ({ item }) => (
     <GlobalSearchNovelCover
       novel={item}
       theme={theme}
-      onPress={() => showModal(item.pluginId, item.novelUrl, item.novelName)}
+      onPress={() => showModal(item.url, item.name)}
       onLongPress={() =>
-        navigation.navigate(
-          'Novel',
-          openNovel({
-            ...item,
-            pluginId: item.pluginId,
-          }),
-        )
+        navigation.push('Novel', { pluginId: pluginId, ...item })
       }
-      inLibrary={inLibrary(item.pluginId, item.novelUrl)}
+      inLibrary={inLibrary(item.url)}
     />
   );
 
-  const showModal = (pluginId, novelUrl, novelName) => {
-    if (inLibrary(pluginId, novelUrl)) {
+  const showModal = (url, name) => {
+    if (inLibrary(url)) {
       showToast('Novel already in library');
     } else {
-      setSelectedNovel({ pluginId, novelUrl, novelName });
+      setSelectedNovel({ url, name });
       showMigrateNovelDialog();
     }
   };
@@ -54,8 +46,8 @@ const MigrationNovelList = ({ data, theme, library, navigation }) => {
       <FlatList
         contentContainerStyle={styles.flatListCont}
         horizontal={true}
-        data={data}
-        keyExtractor={item => item.pluginId + item.novelUrl}
+        data={data.novels}
+        keyExtractor={item => item.id + item.url}
         renderItem={renderItem}
         ListEmptyComponent={
           <Text
@@ -87,7 +79,7 @@ const MigrationNovelList = ({ data, theme, library, navigation }) => {
               marginBottom: 16,
             }}
           >
-            {`Migrate ${selectedNovel.novelName}?`}
+            {`Migrate ${selectedNovel.url}?`}
           </Text>
           <View
             style={{
@@ -103,11 +95,8 @@ const MigrationNovelList = ({ data, theme, library, navigation }) => {
               Button
               onPress={async () => {
                 hideMigrateNovelDialog();
-                await migrateNovel(
-                  selectedNovel.pluginId,
-                  selectedNovel.novelUrl,
-                );
-                showToast(`${selectedNovel.novelName} migrated to new source.`);
+                await migrateNovel(pluginId, selectedNovel.url);
+                showToast(`${selectedNovel.name} migrated to new source.`);
               }}
               title={getString('novelScreen.migrate')}
             />

@@ -60,7 +60,9 @@ const setupPlugin = async (path: string) => {
   return undefined;
 };
 
-const installPlugin = async (url: string): Promise<Plugin | undefined> => {
+const installPlugin = async (
+  url: string,
+): Promise<PluginWorker | undefined> => {
   try {
     fetch(url)
       .then(res => res.text())
@@ -88,8 +90,8 @@ const installPlugin = async (url: string): Promise<Plugin | undefined> => {
       });
   } catch (e: any) {
     showToast('Error');
+    return undefined;
   }
-  return undefined;
 };
 
 const uninstallPlugin = async (_plugin: PluginItem) => {

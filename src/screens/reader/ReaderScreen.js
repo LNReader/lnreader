@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Dimensions, NativeModules, NativeEventEmitter } from 'react-native';
 
-import VolumeButtonListener from './../../utils/volumeButtonListener';
+import VolumeButtonListener from '@utils/volumeButtonListener';
 
 import { useDispatch } from 'react-redux';
 import { Portal } from 'react-native-paper';

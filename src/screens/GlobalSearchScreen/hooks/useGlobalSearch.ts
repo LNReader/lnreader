@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { useBrowseSettings, usePluginReducer } from '@redux/hooks';
-import { SourceNovelItem, PluginItem } from '@plugins/types';
+import { NovelItem, PluginItem } from '@plugins/types';
 import { getPlugin } from '@plugins/pluginManager';
 
 interface Props {
@@ -11,7 +11,7 @@ interface Props {
 export interface GlobalSearchResult {
   isLoading: boolean;
   plugin: PluginItem;
-  novels: SourceNovelItem[];
+  novels: NovelItem[];
   error?: string | null;
 }
 

@@ -181,7 +181,7 @@ export class PluginWorker {
             resolve(res);
           }),
         2,
-        300,
+        200,
       );
     });
   };

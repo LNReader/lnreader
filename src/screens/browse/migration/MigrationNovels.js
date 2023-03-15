@@ -33,17 +33,16 @@ const MigrationNovels = ({ navigation, route }) => {
   const { installedPlugins, pinnedPlugins } = usePluginReducer();
 
   const isPinned = id => pinnedPlugins.find(plg => plg.id !== id);
-  const pinnedSources = allSources.filter(source => isPinned(source.pluginId));
 
   const { searchAllSources = false } = useBrowseSettings();
 
   const getSearchResults = async () => {
-    let migrationSources = searchAllSources ? allSources : pinnedSources;
+    let migrationSources = searchAllSources ? installedPlugins : pinnedPlugins;
 
     setSearchResults(
       migrationSources.map(item => ({
-        pluginId: item.pluginId,
-        sourceName: item.sourceName,
+        id: item.id,
+        name: item.name,
         lang: item.lang,
         loading: true,
         novels: [],
@@ -54,26 +53,25 @@ const MigrationNovels = ({ navigation, route }) => {
     migrationSources.map(async item => {
       if (isMounted.current === true) {
         try {
-          const source = sourceManager(item.pluginId);
+          const source = getPlugin(item.id);
           const data = await source.searchNovels(novelName);
-
           setSearchResults(prevState =>
-            prevState.map(sourceItem =>
-              sourceItem.pluginId === item.pluginId
-                ? { ...sourceItem, novels: data, loading: false }
-                : { ...sourceItem },
+            prevState.map(pluginItem =>
+              pluginItem.id === item.id
+                ? { ...pluginItem, novels: data, loading: false }
+                : { ...pluginItem },
             ),
           );
         } catch (e) {
           setSearchResults(prevState =>
-            prevState.map(sourceItem =>
-              sourceItem.pluginId === item.pluginId
+            prevState.map(pluginItem =>
+              pluginItem.id === item.id
                 ? {
-                    ...sourceItem,
+                    ...pluginItem,
                     loading: false,
                     error: e.message,
                   }
-                : sourceItem,
+                : pluginItem,
             ),
           );
         }
@@ -101,7 +99,7 @@ const MigrationNovels = ({ navigation, route }) => {
   const renderItem = ({ item }) => (
     <>
       <View style={{ padding: 8, paddingVertical: 16 }}>
-        <Text style={{ color: theme.onSurface }}>{item.sourceName}</Text>
+        <Text style={{ color: theme.onSurface }}>{item.name}</Text>
         <Text style={{ color: theme.onSurfaceVariant, fontSize: 12 }}>
           {item.lang}
         </Text>
@@ -112,7 +110,7 @@ const MigrationNovels = ({ navigation, route }) => {
         <GlobalSearchSkeletonLoading theme={theme} />
       ) : (
         <MigrationNovelList
-          data={item.novels}
+          data={item}
           theme={theme}
           library={library}
           navigation={navigation}
@@ -134,14 +132,14 @@ const MigrationNovels = ({ navigation, route }) => {
       <FlatList
         contentContainerStyle={{ flexGrow: 1, padding: 4 }}
         data={searchResults}
-        keyExtractor={item => item.pluginId.toString()}
+        keyExtractor={item => item.id}
         renderItem={renderItem}
-        extraData={pinnedSources}
+        extraData={pinnedPlugins}
         ListEmptyComponent={
           <EmptyView
             icon="__φ(．．)"
-            description={`Search a novel in your pinned sources ${
-              pinnedSources.length === 0 ? '(No sources pinned)' : ''
+            description={`Search a novel in your pinned plugins ${
+              pinnedPlugins.length === 0 ? '(No plugins pinned)' : ''
             }`}
           />
         }

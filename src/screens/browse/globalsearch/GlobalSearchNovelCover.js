@@ -10,9 +10,9 @@ const GlobalSearchNovelCover = ({
   inLibrary,
   onLongPress,
 }) => {
-  const { novelName, novelCover } = novel;
+  const { name, cover } = novel;
 
-  const uri = novelCover;
+  const uri = cover;
 
   return (
     <View style={styles.container}>
@@ -31,7 +31,7 @@ const GlobalSearchNovelCover = ({
           numberOfLines={2}
           style={[styles.title, { color: theme.onSurface }]}
         >
-          {novelName}
+          {name}
         </Text>
       </Pressable>
     </View>
