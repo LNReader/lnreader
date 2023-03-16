@@ -57,19 +57,17 @@ export interface PluginItem {
   version: string;
   iconUrl: string;
   url: string; // the url of raw code
-  description: string;
+  description?: string;
 }
 
 export interface Plugin extends PluginItem {
-  valid: () => Promise<PluginStatus>;
   popularNovels: (
     pageNo: number,
     options?: SourceOptions,
   ) => Promise<NovelItem[]>;
   parseNovelAndChapters: (
     novelUrl: string,
-    start?: number,
-    end?: number,
+    pageNo?: number,
   ) => Promise<SourceNovel>;
   parseChapter: (chapterUrl: string) => Promise<string>; // yes, just string
   searchNovels: (searchTerm: string, pageNo?: number) => Promise<NovelItem[]>;
