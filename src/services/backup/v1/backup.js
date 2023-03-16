@@ -3,9 +3,9 @@ import { StorageAccessFramework } from 'expo-file-system';
 import * as Notifications from 'expo-notifications';
 import BackgroundService from 'react-native-background-actions';
 
-import { restoreLibrary } from '../../../database/queries/NovelQueries';
-import { getLibraryNovelsFromDb } from '../../../database/queries/LibraryQueries';
-import { showToast } from '../../../hooks/showToast';
+import { restoreLibrary } from '@database/queries/NovelQueries';
+import { getLibraryNovelsFromDb } from '@database/queries/LibraryQueries';
+import { showToast } from '@hooks/showToast';
 import dayjs from 'dayjs';
 
 const sleep = time => new Promise(resolve => setTimeout(() => resolve(), time));
@@ -49,9 +49,8 @@ export const createBackup = async () => {
 export const restoreBackup = async () => {
   try {
     const backup = await DocumentPicker.getDocumentAsync({
-      copyToCacheDirectory: true,
+      copyToCacheDirectory: false,
     });
-
     if (backup.uri) {
       let novels = await StorageAccessFramework.readAsStringAsync(backup.uri);
       novels = await JSON.parse(novels);
@@ -77,9 +76,8 @@ export const restoreBackup = async () => {
             try {
               if (BackgroundService.isRunning()) {
                 await restoreLibrary(novels[i]);
-
                 await BackgroundService.updateNotification({
-                  taskTitle: novels[i].novelName,
+                  taskTitle: novels[i].name,
                   taskDesc: '(' + (i + 1) + '/' + novels.length + ')',
                   progressBar: { max: novels.length, value: i + 1 },
                 });
@@ -106,7 +104,7 @@ export const restoreBackup = async () => {
                 }
               }
             } catch (error) {
-              showToast(novels[i].novelName + ': ' + error.message);
+              showToast(novels[i].name + ': ' + error.message);
               continue;
             }
           }

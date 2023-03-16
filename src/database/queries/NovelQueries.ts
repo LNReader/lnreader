@@ -146,45 +146,45 @@ export const deleteNovelCache = () => {
   });
 };
 
-// const restoreFromBackupQuery =
-//   'INSERT INTO novels (novelUrl, sourceUrl, pluginId, source, novelName, novelCover, novelSummary, author, artist, status, genre, followed, unread) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+const restoreFromBackupQuery =
+  'INSERT INTO Novel (url, name, pluginId, cover, summary, author, artist, status, genres, inLibrary) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
-// export const restoreLibrary = async novel => {
-//   return new Promise((resolve, reject) => {
-//     db.transaction(tx =>
-//       tx.executeSql(
-//         restoreFromBackupQuery,
-//         [
-//           novel.novelUrl,
-//           novel.sourceUrl,
-//           novel.pluginId,
-//           novel.source,
-//           novel.novelName,
-//           novel.novelCover,
-//           novel.novelSummary,
-//           novel.author,
-//           novel.artist,
-//           novel.status,
-//           novel.genre,
-//           novel.followed,
-//           novel.unread,
-//         ],
-//         async (txObj, { insertId }) => {
-//           const chapters = await fetchChapters(novel.pluginId, novel.novelUrl);
+export const restoreLibrary = async (novel: NovelInfo) => {
+  return new Promise(resolve => {
+    db.transaction(tx =>
+      tx.executeSql(
+        restoreFromBackupQuery,
+        [
+          novel.url,
+          novel.name,
+          novel.pluginId,
+          novel.cover,
+          novel.summary,
+          novel.author,
+          novel.artist,
+          novel.status,
+          novel.genres,
+          novel.inLibrary,
+        ],
+        async (txObj, { insertId }) => {
+          tx.executeSql(
+            'INSERT INTO NovelCategory (novelId, categoryId) VALUES (?, (SELECT DISTINCT id FROM Category WHERE sort = 1))',
+            [insertId],
+            noop,
+            txnErrorCallback,
+          );
+          const chapters = await fetchChapters(novel.pluginId, novel.url);
 
-//           if (chapters.length) {
-//             await insertChapters(insertId, chapters);
-
-//             resolve();
-//           }
-//         },
-//         (txObj, error) => {
-//           resolve();
-//         },
-//       ),
-//     );
-//   });
-// };
+          if (chapters) {
+            await insertChapters(insertId, chapters);
+            resolve(insertId);
+          }
+        },
+        txnErrorCallback,
+      ),
+    );
+  });
+};
 
 const migrateNovelQuery =
   'INSERT INTO Novel (url, plugin_id, name, cover, summary, author, artist, status, genres, in_libary) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
