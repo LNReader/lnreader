@@ -25,6 +25,7 @@ import {
   insertNovelandChapters,
   getNovel,
 } from '@database/queries/NovelQueries';
+import { insertChapters } from '@database/queries/ChapterQueries';
 import {
   getChapters,
   markChapterRead,
@@ -71,6 +72,11 @@ export const getNovelAction =
          * Get chapters from db.
          */
         chapters = await getChapters(novel.id, sort, filter);
+        if (chapters.length === 0) {
+          const fetchedNovel = await fetchNovel(pluginId, novelUrl);
+          await insertChapters(novel.id, fetchedNovel.chapters);
+          chapters = await getChapters(novel.id, sort, filter);
+        }
         dispatch({
           type: GET_NOVEL,
           payload: { novel, chapters },
