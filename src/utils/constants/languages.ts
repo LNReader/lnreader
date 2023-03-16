@@ -15,6 +15,4 @@ export enum Languages {
   Vietnamese = 'Tiếng Việt',
 }
 
-export const availableLanguages = Object.keys(Languages).map(
-  lang => Object.values(Languages)[Object.keys(Languages).indexOf(lang)],
-);
+export const availableLanguages = Object.values(Languages);
