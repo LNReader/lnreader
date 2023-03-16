@@ -14,7 +14,6 @@ export const fetchChapter = async (pluginId: string, chapterUrl: string) => {
 
 export const fetchChapters = async (pluginId: string, novelUrl: string) => {
   const plugin = getPlugin(pluginId);
-
   const res = await plugin.parseNovelAndChapters(novelUrl);
 
   const chapters = res.chapters;
