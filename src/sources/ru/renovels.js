@@ -37,7 +37,7 @@ const popularNovels = async (page, { showLatestNovels, filters }) => {
 
   let novels = [];
 
-  body.content.map(item => {
+  body.content.forEach(item => {
     const novelName = item.rus_name;
     const novelUrl = item.dir;
     const novelCover =
@@ -89,7 +89,7 @@ const parseNovelAndChapters = async novelUrl => {
     );
     let volumes = await chapterResult.json();
 
-    volumes.content.map(item => {
+    volumes.content.forEach(item => {
       const chapterName =
         `Том ${item.tome} Глава ${item.chapter} ${item.name}`?.trim();
       const releaseDate = dayjs(item.upload_date).format('LLL');
@@ -126,7 +126,7 @@ const searchNovels = async searchTerm => {
   let body = await result.json();
   let novels = [];
 
-  body.content.map(item => {
+  body.content.forEach(item => {
     const novelName = item.rus_name;
     const novelUrl = item.dir;
     const novelCover =

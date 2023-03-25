@@ -50,6 +50,7 @@ const popularNovels = async (page, { showLatestNovels, filters }) => {
   ui = loadedCheerio('a.header-right-menu__item')
     .attr('href')
     ?.replace?.(/[^0-9]/g, '');
+
   let novels = [];
 
   loadedCheerio('.media-card-wrap').each(function () {
@@ -126,7 +127,6 @@ const parseNovelAndChapters = async novelUrl => {
 
   chaptersJson = JSON.parse(chaptersJson);
   ui = chaptersJson?.user?.id;
-  const novelSlug = chaptersJson.manga.slug;
 
   chaptersJson.chapters.list.forEach(chapter => {
     chapters.push({
@@ -134,7 +134,7 @@ const parseNovelAndChapters = async novelUrl => {
         `Том ${chapter.chapter_volume} Глава ${chapter.chapter_number} ${chapter.chapter_name}`?.trim(),
       releaseDate: dayjs(chapter.chapter_created_at).format('LLL'),
       chapterUrl:
-        `${baseUrl}/${novelSlug}/v${chapter.chapter_volume}/c${chapter.chapter_number}?bid=` +
+        `${baseUrl}/${chaptersJson.manga.slug}/v${chapter.chapter_volume}/c${chapter.chapter_number}?bid=` +
         (chapter?.branch_id || ''),
     });
   });

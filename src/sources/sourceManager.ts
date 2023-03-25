@@ -91,7 +91,6 @@ import RanobeHubScraper from './ru/ranobehub';
 import RanobeLibScraper from './ru/ranobelib';
 import RanobeRFScraper from './ru/ranoberf';
 import RenovelsScraper from './ru/renovels';
-import RulateScraper from './ru/rulate';
 import FicbookScraper from './ru/ficbook';
 import DivineDaoLibraryScraper from './en/divinedaolibrary';
 import NovelOnlineFullScraper from './en/novelonlinefull';
@@ -135,6 +134,10 @@ import {
 } from './multisrc/wqmangastream/WQMangaStreamGenerator';
 import AgitoonScraper from './kr/Agitoon';
 import PawReadScraper from './en/pawread';
+import {
+  RulateScraper,
+  ErolateScraper,
+} from './multisrc/rulate/RulateGenerator';
 
 interface PopularNovelsResponse {
   novels: SourceNovelItem[];
@@ -288,6 +291,7 @@ export const sourceManager = (sourceId: number): Scraper => {
     145: AgitoonScraper, // @ts-ignore
     146: PandaMtlScraper, // @ts-ignore
     147: PawReadScraper, // @ts-ignore
+    148: ErolateScraper, // @ts-ignore
   };
 
   return scrapers[sourceId];

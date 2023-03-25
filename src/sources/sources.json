@@ -880,5 +880,12 @@
     "icon": "https://www.pawread.com/favicon.ico",
     "url": "https://pawread.com/",
     "lang": "English"
+  },
+  {
+    "sourceId": 148,
+    "sourceName": "Erolate",
+    "url": "https://erolate.com",
+    "lang": "Russian",
+    "icon": "https://erolate.com/i/logo/erolate.png"
   }
 ]
