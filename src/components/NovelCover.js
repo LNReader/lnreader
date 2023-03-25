@@ -12,7 +12,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import FastImage from 'react-native-fast-image';
 import ListView from './ListView';
 
-import { useDeviceOrientation } from '../services/utils/helpers';
+import { useDeviceOrientation } from '@hooks/useDeviceOrientation';
 import { coverPlaceholderColor } from '../theme/colors';
 import { useLibrarySettings } from '@hooks/useSettings';
 import { DisplayModes } from '@screens/library/constants/constants';
@@ -67,7 +67,7 @@ const NovelCover = ({
       ]}
     >
       <Pressable
-        android_ripple={{ color: color(theme.primary).alpha(0.12).string() }}
+        android_ripple={{ color: theme.rippleColor }}
         style={styles.opac}
         onPress={
           selectedNovels && selectedNovels.length > 0 ? selectNovel : onPress
@@ -158,7 +158,7 @@ const ComfortableTitle = ({ theme, novelName }) => (
     style={[
       styles.title,
       {
-        color: theme.textColorPrimary,
+        color: theme.onSurface,
         padding: 4,
       },
     ]}

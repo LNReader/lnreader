@@ -37,7 +37,7 @@ const CoverImage = ({ children, source, theme, hideBackdrop }) => {
         <View
           style={{
             flex: 1,
-            backgroundColor: `${theme.background}B4`,
+            backgroundColor: color(theme.background).alpha(0.7).string(),
           }}
         >
           {source.uri ? (
@@ -57,7 +57,7 @@ const CoverImage = ({ children, source, theme, hideBackdrop }) => {
   }
 };
 
-const NovelThumbnail = ({ source, setCustomNovelCover }) => {
+const NovelThumbnail = ({ source, theme, setCustomNovelCover }) => {
   const [expanded, setExpanded] = useState(false);
 
   if (!expanded) {
@@ -70,23 +70,14 @@ const NovelThumbnail = ({ source, setCustomNovelCover }) => {
     return (
       <Portal>
         <IconButton
-          icon="close"
-          style={{
-            position: 'absolute',
-            top: StatusBar.currentHeight,
-            left: 0,
-            zIndex: 10,
-          }}
-          onPress={() => setExpanded(false)}
-        />
-        <IconButton
           icon="pencil-outline"
           style={{
             position: 'absolute',
-            top: StatusBar.currentHeight,
-            right: 0,
+            top: StatusBar.currentHeight + 10,
+            right: 10,
             zIndex: 10,
           }}
+          iconColor={theme.onBackground}
           onPress={setCustomNovelCover}
         />
         <Pressable
@@ -153,14 +144,14 @@ const FollowButton = ({ theme, onPress, followed }) => (
     >
       <IconButton
         icon={followed ? 'heart' : 'heart-outline'}
-        iconColor={followed ? theme.primary : theme.textColorHint}
+        iconColor={followed ? theme.primary : theme.outline}
         size={24}
         style={{ margin: 0 }}
       />
       <Text
         style={{
           fontSize: 12,
-          color: followed ? theme.primary : theme.textColorHint,
+          color: followed ? theme.primary : theme.outline,
         }}
       >
         {followed ? 'In Library' : 'Add to library'}
@@ -185,14 +176,14 @@ const TrackerButton = ({ theme, isTracked, onPress }) => (
     >
       <IconButton
         icon={isTracked ? 'check' : 'sync'}
-        iconColor={isTracked ? theme.primary : theme.textColorHint}
+        iconColor={isTracked ? theme.primary : theme.outline}
         size={24}
         style={{ margin: 0 }}
       />
       <Text
         style={{
           fontSize: 12,
-          color: isTracked ? theme.primary : theme.textColorHint,
+          color: isTracked ? theme.primary : theme.outline,
         }}
       >
         {isTracked ? 'Tracked' : 'Tracking'}
@@ -211,7 +202,7 @@ const NovelGenres = ({ theme, genre }) => {
       contentContainerStyle={styles.genreContainer}
       horizontal
       data={data}
-      keyExtractor={item => item}
+      keyExtractor={(item, index) => 'genre' + index}
       renderItem={renderItem}
       showsHorizontalScrollIndicator={false}
     />

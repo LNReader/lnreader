@@ -20,6 +20,7 @@ export interface StringMap {
   'common.searchResults': 'string';
   'common.chapters': 'string';
   'common.submit': 'string';
+  'common.retry': 'string';
   'library': 'string';
   'libraryScreen.searchbar': 'string';
   'libraryScreen.empty': 'string';
@@ -30,6 +31,10 @@ export interface StringMap {
   'libraryScreen.bottomSheet.sortOrders.dateAdded': 'string';
   'libraryScreen.bottomSheet.sortOrders.alphabetically': 'string';
   'libraryScreen.bottomSheet.sortOrders.totalChapters': 'string';
+  'libraryScreen.bottomSheet.sortOrders.download': 'string';
+  'libraryScreen.bottomSheet.sortOrders.unread': 'string';
+  'libraryScreen.bottomSheet.sortOrders.lastRead': 'string';
+  'libraryScreen.bottomSheet.sortOrders.lastUpdated': 'string';
   'libraryScreen.bottomSheet.display.displayMode': 'string';
   'libraryScreen.bottomSheet.display.compact': 'string';
   'libraryScreen.bottomSheet.display.comfortable': 'string';
@@ -42,6 +47,9 @@ export interface StringMap {
   'updates': 'string';
   'updatesScreen.searchbar': 'string';
   'updatesScreen.lastUpdatedAt': 'string';
+  'updatesScreen.newChapters': 'string';
+  'updatesScreen.emptyView': 'string';
+  'updatesScreen.updatesLower': 'string';
   'history': 'string';
   'historyScreen.searchbar': 'string';
   'historyScreen.clearHistorWarning': 'string';
@@ -72,6 +80,9 @@ export interface StringMap {
   'readerScreen.bottomSheet.swipeGestures': 'string';
   'readerScreen.bottomSheet.allowTextSelection': 'string';
   'readerScreen.bottomSheet.useChapterDrawerSwipeNavigation': 'string';
+  'readerScreen.bottomSheet.removeExtraSpacing': 'string';
+  'readerScreen.bottomSheet.volumeButtonsScroll': 'string';
+  'readerScreen.bottomSheet.showSwipeMargins': 'string';
   'readerScreen.drawer.scrollToCurrentChapter': 'string';
   'readerScreen.drawer.scrollToTop': 'string';
   'readerScreen.drawer.scrollToBottom': 'string';
@@ -93,6 +104,27 @@ export interface StringMap {
   'more': 'string';
   'moreScreen.settings': 'string';
   'moreScreen.settingsScreen.generalSettings': 'string';
+  'moreScreen.settingsScreen.generalSettingsScreen.display': 'string';
+  'moreScreen.settingsScreen.generalSettingsScreen.displayMode': 'string';
+  'moreScreen.settingsScreen.generalSettingsScreen.itemsPerRow': 'string';
+  'moreScreen.settingsScreen.generalSettingsScreen.itemsPerRowLibrary': 'string';
+  'moreScreen.settingsScreen.generalSettingsScreen.novelBadges': 'string';
+  'moreScreen.settingsScreen.generalSettingsScreen.novelSort': 'string';
+  'moreScreen.settingsScreen.generalSettingsScreen.updateLibrary': 'string';
+  'moreScreen.settingsScreen.generalSettingsScreen.useFAB': 'string';
+  'moreScreen.settingsScreen.generalSettingsScreen.novel': 'string';
+  'moreScreen.settingsScreen.generalSettingsScreen.chapterSort': 'string';
+  'moreScreen.settingsScreen.generalSettingsScreen.bySource': 'string';
+  'moreScreen.settingsScreen.generalSettingsScreen.asc': 'string';
+  'moreScreen.settingsScreen.generalSettingsScreen.desc': 'string';
+  'moreScreen.settingsScreen.generalSettingsScreen.globalUpdate': 'string';
+  'moreScreen.settingsScreen.generalSettingsScreen.updateOngoing': 'string';
+  'moreScreen.settingsScreen.generalSettingsScreen.refreshMetadata': 'string';
+  'moreScreen.settingsScreen.generalSettingsScreen.refreshMetadataDescription': 'string';
+  'moreScreen.settingsScreen.generalSettingsScreen.updateTime': 'string';
+  'moreScreen.settingsScreen.generalSettingsScreen.autoDownload': 'string';
+  'moreScreen.settingsScreen.generalSettingsScreen.downloadNewChapters': 'string';
+  'moreScreen.settingsScreen.generalSettingsScreen.disableHapticFeedback': 'string';
   'moreScreen.settingsScreen.readerSettings.title': 'string';
   'moreScreen.settingsScreen.readerSettings.readerTheme': 'string';
   'moreScreen.settingsScreen.readerSettings.preset': 'string';
@@ -141,4 +173,8 @@ export interface StringMap {
   'categories.defaultCategory': 'string';
   'settings.icognitoMode': 'string';
   'settings.downloadedOnly': 'string';
+  'downloadScreen.dbInfo': 'string';
+  'downloadScreen.downloadChapters': 'string';
+  'downloadScreen.noDownloads': 'string';
+  'downloadScreen.downloadsLower': 'string';
 }

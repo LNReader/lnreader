@@ -3,7 +3,6 @@ const sourceId = 4;
 const baseUrl = 'https://readnovelfull.com';
 
 const popularNovels = async page => {
-  let totalPages = 61;
   const url = `${baseUrl}/novel-list/most-popular-novel?page=${page}`;
 
   const result = await fetch(url);
@@ -29,7 +28,7 @@ const popularNovels = async page => {
     novels.push(novel);
   });
 
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

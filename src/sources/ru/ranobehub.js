@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import * as cheerio from 'cheerio';
-import { defaultTo } from 'lodash';
+import { defaultTo } from 'lodash-es';
 import { Status } from '../helpers/constants';
 import { htmlToText } from '../helpers/htmlToText';
 import { FilterInputs } from '../types/filterTypes';
@@ -47,9 +47,7 @@ const popularNovels = async (page, { showLatestNovels, filters }) => {
     });
   });
 
-  const totalPages = body.pagination?.lastPage || 0;
-
-  return { novels, totalPages };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

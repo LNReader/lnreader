@@ -3,7 +3,6 @@ import { ScrollView, Text } from 'react-native';
 
 import { useDispatch } from 'react-redux';
 
-import { List } from '../../components/List';
 import { ThemePicker } from '../../components/ThemePicker/ThemePicker';
 import SwitchSetting from '../../components/Switch/Switch';
 import ColorPickerModal from '../../components/ColorPickerModal/ColorPickerModal';
@@ -26,7 +25,7 @@ import {
   useMMKVObject,
   useMMKVString,
 } from 'react-native-mmkv';
-import { Appbar } from '@components';
+import { Appbar, List } from '@components';
 
 const lightThemes = [
   defaultTheme.light,
@@ -84,7 +83,7 @@ const AppearanceSettings = ({ navigation }) => {
           <List.SubHeader theme={theme}>App theme</List.SubHeader>
           <Text
             style={{
-              color: theme.textColorPrimary,
+              color: theme.onSurface,
               paddingHorizontal: 16,
               paddingVertical: 8,
             }}
@@ -114,7 +113,7 @@ const AppearanceSettings = ({ navigation }) => {
           </ScrollView>
           <Text
             style={{
-              color: theme.textColorPrimary,
+              color: theme.onSurface,
               paddingHorizontal: 16,
               paddingVertical: 8,
             }}

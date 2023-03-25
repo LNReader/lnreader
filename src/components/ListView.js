@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, View, Text, Pressable } from 'react-native';
 
 import FastImage from 'react-native-fast-image';
-import { defaultCoverUri } from '../sources/helpers/constants';
 import { coverPlaceholderColor } from '../theme/colors';
 
 import color from 'color';
@@ -19,7 +18,7 @@ const ListView = ({
 }) => {
   return (
     <Pressable
-      android_ripple={{ color: color(theme.primary).alpha(0.12).string() }}
+      android_ripple={{ color: theme.rippleColor }}
       style={[
         styles.listView,
         isSelected && {
@@ -36,7 +35,7 @@ const ListView = ({
         style={[styles.extensionIcon, inLibraryBadge && { opacity: 0.5 }]}
       />
       <Text
-        style={[{ color: theme.textColorPrimary }, styles.novelName]}
+        style={[{ color: theme.onSurface }, styles.novelName]}
         numberOfLines={1}
       >
         {item.novelName}

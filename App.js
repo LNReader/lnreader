@@ -5,19 +5,29 @@ enableFreeze(true);
 
 import React, { useEffect } from 'react';
 import { StatusBar } from 'react-native';
-
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import LottieSplashScreen from 'react-native-lottie-splash-screen';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { Provider } from 'react-redux';
-import { persistor, store } from './src/redux/store';
 import { PersistGate } from 'redux-persist/lib/integration/react';
+import * as Notifications from 'expo-notifications';
+
+import { createDatabase } from '@database/db';
+import { persistor, store } from '@redux/store';
+import AppErrorBoundary from '@components/AppErrorBoundary/AppErrorBoundary';
 
 import Main from './src/navigators/Main';
 
-import { createDatabase } from './src/database/db';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import LottieSplashScreen from 'react-native-lottie-splash-screen';
-import AppErrorBoundary from '@components/AppErrorBoundary/AppErrorBoundary';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+Notifications.setNotificationHandler({
+  handleNotification: async () => {
+    return {
+      shouldShowAlert: true,
+      shouldPlaySound: true,
+      shouldSetBadge: true,
+    };
+  },
+});
 
 const App = () => {
   useEffect(() => {

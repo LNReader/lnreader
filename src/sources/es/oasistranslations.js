@@ -4,8 +4,6 @@ const baseUrl = 'https://oasistranslations.wordpress.com/';
 const popularNovels = async page => {
   let url = baseUrl;
 
-  let totalPages = 1;
-
   const result = await fetch(url);
   const body = await result.text();
 
@@ -35,7 +33,7 @@ const popularNovels = async page => {
       }
     });
 
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

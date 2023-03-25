@@ -66,13 +66,11 @@ const GlobalSearchResultsList: React.FC<GlobalSearchResultsListProps> = ({
               }
             >
               <View>
-                <Text
-                  style={[styles.sourceName, { color: theme.textColorPrimary }]}
-                >
+                <Text style={[styles.sourceName, { color: theme.onSurface }]}>
                   {item.source.sourceName}
                 </Text>
                 <Text
-                  style={[styles.language, { color: theme.textColorSecondary }]}
+                  style={[styles.language, { color: theme.onSurfaceVariant }]}
                 >
                   {item.source.lang}
                 </Text>
@@ -80,7 +78,7 @@ const GlobalSearchResultsList: React.FC<GlobalSearchResultsListProps> = ({
               <MaterialCommunityIcons
                 name="arrow-right"
                 size={24}
-                color={theme.textColorPrimary}
+                color={theme.onSurface}
               />
             </Pressable>
             {item.isLoading ? (
@@ -101,7 +99,7 @@ const GlobalSearchResultsList: React.FC<GlobalSearchResultsListProps> = ({
                   <Text
                     style={[
                       styles.listEmpty,
-                      { color: theme.textColorSecondary },
+                      { color: theme.onSurfaceVariant },
                     ]}
                   >
                     {getString('sourceScreen.noResultsFound')}

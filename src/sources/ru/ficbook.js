@@ -1,7 +1,7 @@
 import { Status, defaultCoverUri } from '../helpers/constants';
 import { FilterInputs } from '../types/filterTypes';
 import * as cheerio from 'cheerio';
-import { defaultTo } from 'lodash';
+import { defaultTo } from 'lodash-es';
 
 const sourceId = 139;
 const sourceName = 'Книга Фанфиков';
@@ -21,12 +21,7 @@ const popularNovels = async (page, { filters }) => {
   const body = await result.text();
 
   let loadedCheerio = cheerio.load(body);
-  const totalPages = parseInt(
-    loadedCheerio(
-      'nav.pagenav:nth-child(1) > div:nth-child(2) > b:nth-child(2)',
-    ).text() || '1',
-    10,
-  );
+
   let novels = [];
 
   loadedCheerio('article.fanfic-inline').each(function () {
@@ -48,7 +43,7 @@ const popularNovels = async (page, { filters }) => {
     novels.push(novel);
   });
 
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

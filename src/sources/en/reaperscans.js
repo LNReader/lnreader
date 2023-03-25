@@ -8,7 +8,6 @@ const sourceName = 'ReaperScans';
 
 const popularNovels = async page => {
   let url = `${baseUrl}/all-series/novels/`;
-  let totalPages = 2;
 
   const result = await fetch(url);
   const body = await result.text();
@@ -40,7 +39,7 @@ const popularNovels = async page => {
     }
   });
 
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

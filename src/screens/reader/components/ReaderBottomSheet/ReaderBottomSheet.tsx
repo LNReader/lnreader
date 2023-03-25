@@ -20,7 +20,6 @@ import ReaderTextAlignSelector from './ReaderTextAlignSelector';
 import ReaderLineHeight from './ReaderLineHeight';
 import ReaderFontPicker from './ReaderFontPicker';
 import { overlay } from 'react-native-paper';
-import { dividerColor } from '../../../../theme/colors';
 
 const ReaderTab: React.FC = () => {
   return (
@@ -38,30 +37,18 @@ const GeneralTab: React.FC = () => {
   const theme = useTheme();
   const dispatch = useAppDispatch();
   const {
-    useWebViewForChapter,
     fullScreenMode,
     autoScroll,
     verticalSeekbar,
     showBatteryAndTime,
     showScrollPercentage,
-    wvUseVolumeButtons = false,
+    useVolumeButtons = false,
     swipeGestures = false,
     removeExtraParagraphSpacing = false,
-    useChapterDrawerSwipeNavigation = true,
   } = useSettingsV1();
 
   return (
     <View>
-      <ReaderSheetPreferenceItem
-        label={getString('readerScreen.bottomSheet.renderHml')}
-        onPress={() =>
-          dispatch(
-            setAppSettings('useWebViewForChapter', !useWebViewForChapter),
-          )
-        }
-        value={useWebViewForChapter}
-        theme={theme}
-      />
       <ReaderSheetPreferenceItem
         label={getString('readerScreen.bottomSheet.fullscreen')}
         onPress={() =>
@@ -111,7 +98,7 @@ const GeneralTab: React.FC = () => {
         theme={theme}
       />
       <ReaderSheetPreferenceItem
-        label={'Remove extra paragraph spacing'}
+        label={getString('readerScreen.bottomSheet.removeExtraSpacing')}
         onPress={() =>
           dispatch(
             setAppSettings(
@@ -123,32 +110,14 @@ const GeneralTab: React.FC = () => {
         value={removeExtraParagraphSpacing}
         theme={theme}
       />
-      {useWebViewForChapter ? (
-        <ReaderSheetPreferenceItem
-          label={'Volume buttons scroll'}
-          onPress={() =>
-            dispatch(setAppSettings('wvUseVolumeButtons', !wvUseVolumeButtons))
-          }
-          value={wvUseVolumeButtons}
-          theme={theme}
-        />
-      ) : (
-        <ReaderSheetPreferenceItem
-          label={getString(
-            'readerScreen.bottomSheet.useChapterDrawerSwipeNavigation',
-          )}
-          onPress={() =>
-            dispatch(
-              setAppSettings(
-                'useChapterDrawerSwipeNavigation',
-                !useChapterDrawerSwipeNavigation,
-              ),
-            )
-          }
-          value={useChapterDrawerSwipeNavigation}
-          theme={theme}
-        />
-      )}
+      <ReaderSheetPreferenceItem
+        label={getString('readerScreen.bottomSheet.volumeButtonsScroll')}
+        onPress={() =>
+          dispatch(setAppSettings('useVolumeButtons', !useVolumeButtons))
+        }
+        value={useVolumeButtons}
+        theme={theme}
+      />
     </View>
   );
 };
@@ -166,8 +135,8 @@ const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
   const backgroundColor = tabHeaderColor;
 
   const renderScene = SceneMap({
-    first: ReaderTab,
-    second: GeneralTab,
+    'readerTab': ReaderTab,
+    'generalTab': GeneralTab,
   });
 
   const layout = useWindowDimensions();
@@ -176,11 +145,11 @@ const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
   const routes = useMemo(
     () => [
       {
-        key: 'first',
+        key: 'readerTab',
         title: getString('moreScreen.settingsScreen.readerSettings.title'),
       },
       {
-        key: 'second',
+        key: 'generalTab',
         title: getString('moreScreen.settingsScreen.generalSettings'),
       },
     ],
@@ -194,7 +163,7 @@ const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
       style={[
         {
           backgroundColor: tabHeaderColor,
-          borderBottomColor: dividerColor(theme.isDark),
+          borderBottomColor: theme.outline,
           borderBottomWidth: 1,
         },
         styles.tabBar,
@@ -202,7 +171,7 @@ const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
       renderLabel={({ route, color }) => (
         <Text style={{ color }}>{route.title}</Text>
       )}
-      inactiveColor={theme.textColorSecondary}
+      inactiveColor={theme.onSurfaceVariant}
       activeColor={theme.primary}
       pressColor={color(theme.primary).alpha(0.12).string()}
     />

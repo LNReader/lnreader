@@ -7,7 +7,6 @@ const sourceName = 'SakuraNovel';
 const baseUrl = 'https://sakuranovel.id/';
 
 const popularNovels = async page => {
-  const totalPages = 8;
   const url = `${baseUrl}advanced-search/page/${page}/?title&author&yearx&status&type&order=rating&country%5B0%5D=china&country%5B1%5D=jepang&country%5B2%5D=unknown`;
 
   const body = await fetchHtml({ url, sourceId });
@@ -21,7 +20,7 @@ const popularNovels = async page => {
       .find('.flexbox2-title span')
       .first()
       .text();
-    const novelCover = loadedCheerio(this).find('img').attr('data-src');
+    const novelCover = loadedCheerio(this).find('img').attr('src');
     const novelUrl = loadedCheerio(this)
       .find('.flexbox2-content > a')
       .attr('href');
@@ -31,7 +30,7 @@ const popularNovels = async page => {
     novels.push(novel);
   });
 
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {
@@ -48,7 +47,25 @@ const parseNovelAndChapters = async novelUrl => {
 
   novel.novelName = loadedCheerio('.series-title h2').text().trim();
 
-  novel.novelCover = loadedCheerio('.series-thumb img').attr('data-src');
+  novel.novelCover = loadedCheerio('.series-thumb img').attr('src');
+
+  loadedCheerio('.series-infolist > li').each(function () {
+    const detailName = loadedCheerio(this).find('b').text().trim();
+    const detail = loadedCheerio(this).find('b').next().text().trim();
+
+    switch (detailName) {
+      case 'Author':
+        novel.author = detail;
+        break;
+    }
+  });
+
+  novel.status = loadedCheerio('.status').text().trim();
+
+  novel.genre = loadedCheerio('.series-genres')
+    .prop('innerHTML')
+    .replace(/<.*?>(.*?)<.*?>/g, '$1,')
+    .slice(0, -1);
 
   novel.summary = loadedCheerio('.series-synops').text().trim();
 
@@ -85,7 +102,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   let loadedCheerio = cheerio.load(body);
 
   const chapterName = loadedCheerio('.title-chapter').text();
-  const chapterText = loadedCheerio('.reader-area').html();
+  const chapterText = loadedCheerio('.reader').html();
 
   const chapter = {
     sourceId,
@@ -112,7 +129,7 @@ const searchNovels = async searchTerm => {
       .find('.flexbox2-title span')
       .first()
       .text();
-    const novelCover = loadedCheerio(this).find('img').attr('data-src');
+    const novelCover = loadedCheerio(this).find('img').attr('src');
     const novelUrl = loadedCheerio(this)
       .find('.flexbox2-content > a')
       .attr('href');

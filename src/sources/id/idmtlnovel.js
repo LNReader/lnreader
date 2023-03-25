@@ -4,7 +4,6 @@ const sourceId = 81;
 const baseUrl = 'https://id.mtlnovel.com';
 
 const popularNovels = async page => {
-  let totalPages = 10;
   const url = `${baseUrl}/alltime-rank/page/${page}`;
 
   let headers = new Headers({
@@ -40,7 +39,7 @@ const popularNovels = async page => {
     novels.push(novel);
   });
 
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

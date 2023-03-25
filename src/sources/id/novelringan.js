@@ -9,7 +9,6 @@ const baseUrl = 'https://novelringan.com/';
 const coverUriPrefix = 'https://i0.wp.com/novelringan.com/wp-content/uploads/';
 
 const popularNovels = async page => {
-  let totalPages = 402;
   const url = `${baseUrl}/top-novel/page/${page}`;
 
   const result = await fetch(url);
@@ -35,7 +34,7 @@ const popularNovels = async page => {
     novels.push(novel);
   });
 
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

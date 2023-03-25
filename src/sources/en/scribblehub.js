@@ -1,12 +1,13 @@
 import * as cheerio from 'cheerio';
+import { fetchHtml } from '@utils/fetch/fetch';
+
+const sourceId = 35;
 const baseUrl = 'https://www.scribblehub.com/';
 
 const popularNovels = async page => {
-  const totalPages = 326;
   let url = baseUrl + 'series-ranking/?sort=1&order=4&pg=' + page;
 
-  const result = await fetch(url);
-  const body = await result.text();
+  const body = await fetchHtml({ url, sourceId });
 
   const loadedCheerio = cheerio.load(body);
 
@@ -25,7 +26,7 @@ const popularNovels = async page => {
     novelUrl = novelUrl[4] + '-' + novelUrl[5];
 
     const novel = {
-      sourceId: 35,
+      sourceId,
       novelName,
       novelCover,
       novelUrl,
@@ -34,14 +35,13 @@ const popularNovels = async page => {
     novels.push(novel);
   });
 
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {
   const url = baseUrl + 'read/' + novelUrl;
 
-  const result = await fetch(url);
-  const body = await result.text();
+  const body = await fetchHtml({ url, sourceId });
 
   let loadedCheerio = cheerio.load(body);
 
@@ -120,8 +120,7 @@ const parseNovelAndChapters = async novelUrl => {
 const parseChapter = async (novelUrl, chapterUrl) => {
   const url = `${baseUrl}read/${novelUrl}/chapter/${chapterUrl}`;
 
-  const result = await fetch(url);
-  const body = await result.text();
+  const body = await fetchHtml({ url, sourceId });
 
   const loadedCheerio = cheerio.load(body);
 
@@ -129,7 +128,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 
   let chapterText = loadedCheerio('div.chp_raw').html();
   const chapter = {
-    sourceId: 35,
+    sourceId,
     novelUrl,
     chapterUrl,
     chapterName,
@@ -143,8 +142,7 @@ const searchNovels = async searchTerm => {
   const url =
     'https://www.scribblehub.com/?s=' + searchTerm + '&post_type=fictionposts';
 
-  const result = await fetch(url);
-  const body = await result.text();
+  const body = await fetchHtml({ url, sourceId });
 
   const loadedCheerio = cheerio.load(body);
 
@@ -163,7 +161,7 @@ const searchNovels = async searchTerm => {
     novelUrl = novelUrl[4] + '-' + novelUrl[5];
 
     const novel = {
-      sourceId: 35,
+      sourceId,
       novelName,
       novelCover,
       novelUrl,

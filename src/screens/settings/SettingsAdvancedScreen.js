@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Button, Dialog, Portal } from 'react-native-paper';
+import { Dialog, Portal } from 'react-native-paper';
 
 import { useTheme } from '@hooks/useTheme';
 import { showToast } from '../../hooks/showToast';
@@ -12,8 +12,8 @@ import { getString } from '@strings/translations';
 import useBoolean from '@hooks/useBoolean';
 import ConfirmationDialog from '@components/ConfirmationDialog/ConfirmationDialog';
 import { deleteReadChaptersFromDb } from '../../database/queries/DownloadQueries';
-import { getDialogBackground } from '@theme/colors';
-import { Appbar, List } from '@components';
+
+import { Appbar, Button, List } from '@components';
 import useSourceStorage from '@hooks/useSourceStorage';
 
 const AdvancedSettings = ({ navigation }) => {
@@ -84,7 +84,7 @@ const AdvancedSettings = ({ navigation }) => {
           onDismiss={hideClearDatabaseDialog}
           style={{
             borderRadius: 28,
-            backgroundColor: getDialogBackground(theme),
+            backgroundColor: theme.overlay3,
           }}
         >
           <Dialog.Title
@@ -92,23 +92,17 @@ const AdvancedSettings = ({ navigation }) => {
               letterSpacing: 0,
               fontSize: 16,
               lineHeight: 16 * 1.5,
-              color: theme.textColorPrimary,
+              color: theme.onSurface,
             }}
           >
             Are you sure? Read chapters and progress of non-library novels will
             be lost.
           </Dialog.Title>
           <Dialog.Actions>
-            <Button
-              uppercase={false}
-              theme={{ colors: { primary: theme.primary } }}
-              onPress={hideClearDatabaseDialog}
-            >
+            <Button onPress={hideClearDatabaseDialog}>
               {getString('common.cancel')}
             </Button>
             <Button
-              uppercase={false}
-              theme={{ colors: { primary: theme.primary } }}
               onPress={() => {
                 deleteNovelCache();
                 hideClearDatabaseDialog();
@@ -123,7 +117,7 @@ const AdvancedSettings = ({ navigation }) => {
           onDismiss={hideClearUpdatesDialog}
           style={{
             borderRadius: 28,
-            backgroundColor: getDialogBackground(theme),
+            backgroundColor: theme.overlay3,
           }}
         >
           <Dialog.Title
@@ -131,22 +125,14 @@ const AdvancedSettings = ({ navigation }) => {
               letterSpacing: 0,
               fontSize: 16,
               lineHeight: 16 * 1.5,
-              color: theme.textColorPrimary,
+              color: theme.onSurface,
             }}
           >
             Are you sure? Updates tab will be cleared.
           </Dialog.Title>
           <Dialog.Actions>
+            <Button onPress={hideClearUpdatesDialog}>Cancel</Button>
             <Button
-              uppercase={false}
-              theme={{ colors: { primary: theme.primary } }}
-              onPress={hideClearUpdatesDialog}
-            >
-              Cancel
-            </Button>
-            <Button
-              uppercase={false}
-              theme={{ colors: { primary: theme.primary } }}
               onPress={() => {
                 clearUpdates();
                 showToast('Updates cleared.');

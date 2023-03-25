@@ -7,7 +7,6 @@ const sourceName = 'BestLightNovel';
 const baseUrl = 'https://bestlightnovel.com/';
 
 const popularNovels = async page => {
-  const totalPages = 2156;
   const url =
     baseUrl + 'novel_list?type=topview&category=all&state=all&page=1' + page;
 
@@ -28,7 +27,7 @@ const popularNovels = async page => {
     novels.push(novel);
   });
 
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

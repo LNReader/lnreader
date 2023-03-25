@@ -10,16 +10,14 @@ const EmptyView = ({ icon, description, style, children, iconStyle }) => {
       <Text
         style={[
           styles.emptyViewIcon,
-          { color: theme.textColorHint },
+          { color: theme.outline },
           style,
           iconStyle,
         ]}
       >
         {icon}
       </Text>
-      <Text
-        style={[styles.emptyViewText, { color: theme.textColorHint }, style]}
-      >
+      <Text style={[styles.emptyViewText, { color: theme.outline }, style]}>
         {description}
       </Text>
       {children}

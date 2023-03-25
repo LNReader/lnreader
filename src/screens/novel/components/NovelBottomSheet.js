@@ -12,8 +12,6 @@ import { Checkbox, SortItem } from '../../../components/Checkbox/Checkbox';
 
 import { showChapterTitlesAction } from '../../../redux/novel/novel.actions';
 import { overlay } from 'react-native-paper';
-import { dividerColor } from '../../../theme/colors';
-
 const ChaptersSettingsSheet = ({
   bottomSheetRef,
   novelId,
@@ -82,11 +80,33 @@ const ChaptersSettingsSheet = ({
     <View style={{ flex: 1 }}>
       <SortItem
         label="By source"
-        status={sort === 'ORDER BY chapterId ASC' ? 'asc' : 'desc'}
+        status={
+          sort === 'ORDER BY chapterId ASC'
+            ? 'asc'
+            : sort === 'ORDER BY chapterId DESC'
+            ? 'desc'
+            : undefined
+        }
         onPress={() =>
           sort === 'ORDER BY chapterId ASC'
             ? sortChapters('ORDER BY chapterId DESC')
             : sortChapters('ORDER BY chapterId ASC')
+        }
+        theme={theme}
+      />
+      <SortItem
+        label="By chapter name"
+        status={
+          sort === 'ORDER BY chapterName ASC'
+            ? 'asc'
+            : sort === 'ORDER BY chapterName DESC'
+            ? 'desc'
+            : undefined
+        }
+        onPress={() =>
+          sort === 'ORDER BY chapterName ASC'
+            ? sortChapters('ORDER BY chapterName DESC')
+            : sortChapters('ORDER BY chapterName ASC')
         }
         theme={theme}
       />
@@ -132,13 +152,13 @@ const ChaptersSettingsSheet = ({
       style={{
         backgroundColor: overlay(2, theme.surface),
         borderBottomWidth: 1,
-        borderBottomColor: dividerColor(theme.isDark),
+        borderBottomColor: theme.outline,
         elevation: 0,
       }}
       renderLabel={({ route, focused, color }) => (
         <Text style={{ color }}>{route.title}</Text>
       )}
-      inactiveColor={theme.textColorSecondary}
+      inactiveColor={theme.onSurfaceVariant}
       activeColor={theme.primary}
       pressColor={color(theme.primary).alpha(0.12).string()}
     />

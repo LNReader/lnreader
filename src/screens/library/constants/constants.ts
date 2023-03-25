@@ -40,31 +40,38 @@ export enum LibrarySortOrder {
   DateAdded_DESC = 'novelId DESC',
   LastRead_ASC = 'lastReadAt ASC',
   LastRead_DESC = 'lastReadAt DESC',
+  LastUpdated_ASC = 'lastUpdatedAt ASC',
+  LastUpdated_DESC = 'lastUpdatedAt DESC',
 }
 
 export const librarySortOrderList = [
   {
-    label: 'Alphabetically',
+    label: getString('libraryScreen.bottomSheet.sortOrders.alphabetically'),
     ASC: LibrarySortOrder.Alphabetically_ASC,
     DESC: LibrarySortOrder.Alphabetically_DESC,
   },
   {
-    label: 'Last Read',
+    label: getString('libraryScreen.bottomSheet.sortOrders.lastRead'),
     ASC: LibrarySortOrder.LastRead_ASC,
     DESC: LibrarySortOrder.LastRead_DESC,
   },
   {
-    label: 'Unread',
+    label: getString('libraryScreen.bottomSheet.sortOrders.lastUpdated'),
+    ASC: LibrarySortOrder.LastUpdated_ASC,
+    DESC: LibrarySortOrder.LastUpdated_DESC,
+  },
+  {
+    label: getString('libraryScreen.bottomSheet.sortOrders.unread'),
     ASC: LibrarySortOrder.Unread_ASC,
     DESC: LibrarySortOrder.Unread_DESC,
   },
   {
-    label: 'Downloaded',
+    label: getString('libraryScreen.bottomSheet.sortOrders.download'),
     ASC: LibrarySortOrder.Downloaded_ASC,
     DESC: LibrarySortOrder.Downloaded_DESC,
   },
   {
-    label: 'Total chapters',
+    label: getString('libraryScreen.bottomSheet.sortOrders.totalChapters'),
     ASC: LibrarySortOrder.TotalChapters_ASC,
     DESC: LibrarySortOrder.TotalChapters_DESC,
   },

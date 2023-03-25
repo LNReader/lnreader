@@ -3,7 +3,6 @@ import * as cheerio from 'cheerio';
 const baseUrl = 'https://www.wuxiaworld.com/';
 
 const popularNovels = async page => {
-  let totalPages = 1;
   const url = `${baseUrl}api/novels`;
 
   const result = await fetch(url);
@@ -24,7 +23,7 @@ const popularNovels = async page => {
     });
   });
 
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

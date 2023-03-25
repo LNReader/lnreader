@@ -18,6 +18,7 @@ const getLanguageCode = language => {
     Chinese: 'cn',
     Japanese: 'jp',
     Vietnamese: 'vi',
+    Korean: 'kr',
   };
 
   return codes[language];
@@ -58,7 +59,6 @@ try {
         : ''
     }
     const popularNovels = async (page: number) => {
-      const totalPages = ${source.popularNovels.totalPages};
       const url = \`${source.popularNovels.url}\`;
     
       const result = await fetch(url);
@@ -102,8 +102,7 @@ try {
         }
       });
     
-      return { totalPages, novels };
-    };
+      return { novels };
     
     const parseNovelAndChapters = async (novelUrl: string) => {
       const url = novelUrl;

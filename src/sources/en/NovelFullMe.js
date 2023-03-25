@@ -5,7 +5,6 @@ const sourceName = 'NovelFull.me';
 const baseUrl = 'https://novelfull.me/';
 
 const popularNovels = async page => {
-  const totalPages = 25;
   const url = `${baseUrl}popular?page=${page}`;
 
   const result = await fetch(url);
@@ -27,7 +26,7 @@ const popularNovels = async page => {
     novels.push(novel);
   });
 
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

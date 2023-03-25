@@ -5,7 +5,6 @@ const sourceName = 'MTLReader';
 const baseUrl = 'https://mtlreader.com/';
 
 const popularNovels = async page => {
-  const totalPages = 24;
   const url = `${baseUrl}novels?page=${page}`;
 
   const result = await fetch(url);
@@ -30,7 +29,7 @@ const popularNovels = async page => {
     novels.push(novel);
   });
 
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

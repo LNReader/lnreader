@@ -2,7 +2,7 @@ import { FilterInputs } from '../types/filterTypes';
 import { htmlToText } from '../helpers/htmlToText';
 import { Status } from '../helpers/constants';
 import * as cheerio from 'cheerio';
-import { defaultTo } from 'lodash';
+import { defaultTo } from 'lodash-es';
 
 const sourceId = 118;
 const sourceName = 'Rulate';
@@ -34,12 +34,6 @@ const popularNovels = async (page, { showLatestNovels, filters }) => {
   const body = await result.text();
   const loadedCheerio = cheerio.load(body);
 
-  let totalPages =
-    loadedCheerio('div[class="pagination"] > ul > li:last-child > a')
-      .attr('href')
-      ?.split('/Book_page/')[1] || '0';
-
-  totalPages = parseInt(totalPages, 10);
   let novels = [];
 
   loadedCheerio(
@@ -53,7 +47,7 @@ const popularNovels = async (page, { showLatestNovels, filters }) => {
     novels.push(novel);
   });
 
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

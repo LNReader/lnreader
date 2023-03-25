@@ -6,7 +6,7 @@ import { txnErrorCallback } from '../utils/helpers';
 const db = SQLite.openDatabase('lnreader.db');
 
 const getLibraryQuery = `
-    SELECT novels.*, C.chaptersUnread, D.chaptersDownloaded, H.lastReadAt
+    SELECT novels.*, C.chaptersUnread, D.chaptersDownloaded, H.lastReadAt, U.lastUpdatedAt
     FROM novels
     LEFT JOIN (
         SELECT chapters.novelId, COUNT(*) AS chaptersUnread 
@@ -30,6 +30,14 @@ const getLibraryQuery = `
         ORDER BY history.historyTimeRead DESC
     ) AS H
     ON novels.novelId = H.novelId
+    LEFT JOIN (
+      SELECT updates.novelId, updateTime AS lastUpdatedAt
+      FROM updates
+      GROUP BY updates.novelId
+      HAVING updates.updateTime = MAX(updates.updateTime)
+      ORDER BY updates.updateTime DESC
+    ) AS U
+    ON novels.novelId = U.novelId
     WHERE novels.followed = 1
     `;
 

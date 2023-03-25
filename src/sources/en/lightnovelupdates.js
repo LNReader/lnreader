@@ -8,7 +8,6 @@ const baseUrl = 'https://www.lightnovelupdates.com/';
 
 const popularNovels = async page => {
   let url = `${baseUrl}novel/page/${page}/?m_orderby=rating`;
-  let totalPages = 500;
 
   const result = await fetch(url);
   const body = await result.text();
@@ -32,7 +31,7 @@ const popularNovels = async page => {
     novels.push(novel);
   });
 
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

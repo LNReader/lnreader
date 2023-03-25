@@ -6,7 +6,6 @@ const sourceName = 'Wuxia.Blog';
 const baseUrl = 'https://www.wuxia.blog/';
 
 const popularNovels = async page => {
-  const totalPages = 0;
   let url = `${baseUrl}listNovels`;
 
   const result = await fetch(url);
@@ -42,7 +41,7 @@ const popularNovels = async page => {
       }
     });
 
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

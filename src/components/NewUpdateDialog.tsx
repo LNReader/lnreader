@@ -3,10 +3,10 @@ import { StyleSheet, View, Text, Dimensions } from 'react-native';
 import { Portal, Modal } from 'react-native-paper';
 import * as Linking from 'expo-linking';
 import { ScrollView } from 'react-native-gesture-handler';
-import Button, { ButtonVariation } from './Button/Button';
+import Button from './Button/Button';
 import { getString } from '@strings/translations';
 import Markdown from 'react-native-markdown-display';
-import { dividerColor, getDialogBackground } from '@theme/colors';
+
 import { useTheme } from '@hooks/useTheme';
 
 interface NewUpdateDialogProps {
@@ -31,26 +31,26 @@ const NewUpdateDialog: React.FC<NewUpdateDialogProps> = ({ newVersion }) => {
         onDismiss={() => showNewUpdateDialog(false)}
         contentContainerStyle={[
           styles.containerStyle,
-          { backgroundColor: getDialogBackground(theme) },
+          { backgroundColor: theme.overlay3 },
         ]}
       >
-        <Text style={[styles.modalHeader, { color: theme.textColorPrimary }]}>
+        <Text style={[styles.modalHeader, { color: theme.onSurface }]}>
           {`${getString('common.newUpdateAvailable')} ${newVersion.tag_name}`}
         </Text>
         <ScrollView style={{ height: modalHeight }}>
           <Markdown
             style={{
               body: {
-                color: theme.textColorSecondary,
+                color: theme.onSurfaceVariant,
                 lineHeight: 20,
                 paddingVertical: 8,
               },
               hr: {
-                backgroundColor: dividerColor(theme.isDark),
+                backgroundColor: theme.outline,
                 marginVertical: 16,
               },
               code_inline: {
-                backgroundColor: getDialogBackground(theme),
+                backgroundColor: theme.overlay3,
               },
             }}
           >
@@ -60,14 +60,10 @@ const NewUpdateDialog: React.FC<NewUpdateDialogProps> = ({ newVersion }) => {
         <View style={styles.buttonCtn}>
           <Button
             title={getString('common.cancel')}
-            theme={theme}
-            variation={ButtonVariation.CLEAR}
             onPress={() => showNewUpdateDialog(false)}
           />
           <Button
             title={getString('common.install')}
-            theme={theme}
-            variation={ButtonVariation.CLEAR}
             onPress={() => Linking.openURL(newVersion.downloadUrl)}
           />
         </View>

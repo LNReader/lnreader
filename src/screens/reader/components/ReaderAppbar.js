@@ -5,27 +5,29 @@ import color from 'color';
 
 import { Appbar, Text } from 'react-native-paper';
 import { IconButtonV2 } from '../../../components';
-import FadeView from '../../../components/Common/CrossFadeView';
 import { bookmarkChapterAction } from '../../../redux/novel/novel.actions';
+import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
+import { useAppDispatch } from '@redux/hooks';
 
 const ReaderAppbar = ({
   bookmark,
   novelName,
   chapterId,
   chapterName,
-  hide,
-  dispatch,
   tts,
   textToSpeech,
-  textToSpeechPosition,
-  pauseTts,
   theme,
 }) => {
+  const dispatch = useAppDispatch();
   const { goBack } = useNavigation();
   const [bookmarked, setBookmarked] = useState(bookmark);
 
   return (
-    <FadeView style={styles.container} active={hide} animationDuration={150}>
+    <Animated.View
+      entering={FadeIn.duration(150)}
+      exiting={FadeOut.duration(150)}
+      style={styles.container}
+    >
       <View
         style={[
           { backgroundColor: color(theme.surface).alpha(0.9).string() },
@@ -42,34 +44,26 @@ const ReaderAppbar = ({
           />
           <View style={styles.content}>
             <Text
-              style={[styles.title, { color: theme.textColorPrimary }]}
+              style={[styles.title, { color: theme.onSurface }]}
               numberOfLines={1}
             >
               {novelName}
             </Text>
             <Text
-              style={[styles.subtitle, { color: theme.textColorSecondary }]}
+              style={[styles.subtitle, { color: theme.onSurfaceVariant }]}
               numberOfLines={1}
             >
               {chapterName}
             </Text>
           </View>
           <Appbar.Action
-            icon="volume-high"
+            icon={textToSpeech === 'progress' ? 'pause' : 'volume-high'}
             size={24}
             onPress={tts}
             iconColor={
               textToSpeech === 'progress' ? theme.primary : theme.onSurface
             }
           />
-          {textToSpeechPosition.end > 0 && (
-            <Appbar.Action
-              icon={textToSpeech === 'paused' ? 'play' : 'pause'}
-              size={24}
-              onPress={pauseTts}
-              iconColor={theme.onSurface}
-            />
-          )}
 
           <IconButtonV2
             name={bookmarked ? 'bookmark' : 'bookmark-outline'}
@@ -84,7 +78,7 @@ const ReaderAppbar = ({
           />
         </Appbar.Header>
       </View>
-    </FadeView>
+    </Animated.View>
   );
 };
 

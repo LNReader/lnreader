@@ -13,7 +13,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { removeTracker, setTracker } from '../../redux/tracker/tracker.actions';
 import { useTheme } from '@hooks/useTheme';
 import { Appbar, List } from '@components';
-import { getDialogBackground } from '@theme/colors';
 
 const TrackerScreen = ({ navigation }) => {
   const theme = useTheme();
@@ -101,12 +100,12 @@ const TrackerScreen = ({ navigation }) => {
               padding: 20,
               margin: 20,
               borderRadius: 6,
-              backgroundColor: getDialogBackground(theme),
+              backgroundColor: theme.overlay3,
             }}
           >
             <Text
               style={{
-                color: theme.textColorPrimary,
+                color: theme.onSurface,
                 fontSize: 18,
               }}
             >

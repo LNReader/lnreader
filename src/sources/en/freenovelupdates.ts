@@ -14,7 +14,6 @@ const baseUrl = 'https://www.freenovelupdates.com';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const popularNovels = async (page: number) => {
-  const totalPages = 1;
   const url = 'https://www.freenovelupdates.com/genres/light-novel-1002';
 
   const result = await fetch(url);
@@ -50,7 +49,7 @@ const popularNovels = async (page: number) => {
     }
   });
 
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async (novelUrl: string) => {

@@ -1,7 +1,7 @@
 import { FilterInputs } from '../types/filterTypes';
 import { htmlToText } from '../helpers/htmlToText';
 import { Status } from '../helpers/constants';
-import { defaultTo } from 'lodash';
+import { defaultTo } from 'lodash-es';
 import dayjs from 'dayjs';
 
 const sourceId = 116;
@@ -45,8 +45,7 @@ const popularNovels = async (page, { showLatestNovels, filters }) => {
     novels.push({ sourceId, novelName, novelCover, novelUrl });
   });
 
-  let totalPages = body.props.total_pages;
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

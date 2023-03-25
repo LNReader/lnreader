@@ -9,7 +9,7 @@ import TrackerSettings from '../screens/settings/SettingsTrackerScreen';
 import ReaderSettings from '../screens/settings/SettingsReaderScreen/SettingsReaderScreen';
 import BackupSettings from '../screens/settings/SettingsBackupScreen';
 import AdvancedSettings from '../screens/settings/SettingsAdvancedScreen';
-import GeneralSettings from '../screens/settings/SettingsGeneralScreen';
+import GeneralSettings from '../screens/settings/SettingsGeneralScreen/SettingsGeneralScreen';
 import DownloadQueue from '../screens/more/DownloadQueueScreen';
 import Downloads from '../screens/more/DownloadsScreen';
 import AppearanceSettings from '../screens/settings/SettingsAppearanceScreen';

@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useMemo } from 'react';
 
 import { EmptyView, SearchbarV2 } from '../../components';
 import {
+  defaultLanguage,
   getSourcesAction,
   searchSourcesAction,
   setLastUsedSource,
@@ -42,7 +43,7 @@ const BrowseScreen = () => {
     allSources,
     searchResults,
     pinnedSourceIds = [],
-    languageFilters = ['English'],
+    languageFilters = [defaultLanguage || 'English'], //defaultLang cant be null, but just for sure
     lastUsed,
   } = useSourcesReducer();
 
@@ -159,7 +160,7 @@ const BrowseScreen = () => {
                   <Text
                     style={[
                       styles.sectionHeader,
-                      { color: theme.textColorSecondary },
+                      { color: theme.onSurfaceVariant },
                     ]}
                   >
                     {getString('browseScreen.discover')}
@@ -174,7 +175,7 @@ const BrowseScreen = () => {
                 <Text
                   style={[
                     styles.sectionHeader,
-                    { color: theme.textColorSecondary },
+                    { color: theme.onSurfaceVariant },
                   ]}
                 >
                   {header}

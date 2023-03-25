@@ -2,7 +2,7 @@ import { Status, defaultCoverUri } from '../helpers/constants';
 import { htmlToText } from '../helpers/htmlToText';
 import { FilterInputs } from '../types/filterTypes';
 import * as cheerio from 'cheerio';
-import { defaultTo } from 'lodash';
+import { defaultTo } from 'lodash-es';
 import dayjs from 'dayjs';
 
 const sourceId = 142;
@@ -38,7 +38,7 @@ const popularNovels = async (page, { showLatestNovels, filters }) => {
   const json = await result.json();
 
   if (json?.code === 'NotFound') {
-    return { totalPages: 0, novels: [] };
+    return { novels: [] };
   }
 
   let novels = json.searchResults.map(novel => ({
@@ -50,8 +50,7 @@ const popularNovels = async (page, { showLatestNovels, filters }) => {
     novelUrl: Math.floor(novel.id).toString(),
   }));
 
-  let totalPages = json?.isLastPage ? 0 : page + 1;
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

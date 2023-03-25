@@ -11,27 +11,6 @@ export const BoxNovelScraper = new MadaraScraper(
   { 'useNewChapterEndpoint': true },
 );
 
-export const SkyNovelScraper = new MadaraScraper(
-  38,
-  'https://skynovel.org/',
-  'SkyNovel',
-  { 'path': { 'novels': 'manga', 'novel': 'manga', 'chapter': 'manga' } },
-);
-
-export const NovelCakeScraper = new MadaraScraper(
-  39,
-  'https://novelcake.com/',
-  'NovelCake',
-  { 'path': { 'novels': 'series', 'novel': 'series', 'chapter': 'series' } },
-);
-
-export const NovelsRockScraper = new MadaraScraper(
-  40,
-  'https://novelsrock.com/',
-  'NovelsRock',
-  { 'path': { 'novels': 'novels', 'novel': 'novel', 'chapter': 'novel' } },
-);
-
 export const ZinnNovelScraper = new MadaraScraper(
   41,
   'https://zinnovel.com/',
@@ -84,7 +63,7 @@ export const DaoNovelScraper = new MadaraScraper(
   'https://daonovel.com/',
   'DaoNovel',
   {
-    'path': { 'novels': 'novel-list', 'novel': 'novel', 'chapter': 'novel' },
+    'path': { 'novels': 'novels-list', 'novel': 'novels', 'chapter': 'novels' },
     'useNewChapterEndpoint': true,
   },
 );
@@ -112,25 +91,18 @@ export const LightNovelHeavenScraper = new MadaraScraper(
   },
 );
 
-export const LightNovelsHubScraper = new MadaraScraper(
-  58,
-  'https://lightnovelshub.com/',
-  'LightNovelsHub',
-  { 'useNewChapterEndpoint': true },
-);
-
 export const ArNovelScraper = new MadaraScraper(
   59,
   'https://arnovel.me/',
   'ArNovel',
-  { 'useNewChapterEndpoint': true, 'totalPages': 25, 'lang': 'Arabic' },
+  { 'useNewChapterEndpoint': true, 'lang': 'Arabic' },
 );
 
 export const MeioNovelScraper = new MadaraScraper(
   60,
   'https://meionovel.id/',
   'MeioNovel',
-  { 'useNewChapterEndpoint': true, 'lang': 'Indonesian', 'totalPages': 35 },
+  { 'useNewChapterEndpoint': true, 'lang': 'Indonesian' },
 );
 
 export const WebNovelLoverScraper = new MadaraScraper(
@@ -139,10 +111,10 @@ export const WebNovelLoverScraper = new MadaraScraper(
   'WebNovelLover',
 );
 
-export const TipNovelScraper = new MadaraScraper(
+export const CrateNovelScraper = new MadaraScraper(
   63,
-  'https://tipnovel.com/',
-  'TipNovel',
+  'https://cratenovel.com/',
+  'CrateNovel',
   { 'useNewChapterEndpoint': true },
 );
 
@@ -169,6 +141,7 @@ export const WuxiaWorldDotSiteScraper = new MadaraScraper(
   74,
   'https://wuxiaworld.site/',
   'WuxiaWorld.Site',
+  { 'useNewChapterEndpoint': true },
 );
 
 export const MysticalSeriesScraper = new MadaraScraper(
@@ -192,6 +165,7 @@ export const OnlyMTLScraper = new MadaraScraper(
   91,
   'https://www.onlymtl.com/',
   'OnlyMTL',
+  { 'useNewChapterEndpoint': true },
 );
 
 export const HizoMangaScraper = new MadaraScraper(
@@ -205,32 +179,25 @@ export const HizoMangaScraper = new MadaraScraper(
   },
 );
 
-export const LatestNovelScraper = new MadaraScraper(
-  98,
-  'https://latestnovel.net/',
-  'LatestNovel',
-  { 'totalPages': 130 },
-);
-
 export const ArMTLScraper = new MadaraScraper(
   101,
   'https://ar-mtl.club/',
   'ArMTL',
-  { 'totalPages': 1, 'useNewChapterEndpoint': true, 'lang': 'Arabic' },
+  { 'useNewChapterEndpoint': true, 'lang': 'Arabic' },
 );
 
 export const Novel4UpScraper = new MadaraScraper(
   104,
   'https://novel4up.com/',
   'Novel4Up',
-  { 'totalPages': 2, 'lang': 'Arabic' },
+  { 'lang': 'Arabic' },
 );
 
 export const TeamXNovelScraper = new MadaraScraper(
   107,
   'https://teamxnovel.com/',
   'TeamXNovel',
-  { 'useNewChapterEndpoint': true, 'totalPages': 3, 'lang': 'Arabic' },
+  { 'useNewChapterEndpoint': true, 'lang': 'Arabic' },
 );
 
 export const TurkceLightNovelsScraper = new MadaraScraper(
@@ -243,44 +210,37 @@ export const TurkceLightNovelsScraper = new MadaraScraper(
       'novel': 'light-novel',
       'chapter': 'light-novel',
     },
-    'totalPages': 2,
+
     'lang': 'Turkish',
   },
-);
-
-export const NovelOwlScraper = new MadaraScraper(
-  111,
-  'https://novelowl.com/',
-  'NovelOwl',
-  { 'totalPages': 208, 'useNewChapterEndpoint': true },
 );
 
 export const SonicMTLScraper = new MadaraScraper(
   121,
   'https://www.sonicmtl.com/',
   'SonicMTL',
-  { 'totalPages': 17, 'useNewChapterEndpoint': true },
+  { 'useNewChapterEndpoint': true },
 );
 
 export const MTLNovelDotClubScraper = new MadaraScraper(
   122,
   'https://mtlnovel.club/',
   'MTLNovel.Club',
-  { 'totalPages': 35, 'useNewChapterEndpoint': true },
+  { 'useNewChapterEndpoint': true },
 );
 
 export const NoobchanTranslationScraper = new MadaraScraper(
   124,
   'https://noobchan.xyz/',
   'Noobchan Translation',
-  { 'totalPages': 1, 'useNewChapterEndpoint': true },
+  { 'useNewChapterEndpoint': true },
 );
 
 export const GuavareadScraper = new MadaraScraper(
   125,
   'https://guavaread.com/',
   'Guavaread',
-  { 'totalPages': 2, 'useNewChapterEndpoint': true },
+  { 'useNewChapterEndpoint': true },
 );
 
 export const SweetEscapeTranslationsScraper = new MadaraScraper(
@@ -288,7 +248,6 @@ export const SweetEscapeTranslationsScraper = new MadaraScraper(
   'https://sweetescapetranslations.com/',
   'Sweet Escape Translations',
   {
-    'totalPages': 1,
     'useNewChapterEndpoint': false,
     'path': { 'novels': 'manga', 'novel': 'manga', 'chapter': 'manga' },
   },
@@ -298,42 +257,42 @@ export const FansTranslationsScraper = new MadaraScraper(
   127,
   'https://fanstranslations.com/',
   'Fans Translations',
-  { 'totalPages': 10, 'useNewChapterEndpoint': true },
+  { 'useNewChapterEndpoint': true },
 );
 
 export const RiwyatScraper = new MadaraScraper(
   130,
   'https://riwyat.com/',
   'Riwyat',
-  { 'totalPages': 12, 'useNewChapterEndpoint': true, 'lang': 'Arabic' },
+  { 'useNewChapterEndpoint': true, 'lang': 'Arabic' },
 );
 
 export const NovelsticScraper = new MadaraScraper(
   131,
   'https://novelstic.com/',
   'Novelstic',
-  { 'totalPages': 69, 'useNewChapterEndpoint': true, 'lang': 'English' },
+  { 'useNewChapterEndpoint': true, 'lang': 'English' },
 );
 
 export const NeoSekaiTranslationsScraper = new MadaraScraper(
   133,
   'https://www.neosekaitranslations.com/',
   'NeoSekai Translations',
-  { 'totalPages': 1, 'lang': 'English' },
+  { 'lang': 'English' },
 );
 
 export const MTLDashNovelScraper = new MadaraScraper(
   134,
   'https://mtl-novel.com/',
   'MTL-Novel',
-  { 'totalPages': 51, 'lang': 'English', 'orderBy': 'latest' },
+  { 'lang': 'English', 'orderBy': 'latest' },
 );
 
 export const ZetroTranslationScraper = new MadaraScraper(
   135,
   'https://zetrotranslation.com/',
   'Zetro Translation',
-  { 'totalPages': 1, 'lang': 'English' },
+  { 'lang': 'English' },
 );
 
 export const NocturneTranslationsScraper = new MadaraScraper(
@@ -341,17 +300,9 @@ export const NocturneTranslationsScraper = new MadaraScraper(
   'https://nocturnetls.net/',
   'Nocturne Translations',
   {
-    'totalPages': 9,
     'lang': 'English',
     'path': { 'novels': 'novels', 'novel': 'novels', 'chapter': 'novels' },
   },
-);
-
-export const AsadaTranslationScraper = new MadaraScraper(
-  137,
-  'https://asadatranslations.com/',
-  'Asada Translation',
-  { 'totalPages': 1, 'lang': 'English' },
 );
 
 export const SugarBabiesScraper = new MadaraScraper(
@@ -359,7 +310,6 @@ export const SugarBabiesScraper = new MadaraScraper(
   'https://sugarbbscan.com/',
   'Sugar Babies',
   {
-    'totalPages': 3,
     'lang': 'English',
     'path': { 'novels': 'series', 'novel': 'series', 'chapter': 'series' },
   },
@@ -370,7 +320,6 @@ export const NovelroomDotnetScraper = new MadaraScraper(
   'https://novelroom.net/',
   'Novelroom.net',
   {
-    'totalPages': 125,
     'lang': 'English',
     'path': { 'novels': 'manga', 'novel': 'manga', 'chapter': 'manga' },
   },
@@ -381,7 +330,6 @@ export const NovelR18Scraper = new MadaraScraper(
   'https://novelr18.com/',
   'NovelR18 ',
   {
-    'totalPages': 10,
     'lang': 'English',
     'path': { 'novels': 'novel', 'novel': 'manga', 'chapter': 'manga' },
     'useNewChapterEndpoint': true,
@@ -392,5 +340,5 @@ export const WebNovelOkuScraper = new MadaraScraper(
   143,
   'https://www.webnoveloku.com/',
   'WebNovelOku ',
-  { 'totalPages': 1, 'lang': 'Turkish' },
+  { 'lang': 'Turkish' },
 );

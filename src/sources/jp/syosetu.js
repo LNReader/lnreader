@@ -37,7 +37,6 @@ const sourceName = 'Syosetu';
 // const maxPageLoad = 3;
 
 const popularNovels = async page => {
-  const totalPages = 100;
   // array of all the novels
   let novels = [];
   // returns list of novels from given page
@@ -74,7 +73,7 @@ const popularNovels = async page => {
    */
 
   // respond with novels!
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

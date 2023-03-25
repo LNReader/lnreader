@@ -17,7 +17,7 @@ const TextSizeSlider: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={[styles.label, { color: theme.textColorSecondary }]}>
+      <Text style={[styles.label, { color: theme.onSurfaceVariant }]}>
         {getString('readerScreen.bottomSheet.textSize')}
       </Text>
       <Slider

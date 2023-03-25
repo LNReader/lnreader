@@ -10,8 +10,6 @@ const baseUrl = 'https://rainofsnow.com/';
 const popularNovels = async page => {
   let url = baseUrl + 'novels/page/' + page;
 
-  const totalPages = 5;
-
   const result = await fetch(url);
   const body = await result.text();
 
@@ -34,7 +32,7 @@ const popularNovels = async page => {
     novels.push(novel);
   });
 
-  return { novels, totalPages };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

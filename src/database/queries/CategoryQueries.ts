@@ -1,5 +1,5 @@
 import * as SQLite from 'expo-sqlite';
-import { noop } from 'lodash';
+import { noop } from 'lodash-es';
 import { Category } from '../types';
 import { txnErrorCallback } from '../utils/helpers';
 const db = SQLite.openDatabase('lnreader.db');
@@ -72,8 +72,10 @@ export const isCategoryNameDuplicate = (
       tx.executeSql(
         isCategoryNameDuplicateQuery,
         [categoryName],
-        (txObj, { rows: { _array } }) =>
-          resolve(Boolean(_array[0]?.isDuplicate)),
+        (txObj, { rows }) => {
+          const { _array } = rows as any;
+          resolve(Boolean(_array[0]?.isDuplicate));
+        },
         txnErrorCallback,
       );
     }),

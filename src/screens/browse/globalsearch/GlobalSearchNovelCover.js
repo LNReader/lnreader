@@ -29,7 +29,7 @@ const GlobalSearchNovelCover = ({
         />
         <Text
           numberOfLines={2}
-          style={[styles.title, { color: theme.textColorPrimary }]}
+          style={[styles.title, { color: theme.onSurface }]}
         >
           {novelName}
         </Text>

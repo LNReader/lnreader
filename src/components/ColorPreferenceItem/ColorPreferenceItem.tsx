@@ -22,10 +22,8 @@ const ColorPreferenceItem: React.FC<ColorPreferenceItemProps> = ({
     onPress={onPress}
   >
     <View>
-      <Text style={[styles.label, { color: theme.textColorPrimary }]}>
-        {label}
-      </Text>
-      <Text style={{ color: theme.textColorSecondary }}>
+      <Text style={[styles.label, { color: theme.onSurface }]}>{label}</Text>
+      <Text style={{ color: theme.onSurfaceVariant }}>
         {description?.toUpperCase?.()}
       </Text>
     </View>

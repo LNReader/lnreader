@@ -39,23 +39,12 @@ import {
 } from '../../database/queries/ChapterQueries';
 import { deleteUpdateFromDb } from '../../database/queries/UpdateQueries';
 import {
-  SAVE_SCROLL_POSITION,
   SET_CHAPTER_LIST_PREF,
   SET_LAST_READ,
 } from '../preferences/preference.types';
 import { showToast } from '../../hooks/showToast';
 
 import * as Notifications from 'expo-notifications';
-
-Notifications.setNotificationHandler({
-  handleNotification: async () => {
-    return {
-      shouldShowAlert: true,
-      shouldPlaySound: true,
-      shouldSetBadge: true,
-    };
-  },
-});
 
 import BackgroundService from 'react-native-background-actions';
 import { SET_DOWNLOAD_QUEUE } from '../downloads/donwloads.types';
@@ -204,19 +193,6 @@ export const markChapterReadAction = (chapterId, novelId) => async dispatch => {
   dispatch({
     type: SET_LAST_READ,
     payload: { novelId, chapterId: nextChapter.chapterId },
-  });
-
-  /**
-   * Reset progress on marked read
-   */
-  dispatch({
-    type: SAVE_SCROLL_POSITION,
-    payload: {
-      position: 0,
-      percentage: 0,
-      chapterId,
-      novelId,
-    },
   });
 };
 

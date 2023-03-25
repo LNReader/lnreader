@@ -9,8 +9,7 @@ import {
 } from 'react-native';
 import { SourceNovelItem } from '../sources/types';
 import { LibraryNovelInfo, NovelInfo } from '../database/types';
-
-import { useDeviceOrientation } from '../services/utils/helpers';
+import { useDeviceOrientation } from '@hooks/useDeviceOrientation';
 
 export type NovelListRenderItem = ListRenderItem<
   LibraryNovelInfo | NovelInfo | SourceNovelItem

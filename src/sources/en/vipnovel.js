@@ -2,7 +2,6 @@ import * as cheerio from 'cheerio';
 const baseUrl = 'https://vipnovel.com/';
 
 const popularNovels = async page => {
-  let totalPages = 89;
   let url = `${baseUrl}vipnovel/page/${page}/?m_orderby=rating`;
 
   const result = await fetch(url);
@@ -29,7 +28,7 @@ const popularNovels = async page => {
     novels.push(novel);
   });
 
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

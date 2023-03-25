@@ -8,8 +8,7 @@ const sourceName = 'wuxia.city';
 const baseUrl = 'https://wuxia.city/';
 
 const popularNovels = async page => {
-  const totalPages = 133;
-  let url = `${baseUrl}genre/all?page=` + page;
+  let url = `${baseUrl}list/editor-pick?page=` + page;
 
   const result = await fetch(url);
   const body = await result.text();
@@ -36,7 +35,7 @@ const popularNovels = async page => {
     novels.push(novel);
   });
 
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

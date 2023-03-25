@@ -46,7 +46,7 @@ const DownloadQueue = ({ navigation }) => {
           anchor={
             <MaterialAppbar.Action
               icon="dots-vertical"
-              iconColor={theme.textColorPrimary}
+              iconColor={theme.onSurface}
               onPress={openMenu}
             />
           }
@@ -61,7 +61,7 @@ const DownloadQueue = ({ navigation }) => {
               closeMenu();
             }}
             title="Cancel downloads"
-            titleStyle={{ color: theme.textColorPrimary }}
+            titleStyle={{ color: theme.onSurface }}
           />
         </Menu>
       </Appbar>
@@ -71,9 +71,7 @@ const DownloadQueue = ({ navigation }) => {
         data={downloadQueue}
         renderItem={({ item }) => (
           <View style={{ padding: 16 }}>
-            <Text style={{ color: theme.textColorPrimary }}>
-              {item.chapterName}
-            </Text>
+            <Text style={{ color: theme.onSurface }}>{item.chapterName}</Text>
             <ProgressBar
               indeterminate={BackgroundService.isRunning() ? true : false}
               progress={!BackgroundService.isRunning() && 0}

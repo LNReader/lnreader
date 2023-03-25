@@ -38,7 +38,7 @@ class ReadwnScraper {
       novels.push(novel);
     });
 
-    return { totalPages: this.totalPages, novels };
+    return { novels };
   }
 
   async parseNovelAndChapters(novelUrl) {

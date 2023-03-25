@@ -11,7 +11,6 @@ const sourceName = 'AllNovelFull';
 const baseUrl = 'https://allnovelfull.com';
 
 const popularNovels = async (page: number) => {
-  let totalPages = 61;
   const url = `${baseUrl}/most-popular?page=${page}`;
 
   const result = await fetch(url);
@@ -38,7 +37,7 @@ const popularNovels = async (page: number) => {
     novels.push(novel);
   });
 
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async (novelUrl: string) => {

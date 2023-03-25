@@ -5,7 +5,6 @@ const sourceId = 22;
 const baseUrl = 'https://foxaholic.com/';
 
 const popularNovels = async page => {
-  let totalPages = 5;
   let url = baseUrl + 'novel/page/' + page + '/?m_orderby=rating';
 
   const body = await fetchHtml({ url, sourceId });
@@ -34,7 +33,7 @@ const popularNovels = async page => {
     novels.push(novel);
   });
 
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {
@@ -95,19 +94,6 @@ const parseNovelAndChapters = async novelUrl => {
     .trim();
 
   let novelChapters = [];
-
-  // const novelId = $('#manga-chapters-holder').attr('data-id');
-
-  // let formData = new FormData();
-  // formData.append('action', 'manga_get_chapters');
-  // formData.append('manga', novelId);
-
-  const data = await fetch(`${url}ajax/chapters/`, {
-    method: 'POST',
-  });
-  const text = await data.text();
-
-  loadedCheerio = cheerio.load(text);
 
   loadedCheerio('.wp-manga-chapter').each(function () {
     const chapterName = loadedCheerio(this)

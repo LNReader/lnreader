@@ -3,21 +3,18 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import { IconButton } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { isUrlAbsolute } from '../../../utils/isAbsoluteUrl';
-import FadeView from '../../../components/Common/CrossFadeView';
 import * as WebBrowser from 'expo-web-browser';
 import color from 'color';
+import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
 const ChapterFooter = ({
-  hide,
   theme,
-  readerSheetRef,
-  scrollViewRef,
-  navigateToNextChapter,
-  navigateToPrevChapter,
+  chapterUrl,
   nextChapter,
   prevChapter,
-  useWebViewForChapter,
-  chapterUrl,
+  readerSheetRef,
+  scrollTo,
+  navigateToChapterBySwipe,
   openDrawer,
 }) => {
   const rippleConfig = {
@@ -29,7 +26,12 @@ const ChapterFooter = ({
   const insets = useSafeAreaInsets();
 
   return (
-    <FadeView style={styles.footer} active={hide} animationDuration={150}>
+    <Animated.View
+      entering={FadeIn.duration(150)}
+      exiting={FadeOut.duration(150)}
+      style={styles.footer}
+      animationDuration={150}
+    >
       <View
         style={[
           {
@@ -42,7 +44,7 @@ const ChapterFooter = ({
         <Pressable
           android_ripple={rippleConfig}
           style={styles.buttonStyles}
-          onPress={navigateToPrevChapter}
+          onPress={() => navigateToChapterBySwipe('SWIPE_RIGHT')}
         >
           <IconButton
             icon="chevron-left"
@@ -60,21 +62,19 @@ const ChapterFooter = ({
             <IconButton icon="earth" size={26} iconColor={theme.onSurface} />
           </Pressable>
         ) : null}
-        {!useWebViewForChapter && (
-          <>
-            <Pressable
-              android_ripple={rippleConfig}
-              style={styles.buttonStyles}
-              onPress={() => scrollViewRef.current.scrollTo({})}
-            >
-              <IconButton
-                icon="format-vertical-align-top"
-                size={26}
-                iconColor={theme.onSurface}
-              />
-            </Pressable>
-          </>
-        )}
+        <>
+          <Pressable
+            android_ripple={rippleConfig}
+            style={styles.buttonStyles}
+            onPress={() => scrollTo(0)}
+          >
+            <IconButton
+              icon="format-vertical-align-top"
+              size={26}
+              iconColor={theme.onSurface}
+            />
+          </Pressable>
+        </>
         <Pressable
           android_ripple={rippleConfig}
           style={styles.buttonStyles}
@@ -100,7 +100,7 @@ const ChapterFooter = ({
         <Pressable
           android_ripple={rippleConfig}
           style={styles.buttonStyles}
-          onPress={navigateToNextChapter}
+          onPress={() => navigateToChapterBySwipe('SWIPE_LEFT')}
         >
           <IconButton
             icon="chevron-right"
@@ -110,7 +110,7 @@ const ChapterFooter = ({
           />
         </Pressable>
       </View>
-    </FadeView>
+    </Animated.View>
   );
 };
 

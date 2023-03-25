@@ -14,7 +14,10 @@ import {
   createHistoryTableQuery,
   createChapterIdIndexQuery,
 } from './tables/HistoryTable';
-import { createDownloadTableQuery } from './tables/DownloadTable';
+import {
+  createDownloadIdIndex,
+  createDownloadTableQuery,
+} from './tables/DownloadTable';
 import { createUpdatesTableQuery } from './tables/UpdateTable';
 import {
   addCategorySortColumnQuery,
@@ -26,7 +29,7 @@ import {
   dbTxnErrorCallback,
   txnErrorCallbackWithoutToast,
 } from './utils/helpers';
-import { noop } from 'lodash';
+import { noop } from 'lodash-es';
 
 const dbName = 'lnreader.db';
 
@@ -71,6 +74,7 @@ const createIndexes = () => {
     tx.executeSql(createUnreadChaptersIndexQuery);
     tx.executeSql(createChapterIdIndexQuery);
     tx.executeSql(createCategorydIndexQuery);
+    tx.executeSql(createDownloadIdIndex);
   });
 };
 

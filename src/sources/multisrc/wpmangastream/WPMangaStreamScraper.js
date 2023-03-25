@@ -6,11 +6,10 @@ class WPMangaStreamScraper {
     this.baseUrl = baseUrl;
     this.sourceName = sourceName;
     this.language = options?.language;
-    this.totalPages = options?.totalPages;
+    this.reverseChapters = options?.reverseChapters;
   }
 
   async popularNovels(page) {
-    let totalPages = this.totalPages;
     let url = this.baseUrl + 'series/?page=' + page + '&status=&order=popular';
     let sourceId = this.sourceId;
 
@@ -23,7 +22,7 @@ class WPMangaStreamScraper {
     loadedCheerio('article.bs').each(function () {
       const novelName = loadedCheerio(this).find('.ntitle').text().trim();
       let image = loadedCheerio(this).find('img');
-      const novelCover = image.attr('src');
+      const novelCover = image.attr('data-src') || image.attr('src');
 
       const novelUrl = loadedCheerio(this).find('a').attr('href');
 
@@ -37,13 +36,13 @@ class WPMangaStreamScraper {
       novels.push(novel);
     });
 
-    return { totalPages, novels };
+    return { novels };
   }
 
   async parseNovelAndChapters(novelUrl) {
     const url = novelUrl;
 
-    const body = await fetchHtml({ url, sourceId });
+    const body = await fetchHtml({ url, sourceId: this.sourceId });
 
     let loadedCheerio = cheerio.load(body);
 
@@ -59,30 +58,43 @@ class WPMangaStreamScraper {
 
     novel.novelName = loadedCheerio('.entry-title').text();
 
-    novel.novelCover = loadedCheerio('img.wp-post-image').attr('src');
+    novel.novelCover =
+      loadedCheerio('img.wp-post-image').attr('data-src') ||
+      loadedCheerio('img.wp-post-image').attr('src');
 
     loadedCheerio('div.spe > span').each(function () {
       const detailName = loadedCheerio(this).find('b').text().trim();
       const detail = loadedCheerio(this).find('b').next().text().trim();
+      const status = loadedCheerio(this)
+        .children('b') //select all the children
+        .remove() //remove all the children
+        .end() //again go back to selected element
+        .text()
+        .trim();
 
       switch (detailName) {
         case 'المؤلف:':
         case 'Yazar:':
         case 'Autor:':
+        case 'Author:':
           novel.author = detail;
           break;
         case 'Status:':
         case 'Seviye:':
-          novel.status = detail;
-          break;
-        case 'Tipo:':
-        case 'Tür:':
-          novel.genre = detail?.replace(/\s/g, ',');
+          novel.status = status;
           break;
       }
     });
 
-    novel.summary = loadedCheerio('div[itemprop="description"]').text().trim();
+    novel.genre = loadedCheerio('.genxed').text().trim().replace(/\s/g, ',');
+
+    novel.summary = loadedCheerio('div[itemprop="description"]')
+      .find('h3 , p.a')
+      .remove()
+      .end()
+      .prop('innerHTML')
+      .replace(/(<.*?>)/g, ' ')
+      .replace(/(&.*;)/g, '\n');
 
     let novelChapters = [];
 
@@ -102,6 +114,10 @@ class WPMangaStreamScraper {
       });
 
     novel.chapters = novelChapters;
+
+    if (this.reverseChapters) {
+      novel.chapters.reverse();
+    }
 
     return novel;
   }
@@ -131,13 +147,13 @@ class WPMangaStreamScraper {
 
   async searchNovels(searchTerm) {
     const url = `${this.baseUrl}?s=${searchTerm}`;
+    const sourceId = this.sourceId;
 
     const body = await fetchHtml({ url, sourceId });
 
     const loadedCheerio = cheerio.load(body);
 
     let novels = [];
-    let sourceId = this.sourceId;
 
     loadedCheerio('article.bs').each(function () {
       const novelName = loadedCheerio(this).find('.ntitle').text().trim();

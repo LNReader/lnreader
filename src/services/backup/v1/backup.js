@@ -4,24 +4,11 @@ import * as Notifications from 'expo-notifications';
 import BackgroundService from 'react-native-background-actions';
 
 import { restoreLibrary } from '../../../database/queries/NovelQueries';
-import {
-  getLibraryNo,
-  getLibraryNovelsFromDb,
-} from '../../../database/queries/LibraryQueries';
+import { getLibraryNovelsFromDb } from '../../../database/queries/LibraryQueries';
 import { showToast } from '../../../hooks/showToast';
 import dayjs from 'dayjs';
 
 const sleep = time => new Promise(resolve => setTimeout(() => resolve(), time));
-
-Notifications.setNotificationHandler({
-  handleNotification: async () => {
-    return {
-      shouldShowAlert: true,
-      shouldPlaySound: true,
-      shouldSetBadge: true,
-    };
-  },
-});
 
 export const createBackup = async () => {
   try {
@@ -62,7 +49,7 @@ export const createBackup = async () => {
 export const restoreBackup = async () => {
   try {
     const backup = await DocumentPicker.getDocumentAsync({
-      copyToCacheDirectory: false,
+      copyToCacheDirectory: true,
     });
 
     if (backup.uri) {

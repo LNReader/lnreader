@@ -1,5 +1,5 @@
 import { StatusBar } from 'react-native';
-import { MD3ThemeType } from '@theme/types';
+import { ThemeColors } from '@theme/types';
 
 /**
  * Sets status and navigation bar color.
@@ -7,5 +7,5 @@ import { MD3ThemeType } from '@theme/types';
  * @param theme
  */
 
-export const setBarColor = (theme: MD3ThemeType) =>
+export const setBarColor = (theme: ThemeColors) =>
   StatusBar.setBarStyle(theme.isDark ? 'light-content' : 'dark-content');

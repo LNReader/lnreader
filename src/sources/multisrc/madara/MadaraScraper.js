@@ -15,7 +15,6 @@ class MadaraScraper {
       chapter: 'novel',
     };
     this.useNewChapterEndpoint = options.useNewChapterEndpoint || false;
-    this.totalPages = options.totalPages || 100;
   }
 
   async popularNovels(page, { showLatestNovels }) {
@@ -55,7 +54,7 @@ class MadaraScraper {
       novels.push(novel);
     });
 
-    return { totalPages: this.totalPages, novels };
+    return { novels };
   }
 
   async parseNovelAndChapters(novelUrl) {

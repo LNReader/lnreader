@@ -2,7 +2,6 @@ import * as cheerio from 'cheerio';
 const baseUrl = 'https://novelfull.com';
 
 const popularNovels = async page => {
-  let totalPages = 42;
   const url = `${baseUrl}/most-popular?page=${page}`;
 
   const result = await fetch(url);
@@ -37,7 +36,7 @@ const popularNovels = async page => {
     },
   );
 
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

@@ -7,9 +7,8 @@ import GlobalSearchNovelCover from '../globalsearch/GlobalSearchNovelCover';
 
 import { migrateNovel } from '../../../database/queries/NovelQueries';
 import { showToast } from '../../../hooks/showToast';
-import { getDialogBackground } from '@theme/colors';
+
 import { Button } from '@components';
-import { ButtonVariation } from '@components/Button/Button';
 import { getString } from '@strings/translations';
 import { openNovel } from '@utils/handleNavigateParams';
 
@@ -61,7 +60,7 @@ const MigrationNovelList = ({ data, theme, library, navigation }) => {
         ListEmptyComponent={
           <Text
             style={{
-              color: theme.textColorSecondary,
+              color: theme.onSurfaceVariant,
               padding: 8,
               paddingVertical: 4,
             }}
@@ -78,12 +77,12 @@ const MigrationNovelList = ({ data, theme, library, navigation }) => {
             padding: 24,
             margin: 20,
             borderRadius: 28,
-            backgroundColor: getDialogBackground(theme),
+            backgroundColor: theme.overlay3,
           }}
         >
           <Text
             style={{
-              color: theme.textColorPrimary,
+              color: theme.onSurface,
               fontSize: 18,
               marginBottom: 16,
             }}
@@ -97,15 +96,11 @@ const MigrationNovelList = ({ data, theme, library, navigation }) => {
             }}
           >
             <Button
-              variation={ButtonVariation.CLEAR}
-              theme={theme}
               onPress={hideMigrateNovelDialog}
               title={getString('common.cancel')}
             />
             <Button
               Button
-              variation={ButtonVariation.CLEAR}
-              theme={theme}
               onPress={async () => {
                 hideMigrateNovelDialog();
                 await migrateNovel(

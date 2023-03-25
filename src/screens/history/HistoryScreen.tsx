@@ -112,13 +112,13 @@ const HistoryScreen = () => {
       {isLoading ? (
         <HistorySkeletonLoading theme={theme} />
       ) : error ? (
-        <ErrorScreenV2 error={error} theme={theme} />
+        <ErrorScreenV2 error={error} />
       ) : (
         <>
           <SectionList
             contentContainerStyle={styles.listContainer}
             sections={groupHistoryByDate(searchText ? searchResults : history)}
-            keyExtractor={item => item.chapterId.toString()}
+            keyExtractor={(item, index) => 'history' + index}
             renderSectionHeader={({ section: { date } }) => (
               <Text style={[styles.dateHeader, { color: theme.onSurface }]}>
                 {dayjs(date).calendar()}

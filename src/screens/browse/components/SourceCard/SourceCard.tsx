@@ -1,19 +1,17 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image, Pressable } from 'react-native';
-import color from 'color';
 
 import { getString } from '../../../../../strings/translations';
 import { Button, IconButtonV2 } from '../../../../components';
-import { ButtonVariation } from '../../../../components/Button/Button';
 
 import { Source } from '../../../../sources/types';
 import { coverPlaceholderColor } from '../../../../theme/colors';
-import { MD3ThemeType } from '../../../../theme/types';
+import { ThemeColors } from '../../../../theme/types';
 
 interface Props {
   source: Source;
   isPinned: boolean;
-  theme: MD3ThemeType;
+  theme: ThemeColors;
   onTogglePinSource: (sourceId: number) => void;
   navigateToSource: (source: Source, showLatestNovels?: boolean) => void;
 }
@@ -28,15 +26,13 @@ const SourceCard: React.FC<Props> = ({
   <Pressable
     style={styles.container}
     onPress={() => navigateToSource(source)}
-    android_ripple={{ color: color(theme.primary).alpha(0.12).string() }}
+    android_ripple={{ color: theme.rippleColor }}
   >
     <View style={styles.flexRow}>
       <Image source={{ uri: source.icon }} style={styles.icon} />
       <View style={styles.details}>
-        <Text style={{ color: theme.textColorPrimary }}>
-          {source.sourceName}
-        </Text>
-        <Text style={[{ color: theme.textColorSecondary }, styles.lang]}>
+        <Text style={{ color: theme.onSurface }}>{source.sourceName}</Text>
+        <Text style={[{ color: theme.onSurfaceVariant }, styles.lang]}>
           {source.lang}
         </Text>
       </View>
@@ -44,15 +40,13 @@ const SourceCard: React.FC<Props> = ({
     <View style={styles.flexRow}>
       <Button
         title={getString('browseScreen.latest')}
-        variation={ButtonVariation.CLEAR}
         textColor={theme.primary}
         onPress={() => navigateToSource(source, true)}
-        theme={theme}
       />
       <IconButtonV2
         name={isPinned ? 'pin' : 'pin-outline'}
         size={22}
-        color={isPinned ? theme.primary : theme.textColorSecondary}
+        color={isPinned ? theme.primary : theme.onSurfaceVariant}
         onPress={() => onTogglePinSource(source.sourceId)}
         theme={theme}
       />

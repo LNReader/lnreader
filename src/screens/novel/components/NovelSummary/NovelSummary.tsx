@@ -3,12 +3,12 @@ import React, { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { MD3ThemeType } from '../../../../theme/types';
+import { ThemeColors } from '../../../../theme/types';
 
 interface NovelSummaryProps {
   summary: string;
   isExpanded: boolean;
-  theme: MD3ThemeType;
+  theme: ThemeColors;
 }
 
 const NovelSummary: React.FC<NovelSummaryProps> = ({

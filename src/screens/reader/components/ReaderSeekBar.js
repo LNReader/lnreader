@@ -3,40 +3,23 @@ import { Dimensions, View, Text, StyleSheet } from 'react-native';
 import color from 'color';
 
 import Slider from '@react-native-community/slider';
-import { useDeviceOrientation } from '../../../services/utils/helpers';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useDeviceOrientation } from '@hooks/useDeviceOrientation';
 
 const VerticalScrollbar = ({
   theme,
-  hide,
-  contentSize,
-  scrollPercentage,
-  setLoading,
-  scrollViewRef,
+  minScroll = 0,
   verticalSeekbar,
-  setWebViewScroll,
-  useWebViewForChapter,
+  percentage,
+  scrollTo,
 }) => {
   const { bottom } = useSafeAreaInsets();
-
   const onSlidingComplete = value => {
-    if (useWebViewForChapter) {
-      return setWebViewScroll({ percentage: value, type: 'instant' });
-    }
-    setLoading(true);
-    scrollViewRef.current.scrollTo({
-      x: 0,
-      y: Math.round((value * contentSize) / 100),
-      animated: false,
-    });
-    setLoading(false);
+    let offsetY =
+      ((value - minScroll) * Dimensions.get('window').height) / minScroll;
+    scrollTo(offsetY);
   };
-
   const screenOrientation = useDeviceOrientation();
-
-  if (hide) {
-    return null;
-  }
 
   if (screenOrientation === 'potrait' && verticalSeekbar) {
     return (
@@ -53,17 +36,17 @@ const VerticalScrollbar = ({
             transform: [{ rotate: '-90deg' }],
           }}
         >
-          {scrollPercentage}
+          {percentage || Math.round(minScroll)}
         </Text>
         <Slider
           style={{
             flex: 1,
             height: 40,
           }}
-          minimumValue={0}
+          minimumValue={Math.round(minScroll)}
           maximumValue={100}
           step={1}
-          value={scrollPercentage}
+          value={percentage || Math.round(minScroll)}
           onSlidingComplete={onSlidingComplete}
           thumbTintColor={theme.primary}
           minimumTrackTintColor={theme.primary}
@@ -97,17 +80,17 @@ const VerticalScrollbar = ({
             marginLeft: 16,
           }}
         >
-          {scrollPercentage}
+          {percentage || Math.round(minScroll)}
         </Text>
         <Slider
           style={{
             flex: 1,
             height: 40,
           }}
-          minimumValue={0}
+          minimumValue={Math.round(minScroll)}
           maximumValue={100}
           step={1}
-          value={scrollPercentage}
+          value={percentage || Math.round(minScroll)}
           onSlidingComplete={onSlidingComplete}
           thumbTintColor={theme.primary}
           minimumTrackTintColor={theme.primary}

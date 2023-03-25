@@ -30,6 +30,12 @@ export interface ChapterItem {
   bookmark: number;
   downloaded: number;
 }
+export interface ChapterItemExtended extends ChapterItem {
+  novelId: number;
+  novelUrl: string;
+  sourceId: number;
+  novelName: string;
+}
 
 export interface DownloadedChapter {
   downloadId: number;

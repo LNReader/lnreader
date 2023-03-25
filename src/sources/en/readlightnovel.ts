@@ -1,5 +1,5 @@
 import * as cheerio from 'cheerio';
-import { defaultTo } from 'lodash';
+import { defaultTo } from 'lodash-es';
 import { SourceOptions } from '../sourceManager';
 import { SourceChapter, SourceChapterItem, SourceNovelItem } from '../types';
 import { FilterInputs, SourceFilter } from '../types/filterTypes';
@@ -25,17 +25,6 @@ const popularNovels = async (page: number, options?: SourceOptions) => {
 
   const novels: SourceNovelItem[] = [];
 
-  let totalPages: string | number | undefined = loadedCheerio(
-    '.pagination.pull-right > li',
-  )
-    .last()
-    .find('a')
-    .attr('href')
-    ?.split('/')
-    .pop();
-
-  totalPages = Number(totalPages) || 1;
-
   loadedCheerio('.top-novel-block').each(function () {
     const novelUrl = loadedCheerio(this)
       .find('h2 > a')
@@ -57,7 +46,7 @@ const popularNovels = async (page: number, options?: SourceOptions) => {
     }
   });
 
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async (novelUrl: string) => {

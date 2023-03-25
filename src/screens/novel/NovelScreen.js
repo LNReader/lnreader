@@ -1,20 +1,14 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   StyleSheet,
   View,
   RefreshControl,
   StatusBar,
-  Dimensions,
   Share,
   Text,
 } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
+import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
 import {
   Provider,
@@ -24,7 +18,6 @@ import {
   Menu,
   FAB,
   Snackbar,
-  overlay,
 } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Haptics from 'expo-haptics';
@@ -60,7 +53,6 @@ import JumpToChapterModal from './components/JumpToChapterModal';
 import { Actionbar } from '../../components/Actionbar/Actionbar';
 import EditInfoModal from './components/EditInfoModal';
 import { pickCustomNovelCover } from '../../database/queries/NovelQueries';
-import FadeView from '../../components/Common/CrossFadeView';
 import DownloadCustomChapterModal from './components/DownloadCustomChapterModal';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import useBoolean from '@hooks/useBoolean';
@@ -141,17 +133,15 @@ const Novel = ({ route, navigation }) => {
 
   const [jumpToChapterModal, showJumpToChapterModal] = useState(false);
 
-  const keyExtractor = useCallback(i => i.chapterId.toString(), []);
-
-  const downloadChapter = (chapterUrl, chapterName, chapterId) =>
+  const downloadChapter = chapter =>
     dispatch(
       downloadChapterAction(
         sourceId,
         novelUrl,
         novelId,
-        chapterUrl,
-        chapterName,
-        chapterId,
+        chapter.chapterUrl,
+        chapter.chapterName,
+        chapter.chapterId,
       ),
     );
 
@@ -227,8 +217,15 @@ const Novel = ({ route, navigation }) => {
     return list;
   }, [selected]);
 
-  const deleteChapter = (chapterId, chapterName) =>
-    dispatch(deleteChapterAction(sourceId, novelId, chapterId, chapterName));
+  const deleteChapter = chapter =>
+    dispatch(
+      deleteChapterAction(
+        sourceId,
+        novelId,
+        chapter.chapterId,
+        chapter.chapterName,
+      ),
+    );
 
   const isSelected = chapterId => {
     return selected.some(obj => obj.chapterId === chapterId);
@@ -306,7 +303,7 @@ const Novel = ({ route, navigation }) => {
       return (
         <Text
           style={{
-            color: theme.textColorHint,
+            color: theme.outline,
             fontSize: 12,
             marginLeft: chapter.releaseDate ? 5 : 0,
           }}
@@ -354,288 +351,280 @@ const Novel = ({ route, navigation }) => {
   const [editInfoModal, showEditInfoModal] = useState(false);
   const downloadCustomChapterModal = useBoolean();
 
+  if (loading) {
+    return <NovelScreenLoading theme={theme} />;
+  }
+
   return (
     <Provider>
       <View style={[styles.container, { backgroundColor: theme.background }]}>
-        {loading && <NovelScreenLoading theme={theme} />}
-        <FadeView
-          style={{
-            position: 'absolute',
-            zIndex: 1,
-            width: Dimensions.get('window').width,
-            elevation: 2,
-          }}
-          active={selected.length === 0}
-          animationDuration={100}
-        >
-          <View
-            style={{
-              backgroundColor: theme.isDark
-                ? overlay(2, theme.surface)
-                : theme.secondaryContainer,
-              paddingTop: StatusBar.currentHeight,
-              flexDirection: 'row',
-              alignItems: 'center',
-              paddingBottom: 8,
-            }}
-          >
-            <Appbar.Action
-              icon="close"
-              iconColor={theme.onBackground}
-              onPress={() => setSelected([])}
-            />
-            <Appbar.Content
-              title={selected.length}
-              titleStyle={{ color: theme.textColorPrimary }}
-            />
-
-            <Appbar.Action
-              icon="select-all"
-              iconColor={theme.onBackground}
-              onPress={() => {
-                setSelected(chapters);
+        <Portal>
+          {selected.length === 0 ? (
+            <View
+              style={{
+                position: 'absolute',
+                height: StatusBar.currentHeight + 54,
+                width: '100%',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
               }}
-            />
-          </View>
-        </FadeView>
-        {selected.length === 0 && (
-          <View
-            style={{
-              position: 'absolute',
-              zIndex: 1,
-              height: StatusBar.currentHeight + 54,
-              width: '100%',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-            }}
-          >
-            <IconButton
-              icon="arrow-left"
-              iconColor={theme.onBackground}
-              size={24}
-              style={{ marginTop: StatusBar.currentHeight + 8 }}
-              onPress={() => navigation.goBack()}
-            />
-            <Row>
+            >
               <IconButton
-                icon="share-variant"
+                icon="arrow-left"
                 iconColor={theme.onBackground}
-                size={21}
-                style={{
-                  marginTop: StatusBar.currentHeight + 8,
-                }}
-                onPress={() =>
-                  Share.share({
-                    message: novel.sourceUrl,
-                  })
-                }
+                size={24}
+                style={{ marginTop: StatusBar.currentHeight + 8 }}
+                onPress={() => navigation.goBack()}
               />
-              <IconButton
-                icon="text-box-search-outline"
-                iconColor={theme.onBackground}
-                size={21}
-                style={{
-                  marginTop: StatusBar.currentHeight + 8,
-                }}
-                onPress={() => showJumpToChapterModal(true)}
-              />
-
-              <Menu
-                visible={downloadMenu}
-                onDismiss={() => showDownloadMenu(false)}
-                anchor={
-                  <IconButton
-                    icon="download-outline"
-                    iconColor={theme.onBackground}
-                    size={24}
-                    style={{
-                      marginTop: StatusBar.currentHeight + 8,
-                    }}
-                    onPress={() => showDownloadMenu(true)}
-                  />
-                }
-                contentStyle={{
-                  backgroundColor: overlay(2, theme.surface),
-                }}
-              >
-                <Menu.Item
-                  title="Next chapter"
-                  style={{ backgroundColor: overlay(2, theme.surface) }}
-                  titleStyle={{
-                    color: theme.textColorPrimary,
-                  }}
-                  onPress={() => {
-                    dispatch(
-                      downloadAllChaptersAction(
-                        novel.sourceId,
-                        novel.novelUrl,
-                        [
-                          chapters.find(
-                            chapter =>
-                              !!chapter.read === false &&
-                              !!chapter.downloaded === false,
-                          ),
-                        ],
-                      ),
-                    );
-                    showDownloadMenu(false);
-                  }}
-                />
-                <Menu.Item
-                  title="Next 5 chapter"
-                  style={{ backgroundColor: overlay(2, theme.surface) }}
-                  titleStyle={{
-                    color: theme.textColorPrimary,
-                  }}
-                  onPress={() => {
-                    dispatch(
-                      downloadAllChaptersAction(
-                        novel.sourceId,
-                        novel.novelUrl,
-                        chapters
-                          .filter(
-                            chapter =>
-                              !!chapter.read === false &&
-                              !!chapter.downloaded === false,
-                          )
-                          .slice(0, 5),
-                      ),
-                    );
-                    showDownloadMenu(false);
-                  }}
-                />
-                <Menu.Item
-                  title="Next 10 chapter"
-                  style={{ backgroundColor: overlay(2, theme.surface) }}
-                  titleStyle={{
-                    color: theme.textColorPrimary,
-                  }}
-                  onPress={() => {
-                    dispatch(
-                      downloadAllChaptersAction(
-                        novel.sourceId,
-                        novel.novelUrl,
-                        chapters
-                          .filter(
-                            chapter =>
-                              !!chapter.read === false &&
-                              !!chapter.downloaded === false,
-                          )
-                          .slice(0, 10),
-                      ),
-                    );
-                    showDownloadMenu(false);
-                  }}
-                />
-                <Menu.Item
-                  title="Custom"
-                  style={{ backgroundColor: overlay(2, theme.surface) }}
-                  titleStyle={{ color: theme.textColorPrimary }}
-                  onPress={() => {
-                    downloadCustomChapterModal.setTrue();
-                    showDownloadMenu(false);
-                  }}
-                />
-                <Menu.Item
-                  title="Unread"
-                  style={{ backgroundColor: overlay(2, theme.surface) }}
-                  titleStyle={{
-                    color: theme.textColorPrimary,
-                  }}
-                  onPress={() => {
-                    dispatch(
-                      downloadAllChaptersAction(
-                        novel.sourceId,
-                        novel.novelUrl,
-                        chapters.filter(chapter => !!chapter.read === false),
-                      ),
-                    );
-                    showDownloadMenu(false);
-                  }}
-                />
-                <Menu.Item
-                  title="All"
-                  style={{ backgroundColor: overlay(2, theme.surface) }}
-                  titleStyle={{
-                    color: theme.textColorPrimary,
-                  }}
-                  onPress={() => {
-                    dispatch(
-                      downloadAllChaptersAction(
-                        novel.sourceId,
-                        novel.novelUrl,
-                        chapters,
-                      ),
-                    );
-                    showDownloadMenu(false);
-                  }}
-                />
-                <Menu.Item
-                  title="Delete downloads"
-                  style={{ backgroundColor: overlay(2, theme.surface) }}
-                  titleStyle={{
-                    color: theme.textColorPrimary,
+              <Row>
+                <IconButton
+                  icon="share-variant"
+                  iconColor={theme.onBackground}
+                  size={21}
+                  style={{
+                    marginTop: StatusBar.currentHeight + 8,
                   }}
                   onPress={() =>
-                    dispatch(deleteAllChaptersAction(sourceId, chapters))
+                    Share.share({
+                      message: novel.sourceUrl,
+                    })
                   }
                 />
-              </Menu>
+                <IconButton
+                  icon="text-box-search-outline"
+                  iconColor={theme.onBackground}
+                  size={21}
+                  style={{
+                    marginTop: StatusBar.currentHeight + 8,
+                  }}
+                  onPress={() => showJumpToChapterModal(true)}
+                />
 
-              <Menu
-                visible={extraMenu}
-                onDismiss={() => showExtraMenu(false)}
-                anchor={
-                  <IconButton
-                    icon="dots-vertical"
-                    iconColor={theme.onBackground}
-                    size={21}
-                    style={{
-                      marginTop: StatusBar.currentHeight + 8,
-                      marginRight: 16,
+                <Menu
+                  visible={downloadMenu}
+                  onDismiss={() => showDownloadMenu(false)}
+                  anchor={
+                    <IconButton
+                      icon="download-outline"
+                      iconColor={theme.onBackground}
+                      size={24}
+                      style={{
+                        marginTop: StatusBar.currentHeight + 8,
+                      }}
+                      onPress={() => showDownloadMenu(true)}
+                    />
+                  }
+                  contentStyle={{ backgroundColor: theme.surface2 }}
+                >
+                  <Menu.Item
+                    title="Next chapter"
+                    style={{ backgroundColor: theme.surface2 }}
+                    titleStyle={{ color: theme.onSurface }}
+                    onPress={() => {
+                      dispatch(
+                        downloadAllChaptersAction(
+                          novel.sourceId,
+                          novel.novelUrl,
+                          [
+                            chapters.find(
+                              chapter =>
+                                !!chapter.read === false &&
+                                !!chapter.downloaded === false,
+                            ),
+                          ],
+                        ),
+                      );
+                      showDownloadMenu(false);
                     }}
-                    onPress={() => showExtraMenu(true)}
                   />
-                }
-                contentStyle={{
-                  backgroundColor: overlay(2, theme.surface),
+                  <Menu.Item
+                    title="Next 5 chapter"
+                    style={{ backgroundColor: theme.surface2 }}
+                    titleStyle={{
+                      color: theme.onSurface,
+                    }}
+                    onPress={() => {
+                      dispatch(
+                        downloadAllChaptersAction(
+                          novel.sourceId,
+                          novel.novelUrl,
+                          chapters
+                            .filter(
+                              chapter =>
+                                !!chapter.read === false &&
+                                !!chapter.downloaded === false,
+                            )
+                            .slice(0, 5),
+                        ),
+                      );
+                      showDownloadMenu(false);
+                    }}
+                  />
+                  <Menu.Item
+                    title="Next 10 chapter"
+                    style={{ backgroundColor: theme.surface2 }}
+                    titleStyle={{
+                      color: theme.onSurface,
+                    }}
+                    onPress={() => {
+                      dispatch(
+                        downloadAllChaptersAction(
+                          novel.sourceId,
+                          novel.novelUrl,
+                          chapters
+                            .filter(
+                              chapter =>
+                                !!chapter.read === false &&
+                                !!chapter.downloaded === false,
+                            )
+                            .slice(0, 10),
+                        ),
+                      );
+                      showDownloadMenu(false);
+                    }}
+                  />
+                  <Menu.Item
+                    title="Custom"
+                    style={{ backgroundColor: theme.surface2 }}
+                    titleStyle={{ color: theme.onSurface }}
+                    onPress={() => {
+                      downloadCustomChapterModal.setTrue();
+                      showDownloadMenu(false);
+                    }}
+                  />
+                  <Menu.Item
+                    title="Unread"
+                    style={{ backgroundColor: theme.surface2 }}
+                    titleStyle={{
+                      color: theme.onSurface,
+                    }}
+                    onPress={() => {
+                      dispatch(
+                        downloadAllChaptersAction(
+                          novel.sourceId,
+                          novel.novelUrl,
+                          chapters.filter(chapter => !!chapter.read === false),
+                        ),
+                      );
+                      showDownloadMenu(false);
+                    }}
+                  />
+                  <Menu.Item
+                    title="All"
+                    style={{ backgroundColor: theme.surface2 }}
+                    titleStyle={{
+                      color: theme.onSurface,
+                    }}
+                    onPress={() => {
+                      dispatch(
+                        downloadAllChaptersAction(
+                          novel.sourceId,
+                          novel.novelUrl,
+                          chapters,
+                        ),
+                      );
+                      showDownloadMenu(false);
+                    }}
+                  />
+                  <Menu.Item
+                    title="Delete downloads"
+                    style={{ backgroundColor: theme.surface2 }}
+                    titleStyle={{
+                      color: theme.onSurface,
+                    }}
+                    onPress={() =>
+                      dispatch(deleteAllChaptersAction(sourceId, chapters))
+                    }
+                  />
+                </Menu>
+
+                <Menu
+                  visible={extraMenu}
+                  onDismiss={() => showExtraMenu(false)}
+                  anchor={
+                    <IconButton
+                      icon="dots-vertical"
+                      iconColor={theme.onBackground}
+                      size={21}
+                      style={{
+                        marginTop: StatusBar.currentHeight + 8,
+                        marginRight: 16,
+                      }}
+                      onPress={() => showExtraMenu(true)}
+                    />
+                  }
+                  contentStyle={{
+                    backgroundColor: theme.surface2,
+                  }}
+                >
+                  <Menu.Item
+                    title="Edit info"
+                    style={{ backgroundColor: theme.surface2 }}
+                    titleStyle={{
+                      color: theme.onSurface,
+                    }}
+                    onPress={() => {
+                      showEditInfoModal(true);
+                      showExtraMenu(false);
+                    }}
+                  />
+                  <Menu.Item
+                    title="Edit cover"
+                    style={{ backgroundColor: theme.surface2 }}
+                    titleStyle={{
+                      color: theme.onSurface,
+                    }}
+                    onPress={setCustomNovelCover}
+                  />
+                </Menu>
+              </Row>
+            </View>
+          ) : (
+            <Animated.View
+              entering={FadeIn.duration(150)}
+              exiting={FadeOut.duration(150)}
+              style={{
+                position: 'absolute',
+                width: '100%',
+                elevation: 2,
+                backgroundColor: theme.surface2,
+                paddingTop: StatusBar.currentHeight,
+                flexDirection: 'row',
+                alignItems: 'center',
+                paddingBottom: 8,
+              }}
+            >
+              <Appbar.Action
+                icon="close"
+                iconColor={theme.onBackground}
+                onPress={() => setSelected([])}
+              />
+              <Appbar.Content
+                title={`${selected.length}`}
+                titleStyle={{ color: theme.onSurface }}
+              />
+              <Appbar.Action
+                icon="select-all"
+                iconColor={theme.onBackground}
+                onPress={() => {
+                  setSelected(chapters);
                 }}
-              >
-                <Menu.Item
-                  title="Edit info"
-                  style={{ backgroundColor: overlay(2, theme.surface) }}
-                  titleStyle={{
-                    color: theme.textColorPrimary,
-                  }}
-                  onPress={() => {
-                    showEditInfoModal(true);
-                    showExtraMenu(false);
-                  }}
-                />
-                <Menu.Item
-                  title="Edit cover"
-                  style={{ backgroundColor: overlay(2, theme.surface) }}
-                  titleStyle={{
-                    color: theme.textColorPrimary,
-                  }}
-                  onPress={setCustomNovelCover}
-                />
-              </Menu>
-            </Row>
-          </View>
-        )}
+              />
+            </Animated.View>
+          )}
+        </Portal>
         <View style={{ minHeight: 3, flex: 1 }}>
           <FlashList
-            ref={ref => (flatlistRef.current = ref)}
-            estimatedItemSize={61.1}
-            data={!loading && chapters}
+            ref={flatlistRef}
+            estimatedItemSize={64}
+            data={chapters}
             extraData={[downloadQueue, selected]}
-            keyExtractor={keyExtractor}
             removeClippedSubviews={true}
             maxToRenderPerBatch={5}
             windowSize={15}
             initialNumToRender={7}
             renderItem={renderItem}
+            keyExtractor={(item, index) => 'chapter' + index}
             contentContainerStyle={{ paddingBottom: 100 }}
             ListHeaderComponent={
               <NovelInfoHeader
@@ -643,7 +632,6 @@ const Novel = ({ route, navigation }) => {
                 novel={novel}
                 theme={theme}
                 filter={filter}
-                loading={loading}
                 lastRead={lastReadChapter}
                 setCustomNovelCover={setCustomNovelCover}
                 dispatch={dispatch}
@@ -657,28 +645,25 @@ const Novel = ({ route, navigation }) => {
             refreshControl={refreshControl()}
           />
         </View>
-        {useFabForContinueReading &&
-          !loading &&
-          chapters.length > 0 &&
-          lastReadChapter && (
-            <FAB
-              style={[
-                styles.fab,
-                { backgroundColor: theme.primary, marginBottom: bottomInset },
-              ]}
-              small
-              color={theme.onPrimary}
-              uppercase={false}
-              label={novel.unread ? 'Start' : 'Resume'}
-              icon="play"
-              onPress={() => {
-                navigation.navigate(
-                  'Chapter',
-                  openChapter(novel, lastReadChapter),
-                );
-              }}
-            />
-          )}
+        {useFabForContinueReading && chapters.length > 0 && lastReadChapter && (
+          <FAB
+            style={[
+              styles.fab,
+              { backgroundColor: theme.primary, marginBottom: bottomInset },
+            ]}
+            small
+            color={theme.onPrimary}
+            uppercase={false}
+            label={novel.unread ? 'Start' : 'Resume'}
+            icon="play"
+            onPress={() => {
+              navigation.navigate(
+                'Chapter',
+                openChapter(novel, lastReadChapter),
+              );
+            }}
+          />
+        )}
         <Portal>
           <Actionbar
             active={selected.length > 0}
@@ -698,55 +683,53 @@ const Novel = ({ route, navigation }) => {
             theme={{ colors: { primary: theme.primary } }}
             style={{ backgroundColor: theme.surface, marginBottom: 32 }}
           >
-            <Text style={{ color: theme.textColorPrimary }}>
+            <Text style={{ color: theme.onSurface }}>
               Delete downloaded chapters?
             </Text>
           </Snackbar>
         </Portal>
-        {!loading && (
-          <Portal>
-            <JumpToChapterModal
-              modalVisible={jumpToChapterModal}
-              hideModal={() => showJumpToChapterModal(false)}
-              chapters={chapters}
-              novel={novel}
-              chapterListRef={flatlistRef.current}
-              navigation={navigation}
-            />
-            <EditInfoModal
-              modalVisible={editInfoModal}
-              hideModal={() => showEditInfoModal(false)}
-              novel={novel}
-              theme={theme}
-              dispatch={dispatch}
-            />
-            <DownloadCustomChapterModal
-              modalVisible={downloadCustomChapterModal.value}
-              hideModal={downloadCustomChapterModal.setFalse}
-              novel={novel}
-              chapters={chapters}
-              theme={theme}
-              dispatch={dispatch}
-            />
-            <NovelBottomSheet
-              novelUrl={novelUrl}
-              bottomSheetRef={novelBottomSheetRef}
-              dispatch={dispatch}
-              sortAndFilterChapters={sortAndFilterChapters}
-              novelId={novel.novelId}
-              sort={sort}
-              theme={theme}
-              filter={filter}
-              showChapterTitles={showChapterTitles}
-            />
-            <TrackSheet
-              bottomSheetRef={trackerSheetRef}
-              novelId={novel.novelId}
-              novelName={novel.novelName}
-              theme={theme}
-            />
-          </Portal>
-        )}
+        <Portal>
+          <JumpToChapterModal
+            modalVisible={jumpToChapterModal}
+            hideModal={() => showJumpToChapterModal(false)}
+            chapters={chapters}
+            novel={novel}
+            chapterListRef={flatlistRef.current}
+            navigation={navigation}
+          />
+          <EditInfoModal
+            modalVisible={editInfoModal}
+            hideModal={() => showEditInfoModal(false)}
+            novel={novel}
+            theme={theme}
+            dispatch={dispatch}
+          />
+          <DownloadCustomChapterModal
+            modalVisible={downloadCustomChapterModal.value}
+            hideModal={downloadCustomChapterModal.setFalse}
+            novel={novel}
+            chapters={chapters}
+            theme={theme}
+            dispatch={dispatch}
+          />
+          <NovelBottomSheet
+            novelUrl={novelUrl}
+            bottomSheetRef={novelBottomSheetRef}
+            dispatch={dispatch}
+            sortAndFilterChapters={sortAndFilterChapters}
+            novelId={novel.novelId}
+            sort={sort}
+            theme={theme}
+            filter={filter}
+            showChapterTitles={showChapterTitles}
+          />
+          <TrackSheet
+            bottomSheetRef={trackerSheetRef}
+            novelId={novel.novelId}
+            novelName={novel.novelName}
+            theme={theme}
+          />
+        </Portal>
       </View>
     </Provider>
   );

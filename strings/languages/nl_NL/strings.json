@@ -1,0 +1,235 @@
+{
+  "common": {
+    "cancel": "Annuleren",
+    "ok": "Oké",
+    "save": "Opslaan",
+    "clear": "Wissen",
+    "reset": "Reset",
+    "search": "Zoeken",
+    "install": "Installeer",
+    "newUpdateAvailable": "Nieuwe update beschikbaar",
+    "categories": "Categorieën",
+    "add": "Voeg toe",
+    "edit": "Bewerk",
+    "name": "Naam",
+    "searchFor": "Zoek naar",
+    "globally": "globaal",
+    "searchResults": "Zoekresultaten",
+    "chapters": "Chapters",
+    "submit": "Submit",
+    "retry": "Retry"
+  },
+  "library": "Bibliotheek",
+  "libraryScreen": {
+    "searchbar": "Zoek in de bibliotheek",
+    "empty": "Je bibliotheek is leeg. Voeg series toe aan je bibliotheek vanuit Bladeren.",
+    "bottomSheet": {
+      "filters": {
+        "downloaded": "Gedownload",
+        "unread": "Ongelezen",
+        "completed": "Voltooid",
+        "started": "Gestart"
+      },
+      "sortOrders": {
+        "dateAdded": "Datum toegevoegd",
+        "alphabetically": "Alfabetisch",
+        "totalChapters": "Totaal aantal hoofdstukken",
+        "download": "Downloaded",
+        "unread": "Unread",
+        "lastRead": "Last Read"
+      },
+      "display": {
+        "displayMode": "Weergavemodus",
+        "compact": "Compacte raster",
+        "comfortable": "Comfortabel raster",
+        "noTitle": "Alleen cover rooster",
+        "list": "Lijst",
+        "badges": "Badges",
+        "downloadBadges": "Gedownloade hoofdstukken",
+        "unreadBadges": "Ongelezen hoofdstukken",
+        "showNoOfItems": "Aantal items tonen"
+      }
+    }
+  },
+  "updates": "Updates",
+  "updatesScreen": {
+    "searchbar": "Updates zoeken",
+    "lastUpdatedAt": "Bibliotheek laatst bijgewerkt:",
+    "newChapters": "new Chapters",
+    "emptyView": "No recent updates"
+  },
+  "history": "Geschiedenis",
+  "historyScreen": {
+    "searchbar": "Zoek geschiedenis",
+    "clearHistorWarning": "Weet je het zeker? Alle geschiedenis zal verloren gaan."
+  },
+  "browse": "Bladeren",
+  "browseScreen": {
+    "discover": "Ontdek",
+    "searchbar": "Zoek bronnen",
+    "globalSearch": "Globaal zoeken",
+    "listEmpty": "Schakel talen in via instellingen",
+    "lastUsed": "Laatst gebruikt",
+    "pinned": "Vastgepind",
+    "all": "Alle",
+    "latest": "Recentst",
+    "addedToLibrary": "Toegevoegd aan bibliotheek",
+    "removeFromLibrary": "Verwijderd uit bibliotheek"
+  },
+  "readerScreen": {
+    "finished": "Voltooid",
+    "noNextChapter": "Er is geen volgend hoofdstuk",
+    "bottomSheet": {
+      "textSize": "Tekstgrootte",
+      "color": "Kleur",
+      "textAlign": "Tekst uitlijn",
+      "lineHeight": "Regelafstand",
+      "fontStyle": "Lettertype",
+      "fullscreen": "Volledig scherm",
+      "renderHml": "HTML weergeven",
+      "autoscroll": "Automatisch scrollen",
+      "verticalSeekbar": "Verticale zoekbalk",
+      "showBatteryAndTime": "Toon batterij en tijd",
+      "showProgressPercentage": "Voortgangspercentage weergeven",
+      "swipeGestures": "Veeg naar links of rechts om tussen de hoofdstukken te navigeren",
+      "allowTextSelection": "Tekstselectie toestaan",
+      "useChapterDrawerSwipeNavigation": "Swipe right to open drawer",
+      "removeExtraSpacing": "Remove extra paragraph spacing",
+      "volumeButtonsScroll": "Volume buttons scroll",
+      "showSwipeMargins": "Show swipe margins"
+    },
+    "drawer": {
+      "scrollToCurrentChapter": "Scroll to current chapter",
+      "scrollToTop": "Scroll to top",
+      "scrollToBottom": "Scroll to bottom"
+    }
+  },
+  "novelScreen": {
+    "addToLibaray": "Toevoegen aan bibliotheek",
+    "inLibaray": "In bibliotheek",
+    "continueReading": "Verder lezen",
+    "chapters": "hoofdstukken",
+    "migrate": "Migreer",
+    "noSummary": "Geen samenvatting",
+    "bottomSheet": {
+      "filter": "Filter",
+      "sort": "Sorteer",
+      "display": "Weergave"
+    },
+    "jumpToChapterModal": {
+      "jumpToChapter": "Jump to Chapter",
+      "openChapter": "Open Chapter",
+      "chapterName": "Chapter Name",
+      "chapterNumber": "Chapter Number",
+      "error": {
+        "validChapterName": "Enter a valid chapter name",
+        "validChapterNumber": "Enter a valid chapter number"
+      }
+    }
+  },
+  "more": "Meer",
+  "moreScreen": {
+    "settings": "Instellingen",
+    "settingsScreen": {
+      "generalSettings": "Algemeen",
+      "generalSettingsScreen": {
+        "display": "Display",
+        "displayMode": "Display Mode",
+        "itemsPerRow": "Items per row",
+        "itemsPerRowLibrary": "Items per row in library",
+        "novelBadges": "Novel Badges",
+        "novelSort": "Novel Sort",
+        "updateLibrary": "Update library on launch",
+        "useFAB": "Use FAB in Library",
+        "novel": "Novel",
+        "chapterSort": "Default chapter sort",
+        "bySource": "By source",
+        "asc": "(Ascending)",
+        "desc": "(Descending)",
+        "globalUpdate": "Global update",
+        "updateOngoing": "Only update ongoing novels",
+        "refreshMetadata": "Automatically refresh metadata",
+        "refreshMetadataDescription": "Check for new cover and details when updating library",
+        "updateTime": "Show last update time",
+        "autoDownload": "Auto-download",
+        "downloadNewChapters": "Download new chapters",
+        "disableHapticFeedback": "Disable haptic feedback"
+      },
+      "readerSettings": {
+        "title": "Lezer",
+        "readerTheme": "Lezer thema",
+        "preset": "Voorinstelling",
+        "backgroundColor": "Achtergrondkleur",
+        "textColor": "Tekstkleur",
+        "backgroundColorModal": "Lezer achtergrondkleur",
+        "textColorModal": "Lezer tekstkleur",
+        "verticalSeekbarDesc": "Schakel tussen verticale en horizontale zoekbalk",
+        "autoScrollInterval": "Auto scroll interval (in seconden)",
+        "autoScrollOffset": "Auto scroll verschuiving (schermhoogte standaard)",
+        "saveCustomTheme": "Aangepaste thema opslaan",
+        "deleteCustomTheme": "Aangepaste thema verwijderen",
+        "customCSS": "Aangepaste CSS"
+      },
+      "browseSettings": "Blader instellingen",
+      "browseSettingsScreen": {
+        "onlyShowPinnedSources": "Alleen vastgepinde bronnen weergeven",
+        "languages": "Talen",
+        "searchAllSources": "Zoek in alle Bronnen",
+        "searchAllWarning": "Het zoeken van een groot aantal bronnen kan de app bevriezen tot het zoeken is voltooid."
+      }
+    }
+  },
+  "sourceScreen": {
+    "noResultsFound": "Geen resultaten gevonden"
+  },
+  "statsScreen": {
+    "title": "Statistieken",
+    "titlesInLibrary": "Titels in bibliotheek",
+    "totalChapters": "Total chapters",
+    "readChapters": "Lees hoofdstukken",
+    "unreadChapters": "Ongelezen hoofdstukken",
+    "downloadedChapters": "Gedownloade hoofdstukken",
+    "genreDistribution": "Genre verdeling",
+    "statusDistribution": "Status verdeling"
+  },
+  "globalSearch": {
+    "searchIn": "Zoek een roman in",
+    "allSources": "alle bronnen",
+    "pinnedSources": "vastgepinde bronnen"
+  },
+  "advancedSettings": {
+    "deleteReadChapters": "Verwijder gelezen hoofdstukken",
+    "deleteReadChaptersDialogTitle": "Weet je het zeker? Alle hoofdstukken die zijn gemarkeerd als gelezen worden verwijderd."
+  },
+  "date": {
+    "calendar": {
+      "sameDay": "[Today]",
+      "nextDay": "[Morgen]",
+      "lastDay": "[Gisteren]",
+      "lastWeek": "[Last] dddd"
+    }
+  },
+  "categories": {
+    "addCategories": "Categorie toevoegen",
+    "editCategories": "Categorienaam wijzigen",
+    "setCategories": "Categorieën instellen",
+    "header": "Categorieën bewerken",
+    "emptyMsg": "Je hebt geen categorieën. Tik op de plus-knop om er een te maken om je bibliotheek te organiseren",
+    "setModalEmptyMsg": "Je hebt geen categorieën. Tik op de plus-knop om er een te maken om je bibliotheek te organiseren",
+    "deleteModal": {
+      "header": "Categorie verwijderen",
+      "desc": "Wilt u deze categorie verwijderen"
+    },
+    "duplicateError": "Er bestaat al een categorie met deze naam!",
+    "defaultCategory": "Standaard categorie"
+  },
+  "settings": {
+    "icognitoMode": "Incognito modus",
+    "downloadedOnly": "Alleen gedownloaden"
+  },
+  "downloadScreen": {
+    "dbInfo": "Downloads are saved in a SQLite Database.",
+    "downloadChapters": "downloaded Chapters",
+    "noDownloads": "No downloads"
+  }
+}

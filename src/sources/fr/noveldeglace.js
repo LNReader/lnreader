@@ -6,8 +6,6 @@ const sourceName = 'NovelDeGlace';
 const baseUrl = 'https://noveldeglace.com/';
 
 const popularNovels = async page => {
-  const totalPages = 1;
-
   let url = baseUrl + 'roman';
 
   const result = await fetch(url);
@@ -35,7 +33,7 @@ const popularNovels = async page => {
     novels.push(novel);
   });
 
-  return { novels, totalPages };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

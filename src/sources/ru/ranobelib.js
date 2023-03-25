@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import * as cheerio from 'cheerio';
-import { defaultTo } from 'lodash';
+import { defaultTo } from 'lodash-es';
 import { Status } from '../helpers/constants';
 import { FilterInputs } from '../types/filterTypes';
 
@@ -11,7 +11,6 @@ const baseUrl = 'https://ranobelib.me';
 var ui = null;
 
 const popularNovels = async (page, { showLatestNovels, filters }) => {
-  const totalPages = 29;
   let url = `${baseUrl}/manga-list?sort=`;
   url += defaultTo(
     filters?.sort,
@@ -65,7 +64,7 @@ const popularNovels = async (page, { showLatestNovels, filters }) => {
     novels.push(novel);
   });
 
-  return { totalPages, novels };
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

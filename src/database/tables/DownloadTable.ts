@@ -7,3 +7,6 @@ export const createDownloadTableQuery = `
         FOREIGN KEY (downloadChapterId) REFERENCES chapters(chapterId) ON DELETE CASCADE
       )
   `;
+
+export const createDownloadIdIndex =
+  'CREATE INDEX IF NOT EXISTS downloadChapterIdIndex ON downloads(downloadChapterId)';

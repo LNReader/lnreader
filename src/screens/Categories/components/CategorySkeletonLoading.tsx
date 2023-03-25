@@ -2,13 +2,13 @@ import React, { memo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder';
 import { LinearGradient } from 'expo-linear-gradient';
-import { MD3ThemeType } from '@theme/types';
+import { ThemeColors } from '@theme/types';
 import getLoadingColors from '@utils/getLoadingColors';
 
 interface Props {
   width: number;
   height: number;
-  theme: MD3ThemeType;
+  theme: ThemeColors;
 }
 
 const CategorySkeletonLoading: React.FC<Props> = ({ height, width, theme }) => {

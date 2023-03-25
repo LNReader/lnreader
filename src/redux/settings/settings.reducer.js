@@ -63,17 +63,13 @@ export const initialState = {
   fullScreenMode: true,
   swipeGestures: false,
   showScrollPercentage: true,
-  useWebViewForChapter: false,
-  wvUseNewSwipes: false,
-  wvShowSwipeMargins: true,
-  wvUseVolumeButtons: false,
+  useVolumeButtons: false,
   showBatteryAndTime: false,
   autoScroll: false,
   autoScrollInterval: 10,
   autoScrollOffset: null,
   verticalSeekbar: true,
   removeExtraParagraphSpacing: false,
-  useChapterDrawerSwipeNavigation: true,
 
   reader: {
     theme: '#292832',
@@ -84,6 +80,7 @@ export const initialState = {
     fontFamily: '',
     lineHeight: 1.5,
     customCSS: '',
+    customJS: '',
   },
 };
 
