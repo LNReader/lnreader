@@ -1,6 +1,6 @@
 import { FilterInputs } from '../../types/filterTypes';
-import { htmlToText } from '../helpers/htmlToText';
-import { Status } from '../helpers/constants';
+import { htmlToText } from '../../helpers/htmlToText';
+import { Status } from '../../helpers/constants';
 import * as cheerio from 'cheerio';
 import { defaultTo } from 'lodash-es';
 
@@ -9,7 +9,74 @@ class RulateScraper {
     this.sourceId = sourceId;
     this.baseUrl = baseUrl;
     this.sourceName = sourceName;
-    this.filter = filter;
+    this.filters = [
+      {
+        key: 'sort',
+        label: 'Сортировка',
+        values: [
+          { label: 'По рейтингу', value: '6' },
+          { label: 'По степени готовности', value: '0' },
+          { label: 'По названию на языке оригинала', value: '1' },
+          { label: 'По названию на языке перевода', value: '2' },
+          { label: 'По дате создания', value: '3' },
+          { label: 'По дате последней активности', value: '4' },
+          { label: 'По просмотрам', value: '5' },
+          { label: 'По кол-ву переведённых глав', value: '7' },
+          { label: 'По кол-ву лайков', value: '8' },
+          { label: 'По кол-ву страниц', value: '10' },
+          { label: 'По кол-ву бесплатных глав', value: '11' },
+          { label: 'По кол-ву рецензий', value: '12' },
+          { label: 'По кол-ву в закладках', value: '13' },
+          { label: 'По кол-ву в избранном', value: '14' },
+        ],
+        inputType: FilterInputs.Picker,
+      },
+      {
+        key: 'type',
+        label: 'Тип',
+        values: [
+          { label: 'Неважно', value: '0' },
+          { label: 'Только переводы', value: '1' },
+          { label: 'Только авторские', value: '2' },
+        ],
+        inputType: FilterInputs.Picker,
+      },
+      {
+        key: 'atmosphere',
+        label: 'Атмосфера',
+        values: [
+          { label: 'Неважно', value: '0' },
+          { label: 'Позитивная', value: '1' },
+          { label: 'Dark', value: '2' },
+        ],
+        inputType: FilterInputs.Picker,
+      },
+      {
+        key: 'trash',
+        label: 'Другое',
+        values: [
+          { label: 'Готовые на 100%', value: 'ready' },
+          { label: 'Доступные для перевода', value: 'tr' },
+          { label: 'Доступные для скачивания', value: 'gen' },
+          { label: 'Завершённые проекты', value: 'wealth' },
+          { label: 'Распродажа', value: 'discount' },
+          { label: 'Только онгоинги', value: 'ongoings' },
+          { label: 'Убрать машинный', value: 'remove_machinelate' },
+        ],
+        inputType: FilterInputs.Checkbox,
+      },
+      ...filter,
+      {
+        key: 'adult',
+        label: 'Возрастные ограничения',
+        values: [
+          { label: 'Все', value: '0' },
+          { label: 'Убрать 18+', value: '1' },
+          { label: 'Только 18+', value: '2' },
+        ],
+        inputType: FilterInputs.Picker,
+      },
+    ];
   }
 
   async popularNovels(page, { showLatestNovels, filters }) {
@@ -206,76 +273,6 @@ class RulateScraper {
 
     return novels;
   }
-
-  filters = [
-    {
-      key: 'sort',
-      label: 'Сортировка',
-      values: [
-        { label: 'По рейтингу', value: '6' },
-        { label: 'По степени готовности', value: '0' },
-        { label: 'По названию на языке оригинала', value: '1' },
-        { label: 'По названию на языке перевода', value: '2' },
-        { label: 'По дате создания', value: '3' },
-        { label: 'По дате последней активности', value: '4' },
-        { label: 'По просмотрам', value: '5' },
-        { label: 'По кол-ву переведённых глав', value: '7' },
-        { label: 'По кол-ву лайков', value: '8' },
-        { label: 'По кол-ву страниц', value: '10' },
-        { label: 'По кол-ву бесплатных глав', value: '11' },
-        { label: 'По кол-ву рецензий', value: '12' },
-        { label: 'По кол-ву в закладках', value: '13' },
-        { label: 'По кол-ву в избранном', value: '14' },
-      ],
-      inputType: FilterInputs.Picker,
-    },
-    {
-      key: 'type',
-      label: 'Тип',
-      values: [
-        { label: 'Неважно', value: '0' },
-        { label: 'Только переводы', value: '1' },
-        { label: 'Только авторские', value: '2' },
-      ],
-      inputType: FilterInputs.Picker,
-    },
-
-    {
-      key: 'atmosphere',
-      label: 'Атмосфера',
-      values: [
-        { label: 'Неважно', value: '0' },
-        { label: 'Позитивная', value: '1' },
-        { label: 'Dark', value: '2' },
-      ],
-      inputType: FilterInputs.Picker,
-    },
-    {
-      key: 'trash',
-      label: 'Другое',
-      values: [
-        { label: 'Готовые на 100%', value: 'ready' },
-        { label: 'Доступные для перевода', value: 'tr' },
-        { label: 'Доступные для скачивания', value: 'gen' },
-        { label: 'Завершённые проекты', value: 'wealth' },
-        { label: 'Распродажа', value: 'discount' },
-        { label: 'Только онгоинги', value: 'ongoings' },
-        { label: 'Убрать машинный', value: 'remove_machinelate' },
-      ],
-      inputType: FilterInputs.Checkbox,
-    },
-    ...this.filter,
-    {
-      key: 'adult',
-      label: 'Возрастные ограничения',
-      values: [
-        { label: 'Все', value: '0' },
-        { label: 'Убрать 18+', value: '1' },
-        { label: 'Только 18+', value: '2' },
-      ],
-      inputType: FilterInputs.Picker,
-    },
-  ];
 }
 
 export default RulateScraper;
