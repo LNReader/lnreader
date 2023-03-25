@@ -1,4 +1,3 @@
-import { FilterInputs } from '../types/filterTypes';
 import MultiSrcScraper from './RulateScraper';
 
 const RulateScraper = new MultiSrcScraper(

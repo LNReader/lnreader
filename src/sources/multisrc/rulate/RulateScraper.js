@@ -1,4 +1,4 @@
-import { FilterInputs } from '../types/filterTypes';
+import { FilterInputs } from '../../types/filterTypes';
 import { htmlToText } from '../helpers/htmlToText';
 import { Status } from '../helpers/constants';
 import * as cheerio from 'cheerio';
