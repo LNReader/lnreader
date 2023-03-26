@@ -1,3 +1,4 @@
+import { FilterInputs } from '../../types/filterTypes';
 import MultiSrcScraper from './RulateScraper';
 
 const RulateScraper = new MultiSrcScraper(
@@ -194,6 +195,7 @@ const RulateScraper = new MultiSrcScraper(
           'value': '52',
         },
       ],
+      inputType: FilterInputs.Checkbox,
     },
     {
       key: 'tags',
@@ -4664,6 +4666,7 @@ const RulateScraper = new MultiSrcScraper(
           'value': '3191',
         },
       ],
+      inputType: FilterInputs.Checkbox,
     },
   ],
 );
@@ -4838,6 +4841,7 @@ const ErolateScraper = new MultiSrcScraper(
           'value': '31',
         },
       ],
+      inputType: FilterInputs.Checkbox,
     },
     {
       key: 'tags',
@@ -6328,6 +6332,7 @@ const ErolateScraper = new MultiSrcScraper(
           'value': '334',
         },
       ],
+      inputType: FilterInputs.Checkbox,
     },
   ],
 );

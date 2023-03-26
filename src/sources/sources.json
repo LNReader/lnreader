@@ -887,5 +887,12 @@
     "url": "https://erolate.com",
     "lang": "Russian",
     "icon": "https://erolate.com/i/logo/erolate.png"
+  },
+  {
+    "sourceId": 149,
+    "sourceName": "РуРанобэ",
+    "url": "https://ruranobe.ru",
+    "lang": "Russian",
+    "icon": "https://ruranobe.ru/logo.png"
   }
 ]

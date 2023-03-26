@@ -215,7 +215,7 @@ class RulateScraper {
   }
 
   async parseChapter(novelUrl, chapterUrl) {
-    let result = await fetch(baseUrl + chapterUrl);
+    let result = await fetch(this.baseUrl + chapterUrl);
     if (result.url.includes('mature?path=')) {
       const formData = new FormData();
       formData.append('path', novelUrl);
@@ -226,7 +226,7 @@ class RulateScraper {
         body: formData,
       });
 
-      result = await fetch(baseUrl + chapterUrl);
+      result = await fetch(this.baseUrl + chapterUrl);
     }
     const body = await result.text();
     const loadedCheerio = cheerio.load(body);
@@ -234,7 +234,7 @@ class RulateScraper {
     loadedCheerio('.content-text img').each(function () {
       if (!loadedCheerio(this).attr('src')?.startsWith('http')) {
         let src = loadedCheerio(this).attr('src');
-        loadedCheerio(this).attr('src', baseUrl + src);
+        loadedCheerio(this).attr('src', this.baseUrl + src);
       }
     });
 
@@ -265,7 +265,7 @@ class RulateScraper {
 
     json.forEach(item => {
       const novelName = item.title_one + ' / ' + item.title_two;
-      const novelCover = baseUrl + item.img;
+      const novelCover = this.baseUrl + item.img;
       const novelUrl = item.url;
 
       novels.push({ sourceId: this.sourceId, novelName, novelCover, novelUrl });

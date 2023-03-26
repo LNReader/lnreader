@@ -138,6 +138,7 @@ import {
   RulateScraper,
   ErolateScraper,
 } from './multisrc/rulate/RulateGenerator';
+import { RuRanobeScraper } from './multisrc/noveltl/NovelTlGenerator';
 
 interface PopularNovelsResponse {
   novels: SourceNovelItem[];
