@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import * as cheerio from 'cheerio';
 import { Status } from '../../helpers/constants';
 import { htmlToText } from '../../helpers/htmlToText';
@@ -28,11 +29,10 @@ class ReadwnScraper {
       body: JSON.stringify({
         operationName: 'Projects',
         query:
-          'query Projects($hostname: String!, $withBanners: Boolean!, $filter: SearchFilter, $page: Int, $limit: Int) {  projects(section: {fullUrl: $hostname}, filter: $filter, page: {pageSize: $limit, pageNumber: $page}) {    totalElements    content {      ...bannerFields @include(if: $withBanners)      ...coverFields @skip(if: $withBanners)      __typename    }    __typename  }}fragment bannerFields on Project {  id  url  title  issueStatus  main  translationStatus  banner {    url    __typename  }  volumes {    totalElements    __typename  }  lastUpdate  rating {    rating    voteCount    __typename  }  __typename}fragment coverFields on Project {  title  url  covers {    thumbnail(width: 240)    __typename  }  main  shortDescription  rating {    rating    voteCount    __typename  }  __typename}',
+          'query Projects($hostname:String! $filter:SearchFilter $page:Int $limit:Int){projects(section:{fullUrl:$hostname}filter:$filter page:{pageSize:$limit,pageNumber:$page}){totalElements content{title url covers{thumbnail(width:240)__typename}__typename}__typename}}',
         variables: {
           filter: {},
           hostname: this.domain,
-          withBanners: false,
           limit: 40,
           page,
         },
@@ -68,7 +68,7 @@ class ReadwnScraper {
       body: JSON.stringify({
         operationName: 'Book',
         query:
-          'query Book($url: String) {  project(project: {fullUrl: $url}) {    id    title    titles(langs: ["jp", "cn", "romaji", "translit", "pinyin", "en", "ru", "*"]) {      lang      value      __typename    }    issueStatus    translationStatus    lastUpdate    url    franchiseNovel    franchiseSpinOff    franchiseSS    franchiseManga    franchiseAnime    franchiseWeb    oneVolume    covers {      thumbnail(width: 240)      url      __typename    }    rating {      rating      voteCount      __typename    }    persons(langs: ["ru", "en", "*"], roles: ["author", "illustrator", "original_story", "original_design"]) {      role      name {        firstName        lastName        __typename      }      __typename    }    genres {      id      type      nameRu      nameEng      __typename    }    tags {      id      type      nameRu      nameEng      __typename    }    annotation {      text      __typename    }    subprojects {      content {        id        title        volumes {          content {            url            externalUrl            file            title            type            shortName            status            statusHint            chapters {              url              __typename            }            __typename          }          __typename        }        __typename      }      __typename    }    requisites {      title      qiwi      wmr      wmu      wmz      wme      wmb      wmg      wmk      wmx      yandex      showYandexMoneyButton      showYandexCardButton      showYandexMobileButton      paypal      paypalButtonId      card      bitcoin      patreonUrl      patreonBePatronUserId      boostyUrl      sbpPhoneNumber      custom      __typename    }    updates {      content {        type        showTime        description        url        title        updated        shortUpdated        sectionId        projectId        volumeId        chapterId        main        __typename      }      __typename    }    __typename  }}',
+          'query Book($url:String){project(project:{fullUrl:$url}){id title translationStatus url covers{thumbnail(width:240)url __typename}persons(langs:["ru","en","*"]roles:["author","illustrator","original_story","original_design"]){role name{firstName lastName __typename}__typename}genres{nameRu nameEng __typename}tags{nameRu nameEng __typename}annotation{text __typename}subprojects{content{id title volumes{content{url title shortName chapters{title publishDate url __typename}__typename}__typename}__typename}__typename}__typename}}',
         variables: {
           hostname: this.domain,
           project: novelUrl,
@@ -108,10 +108,11 @@ class ReadwnScraper {
     let novelChapters = [];
     json.data.project.subprojects.content.forEach(work =>
       work.volumes.content.forEach(volume =>
-        volume.chapters.forEach((chapter, i) =>
+        volume.chapters.forEach(chapter =>
           novelChapters.push({
-            chapterName: `${volume.shortName} Глава ${i + 1}`,
+            chapterName: volume.shortName + ' ' + chapter.title,
             chapterUrl: volume.url + '/' + chapter.url,
+            releaseDate: dayjs(chapter.publishDate).format('LLL'),
           }),
         ),
       ),
@@ -122,6 +123,8 @@ class ReadwnScraper {
   }
 
   async parseChapter(novelUrl, chapterUrl) {
+    const baseUrl = this.baseUrl;
+    const sourceId = this.sourceId;
     const result = await fetch('https://api.novel.tl/api/site/v2/graphql', {
       method: 'post',
       headers: {
@@ -135,11 +138,11 @@ class ReadwnScraper {
         'Sec-Fetch-Mode': 'cors',
         'Sec-Fetch-Site': 'cross-site',
       },
-      referrer: this.baseUrl,
+      referrer: baseUrl,
       body: JSON.stringify({
         operationName: 'EReaderData',
         query:
-          'query EReaderData($url: String!, $chapterSelector: Selector!) {  project(project: {fullUrl: $url}) {    id    title    url    __typename  }  volume(volume: {fullUrl: $url}) {    type    title    shortName    url    topicId    prev {      url      title      shortTitle      __typename    }    next {      url      title      shortTitle      __typename    }    chapters {      id      parentChapterId      url      title      published      __typename    }    __typename  }  chapter(chapter: $chapterSelector) {    ...chapterInfo    __typename  }}fragment chapterInfo on Chapter {  id  title  url  next {    url    __typename  }  text {    text    __typename  }  published  __typename}',
+          'query EReaderData($url:String!,$chapterSelector:Selector!){project(project:{fullUrl:$url}){id title url __typename}chapter(chapter:$chapterSelector){id title text{text __typename}__typename}}',
         variables: {
           chapterSelector: {
             fullUrl: this.domain + '/r/' + novelUrl + '/' + chapterUrl,
@@ -150,16 +153,16 @@ class ReadwnScraper {
     });
     const json = await result.json();
 
-    const loadedCheerio = cheerio.load(json.data.chapter.text);
+    const loadedCheerio = cheerio.load(json.data.chapter.text.text);
     loadedCheerio('img').each(function () {
       if (!loadedCheerio(this).attr('src')?.startsWith('http')) {
         let src = loadedCheerio(this).attr('src');
-        loadedCheerio(this).attr('src', this.baseUrl + src);
+        loadedCheerio(this).attr('src', baseUrl + src);
       }
     });
 
     const chapter = {
-      sourceId: this.sourceId,
+      sourceId,
       novelUrl,
       chapterUrl,
       chapterName: json.data.chapter.title,
@@ -187,13 +190,12 @@ class ReadwnScraper {
       body: JSON.stringify({
         operationName: 'Projects',
         query:
-          'query Projects($hostname: String!, $withBanners: Boolean!, $filter: SearchFilter, $page: Int, $limit: Int) {  projects(section: {fullUrl: $hostname}, filter: $filter, page: {pageSize: $limit, pageNumber: $page}) {    totalElements    content {      ...bannerFields @include(if: $withBanners)      ...coverFields @skip(if: $withBanners)      __typename    }    __typename  }}fragment bannerFields on Project {  id  url  title  issueStatus  main  translationStatus  banner {    url    __typename  }  volumes {    totalElements    __typename  }  lastUpdate  rating {    rating    voteCount    __typename  }  __typename}fragment coverFields on Project {  title  url  covers {    thumbnail(width: 240)    __typename  }  main  shortDescription  rating {    rating    voteCount    __typename  }  __typename}',
+          'query Projects($hostname:String! $filter:SearchFilter $page:Int $limit:Int){projects(section:{fullUrl:$hostname}filter:$filter page:{pageSize:$limit,pageNumber:$page}){totalElements content{title url covers{thumbnail(width:240)__typename}__typename}__typename}}',
         variables: {
           filter: {
             query: searchTerm,
           },
           hostname: this.domain,
-          withBanners: false,
           limit: 40,
           page: 1,
         },

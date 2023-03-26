@@ -80,7 +80,9 @@ class RulateScraper {
   }
 
   async popularNovels(page, { showLatestNovels, filters }) {
-    let url = this.baseUrl + '/search?t=&cat=2';
+    const baseUrl = this.baseUrl;
+    const sourceId = this.sourceId;
+    let url = baseUrl + '/search?t=&cat=2';
     url += '&sort=' + defaultTo(filters?.sort, showLatestNovels ? '4' : '6');
     url += '&type=' + defaultTo(filters?.type, '0');
     url += '&atmosphere=' + defaultTo(filters?.atmosphere, '0');
@@ -110,9 +112,9 @@ class RulateScraper {
       'ul[class="search-results"] > li:not([class="ad_type_catalog"])',
     ).each(function () {
       novels.push({
-        sourceId: this.sourceId,
+        sourceId,
         novelName: loadedCheerio(this).find('p > a').text(),
-        novelCover: this.baseUrl + loadedCheerio(this).find('img').attr('src'),
+        novelCover: baseUrl + loadedCheerio(this).find('img').attr('src'),
         novelUrl: loadedCheerio(this).find('p > a').attr('href'),
       });
     });
@@ -215,7 +217,9 @@ class RulateScraper {
   }
 
   async parseChapter(novelUrl, chapterUrl) {
-    let result = await fetch(this.baseUrl + chapterUrl);
+    const baseUrl = this.baseUrl;
+    const sourceId = this.sourceId;
+    let result = await fetch(baseUrl + chapterUrl);
     if (result.url.includes('mature?path=')) {
       const formData = new FormData();
       formData.append('path', novelUrl);
@@ -226,7 +230,7 @@ class RulateScraper {
         body: formData,
       });
 
-      result = await fetch(this.baseUrl + chapterUrl);
+      result = await fetch(baseUrl + chapterUrl);
     }
     const body = await result.text();
     const loadedCheerio = cheerio.load(body);
@@ -234,7 +238,7 @@ class RulateScraper {
     loadedCheerio('.content-text img').each(function () {
       if (!loadedCheerio(this).attr('src')?.startsWith('http')) {
         let src = loadedCheerio(this).attr('src');
-        loadedCheerio(this).attr('src', this.baseUrl + src);
+        loadedCheerio(this).attr('src', baseUrl + src);
       }
     });
 
@@ -246,7 +250,7 @@ class RulateScraper {
     const chapterText = loadedCheerio('.content-text').html();
 
     const chapter = {
-      sourceId: this.sourceId,
+      sourceId,
       novelUrl,
       chapterUrl,
       chapterName,

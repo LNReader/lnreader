@@ -915,5 +915,89 @@
     "url": "https://kg.novel.tl",
     "lang": "Russian",
     "icon": "https://kg.novel.tl/logo.png"
+  },
+  {
+    "sourceId": 153,
+    "sourceName": "Аксел",
+    "url": "https://axel.znovel.space",
+    "lang": "Russian",
+    "icon": "https://axel.znovel.space/logo.png"
+  },
+  {
+    "sourceId": 154,
+    "sourceName": "Уголок дракона",
+    "url": "https://sferdrakon.novel.tl",
+    "lang": "Russian",
+    "icon": "https://sferdrakon.novel.tl/logo.png"
+  },
+  {
+    "sourceId": 155,
+    "sourceName": "Авторские работы",
+    "url": "https://original.novel.tl",
+    "lang": "Russian",
+    "icon": "https://original.novel.tl/logo.png"
+  },
+  {
+    "sourceId": 156,
+    "sourceName": "Snailulitka",
+    "url": "https://snailulitka.novel.tl",
+    "lang": "Russian",
+    "icon": "https://snailulitka.novel.tl/logo.png"
+  },
+  {
+    "sourceId": 157,
+    "sourceName": "TsundokuTrans",
+    "url": "https://tsundoku.novel.tl",
+    "lang": "Russian",
+    "icon": "https://tsundoku.novel.tl/logo.png"
+  },
+  {
+    "sourceId": 158,
+    "sourceName": "Japit Comics",
+    "url": "https://japit.novel.tl",
+    "lang": "Russian",
+    "icon": "https://japit.novel.tl/logo.png"
+  },
+  {
+    "sourceId": 159,
+    "sourceName": "Белманга",
+    "url": "https://bel.novel.tl",
+    "lang": "Belarus",
+    "icon": "https://bel.novel.tl/logo.png"
+  },
+  {
+    "sourceId": 160,
+    "sourceName": "Север и Юг",
+    "url": "https://red.novel.tl",
+    "lang": "Russian",
+    "icon": "https://red.novel.tl/logo.png"
+  },
+  {
+    "sourceId": 161,
+    "sourceName": "SivensiTeam",
+    "url": "https://SivensiTeam.novel.tl",
+    "lang": "Russian",
+    "icon": "https://SivensiTeam.novel.tl/logo.png"
+  },
+  {
+    "sourceId": 162,
+    "sourceName": "Сказочные истории",
+    "url": "https://si.novel.tl",
+    "lang": "Russian",
+    "icon": "https://si.novel.tl/logo.png"
+  },
+  {
+    "sourceId": 163,
+    "sourceName": "K.O.D.",
+    "url": "https://kod.novel.tl",
+    "lang": "Russian",
+    "icon": "https://kod.novel.tl/logo.png"
+  },
+  {
+    "sourceId": 164,
+    "sourceName": "Инь-Ян",
+    "url": "https://yinandyang.novel.tl",
+    "lang": "Russian",
+    "icon": "https://yinandyang.novel.tl/logo.png"
   }
 ]

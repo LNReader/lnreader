@@ -143,6 +143,18 @@ import {
   UkrRanobeScraper,
   NightnovelScraper,
   KgRanobeScraper,
+  AxelScraper,
+  SferdrakonScraper,
+  OriginalScraper,
+  SnailulitkaScraper,
+  TsundokuScraper,
+  JapitScraper,
+  BelScraper,
+  RedScraper,
+  SivensiTeamScraper,
+  SiScraper,
+  KodScraper,
+  YinandyangScraper,
 } from './multisrc/noveltl/NovelTlGenerator';
 
 interface PopularNovelsResponse {
@@ -302,6 +314,18 @@ export const sourceManager = (sourceId: number): Scraper => {
     150: UkrRanobeScraper, // @ts-ignore
     151: NightnovelScraper, // @ts-ignore
     152: KgRanobeScraper, // @ts-ignore
+    153: AxelScraper, // @ts-ignore
+    154: SferdrakonScraper, // @ts-ignore
+    155: OriginalScraper, // @ts-ignore
+    156: SnailulitkaScraper, // @ts-ignore
+    157: TsundokuScraper, // @ts-ignore
+    158: JapitScraper, // @ts-ignore
+    159: BelScraper, // @ts-ignore
+    160: RedScraper, // @ts-ignore
+    161: SivensiTeamScraper, // @ts-ignore
+    162: SiScraper, // @ts-ignore
+    163: KodScraper, // @ts-ignore
+    164: YinandyangScraper, // @ts-ignore
   };
 
   return scrapers[sourceId];
