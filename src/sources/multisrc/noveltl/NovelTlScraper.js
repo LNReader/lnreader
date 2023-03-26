@@ -5,7 +5,7 @@ import { htmlToText } from '../../helpers/htmlToText';
 import { FilterInputs } from '../../types/filterTypes';
 import tags from './NovelTl.json';
 
-class ReadwnScraper {
+class NovelTlScraper {
   constructor(sourceId, baseUrl, sourceName) {
     this.sourceId = sourceId;
     this.baseUrl = baseUrl;
@@ -103,13 +103,13 @@ class ReadwnScraper {
           : Status.COMPLETED,
     };
 
-    let tags = []
+    let genres = []
       .concat(json.data.project.tags, json.data.project.genres)
       .map(item => item?.nameRu || item?.nameEng)
       .filter(item => item);
 
-    if (tags.length > 0) {
-      novel.genre = tags.join(',');
+    if (genres.length > 0) {
+      novel.genre = genres.join(',');
     }
 
     let novelChapters = [];
@@ -210,15 +210,18 @@ class ReadwnScraper {
     });
     const json = await result.json();
 
-    let novels = json?.data?.projects?.content?.map(novel => ({
-      novelName: novel.title,
-      novelCover: this.baseUrl + novel.covers[0].thumbnail,
-      novelUrl: novel.url,
-      sourceId: this.sourceId,
-    }));
+    let novels = [];
+    json?.data?.projects?.content?.forEach(novel =>
+      novels.push({
+        novelName: novel.title,
+        novelCover: this.baseUrl + novel.covers[0].thumbnail,
+        novelUrl: novel.url,
+        sourceId: this.sourceId,
+      }),
+    );
 
     return novels;
   }
 }
 
-export default ReadwnScraper;
+export default NovelTlScraper;
