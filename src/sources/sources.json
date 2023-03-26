@@ -894,5 +894,26 @@
     "url": "https://ruranobe.ru",
     "lang": "Russian",
     "icon": "https://ruranobe.ru/logo.png"
+  },
+  {
+    "sourceId": 150,
+    "sourceName": "Переклади українською мовою",
+    "url": "https://ukr.novel.tl",
+    "lang": "Ukraine",
+    "icon": "https://ukr.novel.tl/logo.png"
+  },
+  {
+    "sourceId": 151,
+    "sourceName": "Nightnovel",
+    "url": "https://nightnovel.online",
+    "lang": "Russian",
+    "icon": "https://nightnovel.online/logo.png"
+  },
+  {
+    "sourceId": 152,
+    "sourceName": "Карманная галактика",
+    "url": "https://kg.novel.tl",
+    "lang": "Russian",
+    "icon": "https://kg.novel.tl/logo.png"
   }
 ]

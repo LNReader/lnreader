@@ -138,7 +138,12 @@ import {
   RulateScraper,
   ErolateScraper,
 } from './multisrc/rulate/RulateGenerator';
-import { RuRanobeScraper } from './multisrc/noveltl/NovelTlGenerator';
+import {
+  RuRanobeScraper,
+  UkrRanobeScraper,
+  NightnovelScraper,
+  KgRanobeScraper,
+} from './multisrc/noveltl/NovelTlGenerator';
 
 interface PopularNovelsResponse {
   novels: SourceNovelItem[];
@@ -293,6 +298,10 @@ export const sourceManager = (sourceId: number): Scraper => {
     146: PandaMtlScraper, // @ts-ignore
     147: PawReadScraper, // @ts-ignore
     148: ErolateScraper, // @ts-ignore
+    149: RuRanobeScraper, // @ts-ignore
+    150: UkrRanobeScraper, // @ts-ignore
+    151: NightnovelScraper, // @ts-ignore
+    152: KgRanobeScraper, // @ts-ignore
   };
 
   return scrapers[sourceId];
