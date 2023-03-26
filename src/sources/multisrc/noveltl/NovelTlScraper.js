@@ -2,6 +2,8 @@ import dayjs from 'dayjs';
 import * as cheerio from 'cheerio';
 import { Status } from '../../helpers/constants';
 import { htmlToText } from '../../helpers/htmlToText';
+import { FilterInputs } from '../../types/filterTypes';
+import tags from './NovelTl.json';
 
 class ReadwnScraper {
   constructor(sourceId, baseUrl, sourceName) {
@@ -9,9 +11,14 @@ class ReadwnScraper {
     this.baseUrl = baseUrl;
     this.domain = baseUrl.split('//')[1];
     this.sourceName = sourceName;
+
+    if (tags?.[this.domain]) {
+      this.filters = tags[this.domain];
+      this.filters.inputType = FilterInputs.Checkbox;
+    }
   }
 
-  async popularNovels(page) {
+  async popularNovels(page, { filters }) {
     const result = await fetch('https://api.novel.tl/api/site/v2/graphql', {
       method: 'post',
       headers: {
@@ -31,7 +38,7 @@ class ReadwnScraper {
         query:
           'query Projects($hostname:String! $filter:SearchFilter $page:Int $limit:Int){projects(section:{fullUrl:$hostname}filter:$filter page:{pageSize:$limit,pageNumber:$page}){totalElements content{title url covers{thumbnail(width:240)__typename}__typename}__typename}}',
         variables: {
-          filter: {},
+          filter: filters?.tags?.length > 0 ? { tags: filters.tags } : {},
           hostname: this.domain,
           limit: 40,
           page,
