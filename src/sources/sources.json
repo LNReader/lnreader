@@ -974,30 +974,16 @@
   },
   {
     "sourceId": 161,
-    "sourceName": "SivensiTeam",
-    "url": "https://SivensiTeam.novel.tl",
-    "lang": "Russian",
-    "icon": "https://SivensiTeam.novel.tl/logo.png"
-  },
-  {
-    "sourceId": 162,
     "sourceName": "Сказочные истории",
     "url": "https://si.novel.tl",
     "lang": "Russian",
     "icon": "https://si.novel.tl/logo.png"
   },
   {
-    "sourceId": 163,
+    "sourceId": 162,
     "sourceName": "K.O.D.",
     "url": "https://kod.novel.tl",
     "lang": "Russian",
     "icon": "https://kod.novel.tl/logo.png"
-  },
-  {
-    "sourceId": 164,
-    "sourceName": "Инь-Ян",
-    "url": "https://yinandyang.novel.tl",
-    "lang": "Russian",
-    "icon": "https://yinandyang.novel.tl/logo.png"
   }
 ]

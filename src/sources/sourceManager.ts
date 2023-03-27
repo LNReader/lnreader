@@ -151,10 +151,8 @@ import {
   JapitScraper,
   BelScraper,
   RedScraper,
-  SivensiTeamScraper,
   SiScraper,
   KodScraper,
-  YinandyangScraper,
 } from './multisrc/noveltl/NovelTlGenerator';
 
 interface PopularNovelsResponse {
@@ -322,10 +320,8 @@ export const sourceManager = (sourceId: number): Scraper => {
     158: JapitScraper, // @ts-ignore
     159: BelScraper, // @ts-ignore
     160: RedScraper, // @ts-ignore
-    161: SivensiTeamScraper, // @ts-ignore
-    162: SiScraper, // @ts-ignore
-    163: KodScraper, // @ts-ignore
-    164: YinandyangScraper, // @ts-ignore
+    161: SiScraper, // @ts-ignore
+    162: KodScraper, // @ts-ignore
   };
 
   return scrapers[sourceId];

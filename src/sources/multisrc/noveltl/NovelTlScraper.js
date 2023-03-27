@@ -1,21 +1,16 @@
 import dayjs from 'dayjs';
 import * as cheerio from 'cheerio';
-import { Status } from '../../helpers/constants';
 import { htmlToText } from '../../helpers/htmlToText';
-import { FilterInputs } from '../../types/filterTypes';
-import tags from './NovelTl.json';
+import { Status, defaultCoverUri } from '../../helpers/constants';
 
 class NovelTlScraper {
-  constructor(sourceId, baseUrl, sourceName) {
+  constructor(sourceId, baseUrl, sourceName, filter) {
     this.sourceId = sourceId;
     this.baseUrl = baseUrl;
     this.domain = baseUrl.split('//')[1];
     this.sourceName = sourceName;
 
-    if (tags?.[this.domain]) {
-      this.filters = tags[this.domain];
-      this.filters.inputType = FilterInputs.Checkbox;
-    }
+    this.filters = filter || null;
   }
 
   async popularNovels(page, { filters }) {
@@ -36,7 +31,7 @@ class NovelTlScraper {
       body: JSON.stringify({
         operationName: 'Projects',
         query:
-          'query Projects($hostname:String! $filter:SearchFilter $page:Int $limit:Int){projects(section:{fullUrl:$hostname}filter:$filter page:{pageSize:$limit,pageNumber:$page}){totalElements content{title url covers{thumbnail(width:240)__typename}__typename}__typename}}',
+          'query Projects($hostname:String! $filter:SearchFilter $page:Int $limit:Int){projects(section:{fullUrl:$hostname}filter:$filter page:{pageSize:$limit,pageNumber:$page}){content{title url covers{url}}}}',
         variables: {
           filter: filters?.tags?.length > 0 ? { tags: filters.tags } : {},
           hostname: this.domain,
@@ -49,9 +44,11 @@ class NovelTlScraper {
     const json = await result.json();
     let novels = json?.data?.projects?.content?.map(novel => ({
       novelName: novel.title,
-      novelCover: this.baseUrl + novel.covers[0].thumbnail,
       novelUrl: novel.url,
       sourceId: this.sourceId,
+      novelCover: novel.covers[0]?.url
+        ? this.baseUrl + novel.covers[0].url
+        : defaultCoverUri,
     }));
 
     return { novels };
@@ -75,7 +72,7 @@ class NovelTlScraper {
       body: JSON.stringify({
         operationName: 'Book',
         query:
-          'query Book($url:String){project(project:{fullUrl:$url}){id title translationStatus url covers{thumbnail(width:240)url __typename}persons(langs:["ru","en","*"]roles:["author","illustrator","original_story","original_design"]){role name{firstName lastName __typename}__typename}genres{nameRu nameEng __typename}tags{nameRu nameEng __typename}annotation{text __typename}subprojects{content{id title volumes{content{url title shortName chapters{title publishDate url __typename}__typename}__typename}__typename}__typename}__typename}}',
+          'query Book($url:String){project(project:{fullUrl:$url}){title translationStatus url covers{url}persons(langs:["ru","en","*"]roles:["author","illustrator","original_story","original_design"]){role name{firstName lastName}}genres{nameRu nameEng}tags{nameRu nameEng}annotation{text}subprojects{content{title volumes{content{url shortName chapters{title publishDate url published}}}}}}}',
         variables: {
           hostname: this.domain,
           project: novelUrl,
@@ -91,7 +88,9 @@ class NovelTlScraper {
       url: this.baseUrl + '/r/' + novelUrl,
       novelUrl,
       novelName: json.data.project.title,
-      novelCover: this.baseUrl + json.data.project.covers[0].thumbnail,
+      novelCover: json.data.project.covers[0]?.url
+        ? this.baseUrl + json.data.project.covers[0].url
+        : defaultCoverUri,
       summary: htmlToText(json.data.project.annotation?.text),
       author:
         json.data.project.persons[0].name.firstName +
@@ -115,12 +114,14 @@ class NovelTlScraper {
     let novelChapters = [];
     json.data.project.subprojects.content.forEach(work =>
       work.volumes.content.forEach(volume =>
-        volume.chapters.forEach(chapter =>
-          novelChapters.push({
-            chapterName: volume.shortName + ' ' + chapter.title,
-            chapterUrl: volume.url + '/' + chapter.url,
-            releaseDate: dayjs(chapter.publishDate).format('LLL'),
-          }),
+        volume.chapters.forEach(
+          chapter =>
+            chapter?.published &&
+            novelChapters.push({
+              chapterName: volume.shortName + ' ' + chapter.title,
+              chapterUrl: volume.url + '/' + chapter.url,
+              releaseDate: dayjs(chapter.publishDate).format('LLL'),
+            }),
         ),
       ),
     );
@@ -149,7 +150,7 @@ class NovelTlScraper {
       body: JSON.stringify({
         operationName: 'EReaderData',
         query:
-          'query EReaderData($url:String!,$chapterSelector:Selector!){project(project:{fullUrl:$url}){id title url __typename}chapter(chapter:$chapterSelector){id title text{text __typename}__typename}}',
+          'query EReaderData($url:String!,$chapterSelector:Selector!){project(project:{fullUrl:$url}){title url}chapter(chapter:$chapterSelector){title text{text}}}',
         variables: {
           chapterSelector: {
             fullUrl: this.domain + '/r/' + novelUrl + '/' + chapterUrl,
@@ -197,7 +198,7 @@ class NovelTlScraper {
       body: JSON.stringify({
         operationName: 'Projects',
         query:
-          'query Projects($hostname:String! $filter:SearchFilter $page:Int $limit:Int){projects(section:{fullUrl:$hostname}filter:$filter page:{pageSize:$limit,pageNumber:$page}){totalElements content{title url covers{thumbnail(width:240)__typename}__typename}__typename}}',
+          'query Projects($hostname:String! $filter:SearchFilter $page:Int $limit:Int){projects(section:{fullUrl:$hostname}filter:$filter page:{pageSize:$limit,pageNumber:$page}){content{title url covers{url}}}}',
         variables: {
           filter: {
             query: searchTerm,
@@ -214,9 +215,11 @@ class NovelTlScraper {
     json?.data?.projects?.content?.forEach(novel =>
       novels.push({
         novelName: novel.title,
-        novelCover: this.baseUrl + novel.covers[0].thumbnail,
         novelUrl: novel.url,
         sourceId: this.sourceId,
+        novelCover: novel.covers[0]?.url
+          ? this.baseUrl + novel.covers[0].url
+          : defaultCoverUri,
       }),
     );
 
