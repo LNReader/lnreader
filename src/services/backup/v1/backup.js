@@ -134,8 +134,8 @@ export const restoreBackup = async filePath => {
             continue;
           }
         }
+        const errorPath = RNFS.ExternalDirectoryPath + '/errorNovels.json';
         if (errorNovels.length > 0) {
-          const errorPath = RNFS.ExternalDirectoryPath + '/errorNovels.json';
           await RNFS.writeFile(errorPath, JSON.stringify(errorNovels));
 
           resolve();
@@ -147,6 +147,12 @@ export const restoreBackup = async filePath => {
                 ' novels got errors. Please use Restore error backup to try again.',
             },
             trigger: null,
+          });
+        } else {
+          RNFS.exists(errorPath).then(exist => {
+            if (exist) {
+              RNFS.unlink(errorPath);
+            }
           });
         }
       });
