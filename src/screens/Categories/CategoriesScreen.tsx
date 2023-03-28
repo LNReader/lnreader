@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, View, Text } from 'react-native';
+import { FlatList, StyleSheet } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { FAB, Portal } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
@@ -71,11 +71,6 @@ const CategoriesScreen = () => {
         handleGoBack={goBack}
         theme={theme}
       />
-      <View style={{ marginLeft: 16 }}>
-        <Text style={{ color: theme.onBackground }}>
-          {'The first order one is default category'}
-        </Text>
-      </View>
       {isLoading ? (
         <CategorySkeletonLoading width={360.7} height={89.5} theme={theme} />
       ) : (
