@@ -48,7 +48,6 @@
     "prop-types": "^15.7.2",
     "qs": "^6.10.3",
     "react": "16.13.1",
-    "react-dom": "16.13.1",
     "react-native": "^0.64.3",
     "react-native-background-actions": "^2.6.5",
     "react-native-device-info": "^8.4.7",
@@ -72,7 +71,6 @@
     "react-native-vector-icons": "^9.0.0",
     "react-native-webview": "^11.14.3",
     "react-redux": "^7.2.6",
-    "redux": "^4.1.2",
     "redux-persist": "^6.0.0",
     "sanitize-html": "^2.7.0"
   },
