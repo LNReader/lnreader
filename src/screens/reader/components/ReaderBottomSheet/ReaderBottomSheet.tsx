@@ -1,4 +1,10 @@
-import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  useWindowDimensions,
+  View,
+  TextInput,
+} from 'react-native';
 import React, { Ref, useMemo, useState } from 'react';
 import color from 'color';
 
@@ -43,9 +49,22 @@ const GeneralTab: React.FC = () => {
     showBatteryAndTime,
     showScrollPercentage,
     useVolumeButtons = false,
+    volumeButtonScrollAmount: initialVolumeButtonScrollAmount,
     swipeGestures = false,
     removeExtraParagraphSpacing = false,
   } = useSettingsV1();
+
+  const [volumeButtonScrollAmount, setVolumeButtonScrollAmount] = useState(
+    initialVolumeButtonScrollAmount || 0,
+  );
+
+  const handleVolumeButtonScrollAmountChange = (value: string) => {
+    const amount = parseInt(value, 10);
+    if (!isNaN(amount)) {
+      setVolumeButtonScrollAmount(amount);
+      dispatch(setAppSettings('volumeButtonScrollAmount', amount));
+    }
+  };
 
   return (
     <View>
@@ -111,13 +130,29 @@ const GeneralTab: React.FC = () => {
         theme={theme}
       />
       <ReaderSheetPreferenceItem
-        label={getString('readerScreen.bottomSheet.volumeButtonsScroll')}
+        label={getString('readerScreen.bottomSheet.scrollAmount')}
         onPress={() =>
           dispatch(setAppSettings('useVolumeButtons', !useVolumeButtons))
         }
         value={useVolumeButtons}
         theme={theme}
       />
+      {useVolumeButtons && (
+        <View style={styles.textFieldContainer}>
+          <Text style={{ color: theme.onSurfaceVariant }}>
+            {getString('readerScreen.bottomSheet.scrollAmount')}
+          </Text>
+          <TextInput
+            style={[
+              styles.textField,
+              { borderColor: theme.outline, color: theme.onSurface },
+            ]}
+            keyboardType="numeric"
+            value={volumeButtonScrollAmount.toString()}
+            onChangeText={handleVolumeButtonScrollAmountChange}
+          />
+        </View>
+      )}
     </View>
   );
 };
@@ -217,5 +252,20 @@ const styles = StyleSheet.create({
   },
   readerTab: {
     paddingVertical: 8,
+  },
+  textFieldContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+  },
+  textField: {
+    borderWidth: 1,
+    borderRadius: 4,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    width: 100,
+    textAlign: 'right',
   },
 });

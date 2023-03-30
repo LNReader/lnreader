@@ -65,10 +65,11 @@ const SettingsReaderScreen = () => {
   const theme = useTheme();
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
+  const { useVolumeButtons = false, volumeButtonScrollAmount } =
+    useSettingsV1();
 
   const readerSettings = useReaderSettings();
   const {
-    useVolumeButtons = false,
     verticalSeekbar = true,
     swipeGestures = false,
     autoScroll = false,
@@ -209,6 +210,7 @@ const SettingsReaderScreen = () => {
           onPress={() => dispatch(setAppSettings('autoScroll', !autoScroll))}
           theme={theme}
         />
+
         {autoScroll ? (
           <>
             <List.Divider theme={theme} />
@@ -274,6 +276,30 @@ const SettingsReaderScreen = () => {
             ) : null}
           </>
         ) : null}
+
+        {useVolumeButtons && (
+          <View style={styles.volumeButtonScrollAmount}>
+            <Text style={[labelStyle, styles.paddingRightM]} numberOfLines={2}>
+              {getString('readerScreen.bottomSheet.scrollAmount')}
+            </Text>
+            <TextInput
+              style={{
+                paddingHorizontal: 16,
+                paddingBottom: 8,
+                flexDirection: 'row',
+              }}
+              defaultValue={defaultTo(volumeButtonScrollAmount, 100).toString()}
+              keyboardType="numeric"
+              onChangeText={text => {
+                if (text) {
+                  dispatch(
+                    setAppSettings('volumeButtonScrollAmount', Number(text)),
+                  );
+                }
+              }}
+            />
+          </View>
+        )}
         <>
           <List.Divider theme={theme} />
           <List.SubHeader theme={theme}>
@@ -509,5 +535,12 @@ const styles = StyleSheet.create({
   paddingRightM: {
     flex: 1,
     paddingRight: 16,
+  },
+  volumeButtonScrollAmount: {
+    paddingHorizontal: 16,
+    paddingBottom: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
 });

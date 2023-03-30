@@ -86,6 +86,7 @@ const ChapterContent = ({ route, navigation }) => {
   const {
     swipeGestures = false,
     useVolumeButtons = false,
+    volumeButtonScrollAmount = 100,
     autoScroll = false,
     autoScrollInterval = 10,
     autoScrollOffset = null,
@@ -117,16 +118,13 @@ const ChapterContent = ({ route, navigation }) => {
     VolumeButtonListener.preventDefault();
     emmiter.current.addListener('VolumeUp', e => {
       webViewRef.current?.injectJavaScript(`(()=>{
-          window.scrollBy({top:${-Dimensions.get('window')
-            .height},behavior:'smooth',})
-        })()`);
+            window.scrollBy({top:${-volumeButtonScrollAmount},behavior:'smooth',})
+          })()`);
     });
     emmiter.current.addListener('VolumeDown', e => {
       webViewRef.current?.injectJavaScript(`(()=>{
-          window.scrollBy({top:${
-            Dimensions.get('window').height
-          },behavior:'smooth',})
-        })()`);
+            window.scrollBy({top:${volumeButtonScrollAmount},behavior:'smooth',})
+          })()`);
     });
   };
 
@@ -137,14 +135,13 @@ const ChapterContent = ({ route, navigation }) => {
       VolumeButtonListener.disconnect();
       emmiter.current.removeAllListeners('VolumeUp');
       emmiter.current.removeAllListeners('VolumeDown');
-      // this is just for sure, without it app still works properly
     }
     return () => {
       VolumeButtonListener.disconnect();
       emmiter.current.removeAllListeners('VolumeUp');
       emmiter.current.removeAllListeners('VolumeDown');
     };
-  }, [useVolumeButtons, chapter]);
+  }, [useVolumeButtons, volumeButtonScrollAmount]);
 
   const onLayout = useCallback(e => {
     setTimeout(() => connectVolumeButton());
