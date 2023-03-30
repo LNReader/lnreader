@@ -91,7 +91,6 @@ import RanobeHubScraper from './ru/ranobehub';
 import RanobeLibScraper from './ru/ranobelib';
 import RanobeRFScraper from './ru/ranoberf';
 import RenovelsScraper from './ru/renovels';
-import RulateScraper from './ru/rulate';
 import FicbookScraper from './ru/ficbook';
 import DivineDaoLibraryScraper from './en/divinedaolibrary';
 import NovelOnlineFullScraper from './en/novelonlinefull';
@@ -135,6 +134,26 @@ import {
 } from './multisrc/wqmangastream/WQMangaStreamGenerator';
 import AgitoonScraper from './kr/Agitoon';
 import PawReadScraper from './en/pawread';
+import {
+  RulateScraper,
+  ErolateScraper,
+} from './multisrc/rulate/RulateGenerator';
+import {
+  RuRanobeScraper,
+  UkrRanobeScraper,
+  NightnovelScraper,
+  KgRanobeScraper,
+  AxelScraper,
+  SferdrakonScraper,
+  OriginalScraper,
+  SnailulitkaScraper,
+  TsundokuScraper,
+  JapitScraper,
+  BelScraper,
+  RedScraper,
+  SiScraper,
+  KodScraper,
+} from './multisrc/noveltl/NovelTlGenerator';
 
 interface PopularNovelsResponse {
   novels: SourceNovelItem[];
@@ -288,6 +307,21 @@ export const sourceManager = (sourceId: number): Scraper => {
     145: AgitoonScraper, // @ts-ignore
     146: PandaMtlScraper, // @ts-ignore
     147: PawReadScraper, // @ts-ignore
+    148: ErolateScraper, // @ts-ignore
+    149: RuRanobeScraper, // @ts-ignore
+    150: UkrRanobeScraper, // @ts-ignore
+    151: NightnovelScraper, // @ts-ignore
+    152: KgRanobeScraper, // @ts-ignore
+    153: AxelScraper, // @ts-ignore
+    154: SferdrakonScraper, // @ts-ignore
+    155: OriginalScraper, // @ts-ignore
+    156: SnailulitkaScraper, // @ts-ignore
+    157: TsundokuScraper, // @ts-ignore
+    158: JapitScraper, // @ts-ignore
+    159: BelScraper, // @ts-ignore
+    160: RedScraper, // @ts-ignore
+    161: SiScraper, // @ts-ignore
+    162: KodScraper, // @ts-ignore
   };
 
   return scrapers[sourceId];

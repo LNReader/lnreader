@@ -880,5 +880,110 @@
     "icon": "https://www.pawread.com/favicon.ico",
     "url": "https://pawread.com/",
     "lang": "English"
+  },
+  {
+    "sourceId": 148,
+    "sourceName": "Erolate",
+    "url": "https://erolate.com",
+    "lang": "Russian",
+    "icon": "https://erolate.com/i/logo/erolate.png"
+  },
+  {
+    "sourceId": 149,
+    "sourceName": "РуРанобэ",
+    "url": "https://ruranobe.ru",
+    "lang": "Russian",
+    "icon": "https://ruranobe.ru/logo.png"
+  },
+  {
+    "sourceId": 150,
+    "sourceName": "Переклади українською мовою",
+    "url": "https://ukr.novel.tl",
+    "lang": "Ukraine",
+    "icon": "https://ukr.novel.tl/logo.png"
+  },
+  {
+    "sourceId": 151,
+    "sourceName": "Nightnovel",
+    "url": "https://nightnovel.online",
+    "lang": "Russian",
+    "icon": "https://nightnovel.online/logo.png"
+  },
+  {
+    "sourceId": 152,
+    "sourceName": "Карманная галактика",
+    "url": "https://kg.novel.tl",
+    "lang": "Russian",
+    "icon": "https://kg.novel.tl/logo.png"
+  },
+  {
+    "sourceId": 153,
+    "sourceName": "Аксел",
+    "url": "https://axel.znovel.space",
+    "lang": "Russian",
+    "icon": "https://axel.znovel.space/logo.png"
+  },
+  {
+    "sourceId": 154,
+    "sourceName": "Уголок дракона",
+    "url": "https://sferdrakon.novel.tl",
+    "lang": "Russian",
+    "icon": "https://sferdrakon.novel.tl/logo.png"
+  },
+  {
+    "sourceId": 155,
+    "sourceName": "Авторские работы",
+    "url": "https://original.novel.tl",
+    "lang": "Russian",
+    "icon": "https://original.novel.tl/logo.png"
+  },
+  {
+    "sourceId": 156,
+    "sourceName": "Snailulitka",
+    "url": "https://snailulitka.novel.tl",
+    "lang": "Russian",
+    "icon": "https://snailulitka.novel.tl/logo.png"
+  },
+  {
+    "sourceId": 157,
+    "sourceName": "TsundokuTrans",
+    "url": "https://tsundoku.novel.tl",
+    "lang": "Russian",
+    "icon": "https://tsundoku.novel.tl/logo.png"
+  },
+  {
+    "sourceId": 158,
+    "sourceName": "Japit Comics",
+    "url": "https://japit.novel.tl",
+    "lang": "Russian",
+    "icon": "https://japit.novel.tl/logo.png"
+  },
+  {
+    "sourceId": 159,
+    "sourceName": "Белманга",
+    "url": "https://bel.novel.tl",
+    "lang": "Belarus",
+    "icon": "https://bel.novel.tl/logo.png"
+  },
+  {
+    "sourceId": 160,
+    "sourceName": "Север и Юг",
+    "url": "https://red.novel.tl",
+    "lang": "Russian",
+    "icon": "https://red.novel.tl/logo.png"
+  },
+  {
+    "sourceId": 161,
+    "sourceName": "Сказочные истории",
+    "url": "https://si.novel.tl",
+    "lang": "Russian",
+    "icon": "https://si.novel.tl/logo.png"
+  },
+  {
+    "sourceId": 162,
+    "sourceName": "K.O.D.",
+    "url": "https://kod.novel.tl",
+    "lang": "Russian",
+    "icon": "https://kod.novel.tl/logo.png"
   }
 ]

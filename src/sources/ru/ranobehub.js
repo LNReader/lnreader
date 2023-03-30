@@ -85,8 +85,8 @@ const parseNovelAndChapters = async novelUrl => {
   const chaptersRaw = await fetch(fetchChaptersUrl);
   const chaptersJSON = await chaptersRaw.json();
 
-  chaptersJSON.volumes.map(volume =>
-    volume.chapters.map(chapter =>
+  chaptersJSON.volumes.forEach(volume =>
+    volume.chapters.forEach(chapter =>
       novelChapters.push({
         chapterName: chapter.name,
         chapterUrl: chapter.url,
@@ -153,7 +153,7 @@ const searchNovels = async searchTerm => {
 
   data
     .find(item => item.meta.key === 'ranobe')
-    ?.data.map(novel =>
+    ?.data.forEach(novel =>
       novels.push({
         sourceId,
         novelName: novel.names.rus,

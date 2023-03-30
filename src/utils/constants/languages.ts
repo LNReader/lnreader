@@ -1,5 +1,6 @@
 export const languages = [
   'Arabic',
+  'Belarus',
   'Chinese',
   'English',
   'French',
@@ -10,5 +11,6 @@ export const languages = [
   'Russian',
   'Spanish',
   'Turkish',
+  'Ukraine',
   'Vietnamese',
 ];
