@@ -7,6 +7,7 @@ import * as cheerio from 'cheerio';
 import { NovelStatus, PluginStatus, Plugin, PluginItem } from './types';
 import { Languages } from '@utils/constants/languages';
 import { htmlToText } from './helpers/htmlToText';
+import { fetchFile } from './helpers/fetchFile';
 import { parseMadaraDate } from './helpers/parseDate';
 import { isUrlAbsolute } from '@utils/isAbsoluteUrl';
 
@@ -17,6 +18,7 @@ const packages: Record<string, any> = {
   '@libs/pluginStatus': PluginStatus,
   '@libs/novelSatus': NovelStatus,
   '@libs/languages': Languages,
+  '@libs/fetchFile': fetchFile,
   '@libs/htmlToText': htmlToText,
   '@libs/parseMadaraDate': parseMadaraDate,
   '@libs/isAbsoluteUrl': isUrlAbsolute,

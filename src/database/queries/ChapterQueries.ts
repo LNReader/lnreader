@@ -7,7 +7,7 @@ import { ChapterItem } from '@plugins/types';
 
 import * as cheerio from 'cheerio';
 import { txnErrorCallback } from '@database/utils/helpers';
-import { PluginWorker } from '@plugins/types';
+import { Plugin } from '@plugins/types';
 import { Update } from '../types';
 import { noop } from 'lodash-es';
 
@@ -51,7 +51,12 @@ export const insertChapters = async (
     chapters.forEach(chapter => {
       tx.executeSql(
         insertChapterQuery,
-        [chapter.url, chapter.name, chapter.releaseTime, novelId],
+        [
+          chapter.url,
+          chapter.name,
+          chapter.releaseTime ? chapter.releaseTime : '',
+          novelId,
+        ],
         noop,
         txnErrorCallback,
       );
@@ -245,7 +250,7 @@ const createImageFolder = async (
 
 const downloadImages = async (
   html: string,
-  plugin: PluginWorker,
+  plugin: Plugin,
   novelId: number,
   chapterId: number,
 ): Promise<string> => {
@@ -422,11 +427,11 @@ export const getLastReadChapter = async (novelId: number) => {
 
 const bookmarkChapterQuery = 'UPDATE Chapter SET bookmark = ? WHERE id = ?';
 
-export const bookmarkChapter = async (bookmark: boolean, chapterId: number) => {
+export const bookmarkChapter = async (bookmark: number, chapterId: number) => {
   db.transaction(tx => {
     tx.executeSql(
       bookmarkChapterQuery,
-      [!bookmark, chapterId],
+      [1 - bookmark, chapterId],
       (_txObj, _res) => {},
       (_txObj, _error) => {
         // console.log('Error ', error)
