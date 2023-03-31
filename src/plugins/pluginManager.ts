@@ -4,13 +4,7 @@ import { bigger } from '../utils/compareVersion';
 
 // packages for plugins
 import * as cheerio from 'cheerio';
-import {
-  NovelStatus,
-  PluginStatus,
-  Plugin,
-  PluginItem,
-  PluginWorker,
-} from './types';
+import { NovelStatus, PluginStatus, Plugin, PluginItem } from './types';
 import { Languages } from '@utils/constants/languages';
 import { htmlToText } from './helpers/htmlToText';
 import { parseMadaraDate } from './helpers/parseDate';
@@ -38,17 +32,17 @@ const initPlugin = (rawCode: string, path?: string) => {
     const plugin: Plugin = Function(
       'require',
       'module',
-      `${rawCode}; return module.exports;`,
+      `${rawCode}; return module.exports`,
     )(_require, {});
     plugin.path = path || `${pluginsFolder}/${plugin.id}.js`;
-    return new PluginWorker(plugin);
+    return plugin;
   } catch (e) {
-    showToast('Some non-plugin files are found');
+    showToast('Setup error');
     return undefined;
   }
 };
 
-let plugins: Record<string, PluginWorker> = {};
+let plugins: Record<string, Plugin> = {};
 
 // get existing plugin in device
 const setupPlugin = async (path: string) => {
@@ -60,9 +54,7 @@ const setupPlugin = async (path: string) => {
   return undefined;
 };
 
-const installPlugin = async (
-  url: string,
-): Promise<PluginWorker | undefined> => {
+const installPlugin = async (url: string): Promise<Plugin | undefined> => {
   try {
     fetch(url)
       .then(res => res.text())
@@ -128,7 +120,7 @@ const collectPlugins = async () => {
 
 const fetchPlugins = async () => {
   const availablePlugins: Record<Languages, Array<PluginItem>> = await fetch(
-    'https://raw.githubusercontent.com/nyagami/LNReader-plugins/master/plugins/plugins.json?newtest=true',
+    'https://raw.githubusercontent.com/nyagami/plugins/main/plugins/plugins.min.json?newtest=true',
   ).then(res => res.json());
   return availablePlugins;
 };

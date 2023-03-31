@@ -97,16 +97,16 @@ export const getLibraryWithCategory = ({
   if (filter) {
     query += ` AND ${filter} `;
   }
-
   if (downloadedOnlyMode) {
     query += ' ' + LibraryFilter.DownloadedOnly;
   }
 
   if (searchText) {
-    query += ` AND name LIKE '%${searchText}%'`;
+    query += ` AND name LIKE '%${searchText}%' `;
   }
+
   if (sortOrder) {
-    query += `ORDER BY ${sortOrder}`;
+    query += ` ORDER BY ${sortOrder} `;
   }
 
   return new Promise(resolve =>

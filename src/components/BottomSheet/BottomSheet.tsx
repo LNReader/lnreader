@@ -1,6 +1,10 @@
 import React, { ReactElement, Ref, useCallback } from 'react';
 import { overlay } from 'react-native-paper';
-import { default as BS, BottomSheetBackdrop } from '@gorhom/bottom-sheet';
+import {
+  default as BS,
+  BottomSheetBackdrop,
+  BottomSheetBackdropProps,
+} from '@gorhom/bottom-sheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ThemeColors } from '@theme/types';
 import { StyleSheet } from 'react-native';
@@ -22,7 +26,9 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
 }) => {
   const { bottom } = useSafeAreaInsets();
   const renderBackdrop = useCallback(
-    props => <BottomSheetBackdrop {...props} disappearsOnIndex={0} />,
+    (props: BottomSheetBackdropProps) => (
+      <BottomSheetBackdrop {...props} disappearsOnIndex={0} />
+    ),
     [],
   );
   return (

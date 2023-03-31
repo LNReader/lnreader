@@ -251,7 +251,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                         ), timeOut
                       );
                     }
-                    sendHeight(1500);
+                    sendHeight(2000);
                     </script>
                     <div class="infoText">
                     ${getString(

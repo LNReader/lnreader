@@ -5,7 +5,7 @@ import * as Linking from 'expo-linking';
 import { ScrollView } from 'react-native-gesture-handler';
 import Button from './Button/Button';
 import { getString } from '@strings/translations';
-import Markdown from 'react-native-markdown-display';
+// import Markdown from 'react-native-markdown-display';
 
 import { useTheme } from '@hooks/useTheme';
 
@@ -38,7 +38,7 @@ const NewUpdateDialog: React.FC<NewUpdateDialogProps> = ({ newVersion }) => {
           {`${getString('common.newUpdateAvailable')} ${newVersion.tag_name}`}
         </Text>
         <ScrollView style={{ height: modalHeight }}>
-          <Markdown
+          {/* <Markdown
             style={{
               body: {
                 color: theme.onSurfaceVariant,
@@ -55,7 +55,7 @@ const NewUpdateDialog: React.FC<NewUpdateDialogProps> = ({ newVersion }) => {
             }}
           >
             {newVersion.body}
-          </Markdown>
+          </Markdown> */}
         </ScrollView>
         <View style={styles.buttonCtn}>
           <Button

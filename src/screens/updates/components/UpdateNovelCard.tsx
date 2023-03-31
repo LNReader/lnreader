@@ -43,7 +43,6 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
   descriptionText,
   removeItemFromList,
 }) => {
-  console.log(item);
   const { navigate } = useNavigation();
   const dispatch = useAppDispatch();
   const theme = useTheme();
