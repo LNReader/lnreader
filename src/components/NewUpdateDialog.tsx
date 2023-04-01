@@ -38,24 +38,9 @@ const NewUpdateDialog: React.FC<NewUpdateDialogProps> = ({ newVersion }) => {
           {`${getString('common.newUpdateAvailable')} ${newVersion.tag_name}`}
         </Text>
         <ScrollView style={{ height: modalHeight }}>
-          {/* <Markdown
-            style={{
-              body: {
-                color: theme.onSurfaceVariant,
-                lineHeight: 20,
-                paddingVertical: 8,
-              },
-              hr: {
-                backgroundColor: theme.outline,
-                marginVertical: 16,
-              },
-              code_inline: {
-                backgroundColor: theme.overlay3,
-              },
-            }}
-          >
-            {newVersion.body}
-          </Markdown> */}
+          <Text style={[styles.body, { color: theme.onSurfaceVariant }]}>
+            {newVersion.body.split('\n').join('\n\n')}
+          </Text>
         </ScrollView>
         <View style={styles.buttonCtn}>
           <Button
@@ -85,7 +70,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginBottom: 16,
   },
-  body: {},
+  body: {
+    fontSize: 15,
+    fontWeight: '500',
+  },
   buttonCtn: {
     flexDirection: 'row',
     marginTop: 16,
