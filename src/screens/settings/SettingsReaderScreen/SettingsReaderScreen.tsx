@@ -55,7 +55,7 @@ const SettingsReaderScreen = () => {
       <Appbar
         mode="small"
         title={getString('moreScreen.settingsScreen.readerSettings.title')}
-        handleGoBack={navigation.goBack}
+        handleGoBack={handleGoBack}
         theme={theme}
       />
 
