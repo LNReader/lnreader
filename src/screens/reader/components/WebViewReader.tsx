@@ -214,8 +214,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                       }
                     </style>
                   </head>
-                  <body>
-
+                  <body id='source${chapterInfo.sourceId}'>
                     <div class="chapterCtn" ${onClickWebViewPostMessage({
                       type: 'hide',
                     })}>

@@ -25,3 +25,15 @@ export const useDownloadQueue = () =>
 
 export const useSourcesReducer = () =>
   useAppSelector((state: RootState) => state.sourceReducerV2);
+
+export interface readerSettingType {
+  theme: string;
+  textColor: string;
+  textSize: number;
+  textAlign: string;
+  padding: number;
+  fontFamily: string;
+  lineHeight: number;
+  customCSS: string;
+  customJS: string;
+}
