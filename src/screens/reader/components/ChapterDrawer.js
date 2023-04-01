@@ -31,14 +31,13 @@ const ChapterDrawer = ({ state: st, navigation }) => {
   const listAscending = sort === 'ORDER BY id ASC';
   const scrollToIndex = useMemo(() => {
     if (chapters.length < 1) {
-      return;
+      return 0;
     }
-    const indexOfCurrentChapter = chapters.findIndex(el => {
-      return el.id === chapter.id;
-    });
-    let res;
-    res = indexOfCurrentChapter >= 2 ? indexOfCurrentChapter - 2 : 0;
-    listRef.current?.scrollToIndex?.(res);
+    const indexOfCurrentChapter =
+      chapters.findIndex(el => {
+        return el.id === chapter.id;
+      }) || 0;
+    let res = indexOfCurrentChapter >= 2 ? indexOfCurrentChapter - 2 : 0;
     return res;
   }, [chapters, chapter.id, listAscending]);
 
@@ -165,7 +164,7 @@ const ChapterDrawer = ({ state: st, navigation }) => {
       <Text style={styles.headerCtn}>{getString('common.chapters')}</Text>
       {scrollToIndex !== undefined ? (
         <FlashList
-          ref={ref => (listRef.current = ref)}
+          ref={listRef}
           onViewableItemsChanged={checkViewableItems}
           data={chapters}
           renderItem={renderItem}

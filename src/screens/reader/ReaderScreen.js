@@ -81,8 +81,7 @@ const ChapterContent = ({ route, navigation }) => {
   const { setImmersiveMode, showStatusAndNavBar } = useFullscreenMode();
 
   const [hidden, setHidden] = useState(true);
-
-  const position = usePosition(chapter.id, chapter.id);
+  const position = usePosition(chapter.novelId, chapter.id);
   const minScroll = useRef(0);
 
   const { tracker, trackedNovels } = useTrackingStatus();

@@ -85,7 +85,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
             if (event.data && typeof event.data === 'string') {
               plugin.fetchImage(event.data).then(base64 => {
                 webViewRef.current?.injectJavaScript(
-                  `document.querySelector("img[delayed-src='${event.data}']").src="data:image/jpg;base64,${base64}";
+                  `document.querySelector("img[delayed-src='${event.data}']").src="data:image/jpg;base64${base64}";
                   document.querySelector("img[delayed-src='${event.data}']").classList.remove("load-icon");
                   sendHeight(500);`,
                 );

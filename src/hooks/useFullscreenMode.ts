@@ -5,7 +5,7 @@ import color from 'color';
 import { useReaderSettings, useSettingsV1 } from '../redux/hooks';
 import {
   changeNavigationBarColor,
-  hideNavigationBar,
+  // hideNavigationBar,
   showNavigationBar,
 } from '../theme/NativeModules/NavigationBarColor';
 import { useTheme } from './useTheme';
@@ -22,7 +22,7 @@ const useFullscreenMode = () => {
   const setImmersiveMode = useCallback(() => {
     if (fullScreenMode) {
       StatusBar.setHidden(true);
-      hideNavigationBar();
+      // hideNavigationBar();
     } else {
       StatusBar.setBarStyle(
         color(backgroundColor).isDark() ? 'light-content' : 'dark-content',
