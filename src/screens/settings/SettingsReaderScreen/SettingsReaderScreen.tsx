@@ -7,7 +7,6 @@ import {
   useWindowDimensions,
 } from 'react-native';
 import React, { useState } from 'react';
-
 import { useNavigation } from '@react-navigation/native';
 import { defaultTo } from 'lodash-es';
 import WebView from 'react-native-webview';
@@ -65,11 +64,11 @@ const SettingsReaderScreen = () => {
   const theme = useTheme();
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
-  const { useVolumeButtons = false, volumeButtonScrollAmount } =
-    useSettingsV1();
 
   const readerSettings = useReaderSettings();
   const {
+    useVolumeButtons = false,
+    scrollAmount = 200,
     verticalSeekbar = true,
     swipeGestures = false,
     autoScroll = false,
@@ -196,6 +195,28 @@ const SettingsReaderScreen = () => {
           }
           theme={theme}
         />
+        {useVolumeButtons ? (
+          <View style={styles.scrollAmount}>
+            <Text style={[labelStyle, styles.paddingRightM]} numberOfLines={2}>
+              {getString('readerScreen.bottomSheet.scrollAmount')}
+            </Text>
+            <TextInput
+              style={{
+                paddingHorizontal: 16,
+                paddingBottom: 8,
+                flexDirection: 'row',
+              }}
+              defaultValue={defaultTo(scrollAmount, 100).toString()}
+              keyboardType="numeric"
+              onChangeText={text => {
+                if (text) {
+                  dispatch(setAppSettings('scrollAmount', Number(text)));
+                }
+              }}
+            />
+          </View>
+        ) : null}
+
         <SwitchItem
           label={getString('readerScreen.bottomSheet.swipeGestures')}
           value={swipeGestures}
@@ -210,7 +231,6 @@ const SettingsReaderScreen = () => {
           onPress={() => dispatch(setAppSettings('autoScroll', !autoScroll))}
           theme={theme}
         />
-
         {autoScroll ? (
           <>
             <List.Divider theme={theme} />
@@ -276,30 +296,6 @@ const SettingsReaderScreen = () => {
             ) : null}
           </>
         ) : null}
-
-        {useVolumeButtons && (
-          <View style={styles.volumeButtonScrollAmount}>
-            <Text style={[labelStyle, styles.paddingRightM]} numberOfLines={2}>
-              {getString('readerScreen.bottomSheet.scrollAmount')}
-            </Text>
-            <TextInput
-              style={{
-                paddingHorizontal: 16,
-                paddingBottom: 8,
-                flexDirection: 'row',
-              }}
-              defaultValue={defaultTo(volumeButtonScrollAmount, 100).toString()}
-              keyboardType="numeric"
-              onChangeText={text => {
-                if (text) {
-                  dispatch(
-                    setAppSettings('volumeButtonScrollAmount', Number(text)),
-                  );
-                }
-              }}
-            />
-          </View>
-        )}
         <>
           <List.Divider theme={theme} />
           <List.SubHeader theme={theme}>
@@ -536,7 +532,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingRight: 16,
   },
-  volumeButtonScrollAmount: {
+  scrollAmount: {
     paddingHorizontal: 16,
     paddingBottom: 8,
     flexDirection: 'row',

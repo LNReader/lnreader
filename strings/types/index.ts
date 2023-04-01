@@ -82,7 +82,7 @@ export interface StringMap {
   'readerScreen.bottomSheet.useChapterDrawerSwipeNavigation': 'string';
   'readerScreen.bottomSheet.removeExtraSpacing': 'string';
   'readerScreen.bottomSheet.volumeButtonsScroll': 'string';
-  'readerScreen.bottomSheet.scrollAmount': 'number';
+  'readerScreen.bottomSheet.scrollAmount': 'string';
   'readerScreen.bottomSheet.showSwipeMargins': 'string';
   'readerScreen.drawer.scrollToCurrentChapter': 'string';
   'readerScreen.drawer.scrollToTop': 'string';

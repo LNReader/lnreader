@@ -12,6 +12,8 @@ import {
   default as BottomSheetType,
   BottomSheetView,
 } from '@gorhom/bottom-sheet';
+
+import { defaultTo } from 'lodash-es';
 import BottomSheet from '@components/BottomSheet/BottomSheet';
 import { useAppDispatch, useSettingsV1 } from '../../../../redux/hooks';
 import { useTheme } from '@hooks/useTheme';
@@ -49,22 +51,10 @@ const GeneralTab: React.FC = () => {
     showBatteryAndTime,
     showScrollPercentage,
     useVolumeButtons = false,
-    volumeButtonScrollAmount: initialVolumeButtonScrollAmount,
+    scrollAmount = 200,
     swipeGestures = false,
     removeExtraParagraphSpacing = false,
   } = useSettingsV1();
-
-  const [volumeButtonScrollAmount, setVolumeButtonScrollAmount] = useState(
-    initialVolumeButtonScrollAmount || 0,
-  );
-
-  const handleVolumeButtonScrollAmountChange = (value: string) => {
-    const amount = parseInt(value, 10);
-    if (!isNaN(amount)) {
-      setVolumeButtonScrollAmount(amount);
-      dispatch(setAppSettings('volumeButtonScrollAmount', amount));
-    }
-  };
 
   return (
     <View>
@@ -130,33 +120,33 @@ const GeneralTab: React.FC = () => {
         theme={theme}
       />
       <ReaderSheetPreferenceItem
-        label={getString('readerScreen.bottomSheet.scrollAmount')}
+        label={getString('readerScreen.bottomSheet.volumeButtonsScroll')}
         onPress={() =>
           dispatch(setAppSettings('useVolumeButtons', !useVolumeButtons))
         }
         value={useVolumeButtons}
         theme={theme}
       />
-      {useVolumeButtons && (
+      {useVolumeButtons ? (
         <View style={styles.textFieldContainer}>
-          <Text style={{ color: theme.onSurfaceVariant }}>
+          <Text style={[styles.paddingRightM]} numberOfLines={2}>
             {getString('readerScreen.bottomSheet.scrollAmount')}
           </Text>
           <TextInput
-            style={[
-              styles.textField,
-              { borderColor: theme.outline, color: theme.onSurface },
-            ]}
+            style={styles.textField}
+            defaultValue={defaultTo(scrollAmount, 200).toString()}
             keyboardType="numeric"
-            value={volumeButtonScrollAmount.toString()}
-            onChangeText={handleVolumeButtonScrollAmountChange}
+            onChangeText={text => {
+              if (text) {
+                dispatch(setAppSettings('scrollAmount', Number(text)));
+              }
+            }}
           />
         </View>
-      )}
+      ) : null}
     </View>
   );
 };
-
 interface ReaderBottomSheetV2Props {
   bottomSheetRef: Ref<BottomSheetType> | null;
 }
@@ -267,5 +257,9 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     width: 100,
     textAlign: 'right',
+  },
+  paddingRightM: {
+    flex: 1,
+    paddingRight: 16,
   },
 });

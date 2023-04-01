@@ -64,7 +64,7 @@ export const initialState = {
   swipeGestures: false,
   showScrollPercentage: true,
   useVolumeButtons: false,
-  volumeButtonScrollAmount: 100,
+  scrollAmount: 200,
   showBatteryAndTime: false,
   autoScroll: false,
   autoScrollInterval: 10,

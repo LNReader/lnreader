@@ -98,7 +98,7 @@
       "useChapterDrawerSwipeNavigation": "Swipe right to open drawer",
       "removeExtraSpacing": "Remove extra paragraph spacing",
       "volumeButtonsScroll": "Volume buttons scroll",
-      "scrollAmount": "The amount you want to scroll",
+      "scrollAmount": "Scroll amount:",
       "showSwipeMargins": "Show swipe margins"
     },
     "drawer": {
