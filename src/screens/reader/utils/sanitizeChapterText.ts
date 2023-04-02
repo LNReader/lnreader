@@ -39,7 +39,7 @@ export const sanitizeChapterText = (
     const loadedCheerio = loadCheerio(text);
     if (
       options?.pluginId &&
-      getPlugin(options.pluginId).protected &&
+      getPlugin(options.pluginId)?.protected &&
       loadedCheerio('input[offline]').length === 0
     ) {
       loadedCheerio('img').each((i, element) => {

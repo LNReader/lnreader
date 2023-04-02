@@ -217,7 +217,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                     </div>
                     <script>
                     if(!document.querySelector("input[offline]") && ${
-                      plugin.protected
+                      plugin?.protected
                     }){
                       document.querySelectorAll("img").forEach(img => {
                         window.ReactNativeWebView.postMessage(JSON.stringify({type:"imgfile",data:img.getAttribute("delayed-src")}));

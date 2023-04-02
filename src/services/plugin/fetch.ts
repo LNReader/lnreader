@@ -8,7 +8,10 @@ export const fetchNovel = async (pluginId: string, novelUrl: string) => {
 
 export const fetchChapter = async (pluginId: string, chapterUrl: string) => {
   const plugin = getPlugin(pluginId);
-  let chapterText = await plugin.parseChapter(chapterUrl);
+  let chapterText = `Not found plugin with id: ${pluginId}`;
+  if (plugin) {
+    chapterText = await plugin.parseChapter(chapterUrl);
+  }
   return chapterText;
 };
 
