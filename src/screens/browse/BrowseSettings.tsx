@@ -11,7 +11,7 @@ import { useTheme } from '@hooks/useTheme';
 import { useNavigation } from '@react-navigation/native';
 import { getString } from '@strings/translations';
 import { availableLanguages } from '@utils/constants/languages';
-import { toggleLanguageFilter } from '@redux/plugin/pluginsSlice';
+import { toggleLanguageFilter } from '@redux/plugins/pluginsSlice';
 import { setBrowseSettings } from '@redux/settings/settingsSlice';
 
 const BrowseSettings = () => {

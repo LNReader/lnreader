@@ -39,7 +39,6 @@ const initPlugin = (rawCode: string, path?: string) => {
     plugin.path = path || `${pluginsFolder}/${plugin.id}.js`;
     return plugin;
   } catch (e) {
-    showToast('Setup error');
     return undefined;
   }
 };
@@ -50,20 +49,21 @@ let plugins: Record<string, Plugin> = {};
 const setupPlugin = async (path: string) => {
   const rawCode = await RNFS.readFile(path, 'utf8');
   const plugin = await initPlugin(rawCode, path);
-  if (plugin) {
-    return plugin;
+  if (!plugin) {
+    showToast(`Invalid script in: ${path}`);
   }
-  return undefined;
+  return plugin;
 };
 
 const installPlugin = async (url: string): Promise<Plugin | undefined> => {
   try {
-    fetch(url)
+    return await fetch(url)
       .then(res => res.text())
       .then(async rawCode => {
         const plugin = initPlugin(rawCode);
         if (!plugin) {
-          return;
+          showToast(`Invalid script from ${url}`);
+          return undefined;
         }
         const oldPlugin = plugins[plugin.id];
         if (oldPlugin) {
@@ -73,17 +73,18 @@ const installPlugin = async (url: string): Promise<Plugin | undefined> => {
             await RNFS.writeFile(plugin.path, rawCode, 'utf8');
             return plugin;
           } else {
-            showToast('This plugin is the newtest version');
+            showToast(`There's no newer version than ${oldPlugin.version}`);
+            return oldPlugin;
           }
         } else {
           plugins[plugin.id] = plugin;
           await RNFS.writeFile(plugin.path, rawCode, 'utf8');
-          showToast('Downloaded!');
+          showToast(`Installed ${plugin.name}`);
           return plugin;
         }
       });
   } catch (e: any) {
-    showToast('Error');
+    showToast(e.message);
     return undefined;
   }
 };
@@ -93,15 +94,14 @@ const uninstallPlugin = async (_plugin: PluginItem) => {
   if (plugin && (await RNFS.exists(plugin.path))) {
     delete plugins[plugin.id];
     await RNFS.unlink(plugin.path);
-  } else {
-    showToast('Plugin doesnt exist');
   }
+  showToast(`Uninstalled ${_plugin.name}`);
 };
 
 const updatePlugin = async (plugin: PluginItem) => {
   const updated = await installPlugin(plugin.url);
-  if (updated) {
-    showToast('Updated!');
+  if (updated && updated.version !== plugin.version) {
+    showToast(`Updated ${updated.name} to ${updated.version}`);
   }
   return updated;
 };

@@ -5,7 +5,6 @@ import * as Linking from 'expo-linking';
 import { ScrollView } from 'react-native-gesture-handler';
 import Button from './Button/Button';
 import { getString } from '@strings/translations';
-// import Markdown from 'react-native-markdown-display';
 
 import { useTheme } from '@hooks/useTheme';
 

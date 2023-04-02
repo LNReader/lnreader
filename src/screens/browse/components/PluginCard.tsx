@@ -76,7 +76,8 @@ const PluginCard: React.FC<Props> = ({
             onPress={() => {
               updatePlugin(plugin).then(updated => {
                 if (updated) {
-                  onUpdatePlugin(updated);
+                  plugin.version = updated.version;
+                  onUpdatePlugin(plugin);
                 }
               });
             }}
@@ -99,7 +100,11 @@ const PluginCard: React.FC<Props> = ({
             size={22}
             color={theme.primary}
             onPress={() =>
-              installPlugin(plugin.url).then(() => onInstallPlugin(plugin))
+              installPlugin(plugin.url).then(res => {
+                if (res) {
+                  onInstallPlugin(plugin);
+                }
+              })
             }
             theme={theme}
           />

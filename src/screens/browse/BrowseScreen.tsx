@@ -12,7 +12,7 @@ import {
   installPluginAction,
   uninstallPluginAction,
   updatePluginAction,
-} from '@redux/plugin/pluginsSlice';
+} from '@redux/plugins/pluginsSlice';
 import {
   useAppDispatch,
   useBrowseSettings,
