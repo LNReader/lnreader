@@ -170,7 +170,8 @@
         "autoScrollOffset": "Auto scroll offset (screen height by default)",
         "saveCustomTheme": "Save custom theme",
         "deleteCustomTheme": "Delete custom theme",
-        "customCSS": "Custom CSS"
+        "customCSS": "Custom CSS",
+        "customJS": "Custom JS"
       },
       "browseSettings": "Browse Settings",
       "browseSettingsScreen": {

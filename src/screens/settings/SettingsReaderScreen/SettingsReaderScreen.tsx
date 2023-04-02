@@ -11,7 +11,6 @@ import { useTheme } from '@hooks/useTheme';
 import { getString } from '@strings/translations';
 
 import { dummyHTML } from './utils';
-import useBoolean from '@hooks/useBoolean';
 import StandardSettings from './Settings/StandardSettings';
 import CustomCSSSettings from './Settings/CustomCSSSettings';
 
