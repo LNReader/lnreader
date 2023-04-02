@@ -13,11 +13,11 @@ const fetchFile = async (url, init) => {
     return new Promise(resolve => {
       const fr = new FileReader();
       fr.onloadend = () => {
-        if (!fr.result.startsWith('data:application/octet-stream;base64')) {
+        if (!fr.result.startsWith('data:application/octet-stream;base64,')) {
           return undefined;
         }
         resolve(
-          fr.result.substring('data:application/octet-stream;base64'.length),
+          fr.result.substring('data:application/octet-stream;base64,'.length),
         );
       };
       fr.readAsDataURL(blob);
