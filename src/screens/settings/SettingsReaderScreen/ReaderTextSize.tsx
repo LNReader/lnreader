@@ -19,12 +19,8 @@ const ReaderTextSize: React.FC<ReaderTextSizeProps> = ({ labelStyle }) => {
       labelStyle={labelStyle}
       label={getString('readerScreen.bottomSheet.textSize')}
       value={textSize}
-      onPressMinus={() =>
-        dispatch(setReaderSettings('textSize', textSize - 0.1))
-      }
-      onPressPlus={() =>
-        dispatch(setReaderSettings('textSize', textSize + 0.1))
-      }
+      onPressMinus={() => dispatch(setReaderSettings('textSize', textSize - 1))}
+      onPressPlus={() => dispatch(setReaderSettings('textSize', textSize + 1))}
       min={0}
     />
   );

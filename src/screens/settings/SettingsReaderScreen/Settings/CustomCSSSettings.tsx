@@ -1,48 +1,14 @@
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-  ScrollView,
-  useWindowDimensions,
-} from 'react-native';
+import { StyleSheet, ScrollView, View } from 'react-native';
 import React, { useState } from 'react';
 
-import { defaultTo } from 'lodash-es';
+import { Button, List } from '@components/index';
 
-import {
-  Button,
-  ColorPreferenceItem,
-  List,
-  SwitchItem,
-} from '@components/index';
-import ReaderThemeSelector from '../../../../screens/reader/components/ReaderBottomSheet/ReaderThemeSelector';
-import ReaderTextAlignSelector from '../../../../screens/reader/components/ReaderBottomSheet/ReaderTextAlignSelector';
-import ReaderLineHeight from '../../../../screens/reader/components/ReaderBottomSheet/ReaderLineHeight';
-import ReaderTextSize from '../ReaderTextSize';
+import { setReaderSettings } from '@redux/settings/settings.actions';
 
-import {
-  useReaderSettings,
-  useSettingsV1,
-  useAppDispatch,
-  useSettingsV2,
-} from '@redux/hooks';
+import PlusMinusField from '@components/PlusMinusField/PlusMinusField';
 import { useTheme } from '@hooks/useTheme';
+import { useAppDispatch, useReaderSettings } from '@redux/hooks';
 import { getString } from '@strings/translations';
-import {
-  setAppSettings,
-  setReaderSettings,
-} from '@redux/settings/settings.actions';
-
-import useBoolean from '@hooks/useBoolean';
-import {
-  deleteCustomReaderTheme,
-  saveCustomReaderTheme,
-} from '@redux/settings/settingsSlice';
-import {
-  presetReaderThemes,
-  readerFonts,
-} from '../../../../utils/constants/readerConstants';
 
 export type TextAlignments =
   | 'left'
@@ -54,58 +20,50 @@ export type TextAlignments =
 
 const CustomCSSSettings = () => {
   const theme = useTheme();
+  const readerSettings = useReaderSettings();
+  const [customCSS, setcustomCSS] = useState(readerSettings.customCSS);
   const dispatch = useAppDispatch();
 
-  const readerSettings = useReaderSettings();
-  const {
-    useVolumeButtons = false,
-    verticalSeekbar = true,
-    swipeGestures = false,
-    autoScroll = false,
-    autoScrollInterval = 10,
-    autoScrollOffset = null,
-    fullScreenMode = true,
-    showScrollPercentage = true,
-    showBatteryAndTime = false,
-  } = useSettingsV1();
-
-  const {
-    reader: { customThemes = [] },
-  } = useSettingsV2();
-  const readerBackgroundModal = useBoolean();
-  const readerTextColorModal = useBoolean();
-  const readerFontPickerModal = useBoolean();
-
-  const isCurrentThemeCustom = customThemes.some(
-    item =>
-      item.backgroundColor === readerSettings.theme &&
-      item.textColor === readerSettings.textColor,
-  );
-
-  const isCurrentThemePreset = presetReaderThemes.some(
-    item =>
-      item.backgroundColor === readerSettings.theme &&
-      item.textColor === readerSettings.textColor,
-  );
-
-  const currentFontName = readerFonts.find(
-    item => item.fontFamily === readerSettings.fontFamily,
-  )?.name;
-
-  const areAutoScrollSettingsDefault =
-    autoScrollInterval === 10 && autoScrollOffset === null;
-
-  const [customCSS, setcustomCSS] = useState(readerSettings.customCSS);
-  const [customJS, setcustomJS] = useState(readerSettings.customJS);
-
-  const { height: screenHeight } = useWindowDimensions();
+  const [horizontalSpace, setHorizontalSpace] = useState(0);
+  const [maxWidth, setmaxWidth] = useState(100);
 
   const labelStyle = [styles.fontSizeL, { color: theme.onSurface }];
+
   return (
-    <ScrollView
-      style={styles.flex}
-      contentContainerStyle={styles.bottomInset}
-    ></ScrollView>
+    <ScrollView style={styles.flex} contentContainerStyle={styles.bottomInset}>
+      <List.SubHeader theme={theme}>Spacing</List.SubHeader>
+      <PlusMinusField
+        labelStyle={labelStyle}
+        label="Horizontal Spacing"
+        value={horizontalSpace}
+        onPressMinus={() => setHorizontalSpace(horizontalSpace - 1)}
+        onPressPlus={() => setHorizontalSpace(horizontalSpace + 1)}
+        min={0}
+      />
+      <PlusMinusField
+        labelStyle={labelStyle}
+        label="Max Width"
+        value={maxWidth}
+        onPressMinus={() => setmaxWidth(maxWidth - 50)}
+        onPressPlus={() => setmaxWidth(maxWidth + 50)}
+        min={100}
+      />
+      <View style={styles.customCSSButtons}>
+        <Button
+          onPress={() => dispatch(setReaderSettings('customCSS', customCSS))}
+          style={styles.buttons}
+          title={getString('common.save')}
+        />
+        <Button
+          onPress={() => {
+            setcustomCSS('');
+            dispatch(setReaderSettings('customCSS', ''));
+          }}
+          style={styles.buttons}
+          title={getString('common.clear')}
+        />
+      </View>
+    </ScrollView>
   );
 };
 export default CustomCSSSettings;
@@ -135,8 +93,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingBottom: 8,
   },
-  marginLeftS: {
-    marginLeft: 8,
+  buttons: {
+    flex: 1,
   },
   customCSSButtons: {
     flex: 1,
