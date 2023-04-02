@@ -139,6 +139,7 @@ export interface StringMap {
   'moreScreen.settingsScreen.readerSettings.saveCustomTheme': 'string';
   'moreScreen.settingsScreen.readerSettings.deleteCustomTheme': 'string';
   'moreScreen.settingsScreen.readerSettings.customCSS': 'string';
+  'moreScreen.settingsScreen.readerSettings.customJS': 'string';
   'moreScreen.settingsScreen.browseSettings': 'string';
   'moreScreen.settingsScreen.browseSettingsScreen.onlyShowPinnedSources': 'string';
   'moreScreen.settingsScreen.browseSettingsScreen.languages': 'string';
