@@ -41,14 +41,6 @@ const updateNovelCover = async (novelId, novel) => {
   });
 };
 
-const insertUpdate = async (tx, chapterId, novelId) =>
-  tx.executeSql(
-    "INSERT OR IGNORE INTO updates (chapterId, updateTime) values (?, (datetime('now','localtime')))",
-    [chapterId, novelId],
-    (txOBJ, res) => {},
-    (txOBJ, error) => {},
-  );
-
 const updateNovel = async (pluginId, novelUrl, novelId, options) => {
   const { downloadNewChapters, refreshNovelMetadata } = options;
 
@@ -57,20 +49,17 @@ const updateNovel = async (pluginId, novelUrl, novelId, options) => {
   if (refreshNovelMetadata) {
     updateNovelMetadata(novelId, novel);
   }
-
   db.transaction(tx => {
-    novel.chapters.map(chapter => {
+    novel.chapters.forEach(chapter => {
       const { name, url, releaseTime } = chapter;
-
       tx.executeSql(
-        'INSERT OR IGNORE INTO chapters (url, name, releaseTime, novelId) values (?, ?, ?, ?)',
-        [url, chapterName, releaseTime, id],
+        'INSERT OR IGNORE INTO Chapter (url, name, releaseTime, novelId) values (?, ?, ?, ?)',
+        [url, name, releaseTime, novelId],
         (txObj, { insertId }) => {
           if (insertId !== -1) {
             if (downloadNewChapters) {
-              downloadChapter(pluginId, id, chapterUrl, url);
+              downloadChapter(pluginId, novelId, chapterUrl, url);
             }
-            insertUpdate(tx, insertId, novelId);
           }
         },
         (txObj, error) => {},

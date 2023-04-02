@@ -421,8 +421,8 @@ export const updateNovelAction =
 
     await updateNovel(pluginId, novelUrl, novelId, options);
 
-    let novel = await getNovel(pluginId, novelUrl);
-    let chapters = await getChapters(novel.novelId, sort, filter);
+    let novel = await getNovel(novelUrl);
+    let chapters = await getChapters(novelId, sort, filter);
 
     dispatch({
       type: UPDATE_NOVEL,

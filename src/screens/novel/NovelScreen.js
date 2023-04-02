@@ -68,6 +68,7 @@ const Novel = ({ route, navigation }) => {
   const progressViewOffset = topInset + 32;
 
   const { novel, chapters, loading, updating } = useNovel();
+
   const { downloadQueue } = useSelector(state => state.downloadsReducer);
 
   const [selected, setSelected] = useState([]);
@@ -599,25 +600,27 @@ const Novel = ({ route, navigation }) => {
             refreshControl={refreshControl()}
           />
         </View>
-        {useFabForContinueReading && chapters?.length > 0 && lastReadChapter && (
-          <FAB
-            style={[
-              styles.fab,
-              { backgroundColor: theme.primary, marginBottom: bottomInset },
-            ]}
-            small
-            color={theme.onPrimary}
-            uppercase={false}
-            label={novel.unread ? 'Start' : 'Resume'}
-            icon="play"
-            onPress={() => {
-              navigation.navigate(
-                'Chapter',
-                openChapter(novel, lastReadChapter),
-              );
-            }}
-          />
-        )}
+        {useFabForContinueReading &&
+          chapters?.length > 0 &&
+          lastReadChapter && (
+            <FAB
+              style={[
+                styles.fab,
+                { backgroundColor: theme.primary, marginBottom: bottomInset },
+              ]}
+              small
+              color={theme.onPrimary}
+              uppercase={false}
+              label={novel.unread ? 'Start' : 'Resume'}
+              icon="play"
+              onPress={() => {
+                navigation.navigate(
+                  'Chapter',
+                  openChapter(novel, lastReadChapter),
+                );
+              }}
+            />
+          )}
         <Portal>
           <Actionbar
             active={selected.length > 0}

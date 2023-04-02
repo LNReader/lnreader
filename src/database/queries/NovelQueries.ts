@@ -41,17 +41,19 @@ export const insertNovelandChapters = (
           sourceNovel.url,
           pluginId,
           sourceNovel.name,
-          sourceNovel.cover,
+          sourceNovel.cover || '',
           sourceNovel.summary || '',
-          sourceNovel.author,
-          sourceNovel.artist,
-          sourceNovel.status,
+          sourceNovel.author || '',
+          sourceNovel.artist || '',
+          sourceNovel.status || '',
           sourceNovel.genres || '',
         ],
         (txObj, resultSet) => {
-          insertChapters(resultSet.insertId, sourceNovel.chapters).then(() =>
-            resolve(resultSet.insertId),
-          );
+          if (resultSet.insertId) {
+            insertChapters(resultSet.insertId, sourceNovel.chapters).then(() =>
+              resolve(resultSet.insertId || 1),
+            );
+          }
         },
         txnErrorCallback,
       );
@@ -158,15 +160,18 @@ export const restoreLibrary = async (novel: NovelInfo) => {
           novel.url,
           novel.name,
           novel.pluginId,
-          novel.cover,
-          novel.summary,
-          novel.author,
-          novel.artist,
-          novel.status,
-          novel.genres,
+          novel.cover || '',
+          novel.summary || '',
+          novel.author || '',
+          novel.artist || '',
+          novel.status || '',
+          novel.genres || '',
           novel.inLibrary,
         ],
         async (txObj, { insertId }) => {
+          if (!insertId) {
+            return;
+          }
           tx.executeSql(
             'INSERT INTO NovelCategory (novelId, categoryId) VALUES (?, (SELECT DISTINCT id FROM Category WHERE sort = 1))',
             [insertId],
@@ -221,15 +226,18 @@ export const migrateNovel = async (pluginId: string, novelUrl: string) => {
               novel.url,
               pluginId,
               novel.name,
-              novel.cover,
+              novel.cover || '',
               novel.summary || '',
-              novel.author,
-              novel.artist,
-              novel.status,
+              novel.author || '',
+              novel.artist || '',
+              novel.status || '',
               novel.genres || '',
               1,
             ],
             async (txObj, { insertId }) => {
+              if (!insertId) {
+                return;
+              }
               const chapters = await fetchChapters(pluginId, novel.url);
               await insertChapters(insertId, chapters);
               resolve(novel.name);
@@ -256,9 +264,9 @@ export const updateNovelInfo = async (info: NovelInfo) => {
       [
         info.name,
         info.summary || '',
-        info.author,
+        info.author || '',
         info.genres || '',
-        info.status,
+        info.status || '',
         info.id,
       ],
       noop,
