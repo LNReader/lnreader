@@ -94,8 +94,8 @@ const styles = StyleSheet.create({
   buttons: {
     flex: 1,
   },
-  marginLeftS: {
-    marginLeft: 8,
+  buttons: {
+    flex: 1,
   },
   customCSSButtons: {
     marginVertical: 8,
