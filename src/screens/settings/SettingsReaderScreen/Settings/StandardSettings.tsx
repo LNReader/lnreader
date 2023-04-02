@@ -107,7 +107,7 @@ const StandardSettings: React.FC<StandardSettingsProps> = ({
     autoScrollInterval === 10 && autoScrollOffset === null;
 
   //const [customCSS, setcustomCSS] = useState(readerSettings.customCSS);
-  const [customJS, setcustomJS] = useState(readerSettings.customJS);
+  const [customJS, setCustomJS] = useState(readerSettings.customJS);
 
   const { height: screenHeight } = useWindowDimensions();
 
@@ -232,7 +232,7 @@ const StandardSettings: React.FC<StandardSettingsProps> = ({
           <TextInput
             style={[{ color: theme.onSurface }, styles.fontSizeL]}
             value={customJS}
-            onChangeText={text => setcustomJS(text)}
+            onChangeText={text => setCustomJS(text)}
             placeholderTextColor={theme.onSurfaceVariant}
             placeholder="Example: document.getElementById('example');"
             multiline={true}
@@ -245,7 +245,7 @@ const StandardSettings: React.FC<StandardSettingsProps> = ({
             />
             <Button
               onPress={() => {
-                setcustomJS('');
+                setCustomJS('');
                 dispatch(setReaderSettings('customJS', ''));
               }}
               title={getString('common.clear')}

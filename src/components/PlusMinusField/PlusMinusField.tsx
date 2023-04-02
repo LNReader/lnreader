@@ -25,6 +25,8 @@ const PlusMinusField: React.FC<PlusMinusFieldProps> = ({
   onPressPlus,
 }) => {
   const theme = useTheme();
+  const minusDisabled = min || min === 0 ? value <= min : false;
+  const plusDisabled = max || max === 0 ? value >= max : false;
 
   return (
     <View style={styles.container}>
@@ -39,7 +41,7 @@ const PlusMinusField: React.FC<PlusMinusFieldProps> = ({
             name="minus"
             color={theme.primary}
             size={26}
-            disabled={min ? value <= min : false}
+            disabled={minusDisabled}
             onPress={onPressMinus}
             theme={theme}
           />
@@ -52,7 +54,7 @@ const PlusMinusField: React.FC<PlusMinusFieldProps> = ({
             name="plus"
             color={theme.primary}
             size={26}
-            disabled={max ? value >= max : false}
+            disabled={plusDisabled}
             onPress={onPressPlus}
             theme={theme}
           />
