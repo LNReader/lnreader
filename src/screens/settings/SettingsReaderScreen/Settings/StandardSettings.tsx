@@ -22,7 +22,6 @@ import ReaderLineHeight from '../../../../screens/reader/components/ReaderBottom
 import ReaderTextSize from '../ReaderTextSize';
 
 import {
-  useReaderSettings,
   useSettingsV1,
   useAppDispatch,
   useSettingsV2,
@@ -107,7 +106,7 @@ const StandardSettings: React.FC<StandardSettingsProps> = ({
   const areAutoScrollSettingsDefault =
     autoScrollInterval === 10 && autoScrollOffset === null;
 
-  const [customCSS, setcustomCSS] = useState(readerSettings.customCSS);
+  //const [customCSS, setcustomCSS] = useState(readerSettings.customCSS);
   const [customJS, setcustomJS] = useState(readerSettings.customJS);
 
   const { height: screenHeight } = useWindowDimensions();
@@ -115,6 +114,9 @@ const StandardSettings: React.FC<StandardSettingsProps> = ({
   const labelStyle = [styles.fontSizeL, { color: theme.onSurface }];
   return (
     <ScrollView style={styles.flex} contentContainerStyle={styles.bottomInset}>
+      <List.SubHeader theme={theme}>
+        {getString('moreScreen.settingsScreen.generalSettings')}
+      </List.SubHeader>
       <SwitchItem
         label={getString('readerScreen.bottomSheet.verticalSeekbar')}
         description={getString(
@@ -207,6 +209,9 @@ const StandardSettings: React.FC<StandardSettingsProps> = ({
       ) : null}
       <>
         <List.Divider theme={theme} />
+        {/*
+          Custom CSS
+      */}
         <List.SubHeader theme={theme}>
           {getString('moreScreen.settingsScreen.readerSettings.customCSS')}
         </List.SubHeader>
@@ -217,9 +222,11 @@ const StandardSettings: React.FC<StandardSettingsProps> = ({
         />
 
         <List.Divider theme={theme} />
+        {/*
+          Custom JS
+      */}
         <List.SubHeader theme={theme}>
-          {/* {getString('moreScreen.settingsScreen.readerSettings.customJS')} */}
-          {'Custom JS'}
+          {getString('moreScreen.settingsScreen.readerSettings.customJS')}
         </List.SubHeader>
         <View style={styles.customCSSContainer}>
           <TextInput
@@ -247,6 +254,9 @@ const StandardSettings: React.FC<StandardSettingsProps> = ({
         </View>
       </>
       <List.Divider theme={theme} />
+      {/*
+          Display
+      */}
       <List.SubHeader theme={theme}>
         {getString('novelScreen.bottomSheet.display')}
       </List.SubHeader>
@@ -277,6 +287,9 @@ const StandardSettings: React.FC<StandardSettingsProps> = ({
         theme={theme}
       />
       <List.Divider theme={theme} />
+      {/*
+          Reader Theme
+      */}
       <List.SubHeader theme={theme}>
         {getString('moreScreen.settingsScreen.readerSettings.readerTheme')}
       </List.SubHeader>
@@ -346,6 +359,9 @@ const StandardSettings: React.FC<StandardSettingsProps> = ({
         onPress={readerFontPickerModal.setTrue}
         theme={theme}
       />
+      {/*
+          Modals
+      */}
       <Portal>
         <ColorPickerModal
           title={getString(
