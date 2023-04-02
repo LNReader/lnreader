@@ -100,7 +100,7 @@ const uninstallPlugin = async (_plugin: PluginItem) => {
 
 const updatePlugin = async (plugin: PluginItem) => {
   const updated = await installPlugin(plugin.url);
-  if (updated && updated.version !== plugin.version) {
+  if (updated && bigger(updated.version, plugin.version)) {
     showToast(`Updated ${updated.name} to ${updated.version}`);
   }
   return updated;
