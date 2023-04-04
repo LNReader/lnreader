@@ -1,5 +1,5 @@
-import { StyleSheet, Text, TextStyle, View } from 'react-native';
-import React from 'react';
+import { StyleSheet, Text, TextStyle, View, TextInput } from 'react-native';
+import React, { useEffect } from 'react';
 
 import { useTheme } from '@hooks/useTheme';
 import { IconButtonV2 } from '@components/index';
@@ -10,8 +10,8 @@ interface PlusMinusFieldProps {
   displayValue?: number | string;
   min?: number;
   max?: number;
-  onPressMinus: () => void;
-  onPressPlus: () => void;
+  valueChange?: number;
+  method: (value: number) => void;
 }
 
 const PlusMinusField: React.FC<PlusMinusFieldProps> = ({
@@ -21,12 +21,17 @@ const PlusMinusField: React.FC<PlusMinusFieldProps> = ({
   displayValue,
   min,
   max,
-  onPressMinus,
-  onPressPlus,
+  valueChange = 1,
+  method,
 }) => {
   const theme = useTheme();
   const minusDisabled = min || min === 0 ? value <= min : false;
   const plusDisabled = max || max === 0 ? value >= max : false;
+  const [text, onChangeText] = React.useState(value.toString());
+
+  useEffect(() => {
+    onChangeText(value.toString());
+  }, [value]);
 
   return (
     <View style={styles.container}>
@@ -42,20 +47,25 @@ const PlusMinusField: React.FC<PlusMinusFieldProps> = ({
             color={theme.primary}
             size={26}
             disabled={minusDisabled}
-            onPress={onPressMinus}
+            onPress={() => method(value - valueChange)}
             theme={theme}
           />
         </View>
-        <Text style={[styles.value, { color: theme.onSurface }]}>
-          {displayValue ? displayValue : value}
-        </Text>
+        <TextInput
+          editable={displayValue ? false : true}
+          style={[styles.value, { color: theme.onSurface }]}
+          onEndEditing={() => method(Number(text))}
+          value={displayValue ? displayValue.toString() : text}
+          onChangeText={onChangeText}
+          keyboardType="decimal-pad"
+        />
         <View style={styles.buttons}>
           <IconButtonV2
             name="plus"
             color={theme.primary}
             size={26}
             disabled={plusDisabled}
-            onPress={onPressPlus}
+            onPress={() => method(value + valueChange)}
             theme={theme}
           />
         </View>
