@@ -13,12 +13,10 @@ import { getString } from '@strings/translations';
 import { dummyHTML } from './utils';
 import StandardSettings from './Settings/StandardSettings';
 import CustomCSSSettings from './Settings/CustomCSSSettings';
-
-const READER_HEIGHT = 360;
-export enum settingEnum {
-  DEFAULT,
-  CUSTOMCSS,
-}
+import {
+  settingEnum,
+  READER_HEIGHT,
+} from './constants/readerSettingsConstants';
 
 const SettingsReaderScreen = () => {
   const theme = useTheme();
