@@ -1,4 +1,4 @@
-export const READER_HEIGHT = 360;
+export const READER_HEIGHT = 280;
 
 export enum settingEnum {
   DEFAULT,
