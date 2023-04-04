@@ -1,4 +1,4 @@
-import { StyleSheet, ScrollView, View } from 'react-native';
+import { StyleSheet, ScrollView, View, TextInput } from 'react-native';
 import React, { useState } from 'react';
 
 import { Button, List } from '@components/index';
@@ -13,7 +13,7 @@ import { getString } from '@strings/translations';
 const CustomCSSSettings = () => {
   const theme = useTheme();
   const readerSettings = useReaderSettings();
-  const [customCSS, setcustomCSS] = useState(readerSettings.customCSS);
+  const [customCSS, setCustomCSS] = useState(readerSettings.customCSS);
   const dispatch = useAppDispatch();
 
   const [horizontalSpace, setHorizontalSpace] = useState(0);
@@ -28,17 +28,28 @@ const CustomCSSSettings = () => {
         labelStyle={labelStyle}
         label="Horizontal Spacing"
         value={horizontalSpace}
-        onPressMinus={() => setHorizontalSpace(horizontalSpace - 1)}
-        onPressPlus={() => setHorizontalSpace(horizontalSpace + 1)}
+        method={val => setHorizontalSpace(val)}
         min={0}
       />
       <PlusMinusField
         labelStyle={labelStyle}
         label="Max Width"
         value={maxWidth}
-        onPressMinus={() => setmaxWidth(maxWidth - 50)}
-        onPressPlus={() => setmaxWidth(maxWidth + 50)}
+        method={val => setmaxWidth(val)}
+        valueChange={50}
         min={100}
+      />
+      <TextInput
+        style={[
+          { color: theme.onSurface },
+          styles.fontSizeL,
+          styles.customCSSContainer,
+        ]}
+        value={customCSS}
+        onChangeText={text => setCustomCSS(text)}
+        placeholderTextColor={theme.onSurfaceVariant}
+        placeholder="Example: document.getElementById('example');"
+        multiline={true}
       />
       <View style={styles.customCSSButtons}>
         <Button
@@ -70,20 +81,9 @@ const styles = StyleSheet.create({
   fontSizeL: {
     fontSize: 16,
   },
-  autoScrollInterval: {
-    paddingHorizontal: 16,
-    paddingBottom: 8,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  customThemeButton: {
-    marginHorizontal: 16,
-    marginBottom: 16,
-  },
   customCSSContainer: {
-    paddingHorizontal: 16,
-    paddingBottom: 8,
+    marginHorizontal: 16,
+    marginBottom: 8,
   },
   buttons: {
     flex: 1,
@@ -91,9 +91,5 @@ const styles = StyleSheet.create({
   customCSSButtons: {
     flex: 1,
     flexDirection: 'row-reverse',
-  },
-  paddingRightM: {
-    flex: 1,
-    paddingRight: 16,
   },
 });

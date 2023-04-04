@@ -20,12 +20,8 @@ const ReaderLineHeight: React.FC<ReaderLineHeightProps> = ({ labelStyle }) => {
       label={getString('readerScreen.bottomSheet.lineHeight')}
       value={lineHeight}
       displayValue={`${Math.round(lineHeight * 10) / 10}%`}
-      onPressMinus={() =>
-        dispatch(setReaderSettings('lineHeight', lineHeight - 0.1))
-      }
-      onPressPlus={() =>
-        dispatch(setReaderSettings('lineHeight', lineHeight + 0.1))
-      }
+      method={val => dispatch(setReaderSettings('lineHeight', val))}
+      valueChange={0.1}
       min={1.3}
       max={2}
     />
