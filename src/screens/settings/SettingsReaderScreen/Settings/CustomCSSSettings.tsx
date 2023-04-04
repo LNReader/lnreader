@@ -10,14 +10,6 @@ import { useTheme } from '@hooks/useTheme';
 import { useAppDispatch, useReaderSettings } from '@redux/hooks';
 import { getString } from '@strings/translations';
 
-export type TextAlignments =
-  | 'left'
-  | 'center'
-  | 'auto'
-  | 'right'
-  | 'justify'
-  | undefined;
-
 const CustomCSSSettings = () => {
   const theme = useTheme();
   const readerSettings = useReaderSettings();

@@ -43,18 +43,10 @@ import {
   presetReaderThemes,
   readerFonts,
 } from '../../../../utils/constants/readerConstants';
-import { settingEnum } from '../SettingsReaderScreen';
+import { settingEnum } from '../constants/readerSettingsConstants';
 import { Portal } from 'react-native-paper';
 import ColorPickerModal from '@components/ColorPickerModal/ColorPickerModal';
 import FontPickerModal from '../FontPickerModal';
-
-export type TextAlignments =
-  | 'left'
-  | 'center'
-  | 'auto'
-  | 'right'
-  | 'justify'
-  | undefined;
 
 interface StandardSettingsProps {
   setSetting: (value: React.SetStateAction<settingEnum>) => void;
