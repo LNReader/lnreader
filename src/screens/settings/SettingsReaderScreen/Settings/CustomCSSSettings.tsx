@@ -1,10 +1,4 @@
-import {
-  StyleSheet,
-  ScrollView,
-  View,
-  TextInput,
-  KeyboardAvoidingView,
-} from 'react-native';
+import { StyleSheet, View, TextInput, ScrollView } from 'react-native';
 import React, { useState } from 'react';
 
 import { Button, ColorPreferenceItem, List } from '@components/index';
@@ -33,6 +27,7 @@ import useBoolean from '@hooks/useBoolean';
 import { Portal } from 'react-native-paper';
 import ColorPickerModal from '@components/ColorPickerModal/ColorPickerModal';
 import FontPickerModal from '../FontPickerModal';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const CustomCSSSettings = () => {
   const theme = useTheme();
@@ -83,7 +78,13 @@ const CustomCSSSettings = () => {
   )?.name;
 
   return (
-    <ScrollView style={styles.flex} contentContainerStyle={styles.bottomInset}>
+    <KeyboardAwareScrollView
+      enableOnAndroid
+      style={styles.flex}
+      extraScrollHeight={100}
+      scrollToOverflowEnabled={true}
+      //contentContainerStyle={styles.bottomInset}
+    >
       <List.Divider theme={theme} />
       {/*
           Reader Theme
@@ -176,20 +177,19 @@ const CustomCSSSettings = () => {
       />
       <List.Divider theme={theme} />
       <List.SubHeader theme={theme}>CSS file</List.SubHeader>
-      <KeyboardAvoidingView behavior="height">
-        <TextInput
-          style={[
-            { color: theme.onSurface },
-            styles.fontSizeL,
-            styles.customCSSContainer,
-          ]}
-          value={customCSS}
-          onChangeText={text => setCustomCSS(text)}
-          placeholderTextColor={theme.onSurfaceVariant}
-          placeholder="Example: body {margin: 10px;}"
-          multiline={true}
-        />
-      </KeyboardAvoidingView>
+
+      <TextInput
+        style={[
+          { color: theme.onSurface },
+          styles.fontSizeL,
+          styles.customCSSContainer,
+        ]}
+        value={customCSS}
+        onChangeText={text => setCustomCSS(text)}
+        placeholderTextColor={theme.onSurfaceVariant}
+        placeholder="Example: body {margin: 10px;}"
+        multiline={true}
+      />
       <View style={styles.customCSSContainer}>
         <Button
           onPress={() => dispatch(setReaderSettings('customCSS', customCSS))}
@@ -244,7 +244,7 @@ const CustomCSSSettings = () => {
           onDismiss={readerFontPickerModal.setFalse}
         />
       </Portal>
-    </ScrollView>
+    </KeyboardAwareScrollView>
   );
 };
 export default CustomCSSSettings;
