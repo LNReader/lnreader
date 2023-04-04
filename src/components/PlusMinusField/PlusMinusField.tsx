@@ -33,6 +33,17 @@ const PlusMinusField: React.FC<PlusMinusFieldProps> = ({
     onChangeText(value.toString());
   }, [value]);
 
+  const endEditing = () => {
+    let res = isNaN(Number(text)) ? 0 : Number(text);
+    if (min && res < min) {
+      res = min;
+    } else if (max && res > max) {
+      res = max;
+    }
+    method(res);
+    onChangeText(res.toString());
+  };
+
   return (
     <View style={styles.container}>
       <Text
@@ -54,10 +65,10 @@ const PlusMinusField: React.FC<PlusMinusFieldProps> = ({
         <TextInput
           editable={displayValue ? false : true}
           style={[styles.value, { color: theme.onSurface }]}
-          onEndEditing={() => method(Number(text))}
+          onEndEditing={endEditing}
           value={displayValue ? displayValue.toString() : text}
           onChangeText={onChangeText}
-          keyboardType="decimal-pad"
+          keyboardType="numeric"
         />
         <View style={styles.buttons}>
           <IconButtonV2

@@ -1,5 +1,5 @@
 import { View } from 'react-native';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import { useNavigation } from '@react-navigation/native';
 import WebView from 'react-native-webview';
@@ -17,6 +17,8 @@ import {
   settingEnum,
   READER_HEIGHT,
 } from './constants/readerSettingsConstants';
+import BottomSheet from '@components/BottomSheet/BottomSheet';
+import { BottomSheetView } from '@gorhom/bottom-sheet';
 
 const SettingsReaderScreen = () => {
   const theme = useTheme();
@@ -57,6 +59,7 @@ const SettingsReaderScreen = () => {
       setSetting(settingEnum.DEFAULT);
     }
   };
+  let bottomSheetRef = useRef(null);
 
   return (
     <>
