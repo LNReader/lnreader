@@ -2,13 +2,13 @@ import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { NovelInfo } from '../../../../database/types';
+import { NovelInfo } from '@database/types';
 import { useNavigation } from '@react-navigation/native';
-import { useBoolean, useNovelTrackerInfo } from '../../../../hooks';
-import { ThemeColors } from '../../../../theme/types';
-import { getString } from '../../../../../strings/translations';
+import { useBoolean, useNovelTrackerInfo } from '@hooks';
+import { ThemeColors } from '@theme/types';
+import { getString } from '@strings/translations';
 import { Portal } from 'react-native-paper';
-// import SetCategoryModal from '../SetCategoriesModal';
+import SetCategoryModal from '../SetCategoriesModal';
 
 interface NovelScreenButtonGroupProps {
   novel: NovelInfo;
@@ -41,7 +41,6 @@ const NovelScreenButtonGroup: React.FC<NovelScreenButtonGroupProps> = ({
       } as never,
     );
   };
-
   const handleMigrateNovel = () =>
     navigate(
       'MigrateNovel' as never,
@@ -52,9 +51,9 @@ const NovelScreenButtonGroup: React.FC<NovelScreenButtonGroupProps> = ({
     );
 
   const {
-    // value: setCategoryModalVisible,
+    value: setCategoryModalVisible,
     setTrue: showSetCategoryModal,
-    // setFalse: closeSetCategoryModal,
+    setFalse: closeSetCategoryModal,
   } = useBoolean();
 
   return (
@@ -133,12 +132,11 @@ const NovelScreenButtonGroup: React.FC<NovelScreenButtonGroupProps> = ({
         </View>
       </View>
       <Portal>
-        {/* <SetCategoryModal
-          novelId={novel.id}
-          currentCategoryIds={JSON.parse(novel) as number[]}
+        <SetCategoryModal
+          novelIds={[novel.id]}
           closeModal={closeSetCategoryModal}
           visible={setCategoryModalVisible}
-        /> */}
+        />
       </Portal>
     </>
   );

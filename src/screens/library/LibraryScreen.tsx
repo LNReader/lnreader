@@ -247,7 +247,7 @@ const LibraryScreen = () => {
                     name: history[0].novelName,
                   },
                   chapter: {
-                    id: history[0].chapterId,
+                    id: history[0].id,
                     url: history[0].chapterUrl,
                     name: history[0].chapterName,
                     novelId: history[0].novelId,
