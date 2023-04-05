@@ -72,6 +72,9 @@ const CustomFileModal: React.FC<CustomCSSModalProps> = ({
           <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
             {title}
           </Text>
+          <Text style={[{ color: theme.secondary }]}>
+            {getString('moreScreen.settingsScreen.readerSettings.cssHint')}
+          </Text>
           <TextInput
             theme={{ colors: { ...theme } }}
             underlineColor={theme.outline}

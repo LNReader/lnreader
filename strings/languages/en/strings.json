@@ -175,7 +175,8 @@
         "customJS": "Custom JS",
         "openCSSFile": "Open CSS file",
         "openJSFile": "Open JS file",
-        "notSaved": "Not saved"
+        "notSaved": "Not saved",
+        "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#source[SOURCEID])"
       },
       "browseSettings": "Browse Settings",
       "browseSettingsScreen": {
