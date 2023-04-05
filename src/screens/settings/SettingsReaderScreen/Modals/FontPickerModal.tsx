@@ -6,9 +6,9 @@ import { RadioButton } from '@components/RadioButton/RadioButton';
 
 import { useAppDispatch } from '@redux/hooks';
 import { useTheme } from '@hooks/useTheme';
-import { setReaderSettings } from '../../../redux/settings/settings.actions';
+import { setReaderSettings } from '../../../../redux/settings/settings.actions';
 
-import { readerFonts } from '../../../utils/constants/readerConstants';
+import { readerFonts } from '../../../../utils/constants/readerConstants';
 
 interface FontPickerModalProps {
   visible: boolean;

@@ -1,28 +1,31 @@
-import { View } from 'react-native';
-import React, { useRef, useState } from 'react';
+import { ScrollView, View } from 'react-native';
+import React, { useState } from 'react';
 
 import { useNavigation } from '@react-navigation/native';
 import WebView from 'react-native-webview';
 
-import { Appbar } from '@components/index';
+import { Appbar, List } from '@components/index';
 
 import { useReaderSettings } from '@redux/hooks';
 import { useTheme } from '@hooks/useTheme';
 import { getString } from '@strings/translations';
 
 import { dummyHTML } from './utils';
-import StandardSettings from './Settings/StandardSettings';
+import GeneralSettings from './Settings/GeneralSettings';
 import CustomCSSSettings from './Settings/CustomCSSSettings';
 import {
   settingEnum,
   READER_HEIGHT,
 } from './constants/readerSettingsConstants';
-import BottomSheet from '@components/BottomSheet/BottomSheet';
-import { BottomSheetView } from '@gorhom/bottom-sheet';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import CustomJSSettings from './Settings/CustomJSSettings';
+import DisplaySettings from './Settings/DisplaySettings';
+import ReaderThemeSettings from './Settings/ReaderThemeSettings';
 
 const SettingsReaderScreen = () => {
   const theme = useTheme();
   const navigation = useNavigation();
+  let { bottom } = useSafeAreaInsets();
 
   const readerSettings = useReaderSettings();
   const [setting, setSetting] = useState(settingEnum.DEFAULT);
@@ -59,7 +62,6 @@ const SettingsReaderScreen = () => {
       setSetting(settingEnum.DEFAULT);
     }
   };
-  let bottomSheetRef = useRef(null);
 
   return (
     <>
@@ -94,14 +96,20 @@ const SettingsReaderScreen = () => {
           }}
         />
       </View>
-      {setting === settingEnum.DEFAULT ? (
-        <StandardSettings
-          readerSettings={readerSettings}
-          setSetting={setSetting}
-        />
-      ) : (
-        <CustomCSSSettings />
-      )}
+
+      <ScrollView>
+        <View style={{ paddingBottom: bottom }}>
+          <GeneralSettings />
+          <List.Divider theme={theme} />
+          <CustomCSSSettings />
+          <List.Divider theme={theme} />
+          <CustomJSSettings readerSettings={readerSettings} />
+          <List.Divider theme={theme} />
+          <DisplaySettings />
+          <List.Divider theme={theme} />
+          <ReaderThemeSettings />
+        </View>
+      </ScrollView>
     </>
   );
 };

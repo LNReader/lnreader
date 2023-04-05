@@ -8,14 +8,19 @@ import PlusMinusField from '@components/PlusMinusField/PlusMinusField';
 
 interface ReaderTextSizeProps {
   labelStyle?: TextStyle | TextStyle[];
+  onFocus?: (event: Event) => void;
 }
 
-const ReaderTextSize: React.FC<ReaderTextSizeProps> = ({ labelStyle }) => {
+const ReaderTextSize: React.FC<ReaderTextSizeProps> = ({
+  labelStyle,
+  onFocus,
+}) => {
   const dispatch = useAppDispatch();
 
   const { textSize } = useReaderSettings();
   return (
     <PlusMinusField
+      onFocus={onFocus}
       labelStyle={labelStyle}
       label={getString('readerScreen.bottomSheet.textSize')}
       value={textSize}
