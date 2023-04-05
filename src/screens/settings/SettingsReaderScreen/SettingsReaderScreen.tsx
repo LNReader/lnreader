@@ -1,5 +1,5 @@
 import { ScrollView, View } from 'react-native';
-import React, { useState } from 'react';
+import React from 'react';
 
 import { useNavigation } from '@react-navigation/native';
 import WebView from 'react-native-webview';
@@ -13,10 +13,6 @@ import { getString } from '@strings/translations';
 import { dummyHTML } from './utils';
 import GeneralSettings from './Settings/GeneralSettings';
 import CustomCSSSettings from './Settings/CustomCSSSettings';
-import {
-  settingEnum,
-  READER_HEIGHT,
-} from './constants/readerSettingsConstants';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import CustomJSSettings from './Settings/CustomJSSettings';
 import DisplaySettings from './Settings/DisplaySettings';
@@ -28,8 +24,7 @@ const SettingsReaderScreen = () => {
   let { bottom } = useSafeAreaInsets();
 
   const readerSettings = useReaderSettings();
-  const [setting, setSetting] = useState(settingEnum.DEFAULT);
-
+  const READER_HEIGHT = 280;
   const webViewCSS = `
   <style>
   body {
@@ -55,20 +50,12 @@ const SettingsReaderScreen = () => {
 
   const readerBackgroundColor = readerSettings.theme;
 
-  const handleGoBack = () => {
-    if (setting === settingEnum.DEFAULT) {
-      navigation.goBack();
-    } else {
-      setSetting(settingEnum.DEFAULT);
-    }
-  };
-
   return (
     <>
       <Appbar
         mode="small"
         title={getString('moreScreen.settingsScreen.readerSettings.title')}
-        handleGoBack={handleGoBack}
+        handleGoBack={navigation.goBack}
         theme={theme}
       />
 
