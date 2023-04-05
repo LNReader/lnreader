@@ -172,7 +172,10 @@
         "saveCustomTheme": "Save custom theme",
         "deleteCustomTheme": "Delete custom theme",
         "customCSS": "Custom CSS",
-        "customJS": "Custom JS"
+        "customJS": "Custom JS",
+        "openCSSFile": "Open CSS file",
+        "openJSFile": "Open JS file",
+        "notSaved": "Not saved"
       },
       "browseSettings": "Browse Settings",
       "browseSettingsScreen": {

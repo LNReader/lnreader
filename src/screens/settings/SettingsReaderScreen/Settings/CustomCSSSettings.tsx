@@ -8,7 +8,7 @@ import { setReaderSettings } from '@redux/settings/settings.actions';
 import { useTheme } from '@hooks/useTheme';
 import { useAppDispatch, useReaderSettings } from '@redux/hooks';
 import { getString } from '@strings/translations';
-import CustomCSSModal from '../Modals/CustomCSSModal';
+import CustomFileModal from '../Modals/CustomFileModal';
 import useBoolean from '@hooks/useBoolean';
 import { Portal } from 'react-native-paper';
 
@@ -21,9 +21,16 @@ const CustomCSSSettings = () => {
 
   return (
     <>
-      <List.SubHeader theme={theme}>
-        {getString('moreScreen.settingsScreen.readerSettings.customCSS')}
-      </List.SubHeader>
+      <View style={styles.header}>
+        <List.SubHeader theme={theme}>
+          {getString('moreScreen.settingsScreen.readerSettings.customCSS')}
+        </List.SubHeader>
+        <List.SubHeader theme={theme}>
+          {readerSettings.customCSS !== customCSS
+            ? getString('moreScreen.settingsScreen.readerSettings.notSaved')
+            : null}
+        </List.SubHeader>
+      </View>
       <View style={styles.customCSSContainer}>
         <TextInput
           style={[{ color: theme.onSurface }, styles.fontSizeL]}
@@ -53,15 +60,16 @@ const CustomCSSSettings = () => {
             Modals
         */}
       <Portal>
-        <CustomCSSModal
+        <CustomFileModal
           title={getString(
             'moreScreen.settingsScreen.readerSettings.customCSS',
           )}
           visible={cssModal.value}
           onDismiss={cssModal.setFalse}
           theme={theme}
-          customCSS={customCSS}
-          setCustomCSS={setCustomCSS}
+          customFile={customCSS}
+          setCustomFile={setCustomCSS}
+          placeholder="Example: body {margin: 10px;}"
         />
       </Portal>
     </>
@@ -98,4 +106,5 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     marginBottom: 16,
   },
+  header: { flexDirection: 'row', justifyContent: 'space-between' },
 });

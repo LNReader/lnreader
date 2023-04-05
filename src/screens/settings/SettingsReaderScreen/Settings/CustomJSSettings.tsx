@@ -7,6 +7,9 @@ import { useAppDispatch, readerSettingType } from '@redux/hooks';
 import { useTheme } from '@hooks/useTheme';
 import { getString } from '@strings/translations';
 import { setReaderSettings } from '@redux/settings/settings.actions';
+import { Portal } from 'react-native-paper';
+import CustomFileModal from '../Modals/CustomFileModal';
+import useBoolean from '@hooks/useBoolean';
 
 interface CustomJSSettingsProps {
   readerSettings: readerSettingType;
@@ -19,26 +22,34 @@ const CustomJSSettings: React.FC<CustomJSSettingsProps> = ({
   const dispatch = useAppDispatch();
 
   const [customJS, setCustomJS] = useState(readerSettings.customJS);
+  const jsModal = useBoolean();
 
   return (
     <>
-      <List.SubHeader theme={theme}>
-        {getString('moreScreen.settingsScreen.readerSettings.customJS')}
-      </List.SubHeader>
+      <View style={styles.header}>
+        <List.SubHeader theme={theme}>
+          {getString('moreScreen.settingsScreen.readerSettings.customJS')}
+        </List.SubHeader>
+        <List.SubHeader theme={theme}>
+          {readerSettings.customJS !== customJS
+            ? getString('moreScreen.settingsScreen.readerSettings.notSaved')
+            : null}
+        </List.SubHeader>
+      </View>
       <View style={styles.customCSSContainer}>
         <TextInput
           style={[{ color: theme.onSurface }, styles.fontSizeL]}
           value={customJS}
-          onChangeText={text => setCustomJS(text)}
           placeholderTextColor={theme.onSurfaceVariant}
           placeholder="Example: document.getElementById('example');"
           multiline={true}
+          editable={false}
         />
         <View style={styles.customCSSButtons}>
           <Button
-            onPress={() => dispatch(setReaderSettings('customJS', customJS))}
+            onPress={jsModal.setTrue}
             style={styles.marginLeftS}
-            title={getString('common.save')}
+            title={getString('common.edit')}
           />
           <Button
             onPress={() => {
@@ -49,6 +60,24 @@ const CustomJSSettings: React.FC<CustomJSSettingsProps> = ({
           />
         </View>
       </View>
+      {/*
+            Modals
+        */}
+      <Portal>
+        <CustomFileModal
+          title={getString('moreScreen.settingsScreen.readerSettings.customJS')}
+          visible={jsModal.value}
+          onDismiss={jsModal.setFalse}
+          theme={theme}
+          customFile={customJS}
+          setCustomFile={setCustomJS}
+          type="JS"
+          openFileButtonLabel={getString(
+            'moreScreen.settingsScreen.readerSettings.openJSFile',
+          )}
+          placeholder="Example: document.getElementById('example');"
+        />
+      </Portal>
     </>
   );
 };
@@ -69,4 +98,5 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row-reverse',
   },
+  header: { flexDirection: 'row', justifyContent: 'space-between' },
 });

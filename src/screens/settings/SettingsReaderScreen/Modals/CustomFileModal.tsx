@@ -12,31 +12,45 @@ import { StorageAccessFramework } from 'expo-file-system';
 interface CustomCSSModalProps {
   visible: boolean;
   onDismiss: () => void;
-  customCSS: string;
-  setCustomCSS: (val: string) => void;
+  customFile: string;
+  setCustomFile: (val: string) => void;
   theme: MD3ThemeType;
   title: string;
+  type?: string;
+  openFileButtonLabel?: string;
+  placeholder?: string;
 }
 
-const CustomCSSModal: React.FC<CustomCSSModalProps> = ({
+const CustomFileModal: React.FC<CustomCSSModalProps> = ({
   onDismiss,
   visible,
-  customCSS,
-  setCustomCSS,
+  customFile,
+  setCustomFile,
   theme,
   title,
+  type = 'CSS',
+  openFileButtonLabel = getString(
+    'moreScreen.settingsScreen.readerSettings.openCSSFile',
+  ),
+  placeholder = '',
 }) => {
   const dispatch = useAppDispatch();
+  let mimeType: string;
+  if (type === 'CSS') {
+    mimeType = 'text/css';
+  } else {
+    mimeType = 'application/javascript';
+  }
 
   const openCSS = async () => {
     try {
       const rawCSS = await DocumentPicker.getDocumentAsync({
         copyToCacheDirectory: false,
-        type: 'text/css',
+        type: mimeType,
       });
       if (rawCSS.type === 'success') {
         let css = await StorageAccessFramework.readAsStringAsync(rawCSS.uri);
-        setCustomCSS(css);
+        setCustomFile(css);
       }
     } catch (error) {
       // eslint-disable-next-line no-console
@@ -61,10 +75,10 @@ const CustomCSSModal: React.FC<CustomCSSModalProps> = ({
           <TextInput
             theme={{ colors: { ...theme } }}
             underlineColor={theme.outline}
-            value={customCSS}
-            onChangeText={setCustomCSS}
+            value={customFile}
+            onChangeText={setCustomFile}
             mode="outlined"
-            placeholder="Example: body {margin: 10px;}"
+            placeholder={placeholder}
             placeholderTextColor={theme.onSurfaceVariant}
             multiline
             style={[
@@ -75,9 +89,10 @@ const CustomCSSModal: React.FC<CustomCSSModalProps> = ({
           />
           <View style={styles.customCSSButtons}>
             <Button
-              onPress={() =>
-                dispatch(setReaderSettings('customCSS', customCSS))
-              }
+              onPress={() => {
+                dispatch(setReaderSettings(`custom${type}`, customFile));
+                onDismiss();
+              }}
               style={styles.button}
               title={getString('common.save')}
               mode="contained"
@@ -85,7 +100,7 @@ const CustomCSSModal: React.FC<CustomCSSModalProps> = ({
             <Button
               style={styles.button}
               onPress={openCSS}
-              title='Open CSS file'
+              title={openFileButtonLabel}
             />
           </View>
         </KeyboardAvoidingView>
@@ -94,7 +109,7 @@ const CustomCSSModal: React.FC<CustomCSSModalProps> = ({
   );
 };
 
-export default CustomCSSModal;
+export default CustomFileModal;
 
 const styles = StyleSheet.create({
   modalContainer: {
