@@ -93,7 +93,7 @@ const CustomFileModal: React.FC<CustomCSSModalProps> = ({
           <View style={styles.customCSSButtons}>
             <Button
               onPress={() => {
-                dispatch(setReaderSettings(`custom${type}`, customFile));
+                dispatch(setReaderSettings(`custom${type}`, customFile.trim()));
                 onDismiss();
               }}
               style={styles.button}
