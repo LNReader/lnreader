@@ -1,12 +1,12 @@
 import { StyleSheet, View, TextInput } from 'react-native';
 import React, { useState } from 'react';
 
-import { Button, ColorPreferenceItem, List } from '@components/index';
+import { Button, List } from '@components/index';
 
 import { setReaderSettings } from '@redux/settings/settings.actions';
 
 import { useTheme } from '@hooks/useTheme';
-import { useAppDispatch, useReaderSettings, useSettingsV2 } from '@redux/hooks';
+import { useAppDispatch, useReaderSettings } from '@redux/hooks';
 import { getString } from '@strings/translations';
 import CustomFileModal from '../Modals/CustomFileModal';
 import useBoolean from '@hooks/useBoolean';
