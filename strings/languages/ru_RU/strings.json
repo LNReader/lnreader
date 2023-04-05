@@ -233,6 +233,6 @@
     "dbInfo": "Загрузки сохраняются в базе данных SQLite.",
     "downloadChapters": "загруженные главы",
     "noDownloads": "Ничего не загружено",
-    "downloadsLower": "downloads"
+    "downloadsLower": "Загруженное"
   }
 }
