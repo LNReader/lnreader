@@ -119,7 +119,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
         left={() => (
           <NovelCover
             navigateToNovel={navigateToNovel}
-            uri={chapterList[0].cover}
+            uri={chapterList[0].novelCover}
           />
         )}
         descriptionStyle={{ fontSize: 12 }}
@@ -130,7 +130,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
       >
         <FlatList
           data={chapterList}
-          keyExtractor={it => 'update' + it.novelId + it.id || it.chapterId}
+          keyExtractor={it => 'update' + it.id}
           style={styles.chapterList}
           renderItem={it => {
             return (
@@ -148,7 +148,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
                   <View style={styles.novelCover}>
                     <NovelCover
                       navigateToNovel={navigateToNovel}
-                      uri={chapterList[0].cover}
+                      uri={chapterList[0].novelCover}
                     />
                   </View>
                 }
@@ -175,7 +175,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
           <View style={styles.novelCover}>
             <NovelCover
               navigateToNovel={navigateToNovel}
-              uri={chapterList[0].cover}
+              uri={chapterList[0].novelCover}
             />
           </View>
         }

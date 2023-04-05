@@ -72,10 +72,10 @@ const getLibraryWithCategoryQuery = `
   ) as NIL 
   JOIN 
   (
-    SELECT SUM(unread) as chaptersUnread, SUM(isDownloaded) as chaptersDownloaded, novelId, MAX(readTime) as lastReadAt, MAX(Download.updateTime) as lastUpdatedAt
+    SELECT 
+      SUM(unread) as chaptersUnread, SUM(isDownloaded) as chaptersDownloaded, 
+      novelId, MAX(readTime) as lastReadAt, MAX(updatedTime) as lastUpdatedAt
     FROM Chapter
-    LEFT JOIN Download
-    ON Download.chapterId = Chapter.id
     GROUP BY novelId
   ) as C ON NIL.id = C.novelId
 `;

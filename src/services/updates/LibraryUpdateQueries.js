@@ -53,7 +53,7 @@ const updateNovel = async (pluginId, novelUrl, novelId, options) => {
     novel.chapters.forEach(chapter => {
       const { name, url, releaseTime } = chapter;
       tx.executeSql(
-        'INSERT OR IGNORE INTO Chapter (url, name, releaseTime, novelId) values (?, ?, ?, ?)',
+        "INSERT OR IGNORE INTO Chapter (url, name, releaseTime, novelId, updatedTime) values (?, ?, ?, ?, datetime('now','localtime'))",
         [url, name, releaseTime, novelId],
         (txObj, { insertId }) => {
           if (insertId !== -1) {

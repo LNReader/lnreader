@@ -397,8 +397,8 @@ export const deleteChapterAction =
  * @returns
  */
 export const deleteAllChaptersAction =
-  (pluginId, chapters) => async dispatch => {
-    await deleteChapters(pluginId, chapters);
+  (pluginId, novelId, chapters) => async dispatch => {
+    await deleteChapters(pluginId, novelId, chapters);
 
     dispatch({
       type: ALL_CHAPTER_DELETED,

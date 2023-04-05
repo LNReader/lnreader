@@ -13,12 +13,6 @@ const useNovel = () => {
   return { novel, chapters, loading, updating };
 };
 
-const useChapter = () => {
-  const chapter = useSelector(state => state.chapterReducer);
-
-  return chapter;
-};
-
 const useFindNovel = novelId => {
   let novelSettings = useSelector(
     state => state.preferenceReducer.novelSettings,
@@ -99,7 +93,6 @@ export {
   useContinueReading,
   useTrackingStatus,
   useNovel,
-  useChapter,
   useSavedSettings,
   usePosition,
 };

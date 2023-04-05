@@ -36,17 +36,15 @@ export interface ChapterInfo {
 }
 
 export interface DownloadedChapter {
-  id: number;
-  chapterId: number;
-  chapterText: string;
-  updateTime: string;
+  id: number; // chapterId
+  novelId: number;
+  pluginId: string;
 }
 
 export interface History {
   id: number; // chapterId xD
   pluginId: string;
   novelId: number;
-  chapterId: number;
   novelName: string;
   novelUrl: string;
   novelCover: string;
@@ -57,17 +55,15 @@ export interface History {
 }
 
 export interface Update {
-  id: number;
+  id: number; // chapterId
   pluginId: string;
   novelId: number;
   novelName: string;
   novelUrl: string;
   novelCover: string;
-  chapterId: number;
-  chapterUrl: string;
-  chapterName: string;
-  updateTime: string;
-  releaseTime: string;
+  name: string; //  chapterName
+  url: string; //  chapterUrl
+  updatedTime: string;
 }
 
 export interface Category {

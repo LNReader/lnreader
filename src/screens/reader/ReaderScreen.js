@@ -135,9 +135,9 @@ const ChapterContent = ({ route, navigation }) => {
 
   const getChapter = async () => {
     try {
-      const downloaded = await getChapterFromDB(chapter.id);
-      if (downloaded) {
-        sourceChapter.chapterText = downloaded.chapterText;
+      const chapterText = await getChapterFromDB(chapter.id);
+      if (chapterText) {
+        sourceChapter.chapterText = chapterText;
       } else {
         sourceChapter.chapterText = await fetchChapter(
           novel.pluginId,

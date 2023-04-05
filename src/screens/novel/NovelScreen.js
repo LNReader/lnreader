@@ -144,7 +144,7 @@ const Novel = ({ route, navigation }) => {
       list.push({
         icon: 'trash-can-outline',
         onPress: () => {
-          dispatch(deleteAllChaptersAction(pluginId, selected));
+          dispatch(deleteAllChaptersAction(pluginId, novel.id, selected));
           setSelected([]);
         },
       });

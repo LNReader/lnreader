@@ -56,7 +56,6 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
   const showDeleteChapterMenu = () => setDeleteChapterMenuVisible(true);
   const hideDeleteChapterMenu = () => setDeleteChapterMenuVisible(false);
   const chapterNumber = parseChapterNumber(name);
-
   return (
     <Pressable
       key={'chapterItem' + id}

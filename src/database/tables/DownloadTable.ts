@@ -3,7 +3,6 @@ export const createDownloadTableQuery = `
       id INTEGER PRIMARY KEY AUTOINCREMENT, 
       chapterId INTEGER NOT NULL UNIQUE, 
       chapterText TEXT, 
-      updateTime TEXT DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (chapterId) REFERENCES Chapter(id) ON DELETE CASCADE
   )
 `;

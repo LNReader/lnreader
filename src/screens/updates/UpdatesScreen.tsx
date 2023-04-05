@@ -46,7 +46,7 @@ const UpdatesScreen = () => {
   const groupUpdatesByDate = (rawHistory: Update[]) => {
     const dateGroups = rawHistory.reduce<Record<string, Update[][]>>(
       (groups, item) => {
-        const date = convertDateToISOString(item.updateTime);
+        const date = convertDateToISOString(item.updatedTime);
         const novelId = item.novelId;
 
         if (!groups[date]) {
