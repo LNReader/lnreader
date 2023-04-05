@@ -12,6 +12,7 @@ interface PlusMinusFieldProps {
   max?: number;
   valueChange?: number;
   method: (value: number) => void;
+  onFocus?: (event: Event) => void;
 }
 
 const PlusMinusField: React.FC<PlusMinusFieldProps> = ({
@@ -23,6 +24,7 @@ const PlusMinusField: React.FC<PlusMinusFieldProps> = ({
   max,
   valueChange = 1,
   method,
+  onFocus,
 }) => {
   const theme = useTheme();
   const minusDisabled = min || min === 0 ? value <= min : false;
@@ -63,6 +65,7 @@ const PlusMinusField: React.FC<PlusMinusFieldProps> = ({
           />
         </View>
         <TextInput
+          onFocus={onFocus}
           editable={displayValue ? false : true}
           style={[styles.value, { color: theme.onSurface }]}
           onEndEditing={endEditing}
