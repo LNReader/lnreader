@@ -1,8 +1,6 @@
 import { SelectedFilter, SourceFilter } from './filterTypes';
 import { Languages } from '@utils/constants/languages';
 
-// id must be provided by SQLite
-
 export interface NovelItem {
   name: string;
   url: string; //must be absoulute
@@ -40,13 +38,6 @@ export enum NovelStatus {
   PublishingFinished = 'Publishing Finished',
   Cancelled = 'Cancelled',
   OnHiatus = 'On Hiatus',
-}
-
-export enum PluginStatus {
-  BROKEN = 'BROKEN',
-  CANT_PARSE_CHAPTER = 'CANT PARSE CHAPTER',
-  CANT_FETCH_IMAGE = 'CANT FETCH IMAGE', //parse chapter with text only (image error)
-  OK = 'OK', //work perfectly
 }
 
 // this is for display in available plugins

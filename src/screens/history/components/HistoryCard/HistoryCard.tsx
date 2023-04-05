@@ -22,7 +22,7 @@ interface HistoryCardProps {
     novel: openChapterNovelTypes,
     chapter: openChapterChapterTypes,
   ) => void;
-  handleRemoveFromHistory: (historyId: number) => void;
+  handleRemoveFromHistory: (chapterId: number) => void;
   handleNavigateToNovel: (novel: openNovelProps) => void;
   theme: ThemeColors;
 }

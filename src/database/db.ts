@@ -7,7 +7,6 @@ import {
 import { createNovelTableQuery } from './tables/NovelTable';
 import { createNovelCategoryTableQuery } from './tables/NovelCategoryTable';
 import { createChapterTableQuery } from './tables/ChapterTable';
-import { createHistoryTableQuery } from './tables/HistoryTable';
 import { createDownloadTableQuery } from './tables/DownloadTable';
 import { dbTxnErrorCallback } from './utils/helpers';
 import { noop } from 'lodash-es';
@@ -26,7 +25,6 @@ export const createTables = () => {
     });
     tx.executeSql(createNovelCategoryTableQuery);
     tx.executeSql(createChapterTableQuery);
-    tx.executeSql(createHistoryTableQuery);
     tx.executeSql(createDownloadTableQuery);
   });
 };
@@ -41,7 +39,6 @@ export const deleteDatabase = async () => {
       tx.executeSql('DROP TABLE Novel');
       tx.executeSql('DROP TABLE NovelCategory');
       tx.executeSql('DROP TABLE Chapter');
-      tx.executeSql('DROP TABLE History');
       tx.executeSql('DROP TABLE Download');
     },
     dbTxnErrorCallback,

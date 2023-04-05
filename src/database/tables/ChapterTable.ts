@@ -6,8 +6,10 @@ export const createChapterTableQuery = `
         name TEXT NOT NULL,
         releaseTime TEXT,
         bookmark INTEGER DEFAULT 0, 
-        unread INTEGER DEFAULT 1, 
+        unread INTEGER DEFAULT 1,
+        readTime TEXT,
         isDownloaded INTEGER DEFAULT 0,
+        updateTime TEXT,
         FOREIGN KEY (novelId) REFERENCES Novel(id) ON DELETE CASCADE
     )
 `;

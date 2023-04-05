@@ -99,10 +99,8 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
             }
             break;
           case 'height':
-            if (event.data) {
-              const contentHeight = Math.round(Number(event.data));
-              minScroll.current = (layoutHeight / contentHeight) * 100;
-            }
+            const contentHeight = Number(event.data);
+            minScroll.current = (layoutHeight / contentHeight) * 100;
             break;
         }
       }}
@@ -203,7 +201,6 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                     </style>
                   </head>
                   <body>
-
                     <div class="chapterCtn" ${onClickWebViewPostMessage({
                       type: 'hide',
                     })}>
@@ -215,12 +212,11 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                       </chapter>
                     </div>
                     <script>
-                      const resizeObserver = new ResizeObserver((entries) => {
+                      new ResizeObserver(() =>
                         window.ReactNativeWebView.postMessage(
                           JSON.stringify({type: "height", data: document.body.scrollHeight})
-                        );
-                      });
-                      resizeObserver.observe(document.querySelector('body'));
+                        )
+                      ).observe(document.querySelector('body'));
 
                       if(!document.querySelector("input[offline]") && ${
                         plugin?.protected

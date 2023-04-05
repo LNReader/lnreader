@@ -43,7 +43,7 @@ export interface DownloadedChapter {
 }
 
 export interface History {
-  id: number;
+  id: number; // chapterId xD
   pluginId: string;
   novelId: number;
   chapterId: number;

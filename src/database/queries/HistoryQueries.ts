@@ -8,15 +8,12 @@ import { showToast } from '../../hooks/showToast';
 
 const getHistoryQuery = `
     SELECT 
-      History.id, History.readTime,
       Chapter.novelId, Novel.pluginId, Novel.name as novelName, Novel.url as novelUrl, Novel.cover as novelCover,
-      History.chapterId, Chapter.name as chapterName, Chapter.url as chapterUrl, Chapter.bookmark
-    FROM History 
-    JOIN Chapter 
-    ON History.chapterId = Chapter.id
+      Chapter.id, Chapter.name as chapterName, Chapter.url as chapterUrl, Chapter.bookmark, Chapter.readTime
+    FROM Chapter 
     JOIN Novel
-    ON Chapter.novelId = Novel.id
-    ORDER BY History.readTime DESC
+    ON Chapter.novelId = Novel.id AND Chapter.readTime IS NOT NULL
+    ORDER BY readTime DESC
     `;
 
 export const getHistoryFromDb = async (): Promise<History[]> => {
@@ -34,12 +31,10 @@ export const getHistoryFromDb = async (): Promise<History[]> => {
   });
 };
 
-// const insertHistoryQuery =
-
 export const insertHistory = async (chapterId: number) => {
   db.transaction(tx => {
     tx.executeSql(
-      "INSERT OR REPLACE INTO History (chapterId, readTime) VALUES (?, (datetime('now','localtime')))",
+      "UPDATE Chapter SET readTime = datetime('now','localtime') WHERE id = ?",
       [chapterId],
       noop,
       txnErrorCallback,
@@ -47,11 +42,11 @@ export const insertHistory = async (chapterId: number) => {
   });
 };
 
-export const deleteChapterHistory = async (historyId: number) => {
+export const deleteChapterHistory = async (chapterId: number) => {
   db.transaction(tx => {
     tx.executeSql(
-      'DELETE FROM History WHERE id = ?',
-      [historyId],
+      'UPDATE Chapter SET readTime = NULL WHERE id = ?',
+      [chapterId],
       noop,
       txnErrorCallback,
     );
@@ -60,7 +55,7 @@ export const deleteChapterHistory = async (historyId: number) => {
 
 export const deleteAllHistory = async () => {
   db.transaction(tx => {
-    tx.executeSql('DELETE FROM History; VACCUM;');
+    tx.executeSql('UPDATE CHAPTER SET readTime = NULL');
   });
   showToast('History deleted.');
 };
