@@ -86,8 +86,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
               plugin.fetchImage(event.data).then(base64 => {
                 webViewRef.current?.injectJavaScript(
                   `document.querySelector("img[delayed-src='${event.data}']").src="data:image/jpg;base64,${base64}";
-                  document.querySelector("img[delayed-src='${event.data}']").classList.remove("load-icon");
-                  sendHeight(500);`,
+                  document.querySelector("img[delayed-src='${event.data}']").classList.remove("load-icon");`,
                 );
               });
             }
@@ -216,42 +215,38 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                       </chapter>
                     </div>
                     <script>
-                    if(!document.querySelector("input[offline]") && ${
-                      plugin?.protected
-                    }){
-                      document.querySelectorAll("img").forEach(img => {
-                        window.ReactNativeWebView.postMessage(JSON.stringify({type:"imgfile",data:img.getAttribute("delayed-src")}));
-                      });
-                    }
-
-                    var scrollTimeout;
-                    window.addEventListener("scroll", (event) => {
-                      window.clearTimeout( scrollTimeout );
-                      scrollTimeout = setTimeout(() => {
+                      const resizeObserver = new ResizeObserver((entries) => {
                         window.ReactNativeWebView.postMessage(
-                          JSON.stringify(
-                            {
-                              type:"scrollend",
-                              data:{
-                                offSetY: window.pageYOffset,
-                                percentage: (window.pageYOffset+${layoutHeight})/document.body.scrollHeight*100,
-                              }
-                            }
-                          )
+                          JSON.stringify({type: "height", data: document.body.scrollHeight})
                         );
-                      }, 100);
-                    });
+                      });
+                      resizeObserver.observe(document.querySelector('body'));
 
-                    let sendHeightTimeout;
-                    const sendHeight = (timeOut) => {
-                      clearTimeout(sendHeightTimeout);
-                      sendHeightTimeout = setTimeout(
-                        window.ReactNativeWebView.postMessage(
-                          JSON.stringify({type:"height",data:document.body.scrollHeight})
-                        ), timeOut
-                      );
-                    }
-                    sendHeight(2000);
+                      if(!document.querySelector("input[offline]") && ${
+                        plugin?.protected
+                      }){
+                        document.querySelectorAll("img").forEach(img => {
+                          window.ReactNativeWebView.postMessage(JSON.stringify({type:"imgfile",data:img.getAttribute("delayed-src")}));
+                        });
+                      }
+
+                      var scrollTimeout;
+                      window.addEventListener("scroll", (event) => {
+                        window.clearTimeout( scrollTimeout );
+                        scrollTimeout = setTimeout(() => {
+                          window.ReactNativeWebView.postMessage(
+                            JSON.stringify(
+                              {
+                                type:"scrollend",
+                                data:{
+                                  offSetY: window.pageYOffset,
+                                  percentage: (window.pageYOffset+${layoutHeight})/document.body.scrollHeight*100,
+                                }
+                              }
+                            )
+                          );
+                        }, 100);
+                      });
                     </script>
                     <div class="infoText">
                     ${getString(
