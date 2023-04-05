@@ -33,7 +33,7 @@ const SourceCard: React.FC<Props> = ({
       <View style={styles.details}>
         <Text style={{ color: theme.onSurface }}>{source.sourceName}</Text>
         <Text style={[{ color: theme.onSurfaceVariant }, styles.lang]}>
-          {source.lang}
+          {source.lang + ' ' + source.sourceId}
         </Text>
       </View>
     </View>

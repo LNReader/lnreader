@@ -80,8 +80,6 @@ const ChapterContent = ({ route, navigation }) => {
 
   const theme = useTheme();
   const dispatch = useDispatch();
-  const readerSettings = useReaderSettings();
-  const { theme: backgroundColor } = readerSettings;
 
   const {
     swipeGestures = false,
