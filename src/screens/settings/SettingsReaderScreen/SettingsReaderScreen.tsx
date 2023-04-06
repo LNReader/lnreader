@@ -5,6 +5,7 @@ import {
   View,
   ScrollView,
   useWindowDimensions,
+  Dimensions,
 } from 'react-native';
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
@@ -68,7 +69,7 @@ const SettingsReaderScreen = () => {
   const readerSettings = useReaderSettings();
   const {
     useVolumeButtons = false,
-    scrollAmount = 200,
+    scrollAmount = Math.round(Dimensions.get('window').height),
     verticalSeekbar = true,
     swipeGestures = false,
     autoScroll = false,
@@ -196,27 +197,41 @@ const SettingsReaderScreen = () => {
           theme={theme}
         />
         {useVolumeButtons ? (
-          <View style={styles.scrollAmount}>
-            <Text style={[labelStyle, styles.paddingRightM]} numberOfLines={2}>
-              {getString('readerScreen.bottomSheet.scrollAmount')}
-            </Text>
-            <TextInput
-              style={{
-                paddingHorizontal: 16,
-                paddingBottom: 8,
-                flexDirection: 'row',
-              }}
-              defaultValue={defaultTo(scrollAmount, 100).toString()}
-              keyboardType="numeric"
-              onChangeText={text => {
-                if (text) {
-                  dispatch(setAppSettings('scrollAmount', Number(text)));
-                }
-              }}
-            />
-          </View>
+          <>
+            <View style={styles.scrollAmount}>
+              <Text
+                style={[labelStyle, styles.paddingRightM]}
+                numberOfLines={2}
+              >
+                {getString('readerScreen.bottomSheet.scrollAmount')}
+              </Text>
+              <TextInput
+                style={labelStyle}
+                defaultValue={defaultTo(
+                  scrollAmount,
+                  Math.round(screenHeight),
+                ).toString()}
+                keyboardType="numeric"
+                onChangeText={text => {
+                  if (text) {
+                    dispatch(setAppSettings('scrollAmount', Number(text)));
+                  }
+                }}
+              />
+            </View>
+            {scrollAmount && scrollAmount !== Math.round(screenHeight) ? (
+              <View style={styles.customCSSButtons}>
+                <Button
+                  style={styles.customThemeButton}
+                  title={getString('common.reset')}
+                  onPress={() => {
+                    dispatch(setAppSettings('scrollAmount', null));
+                  }}
+                />
+              </View>
+            ) : null}
+          </>
         ) : null}
-
         <SwitchItem
           label={getString('readerScreen.bottomSheet.swipeGestures')}
           value={swipeGestures}

@@ -88,7 +88,7 @@ const ChapterContent = ({ route, navigation }) => {
     useVolumeButtons = false,
     autoScroll = false,
     autoScrollInterval = 10,
-    scrollAmount = 200,
+    scrollAmount = Dimensions.get('window').height,
     autoScrollOffset = null,
     verticalSeekbar = true,
     removeExtraParagraphSpacing = false,
@@ -118,12 +118,18 @@ const ChapterContent = ({ route, navigation }) => {
     VolumeButtonListener.preventDefault();
     emmiter.current.addListener('VolumeUp', e => {
       webViewRef.current?.injectJavaScript(`(()=>{
-            window.scrollBy({top:${-scrollAmount},behavior:'smooth',})
+            window.scrollBy({top:${-defaultTo(
+              scrollAmount,
+              Dimensions.get('window').height,
+            )},behavior:'smooth',})
           })()`);
     });
     emmiter.current.addListener('VolumeDown', e => {
       webViewRef.current?.injectJavaScript(`(()=>{
-            window.scrollBy({top:${scrollAmount},behavior:'smooth',})
+            window.scrollBy({top:${defaultTo(
+              scrollAmount,
+              Dimensions.get('window').height,
+            )},behavior:'smooth',})
           })()`);
     });
   };

@@ -34,7 +34,10 @@ export const fetchHtml = async (params: FetchParams): Promise<string> => {
   const res = await fetchApi(params);
   const html = await res.text();
 
-  if (html.includes('Checking if the site connection is secure')) {
+  if (
+    html.includes('Enable JavaScript and cookies to continue') ||
+    html.includes('Checking if the site connection is secure')
+  ) {
     throw Error(
       "The app couldn't bypass the source's Cloudflare protection.\n\nOpen the source in WebView to bypass the Cloudflare protection.",
     );

@@ -143,7 +143,7 @@ const FilterBottomSheet: React.FC<BottomSheetProps> = ({
           { backgroundColor: overlay(2, theme.surface) },
         ]}
       >
-        <BottomSheetView
+        <View
           style={[styles.buttonContainer, { borderBottomColor: theme.outline }]}
         >
           <Button
@@ -162,7 +162,7 @@ const FilterBottomSheet: React.FC<BottomSheetProps> = ({
             }}
             mode="contained"
           />
-        </BottomSheetView>
+        </View>
         <FlatList
           contentContainerStyle={styles.filterContainer}
           data={filtersValues}
