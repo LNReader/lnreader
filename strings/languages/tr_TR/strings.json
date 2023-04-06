@@ -98,6 +98,7 @@
       "useChapterDrawerSwipeNavigation": "Çekmeceyi açmak için sağa kaydırın",
       "removeExtraSpacing": "Ekstra paragraf boşluklarını kaldır",
       "volumeButtonsScroll": "Ses butonlarıyla kaydırma",
+      "scrollAmount": "Scroll amount:",
       "showSwipeMargins": "Kaydırma kenar boşluklarını göster"
     },
     "drawer": {
