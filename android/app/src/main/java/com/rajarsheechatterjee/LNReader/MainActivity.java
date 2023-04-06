@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
+import android.widget.ScrollView;
 import android.view.WindowManager;
 
 import com.facebook.react.ReactActivity;
@@ -60,7 +61,7 @@ public class MainActivity extends ReactActivity {
                 case KeyEvent.KEYCODE_VOLUME_UP:
                     if (action == KeyEvent.ACTION_DOWN) {
                         // volup
-                        VolumeButtonListener.up();
+                        VolumeButtonListener.up(VolumeButtonListener.getScrollAmount());
                         if (!VolumeButtonListener.prevent)
                             return super.dispatchKeyEvent(event);
                     }
@@ -68,7 +69,7 @@ public class MainActivity extends ReactActivity {
                 case KeyEvent.KEYCODE_VOLUME_DOWN:
                     if (action == KeyEvent.ACTION_DOWN) {
                         // voldown
-                        VolumeButtonListener.down();
+                        VolumeButtonListener.down(VolumeButtonListener.getScrollAmount());
                         if (!VolumeButtonListener.prevent)
                             return super.dispatchKeyEvent(event);
                     }
@@ -79,7 +80,6 @@ public class MainActivity extends ReactActivity {
         }
         return super.dispatchKeyEvent(event);
     }
-
     /**
      * Returns the name of the main component registered from JavaScript.
      * This is used to schedule rendering of the component.

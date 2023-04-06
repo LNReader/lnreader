@@ -88,6 +88,7 @@ const ChapterContent = ({ route, navigation }) => {
     useVolumeButtons = false,
     autoScroll = false,
     autoScrollInterval = 10,
+    scrollAmount = 200,
     autoScrollOffset = null,
     verticalSeekbar = true,
     removeExtraParagraphSpacing = false,
@@ -117,16 +118,13 @@ const ChapterContent = ({ route, navigation }) => {
     VolumeButtonListener.preventDefault();
     emmiter.current.addListener('VolumeUp', e => {
       webViewRef.current?.injectJavaScript(`(()=>{
-          window.scrollBy({top:${-Dimensions.get('window')
-            .height},behavior:'smooth',})
-        })()`);
+            window.scrollBy({top:${-scrollAmount},behavior:'smooth',})
+          })()`);
     });
     emmiter.current.addListener('VolumeDown', e => {
       webViewRef.current?.injectJavaScript(`(()=>{
-          window.scrollBy({top:${
-            Dimensions.get('window').height
-          },behavior:'smooth',})
-        })()`);
+            window.scrollBy({top:${scrollAmount},behavior:'smooth',})
+          })()`);
     });
   };
 
@@ -144,7 +142,7 @@ const ChapterContent = ({ route, navigation }) => {
       emmiter.current.removeAllListeners('VolumeUp');
       emmiter.current.removeAllListeners('VolumeDown');
     };
-  }, [useVolumeButtons, chapter]);
+  }, [useVolumeButtons, scrollAmount]);
 
   const onLayout = useCallback(e => {
     setTimeout(() => connectVolumeButton());

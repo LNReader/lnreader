@@ -1,4 +1,10 @@
-import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  useWindowDimensions,
+  View,
+  TextInput,
+} from 'react-native';
 import React, { Ref, useMemo, useState } from 'react';
 import color from 'color';
 
@@ -6,6 +12,8 @@ import {
   default as BottomSheetType,
   BottomSheetView,
 } from '@gorhom/bottom-sheet';
+
+import { defaultTo } from 'lodash-es';
 import BottomSheet from '@components/BottomSheet/BottomSheet';
 import { useAppDispatch, useSettingsV1 } from '../../../../redux/hooks';
 import { useTheme } from '@hooks/useTheme';
@@ -43,6 +51,7 @@ const GeneralTab: React.FC = () => {
     showBatteryAndTime,
     showScrollPercentage,
     useVolumeButtons = false,
+    scrollAmount = 200,
     swipeGestures = false,
     removeExtraParagraphSpacing = false,
   } = useSettingsV1();
@@ -118,10 +127,26 @@ const GeneralTab: React.FC = () => {
         value={useVolumeButtons}
         theme={theme}
       />
+      {useVolumeButtons ? (
+        <View style={styles.textFieldContainer}>
+          <Text style={[styles.paddingRightM]} numberOfLines={2}>
+            {getString('readerScreen.bottomSheet.scrollAmount')}
+          </Text>
+          <TextInput
+            style={styles.textField}
+            defaultValue={defaultTo(scrollAmount, 200).toString()}
+            keyboardType="numeric"
+            onChangeText={text => {
+              if (text) {
+                dispatch(setAppSettings('scrollAmount', Number(text)));
+              }
+            }}
+          />
+        </View>
+      ) : null}
     </View>
   );
 };
-
 interface ReaderBottomSheetV2Props {
   bottomSheetRef: Ref<BottomSheetType> | null;
 }
@@ -217,5 +242,24 @@ const styles = StyleSheet.create({
   },
   readerTab: {
     paddingVertical: 8,
+  },
+  textFieldContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+  },
+  textField: {
+    borderWidth: 1,
+    borderRadius: 4,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    width: 100,
+    textAlign: 'right',
+  },
+  paddingRightM: {
+    flex: 1,
+    paddingRight: 16,
   },
 });
