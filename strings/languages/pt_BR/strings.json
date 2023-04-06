@@ -98,6 +98,7 @@
       "useChapterDrawerSwipeNavigation": "Deslize para a direita para abrir a gaveta",
       "removeExtraSpacing": "Remover espaçamento extra dos parágrafos",
       "volumeButtonsScroll": "Deslizar com os botões de volume",
+      "scrollAmount": "Scroll amount:",
       "showSwipeMargins": "Mostrar margens de deslize"
     },
     "drawer": {
