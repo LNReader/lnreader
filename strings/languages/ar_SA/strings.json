@@ -98,6 +98,7 @@
       "useChapterDrawerSwipeNavigation": "مرر يمينا لفتح القائمة الجانبية",
       "removeExtraSpacing": "Remove extra paragraph spacing",
       "volumeButtonsScroll": "Volume buttons scroll",
+      "scrollAmount": "Scroll amount:",
       "showSwipeMargins": "Show swipe margins"
     },
     "drawer": {
