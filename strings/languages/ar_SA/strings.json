@@ -17,7 +17,7 @@
     "searchResults": "نتائج البحث",
     "chapters": "فصول",
     "submit": "إرسال",
-    "retry": "Retry"
+    "retry": "أعد المحاولة"
   },
   "library": "المكتبة",
   "libraryScreen": {
@@ -34,10 +34,10 @@
         "dateAdded": "تاريخ الإضافة",
         "alphabetically": "حسب الترتيب الأبجدي",
         "totalChapters": "مجموع الفصول",
-        "download": "Downloaded",
-        "unread": "Unread",
-        "lastRead": "Last read",
-        "lastUpdated": "Last updated"
+        "download": "تم التنزيل",
+        "unread": "غير مقروء",
+        "lastRead": "آخر قراءة",
+        "lastUpdated": "آخر تحديث"
       },
       "display": {
         "displayMode": "نمط العرض",
@@ -56,9 +56,9 @@
   "updatesScreen": {
     "searchbar": "البحث في التحديثات",
     "lastUpdatedAt": "آخر تحديث للمكتبة:",
-    "newChapters": "new Chapters",
-    "emptyView": "No recent updates",
-    "updatesLower": "updates"
+    "newChapters": "فصول جديدة",
+    "emptyView": "لا توجد تحديثات",
+    "updatesLower": "التحديثات"
   },
   "history": "السجل",
   "historyScreen": {
@@ -96,10 +96,10 @@
       "swipeGestures": "اسحب لليسار أو لليمين للتبديل بين علامات التبويب",
       "allowTextSelection": "السماح باختيار النص",
       "useChapterDrawerSwipeNavigation": "مرر يمينا لفتح القائمة الجانبية",
-      "removeExtraSpacing": "Remove extra paragraph spacing",
-      "volumeButtonsScroll": "Volume buttons scroll",
-      "scrollAmount": "Scroll amount:",
-      "showSwipeMargins": "Show swipe margins"
+      "removeExtraSpacing": "إزالة المسافات الزائدة بين الفقرات",
+      "volumeButtonsScroll": "تمرير أزرار الصوت",
+      "scrollAmount": "كَمَيَّة التمرير:",
+      "showSwipeMargins": "إظهار هوامش التمرير"
     },
     "drawer": {
       "scrollToCurrentChapter": "التمرير إلى الفصل الحالي",
@@ -136,27 +136,27 @@
     "settingsScreen": {
       "generalSettings": "العامة",
       "generalSettingsScreen": {
-        "display": "Display",
-        "displayMode": "Display Mode",
-        "itemsPerRow": "Items per row",
-        "itemsPerRowLibrary": "Items per row in library",
-        "novelBadges": "Novel Badges",
-        "novelSort": "Novel Sort",
-        "updateLibrary": "Update library on launch",
-        "useFAB": "Use FAB in Library",
-        "novel": "Novel",
-        "chapterSort": "Default chapter sort",
-        "bySource": "By source",
-        "asc": "(Ascending)",
-        "desc": "(Descending)",
-        "globalUpdate": "Global update",
-        "updateOngoing": "Only update ongoing novels",
-        "refreshMetadata": "Automatically refresh metadata",
-        "refreshMetadataDescription": "Check for new cover and details when updating library",
-        "updateTime": "Show last update time",
-        "autoDownload": "Auto-download",
-        "downloadNewChapters": "Download new chapters",
-        "disableHapticFeedback": "Disable haptic feedback"
+        "display": "عرض",
+        "displayMode": "وضع العرض",
+        "itemsPerRow": "العناصر في كل صف",
+        "itemsPerRowLibrary": "العناصر لكل صف في المكتبة",
+        "novelBadges": "شارات الرواية",
+        "novelSort": "نوع الرواية",
+        "updateLibrary": "تحديث المكتبة عند الإطلاق",
+        "useFAB": "استخدام FAB في المكتبة",
+        "novel": "رواية",
+        "chapterSort": "التصنيف الافتراضي",
+        "bySource": "حسب المصدر",
+        "asc": "ترتيب تصاعدي",
+        "desc": "ترتيب تنازلي",
+        "globalUpdate": "التحديث الشامل",
+        "updateOngoing": "تحديث الروايات الجارية فقط",
+        "refreshMetadata": "تحديث البيانات الوصفية تلقائيًا",
+        "refreshMetadataDescription": "تحقق من الغلاف الجديد ",
+        "updateTime": "وقت آخر تحديث",
+        "autoDownload": "التحميل التلقائي",
+        "downloadNewChapters": "تحميل فصول جديدة",
+        "disableHapticFeedback": "تعطيل الاهتزاز"
       },
       "readerSettings": {
         "title": "القارئ",
@@ -231,9 +231,9 @@
     "downloadedOnly": "التنزيلات فقط"
   },
   "downloadScreen": {
-    "dbInfo": "Downloads are saved in a SQLite Database.",
-    "downloadChapters": "downloaded Chapters",
-    "noDownloads": "No downloads",
-    "downloadsLower": "downloads"
+    "dbInfo": "يتم حفظ التنزيلات في قاعدة بيانات SQLite",
+    "downloadChapters": "الفصول المحملة",
+    "noDownloads": "لا توجد تحميلات",
+    "downloadsLower": "تم التنزيل"
   }
 }
