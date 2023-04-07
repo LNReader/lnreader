@@ -4,9 +4,8 @@ import { bigger } from '../utils/compareVersion';
 
 // packages for plugins
 import * as cheerio from 'cheerio';
-import { NovelStatus, PluginStatus, Plugin, PluginItem } from './types';
+import { NovelStatus, Plugin, PluginItem } from './types';
 import { Languages } from '@utils/constants/languages';
-import { htmlToText } from './helpers/htmlToText';
 import { fetchFile } from './helpers/fetchFile';
 import { parseMadaraDate } from './helpers/parseDate';
 import { isUrlAbsolute } from '@utils/isAbsoluteUrl';
@@ -15,11 +14,9 @@ const pluginsFolder = RNFS.ExternalDirectoryPath + '/Plugins';
 
 const packages: Record<string, any> = {
   'cheerio': cheerio,
-  '@libs/pluginStatus': PluginStatus,
   '@libs/novelSatus': NovelStatus,
   '@libs/languages': Languages,
   '@libs/fetchFile': fetchFile,
-  '@libs/htmlToText': htmlToText,
   '@libs/parseMadaraDate': parseMadaraDate,
   '@libs/isAbsoluteUrl': isUrlAbsolute,
 };
