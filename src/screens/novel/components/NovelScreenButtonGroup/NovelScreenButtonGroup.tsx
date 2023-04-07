@@ -98,22 +98,24 @@ const NovelScreenButtonGroup: React.FC<NovelScreenButtonGroupProps> = ({
             </Pressable>
           </View>
         ) : null}
-        <View style={styles.buttonContainer}>
-          <Pressable
-            android_ripple={{ color: theme.rippleColor }}
-            onPress={handleMigrateNovel}
-            style={styles.button}
-          >
-            <MaterialCommunityIcons
-              name="swap-vertical-variant"
-              color={theme.outline}
-              size={24}
-            />
-            <Text style={[styles.buttonLabel, { color: theme.outline }]}>
-              {getString('novelScreen.migrate')}
-            </Text>
-          </Pressable>
-        </View>
+        {inLibrary ? (
+          <View style={styles.buttonContainer}>
+            <Pressable
+              android_ripple={{ color: theme.rippleColor }}
+              onPress={handleMigrateNovel}
+              style={styles.button}
+            >
+              <MaterialCommunityIcons
+                name="swap-vertical-variant"
+                color={theme.outline}
+                size={24}
+              />
+              <Text style={[styles.buttonLabel, { color: theme.outline }]}>
+                {getString('novelScreen.migrate')}
+              </Text>
+            </Pressable>
+          </View>
+        ) : null}
         <View style={styles.buttonContainer}>
           <Pressable
             android_ripple={{ color: theme.rippleColor }}
