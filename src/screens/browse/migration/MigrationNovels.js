@@ -20,7 +20,8 @@ import { Appbar } from '@components';
 import GlobalSearchSkeletonLoading from '../loadingAnimation/GlobalSearchSkeletonLoading';
 
 const MigrationNovels = ({ navigation, route }) => {
-  const { pluginId, novelName } = route.params;
+  const { pluginId, novel } = route.params;
+
   const theme = useTheme();
 
   const isMounted = React.useRef(true);
@@ -54,7 +55,7 @@ const MigrationNovels = ({ navigation, route }) => {
       if (isMounted.current === true) {
         try {
           const source = getPlugin(item.id);
-          const data = await source.searchNovels(novelName);
+          const data = await source.searchNovels(novel.name);
           setSearchResults(prevState =>
             prevState.map(pluginItem =>
               pluginItem.id === item.id
@@ -111,6 +112,7 @@ const MigrationNovels = ({ navigation, route }) => {
       ) : (
         <MigrationNovelList
           data={item}
+          fromNovel={novel} // the novel will be migrated from
           theme={theme}
           library={library}
           navigation={navigation}
@@ -122,7 +124,7 @@ const MigrationNovels = ({ navigation, route }) => {
   return (
     <ScreenContainer theme={theme}>
       <Appbar
-        title={novelName}
+        title={novel.name}
         handleGoBack={navigation.goBack}
         theme={theme}
       />

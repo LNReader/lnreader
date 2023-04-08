@@ -4,14 +4,20 @@ import { Portal, Modal } from 'react-native-paper';
 import { getNovelAction } from '@redux/novel/novel.actions';
 import GlobalSearchNovelCover from '../globalsearch/GlobalSearchNovelCover';
 
-import { migrateNovel } from '@database/queries/NovelQueries';
+import { migrateNovel } from '@services/migrate/migrateNovel';
 import { showToast } from '@hooks/showToast';
 
 import { Button } from '@components';
 import { getString } from '@strings/translations';
 import { openNovel } from '@utils/handleNavigateParams';
 
-const MigrationNovelList = ({ data, theme, library, navigation }) => {
+const MigrationNovelList = ({
+  data,
+  fromNovel,
+  theme,
+  library,
+  navigation,
+}) => {
   const pluginId = data.id;
   const [selectedNovel, setSelectedNovel] = useState({});
   const [migrateNovelDialog, setMigrateNovelDialog] = useState(false);
@@ -95,8 +101,8 @@ const MigrationNovelList = ({ data, theme, library, navigation }) => {
               Button
               onPress={async () => {
                 hideMigrateNovelDialog();
-                await migrateNovel(pluginId, selectedNovel.url);
-                showToast(`${selectedNovel.name} migrated to new source.`);
+                await migrateNovel(pluginId, fromNovel, selectedNovel.url);
+                showToast(`${fromNovel.name} migrated to new source.`);
               }}
               title={getString('novelScreen.migrate')}
             />

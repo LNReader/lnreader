@@ -30,11 +30,10 @@ const usePreferences = novelId => {
   if (novel) {
     sort = novel.sort;
     filter = novel.filter;
-    position = novel.position;
     showChapterTitles = novel.showChapterTitles;
   }
 
-  return { sort, filter, position, showChapterTitles };
+  return { sort, filter, showChapterTitles };
 };
 
 const useSavedSettings = () => {

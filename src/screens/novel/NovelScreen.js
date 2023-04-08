@@ -260,7 +260,7 @@ const Novel = ({ route, navigation }) => {
   const showProgressPercentage = chapter => {
     const savedProgress =
       position && position[chapter.id] && position[chapter.id].percentage;
-    if (savedProgress < 100 && savedProgress > 0 && !chapter.unread) {
+    if (savedProgress < 100 && savedProgress > 0 && chapter.unread) {
       return (
         <Text
           style={{
@@ -271,7 +271,7 @@ const Novel = ({ route, navigation }) => {
           numberOfLines={1}
         >
           {chapter.releaseTime ? '•  ' : null}
-          {'Progress ' + position[chapter.id].percentage + '%'}
+          {'Progress ' + savedProgress + '%'}
         </Text>
       );
     }
@@ -306,6 +306,7 @@ const Novel = ({ route, navigation }) => {
       onSelectLongPress={onSelectLongPress}
       navigateToChapter={navigateToChapter}
       showProgressPercentage={showProgressPercentage}
+      novelName={name}
     />
   );
 

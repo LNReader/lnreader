@@ -25,6 +25,7 @@ export interface ChapterInfo {
   url: string;
   name: string;
   releaseTime?: string;
+  readTime: string;
   bookmark: number;
   unread: number;
   isDownloaded: number;
@@ -33,6 +34,9 @@ export interface ChapterInfo {
   pluginId: string;
   novelName: string;
   novelUrl: string;
+
+  // migrate need this :)
+  number: number;
 }
 
 export interface DownloadedChapter {

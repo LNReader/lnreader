@@ -25,11 +25,11 @@ interface ChapterItemProps {
   onSelectPress?: (chapter: ChapterInfo, arg1: () => void) => void;
   onSelectLongPress?: (chapter: ChapterInfo) => void;
   navigateToChapter: (chapter: ChapterInfo) => void;
-  showProgressPercentage?: (chapter: ChapterInfo) => void;
+  showProgressPercentage?: (chapter: ChapterInfo) => any;
   left?: ReactNode;
 
   isUpdateCard?: boolean;
-  novelName?: string;
+  novelName: string;
 }
 
 const ChapterItem: React.FC<ChapterItemProps> = ({
@@ -49,13 +49,12 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
   isUpdateCard,
   novelName,
 }) => {
-  // :(
   const { id, name, unread, releaseTime, bookmark } = chapter;
   const [deleteChapterMenuVisible, setDeleteChapterMenuVisible] =
     useState(false);
   const showDeleteChapterMenu = () => setDeleteChapterMenuVisible(true);
   const hideDeleteChapterMenu = () => setDeleteChapterMenuVisible(false);
-  const chapterNumber = parseChapterNumber(name);
+  const chapterNumber = parseChapterNumber(novelName, name);
   return (
     <Pressable
       key={'chapterItem' + id}

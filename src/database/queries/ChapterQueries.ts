@@ -399,7 +399,6 @@ const getReadDownloadedChapters = async (): Promise<DownloadedChapter[]> => {
 
 export const deleteReadChaptersFromDb = async () => {
   const chapters = await getReadDownloadedChapters();
-  console.log(chapters);
   await Promise.all(
     chapters?.map(chapter => {
       deleteDownloadedImages(

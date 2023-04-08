@@ -1,7 +1,6 @@
 import * as SQLite from 'expo-sqlite';
 const db = SQLite.openDatabase('lnreader.db');
 
-import BackgroundService from 'react-native-background-actions';
 import * as DocumentPicker from 'expo-document-picker';
 
 import { fetchChapters, fetchNovel } from '@services/plugin/fetch';
@@ -13,19 +12,6 @@ import { noop } from 'lodash-es';
 import { getString } from '@strings/translations';
 import { NovelInfo } from '../types';
 import { SourceNovel } from '@plugins/types';
-
-/**
-  * @param PluginType
-  Browse novels with @NovelItem (url - absolute, name, cover)
-
-  * @param DatabaseType
-  Longpress to add Novel to Library | BrowseSource -> Parse novel and chapters ( @SourceNovel including @ChapterItem ) -> insert @Novel and @Chapters
-  Longpress to remove Novel from Library -> only change @inLibrary field of novel
-  Get novels in Library with @LibraryNovelInfo (id, url, name, pluginId, cover, unreadChapters, downloadedChapters, lastReadAt, lastUpdatedAt)
-  NovelScreen will use @NovelInfo (same as in Novel table)
-  Click "heart" to add or remove -> change @inLibrary (because novel and chapters were already in db)
-  Auto create Novel Category Default (@sort = 1) by Trigger
-**/
 
 export const insertNovelandChapters = (
   pluginId: string,
@@ -191,80 +177,15 @@ export const restoreLibrary = async (novel: NovelInfo) => {
   });
 };
 
-const migrateNovelQuery =
-  'INSERT INTO Novel (url, plugin_id, name, cover, summary, author, artist, status, genres, in_libary) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-
-export const migrateNovel = async (pluginId: string, novelUrl: string) => {
-  try {
-    const novel = await fetchNovel(pluginId, novelUrl);
-
-    const options = {
-      taskName: 'Migration',
-      taskTitle: `Migrating ${novel.name} to new source`,
-      taskDesc: pluginId,
-      taskIcon: {
-        name: 'notification_icon',
-        type: 'drawable',
-      },
-      color: '#00adb5',
-      parameters: {
-        delay: 1000,
-      },
-      progressBar: {
-        max: 1,
-        value: 0,
-        indeterminate: true,
-      },
-    };
-
-    const veryIntensiveTask = async () => {
-      await new Promise(async resolve => {
-        db.transaction(tx =>
-          tx.executeSql(
-            migrateNovelQuery,
-            [
-              novel.url,
-              pluginId,
-              novel.name,
-              novel.cover || '',
-              novel.summary || '',
-              novel.author || '',
-              novel.artist || '',
-              novel.status || '',
-              novel.genres || '',
-              1,
-            ],
-            async (txObj, { insertId }) => {
-              if (!insertId) {
-                return;
-              }
-              const chapters = await fetchChapters(pluginId, novel.url);
-              await insertChapters(insertId, chapters);
-              resolve(novel.name);
-            },
-            txnErrorCallback,
-          ),
-        );
-      });
-    };
-
-    await BackgroundService.start(veryIntensiveTask, options);
-    await BackgroundService.updateNotification({
-      progressBar: { max: 5, value: 1, indeterminate: false },
-    });
-  } catch (error: any) {
-    showToast(error.message);
-  }
-};
-
 export const updateNovelInfo = async (info: NovelInfo) => {
   db.transaction(tx => {
     tx.executeSql(
-      'UPDATE Novel SET name = ?, summary = ?, author = ?, genres = ?, status = ? WHERE id = ?',
+      'UPDATE Novel SET name = ?, summary = ?, author = ?, artist = ?, genres = ?, status = ? WHERE id = ?',
       [
         info.name,
         info.summary || '',
         info.author || '',
+        info.artist || '',
         info.genres || '',
         info.status || '',
         info.id,

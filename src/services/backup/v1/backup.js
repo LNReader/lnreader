@@ -108,8 +108,6 @@ export const restoreBackup = async filePath => {
               });
 
               if (novels.length === i + 1) {
-                resolve();
-
                 Notifications.scheduleNotificationAsync({
                   content: {
                     title: 'Library Restored',
@@ -117,6 +115,7 @@ export const restoreBackup = async filePath => {
                   },
                   trigger: null,
                 });
+                resolve();
               }
 
               const nextNovelIndex = i + 1;
@@ -137,8 +136,6 @@ export const restoreBackup = async filePath => {
         const errorPath = RNFS.ExternalDirectoryPath + '/errorNovels.json';
         if (errorNovels.length > 0) {
           await RNFS.writeFile(errorPath, JSON.stringify(errorNovels));
-
-          resolve();
           Notifications.scheduleNotificationAsync({
             content: {
               title: 'Library Restored',
@@ -148,6 +145,7 @@ export const restoreBackup = async filePath => {
             },
             trigger: null,
           });
+          resolve();
         } else {
           RNFS.exists(errorPath).then(exist => {
             if (exist) {
