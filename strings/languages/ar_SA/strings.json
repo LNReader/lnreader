@@ -98,7 +98,7 @@
       "useChapterDrawerSwipeNavigation": "مرر يمينا لفتح القائمة الجانبية",
       "removeExtraSpacing": "إزالة المسافات الزائدة بين الفقرات",
       "volumeButtonsScroll": "تمرير أزرار الصوت",
-      "scrollAmount": "كَمَيَّة التمرير:",
+      "scrollAmount": "Scroll amount (screen height by default)",
       "showSwipeMargins": "إظهار هوامش التمرير"
     },
     "drawer": {
