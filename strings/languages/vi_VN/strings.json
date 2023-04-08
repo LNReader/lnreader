@@ -98,7 +98,7 @@
       "useChapterDrawerSwipeNavigation": "Vuốt phải để hiện danh sách",
       "removeExtraSpacing": "Xoá khoảng trống thừa",
       "volumeButtonsScroll": "Cuộn bằng nút âm lượng",
-      "scrollAmount": "Scroll amount:",
+      "scrollAmount": "Scroll amount (screen height by default)",
       "showSwipeMargins": "Hiện khoảng vuốt"
     },
     "drawer": {
