@@ -98,7 +98,7 @@
       "useChapterDrawerSwipeNavigation": "Проведите вправо, чтобы открыть",
       "removeExtraSpacing": "Удалить дополнительный интервал параграфа",
       "volumeButtonsScroll": "Прокрутка кноками громкости",
-      "scrollAmount": "Scroll amount:",
+      "scrollAmount": "Scroll amount (screen height by default)",
       "showSwipeMargins": "Показать зоны прокрутки"
     },
     "drawer": {
