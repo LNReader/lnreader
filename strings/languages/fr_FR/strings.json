@@ -98,7 +98,7 @@
       "useChapterDrawerSwipeNavigation": "Balayez vers la droite pour ouvrir le tiroir",
       "removeExtraSpacing": "Remove extra paragraph spacing",
       "volumeButtonsScroll": "Volume buttons scroll",
-      "scrollAmount": "Scroll amount:",
+      "scrollAmount": "Scroll amount (screen height by default)",
       "showSwipeMargins": "Show swipe margins"
     },
     "drawer": {
