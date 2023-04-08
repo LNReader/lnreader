@@ -98,7 +98,7 @@
       "useChapterDrawerSwipeNavigation": "向右滑动以打开抽屉栏",
       "removeExtraSpacing": "Remove extra paragraph spacing",
       "volumeButtonsScroll": "Volume buttons scroll",
-      "scrollAmount": "Scroll amount:",
+      "scrollAmount": "Scroll amount (screen height by default)",
       "showSwipeMargins": "Show swipe margins"
     },
     "drawer": {
