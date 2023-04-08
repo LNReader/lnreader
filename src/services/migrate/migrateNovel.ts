@@ -98,7 +98,7 @@ export const migrateNovel = async (
               fromNovel.author || toNovel.author || '',
               fromNovel.artist || toNovel.artist || '',
               fromNovel.status || toNovel.status || '',
-              fromNovel.genres || toNovel.cover || '',
+              fromNovel.genres || toNovel.genres || '',
               toNovel.id,
             ],
             noop,
@@ -111,7 +111,7 @@ export const migrateNovel = async (
             txnErrorCallback,
           );
           tx.executeSql(
-            'DELETE FROM Novel Where id = ?',
+            'DELETE FROM Novel WHERE id = ?',
             [fromNovel.id],
             noop,
             txnErrorCallback,
@@ -157,14 +157,14 @@ export const migrateNovel = async (
               position[fromChapter.id];
           }
 
-          db.transaction(tx => {
+          db.transaction(tx =>
             tx.executeSql(migrateChapterQuery, [
               fromChapter.bookmark,
               fromChapter.unread,
               fromChapter.readTime,
               toChapter.id,
-            ]);
-          });
+            ]),
+          );
 
           if (fromChapter.isDownloaded) {
             await downloadChapter(
