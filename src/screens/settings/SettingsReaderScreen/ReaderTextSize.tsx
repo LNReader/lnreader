@@ -4,7 +4,7 @@ import React from 'react';
 import { useAppDispatch, useReaderSettings } from '@redux/hooks';
 import { setReaderSettings } from '@redux/settings/settings.actions';
 import { getString } from '@strings/translations';
-import PlusMinusField from '@components/PlusMinusField/PlusMinusField';
+import Counter from '@components/PlusMinusField/PlusMinusField';
 
 interface ReaderTextSizeProps {
   labelStyle?: TextStyle | TextStyle[];
@@ -19,12 +19,12 @@ const ReaderTextSize: React.FC<ReaderTextSizeProps> = ({
 
   const { textSize } = useReaderSettings();
   return (
-    <PlusMinusField
+    <Counter
       onFocus={onFocus}
       labelStyle={labelStyle}
       label={getString('readerScreen.bottomSheet.textSize')}
       value={textSize}
-      method={val => dispatch(setReaderSettings('textSize', val))}
+      onChange={val => dispatch(setReaderSettings('textSize', val))}
       min={0}
     />
   );

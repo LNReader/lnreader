@@ -8,27 +8,25 @@ interface PlusMinusFieldProps {
   label: string;
   value: number;
   displayValue?: number | string;
-  min?: number;
-  max?: number;
-  valueChange?: number;
-  method: (value: number) => void;
-  onFocus?: (event: Event) => void;
+  minimumValue: number;
+  maximumValue: number;
+  step?: number;
+  onChange: (value: number) => void;
 }
 
-const PlusMinusField: React.FC<PlusMinusFieldProps> = ({
+const Counter: React.FC<PlusMinusFieldProps> = ({
   labelStyle,
   label,
   value,
   displayValue,
-  min,
-  max,
-  valueChange = 1,
-  method,
-  onFocus,
+  minimumValue,
+  maximumValue,
+  step = 1,
+  onChange,
 }) => {
   const theme = useTheme();
-  const minusDisabled = min || min === 0 ? value <= min : false;
-  const plusDisabled = max || max === 0 ? value >= max : false;
+  const minusDisabled = value <= minimumValue;
+  const plusDisabled = value >= maximumValue;
   const [text, onChangeText] = React.useState(value.toString());
 
   useEffect(() => {
@@ -37,12 +35,12 @@ const PlusMinusField: React.FC<PlusMinusFieldProps> = ({
 
   const endEditing = () => {
     let res = isNaN(Number(text)) ? 0 : Number(text);
-    if (min && res < min) {
-      res = min;
-    } else if (max && res > max) {
-      res = max;
+    if (minimumValue && res < minimumValue) {
+      res = minimumValue;
+    } else if (maximumValue && res > maximumValue) {
+      res = maximumValue;
     }
-    method(res);
+    onChange(res);
     onChangeText(res.toString());
   };
 
@@ -60,12 +58,11 @@ const PlusMinusField: React.FC<PlusMinusFieldProps> = ({
             color={theme.primary}
             size={26}
             disabled={minusDisabled}
-            onPress={() => method(value - valueChange)}
+            onPress={() => onChange(value - step)}
             theme={theme}
           />
         </View>
         <TextInput
-          onFocus={onFocus}
           editable={displayValue ? false : true}
           style={[styles.value, { color: theme.onSurface }]}
           onEndEditing={endEditing}
@@ -79,7 +76,7 @@ const PlusMinusField: React.FC<PlusMinusFieldProps> = ({
             color={theme.primary}
             size={26}
             disabled={plusDisabled}
-            onPress={() => method(value + valueChange)}
+            onPress={() => onChange(value + step)}
             theme={theme}
           />
         </View>
@@ -88,7 +85,7 @@ const PlusMinusField: React.FC<PlusMinusFieldProps> = ({
   );
 };
 
-export default PlusMinusField;
+export default Counter;
 
 const styles = StyleSheet.create({
   container: {
