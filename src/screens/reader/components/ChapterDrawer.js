@@ -59,6 +59,7 @@ const ChapterDrawer = ({ state: st, navigation }) => {
     res = indexOfCurrentChapter >= 2 ? indexOfCurrentChapter - 2 : 0;
     listRef.current?.scrollToIndex?.(res);
     return res;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chapters, currentChapterId, listAscending]);
   const [buttonProperties, setButtonProperties] = useState({
     up: {
@@ -248,7 +249,7 @@ const createStylesheet = (theme, insets) => {
     footer: {
       marginTop: 4,
       paddingTop: 8,
-      paddingBottom: insets.bottom,
+      paddingBottom: 30,
       borderTopWidth: 1,
       borderTopColor: theme.outline,
     },
