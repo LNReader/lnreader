@@ -14,7 +14,7 @@ jobs:
           node-version: '16'
       - name: Install Dependencies
         run: |
-          npm install --legacy-peer-deps
+          npm install
 
       - name: Cache Gradle Wrapper
         uses: actions/cache@v3

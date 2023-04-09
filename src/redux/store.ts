@@ -1,6 +1,6 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { MMKVStorage } from '@utils/mmkv/mmkv';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import { persistStore, persistReducer } from 'redux-persist';
+import { persistStore, persistReducer, Storage } from 'redux-persist';
 
 import settingsReducer from './settings/settings.reducer';
 import settingsReducerV2 from './settings/settingsSlice';
@@ -11,9 +11,24 @@ import trackerReducer from './tracker/tracker.reducer';
 import preferenceReducer from './preferences/preference.reducer';
 import downloadsReducer from './downloads/downloads.reducer';
 
+const reduxStorage: Storage = {
+  setItem: (key, value) => {
+    MMKVStorage.set(key, value);
+    return Promise.resolve(true);
+  },
+  getItem: key => {
+    const value = MMKVStorage.getString(key);
+    return Promise.resolve(value);
+  },
+  removeItem: key => {
+    MMKVStorage.delete(key);
+    return Promise.resolve();
+  },
+};
+
 const persistConfig = {
   key: 'root',
-  storage: AsyncStorage,
+  storage: reduxStorage,
   blacklist: ['novelReducer'],
 };
 
