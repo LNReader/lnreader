@@ -20,11 +20,11 @@ import {
   List,
   SwitchItem,
 } from '@components/index';
-import ReaderThemeSelector from '../../../screens/reader/components/ReaderBottomSheet/ReaderThemeSelector';
-import ReaderTextAlignSelector from '../../../screens/reader/components/ReaderBottomSheet/ReaderTextAlignSelector';
+import ReaderThemeSelector from '../../reader/components/ReaderBottomSheet/ReaderThemeSelector';
+import ReaderTextAlignSelector from '../../reader/components/ReaderBottomSheet/ReaderTextAlignSelector';
 import ColorPickerModal from '@components/ColorPickerModal/ColorPickerModal';
-import FontPickerModal from './FontPickerModal';
-import ReaderLineHeight from '../../../screens/reader/components/ReaderBottomSheet/ReaderLineHeight';
+import FontPickerModal from './Modals/FontPickerModal';
+import ReaderLineHeight from '../../reader/components/ReaderBottomSheet/ReaderLineHeight';
 import ReaderTextSize from './ReaderTextSize';
 
 import {
