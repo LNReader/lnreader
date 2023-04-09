@@ -8,6 +8,7 @@ import { useAppDispatch } from '@redux/hooks';
 import { setReaderSettings } from '@redux/settings/settings.actions';
 import * as DocumentPicker from 'expo-document-picker';
 import { StorageAccessFramework } from 'expo-file-system';
+import { showToast } from '@hooks/showToast';
 
 interface CustomCSSModalProps {
   visible: boolean;
@@ -53,8 +54,7 @@ const CustomFileModal: React.FC<CustomCSSModalProps> = ({
         setCustomFile(css);
       }
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(error);
+      showToast(error.message);
     }
   };
 
