@@ -18,6 +18,7 @@ import { persistor, store } from '@redux/store';
 import AppErrorBoundary from '@components/AppErrorBoundary/AppErrorBoundary';
 
 import Main from './src/navigators/Main';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => {
@@ -42,8 +43,10 @@ const App = () => {
           <PersistGate loading={null} persistor={persistor}>
             <SafeAreaProvider>
               <PaperProvider>
-                <StatusBar translucent={true} backgroundColor="transparent" />
-                <Main />
+                <BottomSheetModalProvider>
+                  <StatusBar translucent={true} backgroundColor="transparent" />
+                  <Main />
+                </BottomSheetModalProvider>
               </PaperProvider>
             </SafeAreaProvider>
           </PersistGate>

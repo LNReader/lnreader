@@ -18,14 +18,11 @@ import {
 import { FlashList } from '@shopify/flash-list';
 import { RadioButton } from '@components/RadioButton/RadioButton';
 import { overlay } from 'react-native-paper';
-import {
-  default as BottomSheetType,
-  BottomSheetView,
-} from '@gorhom/bottom-sheet';
+import { BottomSheetView, BottomSheetModal } from '@gorhom/bottom-sheet';
 import BottomSheet from '@components/BottomSheet/BottomSheet';
 
 interface LibraryBottomSheetProps {
-  bottomSheetRef: Ref<BottomSheetType> | null;
+  bottomSheetRef: Ref<BottomSheetModal> | null;
 }
 
 const FirstRoute = () => {
@@ -207,12 +204,7 @@ const LibraryBottomSheet: React.FC<LibraryBottomSheetProps> = ({
   });
 
   return (
-    <BottomSheet
-      bottomSheetRef={bottomSheetRef}
-      snapPoints={[520]}
-      height={520}
-      theme={theme}
-    >
+    <BottomSheet bottomSheetRef={bottomSheetRef} snapPoints={[520]}>
       <BottomSheetView
         style={[
           styles.bottomSheetCtn,

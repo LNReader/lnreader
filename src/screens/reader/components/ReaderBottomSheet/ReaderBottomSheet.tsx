@@ -8,10 +8,7 @@ import {
 import React, { Ref, useMemo, useState } from 'react';
 import color from 'color';
 
-import {
-  default as BottomSheetType,
-  BottomSheetView,
-} from '@gorhom/bottom-sheet';
+import { BottomSheetView, BottomSheetModal } from '@gorhom/bottom-sheet';
 
 import { defaultTo } from 'lodash-es';
 import BottomSheet from '@components/BottomSheet/BottomSheet';
@@ -148,7 +145,7 @@ const GeneralTab: React.FC = () => {
   );
 };
 interface ReaderBottomSheetV2Props {
-  bottomSheetRef: Ref<BottomSheetType> | null;
+  bottomSheetRef: Ref<BottomSheetModal> | null;
 }
 
 const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
@@ -203,12 +200,7 @@ const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
   );
 
   return (
-    <BottomSheet
-      bottomSheetRef={bottomSheetRef}
-      snapPoints={[360, 560]}
-      height={560}
-      theme={theme}
-    >
+    <BottomSheet bottomSheetRef={bottomSheetRef} snapPoints={[360, 560]}>
       <BottomSheetView
         style={[styles.bottomSheetContainer, { backgroundColor }]}
       >

@@ -105,12 +105,7 @@ const TrackSheet = ({ bottomSheetRef, novelId, novelName, theme }) => {
 
   return (
     <>
-      <BottomSheet
-        bottomSheetRef={bottomSheetRef}
-        snapPoints={[130]}
-        height={130}
-        theme={theme}
-      >
+      <BottomSheet bottomSheetRef={bottomSheetRef} snapPoints={[130]}>
         <View
           style={[
             styles.contentContainer,
