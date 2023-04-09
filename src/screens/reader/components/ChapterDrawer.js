@@ -5,7 +5,6 @@ import color from 'color';
 import { useTheme } from '@hooks/useTheme';
 import { FlashList } from '@shopify/flash-list';
 import { Button, LoadingScreenV2 } from '@components/index';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getString } from '@strings/translations';
 import { useNovel, useSettings, usePreferences } from '@hooks/reduxHooks';
 import { useDispatch } from 'react-redux';
@@ -13,8 +12,7 @@ import { setNovel, getNovelAction } from '@redux/novel/novel.actions';
 
 const ChapterDrawer = ({ state: st, navigation }) => {
   const theme = useTheme();
-  const insets = useSafeAreaInsets();
-  const styles = createStylesheet(theme, insets);
+  const styles = createStylesheet(theme);
   let listRef = useRef();
 
   const dispatch = useDispatch();
@@ -202,7 +200,7 @@ const ChapterDrawer = ({ state: st, navigation }) => {
   );
 };
 
-const createStylesheet = (theme, insets) => {
+const createStylesheet = theme => {
   return StyleSheet.create({
     drawer: {
       flex: 1,
