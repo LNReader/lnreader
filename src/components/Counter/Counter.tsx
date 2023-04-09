@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 
 import { useTheme } from '@hooks/useTheme';
 import { IconButtonV2 } from '@components/index';
-interface PlusMinusFieldProps {
+interface CounterProps {
   labelStyle?: TextStyle | TextStyle[];
   label: string;
   value: number;
@@ -14,7 +14,7 @@ interface PlusMinusFieldProps {
   onChange: (value: number) => void;
 }
 
-const Counter: React.FC<PlusMinusFieldProps> = ({
+const Counter: React.FC<CounterProps> = ({
   labelStyle,
   label,
   value,

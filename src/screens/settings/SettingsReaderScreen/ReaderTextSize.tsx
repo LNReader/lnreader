@@ -4,7 +4,7 @@ import React from 'react';
 import { useAppDispatch, useReaderSettings } from '@redux/hooks';
 import { setReaderSettings } from '@redux/settings/settings.actions';
 import { getString } from '@strings/translations';
-import Counter from '@components/PlusMinusField/PlusMinusField';
+import Counter from '@components/Counter/Counter';
 
 interface ReaderTextSizeProps {
   labelStyle?: TextStyle | TextStyle[];

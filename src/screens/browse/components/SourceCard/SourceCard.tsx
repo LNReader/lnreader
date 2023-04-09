@@ -32,8 +32,8 @@ const SourceCard: React.FC<Props> = ({
       <Image source={{ uri: source.icon }} style={styles.icon} />
       <View style={styles.details}>
         <Text style={{ color: theme.onSurface }}>{source.sourceName}</Text>
-        <Text style={[{ color: theme.onSurfaceVariant }, styles.lang]}>
-          {source.lang}
+        <Text style={[{ color: theme.onSurfaceVariant }, styles.description]}>
+          <Text>{`${source.lang}   ID: ${source.sourceId}`}</Text>
         </Text>
       </View>
     </View>
@@ -73,8 +73,11 @@ const styles = StyleSheet.create({
   details: {
     marginLeft: 16,
   },
-  lang: {
+  description: {
     fontSize: 12,
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    minWidth: '50%',
   },
   flexRow: {
     flexDirection: 'row',
