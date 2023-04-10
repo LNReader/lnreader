@@ -635,7 +635,7 @@ const Novel = ({ route, navigation }) => {
             action={{
               label: 'Delete',
               onPress: () => {
-                dispatch(deleteAllChaptersAction(pluginId, chapters));
+                dispatch(deleteAllChaptersAction(pluginId, novel.id, chapters));
               },
             }}
             theme={{ colors: { primary: theme.primary } }}
