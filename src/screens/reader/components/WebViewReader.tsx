@@ -205,6 +205,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                       type: 'hide',
                     })}>
                       <chapter 
+                        data-plugin-id='${novel?.pluginId}'
                         data-novel-id='${chapter.novelId}'
                         data-chapter-id='${chapter.id}'
                       >
