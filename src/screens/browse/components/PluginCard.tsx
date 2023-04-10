@@ -47,10 +47,7 @@ const PluginCard: React.FC<Props> = ({
       <View style={styles.details}>
         <Text style={{ color: theme.onSurface }}>{plugin.name}</Text>
         <Text style={[{ color: theme.onSurfaceVariant }, styles.lang]}>
-          {plugin.lang}
-        </Text>
-        <Text style={[{ color: theme.onSurfaceVariant }, styles.lang]}>
-          {'version: ' + plugin.version}
+          {`ID: ${plugin.id}\nLang: ${plugin.lang}\nVer: ${plugin.version}`}
         </Text>
       </View>
     </View>

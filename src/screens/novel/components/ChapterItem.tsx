@@ -16,7 +16,6 @@ import { ChapterInfo } from '@database/types';
 interface ChapterItemProps {
   chapter: ChapterInfo;
   theme: ThemeColors;
-  index?: number;
   downloadQueue: any;
   showChapterTitles: boolean;
   isSelected?: (id: number) => boolean;
@@ -35,7 +34,6 @@ interface ChapterItemProps {
 const ChapterItem: React.FC<ChapterItemProps> = ({
   chapter,
   theme,
-  index,
   showChapterTitles,
   downloadQueue,
   downloadChapter,
@@ -101,9 +99,7 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
             ]}
           >
             {showChapterTitles
-              ? chapterNumber
-                ? 'Chapter ' + chapterNumber
-                : 'Chapter ' + index
+              ? `Chapter ${chapterNumber} • ID: ${id}`
               : name.slice(0, 45)}
           </Text>
           <View style={styles.textRow}>

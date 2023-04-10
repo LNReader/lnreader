@@ -296,7 +296,6 @@ const Novel = ({ route, navigation }) => {
     <ChapterItem
       theme={theme}
       chapter={it}
-      index={index}
       showChapterTitles={showChapterTitles}
       downloadQueue={downloadQueue}
       deleteChapter={deleteChapter}

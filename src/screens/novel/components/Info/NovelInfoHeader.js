@@ -80,6 +80,15 @@ const NovelInfoHeader = ({
             >
               {novel.name}
             </NovelTitle>
+            <Text
+              style={{
+                fontSize: 15,
+                fontWeight: 'bold',
+                color: theme.onBackground,
+              }}
+            >
+              {`ID: ${novel.id}`}
+            </Text>
             <>
               <NovelAuthor theme={theme}>
                 {novel.author || 'Unknown author'}
