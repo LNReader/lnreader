@@ -9,6 +9,7 @@ import { Languages } from '@utils/constants/languages';
 import { fetchFile } from './helpers/fetchFile';
 import { parseMadaraDate } from './helpers/parseDate';
 import { isUrlAbsolute } from '@utils/isAbsoluteUrl';
+import { fetchApi } from '@utils/fetch/fetch';
 
 const pluginsFolder = RNFS.ExternalDirectoryPath + '/Plugins';
 
@@ -19,6 +20,7 @@ const packages: Record<string, any> = {
   '@libs/fetchFile': fetchFile,
   '@libs/parseMadaraDate': parseMadaraDate,
   '@libs/isAbsoluteUrl': isUrlAbsolute,
+  '@libs/fetchApi': fetchApi,
 };
 
 const _require = (packageName: string) => {
