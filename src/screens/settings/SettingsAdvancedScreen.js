@@ -50,7 +50,7 @@ const AdvancedSettings = ({ navigation }) => {
         <List.SubHeader theme={theme}>Data Management</List.SubHeader>
         <List.Item
           title="Clear database"
-          description="Delete history for novels not in your library"
+          description="Delete cached novels which not in your library"
           onPress={showClearDatabaseDialog}
           theme={theme}
         />
@@ -97,8 +97,8 @@ const AdvancedSettings = ({ navigation }) => {
               color: theme.onSurface,
             }}
           >
-            Are you sure? Read chapters and progress of non-library novels will
-            be lost.
+            Are you sure? Read and Downloaded chapters and progress of
+            non-library novels will be lost.
           </Dialog.Title>
           <Dialog.Actions>
             <Button onPress={hideClearDatabaseDialog}>
