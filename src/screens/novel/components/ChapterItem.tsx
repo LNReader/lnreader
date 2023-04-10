@@ -84,9 +84,8 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
                   color: unread ? theme.onSurface : theme.outline,
                 },
               ]}
-              numberOfLines={1}
             >
-              {novelName}
+              {novelName.slice(0, 45)}
             </Text>
           )}
           <Text
@@ -100,13 +99,12 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
                   : theme.onSurfaceVariant,
               },
             ]}
-            numberOfLines={1}
           >
             {showChapterTitles
               ? chapterNumber
                 ? 'Chapter ' + chapterNumber
                 : 'Chapter ' + index
-              : name}
+              : name.slice(0, 45)}
           </Text>
           <View style={styles.textRow}>
             {releaseTime && !isUpdateCard ? (
