@@ -1,6 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Languages } from '@utils/constants/languages';
 import { PluginItem } from '@plugins/types';
+import { Languages } from '@utils/constants/languages';
+import { locale } from 'expo-localization';
+import { languagesMapping } from '@utils/constants/languages';
 
 interface PLuginsState {
   availablePlugins: Record<Languages, Array<PluginItem>>;
@@ -11,10 +13,15 @@ interface PLuginsState {
   searchResults: Array<PluginItem>;
 }
 
+const defaultLangCode = Object.keys(languagesMapping).find(code =>
+  locale.toLowerCase().includes(code),
+);
+const defaultLang = languagesMapping[defaultLangCode || ''] as Languages;
+
 const initialState: PLuginsState = {
   availablePlugins: {} as Record<Languages, Array<PluginItem>>,
   installedPlugins: [] as Array<PluginItem>,
-  languagesFilter: [Languages.English],
+  languagesFilter: [defaultLang || Languages.English],
   lastUsed: null,
   pinnedPlugins: [] as Array<PluginItem>,
   searchResults: [] as Array<PluginItem>,
