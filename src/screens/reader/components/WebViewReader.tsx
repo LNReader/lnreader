@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dimensions, StatusBar } from 'react-native';
-import WebView, { WebViewProps } from 'react-native-webview';
+import WebView from 'react-native-webview';
 
 import { useTheme } from '@hooks/useTheme';
 import { ChapterInfo, NovelInfo } from '@database/types';
@@ -23,10 +23,10 @@ type WebViewReaderProps = {
   nextChapter: ChapterInfo;
   webViewRef: React.MutableRefObject<WebView>;
   onPress(): void;
+  onLayout(): void;
   doSaveProgress(offSetY: number, percentage: number): void;
   navigateToChapterBySwipe(name: string): void;
   onWebViewNavigationStateChange(): void;
-  onLayout: WebViewProps['onLayout'];
 };
 
 const onClickWebViewPostMessage = (event: WebViewPostEvent) =>
@@ -68,7 +68,6 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
       onNavigationStateChange={onWebViewNavigationStateChange}
       nestedScrollEnabled={true}
       javaScriptEnabled={true}
-      onLayout={onLayout}
       onMessage={ev => {
         const event: WebViewPostEvent = JSON.parse(ev.nativeEvent.data);
         switch (event.type) {
@@ -101,6 +100,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
           case 'height':
             const contentHeight = Number(event.data);
             minScroll.current = (layoutHeight / contentHeight) * 100;
+            onLayout();
             break;
         }
       }}
