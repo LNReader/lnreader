@@ -40,7 +40,6 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
     novelId,
     novelName,
     novelUrl,
-    chapterId,
     chapterName,
     novelCover,
     readTime,
@@ -49,7 +48,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
   } = history;
   const chapterNoAndTime = useMemo(
     () =>
-      `Chapter ${parseChapterNumber(chapterName)} • ${dayjs(readTime)
+      `Chapter ${parseChapterNumber(novelName, chapterName)} • ${dayjs(readTime)
         .format('LT')
         .toUpperCase()}`,
     [chapterName, readTime],
@@ -95,7 +94,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
             handleNavigateToChapter(
               { url: novelUrl, pluginId: pluginId, name: novelName },
               {
-                id: chapterId,
+                id: id,
                 url: chapterUrl,
                 novelId: novelId,
                 name: chapterName,
