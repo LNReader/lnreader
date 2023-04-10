@@ -160,11 +160,13 @@ const SettingsReaderScreen = () => {
                 ${webViewCSS}
               </head>
               <body>
-                ${dummyHTML}
-                <script>
-                  async function fn(){${readerSettings.customJS}}
-                  document.addEventListener("DOMContentLoaded", fn);
-                </script>
+                <chapter>
+                  ${dummyHTML}
+                  <script>
+                    async function fn(){${readerSettings.customJS}}
+                    document.addEventListener("DOMContentLoaded", fn);
+                  </script>
+                </chapter>
               </body>
             </html>
             `,

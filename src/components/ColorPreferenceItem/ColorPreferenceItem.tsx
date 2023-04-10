@@ -1,13 +1,13 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { ThemeType } from '../../theme/types';
+import { ThemeColors } from '../../theme/types';
 
 interface ColorPreferenceItemProps {
   label: string;
   description?: string;
   onPress: () => void;
-  theme: ThemeType;
+  theme: ThemeColors;
 }
 
 const ColorPreferenceItem: React.FC<ColorPreferenceItemProps> = ({
