@@ -30,7 +30,7 @@ type ReduxNovelSettings = Record<
     position: Record<
       number,
       {
-        position: number;
+        offsetY: number;
         percentage: number;
       }
     >;

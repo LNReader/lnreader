@@ -56,7 +56,7 @@ const preferenceReducer = (state = initialState, action) => {
             position: {
               ...state.novelSettings[payload.novelId].position,
               [payload.chapterId]: {
-                position: payload.position,
+                offsetY: payload.offsetY,
                 percentage: payload.percentage,
               },
             },

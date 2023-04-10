@@ -43,16 +43,18 @@ const useSavedSettings = () => {
 };
 
 const useContinueReading = (chapters, novelId) => {
-  let lastReadChapter, chapterId, novel, position;
+  let lastReadChapter, novel, position;
   novel = useFindNovel(novelId);
   if (novel && novel.lastRead) {
-    chapterId = novel.lastRead.id;
+    lastReadChapter = novel.lastRead;
     position = novel.position;
   }
 
-  if (chapterId && position) {
+  if (lastReadChapter && position) {
     lastReadChapter =
-      position[chapterId].percentage >= 97 ? undefined : lastReadChapter;
+      position[lastReadChapter.id]?.percentage >= 97
+        ? undefined
+        : lastReadChapter;
   } else {
     // for the first time
     lastReadChapter = chapters[0];

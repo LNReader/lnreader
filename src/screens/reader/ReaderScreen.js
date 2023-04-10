@@ -214,7 +214,7 @@ const ChapterContent = ({ route, navigation }) => {
   }, [autoScroll, webViewRef]);
 
   const updateTracker = () => {
-    const chapterNumber = parseChapterNumber(chapter.name);
+    const chapterNumber = parseChapterNumber(novel.name, chapter.name);
 
     isTracked &&
       chapterNumber &&
@@ -312,7 +312,7 @@ const ChapterContent = ({ route, navigation }) => {
         webViewRef={webViewRef}
         onLayout={() => {
           useVolumeButtons && onLayout();
-          scrollTo(position?.position);
+          scrollTo(position?.offsetY);
         }}
         onPress={hideHeader}
         doSaveProgress={doSaveProgress}

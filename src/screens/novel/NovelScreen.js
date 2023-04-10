@@ -260,7 +260,7 @@ const Novel = ({ route, navigation }) => {
   const showProgressPercentage = chapter => {
     const savedProgress =
       position && position[chapter.id] && position[chapter.id].percentage;
-    if (savedProgress < 100 && savedProgress > 0 && chapter.unread) {
+    if (savedProgress < 97 && savedProgress > 0 && chapter.unread) {
       return (
         <Text
           style={{
