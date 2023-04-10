@@ -29,15 +29,30 @@ export const createCategory = (categoryName: string): void =>
     tx.executeSql(createCategoryQuery, [categoryName], noop, txnErrorCallback),
   );
 
+const beforeDeleteCategoryQuery = `
+    UPDATE NovelCategory SET categoryId = (SELECT id FROM Category WHERE sort = 1)
+    WHERE novelId IN (
+      SELECT novelId FROM NovelCategory
+      GROUP BY novelId
+      HAVING COUNT(categoryId) = 1
+    )
+    AND categoryId = ?;
+`;
 const deleteCategoryQuery = 'DELETE FROM Category WHERE id = ?';
 
 export const deleteCategoryById = (category: Category): void => {
   if (category.sort === 1) {
     return showToast('You cant delete default category');
   }
-  db.transaction(tx =>
-    tx.executeSql(deleteCategoryQuery, [category.id], noop, txnErrorCallback),
-  );
+  db.transaction(tx => {
+    tx.executeSql(
+      beforeDeleteCategoryQuery,
+      [category.id],
+      noop,
+      txnErrorCallback,
+    );
+    tx.executeSql(deleteCategoryQuery, [category.id], noop, txnErrorCallback);
+  });
 };
 
 const updateCategoryQuery = 'UPDATE Category SET name = ? WHERE id = ?';
