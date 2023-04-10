@@ -51,9 +51,11 @@ const useContinueReading = (chapters, novelId) => {
   }
 
   if (chapterId) {
-    lastReadChapter = chapters.find(
-      obj => obj.id === chapterId && obj.unread === 1,
-    );
+    lastReadChapter =
+      position[chapterId].percentage >= 97 ? undefined : lastReadChapter;
+  } else {
+    // for the first time
+    lastReadChapter = chapters[0];
   }
 
   // If the last read chapter is 100% done, set the next chapter as the 'last read'.
