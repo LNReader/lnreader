@@ -30,7 +30,7 @@ const ListView = ({
     >
       <FastImage
         source={{
-          uri: item.novelCover,
+          uri: item.cover,
         }}
         style={[styles.extensionIcon, inLibraryBadge && { opacity: 0.5 }]}
       />
@@ -38,7 +38,7 @@ const ListView = ({
         style={[{ color: theme.onSurface }, styles.novelName]}
         numberOfLines={1}
       >
-        {item.novelName}
+        {item.name}
       </Text>
       <View style={styles.badgeContainer}>
         {downloadBadge}

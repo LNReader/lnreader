@@ -8,7 +8,7 @@ import { usePluginReducer } from '@redux/hooks';
 import { useLibraryNovels } from '@screens/library/hooks/useLibrary';
 import { Appbar } from '@components';
 
-const GlobalSearch = ({ navigation }) => {
+const Migration = ({ navigation }) => {
   const theme = useTheme();
 
   const { library } = useLibraryNovels();
@@ -18,7 +18,7 @@ const GlobalSearch = ({ navigation }) => {
     library.filter(novel => novel.pluginId === pluginId).length;
 
   plugins = installedPlugins.filter(
-    plugin => library.filter(novel => novel.pluginId === plugin.id).length,
+    plugin => library.find(novel => novel.pluginId === plugin.id) !== undefined,
   );
 
   const renderItem = ({ item }) => (
@@ -26,7 +26,7 @@ const GlobalSearch = ({ navigation }) => {
       item={item}
       theme={theme}
       noOfNovels={novelsPerSource(item.id)}
-      onPress={() => navigation.navigate('SourceNovels', item.pluginId)}
+      onPress={() => navigation.navigate('SourceNovels', item.id)}
     />
   );
 
@@ -56,7 +56,7 @@ const GlobalSearch = ({ navigation }) => {
   );
 };
 
-export default GlobalSearch;
+export default Migration;
 
 const styles = StyleSheet.create({
   container: {

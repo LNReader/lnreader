@@ -5,6 +5,7 @@ import { useTheme } from '@hooks/useTheme';
 import ListView from '../../components/ListView';
 import { useLibraryNovels } from '@screens/library/hooks/useLibrary';
 import { Appbar } from '@components';
+import NovelCover from '@components/NovelCover';
 
 const SourceNovels = ({ navigation, route }) => {
   const pluginId = route.params;
@@ -20,7 +21,7 @@ const SourceNovels = ({ navigation, route }) => {
       onPress={() =>
         navigation.navigate('MigrateNovel', {
           pluginId: item.pluginId,
-          novelName: item.novelName,
+          novel: item,
         })
       }
     />
@@ -37,7 +38,7 @@ const SourceNovels = ({ navigation, route }) => {
       />
       <FlatList
         data={sourceNovels}
-        keyExtractor={item => item.novelId.toString()}
+        keyExtractor={item => 'migrateFrom' + item.id}
         renderItem={renderItem}
         ListEmptyComponent={
           <Text
