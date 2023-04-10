@@ -2,16 +2,13 @@ import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import React, { Ref, useMemo, useState } from 'react';
 import color from 'color';
 
-import {
-  default as BottomSheetType,
-  BottomSheetView,
-} from '@gorhom/bottom-sheet';
+import { BottomSheetView, BottomSheetModal } from '@gorhom/bottom-sheet';
 import BottomSheet from '@components/BottomSheet/BottomSheet';
-import { useAppDispatch, useSettingsV1 } from '../../../../redux/hooks';
+import { useAppDispatch, useSettingsV1 } from '@redux/hooks';
 import { useTheme } from '@hooks/useTheme';
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
-import { getString } from '../../../../../strings/translations';
-import { setAppSettings } from '../../../../redux/settings/settings.actions';
+import { getString } from '@strings/translations';
+import { setAppSettings } from '@redux/settings/settings.actions';
 
 import ReaderSheetPreferenceItem from './ReaderSheetPreferenceItem';
 import TextSizeSlider from './TextSizeSlider';
@@ -123,7 +120,7 @@ const GeneralTab: React.FC = () => {
 };
 
 interface ReaderBottomSheetV2Props {
-  bottomSheetRef: Ref<BottomSheetType> | null;
+  bottomSheetRef: Ref<BottomSheetModal> | null;
 }
 
 const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
@@ -178,12 +175,7 @@ const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
   );
 
   return (
-    <BottomSheet
-      bottomSheetRef={bottomSheetRef}
-      snapPoints={[360, 560]}
-      height={560}
-      theme={theme}
-    >
+    <BottomSheet bottomSheetRef={bottomSheetRef} snapPoints={[360, 560]}>
       <BottomSheetView
         style={[styles.bottomSheetContainer, { backgroundColor }]}
       >

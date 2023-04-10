@@ -324,9 +324,7 @@ const ChapterContent = ({ route, navigation }) => {
           position?.percentage || Math.round(minScroll.current) || 0
         }
       />
-      <Portal>
-        <ReaderBottomSheetV2 bottomSheetRef={readerSheetRef} />
-      </Portal>
+      <ReaderBottomSheetV2 bottomSheetRef={readerSheetRef} />
       {!hidden && (
         <>
           <ReaderAppbar

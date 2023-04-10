@@ -168,12 +168,7 @@ const ChaptersSettingsSheet = ({
   );
 
   return (
-    <BottomSheet
-      snapPoints={[240]}
-      bottomSheetRef={bottomSheetRef}
-      height={220}
-      theme={theme}
-    >
+    <BottomSheet snapPoints={[240]} bottomSheetRef={bottomSheetRef}>
       <BottomSheetView
         style={[
           styles.contentContainer,

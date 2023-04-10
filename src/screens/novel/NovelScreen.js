@@ -669,24 +669,23 @@ const Novel = ({ route, navigation }) => {
             theme={theme}
             dispatch={dispatch}
           />
-          <NovelBottomSheet
-            url={url}
-            bottomSheetRef={novelBottomSheetRef}
-            dispatch={dispatch}
-            sortAndFilterChapters={sortAndFilterChapters}
-            novelId={novel.id}
-            sort={sort}
-            theme={theme}
-            filter={filter}
-            showChapterTitles={showChapterTitles}
-          />
-          <TrackSheet
-            bottomSheetRef={trackerSheetRef}
-            novelId={novel.id}
-            novelName={novel.name}
-            theme={theme}
-          />
         </Portal>
+        <NovelBottomSheet
+          bottomSheetRef={novelBottomSheetRef}
+          dispatch={dispatch}
+          sortAndFilterChapters={sortAndFilterChapters}
+          novelId={novel.id}
+          sort={sort}
+          theme={theme}
+          filter={filter}
+          showChapterTitles={showChapterTitles}
+        />
+        <TrackSheet
+          bottomSheetRef={trackerSheetRef}
+          novelId={novel.id}
+          novelName={novel.name}
+          theme={theme}
+        />
       </View>
     </Provider>
   );

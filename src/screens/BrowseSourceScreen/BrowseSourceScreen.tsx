@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
-import { FAB, Portal } from 'react-native-paper';
+import { FAB } from 'react-native-paper';
 import { Container, ErrorScreenV2, SearchbarV2 } from '@components/index';
 import NovelList from '@components/NovelList';
 import NovelCover from '@components/NovelCover';
-import Bottomsheet from '@gorhom/bottom-sheet';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import FilterBottomSheet from './components/FilterBottomSheet';
 
 import { usePreviousRouteName, useSearch } from '@hooks';
@@ -105,7 +105,7 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
   );
 
   const { bottom } = useSafeAreaInsets();
-  const filterSheetRef = useRef<Bottomsheet | null>(null);
+  const filterSheetRef = useRef<BottomSheetModal | null>(null);
   return (
     <Container>
       <SearchbarV2
@@ -184,16 +184,14 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
             label={'Filter'}
             uppercase={false}
             color={theme.onPrimary}
-            onPress={() => filterSheetRef?.current?.expand()}
+            onPress={() => filterSheetRef?.current?.present()}
           />
-          <Portal>
-            <FilterBottomSheet
-              filterSheetRef={filterSheetRef}
-              filtersValues={filterValues}
-              setFilters={setFilters}
-              clearFilters={clearFilters}
-            />
-          </Portal>
+          <FilterBottomSheet
+            filterSheetRef={filterSheetRef}
+            filtersValues={filterValues}
+            setFilters={setFilters}
+            clearFilters={clearFilters}
+          />
         </>
       ) : null}
     </Container>
