@@ -50,7 +50,7 @@ const useContinueReading = (chapters, novelId) => {
     position = novel.position;
   }
 
-  if (chapterId) {
+  if (chapterId && position) {
     lastReadChapter =
       position[chapterId].percentage >= 97 ? undefined : lastReadChapter;
   } else {
