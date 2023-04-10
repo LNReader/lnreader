@@ -154,6 +154,7 @@ import {
   SiScraper,
   KodScraper,
 } from './multisrc/noveltl/NovelTlGenerator';
+import NovelsOnlineScraper from './en/NovelOnline';
 
 interface PopularNovelsResponse {
   novels: SourceNovelItem[];
@@ -321,7 +322,8 @@ export const sourceManager = (sourceId: number): Scraper => {
     159: BelScraper, // @ts-ignore
     160: RedScraper, // @ts-ignore
     161: SiScraper, // @ts-ignore
-    162: KodScraper, // @ts-ignore
+    162: KodScraper,
+    163: NovelsOnlineScraper,
   };
 
   return scrapers[sourceId];

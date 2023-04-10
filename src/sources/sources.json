@@ -985,5 +985,12 @@
     "url": "https://kod.novel.tl",
     "lang": "Russian",
     "icon": "https://kod.novel.tl/logo.png"
+  },
+  {
+    "sourceId": 163,
+    "sourceName": "Novels Online",
+    "url": "https://novelsonline.net/",
+    "lang": "English",
+    "icon": "https://novelsonline.net/assets/images/logo.png?v=norm"
   }
 ]
