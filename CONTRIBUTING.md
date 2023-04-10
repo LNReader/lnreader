@@ -57,3 +57,51 @@ codebase, however you can always check to see if the source code is compliant by
 ```bash
 npm run lint
 ```
+# Database
+```mermaid
+erDiagram
+    Category ||--|{ NovelCategory : contains
+    Category{
+      INTEGER id PK
+      TEXT name
+      INTEGER sort
+    }
+    NovelCategory{
+      INTEGER id PK
+      INTEGER novelId FK
+      INTEGER categoryId FK "default: whose sort = 1"
+    }
+    Novel ||--|{ NovelCategory : contains
+    Novel{
+      INTEGER id PK
+      TEXT url
+      TEXT pluginId
+      TEXT name
+      TEXT cover
+      TEXT summary
+      TEXT author
+      TEXT artist
+      TEXT status
+      TEXT genres
+      INTEGER inLibrary "default: 0"
+    }
+    Novel ||--o| Chapter : has
+    Chapter ||--o| Download : may_have
+    Chapter{
+      INTEGER id PK
+      INTEGER novelId FK
+      text url
+      TEXT name
+      TEXT releaseTime
+      INTEGER bookmark  "default: 0"
+      INTEGER unread    "default: 1"
+      TEXT readTime
+      INTEGER isDownloaded  "default: 0"
+      TEXT updatedTime
+    }
+    Download{
+      INTEGER id PK
+      INTEGER chapterId FK
+      string chapterText
+    }
+```
