@@ -171,7 +171,12 @@
         "autoScrollOffset": "Valeur du scroll automatique (hauteur de l'écran par défaut)",
         "saveCustomTheme": "Sauvegarder le thème personnalisé",
         "deleteCustomTheme": "Supprimer le thème personnalisé",
-        "customCSS": "CSS personnalisé"
+        "customCSS": "CSS personnalisé",
+        "customJS": "Custom JS",
+        "openCSSFile": "Open CSS file",
+        "openJSFile": "Open JS file",
+        "notSaved": "Not saved",
+        "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])"
       },
       "browseSettings": "Parcourir les paramètres",
       "browseSettingsScreen": {
