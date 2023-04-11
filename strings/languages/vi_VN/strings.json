@@ -171,7 +171,12 @@
         "autoScrollOffset": "Khoảng cách tự động cuộn (mặc định chiều cao màn hình)",
         "saveCustomTheme": "Lưu tùy chỉnh giao diện",
         "deleteCustomTheme": "Xoá tuỳ chỉnh giao diện",
-        "customCSS": "CSS Tùy chỉnh"
+        "customCSS": "CSS Tùy chỉnh",
+        "customJS": "Custom JS",
+        "openCSSFile": "Open CSS file",
+        "openJSFile": "Open JS file",
+        "notSaved": "Not saved",
+        "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])"
       },
       "browseSettings": "Cài đặt trình tìm kiếm",
       "browseSettingsScreen": {
