@@ -171,7 +171,12 @@
         "autoScrollOffset": "Offset gulir otomatis (tinggi layar secara default)",
         "saveCustomTheme": "Simpan kostumisasi tema",
         "deleteCustomTheme": "Hapus kostumisasi tema",
-        "customCSS": "Kostumisasi CSS"
+        "customCSS": "Kostumisasi CSS",
+        "customJS": "Custom JS",
+        "openCSSFile": "Open CSS file",
+        "openJSFile": "Open JS file",
+        "notSaved": "Not saved",
+        "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])"
       },
       "browseSettings": "Pengaturan Setelan",
       "browseSettingsScreen": {
