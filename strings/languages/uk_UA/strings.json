@@ -171,7 +171,12 @@
         "autoScrollOffset": "Зсув автоматичної прокрутки (висота екрану за замовчуванням)",
         "saveCustomTheme": "Зберегти тему",
         "deleteCustomTheme": "Видалити тему",
-        "customCSS": "Довільний CSS"
+        "customCSS": "Довільний CSS",
+        "customJS": "Custom JS",
+        "openCSSFile": "Open CSS file",
+        "openJSFile": "Open JS file",
+        "notSaved": "Not saved",
+        "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])"
       },
       "browseSettings": "Налаштування джерел",
       "browseSettingsScreen": {
