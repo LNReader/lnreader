@@ -171,7 +171,12 @@
         "autoScrollOffset": "Смещение автопрокрутки (высота экрана по умолчанию)",
         "saveCustomTheme": "Сохранить пользовательскую тему",
         "deleteCustomTheme": "Удалить пользовательскую тему",
-        "customCSS": "Пользовательские CSS"
+        "customCSS": "Пользовательские CSS",
+        "customJS": "Custom JS",
+        "openCSSFile": "Open CSS file",
+        "openJSFile": "Open JS file",
+        "notSaved": "Not saved",
+        "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])"
       },
       "browseSettings": "Настройки обзора",
       "browseSettingsScreen": {
