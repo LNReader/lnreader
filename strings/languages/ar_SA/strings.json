@@ -171,7 +171,12 @@
         "autoScrollOffset": "تمرير إزاحة تلقائية (ارتفاع الشاشة افتراضي)",
         "saveCustomTheme": "حفظ السمة المخصصة",
         "deleteCustomTheme": "حذف السمة المخصصة",
-        "customCSS": "تنسيقات CSS مخصصة"
+        "customCSS": "تنسيقات CSS مخصصة",
+        "customJS": "Custom JS",
+        "openCSSFile": "Open CSS file",
+        "openJSFile": "Open JS file",
+        "notSaved": "Not saved",
+        "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])"
       },
       "browseSettings": "تصفح الإعدادات",
       "browseSettingsScreen": {
