@@ -171,7 +171,12 @@
         "autoScrollOffset": "Otomatik kaydırma konumu (varsayılan olarak ekran yüksekliği)",
         "saveCustomTheme": "Özel temayı kaydet",
         "deleteCustomTheme": "Özel temayı sil",
-        "customCSS": "Özel CSS"
+        "customCSS": "Özel CSS",
+        "customJS": "Custom JS",
+        "openCSSFile": "Open CSS file",
+        "openJSFile": "Open JS file",
+        "notSaved": "Not saved",
+        "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])"
       },
       "browseSettings": "Göz Atma Seçenekleri",
       "browseSettingsScreen": {
