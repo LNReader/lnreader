@@ -98,7 +98,7 @@
       "useChapterDrawerSwipeNavigation": "Çekmeceyi açmak için sağa kaydırın",
       "removeExtraSpacing": "Ekstra paragraf boşluklarını kaldır",
       "volumeButtonsScroll": "Ses butonlarıyla kaydırma",
-      "scrollAmount": "Scroll amount (screen height by default)",
+      "scrollAmount": "Kaydırma miktarı (varsayılan olarak ekran yüksekliği)",
       "showSwipeMargins": "Kaydırma kenar boşluklarını göster"
     },
     "drawer": {
@@ -172,11 +172,11 @@
         "saveCustomTheme": "Özel temayı kaydet",
         "deleteCustomTheme": "Özel temayı sil",
         "customCSS": "Özel CSS",
-        "customJS": "Custom JS",
-        "openCSSFile": "Open CSS file",
-        "openJSFile": "Open JS file",
-        "notSaved": "Not saved",
-        "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])"
+        "customJS": "Özel JS",
+        "openCSSFile": "CSS dosyası aç",
+        "openJSFile": "JS dosyası aç",
+        "notSaved": "Kaydedilmedi",
+        "cssHint": "İpucu: Kaynak ID'si ile kaynağa özel CSS yapılandırması oluşturabilirsiniz.\n(#kaynakId-[KAYNAKID])"
       },
       "browseSettings": "Göz Atma Seçenekleri",
       "browseSettingsScreen": {
