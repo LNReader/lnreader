@@ -4,6 +4,7 @@ import { bigger } from '../utils/compareVersion';
 
 // packages for plugins
 import * as cheerio from 'cheerio';
+import dayjs from 'dayjs';
 import { NovelStatus, Plugin, PluginItem } from './types';
 import { FilterInputs } from './types/filterTypes';
 import { Languages } from '@utils/constants/languages';
@@ -16,6 +17,7 @@ const pluginsFolder = RNFS.ExternalDirectoryPath + '/Plugins';
 
 const packages: Record<string, any> = {
   'cheerio': cheerio,
+  'dayjs': dayjs,
   '@libs/novelStatus': NovelStatus,
   '@libs/languages': Languages,
   '@libs/fetchFile': fetchFile,
@@ -40,6 +42,7 @@ const initPlugin = (rawCode: string, path?: string) => {
     plugin.path = path || `${pluginsFolder}/${plugin.id}.js`;
     return plugin;
   } catch (e) {
+    console.log(e);
     return undefined;
   }
 };
