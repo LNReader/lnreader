@@ -13,23 +13,6 @@ export interface ChapterItem {
   releaseTime?: string;
 }
 
-export interface SourceNovel {
-  url: string; //must be absoulute
-  name: string;
-  cover?: string;
-  genres?: string;
-  summary?: string;
-  author?: string;
-  artist?: string;
-  status?: string;
-  chapters?: ChapterItem[];
-}
-
-export interface SourceOptions {
-  showLatestNovels?: boolean;
-  filters?: SelectedFilter;
-}
-
 export enum NovelStatus {
   Unknown = 'Unknown',
   Ongoing = 'Ongoing',
@@ -38,6 +21,23 @@ export enum NovelStatus {
   PublishingFinished = 'Publishing Finished',
   Cancelled = 'Cancelled',
   OnHiatus = 'On Hiatus',
+}
+
+export interface SourceNovel {
+  url: string; //must be absoulute
+  name: string;
+  cover?: string;
+  genres?: string;
+  summary?: string;
+  author?: string;
+  artist?: string;
+  status?: NovelStatus;
+  chapters?: ChapterItem[];
+}
+
+export interface SourceOptions {
+  showLatestNovels?: boolean;
+  filters?: SelectedFilter;
 }
 
 // this is for display in available plugins

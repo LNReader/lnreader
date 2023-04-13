@@ -16,7 +16,7 @@ const pluginsFolder = RNFS.ExternalDirectoryPath + '/Plugins';
 
 const packages: Record<string, any> = {
   'cheerio': cheerio,
-  '@libs/novelSatus': NovelStatus,
+  '@libs/novelStatus': NovelStatus,
   '@libs/languages': Languages,
   '@libs/fetchFile': fetchFile,
   '@libs/parseMadaraDate': parseMadaraDate,
