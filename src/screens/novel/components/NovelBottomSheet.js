@@ -60,7 +60,6 @@ const ChaptersSettingsSheet = ({
           } else if (filter.match(' AND `unread`=0')) {
             filterChapters(filter.replace(' AND `unread`=0', ''));
           } else {
-            console.log('else');
             filterChapters(filter + ' AND `unread`=1');
           }
         }}

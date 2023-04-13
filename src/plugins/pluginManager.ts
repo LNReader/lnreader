@@ -42,7 +42,6 @@ const initPlugin = (rawCode: string, path?: string) => {
     plugin.path = path || `${pluginsFolder}/${plugin.id}.js`;
     return plugin;
   } catch (e) {
-    console.log(e);
     return undefined;
   }
 };
