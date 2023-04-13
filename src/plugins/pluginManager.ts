@@ -5,6 +5,7 @@ import { bigger } from '../utils/compareVersion';
 // packages for plugins
 import * as cheerio from 'cheerio';
 import { NovelStatus, Plugin, PluginItem } from './types';
+import { FilterInputs } from './types/filterTypes';
 import { Languages } from '@utils/constants/languages';
 import { fetchFile } from './helpers/fetchFile';
 import { parseMadaraDate } from './helpers/parseDate';
@@ -21,6 +22,7 @@ const packages: Record<string, any> = {
   '@libs/parseMadaraDate': parseMadaraDate,
   '@libs/isAbsoluteUrl': isUrlAbsolute,
   '@libs/fetchApi': fetchApi,
+  '@libs/filterInputs': FilterInputs,
 };
 
 const _require = (packageName: string) => {
