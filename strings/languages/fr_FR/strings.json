@@ -17,7 +17,7 @@
     "searchResults": "Résultats de la recherche",
     "chapters": "Chapitres",
     "submit": "Soumettre",
-    "retry": "Retry"
+    "retry": "Réessayer"
   },
   "library": "Bibliothèque",
   "libraryScreen": {
@@ -34,10 +34,10 @@
         "dateAdded": "Date ajoutée",
         "alphabetically": "Alphabétiquement",
         "totalChapters": "Nombre total de chapitres",
-        "download": "Downloaded",
-        "unread": "Unread",
-        "lastRead": "Last read",
-        "lastUpdated": "Last updated"
+        "download": "Téléchargé",
+        "unread": "Non lu",
+        "lastRead": "Dernière lecture",
+        "lastUpdated": "Dernière mise à jour"
       },
       "display": {
         "displayMode": "Mode d'affichage",
@@ -56,9 +56,9 @@
   "updatesScreen": {
     "searchbar": "Rechercher des mises à jour",
     "lastUpdatedAt": "Dernière mise à jour de la bibliothèque :",
-    "newChapters": "new Chapters",
-    "emptyView": "No recent updates",
-    "updatesLower": "updates"
+    "newChapters": "nouveaux Chapitres",
+    "emptyView": "Pas de mise à jour récente",
+    "updatesLower": "mises à jour"
   },
   "history": "Historique",
   "historyScreen": {
@@ -96,10 +96,10 @@
       "swipeGestures": "Balayez vers la gauche ou la droite pour passer d'un chapitre à l'autre.",
       "allowTextSelection": "Permettre la sélection du texte",
       "useChapterDrawerSwipeNavigation": "Balayez vers la droite pour ouvrir le tiroir",
-      "removeExtraSpacing": "Remove extra paragraph spacing",
-      "volumeButtonsScroll": "Volume buttons scroll",
-      "scrollAmount": "Scroll amount (screen height by default)",
-      "showSwipeMargins": "Show swipe margins"
+      "removeExtraSpacing": "Supprimer l'espacement de paragraphe supplémentaire",
+      "volumeButtonsScroll": "Défilement avec les boutons de volume",
+      "scrollAmount": "Défilement du montant (hauteur de l'écran par défaut)",
+      "showSwipeMargins": "Afficher les marges de balayage"
     },
     "drawer": {
       "scrollToCurrentChapter": "Défiler vers le chapitre actuel",
@@ -136,27 +136,27 @@
     "settingsScreen": {
       "generalSettings": "Général",
       "generalSettingsScreen": {
-        "display": "Display",
-        "displayMode": "Display Mode",
-        "itemsPerRow": "Items per row",
-        "itemsPerRowLibrary": "Items per row in library",
-        "novelBadges": "Novel Badges",
-        "novelSort": "Novel Sort",
-        "updateLibrary": "Update library on launch",
-        "useFAB": "Use FAB in Library",
-        "novel": "Novel",
-        "chapterSort": "Default chapter sort",
-        "bySource": "By source",
-        "asc": "(Ascending)",
-        "desc": "(Descending)",
-        "globalUpdate": "Global update",
-        "updateOngoing": "Only update ongoing novels",
-        "refreshMetadata": "Automatically refresh metadata",
-        "refreshMetadataDescription": "Check for new cover and details when updating library",
-        "updateTime": "Show last update time",
-        "autoDownload": "Auto-download",
-        "downloadNewChapters": "Download new chapters",
-        "disableHapticFeedback": "Disable haptic feedback"
+        "display": "Afficher",
+        "displayMode": "Mode d'affichage",
+        "itemsPerRow": "Élément par ligne",
+        "itemsPerRowLibrary": "Éléments par ligne dans la bibliothèque",
+        "novelBadges": "Badges de roman",
+        "novelSort": "Trier les romans",
+        "updateLibrary": "Mettre à jour la bibliothèque au lancement",
+        "useFAB": "Utiliser FAB dans la bibliothèque",
+        "novel": "Roman",
+        "chapterSort": "Tri des chapitres par défaut",
+        "bySource": "Par Source",
+        "asc": "(Ascendant)",
+        "desc": "(Descendant)",
+        "globalUpdate": "Mise à jour globale",
+        "updateOngoing": "Ne mettre à jour que les romans en cours",
+        "refreshMetadata": "Rafraîchir automatiquement les métadonnées",
+        "refreshMetadataDescription": "Vérifier la nouvelle couverture et les détails lors de la mise à jour de la bibliothèque",
+        "updateTime": "Afficher la date de dernière mise à jour",
+        "autoDownload": "Téléchargement automatique",
+        "downloadNewChapters": "Télécharger les nouveaux chapitres",
+        "disableHapticFeedback": "Désactiver le retour haptique"
       },
       "readerSettings": {
         "title": "Lecteur",
@@ -172,11 +172,11 @@
         "saveCustomTheme": "Sauvegarder le thème personnalisé",
         "deleteCustomTheme": "Supprimer le thème personnalisé",
         "customCSS": "CSS personnalisé",
-        "customJS": "Custom JS",
-        "openCSSFile": "Open CSS file",
-        "openJSFile": "Open JS file",
-        "notSaved": "Not saved",
-        "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])"
+        "customJS": "JS personnalisé",
+        "openCSSFile": "Ouvrir le fichier CSS",
+        "openJSFile": "Ouvrir le fichier JS",
+        "notSaved": "Non enregistré",
+        "cssHint": "Astuce : Vous pouvez créer une configuration CSS spécifique à la source avec l'ID source. (#sourceId-[SOURCEID])"
       },
       "browseSettings": "Parcourir les paramètres",
       "browseSettingsScreen": {
@@ -193,7 +193,7 @@
   "statsScreen": {
     "title": "Statistiques",
     "titlesInLibrary": "Titres dans la bibliothèque",
-    "totalChapters": "Total chapters",
+    "totalChapters": "Nombre total de chapitres",
     "readChapters": "Chapitres Lu",
     "unreadChapters": "Chapitres non lus",
     "downloadedChapters": "Chapitres téléchargés",
@@ -236,9 +236,9 @@
     "downloadedOnly": "Téléchargés seulement"
   },
   "downloadScreen": {
-    "dbInfo": "Downloads are saved in a SQLite Database.",
-    "downloadChapters": "downloaded Chapters",
-    "noDownloads": "No downloads",
-    "downloadsLower": "downloads"
+    "dbInfo": "Les téléchargements sont enregistrés dans une base de données SQLite.",
+    "downloadChapters": "chapitres téléchargés",
+    "noDownloads": "Aucun téléchargement",
+    "downloadsLower": "télécharger"
   }
 }
