@@ -44,6 +44,7 @@ export interface SourceOptions {
 export interface PluginItem {
   id: string;
   name: string;
+  site: string;
   lang: Languages;
   version: string;
   iconUrl: string;

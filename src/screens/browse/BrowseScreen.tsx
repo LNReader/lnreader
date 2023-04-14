@@ -73,7 +73,7 @@ const BrowseScreen = () => {
         {
           pluginId: plugin.id,
           pluginName: plugin.name,
-          pluginUrl: plugin.url,
+          pluginUrl: plugin.site,
           showLatestNovels,
         } as never,
       );

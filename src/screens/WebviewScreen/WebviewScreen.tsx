@@ -11,7 +11,7 @@ import { defaultUserAgentString } from '@utils/fetch/fetch';
 type ReaderScreenRouteProps = RouteProp<{
   params: {
     name: string;
-    pluginId: number;
+    pluginId: string;
     url: string;
   };
 }>;
