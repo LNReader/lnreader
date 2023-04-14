@@ -120,11 +120,9 @@ const BrowseScreen = () => {
     }
     return list;
   }, [
-    lastUsed,
     JSON.stringify(searchResults),
     availablePlugins,
     languagesFilter,
-    availablePlugins,
     searchText,
   ]);
 
@@ -165,7 +163,6 @@ const BrowseScreen = () => {
     pinnedPlugins,
     onlyShowPinnedSources,
     JSON.stringify(searchResults),
-    availablePlugins,
     installedPlugins,
     searchText,
   ]);
