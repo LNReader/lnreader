@@ -47,7 +47,7 @@ const PluginCard: React.FC<Props> = ({
       <View style={styles.details}>
         <Text style={{ color: theme.onSurface }}>{plugin.name}</Text>
         <Text style={[{ color: theme.onSurfaceVariant }, styles.lang]}>
-          {`ID: ${plugin.id}\nLang: ${plugin.lang}\nVer: ${plugin.version}`}
+          {`ID: ${plugin.id}\n${plugin.lang}\nVer: ${plugin.version}`}
         </Text>
       </View>
     </View>
@@ -67,7 +67,7 @@ const PluginCard: React.FC<Props> = ({
             theme={theme}
           />
           <IconButtonV2
-            name={'update'}
+            name={'arrow-up-circle'}
             size={22}
             color={theme.primary}
             onPress={() => {
