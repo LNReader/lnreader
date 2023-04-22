@@ -1,7 +1,7 @@
 import * as cheerio from 'cheerio';
 import { Status } from '../helpers/constants';
 
-const sourceId = 110;
+const sourceId = 164;
 const sourceName = 'Zenx Novel';
 
 const baseUrl = 'https://zenxnovel.com/';
