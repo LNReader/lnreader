@@ -30,6 +30,8 @@ export const useTextToSpeech = (sentences, markChapterAsRead) => {
 
     setTtsStatus('progress');
     Tts.stop();
+    Tts.setDefaultLanguage('en-US');
+    Tts.setDefaultVoice('en-us-x-tpc-network');
     for (let i = ttsPosition.current; i < sentences.length; i++) {
       Tts.speak(sentences[i], {
         androidParams: {
