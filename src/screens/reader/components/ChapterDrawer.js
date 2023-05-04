@@ -55,7 +55,6 @@ const ChapterDrawer = ({ state: st, navigation }) => {
     });
     let res;
     res = indexOfCurrentChapter >= 2 ? indexOfCurrentChapter - 2 : 0;
-    listRef.current?.scrollToIndex?.(res);
     return res;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chapters, currentChapterId, listAscending]);
