@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { StyleSheet, View, Pressable } from 'react-native';
-import { Text } from 'react-native-paper';
+import { Text, Tooltip } from 'react-native-paper';
 import color from 'color';
 import { useTheme } from '@hooks/useTheme';
 import { FlashList } from '@shopify/flash-list';
@@ -85,27 +85,29 @@ const ChapterDrawer = ({ state: st, navigation }) => {
     });
   };
   const renderItem = ({ item }) => (
-    <View
-      style={[
-        styles.drawerElementContainer,
-        item.chapterId === currentChapterId && {
-          backgroundColor: color(theme.primary).alpha(0.12).string(),
-        },
-      ]}
-    >
-      <Pressable
-        android_ripple={{ color: theme.rippleColor }}
-        onPress={() => changeChapter(item)}
-        style={styles.chapterCtn}
+    <Tooltip title={item.chapterName} leaveTouchDelay={1000}>
+      <View
+        style={[
+          styles.drawerElementContainer,
+          item.chapterId === currentChapterId && {
+            backgroundColor: color(theme.primary).alpha(0.12).string(),
+          },
+        ]}
       >
-        <Text numberOfLines={1} style={styles.chapterNameCtn}>
-          {item.chapterName}
-        </Text>
-        {item?.releaseDate ? (
-          <Text style={styles.releaseDateCtn}>{item.releaseDate}</Text>
-        ) : null}
-      </Pressable>
-    </View>
+        <Pressable
+          android_ripple={{ color: theme.rippleColor }}
+          onPress={() => changeChapter(item)}
+          style={styles.chapterCtn}
+        >
+          <Text numberOfLines={1} style={styles.chapterNameCtn}>
+            {item.chapterName}
+          </Text>
+          {item?.releaseDate ? (
+            <Text style={styles.releaseDateCtn}>{item.releaseDate}</Text>
+          ) : null}
+        </Pressable>
+      </View>
+    </Tooltip>
   );
 
   const ListFooter = () => {
