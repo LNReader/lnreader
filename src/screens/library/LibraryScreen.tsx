@@ -1,6 +1,6 @@
 import React, { useMemo, useRef, useState } from 'react';
 import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
-import BottomSheet from '@gorhom/bottom-sheet';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import {
   NavigationState,
   SceneRendererProps,
@@ -83,7 +83,7 @@ const LibraryScreen = () => {
 
   const [index, setIndex] = useState(0);
 
-  const bottomSheetRef = useRef<BottomSheet | null>(null);
+  const bottomSheetRef = useRef<BottomSheetModal | null>(null);
 
   const renderTabBar = (
     props: SceneRendererProps & { navigationState: State },
@@ -176,7 +176,7 @@ const LibraryScreen = () => {
               }
             : {
                 iconName: 'filter-variant',
-                onPress: () => bottomSheetRef.current?.expand(),
+                onPress: () => bottomSheetRef.current?.present(),
               },
         ]}
         theme={theme}
@@ -275,8 +275,8 @@ const LibraryScreen = () => {
           refetchLibrary();
         }}
       />
+      <LibraryBottomSheet bottomSheetRef={bottomSheetRef} />
       <Portal>
-        <LibraryBottomSheet bottomSheetRef={bottomSheetRef} />
         <Actionbar
           active={selectedNovelIds.length > 0}
           actions={[

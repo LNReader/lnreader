@@ -26,7 +26,7 @@ const popularNovels = async (page, { showLatestNovels, filters }) => {
   json = JSON.parse(json);
   let novels = [];
 
-  json.props.pageProps.totalData.items.map(item => {
+  json.props.pageProps.totalData.items.forEach(item => {
     const novelName = item.title;
     const novelUrl = baseUrl + '/' + item.slug;
     const novelCover = item?.verticalImage?.url
@@ -65,7 +65,7 @@ const parseNovelAndChapters = async novelUrl => {
 
   let chapters = [];
 
-  json.props.pageProps.book.chapters.map(item => {
+  json.props.pageProps.book.chapters.forEach(item => {
     const chapterName = item.title;
     const releaseDate = dayjs(item.publishedAt).format('LLL');
     const chapterUrl = baseUrl + item.url;
@@ -115,7 +115,7 @@ const searchNovels = async searchTerm => {
   const body = await result.json();
   let novels = [];
 
-  body.items.map(item => {
+  body.items.forEach(item => {
     const novelName = item.title;
     const novelUrl = baseUrl + '/' + item.slug;
     const novelCover = item?.verticalImage?.url

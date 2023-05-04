@@ -2,6 +2,8 @@ package com.rajarsheechatterjee.LNReader;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.res.Configuration;
+import androidx.annotation.NonNull;
 
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
@@ -9,11 +11,10 @@ import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
-import com.rajarsheechatterjee.LNReader.generated.BasePackageList;
 import com.rajarsheechatterjee.VolumeButtonListener.VolumeButtonListenerPackage;
 
-import org.unimodules.adapters.react.ModuleRegistryAdapter;
-import org.unimodules.adapters.react.ReactModuleRegistryProvider;
+import expo.modules.ApplicationLifecycleDispatcher;
+import expo.modules.ReactNativeHostWrapper;
 
 import com.facebook.react.bridge.JSIModulePackage;
 import com.swmansion.reanimated.ReanimatedJSIModulePackage;
@@ -22,40 +23,41 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
+import com.rnfs.RNFSPackage;
 
 public class MainApplication extends Application implements ReactApplication {
-  private final ReactModuleRegistryProvider mModuleRegistryProvider = new ReactModuleRegistryProvider(
-      new BasePackageList().getPackageList());
 
-  private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
-    @Override
-    public boolean getUseDeveloperSupport() {
-      return BuildConfig.DEBUG;
-    }
+  private final ReactNativeHost mReactNativeHost = 
+    new ReactNativeHostWrapper(this, new ReactNativeHost(this) {
+        @Override
+        public boolean getUseDeveloperSupport() {
+          return BuildConfig.DEBUG;
+        }
 
-    @Override
-    protected List<ReactPackage> getPackages() {
-      List<ReactPackage> packages = new PackageList(this).getPackages();
-      packages.add(new ModuleRegistryAdapter(mModuleRegistryProvider));
-      packages.add(new com.rajarsheechatterjee.LNReader.NavigationBarColorPackage());
-      packages.add(new VolumeButtonListenerPackage());
-      return packages;
-    }
+        @Override
+        protected List<ReactPackage> getPackages() {
+          @SuppressWarnings("UnnecessaryLocalVariable")
+          List<ReactPackage> packages = new PackageList(this).getPackages();
+          packages.add(new com.rajarsheechatterjee.LNReader.NavigationBarColorPackage());
+          packages.add(new VolumeButtonListenerPackage());
+          return packages;
+        }
 
-    @Override
-    protected String getJSMainModuleName() {
-      return "index";
-    }
+        @Override
+        protected String getJSMainModuleName() {
+          return "index";
+        }
 
-    @Override
-    protected JSIModulePackage getJSIModulePackage() {
-      return new ReanimatedJSIModulePackage();
-    }
-  };
+        @Override
+        protected JSIModulePackage getJSIModulePackage() {
+          return new ReanimatedJSIModulePackage();
+        }
+      }
+    );
 
   @Override
   public ReactNativeHost getReactNativeHost() {
-    return mReactNativeHost;
+      return mReactNativeHost;
   }
 
   @Override
@@ -64,6 +66,7 @@ public class MainApplication extends Application implements ReactApplication {
     SoLoader.init(this, /* native exopackage */ false);
 
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
+    ApplicationLifecycleDispatcher.onApplicationCreate(this);
   }
 
   /**
@@ -75,7 +78,7 @@ public class MainApplication extends Application implements ReactApplication {
    * @param reactInstanceManager
    */
   private static void initializeFlipper(
-      Context context, ReactInstanceManager reactInstanceManager) {
+    Context context, ReactInstanceManager reactInstanceManager) {
     if (BuildConfig.DEBUG) {
       try {
         /*
@@ -96,5 +99,11 @@ public class MainApplication extends Application implements ReactApplication {
         e.printStackTrace();
       }
     }
+  }
+
+  @Override
+  public void onConfigurationChanged(@NonNull Configuration newConfig) {
+    super.onConfigurationChanged(newConfig);
+    ApplicationLifecycleDispatcher.onConfigurationChanged(this, newConfig);
   }
 }

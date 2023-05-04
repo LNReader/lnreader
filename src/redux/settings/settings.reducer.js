@@ -1,3 +1,4 @@
+import { Dimensions } from 'react-native';
 import { SET_READER_SETTINGS, SET_APP_SETTINGS } from './settings.types';
 
 /**
@@ -64,6 +65,7 @@ export const initialState = {
   swipeGestures: false,
   showScrollPercentage: true,
   useVolumeButtons: false,
+  scrollAmount: Math.round(Dimensions.get('window').height),
   showBatteryAndTime: false,
   autoScroll: false,
   autoScrollInterval: 10,

@@ -23,13 +23,19 @@ export const useGithubUpdateChecker = () => {
   };
 
   const isNewVersion = versionTag => {
-    let currentVersion = `${appVersion}`;
     const regex = /[^\\d.]/;
 
-    let newVersion = versionTag.replace(regex, '');
-    currentVersion = currentVersion;
+    const currentVersion = appVersion;
+    const newVersion = versionTag.replace(regex, '');
 
-    return newVersion !== currentVersion;
+    const newSemVer = newVersion.split('.');
+    const oldSemVer = currentVersion.split('.');
+
+    oldSemVer?.map((version, index) => {
+      if (newSemVer[index] > version) {
+        return true;
+      }
+    });
   };
 
   useEffect(() => {

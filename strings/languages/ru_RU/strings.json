@@ -36,7 +36,8 @@
         "totalChapters": "Всего глав",
         "download": "Загружено",
         "unread": "Непрочитанные",
-        "lastRead": "Последнее прочитанное"
+        "lastRead": "Последнее прочитанное",
+        "lastUpdated": "Последнее обновление"
       },
       "display": {
         "displayMode": "Режим отображения",
@@ -55,8 +56,9 @@
   "updatesScreen": {
     "searchbar": "Поиск в обновлениях",
     "lastUpdatedAt": "Последнее обновление библиотеки:",
-    "newChapters": "new Chapters",
-    "emptyView": "No recent updates"
+    "newChapters": "новые главы",
+    "emptyView": "Нет последних обновлений",
+    "updatesLower": "обновлено"
   },
   "history": "История",
   "historyScreen": {
@@ -228,8 +230,9 @@
     "downloadedOnly": "Только загруженные главы"
   },
   "downloadScreen": {
-    "dbInfo": "Downloads are saved in a SQLite Database.",
-    "downloadChapters": "downloaded Chapters",
-    "noDownloads": "No downloads"
+    "dbInfo": "Загрузки сохраняются в базе данных SQLite.",
+    "downloadChapters": "загруженные главы",
+    "noDownloads": "Ничего не загружено",
+    "downloadsLower": "Загруженное"
   }
 }

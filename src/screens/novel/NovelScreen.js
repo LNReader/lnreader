@@ -712,24 +712,24 @@ const Novel = ({ route, navigation }) => {
             theme={theme}
             dispatch={dispatch}
           />
-          <NovelBottomSheet
-            novelUrl={novelUrl}
-            bottomSheetRef={novelBottomSheetRef}
-            dispatch={dispatch}
-            sortAndFilterChapters={sortAndFilterChapters}
-            novelId={novel.novelId}
-            sort={sort}
-            theme={theme}
-            filter={filter}
-            showChapterTitles={showChapterTitles}
-          />
-          <TrackSheet
-            bottomSheetRef={trackerSheetRef}
-            novelId={novel.novelId}
-            novelName={novel.novelName}
-            theme={theme}
-          />
         </Portal>
+        <NovelBottomSheet
+          novelUrl={novelUrl}
+          bottomSheetRef={novelBottomSheetRef}
+          dispatch={dispatch}
+          sortAndFilterChapters={sortAndFilterChapters}
+          novelId={novel.novelId}
+          sort={sort}
+          theme={theme}
+          filter={filter}
+          showChapterTitles={showChapterTitles}
+        />
+        <TrackSheet
+          bottomSheetRef={trackerSheetRef}
+          novelId={novel.novelId}
+          novelName={novel.novelName}
+          theme={theme}
+        />
       </View>
     </Provider>
   );

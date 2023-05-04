@@ -3,70 +3,72 @@
     "cancel": "Annulla",
     "ok": "Ok",
     "save": "Salva",
-    "clear": "Clear",
+    "clear": "Svuota",
     "reset": "Reset",
-    "search": "Search",
-    "install": "Install",
-    "newUpdateAvailable": "New update available",
-    "categories": "Categories",
-    "add": "Add",
-    "edit": "Edit",
-    "name": "Name",
-    "searchFor": "Search for",
-    "globally": "globally",
-    "searchResults": "Search results",
-    "chapters": "Chapters",
-    "submit": "Submit",
-    "retry": "Retry"
+    "search": "Cerca",
+    "install": "Installa",
+    "newUpdateAvailable": "Nuovo aggiornamento disponibile",
+    "categories": "Categorie",
+    "add": "Aggiungi",
+    "edit": "Modifica",
+    "name": "Nome",
+    "searchFor": "Cerca per",
+    "globally": "globale",
+    "searchResults": "Risultati della ricerca",
+    "chapters": "Capitoli",
+    "submit": "Invia",
+    "retry": "Riprova"
   },
-  "library": "Library",
+  "library": "Libreria",
   "libraryScreen": {
-    "searchbar": "Search library",
-    "empty": "Your library is empty. Add series to your library from Browse.",
+    "searchbar": "Cerca nella libreria",
+    "empty": "La tua libreria è vuota. Aggiungi delle serie alla tua libreria da Esplora.",
     "bottomSheet": {
       "filters": {
-        "downloaded": "Downloaded",
-        "unread": "Unread",
-        "completed": "Completed",
-        "started": "Started"
+        "downloaded": "Scaricati",
+        "unread": "Non letti",
+        "completed": "Completati",
+        "started": "Iniziati"
       },
       "sortOrders": {
-        "dateAdded": "Date added",
-        "alphabetically": "Alphabetically",
-        "totalChapters": "Total chapters",
-        "download": "Downloaded",
-        "unread": "Unread",
-        "lastRead": "Last Read"
+        "dateAdded": "Data d'inserimento",
+        "alphabetically": "Ordine Alfabetico",
+        "totalChapters": "Capitoli totali",
+        "download": "Scaricati",
+        "unread": "Non letti",
+        "lastRead": "Ultima lettura",
+        "lastUpdated": "Ultimo aggiornamento"
       },
       "display": {
-        "displayMode": "Display mode",
-        "compact": "Compact grid",
-        "comfortable": "Comfortable grid",
-        "noTitle": "Cover only grid",
-        "list": "List",
-        "badges": "Badges",
-        "downloadBadges": "Download badges",
-        "unreadBadges": "Unread badges",
-        "showNoOfItems": "Show number of items"
+        "displayMode": "Modalità di visualizzazione",
+        "compact": "Griglia compatta",
+        "comfortable": "Griglia comoda",
+        "noTitle": "Griglia solo copertina",
+        "list": "Lista",
+        "badges": "Badge",
+        "downloadBadges": "Scarica il badge",
+        "unreadBadges": "Badge non letti",
+        "showNoOfItems": "Mostra il numero di elementi"
       }
     }
   },
-  "updates": "Updates",
+  "updates": "Aggiornamenti",
   "updatesScreen": {
-    "searchbar": "Search updates",
-    "lastUpdatedAt": "Library last updated:",
-    "newChapters": "new Chapters",
-    "emptyView": "No recent updates"
+    "searchbar": "Cerca aggiornamenti",
+    "lastUpdatedAt": "Aggiornamento Libreria:",
+    "newChapters": "Nuovi capitoli",
+    "emptyView": "Nessun aggiornamento recente",
+    "updatesLower": "aggiornamenti"
   },
-  "history": "History",
+  "history": "Cronologia",
   "historyScreen": {
-    "searchbar": "Search history",
-    "clearHistorWarning": "Are you sure? All history will be lost."
+    "searchbar": "Cerca nella cronologia",
+    "clearHistorWarning": "Sei sicuro? Tutta la cronologia sarà persa."
   },
-  "browse": "Browse",
+  "browse": "Esplora",
   "browseScreen": {
-    "discover": "Discover",
-    "searchbar": "Search sources",
+    "discover": "Scopri",
+    "searchbar": "Cerca fonti",
     "globalSearch": "Global search",
     "listEmpty": "Enable languages from settings",
     "lastUsed": "Last used",
@@ -230,6 +232,7 @@
   "downloadScreen": {
     "dbInfo": "Downloads are saved in a SQLite Database.",
     "downloadChapters": "downloaded Chapters",
-    "noDownloads": "No downloads"
+    "noDownloads": "No downloads",
+    "downloadsLower": "downloads"
   }
 }

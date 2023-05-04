@@ -113,7 +113,7 @@ const NovelInfoHeader = ({
               deleteDownloadsSnackbar.setTrue();
             }
           }}
-          handleTrackerSheet={() => trackerSheetRef.current.expand()}
+          handleTrackerSheet={() => trackerSheetRef.current.present()}
           theme={theme}
         />
         <NovelSummary
@@ -125,7 +125,7 @@ const NovelInfoHeader = ({
         <ReadButton novel={novel} chapters={chapters} lastRead={lastRead} />
         <Pressable
           style={styles.bottomsheet}
-          onPress={() => novelBottomSheetRef.current.expand()}
+          onPress={() => novelBottomSheetRef.current.present()}
           android_ripple={{
             color: color(theme.primary).alpha(0.12).string(),
           }}
