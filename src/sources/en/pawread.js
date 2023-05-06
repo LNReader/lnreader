@@ -72,11 +72,12 @@ const parseNovelAndChapters = async novelUrl => {
       .next()
       .text();
     const chapterUrl =
-      baseUrl +
+      novelUrl +
       loadedCheerio(this)
         .find('.item-box')
         .attr('onclick')
-        .replace(/.*?(novel.*html).*/g, '$1');
+        .replace(/.*'(.*)'.*/g, '$1') +
+      '.html';
 
     chapters.push({ chapterName, releaseDate, chapterUrl });
   });
