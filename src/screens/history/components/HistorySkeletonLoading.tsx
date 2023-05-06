@@ -16,7 +16,7 @@ const HistorySkeletonLoading: React.FC<Props> = ({ theme }) => {
 
   const renderLoadingChapter = (item: number, index: number) => {
     return (
-      <>
+      <View key={index}>
         {index === 0 || Math.random() > 0.6 ? (
           <ShimmerPlaceHolder
             style={styles.date}
@@ -25,7 +25,7 @@ const HistorySkeletonLoading: React.FC<Props> = ({ theme }) => {
             width={Math.random() * 40 + 50}
           />
         ) : null}
-        <View style={styles.chapterCtn} key={index}>
+        <View style={styles.chapterCtn}>
           <ShimmerPlaceHolder
             style={styles.picture}
             shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
@@ -63,7 +63,7 @@ const HistorySkeletonLoading: React.FC<Props> = ({ theme }) => {
             />
           </View>
         </View>
-      </>
+      </View>
     );
   };
 

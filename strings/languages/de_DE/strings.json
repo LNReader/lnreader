@@ -98,6 +98,7 @@
       "useChapterDrawerSwipeNavigation": "Wische nach rechts, um Seitenleiste zu öffnen",
       "removeExtraSpacing": "Extra Absatzabstand entfernen",
       "volumeButtonsScroll": "Scrollen mit Lautstärkeregler",
+      "scrollAmount": "Scroll amount (screen height by default)",
       "showSwipeMargins": "Show swipe margins"
     },
     "drawer": {
@@ -170,7 +171,12 @@
         "autoScrollOffset": "AutoScroll Versatz (standardmäßig Bildschirmhöhe)",
         "saveCustomTheme": "Benutzerdefiniertes Theme speichern",
         "deleteCustomTheme": "Benutzerdefiniertes Theme löschen",
-        "customCSS": "Benutzerdefiniertes CSS"
+        "customCSS": "Benutzerdefiniertes CSS",
+        "customJS": "Custom JS",
+        "openCSSFile": "Open CSS file",
+        "openJSFile": "Open JS file",
+        "notSaved": "Not saved",
+        "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])"
       },
       "browseSettings": "Einstellungen durchsuchen",
       "browseSettingsScreen": {

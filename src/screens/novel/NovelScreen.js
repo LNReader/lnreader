@@ -215,6 +215,7 @@ const Novel = ({ route, navigation }) => {
     }
 
     return list;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selected]);
 
   const deleteChapter = chapter =>
@@ -300,13 +301,16 @@ const Novel = ({ route, navigation }) => {
       position[chapter.chapterId] &&
       position[chapter.chapterId].percentage;
     if (savedProgress < 100 && savedProgress > 0 && !chapter.read) {
+      const margin = chapter.releaseDate ? 5 : 0;
       return (
         <Text
-          style={{
-            color: theme.outline,
-            fontSize: 12,
-            marginLeft: chapter.releaseDate ? 5 : 0,
-          }}
+          style={[
+            styles.defaultTextSize,
+            {
+              color: theme.outline,
+              marginLeft: margin,
+            },
+          ]}
           numberOfLines={1}
         >
           {chapter.releaseDate ? '•  ' : null}
@@ -360,15 +364,7 @@ const Novel = ({ route, navigation }) => {
       <View style={[styles.container, { backgroundColor: theme.background }]}>
         <Portal>
           {selected.length === 0 ? (
-            <View
-              style={{
-                position: 'absolute',
-                height: StatusBar.currentHeight + 54,
-                width: '100%',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-              }}
-            >
+            <View style={styles.row}>
               <IconButton
                 icon="arrow-left"
                 iconColor={theme.onBackground}
@@ -546,10 +542,7 @@ const Novel = ({ route, navigation }) => {
                       icon="dots-vertical"
                       iconColor={theme.onBackground}
                       size={21}
-                      style={{
-                        marginTop: StatusBar.currentHeight + 8,
-                        marginRight: 16,
-                      }}
+                      style={styles.iconButton}
                       onPress={() => showExtraMenu(true)}
                     />
                   }
@@ -583,16 +576,12 @@ const Novel = ({ route, navigation }) => {
             <Animated.View
               entering={FadeIn.duration(150)}
               exiting={FadeOut.duration(150)}
-              style={{
-                position: 'absolute',
-                width: '100%',
-                elevation: 2,
-                backgroundColor: theme.surface2,
-                paddingTop: StatusBar.currentHeight,
-                flexDirection: 'row',
-                alignItems: 'center',
-                paddingBottom: 8,
-              }}
+              style={[
+                {
+                  backgroundColor: theme.surface2,
+                },
+                styles.animatedView,
+              ]}
             >
               <Appbar.Action
                 icon="close"
@@ -613,7 +602,7 @@ const Novel = ({ route, navigation }) => {
             </Animated.View>
           )}
         </Portal>
-        <View style={{ minHeight: 3, flex: 1 }}>
+        <View style={styles.flashlistContainer}>
           <FlashList
             ref={flatlistRef}
             estimatedItemSize={64}
@@ -624,8 +613,8 @@ const Novel = ({ route, navigation }) => {
             windowSize={15}
             initialNumToRender={7}
             renderItem={renderItem}
-            keyExtractor={(item, index) => 'chapter' + index}
-            contentContainerStyle={{ paddingBottom: 100 }}
+            keyExtractor={(_item, index) => 'chapter' + index}
+            contentContainerStyle={styles.paddingB100}
             ListHeaderComponent={
               <NovelInfoHeader
                 item={item}
@@ -668,7 +657,7 @@ const Novel = ({ route, navigation }) => {
           <Actionbar
             active={selected.length > 0}
             theme={theme}
-            style={{ marginBottom: 24 }}
+            style={styles.marginB24}
             actions={actions}
           />
           <Snackbar
@@ -681,7 +670,7 @@ const Novel = ({ route, navigation }) => {
               },
             }}
             theme={{ colors: { primary: theme.primary } }}
-            style={{ backgroundColor: theme.surface, marginBottom: 32 }}
+            style={[{ backgroundColor: theme.surface }, styles.marginB32]}
           >
             <Text style={{ color: theme.onSurface }}>
               Delete downloaded chapters?
@@ -745,10 +734,43 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+  row: {
+    position: 'absolute',
+    height: StatusBar.currentHeight + 54,
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  iconButton: {
+    marginTop: StatusBar.currentHeight + 8,
+    marginRight: 16,
+  },
   fab: {
     position: 'absolute',
     margin: 16,
     right: 0,
     bottom: 16,
   },
+  defaultTextSize: {
+    fontSize: 12,
+  },
+  animatedView: {
+    position: 'absolute',
+    width: '100%',
+    elevation: 2,
+    paddingTop: StatusBar.currentHeight,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingBottom: 8,
+  },
+  marginB24: {
+    marginBottom: 24,
+  },
+  marginB32: {
+    marginBottom: 32,
+  },
+  paddingB100: {
+    paddingBottom: 100,
+  },
+  flashlistContainer: { minHeight: 3, flex: 1 },
 });

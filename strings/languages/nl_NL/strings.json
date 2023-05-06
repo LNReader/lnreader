@@ -98,6 +98,7 @@
       "useChapterDrawerSwipeNavigation": "Swipe right to open drawer",
       "removeExtraSpacing": "Remove extra paragraph spacing",
       "volumeButtonsScroll": "Volume buttons scroll",
+      "scrollAmount": "Scroll amount (screen height by default)",
       "showSwipeMargins": "Show swipe margins"
     },
     "drawer": {
@@ -170,7 +171,12 @@
         "autoScrollOffset": "Auto scroll verschuiving (schermhoogte standaard)",
         "saveCustomTheme": "Aangepaste thema opslaan",
         "deleteCustomTheme": "Aangepaste thema verwijderen",
-        "customCSS": "Aangepaste CSS"
+        "customCSS": "Aangepaste CSS",
+        "customJS": "Custom JS",
+        "openCSSFile": "Open CSS file",
+        "openJSFile": "Open JS file",
+        "notSaved": "Not saved",
+        "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])"
       },
       "browseSettings": "Blader instellingen",
       "browseSettingsScreen": {
