@@ -1,10 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text } from 'react-native';
+import { useSelector } from 'react-redux';
 import { Modal, overlay } from 'react-native-paper';
-import {
-  RadioButton,
-  RadioButtonGroup,
-} from '../../../../components/RadioButton';
+import { MyAnimeListScoreSelector } from './MyAnimeList';
+import { AniListScoreSelector } from './AniList';
 
 const SetTrackScoreDialog = ({
   trackItem,
@@ -13,23 +12,7 @@ const SetTrackScoreDialog = ({
   updateTrackScore,
   theme,
 }) => {
-  const getScoreLabel = score => {
-    const myanimeListScores = {
-      0: 'No Score',
-      1: 'Apalling',
-      2: 'Horrible',
-      3: 'Very Bad',
-      4: 'Bad',
-      5: 'Average',
-      6: 'Fine',
-      7: 'Good',
-      8: 'Very Good',
-      9: 'Great',
-      10: 'Masterpiece',
-    };
-
-    return `(${score}) ${myanimeListScores[score]}`;
-  };
+  const tracker = useSelector(state => state.trackerReducer.tracker);
 
   return (
     <Modal
@@ -44,19 +27,20 @@ const SetTrackScoreDialog = ({
       <Text style={[styles.dialogTitle, { color: theme.onSurface }]}>
         Score
       </Text>
-      <RadioButtonGroup
-        onValueChange={updateTrackScore}
-        value={trackItem.userData.score}
-      >
-        {[...Array(11).keys()].map((item, index) => (
-          <RadioButton
-            key={index}
-            value={item}
-            label={getScoreLabel(item)}
-            theme={theme}
-          />
-        ))}
-      </RadioButtonGroup>
+      {tracker.name === 'MyAnimeList' ? (
+        <MyAnimeListScoreSelector
+          theme={theme}
+          trackItem={trackItem}
+          updateTrackScore={updateTrackScore}
+        />
+      ) : (
+        <AniListScoreSelector
+          theme={theme}
+          trackItem={trackItem}
+          auth={tracker.auth}
+          updateTrackScore={updateTrackScore}
+        />
+      )}
     </Modal>
   );
 };

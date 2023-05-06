@@ -1,8 +1,9 @@
 import React from 'react';
 import { StyleSheet, View, Text, Image, Pressable } from 'react-native';
 import { TouchableRipple, IconButton } from 'react-native-paper';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { untrackNovel } from '../../../../redux/tracker/tracker.actions';
+import { getScoreFormatting } from './AniList';
 
 import color from 'color';
 import { dividerColor } from '../../../../theme/colors';
@@ -50,6 +51,7 @@ export const TrackedItemCard = ({
   theme,
   icon,
 }) => {
+  const tracker = useSelector(state => state.trackerReducer.tracker);
   const dispatch = useDispatch();
 
   return (
@@ -102,7 +104,13 @@ export const TrackedItemCard = ({
           rippleColor={color(theme.primary).alpha(0.12).string()}
         >
           <Text style={[styles.listItem, { color: theme.onSurfaceVariant }]}>
-            {trackItem.userData.score === 0 ? '-' : trackItem.userData.score}
+            {tracker.name === 'AniList'
+              ? getScoreFormatting(tracker.auth.meta.scoreFormat, true).label(
+                  trackItem.userData.score,
+                )
+              : trackItem.userData.score === 0
+              ? '-'
+              : trackItem.userData.score}
           </Text>
         </TouchableRipple>
       </View>

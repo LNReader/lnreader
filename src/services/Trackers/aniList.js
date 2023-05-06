@@ -30,8 +30,8 @@ const getListEntryQuery = `query($userId: Int!, $mediaId: Int!) {
     }
   }
 }`;
-const updateListEntryMutation = `mutation($id: Int!, $status: MediaListStatus, $progress: Int, $score: Int) {
-  SaveMediaListEntry(mediaId: $id, status: $status, progress: $progress, scoreRaw: $score) {
+const updateListEntryMutation = `mutation($id: Int!, $status: MediaListStatus, $progress: Int, $score: Float) {
+  SaveMediaListEntry(mediaId: $id, status: $status, progress: $progress, score: $score) {
     id
     status
     progress
@@ -62,7 +62,7 @@ export const aniListTracker = createTracker('AniList', {
         const expiresAt = new Date(keyVal.expires_at * 1000);
 
         const { data } = await queryAniList(
-          '{ Viewer { id } }',
+          '{ Viewer { id mediaListOptions { scoreFormat } } }',
           {},
           { accessToken },
         );
@@ -73,7 +73,10 @@ export const aniListTracker = createTracker('AniList', {
           refreshToken: null,
           expiresAt,
           meta: {
+            // Updating list entries requires the user ID
             userId: data.Viewer.id,
+            // AniList supports multiple user-facing score formats (numbers, stars, smilies)
+            scoreFormat: data.Viewer.mediaListOptions.scoreFormat,
           },
         };
       }

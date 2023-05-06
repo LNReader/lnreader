@@ -75,15 +75,15 @@ const TrackSheet = ({ bottomSheetRef, novelId, novelName, theme }) => {
   const updateTrackStatus = newStatus => {
     setTrackItem({
       ...trackItem,
-      my_list_status: {
-        ...trackItem.my_list_status,
+      userData: {
+        ...trackItem.userData,
         status: newStatus,
       },
     });
 
     dispatch(
-      updateTracker(trackItem.id, tracker.access_token, {
-        ...trackItem.my_list_status,
+      updateTracker(tracker.name, trackItem.id, trackItem, tracker.auth, {
+        ...trackItem.userData,
         status: newStatus,
       }),
     );
@@ -94,15 +94,15 @@ const TrackSheet = ({ bottomSheetRef, novelId, novelName, theme }) => {
   const updateTrackScore = newScore => {
     setTrackItem({
       ...trackItem,
-      my_list_status: {
-        ...trackItem.my_list_status,
+      userData: {
+        ...trackItem.userData,
         score: newScore,
       },
     });
 
     dispatch(
-      updateTracker(trackItem.id, tracker.access_token, {
-        ...trackItem.my_list_status,
+      updateTracker(tracker.name, trackItem.id, tracker.auth, {
+        ...trackItem.userData,
         score: newScore,
       }),
     );
