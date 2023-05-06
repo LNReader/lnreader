@@ -10,6 +10,23 @@ const baseApiUrl = 'https://api.myanimelist.net/v2';
 const challenge = pkceChallenger();
 const authUrl = `${baseOAuthUrl}?response_type=code&client_id=${clientId}&code_challenge_method=plain&code_challenge=${challenge}`;
 const redirectUri = Linking.createURL();
+/** @type {Record<string, import('./index').UserListStatus>} */
+const malToNormalized = {
+  reading: 'CURRENT',
+  completed: 'COMPLETED',
+  on_hold: 'PAUSED',
+  dropped: 'DROPPED',
+  plan_to_read: 'PLANNING',
+};
+/** @type {Record<import('./index').UserListStatus, string>} */
+const normalizedToMal = {
+  CURRENT: 'reading',
+  COMPLETED: 'completed',
+  PAUSED: 'on_hold',
+  DROPPED: 'dropped',
+  PLANNING: 'plan_to_read',
+  REPEATING: 'reading;true', // MAL has a bool for repeating, so we'll special case this
+};
 
 export const myAnimeListTracker = createTracker('MyAnimeList', {
   authStrategy: {
@@ -102,13 +119,21 @@ export const myAnimeListTracker = createTracker('MyAnimeList', {
 
     const data = await response.json();
     return {
-      status: data.my_list_status?.status || 'reading',
+      status: malToNormalized[data.my_list_status?.status] || 'CURRENT',
       score: data.my_list_status?.score || 0,
       progress: data.my_list_status?.num_chapters_read || 0,
       totalChapters: data.num_chapters,
     };
   },
   listUpdater: async (id, payload, auth) => {
+    let status = normalizedToMal[payload.status];
+    let repeating = false;
+    if (status.includes(';')) {
+      const split = status.split(';');
+      status = split[0];
+      repeating = Boolean(split[1]);
+    }
+
     const url = `${baseApiUrl}/manga/${id}/my_list_status`;
     const res = await fetch(url, {
       method: 'PUT',
@@ -116,15 +141,22 @@ export const myAnimeListTracker = createTracker('MyAnimeList', {
         Authorization: `Bearer ${auth.accessToken}`,
       },
       body: qs.stringify({
-        status: payload.status,
+        status,
+        is_rereading: repeating,
         num_chapters_read: payload.progress,
         score: payload.score,
       }),
     });
 
     const data = await res.json();
+
+    let normalizedStatus = malToNormalized[data.status];
+    if (!normalizedStatus && data.is_rereading) {
+      normalizedStatus = 'REPEATING';
+    }
+
     return {
-      status: data.status,
+      status: normalizedStatus,
       progress: data.num_chapters_read,
       score: data.score,
     };

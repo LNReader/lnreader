@@ -6,6 +6,10 @@
  * @property {ListUpdater} listUpdater
  *
  * @typedef {"AniList" | "MyAnimeList"} TrackerName Intellisense for supported trackers
+ * @typedef {"CURRENT" | "PLANNING" | "COMPLETED" | "DROPPED" | "PAUSED" | "REPEATING"} UserListStatus
+ * Normalized list status values.
+ * Not all trackers will use all of these.
+ * Trackers should remap them when getting/sending them to the server
  *
  * @typedef {Object} AuthenticationStrategy
  * @property {() => Promise<AuthenticatorResult>} authenticator Handles the full flow of logging the user in
@@ -24,7 +28,7 @@
  * @property {string} coverImage A cover image for this entry
  *
  * @typedef {Object} UserListEntry
- * @property {string} status The user's current status
+ * @property {UserListStatus} status The user's current status
  * @property {number} progress The user's current chapter progress
  * @property {number?} totalChapters The total chapters for this entry. May not be known by the tracker
  * @property {number} score The user's current score

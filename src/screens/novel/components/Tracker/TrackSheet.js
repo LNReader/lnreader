@@ -10,8 +10,7 @@ import TrackSearchDialog from './TrackSearchDialog';
 import SetTrackStatusDialog from './SetTrackStatusDialog';
 import SetTrackScoreDialog from './SetTrackScoreDialog';
 import SetTrackChaptersDialog from './SetTrackChaptersDialog';
-import { AddTrackingCard, TrackedItemCard } from './MyAnimeListCards';
-import { mapStatus as mapAniListStatus } from '../../../../services/Trackers/aniList';
+import { AddTrackingCard, TrackedItemCard } from './TrackerCards';
 
 const TrackSheet = ({ bottomSheetRef, novelId, novelName, theme }) => {
   const tracker = useSelector(state => state.trackerReducer.tracker);
@@ -31,22 +30,21 @@ const TrackSheet = ({ bottomSheetRef, novelId, novelName, theme }) => {
   const [trackChaptersDialog, setTrackChaptersDialog] = useState(false);
   const [trackScoreDialog, setTrackScoreDialog] = useState(false);
 
+  /** @type {(status: import("../../../../services/Trackers/index").UserListStatus) => string} */
   const getStatus = status => {
-    switch (tracker.name) {
-      case 'MyAnimeList': {
-        const myAnimeListStatus = {
-          reading: 'Reading',
-          completed: 'Completed',
-          on_hold: 'On Hold',
-          dropped: 'Dropped',
-          plan_to_read: 'Plan to read',
-        };
-
-        return myAnimeListStatus[status];
-      }
-      case 'AniList': {
-        return mapAniListStatus(status);
-      }
+    switch (status) {
+      case 'CURRENT':
+        return 'Reading';
+      case 'PLANNING':
+        return 'Plan to read';
+      case 'COMPLETED':
+        return 'Completed';
+      case 'DROPPED':
+        return 'Dropped';
+      case 'PAUSED':
+        return 'On Hold';
+      case 'REPEATING':
+        return 'Rereading';
     }
   };
 

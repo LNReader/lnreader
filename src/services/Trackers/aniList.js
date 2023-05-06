@@ -126,19 +126,6 @@ export const aniListTracker = createTracker('AniList', {
   },
 });
 
-export function mapStatus(status) {
-  const map = {
-    CURRENT: 'Current',
-    PLANNING: 'Plan to read',
-    COMPLETED: 'Completed',
-    DROPPED: 'Dropped',
-    PAUSED: 'Paused',
-    REPEATING: 'Repeating',
-  };
-
-  return map[status];
-}
-
 /**
  * @param {string} query
  * @param {Object} variables
