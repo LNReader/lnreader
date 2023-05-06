@@ -35,6 +35,21 @@ const TrackerScreen = ({ navigation }) => {
         <List.Section>
           <List.SubHeader theme={theme}>Services</List.SubHeader>
           <List.Item
+            title="AniList"
+            onPress={async () => {
+              if (tracker) {
+                showModal();
+              } else {
+                const auth = await getTracker(
+                  'AniList',
+                ).authStrategy.authenticator();
+                dispatch(setTracker('AniList', { auth }));
+              }
+            }}
+            right={tracker?.name === 'AniList' && 'check'}
+            theme={theme}
+          />
+          <List.Item
             title="MyAnimeList"
             onPress={async () => {
               if (tracker) {
@@ -66,21 +81,6 @@ const TrackerScreen = ({ navigation }) => {
                 />
               </>
             )}
-          <List.Item
-            title="AniList"
-            onPress={async () => {
-              if (tracker) {
-                showModal();
-              } else {
-                const auth = await getTracker(
-                  'AniList',
-                ).authStrategy.authenticator();
-                dispatch(setTracker('AniList', { auth }));
-              }
-            }}
-            right={tracker?.name === 'AniList' && 'check'}
-            theme={theme}
-          />
         </List.Section>
 
         <Portal>
