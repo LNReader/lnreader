@@ -98,6 +98,7 @@
       "useChapterDrawerSwipeNavigation": "向右滑动以打开抽屉栏",
       "removeExtraSpacing": "Remove extra paragraph spacing",
       "volumeButtonsScroll": "Volume buttons scroll",
+      "scrollAmount": "Scroll amount (screen height by default)",
       "showSwipeMargins": "Show swipe margins"
     },
     "drawer": {
@@ -170,7 +171,12 @@
         "autoScrollOffset": "自动滚动偏移(默认屏幕高度)",
         "saveCustomTheme": "保存自定义主题",
         "deleteCustomTheme": "删除自定义主题",
-        "customCSS": "自定义 CSS"
+        "customCSS": "自定义 CSS",
+        "customJS": "Custom JS",
+        "openCSSFile": "Open CSS file",
+        "openJSFile": "Open JS file",
+        "notSaved": "Not saved",
+        "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])"
       },
       "browseSettings": "浏览设置",
       "browseSettingsScreen": {

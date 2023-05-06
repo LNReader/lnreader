@@ -98,6 +98,7 @@
       "useChapterDrawerSwipeNavigation": "Deslize para a direita para abrir a gaveta",
       "removeExtraSpacing": "Remover espaçamento extra dos parágrafos",
       "volumeButtonsScroll": "Deslizar com os botões de volume",
+      "scrollAmount": "Scroll amount (screen height by default)",
       "showSwipeMargins": "Mostrar margens de deslize"
     },
     "drawer": {
@@ -170,7 +171,12 @@
         "autoScrollOffset": "Deslocamento automático de rolagem (altura padrão da tela)",
         "saveCustomTheme": "Salvar tema personalizado",
         "deleteCustomTheme": "Excluir tema personalizado",
-        "customCSS": "CSS Personalizado"
+        "customCSS": "CSS Personalizado",
+        "customJS": "Custom JS",
+        "openCSSFile": "Open CSS file",
+        "openJSFile": "Open JS file",
+        "notSaved": "Not saved",
+        "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])"
       },
       "browseSettings": "Configurações de navegação",
       "browseSettingsScreen": {

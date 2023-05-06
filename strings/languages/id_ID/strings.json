@@ -16,8 +16,8 @@
     "globally": "menyeluruh",
     "searchResults": "Hasil pencarian",
     "chapters": "Bab",
-    "submit": "Submit",
-    "retry": "Retry"
+    "submit": "Hi",
+    "retry": "Coba Lagi"
   },
   "library": "Library",
   "libraryScreen": {
@@ -34,10 +34,10 @@
         "dateAdded": "Tanggal ditambahkan",
         "alphabetically": "Menurut abjad",
         "totalChapters": "Jumlah bab",
-        "download": "Downloaded",
-        "unread": "Unread",
-        "lastRead": "Last read",
-        "lastUpdated": "Last updated"
+        "download": "Unduh",
+        "unread": "Me",
+        "lastRead": "After a while",
+        "lastUpdated": "Terakhir diperbarui"
       },
       "display": {
         "displayMode": "Mode tampilan",
@@ -56,9 +56,9 @@
   "updatesScreen": {
     "searchbar": "Search updates",
     "lastUpdatedAt": "Library last updated:",
-    "newChapters": "new Chapters",
-    "emptyView": "No recent updates",
-    "updatesLower": "updates"
+    "newChapters": "bab Baru",
+    "emptyView": "Update terbaru",
+    "updatesLower": "Pembaruan"
   },
   "history": "History",
   "historyScreen": {
@@ -95,10 +95,11 @@
       "showProgressPercentage": "Tampilkan persentase proses",
       "swipeGestures": "Gesek ke kiri atau kanan untuk menavigasi antara bab",
       "allowTextSelection": "Izinkan pemilihan teks",
-      "useChapterDrawerSwipeNavigation": "Swipe right to open drawer",
-      "removeExtraSpacing": "Remove extra paragraph spacing",
-      "volumeButtonsScroll": "Volume buttons scroll",
-      "showSwipeMargins": "Show swipe margins"
+      "useChapterDrawerSwipeNavigation": "Geser ke kanan untuk membuka kamera",
+      "removeExtraSpacing": "Cainnovel",
+      "volumeButtonsScroll": "Readerscreen",
+      "scrollAmount": "Offset gulir otomatis (tinggi layar secara default)",
+      "showSwipeMargins": "Kita"
     },
     "drawer": {
       "scrollToCurrentChapter": "Scroll to current chapter",
@@ -170,7 +171,12 @@
         "autoScrollOffset": "Offset gulir otomatis (tinggi layar secara default)",
         "saveCustomTheme": "Simpan kostumisasi tema",
         "deleteCustomTheme": "Hapus kostumisasi tema",
-        "customCSS": "Kostumisasi CSS"
+        "customCSS": "Kostumisasi CSS",
+        "customJS": "Custom JS",
+        "openCSSFile": "Open CSS file",
+        "openJSFile": "Open JS file",
+        "notSaved": "Not saved",
+        "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])"
       },
       "browseSettings": "Pengaturan Setelan",
       "browseSettingsScreen": {
