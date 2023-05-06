@@ -25,6 +25,7 @@ import SourceNovels from '../screens/browse/SourceNovels';
 import MigrateNovel from '../screens/browse/migration/MigrationNovels';
 
 import MalTopNovels from '../screens/browse/discover/MalTopNovels';
+import AniListTopNovels from '../screens/browse/discover/AniListTopNovels';
 import NewUpdateDialog from '../components/NewUpdateDialog';
 import BrowseSettings from '../screens/browse/BrowseSettings';
 import { useAppDispatch } from '@redux/hooks';
@@ -67,6 +68,7 @@ const MainNavigator = () => {
         <Stack.Screen name="MoreStack" component={MoreStack} />
         <Stack.Screen name="SourceScreen" component={BrowseSourceScreen} />
         <Stack.Screen name="BrowseMal" component={MalTopNovels} />
+        <Stack.Screen name="BrowseAL" component={AniListTopNovels} />
         <Stack.Screen name="BrowseSettings" component={BrowseSettings} />
         <Stack.Screen
           name="GlobalSearchScreen"

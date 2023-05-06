@@ -20,7 +20,7 @@ import { useSearch } from '../../hooks';
 import SourceCard from './components/SourceCard/SourceCard';
 import { getString } from '../../../strings/translations';
 import { Source } from '../../sources/types';
-import MalCard from './discover/MalCard/MalCard';
+import TrackerCard from './discover/TrackerCard';
 
 const BrowseScreen = () => {
   const { navigate } = useNavigation();
@@ -47,8 +47,11 @@ const BrowseScreen = () => {
     lastUsed,
   } = useSourcesReducer();
 
-  const { showMyAnimeList = true, onlyShowPinnedSources = false } =
-    useBrowseSettings();
+  const {
+    showMyAnimeList = true,
+    showAniList = true,
+    onlyShowPinnedSources = false,
+  } = useBrowseSettings();
 
   useEffect(() => {
     dispatch(getSourcesAction());
@@ -165,7 +168,22 @@ const BrowseScreen = () => {
                   >
                     {getString('browseScreen.discover')}
                   </Text>
-                  {showMyAnimeList && <MalCard theme={theme} />}
+                  {showAniList && (
+                    <TrackerCard
+                      theme={theme}
+                      icon={require('../../../assets/anilist.png')}
+                      navTarget="BrowseAL"
+                      trackerName="AniList"
+                    />
+                  )}
+                  {showMyAnimeList && (
+                    <TrackerCard
+                      theme={theme}
+                      icon={require('../../../assets/mal.png')}
+                      navTarget="BrowseMal"
+                      trackerName="MyAnimeList"
+                    />
+                  )}
                 </>
               ) : null
             }

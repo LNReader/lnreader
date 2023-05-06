@@ -6,9 +6,9 @@ const apiEndpoint = 'https://graphql.anilist.co';
 const clientId = '9085';
 const authUrl = `https://anilist.co/api/v2/oauth/authorize?client_id=${clientId}&response_type=token`;
 const redirectUri = Linking.createURL();
-const searchQuery = `query($search: String!) {
+const searchQuery = `query($search: String) {
   Page {
-    media(search: $search, type: MANGA, format: NOVEL) {
+    media(search: $search, type: MANGA, format: NOVEL, sort: POPULARITY_DESC) {
       id
       title {
         userPreferred
@@ -134,7 +134,7 @@ export const aniListTracker = createTracker('AniList', {
  * @param {Object} variables
  * @param {import('./index').AuthenticatorResult} auth
  */
-async function queryAniList(query, variables, auth) {
+export async function queryAniList(query, variables, auth) {
   const res = await fetch(apiEndpoint, {
     method: 'POST',
     headers: {

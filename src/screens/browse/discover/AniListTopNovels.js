@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, ActivityIndicator, FlatList } from 'react-native';
+import { useSelector } from 'react-redux';
 
 import * as WebBrowser from 'expo-web-browser';
 
@@ -7,28 +8,88 @@ import { ErrorView } from '../../../components/ErrorView/ErrorView';
 import { SearchbarV2 } from '@components';
 
 import { showToast } from '../../../hooks/showToast';
-import { scrapeSearchResults, scrapeTopNovels } from './MyAnimeListScraper';
-import MalNovelCard from './TrackerNovelCard/TrackerNovelCard';
+import TrackerNovelCard from './TrackerNovelCard/TrackerNovelCard';
 import { useTheme } from '@hooks/useTheme';
-import MalLoading from '../loadingAnimation/TrackerLoading';
+import TrackerLoading from '../loadingAnimation/TrackerLoading';
+import { queryAniList } from '../../../services/Trackers/aniList';
+import dayjs from 'dayjs';
 
-const BrowseMalScreen = ({ navigation, route }) => {
+function formatDate(date) {
+  if (date.year && date.month) {
+    return `${dayjs.monthsShort()[date.month]} ${date.year}`;
+  }
+
+  return '';
+}
+
+const BrowseALScreen = ({ navigation, route }) => {
   const theme = useTheme();
+  const tracker = useSelector(state => state.trackerReducer.tracker);
 
   const [loading, setLoading] = useState(true);
+  const [hasNextPage, setHasNextPage] = useState(true);
   const [novels, setNovels] = useState([]);
   const [error, setError] = useState();
-  const [limit, setLimit] = useState(0);
+  const [limit, setLimit] = useState(50);
 
   const [searchText, setSearchText] = useState('');
 
-  const malUrl = 'https://myanimelist.net/topmanga.php?type=lightnovels';
+  const anilistSearchQuery = `query($search: String, $page: Int) {
+    Page(page: $page) {
+      pageInfo {
+        hasNextPage
+      }
+      media(search: $search, type: MANGA, format: NOVEL, sort: POPULARITY_DESC) {
+        id
+        volumes
+        title {
+          userPreferred
+        }
+        coverImage {
+          extraLarge
+        }
+        averageScore
+        format
+        startDate {
+          month
+          year
+        }
+        endDate {
+          month
+          year
+        }
+      }
+    }
+  }`;
+  const anilistUrl =
+    'https://anilist.co/search/manga?format=NOVEL&sort=POPULARITY_DESC';
 
-  const getNovels = async lim => {
+  const searchAniList = async (onlyTop, page = 1) => {
     try {
-      const data = await scrapeTopNovels(lim ?? limit);
+      const { data } = await queryAniList(
+        anilistSearchQuery,
+        {
+          search: onlyTop ? undefined : searchText,
+          page,
+        },
+        tracker.auth,
+      );
 
-      setNovels(before => before.concat(data));
+      const results = data.Page.media.map(m => {
+        return {
+          id: m.id,
+          novelName: m.title.userPreferred,
+          novelCover: m.coverImage.extraLarge,
+          score: `${m.averageScore}%`,
+          info: [
+            `Light Novel (${m.volumes || '?'} Vols)`,
+            `${formatDate(m.startDate)} - ${formatDate(m.endDate)}`,
+          ],
+        };
+      });
+
+      setHasNextPage(data.Page.pageInfo.hasNextPage);
+      setNovels(onlyTop ? before => before.concat(results) : results);
       setLoading(false);
     } catch (err) {
       setError(err.message);
@@ -39,59 +100,28 @@ const BrowseMalScreen = ({ navigation, route }) => {
   };
 
   const clearSearchbar = () => {
-    getNovels();
+    setNovels([]);
+    setHasNextPage(true);
+    searchAniList(true, 1);
     setLoading(true);
     setSearchText('');
   };
 
-  const getSearchResults = async () => {
-    try {
-      setLoading(true);
-
-      const data = await scrapeSearchResults(searchText);
-
-      setNovels(data);
-      setLoading(false);
-    } catch (err) {
-      setError(err.message);
-      setNovels([]);
-      setLoading(false);
-      showToast(err.message);
-    }
-  };
-
   useEffect(() => {
-    getNovels();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    searchAniList(true);
   }, []);
 
   const renderItem = ({ item }) => (
-    <MalNovelCard
+    <TrackerNovelCard
       novel={item}
       theme={theme}
       onPress={() =>
         navigation.navigate('GlobalSearchScreen', {
-          searchText: item.novelName,
+          searchText: item.title,
         })
       }
     />
   );
-
-  // const {displayMode, novelsPerRow} = useSettings();
-
-  // const orientation = useDeviceOrientation();
-
-  // const getNovelsPerRow = () => {
-  //   if (displayMode === 2) {
-  //     return 1;
-  //   }
-
-  //   if (orientation === 'landscape') {
-  //     return 6;
-  //   } else {
-  //     return novelsPerRow;
-  //   }
-  // };
 
   const isCloseToBottom = ({
     layoutMeasurement,
@@ -112,7 +142,7 @@ const BrowseMalScreen = ({ navigation, route }) => {
         {
           name: 'Retry',
           onPress: () => {
-            getNovels();
+            searchAniList(true);
             setLoading(true);
             setError();
           },
@@ -129,32 +159,32 @@ const BrowseMalScreen = ({ navigation, route }) => {
     >
       <SearchbarV2
         theme={theme}
-        placeholder="Search MyAnimeList"
+        placeholder="Search AniList"
         leftIcon="arrow-left"
         handleBackAction={() => navigation.goBack()}
         searchText={searchText}
         onChangeText={text => setSearchText(text)}
-        onSubmitEditing={getSearchResults}
+        onSubmitEditing={() => searchAniList(false, 1)}
         clearSearchbar={clearSearchbar}
         rightIcons={[
           {
             iconName: 'earth',
-            onPress: () => WebBrowser.openBrowserAsync(malUrl),
+            onPress: () => WebBrowser.openBrowserAsync(anilistUrl),
           },
         ]}
       />
       {loading ? (
-        <MalLoading theme={theme} />
+        <TrackerLoading theme={theme} />
       ) : (
         <FlatList
           contentContainerStyle={styles.novelsContainer}
           data={novels}
-          keyExtractor={item => item.novelName}
+          keyExtractor={item => item.id}
           renderItem={renderItem}
           ListEmptyComponent={ListEmptyComponent}
           onScroll={({ nativeEvent }) => {
-            if (!searchText && isCloseToBottom(nativeEvent)) {
-              getNovels(limit + 50);
+            if (hasNextPage && !searchText && isCloseToBottom(nativeEvent)) {
+              searchAniList(true, Math.ceil((limit + 50) / 50));
               setLimit(before => before + 50);
             }
           }}
@@ -171,7 +201,7 @@ const BrowseMalScreen = ({ navigation, route }) => {
   );
 };
 
-export default BrowseMalScreen;
+export default BrowseALScreen;
 
 const styles = StyleSheet.create({
   container: {

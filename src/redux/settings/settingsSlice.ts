@@ -22,6 +22,7 @@ interface SettingsState {
   browse: {
     onlyShowPinnedSources: boolean;
     showMyAnimeList: boolean;
+    showAniList: boolean;
     searchAllSources: boolean;
   };
 }
@@ -37,6 +38,7 @@ const initialState: SettingsState = {
   browse: {
     onlyShowPinnedSources: false,
     showMyAnimeList: true,
+    showAniList: true,
     searchAllSources: false,
   },
 };
