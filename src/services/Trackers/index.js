@@ -1,12 +1,11 @@
-import { aniListTracker } from './aniList';
-import { myAnimeListTracker } from './myAnimeList';
-
 /**
  * @typedef {Object} Tracker
  * @property {AuthenticationStrategy} authStrategy
  * @property {TrackerSearch} searchHandler
  * @property {UserListFinder} listFinder
  * @property {ListUpdater} listUpdater
+ *
+ * @typedef {"AniList" | "MyAnimeList"} TrackerName Intellisense for supported trackers
  *
  * @typedef {Object} AuthenticationStrategy
  * @property {() => Promise<AuthenticatorResult>} authenticator Handles the full flow of logging the user in
@@ -47,40 +46,26 @@ import { myAnimeListTracker } from './myAnimeList';
  * @return {Promise<UserListEntry>} The updated result from the server
  */
 
+/** @type {Record<TrackerName, Tracker>} */
+const trackers = {};
+
 /**
  * Convenience method to create a shaped Tracker object.
  *
- * @param {AuthenticationStrategy} authStrategy
- * @param {TrackerSearch} searchHandler
- * @param {UserListFinder} listFinder
- * @param {ListUpdater} listUpdater
+ * @param {TrackerName} trackerName
+ * @param {Tracker} trackerOpts
  * @returns {Tracker}
  */
-export function createTracker(
-  authStrategy,
-  searchHandler,
-  listFinder,
-  listUpdater,
-) {
-  return {
-    authStrategy,
-    searchHandler,
-    listFinder,
-    listUpdater,
-  };
+export function createTracker(trackerName, trackerOpts) {
+  trackers[trackerName] = trackerOpts;
 }
 
 /**
  * A convenience method for getting a tracker by name.
  *
- * @param {"MyAnimeList" | "AniList"} trackerName The name of the current tracker
+ * @param {TrackerName} trackerName The name of the current tracker
  * @returns {Tracker}
  */
 export function getTracker(trackerName) {
-  switch (trackerName) {
-    case 'AniList':
-      return aniListTracker;
-    case 'MyAnimeList':
-      return myAnimeListTracker;
-  }
+  return trackers[trackerName];
 }

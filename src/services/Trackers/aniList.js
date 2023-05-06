@@ -39,8 +39,8 @@ const updateListEntryMutation = `mutation($id: Int!, $status: MediaListStatus, $
   }
 }`;
 
-export const aniListTracker = createTracker(
-  {
+export const aniListTracker = createTracker('AniList', {
+  authStrategy: {
     authenticator: async () => {
       const result = await WebBrowser.openAuthSessionAsync(
         authUrl,
@@ -81,7 +81,7 @@ export const aniListTracker = createTracker(
     // AniList does not support refresh tokens, so we can't re-authenticate the user.
     revalidator: null,
   },
-  async (search, auth) => {
+  searchHandler: async (search, auth) => {
     const { data } = await queryAniList(searchQuery, { search }, auth);
 
     return data.Page.media.map(m => {
@@ -92,7 +92,7 @@ export const aniListTracker = createTracker(
       };
     });
   },
-  async (id, auth) => {
+  listFinder: async (id, auth) => {
     const { data } = await queryAniList(
       getListEntryQuery,
       { userId: auth.meta.userId, mediaId: id },
@@ -106,7 +106,7 @@ export const aniListTracker = createTracker(
       totalChapters: data.MediaList?.media.chapters || null,
     };
   },
-  async (id, payload, auth) => {
+  listUpdater: async (id, payload, auth) => {
     const { data } = await queryAniList(
       updateListEntryMutation,
       {
@@ -124,7 +124,7 @@ export const aniListTracker = createTracker(
       score: data.SaveMediaListEntry?.score || 0,
     };
   },
-);
+});
 
 export function mapStatus(status) {
   const map = {

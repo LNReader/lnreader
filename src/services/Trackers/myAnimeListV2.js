@@ -11,8 +11,8 @@ const challenge = pkceChallenger();
 const authUrl = `${baseOAuthUrl}?response_type=code&client_id=${clientId}&code_challenge_method=plain&code_challenge=${challenge}`;
 const redirectUri = Linking.createURL();
 
-export const myAnimeListTracker = createTracker(
-  {
+export const myAnimeListTracker = createTracker('MyAnimeList', {
+  authStrategy: {
     authenticator: async () => {
       const result = await WebBrowser.openAuthSessionAsync(
         authUrl,
@@ -69,7 +69,7 @@ export const myAnimeListTracker = createTracker(
       };
     },
   },
-  async (search, auth) => {
+  searchHandler: async (search, auth) => {
     const searchUrl = `${baseApiUrl}/manga?q=${search}&fields=id,title,main_picture,media_type`;
     const response = await fetch(searchUrl, {
       headers: {
@@ -92,7 +92,7 @@ export const myAnimeListTracker = createTracker(
         };
       });
   },
-  async (id, auth) => {
+  listFinder: async (id, auth) => {
     const url = `${baseApiUrl}/manga/${id}?fields=id,num_chapters,my_list_status{start_date,finish_date}`;
     const response = await fetch(url, {
       headers: {
@@ -108,7 +108,7 @@ export const myAnimeListTracker = createTracker(
       totalChapters: data.num_chapters,
     };
   },
-  async (id, payload, auth) => {
+  listUpdater: async (id, payload, auth) => {
     const url = `${baseApiUrl}/manga/${id}/my_list_status`;
     const res = await fetch(url, {
       method: 'PUT',
@@ -129,7 +129,7 @@ export const myAnimeListTracker = createTracker(
       score: data.score,
     };
   },
-);
+});
 
 function pkceChallenger() {
   const MAX_LENGTH = 88;
