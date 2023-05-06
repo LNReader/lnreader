@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { View } from 'react-native';
 import { Modal, Portal, Text, Button, Provider } from 'react-native-paper';
 
-import { malTokenWatcher } from '../../services/Trackers/myAnimeList';
-
 import { useSelector, useDispatch } from 'react-redux';
 import { removeTracker, setTracker } from '../../redux/tracker/tracker.actions';
 import { useTheme } from '@hooks/useTheme';
@@ -58,9 +56,11 @@ const TrackerScreen = ({ navigation }) => {
                 <List.SubHeader theme={theme}>Settings</List.SubHeader>
                 <List.Item
                   title="Revalidate MyAnimeList"
-                  onPress={() => {
-                    const res = malTokenWatcher(tracker);
-                    dispatch(setTracker(res));
+                  onPress={async () => {
+                    const auth = await getTracker(
+                      'MyAnimeList',
+                    ).authStrategy.revalidator(tracker.auth);
+                    setTracker('MyAnimeList', { auth });
                   }}
                   theme={theme}
                 />
