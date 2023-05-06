@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Image, ActivityIndicator } from 'react-native';
 import { Modal, overlay, TextInput, TouchableRipple } from 'react-native-paper';
-import { searchNovels } from '../../../../services/Trackers/myAnimeList';
+import { getTracker } from '../../../../services/Trackers/index';
 import { useSelector, useDispatch } from 'react-redux';
 import { ScrollView } from 'react-native-gesture-handler';
 import { trackNovel } from '../../../../redux/tracker/tracker.actions';
@@ -27,8 +27,10 @@ const TrackSearchDialog = ({
   const dispatch = useDispatch();
 
   const getSearchresults = async () => {
-    const res = await searchNovels(searchText, tracker.access_token);
-    setSearchResults(res);
+    setLoading(true);
+    const trackerObj = getTracker(tracker.name);
+    const results = await trackerObj.searchHandler(searchText, tracker.auth);
+    setSearchResults(results);
     setLoading(false);
   };
 
@@ -37,22 +39,25 @@ const TrackSearchDialog = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [trackSearchDialog]);
 
+  /**
+   * @param {import('../../../../services/Trackers').SearchResult} item
+   */
   const renderSearchResultCard = item => (
     <TouchableRipple
       style={[
         { flexDirection: 'row', borderRadius: 4, margin: 8 },
         selectedNovel &&
-          selectedNovel.id === item.node.id && {
+          selectedNovel.id === item.id && {
             backgroundColor: color(theme.primary).alpha(0.12).string(),
           },
       ]}
-      key={item.node.id}
-      onPress={() => setSelectedNovel(item.node)}
+      key={item.id}
+      onPress={() => setSelectedNovel(item)}
       rippleColor={color(theme.primary).alpha(0.12).string()}
       borderless
     >
       <>
-        {selectedNovel && selectedNovel.id === item.node.id && (
+        {selectedNovel && selectedNovel.id === item.id && (
           <MaterialCommunityIcons
             name="check-circle"
             color={theme.primary}
@@ -66,7 +71,7 @@ const TrackSearchDialog = ({
           />
         )}
         <Image
-          source={{ uri: item.node.main_picture.large }}
+          source={{ uri: item.coverImage }}
           style={{ height: 150, width: 100, borderRadius: 4 }}
         />
         <Text
@@ -80,7 +85,7 @@ const TrackSearchDialog = ({
             paddingLeft: 0,
           }}
         >
-          {item.node.title}
+          {item.title}
         </Text>
       </>
     </TouchableRipple>
@@ -125,8 +130,7 @@ const TrackSearchDialog = ({
           />
         ) : (
           searchResults &&
-          searchResults.data &&
-          searchResults.data.map(result => renderSearchResultCard(result))
+          searchResults.map(result => renderSearchResultCard(result))
         )}
       </ScrollView>
       <View
@@ -140,12 +144,14 @@ const TrackSearchDialog = ({
         <View style={{ flexDirection: 'row' }}>
           <Button onPress={() => setTrackSearchDialog(false)}>Cancel</Button>
           <Button
-            onPress={() => {
+            onPress={async () => {
               if (selectedNovel) {
                 dispatch(
                   trackNovel(
-                    { ...selectedNovel, novelId },
-                    tracker.access_token,
+                    tracker.name,
+                    novelId,
+                    selectedNovel,
+                    tracker.auth,
                   ),
                 );
               }

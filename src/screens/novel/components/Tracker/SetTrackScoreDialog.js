@@ -46,7 +46,7 @@ const SetTrackScoreDialog = ({
       </Text>
       <RadioButtonGroup
         onValueChange={updateTrackScore}
-        value={trackItem.my_list_status.score}
+        value={trackItem.userData.score}
       >
         {[...Array(11).keys()].map((item, index) => (
           <RadioButton

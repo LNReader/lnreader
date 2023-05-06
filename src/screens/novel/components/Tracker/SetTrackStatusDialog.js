@@ -35,7 +35,7 @@ const SetTrackStatusDialog = ({
       </Text>
       <RadioButtonGroup
         onValueChange={updateTrackStatus}
-        value={trackItem.my_list_status.status}
+        value={trackItem.userData.status}
       >
         {Object.keys(myAnimeListStatus).map((key, index) => (
           <RadioButton
