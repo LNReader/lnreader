@@ -4,7 +4,6 @@ import { Dimensions, NativeModules, NativeEventEmitter } from 'react-native';
 import VolumeButtonListener from './../../utils/volumeButtonListener';
 
 import { useDispatch } from 'react-redux';
-import { Portal } from 'react-native-paper';
 import { useKeepAwake } from 'expo-keep-awake';
 
 import {
@@ -35,7 +34,6 @@ import { useTextToSpeech } from '../../hooks/useTextToSpeech';
 import { useFullscreenMode, useLibrarySettings } from '../../hooks';
 import { getChapterFromDb } from '../../database/queries/DownloadQueries';
 import ReaderBottomSheetV2 from './components/ReaderBottomSheet/ReaderBottomSheet';
-import { useReaderSettings } from '../../redux/hooks';
 import { defaultTo } from 'lodash-es';
 import BottomInfoBar from './components/BottomInfoBar/BottomInfoBar';
 import { sanitizeChapterText } from './utils/sanitizeChapterText';
@@ -80,8 +78,6 @@ const ChapterContent = ({ route, navigation }) => {
 
   const theme = useTheme();
   const dispatch = useDispatch();
-  const readerSettings = useReaderSettings();
-  const { theme: backgroundColor } = readerSettings;
 
   const {
     swipeGestures = false,
@@ -146,12 +142,15 @@ const ChapterContent = ({ route, navigation }) => {
     return () => {
       VolumeButtonListener.disconnect();
       emmiter.current.removeAllListeners('VolumeUp');
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       emmiter.current.removeAllListeners('VolumeDown');
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [useVolumeButtons, scrollAmount]);
 
   const onLayout = useCallback(e => {
     setTimeout(() => connectVolumeButton());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getChapter = async id => {
@@ -179,6 +178,7 @@ const ChapterContent = ({ route, navigation }) => {
         payload: { novelId, chapterId },
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const [[nextChapter, prevChapter], setAdjacentChapter] = useState([]);
@@ -192,6 +192,7 @@ const ChapterContent = ({ route, navigation }) => {
       setAdjacentChapter([nextChap, prevChap]);
     };
     setPrevAndNextChap();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chapter]);
 
   const [ttsStatus, startTts] = useTextToSpeech(
@@ -216,6 +217,7 @@ const ChapterContent = ({ route, navigation }) => {
   let scrollInterval;
   useEffect(() => {
     if (autoScroll) {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       scrollInterval = setInterval(() => {
         webViewRef.current?.injectJavaScript(`(()=>{
           window.scrollBy({top:${defaultTo(
@@ -255,6 +257,7 @@ const ChapterContent = ({ route, navigation }) => {
         updateTracker();
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [chapter],
   );
 
@@ -307,7 +310,7 @@ const ChapterContent = ({ route, navigation }) => {
   });
   const openDrawer = () => {
     navigation.openDrawer();
-    setHidden(true);
+    hideHeader();
   };
 
   if (loading) {
