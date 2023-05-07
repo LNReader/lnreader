@@ -52,8 +52,6 @@ const parseNovelAndChapters = async novelUrl => {
     novelUrl,
   };
 
-  // loadedCheerio('.container > h3 > span').remove();
-
   novel.novelUrl = novelUrl;
 
   novel.novelName = loadedCheerio('.p-2 > .container h1').text().trim();
