@@ -19,8 +19,8 @@ import {
 
 interface SetCategoryModalProps {
   novelId: number | number[];
-  followed: number;
-  handleFollowNovel: () => void;
+  followed?: number;
+  handleFollowNovel?: () => void;
   visible: boolean;
   currentCategoryIds: number[];
   onEditCategories?: () => void;
@@ -128,8 +128,8 @@ const SetCategoryModal: React.FC<SetCategoryModalProps> = ({
                 if (isArray(novelId)) {
                   updateNovelCategoryByIds(novelId, selectedCategories);
                 } else {
-                  if (!followed) {
-                    handleFollowNovel();
+                  if (!followed && followed !== undefined) {
+                    handleFollowNovel?.();
                   }
                   updateNovelCategoryById(novelId, selectedCategories);
                 }
