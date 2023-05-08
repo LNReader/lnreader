@@ -1,17 +1,34 @@
 import * as cheerio from 'cheerio';
 import { fetchApi, fetchHtml } from '@utils/fetch/fetch';
+import { defaultTo } from 'lodash-es';
+import { SourceOptions } from '../sourceManager';
+import {
+  SourceChapter,
+  SourceChapterItem,
+  SourceNovel,
+  SourceNovelItem,
+} from '../types';
+import { FilterInputs, SourceFilter } from '../types/filterTypes';
 
 const sourceId = 35;
+const sourceName = 'Scribble Hub';
 const baseUrl = 'https://www.scribblehub.com/';
 
-const popularNovels = async page => {
-  let url = baseUrl + 'series-ranking/?sort=1&order=4&pg=' + page;
+const popularNovels = async (page: number, options?: SourceOptions) => {
+  const url = `${baseUrl}${
+    options?.showLatestNovels
+      ? 'latest-series/?'
+      : 'series-ranking/?sort=' +
+        defaultTo(options?.filters?.sort, '1') +
+        '&order=' +
+        defaultTo(options?.filters?.order, '4')
+  }&pg=${page}`;
 
   const body = await fetchHtml({ url, sourceId });
 
   const loadedCheerio = cheerio.load(body);
 
-  let novels = [];
+  const novels: SourceNovelItem[] = [];
 
   loadedCheerio('div.search_main_box').each(function () {
     const novelName = loadedCheerio(this).find('div.search_title > a').text();
@@ -19,7 +36,7 @@ const popularNovels = async page => {
       .find('div.search_img > img')
       .attr('src');
 
-    let novelUrl = loadedCheerio(this)
+    let novelUrl: any = loadedCheerio(this)
       .find('div.search_title > a')
       .attr('href');
     novelUrl = novelUrl.split('/');
@@ -38,22 +55,19 @@ const popularNovels = async page => {
   return { novels };
 };
 
-const parseNovelAndChapters = async novelUrl => {
+const parseNovelAndChapters = async (novelUrl: string) => {
   const url = baseUrl + 'read/' + novelUrl;
 
   const body = await fetchHtml({ url, sourceId });
 
   let loadedCheerio = cheerio.load(body);
 
-  let novel = {};
-
-  novel.sourceId = 35;
-
-  novel.sourceName = 'Scribble Hub';
-
-  novel.url = url;
-
-  novel.novelUrl = novelUrl;
+  let novel: SourceNovel = {
+    sourceId: sourceId,
+    sourceName: sourceName,
+    url: url,
+    novelUrl: novelUrl,
+  };
 
   novel.novelName = loadedCheerio('div.fic_title').text();
 
@@ -64,7 +78,7 @@ const parseNovelAndChapters = async novelUrl => {
   novel.genre = '';
   loadedCheerio('span.wi_fic_genre')
     .find('span')
-    .each(function (res) {
+    .each(function () {
       novel.genre += loadedCheerio(this).text() + ',';
     });
   if (novel.genre) {
@@ -97,7 +111,7 @@ const parseNovelAndChapters = async novelUrl => {
 
   loadedCheerio = cheerio.load(text);
 
-  let novelChapters = [];
+  let novelChapters: SourceChapterItem[] = [];
 
   loadedCheerio('.toc_w').each(function () {
     const chapterName = loadedCheerio(this).find('.toc_a').text();
@@ -118,7 +132,7 @@ const parseNovelAndChapters = async novelUrl => {
   return novel;
 };
 
-const parseChapter = async (novelUrl, chapterUrl) => {
+const parseChapter = async (novelUrl: string, chapterUrl: string) => {
   const url = `${baseUrl}read/${novelUrl}/chapter/${chapterUrl}`;
 
   const body = await fetchHtml({ url, sourceId });
@@ -127,8 +141,8 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 
   let chapterName = loadedCheerio('div.chapter-title').text();
 
-  let chapterText = loadedCheerio('div.chp_raw').html();
-  const chapter = {
+  let chapterText = loadedCheerio('div.chp_raw').html() || '';
+  const chapter: SourceChapter = {
     sourceId,
     novelUrl,
     chapterUrl,
@@ -139,7 +153,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   return chapter;
 };
 
-const searchNovels = async searchTerm => {
+const searchNovels = async (searchTerm: string) => {
   const url =
     'https://www.scribblehub.com/?s=' + searchTerm + '&post_type=fictionposts';
 
@@ -147,7 +161,7 @@ const searchNovels = async searchTerm => {
 
   const loadedCheerio = cheerio.load(body);
 
-  let novels = [];
+  const novels: SourceNovelItem[] = [];
 
   loadedCheerio('div.search_main_box').each(function () {
     const novelName = loadedCheerio(this).find('div.search_title > a').text();
@@ -155,11 +169,11 @@ const searchNovels = async searchTerm => {
       .find('div.search_img > img')
       .attr('src');
 
-    let novelUrl = loadedCheerio(this)
+    let novelUrl: any = loadedCheerio(this)
       .find('div.search_title > a')
       .attr('href');
-    novelUrl = novelUrl.split('/');
-    novelUrl = novelUrl[4] + '-' + novelUrl[5];
+    let novelUrlSplit = novelUrl.split('/');
+    novelUrl = novelUrlSplit[4] + '-' + novelUrlSplit[5];
 
     const novel = {
       sourceId,
@@ -173,11 +187,38 @@ const searchNovels = async searchTerm => {
   return novels;
 };
 
+export const filters: SourceFilter[] = [
+  {
+    inputType: FilterInputs.Picker,
+    key: 'sort',
+    label: 'Sort By',
+    values: [
+      { label: 'Popularity', value: '1' },
+      { label: 'Favorites', value: '2' },
+      { label: 'Activity', value: '3' },
+      { label: 'Readers', value: '4' },
+      { label: 'Rising', value: '5' },
+    ],
+  },
+  {
+    inputType: FilterInputs.Picker,
+    key: 'order',
+    label: 'Order',
+    values: [
+      { label: 'All Time', value: '4' },
+      { label: 'Daily', value: '1' },
+      { label: 'Weekly', value: '2' },
+      { label: 'Monthly', value: '3' },
+    ],
+  },
+];
+
 const ScribbleHubScraper = {
   popularNovels,
   parseNovelAndChapters,
   parseChapter,
   searchNovels,
+  filters,
 };
 
 export default ScribbleHubScraper;
