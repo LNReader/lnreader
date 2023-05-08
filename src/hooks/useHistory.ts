@@ -32,8 +32,8 @@ const useHistory = () => {
     getHistory();
   };
 
-  const removeChapterFromHistory = async (historyId: number) => {
-    deleteChapterHistory(historyId);
+  const removeChapterFromHistory = async (chapterId: number) => {
+    deleteChapterHistory(chapterId);
     getHistory();
   };
 

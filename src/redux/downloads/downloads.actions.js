@@ -1,8 +1,8 @@
 import { CANCEL_DOWNLOAD, PAUSE_DOWNLOADS } from './donwloads.types';
 import BackgroundService from 'react-native-background-actions';
-import { downloadChapter } from '../../database/queries/ChapterQueries';
+import { downloadChapter } from '@database/queries/ChapterQueries';
 import { CHAPTER_DOWNLOADED } from '../novel/novel.types';
-import { showToast } from '../../hooks/showToast';
+import { showToast } from '@hooks/showToast';
 
 import * as Notifications from 'expo-notifications';
 
@@ -16,10 +16,9 @@ export const pauseDownloads = () => async dispatch => {
 
 export const resumeDownloads = chapters => async dispatch => {
   showToast('Download resumed');
-
   const options = {
     taskName: 'Library Update',
-    taskTitle: chapters[0].chapterName,
+    taskTitle: chapters[0].name,
     taskDesc: '0/' + chapters.length,
     taskIcon: {
       name: 'notification_icon',
@@ -48,24 +47,23 @@ export const resumeDownloads = chapters => async dispatch => {
       ) {
         if (BackgroundService.isRunning()) {
           try {
-            if (!chapters[i].downloaded) {
+            if (!chapters[i].isDownloaded) {
               await downloadChapter(
-                chapters[i].sourceId,
-                chapters[i].novelUrl,
+                chapters[i].pluginId,
                 chapters[i].novelId,
-                chapters[i].chapterUrl,
-                chapters[i].chapterId,
+                chapters[i].id,
+                chapters[i].url,
               );
             }
 
             dispatch({
               type: CHAPTER_DOWNLOADED,
-              payload: chapters[i].chapterId,
+              payload: { chapterId: chapters[i].id },
             });
           } catch (error) {
             Notifications.scheduleNotificationAsync({
               content: {
-                title: chapters[i].chapterName,
+                title: chapters[i].name,
                 body: `Download failed: ${error.message}`,
               },
               trigger: null,
@@ -73,7 +71,7 @@ export const resumeDownloads = chapters => async dispatch => {
           }
 
           await BackgroundService.updateNotification({
-            taskTitle: chapters[i].chapterName,
+            taskTitle: chapters[i].name,
             taskDesc: i + 1 + '/' + chapters.length,
             progressBar: {
               max: chapters.length,

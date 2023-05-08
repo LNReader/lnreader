@@ -1,13 +1,13 @@
 import { useCallback, useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 
-import { getCategoriesFromDb } from '../../../database/queries/CategoryQueries';
+import { getCategoriesFromDb } from '@database/queries/CategoryQueries';
 import {
-  getLibrary as getLibraryFromDb,
+  getLibraryWithCategory,
   getLibraryNovelsFromDb,
-} from '../../../database/queries/LibraryQueries';
+} from '@database/queries/LibraryQueries';
 
-import { Category, LibraryNovelInfo, NovelInfo } from '../../../database/types';
+import { Category, LibraryNovelInfo, NovelInfo } from '@database/types';
 
 import { useLibrarySettings } from '@hooks/useSettings';
 import { LibrarySortOrder } from '../constants/constants';
@@ -31,7 +31,7 @@ export const useLibrary = ({ searchText }: { searchText?: string }) => {
 
     const [categories, novels] = await Promise.all([
       getCategoriesFromDb(),
-      getLibraryFromDb({
+      getLibraryWithCategory({
         searchText,
         filter,
         sortOrder,
@@ -41,15 +41,8 @@ export const useLibrary = ({ searchText }: { searchText?: string }) => {
 
     const res = categories.map(category => ({
       ...category,
-      novels: novels.filter(novel =>
-        JSON.parse(novel.categoryIds).includes(category.id),
-      ),
+      novels: novels.filter(novel => novel.category === category.name),
     }));
-
-    // Remove default category if empty
-    if (res.length > 1 && !res[0].novels.length && !searchText) {
-      res.shift();
-    }
 
     setLibrary(res);
     setIsLoading(false);

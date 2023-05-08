@@ -2,15 +2,16 @@ import { Dimensions, Pressable, StyleSheet, Text, View } from 'react-native';
 import React, { useMemo } from 'react';
 import FastImage from 'react-native-fast-image';
 
-import { coverPlaceholderColor } from '../../../theme/colors';
+import { coverPlaceholderColor } from '@theme/colors';
 
-import { SourceNovelItem } from '../../../sources/types';
-import { ThemeColors } from '../../../theme/types';
+import { NovelItem } from '@plugins/types';
+import { ThemeColors } from '@theme/types';
 import { getString } from '@strings/translations';
 
 interface Props {
-  novel: SourceNovelItem;
-  navigateToNovel: (novel: SourceNovelItem) => void;
+  novel: NovelItem;
+  pluginId: string;
+  navigateToNovel: (novelItem: any) => void;
   theme: ThemeColors;
   onLongPress?: () => void;
   inLibrary?: boolean;
@@ -18,6 +19,7 @@ interface Props {
 
 const GlobalSearchNovelItem: React.FC<Props> = ({
   novel,
+  pluginId,
   navigateToNovel,
   theme,
   onLongPress,
@@ -37,11 +39,11 @@ const GlobalSearchNovelItem: React.FC<Props> = ({
       <Pressable
         style={styles.pressable}
         android_ripple={{ color: theme.rippleColor }}
-        onPress={() => navigateToNovel(novel)}
+        onPress={() => navigateToNovel({ ...novel, pluginId: pluginId })}
         onLongPress={onLongPress}
       >
         <FastImage
-          source={{ uri: novel.novelCover }}
+          source={{ uri: novel.cover }}
           style={[styles.novelCover, { ...novelItemDimensions }]}
         />
         {inLibrary ? (
@@ -64,7 +66,7 @@ const GlobalSearchNovelItem: React.FC<Props> = ({
           ]}
           numberOfLines={2}
         >
-          {novel.novelName}
+          {novel.name}
         </Text>
       </Pressable>
     </View>

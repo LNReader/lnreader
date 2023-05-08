@@ -30,7 +30,6 @@ const CategoriesScreen = () => {
   const getCategories = async () => {
     try {
       let res = await getCategoriesFromDb();
-      res.shift();
 
       setCategories(res);
     } catch (err) {
@@ -43,33 +42,19 @@ const CategoriesScreen = () => {
   useEffect(() => {
     getCategories();
   }, []);
-
-  const updateCategorySort = (
-    categoryId: number,
-    currentIndex: number,
-    newIndex: number,
-  ) => {
+  const updateCategorySort = (currentIndex: number, newIndex: number) => {
     const updatedOrderCategories = orderBy(
       categories?.map((category, index) => {
-        if (category.sort === newIndex || newIndex === index) {
-          return {
-            ...category,
-            sort: currentIndex,
-          };
+        if (index === currentIndex) {
+          return { ...category, sort: newIndex + 1 }; // + 1 because in db, sort start from 1
         }
-
-        if (category.id === categoryId) {
-          return {
-            ...category,
-            sort: newIndex,
-          };
+        if (index === newIndex) {
+          return { ...category, sort: currentIndex + 1 };
         }
-
         return category;
       }),
       'sort',
     );
-
     setCategories(updatedOrderCategories);
     updateCategoryOrderInDb(updatedOrderCategories || []);
   };

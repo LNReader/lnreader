@@ -9,57 +9,38 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getString } from '@strings/translations';
 import { useNovel, useSettings, usePreferences } from '@hooks/reduxHooks';
 import { useDispatch } from 'react-redux';
-import { setNovel, getNovelAction } from '@redux/novel/novel.actions';
+import { getNovelAction } from '@redux/novel/novel.actions';
 
 const ChapterDrawer = ({ state: st, navigation }) => {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
   const styles = createStylesheet(theme, insets);
   let listRef = useRef();
-
   const dispatch = useDispatch();
-  const {
-    sourceId,
-    novelUrl,
-    novelName,
-    novelId,
-    chapterId: currentChapterId,
-  } = st.routes[0].params;
-  const { defaultChapterSort = 'ORDER BY chapterId ASC' } = useSettings();
-  const { sort = defaultChapterSort, filter = '' } = usePreferences(novelId);
-  const { chapters, novel } = useNovel();
+  const { chapter, novel: novelItem } = st.routes[0].params;
+  const { defaultChapterSort = 'ORDER BY id ASC' } = useSettings();
+  const { sort = defaultChapterSort, filter = '' } = usePreferences(
+    chapter.novelId,
+  );
+  const { novel, chapters } = useNovel();
   useEffect(() => {
-    if (chapters.length < 1 || novelId !== novel.novelId) {
-      dispatch(setNovel({ sourceId, novelUrl, novelName, novelId }));
-      dispatch(
-        getNovelAction(true, sourceId, novelUrl, novelId, sort, filter, 1),
-      );
+    if (chapter.novelId !== novel.id || chapters.length === 0) {
+      dispatch(getNovelAction(novelItem.pluginId, novelItem.url, sort, filter));
     }
-  }, [
-    chapters.length,
-    defaultChapterSort,
-    dispatch,
-    filter,
-    novel.novelId,
-    novelId,
-    novelName,
-    novelUrl,
-    sort,
-    sourceId,
-  ]);
-  const listAscending = sort === 'ORDER BY chapterId ASC';
+  }, [defaultChapterSort, dispatch, filter, novelItem, chapter]);
+  const listAscending = sort === 'ORDER BY id ASC';
   const scrollToIndex = useMemo(() => {
     if (chapters.length < 1) {
-      return;
+      return 0;
     }
-    const indexOfCurrentChapter = chapters.findIndex(el => {
-      return el.chapterId === currentChapterId;
-    });
-    let res;
-    res = indexOfCurrentChapter >= 2 ? indexOfCurrentChapter - 2 : 0;
-    listRef.current?.scrollToIndex?.(res);
+    const indexOfCurrentChapter =
+      chapters.findIndex(el => {
+        return el.id === chapter.id;
+      }) || 0;
+    let res = indexOfCurrentChapter >= 2 ? indexOfCurrentChapter - 2 : 0;
     return res;
-  }, [chapters, currentChapterId, listAscending]);
+  }, [chapters, chapter.id, listAscending]);
+
   const [buttonProperties, setButtonProperties] = useState({
     up: {
       text: getString('readerScreen.drawer.scrollToTop'),
@@ -79,18 +60,15 @@ const ChapterDrawer = ({ state: st, navigation }) => {
 
   const changeChapter = item => {
     navigation.replace('Chapter', {
-      sourceId,
-      novelUrl,
-      novelName,
-      novelId,
-      ...item,
+      novel: novelItem,
+      chapter: item,
     });
   };
   const renderItem = ({ item }) => (
     <View
       style={[
         styles.drawerElementContainer,
-        item.chapterId === currentChapterId && {
+        item.id === chapter.id && {
           backgroundColor: color(theme.primary).alpha(0.12).string(),
         },
       ]}
@@ -101,10 +79,10 @@ const ChapterDrawer = ({ state: st, navigation }) => {
         style={styles.chapterCtn}
       >
         <Text numberOfLines={1} style={styles.chapterNameCtn}>
-          {item.chapterName}
+          {item.name}
         </Text>
         {item?.releaseDate ? (
-          <Text style={styles.releaseDateCtn}>{item.releaseDate}</Text>
+          <Text style={styles.releaseDateCtn}>{item.releaseTime}</Text>
         ) : null}
       </Pressable>
     </View>
@@ -145,13 +123,13 @@ const ChapterDrawer = ({ state: st, navigation }) => {
     };
     if (viewableItems.length !== 0) {
       let visible = viewableItems.find(({ item }) => {
-        return item.chapterId === currentChapterId;
+        return item.id === chapter.id;
       });
       if (!visible) {
         if (
           listAscending
-            ? viewableItems[0].item.chapterId < currentChapterId
-            : viewableItems[0].item.chapterId > currentChapterId
+            ? viewableItems[0].item.id < chapter.id
+            : viewableItems[0].item.id > chapter.id
         ) {
           down = {
             text: getString('readerScreen.drawer.scrollToCurrentChapter'),
@@ -186,7 +164,7 @@ const ChapterDrawer = ({ state: st, navigation }) => {
       <Text style={styles.headerCtn}>{getString('common.chapters')}</Text>
       {scrollToIndex !== undefined ? (
         <FlashList
-          ref={ref => (listRef.current = ref)}
+          ref={listRef}
           onViewableItemsChanged={checkViewableItems}
           data={chapters}
           renderItem={renderItem}

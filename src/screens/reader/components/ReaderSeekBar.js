@@ -8,7 +8,7 @@ import { useDeviceOrientation } from '@hooks/useDeviceOrientation';
 
 const VerticalScrollbar = ({
   theme,
-  minScroll = 0,
+  minScroll,
   verticalSeekbar,
   percentage,
   scrollTo,
@@ -16,7 +16,8 @@ const VerticalScrollbar = ({
   const { bottom } = useSafeAreaInsets();
   const onSlidingComplete = value => {
     let offsetY =
-      ((value - minScroll) * Dimensions.get('window').height) / minScroll;
+      ((value - Math.round(minScroll)) * Dimensions.get('window').height) /
+      Math.round(minScroll);
     scrollTo(offsetY);
   };
   const screenOrientation = useDeviceOrientation();

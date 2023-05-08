@@ -1,8 +1,10 @@
 import * as Notifications from 'expo-notifications';
 import BackgroundService from 'react-native-background-actions';
 
-import { getCategoryNovelsFromDb } from '../../database/queries/NovelQueriesV2';
-import { getLibraryNovelsFromDb } from '../../database/queries/LibraryQueries';
+import {
+  getNovelsWithCatogory,
+  getLibraryNovelsFromDb,
+} from '../../database/queries/LibraryQueries';
 
 import { showToast } from '../../hooks/showToast';
 import { updateNovel } from './LibraryUpdateQueries';
@@ -15,7 +17,7 @@ const updateLibrary = async options => {
   let libraryNovels = [];
 
   if (categoryId) {
-    libraryNovels = await getCategoryNovelsFromDb(
+    libraryNovels = await getNovelsWithCatogory(
       categoryId,
       onlyUpdateOngoingNovels,
     );
@@ -47,9 +49,9 @@ const updateLibrary = async options => {
              * Update chapters
              */
             await updateNovel(
-              libraryNovels[i].sourceId,
-              libraryNovels[i].novelUrl,
-              libraryNovels[i].novelId,
+              libraryNovels[i].pluginId,
+              libraryNovels[i].url,
+              libraryNovels[i].id,
               options,
             );
 
@@ -57,7 +59,7 @@ const updateLibrary = async options => {
              * Update notification
              */
             await BackgroundService.updateNotification({
-              taskTitle: libraryNovels[i].novelName,
+              taskTitle: libraryNovels[i].name,
               taskDesc: '(' + (i + 1) + '/' + libraryNovels.length + ')',
               progressBar: { max: libraryNovels.length, value: i + 1 },
             });
@@ -81,14 +83,14 @@ const updateLibrary = async options => {
 
             if (
               nextNovelIndex in libraryNovels &&
-              libraryNovels[nextNovelIndex].sourceId ===
-                libraryNovels[i].sourceId
+              libraryNovels[nextNovelIndex].pluginId ===
+                libraryNovels[i].pluginId
             ) {
               await sleep(taskData.delay);
             }
           }
         } catch (error) {
-          showToast(libraryNovels[i].novelName + ': ' + error.message);
+          showToast(libraryNovels[i].name + ': ' + error.message);
           continue;
         }
       }

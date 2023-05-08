@@ -10,8 +10,8 @@ import {
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Modal, Portal, TextInput } from 'react-native-paper';
-import { setNovel } from '../../../redux/novel/novel.actions';
-import { updateNovelInfo } from '../../../database/queries/NovelQueries';
+import { setNovel } from '@redux/novel/novel.actions';
+import { updateNovelInfo } from '@database/queries/NovelQueries';
 
 import { getString } from '@strings/translations';
 import { Button } from '@components';
@@ -20,10 +20,9 @@ const EditInfoModal = ({ theme, hideModal, modalVisible, novel, dispatch }) => {
   const [info, setInfo] = useState(novel);
 
   const [tag, setTag] = useState('');
-
   const removeTag = t => {
-    let tags = info.genre.split(',').filter(item => item !== t);
-    setInfo({ ...info, genre: tags.join(',') });
+    let tags = info.genres.split(',').filter(item => item !== t);
+    setInfo({ ...info, genres: tags.join(',') });
   };
 
   const status = ['Ongoing', 'Hiatus', 'Completed', 'Unknown', 'Cancelled'];
@@ -87,12 +86,12 @@ const EditInfoModal = ({ theme, hideModal, modalVisible, novel, dispatch }) => {
           </ScrollView>
         </View>
         <TextInput
-          placeholder={`Title: ${info.novelName}`}
+          placeholder={`Title: ${info.name}`}
           style={{ fontSize: 14 }}
           numberOfLines={1}
           mode="outlined"
           theme={{ colors: { ...theme } }}
-          onChangeText={text => setInfo({ ...info, novelName: text })}
+          onChangeText={text => setInfo({ ...info, name: text })}
           dense
         />
         <TextInput
@@ -105,14 +104,11 @@ const EditInfoModal = ({ theme, hideModal, modalVisible, novel, dispatch }) => {
           dense
         />
         <TextInput
-          placeholder={`Description: ${info?.novelSummary?.substring(
-            0,
-            16,
-          )}...`}
+          placeholder={`Description: ${info.summary?.substring(0, 16)}...`}
           style={{ fontSize: 14 }}
           numberOfLines={1}
           mode="outlined"
-          onChangeText={text => setInfo({ ...info, novelSummary: text })}
+          onChangeText={text => setInfo({ ...info, summary: text })}
           theme={{ colors: { ...theme } }}
           dense
         />
@@ -124,18 +120,18 @@ const EditInfoModal = ({ theme, hideModal, modalVisible, novel, dispatch }) => {
           mode="outlined"
           onChangeText={text => setTag(text)}
           onSubmitEditing={() => {
-            setInfo({ ...info, genre: info.genre + ',' + tag });
+            setInfo({ ...info, genres: info.genres + ',' + tag });
             setTag('');
           }}
           theme={{ colors: { ...theme } }}
           dense
         />
 
-        {info.genre !== null && info.genre !== '' && (
+        {info.genres !== undefined && info.genres !== '' && (
           <FlatList
             contentContainerStyle={{ marginVertical: 8 }}
             horizontal
-            data={info.genre.split(',')}
+            data={info.genres?.split(',')}
             keyExtractor={(item, index) => 'novelTag' + index}
             renderItem={({ item }) => (
               <GenreChip theme={theme} onPress={() => removeTag(item)}>
@@ -148,7 +144,7 @@ const EditInfoModal = ({ theme, hideModal, modalVisible, novel, dispatch }) => {
         <View style={{ flexDirection: 'row-reverse' }}>
           <Button
             onPress={() => {
-              updateNovelInfo(info, novel.novelId);
+              updateNovelInfo(info, novel.id);
               hideModal();
               dispatch(setNovel({ ...novel, ...info }));
             }}

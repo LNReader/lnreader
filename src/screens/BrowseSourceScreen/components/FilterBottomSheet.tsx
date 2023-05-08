@@ -2,14 +2,14 @@ import React, { Ref, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import BottomSheet from '../../../components/BottomSheet/BottomSheet';
-import BottomSheetType, { BottomSheetView } from '@gorhom/bottom-sheet';
+import { BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet';
 
 import { useTheme } from '@hooks/useTheme';
 import {
   FilterInputs,
   SelectedFilter,
   SourceFilter,
-} from '../../../sources/types/filterTypes';
+} from '@plugins/types/filterTypes';
 import { FlatList } from 'react-native-gesture-handler';
 import { Button, IconButtonV2 } from '@components/index';
 import { Checkbox } from '@components/Checkbox/Checkbox';
@@ -113,7 +113,7 @@ const FilterItem: React.FC<FilterItemProps> = ({
 };
 
 interface BottomSheetProps {
-  filterSheetRef: Ref<BottomSheetType> | null;
+  filterSheetRef: Ref<BottomSheetModal> | null;
   filtersValues: SourceFilter[] | undefined;
   setFilters: (filters?: SelectedFilter) => void;
   clearFilters: () => void;
@@ -131,12 +131,7 @@ const FilterBottomSheet: React.FC<BottomSheetProps> = ({
   >();
 
   return (
-    <BottomSheet
-      bottomSheetRef={filterSheetRef}
-      snapPoints={[400, 600]}
-      height={600}
-      theme={theme}
-    >
+    <BottomSheet bottomSheetRef={filterSheetRef} snapPoints={[400, 600]}>
       <BottomSheetView
         style={[
           styles.container,

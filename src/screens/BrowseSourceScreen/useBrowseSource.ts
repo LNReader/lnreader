@@ -1,14 +1,15 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { SelectedFilter, SourceFilter } from '../../sources/types/filterTypes';
-import { sourceManager } from '../../sources/sourceManager';
-import { SourceNovelItem } from '../../sources/types';
+import { SelectedFilter, SourceFilter } from '@plugins/types/filterTypes';
+import { NovelItem } from '@plugins/types';
+
+import { getPlugin } from '@plugins/pluginManager';
 
 export const useBrowseSource = (
-  sourceId: number,
+  pluginId: string,
   showLatestNovels?: boolean,
 ) => {
   const [isLoading, setIsLoading] = useState(true);
-  const [novels, setNovels] = useState<SourceNovelItem[]>([]);
+  const [novels, setNovels] = useState<NovelItem[]>([]);
   const [error, setError] = useState<string>();
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -24,18 +25,16 @@ export const useBrowseSource = (
     async (page: number, filters?: SelectedFilter) => {
       if (isScreenMounted.current === true) {
         try {
-          const source = sourceManager(sourceId);
-          const res = await source.popularNovels(page, {
+          const plugin = getPlugin(pluginId);
+          const res = await plugin.popularNovels(page, {
             showLatestNovels,
             filters,
           });
-          setNovels(prevState =>
-            page === 1 ? res.novels : [...prevState, ...res.novels],
-          );
-          if (!res.novels.length) {
+          setNovels(prevState => (page === 1 ? res : [...prevState, ...res]));
+          if (!res.length) {
             setHasNextPage(false);
           }
-          setFilterValues(source.filters);
+          setFilterValues(plugin.filters);
         } catch (err: unknown) {
           setError(`${err}`);
         } finally {
@@ -43,20 +42,11 @@ export const useBrowseSource = (
         }
       }
     },
-    [sourceId],
+    [pluginId],
   );
 
   const fetchNextPage = () => {
     hasNextPage && setCurrentPage(prevState => prevState + 1);
-  };
-
-  useEffect(() => {
-    fetchNovels(currentPage, selectedFilters);
-  }, [fetchNovels, currentPage]);
-
-  const refetchNovels = () => {
-    setCurrentPage(1);
-    fetchNovels(1);
   };
 
   /**
@@ -68,9 +58,18 @@ export const useBrowseSource = (
     };
   }, []);
 
+  useEffect(() => {
+    fetchNovels(currentPage, selectedFilters);
+  }, [fetchNovels, currentPage]);
+
+  const refetchNovels = () => {
+    setCurrentPage(1);
+    fetchNovels(1);
+  };
+
   const clearFilters = useCallback(() => setSelectedFilters(undefined), []);
 
-  const setFilters = (filters: SelectedFilter) => {
+  const setFilters = (filters?: SelectedFilter) => {
     setIsLoading(true);
     setCurrentPage(1);
     fetchNovels(1, filters);
@@ -90,16 +89,16 @@ export const useBrowseSource = (
   };
 };
 
-export const useSearchSource = (sourceId: number) => {
+export const useSearchSource = (pluginId: string) => {
   const [isSearching, setIsSearching] = useState(false);
-  const [searchResults, setSearchResults] = useState<SourceNovelItem[]>([]);
+  const [searchResults, setSearchResults] = useState<NovelItem[]>([]);
   const [searchError, setSearchError] = useState<string>();
 
   const searchSource = useCallback(
     async (searchTerm: string) => {
       try {
         setIsSearching(true);
-        const res = await sourceManager(sourceId).searchNovels(searchTerm);
+        const res = await getPlugin(pluginId).searchNovels(searchTerm);
         setSearchResults(res);
       } catch (err) {
         setSearchError(`${err}`);
@@ -107,7 +106,7 @@ export const useSearchSource = (sourceId: number) => {
         setIsSearching(false);
       }
     },
-    [sourceId],
+    [pluginId],
   );
 
   const clearSearchResults = useCallback(() => setSearchResults([]), []);

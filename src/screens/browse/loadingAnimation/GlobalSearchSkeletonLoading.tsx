@@ -3,6 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { ThemeColors } from '@theme/types';
 import LoadingNovel from './LoadingNovel';
 import getLoadingColors from '@utils/getLoadingColors';
+import { DisplayModes } from '@screens/library/constants/constants';
 
 interface Props {
   theme: ThemeColors;
@@ -23,6 +24,8 @@ const GlobalSearchSkeletonLoading: React.FC<Props> = ({ theme }) => {
             backgroundColor={backgroundColor}
             highlightColor={highlightColor}
             pictureHeight={153.1}
+            pictureWidth={100}
+            displayMode={DisplayModes.Comfortable}
           />
         );
       })}

@@ -1,16 +1,11 @@
 import { FlatList, Pressable, StyleSheet, View } from 'react-native';
 import React, { useCallback, useState } from 'react';
 
-import { ChapterItemExtended, Update } from '../../../database/types';
+import { ChapterInfo, Update } from '@database/types';
 import FastImage from 'react-native-fast-image';
 import { List } from 'react-native-paper';
-import { coverPlaceholderColor } from '../../../theme/colors';
-import {
-  openChapter,
-  openChapterFunctionTypes,
-  openNovel,
-  openNovelProps,
-} from '@utils/handleNavigateParams';
+import { coverPlaceholderColor } from '@theme/colors';
+import { openNovel } from '@utils/handleNavigateParams';
 import {
   deleteChapterAction,
   downloadChapterAction,
@@ -55,27 +50,26 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
   const [chapterList, setChapterList] = useState(item);
 
   const handleDownloadChapter = useCallback(
-    (chapter: ChapterItemExtended) =>
+    (chapter: ChapterInfo) =>
       dispatch(
         downloadChapterAction(
-          chapter.sourceId,
-          chapter.novelUrl,
+          chapter.pluginId,
           chapter.novelId,
-          chapter.chapterUrl,
-          chapter.chapterName,
-          chapter.chapterId,
+          chapter.url,
+          chapter.name,
+          chapter.id,
         ),
       ),
     [],
   );
 
-  const handleDeleteChapter = useCallback((chapter: ChapterItemExtended) => {
+  const handleDeleteChapter = useCallback((chapter: ChapterInfo) => {
     dispatch(
       deleteChapterAction(
-        chapter.sourceId,
+        chapter.pluginId,
         chapter.novelId,
-        chapter.chapterId,
-        chapter.chapterName,
+        chapter.id,
+        chapter.name,
       ),
     );
     if (removeItemFromList) {
@@ -87,10 +81,17 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
   }, []);
 
   const navigateToChapter = useCallback(
-    (chapter: ChapterItemExtended) =>
+    (chapter: ChapterInfo) =>
       navigate(
         'Chapter' as never,
-        openChapter(chapter, chapter) as openChapterFunctionTypes as never,
+        {
+          novel: {
+            url: chapter.novelUrl,
+            pluginId: chapter.pluginId,
+            name: chapter.novelName,
+          },
+          chapter: chapter,
+        } as never,
       ),
     [],
   );
@@ -98,13 +99,18 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
   const navigateToNovel = () =>
     navigate(
       'Novel' as never,
-      openNovel(chapterList[0]) as openNovelProps as never,
+      openNovel({
+        pluginId: chapterList[0].pluginId,
+        id: chapterList[0].novelId,
+        url: chapterList[0].novelUrl,
+        name: chapterList[0].novelName,
+        cover: chapterList[0].novelCover,
+      }) as never,
     );
 
   const { downloadQueue } = useSelector(
     (state: RootState) => state.downloadsReducer,
   );
-
   if (chapterList.length > 1) {
     return (
       <List.Accordion
@@ -124,7 +130,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
       >
         <FlatList
           data={chapterList}
-          keyExtractor={it => it.chapterId.toString()}
+          keyExtractor={it => 'update' + it.id}
           style={styles.chapterList}
           renderItem={it => {
             return (

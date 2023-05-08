@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Dimensions, FlatList, StyleSheet, Text, View } from 'react-native';
-import { Modal, overlay, Portal } from 'react-native-paper';
+import { Divider, Modal, overlay, Portal } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 
 import { Button } from '@components/index';
@@ -8,27 +8,22 @@ import { Button } from '@components/index';
 import { useTheme } from '@hooks/useTheme';
 
 import { getString } from '@strings/translations';
-import { getCategoriesFromDb } from '../../../database/queries/CategoryQueries';
-import { Category } from '../../../database/types';
+import { getCategoriesFromDb } from '@database/queries/CategoryQueries';
+import { updateNovelCategories } from '@database/queries/NovelQueries';
+import { Category } from '@database/types';
 import { Checkbox } from '@components/Checkbox/Checkbox';
-import { isArray, xor } from 'lodash-es';
-import {
-  updateNovelCategoryById,
-  updateNovelCategoryByIds,
-} from '@database/queries/NovelQueriesV2';
+import { xor } from 'lodash-es';
 
 interface SetCategoryModalProps {
-  novelId: number | number[];
+  novelIds: number[];
   visible: boolean;
-  currentCategoryIds: number[];
   onEditCategories?: () => void;
   closeModal: () => void;
   onSuccess?: () => void | Promise<void>;
 }
 
 const SetCategoryModal: React.FC<SetCategoryModalProps> = ({
-  novelId,
-  currentCategoryIds,
+  novelIds,
   closeModal,
   visible,
   onSuccess,
@@ -36,14 +31,12 @@ const SetCategoryModal: React.FC<SetCategoryModalProps> = ({
 }) => {
   const theme = useTheme();
   const { navigate } = useNavigation();
-
-  const [selectedCategories, setSelectedCategories] =
-    useState(currentCategoryIds);
-  const [categories, setCategories] = useState<Category[]>();
+  const [option, setOption] = useState<string>('KEEP_OLD');
+  const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
+  const [categories = [], setCategories] = useState<Category[]>();
 
   const getCategories = async () => {
     const res = await getCategoriesFromDb();
-    res.shift();
 
     setCategories(res);
   };
@@ -54,17 +47,13 @@ const SetCategoryModal: React.FC<SetCategoryModalProps> = ({
     }
   }, [visible]);
 
-  useEffect(() => {
-    setSelectedCategories(currentCategoryIds);
-  }, [JSON.stringify(currentCategoryIds)]);
-
   return (
     <Portal>
       <Modal
         visible={visible}
         onDismiss={() => {
           closeModal();
-          setSelectedCategories(currentCategoryIds);
+          setSelectedCategories([]);
         }}
         contentContainerStyle={[
           styles.modalContainer,
@@ -78,10 +67,13 @@ const SetCategoryModal: React.FC<SetCategoryModalProps> = ({
           data={categories}
           renderItem={({ item }) => (
             <Checkbox
-              status={selectedCategories.includes(item.id)}
+              status={
+                selectedCategories.find(category => category.id === item.id) !==
+                undefined
+              }
               label={item.name}
               onPress={() =>
-                setSelectedCategories(prevValues => xor(prevValues, [item.id]))
+                setSelectedCategories(xor(selectedCategories, [item]))
               }
               viewStyle={styles.checkboxView}
               theme={theme}
@@ -95,6 +87,33 @@ const SetCategoryModal: React.FC<SetCategoryModalProps> = ({
             </Text>
           }
         />
+        <Divider
+          style={{
+            height: 1,
+            width: '90%',
+            marginLeft: '5%',
+            backgroundColor: theme.onSurfaceDisabled,
+          }}
+        />
+        <View>
+          <Text style={[styles.modelOption, { color: theme.onSurface }]}>
+            {'Option'}
+          </Text>
+          <Checkbox
+            status={option === 'KEEP_OLD'}
+            label={'Keep old categories'}
+            onPress={() => setOption('KEEP_OLD')}
+            viewStyle={styles.checkboxView}
+            theme={theme}
+          />
+          <Checkbox
+            status={option === 'REMOVE_OLD'}
+            label={'Remove old categories (not selected)'}
+            onPress={() => setOption('REMOVE_OLD')}
+            viewStyle={styles.checkboxView}
+            theme={theme}
+          />
+        </View>
         <View style={styles.btnContainer}>
           <Button
             title={getString('common.edit')}
@@ -114,19 +133,19 @@ const SetCategoryModal: React.FC<SetCategoryModalProps> = ({
             title={getString('common.cancel')}
             onPress={() => {
               closeModal();
-              setSelectedCategories(currentCategoryIds);
             }}
           />
-          {categories?.length ? (
+          {selectedCategories.length ? (
             <Button
               title={getString('common.ok')}
-              onPress={() => {
-                if (isArray(novelId)) {
-                  updateNovelCategoryByIds(novelId, selectedCategories);
-                } else {
-                  updateNovelCategoryById(novelId, selectedCategories);
-                }
+              onPress={async () => {
+                await updateNovelCategories(
+                  novelIds,
+                  selectedCategories.map(category => category.id),
+                  option,
+                );
                 closeModal();
+                setSelectedCategories([]);
                 onSuccess?.();
               }}
             />
@@ -151,6 +170,11 @@ const styles = StyleSheet.create({
     fontSize: 24,
     marginBottom: 20,
   },
+  modelOption: {
+    paddingHorizontal: 24,
+    fontSize: 15,
+    marginVertical: 10,
+  },
   flex: {
     flex: 1,
   },
@@ -161,6 +185,7 @@ const styles = StyleSheet.create({
   },
   checkboxView: {
     paddingHorizontal: 20,
+    marginBottom: 5,
   },
   emptyState: {
     paddingHorizontal: 24,

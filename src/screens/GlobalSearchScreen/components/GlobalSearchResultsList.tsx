@@ -12,10 +12,9 @@ import { useTheme } from '@hooks/useTheme';
 import { GlobalSearchResult } from '../hooks/useGlobalSearch';
 import GlobalSearchNovelItem from './GlobalSearchNovelItem';
 import { useLibraryNovels } from '@screens/library/hooks/useLibrary';
-import { insertNovelInLibrary } from '../../../database/queries/NovelQueriesV2';
-import { LibraryNovelInfo } from '../../../database/types';
+import { LibraryNovelInfo } from '@database/types';
 import GlobalSearchSkeletonLoading from '@screens/browse/loadingAnimation/GlobalSearchSkeletonLoading';
-import { useCategorySettings } from '@hooks/useSettings';
+import { switchNovelToLibrary } from '@database/queries/NovelQueries';
 
 interface GlobalSearchResultsListProps {
   searchResults: GlobalSearchResult[];
@@ -28,14 +27,11 @@ const GlobalSearchResultsList: React.FC<GlobalSearchResultsListProps> = ({
 }) => {
   const theme = useTheme();
   const navigation = useNavigation<StackNavigationProp<any>>();
-  const keyExtractor = useCallback(item => item.source.sourceId.toString(), []);
+  const keyExtractor = useCallback(item => item.plugin.id, []);
   const { library, setLibrary } = useLibraryNovels();
-  const { defaultCategoryId = 1 } = useCategorySettings();
 
-  const novelInLibrary = (sourceId: number, novelUrl: string) =>
-    library?.some(
-      novel => novel.novelUrl === novelUrl && novel.sourceId === sourceId,
-    );
+  const novelInLibrary = (novelUrl: string) =>
+    library?.some(novel => novel.url === novelUrl);
 
   const errorColor = useMemo(() => (theme.isDark ? '#B3261E' : '#F2B8B5'), []);
 
@@ -59,20 +55,20 @@ const GlobalSearchResultsList: React.FC<GlobalSearchResultsListProps> = ({
               style={styles.sourceHeader}
               onPress={() =>
                 navigation.navigate('SourceScreen', {
-                  sourceId: item.source.sourceId,
-                  sourceName: item.source.sourceName,
-                  url: item.source.url,
+                  pluginId: item.plugin.id,
+                  pluginName: item.plugin.name,
+                  url: item.plugin.url,
                 })
               }
             >
               <View>
                 <Text style={[styles.sourceName, { color: theme.onSurface }]}>
-                  {item.source.sourceName}
+                  {item.plugin.name}
                 </Text>
                 <Text
                   style={[styles.language, { color: theme.onSurfaceVariant }]}
                 >
-                  {item.source.lang}
+                  {item.plugin.lang}
                 </Text>
               </View>
               <MaterialCommunityIcons
@@ -91,9 +87,7 @@ const GlobalSearchResultsList: React.FC<GlobalSearchResultsListProps> = ({
               <FlatList
                 horizontal
                 contentContainerStyle={styles.novelsContainer}
-                keyExtractor={novelItem =>
-                  novelItem.novelUrl + novelItem.sourceId
-                }
+                keyExtractor={novelItem => novelItem.url}
                 data={item.novels}
                 ListEmptyComponent={
                   <Text
@@ -106,14 +100,12 @@ const GlobalSearchResultsList: React.FC<GlobalSearchResultsListProps> = ({
                   </Text>
                 }
                 renderItem={({ item: novelItem }) => {
-                  const inLibrary = novelInLibrary(
-                    novelItem.sourceId,
-                    novelItem.novelUrl,
-                  );
+                  const inLibrary = novelInLibrary(novelItem.url);
 
                   return (
                     <GlobalSearchNovelItem
                       novel={novelItem}
+                      pluginId={item.plugin.id}
                       inLibrary={inLibrary}
                       navigateToNovel={navigateToNovel}
                       theme={theme}
@@ -122,25 +114,19 @@ const GlobalSearchResultsList: React.FC<GlobalSearchResultsListProps> = ({
                           if (inLibrary) {
                             return [
                               ...prevValues.filter(
-                                novel => novel.novelUrl !== novelItem.novelUrl,
+                                novel => novel.url !== novelItem.url,
                               ),
                             ];
                           } else {
                             return [
                               ...prevValues,
                               {
-                                novelUrl: novelItem.novelUrl,
-                                sourceId: novelItem.sourceId,
+                                url: novelItem.url,
                               } as LibraryNovelInfo,
                             ];
                           }
                         });
-                        insertNovelInLibrary(
-                          novelItem.sourceId,
-                          novelItem.novelUrl,
-                          inLibrary,
-                          defaultCategoryId,
-                        );
+                        switchNovelToLibrary(novelItem.url, item.plugin.id);
                       }}
                     />
                   );

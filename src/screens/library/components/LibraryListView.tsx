@@ -7,15 +7,12 @@ import { EmptyView } from '@components/index';
 import NovelCover from '@components/NovelCover';
 import NovelList, { NovelListRenderItem } from '@components/NovelList';
 
-import { LibraryNovelInfo } from '../../../database/types';
-
-import { setNovel } from '@redux/novel/novel.actions';
+import { LibraryNovelInfo } from '@database/types';
 
 import { getString } from '@strings/translations';
 import { useAppDispatch } from '@redux/hooks';
 import { useTheme } from '@hooks/useTheme';
 import { updateLibraryAction } from '@redux/updates/updates.actions';
-import { openNovel } from '@utils/handleNavigateParams';
 
 interface Props {
   categoryId: number;
@@ -33,23 +30,28 @@ export const LibraryView: React.FC<Props> = ({
   const theme = useTheme();
   const { navigate } = useNavigation();
   const dispatch = useAppDispatch();
-
   const renderItem = ({ item }: { item: LibraryNovelInfo }) => (
     <NovelCover
       item={item}
       theme={theme}
-      isSelected={selectedNovelIds.includes(item.novelId)}
-      onLongPress={() =>
-        setSelectedNovelIds(xor(selectedNovelIds, [item.novelId]))
-      }
+      isSelected={selectedNovelIds.includes(item.id)}
+      onLongPress={() => setSelectedNovelIds(xor(selectedNovelIds, [item.id]))}
       onPress={() => {
         if (selectedNovelIds.length) {
-          setSelectedNovelIds(xor(selectedNovelIds, [item.novelId]));
+          setSelectedNovelIds(xor(selectedNovelIds, [item.id]));
         } else {
-          navigate('Novel' as never, openNovel(item) as never);
-          dispatch(setNovel(item));
+          navigate(
+            'Novel' as never,
+            {
+              name: item.name,
+              url: item.url,
+              pluginId: item.pluginId,
+            } as never,
+          );
         }
       }}
+      libraryStatus={false} // yes but actually no :D
+      selectedNovels={selectedNovelIds}
     />
   );
 

@@ -1,49 +1,39 @@
-import React, { ReactElement, Ref, useCallback } from 'react';
-import { overlay } from 'react-native-paper';
-import { default as BS, BottomSheetBackdrop } from '@gorhom/bottom-sheet';
+import React, { Ref, useCallback } from 'react';
+import {
+  BottomSheetBackdrop,
+  BottomSheetBackdropProps,
+  BottomSheetModal,
+  BottomSheetModalProps,
+} from '@gorhom/bottom-sheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { ThemeColors } from '@theme/types';
-import { StyleSheet } from 'react-native';
 
-interface BottomSheetProps {
-  bottomSheetRef: Ref<BS>;
-  snapPoints: Array<number>;
-  height: number;
-  theme: ThemeColors;
-  children: ReactElement;
+interface BottomSheetProps extends Omit<BottomSheetModalProps, 'ref'> {
+  bottomSheetRef: Ref<BottomSheetModal> | null;
 }
 
-const BottomSheet: React.FC<BottomSheetProps> = ({
-  bottomSheetRef,
-  snapPoints,
-  height,
-  theme,
-  children,
-}) => {
+const BottomSheet: React.FC<BottomSheetProps> = props => {
   const { bottom } = useSafeAreaInsets();
   const renderBackdrop = useCallback(
-    props => <BottomSheetBackdrop {...props} disappearsOnIndex={0} />,
+    (backdropProps: BottomSheetBackdropProps) => (
+      <BottomSheetBackdrop
+        {...backdropProps}
+        disappearsOnIndex={-1}
+        appearsOnIndex={0}
+      />
+    ),
     [],
   );
   return (
-    <BS
-      index={-1}
+    <BottomSheetModal
+      ref={props.bottomSheetRef}
       backdropComponent={renderBackdrop}
-      snapPoints={[0.1].concat(snapPoints)}
-      enablePanDownToClose={true}
-      ref={bottomSheetRef}
-      handleStyle={styles.handle}
-      containerHeight={height + bottom}
+      handleComponent={null}
       containerStyle={{ paddingBottom: bottom }}
-      backgroundStyle={{ backgroundColor: overlay(2, theme.surface) }}
+      {...props}
     >
-      {children}
-    </BS>
+      {props.children}
+    </BottomSheetModal>
   );
 };
-const styles = StyleSheet.create({
-  handle: {
-    display: 'none',
-  },
-});
+
 export default BottomSheet;

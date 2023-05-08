@@ -54,7 +54,7 @@ export const initialState = {
    */
 
   hideBackdrop: false,
-  defaultChapterSort: 'ORDER BY chapterId ASC',
+  defaultChapterSort: 'ORDER BY id ASC',
 
   /**
    * Reader settings
@@ -76,7 +76,7 @@ export const initialState = {
     textColor: '#CCCCCC',
     textSize: 16,
     textAlign: 'left',
-    padding: 5,
+    padding: 2,
     fontFamily: '',
     lineHeight: 1.5,
     customCSS: '',

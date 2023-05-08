@@ -11,7 +11,7 @@ import { defaultUserAgentString } from '@utils/fetch/fetch';
 type ReaderScreenRouteProps = RouteProp<{
   params: {
     name: string;
-    sourceId: number;
+    pluginId: string;
     url: string;
   };
 }>;
@@ -21,9 +21,9 @@ const WebviewScreen = () => {
   const { goBack } = useNavigation();
 
   const {
-    params: { name, sourceId, url },
+    params: { name, pluginId, url },
   } = useRoute<ReaderScreenRouteProps>();
-  const { setSourceStorage } = useSourceStorage({ sourceId });
+  const { setSourceStorage } = useSourceStorage({ pluginId });
 
   useEffect(() => {
     CookieManager.get(url, true).then(cookies => {

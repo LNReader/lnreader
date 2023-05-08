@@ -35,13 +35,13 @@ import {
   setNovel,
   sortAndFilterChapters,
   updateNovelAction,
-} from '../../redux/novel/novel.actions';
+} from '@redux/novel/novel.actions';
 import {
   useContinueReading,
   useNovel,
   usePreferences,
   useSettings,
-} from '../../hooks/reduxHooks';
+} from '@hooks/reduxHooks';
 import { showToast } from '../../hooks/showToast';
 import { useTheme } from '@hooks/useTheme';
 import ChapterItem from './components/ChapterItem';
@@ -61,15 +61,14 @@ import { openChapter } from '../../utils/handleNavigateParams';
 import NovelScreenLoading from './components/LoadingAnimation/NovelScreenLoading';
 
 const Novel = ({ route, navigation }) => {
-  const item = route.params;
-  const { sourceId, novelUrl, novelName, followed, novelId } = item;
-
+  const { name, url, pluginId } = route.params;
   const theme = useTheme();
   const dispatch = useDispatch();
   const { top: topInset, bottom: bottomInset } = useSafeAreaInsets();
   const progressViewOffset = topInset + 32;
 
   const { novel, chapters, loading, updating } = useNovel();
+
   const { downloadQueue } = useSelector(state => state.downloadsReducer);
 
   const [selected, setSelected] = useState([]);
@@ -83,42 +82,25 @@ const Novel = ({ route, navigation }) => {
   const deleteDownloadsSnackbar = useBoolean();
 
   const {
-    useFabForContinueReading = false,
-    defaultChapterSort = 'ORDER BY chapterId ASC',
-    disableHapticFeedback = false,
+    useFabForContinueReading,
+    defaultChapterSort,
+    disableHapticFeedback,
   } = useSettings();
 
   const {
     sort = defaultChapterSort,
     filter = '',
     showChapterTitles = false,
-  } = usePreferences(novel.novelId);
+  } = usePreferences(novel.id);
 
-  let { lastReadChapter, position } = useContinueReading(
-    chapters,
-    novel.novelId,
-  );
-
-  const { defaultCategoryId = 1 } = useCategorySettings();
-
+  let { lastReadChapter, position } = useContinueReading(chapters, novel.id);
   useEffect(() => {
-    dispatch(
-      getNovelAction(
-        followed,
-        sourceId,
-        novelUrl,
-        novelId,
-        sort,
-        filter,
-        defaultCategoryId,
-      ),
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    dispatch(getNovelAction(pluginId, url, sort, filter));
   }, [getNovelAction]);
 
   const onRefresh = () => {
-    dispatch(updateNovelAction(sourceId, novelUrl, novelId, sort, filter));
-    showToast(`Updated ${novelName}`);
+    dispatch(updateNovelAction(pluginId, url, novel.id, sort, filter));
+    showToast(`Updated ${name}`);
   };
 
   const refreshControl = () => (
@@ -136,34 +118,33 @@ const Novel = ({ route, navigation }) => {
   const downloadChapter = chapter =>
     dispatch(
       downloadChapterAction(
-        sourceId,
-        novelUrl,
-        novelId,
-        chapter.chapterUrl,
-        chapter.chapterName,
-        chapter.chapterId,
+        pluginId,
+        novel.id,
+        chapter.url,
+        chapter.name,
+        chapter.id,
       ),
     );
 
   const actions = useMemo(() => {
     const list = [];
 
-    if (selected.some(obj => obj.downloaded === 0)) {
+    if (selected.some(obj => obj.isDownloaded === 0)) {
       list.push({
         icon: 'download-outline',
         onPress: () => {
           dispatch(
-            downloadAllChaptersAction(novel.sourceId, novel.novelUrl, selected),
+            downloadAllChaptersAction(novel.pluginId, novel.url, selected),
           );
           setSelected([]);
         },
       });
     }
-    if (selected.some(obj => obj.downloaded === 1)) {
+    if (selected.some(obj => obj.isDownloaded === 1)) {
       list.push({
         icon: 'trash-can-outline',
         onPress: () => {
-          dispatch(deleteAllChaptersAction(sourceId, selected));
+          dispatch(deleteAllChaptersAction(pluginId, novel.id, selected));
           setSelected([]);
         },
       });
@@ -177,23 +158,21 @@ const Novel = ({ route, navigation }) => {
       },
     });
 
-    if (selected.some(obj => obj.read === 0)) {
+    if (selected.some(obj => obj.unread === 0)) {
       list.push({
         icon: 'check',
         onPress: () => {
-          dispatch(markChaptersRead(selected, novel.novelId, sort, filter));
+          dispatch(markChaptersRead(selected, novel.id, sort, filter));
           setSelected([]);
         },
       });
     }
 
-    if (selected.some(obj => obj.read === 1)) {
+    if (selected.some(obj => obj.unread === 1)) {
       list.push({
         icon: 'check-outline',
         onPress: () => {
-          dispatch(
-            markChapterUnreadAction(selected, novel.novelId, sort, filter),
-          );
+          dispatch(markChapterUnreadAction(selected, novel.id, sort, filter));
           setSelected([]);
         },
       });
@@ -204,10 +183,7 @@ const Novel = ({ route, navigation }) => {
         icon: 'playlist-check',
         onPress: () => {
           dispatch(
-            markPreviousChaptersReadAction(
-              selected[0].chapterId,
-              selected[0].novelId,
-            ),
+            markPreviousChaptersReadAction(selected[0].id, selected[0].novelId),
           );
           setSelected([]);
         },
@@ -218,27 +194,18 @@ const Novel = ({ route, navigation }) => {
   }, [selected]);
 
   const deleteChapter = chapter =>
-    dispatch(
-      deleteChapterAction(
-        sourceId,
-        novelId,
-        chapter.chapterId,
-        chapter.chapterName,
-      ),
-    );
+    dispatch(deleteChapterAction(pluginId, novel.id, chapter.id, chapter.name));
 
-  const isSelected = chapterId => {
-    return selected.some(obj => obj.chapterId === chapterId);
+  const isSelected = id => {
+    return selected.some(obj => obj.id === id);
   };
 
   const onSelectPress = (chapter, navigateToChapter) => {
     if (selected.length === 0) {
       navigateToChapter();
     } else {
-      if (isSelected(chapter.chapterId)) {
-        setSelected(sel =>
-          sel.filter(it => it.chapterId !== chapter.chapterId),
-        );
+      if (isSelected(chapter.id)) {
+        setSelected(sel => sel.filter(it => it.id !== chapter.id));
       } else {
         setSelected(sel => [...sel, chapter]);
       }
@@ -261,15 +228,15 @@ const Novel = ({ route, navigation }) => {
        */
       const lastSelectedChapter = selected[selected.length - 1];
 
-      if (lastSelectedChapter.chapterId !== chapter.chapterId) {
-        if (lastSelectedChapter.chapterId > chapter.chapterId) {
+      if (lastSelectedChapter.id !== chapter.id) {
+        if (lastSelectedChapter.id > chapter.id) {
           setSelected(sel => [
             ...sel,
             chapter,
             ...chapters.filter(
               chap =>
-                (chap.chapterId <= chapter.chapterId ||
-                  chap.chapterId >= lastSelectedChapter.chapterId) === false,
+                (chap.id <= chapter.id || chap.id >= lastSelectedChapter.id) ===
+                false,
             ),
           ]);
         } else {
@@ -278,52 +245,46 @@ const Novel = ({ route, navigation }) => {
             chapter,
             ...chapters.filter(
               chap =>
-                (chap.chapterId >= chapter.chapterId ||
-                  chap.chapterId <= lastSelectedChapter.chapterId) === false,
+                (chap.id >= chapter.id || chap.id <= lastSelectedChapter.id) ===
+                false,
             ),
           ]);
         }
       }
     }
   };
-
   const navigateToChapter = chapter => {
-    navigation.navigate(
-      'Chapter',
-      openChapter({ sourceId, novelUrl, novelName }, chapter),
-    );
+    navigation.navigate('Chapter', { novel: novel, chapter: chapter });
   };
 
   const showProgressPercentage = chapter => {
     const savedProgress =
-      position &&
-      position[chapter.chapterId] &&
-      position[chapter.chapterId].percentage;
-    if (savedProgress < 100 && savedProgress > 0 && !chapter.read) {
+      position && position[chapter.id] && position[chapter.id].percentage;
+    if (savedProgress < 97 && savedProgress > 0 && chapter.unread) {
       return (
         <Text
           style={{
             color: theme.outline,
             fontSize: 12,
-            marginLeft: chapter.releaseDate ? 5 : 0,
+            marginLeft: chapter.releaseTime ? 5 : 0,
           }}
           numberOfLines={1}
         >
-          {chapter.releaseDate ? '•  ' : null}
-          {'Progress ' + position[chapter.chapterId].percentage + '%'}
+          {chapter.releaseTime ? '•  ' : null}
+          {'Progress ' + savedProgress + '%'}
         </Text>
       );
     }
   };
 
   const setCustomNovelCover = async () => {
-    const cover = await pickCustomNovelCover(novelId);
+    const newCover = await pickCustomNovelCover(novel.id);
 
-    if (cover) {
+    if (newCover) {
       dispatch(
         setNovel({
           ...novel,
-          novelCover: cover,
+          cover: newCover,
         }),
       );
     }
@@ -335,7 +296,6 @@ const Novel = ({ route, navigation }) => {
     <ChapterItem
       theme={theme}
       chapter={it}
-      index={index}
       showChapterTitles={showChapterTitles}
       downloadQueue={downloadQueue}
       deleteChapter={deleteChapter}
@@ -345,6 +305,7 @@ const Novel = ({ route, navigation }) => {
       onSelectLongPress={onSelectLongPress}
       navigateToChapter={navigateToChapter}
       showProgressPercentage={showProgressPercentage}
+      novelName={name}
     />
   );
 
@@ -354,7 +315,6 @@ const Novel = ({ route, navigation }) => {
   if (loading) {
     return <NovelScreenLoading theme={theme} />;
   }
-
   return (
     <Provider>
       <View style={[styles.container, { backgroundColor: theme.background }]}>
@@ -386,7 +346,7 @@ const Novel = ({ route, navigation }) => {
                   }}
                   onPress={() =>
                     Share.share({
-                      message: novel.sourceUrl,
+                      message: novel.url,
                     })
                   }
                 />
@@ -422,17 +382,13 @@ const Novel = ({ route, navigation }) => {
                     titleStyle={{ color: theme.onSurface }}
                     onPress={() => {
                       dispatch(
-                        downloadAllChaptersAction(
-                          novel.sourceId,
-                          novel.novelUrl,
-                          [
-                            chapters.find(
-                              chapter =>
-                                !!chapter.read === false &&
-                                !!chapter.downloaded === false,
-                            ),
-                          ],
-                        ),
+                        downloadAllChaptersAction(novel.pluginId, novel.url, [
+                          chapters.find(
+                            chapter =>
+                              !!chapter.unread === true &&
+                              !!chapter.isDownloaded === false,
+                          ),
+                        ]),
                       );
                       showDownloadMenu(false);
                     }}
@@ -446,13 +402,13 @@ const Novel = ({ route, navigation }) => {
                     onPress={() => {
                       dispatch(
                         downloadAllChaptersAction(
-                          novel.sourceId,
-                          novel.novelUrl,
+                          novel.pluginId,
+                          novel.url,
                           chapters
                             .filter(
                               chapter =>
-                                !!chapter.read === false &&
-                                !!chapter.downloaded === false,
+                                !!chapter.unread === true &&
+                                !!chapter.idDownloaded === false,
                             )
                             .slice(0, 5),
                         ),
@@ -469,13 +425,13 @@ const Novel = ({ route, navigation }) => {
                     onPress={() => {
                       dispatch(
                         downloadAllChaptersAction(
-                          novel.sourceId,
-                          novel.novelUrl,
+                          novel.pluginId,
+                          novel.url,
                           chapters
                             .filter(
                               chapter =>
-                                !!chapter.read === false &&
-                                !!chapter.downloaded === false,
+                                !!chapter.unread === true &&
+                                !!chapter.Downloaded === false,
                             )
                             .slice(0, 10),
                         ),
@@ -501,9 +457,9 @@ const Novel = ({ route, navigation }) => {
                     onPress={() => {
                       dispatch(
                         downloadAllChaptersAction(
-                          novel.sourceId,
-                          novel.novelUrl,
-                          chapters.filter(chapter => !!chapter.read === false),
+                          novel.pluginId,
+                          novel.url,
+                          chapters.filter(chapter => !!chapter.unread === true),
                         ),
                       );
                       showDownloadMenu(false);
@@ -518,8 +474,8 @@ const Novel = ({ route, navigation }) => {
                     onPress={() => {
                       dispatch(
                         downloadAllChaptersAction(
-                          novel.sourceId,
-                          novel.novelUrl,
+                          novel.pluginId,
+                          novel.url,
                           chapters,
                         ),
                       );
@@ -533,7 +489,7 @@ const Novel = ({ route, navigation }) => {
                       color: theme.onSurface,
                     }}
                     onPress={() =>
-                      dispatch(deleteAllChaptersAction(sourceId, chapters))
+                      dispatch(deleteAllChaptersAction(pluginId, chapters))
                     }
                   />
                 </Menu>
@@ -624,11 +580,10 @@ const Novel = ({ route, navigation }) => {
             windowSize={15}
             initialNumToRender={7}
             renderItem={renderItem}
-            keyExtractor={(item, index) => 'chapter' + index}
+            keyExtractor={(item, index) => 'chapter' + item.id + index}
             contentContainerStyle={{ paddingBottom: 100 }}
             ListHeaderComponent={
               <NovelInfoHeader
-                item={item}
                 novel={novel}
                 theme={theme}
                 filter={filter}
@@ -645,25 +600,27 @@ const Novel = ({ route, navigation }) => {
             refreshControl={refreshControl()}
           />
         </View>
-        {useFabForContinueReading && chapters.length > 0 && lastReadChapter && (
-          <FAB
-            style={[
-              styles.fab,
-              { backgroundColor: theme.primary, marginBottom: bottomInset },
-            ]}
-            small
-            color={theme.onPrimary}
-            uppercase={false}
-            label={novel.unread ? 'Start' : 'Resume'}
-            icon="play"
-            onPress={() => {
-              navigation.navigate(
-                'Chapter',
-                openChapter(novel, lastReadChapter),
-              );
-            }}
-          />
-        )}
+        {useFabForContinueReading &&
+          chapters?.length > 0 &&
+          lastReadChapter && (
+            <FAB
+              style={[
+                styles.fab,
+                { backgroundColor: theme.primary, marginBottom: bottomInset },
+              ]}
+              small
+              color={theme.onPrimary}
+              uppercase={false}
+              label={novel.unread ? 'Start' : 'Resume'}
+              icon="play"
+              onPress={() => {
+                navigation.navigate(
+                  'Chapter',
+                  openChapter(novel, lastReadChapter),
+                );
+              }}
+            />
+          )}
         <Portal>
           <Actionbar
             active={selected.length > 0}
@@ -677,7 +634,7 @@ const Novel = ({ route, navigation }) => {
             action={{
               label: 'Delete',
               onPress: () => {
-                dispatch(deleteAllChaptersAction(sourceId, chapters));
+                dispatch(deleteAllChaptersAction(pluginId, novel.id, chapters));
               },
             }}
             theme={{ colors: { primary: theme.primary } }}
@@ -712,24 +669,23 @@ const Novel = ({ route, navigation }) => {
             theme={theme}
             dispatch={dispatch}
           />
-          <NovelBottomSheet
-            novelUrl={novelUrl}
-            bottomSheetRef={novelBottomSheetRef}
-            dispatch={dispatch}
-            sortAndFilterChapters={sortAndFilterChapters}
-            novelId={novel.novelId}
-            sort={sort}
-            theme={theme}
-            filter={filter}
-            showChapterTitles={showChapterTitles}
-          />
-          <TrackSheet
-            bottomSheetRef={trackerSheetRef}
-            novelId={novel.novelId}
-            novelName={novel.novelName}
-            theme={theme}
-          />
         </Portal>
+        <NovelBottomSheet
+          bottomSheetRef={novelBottomSheetRef}
+          dispatch={dispatch}
+          sortAndFilterChapters={sortAndFilterChapters}
+          novelId={novel.id}
+          sort={sort}
+          theme={theme}
+          filter={filter}
+          showChapterTitles={showChapterTitles}
+        />
+        <TrackSheet
+          bottomSheetRef={trackerSheetRef}
+          novelId={novel.id}
+          novelName={novel.name}
+          theme={theme}
+        />
       </View>
     </Provider>
   );

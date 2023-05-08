@@ -22,7 +22,7 @@ interface HistoryCardProps {
     novel: openChapterNovelTypes,
     chapter: openChapterChapterTypes,
   ) => void;
-  handleRemoveFromHistory: (historyId: number) => void;
+  handleRemoveFromHistory: (chapterId: number) => void;
   handleNavigateToNovel: (novel: openNovelProps) => void;
   theme: ThemeColors;
 }
@@ -35,25 +35,23 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
   theme,
 }) => {
   const {
-    historyId,
-    sourceId,
+    id,
+    pluginId,
     novelId,
     novelName,
     novelUrl,
-    chapterId,
     chapterName,
     novelCover,
-    historyTimeRead,
+    readTime,
     chapterUrl,
     bookmark,
   } = history;
-
   const chapterNoAndTime = useMemo(
     () =>
-      `Chapter ${parseChapterNumber(chapterName)} • ${dayjs(historyTimeRead)
+      `Chapter ${parseChapterNumber(novelName, chapterName)} • ${dayjs(readTime)
         .format('LT')
         .toUpperCase()}`,
-    [chapterName, historyTimeRead],
+    [chapterName, readTime],
   );
 
   return (
@@ -62,11 +60,11 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
       android_ripple={{ color: theme.rippleColor }}
       onPress={() =>
         handleNavigateToNovel({
-          sourceId,
-          novelId,
-          novelUrl,
-          novelName,
-          novelCover,
+          pluginId,
+          id: novelId,
+          url: novelUrl,
+          name: novelName,
+          cover: novelCover,
         })
       }
     >
@@ -88,19 +86,19 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
         <IconButtonV2
           name="delete-outline"
           theme={theme}
-          onPress={() => handleRemoveFromHistory(historyId)}
+          onPress={() => handleRemoveFromHistory(id)}
         />
         <IconButtonV2
           name="play"
           onPress={() =>
             handleNavigateToChapter(
-              { sourceId, novelName, novelUrl },
+              { url: novelUrl, pluginId: pluginId, name: novelName },
               {
-                novelId,
-                chapterId,
-                chapterUrl,
-                chapterName,
-                bookmark,
+                id: id,
+                url: chapterUrl,
+                novelId: novelId,
+                name: chapterName,
+                bookmark: bookmark,
               },
             )
           }

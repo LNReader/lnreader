@@ -3,7 +3,7 @@ import { View, Text, Image, StyleSheet } from 'react-native';
 import { TouchableRipple } from 'react-native-paper';
 
 const MigrationSourceCard = ({ item, theme, noOfNovels, onPress }) => {
-  const { sourceName, icon, sourceLanguage } = item;
+  const { name, iconUrl, lang } = item;
 
   return (
     <TouchableRipple
@@ -12,7 +12,7 @@ const MigrationSourceCard = ({ item, theme, noOfNovels, onPress }) => {
       rippleColor={theme.rippleColor}
     >
       <>
-        <Image source={{ uri: icon }} style={styles.sourceIcon} />
+        <Image source={{ uri: iconUrl }} style={styles.sourceIcon} />
         <View style={styles.sourceDetailsContainer}>
           <Text
             style={{
@@ -20,7 +20,7 @@ const MigrationSourceCard = ({ item, theme, noOfNovels, onPress }) => {
               fontSize: 14,
             }}
           >
-            {sourceName} {` (${noOfNovels || 0})`}
+            {name} {` (${noOfNovels || 0})`}
           </Text>
           <Text
             style={{
@@ -28,7 +28,7 @@ const MigrationSourceCard = ({ item, theme, noOfNovels, onPress }) => {
               fontSize: 12,
             }}
           >
-            {sourceLanguage}
+            {lang}
           </Text>
         </View>
       </>

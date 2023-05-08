@@ -7,20 +7,17 @@ const useSettings = () => {
 };
 
 const useNovel = () => {
-  const novel = useSelector(state => state.novelReducer);
-
-  return novel;
-};
-
-const useChapter = () => {
-  const chapter = useSelector(state => state.chapterReducer);
-
-  return chapter;
+  const { novel, chapters, loading, updating } = useSelector(
+    state => state.novelReducer,
+  );
+  return { novel, chapters, loading, updating };
 };
 
 const useFindNovel = novelId => {
-  let novel = useSelector(state => state.preferenceReducer.novelSettings);
-  novel = novel[novelId];
+  let novelSettings = useSelector(
+    state => state.preferenceReducer.novelSettings,
+  );
+  novel = novelSettings[novelId];
 
   return novel;
 };
@@ -33,11 +30,10 @@ const usePreferences = novelId => {
   if (novel) {
     sort = novel.sort;
     filter = novel.filter;
-    position = novel.position;
     showChapterTitles = novel.showChapterTitles;
   }
 
-  return { sort, filter, position, showChapterTitles };
+  return { sort, filter, showChapterTitles };
 };
 
 const useSavedSettings = () => {
@@ -47,25 +43,28 @@ const useSavedSettings = () => {
 };
 
 const useContinueReading = (chapters, novelId) => {
-  let lastReadChapter, chapterId, novel, position;
-
+  let lastReadChapter, novel, position;
   novel = useFindNovel(novelId);
-  if (novel) {
-    chapterId = novel.lastRead;
+  if (novel && novel.lastRead) {
+    lastReadChapter = novel.lastRead;
     position = novel.position;
   }
 
-  if (chapterId) {
-    lastReadChapter = chapters.find(
-      obj => obj.chapterId === chapterId && obj.read === 0,
-    );
+  if (lastReadChapter && position) {
+    lastReadChapter =
+      position[lastReadChapter.id]?.percentage >= 97
+        ? undefined
+        : lastReadChapter;
+  } else {
+    // for the first time
+    lastReadChapter = chapters[0];
   }
 
   // If the last read chapter is 100% done, set the next chapter as the 'last read'.
   // If all chapters are read, then set the last chapter in the list as the last read (Fixed bug)
-  if (!lastReadChapter) {
+  if (!lastReadChapter && chapters) {
     lastReadChapter =
-      chapters.find(obj => obj.read === 0) || chapters[chapters.length - 1];
+      chapters.find(obj => obj.unread === 0) || chapters[chapters.length - 1];
   }
 
   return { lastReadChapter, position };
@@ -97,7 +96,6 @@ export {
   useContinueReading,
   useTrackingStatus,
   useNovel,
-  useChapter,
   useSavedSettings,
   usePosition,
 };

@@ -29,7 +29,6 @@ import { getString } from '../../../../../strings/translations';
 import { filterColor } from '../../../../theme/colors';
 
 const NovelInfoHeader = ({
-  item,
   novel,
   theme,
   filter,
@@ -37,7 +36,7 @@ const NovelInfoHeader = ({
   lastRead,
   navigation,
   trackerSheetRef,
-  setCustomNovelCover,
+  setCustomcover,
   novelBottomSheetRef,
   deleteDownloadsSnackbar,
 }) => {
@@ -53,35 +52,43 @@ const NovelInfoHeader = ({
     }),
     [],
   );
-
   return (
     <>
       <CoverImage
-        source={{ uri: novel.novelCover }}
+        source={{ uri: novel.cover }}
         theme={theme}
         hideBackdrop={hideBackdrop}
       >
         <NovelInfoContainer>
           <NovelThumbnail
-            source={{ uri: novel.novelCover }}
+            source={{ uri: novel.cover }}
             theme={theme}
-            setCustomNovelCover={setCustomNovelCover}
+            setCustomcover={setCustomcover}
           />
           <View style={styles.novelDetails}>
             <NovelTitle
               theme={theme}
               onPress={() =>
                 navigation.replace('GlobalSearchScreen', {
-                  searchText: item.novelName,
+                  searchText: novel.name,
                 })
               }
               onLongPress={() => {
-                Clipboard.setString(item.novelName);
-                showToast('Copied to clipboard: ' + item.novelName);
+                Clipboard.setString(novel.name);
+                showToast('Copied to clipboard: ' + novel.name);
               }}
             >
-              {item.novelName}
+              {novel.name}
             </NovelTitle>
+            <Text
+              style={{
+                fontSize: 15,
+                fontWeight: 'bold',
+                color: theme.onBackground,
+              }}
+            >
+              {`ID: ${novel.id}`}
+            </Text>
             <>
               <NovelAuthor theme={theme}>
                 {novel.author || 'Unknown author'}
@@ -94,7 +101,7 @@ const NovelInfoHeader = ({
                   style={{ marginRight: 4 }}
                 />
                 <NovelInfo theme={theme}>
-                  {(novel.status || 'Unknown status') + ' • ' + novel.source}
+                  {(novel.status || 'Unknown status') + ' • ' + novel.pluginId}
                 </NovelInfo>
               </Row>
             </>
@@ -105,33 +112,35 @@ const NovelInfoHeader = ({
         <NovelScreenButtonGroup
           novel={novel}
           handleFollowNovel={() => {
-            dispatch(followNovelAction(novel));
+            dispatch(followNovelAction(novel, novel.pluginId));
             if (
-              novel.followed &&
-              chapters.some(chapter => chapter.downloaded === 1)
+              novel.inLibrary &&
+              chapters.some(chapter => chapter.isDownloaded === 1)
             ) {
               deleteDownloadsSnackbar.setTrue();
             }
           }}
-          handleTrackerSheet={() => trackerSheetRef.current.expand()}
+          handleTrackerSheet={() => trackerSheetRef.current.present()}
           theme={theme}
         />
         <NovelSummary
-          summary={novel.novelSummary}
-          isExpanded={!novel.followed}
+          summary={novel.summary}
+          isExpanded={!novel.inLibrary}
           theme={theme}
         />
-        {novel.genre ? <NovelGenres theme={theme} genre={novel.genre} /> : null}
+        {novel.genres ? (
+          <NovelGenres theme={theme} genres={novel.genres} />
+        ) : null}
         <ReadButton novel={novel} chapters={chapters} lastRead={lastRead} />
         <Pressable
           style={styles.bottomsheet}
-          onPress={() => novelBottomSheetRef.current.expand()}
+          onPress={() => novelBottomSheetRef.current.present()}
           android_ripple={{
             color: color(theme.primary).alpha(0.12).string(),
           }}
         >
           <Text style={[{ color: theme.onSurface }, styles.chapters]}>
-            {`${chapters.length} ${getString('novelScreen.chapters')}`}
+            {`${chapters?.length} ${getString('novelScreen.chapters')}`}
           </Text>
           <IconButton
             icon="filter-variant"

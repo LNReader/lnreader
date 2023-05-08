@@ -1,17 +1,17 @@
 export const createCategoriesTableQuery = `
-    CREATE TABLE IF NOT EXISTS categories(
-        id INTEGER PRIMARY KEY AUTOINCREMENT, 
-        name TEXT NOT NULL,
-        lastUpdatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-        sort INTEGER DEFAULT NULL
-      )
-  `;
+  CREATE TABLE IF NOT EXISTS Category (
+    id INTEGER PRIMARY KEY AUTOINCREMENT, 
+    name TEXT NOT NULL UNIQUE,
+    sort INTEGER
+  );
+`;
 
-export const createDefaultCategoryQuery =
-  'INSERT INTO categories (id, name) VALUES (1, "Default");';
+export const createCategoryTriggerQuery = `
+  CREATE TRIGGER IF NOT EXISTS add_category AFTER INSERT ON Category
+  BEGIN
+    UPDATE Category SET sort = (SELECT MAX(sort) FROM Category) + 1 WHERE id = new.id;
+  END;
+`;
 
-export const createCategorydIndexQuery =
-  'CREATE INDEX IF NOT EXISTS categoryIdIndex ON categories(id)';
-
-export const addCategorySortColumnQuery =
-  'ALTER TABLE categories ADD COLUMN sort INTEGER DEFAULT NULL';
+export const createCategoryDefaultQuery =
+  'INSERT OR IGNORE INTO Category (id, name, sort) VALUES (IFNULL((SELECT MAX(id) FROM Category), 1), "Default", 0)';

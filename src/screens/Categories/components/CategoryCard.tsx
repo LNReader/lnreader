@@ -13,11 +13,7 @@ interface CategoryCardProps {
   categoryIndex: number;
   category: Category;
   getCategories: () => Promise<void>;
-  updateCategorySort: (
-    categoryId: number,
-    currentIndex: number,
-    newIndex: number,
-  ) => void;
+  updateCategorySort: (currentIndex: number, newIndex: number) => void;
   totalCategories: number;
 }
 
@@ -49,7 +45,9 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
           styles.cardCtn,
           {
             backgroundColor: theme.isDark
-              ? overlay(2, theme.surface)
+              ? overlay(2, category.sort === 1 ? theme.surface2 : theme.surface)
+              : category.sort === 1
+              ? theme.primaryContainer
               : theme.secondaryContainer,
           },
         ]}
@@ -62,7 +60,13 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
             theme={theme}
           />
           <Text
-            style={[styles.name, { color: theme.onSurface }]}
+            style={[
+              styles.name,
+              {
+                color: theme.onSurface,
+                fontWeight: category.sort === 1 ? '700' : '300',
+              },
+            ]}
             onPress={showCategoryModal}
           >
             {category.name}
@@ -72,9 +76,7 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
           <IconButton
             name="menu-up"
             color={theme.onSurface}
-            onPress={() =>
-              updateCategorySort(category.id, categoryIndex, categoryIndex - 1)
-            }
+            onPress={() => updateCategorySort(categoryIndex, categoryIndex - 1)}
             theme={theme}
             disabled={categoryIndex <= 0}
           />
@@ -82,9 +84,7 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
             name="menu-down"
             color={theme.onSurface}
             style={styles.orderDownBtn}
-            onPress={() =>
-              updateCategorySort(category.id, categoryIndex, categoryIndex + 1)
-            }
+            onPress={() => updateCategorySort(categoryIndex, categoryIndex + 1)}
             theme={theme}
             disabled={categoryIndex + 1 >= totalCategories}
           />

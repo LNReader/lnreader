@@ -2,7 +2,11 @@ import React from 'react';
 
 import { ScreenContainer } from '../../components/Common';
 
-import { createBackup, restoreBackup } from '../../services/backup/v1/backup';
+import {
+  createBackup,
+  restoreBackup,
+  restoreError,
+} from '../../services/backup/v1/backup';
 
 import { useTheme } from '@hooks/useTheme';
 import { Appbar, List } from '@components';
@@ -29,7 +33,13 @@ const BackupSettings = ({ navigation }) => {
           <List.Item
             title="Restore backup"
             description="Restore library from backup file"
-            onPress={restoreBackup}
+            onPress={() => restoreBackup()}
+            theme={theme}
+          />
+          <List.Item
+            title="Restore error backup"
+            description="If there were errors when restoring backup. Using this to restore the remaining. Save your time."
+            onPress={restoreError}
             theme={theme}
           />
           <List.InfoItem

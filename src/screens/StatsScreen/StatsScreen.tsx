@@ -26,7 +26,7 @@ const StatsScreen = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [stats, setStats] = useState<LibraryStats>({});
-  const [error, setError] = useState();
+  const [error, setError] = useState<any>();
 
   const getStats = async () => {
     try {

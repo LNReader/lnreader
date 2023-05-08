@@ -3,15 +3,17 @@ import React, { useState } from 'react';
 import { Dialog, Portal } from 'react-native-paper';
 
 import { useTheme } from '@hooks/useTheme';
-import { showToast } from '../../hooks/showToast';
+import { showToast } from '@hooks/showToast';
 
-import { deleteNovelCache } from '../../database/queries/NovelQueries';
-import { clearUpdates } from '../../database/queries/UpdateQueries';
-import { clearCoverCache } from '../../services/utils/coverCache';
+import { deleteNovelCache } from '@database/queries/NovelQueries';
+import { clearCoverCache } from '@services/utils/coverCache';
 import { getString } from '@strings/translations';
 import useBoolean from '@hooks/useBoolean';
 import ConfirmationDialog from '@components/ConfirmationDialog/ConfirmationDialog';
-import { deleteReadChaptersFromDb } from '../../database/queries/DownloadQueries';
+import {
+  deleteReadChaptersFromDb,
+  clearUpdates,
+} from '@database/queries/ChapterQueries';
 
 import { Appbar, Button, List } from '@components';
 import useSourceStorage from '@hooks/useSourceStorage';
@@ -48,7 +50,7 @@ const AdvancedSettings = ({ navigation }) => {
         <List.SubHeader theme={theme}>Data Management</List.SubHeader>
         <List.Item
           title="Clear database"
-          description="Delete history for novels not in your library"
+          description="Delete cached novels which not in your library"
           onPress={showClearDatabaseDialog}
           theme={theme}
         />
@@ -95,8 +97,8 @@ const AdvancedSettings = ({ navigation }) => {
               color: theme.onSurface,
             }}
           >
-            Are you sure? Read chapters and progress of non-library novels will
-            be lost.
+            Are you sure? Read and Downloaded chapters and progress of
+            non-library novels will be lost.
           </Dialog.Title>
           <Dialog.Actions>
             <Button onPress={hideClearDatabaseDialog}>

@@ -8,9 +8,9 @@ interface SourceStorage {
   cookies?: any;
 }
 
-export type SourceStorageMap = Record<number, Partial<SourceStorage>>;
+export type SourceStorageMap = Record<string, Partial<SourceStorage>>;
 
-const useSourceStorage = ({ sourceId = -1 }: { sourceId?: number }) => {
+const useSourceStorage = ({ pluginId = '' }: { pluginId?: string }) => {
   const [values, setValues] = useMMKVObject<SourceStorageMap>(
     SOURCE_STORAGE,
     MMKVStorage,
@@ -19,8 +19,8 @@ const useSourceStorage = ({ sourceId = -1 }: { sourceId?: number }) => {
   const setSourceStorage = (key: keyof SourceStorage, value: any): void => {
     setValues({
       ...values,
-      [sourceId]: {
-        ...values?.[sourceId],
+      [pluginId]: {
+        ...values?.[pluginId],
         [key]: value,
       },
     });
@@ -43,7 +43,7 @@ const useSourceStorage = ({ sourceId = -1 }: { sourceId?: number }) => {
     showToast('Cookies cleared');
   };
 
-  const sourceStorage = values?.[sourceId];
+  const sourceStorage = values?.[pluginId];
 
   return {
     ...sourceStorage,
@@ -54,9 +54,9 @@ const useSourceStorage = ({ sourceId = -1 }: { sourceId?: number }) => {
 
 export default useSourceStorage;
 
-export const getSourceStorage = (sourceId: number) => {
+export const getSourceStorage = (pluginId: string) => {
   const rawSettings = MMKVStorage.getString(SOURCE_STORAGE) || '{}';
   const parsedSettings: Partial<SourceStorageMap> = JSON.parse(rawSettings);
 
-  return parsedSettings[sourceId] || {};
+  return parsedSettings[pluginId] || {};
 };

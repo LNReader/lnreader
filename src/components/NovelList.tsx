@@ -1,22 +1,22 @@
 import { useLibrarySettings } from '@hooks/useSettings';
 import { DisplayModes } from '@screens/library/constants/constants';
-import React, { useCallback, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import {
   StyleSheet,
   FlatList,
   FlatListProps,
   ListRenderItem,
 } from 'react-native';
-import { SourceNovelItem } from '../sources/types';
+import { NovelItem } from '@plugins/types';
 import { LibraryNovelInfo, NovelInfo } from '../database/types';
 import { useDeviceOrientation } from '@hooks/useDeviceOrientation';
 
 export type NovelListRenderItem = ListRenderItem<
-  LibraryNovelInfo | NovelInfo | SourceNovelItem
+  LibraryNovelInfo | NovelInfo | NovelItem
 >;
 
 const NovelList: React.FC<
-  FlatListProps<LibraryNovelInfo | NovelInfo | SourceNovelItem>
+  FlatListProps<LibraryNovelInfo | NovelInfo | NovelItem>
 > = props => {
   const { displayMode = DisplayModes.Comfortable, novelsPerRow = 3 } =
     useLibrarySettings();
@@ -37,8 +37,6 @@ const NovelList: React.FC<
     }
   }, [isListView, orientation, novelsPerRow]);
 
-  const keyExtractor = useCallback(item => item.sourceId + item.novelUrl, []);
-
   return (
     <FlatList
       contentContainerStyle={[
@@ -47,7 +45,7 @@ const NovelList: React.FC<
       ]}
       numColumns={numColumns}
       key={numColumns}
-      keyExtractor={keyExtractor}
+      keyExtractor={item => item.url}
       {...props}
     />
   );

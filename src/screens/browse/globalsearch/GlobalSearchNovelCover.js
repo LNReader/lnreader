@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text, Image, Pressable } from 'react-native';
-import { defaultCoverUri } from '../../../sources/helpers/constants';
-import { coverPlaceholderColor } from '../../../theme/colors';
+import { defaultCoverUri } from '@plugins/helpers/constants';
+import { coverPlaceholderColor } from '@theme/colors';
 
 const GlobalSearchNovelCover = ({
   novel,
@@ -10,9 +10,9 @@ const GlobalSearchNovelCover = ({
   inLibrary,
   onLongPress,
 }) => {
-  const { novelName, novelCover } = novel;
+  const { name, cover } = novel;
 
-  const uri = novelCover;
+  const uri = cover;
 
   return (
     <View style={styles.container}>
@@ -31,7 +31,7 @@ const GlobalSearchNovelCover = ({
           numberOfLines={2}
           style={[styles.title, { color: theme.onSurface }]}
         >
-          {novelName}
+          {name}
         </Text>
       </Pressable>
     </View>

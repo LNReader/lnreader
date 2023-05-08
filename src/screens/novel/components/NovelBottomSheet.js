@@ -6,11 +6,11 @@ import color from 'color';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { BottomSheetView } from '@gorhom/bottom-sheet';
 import BottomSheet from '@components/BottomSheet/BottomSheet';
-import { getString } from '../../../../strings/translations';
+import { getString } from '@strings/translations';
 
-import { Checkbox, SortItem } from '../../../components/Checkbox/Checkbox';
+import { Checkbox, SortItem } from '@components/Checkbox/Checkbox';
 
-import { showChapterTitlesAction } from '../../../redux/novel/novel.actions';
+import { showChapterTitlesAction } from '@redux/novel/novel.actions';
 import { overlay } from 'react-native-paper';
 const ChaptersSettingsSheet = ({
   bottomSheetRef,
@@ -34,11 +34,11 @@ const ChaptersSettingsSheet = ({
         theme={theme}
         label="Downloaded"
         color={theme.primary}
-        status={filter.match('AND downloaded=1')}
+        status={filter.match('AND isDownloaded = 1')}
         onPress={() =>
-          filter.match('AND downloaded=1')
-            ? filterChapters(filter.replace(' AND downloaded=1', ''))
-            : filterChapters(filter + ' AND downloaded=1')
+          filter.match('AND isDownloaded = 1')
+            ? filterChapters(filter.replace(' AND isDownloaded = 1', ''))
+            : filterChapters(filter + ' AND isDownloaded = 1')
         }
       />
       <Checkbox
@@ -46,19 +46,21 @@ const ChaptersSettingsSheet = ({
         label="Unread"
         color={theme.primary}
         status={
-          filter.match('AND `read`=0')
+          filter.match('AND `unread`=1')
             ? true
-            : filter.match('AND `read`=1')
+            : filter.match('AND `unread`=0')
             ? 'indeterminate'
             : false
         }
         onPress={() => {
-          if (filter.match('AND `read`=0')) {
-            filterChapters(filter.replace(' AND `read`=0', ' AND `read`=1'));
-          } else if (filter.match('AND `read`=1')) {
-            filterChapters(filter.replace(' AND `read`=1', ''));
+          if (filter.match(' AND `unread`=1')) {
+            filterChapters(
+              filter.replace(' AND `unread`=1', ' AND `unread`=0'),
+            );
+          } else if (filter.match(' AND `unread`=0')) {
+            filterChapters(filter.replace(' AND `unread`=0', ''));
           } else {
-            filterChapters(filter + ' AND `read`=0');
+            filterChapters(filter + ' AND `unread`=1');
           }
         }}
       />
@@ -81,32 +83,32 @@ const ChaptersSettingsSheet = ({
       <SortItem
         label="By source"
         status={
-          sort === 'ORDER BY chapterId ASC'
+          sort === 'ORDER BY id ASC'
             ? 'asc'
-            : sort === 'ORDER BY chapterId DESC'
+            : sort === 'ORDER BY id DESC'
             ? 'desc'
             : undefined
         }
         onPress={() =>
-          sort === 'ORDER BY chapterId ASC'
-            ? sortChapters('ORDER BY chapterId DESC')
-            : sortChapters('ORDER BY chapterId ASC')
+          sort === 'ORDER BY id ASC'
+            ? sortChapters('ORDER BY id DESC')
+            : sortChapters('ORDER BY id ASC')
         }
         theme={theme}
       />
       <SortItem
         label="By chapter name"
         status={
-          sort === 'ORDER BY chapterName ASC'
+          sort === 'ORDER BY name ASC'
             ? 'asc'
-            : sort === 'ORDER BY chapterName DESC'
+            : sort === 'ORDER BY name DESC'
             ? 'desc'
             : undefined
         }
         onPress={() =>
-          sort === 'ORDER BY chapterName ASC'
-            ? sortChapters('ORDER BY chapterName DESC')
-            : sortChapters('ORDER BY chapterName ASC')
+          sort === 'ORDER BY name ASC'
+            ? sortChapters('ORDER BY name DESC')
+            : sortChapters('ORDER BY name ASC')
         }
         theme={theme}
       />
@@ -165,12 +167,7 @@ const ChaptersSettingsSheet = ({
   );
 
   return (
-    <BottomSheet
-      snapPoints={[240]}
-      bottomSheetRef={bottomSheetRef}
-      height={220}
-      theme={theme}
-    >
+    <BottomSheet snapPoints={[240]} bottomSheetRef={bottomSheetRef}>
       <BottomSheetView
         style={[
           styles.contentContainer,

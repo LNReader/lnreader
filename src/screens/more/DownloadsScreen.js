@@ -3,8 +3,6 @@ import { FlatList, StyleSheet } from 'react-native';
 
 import { Appbar as MaterialAppbar } from 'react-native-paper';
 
-import { useDispatch } from 'react-redux';
-
 import { ScreenContainer } from '../../components/Common';
 import EmptyView from '../../components/EmptyView';
 import { Appbar, List } from '@components';
@@ -22,8 +20,6 @@ import { getString } from '@strings/translations';
 
 const Downloads = ({ navigation }) => {
   const theme = useTheme();
-
-  const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(true);
   const [chapters, setChapters] = useState([]);
@@ -92,7 +88,7 @@ const Downloads = ({ navigation }) => {
         <FlatList
           contentContainerStyle={styles.flatList}
           data={groupUpdatesByDate(chapters)}
-          //keyExtractor={item => item.chapterId.toString()}
+          keyExtractor={(item, index) => 'downloadGroup' + index}
           renderItem={renderItem}
           ListEmptyComponent={<ListEmptyComponent />}
         />
@@ -101,7 +97,7 @@ const Downloads = ({ navigation }) => {
         dialogVisible={visible}
         hideDialog={hideDialog}
         onSubmit={() => {
-          deleteDownloads();
+          deleteDownloads(chapters);
           setChapters([]);
           hideDialog();
         }}

@@ -6,7 +6,6 @@ import {
   useWindowDimensions,
   Pressable,
 } from 'react-native';
-import color from 'color';
 
 import { LinearGradient } from 'expo-linear-gradient';
 import FastImage from 'react-native-fast-image';
@@ -47,10 +46,9 @@ const NovelCover = ({
     [numColumns],
   );
 
-  const selectNovel = () => onLongPress && onLongPress(item.novelId);
+  const selectNovel = () => onLongPress(item);
 
-  const uri = item.novelCover;
-
+  const uri = item.cover;
   return displayMode !== DisplayModes.List ? (
     <View
       style={[
@@ -76,7 +74,7 @@ const NovelCover = ({
       >
         <View style={styles.badgeContainer}>
           {libraryStatus && <InLibraryBadge theme={theme} />}
-          {showDownloadBadges && item.chaptersDownloaded && (
+          {showDownloadBadges && item.chaptersDownloaded > 0 && (
             <DownloadBadge
               showUnreadBadges={showUnreadBadges}
               chaptersDownloaded={item.chaptersDownloaded}
@@ -84,7 +82,7 @@ const NovelCover = ({
               theme={theme}
             />
           )}
-          {showUnreadBadges && item.chaptersUnread && (
+          {showUnreadBadges && item.chaptersUnread > 0 && (
             <UnreadBadge
               theme={theme}
               chaptersDownloaded={item.chaptersDownloaded}
@@ -106,11 +104,11 @@ const NovelCover = ({
         />
         <View style={styles.compactTitleContainer}>
           {displayMode === DisplayModes.Compact && (
-            <CompactTitle novelName={item.novelName} />
+            <CompactTitle novelName={item.name} />
           )}
         </View>
         {displayMode === DisplayModes.Comfortable && (
-          <ComfortableTitle novelName={item.novelName} theme={theme} />
+          <ComfortableTitle novelName={item.name} theme={theme} />
         )}
       </Pressable>
     </View>

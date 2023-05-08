@@ -2,7 +2,7 @@ import React, { memo, ReactNode, useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import color from 'color';
 
-import { Row } from '../../../components/Common';
+import { Row } from '@components/Common';
 
 import {
   ChapterBookmarkButton,
@@ -11,31 +11,29 @@ import {
 import { parseChapterNumber } from '@utils/parseChapterNumber';
 
 import { ThemeColors } from '@theme/types';
-import { ChapterItemExtended } from '@database/types';
+import { ChapterInfo } from '@database/types';
 
 interface ChapterItemProps {
-  chapter: ChapterItemExtended;
+  chapter: ChapterInfo;
   theme: ThemeColors;
-  index?: number;
   downloadQueue: any;
   showChapterTitles: boolean;
-  isSelected?: (chapterId: number) => boolean;
-  downloadChapter: (chapter: ChapterItemExtended) => (dispatch: any) => void;
-  deleteChapter: (chapter: ChapterItemExtended) => void;
-  onSelectPress?: (chapter: ChapterItemExtended, arg1: () => void) => void;
-  onSelectLongPress?: (chapter: ChapterItemExtended) => void;
-  navigateToChapter: (chapter: ChapterItemExtended) => void;
-  showProgressPercentage?: (chapter: ChapterItemExtended) => void;
+  isSelected?: (id: number) => boolean;
+  downloadChapter: (chapter: ChapterInfo) => (dispatch: any) => void;
+  deleteChapter: (chapter: ChapterInfo) => void;
+  onSelectPress?: (chapter: ChapterInfo, arg1: () => void) => void;
+  onSelectLongPress?: (chapter: ChapterInfo) => void;
+  navigateToChapter: (chapter: ChapterInfo) => void;
+  showProgressPercentage?: (chapter: ChapterInfo) => any;
   left?: ReactNode;
 
   isUpdateCard?: boolean;
-  novelName?: string;
+  novelName: string;
 }
 
 const ChapterItem: React.FC<ChapterItemProps> = ({
   chapter,
   theme,
-  index,
   showChapterTitles,
   downloadQueue,
   downloadChapter,
@@ -49,19 +47,18 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
   isUpdateCard,
   novelName,
 }) => {
-  const { chapterId, chapterName, read, releaseDate, bookmark } = chapter;
+  const { id, name, unread, releaseTime, bookmark } = chapter;
   const [deleteChapterMenuVisible, setDeleteChapterMenuVisible] =
     useState(false);
   const showDeleteChapterMenu = () => setDeleteChapterMenuVisible(true);
   const hideDeleteChapterMenu = () => setDeleteChapterMenuVisible(false);
-  const chapterNumber = parseChapterNumber(chapterName);
-
+  const chapterNumber = parseChapterNumber(novelName, name);
   return (
     <Pressable
-      key={chapterId.toString()}
+      key={'chapterItem' + id}
       style={[
         styles.chapterCardContainer,
-        isSelected?.(chapterId) && {
+        isSelected?.(id) && {
           backgroundColor: color(theme.primary).alpha(0.12).string(),
         },
       ]}
@@ -82,39 +79,35 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
               style={[
                 {
                   fontSize: 14,
-                  color: read ? theme.outline : theme.onSurface,
+                  color: unread ? theme.onSurface : theme.outline,
                 },
               ]}
-              numberOfLines={1}
             >
-              {novelName}
+              {novelName.slice(0, 45)}
             </Text>
           )}
           <Text
             style={[
               {
                 fontSize: isUpdateCard ? 12 : 14,
-                color: read
+                color: !unread
                   ? theme.outline
                   : bookmark
                   ? theme.primary
                   : theme.onSurfaceVariant,
               },
             ]}
-            numberOfLines={1}
           >
             {showChapterTitles
-              ? chapterNumber
-                ? 'Chapter ' + chapterNumber
-                : 'Chapter ' + index
-              : chapterName}
+              ? `Chapter ${chapterNumber} • ID: ${id}`
+              : name.slice(0, 45)}
           </Text>
           <View style={styles.textRow}>
-            {releaseDate && !isUpdateCard ? (
+            {releaseTime && !isUpdateCard ? (
               <Text
                 style={[
                   {
-                    color: read
+                    color: !unread
                       ? theme.outline
                       : bookmark
                       ? theme.primary
@@ -124,7 +117,7 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
                 ]}
                 numberOfLines={1}
               >
-                {releaseDate}
+                {releaseTime}
               </Text>
             ) : null}
             {showProgressPercentage?.(chapter)}

@@ -1,14 +1,13 @@
 import React from 'react';
 import { Dimensions, StatusBar } from 'react-native';
-import WebView, { WebViewProps } from 'react-native-webview';
-import RNFetchBlob from 'rn-fetch-blob';
+import WebView from 'react-native-webview';
 
 import { useTheme } from '@hooks/useTheme';
-import { ChapterItem } from '@database/types';
+import { ChapterInfo, NovelInfo } from '@database/types';
 import { useReaderSettings } from '@redux/hooks';
 import { getString } from '@strings/translations';
 
-import { sourceManager } from '../../../sources/sourceManager';
+import { getPlugin } from '@plugins/pluginManager';
 
 type WebViewPostEvent = {
   type: string;
@@ -16,27 +15,18 @@ type WebViewPostEvent = {
 };
 
 type WebViewReaderProps = {
-  chapterInfo: {
-    sourceId: number;
-    chapterId: string;
-    chapterUrl: string;
-    novelId: string;
-    novelUrl: string;
-    novelName: string;
-    chapterName: string;
-    bookmark: string;
-  };
+  chapterInfo: { novel: NovelInfo; chapter: ChapterInfo };
   html: string;
   chapterName: string;
   swipeGestures: boolean;
   minScroll: React.MutableRefObject<number>;
-  nextChapter: ChapterItem;
+  nextChapter: ChapterInfo;
   webViewRef: React.MutableRefObject<WebView>;
   onPress(): void;
+  onLayout(): void;
   doSaveProgress(offSetY: number, percentage: number): void;
   navigateToChapterBySwipe(name: string): void;
   onWebViewNavigationStateChange(): void;
-  onLayout: WebViewProps['onLayout'];
 };
 
 const onClickWebViewPostMessage = (event: WebViewPostEvent) =>
@@ -61,12 +51,12 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
   } = props;
 
   const theme = useTheme();
-
+  const { novel, chapter } = chapterInfo;
   const readerSettings = useReaderSettings();
   const { theme: backgroundColor } = readerSettings;
 
   const layoutHeight = Dimensions.get('window').height;
-  const headers = sourceManager(chapterInfo.sourceId)?.headers;
+  const plugin = getPlugin(novel?.pluginId);
   return (
     <WebView
       ref={webViewRef}
@@ -78,7 +68,6 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
       onNavigationStateChange={onWebViewNavigationStateChange}
       nestedScrollEnabled={true}
       javaScriptEnabled={true}
-      onLayout={onLayout}
       onMessage={ev => {
         const event: WebViewPostEvent = JSON.parse(ev.nativeEvent.data);
         switch (event.type) {
@@ -93,12 +82,10 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
             break;
           case 'imgfile':
             if (event.data && typeof event.data === 'string') {
-              RNFetchBlob.fetch('get', event.data, headers).then(res => {
-                const base64 = res.base64();
+              plugin.fetchImage(event.data).then(base64 => {
                 webViewRef.current?.injectJavaScript(
                   `document.querySelector("img[delayed-src='${event.data}']").src="data:image/jpg;base64,${base64}";
-                  document.querySelector("img[delayed-src='${event.data}']").classList.remove("load-icon");
-                  sendHeight(500);`,
+                  document.querySelector("img[delayed-src='${event.data}']").classList.remove("load-icon");`,
                 );
               });
             }
@@ -111,10 +98,9 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
             }
             break;
           case 'height':
-            if (event.data) {
-              const contentHeight = Math.round(Number(event.data));
-              minScroll.current = (layoutHeight / contentHeight) * 100;
-            }
+            const contentHeight = Number(event.data);
+            minScroll.current = (layoutHeight / contentHeight) * 100;
+            onLayout();
             break;
         }
       }}
@@ -215,52 +201,49 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                     </style>
                   </head>
                   <body>
-
                     <div class="chapterCtn" ${onClickWebViewPostMessage({
                       type: 'hide',
                     })}>
                       <chapter 
-                        data-novel-id='${chapterInfo.novelId}'
-                        data-chapter-id='${chapterInfo.chapterId}'
+                        data-plugin-id='${novel?.pluginId}'
+                        data-novel-id='${chapter.novelId}'
+                        data-chapter-id='${chapter.id}'
                       >
                         ${html}
                       </chapter>
                     </div>
                     <script>
-                    if(!document.querySelector("input[offline]") && ${!!headers}){
-                      document.querySelectorAll("img").forEach(img => {
-                        window.ReactNativeWebView.postMessage(JSON.stringify({type:"imgfile",data:img.getAttribute("delayed-src")}));
-                      });
-                    }
-
-                    var scrollTimeout;
-                    window.addEventListener("scroll", (event) => {
-                      window.clearTimeout( scrollTimeout );
-                      scrollTimeout = setTimeout(() => {
+                      new ResizeObserver(() =>
                         window.ReactNativeWebView.postMessage(
-                          JSON.stringify(
-                            {
-                              type:"scrollend",
-                              data:{
-                                offSetY: window.pageYOffset,
-                                percentage: (window.pageYOffset+${layoutHeight})/document.body.scrollHeight*100,
+                          JSON.stringify({type: "height", data: document.body.scrollHeight})
+                        )
+                      ).observe(document.querySelector('body'));
+
+                      if(!document.querySelector("input[offline]") && ${
+                        plugin?.protected
+                      }){
+                        document.querySelectorAll("img").forEach(img => {
+                          window.ReactNativeWebView.postMessage(JSON.stringify({type:"imgfile",data:img.getAttribute("delayed-src")}));
+                        });
+                      }
+
+                      var scrollTimeout;
+                      window.addEventListener("scroll", (event) => {
+                        window.clearTimeout( scrollTimeout );
+                        scrollTimeout = setTimeout(() => {
+                          window.ReactNativeWebView.postMessage(
+                            JSON.stringify(
+                              {
+                                type:"scrollend",
+                                data:{
+                                  offSetY: window.pageYOffset,
+                                  percentage: (window.pageYOffset+${layoutHeight})/document.body.scrollHeight*100,
+                                }
                               }
-                            }
-                          )
-                        );
-                      }, 100);
-                    });
-
-                    let sendHeightTimeout;
-                    const sendHeight = (timeOut) => {
-                      clearTimeout(sendHeightTimeout);
-                      sendHeightTimeout = setTimeout(
-                        window.ReactNativeWebView.postMessage(
-                          JSON.stringify({type:"height",data:document.body.scrollHeight})
-                        ), timeOut
-                      );
-                    }
-                    sendHeight(1000);
+                            )
+                          );
+                        }, 100);
+                      });
                     </script>
                     <div class="infoText">
                     ${getString(
@@ -272,7 +255,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                         ? `<button class="nextButton" ${onClickWebViewPostMessage(
                             { type: 'next' },
                           )}>
-                      Next: ${nextChapter.chapterName}
+                      Next: ${nextChapter.name}
                     </button>`
                         : `<div class="infoText">${getString(
                             'readerScreen.noNextChapter',

@@ -9,18 +9,19 @@ import {
 import { ProgressBar } from 'react-native-paper';
 import { useTheme } from '@hooks/useTheme';
 
-import EmptyView from '../../../components/EmptyView';
+import EmptyView from '@components/EmptyView';
 import MigrationNovelList from './MigrationNovelList';
 
-import { ScreenContainer } from '../../../components/Common';
-import { sourceManager } from '../../../sources/sourceManager';
-import { useBrowseSettings, useSourcesReducer } from '../../../redux/hooks';
+import { ScreenContainer } from '@components/Common';
+import { getPlugin } from '@plugins/pluginManager';
+import { useBrowseSettings, usePluginReducer } from '@redux/hooks';
 import { useLibraryNovels } from '@screens/library/hooks/useLibrary';
 import { Appbar } from '@components';
 import GlobalSearchSkeletonLoading from '../loadingAnimation/GlobalSearchSkeletonLoading';
 
 const MigrationNovels = ({ navigation, route }) => {
-  const { sourceId, novelName } = route.params;
+  const { pluginId, novel } = route.params;
+
   const theme = useTheme();
 
   const isMounted = React.useRef(true);
@@ -30,20 +31,19 @@ const MigrationNovels = ({ navigation, route }) => {
 
   const { library } = useLibraryNovels();
 
-  const { allSources, pinnedSourceIds = [] } = useSourcesReducer();
+  const { installedPlugins, pinnedPlugins } = usePluginReducer();
 
-  const isPinned = id => pinnedSourceIds.indexOf(id) > -1;
-  const pinnedSources = allSources.filter(source => isPinned(source.sourceId));
+  const isPinned = id => pinnedPlugins.find(plg => plg.id !== id);
 
   const { searchAllSources = false } = useBrowseSettings();
 
   const getSearchResults = async () => {
-    let migrationSources = searchAllSources ? allSources : pinnedSources;
+    let migrationSources = searchAllSources ? installedPlugins : pinnedPlugins;
 
     setSearchResults(
       migrationSources.map(item => ({
-        sourceId: item.sourceId,
-        sourceName: item.sourceName,
+        id: item.id,
+        name: item.name,
         lang: item.lang,
         loading: true,
         novels: [],
@@ -54,26 +54,25 @@ const MigrationNovels = ({ navigation, route }) => {
     migrationSources.map(async item => {
       if (isMounted.current === true) {
         try {
-          const source = sourceManager(item.sourceId);
-          const data = await source.searchNovels(novelName);
-
+          const source = getPlugin(item.id);
+          const data = await source.searchNovels(novel.name);
           setSearchResults(prevState =>
-            prevState.map(sourceItem =>
-              sourceItem.sourceId === item.sourceId
-                ? { ...sourceItem, novels: data, loading: false }
-                : { ...sourceItem },
+            prevState.map(pluginItem =>
+              pluginItem.id === item.id
+                ? { ...pluginItem, novels: data, loading: false }
+                : { ...pluginItem },
             ),
           );
         } catch (e) {
           setSearchResults(prevState =>
-            prevState.map(sourceItem =>
-              sourceItem.sourceId === item.sourceId
+            prevState.map(pluginItem =>
+              pluginItem.id === item.id
                 ? {
-                    ...sourceItem,
+                    ...pluginItem,
                     loading: false,
                     error: e.message,
                   }
-                : sourceItem,
+                : pluginItem,
             ),
           );
         }
@@ -101,7 +100,7 @@ const MigrationNovels = ({ navigation, route }) => {
   const renderItem = ({ item }) => (
     <>
       <View style={{ padding: 8, paddingVertical: 16 }}>
-        <Text style={{ color: theme.onSurface }}>{item.sourceName}</Text>
+        <Text style={{ color: theme.onSurface }}>{item.name}</Text>
         <Text style={{ color: theme.onSurfaceVariant, fontSize: 12 }}>
           {item.lang}
         </Text>
@@ -112,7 +111,8 @@ const MigrationNovels = ({ navigation, route }) => {
         <GlobalSearchSkeletonLoading theme={theme} />
       ) : (
         <MigrationNovelList
-          data={item.novels}
+          data={item}
+          fromNovel={novel} // the novel will be migrated from
           theme={theme}
           library={library}
           navigation={navigation}
@@ -124,7 +124,7 @@ const MigrationNovels = ({ navigation, route }) => {
   return (
     <ScreenContainer theme={theme}>
       <Appbar
-        title={novelName}
+        title={novel.name}
         handleGoBack={navigation.goBack}
         theme={theme}
       />
@@ -134,14 +134,14 @@ const MigrationNovels = ({ navigation, route }) => {
       <FlatList
         contentContainerStyle={{ flexGrow: 1, padding: 4 }}
         data={searchResults}
-        keyExtractor={item => item.sourceId.toString()}
+        keyExtractor={item => item.id}
         renderItem={renderItem}
-        extraData={pinnedSources}
+        extraData={pinnedPlugins}
         ListEmptyComponent={
           <EmptyView
             icon="__φ(．．)"
-            description={`Search a novel in your pinned sources ${
-              pinnedSources.length === 0 ? '(No sources pinned)' : ''
+            description={`Search a novel in your pinned plugins ${
+              pinnedPlugins.length === 0 ? '(No plugins pinned)' : ''
             }`}
           />
         }

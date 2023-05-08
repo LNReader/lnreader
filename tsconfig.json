@@ -6,7 +6,7 @@
     "esModuleInterop": true,
     "isolatedModules": true,
     "jsx": "react-native",
-    "lib": ["es2017"],
+    "lib": ["es2019"],
     "moduleResolution": "node",
     "noEmit": true,
     "strict": true,
@@ -23,7 +23,9 @@
       "@strings/*": ["strings/*"],
       "@redux/*": ["src/redux/*"],
       "@theme/*": ["src/theme/*"],
-      "@utils/*": ["src/utils/*"]
+      "@utils/*": ["src/utils/*"],
+      "@plugins/*": ["src/plugins/*"],
+      "@services/*": ["src/services/*"],
     }
   },
   "exclude": [

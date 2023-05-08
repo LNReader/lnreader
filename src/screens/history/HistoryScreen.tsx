@@ -16,10 +16,8 @@ import { History } from '../../database/types';
 import { getString } from '@strings/translations';
 import ClearHistoryDialog from './components/ClearHistoryDialog';
 import {
-  openChapter,
   openChapterChapterTypes,
   openChapterNovelTypes,
-  openChapterFunctionTypes,
   openNovel,
   openNovelProps,
 } from '@utils/handleNavigateParams';
@@ -52,7 +50,7 @@ const HistoryScreen = () => {
   const groupHistoryByDate = (rawHistory: History[]) => {
     const dateGroups = rawHistory.reduce<Record<string, History[]>>(
       (groups, item) => {
-        const date = convertDateToISOString(item.historyTimeRead);
+        const date = convertDateToISOString(item.readTime);
 
         if (!groups[date]) {
           groups[date] = [];
@@ -79,10 +77,7 @@ const HistoryScreen = () => {
     novel: openChapterNovelTypes,
     chapter: openChapterChapterTypes,
   ) =>
-    navigate(
-      'Chapter' as never,
-      openChapter(novel, chapter) as openChapterFunctionTypes as never,
-    );
+    navigate('Chapter' as never, { novel: novel, chapter: chapter } as never);
 
   const handleNavigateToNovel = (novel: openNovelProps) =>
     navigate('Novel' as never, openNovel(novel) as openNovelProps as never);

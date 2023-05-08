@@ -1,100 +1,45 @@
 import * as SQLite from 'expo-sqlite';
 import {
-  createNovelTableQuery,
-  createUrlIndexQuery,
-  createLibraryIndexQuery,
-  addCategoryColumnQuery,
-} from './tables/NovelTable';
-import {
-  createChapterTableQuery,
-  createNovelIdIndexQuery,
-  createUnreadChaptersIndexQuery,
-} from './tables/ChapterTable';
-import {
-  createHistoryTableQuery,
-  createChapterIdIndexQuery,
-} from './tables/HistoryTable';
-import {
-  createDownloadIdIndex,
-  createDownloadTableQuery,
-} from './tables/DownloadTable';
-import { createUpdatesTableQuery } from './tables/UpdateTable';
-import {
-  addCategorySortColumnQuery,
   createCategoriesTableQuery,
-  createCategorydIndexQuery,
-  createDefaultCategoryQuery,
+  createCategoryDefaultQuery,
+  createCategoryTriggerQuery,
 } from './tables/CategoryTable';
-import {
-  dbTxnErrorCallback,
-  txnErrorCallbackWithoutToast,
-} from './utils/helpers';
+import { createNovelTableQuery } from './tables/NovelTable';
+import { createNovelCategoryTableQuery } from './tables/NovelCategoryTable';
+import { createChapterTableQuery } from './tables/ChapterTable';
+import { createDownloadTableQuery } from './tables/DownloadTable';
+import { dbTxnErrorCallback } from './utils/helpers';
 import { noop } from 'lodash-es';
 
 const dbName = 'lnreader.db';
 
 const db = SQLite.openDatabase(dbName);
 
-const createTables = () => {
+export const createTables = () => {
+  db.exec([{ sql: 'PRAGMA foreign_keys = ON', args: [] }], false, () => {});
   db.transaction(tx => {
+    tx.executeSql(createNovelTableQuery);
     tx.executeSql(createCategoriesTableQuery, [], () => {
-      tx.executeSql(
-        addCategorySortColumnQuery,
-        undefined,
-        noop,
-        txnErrorCallbackWithoutToast,
-      );
-      tx.executeSql(
-        createDefaultCategoryQuery,
-        undefined,
-        noop,
-        txnErrorCallbackWithoutToast,
-      );
+      tx.executeSql(createCategoryTriggerQuery);
+      tx.executeSql(createCategoryDefaultQuery);
     });
-    tx.executeSql(createNovelTableQuery, [], () => {
-      tx.executeSql(
-        addCategoryColumnQuery,
-        undefined,
-        noop,
-        txnErrorCallbackWithoutToast,
-      );
-    });
+    tx.executeSql(createNovelCategoryTableQuery);
     tx.executeSql(createChapterTableQuery);
-    tx.executeSql(createHistoryTableQuery);
     tx.executeSql(createDownloadTableQuery);
-    tx.executeSql(createUpdatesTableQuery);
   });
-};
-
-const createIndexes = () => {
-  db.transaction(tx => {
-    tx.executeSql(createUrlIndexQuery);
-    tx.executeSql(createLibraryIndexQuery);
-    tx.executeSql(createNovelIdIndexQuery);
-    tx.executeSql(createUnreadChaptersIndexQuery);
-    tx.executeSql(createChapterIdIndexQuery);
-    tx.executeSql(createCategorydIndexQuery);
-    tx.executeSql(createDownloadIdIndex);
-  });
-};
-
-export const createDatabase = async () => {
-  createTables();
-  createIndexes();
 };
 
 /**
  * For Testing
  */
-export const deleteDatabase = () => {
+export const deleteDatabase = async () => {
   db.transaction(
     tx => {
-      tx.executeSql('DROP TABLE novels');
-      tx.executeSql('DROP TABLE chapters');
-      tx.executeSql('DROP TABLE history');
-      tx.executeSql('DROP TABLE downloads');
-      tx.executeSql('DROP TABLE updates');
-      tx.executeSql('DROP TABLE categories');
+      tx.executeSql('DROP TABLE Category');
+      tx.executeSql('DROP TABLE Novel');
+      tx.executeSql('DROP TABLE NovelCategory');
+      tx.executeSql('DROP TABLE Chapter');
+      tx.executeSql('DROP TABLE Download');
     },
     dbTxnErrorCallback,
     noop,

@@ -1,11 +1,11 @@
 import { SAVE_SCROLL_POSITION } from '../preferences/preference.types';
 
 export const saveScrollPosition =
-  (position, percentage, chapterId, novelId) => async dispatch => {
+  (offsetY, percentage, chapterId, novelId) => async dispatch => {
     dispatch({
       type: SAVE_SCROLL_POSITION,
       payload: {
-        position,
+        offsetY,
         percentage,
         chapterId,
         novelId,

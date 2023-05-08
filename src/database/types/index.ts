@@ -1,85 +1,79 @@
+import { NovelStatus } from '@plugins/types';
 export interface NovelInfo {
-  novelId: number;
-  sourceUrl: string;
-  novelUrl: string;
-  sourceId: number;
-  source: string;
-  novelName: string;
-  novelCover?: string;
-  novelSummary?: string;
-  genre?: string;
+  id: number;
+  url: string;
+  pluginId: string;
+  name: string;
+  cover?: string;
+  summary?: string;
   author?: string;
-  status?: string;
-  followed: number;
-  categoryIds: string;
+  artist?: string;
+  status?: NovelStatus;
+  genres?: string;
+  inLibrary: number;
 }
 
 export interface LibraryNovelInfo extends NovelInfo {
+  category: string;
   chaptersUnread: number;
   chaptersDownloaded: number;
-  categoryIds: string;
 }
 
-export interface ChapterItem {
-  chapterId: number;
+export interface ChapterInfo {
+  id: number;
   novelId: number;
-  chapterUrl: string;
-  chapterName: string;
-  releaseDate?: string;
-  read: number;
+  url: string;
+  name: string;
+  releaseTime?: string;
+  readTime: string;
   bookmark: number;
-  downloaded: number;
-}
-export interface ChapterItemExtended extends ChapterItem {
-  novelId: number;
-  novelUrl: string;
-  sourceId: number;
+  unread: number;
+  isDownloaded: number;
+
+  // download screen need this :)
+  pluginId: string;
   novelName: string;
+  novelUrl: string;
+
+  // migrate need this :)
+  number: number;
 }
 
 export interface DownloadedChapter {
-  downloadId: number;
-  downloadChapterId: number;
-  chapterName: string | null;
-  chapterText: string;
+  id: number; // chapterId
+  novelId: number;
+  pluginId: string;
 }
 
 export interface History {
-  historyId: number;
-  sourceId: number;
+  id: number; // chapterId xD
+  pluginId: string;
   novelId: number;
-  chapterId: number;
   novelName: string;
   novelUrl: string;
   novelCover: string;
   chapterName: string;
   chapterUrl: string;
-  historyTimeRead: string;
+  readTime: string;
   bookmark: number;
 }
 
 export interface Update {
-  updateId: number;
-  sourceId: number;
+  id: number; // chapterId
+  pluginId: string;
   novelId: number;
   novelName: string;
   novelUrl: string;
   novelCover: string;
-  chapterId: number;
-  chapterUrl: string;
-  chapterName: string;
-  downloaded: number;
-  read: number;
-  updateTime: string;
-  bookmark: number;
-  releaseDate: string;
+  name: string; //  chapterName
+  url: string; //  chapterUrl
+  updatedTime: string;
 }
 
 export interface Category {
   id: number;
   name: string;
-  lastUpdatedAt: Date;
-  sort: number | null;
+  sort: number;
 }
 
 export interface LibraryStats {

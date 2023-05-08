@@ -1,12 +1,12 @@
 import sanitizeHtml from 'sanitize-html';
 
 import { load as loadCheerio } from 'cheerio';
-import { sourceManager } from './../../../sources/sourceManager';
+import { getPlugin } from '@plugins/pluginManager';
 import { LoadingImageSrc } from './LoadImage';
 
 interface Options {
   removeExtraParagraphSpacing?: boolean;
-  sourceId?: number;
+  pluginId?: string;
 }
 
 export const sanitizeChapterText = (
@@ -38,8 +38,8 @@ export const sanitizeChapterText = (
     }
     const loadedCheerio = loadCheerio(text);
     if (
-      options?.sourceId &&
-      sourceManager(options.sourceId).headers &&
+      options?.pluginId &&
+      getPlugin(options.pluginId)?.protected &&
       loadedCheerio('input[offline]').length === 0
     ) {
       loadedCheerio('img').each((i, element) => {

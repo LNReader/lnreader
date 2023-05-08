@@ -1,78 +1,83 @@
-import { SectionList, StyleSheet, Text } from 'react-native';
-import React, { useCallback, useEffect, useMemo } from 'react';
+import { SectionList, StyleSheet, Text, RefreshControl } from 'react-native';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
+import { useNavigation } from '@react-navigation/native';
+import color from 'color';
 
-import { EmptyView, SearchbarV2 } from '../../components';
 import {
-  defaultLanguage,
-  getSourcesAction,
-  searchSourcesAction,
-  setLastUsedSource,
-  togglePinSource,
-} from '../../redux/source/sourcesSlice';
+  fetchPluginsAction,
+  searchPluginsAction,
+  setLastUsedPlugin,
+  togglePinPlugin,
+  installPluginAction,
+  uninstallPluginAction,
+  updatePluginAction,
+} from '@redux/plugins/pluginsSlice';
 import {
   useAppDispatch,
   useBrowseSettings,
-  useSourcesReducer,
-} from '../../redux/hooks';
+  usePluginReducer,
+} from '@redux/hooks';
+
+import { useSearch } from '@hooks';
 import { useTheme } from '@hooks/useTheme';
-import { useNavigation } from '@react-navigation/native';
-import { useSearch } from '../../hooks';
-import SourceCard from './components/SourceCard/SourceCard';
-import { getString } from '../../../strings/translations';
-import { Source } from '../../sources/types';
+import { getString } from '@strings/translations';
+import { fetchPlugins } from '@plugins/pluginManager';
+
+import { Languages } from '@utils/constants/languages';
+import { PluginItem } from '@plugins/types';
+import { EmptyView, SearchbarV2 } from '@components';
 import MalCard from './discover/MalCard/MalCard';
+import PluginCard from './components/PluginCard';
 
 const BrowseScreen = () => {
   const { navigate } = useNavigation();
-  const theme = useTheme();
   const dispatch = useAppDispatch();
-
+  const theme = useTheme();
+  const [refreshing, setRefreshing] = useState(false);
   const { searchText, setSearchText, clearSearchbar } = useSearch();
-
-  const onChangeText = (text: string) => {
-    setSearchText(text);
-    dispatch(searchSourcesAction(text));
-  };
-
-  const handleClearSearchbar = () => {
-    clearSearchbar();
-    dispatch(getSourcesAction());
-  };
-
   const {
-    allSources,
+    availablePlugins,
+    installedPlugins,
     searchResults,
-    pinnedSourceIds = [],
-    languageFilters = [defaultLanguage || 'English'], //defaultLang cant be null, but just for sure
+    pinnedPlugins,
+    languagesFilter,
     lastUsed,
-  } = useSourcesReducer();
-
+  } = usePluginReducer();
   const { showMyAnimeList = true, onlyShowPinnedSources = false } =
     useBrowseSettings();
 
   useEffect(() => {
-    dispatch(getSourcesAction());
-  }, [dispatch, languageFilters]);
+    if (Object.keys(availablePlugins).length === 0) {
+      fetchPlugins().then(plugins => dispatch(fetchPluginsAction(plugins)));
+    }
+  }, []);
 
-  const isPinned = (sourceId: number) => pinnedSourceIds.indexOf(sourceId) > -1;
+  const onRefresh = () => {
+    setRefreshing(true);
+    fetchPlugins().then(plugins => {
+      dispatch(fetchPluginsAction(plugins));
+      setRefreshing(false);
+    });
+  };
 
-  const pinnedSources = allSources.filter(source => isPinned(source.sourceId));
-  const lastUsedSource = lastUsed
-    ? allSources.filter(source => source.sourceId === lastUsed)
-    : [];
+  const onChangeText = (text: string) => {
+    setSearchText(text);
+    dispatch(searchPluginsAction(text));
+  };
 
   const navigateToSource = useCallback(
-    (source: Source, showLatestNovels?: boolean) => {
+    (plugin: PluginItem, showLatestNovels?: boolean) => {
       navigate(
         'SourceScreen' as never,
         {
-          sourceId: source.sourceId,
-          sourceName: source.sourceName,
-          url: source.url,
+          pluginId: plugin.id,
+          pluginName: plugin.name,
+          pluginUrl: plugin.site,
           showLatestNovels,
         } as never,
       );
-      dispatch(setLastUsedSource({ sourceId: source.sourceId }));
+      dispatch(setLastUsedPlugin(plugin));
     },
     [],
   );
@@ -95,18 +100,44 @@ const BrowseScreen = () => {
     [],
   );
 
-  const sections = useMemo(() => {
-    const list = [
-      {
-        header: getString('browseScreen.lastUsed'),
-        data: lastUsedSource,
-      },
-    ];
+  const availableSections = useMemo(() => {
+    const list = [];
+    if (searchText) {
+      list.unshift({
+        header: getString('common.searchResults'),
+        data: searchResults,
+      });
+    } else {
+      languagesFilter.forEach(lang => {
+        const plugins = availablePlugins[lang as Languages];
+        if (plugins) {
+          list.push({
+            header: lang,
+            data: plugins,
+          });
+        }
+      });
+    }
+    return list;
+  }, [
+    JSON.stringify(searchResults),
+    availablePlugins,
+    languagesFilter,
+    searchText,
+  ]);
 
-    if (pinnedSourceIds) {
+  const installedSections = useMemo(() => {
+    const list = [];
+    if (lastUsed) {
+      list.push({
+        header: getString('browseScreen.lastUsed'),
+        data: [lastUsed],
+      });
+    }
+    if (pinnedPlugins) {
       list.push({
         header: getString('browseScreen.pinned'),
-        data: pinnedSources,
+        data: pinnedPlugins,
       });
     }
 
@@ -117,45 +148,42 @@ const BrowseScreen = () => {
           data: searchResults,
         });
       } else {
-        list.push({
-          header: getString('browseScreen.all'),
-          data: allSources,
-        });
+        if (installedPlugins) {
+          list.push({
+            header: 'Installed plugins',
+            data: installedPlugins,
+          });
+        }
       }
     }
 
     return list;
   }, [
-    lastUsedSource,
-    pinnedSourceIds,
+    lastUsed,
+    pinnedPlugins,
     onlyShowPinnedSources,
     JSON.stringify(searchResults),
+    installedPlugins,
     searchText,
   ]);
 
-  return (
+  const makeRoute = (
+    sections: Array<{ header: string; data: Array<PluginItem> }>,
+    installTab: boolean,
+  ) => (
     <>
-      <SearchbarV2
-        searchText={searchText}
-        placeholder={getString('browseScreen.searchbar')}
-        leftIcon="magnify"
-        onChangeText={onChangeText}
-        clearSearchbar={handleClearSearchbar}
-        theme={theme}
-        rightIcons={searchbarActions}
-      />
-      {languageFilters.length === 0 ? (
+      {languagesFilter.length === 0 ? (
         <EmptyView
           icon="(･Д･。"
           description={getString('browseScreen.listEmpty')}
           theme={theme}
         />
-      ) : allSources.length === 0 ? null : (
+      ) : (
         <>
           <SectionList
             sections={sections}
             ListHeaderComponent={
-              showMyAnimeList ? (
+              showMyAnimeList && installTab ? (
                 <>
                   <Text
                     style={[
@@ -169,7 +197,7 @@ const BrowseScreen = () => {
                 </>
               ) : null
             }
-            keyExtractor={(_, index) => index.toString()}
+            keyExtractor={(_, index) => index.toString() + installTab}
             renderSectionHeader={({ section: { header, data } }) =>
               data.length > 0 ? (
                 <Text
@@ -183,19 +211,91 @@ const BrowseScreen = () => {
               ) : null
             }
             renderItem={({ item }) => (
-              <SourceCard
-                source={item}
-                isPinned={isPinned(item.sourceId)}
-                navigateToSource={navigateToSource}
-                onTogglePinSource={sourceId =>
-                  dispatch(togglePinSource(sourceId))
+              <PluginCard
+                installed={
+                  installedPlugins.find(plg => plg.id === item.id) !== undefined
                 }
+                plugin={item}
+                isPinned={
+                  installTab &&
+                  pinnedPlugins.find(plg => plg.id === item.id) !== undefined
+                }
+                navigateToSource={navigateToSource}
+                onTogglePinSource={plugin => dispatch(togglePinPlugin(plugin))}
+                onInstallPlugin={plugin =>
+                  dispatch(installPluginAction(plugin))
+                }
+                onUninstallPlugin={plugin =>
+                  dispatch(uninstallPluginAction(plugin))
+                }
+                onUpdatePlugin={plugin => dispatch(updatePluginAction(plugin))}
                 theme={theme}
               />
             )}
+            refreshControl={
+              installTab ? (
+                <></>
+              ) : (
+                <RefreshControl
+                  refreshing={refreshing}
+                  onRefresh={onRefresh}
+                  colors={[theme.onPrimary]}
+                  progressBackgroundColor={theme.primary}
+                />
+              )
+            }
           />
         </>
       )}
+    </>
+  );
+
+  const renderScene = SceneMap({
+    availableRoute: () => makeRoute(availableSections, false),
+    installedRoute: () => makeRoute(installedSections, true),
+  });
+
+  const [index, setIndex] = React.useState(0);
+  const [routes] = React.useState([
+    { key: 'installedRoute', title: 'Installed' },
+    { key: 'availableRoute', title: 'Available' },
+  ]);
+
+  return (
+    <>
+      <SearchbarV2
+        searchText={searchText}
+        placeholder={getString('browseScreen.searchbar')}
+        leftIcon="magnify"
+        onChangeText={onChangeText}
+        clearSearchbar={clearSearchbar}
+        theme={theme}
+        rightIcons={searchbarActions}
+      />
+      <TabView
+        navigationState={{ index, routes }}
+        renderScene={renderScene}
+        onIndexChange={setIndex}
+        renderTabBar={props => (
+          <TabBar
+            {...props}
+            indicatorStyle={{ backgroundColor: theme.primary }}
+            style={{
+              backgroundColor: theme.surface,
+              borderBottomColor: color(theme.isDark ? '#FFFFFF' : '#000000')
+                .alpha(0.12)
+                .string(),
+              borderBottomWidth: 1,
+            }}
+            renderLabel={({ route, color }) => (
+              <Text style={{ color }}>{route.title}</Text>
+            )}
+            inactiveColor={theme.secondary}
+            activeColor={theme.primary}
+            pressColor={theme.rippleColor}
+          />
+        )}
+      />
     </>
   );
 };

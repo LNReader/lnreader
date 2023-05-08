@@ -2,11 +2,11 @@ import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { NovelInfo } from '../../../../database/types';
+import { NovelInfo } from '@database/types';
 import { useNavigation } from '@react-navigation/native';
-import { useBoolean, useNovelTrackerInfo } from '../../../../hooks';
-import { ThemeColors } from '../../../../theme/types';
-import { getString } from '../../../../../strings/translations';
+import { useBoolean, useNovelTrackerInfo } from '@hooks';
+import { ThemeColors } from '@theme/types';
+import { getString } from '@strings/translations';
 import { Portal } from 'react-native-paper';
 import SetCategoryModal from '../SetCategoriesModal';
 
@@ -23,28 +23,30 @@ const NovelScreenButtonGroup: React.FC<NovelScreenButtonGroupProps> = ({
   handleFollowNovel,
   theme,
 }) => {
-  const { followed, sourceUrl } = novel;
+  const { inLibrary } = novel;
   const { navigate } = useNavigation();
-  const followButtonColor = followed ? theme.primary : theme.outline;
+  const followButtonColor = inLibrary ? theme.primary : theme.outline;
 
-  const { isTracked, isTrackerAvailable } = useNovelTrackerInfo(novel.novelId);
+  const { isTracked, isTrackerAvailable } = useNovelTrackerInfo(novel.id);
 
   const trackerButtonColor = isTracked ? theme.primary : theme.outline;
 
   const handleOpenWebView = async () => {
-    navigate('WebviewScreen', {
-      sourceId: novel.sourceId,
-      name: novel.source,
-      url: sourceUrl,
-    });
+    navigate(
+      'WebviewScreen' as never,
+      {
+        pluginId: novel.pluginId,
+        name: novel.pluginId,
+        url: novel.url,
+      } as never,
+    );
   };
-
   const handleMigrateNovel = () =>
     navigate(
       'MigrateNovel' as never,
       {
-        sourceId: novel.sourceId,
-        novelName: novel.novelName,
+        pluginId: novel.pluginId,
+        novel: novel,
       } as never,
     );
 
@@ -65,13 +67,15 @@ const NovelScreenButtonGroup: React.FC<NovelScreenButtonGroupProps> = ({
             style={styles.button}
           >
             <MaterialCommunityIcons
-              name={followed ? 'heart' : 'heart-outline'}
+              name={inLibrary ? 'heart' : 'heart-outline'}
               color={followButtonColor}
               size={24}
             />
             <Text style={[styles.buttonLabel, { color: followButtonColor }]}>
               {getString(
-                followed ? 'novelScreen.inLibaray' : 'novelScreen.addToLibaray',
+                inLibrary
+                  ? 'novelScreen.inLibaray'
+                  : 'novelScreen.addToLibaray',
               )}
             </Text>
           </Pressable>
@@ -94,22 +98,24 @@ const NovelScreenButtonGroup: React.FC<NovelScreenButtonGroupProps> = ({
             </Pressable>
           </View>
         ) : null}
-        <View style={styles.buttonContainer}>
-          <Pressable
-            android_ripple={{ color: theme.rippleColor }}
-            onPress={handleMigrateNovel}
-            style={styles.button}
-          >
-            <MaterialCommunityIcons
-              name="swap-vertical-variant"
-              color={theme.outline}
-              size={24}
-            />
-            <Text style={[styles.buttonLabel, { color: theme.outline }]}>
-              {getString('novelScreen.migrate')}
-            </Text>
-          </Pressable>
-        </View>
+        {inLibrary ? (
+          <View style={styles.buttonContainer}>
+            <Pressable
+              android_ripple={{ color: theme.rippleColor }}
+              onPress={handleMigrateNovel}
+              style={styles.button}
+            >
+              <MaterialCommunityIcons
+                name="swap-vertical-variant"
+                color={theme.outline}
+                size={24}
+              />
+              <Text style={[styles.buttonLabel, { color: theme.outline }]}>
+                {getString('novelScreen.migrate')}
+              </Text>
+            </Pressable>
+          </View>
+        ) : null}
         <View style={styles.buttonContainer}>
           <Pressable
             android_ripple={{ color: theme.rippleColor }}
@@ -129,8 +135,7 @@ const NovelScreenButtonGroup: React.FC<NovelScreenButtonGroupProps> = ({
       </View>
       <Portal>
         <SetCategoryModal
-          novelId={novel.novelId}
-          currentCategoryIds={JSON.parse(novel.categoryIds) as number[]}
+          novelIds={[novel.id]}
           closeModal={closeSetCategoryModal}
           visible={setCategoryModalVisible}
         />

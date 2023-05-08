@@ -1,25 +1,25 @@
 import { FlatList, StyleSheet } from 'react-native';
 import React from 'react';
-import { Appbar, List, SwitchItem } from '../../components';
+import { Appbar, List, SwitchItem } from '@components';
 
 import {
   useAppDispatch,
   useBrowseSettings,
-  useSourcesReducer,
-} from '../../redux/hooks';
+  usePluginReducer,
+} from '@redux/hooks';
 import { useTheme } from '@hooks/useTheme';
 import { useNavigation } from '@react-navigation/native';
-import { getString } from '../../../strings/translations';
-import { languages } from '../../utils/constants/languages';
-import { toggleLanguageFilter } from '../../redux/source/sourcesSlice';
-import { setBrowseSettings } from '../../redux/settings/settingsSlice';
+import { getString } from '@strings/translations';
+import { availableLanguages } from '@utils/constants/languages';
+import { toggleLanguageFilter } from '@redux/plugins/pluginsSlice';
+import { setBrowseSettings } from '@redux/settings/settingsSlice';
 
 const BrowseSettings = () => {
   const theme = useTheme();
   const { goBack } = useNavigation();
   const dispatch = useAppDispatch();
 
-  const { languageFilters } = useSourcesReducer();
+  const { languagesFilter } = usePluginReducer();
   const {
     searchAllSources = false,
     showMyAnimeList = true,
@@ -103,12 +103,12 @@ const BrowseSettings = () => {
           </>
         }
         keyExtractor={item => item}
-        data={languages}
+        data={availableLanguages}
         renderItem={({ item }) => (
           <SwitchItem
             label={item}
-            value={languageFilters.indexOf(item) !== -1}
-            onPress={() => dispatch(toggleLanguageFilter({ language: item }))}
+            value={languagesFilter.indexOf(item) !== -1}
+            onPress={() => dispatch(toggleLanguageFilter(item))}
             theme={theme}
           />
         )}

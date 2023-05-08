@@ -2,14 +2,15 @@ import { showToast } from '@hooks/showToast';
 import { SQLError, SQLTransaction } from 'expo-sqlite';
 
 export const txnErrorCallback = (
-  txnObj: SQLTransaction,
+  txn: SQLTransaction,
   error: SQLError,
 ): boolean => {
   showToast(error.message);
   return false;
 };
 
-export const txnErrorCallbackWithoutToast = (): boolean => {
+export const txnErrorCallbackWithoutToast = (error: SQLError): boolean => {
+  error;
   return false;
 };
 

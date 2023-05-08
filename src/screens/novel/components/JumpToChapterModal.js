@@ -34,7 +34,7 @@ const JumpToChapterModal = ({
   const navigateToChapter = chap => {
     onDismiss();
     navigation.navigate('Chapter', {
-      sourceId: novel.sourceId,
+      pluginId: novel.pluginId,
       novelUrl: novel.novelUrl,
       novelId: novel.novelId,
       chapterId: chap.chapterId,

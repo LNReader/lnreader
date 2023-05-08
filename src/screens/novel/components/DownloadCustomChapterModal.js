@@ -22,7 +22,7 @@ const DownloadCustomChapterModal = ({
   const onSubmit = () => {
     dispatch(
       downloadAllChaptersAction(
-        novel.sourceId,
+        novel.pluginId,
         novel.novelUrl,
         chapters
           .filter(

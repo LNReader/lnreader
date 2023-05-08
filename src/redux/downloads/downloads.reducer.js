@@ -2,7 +2,7 @@ import { CHAPTER_DOWNLOADED } from '../novel/novel.types';
 import { CANCEL_DOWNLOAD, SET_DOWNLOAD_QUEUE } from './donwloads.types';
 
 const initialState = {
-  downloadQueue: [],
+  downloadQueue: [], // Array<{id, url, isDownload, novelId, pluginId}>
 };
 
 const downloadsReducer = (state = initialState, action) => {
@@ -19,7 +19,7 @@ const downloadsReducer = (state = initialState, action) => {
       return {
         ...state,
         downloadQueue: state.downloadQueue.filter(
-          chapter => chapter.chapterId !== payload,
+          chapter => chapter.id !== payload.chapterId,
         ),
       };
     case CANCEL_DOWNLOAD:

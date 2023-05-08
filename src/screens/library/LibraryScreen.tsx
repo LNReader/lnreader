@@ -1,6 +1,6 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
-import BottomSheet from '@gorhom/bottom-sheet';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import {
   NavigationState,
   SceneRendererProps,
@@ -26,12 +26,11 @@ import {
   markAllChaptersRead,
   markAllChaptersUnread,
 } from '../../database/queries/ChapterQueries';
-import { unfollowNovel } from '../../database/queries/NovelQueries';
+import { removeNovelsFromLibrary } from '@database/queries/NovelQueries';
 import SetCategoryModal from '@screens/novel/components/SetCategoriesModal';
 import useBoolean from '@hooks/useBoolean';
-import { debounce, intersection } from 'lodash-es';
+import { debounce } from 'lodash-es';
 import { useBackHandler } from '@hooks/useBackHandler';
-import { openChapter } from '@utils/handleNavigateParams';
 import useHistory from '@hooks/useHistory';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useSettings } from '@hooks/reduxHooks';
@@ -69,7 +68,6 @@ const LibraryScreen = () => {
 
   const { library, refetchLibrary, isLoading } = useLibrary({ searchText });
   const [selectedNovelIds, setSelectedNovelIds] = useState<number[]>([]);
-
   useBackHandler(() => {
     if (selectedNovelIds.length) {
       setSelectedNovelIds([]);
@@ -83,7 +81,7 @@ const LibraryScreen = () => {
 
   const [index, setIndex] = useState(0);
 
-  const bottomSheetRef = useRef<BottomSheet | null>(null);
+  const bottomSheetRef = useRef<BottomSheetModal | null>(null);
 
   const renderTabBar = (
     props: SceneRendererProps & { navigationState: State },
@@ -134,24 +132,6 @@ const LibraryScreen = () => {
     setFalse: closeSetCategoryModal,
   } = useBoolean();
 
-  const selectedNovelCategoryIds = useMemo(() => {
-    let categoryIds: number[][] = [];
-
-    library.map(category =>
-      category.novels
-        .filter(novel => selectedNovelIds.includes(novel.novelId))
-        .map(novel => {
-          categoryIds.push(JSON.parse(novel.categoryIds));
-        }),
-    );
-
-    const selectedCategoryIds = intersection(...categoryIds).filter(
-      id => id !== 1,
-    );
-
-    return selectedCategoryIds;
-  }, [selectedNovelIds]);
-
   return (
     <>
       <SearchbarV2
@@ -171,12 +151,12 @@ const LibraryScreen = () => {
                 iconName: 'select-all',
                 onPress: () =>
                   setSelectedNovelIds(
-                    library[index].novels.map(novel => novel.novelId),
+                    library[index].novels.map(novel => novel.id),
                   ),
               }
             : {
                 iconName: 'filter-variant',
-                onPress: () => bottomSheetRef.current?.expand(),
+                onPress: () => bottomSheetRef.current?.present(),
               },
         ]}
         theme={theme}
@@ -259,14 +239,26 @@ const LibraryScreen = () => {
             onPress={() => {
               navigate(
                 'Chapter' as never,
-                openChapter(history[0], history[0]) as never,
+                {
+                  novel: {
+                    id: history[0].novelId,
+                    url: history[0].novelUrl,
+                    pluginId: history[0].pluginId,
+                    name: history[0].novelName,
+                  },
+                  chapter: {
+                    id: history[0].id,
+                    url: history[0].chapterUrl,
+                    name: history[0].chapterName,
+                    novelId: history[0].novelId,
+                  },
+                } as never,
               );
             }}
           />
         )}
       <SetCategoryModal
-        novelId={selectedNovelIds}
-        currentCategoryIds={selectedNovelCategoryIds}
+        novelIds={selectedNovelIds}
         closeModal={closeSetCategoryModal}
         onEditCategories={() => setSelectedNovelIds([])}
         visible={setCategoryModalVisible}
@@ -275,8 +267,8 @@ const LibraryScreen = () => {
           refetchLibrary();
         }}
       />
+      <LibraryBottomSheet bottomSheetRef={bottomSheetRef} />
       <Portal>
-        <LibraryBottomSheet bottomSheetRef={bottomSheetRef} />
         <Actionbar
           active={selectedNovelIds.length > 0}
           actions={[
@@ -303,8 +295,9 @@ const LibraryScreen = () => {
             {
               icon: 'delete-outline',
               onPress: () => {
-                selectedNovelIds.map(id => unfollowNovel(id));
+                removeNovelsFromLibrary(selectedNovelIds);
                 setSelectedNovelIds([]);
+                refetchLibrary();
               },
             },
           ]}

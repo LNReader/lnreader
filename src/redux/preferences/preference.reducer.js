@@ -6,21 +6,20 @@ import {
 } from './preference.types';
 
 const initialState = {
-  novelSettings: {},
+  novelSettings: {}, // {[novelId]: {lastRead, sort, filter, showChapterTitles, position {[chapterId]: position, percentage}}}
 };
 
-const novelReducer = (state = initialState, action) => {
+const preferenceReducer = (state = initialState, action) => {
   const { type, payload } = action;
-
   switch (type) {
     case SET_LAST_READ:
       return {
         ...state,
         novelSettings: {
           ...state.novelSettings,
-          [payload.novelId]: {
-            ...state.novelSettings[payload.novelId],
-            lastRead: payload.chapterId,
+          [payload.lastRead.novelId]: {
+            ...state.novelSettings[payload.lastRead.novelId],
+            lastRead: payload.lastRead,
           },
         },
       };
@@ -43,7 +42,7 @@ const novelReducer = (state = initialState, action) => {
           ...state.novelSettings,
           [payload.novelId]: {
             ...state.novelSettings[payload.novelId],
-            showChapterTitles: payload.value,
+            showChapterTitles: payload.showChapterTitles,
           },
         },
       };
@@ -57,7 +56,7 @@ const novelReducer = (state = initialState, action) => {
             position: {
               ...state.novelSettings[payload.novelId].position,
               [payload.chapterId]: {
-                position: payload.position,
+                offsetY: payload.offsetY,
                 percentage: payload.percentage,
               },
             },
@@ -69,4 +68,4 @@ const novelReducer = (state = initialState, action) => {
   }
 };
 
-export default novelReducer;
+export default preferenceReducer;

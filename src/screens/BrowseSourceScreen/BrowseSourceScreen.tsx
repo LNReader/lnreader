@@ -1,32 +1,32 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
-import { FAB, Portal } from 'react-native-paper';
+import { FAB } from 'react-native-paper';
 import { Container, ErrorScreenV2, SearchbarV2 } from '@components/index';
 import NovelList from '@components/NovelList';
 import NovelCover from '@components/NovelCover';
-import Bottomsheet from '@gorhom/bottom-sheet';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import FilterBottomSheet from './components/FilterBottomSheet';
 
-import { useCategorySettings, usePreviousRouteName, useSearch } from '@hooks';
+import { usePreviousRouteName, useSearch } from '@hooks';
 import { useTheme } from '@hooks/useTheme';
 import { useBrowseSource, useSearchSource } from './useBrowseSource';
 
-import { SourceNovelItem } from '../../sources/types';
+import { NovelItem } from '@plugins/types';
 import { getString } from '@strings/translations';
 import { StyleSheet } from 'react-native';
-import { useLibraryNovels } from '../../screens/library/hooks/useLibrary';
-import { insertNovelInLibrary } from '../../database/queries/NovelQueriesV2';
-import { LibraryNovelInfo } from '../../database/types';
+import { useLibraryNovels } from '@screens/library/hooks/useLibrary';
+import { switchNovelToLibrary } from '@database/queries/NovelQueries';
+import { NovelInfo } from '@database/types';
 import SourceScreenSkeletonLoading from '@screens/browse/loadingAnimation/SourceScreenSkeletonLoading';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface BrowseSourceScreenProps {
   route: {
     params: {
-      sourceId: number;
-      sourceName: string;
-      url: string;
+      pluginId: string;
+      pluginName: string;
+      pluginUrl: string;
       showLatestNovels?: boolean;
     };
   };
@@ -37,12 +37,7 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
   const { navigate, goBack } = useNavigation();
   const previousScreen = usePreviousRouteName();
 
-  const {
-    sourceId,
-    sourceName,
-    url: sourceUrl,
-    showLatestNovels,
-  } = route.params;
+  const { pluginId, pluginName, pluginUrl, showLatestNovels } = route.params;
 
   const {
     isLoading,
@@ -54,16 +49,15 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
     setFilters,
     clearFilters,
     refetchNovels,
-  } = useBrowseSource(sourceId, showLatestNovels);
+  } = useBrowseSource(pluginId, showLatestNovels);
 
-  const { defaultCategoryId = 1 } = useCategorySettings();
   const {
     isSearching,
     searchResults,
     searchSource,
     clearSearchResults,
     searchError,
-  } = useSearchSource(sourceId);
+  } = useSearchSource(pluginId);
 
   const novelList = searchResults.length > 0 ? searchResults : novels;
   const errorMessage = error || searchError;
@@ -83,40 +77,41 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
   }, [previousScreen]);
 
   const handleOpenWebView = async () => {
-    navigate('WebviewScreen', {
-      sourceId,
-      name: sourceName,
-      url: sourceUrl,
-    });
+    navigate(
+      'WebviewScreen' as never,
+      {
+        pluginId,
+        name: pluginName,
+        url: pluginUrl,
+      } as never,
+    );
   };
 
   const { library, setLibrary } = useLibraryNovels();
 
   const novelInLibrary = (novelUrl: string) =>
-    library?.some(
-      novel => novel.novelUrl === novelUrl && novel.sourceId === sourceId,
-    );
+    library?.some(novel => novel.url === novelUrl);
 
   const navigateToNovel = useCallback(
-    (item: SourceNovelItem) =>
+    (item: NovelItem) =>
       navigate(
         'Novel' as never,
         {
           ...item,
-          sourceId: sourceId,
+          pluginId: pluginId,
         } as never,
       ),
-    [sourceId],
+    [pluginId],
   );
 
   const { bottom } = useSafeAreaInsets();
-  const filterSheetRef = useRef<Bottomsheet | null>(null);
+  const filterSheetRef = useRef<BottomSheetModal | null>(null);
   return (
     <Container>
       <SearchbarV2
         searchText={searchText}
         leftIcon="magnify"
-        placeholder={`${getString('common.search')} ${sourceName}`}
+        placeholder={`${getString('common.search')} ${pluginName}`}
         onChangeText={onChangeText}
         onSubmitEditing={onSubmitEditing}
         clearSearchbar={handleClearSearchbar}
@@ -134,7 +129,7 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
         <NovelList
           data={novelList}
           renderItem={({ item }) => {
-            const inLibrary = novelInLibrary(item.novelUrl);
+            const inLibrary = novelInLibrary(item.url);
 
             return (
               <NovelCover
@@ -142,31 +137,26 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
                 theme={theme}
                 libraryStatus={inLibrary}
                 onPress={() => navigateToNovel(item)}
-                onLongPress={() => {
+                isSelected={false}
+                onLongPress={async () => {
+                  await switchNovelToLibrary(item.url, pluginId);
                   setLibrary(prevValues => {
                     if (inLibrary) {
                       return [
-                        ...prevValues.filter(
-                          novel => novel.novelUrl !== item.novelUrl,
-                        ),
+                        ...prevValues.filter(novel => novel.url !== item.url),
                       ];
                     } else {
                       return [
                         ...prevValues,
                         {
-                          novelUrl: item.novelUrl,
-                          sourceId,
-                        } as LibraryNovelInfo,
+                          ...item,
+                          inLibrary: 1,
+                        } as NovelInfo,
                       ];
                     }
                   });
-                  insertNovelInLibrary(
-                    sourceId,
-                    item.novelUrl,
-                    inLibrary,
-                    defaultCategoryId,
-                  );
                 }}
+                selectedNovels={[]}
               />
             );
           }}
@@ -194,16 +184,14 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
             label={'Filter'}
             uppercase={false}
             color={theme.onPrimary}
-            onPress={() => filterSheetRef?.current?.expand()}
+            onPress={() => filterSheetRef?.current?.present()}
           />
-          <Portal>
-            <FilterBottomSheet
-              filterSheetRef={filterSheetRef}
-              filtersValues={filterValues}
-              setFilters={setFilters}
-              clearFilters={clearFilters}
-            />
-          </Portal>
+          <FilterBottomSheet
+            filterSheetRef={filterSheetRef}
+            filtersValues={filterValues}
+            setFilters={setFilters}
+            clearFilters={clearFilters}
+          />
         </>
       ) : null}
     </Container>

@@ -1,6 +1,5 @@
 import { useCallback, useState } from 'react';
-
-import { getUpdatesFromDb } from '../database/queries/UpdateQueries';
+import { getUpdatesFromDb } from '@database/queries/ChapterQueries';
 
 import { useFocusEffect } from '@react-navigation/native';
 import { Update } from '../database/types';
@@ -14,7 +13,7 @@ const useUpdates = () => {
   const { lastUpdateTime = null, showLastUpdateTime = false } = useAppSelector(
     state => state.updatesReducer,
   );
-  const downloadQueue = useDownloadQueue();
+  const { downloadQueue } = useDownloadQueue();
 
   const [error, setError] = useState('');
 

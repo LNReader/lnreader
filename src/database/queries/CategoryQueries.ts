@@ -1,14 +1,15 @@
 import * as SQLite from 'expo-sqlite';
 import { noop } from 'lodash-es';
 import { Category } from '../types';
+import { showToast } from '@hooks/showToast';
 import { txnErrorCallback } from '../utils/helpers';
 const db = SQLite.openDatabase('lnreader.db');
 
 const getCategoriesQuery = `
-  SELECT * FROM categories ORDER BY CASE WHEN id > 1 THEN 1 ELSE 0 END, IFNULL(sort, 9999)
+  SELECT * FROM Category ORDER BY sort
 	`;
 
-export const getCategoriesFromDb = (): Promise<Category[]> => {
+export const getCategoriesFromDb = async (): Promise<Category[]> => {
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
@@ -21,31 +22,40 @@ export const getCategoriesFromDb = (): Promise<Category[]> => {
   );
 };
 
-const createCategoryQuery = `
-  INSERT INTO categories (name) 
-  VALUES 
-    (?)
-	`;
+const createCategoryQuery = 'INSERT INTO Category (name) VALUES (?)';
 
 export const createCategory = (categoryName: string): void =>
   db.transaction(tx =>
     tx.executeSql(createCategoryQuery, [categoryName], noop, txnErrorCallback),
   );
 
-const deleteCategoryQuery = `
-  DELETE FROM categories 
-  WHERE 
-    id = ?
-	`;
+const beforeDeleteCategoryQuery = `
+    UPDATE NovelCategory SET categoryId = (SELECT id FROM Category WHERE sort = 1)
+    WHERE novelId IN (
+      SELECT novelId FROM NovelCategory
+      GROUP BY novelId
+      HAVING COUNT(categoryId) = 1
+    )
+    AND categoryId = ?;
+`;
+const deleteCategoryQuery = 'DELETE FROM Category WHERE id = ?';
 
-export const deleteCategoryById = (categoryId: number): void =>
-  db.transaction(tx =>
-    tx.executeSql(deleteCategoryQuery, [categoryId], noop, txnErrorCallback),
-  );
+export const deleteCategoryById = (category: Category): void => {
+  if (category.sort === 1) {
+    return showToast('You cant delete default category');
+  }
+  db.transaction(tx => {
+    tx.executeSql(
+      beforeDeleteCategoryQuery,
+      [category.id],
+      noop,
+      txnErrorCallback,
+    );
+    tx.executeSql(deleteCategoryQuery, [category.id], noop, txnErrorCallback);
+  });
+};
 
-const updateCategoryQuery = `
-  UPDATE categories SET name = ? WHERE id = ?
-	`;
+const updateCategoryQuery = 'UPDATE Category SET name = ? WHERE id = ?';
 
 export const updateCategory = (
   categoryId: number,
@@ -61,7 +71,7 @@ export const updateCategory = (
   );
 
 const isCategoryNameDuplicateQuery = `
-  SELECT COUNT(*) as isDuplicate FROM categories WHERE name = ?
+  SELECT COUNT(*) as isDuplicate FROM Category WHERE name = ?
 	`;
 
 export const isCategoryNameDuplicate = (
@@ -82,9 +92,7 @@ export const isCategoryNameDuplicate = (
   );
 };
 
-const updateCategoryOrderQuery = `
-  UPDATE categories SET sort = ? WHERE id = ?
-	`;
+const updateCategoryOrderQuery = 'UPDATE Category SET sort = ? WHERE id = ?';
 
 export const updateCategoryOrderInDb = (categories: Category[]): void =>
   db.transaction(tx => {
