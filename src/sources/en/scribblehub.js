@@ -1,5 +1,5 @@
 import * as cheerio from 'cheerio';
-import { fetchHtml } from '@utils/fetch/fetch';
+import { fetchApi, fetchHtml } from '@utils/fetch/fetch';
 
 const sourceId = 35;
 const baseUrl = 'https://www.scribblehub.com/';
@@ -85,13 +85,14 @@ const parseNovelAndChapters = async novelUrl => {
   formData.append('pagenum', '-1');
   formData.append('mypostid', novelUrl.split('-')[0]);
 
-  const data = await fetch(
-    'https://www.scribblehub.com/wp-admin/admin-ajax.php',
-    {
+  const data = await fetchApi({
+    url: 'https://www.scribblehub.com/wp-admin/admin-ajax.php',
+    init: {
       method: 'POST',
       body: formData,
     },
-  );
+    sourceId,
+  });
   const text = await data.text();
 
   loadedCheerio = cheerio.load(text);
