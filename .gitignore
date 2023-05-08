@@ -74,3 +74,6 @@ web-build/
 
 .vscode/
 src/sources/en/generators/
+
+# jenv
+.java-version
