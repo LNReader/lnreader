@@ -22,7 +22,15 @@ const popularNovels = async (page: number, options?: SourceOptions) => {
         defaultTo(options?.filters?.sort, '1') +
         '&order=' +
         defaultTo(options?.filters?.order, '4')
-  }&pg=${page}`;
+  }${
+    options?.filters?.genreInclude
+      ? '&gi=' + options?.filters?.genreInclude
+      : ''
+  }${
+    options?.filters?.genreExclude
+      ? '&ge=' + options?.filters?.genreExclude
+      : ''
+  }${'&mgi=' + defaultTo(options?.filters?.andOr, 'or')}&pg=${page}`;
 
   const body = await fetchHtml({ url, sourceId });
 
@@ -117,7 +125,8 @@ const parseNovelAndChapters = async (novelUrl: string) => {
     const chapterName = loadedCheerio(this).find('.toc_a').text();
     const releaseDate = loadedCheerio(this).find('.fic_date_pub').text();
 
-    const chapterUrl = loadedCheerio(this).find('a').attr('href').split('/')[6];
+    const chapterUrl =
+      loadedCheerio(this).find('a').attr('href')?.split('/')[6] || '';
     // .replace("/novel/" + novelUrl + "/", "");
 
     novelChapters.push({
@@ -188,6 +197,91 @@ const searchNovels = async (searchTerm: string) => {
 };
 
 export const filters: SourceFilter[] = [
+  {
+    inputType: FilterInputs.Checkbox,
+    key: 'genreInclude',
+    label: 'Genre Include',
+    values: [
+      { label: 'Action', value: '9' },
+      { label: 'Adult', value: '902' },
+      { label: 'Adventure', value: '8' },
+      { label: 'Boys Love', value: '891' },
+      { label: 'Comedy', value: '7' },
+      { label: 'Drama', value: '903' },
+      { label: 'Ecchi', value: '904' },
+      { label: 'Fanfiction', value: '38' },
+      { label: 'Fantasy', value: '19' },
+      { label: 'Gender Bender', value: '905' },
+      { label: 'Girls Love', value: '892' },
+      { label: 'Harem', value: '1015' },
+      { label: 'Historical', value: '21' },
+      { label: 'Horror', value: '22' },
+      { label: 'Isekai', value: '37' },
+      { label: 'Josei', value: '906' },
+      { label: 'LitRPG', value: '1180' },
+      { label: 'Martial Arts', value: '907' },
+      { label: 'Mature', value: '20' },
+      { label: 'Mecha', value: '908' },
+      { label: 'Mystery', value: '909' },
+      { label: 'Psychological', value: '910' },
+      { label: 'Romance', value: '6' },
+      { label: 'School Life', value: '911' },
+      { label: 'Sci-fi', value: '912' },
+      { label: 'Seinen', value: '913' },
+      { label: 'Slice of Life', value: '914' },
+      { label: 'Smut', value: '915' },
+      { label: 'Sports', value: '916' },
+      { label: 'Supernatural', value: '5' },
+      { label: 'Tragedy', value: '901' },
+    ],
+  },
+  {
+    inputType: FilterInputs.Checkbox,
+    key: 'genreExclude',
+    label: 'Genre Exclude',
+    values: [
+      { label: 'Action', value: '9' },
+      { label: 'Adult', value: '902' },
+      { label: 'Adventure', value: '8' },
+      { label: 'Boys Love', value: '891' },
+      { label: 'Comedy', value: '7' },
+      { label: 'Drama', value: '903' },
+      { label: 'Ecchi', value: '904' },
+      { label: 'Fanfiction', value: '38' },
+      { label: 'Fantasy', value: '19' },
+      { label: 'Gender Bender', value: '905' },
+      { label: 'Girls Love', value: '892' },
+      { label: 'Harem', value: '1015' },
+      { label: 'Historical', value: '21' },
+      { label: 'Horror', value: '22' },
+      { label: 'Isekai', value: '37' },
+      { label: 'Josei', value: '906' },
+      { label: 'LitRPG', value: '1180' },
+      { label: 'Martial Arts', value: '907' },
+      { label: 'Mature', value: '20' },
+      { label: 'Mecha', value: '908' },
+      { label: 'Mystery', value: '909' },
+      { label: 'Psychological', value: '910' },
+      { label: 'Romance', value: '6' },
+      { label: 'School Life', value: '911' },
+      { label: 'Sci-fi', value: '912' },
+      { label: 'Seinen', value: '913' },
+      { label: 'Slice of Life', value: '914' },
+      { label: 'Smut', value: '915' },
+      { label: 'Sports', value: '916' },
+      { label: 'Supernatural', value: '5' },
+      { label: 'Tragedy', value: '901' },
+    ],
+  },
+  {
+    inputType: FilterInputs.Picker,
+    key: 'andOr',
+    label: 'Genre And/Or',
+    values: [
+      { label: 'OR', value: 'or' },
+      { label: 'AND', value: 'and' },
+    ],
+  },
   {
     inputType: FilterInputs.Picker,
     key: 'sort',
