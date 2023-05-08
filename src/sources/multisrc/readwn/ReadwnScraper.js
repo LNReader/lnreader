@@ -88,7 +88,7 @@ class ReadwnScraper {
 
     let novelChapters = [];
 
-    const novelId = novelUrl.replace('.html', '');
+    const novelId = novelUrl.replace('.html', '').replace(baseUrl, '');
 
     const latestChapterNo = loadedCheerio('.header-stats')
       .find('span > strong')
@@ -96,7 +96,30 @@ class ReadwnScraper {
       .text()
       .trim();
 
-    for (let i = 1; i <= latestChapterNo; i++) {
+    let lastChapterNo = 1;
+    loadedCheerio('.chapter-list li').each(function () {
+      const chapterName = loadedCheerio(this)
+        .find('a .chapter-title')
+        .text()
+        .trim();
+
+      const chapterUrl = loadedCheerio(this).find('a').attr('href').trim();
+
+      const releaseDate = loadedCheerio(this)
+        .find('a .chapter-update')
+        .text()
+        .trim();
+
+      lastChapterNo = loadedCheerio(this).find('a .chapter-no').text().trim();
+
+      const chapter = { chapterName, releaseDate, chapterUrl };
+
+      novelChapters.push(chapter);
+    });
+
+    // Itterate once more before loop to finish off
+    lastChapterNo++;
+    for (let i = lastChapterNo; i <= latestChapterNo; i++) {
       const chapterName = `Chapter ${i}`;
       const chapterUrl = `${novelId}_${i}.html`;
       const releaseDate = null;
@@ -112,7 +135,8 @@ class ReadwnScraper {
   }
 
   async parseChapter(novelUrl, chapterUrl) {
-    const url = chapterUrl;
+    const baseUrl = this.baseUrl;
+    const url = baseUrl + chapterUrl;
     const sourceId = this.sourceId;
 
     const result = await fetch(url);
