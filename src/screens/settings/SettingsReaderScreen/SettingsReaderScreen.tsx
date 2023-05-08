@@ -25,6 +25,13 @@ const SettingsReaderScreen = () => {
 
   const readerSettings = useReaderSettings();
   const READER_HEIGHT = 280;
+  const dummyChapterInfo = {
+    sourceId: 11,
+    chapterId: 99,
+    novelId: 20,
+    novelName: 'novel name',
+    chapterName: "chapter' name",
+  };
   const webViewCSS = `
   <style>
   body {
@@ -72,9 +79,22 @@ const SettingsReaderScreen = () => {
                 ${webViewCSS}
               </head>
               <body>
-                ${dummyHTML}
+                <chapter 
+                  data-novel-id='${dummyChapterInfo.novelId}'
+                  data-chapter-id='${dummyChapterInfo.chapterId}'
+                >
+                  ${dummyHTML}
+                </chapter>
                 <script>
-                  async function fn(){${readerSettings.customJS}}
+                  async function fn(){
+                    let novelName = "${dummyChapterInfo.novelName}";
+                    let chapterName = "${dummyChapterInfo.chapterName}";
+                    let sourceId =${dummyChapterInfo.sourceId};
+                    let chapterId =${dummyChapterInfo.chapterId};
+                    let novelId =${dummyChapterInfo.novelId};
+                    let html = document.getElementsByTagName("chapter")[0].innerHTML;
+                    ${readerSettings.customJS}
+                  }
                   document.addEventListener("DOMContentLoaded", fn);
                 </script>
               </body>
@@ -83,7 +103,6 @@ const SettingsReaderScreen = () => {
           }}
         />
       </View>
-
       <ScrollView>
         <View style={{ paddingBottom: bottom }}>
           <GeneralSettings />
