@@ -177,7 +177,7 @@
         "openJSFile": "JS dosyası aç",
         "notSaved": "Kaydedilmedi",
         "cssHint": "İpucu: Kaynak ID'si ile kaynağa özel CSS yapılandırması oluşturabilirsiniz.\n(#kaynakId-[KAYNAKID])",
-        "jsHint": "Hint: You have access to following variables: html, novelName, chapterName, sourceId, chapterId, novelId"
+        "jsHint": "İpucu: Aşağıdaki değişkenlere erişiminiz bulunmakta:\nhtml, novelName, chapterName, sourceId, chapterId, novelId"
       },
       "browseSettings": "Göz Atma Seçenekleri",
       "browseSettingsScreen": {
