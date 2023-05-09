@@ -29,7 +29,7 @@ const TrackSearchDialog = ({
   const getSearchresults = async () => {
     setLoading(true);
     const trackerObj = getTracker(tracker.name);
-    const results = await trackerObj.searchHandler(searchText, tracker.auth);
+    const results = await trackerObj.handleSearch(searchText, tracker.auth);
     setSearchResults(results);
     setLoading(false);
   };

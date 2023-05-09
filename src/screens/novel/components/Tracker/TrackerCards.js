@@ -91,9 +91,7 @@ export const TrackedItemCard = ({
         >
           <Text style={[styles.listItem, { color: theme.onSurfaceVariant }]}>
             {`${trackItem.userData.progress}/${
-              trackItem.userData.totalChapters
-                ? trackItem.userData.totalChapters
-                : '-'
+              trackItem.totalChapters ? trackItem.totalChapters : '-'
             }`}
           </Text>
         </TouchableRipple>

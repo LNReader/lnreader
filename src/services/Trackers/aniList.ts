@@ -1,15 +1,20 @@
 import * as Linking from 'expo-linking';
 import * as WebBrowser from 'expo-web-browser';
-import { createTracker } from './index';
+import {
+  createTracker,
+  type AuthenticationResult,
+  type Tracker,
+} from './index';
 
 const apiEndpoint = 'https://graphql.anilist.co';
 const clientId = '9085';
 const authUrl = `https://anilist.co/api/v2/oauth/authorize?client_id=${clientId}&response_type=token`;
-const redirectUri = Linking.createURL();
+const redirectUri = Linking.createURL('');
 const searchQuery = `query($search: String) {
   Page {
     media(search: $search, type: MANGA, format: NOVEL, sort: POPULARITY_DESC) {
       id
+      chapters
       title {
         userPreferred
       }
@@ -40,65 +45,61 @@ const updateListEntryMutation = `mutation($id: Int!, $status: MediaListStatus, $
 }`;
 
 export const aniListTracker = createTracker('AniList', {
-  authStrategy: {
-    authenticator: async () => {
-      const result = await WebBrowser.openAuthSessionAsync(
-        authUrl,
-        redirectUri,
+  authenticate: async () => {
+    const result = await WebBrowser.openAuthSessionAsync(authUrl, redirectUri);
+    if (result.type === 'success') {
+      const { url } = result;
+
+      const keyVal: Record<string, string> = {};
+      url
+        .split('#')[1]
+        .split('&')
+        .forEach(k => {
+          const split = k.split('=');
+          keyVal[split[0]] = split[1];
+        });
+      const accessToken = keyVal.access_token;
+      // The expiration date is provided in seconds, so we convert to milliseconds to construct a date
+      const expiresAt = new Date(Number(keyVal.expires_at) * 1000);
+
+      const { data } = await queryAniList(
+        '{ Viewer { id mediaListOptions { scoreFormat } } }',
+        {},
+        { accessToken },
       );
-      if (result.type === 'success') {
-        const { url } = result;
 
-        const keyVal = {};
-        url
-          .split('#')[1]
-          .split('&')
-          .forEach(k => {
-            const split = k.split('=');
-            keyVal[split[0]] = split[1];
-          });
-        const accessToken = keyVal.access_token;
-        // The expiration date is provided in seconds, so we convert to milliseconds to construct a date
-        const expiresAt = new Date(keyVal.expires_at * 1000);
-
-        const { data } = await queryAniList(
-          '{ Viewer { id mediaListOptions { scoreFormat } } }',
-          {},
-          { accessToken },
-        );
-
-        return {
-          accessToken,
-          // AniList does not support refresh tokens.
-          refreshToken: null,
-          expiresAt,
-          meta: {
-            // Updating list entries requires the user ID
-            userId: data.Viewer.id,
-            // AniList supports multiple user-facing score formats (numbers, stars, smilies)
-            scoreFormat: data.Viewer.mediaListOptions.scoreFormat,
-          },
-        };
-      }
-    },
-    // AniList does not support refresh tokens, so we can't re-authenticate the user.
-    revalidator: null,
+      return {
+        accessToken,
+        // AniList does not support refresh tokens.
+        refreshToken: undefined,
+        expiresAt,
+        meta: {
+          // Updating list entries requires the user ID
+          userId: data.Viewer.id,
+          // AniList supports multiple user-facing score formats (numbers, stars, smilies)
+          scoreFormat: data.Viewer.mediaListOptions.scoreFormat,
+        },
+      };
+    }
   },
-  searchHandler: async (search, auth) => {
+  // AniList does not support refresh tokens, so we can't re-authenticate the user.
+  revalidate: undefined,
+  handleSearch: async (search, auth) => {
     const { data } = await queryAniList(searchQuery, { search }, auth);
 
-    return data.Page.media.map(m => {
+    return data.Page.media.map((m: any) => {
       return {
         id: m.id,
         title: m.title.userPreferred,
         coverImage: m.coverImage.extraLarge,
+        totalChapters: m.chapters || undefined,
       };
     });
   },
-  listFinder: async (id, auth) => {
+  getUserListEntry: async (id, auth) => {
     const { data } = await queryAniList(
       getListEntryQuery,
-      { userId: auth.meta.userId, mediaId: id },
+      { userId: auth.meta!.userId, mediaId: id },
       auth,
     );
 
@@ -109,7 +110,7 @@ export const aniListTracker = createTracker('AniList', {
       totalChapters: data.MediaList?.media.chapters || null,
     };
   },
-  listUpdater: async (id, payload, auth) => {
+  updateUserListEntry: async (id, payload, auth) => {
     const { data } = await queryAniList(
       updateListEntryMutation,
       {
@@ -127,14 +128,13 @@ export const aniListTracker = createTracker('AniList', {
       score: data.SaveMediaListEntry?.score || 0,
     };
   },
-});
+} as Tracker<{ userId: number; scoreFormat: string }>);
 
-/**
- * @param {string} query
- * @param {Object} variables
- * @param {import('./index').AuthenticatorResult} auth
- */
-export async function queryAniList(query, variables, auth) {
+export async function queryAniList(
+  query: string,
+  variables: any,
+  auth: Pick<AuthenticationResult, 'accessToken'>,
+) {
   const res = await fetch(apiEndpoint, {
     method: 'POST',
     headers: {

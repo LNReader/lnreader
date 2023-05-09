@@ -24,12 +24,12 @@ export const removeTracker = () => async dispatch => {
  * @param {string} trackerName
  * @param {number} internalId
  * @param {import('../../services/Trackers').SearchResult} novel
- * @param {import('../../services/Trackers').AuthenticatorResult} authentication
+ * @param {import('../../services/Trackers').AuthenticationResult} authentication
  */
 export const trackNovel =
   (trackerName, internalId, novel, auth) => async dispatch => {
     const tracker = getTracker(trackerName);
-    const userData = await tracker.listFinder(novel.id, auth);
+    const userData = await tracker.getUserListEntry(novel.id, auth);
     dispatch({
       type: TRACK_NOVEL,
       payload: { novelId: internalId, ...novel, userData },
@@ -39,7 +39,7 @@ export const trackNovel =
 export const updateTracker =
   (trackerName, trackerId, auth, body) => async dispatch => {
     const tracker = getTracker(trackerName);
-    const res = await tracker.listUpdater(trackerId, body, auth);
+    const res = await tracker.updateUserListEntry(trackerId, body, auth);
     dispatch({
       type: UPDATE_TRACKER,
       payload: { trackerId, ...res },
@@ -53,7 +53,7 @@ export const untrackNovel = id => async dispatch => {
 export const updateChaptersRead =
   (trackerName, trackerId, auth, chaptersRead) => async dispatch => {
     const tracker = getTracker(trackerName);
-    const res = await tracker.listUpdater(
+    const res = await tracker.updateUserListEntry(
       trackerId,
       { progress: chaptersRead },
       auth,

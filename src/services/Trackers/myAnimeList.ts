@@ -1,7 +1,7 @@
 import * as Linking from 'expo-linking';
 import * as WebBrowser from 'expo-web-browser';
 import qs from 'qs';
-import { createTracker } from './index';
+import { createTracker, type UserListStatus } from './index';
 
 const clientId = 'd2f499825d64b0213bb77e78193ccbb1';
 const baseOAuthUrl = 'https://myanimelist.net/v1/oauth2/authorize';
@@ -9,17 +9,15 @@ const tokenUrl = 'https://myanimelist.net/v1/oauth2/token';
 const baseApiUrl = 'https://api.myanimelist.net/v2';
 const challenge = pkceChallenger();
 const authUrl = `${baseOAuthUrl}?response_type=code&client_id=${clientId}&code_challenge_method=plain&code_challenge=${challenge}`;
-const redirectUri = Linking.createURL();
-/** @type {Record<string, import('./index').UserListStatus>} */
-const malToNormalized = {
+const redirectUri = Linking.createURL('');
+const malToNormalized: Record<string, UserListStatus> = {
   reading: 'CURRENT',
   completed: 'COMPLETED',
   on_hold: 'PAUSED',
   dropped: 'DROPPED',
   plan_to_read: 'PLANNING',
 };
-/** @type {Record<import('./index').UserListStatus, string>} */
-const normalizedToMal = {
+const normalizedToMal: Record<UserListStatus, string> = {
   CURRENT: 'reading',
   COMPLETED: 'completed',
   PAUSED: 'on_hold',
@@ -29,64 +27,62 @@ const normalizedToMal = {
 };
 
 export const myAnimeListTracker = createTracker('MyAnimeList', {
-  authStrategy: {
-    authenticator: async () => {
-      const result = await WebBrowser.openAuthSessionAsync(
-        authUrl,
-        redirectUri,
-      );
+  authenticate: async () => {
+    const result = await WebBrowser.openAuthSessionAsync(authUrl, redirectUri);
+    if (result.type !== 'success') {
+      throw 'Failed to authenticate with MyAnimeList';
+    }
 
-      if (result.type === 'success') {
-        const { url } = result;
+    const { url } = result;
 
-        const codeExtractor = new RegExp(/[=]([^&]+)/);
-        let code = url.match(codeExtractor);
+    const codeExtractor = new RegExp(/[=]([^&]+)/);
+    const codeMatch = url.match(codeExtractor);
 
-        if (code) {
-          code = code[1];
-          const response = await fetch(tokenUrl, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: qs.stringify({
-              client_id: clientId,
-              grant_type: 'authorization_code',
-              code,
-              code_verifier: challenge,
-            }),
-          });
+    if (!codeMatch) {
+      throw 'Failed to extract authorization code from URL';
+    }
 
-          const tokenResponse = await response.json();
-          return {
-            accessToken: tokenResponse.access_token,
-            refreshToken: tokenResponse.refresh_token,
-            expiresAt: new Date(Date.now() + tokenResponse.expires_in),
-          };
-        }
-      }
-    },
-    revalidator: async auth => {
-      const response = await fetch(tokenUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: qs.stringify({
-          grant_type: 'refresh_token',
-          refresh_token: auth.refreshToken,
-        }),
-      });
+    const code = codeMatch[1];
+    const response = await fetch(tokenUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: qs.stringify({
+        client_id: clientId,
+        grant_type: 'authorization_code',
+        code,
+        code_verifier: challenge,
+      }),
+    });
 
-      const tokenResponse = await response.json();
-      return {
-        accessToken: tokenResponse.access_token,
-        refreshToken: tokenResponse.refresh_token,
-        expiresAt: new Date(Date.now() + tokenResponse.expires_in),
-      };
-    },
+    const tokenResponse = await response.json();
+    return {
+      accessToken: tokenResponse.access_token,
+      refreshToken: tokenResponse.refresh_token,
+      expiresAt: new Date(Date.now() + tokenResponse.expires_in),
+    };
   },
-  searchHandler: async (search, auth) => {
+  revalidate: async auth => {
+    const response = await fetch(tokenUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: qs.stringify({
+        grant_type: 'refresh_token',
+        refresh_token: auth.refreshToken,
+      }),
+    });
+
+    const tokenResponse = await response.json();
+    return {
+      accessToken: tokenResponse.access_token,
+      refreshToken: tokenResponse.refresh_token,
+      expiresAt: new Date(Date.now() + tokenResponse.expires_in),
+    };
+  },
+  handleSearch: async (search, auth) => {
     const searchUrl = `${baseApiUrl}/manga?q=${search}&fields=id,title,main_picture,media_type`;
     const response = await fetch(searchUrl, {
       headers: {
@@ -100,8 +96,8 @@ export const myAnimeListTracker = createTracker('MyAnimeList', {
 
     const { data } = await response.json();
     return data
-      .filter(e => e.node.media_type === 'light_novel')
-      .map(e => {
+      .filter((e: any) => e.node.media_type === 'light_novel')
+      .map((e: any) => {
         return {
           id: e.node.id,
           title: e.node.title,
@@ -109,7 +105,7 @@ export const myAnimeListTracker = createTracker('MyAnimeList', {
         };
       });
   },
-  listFinder: async (id, auth) => {
+  getUserListEntry: async (id, auth) => {
     const url = `${baseApiUrl}/manga/${id}?fields=id,num_chapters,my_list_status{start_date,finish_date}`;
     const response = await fetch(url, {
       headers: {
@@ -125,7 +121,7 @@ export const myAnimeListTracker = createTracker('MyAnimeList', {
       totalChapters: data.num_chapters,
     };
   },
-  listUpdater: async (id, payload, auth) => {
+  updateUserListEntry: async (id, payload, auth) => {
     let status = normalizedToMal[payload.status];
     let repeating = false;
     if (status.includes(';')) {

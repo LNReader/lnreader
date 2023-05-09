@@ -40,9 +40,7 @@ const TrackerScreen = ({ navigation }) => {
               if (tracker) {
                 showModal();
               } else {
-                const auth = await getTracker(
-                  'AniList',
-                ).authStrategy.authenticator();
+                const auth = await getTracker('AniList').authenticate();
                 dispatch(setTracker('AniList', { auth }));
               }
             }}
@@ -55,9 +53,7 @@ const TrackerScreen = ({ navigation }) => {
               if (tracker) {
                 showModal();
               } else {
-                const auth = await getTracker(
-                  'MyAnimeList',
-                ).authStrategy.authenticator();
+                const auth = await getTracker('MyAnimeList').authenticate();
                 dispatch(setTracker('MyAnimeList', { auth }));
               }
             }}
@@ -72,10 +68,11 @@ const TrackerScreen = ({ navigation }) => {
                 <List.Item
                   title="Revalidate MyAnimeList"
                   onPress={async () => {
-                    const auth = await getTracker(
-                      'MyAnimeList',
-                    ).authStrategy.revalidator(tracker.auth);
-                    setTracker('MyAnimeList', { auth });
+                    const revalidate = getTracker('MyAnimeList').revalidate;
+                    if (revalidate) {
+                      const auth = revalidate(tracker.auth);
+                      setTracker('MyAnimeList', { auth });
+                    }
                   }}
                   theme={theme}
                 />
