@@ -77,11 +77,14 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
   };
 
   const handleOpenWebView = async () => {
-    navigate('WebviewScreen', {
-      sourceId,
-      name: sourceName,
-      url: sourceUrl,
-    });
+    navigate(
+      'WebviewScreen' as never,
+      {
+        sourceId,
+        name: sourceName,
+        url: sourceUrl,
+      } as never,
+    );
   };
 
   const { library, setLibrary } = useLibraryNovels();
@@ -127,12 +130,13 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
       ) : (
         <NovelList
           data={novelList}
+          inSource
           renderItem={({ item }) => {
             const inLibrary = novelInLibrary(item.novelUrl);
 
             return (
               <NovelCover
-                item={item}
+                item={item as LibraryNovelInfo}
                 theme={theme}
                 libraryStatus={inLibrary}
                 onPress={() => navigateToNovel(item)}
@@ -169,6 +173,7 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
               fetchNextPage();
             }
           }}
+          onEndReachedThreshold={1.5}
           ListFooterComponent={
             hasNextPage && !searchText ? (
               <SourceScreenSkeletonLoading theme={theme} />

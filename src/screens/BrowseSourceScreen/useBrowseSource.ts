@@ -70,7 +70,7 @@ export const useBrowseSource = (
 
   const clearFilters = useCallback(() => setSelectedFilters(undefined), []);
 
-  const setFilters = (filters: SelectedFilter) => {
+  const setFilters = (filters?: SelectedFilter) => {
     setIsLoading(true);
     setCurrentPage(1);
     fetchNovels(1, filters);

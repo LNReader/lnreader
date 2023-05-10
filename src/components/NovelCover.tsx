@@ -18,13 +18,14 @@ import { DisplayModes } from '@screens/library/constants/constants';
 import { LibraryNovelInfo } from '@database/types';
 import { SourceNovelItem } from 'src/sources/types';
 import { ThemeColors } from '@theme/types';
+import SourceScreenSkeletonLoading from '@screens/browse/loadingAnimation/SourceScreenSkeletonLoading';
 
 interface NovelCoverProps {
   item: LibraryNovelInfo;
   onPress: () => void;
   libraryStatus?: boolean;
   theme: ThemeColors;
-  isSelected: boolean;
+  isSelected?: boolean;
   onLongPress: (novelId: number) => void;
   selectedNovels?: Array<SourceNovelItem>;
 }
@@ -64,7 +65,9 @@ const NovelCover: React.FC<NovelCoverProps> = ({
 
   const uri = item.novelCover;
 
-  return displayMode !== DisplayModes.List ? (
+  return item.sourceId < 0 ? (
+    <SourceScreenSkeletonLoading theme={theme} completeRow={item.sourceId} />
+  ) : displayMode !== DisplayModes.List ? (
     <View
       style={[
         {
