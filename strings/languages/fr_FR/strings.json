@@ -177,7 +177,7 @@
         "openJSFile": "Ouvrir le fichier JS",
         "notSaved": "Non enregistré",
         "cssHint": "Astuce : Vous pouvez créer une configuration CSS spécifique à la source avec l'ID source. (#sourceId-[SOURCEID])",
-        "jsHint": "Hint: You have access to following variables: html, novelName, chapterName, sourceId, chapterId, novelId"
+        "jsHint": "Astuce : Vous avez accès aux variables suivantes : html, novelName, chapterName, sourceId, chapterId, novelId"
       },
       "browseSettings": "Parcourir les paramètres",
       "browseSettingsScreen": {
