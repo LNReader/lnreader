@@ -36,7 +36,7 @@ const CustomJSSettings: React.FC<CustomJSSettingsProps> = ({
             : null}
         </List.SubHeader>
       </View>
-      <View style={styles.customCSSContainer}>
+      <View style={styles.customJSContainer}>
         <TextInput
           style={[{ color: theme.onSurface }, styles.fontSizeL]}
           value={customJS}
@@ -45,7 +45,7 @@ const CustomJSSettings: React.FC<CustomJSSettingsProps> = ({
           multiline={true}
           editable={false}
         />
-        <View style={styles.customCSSButtons}>
+        <View style={styles.customJSButtons}>
           <Button
             onPress={jsModal.setTrue}
             style={styles.marginLeftS}
@@ -87,14 +87,14 @@ const styles = StyleSheet.create({
   fontSizeL: {
     fontSize: 16,
   },
-  customCSSContainer: {
+  customJSContainer: {
     paddingHorizontal: 16,
     paddingBottom: 8,
   },
   marginLeftS: {
     marginLeft: 8,
   },
-  customCSSButtons: {
+  customJSButtons: {
     flex: 1,
     flexDirection: 'row-reverse',
   },

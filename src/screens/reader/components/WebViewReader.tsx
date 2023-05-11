@@ -300,7 +300,15 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                     }
 
                     <script>
-                      async function fn(){${readerSettings.customJS}}
+                      async function fn(){
+                        let novelName = "${chapterInfo.novelName}";
+                        let chapterName = "${chapterInfo.chapterName}";
+                        let sourceId =${chapterInfo.sourceId};
+                        let chapterId =${chapterInfo.chapterId};
+                        let novelId =${chapterInfo.novelId};
+                        let html = document.getElementsByTagName("chapter")[0]. innerHTML;
+                        ${readerSettings.customJS}
+                      }
                       document.addEventListener("DOMContentLoaded", fn);
                     </script>
                   </body>
