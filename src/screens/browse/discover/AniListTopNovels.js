@@ -16,10 +16,14 @@ import dayjs from 'dayjs';
 
 function formatDate(date) {
   if (date.year && date.month) {
-    return `${dayjs.monthsShort()[date.month]} ${date.year}`;
+    return `${dayjs.monthsShort()[date.month - 1]} ${date.year}`;
   }
 
   return '';
+}
+
+function datesEqual(date1, date2) {
+  return date1.year === date2.year && date1.month === date2.month;
 }
 
 const BrowseALScreen = ({ navigation, route }) => {
@@ -82,8 +86,13 @@ const BrowseALScreen = ({ navigation, route }) => {
           novelCover: m.coverImage.extraLarge,
           score: `${m.averageScore}%`,
           info: [
+            '', // MAL returns an item we don't care about first, so the component ignores the first element
             `Light Novel (${m.volumes || '?'} Vols)`,
-            `${formatDate(m.startDate)} - ${formatDate(m.endDate)}`,
+            `${formatDate(m.startDate)}${
+              datesEqual(m.startDate, m.endDate)
+                ? ''
+                : `- ${formatDate(m.endDate)}`
+            }`,
           ],
         };
       });
