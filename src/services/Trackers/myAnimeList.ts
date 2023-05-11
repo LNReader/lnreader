@@ -10,7 +10,7 @@ const baseApiUrl = 'https://api.myanimelist.net/v2';
 const challenge = pkceChallenger();
 const authUrl = `${baseOAuthUrl}?response_type=code&client_id=${clientId}&code_challenge_method=plain&code_challenge=${challenge}`;
 const redirectUri = Linking.createURL('');
-const malToNormalized: Record<string, UserListStatus> = {
+export const malToNormalized: Record<string, UserListStatus> = {
   reading: 'CURRENT',
   completed: 'COMPLETED',
   on_hold: 'PAUSED',

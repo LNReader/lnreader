@@ -23,7 +23,7 @@ export const removeTracker = () => async dispatch => {
 /**
  * @param {string} trackerName
  * @param {number} internalId
- * @param {import('../../services/Trackers').SearchResult} novel
+ * @param {Omit<import('../../services/Trackers').SearchResult, "coverImage" | "title">} novel
  * @param {import('../../services/Trackers').AuthenticationResult} authentication
  */
 export const trackNovel =

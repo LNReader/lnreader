@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { persistStore, persistReducer } from 'redux-persist';
 
+import migrate from './migrate';
 import settingsReducer from './settings/settings.reducer';
 import settingsReducerV2 from './settings/settingsSlice';
 import sourceReducerV2 from './source/sourcesSlice';
@@ -14,7 +15,9 @@ import downloadsReducer from './downloads/downloads.reducer';
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
+  version: 0,
   blacklist: ['novelReducer'],
+  migrate,
 };
 
 const reducers = combineReducers({
