@@ -32,11 +32,14 @@ const NovelScreenButtonGroup: React.FC<NovelScreenButtonGroupProps> = ({
   const trackerButtonColor = isTracked ? theme.primary : theme.outline;
 
   const handleOpenWebView = async () => {
-    navigate('WebviewScreen', {
-      sourceId: novel.sourceId,
-      name: novel.source,
-      url: sourceUrl,
-    });
+    navigate(
+      'WebviewScreen' as never,
+      {
+        sourceId: novel.sourceId,
+        name: novel.source,
+        url: sourceUrl,
+      } as never,
+    );
   };
 
   const handleMigrateNovel = () =>
@@ -130,7 +133,11 @@ const NovelScreenButtonGroup: React.FC<NovelScreenButtonGroupProps> = ({
       <Portal>
         <SetCategoryModal
           novelId={novel.novelId}
-          currentCategoryIds={JSON.parse(novel.categoryIds) as number[]}
+          followed={novel.followed}
+          handleFollowNovel={handleFollowNovel}
+          currentCategoryIds={
+            JSON.parse(novel.categoryIds).slice(1) as number[]
+          }
           closeModal={closeSetCategoryModal}
           visible={setCategoryModalVisible}
         />
