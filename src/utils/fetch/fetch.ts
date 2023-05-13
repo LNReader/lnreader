@@ -20,7 +20,7 @@ export const fetchApi = async ({
   if (!userAgent) {
     userAgent = defaultUserAgentString;
   }
-  if (userAgent === '') {
+  if (userAgent === 'false') {
     headers = new Headers({
       ...init?.headers,
     });
