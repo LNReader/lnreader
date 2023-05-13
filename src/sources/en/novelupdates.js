@@ -1,4 +1,5 @@
 import * as cheerio from 'cheerio';
+import { fetchApi, fetchHtml } from '@utils/fetch/fetch';
 import { defaultTo } from 'lodash-es';
 import { FilterInputs } from '../types/filterTypes';
 const sourceId = 50;
@@ -7,10 +8,8 @@ const sourceName = 'Novel Updates';
 
 const baseUrl = 'https://www.novelupdates.com/';
 
-let headers = new Headers({
-  'User-Agent':
-    "'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36",
-});
+const userAgent =
+  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36';
 
 const getPopularNovelsUrl = (page, { showLatestNovels, filters }) => {
   let url = `${baseUrl}${
@@ -55,11 +54,7 @@ const getPopularNovelsUrl = (page, { showLatestNovels, filters }) => {
 const popularNovels = async (page, { showLatestNovels, filters }) => {
   const url = getPopularNovelsUrl(page, { showLatestNovels, filters });
 
-  const result = await fetch(url, {
-    method: 'GET',
-    headers: headers,
-  });
-  const body = await result.text();
+  const body = await fetchHtml({ url, sourceId, userAgent: userAgent });
 
   const loadedCheerio = cheerio.load(body);
 
@@ -89,11 +84,7 @@ const popularNovels = async (page, { showLatestNovels, filters }) => {
 const parseNovelAndChapters = async novelUrl => {
   const url = `${baseUrl}series/${novelUrl}`;
 
-  const result = await fetch(url, {
-    method: 'GET',
-    headers: headers,
-  });
-  const body = await result.text();
+  const body = await fetchHtml({ url, sourceId, userAgent: userAgent });
 
   let loadedCheerio = cheerio.load(body);
 
@@ -133,14 +124,15 @@ const parseNovelAndChapters = async novelUrl => {
   formData.append('mygrr', 0);
   formData.append('mypostid', parseInt(novelId, 10));
 
-  const data = await fetch(
-    'https://www.novelupdates.com/wp-admin/admin-ajax.php',
-    {
+  const data = await fetchApi({
+    url: 'https://www.novelupdates.com/wp-admin/admin-ajax.php',
+    init: {
       method: 'POST',
-      headers,
       body: formData,
     },
-  );
+    sourceId,
+    userAgent: userAgent,
+  });
   const text = await data.text();
 
   loadedCheerio = cheerio.load(text);
@@ -179,9 +171,13 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 
   let chapterText = '';
 
-  result = await fetch(url, {
-    method: 'GET',
-    headers: headers,
+  result = await fetchApi({
+    url: url,
+    init: {
+      method: 'GET',
+    },
+    sourceId,
+    userAgent: userAgent,
   });
   body = await result.text();
 
@@ -318,11 +314,7 @@ const searchNovels = async searchTerm => {
   const url =
     'https://www.novelupdates.com/?s=' + searchTerm + '&post_type=seriesplans';
 
-  const res = await fetch(url, {
-    method: 'GET',
-    headers: headers,
-  });
-  const body = await res.text();
+  const body = await fetchHtml({ url, sourceId, userAgent: userAgent });
 
   const loadedCheerio = cheerio.load(body);
 
