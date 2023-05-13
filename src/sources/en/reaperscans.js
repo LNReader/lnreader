@@ -110,7 +110,8 @@ const parseNovelAndChapters = async novelUrl => {
         .find('div.mt-2 p')
         .text()
         .trim()
-        .replace('Released ', '');
+        .replace('Released', '')
+        .trim();
 
       const chapterUrl = page(this)
         .find('a')
