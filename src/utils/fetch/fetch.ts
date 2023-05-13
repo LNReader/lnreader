@@ -7,8 +7,21 @@ interface FetchParams {
   url: string; // URL of request
   init?: RequestInit; // Variable for passing headers and other information
   sourceId?: number; // ID number of source for cookies
-  raw?: Boolean; // for fetchHtml, allows returning array with response and html.
 }
+
+// Checks if we bypassed cloudflare. If we failed to bypass, throw error.
+export const cloudflareCheck = (text: string) => {
+  if (text.length > 0) {
+    if (
+      text.includes('Enable JavaScript and cookies to continue') ||
+      text.includes('Checking if the site connection is secure')
+    ) {
+      throw Error(
+        "The app couldn't bypass the source's Cloudflare protection.\n\nOpen the source in WebView to bypass the Cloudflare protection.",
+      );
+    }
+  }
+};
 
 export const fetchApi = async ({
   url,
@@ -35,24 +48,11 @@ export const fetchApi = async ({
   return fetch(url, { ...init, headers });
 };
 
-export const fetchHtml = async (
-  params: FetchParams,
-): Promise<string | Array<any>> => {
+export const fetchHtml = async (params: FetchParams): Promise<string> => {
   const res = await fetchApi(params);
   const html = await res.text();
 
-  if (
-    html.includes('Enable JavaScript and cookies to continue') ||
-    html.includes('Checking if the site connection is secure')
-  ) {
-    throw Error(
-      "The app couldn't bypass the source's Cloudflare protection.\n\nOpen the source in WebView to bypass the Cloudflare protection.",
-    );
-  }
+  cloudflareCheck(html);
 
-  if (params.raw === true) {
-    return [res, html];
-  } else {
-    return html;
-  }
+  return html;
 };

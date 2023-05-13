@@ -1,5 +1,5 @@
 import * as cheerio from 'cheerio';
-import { fetchApi, fetchHtml } from '@utils/fetch/fetch';
+import { fetchApi, fetchHtml, cloudflareCheck } from '@utils/fetch/fetch';
 import { defaultTo } from 'lodash-es';
 import { FilterInputs } from '../types/filterTypes';
 const sourceId = 50;
@@ -179,12 +179,16 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 
   let chapterText = '';
 
-  [result, body] = await fetchHtml({
+  result = await fetchApi({
     url,
+    init: {
+      method: 'GET',
+      headers: { 'User-Agent': userAgent },
+    },
     sourceId,
-    raw: true,
-    init: { headers: { 'User-Agent': userAgent } },
   });
+  body = await result.text();
+  cloudflareCheck(body);
 
   // console.log(result.url);
 
