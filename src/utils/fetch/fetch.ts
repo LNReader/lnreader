@@ -1,23 +1,35 @@
 import { getSourceStorage } from '@hooks/useSourceStorage';
 
 export const defaultUserAgentString =
-  'Mozilla/5.0 (Linux; Android 13) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.5359.128 Mobile Safari/537.36';
+  'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Mobile Safari/537.36';
 
 interface FetchParams {
   url: string;
   init?: RequestInit;
   sourceId?: number;
+  userAgent?: string;
 }
 
 export const fetchApi = async ({
   url,
   init,
   sourceId,
+  userAgent,
 }: FetchParams): Promise<Response> => {
-  const headers = new Headers({
-    ...init?.headers,
-    'User-Agent': defaultUserAgentString,
-  });
+  let headers: Headers;
+  if (!userAgent) {
+    userAgent = defaultUserAgentString;
+  }
+  if (userAgent === '') {
+    headers = new Headers({
+      ...init?.headers,
+    });
+  } else {
+    headers = new Headers({
+      ...init?.headers,
+      'User-Agent': userAgent,
+    });
+  }
 
   if (sourceId) {
     const { cookies = '' } = getSourceStorage(sourceId);
