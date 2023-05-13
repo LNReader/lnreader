@@ -8,6 +8,7 @@ interface FetchParams {
   init?: RequestInit;
   sourceId?: number;
   userAgent?: string;
+  raw?: Boolean;
 }
 
 export const fetchApi = async ({
@@ -42,7 +43,9 @@ export const fetchApi = async ({
   return fetch(url, { ...init, headers });
 };
 
-export const fetchHtml = async (params: FetchParams): Promise<string> => {
+export const fetchHtml = async (
+  params: FetchParams,
+): Promise<string | Array<any>> => {
   const res = await fetchApi(params);
   const html = await res.text();
 
@@ -55,5 +58,9 @@ export const fetchHtml = async (params: FetchParams): Promise<string> => {
     );
   }
 
-  return html;
+  if (params.raw === true) {
+    return [res, html];
+  } else {
+    return html;
+  }
 };

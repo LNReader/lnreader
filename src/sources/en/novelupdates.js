@@ -171,24 +171,12 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 
   let chapterText = '';
 
-  result = await fetchApi({
-    url: url,
-    init: {
-      method: 'GET',
-    },
+  [result, body] = await fetchHtml({
+    url,
     sourceId,
+    raw: true,
     userAgent: userAgent,
   });
-  body = await result.text();
-
-  if (
-    result.includes('Enable JavaScript and cookies to continue') ||
-    result.includes('Checking if the site connection is secure')
-  ) {
-    throw Error(
-      "The app couldn't bypass the source's Cloudflare protection.\n\nOpen the source in WebView to bypass the Cloudflare protection.",
-    );
-  }
 
   // console.log(result.url);
 
