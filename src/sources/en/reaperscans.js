@@ -79,28 +79,49 @@ const parseNovelAndChapters = async novelUrl => {
 
   novel.summary = loadedCheerio('div.p-4 > p.prose').text().trim();
 
+  let novelLastPage = 1;
+  loadedCheerio('nav span.inline-flex button').each(function () {
+    let number = loadedCheerio(this).text().trim();
+    if (!isNaN(number) && Number(number) > novelLastPage) {
+      novelLastPage = Number(number);
+    }
+  });
+
   let novelChapters = [];
 
-  loadedCheerio('.mt-6 > .pb-4 li').each(function () {
-    const chapterName = loadedCheerio(this)
-      .find('div.text-sm > p.truncate')
-      .text()
-      .trim();
-    const releaseDate = loadedCheerio(this)
-      .find('div.mt-2 p')
-      .text()
-      .trim()
-      .replace('Released ', '');
+  let tableOfContents = [];
+  tableOfContents.push(loadedCheerio);
 
-    const chapterUrl = loadedCheerio(this)
-      .find('a')
-      .attr('href')
-      .replace(url + '/chapters/', '');
+  for (let i = 2; i <= novelLastPage; i++) {
+    let pUrl = url + '?page=' + i;
+    let pResult = await fetch(pUrl);
+    let pBody = await pResult.text();
 
-    const chapter = { chapterName, releaseDate, chapterUrl };
+    tableOfContents.push(cheerio.load(pBody));
+  }
 
-    novelChapters.push(chapter);
-  });
+  for (let page of tableOfContents) {
+    page('.mt-6 > .pb-4 li').each(function () {
+      const chapterName = page(this)
+        .find('div.text-sm > p.truncate')
+        .text()
+        .trim();
+      const releaseDate = page(this)
+        .find('div.mt-2 p')
+        .text()
+        .trim()
+        .replace('Released ', '');
+
+      const chapterUrl = page(this)
+        .find('a')
+        .attr('href')
+        .replace(url + '/chapters/', '');
+
+      const chapter = { chapterName, releaseDate, chapterUrl };
+
+      novelChapters.push(chapter);
+    });
+  }
 
   novel.chapters = novelChapters.reverse();
 
