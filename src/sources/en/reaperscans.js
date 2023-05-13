@@ -10,7 +10,11 @@ const sourceName = 'ReaperScans';
 const popularNovels = async page => {
   let url = `${baseUrl}/novels/`;
 
-  const body = await fetchHtml({ url, sourceId, userAgent: 'false' });
+  const body = await fetchHtml({
+    url,
+    sourceId,
+    init: { headers: { 'User-Agent': undefined } },
+  });
 
   const loadedCheerio = cheerio.load(body);
 
@@ -40,7 +44,11 @@ const popularNovels = async page => {
 const parseNovelAndChapters = async novelUrl => {
   const url = `${baseUrl}/novels/${novelUrl}`;
 
-  const body = await fetchHtml({ url, sourceId, userAgent: 'false' });
+  const body = await fetchHtml({
+    url,
+    sourceId,
+    init: { headers: { 'User-Agent': undefined } },
+  });
 
   const loadedCheerio = cheerio.load(body);
 
