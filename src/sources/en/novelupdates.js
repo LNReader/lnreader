@@ -54,7 +54,11 @@ const getPopularNovelsUrl = (page, { showLatestNovels, filters }) => {
 const popularNovels = async (page, { showLatestNovels, filters }) => {
   const url = getPopularNovelsUrl(page, { showLatestNovels, filters });
 
-  const body = await fetchHtml({ url, sourceId, userAgent: userAgent });
+  const body = await fetchHtml({
+    url,
+    sourceId,
+    init: { headers: { 'User-Agent': userAgent } },
+  });
 
   const loadedCheerio = cheerio.load(body);
 
@@ -84,7 +88,11 @@ const popularNovels = async (page, { showLatestNovels, filters }) => {
 const parseNovelAndChapters = async novelUrl => {
   const url = `${baseUrl}series/${novelUrl}`;
 
-  const body = await fetchHtml({ url, sourceId, userAgent: userAgent });
+  const body = await fetchHtml({
+    url,
+    sourceId,
+    init: { headers: { 'User-Agent': userAgent } },
+  });
 
   let loadedCheerio = cheerio.load(body);
 
@@ -129,9 +137,9 @@ const parseNovelAndChapters = async novelUrl => {
     init: {
       method: 'POST',
       body: formData,
+      headers: { 'User-Agent': userAgent },
     },
     sourceId,
-    userAgent: userAgent,
   });
   const text = await data.text();
 
@@ -175,7 +183,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     url,
     sourceId,
     raw: true,
-    userAgent: userAgent,
+    init: { headers: { 'User-Agent': userAgent } },
   });
 
   // console.log(result.url);
@@ -311,7 +319,11 @@ const searchNovels = async searchTerm => {
   const url =
     'https://www.novelupdates.com/?s=' + searchTerm + '&post_type=seriesplans';
 
-  const body = await fetchHtml({ url, sourceId, userAgent: userAgent });
+  const body = await fetchHtml({
+    url,
+    sourceId,
+    init: { headers: { 'User-Agent': userAgent } },
+  });
 
   const loadedCheerio = cheerio.load(body);
 

@@ -4,33 +4,25 @@ export const defaultUserAgentString =
   'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Mobile Safari/537.36';
 
 interface FetchParams {
-  url: string;
-  init?: RequestInit;
-  sourceId?: number;
-  userAgent?: string;
-  raw?: Boolean;
+  url: string; // URL of request
+  init?: RequestInit; // Variable for passing headers and other information
+  sourceId?: number; // ID number of source for cookies
+  raw?: Boolean; // for fetchHtml, allows returning array with response and html.
 }
 
 export const fetchApi = async ({
   url,
   init,
   sourceId,
-  userAgent,
 }: FetchParams): Promise<Response> => {
-  let headers: Headers;
-  if (!userAgent) {
-    userAgent = defaultUserAgentString;
-  }
-  if (userAgent === 'false') {
-    headers = new Headers({
-      ...init?.headers,
-    });
-  } else {
-    headers = new Headers({
-      ...init?.headers,
-      'User-Agent': userAgent,
-    });
-  }
+  let headers = new Headers({
+    'User-Agent': defaultUserAgentString,
+    ...init?.headers,
+  });
+  // 'User-Agent' can be overwritten by defining
+  // init: { headers: { 'User-Agent': 'New user agent!' } },
+  // You can have NO user agent by doing this:
+  // init: { headers: { 'User-Agent': undefined } },
 
   if (sourceId) {
     const { cookies = '' } = getSourceStorage(sourceId);
