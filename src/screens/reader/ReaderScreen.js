@@ -207,9 +207,11 @@ const ChapterContent = ({ route, navigation }) => {
 
   const scrollTo = useCallback(
     offsetY => {
-      webViewRef?.current.injectJavaScript(`(()=>{
-        window.scrollTo({top:${offsetY},behavior:'smooth',})
-      })()`);
+      requestAnimationFrame(() => {
+        webViewRef?.current.injectJavaScript(`(()=>{
+          window.scrollTo({top:${offsetY},behavior:'smooth',})
+        })()`);
+      });
     },
     [webViewRef],
   );
