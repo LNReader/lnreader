@@ -1,5 +1,6 @@
 import * as cheerio from 'cheerio';
 import { Status } from '../helpers/constants';
+import { fetchHtml } from '@utils/fetch/fetch';
 
 const baseUrl = 'https://reaperscans.com';
 
@@ -9,8 +10,7 @@ const sourceName = 'ReaperScans';
 const popularNovels = async page => {
   let url = `${baseUrl}/novels/`;
 
-  const result = await fetch(url);
-  const body = await result.text();
+  const body = await fetchHtml({ url, sourceId, userAgent: 'false' });
 
   const loadedCheerio = cheerio.load(body);
 
@@ -40,8 +40,7 @@ const popularNovels = async page => {
 const parseNovelAndChapters = async novelUrl => {
   const url = `${baseUrl}/novels/${novelUrl}`;
 
-  const result = await fetch(url);
-  const body = await result.text();
+  const body = await fetchHtml({ url, sourceId, userAgent: 'false' });
 
   const loadedCheerio = cheerio.load(body);
 
