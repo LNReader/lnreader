@@ -10,7 +10,7 @@ import TrackSearchDialog from './TrackSearchDialog';
 import SetTrackStatusDialog from './SetTrackStatusDialog';
 import SetTrackScoreDialog from './SetTrackScoreDialog';
 import SetTrackChaptersDialog from './SetTrackChaptersDialog';
-import { AddMalTrackingCard, MalTrackItemCard } from './MyAnimeListCards';
+import { AddTrackingCard, TrackedItemCard } from './TrackerCards';
 
 const TrackSheet = ({ bottomSheetRef, novelId, novelName, theme }) => {
   const tracker = useSelector(state => state.trackerReducer.tracker);
@@ -30,32 +30,39 @@ const TrackSheet = ({ bottomSheetRef, novelId, novelName, theme }) => {
   const [trackChaptersDialog, setTrackChaptersDialog] = useState(false);
   const [trackScoreDialog, setTrackScoreDialog] = useState(false);
 
+  /** @type {(status: import("../../../../services/Trackers/index").UserListStatus) => string} */
   const getStatus = status => {
-    const myAnimeListStatus = {
-      reading: 'Reading',
-      completed: 'Completed',
-      on_hold: 'On Hold',
-      dropped: 'Dropped',
-      plan_to_read: 'Plan to read',
-    };
-
-    return myAnimeListStatus[status];
+    switch (status) {
+      case 'CURRENT':
+        return 'Reading';
+      case 'PLANNING':
+        return 'Plan to read';
+      case 'COMPLETED':
+        return 'Completed';
+      case 'DROPPED':
+        return 'Dropped';
+      case 'PAUSED':
+        return 'On Hold';
+      case 'REPEATING':
+        return 'Rereading';
+    }
   };
 
   const updateTrackChapters = newChapters => {
     if (newChapters !== '') {
+      const newProgress = Number(newChapters);
       setTrackItem({
         ...trackItem,
-        my_list_status: {
-          ...trackItem.my_list_status,
-          num_chapters_read: newChapters,
+        userData: {
+          ...trackItem.userData,
+          progress: newProgress,
         },
       });
 
       dispatch(
-        updateTracker(trackItem.id, tracker.access_token, {
-          ...trackItem.my_list_status,
-          num_chapters_read: newChapters,
+        updateTracker(tracker.name, trackItem.id, tracker.auth, {
+          ...trackItem.userData,
+          progress: newProgress,
         }),
       );
 
@@ -68,15 +75,15 @@ const TrackSheet = ({ bottomSheetRef, novelId, novelName, theme }) => {
   const updateTrackStatus = newStatus => {
     setTrackItem({
       ...trackItem,
-      my_list_status: {
-        ...trackItem.my_list_status,
+      userData: {
+        ...trackItem.userData,
         status: newStatus,
       },
     });
 
     dispatch(
-      updateTracker(trackItem.id, tracker.access_token, {
-        ...trackItem.my_list_status,
+      updateTracker(tracker.name, trackItem.id, trackItem, tracker.auth, {
+        ...trackItem.userData,
         status: newStatus,
       }),
     );
@@ -87,15 +94,15 @@ const TrackSheet = ({ bottomSheetRef, novelId, novelName, theme }) => {
   const updateTrackScore = newScore => {
     setTrackItem({
       ...trackItem,
-      my_list_status: {
-        ...trackItem.my_list_status,
+      userData: {
+        ...trackItem.userData,
         score: newScore,
       },
     });
 
     dispatch(
-      updateTracker(trackItem.id, tracker.access_token, {
-        ...trackItem.my_list_status,
+      updateTracker(tracker.name, trackItem.id, tracker.auth, {
+        ...trackItem.userData,
         score: newScore,
       }),
     );
@@ -113,12 +120,26 @@ const TrackSheet = ({ bottomSheetRef, novelId, novelName, theme }) => {
           ]}
         >
           {!trackItem ? (
-            <AddMalTrackingCard
-              theme={theme}
-              setTrackSearchDialog={setTrackSearchDialog}
-            />
+            tracker.name === 'MyAnimeList' ? (
+              <AddTrackingCard
+                icon={require('../../../../../assets/mal.png')}
+                theme={theme}
+                setTrackSearchDialog={setTrackSearchDialog}
+              />
+            ) : (
+              <AddTrackingCard
+                icon={require('../../../../../assets/anilist.png')}
+                theme={theme}
+                setTrackSearchDialog={setTrackSearchDialog}
+              />
+            )
           ) : (
-            <MalTrackItemCard
+            <TrackedItemCard
+              icon={
+                tracker.name === 'MyAnimeList'
+                  ? require('../../../../../assets/mal.png')
+                  : require('../../../../../assets/anilist.png')
+              }
               trackItem={trackItem}
               setTrackStatusDialog={setTrackStatusDialog}
               setTrackChaptersDialog={setTrackChaptersDialog}

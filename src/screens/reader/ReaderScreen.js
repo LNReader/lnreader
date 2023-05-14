@@ -236,14 +236,18 @@ const ChapterContent = ({ route, navigation }) => {
   }, [autoScroll, webViewRef]);
 
   const updateTracker = () => {
-    const chapterNumber = parseChapterNumber(chapterName);
-
+    const chapterNumber = Number(parseChapterNumber(chapterName));
     isTracked &&
       chapterNumber &&
       Number.isInteger(chapterNumber) &&
-      chapterNumber > isTracked.my_list_status.num_chapters_read &&
+      chapterNumber > isTracked.userData.progress &&
       dispatch(
-        updateChaptersRead(isTracked.id, tracker.access_token, chapterNumber),
+        updateChaptersRead(
+          tracker.name,
+          isTracked.id,
+          tracker.auth,
+          chapterNumber,
+        ),
       );
   };
 
