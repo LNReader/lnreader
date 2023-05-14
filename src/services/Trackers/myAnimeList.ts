@@ -3,7 +3,7 @@ import * as WebBrowser from 'expo-web-browser';
 import qs from 'qs';
 import { createTracker, type UserListStatus } from './index';
 
-const clientId = 'd2f499825d64b0213bb77e78193ccbb1';
+const clientId = process.env.MYANIMELIST_CLIENT_ID;
 const baseOAuthUrl = 'https://myanimelist.net/v1/oauth2/authorize';
 const tokenUrl = 'https://myanimelist.net/v1/oauth2/token';
 const baseApiUrl = 'https://api.myanimelist.net/v2';
@@ -110,6 +110,7 @@ export const myAnimeListTracker = createTracker('MyAnimeList', {
     const response = await fetch(url, {
       headers: {
         Authorization: `Bearer ${auth.accessToken}`,
+        'Content-Type': 'application/x-www-form-urlencoded',
       },
     });
 
@@ -122,7 +123,7 @@ export const myAnimeListTracker = createTracker('MyAnimeList', {
     };
   },
   updateUserListEntry: async (id, payload, auth) => {
-    let status = normalizedToMal[payload.status];
+    let status = normalizedToMal[payload.status] || normalizedToMal.CURRENT;
     let repeating = false;
     if (status.includes(';')) {
       const split = status.split(';');
@@ -135,6 +136,7 @@ export const myAnimeListTracker = createTracker('MyAnimeList', {
       method: 'PUT',
       headers: {
         Authorization: `Bearer ${auth.accessToken}`,
+        'Content-Type': 'application/x-www-form-urlencoded',
       },
       body: qs.stringify({
         status,

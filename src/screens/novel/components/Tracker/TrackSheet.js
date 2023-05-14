@@ -3,7 +3,8 @@ import { StyleSheet, View, ToastAndroid } from 'react-native';
 import { overlay, Portal } from 'react-native-paper';
 import BottomSheet from '@components/BottomSheet/BottomSheet';
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { useTrackerReducer } from '@redux/hooks';
 import { updateTracker } from '../../../../redux/tracker/tracker.actions';
 
 import TrackSearchDialog from './TrackSearchDialog';
@@ -13,10 +14,7 @@ import SetTrackChaptersDialog from './SetTrackChaptersDialog';
 import { AddTrackingCard, TrackedItemCard } from './TrackerCards';
 
 const TrackSheet = ({ bottomSheetRef, novelId, novelName, theme }) => {
-  const tracker = useSelector(state => state.trackerReducer.tracker);
-  const trackedNovels = useSelector(
-    state => state.trackerReducer.trackedNovels,
-  );
+  const { tracker, trackedNovels } = useTrackerReducer();
   const dispatch = useDispatch();
 
   const [trackItem, setTrackItem] = useState();

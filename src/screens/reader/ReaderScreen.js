@@ -12,11 +12,9 @@ import {
 } from '../../database/queries/ChapterQueries';
 import { fetchChapter } from '../../services/Source/source';
 import { showToast } from '../../hooks/showToast';
-import {
-  usePosition,
-  useSettings,
-  useTrackingStatus,
-} from '../../hooks/reduxHooks';
+import { usePosition, useSettings } from '../../hooks/reduxHooks';
+import { useTrackerReducer } from '@redux/hooks';
+
 import { useTheme } from '@hooks/useTheme';
 import { updateChaptersRead } from '../../redux/tracker/tracker.actions';
 import { markChapterReadAction } from '../../redux/novel/novel.actions';
@@ -98,7 +96,7 @@ const ChapterContent = ({ route, navigation }) => {
   const position = usePosition(novelId, chapterId);
   const minScroll = useRef(0);
 
-  const { tracker, trackedNovels } = useTrackingStatus();
+  const { tracker, trackedNovels } = useTrackerReducer();
   const isTracked = trackedNovels.find(obj => obj.novelId === novelId);
 
   const [chapter, setChapter] = useState({});

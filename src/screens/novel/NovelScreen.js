@@ -59,6 +59,7 @@ import useBoolean from '@hooks/useBoolean';
 import { useCategorySettings } from '@hooks/useSettings';
 import { openChapter } from '../../utils/handleNavigateParams';
 import NovelScreenLoading from './components/LoadingAnimation/NovelScreenLoading';
+import { useTrackerReducer } from '@redux/hooks';
 
 const Novel = ({ route, navigation }) => {
   const item = route.params;
@@ -71,6 +72,7 @@ const Novel = ({ route, navigation }) => {
 
   const { novel, chapters, loading, updating } = useNovel();
   const { downloadQueue } = useSelector(state => state.downloadsReducer);
+  const { tracker } = useTrackerReducer();
 
   const [selected, setSelected] = useState([]);
   const [downloadMenu, showDownloadMenu] = useState(false);
@@ -713,12 +715,14 @@ const Novel = ({ route, navigation }) => {
           filter={filter}
           showChapterTitles={showChapterTitles}
         />
-        <TrackSheet
-          bottomSheetRef={trackerSheetRef}
-          novelId={novel.novelId}
-          novelName={novel.novelName}
-          theme={theme}
-        />
+        {tracker ? (
+          <TrackSheet
+            bottomSheetRef={trackerSheetRef}
+            novelId={novel.novelId}
+            novelName={novel.novelName}
+            theme={theme}
+          />
+        ) : null}
       </View>
     </Provider>
   );
