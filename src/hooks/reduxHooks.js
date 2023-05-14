@@ -85,17 +85,10 @@ const usePosition = (novelId, chapterId) => {
   return position;
 };
 
-const useTrackingStatus = () => {
-  const tracker = useSelector(state => state.trackerReducer);
-
-  return tracker;
-};
-
 export {
   useSettings,
   usePreferences,
   useContinueReading,
-  useTrackingStatus,
   useNovel,
   useChapter,
   useSavedSettings,

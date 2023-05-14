@@ -51,6 +51,7 @@ const GeneralTab: React.FC = () => {
     scrollAmount = 200,
     swipeGestures = false,
     removeExtraParagraphSpacing = false,
+    addChapterNameInReader = false,
   } = useSettingsV1();
 
   return (
@@ -141,6 +142,16 @@ const GeneralTab: React.FC = () => {
           />
         </View>
       ) : null}
+      <ReaderSheetPreferenceItem
+        label={'Add chapter name in reader'}
+        onPress={() =>
+          dispatch(
+            setAppSettings('addChapterNameInReader', !addChapterNameInReader),
+          )
+        }
+        value={addChapterNameInReader}
+        theme={theme}
+      />
     </View>
   );
 };

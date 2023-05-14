@@ -2,17 +2,11 @@ import React, { useState } from 'react';
 import { View } from 'react-native';
 import { Modal, Portal, Text, Button, Provider } from 'react-native-paper';
 
-import * as WebBrowser from 'expo-web-browser';
-import {
-  myAnimeListConfig,
-  getAccessToken,
-  malTokenWatcher,
-} from '../../services/Trackers/myAnimeList';
-
 import { useSelector, useDispatch } from 'react-redux';
 import { removeTracker, setTracker } from '../../redux/tracker/tracker.actions';
 import { useTheme } from '@hooks/useTheme';
 import { Appbar, List } from '@components';
+import { getTracker } from '../../services/Trackers/index';
 
 const TrackerScreen = ({ navigation }) => {
   const theme = useTheme();
@@ -41,55 +35,49 @@ const TrackerScreen = ({ navigation }) => {
         <List.Section>
           <List.SubHeader theme={theme}>Services</List.SubHeader>
           <List.Item
+            title="AniList"
+            onPress={async () => {
+              if (tracker) {
+                showModal();
+              } else {
+                const auth = await getTracker('AniList').authenticate();
+                dispatch(setTracker('AniList', { auth }));
+              }
+            }}
+            right={tracker?.name === 'AniList' && 'check'}
+            theme={theme}
+          />
+          <List.Item
             title="MyAnimeList"
             onPress={async () => {
               if (tracker) {
                 showModal();
               } else {
-                await WebBrowser.openAuthSessionAsync(
-                  myAnimeListConfig.authUrl,
-                  myAnimeListConfig.redirectUri,
-                ).then(res => {
-                  // console.log(res.type);
-                  if (res.type === 'success') {
-                    const { url } = res;
-
-                    const codeExtractor = new RegExp(/[=]([^&]+)/);
-                    let code = url.match(codeExtractor);
-
-                    // console.log(code);
-
-                    if (code) {
-                      code = code[1];
-                      getAccessToken(
-                        code,
-                        myAnimeListConfig.codeChallenge,
-                      ).then(objects => {
-                        // console.log(objects);
-                        dispatch(setTracker(objects));
-                      });
-                    }
-                  }
-                });
+                const auth = await getTracker('MyAnimeList').authenticate();
+                dispatch(setTracker('MyAnimeList', { auth }));
               }
             }}
-            right={tracker && 'check'}
+            right={tracker?.name === 'MyAnimeList' && 'check'}
             theme={theme}
           />
-          {tracker && tracker.expires_in < new Date(Date.now()) && (
-            <>
-              <List.Divider theme={theme} />
-              <List.SubHeader theme={theme}>Settings</List.SubHeader>
-              <List.Item
-                title="Revalidate MyAnimeList"
-                onPress={() => {
-                  const res = malTokenWatcher(tracker);
-                  dispatch(setTracker(res));
-                }}
-                theme={theme}
-              />
-            </>
-          )}
+          {tracker?.name === 'MyAnimeList' &&
+            tracker.expires_in < new Date(Date.now()) && (
+              <>
+                <List.Divider theme={theme} />
+                <List.SubHeader theme={theme}>Settings</List.SubHeader>
+                <List.Item
+                  title="Revalidate MyAnimeList"
+                  onPress={async () => {
+                    const revalidate = getTracker('MyAnimeList').revalidate;
+                    if (revalidate) {
+                      const auth = revalidate(tracker.auth);
+                      setTracker('MyAnimeList', { auth });
+                    }
+                  }}
+                  theme={theme}
+                />
+              </>
+            )}
         </List.Section>
 
         <Portal>
@@ -109,7 +97,7 @@ const TrackerScreen = ({ navigation }) => {
                 fontSize: 18,
               }}
             >
-              Log out from MyAnimeList?
+              Log out from {tracker?.name}?
             </Text>
             <View
               style={{
