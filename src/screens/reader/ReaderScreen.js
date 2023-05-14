@@ -146,10 +146,11 @@ const ChapterContent = ({ route, navigation }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [useVolumeButtons, scrollAmount]);
 
-  const onLayout = useCallback(e => {
-    setTimeout(() => connectVolumeButton());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const onLayout = useCallback(() => {
+    if (useVolumeButtons) {
+      setTimeout(() => connectVolumeButton());
+    } // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [useVolumeButtons]);
 
   const getChapter = async id => {
     try {
@@ -265,48 +266,53 @@ const ChapterContent = ({ route, navigation }) => {
     [chapter],
   );
 
-  const hideHeader = () => {
+  const hideHeader = useCallback(() => {
     if (!hidden) {
       setImmersiveMode();
     } else {
       showStatusAndNavBar();
     }
     setHidden(!hidden);
-  };
+  }, [hidden]);
 
-  const navigateToChapterBySwipe = name => {
-    let navChapter;
-    if (name === 'SWIPE_LEFT') {
-      navChapter = nextChapter;
-    } else if (name === 'SWIPE_RIGHT') {
-      navChapter = prevChapter;
-    } else {
-      return;
-    }
-    // you can add more condition for friendly usage. for example: if(name === "SWIPE_LEFT" || name === "right")
-    navChapter
-      ? navigation.replace('Chapter', {
-          ...params,
-          chapterUrl: navChapter.chapterUrl,
-          chapterId: navChapter.chapterId,
-          chapterName: navChapter.chapterName,
-          bookmark: navChapter.bookmark,
-        })
-      : showToast(
-          name === 'SWIPE_LEFT'
-            ? "There's no next chapter"
-            : "There's no previous chapter",
-        );
-  };
+  const navigateToChapterBySwipe = useCallback(
+    name => {
+      let navChapter;
+      if (name === 'SWIPE_LEFT') {
+        navChapter = nextChapter;
+      } else if (name === 'SWIPE_RIGHT') {
+        navChapter = prevChapter;
+      } else {
+        return;
+      }
+      // you can add more condition for friendly usage. for example: if(name === "SWIPE_LEFT" || name === "right")
+      navChapter
+        ? navigation.replace('Chapter', {
+            ...params,
+            chapterUrl: navChapter.chapterUrl,
+            chapterId: navChapter.chapterId,
+            chapterName: navChapter.chapterName,
+            bookmark: navChapter.bookmark,
+          })
+        : showToast(
+            name === 'SWIPE_LEFT'
+              ? "There's no next chapter"
+              : "There's no previous chapter",
+          );
+    },
+    [nextChapter, prevChapter],
+  );
 
-  const onWebViewNavigationStateChange = async ({ url }) => {
+  const onWebViewNavigationStateChange = useCallback(async ({ url }) => {
     if ((sourceId === 50 || sourceId === 62) && url !== 'about:blank') {
       setLoading(true);
       const res = await fetchChapter(sourceId, novelUrl, url);
       setChapter(res);
       setLoading(false);
     }
-  };
+  }, []);
+
+  const scrollToSavedProgress = () => scrollTo(position?.position);
 
   const chapterText = sanitizeChapterText(chapter.chapterText, {
     removeExtraParagraphSpacing,
@@ -335,10 +341,8 @@ const ChapterContent = ({ route, navigation }) => {
         minScroll={minScroll}
         nextChapter={nextChapter}
         webViewRef={webViewRef}
-        onLayout={() => {
-          useVolumeButtons && onLayout();
-          scrollTo(position?.position);
-        }}
+        onLayout={onLayout}
+        scrollToSavedProgress={scrollToSavedProgress}
         onPress={hideHeader}
         doSaveProgress={doSaveProgress}
         navigateToChapterBySwipe={navigateToChapterBySwipe}

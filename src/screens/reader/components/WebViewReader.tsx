@@ -2,10 +2,11 @@ import React from 'react';
 import { Dimensions, StatusBar } from 'react-native';
 import WebView, { WebViewProps } from 'react-native-webview';
 import RNFetchBlob from 'rn-fetch-blob';
+import isEqual from 'react-fast-compare';
 
 import { useTheme } from '@hooks/useTheme';
 import { ChapterItem } from '@database/types';
-import { useReaderSettings } from '@redux/hooks';
+import { useReaderSettings, useSettingsV1 } from '@redux/hooks';
 import { getString } from '@strings/translations';
 
 import { sourceManager } from '../../../sources/sourceManager';
@@ -37,6 +38,7 @@ type WebViewReaderProps = {
   navigateToChapterBySwipe(name: string): void;
   onWebViewNavigationStateChange(): void;
   onLayout: WebViewProps['onLayout'];
+  scrollToSavedProgress: () => void;
 };
 
 const onClickWebViewPostMessage = (event: WebViewPostEvent) =>
@@ -58,12 +60,14 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
     doSaveProgress,
     navigateToChapterBySwipe,
     onWebViewNavigationStateChange,
+    scrollToSavedProgress,
   } = props;
 
   const theme = useTheme();
 
   const readerSettings = useReaderSettings();
   const { theme: backgroundColor } = readerSettings;
+  const { addChapterNameInReader = false } = useSettingsV1();
 
   const layoutHeight = Dimensions.get('window').height;
   const headers = sourceManager(chapterInfo.sourceId)?.headers;
@@ -78,6 +82,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
       onNavigationStateChange={onWebViewNavigationStateChange}
       nestedScrollEnabled={true}
       javaScriptEnabled={true}
+      onLoad={scrollToSavedProgress}
       onLayout={onLayout}
       onMessage={ev => {
         const event: WebViewPostEvent = JSON.parse(ev.nativeEvent.data);
@@ -222,6 +227,11 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                         data-novel-id='${chapterInfo.novelId}'
                         data-chapter-id='${chapterInfo.chapterId}'
                       >
+                        ${
+                          addChapterNameInReader
+                            ? `<h3>${chapterName}</h3>`
+                            : ''
+                        }
                         ${html}
                       </chapter>
                     </div>
@@ -319,4 +329,4 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
   );
 };
 
-export default WebViewReader;
+export default React.memo(WebViewReader, isEqual);
