@@ -106,7 +106,7 @@ const popularNovels = async () => {
 };
 
 const parseChapter = async (novelUrl: string, chapterUrl: string) => {
-  const result = await fetchHtml({ url: novelUrl });
+  const result = await fetchHtml({ url: chapterUrl });
   let loadedCheerio = cheerio.load(result);
 
   const chapterName = loadedCheerio('h1').text();
