@@ -992,5 +992,12 @@
     "url": "https://novelsonline.net/",
     "lang": "English",
     "icon": "https://novelsonline.net/assets/images/logo.png?v=norm"
+  },
+  {
+    "sourceId": 164,
+    "sourceName": "Zenx Novel",
+    "url": "https://zenxnovel.com/"
+    "lang" "Indonesian",
+    "icon" "https://zenxnovel.com/wp-content/uploads/2023/04/cropped-yumine-192x192.png"
   }
 ]
