@@ -17,7 +17,7 @@ import { getString } from '@strings/translations';
 import { StyleSheet } from 'react-native';
 import { useLibraryNovels } from '@screens/library/hooks/useLibrary';
 import { switchNovelToLibrary } from '@database/queries/NovelQueries';
-import { NovelInfo } from '@database/types';
+import { Novel } from '@database/types';
 import SourceScreenSkeletonLoading from '@screens/browse/loadingAnimation/SourceScreenSkeletonLoading';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -138,22 +138,23 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
                 libraryStatus={inLibrary}
                 onPress={() => navigateToNovel(item)}
                 isSelected={false}
-                onLongPress={async () => {
-                  await switchNovelToLibrary(item.url, pluginId);
-                  setLibrary(prevValues => {
-                    if (inLibrary) {
-                      return [
-                        ...prevValues.filter(novel => novel.url !== item.url),
-                      ];
-                    } else {
-                      return [
-                        ...prevValues,
-                        {
-                          ...item,
-                          inLibrary: 1,
-                        } as NovelInfo,
-                      ];
-                    }
+                onLongPress={() => {
+                  switchNovelToLibrary(item.url, pluginId).then(() => {
+                    setLibrary(prevValues => {
+                      if (inLibrary) {
+                        return [
+                          ...prevValues.filter(novel => novel.url !== item.url),
+                        ];
+                      } else {
+                        return [
+                          ...prevValues,
+                          {
+                            ...item,
+                            inLibrary: 1,
+                          } as Novel,
+                        ];
+                      }
+                    });
                   });
                 }}
                 selectedNovels={[]}

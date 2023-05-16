@@ -5,7 +5,7 @@ import { Modal, Portal } from 'react-native-paper';
 import { Button } from '@components/index';
 
 import { Category } from '../../../database/types';
-import { deleteCategoryById } from '../../../database/queries/CategoryQueries';
+import { deleteCategory } from '../../../database/queries/CategoryQueries';
 import { useTheme } from '@hooks/useTheme';
 
 import { getString } from '@strings/translations';
@@ -45,7 +45,7 @@ const DeleteCategoryModal: React.FC<DeleteCategoryModalProps> = ({
           <Button
             title={getString('common.ok')}
             onPress={() => {
-              deleteCategoryById(category);
+              deleteCategory(category);
               closeModal();
               onSuccess();
             }}

@@ -7,8 +7,8 @@ import { Appbar, EmptyView } from '@components/index';
 import AddCategoryModal from './components/AddCategoryModal';
 
 import {
-  getCategoriesFromDb,
-  updateCategoryOrderInDb,
+  getAllCategories,
+  updateCategoriesOrder,
 } from '../../database/queries/CategoryQueries';
 import useBoolean from '@hooks/useBoolean';
 import { useTheme } from '@hooks/useTheme';
@@ -25,15 +25,15 @@ const CategoriesScreen = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [categories, setCategories] = useState<Category[]>();
-  const [error, setError] = useState();
+  // I comment this because there's no Error screen
+  // const [error, setError] = useState();
 
   const getCategories = async () => {
     try {
-      let res = await getCategoriesFromDb();
-
+      let res = await getAllCategories();
       setCategories(res);
     } catch (err) {
-      setError(error?.message);
+      // setError(err?.message);
     } finally {
       setIsLoading(false);
     }
@@ -56,7 +56,7 @@ const CategoriesScreen = () => {
       'sort',
     );
     setCategories(updatedOrderCategories);
-    updateCategoryOrderInDb(updatedOrderCategories || []);
+    updateCategoriesOrder(updatedOrderCategories || []);
   };
 
   const {

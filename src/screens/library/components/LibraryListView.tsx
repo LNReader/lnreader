@@ -7,7 +7,7 @@ import { EmptyView } from '@components/index';
 import NovelCover from '@components/NovelCover';
 import NovelList, { NovelListRenderItem } from '@components/NovelList';
 
-import { LibraryNovelInfo } from '@database/types';
+import { ExtendedNovel } from '@database/types';
 
 import { getString } from '@strings/translations';
 import { useAppDispatch } from '@redux/hooks';
@@ -16,7 +16,7 @@ import { updateLibraryAction } from '@redux/updates/updates.actions';
 
 interface Props {
   categoryId: number;
-  novels: LibraryNovelInfo[];
+  novels: ExtendedNovel[];
   selectedNovelIds: number[];
   setSelectedNovelIds: React.Dispatch<React.SetStateAction<number[]>>;
 }
@@ -30,7 +30,7 @@ export const LibraryView: React.FC<Props> = ({
   const theme = useTheme();
   const { navigate } = useNavigation();
   const dispatch = useAppDispatch();
-  const renderItem = ({ item }: { item: LibraryNovelInfo }) => (
+  const renderItem = ({ item }: { item: ExtendedNovel }) => (
     <NovelCover
       item={item}
       theme={theme}

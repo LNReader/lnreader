@@ -6,7 +6,7 @@ import { Button } from '@components/index';
 
 import { Category } from '../../../database/types';
 import {
-  createCategory,
+  insertCategory,
   isCategoryNameDuplicate,
   updateCategory,
 } from '../../../database/queries/CategoryQueries';
@@ -67,9 +67,10 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
                 showToast(getString('categories.duplicateError'));
               } else {
                 if (isEditMode && category) {
-                  updateCategory(category?.id, categoryName);
+                  category.name = categoryName;
+                  updateCategory(category);
                 } else {
-                  createCategory(categoryName);
+                  insertCategory(categoryName);
                 }
                 onSuccess();
               }

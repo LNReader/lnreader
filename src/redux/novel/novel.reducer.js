@@ -24,8 +24,8 @@ const initialState = {
   chapters: [],
   loading: true,
   updating: false,
-  downloading: [], // Array<ChapterInfo {id, url, isDownloaded, novelId, pluginId}>
-  lastRead: undefined, // ChapterInfo (id, name,)
+  downloading: [], // ExtendedChapter[]
+  lastRead: undefined, // Chapter
   inLibrary: false,
 };
 

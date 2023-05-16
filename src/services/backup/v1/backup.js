@@ -6,7 +6,7 @@ import RNFS from 'react-native-fs';
 
 import { getPlugin } from '@plugins/pluginManager';
 import { restoreLibrary } from '@database/queries/NovelQueries';
-import { getLibraryNovelsFromDb } from '@database/queries/LibraryQueries';
+import { getNovelsInLibrary } from '@database/queries/LibraryQueries';
 import { showToast } from '@hooks/showToast';
 import dayjs from 'dayjs';
 
@@ -14,7 +14,7 @@ const sleep = time => new Promise(resolve => setTimeout(() => resolve(), time));
 
 export const createBackup = async () => {
   try {
-    const novels = await getLibraryNovelsFromDb();
+    const novels = await getNovelsInLibrary();
 
     const permissions =
       await StorageAccessFramework.requestDirectoryPermissionsAsync();
