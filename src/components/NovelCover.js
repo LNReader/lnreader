@@ -116,26 +116,26 @@ const NovelCover = ({
     <ListView
       item={item}
       downloadBadge={
-        showDownloadBadges &&
-        item.chaptersDownloaded && (
+        (showDownloadBadges && item.chaptersDownloaded && (
           <DownloadBadge
             theme={theme}
             showUnreadBadges={showUnreadBadges}
             chaptersDownloaded={item.chaptersDownloaded}
             chaptersUnread={item.chaptersUnread}
           />
-        )
+        )) ||
+        undefined
       }
       unreadBadge={
-        showUnreadBadges &&
-        item.chaptersUnread && (
+        (showUnreadBadges && item.chaptersUnread && (
           <UnreadBadge
             theme={theme}
             chaptersDownloaded={item.chaptersDownloaded}
             chaptersUnread={item.chaptersUnread}
             showDownloadBadges={showDownloadBadges}
           />
-        )
+        )) ||
+        undefined
       }
       inLibraryBadge={libraryStatus && <InLibraryBadge theme={theme} />}
       theme={theme}
