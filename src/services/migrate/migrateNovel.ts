@@ -8,7 +8,7 @@ import {
   getNovel,
   insertNovelandChapters,
 } from '@database/queries/NovelQueries';
-import { getExtendedChaptersByNovel } from '@database/queries/extendsChaptersQueries';
+import { getExtendedChaptersByNovel } from '@database/queries/extendedChaptersQueries';
 import { downloadChapter } from '@database/queries/ChapterQueries';
 
 import { fetchNovel } from '@services/plugin/fetch';

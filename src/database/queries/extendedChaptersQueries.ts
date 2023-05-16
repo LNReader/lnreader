@@ -29,11 +29,15 @@ export const getExtendedChapterByChapter = (
 
 export const getExtendedChaptersByNovel = (
   novel: Novel,
+  sort?: string,
+  filter?: string,
 ): Promise<ExtendedChapter[]> => {
+  const getChaptersQuery = (sort = '', filter = '') =>
+    `SELECT * FROM Chapter WHERE novelId = ? ${filter} ${sort}`;
   return new Promise(resolve => {
     db.transaction(tx => {
       tx.executeSql(
-        'SELECT * FROM Chapter WHERE novelId = ?',
+        getChaptersQuery(sort, filter),
         [novel.id],
         (txObj, { rows }) => {
           resolve(

@@ -9,7 +9,7 @@ import * as cheerio from 'cheerio';
 import { txnErrorCallback } from '@database/utils/helpers';
 import { Plugin } from '@plugins/types';
 import { noop } from 'lodash-es';
-import { getExtendedChapterByChapter } from './extendsChaptersQueries';
+import { getExtendedChapterByChapter } from './extendedChaptersQueries';
 
 const db = SQLite.openDatabase('lnreader.db');
 
