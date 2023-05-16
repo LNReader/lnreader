@@ -133,9 +133,7 @@ const Novel = ({ route, navigation }) => {
       list.push({
         icon: 'download-outline',
         onPress: () => {
-          dispatch(
-            downloadAllChaptersAction(novel.pluginId, novel.url, selected),
-          );
+          dispatch(downloadAllChaptersAction(selected));
           setSelected([]);
         },
       });
@@ -144,7 +142,7 @@ const Novel = ({ route, navigation }) => {
       list.push({
         icon: 'trash-can-outline',
         onPress: () => {
-          dispatch(deleteAllChaptersAction(pluginId, novel.id, selected));
+          dispatch(deleteAllChaptersAction(selected));
           setSelected([]);
         },
       });
@@ -193,8 +191,7 @@ const Novel = ({ route, navigation }) => {
     return list;
   }, [selected]);
 
-  const deleteChapter = chapter =>
-    dispatch(deleteChapterAction(pluginId, novel.id, chapter.id, chapter.name));
+  const deleteChapter = chapter => dispatch(deleteChapterAction(chapter));
 
   const isSelected = id => {
     return selected.some(obj => obj.id === id);
@@ -382,7 +379,7 @@ const Novel = ({ route, navigation }) => {
                     titleStyle={{ color: theme.onSurface }}
                     onPress={() => {
                       dispatch(
-                        downloadAllChaptersAction(novel.pluginId, novel.url, [
+                        downloadAllChaptersAction([
                           chapters.find(
                             chapter =>
                               !!chapter.unread === true &&
@@ -402,8 +399,6 @@ const Novel = ({ route, navigation }) => {
                     onPress={() => {
                       dispatch(
                         downloadAllChaptersAction(
-                          novel.pluginId,
-                          novel.url,
                           chapters
                             .filter(
                               chapter =>
@@ -425,8 +420,6 @@ const Novel = ({ route, navigation }) => {
                     onPress={() => {
                       dispatch(
                         downloadAllChaptersAction(
-                          novel.pluginId,
-                          novel.url,
                           chapters
                             .filter(
                               chapter =>
@@ -457,8 +450,6 @@ const Novel = ({ route, navigation }) => {
                     onPress={() => {
                       dispatch(
                         downloadAllChaptersAction(
-                          novel.pluginId,
-                          novel.url,
                           chapters.filter(chapter => !!chapter.unread === true),
                         ),
                       );
@@ -472,13 +463,7 @@ const Novel = ({ route, navigation }) => {
                       color: theme.onSurface,
                     }}
                     onPress={() => {
-                      dispatch(
-                        downloadAllChaptersAction(
-                          novel.pluginId,
-                          novel.url,
-                          chapters,
-                        ),
-                      );
+                      dispatch(downloadAllChaptersAction(chapters));
                       showDownloadMenu(false);
                     }}
                   />
@@ -488,9 +473,7 @@ const Novel = ({ route, navigation }) => {
                     titleStyle={{
                       color: theme.onSurface,
                     }}
-                    onPress={() =>
-                      dispatch(deleteAllChaptersAction(pluginId, chapters))
-                    }
+                    onPress={() => dispatch(deleteAllChaptersAction(chapters))}
                   />
                 </Menu>
 
@@ -634,7 +617,7 @@ const Novel = ({ route, navigation }) => {
             action={{
               label: 'Delete',
               onPress: () => {
-                dispatch(deleteAllChaptersAction(pluginId, novel.id, chapters));
+                dispatch(deleteAllChaptersAction(chapters));
               },
             }}
             theme={{ colors: { primary: theme.primary } }}

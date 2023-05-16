@@ -8,7 +8,7 @@ import { Button } from '@components/index';
 import { useTheme } from '@hooks/useTheme';
 
 import { getString } from '@strings/translations';
-import { getCategoriesFromDb } from '@database/queries/CategoryQueries';
+import { getAllCategories } from '@database/queries/CategoryQueries';
 import { updateNovelCategories } from '@database/queries/NovelQueries';
 import { Category } from '@database/types';
 import { Checkbox } from '@components/Checkbox/Checkbox';
@@ -36,7 +36,7 @@ const SetCategoryModal: React.FC<SetCategoryModalProps> = ({
   const [categories = [], setCategories] = useState<Category[]>();
 
   const getCategories = async () => {
-    const res = await getCategoriesFromDb();
+    const res = await getAllCategories();
 
     setCategories(res);
   };

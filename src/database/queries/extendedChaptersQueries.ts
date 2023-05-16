@@ -55,3 +55,38 @@ export const getExtendedChaptersByNovel = (
     });
   });
 };
+
+export const getExtendedChaptersByNovelId = (
+  novelId: number,
+  sort?: string,
+  filter?: string,
+): Promise<ExtendedChapter[]> => {
+  const getChaptersQuery = (sort = '', filter = '') =>
+    `SELECT * FROM Chapter WHERE novelId = ? ${filter} ${sort}`;
+  return new Promise(resolve => {
+    db.transaction(tx => {
+      tx.executeSql(
+        'SELECT * FROM Novel WHERE id = ?',
+        [novelId],
+        (txObj, { rows }) => {
+          const novel = rows.item(0);
+          tx.executeSql(
+            getChaptersQuery(sort, filter),
+            [novelId],
+            (txObj, { rows }) => {
+              resolve(
+                rows._array.map(chapter => {
+                  return {
+                    ...chapter,
+                    novel: novel,
+                  } as ExtendedChapter;
+                }),
+              );
+            },
+          );
+        },
+        txnErrorCallback,
+      );
+    });
+  });
+};

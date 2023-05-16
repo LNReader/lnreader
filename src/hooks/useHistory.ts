@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 
-import { History } from '../database/types';
+import { ExtendedChapter } from '../database/types';
 
 import {
   deleteAllHistory,
@@ -11,7 +11,7 @@ import {
 
 const useHistory = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [history, setHistory] = useState<History[]>([]);
+  const [history, setHistory] = useState<ExtendedChapter[]>([]);
   const [error, setError] = useState<string>();
 
   const getHistory = async () => {

@@ -22,8 +22,6 @@ const DownloadCustomChapterModal = ({
   const onSubmit = () => {
     dispatch(
       downloadAllChaptersAction(
-        novel.pluginId,
-        novel.novelUrl,
         chapters
           .filter(
             chapter =>

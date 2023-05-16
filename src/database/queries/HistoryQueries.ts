@@ -1,10 +1,10 @@
-import { History } from '@database/types';
 import { txnErrorCallback } from '@database/utils/helpers';
 import * as SQLite from 'expo-sqlite';
 import { noop } from 'lodash-es';
 const db = SQLite.openDatabase('lnreader.db');
 
 import { showToast } from '../../hooks/showToast';
+import { ExtendedChapter } from '@database/types';
 
 const getHistoryQuery = `
     SELECT 
@@ -16,7 +16,7 @@ const getHistoryQuery = `
     ORDER BY readTime DESC
     `;
 
-export const getHistoryFromDb = async (): Promise<History[]> => {
+export const getHistoryFromDb = async (): Promise<ExtendedChapter[]> => {
   return new Promise(resolve => {
     db.transaction(tx => {
       tx.executeSql(
