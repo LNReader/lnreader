@@ -2,24 +2,15 @@ import RNFS from 'react-native-fs';
 import * as SQLite from 'expo-sqlite';
 import { showToast } from '@hooks/showToast';
 import { getPlugin } from '@plugins/pluginManager';
-import { ChapterInfo, DownloadedChapter } from '../types';
+import { Chapter, ExtendedChapter } from '../types';
 import { ChapterItem } from '@plugins/types';
 
 import * as cheerio from 'cheerio';
 import { txnErrorCallback } from '@database/utils/helpers';
 import { Plugin } from '@plugins/types';
-import { Update } from '../types';
 import { noop } from 'lodash-es';
 
 const db = SQLite.openDatabase('lnreader.db');
-
-const insertChapterQuery = `
-INSERT INTO Chapter (
-  url, name, releaseTime, novelId
-) 
-Values 
-  (?, ?, ?, ?)
-`;
 
 export const insertChapters = async (
   novelId: number,
@@ -28,6 +19,10 @@ export const insertChapters = async (
   if (!chapters?.length) {
     return;
   }
+  const insertChapterQuery = `
+    INSERT INTO Chapter (url, name, releaseTime, novelId) 
+    VALUES (?, ?, ?, ?)
+  `;
   db.transaction(tx => {
     chapters.forEach(chapter => {
       tx.executeSql(
@@ -45,35 +40,30 @@ export const insertChapters = async (
   });
 };
 
-const getChaptersQuery = (sort = 'ORDER BY id ASC', filter = '') =>
-  `SELECT id, * FROM Chapter WHERE novelId = ? ${filter} ${sort}`;
-
 export const getChapters = (
   novelId: number,
   sort: string,
   filter: string,
-): Promise<ChapterInfo[]> => {
+): Promise<Chapter[]> => {
+  const getChaptersQuery = (sort = 'ORDER BY id ASC', filter = '') =>
+    `SELECT * FROM Chapter WHERE novelId = ? ${filter} ${sort}`;
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
         getChaptersQuery(sort, filter),
         [novelId],
-        (txObj, { rows }) => resolve((rows as any)._array),
+        (txObj, { rows }) => resolve(rows._array),
         txnErrorCallback,
       );
     }),
   );
 };
 
-// downloaded chapter
-const getChapterQuery =
-  'SELECT chapterText FROM Download WHERE Download.chapterId = ?';
-
 export const getChapterFromDB = (chapterId: number): Promise<string> => {
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
-        getChapterQuery,
+        'SELECT chapterText FROM Download WHERE chapterId = ?',
         [chapterId],
         (txObj, { rows }) => resolve(rows.item(0)?.chapterText),
         txnErrorCallback,
@@ -82,25 +72,14 @@ export const getChapterFromDB = (chapterId: number): Promise<string> => {
   );
 };
 
-const getPrevChapterQuery = `
-  SELECT
-    id, *
-  FROM
-    Chapter
-  WHERE
-    novelId = ?
-  AND
-    id < ?
-  `;
-
 export const getPrevChapter = (
   novelId: number,
   chapterId: number,
-): Promise<ChapterInfo> => {
+): Promise<Chapter> => {
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
-        getPrevChapterQuery,
+        'SELECT * FROM Chapter WHERE novelId = ? AND id < ?',
         [novelId, chapterId],
         (_txObj, results) =>
           resolve(results.rows.item(results.rows.length - 1)),
@@ -113,25 +92,14 @@ export const getPrevChapter = (
   );
 };
 
-const getNextChapterQuery = `
-  SELECT
-    id, *
-  FROM
-    Chapter
-  WHERE
-    novelId = ?
-  AND
-    id > ?
-  `;
-
 export const getNextChapter = (
   novelId: number,
   chapterId: number,
-): Promise<ChapterInfo> => {
+): Promise<Chapter> => {
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
-        getNextChapterQuery,
+        'SELECT * FROM Chapter WHERE novelId = ? AND id > ?',
         [novelId, chapterId],
         (_txObj, results) => resolve(results.rows.item(0)),
         () => {
@@ -143,41 +111,32 @@ export const getNextChapter = (
   );
 };
 
-const markChapterReadQuery = 'UPDATE Chapter SET `unread` = 0 WHERE id = ?';
-
 export const markChapterRead = async (chapterId: number) => {
   db.transaction(tx => {
-    tx.executeSql(markChapterReadQuery, [chapterId], noop, (_txObj, _error) => {
-      // console.log(error)
-      return false;
-    });
+    tx.executeSql(
+      'UPDATE Chapter SET `unread` = 0 WHERE id = ?',
+      [chapterId],
+      noop,
+      txnErrorCallback,
+    );
   });
 };
-
-const markChapterUnreadQuery = 'UPDATE Chapter SET `unread` = 1 WHERE id = ?';
 
 export const markChapterUnread = async (chapterId: number) => {
   db.transaction(tx => {
-    tx.executeSql(markChapterUnreadQuery, [chapterId], noop, txnErrorCallback);
+    tx.executeSql(
+      'UPDATE Chapter SET `unread` = 1 WHERE id = ?',
+      [chapterId],
+      noop,
+      txnErrorCallback,
+    );
   });
 };
-
-const markAllChaptersReadQuery =
-  'UPDATE Chapter SET `unread` = 0 WHERE novelId = ?';
 
 export const markAllChaptersRead = async (novelId: number) => {
   db.transaction(tx => {
-    tx.executeSql(markAllChaptersReadQuery, [novelId], noop, txnErrorCallback);
-  });
-};
-
-const markAllChaptersUnreadQuery =
-  'UPDATE Chapter SET `unread` = 1 WHERE novelId = ?';
-
-export const markAllChaptersUnread = async (novelId: number) => {
-  db.transaction(tx => {
     tx.executeSql(
-      markAllChaptersUnreadQuery,
+      'UPDATE Chapter SET `unread` = 0 WHERE novelId = ?',
       [novelId],
       noop,
       txnErrorCallback,
@@ -185,16 +144,20 @@ export const markAllChaptersUnread = async (novelId: number) => {
   });
 };
 
-const downloadChapterQuery =
-  'INSERT INTO Download (chapterId, chapterText) VALUES (?, ?)';
+export const markAllChaptersUnread = async (novelId: number) => {
+  db.transaction(tx => {
+    tx.executeSql(
+      'UPDATE Chapter SET `unread` = 1 WHERE novelId = ?',
+      [novelId],
+      noop,
+      txnErrorCallback,
+    );
+  });
+};
 
 const createImageFolder = async (
   path: string,
-  data: {
-    pluginId: string;
-    novelId: number;
-    chapterId: number;
-  },
+  chapter: ExtendedChapter,
 ): Promise<string> => {
   const mkdirIfNot = async (p: string) => {
     const nomediaPath =
@@ -206,17 +169,15 @@ const createImageFolder = async (
   };
 
   await mkdirIfNot(path);
-
-  const { pluginId, novelId, chapterId } = data;
-  await mkdirIfNot(`${path}/${pluginId}/${novelId}/${chapterId}/`);
-  return `${path}/${pluginId}/${novelId}/${chapterId}/`;
+  const fullPath = `${path}/${chapter.novel.pluginId}/${chapter.novel.id}/${chapter.id}`;
+  await mkdirIfNot(fullPath);
+  return fullPath;
 };
 
 const downloadImages = async (
   html: string,
   plugin: Plugin,
-  novelId: number,
-  chapterId: number,
+  chapter: ExtendedChapter,
 ): Promise<string> => {
   try {
     const loadedCheerio = cheerio.load(html);
@@ -227,11 +188,10 @@ const downloadImages = async (
       if (url) {
         const imageb64 = await plugin.fetchImage(url);
         const fileurl =
-          (await createImageFolder(`${RNFS.DownloadDirectoryPath}/LNReader`, {
-            pluginId: plugin.id,
-            novelId,
-            chapterId,
-          }).catch(() => {
+          (await createImageFolder(
+            `${RNFS.DownloadDirectoryPath}/LNReader`,
+            chapter,
+          ).catch(() => {
             showToast(
               `Unexpected storage error!\nRemove ${fileurl} and try downloading again`,
             );
@@ -257,32 +217,26 @@ const downloadImages = async (
   }
 };
 
-// novelId for determine folder %LNReaderDownloadDir%/novelId/ChapterId/
-export const downloadChapter = async (
-  pluginId: string,
-  novelId: number,
-  chapterId: number,
-  chapterUrl: string,
-) => {
+// novelId for determine folder %LNReaderDownloadDir%/pluginId/novelId/ChapterId/
+export const downloadChapter = async (chapter: ExtendedChapter) => {
   try {
-    const plugin = getPlugin(pluginId);
-    const chapterText = await plugin.parseChapter(chapterUrl);
+    const plugin = getPlugin(chapter.novel.pluginId);
+    const chapterText = await plugin.parseChapter(chapter.url);
     if (chapterText?.length) {
       const imagedChapterText =
-        chapterText &&
-        (await downloadImages(chapterText, plugin, novelId, chapterId));
+        chapterText && (await downloadImages(chapterText, plugin, chapter));
 
       if (!chapterText) {
-        return showToast('Cant download chapter from url' + chapterUrl);
+        return showToast('Cant download chapter from url ' + chapter.url);
       }
       db.transaction(tx => {
         tx.executeSql(
           "UPDATE Chapter SET isDownloaded = 1, updatedTime = datetime('now','localtime') WHERE id = ?",
-          [chapterId],
+          [chapter.id],
         );
         tx.executeSql(
-          downloadChapterQuery,
-          [chapterId, imagedChapterText],
+          'INSERT INTO Download (chapterId, chapterText) VALUES (?, ?)',
+          [chapter.id, imagedChapterText],
           (_txObj, _res) => {
             return true;
           },
@@ -297,15 +251,11 @@ export const downloadChapter = async (
   }
 };
 
-const deleteDownloadedImages = async (
-  pluginId: string,
-  novelId: number,
-  chapterId: number,
-) => {
+const deleteDownloadedImages = async (chapter: ExtendedChapter) => {
   try {
     const path = await createImageFolder(
       `${RNFS.DownloadDirectoryPath}/LNReader`,
-      { pluginId, novelId, chapterId },
+      chapter,
     );
     const files = await RNFS.readDir(path);
     for (let i = 0; i < files.length; i++) {
@@ -320,28 +270,25 @@ const deleteDownloadedImages = async (
 };
 
 // delete downloaded chapter
-export const deleteChapter = async (
-  pluginId: string,
-  novelId: number,
-  chapterId: number,
-) => {
+export const deleteChapter = async (chapter: ExtendedChapter) => {
   const updateIsDownloadedQuery =
     'UPDATE Chapter SET isDownloaded = 0 WHERE id = ?';
   const deleteChapterQuery = 'DELETE FROM Download WHERE chapterId = ?';
 
-  await deleteDownloadedImages(pluginId, novelId, chapterId);
+  await deleteDownloadedImages(chapter);
 
   db.transaction(tx => {
-    tx.executeSql(updateIsDownloadedQuery, [chapterId], noop, txnErrorCallback);
-    tx.executeSql(deleteChapterQuery, [chapterId], noop, txnErrorCallback);
+    tx.executeSql(
+      updateIsDownloadedQuery,
+      [chapter.id],
+      noop,
+      txnErrorCallback,
+    );
+    tx.executeSql(deleteChapterQuery, [chapter.id], noop, txnErrorCallback);
   });
 };
 
-export const deleteChapters = async (
-  pluginId: string,
-  novelId: number,
-  chapters?: DownloadedChapter[],
-) => {
+export const deleteChapters = async (chapters?: ExtendedChapter[]) => {
   if (!chapters?.length) {
     return;
   }
@@ -351,11 +298,7 @@ export const deleteChapters = async (
   const updateIsDownloadedQuery = `UPDATE Chapter SET isDownloaded = 0 WHERE id IN (${chapterIdsString})`;
   const deleteChapterQuery = `DELETE FROM Download WHERE chapterId IN (${chapterIdsString})`;
 
-  await Promise.all(
-    chapters?.map(chapter =>
-      deleteDownloadedImages(pluginId, novelId, chapter.id),
-    ),
-  );
+  await Promise.all(chapters?.map(chapter => deleteDownloadedImages(chapter)));
 
   db.transaction(tx => {
     tx.executeSql(
@@ -368,10 +311,10 @@ export const deleteChapters = async (
   });
 };
 
-export const deleteDownloads = async (chapters: DownloadedChapter[]) => {
+export const deleteDownloads = async (chapters: ExtendedChapter[]) => {
   await Promise.all(
     chapters?.map(chapter => {
-      deleteDownloadedImages(chapter.pluginId, chapter.novelId, chapter.id);
+      deleteDownloadedImages(chapter);
     }),
   );
   db.transaction(tx => {
@@ -381,17 +324,17 @@ export const deleteDownloads = async (chapters: DownloadedChapter[]) => {
   });
 };
 
-const getReadDownloadedChapters = async (): Promise<DownloadedChapter[]> => {
+const getReadDownloadedChapters = async (): Promise<ExtendedChapter[]> => {
   return new Promise(resolve => {
     db.transaction(tx => {
       tx.executeSql(
-        `
-        SELECT Chapter.id, Chapter.novelId, pluginId 
-        FROM Chapter
-        JOIN Novel
-        ON Novel.id = Chapter.novelId AND unread = 0 AND isDownloaded = 1`,
+        'SELECT * FROM Chapter WHERE unread = 0 AND isDownloaded = 1',
         [],
-        (txObj, { rows }) => resolve((rows as any)._array),
+        (txObj, { rows }) => {
+          Promise.all(
+            rows._array.map(chapter => fetchEagerChapter(chapter)),
+          ).then(res => resolve(res));
+        },
       );
     });
   });
@@ -401,11 +344,7 @@ export const deleteReadChaptersFromDb = async () => {
   const chapters = await getReadDownloadedChapters();
   await Promise.all(
     chapters?.map(chapter => {
-      deleteDownloadedImages(
-        chapter.pluginId,
-        chapter.novelId,
-        chapter.novelId,
-      );
+      deleteDownloadedImages(chapter);
     }),
   );
   const chapterIdsString = chapters?.map(chapter => chapter.id).toString();
@@ -420,24 +359,16 @@ export const deleteReadChaptersFromDb = async () => {
   showToast('Read chapters deleted');
 };
 
-const bookmarkChapterQuery = 'UPDATE Chapter SET bookmark = ? WHERE id = ?';
-
 export const bookmarkChapter = async (bookmark: number, chapterId: number) => {
   db.transaction(tx => {
     tx.executeSql(
-      bookmarkChapterQuery,
+      'UPDATE Chapter SET bookmark = ? WHERE id = ?',
       [1 - bookmark, chapterId],
-      (_txObj, _res) => {},
-      (_txObj, _error) => {
-        // console.log('Error ', error)
-        return false;
-      },
+      noop,
+      txnErrorCallback,
     );
   });
 };
-
-const markPreviuschaptersReadQuery =
-  'UPDATE Chapter SET `unread` = 0 WHERE id < ? AND novelId = ?';
 
 export const markPreviuschaptersRead = async (
   chapterId: number,
@@ -445,19 +376,13 @@ export const markPreviuschaptersRead = async (
 ) => {
   db.transaction(tx => {
     tx.executeSql(
-      markPreviuschaptersReadQuery,
+      'UPDATE Chapter SET `unread` = 0 WHERE id < ? AND novelId = ?',
       [chapterId, novelId],
-      (_txObj, _res) => {},
-      (_txObj, _error) => {
-        // console.log(error)
-        return false;
-      },
+      noop,
+      txnErrorCallback,
     );
   });
 };
-
-const markPreviousChaptersUnreadQuery =
-  'UPDATE Chapter SET `unread` = 1 WHERE id < ? AND novelId = ?';
 
 export const markPreviousChaptersUnread = async (
   chapterId: number,
@@ -465,63 +390,42 @@ export const markPreviousChaptersUnread = async (
 ) => {
   db.transaction(tx => {
     tx.executeSql(
-      markPreviousChaptersUnreadQuery,
+      'UPDATE Chapter SET `unread` = 1 WHERE id < ? AND novelId = ?',
       [chapterId, novelId],
-      (_txObj, _res) => {},
-      (_txObj, _error) => {
-        // console.log(error)
-        return false;
-      },
+      noop,
+      txnErrorCallback,
     );
   });
 };
-
-const getDownloadedChaptersQuery = `
-    SELECT
-      Chapter.*,
-      Novel.pluginId, Novel.name as novelName, Novel.cover as novelCover, Novel.url as novelUrl
-    FROM Chapter
-    JOIN Novel
-    ON Chapter.novelId = Novel.id
-    WHERE Chapter.isDownloaded = 1
-  `;
 
 export const getDownloadedChapters = () => {
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
-        getDownloadedChaptersQuery,
-        undefined,
+        'SELECT * FROM Chapter WHERE isDownloaded',
+        [],
         (txObj, { rows }) => {
-          resolve((rows as any)._array);
+          Promise.all(
+            rows._array.map(chapter => fetchEagerChapter(chapter)),
+          ).then(res => resolve(res));
         },
-        (_txObj, _error) => {
-          // console.log('Error ', error)
-          return false;
-        },
+        txnErrorCallback,
       );
     }),
   );
 };
 
-const getUpdatesQuery = `
-SELECT
-  Chapter.id, Chapter.*,
-  pluginId, Novel.id as novelId, Novel.name as novelName, Novel.url as novelUrl, cover as novelCover
-FROM
-  Chapter
-JOIN
-  Novel
-ON Chapter.novelId = Novel.id AND Chapter.updatedTime IS NOT NULL
-`;
-
-export const getUpdatesFromDb = (): Promise<Update[]> => {
+export const getUpdatesFromDb = (): Promise<ExtendedChapter[]> => {
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
-        getUpdatesQuery,
+        'SELECT * FROM Chapter WHERE updatedTime IS NOT NULL',
         [],
-        (txObj, { rows }) => resolve((rows as any)._array),
+        (txObj, { rows }) => {
+          Promise.all(
+            rows._array.map(chapter => fetchEagerChapter(chapter)),
+          ).then(res => resolve(res));
+        },
         txnErrorCallback,
       );
     }),

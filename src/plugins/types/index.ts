@@ -1,18 +1,6 @@
 import { SelectedFilter, SourceFilter } from './filterTypes';
 import { Languages } from '@utils/constants/languages';
 
-export interface NovelItem {
-  name: string;
-  url: string; //must be absoulute
-  cover?: string;
-}
-
-export interface ChapterItem {
-  name: string;
-  url: string; //must be absoulute
-  releaseTime?: string;
-}
-
 export enum NovelStatus {
   Unknown = 'Unknown',
   Ongoing = 'Ongoing',
@@ -22,16 +10,24 @@ export enum NovelStatus {
   Cancelled = 'Cancelled',
   OnHiatus = 'On Hiatus',
 }
-
-export interface SourceNovel {
-  url: string; //must be absoulute
+export interface NovelItem {
+  url: string;
   name: string;
   cover?: string;
-  genres?: string;
   summary?: string;
   author?: string;
   artist?: string;
   status?: NovelStatus;
+  genres?: string;
+}
+
+export interface ChapterItem {
+  name: string;
+  url: string;
+  releaseTime?: string;
+}
+
+export interface SourceNovel extends NovelItem {
   chapters?: ChapterItem[];
 }
 

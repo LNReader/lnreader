@@ -1,14 +1,14 @@
 import { LibraryFilter } from '@screens/library/constants/constants';
 import * as SQLite from 'expo-sqlite';
-import { LibraryNovelInfo, NovelInfo } from '../types';
+import { Category, ExtendedNovel, Novel } from '../types';
 import { txnErrorCallback } from '../utils/helpers';
 
 const db = SQLite.openDatabase('lnreader.db');
 
-export const getNovelsWithCatogory = (
+export const getNovelsWithCategory = (
   categoryId: number,
   onlyOngoingNovels?: boolean,
-): Promise<NovelInfo[]> => {
+): Promise<Novel[]> => {
   let query = `
     SELECT
     * 
@@ -35,9 +35,9 @@ export const getNovelsWithCatogory = (
   );
 };
 
-export const getLibraryNovelsFromDb = (
+export const getNovelsInLibrary = (
   onlyOngoingNovels?: boolean,
-): Promise<NovelInfo[]> => {
+): Promise<Novel[]> => {
   let getLibraryNovelsQuery = 'SELECT * FROM Novel WHERE inLibrary = 1';
 
   if (onlyOngoingNovels) {
@@ -48,7 +48,7 @@ export const getLibraryNovelsFromDb = (
     db.transaction(tx => {
       tx.executeSql(
         getLibraryNovelsQuery,
-        undefined,
+        [],
         (txObj, { rows }) => resolve((rows as any)._array),
         txnErrorCallback,
       );
@@ -56,42 +56,39 @@ export const getLibraryNovelsFromDb = (
   );
 };
 
-const getLibraryWithCategoryQuery = `
-  SELECT 
-  NIL.*, chaptersUnread, chaptersDownloaded, lastReadAt, lastUpdatedAt
-  FROM 
-  (
+export const getExtendedNovelsWithCategory = (
+  {
+    filter,
+    searchText,
+    sortOrder,
+    downloadedOnlyMode,
+  }: {
+    sortOrder?: string;
+    filter?: string;
+    searchText?: string;
+    downloadedOnlyMode?: boolean;
+  },
+  catgory: Category,
+): Promise<ExtendedNovel[]> => {
+  let query = `
     SELECT 
-      Novel.*,
-      category 
-    FROM
-    Novel LEFT JOIN (
-      SELECT NovelId, name as category FROM (NovelCategory JOIN Category ON NovelCategory.categoryId = Category.id)
-    ) as NC ON Novel.id = NC.novelId
-    WHERE inLibrary = 1
-  ) as NIL 
-  JOIN 
-  (
-    SELECT 
-      SUM(unread) as chaptersUnread, SUM(isDownloaded) as chaptersDownloaded, 
-      novelId, MAX(readTime) as lastReadAt, MAX(updatedTime) as lastUpdatedAt
-    FROM Chapter
-    GROUP BY novelId
-  ) as C ON NIL.id = C.novelId
-`;
+      N.*, chaptersUnread, chaptersDownloaded, lastReadAt, lastUpdatedAt
+    FROM Novel as N
+    JOIN 
+    (
+      SELECT 
+        SUM(unread) as chaptersUnread, SUM(isDownloaded) as chaptersDownloaded, 
+        novelId, MAX(readTime) as lastReadAt, MAX(updatedTime) as lastUpdatedAt
+      FROM Chapter
+      GROUP BY novelId
+    ) as C ON N.id = C.novelId
+    AND N.id IN
+    (
+      SELECT novelId FROM Category as CA JOIN NovelCategory as NC  
+      ON CA.id = NC.categoryId AND CA.id = ?
+    )
+  `;
 
-export const getLibraryWithCategory = ({
-  filter,
-  searchText,
-  sortOrder,
-  downloadedOnlyMode,
-}: {
-  sortOrder?: string;
-  filter?: string;
-  searchText?: string;
-  downloadedOnlyMode?: boolean;
-}): Promise<LibraryNovelInfo[]> => {
-  let query = getLibraryWithCategoryQuery;
   if (filter) {
     query += ` AND ${filter} `;
   }
@@ -111,8 +108,8 @@ export const getLibraryWithCategory = ({
     db.transaction(tx => {
       tx.executeSql(
         query,
-        [],
-        (txObj, { rows }) => resolve((rows as any)._array),
+        [catgory.id],
+        (txObj, { rows }) => resolve(rows._array),
         txnErrorCallback,
       );
     }),

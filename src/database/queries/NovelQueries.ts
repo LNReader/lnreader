@@ -10,7 +10,7 @@ import { showToast } from '@hooks/showToast';
 import { txnErrorCallback } from '../utils/helpers';
 import { noop } from 'lodash-es';
 import { getString } from '@strings/translations';
-import { NovelInfo } from '../types';
+import { Novel } from '../types';
 import { SourceNovel } from '@plugins/types';
 
 export const insertNovelandChapters = (
@@ -39,6 +39,8 @@ export const insertNovelandChapters = (
             insertChapters(resultSet.insertId, sourceNovel.chapters).then(() =>
               resolve(resultSet.insertId || 1),
             );
+          } else {
+            throw new Error('Failed to insert novel!');
           }
         },
         txnErrorCallback,
@@ -47,11 +49,11 @@ export const insertNovelandChapters = (
   });
 };
 
-export const getNovel = async (novelUrl: string): Promise<NovelInfo> => {
+export const getNovel = async (novelUrl: string): Promise<Novel> => {
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
-        'SELECT id, * FROM Novel WHERE url = ?',
+        'SELECT * FROM Novel WHERE url = ?',
         [novelUrl],
         (txObj, { rows }) => resolve(rows.item(0)),
         txnErrorCallback,
@@ -97,15 +99,15 @@ export const switchNovelToLibrary = async (
     const novelId = await insertNovelandChapters(pluginId, sourceNovel);
     db.transaction(tx => {
       tx.executeSql(
-        'UPDATE Novel SET inLibrary = 1 WHERE url = ?',
-        [novelUrl],
-        () => showToast(getString('browseScreen.addedToLibrary')),
+        'UPDATE Novel SET inLibrary = 1 WHERE id = ?',
+        [novelId],
+        noop,
         txnErrorCallback,
       );
       tx.executeSql(
         'INSERT INTO NovelCategory (novelId, categoryId) VALUES (?, (SELECT DISTINCT id FROM Category WHERE sort = 1))',
         [novelId],
-        noop,
+        () => showToast(getString('browseScreen.addedToLibrary')),
         txnErrorCallback,
       );
     });
@@ -136,9 +138,9 @@ export const deleteNovelCache = () => {
 };
 
 const restoreFromBackupQuery =
-  'INSERT INTO Novel (url, name, pluginId, cover, summary, author, artist, status, genres, inLibrary) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+  'INSERT INTO Novel (url, name, pluginId, cover, summary, author, artist, status, genres, inLibrary) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, 1)';
 
-export const restoreLibrary = async (novel: NovelInfo) => {
+export const restoreLibrary = async (novel: Novel) => {
   return new Promise(resolve => {
     db.transaction(tx =>
       tx.executeSql(
@@ -153,7 +155,6 @@ export const restoreLibrary = async (novel: NovelInfo) => {
           novel.artist || '',
           novel.status || '',
           novel.genres || '',
-          novel.inLibrary,
         ],
         async (txObj, { insertId }) => {
           if (!insertId) {
@@ -170,6 +171,8 @@ export const restoreLibrary = async (novel: NovelInfo) => {
           if (chapters) {
             await insertChapters(insertId, chapters);
             resolve(insertId);
+          } else {
+            throw new Error('No chapters found');
           }
         },
         txnErrorCallback,
@@ -178,7 +181,7 @@ export const restoreLibrary = async (novel: NovelInfo) => {
   });
 };
 
-export const updateNovelInfo = async (info: NovelInfo) => {
+export const updateNovelInfo = async (info: Novel) => {
   db.transaction(tx => {
     tx.executeSql(
       'UPDATE Novel SET name = ?, summary = ?, author = ?, artist = ?, genres = ?, status = ? WHERE id = ?',
