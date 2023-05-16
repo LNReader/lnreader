@@ -3,12 +3,12 @@ import * as Notifications from 'expo-notifications';
 import BackgroundService from 'react-native-background-actions';
 import { store } from '@redux/store';
 
-import { NovelInfo, ChapterInfo } from '@database/types';
+import { Novel, Chapter, ExtendedChapter } from '@database/types';
 import {
   getNovel,
   insertNovelandChapters,
 } from '@database/queries/NovelQueries';
-import { getChapters } from '@database/queries/ChapterQueries';
+import { getExtendedChaptersByNovel } from '@database/queries/extendsChaptersQueries';
 import { downloadChapter } from '@database/queries/ChapterQueries';
 
 import { fetchNovel } from '@services/plugin/fetch';
@@ -26,7 +26,7 @@ type ReduxNovelSettings = Record<
     sort: string;
     filter: string;
     showChapterTitles: boolean;
-    lastRead: ChapterInfo;
+    lastRead: Chapter;
     position: Record<
       number,
       {
@@ -44,29 +44,32 @@ const migrateChapterQuery =
 const sleep = (time: number): any =>
   new Promise(resolve => setTimeout(() => resolve(null), time));
 
-const sortChaptersByNumber = (novelName: string, chapters: ChapterInfo[]) => {
+const sortChaptersByNumber = (
+  novelName: string,
+  chapters: ExtendedChapter[],
+) => {
   for (let i = 0; i < chapters.length; ++i) {
-    chapters[i].number = parseChapterNumber(novelName, chapters[i].name);
+    chapters[i].chapterNumber = parseChapterNumber(novelName, chapters[i].name);
   }
-  return chapters.sort((a, b) => a.number - b.number);
+  return chapters.sort((a, b) => a.chapterNumber - b.chapterNumber);
 };
 
 export const migrateNovel = async (
   pluginId: string,
-  fromNovel: NovelInfo,
+  fromNovel: Novel,
   toNovelUrl: string,
 ) => {
   try {
-    let fromChapters = await getChapters(fromNovel.id, '', '');
+    let fromChapters = await getExtendedChaptersByNovel(fromNovel);
     let toNovel = await getNovel(toNovelUrl);
-    let toChapters: ChapterInfo[];
+    let toChapters: ExtendedChapter[];
     if (toNovel) {
-      toChapters = await getChapters(toNovel.id, '', '');
+      toChapters = await getExtendedChaptersByNovel(toNovel);
     } else {
       const fetchedNovel = await fetchNovel(pluginId, toNovelUrl);
       await insertNovelandChapters(pluginId, fetchedNovel);
       toNovel = await getNovel(toNovelUrl);
-      toChapters = await getChapters(toNovel.id, '', '');
+      toChapters = await getExtendedChaptersByNovel(toNovel);
     }
 
     const options = {
@@ -143,11 +146,11 @@ export const migrateNovel = async (
           const fromChapter = fromChapters[fromPointer];
           const toChapter = toChapters[toPointer];
 
-          if (fromChapter.number < toChapter.number) {
+          if (fromChapter.chapterNumber < toChapter.chapterNumber) {
             ++fromPointer;
             continue;
           }
-          if (fromChapter.number > toChapter.number) {
+          if (fromChapter.chapterNumber > toChapter.chapterNumber) {
             ++toPointer;
             continue;
           }
@@ -167,12 +170,7 @@ export const migrateNovel = async (
           );
 
           if (fromChapter.isDownloaded) {
-            await downloadChapter(
-              pluginId,
-              toNovel.id,
-              toChapter.id,
-              toChapter.url,
-            );
+            await downloadChapter(toChapter);
             await sleep(taskData.delay || 1000);
           }
 
