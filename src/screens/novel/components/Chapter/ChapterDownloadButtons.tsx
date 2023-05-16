@@ -1,4 +1,4 @@
-import { ChapterInfo } from '@database/types';
+import { ExtendedChapter } from '@database/types';
 import { MD3ThemeType } from '@theme/types';
 import React, { useState } from 'react';
 import { ActivityIndicator, StyleSheet } from 'react-native';
@@ -6,12 +6,12 @@ import { ActivityIndicator, StyleSheet } from 'react-native';
 import { IconButton, Menu, overlay } from 'react-native-paper';
 
 interface DownloadButtonProps {
-  downloadQueue: ChapterInfo[];
-  chapter: ChapterInfo;
+  downloadQueue: ExtendedChapter[];
+  chapter: ExtendedChapter;
   theme: MD3ThemeType;
   deleteChapterMenuVisible: boolean;
-  deleteChapter: (chapter: ChapterInfo) => void;
-  downloadChapter: (chapter: ChapterInfo) => (dispatch: any) => void;
+  deleteChapter: (chapter: ExtendedChapter) => void;
+  downloadChapter: (chapter: ExtendedChapter) => void;
   hideDeleteChapterMenu: () => void;
   showDeleteChapterMenu: () => void;
 }

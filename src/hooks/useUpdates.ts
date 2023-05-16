@@ -2,13 +2,13 @@ import { useCallback, useState } from 'react';
 import { getUpdatesFromDb } from '@database/queries/ChapterQueries';
 
 import { useFocusEffect } from '@react-navigation/native';
-import { Update } from '../database/types';
 import { useAppSelector, useDownloadQueue } from '../redux/hooks';
+import { ExtendedChapter } from '@database/types';
 
 const useUpdates = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [updates, setUpdates] = useState<Update[]>([]);
-  const [searchResults, setSearchResults] = useState<Update[]>([]);
+  const [updates, setUpdates] = useState<ExtendedChapter[]>([]);
+  const [searchResults, setSearchResults] = useState<ExtendedChapter[]>([]);
 
   const { lastUpdateTime = null, showLastUpdateTime = false } = useAppSelector(
     state => state.updatesReducer,
@@ -34,7 +34,7 @@ const useUpdates = () => {
     async (searchText: string) => {
       setSearchResults(
         updates.filter(item =>
-          item.novelName.toLowerCase().includes(searchText.toLowerCase()),
+          item.novel.name.toLowerCase().includes(searchText.toLowerCase()),
         ),
       );
     },

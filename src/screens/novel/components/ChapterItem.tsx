@@ -11,20 +11,20 @@ import {
 import { parseChapterNumber } from '@utils/parseChapterNumber';
 
 import { ThemeColors } from '@theme/types';
-import { ChapterInfo } from '@database/types';
+import { ExtendedChapter } from '@database/types';
 
 interface ChapterItemProps {
-  chapter: ChapterInfo;
+  chapter: ExtendedChapter;
   theme: ThemeColors;
   downloadQueue: any;
   showChapterTitles: boolean;
   isSelected?: (id: number) => boolean;
-  downloadChapter: (chapter: ChapterInfo) => (dispatch: any) => void;
-  deleteChapter: (chapter: ChapterInfo) => void;
-  onSelectPress?: (chapter: ChapterInfo, arg1: () => void) => void;
-  onSelectLongPress?: (chapter: ChapterInfo) => void;
-  navigateToChapter: (chapter: ChapterInfo) => void;
-  showProgressPercentage?: (chapter: ChapterInfo) => any;
+  downloadChapter: (chapter: ExtendedChapter) => void;
+  deleteChapter: (chapter: ExtendedChapter) => void;
+  onSelectPress?: (chapter: ExtendedChapter, arg1: () => void) => void;
+  onSelectLongPress?: (chapter: ExtendedChapter) => void;
+  navigateToChapter: (chapter: ExtendedChapter) => void;
+  showProgressPercentage?: (chapter: ExtendedChapter) => any;
   left?: ReactNode;
 
   isUpdateCard?: boolean;

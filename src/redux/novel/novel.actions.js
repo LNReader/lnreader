@@ -214,60 +214,28 @@ export const markChapterUnreadAction =
     });
   };
 
-/**
- * When propertise are stand alone, they should have prefix (novel | chapter)
- * @param {string} pluginId
- * @param {string} novelUrl
- * @param {number} novelId
- * @param {string} chapterlUrl
- * @param {string} chapterlName
- * @param {number} chapterId
- * @returns
- */
-export const downloadChapterAction =
-  (pluginId, novelId, chapterUrl, chapterName, chapterId) => async dispatch => {
-    dispatch({
-      type: CHAPTER_DOWNLOADING,
-      payload: {
-        downloadingChapter: {
-          id: chapterId,
-          novelId: novelId,
-          name: chapterName,
-          pluginId: pluginId,
-          url: chapterUrl,
-        },
-      },
-    });
-    dispatch({
-      type: SET_DOWNLOAD_QUEUE,
-      payload: [
-        {
-          id: chapterId,
-          novelId: novelId,
-          name: chapterName,
-          pluginId: pluginId,
-          url: chapterUrl,
-        },
-      ],
-    });
+export const downloadChapterAction = chapter => async dispatch => {
+  dispatch({
+    type: CHAPTER_DOWNLOADING,
+    payload: {
+      downloadingChapter: chapter,
+    },
+  });
+  dispatch({
+    type: SET_DOWNLOAD_QUEUE,
+    payload: [chapter],
+  });
 
-    await downloadChapter(pluginId, novelId, chapterId, chapterUrl);
+  await downloadChapter(chapter);
 
-    dispatch({
-      type: CHAPTER_DOWNLOADED,
-      payload: { chapterId },
-    });
+  dispatch({
+    type: CHAPTER_DOWNLOADED,
+    payload: chapter,
+  });
 
-    ToastAndroid.show(`Downloaded ${chapterName}`, ToastAndroid.SHORT);
-  };
+  ToastAndroid.show(`Downloaded ${chapter.name}`, ToastAndroid.SHORT);
+};
 
-/**
- *
- * @param {string} pluginId
- * @param {string} novelUrl
- * @param {import("../../database/types").ChapterItem[]} chaps
- * @returns
- */
 export const downloadAllChaptersAction =
   (pluginId, novelUrl, chaps) => async (dispatch, getState) => {
     try {
@@ -379,17 +347,16 @@ export const downloadAllChaptersAction =
     }
   };
 
-export const deleteChapterAction =
-  (pluginId, novelId, chapterId, chapterName) => async dispatch => {
-    await deleteChapter(pluginId, novelId, chapterId);
+export const deleteChapterAction = chapter => async dispatch => {
+  await deleteChapter(chapter);
 
-    dispatch({
-      type: CHAPTER_DELETED,
-      payload: { chapterId },
-    });
+  dispatch({
+    type: CHAPTER_DELETED,
+    payload: chapter,
+  });
 
-    showToast(`Deleted ${chapterName}`);
-  };
+  showToast(`Deleted ${chapter.name}`);
+};
 
 /**
  *

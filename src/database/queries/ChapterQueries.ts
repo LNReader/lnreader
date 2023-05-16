@@ -9,6 +9,7 @@ import * as cheerio from 'cheerio';
 import { txnErrorCallback } from '@database/utils/helpers';
 import { Plugin } from '@plugins/types';
 import { noop } from 'lodash-es';
+import { getExtendedChapterByChapter } from './extendsChaptersQueries';
 
 const db = SQLite.openDatabase('lnreader.db');
 
@@ -324,7 +325,7 @@ export const deleteDownloads = async (chapters: ExtendedChapter[]) => {
   });
 };
 
-const getReadDownloadedChapters = async (): Promise<ExtendedChapter[]> => {
+const getReadDownloadedChapters = (): Promise<ExtendedChapter[]> => {
   return new Promise(resolve => {
     db.transaction(tx => {
       tx.executeSql(
@@ -332,7 +333,7 @@ const getReadDownloadedChapters = async (): Promise<ExtendedChapter[]> => {
         [],
         (txObj, { rows }) => {
           Promise.all(
-            rows._array.map(chapter => fetchEagerChapter(chapter)),
+            rows._array.map(chapter => getExtendedChapterByChapter(chapter)),
           ).then(res => resolve(res));
         },
       );
@@ -406,7 +407,7 @@ export const getDownloadedChapters = () => {
         [],
         (txObj, { rows }) => {
           Promise.all(
-            rows._array.map(chapter => fetchEagerChapter(chapter)),
+            rows._array.map(chapter => getExtendedChapterByChapter(chapter)),
           ).then(res => resolve(res));
         },
         txnErrorCallback,
@@ -423,7 +424,7 @@ export const getUpdatesFromDb = (): Promise<ExtendedChapter[]> => {
         [],
         (txObj, { rows }) => {
           Promise.all(
-            rows._array.map(chapter => fetchEagerChapter(chapter)),
+            rows._array.map(chapter => getExtendedChapterByChapter(chapter)),
           ).then(res => resolve(res));
         },
         txnErrorCallback,
