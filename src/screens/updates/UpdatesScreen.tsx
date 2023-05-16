@@ -6,7 +6,7 @@ import { EmptyView, ErrorScreenV2, SearchbarV2 } from '@components';
 
 import { convertDateToISOString } from '@database/utils/convertDateToISOString';
 
-import { Update } from '@database/types';
+import { ExtendedChapter } from '@database/types';
 
 import { useSearch, useUpdates } from '@hooks';
 import { useAppDispatch } from '@redux/hooks';
@@ -43,8 +43,8 @@ const UpdatesScreen = () => {
     clearSearchResults();
   };
 
-  const groupUpdatesByDate = (rawHistory: Update[]) => {
-    const dateGroups = rawHistory.reduce<Record<string, Update[][]>>(
+  const groupUpdatesByDate = (rawHistory: ExtendedChapter[]) => {
+    const dateGroups = rawHistory.reduce<Record<string, ExtendedChapter[][]>>(
       (groups, item) => {
         const date = convertDateToISOString(item.updatedTime);
         const novelId = item.novelId;

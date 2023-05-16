@@ -1,7 +1,7 @@
 import { FlatList, Pressable, StyleSheet, View } from 'react-native';
 import React, { useCallback, useState } from 'react';
 
-import { ChapterInfo, Update } from '@database/types';
+import { ExtendedChapter } from '@database/types';
 import FastImage from 'react-native-fast-image';
 import { List } from 'react-native-paper';
 import { coverPlaceholderColor } from '@theme/colors';
@@ -33,7 +33,7 @@ const NovelCover = ({
 };
 
 interface UpdateCardProps {
-  item: Update[];
+  item: ExtendedChapter[];
   descriptionText: string;
   removeItemFromList?: boolean;
 }
@@ -49,29 +49,12 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
 
   const [chapterList, setChapterList] = useState(item);
 
-  const handleDownloadChapter = useCallback(
-    (chapter: ChapterInfo) =>
-      dispatch(
-        downloadChapterAction(
-          chapter.pluginId,
-          chapter.novelId,
-          chapter.url,
-          chapter.name,
-          chapter.id,
-        ),
-      ),
-    [],
-  );
+  const handleDownloadChapter = useCallback((chapter: ExtendedChapter) => {
+    dispatch(downloadChapterAction(chapter));
+  }, []);
 
-  const handleDeleteChapter = useCallback((chapter: ChapterInfo) => {
-    dispatch(
-      deleteChapterAction(
-        chapter.pluginId,
-        chapter.novelId,
-        chapter.id,
-        chapter.name,
-      ),
-    );
+  const handleDeleteChapter = useCallback((chapter: ExtendedChapter) => {
+    dispatch(deleteChapterAction(chapter));
     if (removeItemFromList) {
       //@ts-ignore
       let index = item.indexOf(chapter);
@@ -81,15 +64,11 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
   }, []);
 
   const navigateToChapter = useCallback(
-    (chapter: ChapterInfo) =>
+    (chapter: ExtendedChapter) =>
       navigate(
         'Chapter' as never,
         {
-          novel: {
-            url: chapter.novelUrl,
-            pluginId: chapter.pluginId,
-            name: chapter.novelName,
-          },
+          novel: chapter.novel,
           chapter: chapter,
         } as never,
       ),
@@ -97,16 +76,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
   );
 
   const navigateToNovel = () =>
-    navigate(
-      'Novel' as never,
-      openNovel({
-        pluginId: chapterList[0].pluginId,
-        id: chapterList[0].novelId,
-        url: chapterList[0].novelUrl,
-        name: chapterList[0].novelName,
-        cover: chapterList[0].novelCover,
-      }) as never,
-    );
+    navigate('Novel' as never, openNovel(chapterList[0].novel) as never);
 
   const { downloadQueue } = useSelector(
     (state: RootState) => state.downloadsReducer,
@@ -114,12 +84,12 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
   if (chapterList.length > 1) {
     return (
       <List.Accordion
-        title={chapterList[0].novelName}
+        title={chapterList[0].novel.name}
         titleStyle={{ fontSize: 14, color: theme.onSurface }}
         left={() => (
           <NovelCover
             navigateToNovel={navigateToNovel}
-            uri={chapterList[0].novelCover}
+            uri={chapterList[0].novel.cover || ''}
           />
         )}
         descriptionStyle={{ fontSize: 12 }}
@@ -136,7 +106,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
             return (
               <ChapterItem
                 isUpdateCard
-                novelName={chapterList[0].novelName}
+                novelName={chapterList[0].novel.name}
                 chapter={it.item}
                 theme={theme}
                 showChapterTitles={false}
@@ -148,7 +118,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
                   <View style={styles.novelCover}>
                     <NovelCover
                       navigateToNovel={navigateToNovel}
-                      uri={chapterList[0].novelCover}
+                      uri={chapterList[0].novel.cover || ''}
                     />
                   </View>
                 }
@@ -163,7 +133,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
     return (
       <ChapterItem
         isUpdateCard
-        novelName={chapterList[0].novelName}
+        novelName={chapterList[0].novel.name}
         chapter={chapterList[0]}
         theme={theme}
         showChapterTitles={false}
@@ -175,7 +145,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
           <View style={styles.novelCover}>
             <NovelCover
               navigateToNovel={navigateToNovel}
-              uri={chapterList[0].novelCover}
+              uri={chapterList[0].novel.cover || ''}
             />
           </View>
         }
