@@ -97,9 +97,7 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
               },
             ]}
           >
-            {showChapterTitles
-              ? `Chapter ${chapterNumber} • ID: ${id}`
-              : name.slice(0, 45)}
+            {showChapterTitles ? `Chapter ${chapterNumber} • ID: ${id}` : name}
           </Text>
           <View style={styles.textRow}>
             {releaseTime && !isUpdateCard ? (

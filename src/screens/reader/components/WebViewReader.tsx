@@ -59,6 +59,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
       style={{ backgroundColor }}
       allowFileAccess={true}
       originWhitelist={['*']}
+      onLayout={onLayout}
       scalesPageToFit={true}
       showsVerticalScrollIndicator={false}
       onNavigationStateChange={onWebViewNavigationStateChange}
@@ -96,7 +97,6 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
           case 'height':
             const contentHeight = Number(event.data);
             minScroll.current = (layoutHeight / contentHeight) * 100;
-            onLayout();
             break;
         }
       }}
