@@ -41,26 +41,7 @@ export const insertChapters = async (
   });
 };
 
-export const getChapters = (
-  novelId: number,
-  sort: string,
-  filter: string,
-): Promise<Chapter[]> => {
-  const getChaptersQuery = (sort = 'ORDER BY id ASC', filter = '') =>
-    `SELECT * FROM Chapter WHERE novelId = ? ${filter} ${sort}`;
-  return new Promise(resolve =>
-    db.transaction(tx => {
-      tx.executeSql(
-        getChaptersQuery(sort, filter),
-        [novelId],
-        (txObj, { rows }) => resolve(rows._array),
-        txnErrorCallback,
-      );
-    }),
-  );
-};
-
-export const getChapterFromDB = (chapterId: number): Promise<string> => {
+export const getChapterText = (chapterId: number): Promise<string> => {
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(

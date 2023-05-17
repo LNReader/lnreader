@@ -35,7 +35,6 @@ const HistoryScreen = () => {
 
   const { searchText, setSearchText, clearSearchbar } = useSearch();
   const [searchResults, setSearchResults] = useState<ExtendedChapter[]>([]);
-  console.log(history[0]);
   const onChangeText = (text: string) => {
     setSearchText(text);
     setSearchResults(

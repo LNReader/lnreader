@@ -23,8 +23,8 @@ const Downloads = ({ navigation }) => {
 
   const [loading, setLoading] = useState(true);
   const [chapters, setChapters] = useState([]);
-  const groupUpdatesByDate = chapters => {
-    const dateGroups = chapters.reduce((groups, item) => {
+  const groupUpdatesByNovel = chapters => {
+    const novelGroups = chapters.reduce((groups, item) => {
       const novelId = item.novelId;
       if (!groups[novelId]) {
         groups[novelId] = [];
@@ -34,7 +34,7 @@ const Downloads = ({ navigation }) => {
 
       return groups;
     }, {});
-    return Object.values(dateGroups);
+    return Object.values(novelGroups);
   };
 
   /**
@@ -87,7 +87,7 @@ const Downloads = ({ navigation }) => {
       ) : (
         <FlatList
           contentContainerStyle={styles.flatList}
-          data={groupUpdatesByDate(chapters)}
+          data={groupUpdatesByNovel(chapters)}
           keyExtractor={(item, index) => 'downloadGroup' + index}
           renderItem={renderItem}
           ListEmptyComponent={<ListEmptyComponent />}

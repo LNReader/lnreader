@@ -29,7 +29,7 @@ import { SET_LAST_READ } from '@redux/preferences/preference.types';
 import WebViewReader from './components/WebViewReader';
 import { useTextToSpeech } from '@hooks/useTextToSpeech';
 import { useFullscreenMode, useLibrarySettings } from '@hooks';
-import { getChapterFromDB } from '@database/queries/ChapterQueries';
+import { getChapterText } from '@database/queries/ChapterQueries';
 import ReaderBottomSheetV2 from './components/ReaderBottomSheet/ReaderBottomSheet';
 import { defaultTo } from 'lodash-es';
 import BottomInfoBar from './components/BottomInfoBar/BottomInfoBar';
@@ -134,7 +134,7 @@ const ChapterContent = ({ route, navigation }) => {
 
   const getChapter = async () => {
     try {
-      const chapterText = await getChapterFromDB(chapter.id);
+      const chapterText = await getChapterText(chapter.id);
       if (chapterText) {
         sourceChapter.chapterText = chapterText;
       } else {

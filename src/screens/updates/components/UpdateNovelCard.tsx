@@ -65,13 +65,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
 
   const navigateToChapter = useCallback(
     (chapter: ExtendedChapter) =>
-      navigate(
-        'Chapter' as never,
-        {
-          novel: chapter.novel,
-          chapter: chapter,
-        } as never,
-      ),
+      navigate('Chapter' as never, chapter as never),
     [],
   );
 

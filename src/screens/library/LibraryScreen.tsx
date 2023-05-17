@@ -237,23 +237,7 @@ const LibraryScreen = () => {
             label={'Resume'}
             icon="play"
             onPress={() => {
-              navigate(
-                'Chapter' as never,
-                {
-                  novel: {
-                    id: history[0].novel.id,
-                    url: history[0].novel,
-                    pluginId: history[0].pluginId,
-                    name: history[0].novelName,
-                  },
-                  chapter: {
-                    id: history[0].id,
-                    url: history[0].chapterUrl,
-                    name: history[0].chapterName,
-                    novelId: history[0].novelId,
-                  },
-                } as never,
-              );
+              navigate('Chapter' as never, history[0] as never);
             }}
           />
         )}
