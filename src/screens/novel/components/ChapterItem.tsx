@@ -45,14 +45,13 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
   showProgressPercentage,
   left,
   isUpdateCard,
-  novelName,
 }) => {
-  const { id, name, unread, releaseTime, bookmark } = chapter;
+  const { id, name, unread, releaseTime, bookmark, novel } = chapter;
   const [deleteChapterMenuVisible, setDeleteChapterMenuVisible] =
     useState(false);
   const showDeleteChapterMenu = () => setDeleteChapterMenuVisible(true);
   const hideDeleteChapterMenu = () => setDeleteChapterMenuVisible(false);
-  const chapterNumber = parseChapterNumber(novelName, name);
+  const chapterNumber = parseChapterNumber(novel.name, name);
   return (
     <Pressable
       key={'chapterItem' + id}
@@ -83,7 +82,7 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
                 },
               ]}
             >
-              {novelName.slice(0, 45)}
+              {novel.name}
             </Text>
           )}
           <Text

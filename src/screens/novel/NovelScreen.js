@@ -115,16 +115,7 @@ const Novel = ({ route, navigation }) => {
 
   const [jumpToChapterModal, showJumpToChapterModal] = useState(false);
 
-  const downloadChapter = chapter =>
-    dispatch(
-      downloadChapterAction(
-        pluginId,
-        novel.id,
-        chapter.url,
-        chapter.name,
-        chapter.id,
-      ),
-    );
+  const downloadChapter = chapter => dispatch(downloadChapterAction(chapter));
 
   const actions = useMemo(() => {
     const list = [];
@@ -251,7 +242,7 @@ const Novel = ({ route, navigation }) => {
     }
   };
   const navigateToChapter = chapter => {
-    navigation.navigate('Chapter', { novel: novel, chapter: chapter });
+    navigation.navigate('Chapter', chapter);
   };
 
   const showProgressPercentage = chapter => {
@@ -289,7 +280,7 @@ const Novel = ({ route, navigation }) => {
     showExtraMenu(false);
   };
 
-  const renderItem = ({ item: it, index }) => (
+  const renderItem = ({ item: it }) => (
     <ChapterItem
       theme={theme}
       chapter={it}
@@ -302,7 +293,6 @@ const Novel = ({ route, navigation }) => {
       onSelectLongPress={onSelectLongPress}
       navigateToChapter={navigateToChapter}
       showProgressPercentage={showProgressPercentage}
-      novelName={name}
     />
   );
 

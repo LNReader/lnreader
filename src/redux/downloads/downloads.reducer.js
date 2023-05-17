@@ -19,7 +19,7 @@ const downloadsReducer = (state = initialState, action) => {
       return {
         ...state,
         downloadQueue: state.downloadQueue.filter(
-          chapter => chapter.id !== payload.chapterId,
+          chapter => chapter.id !== payload.id,
         ),
       };
     case CANCEL_DOWNLOAD:

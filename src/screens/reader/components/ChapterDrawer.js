@@ -17,7 +17,7 @@ const ChapterDrawer = ({ state: st, navigation }) => {
   const styles = createStylesheet(theme, insets);
   let listRef = useRef();
   const dispatch = useDispatch();
-  const { chapter, novel: novelItem } = st.routes[0].params;
+  const chapter = st.routes[0].params;
   const { defaultChapterSort = 'ORDER BY id ASC' } = useSettings();
   const { sort = defaultChapterSort, filter = '' } = usePreferences(
     chapter.novelId,
@@ -25,9 +25,11 @@ const ChapterDrawer = ({ state: st, navigation }) => {
   const { novel, chapters } = useNovel();
   useEffect(() => {
     if (chapter.novelId !== novel.id || chapters.length === 0) {
-      dispatch(getNovelAction(novelItem.pluginId, novelItem.url, sort, filter));
+      dispatch(
+        getNovelAction(chapter.novel.pluginId, chapter.novel.url, sort, filter),
+      );
     }
-  }, [defaultChapterSort, dispatch, filter, novelItem, chapter]);
+  }, [defaultChapterSort, dispatch, filter, chapter]);
   const listAscending = sort === 'ORDER BY id ASC';
   const scrollToIndex = useMemo(() => {
     if (chapters.length < 1) {
@@ -59,10 +61,7 @@ const ChapterDrawer = ({ state: st, navigation }) => {
   });
 
   const changeChapter = item => {
-    navigation.replace('Chapter', {
-      novel: novelItem,
-      chapter: item,
-    });
+    navigation.replace('Chapter', item);
   };
   const renderItem = ({ item }) => (
     <View
@@ -81,7 +80,7 @@ const ChapterDrawer = ({ state: st, navigation }) => {
         <Text numberOfLines={1} style={styles.chapterNameCtn}>
           {item.name}
         </Text>
-        {item?.releaseDate ? (
+        {item.releaseTime ? (
           <Text style={styles.releaseDateCtn}>{item.releaseTime}</Text>
         ) : null}
       </Pressable>

@@ -3,7 +3,7 @@ import { Dimensions, StatusBar } from 'react-native';
 import WebView from 'react-native-webview';
 
 import { useTheme } from '@hooks/useTheme';
-import { ChapterInfo, NovelInfo } from '@database/types';
+import { ExtendedChapter } from '@database/types';
 import { useReaderSettings } from '@redux/hooks';
 import { getString } from '@strings/translations';
 
@@ -15,12 +15,11 @@ type WebViewPostEvent = {
 };
 
 type WebViewReaderProps = {
-  chapterInfo: { novel: NovelInfo; chapter: ChapterInfo };
+  chapter: ExtendedChapter;
   html: string;
-  chapterName: string;
   swipeGestures: boolean;
   minScroll: React.MutableRefObject<number>;
-  nextChapter: ChapterInfo;
+  nextChapter: ExtendedChapter;
   webViewRef: React.MutableRefObject<WebView>;
   onPress(): void;
   onLayout(): void;
@@ -36,9 +35,8 @@ const onClickWebViewPostMessage = (event: WebViewPostEvent) =>
 
 const WebViewReader: React.FC<WebViewReaderProps> = props => {
   const {
-    chapterInfo,
+    chapter,
     html,
-    chapterName,
     swipeGestures,
     minScroll,
     nextChapter,
@@ -49,14 +47,12 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
     navigateToChapterBySwipe,
     onWebViewNavigationStateChange,
   } = props;
-
   const theme = useTheme();
-  const { novel, chapter } = chapterInfo;
   const readerSettings = useReaderSettings();
   const { theme: backgroundColor } = readerSettings;
 
   const layoutHeight = Dimensions.get('window').height;
-  const plugin = getPlugin(novel?.pluginId);
+  const plugin = getPlugin(chapter.novel.pluginId);
   return (
     <WebView
       ref={webViewRef}
@@ -205,9 +201,10 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                       type: 'hide',
                     })}>
                       <chapter 
-                        data-plugin-id='${novel?.pluginId}'
+                        data-plugin-id='${chapter.novel.pluginId}'
                         data-novel-id='${chapter.novelId}'
                         data-chapter-id='${chapter.id}'
+                        data-chapter-name='${chapter.name}'
                       >
                         ${html}
                       </chapter>
@@ -248,7 +245,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                     <div class="infoText">
                     ${getString(
                       'readerScreen.finished',
-                    )}: ${chapterName?.trim()}
+                    )}: ${chapter.name?.trim()}
                     </div>
                     ${
                       nextChapter

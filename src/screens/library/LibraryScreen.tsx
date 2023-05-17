@@ -241,8 +241,8 @@ const LibraryScreen = () => {
                 'Chapter' as never,
                 {
                   novel: {
-                    id: history[0].novelId,
-                    url: history[0].novelUrl,
+                    id: history[0].novel.id,
+                    url: history[0].novel,
                     pluginId: history[0].pluginId,
                     name: history[0].novelName,
                   },

@@ -59,8 +59,7 @@ const Chapter = ({ route }) => {
 
 const ChapterContent = ({ route, navigation }) => {
   useKeepAwake();
-  const params = route.params;
-  const { novel, chapter } = params;
+  const chapter = route.params;
   let webViewRef = useRef(null);
   let readerSheetRef = useRef(null);
 
@@ -140,7 +139,7 @@ const ChapterContent = ({ route, navigation }) => {
         sourceChapter.chapterText = chapterText;
       } else {
         sourceChapter.chapterText = await fetchChapter(
-          novel.pluginId,
+          chapter.novel.pluginId,
           chapter.url,
         );
       }
@@ -214,7 +213,7 @@ const ChapterContent = ({ route, navigation }) => {
   }, [autoScroll, webViewRef]);
 
   const updateTracker = () => {
-    const chapterNumber = parseChapterNumber(novel.name, chapter.name);
+    const chapterNumber = parseChapterNumber(chapter.novel.name, chapter.name);
 
     isTracked &&
       chapterNumber &&
@@ -262,10 +261,7 @@ const ChapterContent = ({ route, navigation }) => {
     }
     // you can add more condition for friendly usage. for example: if(name === "SWIPE_LEFT" || name === "right")
     navChapter
-      ? navigation.replace('Chapter', {
-          novel: novel,
-          chapter: navChapter,
-        })
+      ? navigation.replace('Chapter', navChapter)
       : showToast(
           name === 'SWIPE_LEFT'
             ? "There's no next chapter"
@@ -276,7 +272,7 @@ const ChapterContent = ({ route, navigation }) => {
   const onWebViewNavigationStateChange = async ({ url }) => {
     if (url !== 'about:blank') {
       setLoading(true);
-      const res = await fetchChapter(novel.pluginId, chapter.url);
+      const res = await fetchChapter(chapter.novel.pluginId, chapter.url);
       sourceChapter.chapterText = res;
       setChapter(sourceChapter);
       setLoading(false);
@@ -285,7 +281,7 @@ const ChapterContent = ({ route, navigation }) => {
 
   const chapterText = sanitizeChapterText(sourceChapter.chapterText, {
     removeExtraParagraphSpacing,
-    pluginId: novel.pluginId,
+    pluginId: chapter.novel.pluginId,
   });
   const openDrawer = () => {
     navigation.openDrawer();
@@ -303,9 +299,8 @@ const ChapterContent = ({ route, navigation }) => {
   return (
     <>
       <WebViewReader
-        chapterInfo={{ novel, chapter }}
+        chapter={chapter}
         html={chapterText}
-        chapterName={chapter.name}
         swipeGestures={swipeGestures}
         minScroll={minScroll}
         nextChapter={nextChapter}

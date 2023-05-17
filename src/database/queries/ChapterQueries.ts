@@ -76,17 +76,20 @@ export const getChapterFromDB = (chapterId: number): Promise<string> => {
 export const getPrevChapter = (
   novelId: number,
   chapterId: number,
-): Promise<Chapter> => {
+): Promise<Chapter | undefined> => {
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
         'SELECT * FROM Chapter WHERE novelId = ? AND id < ?',
         [novelId, chapterId],
-        (_txObj, results) =>
-          resolve(results.rows.item(results.rows.length - 1)),
-        () => {
-          showToast("There's no previous chapter");
-          return false;
+        (_txObj, { rows }) => {
+          if (rows.length == 0) {
+            resolve(undefined);
+          } else {
+            getExtendedChapterByChapter(rows.item(rows.length - 1)).then(
+              chapter => resolve(chapter),
+            );
+          }
         },
       );
     }),
@@ -96,16 +99,20 @@ export const getPrevChapter = (
 export const getNextChapter = (
   novelId: number,
   chapterId: number,
-): Promise<Chapter> => {
+): Promise<ExtendedChapter | undefined> => {
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
         'SELECT * FROM Chapter WHERE novelId = ? AND id > ?',
         [novelId, chapterId],
-        (_txObj, results) => resolve(results.rows.item(0)),
-        () => {
-          showToast("There's no next Chapter");
-          return false;
+        (_txObj, { rows }) => {
+          if (rows.length == 0) {
+            resolve(undefined);
+          } else {
+            getExtendedChapterByChapter(rows.item(0)).then(chapter =>
+              resolve(chapter),
+            );
+          }
         },
       );
     }),
