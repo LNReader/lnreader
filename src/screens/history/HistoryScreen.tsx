@@ -12,12 +12,11 @@ import { useTheme } from '@hooks/useTheme';
 
 import { convertDateToISOString } from '../../database/utils/convertDateToISOString';
 
-import { History } from '../../database/types';
+import { ExtendedChapter } from '../../database/types';
 import { getString } from '@strings/translations';
 import ClearHistoryDialog from './components/ClearHistoryDialog';
 import {
   openChapterChapterTypes,
-  openChapterNovelTypes,
   openNovel,
   openNovelProps,
 } from '@utils/handleNavigateParams';
@@ -26,7 +25,6 @@ import HistorySkeletonLoading from './components/HistorySkeletonLoading';
 const HistoryScreen = () => {
   const theme = useTheme();
   const { navigate } = useNavigation();
-
   const {
     isLoading,
     history,
@@ -36,19 +34,19 @@ const HistoryScreen = () => {
   } = useHistory();
 
   const { searchText, setSearchText, clearSearchbar } = useSearch();
-  const [searchResults, setSearchResults] = useState<History[]>([]);
-
+  const [searchResults, setSearchResults] = useState<ExtendedChapter[]>([]);
+  console.log(history[0]);
   const onChangeText = (text: string) => {
     setSearchText(text);
     setSearchResults(
       history.filter(item =>
-        item.novelName.toLowerCase().includes(searchText.toLowerCase()),
+        item.name.toLowerCase().includes(searchText.toLowerCase()),
       ),
     );
   };
 
-  const groupHistoryByDate = (rawHistory: History[]) => {
-    const dateGroups = rawHistory.reduce<Record<string, History[]>>(
+  const groupHistoryByDate = (rawHistory: ExtendedChapter[]) => {
+    const dateGroups = rawHistory.reduce<Record<string, ExtendedChapter[]>>(
       (groups, item) => {
         const date = convertDateToISOString(item.readTime);
 
@@ -73,11 +71,8 @@ const HistoryScreen = () => {
     return groupedHistory;
   };
 
-  const handleNavigateToChapter = (
-    novel: openChapterNovelTypes,
-    chapter: openChapterChapterTypes,
-  ) =>
-    navigate('Chapter' as never, { novel: novel, chapter: chapter } as never);
+  const handleNavigateToChapter = (chapter: openChapterChapterTypes) =>
+    navigate('Chapter' as never, chapter as never);
 
   const handleNavigateToNovel = (novel: openNovelProps) =>
     navigate('Novel' as never, openNovel(novel) as openNovelProps as never);

@@ -5,25 +5,20 @@ const db = SQLite.openDatabase('lnreader.db');
 
 import { showToast } from '../../hooks/showToast';
 import { ExtendedChapter } from '@database/types';
-
-const getHistoryQuery = `
-    SELECT 
-      Chapter.novelId, Novel.pluginId, Novel.name as novelName, Novel.url as novelUrl, Novel.cover as novelCover,
-      Chapter.id, Chapter.name as chapterName, Chapter.url as chapterUrl, Chapter.bookmark, Chapter.readTime
-    FROM Chapter 
-    JOIN Novel
-    ON Chapter.novelId = Novel.id AND Chapter.readTime IS NOT NULL
-    ORDER BY readTime DESC
-    `;
+import { getExtendedChapterByChapter } from './extendedChaptersQueries';
 
 export const getHistoryFromDb = async (): Promise<ExtendedChapter[]> => {
+  const query =
+    'SELECT * FROM Chapter WHERE readTime IS NOT NULL ORDER BY readTime DESC';
   return new Promise(resolve => {
     db.transaction(tx => {
       tx.executeSql(
-        getHistoryQuery,
+        query,
         [],
         (txObj, { rows }) => {
-          resolve((rows as any)._array);
+          Promise.all(
+            rows._array.map(chapter => getExtendedChapterByChapter(chapter)),
+          ).then(chapters => resolve(chapters));
         },
         txnErrorCallback,
       );
@@ -55,7 +50,8 @@ export const deleteChapterHistory = async (chapterId: number) => {
 
 export const deleteAllHistory = async () => {
   db.transaction(tx => {
-    tx.executeSql('UPDATE CHAPTER SET readTime = NULL');
+    tx.executeSql('UPDATE CHAPTER SET readTime = NULL', [], () =>
+      showToast('History deleted.'),
+    );
   });
-  showToast('History deleted.');
 };

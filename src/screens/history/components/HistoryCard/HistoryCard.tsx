@@ -7,21 +7,17 @@ import FastImage from 'react-native-fast-image';
 import { IconButtonV2 } from '@components';
 import { parseChapterNumber } from '@utils/parseChapterNumber';
 
-import { History } from '@database/types';
+import { ExtendedChapter } from '@database/types';
 import { ThemeColors } from '@theme/types';
 import { coverPlaceholderColor } from '@theme/colors';
 import {
   openChapterChapterTypes,
-  openChapterNovelTypes,
   openNovelProps,
 } from '@utils/handleNavigateParams';
 
 interface HistoryCardProps {
-  history: History;
-  handleNavigateToChapter: (
-    novel: openChapterNovelTypes,
-    chapter: openChapterChapterTypes,
-  ) => void;
+  history: ExtendedChapter;
+  handleNavigateToChapter: (chapter: openChapterChapterTypes) => void;
   handleRemoveFromHistory: (chapterId: number) => void;
   handleNavigateToNovel: (novel: openNovelProps) => void;
   theme: ThemeColors;
@@ -34,48 +30,29 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
   handleNavigateToNovel,
   theme,
 }) => {
-  const {
-    id,
-    pluginId,
-    novelId,
-    novelName,
-    novelUrl,
-    chapterName,
-    novelCover,
-    readTime,
-    chapterUrl,
-    bookmark,
-  } = history;
   const chapterNoAndTime = useMemo(
     () =>
-      `Chapter ${parseChapterNumber(novelName, chapterName)} • ${dayjs(readTime)
-        .format('LT')
-        .toUpperCase()}`,
-    [chapterName, readTime],
+      `Chapter ${parseChapterNumber(
+        history.novel.name,
+        history.name,
+      )} • ${dayjs(history.readTime).format('LT').toUpperCase()}`,
+    [history.name, history.readTime],
   );
 
   return (
     <Pressable
       style={styles.container}
       android_ripple={{ color: theme.rippleColor }}
-      onPress={() =>
-        handleNavigateToNovel({
-          pluginId,
-          id: novelId,
-          url: novelUrl,
-          name: novelName,
-          cover: novelCover,
-        })
-      }
+      onPress={() => handleNavigateToNovel(history.novel)}
     >
       <View style={styles.imageAndNameContainer}>
-        <FastImage source={{ uri: novelCover }} style={styles.cover} />
+        <FastImage source={{ uri: history.novel.cover }} style={styles.cover} />
         <View style={styles.detailsContainer}>
           <Text
             numberOfLines={2}
             style={[{ color: theme.onSurface }, styles.novelName]}
           >
-            {novelName}
+            {history.novel.name}
           </Text>
           <Text style={{ color: theme.onSurfaceVariant }}>
             {chapterNoAndTime}
@@ -86,22 +63,11 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
         <IconButtonV2
           name="delete-outline"
           theme={theme}
-          onPress={() => handleRemoveFromHistory(id)}
+          onPress={() => handleRemoveFromHistory(history.id)}
         />
         <IconButtonV2
           name="play"
-          onPress={() =>
-            handleNavigateToChapter(
-              { url: novelUrl, pluginId: pluginId, name: novelName },
-              {
-                id: id,
-                url: chapterUrl,
-                novelId: novelId,
-                name: chapterName,
-                bookmark: bookmark,
-              },
-            )
-          }
+          onPress={() => handleNavigateToChapter(history)}
           theme={theme}
         />
       </View>
