@@ -158,7 +158,7 @@ const createImageFolder = async (
   };
 
   await mkdirIfNot(path);
-  const fullPath = `${path}/${chapter.novel.pluginId}/${chapter.novel.id}/${chapter.id}`;
+  const fullPath = `${path}/${chapter.novel.pluginId}/${chapter.novel.id}/${chapter.id}/`;
   await mkdirIfNot(fullPath);
   return fullPath;
 };
@@ -210,6 +210,9 @@ const downloadImages = async (
 export const downloadChapter = async (chapter: ExtendedChapter) => {
   try {
     const plugin = getPlugin(chapter.novel.pluginId);
+    if (!plugin) {
+      throw new Error('Plugin not found!');
+    }
     const chapterText = await plugin.parseChapter(chapter.url);
     if (chapterText?.length) {
       const imagedChapterText =

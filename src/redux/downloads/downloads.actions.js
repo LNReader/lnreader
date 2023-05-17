@@ -48,12 +48,7 @@ export const resumeDownloads = chapters => async dispatch => {
         if (BackgroundService.isRunning()) {
           try {
             if (!chapters[i].isDownloaded) {
-              await downloadChapter(
-                chapters[i].pluginId,
-                chapters[i].novelId,
-                chapters[i].id,
-                chapters[i].url,
-              );
+              await downloadChapter(chapters[i]);
             }
 
             dispatch({

@@ -226,7 +226,12 @@ export const downloadChapterAction = chapter => async dispatch => {
     payload: [chapter],
   });
 
-  await downloadChapter(chapter);
+  try {
+    await downloadChapter(chapter);
+  } catch (error) {
+    showToast(error.message);
+    return;
+  }
 
   dispatch({
     type: CHAPTER_DOWNLOADED,
