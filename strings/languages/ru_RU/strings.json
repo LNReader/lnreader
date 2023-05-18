@@ -98,7 +98,7 @@
       "useChapterDrawerSwipeNavigation": "Проведите вправо, чтобы открыть",
       "removeExtraSpacing": "Удалить дополнительный интервал параграфа",
       "volumeButtonsScroll": "Прокрутка кноками громкости",
-      "scrollAmount": "Scroll amount (screen height by default)",
+      "scrollAmount": "Смещение автопрокрутки (высота экрана по умолчанию)",
       "showSwipeMargins": "Показать зоны прокрутки"
     },
     "drawer": {
@@ -172,12 +172,12 @@
         "saveCustomTheme": "Сохранить пользовательскую тему",
         "deleteCustomTheme": "Удалить пользовательскую тему",
         "customCSS": "Пользовательские CSS",
-        "customJS": "Custom JS",
-        "openCSSFile": "Open CSS file",
-        "openJSFile": "Open JS file",
-        "notSaved": "Not saved",
-        "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])",
-        "jsHint": "Hint: You have access to following variables: html, novelName, chapterName, sourceId, chapterId, novelId"
+        "customJS": "Пользовательский JS",
+        "openCSSFile": "Открыть CSS-файл",
+        "openJSFile": "Открыть JS-файл",
+        "notSaved": "Не сохранено",
+        "cssHint": "Подсказка: Вы можете создать исходный код конфигурации с исходным ID. (#sourceId-[SOURCEID])",
+        "jsHint": "Подсказка: У вас есть доступ к следующим переменным: html, novelName, chapterName, sourceId, chapterId, novelId"
       },
       "browseSettings": "Настройки обзора",
       "browseSettingsScreen": {
