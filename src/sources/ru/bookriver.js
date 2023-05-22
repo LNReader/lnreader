@@ -15,7 +15,7 @@ const popularNovels = async (page, { showLatestNovels, filters }) => {
     url += '&g=' + filters.genres.join(',');
   }
 
-  const result = await fetchApi(url);
+  const result = await fetch(url);
   const body = await result.text();
 
   const loadedCheerio = cheerio.load(body);
@@ -36,7 +36,7 @@ const popularNovels = async (page, { showLatestNovels, filters }) => {
 };
 
 const parseNovelAndChapters = async novelUrl => {
-  const result = await fetchApi(novelUrl);
+  const result = await fetch(novelUrl);
   const body = await result.text();
 
   const loadedCheerio = cheerio.load(body);
@@ -75,7 +75,7 @@ const parseNovelAndChapters = async novelUrl => {
 
 const parseChapter = async (novelUrl, chapterUrl) => {
   const url = 'https://api.bookriver.ru/api/v1/books/chapter/text/';
-  const result = await fetchApi(url + chapterUrl.split('/').pop());
+  const result = await fetch(url + chapterUrl.split('/').pop());
   const json = await result.json();
 
   const chapter = {
@@ -90,7 +90,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 
 const searchNovels = async searchTerm => {
   const url = `${baseUrl}/search/books?keyword=${searchTerm}`;
-  const result = await fetchApi(url);
+  const result = await fetch(url);
   const body = await result.text();
 
   const loadedCheerio = cheerio.load(body);
