@@ -1,6 +1,5 @@
 import dayjs from 'dayjs';
 import * as cheerio from 'cheerio';
-import { defaultTo } from 'lodash-es';
 import { htmlToText } from '../helpers/htmlToText';
 import { Status, defaultCoverUri } from '../helpers/constants';
 import { FilterInputs } from '../types/filterTypes';
@@ -12,10 +11,7 @@ const baseUrl = 'https://ранобэ.рф';
 
 const popularNovels = async (page, { showLatestNovels, filters }) => {
   let url = baseUrl + '/books?order=';
-  url += defaultTo(
-    filters?.sort,
-    showLatestNovels ? 'lastPublishedChapter' : 'popular',
-  );
+  url += showLatestNovels ? 'lastPublishedChapter' : filters?.sort || 'popular';
   url += '&page=' + page;
 
   const result = await fetch(url);
@@ -24,16 +20,18 @@ const popularNovels = async (page, { showLatestNovels, filters }) => {
   const loadedCheerio = cheerio.load(body);
   let json = loadedCheerio('#__NEXT_DATA__').html();
   json = JSON.parse(json);
-  let novels = [];
 
-  json.props.pageProps.totalData.items.forEach(item => {
-    const novelName = item.title;
-    const novelUrl = baseUrl + '/' + item.slug;
-    const novelCover = item?.verticalImage?.url
-      ? baseUrl + item.verticalImage.url
-      : defaultCoverUri;
-    novels.push({ sourceId, novelName, novelCover, novelUrl });
-  });
+  let novels = [];
+  json.props.pageProps.totalData.items.forEach(novel =>
+    novels.push({
+      sourceId,
+      novelName: novel.title,
+      novelCover: novel?.verticalImage?.url
+        ? baseUrl + novel.verticalImage.url
+        : defaultCoverUri,
+      novelUrl: baseUrl + '/' + novel.slug,
+    }),
+  );
 
   return { novels };
 };
@@ -115,14 +113,16 @@ const searchNovels = async searchTerm => {
   const body = await result.json();
   let novels = [];
 
-  body.items.forEach(item => {
-    const novelName = item.title;
-    const novelUrl = baseUrl + '/' + item.slug;
-    const novelCover = item?.verticalImage?.url
-      ? baseUrl + item.verticalImage.url
-      : defaultCoverUri;
-    novels.push({ sourceId, novelName, novelCover, novelUrl });
-  });
+  body.items.forEach(novel =>
+    novels.push({
+      sourceId,
+      novelName: novel.title,
+      novelCover: novel?.verticalImage?.url
+        ? baseUrl + novel.verticalImage.url
+        : defaultCoverUri,
+      novelUrl: baseUrl + '/' + novel.slug,
+    }),
+  );
 
   return novels;
 };

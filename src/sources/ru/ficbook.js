@@ -1,7 +1,6 @@
 import { Status, defaultCoverUri } from '../helpers/constants';
 import { FilterInputs } from '../types/filterTypes';
 import * as cheerio from 'cheerio';
-import { defaultTo } from 'lodash-es';
 
 const sourceId = 139;
 const sourceName = 'Книга Фанфиков';
@@ -14,7 +13,7 @@ const popularNovels = async (page, { filters }) => {
   if (filters?.directions) {
     url += '/popular/' + filters.directions;
   } else {
-    url += `/${defaultTo(filters?.sort, 'fanfiction')}?p=${page}`;
+    url += '/' + (filters?.sort || 'fanfiction') + '?p=' + page;
   }
 
   const result = await fetch(url);

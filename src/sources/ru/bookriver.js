@@ -44,6 +44,8 @@ const parseNovelAndChapters = async novelUrl => {
   const book = JSON.parse(json).props.pageProps.state.book.bookPage;
 
   let novel = {
+    sourceId,
+    sourceName,
     url: novelUrl,
     novelUrl,
     novelName: book.name,
