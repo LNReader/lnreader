@@ -1,7 +1,6 @@
 import { FilterInputs } from '../types/filterTypes';
 import { htmlToText } from '../helpers/htmlToText';
 import { Status } from '../helpers/constants';
-import { defaultTo } from 'lodash-es';
 import dayjs from 'dayjs';
 
 const sourceId = 116;
@@ -12,7 +11,7 @@ const baseUrl = 'https://renovels.org';
 const popularNovels = async (page, { showLatestNovels, filters }) => {
   let url = baseUrl + '/api/search/catalog/?count=30&ordering=';
   url += filters?.order ? filters?.order?.replace('+', '') : '-';
-  url += defaultTo(filters?.sort, showLatestNovels ? 'chapter_date' : 'rating');
+  url += showLatestNovels ? 'chapter_date' : filters?.sort || 'rating';
 
   if (filters?.type?.length) {
     url += filters.type.map(i => `&types=${i}`).join('');
@@ -34,16 +33,16 @@ const popularNovels = async (page, { showLatestNovels, filters }) => {
 
   const result = await fetch(url);
   let body = await result.json();
-
   let novels = [];
 
-  body.content.forEach(item => {
-    const novelName = item.rus_name;
-    const novelUrl = item.dir;
-    const novelCover =
-      baseUrl + (item.img?.high || item.img?.mid || item.img.low);
-    novels.push({ sourceId, novelName, novelCover, novelUrl });
-  });
+  body.content.forEach(novel =>
+    novels.push({
+      sourceId,
+      novelName: novel.rus_name,
+      cover: baseUrl + (novel.img?.high || novel.img?.mid || novel.img.low),
+      novelUrl: novel.dir,
+    }),
+  );
 
   return { novels };
 };
@@ -126,14 +125,14 @@ const searchNovels = async searchTerm => {
   let body = await result.json();
   let novels = [];
 
-  body.content.forEach(item => {
-    const novelName = item.rus_name;
-    const novelUrl = item.dir;
-    const novelCover =
-      baseUrl + (item.img?.high || item.img?.mid || item.img.low);
-    const novel = { sourceId, novelName, novelCover, novelUrl };
-    novels.push(novel);
-  });
+  body.content.forEach(novel =>
+    novels.push({
+      sourceId,
+      novelName: novel.rus_name,
+      cover: baseUrl + (novel.img?.high || novel.img?.mid || novel.img.low),
+      novelUrl: novel.dir,
+    }),
+  );
 
   return novels;
 };
@@ -229,6 +228,8 @@ const filters = [
     key: 'categories',
     label: 'Категории',
     values: [
+      { label: '[Награжденная работа]', value: '648' },
+      { label: '18+', value: '423' },
       { label: 'Абьюзеры', value: '663' },
       { label: 'Авантюристы', value: '436' },
       { label: 'Автоматоны', value: '593' },
@@ -343,10 +344,6 @@ const filters = [
       { label: 'Гетерохромия', value: '570' },
       { label: 'Гильдии', value: '411' },
       { label: 'Гипнотизм', value: '755' },
-      { label: 'Главный герой влюбляется первы', value: '683' },
-      { label: 'Главный герой играет роль', value: '472' },
-      { label: 'Главный герой носит очки', value: '672' },
-      { label: 'Главный герой пацифист', value: '698' },
       { label: 'Главный герой — бог', value: '547' },
       { label: 'Главный герой — гуманоид', value: '636' },
       { label: 'Главный герой — наполовину чел', value: '445' },
@@ -354,6 +351,10 @@ const filters = [
       { label: 'Главный герой — раб', value: '780' },
       { label: 'Главный герой — ребенок', value: '488' },
       { label: 'Главный герой — рубака', value: '476' },
+      { label: 'Главный герой влюбляется первы', value: '683' },
+      { label: 'Главный герой играет роль', value: '472' },
+      { label: 'Главный герой носит очки', value: '672' },
+      { label: 'Главный герой пацифист', value: '698' },
       { label: 'Гладиаторы', value: '603' },
       { label: 'Глуповатый главный герой', value: '385' },
       { label: 'Гоблины', value: '586' },
@@ -400,6 +401,7 @@ const filters = [
       { label: 'Душевность', value: '633' },
       { label: 'Души', value: '254' },
       { label: 'Европейская атмосфера', value: '521' },
+      { label: 'Ёкаи', value: '575' },
       { label: 'Есть аниме-адаптация', value: '154' },
       { label: 'Есть видеоигра по мотивам', value: '552' },
       { label: 'Есть манга', value: '155' },
@@ -733,7 +735,6 @@ const filters = [
       { label: 'Романтический подсюжет', value: '271' },
       { label: 'Рост персонажа', value: '215' },
       { label: 'Рыцари', value: '260' },
-      { label: 'Сёнэн-ай подсюжет', value: '690' },
       { label: 'Садистские персонажи', value: '674' },
       { label: 'Самоотверженный главный герой', value: '747' },
       { label: 'Самурай', value: '677' },
@@ -749,6 +750,7 @@ const filters = [
       { label: 'Семь добродетелей', value: '334' },
       { label: 'Семь смертных грехов', value: '253' },
       { label: 'Семья', value: '347' },
+      { label: 'Сёнэн-ай подсюжет', value: '690' },
       { label: 'Серийные убийцы', value: '557' },
       { label: 'Сестринский комплекс', value: '558' },
       { label: 'Сила духа', value: '373' },
@@ -921,11 +923,8 @@ const filters = [
       { label: 'Яндере', value: '314' },
       { label: 'Японские силы самообороны', value: '610' },
       { label: 'Ярко выраженная романтика', value: '365' },
-      { label: '18+', value: '423' },
       { label: 'R-15 Японское возрастное огр.', value: '332' },
       { label: 'R-18', value: '424' },
-      { label: '[Награжденная работа]', value: '648' },
-      { label: 'Ёкаи', value: '575' },
     ],
     inputType: FilterInputs.Checkbox,
   },

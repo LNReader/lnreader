@@ -2,7 +2,6 @@ import { FilterInputs } from '../../types/filterTypes';
 import { htmlToText } from '../../helpers/htmlToText';
 import { Status } from '../../helpers/constants';
 import * as cheerio from 'cheerio';
-import { defaultTo } from 'lodash-es';
 
 class RulateScraper {
   constructor(sourceId, baseUrl, sourceName, filter) {
@@ -83,10 +82,10 @@ class RulateScraper {
     const baseUrl = this.baseUrl;
     const sourceId = this.sourceId;
     let url = baseUrl + '/search?t=&cat=2';
-    url += '&sort=' + defaultTo(filters?.sort, showLatestNovels ? '4' : '6');
-    url += '&type=' + defaultTo(filters?.type, '0');
-    url += '&atmosphere=' + defaultTo(filters?.atmosphere, '0');
-    url += '&adult=' + defaultTo(filters?.adult, '0');
+    url += '&sort=' + showLatestNovels ? '4' : filters?.sort || '6';
+    url += '&type=' + filters?.type || '0';
+    url += '&atmosphere=' + filters?.atmosphere || '0';
+    url += '&adult=' + filters?.adult || '0';
 
     if (filters?.genres?.length) {
       url += filters.genres.map(i => `&genres[]=${i}`).join('');

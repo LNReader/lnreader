@@ -2,7 +2,6 @@ import { Status, defaultCoverUri } from '../helpers/constants';
 import { htmlToText } from '../helpers/htmlToText';
 import { FilterInputs } from '../types/filterTypes';
 import * as cheerio from 'cheerio';
-import { defaultTo } from 'lodash-es';
 import dayjs from 'dayjs';
 
 const sourceId = 142;
@@ -21,14 +20,13 @@ const popularNovels = async (page, { showLatestNovels, filters }) => {
   }
 
   url +=
-    '&sorting=' +
-    defaultTo(filters?.sort, showLatestNovels ? 'recent' : 'popular');
+    '&sorting=' + (showLatestNovels ? 'recent' : filters?.sort || 'popular');
 
-  url += '&form=' + defaultTo(filters?.form, 'any');
-  url += '&state=' + defaultTo(filters?.state, 'any');
-  url += '&series=' + defaultTo(filters?.series, 'any');
-  url += '&access=' + defaultTo(filters?.access, 'any');
-  url += '&promo=' + defaultTo(filters?.promo, 'hide');
+  url += '&form=' + (filters?.form || 'any');
+  url += '&state=' + (filters?.state || 'any');
+  url += '&series=' + (filters?.series || 'any');
+  url += '&access=' + (filters?.access || 'any');
+  url += '&promo=' + (filters?.promo || 'hide');
 
   const result = await fetch(url, {
     headers: {
@@ -41,14 +39,18 @@ const popularNovels = async (page, { showLatestNovels, filters }) => {
     return { novels: [] };
   }
 
-  let novels = json.searchResults.map(novel => ({
-    sourceId,
-    novelName: novel.title,
-    novelCover: novel?.coverUrl
-      ? 'https://cm.author.today/content/' + novel.coverUrl
-      : defaultCoverUri,
-    novelUrl: Math.floor(novel.id).toString(),
-  }));
+  let novels = [];
+
+  json.searchResults.forEach(novel =>
+    novels.push({
+      sourceId,
+      novelName: novel.title,
+      novelCover: novel?.coverUrl
+        ? 'https://cm.author.today/content/' + novel.coverUrl
+        : defaultCoverUri,
+      novelUrl: Math.floor(novel.id).toString(),
+    }),
+  );
 
   return { novels };
 };
@@ -233,6 +235,7 @@ const filters = [
       { label: 'Любовное фэнтези', value: 'love-fantasy' },
       { label: 'Любовные романы', value: 'romance' },
       { label: 'Мистика', value: 'paranormal' },
+      { label: 'Назад в СССР', value: 'back-to-ussr' },
       { label: 'Научная фантастика', value: 'science-fiction' },
       { label: 'Подростковая проза', value: 'teen-prose' },
       { label: 'Политический роман', value: 'political-fiction' },
@@ -252,7 +255,6 @@ const filters = [
       { label: 'РеалРПГ', value: 'realrpg' },
       { label: 'Романтическая эротика', value: 'romantic-erotika' },
       { label: 'Сказка', value: 'fairy-tale' },
-      { label: 'Слэш', value: 'slash' },
       { label: 'Современная проза', value: 'modern-prose' },
       { label: 'Современный любовный роман', value: 'contemporary-romance' },
       { label: 'Социальная фантастика', value: 'sf-social' },
@@ -263,7 +265,6 @@ const filters = [
       { label: 'Фантастика', value: 'sci-fi' },
       { label: 'Фантастический детектив', value: 'detective-science-fiction' },
       { label: 'Фанфик', value: 'fanfiction' },
-      { label: 'Фемслэш', value: 'femslesh' },
       { label: 'Фэнтези', value: 'fantasy' },
       { label: 'Шпионский детектив', value: 'spy-mystery' },
       { label: 'Эпическое фэнтези', value: 'epic-fantasy' },
