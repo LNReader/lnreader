@@ -49,17 +49,18 @@ import NovelInfoHeader from './components/Info/NovelInfoHeader';
 import NovelBottomSheet from './components/NovelBottomSheet';
 import TrackSheet from './components/Tracker/TrackSheet';
 import { Row } from '../../components/Common';
-import JumpToChapterModal from './components/JumpToChapterModal';
+import JumpToChapterModal from './components/Modal/JumpToChapterModal';
 import { Actionbar } from '../../components/Actionbar/Actionbar';
-import EditInfoModal from './components/EditInfoModal';
+import EditInfoModal from './components/Modal/EditInfoModal';
 import { pickCustomNovelCover } from '../../database/queries/NovelQueries';
-import DownloadCustomChapterModal from './components/DownloadCustomChapterModal';
+import DownloadCustomChapterModal from './components/Modal/DownloadCustomChapterModal';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import useBoolean from '@hooks/useBoolean';
 import { useCategorySettings } from '@hooks/useSettings';
 import { openChapter } from '../../utils/handleNavigateParams';
 import NovelScreenLoading from './components/LoadingAnimation/NovelScreenLoading';
 import { useTrackerReducer } from '@redux/hooks';
+import EpubIconButton from './components/EpubIconButton';
 
 const Novel = ({ route, navigation }) => {
   const item = route.params;
@@ -535,7 +536,11 @@ const Novel = ({ route, navigation }) => {
                     }
                   />
                 </Menu>
-
+                <EpubIconButton
+                  theme={theme}
+                  style={{ marginTop: StatusBar.currentHeight + 8 }}
+                  novel={novel}
+                />
                 <Menu
                   visible={extraMenu}
                   onDismiss={() => showExtraMenu(false)}
