@@ -8,6 +8,7 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
+.env
 
 # macOS
 .DS_Store
@@ -74,3 +75,6 @@ web-build/
 
 .vscode/
 src/sources/en/generators/
+
+# jenv
+.java-version

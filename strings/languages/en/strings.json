@@ -176,7 +176,8 @@
         "openCSSFile": "Open CSS file",
         "openJSFile": "Open JS file",
         "notSaved": "Not saved",
-        "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])"
+        "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])",
+        "jsHint":"Hint: You have access to following variables: html, novelName, chapterName, sourceId, chapterId, novelId"
       },
       "browseSettings": "Browse Settings",
       "browseSettingsScreen": {

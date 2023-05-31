@@ -10,7 +10,7 @@ const SetTrackChaptersDialog = ({
   theme,
 }) => {
   const [trackChapters, setTrackChapters] = useState(
-    trackItem.my_list_status.num_chapters_read,
+    trackItem.userData.progress,
   );
 
   return (

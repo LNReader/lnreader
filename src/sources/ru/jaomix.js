@@ -1,5 +1,4 @@
 import * as cheerio from 'cheerio';
-import { defaultTo } from 'lodash-es';
 import { Status } from '../helpers/constants';
 import { FilterInputs } from '../types/filterTypes';
 
@@ -10,7 +9,7 @@ const baseUrl = 'https://jaomix.ru';
 
 const popularNovels = async (page, { showLatestNovels, filters }) => {
   let url = baseUrl + '/?searchrn&sortby=';
-  url += defaultTo(filters?.sort, showLatestNovels ? 'upd' : 'count');
+  url += showLatestNovels ? 'upd' : filters?.sort || 'count';
 
   if (filters?.type?.length) {
     url += filters.type.map(i => `&lang[]=${i}`).join('');
@@ -162,17 +161,6 @@ const filters = [
     key: 'genres',
     label: 'Жанры',
     values: [
-      { label: 'Adult', value: 'Adult' },
-      { label: 'Ecchi', value: 'Ecchi' },
-      { label: 'Josei', value: 'Josei' },
-      { label: 'Lolicon', value: 'Lolicon' },
-      { label: 'Mature', value: 'Mature' },
-      { label: 'Sci-fi', value: 'Sci-fi' },
-      { label: 'Shoujo', value: 'Shoujo' },
-      { label: 'Wuxia', value: 'Wuxia' },
-      { label: 'Xianxia', value: 'Xianxia' },
-      { label: 'Xuanhuan', value: 'Xuanhuan' },
-      { label: 'Yaoi', value: 'Yaoi' },
       { label: 'Боевые Искусства', value: 'Боевые Искусства' },
       { label: 'Виртуальный Мир', value: 'Виртуальный Мир' },
       { label: 'Гарем', value: 'Гарем' },
@@ -182,6 +170,7 @@ const filters = [
       { label: 'Истории из жизни', value: 'Истории из жизни' },
       { label: 'Исторический', value: 'Исторический' },
       { label: 'История', value: 'История' },
+      { label: 'Исэкай', value: 'Исэкай' },
       { label: 'Комедия', value: 'Комедия' },
       { label: 'Меха', value: 'Меха' },
       { label: 'Мистика', value: 'Мистика' },
@@ -191,9 +180,9 @@ const filters = [
       { label: 'Приключения', value: 'Приключения' },
       { label: 'Психология', value: 'Психология' },
       { label: 'Романтика', value: 'Романтика' },
+      { label: 'Сверхъестественное', value: 'Сверхъестественное' },
       { label: 'Сёнэн', value: 'Сёнэн' },
       { label: 'Сёнэн-ай', value: 'Сёнэн-ай' },
-      { label: 'Сверхъестественное', value: 'Сверхъестественное' },
       { label: 'Спорт', value: 'Спорт' },
       { label: 'Сэйнэн', value: 'Сэйнэн' },
       { label: 'Сюаньхуа', value: 'Сюаньхуа' },
@@ -206,6 +195,17 @@ const filters = [
       { label: 'Шоунен', value: 'Шоунен' },
       { label: 'Экшн', value: 'Экшн' },
       { label: 'Этти', value: 'Этти' },
+      { label: 'Юри', value: 'Юри' },
+      { label: 'Adult', value: 'Adult' },
+      { label: 'Ecchi', value: 'Ecchi' },
+      { label: 'Josei', value: 'Josei' },
+      { label: 'Lolicon', value: 'Lolicon' },
+      { label: 'Mature', value: 'Mature' },
+      { label: 'Shoujo', value: 'Shoujo' },
+      { label: 'Wuxia', value: 'Wuxia' },
+      { label: 'Xianxia', value: 'Xianxia' },
+      { label: 'Xuanhuan', value: 'Xuanhuan' },
+      { label: 'Yaoi', value: 'Yaoi' },
     ],
     inputType: FilterInputs.Checkbox,
   },

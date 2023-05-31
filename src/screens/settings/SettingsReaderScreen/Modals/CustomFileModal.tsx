@@ -72,8 +72,10 @@ const CustomFileModal: React.FC<CustomCSSModalProps> = ({
           <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
             {title}
           </Text>
-          <Text style={[{ color: theme.secondary }]}>
-            {getString('moreScreen.settingsScreen.readerSettings.cssHint')}
+          <Text style={[{ color: theme.onSurfaceVariant }]}>
+            {type === 'CSS'
+              ? getString('moreScreen.settingsScreen.readerSettings.cssHint')
+              : getString('moreScreen.settingsScreen.readerSettings.jsHint')}
           </Text>
           <TextInput
             theme={{ colors: { ...theme } }}
@@ -126,6 +128,8 @@ const styles = StyleSheet.create({
   customCSSContainer: {
     height: 220,
     borderRadius: 14,
+    marginTop: 16,
+    marginBottom: 8,
   },
   modalTitle: {
     fontSize: 24,

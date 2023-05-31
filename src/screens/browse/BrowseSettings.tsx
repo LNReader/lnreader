@@ -23,6 +23,7 @@ const BrowseSettings = () => {
   const {
     searchAllSources = false,
     showMyAnimeList = true,
+    showAniList = true,
     onlyShowPinnedSources = false,
   } = useBrowseSettings();
 
@@ -66,6 +67,19 @@ const BrowseSettings = () => {
             <List.SubHeader theme={theme}>
               {getString('browseScreen.discover')}
             </List.SubHeader>
+            <SwitchItem
+              label="Show AniList"
+              value={showAniList}
+              onPress={() =>
+                dispatch(
+                  setBrowseSettings({
+                    key: 'showAniList',
+                    value: !showAniList,
+                  }),
+                )
+              }
+              theme={theme}
+            />
             <SwitchItem
               label="Show MyAnimeList"
               value={showMyAnimeList}

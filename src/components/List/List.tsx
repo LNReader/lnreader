@@ -9,6 +9,7 @@ interface ListItemProps {
   title: string;
   description?: string | null;
   icon?: string;
+  right?: string;
   onPress?: () => void;
   theme: ThemeColors;
 }
@@ -35,6 +36,7 @@ const Item: React.FC<ListItemProps> = ({
   icon,
   onPress,
   theme,
+  right,
 }) => (
   <PaperList.Item
     title={title}
@@ -47,6 +49,17 @@ const Item: React.FC<ListItemProps> = ({
             <PaperList.Icon
               color={theme.primary}
               icon={icon}
+              style={styles.iconCtn}
+            />
+          )
+        : undefined
+    }
+    right={
+      right
+        ? () => (
+            <PaperList.Icon
+              color={theme.primary}
+              icon={right}
               style={styles.iconCtn}
             />
           )

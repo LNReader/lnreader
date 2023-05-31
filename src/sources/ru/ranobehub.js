@@ -1,23 +1,20 @@
 import dayjs from 'dayjs';
 import * as cheerio from 'cheerio';
-import { defaultTo } from 'lodash-es';
 import { Status } from '../helpers/constants';
 import { htmlToText } from '../helpers/htmlToText';
 import { FilterInputs } from '../types/filterTypes';
 
 const sourceId = 69;
-
 const sourceName = 'RanobeHub';
 
 const baseUrl = 'https://ranobehub.org/';
 
 const popularNovels = async (page, { showLatestNovels, filters }) => {
   let url = baseUrl + `api/search?page=${page}&sort=`;
-  url += defaultTo(
-    filters?.sort,
-    showLatestNovels ? 'last_chapter_at' : 'computed_rating',
-  );
-  url += '&status=' + defaultTo(filters?.status, '0');
+  url += showLatestNovels
+    ? 'last_chapter_at'
+    : filters?.sort || 'computed_rating';
+  url += '&status=' + (filters?.status ? filters?.status : '0');
 
   if (filters?.country?.length) {
     url += '&country=' + filters?.country.join(',');
@@ -34,18 +31,14 @@ const popularNovels = async (page, { showLatestNovels, filters }) => {
 
   let novels = [];
 
-  body.resource.forEach(novel => {
-    const novelName = novel.names.rus;
-    const novelCover = novel.poster.medium;
-    const novelUrl = novel.url.split('/').pop();
-
+  body.resource.forEach(novel =>
     novels.push({
       sourceId,
-      novelName,
-      novelCover,
-      novelUrl,
-    });
-  });
+      novelName: novel.names.rus,
+      novelCover: novel.poster.medium,
+      novelUrl: novel.url.split('/').pop(),
+    }),
+  );
 
   return { novels };
 };
@@ -209,6 +202,8 @@ const filters = [
     key: 'events',
     label: 'События',
     values: [
+      { label: '[Награжденная работа]', value: '611' },
+      { label: '18+', value: '338' },
       { label: 'Авантюристы', value: '353' },
       { label: 'Автоматоны', value: '538' },
       { label: 'Агрессивные персонажи', value: '434' },
@@ -321,12 +316,6 @@ const filters = [
       { label: 'Гетерохромия', value: '510' },
       { label: 'Гильдии', value: '323' },
       { label: 'Гипнотизм', value: '768' },
-      { label: 'Главный герой влюбляется первым', value: '655' },
-      { label: 'Главный герой играет роль', value: '396' },
-      { label: 'Главный герой носит очки', value: '637' },
-      { label: 'Главный герой пацифист', value: '675' },
-      { label: 'Главный герой с несколькими телами', value: '628' },
-      { label: 'Главный герой силен с самого начала', value: '45' },
       { label: 'Главный герой — бог', value: '486' },
       { label: 'Главный герой — гуманоид', value: '595' },
       { label: 'Главный герой — женщина', value: '63' },
@@ -337,6 +326,12 @@ const filters = [
       { label: 'Главный герой — ребенок', value: '415' },
       { label: 'Главный герой — рубака', value: '400' },
       { label: 'Главный герой — собиратель гарема', value: '439' },
+      { label: 'Главный герой влюбляется первым', value: '655' },
+      { label: 'Главный герой играет роль', value: '396' },
+      { label: 'Главный герой носит очки', value: '637' },
+      { label: 'Главный герой пацифист', value: '675' },
+      { label: 'Главный герой с несколькими телами', value: '628' },
+      { label: 'Главный герой силен с самого начала', value: '45' },
       { label: 'Гладиаторы', value: '549' },
       { label: 'Глуповатый главный герой', value: '295' },
       { label: 'Гоблины', value: '529' },
@@ -383,6 +378,7 @@ const filters = [
       { label: 'Душевность', value: '587' },
       { label: 'Души', value: '136' },
       { label: 'Европейская атмосфера', value: '457' },
+      { label: 'Ёкаи', value: '516' },
       { label: 'Есть аниме-адаптация', value: '26' },
       { label: 'Есть видеоигра по мотивам', value: '491' },
       { label: 'Есть манга-адаптация', value: '27' },
@@ -716,7 +712,6 @@ const filters = [
       { label: 'Романтический подсюжет ', value: '159' },
       { label: 'Рост персонажа', value: '95' },
       { label: 'Рыцари', value: '142' },
-      { label: 'Сёнэн-ай подсюжет ', value: '664' },
       { label: 'Садистские персонажи', value: '642' },
       { label: 'Самоотверженный главный герой', value: '748' },
       { label: 'Самоубийства', value: '616' },
@@ -733,6 +728,7 @@ const filters = [
       { label: 'Семь добродетелей', value: '233' },
       { label: 'Семь смертных грехов', value: '134' },
       { label: 'Семья', value: '251' },
+      { label: 'Сёнэн-ай подсюжет ', value: '664' },
       { label: 'Серийные убийцы', value: '497' },
       { label: 'Сестринский комплекс', value: '498' },
       { label: 'Сила духа', value: '282' },
@@ -887,9 +883,6 @@ const filters = [
       { label: 'Яндере', value: '208' },
       { label: 'Японские силы самообороны', value: '559' },
       { label: 'Ярко выраженная романтическая линия', value: '272' },
-      { label: '[Награжденная работа]', value: '611' },
-      { label: 'Ёкаи', value: '516' },
-      { label: '18+', value: '338' },
       { label: 'Abusive Characters', value: '625' },
       { label: 'Adapted to Visual Novel', value: '1046' },
       { label: 'Adopted-lead', value: '886' },
@@ -986,6 +979,7 @@ const filters = [
       { label: 'Human-nonhuman-relationship', value: '914' },
       { label: 'Humanoid-lead', value: '915' },
       { label: 'Imperial Harem', value: '805' },
+      { label: 'Incubus', value: '1049' },
       { label: 'Insects', value: '831' },
       { label: 'Interspatial-storage', value: '959' },
       { label: 'Kind Love Interests', value: '757' },
@@ -1054,6 +1048,7 @@ const filters = [
       { label: 'Secret Crush', value: '827' },
       { label: 'Seme Protagonist', value: '1034' },
       { label: 'Seme-lead', value: '1028' },
+      { label: 'Sentimental Protagonist', value: '1048' },
       { label: 'Seven-heavenly-virtues', value: '1018' },
       { label: 'Sexual Cultivation Technique', value: '350' },
       { label: 'Sexual-content', value: '982' },
@@ -1118,11 +1113,11 @@ const filters = [
       { label: 'Приключение', value: '11' },
       { label: 'Психология', value: '18' },
       { label: 'Романтика', value: '9' },
+      { label: 'Сверхъестественное', value: '20' },
       { label: 'Сёдзё', value: '15' },
       { label: 'Сёдзё-ай', value: '23' },
       { label: 'Сёнэн', value: '189' },
       { label: 'Сёнэн-ай', value: '680' },
-      { label: 'Сверхъестественное', value: '20' },
       { label: 'Спорт', value: '420' },
       { label: 'Сэйнэн', value: '5' },
       { label: 'Сюаньхуа', value: '242' },

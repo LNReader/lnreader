@@ -13,9 +13,6 @@ export const sanitizeChapterText = (
   html: string,
   options?: Options,
 ): string => {
-  if (html) {
-    html = html.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
-  }
   let text = sanitizeHtml(html, {
     allowedTags: sanitizeHtml.defaults.allowedTags.concat([
       'img',

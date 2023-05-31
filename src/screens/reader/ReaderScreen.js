@@ -12,11 +12,9 @@ import {
 } from '../../database/queries/ChapterQueries';
 import { fetchChapter } from '../../services/Source/source';
 import { showToast } from '../../hooks/showToast';
-import {
-  usePosition,
-  useSettings,
-  useTrackingStatus,
-} from '../../hooks/reduxHooks';
+import { usePosition, useSettings } from '../../hooks/reduxHooks';
+import { useTrackerReducer } from '@redux/hooks';
+
 import { useTheme } from '@hooks/useTheme';
 import { updateChaptersRead } from '../../redux/tracker/tracker.actions';
 import { markChapterReadAction } from '../../redux/novel/novel.actions';
@@ -98,7 +96,7 @@ const ChapterContent = ({ route, navigation }) => {
   const position = usePosition(novelId, chapterId);
   const minScroll = useRef(0);
 
-  const { tracker, trackedNovels } = useTrackingStatus();
+  const { tracker, trackedNovels } = useTrackerReducer();
   const isTracked = trackedNovels.find(obj => obj.novelId === novelId);
 
   const [chapter, setChapter] = useState({});
@@ -148,10 +146,11 @@ const ChapterContent = ({ route, navigation }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [useVolumeButtons, scrollAmount]);
 
-  const onLayout = useCallback(e => {
-    setTimeout(() => connectVolumeButton());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const onLayout = useCallback(() => {
+    if (useVolumeButtons) {
+      setTimeout(() => connectVolumeButton());
+    } // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [useVolumeButtons]);
 
   const getChapter = async id => {
     try {
@@ -207,9 +206,11 @@ const ChapterContent = ({ route, navigation }) => {
 
   const scrollTo = useCallback(
     offsetY => {
-      webViewRef?.current.injectJavaScript(`(()=>{
-        window.scrollTo({top:${offsetY},behavior:'smooth',})
-      })()`);
+      requestAnimationFrame(() => {
+        webViewRef?.current.injectJavaScript(`(()=>{
+          window.scrollTo({top:${offsetY},behavior:'smooth',})
+        })()`);
+      });
     },
     [webViewRef],
   );
@@ -234,14 +235,18 @@ const ChapterContent = ({ route, navigation }) => {
   }, [autoScroll, webViewRef]);
 
   const updateTracker = () => {
-    const chapterNumber = parseChapterNumber(chapterName);
-
+    const chapterNumber = Number(parseChapterNumber(chapterName));
     isTracked &&
       chapterNumber &&
       Number.isInteger(chapterNumber) &&
-      chapterNumber > isTracked.my_list_status.num_chapters_read &&
+      chapterNumber > isTracked.userData.progress &&
       dispatch(
-        updateChaptersRead(isTracked.id, tracker.access_token, chapterNumber),
+        updateChaptersRead(
+          tracker.name,
+          isTracked.id,
+          tracker.auth,
+          chapterNumber,
+        ),
       );
   };
 
@@ -261,48 +266,53 @@ const ChapterContent = ({ route, navigation }) => {
     [chapter],
   );
 
-  const hideHeader = () => {
+  const hideHeader = useCallback(() => {
     if (!hidden) {
       setImmersiveMode();
     } else {
       showStatusAndNavBar();
     }
     setHidden(!hidden);
-  };
+  }, [hidden]);
 
-  const navigateToChapterBySwipe = name => {
-    let navChapter;
-    if (name === 'SWIPE_LEFT') {
-      navChapter = nextChapter;
-    } else if (name === 'SWIPE_RIGHT') {
-      navChapter = prevChapter;
-    } else {
-      return;
-    }
-    // you can add more condition for friendly usage. for example: if(name === "SWIPE_LEFT" || name === "right")
-    navChapter
-      ? navigation.replace('Chapter', {
-          ...params,
-          chapterUrl: navChapter.chapterUrl,
-          chapterId: navChapter.chapterId,
-          chapterName: navChapter.chapterName,
-          bookmark: navChapter.bookmark,
-        })
-      : showToast(
-          name === 'SWIPE_LEFT'
-            ? "There's no next chapter"
-            : "There's no previous chapter",
-        );
-  };
+  const navigateToChapterBySwipe = useCallback(
+    name => {
+      let navChapter;
+      if (name === 'SWIPE_LEFT') {
+        navChapter = nextChapter;
+      } else if (name === 'SWIPE_RIGHT') {
+        navChapter = prevChapter;
+      } else {
+        return;
+      }
+      // you can add more condition for friendly usage. for example: if(name === "SWIPE_LEFT" || name === "right")
+      navChapter
+        ? navigation.replace('Chapter', {
+            ...params,
+            chapterUrl: navChapter.chapterUrl,
+            chapterId: navChapter.chapterId,
+            chapterName: navChapter.chapterName,
+            bookmark: navChapter.bookmark,
+          })
+        : showToast(
+            name === 'SWIPE_LEFT'
+              ? "There's no next chapter"
+              : "There's no previous chapter",
+          );
+    },
+    [nextChapter, prevChapter],
+  );
 
-  const onWebViewNavigationStateChange = async ({ url }) => {
+  const onWebViewNavigationStateChange = useCallback(async ({ url }) => {
     if ((sourceId === 50 || sourceId === 62) && url !== 'about:blank') {
       setLoading(true);
       const res = await fetchChapter(sourceId, novelUrl, url);
       setChapter(res);
       setLoading(false);
     }
-  };
+  }, []);
+
+  const scrollToSavedProgress = () => scrollTo(position?.position);
 
   const chapterText = sanitizeChapterText(chapter.chapterText, {
     removeExtraParagraphSpacing,
@@ -331,10 +341,8 @@ const ChapterContent = ({ route, navigation }) => {
         minScroll={minScroll}
         nextChapter={nextChapter}
         webViewRef={webViewRef}
-        onLayout={() => {
-          useVolumeButtons && onLayout();
-          scrollTo(position?.position);
-        }}
+        onLayout={onLayout}
+        scrollToSavedProgress={scrollToSavedProgress}
         onPress={hideHeader}
         doSaveProgress={doSaveProgress}
         navigateToChapterBySwipe={navigateToChapterBySwipe}
