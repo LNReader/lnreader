@@ -2,6 +2,7 @@
  * Select epub files with this code:
  */
 //global variables beneath
+/*
 private static final int REQUEST_DIRECTORY=100;  //constant request code dunno if will use it
 private static String epubPath;
 
@@ -67,5 +68,5 @@ Python.start(new AndroidPlatform(this));
 //use this code to open up the file explorer
 Intent intent=new Intent(Intent.ACTION_OPEN_DOCUMENT);
 intent.addCategory(Intent.CATEGORY_OPENABLE);
-intent.setType("*/*"); //there's an extra backslash in there
-startActivityForResult(intent,REQUEST_DIRECTORY);
+intent.setType("*//*"); //there's an extra backslash in there
+startActivityForResult(intent,REQUEST_DIRECTORY);*/
