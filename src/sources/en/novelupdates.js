@@ -203,7 +203,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   let isTumblr = result.url.toLowerCase().includes('tumblr');
 
   let isWattpad = result.url.toLowerCase().includes('wattpad');
-  
+
   let isLightNovelsTls = result.url
     .toLowerCase()
     .includes('lightnovelstranslations');
@@ -244,7 +244,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     loadedCheerio('.post-share-buttons').remove();
   } else if (isLightNovelsTls) {
     chapterText = loadedCheerio('.text_story').html;
-    
+
     chapterText = loadedCheerio('.entry-content').html();
   } else if (isHostedNovel) {
     chapterText = loadedCheerio('.chapter').html();
