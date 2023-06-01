@@ -171,7 +171,7 @@ function getLocation(href) {
 const parseChapter = async (novelUrl, chapterUrl) => {
   const url = chapterUrl;
 
-  // console.log("Original URL: ", url);
+  // console.log('Original URL: ', url);
 
   let result, body;
 
@@ -192,7 +192,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 
   // console.log(result.url);
 
-  // console.log("Redirected URL: ", result.url);
+  // console.log('Redirected URL: ', result.url);
 
   const loadedCheerio = cheerio.load(body);
 
@@ -213,7 +213,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     .includes('travistranslations');
 
   /**
-   * Checks if its a wwordpress site
+   * Checks if its a wordpress site
    */
   let isWordPress =
     loadedCheerio('meta[name="generator"]').attr('content') ||
@@ -242,9 +242,6 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     chapterText = loadedCheerio('.post').html();
   } else if (isBlogspot) {
     loadedCheerio('.post-share-buttons').remove();
-  } else if (isLightNovelsTls) {
-    chapterText = loadedCheerio('.text_story').html;
-
     chapterText = loadedCheerio('.entry-content').html();
   } else if (isHostedNovel) {
     chapterText = loadedCheerio('.chapter').html();
@@ -254,6 +251,8 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     chapterText = loadedCheerio('.container  pre').html();
   } else if (isTravisTranslation) {
     chapterText = loadedCheerio('.reader-content').html();
+  } else if (isLightNovelsTls) {
+    chapterText = loadedCheerio('.text_story').html();
   } else if (isWordPress) {
     /**
      * Remove wordpress bloat tags
