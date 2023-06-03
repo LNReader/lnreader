@@ -22,10 +22,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 
-public class epubParser {
+public class epubParser extends AppCompatActivity{
     private static final int REQUEST_DIRECTORY=100;  //constant request code dunno if will use it
     private static String epubPath;
 
@@ -78,7 +78,8 @@ public class epubParser {
         }
     }
     //trigger this onClick
-    private void openDocumentTree(){
+    protected void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
         if (!Python.isStarted()) {
             // Initialize Python with the Chaquopy SDK
             Python.start(new AndroidPlatform(this));
