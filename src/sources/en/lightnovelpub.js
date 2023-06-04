@@ -1,4 +1,4 @@
-import { fetchHtml } from '@utils/fetch/fetch';
+import { fetchApi, fetchHtml } from '@utils/fetch/fetch';
 import * as cheerio from 'cheerio';
 const sourceId = 15;
 const baseUrl = 'https://www.lightnovelpub.com/';
@@ -156,13 +156,26 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 
 const searchNovels = async searchTerm => {
   const url = `${baseUrl}lnsearchlive`;
+  const link = `${baseUrl}search`;
+  const response = await fetchApi({ url: link, sourceId })
+    .then(r => r.text())
+    .catch(_ => {
+      console.error('An error occured!');
+    });
+  const token = cheerio.load(response);
+  let verifytoken = token('#novelSearchForm > input').attr('value');
 
   let formData = new FormData();
   formData.append('inputContent', searchTerm);
 
   const body = await fetchHtml({
     url,
-    init: { method: 'POST', headers, body: formData },
+    init: {
+      method: 'POST',
+      headers: { 'LNRequestVerifyToken': verifytoken },
+      body: formData,
+    },
+    sourceId,
   });
 
   let loadedCheerio = cheerio.load(body);
