@@ -10,9 +10,18 @@ import {
 
 import { useTheme } from '@hooks/useTheme';
 import { Appbar, List } from '@components';
+import { Portal } from 'react-native-paper';
+import useBoolean from '@hooks/useBoolean';
+import ConnectionModal from './components/ConnectionModal';
+import { remoteBackup } from '@services/backup/remote/remoteBackup';
 
 const BackupSettings = ({ navigation }) => {
   const theme = useTheme();
+  const {
+    value: connectionModalVisible,
+    setTrue: showConnectionModal,
+    setFalse: closeConnectionModal,
+  } = useBoolean();
 
   return (
     <>
@@ -28,6 +37,12 @@ const BackupSettings = ({ navigation }) => {
             title="Create backup"
             description="Can be used to restore current library"
             onPress={createBackup}
+            theme={theme}
+          />
+          <List.Item
+            title="Remote backup"
+            description="Backup data to your pc"
+            onPress={showConnectionModal}
             theme={theme}
           />
           <List.Item
@@ -54,6 +69,14 @@ const BackupSettings = ({ navigation }) => {
           />
         </List.Section>
       </ScreenContainer>
+      <Portal>
+        <ConnectionModal
+          visible={connectionModalVisible}
+          theme={theme}
+          closeModal={closeConnectionModal}
+          handle={remoteBackup}
+        />
+      </Portal>
     </>
   );
 };
