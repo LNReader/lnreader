@@ -53,11 +53,11 @@ const ConnectionModal: React.FC<ConnectionModalProps> = ({
         <Button
           title={getString('common.ok')}
           onPress={() => {
-            console.log(ipv4, port);
-            fetch(`http://${ipv4}:${port}/`)
+            fetch(`http://${ipv4}:${port}`)
               .then(res => {
                 if (res.ok) {
                   closeModal();
+                  showToast('Connected!');
                   handle(ipv4, port);
                 } else {
                   showToast('Invalid request!');
