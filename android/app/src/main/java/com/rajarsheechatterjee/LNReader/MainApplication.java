@@ -12,6 +12,7 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.rajarsheechatterjee.VolumeButtonListener.VolumeButtonListenerPackage;
+import com.rajarsheechatterjee.EpubParser.EpubParserPackage;
 
 import expo.modules.ApplicationLifecycleDispatcher;
 import expo.modules.ReactNativeHostWrapper;
@@ -40,6 +41,7 @@ public class MainApplication extends Application implements ReactApplication {
           List<ReactPackage> packages = new PackageList(this).getPackages();
           packages.add(new com.rajarsheechatterjee.LNReader.NavigationBarColorPackage());
           packages.add(new VolumeButtonListenerPackage());
+          packages.add(new EpubParserPackage());
           return packages;
         }
 

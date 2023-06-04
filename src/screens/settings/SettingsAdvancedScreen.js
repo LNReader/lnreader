@@ -14,6 +14,7 @@ import {
   deleteReadChaptersFromDb,
   clearUpdates,
 } from '@database/queries/ChapterQueries';
+import EpubParser from '../../native/epubParser';
 
 import { Appbar, Button, List } from '@components';
 import useSourceStorage from '@hooks/useSourceStorage';
@@ -72,6 +73,11 @@ const AdvancedSettings = ({ navigation }) => {
           theme={theme}
         />
         <List.Item title="Clear cookies" onPress={clearCookies} theme={theme} />
+        <List.Item
+          title="Import Epub"
+          onPress={() => EpubParser.openDirectory()}
+          theme={theme}
+        />
       </List.Section>
       <Portal>
         <ConfirmationDialog
