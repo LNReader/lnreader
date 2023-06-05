@@ -7,6 +7,10 @@ import {
   novelCoverTask,
   novelCategoryTask,
   chapterTask,
+  downloadTask,
+  imageTask,
+  pluginTask,
+  settingTask,
 } from './requests';
 import * as Notifications from 'expo-notifications';
 import BackgroundService from 'react-native-background-actions';
@@ -30,8 +34,27 @@ const postBackup = (
       method: 'POST',
       body: JSON.stringify(data),
     })
-      .then(res => res.json())
-      .then(resObj => resolve(resObj))
+      .then(res => {
+        const contentType = res.headers.get('content-type');
+        if (
+          res.ok &&
+          contentType &&
+          contentType.indexOf('application/json') !== -1
+        ) {
+          return res.json();
+        } else {
+          return res.text();
+        }
+      })
+      .then(resObj => {
+        if (resObj instanceof String) {
+          resObj = {
+            success: false,
+            message: resObj,
+          };
+        }
+        resolve(resObj);
+      })
       .catch(error => resolve({ success: false, message: error.message }));
   });
 };
@@ -48,42 +71,45 @@ export const remoteBackup = async (ipv4: string, port: string) => {
       linkingURI: 'lnreader://updates',
     };
 
-    const remoteBackupBackgroundAction = (): Promise<void> => {
+    const remoteBackupBackgroundAction = async () => {
       const allTasks: Array<() => Promise<BackupTask>> = [
         categoryTask,
         novelTask,
         novelCoverTask,
         novelCategoryTask,
         chapterTask,
+        downloadTask,
+        imageTask,
+        pluginTask,
+        settingTask,
       ];
-      return new Promise(async resolve => {
-        const doTask = async (task: () => Promise<BackupTask>) => {
-          const { type, subtasks } = await task();
-          for (
-            let i = 0;
-            BackgroundService.isRunning() && i < subtasks.length;
-            i++
-          ) {
-            const requestPackage = await subtasks[i]();
-            const response = await postBackup(ipv4, port, requestPackage);
-            if (response.success) {
-              await BackgroundService.updateNotification({
-                taskDesc: `Backup ${type} (${i + 1}/${subtasks.length})`,
-                progressBar: { max: subtasks.length, value: i + 1 },
-              });
-            } else {
-              Notifications.scheduleNotificationAsync({
-                content: {
-                  title: 'Remote Backup Failed',
-                  body: response.message,
-                },
-                trigger: null,
-              });
-              BackgroundService.stop();
-              resolve();
-            }
+      const doTask = async (task: () => Promise<BackupTask>) => {
+        const { type, subtasks } = await task();
+        for (
+          let i = 0;
+          BackgroundService.isRunning() && i < subtasks.length;
+          i++
+        ) {
+          const requestPackage = await subtasks[i]();
+          const response = await postBackup(ipv4, port, requestPackage);
+          if (response.success) {
+            await BackgroundService.updateNotification({
+              taskDesc: `Backup ${type} (${i + 1}/${subtasks.length})`,
+              progressBar: { max: subtasks.length, value: i + 1 },
+            });
+          } else {
+            await Notifications.scheduleNotificationAsync({
+              content: {
+                title: 'Remote Backup Failed',
+                body: response.message,
+              },
+              trigger: null,
+            });
+            await BackgroundService.stop();
           }
-        };
+        }
+      };
+      try {
         for (let task of allTasks) {
           await doTask(task);
         }
@@ -94,8 +120,11 @@ export const remoteBackup = async (ipv4: string, port: string) => {
           },
           trigger: null,
         });
-      });
+      } catch (error) {
+        throw error;
+      }
     };
+
     BackgroundService.start(remoteBackupBackgroundAction, options);
   } catch (error: any) {
     showToast(error.message);
