@@ -8,6 +8,7 @@ class WQMangaStreamScraper {
     this.sourceName = sourceName;
     this.language = options?.language;
     this.reverseChapters = options?.reverseChapters;
+    this.AI_Text = options?.AI_Text;
   }
 
   async popularNovels(page) {
@@ -132,6 +133,12 @@ class WQMangaStreamScraper {
       chapterName,
       chapterText,
     };
+
+    if (this.AI_Text) {
+      let AI = loadedCheerio('.epcontent').find('p').next().attr('class');
+      let regex = new RegExp(`/<p class=\\${AI}\\".*?p>/`);
+      chapterText.replace(regex, '');
+    }
 
     return chapter;
   }
