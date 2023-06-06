@@ -266,6 +266,9 @@ export const downloadChapter = async (
 ) => {
   try {
     const plugin = getPlugin(pluginId);
+    if (!plugin) {
+      throw new Error('Plugin not found!');
+    }
     const chapterText = await plugin.parseChapter(chapterUrl);
     if (chapterText?.length) {
       const imagedChapterText =
