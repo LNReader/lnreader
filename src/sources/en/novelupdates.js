@@ -208,6 +208,10 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     .toLowerCase()
     .includes('lightnovelstranslations');
 
+  let isiNovelTranslation = result.url
+    .toLowerCase()
+    .includes('inoveltranslation');
+
   let isTravisTranslation = result.url
     .toLowerCase()
     .includes('travistranslations');
@@ -253,6 +257,8 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     chapterText = loadedCheerio('.reader-content').html();
   } else if (isLightNovelsTls) {
     chapterText = loadedCheerio('.text_story').html();
+  } else if (isiNovelTranslation) {
+    chapterText = loadedCheerio('.chakra-skeleton').html();
   } else if (isWordPress) {
     /**
      * Remove wordpress bloat tags
