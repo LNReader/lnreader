@@ -124,7 +124,15 @@ class WQMangaStreamScraper {
     const loadedCheerio = cheerio.load(body);
 
     let chapterName = loadedCheerio('.entry-title').text();
-    let chapterText = loadedCheerio('.epcontent').html();
+    let chapterText = '';
+
+    if (this.AI_Text) {
+      let AI = loadedCheerio('.epcontent > p').next().attr('class');
+      loadedCheerio(`p.${AI}`).remove();
+      chapterText = loadedCheerio('.epcontent').html();
+    }
+
+    chapterText = loadedCheerio('.epcontent').html();
 
     const chapter = {
       sourceId,
@@ -133,12 +141,6 @@ class WQMangaStreamScraper {
       chapterName,
       chapterText,
     };
-
-    if (this.AI_Text) {
-      let AI = loadedCheerio('.epcontent').find('p').next().attr('class');
-      let regex = new RegExp(`/<p class=\\${AI}\\".*?p>/`);
-      chapterText.replace(regex, '');
-    }
 
     return chapter;
   }
