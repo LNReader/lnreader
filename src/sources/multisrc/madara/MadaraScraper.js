@@ -76,7 +76,7 @@ class MadaraScraper {
 
     loadedCheerio('.manga-title-badges').remove();
 
-    novel.novelName = loadedCheerio('.post-title > h1').text().trim();
+    novel.novelName = loadedCheerio('.post-title h1').text().trim();
 
     novel.novelCover =
       loadedCheerio('.summary_image > a > img').attr('data-src') ||
@@ -109,6 +109,7 @@ class MadaraScraper {
       }
     });
 
+    loadedCheerio('div.summary__content div').remove();
     novel.summary = loadedCheerio('div.summary__content').text().trim();
 
     let novelChapters = [];
@@ -193,6 +194,8 @@ class MadaraScraper {
       loadedCheerio('.text-center').text() ||
       loadedCheerio('#chapter-heading').text();
 
+    loadedCheerio('.text-left div', '').remove();
+    loadedCheerio('.text-right div').remove();
     let chapterText =
       loadedCheerio('.text-left').html() ||
       loadedCheerio('.text-right').html() ||

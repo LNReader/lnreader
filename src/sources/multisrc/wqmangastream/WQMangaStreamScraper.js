@@ -8,6 +8,7 @@ class WQMangaStreamScraper {
     this.sourceName = sourceName;
     this.language = options?.language;
     this.reverseChapters = options?.reverseChapters;
+    this.ignoredStrings = options?.ignoredStrings;
   }
 
   async popularNovels(page) {
@@ -63,29 +64,31 @@ class WQMangaStreamScraper {
       loadedCheerio('img.wp-post-image').attr('data-src') ||
       loadedCheerio('img.wp-post-image').attr('src');
 
-    novel.status = loadedCheerio('div.sertostat > span').text().trim();
+    novel.status = loadedCheerio('div.sertostat > span').attr('class');
 
     loadedCheerio('div.serl:nth-child(3) > span').each(function () {
       const detailName = loadedCheerio(this).text().trim();
-      const detail = loadedCheerio(this).next().prop('innerHTML');
+      const detail = loadedCheerio(this).next().text().trim();
 
       switch (detailName) {
         case 'الكاتب':
         case 'Author':
-          novel.author = detail.replace(/<a.*?>(.*?)<.*?>/g, '$1');
+          novel.author = detail;
           break;
       }
     });
 
     novel.genre = loadedCheerio('.sertogenre')
-      .prop('innerHTML')
-      .replace(/<a.*?>(.*?)<.*?>/g, '$1,')
-      .slice(0, -1);
+      .children('a')
+      .map((i, el) => loadedCheerio(el).text())
+      .toArray()
+      .join(',');
 
     novel.summary = loadedCheerio('.sersys')
-      .prop('innerHTML')
-      .replace(/(<.*?>)/g, '')
-      .replace(/(&.*;)/g, '\n');
+      .find('br')
+      .replaceWith('\n')
+      .end()
+      .text();
 
     let novelChapters = [];
 
@@ -123,7 +126,15 @@ class WQMangaStreamScraper {
     const loadedCheerio = cheerio.load(body);
 
     let chapterName = loadedCheerio('.entry-title').text();
-    let chapterText = loadedCheerio('.epcontent').html();
+    let chapterText = '';
+
+    if (this.ignoredStrings) {
+      let ignore = loadedCheerio('.epcontent > p').next().attr('class');
+      loadedCheerio(`p.${ignore}`).remove();
+      chapterText = loadedCheerio('.epcontent').html();
+    }
+
+    chapterText = loadedCheerio('.epcontent').html();
 
     const chapter = {
       sourceId,
