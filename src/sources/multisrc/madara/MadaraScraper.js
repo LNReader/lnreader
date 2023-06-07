@@ -84,10 +84,7 @@ class MadaraScraper {
       defaultCoverUri;
 
     loadedCheerio('.post-content_item').each(function () {
-      const detailName = loadedCheerio(this)
-        .find('.summary-heading > h5')
-        .text()
-        .trim();
+      const detailName = loadedCheerio(this).find('h5').text().trim();
       const detail = loadedCheerio(this).find('.summary-content').text().trim();
 
       switch (detailName) {
@@ -109,7 +106,7 @@ class MadaraScraper {
       }
     });
 
-    loadedCheerio('div.summary__content div').remove();
+    loadedCheerio('div.summary__content .code-block').remove();
     novel.summary = loadedCheerio('div.summary__content').text().trim();
 
     let novelChapters = [];
@@ -194,8 +191,9 @@ class MadaraScraper {
       loadedCheerio('.text-center').text() ||
       loadedCheerio('#chapter-heading').text();
 
-    loadedCheerio('.text-left div', '').remove();
+    loadedCheerio('.text-left div').remove();
     loadedCheerio('.text-right div').remove();
+    loadedCheerio('.entry-content .code-block').remove();
     let chapterText =
       loadedCheerio('.text-left').html() ||
       loadedCheerio('.text-right').html() ||
