@@ -11,5 +11,5 @@ export const KolNovelScraper = new WQMangaStreamScraper(
   53,
   'https://kolnovel.com/',
   'KolNovel',
-  { reverseChapters: true, AI_Text: true },
+  { reverseChapters: true, ignoredStrings: true },
 );

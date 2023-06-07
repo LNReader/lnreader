@@ -8,7 +8,7 @@ class WQMangaStreamScraper {
     this.sourceName = sourceName;
     this.language = options?.language;
     this.reverseChapters = options?.reverseChapters;
-    this.AI_Text = options?.AI_Text;
+    this.ignoredStrings = options?.ignoredStrings;
   }
 
   async popularNovels(page) {
@@ -128,9 +128,9 @@ class WQMangaStreamScraper {
     let chapterName = loadedCheerio('.entry-title').text();
     let chapterText = '';
 
-    if (this.AI_Text) {
-      let AI = loadedCheerio('.epcontent > p').next().attr('class');
-      loadedCheerio(`p.${AI}`).remove();
+    if (this.ignoredStrings) {
+      let ignore = loadedCheerio('.epcontent > p').next().attr('class');
+      loadedCheerio(`p.${ignore}`).remove();
       chapterText = loadedCheerio('.epcontent').html();
     }
 
