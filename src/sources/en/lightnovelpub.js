@@ -157,11 +157,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 const searchNovels = async searchTerm => {
   const url = `${baseUrl}lnsearchlive`;
   const link = `${baseUrl}search`;
-  const response = await fetchApi({ url: link, sourceId })
-    .then(r => r.text())
-    .catch(_ => {
-      console.error('An error occured!');
-    });
+  const response = await fetchApi({ url: link, sourceId }).then(r => r.text());
   const token = cheerio.load(response);
   let verifytoken = token('#novelSearchForm > input').attr('value');
 

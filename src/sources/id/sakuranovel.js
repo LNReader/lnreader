@@ -78,8 +78,8 @@ const parseNovelAndChapters = async novelUrl => {
       .find('a span')
       .first()
       .text()
-      .replace(`${novel.novelName} – `, '')
-      .replace('Bahasa Indonesia', '')
+      .replace(/.*?(Chapter.|[0-9])/g, '$1')
+      .replace(/Bahasa Indonesia/g, '')
       .replace(/\s+/g, ' ')
       .trim();
 
