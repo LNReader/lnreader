@@ -83,7 +83,7 @@ class MadaraScraper {
       loadedCheerio('.summary_image > a > img').attr('src') ||
       defaultCoverUri;
 
-    loadedCheerio('.post-content_item').each(function () {
+    loadedCheerio('.post-content_item', '.post-content').each(function () {
       const detailName = loadedCheerio(this).find('h5').text().trim();
       const detail = loadedCheerio(this).find('.summary-content').text().trim();
 
@@ -191,11 +191,11 @@ class MadaraScraper {
       loadedCheerio('.text-center').text() ||
       loadedCheerio('#chapter-heading').text();
 
-    if (loadedCheerio('.text-right')){
+    if (loadedCheerio('.text-right')) {
       loadedCheerio('.text-right div').remove();
-    } else if (loadedCheerio('.text-left')){
+    } else if (loadedCheerio('.text-left')) {
       loadedCheerio('.text-left div').remove();
-    } else if (loadedCheerio('.entry-content')){
+    } else if (loadedCheerio('.entry-content')) {
       loadedCheerio('.entry-content div').remove();
     }
 
