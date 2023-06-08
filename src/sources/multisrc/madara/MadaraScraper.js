@@ -191,9 +191,14 @@ class MadaraScraper {
       loadedCheerio('.text-center').text() ||
       loadedCheerio('#chapter-heading').text();
 
-    loadedCheerio('.text-left div').remove();
-    loadedCheerio('.text-right div').remove();
-    loadedCheerio('.entry-content .code-block').remove();
+    if (loadedCheerio('.text-right')){
+      loadedCheerio('.text-right div').remove();
+    } else if (loadedCheerio('.text-left')){
+      loadedCheerio('.text-left div').remove();
+    } else if (loadedCheerio('.entry-content')){
+      loadedCheerio('.entry-content div').remove();
+    }
+
     let chapterText =
       loadedCheerio('.text-left').html() ||
       loadedCheerio('.text-right').html() ||
