@@ -1,5 +1,4 @@
 import { Button } from '@components';
-import { showToast } from '@hooks/showToast';
 import { getString } from '@strings/translations';
 import { ThemeColors } from '@theme/types';
 import React, { useState } from 'react';
@@ -53,19 +52,8 @@ const ConnectionModal: React.FC<ConnectionModalProps> = ({
         <Button
           title={getString('common.ok')}
           onPress={() => {
-            fetch(`http://${ipv4}:${port}`)
-              .then(res => {
-                if (res.ok) {
-                  closeModal();
-                  showToast('Connected!');
-                  handle(ipv4, port);
-                } else {
-                  showToast('Invalid request!');
-                }
-              })
-              .catch(() => {
-                showToast('Request failed!');
-              });
+            closeModal();
+            handle(ipv4, port);
           }}
         />
         <Button title={getString('common.cancel')} onPress={closeModal} />

@@ -6,29 +6,16 @@ import { ChapterInfo, NovelInfo } from '@database/types';
 import { getChapterFromDB } from '@database/queries/ChapterQueries';
 import { pluginsFolder } from '@plugins/pluginManager';
 import { store } from '@redux/store';
+import {
+  DataFilePath,
+  DataFolderPath,
+  RequestPackage,
+  BackupTask,
+  TaskType,
+} from './types';
 
 const db = SQLite.openDatabase('lnreader.db');
 const downloadDirectoryPath = `${RNFS.DownloadDirectoryPath}/LNReader`;
-
-export enum DataPath {
-  Category = 'Category.json',
-  Novel = 'Novel.json',
-  NovelCatgory = 'NovelCategory.json',
-  Setting = 'Setting.json',
-}
-
-export interface RequestPackage {
-  type: string;
-  content: any;
-  encoding?: string; // 'base64', 'utf-8',
-  relative_path: string | DataPath;
-}
-
-export interface BackupTask {
-  type: string; // for notification
-  // Images or ChapterText could be large, so transfer it one by one
-  subtasks: Array<() => Promise<RequestPackage>>;
-}
 
 export const categoryTask = (): Promise<BackupTask> => {
   return new Promise(resolve => {
@@ -38,12 +25,12 @@ export const categoryTask = (): Promise<BackupTask> => {
         [],
         (txObj, { rows }) => {
           const requestPackage: RequestPackage = {
-            type: 'Category',
+            taskType: TaskType.Category,
             content: rows._array,
-            relative_path: DataPath.Category,
+            relative_path: DataFilePath.Category,
           };
           resolve({
-            type: 'Category',
+            taskType: TaskType.Category,
             subtasks: [async () => requestPackage],
           } as BackupTask);
         },
@@ -61,17 +48,17 @@ export const novelTask = (): Promise<BackupTask> => {
         [],
         (txObj, { rows }) => {
           const requestPackage: RequestPackage = {
-            type: 'Novel',
+            taskType: TaskType.Novel,
             content: rows._array.map((novel: NovelInfo) => {
               if (novel.cover && novel.cover.startsWith('http')) {
                 novel.cover = `${downloadDirectoryPath}/${novel.pluginId}/${novel.id}/Cover.jpg`;
               }
               return novel;
             }),
-            relative_path: DataPath.Novel,
+            relative_path: DataFilePath.Novel,
           };
           resolve({
-            type: 'Novel',
+            taskType: TaskType.Novel,
             subtasks: [async () => requestPackage],
           } as BackupTask);
         },
@@ -95,7 +82,7 @@ export const novelCoverTask = (): Promise<BackupTask> => {
                 base64 = await RNFS.readFile(novel.cover, 'base64');
               }
               return {
-                type: 'NovelCover',
+                taskType: TaskType.NovelCover,
                 content: base64,
                 encoding: 'base64',
                 relative_path: `${novel.pluginId}/${novel.id}/Cover.jpg`,
@@ -103,7 +90,10 @@ export const novelCoverTask = (): Promise<BackupTask> => {
             };
             return subtask;
           });
-          resolve({ type: 'NovelCover', subtasks: subtasks } as BackupTask);
+          resolve({
+            taskType: TaskType.NovelCover,
+            subtasks: subtasks,
+          } as BackupTask);
         },
         txnErrorCallback,
       );
@@ -119,12 +109,12 @@ export const novelCategoryTask = (): Promise<BackupTask> => {
         [],
         (txObj, { rows }) => {
           const requestPackage: RequestPackage = {
-            type: 'NovelCategory',
+            taskType: TaskType.NovelCategory,
             content: rows._array,
-            relative_path: DataPath.NovelCatgory,
+            relative_path: DataFilePath.NovelCatgory,
           };
           resolve({
-            type: 'NovelCategory',
+            taskType: TaskType.NovelCategory,
             subtasks: [async () => requestPackage],
           } as BackupTask);
         },
@@ -157,15 +147,15 @@ export const chapterTask = (): Promise<BackupTask> => {
             const subtask = async () => {
               const chapters = await getChaptersByNovelId(novel.id);
               const requestPackage: RequestPackage = {
-                type: 'Chapter',
+                taskType: TaskType.Chapter,
                 content: chapters,
-                relative_path: `Chapters/${novel.id}-Chapters`,
+                relative_path: `${DataFolderPath.Chapter}/${novel.id}`,
               };
               return requestPackage;
             };
             return subtask;
           });
-          resolve({ type: 'Chapter', subtasks: subtasks });
+          resolve({ taskType: TaskType.Chapter, subtasks: subtasks });
         },
         txnErrorCallback,
       );
@@ -184,16 +174,16 @@ export const downloadTask = (): Promise<BackupTask> => {
             const subtask = async () => {
               const chapterText = await getChapterFromDB(chapter.id);
               const requestPackage: RequestPackage = {
-                type: 'Download',
+                taskType: TaskType.Download,
                 content: chapterText,
-                relative_path: `Downloads/${chapter.id}.html`,
+                relative_path: `${DataFolderPath.Download}/${chapter.id}.html`,
                 encoding: 'utf-8',
               };
               return requestPackage;
             };
             return subtask;
           });
-          resolve({ type: 'Download', subtasks: subtasks });
+          resolve({ taskType: TaskType.Download, subtasks: subtasks });
         },
         txnErrorCallback,
       );
@@ -211,8 +201,7 @@ export const imageTask = (): Promise<BackupTask> => {
       ),
     )
     .then(novelDirss => {
-      // [][] => []
-      const novelDirs = novelDirss.reduce((res, dirs) => res.concat(dirs), []);
+      const novelDirs = novelDirss.reduce((res, dirs) => res.concat(dirs), []); // [][] => []
       return Promise.all(
         novelDirs
           .filter(dir => dir.isDirectory())
@@ -240,7 +229,7 @@ export const imageTask = (): Promise<BackupTask> => {
           const subtask = async () => {
             const base64 = await RNFS.readFile(path, 'base64');
             return {
-              type: 'Image',
+              taskType: TaskType.Image,
               encoding: 'base64',
               content: base64,
               relative_path: path.split('/').slice(-4).join('/'),
@@ -248,7 +237,7 @@ export const imageTask = (): Promise<BackupTask> => {
           };
           return subtask;
         });
-      return { type: 'Image', subtasks: subtasks };
+      return { taskType: TaskType.Image, subtasks: subtasks };
     });
 };
 
@@ -258,7 +247,7 @@ export const pluginTask = (): Promise<BackupTask> => {
       const subtask = async () => {
         const script = await RNFS.readFile(item.path);
         return {
-          type: 'Plugin',
+          taskType: TaskType.Plugin,
           relative_path: item.path.split('/').slice(-2).join('/'),
           content: script,
           encoding: 'utf-8',
@@ -266,17 +255,20 @@ export const pluginTask = (): Promise<BackupTask> => {
       };
       return subtask;
     });
-    return { type: 'Plugin', subtasks: subtasks };
+    return { taskType: TaskType.Plugin, subtasks: subtasks };
   });
 };
 
 export const settingTask = (): Promise<BackupTask> => {
   return new Promise(resolve => {
     const requestPackage = {
-      type: 'Setting',
+      taskType: TaskType.Setting,
       content: store.getState(),
-      relative_path: DataPath.Setting,
+      relative_path: DataFilePath.Setting,
     } as RequestPackage;
-    resolve({ type: 'Setting', subtasks: [async () => requestPackage] });
+    resolve({
+      taskType: TaskType.Setting,
+      subtasks: [async () => requestPackage],
+    });
   });
 };
