@@ -2,7 +2,7 @@ import * as React from 'react';
 import useBoolean from '@hooks/useBoolean';
 import { IconButton, Portal } from 'react-native-paper';
 import ChooseEpubLocationModal from './Modal/ChooseEpubLocationModal';
-import { Dimensions, StatusBar, StyleProp } from 'react-native';
+import { StatusBar, StyleProp } from 'react-native';
 import { IconProps } from 'react-native-paper/lib/typescript/src/components/MaterialCommunityIcon';
 import { ThemeColors } from '@theme/types';
 
@@ -28,7 +28,6 @@ const EpubIconButton: React.FC<EpubIconButtonProps> = ({
 }) => {
   const chooseEpubLocationModal = useBoolean(false);
   const readerSettings = useReaderSettings();
-  const layoutHeight = Dimensions.get('window').height;
   const epubStyle = `html {
     scroll-behavior: smooth;
     overflow-x: hidden;
@@ -45,9 +44,6 @@ const EpubIconButton: React.FC<EpubIconButtonProps> = ({
     line-height: ${readerSettings.lineHeight};
     font-family: "${readerSettings.fontFamily}";
   }
-  chapter{
-    display: block;
-  }
   hr {
     margin-top: 20px;
     margin-bottom: 20px;
@@ -62,37 +58,7 @@ const EpubIconButton: React.FC<EpubIconButtonProps> = ({
     max-width: 100%;
   }
   
-  .nextButton,
-  .infoText {
-    width: 100%;
-    border-radius: 50px;
-    border-width: 1;
-    color: ${theme.onPrimary};
-    background-color: ${theme.primary};
-    font-family: ${readerSettings.fontFamily};
-    font-size: 16px;
-    border-width: 0;
-  }
-  .nextButton {
-    min-height: 40px;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    padding: 0 16px;
-  }
-  .infoText {
-    background-color: transparent;
-    text-align:center;
-    border: none;
-    margin: 0px;
-    color: inherit;
-    padding-top: 16px;
-    padding-bottom: 16px;
-  }
-  .chapterCtn {
-    min-height: ${layoutHeight - 140};
-    margin-bottom: auto;
-  } ${readerSettings.customCSS}`;
+  ${readerSettings.customCSS}`;
 
   const createEpub = async (uri: string) => {
     var epub = new EpubBuilder(
