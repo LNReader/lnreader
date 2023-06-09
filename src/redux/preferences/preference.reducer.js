@@ -1,5 +1,6 @@
 import { SET_NOVEL_SETTINGS } from '../novel/novel.types';
 import {
+  RESTORE_PREFERENCE_STATE,
   SAVE_SCROLL_POSITION,
   SET_CHAPTER_LIST_PREF,
   SET_LAST_READ,
@@ -62,6 +63,10 @@ const preferenceReducer = (state = initialState, action) => {
             },
           },
         },
+      };
+    case RESTORE_PREFERENCE_STATE:
+      return {
+        ...payload,
       };
     default:
       return state;

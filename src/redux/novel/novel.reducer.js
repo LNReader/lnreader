@@ -17,6 +17,7 @@ import {
   BOOKMARK_CHAPTER,
   MARK_PREVIOUS_CHAPTERS_READ,
   MARK_PREVIOUS_CHAPTERS_UNREAD,
+  RESTORE_NOVEL_STATE,
 } from './novel.types';
 
 const initialState = {
@@ -146,6 +147,10 @@ const novelReducer = (state = initialState, action) => {
         chapters: state.chapters.map(chapter =>
           chapter.id < payload.chapterId ? { ...chapter, unread: 1 } : chapter,
         ),
+      };
+    case RESTORE_NOVEL_STATE:
+      return {
+        ...payload,
       };
     case NOVEL_ERROR:
       return {

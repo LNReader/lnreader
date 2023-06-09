@@ -13,6 +13,7 @@ import {
   BackupTask,
   TaskType,
 } from './types';
+import { MMKVStorage } from '@utils/mmkv/mmkv';
 
 const db = SQLite.openDatabase('lnreader.db');
 const downloadDirectoryPath = `${RNFS.DownloadDirectoryPath}/LNReader`;
@@ -50,7 +51,7 @@ export const novelTask = (): Promise<BackupTask> => {
           const requestPackage: RequestPackage = {
             taskType: TaskType.Novel,
             content: rows._array.map((novel: NovelInfo) => {
-              if (novel.cover && novel.cover.startsWith('http')) {
+              if (novel.cover && !novel.cover.startsWith('http')) {
                 novel.cover = `${downloadDirectoryPath}/${novel.pluginId}/${novel.id}/Cover.jpg`;
               }
               return novel;
@@ -149,7 +150,7 @@ export const chapterTask = (): Promise<BackupTask> => {
               const requestPackage: RequestPackage = {
                 taskType: TaskType.Chapter,
                 content: chapters,
-                relative_path: `${DataFolderPath.Chapter}/${novel.id}`,
+                relative_path: `${DataFolderPath.Chapter}/${novel.id}.json`,
               };
               return requestPackage;
             };
@@ -223,20 +224,18 @@ export const imageTask = (): Promise<BackupTask> => {
       const imagePaths = imagePathss
         .reduce((res, items) => res.concat(items), [])
         .map(item => item.path);
-      const subtasks = imagePaths
-        .filter(path => !path.endsWith('.nomedia'))
-        .map(path => {
-          const subtask = async () => {
-            const base64 = await RNFS.readFile(path, 'base64');
-            return {
-              taskType: TaskType.Image,
-              encoding: 'base64',
-              content: base64,
-              relative_path: path.split('/').slice(-4).join('/'),
-            } as RequestPackage;
-          };
-          return subtask;
-        });
+      const subtasks = imagePaths.map(path => {
+        const subtask = async () => {
+          const base64 = await RNFS.readFile(path, 'base64');
+          return {
+            taskType: TaskType.Image,
+            encoding: 'base64',
+            content: base64,
+            relative_path: path.split('/').slice(-4).join('/'),
+          } as RequestPackage;
+        };
+        return subtask;
+      });
       return { taskType: TaskType.Image, subtasks: subtasks };
     });
 };
@@ -268,6 +267,27 @@ export const settingTask = (): Promise<BackupTask> => {
     } as RequestPackage;
     resolve({
       taskType: TaskType.Setting,
+      subtasks: [async () => requestPackage],
+    });
+  });
+};
+
+export const themeTask = (): Promise<BackupTask> => {
+  return new Promise(resolve => {
+    const APP_THEME = MMKVStorage.getString('APP_THEME');
+    const AMOLED_BLACK = MMKVStorage.getBoolean('AMOLED_BLACK');
+    const CUSTOM_ACCENT_COLOR = MMKVStorage.getString('CUSTOM_ACCENT_COLOR');
+    const requestPackage = {
+      taskType: TaskType.Theme,
+      content: {
+        APP_THEME,
+        AMOLED_BLACK,
+        CUSTOM_ACCENT_COLOR,
+      },
+      relative_path: DataFilePath.Theme,
+    } as RequestPackage;
+    resolve({
+      taskType: TaskType.Theme,
       subtasks: [async () => requestPackage],
     });
   });

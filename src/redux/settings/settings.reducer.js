@@ -1,4 +1,8 @@
-import { SET_READER_SETTINGS, SET_APP_SETTINGS } from './settings.types';
+import {
+  SET_READER_SETTINGS,
+  SET_APP_SETTINGS,
+  RESTORE_SETTINGS_STATE,
+} from './settings.types';
 
 /**
  * Display Mode
@@ -100,6 +104,10 @@ const settingsReducer = (state = initialState, action) => {
           ...state.reader,
           [payload.key]: payload.val,
         },
+      };
+    case RESTORE_SETTINGS_STATE:
+      return {
+        ...payload,
       };
     default:
       return state;

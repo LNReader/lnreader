@@ -1,5 +1,6 @@
 import {
   REMOVE_TRACKER,
+  RESTORE_TRACKER_STATE,
   SET_TRACKER,
   TRACK_NOVEL,
   UNTRACK_NOVEL,
@@ -70,6 +71,10 @@ const trackerReducer = (state = initialState, action) => {
               }
             : novel,
         ),
+      };
+    case RESTORE_TRACKER_STATE:
+      return {
+        ...payload,
       };
     default:
       return state;

@@ -3,6 +3,7 @@ export enum DataFilePath {
   Novel = 'Novel.json',
   NovelCatgory = 'NovelCategory.json',
   Setting = 'Setting.json',
+  Theme = 'Theme.json',
 }
 
 export enum DataFolderPath {
@@ -26,7 +27,7 @@ export enum TaskType {
   Image = 'Image',
   Plugin = 'Plugin',
   Setting = 'Setting',
-  Error = 'Error',
+  Theme = 'Theme',
 }
 
 export interface SocketPackage {
@@ -42,6 +43,8 @@ export interface RequestPackage extends SocketPackage {
 export interface ResponsePackage extends SocketPackage {
   success: boolean;
   message: any;
+  total?: number; // total tasks
+  taskType?: TaskType;
 }
 
 export interface BackupTask {
