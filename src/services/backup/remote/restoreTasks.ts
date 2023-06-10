@@ -1,4 +1,3 @@
-import { txnErrorCallback } from '@database/utils/helpers';
 import * as SQLite from 'expo-sqlite';
 import RNFS from 'react-native-fs';
 
@@ -24,25 +23,28 @@ const insertObject = (record: any, table: string): Promise<void> => {
     .map(() => '?')
     .join(', ');
   const query = `INSERT OR IGNORE INTO ${table} (${fields}) VALUES (${values})`;
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     db.transaction(tx => {
       tx.executeSql(
         query,
         Object.values(record),
         () => resolve(),
-        txnErrorCallback,
+        error => {
+          reject(error);
+          return false;
+        },
       );
     });
   });
 };
 
 const insertTable = (records: any[], table: string): Promise<void> => {
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     db.transaction(tx => {
       tx.executeSql(`DELETE FROM ${table}`, [], () => {
-        Promise.all(
-          records.map((record: any) => insertObject(record, table)),
-        ).then(() => resolve());
+        Promise.all(records.map((record: any) => insertObject(record, table)))
+          .then(() => resolve())
+          .catch(error => reject(error));
       });
     });
   });
@@ -51,15 +53,17 @@ const insertTable = (records: any[], table: string): Promise<void> => {
 export const restoreCategory = (
   responsePackage: ResponsePackage,
 ): Promise<void> => {
-  return new Promise(resolve => {
-    insertTable(responsePackage.content, 'Category').then(() => resolve());
+  return new Promise((resolve, reject) => {
+    insertTable(responsePackage.content, 'Category')
+      .then(() => resolve())
+      .catch(error => reject(error));
   });
 };
 
 export const restoreNovel = (
   responsePackage: ResponsePackage,
 ): Promise<void> => {
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     db.transaction(async tx => {
       tx.executeSql('DELETE FROM Download');
       tx.executeSql(
@@ -67,7 +71,10 @@ export const restoreNovel = (
         [],
         () =>
           insertTable(responsePackage.content, 'Novel').then(() => resolve()),
-        txnErrorCallback,
+        error => {
+          reject(error);
+          return false;
+        },
       );
     });
   });
@@ -76,26 +83,28 @@ export const restoreNovel = (
 export const restoreNovelCategory = (
   responsePackage: ResponsePackage,
 ): Promise<void> => {
-  return new Promise(resolve => {
-    insertTable(responsePackage.content, 'NovelCategory').then(() => resolve());
+  return new Promise((resolve, reject) => {
+    insertTable(responsePackage.content, 'NovelCategory')
+      .then(() => resolve())
+      .catch(error => reject(error));
   });
 };
 
 export const restoreChapter = (
   responsePackage: ResponsePackage,
 ): Promise<void> => {
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     const chapters: any[] = responsePackage.content;
-    Promise.all(chapters.map(chapter => insertObject(chapter, 'Chapter'))).then(
-      () => resolve(),
-    );
+    Promise.all(chapters.map(chapter => insertObject(chapter, 'Chapter')))
+      .then(() => resolve())
+      .catch(error => reject(error));
   });
 };
 
 export const restoreDownload = (
   responsePackage: ResponsePackage,
 ): Promise<void> => {
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     const chapterText = responsePackage.content;
     const chapterId = responsePackage.relative_path?.split('.')[0];
     db.transaction(tx => {
@@ -103,7 +112,10 @@ export const restoreDownload = (
         'INSERT INTO Download(chapterId, chapterText) VALUES (?, ?)',
         [chapterId, chapterText],
         () => resolve(),
-        txnErrorCallback,
+        error => {
+          reject(error);
+          return false;
+        },
       );
     });
   });
@@ -112,7 +124,7 @@ export const restoreDownload = (
 export const restoreImage = (
   responsePackage: ResponsePackage,
 ): Promise<void> => {
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     const realPath = `${downloadDirectoryPath}/${responsePackage.relative_path}`;
     const folderPath = realPath.split('/').slice(0, -1).join('/');
     RNFS.exists(folderPath)
@@ -120,19 +132,22 @@ export const restoreImage = (
         if (!exists) {
           return RNFS.mkdir(folderPath);
         }
-        return new Promise(resolve => resolve(null));
+        return new Promise(_resolve => _resolve(null));
       })
       .then(() => RNFS.writeFile(realPath, responsePackage.content, 'base64'))
-      .then(() => resolve());
+      .then(() => resolve())
+      .catch(error => reject(error));
   });
 };
 
 export const restorePlugin = (
   responsePackage: ResponsePackage,
 ): Promise<void> => {
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     const realPath = `${pluginsFolder}/${responsePackage.relative_path}`;
-    RNFS.writeFile(realPath, responsePackage.content).then(() => resolve());
+    RNFS.writeFile(realPath, responsePackage.content)
+      .then(() => resolve())
+      .catch(error => reject(error));
   });
 };
 

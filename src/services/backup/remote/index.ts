@@ -66,7 +66,7 @@ export const remoteBackup = async (ipv4: string, port: string) => {
         taskType: '',
         finised: false,
       };
-      const getNextRequest = async () => {
+      const getNextRequestData = async () => {
         // get next task if current task is done (all subtasks is finised)
         while (
           state.currentTaskIndex < state.taskList.length - 1 &&
@@ -84,7 +84,9 @@ export const remoteBackup = async (ipv4: string, port: string) => {
         if (state.currentSubtaskIndex === state.subtaskList.length) {
           return undefined;
         }
-        const req = await state.subtaskList[state.currentSubtaskIndex]();
+        const requestData = await state.subtaskList[
+          state.currentSubtaskIndex
+        ]();
         state.currentSubtaskIndex += 1;
         await BackgroundService.updateNotification({
           taskDesc: `Backup ${state.taskType} (${state.currentSubtaskIndex}/${state.subtaskList.length})`,
@@ -93,23 +95,24 @@ export const remoteBackup = async (ipv4: string, port: string) => {
             value: state.currentSubtaskIndex,
           },
         });
-        return req;
+        return requestData;
       };
 
       const ws = new WebSocket(`ws://${ipv4}:${port}`);
-      ws.onopen = async () => {
+      ws.onopen = () => {
         showToast('Connected');
-        const req = await getNextRequest();
-        if (req) {
-          ws.send(
-            JSON.stringify({
-              type: RequestType.Backup,
-              data: req,
-            }),
-          );
-        } else {
-          ws.close();
-        }
+        getNextRequestData().then(data => {
+          if (data) {
+            ws.send(
+              JSON.stringify({
+                type: RequestType.Backup,
+                data: data,
+              }),
+            );
+          } else {
+            ws.close();
+          }
+        });
       };
       ws.onerror = e => {
         state.error = true;
@@ -123,34 +126,43 @@ export const remoteBackup = async (ipv4: string, port: string) => {
         ws.close();
       };
       ws.onmessage = async e => {
-        const res = JSON.parse(e.data) as ResponsePackage;
-        if (res.success) {
-          const req = await getNextRequest();
-          if (req) {
-            ws.send(
-              JSON.stringify({
-                type: RequestType.Backup,
-                data: req,
-              }),
-            );
-          } else {
-            ws.send(
-              JSON.stringify({
-                type: 'Metadata',
-              }),
-            );
-            ws.close();
-          }
+        const response = JSON.parse(e.data) as ResponsePackage;
+        if (response.success) {
+          getNextRequestData()
+            .then(data => {
+              if (data) {
+                ws.send(
+                  JSON.stringify({
+                    type: RequestType.Backup,
+                    data: data,
+                  }),
+                );
+              } else {
+                ws.send(JSON.stringify({ type: 'Metadata' }));
+                ws.close();
+              }
+            })
+            .catch(error => {
+              state.error = true;
+              ws.close();
+              Notifications.scheduleNotificationAsync({
+                content: {
+                  title: 'Remote Restore Interrupted',
+                  body: error.message,
+                },
+                trigger: null,
+              });
+            });
         } else {
           state.error = true;
-          throw new Error(res.message);
+          ws.close();
         }
       };
       ws.onclose = async () => {
         if (!state.error) {
           await Notifications.scheduleNotificationAsync({
             content: {
-              title: 'Remote Backup',
+              title: 'Remote Interrupted',
               body: 'Done!',
             },
             trigger: null,
@@ -170,7 +182,7 @@ export const remoteBackup = async (ipv4: string, port: string) => {
     if (BackgroundService.isRunning()) {
       await Notifications.scheduleNotificationAsync({
         content: {
-          title: 'Remote Backup Failed',
+          title: 'Remote Backup Interruped',
           body: error.message,
         },
         trigger: null,
@@ -219,9 +231,7 @@ export const remoteRestore = async (ipv4: string, port: string) => {
         ws.send(
           JSON.stringify({
             type: 'Restore',
-            data: {
-              index: state.index,
-            },
+            data: { index: state.index },
           }),
         );
       };
@@ -229,7 +239,7 @@ export const remoteRestore = async (ipv4: string, port: string) => {
         state.error = true;
         Notifications.scheduleNotificationAsync({
           content: {
-            title: 'Remote Restore Failed',
+            title: 'Remote Restore Interrupted',
             body: e.message,
           },
           trigger: null,
@@ -237,43 +247,54 @@ export const remoteRestore = async (ipv4: string, port: string) => {
         ws.close();
       };
       ws.onmessage = async e => {
-        const res = JSON.parse(e.data) as ResponsePackage;
-        if (res.success) {
+        const response = JSON.parse(e.data) as ResponsePackage;
+        if (response.success) {
           state.index += 1;
           await BackgroundService.updateNotification({
-            taskDesc: `Restore ${res.taskType} (${state.index}/${res.total})`,
+            taskDesc: `Restore ${response.taskType} (${state.index}/${response.total})`,
             progressBar: {
-              max: res.total as number,
+              max: response.total as number,
               value: state.index,
             },
           });
-          if (res.taskType && res.taskType in taskMap) {
-            await taskMap[res.taskType](res);
-          }
-          if (state.index === res.total) {
-            state.finised = true;
-            ws.send(
-              JSON.stringify({
-                type: 'Restore',
-                data: {
-                  finished: true,
-                },
-              }),
-            );
-            ws.close();
-          } else {
-            ws.send(
-              JSON.stringify({
-                type: 'Restore',
-                data: {
-                  index: state.index,
-                },
-              }),
-            );
+          if (response.taskType && response.taskType in taskMap) {
+            taskMap[response.taskType](response)
+              .then(() => {
+                if (state.index === response.total) {
+                  state.finised = true;
+                  ws.send(
+                    JSON.stringify({
+                      type: 'Restore',
+                      data: {
+                        finished: true,
+                      },
+                    }),
+                  );
+                  ws.close();
+                } else {
+                  ws.send(
+                    JSON.stringify({
+                      type: 'Restore',
+                      data: { index: state.index },
+                    }),
+                  );
+                }
+              })
+              .catch(error => {
+                state.error = true;
+                ws.close();
+                Notifications.scheduleNotificationAsync({
+                  content: {
+                    title: 'Remote Restore Interrupted',
+                    body: error.message,
+                  },
+                  trigger: null,
+                });
+              });
           }
         } else {
           state.error = true;
-          throw new Error(res.message);
+          ws.close();
         }
       };
       ws.onclose = async () => {
@@ -300,7 +321,7 @@ export const remoteRestore = async (ipv4: string, port: string) => {
     if (BackgroundService.isRunning()) {
       await Notifications.scheduleNotificationAsync({
         content: {
-          title: 'Remote Backup Failed',
+          title: 'Remote Backup Interrupted',
           body: error.message,
         },
         trigger: null,
