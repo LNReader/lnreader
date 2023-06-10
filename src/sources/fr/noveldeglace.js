@@ -8,7 +8,9 @@ const baseUrl = 'https://noveldeglace.com/';
 const popularNovels = async page => {
   let url = baseUrl + 'roman';
 
-  const result = await fetch(url);
+  const result = await fetch(url, {
+    headers: { 'Accept-Encoding': 'deflate' },
+  });
   const body = await result.text();
 
   let loadedCheerio = cheerio.load(body);
@@ -39,7 +41,9 @@ const popularNovels = async page => {
 const parseNovelAndChapters = async novelUrl => {
   const url = baseUrl + 'roman/' + novelUrl;
 
-  const result = await fetch(url);
+  const result = await fetch(url, {
+    headers: { 'Accept-Encoding': 'deflate' },
+  });
   const body = await result.text();
 
   let loadedCheerio = cheerio.load(body);
@@ -90,7 +94,9 @@ const parseNovelAndChapters = async novelUrl => {
 const parseChapter = async (novelUrl, chapterUrl) => {
   const url = chapterUrl;
 
-  const result = await fetch(url);
+  const result = await fetch(url, {
+    headers: { 'Accept-Encoding': 'deflate' },
+  });
   const body = await result.text();
 
   let loadedCheerio = cheerio.load(body);
@@ -112,7 +118,9 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 const searchNovels = async searchTerm => {
   let url = baseUrl + 'roman';
 
-  const result = await fetch(url);
+  const result = await fetch(url, {
+    headers: { 'Accept-Encoding': 'deflate' },
+  });
   const body = await result.text();
 
   let loadedCheerio = cheerio.load(body);
