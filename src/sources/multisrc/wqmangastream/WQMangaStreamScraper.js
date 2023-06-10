@@ -8,7 +8,6 @@ class WQMangaStreamScraper {
     this.sourceName = sourceName;
     this.language = options?.language;
     this.reverseChapters = options?.reverseChapters;
-    this.ignoredStrings = options?.ignoredStrings;
   }
 
   async popularNovels(page) {
@@ -126,15 +125,13 @@ class WQMangaStreamScraper {
     const loadedCheerio = cheerio.load(body);
 
     let chapterName = loadedCheerio('.entry-title').text();
-    let chapterText = '';
+    let chapterText = loadedCheerio('.epcontent').html();
 
-    if (this.ignoredStrings) {
+    if (sourceId === 53) {
       let ignore = loadedCheerio('.epcontent > p').next().attr('class');
       loadedCheerio(`p.${ignore}`).remove();
       chapterText = loadedCheerio('.epcontent').html();
     }
-
-    chapterText = loadedCheerio('.epcontent').html();
 
     const chapter = {
       sourceId,
