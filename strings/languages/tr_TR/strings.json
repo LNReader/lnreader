@@ -128,6 +128,10 @@
         "validChapterName": "Geçerli bir bölüm adı girin",
         "validChapterNumber": "Geçerli bir bölüm sayısı girin"
       }
+    },
+    "convertToEpubModal": {
+      "chooseLocation": "Choose EPUB save location",
+      "pathToFolder": "Path to EPUB save folder"
     }
   },
   "more": "Daha fazla",
@@ -155,6 +159,9 @@
         "refreshMetadataDescription": "Kitaplığı güncellerken yeni kapak ve ayrıntıları denetle",
         "updateTime": "Son güncelleme süresini göster",
         "autoDownload": "Otomatik İndirme",
+        "epub": "EPUB",
+        "epubLocation": "EPUB Location",
+        "epubLocationDescription": "The place where you open and export your EPUB files.",
         "downloadNewChapters": "Yeni bölümleri indir",
         "disableHapticFeedback": "Dokunmatik geri bildirimi devre dışı bırak"
       },
