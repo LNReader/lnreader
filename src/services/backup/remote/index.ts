@@ -118,7 +118,7 @@ export const remoteBackup = async (ipv4: string, port: string) => {
         state.error = true;
         Notifications.scheduleNotificationAsync({
           content: {
-            title: 'Remote Backup Failed',
+            title: 'Remote Backup Interrupted',
             body: e.message,
           },
           trigger: null,
@@ -147,7 +147,7 @@ export const remoteBackup = async (ipv4: string, port: string) => {
               ws.close();
               Notifications.scheduleNotificationAsync({
                 content: {
-                  title: 'Remote Restore Interrupted',
+                  title: 'Remote Backup Interrupted',
                   body: error.message,
                 },
                 trigger: null,
@@ -162,7 +162,7 @@ export const remoteBackup = async (ipv4: string, port: string) => {
         if (!state.error) {
           await Notifications.scheduleNotificationAsync({
             content: {
-              title: 'Remote Interrupted',
+              title: 'Remote backup',
               body: 'Done!',
             },
             trigger: null,

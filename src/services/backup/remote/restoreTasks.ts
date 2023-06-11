@@ -188,9 +188,11 @@ export const restoreTheme = (
 ): Promise<void> => {
   return new Promise(resovle => {
     const theme = responsePackage.content;
-    MMKVStorage.set('APP_THEME', theme.APP_THEME);
-    MMKVStorage.set('AMOLED_BLACK', theme.AMOLED_BLACK);
-    MMKVStorage.set('CUSTOM_ACCENT_COLOR', theme.CUSTOM_ACCENT_COLOR);
+    for (let key of ['APP_THEME', 'AMOLED_BLACK', 'CUSTOM_ACCENT_COLOR']) {
+      if (key in theme) {
+        MMKVStorage.set(key, theme[key]);
+      }
+    }
     resovle();
   });
 };

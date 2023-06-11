@@ -1,6 +1,6 @@
 import { txnErrorCallback } from '@database/utils/helpers';
 import * as SQLite from 'expo-sqlite';
-import RNFS from 'react-native-fs';
+import RNFS, { ReadDirItem } from 'react-native-fs';
 
 import { ChapterInfo, NovelInfo } from '@database/types';
 import { getChapterFromDB } from '@database/queries/ChapterQueries';
@@ -193,38 +193,27 @@ export const downloadTask = (): Promise<BackupTask> => {
 };
 
 export const imageTask = (): Promise<BackupTask> => {
-  return RNFS.readDir(`${RNFS.DownloadDirectoryPath}/LNReader`)
-    .then(pluginDirs =>
-      Promise.all(
-        pluginDirs
-          .filter(dir => dir.isDirectory())
-          .map(dir => RNFS.readDir(dir.path)),
-      ),
-    )
-    .then(novelDirss => {
-      const novelDirs = novelDirss.reduce((res, dirs) => res.concat(dirs), []); // [][] => []
-      return Promise.all(
-        novelDirs
-          .filter(dir => dir.isDirectory())
-          .map(dir => RNFS.readDir(dir.path)),
-      );
-    })
-    .then(chapterDirss => {
-      const chapterDirs = chapterDirss.reduce(
-        (res, dirs) => res.concat(dirs),
-        [],
-      );
-      return Promise.all(
-        chapterDirs
-          .filter(dir => dir.isDirectory())
-          .map(dir => RNFS.readDir(dir.path)),
-      );
-    })
-    .then(imagePathss => {
-      const imagePaths = imagePathss
-        .reduce((res, items) => res.concat(items), [])
-        .map(item => item.path);
-      const subtasks = imagePaths.map(path => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const walkDir = async (items: ReadDirItem[]) => {
+        let paths: string[] = [];
+        for (let item of items) {
+          if (item.isFile()) {
+            paths.push(item.path);
+          } else {
+            const _items = await RNFS.readDir(item.path);
+            paths = paths.concat(await walkDir(_items));
+          }
+        }
+        return paths;
+      };
+      const downloadDir = `${RNFS.DownloadDirectoryPath}/LNReader`;
+      let paths: string[] = [];
+      if (await RNFS.exists(downloadDir)) {
+        const items = await RNFS.readDir(downloadDir);
+        paths = await walkDir(items);
+      }
+      const subtasks = paths.map(path => {
         const subtask = async () => {
           const base64 = await RNFS.readFile(path, 'base64');
           return {
@@ -236,8 +225,11 @@ export const imageTask = (): Promise<BackupTask> => {
         };
         return subtask;
       });
-      return { taskType: TaskType.Image, subtasks: subtasks };
-    });
+      resolve({ taskType: TaskType.Image, subtasks: subtasks });
+    } catch (error) {
+      reject(error);
+    }
+  });
 };
 
 export const pluginTask = (): Promise<BackupTask> => {
