@@ -128,6 +128,10 @@
         "validChapterName": "Inserisci un nome di capitolo valido",
         "validChapterNumber": "Inserisci un numero di capitolo valido"
       }
+    },
+    "convertToEpubModal": {
+      "chooseLocation": "Choose EPUB save location",
+      "pathToFolder": "Path to EPUB save folder"
     }
   },
   "more": "Altro",
@@ -155,6 +159,9 @@
         "refreshMetadataDescription": "Controlla nuove copertine e dettagli durante l'aggiornamento della libreria",
         "updateTime": "Mostra l'orario dell'ultimo aggiornamento",
         "autoDownload": "Scarica automaticamente",
+        "epub": "EPUB",
+        "epubLocation": "EPUB Location",
+        "epubLocationDescription": "The place where you open and export your EPUB files.",
         "downloadNewChapters": "Scarica nuovi capitoli",
         "disableHapticFeedback": "Disattiva vibrazione"
       },
