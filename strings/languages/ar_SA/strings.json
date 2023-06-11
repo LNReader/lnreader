@@ -128,6 +128,10 @@
         "validChapterName": "أدخل اسم فصل صحيح",
         "validChapterNumber": "أدخل رَقْم فصل صحيح"
       }
+    },
+    "convertToEpubModal": {
+      "chooseLocation": "Choose EPUB save location",
+      "pathToFolder": "Path to EPUB save folder"
     }
   },
   "more": "المزيد",
@@ -155,6 +159,9 @@
         "refreshMetadataDescription": "تحقق من الغلاف الجديد ",
         "updateTime": "وقت آخر تحديث",
         "autoDownload": "التحميل التلقائي",
+        "epub": "EPUB",
+        "epubLocation": "EPUB Location",
+        "epubLocationDescription": "The place where you open and export your EPUB files.",
         "downloadNewChapters": "تحميل فصول جديدة",
         "disableHapticFeedback": "تعطيل الاهتزاز"
       },
