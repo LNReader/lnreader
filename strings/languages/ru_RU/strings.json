@@ -128,6 +128,10 @@
         "validChapterName": "Введите допустимое название главы",
         "validChapterNumber": "Введите действительный номер главы"
       }
+    },
+    "convertToEpubModal": {
+      "chooseLocation": "Choose EPUB save location",
+      "pathToFolder": "Path to EPUB save folder"
     }
   },
   "more": "Ещё",
@@ -155,6 +159,9 @@
         "refreshMetadataDescription": "Проверять наличие новой обложки и описания при обновлении библиотеки",
         "updateTime": "Показать время последнего обновления",
         "autoDownload": "Автозагрузка",
+        "epub": "EPUB",
+        "epubLocation": "EPUB Location",
+        "epubLocationDescription": "The place where you open and export your EPUB files.",
         "downloadNewChapters": "Скачивать новые главы",
         "disableHapticFeedback": "Отключить виброотклик"
       },
