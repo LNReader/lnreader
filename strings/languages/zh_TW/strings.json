@@ -128,6 +128,10 @@
         "validChapterName": "Enter a valid chapter name",
         "validChapterNumber": "Enter a valid chapter number"
       }
+    },
+    "convertToEpubModal": {
+      "chooseLocation": "Choose EPUB save location",
+      "pathToFolder": "Path to EPUB save folder"
     }
   },
   "more": "更多",
@@ -155,6 +159,9 @@
         "refreshMetadataDescription": "Check for new cover and details when updating library",
         "updateTime": "Show last update time",
         "autoDownload": "Auto-download",
+        "epub": "EPUB",
+        "epubLocation": "EPUB Location",
+        "epubLocationDescription": "The place where you open and export your EPUB files.",
         "downloadNewChapters": "Download new chapters",
         "disableHapticFeedback": "Disable haptic feedback"
       },
