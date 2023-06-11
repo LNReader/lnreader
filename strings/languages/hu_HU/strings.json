@@ -128,6 +128,10 @@
         "validChapterName": "Adj meg egy létező fejezetcímet",
         "validChapterNumber": "Adj meg egy létező fejezetszámot"
       }
+    },
+    "convertToEpubModal": {
+      "chooseLocation": "Choose EPUB save location",
+      "pathToFolder": "Path to EPUB save folder"
     }
   },
   "more": "Több",
@@ -155,6 +159,9 @@
         "refreshMetadataDescription": "Új borító és leírás keresése a könyvtár frissítésekor",
         "updateTime": "Utolsó frissítés idejének mutatása",
         "autoDownload": "Automatikus letöltés",
+        "epub": "EPUB",
+        "epubLocation": "EPUB Location",
+        "epubLocationDescription": "The place where you open and export your EPUB files.",
         "downloadNewChapters": "Új fejezetek letöltése",
         "disableHapticFeedback": "Haptikus visszajelzés kikapcsolása"
       },
