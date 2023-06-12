@@ -130,8 +130,8 @@
       }
     },
     "convertToEpubModal": {
-      "chooseLocation": "Choose EPUB save location",
-      "pathToFolder": "Path to EPUB save folder"
+      "chooseLocation": "EPUB kaydetme konumunu seç",
+      "pathToFolder": "EPUB dosyalarını kaydetme klasörünün yolu"
     }
   },
   "more": "Daha fazla",
@@ -160,8 +160,8 @@
         "updateTime": "Son güncelleme süresini göster",
         "autoDownload": "Otomatik İndirme",
         "epub": "EPUB",
-        "epubLocation": "EPUB Location",
-        "epubLocationDescription": "The place where you open and export your EPUB files.",
+        "epubLocation": "EPUB Konumu",
+        "epubLocationDescription": "EPUB dosyalarınızı açıp, dışa aktardığınız yer.",
         "downloadNewChapters": "Yeni bölümleri indir",
         "disableHapticFeedback": "Dokunmatik geri bildirimi devre dışı bırak"
       },
