@@ -25,6 +25,7 @@ const packages: Record<string, any> = {
   '@libs/isAbsoluteUrl': isUrlAbsolute,
   '@libs/fetchApi': fetchApi,
   '@libs/filterInputs': FilterInputs,
+  '@libs/showToast': showToast,
 };
 
 const _require = (packageName: string) => {
