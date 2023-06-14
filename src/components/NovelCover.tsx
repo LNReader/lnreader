@@ -6,7 +6,6 @@ import {
   useWindowDimensions,
   Pressable,
 } from 'react-native';
-import color from 'color';
 
 import { LinearGradient } from 'expo-linear-gradient';
 import FastImage from 'react-native-fast-image';
@@ -16,8 +15,22 @@ import { useDeviceOrientation } from '@hooks/useDeviceOrientation';
 import { coverPlaceholderColor } from '../theme/colors';
 import { useLibrarySettings } from '@hooks/useSettings';
 import { DisplayModes } from '@screens/library/constants/constants';
+import { LibraryNovelInfo } from '@database/types';
+import { SourceNovelItem } from 'src/sources/types';
+import { ThemeColors } from '@theme/types';
+import SourceScreenSkeletonLoading from '@screens/browse/loadingAnimation/SourceScreenSkeletonLoading';
 
-const NovelCover = ({
+interface NovelCoverProps {
+  item: LibraryNovelInfo;
+  onPress: () => void;
+  libraryStatus?: boolean;
+  theme: ThemeColors;
+  isSelected?: boolean;
+  onLongPress: (novelId: number) => void;
+  selectedNovels?: Array<SourceNovelItem>;
+}
+
+const NovelCover: React.FC<NovelCoverProps> = ({
   item,
   onPress,
   libraryStatus,
@@ -44,6 +57,7 @@ const NovelCover = ({
 
   const coverHeight = useMemo(
     () => (window.width / numColumns) * (4 / 3),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [numColumns],
   );
 
@@ -51,19 +65,19 @@ const NovelCover = ({
 
   const uri = item.novelCover;
 
-  return displayMode !== DisplayModes.List ? (
+  return item.sourceId < 0 ? (
+    <SourceScreenSkeletonLoading theme={theme} completeRow={item.sourceId} />
+  ) : displayMode !== DisplayModes.List ? (
     <View
       style={[
         {
           flex: 1 / numColumns,
-          borderRadius: 6,
-          overflow: 'hidden',
-          margin: 2,
         },
+        styles.standardNovelCover,
         isSelected && {
-          backgroundColor: theme.primary,
-          opacity: 0.8,
-        },
+            backgroundColor: theme.primary,
+          } &&
+          styles.selectedNovelCover,
       ]}
     >
       <Pressable
@@ -98,10 +112,10 @@ const NovelCover = ({
           style={[
             {
               height: coverHeight,
-              borderRadius: 4,
               backgroundColor: coverPlaceholderColor,
             },
-            libraryStatus && { opacity: 0.5 },
+            styles.standardBorderRadius,
+            libraryStatus && styles.opacityPoint5,
           ]}
         />
         <View style={styles.compactTitleContainer}>
@@ -152,14 +166,17 @@ const NovelCover = ({
 
 export default memo(NovelCover);
 
-const ComfortableTitle = ({ theme, novelName }) => (
+const ComfortableTitle: React.FC<{ theme: ThemeColors; novelName: string }> = ({
+  theme,
+  novelName,
+}) => (
   <Text
     numberOfLines={2}
     style={[
       styles.title,
+      styles.padding4,
       {
         color: theme.onSurface,
-        padding: 4,
       },
     ]}
   >
@@ -167,46 +184,47 @@ const ComfortableTitle = ({ theme, novelName }) => (
   </Text>
 );
 
-const CompactTitle = ({ novelName }) => (
+const CompactTitle: React.FC<{ novelName: string }> = ({ novelName }) => (
   <View style={styles.titleContainer}>
     <LinearGradient
       colors={['transparent', 'rgba(0,0,0,0.7)']}
       style={styles.linearGradient}
     >
-      <Text
-        numberOfLines={2}
-        style={[
-          styles.title,
-          {
-            color: 'rgba(255,255,255,1)',
-            textShadowColor: 'rgba(0, 0, 0, 0.75)',
-            textShadowOffset: { width: -1, height: 1 },
-            textShadowRadius: 10,
-          },
-        ]}
-      >
+      <Text numberOfLines={2} style={[styles.title, styles.compactTitle]}>
         {novelName}
       </Text>
     </LinearGradient>
   </View>
 );
 
-const InLibraryBadge = ({ theme }) => (
+const InLibraryBadge: React.FC<{ theme: ThemeColors }> = ({ theme }) => (
   <Text
     style={[
       styles.inLibraryBadge,
       {
         backgroundColor: theme.primary,
         color: theme.onPrimary,
-        borderRadius: 4,
       },
+      styles.standardBorderRadius,
     ]}
   >
     In library
   </Text>
 );
 
-const UnreadBadge = ({
+interface BadgeProps {
+  chaptersDownloaded: number;
+  chaptersUnread: number;
+  theme: ThemeColors;
+}
+interface UnreadBadgeProps extends BadgeProps {
+  showDownloadBadges: boolean;
+}
+interface DownloadBadgeProps extends BadgeProps {
+  showUnreadBadges: boolean;
+}
+
+const UnreadBadge: React.FC<UnreadBadgeProps> = ({
   chaptersDownloaded,
   chaptersUnread,
   showDownloadBadges,
@@ -215,13 +233,8 @@ const UnreadBadge = ({
   <Text
     style={[
       styles.unreadBadge,
-      !chaptersDownloaded && {
-        borderTopLeftRadius: 4,
-        borderBottomLeftRadius: 4,
-      },
-      !showDownloadBadges && {
-        borderRadius: 4,
-      },
+      !chaptersDownloaded && styles.LeftBorderRadius,
+      !showDownloadBadges && styles.standardBorderRadius,
       {
         backgroundColor: theme.primary,
         color: theme.onPrimary,
@@ -232,7 +245,7 @@ const UnreadBadge = ({
   </Text>
 );
 
-const DownloadBadge = ({
+const DownloadBadge: React.FC<DownloadBadgeProps> = ({
   chaptersDownloaded,
   showUnreadBadges,
   chaptersUnread,
@@ -241,13 +254,8 @@ const DownloadBadge = ({
   <Text
     style={[
       styles.downloadBadge,
-      !chaptersUnread && {
-        borderTopRightRadius: 4,
-        borderBottomRightRadius: 4,
-      },
-      !showUnreadBadges && {
-        borderRadius: 4,
-      },
+      !chaptersUnread && styles.RightBorderRadius,
+      !showUnreadBadges && styles.standardBorderRadius,
       {
         backgroundColor: theme.tertiary,
         color: theme.onTertiary,
@@ -259,6 +267,19 @@ const DownloadBadge = ({
 );
 
 const styles = StyleSheet.create({
+  LeftBorderRadius: {
+    borderTopLeftRadius: 4,
+    borderBottomLeftRadius: 4,
+  },
+  RightBorderRadius: {
+    borderTopRightRadius: 4,
+    borderBottomRightRadius: 4,
+  },
+  standardBorderRadius: {
+    borderRadius: 4,
+  },
+  opacityPoint5: { opacity: 0.5 },
+  padding4: { padding: 4 },
   titleContainer: {
     flex: 1,
     borderRadius: 4,
@@ -321,5 +342,19 @@ const styles = StyleSheet.create({
     top: 10,
     left: 10,
     flexDirection: 'row',
+  },
+  standardNovelCover: {
+    borderRadius: 6,
+    overflow: 'hidden',
+    margin: 2,
+  },
+  selectedNovelCover: {
+    opacity: 0.8,
+  },
+  compactTitle: {
+    color: 'rgba(255,255,255,1)',
+    textShadowColor: 'rgba(0, 0, 0, 0.75)',
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 10,
   },
 });

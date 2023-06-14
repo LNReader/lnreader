@@ -92,6 +92,7 @@ import RanobeLibScraper from './ru/ranobelib';
 import RanobeRFScraper from './ru/ranoberf';
 import RenovelsScraper from './ru/renovels';
 import FicbookScraper from './ru/ficbook';
+import BookRiverScraper from './ru/bookriver';
 import DivineDaoLibraryScraper from './en/divinedaolibrary';
 import NovelOnlineFullScraper from './en/novelonlinefull';
 import LightNovelUpdatesScraper from './en/lightnovelupdates';
@@ -322,8 +323,9 @@ export const sourceManager = (sourceId: number): Scraper => {
     159: BelScraper, // @ts-ignore
     160: RedScraper, // @ts-ignore
     161: SiScraper, // @ts-ignore
-    162: KodScraper,
-    163: NovelsOnlineScraper,
+    162: KodScraper, // @ts-ignore
+    163: NovelsOnlineScraper, // @ts-ignore
+    164: BookRiverScraper, // @ts-ignore
   };
 
   return scrapers[sourceId];

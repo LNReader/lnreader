@@ -1,6 +1,5 @@
 import dayjs from 'dayjs';
 import * as cheerio from 'cheerio';
-import { defaultTo } from 'lodash-es';
 import { Status } from '../helpers/constants';
 import { FilterInputs } from '../types/filterTypes';
 
@@ -12,11 +11,8 @@ var ui = null;
 
 const popularNovels = async (page, { showLatestNovels, filters }) => {
   let url = `${baseUrl}/manga-list?sort=`;
-  url += defaultTo(
-    filters?.sort,
-    showLatestNovels ? 'last_chapter_at' : 'rate',
-  );
-  url += '&dir=' + defaultTo(filters?.order, 'desc');
+  url += showLatestNovels ? 'last_chapter_at' : filters?.sort || 'rate';
+  url += '&dir=' + (filters?.order || 'desc');
   url += '&page=' + page;
 
   if (filters?.type?.length) {
@@ -128,7 +124,7 @@ const parseNovelAndChapters = async novelUrl => {
   chaptersJson = JSON.parse(chaptersJson);
   ui = chaptersJson?.user?.id;
 
-  chaptersJson.chapters.list.forEach(chapter => {
+  chaptersJson.chapters.list.forEach(chapter =>
     chapters.push({
       chapterName:
         `Том ${chapter.chapter_volume} Глава ${chapter.chapter_number} ${chapter.chapter_name}`?.trim(),
@@ -136,8 +132,8 @@ const parseNovelAndChapters = async novelUrl => {
       chapterUrl:
         `${baseUrl}/${chaptersJson.manga.slug}/v${chapter.chapter_volume}/c${chapter.chapter_number}?bid=` +
         (chapter?.branch_id || ''),
-    });
-  });
+    }),
+  );
 
   novel.chapters = chapters.reverse();
   return novel;
@@ -183,12 +179,14 @@ const searchNovels = async searchTerm => {
   const body = await result.json();
   let novels = [];
 
-  body.forEach(novel => {
-    const novelName = novel?.rus_name || novel.name;
-    const novelUrl = novel?.href || baseUrl + '/' + novel.slug;
-    const novelCover = novel.coverImage;
-    novels.push({ sourceId, novelName, novelCover, novelUrl });
-  });
+  body.forEach(novel =>
+    novels.push({
+      sourceId,
+      novelName: novel?.rus_name || novel.name,
+      novelCover: novel.coverImage,
+      novelUrl: novel?.href || baseUrl + '/' + novel.slug,
+    }),
+  );
 
   return novels;
 };
@@ -306,12 +304,12 @@ const filters = [
       { label: 'Приключения', value: '54' },
       { label: 'Психология', value: '55' },
       { label: 'Романтика', value: '56' },
+      { label: 'Самурайский боевик', value: '57' },
+      { label: 'Сверхъестественное', value: '58' },
       { label: 'Сёдзё', value: '59' },
       { label: 'Сёдзё-ай', value: '60' },
       { label: 'Сёнэн', value: '61' },
       { label: 'Сёнэн-ай', value: '62' },
-      { label: 'Самурайский боевик', value: '57' },
-      { label: 'Сверхъестественное', value: '58' },
       { label: 'Спорт', value: '63' },
       { label: 'Супер сила', value: '87' },
       { label: 'Сэйнэн', value: '64' },
