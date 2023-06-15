@@ -252,9 +252,14 @@ export const pluginTask = (): Promise<BackupTask> => {
 
 export const settingTask = (): Promise<BackupTask> => {
   return new Promise(resolve => {
+    const state = store.getState();
+    state.trackerReducer = {
+      'tracker': null,
+      'trackedNovels': [],
+    };
     const requestPackage = {
       taskType: TaskType.Setting,
-      content: store.getState(),
+      content: state,
       relative_path: DataFilePath.Setting,
     } as RequestPackage;
     resolve({

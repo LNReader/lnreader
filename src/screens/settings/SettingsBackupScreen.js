@@ -42,12 +42,6 @@ const BackupSettings = ({ navigation }) => {
         <List.Section>
           <List.SubHeader theme={theme}>Backup</List.SubHeader>
           <List.Item
-            title="Create backup"
-            description="Can be used to restore current library"
-            onPress={createBackup}
-            theme={theme}
-          />
-          <List.Item
             title="Remote backup"
             description="Backup data to your pc"
             onPress={showBackupModal}
@@ -57,6 +51,12 @@ const BackupSettings = ({ navigation }) => {
             title="Remote restore"
             description="Restore data from your pc"
             onPress={showRestoreModal}
+            theme={theme}
+          />
+          <List.Item
+            title="Create backup"
+            description="Can be used to restore current library"
+            onPress={createBackup}
             theme={theme}
           />
           <List.Item
