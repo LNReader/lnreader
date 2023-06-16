@@ -1,4 +1,5 @@
 import * as cheerio from 'cheerio';
+import { fetchHtml } from '@utils/fetch/fetch';
 
 const sourceId = 87;
 const sourceName = 'IndoWebNovel';
@@ -6,19 +7,23 @@ const sourceName = 'IndoWebNovel';
 const baseUrl = 'http://indowebnovel.id/';
 
 const popularNovels = async page => {
-  const url = `${baseUrl}daftar-novel/`;
+  const url = `${baseUrl}id/advanced-search/page/${page}/?title=&author=&yearx=&status=&type=&order=title&country[]=china&country[]=jepang&country[]=korea&country[]=unknown`;
 
-  const result = await fetch(url);
-  const body = await result.text();
+  const body = await fetchHtml({ url, sourceId });
 
   const loadedCheerio = cheerio.load(body);
 
   let novels = [];
 
-  loadedCheerio('.novellist-blc li').each(function () {
-    const novelName = loadedCheerio(this).find('a').text();
-    const novelCover = null;
-    const novelUrl = loadedCheerio(this).find('a').attr('href');
+  loadedCheerio('.flexbox2-item').each(function () {
+    const novelName = loadedCheerio(this)
+      .find('.flexbox2-title span')
+      .first()
+      .text();
+    const novelCover = loadedCheerio(this).find('img').attr('src');
+    const novelUrl = loadedCheerio(this)
+      .find('.flexbox2-content > a')
+      .attr('href');
 
     const novel = {
       sourceId,
@@ -34,48 +39,60 @@ const popularNovels = async page => {
 };
 
 const parseNovelAndChapters = async novelUrl => {
-  const url = novelUrl;
-
-  const result = await fetch(url);
-  const body = await result.text();
+  const body = await fetchHtml({ url: novelUrl, sourceId });
 
   let loadedCheerio = cheerio.load(body);
 
   let novel = {
     sourceId,
     sourceName,
-    url,
+    url: novelUrl,
     novelUrl,
-    novelName: '',
-    novelCover: '',
-    author: '',
-    status: '',
-    genre: '',
-    summary: '',
-    chapters: [],
   };
 
-  novel.novelName = loadedCheerio('.series-title').text().trim();
+  novel.novelName = loadedCheerio('.series-title h2').text().trim();
 
-  novel.novelCover = loadedCheerio('.series-thumb > img').attr('src');
+  novel.novelCover = loadedCheerio('.series-thumb img').attr('src');
 
-  novel.summary = loadedCheerio('.series-synops').text().trim();
+  loadedCheerio('.series-infolist > li').each(function () {
+    const detailName = loadedCheerio(this).find('b').text().trim();
+    const detail = loadedCheerio(this).find('b').next().text().trim();
+
+    switch (detailName) {
+      case 'Author':
+        novel.author = detail;
+        break;
+    }
+  });
 
   novel.status = loadedCheerio('.status').text().trim();
 
-  novel.genre = [];
+  novel.genre = loadedCheerio('.series-genres')
+    .children('a')
+    .map((i, el) => loadedCheerio(el).text())
+    .toArray()
+    .join(',');
 
-  loadedCheerio('.series-genres').each(function () {
-    novel.genre.push(loadedCheerio(this).find('a').text().trim());
-  });
-
-  novel.genre = novel.genre.toString();
+  loadedCheerio('.series-synops div').remove();
+  novel.summary = loadedCheerio('.series-synops').text().trim();
 
   let chapters = [];
 
   loadedCheerio('.series-chapterlist li').each(function () {
-    const chapterName = loadedCheerio(this).find('a').text().trim();
-    const releaseDate = null;
+    const chapterName = loadedCheerio(this)
+      .find('a span')
+      .first()
+      .text()
+      .replace(/.*?(Chapter.|[0-9])/g, '$1')
+      .replace(/Bahasa Indonesia/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    const releaseDate = loadedCheerio(this)
+      .find('a span')
+      .first()
+      .next()
+      .text();
     const chapterUrl = loadedCheerio(this).find('a').attr('href');
 
     chapters.push({ chapterName, releaseDate, chapterUrl });
@@ -87,10 +104,7 @@ const parseNovelAndChapters = async novelUrl => {
 };
 
 const parseChapter = async (novelUrl, chapterUrl) => {
-  const url = chapterUrl;
-
-  const result = await fetch(url);
-  const body = await result.text();
+  const body = await fetchHtml({ url: chapterUrl, sourceId });
 
   let loadedCheerio = cheerio.load(body);
 
@@ -109,30 +123,27 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 };
 
 const searchNovels = async searchTerm => {
-  const url = `${baseUrl}daftar-novel/`;
+  const url = `${baseUrl}id/?s=${searchTerm}`;
 
-  const result = await fetch(url);
-  const body = await result.text();
+  const body = await fetchHtml({ url, sourceId });
 
-  const loadedCheerio = cheerio.load(body);
+  let loadedCheerio = cheerio.load(body);
 
   let novels = [];
 
-  loadedCheerio('.novellist-blc li').each(function () {
-    const novelName = loadedCheerio(this).find('a').text();
-    const novelCover = null;
-    const novelUrl = loadedCheerio(this).find('a').attr('href');
+  loadedCheerio('.flexbox2-item').each(function () {
+    const novelName = loadedCheerio(this)
+      .find('.flexbox2-title span')
+      .first()
+      .text();
+    const novelCover = loadedCheerio(this).find('img').attr('src');
+    const novelUrl = loadedCheerio(this)
+      .find('.flexbox2-content > a')
+      .attr('href');
 
-    const novel = {
-      sourceId,
-      novelName,
-      novelCover,
-      novelUrl,
-    };
+    const novel = { sourceId, novelName, novelCover, novelUrl };
 
-    if (novelName.toLowerCase().includes(searchTerm.toLowerCase())) {
-      novels.push(novel);
-    }
+    novels.push(novel);
   });
 
   return novels;
