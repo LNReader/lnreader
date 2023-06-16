@@ -64,13 +64,7 @@ class WPMangaStreamScraper {
 
     loadedCheerio('div.spe > span').each(function () {
       const detailName = loadedCheerio(this).find('b').text().trim();
-      const detail = loadedCheerio(this).find('b').next().text().trim();
-      const status = loadedCheerio(this)
-        .children('b') //select all the children
-        .remove() //remove all the children
-        .end() //again go back to selected element
-        .text()
-        .trim();
+      const detail = loadedCheerio(this).find('b').remove().end().text().trim();
 
       switch (detailName) {
         case 'المؤلف:':
@@ -81,20 +75,19 @@ class WPMangaStreamScraper {
           break;
         case 'Status:':
         case 'Seviye:':
-          novel.status = status;
+          novel.status = detail;
           break;
       }
     });
 
     novel.genre = loadedCheerio('.genxed').text().trim().replace(/\s/g, ',');
 
+    loadedCheerio('div[itemprop="description"]  h3,p.a,strong').remove();
     novel.summary = loadedCheerio('div[itemprop="description"]')
-      .find('h3 , p.a')
-      .remove()
+      .find('br')
+      .replaceWith('\n')
       .end()
-      .prop('innerHTML')
-      .replace(/(<.*?>)/g, ' ')
-      .replace(/(&.*;)/g, '\n');
+      .text();
 
     let novelChapters = [];
 
