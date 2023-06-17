@@ -90,6 +90,7 @@ const ChapterContent = ({ route, navigation }) => {
   const [sourceChapter, setChapter] = useState({ ...chapter });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
+  const [[nextChapter, prevChapter], setAdjacentChapter] = useState([]);
 
   const emmiter = useRef(
     new NativeEventEmitter(NativeModules.VolumeButtonListener),
@@ -135,7 +136,11 @@ const ChapterContent = ({ route, navigation }) => {
 
   const getChapter = async () => {
     try {
-      const chapterText = await getChapterFromDB(chapter.id);
+      const [chapterText, nextChap, prevChap] = await Promise.all([
+        getChapterFromDB(chapter.id),
+        getNextChapter(chapter.novelId, chapter.id),
+        getPrevChapter(chapter.novelId, chapter.id),
+      ]);
       if (chapterText) {
         sourceChapter.chapterText = chapterText;
       } else {
@@ -163,18 +168,6 @@ const ChapterContent = ({ route, navigation }) => {
       });
     }
   }, []);
-
-  const [[nextChapter, prevChapter], setAdjacentChapter] = useState([]);
-  useEffect(() => {
-    const setPrevAndNextChap = async () => {
-      const [nextChap, prevChap] = await Promise.all([
-        getNextChapter(chapter.novelId, chapter.id),
-        getPrevChapter(chapter.novelId, chapter.id),
-      ]);
-      setAdjacentChapter([nextChap, prevChap]);
-    };
-    setPrevAndNextChap();
-  }, [chapter]);
 
   const [ttsStatus, startTts] = useTextToSpeech(
     htmlToText(sourceChapter.chapterText).split('\n'),

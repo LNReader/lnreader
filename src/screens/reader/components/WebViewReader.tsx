@@ -85,7 +85,13 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
               plugin.fetchImage(event.data).then(base64 => {
                 webViewRef.current?.injectJavaScript(
                   `document.querySelector("img[delayed-src='${event.data}']").src="data:image/jpg;base64,${base64}";
-                  document.querySelector("img[delayed-src='${event.data}']").classList.remove("load-icon");`,
+                  document.querySelector("img[delayed-src='${event.data}']").classList.remove("load-icon");
+                  window.requestAnimationFrame(() => {
+                    window.ReactNativeWebView.postMessage(
+                      JSON.stringify({type: "height", data: document.body.scrollHeight})
+                    );
+                  });
+                  `,
                 );
               });
             }
@@ -212,13 +218,23 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                         ${html}
                       </chapter>
                     </div>
+                    <div class="infoText">
+                    ${getString(
+                      'readerScreen.finished',
+                    )}: ${chapterName?.trim()}
+                    </div>
+                    ${
+                      nextChapter
+                        ? `<button class="nextButton" ${onClickWebViewPostMessage(
+                            { type: 'next' },
+                          )}>
+                      Next: ${nextChapter.name}
+                    </button>`
+                        : `<div class="infoText">${getString(
+                            'readerScreen.noNextChapter',
+                          )}</div>`
+                    }
                     <script>
-                      new ResizeObserver(() =>
-                        window.ReactNativeWebView.postMessage(
-                          JSON.stringify({type: "height", data: document.body.scrollHeight})
-                        )
-                      ).observe(document.querySelector('body'));
-
                       if(!document.querySelector("input[offline]") && ${
                         plugin?.protected
                       }){
@@ -244,23 +260,12 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                           );
                         }, 100);
                       });
+                      window.onload = () => {
+                        window.ReactNativeWebView.postMessage(
+                          JSON.stringify({type: "height", data: document.body.scrollHeight})
+                        );
+                      }
                     </script>
-                    <div class="infoText">
-                    ${getString(
-                      'readerScreen.finished',
-                    )}: ${chapterName?.trim()}
-                    </div>
-                    ${
-                      nextChapter
-                        ? `<button class="nextButton" ${onClickWebViewPostMessage(
-                            { type: 'next' },
-                          )}>
-                      Next: ${nextChapter.name}
-                    </button>`
-                        : `<div class="infoText">${getString(
-                            'readerScreen.noNextChapter',
-                          )}</div>`
-                    }
                     ${
                       swipeGestures
                         ? `
@@ -282,7 +287,6 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                           </script>`
                         : ''
                     }
-
                     <script>
                       async function fn(){${readerSettings.customJS}}
                       document.addEventListener("DOMContentLoaded", fn);
