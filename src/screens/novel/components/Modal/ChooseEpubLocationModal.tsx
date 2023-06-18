@@ -7,17 +7,23 @@ import { Modal, Portal, TextInput, Text } from 'react-native-paper';
 import { useTheme } from '@hooks/useTheme';
 import { useSettings } from '@hooks/reduxHooks';
 import { openDocumentTree } from 'react-native-saf-x';
+import SwitchSetting from '@components/Switch/Switch';
+import { booleanHookType } from '@hooks/useBoolean';
 
 interface ChooseEpubLocationModalProps {
   hideModal: () => void;
   modalVisible: boolean;
   onSubmit: (uri: string) => void;
+  useAppTheme: booleanHookType;
+  showExtraSettings?: boolean;
 }
 
 const ChooseEpubLocationModal: React.FC<ChooseEpubLocationModalProps> = ({
   hideModal,
   modalVisible,
   onSubmit: onSubmitProp,
+  useAppTheme,
+  showExtraSettings,
 }) => {
   const { epubLocation = '' } = useSettings();
   const theme = useTheme();
@@ -87,6 +93,16 @@ const ChooseEpubLocationModal: React.FC<ChooseEpubLocationModalProps> = ({
             />
           </View>
         </View>
+        {showExtraSettings ? (
+          <View style={styles.settings}>
+            <SwitchSetting
+              label={getString('novelScreen.convertToEpubModal.useReaderTheme')}
+              value={useAppTheme.value}
+              onPress={useAppTheme.toggle}
+              theme={theme}
+            />
+          </View>
+        ) : null}
         <View style={styles.modalFooterCtn}>
           <Button title={getString('common.submit')} onPress={onSubmit} />
           <Button title={getString('common.cancel')} onPress={hideModal} />
@@ -103,6 +119,9 @@ const styles = StyleSheet.create({
     margin: 30,
     borderRadius: 32,
   },
+  settings: {
+    paddingLeft: 5,
+  },
   icon: { marginVertical: 0, marginRight: 0 },
   textInput: { flex: 1 },
   modalHeaderCtn: {
@@ -114,7 +133,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row-reverse',
     paddingHorizontal: 20,
     paddingTop: 8,
-    paddingBottom: 32,
+    paddingBottom: 20,
   },
   modalTitle: {
     fontSize: 24,

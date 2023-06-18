@@ -28,6 +28,8 @@ const EpubIconButton: React.FC<EpubIconButtonProps> = ({
 }) => {
   const chooseEpubLocationModal = useBoolean(false);
   const readerSettings = useReaderSettings();
+  const useAppTheme = useBoolean(false);
+
   const epubStyle = `html {
     scroll-behavior: smooth;
     overflow-x: hidden;
@@ -43,6 +45,7 @@ const EpubIconButton: React.FC<EpubIconButtonProps> = ({
     text-align: ${readerSettings.textAlign};
     line-height: ${readerSettings.lineHeight};
     font-family: "${readerSettings.fontFamily}";
+    background-color: "${readerSettings.theme}";
   }
   hr {
     margin-top: 20px;
@@ -70,7 +73,7 @@ const EpubIconButton: React.FC<EpubIconButtonProps> = ({
         description: novel.novelSummary,
         author: novel.author,
         bookId: novel.novelId.toString(),
-        stylesheet: epubStyle,
+        stylesheet: useAppTheme.value ? epubStyle : undefined,
       },
       uri,
     );
@@ -92,10 +95,7 @@ const EpubIconButton: React.FC<EpubIconButtonProps> = ({
       var epubFilePath = await epub.save();
       showToast('Epub file saved at: ' + epubFilePath);
     } catch (error) {
-      // remove the temp created folder
       showToast('Cannot create because: ' + error);
-      console.error(error);
-
       await epub.discardChanges();
     }
   };
@@ -114,6 +114,8 @@ const EpubIconButton: React.FC<EpubIconButtonProps> = ({
           modalVisible={chooseEpubLocationModal.value}
           hideModal={chooseEpubLocationModal.setFalse}
           onSubmit={createEpub}
+          useAppTheme={useAppTheme}
+          showExtraSettings
         />
       </Portal>
     </>

@@ -104,6 +104,7 @@ export interface StringMap {
   'novelScreen.jumpToChapterModal.error.validChapterNumber': 'string';
   'novelScreen.convertToEpubModal.chooseLocation': 'string';
   'novelScreen.convertToEpubModal.pathToFolder': 'string';
+  'novelScreen.convertToEpubModal.useReaderTheme': 'string';
   'more': 'string';
   'moreScreen.settings': 'string';
   'moreScreen.settingsScreen.generalSettings': 'string';
