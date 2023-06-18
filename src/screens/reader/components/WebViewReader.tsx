@@ -75,6 +75,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
       onNavigationStateChange={onWebViewNavigationStateChange}
       nestedScrollEnabled={true}
       javaScriptEnabled={true}
+      onLayout={async () => onLayout()}
       onMessage={ev => {
         const event: WebViewPostEvent = JSON.parse(ev.nativeEvent.data);
         switch (event.type) {
@@ -93,11 +94,6 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                 webViewRef.current?.injectJavaScript(
                   `document.querySelector("img[delayed-src='${event.data}']").src="data:image/jpg;base64,${base64}";
                   document.querySelector("img[delayed-src='${event.data}']").classList.remove("load-icon");
-                  window.requestAnimationFrame(() => {
-                    window.ReactNativeWebView.postMessage(
-                      JSON.stringify({type: "height", data: document.body.scrollHeight})
-                    );
-                  });
                   `,
                 );
               });
@@ -105,15 +101,10 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
             break;
           case 'scrollend':
             if (event.data) {
-              const offSetY = Number(event.data?.offSetY);
               const percentage = Math.round(Number(event.data?.percentage));
-              doSaveProgress(offSetY, percentage);
+              minScroll.current = Math.round(Number(event.data?.minscroll));
+              doSaveProgress(Number(event.data?.offSetY), percentage);
             }
-            break;
-          case 'height':
-            const contentHeight = Number(event.data);
-            minScroll.current = (layoutHeight / contentHeight) * 100;
-            onLayout();
             break;
         }
       }}
@@ -261,17 +252,13 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                                 data:{
                                   offSetY: window.pageYOffset,
                                   percentage: (window.pageYOffset+${layoutHeight})/document.body.scrollHeight*100,
+                                  minscroll: ${layoutHeight}/document.body.scrollHeight*100,
                                 }
                               }
                             )
                           );
                         }, 100);
                       });
-                      window.onload = () => {
-                        window.ReactNativeWebView.postMessage(
-                          JSON.stringify({type: "height", data: document.body.scrollHeight})
-                        );
-                      }
                     </script>
                     ${
                       swipeGestures

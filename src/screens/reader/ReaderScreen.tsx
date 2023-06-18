@@ -241,7 +241,7 @@ export const ChapterContent = ({
   };
 
   const doSaveProgress = useCallback(
-    (offsetY: number, percentage: number) => {
+    async (offsetY: number, percentage: number) => {
       if (!incognitoMode) {
         dispatch(
           saveScrollPosition(offsetY, percentage, chapter.id, chapter.novelId),
@@ -327,7 +327,7 @@ export const ChapterContent = ({
         webViewRef={webViewRef}
         onLayout={() => {
           useVolumeButtons && onLayout();
-          scrollTo(position?.offsetY);
+          scrollTo(position?.offsetY || 1);
         }}
         onPress={hideHeader}
         doSaveProgress={doSaveProgress}
