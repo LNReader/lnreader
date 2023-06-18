@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import WebView from 'react-native-webview';
 import CookieManager from '@react-native-cookies/cookies';
 
@@ -7,22 +6,12 @@ import { Appbar } from '@components';
 import { useTheme } from '@hooks/useTheme';
 import useSourceStorage from '@hooks/useSourceStorage';
 import { defaultUserAgentString } from '@utils/fetch/fetch';
+import { WebviewScreenProps } from '@navigators/types';
 
-type ReaderScreenRouteProps = RouteProp<{
-  params: {
-    name: string;
-    pluginId: string;
-    url: string;
-  };
-}>;
-
-const WebviewScreen = () => {
+const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
   const theme = useTheme();
-  const { goBack } = useNavigation();
 
-  const {
-    params: { name, pluginId, url },
-  } = useRoute<ReaderScreenRouteProps>();
+  const { name, pluginId, url } = route.params;
   const { setSourceStorage } = useSourceStorage({ pluginId });
 
   useEffect(() => {
@@ -37,7 +26,12 @@ const WebviewScreen = () => {
 
   return (
     <>
-      <Appbar mode="small" title={name} handleGoBack={goBack} theme={theme} />
+      <Appbar
+        mode="small"
+        title={name}
+        handleGoBack={() => navigation.goBack()}
+        theme={theme}
+      />
       <WebView
         startInLoadingState
         userAgent={defaultUserAgentString}

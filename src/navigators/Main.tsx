@@ -1,10 +1,6 @@
 import React, { useEffect } from 'react';
 
-import {
-  DefaultTheme,
-  NavigationContainer,
-  Theme,
-} from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import { setBarColor } from '../theme/utils/setBarColor';
@@ -61,16 +57,9 @@ const MainNavigator = () => {
   }, []);
 
   const { isNewVersion, latestRelease } = useGithubUpdateChecker();
-  const navigationTheme: Theme = {
-    dark: theme.isDark,
-    colors: {
-      ...DefaultTheme.colors,
-      primary: theme.primary,
-      background: theme.background,
-    },
-  };
+
   return (
-    <NavigationContainer theme={navigationTheme}>
+    <NavigationContainer theme={{ colors: theme }}>
       {isNewVersion && <NewUpdateDialog newVersion={latestRelease} />}
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="BottomNavigator" component={BottomNavigator} />

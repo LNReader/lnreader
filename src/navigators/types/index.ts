@@ -25,7 +25,11 @@ export type RootStackParamList = {
   Migration: undefined;
   SourceNovels: { pluginId: string };
   MigrateNovel: { pluginId: string; novel: any };
-  WebviewScreen: undefined;
+  WebviewScreen: {
+    pluginId: string;
+    name: string;
+    url: string;
+  };
 };
 
 export type ChapterScreenProps = StackScreenProps<
@@ -35,4 +39,8 @@ export type ChapterScreenProps = StackScreenProps<
 export type BrowseSourceScreenProps = StackScreenProps<
   RootStackParamList,
   'SourceScreen'
+>;
+export type WebviewScreenProps = StackScreenProps<
+  RootStackParamList,
+  'WebviewScreen'
 >;
