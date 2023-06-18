@@ -1,6 +1,10 @@
 import React, { useEffect } from 'react';
 
-import { NavigationContainer } from '@react-navigation/native';
+import {
+  DefaultTheme,
+  NavigationContainer,
+  Theme,
+} from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import { setBarColor } from '../theme/utils/setBarColor';
@@ -31,8 +35,9 @@ import { useAppDispatch } from '@redux/hooks';
 import { updateLibraryAction } from '@redux/updates/updates.actions';
 import { useSettings } from '@hooks/reduxHooks';
 import WebviewScreen from '@screens/WebviewScreen/WebviewScreen';
+import { RootStackParamList } from './types';
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<RootStackParamList>();
 
 const MainNavigator = () => {
   const theme = useTheme();
@@ -55,10 +60,17 @@ const MainNavigator = () => {
     }
   }, []);
 
-  const { isNewVersion, latestRelease } = useGithubUpdateChecker() || {};
-
+  const { isNewVersion, latestRelease } = useGithubUpdateChecker();
+  const navigationTheme: Theme = {
+    dark: theme.isDark,
+    colors: {
+      ...DefaultTheme.colors,
+      primary: theme.primary,
+      background: theme.background,
+    },
+  };
   return (
-    <NavigationContainer theme={{ colors: theme }}>
+    <NavigationContainer theme={navigationTheme}>
       {isNewVersion && <NewUpdateDialog newVersion={latestRelease} />}
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="BottomNavigator" component={BottomNavigator} />

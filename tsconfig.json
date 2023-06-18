@@ -26,6 +26,7 @@
       "@utils/*": ["src/utils/*"],
       "@plugins/*": ["src/plugins/*"],
       "@services/*": ["src/services/*"],
+      "@navigators/*": ["src/navigators/*"],
     }
   },
   "exclude": [

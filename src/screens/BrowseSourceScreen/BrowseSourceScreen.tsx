@@ -20,19 +20,9 @@ import { switchNovelToLibrary } from '@database/queries/NovelQueries';
 import { NovelInfo } from '@database/types';
 import SourceScreenSkeletonLoading from '@screens/browse/loadingAnimation/SourceScreenSkeletonLoading';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { BrowseSourceScreenProps } from '@navigators/types';
 
-interface BrowseSourceScreenProps {
-  route: {
-    params: {
-      pluginId: string;
-      pluginName: string;
-      pluginUrl: string;
-      showLatestNovels?: boolean;
-    };
-  };
-}
-
-const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
+const BrowseSourceScreen = ({ route }: BrowseSourceScreenProps) => {
   const theme = useTheme();
   const { navigate, goBack } = useNavigation();
   const previousScreen = usePreviousRouteName();

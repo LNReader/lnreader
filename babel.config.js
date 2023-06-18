@@ -17,6 +17,7 @@ module.exports = function (api) {
             '@plugins': './src/plugins',
             '@utils': './src/utils',
             '@theme': './src/theme',
+            '@navigators': './src/navigators',
           },
         },
       ],

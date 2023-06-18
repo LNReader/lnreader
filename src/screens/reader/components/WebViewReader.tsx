@@ -1,9 +1,9 @@
 import React from 'react';
 import { Dimensions, StatusBar } from 'react-native';
-import WebView from 'react-native-webview';
+import WebView, { WebViewNavigation } from 'react-native-webview';
 
 import { useTheme } from '@hooks/useTheme';
-import { ChapterInfo, NovelInfo } from '@database/types';
+import { ChapterInfo } from '@database/types';
 import { useReaderSettings } from '@redux/hooks';
 import { getString } from '@strings/translations';
 
@@ -15,18 +15,25 @@ type WebViewPostEvent = {
 };
 
 type WebViewReaderProps = {
-  chapterInfo: { novel: NovelInfo; chapter: ChapterInfo };
+  data: {
+    novel: {
+      id: string;
+      pluginId: string;
+      name: string;
+    };
+    chapter: ChapterInfo;
+  };
   html: string;
   chapterName: string;
   swipeGestures: boolean;
   minScroll: React.MutableRefObject<number>;
   nextChapter: ChapterInfo;
-  webViewRef: React.MutableRefObject<WebView>;
+  webViewRef: React.RefObject<WebView>;
   onPress(): void;
   onLayout(): void;
   doSaveProgress(offSetY: number, percentage: number): void;
   navigateToChapterBySwipe(name: string): void;
-  onWebViewNavigationStateChange(): void;
+  onWebViewNavigationStateChange({ url }: WebViewNavigation): void;
 };
 
 const onClickWebViewPostMessage = (event: WebViewPostEvent) =>
@@ -36,7 +43,7 @@ const onClickWebViewPostMessage = (event: WebViewPostEvent) =>
 
 const WebViewReader: React.FC<WebViewReaderProps> = props => {
   const {
-    chapterInfo,
+    data,
     html,
     chapterName,
     swipeGestures,
@@ -51,7 +58,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
   } = props;
 
   const theme = useTheme();
-  const { novel, chapter } = chapterInfo;
+  const { novel, chapter } = data;
   const readerSettings = useReaderSettings();
   const { theme: backgroundColor } = readerSettings;
 

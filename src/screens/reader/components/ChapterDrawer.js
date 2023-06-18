@@ -11,13 +11,13 @@ import { useNovel, useSettings, usePreferences } from '@hooks/reduxHooks';
 import { useDispatch } from 'react-redux';
 import { getNovelAction } from '@redux/novel/novel.actions';
 
-const ChapterDrawer = ({ state: st, navigation }) => {
+const ChapterDrawer = ({ route, navigation }) => {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
   const styles = createStylesheet(theme, insets);
   let listRef = useRef();
   const dispatch = useDispatch();
-  const { chapter, novel: novelItem } = st.routes[0].params;
+  const { chapter, novel: novelItem } = route.params;
   const { defaultChapterSort = 'ORDER BY id ASC' } = useSettings();
   const { sort = defaultChapterSort, filter = '' } = usePreferences(
     chapter.novelId,
