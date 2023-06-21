@@ -196,19 +196,21 @@ const createImageFolder = async (
     chapterId: number;
   },
 ): Promise<string> => {
-  const mkdirIfNot = async (p: string) => {
+  const mkdirIfNot = async (p: string, nomedia: boolean) => {
     const nomediaPath =
       p + (p.charAt(p.length - 1) === '/' ? '' : '/') + '.nomedia';
     if (!(await RNFS.exists(p))) {
       await RNFS.mkdir(p);
-      await RNFS.writeFile(nomediaPath, ',', 'utf8');
+      if (nomedia) {
+        await RNFS.writeFile(nomediaPath, ',', 'utf8');
+      }
     }
   };
 
-  await mkdirIfNot(path);
+  await mkdirIfNot(path, false);
 
   const { pluginId, novelId, chapterId } = data;
-  await mkdirIfNot(`${path}/${pluginId}/${novelId}/${chapterId}/`);
+  await mkdirIfNot(`${path}/${pluginId}/${novelId}/${chapterId}/`, true);
   return `${path}/${pluginId}/${novelId}/${chapterId}/`;
 };
 
