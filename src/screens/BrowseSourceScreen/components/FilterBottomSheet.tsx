@@ -58,7 +58,13 @@ const FilterItem: React.FC<FilterItemProps> = ({
           placeholder={filter.label}
         >
           {filter.values.map(val => {
-            return <Picker.Item label={val.label} value={val.value} />;
+            return (
+              <Picker.Item
+                key={val.label}
+                label={val.label}
+                value={val.value}
+              />
+            );
           })}
         </Picker>
       </View>
