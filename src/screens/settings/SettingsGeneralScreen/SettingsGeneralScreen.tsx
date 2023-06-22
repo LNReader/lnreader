@@ -345,9 +345,7 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
       <ChooseEpubLocationModal
         hideModal={convertToEpubModal.setFalse}
         modalVisible={convertToEpubModal.value}
-        onSubmit={(uri: string) =>
-          dispatch(setAppSettings('epubLocation', uri))
-        }
+        dispatchConfig
       />
     </>
   );

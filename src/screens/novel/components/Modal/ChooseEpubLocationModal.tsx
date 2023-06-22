@@ -8,26 +8,37 @@ import { useTheme } from '@hooks/useTheme';
 import { useSettings } from '@hooks/reduxHooks';
 import { openDocumentTree } from 'react-native-saf-x';
 import SwitchSetting from '@components/Switch/Switch';
-import { booleanHookType } from '@hooks/useBoolean';
+import useBoolean from '@hooks/useBoolean';
+import { useDispatch } from 'react-redux';
+import { setAppSettings } from '@redux/settings/settings.actions';
 
 interface ChooseEpubLocationModalProps {
   hideModal: () => void;
   modalVisible: boolean;
-  onSubmit: (uri: string) => void;
-  useAppTheme: booleanHookType;
-  showExtraSettings?: boolean;
+  onSubmit?: (uri: string) => void;
+  dispatchConfig?: boolean;
 }
 
 const ChooseEpubLocationModal: React.FC<ChooseEpubLocationModalProps> = ({
   hideModal,
   modalVisible,
   onSubmit: onSubmitProp,
-  useAppTheme,
-  showExtraSettings,
+  dispatchConfig,
 }) => {
-  const { epubLocation = '' } = useSettings();
   const theme = useTheme();
+  const {
+    epubLocation = '',
+    epubUseAppTheme = false,
+    epubUseCustomCSS = false,
+    epubUseCustomJS = false,
+  } = useSettings();
+  const saveConfig = dispatchConfig ? true : epubLocation === '';
+  const dispatch = useDispatch();
+
   const [uri, setUri] = useState(epubLocation);
+  const useAppTheme = useBoolean(epubUseAppTheme);
+  const useCustomCSS = useBoolean(epubUseCustomCSS);
+  const useCustomJS = useBoolean(epubUseCustomJS);
   const [error, setError] = useState('');
 
   const onDismiss = () => {
@@ -41,7 +52,13 @@ const ChooseEpubLocationModal: React.FC<ChooseEpubLocationModalProps> = ({
   };
 
   const onSubmit = () => {
-    onSubmitProp(uri);
+    if (saveConfig) {
+      dispatch(setAppSettings('epubLocation', uri));
+      dispatch(setAppSettings('epubUseAppTheme', useAppTheme.value));
+      dispatch(setAppSettings('epubUseCustomCSS', useCustomCSS.value));
+      dispatch(setAppSettings('epubUseCustomJS', useCustomJS.value));
+    }
+    onSubmitProp?.(uri);
     hideModal();
   };
 
@@ -93,16 +110,26 @@ const ChooseEpubLocationModal: React.FC<ChooseEpubLocationModalProps> = ({
             />
           </View>
         </View>
-        {showExtraSettings ? (
-          <View style={styles.settings}>
-            <SwitchSetting
-              label={getString('novelScreen.convertToEpubModal.useReaderTheme')}
-              value={useAppTheme.value}
-              onPress={useAppTheme.toggle}
-              theme={theme}
-            />
-          </View>
-        ) : null}
+        <View style={styles.settings}>
+          <SwitchSetting
+            label={getString('novelScreen.convertToEpubModal.useReaderTheme')}
+            value={useAppTheme.value}
+            onPress={useAppTheme.toggle}
+            theme={theme}
+          />
+          <SwitchSetting
+            label={getString('novelScreen.convertToEpubModal.useCustomCSS')}
+            value={useCustomCSS.value}
+            onPress={useCustomCSS.toggle}
+            theme={theme}
+          />
+          <SwitchSetting
+            label={getString('novelScreen.convertToEpubModal.useCustomJS')}
+            value={useCustomJS.value}
+            onPress={useCustomJS.toggle}
+            theme={theme}
+          />
+        </View>
         <View style={styles.modalFooterCtn}>
           <Button title={getString('common.submit')} onPress={onSubmit} />
           <Button title={getString('common.cancel')} onPress={hideModal} />

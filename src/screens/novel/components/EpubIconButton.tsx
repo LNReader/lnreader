@@ -29,6 +29,8 @@ const EpubIconButton: React.FC<EpubIconButtonProps> = ({
   const chooseEpubLocationModal = useBoolean(false);
   const readerSettings = useReaderSettings();
   const useAppTheme = useBoolean(false);
+  const useCustomCSS = useBoolean(false);
+  const useCustomJS = useBoolean(false);
 
   const epubStyle = `html {
     scroll-behavior: smooth;
@@ -60,8 +62,13 @@ const EpubIconButton: React.FC<EpubIconButtonProps> = ({
     height: auto;
     max-width: 100%;
   }
-  
-  ${readerSettings.customCSS}`;
+  ${
+    useCustomCSS.value
+      ? readerSettings.customCSS
+          .replace(RegExp(`\#sourceId-${novel.sourceId}\\s*\\{`, 'g'), 'body {')
+          .replace(RegExp(`\#sourceId-${novel.sourceId}[^\.\#A-Z]*`, 'gi'), '')
+      : ''
+  }`;
 
   const createEpub = async (uri: string) => {
     var epub = new EpubBuilder(
@@ -74,6 +81,7 @@ const EpubIconButton: React.FC<EpubIconButtonProps> = ({
         author: novel.author,
         bookId: novel.novelId.toString(),
         stylesheet: useAppTheme.value ? epubStyle : undefined,
+        js: useCustomJS.value ? readerSettings.customJS : undefined,
       },
       uri,
     );
@@ -114,8 +122,6 @@ const EpubIconButton: React.FC<EpubIconButtonProps> = ({
           modalVisible={chooseEpubLocationModal.value}
           hideModal={chooseEpubLocationModal.setFalse}
           onSubmit={createEpub}
-          useAppTheme={useAppTheme}
-          showExtraSettings
         />
       </Portal>
     </>
