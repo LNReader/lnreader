@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     zIndex: 2,
     right: -(Dimensions.get('window').width / 2) + 40,
-    bottom: 300,
+    bottom: Dimensions.get('window').height / 2,
   },
   horizontalSliderContainer: {
     position: 'absolute',
