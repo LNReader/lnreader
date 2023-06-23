@@ -72,7 +72,7 @@ const CustomFileModal: React.FC<CustomCSSModalProps> = ({
         { backgroundColor: overlay(2, theme.surface) },
       ]}
     >
-      <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={300}>
+      <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={180}>
         <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
           {title}
         </Text>
