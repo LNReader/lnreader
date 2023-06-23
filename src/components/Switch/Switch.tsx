@@ -20,12 +20,12 @@ const SwitchSetting: React.FC<SwitchProps> = ({
   icon,
   value,
 }) => {
-  const styles = StyleSheet.create({
+  const styles2 = StyleSheet.create({
     container: {
       paddingHorizontal: 16,
       flexDirection: 'row',
       justifyContent: 'space-between',
-      paddingVertical: description ? 16 : 12,
+      paddingVertical: 12,
     },
     row: {
       flexDirection: 'row',
@@ -39,7 +39,6 @@ const SwitchSetting: React.FC<SwitchProps> = ({
     },
     text: {
       fontSize: 16,
-      flex: 1,
       textAlignVertical: 'center',
     },
     switch: { marginLeft: 8 },
@@ -50,15 +49,17 @@ const SwitchSetting: React.FC<SwitchProps> = ({
       android_ripple={{
         color: theme.rippleColor,
       }}
-      style={styles.container}
+      style={styles2.container}
       onPress={onPress}
     >
-      <View style={styles.row}>
+      <View style={styles2.row}>
         {icon && (
-          <List.Icon color={theme.primary} icon={icon} style={styles.icon} />
+          <List.Icon color={theme.primary} icon={icon} style={styles2.icon} />
         )}
-        <View style={styles.textContainer}>
-          <Text style={[styles.text, { color: theme.onSurface }]}>{label}</Text>
+        <View style={styles2.textContainer}>
+          <Text style={[styles2.text, { color: theme.onSurface }]}>
+            {label}
+          </Text>
           {description && (
             <Text style={{ color: theme.onSurfaceVariant }}>{description}</Text>
           )}
@@ -68,7 +69,7 @@ const SwitchSetting: React.FC<SwitchProps> = ({
         value={value}
         onValueChange={onPress}
         color={theme.primary}
-        style={styles.switch}
+        style={styles2.switch}
       />
     </Pressable>
   );
