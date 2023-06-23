@@ -90,7 +90,7 @@
     "@typescript-eslint/parser": "^5.57.1",
     "babel-plugin-module-resolver": "^4.1.0",
     "eslint": "^8.0.0",
-    "eslint-plugin-react-native": "^3.11.0",
+    "eslint-plugin-react-native": "^4.0.0",
     "husky": "^7.0.4",
     "lint-staged": "^12.3.7",
     "prettier": "^2.8.8",
