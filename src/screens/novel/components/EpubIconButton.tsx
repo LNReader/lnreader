@@ -35,7 +35,9 @@ const EpubIconButton: React.FC<EpubIconButtonProps> = ({
     epubUseCustomJS = false,
   } = useSettings();
 
-  const epubStyle = `html {
+  const epubStyle = `${
+    epubUseAppTheme
+      ? `html {
     scroll-behavior: smooth;
     overflow-x: hidden;
     padding-top: ${StatusBar.currentHeight};
@@ -64,6 +66,8 @@ const EpubIconButton: React.FC<EpubIconButtonProps> = ({
     width: auto;
     height: auto;
     max-width: 100%;
+  }`
+      : ''
   }
   ${
     epubUseCustomCSS
@@ -92,7 +96,7 @@ const EpubIconButton: React.FC<EpubIconButtonProps> = ({
         description: novel.novelSummary,
         author: novel.author,
         bookId: novel.novelId.toString(),
-        stylesheet: epubUseAppTheme ? epubStyle : undefined,
+        stylesheet: epubStyle || undefined,
         js: epubUseCustomJS ? epubJS : undefined,
       },
       uri,
