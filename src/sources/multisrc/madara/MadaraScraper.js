@@ -44,6 +44,14 @@ class MadaraScraper {
         .attr('href')
         .split('/')[4];
 
+      if (sourceId === 59) {
+        novelUrl = loadedCheerio(this)
+          .find('.post-title')
+          .find('a')
+          .attr('href')
+          .split('/')[5];
+      }
+
       const novel = {
         sourceId,
         novelName,
@@ -83,7 +91,7 @@ class MadaraScraper {
       loadedCheerio('.summary_image > a > img').attr('src') ||
       defaultCoverUri;
 
-    loadedCheerio('.post-content_item', '.post-content').each(function () {
+    loadedCheerio('.post-content_item' || '.post-content').each(function () {
       const detailName = loadedCheerio(this).find('h5').text().trim();
       const detail = loadedCheerio(this).find('.summary-content').text().trim();
 
@@ -94,6 +102,7 @@ class MadaraScraper {
           break;
         case 'Author(s)':
         case 'المؤلف':
+        case 'المؤلف (ين)':
           novel.author = detail;
           break;
         case 'Status':
@@ -106,7 +115,7 @@ class MadaraScraper {
       }
     });
 
-    loadedCheerio('div.summary__content .code-block').remove();
+    loadedCheerio('div.summary__content .code-block,script').remove();
     novel.summary = loadedCheerio('div.summary__content').text().trim();
 
     let novelChapters = [];
@@ -236,6 +245,14 @@ class MadaraScraper {
         .find('a')
         .attr('href')
         .split('/')[4];
+
+      if (sourceId === 59) {
+        novelUrl = loadedCheerio(this)
+          .find('.post-title')
+          .find('a')
+          .attr('href')
+          .split('/')[5];
+      }
 
       const novel = {
         sourceId,
