@@ -98,6 +98,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   const chapterName = loadedCheerio(
     'div.panel:nth-child(2) > div > div > h3',
   ).text();
+  loadedCheerio('p:contains("pawread")').remove();
   const chapterText = loadedCheerio('#chapter_item').html();
 
   const chapter = {
