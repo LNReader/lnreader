@@ -87,6 +87,7 @@ class MadaraScraper {
     novel.novelName = loadedCheerio('.post-title h1').text().trim();
 
     novel.novelCover =
+      loadedCheerio('.summary_image > a > img').attr('data-lazy-src') ||
       loadedCheerio('.summary_image > a > img').attr('data-src') ||
       loadedCheerio('.summary_image > a > img').attr('src') ||
       defaultCoverUri;
