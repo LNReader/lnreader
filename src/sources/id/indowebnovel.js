@@ -51,6 +51,12 @@ const parseNovelAndChapters = async novelUrl => {
   };
 
   novel.novelName = loadedCheerio('.series-title h2').text().trim();
+  const chapName = novel.novelName
+    .split(' ')
+    .map(chap => {
+      return chap[0].toUpperCase() + chap.slice(1);
+    })
+    .join(' ');
 
   novel.novelCover = loadedCheerio('.series-thumb img').attr('src');
 
@@ -78,22 +84,23 @@ const parseNovelAndChapters = async novelUrl => {
 
   let chapters = [];
 
-  loadedCheerio('.series-chapterlist li').each(function () {
-    const chapterName = loadedCheerio(this)
-      .find('a span')
-      .first()
-      .text()
-      .replace(/.*?(Chapter.|[0-9])/g, '$1')
+  loadedCheerio('.series-chapterlist li a').each(function () {
+    let titles = loadedCheerio(this)
+      .attr('title')
       .replace(/Bahasa Indonesia/g, '')
-      .replace(/\s+/g, ' ')
+      .replace(/\s\s+/g, ' ')
       .trim();
 
-    const releaseDate = loadedCheerio(this)
-      .find('a span')
-      .first()
-      .next()
-      .text();
-    const chapterUrl = loadedCheerio(this).find('a').attr('href');
+    let titlename = titles
+      .split(' ')
+      .map(title => {
+        return title[0].toUpperCase() + title.slice(1);
+      })
+      .join(' ');
+
+    const chapterName = titlename.replace(`${chapName}`, '');
+    const releaseDate = loadedCheerio(this).find('span:last').text();
+    const chapterUrl = loadedCheerio(this).attr('href');
 
     chapters.push({ chapterName, releaseDate, chapterUrl });
   });
