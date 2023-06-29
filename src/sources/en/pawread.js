@@ -47,34 +47,28 @@ const parseNovelAndChapters = async novelUrl => {
     .attr('style')
     .replace(/.*\((.*?)\)/g, '$1');
 
-  novel.author = loadedCheerio(
-    '#views_info > div:nth-child(4) > span:nth-child(2)',
-  )
+  novel.author = loadedCheerio('#views_info > div:last > span:last')
     .text()
-    .replace(/(Author: )/g, '');
+    .replace('Author: ', '');
 
   novel.status = loadedCheerio('.label').text().trim();
 
-  novel.genre = loadedCheerio('div.mt20:nth-child(4)')
-    .text()
-    .trim()
-    .replace(/\s/g, ',');
+  novel.genre = loadedCheerio('.col-md-9 .mt20')
+    .find('a')
+    .map((i, el) => loadedCheerio(el).text())
+    .toArray()
+    .join(',');
 
   novel.summary = loadedCheerio('#simple-des').text().trim();
 
   let chapters = [];
 
-  loadedCheerio('div.filtr-item').each(function () {
+  loadedCheerio('.item-box').each(function () {
     const chapterName = loadedCheerio(this).find('.c_title').text();
-    const releaseDate = loadedCheerio(this)
-      .find('.c_title')
-      .next()
-      .next()
-      .text();
+    const releaseDate = loadedCheerio(this).find('span:last').text();
     const chapterUrl =
       novelUrl +
       loadedCheerio(this)
-        .find('.item-box')
         .attr('onclick')
         .replace(/.*'(.*)'.*/g, '$1') +
       '.html';
@@ -95,10 +89,10 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 
   let loadedCheerio = cheerio.load(body);
 
-  const chapterName = loadedCheerio(
-    'div.panel:nth-child(2) > div > div > h3',
-  ).text();
-  loadedCheerio('p:contains("pawread")').remove();
+  const chapterName = loadedCheerio('.chapter-content h3').text();
+
+  const steal = ['bit.ly', 'tinyurl', 'pawread'];
+  steal.map(tag => loadedCheerio(`p:icontains(${tag})`).remove());
   const chapterText = loadedCheerio('#chapter_item').html();
 
   const chapter = {
