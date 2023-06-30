@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { ScreenContainer } from '../../components/Common';
 
@@ -10,9 +10,26 @@ import {
 
 import { useTheme } from '@hooks/useTheme';
 import { Appbar, List } from '@components';
+import { Portal } from 'react-native-paper';
+import useBoolean from '@hooks/useBoolean';
+import ConnectionModal from './components/ConnectionModal';
+import { remoteBackup, remoteRestore } from '@services/backup/remote';
 
 const BackupSettings = ({ navigation }) => {
   const theme = useTheme();
+  const [ipv4, setIpv4] = useState('');
+  const [port, setPort] = useState('8000');
+  const {
+    value: backupModalVisible,
+    setTrue: showBackupModal,
+    setFalse: closeBackupModal,
+  } = useBoolean();
+
+  const {
+    value: restoreModalVisible,
+    setTrue: showRestoreModal,
+    setFalse: closeRestoreModal,
+  } = useBoolean();
 
   return (
     <>
@@ -24,6 +41,18 @@ const BackupSettings = ({ navigation }) => {
         />
         <List.Section>
           <List.SubHeader theme={theme}>Backup</List.SubHeader>
+          <List.Item
+            title="Remote backup"
+            description="Backup data to your pc"
+            onPress={showBackupModal}
+            theme={theme}
+          />
+          <List.Item
+            title="Remote restore"
+            description="Restore data from your pc"
+            onPress={showRestoreModal}
+            theme={theme}
+          />
           <List.Item
             title="Create backup"
             description="Can be used to restore current library"
@@ -54,6 +83,30 @@ const BackupSettings = ({ navigation }) => {
           />
         </List.Section>
       </ScreenContainer>
+      <Portal>
+        <ConnectionModal
+          title="Remote Backup"
+          ipv4={ipv4}
+          port={port}
+          visible={backupModalVisible}
+          theme={theme}
+          closeModal={closeBackupModal}
+          handle={remoteBackup}
+          setIpv4={setIpv4}
+          setPort={setPort}
+        />
+        <ConnectionModal
+          title="Remote Restore"
+          ipv4={ipv4}
+          port={port}
+          visible={restoreModalVisible}
+          theme={theme}
+          closeModal={closeRestoreModal}
+          handle={remoteRestore}
+          setIpv4={setIpv4}
+          setPort={setPort}
+        />
+      </Portal>
     </>
   );
 };

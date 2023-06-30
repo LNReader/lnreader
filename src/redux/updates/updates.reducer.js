@@ -3,6 +3,7 @@ import {
   GET_UPDATES,
   SET_LAST_UPDATE_TIME,
   SHOW_LAST_UPDATE_TIME,
+  RESTORE_UPDATE_STATE,
 } from './updates.types';
 
 const initialState = {
@@ -29,6 +30,10 @@ const updateReducer = (state = initialState, action) => {
       return {
         ...state,
         showLastUpdateTime: payload,
+      };
+    case RESTORE_UPDATE_STATE:
+      return {
+        ...payload,
       };
     default:
       return state;

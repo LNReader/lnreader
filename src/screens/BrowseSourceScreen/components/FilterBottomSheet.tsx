@@ -1,4 +1,4 @@
-import React, { Ref, useState } from 'react';
+import React, { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import BottomSheet from '../../../components/BottomSheet/BottomSheet';
@@ -58,7 +58,13 @@ const FilterItem: React.FC<FilterItemProps> = ({
           placeholder={filter.label}
         >
           {filter.values.map(val => {
-            return <Picker.Item label={val.label} value={val.value} />;
+            return (
+              <Picker.Item
+                key={val.label}
+                label={val.label}
+                value={val.value}
+              />
+            );
           })}
         </Picker>
       </View>
@@ -113,7 +119,7 @@ const FilterItem: React.FC<FilterItemProps> = ({
 };
 
 interface BottomSheetProps {
-  filterSheetRef: Ref<BottomSheetModal> | null;
+  filterSheetRef: React.RefObject<BottomSheetModal> | null;
   filtersValues: SourceFilter[] | undefined;
   setFilters: (filters?: SelectedFilter) => void;
   clearFilters: () => void;
@@ -161,7 +167,7 @@ const FilterBottomSheet: React.FC<BottomSheetProps> = ({
         <FlatList
           contentContainerStyle={styles.filterContainer}
           data={filtersValues}
-          keyExtractor={item => item.key}
+          keyExtractor={(item, index) => 'filter' + index}
           renderItem={({ item }: { item: SourceFilter }) => (
             <FilterItem
               filter={item}

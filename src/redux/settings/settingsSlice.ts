@@ -77,6 +77,14 @@ export const settingsSlice = createSlice({
           ),
       );
     },
+    restoreSettingsState: (state, action: PayloadAction<SettingsState>) => {
+      state.app = action.payload.app;
+      state.appearance = action.payload.appearance;
+      state.reader = action.payload.reader;
+      state.browse = action.payload.browse;
+      state.library = action.payload.library;
+      state.updates = action.payload.updates;
+    },
   },
 });
 
@@ -84,6 +92,7 @@ export const {
   setBrowseSettings,
   saveCustomReaderTheme,
   deleteCustomReaderTheme,
+  restoreSettingsState,
 } = settingsSlice.actions;
 
 export default settingsSlice.reducer;

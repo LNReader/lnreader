@@ -100,6 +100,14 @@ export const sourcesSlice = createSlice({
         state.languagesFilter = [...state.languagesFilter, action.payload];
       }
     },
+    restorePluginState: (state, action: PayloadAction<PLuginsState>) => {
+      state.availablePlugins = action.payload.availablePlugins;
+      state.installedPlugins = action.payload.installedPlugins;
+      state.languagesFilter = action.payload.languagesFilter;
+      state.lastUsed = action.payload.lastUsed;
+      state.pinnedPlugins = action.payload.pinnedPlugins;
+      state.searchResults = action.payload.searchResults;
+    },
   },
 });
 
@@ -112,6 +120,7 @@ export const {
   installPluginAction,
   uninstallPluginAction,
   updatePluginAction,
+  restorePluginState,
 } = sourcesSlice.actions;
 
 export default sourcesSlice.reducer;
