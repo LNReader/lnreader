@@ -50,6 +50,12 @@ export const sourcesSlice = createSlice({
       ].filter(plugin => plugin.id !== action.payload.id);
     },
     uninstallPluginAction: (state, action: PayloadAction<PluginItem>) => {
+      if (state.lastUsed && state.lastUsed.id === action.payload.id) {
+        state.lastUsed = null;
+      }
+      state.pinnedPlugins = state.pinnedPlugins.filter(
+        plugin => plugin.id !== action.payload.id,
+      );
       state.installedPlugins = state.installedPlugins.filter(
         plugin => plugin.id !== action.payload.id,
       );
