@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import color from 'color';
 
@@ -17,10 +17,10 @@ const ReaderAppbar = ({
   tts,
   textToSpeech,
   theme,
+  bookmarkChapter,
 }) => {
   const dispatch = useAppDispatch();
   const { goBack } = useNavigation();
-  const [bookmarked, setBookmarked] = useState(bookmark);
 
   return (
     <Animated.View
@@ -66,11 +66,11 @@ const ReaderAppbar = ({
           />
 
           <IconButtonV2
-            name={bookmarked ? 'bookmark' : 'bookmark-outline'}
+            name={bookmark ? 'bookmark' : 'bookmark-outline'}
             size={24}
             onPress={() => {
               dispatch(bookmarkChapterAction([{ bookmark, chapterId }]));
-              setBookmarked(!bookmarked);
+              bookmarkChapter();
             }}
             iconColor={theme.onSurface}
             theme={theme}
