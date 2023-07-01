@@ -38,7 +38,7 @@ const initPlugin = (rawCode: string, path?: string) => {
     const plugin: Plugin = Function(
       'require',
       'module',
-      `${rawCode}; return module.exports`,
+      `const exports = module.exports = {}; ${rawCode}; return module.exports`,
     )(_require, {});
     plugin.path = path || `${pluginsFolder}/${plugin.id}.js`;
     return plugin;
