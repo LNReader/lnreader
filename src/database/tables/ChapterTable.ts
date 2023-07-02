@@ -17,5 +17,5 @@ export const createChapterTableQuery = `
 export const createChapterNovelIdIndexQuery = `
     CREATE INDEX
     IF NOT EXISTS
-    chapterNovelIdIndex ON chapters(novelId)
+    chapterNovelIdIndex ON Chapter(novelId)
 `;
