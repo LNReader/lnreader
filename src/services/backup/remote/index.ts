@@ -13,6 +13,7 @@ import {
   versionTask,
 } from './backupTasks';
 import {
+  checkAppVersion,
   restoreCategory,
   restoreChapter,
   restoreDownload,
@@ -211,6 +212,7 @@ export const remoteRestore = async (ipv4: string, port: string) => {
         string,
         (responsePackage: ResponsePackage) => Promise<void>
       > = {
+        'Version': checkAppVersion,
         'Category': restoreCategory,
         'Novel': restoreNovel,
         'NovelCategory': restoreNovelCategory,
