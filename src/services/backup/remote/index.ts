@@ -10,6 +10,7 @@ import {
   pluginTask,
   settingTask,
   themeTask,
+  versionTask,
 } from './backupTasks';
 import {
   restoreCategory,
@@ -46,6 +47,7 @@ export const remoteBackup = async (ipv4: string, port: string) => {
 
     const remoteBackupBackgroundAction = async (taskData: any) => {
       const taskList: Array<() => Promise<BackupTask>> = [
+        versionTask,
         categoryTask,
         novelTask,
         novelCoverTask,

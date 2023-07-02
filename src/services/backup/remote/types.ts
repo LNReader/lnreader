@@ -1,4 +1,5 @@
 export enum DataFilePath {
+  Version = 'Version.json',
   Category = 'Category.json',
   Novel = 'Novel.json',
   NovelCatgory = 'NovelCategory.json',
@@ -18,6 +19,7 @@ export enum RequestType {
 }
 
 export enum TaskType {
+  Version = 'Version',
   Category = 'Category',
   Novel = 'Novel',
   NovelCover = 'NovelCover',

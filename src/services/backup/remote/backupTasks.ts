@@ -1,7 +1,7 @@
 import { txnErrorCallback } from '@database/utils/helpers';
 import * as SQLite from 'expo-sqlite';
 import RNFS, { ReadDirItem } from 'react-native-fs';
-
+import { appVersion } from '@utils/versionUtils';
 import { ChapterInfo, NovelInfo } from '@database/types';
 import { getChapterFromDB } from '@database/queries/ChapterQueries';
 import { pluginsFolder } from '@plugins/pluginManager';
@@ -17,6 +17,22 @@ import { MMKVStorage } from '@utils/mmkv/mmkv';
 
 const db = SQLite.openDatabase('lnreader.db');
 const downloadDirectoryPath = `${RNFS.DownloadDirectoryPath}/LNReader`;
+
+export const versionTask = (): Promise<BackupTask> => {
+  return new Promise(resolve => {
+    const requestPackage: RequestPackage = {
+      taskType: TaskType.Version,
+      content: {
+        version: appVersion,
+      },
+      relative_path: DataFilePath.Version,
+    };
+    resolve({
+      taskType: TaskType.Version,
+      subtasks: [async () => requestPackage],
+    });
+  });
+};
 
 export const categoryTask = (): Promise<BackupTask> => {
   return new Promise(resolve => {
