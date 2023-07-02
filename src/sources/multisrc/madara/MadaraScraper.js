@@ -92,7 +92,7 @@ class MadaraScraper {
       loadedCheerio('.summary_image > a > img').attr('src') ||
       defaultCoverUri;
 
-    loadedCheerio('.post-content_item' || '.post-content').each(function () {
+    loadedCheerio('.post-content_item, .post-content').each(function () {
       const detailName = loadedCheerio(this).find('h5').text().trim();
       const detail = loadedCheerio(this).find('.summary-content').text().trim();
 
