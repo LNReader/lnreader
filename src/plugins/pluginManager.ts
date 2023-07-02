@@ -19,7 +19,6 @@ const packages: Record<string, any> = {
   'cheerio': cheerio,
   'dayjs': dayjs,
   '@libs/novelStatus': NovelStatus,
-  '@libs/languages': Languages,
   '@libs/fetchFile': fetchFile,
   '@libs/parseMadaraDate': parseMadaraDate,
   '@libs/isAbsoluteUrl': isUrlAbsolute,
