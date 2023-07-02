@@ -208,8 +208,8 @@ const ChapterContent = ({ route, navigation }) => {
   const scrollTo = useCallback(
     offsetY => {
       requestAnimationFrame(() => {
-        webViewRef?.current.injectJavaScript(`(()=>{
-          window.scrollTo({top:${offsetY},behavior:'smooth',})
+        webViewRef?.current?.injectJavaScript(`(()=>{
+          window.scrollTo({top:${offsetY},behavior:'smooth'})
         })()`);
       });
     },
