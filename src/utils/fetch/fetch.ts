@@ -9,8 +9,8 @@ export const fetchApi = async (
   pluginId?: string,
 ): Promise<Response> => {
   const headers = new Headers({
-    ...init?.headers,
     'User-Agent': defaultUserAgentString,
+    ...init?.headers,
   });
 
   if (pluginId) {
