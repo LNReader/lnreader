@@ -73,24 +73,26 @@ export const novelCoverTask = (): Promise<BackupTask> => {
   return new Promise(resolve => {
     db.transaction(tx => {
       tx.executeSql(
-        'SELECT * FROM Novel WHERE Cover NOT LIKE "http%"',
+        'SELECT * FROM Novel WHERE cover NOT LIKE "http%"',
         [],
         (txObj, { rows }) => {
-          const subtasks = rows._array.map((novel: NovelInfo) => {
-            const subtask = async () => {
-              let base64 = '';
-              if (novel.cover) {
-                base64 = await RNFS.readFile(novel.cover, 'base64');
-              }
-              return {
-                taskType: TaskType.NovelCover,
-                content: base64,
-                encoding: 'base64',
-                relative_path: `${novel.pluginId}/${novel.id}/Cover.jpg`,
-              } as RequestPackage;
-            };
-            return subtask;
-          });
+          const subtasks = rows._array
+            .filter((novel: NovelInfo) => novel.cover)
+            .map((novel: NovelInfo) => {
+              const subtask = async () => {
+                let base64 = '';
+                if (novel.cover) {
+                  base64 = await RNFS.readFile(novel.cover, 'base64');
+                }
+                return {
+                  taskType: TaskType.NovelCover,
+                  content: base64,
+                  encoding: 'base64',
+                  relative_path: `${novel.pluginId}/${novel.id}/Cover.jpg`,
+                } as RequestPackage;
+              };
+              return subtask;
+            });
           resolve({
             taskType: TaskType.NovelCover,
             subtasks: subtasks,
