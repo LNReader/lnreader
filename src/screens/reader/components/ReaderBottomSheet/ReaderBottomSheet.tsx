@@ -52,6 +52,7 @@ const GeneralTab: React.FC = () => {
     swipeGestures = false,
     removeExtraParagraphSpacing = false,
     addChapterNameInReader = false,
+    bionicReading = false,
   } = useSettingsV1();
 
   return (
@@ -152,6 +153,14 @@ const GeneralTab: React.FC = () => {
         value={addChapterNameInReader}
         theme={theme}
       />
+      <ReaderSheetPreferenceItem
+        label={getString('readerScreen.bottomSheet.bionicReading')}
+        onPress={() =>
+          dispatch(setAppSettings('bionicReading', !bionicReading))
+        }
+        value={bionicReading}
+        theme={theme}
+      />
     </View>
   );
 };
@@ -211,7 +220,7 @@ const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
   );
 
   return (
-    <BottomSheet bottomSheetRef={bottomSheetRef} snapPoints={[360, 560]}>
+    <BottomSheet bottomSheetRef={bottomSheetRef} snapPoints={[360, 600]}>
       <BottomSheetView
         style={[styles.bottomSheetContainer, { backgroundColor }]}
       >

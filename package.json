@@ -73,7 +73,8 @@
     "react-redux": "^7.2.6",
     "redux-persist": "^6.0.0",
     "rn-fetch-blob": "^0.12.0",
-    "sanitize-html": "^2.7.0"
+    "sanitize-html": "^2.7.0",
+    "text-vide": "^1.7.0"
   },
   "devDependencies": {
     "@babel/core": "^7.21.4",
