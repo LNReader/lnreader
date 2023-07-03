@@ -209,7 +209,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                       type: 'hide',
                     })}>
                       <chapter 
-                        data-plugin-id='${novel?.pluginId}'
+                        data-plugin-id='${novel.pluginId}'
                         data-novel-id='${chapter.novelId}'
                         data-chapter-id='${chapter.id}'
                       >
@@ -233,6 +233,9 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                           )}</div>`
                     }
                     <script>
+                      const pluginId = '${novel.pluginId}';
+                      const novelId = '${chapter.novelId}';
+                      const chapterId = '${chapter.id}';
                       if(!document.querySelector("input[offline]") && ${
                         plugin?.protected
                       }){
