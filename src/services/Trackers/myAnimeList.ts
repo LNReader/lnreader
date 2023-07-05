@@ -1,9 +1,10 @@
 import * as Linking from 'expo-linking';
 import * as WebBrowser from 'expo-web-browser';
 import qs from 'qs';
+import { MYANIMELIST_CLIENT_ID } from '@env';
 import { createTracker, type UserListStatus } from './index';
 
-const clientId = process.env.MYANIMELIST_CLIENT_ID;
+const clientId = MYANIMELIST_CLIENT_ID;
 const baseOAuthUrl = 'https://myanimelist.net/v1/oauth2/authorize';
 const tokenUrl = 'https://myanimelist.net/v1/oauth2/token';
 const baseApiUrl = 'https://api.myanimelist.net/v2';

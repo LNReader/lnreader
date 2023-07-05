@@ -88,6 +88,7 @@
       "lineHeight": "Line Height",
       "fontStyle": "Font style",
       "fullscreen": "Fullscreen",
+      "bionicReading": "Bionic Reading",
       "renderHml": "Render HTML",
       "autoscroll": "AutoScroll",
       "verticalSeekbar": "Vertical Seekbar",
@@ -159,7 +160,7 @@
         "refreshMetadataDescription": "Check for new cover and details when updating library",
         "updateTime": "Show last update time",
         "autoDownload": "Auto-download",
-        "epub":"EPUB",
+        "epub": "EPUB",
         "epubLocation": "EPUB Location",
         "epubLocationDescription": "The place where you open and export your EPUB files.",
         "downloadNewChapters": "Download new chapters",
@@ -184,7 +185,7 @@
         "openJSFile": "Open JS file",
         "notSaved": "Not saved",
         "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])",
-        "jsHint":"Hint: You have access to following variables: html, novelName, chapterName, sourceId, chapterId, novelId"
+        "jsHint": "Hint: You have access to following variables: html, novelName, chapterName, sourceId, chapterId, novelId"
       },
       "browseSettings": "Browse Settings",
       "browseSettingsScreen": {

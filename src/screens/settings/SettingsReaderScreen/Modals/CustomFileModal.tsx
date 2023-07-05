@@ -80,7 +80,7 @@ const CustomFileModal: React.FC<CustomCSSModalProps> = ({
           <TextInput
             theme={{ colors: { ...theme } }}
             underlineColor={theme.outline}
-            value={customFile}
+            defaultValue={customFile}
             onChangeText={setCustomFile}
             mode="outlined"
             placeholder={placeholder}
