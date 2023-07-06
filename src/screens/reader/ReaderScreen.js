@@ -86,6 +86,7 @@ const ChapterContent = ({ route, navigation }) => {
     autoScrollOffset = null,
     verticalSeekbar = true,
     removeExtraParagraphSpacing = false,
+    bionicReading = false,
   } = useSettings();
   const { incognitoMode } = useLibrarySettings();
 
@@ -207,8 +208,8 @@ const ChapterContent = ({ route, navigation }) => {
   const scrollTo = useCallback(
     offsetY => {
       requestAnimationFrame(() => {
-        webViewRef?.current.injectJavaScript(`(()=>{
-          window.scrollTo({top:${offsetY},behavior:'smooth',})
+        webViewRef?.current?.injectJavaScript(`(()=>{
+          window.scrollTo({top:${offsetY},behavior:'smooth'})
         })()`);
       });
     },
@@ -316,6 +317,7 @@ const ChapterContent = ({ route, navigation }) => {
 
   const chapterText = sanitizeChapterText(chapter.chapterText, {
     removeExtraParagraphSpacing,
+    bionicReading,
     sourceId: sourceId,
   });
   const openDrawer = () => {
