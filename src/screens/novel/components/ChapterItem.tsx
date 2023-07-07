@@ -1,5 +1,6 @@
 import React, { memo, ReactNode, useState } from 'react';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { View, StyleSheet, Pressable } from 'react-native';
+import { Text } from 'react-native-paper';
 import color from 'color';
 
 import { Row } from '../../../components/Common';
@@ -73,10 +74,10 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
       onLongPress={() => onSelectLongPress?.(chapter)}
       android_ripple={{ color: theme.rippleColor }}
     >
+      {left && <View style={styles.flex}>{left}</View>}
       <Row style={styles.row}>
-        {left}
         {!!bookmark && <ChapterBookmarkButton theme={theme} />}
-        <View>
+        <View style={styles.textContainer}>
           {isUpdateCard && (
             <Text
               style={[
@@ -131,16 +132,18 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
           </View>
         </View>
       </Row>
-      <DownloadButton
-        downloadQueue={downloadQueue}
-        chapter={chapter}
-        theme={theme}
-        deleteChapter={deleteChapter}
-        downloadChapter={downloadChapter}
-        hideDeleteChapterMenu={hideDeleteChapterMenu}
-        showDeleteChapterMenu={showDeleteChapterMenu}
-        deleteChapterMenuVisible={deleteChapterMenuVisible}
-      />
+      <View style={styles.flex}>
+        <DownloadButton
+          downloadQueue={downloadQueue}
+          chapter={chapter}
+          theme={theme}
+          deleteChapter={deleteChapter}
+          downloadChapter={downloadChapter}
+          hideDeleteChapterMenu={hideDeleteChapterMenu}
+          showDeleteChapterMenu={showDeleteChapterMenu}
+          deleteChapterMenuVisible={deleteChapterMenuVisible}
+        />
+      </View>
     </Pressable>
   );
 };
@@ -155,13 +158,28 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    columnGab: 8,
   },
   text: {
     fontSize: 12,
   },
   textRow: {
     flexDirection: 'row',
-    marginTop: 5,
   },
-  row: { flex: 1, overflow: 'hidden' },
+  flex: {
+    flexBasis: 'auto',
+    flexShrink: 9,
+  },
+  textContainer: {
+    flex: 1,
+    marginVertical: '10%',
+    height: '80%',
+    justifyContent: 'space-evenly',
+  },
+  row: {
+    flexBasis: 10,
+    flexGrow: 1,
+    overflow: 'hidden',
+    height: '100%',
+  },
 });
