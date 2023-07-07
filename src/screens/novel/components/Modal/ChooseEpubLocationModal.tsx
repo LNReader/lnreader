@@ -32,7 +32,7 @@ const ChooseEpubLocationModal: React.FC<ChooseEpubLocationModalProps> = ({
     epubUseCustomCSS = false,
     epubUseCustomJS = false,
   } = useSettings();
-  const saveConfig = dispatchConfig ? true : epubLocation === '';
+  const saveConfig = dispatchConfig || epubLocation === '';
   const dispatch = useDispatch();
 
   const [uri, setUri] = useState(epubLocation);
