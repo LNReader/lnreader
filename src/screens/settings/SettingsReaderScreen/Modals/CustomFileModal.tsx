@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { KeyboardAvoidingView, StyleSheet, Text, View } from 'react-native';
 import { Modal, overlay, TextInput } from 'react-native-paper';
 import { Button } from '@components/index';
@@ -35,6 +35,7 @@ const CustomFileModal: React.FC<CustomCSSModalProps> = ({
   ),
   placeholder = '',
 }) => {
+  const [text, setText] = useState(customFile);
   const dispatch = useAppDispatch();
   let mimeType: string;
   if (type === 'CSS') {
@@ -51,17 +52,21 @@ const CustomFileModal: React.FC<CustomCSSModalProps> = ({
       });
       if (rawCSS.type === 'success') {
         let css = await StorageAccessFramework.readAsStringAsync(rawCSS.uri);
-        setCustomFile(css);
+        setText(css);
       }
     } catch (error: any) {
       showToast(error.message);
     }
   };
+  const dismiss = () => {
+    setCustomFile(text.trim());
+    onDismiss();
+  };
 
   return (
     <Modal
       visible={visible}
-      onDismiss={onDismiss}
+      onDismiss={dismiss}
       contentContainerStyle={[
         styles.modalContainer,
         { backgroundColor: overlay(2, theme.surface) },
@@ -79,8 +84,8 @@ const CustomFileModal: React.FC<CustomCSSModalProps> = ({
         <TextInput
           theme={{ colors: { ...theme } }}
           underlineColor={theme.outline}
-          defaultValue={customFile}
-          onChangeText={setCustomFile}
+          value={text}
+          onChangeText={setText}
           mode="outlined"
           placeholder={placeholder}
           placeholderTextColor={theme.onSurfaceVariant}
@@ -94,8 +99,8 @@ const CustomFileModal: React.FC<CustomCSSModalProps> = ({
         <View style={styles.customCSSButtons}>
           <Button
             onPress={() => {
-              dispatch(setReaderSettings(`custom${type}`, customFile.trim()));
-              onDismiss();
+              dispatch(setReaderSettings(`custom${type}`, text.trim()));
+              dismiss();
             }}
             style={styles.button}
             title={getString('common.save')}
