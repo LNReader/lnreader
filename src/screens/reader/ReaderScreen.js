@@ -86,6 +86,7 @@ const ChapterContent = ({ route, navigation }) => {
     autoScrollOffset = null,
     verticalSeekbar = true,
     removeExtraParagraphSpacing = false,
+    bionicReading = false,
   } = useSettings();
   const { incognitoMode } = useLibrarySettings();
 
@@ -158,7 +159,7 @@ const ChapterContent = ({ route, navigation }) => {
       if (!(id && (result = await getChapterFromDb(id)))) {
         result = await fetchChapter(sourceId, novelUrl, chapterUrl);
       }
-      setChapter(result);
+      setChapter({ ...result, bookmark });
     } catch (e) {
       setError(e.message);
       showToast(e.message);
@@ -207,8 +208,8 @@ const ChapterContent = ({ route, navigation }) => {
   const scrollTo = useCallback(
     offsetY => {
       requestAnimationFrame(() => {
-        webViewRef?.current.injectJavaScript(`(()=>{
-          window.scrollTo({top:${offsetY},behavior:'smooth',})
+        webViewRef?.current?.injectJavaScript(`(()=>{
+          window.scrollTo({top:${offsetY},behavior:'smooth'})
         })()`);
       });
     },
@@ -316,6 +317,7 @@ const ChapterContent = ({ route, navigation }) => {
 
   const chapterText = sanitizeChapterText(chapter.chapterText, {
     removeExtraParagraphSpacing,
+    bionicReading,
     sourceId: sourceId,
   });
   const openDrawer = () => {
@@ -330,6 +332,9 @@ const ChapterContent = ({ route, navigation }) => {
   if (error) {
     return <ErrorScreenV2 error={error} />;
   }
+
+  const bookmarkChapter = () =>
+    setChapter(prevVal => ({ ...prevVal, bookmark: !prevVal?.bookmark }));
 
   return (
     <>
@@ -357,7 +362,8 @@ const ChapterContent = ({ route, navigation }) => {
       {!hidden && (
         <>
           <ReaderAppbar
-            bookmark={bookmark}
+            bookmark={chapter.bookmark}
+            bookmarkChapter={bookmarkChapter}
             novelName={novelName}
             chapterId={chapterId}
             chapterName={chapterName || chapter.chapterName}

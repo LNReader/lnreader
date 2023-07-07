@@ -73,6 +73,7 @@ export const initialState = {
   verticalSeekbar: true,
   removeExtraParagraphSpacing: false,
   addChapterNameInReader: false,
+  bionicReading: false,
 
   reader: {
     theme: '#292832',

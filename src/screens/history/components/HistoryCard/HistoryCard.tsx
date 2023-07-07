@@ -61,17 +61,32 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
       style={styles.container}
       android_ripple={{ color: theme.rippleColor }}
       onPress={() =>
-        handleNavigateToNovel({
-          sourceId,
-          novelId,
-          novelUrl,
-          novelName,
-          novelCover,
-        })
+        handleNavigateToChapter(
+          { sourceId, novelName, novelUrl },
+          {
+            novelId,
+            chapterId,
+            chapterUrl,
+            chapterName,
+            bookmark,
+          },
+        )
       }
     >
       <View style={styles.imageAndNameContainer}>
-        <FastImage source={{ uri: novelCover }} style={styles.cover} />
+        <Pressable
+          onPress={() =>
+            handleNavigateToNovel({
+              sourceId,
+              novelId,
+              novelUrl,
+              novelName,
+              novelCover,
+            })
+          }
+        >
+          <FastImage source={{ uri: novelCover }} style={styles.cover} />
+        </Pressable>
         <View style={styles.detailsContainer}>
           <Text
             numberOfLines={2}
@@ -89,22 +104,6 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
           name="delete-outline"
           theme={theme}
           onPress={() => handleRemoveFromHistory(historyId)}
-        />
-        <IconButtonV2
-          name="play"
-          onPress={() =>
-            handleNavigateToChapter(
-              { sourceId, novelName, novelUrl },
-              {
-                novelId,
-                chapterId,
-                chapterUrl,
-                chapterName,
-                bookmark,
-              },
-            )
-          }
-          theme={theme}
         />
       </View>
     </Pressable>
@@ -135,7 +134,6 @@ const styles = StyleSheet.create({
   novelName: {
     marginBottom: 4,
   },
-  chapterName: {},
   imageAndNameContainer: {
     flex: 1,
     flexDirection: 'row',

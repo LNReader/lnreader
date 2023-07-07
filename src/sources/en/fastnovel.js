@@ -78,7 +78,7 @@ const parseNovelAndChapters = async novelUrl => {
   const novelId = loadedCheerio('#rating').attr('data-novel-id');
 
   const getChapters = async id => {
-    const chapterListUrl = baseUrl + '/ajax/chapter-option?novelId=' + id;
+    const chapterListUrl = baseUrl + '/ajax/chapter-archive?novelId=' + id;
 
     const data = await fetch(chapterListUrl);
     const chapters = await data.text();

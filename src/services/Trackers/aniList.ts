@@ -1,5 +1,6 @@
 import * as Linking from 'expo-linking';
 import * as WebBrowser from 'expo-web-browser';
+import { ANILIST_CLIENT_ID } from '@env';
 import {
   createTracker,
   type AuthenticationResult,
@@ -7,7 +8,7 @@ import {
 } from './index';
 
 const apiEndpoint = 'https://graphql.anilist.co';
-const clientId = process.env.ANILIST_CLIENT_ID;
+const clientId = ANILIST_CLIENT_ID;
 const authUrl = `https://anilist.co/api/v2/oauth/authorize?client_id=${clientId}&response_type=token`;
 const redirectUri = Linking.createURL('');
 const searchQuery = `query($search: String) {

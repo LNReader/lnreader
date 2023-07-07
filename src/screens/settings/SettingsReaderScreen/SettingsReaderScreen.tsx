@@ -1,12 +1,13 @@
 import { ScrollView, View } from 'react-native';
-import React from 'react';
+import React, { useMemo } from 'react';
+import { textVide } from 'text-vide';
 
 import { useNavigation } from '@react-navigation/native';
 import WebView from 'react-native-webview';
 
 import { Appbar, List } from '@components/index';
 
-import { useReaderSettings } from '@redux/hooks';
+import { useReaderSettings, useSettingsV1 } from '@redux/hooks';
 import { useTheme } from '@hooks/useTheme';
 import { getString } from '@strings/translations';
 
@@ -24,6 +25,18 @@ const SettingsReaderScreen = () => {
   let { bottom } = useSafeAreaInsets();
 
   const readerSettings = useReaderSettings();
+
+  const { bionicReading } = useSettingsV1();
+
+  const html = useMemo(() => {
+    let tempHtml = dummyHTML;
+    if (bionicReading) {
+      tempHtml = textVide(tempHtml);
+    }
+
+    return tempHtml;
+  }, [bionicReading]);
+
   const READER_HEIGHT = 280;
   const dummyChapterInfo = {
     sourceId: 11,
@@ -83,7 +96,7 @@ const SettingsReaderScreen = () => {
                   data-novel-id='${dummyChapterInfo.novelId}'
                   data-chapter-id='${dummyChapterInfo.chapterId}'
                 >
-                  ${dummyHTML}
+                  ${html}
                 </chapter>
                 <script>
                   async function fn(){

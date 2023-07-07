@@ -27,6 +27,7 @@ const GeneralSettings: React.FC = () => {
     autoScroll = false,
     autoScrollInterval = 10,
     autoScrollOffset = null,
+    bionicReading,
   } = useSettingsV1();
 
   const areAutoScrollSettingsDefault =
@@ -40,6 +41,14 @@ const GeneralSettings: React.FC = () => {
       <List.SubHeader theme={theme}>
         {getString('moreScreen.settingsScreen.generalSettings')}
       </List.SubHeader>
+      <SwitchItem
+        label={getString('readerScreen.bottomSheet.bionicReading')}
+        value={bionicReading}
+        onPress={() =>
+          dispatch(setAppSettings('bionicReading', !bionicReading))
+        }
+        theme={theme}
+      />
       <SwitchItem
         label={getString('readerScreen.bottomSheet.verticalSeekbar')}
         description={getString(

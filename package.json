@@ -51,6 +51,7 @@
     "react-native": "^0.69.9",
     "react-native-background-actions": "^2.6.5",
     "react-native-device-info": "^8.4.7",
+    "react-native-dotenv": "^3.4.9",
     "react-native-easing-gradient": "^1.0.0",
     "react-native-error-boundary": "^1.1.16",
     "react-native-fast-image": "^8.5.11",
@@ -73,7 +74,8 @@
     "react-redux": "^7.2.6",
     "redux-persist": "^6.0.0",
     "rn-fetch-blob": "^0.12.0",
-    "sanitize-html": "^2.7.0"
+    "sanitize-html": "^2.7.0",
+    "text-vide": "^1.7.0"
   },
   "devDependencies": {
     "@babel/core": "^7.21.4",

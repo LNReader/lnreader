@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { KeyboardAvoidingView, StyleSheet, Text, View } from 'react-native';
 import { Modal, overlay, TextInput } from 'react-native-paper';
 import { Button } from '@components/index';
 import { MD3ThemeType } from '@theme/types';
 import { getString } from '@strings/translations';
 import { useAppDispatch } from '@redux/hooks';
-import { setReaderSettings } from '@redux/settings/settings.actions';
 import * as DocumentPicker from 'expo-document-picker';
 import { StorageAccessFramework } from 'expo-file-system';
 import { showToast } from '@hooks/showToast';
+import { setReaderSettings } from '@redux/settings/settings.actions';
 
 interface CustomCSSModalProps {
   visible: boolean;
@@ -35,7 +35,6 @@ const CustomFileModal: React.FC<CustomCSSModalProps> = ({
   ),
   placeholder = '',
 }) => {
-  const [text, setText] = useState(customFile);
   const dispatch = useAppDispatch();
   let mimeType: string;
   if (type === 'CSS') {
@@ -52,21 +51,17 @@ const CustomFileModal: React.FC<CustomCSSModalProps> = ({
       });
       if (rawCSS.type === 'success') {
         let css = await StorageAccessFramework.readAsStringAsync(rawCSS.uri);
-        setText(css);
+        setCustomFile(css);
       }
     } catch (error: any) {
       showToast(error.message);
     }
   };
-  const dismiss = () => {
-    onDismiss();
-    setCustomFile(text);
-  };
 
   return (
     <Modal
       visible={visible}
-      onDismiss={dismiss}
+      onDismiss={onDismiss}
       contentContainerStyle={[
         styles.modalContainer,
         { backgroundColor: overlay(2, theme.surface) },
@@ -84,8 +79,8 @@ const CustomFileModal: React.FC<CustomCSSModalProps> = ({
         <TextInput
           theme={{ colors: { ...theme } }}
           underlineColor={theme.outline}
-          value={text}
-          onChangeText={setText}
+          defaultValue={customFile}
+          onChangeText={setCustomFile}
           mode="outlined"
           placeholder={placeholder}
           placeholderTextColor={theme.onSurfaceVariant}
@@ -99,8 +94,8 @@ const CustomFileModal: React.FC<CustomCSSModalProps> = ({
         <View style={styles.customCSSButtons}>
           <Button
             onPress={() => {
-              dispatch(setReaderSettings(`custom${type}`, text.trim()));
-              dismiss();
+              dispatch(setReaderSettings(`custom${type}`, customFile.trim()));
+              onDismiss();
             }}
             style={styles.button}
             title={getString('common.save')}

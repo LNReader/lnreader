@@ -63,10 +63,12 @@ const parseNovelAndChapters = async novelUrl => {
   novel.status = loadedCheerio('.status').text().trim();
 
   novel.genre = loadedCheerio('.series-genres')
-    .prop('innerHTML')
-    .replace(/<.*?>(.*?)<.*?>/g, '$1,')
-    .slice(0, -1);
+    .children('a')
+    .map((i, el) => loadedCheerio(el).text())
+    .toArray()
+    .join(',');
 
+  loadedCheerio('.series-synops div').remove();
   novel.summary = loadedCheerio('.series-synops').text().trim();
 
   let chapters = [];
@@ -76,8 +78,8 @@ const parseNovelAndChapters = async novelUrl => {
       .find('a span')
       .first()
       .text()
-      .replace(`${novel.novelName} – `, '')
-      .replace('Bahasa Indonesia', '')
+      .replace(/.*?(Chapter.|[0-9])/g, '$1')
+      .replace(/Bahasa Indonesia/g, '')
       .replace(/\s+/g, ' ')
       .trim();
 

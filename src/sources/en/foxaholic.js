@@ -85,10 +85,7 @@ const parseNovelAndChapters = async novelUrl => {
     }
   });
 
-  loadedCheerio('.description-summary > div.summary__content')
-    .find('em')
-    .remove();
-
+  loadedCheerio('.description-summary > div.summary__content em').remove();
   novel.summary = loadedCheerio('.description-summary > div.summary__content')
     .text()
     .trim();

@@ -72,6 +72,7 @@ export interface StringMap {
   'readerScreen.bottomSheet.lineHeight': 'string';
   'readerScreen.bottomSheet.fontStyle': 'string';
   'readerScreen.bottomSheet.fullscreen': 'string';
+  'readerScreen.bottomSheet.bionicReading': 'string';
   'readerScreen.bottomSheet.renderHml': 'string';
   'readerScreen.bottomSheet.autoscroll': 'string';
   'readerScreen.bottomSheet.verticalSeekbar': 'string';
