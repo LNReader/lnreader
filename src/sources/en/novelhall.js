@@ -56,18 +56,16 @@ const parseNovelAndChapters = async novelUrl => {
     .text()
     ?.replace('back<<', '');
 
-  novel.author = loadedCheerio('span.blue')
-    .first()
+  loadedCheerio('p[style="display: none;"]').remove();
+  novel.author = loadedCheerio('span.blue:contains("Author")')
     .text()
-    .replace('Author：', '');
+    .replace(/Author：|\n+\t+/g, '');
 
   novel.genre = loadedCheerio('a.red').text();
 
   novel.artist = null;
 
-  novel.status = loadedCheerio('span.blue')
-    .first()
-    .next()
+  novel.status = loadedCheerio('span.blue:contains("Status")')
     .text()
     .replace('Status：', '');
 
