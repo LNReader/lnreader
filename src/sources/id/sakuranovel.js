@@ -83,7 +83,7 @@ const parseNovelAndChapters = async novelUrl => {
         .trim(),
     );
 
-    const chapterName = titles.replace(`${chapName}`, '');
+    const chapterName = titles.replace(`${novel.novelName}`, '');
     const releaseDate = loadedCheerio(this).find('span:last').text();
     const chapterUrl = loadedCheerio(this).attr('href');
 
