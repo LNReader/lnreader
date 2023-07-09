@@ -1,5 +1,6 @@
 import * as cheerio from 'cheerio';
 import { fetchHtml } from '@utils/fetch/fetch';
+import { startCase } from 'lodash-es';
 
 const sourceId = 87;
 const sourceName = 'IndoWebNovel';
@@ -50,13 +51,7 @@ const parseNovelAndChapters = async novelUrl => {
     novelUrl,
   };
 
-  novel.novelName = loadedCheerio('.series-title h2').text().trim();
-  const chapName = novel.novelName
-    .split(' ')
-    .map(chap => {
-      return chap[0].toUpperCase() + chap.slice(1);
-    })
-    .join(' ');
+  novel.novelName = startCase(loadedCheerio('.series-title h2').text().trim());
 
   novel.novelCover = loadedCheerio('.series-thumb img').attr('src');
 
@@ -85,20 +80,15 @@ const parseNovelAndChapters = async novelUrl => {
   let chapters = [];
 
   loadedCheerio('.series-chapterlist li a').each(function () {
-    let titles = loadedCheerio(this)
-      .attr('title')
-      .replace(/Bahasa Indonesia/g, '')
-      .replace(/\s\s+/g, ' ')
-      .trim();
+    let titles = startCase(
+      loadedCheerio(this)
+        .attr('title')
+        .replace(/Bahasa Indonesia/g, '')
+        .replace(/\s\s+/g, ' ')
+        .trim(),
+    );
 
-    let titlename = titles
-      .split(' ')
-      .map(title => {
-        return title[0].toUpperCase() + title.slice(1);
-      })
-      .join(' ');
-
-    const chapterName = titlename.replace(`${chapName}`, '');
+    const chapterName = titles.replace(`${chapName}`, '');
     const releaseDate = loadedCheerio(this).find('span:last').text();
     const chapterUrl = loadedCheerio(this).attr('href');
 

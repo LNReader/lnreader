@@ -334,7 +334,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     chapterName,
     chapterText,
   };
-  console.log(chapter);
+
   return chapter;
 };
 
