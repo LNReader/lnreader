@@ -1,9 +1,9 @@
 {
   "common": {
-    "cancel": "Cancel",
-    "ok": "Ok",
-    "save": "Save",
-    "clear": "Clear",
+    "cancel": "Ακύρωση",
+    "ok": "Οκ",
+    "save": "Αποθήκευση",
+    "clear": "Εκκαθάριση",
     "reset": "Reset",
     "search": "Search",
     "install": "Install",
