@@ -88,6 +88,7 @@
       "lineHeight": "Altezza riga",
       "fontStyle": "Stile del font",
       "fullscreen": "Schermo Intero",
+      "bionicReading": "Bionic Reading",
       "renderHml": "Renderizza HTML",
       "autoscroll": "Scorrimento automatico",
       "verticalSeekbar": "Barra Verticale",
@@ -128,6 +129,14 @@
         "validChapterName": "Inserisci un nome di capitolo valido",
         "validChapterNumber": "Inserisci un numero di capitolo valido"
       }
+    },
+    "convertToEpubModal": {
+      "chooseLocation": "Select EPUB storage directory",
+      "pathToFolder": "Path to EPUB save folder",
+      "useReaderTheme": "Use reader theme",
+      "useCustomCSS": "Use customCSS",
+      "useCustomJS": "Use customJS",
+      "useCustomJSWarning": "May not be supported by all EPUB readers"
     }
   },
   "more": "Altro",
@@ -155,6 +164,9 @@
         "refreshMetadataDescription": "Controlla nuove copertine e dettagli durante l'aggiornamento della libreria",
         "updateTime": "Mostra l'orario dell'ultimo aggiornamento",
         "autoDownload": "Scarica automaticamente",
+        "epub": "EPUB",
+        "epubLocation": "EPUB Location",
+        "epubLocationDescription": "The place where you open and export your EPUB files.",
         "downloadNewChapters": "Scarica nuovi capitoli",
         "disableHapticFeedback": "Disattiva vibrazione"
       },
@@ -176,7 +188,8 @@
         "openCSSFile": "Apri file CSS",
         "openJSFile": "Apri file JS",
         "notSaved": "Non salvato",
-        "cssHint": "Suggerimento: è possibile creare una configurazione CSS specifica con l'ID sorgente. (#sourceId-[SOURCEID])"
+        "cssHint": "Suggerimento: è possibile creare una configurazione CSS specifica con l'ID sorgente. (#sourceId-[SOURCEID])",
+        "jsHint": "Hint: You have access to following variables: html, novelName, chapterName, sourceId, chapterId, novelId"
       },
       "browseSettings": "Impostazioni Esplora",
       "browseSettingsScreen": {

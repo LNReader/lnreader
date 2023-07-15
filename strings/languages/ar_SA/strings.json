@@ -34,7 +34,7 @@
         "dateAdded": "تاريخ الإضافة",
         "alphabetically": "حسب الترتيب الأبجدي",
         "totalChapters": "مجموع الفصول",
-        "download": "تم التنزيل",
+        "download": "منزّل",
         "unread": "غير مقروء",
         "lastRead": "آخر قراءة",
         "lastUpdated": "آخر تحديث"
@@ -88,6 +88,7 @@
       "lineHeight": "ارتفاع الخط",
       "fontStyle": "نمط الخط",
       "fullscreen": "تكبير الشاشة",
+      "bionicReading": "Bionic Reading",
       "renderHml": "عرض HTML",
       "autoscroll": "تدوير تلقائي",
       "verticalSeekbar": "شريط البحث العمودي",
@@ -98,7 +99,7 @@
       "useChapterDrawerSwipeNavigation": "مرر يمينا لفتح القائمة الجانبية",
       "removeExtraSpacing": "إزالة المسافات الزائدة بين الفقرات",
       "volumeButtonsScroll": "تمرير أزرار الصوت",
-      "scrollAmount": "Scroll amount (screen height by default)",
+      "scrollAmount": "مقدار التمرير (افتراضيًا طول الشاشة)",
       "showSwipeMargins": "إظهار هوامش التمرير"
     },
     "drawer": {
@@ -128,6 +129,14 @@
         "validChapterName": "أدخل اسم فصل صحيح",
         "validChapterNumber": "أدخل رَقْم فصل صحيح"
       }
+    },
+    "convertToEpubModal": {
+      "chooseLocation": "Select EPUB storage directory",
+      "pathToFolder": "مسار مجلد لحفظ EPUB",
+      "useReaderTheme": "Use reader theme",
+      "useCustomCSS": "Use customCSS",
+      "useCustomJS": "Use customJS",
+      "useCustomJSWarning": "May not be supported by all EPUB readers"
     }
   },
   "more": "المزيد",
@@ -141,11 +150,11 @@
         "itemsPerRow": "العناصر في كل صف",
         "itemsPerRowLibrary": "العناصر لكل صف في المكتبة",
         "novelBadges": "شارات الرواية",
-        "novelSort": "نوع الرواية",
-        "updateLibrary": "تحديث المكتبة عند الإطلاق",
+        "novelSort": "فرز الروايات",
+        "updateLibrary": "تحديث المكتبة عند تشغيل التطبيق",
         "useFAB": "استخدام FAB في المكتبة",
         "novel": "رواية",
-        "chapterSort": "التصنيف الافتراضي",
+        "chapterSort": "الفرز الافتراضي للفصول",
         "bySource": "حسب المصدر",
         "asc": "ترتيب تصاعدي",
         "desc": "ترتيب تنازلي",
@@ -155,6 +164,9 @@
         "refreshMetadataDescription": "تحقق من الغلاف الجديد ",
         "updateTime": "وقت آخر تحديث",
         "autoDownload": "التحميل التلقائي",
+        "epub": "EPUB",
+        "epubLocation": "موقع EPUB",
+        "epubLocationDescription": "مكان لحفظ ملفات EPUB وتصديرها.",
         "downloadNewChapters": "تحميل فصول جديدة",
         "disableHapticFeedback": "تعطيل الاهتزاز"
       },
@@ -173,10 +185,11 @@
         "deleteCustomTheme": "حذف السمة المخصصة",
         "customCSS": "تنسيقات CSS مخصصة",
         "customJS": "Custom JS",
-        "openCSSFile": "Open CSS file",
-        "openJSFile": "Open JS file",
-        "notSaved": "Not saved",
-        "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])"
+        "openCSSFile": "افتح ملف CSS",
+        "openJSFile": "فتح ملف JS",
+        "notSaved": "لم يُحفظ",
+        "cssHint": "تلميح: يمكنك إنشاء تضبيطات CSS مخصصة لمصدر محدد باستخدام معرفه. (#sourceId-[SOURCEID])",
+        "jsHint": "تلميح: يمكنك الوصول إلى المتغيرات التالية واستخدامها: html, novelName, chapterName, sourceId, chapterId, novelId"
       },
       "browseSettings": "تصفح الإعدادات",
       "browseSettingsScreen": {

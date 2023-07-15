@@ -88,6 +88,7 @@
       "lineHeight": "Satır Yüksekliği",
       "fontStyle": "Yazı tipi",
       "fullscreen": "Tam ekran",
+      "bionicReading": "Biyonik Okuma",
       "renderHml": "HTML'yi Render'le",
       "autoscroll": "Otomatik Kaydırma",
       "verticalSeekbar": "Dikey Arama Çubuğu",
@@ -128,6 +129,14 @@
         "validChapterName": "Geçerli bir bölüm adı girin",
         "validChapterNumber": "Geçerli bir bölüm sayısı girin"
       }
+    },
+    "convertToEpubModal": {
+      "chooseLocation": "Select EPUB storage directory",
+      "pathToFolder": "EPUB dosyalarını kaydetme klasörünün yolu",
+      "useReaderTheme": "Use reader theme",
+      "useCustomCSS": "Use customCSS",
+      "useCustomJS": "Use customJS",
+      "useCustomJSWarning": "May not be supported by all EPUB readers"
     }
   },
   "more": "Daha fazla",
@@ -155,6 +164,9 @@
         "refreshMetadataDescription": "Kitaplığı güncellerken yeni kapak ve ayrıntıları denetle",
         "updateTime": "Son güncelleme süresini göster",
         "autoDownload": "Otomatik İndirme",
+        "epub": "EPUB",
+        "epubLocation": "EPUB Konumu",
+        "epubLocationDescription": "EPUB dosyalarınızı açıp, dışa aktardığınız yer.",
         "downloadNewChapters": "Yeni bölümleri indir",
         "disableHapticFeedback": "Dokunmatik geri bildirimi devre dışı bırak"
       },
@@ -176,7 +188,8 @@
         "openCSSFile": "CSS dosyası aç",
         "openJSFile": "JS dosyası aç",
         "notSaved": "Kaydedilmedi",
-        "cssHint": "İpucu: Kaynak ID'si ile kaynağa özel CSS yapılandırması oluşturabilirsiniz.\n(#kaynakId-[KAYNAKID])"
+        "cssHint": "İpucu: Kaynak ID'si ile kaynağa özel CSS yapılandırması oluşturabilirsiniz.\n(#kaynakId-[KAYNAKID])",
+        "jsHint": "İpucu: Aşağıdaki değişkenlere erişiminiz bulunmakta:\nhtml, novelName, chapterName, sourceId, chapterId, novelId"
       },
       "browseSettings": "Göz Atma Seçenekleri",
       "browseSettingsScreen": {

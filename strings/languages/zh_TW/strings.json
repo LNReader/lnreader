@@ -88,6 +88,7 @@
       "lineHeight": "行高",
       "fontStyle": "字体样式",
       "fullscreen": "全屏",
+      "bionicReading": "Bionic Reading",
       "renderHml": "渲染HTML",
       "autoscroll": "自动滚动",
       "verticalSeekbar": "垂直进度条",
@@ -128,6 +129,14 @@
         "validChapterName": "Enter a valid chapter name",
         "validChapterNumber": "Enter a valid chapter number"
       }
+    },
+    "convertToEpubModal": {
+      "chooseLocation": "Select EPUB storage directory",
+      "pathToFolder": "Path to EPUB save folder",
+      "useReaderTheme": "Use reader theme",
+      "useCustomCSS": "Use customCSS",
+      "useCustomJS": "Use customJS",
+      "useCustomJSWarning": "May not be supported by all EPUB readers"
     }
   },
   "more": "更多",
@@ -155,6 +164,9 @@
         "refreshMetadataDescription": "Check for new cover and details when updating library",
         "updateTime": "Show last update time",
         "autoDownload": "Auto-download",
+        "epub": "EPUB",
+        "epubLocation": "EPUB Location",
+        "epubLocationDescription": "The place where you open and export your EPUB files.",
         "downloadNewChapters": "Download new chapters",
         "disableHapticFeedback": "Disable haptic feedback"
       },
@@ -176,7 +188,8 @@
         "openCSSFile": "Open CSS file",
         "openJSFile": "Open JS file",
         "notSaved": "Not saved",
-        "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])"
+        "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])",
+        "jsHint": "Hint: You have access to following variables: html, novelName, chapterName, sourceId, chapterId, novelId"
       },
       "browseSettings": "浏览设置",
       "browseSettingsScreen": {
