@@ -258,7 +258,15 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   } else if (isLightNovelsTls) {
     chapterText = loadedCheerio('.text_story').html();
   } else if (isiNovelTranslation) {
-    chapterText = loadedCheerio('.chakra-skeleton').html();
+    const link = 'https://api.' + result.url.slice(8);
+    const json = await fetchApi({
+      url: link,
+      sourceId,
+    }).then(r => r.json());
+    chapterText =
+      json.content.replace(/\n/g, '<br>') +
+      '<br><hr><br>TL Notes:<br>' +
+      json.notes.replace(/\n/g, '<br>');
   } else if (isWordPress) {
     /**
      * Remove wordpress bloat tags

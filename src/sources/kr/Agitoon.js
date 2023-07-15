@@ -102,16 +102,10 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   const loadedCheerio = cheerio.load(body);
 
   const title = loadedCheerio('div > div.col-12 > h2').text();
-  const contentTag = loadedCheerio('#id_wr_content > p');
-
-  let content = '';
-  contentTag.each((_, element) => {
-    content += loadedCheerio(element).text();
-    content += '<br />';
-  });
+  let chapterText = loadedCheerio('#id_wr_content').html();
 
   // gets rid of the popup thingy
-  content = content.replace(
+  chapterText = chapterText.replace(
     '팝업메뉴는 빈공간을 더치하거나 스크룰시 사라집니다',
     '',
   );
@@ -121,7 +115,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     novelUrl,
     chapterUrl,
     chapterName: title,
-    chapterText: content,
+    chapterText,
   };
 
   return chapter;
