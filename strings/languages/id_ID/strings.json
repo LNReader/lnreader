@@ -131,8 +131,12 @@
       }
     },
     "convertToEpubModal": {
-      "chooseLocation": "Choose EPUB save location",
-      "pathToFolder": "Path to EPUB save folder"
+      "chooseLocation": "Select EPUB storage directory",
+      "pathToFolder": "Path to EPUB save folder",
+      "useReaderTheme": "Use reader theme",
+      "useCustomCSS": "Use customCSS",
+      "useCustomJS": "Use customJS",
+      "useCustomJSWarning": "May not be supported by all EPUB readers"
     }
   },
   "more": "Lainnya",
