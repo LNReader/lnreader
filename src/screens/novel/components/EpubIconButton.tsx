@@ -11,6 +11,7 @@ import { ChapterItem, LibraryNovelInfo } from '@database/types';
 import { showToast } from '@hooks/showToast';
 import { getChapterFromDb } from '@database/queries/DownloadQueries';
 import { useReaderSettings } from '@redux/hooks';
+import { useSettings } from '@hooks/reduxHooks';
 
 interface extendedNovelInfo extends LibraryNovelInfo {
   chapters: ChapterItem[];
@@ -28,7 +29,15 @@ const EpubIconButton: React.FC<EpubIconButtonProps> = ({
 }) => {
   const chooseEpubLocationModal = useBoolean(false);
   const readerSettings = useReaderSettings();
-  const epubStyle = `html {
+  const {
+    epubUseAppTheme = false,
+    epubUseCustomCSS = false,
+    epubUseCustomJS = false,
+  } = useSettings();
+
+  const epubStyle = `${
+    epubUseAppTheme
+      ? `html {
     scroll-behavior: smooth;
     overflow-x: hidden;
     padding-top: ${StatusBar.currentHeight};
@@ -43,6 +52,7 @@ const EpubIconButton: React.FC<EpubIconButtonProps> = ({
     text-align: ${readerSettings.textAlign};
     line-height: ${readerSettings.lineHeight};
     font-family: "${readerSettings.fontFamily}";
+    background-color: "${readerSettings.theme}";
   }
   hr {
     margin-top: 20px;
@@ -56,9 +66,25 @@ const EpubIconButton: React.FC<EpubIconButtonProps> = ({
     width: auto;
     height: auto;
     max-width: 100%;
+  }`
+      : ''
   }
-  
-  ${readerSettings.customCSS}`;
+  ${
+    epubUseCustomCSS
+      ? readerSettings.customCSS
+          .replace(RegExp(`\#sourceId-${novel.sourceId}\\s*\\{`, 'g'), 'body {')
+          .replace(RegExp(`\#sourceId-${novel.sourceId}[^\.\#A-Z]*`, 'gi'), '')
+      : ''
+  }`;
+
+  const epubJS = `let novelName = "${novel.novelName}";
+    let chapterName = "";
+    let sourceId =${novel.sourceId};
+    let chapterId ="";
+    let novelId =${novel.novelId};
+    let html = document.querySelector("chapter").innerHTML;
+    ${readerSettings.customJS}
+  `;
 
   const createEpub = async (uri: string) => {
     var epub = new EpubBuilder(
@@ -70,7 +96,8 @@ const EpubIconButton: React.FC<EpubIconButtonProps> = ({
         description: novel.novelSummary,
         author: novel.author,
         bookId: novel.novelId.toString(),
-        stylesheet: epubStyle,
+        stylesheet: epubStyle || undefined,
+        js: epubUseCustomJS ? epubJS : undefined,
       },
       uri,
     );
@@ -85,21 +112,17 @@ const EpubIconButton: React.FC<EpubIconButtonProps> = ({
           await epub.addChapter({
             title: downloaded.chapterName?.trim() ?? 'Chapter ' + i,
             fileName: 'Chapter' + i,
-            htmlBody: downloaded.chapterText,
+            htmlBody: `<chapter data-novel-id='${chapter.novelId}' data-chapter-id='${chapter.chapterId}'>${downloaded.chapterText}</chapter>`,
           });
         }
       }
       var epubFilePath = await epub.save();
       showToast('Epub file saved at: ' + epubFilePath);
     } catch (error) {
-      // remove the temp created folder
       showToast('Cannot create because: ' + error);
-      console.error(error);
-
       await epub.discardChanges();
     }
   };
-
   return (
     <>
       <IconButton

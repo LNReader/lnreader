@@ -6,6 +6,8 @@ import {
   BottomSheetModalProps,
 } from '@gorhom/bottom-sheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTheme } from '@hooks/useTheme';
+import { overlay } from 'react-native-paper';
 
 interface BottomSheetProps extends Omit<BottomSheetModalProps, 'ref'> {
   bottomSheetRef: Ref<BottomSheetModal> | null;
@@ -13,6 +15,7 @@ interface BottomSheetProps extends Omit<BottomSheetModalProps, 'ref'> {
 
 const BottomSheet: React.FC<BottomSheetProps> = props => {
   const { bottom } = useSafeAreaInsets();
+  const theme = useTheme();
 
   const renderBackdrop = useCallback(
     (backdropProps: BottomSheetBackdropProps) => (
@@ -31,6 +34,7 @@ const BottomSheet: React.FC<BottomSheetProps> = props => {
       backdropComponent={renderBackdrop}
       handleComponent={null}
       containerStyle={{ paddingBottom: bottom }}
+      backgroundStyle={{ backgroundColor: overlay(2, theme.surface) }}
       {...props}
     >
       {props.children}

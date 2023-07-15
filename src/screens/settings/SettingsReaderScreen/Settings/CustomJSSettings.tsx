@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 
 import { Button, List } from '@components/index';
 
-import { useAppDispatch, readerSettingType } from '@redux/hooks';
+import { useAppDispatch, useReaderSettings } from '@redux/hooks';
 import { useTheme } from '@hooks/useTheme';
 import { getString } from '@strings/translations';
 import { setReaderSettings } from '@redux/settings/settings.actions';
@@ -12,7 +12,7 @@ import CustomFileModal from '../Modals/CustomFileModal';
 import useBoolean from '@hooks/useBoolean';
 
 interface CustomJSSettingsProps {
-  readerSettings: readerSettingType;
+  readerSettings: ReturnType<typeof useReaderSettings>;
 }
 
 const CustomJSSettings: React.FC<CustomJSSettingsProps> = ({

@@ -25,7 +25,7 @@ const SwitchSetting: React.FC<SwitchProps> = ({
       paddingHorizontal: 16,
       flexDirection: 'row',
       justifyContent: 'space-between',
-      paddingVertical: description ? 16 : 12,
+      paddingVertical: 12,
     },
     row: {
       flexDirection: 'row',
@@ -39,7 +39,6 @@ const SwitchSetting: React.FC<SwitchProps> = ({
     },
     text: {
       fontSize: 16,
-      flex: 1,
       textAlignVertical: 'center',
     },
     switch: { marginLeft: 8 },

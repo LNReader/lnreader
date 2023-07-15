@@ -316,7 +316,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                         let sourceId =${chapterInfo.sourceId};
                         let chapterId =${chapterInfo.chapterId};
                         let novelId =${chapterInfo.novelId};
-                        let html = document.getElementsByTagName("chapter")[0]. innerHTML;
+                        let html = document.querySelector("chapter").innerHTML;
                         ${readerSettings.customJS}
                       }
                       document.addEventListener("DOMContentLoaded", fn);

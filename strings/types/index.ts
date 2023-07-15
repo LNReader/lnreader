@@ -105,6 +105,10 @@ export interface StringMap {
   'novelScreen.jumpToChapterModal.error.validChapterNumber': 'string';
   'novelScreen.convertToEpubModal.chooseLocation': 'string';
   'novelScreen.convertToEpubModal.pathToFolder': 'string';
+  'novelScreen.convertToEpubModal.useReaderTheme': 'string';
+  'novelScreen.convertToEpubModal.useCustomCSS': 'string';
+  'novelScreen.convertToEpubModal.useCustomJS': 'string';
+  'novelScreen.convertToEpubModal.useCustomJSWarning': 'string';
   'more': 'string';
   'moreScreen.settings': 'string';
   'moreScreen.settingsScreen.generalSettings': 'string';

@@ -111,10 +111,12 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
         title={chapterList[0].novelName}
         titleStyle={{ fontSize: 14, color: theme.onSurface }}
         left={() => (
-          <NovelCover
-            navigateToNovel={navigateToNovel}
-            uri={chapterList[0].novelCover}
-          />
+          <View style={styles.listNovelCover}>
+            <NovelCover
+              navigateToNovel={navigateToNovel}
+              uri={chapterList[0].novelCover}
+            />
+          </View>
         )}
         descriptionStyle={{ fontSize: 12 }}
         theme={{ colors: theme }}
@@ -196,8 +198,11 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     backgroundColor: coverPlaceholderColor,
   },
+  listNovelCover: {
+    justifyContent: 'center',
+  },
   novelCover: {
-    marginRight: 8,
+    marginRight: 16,
   },
   imageContainer: {
     flex: 1,
@@ -217,6 +222,6 @@ const styles = StyleSheet.create({
     margin: 8,
   },
   chapterList: {
-    marginLeft: -64,
+    marginLeft: -40,
   },
 });
