@@ -11,7 +11,7 @@ import { FilterInputs } from './types/filterTypes';
 import { parseMadaraDate } from './helpers/parseDate';
 import { isUrlAbsolute } from '@utils/isAbsoluteUrl';
 import { fetchApi, fetchFile } from '@utils/fetch/fetch';
-import { defaultCoverUri } from './helpers/constants';
+import { defaultCover } from './helpers/constants';
 
 const pluginsFolder = RNFS.ExternalDirectoryPath + '/Plugins';
 
@@ -24,7 +24,7 @@ const packages: Record<string, any> = {
   '@libs/isAbsoluteUrl': { isUrlAbsolute },
   '@libs/filterInputs': { FilterInputs },
   '@libs/showToast': { showToast },
-  '@libs/defaultCoverUri': { defaultCoverUri },
+  '@libs/defaultCover': { defaultCover },
 };
 
 const _require = (packageName: string) => {
