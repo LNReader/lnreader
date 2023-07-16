@@ -6,7 +6,7 @@ import { fetchHtml } from '@utils/fetch/fetch';
 const sourceId = 51;
 const sourceName = 'Ranobes';
 
-const baseUrl = 'https://ranobes.net';
+const baseUrl = 'https://ranobes.top';
 
 const popularNovels = async page => {
   let url = `${baseUrl}/novels/page/${page}/`;
