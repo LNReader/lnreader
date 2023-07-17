@@ -94,7 +94,7 @@
       "verticalSeekbar": "شريط البحث العمودي",
       "showBatteryAndTime": "اضهر البطارية والوقت",
       "showProgressPercentage": "النسبة المئوية للتقدم",
-      "swipeGestures": "اسحب لليسار أو لليمين للتبديل بين علامات التبويب",
+      "swipeGestures": "اسحب لليسار أو لليمين للتنقل بين الفصول",
       "allowTextSelection": "السماح باختيار النص",
       "useChapterDrawerSwipeNavigation": "مرر يمينا لفتح القائمة الجانبية",
       "removeExtraSpacing": "إزالة المسافات الزائدة بين الفقرات",
@@ -214,7 +214,7 @@
     "statusDistribution": "توزيع الحالات"
   },
   "globalSearch": {
-    "searchIn": "البحث في رواية",
+    "searchIn": "البحث عن رواية في",
     "allSources": "جميع المصادر",
     "pinnedSources": "المصادر المثبتة"
   },
