@@ -103,9 +103,9 @@
       "showSwipeMargins": "Kita"
     },
     "drawer": {
-      "scrollToCurrentChapter": "Scroll to current chapter",
-      "scrollToTop": "Scroll to top",
-      "scrollToBottom": "Scroll to bottom"
+      "scrollToCurrentChapter": "Gulir ke bab saat ini",
+      "scrollToTop": "Gulir ke puncak",
+      "scrollToBottom": "Gulir ke dasar"
     }
   },
   "novelScreen": {
