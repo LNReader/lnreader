@@ -131,12 +131,12 @@
       }
     },
     "convertToEpubModal": {
-      "chooseLocation": "Select EPUB storage directory",
+      "chooseLocation": "EPUB depolama dizinini seç",
       "pathToFolder": "EPUB dosyalarını kaydetme klasörünün yolu",
-      "useReaderTheme": "Use reader theme",
-      "useCustomCSS": "Use customCSS",
-      "useCustomJS": "Use customJS",
-      "useCustomJSWarning": "May not be supported by all EPUB readers"
+      "useReaderTheme": "Okuyucu temasını kullan",
+      "useCustomCSS": "Özel CSS kullan",
+      "useCustomJS": "Özel JS kullan",
+      "useCustomJSWarning": "Tüm EPUB okuyucuları tarafından desteklenmeyebilir"
     }
   },
   "more": "Daha fazla",
