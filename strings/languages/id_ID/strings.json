@@ -121,22 +121,22 @@
       "display": "Tampilan"
     },
     "jumpToChapterModal": {
-      "jumpToChapter": "Jump to Chapter",
-      "openChapter": "Open Chapter",
-      "chapterName": "Chapter Name",
-      "chapterNumber": "Chapter Number",
+      "jumpToChapter": "Melompat ke Bab",
+      "openChapter": "Buka Bab",
+      "chapterName": "Nama Bab",
+      "chapterNumber": "Nomor Bab",
       "error": {
-        "validChapterName": "Enter a valid chapter name",
-        "validChapterNumber": "Enter a valid chapter number"
+        "validChapterName": "Masukan nama Bab yang valid",
+        "validChapterNumber": "Masukan nomor Bab yang valid"
       }
     },
     "convertToEpubModal": {
-      "chooseLocation": "Select EPUB storage directory",
-      "pathToFolder": "Path to EPUB save folder",
-      "useReaderTheme": "Use reader theme",
-      "useCustomCSS": "Use customCSS",
-      "useCustomJS": "Use customJS",
-      "useCustomJSWarning": "May not be supported by all EPUB readers"
+      "chooseLocation": "Pilih direktori penyimpanan EPUB",
+      "pathToFolder": "Jalur ke folder penyimpanan EPUB",
+      "useReaderTheme": "Gunakan tema pembaca",
+      "useCustomCSS": "Gunakan customCSS",
+      "useCustomJS": "Gunakan customJS",
+      "useCustomJSWarning": "Bisa saja tidak didukung oleh semua pembaca EPUB"
     }
   },
   "more": "Lainnya",
@@ -145,22 +145,22 @@
     "settingsScreen": {
       "generalSettings": "Umum",
       "generalSettingsScreen": {
-        "display": "Display",
-        "displayMode": "Display Mode",
-        "itemsPerRow": "Items per row",
-        "itemsPerRowLibrary": "Items per row in library",
-        "novelBadges": "Novel Badges",
-        "novelSort": "Novel Sort",
-        "updateLibrary": "Update library on launch",
-        "useFAB": "Use FAB in Library",
+        "display": "Tampilan",
+        "displayMode": "Mode tampilan",
+        "itemsPerRow": "Barang-barang perbaris",
+        "itemsPerRowLibrary": "Barang-barang per baris di perpustakaan",
+        "novelBadges": "Lencana Novel",
+        "novelSort": "Urutkan Novel",
+        "updateLibrary": "Perbarui perpustakaan saat diluncurkan",
+        "useFAB": "Gunakan FAB di perpustakaan",
         "novel": "Novel",
-        "chapterSort": "Default chapter sort",
-        "bySource": "By source",
-        "asc": "(Ascending)",
-        "desc": "(Descending)",
-        "globalUpdate": "Global update",
-        "updateOngoing": "Only update ongoing novels",
-        "refreshMetadata": "Automatically refresh metadata",
+        "chapterSort": "Pengurutan Bab bawaan",
+        "bySource": "Berdasarkan sumber",
+        "asc": "(Naik)",
+        "desc": "(Menurun)",
+        "globalUpdate": "Pembaruan global",
+        "updateOngoing": "Hanya memperbarui novel yang sedang berlangsung",
+        "refreshMetadata": "Memperbarui metadata secara otomatis",
         "refreshMetadataDescription": "Check for new cover and details when updating library",
         "updateTime": "Show last update time",
         "autoDownload": "Auto-download",
