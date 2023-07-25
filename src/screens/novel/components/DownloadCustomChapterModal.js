@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput } from 'react-native';
 
 import { Button, IconButton, Modal, Portal } from 'react-native-paper';
-import { downloadAllChaptersAction } from '../../../../redux/novel/novel.actions';
+import { downloadAllChaptersAction } from '../../../redux/novel/novel.actions';
 
 const DownloadCustomChapterModal = ({
   theme,
