@@ -13,3 +13,4 @@ export { default as ColorPreferenceItem } from './ColorPreferenceItem/ColorPrefe
 export { default as LoadingMoreIndicator } from './LoadingMoreIndicator/LoadingMoreIndicator';
 export { Checkbox } from './Checkbox/Checkbox';
 export { RadioButton } from './RadioButton/RadioButton';
+export { default as ConfirmationDialog } from './ConfirmationDialog/ConfirmationDialog';
