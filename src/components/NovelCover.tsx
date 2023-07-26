@@ -75,9 +75,9 @@ const NovelCover: React.FC<NovelCoverProps> = ({
         },
         styles.standardNovelCover,
         isSelected && {
-            backgroundColor: theme.primary,
-          } &&
-          styles.selectedNovelCover,
+          backgroundColor: theme.primary,
+          opacity: 0.8,
+        },
       ]}
     >
       <Pressable
@@ -347,9 +347,6 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     overflow: 'hidden',
     margin: 2,
-  },
-  selectedNovelCover: {
-    opacity: 0.8,
   },
   compactTitle: {
     color: 'rgba(255,255,255,1)',
