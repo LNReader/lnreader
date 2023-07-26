@@ -999,5 +999,12 @@
     "url": "https://bookriver.ru/",
     "lang": "Russian",
     "icon": "https://bookriver.ru/android-chrome-512x512.png"
+  },
+  {
+    "sourceId": 165,
+    "sourceName": "Linovelib",
+    "url": "https://w.linovelib.com",
+    "lang": "Chinese",
+    "icon": "https://w.linovelib.com/images/logo.png"
   }
 ]

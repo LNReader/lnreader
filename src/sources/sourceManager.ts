@@ -78,6 +78,7 @@ import NovelUpdatesScraper from './en/novelupdates';
 import RanobesScraper from './en/ranobes';
 import RanobesruScraper from './ru/ranobes';
 import YushuboScraper from './ch/yushubo';
+import LinovelibScraper from './ch/linovelib';
 import {
   LiebeSchneeHiverNovelScraper,
   LightNovelsBrasilScraper,
@@ -326,6 +327,7 @@ export const sourceManager = (sourceId: number): Scraper => {
     162: KodScraper, // @ts-ignore
     163: NovelsOnlineScraper, // @ts-ignore
     164: BookRiverScraper, // @ts-ignore
+    165: LinovelibScraper, // @ts-ignore
   };
 
   return scrapers[sourceId];
