@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, TextInput } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import { Portal } from 'react-native-paper';
 
 import { Button, List, ConfirmationDialog } from '@components/index';
@@ -28,14 +28,9 @@ const CustomCSSSettings = () => {
         </List.SubHeader>
       </View>
       <View style={styles.customCSSContainer}>
-        <TextInput
-          style={[{ color: theme.onSurface }, styles.fontSizeL]}
-          value={readerSettings.customCSS}
-          placeholderTextColor={theme.onSurfaceVariant}
-          placeholder="Example: body {margin: 10px;}"
-          multiline={true}
-          editable={false}
-        />
+        <Text numberOfLines={3} style={[{ color: theme.onSurface }]}>
+          {readerSettings.customCSS || 'Example: body {margin: 10px;}'}
+        </Text>
         <View style={styles.customCSSButtons}>
           <Button
             onPress={cssModal.setTrue}

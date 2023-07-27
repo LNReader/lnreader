@@ -48,7 +48,8 @@ const CustomFileModal: React.FC<CustomFileModal> = ({
           file.uri,
         );
 
-        setText(content);
+        onSave(content.trim());
+        onDismiss();
       }
     } catch (error: any) {
       showToast(error.message);
@@ -82,7 +83,7 @@ const CustomFileModal: React.FC<CustomFileModal> = ({
       <View style={styles.customCSSButtons}>
         <Button
           onPress={() => {
-            onSave(text);
+            onSave(text.trim());
             onDismiss();
           }}
           style={styles.button}
