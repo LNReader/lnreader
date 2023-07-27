@@ -1,4 +1,9 @@
+import { fetchHtml } from '@utils/fetch/fetch';
 import * as cheerio from 'cheerio';
+
+const sourceId = 165;
+const sourceName = 'Linovelib';
+
 const baseUrl = 'https://w.linovelib.com';
 
 const popularNovels = async page => {
@@ -27,7 +32,7 @@ const popularNovels = async page => {
       novelUrl = baseUrl + novelUrl;
 
       const novel = {
-        sourceId: 165,
+        sourceId,
         novelUrl,
         novelName,
         novelCover,
@@ -52,15 +57,12 @@ const parseNovelAndChapters = async novelUrl => {
 
   const loadedCheerio = cheerio.load(body);
 
-  const novel = {};
-
-  novel.sourceId = 165;
-
-  novel.sourceName = 'Linovelib';
-
-  novel.url = url;
-
-  novel.novelUrl = novelUrl;
+  const novel = {
+    sourceId,
+    sourceName,
+    url: novelUrl,
+    novelUrl,
+  };
 
   novel.name = loadedCheerio('#bookDetailWrapper .book-title').text();
 
@@ -163,7 +165,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   const chapterText = loadedCheerio('#acontent').html();
 
   const chapter = {
-    sourceId: 165,
+    sourceId,
     novelUrl,
     chapterUrl,
     chapterName,
@@ -175,13 +177,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 
 const searchNovels = async searchTerm => {
   const url = `${baseUrl}/search.html?searchkey=` + encodeURI(searchTerm);
-  const result = await fetch(url, {
-    headers: {
-      'User-Agent':
-        "'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36",
-    },
-  });
-  const body = await result.text();
+  const body = await fetchHtml({ url, sourceId });
 
   const loadedCheerio = cheerio.load(body);
 
