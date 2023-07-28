@@ -49,9 +49,11 @@ const parseNovelAndChapters = async novelUrl => {
     novelUrl,
   };
 
-  novel.name = loadedCheerio('#bookDetailWrapper .book-title').text();
+  novel.novelName = loadedCheerio('#bookDetailWrapper .book-title').text();
 
-  novel.cover = loadedCheerio('#bookDetailWrapper img.book-cover').attr('src');
+  novel.novelCover = loadedCheerio('#bookDetailWrapper img.book-cover').attr(
+    'src',
+  );
 
   novel.summary = loadedCheerio('#bookSummary content').text();
 
@@ -59,9 +61,9 @@ const parseNovelAndChapters = async novelUrl => {
 
   novel.artist = null;
 
-  novel.status = loadedCheerio(
-    '#bookSummary .notice:first-child .notice-body',
-  ).text();
+  // TODO: Need some regex and dirty selector to get it
+  // Need to look into how to translate that message
+  novel.status = null;
 
   let genres = [];
   loadedCheerio(
