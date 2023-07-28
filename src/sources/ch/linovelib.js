@@ -81,7 +81,7 @@ const parseNovelAndChapters = async novelUrl => {
   const novelId = url.match(idPattern)[1];
 
   const chaptersUrl = baseUrl + loadedCheerio('#btnReadBook').attr('href');
-  const chaptersBody = await fetchHtml({ chaptersUrl, sourceId });
+  const chaptersBody = await fetchHtml({ url: chaptersUrl, sourceId });
 
   const chaptersLoadedCheerio = cheerio.load(chaptersBody);
 
