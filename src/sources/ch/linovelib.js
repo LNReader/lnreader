@@ -138,10 +138,19 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   // Remove JS
   loadedCheerio('#acontent .cgo').remove();
 
+  // Load lazyloaded images
+  loadedCheerio('#acontent img.imagecontent').each(function () {
+    const imgSrc = loadedCheerio(this).attr('data-src');
+    if (imgSrc) {
+      loadedCheerio(this).attr('src', imgSrc);
+    }
+  });
+
   const chapterName =
     loadedCheerio('#atitle + h3').text() +
     ' — ' +
     loadedCheerio('#atitle').text();
+
   const chapterText = loadedCheerio('#acontent').html();
 
   const chapter = {
