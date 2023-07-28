@@ -8,15 +8,7 @@ const baseUrl = 'https://w.linovelib.com';
 
 const popularNovels = async page => {
   const url = `${baseUrl}/top/monthvisit/${page}.html`;
-
-  const result = await fetch(url, {
-    headers: {
-      'User-Agent':
-        "'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36",
-    },
-  });
-  const body = await result.text();
-
+  const body = await fetchHtml({ url, sourceId });
   const loadedCheerio = cheerio.load(body);
 
   const novels = [];
@@ -47,14 +39,7 @@ const popularNovels = async page => {
 
 const parseNovelAndChapters = async novelUrl => {
   const url = novelUrl;
-  const result = await fetch(url, {
-    headers: {
-      'User-Agent':
-        "'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36",
-    },
-  });
-  const body = await result.text();
-
+  const body = await fetchHtml({ url, sourceId });
   const loadedCheerio = cheerio.load(body);
 
   const novel = {
@@ -96,8 +81,7 @@ const parseNovelAndChapters = async novelUrl => {
   const novelId = url.match(idPattern)[1];
 
   const chaptersUrl = baseUrl + loadedCheerio('#btnReadBook').attr('href');
-  const chaptersResult = await fetchApi(chaptersUrl);
-  const chaptersBody = await chaptersResult.text();
+  const chaptersBody = await fetchHtml({ url: chaptersUrl, sourceId });
 
   const chaptersLoadedCheerio = cheerio.load(chaptersBody);
 
@@ -145,13 +129,7 @@ const parseNovelAndChapters = async novelUrl => {
 
 const parseChapter = async (novelUrl, chapterUrl) => {
   const url = chapterUrl;
-  const result = await fetch(url, {
-    headers: {
-      'User-Agent':
-        "'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36",
-    },
-  });
-  const body = await result.text();
+  const body = await fetchHtml({ url, sourceId });
 
   const loadedCheerio = cheerio.load(body);
 
