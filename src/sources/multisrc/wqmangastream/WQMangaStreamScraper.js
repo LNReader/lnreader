@@ -130,7 +130,7 @@ class WQMangaStreamScraper {
     if (sourceId === 53) {
       let ignore = loadedCheerio('article > style').text().trim().split(',');
       ignore.push(...ignore.pop().match(/^\.\w+/));
-      loadedCheerio(`p${ignore}`).remove();
+      ignore.map(tag => loadedCheerio(`p${tag}`).remove());
       chapterText = loadedCheerio('.epcontent').html();
     }
 
