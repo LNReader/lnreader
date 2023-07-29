@@ -142,7 +142,14 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   loadedCheerio('#acontent img.imagecontent').each(function () {
     const imgSrc = loadedCheerio(this).attr('data-src');
     if (imgSrc) {
-      loadedCheerio(this).attr('src', imgSrc);
+      // The original CDN URL is locked behind a CF-like challenge, switch the URL to bypass that
+      // There are no react-native-url-polyfill lib, can't use URL API
+      const regex = /\/\/.+\.com\//;
+      const imgUrl = imgSrc.replace(regex, '//img.linovelib.com/');
+      loadedCheerio(this)
+        .attr('src', imgUrl)
+        .removeAttr('data-src')
+        .removeClass('lazyload');
     }
   });
 
@@ -257,7 +264,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   };
 
   Object.entries(mapping_dict).forEach(([key, value]) => {
-    chapterText.replaceAll(key, value);
+    chapterText = chapterText.replaceAll(key, value);
   });
 
   const chapterName =
