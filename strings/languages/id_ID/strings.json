@@ -166,9 +166,9 @@
         "autoDownload": "Unduh otomatis",
         "epub": "EPUB",
         "epubLocation": "Lokasi EPUB",
-        "epubLocationDescription": "The place where you open and export your EPUB files.",
-        "downloadNewChapters": "Download new chapters",
-        "disableHapticFeedback": "Disable haptic feedback"
+        "epubLocationDescription": "Lokasi dimana anda membuka dan mengekspor file EPUB anda.",
+        "downloadNewChapters": "Unduh bab terbaru",
+        "disableHapticFeedback": "Nonaktifkan umpan balik haptic"
       },
       "readerSettings": {
         "title": "Pembaca",
@@ -184,11 +184,11 @@
         "saveCustomTheme": "Simpan kostumisasi tema",
         "deleteCustomTheme": "Hapus kostumisasi tema",
         "customCSS": "Kostumisasi CSS",
-        "customJS": "Custom JS",
-        "openCSSFile": "Open CSS file",
-        "openJSFile": "Open JS file",
-        "notSaved": "Not saved",
-        "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])",
+        "customJS": "JS Khusus",
+        "openCSSFile": "Buka file CSS",
+        "openJSFile": "Buka file JS",
+        "notSaved": "Tidak tersimpan",
+        "cssHint": "Petunjuk: Anda dapat membuat konfigurasi CSS khusus sumber dengan ID sumber. (#sourceId-[SOURCEID])",
         "jsHint": "Hint: You have access to following variables: html, novelName, chapterName, sourceId, chapterId, novelId"
       },
       "browseSettings": "Pengaturan Setelan",
