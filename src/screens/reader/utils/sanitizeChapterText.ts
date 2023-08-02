@@ -42,23 +42,22 @@ export const sanitizeChapterText = (
       text = textVide(text);
     }
 
-    const loadedCheerio = loadCheerio(text);
-    if (
-      options?.sourceId &&
-      sourceManager(options.sourceId).headers &&
-      loadedCheerio('input[offline]').length === 0
-    ) {
-      loadedCheerio('img').each((i, element) => {
-        const src = loadedCheerio(element).attr('src');
-        if (src) {
-          loadedCheerio(element).attr({
-            'src': LoadingImageSrc,
-            'class': 'load-icon',
-            'delayed-src': src,
-          });
-        }
-      });
-      text = loadedCheerio('body').html() || text;
+    if (options?.sourceId && sourceManager(options.sourceId).headers) {
+      // Some documents might take a few seconds to be parsed, only do when necessary
+      const loadedCheerio = loadCheerio(text);
+      if (loadedCheerio('input[offline]').length === 0) {
+        loadedCheerio('img').each((i, element) => {
+          const src = loadedCheerio(element).attr('src');
+          if (src) {
+            loadedCheerio(element).attr({
+              'src': LoadingImageSrc,
+              'class': 'load-icon',
+              'delayed-src': src,
+            });
+          }
+        });
+        text = loadedCheerio('body').html() || text;
+      }
     }
   } else {
     text =
