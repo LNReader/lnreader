@@ -2,6 +2,10 @@ import * as cheerio from 'cheerio';
 const baseUrl = 'https://hasutl.wordpress.com/';
 
 const popularNovels = async page => {
+  if (page !== 1) {
+    return { novels: [] };
+  }
+
   let url = baseUrl + 'light-novels-activas/';
 
   const result = await fetch(url);
@@ -125,8 +129,8 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   return chapter;
 };
 
-const searchNovels = async searchTerm => {
-  const url = `${baseUrl}?s=${searchTerm}&post_type=wp-manga`;
+const searchNovels = async (searchTerm, page) => {
+  const url = `${baseUrl}page/${page}/?s=${searchTerm}&post_type=wp-manga`;
 
   const result = await fetch(url);
   const body = await result.text();
