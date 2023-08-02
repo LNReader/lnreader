@@ -1,7 +1,8 @@
 import * as cheerio from 'cheerio';
-import { htmlToText } from '../helpers/htmlToText';
 
 const baseUrl = 'https://novelasligera.com/';
+const sourceName = 'Novelas Ligera';
+const sourceId = 26;
 
 const popularNovels = async page => {
   if (page > 1) {
@@ -29,7 +30,7 @@ const popularNovels = async page => {
       novelUrl = novelUrl.replace('novela/', '');
 
       const novel = {
-        sourceId: 26,
+        sourceId,
         novelName,
         novelCover,
         novelUrl,
@@ -50,23 +51,19 @@ const parseNovelAndChapters = async novelUrl => {
 
   let loadedCheerio = cheerio.load(body);
 
-  let novel = {};
-
-  novel.sourceId = 26;
-
-  novel.sourceName = 'Novelas Ligera';
-
-  novel.url = url;
-
-  novel.novelUrl = novelUrl;
+  let novel = {
+    sourceId,
+    sourceName,
+    url,
+    novelUrl,
+  };
 
   novel.novelName = loadedCheerio('h1').text();
-
   novel.novelCover = loadedCheerio('.elementor-widget-container')
     .find('img')
     .attr('data-lazy-src');
 
-  loadedCheerio('.elementor-row')
+  loadedCheerio('.elementor-widget-container')
     .find('p')
     .each(function () {
       if (loadedCheerio(this).text().includes('Autor:')) {
@@ -85,11 +82,16 @@ const parseNovelAndChapters = async novelUrl => {
       }
     });
 
-  novel.artist = null;
-
-  novel.summary = loadedCheerio(
-    '.elementor-text-editor.elementor-clearfix',
-  ).text();
+  const summary = loadedCheerio(
+    'div[data-widget_type="text-editor.default"] .elementor-widget-container',
+  ).first();
+  summary.find('div.yasr-visitor-votes').remove();
+  novel.summary = summary
+    .children()
+    .toArray()
+    .filter(e => e.childNodes[0]?.type === 'text')
+    .map(e => e.childNodes[0].data)
+    .join('\n\n');
 
   let novelChapters = [];
 
