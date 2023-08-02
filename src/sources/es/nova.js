@@ -1,6 +1,7 @@
 import * as cheerio from 'cheerio';
 import { fetchHtml } from '@utils/fetch/fetch';
-import { bypassImages } from '@utils/cloudflareImagesBypass';
+import { bypassImages } from '../helpers/cloudflareImagesBypass';
+import { htmlToText } from '../helpers/htmlToText';
 
 const baseUrl = 'https://novelasligeras.net';
 const searchQuery =
@@ -8,7 +9,6 @@ const searchQuery =
 
 const sourceName = 'NOVA';
 const sourceId = 166;
-const parsedChapters = {};
 
 const popularNovels = async page => {
   return { novels: await searchNovels('', page) };
@@ -45,9 +45,9 @@ const parseNovelAndChapters = async novelUrl => {
     '.woocommerce-product-attributes-item--attribute_pa_estado td',
   ).text();
 
-  novel.summary = loadedCheerio(
-    '.woocommerce-product-details__short-description',
-  ).text();
+  novel.summary = htmlToText(
+    loadedCheerio('.woocommerce-product-details__short-description').html(),
+  );
 
   novel.chapters = [];
 
@@ -129,7 +129,6 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     chapterText,
   };
 
-  parsedChapters[url] = chapter;
   return chapter;
 };
 
