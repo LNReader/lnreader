@@ -16,6 +16,9 @@ import {
   openNovelProps,
 } from '@utils/handleNavigateParams';
 
+import { getSourceStorage } from '@hooks/useSourceStorage';
+import { defaultUserAgentString } from '@utils/fetch/fetch';
+
 interface HistoryCardProps {
   history: History;
   handleNavigateToChapter: (
@@ -56,6 +59,8 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
     [chapterName, historyTimeRead],
   );
 
+  const { cookies = '' } = getSourceStorage(sourceId);
+
   return (
     <Pressable
       style={styles.container}
@@ -85,7 +90,16 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
             })
           }
         >
-          <FastImage source={{ uri: novelCover }} style={styles.cover} />
+          <FastImage
+            source={{
+              uri: novelCover,
+              headers: {
+                Cookie: cookies,
+                'User-Agent': defaultUserAgentString,
+              },
+            }}
+            style={styles.cover}
+          />
         </Pressable>
         <View style={styles.detailsContainer}>
           <Text

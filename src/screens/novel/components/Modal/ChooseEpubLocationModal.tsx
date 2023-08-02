@@ -65,7 +65,7 @@ const ChooseEpubLocationModal: React.FC<ChooseEpubLocationModalProps> = ({
         setUri(resultUri.uri);
       }
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
   };
 

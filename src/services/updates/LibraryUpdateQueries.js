@@ -4,6 +4,8 @@ import { fetchNovel } from '../Source/source';
 import { downloadChapter } from '../../database/queries/ChapterQueries';
 
 import * as SQLite from 'expo-sqlite';
+import { getNovel } from '@database/queries/NovelQueries';
+
 const db = SQLite.openDatabase('lnreader.db');
 
 const updateNovelMetadata = async (novelId, novel) => {
@@ -54,8 +56,16 @@ const updateNovel = async (sourceId, novelUrl, novelId, options) => {
   const { downloadNewChapters, refreshNovelMetadata } = options;
 
   let novel = await fetchNovel(sourceId, novelUrl);
+  let forceMetdataUpdate = false;
 
-  if (refreshNovelMetadata) {
+  if (novelId === undefined) {
+    // novelId will be undefined if novel is not saved in local library
+    let dbNovel = await getNovel(sourceId, novelUrl);
+    novelId = dbNovel.novelId;
+    forceMetdataUpdate = true;
+  }
+
+  if (refreshNovelMetadata || forceMetdataUpdate) {
     updateNovelMetadata(novelId, novel);
   }
 

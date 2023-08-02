@@ -111,7 +111,6 @@ const parseNovelAndChapters = async (novelUrl: string) => {
 
     return novelChapters;
   };
-  console.log(novelId);
 
   if (novelId) {
     novel.chapters = await getChapters(novelId);

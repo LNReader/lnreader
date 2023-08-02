@@ -130,6 +130,7 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
       ) : (
         <NovelList
           data={novelList}
+          isFetchingNextPage={hasNextPage && !searchText}
           inSource
           renderItem={({ item }) => {
             const inLibrary = novelInLibrary(item.novelUrl);

@@ -2,6 +2,10 @@ import * as cheerio from 'cheerio';
 const baseUrl = 'https://oasistranslations.wordpress.com/';
 
 const popularNovels = async page => {
+  if (page !== 1) {
+    return { novels: [] };
+  }
+
   let url = baseUrl;
 
   const result = await fetch(url);
