@@ -201,15 +201,16 @@ const ChapterContent = ({ route, navigation }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chapter]);
 
-  const [ttsStatus, startTts] = useTextToSpeech(
-    htmlToText(chapter?.chapterText).split('\n'),
-    () => {
-      if (!incognitoMode) {
-        dispatch(markChapterReadAction(chapterId, novelId));
-        updateTracker();
-      }
-    },
+  const htmlText = useMemo(
+    () => htmlToText(chapter?.chapterText).split('\n'),
+    [chapter.chapterText],
   );
+  const [ttsStatus, startTts] = useTextToSpeech(htmlText, () => {
+    if (!incognitoMode) {
+      dispatch(markChapterReadAction(chapterId, novelId));
+      updateTracker();
+    }
+  });
 
   const scrollTo = useCallback(
     offsetY => {
