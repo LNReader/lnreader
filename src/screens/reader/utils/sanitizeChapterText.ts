@@ -24,6 +24,7 @@ export const sanitizeChapterText = (
       'em',
       'b',
       'a',
+      'center',
     ]),
     allowedAttributes: {
       'img': ['src', 'class'],
