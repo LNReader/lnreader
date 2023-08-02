@@ -4,6 +4,10 @@ import { htmlToText } from '../helpers/htmlToText';
 const baseUrl = 'https://novelasligera.com/';
 
 const popularNovels = async page => {
+  if (page > 1) {
+    return { novels: [] };
+  }
+
   let url = baseUrl;
 
   const result = await fetch(url);
@@ -18,7 +22,7 @@ const popularNovels = async page => {
       .find('.widget-image-caption.wp-caption-text')
       .text();
     if (novelName) {
-      const novelCover = loadedCheerio(this).find('img').attr('src');
+      const novelCover = loadedCheerio(this).find('img').attr('data-lazy-src');
 
       let novelUrl = loadedCheerio(this).find('a').attr('href');
       novelUrl = novelUrl.replace(baseUrl, '');
@@ -41,8 +45,6 @@ const popularNovels = async page => {
 const parseNovelAndChapters = async novelUrl => {
   const url = baseUrl + 'novela/' + novelUrl;
 
-  // console.log(url);
-
   const result = await fetch(url);
   const body = await result.text();
 
@@ -62,7 +64,7 @@ const parseNovelAndChapters = async novelUrl => {
 
   novel.novelCover = loadedCheerio('.elementor-widget-container')
     .find('img')
-    .attr('src');
+    .attr('data-lazy-src');
 
   loadedCheerio('.elementor-row')
     .find('p')
@@ -85,7 +87,7 @@ const parseNovelAndChapters = async novelUrl => {
 
   novel.artist = null;
 
-  novel.novelSummary = loadedCheerio(
+  novel.summary = loadedCheerio(
     '.elementor-text-editor.elementor-clearfix',
   ).text();
 
@@ -115,7 +117,6 @@ const parseNovelAndChapters = async novelUrl => {
 
 const parseChapter = async (novelUrl, chapterUrl) => {
   const url = baseUrl + 'novela/' + chapterUrl;
-  // console.log(url);
 
   const result = await fetch(url);
   const body = await result.text();
@@ -131,7 +132,6 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   loadedCheerio('.wp-post-navigation').remove();
 
   let chapterText = loadedCheerio('.entry-content').html();
-  chapterText = htmlToText(chapterText, { preserveNewlines: true });
 
   const chapter = {
     sourceId: 26,
@@ -146,7 +146,6 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 
 const searchNovels = async searchTerm => {
   const url = baseUrl + '?s=' + searchTerm + '&post_type=wp-manga';
-  // console.log(url);
 
   const result = await fetch(url);
   const body = await result.text();
@@ -156,7 +155,7 @@ const searchNovels = async searchTerm => {
   let novels = [];
 
   loadedCheerio('.inside-article').each(function () {
-    const novelCover = loadedCheerio(this).find('img').attr('src');
+    const novelCover = loadedCheerio(this).find('img').attr('data-lazy-src');
     let novelUrl = loadedCheerio(this).find('a').attr('href').split('/')[4];
 
     let novelName;
@@ -178,8 +177,6 @@ const searchNovels = async searchTerm => {
 
     novels.push(novel);
   });
-
-  novels = [{ ...novels[1] }];
 
   return novels;
 };
