@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo,
+} from 'react';
 import { Dimensions, NativeModules, NativeEventEmitter } from 'react-native';
 
 import VolumeButtonListener from './../../utils/volumeButtonListener';
@@ -268,13 +274,15 @@ const ChapterContent = ({ route, navigation }) => {
   );
 
   const hideHeader = useCallback(() => {
-    if (!hidden) {
-      setImmersiveMode();
-    } else {
-      showStatusAndNavBar();
-    }
-    setHidden(!hidden);
-  }, [hidden]);
+    setHidden(h => {
+      if (!h) {
+        setImmersiveMode();
+      } else {
+        showStatusAndNavBar();
+      }
+      return !h;
+    });
+  }, []);
 
   const navigateToChapterBySwipe = useCallback(
     name => {
@@ -313,17 +321,27 @@ const ChapterContent = ({ route, navigation }) => {
     }
   }, []);
 
-  const scrollToSavedProgress = () => scrollTo(position?.position);
+  const scrollToSavedProgress = useCallback(
+    () => scrollTo(position?.position),
+    [],
+  );
 
-  const chapterText = sanitizeChapterText(chapter.chapterText, {
-    removeExtraParagraphSpacing,
-    bionicReading,
-    sourceId: sourceId,
-  });
+  const chapterText = useMemo(
+    () =>
+      sanitizeChapterText(chapter.chapterText, {
+        removeExtraParagraphSpacing,
+        bionicReading,
+        sourceId,
+      }),
+    [chapter.chapterText, removeExtraParagraphSpacing, bionicReading, sourceId],
+  );
   const openDrawer = () => {
     navigation.openDrawer();
     hideHeader();
   };
+
+  const bookmarkChapter = () =>
+    setChapter(prevVal => ({ ...prevVal, bookmark: !prevVal?.bookmark }));
 
   if (loading) {
     return <ChapterLoadingScreen />;
@@ -332,9 +350,6 @@ const ChapterContent = ({ route, navigation }) => {
   if (error) {
     return <ErrorScreenV2 error={error} />;
   }
-
-  const bookmarkChapter = () =>
-    setChapter(prevVal => ({ ...prevVal, bookmark: !prevVal?.bookmark }));
 
   return (
     <>
