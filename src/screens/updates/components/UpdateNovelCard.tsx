@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
     backgroundColor: coverPlaceholderColor,
   },
   novelCover: {
-    marginRight: 16,
+    marginRight: 8,
   },
   imageContainer: {
     flex: 1,
@@ -233,6 +233,6 @@ const styles = StyleSheet.create({
     margin: 8,
   },
   chapterList: {
-    marginLeft: -64,
+    marginLeft: -40,
   },
 });
