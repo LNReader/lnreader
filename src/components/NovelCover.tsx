@@ -20,6 +20,9 @@ import { SourceNovelItem } from 'src/sources/types';
 import { ThemeColors } from '@theme/types';
 import SourceScreenSkeletonLoading from '@screens/browse/loadingAnimation/SourceScreenSkeletonLoading';
 
+import { getSourceStorage } from '@hooks/useSourceStorage';
+import { defaultUserAgentString } from '@utils/fetch/fetch';
+
 interface NovelCoverProps {
   item: LibraryNovelInfo;
   onPress: () => void;
@@ -65,6 +68,8 @@ const NovelCover: React.FC<NovelCoverProps> = ({
 
   const uri = item.novelCover;
 
+  const { cookies = '' } = getSourceStorage(item.sourceId);
+
   return item.sourceId < 0 ? (
     <SourceScreenSkeletonLoading theme={theme} completeRow={item.sourceId} />
   ) : displayMode !== DisplayModes.List ? (
@@ -75,9 +80,9 @@ const NovelCover: React.FC<NovelCoverProps> = ({
         },
         styles.standardNovelCover,
         isSelected && {
-            backgroundColor: theme.primary,
-          } &&
-          styles.selectedNovelCover,
+          backgroundColor: theme.primary,
+          opacity: 0.8,
+        },
       ]}
     >
       <Pressable
@@ -108,7 +113,10 @@ const NovelCover: React.FC<NovelCoverProps> = ({
           )}
         </View>
         <FastImage
-          source={{ uri }}
+          source={{
+            uri,
+            headers: { Cookie: cookies, 'User-Agent': defaultUserAgentString },
+          }}
           style={[
             {
               height: coverHeight,
@@ -347,9 +355,6 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     overflow: 'hidden',
     margin: 2,
-  },
-  selectedNovelCover: {
-    opacity: 0.8,
   },
   compactTitle: {
     color: 'rgba(255,255,255,1)',

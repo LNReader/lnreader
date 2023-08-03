@@ -6,6 +6,10 @@ function getNovelName(y) {
 }
 
 const popularNovels = async page => {
+  if (page !== 1) {
+    return { novels: [] };
+  }
+
   let url = baseUrl + 'p/todas-las-novelas.html';
 
   let headers = new Headers({

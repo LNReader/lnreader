@@ -1,5 +1,6 @@
 import * as cheerio from 'cheerio';
 import { defaultCoverUri, Status } from '../helpers/constants';
+import { fetchHtml } from '@utils/fetch/fetch';
 
 const sourceId = 23;
 const sourceName = 'TuNovelaLigera';
@@ -7,10 +8,9 @@ const sourceName = 'TuNovelaLigera';
 const baseUrl = 'https://tunovelaligera.com/';
 
 const popularNovels = async page => {
-  let url = baseUrl + 'novelas/page/' + page + '/?m_orderby=rating';
+  let url = `${baseUrl}novelas/page/${page}/?m_orderby=rating`;
 
-  const result = await fetch(url);
-  const body = await result.text();
+  const body = await fetchHtml({ url });
 
   let loadedCheerio = cheerio.load(body);
 
@@ -18,7 +18,9 @@ const popularNovels = async page => {
 
   loadedCheerio('.page-item-detail').each(function () {
     const novelName = loadedCheerio(this).find('.h5 > a').text();
-    const novelCover = loadedCheerio(this).find('img').attr('src');
+    const novelCoverImg = loadedCheerio(this).find('img');
+    const novelCover =
+      novelCoverImg.attr('src') || novelCoverImg.attr('data-cfsrc');
 
     let novelUrl = loadedCheerio(this)
       .find('.h5 > a')
@@ -42,8 +44,7 @@ const popularNovels = async page => {
 const parseNovelAndChapters = async novelUrl => {
   const url = `${baseUrl}novelas/${novelUrl}`;
 
-  const result = await fetch(url);
-  const body = await result.text();
+  const body = await fetchHtml({ url });
 
   let loadedCheerio = cheerio.load(body);
 
@@ -58,10 +59,13 @@ const parseNovelAndChapters = async novelUrl => {
 
   novel.novelName = loadedCheerio('.post-title > h1').text().trim();
 
-  let novelCover = loadedCheerio('.summary_image > a > img');
+  let novelCover = loadedCheerio('.summary_image img');
 
   novel.novelCover =
-    novelCover.attr('data-src') || novelCover.attr('src') || defaultCoverUri;
+    novelCover.attr('data-src') ||
+    novelCover.attr('src') ||
+    novelCover.attr('data-cfsrc') ||
+    defaultCoverUri;
 
   loadedCheerio('.post-content_item').each(function () {
     const detailName = loadedCheerio(this)
@@ -98,14 +102,13 @@ const parseNovelAndChapters = async novelUrl => {
   formData.append('action', 'manga_get_chapters');
   formData.append('manga', novelId);
 
-  const data = await fetch(
-    'https://tunovelaligera.com/wp-admin/admin-ajax.php',
-    {
+  const text = await fetchHtml({
+    url: 'https://tunovelaligera.com/wp-admin/admin-ajax.php',
+    init: {
       method: 'POST',
       body: formData,
     },
-  );
-  const text = await data.text();
+  });
 
   loadedCheerio = cheerio.load(text);
 
@@ -135,8 +138,7 @@ const parseNovelAndChapters = async novelUrl => {
 const parseChapter = async (novelUrl, chapterUrl) => {
   const url = `${baseUrl}novelas/${novelUrl}/${chapterUrl}`;
 
-  const result = await fetch(url);
-  const body = await result.text();
+  const body = await fetchHtml({ url });
 
   let loadedCheerio = cheerio.load(body);
 
@@ -159,8 +161,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 const searchNovels = async searchTerm => {
   const url = `${baseUrl}?s=${searchTerm}&post_type=wp-manga`;
 
-  const result = await fetch(url);
-  const body = await result.text();
+  const body = await fetchHtml({ url });
 
   let loadedCheerio = cheerio.load(body);
 
@@ -168,7 +169,9 @@ const searchNovels = async searchTerm => {
 
   loadedCheerio('.c-tabs-item__content').each(function () {
     const novelName = loadedCheerio(this).find('.h4 > a').text();
-    const novelCover = loadedCheerio(this).find('img').attr('src');
+    const novelCoverImg = loadedCheerio(this).find('img');
+    const novelCover =
+      novelCoverImg.attr('src') ?? novelCoverImg.attr('data-cfsrc');
 
     let novelUrl = loadedCheerio(this).find('.h4 > a').attr('href');
     novelUrl = novelUrl.replace(`${baseUrl}novelas/`, '');

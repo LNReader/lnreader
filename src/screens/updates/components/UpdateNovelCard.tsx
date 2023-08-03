@@ -23,16 +23,24 @@ import { useAppDispatch } from '@redux/hooks';
 import { useTheme } from '@hooks/useTheme';
 import { noop } from 'lodash-es';
 
+import { getSourceStorage } from '@hooks/useSourceStorage';
+
 const NovelCover = ({
   uri,
   navigateToNovel,
+  sourceId,
 }: {
   uri: string;
   navigateToNovel: () => void;
+  sourceId: number;
 }) => {
+  const { cookies = '' } = getSourceStorage(sourceId);
   return (
     <Pressable onPress={navigateToNovel}>
-      <FastImage source={{ uri }} style={styles.cover} />
+      <FastImage
+        source={{ uri, headers: { 'cookie': cookies } }}
+        style={styles.cover}
+      />
     </Pressable>
   );
 };
@@ -110,6 +118,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
       <NovelCover
         navigateToNovel={navigateToNovel}
         uri={chapterList[0].novelCover}
+        sourceId={chapterList[0].sourceId}
       />
     ),
     [JSON.stringify(chapterList[0])],
@@ -148,6 +157,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
                     <NovelCover
                       navigateToNovel={navigateToNovel}
                       uri={chapterList[0].novelCover}
+                      sourceId={chapterList[0].sourceId}
                     />
                   </View>
                 }
@@ -175,6 +185,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
             <NovelCover
               navigateToNovel={navigateToNovel}
               uri={chapterList[0].novelCover}
+              sourceId={chapterList[0].sourceId}
             />
           </View>
         }

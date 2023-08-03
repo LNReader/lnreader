@@ -281,7 +281,7 @@
   },
   {
     "sourceId": 51,
-    "url": "https://ranobes.net/",
+    "url": "https://ranobes.top/",
     "sourceName": "Ranobes",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/icons/src/en/ranobes/icon.png?raw=true",
     "lang": "English"
@@ -999,5 +999,19 @@
     "url": "https://bookriver.ru/",
     "lang": "Russian",
     "icon": "https://bookriver.ru/android-chrome-512x512.png"
+  },
+  {
+    "sourceId": 165,
+    "sourceName": "Linovelib",
+    "url": "https://w.linovelib.com",
+    "lang": "Chinese",
+    "icon": "https://w.linovelib.com/images/logo.png"
+  },
+  {
+    "sourceId": 166,
+    "sourceName": "NOVA",
+    "url": "https://novelasligeras.net",
+    "lang": "Spanish",
+    "icon": "https://pbs.twimg.com/profile_images/1659040611507351552/DeLBdFep_400x400.jpg"
   }
 ]
