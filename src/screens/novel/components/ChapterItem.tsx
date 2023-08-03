@@ -74,10 +74,10 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
       onLongPress={() => onSelectLongPress?.(chapter)}
       android_ripple={{ color: theme.rippleColor }}
     >
-      {left && <View style={styles.flex}>{left}</View>}
+      {left}
       <Row style={styles.row}>
         {!!bookmark && <ChapterBookmarkButton theme={theme} />}
-        <View style={styles.textContainer}>
+        <View>
           {isUpdateCard && (
             <Text
               style={[
@@ -132,18 +132,16 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
           </View>
         </View>
       </Row>
-      <View style={styles.flex}>
-        <DownloadButton
-          downloadQueue={downloadQueue}
-          chapter={chapter}
-          theme={theme}
-          deleteChapter={deleteChapter}
-          downloadChapter={downloadChapter}
-          hideDeleteChapterMenu={hideDeleteChapterMenu}
-          showDeleteChapterMenu={showDeleteChapterMenu}
-          deleteChapterMenuVisible={deleteChapterMenuVisible}
-        />
-      </View>
+      <DownloadButton
+        downloadQueue={downloadQueue}
+        chapter={chapter}
+        theme={theme}
+        deleteChapter={deleteChapter}
+        downloadChapter={downloadChapter}
+        hideDeleteChapterMenu={hideDeleteChapterMenu}
+        showDeleteChapterMenu={showDeleteChapterMenu}
+        deleteChapterMenuVisible={deleteChapterMenuVisible}
+      />
     </Pressable>
   );
 };
@@ -158,28 +156,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    columnGab: 8,
   },
   text: {
     fontSize: 12,
   },
   textRow: {
     flexDirection: 'row',
+    marginTop: 5,
   },
-  flex: {
-    flexBasis: 'auto',
-    flexShrink: 9,
-  },
-  textContainer: {
-    flex: 1,
-    marginVertical: '10%',
-    height: '80%',
-    justifyContent: 'space-evenly',
-  },
-  row: {
-    flexBasis: 10,
-    flexGrow: 1,
-    overflow: 'hidden',
-    height: '100%',
-  },
+  row: { flex: 1, overflow: 'hidden' },
 });

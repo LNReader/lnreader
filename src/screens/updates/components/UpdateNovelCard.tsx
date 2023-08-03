@@ -113,20 +113,23 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
     (state: RootState) => state.downloadsReducer,
   );
 
+  const renderNovelCover = useCallback(
+    () => (
+      <NovelCover
+        navigateToNovel={navigateToNovel}
+        uri={chapterList[0].novelCover}
+        sourceId={chapterList[0].sourceId}
+      />
+    ),
+    [JSON.stringify(chapterList[0])],
+  );
+
   if (chapterList.length > 1) {
     return (
       <List.Accordion
         title={chapterList[0].novelName}
         titleStyle={{ fontSize: 14, color: theme.onSurface }}
-        left={() => (
-          <View style={styles.listNovelCover}>
-            <NovelCover
-              navigateToNovel={navigateToNovel}
-              uri={chapterList[0].novelCover}
-              sourceId={chapterList[0].sourceId}
-            />
-          </View>
-        )}
+        left={renderNovelCover}
         descriptionStyle={{ fontSize: 12 }}
         theme={{ colors: theme }}
         style={[styles.container, styles.padding]}
@@ -209,11 +212,8 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     backgroundColor: coverPlaceholderColor,
   },
-  listNovelCover: {
-    justifyContent: 'center',
-  },
   novelCover: {
-    marginRight: 16,
+    marginRight: 8,
   },
   imageContainer: {
     flex: 1,

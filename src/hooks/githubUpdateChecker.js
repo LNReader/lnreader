@@ -31,7 +31,7 @@ export const useGithubUpdateChecker = () => {
     const newSemVer = newVersion.split('.');
     const oldSemVer = currentVersion.split('.');
 
-    oldSemVer?.map((version, index) => {
+    return oldSemVer?.some((version, index) => {
       if (newSemVer[index] > version) {
         return true;
       }
