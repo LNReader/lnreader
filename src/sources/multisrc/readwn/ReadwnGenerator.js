@@ -2,7 +2,7 @@ import MultiSrcScraper from './ReadwnScraper';
 
 const ReadwnScraper = new MultiSrcScraper(
   68,
-  'https://www.readwn.com/',
+  'https://www.wuxiap.com/',
   'Readwn.com',
 );
 
