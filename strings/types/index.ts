@@ -79,6 +79,7 @@ export interface StringMap {
   'readerScreen.bottomSheet.showBatteryAndTime': 'string';
   'readerScreen.bottomSheet.showProgressPercentage': 'string';
   'readerScreen.bottomSheet.swipeGestures': 'string';
+  'readerScreen.bottomSheet.readerPages': 'string';
   'readerScreen.bottomSheet.allowTextSelection': 'string';
   'readerScreen.bottomSheet.useChapterDrawerSwipeNavigation': 'string';
   'readerScreen.bottomSheet.removeExtraSpacing': 'string';

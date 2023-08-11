@@ -88,6 +88,7 @@ const ChapterContent = ({ route, navigation }) => {
 
   const {
     swipeGestures = false,
+    readerPages = false,
     useVolumeButtons = false,
     autoScroll = false,
     autoScrollInterval = 10,
@@ -395,6 +396,7 @@ const ChapterContent = ({ route, navigation }) => {
         html={chapterText}
         chapterName={chapter.chapterName || chapterName}
         swipeGestures={swipeGestures}
+        readerPages={readerPages}
         minScroll={minScroll}
         nextChapter={nextChapter}
         webViewRef={webViewRef}

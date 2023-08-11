@@ -50,6 +50,7 @@ const GeneralTab: React.FC = () => {
     useVolumeButtons = false,
     scrollAmount = 200,
     swipeGestures = false,
+    readerPages = false,
     removeExtraParagraphSpacing = false,
     addChapterNameInReader = false,
     bionicReading = false,
@@ -103,6 +104,12 @@ const GeneralTab: React.FC = () => {
           dispatch(setAppSettings('swipeGestures', !swipeGestures))
         }
         value={swipeGestures}
+        theme={theme}
+      />
+      <ReaderSheetPreferenceItem
+        label={getString('readerScreen.bottomSheet.readerPages')}
+        onPress={() => dispatch(setAppSettings('readerPages', !readerPages))}
+        value={readerPages}
         theme={theme}
       />
       <ReaderSheetPreferenceItem

@@ -10,6 +10,7 @@ import { useReaderSettings, useSettingsV1 } from '@redux/hooks';
 import { getString } from '@strings/translations';
 
 import { sourceManager } from '../../../sources/sourceManager';
+import { horizontalReaderPages } from './functionStrings/horizontalReaderPages';
 
 type WebViewPostEvent = {
   type: string;
@@ -30,6 +31,7 @@ type WebViewReaderProps = {
   html: string;
   chapterName: string;
   swipeGestures: boolean;
+  readerPages: boolean;
   minScroll: React.MutableRefObject<number>;
   nextChapter: ChapterItem;
   webViewRef: React.MutableRefObject<WebView>;
@@ -52,6 +54,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
     html,
     chapterName,
     swipeGestures,
+    readerPages,
     minScroll,
     nextChapter,
     webViewRef,
@@ -206,6 +209,40 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                         min-height: ${layoutHeight - 140};
                         margin-bottom: auto;
                       }
+                      ${
+                        readerPages
+                          ? `
+                          .left, .right { 
+                            position: absolute; 
+                            height: 89%; 
+                            width: 35%; 
+                            z-index: 100; 
+                            top:0;
+                          } 
+                          .left { 
+                            left: 0
+                          } 
+                          .right { 
+                            right: 0; 
+                          } 
+                          chapter{ 
+                            position: relative; 
+                            height: 84%
+                          }
+                          .hidden { 
+                            display: none 
+                          }
+                          .middle {
+                            left: 35%;
+                            position: absolute; 
+                            height: 89%; 
+                            width: 30%; 
+                            z-index: 100; 
+                            top:0;
+                          }
+                          `
+                          : ''
+                      }
                     </style>
                     
                     <style>
@@ -220,20 +257,33 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                     </style>
                   </head>
                   <body id='sourceId-${chapterInfo.sourceId}'>
-                    <div class="chapterCtn" ${onClickWebViewPostMessage({
-                      type: 'hide',
-                    })}>
+                    <div class="chapterCtn" ${
+                      readerPages
+                        ? undefined
+                        : onClickWebViewPostMessage({
+                            type: 'hide',
+                          })
+                    }>
                       <chapter 
                         data-novel-id='${chapterInfo.novelId}'
                         data-chapter-id='${chapterInfo.chapterId}'
                       >
                         ${
                           addChapterNameInReader
-                            ? `<h3>${chapterName}</h3>`
+                            ? `<p><h3>${chapterName}</h3></p>`
                             : ''
                         }
                         ${html}
                       </chapter>
+                      <div class="left"></div>
+                      <div class="right"></div>
+                      <div class="middle" ${
+                        readerPages
+                          ? onClickWebViewPostMessage({
+                              type: 'hide',
+                            })
+                          : undefined
+                      }></div>
                     </div>
                     <script>
                     if(!document.querySelector("input[offline]") && ${!!headers}){
@@ -308,7 +358,6 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                           </script>`
                         : ''
                     }
-
                     <script>
                       async function fn(){
                         let novelName = "${chapterInfo.novelName}";
@@ -317,7 +366,8 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                         let chapterId =${chapterInfo.chapterId};
                         let novelId =${chapterInfo.novelId};
                         let html = document.querySelector("chapter").innerHTML;
-                        ${readerSettings.customJS}
+                        ${readerPages ? horizontalReaderPages : ''}
+                          ${readerSettings.customJS}
                       }
                       document.addEventListener("DOMContentLoaded", fn);
                     </script>
