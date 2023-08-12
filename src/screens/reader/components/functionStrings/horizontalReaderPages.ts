@@ -7,7 +7,7 @@ const navRight = document.getElementById("right");
 const infoBox = document.getElementById("infoContainer");
 infoBox.classList.add("hidden");
 
-const pages = Math.ceil(textWidth / clientWidth);
+const pages = Math.round(textWidth / clientWidth);
 let page = 0;
 
 navRight.addEventListener("click", () => {
@@ -32,5 +32,15 @@ function movePage(){
   + '% + '
   + -${padding} * 2 * page
   +'%))';
+  window.ReactNativeWebView.postMessage(
+    JSON.stringify(
+      {
+        type:"scrollend",
+        data:{
+            offSetY: window.pageXOffset,                                    percentage: page === 0 ? 1 :(page * document.documentElement.clientWidth) / document.querySelector("chapter").scrollWidth*100,  
+        }
+      }
+    )
+  );
 }
 ;`;

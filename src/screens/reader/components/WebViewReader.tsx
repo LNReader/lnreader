@@ -256,9 +256,9 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                             transition: 200ms;
                           }
                           .spacer {
-                            padding-bottom: 120px;
+                            padding-bottom: 60px;
                             height: 10px;
-                            width: 100%
+                            width: 100%;
                           }
                           .hide {
                             transform: translate(100%);
@@ -267,19 +267,6 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                           .show {
                             transform: translate(0%);
 
-                          }
-                          .shown {
-                            animation: hideInfo 200ms backwards
-                          }
-                          @keyframes hideInfo {
-                            0% {
-                              
-                              transform: translate(0);
-                            }
-                            100% {
-                              transform: translate(100%);
-                              
-                            }
                           }
                           `
                           : ''
@@ -355,7 +342,10 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                       }
 
                       var scrollTimeout;
-                      window.addEventListener("scroll", (event) => {
+                      ${
+                        readerPages
+                          ? ''
+                          : `window.addEventListener("scroll", (event) => {
                         window.clearTimeout( scrollTimeout );
                         scrollTimeout = setTimeout(() => {
                           window.ReactNativeWebView.postMessage(
@@ -363,15 +353,17 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                               {
                                 type:"scrollend",
                                 data:{
-                                  offSetY: window.pageYOffset,
-                                  percentage: (window.pageYOffset+${layoutHeight})/document.body.scrollHeight*100,
+                                  offSetY: window.pageYOffset,                                    percentage: (window.pageYOffset+${layoutHeight} 
+                                        )/document.body.scrollHeight*100,
+                                  }
+                                  
                                 }
                               }
                             )
                           );
                         }, 100);
-                      });
-
+                      });`
+                      }
                       let sendHeightTimeout;
                       const sendHeight = (timeOut) => {
                         clearTimeout(sendHeightTimeout);
