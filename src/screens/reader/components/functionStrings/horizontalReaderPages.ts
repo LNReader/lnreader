@@ -1,4 +1,4 @@
-export const horizontalReaderPages = (padding: number) => `
+export const horizontalReaderPages = () => `
 const chapter = document.querySelector("chapter");
 const clientWidth = document.documentElement.clientWidth;
 const textWidth = chapter.scrollWidth;
@@ -7,11 +7,11 @@ const navRight = document.getElementById("right");
 const infoBox = document.getElementById("infoContainer");
 infoBox.classList.add("hidden");
 
-const pages = Math.round(textWidth / clientWidth);
+const pages = Math.ceil(textWidth / clientWidth) - 1;
 let page = 0;
 
 navRight.addEventListener("click", () => {
-  if (page < pages ) {
+  if (page < pages  ) {
     page++;
     movePage();
     if (page === pages){
@@ -27,17 +27,14 @@ navLeft.addEventListener("click", () => {
   }
 })
 function movePage(){
-  chapter.style.transform = 'translate(calc('
-  + page * -100
-  + '% + '
-  + -${padding} * 2 * page
-  +'%))';
+  chapter.style.transform = 'translate(-'+page*100+'%)';
+
   window.ReactNativeWebView.postMessage(
     JSON.stringify(
       {
         type:"scrollend",
         data:{
-            offSetY: window.pageXOffset,                                    percentage: page === 0 ? 1 :(page * document.documentElement.clientWidth) / document.querySelector("chapter").scrollWidth*100,  
+            offSetY: window.pageXOffset,                                    percentage: page === 0 ? 1 :page  /pages *100,  
         }
       }
     )

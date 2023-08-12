@@ -139,10 +139,9 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                         word-wrap: break-word;
                       }
                       body {
-                        padding-left: ${readerSettings.padding}%;
-                        padding-right: ${readerSettings.padding}%;
                         padding-bottom: 40px;
-                        
+                        margin-left: 0;
+                        margin-right: 0;
                         font-size: ${readerSettings.textSize}px;
                         color: ${readerSettings.textColor};
                         text-align: ${readerSettings.textAlign};
@@ -151,6 +150,11 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                       }
                       chapter{
                         display: block;
+                      }
+                      
+                      chapter > *{
+                        padding-left: ${readerSettings.padding}%;
+                        padding-right: ${readerSettings.padding}%;
                       }
                       hr {
                         margin-top: 20px;
@@ -239,7 +243,8 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                             z-index: 1000;
                             bottom: 40;
                             margin: auto;
-                            left: 0;
+                            width: 90%;
+                            left: 5%;
                           }
                           .nextButton{
                             position: relative;
@@ -250,23 +255,23 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                             display: flexbox;
                             flex-direction: column;
                             flex-wrap: wrap;
-                            column-gap: calc(2 * ${readerSettings.padding}%);
-                          
+                            column-gap: 0;
                             column-width: 100vw; 
                             transition: 200ms;
                           }
+                          chapter > * {
+                            width: calc(100% - 2*${readerSettings.padding}%) !important;
+                          }
                           .spacer {
-                            padding-bottom: 60px;
-                            height: 10px;
+                            height: 60px;
                             width: 100%;
                           }
                           .hide {
-                            transform: translate(100%);
+                            transform: translate(110%);
                             transition: 200ms
                           }
                           .show {
                             transform: translate(0%);
-
                           }
                           `
                           : ''
@@ -340,11 +345,11 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                           window.ReactNativeWebView.postMessage(JSON.stringify({type:"imgfile",data:img.getAttribute("delayed-src")}));
                         });
                       }
-
+                     
                       var scrollTimeout;
                       ${
                         readerPages
-                          ? ''
+                          ? horizontalReaderPages()
                           : `window.addEventListener("scroll", (event) => {
                         window.clearTimeout( scrollTimeout );
                         scrollTimeout = setTimeout(() => {
@@ -405,11 +410,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                         let chapterId =${chapterInfo.chapterId};
                         let novelId =${chapterInfo.novelId};
                         let html = document.querySelector("chapter").innerHTML;
-                        ${
-                          readerPages
-                            ? horizontalReaderPages(readerSettings.padding)
-                            : ''
-                        }
+                        
                           ${readerSettings.customJS}
                       }
                       document.addEventListener("DOMContentLoaded", fn);
