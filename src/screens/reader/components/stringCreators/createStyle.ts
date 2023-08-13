@@ -132,8 +132,7 @@ export const createStyles = (
         position: absolute;
         z-index: 1000;
         bottom: 40;
-        margin: auto;
-        width: 90%;
+        width: calc(100% - 2*${readerSettings.padding}%)
       }
       .nextButton{
         position: relative;
