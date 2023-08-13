@@ -1,4 +1,4 @@
-export const horizontalReaderPages = () => `
+export const createHorizontalReaderPages = () => `
 const chapter = document.querySelector("chapter");
 const clientWidth = document.documentElement.clientWidth;
 const textWidth = chapter.scrollWidth;
