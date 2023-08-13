@@ -262,8 +262,9 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                           chapter > * {
                             width: calc(100% - 2*${readerSettings.padding}%) !important;
                           }
-                          .spacer {
-                            height: 60px;
+                          #spacer {
+                            display: block;
+                            min-height: 60px;
                             width: 100%;
                           }
                           .hide {
@@ -316,7 +317,8 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                             : ''
                         }
                         ${html}
-                        <div class="spacer"></div>
+                        <p id="spacer"></p>
+
                       </chapter>
                       <div id="infoContainer" class="hide">
                         <div class="infoText">
@@ -349,7 +351,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                       var scrollTimeout;
                       ${
                         readerPages
-                          ? horizontalReaderPages()
+                          ? ''
                           : `window.addEventListener("scroll", (event) => {
                         window.clearTimeout( scrollTimeout );
                         scrollTimeout = setTimeout(() => {
@@ -404,6 +406,8 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                     }
                     <script>
                       async function fn(){
+                        // Position important to prevent layout bugs
+                        ${readerPages && horizontalReaderPages()}
                         let novelName = "${chapterInfo.novelName}";
                         let chapterName = "${chapterInfo.chapterName}";
                         let sourceId =${chapterInfo.sourceId};

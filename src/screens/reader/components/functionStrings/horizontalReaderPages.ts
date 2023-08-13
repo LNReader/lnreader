@@ -6,6 +6,7 @@ const navLeft = document.getElementById("left");
 const navRight = document.getElementById("right");
 const infoBox = document.getElementById("infoContainer");
 infoBox.classList.add("hidden");
+document.getElementById("spacer").style.height = infoBox.scrollHeight + 'px';
 
 const pages = Math.ceil(textWidth / clientWidth) - 1;
 let page = 0;
