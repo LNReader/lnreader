@@ -17,10 +17,14 @@ infoBox.classList.add("hidden");
 id("spacer").style.height = infoBox.scrollHeight + 'px';
 
 const pages = (Math.ceil(textWidth / clientWidth) - 1);
-page = 0;
+let page = 0;
+
 
 navRight.addEventListener("click", () => {
   page = select("chapter").getAttribute('data-page');
+  if (isNaN(page)) {
+    page = 0;
+  }
   if (page < pages  ) {
     page++;
     movePage();
