@@ -216,9 +216,13 @@ const ChapterContent = ({ route, navigation }) => {
       updateTracker();
     }
   });
-
+  useEffect(() => {
+    webViewRef?.current?.injectJavaScript(
+      `${!readerPages} && document.querySelector('chapter').style.transform = 'translate(0%)';`,
+    );
+  }, [readerPages]);
   const scrollTo = useCallback(
-    (offset, axis = 'Y') => {
+    offset => {
       console.log('offset', offset);
       requestAnimationFrame(() => {
         webViewRef?.current?.injectJavaScript(
