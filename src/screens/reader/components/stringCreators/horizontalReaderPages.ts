@@ -1,17 +1,26 @@
-export const createHorizontalReaderPages = () => `
-const chapter = document.querySelector("chapter");
+export const createHorizontalReaderPages = () => {
+  return `
+const id = (key) => {
+  return document.getElementById(key)
+}
+const select = (key) => {
+  return document.querySelector(key)
+}
+
+const chapter = select("chapter");
 const clientWidth = document.documentElement.clientWidth;
 const textWidth = chapter.scrollWidth;
-const navLeft = document.getElementById("left");
-const navRight = document.getElementById("right");
-const infoBox = document.getElementById("infoContainer");
+const navLeft = id("left");
+const navRight = id("right");
+const infoBox = id("infoContainer");
 infoBox.classList.add("hidden");
-document.getElementById("spacer").style.height = infoBox.scrollHeight + 'px';
+id("spacer").style.height = infoBox.scrollHeight + 'px';
 
-const pages = Math.ceil(textWidth / clientWidth) - 1;
-let page = 0;
+const pages = (Math.ceil(textWidth / clientWidth) - 1);
+page = 0;
 
 navRight.addEventListener("click", () => {
+  page = select("chapter").getAttribute('data-page');
   if (page < pages  ) {
     page++;
     movePage();
@@ -21,6 +30,7 @@ navRight.addEventListener("click", () => {
   }
 });
 navLeft.addEventListener("click", () => {
+  page = select("chapter").getAttribute('data-page');
   if (page > 0) {
     infoBox.classList.remove("show")
     page--;
@@ -29,16 +39,29 @@ navLeft.addEventListener("click", () => {
 })
 function movePage(){
   chapter.style.transform = 'translate(-'+page*100+'%)';
-
+  select('chapter').setAttribute('data-page', 
+    page
+  );
   window.ReactNativeWebView.postMessage(
     JSON.stringify(
       {
         type:"scrollend",
         data:{
-            offSetY: window.pageXOffset,                                    percentage: page === 0 ? 1 :page  /pages *100,  
+            offSetY: window.pageXOffset,                                    percentage: page === 0 ? 1 : page / pages * 100,  
         }
       }
     )
   );
 }
+let sendWidthTimeout;
+const sendPages = (timeOut) => {
+  clearTimeout(sendHeightTimeout);
+  sendHeightTimeout = setTimeout(
+    window.ReactNativeWebView.postMessage(
+      JSON.stringify({type:"pages",data: pages})
+    ), timeOut
+  );
+}
+sendPages(200);
 ;`;
+};

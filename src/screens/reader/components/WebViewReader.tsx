@@ -35,6 +35,7 @@ type WebViewReaderProps = {
   swipeGestures: boolean;
   readerPages: boolean;
   minScroll: React.MutableRefObject<number>;
+  pages: React.MutableRefObject<number>;
   nextChapter: ChapterItem;
   webViewRef: React.MutableRefObject<WebView>;
   onPress(): void;
@@ -60,6 +61,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
     minScroll,
     nextChapter,
     webViewRef,
+    pages,
     onPress,
     onLayout,
     doSaveProgress,
@@ -117,6 +119,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
             if (event.data) {
               const offSetY = Number(event.data?.offSetY);
               const percentage = Math.round(Number(event.data?.percentage));
+
               doSaveProgress(offSetY, percentage);
             }
             break;
@@ -124,6 +127,12 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
             if (event.data) {
               const contentHeight = Math.round(Number(event.data));
               minScroll.current = (layoutHeight / contentHeight) * 100;
+            }
+            break;
+          case 'pages':
+            console.log(event.data);
+            if (event.data) {
+              pages.current = Number(event.data);
             }
             break;
         }
@@ -168,6 +177,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                         })
                       }></div>
                       <chapter 
+                        data-page=0
                         data-novel-id='${chapterInfo.novelId}'
                         data-chapter-id='${chapterInfo.chapterId}'
                       >
@@ -229,7 +239,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                       clearTimeout(sendHeightTimeout);
                       sendHeightTimeout = setTimeout(
                         window.ReactNativeWebView.postMessage(
-                          JSON.stringify({type:"height",data:document.body.scrollHeight})
+                          JSON.stringify({type:"height",data: document.body.scrollHeight})
                         ), timeOut
                       );
                     }

@@ -106,6 +106,7 @@ const ChapterContent = ({ route, navigation }) => {
 
   const position = usePosition(novelId, chapterId);
   const minScroll = useRef(0);
+  const pages = useRef(0);
 
   const { tracker, trackedNovels } = useTrackerReducer();
   const isTracked = trackedNovels.find(obj => obj.novelId === novelId);
@@ -217,11 +218,32 @@ const ChapterContent = ({ route, navigation }) => {
   });
 
   const scrollTo = useCallback(
-    offsetY => {
+    (offset, axis = 'Y') => {
       requestAnimationFrame(() => {
-        webViewRef?.current?.injectJavaScript(`(()=>{
-          window.scrollTo({top:${offsetY},behavior:'smooth'})
-        })()`);
+        webViewRef?.current?.injectJavaScript(
+          axis === 'Y'
+            ? `(()=>{
+                window.scrollTo({top:${offset},behavior:'smooth'})
+              })()`
+            : `(()=>{
+              document.querySelector('chapter').setAttribute('data-page', ${
+                offset / 100
+              });
+              document.querySelector("chapter").style.transform = 'translate(-${offset}%)';
+              window.ReactNativeWebView.postMessage(
+                JSON.stringify(
+                  {
+                    type:"scrollend",
+                    data:{
+                        offSetY: window.pageXOffset,                                    percentage: (${
+                          offset / 100 / pages.current
+                        } > 0 ? ${offset / 100 / pages.current} * 100 : 1),  
+                    }
+                  }
+                )
+              );
+            })()`,
+        );
       });
     },
     [webViewRef],
@@ -398,6 +420,7 @@ const ChapterContent = ({ route, navigation }) => {
         swipeGestures={swipeGestures}
         readerPages={readerPages}
         minScroll={minScroll}
+        pages={pages}
         nextChapter={nextChapter}
         webViewRef={webViewRef}
         onLayout={onLayout}
@@ -427,7 +450,9 @@ const ChapterContent = ({ route, navigation }) => {
           />
           <ReaderSeekBar
             theme={theme}
+            readerPages={readerPages}
             minScroll={minScroll.current}
+            pages={pages.current}
             verticalSeekbar={verticalSeekbar}
             percentage={position?.percentage}
             scrollTo={scrollTo}
