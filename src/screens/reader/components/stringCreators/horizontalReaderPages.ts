@@ -47,7 +47,7 @@ function movePage(){
       {
         type:"scrollend",
         data:{
-            offSetY: window.pageXOffset,                                    percentage: page === 0 ? 1 : page / pages * 100,  
+            offSetY: page * 100,                                           percentage: page === 0 ? 1 : page / pages * 100,  
         }
       }
     )

@@ -219,9 +219,10 @@ const ChapterContent = ({ route, navigation }) => {
 
   const scrollTo = useCallback(
     (offset, axis = 'Y') => {
+      console.log('offset', offset);
       requestAnimationFrame(() => {
         webViewRef?.current?.injectJavaScript(
-          axis === 'Y'
+          !readerPages
             ? `(()=>{
                 window.scrollTo({top:${offset},behavior:'smooth'})
               })()`
@@ -235,9 +236,10 @@ const ChapterContent = ({ route, navigation }) => {
                   {
                     type:"scrollend",
                     data:{
-                        offSetY: window.pageXOffset,                                    percentage: (${
-                          offset / 100 / pages.current
-                        } > 0 ? ${offset / 100 / pages.current} * 100 : 1),  
+                        offSetY: ${offset},                                    
+                        percentage: (${offset / 100 / pages.current} > 0 ? ${
+                offset / 100 / pages.current
+              } * 100 : 1),  
                     }
                   }
                 )
