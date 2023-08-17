@@ -14,6 +14,8 @@ import { RESTORE_UPDATE_STATE } from '@redux/updates/updates.types';
 import { RESTORE_DOWNLOADS_STATE } from '@redux/downloads/donwloads.types';
 import { MMKVStorage } from '@utils/mmkv/mmkv';
 
+import { createCategoryTriggerQuery } from '@database/tables/CategoryTable';
+
 const db = SQLite.openDatabase('lnreader.db');
 const downloadDirectoryPath = `${RNFS.DownloadDirectoryPath}/LNReader`;
 
@@ -62,10 +64,18 @@ export const checkAppVersion = (
 export const restoreCategory = (
   responsePackage: ResponsePackage,
 ): Promise<void> => {
-  return new Promise((resolve, reject) => {
-    insertTable(responsePackage.content, 'Category')
-      .then(() => resolve())
-      .catch(error => reject(error));
+  return new Promise(async (resolve, reject) => {
+    // this trigger could make sort mess up
+    db.transaction(tx => {
+      tx.executeSql('DROP TRIGGER if EXISTS add_category');
+    });
+    await insertTable(responsePackage.content, 'Category').catch(error =>
+      reject(error),
+    );
+    db.transaction(tx => {
+      tx.executeSql(createCategoryTriggerQuery);
+    });
+    resolve();
   });
 };
 
