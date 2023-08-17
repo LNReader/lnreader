@@ -76,7 +76,7 @@ const htmlToText = (html, options = {}) => {
      * Remove remaining tags
      */
 
-    .replace(/(<([^>]+)>)/gi, '')
+    .replace(/(<([^>-]+)>)/gi, '')
 
     /**
      * Remove tabs.

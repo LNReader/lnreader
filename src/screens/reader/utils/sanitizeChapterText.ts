@@ -1,9 +1,7 @@
 import sanitizeHtml from 'sanitize-html';
-import { load as loadCheerio } from 'cheerio';
 
 interface Options {
   removeExtraParagraphSpacing?: boolean;
-  pluginId?: string;
 }
 
 export const sanitizeChapterText = (
@@ -23,7 +21,7 @@ export const sanitizeChapterText = (
       'div',
     ]),
     allowedAttributes: {
-      'img': ['src', 'class', 'error-src'],
+      'img': ['src'],
       'a': ['href'],
     },
     allowedSchemes: ['data', 'http', 'https', 'file'],
@@ -32,15 +30,20 @@ export const sanitizeChapterText = (
     if (options?.removeExtraParagraphSpacing) {
       text = text.replace(/<\s*br[^>]*>/gi, '\n').replace(/\n{2,}/g, '\n\n');
     }
-    const loadedCheerio = loadCheerio(text);
-    loadedCheerio('img').each((i, img) => {
-      loadedCheerio(img).attr({
-        onload: 'reader.refresh()',
-        onerror:
-          "this.setAttribute('error-src', this.src);reader.post({type:'error-img',data:this.src});this.src='file:///android_asset/images/loading.gif';",
-      });
-    });
-    text = loadedCheerio('body').html() || text;
+    const imgHandlerRegex = /<img([^>]*src="[^"]+"[^>]*)>/g;
+    const ttsHandlerRegex =
+      /(< *\w+ *>[^<.?!]+< *\/\w+ *>|< *a *href *= *"[^"]+" *>\s*(<img[^>]+>|[^<]+|(< *\w+ *>[^]+< *\/\w+ *>)*)\s*< *\/a *>|< *img[^>]+>|[^<>.?!]+[.?!])/g;
+    // first -> match whole tags which dont have attribute and [.?!] inside
+    // second -> match a tags and its childs
+    // third -> match img tags
+    // match sentence split by [.?!]
+
+    text = text
+      .replace(
+        imgHandlerRegex,
+        "<img alt=\"Plugin can't fetch this img\" onload=\"reader.refresh()\" onerror=\"this.setAttribute('error-src', this.src);reader.post({type:'error-img',data:this.src});this.src='file:///android_asset/images/loading.gif';this.onerror=undefined\" $1>",
+      )
+      .replace(ttsHandlerRegex, '<t-t-s>$1</t-t-s>');
   } else {
     text =
       "Chapter is empty.\n\nReport on <a href='https://github.com/LNReader/lnreader-sources/issues/new/choose'>github</a> if it's available in webview.";

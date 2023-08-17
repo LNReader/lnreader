@@ -117,6 +117,8 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
                       --readerSettings-fontFamily: ${readerSettings.fontFamily};
                       --theme-primary: ${theme.primary};
                       --theme-onPrimary: ${theme.onPrimary};
+                      --theme-secondary: ${theme.secondary};
+                      --theme-onSecondary: ${theme.onSecondary};
                       --theme-surface: ${theme.surface};
                       --theme-surface-0-9: ${color(theme.surface)
                         .alpha(0.9)

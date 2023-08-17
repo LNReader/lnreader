@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo,
+} from 'react';
 import {
   Dimensions,
   NativeModules,
@@ -38,7 +44,6 @@ import { defaultTo } from 'lodash-es';
 import BottomInfoBar from './components/BottomInfoBar/BottomInfoBar';
 import { sanitizeChapterText } from './utils/sanitizeChapterText';
 import ChapterDrawer from './components/ChapterDrawer';
-import { htmlToText } from '@plugins/helpers/htmlToText';
 import ChapterLoadingScreen from './ChapterLoadingScreen/ChapterLoadingScreen';
 import { ErrorScreenV2 } from '@components';
 import { ChapterScreenProps } from '@navigators/types';
@@ -189,16 +194,6 @@ export const ChapterContent = ({
     }
   }, []);
 
-  const [ttsStatus, startTts] = useTextToSpeech(
-    htmlToText(sourceChapter.chapterText).split('\n'),
-    () => {
-      if (!incognitoMode) {
-        dispatch(markChapterReadAction(chapter.id, chapter.novelId));
-        updateTracker();
-      }
-    },
-  );
-
   const scrollTo = useCallback(
     (offsetY: number) => {
       webViewRef.current?.injectJavaScript(`(()=>{
@@ -257,10 +252,10 @@ export const ChapterContent = ({
 
   const hideHeader = () => {
     if (!hidden) {
-      webViewRef.current?.injectJavaScript('scrollbar.hide()');
+      webViewRef.current?.injectJavaScript('scrollHandler.hide()');
       setImmersiveMode();
     } else {
-      webViewRef.current?.injectJavaScript('scrollbar.show()');
+      webViewRef.current?.injectJavaScript('scrollHandler.show()');
       showStatusAndNavBar();
     }
     setHidden(!hidden);
@@ -298,10 +293,21 @@ export const ChapterContent = ({
     }
   };
 
-  const chapterText = sanitizeChapterText(sourceChapter.chapterText, {
-    removeExtraParagraphSpacing,
-    pluginId: novel.pluginId,
+  const chapterText = useMemo(
+    () =>
+      sanitizeChapterText(sourceChapter.chapterText, {
+        removeExtraParagraphSpacing,
+      }),
+    [sourceChapter.chapterText],
+  );
+
+  const [ttsStatus, startTts] = useTextToSpeech(chapterText, webViewRef, () => {
+    if (!incognitoMode) {
+      dispatch(markChapterReadAction(chapter.id, chapter.novelId));
+      updateTracker();
+    }
   });
+
   const openDrawer = useCallback(() => {
     drawerRef.current?.openDrawer();
     setHidden(true);

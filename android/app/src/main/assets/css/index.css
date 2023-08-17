@@ -37,22 +37,6 @@ img {
     max-width: 100%;
 }
 
-img.load-icon {
-    display: block;
-    margin-inline: auto;
-    animation: rotation 1s infinite linear;
-}
-
-@keyframes rotation {
-    100% {
-        transform: rotate(360deg);
-    }
-
-    0% {
-        transform: rotate(0deg);
-    }
-}
-
 .nextButton,
 .infoText {
     width: 100%;
@@ -154,4 +138,9 @@ img.load-icon {
     right: 0;
     font-size: 1rem;
     text-align: center;
+}
+
+t-t-s.tts-highlight {
+    color: var(--theme-onSecondary);
+    background-color: var(--theme-secondary);
 }
