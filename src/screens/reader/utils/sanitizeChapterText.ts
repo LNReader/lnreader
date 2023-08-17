@@ -1,8 +1,5 @@
 import sanitizeHtml from 'sanitize-html';
-
 import { load as loadCheerio } from 'cheerio';
-import { getPlugin } from '@plugins/pluginManager';
-import { LoadingImageSrc } from './LoadImage';
 
 interface Options {
   removeExtraParagraphSpacing?: boolean;
@@ -19,16 +16,15 @@ export const sanitizeChapterText = (
   let text = sanitizeHtml(html, {
     allowedTags: sanitizeHtml.defaults.allowedTags.concat([
       'img',
-      'input',
       'i',
       'em',
       'b',
       'a',
+      'div',
     ]),
     allowedAttributes: {
-      'img': ['src', 'class'],
+      'img': ['src', 'class', 'error-src'],
       'a': ['href'],
-      'input': ['type', 'offline'],
     },
     allowedSchemes: ['data', 'http', 'https', 'file'],
   });
@@ -37,23 +33,14 @@ export const sanitizeChapterText = (
       text = text.replace(/<\s*br[^>]*>/gi, '\n').replace(/\n{2,}/g, '\n\n');
     }
     const loadedCheerio = loadCheerio(text);
-    if (
-      options?.pluginId &&
-      getPlugin(options.pluginId)?.protected &&
-      loadedCheerio('input[offline]').length === 0
-    ) {
-      loadedCheerio('img').each((i, element) => {
-        const src = loadedCheerio(element).attr('src');
-        if (src) {
-          loadedCheerio(element).attr({
-            'src': LoadingImageSrc,
-            'class': 'load-icon',
-            'delayed-src': src,
-          });
-        }
+    loadedCheerio('img').each((i, img) => {
+      loadedCheerio(img).attr({
+        onload: 'reader.refresh()',
+        onerror:
+          "this.setAttribute('error-src', this.src);reader.post({type:'error-img',data:this.src});this.src='file:///android_asset/images/loading.gif';",
       });
-      text = loadedCheerio('body').html() || text;
-    }
+    });
+    text = loadedCheerio('body').html() || text;
   } else {
     text =
       "Chapter is empty.\n\nReport on <a href='https://github.com/LNReader/lnreader-sources/issues/new/choose'>github</a> if it's available in webview.";

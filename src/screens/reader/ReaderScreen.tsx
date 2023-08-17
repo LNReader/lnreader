@@ -26,7 +26,6 @@ import { parseChapterNumber } from '@utils/parseChapterNumber';
 
 import ReaderAppbar from './components/ReaderAppbar';
 import ReaderFooter from './components/ReaderFooter';
-import ReaderSeekBar from './components/ReaderSeekBar';
 
 import { insertHistory } from '@database/queries/HistoryQueries';
 import { SET_LAST_READ } from '@redux/preferences/preference.types';
@@ -90,7 +89,7 @@ export const ChapterContent = ({
     autoScroll = false,
     autoScrollInterval = 10,
     autoScrollOffset = null,
-    verticalSeekbar = true,
+    // verticalSeekbar = true,
     removeExtraParagraphSpacing = false,
   } = useSettings();
   const { incognitoMode } = useLibrarySettings();
@@ -99,7 +98,6 @@ export const ChapterContent = ({
 
   const [hidden, setHidden] = useState(true);
   const position = usePosition(chapter.novelId, chapter.id);
-  const minScroll = useRef<number>(0);
 
   const { tracker, trackedNovels } = useTrackingStatus();
   const isTracked = trackedNovels.find(
@@ -240,7 +238,7 @@ export const ChapterContent = ({
       );
   };
 
-  const doSaveProgress = useCallback(
+  const saveProgress = useCallback(
     async (offsetY: number, percentage: number) => {
       if (!incognitoMode) {
         dispatch(
@@ -259,8 +257,10 @@ export const ChapterContent = ({
 
   const hideHeader = () => {
     if (!hidden) {
+      webViewRef.current?.injectJavaScript('scrollbar.hide()');
       setImmersiveMode();
     } else {
+      webViewRef.current?.injectJavaScript('scrollbar.show()');
       showStatusAndNavBar();
     }
     setHidden(!hidden);
@@ -320,23 +320,19 @@ export const ChapterContent = ({
       <WebViewReader
         data={{ novel, chapter }}
         html={chapterText}
-        chapterName={chapter.name}
         swipeGestures={swipeGestures}
-        minScroll={minScroll}
         nextChapter={nextChapter}
         webViewRef={webViewRef}
+        saveProgress={saveProgress}
         onLayout={() => {
           useVolumeButtons && onLayout();
-          scrollTo(position?.offsetY || 1);
+          scrollTo(position?.offsetY);
         }}
         onPress={hideHeader}
-        doSaveProgress={doSaveProgress}
         navigateToChapterBySwipe={navigateToChapterBySwipe}
         onWebViewNavigationStateChange={onWebViewNavigationStateChange}
       />
-      <BottomInfoBar
-        scrollPercentage={position?.percentage || Math.round(minScroll.current)}
-      />
+      <BottomInfoBar />
       <ReaderBottomSheetV2 bottomSheetRef={readerSheetRef} />
       {!hidden && (
         <>
@@ -348,13 +344,6 @@ export const ChapterContent = ({
             tts={startTts}
             textToSpeech={ttsStatus}
             theme={theme}
-          />
-          <ReaderSeekBar
-            theme={theme}
-            minScroll={minScroll.current}
-            verticalSeekbar={verticalSeekbar}
-            percentage={position?.percentage}
-            scrollTo={scrollTo}
           />
           <ReaderFooter
             theme={theme}
