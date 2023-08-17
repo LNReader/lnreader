@@ -231,6 +231,6 @@ const styles = StyleSheet.create({
     margin: 8,
   },
   chapterList: {
-    marginLeft: -40,
+    marginLeft: -64,
   },
 });
