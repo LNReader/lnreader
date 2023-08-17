@@ -13,3 +13,9 @@ export const createChapterTableQuery = `
         FOREIGN KEY (novelId) REFERENCES Novel(id) ON DELETE CASCADE
     )
 `;
+
+export const createChapterNovelIdIndexQuery = `
+    CREATE INDEX
+    IF NOT EXISTS
+    chapterNovelIdIndex ON Chapter(novelId)
+`;

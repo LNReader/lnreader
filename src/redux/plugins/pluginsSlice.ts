@@ -50,6 +50,12 @@ export const sourcesSlice = createSlice({
       ].filter(plugin => plugin.id !== action.payload.id);
     },
     uninstallPluginAction: (state, action: PayloadAction<PluginItem>) => {
+      if (state.lastUsed && state.lastUsed.id === action.payload.id) {
+        state.lastUsed = null;
+      }
+      state.pinnedPlugins = state.pinnedPlugins.filter(
+        plugin => plugin.id !== action.payload.id,
+      );
       state.installedPlugins = state.installedPlugins.filter(
         plugin => plugin.id !== action.payload.id,
       );
@@ -68,13 +74,16 @@ export const sourcesSlice = createSlice({
       for (let lang in state.availablePlugins) {
         const matchResuls = state.availablePlugins[lang as Languages].filter(
           plugin =>
+            state.languagesFilter.includes(plugin.lang) &&
             plugin.name.toLowerCase().includes(action.payload.toLowerCase()),
         );
         results = results.concat(matchResuls);
       }
       results = results.concat(
-        state.installedPlugins.filter(plugin =>
-          plugin.name.toLowerCase().includes(action.payload.toLowerCase()),
+        state.installedPlugins.filter(
+          plugin =>
+            state.languagesFilter.includes(plugin.lang) &&
+            plugin.name.toLowerCase().includes(action.payload.toLowerCase()),
         ),
       );
       state.searchResults = results;

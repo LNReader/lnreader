@@ -6,7 +6,10 @@ import {
 } from './tables/CategoryTable';
 import { createNovelTableQuery } from './tables/NovelTable';
 import { createNovelCategoryTableQuery } from './tables/NovelCategoryTable';
-import { createChapterTableQuery } from './tables/ChapterTable';
+import {
+  createChapterTableQuery,
+  createChapterNovelIdIndexQuery,
+} from './tables/ChapterTable';
 import { createDownloadTableQuery } from './tables/DownloadTable';
 import { dbTxnErrorCallback } from './utils/helpers';
 import { noop } from 'lodash-es';
@@ -24,7 +27,9 @@ export const createTables = () => {
       tx.executeSql(createCategoryDefaultQuery);
     });
     tx.executeSql(createNovelCategoryTableQuery);
-    tx.executeSql(createChapterTableQuery);
+    tx.executeSql(createChapterTableQuery, [], () => {
+      tx.executeSql(createChapterNovelIdIndexQuery);
+    });
     tx.executeSql(createDownloadTableQuery);
   });
 };

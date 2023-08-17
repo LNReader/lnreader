@@ -149,9 +149,12 @@ const BrowseScreen = () => {
         });
       } else {
         if (installedPlugins) {
+          const plugins = installedPlugins.filter(plugin =>
+            languagesFilter.includes(plugin.lang),
+          );
           list.push({
             header: 'Installed plugins',
-            data: installedPlugins,
+            data: plugins,
           });
         }
       }
@@ -165,6 +168,7 @@ const BrowseScreen = () => {
     JSON.stringify(searchResults),
     installedPlugins,
     searchText,
+    languagesFilter,
   ]);
 
   const makeRoute = (

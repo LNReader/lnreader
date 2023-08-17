@@ -1,31 +1,30 @@
 import RNFS from 'react-native-fs';
 import { showToast } from '../hooks/showToast';
 import { bigger } from '../utils/compareVersion';
+import { Languages } from '@utils/constants/languages';
 
 // packages for plugins
-import * as cheerio from 'cheerio';
+import { load } from 'cheerio';
 import dayjs from 'dayjs';
 import { NovelStatus, Plugin, PluginItem } from './types';
 import { FilterInputs } from './types/filterTypes';
-import { Languages } from '@utils/constants/languages';
-import { fetchFile } from './helpers/fetchFile';
 import { parseMadaraDate } from './helpers/parseDate';
 import { isUrlAbsolute } from '@utils/isAbsoluteUrl';
-import { fetchApi } from '@utils/fetch/fetch';
+import { fetchApi, fetchFile } from '@utils/fetch/fetch';
+import { defaultCover } from './helpers/constants';
 
 const pluginsFolder = RNFS.ExternalDirectoryPath + '/Plugins';
 
 const packages: Record<string, any> = {
-  'cheerio': cheerio,
+  'cheerio': { load },
   'dayjs': dayjs,
-  '@libs/novelStatus': NovelStatus,
-  '@libs/languages': Languages,
-  '@libs/fetchFile': fetchFile,
-  '@libs/parseMadaraDate': parseMadaraDate,
-  '@libs/isAbsoluteUrl': isUrlAbsolute,
-  '@libs/fetchApi': fetchApi,
-  '@libs/filterInputs': FilterInputs,
-  '@libs/showToast': showToast,
+  '@libs/novelStatus': { NovelStatus },
+  '@libs/fetch': { fetchApi, fetchFile },
+  '@libs/parseMadaraDate': { parseMadaraDate },
+  '@libs/isAbsoluteUrl': { isUrlAbsolute },
+  '@libs/filterInputs': { FilterInputs },
+  '@libs/showToast': { showToast },
+  '@libs/defaultCover': { defaultCover },
 };
 
 const _require = (packageName: string) => {
@@ -38,7 +37,7 @@ const initPlugin = (rawCode: string, path?: string) => {
     const plugin: Plugin = Function(
       'require',
       'module',
-      `${rawCode}; return module.exports`,
+      `const exports = module.exports = {}; ${rawCode}; return module.exports`,
     )(_require, {});
     plugin.path = path || `${pluginsFolder}/${plugin.id}.js`;
     return plugin;

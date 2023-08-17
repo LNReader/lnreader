@@ -50,6 +50,15 @@ const insertTable = (records: any[], table: string): Promise<void> => {
   });
 };
 
+export const checkAppVersion = (
+  responsePackage: ResponsePackage,
+): Promise<void> => {
+  return new Promise(resolve => {
+    responsePackage; // currently there's nothing to do
+    resolve();
+  });
+};
+
 export const restoreCategory = (
   responsePackage: ResponsePackage,
 ): Promise<void> => {

@@ -1,7 +1,7 @@
 import { txnErrorCallback } from '@database/utils/helpers';
 import * as SQLite from 'expo-sqlite';
 import RNFS, { ReadDirItem } from 'react-native-fs';
-
+import { appVersion } from '@utils/versionUtils';
 import { ChapterInfo, NovelInfo } from '@database/types';
 import { getChapterFromDB } from '@database/queries/ChapterQueries';
 import { pluginsFolder } from '@plugins/pluginManager';
@@ -17,6 +17,22 @@ import { MMKVStorage } from '@utils/mmkv/mmkv';
 
 const db = SQLite.openDatabase('lnreader.db');
 const downloadDirectoryPath = `${RNFS.DownloadDirectoryPath}/LNReader`;
+
+export const versionTask = (): Promise<BackupTask> => {
+  return new Promise(resolve => {
+    const requestPackage: RequestPackage = {
+      taskType: TaskType.Version,
+      content: {
+        version: appVersion,
+      },
+      relative_path: DataFilePath.Version,
+    };
+    resolve({
+      taskType: TaskType.Version,
+      subtasks: [async () => requestPackage],
+    });
+  });
+};
 
 export const categoryTask = (): Promise<BackupTask> => {
   return new Promise(resolve => {
@@ -73,24 +89,26 @@ export const novelCoverTask = (): Promise<BackupTask> => {
   return new Promise(resolve => {
     db.transaction(tx => {
       tx.executeSql(
-        'SELECT * FROM Novel WHERE Cover NOT LIKE "http%"',
+        'SELECT * FROM Novel WHERE cover NOT LIKE "http%"',
         [],
         (txObj, { rows }) => {
-          const subtasks = rows._array.map((novel: NovelInfo) => {
-            const subtask = async () => {
-              let base64 = '';
-              if (novel.cover) {
-                base64 = await RNFS.readFile(novel.cover, 'base64');
-              }
-              return {
-                taskType: TaskType.NovelCover,
-                content: base64,
-                encoding: 'base64',
-                relative_path: `${novel.pluginId}/${novel.id}/Cover.jpg`,
-              } as RequestPackage;
-            };
-            return subtask;
-          });
+          const subtasks = rows._array
+            .filter((novel: NovelInfo) => novel.cover)
+            .map((novel: NovelInfo) => {
+              const subtask = async () => {
+                let base64 = '';
+                if (novel.cover) {
+                  base64 = await RNFS.readFile(novel.cover, 'base64');
+                }
+                return {
+                  taskType: TaskType.NovelCover,
+                  content: base64,
+                  encoding: 'base64',
+                  relative_path: `${novel.pluginId}/${novel.id}/Cover.jpg`,
+                } as RequestPackage;
+              };
+              return subtask;
+            });
           resolve({
             taskType: TaskType.NovelCover,
             subtasks: subtasks,

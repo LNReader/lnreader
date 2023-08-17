@@ -10,8 +10,10 @@ import {
   pluginTask,
   settingTask,
   themeTask,
+  versionTask,
 } from './backupTasks';
 import {
+  checkAppVersion,
   restoreCategory,
   restoreChapter,
   restoreDownload,
@@ -46,6 +48,7 @@ export const remoteBackup = async (ipv4: string, port: string) => {
 
     const remoteBackupBackgroundAction = async (taskData: any) => {
       const taskList: Array<() => Promise<BackupTask>> = [
+        versionTask,
         categoryTask,
         novelTask,
         novelCoverTask,
@@ -209,6 +212,7 @@ export const remoteRestore = async (ipv4: string, port: string) => {
         string,
         (responsePackage: ResponsePackage) => Promise<void>
       > = {
+        'Version': checkAppVersion,
         'Category': restoreCategory,
         'Novel': restoreNovel,
         'NovelCategory': restoreNovelCategory,
