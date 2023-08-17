@@ -31,7 +31,7 @@ import SetCategoryModal from '@screens/novel/components/SetCategoriesModal';
 import useBoolean from '@hooks/useBoolean';
 import { debounce, intersection } from 'lodash-es';
 import { useBackHandler } from '@hooks/useBackHandler';
-import { openChapter } from '@utils/handleNavigateParams';
+import { getChapterScreenRouteParams } from '@utils/NavigationUtils';
 import useHistory from '@hooks/useHistory';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useSettings } from '@hooks/reduxHooks';
@@ -259,7 +259,7 @@ const LibraryScreen = () => {
             onPress={() => {
               navigate(
                 'Chapter' as never,
-                openChapter(history[0], history[0]) as never,
+                getChapterScreenRouteParams(history[0], history[0]) as never,
               );
             }}
           />

@@ -57,7 +57,7 @@ import DownloadCustomChapterModal from './components/DownloadCustomChapterModal'
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import useBoolean from '@hooks/useBoolean';
 import { useCategorySettings } from '@hooks/useSettings';
-import { openChapter } from '../../utils/handleNavigateParams';
+import { getChapterScreenRouteParams } from '../../utils/NavigationUtils';
 import NovelScreenLoading from './components/LoadingAnimation/NovelScreenLoading';
 import { useTrackerReducer } from '@redux/hooks';
 
@@ -293,7 +293,7 @@ const Novel = ({ route, navigation }) => {
   const navigateToChapter = chapter => {
     navigation.navigate(
       'Chapter',
-      openChapter({ sourceId, novelUrl, novelName }, chapter),
+      getChapterScreenRouteParams({ sourceId, novelUrl, novelName }, chapter),
     );
   };
 
@@ -650,7 +650,7 @@ const Novel = ({ route, navigation }) => {
             onPress={() => {
               navigation.navigate(
                 'Chapter',
-                openChapter(novel, lastReadChapter),
+                getChapterScreenRouteParams(novel, lastReadChapter),
               );
             }}
           />

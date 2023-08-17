@@ -6,11 +6,9 @@ import FastImage from 'react-native-fast-image';
 import { List } from 'react-native-paper';
 import { coverPlaceholderColor } from '../../../theme/colors';
 import {
-  openChapter,
-  openChapterFunctionTypes,
-  openNovel,
-  openNovelProps,
-} from '@utils/handleNavigateParams';
+  getChapterScreenRouteParams,
+  getNovelScreenRouteParams,
+} from '@utils/NavigationUtils';
 import {
   deleteChapterAction,
   downloadChapterAction,
@@ -98,7 +96,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
     (chapter: ChapterItemExtended) =>
       navigate(
         'Chapter' as never,
-        openChapter(chapter, chapter) as openChapterFunctionTypes as never,
+        getChapterScreenRouteParams(chapter, chapter) as never,
       ),
     [],
   );
@@ -106,7 +104,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
   const navigateToNovel = () =>
     navigate(
       'Novel' as never,
-      openNovel(chapterList[0]) as openNovelProps as never,
+      getNovelScreenRouteParams(chapterList[0]) as never,
     );
 
   const { downloadQueue } = useSelector(
