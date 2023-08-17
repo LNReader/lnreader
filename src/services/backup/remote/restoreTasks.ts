@@ -1,7 +1,6 @@
 import * as SQLite from 'expo-sqlite';
 import RNFS from 'react-native-fs';
 
-import { pluginsFolder } from '@plugins/pluginManager';
 import { store } from '@redux/store';
 import { ResponsePackage } from './types';
 import { RESTORE_NOVEL_STATE } from '@redux/novel/novel.types';
@@ -15,9 +14,9 @@ import { RESTORE_DOWNLOADS_STATE } from '@redux/downloads/donwloads.types';
 import { MMKVStorage } from '@utils/mmkv/mmkv';
 
 import { createCategoryTriggerQuery } from '@database/tables/CategoryTable';
+import { AppDownloadFolder } from '@utils/constants/download';
 
 const db = SQLite.openDatabase('lnreader.db');
-const downloadDirectoryPath = `${RNFS.DownloadDirectoryPath}/LNReader`;
 
 const insertObject = (record: any, table: string): Promise<void> => {
   const fields = Object.keys(record).join(', ');
@@ -84,7 +83,6 @@ export const restoreNovel = (
 ): Promise<void> => {
   return new Promise((resolve, reject) => {
     db.transaction(async tx => {
-      tx.executeSql('DELETE FROM Download');
       tx.executeSql(
         'DELETE FROM Chapter',
         [],
@@ -124,27 +122,7 @@ export const restoreDownload = (
   responsePackage: ResponsePackage,
 ): Promise<void> => {
   return new Promise((resolve, reject) => {
-    const chapterText = responsePackage.content;
-    const chapterId = responsePackage.relative_path?.split('.')[0];
-    db.transaction(tx => {
-      tx.executeSql(
-        'INSERT INTO Download(chapterId, chapterText) VALUES (?, ?)',
-        [chapterId, chapterText],
-        () => resolve(),
-        error => {
-          reject(error);
-          return false;
-        },
-      );
-    });
-  });
-};
-
-export const restoreImage = (
-  responsePackage: ResponsePackage,
-): Promise<void> => {
-  return new Promise((resolve, reject) => {
-    const realPath = `${downloadDirectoryPath}/${responsePackage.relative_path}`;
+    const realPath = `${AppDownloadFolder}/${responsePackage.relative_path}`;
     const folderPath = realPath.split('/').slice(0, -1).join('/');
     RNFS.exists(folderPath)
       .then(exists => {
@@ -154,17 +132,6 @@ export const restoreImage = (
         return new Promise(_resolve => _resolve(null));
       })
       .then(() => RNFS.writeFile(realPath, responsePackage.content, 'base64'))
-      .then(() => resolve())
-      .catch(error => reject(error));
-  });
-};
-
-export const restorePlugin = (
-  responsePackage: ResponsePackage,
-): Promise<void> => {
-  return new Promise((resolve, reject) => {
-    const realPath = `${pluginsFolder}/${responsePackage.relative_path}`;
-    RNFS.writeFile(realPath, responsePackage.content)
       .then(() => resolve())
       .catch(error => reject(error));
   });

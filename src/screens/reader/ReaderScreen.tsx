@@ -44,6 +44,7 @@ import { ErrorScreenV2 } from '@components';
 import { ChapterScreenProps } from '@navigators/types';
 import { ChapterInfo } from '@database/types';
 import WebView, { WebViewNavigation } from 'react-native-webview';
+import { NovelDownloadFolder } from '@utils/constants/download';
 
 const Chapter = ({ route, navigation }: ChapterScreenProps) => {
   const drawerRef = useRef<DrawerLayoutAndroid>(null);
@@ -155,7 +156,7 @@ export const ChapterContent = ({
 
   const getChapter = async () => {
     try {
-      const filePath = `${RNFS.DownloadDirectoryPath}/LNReader/${novel.pluginId}/${chapter.novelId}/${chapter.id}/index.html`;
+      const filePath = `${NovelDownloadFolder}/${novel.pluginId}/${chapter.novelId}/${chapter.id}/index.html`;
       if (await RNFS.exists(filePath)) {
         sourceChapter.chapterText = await RNFS.readFile(filePath);
       } else {

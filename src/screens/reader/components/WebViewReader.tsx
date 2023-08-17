@@ -70,7 +70,6 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
         const event: WebViewPostEvent = JSON.parse(ev.nativeEvent.data);
         switch (event.type) {
           case 'hide':
-            console.log('press');
             onPress();
             break;
           case 'next':

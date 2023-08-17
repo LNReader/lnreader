@@ -6,8 +6,6 @@ import {
   novelCategoryTask,
   chapterTask,
   downloadTask,
-  imageTask,
-  pluginTask,
   settingTask,
   themeTask,
   versionTask,
@@ -17,10 +15,8 @@ import {
   restoreCategory,
   restoreChapter,
   restoreDownload,
-  restoreImage,
   restoreNovel,
   restoreNovelCategory,
-  restorePlugin,
   restoreSetting,
   restoreTheme,
 } from './restoreTasks';
@@ -55,8 +51,6 @@ export const remoteBackup = async (ipv4: string, port: string) => {
         novelCategoryTask,
         chapterTask,
         downloadTask,
-        imageTask,
-        pluginTask,
         settingTask,
         themeTask,
       ];
@@ -218,8 +212,6 @@ export const remoteRestore = async (ipv4: string, port: string) => {
         'NovelCategory': restoreNovelCategory,
         'Chapter': restoreChapter,
         'Download': restoreDownload,
-        'Image': restoreImage,
-        'Plugin': restorePlugin,
         'Setting': restoreSetting,
         'Theme': restoreTheme,
       };

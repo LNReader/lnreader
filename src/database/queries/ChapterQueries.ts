@@ -6,6 +6,7 @@ import { ChapterInfo, DownloadedChapter } from '../types';
 import { ChapterItem } from '@plugins/types';
 
 import * as cheerio from 'cheerio';
+import { NovelDownloadFolder } from '@utils/constants/download';
 import { txnErrorCallback } from '@database/utils/helpers';
 import { Plugin } from '@plugins/types';
 import { Update } from '../types';
@@ -218,14 +219,11 @@ const downloadFiles = async (
   chapterId: number,
 ): Promise<void> => {
   try {
-    const folder = await createChapterFolder(
-      `${RNFS.DownloadDirectoryPath}/LNReader`,
-      {
-        pluginId: plugin.id,
-        novelId,
-        chapterId,
-      },
-    ).catch(error => {
+    const folder = await createChapterFolder(NovelDownloadFolder, {
+      pluginId: plugin.id,
+      novelId,
+      chapterId,
+    }).catch(error => {
       throw error;
     });
     const loadedCheerio = cheerio.load(html);
@@ -281,10 +279,11 @@ const deleteDownloadedFiles = async (
   chapterId: number,
 ) => {
   try {
-    const path = await createChapterFolder(
-      `${RNFS.DownloadDirectoryPath}/LNReader`,
-      { pluginId, novelId, chapterId },
-    );
+    const path = await createChapterFolder(NovelDownloadFolder, {
+      pluginId,
+      novelId,
+      chapterId,
+    });
     const files = await RNFS.readDir(path);
     for (let i = 0; i < files.length; i++) {
       const ex = /(\.b64\.png)|(index.html)/.exec(files[i].path);

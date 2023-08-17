@@ -34,7 +34,7 @@ Notifications.setNotificationHandler({
 const App = () => {
   useEffect(() => {
     createTables();
-    collectPlugins().then(LottieSplashScreen.hide());
+    collectPlugins().then(() => LottieSplashScreen.hide());
   }, []);
 
   return (
