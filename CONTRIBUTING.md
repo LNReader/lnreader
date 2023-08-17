@@ -86,7 +86,6 @@ erDiagram
       INTEGER inLibrary "default: 0"
     }
     Novel ||--o| Chapter : has
-    Chapter ||--o| Download : may_have
     Chapter{
       INTEGER id PK
       INTEGER novelId FK
@@ -98,10 +97,5 @@ erDiagram
       TEXT readTime
       INTEGER isDownloaded  "default: 0"
       TEXT updatedTime
-    }
-    Download{
-      INTEGER id PK
-      INTEGER chapterId FK
-      string chapterText
     }
 ```

@@ -5,6 +5,7 @@ import {
   NativeEventEmitter,
   DrawerLayoutAndroid,
 } from 'react-native';
+import * as RNFS from 'react-native-fs';
 
 import VolumeButtonListener from '@utils/volumeButtonListener';
 
@@ -32,7 +33,6 @@ import { SET_LAST_READ } from '@redux/preferences/preference.types';
 import WebViewReader from './components/WebViewReader';
 import { useTextToSpeech } from '@hooks/useTextToSpeech';
 import { useFullscreenMode, useLibrarySettings } from '@hooks';
-import { getChapterFromDB } from '@database/queries/ChapterQueries';
 import ReaderBottomSheetV2 from './components/ReaderBottomSheet/ReaderBottomSheet';
 import { defaultTo } from 'lodash-es';
 import BottomInfoBar from './components/BottomInfoBar/BottomInfoBar';
@@ -155,24 +155,23 @@ export const ChapterContent = ({
 
   const getChapter = async () => {
     try {
-      const [chapterText, nextChap, prevChap] = await Promise.all([
-        getChapterFromDB(chapter.id),
-        getNextChapter(chapter.novelId, chapter.id),
-        getPrevChapter(chapter.novelId, chapter.id),
-      ]);
-      if (chapterText) {
-        sourceChapter.chapterText = chapterText;
+      const filePath = `${RNFS.DownloadDirectoryPath}/LNReader/${novel.pluginId}/${chapter.novelId}/${chapter.id}/index.html`;
+      if (await RNFS.exists(filePath)) {
+        sourceChapter.chapterText = await RNFS.readFile(filePath);
       } else {
         sourceChapter.chapterText = await fetchChapter(
           novel.pluginId,
           chapter.url,
         );
       }
+      const [nextChap, prevChap] = await Promise.all([
+        getNextChapter(chapter.novelId, chapter.id),
+        getPrevChapter(chapter.novelId, chapter.id),
+      ]);
       setChapter(sourceChapter);
       setAdjacentChapter([nextChap, prevChap]);
     } catch (e: any) {
       setError(e.message);
-      showToast(e.message);
     } finally {
       setLoading(false);
     }
