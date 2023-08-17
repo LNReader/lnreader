@@ -16,8 +16,7 @@ const VerticalScrollbar = ({
   const { bottom } = useSafeAreaInsets();
   const onSlidingComplete = value => {
     let offsetY =
-      ((value - Math.round(minScroll)) * Dimensions.get('window').height) /
-      Math.round(minScroll);
+      ((value - minScroll) * Dimensions.get('window').height) / minScroll;
     scrollTo(offsetY);
   };
   const screenOrientation = useDeviceOrientation();
@@ -37,17 +36,17 @@ const VerticalScrollbar = ({
             transform: [{ rotate: '-90deg' }],
           }}
         >
-          {percentage || Math.round(minScroll)}
+          {percentage || minScroll}
         </Text>
         <Slider
           style={{
             flex: 1,
             height: 40,
           }}
-          minimumValue={Math.round(minScroll)}
+          minimumValue={minScroll}
           maximumValue={100}
           step={1}
-          value={percentage || Math.round(minScroll)}
+          value={percentage || minScroll}
           onSlidingComplete={onSlidingComplete}
           thumbTintColor={theme.primary}
           minimumTrackTintColor={theme.primary}
@@ -81,17 +80,17 @@ const VerticalScrollbar = ({
             marginLeft: 16,
           }}
         >
-          {percentage || Math.round(minScroll)}
+          {percentage || minScroll}
         </Text>
         <Slider
           style={{
             flex: 1,
             height: 40,
           }}
-          minimumValue={Math.round(minScroll)}
+          minimumValue={minScroll}
           maximumValue={100}
           step={1}
-          value={percentage || Math.round(minScroll)}
+          value={percentage || minScroll}
           onSlidingComplete={onSlidingComplete}
           thumbTintColor={theme.primary}
           minimumTrackTintColor={theme.primary}
@@ -123,7 +122,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     zIndex: 2,
     right: -(Dimensions.get('window').width / 2) + 40,
-    bottom: 300,
+    bottom: Dimensions.get('window').height / 2,
   },
   horizontalSliderContainer: {
     position: 'absolute',

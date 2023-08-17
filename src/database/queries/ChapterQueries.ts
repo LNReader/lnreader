@@ -518,6 +518,7 @@ FROM
 JOIN
   Novel
 ON Chapter.novelId = Novel.id AND Chapter.updatedTime IS NOT NULL
+ORDER BY Chapter.updatedTime DESC
 `;
 
 export const getUpdatesFromDb = (): Promise<Update[]> => {

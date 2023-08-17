@@ -31,8 +31,9 @@ import { useAppDispatch } from '@redux/hooks';
 import { updateLibraryAction } from '@redux/updates/updates.actions';
 import { useSettings } from '@hooks/reduxHooks';
 import WebviewScreen from '@screens/WebviewScreen/WebviewScreen';
+import { RootStackParamList } from './types';
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<RootStackParamList>();
 
 const MainNavigator = () => {
   const theme = useTheme();
@@ -55,7 +56,7 @@ const MainNavigator = () => {
     }
   }, []);
 
-  const { isNewVersion, latestRelease } = useGithubUpdateChecker() || {};
+  const { isNewVersion, latestRelease } = useGithubUpdateChecker();
 
   return (
     <NavigationContainer theme={{ colors: theme }}>

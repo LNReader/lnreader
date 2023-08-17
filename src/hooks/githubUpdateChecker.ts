@@ -1,28 +1,33 @@
 import { useState, useEffect } from 'react';
 import { appVersion } from '../utils/versionUtils';
 
-export const useGithubUpdateChecker = () => {
+interface GithubUpdate {
+  isNewVersion: boolean;
+  latestRelease: any;
+}
+
+export const useGithubUpdateChecker = (): GithubUpdate => {
   const latestReleaseUrl =
     'https://api.github.com/repos/rajarsheechatterjee/lnreader/releases/latest';
 
   const [checking, setChecking] = useState(true);
-  const [latestRelease, setLatestRelease] = useState();
+  const [latestRelease, setLatestRelease] = useState<any>();
 
   const checkForRelease = async () => {
-    let res = await fetch(latestReleaseUrl);
-    res = await res.json();
+    const res = await fetch(latestReleaseUrl);
+    const data = await res.json();
 
     const release = {
-      tag_name: res.tag_name,
-      body: res.body,
-      downloadUrl: res.assets[0].browser_download_url,
+      tag_name: data.tag_name,
+      body: data.body,
+      downloadUrl: data.assets[0].browser_download_url,
     };
 
     setLatestRelease(release);
     setChecking(false);
   };
 
-  const isNewVersion = versionTag => {
+  const isNewVersion = (versionTag: string) => {
     let currentVersion = `${appVersion}`;
     const regex = /[^\\d.]/;
 
@@ -47,5 +52,10 @@ export const useGithubUpdateChecker = () => {
     };
 
     return data;
+  } else {
+    return {
+      latestRelease: undefined,
+      isNewVersion: false,
+    };
   }
 };

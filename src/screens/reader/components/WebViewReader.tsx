@@ -1,9 +1,9 @@
 import React from 'react';
 import { Dimensions, StatusBar } from 'react-native';
-import WebView from 'react-native-webview';
+import WebView, { WebViewNavigation } from 'react-native-webview';
 
 import { useTheme } from '@hooks/useTheme';
-import { ChapterInfo, NovelInfo } from '@database/types';
+import { ChapterInfo } from '@database/types';
 import { useReaderSettings } from '@redux/hooks';
 import { getString } from '@strings/translations';
 
@@ -15,18 +15,25 @@ type WebViewPostEvent = {
 };
 
 type WebViewReaderProps = {
-  chapterInfo: { novel: NovelInfo; chapter: ChapterInfo };
+  data: {
+    novel: {
+      id: string;
+      pluginId: string;
+      name: string;
+    };
+    chapter: ChapterInfo;
+  };
   html: string;
   chapterName: string;
   swipeGestures: boolean;
   minScroll: React.MutableRefObject<number>;
   nextChapter: ChapterInfo;
-  webViewRef: React.MutableRefObject<WebView>;
+  webViewRef: React.RefObject<WebView>;
   onPress(): void;
   onLayout(): void;
   doSaveProgress(offSetY: number, percentage: number): void;
   navigateToChapterBySwipe(name: string): void;
-  onWebViewNavigationStateChange(): void;
+  onWebViewNavigationStateChange({ url }: WebViewNavigation): void;
 };
 
 const onClickWebViewPostMessage = (event: WebViewPostEvent) =>
@@ -36,7 +43,7 @@ const onClickWebViewPostMessage = (event: WebViewPostEvent) =>
 
 const WebViewReader: React.FC<WebViewReaderProps> = props => {
   const {
-    chapterInfo,
+    data,
     html,
     chapterName,
     swipeGestures,
@@ -51,7 +58,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
   } = props;
 
   const theme = useTheme();
-  const { novel, chapter } = chapterInfo;
+  const { novel, chapter } = data;
   const readerSettings = useReaderSettings();
   const { theme: backgroundColor } = readerSettings;
 
@@ -68,6 +75,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
       onNavigationStateChange={onWebViewNavigationStateChange}
       nestedScrollEnabled={true}
       javaScriptEnabled={true}
+      onLayout={async () => onLayout()}
       onMessage={ev => {
         const event: WebViewPostEvent = JSON.parse(ev.nativeEvent.data);
         switch (event.type) {
@@ -85,22 +93,18 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
               plugin.fetchImage(event.data).then(base64 => {
                 webViewRef.current?.injectJavaScript(
                   `document.querySelector("img[delayed-src='${event.data}']").src="data:image/jpg;base64,${base64}";
-                  document.querySelector("img[delayed-src='${event.data}']").classList.remove("load-icon");`,
+                  document.querySelector("img[delayed-src='${event.data}']").classList.remove("load-icon");
+                  `,
                 );
               });
             }
             break;
           case 'scrollend':
             if (event.data) {
-              const offSetY = Number(event.data?.offSetY);
               const percentage = Math.round(Number(event.data?.percentage));
-              doSaveProgress(offSetY, percentage);
+              minScroll.current = Math.round(Number(event.data?.minscroll));
+              doSaveProgress(Number(event.data?.offSetY), percentage);
             }
-            break;
-          case 'height':
-            const contentHeight = Number(event.data);
-            minScroll.current = (layoutHeight / contentHeight) * 100;
-            onLayout();
             break;
         }
       }}
@@ -205,20 +209,33 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                       type: 'hide',
                     })}>
                       <chapter 
-                        data-plugin-id='${novel?.pluginId}'
+                        data-plugin-id='${novel.pluginId}'
                         data-novel-id='${chapter.novelId}'
                         data-chapter-id='${chapter.id}'
                       >
                         ${html}
                       </chapter>
                     </div>
+                    <div class="infoText">
+                    ${getString(
+                      'readerScreen.finished',
+                    )}: ${chapterName?.trim()}
+                    </div>
+                    ${
+                      nextChapter
+                        ? `<button class="nextButton" ${onClickWebViewPostMessage(
+                            { type: 'next' },
+                          )}>
+                      Next: ${nextChapter.name}
+                    </button>`
+                        : `<div class="infoText">${getString(
+                            'readerScreen.noNextChapter',
+                          )}</div>`
+                    }
                     <script>
-                      new ResizeObserver(() =>
-                        window.ReactNativeWebView.postMessage(
-                          JSON.stringify({type: "height", data: document.body.scrollHeight})
-                        )
-                      ).observe(document.querySelector('body'));
-
+                      const pluginId = '${novel.pluginId}';
+                      const novelId = '${chapter.novelId}';
+                      const chapterId = '${chapter.id}';
                       if(!document.querySelector("input[offline]") && ${
                         plugin?.protected
                       }){
@@ -238,6 +255,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                                 data:{
                                   offSetY: window.pageYOffset,
                                   percentage: (window.pageYOffset+${layoutHeight})/document.body.scrollHeight*100,
+                                  minscroll: ${layoutHeight}/document.body.scrollHeight*100,
                                 }
                               }
                             )
@@ -245,22 +263,6 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                         }, 100);
                       });
                     </script>
-                    <div class="infoText">
-                    ${getString(
-                      'readerScreen.finished',
-                    )}: ${chapterName?.trim()}
-                    </div>
-                    ${
-                      nextChapter
-                        ? `<button class="nextButton" ${onClickWebViewPostMessage(
-                            { type: 'next' },
-                          )}>
-                      Next: ${nextChapter.name}
-                    </button>`
-                        : `<div class="infoText">${getString(
-                            'readerScreen.noNextChapter',
-                          )}</div>`
-                    }
                     ${
                       swipeGestures
                         ? `
@@ -282,7 +284,6 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                           </script>`
                         : ''
                     }
-
                     <script>
                       async function fn(){${readerSettings.customJS}}
                       document.addEventListener("DOMContentLoaded", fn);

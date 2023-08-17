@@ -1,18 +1,14 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image, Pressable } from 'react-native';
 
-import { getString } from '@strings/translations';
-import { Button, IconButtonV2 } from '@components';
+import { IconButtonV2 } from '@components';
 
 import { coverPlaceholderColor } from '@theme/colors';
 import { ThemeColors } from '@theme/types';
 
 import { PluginItem } from '@plugins/types';
-import {
-  installPlugin,
-  uninstallPlugin,
-  updatePlugin,
-} from '@plugins/pluginManager';
+import { installPlugin } from '@plugins/pluginManager';
+import { PluginMenu } from './PluginMenu';
 
 interface Props {
   installed: boolean;
@@ -46,50 +42,25 @@ const PluginCard: React.FC<Props> = ({
       <Image source={{ uri: plugin.iconUrl }} style={styles.icon} />
       <View style={styles.details}>
         <Text style={{ color: theme.onSurface }}>{plugin.name}</Text>
-        <Text style={[{ color: theme.onSurfaceVariant }, styles.lang]}>
-          {`ID: ${plugin.id}\n${plugin.lang}\nVer: ${plugin.version}`}
+        <Text style={{ color: theme.onSurface, fontWeight: 'bold' }}>
+          {`ID: ${plugin.id}`}
+        </Text>
+        <Text style={[{ color: theme.onSurfaceVariant }]}>
+          {`${plugin.lang}\n${plugin.version}`}
         </Text>
       </View>
     </View>
     <View style={styles.flexRow}>
       {installed ? (
-        <>
-          <Button
-            title={getString('browseScreen.latest')}
-            textColor={theme.primary}
-            onPress={() => navigateToSource(plugin, true)}
-          />
-          <IconButtonV2
-            name={isPinned ? 'pin' : 'pin-outline'}
-            size={22}
-            color={isPinned ? theme.primary : theme.onSurfaceVariant}
-            onPress={() => onTogglePinSource(plugin)}
-            theme={theme}
-          />
-          <IconButtonV2
-            name={'arrow-up-circle'}
-            size={22}
-            color={theme.primary}
-            onPress={() => {
-              updatePlugin(plugin).then(updated => {
-                if (updated) {
-                  plugin.version = updated.version;
-                  onUpdatePlugin(plugin);
-                }
-              });
-            }}
-            theme={theme}
-          />
-          <IconButtonV2
-            name={'delete'}
-            size={22}
-            color={theme.primary}
-            onPress={() =>
-              uninstallPlugin(plugin).then(() => onUninstallPlugin(plugin))
-            }
-            theme={theme}
-          />
-        </>
+        <PluginMenu
+          plugin={plugin}
+          isPinned={isPinned}
+          theme={theme}
+          onTogglePinSource={onTogglePinSource}
+          navigateToSource={navigateToSource}
+          onUninstallPlugin={onUninstallPlugin}
+          onUpdatePlugin={onUpdatePlugin}
+        />
       ) : (
         <>
           <IconButtonV2
@@ -129,9 +100,6 @@ const styles = StyleSheet.create({
   },
   details: {
     marginLeft: 16,
-  },
-  lang: {
-    fontSize: 12,
   },
   flexRow: {
     flexDirection: 'row',
