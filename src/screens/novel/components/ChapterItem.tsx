@@ -73,8 +73,8 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
       onLongPress={() => onSelectLongPress?.(chapter)}
       android_ripple={{ color: theme.rippleColor }}
     >
-      {left}
       <Row style={styles.row}>
+        {left}
         {!!bookmark && <ChapterBookmarkButton theme={theme} />}
         <View>
           {isUpdateCard && (
