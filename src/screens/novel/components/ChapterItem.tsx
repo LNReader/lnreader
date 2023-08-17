@@ -1,6 +1,5 @@
 import React, { memo, ReactNode, useState } from 'react';
-import { View, StyleSheet, Pressable } from 'react-native';
-import { Text } from 'react-native-paper';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 import color from 'color';
 
 import { Row } from '../../../components/Common';

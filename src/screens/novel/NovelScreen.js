@@ -60,6 +60,7 @@ import { useCategorySettings } from '@hooks/useSettings';
 import { getChapterScreenRouteParams } from '../../utils/NavigationUtils';
 import NovelScreenLoading from './components/LoadingAnimation/NovelScreenLoading';
 import { useTrackerReducer } from '@redux/hooks';
+import EpubIconButton from './components/EpubIconButton';
 
 const Novel = ({ route, navigation }) => {
   const item = route.params;
@@ -397,7 +398,11 @@ const Novel = ({ route, navigation }) => {
                   }}
                   onPress={() => showJumpToChapterModal(true)}
                 />
-
+                <EpubIconButton
+                  theme={theme}
+                  style={{ marginTop: StatusBar.currentHeight + 8 }}
+                  novel={novel}
+                />
                 <Menu
                   visible={downloadMenu}
                   onDismiss={() => showDownloadMenu(false)}
