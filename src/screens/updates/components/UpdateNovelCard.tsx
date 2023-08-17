@@ -34,7 +34,12 @@ const NovelCover = ({
 }) => {
   const { cookies = '' } = getSourceStorage(sourceId);
   return (
-    <Pressable onPress={navigateToNovel}>
+    <Pressable
+      onPress={navigateToNovel}
+      style={{
+        justifyContent: 'center',
+      }}
+    >
       <FastImage
         source={{ uri, headers: { 'cookie': cookies } }}
         style={styles.cover}
@@ -198,7 +203,8 @@ export default UpdateNovelCard;
 const styles = StyleSheet.create({
   padding: {
     paddingHorizontal: 16,
-    paddingVertical: 3,
+    paddingVertical: 0,
+    alignItems: 'center',
     height: 64,
   },
   container: {
@@ -211,7 +217,7 @@ const styles = StyleSheet.create({
     backgroundColor: coverPlaceholderColor,
   },
   novelCover: {
-    marginRight: 8,
+    marginRight: 16,
   },
   imageContainer: {
     flex: 1,
@@ -231,6 +237,6 @@ const styles = StyleSheet.create({
     margin: 8,
   },
   chapterList: {
-    marginLeft: -64,
+    marginLeft: -40,
   },
 });

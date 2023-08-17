@@ -76,7 +76,7 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
       <Row style={styles.row}>
         {left}
         {!!bookmark && <ChapterBookmarkButton theme={theme} />}
-        <View>
+        <View style={{ flex: 1 }}>
           {isUpdateCard && (
             <Text
               style={[
