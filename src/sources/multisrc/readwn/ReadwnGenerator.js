@@ -8,7 +8,7 @@ const ReadwnScraper = new MultiSrcScraper(
 
 const NovelmtScraper = new MultiSrcScraper(
   99,
-  'https://www.novelmt.com/',
+  'https://www.wuxiapub.com/',
   'Novelmt.com',
 );
 
