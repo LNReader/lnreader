@@ -224,7 +224,7 @@ const ChapterContent = ({ route, navigation }) => {
     }
   }, [readerPages]);
   const scrollTo = useCallback(
-    (offset, axis = 'Y') => {
+    offset => {
       requestAnimationFrame(() => {
         webViewRef?.current?.injectJavaScript(
           !readerPages
