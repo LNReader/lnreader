@@ -14,12 +14,12 @@ interface IScrollbar {
   verticalSeekbar: boolean;
   readerPages: boolean;
   percentage?: number;
-  scrollTo: (offset: number, axis: 'Y' | 'X') => void;
+  scrollTo: (offset: number) => void;
 }
 
 const VerticalScrollbar: React.FC<IScrollbar> = ({
   theme,
-  minScroll = 1,
+  minScroll = 0,
   pages,
   verticalSeekbar,
   readerPages,
@@ -37,7 +37,7 @@ const VerticalScrollbar: React.FC<IScrollbar> = ({
       offset =
         ((value - minScroll) * Dimensions.get('window').height) / minScroll;
     }
-    scrollTo(offset, readerPages ? 'X' : 'Y');
+    scrollTo(offset);
   };
   const screenOrientation = useDeviceOrientation();
 

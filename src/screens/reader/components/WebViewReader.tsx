@@ -130,7 +130,6 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
             }
             break;
           case 'pages':
-            console.log(event.data);
             if (event.data) {
               pages.current = Number(event.data);
             }
