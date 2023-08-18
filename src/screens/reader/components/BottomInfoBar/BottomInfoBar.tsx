@@ -6,19 +6,11 @@ import dayjs from 'dayjs';
 import { useReaderSettings, useSettingsV1 } from '@redux/hooks';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-interface BottomInfoBarProps {
-  scrollPercentage: number;
-}
-
-const BottomInfoBar: React.FC<BottomInfoBarProps> = ({ scrollPercentage }) => {
+const BottomInfoBar = () => {
   const { bottom: bottomInset } = useSafeAreaInsets();
-  const {
-    showScrollPercentage = true,
-    showBatteryAndTime = false,
-    fullScreenMode = true,
-  } = useSettingsV1();
+  const { showBatteryAndTime = false, fullScreenMode = true } = useSettingsV1();
 
-  const { textColor, theme: backgroundColor } = useReaderSettings();
+  const { textColor } = useReaderSettings();
 
   const batteryLevel = useBatteryLevel();
 
@@ -32,12 +24,11 @@ const BottomInfoBar: React.FC<BottomInfoBarProps> = ({ scrollPercentage }) => {
     return () => clearInterval(timeInterval);
   }, []);
 
-  if (showScrollPercentage || showBatteryAndTime) {
+  if (showBatteryAndTime) {
     return (
       <View
         style={[
           styles.container,
-          { backgroundColor },
           !fullScreenMode && {
             paddingBottom: bottomInset,
           },
@@ -46,11 +37,6 @@ const BottomInfoBar: React.FC<BottomInfoBarProps> = ({ scrollPercentage }) => {
         {showBatteryAndTime && batteryLevel ? (
           <Text style={{ color: textColor }}>
             {Math.ceil(batteryLevel * 100) + '%'}
-          </Text>
-        ) : null}
-        {showScrollPercentage ? (
-          <Text style={[styles.scrollPercentage, { color: textColor }]}>
-            {scrollPercentage + '%'}
           </Text>
         ) : null}
         {showBatteryAndTime ? (
@@ -79,9 +65,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 32,
     alignItems: 'center',
     justifyContent: 'space-between',
-  },
-  scrollPercentage: {
-    flex: 1,
-    textAlign: 'center',
   },
 });

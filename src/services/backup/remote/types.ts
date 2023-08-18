@@ -9,13 +9,13 @@ export enum DataFilePath {
 
 export enum DataFolderPath {
   Chapter = 'Chapters',
-  Download = 'Downloads',
 }
+
+// both above are in /Backup/Data
 
 export enum RequestType {
   Backup = 'Backup',
   Restore = 'Restore',
-  OldRestore = 'OldRestore',
 }
 
 export enum TaskType {
@@ -26,8 +26,6 @@ export enum TaskType {
   NovelCategory = 'NovelCategory',
   Chapter = 'Chapter',
   Download = 'Download',
-  Image = 'Image',
-  Plugin = 'Plugin',
   Setting = 'Setting',
   Theme = 'Theme',
 }

@@ -1,4 +1,5 @@
 import RNFS from 'react-native-fs';
+import { PluginDownloadFolder } from '@utils/constants/download';
 import { showToast } from '../hooks/showToast';
 import { bigger } from '../utils/compareVersion';
 import { Languages } from '@utils/constants/languages';
@@ -12,8 +13,6 @@ import { parseMadaraDate } from './helpers/parseDate';
 import { isUrlAbsolute } from '@utils/isAbsoluteUrl';
 import { fetchApi, fetchFile } from '@utils/fetch/fetch';
 import { defaultCover } from './helpers/constants';
-
-const pluginsFolder = RNFS.ExternalDirectoryPath + '/Plugins';
 
 const packages: Record<string, any> = {
   'cheerio': { load },
@@ -39,7 +38,7 @@ const initPlugin = (rawCode: string, path?: string) => {
       'module',
       `const exports = module.exports = {}; ${rawCode}; return module.exports`,
     )(_require, {});
-    plugin.path = path || `${pluginsFolder}/${plugin.id}.js`;
+    plugin.path = path || `${PluginDownloadFolder}/${plugin.id}.js`;
     return plugin;
   } catch (e) {
     return undefined;
@@ -110,11 +109,11 @@ const updatePlugin = async (plugin: PluginItem) => {
 };
 
 const collectPlugins = async () => {
-  if (!(await RNFS.exists(pluginsFolder))) {
-    await RNFS.mkdir(pluginsFolder);
+  if (!(await RNFS.exists(PluginDownloadFolder))) {
+    await RNFS.mkdir(PluginDownloadFolder);
     return;
   }
-  const paths = await RNFS.readDir(pluginsFolder);
+  const paths = await RNFS.readDir(PluginDownloadFolder);
   for (let i = 0; i < paths.length; i++) {
     const plugin = await setupPlugin(paths[i].path);
     if (plugin) {
@@ -138,7 +137,6 @@ const fetchPlugins = async () => {
 const getPlugin = (pluginId: string) => plugins[pluginId];
 
 export {
-  pluginsFolder,
   getPlugin,
   installPlugin,
   uninstallPlugin,

@@ -6,6 +6,7 @@ import { ChapterInfo, DownloadedChapter } from '../types';
 import { ChapterItem } from '@plugins/types';
 
 import * as cheerio from 'cheerio';
+import { NovelDownloadFolder } from '@utils/constants/download';
 import { txnErrorCallback } from '@database/utils/helpers';
 import { Plugin } from '@plugins/types';
 import { Update } from '../types';
@@ -185,10 +186,7 @@ export const markAllChaptersUnread = async (novelId: number) => {
   });
 };
 
-const downloadChapterQuery =
-  'INSERT INTO Download (chapterId, chapterText) VALUES (?, ?)';
-
-const createImageFolder = async (
+const createChapterFolder = async (
   path: string,
   data: {
     pluginId: string;
@@ -214,13 +212,20 @@ const createImageFolder = async (
   return `${path}/${pluginId}/${novelId}/${chapterId}/`;
 };
 
-const downloadImages = async (
+const downloadFiles = async (
   html: string,
   plugin: Plugin,
   novelId: number,
   chapterId: number,
-): Promise<string> => {
+): Promise<void> => {
   try {
+    const folder = await createChapterFolder(NovelDownloadFolder, {
+      pluginId: plugin.id,
+      novelId,
+      chapterId,
+    }).catch(error => {
+      throw error;
+    });
     const loadedCheerio = cheerio.load(html);
     const imgs = loadedCheerio('img').toArray();
     for (let i = 0; i < imgs.length; i++) {
@@ -228,34 +233,14 @@ const downloadImages = async (
       const url = elem.attr('src');
       if (url) {
         const imageb64 = await plugin.fetchImage(url);
-        const fileurl =
-          (await createImageFolder(`${RNFS.DownloadDirectoryPath}/LNReader`, {
-            pluginId: plugin.id,
-            novelId,
-            chapterId,
-          }).catch(() => {
-            showToast(
-              `Unexpected storage error!\nRemove ${fileurl} and try downloading again`,
-            );
-            return '--';
-          })) +
-          i +
-          '.b64.png';
-        if (fileurl.charAt(0) === '-') {
-          return loadedCheerio.html();
-        }
+        const fileurl = folder + i + '.b64.png';
         elem.attr('src', `file://${fileurl}`);
-        RNFS.writeFile(fileurl, imageb64, 'base64').catch(() => {
-          showToast(
-            `Unexpected storage error!\nRemove ${fileurl} and try downloading again`,
-          );
-        });
+        RNFS.writeFile(fileurl, imageb64, 'base64');
       }
     }
-    loadedCheerio('body').prepend("<input type='hidden' offline />");
-    return loadedCheerio.html();
-  } catch (e) {
-    return html;
+    RNFS.writeFile(folder + 'index.html', loadedCheerio.html());
+  } catch (error) {
+    throw error;
   }
 };
 
@@ -272,26 +257,12 @@ export const downloadChapter = async (
       throw new Error('Plugin not found!');
     }
     const chapterText = await plugin.parseChapter(chapterUrl);
-    if (chapterText?.length) {
-      const imagedChapterText =
-        chapterText &&
-        (await downloadImages(chapterText, plugin, novelId, chapterId));
-
-      if (!chapterText) {
-        return showToast('Cant download chapter from url' + chapterUrl);
-      }
+    if (chapterText && chapterText.length) {
+      await downloadFiles(chapterText, plugin, novelId, chapterId);
       db.transaction(tx => {
         tx.executeSql(
           "UPDATE Chapter SET isDownloaded = 1, updatedTime = datetime('now','localtime') WHERE id = ?",
           [chapterId],
-        );
-        tx.executeSql(
-          downloadChapterQuery,
-          [chapterId, imagedChapterText],
-          (_txObj, _res) => {
-            return true;
-          },
-          txnErrorCallback,
         );
       });
     } else {
@@ -302,25 +273,26 @@ export const downloadChapter = async (
   }
 };
 
-const deleteDownloadedImages = async (
+const deleteDownloadedFiles = async (
   pluginId: string,
   novelId: number,
   chapterId: number,
 ) => {
   try {
-    const path = await createImageFolder(
-      `${RNFS.DownloadDirectoryPath}/LNReader`,
-      { pluginId, novelId, chapterId },
-    );
+    const path = await createChapterFolder(NovelDownloadFolder, {
+      pluginId,
+      novelId,
+      chapterId,
+    });
     const files = await RNFS.readDir(path);
     for (let i = 0; i < files.length; i++) {
-      const ex = /\.b64\.png/.exec(files[i].path);
+      const ex = /(\.b64\.png)|(index.html)/.exec(files[i].path);
       if (ex) {
         await RNFS.unlink(files[i].path);
       }
     }
   } catch (error) {
-    throw new Error('Cant delete chapter image folder');
+    throw new Error('Cant delete chapter chapter folder');
   }
 };
 
@@ -332,13 +304,11 @@ export const deleteChapter = async (
 ) => {
   const updateIsDownloadedQuery =
     'UPDATE Chapter SET isDownloaded = 0 WHERE id = ?';
-  const deleteChapterQuery = 'DELETE FROM Download WHERE chapterId = ?';
 
-  await deleteDownloadedImages(pluginId, novelId, chapterId);
+  await deleteDownloadedFiles(pluginId, novelId, chapterId);
 
   db.transaction(tx => {
     tx.executeSql(updateIsDownloadedQuery, [chapterId], noop, txnErrorCallback);
-    tx.executeSql(deleteChapterQuery, [chapterId], noop, txnErrorCallback);
   });
 };
 
@@ -354,11 +324,10 @@ export const deleteChapters = async (
   const chapterIdsString = chapters?.map(chapter => chapter.id).toString();
 
   const updateIsDownloadedQuery = `UPDATE Chapter SET isDownloaded = 0 WHERE id IN (${chapterIdsString})`;
-  const deleteChapterQuery = `DELETE FROM Download WHERE chapterId IN (${chapterIdsString})`;
 
   await Promise.all(
     chapters?.map(chapter =>
-      deleteDownloadedImages(pluginId, novelId, chapter.id),
+      deleteDownloadedFiles(pluginId, novelId, chapter.id),
     ),
   );
 
@@ -369,20 +338,19 @@ export const deleteChapters = async (
       undefined,
       txnErrorCallback,
     );
-    tx.executeSql(deleteChapterQuery, undefined, undefined, txnErrorCallback);
   });
 };
 
 export const deleteDownloads = async (chapters: DownloadedChapter[]) => {
   await Promise.all(
     chapters?.map(chapter => {
-      deleteDownloadedImages(chapter.pluginId, chapter.novelId, chapter.id);
+      deleteDownloadedFiles(chapter.pluginId, chapter.novelId, chapter.id);
     }),
   );
   db.transaction(tx => {
-    tx.executeSql('UPDATE Chapter SET isDownloaded = 0');
-    tx.executeSql('DELETE FROM Download; VACCUM;');
-    showToast('Deleted all Downloads');
+    tx.executeSql('UPDATE Chapter SET isDownloaded = 0', [], () =>
+      showToast('Deleted all Downloads'),
+    );
   });
 };
 
@@ -406,21 +374,15 @@ export const deleteReadChaptersFromDb = async () => {
   const chapters = await getReadDownloadedChapters();
   await Promise.all(
     chapters?.map(chapter => {
-      deleteDownloadedImages(
-        chapter.pluginId,
-        chapter.novelId,
-        chapter.novelId,
-      );
+      deleteDownloadedFiles(chapter.pluginId, chapter.novelId, chapter.novelId);
     }),
   );
   const chapterIdsString = chapters?.map(chapter => chapter.id).toString();
 
   const updateIsDownloadedQuery = `UPDATE Chapter SET isDownloaded = 0 WHERE id IN (${chapterIdsString})`;
-  const deleteChapterQuery = `DELETE FROM Download WHERE chapterId IN (${chapterIdsString})`;
 
   db.transaction(tx => {
     tx.executeSql(updateIsDownloadedQuery, [], noop, txnErrorCallback);
-    tx.executeSql(deleteChapterQuery, [], noop, txnErrorCallback);
   });
   showToast('Read chapters deleted');
 };

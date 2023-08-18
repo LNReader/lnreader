@@ -3,8 +3,6 @@ import * as SQLite from 'expo-sqlite';
 import RNFS, { ReadDirItem } from 'react-native-fs';
 import { appVersion } from '@utils/versionUtils';
 import { ChapterInfo, NovelInfo } from '@database/types';
-import { getChapterFromDB } from '@database/queries/ChapterQueries';
-import { pluginsFolder } from '@plugins/pluginManager';
 import { store } from '@redux/store';
 import {
   DataFilePath,
@@ -14,9 +12,12 @@ import {
   TaskType,
 } from './types';
 import { MMKVStorage } from '@utils/mmkv/mmkv';
+import {
+  AppDownloadFolder,
+  NovelDownloadFolder,
+} from '@utils/constants/download';
 
 const db = SQLite.openDatabase('lnreader.db');
-const downloadDirectoryPath = `${RNFS.DownloadDirectoryPath}/LNReader`;
 
 export const versionTask = (): Promise<BackupTask> => {
   return new Promise(resolve => {
@@ -68,7 +69,7 @@ export const novelTask = (): Promise<BackupTask> => {
             taskType: TaskType.Novel,
             content: rows._array.map((novel: NovelInfo) => {
               if (novel.cover && !novel.cover.startsWith('http')) {
-                novel.cover = `${downloadDirectoryPath}/${novel.pluginId}/${novel.id}/Cover.jpg`;
+                novel.cover = `${NovelDownloadFolder}/${novel.pluginId}/${novel.id}/Cover.jpg`;
               }
               return novel;
             }),
@@ -182,89 +183,43 @@ export const chapterTask = (): Promise<BackupTask> => {
   });
 };
 
-export const downloadTask = (): Promise<BackupTask> => {
-  return new Promise(resolve => {
-    db.transaction(tx => {
-      tx.executeSql(
-        'SELECT id from Chapter WHERE isDownloaded = 1',
-        [],
-        (txObj, { rows }) => {
-          const subtasks = rows._array.map((chapter: ChapterInfo) => {
-            const subtask = async () => {
-              const chapterText = await getChapterFromDB(chapter.id);
-              const requestPackage: RequestPackage = {
-                taskType: TaskType.Download,
-                content: chapterText,
-                relative_path: `${DataFolderPath.Download}/${chapter.id}.html`,
-                encoding: 'utf-8',
-              };
-              return requestPackage;
-            };
-            return subtask;
-          });
-          resolve({ taskType: TaskType.Download, subtasks: subtasks });
-        },
-        txnErrorCallback,
-      );
-    });
-  });
+const walkDir = async (items: ReadDirItem[]) => {
+  let paths: string[] = [];
+  for (let item of items) {
+    if (item.isFile()) {
+      paths.push(item.path);
+    } else {
+      const _items = await RNFS.readDir(item.path);
+      paths = paths.concat(await walkDir(_items));
+    }
+  }
+  return paths;
 };
 
-export const imageTask = (): Promise<BackupTask> => {
+export const downloadTask = (): Promise<BackupTask> => {
   return new Promise(async (resolve, reject) => {
     try {
-      const walkDir = async (items: ReadDirItem[]) => {
-        let paths: string[] = [];
-        for (let item of items) {
-          if (item.isFile()) {
-            paths.push(item.path);
-          } else {
-            const _items = await RNFS.readDir(item.path);
-            paths = paths.concat(await walkDir(_items));
-          }
-        }
-        return paths;
-      };
-      const downloadDir = `${RNFS.DownloadDirectoryPath}/LNReader`;
       let paths: string[] = [];
-      if (await RNFS.exists(downloadDir)) {
-        const items = await RNFS.readDir(downloadDir);
+      if (await RNFS.exists(AppDownloadFolder)) {
+        const items = await RNFS.readDir(AppDownloadFolder);
         paths = await walkDir(items);
       }
       const subtasks = paths.map(path => {
         const subtask = async () => {
           const base64 = await RNFS.readFile(path, 'base64');
           return {
-            taskType: TaskType.Image,
+            taskType: TaskType.Download,
             encoding: 'base64',
             content: base64,
-            relative_path: path.split('/').slice(-4).join('/'),
+            relative_path: path.replace(AppDownloadFolder + '/', ''),
           } as RequestPackage;
         };
         return subtask;
       });
-      resolve({ taskType: TaskType.Image, subtasks: subtasks });
+      resolve({ taskType: TaskType.Download, subtasks: subtasks });
     } catch (error) {
       reject(error);
     }
-  });
-};
-
-export const pluginTask = (): Promise<BackupTask> => {
-  return RNFS.readDir(pluginsFolder).then(items => {
-    const subtasks = items.map(item => {
-      const subtask = async () => {
-        const script = await RNFS.readFile(item.path);
-        return {
-          taskType: TaskType.Plugin,
-          relative_path: item.path.split('/').slice(-2).join('/'),
-          content: script,
-          encoding: 'utf-8',
-        } as RequestPackage;
-      };
-      return subtask;
-    });
-    return { taskType: TaskType.Plugin, subtasks: subtasks };
   });
 };
 

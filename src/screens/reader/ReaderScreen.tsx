@@ -1,10 +1,17 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo,
+} from 'react';
 import {
   Dimensions,
   NativeModules,
   NativeEventEmitter,
   DrawerLayoutAndroid,
 } from 'react-native';
+import * as RNFS from 'react-native-fs';
 
 import VolumeButtonListener from '@utils/volumeButtonListener';
 
@@ -26,25 +33,23 @@ import { parseChapterNumber } from '@utils/parseChapterNumber';
 
 import ReaderAppbar from './components/ReaderAppbar';
 import ReaderFooter from './components/ReaderFooter';
-import ReaderSeekBar from './components/ReaderSeekBar';
 
 import { insertHistory } from '@database/queries/HistoryQueries';
 import { SET_LAST_READ } from '@redux/preferences/preference.types';
 import WebViewReader from './components/WebViewReader';
 import { useTextToSpeech } from '@hooks/useTextToSpeech';
 import { useFullscreenMode, useLibrarySettings } from '@hooks';
-import { getChapterFromDB } from '@database/queries/ChapterQueries';
 import ReaderBottomSheetV2 from './components/ReaderBottomSheet/ReaderBottomSheet';
 import { defaultTo } from 'lodash-es';
 import BottomInfoBar from './components/BottomInfoBar/BottomInfoBar';
 import { sanitizeChapterText } from './utils/sanitizeChapterText';
 import ChapterDrawer from './components/ChapterDrawer';
-import { htmlToText } from '@plugins/helpers/htmlToText';
 import ChapterLoadingScreen from './ChapterLoadingScreen/ChapterLoadingScreen';
 import { ErrorScreenV2 } from '@components';
 import { ChapterScreenProps } from '@navigators/types';
 import { ChapterInfo } from '@database/types';
 import WebView, { WebViewNavigation } from 'react-native-webview';
+import { NovelDownloadFolder } from '@utils/constants/download';
 
 const Chapter = ({ route, navigation }: ChapterScreenProps) => {
   const drawerRef = useRef<DrawerLayoutAndroid>(null);
@@ -90,7 +95,7 @@ export const ChapterContent = ({
     autoScroll = false,
     autoScrollInterval = 10,
     autoScrollOffset = null,
-    verticalSeekbar = true,
+    // verticalSeekbar = true,
     removeExtraParagraphSpacing = false,
   } = useSettings();
   const { incognitoMode } = useLibrarySettings();
@@ -99,7 +104,6 @@ export const ChapterContent = ({
 
   const [hidden, setHidden] = useState(true);
   const position = usePosition(chapter.novelId, chapter.id);
-  const minScroll = useRef<number>(0);
 
   const { tracker, trackedNovels } = useTrackingStatus();
   const isTracked = trackedNovels.find(
@@ -157,24 +161,23 @@ export const ChapterContent = ({
 
   const getChapter = async () => {
     try {
-      const [chapterText, nextChap, prevChap] = await Promise.all([
-        getChapterFromDB(chapter.id),
-        getNextChapter(chapter.novelId, chapter.id),
-        getPrevChapter(chapter.novelId, chapter.id),
-      ]);
-      if (chapterText) {
-        sourceChapter.chapterText = chapterText;
+      const filePath = `${NovelDownloadFolder}/${novel.pluginId}/${chapter.novelId}/${chapter.id}/index.html`;
+      if (await RNFS.exists(filePath)) {
+        sourceChapter.chapterText = await RNFS.readFile(filePath);
       } else {
         sourceChapter.chapterText = await fetchChapter(
           novel.pluginId,
           chapter.url,
         );
       }
+      const [nextChap, prevChap] = await Promise.all([
+        getNextChapter(chapter.novelId, chapter.id),
+        getPrevChapter(chapter.novelId, chapter.id),
+      ]);
       setChapter(sourceChapter);
       setAdjacentChapter([nextChap, prevChap]);
     } catch (e: any) {
       setError(e.message);
-      showToast(e.message);
     } finally {
       setLoading(false);
     }
@@ -190,16 +193,6 @@ export const ChapterContent = ({
       });
     }
   }, []);
-
-  const [ttsStatus, startTts] = useTextToSpeech(
-    htmlToText(sourceChapter.chapterText).split('\n'),
-    () => {
-      if (!incognitoMode) {
-        dispatch(markChapterReadAction(chapter.id, chapter.novelId));
-        updateTracker();
-      }
-    },
-  );
 
   const scrollTo = useCallback(
     (offsetY: number) => {
@@ -240,7 +233,7 @@ export const ChapterContent = ({
       );
   };
 
-  const doSaveProgress = useCallback(
+  const saveProgress = useCallback(
     async (offsetY: number, percentage: number) => {
       if (!incognitoMode) {
         dispatch(
@@ -259,8 +252,10 @@ export const ChapterContent = ({
 
   const hideHeader = () => {
     if (!hidden) {
+      webViewRef.current?.injectJavaScript('scrollHandler.hide()');
       setImmersiveMode();
     } else {
+      webViewRef.current?.injectJavaScript('scrollHandler.show()');
       showStatusAndNavBar();
     }
     setHidden(!hidden);
@@ -298,10 +293,21 @@ export const ChapterContent = ({
     }
   };
 
-  const chapterText = sanitizeChapterText(sourceChapter.chapterText, {
-    removeExtraParagraphSpacing,
-    pluginId: novel.pluginId,
+  const chapterText = useMemo(
+    () =>
+      sanitizeChapterText(sourceChapter.chapterText, {
+        removeExtraParagraphSpacing,
+      }),
+    [sourceChapter.chapterText],
+  );
+
+  const [ttsStatus, startTts] = useTextToSpeech(chapterText, webViewRef, () => {
+    if (!incognitoMode) {
+      dispatch(markChapterReadAction(chapter.id, chapter.novelId));
+      updateTracker();
+    }
   });
+
   const openDrawer = useCallback(() => {
     drawerRef.current?.openDrawer();
     setHidden(true);
@@ -320,23 +326,19 @@ export const ChapterContent = ({
       <WebViewReader
         data={{ novel, chapter }}
         html={chapterText}
-        chapterName={chapter.name}
         swipeGestures={swipeGestures}
-        minScroll={minScroll}
         nextChapter={nextChapter}
         webViewRef={webViewRef}
+        saveProgress={saveProgress}
         onLayout={() => {
           useVolumeButtons && onLayout();
-          scrollTo(position?.offsetY || 1);
+          scrollTo(position?.offsetY);
         }}
         onPress={hideHeader}
-        doSaveProgress={doSaveProgress}
         navigateToChapterBySwipe={navigateToChapterBySwipe}
         onWebViewNavigationStateChange={onWebViewNavigationStateChange}
       />
-      <BottomInfoBar
-        scrollPercentage={position?.percentage || Math.round(minScroll.current)}
-      />
+      <BottomInfoBar />
       <ReaderBottomSheetV2 bottomSheetRef={readerSheetRef} />
       {!hidden && (
         <>
@@ -348,13 +350,6 @@ export const ChapterContent = ({
             tts={startTts}
             textToSpeech={ttsStatus}
             theme={theme}
-          />
-          <ReaderSeekBar
-            theme={theme}
-            minScroll={minScroll.current}
-            verticalSeekbar={verticalSeekbar}
-            percentage={position?.percentage}
-            scrollTo={scrollTo}
           />
           <ReaderFooter
             theme={theme}
