@@ -134,9 +134,10 @@
       "chooseLocation": "Pilih direktori penyimpanan EPUB",
       "pathToFolder": "Jalur ke folder penyimpanan EPUB",
       "useReaderTheme": "Gunakan tema pembaca",
-      "useCustomCSS": "Gunakan customCSS",
-      "useCustomJS": "Gunakan customJS",
-      "useCustomJSWarning": "Bisa saja tidak didukung oleh semua pembaca EPUB"
+      "useCustomCSS": "Use custom CSS",
+      "useCustomJS": "Use custom JS",
+      "useCustomJSWarning": "Bisa saja tidak didukung oleh semua pembaca EPUB",
+      "chaptersWarning": "Only downloaded chapters are included in the EPUB"
     }
   },
   "more": "Lainnya",
