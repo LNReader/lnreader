@@ -134,9 +134,10 @@
       "chooseLocation": "EPUB depolama dizinini seç",
       "pathToFolder": "EPUB dosyalarını kaydetme klasörünün yolu",
       "useReaderTheme": "Okuyucu temasını kullan",
-      "useCustomCSS": "Özel CSS kullan",
-      "useCustomJS": "Özel JS kullan",
-      "useCustomJSWarning": "Tüm EPUB okuyucuları tarafından desteklenmeyebilir"
+      "useCustomCSS": "Use custom CSS",
+      "useCustomJS": "Use custom JS",
+      "useCustomJSWarning": "Tüm EPUB okuyucuları tarafından desteklenmeyebilir",
+      "chaptersWarning": "Only downloaded chapters are included in the EPUB"
     }
   },
   "more": "Daha fazla",
