@@ -134,9 +134,10 @@
       "chooseLocation": "Sélectionner répertoire de stockage EPUB",
       "pathToFolder": "Chemin vers le dossier de sauvegarde d'EPUB",
       "useReaderTheme": "Utiliser le mode lecture",
-      "useCustomCSS": "Utiliser customCSS",
-      "useCustomJS": "Utiliser customJS",
-      "useCustomJSWarning": "Peut ne pas être supporté par tous les lecteurs d'EPUB"
+      "useCustomCSS": "Use custom CSS",
+      "useCustomJS": "Use custom JS",
+      "useCustomJSWarning": "Peut ne pas être supporté par tous les lecteurs d'EPUB",
+      "chaptersWarning": "Only downloaded chapters are included in the EPUB"
     }
   },
   "more": "Suite",
