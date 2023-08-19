@@ -109,6 +109,7 @@ export interface StringMap {
   'novelScreen.convertToEpubModal.useCustomCSS': 'string';
   'novelScreen.convertToEpubModal.useCustomJS': 'string';
   'novelScreen.convertToEpubModal.useCustomJSWarning': 'string';
+  'novelScreen.convertToEpubModal.chaptersWarning': 'string';
   'more': 'string';
   'moreScreen.settings': 'string';
   'moreScreen.settingsScreen.generalSettings': 'string';

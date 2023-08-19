@@ -344,9 +344,8 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
         theme={theme}
       />
       <ChooseEpubLocationModal
+        isVisible={convertToEpubModal.value}
         hideModal={convertToEpubModal.setFalse}
-        modalVisible={convertToEpubModal.value}
-        dispatchConfig
       />
     </>
   );
