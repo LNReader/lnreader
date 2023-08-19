@@ -340,7 +340,6 @@ const Novel = ({ route, navigation }) => {
 
   const renderItem = ({ item: it, index }) => (
     <ChapterItem
-      theme={theme}
       chapter={it}
       index={index}
       showChapterTitles={showChapterTitles}
