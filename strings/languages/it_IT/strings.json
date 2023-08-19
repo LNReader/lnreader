@@ -134,9 +134,10 @@
       "chooseLocation": "Seleziona la cartella di archiviazione EPUB",
       "pathToFolder": "Percorso cartella di salvataggio EPUB",
       "useReaderTheme": "Usa tema lettore",
-      "useCustomCSS": "Usa customCSS",
-      "useCustomJS": "Usa customJS",
-      "useCustomJSWarning": "Potrebbe non essere supportato da tutti i lettori EPUB"
+      "useCustomCSS": "Use custom CSS",
+      "useCustomJS": "Use custom JS",
+      "useCustomJSWarning": "Potrebbe non essere supportato da tutti i lettori EPUB",
+      "chaptersWarning": "Only downloaded chapters are included in the EPUB"
     }
   },
   "more": "Altro",
