@@ -99,11 +99,24 @@ const ChapterDrawer = ({ state: st, navigation }) => {
           onPress={() => changeChapter(item)}
           style={styles.chapterCtn}
         >
-          <Text numberOfLines={1} style={styles.chapterNameCtn}>
+          <Text
+            numberOfLines={1}
+            style={[
+              styles.chapterNameCtn,
+              { color: item.read ? theme.outline : theme.onSurface },
+            ]}
+          >
             {item.chapterName}
           </Text>
           {item?.releaseDate ? (
-            <Text style={styles.releaseDateCtn}>{item.releaseDate}</Text>
+            <Text
+              style={[
+                styles.releaseDateCtn,
+                { color: item.read ? theme.outline : theme.onSurfaceVariant },
+              ]}
+            >
+              {item.releaseDate}
+            </Text>
           ) : null}
         </Pressable>
       </View>
@@ -226,11 +239,9 @@ const createStylesheet = theme => {
     chapterNameCtn: {
       fontSize: 12,
       marginBottom: 2,
-      color: theme.onSurface,
     },
     releaseDateCtn: {
       fontSize: 10,
-      color: theme.onSurfaceVariant,
     },
     drawerElementContainer: {
       margin: 4,
