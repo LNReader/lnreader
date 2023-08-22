@@ -5,7 +5,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import { setBarColor } from '../theme/utils/setBarColor';
 import { useTheme } from '../hooks/useTheme';
-import { useGithubUpdateChecker } from '../hooks/githubUpdateChecker';
 
 /**
  * Navigators
@@ -26,7 +25,6 @@ import MigrateNovel from '../screens/browse/migration/MigrationNovels';
 
 import MalTopNovels from '../screens/browse/discover/MalTopNovels';
 import AniListTopNovels from '../screens/browse/discover/AniListTopNovels';
-import NewUpdateDialog from '../components/NewUpdateDialog';
 import BrowseSettings from '../screens/browse/BrowseSettings';
 import { useAppDispatch } from '@redux/hooks';
 import { updateLibraryAction } from '@redux/updates/updates.actions';
@@ -56,11 +54,8 @@ const MainNavigator = () => {
     }
   }, []);
 
-  const { isNewVersion, latestRelease } = useGithubUpdateChecker() || {};
-
   return (
     <NavigationContainer theme={{ colors: theme }}>
-      {isNewVersion && <NewUpdateDialog newVersion={latestRelease} />}
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="BottomNavigator" component={BottomNavigator} />
         <Stack.Screen name="Novel" component={Novel} />

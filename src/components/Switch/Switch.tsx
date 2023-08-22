@@ -20,31 +20,6 @@ const SwitchSetting: React.FC<SwitchProps> = ({
   icon,
   value,
 }) => {
-  const styles = StyleSheet.create({
-    container: {
-      paddingHorizontal: 16,
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      paddingVertical: description ? 16 : 12,
-    },
-    row: {
-      flexDirection: 'row',
-      flex: 1,
-    },
-    icon: {
-      margin: 0,
-    },
-    textContainer: {
-      marginLeft: icon && 16,
-    },
-    text: {
-      fontSize: 16,
-      flex: 1,
-      textAlignVertical: 'center',
-    },
-    switch: { marginLeft: 8 },
-  });
-
   return (
     <Pressable
       android_ripple={{
@@ -57,7 +32,7 @@ const SwitchSetting: React.FC<SwitchProps> = ({
         {icon && (
           <List.Icon color={theme.primary} icon={icon} style={styles.icon} />
         )}
-        <View style={styles.textContainer}>
+        <View>
           <Text style={[styles.text, { color: theme.onSurface }]}>{label}</Text>
           {description && (
             <Text style={{ color: theme.onSurfaceVariant }}>{description}</Text>
@@ -75,3 +50,27 @@ const SwitchSetting: React.FC<SwitchProps> = ({
 };
 
 export default SwitchSetting;
+
+const styles = StyleSheet.create({
+  container: {
+    paddingHorizontal: 16,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 16,
+  },
+  row: {
+    flexDirection: 'row',
+    flex: 1,
+  },
+  icon: {
+    margin: 0,
+    marginRight: 16,
+  },
+  text: {
+    fontSize: 16,
+    textAlignVertical: 'center',
+  },
+  switch: {
+    marginLeft: 8,
+  },
+});

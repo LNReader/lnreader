@@ -1,12 +1,15 @@
 import sanitizeHtml from 'sanitize-html';
+import { textVide } from 'text-vide';
 
 import { load as loadCheerio } from 'cheerio';
 import { sourceManager } from './../../../sources/sourceManager';
 import { LoadingImageSrc } from './LoadImage';
+import { decodeHtmlEntity } from '../../../sources/helpers/htmlToText';
 
 interface Options {
   removeExtraParagraphSpacing?: boolean;
   sourceId?: number;
+  bionicReading?: boolean;
 }
 
 export const sanitizeChapterText = (
@@ -21,6 +24,7 @@ export const sanitizeChapterText = (
       'em',
       'b',
       'a',
+      'center',
     ]),
     allowedAttributes: {
       'img': ['src', 'class'],
@@ -33,23 +37,28 @@ export const sanitizeChapterText = (
     if (options?.removeExtraParagraphSpacing) {
       text = text.replace(/<\s*br[^>]*>/gi, '\n').replace(/\n{2,}/g, '\n\n');
     }
-    const loadedCheerio = loadCheerio(text);
-    if (
-      options?.sourceId &&
-      sourceManager(options.sourceId).headers &&
-      loadedCheerio('input[offline]').length === 0
-    ) {
-      loadedCheerio('img').each((i, element) => {
-        const src = loadedCheerio(element).attr('src');
-        if (src) {
-          loadedCheerio(element).attr({
-            'src': LoadingImageSrc,
-            'class': 'load-icon',
-            'delayed-src': src,
-          });
-        }
-      });
-      text = loadedCheerio('body').html() || text;
+
+    if (options?.bionicReading) {
+      text = text.replace(/&([^;]+);/g, decodeHtmlEntity);
+      text = textVide(text);
+    }
+
+    if (options?.sourceId && sourceManager(options.sourceId).headers) {
+      // Some documents might take a few seconds to be parsed, only do when necessary
+      const loadedCheerio = loadCheerio(text);
+      if (loadedCheerio('input[offline]').length === 0) {
+        loadedCheerio('img').each((i, element) => {
+          const src = loadedCheerio(element).attr('src');
+          if (src) {
+            loadedCheerio(element).attr({
+              'src': LoadingImageSrc,
+              'class': 'load-icon',
+              'delayed-src': src,
+            });
+          }
+        });
+        text = loadedCheerio('body').html() || text;
+      }
     }
   } else {
     text =

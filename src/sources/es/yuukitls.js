@@ -2,6 +2,10 @@ import * as cheerio from 'cheerio';
 const baseUrl = 'https://yuukitls.com/';
 
 const popularNovels = async page => {
+  if (page !== 1) {
+    return { novels: [] };
+  }
+
   let url = baseUrl;
 
   const result = await fetch(url);
@@ -11,25 +15,25 @@ const popularNovels = async page => {
 
   let novels = [];
 
-  loadedCheerio('.menu-item-2869')
-    .find('.menu-item.menu-item-type-post_type.menu-item-object-post')
-    .each(function () {
-      const novelName = loadedCheerio(this).text();
-      const novelCover = loadedCheerio(this).find('img').attr('src');
+  loadedCheerio(
+    'li.quadmenu-item.quadmenu-item-object-post.quadmenu-item-level-2',
+  ).each(function () {
+    const novelName = loadedCheerio(this).find('span.quadmenu-text').text();
+    const novelCover = loadedCheerio(this).find('img').attr('src');
 
-      let novelUrl = loadedCheerio(this).find('a').attr('href');
-      novelUrl = novelUrl.split('/');
-      novelUrl = novelUrl[novelUrl.length - 2] + '/';
+    let novelUrl = loadedCheerio(this).find('a').attr('href');
+    novelUrl = novelUrl.split('/');
+    novelUrl = novelUrl[novelUrl.length - 2] + '/';
 
-      const novel = {
-        sourceId: 28,
-        novelName,
-        novelCover,
-        novelUrl,
-      };
+    const novel = {
+      sourceId: 28,
+      novelName,
+      novelCover,
+      novelUrl,
+    };
 
-      novels.push(novel);
-    });
+    novels.push(novel);
+  });
 
   return { novels };
 };

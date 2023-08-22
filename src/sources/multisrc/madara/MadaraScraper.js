@@ -44,6 +44,14 @@ class MadaraScraper {
         .attr('href')
         .split('/')[4];
 
+      if (sourceId === 59) {
+        novelUrl = loadedCheerio(this)
+          .find('.post-title')
+          .find('a')
+          .attr('href')
+          .split('/')[5];
+      }
+
       const novel = {
         sourceId,
         novelName,
@@ -76,18 +84,16 @@ class MadaraScraper {
 
     loadedCheerio('.manga-title-badges').remove();
 
-    novel.novelName = loadedCheerio('.post-title > h1').text().trim();
+    novel.novelName = loadedCheerio('.post-title h1').text().trim();
 
     novel.novelCover =
+      loadedCheerio('.summary_image > a > img').attr('data-lazy-src') ||
       loadedCheerio('.summary_image > a > img').attr('data-src') ||
       loadedCheerio('.summary_image > a > img').attr('src') ||
       defaultCoverUri;
 
-    loadedCheerio('.post-content_item').each(function () {
-      const detailName = loadedCheerio(this)
-        .find('.summary-heading > h5')
-        .text()
-        .trim();
+    loadedCheerio('.post-content_item, .post-content').each(function () {
+      const detailName = loadedCheerio(this).find('h5').text().trim();
       const detail = loadedCheerio(this).find('.summary-content').text().trim();
 
       switch (detailName) {
@@ -97,6 +103,7 @@ class MadaraScraper {
           break;
         case 'Author(s)':
         case 'المؤلف':
+        case 'المؤلف (ين)':
           novel.author = detail;
           break;
         case 'Status':
@@ -109,6 +116,7 @@ class MadaraScraper {
       }
     });
 
+    loadedCheerio('div.summary__content .code-block,script').remove();
     novel.summary = loadedCheerio('div.summary__content').text().trim();
 
     let novelChapters = [];
@@ -193,6 +201,14 @@ class MadaraScraper {
       loadedCheerio('.text-center').text() ||
       loadedCheerio('#chapter-heading').text();
 
+    if (loadedCheerio('.text-right')) {
+      loadedCheerio('.text-right div').remove();
+    } else if (loadedCheerio('.text-left')) {
+      loadedCheerio('.text-left div').remove();
+    } else if (loadedCheerio('.entry-content')) {
+      loadedCheerio('.entry-content div').remove();
+    }
+
     let chapterText =
       loadedCheerio('.text-left').html() ||
       loadedCheerio('.text-right').html() ||
@@ -230,6 +246,14 @@ class MadaraScraper {
         .find('a')
         .attr('href')
         .split('/')[4];
+
+      if (sourceId === 59) {
+        novelUrl = loadedCheerio(this)
+          .find('.post-title')
+          .find('a')
+          .attr('href')
+          .split('/')[5];
+      }
 
       const novel = {
         sourceId,

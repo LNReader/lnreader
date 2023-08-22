@@ -1,5 +1,6 @@
 import { fetchHtml } from '@utils/fetch/fetch';
 import * as cheerio from 'cheerio';
+import { startCase } from 'lodash-es';
 
 const sourceId = 103;
 const sourceName = 'SakuraNovel';
@@ -45,7 +46,7 @@ const parseNovelAndChapters = async novelUrl => {
     novelUrl,
   };
 
-  novel.novelName = loadedCheerio('.series-title h2').text().trim();
+  novel.novelName = startCase(loadedCheerio('.series-title h2').text().trim());
 
   novel.novelCover = loadedCheerio('.series-thumb img').attr('src');
 
@@ -63,30 +64,28 @@ const parseNovelAndChapters = async novelUrl => {
   novel.status = loadedCheerio('.status').text().trim();
 
   novel.genre = loadedCheerio('.series-genres')
-    .prop('innerHTML')
-    .replace(/<.*?>(.*?)<.*?>/g, '$1,')
-    .slice(0, -1);
+    .children('a')
+    .map((i, el) => loadedCheerio(el).text())
+    .toArray()
+    .join(',');
 
+  loadedCheerio('.series-synops div').remove();
   novel.summary = loadedCheerio('.series-synops').text().trim();
 
   let chapters = [];
 
-  loadedCheerio('.series-chapterlist li').each(function () {
-    const chapterName = loadedCheerio(this)
-      .find('a span')
-      .first()
-      .text()
-      .replace(`${novel.novelName} – `, '')
-      .replace('Bahasa Indonesia', '')
-      .replace(/\s+/g, ' ')
-      .trim();
+  loadedCheerio('.series-chapterlist li a').each(function () {
+    let titles = startCase(
+      loadedCheerio(this)
+        .attr('title')
+        .replace(/Bahasa Indonesia/g, '')
+        .replace(/\s\s+/g, ' ')
+        .trim(),
+    );
 
-    const releaseDate = loadedCheerio(this)
-      .find('a span')
-      .first()
-      .next()
-      .text();
-    const chapterUrl = loadedCheerio(this).find('a').attr('href');
+    const chapterName = titles.replace(`${novel.novelName}`, '');
+    const releaseDate = loadedCheerio(this).find('span:last').text();
+    const chapterUrl = loadedCheerio(this).attr('href');
 
     chapters.push({ chapterName, releaseDate, chapterUrl });
   });

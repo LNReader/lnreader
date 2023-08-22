@@ -53,7 +53,7 @@ export const FreeNovelMeScraper = new MadaraScraper(
 
 export const FirstKissNovelScraper = new MadaraScraper(
   46,
-  'https://1stkissnovel.love/',
+  'https://1stkissnovel.org/',
   'FirstKissNovel',
   { 'useNewChapterEndpoint': true },
 );

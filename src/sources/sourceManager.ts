@@ -18,6 +18,7 @@ import EinharjarProjectScraper from './es/einherjarproject';
 import TuNovelaLigeraScraper from './es/tunovelaligera';
 import SkyNovelsScraper from './es/skynovels';
 import NovelasLigeraScraper from './es/novelasligera';
+import NOVAScraper from './es/nova';
 import YuukiTlsScraper from './es/yuukitls';
 import NovelaWuxiaScraper from './es/novelawuxia';
 import OasisTranslationsScraper from './es/oasistranslations';
@@ -78,6 +79,7 @@ import NovelUpdatesScraper from './en/novelupdates';
 import RanobesScraper from './en/ranobes';
 import RanobesruScraper from './ru/ranobes';
 import YushuboScraper from './ch/yushubo';
+import LinovelibScraper from './ch/linovelib';
 import {
   LiebeSchneeHiverNovelScraper,
   LightNovelsBrasilScraper,
@@ -326,6 +328,8 @@ export const sourceManager = (sourceId: number): Scraper => {
     162: KodScraper, // @ts-ignore
     163: NovelsOnlineScraper, // @ts-ignore
     164: BookRiverScraper, // @ts-ignore
+    165: LinovelibScraper, // @ts-ignore
+    166: NOVAScraper, // @ts-ignore
   };
 
   return scrapers[sourceId];

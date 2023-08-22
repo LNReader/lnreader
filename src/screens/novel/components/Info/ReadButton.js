@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import { openChapter } from '@utils/handleNavigateParams';
+import { getChapterScreenRouteParams } from '@utils/NavigationUtils';
 import React from 'react';
 
 import { Button } from '@components';
@@ -11,7 +11,7 @@ const ReadButton = ({ novel, chapters, lastRead }) => {
   const { useFabForContinueReading = false } = useSettings();
 
   const navigateToLastReadChapter = () =>
-    navigate('Chapter', openChapter(novel, lastRead));
+    navigate('Chapter', getChapterScreenRouteParams(novel, lastRead));
 
   if (!useFabForContinueReading) {
     return (

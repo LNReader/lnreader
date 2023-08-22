@@ -6,11 +6,9 @@ import FastImage from 'react-native-fast-image';
 import { List } from 'react-native-paper';
 import { coverPlaceholderColor } from '../../../theme/colors';
 import {
-  openChapter,
-  openChapterFunctionTypes,
-  openNovel,
-  openNovelProps,
-} from '@utils/handleNavigateParams';
+  getChapterScreenRouteParams,
+  getNovelScreenRouteParams,
+} from '@utils/NavigationUtils';
 import {
   deleteChapterAction,
   downloadChapterAction,
@@ -23,16 +21,29 @@ import { useAppDispatch } from '@redux/hooks';
 import { useTheme } from '@hooks/useTheme';
 import { noop } from 'lodash-es';
 
+import { getSourceStorage } from '@hooks/useSourceStorage';
+
 const NovelCover = ({
   uri,
   navigateToNovel,
+  sourceId,
 }: {
   uri: string;
   navigateToNovel: () => void;
+  sourceId: number;
 }) => {
+  const { cookies = '' } = getSourceStorage(sourceId);
   return (
-    <Pressable onPress={navigateToNovel}>
-      <FastImage source={{ uri }} style={styles.cover} />
+    <Pressable
+      onPress={navigateToNovel}
+      style={{
+        justifyContent: 'center',
+      }}
+    >
+      <FastImage
+        source={{ uri, headers: { 'cookie': cookies } }}
+        style={styles.cover}
+      />
     </Pressable>
   );
 };
@@ -90,7 +101,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
     (chapter: ChapterItemExtended) =>
       navigate(
         'Chapter' as never,
-        openChapter(chapter, chapter) as openChapterFunctionTypes as never,
+        getChapterScreenRouteParams(chapter, chapter) as never,
       ),
     [],
   );
@@ -98,11 +109,22 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
   const navigateToNovel = () =>
     navigate(
       'Novel' as never,
-      openNovel(chapterList[0]) as openNovelProps as never,
+      getNovelScreenRouteParams(chapterList[0]) as never,
     );
 
   const { downloadQueue } = useSelector(
     (state: RootState) => state.downloadsReducer,
+  );
+
+  const renderNovelCover = useCallback(
+    () => (
+      <NovelCover
+        navigateToNovel={navigateToNovel}
+        uri={chapterList[0].novelCover}
+        sourceId={chapterList[0].sourceId}
+      />
+    ),
+    [JSON.stringify(chapterList[0])],
   );
 
   if (chapterList.length > 1) {
@@ -110,12 +132,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
       <List.Accordion
         title={chapterList[0].novelName}
         titleStyle={{ fontSize: 14, color: theme.onSurface }}
-        left={() => (
-          <NovelCover
-            navigateToNovel={navigateToNovel}
-            uri={chapterList[0].novelCover}
-          />
-        )}
+        left={renderNovelCover}
         descriptionStyle={{ fontSize: 12 }}
         theme={{ colors: theme }}
         style={[styles.container, styles.padding]}
@@ -143,6 +160,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
                     <NovelCover
                       navigateToNovel={navigateToNovel}
                       uri={chapterList[0].novelCover}
+                      sourceId={chapterList[0].sourceId}
                     />
                   </View>
                 }
@@ -170,6 +188,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
             <NovelCover
               navigateToNovel={navigateToNovel}
               uri={chapterList[0].novelCover}
+              sourceId={chapterList[0].sourceId}
             />
           </View>
         }
@@ -184,7 +203,8 @@ export default UpdateNovelCard;
 const styles = StyleSheet.create({
   padding: {
     paddingHorizontal: 16,
-    paddingVertical: 3,
+    paddingVertical: 0,
+    alignItems: 'center',
     height: 64,
   },
   container: {
@@ -197,7 +217,7 @@ const styles = StyleSheet.create({
     backgroundColor: coverPlaceholderColor,
   },
   novelCover: {
-    marginRight: 8,
+    marginRight: 16,
   },
   imageContainer: {
     flex: 1,
@@ -217,6 +237,6 @@ const styles = StyleSheet.create({
     margin: 8,
   },
   chapterList: {
-    marginLeft: -64,
+    marginLeft: -40,
   },
 });

@@ -12,7 +12,7 @@ const popularNovels = async page => {
     headers: {
       'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
     },
-    body: `mode=get_data_novel_list_p&novel_menu=3&np_day=${day}&np_rank=1&np_distributor=0&np_genre=00&np_order=1&np_genre_ex_1=00&np_genre_ex_2=00&list_limit=${list_limit}&is_query_first=true`,
+    body: `mode=get_data_novel_list_p&novel_menu=3&np_day=${day}&np_rank=0&np_distributor=0&np_genre=00&np_order=1&np_genre_ex_1=00&np_genre_ex_2=00&list_limit=${list_limit}&is_query_first=true`,
     method: 'POST',
   });
 
@@ -102,16 +102,10 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   const loadedCheerio = cheerio.load(body);
 
   const title = loadedCheerio('div > div.col-12 > h2').text();
-  const contentTag = loadedCheerio('#id_wr_content > p');
-
-  let content = '';
-  contentTag.each((_, element) => {
-    content += loadedCheerio(element).text();
-    content += '<br />';
-  });
+  let chapterText = loadedCheerio('#id_wr_content').html();
 
   // gets rid of the popup thingy
-  content = content.replace(
+  chapterText = chapterText.replace(
     '팝업메뉴는 빈공간을 더치하거나 스크룰시 사라집니다',
     '',
   );
@@ -121,7 +115,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     novelUrl,
     chapterUrl,
     chapterName: title,
-    chapterText: content,
+    chapterText,
   };
 
   return chapter;

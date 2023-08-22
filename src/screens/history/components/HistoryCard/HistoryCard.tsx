@@ -11,19 +11,22 @@ import { History } from '@database/types';
 import { ThemeColors } from '@theme/types';
 import { coverPlaceholderColor } from '@theme/colors';
 import {
-  openChapterChapterTypes,
-  openChapterNovelTypes,
-  openNovelProps,
-} from '@utils/handleNavigateParams';
+  ChapterRouteParams,
+  NovelRouteParams,
+  NovelScreenRouteParams,
+} from '@utils/NavigationUtils';
+
+import { getSourceStorage } from '@hooks/useSourceStorage';
+import { defaultUserAgentString } from '@utils/fetch/fetch';
 
 interface HistoryCardProps {
   history: History;
   handleNavigateToChapter: (
-    novel: openChapterNovelTypes,
-    chapter: openChapterChapterTypes,
+    novel: NovelRouteParams,
+    chapter: ChapterRouteParams,
   ) => void;
   handleRemoveFromHistory: (historyId: number) => void;
-  handleNavigateToNovel: (novel: openNovelProps) => void;
+  handleNavigateToNovel: (novel: NovelScreenRouteParams) => void;
   theme: ThemeColors;
 }
 
@@ -56,22 +59,48 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
     [chapterName, historyTimeRead],
   );
 
+  const { cookies = '' } = getSourceStorage(sourceId);
+
   return (
     <Pressable
       style={styles.container}
       android_ripple={{ color: theme.rippleColor }}
       onPress={() =>
-        handleNavigateToNovel({
-          sourceId,
-          novelId,
-          novelUrl,
-          novelName,
-          novelCover,
-        })
+        handleNavigateToChapter(
+          { sourceId, novelName, novelUrl },
+          {
+            novelId,
+            chapterId,
+            chapterUrl,
+            chapterName,
+            bookmark,
+          },
+        )
       }
     >
       <View style={styles.imageAndNameContainer}>
-        <FastImage source={{ uri: novelCover }} style={styles.cover} />
+        <Pressable
+          onPress={() =>
+            handleNavigateToNovel({
+              sourceId,
+              novelId,
+              novelUrl,
+              novelName,
+              novelCover,
+            })
+          }
+        >
+          <FastImage
+            source={{
+              uri: novelCover,
+              headers: {
+                Cookie: cookies,
+                'User-Agent': defaultUserAgentString,
+              },
+            }}
+            style={styles.cover}
+          />
+        </Pressable>
         <View style={styles.detailsContainer}>
           <Text
             numberOfLines={2}
@@ -89,22 +118,6 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
           name="delete-outline"
           theme={theme}
           onPress={() => handleRemoveFromHistory(historyId)}
-        />
-        <IconButtonV2
-          name="play"
-          onPress={() =>
-            handleNavigateToChapter(
-              { sourceId, novelName, novelUrl },
-              {
-                novelId,
-                chapterId,
-                chapterUrl,
-                chapterName,
-                bookmark,
-              },
-            )
-          }
-          theme={theme}
         />
       </View>
     </Pressable>
@@ -135,7 +148,6 @@ const styles = StyleSheet.create({
   novelName: {
     marginBottom: 4,
   },
-  chapterName: {},
   imageAndNameContainer: {
     flex: 1,
     flexDirection: 'row',

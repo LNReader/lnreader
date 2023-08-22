@@ -1,4 +1,4 @@
-import { fetchHtml } from '@utils/fetch/fetch';
+import { fetchApi, fetchHtml } from '@utils/fetch/fetch';
 import * as cheerio from 'cheerio';
 const sourceId = 15;
 const baseUrl = 'https://www.lightnovelpub.com/';
@@ -53,43 +53,28 @@ const parseNovelAndChapters = async novelUrl => {
     sourceName: 'LightNovelPub',
   };
 
-  novel.novelName = loadedCheerio('h1.novel-title')
-    .text()
-    .replace(/[\t\n]/g, '')
-    .trim();
+  novel.novelName = loadedCheerio('h1.novel-title').text().trim();
 
   novel.novelCover = loadedCheerio('figure.cover > img').attr('data-src');
 
-  novel.genre = '';
+  novel.genre = loadedCheerio('.categories li')
+    .find('a')
+    .map((i, el) => loadedCheerio(el).text())
+    .toArray()
+    .join(',');
 
-  loadedCheerio('div.categories > ul > li').each(function () {
-    novel.genre +=
-      loadedCheerio(this)
-        .text()
-        .replace(/[\t\n]/g, '') + ',';
-  });
-
-  loadedCheerio('div.header-stats > span').each(function () {
-    if (loadedCheerio(this).find('small').text() === 'Status') {
-      novel.status = loadedCheerio(this).find('strong').text();
-    }
-  });
-
-  novel.genre = novel.genre.slice(0, -1);
+  novel.status = loadedCheerio('small:contains("Status")').prev().text().trim();
 
   novel.author = loadedCheerio('.author > a > span').text();
 
+  loadedCheerio('.expand').remove();
   novel.summary = loadedCheerio('.summary > .content').text().trim();
 
   const delay = ms => new Promise(res => setTimeout(res, ms));
 
   let lastPage = 1;
 
-  lastPage = loadedCheerio(
-    '#novel > header > div.header-body.container > div.novel-info > div.header-stats > span:nth-child(1) > strong',
-  )
-    .text()
-    ?.trim();
+  lastPage = loadedCheerio('small:contains("Chapters")').prev().text().trim();
 
   lastPage = Math.ceil(lastPage / 100);
 
@@ -156,13 +141,22 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 
 const searchNovels = async searchTerm => {
   const url = `${baseUrl}lnsearchlive`;
+  const link = `${baseUrl}search`;
+  const response = await fetchApi({ url: link, sourceId }).then(r => r.text());
+  const token = cheerio.load(response);
+  let verifytoken = token('#novelSearchForm > input').attr('value');
 
   let formData = new FormData();
   formData.append('inputContent', searchTerm);
 
   const body = await fetchHtml({
     url,
-    init: { method: 'POST', headers, body: formData },
+    init: {
+      method: 'POST',
+      headers: { 'LNRequestVerifyToken': verifytoken },
+      body: formData,
+    },
+    sourceId,
   });
 
   let loadedCheerio = cheerio.load(body);

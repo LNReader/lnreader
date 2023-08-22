@@ -72,6 +72,7 @@ export interface StringMap {
   'readerScreen.bottomSheet.lineHeight': 'string';
   'readerScreen.bottomSheet.fontStyle': 'string';
   'readerScreen.bottomSheet.fullscreen': 'string';
+  'readerScreen.bottomSheet.bionicReading': 'string';
   'readerScreen.bottomSheet.renderHml': 'string';
   'readerScreen.bottomSheet.autoscroll': 'string';
   'readerScreen.bottomSheet.verticalSeekbar': 'string';
@@ -102,6 +103,13 @@ export interface StringMap {
   'novelScreen.jumpToChapterModal.chapterNumber': 'string';
   'novelScreen.jumpToChapterModal.error.validChapterName': 'string';
   'novelScreen.jumpToChapterModal.error.validChapterNumber': 'string';
+  'novelScreen.convertToEpubModal.chooseLocation': 'string';
+  'novelScreen.convertToEpubModal.pathToFolder': 'string';
+  'novelScreen.convertToEpubModal.useReaderTheme': 'string';
+  'novelScreen.convertToEpubModal.useCustomCSS': 'string';
+  'novelScreen.convertToEpubModal.useCustomJS': 'string';
+  'novelScreen.convertToEpubModal.useCustomJSWarning': 'string';
+  'novelScreen.convertToEpubModal.chaptersWarning': 'string';
   'more': 'string';
   'moreScreen.settings': 'string';
   'moreScreen.settingsScreen.generalSettings': 'string';
@@ -124,6 +132,9 @@ export interface StringMap {
   'moreScreen.settingsScreen.generalSettingsScreen.refreshMetadataDescription': 'string';
   'moreScreen.settingsScreen.generalSettingsScreen.updateTime': 'string';
   'moreScreen.settingsScreen.generalSettingsScreen.autoDownload': 'string';
+  'moreScreen.settingsScreen.generalSettingsScreen.epub': 'string';
+  'moreScreen.settingsScreen.generalSettingsScreen.epubLocation': 'string';
+  'moreScreen.settingsScreen.generalSettingsScreen.epubLocationDescription': 'string';
   'moreScreen.settingsScreen.generalSettingsScreen.downloadNewChapters': 'string';
   'moreScreen.settingsScreen.generalSettingsScreen.disableHapticFeedback': 'string';
   'moreScreen.settingsScreen.readerSettings.title': 'string';

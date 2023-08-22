@@ -26,6 +26,7 @@
       "@utils/*": ["src/utils/*"]
     }
   },
+  "typeRoots": ["./types"],
   "exclude": [
     "node_modules",
     "babel.config.js",

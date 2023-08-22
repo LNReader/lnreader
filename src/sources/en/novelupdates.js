@@ -171,7 +171,7 @@ function getLocation(href) {
 const parseChapter = async (novelUrl, chapterUrl) => {
   const url = chapterUrl;
 
-  // console.log("Original URL: ", url);
+  // console.log('Original URL: ', url);
 
   let result, body;
 
@@ -192,7 +192,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 
   // console.log(result.url);
 
-  // console.log("Redirected URL: ", result.url);
+  // console.log('Redirected URL: ', result.url);
 
   const loadedCheerio = cheerio.load(body);
 
@@ -204,12 +204,20 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 
   let isWattpad = result.url.toLowerCase().includes('wattpad');
 
+  let isLightNovelsTls = result.url
+    .toLowerCase()
+    .includes('lightnovelstranslations');
+
+  let isiNovelTranslation = result.url
+    .toLowerCase()
+    .includes('inoveltranslation');
+
   let isTravisTranslation = result.url
     .toLowerCase()
     .includes('travistranslations');
 
   /**
-   * Checks if its a wwordpress site
+   * Checks if its a wordpress site
    */
   let isWordPress =
     loadedCheerio('meta[name="generator"]').attr('content') ||
@@ -238,7 +246,6 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     chapterText = loadedCheerio('.post').html();
   } else if (isBlogspot) {
     loadedCheerio('.post-share-buttons').remove();
-
     chapterText = loadedCheerio('.entry-content').html();
   } else if (isHostedNovel) {
     chapterText = loadedCheerio('.chapter').html();
@@ -248,6 +255,18 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     chapterText = loadedCheerio('.container  pre').html();
   } else if (isTravisTranslation) {
     chapterText = loadedCheerio('.reader-content').html();
+  } else if (isLightNovelsTls) {
+    chapterText = loadedCheerio('.text_story').html();
+  } else if (isiNovelTranslation) {
+    const link = 'https://api.' + result.url.slice(8);
+    const json = await fetchApi({
+      url: link,
+      sourceId,
+    }).then(r => r.json());
+    chapterText =
+      json.content.replace(/\n/g, '<br>') +
+      '<br><hr><br>TL Notes:<br>' +
+      json.notes.replace(/\n/g, '<br>');
   } else if (isWordPress) {
     /**
      * Remove wordpress bloat tags

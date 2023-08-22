@@ -4,6 +4,9 @@ import { StyleSheet, View, Text, Pressable } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { coverPlaceholderColor } from '../theme/colors';
 
+import { getSourceStorage } from '@hooks/useSourceStorage';
+import { defaultUserAgentString } from '@utils/fetch/fetch';
+
 import color from 'color';
 
 const ListView = ({
@@ -16,6 +19,7 @@ const ListView = ({
   isSelected,
   onLongPress,
 }) => {
+  const { cookies = '' } = getSourceStorage(item.sourceId);
   return (
     <Pressable
       android_ripple={{ color: theme.rippleColor }}
@@ -31,6 +35,7 @@ const ListView = ({
       <FastImage
         source={{
           uri: item.novelCover,
+          headers: { Cookie: cookies, 'User-Agent': defaultUserAgentString },
         }}
         style={[styles.extensionIcon, inLibraryBadge && { opacity: 0.5 }]}
       />

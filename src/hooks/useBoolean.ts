@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useCallback, useState } from 'react';
 
-interface ReturnType {
+export interface BooleanHookType {
   value: boolean;
   setValue: Dispatch<SetStateAction<boolean>>;
   setTrue: () => void;
@@ -8,7 +8,7 @@ interface ReturnType {
   toggle: () => void;
 }
 
-const useBoolean = (defaultValue?: boolean): ReturnType => {
+const useBoolean = (defaultValue?: boolean): BooleanHookType => {
   const [value, setValue] = useState(!!defaultValue);
 
   const setTrue = useCallback(() => setValue(true), []);

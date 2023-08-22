@@ -113,7 +113,7 @@ const htmlToText = (html, options = {}) => {
   return text;
 };
 
-const decodeHtmlEntity = (m, n) => {
+export const decodeHtmlEntity = (m, n) => {
   let code;
 
   if (n.substr(0, 1) === '#') {

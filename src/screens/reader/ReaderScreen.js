@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo,
+} from 'react';
 import { Dimensions, NativeModules, NativeEventEmitter } from 'react-native';
 
 import VolumeButtonListener from './../../utils/volumeButtonListener';
@@ -86,6 +92,7 @@ const ChapterContent = ({ route, navigation }) => {
     autoScrollOffset = null,
     verticalSeekbar = true,
     removeExtraParagraphSpacing = false,
+    bionicReading = false,
   } = useSettings();
   const { incognitoMode } = useLibrarySettings();
 
@@ -158,7 +165,7 @@ const ChapterContent = ({ route, navigation }) => {
       if (!(id && (result = await getChapterFromDb(id)))) {
         result = await fetchChapter(sourceId, novelUrl, chapterUrl);
       }
-      setChapter(result);
+      setChapter({ ...result, bookmark });
     } catch (e) {
       setError(e.message);
       showToast(e.message);
@@ -194,21 +201,22 @@ const ChapterContent = ({ route, navigation }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chapter]);
 
-  const [ttsStatus, startTts] = useTextToSpeech(
-    htmlToText(chapter?.chapterText).split('\n'),
-    () => {
-      if (!incognitoMode) {
-        dispatch(markChapterReadAction(chapterId, novelId));
-        updateTracker();
-      }
-    },
+  const htmlText = useMemo(
+    () => htmlToText(chapter?.chapterText).split('\n'),
+    [chapter.chapterText],
   );
+  const [ttsStatus, startTts] = useTextToSpeech(htmlText, () => {
+    if (!incognitoMode) {
+      dispatch(markChapterReadAction(chapterId, novelId));
+      updateTracker();
+    }
+  });
 
   const scrollTo = useCallback(
     offsetY => {
       requestAnimationFrame(() => {
-        webViewRef?.current.injectJavaScript(`(()=>{
-          window.scrollTo({top:${offsetY},behavior:'smooth',})
+        webViewRef?.current?.injectJavaScript(`(()=>{
+          window.scrollTo({top:${offsetY},behavior:'smooth'})
         })()`);
       });
     },
@@ -267,13 +275,15 @@ const ChapterContent = ({ route, navigation }) => {
   );
 
   const hideHeader = useCallback(() => {
-    if (!hidden) {
-      setImmersiveMode();
-    } else {
-      showStatusAndNavBar();
-    }
-    setHidden(!hidden);
-  }, [hidden]);
+    setHidden(h => {
+      if (!h) {
+        setImmersiveMode();
+      } else {
+        showStatusAndNavBar();
+      }
+      return !h;
+    });
+  }, []);
 
   const navigateToChapterBySwipe = useCallback(
     name => {
@@ -312,16 +322,27 @@ const ChapterContent = ({ route, navigation }) => {
     }
   }, []);
 
-  const scrollToSavedProgress = () => scrollTo(position?.position);
+  const scrollToSavedProgress = useCallback(
+    () => scrollTo(position?.position),
+    [],
+  );
 
-  const chapterText = sanitizeChapterText(chapter.chapterText, {
-    removeExtraParagraphSpacing,
-    sourceId: sourceId,
-  });
+  const chapterText = useMemo(
+    () =>
+      sanitizeChapterText(chapter.chapterText, {
+        removeExtraParagraphSpacing,
+        bionicReading,
+        sourceId,
+      }),
+    [chapter.chapterText, removeExtraParagraphSpacing, bionicReading, sourceId],
+  );
   const openDrawer = () => {
     navigation.openDrawer();
     hideHeader();
   };
+
+  const bookmarkChapter = () =>
+    setChapter(prevVal => ({ ...prevVal, bookmark: !prevVal?.bookmark }));
 
   if (loading) {
     return <ChapterLoadingScreen />;
@@ -357,7 +378,8 @@ const ChapterContent = ({ route, navigation }) => {
       {!hidden && (
         <>
           <ReaderAppbar
-            bookmark={bookmark}
+            bookmark={chapter.bookmark}
+            bookmarkChapter={bookmarkChapter}
             novelName={novelName}
             chapterId={chapterId}
             chapterName={chapterName || chapter.chapterName}

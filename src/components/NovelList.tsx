@@ -15,9 +15,13 @@ export type NovelListRenderItem = ListRenderItem<
   LibraryNovelInfo | NovelInfo | SourceNovelItem
 >;
 
-const NovelList: React.FC<
-  FlatListProps<LibraryNovelInfo | NovelInfo | SourceNovelItem>
-> = props => {
+interface NovelListProps
+  extends FlatListProps<LibraryNovelInfo | NovelInfo | SourceNovelItem> {
+  isFetchingNextPage?: boolean;
+  inSource?: boolean;
+}
+
+const NovelList: React.FC<NovelListProps> = props => {
   const { displayMode = DisplayModes.Comfortable, novelsPerRow = 3 } =
     useLibrarySettings();
 
@@ -37,7 +41,20 @@ const NovelList: React.FC<
     }
   }, [isListView, orientation, novelsPerRow]);
 
-  const keyExtractor = useCallback(item => item.sourceId + item.novelUrl, []);
+  const keyExtractor = useCallback(
+    (item: SourceNovelItem) => item.sourceId + item.novelUrl,
+    [],
+  );
+  var extendedNovelList: Array<SourceNovelItem | LibraryNovelInfo> =
+    props?.data as Array<LibraryNovelInfo>;
+  if (props.data?.length && props.inSource && props.isFetchingNextPage) {
+    let remainder = numColumns - (props.data?.length % numColumns);
+    let extension = [];
+    if (remainder !== 0 && remainder !== numColumns) {
+      extension.push({ sourceId: -remainder, novelName: '', novelUrl: '' });
+    }
+    extendedNovelList = [...props.data, ...extension];
+  }
 
   return (
     <FlatList
@@ -49,6 +66,7 @@ const NovelList: React.FC<
       key={numColumns}
       keyExtractor={keyExtractor}
       {...props}
+      data={extendedNovelList}
     />
   );
 };

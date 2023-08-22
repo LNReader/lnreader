@@ -10,7 +10,7 @@ import { showToast } from '../../../hooks/showToast';
 
 import { Button } from '@components';
 import { getString } from '@strings/translations';
-import { openNovel } from '@utils/handleNavigateParams';
+import { getNovelScreenRouteParams } from '@utils/NavigationUtils';
 
 const MigrationNovelList = ({ data, theme, library, navigation }) => {
   const [selectedNovel, setSelectedNovel] = useState(false);
@@ -30,7 +30,7 @@ const MigrationNovelList = ({ data, theme, library, navigation }) => {
       onLongPress={() =>
         navigation.navigate(
           'Novel',
-          openNovel({
+          getNovelScreenRouteParams({
             ...item,
             sourceId: item.sourceId,
           }),

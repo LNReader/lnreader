@@ -1,5 +1,9 @@
 import { Dimensions } from 'react-native';
-import { SET_READER_SETTINGS, SET_APP_SETTINGS } from './settings.types';
+import {
+  SET_READER_SETTINGS,
+  SET_APP_SETTINGS,
+  SET_MULTIPLE_APP_SETTINGS,
+} from './settings.types';
 
 /**
  * Display Mode
@@ -73,6 +77,7 @@ export const initialState = {
   verticalSeekbar: true,
   removeExtraParagraphSpacing: false,
   addChapterNameInReader: false,
+  bionicReading: false,
 
   reader: {
     theme: '#292832',
@@ -103,6 +108,11 @@ const settingsReducer = (state = initialState, action) => {
           ...state.reader,
           [payload.key]: payload.val,
         },
+      };
+    case SET_MULTIPLE_APP_SETTINGS:
+      return {
+        ...state,
+        ...payload,
       };
     default:
       return state;
