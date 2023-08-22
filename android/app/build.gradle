@@ -1,4 +1,5 @@
 apply plugin: "com.android.application"
+apply plugin: "com.chaquo.python"
 
 import com.android.build.OutputFile
 
@@ -149,6 +150,20 @@ android {
         versionCode ((((versionMajor << 10) | versionMinor) << 11) | versionPatch)
         versionName "$versionMajor.$versionMinor.$versionPatch"
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
+    }
+    ndk {
+        abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
+    }
+    python{
+        //buildPython "C:/Users/kijij/AppData/Local/Programs/Python/Python39/python.exe" //don't believe you need this
+        pip {
+            install "-r", "./requirements.txt"
+        }
+    }
+}
+sourceSets {
+    main {
+        python.srcDirs = ["./src/main/python"]
     }
     splits {
         abi {

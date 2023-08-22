@@ -70,6 +70,11 @@ const AdvancedSettings = ({ navigation }) => {
           theme={theme}
         />
         <List.Item title="Clear cookies" onPress={clearCookies} theme={theme} />
+        <List.Item
+          title="Import Epub"
+          onPress={() => EpubParser.openDirectory()}
+          theme={theme}
+        />
       </List.Section>
       <Portal>
         <ConfirmationDialog
