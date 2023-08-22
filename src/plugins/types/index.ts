@@ -49,7 +49,6 @@ export interface PluginItem {
   version: string;
   iconUrl: string;
   url: string; // the url of raw code
-  description?: string;
 }
 
 export interface Plugin extends PluginItem {
@@ -64,7 +63,6 @@ export interface Plugin extends PluginItem {
   parseChapter: (chapterUrl: string) => Promise<string>; // yes, just string
   searchNovels: (searchTerm: string, pageNo?: number) => Promise<NovelItem[]>;
   fetchImage: (url: string) => Promise<string>; // base64
-  protected: boolean; // true if you cant host their resources in other sites
   site: string;
   path: string;
   filters?: SourceFilter[];
