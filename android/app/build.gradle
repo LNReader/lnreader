@@ -147,23 +147,23 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         // Generated version code. Supports versions up to 1024.1024.2048
-        versionCode ((((versionMajor << 10) | versionMinor) << 11) | versionPatch)
+        versionCode((((versionMajor << 10) | versionMinor) << 11) | versionPatch)
         versionName "$versionMajor.$versionMinor.$versionPatch"
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
-    }
-    ndk {
-        abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
-    }
-    python{
-        //buildPython "C:/Users/kijij/AppData/Local/Programs/Python/Python39/python.exe" //don't believe you need this
-        pip {
-            install "-r", "./requirements.txt"
+        ndk {
+            abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
         }
-    }
-}
-sourceSets {
-    main {
-        python.srcDirs = ["./src/main/python"]
+        python {
+            //buildPython "C:/Users/kijij/AppData/Local/Programs/Python/Python39/python.exe" //don't believe you need this
+            pip {
+                install "-r", "./requirements.txt"
+            }
+        }
+        sourceSets {
+            main {
+                python.srcDirs = ["./src/main/python"]
+            }
+        }
     }
     splits {
         abi {
