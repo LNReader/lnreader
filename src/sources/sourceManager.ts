@@ -1,3 +1,4 @@
+import EPubSource from './local/epubSource';
 import ComradeMaoScraper from './en/comrademao';
 import ReadLightNovelScraper from './en/readlightnovel';
 import fastNovelScraper from './en/fastnovel';
@@ -185,6 +186,7 @@ interface Scraper {
 export const sourceManager = (sourceId: number): Scraper => {
   const scrapers: Record<number, Scraper> = {
     // @ts-ignore
+    0: EPubSource, // @ts-ignore
     1: BoxNovelScraper, // @ts-ignore
     2: ReadLightNovelScraper, // @ts-ignore
     3: fastNovelScraper, // @ts-ignore

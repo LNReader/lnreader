@@ -55,16 +55,14 @@ public class EpubParser extends ReactContextBaseJavaModule implements ActivityEv
     public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
         if (activity != null && requestCode == REQUEST_DIRECTORY && resultCode == Activity.RESULT_OK) {
             Uri uri = data.getData();
-            String folderPath = getFilePathFromUri(uri);
-            epubPath = folderPath;
+            String epubPath = getFilePathFromUri(uri);
 
             Python py = Python.getInstance();
             PyObject epubParser = py.getModule("epubParser");
 
             if (epubPath != null && epubPath.toLowerCase().endsWith(".epub")) {
-                PyObject getContent = epubParser.callAttr("parseEpub", epubPath, "/data/data/com.rajarsheechatterjee.LNReader/files/");
-                epubPath = null;
-                promise.resolve(null);
+                PyObject savePath = epubParser.callAttr("parseEpub", epubPath, "/data/data/com.rajarsheechatterjee.LNReader/files/");
+                promise.resolve(savePath.toString());
             } else {
                 promise.reject("Invalid file format");
             }
