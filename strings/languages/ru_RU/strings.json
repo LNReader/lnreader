@@ -134,10 +134,10 @@
       "chooseLocation": "Выберите каталог хранения EPUB",
       "pathToFolder": "Путь к папке сохранения EPUB",
       "useReaderTheme": "Использовать тему для чтения",
-      "useCustomCSS": "Use custom CSS",
-      "useCustomJS": "Use custom JS",
+      "useCustomCSS": "Использовать пользовательский CSS",
+      "useCustomJS": "Использовать пользовательский JS",
       "useCustomJSWarning": "Может поддерживаться не всеми читателями EPUB",
-      "chaptersWarning": "Only downloaded chapters are included in the EPUB"
+      "chaptersWarning": "Только загруженные главы включать в EPUB"
     }
   },
   "more": "Ещё",
