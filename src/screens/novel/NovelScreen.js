@@ -8,7 +8,14 @@ import {
   Text,
 } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
-import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
+import Animated, {
+  FadeIn,
+  FadeOut,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+  interpolateColor,
+} from 'react-native-reanimated';
 
 import {
   Provider,
@@ -103,6 +110,22 @@ const Novel = ({ route, navigation }) => {
   );
 
   const { defaultCategoryId = 1 } = useCategorySettings();
+
+  const headerOpacity = useSharedValue(0);
+  const headerOpacityStyle = useAnimatedStyle(() => {
+    const backgroundColor = interpolateColor(
+      headerOpacity.value,
+      [0, 1],
+      ['transparent', theme.surface],
+    );
+    return {
+      backgroundColor,
+    };
+  });
+  const onPageScroll = event => {
+    const y = event.nativeEvent.contentOffset.y;
+    headerOpacity.value = withTiming(y > 10 ? 1 : 0, { duration: 200 });
+  };
 
   useEffect(() => {
     dispatch(
@@ -366,7 +389,7 @@ const Novel = ({ route, navigation }) => {
       <View style={[styles.container, { backgroundColor: theme.background }]}>
         <Portal>
           {selected.length === 0 ? (
-            <View style={styles.row}>
+            <Animated.View style={[styles.row, headerOpacityStyle]}>
               <IconButton
                 icon="arrow-left"
                 iconColor={theme.onBackground}
@@ -577,7 +600,7 @@ const Novel = ({ route, navigation }) => {
                   />
                 </Menu>
               </Row>
-            </View>
+            </Animated.View>
           ) : (
             <Animated.View
               entering={FadeIn.duration(150)}
@@ -637,6 +660,7 @@ const Novel = ({ route, navigation }) => {
                 deleteDownloadsSnackbar={deleteDownloadsSnackbar}
               />
             }
+            onScroll={onPageScroll}
             refreshControl={refreshControl()}
           />
         </View>
