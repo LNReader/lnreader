@@ -1,6 +1,12 @@
 import { getString } from '@strings/translations';
 import React, { useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import {
+  LayoutAnimation,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { ThemeColors } from '../../../../theme/types';
@@ -22,6 +28,10 @@ const NovelSummary: React.FC<NovelSummaryProps> = ({
   const [expanded, setExpanded] = useState(isExpanded);
   const toggleExpanded = () => {
     if (summary) {
+      LayoutAnimation.configureNext({
+        ...LayoutAnimation.Presets.linear,
+        duration: 100,
+      });
       setExpanded(!expanded);
     }
   };
@@ -38,8 +48,13 @@ const NovelSummary: React.FC<NovelSummaryProps> = ({
       onPress={toggleExpanded}
     >
       <Text
-        style={[styles.summaryText, { color: textColor }]}
-        numberOfLines={expanded ? Number.MAX_SAFE_INTEGER : 3}
+        style={[
+          styles.summaryText,
+          {
+            color: textColor,
+            height: expanded ? undefined : styles.summaryText.lineHeight * 3,
+          },
+        ]}
       >
         {summary || getString('novelScreen.noSummary')}
       </Text>
