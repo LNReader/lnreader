@@ -152,8 +152,8 @@ const Novel = ({ route, navigation }) => {
       progressViewOffset={progressViewOffset}
       onRefresh={onRefresh}
       refreshing={updating}
-      colors={[theme.primary]}
-      progressBackgroundColor={theme.onPrimary}
+      colors={[theme.onPrimary]}
+      progressBackgroundColor={theme.primary}
     />
   );
 
