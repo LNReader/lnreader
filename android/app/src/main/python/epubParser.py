@@ -69,7 +69,6 @@ def getContent(epub_path, dest_dir):
         dir = dest_dir + 'convertedEpubs/' + cleanedTitle  # temporary directory for saving
         for fileInfo in z.infolist():
             if any(fileInfo.filename.endswith(ext) for ext in extensions):
-                fileInfo.filename = os.path.basename(fileInfo.filename)
                 z.extract(fileInfo, path = dir)
         return dir
 
@@ -101,44 +100,69 @@ def getChapters(z: zipfile.ZipFile, opf_tree):
     chapters = []
 
     for filename in z.namelist():
-        print(filename)
         if filename.endswith('toc.ncx'):
             isEPUB2 = True
             chpts_data_filename = filename
             break
 
-    print(isEPUB2)
-
     if isEPUB2:
-        name_by_content = {}
+        name_by_path = {}
         tree = etree.XML(z.read(chpts_data_filename))
+        # lastNavHash = None
+
         for nav_point in tree.xpath('//ncx:navMap/ncx:navPoint', namespaces=namespaces):
             name = nav_point.find('.//ncx:text', namespaces=namespaces).text
-            content = nav_point.find('.//ncx:content', namespaces=namespaces).attrib['src'] + '#'
-            name_by_content[content[:content.index('#') or -1]] = name
+            content = nav_point.find('.//ncx:content', namespaces=namespaces).attrib['src']
 
+            chapter_path = '#' in content and content[:content.index('#')] or content
+            # new_chapter_path = chapter_name
+            # i = 1
+
+            if name_by_path[chapter_path]: # Chapter has been referenced more than once, split into smaller chapters
+                continue
+                # new_chapter_path = f'{chapter_path}_lnreaderSplit{i}'
+                # lastNavHash = content[content.index('#')+1:]
+                # i += 1
+
+            name_by_path[chapter_path] = name
+            chapters.append({
+                "name":name,
+                "path":chapter_path
+            })
+
+        # chapters_elements = opf_tree.xpath('//opf:spine//opf:itemref', namespaces=namespaces)
+        # for i,chapter_el in enumerate(chapters_elements):
+        #     id = chapter_el.get('idref')
+        #     item = opf_tree.find(f".//opf:manifest/opf:item[@id='{id}']", namespaces=namespaces)
+        #     path = item.attrib['href']
+        #     chapter_has_name = path in name_by_path
+        #     
+        #     if chapter_has_name:
+        #         chapter_name = name_by_path[path]
+        #         if chapter_name.isnumeric():
+        #             chapterName = f"Chapter {chapter_name}"
+        #         else:
+        #             chapterName = chapter_name
+        #     else:
+        #         chapterName = f"Unnamed chapter {i+1}"
+# 
+        #     chapters.append({
+        #         "name":chapterName,
+        #         "path":path
+        #     })
+    else:
+        # epub 3 uses nav.xhtml instead but I don't have an example rn
+        # Temporal workaround, no chapter names included
         chapters_elements = opf_tree.xpath('//opf:spine//opf:itemref', namespaces=namespaces)
         for i,chapter_el in enumerate(chapters_elements):
             id = chapter_el.get('idref')
             item = opf_tree.find(f".//opf:manifest/opf:item[@id='{id}']", namespaces=namespaces)
-            content = item.attrib['href']
-            chapter_has_name = content in name_by_content
-            
-            if chapter_has_name:
-                chapter_name = name_by_content[content]
-                if chapter_name.isnumeric():
-                    chapterName = f"Chapter {chapter_name}"
-                else:
-                    chapterName = chapter_name
-            else:
-                chapterName = f"Unnamed chapter {i+1}"
+            path = item.attrib['href']
 
             chapters.append({
-                "name":chapterName,
-                "path":content
+                "name":f"Chapter {i+1}",
+                "path":path
             })
-    else:
-        pass
 
     return chapters
 
@@ -170,7 +194,7 @@ def getMetadata(epub_path, save_path):
         artist = '' #this will be included with author as epub files do not need to have an artist role and distinction is probably not necessary
         chapters = getChapters(z, tree)
         print('chapters', chapters)
-
+        
         return {
             'url' : save_path,
             'title' : title,
