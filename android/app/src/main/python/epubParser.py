@@ -32,7 +32,6 @@ class ChapterItem:
         self.url = url
         self.releaseTime = releaseTime  # perhaps epub creation date?
 
-
 namespaces = {
     'calibre': 'http://calibre.kovidgoyal.net/2009/metadata',
     'dc': 'http://purl.org/dc/elements/1.1/',
@@ -67,16 +66,20 @@ def getContent(epub_path, dest_dir):
     extensions = ['.html', '.htm', '.xhtml', '.css', '.png', '.jpeg', '.jpg', '.gif',
                   '.opf']  # still need the content.opf file
     with zipfile.ZipFile(epub_path) as z:
-        for i in range(0, len(z.namelist())):
-            if (z.namelist()[i].endswith('opf')):
-                contentOPF = z.namelist()[i]  # search for opf file
+        for filename in z.namelist():
+            if (filename.endswith('opf')):
+                contentOPF = filename  # search for opf file
+                break
+
         tree = etree.XML(z.read(contentOPF))
         title = tree.find('.//dc:title', namespaces=namespaces).text
         cleanedTitle = cleanTitle(title)
         dir = dest_dir + 'convertedEpubs/' + cleanedTitle  # temporary directory for saving
+
         for fileInfo in z.infolist():
             if any(fileInfo.filename.endswith(ext) for ext in extensions):
                 z.extract(fileInfo, path=dir)
+                
         return dir
 
 
@@ -104,53 +107,60 @@ class SourceNovel:
         self.chapters = chapters
 
 
-def getChapters(z: zipfile.ZipFile, opf_tree, path):
+def getChapters(z: zipfile.ZipFile, opf_tree, dir_path):
     isEPUB2 = False
-    filename = None
     chapters = []
+
     for filename in z.namelist():
-        #print(filename)
         if filename.endswith('toc.ncx'):
             isEPUB2 = True
             chpts_data_filename = filename
             break
 
-    #print(isEPUB2)
-
     if isEPUB2:
-        name_by_content = {}
+        name_by_path = {}
         tree = etree.XML(z.read(chpts_data_filename))
-        # lastNavHash = None
+
         for nav_point in tree.xpath('//ncx:navMap/ncx:navPoint', namespaces=namespaces):
             name = nav_point.find('.//ncx:text', namespaces=namespaces).text
-            content = nav_point.find('.//ncx:content', namespaces=namespaces).attrib['src'] + '#'
-            name_by_content[content[:content.index('#') or -1]] = name
-            chapter_filename = content[:content.index('#') or -1]
+            path = nav_point.find('.//ncx:content', namespaces=namespaces).attrib['src']
 
-            name_by_content[chapter_filename] = name
+            chapter_path = path[:path.index('#')] if '#' in path else path
+            name_by_path[chapter_path] = name
 
         chapters_elements = opf_tree.xpath('//opf:spine//opf:itemref', namespaces=namespaces)
         for i, chapter_el in enumerate(chapters_elements):
             id = chapter_el.get('idref')
             item = opf_tree.find(f".//opf:manifest/opf:item[@id='{id}']", namespaces=namespaces)
-            content = item.attrib['href']
-            chapter_has_name = content in name_by_content
+            path = item.attrib['href']
+            chapter_has_name = path in name_by_path
 
             if chapter_has_name:
-                chapter_name = name_by_content[content]
+                chapter_name = name_by_path[path]
                 if chapter_name.isnumeric():
-                    chapterName = f"Chapter {chapter_name}"
+                    chapterName = f'Chapter {chapter_name}'
                 else:
                     chapterName = chapter_name
             else:
-                chapterName = f"Unnamed chapter {i + 1}"
+                chapterName = f'Unnamed chapter {i + 1}'
 
             chapters.append({
-                "name": chapterName,
-                "path": path + '/' + content if len(path) > 0 else content,
+                'name': chapterName,
+                'path': dir_path + '/' + path if len(dir_path) > 0 else path,
             })
     else:
-        pass  # epub 3 uses nav.xhtml instead but I don't have an example rn
+        # EPUB3 uses nav.xhtml instead but I don't have an example rn
+        # For now it will list all files without their corresponding chapter names
+        chapters_elements = opf_tree.xpath('//opf:spine//opf:itemref', namespaces=namespaces)
+        for i, chapter_el in enumerate(chapters_elements):
+            id = chapter_el.get('idref')
+            item = opf_tree.find(f".//opf:manifest/opf:item[@id='{id}']", namespaces=namespaces)
+            path = item.attrib['href']
+
+            chapters.append({
+                'name': f'EPUB3 - Chapter {i + 1}',
+                'path': path + '/' + path if len(path) > 0 else path,
+            })
 
     return chapters
 
@@ -161,7 +171,7 @@ def getMetadata(epub_path, save_path):
             if (filename.endswith('opf')):
                 contentOPF = filename  # search for opf file
                 break
-        print("content.opf", contentOPF)
+        print('content.opf', contentOPF)
         tree = etree.XML(z.read(contentOPF))
 
         title = tree.find('.//dc:title', namespaces=namespaces).text

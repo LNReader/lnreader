@@ -1,14 +1,27 @@
 import * as cheerio from 'cheerio';
 import RNFS from 'react-native-fs';
+import { htmlToText } from '../helpers/htmlToText';
 
 const sourceName = 'EPub';
 const sourceId = 0;
 
-const parseNovelAndChapters = async (epubPath: string) => {
-  const files = await RNFS.readDir(epubPath);
+const resolveRelativePath = (absPath: string, relPath: string): string => {
+  const absPathParts = absPath.split('/');
+  const relPathParts = relPath.split('/');
 
-  const metadataFile = files.find(f => f.name.endsWith('.json'))!;
-  const metadata = JSON.parse(await RNFS.readFile(metadataFile.path));
+  let backNavigations = 0;
+  relPathParts.forEach(p => p === '..' && backNavigations++);
+
+  const newAbsPath = absPathParts
+    .slice(0, absPathParts.length - backNavigations)
+    .join('/');
+  const newRelPath = relPathParts.slice(backNavigations).join('/');
+
+  return `${newAbsPath}/${newRelPath}`;
+};
+
+const parseNovelAndChapters = async (epubPath: string) => {
+  const metadata = JSON.parse(await RNFS.readFile(`${epubPath}/metadata.json`));
 
   let novel = {
     sourceId,
@@ -20,8 +33,8 @@ const parseNovelAndChapters = async (epubPath: string) => {
     novelCover: `file://${epubPath}/${metadata.cover}`,
     artist: metadata.artist,
     author: metadata.authors,
-    summary: metadata.summary,
-    status: 'Finished',
+    summary: htmlToText(metadata.summary),
+    status: 'Completed',
 
     chapters: metadata.chapters.map((chapter: any) => ({
       chapterName: chapter.name,
@@ -33,14 +46,12 @@ const parseNovelAndChapters = async (epubPath: string) => {
 };
 
 const parseChapter = async (epubPath: string, chapterUrl: string) => {
-  const files = await RNFS.readDir(epubPath);
-
-  const metadataFile = files.find(f => f.name.endsWith('.json'))!;
-  const metadata = JSON.parse(await RNFS.readFile(metadataFile.path));
+  const metadata = JSON.parse(await RNFS.readFile(`${epubPath}/metadata.json`));
   const chapterInfo = metadata.chapters.find((f: any) =>
     chapterUrl.includes(f.path),
   );
 
+  const dirPath = chapterUrl.substring(0, chapterUrl.lastIndexOf('/'));
   let chapterText = await RNFS.readFile(chapterUrl);
 
   const loadedCheerio = cheerio.load(chapterText);
@@ -59,8 +70,8 @@ const parseChapter = async (epubPath: string, chapterUrl: string) => {
     }
 
     const promise: Promise<number> = new Promise(async r => {
-      const url = `${epubPath}/${src}`;
-      loadedCheerio(this).replaceWith(`<img src="file://${url}"/>`);
+      const url = resolveRelativePath(dirPath, src);
+      loadedCheerio(this).replaceWith(`<img src="${url}"/>`);
       r(0);
     });
 
@@ -78,7 +89,8 @@ const parseChapter = async (epubPath: string, chapterUrl: string) => {
     }
 
     const promise: Promise<number> = new Promise(async r => {
-      const style = await RNFS.readFile(`${epubPath}/${this.attribs.href}`);
+      const path = resolveRelativePath(dirPath, this.attribs.href);
+      const style = await RNFS.readFile(path);
       loadedCheerio(this).replaceWith(`<style>${style}</style>`);
       r(0);
     });
