@@ -557,9 +557,10 @@ const Novel = ({ route, navigation }) => {
                     titleStyle={{
                       color: theme.onSurface,
                     }}
-                    onPress={() =>
-                      dispatch(deleteAllChaptersAction(sourceId, chapters))
-                    }
+                    onPress={() => {
+                      dispatch(deleteAllChaptersAction(sourceId, chapters));
+                      showDownloadMenu(false);
+                    }}
                   />
                 </Menu>
 
