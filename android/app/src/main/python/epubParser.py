@@ -159,7 +159,7 @@ def getChapters(z: zipfile.ZipFile, opf_tree, dir_path):
 
             chapters.append({
                 'name': f'EPUB3 - Chapter {i + 1}',
-                'path': path + '/' + path if len(path) > 0 else path,
+                'path': dir_path + '/' + path if len(dir_path) > 0 else path,
             })
 
     return chapters
