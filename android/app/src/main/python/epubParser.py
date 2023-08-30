@@ -32,6 +32,7 @@ class ChapterItem:
         self.url = url
         self.releaseTime = releaseTime  # perhaps epub creation date?
 
+
 namespaces = {
     'calibre': 'http://calibre.kovidgoyal.net/2009/metadata',
     'dc': 'http://purl.org/dc/elements/1.1/',
@@ -63,7 +64,7 @@ def cleanTitle(dir_name):
 
 
 def getContent(epub_path, dest_dir):
-    extensions = ['.html', '.htm', '.xhtml', '.css', '.png', '.jpeg', '.jpg', '.gif',
+    extensions = ['.html', '.htm', '.xhtml', '.css', '.png', '.jpeg', '.jpg', '.gif', '.ncx',
                   '.opf']  # still need the content.opf file
     with zipfile.ZipFile(epub_path) as z:
         for filename in z.namelist():
@@ -79,7 +80,7 @@ def getContent(epub_path, dest_dir):
         for fileInfo in z.infolist():
             if any(fileInfo.filename.endswith(ext) for ext in extensions):
                 z.extract(fileInfo, path=dir)
-                
+
         return dir
 
 
@@ -134,7 +135,7 @@ def getChapters(z: zipfile.ZipFile, opf_tree, dir_path):
             item = opf_tree.find(f".//opf:manifest/opf:item[@id='{id}']", namespaces=namespaces)
             path = item.attrib['href']
             chapter_has_name = path in name_by_path
-
+            print(chapter_has_name)
             if chapter_has_name:
                 chapter_name = name_by_path[path]
                 if chapter_name.isnumeric():
@@ -142,7 +143,7 @@ def getChapters(z: zipfile.ZipFile, opf_tree, dir_path):
                 else:
                     chapterName = chapter_name
             else:
-                chapterName = f'Unnamed chapter {i + 1}'
+                chapterName = id.split('_')[0]
 
             chapters.append({
                 'name': chapterName,
@@ -175,21 +176,21 @@ def getMetadata(epub_path, save_path):
         tree = etree.XML(z.read(contentOPF))
 
         title = tree.find('.//dc:title', namespaces=namespaces).text
-        #print('title', title)
+        # print('title', title)
 
         cover = getCover(epub_path)
-        #print('cover', cover)
+        # print('cover', cover)
 
         authors = ''
         for author in tree.findall('.//dc:creator', namespaces=namespaces):
             authors += (author.text + ' ')
-        #print('authors', authors)
+        # print('authors', authors)
 
         genre = treeFindsAll('.//dc:subject', tree)
-        #print('genre', genre)
+        # print('genre', genre)
 
         summary = treeFindsAll('.//dc:description', tree)
-        #print('summary', summary)
+        # print('summary', summary)
 
         artist = ''  # this will be included with author as epub files do not need to have an artist role and distinction is probably not necessary
         chapters = getChapters(z, tree, os.path.dirname(contentOPF))
@@ -218,12 +219,12 @@ def getCover(epub_path):
 
         try:
             coverID = tree.xpath("//opf:metadata/opf:meta[@name='cover']", namespaces=namespaces)[0].get('content')
-            #print('coverID 2', coverID)  # now we know where the cover image is located
+            # print('coverID 2', coverID)  # now we know where the cover image is located
             coverHREF = tree.xpath("//opf:manifest/opf:item[@id='" + coverID + "']", namespaces=namespaces)[0].get(
                 'href')
 
         except IndexError:  # not an EPUB 2.0
-            #print('EPUB 2 failure')
+            # print('EPUB 2 failure')
             pass
 
         if not coverHREF:  # try EPUB 3.0
@@ -231,7 +232,7 @@ def getCover(epub_path):
                 coverHREF = tree.xpath("//opf:manifest/opf:item[@properties='cover-image']", namespaces=namespaces)[
                     0].get('href')
             except IndexError:
-                #print('EPUB 3 failure')
+                # print('EPUB 3 failure')
                 pass
         elif not coverHREF:  # some EPUBs don't explicitly declare cover images
             try:
@@ -244,19 +245,20 @@ def getCover(epub_path):
             except IndexError:
                 print('Edge case failure')
         elif not coverHREF:
-            #print('No cover found')
+            # print('No cover found')
             return None
 
         coverPath = coverHREF.replace('\\', '/')
-        #print('coverPath', coverPath)
+        # print('coverPath', coverPath)
 
-        return coverPath
+        return coverPath if os.path.dirname(contentOPF) == 0 else os.path.dirname(contentOPF) + '/' + coverPath
 
 
 def dumpMetaData(metaData, dest_dir):
     dir = dest_dir + 'convertedEpubs/' + cleanTitle(metaData.get('title')) + '/'
     with open(dir + 'metadata.json', 'w') as fileout:
         json.dump(metaData, fileout)
+
 
 def parseEpub(epub_path, dest_dir):
     save_path = getContent(epub_path, dest_dir)  # simultaneously writes and saves content to a variable
