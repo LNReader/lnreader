@@ -122,12 +122,13 @@ def getChapters(z: zipfile.ZipFile, opf_tree, dir_path):
         name_by_path = {}
         tree = etree.XML(z.read(chpts_data_filename))
 
-        for nav_point in tree.xpath('//ncx:navMap/ncx:navPoint', namespaces=namespaces):
+        for nav_point in tree.xpath('.//ncx:navPoint', namespaces=namespaces):
             name = nav_point.find('.//ncx:text', namespaces=namespaces).text
             path = nav_point.find('.//ncx:content', namespaces=namespaces).attrib['src']
 
             chapter_path = path[:path.index('#')] if '#' in path else path
-            name_by_path[chapter_path] = name
+            if chapter_path not in name_by_path:
+                name_by_path[chapter_path] = name
 
         chapters_elements = opf_tree.xpath('//opf:spine//opf:itemref', namespaces=namespaces)
         for i, chapter_el in enumerate(chapters_elements):
