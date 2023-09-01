@@ -1,23 +1,23 @@
 {
   "common": {
     "cancel": "Cancel",
-    "ok": "Ok",
-    "save": "Save",
-    "clear": "Clear",
+    "ok": "ଠିକ୍ ଅଛି",
+    "save": "ସଞ୍ଚୟ କରିବା",
+    "clear": "ସଫା କରିବା",
     "reset": "Reset",
-    "search": "Search",
+    "search": "ସନ୍ଧାନ",
     "install": "Install",
     "newUpdateAvailable": "ନୂଆ ଅଦ୍ୟତନ ଉପଲବ୍ଧ",
     "categories": "ବର୍ଗ",
     "add": "ଯୋଡ଼ନ୍ତୁ",
     "edit": "ସମ୍ପାଦନା",
-    "name": "Name",
+    "name": "ନାମ",
     "searchFor": "Search for",
     "globally": "globally",
     "searchResults": "Search results",
-    "chapters": "Chapters",
+    "chapters": "ଅଧ୍ୟାୟ",
     "submit": "Submit",
-    "retry": "Retry"
+    "retry": "ପୁନଃ ଚେଷ୍ଟା କରିବା"
   },
   "library": "Library",
   "libraryScreen": {
@@ -31,7 +31,7 @@
         "started": "Started"
       },
       "sortOrders": {
-        "dateAdded": "Date added",
+        "dateAdded": "ଯୋଡ଼ାଯିବା ତାରିଖ",
         "alphabetically": "Alphabetically",
         "totalChapters": "Total chapters",
         "download": "Downloaded",
@@ -44,7 +44,7 @@
         "compact": "Compact grid",
         "comfortable": "Comfortable grid",
         "noTitle": "Cover only grid",
-        "list": "List",
+        "list": "ତାଲିକା",
         "badges": "Badges",
         "downloadBadges": "Download badges",
         "unreadBadges": "Unread badges",
