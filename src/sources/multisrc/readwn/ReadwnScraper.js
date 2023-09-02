@@ -8,13 +8,15 @@ class ReadwnScraper {
     this.sourceName = sourceName;
   }
 
-  async popularNovels(page) {
+  async popularNovels(page, options) {
     const baseUrl = this.baseUrl;
     const sourceId = this.sourceId;
 
     const pageNo = page - 1;
 
-    const url = `${baseUrl}list/all/all-onclick-${pageNo}.html`;
+    const url = `${baseUrl}list/all/${
+      options?.showLatestNovels ? 'all-lastdotime' : 'all-onclick'
+    }-${pageNo}.html`;
 
     const result = await fetch(url);
     const body = await result.text();
