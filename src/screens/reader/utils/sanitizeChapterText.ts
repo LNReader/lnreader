@@ -16,6 +16,7 @@ export const sanitizeChapterText = (
   html: string,
   options?: Options,
 ): string => {
+  const isEPubSource = options?.sourceId === 0;
   let text = sanitizeHtml(html, {
     allowedTags: sanitizeHtml.defaults.allowedTags.concat([
       'img',
@@ -25,13 +26,16 @@ export const sanitizeChapterText = (
       'b',
       'a',
       'center',
+      ...(isEPubSource ? ['head', 'title', 'style'] : []),
     ]),
     allowedAttributes: {
       'img': ['src', 'class'],
       'a': ['href'],
       'input': ['type', 'offline'],
+      ...(isEPubSource ? { '*': ['class'] } : {}),
     },
     allowedSchemes: ['data', 'http', 'https', 'file'],
+    allowVulnerableTags: isEPubSource,
   });
   if (text) {
     if (options?.removeExtraParagraphSpacing) {
