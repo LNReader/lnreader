@@ -20,7 +20,7 @@
     "baseUrl": "https://noveltranslate.com/",
     "sourceName": "NovelTranslate",
     "options": {
-      "path": { "novels": "all-novels", "novel": "manga", "chapter": "manga" }
+      "path": { "novels": "all-novels", "novel": "novel", "chapter": "novel" }
     }
   },
   {

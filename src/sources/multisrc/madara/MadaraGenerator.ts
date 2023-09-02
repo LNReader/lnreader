@@ -22,7 +22,7 @@ export const NovelTranslateScraper = new MadaraScraper(
   42,
   'https://noveltranslate.com/',
   'NovelTranslate',
-  { 'path': { 'novels': 'all-novels', 'novel': 'manga', 'chapter': 'manga' } },
+  { 'path': { 'novels': 'all-novels', 'novel': 'novel', 'chapter': 'novel' } },
 );
 
 export const LunarLettersScraper = new MadaraScraper(
