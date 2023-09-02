@@ -1,8 +1,8 @@
 import * as cheerio from 'cheerio';
 const sourceId = 97;
-const sourceName = 'NovelFull.me';
+const sourceName = 'Novel Buddy';
 
-const baseUrl = 'https://novelfull.me/';
+const baseUrl = 'https://novelbuddy.io/';
 
 const popularNovels = async page => {
   const url = `${baseUrl}popular?page=${page}`;
@@ -56,11 +56,7 @@ const parseNovelAndChapters = async novelUrl => {
   novel.novelCover =
     'https:' + loadedCheerio('.img-cover img').attr('data-src');
 
-  novel.summary = loadedCheerio(
-    'body > div.layout > div.main-container.book-details > div > div.row.no-gutters > div.col-lg-8 > div.mt-1 > div.section.box.mt-1.summary > div.section-body > p.content',
-  )
-    .text()
-    .trim();
+  novel.summary = loadedCheerio('div.summary > p').text().trim();
 
   novel.author = loadedCheerio(
     'body > div.layout > div.main-container.book-details > div > div.row.no-gutters > div.col-lg-8 > div.book-info > div.detail > div.meta.box.mt-1.p-10 > p:nth-child(1) > a > span',
@@ -84,9 +80,9 @@ const parseNovelAndChapters = async novelUrl => {
 
   let chapters = [];
 
-  const chaptersUrl =
-    novelUrl.replace(baseUrl, 'https://novelfull.me/api/novels/') +
-    '/chapters?source=detail';
+  const novelId = /bookId = (\d+);/.exec(loadedCheerio('script').text())[1];
+
+  const chaptersUrl = `https://novelbuddy.io/api/manga/${novelId}/chapters?source=detail`;
 
   const chaptersRequest = await fetch(chaptersUrl);
   const chaptersHtml = await chaptersRequest.text();
