@@ -1,4 +1,4 @@
-import { StyleSheet, TextInput, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import React, { useState } from 'react';
 
 import { Button, List } from '@components/index';
@@ -37,14 +37,9 @@ const CustomJSSettings: React.FC<CustomJSSettingsProps> = ({
         </List.SubHeader>
       </View>
       <View style={styles.customJSContainer}>
-        <TextInput
-          style={[{ color: theme.onSurface }, styles.fontSizeL]}
-          value={customJS}
-          placeholderTextColor={theme.onSurfaceVariant}
-          placeholder="Example: document.getElementById('example');"
-          multiline={true}
-          editable={false}
-        />
+        <Text numberOfLines={3} style={{ color: theme.onSurface }}>
+          {customJS || "Example: document.getElementById('example');"}
+        </Text>
         <View style={styles.customJSButtons}>
           <Button
             onPress={jsModal.setTrue}
