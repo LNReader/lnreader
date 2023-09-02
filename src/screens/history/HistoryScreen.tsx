@@ -16,13 +16,12 @@ import { History } from '../../database/types';
 import { getString } from '@strings/translations';
 import ClearHistoryDialog from './components/ClearHistoryDialog';
 import {
-  openChapter,
-  openChapterChapterTypes,
-  openChapterNovelTypes,
-  openChapterFunctionTypes,
-  openNovel,
-  openNovelProps,
-} from '@utils/handleNavigateParams';
+  ChapterRouteParams,
+  NovelRouteParams,
+  getNovelScreenRouteParams,
+  getChapterScreenRouteParams,
+  NovelScreenRouteParams,
+} from '@utils/NavigationUtils';
 import HistorySkeletonLoading from './components/HistorySkeletonLoading';
 
 const HistoryScreen = () => {
@@ -76,16 +75,16 @@ const HistoryScreen = () => {
   };
 
   const handleNavigateToChapter = (
-    novel: openChapterNovelTypes,
-    chapter: openChapterChapterTypes,
+    novel: NovelRouteParams,
+    chapter: ChapterRouteParams,
   ) =>
     navigate(
       'Chapter' as never,
-      openChapter(novel, chapter) as openChapterFunctionTypes as never,
+      getChapterScreenRouteParams(novel, chapter) as never,
     );
 
-  const handleNavigateToNovel = (novel: openNovelProps) =>
-    navigate('Novel' as never, openNovel(novel) as openNovelProps as never);
+  const handleNavigateToNovel = (novel: NovelScreenRouteParams) =>
+    navigate('Novel' as never, getNovelScreenRouteParams(novel) as never);
 
   const {
     value: clearHistoryDialogVisible,

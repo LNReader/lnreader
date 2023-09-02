@@ -25,7 +25,7 @@ import NovelBadgesModal from './modals/NovelBadgesModal';
 import { RootState } from '@redux/store';
 import { NavigationState } from '@react-navigation/native';
 import { getString } from '@strings/translations';
-import ChooseEpubLocationModal from '@screens/novel/components/Modal/ChooseEpubLocationModal';
+import ChooseEpubLocationModal from '@screens/novel/components/ChooseEpubLocationModal';
 
 interface GenralSettingsProps {
   navigation: NavigationState;
@@ -105,10 +105,12 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
    * Chapter Sort Modal
    */
   const defaultChapterSortModal = useBoolean();
+
   /**
    * Convert to EPUB Modal
    */
   const convertToEpubModal = useBoolean();
+
   return (
     <>
       <Appbar
@@ -263,7 +265,6 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
             theme={theme}
           />
           <List.Divider theme={theme} />
-
           <List.SubHeader theme={theme}>
             {getString('moreScreen.settingsScreen.generalSettingsScreen.epub')}
           </List.SubHeader>
@@ -343,9 +344,8 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
         theme={theme}
       />
       <ChooseEpubLocationModal
+        isVisible={convertToEpubModal.value}
         hideModal={convertToEpubModal.setFalse}
-        modalVisible={convertToEpubModal.value}
-        dispatchConfig
       />
     </>
   );

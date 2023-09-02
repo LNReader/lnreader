@@ -81,7 +81,7 @@ const InfoItem = ({
   theme,
 }: {
   title: string;
-  icon: string;
+  icon?: string;
   theme: ThemeColors;
 }) => (
   <View style={styles.infoCtn}>

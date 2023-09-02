@@ -17,6 +17,7 @@ export type NovelListRenderItem = ListRenderItem<
 
 interface NovelListProps
   extends FlatListProps<LibraryNovelInfo | NovelInfo | SourceNovelItem> {
+  isFetchingNextPage?: boolean;
   inSource?: boolean;
 }
 
@@ -46,7 +47,7 @@ const NovelList: React.FC<NovelListProps> = props => {
   );
   var extendedNovelList: Array<SourceNovelItem | LibraryNovelInfo> =
     props?.data as Array<LibraryNovelInfo>;
-  if (props.data?.length && props.inSource) {
+  if (props.data?.length && props.inSource && props.isFetchingNextPage) {
     let remainder = numColumns - (props.data?.length % numColumns);
     let extension = [];
     if (remainder !== 0 && remainder !== numColumns) {

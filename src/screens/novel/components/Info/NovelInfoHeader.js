@@ -11,6 +11,9 @@ import { followNovelAction } from '../../../../redux/novel/novel.actions';
 import { useSettings } from '../../../../hooks/reduxHooks';
 import { showToast } from '../../../../hooks/showToast';
 
+import { getSourceStorage } from '@hooks/useSourceStorage';
+import { defaultUserAgentString } from '@utils/fetch/fetch';
+
 import {
   CoverImage,
   NovelAuthor,
@@ -54,16 +57,30 @@ const NovelInfoHeader = ({
     [],
   );
 
+  const { cookies = '' } = getSourceStorage(novel.sourceId);
+
   return (
     <>
       <CoverImage
-        source={{ uri: novel.novelCover }}
+        source={{
+          uri: novel.novelCover,
+          headers: {
+            Cookie: cookies,
+            'User-Agent': defaultUserAgentString,
+          },
+        }}
         theme={theme}
         hideBackdrop={hideBackdrop}
       >
         <NovelInfoContainer>
           <NovelThumbnail
-            source={{ uri: novel.novelCover }}
+            source={{
+              uri: novel.novelCover,
+              headers: {
+                Cookie: cookies,
+                'User-Agent': defaultUserAgentString,
+              },
+            }}
             theme={theme}
             setCustomNovelCover={setCustomNovelCover}
           />

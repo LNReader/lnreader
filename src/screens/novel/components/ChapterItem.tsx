@@ -1,22 +1,22 @@
-import React, { memo, ReactNode, useState } from 'react';
-import { View, StyleSheet, Pressable } from 'react-native';
-import { Text } from 'react-native-paper';
+import React, { memo, ReactNode } from 'react';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 import color from 'color';
+import isEqual from 'react-fast-compare';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { Row } from '../../../components/Common';
+import { Row } from '@components/Common';
+
+import { useBoolean, useTheme } from '@hooks';
+import { ChapterItemExtended } from '@database/types';
+import { parseChapterNumber } from '@utils/parseChapterNumber';
 
 import {
   ChapterBookmarkButton,
   DownloadButton,
 } from './Chapter/ChapterDownloadButtons';
-import { parseChapterNumber } from '@utils/parseChapterNumber';
-
-import { ThemeColors } from '@theme/types';
-import { ChapterItemExtended } from '@database/types';
 
 interface ChapterItemProps {
   chapter: ChapterItemExtended;
-  theme: ThemeColors;
   index?: number;
   downloadQueue: any;
   showChapterTitles: boolean;
@@ -35,7 +35,6 @@ interface ChapterItemProps {
 
 const ChapterItem: React.FC<ChapterItemProps> = ({
   chapter,
-  theme,
   index,
   showChapterTitles,
   downloadQueue,
@@ -50,16 +49,20 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
   isUpdateCard,
   novelName,
 }) => {
+  const theme = useTheme();
+
   const { chapterId, chapterName, read, releaseDate, bookmark } = chapter;
-  const [deleteChapterMenuVisible, setDeleteChapterMenuVisible] =
-    useState(false);
-  const showDeleteChapterMenu = () => setDeleteChapterMenuVisible(true);
-  const hideDeleteChapterMenu = () => setDeleteChapterMenuVisible(false);
+
+  const {
+    value: isMenuVisible,
+    setTrue: showMenu,
+    setFalse: hideMenu,
+  } = useBoolean();
+
   const chapterNumber = parseChapterNumber(chapterName);
 
   return (
     <Pressable
-      key={chapterId.toString()}
       style={[
         styles.chapterCardContainer,
         isSelected?.(chapterId) && {
@@ -74,10 +77,10 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
       onLongPress={() => onSelectLongPress?.(chapter)}
       android_ripple={{ color: theme.rippleColor }}
     >
-      {left && <View style={styles.flex}>{left}</View>}
       <Row style={styles.row}>
+        {left}
         {!!bookmark && <ChapterBookmarkButton theme={theme} />}
-        <View style={styles.textContainer}>
+        <View style={{ flex: 1 }}>
           {isUpdateCard && (
             <Text
               style={[
@@ -91,25 +94,33 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
               {novelName}
             </Text>
           )}
-          <Text
-            style={[
-              {
+          <View style={styles.row}>
+            {!chapter.read ? (
+              <MaterialCommunityIcons
+                name="circle"
+                color={theme.primary}
+                size={8}
+                style={styles.unreadIcon}
+              />
+            ) : null}
+            <Text
+              style={{
                 fontSize: isUpdateCard ? 12 : 14,
                 color: read
                   ? theme.outline
                   : bookmark
                   ? theme.primary
-                  : theme.onSurfaceVariant,
-              },
-            ]}
-            numberOfLines={1}
-          >
-            {showChapterTitles
-              ? chapterNumber
-                ? 'Chapter ' + chapterNumber
-                : 'Chapter ' + index
-              : chapterName}
-          </Text>
+                  : theme.onSurface,
+              }}
+              numberOfLines={1}
+            >
+              {showChapterTitles
+                ? chapterNumber
+                  ? 'Chapter ' + chapterNumber
+                  : 'Chapter ' + index
+                : chapterName}
+            </Text>
+          </View>
           <View style={styles.textRow}>
             {releaseDate && !isUpdateCard ? (
               <Text
@@ -132,23 +143,21 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
           </View>
         </View>
       </Row>
-      <View style={styles.flex}>
-        <DownloadButton
-          downloadQueue={downloadQueue}
-          chapter={chapter}
-          theme={theme}
-          deleteChapter={deleteChapter}
-          downloadChapter={downloadChapter}
-          hideDeleteChapterMenu={hideDeleteChapterMenu}
-          showDeleteChapterMenu={showDeleteChapterMenu}
-          deleteChapterMenuVisible={deleteChapterMenuVisible}
-        />
-      </View>
+      <DownloadButton
+        downloadQueue={downloadQueue}
+        chapter={chapter}
+        theme={theme}
+        deleteChapter={deleteChapter}
+        downloadChapter={downloadChapter}
+        hideDeleteChapterMenu={hideMenu}
+        showDeleteChapterMenu={showMenu}
+        deleteChapterMenuVisible={isMenuVisible}
+      />
     </Pressable>
   );
 };
 
-export default memo(ChapterItem);
+export default memo(ChapterItem, isEqual);
 
 const styles = StyleSheet.create({
   chapterCardContainer: {
@@ -158,28 +167,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    columnGab: 8,
   },
   text: {
     fontSize: 12,
   },
   textRow: {
     flexDirection: 'row',
-  },
-  flex: {
-    flexBasis: 'auto',
-    flexShrink: 9,
-  },
-  textContainer: {
-    flex: 1,
-    marginVertical: '10%',
-    height: '80%',
-    justifyContent: 'space-evenly',
+    marginTop: 5,
   },
   row: {
-    flexBasis: 10,
-    flexGrow: 1,
-    overflow: 'hidden',
-    height: '100%',
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  unreadIcon: {
+    marginRight: 4,
   },
 });

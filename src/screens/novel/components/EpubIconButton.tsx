@@ -1,7 +1,7 @@
-import * as React from 'react';
+import React, { useMemo } from 'react';
 import useBoolean from '@hooks/useBoolean';
 import { IconButton, Portal } from 'react-native-paper';
-import ChooseEpubLocationModal from './Modal/ChooseEpubLocationModal';
+import ChooseEpubLocationModal from './ChooseEpubLocationModal';
 import { StatusBar, StyleProp } from 'react-native';
 import { IconProps } from 'react-native-paper/lib/typescript/src/components/MaterialCommunityIcon';
 import { ThemeColors } from '@theme/types';
@@ -27,7 +27,11 @@ const EpubIconButton: React.FC<EpubIconButtonProps> = ({
   style,
   novel,
 }) => {
-  const chooseEpubLocationModal = useBoolean(false);
+  const {
+    value: isVisible,
+    setTrue: showModal,
+    setFalse: hideModal,
+  } = useBoolean(false);
   const readerSettings = useReaderSettings();
   const {
     epubUseAppTheme = false,
@@ -35,56 +39,73 @@ const EpubIconButton: React.FC<EpubIconButtonProps> = ({
     epubUseCustomJS = false,
   } = useSettings();
 
-  const epubStyle = `${
-    epubUseAppTheme
-      ? `html {
-    scroll-behavior: smooth;
-    overflow-x: hidden;
-    padding-top: ${StatusBar.currentHeight};
-    word-wrap: break-word;
-  }
-  body {
-    padding-left: ${readerSettings.padding}%;
-    padding-right: ${readerSettings.padding}%;
-    padding-bottom: 40px;
-    font-size: ${readerSettings.textSize}px;
-    color: ${readerSettings.textColor};
-    text-align: ${readerSettings.textAlign};
-    line-height: ${readerSettings.lineHeight};
-    font-family: "${readerSettings.fontFamily}";
-    background-color: "${readerSettings.theme}";
-  }
-  hr {
-    margin-top: 20px;
-    margin-bottom: 20px;
-  }
-  a {
-    color: ${theme.primary};
-  }
-  img {
-    display: block;
-    width: auto;
-    height: auto;
-    max-width: 100%;
-  }`
-      : ''
-  }
-  ${
-    epubUseCustomCSS
-      ? readerSettings.customCSS
-          .replace(RegExp(`\#sourceId-${novel.sourceId}\\s*\\{`, 'g'), 'body {')
-          .replace(RegExp(`\#sourceId-${novel.sourceId}[^\.\#A-Z]*`, 'gi'), '')
-      : ''
-  }`;
+  const epubStyle = useMemo(
+    () =>
+      `${
+        epubUseAppTheme
+          ? `
+              html {
+                scroll-behavior: smooth;
+                overflow-x: hidden;
+                padding-top: ${StatusBar.currentHeight};
+                word-wrap: break-word;
+              }
+              body {
+                padding-left: ${readerSettings.padding}%;
+                padding-right: ${readerSettings.padding}%;
+                padding-bottom: 40px;
+                font-size: ${readerSettings.textSize}px;
+                color: ${readerSettings.textColor};
+                text-align: ${readerSettings.textAlign};
+                line-height: ${readerSettings.lineHeight};
+                font-family: "${readerSettings.fontFamily}";
+                background-color: "${readerSettings.theme}";
+              }
+              hr {
+                margin-top: 20px;
+                margin-bottom: 20px;
+              }
+              a {
+                color: ${theme.primary};
+              }
+              img {
+                display: block;
+                width: auto;
+                height: auto;
+                max-width: 100%;
+            }`
+          : ''
+      }
+      ${
+        epubUseCustomCSS
+          ? readerSettings.customCSS
+              .replace(
+                RegExp(`\#sourceId-${novel.sourceId}\\s*\\{`, 'g'),
+                'body {',
+              )
+              .replace(
+                RegExp(`\#sourceId-${novel.sourceId}[^\.\#A-Z]*`, 'gi'),
+                '',
+              )
+          : ''
+      }`,
+    [novel, epubUseAppTheme, readerSettings, epubUseCustomCSS],
+  );
 
-  const epubJS = `let novelName = "${novel.novelName}";
-    let chapterName = "";
-    let sourceId =${novel.sourceId};
-    let chapterId ="";
-    let novelId =${novel.novelId};
-    let html = document.querySelector("chapter").innerHTML;
-    ${readerSettings.customJS}
-  `;
+  const epubJS = useMemo(
+    () =>
+      `
+        let novelName = "${novel.novelName}";
+        let chapterName = "";
+        let sourceId =${novel.sourceId};
+        let chapterId ="";
+        let novelId =${novel.novelId};
+        let html = document.querySelector("chapter").innerHTML;
+          
+        ${readerSettings.customJS}
+        `,
+    [novel, readerSettings],
+  );
 
   const createEpub = async (uri: string) => {
     var epub = new EpubBuilder(
@@ -130,12 +151,12 @@ const EpubIconButton: React.FC<EpubIconButtonProps> = ({
         iconColor={theme.onBackground}
         size={21}
         style={style}
-        onPress={chooseEpubLocationModal.setTrue}
+        onPress={showModal}
       />
       <Portal>
         <ChooseEpubLocationModal
-          modalVisible={chooseEpubLocationModal.value}
-          hideModal={chooseEpubLocationModal.setFalse}
+          isVisible={isVisible}
+          hideModal={hideModal}
           onSubmit={createEpub}
         />
       </Portal>

@@ -1,29 +1,27 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { getString } from '@strings/translations';
-import { Button } from '@components';
-
 import { Modal, TextInput, Text } from 'react-native-paper';
-import { useTheme } from '@hooks/useTheme';
-import { useSettings } from '@hooks/reduxHooks';
-import { openDocumentTree } from 'react-native-saf-x';
-import SwitchSetting from '@components/Switch/Switch';
-import useBoolean from '@hooks/useBoolean';
 import { useDispatch } from 'react-redux';
-import { setAppSettings } from '@redux/settings/settings.actions';
+import { openDocumentTree } from 'react-native-saf-x';
+
+import { Button, List, SwitchItem } from '@components';
+
+import { useTheme, useBoolean } from '@hooks';
+import { useSettings } from '@hooks/reduxHooks';
+import { showToast } from '@hooks/showToast';
+import { getString } from '@strings/translations';
+import { setMultipleAppSettings } from '@redux/settings/settings.actions';
 
 interface ChooseEpubLocationModalProps {
-  hideModal: () => void;
-  modalVisible: boolean;
+  isVisible: boolean;
   onSubmit?: (uri: string) => void;
-  dispatchConfig?: boolean;
+  hideModal: () => void;
 }
 
 const ChooseEpubLocationModal: React.FC<ChooseEpubLocationModalProps> = ({
-  hideModal,
-  modalVisible,
+  isVisible,
   onSubmit: onSubmitProp,
-  dispatchConfig,
+  hideModal,
 }) => {
   const theme = useTheme();
   const {
@@ -32,28 +30,28 @@ const ChooseEpubLocationModal: React.FC<ChooseEpubLocationModalProps> = ({
     epubUseCustomCSS = false,
     epubUseCustomJS = false,
   } = useSettings();
-  const saveConfig = dispatchConfig || epubLocation === '';
   const dispatch = useDispatch();
 
   const [uri, setUri] = useState(epubLocation);
   const useAppTheme = useBoolean(epubUseAppTheme);
   const useCustomCSS = useBoolean(epubUseCustomCSS);
   const useCustomJS = useBoolean(epubUseCustomJS);
-  const [error, setError] = useState('');
 
   const onDismiss = () => {
     hideModal();
-    setError('');
     setUri(epubLocation);
   };
 
   const onSubmit = () => {
-    if (saveConfig) {
-      dispatch(setAppSettings('epubLocation', uri));
-      dispatch(setAppSettings('epubUseAppTheme', useAppTheme.value));
-      dispatch(setAppSettings('epubUseCustomCSS', useCustomCSS.value));
-      dispatch(setAppSettings('epubUseCustomJS', useCustomJS.value));
-    }
+    dispatch(
+      setMultipleAppSettings({
+        'epubLocation': uri,
+        'epubUseAppTheme': useAppTheme.value,
+        'epubUseCustomCSS': useCustomCSS.value,
+        'epubUseCustomJS': useCustomJS.value,
+      }),
+    );
+
     onSubmitProp?.(uri);
     hideModal();
   };
@@ -64,14 +62,14 @@ const ChooseEpubLocationModal: React.FC<ChooseEpubLocationModalProps> = ({
       if (resultUri) {
         setUri(resultUri.uri);
       }
-    } catch (err) {
-      console.log(err);
+    } catch (error: any) {
+      showToast(error.message);
     }
   };
 
   return (
     <Modal
-      visible={modalVisible}
+      visible={isVisible}
       onDismiss={onDismiss}
       contentContainerStyle={[
         styles.modalContainer,
@@ -82,43 +80,37 @@ const ChooseEpubLocationModal: React.FC<ChooseEpubLocationModalProps> = ({
         <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
           {getString('novelScreen.convertToEpubModal.chooseLocation')}
         </Text>
-        <View style={styles.row}>
-          <TextInput
-            style={styles.textInput}
-            onChangeText={setUri}
-            value={uri}
-            placeholder={getString(
-              'novelScreen.convertToEpubModal.pathToFolder',
-            )}
-            onSubmitEditing={onSubmit}
-            mode="outlined"
-            theme={{ colors: { ...theme } }}
-            underlineColor={theme.outline}
-            dense
-            error={error ? true : false}
-            right={
-              <TextInput.Icon
-                icon="folder-edit-outline"
-                onPress={openFolderPicker}
-              />
-            }
-          />
-        </View>
+        <TextInput
+          onChangeText={setUri}
+          value={uri}
+          placeholder={getString('novelScreen.convertToEpubModal.pathToFolder')}
+          onSubmitEditing={onSubmit}
+          mode="outlined"
+          theme={{ colors: { ...theme } }}
+          underlineColor={theme.outline}
+          dense
+          right={
+            <TextInput.Icon
+              icon="folder-edit-outline"
+              onPress={openFolderPicker}
+            />
+          }
+        />
       </View>
       <View style={styles.settings}>
-        <SwitchSetting
+        <SwitchItem
           label={getString('novelScreen.convertToEpubModal.useReaderTheme')}
           value={useAppTheme.value}
           onPress={useAppTheme.toggle}
           theme={theme}
         />
-        <SwitchSetting
+        <SwitchItem
           label={getString('novelScreen.convertToEpubModal.useCustomCSS')}
           value={useCustomCSS.value}
           onPress={useCustomCSS.toggle}
           theme={theme}
         />
-        <SwitchSetting
+        <SwitchItem
           label={getString('novelScreen.convertToEpubModal.useCustomJS')}
           description={getString(
             'novelScreen.convertToEpubModal.useCustomJSWarning',
@@ -128,6 +120,10 @@ const ChooseEpubLocationModal: React.FC<ChooseEpubLocationModalProps> = ({
           theme={theme}
         />
       </View>
+      <List.InfoItem
+        title={getString('novelScreen.convertToEpubModal.chaptersWarning')}
+        theme={theme}
+      />
       <View style={styles.modalFooterCtn}>
         <Button title={getString('common.submit')} onPress={onSubmit} />
         <Button title={getString('common.cancel')} onPress={hideModal} />
@@ -145,10 +141,7 @@ const styles = StyleSheet.create({
   },
   settings: {
     marginTop: 12,
-    paddingLeft: 5,
   },
-  icon: { marginVertical: 0, marginRight: 0 },
-  textInput: { flex: 1 },
   modalHeaderCtn: {
     padding: 20,
     paddingTop: 32,
@@ -163,10 +156,5 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontSize: 24,
     marginBottom: 16,
-  },
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
   },
 });

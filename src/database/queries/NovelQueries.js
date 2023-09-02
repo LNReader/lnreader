@@ -132,9 +132,9 @@ export const restoreLibrary = async novel => {
 
           if (chapters.length) {
             await insertChapters(insertId, chapters);
-
-            resolve();
           }
+
+          resolve();
         },
         (txObj, error) => {
           resolve();

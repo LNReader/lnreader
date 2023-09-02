@@ -1,3 +1,4 @@
+import EPubSource from './local/epubSource';
 import ComradeMaoScraper from './en/comrademao';
 import ReadLightNovelScraper from './en/readlightnovel';
 import fastNovelScraper from './en/fastnovel';
@@ -18,6 +19,7 @@ import EinharjarProjectScraper from './es/einherjarproject';
 import TuNovelaLigeraScraper from './es/tunovelaligera';
 import SkyNovelsScraper from './es/skynovels';
 import NovelasLigeraScraper from './es/novelasligera';
+import NOVAScraper from './es/nova';
 import YuukiTlsScraper from './es/yuukitls';
 import NovelaWuxiaScraper from './es/novelawuxia';
 import OasisTranslationsScraper from './es/oasistranslations';
@@ -78,6 +80,7 @@ import NovelUpdatesScraper from './en/novelupdates';
 import RanobesScraper from './en/ranobes';
 import RanobesruScraper from './ru/ranobes';
 import YushuboScraper from './ch/yushubo';
+import LinovelibScraper from './ch/linovelib';
 import {
   LiebeSchneeHiverNovelScraper,
   LightNovelsBrasilScraper,
@@ -183,6 +186,7 @@ interface Scraper {
 export const sourceManager = (sourceId: number): Scraper => {
   const scrapers: Record<number, Scraper> = {
     // @ts-ignore
+    0: EPubSource, // @ts-ignore
     1: BoxNovelScraper, // @ts-ignore
     2: ReadLightNovelScraper, // @ts-ignore
     3: fastNovelScraper, // @ts-ignore
@@ -326,6 +330,8 @@ export const sourceManager = (sourceId: number): Scraper => {
     162: KodScraper, // @ts-ignore
     163: NovelsOnlineScraper, // @ts-ignore
     164: BookRiverScraper, // @ts-ignore
+    165: LinovelibScraper, // @ts-ignore
+    166: NOVAScraper, // @ts-ignore
   };
 
   return scrapers[sourceId];

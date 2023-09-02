@@ -49,15 +49,15 @@ import NovelInfoHeader from './components/Info/NovelInfoHeader';
 import NovelBottomSheet from './components/NovelBottomSheet';
 import TrackSheet from './components/Tracker/TrackSheet';
 import { Row } from '../../components/Common';
-import JumpToChapterModal from './components/Modal/JumpToChapterModal';
+import JumpToChapterModal from './components/JumpToChapterModal';
 import { Actionbar } from '../../components/Actionbar/Actionbar';
-import EditInfoModal from './components/Modal/EditInfoModal';
+import EditInfoModal from './components/EditInfoModal';
 import { pickCustomNovelCover } from '../../database/queries/NovelQueries';
-import DownloadCustomChapterModal from './components/Modal/DownloadCustomChapterModal';
+import DownloadCustomChapterModal from './components/DownloadCustomChapterModal';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import useBoolean from '@hooks/useBoolean';
 import { useCategorySettings } from '@hooks/useSettings';
-import { openChapter } from '../../utils/handleNavigateParams';
+import { getChapterScreenRouteParams } from '../../utils/NavigationUtils';
 import NovelScreenLoading from './components/LoadingAnimation/NovelScreenLoading';
 import { useTrackerReducer } from '@redux/hooks';
 import EpubIconButton from './components/EpubIconButton';
@@ -294,7 +294,7 @@ const Novel = ({ route, navigation }) => {
   const navigateToChapter = chapter => {
     navigation.navigate(
       'Chapter',
-      openChapter({ sourceId, novelUrl, novelName }, chapter),
+      getChapterScreenRouteParams({ sourceId, novelUrl, novelName }, chapter),
     );
   };
 
@@ -340,7 +340,6 @@ const Novel = ({ route, navigation }) => {
 
   const renderItem = ({ item: it, index }) => (
     <ChapterItem
-      theme={theme}
       chapter={it}
       index={index}
       showChapterTitles={showChapterTitles}
@@ -398,7 +397,11 @@ const Novel = ({ route, navigation }) => {
                   }}
                   onPress={() => showJumpToChapterModal(true)}
                 />
-
+                <EpubIconButton
+                  theme={theme}
+                  style={{ marginTop: StatusBar.currentHeight + 8 }}
+                  novel={novel}
+                />
                 <Menu
                   visible={downloadMenu}
                   onDismiss={() => showDownloadMenu(false)}
@@ -536,11 +539,7 @@ const Novel = ({ route, navigation }) => {
                     }
                   />
                 </Menu>
-                <EpubIconButton
-                  theme={theme}
-                  style={{ marginTop: StatusBar.currentHeight + 8 }}
-                  novel={novel}
-                />
+
                 <Menu
                   visible={extraMenu}
                   onDismiss={() => showExtraMenu(false)}
@@ -655,7 +654,7 @@ const Novel = ({ route, navigation }) => {
             onPress={() => {
               navigation.navigate(
                 'Chapter',
-                openChapter(novel, lastReadChapter),
+                getChapterScreenRouteParams(novel, lastReadChapter),
               );
             }}
           />

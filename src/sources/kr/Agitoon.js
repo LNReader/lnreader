@@ -12,7 +12,7 @@ const popularNovels = async page => {
     headers: {
       'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
     },
-    body: `mode=get_data_novel_list_p&novel_menu=3&np_day=${day}&np_rank=1&np_distributor=0&np_genre=00&np_order=1&np_genre_ex_1=00&np_genre_ex_2=00&list_limit=${list_limit}&is_query_first=true`,
+    body: `mode=get_data_novel_list_p&novel_menu=3&np_day=${day}&np_rank=0&np_distributor=0&np_genre=00&np_order=1&np_genre_ex_1=00&np_genre_ex_2=00&list_limit=${list_limit}&is_query_first=true`,
     method: 'POST',
   });
 

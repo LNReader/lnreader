@@ -2,13 +2,13 @@ import MultiSrcScraper from './ReadwnScraper';
 
 const ReadwnScraper = new MultiSrcScraper(
   68,
-  'https://www.readwn.com/',
+  'https://www.wuxiap.com/',
   'Readwn.com',
 );
 
 const NovelmtScraper = new MultiSrcScraper(
   99,
-  'https://www.novelmt.com/',
+  'https://www.wuxiapub.com/',
   'Novelmt.com',
 );
 

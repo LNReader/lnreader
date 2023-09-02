@@ -1,52 +1,57 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, Text, Dimensions } from 'react-native';
+import React, { useEffect } from 'react';
+import { ScrollView, StyleSheet, View, Text, Dimensions } from 'react-native';
 import { Portal, Modal } from 'react-native-paper';
 import * as Linking from 'expo-linking';
-import { ScrollView } from 'react-native-gesture-handler';
-import Button from './Button/Button';
+
+import { Button } from '@components';
+
+import { useBoolean, useReleaseChecker, useTheme } from '@hooks';
 import { getString } from '@strings/translations';
 
-import { useTheme } from '@hooks/useTheme';
-
-interface NewUpdateDialogProps {
-  newVersion: {
-    tag_name: string;
-    body: string;
-    downloadUrl: string;
-  };
-}
-
-const NewUpdateDialog: React.FC<NewUpdateDialogProps> = ({ newVersion }) => {
-  const [newUpdateDialog, showNewUpdateDialog] = useState(true);
-
+const NewUpdateDialog: React.FC = () => {
   const theme = useTheme();
 
+  const newRelease = useReleaseChecker();
+
+  const {
+    value: isVisible,
+    setFalse: hideModal,
+    setValue: setModalVisible,
+  } = useBoolean();
+
+  useEffect(() => {
+    setModalVisible(Boolean(newRelease));
+  }, [newRelease]);
+
   const modalHeight = Dimensions.get('window').height / 2;
+
+  if (!newRelease) {
+    return null;
+  }
 
   return (
     <Portal>
       <Modal
-        visible={newUpdateDialog}
-        onDismiss={() => showNewUpdateDialog(false)}
+        visible={isVisible}
+        onDismiss={hideModal}
         contentContainerStyle={[
           styles.containerStyle,
           { backgroundColor: theme.overlay3 },
         ]}
       >
         <Text style={[styles.modalHeader, { color: theme.onSurface }]}>
-          {`${getString('common.newUpdateAvailable')} ${newVersion.tag_name}`}
+          {`${getString('common.newUpdateAvailable')} ${newRelease?.tagName}`}
         </Text>
         <ScrollView style={{ height: modalHeight }}>
-          {newVersion.body}
+          <Text style={{ color: theme.onSurface }}>
+            {newRelease?.changelog}
+          </Text>
         </ScrollView>
         <View style={styles.buttonCtn}>
-          <Button
-            title={getString('common.cancel')}
-            onPress={() => showNewUpdateDialog(false)}
-          />
+          <Button title={getString('common.cancel')} onPress={hideModal} />
           <Button
             title={getString('common.install')}
-            onPress={() => Linking.openURL(newVersion.downloadUrl)}
+            onPress={() => Linking.openURL(newRelease?.downloadUrl)}
           />
         </View>
       </Modal>
@@ -67,7 +72,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginBottom: 16,
   },
-  body: {},
   buttonCtn: {
     flexDirection: 'row',
     marginTop: 16,

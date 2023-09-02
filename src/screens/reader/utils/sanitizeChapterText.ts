@@ -16,6 +16,7 @@ export const sanitizeChapterText = (
   html: string,
   options?: Options,
 ): string => {
+  const isEPubSource = options?.sourceId === 0;
   let text = sanitizeHtml(html, {
     allowedTags: sanitizeHtml.defaults.allowedTags.concat([
       'img',
@@ -24,13 +25,17 @@ export const sanitizeChapterText = (
       'em',
       'b',
       'a',
+      'center',
+      ...(isEPubSource ? ['head', 'title', 'style'] : []),
     ]),
     allowedAttributes: {
       'img': ['src', 'class'],
       'a': ['href'],
       'input': ['type', 'offline'],
+      ...(isEPubSource ? { '*': ['class'] } : {}),
     },
     allowedSchemes: ['data', 'http', 'https', 'file'],
+    allowVulnerableTags: isEPubSource,
   });
   if (text) {
     if (options?.removeExtraParagraphSpacing) {
@@ -42,23 +47,22 @@ export const sanitizeChapterText = (
       text = textVide(text);
     }
 
-    const loadedCheerio = loadCheerio(text);
-    if (
-      options?.sourceId &&
-      sourceManager(options.sourceId).headers &&
-      loadedCheerio('input[offline]').length === 0
-    ) {
-      loadedCheerio('img').each((i, element) => {
-        const src = loadedCheerio(element).attr('src');
-        if (src) {
-          loadedCheerio(element).attr({
-            'src': LoadingImageSrc,
-            'class': 'load-icon',
-            'delayed-src': src,
-          });
-        }
-      });
-      text = loadedCheerio('body').html() || text;
+    if (options?.sourceId && sourceManager(options.sourceId).headers) {
+      // Some documents might take a few seconds to be parsed, only do when necessary
+      const loadedCheerio = loadCheerio(text);
+      if (loadedCheerio('input[offline]').length === 0) {
+        loadedCheerio('img').each((i, element) => {
+          const src = loadedCheerio(element).attr('src');
+          if (src) {
+            loadedCheerio(element).attr({
+              'src': LoadingImageSrc,
+              'class': 'load-icon',
+              'delayed-src': src,
+            });
+          }
+        });
+        text = loadedCheerio('body').html() || text;
+      }
     }
   } else {
     text =

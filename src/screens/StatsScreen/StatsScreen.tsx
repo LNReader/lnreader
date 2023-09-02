@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-
-import { useTheme } from '@hooks/useTheme';
-import { getString } from '@strings/translations';
+import { overlay } from 'react-native-paper';
 
 import { Appbar, ErrorScreenV2, LoadingScreenV2 } from '@components';
 
+import { useTheme } from '@hooks/useTheme';
+import { getString } from '@strings/translations';
 import { LibraryStats } from '@database/types';
 import {
   getChaptersDownloadedCountFromDb,
@@ -17,8 +17,6 @@ import {
   getNovelGenresFromDb,
   getNovelStatusFromDb,
 } from '@database/queries/StatsQueries';
-import { Row } from '@components/Common';
-import { overlay } from 'react-native-paper';
 
 const StatsScreen = () => {
   const theme = useTheme();
@@ -87,7 +85,7 @@ const StatsScreen = () => {
         <Text style={[styles.header, { color: theme.onSurfaceVariant }]}>
           {getString('moreScreen.settingsScreen.generalSettings')}
         </Text>
-        <Row style={styles.statsRow}>
+        <View style={styles.statsGroupCtn}>
           <StatsCard
             label={getString('statsScreen.titlesInLibrary')}
             value={stats.novelsCount}
@@ -100,8 +98,6 @@ const StatsScreen = () => {
             label={getString('statsScreen.totalChapters')}
             value={stats.chaptersCount}
           />
-        </Row>
-        <Row style={styles.statsRow}>
           <StatsCard
             label={getString('statsScreen.unreadChapters')}
             value={stats.chaptersUnread}
@@ -110,26 +106,25 @@ const StatsScreen = () => {
             label={getString('statsScreen.downloadedChapters')}
             value={stats.chaptersDownloaded}
           />
-        </Row>
-        <Row style={styles.statsRow}>
           <StatsCard label="Sources" value={stats.sourcesCount} />
-        </Row>
+        </View>
         <Text style={[styles.header, { color: theme.onSurfaceVariant }]}>
           {getString('statsScreen.genreDistribution')}
         </Text>
-        <Row style={[styles.statsRow, styles.genreRow]}>
+
+        <View style={styles.statsGroupCtn}>
           {Object.entries(stats.genres || {}).map(item => (
             <StatsCard key={item[0]} label={item[0]} value={item[1]} />
           ))}
-        </Row>
+        </View>
         <Text style={[styles.header, { color: theme.onSurfaceVariant }]}>
           {getString('statsScreen.statusDistribution')}
         </Text>
-        <Row style={[styles.statsRow, styles.genreRow]}>
+        <View style={styles.statsGroupCtn}>
           {Object.entries(stats.status || {}).map(item => (
             <StatsCard key={item[0]} label={item[0]} value={item[1]} />
           ))}
-        </Row>
+        </View>
       </ScrollView>
     </>
   );
@@ -165,9 +160,17 @@ export const StatsCard: React.FC<{ label: string; value?: number }> = ({
 };
 
 const styles = StyleSheet.create({
+  statsGroupCtn: {
+    flex: 1,
+    flexWrap: 'wrap',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   statsCardCtn: {
     elevation: 1,
     margin: 4,
+    marginBottom: 8,
     paddingHorizontal: 8,
     paddingVertical: 12,
     borderRadius: 12,
@@ -184,10 +187,7 @@ const styles = StyleSheet.create({
   contentCtn: {
     paddingBottom: 40,
   },
-  statsRow: {
-    marginBottom: 8,
-    justifyContent: 'center',
-  },
+
   genreRow: {
     flexWrap: 'wrap',
   },

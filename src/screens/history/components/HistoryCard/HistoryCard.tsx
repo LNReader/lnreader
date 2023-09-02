@@ -11,19 +11,22 @@ import { History } from '@database/types';
 import { ThemeColors } from '@theme/types';
 import { coverPlaceholderColor } from '@theme/colors';
 import {
-  openChapterChapterTypes,
-  openChapterNovelTypes,
-  openNovelProps,
-} from '@utils/handleNavigateParams';
+  ChapterRouteParams,
+  NovelRouteParams,
+  NovelScreenRouteParams,
+} from '@utils/NavigationUtils';
+
+import { getSourceStorage } from '@hooks/useSourceStorage';
+import { defaultUserAgentString } from '@utils/fetch/fetch';
 
 interface HistoryCardProps {
   history: History;
   handleNavigateToChapter: (
-    novel: openChapterNovelTypes,
-    chapter: openChapterChapterTypes,
+    novel: NovelRouteParams,
+    chapter: ChapterRouteParams,
   ) => void;
   handleRemoveFromHistory: (historyId: number) => void;
-  handleNavigateToNovel: (novel: openNovelProps) => void;
+  handleNavigateToNovel: (novel: NovelScreenRouteParams) => void;
   theme: ThemeColors;
 }
 
@@ -56,6 +59,8 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
     [chapterName, historyTimeRead],
   );
 
+  const { cookies = '' } = getSourceStorage(sourceId);
+
   return (
     <Pressable
       style={styles.container}
@@ -85,7 +90,16 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
             })
           }
         >
-          <FastImage source={{ uri: novelCover }} style={styles.cover} />
+          <FastImage
+            source={{
+              uri: novelCover,
+              headers: {
+                Cookie: cookies,
+                'User-Agent': defaultUserAgentString,
+              },
+            }}
+            style={styles.cover}
+          />
         </Pressable>
         <View style={styles.detailsContainer}>
           <Text
