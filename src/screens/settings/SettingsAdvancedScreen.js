@@ -12,6 +12,7 @@ import { getString } from '@strings/translations';
 import useBoolean from '@hooks/useBoolean';
 import ConfirmationDialog from '@components/ConfirmationDialog/ConfirmationDialog';
 import { deleteReadChaptersFromDb } from '../../database/queries/DownloadQueries';
+import { openDirectory } from '../../native/epubParser';
 
 import { Appbar, Button, List } from '@components';
 import useSourceStorage from '@hooks/useSourceStorage';
@@ -70,6 +71,11 @@ const AdvancedSettings = ({ navigation }) => {
           theme={theme}
         />
         <List.Item title="Clear cookies" onPress={clearCookies} theme={theme} />
+        <List.Item
+          title="Import Epub"
+          onPress={() => openDirectory()}
+          theme={theme}
+        />
       </List.Section>
       <Portal>
         <ConfirmationDialog
