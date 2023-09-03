@@ -195,7 +195,7 @@ export const Novel4UpScraper = new MadaraScraper(
 
 export const TeamXNovelScraper = new MadaraScraper(
   107,
-  'https://teamxnovel.com/',
+  'https://novelxs.com/',
   'TeamXNovel',
   { 'useNewChapterEndpoint': true, 'lang': 'Arabic' },
 );
