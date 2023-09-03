@@ -191,8 +191,8 @@
         "notSaved": "Kaydedilmedi",
         "cssHint": "İpucu: Kaynak ID'si ile kaynağa özel CSS yapılandırması oluşturabilirsiniz.\n(#kaynakId-[KAYNAKID])",
         "jsHint": "İpucu: Aşağıdaki değişkenlere erişiminiz bulunmakta:\nhtml, novelName, chapterName, sourceId, chapterId, novelId",
-        "clearCustomCSS": "Are you sure? Your custom CSS would be reset.",
-        "clearCustomJS": "Are you sure? Your custom JS would be reset."
+        "clearCustomCSS": "Emin misiniz? Özel CSS'niz sıfırlanır.",
+        "clearCustomJS": "Emin misiniz? Özel JS kodlarınız sıfırlanır."
       },
       "browseSettings": "Göz Atma Seçenekleri",
       "browseSettingsScreen": {
