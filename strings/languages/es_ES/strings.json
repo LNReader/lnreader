@@ -17,7 +17,7 @@
     "searchResults": "Resultados de la búsqueda",
     "chapters": "Capítulos",
     "submit": "Enviar",
-    "retry": "Intentar nuevamente"
+    "retry": "Reintentar"
   },
   "library": "Biblioteca",
   "libraryScreen": {
@@ -242,19 +242,19 @@
     "setModalEmptyMsg": "No tienes categorías. Pulsa el botón Editar para crear una para organizar tu biblioteca",
     "deleteModal": {
       "header": "Eliminar categoría",
-      "desc": "Do you wish to delete category"
+      "desc": "¿Deseas eliminar la categoría?"
     },
-    "duplicateError": "A category with this name already exists!",
-    "defaultCategory": "Default category"
+    "duplicateError": "¡Ya existe una categoría con este nombre!",
+    "defaultCategory": "Categoría por defecto"
   },
   "settings": {
-    "icognitoMode": "Incognito mode",
-    "downloadedOnly": "Downloaded only"
+    "icognitoMode": "Modo Incógnito",
+    "downloadedOnly": "Sólo descargado"
   },
   "downloadScreen": {
-    "dbInfo": "Downloads are saved in a SQLite Database.",
-    "downloadChapters": "downloaded Chapters",
-    "noDownloads": "No downloads",
-    "downloadsLower": "downloads"
+    "dbInfo": "Las descargas se guardan en una base de datos SQLite.",
+    "downloadChapters": "capítulos descargados",
+    "noDownloads": "No hay descargas",
+    "downloadsLower": "descargas"
   }
 }
