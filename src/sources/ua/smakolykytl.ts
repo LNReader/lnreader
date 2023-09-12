@@ -1,5 +1,4 @@
-import { NovelStatus } from '@libs/novelStatus';
-import { load as parseHTML } from 'cheerio';
+import { Status } from '../helpers/constants';
 import dayjs from 'dayjs';
 import {
   SourceChapter,
@@ -52,8 +51,8 @@ const parseNovelAndChapters = async (novelUrl: string) => {
     chapters: [],
     author: book?.project?.author,
     status: book?.project?.status_translate.includes('Триває')
-      ? NovelStatus.Ongoing
-      : NovelStatus.Completed,
+      ? Status.ONGOING
+      : Status.COMPLETED,
   };
   let tags = [book?.project?.genres, book?.project?.tags]
     .flat()
@@ -64,7 +63,6 @@ const parseNovelAndChapters = async (novelUrl: string) => {
     novel.genre = tags.join(', ');
   }
 
-  let chapters: Chapter.Item[] = [];
   const res = await fetch(
     'https://api.smakolykytl.site/api/user/projects/' + id + '/books',
   );
