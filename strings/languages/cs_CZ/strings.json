@@ -1,10 +1,10 @@
 {
   "common": {
-    "cancel": "Cancel",
+    "cancel": "Zrušit",
     "ok": "Ok",
-    "save": "Save",
-    "clear": "Clear",
-    "reset": "Reset",
+    "save": "Uložit",
+    "clear": "Vymazat",
+    "reset": "Resetovat",
     "search": "Search",
     "install": "Install",
     "newUpdateAvailable": "New update available",
