@@ -133,7 +133,7 @@
     "convertToEpubModal": {
       "chooseLocation": "Select EPUB storage directory",
       "pathToFolder": "مسار مجلد لحفظ EPUB",
-      "useReaderTheme": "Use reader theme",
+      "useReaderTheme": "استخدام قالب القارئ",
       "useCustomCSS": "Use custom CSS",
       "useCustomJS": "Use custom JS",
       "useCustomJSWarning": "May not be supported by all EPUB readers",
