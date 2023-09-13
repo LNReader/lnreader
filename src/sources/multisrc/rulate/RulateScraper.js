@@ -153,7 +153,7 @@ class RulateScraper {
     novel.novelCover =
       this.baseUrl + loadedCheerio('div[class="images"] > div img').attr('src');
     novel.summary = loadedCheerio(
-      '#Info > div:nth-child(3), .book-description)',
+      '#Info > div:nth-child(3), .book-description',
     ).html();
     let genre = [];
 
@@ -170,8 +170,8 @@ class RulateScraper {
           case 'Выпуск:':
             novel.status =
               loadedCheerio(this).find('em').text().trim() === 'продолжается'
-                ? NovelStatus.Ongoing
-                : NovelStatus.Completed;
+                ? Status.Ongoing
+                : Status.Completed;
             break;
           case 'Тэги:':
             loadedCheerio(this)

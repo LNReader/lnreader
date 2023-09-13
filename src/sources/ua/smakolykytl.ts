@@ -1,11 +1,6 @@
 import { Status } from '../helpers/constants';
 import dayjs from 'dayjs';
-import {
-  SourceChapter,
-  SourceChapterItem,
-  SourceNovel,
-  SourceNovelItem,
-} from '../types';
+import { SourceChapter, SourceNovel, SourceNovelItem } from '../types';
 
 const sourceId = 167;
 const sourceName = 'Смаколики';
@@ -26,7 +21,7 @@ const popularNovels = async (page: number, { showLatestNovels }) => {
       sourceId,
       novelName: novel.title,
       novelCover: novel.image.url,
-      novelUrl: site + 'titles/' + novel.id,
+      novelUrl: baseUrl + 'titles/' + novel.id,
     }),
   );
 
@@ -54,28 +49,27 @@ const parseNovelAndChapters = async (novelUrl: string) => {
       ? Status.ONGOING
       : Status.COMPLETED,
   };
-  let tags = [book?.project?.genres, book?.project?.tags]
+  let genre = [book?.project?.genres, book?.project?.tags]
     .flat()
     .map(tags => tags?.title)
     .filter(tags => tags);
 
-  if (tags.length > 0) {
-    novel.genre = tags.join(', ');
+  if (genre.length > 0) {
+    novel.genre = genre.join(', ');
   }
 
   const res = await fetch(
     'https://api.smakolykytl.site/api/user/projects/' + id + '/books',
   );
   const data = (await res.json()) as response;
-  data?.books?.forEach(
-    volume =>
-      volume?.chapters?.map(chapter =>
-        novel.chapters.push({
-          chapterName: volume.title + ' ' + chapter.title,
-          releaseDate: dayjs(chapter.modifiedAt).format('LLL'),
-          chapterUrl: site + 'read/' + chapter.id,
-        }),
-      ),
+  data?.books?.forEach(volume =>
+    volume?.chapters?.map(chapter =>
+      novel.chapters.push({
+        chapterName: volume.title + ' ' + chapter.title,
+        releaseDate: dayjs(chapter.modifiedAt).format('LLL'),
+        chapterUrl: baseUrl + 'read/' + chapter.id,
+      }),
+    ),
   );
 
   return novel;
@@ -116,7 +110,7 @@ const searchNovels = async (searchTerm: string) => {
         sourceId,
         novelName: novel.title,
         novelCover: novel.image.url,
-        novelUrl: site + 'titles/' + novel.id,
+        novelUrl: baseUrl + 'titles/' + novel.id,
       }),
     );
   return novels;
