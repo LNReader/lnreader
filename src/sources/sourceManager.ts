@@ -159,8 +159,8 @@ import {
   KodScraper,
 } from './multisrc/noveltl/NovelTlGenerator';
 import NovelsOnlineScraper from './en/NovelOnline';
-import SmakolykyTlScraper from './ua/smakolykytl.ts';
-import LitSpaceScraper from './ru/freedlit.ts';
+import SmakolykyTlScraper from './ua/smakolykytl';
+import LitSpaceScraper from './ru/freedlit';
 
 interface PopularNovelsResponse {
   novels: SourceNovelItem[];

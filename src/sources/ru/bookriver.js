@@ -91,16 +91,12 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 };
 
 const searchNovels = async searchTerm => {
-  const url = `${baseUrl}/search/books?keyword=${searchTerm}`;
+  const url = `https://api.bookriver.ru/api/v1/search/autocomplete?keyword=${searchTerm}&page=1&perPage=10`;
   const result = await fetch(url);
-  const body = await result.text();
-
-  const loadedCheerio = cheerio.load(body);
-  let json = loadedCheerio('#__NEXT_DATA__').html();
-  json = JSON.parse(json);
+  const json = await result.json();
 
   let novels = [];
-  json.props.pageProps.state.catalog.books.books.forEach(novel =>
+  json?.data?.books?.forEach(novel =>
     novels.push({
       sourceId,
       novelName: novel.name,

@@ -40,7 +40,7 @@ const popularNovels = async (page, { showLatestNovels, filters }) => {
     novels.push({ sourceId, novelName, novelCover, novelUrl });
   });
 
-  return novels;
+  return { novels };
 };
 
 const parseNovelAndChapters = async novelUrl => {

@@ -177,14 +177,14 @@ class RulateScraper {
             loadedCheerio(this)
               .find('em > a')
               .each(function () {
-                genres.push(loadedCheerio(this).text());
+                genre.push(loadedCheerio(this).text());
               });
             break;
           case 'Жанры:':
             loadedCheerio(this)
               .find('em > a')
               .each(function () {
-                genres.push(loadedCheerio(this).text());
+                genre.push(loadedCheerio(this).text());
               });
             break;
         }

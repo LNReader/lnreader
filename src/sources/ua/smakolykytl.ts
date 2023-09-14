@@ -25,7 +25,7 @@ const popularNovels = async (page: number, { showLatestNovels }) => {
     }),
   );
 
-  return novels;
+  return { novels };
 };
 
 const parseNovelAndChapters = async (novelUrl: string) => {
