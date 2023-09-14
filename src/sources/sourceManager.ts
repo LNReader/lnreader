@@ -160,6 +160,7 @@ import {
 } from './multisrc/noveltl/NovelTlGenerator';
 import NovelsOnlineScraper from './en/NovelOnline';
 import SmakolykyTlScraper from './ua/smakolykytl.ts';
+import LitSpaceScraper from './ru/freedlit.ts';
 
 interface PopularNovelsResponse {
   novels: SourceNovelItem[];
@@ -334,6 +335,7 @@ export const sourceManager = (sourceId: number): Scraper => {
     165: LinovelibScraper, // @ts-ignore
     166: NOVAScraper, // @ts-ignore
     167: SmakolykyTlScraper, // @ts-ignore
+    168: LitSpaceScraper, // @ts-ignore
   };
 
   return scrapers[sourceId];

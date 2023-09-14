@@ -62,6 +62,7 @@ const parseNovelAndChapters = async (novelUrl: string) => {
     'https://api.smakolykytl.site/api/user/projects/' + id + '/books',
   );
   const data = (await res.json()) as response;
+
   data?.books?.forEach(volume =>
     volume?.chapters?.map(chapter =>
       novel.chapters.push({

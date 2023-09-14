@@ -1020,5 +1020,12 @@
     "url": "https://smakolykytl.site/",
     "lang": "Ukraine",
     "icon": "https://smakolykytl.site/img/favicon/apple-touch-icon.webp"
+  },
+  {
+    "sourceId": 168,
+    "sourceName": "LitSpace",
+    "url": "https://freedlit.space/",
+    "lang": "Russian",
+    "icon": "https://freedlit.space/images/fav/apple-touch-icon.png"
   }
 ]
