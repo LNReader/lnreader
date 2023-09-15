@@ -1,5 +1,5 @@
-function Reader() {
-  this.init = () => {
+class Reader {
+  constructor() {
     this.percentage =
       showScrollPercentage && document.getElementById('reader-percentage');
     this.paddingTop = parseInt(
@@ -13,29 +13,29 @@ function Reader() {
     this.pluginId = this.chapter.getAttribute('data-plugin-id');
     this.novelId = this.chapter.getAttribute('data-novel-id');
     this.chapterId = this.chapter.getAttribute('data-chapter-id');
-  };
-  this.refresh = () => {
+    this.saveProgressInterval = setInterval(
+      () =>
+        this.post({
+          type: 'save',
+          data: {
+            offsetY: window.scrollY,
+            percentage: parseInt(
+              ((window.scrollY + this.layoutHeight) / this.chapterHeight) * 100,
+            ),
+          },
+        }),
+      autoSaveInterval,
+    );
+  }
+
+  refresh = () => {
     this.chapterHeight = this.chapter.scrollHeight + this.paddingTop;
   };
-  this.post = obj => window.ReactNativeWebView.postMessage(JSON.stringify(obj));
-  this.init();
-  this.saveProgressInterval = setInterval(
-    () =>
-      reader.post({
-        type: 'save',
-        data: {
-          offsetY: window.scrollY,
-          percentage: parseInt(
-            ((window.scrollY + this.layoutHeight) / this.chapterHeight) * 100,
-          ),
-        },
-      }),
-    autoSaveInterval,
-  );
+  post = obj => window.ReactNativeWebView.postMessage(JSON.stringify(obj));
 }
-
-function ScrollHandler() {
-  this.init = () => {
+class ScrollHandler {
+  constructor(reader) {
+    this.reader = reader;
     this.$ = document.getElementById('ScrollBar');
     this.$.innerHTML =
       '<div class="scrollbar-item scrollbar-text d-none" id="scrollbar-percentage">0</div><div class="scrollbar-item" id="scrollbar-slider"><div id="scrollbar-track"></div><div id="scrollbar-progress"><div id="scrollbar-thumb"></div></div></div><div class="scrollbar-item scrollbar-text">100</div>';
@@ -47,10 +47,19 @@ function ScrollHandler() {
     this.sliderOffsetY = this.slider.offsetTop + this.$.offsetTop;
     this.lock = false;
     this.visible = false; // scrollbar
-  };
-  this.update = ratio => {
+    window.onscroll = () => !this.lock && this.update();
+    this.thumb.ontouchstart = () => (this.lock = true);
+    this.thumb.ontouchend = () => (this.lock = false);
+    this.thumb.ontouchmove = e => {
+      const ratio =
+        (e.changedTouches[0].clientY - this.sliderOffsetY) / this.sliderHeight;
+      this.update(ratio < 0 ? 0 : ratio);
+    };
+  }
+  update = ratio => {
     if (ratio === undefined) {
-      ratio = (window.scrollY + reader.layoutHeight) / reader.chapterHeight;
+      ratio =
+        (window.scrollY + this.reader.layoutHeight) / this.reader.chapterHeight;
     }
     if (ratio > 1) {
       ratio = 1;
@@ -62,82 +71,73 @@ function ScrollHandler() {
     }
     if (this.lock) {
       window.scrollTo({
-        top: reader.chapterHeight * ratio - reader.layoutHeight,
+        top: this.reader.chapterHeight * ratio - this.reader.layoutHeight,
         behavior: 'instant',
       });
     }
-    if (reader.percentage) {
-      reader.percentage.innerText = percentage + '%';
+    if (this.reader.percentage) {
+      this.reader.percentage.innerText = percentage + '%';
     }
   };
-  this.refresh = () => {
+  refresh = () => {
     this.sliderHeight = this.slider.clientHeight;
     this.sliderOffsetY = this.slider.offsetTop + this.$.offsetTop;
   };
-  this.hide = () => {
+  hide = () => {
     this.$.classList.add('d-none');
     this.visible = false;
   };
-  this.show = () => {
-    reader.refresh();
+  show = () => {
+    this.reader.refresh();
     this.visible = true;
     this.$.classList.remove('d-none');
     this.refresh();
     this.update();
   };
-  this.init();
-  window.onscroll = () => !this.lock && this.update();
-  this.thumb.ontouchstart = () => (this.lock = true);
-  this.thumb.ontouchend = () => (this.lock = false);
-  this.thumb.ontouchmove = e => {
-    const ratio =
-      (e.changedTouches[0].clientY - this.sliderOffsetY) / this.sliderHeight;
-    this.update(ratio < 0 ? 0 : ratio);
-  };
 }
 
-function SwipeHandler() {
-  this.init = () => {
+class SwipeHandler {
+  constructor(reader) {
+    this.reader = reader;
     this.initialX = null;
     this.initialY = null;
     if (swipeGestures) {
       this.enable();
     }
-  };
-  this.touchStartHandler = e => {
+  }
+
+  touchStartHandler = e => {
     this.initialX = e.changedTouches[0].screenX;
     this.initialY = e.changedTouches[0].screenY;
   };
 
-  this.touchEndHandler = e => {
+  touchEndHandler = e => {
     let diffX = e.changedTouches[0].screenX - this.initialX;
     let diffY = e.changedTouches[0].screenY - this.initialY;
     if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 10) {
       e.preventDefault();
-      reader.post({ type: diffX < 0 ? 'next' : 'prev' });
+      this.reader.post({ type: diffX < 0 ? 'next' : 'prev' });
     }
   };
 
-  this.enable = () => {
+  enable = () => {
     document.addEventListener('touchstart', this.touchStartHandler);
     document.addEventListener('touchend', this.touchEndHandler);
   };
 
-  this.disable = () => {
+  disable = () => {
     document.removeEventListener('touchstart', this.touchStartHandler);
     document.removeEventListener('touchend', this.touchEndHandler);
   };
-
-  this.init();
 }
 
-function TextToSpeech() {
-  this.init = () => {
-    this.elements = reader.chapter.querySelectorAll('t-t-s');
+class TextToSpeech {
+  constructor(reader) {
+    this.reader = reader;
+    this.elements = this.reader.chapter.querySelectorAll('t-t-s');
     this.previous = null;
-  };
-
-  this.play = index => {
+  }
+  play = index => {
     if (index >= 0 && index < this.elements.length) {
       if (this.previous !== null) {
         this.unhighlight(this.previous);
@@ -147,22 +147,20 @@ function TextToSpeech() {
     }
   };
 
-  this.highlight = index => {
+  highlight = index => {
     if (index >= 0 && index < this.elements.length) {
       this.elements[index].classList.add('tts-highlight');
     }
   };
 
-  this.unhighlight = index => {
+  unhighlight = index => {
     if (index >= 0 && index < this.elements.length) {
       this.elements[index].classList.remove('tts-highlight');
     }
   };
-
-  this.init();
 }
 
 const reader = new Reader();
-const scrollHandler = new ScrollHandler();
-const swipeHandler = new SwipeHandler();
-const tts = new TextToSpeech();
+const scrollHandler = new ScrollHandler(reader);
+const swipeHandler = new SwipeHandler(reader);
+const tts = new TextToSpeech(reader);
