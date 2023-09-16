@@ -191,8 +191,8 @@
         "notSaved": "Не сохранено",
         "cssHint": "Подсказка: Вы можете создать исходный код конфигурации с исходным ID. (#sourceId-[SOURCEID])",
         "jsHint": "Подсказка: У вас есть доступ к следующим переменным: html, novelName, chapterName, sourceId, chapterId, novelId",
-        "clearCustomCSS": "Are you sure? Your custom CSS would be reset.",
-        "clearCustomJS": "Are you sure? Your custom JS would be reset."
+        "clearCustomCSS": "Вы уверены? Ваш пользовательский CSS будет сброшен.",
+        "clearCustomJS": "Вы уверены? Ваш пользовательский JS будет сброшен."
       },
       "browseSettings": "Настройки обзора",
       "browseSettingsScreen": {
