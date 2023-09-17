@@ -13,7 +13,7 @@
     "edit": "Upravit",
     "name": "Jméno",
     "searchFor": "Hledat",
-    "globally": "globally",
+    "globally": "globálně",
     "searchResults": "Výsledky hledání",
     "chapters": "Kapitoly",
     "submit": "Odeslat",
@@ -32,10 +32,10 @@
       },
       "sortOrders": {
         "dateAdded": "Datum přidání",
-        "alphabetically": "Alphabetically",
-        "totalChapters": "Total chapters",
-        "download": "Downloaded",
-        "unread": "Unread",
+        "alphabetically": "Abecedně",
+        "totalChapters": "Celkem kapitol",
+        "download": "Staženo",
+        "unread": "Nepřečteno",
         "lastRead": "Last read",
         "lastUpdated": "Last updated"
       },
