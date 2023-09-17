@@ -38,8 +38,8 @@ const popularNovels = async (page, { showLatestNovels, filters }) => {
   body.content.forEach(novel =>
     novels.push({
       sourceId,
-      novelName: novel.rus_name,
-      cover: baseUrl + (novel.img?.high || novel.img?.mid || novel.img.low),
+      novelName: novel?.rus_name || novel?.main_name,
+      cover: baseUrl + (novel.img?.mid || novel.img.low),
       novelUrl: novel.dir,
     }),
   );
@@ -56,13 +56,11 @@ const parseNovelAndChapters = async novelUrl => {
     sourceName,
     url: baseUrl + '/novel/' + body.content.dir,
     novelUrl,
-    novelName: body.content.rus_name,
+    novelName: body.content?.rus_name || body.content?.main_name,
     summary: htmlToText(body.content.description),
-    novelCover:
-      baseUrl +
-      (body.content.img?.high || body.content.img?.mid || body.content.img.low),
+    novelCover: baseUrl + (body.content.img?.mid || body.content.img.low),
     status:
-      body.content.status.name === 'Продолжается'
+      body.content?.status?.name === 'Продолжается'
         ? Status.ONGOING
         : Status.COMPLETED,
   };
@@ -128,8 +126,8 @@ const searchNovels = async searchTerm => {
   body.content.forEach(novel =>
     novels.push({
       sourceId,
-      novelName: novel.rus_name,
-      cover: baseUrl + (novel.img?.high || novel.img?.mid || novel.img.low),
+      novelName: novel?.rus_name || novel?.main_name,
+      cover: baseUrl + (novel.img?.mid || novel.img.low),
       novelUrl: novel.dir,
     }),
   );
