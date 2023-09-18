@@ -36,15 +36,15 @@
         "totalChapters": "Celkem kapitol",
         "download": "Staženo",
         "unread": "Nepřečteno",
-        "lastRead": "Last read",
-        "lastUpdated": "Last updated"
+        "lastRead": "Naposledy přečteno",
+        "lastUpdated": "Naposledy aktualizováno"
       },
       "display": {
-        "displayMode": "Display mode",
-        "compact": "Compact grid",
-        "comfortable": "Comfortable grid",
-        "noTitle": "Cover only grid",
-        "list": "List",
+        "displayMode": "Režim zobrazení",
+        "compact": "Kompaktní mřížka",
+        "comfortable": "Komfortní mřížka",
+        "noTitle": "Mřížka pouze s přebaly",
+        "list": "Seznam",
         "badges": "Badges",
         "downloadBadges": "Download badges",
         "unreadBadges": "Unread badges",
