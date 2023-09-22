@@ -13,20 +13,24 @@ const popularNovels = async (page, { showLatestNovels, filters }) => {
   url += filters?.order ? filters?.order?.replace('+', '') : '-';
   url += showLatestNovels ? 'chapter_date' : filters?.sort || 'rating';
 
-  if (filters?.type?.length) {
-    url += filters.type.map(i => `&types=${i}`).join('');
-  }
-
-  if (filters?.statuss?.length) {
-    url += filters?.statuss.map(i => `&status=${i}`).join('');
-  }
-
-  if (filters?.genres?.length) {
+  if (filters?.genres instanceof Array) {
     url += filters.genres.map(i => `&genres=${i}`).join('');
   }
 
-  if (filters?.categories?.length) {
+  if (filters?.status instanceof Array) {
+    url += filters?.status.map(i => `&status=${i}`).join('');
+  }
+
+  if (filters?.types instanceof Array) {
+    url += filters.types.map(i => `&types=${i}`).join('');
+  }
+
+  if (filters?.categories instanceof Array) {
     url += filters.categories.map(i => `&categories=${i}`).join('');
+  }
+
+  if (filters?.age_limit instanceof Array) {
+    url += filters.age_limit.map(i => `&age_limit=${i}`).join('');
   }
 
   url += '&page=' + page;
@@ -38,8 +42,9 @@ const popularNovels = async (page, { showLatestNovels, filters }) => {
   body.content.forEach(novel =>
     novels.push({
       sourceId,
-      novelName: novel.rus_name,
-      cover: baseUrl + (novel.img?.high || novel.img?.mid || novel.img.low),
+      novelName: novel.main_name || novel.secondary_name,
+      novelCover:
+        baseUrl + (novel.img?.high || novel.img?.mid || novel.img.low),
       novelUrl: novel.dir,
     }),
   );
@@ -56,13 +61,13 @@ const parseNovelAndChapters = async novelUrl => {
     sourceName,
     url: baseUrl + '/novel/' + body.content.dir,
     novelUrl,
-    novelName: body.content.rus_name,
+    novelName: body.content.main_name || body.content.secondary_name,
     summary: htmlToText(body.content.description),
     novelCover:
       baseUrl +
       (body.content.img?.high || body.content.img?.mid || body.content.img.low),
     status:
-      body.content.status.name === 'Продолжается'
+      body.content?.status?.name === 'Продолжается'
         ? Status.ONGOING
         : Status.COMPLETED,
   };
@@ -75,14 +80,15 @@ const parseNovelAndChapters = async novelUrl => {
     novel.genre = tags.join(',');
   }
 
-  let all = (body.content.count_chapters / 100 + 1) ^ 0;
+  let all = Math.floor(body.content.count_chapters / 100 + 1);
+  let branch_id = body.content.branches?.[0]?.id || body.content.id;
   let chapters = [];
 
   for (let i = 0; i < all; i++) {
     let chapterResult = await fetch(
       baseUrl +
         '/api/titles/chapters/?branch_id=' +
-        body.content.branches[0].id +
+        branch_id +
         '&count=100&page=' +
         (i + 1),
     );
@@ -128,8 +134,9 @@ const searchNovels = async searchTerm => {
   body.content.forEach(novel =>
     novels.push({
       sourceId,
-      novelName: novel.rus_name,
-      cover: baseUrl + (novel.img?.high || novel.img?.mid || novel.img.low),
+      novelName: novel.main_name || novel.secondary_name,
+      novelCover:
+        baseUrl + (novel.img?.high || novel.img?.mid || novel.img.low),
       novelUrl: novel.dir,
     }),
   );
@@ -155,41 +162,14 @@ const filters = [
     key: 'order',
     label: 'Порядок',
     values: [
-      { label: 'По убыванию', value: '-' }, // desc
-      { label: 'По возрастанию', value: '+' }, // asc
+      { label: 'По убыванию', value: '-' },
+      { label: 'По возрастанию', value: '+' },
     ],
     inputType: FilterInputs.Picker,
   },
   {
-    key: 'type',
-    label: 'Тип',
-    values: [
-      { label: 'Авторское', value: '1' },
-      { label: 'Другое', value: '7' },
-      { label: 'Запад', value: '5' },
-      { label: 'Китай', value: '4' },
-      { label: 'Корея', value: '3' },
-      { label: 'Фанфики', value: '6' },
-      { label: 'Япония', value: '2' },
-    ],
-    inputType: FilterInputs.Checkbox,
-  },
-  {
-    key: 'statuss',
-    label: 'Статус тайтла',
-    values: [
-      { label: 'Закончен', value: '0' },
-      { label: 'Продолжается', value: '1' },
-      { label: 'Заморожен', value: '2' },
-      { label: 'Нет переводчика', value: '3' },
-      { label: 'Анонс', value: '4' },
-      { label: 'Лицензировано', value: '5' },
-    ],
-    inputType: FilterInputs.Checkbox,
-  },
-  {
     key: 'genres',
-    label: 'Жанры',
+    label: 'Жанры:',
     values: [
       { label: 'Боевик', value: '112' },
       { label: 'Война', value: '123' },
@@ -226,7 +206,7 @@ const filters = [
   },
   {
     key: 'categories',
-    label: 'Категории',
+    label: 'Тэги:',
     values: [
       { label: '[Награжденная работа]', value: '648' },
       { label: '18+', value: '423' },
@@ -925,6 +905,43 @@ const filters = [
       { label: 'Ярко выраженная романтика', value: '365' },
       { label: 'R-15 Японское возрастное огр.', value: '332' },
       { label: 'R-18', value: '424' },
+    ],
+    inputType: FilterInputs.Checkbox,
+  },
+  {
+    key: 'types',
+    label: 'Типы:',
+    values: [
+      { label: 'Авторское', value: '1' },
+      { label: 'Другое', value: '7' },
+      { label: 'Запад', value: '5' },
+      { label: 'Китай', value: '4' },
+      { label: 'Корея', value: '3' },
+      { label: 'Фанфики', value: '6' },
+      { label: 'Япония', value: '2' },
+    ],
+    inputType: FilterInputs.Checkbox,
+  },
+  {
+    key: 'status',
+    label: 'Статус проекта:',
+    values: [
+      { label: 'Анонс', value: '4' },
+      { label: 'Закончен', value: '0' },
+      { label: 'Заморожен', value: '2' },
+      { label: 'Лицензировано', value: '5' },
+      { label: 'Нет переводчика', value: '3' },
+      { label: 'Продолжается', value: '1' },
+    ],
+    inputType: FilterInputs.Checkbox,
+  },
+  {
+    key: 'age_limit',
+    label: 'Возрастной рейтинг:',
+    values: [
+      { label: '16+', value: '1' },
+      { label: '18+', value: '2' },
+      { label: 'Для всех', value: '0' },
     ],
     inputType: FilterInputs.Checkbox,
   },

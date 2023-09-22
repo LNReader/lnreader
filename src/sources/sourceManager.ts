@@ -159,6 +159,8 @@ import {
   KodScraper,
 } from './multisrc/noveltl/NovelTlGenerator';
 import NovelsOnlineScraper from './en/NovelOnline';
+import SmakolykyTlScraper from './ua/smakolykytl';
+import LitSpaceScraper from './ru/freedlit';
 
 interface PopularNovelsResponse {
   novels: SourceNovelItem[];
@@ -332,6 +334,8 @@ export const sourceManager = (sourceId: number): Scraper => {
     164: BookRiverScraper, // @ts-ignore
     165: LinovelibScraper, // @ts-ignore
     166: NOVAScraper, // @ts-ignore
+    167: SmakolykyTlScraper, // @ts-ignore
+    168: LitSpaceScraper, // @ts-ignore
   };
 
   return scrapers[sourceId];
