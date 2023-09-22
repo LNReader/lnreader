@@ -1,6 +1,9 @@
-import { FilterInputs } from '../../types/filterTypes';
 import * as cheerio from 'cheerio';
 import QueryString from 'qs';
+
+import { fetchHtml } from '@utils/fetch/fetch';
+
+import { FilterInputs } from '../../types/filterTypes';
 
 class ReadwnScraper {
   constructor(sourceId, baseUrl, sourceName, genres) {
@@ -50,8 +53,7 @@ class ReadwnScraper {
       (showLatestNovels ? 'lastdotime' : filters?.sort || 'newstime') + '-';
     url += pageNo + '.html';
 
-    const result = await fetch(url);
-    const body = await result.text();
+    const body = await fetchHtml({ url, sourceId });
 
     const loadedCheerio = cheerio.load(body);
 
@@ -82,8 +84,7 @@ class ReadwnScraper {
 
     const url = novelUrl;
 
-    const result = await fetch(url);
-    const body = await result.text();
+    const body = await fetchHtml({ url, sourceId });
 
     let loadedCheerio = cheerio.load(body);
 
@@ -173,8 +174,7 @@ class ReadwnScraper {
     const url = baseUrl + chapterUrl;
     const sourceId = this.sourceId;
 
-    const result = await fetch(url);
-    const body = await result.text();
+    const body = await fetchHtml({ url, sourceId });
 
     const loadedCheerio = cheerio.load(body);
 
@@ -197,23 +197,25 @@ class ReadwnScraper {
     const sourceId = this.sourceId;
     const searchUrl = `${baseUrl}e/search/index.php`;
 
-    const result = await fetch(searchUrl, {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        Referer: `${baseUrl}search.html`,
-        Origin: baseUrl,
-        'user-agent':
-          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36',
+    const body = await fetchHtml({
+      url: searchUrl,
+      init: {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          Referer: `${baseUrl}search.html`,
+          Origin: baseUrl,
+          'user-agent':
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36',
+        },
+        method: 'POST',
+        body: QueryString.stringify({
+          show: 'title',
+          tempid: 1,
+          tbname: 'news',
+          keyboard: searchTerm,
+        }),
       },
-      method: 'POST',
-      body: QueryString.stringify({
-        show: 'title',
-        tempid: 1,
-        tbname: 'news',
-        keyboard: searchTerm,
-      }),
     });
-    const body = await result.text();
 
     const loadedCheerio = cheerio.load(body);
 
