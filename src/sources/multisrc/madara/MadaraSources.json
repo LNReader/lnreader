@@ -172,7 +172,7 @@
   },
   {
     "sourceId": 96,
-    "baseUrl": "https://hizomanga.com/",
+    "baseUrl": "https://hizomanga.net/",
     "sourceName": "HizoManga",
     "options": {
       "path": { "novels": "serie", "novel": "serie", "chapter": "serie" },

@@ -170,7 +170,7 @@ export const OnlyMTLScraper = new MadaraScraper(
 
 export const HizoMangaScraper = new MadaraScraper(
   96,
-  'https://hizomanga.com/',
+  'https://hizomanga.net/',
   'HizoManga',
   {
     'path': { 'novels': 'serie', 'novel': 'serie', 'chapter': 'serie' },
