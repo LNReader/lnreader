@@ -266,8 +266,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     chapterText = json.content.replace(/\n/g, '<br>');
     if (json.notes) {
       chapterText +=
-        '<br><hr><br>TL Notes:<br>' +
-        json.notes.replace(/\n/g, '<br>');
+        '<br><hr><br>TL Notes:<br>' + json.notes.replace(/\n/g, '<br>');
     }
   } else if (isWordPress) {
     /**
