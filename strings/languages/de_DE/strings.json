@@ -96,7 +96,7 @@
       "showProgressPercentage": "Zeige Fortschritt in Prozent",
       "swipeGestures": "Nach links oder rechts wischen, um zwischen den Kapiteln zu wechseln",
       "allowTextSelection": "Textauswahl erlauben",
-      "useChapterDrawerSwipeNavigation": "Wische nach rechts, um Seitenleiste zu öffnen",
+      "useChapterDrawerSwipeNavigation": "Wische nach rechts, um die Seitenleiste zu öffnen",
       "removeExtraSpacing": "Extra Absatzabstand entfernen",
       "volumeButtonsScroll": "Scrollen mit Lautstärkeregler",
       "scrollAmount": "Höhe des Bildlaufs (standardmäßig Bildschirmhöhe)",
