@@ -95,7 +95,15 @@ export const ArNovelScraper = new MadaraScraper(
   59,
   'https://arnovel.me/',
   'ArNovel',
-  { 'useNewChapterEndpoint': true, 'lang': 'Arabic' },
+  {
+    'path': {
+      'novels': 'home/novel',
+      'novel': 'home/novel',
+      'chapter': 'home/novel',
+    },
+    'useNewChapterEndpoint': true,
+    'lang': 'Arabic',
+  },
 );
 
 export const MeioNovelScraper = new MadaraScraper(

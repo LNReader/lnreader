@@ -33,7 +33,7 @@ class MadaraScraper {
 
     loadedCheerio('.manga-title-badges').remove();
 
-    loadedCheerio('.page-item-detail, .page-content-listing').each(function () {
+    loadedCheerio('.page-item-detail').each(function () {
       const novelName = loadedCheerio(this).find('.post-title').text().trim();
       let image = loadedCheerio(this).find('img');
       const novelCover = image.attr('data-src') || image.attr('src');
