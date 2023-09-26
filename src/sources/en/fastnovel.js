@@ -69,7 +69,7 @@ const parseNovelAndChapters = async novelUrl => {
         novel.status = detail;
         break;
       case 'Genre:':
-        novel.genres = detail;
+        novel.genre = detail;
         break;
     }
   });

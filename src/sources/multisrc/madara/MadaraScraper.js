@@ -33,7 +33,7 @@ class MadaraScraper {
 
     loadedCheerio('.manga-title-badges').remove();
 
-    loadedCheerio('.page-item-detail').each(function () {
+    loadedCheerio('.page-item-detail, .page-content-listing').each(function () {
       const novelName = loadedCheerio(this).find('.post-title').text().trim();
       let image = loadedCheerio(this).find('img');
       const novelCover = image.attr('data-src') || image.attr('src');
@@ -172,10 +172,15 @@ class MadaraScraper {
 
       let chapterUrl = loadedCheerio(this).find('a').attr('href').split('/');
 
-      chapterUrl[6]
-        ? (chapterUrl = chapterUrl[5] + '/' + chapterUrl[6])
-        : (chapterUrl = chapterUrl[5]);
-
+      if (sourceId === 59) {
+        chapterUrl[7]
+          ? (chapterUrl = chapterUrl[6] + '/' + chapterUrl[7])
+          : (chapterUrl = chapterUrl[6]);
+      } else {
+        chapterUrl[6]
+          ? (chapterUrl = chapterUrl[5] + '/' + chapterUrl[6])
+          : (chapterUrl = chapterUrl[5]);
+      }
       novelChapters.push({ chapterName, releaseDate, chapterUrl });
     });
 
