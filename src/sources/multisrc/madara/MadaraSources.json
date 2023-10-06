@@ -94,6 +94,11 @@
     "baseUrl": "https://arnovel.me/",
     "sourceName": "ArNovel",
     "options": {
+      "path": {
+        "novels": "home/novel",
+        "novel": "home/novel",
+        "chapter": "home/novel"
+      },
       "useNewChapterEndpoint": true,
       "lang": "Arabic"
     }
