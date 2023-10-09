@@ -20,7 +20,7 @@
     "baseUrl": "https://noveltranslate.com/",
     "sourceName": "NovelTranslate",
     "options": {
-      "path": { "novels": "all-novels", "novel": "manga", "chapter": "manga" }
+      "path": { "novels": "all-novels", "novel": "novel", "chapter": "novel" }
     }
   },
   {
@@ -94,6 +94,11 @@
     "baseUrl": "https://arnovel.me/",
     "sourceName": "ArNovel",
     "options": {
+      "path": {
+        "novels": "home/novel",
+        "novel": "home/novel",
+        "chapter": "home/novel"
+      },
       "useNewChapterEndpoint": true,
       "lang": "Arabic"
     }
@@ -172,7 +177,7 @@
   },
   {
     "sourceId": 96,
-    "baseUrl": "https://hizomanga.com/",
+    "baseUrl": "https://hizomanga.net/",
     "sourceName": "HizoManga",
     "options": {
       "path": { "novels": "serie", "novel": "serie", "chapter": "serie" },

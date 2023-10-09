@@ -18,7 +18,7 @@ export const setReaderSettings = (key, val) => dispatch => {
   });
 };
 
-export const setMultipleAppSettings = newSettings => {
+export const setMultipleAppSettings = newSettings => dispatch => {
   dispatch({
     type: SET_MULTIPLE_APP_SETTINGS,
     payload: newSettings,

@@ -1,23 +1,24 @@
-import { StyleSheet, View, TextInput } from 'react-native';
-import React, { useState } from 'react';
+import React from 'react';
+import { StyleSheet, View, Text } from 'react-native';
+import { Portal } from 'react-native-paper';
 
-import { Button, List } from '@components/index';
+import { Button, List, ConfirmationDialog } from '@components/index';
 
-import { setReaderSettings } from '@redux/settings/settings.actions';
-
+import useBoolean from '@hooks/useBoolean';
 import { useTheme } from '@hooks/useTheme';
 import { useAppDispatch, useReaderSettings } from '@redux/hooks';
+import { setReaderSettings } from '@redux/settings/settings.actions';
 import { getString } from '@strings/translations';
+
 import CustomFileModal from '../Modals/CustomFileModal';
-import useBoolean from '@hooks/useBoolean';
-import { Portal } from 'react-native-paper';
 
 const CustomCSSSettings = () => {
   const theme = useTheme();
   const readerSettings = useReaderSettings();
-  const [customCSS, setCustomCSS] = useState(readerSettings.customCSS);
   const dispatch = useAppDispatch();
+
   const cssModal = useBoolean();
+  const clearCSSModal = useBoolean();
 
   return (
     <>
@@ -25,22 +26,11 @@ const CustomCSSSettings = () => {
         <List.SubHeader theme={theme}>
           {getString('moreScreen.settingsScreen.readerSettings.customCSS')}
         </List.SubHeader>
-        <List.SubHeader theme={theme}>
-          {readerSettings.customCSS !== customCSS
-            ? getString('moreScreen.settingsScreen.readerSettings.notSaved')
-            : null}
-        </List.SubHeader>
       </View>
       <View style={styles.customCSSContainer}>
-        <TextInput
-          style={[{ color: theme.onSurface }, styles.fontSizeL]}
-          value={customCSS}
-          onChangeText={text => setCustomCSS(text)}
-          placeholderTextColor={theme.onSurfaceVariant}
-          placeholder="Example: body {margin: 10px;}"
-          multiline={true}
-          editable={false}
-        />
+        <Text numberOfLines={3} style={[{ color: theme.onSurface }]}>
+          {readerSettings.customCSS || 'Example: body {margin: 10px;}'}
+        </Text>
         <View style={styles.customCSSButtons}>
           <Button
             onPress={cssModal.setTrue}
@@ -48,28 +38,41 @@ const CustomCSSSettings = () => {
             title={getString('common.edit')}
           />
           <Button
-            onPress={() => {
-              setCustomCSS('');
-              dispatch(setReaderSettings('customCSS', ''));
-            }}
+            onPress={clearCSSModal.setTrue}
             title={getString('common.clear')}
           />
         </View>
       </View>
-      {/*
-            Modals
-        */}
+
+      {/* Modals */}
       <Portal>
         <CustomFileModal
+          visible={cssModal.value}
+          onDismiss={cssModal.setFalse}
+          defaultValue={readerSettings.customCSS}
+          mimeType="text/css"
           title={getString(
             'moreScreen.settingsScreen.readerSettings.customCSS',
           )}
-          visible={cssModal.value}
-          onDismiss={cssModal.setFalse}
-          theme={theme}
-          customFile={customCSS}
-          setCustomFile={setCustomCSS}
+          description={getString(
+            'moreScreen.settingsScreen.readerSettings.cssHint',
+          )}
           placeholder="Example: body {margin: 10px;}"
+          openFileLabel={getString(
+            'moreScreen.settingsScreen.readerSettings.openCSSFile',
+          )}
+          onSave={text => dispatch(setReaderSettings('customCSS', text))}
+        />
+        <ConfirmationDialog
+          title={getString(
+            'moreScreen.settingsScreen.readerSettings.clearCustomCSS',
+          )}
+          visible={clearCSSModal.value}
+          onSubmit={() => {
+            dispatch(setReaderSettings('customCSS', ''));
+          }}
+          onDismiss={clearCSSModal.setFalse}
+          theme={theme}
         />
       </Portal>
     </>

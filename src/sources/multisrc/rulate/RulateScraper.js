@@ -81,11 +81,11 @@ class RulateScraper {
   async popularNovels(page, { showLatestNovels, filters }) {
     const baseUrl = this.baseUrl;
     const sourceId = this.sourceId;
-    let url = baseUrl + '/search?t=&cat=2';
-    url += '&sort=' + showLatestNovels ? '4' : filters?.sort || '6';
-    url += '&type=' + filters?.type || '0';
-    url += '&atmosphere=' + filters?.atmosphere || '0';
-    url += '&adult=' + filters?.adult || '0';
+    let url = baseUrl + '/search?t=&cat=0';
+    url += '&type=' + (filters?.type || '0');
+    url += '&sort=' + (showLatestNovels ? '4' : filters?.sort || '6');
+    url += '&atmosphere=' + (filters?.atmosphere || '0');
+    url += '&adult=' + (filters?.adult || '0');
 
     if (filters?.genres?.length) {
       url += filters.genres.map(i => `&genres[]=${i}`).join('');
@@ -145,45 +145,51 @@ class RulateScraper {
       novelUrl,
     };
 
-    novel.novelName = loadedCheerio('div[class="container"] > div > div > h1')
+    novel.novelName = loadedCheerio(
+      'div[class="container"] > div > div > h1, div.span8:nth-child(1) > h1:nth-child(2)',
+    )
       .text()
       .trim();
     novel.novelCover =
       this.baseUrl + loadedCheerio('div[class="images"] > div img').attr('src');
-    novel.summary = loadedCheerio('#Info > div:nth-child(3)').html();
+    novel.summary = loadedCheerio(
+      '#Info > div:nth-child(3), .book-description',
+    ).html();
     let genre = [];
 
     if (novel?.summary) {
       novel.summary = htmlToText(novel.summary);
     }
 
-    loadedCheerio('div[class="span5"] > p').each(function () {
-      switch (loadedCheerio(this).find('strong').text()) {
-        case 'Автор:':
-          novel.author = loadedCheerio(this).find('em > a').text().trim();
-          break;
-        case 'Выпуск:':
-          novel.status =
-            loadedCheerio(this).find('em').text().trim() === 'продолжается'
-              ? Status.ONGOING
-              : Status.COMPLETED;
-          break;
-        case 'Тэги:':
-          loadedCheerio(this)
-            .find('em > a')
-            .each(function () {
-              genre.push(loadedCheerio(this).text());
-            });
-          break;
-        case 'Жанры:':
-          loadedCheerio(this)
-            .find('em > a')
-            .each(function () {
-              genre.push(loadedCheerio(this).text());
-            });
-          break;
-      }
-    });
+    loadedCheerio('div.span5 > p, .span5 > div:nth-child(2) > p').each(
+      function () {
+        switch (loadedCheerio(this).find('strong').text()) {
+          case 'Автор:':
+            novel.author = loadedCheerio(this).find('em > a').text().trim();
+            break;
+          case 'Выпуск:':
+            novel.status =
+              loadedCheerio(this).find('em').text().trim() === 'продолжается'
+                ? Status.Ongoing
+                : Status.Completed;
+            break;
+          case 'Тэги:':
+            loadedCheerio(this)
+              .find('em > a')
+              .each(function () {
+                genre.push(loadedCheerio(this).text());
+              });
+            break;
+          case 'Жанры:':
+            loadedCheerio(this)
+              .find('em > a')
+              .each(function () {
+                genre.push(loadedCheerio(this).text());
+              });
+            break;
+        }
+      },
+    );
 
     if (genre.length > 0) {
       novel.genre = genre.reverse().join(',');

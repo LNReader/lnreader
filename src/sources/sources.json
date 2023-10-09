@@ -568,15 +568,15 @@
   },
   {
     "sourceId": 96,
-    "url": "https://hizomanga.com/",
+    "url": "https://hizomanga.net/",
     "sourceName": "HizoManga",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/icons/multisrc/madara/icons/hizomanga.png?raw=true",
     "lang": "Arabic"
   },
   {
     "sourceId": 97,
-    "url": "https://novelfull.me/",
-    "sourceName": "NovelFull.me",
+    "url": "https://novelbuddy.io/",
+    "sourceName": "Novel Buddy",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/icons/src/en/novelfullme/icon.png?raw=true",
     "lang": "English"
   },
@@ -1013,5 +1013,19 @@
     "url": "https://novelasligeras.net",
     "lang": "Spanish",
     "icon": "https://pbs.twimg.com/profile_images/1659040611507351552/DeLBdFep_400x400.jpg"
+  },
+  {
+    "sourceId": 167,
+    "sourceName": "Смаколики",
+    "url": "https://smakolykytl.site/",
+    "lang": "Ukraine",
+    "icon": "https://smakolykytl.site/img/favicon/apple-touch-icon.webp"
+  },
+  {
+    "sourceId": 168,
+    "sourceName": "LitSpace",
+    "url": "https://freedlit.space/",
+    "lang": "Russian",
+    "icon": "https://freedlit.space/images/fav/apple-touch-icon.png"
   }
 ]

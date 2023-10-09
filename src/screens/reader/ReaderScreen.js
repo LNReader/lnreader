@@ -151,7 +151,7 @@ const ChapterContent = ({ route, navigation }) => {
       emmiter.current.removeAllListeners('VolumeDown');
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [useVolumeButtons, scrollAmount]);
+  }, [useVolumeButtons, scrollAmount, chapter]);
 
   const onLayout = useCallback(() => {
     if (useVolumeButtons) {
