@@ -63,39 +63,9 @@ public class EpubParser extends ReactContextBaseJavaModule implements ActivityEv
             if (epubPath != null && epubPath.toLowerCase().endsWith(".epub")) {
                 PyObject savePath = epubParser.callAttr("parseEpub", epubPath, "/data/data/com.rajarsheechatterjee.LNReader/files/");
                 promise.resolve(savePath.toString());
-            } else {
-                promise.reject("Invalid file format");
             }
-        } else {
-            promise.reject("Directory selection canceled");
         }
     }
-    /*
-    private final ActivityEventListener activityEventListener = new BaseActivityEventListener() {
-        //@Override
-        public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data){
-            if(requestCode == REQUEST_DIRECTORY && resultCode == Activity.RESULT_OK){
-                Uri uri = data.getData();
-                String folderPath = getFilePathFromUri(uri);
-                //Log.d("file name", folderPath);
-                epubPath = folderPath;
-                //Log.d("epub path", epubPath);
-                Python py = Python.getInstance();
-                PyObject epubParser = py.getModule("epubParser");
-                if(epubPath != null && epubPath.toLowerCase().endsWith(".epub")){
-                    //Log.d("file name", epubPath);
-                    PyObject getContent = epubParser.callAttr("parseEpub",epubPath,"/data/data/com.rajarsheechatterjee.LNReader/files/"); //dunno if that's the right app ID
-                    epubPath = null;
-                    promise.resolve(null);
-                } else{
-                    promise.reject("Bad file");
-                }
-            }
-            else{
-                promise.reject("Directory selection canceled");
-            }
-        }
-    };*/
 
     @Override
     public String getName(){
