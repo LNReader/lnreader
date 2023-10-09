@@ -134,7 +134,7 @@ def reactNativeArchitectures() {
 ext {
     versionMajor = 1
     versionMinor = 1
-    versionPatch = 17
+    versionPatch = 18
 }
 
 android {
