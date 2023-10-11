@@ -187,11 +187,11 @@
   },
   {
     "sourceId": 101,
-    "baseUrl": "https://ar-mtl.club/",
-    "sourceName": "ArMTL",
+    "baseUrl": "https://asuralightnovel.com/",
+    "sourceName": "Asura Light Novel",
     "options": {
       "useNewChapterEndpoint": true,
-      "lang": "Arabic"
+      "lang": "English"
     }
   },
   {

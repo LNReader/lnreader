@@ -187,11 +187,11 @@ export const HizoMangaScraper = new MadaraScraper(
   },
 );
 
-export const ArMTLScraper = new MadaraScraper(
+export const AsuraLightNovelScraper = new MadaraScraper(
   101,
-  'https://ar-mtl.club/',
-  'ArMTL',
-  { 'useNewChapterEndpoint': true, 'lang': 'Arabic' },
+  'https://asuralightnovel.com/',
+  'Asura Light Novel',
+  { 'useNewChapterEndpoint': true, 'lang': 'English' },
 );
 
 export const Novel4UpScraper = new MadaraScraper(

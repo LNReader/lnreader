@@ -603,10 +603,10 @@
   },
   {
     "sourceId": 101,
-    "url": "https://ar-mtl.club/",
-    "sourceName": "ArMTL",
-    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/icons/multisrc/madara/icons/armtl.png?raw=true",
-    "lang": "Arabic"
+    "url": "AsuraLightNovelScraper",
+    "sourceName": "Asura Light Novel",
+    "icon": "https://asuralightnovel.com/wp-content/uploads/2021/06/favicon-asura-2.png",
+    "lang": "English"
   },
   {
     "sourceId": 103,
