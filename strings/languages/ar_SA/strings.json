@@ -88,7 +88,7 @@
       "lineHeight": "ارتفاع الخط",
       "fontStyle": "نمط الخط",
       "fullscreen": "تكبير الشاشة",
-      "bionicReading": "Bionic Reading",
+      "bionicReading": "الكلمات ثنائية الخط",
       "renderHml": "عرض HTML",
       "autoscroll": "تدوير تلقائي",
       "verticalSeekbar": "شريط البحث العمودي",
@@ -131,7 +131,7 @@
       }
     },
     "convertToEpubModal": {
-      "chooseLocation": "Select EPUB storage directory",
+      "chooseLocation": "حدد مسار تخزين ملفات EPUB",
       "pathToFolder": "مسار مجلد لحفظ EPUB",
       "useReaderTheme": "استخدام قالب القارئ",
       "useCustomCSS": "Use custom CSS",
