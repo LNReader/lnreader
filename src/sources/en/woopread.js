@@ -119,7 +119,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 
   const loadedCheerio = cheerio.load(body);
 
-  const chapterName = loadedCheerio('h1#chapter-heading').text();
+  const chapterName = loadedCheerio('.reading-content b:first').text();
 
   let chapterText = loadedCheerio('.reading-content').html();
 
@@ -144,11 +144,11 @@ const searchNovels = async searchTerm => {
 
   let novels = [];
 
-  loadedCheerio('.c-tabs-item__content').each(function () {
-    const novelName = loadedCheerio(this).find('.h4 > a').text();
-    const novelCover = loadedCheerio(this).find('img').attr('src');
+  loadedCheerio('.tab-thumb').each(function () {
+    const novelName = loadedCheerio(this).find('a').attr('title');
+    const novelCover = loadedCheerio(this).find('img').attr('data-src');
 
-    let novelUrl = loadedCheerio(this).find('.h4 > a').attr('href');
+    let novelUrl = loadedCheerio(this).find('a').attr('href');
     novelUrl = novelUrl.replace(`${baseUrl}series/`, '');
 
     const novel = {
