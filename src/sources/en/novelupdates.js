@@ -238,10 +238,12 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 
   let isScribbleHub = result.url.toLowerCase().includes('scribblehub');
 
+  let isTitanWF = result.url.toLowerCase().includes('titan.wf');
+
   if (isWuxiaWorld) {
     chapterText = loadedCheerio('#chapter-content').html();
   } else if (isRainOfSnow) {
-    chapterText = loadedCheerio('div.content').html();
+    chapterText = loadedCheerio('.content').html();
   } else if (isTumblr) {
     chapterText = loadedCheerio('.post').html();
   } else if (isBlogspot) {
@@ -250,11 +252,13 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   } else if (isHostedNovel) {
     chapterText = loadedCheerio('.chapter').html();
   } else if (isScribbleHub) {
-    chapterText = loadedCheerio('div.chp_raw').html();
+    chapterText = loadedCheerio('.chp_raw').html();
   } else if (isWattpad) {
     chapterText = loadedCheerio('.container  pre').html();
   } else if (isTravisTranslation) {
     chapterText = loadedCheerio('.reader-content').html();
+  } else if (isTitanWF) {
+    chapterText = loadedCheerio('.reading-content').html();
   } else if (isLightNovelsTls) {
     chapterText = loadedCheerio('.text_story').html();
   } else if (isiNovelTranslation) {
