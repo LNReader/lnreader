@@ -134,10 +134,10 @@
       "chooseLocation": "حدد مسار تخزين ملفات EPUB",
       "pathToFolder": "مسار مجلد لحفظ EPUB",
       "useReaderTheme": "استخدام قالب القارئ",
-      "useCustomCSS": "Use custom CSS",
-      "useCustomJS": "Use custom JS",
-      "useCustomJSWarning": "May not be supported by all EPUB readers",
-      "chaptersWarning": "Only downloaded chapters are included in the EPUB"
+      "useCustomCSS": "استخدام CSS حسب التفضيل",
+      "useCustomJS": "استخدام JS حسب التفضيل",
+      "useCustomJSWarning": "قد لا يكون مدعوماً من كل قراء EPUB",
+      "chaptersWarning": "الفصول التي تم تنزيلها فقط مدرجة في EPUB"
     }
   },
   "more": "المزيد",
@@ -185,14 +185,14 @@
         "saveCustomTheme": "حفظ السمة المخصصة",
         "deleteCustomTheme": "حذف السمة المخصصة",
         "customCSS": "تنسيقات CSS مخصصة",
-        "customJS": "Custom JS",
+        "customJS": "JS حسب التفضيل",
         "openCSSFile": "افتح ملف CSS",
         "openJSFile": "فتح ملف JS",
         "notSaved": "لم يُحفظ",
         "cssHint": "تلميح: يمكنك إنشاء تضبيطات CSS مخصصة لمصدر محدد باستخدام معرفه. (#sourceId-[SOURCEID])",
         "jsHint": "تلميح: يمكنك الوصول إلى المتغيرات التالية واستخدامها: html, novelName, chapterName, sourceId, chapterId, novelId",
-        "clearCustomCSS": "Are you sure? Your custom CSS would be reset.",
-        "clearCustomJS": "Are you sure? Your custom JS would be reset."
+        "clearCustomCSS": "هل أنت متأكد؟ سيتم إعادة CSS الخاص بك إلي الحالة الافتراضية.",
+        "clearCustomJS": "هل أنت متأكد؟ سيتم إعادة JS الخاص بك إلي الحالة الافتراضية."
       },
       "browseSettings": "تصفح الإعدادات",
       "browseSettingsScreen": {
