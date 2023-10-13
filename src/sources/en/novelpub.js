@@ -40,11 +40,7 @@ const popularNovels = async page => {
 const parseNovelAndChapters = async novelUrl => {
   const url = novelUrl;
 
-  const body = await fetchHtml({
-    url,
-    sourceId,
-    init: { headers: { 'User-Agent': userAgent } },
-  });
+  const body = await fetchHtml({ url, sourceId });
 
   let loadedCheerio = cheerio.load(body);
 
