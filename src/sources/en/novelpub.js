@@ -6,23 +6,15 @@ const baseUrl = 'https://www.novelpub.com/';
 const sourceName = 'NovelPub';
 const sourceId = 94;
 
-const userAgent =
-  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36';
-
 const headers = new Headers({
   Accept: 'application/json',
   'Content-Type': 'application/json',
-  'User-Agent': userAgent,
 });
 
 const popularNovels = async page => {
   let url = baseUrl + 'browse/all/popular/all/' + page;
 
-  const body = await fetchHtml({
-    url,
-    sourceId,
-    init: { headers: { 'User-Agent': userAgent } },
-  });
+  const body = await fetchHtml({ url, sourceId });
 
   const loadedCheerio = cheerio.load(body);
 
@@ -62,14 +54,14 @@ const parseNovelAndChapters = async novelUrl => {
 
   novel.novelCover = loadedCheerio('figure.cover > img').attr('data-src');
 
-  loadedCheerio('div.categories > ul > li').each(function () {
+  loadedCheerio('.categories > ul > li').each(function () {
     novel.genre +=
       loadedCheerio(this)
         .text()
         .replace(/[\t\n]/g, '') + ',';
   });
 
-  loadedCheerio('div.header-stats > span').each(function () {
+  loadedCheerio('.header-stats > span').each(function () {
     if (loadedCheerio(this).find('small').text() === 'Status') {
       novel.status = loadedCheerio(this).find('strong').text();
     }
@@ -135,11 +127,7 @@ const parseNovelAndChapters = async novelUrl => {
 const parseChapter = async (novelUrl, chapterUrl) => {
   const url = chapterUrl;
 
-  const body = await fetchHtml({
-    url,
-    sourceId,
-    init: { headers: { 'User-Agent': userAgent } },
-  });
+  const body = await fetchHtml({ url, sourceId });
 
   const loadedCheerio = cheerio.load(body);
 
@@ -154,11 +142,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 const searchNovels = async searchTerm => {
   const url = `${baseUrl}lnwsearchlive?inputContent=${searchTerm}`;
 
-  const body = await fetchHtml({
-    url,
-    sourceId,
-    init: { headers: { 'User-Agent': userAgent } },
-  });
+  const body = await fetchHtml({ url, sourceId });
 
   let loadedCheerio = cheerio.load(body);
 
