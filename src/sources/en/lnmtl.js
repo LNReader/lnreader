@@ -1,6 +1,5 @@
 import * as cheerio from 'cheerio';
 import { showToast } from '../../hooks/showToast';
-import { htmlToText } from '../helpers/htmlToText';
 
 const baseUrl = 'https://lnmtl.com/';
 
@@ -56,26 +55,29 @@ const parseNovelAndChapters = async novelUrl => {
 
   novel.novelName = loadedCheerio('.novel-name').text();
 
-  novel.novelCover = loadedCheerio('div.novel').find('img').attr('src');
+  novel.novelCover = loadedCheerio('.novel').find('img').attr('src');
 
-  novel.summary = loadedCheerio('div.description').text().trim();
+  novel.summary = loadedCheerio('.description').text().trim();
 
-  novel.author = loadedCheerio(
-    'main > div:nth-child(3) > div > div.col-lg-3.col-md-4 > div:nth-child(2) > div.panel-body > dl:nth-child(1) > dd > a > span',
-  ).text();
+  loadedCheerio(".panel-body > dl").each(function () {
+    let detailName = loadedCheerio(this).find("dt").text().trim();
+    let detail = loadedCheerio(this).find("dd").text().trim();
 
-  novel.status = loadedCheerio(
-    'main > div:nth-child(3) > div > div.col-lg-3.col-md-4 > div:nth-child(2) > div.panel-body > dl:last-child > dd',
-  )
-    .text()
-    .trim();
+    switch (detailName) {
+        case "Authors":
+            novel.author = detail;
+            break;
+        case "Current status":
+            novel.status = detail;
+            break;
+    }
+  });
 
-  novel.genre = loadedCheerio(
-    'main > div.container > div > div.col-lg-3.col-md-4 > div:nth-child(4) > div.panel-body > ul',
-  )
+  novel.genre = loadedCheerio('.panel-heading:contains(" Genres ")')
+    .next()
     .text()
     .trim()
-    .replace(/\s\s/g, ',');
+    .replace(/\s\s/g, ",");
 
   let volumes = JSON.parse(
     loadedCheerio('main')
@@ -128,16 +130,14 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 
   let chapterName = loadedCheerio('h3 > span.chapter-title').text().trim();
 
-  loadedCheerio('.original').remove();
+  loadedCheerio('.original, script').remove();
+  loadedCheerio('sentence.translated').wrap('<p></p>')
 
   let chapterText = loadedCheerio('.chapter-body').html();
 
   if (!chapterText) {
     chapterText = loadedCheerio('.alert.alert-warning').text();
   }
-
-  chapterText =
-    chapterName + '\n\n' + htmlToText(chapterText, { removeLineBreaks: false });
 
   const chapter = {
     sourceId: 37,
