@@ -88,7 +88,7 @@
       "lineHeight": "Zeilenhöhe",
       "fontStyle": "Schriftart",
       "fullscreen": "Vollbildmodus",
-      "bionicReading": "Bionic Reading",
+      "bionicReading": "Bionisches Lesen",
       "renderHml": "HTML anzeigen",
       "autoscroll": "AutoScroll",
       "verticalSeekbar": "Vertikale Suchleiste",
@@ -96,10 +96,10 @@
       "showProgressPercentage": "Zeige Fortschritt in Prozent",
       "swipeGestures": "Nach links oder rechts wischen, um zwischen den Kapiteln zu wechseln",
       "allowTextSelection": "Textauswahl erlauben",
-      "useChapterDrawerSwipeNavigation": "Wische nach rechts, um Seitenleiste zu öffnen",
+      "useChapterDrawerSwipeNavigation": "Wische nach rechts, um die Seitenleiste zu öffnen",
       "removeExtraSpacing": "Extra Absatzabstand entfernen",
       "volumeButtonsScroll": "Scrollen mit Lautstärkeregler",
-      "scrollAmount": "Scroll amount (screen height by default)",
+      "scrollAmount": "Höhe des Bildlaufs (standardmäßig Bildschirmhöhe)",
       "showSwipeMargins": "Show swipe margins"
     },
     "drawer": {
@@ -131,12 +131,13 @@
       }
     },
     "convertToEpubModal": {
-      "chooseLocation": "Select EPUB storage directory",
-      "pathToFolder": "Path to EPUB save folder",
+      "chooseLocation": "EPUB-Speicherverzeichnis auswählen",
+      "pathToFolder": "Pfad zum EPUB-Speicherverzeichnis",
       "useReaderTheme": "Use reader theme",
-      "useCustomCSS": "Use customCSS",
-      "useCustomJS": "Use customJS",
-      "useCustomJSWarning": "May not be supported by all EPUB readers"
+      "useCustomCSS": "Eigene CSS-Datei verwenden",
+      "useCustomJS": "Eigene JS-Datei verwenden",
+      "useCustomJSWarning": "Wird möglicherweise nicht von allen EPUB-Readern unterstützt",
+      "chaptersWarning": "Nur heruntergeladene Kapitel sind im EPUB enthalten"
     }
   },
   "more": "Mehr",
@@ -165,8 +166,8 @@
         "updateTime": "Zeige den Zeitpunkt der letzten Aktualisierung",
         "autoDownload": "Automatisch herunterladen",
         "epub": "EPUB",
-        "epubLocation": "EPUB Location",
-        "epubLocationDescription": "The place where you open and export your EPUB files.",
+        "epubLocation": "EPUB Speicherort",
+        "epubLocationDescription": "Der Speicherort, an dem Sie Ihre EPUB Dateien öffnen und exportieren.",
         "downloadNewChapters": "Neue Kapitel herunterladen",
         "disableHapticFeedback": "Haptisches Feedback deaktivieren"
       },
@@ -184,12 +185,14 @@
         "saveCustomTheme": "Benutzerdefiniertes Theme speichern",
         "deleteCustomTheme": "Benutzerdefiniertes Theme löschen",
         "customCSS": "Benutzerdefiniertes CSS",
-        "customJS": "Custom JS",
-        "openCSSFile": "Open CSS file",
-        "openJSFile": "Open JS file",
-        "notSaved": "Not saved",
-        "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])",
-        "jsHint": "Hint: You have access to following variables: html, novelName, chapterName, sourceId, chapterId, novelId"
+        "customJS": "Benutzerdefiniertes CSS",
+        "openCSSFile": "CSS-Datei öffnen",
+        "openJSFile": "JS-Datei öffnen",
+        "notSaved": "Nicht gespeichert",
+        "cssHint": "Hinweis: Sie können eine quellspezifische CSS-Konfiguration mit der Quell-ID erstellen. (#sourceId-[SOURCEID])",
+        "jsHint": "Hinweis: Sie haben Zugriff auf folgende Variablen: html, novelName, chapterName, sourceId, chapterId, novelId",
+        "clearCustomCSS": "Sind Sie sicher? Ihr benutzerdefiniertes CSS wird zurückgesetzt.",
+        "clearCustomJS": "Sind Sie sicher? Ihr benutzerdefiniertes JS wird zurückgesetzt."
       },
       "browseSettings": "Einstellungen durchsuchen",
       "browseSettingsScreen": {

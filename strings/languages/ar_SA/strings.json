@@ -88,13 +88,13 @@
       "lineHeight": "ارتفاع الخط",
       "fontStyle": "نمط الخط",
       "fullscreen": "تكبير الشاشة",
-      "bionicReading": "Bionic Reading",
+      "bionicReading": "الكلمات ثنائية الخط",
       "renderHml": "عرض HTML",
       "autoscroll": "تدوير تلقائي",
       "verticalSeekbar": "شريط البحث العمودي",
       "showBatteryAndTime": "اضهر البطارية والوقت",
       "showProgressPercentage": "النسبة المئوية للتقدم",
-      "swipeGestures": "اسحب لليسار أو لليمين للتبديل بين علامات التبويب",
+      "swipeGestures": "اسحب لليسار أو لليمين للتنقل بين الفصول",
       "allowTextSelection": "السماح باختيار النص",
       "useChapterDrawerSwipeNavigation": "مرر يمينا لفتح القائمة الجانبية",
       "removeExtraSpacing": "إزالة المسافات الزائدة بين الفقرات",
@@ -131,12 +131,13 @@
       }
     },
     "convertToEpubModal": {
-      "chooseLocation": "Select EPUB storage directory",
+      "chooseLocation": "حدد مسار تخزين ملفات EPUB",
       "pathToFolder": "مسار مجلد لحفظ EPUB",
-      "useReaderTheme": "Use reader theme",
-      "useCustomCSS": "Use customCSS",
-      "useCustomJS": "Use customJS",
-      "useCustomJSWarning": "May not be supported by all EPUB readers"
+      "useReaderTheme": "استخدام قالب القارئ",
+      "useCustomCSS": "استخدام CSS حسب التفضيل",
+      "useCustomJS": "استخدام JS حسب التفضيل",
+      "useCustomJSWarning": "قد لا يكون مدعوماً من كل قراء EPUB",
+      "chaptersWarning": "الفصول التي تم تنزيلها فقط مدرجة في EPUB"
     }
   },
   "more": "المزيد",
@@ -184,12 +185,14 @@
         "saveCustomTheme": "حفظ السمة المخصصة",
         "deleteCustomTheme": "حذف السمة المخصصة",
         "customCSS": "تنسيقات CSS مخصصة",
-        "customJS": "Custom JS",
+        "customJS": "JS حسب التفضيل",
         "openCSSFile": "افتح ملف CSS",
         "openJSFile": "فتح ملف JS",
         "notSaved": "لم يُحفظ",
         "cssHint": "تلميح: يمكنك إنشاء تضبيطات CSS مخصصة لمصدر محدد باستخدام معرفه. (#sourceId-[SOURCEID])",
-        "jsHint": "تلميح: يمكنك الوصول إلى المتغيرات التالية واستخدامها: html, novelName, chapterName, sourceId, chapterId, novelId"
+        "jsHint": "تلميح: يمكنك الوصول إلى المتغيرات التالية واستخدامها: html, novelName, chapterName, sourceId, chapterId, novelId",
+        "clearCustomCSS": "هل أنت متأكد؟ سيتم إعادة CSS الخاص بك إلي الحالة الافتراضية.",
+        "clearCustomJS": "هل أنت متأكد؟ سيتم إعادة JS الخاص بك إلي الحالة الافتراضية."
       },
       "browseSettings": "تصفح الإعدادات",
       "browseSettingsScreen": {
@@ -214,7 +217,7 @@
     "statusDistribution": "توزيع الحالات"
   },
   "globalSearch": {
-    "searchIn": "البحث في رواية",
+    "searchIn": "البحث عن رواية في",
     "allSources": "جميع المصادر",
     "pinnedSources": "المصادر المثبتة"
   },

@@ -88,7 +88,7 @@
       "lineHeight": "Высота строки",
       "fontStyle": "Шрифт",
       "fullscreen": "Полноэкранный",
-      "bionicReading": "Bionic Reading",
+      "bionicReading": "Бионическое чтение",
       "renderHml": "Рендер HTML",
       "autoscroll": "Автопрокрутка",
       "verticalSeekbar": "Вертикальная панель навигации",
@@ -131,12 +131,13 @@
       }
     },
     "convertToEpubModal": {
-      "chooseLocation": "Select EPUB storage directory",
-      "pathToFolder": "Path to EPUB save folder",
-      "useReaderTheme": "Use reader theme",
-      "useCustomCSS": "Use customCSS",
-      "useCustomJS": "Use customJS",
-      "useCustomJSWarning": "May not be supported by all EPUB readers"
+      "chooseLocation": "Выберите каталог хранения EPUB",
+      "pathToFolder": "Путь к папке сохранения EPUB",
+      "useReaderTheme": "Использовать тему для чтения",
+      "useCustomCSS": "Использовать пользовательский CSS",
+      "useCustomJS": "Использовать пользовательский JS",
+      "useCustomJSWarning": "Может поддерживаться не всеми читателями EPUB",
+      "chaptersWarning": "Только загруженные главы включать в EPUB"
     }
   },
   "more": "Ещё",
@@ -165,8 +166,8 @@
         "updateTime": "Показать время последнего обновления",
         "autoDownload": "Автозагрузка",
         "epub": "EPUB",
-        "epubLocation": "EPUB Location",
-        "epubLocationDescription": "The place where you open and export your EPUB files.",
+        "epubLocation": "Расположение EPUB",
+        "epubLocationDescription": "Место открытия и экспорта файлов EPUB.",
         "downloadNewChapters": "Скачивать новые главы",
         "disableHapticFeedback": "Отключить виброотклик"
       },
@@ -189,7 +190,9 @@
         "openJSFile": "Открыть JS-файл",
         "notSaved": "Не сохранено",
         "cssHint": "Подсказка: Вы можете создать исходный код конфигурации с исходным ID. (#sourceId-[SOURCEID])",
-        "jsHint": "Подсказка: У вас есть доступ к следующим переменным: html, novelName, chapterName, sourceId, chapterId, novelId"
+        "jsHint": "Подсказка: У вас есть доступ к следующим переменным: html, novelName, chapterName, sourceId, chapterId, novelId",
+        "clearCustomCSS": "Вы уверены? Ваш пользовательский CSS будет сброшен.",
+        "clearCustomJS": "Вы уверены? Ваш пользовательский JS будет сброшен."
       },
       "browseSettings": "Настройки обзора",
       "browseSettingsScreen": {
