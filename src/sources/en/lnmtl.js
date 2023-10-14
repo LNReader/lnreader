@@ -59,17 +59,17 @@ const parseNovelAndChapters = async novelUrl => {
 
   novel.summary = loadedCheerio('.description').text().trim();
 
-  loadedCheerio(".panel-body > dl").each(function () {
-    let detailName = loadedCheerio(this).find("dt").text().trim();
-    let detail = loadedCheerio(this).find("dd").text().trim();
+  loadedCheerio('.panel-body > dl').each(function () {
+    let detailName = loadedCheerio(this).find('dt').text().trim();
+    let detail = loadedCheerio(this).find('dd').text().trim();
 
     switch (detailName) {
-        case "Authors":
-            novel.author = detail;
-            break;
-        case "Current status":
-            novel.status = detail;
-            break;
+      case 'Authors':
+        novel.author = detail;
+        break;
+      case 'Current status':
+        novel.status = detail;
+        break;
     }
   });
 
@@ -77,7 +77,7 @@ const parseNovelAndChapters = async novelUrl => {
     .next()
     .text()
     .trim()
-    .replace(/\s\s/g, ",");
+    .replace(/\s\s/g, ',');
 
   let volumes = JSON.parse(
     loadedCheerio('main')
@@ -131,7 +131,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   let chapterName = loadedCheerio('h3 > span.chapter-title').text().trim();
 
   loadedCheerio('.original, script').remove();
-  loadedCheerio('sentence.translated').wrap('<p></p>')
+  loadedCheerio('sentence.translated').wrap('<p></p>');
 
   let chapterText = loadedCheerio('.chapter-body').html();
 
