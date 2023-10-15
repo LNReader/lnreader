@@ -151,7 +151,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 };
 
 const searchNovels = async searchTerm => {
-  const url = 'https://lnmtl.com/term';
+  const url = 'https://lnmtl.com/';
 
   const result = await fetch(url);
   const body = await result.text();
@@ -162,8 +162,7 @@ const searchNovels = async searchTerm => {
     .next()
     .next()
     .html()
-    .match(/local: \[(.*?)\]/)[0]
-    .replace('local: ', '');
+    .match(/prefetch: '\/(.*json)/)[1];
 
   novels = JSON.parse(novels);
 
