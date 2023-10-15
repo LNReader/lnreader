@@ -133,7 +133,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   loadedCheerio('.original, script').remove();
   loadedCheerio('sentence.translated').wrap('<p></p>');
 
-  let chapterText = loadedCheerio('.chapter-body').html();
+  let chapterText = loadedCheerio('.chapter-body').html().replace(/„/g, '“');
 
   if (!chapterText) {
     chapterText = loadedCheerio('.alert.alert-warning').text();
@@ -151,31 +151,35 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 };
 
 const searchNovels = async searchTerm => {
-  const url = 'https://lnmtl.com/';
-
-  const result = await fetch(url);
+  const result = await fetch(baseUrl);
   const body = await result.text();
 
   const loadedCheerio = cheerio.load(body);
 
-  let novels = loadedCheerio('footer')
+  const list = loadedCheerio('footer')
     .next()
     .next()
     .html()
     .match(/prefetch: '\/(.*json)/)[1];
 
-  novels = JSON.parse(novels);
+  const search = await fetch(`${baseUrl}${list}`);
+  const data = await search.json();
 
-  novels = novels.filter(novel =>
-    novel.name.toLowerCase().includes(searchTerm.toLowerCase()),
+  let nov = data.filter(res =>
+    res.name.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
-  novels = novels.map(novel => ({
-    sourceId: 37,
-    novelName: novel.name,
-    novelUrl: novel.slug,
-    novelCover: novel.image,
-  }));
+  const novels = [];
+
+  nov.map(res => {
+    const novelName = res.name;
+    const novelUrl = res.slug;
+    const novelCover = res.image;
+
+    const novel = { sourceId: 37, novelName, novelUrl, novelCover };
+
+    novels.push(novel);
+  });
 
   return novels;
 };
