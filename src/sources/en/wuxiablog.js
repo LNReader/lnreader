@@ -23,12 +23,12 @@ const popularNovels = async page => {
       if (novelName) {
         const novelId = loadedCheerio(this).find('td:nth-child(1)').text();
 
-        const novelCover = baseUrl + '/data/image/' + novelId + '.jpg';
+        const novelCover = baseUrl + 'data/image/' + novelId + '.jpg';
 
         let novelUrl = loadedCheerio(this)
           .find('td.novel > a')
           .attr('href')
-          .replace('/novel/', '');
+          .replace('/book/', '');
 
         const novel = {
           sourceId,
@@ -45,7 +45,7 @@ const popularNovels = async page => {
 };
 
 const parseNovelAndChapters = async novelUrl => {
-  const url = `${baseUrl}novel/${novelUrl}/`;
+  const url = `${baseUrl}book/${novelUrl}/`;
 
   const result = await fetch(url);
   const body = await result.text();
@@ -59,25 +59,19 @@ const parseNovelAndChapters = async novelUrl => {
     novelUrl,
   };
 
-  novel.novelName = loadedCheerio(
-    'body > div.container-fluid.text-center > div.row.content > div.col-sm-8.text-left > div:nth-child(6) > div.panel-heading.clearfix > h4',
-  ).text();
+  novel.novelName = loadedCheerio('h4[itemprop="name>"]:first').text();
 
-  novel.novelCover = loadedCheerio('img[itemprop="image"]').attr('src');
+  novel.novelCover = loadedCheerio('.img-thumbnail').attr('src');
 
-  novel.author = loadedCheerio(
-    'div.col-md-6 > div > div:nth-child(2) > div > div:nth-child(2) > a',
-  ).text();
+  novel.author = loadedCheerio('h4:contains("Author:")').next().text();
 
-  novel.genre = loadedCheerio(
-    'div.row > div.col-md-6 > div > a:nth-child(4)',
-  ).text();
+  novel.genre = loadedCheerio('h4:contains("Genre:")')
+    .nextUntil('h4')
+    .map((i, el) => loadedCheerio(el).text())
+    .toArray()
+    .join(',');
 
-  novel.summary = loadedCheerio('div[itemprop="description"]')
-    .find('p')
-    .text()
-    .trim();
-
+  novel.summary = loadedCheerio('h4:contains("Description:")').next().text();
   let novelChapters = [];
 
   loadedCheerio('table#chplist > #chapters > tr').each(function () {
@@ -137,20 +131,18 @@ const parseNovelAndChapters = async novelUrl => {
 };
 
 const parseChapter = async (novelUrl, chapterUrl) => {
-  const url = `${baseUrl}novel/${novelUrl}/${chapterUrl}`;
+  const url = `${baseUrl}book/${novelUrl}/${chapterUrl}`;
 
   const result = await fetch(url);
   const body = await result.text();
 
   const loadedCheerio = cheerio.load(body);
 
-  let chapterName = loadedCheerio('div.panel-body.article').find('h4').text();
+  let chapterName = loadedCheerio('.panel-body.article').find('h4').text();
 
-  loadedCheerio('ul.pager').remove();
+  loadedCheerio('ul.pager, .panel-body.article div,button,span').remove();
 
-  let chapterText = loadedCheerio('div.panel-body.article')
-    .html()
-    .replace(/<span(.*?)>(.*?)<\/span>/g, '');
+  let chapterText = loadedCheerio('.panel-body.article').html();
 
   const chapter = {
     sourceId,
@@ -164,40 +156,9 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 };
 
 const searchNovels = async searchTerm => {
-  const url = `${baseUrl}?search=${searchTerm}`;
+  showToast('Search is not available in this source');
 
-  const result = await fetch(url);
-  const body = await result.text();
-
-  const loadedCheerio = cheerio.load(body);
-
-  let novels = [];
-
-  loadedCheerio('#table')
-    .find('tr')
-    .each(function () {
-      const novelName = loadedCheerio(this).find('a').text().trim();
-
-      if (novelName) {
-        const novelCover = loadedCheerio(this).find('img').attr('src');
-
-        let novelUrl = loadedCheerio(this)
-          .find('a')
-          .attr('href')
-          .replace(baseUrl + 'novel/', '');
-
-        const novel = {
-          sourceId,
-          novelName,
-          novelCover,
-          novelUrl,
-        };
-
-        novels.push(novel);
-      }
-    });
-
-  return novels;
+  return;
 };
 
 const WuxiaBlogScraper = {
