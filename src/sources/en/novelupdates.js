@@ -238,8 +238,6 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 
   let isScribbleHub = result.url.toLowerCase().includes('scribblehub');
 
-  let isTitanWF = result.url.toLowerCase().includes('titan.wf');
-
   if (isWuxiaWorld) {
     chapterText = loadedCheerio('#chapter-content').html();
   } else if (isRainOfSnow) {
@@ -257,8 +255,6 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     chapterText = loadedCheerio('.container  pre').html();
   } else if (isTravisTranslation) {
     chapterText = loadedCheerio('.reader-content').html();
-  } else if (isTitanWF) {
-    chapterText = loadedCheerio('.reading-content').html();
   } else if (isLightNovelsTls) {
     chapterText = loadedCheerio('.text_story').html();
   } else if (isiNovelTranslation) {
@@ -331,7 +327,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
       `href="${getLocation(result.url)}/`,
     );
   }
-
+  console.log(chapterText);
   const chapter = {
     sourceId,
     novelUrl,
