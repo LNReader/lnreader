@@ -87,6 +87,7 @@ const parseNovelAndChapters = async novelUrl => {
       const chaptersHtml = await fetchHtml({
         url: chaptersUrl,
         init: { headers },
+        sourceId,
       });
 
       loadedCheerio = cheerio.load(chaptersHtml);
