@@ -327,7 +327,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
       `href="${getLocation(result.url)}/`,
     );
   }
-  console.log(chapterText);
+
   const chapter = {
     sourceId,
     novelUrl,
