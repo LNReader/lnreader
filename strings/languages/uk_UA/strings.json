@@ -15,7 +15,7 @@
     "searchFor": "Шукати",
     "globally": "глобально",
     "searchResults": "Результати пошуку",
-    "chapters": "Chapters",
+    "chapters": "Глави",
     "submit": "Submit",
     "retry": "Retry"
   },
@@ -134,9 +134,10 @@
       "chooseLocation": "Select EPUB storage directory",
       "pathToFolder": "Path to EPUB save folder",
       "useReaderTheme": "Use reader theme",
-      "useCustomCSS": "Use customCSS",
-      "useCustomJS": "Use customJS",
-      "useCustomJSWarning": "May not be supported by all EPUB readers"
+      "useCustomCSS": "Use custom CSS",
+      "useCustomJS": "Use custom JS",
+      "useCustomJSWarning": "May not be supported by all EPUB readers",
+      "chaptersWarning": "Only downloaded chapters are included in the EPUB"
     }
   },
   "more": "Більше",
@@ -189,7 +190,9 @@
         "openJSFile": "Open JS file",
         "notSaved": "Not saved",
         "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])",
-        "jsHint": "Hint: You have access to following variables: html, novelName, chapterName, sourceId, chapterId, novelId"
+        "jsHint": "Hint: You have access to following variables: html, novelName, chapterName, sourceId, chapterId, novelId",
+        "clearCustomCSS": "Are you sure? Your custom CSS would be reset.",
+        "clearCustomJS": "Are you sure? Your custom JS would be reset."
       },
       "browseSettings": "Налаштування джерел",
       "browseSettingsScreen": {

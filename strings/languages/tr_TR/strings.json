@@ -131,12 +131,13 @@
       }
     },
     "convertToEpubModal": {
-      "chooseLocation": "Select EPUB storage directory",
+      "chooseLocation": "EPUB depolama dizinini seç",
       "pathToFolder": "EPUB dosyalarını kaydetme klasörünün yolu",
-      "useReaderTheme": "Use reader theme",
-      "useCustomCSS": "Use customCSS",
-      "useCustomJS": "Use customJS",
-      "useCustomJSWarning": "May not be supported by all EPUB readers"
+      "useReaderTheme": "Okuyucu temasını kullan",
+      "useCustomCSS": "Özel CSS kullan",
+      "useCustomJS": "Özel JS kullan",
+      "useCustomJSWarning": "Tüm EPUB okuyucuları tarafından desteklenmeyebilir",
+      "chaptersWarning": "EPUB'da yalnızca, indirilen bölümler dahil edilir"
     }
   },
   "more": "Daha fazla",
@@ -189,7 +190,9 @@
         "openJSFile": "JS dosyası aç",
         "notSaved": "Kaydedilmedi",
         "cssHint": "İpucu: Kaynak ID'si ile kaynağa özel CSS yapılandırması oluşturabilirsiniz.\n(#kaynakId-[KAYNAKID])",
-        "jsHint": "İpucu: Aşağıdaki değişkenlere erişiminiz bulunmakta:\nhtml, novelName, chapterName, sourceId, chapterId, novelId"
+        "jsHint": "İpucu: Aşağıdaki değişkenlere erişiminiz bulunmakta:\nhtml, novelName, chapterName, sourceId, chapterId, novelId",
+        "clearCustomCSS": "Emin misiniz? Özel CSS'niz sıfırlanır.",
+        "clearCustomJS": "Emin misiniz? Özel JS kodlarınız sıfırlanır."
       },
       "browseSettings": "Göz Atma Seçenekleri",
       "browseSettingsScreen": {

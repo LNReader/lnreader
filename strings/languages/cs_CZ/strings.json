@@ -1,50 +1,50 @@
 {
   "common": {
-    "cancel": "Cancel",
+    "cancel": "Zrušit",
     "ok": "Ok",
-    "save": "Save",
-    "clear": "Clear",
-    "reset": "Reset",
-    "search": "Search",
-    "install": "Install",
-    "newUpdateAvailable": "New update available",
-    "categories": "Categories",
-    "add": "Add",
-    "edit": "Edit",
-    "name": "Name",
-    "searchFor": "Search for",
-    "globally": "globally",
-    "searchResults": "Search results",
-    "chapters": "Chapters",
-    "submit": "Submit",
-    "retry": "Retry"
+    "save": "Uložit",
+    "clear": "Vymazat",
+    "reset": "Resetovat",
+    "search": "Hledat",
+    "install": "Instalovat",
+    "newUpdateAvailable": "Nová aktualizace k dispozici",
+    "categories": "Kategorie",
+    "add": "Přidat",
+    "edit": "Upravit",
+    "name": "Jméno",
+    "searchFor": "Hledat",
+    "globally": "globálně",
+    "searchResults": "Výsledky hledání",
+    "chapters": "Kapitoly",
+    "submit": "Odeslat",
+    "retry": "Opakovat"
   },
-  "library": "Library",
+  "library": "Knihovna",
   "libraryScreen": {
-    "searchbar": "Search library",
-    "empty": "Your library is empty. Add series to your library from Browse.",
+    "searchbar": "Hledat v knihovně",
+    "empty": "Vaše knihovna je prázdná. Přidejte sérii do knihovny z procházet.",
     "bottomSheet": {
       "filters": {
-        "downloaded": "Downloaded",
-        "unread": "Unread",
-        "completed": "Completed",
-        "started": "Started"
+        "downloaded": "Staženo",
+        "unread": "Nepřečteno",
+        "completed": "Dokončeno",
+        "started": "Zahájeno"
       },
       "sortOrders": {
-        "dateAdded": "Date added",
-        "alphabetically": "Alphabetically",
-        "totalChapters": "Total chapters",
-        "download": "Downloaded",
-        "unread": "Unread",
-        "lastRead": "Last read",
-        "lastUpdated": "Last updated"
+        "dateAdded": "Datum přidání",
+        "alphabetically": "Abecedně",
+        "totalChapters": "Celkem kapitol",
+        "download": "Staženo",
+        "unread": "Nepřečteno",
+        "lastRead": "Naposledy přečteno",
+        "lastUpdated": "Naposledy aktualizováno"
       },
       "display": {
-        "displayMode": "Display mode",
-        "compact": "Compact grid",
-        "comfortable": "Comfortable grid",
-        "noTitle": "Cover only grid",
-        "list": "List",
+        "displayMode": "Režim zobrazení",
+        "compact": "Kompaktní mřížka",
+        "comfortable": "Komfortní mřížka",
+        "noTitle": "Mřížka pouze s přebaly",
+        "list": "Seznam",
         "badges": "Badges",
         "downloadBadges": "Download badges",
         "unreadBadges": "Unread badges",
@@ -134,9 +134,10 @@
       "chooseLocation": "Select EPUB storage directory",
       "pathToFolder": "Path to EPUB save folder",
       "useReaderTheme": "Use reader theme",
-      "useCustomCSS": "Use customCSS",
-      "useCustomJS": "Use customJS",
-      "useCustomJSWarning": "May not be supported by all EPUB readers"
+      "useCustomCSS": "Use custom CSS",
+      "useCustomJS": "Use custom JS",
+      "useCustomJSWarning": "May not be supported by all EPUB readers",
+      "chaptersWarning": "Only downloaded chapters are included in the EPUB"
     }
   },
   "more": "More",
@@ -189,7 +190,9 @@
         "openJSFile": "Open JS file",
         "notSaved": "Not saved",
         "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])",
-        "jsHint": "Hint: You have access to following variables: html, novelName, chapterName, sourceId, chapterId, novelId"
+        "jsHint": "Hint: You have access to following variables: html, novelName, chapterName, sourceId, chapterId, novelId",
+        "clearCustomCSS": "Are you sure? Your custom CSS would be reset.",
+        "clearCustomJS": "Are you sure? Your custom JS would be reset."
       },
       "browseSettings": "Browse Settings",
       "browseSettingsScreen": {

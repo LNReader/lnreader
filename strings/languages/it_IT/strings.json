@@ -88,7 +88,7 @@
       "lineHeight": "Altezza riga",
       "fontStyle": "Stile del font",
       "fullscreen": "Schermo Intero",
-      "bionicReading": "Bionic Reading",
+      "bionicReading": "Lettura Bionica",
       "renderHml": "Renderizza HTML",
       "autoscroll": "Scorrimento automatico",
       "verticalSeekbar": "Barra Verticale",
@@ -131,12 +131,13 @@
       }
     },
     "convertToEpubModal": {
-      "chooseLocation": "Select EPUB storage directory",
-      "pathToFolder": "Path to EPUB save folder",
-      "useReaderTheme": "Use reader theme",
-      "useCustomCSS": "Use customCSS",
-      "useCustomJS": "Use customJS",
-      "useCustomJSWarning": "May not be supported by all EPUB readers"
+      "chooseLocation": "Seleziona la cartella di archiviazione EPUB",
+      "pathToFolder": "Percorso cartella di salvataggio EPUB",
+      "useReaderTheme": "Usa tema lettore",
+      "useCustomCSS": "Use custom CSS",
+      "useCustomJS": "Use custom JS",
+      "useCustomJSWarning": "Potrebbe non essere supportato da tutti i lettori EPUB",
+      "chaptersWarning": "Only downloaded chapters are included in the EPUB"
     }
   },
   "more": "Altro",
@@ -149,8 +150,8 @@
         "displayMode": "Modalità di visualizzazione",
         "itemsPerRow": "Elementi per riga",
         "itemsPerRowLibrary": "Elementi per riga nella libreria",
-        "novelBadges": "Badge dei romanzi",
-        "novelSort": "Ordine romanzi",
+        "novelBadges": "Badge delle novel",
+        "novelSort": "Ordine novel",
         "updateLibrary": "Aggiorna la libreria all'avvio",
         "useFAB": "Usa FAB nella libreria",
         "novel": "Romanzo",
@@ -159,14 +160,14 @@
         "asc": "(Crescente)",
         "desc": "(Decrescente)",
         "globalUpdate": "Aggiornamento globale",
-        "updateOngoing": "Aggiorna solo i romanzi in corso",
+        "updateOngoing": "Aggiorna solo le novel in corso",
         "refreshMetadata": "Aggiorna automaticamente i metadati",
         "refreshMetadataDescription": "Controlla nuove copertine e dettagli durante l'aggiornamento della libreria",
         "updateTime": "Mostra l'orario dell'ultimo aggiornamento",
         "autoDownload": "Scarica automaticamente",
         "epub": "EPUB",
-        "epubLocation": "EPUB Location",
-        "epubLocationDescription": "The place where you open and export your EPUB files.",
+        "epubLocation": "Posizione EPUB",
+        "epubLocationDescription": "Il posto dove apri ed esporti i tuoi file EPUB.",
         "downloadNewChapters": "Scarica nuovi capitoli",
         "disableHapticFeedback": "Disattiva vibrazione"
       },
@@ -188,8 +189,10 @@
         "openCSSFile": "Apri file CSS",
         "openJSFile": "Apri file JS",
         "notSaved": "Non salvato",
-        "cssHint": "Suggerimento: è possibile creare una configurazione CSS specifica con l'ID sorgente. (#sourceId-[SOURCEID])",
-        "jsHint": "Hint: You have access to following variables: html, novelName, chapterName, sourceId, chapterId, novelId"
+        "cssHint": "Consiglio: è possibile creare una configurazione CSS specifica con l'ID sorgente. (#sourceId-[SOURCEID])",
+        "jsHint": "Consiglio: Hai accesso alle variabili seguenti: html, novelName, chapterName, sourceId, chapterId, novelId",
+        "clearCustomCSS": "Are you sure? Your custom CSS would be reset.",
+        "clearCustomJS": "Are you sure? Your custom JS would be reset."
       },
       "browseSettings": "Impostazioni Esplora",
       "browseSettingsScreen": {
@@ -214,7 +217,7 @@
     "statusDistribution": "Distribuzione dello stato"
   },
   "globalSearch": {
-    "searchIn": "Cerca un romanzo in",
+    "searchIn": "Cerca una novel in",
     "allSources": "Tutte le fonti",
     "pinnedSources": "Fonti fissate"
   },
@@ -235,7 +238,7 @@
     "editCategories": "Rinomina categoria",
     "setCategories": "Imposta categorie",
     "header": "Modifica categorie",
-    "emptyMsg": "Non hai categorie. Tocca il pulsante più per crearne una per organizzare la tua libreria",
+    "emptyMsg": "Non hai categorie. Tocca il pulsante + per crearne una per organizzare la tua libreria",
     "setModalEmptyMsg": "Non hai categorie. Tocca il pulsante Modifica per crearne una per organizzare la tua libreria",
     "deleteModal": {
       "header": "Elimina categoria",
