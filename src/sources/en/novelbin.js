@@ -2,8 +2,8 @@ import { fetchHtml } from '@utils/fetch/fetch';
 import * as cheerio from 'cheerio';
 
 const sourceId = 3;
-const baseUrl = 'https://fastnovel.org';
-const searchUrl = 'https://fastnovel.org/search/';
+const baseUrl = 'https://novelbin.org';
+const searchUrl = 'https://novelbin.org/search/';
 
 const popularNovels = async page => {
   const url = `${baseUrl}/sort/p/?page=${page}`;
@@ -42,7 +42,7 @@ const parseNovelAndChapters = async novelUrl => {
 
   let novel = {
     sourceId,
-    sourceName: 'FastNovel',
+    sourceName: 'NovelBin',
     url,
     novelUrl,
   };
@@ -158,11 +158,11 @@ const searchNovels = async searchTerm => {
   return novels;
 };
 
-const fastNovelScraper = {
+const NovelBinScraper = {
   popularNovels,
   parseNovelAndChapters,
   parseChapter,
   searchNovels,
 };
 
-export default fastNovelScraper;
+export default NovelBinScraper;
