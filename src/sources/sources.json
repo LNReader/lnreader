@@ -603,10 +603,10 @@
   },
   {
     "sourceId": 101,
-    "url": "AsuraLightNovelScraper",
-    "sourceName": "Asura Light Novel",
-    "icon": "https://asuralightnovel.com/wp-content/uploads/2021/06/favicon-asura-2.png",
-    "lang": "English"
+    "url": "https://ar-mtl.club/",
+    "sourceName": "ArMTL",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/icons/multisrc/madara/icons/armtl.png?raw=true",
+    "lang": "Arabic"
   },
   {
     "sourceId": 103,
@@ -1027,5 +1027,12 @@
     "url": "https://freedlit.space/",
     "lang": "Russian",
     "icon": "https://freedlit.space/images/fav/apple-touch-icon.png"
+  },
+  {
+    "sourceId": 169,
+    "url": "AsuraLightNovelScraper",
+    "sourceName": "Asura Light Novel",
+    "icon": "https://asuralightnovel.com/wp-content/uploads/2021/06/favicon-asura-2.png",
+    "lang": "English"
   }
 ]

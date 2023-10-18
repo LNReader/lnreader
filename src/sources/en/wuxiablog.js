@@ -156,9 +156,40 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 };
 
 const searchNovels = async searchTerm => {
-  showToast('Search is not available in this source');
+  const url = `${baseUrl}?search=${searchTerm}`;
 
-  return;
+  const result = await fetch(url);
+  const body = await result.text();
+
+  const loadedCheerio = cheerio.load(body);
+
+  let novels = [];
+
+  loadedCheerio('#table')
+    .find('tr')
+    .each(function () {
+      const novelName = loadedCheerio(this).find('a').text().trim();
+
+      if (novelName) {
+        const novelCover = loadedCheerio(this).find('img').attr('src');
+
+        let novelUrl = loadedCheerio(this)
+          .find('a')
+          .attr('href')
+          .replace(baseUrl + 'book/', '');
+
+        const novel = {
+          sourceId,
+          novelName,
+          novelCover,
+          novelUrl,
+        };
+
+        novels.push(novel);
+      }
+    });
+
+  return novels;
 };
 
 const WuxiaBlogScraper = {

@@ -31,6 +31,7 @@ import LNMTLScraper from './en/lnmtl';
 import LightNovelFullScraper from './en/lightnovelfull';
 import {
   AsuraLightNovelScraper,
+  ArMTLScraper,
   BoxNovelScraper,
   ClickNovelScraper,
   DaoNovelScraper,
@@ -275,7 +276,7 @@ export const sourceManager = (sourceId: number): Scraper => {
     98: LightNovelFullScraper, // @ts-ignore
     99: NovelmtScraper, // @ts-ignore
     100: LtnovelScraper, // @ts-ignore
-    101: AsuraLightNovelScraper, // @ts-ignore
+    101: ArMTLScraper, // @ts-ignore
     103: SakuraNovelScraper, // @ts-ignore
     104: Novel4UpScraper, // @ts-ignore
     107: TeamXNovelScraper, // @ts-ignore
@@ -336,6 +337,7 @@ export const sourceManager = (sourceId: number): Scraper => {
     166: NOVAScraper, // @ts-ignore
     167: SmakolykyTlScraper, // @ts-ignore
     168: LitSpaceScraper, // @ts-ignore
+    169: AsuraLightNovelScraper, // @ts-ignore
   };
 
   return scrapers[sourceId];
