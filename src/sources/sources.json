@@ -1027,5 +1027,11 @@
     "url": "https://freedlit.space/",
     "lang": "Russian",
     "icon": "https://freedlit.space/images/fav/apple-touch-icon.png"
-  }
+  },  {
+    "sourceId": 169,
+    "url": "https://www.fannovel.com/",
+    "sourceName": "fannovel.com",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/icons/multisrc/readwn/icons/novelmt.png?raw=true",
+    "lang": "English"
+  },
 ]

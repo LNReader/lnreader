@@ -121,6 +121,7 @@ import {
   LtnovelScraper,
   NovelmtScraper,
   ReadwnScraper,
+  fanovelScraper,
 } from './multisrc/readwn/ReadwnGenerator';
 import SakuraNovelScraper from './id/sakuranovel';
 
@@ -336,6 +337,7 @@ export const sourceManager = (sourceId: number): Scraper => {
     166: NOVAScraper, // @ts-ignore
     167: SmakolykyTlScraper, // @ts-ignore
     168: LitSpaceScraper, // @ts-ignore
+    169: fanovelScraper,
   };
 
   return scrapers[sourceId];
