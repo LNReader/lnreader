@@ -204,6 +204,10 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 
   let isWattpad = result.url.toLowerCase().includes('wattpad');
 
+  let isBlossomTranslation = result.url
+    .toLowerCase()
+    .includes('blossomtranslation');
+
   let isLightNovelsTls = result.url
     .toLowerCase()
     .includes('lightnovelstranslations');
@@ -257,6 +261,8 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     chapterText = loadedCheerio('.reader-content').html();
   } else if (isLightNovelsTls) {
     chapterText = loadedCheerio('.text_story').html();
+  } else if (isBlossomTranslation) {
+    chapterText = loadedCheerio('.manga-child-content').html();
   } else if (isiNovelTranslation) {
     const link = 'https://api.' + result.url.slice(8);
     const json = await fetchApi({
