@@ -130,8 +130,10 @@ const parseNovelAndChapters = async novelUrl => {
 };
 
 const parseChapter = async (novelUrl, chapterUrl) => {
-  let chapterName, chapterText, hasNextPage;
-  let pageNumber = 1;
+  const body = await fetchHtml({ url: chapterUrl, sourceId });
+  const pageCheerio = cheerio.load(body);
+  let pageText;
+  // let hasNextPage, pageNumber = 1;
 
   /*
    * TODO: Maybe there are other ways to get the translation table
@@ -244,67 +246,64 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     '': '裸',
   };
 
-  const addPage = async pageCheerio => {
-    let pageText;
+  // const addPage = async pageCheerio => {
 
-    const formatPage = async () => {
-      // Remove JS
-      pageCheerio('#acontent .cgo').remove();
+  const formatPage = async () => {
+    // Remove JS
+    pageCheerio('#ccacontent .cgo').remove();
 
-      // Load lazyloaded images
-      pageCheerio('#acontent img.imagecontent').each(function () {
-        // Sometimes images are either in data-src or src
-        const imgSrc =
-          pageCheerio(this).attr('data-src') || pageCheerio(this).attr('src');
-        if (imgSrc) {
-          // The original CDN URL is locked behind a CF-like challenge, switch the URL to bypass that
-          // There are no react-native-url-polyfill lib, can't use URL API
-          const regex = /\/\/.+\.com\//;
-          const imgUrl = imgSrc.replace(regex, '//img.linovelib.com/');
-          // Clean up img element
-          pageCheerio(this)
-            .attr('src', imgUrl)
-            .removeAttr('data-src')
-            .removeClass('lazyload');
-        }
-      });
+    // Load lazyloaded images
+    pageCheerio('#ccacontent img.imagecontent').each(function () {
+      // Sometimes images are either in data-src or src
+      const imgSrc =
+        pageCheerio(this).attr('data-src') || pageCheerio(this).attr('src');
+      if (imgSrc) {
+        // The original CDN URL is locked behind a CF-like challenge, switch the URL to bypass that
+        // There are no react-native-url-polyfill lib, can't use URL API
+        const regex = /\/\/.+\.com\//;
+        const imgUrl = imgSrc.replace(regex, '//img.linovelib.com/');
+        // Clean up img element
+        pageCheerio(this)
+          .attr('src', imgUrl)
+          .removeAttr('data-src')
+          .removeClass('lazyload');
+      }
+    });
 
-      // Recover the original character
-      pageText = pageCheerio('#acontent').html();
-      pageText = pageText.replace(/./g, char => mapping_dict[char] || char);
+    // Recover the original character
+    pageText = pageCheerio('#ccacontent').html();
+    pageText = pageText.replace(/./g, char => mapping_dict[char] || char);
 
-      return Promise.resolve();
-    };
-
-    await formatPage();
-    chapterName ??=
-      pageCheerio('#atitle + h3').text() +
-      ' — ' +
-      pageCheerio('#atitle').text();
-    chapterText += pageText;
+    return Promise.resolve();
   };
 
-  const loadPage = async url => {
-    const body = await fetchHtml({ url, sourceId });
-    const pageCheerio = cheerio.load(body);
-    addPage(pageCheerio);
-    pageHasNextPage =
-      pageCheerio('#footlink > a[onclick$=ReadParams.url_next;]').text() ===
-      '下一页'
-        ? true
-        : false;
-    return { pageCheerio, pageHasNextPage };
-  };
+  await formatPage();
+  const chapterName =
+    pageCheerio('#atitle + h3').text() + ' — ' + pageCheerio('#atitle').text();
+  const chapterText = pageText;
+  // };
 
-  let url = chapterUrl;
-  do {
-    const page = await loadPage(url);
-    hasNextPage = page.pageHasNextPage;
-    if (hasNextPage === true) {
-      pageNumber++;
-      url = chapterUrl.replace(/\.html/gi, `_${pageNumber}` + '.html');
-    }
-  } while (hasNextPage === true);
+  // const loadPage = async url => {
+  //   const body = await fetchHtml({ url, sourceId });
+  //   const pageCheerio = cheerio.load(body);
+  //   addPage(pageCheerio);
+  //   pageHasNextPage =
+  //     pageCheerio('#footlink > a[onclick$=ReadParams.url_next;]').text() ===
+  //     '下一页'
+  //       ? true
+  //       : false;
+  //   return { pageCheerio, pageHasNextPage };
+  // };
+
+  // let url = chapterUrl;
+  // do {
+  //   const page = await loadPage(url);
+  //   hasNextPage = page.pageHasNextPage;
+  //   if (hasNextPage === true) {
+  //     pageNumber++;
+  //     url = chapterUrl.replace(/\.html/gi, `_${pageNumber}` + '.html');
+  //   }
+  // } while (hasNextPage === true);
 
   const chapter = {
     sourceId,
