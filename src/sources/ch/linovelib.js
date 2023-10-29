@@ -148,8 +148,8 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     '': '不',
     '': '好',
     '': '个',
-    '': '来',
-    '': '大',
+    '': '开',
+    '': '样',
     '': '子',
     '': '说',
     '': '年',
@@ -165,8 +165,8 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     '': '舔',
     '': '他',
     '': '只',
-    '': '成',
-    '': '事',
+    '': '看',
+    '': '来',
     '': '用',
     '': '道',
     '': '种',
@@ -175,11 +175,11 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     '': '肉',
     '': '胸',
     '': '淫',
-    '': '射',
+    '': '性',
     '': '骚',
     '”': '」',
     '': '的',
-    '': '了',
+    '': '当',
     '': '人',
     '': '有',
     '': '上',
@@ -198,13 +198,13 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     '': '多',
     '': '心',
     '': '都',
-    '': '看',
-    '': '当',
-    '': '发',
-    '': '把',
+    '': '成',
+    '': '了',
+    '': '把',
+    '': '发',
     '': '第',
     '': '想',
-    '': '开',
+    '': '事',
     '': '阴',
     '': '欲',
     '': '交',
@@ -226,7 +226,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     '': '要',
     '': '也',
     '': '后',
-    '': '会',
+    '': '没',
     '': '下',
     '': '天',
     '': '对',
@@ -237,12 +237,12 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     '': '没',
     '': '如',
     '': '还',
-    '': '样',
+    '': '大',
     '': '作',
     '': '美',
     '': '液',
     '': '呻',
-    '': '性',
+    '': '射',
     '': '穴',
     '': '么',
     '': '裸',
@@ -314,11 +314,11 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     chapterName,
     chapterText,
   };
-
+  console.log(chapter);
   return chapter;
 };
 
-const searchNovels = async (searchTerm, page) => {
+const searchNovels = async searchTerm => {
   const url = `${baseUrl}/search.html?searchkey=` + encodeURI(searchTerm);
   const body = await fetchHtml({ url, sourceId });
   console.log(url);
