@@ -1,4 +1,6 @@
+import { showToast } from '@hooks/showToast';
 import { fetchHtml } from '@utils/fetch/fetch';
+
 import * as cheerio from 'cheerio';
 
 const sourceId = 165;
@@ -319,7 +321,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 const searchNovels = async searchTerm => {
   const url = `${baseUrl}/search.html?searchkey=` + encodeURI(searchTerm);
   const body = await fetchHtml({ url, sourceId });
-
+  console.log(url);
   const loadedCheerio = cheerio.load(body);
 
   const novels = [];
@@ -335,25 +337,38 @@ const searchNovels = async searchTerm => {
           .attr('data-src');
         novelUrl = baseUrl + novelUrl;
 
-        const novel = {
-          url: novelUrl,
-          name: novelName,
-          cover: novelCover,
-        };
+        const novel = { sourceId, novelUrl, novelName, novelCover };
 
         novels.push(novel);
       }
     });
   };
 
-  const novelResults = loadedCheerio('.book-ol .book-layout');
+  const novelResults = loadedCheerio('.book-ol a.book-layout');
 
   if (novelResults.length === 0) {
-    // console.log('Challenge');
+    showToast('Bypass check by searching in Webview');
   } else {
     loadSearchResults();
   }
 
+  const singlenovel = loadedCheerio('div.book-layout');
+
+  if (singlenovel.length !== 0) {
+    novels.length = 0;
+    const novelName = loadedCheerio('#bookDetailWrapper .book-title').text();
+
+    const novelCover = loadedCheerio('#bookDetailWrapper img.book-cover').attr(
+      'src',
+    );
+    const novelUrl =
+      baseUrl +
+      loadedCheerio('#btnReadBook').attr('href').slice(0, -8) +
+      '.html';
+    const novel = { sourceId, novelUrl, novelName, novelCover };
+    novels.push(novel);
+  }
+  console.log(novels);
   return novels;
 };
 
