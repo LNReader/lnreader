@@ -36,11 +36,31 @@ const initPlugin = (rawCode: string, path?: string) => {
     const plugin: Plugin = Function(
       'require',
       'module',
-      `const exports = module.exports = {}; ${rawCode}; return module.exports`,
+      `const exports = module.exports = {}; 
+      ${rawCode}; 
+      return exports.default`,
     )(_require, {});
     plugin.path = path || `${PluginDownloadFolder}/${plugin.id}.js`;
+    plugin.rawCode = rawCode;
+    plugin.updateUserAgent = async function (newUserAgent) {
+      this.userAgent = newUserAgent;
+      this.rawCode = this.rawCode.replace(
+        /(userAgent\s*=\s*)(["'`].*["'`])/,
+        `$1"${newUserAgent}"`,
+      );
+      await RNFS.writeFile(this.path, this.rawCode, 'utf8');
+    };
+    plugin.updateCookieString = async function (newCookieString) {
+      this.cookieString = newCookieString;
+      this.rawCode = this.rawCode.replace(
+        /(cookieString\s*=\s*)(["'`].*["'`])/,
+        `$1"${newCookieString}"`,
+      );
+      await RNFS.writeFile(this.path, this.rawCode, 'utf8');
+    };
     return plugin;
   } catch (e) {
+    console.log(e);
     return undefined;
   }
 };
@@ -124,9 +144,9 @@ const collectPlugins = async () => {
 
 const fetchPlugins = async () => {
   // plugins host
-  const githubUsername = 'LNReader';
-  const githubRepository = 'lnreader-sources';
-  const githubBranch = 'plugins';
+  const githubUsername = 'nyagami';
+  const githubRepository = 'plugins';
+  const githubBranch = 'plugin-class';
 
   const availablePlugins: Record<Languages, Array<PluginItem>> = await fetch(
     `https://raw.githubusercontent.com/${githubUsername}/${githubRepository}/${githubBranch}/dist/${githubUsername}/plugins.min.json`,
