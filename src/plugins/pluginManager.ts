@@ -144,9 +144,9 @@ const collectPlugins = async () => {
 
 const fetchPlugins = async () => {
   // plugins host
-  const githubUsername = 'nyagami';
-  const githubRepository = 'plugins';
-  const githubBranch = 'plugin-class';
+  const githubUsername = 'LNReader';
+  const githubRepository = 'lnreader-sources';
+  const githubBranch = 'plugins';
 
   const availablePlugins: Record<Languages, Array<PluginItem>> = await fetch(
     `https://raw.githubusercontent.com/${githubUsername}/${githubRepository}/${githubBranch}/dist/${githubUsername}/plugins.min.json`,
