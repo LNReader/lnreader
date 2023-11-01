@@ -1,192 +1,179 @@
-import * as cheerio from 'cheerio';
-import { defaultCoverUri, Status } from '../helpers/constants';
-import { fetchHtml } from '@utils/fetch/fetch';
+const cheerio = require("cheerio");
+const { parseRelativeDate } = require("../../utils");
 
-const sourceId = 23;
-const sourceName = 'TuNovelaLigera';
+const sourceId = 101;
 
-const baseUrl = 'https://tunovelaligera.com/';
+const sourceName = "TuNovelaLigera";
 
-const popularNovels = async page => {
-  let url = `${baseUrl}novelas/page/${page}/?m_orderby=rating`;
+const baseUrl = "https://tunovelaligera.com/";
 
-  const body = await fetchHtml({ url });
+const popularNovels = async (page) => {
+  let url = baseUrl + "lista-novelas/";
 
-  let loadedCheerio = cheerio.load(body);
+  const totalPages = 1;
+  let result = [];
 
-  let novels = [];
+  try {
+    let data = await axios.get(url);
+    let $ = cheerio.load(data.data);
 
-  loadedCheerio('.page-item-detail').each(function () {
-    const novelName = loadedCheerio(this).find('.h5 > a').text();
-    const novelCoverImg = loadedCheerio(this).find('img');
-    const novelCover =
-      novelCoverImg.attr('src') || novelCoverImg.attr('data-cfsrc');
+    $("div.listnovel-item").each(function (resultNumber, element) {
+      if (resultNumber < 50) {
+        const novelName = $(element).find("h3").text().trim();
+        const novelCover = $(element).find("img").attr("src");
 
-    let novelUrl = loadedCheerio(this)
-      .find('.h5 > a')
-      .attr('href')
-      .split('/')[4];
-    novelUrl += '/';
+        let novelUrl = $(element).find("a").attr("href").split("/")[4] + "/";
 
-    const novel = {
-      sourceId,
-      novelName,
-      novelCover,
-      novelUrl,
-    };
+        const novel = {
+          sourceId,
+          novelName,
+          novelCover,
+          novelUrl,
+        };
 
-    novels.push(novel);
-  });
+        result.push(novel);
+      }
+    });
+  } catch (error) {
+    console.error(error);
+  }
 
-  return { novels };
+  return { result, totalPages };
 };
 
-const parseNovelAndChapters = async novelUrl => {
-  const url = `${baseUrl}novelas/${novelUrl}`;
+const parseNovelAndChapters = async (novelUrl) => {
+  const url = baseUrl + "novel/" + novelUrl;
 
-  const body = await fetchHtml({ url });
+  let novel = {};
 
-  let loadedCheerio = cheerio.load(body);
+  try {
+    const result = await axios.get(url);
+    const $ = cheerio.load(result.data);
 
-  let novel = {
-    sourceId,
-    sourceName,
-    url,
-    novelUrl,
-  };
+    novel.sourceId = sourceId;
 
-  loadedCheerio('.manga-title-badges').remove();
+    novel.sourceName = sourceName;
 
-  novel.novelName = loadedCheerio('.post-title > h1').text().trim();
+    novel.url = url;
 
-  let novelCover = loadedCheerio('.summary_image img');
+    novel.novelUrl = novelUrl;
 
-  novel.novelCover =
-    novelCover.attr('data-src') ||
-    novelCover.attr('src') ||
-    novelCover.attr('data-cfsrc') ||
-    defaultCoverUri;
+    novel.novelName = $("h1.entry-title").text().trim();
 
-  loadedCheerio('.post-content_item').each(function () {
-    const detailName = loadedCheerio(this)
-      .find('.summary-heading > h5')
-      .text()
-      .trim();
-    const detail = loadedCheerio(this).find('.summary-content').text().trim();
+    novel.novelCover =
+      $("div.summary_image > a > img").attr("data-lazy-src") ||
+      $("div.summary_image > a > img").attr("src");
 
-    switch (detailName) {
-      case 'Generos':
-        novel.genre = detail.replace(/, /g, ',');
-        break;
-      case 'Autores':
-        novel.author = detail;
-        break;
-      case 'Estado':
-        novel.status =
-          detail.includes('OnGoing') || detail.includes('Updating')
-            ? Status.ONGOING
-            : Status.COMPLETED;
-        break;
-    }
-  });
+    novel.summary = $("div.summary__content").text().trim();
 
-  novel.summary = loadedCheerio('div.summary__content > p').text().trim();
+    novel.genre =
+      $("div.genres-content > a")
+        .map(function () {
+          return $(this).text().trim();
+        })
+        .get()
+        .join(",") || "";
 
-  let novelChapters = [];
+    novel.author =
+      $("div.author-content > a")
+        .map(function () {
+          return $(this).text().trim();
+        })
+        .get()
+        .join(",") || "";
 
-  const novelId =
-    loadedCheerio('.rating-post-id').attr('value') ||
-    loadedCheerio('#manga-chapters-holder').attr('data-id');
+    novel.status =
+      $("div.post-status > div:nth-child(2) > div.summary-content")
+        .text()
+        .trim() || "Ongoing";
 
-  let formData = new FormData();
-  formData.append('action', 'manga_get_chapters');
-  formData.append('manga', novelId);
+    let novelChapters = [];
 
-  const text = await fetchHtml({
-    url: 'https://tunovelaligera.com/wp-admin/admin-ajax.php',
-    init: {
-      method: 'POST',
-      body: formData,
-    },
-  });
+    const data = await axios.get(url + "ajax/chapters/");
+    $ = cheerio.load(data.data);
 
-  loadedCheerio = cheerio.load(text);
+    $(".wp-manga-chapter").each(function () {
+      const chapterName = $(this).find("a").text().trim();
+      const releaseDate = parseRelativeDate(
+        $(this).find("span.chapter-release-date i").text().trim()
+      );
+      const chapterUrl = $(this).find("a").attr("href");
 
-  loadedCheerio('.wp-manga-chapter').each(function () {
-    const chapterName = loadedCheerio(this)
-      .find('a')
-      .text()
-      .replace(/[\t\n]/g, '')
-      .trim();
+      novelChapters.push({ chapterName, releaseDate, chapterUrl });
+    });
 
-    const releaseDate = loadedCheerio(this).find('span').text().trim();
-
-    let chapterUrl = loadedCheerio(this).find('a').attr('href').split('/');
-
-    chapterUrl[6]
-      ? (chapterUrl = chapterUrl[5] + '/' + chapterUrl[6])
-      : (chapterUrl = chapterUrl[5]);
-
-    novelChapters.push({ chapterName, releaseDate, chapterUrl });
-  });
-
-  novel.chapters = novelChapters.reverse();
+    novel.chapters = novelChapters.reverse();
+  } catch (error) {
+    console.error(error);
+  }
 
   return novel;
 };
 
 const parseChapter = async (novelUrl, chapterUrl) => {
-  const url = `${baseUrl}novelas/${novelUrl}/${chapterUrl}`;
+  const url = chapterUrl;
 
-  const body = await fetchHtml({ url });
+  try {
+    const result = await axios.get(url);
+    const $ = cheerio.load(result.data);
 
-  let loadedCheerio = cheerio.load(body);
+    let chapterName;
+    let chapterText;
+    let nextChapter;
+    let prevChapter;
 
-  let chapterName = loadedCheerio('h1#chapter-heading').text();
+    chapterName = $(".breadcrumb li.active").text().trim();
 
-  let chapterText = loadedCheerio('.text-left').html();
-  novelUrl = novelUrl + '/';
+    chapterText =
+      $(".reading-content p")
+        .map(function () {
+          return $(this).html();
+        })
+        .get()
+        .join("<br/>") || "";
 
-  const chapter = {
-    sourceId,
-    novelUrl,
-    chapterUrl,
-    chapterName,
-    chapterText,
-  };
+    nextChapter =
+      $(".nav-next a").attr("href") === undefined
+        ? null
+        : $(".nav-next a").attr("href");
+    
+    prevChapter =
+      $(".nav-previous a").attr("href") === undefined
+        ? null
+        : $(".nav-previous a").attr("href");
 
-  return chapter;
+    return { chapterName, chapterText, nextChapter, prevChapter };
+  } catch (error) {
+    console.error(error);
+  }
 };
 
-const searchNovels = async searchTerm => {
-  const url = `${baseUrl}?s=${searchTerm}&post_type=wp-manga`;
+const searchNovels = async (searchTerm) => {
+  const searchUrl =
+    baseUrl + "?s=" + searchTerm + "&post_type=wp-manga&author=&artist=&release=";
 
-  const body = await fetchHtml({ url });
+  let result;
+  let novelsList;
 
-  let loadedCheerio = cheerio.load(body);
+  try {
+    result = await axios.get(searchUrl);
+    
+    if (result.status === 200) {
+      novelsList =
+        result.data.results !== undefined
+          ? result.data.results.map((item) => ({
+              sourceId,
+              novelName: item.title,
+              novelCover: item.image,
+              novelUrl: item.url.split("/")[4] + "/",
+            }))
+          : [];
+    }
+  } catch (error) {
+    console.error(error);
+  }
 
-  let novels = [];
-
-  loadedCheerio('.c-tabs-item__content').each(function () {
-    const novelName = loadedCheerio(this).find('.h4 > a').text();
-    const novelCoverImg = loadedCheerio(this).find('img');
-    const novelCover =
-      novelCoverImg.attr('src') ?? novelCoverImg.attr('data-cfsrc');
-
-    let novelUrl = loadedCheerio(this).find('.h4 > a').attr('href');
-    novelUrl = novelUrl.replace(`${baseUrl}novelas/`, '');
-
-    const novel = {
-      sourceId,
-      novelName,
-      novelCover,
-      novelUrl,
-    };
-
-    novels.push(novel);
-  });
-
-  return novels;
+  return novelsList;
 };
 
 const TuNovelaLigeraScraper = {
@@ -196,4 +183,4 @@ const TuNovelaLigeraScraper = {
   searchNovels,
 };
 
-export default TuNovelaLigeraScraper;
+module.exports = TuNovelaLigeraScraper;
