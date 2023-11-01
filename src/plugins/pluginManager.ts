@@ -45,7 +45,7 @@ const initPlugin = (rawCode: string, path?: string) => {
     plugin.updateUserAgent = async function (newUserAgent) {
       this.userAgent = newUserAgent;
       this.rawCode = this.rawCode.replace(
-        /(userAgent\s*=\s*)(["'`].*["'`])/,
+        /(userAgent\s*=\s*)([^\n;]*)/,
         `$1"${newUserAgent}"`,
       );
       await RNFS.writeFile(this.path, this.rawCode, 'utf8');
@@ -53,7 +53,7 @@ const initPlugin = (rawCode: string, path?: string) => {
     plugin.updateCookieString = async function (newCookieString) {
       this.cookieString = newCookieString;
       this.rawCode = this.rawCode.replace(
-        /(cookieString\s*=\s*)(["'`].*["'`])/,
+        /(cookieString\s*=\s*)([^\n;]*)/,
         `$1"${newCookieString}"`,
       );
       await RNFS.writeFile(this.path, this.rawCode, 'utf8');
