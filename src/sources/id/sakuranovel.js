@@ -101,7 +101,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   let loadedCheerio = cheerio.load(body);
 
   const chapterName = loadedCheerio('.title-chapter').text();
-  const chapterText = loadedCheerio('.readers').html();
+  const chapterText = loadedCheerio('.reader-setting').next().next().html();
 
   const chapter = {
     sourceId,
