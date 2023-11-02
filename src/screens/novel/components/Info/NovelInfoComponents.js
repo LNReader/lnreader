@@ -8,6 +8,7 @@ import {
   Dimensions,
   StatusBar,
 } from 'react-native';
+import RNFetchBlob from 'rn-fetch-blob';
 import color from 'color';
 import { IconButton, Portal } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -16,6 +17,7 @@ import FastImage from 'react-native-fast-image';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { Chip } from '../../../../components';
 import { coverPlaceholderColor } from '../../../../theme/colors';
+import { showToast } from '@hooks/showToast';
 
 const NovelInfoContainer = ({ children }) => (
   <View style={styles.novelInfoContainer}>{children}</View>
@@ -69,17 +71,41 @@ const NovelThumbnail = ({ source, theme, setCustomNovelCover }) => {
   } else {
     return (
       <Portal>
-        <IconButton
-          icon="pencil-outline"
+        <View
           style={{
             position: 'absolute',
             top: StatusBar.currentHeight + 10,
             right: 10,
             zIndex: 10,
+            flexDirection: 'row',
           }}
-          iconColor={theme.onBackground}
-          onPress={setCustomNovelCover}
-        />
+        >
+          <IconButton
+            icon="pencil-outline"
+            iconColor={theme.onBackground}
+            onPress={setCustomNovelCover}
+          />
+          <IconButton
+            icon="content-save-outline"
+            iconColor={theme.onBackground}
+            onPress={() => {
+              RNFetchBlob.config({
+                fileCache: true,
+                addAndroidDownloads: {
+                  useDownloadManager: true,
+                  notification: true,
+                  path:
+                    RNFetchBlob.fs.dirs.DownloadDir +
+                    '/' +
+                    source.uri.split('/').pop(),
+                  description: 'Image',
+                },
+              })
+                .fetch('GET', source.uri)
+                .then(() => showToast('Cover saved'));
+            }}
+          />
+        </View>
         <Pressable
           style={{
             position: 'absolute',
