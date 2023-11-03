@@ -18,6 +18,7 @@ module.exports = function (api) {
             '@utils': './src/utils',
             '@theme': './src/theme',
             '@navigators': './src/navigators',
+            '@native': './src/native',
           },
         },
       ],

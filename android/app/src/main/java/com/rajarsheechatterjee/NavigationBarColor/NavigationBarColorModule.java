@@ -1,21 +1,18 @@
-package com.rajarsheechatterjee.LNReader;
+package com.rajarsheechatterjee.NavigationBarColor;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
-import android.annotation.TargetApi;
 import android.graphics.Color;
 import android.os.Build;
 import android.app.Activity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import androidx.annotation.UiThread;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
-import com.facebook.react.bridge.UiThreadUtil;
 import com.facebook.react.bridge.WritableMap;
 import java.util.HashMap;
 import java.util.Map;
