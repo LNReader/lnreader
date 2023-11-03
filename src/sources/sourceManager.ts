@@ -29,6 +29,7 @@ import ScribbleHubScraper from './en/scribblehub';
 import SyosetuScraper from './jp/syosetu';
 import LNMTLScraper from './en/lnmtl';
 import LightNovelFullScraper from './en/lightnovelfull';
+import ICantReadJPTLScraper from './en/icantreadjapanese';
 import {
   AsuraLightNovelScraper,
   ArMTLScraper,
@@ -338,6 +339,7 @@ export const sourceManager = (sourceId: number): Scraper => {
     167: SmakolykyTlScraper, // @ts-ignore
     168: LitSpaceScraper, // @ts-ignore
     169: AsuraLightNovelScraper, // @ts-ignore
+    170: ICantReadJPTLScraper, // @ts-ignore
   };
 
   return scrapers[sourceId];

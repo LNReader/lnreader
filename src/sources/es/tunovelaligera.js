@@ -1,6 +1,7 @@
 import * as cheerio from 'cheerio';
 import { defaultCoverUri, Status } from '../helpers/constants';
 import { fetchHtml } from '@utils/fetch/fetch';
+import { showToast } from '@hooks/showToast';
 
 const sourceId = 23;
 const sourceName = 'TuNovelaLigera';
@@ -92,51 +93,46 @@ const parseNovelAndChapters = async novelUrl => {
 
   novel.summary = loadedCheerio('div.summary__content > p').text().trim();
 
-  let novelChapters = [];
+  const delay = ms => new Promise(res => setTimeout(res, ms));
+  let lastPage = 1;
+  lastPage = loadedCheerio('.lcp_paginator li:last').prev().text().trim();
 
-  const novelId =
-    loadedCheerio('.rating-post-id').attr('value') ||
-    loadedCheerio('#manga-chapters-holder').attr('data-id');
+  const getChapters = async () => {
+    let novelChapters = [];
+    for (let i = 1; i <= lastPage; i++) {
+      const chaptersUrl = `${baseUrl}novelas/${novelUrl}?lcp_page0=${i}`;
+      showToast(`Getting Chapters Page ${i}/${lastPage}...`);
+      const chaptersHtml = await fetchHtml({
+        url: chaptersUrl,
+        sourceId,
+      });
 
-  let formData = new FormData();
-  formData.append('action', 'manga_get_chapters');
-  formData.append('manga', novelId);
+      loadedCheerio = cheerio.load(chaptersHtml);
+      loadedCheerio('.lcp_catlist li').each((i, el) => {
+        const chapterName = loadedCheerio(el)
+          .find('a')
+          .text()
+          .replace(/[\t\n]/g, '')
+          .trim();
 
-  const text = await fetchHtml({
-    url: 'https://tunovelaligera.com/wp-admin/admin-ajax.php',
-    init: {
-      method: 'POST',
-      body: formData,
-    },
-  });
+        const releaseDate = loadedCheerio(el).find('span').text().trim();
 
-  loadedCheerio = cheerio.load(text);
+        const chapterUrl = loadedCheerio(el).find('a').attr('href');
 
-  loadedCheerio('.wp-manga-chapter').each(function () {
-    const chapterName = loadedCheerio(this)
-      .find('a')
-      .text()
-      .replace(/[\t\n]/g, '')
-      .trim();
+        novelChapters.push({ chapterName, releaseDate, chapterUrl });
+      });
+      await delay(1000);
+    }
+    return novelChapters.reverse();
+  };
 
-    const releaseDate = loadedCheerio(this).find('span').text().trim();
-
-    let chapterUrl = loadedCheerio(this).find('a').attr('href').split('/');
-
-    chapterUrl[6]
-      ? (chapterUrl = chapterUrl[5] + '/' + chapterUrl[6])
-      : (chapterUrl = chapterUrl[5]);
-
-    novelChapters.push({ chapterName, releaseDate, chapterUrl });
-  });
-
-  novel.chapters = novelChapters.reverse();
+  novel.chapters = await getChapters();
 
   return novel;
 };
 
 const parseChapter = async (novelUrl, chapterUrl) => {
-  const url = `${baseUrl}novelas/${novelUrl}/${chapterUrl}`;
+  const url = chapterUrl;
 
   const body = await fetchHtml({ url });
 
@@ -144,7 +140,8 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 
   let chapterName = loadedCheerio('h1#chapter-heading').text();
 
-  let chapterText = loadedCheerio('.text-left').html();
+  loadedCheerio('#hola_siguiente').next().find('div').remove();
+  let chapterText = loadedCheerio('#hola_siguiente').next().html();
   novelUrl = novelUrl + '/';
 
   const chapter = {
