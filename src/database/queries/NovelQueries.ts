@@ -241,6 +241,8 @@ export const updateNovelCategories = async (
   option: string,
 ): Promise<void> => {
   let queries: string[] = [];
+  // allow local novels have other categories, but not the revesre
+  categoryIds = categoryIds.filter(id => id !== 2);
   if (option === 'KEEP_OLD') {
     novelIds.forEach(novelId => {
       categoryIds.forEach(categoryId =>
