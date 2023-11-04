@@ -6,7 +6,7 @@ import { store } from '@redux/store';
 import { NovelInfo, ChapterInfo } from '@database/types';
 import {
   getNovel,
-  insertNovelandChapters,
+  insertNovelAndChapters,
 } from '@database/queries/NovelQueries';
 import { getChapters } from '@database/queries/ChapterQueries';
 import { downloadChapter } from '@database/queries/ChapterQueries';
@@ -64,7 +64,7 @@ export const migrateNovel = async (
       toChapters = await getChapters(toNovel.id, '', '');
     } else {
       const fetchedNovel = await fetchNovel(pluginId, toNovelUrl);
-      await insertNovelandChapters(pluginId, fetchedNovel);
+      await insertNovelAndChapters(pluginId, fetchedNovel);
       toNovel = await getNovel(toNovelUrl);
       toChapters = await getChapters(toNovel.id, '', '');
     }

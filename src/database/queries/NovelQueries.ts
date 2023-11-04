@@ -13,7 +13,7 @@ import { getString } from '@strings/translations';
 import { NovelInfo } from '../types';
 import { SourceNovel } from '@plugins/types';
 
-export const insertNovelandChapters = (
+export const insertNovelAndChapters = (
   pluginId: string,
   sourceNovel: SourceNovel,
 ): Promise<number> => {
@@ -51,7 +51,7 @@ export const getNovel = async (novelUrl: string): Promise<NovelInfo> => {
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
-        'SELECT id, * FROM Novel WHERE url = ?',
+        'SELECT * FROM Novel WHERE url = ?',
         [novelUrl],
         (txObj, { rows }) => resolve(rows.item(0)),
         txnErrorCallback,
@@ -69,6 +69,9 @@ export const switchNovelToLibrary = async (
 ) => {
   const novel = await getNovel(novelUrl);
   if (novel) {
+    if (novel.inLibrary) {
+      return;
+    }
     db.transaction(tx => {
       tx.executeSql(
         'UPDATE Novel SET inLibrary = ? WHERE id = ?',
@@ -94,7 +97,7 @@ export const switchNovelToLibrary = async (
     });
   } else {
     const sourceNovel = await fetchNovel(pluginId, novelUrl);
-    const novelId = await insertNovelandChapters(pluginId, sourceNovel);
+    const novelId = await insertNovelAndChapters(pluginId, sourceNovel);
     db.transaction(tx => {
       tx.executeSql(
         'UPDATE Novel SET inLibrary = 1 WHERE url = ?',
@@ -112,6 +115,7 @@ export const switchNovelToLibrary = async (
   }
 };
 
+// allow to delete local novels
 export const removeNovelsFromLibrary = (novelIds: Array<number>) => {
   db.transaction(tx => {
     tx.executeSql(

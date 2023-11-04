@@ -11,6 +11,7 @@ export interface NovelInfo {
   status?: NovelStatus;
   genres?: string;
   inLibrary: number;
+  isLocal: number;
 }
 
 export interface LibraryNovelInfo extends NovelInfo {
