@@ -47,13 +47,17 @@ public class EpubParser extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void parse(String epubFilePath, String epubDirPath, Promise promise) throws Exception {
-        this.rootPath = epubDirPath;
-        this.unzip(epubFilePath, epubDirPath);
-        File contentFile = this.parseContainer(epubDirPath);
-        this.contentDirPath = contentFile.getParent();
-        ReadableMap novel = this.parseContent(contentFile);
-        promise.resolve(novel);
+    public void parse(String epubFilePath, String epubDirPath, Promise promise) {
+        try{
+            this.rootPath = epubDirPath;
+            this.unzip(epubFilePath, epubDirPath);
+            File contentFile = this.parseContainer(epubDirPath);
+            this.contentDirPath = contentFile.getParent();
+            ReadableMap novel = this.parseContent(contentFile);
+            promise.resolve(novel);
+        } catch (Exception e) {
+            promise.reject(e.getCause());
+        }
     }
 
     public File parseContainer(String epubDir) throws Exception {
@@ -100,7 +104,7 @@ public class EpubParser extends ReactContextBaseJavaModule {
         if(node != null){
             String text = node.getPreviousSibling().getTextContent().trim();
             if(text.isEmpty()) text = node.getPreviousSibling().getPreviousSibling().getTextContent().trim();
-            return text;
+            return !text.isEmpty() ? text : null;
         }
         return null;
     }

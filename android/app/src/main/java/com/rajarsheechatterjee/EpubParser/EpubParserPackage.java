@@ -14,7 +14,7 @@ import java.util.List;
 public class EpubParserPackage implements ReactPackage {
     @NonNull
     @Override
-    public List<NativeModule> createNativeModules(@NonNull ReactApplicationContext reactApplicationContext) throws RuntimeException {
+    public List<NativeModule> createNativeModules(@NonNull ReactApplicationContext reactApplicationContext) {
         List<NativeModule> modules = new ArrayList<>();
         try {
             modules.add(new EpubParser(reactApplicationContext));
