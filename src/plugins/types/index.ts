@@ -47,11 +47,16 @@ export interface PluginItem {
   site: string;
   lang: Languages;
   version: string;
-  iconUrl: string;
   url: string; // the url of raw code
+  iconUrl: string;
 }
 
 export interface Plugin extends PluginItem {
+  path: string; // path in device
+  filters?: SourceFilter[];
+  userAgent: string;
+  cookieString: string;
+  rawCode: string;
   popularNovels: (
     pageNo: number,
     options?: SourceOptions,
@@ -60,10 +65,9 @@ export interface Plugin extends PluginItem {
     novelUrl: string,
     pageNo?: number,
   ) => Promise<SourceNovel>;
-  parseChapter: (chapterUrl: string) => Promise<string>; // yes, just string
+  parseChapter: (chapterUrl: string) => Promise<string>;
   searchNovels: (searchTerm: string, pageNo?: number) => Promise<NovelItem[]>;
-  fetchImage: (url: string) => Promise<string>; // base64
-  site: string;
-  path: string;
-  filters?: SourceFilter[];
+  fetchImage: (url: string) => Promise<string>;
+  updateUserAgent: (newUserAgent: string) => Promise<void>;
+  updateCookieString: (newCookieString: string) => Promise<void>;
 }

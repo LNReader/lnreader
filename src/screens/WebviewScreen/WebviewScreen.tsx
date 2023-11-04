@@ -4,22 +4,22 @@ import CookieManager from '@react-native-cookies/cookies';
 
 import { Appbar } from '@components';
 import { useTheme } from '@hooks/useTheme';
-import useSourceStorage from '@hooks/useSourceStorage';
 import { defaultUserAgentString } from '@utils/fetch/fetch';
 import { WebviewScreenProps } from '@navigators/types';
+import { getPlugin } from '@plugins/pluginManager';
 
 const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
   const theme = useTheme();
 
   const { name, pluginId, url } = route.params;
-  const { setSourceStorage } = useSourceStorage({ pluginId });
+  const plugin = getPlugin(pluginId);
 
   useEffect(() => {
     CookieManager.get(url, true).then(cookies => {
       const cloudflareCookie = cookies?.cf_clearance;
       if (cloudflareCookie) {
         const cloudflareCookieString = `${cloudflareCookie.name}=${cloudflareCookie.value}`;
-        setSourceStorage('cookies', cloudflareCookieString);
+        plugin.updateCookieString(cloudflareCookieString);
       }
     });
   }, []);

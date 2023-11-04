@@ -36,11 +36,31 @@ const initPlugin = (rawCode: string, path?: string) => {
     const plugin: Plugin = Function(
       'require',
       'module',
-      `const exports = module.exports = {}; ${rawCode}; return module.exports`,
+      `const exports = module.exports = {}; 
+      ${rawCode}; 
+      return exports.default`,
     )(_require, {});
     plugin.path = path || `${PluginDownloadFolder}/${plugin.id}.js`;
+    plugin.rawCode = rawCode;
+    plugin.updateUserAgent = async function (newUserAgent) {
+      this.userAgent = newUserAgent;
+      this.rawCode = this.rawCode.replace(
+        /(userAgent\s*=\s*)([^\n;]*)/,
+        `$1"${newUserAgent}"`,
+      );
+      await RNFS.writeFile(this.path, this.rawCode, 'utf8');
+    };
+    plugin.updateCookieString = async function (newCookieString) {
+      this.cookieString = newCookieString;
+      this.rawCode = this.rawCode.replace(
+        /(cookieString\s*=\s*)([^\n;]*)/,
+        `$1"${newCookieString}"`,
+      );
+      await RNFS.writeFile(this.path, this.rawCode, 'utf8');
+    };
     return plugin;
   } catch (e) {
+    console.log(e);
     return undefined;
   }
 };
