@@ -149,7 +149,7 @@ const fetchPlugins = async () => {
   const githubBranch = 'plugins';
 
   const availablePlugins: Record<Languages, Array<PluginItem>> = await fetch(
-    `https://raw.githubusercontent.com/${githubUsername}/${githubRepository}/${githubBranch}/dist/${githubUsername}/plugins.min.json`,
+    `https://raw.githubusercontent.com/${githubUsername}/${githubRepository}/${githubBranch}/.dist/${githubUsername}/plugins.min.json`,
   ).then(res => res.json());
   return availablePlugins;
 };
