@@ -33,6 +33,7 @@ const insertLocalNovel = (
         [name, url, cover || '', author || 'unknown'],
         async (txObj, resultSet) => {
           if (resultSet.insertId) {
+            await updateNovelCategoryById(resultSet.insertId, [2]);
             const novelDir =
               NovelDownloadFolder + '/local/' + resultSet.insertId;
             await RNFS.mkdir(novelDir);
@@ -50,7 +51,6 @@ const insertLocalNovel = (
               inLibrary: 1,
               isLocal: 1,
             });
-            await updateNovelCategoryById(resultSet.insertId, [2]);
             resolve(resultSet.insertId);
           } else {
             reject(new Error('novel insert failed'));
@@ -92,7 +92,9 @@ const insertLocalChapter = (
             chapterText = chapterText.replace(
               /(href|src)=(["'])(.*?)\2/g,
               ($0, $1, $2, $3) => {
-                staticPaths.push(epubContentDir + '/' + $3);
+                if ($3) {
+                  staticPaths.push(epubContentDir + '/' + $3);
+                }
                 return (
                   $1 +
                   '=' +
@@ -209,7 +211,7 @@ const importEpubAction = async (taskData?: TaskData) => {
     Notifications.scheduleNotificationAsync({
       content: {
         title: 'Import Epub',
-        body: 'Thành công',
+        body: 'Done',
       },
       trigger: null,
     });

@@ -55,7 +55,9 @@ public class EpubParser extends ReactContextBaseJavaModule {
             File contentFile = this.parseContainer(epubDirPath);
             this.contentDirPath = contentFile.getParent();
             WritableMap novel = (WritableMap) this.parseContent(contentFile);
-            novel.putString("cover", new File(epubDirPath, novelCover).getAbsolutePath());
+            if(novelCover != null){
+                novel.putString("cover", new File(epubDirPath, novelCover).getAbsolutePath());
+            }
             promise.resolve(novel);
         } catch (Exception e) {
             promise.reject(e.getCause());
@@ -140,7 +142,7 @@ public class EpubParser extends ReactContextBaseJavaModule {
         ZipInputStream zis = new ZipInputStream(new FileInputStream(epubFilePath));
         ZipEntry zipEntry;
         int len;
-        String novelCover = "";
+        String novelCover = null;
         byte[] buffer = new byte[4096];
         while ((zipEntry = zis.getNextEntry()) != null) {
             if(Pattern.compile(".*cover.*\\.(png|jpeg|jpg)", Pattern.CASE_INSENSITIVE).matcher(zipEntry.getName()).matches()){
