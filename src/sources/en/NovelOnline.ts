@@ -8,9 +8,9 @@ import {
 } from '../types';
 
 const sourceId = 163;
-const sourceName = 'novelsOnline';
+const sourceName = 'NovelsOnline';
 
-// const baseUrl = 'https://novelsonline.net';
+const baseUrl = 'https://novelsonline.net';
 
 const searchNovels = async (searchTerm: string) => {
   const result = await fetchHtml({
@@ -101,26 +101,32 @@ const parseNovelAndChapters = async (novelUrl: string) => {
   return novel;
 };
 
-const popularNovels = async () => {
-  return { novels: [] as SourceNovelItem[] }; /** TO DO */
-};
+const popularNovels = async (page: number) => {
+  const url = `${baseUrl}/top-novel/${page}`;
+  const result = await fetchHtml({ sourceId, url });
+  let $ = cheerio.load(result);
 
-const parseChapter = async (novelUrl: string, chapterUrl: string) => {
-  const result = await fetchHtml({ url: chapterUrl });
-  let loadedCheerio = cheerio.load(result);
+  const headers = $('div.top-novel-block');
+  return headers
+    .map((i, h) => {
+      const novelName = $(h).find('h2').text();
+      const novelUrl = $(h).find('a').attr('href');
+      const novelCover = $(h).find('img').attr('src');
 
-  const chapterName = loadedCheerio('h1').text();
-  const chapterText = loadedCheerio('#contentall').html() || '';
+      if (!novelUrl) {
+        return null;
+      }
 
-  const chapter: SourceChapter = {
-    sourceId,
-    novelUrl,
-    chapterUrl,
-    chapterName,
-    chapterText,
-  };
-
-  return chapter;
+      return {
+        sourceId,
+        novelName,
+        novelCover,
+        novelUrl,
+      } as SourceNovelItem;
+    })
+    .get()
+    .filter(sr => sr !== null);
+  //return { novels: [] as SourceNovelItem[] };
 };
 
 const NovelsOnlineScraper = {
