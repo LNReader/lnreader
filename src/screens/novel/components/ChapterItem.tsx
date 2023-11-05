@@ -26,7 +26,7 @@ interface ChapterItemProps {
   navigateToChapter: (chapter: ChapterInfo) => void;
   showProgressPercentage?: (chapter: ChapterInfo) => any;
   left?: ReactNode;
-
+  isLocal: boolean;
   isUpdateCard?: boolean;
   novelName: string;
 }
@@ -43,6 +43,7 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
   onSelectLongPress,
   navigateToChapter,
   showProgressPercentage,
+  isLocal,
   left,
   isUpdateCard,
   novelName,
@@ -124,16 +125,18 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
           </View>
         </View>
       </Row>
-      <DownloadButton
-        downloadQueue={downloadQueue}
-        chapter={chapter}
-        theme={theme}
-        deleteChapter={deleteChapter}
-        downloadChapter={downloadChapter}
-        hideDeleteChapterMenu={hideDeleteChapterMenu}
-        showDeleteChapterMenu={showDeleteChapterMenu}
-        deleteChapterMenuVisible={deleteChapterMenuVisible}
-      />
+      {!isLocal && (
+        <DownloadButton
+          downloadQueue={downloadQueue}
+          chapter={chapter}
+          theme={theme}
+          deleteChapter={deleteChapter}
+          downloadChapter={downloadChapter}
+          hideDeleteChapterMenu={hideDeleteChapterMenu}
+          showDeleteChapterMenu={showDeleteChapterMenu}
+          deleteChapterMenuVisible={deleteChapterMenuVisible}
+        />
+      )}
     </Pressable>
   );
 };

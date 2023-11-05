@@ -23,7 +23,7 @@ const NovelScreenButtonGroup: React.FC<NovelScreenButtonGroupProps> = ({
   handleFollowNovel,
   theme,
 }) => {
-  const { inLibrary } = novel;
+  const { inLibrary, isLocal } = novel;
   const { navigate } = useNavigation();
   const followButtonColor = inLibrary ? theme.primary : theme.outline;
 
@@ -98,7 +98,7 @@ const NovelScreenButtonGroup: React.FC<NovelScreenButtonGroupProps> = ({
             </Pressable>
           </View>
         ) : null}
-        {inLibrary ? (
+        {inLibrary && !isLocal && (
           <View style={styles.buttonContainer}>
             <Pressable
               android_ripple={{ color: theme.rippleColor }}
@@ -115,23 +115,25 @@ const NovelScreenButtonGroup: React.FC<NovelScreenButtonGroupProps> = ({
               </Text>
             </Pressable>
           </View>
-        ) : null}
-        <View style={styles.buttonContainer}>
-          <Pressable
-            android_ripple={{ color: theme.rippleColor }}
-            onPress={handleOpenWebView}
-            style={styles.button}
-          >
-            <MaterialCommunityIcons
-              name="earth"
-              color={theme.outline}
-              size={24}
-            />
-            <Text style={[styles.buttonLabel, { color: theme.outline }]}>
-              WebView
-            </Text>
-          </Pressable>
-        </View>
+        )}
+        {!isLocal && (
+          <View style={styles.buttonContainer}>
+            <Pressable
+              android_ripple={{ color: theme.rippleColor }}
+              onPress={handleOpenWebView}
+              style={styles.button}
+            >
+              <MaterialCommunityIcons
+                name="earth"
+                color={theme.outline}
+                size={24}
+              />
+              <Text style={[styles.buttonLabel, { color: theme.outline }]}>
+                WebView
+              </Text>
+            </Pressable>
+          </View>
+        )}
       </View>
       <Portal>
         <SetCategoryModal
