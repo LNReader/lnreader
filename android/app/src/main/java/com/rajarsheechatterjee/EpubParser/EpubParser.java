@@ -21,6 +21,7 @@ import org.w3c.dom.NodeList;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -50,10 +51,11 @@ public class EpubParser extends ReactContextBaseJavaModule {
     public void parse(String epubFilePath, String epubDirPath, Promise promise) {
         try{
             this.rootPath = epubDirPath;
-            this.unzip(epubFilePath, epubDirPath);
+            String novelCover = this.unzip(epubFilePath, epubDirPath);
             File contentFile = this.parseContainer(epubDirPath);
             this.contentDirPath = contentFile.getParent();
-            ReadableMap novel = this.parseContent(contentFile);
+            WritableMap novel = (WritableMap) this.parseContent(contentFile);
+            novel.putString("cover", new File(epubDirPath, novelCover).getAbsolutePath());
             promise.resolve(novel);
         } catch (Exception e) {
             promise.reject(e.getCause());
@@ -134,12 +136,16 @@ public class EpubParser extends ReactContextBaseJavaModule {
         return doc;
     }
 
-    public void unzip(String epubFilePath, String epubDirPath) throws Exception {
+    public String unzip(String epubFilePath, String epubDirPath) throws Exception {
         ZipInputStream zis = new ZipInputStream(new FileInputStream(epubFilePath));
         ZipEntry zipEntry;
         int len;
+        String novelCover = "";
         byte[] buffer = new byte[4096];
         while ((zipEntry = zis.getNextEntry()) != null) {
+            if(Pattern.compile(".*cover.*\\.(png|jpeg|jpg)", Pattern.CASE_INSENSITIVE).matcher(zipEntry.getName()).matches()){
+                novelCover = zipEntry.getName();
+            }
             File newFile = new File(epubDirPath, zipEntry.getName());
             newFile.getParentFile().mkdirs();
             FileOutputStream fos = new FileOutputStream(newFile);
@@ -149,5 +155,6 @@ public class EpubParser extends ReactContextBaseJavaModule {
         }
         zis.closeEntry();
         zis.close();
+        return novelCover;
     }
 }

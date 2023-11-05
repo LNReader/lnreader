@@ -17,7 +17,7 @@ import {
 
 import { Appbar, Button, List } from '@components';
 import useSourceStorage from '@hooks/useSourceStorage';
-import { parseEpub } from '@native/epubParser';
+import { importEpub } from '@services/epub/import';
 
 const AdvancedSettings = ({ navigation }) => {
   const theme = useTheme();
@@ -73,7 +73,7 @@ const AdvancedSettings = ({ navigation }) => {
           theme={theme}
         />
         <List.Item title="Clear cookies" onPress={clearCookies} theme={theme} />
-        <List.Item title="Import Epub" onPress={parseEpub} theme={theme} />
+        <List.Item title="Import Epub" onPress={importEpub} theme={theme} />
       </List.Section>
       <Portal>
         <ConfirmationDialog

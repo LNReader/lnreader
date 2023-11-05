@@ -185,14 +185,17 @@ export const restoreLibrary = async (novel: NovelInfo) => {
 export const updateNovelInfo = async (info: NovelInfo) => {
   db.transaction(tx => {
     tx.executeSql(
-      'UPDATE Novel SET name = ?, summary = ?, author = ?, artist = ?, genres = ?, status = ? WHERE id = ?',
+      'UPDATE Novel SET name = ?, cover = ?, url = ? , summary = ?, author = ?, artist = ?, genres = ?, status = ?, isLocal = ? WHERE id = ?',
       [
         info.name,
+        info.cover || '',
+        info.url,
         info.summary || '',
         info.author || '',
         info.artist || '',
         info.genres || '',
         info.status || '',
+        info.isLocal,
         info.id,
       ],
       noop,
