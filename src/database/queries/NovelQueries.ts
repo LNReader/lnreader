@@ -2,6 +2,7 @@ import * as SQLite from 'expo-sqlite';
 const db = SQLite.openDatabase('lnreader.db');
 
 import * as DocumentPicker from 'expo-document-picker';
+import * as RNFS from 'react-native-fs';
 
 import { fetchChapters, fetchNovel } from '@services/plugin/fetch';
 import { insertChapters } from './ChapterQueries';
@@ -12,6 +13,7 @@ import { noop } from 'lodash-es';
 import { getString } from '@strings/translations';
 import { NovelInfo } from '../types';
 import { SourceNovel } from '@plugins/types';
+import { NovelDownloadFolder } from '@utils/constants/download';
 
 export const insertNovelAndChapters = (
   pluginId: string,
@@ -128,7 +130,27 @@ export const removeNovelsFromLibrary = (novelIds: Array<number>) => {
   showToast('Removed from Library');
 };
 
-export const deleteNovelCache = () => {
+export const getCachedNovels = (): Promise<NovelInfo[]> => {
+  return new Promise(resolve => {
+    db.transaction(tx => {
+      tx.executeSql(
+        'SELECT * FROM Novel WHERE inLibrary = 0',
+        [],
+        (txObj, { rows }) => resolve(rows._array as NovelInfo[]),
+        txnErrorCallback,
+      );
+    });
+  });
+};
+export const deleteCachedNovels = async () => {
+  const cachedNovels = await getCachedNovels();
+  for (let novel of cachedNovels) {
+    const novelDir =
+      NovelDownloadFolder + '/' + novel.pluginId + '/' + novel.id;
+    if (await RNFS.exists(novelDir)) {
+      await RNFS.unlink(novelDir);
+    }
+  }
   db.transaction(tx => {
     tx.executeSql(
       'DELETE FROM Novel WHERE inLibrary = 0',
