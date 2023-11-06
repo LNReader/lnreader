@@ -1,7 +1,6 @@
 import { fetchHtml } from '@utils/fetch/fetch';
 import * as cheerio from 'cheerio';
 import {
-  SourceChapter,
   SourceChapterItem,
   SourceNovel,
   SourceNovelItem,
@@ -126,7 +125,6 @@ const popularNovels = async (page: number) => {
     })
     .get()
     .filter(sr => sr !== null);
-  //return { novels: [] as SourceNovelItem[] };
 };
 
 const NovelsOnlineScraper = {
