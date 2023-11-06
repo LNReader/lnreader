@@ -1,10 +1,6 @@
 import { fetchHtml } from '@utils/fetch/fetch';
 import * as cheerio from 'cheerio';
-import {
-  SourceChapterItem,
-  SourceNovel,
-  SourceNovelItem,
-} from '../types';
+import { SourceChapterItem, SourceNovel, SourceNovelItem } from '../types';
 
 const sourceId = 163;
 const sourceName = 'novelsOnline';
@@ -64,7 +60,7 @@ const parseNovelAndChapters = async (novelUrl: string) => {
   novel.novelName = $('h1').text();
   novel.novelCover = $('.novel-cover').find('a > img').attr('src');
   novel.author = $(
-    'div.novel-details > div:nth-child(5) > div.novel-detail-body',
+    'div.novel-details > div:nth-child(5) > div.novel-detail-body'
   )
     .find('li')
     .map((_, el) => $(el).text())
@@ -72,7 +68,7 @@ const parseNovelAndChapters = async (novelUrl: string) => {
     .join(', ');
 
   novel.genre = $(
-    'div.novel-details > div:nth-child(2) > div.novel-detail-body',
+    'div.novel-details > div:nth-child(2) > div.novel-detail-body'
   )
     .find('li')
     .map((_, el) => $(el).text())
@@ -80,7 +76,7 @@ const parseNovelAndChapters = async (novelUrl: string) => {
     .join(',');
 
   novel.summary = $(
-    'div.novel-right > div > div:nth-child(1) > div.novel-detail-body',
+    'div.novel-right > div > div:nth-child(1) > div.novel-detail-body'
   ).text();
 
   novel.chapters = $('ul.chapter-chs > li > a')
