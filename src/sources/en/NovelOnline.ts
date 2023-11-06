@@ -8,7 +8,7 @@ import {
 } from '../types';
 
 const sourceId = 163;
-const sourceName = 'NovelsOnline';
+const sourceName = 'novelsOnline';
 
 const baseUrl = 'https://novelsonline.net';
 
