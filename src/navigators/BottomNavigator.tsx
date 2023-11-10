@@ -1,5 +1,4 @@
 import React from 'react';
-import Color from 'color';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 
 import Library from '../screens/library/LibraryScreen';
