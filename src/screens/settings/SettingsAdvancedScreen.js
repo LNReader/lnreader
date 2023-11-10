@@ -5,7 +5,7 @@ import { Dialog, Portal } from 'react-native-paper';
 import { useTheme } from '@hooks/useTheme';
 import { showToast } from '@hooks/showToast';
 
-import { deleteNovelCache } from '@database/queries/NovelQueries';
+import { deleteCachedNovels } from '@database/queries/NovelQueries';
 import { clearCoverCache } from '@services/utils/coverCache';
 import { getString } from '@strings/translations';
 import useBoolean from '@hooks/useBoolean';
@@ -17,6 +17,7 @@ import {
 
 import { Appbar, Button, List } from '@components';
 import useSourceStorage from '@hooks/useSourceStorage';
+import { importEpub } from '@services/epub/import';
 
 const AdvancedSettings = ({ navigation }) => {
   const theme = useTheme();
@@ -72,6 +73,7 @@ const AdvancedSettings = ({ navigation }) => {
           theme={theme}
         />
         <List.Item title="Clear cookies" onPress={clearCookies} theme={theme} />
+        <List.Item title="Import Epub" onPress={importEpub} theme={theme} />
       </List.Section>
       <Portal>
         <ConfirmationDialog
@@ -106,7 +108,7 @@ const AdvancedSettings = ({ navigation }) => {
             </Button>
             <Button
               onPress={() => {
-                deleteNovelCache();
+                deleteCachedNovels();
                 hideClearDatabaseDialog();
               }}
             >

@@ -41,7 +41,7 @@ const beforeDeleteCategoryQuery = `
 const deleteCategoryQuery = 'DELETE FROM Category WHERE id = ?';
 
 export const deleteCategoryById = (category: Category): void => {
-  if (category.sort === 1) {
+  if (category.sort <= 2) {
     return showToast('You cant delete default category');
   }
   db.transaction(tx => {

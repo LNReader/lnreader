@@ -2,6 +2,7 @@ import * as SQLite from 'expo-sqlite';
 const db = SQLite.openDatabase('lnreader.db');
 
 import * as DocumentPicker from 'expo-document-picker';
+import * as RNFS from 'react-native-fs';
 
 import { fetchChapters, fetchNovel } from '@services/plugin/fetch';
 import { insertChapters } from './ChapterQueries';
@@ -12,8 +13,9 @@ import { noop } from 'lodash-es';
 import { getString } from '@strings/translations';
 import { NovelInfo } from '../types';
 import { SourceNovel } from '@plugins/types';
+import { NovelDownloadFolder } from '@utils/constants/download';
 
-export const insertNovelandChapters = (
+export const insertNovelAndChapters = (
   pluginId: string,
   sourceNovel: SourceNovel,
 ): Promise<number> => {
@@ -51,7 +53,7 @@ export const getNovel = async (novelUrl: string): Promise<NovelInfo> => {
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
-        'SELECT id, * FROM Novel WHERE url = ?',
+        'SELECT * FROM Novel WHERE url = ?',
         [novelUrl],
         (txObj, { rows }) => resolve(rows.item(0)),
         txnErrorCallback,
@@ -69,6 +71,9 @@ export const switchNovelToLibrary = async (
 ) => {
   const novel = await getNovel(novelUrl);
   if (novel) {
+    if (novel.inLibrary) {
+      return;
+    }
     db.transaction(tx => {
       tx.executeSql(
         'UPDATE Novel SET inLibrary = ? WHERE id = ?',
@@ -94,7 +99,7 @@ export const switchNovelToLibrary = async (
     });
   } else {
     const sourceNovel = await fetchNovel(pluginId, novelUrl);
-    const novelId = await insertNovelandChapters(pluginId, sourceNovel);
+    const novelId = await insertNovelAndChapters(pluginId, sourceNovel);
     db.transaction(tx => {
       tx.executeSql(
         'UPDATE Novel SET inLibrary = 1 WHERE url = ?',
@@ -112,6 +117,7 @@ export const switchNovelToLibrary = async (
   }
 };
 
+// allow to delete local novels
 export const removeNovelsFromLibrary = (novelIds: Array<number>) => {
   db.transaction(tx => {
     tx.executeSql(
@@ -124,7 +130,27 @@ export const removeNovelsFromLibrary = (novelIds: Array<number>) => {
   showToast('Removed from Library');
 };
 
-export const deleteNovelCache = () => {
+export const getCachedNovels = (): Promise<NovelInfo[]> => {
+  return new Promise(resolve => {
+    db.transaction(tx => {
+      tx.executeSql(
+        'SELECT * FROM Novel WHERE inLibrary = 0',
+        [],
+        (txObj, { rows }) => resolve(rows._array as NovelInfo[]),
+        txnErrorCallback,
+      );
+    });
+  });
+};
+export const deleteCachedNovels = async () => {
+  const cachedNovels = await getCachedNovels();
+  for (let novel of cachedNovels) {
+    const novelDir =
+      NovelDownloadFolder + '/' + novel.pluginId + '/' + novel.id;
+    if (await RNFS.exists(novelDir)) {
+      await RNFS.unlink(novelDir);
+    }
+  }
   db.transaction(tx => {
     tx.executeSql(
       'DELETE FROM Novel WHERE inLibrary = 0',
@@ -181,14 +207,17 @@ export const restoreLibrary = async (novel: NovelInfo) => {
 export const updateNovelInfo = async (info: NovelInfo) => {
   db.transaction(tx => {
     tx.executeSql(
-      'UPDATE Novel SET name = ?, summary = ?, author = ?, artist = ?, genres = ?, status = ? WHERE id = ?',
+      'UPDATE Novel SET name = ?, cover = ?, url = ? , summary = ?, author = ?, artist = ?, genres = ?, status = ?, isLocal = ? WHERE id = ?',
       [
         info.name,
+        info.cover || '',
+        info.url,
         info.summary || '',
         info.author || '',
         info.artist || '',
         info.genres || '',
         info.status || '',
+        info.isLocal,
         info.id,
       ],
       noop,
@@ -237,6 +266,8 @@ export const updateNovelCategories = async (
   option: string,
 ): Promise<void> => {
   let queries: string[] = [];
+  // allow local novels have other categories, but not the revesre
+  categoryIds = categoryIds.filter(id => id !== 2);
   if (option === 'KEEP_OLD') {
     novelIds.forEach(novelId => {
       categoryIds.forEach(categoryId =>

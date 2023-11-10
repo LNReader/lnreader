@@ -5,7 +5,7 @@ import { txnErrorCallback } from '../utils/helpers';
 
 const db = SQLite.openDatabase('lnreader.db');
 
-export const getNovelsWithCatogory = (
+export const getNovelsWithCategory = (
   categoryId: number,
   onlyOngoingNovels?: boolean,
 ): Promise<NovelInfo[]> => {

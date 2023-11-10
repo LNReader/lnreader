@@ -2,6 +2,7 @@ import * as SQLite from 'expo-sqlite';
 import {
   createCategoriesTableQuery,
   createCategoryDefaultQuery,
+  createCategoryLocalQuery,
   createCategoryTriggerQuery,
 } from './tables/CategoryTable';
 import { createNovelTableQuery } from './tables/NovelTable';
@@ -22,8 +23,9 @@ export const createTables = () => {
   db.transaction(tx => {
     tx.executeSql(createNovelTableQuery);
     tx.executeSql(createCategoriesTableQuery, [], () => {
-      tx.executeSql(createCategoryTriggerQuery);
       tx.executeSql(createCategoryDefaultQuery);
+      tx.executeSql(createCategoryLocalQuery);
+      tx.executeSql(createCategoryTriggerQuery);
     });
     tx.executeSql(createNovelCategoryTableQuery);
     tx.executeSql(createChapterTableQuery, [], () => {

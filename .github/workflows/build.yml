@@ -8,13 +8,16 @@ jobs:
     name: Build App
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Clone Repository (Latest)
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v3
         with:
           node-version: '16'
       - name: Install Dependencies
         run: |
-          npm install --legacy-peer-deps
+          npm install
 
       - name: Cache Gradle Wrapper
         uses: actions/cache@v3

@@ -11,7 +11,9 @@ import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
+import com.rajarsheechatterjee.NavigationBarColor.NavigationBarColorPackage;
 import com.rajarsheechatterjee.VolumeButtonListener.VolumeButtonListenerPackage;
+import com.rajarsheechatterjee.EpubParser.EpubParserPackage;
 
 import expo.modules.ApplicationLifecycleDispatcher;
 import expo.modules.ReactNativeHostWrapper;
@@ -21,10 +23,6 @@ import com.swmansion.reanimated.ReanimatedJSIModulePackage;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
-
-import org.devio.rn.splashscreen.SplashScreenReactPackage;
-import com.rnfs.RNFSPackage;
-
 public class MainApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost = 
@@ -36,10 +34,10 @@ public class MainApplication extends Application implements ReactApplication {
 
         @Override
         protected List<ReactPackage> getPackages() {
-          @SuppressWarnings("UnnecessaryLocalVariable")
           List<ReactPackage> packages = new PackageList(this).getPackages();
-          packages.add(new com.rajarsheechatterjee.LNReader.NavigationBarColorPackage());
+          packages.add(new NavigationBarColorPackage());
           packages.add(new VolumeButtonListenerPackage());
+          packages.add(new EpubParserPackage());
           return packages;
         }
 
@@ -69,14 +67,6 @@ public class MainApplication extends Application implements ReactApplication {
     ApplicationLifecycleDispatcher.onApplicationCreate(this);
   }
 
-  /**
-   * Loads Flipper in React Native templates. Call this in the onCreate method
-   * with something like
-   * initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
-   *
-   * @param context
-   * @param reactInstanceManager
-   */
   private static void initializeFlipper(
     Context context, ReactInstanceManager reactInstanceManager) {
     if (BuildConfig.DEBUG) {

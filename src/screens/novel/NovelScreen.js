@@ -294,6 +294,7 @@ const Novel = ({ route, navigation }) => {
 
   const renderItem = ({ item: it, index }) => (
     <ChapterItem
+      isLocal={novel.isLocal}
       theme={theme}
       chapter={it}
       showChapterTitles={showChapterTitles}
@@ -359,140 +360,143 @@ const Novel = ({ route, navigation }) => {
                   }}
                   onPress={() => showJumpToChapterModal(true)}
                 />
-
-                <Menu
-                  visible={downloadMenu}
-                  onDismiss={() => showDownloadMenu(false)}
-                  anchor={
-                    <IconButton
-                      icon="download-outline"
-                      iconColor={theme.onBackground}
-                      size={24}
-                      style={{
-                        marginTop: StatusBar.currentHeight + 8,
-                      }}
-                      onPress={() => showDownloadMenu(true)}
-                    />
-                  }
-                  contentStyle={{ backgroundColor: theme.surface2 }}
-                >
-                  <Menu.Item
-                    title="Next chapter"
-                    style={{ backgroundColor: theme.surface2 }}
-                    titleStyle={{ color: theme.onSurface }}
-                    onPress={() => {
-                      dispatch(
-                        downloadAllChaptersAction(novel.pluginId, novel.url, [
-                          chapters.find(
-                            chapter =>
-                              !!chapter.unread === true &&
-                              !!chapter.isDownloaded === false,
-                          ),
-                        ]),
-                      );
-                      showDownloadMenu(false);
-                    }}
-                  />
-                  <Menu.Item
-                    title="Next 5 chapter"
-                    style={{ backgroundColor: theme.surface2 }}
-                    titleStyle={{
-                      color: theme.onSurface,
-                    }}
-                    onPress={() => {
-                      dispatch(
-                        downloadAllChaptersAction(
-                          novel.pluginId,
-                          novel.url,
-                          chapters
-                            .filter(
-                              chapter =>
-                                !!chapter.unread === true &&
-                                !!chapter.idDownloaded === false,
-                            )
-                            .slice(0, 5),
-                        ),
-                      );
-                      showDownloadMenu(false);
-                    }}
-                  />
-                  <Menu.Item
-                    title="Next 10 chapter"
-                    style={{ backgroundColor: theme.surface2 }}
-                    titleStyle={{
-                      color: theme.onSurface,
-                    }}
-                    onPress={() => {
-                      dispatch(
-                        downloadAllChaptersAction(
-                          novel.pluginId,
-                          novel.url,
-                          chapters
-                            .filter(
-                              chapter =>
-                                !!chapter.unread === true &&
-                                !!chapter.Downloaded === false,
-                            )
-                            .slice(0, 10),
-                        ),
-                      );
-                      showDownloadMenu(false);
-                    }}
-                  />
-                  <Menu.Item
-                    title="Custom"
-                    style={{ backgroundColor: theme.surface2 }}
-                    titleStyle={{ color: theme.onSurface }}
-                    onPress={() => {
-                      downloadCustomChapterModal.setTrue();
-                      showDownloadMenu(false);
-                    }}
-                  />
-                  <Menu.Item
-                    title="Unread"
-                    style={{ backgroundColor: theme.surface2 }}
-                    titleStyle={{
-                      color: theme.onSurface,
-                    }}
-                    onPress={() => {
-                      dispatch(
-                        downloadAllChaptersAction(
-                          novel.pluginId,
-                          novel.url,
-                          chapters.filter(chapter => !!chapter.unread === true),
-                        ),
-                      );
-                      showDownloadMenu(false);
-                    }}
-                  />
-                  <Menu.Item
-                    title="All"
-                    style={{ backgroundColor: theme.surface2 }}
-                    titleStyle={{
-                      color: theme.onSurface,
-                    }}
-                    onPress={() => {
-                      dispatch(
-                        downloadAllChaptersAction(
-                          novel.pluginId,
-                          novel.url,
-                          chapters,
-                        ),
-                      );
-                      showDownloadMenu(false);
-                    }}
-                  />
-                  <Menu.Item
-                    title="Delete downloads"
-                    style={{ backgroundColor: theme.surface2 }}
-                    titleStyle={{
-                      color: theme.onSurface,
-                    }}
-                    onPress={() =>
-                      dispatch(deleteAllChaptersAction(pluginId, chapters))
+                {!novel.isLocal && (
+                  <Menu
+                    visible={downloadMenu}
+                    onDismiss={() => showDownloadMenu(false)}
+                    anchor={
+                      <IconButton
+                        icon="download-outline"
+                        iconColor={theme.onBackground}
+                        size={24}
+                        style={{
+                          marginTop: StatusBar.currentHeight + 8,
+                        }}
+                        onPress={() => showDownloadMenu(true)}
+                      />
                     }
-                  />
-                </Menu>
+                    contentStyle={{ backgroundColor: theme.surface2 }}
+                  >
+                    <Menu.Item
+                      title="Next chapter"
+                      style={{ backgroundColor: theme.surface2 }}
+                      titleStyle={{ color: theme.onSurface }}
+                      onPress={() => {
+                        dispatch(
+                          downloadAllChaptersAction(novel.pluginId, novel.url, [
+                            chapters.find(
+                              chapter =>
+                                !!chapter.unread === true &&
+                                !!chapter.isDownloaded === false,
+                            ),
+                          ]),
+                        );
+                        showDownloadMenu(false);
+                      }}
+                    />
+                    <Menu.Item
+                      title="Next 5 chapter"
+                      style={{ backgroundColor: theme.surface2 }}
+                      titleStyle={{
+                        color: theme.onSurface,
+                      }}
+                      onPress={() => {
+                        dispatch(
+                          downloadAllChaptersAction(
+                            novel.pluginId,
+                            novel.url,
+                            chapters
+                              .filter(
+                                chapter =>
+                                  !!chapter.unread === true &&
+                                  !!chapter.idDownloaded === false,
+                              )
+                              .slice(0, 5),
+                          ),
+                        );
+                        showDownloadMenu(false);
+                      }}
+                    />
+                    <Menu.Item
+                      title="Next 10 chapter"
+                      style={{ backgroundColor: theme.surface2 }}
+                      titleStyle={{
+                        color: theme.onSurface,
+                      }}
+                      onPress={() => {
+                        dispatch(
+                          downloadAllChaptersAction(
+                            novel.pluginId,
+                            novel.url,
+                            chapters
+                              .filter(
+                                chapter =>
+                                  !!chapter.unread === true &&
+                                  !!chapter.Downloaded === false,
+                              )
+                              .slice(0, 10),
+                          ),
+                        );
+                        showDownloadMenu(false);
+                      }}
+                    />
+                    <Menu.Item
+                      title="Custom"
+                      style={{ backgroundColor: theme.surface2 }}
+                      titleStyle={{ color: theme.onSurface }}
+                      onPress={() => {
+                        downloadCustomChapterModal.setTrue();
+                        showDownloadMenu(false);
+                      }}
+                    />
+                    <Menu.Item
+                      title="Unread"
+                      style={{ backgroundColor: theme.surface2 }}
+                      titleStyle={{
+                        color: theme.onSurface,
+                      }}
+                      onPress={() => {
+                        dispatch(
+                          downloadAllChaptersAction(
+                            novel.pluginId,
+                            novel.url,
+                            chapters.filter(
+                              chapter => !!chapter.unread === true,
+                            ),
+                          ),
+                        );
+                        showDownloadMenu(false);
+                      }}
+                    />
+                    <Menu.Item
+                      title="All"
+                      style={{ backgroundColor: theme.surface2 }}
+                      titleStyle={{
+                        color: theme.onSurface,
+                      }}
+                      onPress={() => {
+                        dispatch(
+                          downloadAllChaptersAction(
+                            novel.pluginId,
+                            novel.url,
+                            chapters,
+                          ),
+                        );
+                        showDownloadMenu(false);
+                      }}
+                    />
+                    <Menu.Item
+                      title="Delete downloads"
+                      style={{ backgroundColor: theme.surface2 }}
+                      titleStyle={{
+                        color: theme.onSurface,
+                      }}
+                      onPress={() =>
+                        dispatch(deleteAllChaptersAction(pluginId, chapters))
+                      }
+                    />
+                  </Menu>
+                )}
 
                 <Menu
                   visible={extraMenu}

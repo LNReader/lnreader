@@ -23,7 +23,7 @@ import {
 import { fetchNovel } from '@services/plugin/fetch';
 import {
   switchNovelToLibrary,
-  insertNovelandChapters,
+  insertNovelAndChapters,
   getNovel,
 } from '@database/queries/NovelQueries';
 import { insertChapters } from '@database/queries/ChapterQueries';
@@ -85,7 +85,7 @@ export const getNovelAction =
         /**
          * Insert novel in db.
          */
-        await insertNovelandChapters(pluginId, fetchedNovel);
+        await insertNovelAndChapters(pluginId, fetchedNovel);
         /**
          * Get novel from db.
          */
