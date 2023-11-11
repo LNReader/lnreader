@@ -1,20 +1,24 @@
 import { ChapterInfo, NovelInfo } from '@database/types';
-import { NavigatorScreenParams } from '@react-navigation/native';
+import { MaterialBottomTabScreenProps } from '@react-navigation/material-bottom-tabs';
+import {
+  CompositeScreenProps,
+  NavigatorScreenParams,
+} from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 
 export type RootStackParamList = {
-  BottomNavigator: undefined;
+  BottomNavigator: NavigatorScreenParams<BottomNavigatorParamList>;
   Novel: { name: string; url: string; pluginId: string };
   Chapter: {
     novel: NovelInfo;
     chapter: ChapterInfo;
   };
-  MoreStack: NavigatorScreenParams<MoreStackParamList> | undefined;
+  MoreStack: NavigatorScreenParams<MoreStackParamList>;
   SourceScreen: {
     pluginId: string;
     pluginName: string;
     pluginUrl: string;
-    showLatestNovels: boolean;
+    showLatestNovels?: boolean;
   };
   BrowseMal: undefined;
   BrowseSettings: undefined;
@@ -29,6 +33,22 @@ export type RootStackParamList = {
   };
 };
 
+export type BottomNavigatorParamList = {
+  Library: undefined;
+  Updates: undefined;
+  History: undefined;
+  Browse: undefined;
+  More: undefined;
+};
+
+export type BrowseScreenProps = MaterialBottomTabScreenProps<
+  BottomNavigatorParamList,
+  'Browse'
+>;
+export type MoreStackScreenProps = CompositeScreenProps<
+  MaterialBottomTabScreenProps<BottomNavigatorParamList, 'More'>,
+  StackScreenProps<RootStackParamList, 'MoreStack'>
+>;
 export type MoreStackParamList = {
   SettingsStack: undefined;
   About: undefined;
@@ -54,11 +74,16 @@ export type ChapterScreenProps = StackScreenProps<
   RootStackParamList,
   'Chapter'
 >;
-export type MoreStackScreenProps = StackScreenProps<
-  RootStackParamList,
-  'MoreStack'
->;
+
 export type AboutScreenProps = StackScreenProps<MoreStackParamList, 'About'>;
+export type DownloadsScreenProps = StackScreenProps<
+  MoreStackParamList,
+  'Downloads'
+>;
+export type DownloadQueueScreenProps = StackScreenProps<
+  MoreStackParamList,
+  'DownloadQueue'
+>;
 export type BrowseSourceScreenProps = StackScreenProps<
   RootStackParamList,
   'SourceScreen'

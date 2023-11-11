@@ -20,12 +20,10 @@ import {
 import BackgroundService from 'react-native-background-actions';
 import { showToast } from '../../hooks/showToast';
 import { Appbar, EmptyView } from '@components';
-import { MoreStackScreenProps } from '@navigators/types';
+import { DownloadQueueScreenProps } from '@navigators/types';
 import { RootState } from '@redux/store';
-import { useNavigation } from '@react-navigation/native';
 
-const DownloadQueue = () => {
-  const { navigation } = useNavigation<MoreStackScreenProps>();
+const DownloadQueue = ({ navigation }: DownloadQueueScreenProps) => {
   const theme = useTheme();
   const { downloadQueue } = useSelector(
     (state: RootState) => state.downloadsReducer,

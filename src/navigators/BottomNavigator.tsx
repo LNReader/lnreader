@@ -10,8 +10,9 @@ import More from '../screens/more/MoreScreen';
 import { useSettings } from '../hooks/reduxHooks';
 import { getString } from '../../strings/translations';
 import { useTheme } from '@hooks/useTheme';
+import { BottomNavigatorParamList } from './types';
 
-const Tab = createMaterialBottomTabNavigator();
+const Tab = createMaterialBottomTabNavigator<BottomNavigatorParamList>();
 
 const BottomNavigator = () => {
   const theme = useTheme();
@@ -30,41 +31,46 @@ const BottomNavigator = () => {
       shifting={!showLabelsInNav}
     >
       <Tab.Screen
-        name={getString('library')}
+        name="Library"
         component={Library}
         options={{
+          title: getString('library'),
           tabBarIcon: 'book-variant-multiple',
         }}
       />
       {showUpdatesTab && (
         <Tab.Screen
-          name={getString('updates')}
+          name="Updates"
           component={Updates}
           options={{
+            title: getString('updates'),
             tabBarIcon: 'alert-decagram-outline',
           }}
         />
       )}
       {showHistoryTab && (
         <Tab.Screen
-          name={getString('history')}
+          name="History"
           component={History}
           options={{
+            title: getString('history'),
             tabBarIcon: 'history',
           }}
         />
       )}
       <Tab.Screen
-        name={getString('browse')}
+        name="Browse"
         component={Browse}
         options={{
+          title: getString('browse'),
           tabBarIcon: 'compass-outline',
         }}
       />
       <Tab.Screen
-        name={getString('more')}
+        name="More"
         component={More}
         options={{
+          title: getString('more'),
           tabBarIcon: 'dots-horizontal',
         }}
       />

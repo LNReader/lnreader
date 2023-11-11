@@ -2,12 +2,14 @@ import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 
 import { Appbar, List } from '@components';
-import { MoreStackScreenProps } from '@navigators/types';
+import { AboutScreenProps, MoreStackScreenProps } from '@navigators/types';
 import { ThemeColors } from '@theme/types';
 
 interface MoreHeaderProps {
   title: string;
-  navigation: MoreStackScreenProps['navigation'];
+  navigation:
+    | AboutScreenProps['navigation']
+    | MoreStackScreenProps['navigation'];
   theme: ThemeColors;
   goBack?: boolean;
 }

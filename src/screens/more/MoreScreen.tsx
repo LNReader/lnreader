@@ -16,10 +16,8 @@ import { useLibrarySettings } from '@hooks/useSettings';
 import { useTheme } from '@hooks/useTheme';
 import { MoreStackScreenProps } from '@navigators/types';
 import { RootState } from '@redux/store';
-import { useNavigation } from '@react-navigation/native';
 
-const MoreScreen = () => {
-  const { navigation } = useNavigation<MoreStackScreenProps>();
+const MoreScreen = ({ navigation }: MoreStackScreenProps) => {
   const theme = useTheme();
   const { downloadQueue } = useSelector(
     (state: RootState) => state.downloadsReducer,

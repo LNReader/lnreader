@@ -17,14 +17,12 @@ import RemoveDownloadsDialog from './components/RemoveDownloadsDialog';
 import UpdatesSkeletonLoading from '@screens/updates/components/UpdatesSkeletonLoading';
 import UpdateNovelCard from '@screens/updates/components/UpdateNovelCard';
 import { getString } from '@strings/translations';
-import { MoreStackScreenProps } from '@navigators/types';
+import { DownloadsScreenProps } from '@navigators/types';
 import { ChapterInfo } from '@database/types';
-import { useNavigation } from '@react-navigation/native';
 
 type DownloadGroup = Record<number, ChapterInfo[]>;
 
-const Downloads = () => {
-  const { navigation } = useNavigation<MoreStackScreenProps>();
+const Downloads = ({ navigation }: DownloadsScreenProps) => {
   const theme = useTheme();
   const [loading, setLoading] = useState(true);
   const [chapters, setChapters] = useState<ChapterInfo[]>([]);
