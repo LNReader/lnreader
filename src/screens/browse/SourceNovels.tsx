@@ -1,26 +1,27 @@
 import React from 'react';
-import { StyleSheet, View, FlatList, Text } from 'react-native';
+import { StyleSheet, View, FlatList, Text, FlatListProps } from 'react-native';
 import { useTheme } from '@hooks/useTheme';
 
 import ListView from '../../components/ListView';
 import { useLibraryNovels } from '@screens/library/hooks/useLibrary';
 import { Appbar } from '@components';
-import NovelCover from '@components/NovelCover';
+import { SourceNovelsScreenProps } from '@navigators/types';
+import { NovelInfo } from '@database/types';
 
-const SourceNovels = ({ navigation, route }) => {
-  const pluginId = route.params;
+const SourceNovels = ({ navigation, route }: SourceNovelsScreenProps) => {
+  const pluginId = route.params.pluginId;
+  console.log(pluginId);
   const theme = useTheme();
   const { library } = useLibraryNovels();
 
   const sourceNovels = library.filter(novel => novel.pluginId === pluginId);
 
-  const renderItem = ({ item }) => (
+  const renderItem: FlatListProps<NovelInfo>['renderItem'] = ({ item }) => (
     <ListView
       item={item}
       theme={theme}
       onPress={() =>
         navigation.navigate('MigrateNovel', {
-          pluginId: item.pluginId,
           novel: item,
         })
       }
@@ -28,9 +29,7 @@ const SourceNovels = ({ navigation, route }) => {
   );
 
   return (
-    <View
-      style={[styles.container, { backgroundColor: theme.colorPrimaryDark }]}
-    >
+    <View style={[styles.container]}>
       <Appbar
         title="Select Novel"
         handleGoBack={navigation.goBack}

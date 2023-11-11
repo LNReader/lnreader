@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  View,
-  Text,
-  FlatList,
-  ActivityIndicator,
-  StyleSheet,
-} from 'react-native';
+import { View, Text, FlatList, StyleSheet, FlatListProps } from 'react-native';
 import { ProgressBar } from 'react-native-paper';
 import { useTheme } from '@hooks/useTheme';
 
@@ -18,22 +12,30 @@ import { useBrowseSettings, usePluginReducer } from '@redux/hooks';
 import { useLibraryNovels } from '@screens/library/hooks/useLibrary';
 import { Appbar } from '@components';
 import GlobalSearchSkeletonLoading from '../loadingAnimation/GlobalSearchSkeletonLoading';
+import { MigrateNovelScreenProps } from '@navigators/types';
+import { NovelItem } from '@plugins/types';
 
-const MigrationNovels = ({ navigation, route }) => {
-  const { pluginId, novel } = route.params;
+export interface SourceSearchResult {
+  id: string;
+  name: string;
+  lang: string;
+  loading: boolean;
+  novels: NovelItem[];
+  error?: any;
+}
 
+const MigrationNovels = ({ navigation, route }: MigrateNovelScreenProps) => {
+  const { novel } = route.params;
   const theme = useTheme();
 
   const isMounted = React.useRef(true);
 
   const [progress, setProgress] = useState(0);
-  const [searchResults, setSearchResults] = useState('');
+  const [searchResults, setSearchResults] = useState<SourceSearchResult[]>([]);
 
   const { library } = useLibraryNovels();
 
   const { installedPlugins, pinnedPlugins } = usePluginReducer();
-
-  const isPinned = id => pinnedPlugins.find(plg => plg.id !== id);
 
   const { searchAllSources = false } = useBrowseSettings();
 
@@ -63,7 +65,7 @@ const MigrationNovels = ({ navigation, route }) => {
                 : { ...pluginItem },
             ),
           );
-        } catch (e) {
+        } catch (e: any) {
           setSearchResults(prevState =>
             prevState.map(pluginItem =>
               pluginItem.id === item.id
@@ -97,7 +99,9 @@ const MigrationNovels = ({ navigation, route }) => {
     color: theme.isDark ? '#F2B8B5' : '#B3261E',
   };
 
-  const renderItem = ({ item }) => (
+  const renderItem: FlatListProps<SourceSearchResult>['renderItem'] = ({
+    item,
+  }) => (
     <>
       <View style={{ padding: 8, paddingVertical: 16 }}>
         <Text style={{ color: theme.onSurface }}>{item.name}</Text>

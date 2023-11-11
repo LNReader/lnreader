@@ -60,7 +60,6 @@ const initPlugin = (rawCode: string, path?: string) => {
     };
     return plugin;
   } catch (e) {
-    console.log(e);
     return undefined;
   }
 };

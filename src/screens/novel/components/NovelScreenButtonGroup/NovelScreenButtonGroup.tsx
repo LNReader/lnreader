@@ -41,7 +41,6 @@ const NovelScreenButtonGroup: React.FC<NovelScreenButtonGroupProps> = ({
   };
   const handleMigrateNovel = () =>
     navigate('MigrateNovel', {
-      pluginId: novel.pluginId,
       novel: novel,
     });
 

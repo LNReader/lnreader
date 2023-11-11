@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, FlatList, Text } from 'react-native';
+import { StyleSheet, View, FlatList, Text, FlatListProps } from 'react-native';
 
 import MigrationSourceItem from './MigrationSourceItem';
 
@@ -7,26 +7,28 @@ import { useTheme } from '@hooks/useTheme';
 import { usePluginReducer } from '@redux/hooks';
 import { useLibraryNovels } from '@screens/library/hooks/useLibrary';
 import { Appbar } from '@components';
+import { MigrationScreenProps } from '@navigators/types';
+import { PluginItem } from '@plugins/types';
 
-const Migration = ({ navigation }) => {
+const Migration = ({ navigation }: MigrationScreenProps) => {
   const theme = useTheme();
 
   const { library } = useLibraryNovels();
   let { installedPlugins } = usePluginReducer();
 
-  const novelsPerSource = pluginId =>
+  const novelsPerSource = (pluginId: string) =>
     library.filter(novel => novel.pluginId === pluginId).length;
 
-  plugins = installedPlugins.filter(
+  const plugins = installedPlugins.filter(
     plugin => library.find(novel => novel.pluginId === plugin.id) !== undefined,
   );
 
-  const renderItem = ({ item }) => (
+  const renderItem: FlatListProps<PluginItem>['renderItem'] = ({ item }) => (
     <MigrationSourceItem
       item={item}
       theme={theme}
       noOfNovels={novelsPerSource(item.id)}
-      onPress={() => navigation.navigate('SourceNovels', item.id)}
+      onPress={() => navigation.navigate('SourceNovels', { pluginId: item.id })}
     />
   );
 
@@ -37,9 +39,7 @@ const Migration = ({ navigation }) => {
   );
 
   return (
-    <View
-      style={[styles.container, { backgroundColor: theme.colorPrimaryDark }]}
-    >
+    <View style={[styles.container]}>
       <Appbar
         title="Select Source"
         handleGoBack={navigation.goBack}

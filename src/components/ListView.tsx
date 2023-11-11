@@ -5,6 +5,19 @@ import FastImage from 'react-native-fast-image';
 import { coverPlaceholderColor } from '../theme/colors';
 
 import color from 'color';
+import { ThemeColors } from '@theme/types';
+import { NovelInfo } from '@database/types';
+
+interface ListViewProps {
+  item: NovelInfo;
+  downloadBadge?: React.ReactNode;
+  unreadBadge?: React.ReactNode;
+  inLibraryBadge?: React.ReactNode;
+  theme: ThemeColors;
+  onPress: () => void;
+  isSelected?: boolean;
+  onLongPress?: () => void;
+}
 
 const ListView = ({
   item,
@@ -15,7 +28,7 @@ const ListView = ({
   onPress,
   isSelected,
   onLongPress,
-}) => {
+}: ListViewProps) => {
   return (
     <Pressable
       android_ripple={{ color: theme.rippleColor }}
@@ -32,7 +45,7 @@ const ListView = ({
         source={{
           uri: item.cover,
         }}
-        style={[styles.extensionIcon, inLibraryBadge && { opacity: 0.5 }]}
+        style={[styles.extensionIcon, inLibraryBadge ? { opacity: 0.5 } : {}]}
       />
       <Text
         style={[{ color: theme.onSurface }, styles.novelName]}

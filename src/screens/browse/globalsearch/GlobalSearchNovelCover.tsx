@@ -1,6 +1,16 @@
 import React from 'react';
 import { StyleSheet, View, Text, Image, Pressable } from 'react-native';
 import { coverPlaceholderColor } from '@theme/colors';
+import { ThemeColors } from '@theme/types';
+import { NovelItem } from '@plugins/types';
+
+interface GlobalSearchNovelCoverProps {
+  novel: NovelItem;
+  theme: ThemeColors;
+  onPress: () => void;
+  inLibrary: boolean;
+  onLongPress: () => void;
+}
 
 const GlobalSearchNovelCover = ({
   novel,
@@ -8,7 +18,7 @@ const GlobalSearchNovelCover = ({
   onPress,
   inLibrary,
   onLongPress,
-}) => {
+}: GlobalSearchNovelCoverProps) => {
   const { name, cover } = novel;
 
   const uri = cover;

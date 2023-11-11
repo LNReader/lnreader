@@ -25,7 +25,7 @@ export type RootStackParamList = {
   GlobalSearchScreen: { searchText?: string };
   Migration: undefined;
   SourceNovels: { pluginId: string };
-  MigrateNovel: { pluginId: string; novel: any };
+  MigrateNovel: { novel: NovelInfo };
   WebviewScreen: {
     pluginId: string;
     name: string;
@@ -41,10 +41,11 @@ export type BottomNavigatorParamList = {
   More: undefined;
 };
 
-export type BrowseScreenProps = MaterialBottomTabScreenProps<
-  BottomNavigatorParamList,
-  'Browse'
+export type BrowseScreenProps = CompositeScreenProps<
+  MaterialBottomTabScreenProps<BottomNavigatorParamList, 'Browse'>,
+  StackScreenProps<RootStackParamList>
 >;
+
 export type MoreStackScreenProps = CompositeScreenProps<
   MaterialBottomTabScreenProps<BottomNavigatorParamList, 'More'>,
   StackScreenProps<RootStackParamList, 'MoreStack'>
@@ -95,6 +96,18 @@ export type BrowseSettingsScreenProp = StackScreenProps<
 export type GlobalSearchScreenProps = StackScreenProps<
   RootStackParamList,
   'GlobalSearchScreen'
+>;
+export type MigrationScreenProps = StackScreenProps<
+  RootStackParamList,
+  'Migration'
+>;
+export type MigrateNovelScreenProps = StackScreenProps<
+  RootStackParamList,
+  'MigrateNovel'
+>;
+export type SourceNovelsScreenProps = StackScreenProps<
+  RootStackParamList,
+  'SourceNovels'
 >;
 export type WebviewScreenProps = StackScreenProps<
   RootStackParamList,
