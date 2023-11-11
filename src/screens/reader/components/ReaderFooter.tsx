@@ -6,6 +6,20 @@ import { isUrlAbsolute } from '../../../utils/isAbsoluteUrl';
 import * as WebBrowser from 'expo-web-browser';
 import color from 'color';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
+import { ThemeColors } from '@theme/types';
+import { ChapterInfo } from '@database/types';
+import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
+
+interface ChapterFooterProps {
+  theme: ThemeColors;
+  chapterUrl: string;
+  nextChapter: ChapterInfo;
+  prevChapter: ChapterInfo;
+  readerSheetRef: React.RefObject<BottomSheetModalMethods>;
+  scrollTo: (offsetY: number) => void;
+  navigateToChapterBySwipe: (actionName: string) => void;
+  openDrawer: () => void;
+}
 
 const ChapterFooter = ({
   theme,
@@ -16,7 +30,7 @@ const ChapterFooter = ({
   scrollTo,
   navigateToChapterBySwipe,
   openDrawer,
-}) => {
+}: ChapterFooterProps) => {
   const rippleConfig = {
     color: theme.rippleColor,
     borderless: true,
@@ -30,7 +44,6 @@ const ChapterFooter = ({
       entering={FadeIn.duration(150)}
       exiting={FadeOut.duration(150)}
       style={styles.footer}
-      animationDuration={150}
     >
       <View
         style={[
@@ -89,7 +102,7 @@ const ChapterFooter = ({
         <Pressable
           android_ripple={rippleConfig}
           style={styles.buttonStyles}
-          onPress={() => readerSheetRef.current.present()}
+          onPress={() => readerSheetRef.current?.present()}
         >
           <IconButton
             icon="cog-outline"

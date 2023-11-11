@@ -3,19 +3,22 @@ import { StyleSheet, View, Pressable } from 'react-native';
 import { Text } from 'react-native-paper';
 import color from 'color';
 import { useTheme } from '@hooks/useTheme';
-import { FlashList } from '@shopify/flash-list';
+import { FlashList, FlashListProps } from '@shopify/flash-list';
 import { Button, LoadingScreenV2 } from '@components/index';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { EdgeInsets, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getString } from '@strings/translations';
 import { useNovel, useSettings, usePreferences } from '@hooks/reduxHooks';
 import { useDispatch } from 'react-redux';
 import { getNovelAction } from '@redux/novel/novel.actions';
+import { ChapterScreenProps } from '@navigators/types';
+import { ChapterInfo } from '@database/types';
+import { ThemeColors } from '@theme/types';
 
-const ChapterDrawer = ({ route, navigation }) => {
+const ChapterDrawer = ({ route, navigation }: ChapterScreenProps) => {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
   const styles = createStylesheet(theme, insets);
-  let listRef = useRef();
+  const listRef = useRef<FlashList<ChapterInfo>>(null);
   const dispatch = useDispatch();
   const { chapter, novel: novelItem } = route.params;
   const { defaultChapterSort = 'ORDER BY id ASC' } = useSettings();
@@ -45,26 +48,26 @@ const ChapterDrawer = ({ route, navigation }) => {
     up: {
       text: getString('readerScreen.drawer.scrollToTop'),
       func: () => {
-        listRef.current.scrollToIndex({ index: 0, animated: true });
+        listRef.current?.scrollToIndex({ index: 0, animated: true });
       },
     },
     down: {
       text: getString('readerScreen.drawer.scrollToBottom'),
       func: () => {
-        listRef.current.scrollToEnd({
+        listRef.current?.scrollToEnd({
           animated: true,
         });
       },
     },
   });
 
-  const changeChapter = item => {
+  const changeChapter = (item: ChapterInfo) => {
     navigation.replace('Chapter', {
       novel: novelItem,
       chapter: item,
     });
   };
-  const renderItem = ({ item }) => (
+  const renderItem: FlashListProps<ChapterInfo>['renderItem'] = ({ item }) => (
     <View
       style={[
         styles.drawerElementContainer,
@@ -81,7 +84,7 @@ const ChapterDrawer = ({ route, navigation }) => {
         <Text numberOfLines={1} style={styles.chapterNameCtn}>
           {item.name}
         </Text>
-        {item?.releaseDate ? (
+        {item.readTime ? (
           <Text style={styles.releaseDateCtn}>{item.releaseTime}</Text>
         ) : null}
       </Pressable>
@@ -106,58 +109,59 @@ const ChapterDrawer = ({ route, navigation }) => {
       </View>
     );
   };
-  const checkViewableItems = ({ viewableItems }) => {
-    let up = {
-      text: getString('readerScreen.drawer.scrollToTop'),
-      func: () => {
-        listRef.current.scrollToIndex({ index: 0, animated: true });
-      },
-    };
-    let down = {
-      text: getString('readerScreen.drawer.scrollToBottom'),
-      func: () => {
-        listRef.current.scrollToEnd({
-          animated: true,
+  const checkViewableItems: FlashListProps<ChapterInfo>['onViewableItemsChanged'] =
+    ({ viewableItems }) => {
+      let up = {
+        text: getString('readerScreen.drawer.scrollToTop'),
+        func: () => {
+          listRef.current?.scrollToIndex({ index: 0, animated: true });
+        },
+      };
+      let down = {
+        text: getString('readerScreen.drawer.scrollToBottom'),
+        func: () => {
+          listRef.current?.scrollToEnd({
+            animated: true,
+          });
+        },
+      };
+      if (viewableItems.length !== 0) {
+        let visible = viewableItems.find(({ item }) => {
+          return item.id === chapter.id;
         });
-      },
-    };
-    if (viewableItems.length !== 0) {
-      let visible = viewableItems.find(({ item }) => {
-        return item.id === chapter.id;
-      });
-      if (!visible) {
-        if (
-          listAscending
-            ? viewableItems[0].item.id < chapter.id
-            : viewableItems[0].item.id > chapter.id
-        ) {
-          down = {
-            text: getString('readerScreen.drawer.scrollToCurrentChapter'),
-            func: () => {
-              listRef.current.scrollToIndex({
-                index: scrollToIndex,
-                animated: true,
-              });
-            },
-          };
-        } else {
-          up = {
-            text: getString('readerScreen.drawer.scrollToCurrentChapter'),
-            func: () => {
-              listRef.current.scrollToIndex({
-                index: scrollToIndex,
-                animated: true,
-              });
-            },
-          };
+        if (!visible) {
+          if (
+            listAscending
+              ? viewableItems[0].item.id < chapter.id
+              : viewableItems[0].item.id > chapter.id
+          ) {
+            down = {
+              text: getString('readerScreen.drawer.scrollToCurrentChapter'),
+              func: () => {
+                listRef.current?.scrollToIndex({
+                  index: scrollToIndex,
+                  animated: true,
+                });
+              },
+            };
+          } else {
+            up = {
+              text: getString('readerScreen.drawer.scrollToCurrentChapter'),
+              func: () => {
+                listRef.current?.scrollToIndex({
+                  index: scrollToIndex,
+                  animated: true,
+                });
+              },
+            };
+          }
         }
+        setButtonProperties({
+          up: up,
+          down: down,
+        });
       }
-      setButtonProperties({
-        up: up,
-        down: down,
-      });
-    }
-  };
+    };
 
   return (
     <View style={styles.drawer}>
@@ -179,7 +183,7 @@ const ChapterDrawer = ({ route, navigation }) => {
   );
 };
 
-const createStylesheet = (theme, insets) => {
+const createStylesheet = (theme: ThemeColors, insets: EdgeInsets) => {
   return StyleSheet.create({
     drawer: {
       flex: 1,

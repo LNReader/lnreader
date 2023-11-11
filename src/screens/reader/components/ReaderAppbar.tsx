@@ -8,6 +8,17 @@ import { IconButtonV2 } from '../../../components';
 import { bookmarkChapterAction } from '../../../redux/novel/novel.actions';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import { useAppDispatch } from '@redux/hooks';
+import { ThemeColors } from '@theme/types';
+
+interface ReaderAppbarProps {
+  bookmark: boolean;
+  novelName: string;
+  chapterId: number;
+  chapterName: string;
+  tts: () => void;
+  textToSpeech: string;
+  theme: ThemeColors;
+}
 
 const ReaderAppbar = ({
   bookmark,
@@ -17,7 +28,7 @@ const ReaderAppbar = ({
   tts,
   textToSpeech,
   theme,
-}) => {
+}: ReaderAppbarProps) => {
   const dispatch = useAppDispatch();
   const { goBack } = useNavigation();
   const [bookmarked, setBookmarked] = useState(bookmark);
@@ -38,7 +49,7 @@ const ReaderAppbar = ({
           <IconButtonV2
             name="arrow-left"
             onPress={goBack}
-            iconColor={theme.onSurface}
+            color={theme.onSurface}
             size={26}
             theme={theme}
           />
@@ -72,7 +83,7 @@ const ReaderAppbar = ({
               dispatch(bookmarkChapterAction([{ bookmark, chapterId }]));
               setBookmarked(!bookmarked);
             }}
-            iconColor={theme.onSurface}
+            color={theme.onSurface}
             theme={theme}
             style={styles.bookmark}
           />
