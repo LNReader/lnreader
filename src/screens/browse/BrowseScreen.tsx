@@ -19,8 +19,9 @@ import { useNavigation } from '@react-navigation/native';
 import { useSearch } from '../../hooks';
 import SourceCard from './components/SourceCard/SourceCard';
 import { getString } from '../../../strings/translations';
-import { Source } from '../../sources/types';
+import { Source } from '@sourcesV2/types';
 import TrackerCard from './discover/TrackerCard';
+import SourceFactory from '@sourcesV2/SourceFactory';
 
 const BrowseScreen = () => {
   const { navigate } = useNavigation();
@@ -40,12 +41,14 @@ const BrowseScreen = () => {
   };
 
   const {
-    allSources,
+    // allSources,
     searchResults,
     pinnedSourceIds = [],
     languageFilters = [defaultLanguage || 'English'], //defaultLang cant be null, but just for sure
     lastUsed,
   } = useSourcesReducer();
+
+  const allSources = SourceFactory.getSources();
 
   const {
     showMyAnimeList = true,
@@ -59,26 +62,23 @@ const BrowseScreen = () => {
 
   const isPinned = (sourceId: number) => pinnedSourceIds.indexOf(sourceId) > -1;
 
-  const pinnedSources = allSources.filter(source => isPinned(source.sourceId));
+  const pinnedSources = allSources.filter(source => isPinned(source.id));
   const lastUsedSource = lastUsed
-    ? allSources.filter(source => source.sourceId === lastUsed)
+    ? allSources.filter(source => source.id === lastUsed)
     : [];
 
-  const navigateToSource = useCallback(
-    (source: Source, showLatestNovels?: boolean) => {
-      navigate(
-        'SourceScreen' as never,
-        {
-          sourceId: source.sourceId,
-          sourceName: source.sourceName,
-          url: source.url,
-          showLatestNovels,
-        } as never,
-      );
-      dispatch(setLastUsedSource({ sourceId: source.sourceId }));
-    },
-    [],
-  );
+  const navigateToSource = useCallback((source: Source) => {
+    navigate(
+      'SourceScreen' as never,
+      {
+        sourceId: source.id,
+        sourceName: source.name,
+        url: source.baseUrl,
+        showLatestNovels: source.isLatestSupported,
+      } as never,
+    );
+    dispatch(setLastUsedSource({ sourceId: source.id }));
+  }, []);
 
   const searchbarActions = useMemo(
     () => [
@@ -203,7 +203,7 @@ const BrowseScreen = () => {
             renderItem={({ item }) => (
               <SourceCard
                 source={item}
-                isPinned={isPinned(item.sourceId)}
+                isPinned={isPinned(item.id)}
                 navigateToSource={navigateToSource}
                 onTogglePinSource={sourceId =>
                   dispatch(togglePinSource(sourceId))

@@ -38,7 +38,7 @@ import { useTextToSpeech } from '../../hooks/useTextToSpeech';
 import { useFullscreenMode, useLibrarySettings } from '../../hooks';
 import { getChapterFromDb } from '../../database/queries/DownloadQueries';
 import ReaderBottomSheetV2 from './components/ReaderBottomSheet/ReaderBottomSheet';
-import { defaultTo } from 'lodash-es';
+import { defaultTo, omit } from 'lodash-es';
 import BottomInfoBar from './components/BottomInfoBar/BottomInfoBar';
 import { sanitizeChapterText } from './utils/sanitizeChapterText';
 import ChapterDrawer from './components/ChapterDrawer';
@@ -322,10 +322,11 @@ const ChapterContent = ({ route, navigation }) => {
     }
   }, []);
 
-  const scrollToSavedProgress = useCallback(
-    () => scrollTo(position?.position),
-    [],
-  );
+  const scrollToSavedProgress = useCallback(() => {
+    if (position?.percentage <= 97) {
+      scrollTo(position?.position);
+    }
+  }, []);
 
   const chapterText = useMemo(
     () =>

@@ -19,9 +19,10 @@
       "@database/*": ["src/database/*"],
       "@hooks/*": ["src/hooks/*"],
       "@hooks": ["src/hooks/index"],
+      "@redux/*": ["src/redux/*"],
       "@screens/*": ["src/screens/*"],
       "@strings/*": ["strings/*"],
-      "@redux/*": ["src/redux/*"],
+      "@sourcesV2/*": ["src/sourcesV2/*"],
       "@theme/*": ["src/theme/*"],
       "@utils/*": ["src/utils/*"]
     }

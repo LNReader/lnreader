@@ -17,9 +17,7 @@ export const cloudflareCheck = (text: string) => {
       text.includes('Checking if the site connection is secure') ||
       text.includes('Verify below to continue reading')
     ) {
-      throw Error(
-        "The app couldn't bypass the source's Cloudflare protection.\n\nOpen the source in WebView and complete the verification to bypass the Cloudflare protection.",
-      );
+      throw Error('Failed to bypass Cloudflare');
     }
   }
 };

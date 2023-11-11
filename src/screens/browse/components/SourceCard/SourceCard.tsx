@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, Image, Pressable } from 'react-native';
 import { getString } from '../../../../../strings/translations';
 import { Button, IconButtonV2 } from '../../../../components';
 
-import { Source } from '../../../../sources/types';
+import { Source } from '@sourcesV2/types';
 import { coverPlaceholderColor } from '../../../../theme/colors';
 import { ThemeColors } from '../../../../theme/types';
 
@@ -29,11 +29,11 @@ const SourceCard: React.FC<Props> = ({
     android_ripple={{ color: theme.rippleColor }}
   >
     <View style={styles.flexRow}>
-      <Image source={{ uri: source.icon }} style={styles.icon} />
+      <Image source={{ uri: source.iconUrl }} style={styles.icon} />
       <View style={styles.details}>
-        <Text style={{ color: theme.onSurface }}>{source.sourceName}</Text>
+        <Text style={{ color: theme.onSurface }}>{source.name}</Text>
         <Text style={[{ color: theme.onSurfaceVariant }, styles.description]}>
-          <Text>{`${source.lang} (ID: ${source.sourceId})`}</Text>
+          <Text>{`${source.lang} (ID: ${source.id})`}</Text>
         </Text>
       </View>
     </View>
@@ -47,7 +47,7 @@ const SourceCard: React.FC<Props> = ({
         name={isPinned ? 'pin' : 'pin-outline'}
         size={22}
         color={isPinned ? theme.primary : theme.onSurfaceVariant}
-        onPress={() => onTogglePinSource(source.sourceId)}
+        onPress={() => onTogglePinSource(source.id)}
         theme={theme}
       />
     </View>
