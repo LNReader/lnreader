@@ -15,8 +15,25 @@ import { useDeviceOrientation } from '@hooks/useDeviceOrientation';
 import { coverPlaceholderColor } from '../theme/colors';
 import { useLibrarySettings } from '@hooks/useSettings';
 import { DisplayModes } from '@screens/library/constants/constants';
+import { LibraryNovelInfo, NovelInfo } from '@database/types';
+import { NovelItem } from '@plugins/types';
+import { ThemeColors } from '@theme/types';
 
-const NovelCover = ({
+interface UnreadBadgeProps {
+  chaptersDownloaded: number;
+  chaptersUnread: number;
+  showDownloadBadges: boolean;
+  theme: ThemeColors;
+}
+
+interface DownloadBadgeProps {
+  chaptersDownloaded: number;
+  chaptersUnread: number;
+  showUnreadBadges: boolean;
+  theme: ThemeColors;
+}
+
+function NovelCover<TNovel extends NovelItem | NovelInfo | LibraryNovelInfo>({
   item,
   onPress,
   libraryStatus,
@@ -24,7 +41,15 @@ const NovelCover = ({
   isSelected,
   onLongPress,
   selectedNovels,
-}) => {
+}: {
+  item: TNovel;
+  onPress: () => void;
+  libraryStatus: boolean;
+  theme: ThemeColors;
+  isSelected: boolean;
+  onLongPress: (item: TNovel) => void;
+  selectedNovels: TNovel[];
+}) {
   const {
     displayMode = DisplayModes.Comfortable,
     showDownloadBadges = true,
@@ -146,11 +171,17 @@ const NovelCover = ({
       isSelected={isSelected}
     />
   );
-};
+}
 
 export default memo(NovelCover);
 
-const ComfortableTitle = ({ theme, novelName }) => (
+const ComfortableTitle = ({
+  theme,
+  novelName,
+}: {
+  theme: ThemeColors;
+  novelName: string;
+}) => (
   <Text
     numberOfLines={2}
     style={[
@@ -165,7 +196,7 @@ const ComfortableTitle = ({ theme, novelName }) => (
   </Text>
 );
 
-const CompactTitle = ({ novelName }) => (
+const CompactTitle = ({ novelName }: { novelName: string }) => (
   <View style={styles.titleContainer}>
     <LinearGradient
       colors={['transparent', 'rgba(0,0,0,0.7)']}
@@ -189,7 +220,7 @@ const CompactTitle = ({ novelName }) => (
   </View>
 );
 
-const InLibraryBadge = ({ theme }) => (
+const InLibraryBadge = ({ theme }: { theme: ThemeColors }) => (
   <Text
     style={[
       styles.inLibraryBadge,
@@ -209,7 +240,7 @@ const UnreadBadge = ({
   chaptersUnread,
   showDownloadBadges,
   theme,
-}) => (
+}: UnreadBadgeProps) => (
   <Text
     style={[
       styles.unreadBadge,
@@ -235,7 +266,7 @@ const DownloadBadge = ({
   showUnreadBadges,
   chaptersUnread,
   theme,
-}) => (
+}: DownloadBadgeProps) => (
   <Text
     style={[
       styles.downloadBadge,

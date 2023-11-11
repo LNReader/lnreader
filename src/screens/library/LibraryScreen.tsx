@@ -211,6 +211,7 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
                 novels={route.novels}
                 selectedNovelIds={selectedNovelIds}
                 setSelectedNovelIds={setSelectedNovelIds}
+                navigation={navigation}
               />
             </>
           )

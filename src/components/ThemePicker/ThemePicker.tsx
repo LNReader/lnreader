@@ -3,8 +3,19 @@ import { View, Text, /* StyleSheet, */ Pressable } from 'react-native';
 import { overlay } from 'react-native-paper';
 import color from 'color';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { ThemeColors } from '@theme/types';
 
-export const ThemePicker = ({ theme, currentTheme, onPress }) => (
+interface ThemePickerProps {
+  theme: ThemeColors;
+  currentTheme: ThemeColors;
+  onPress: () => void;
+}
+
+export const ThemePicker = ({
+  theme,
+  currentTheme,
+  onPress,
+}: ThemePickerProps) => (
   <View
     style={{
       justifyContent: 'center',
