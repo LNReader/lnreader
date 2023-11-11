@@ -14,10 +14,14 @@ import { List } from '@components';
 import { MoreHeader } from './components/MoreHeader';
 import { useLibrarySettings } from '@hooks/useSettings';
 import { useTheme } from '@hooks/useTheme';
+import { MoreStackScreenProps } from '@navigators/types';
+import { RootState } from '@redux/store';
 
-const MoreScreen = ({ navigation }) => {
+const MoreScreen = ({ navigation }: MoreStackScreenProps) => {
   const theme = useTheme();
-  const { downloadQueue } = useSelector(state => state.downloadsReducer);
+  const { downloadQueue } = useSelector(
+    (state: RootState) => state.downloadsReducer,
+  );
   const {
     incognitoMode = false,
     downloadedOnlyMode = false,
@@ -105,7 +109,9 @@ const MoreScreen = ({ navigation }) => {
           <List.Item
             title="Download queue"
             description={
-              downloadQueue.length > 0 && downloadQueue.length + ' remaining'
+              downloadQueue.length > 0
+                ? downloadQueue.length + ' remaining'
+                : ''
             }
             icon="progress-download"
             onPress={() =>

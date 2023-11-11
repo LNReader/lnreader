@@ -20,10 +20,14 @@ import {
 import BackgroundService from 'react-native-background-actions';
 import { showToast } from '../../hooks/showToast';
 import { Appbar, EmptyView } from '@components';
+import { MoreStackScreenProps } from '@navigators/types';
+import { RootState } from '@redux/store';
 
-const DownloadQueue = ({ navigation }) => {
+const DownloadQueue = ({ navigation }: MoreStackScreenProps) => {
   const theme = useTheme();
-  const { downloadQueue } = useSelector(state => state.downloadsReducer);
+  const { downloadQueue } = useSelector(
+    (state: RootState) => state.downloadsReducer,
+  );
   const dispatch = useDispatch();
 
   const [visible, setVisible] = useState(false);
@@ -73,7 +77,7 @@ const DownloadQueue = ({ navigation }) => {
             <Text style={{ color: theme.onSurface }}>{item.name}</Text>
             <ProgressBar
               indeterminate={BackgroundService.isRunning() ? true : false}
-              progress={!BackgroundService.isRunning() && 0}
+              progress={Number(!BackgroundService.isRunning())}
               color={theme.primary}
               style={{ marginTop: 8 }}
             />

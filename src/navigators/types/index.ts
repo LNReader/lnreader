@@ -1,4 +1,5 @@
 import { ChapterInfo, NovelInfo } from '@database/types';
+import { NavigatorScreenParams } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 
 export type RootStackParamList = {
@@ -8,7 +9,7 @@ export type RootStackParamList = {
     novel: NovelInfo;
     chapter: ChapterInfo;
   };
-  MoreStack: undefined;
+  MoreStack: NavigatorScreenParams<MoreStackParamList>;
   SourceScreen: {
     pluginId: string;
     pluginName: string;
@@ -28,11 +29,36 @@ export type RootStackParamList = {
   };
 };
 
+export type MoreStackParamList = {
+  SettingsStack: undefined;
+  About: undefined;
+  DownloadQueue: undefined;
+  Downloads: undefined;
+  Categories: undefined;
+  Statistics: undefined;
+};
+
+export type SettingsStackParamList = {
+  Settings: undefined;
+  GeneralSettings: undefined;
+  ReaderSettings: undefined;
+  TrackerSettings: undefined;
+  BackupSettings: undefined;
+  AppearanceSettings: undefined;
+  AdvancedSettings: undefined;
+  LibrarySettings: undefined;
+};
+
 export type NovelScreenProps = StackScreenProps<RootStackParamList, 'Novel'>;
 export type ChapterScreenProps = StackScreenProps<
   RootStackParamList,
   'Chapter'
 >;
+export type MoreStackScreenProps = StackScreenProps<
+  RootStackParamList,
+  'MoreStack'
+>;
+export type AboutScreenProps = StackScreenProps<MoreStackParamList, 'About'>;
 export type BrowseSourceScreenProps = StackScreenProps<
   RootStackParamList,
   'SourceScreen'

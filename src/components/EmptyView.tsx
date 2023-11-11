@@ -2,7 +2,21 @@ import { useTheme } from '@hooks/useTheme';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-const EmptyView = ({ icon, description, style, children, iconStyle }) => {
+interface EmptyViewProps {
+  icon: string;
+  description: string;
+  style?: any;
+  children?: React.ReactNode;
+  iconStyle?: any;
+}
+
+const EmptyView = ({
+  icon,
+  description,
+  style,
+  children,
+  iconStyle,
+}: EmptyViewProps) => {
   const theme = useTheme();
 
   return (

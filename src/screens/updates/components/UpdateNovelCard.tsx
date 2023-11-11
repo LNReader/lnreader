@@ -33,7 +33,7 @@ const NovelCover = ({
 };
 
 interface UpdateCardProps {
-  item: Update[];
+  item: Update[] | ChapterInfo[];
   descriptionText: string;
   removeItemFromList?: boolean;
 }

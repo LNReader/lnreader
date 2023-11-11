@@ -2,13 +2,21 @@ import React from 'react';
 
 import { Button } from '@components';
 import { Dialog, overlay, Portal } from 'react-native-paper';
+import { ThemeColors } from '@theme/types';
+
+interface RemoveDownloadsDialogProps {
+  dialogVisible: boolean;
+  hideDialog: () => void;
+  theme: ThemeColors;
+  onSubmit: () => void;
+}
 
 const RemoveDownloadsDialog = ({
   dialogVisible,
   hideDialog,
   theme,
   onSubmit,
-}) => {
+}: RemoveDownloadsDialogProps) => {
   return (
     <Portal>
       <Dialog

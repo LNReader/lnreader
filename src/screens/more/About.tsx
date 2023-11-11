@@ -8,8 +8,9 @@ import { MoreHeader } from './components/MoreHeader';
 import { appVersion, releaseDate } from '../../utils/versionUtils';
 import { useTheme } from '@hooks/useTheme';
 import { List } from '@components';
+import { MoreStackScreenProps } from '@navigators/types';
 
-const AboutScreen = ({ navigation }) => {
+const AboutScreen = ({ navigation }: MoreStackScreenProps) => {
   const theme = useTheme();
 
   return (

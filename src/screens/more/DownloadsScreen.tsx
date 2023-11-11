@@ -17,13 +17,17 @@ import RemoveDownloadsDialog from './components/RemoveDownloadsDialog';
 import UpdatesSkeletonLoading from '@screens/updates/components/UpdatesSkeletonLoading';
 import UpdateNovelCard from '@screens/updates/components/UpdateNovelCard';
 import { getString } from '@strings/translations';
+import { MoreStackScreenProps } from '@navigators/types';
+import { ChapterInfo } from '@database/types';
 
-const Downloads = ({ navigation }) => {
+type DownloadGroup = Record<number, ChapterInfo[]>;
+
+const Downloads = ({ navigation }: MoreStackScreenProps) => {
   const theme = useTheme();
 
   const [loading, setLoading] = useState(true);
-  const [chapters, setChapters] = useState([]);
-  const groupUpdatesByDate = chapters => {
+  const [chapters, setChapters] = useState<ChapterInfo[]>([]);
+  const groupUpdatesByDate = (chapters: ChapterInfo[]): ChapterInfo[][] => {
     const dateGroups = chapters.reduce((groups, item) => {
       const novelId = item.novelId;
       if (!groups[novelId]) {
@@ -33,7 +37,7 @@ const Downloads = ({ navigation }) => {
       groups[novelId].push(item);
 
       return groups;
-    }, {});
+    }, {} as DownloadGroup);
     return Object.values(dateGroups);
   };
 
@@ -51,24 +55,16 @@ const Downloads = ({ navigation }) => {
   };
 
   const ListEmptyComponent = () =>
-    !loading && (
+    !loading ? (
       <EmptyView
         icon="(˘･_･˘)"
         description={getString('downloadScreen.noDownloads')}
       />
-    );
+    ) : null;
 
   useEffect(() => {
     getChapters();
   }, []);
-
-  const renderItem = ({ item, index }) => (
-    <UpdateNovelCard
-      item={item}
-      descriptionText={getString('downloadScreen.downloadsLower')}
-      removeItemFromList
-    />
-  );
 
   return (
     <ScreenContainer theme={theme}>
@@ -89,7 +85,13 @@ const Downloads = ({ navigation }) => {
           contentContainerStyle={styles.flatList}
           data={groupUpdatesByDate(chapters)}
           keyExtractor={(item, index) => 'downloadGroup' + index}
-          renderItem={renderItem}
+          renderItem={({ item }) => (
+            <UpdateNovelCard
+              item={item}
+              descriptionText={getString('downloadScreen.downloadsLower')}
+              removeItemFromList
+            />
+          )}
           ListEmptyComponent={<ListEmptyComponent />}
         />
       )}

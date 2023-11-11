@@ -2,12 +2,26 @@ import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 
 import { Appbar, List } from '@components';
+import { MoreStackScreenProps } from '@navigators/types';
+import { ThemeColors } from '@theme/types';
 
-export const MoreHeader = ({ title, navigation, theme, goBack }) => (
+interface MoreHeaderProps {
+  title: string;
+  navigation: MoreStackScreenProps['navigation'];
+  theme: ThemeColors;
+  goBack?: boolean;
+}
+
+export const MoreHeader = ({
+  title,
+  navigation,
+  theme,
+  goBack,
+}: MoreHeaderProps) => (
   <>
     <Appbar
       title={title}
-      handleGoBack={goBack && navigation.goBack}
+      handleGoBack={goBack ? navigation.goBack : undefined}
       mode="small"
       theme={theme}
     />

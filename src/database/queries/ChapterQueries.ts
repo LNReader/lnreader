@@ -453,14 +453,14 @@ const getDownloadedChaptersQuery = `
     WHERE Chapter.isDownloaded = 1
   `;
 
-export const getDownloadedChapters = () => {
+export const getDownloadedChapters = (): Promise<ChapterInfo[]> => {
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
         getDownloadedChaptersQuery,
         undefined,
         (txObj, { rows }) => {
-          resolve((rows as any)._array);
+          resolve(rows._array);
         },
         (_txObj, _error) => {
           // console.log('Error ', error)
