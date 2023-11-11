@@ -48,8 +48,8 @@ const insertLocalNovel = (
               url: NovelDownloadFolder + '/local/' + resultSet.insertId,
               cover: newCoverPath,
               name: name,
-              inLibrary: 1,
-              isLocal: 1,
+              inLibrary: true,
+              isLocal: true,
             });
             resolve(resultSet.insertId);
           } else {

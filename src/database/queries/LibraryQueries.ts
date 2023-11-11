@@ -81,11 +81,13 @@ const getLibraryWithCategoryQuery = `
 `;
 
 export const getLibraryWithCategory = ({
+  categoryId,
   filter,
   searchText,
   sortOrder,
   downloadedOnlyMode,
 }: {
+  categoryId: number;
   sortOrder?: string;
   filter?: string;
   searchText?: string;
@@ -111,7 +113,7 @@ export const getLibraryWithCategory = ({
     db.transaction(tx => {
       tx.executeSql(
         query,
-        [],
+        [categoryId],
         (txObj, { rows }) => resolve((rows as any)._array),
         txnErrorCallback,
       );

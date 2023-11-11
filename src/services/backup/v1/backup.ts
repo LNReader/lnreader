@@ -9,8 +9,8 @@ import { restoreLibrary } from '@database/queries/NovelQueries';
 import { getLibraryNovelsFromDb } from '@database/queries/LibraryQueries';
 import { showToast } from '@hooks/showToast';
 import dayjs from 'dayjs';
-
-const sleep = time => new Promise(resolve => setTimeout(() => resolve(), time));
+import { NovelInfo } from '@database/types';
+import { sleep } from '@utils/sleep';
 
 export const createBackup = async () => {
   try {
@@ -43,32 +43,33 @@ export const createBackup = async () => {
 
       showToast(`Backup created ${fileName}`);
     }
-  } catch (error) {
+  } catch (error: any) {
     showToast(error.message);
   }
 };
 
-export const restoreBackup = async filePath => {
-  try {
-    let backup = {};
-    if (!filePath) {
-      backup = await DocumentPicker.getDocumentAsync({
-        copyToCacheDirectory: false,
-      });
-    }
-    let novels = '';
+interface TaskData {
+  delay: number;
+}
 
-    if (backup.uri) {
-      novels = await StorageAccessFramework.readAsStringAsync(backup.uri);
+export const restoreBackup = async (filePath: string) => {
+  try {
+    const backup = await DocumentPicker.getDocumentAsync({
+      copyToCacheDirectory: false,
+    });
+    let novelsString = '';
+
+    if (backup.type === 'success') {
+      novelsString = await StorageAccessFramework.readAsStringAsync(backup.uri);
     } else if (filePath) {
       if (!(await RNFS.exists(filePath))) {
         showToast("There's no error novel");
         return; //neither backup nor error backup
       }
-      novels = await RNFS.readFile(filePath);
+      novelsString = await RNFS.readFile(filePath);
     }
 
-    novels = await JSON.parse(novels);
+    const novels: NovelInfo[] = await JSON.parse(novelsString);
     if (novels.length === 0) {
       showToast("There's no available backup");
       return;
@@ -84,8 +85,8 @@ export const restoreBackup = async filePath => {
       progressBar: { max: novels.length, value: 0 },
     };
 
-    const restoreBackupBackgroundAction = async taskData =>
-      await new Promise(async resolve => {
+    const restoreBackupBackgroundAction = async (taskData?: TaskData) =>
+      await new Promise<void>(async resolve => {
         const errorNovels = [];
         for (
           let i = 0;
@@ -124,10 +125,10 @@ export const restoreBackup = async filePath => {
                 nextNovelIndex in novels &&
                 novels[nextNovelIndex].pluginId === novels[i].pluginId
               ) {
-                await sleep(taskData.delay);
+                await sleep(taskData?.delay || 0);
               }
             }
-          } catch (error) {
+          } catch (error: any) {
             showToast(novels[i].name + ': ' + error.message);
             errorNovels.push(novels[i]);
             continue;
@@ -156,12 +157,12 @@ export const restoreBackup = async filePath => {
       });
 
     if (novels.length > 0) {
-      await BackgroundService.start(
+      await BackgroundService.start<TaskData>(
         restoreBackupBackgroundAction,
         notificationOptions,
       );
     }
-  } catch (error) {
+  } catch (error: any) {
     showToast(error.message);
   }
 };

@@ -8,21 +8,31 @@ import {
 
 import { showToast } from '../../hooks/showToast';
 import { updateNovel } from './LibraryUpdateQueries';
+import { LibraryNovelInfo } from '@database/types';
+import { sleep } from '@utils/sleep';
 
-const sleep = time => new Promise(resolve => setTimeout(() => resolve(), time));
+interface TaskData {
+  delay: number;
+}
 
-const updateLibrary = async options => {
+export interface UpdateLibraryOptions {
+  downloadNewChapters?: boolean;
+  onlyUpdateOngoingNovels?: boolean;
+  refreshNovelMetadata?: boolean;
+  categoryId?: number;
+}
+
+const updateLibrary = async (options: UpdateLibraryOptions) => {
   const { onlyUpdateOngoingNovels, categoryId } = options;
 
-  let libraryNovels = [];
+  let libraryNovels: LibraryNovelInfo[] = [];
 
   if (categoryId) {
-    libraryNovels = await getLibraryWithCategory(
-      categoryId,
-      onlyUpdateOngoingNovels,
-    );
+    libraryNovels = await getLibraryWithCategory({ categoryId });
   } else {
-    libraryNovels = await getLibraryNovelsFromDb(onlyUpdateOngoingNovels);
+    libraryNovels = (await getLibraryNovelsFromDb(
+      onlyUpdateOngoingNovels,
+    )) as LibraryNovelInfo[];
   }
 
   const notificationOptions = {
@@ -36,8 +46,8 @@ const updateLibrary = async options => {
     progressBar: { max: libraryNovels.length, value: 0 },
   };
 
-  const libraryUpdateBackgroundAction = async taskData =>
-    await new Promise(async resolve => {
+  const libraryUpdateBackgroundAction = async (taskData?: TaskData) =>
+    await new Promise<void>(async resolve => {
       for (
         let i = 0;
         BackgroundService.isRunning() && i < libraryNovels.length;
@@ -86,10 +96,10 @@ const updateLibrary = async options => {
               libraryNovels[nextNovelIndex].pluginId ===
                 libraryNovels[i].pluginId
             ) {
-              await sleep(taskData.delay);
+              await sleep(taskData?.delay ?? 0);
             }
           }
-        } catch (error) {
+        } catch (error: any) {
           showToast(libraryNovels[i].name + ': ' + error.message);
           continue;
         }
@@ -97,7 +107,7 @@ const updateLibrary = async options => {
     });
 
   if (libraryNovels.length > 0) {
-    await BackgroundService.start(
+    await BackgroundService.start<TaskData>(
       libraryUpdateBackgroundAction,
       notificationOptions,
     );
