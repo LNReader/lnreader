@@ -26,6 +26,7 @@ import {
   useMMKVString,
 } from 'react-native-mmkv';
 import { Appbar, List } from '@components';
+import { AppearanceSettingsScreenProps } from '@navigators/types';
 
 const lightThemes = [
   defaultTheme.light,
@@ -46,11 +47,12 @@ const darkThemes = [
   takoTheme.dark,
 ];
 
-const AppearanceSettings = ({ navigation }) => {
+const AppearanceSettings = ({ navigation }: AppearanceSettingsScreenProps) => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const [, setTheme] = useMMKVObject('APP_THEME');
-  const [isAmoledBlack, setAmoledBlack] = useMMKVBoolean('AMOLED_BLACK');
+  const [isAmoledBlack = false, setAmoledBlack] =
+    useMMKVBoolean('AMOLED_BLACK');
   const [, setCustomAccentColor] = useMMKVString('CUSTOM_ACCENT_COLOR');
 
   const {

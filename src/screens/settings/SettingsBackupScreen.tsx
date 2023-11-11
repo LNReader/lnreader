@@ -14,8 +14,9 @@ import { Portal } from 'react-native-paper';
 import useBoolean from '@hooks/useBoolean';
 import ConnectionModal from './components/ConnectionModal';
 import { remoteBackup, remoteRestore } from '@services/backup/remote';
+import { BackupSettingsScreenProps } from '@navigators/types';
 
-const BackupSettings = ({ navigation }) => {
+const BackupSettings = ({ navigation }: BackupSettingsScreenProps) => {
   const theme = useTheme();
   const [ipv4, setIpv4] = useState('');
   const [port, setPort] = useState('8000');

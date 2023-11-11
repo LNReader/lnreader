@@ -18,8 +18,9 @@ import {
 import { Appbar, Button, List } from '@components';
 import useSourceStorage from '@hooks/useSourceStorage';
 import { importEpub } from '@services/epub/import';
+import { AdvancedSettingsScreenProps } from '@navigators/types';
 
-const AdvancedSettings = ({ navigation }) => {
+const AdvancedSettings = ({ navigation }: AdvancedSettingsScreenProps) => {
   const theme = useTheme();
   const { clearCookies } = useSourceStorage({});
 

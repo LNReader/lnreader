@@ -5,8 +5,9 @@ import { Appbar, List } from '@components';
 import { useTheme } from '@hooks/useTheme';
 
 import { getString } from '@strings/translations';
+import { SettingsScreenProps } from '@navigators/types';
 
-const SettingsScreen = ({ navigation }) => {
+const SettingsScreen = ({ navigation }: SettingsScreenProps) => {
   const theme = useTheme();
 
   return (

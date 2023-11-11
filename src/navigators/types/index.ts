@@ -51,7 +51,7 @@ export type MoreStackScreenProps = CompositeScreenProps<
   StackScreenProps<RootStackParamList, 'MoreStack'>
 >;
 export type MoreStackParamList = {
-  SettingsStack: undefined;
+  SettingsStack: NavigatorScreenParams<SettingsStackParamList>;
   About: undefined;
   DownloadQueue: undefined;
   Downloads: undefined;
@@ -112,4 +112,24 @@ export type SourceNovelsScreenProps = StackScreenProps<
 export type WebviewScreenProps = StackScreenProps<
   RootStackParamList,
   'WebviewScreen'
+>;
+export type SettingsScreenProps = CompositeScreenProps<
+  StackScreenProps<SettingsStackParamList, 'Settings'>,
+  StackScreenProps<MoreStackParamList, 'SettingsStack'>
+>;
+export type AppearanceSettingsScreenProps = StackScreenProps<
+  SettingsStackParamList,
+  'AppearanceSettings'
+>;
+export type TrackerSettingsScreenProps = StackScreenProps<
+  SettingsStackParamList,
+  'TrackerSettings'
+>;
+export type BackupSettingsScreenProps = StackScreenProps<
+  SettingsStackParamList,
+  'BackupSettings'
+>;
+export type AdvancedSettingsScreenProps = StackScreenProps<
+  SettingsStackParamList,
+  'AdvancedSettings'
 >;

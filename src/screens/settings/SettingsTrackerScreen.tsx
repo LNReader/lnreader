@@ -13,10 +13,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import { removeTracker, setTracker } from '../../redux/tracker/tracker.actions';
 import { useTheme } from '@hooks/useTheme';
 import { Appbar, List } from '@components';
+import { TrackerSettingsScreenProps } from '@navigators/types';
+import { RootState } from '@redux/store';
 
-const TrackerScreen = ({ navigation }) => {
+const TrackerScreen = ({ navigation }: TrackerSettingsScreenProps) => {
   const theme = useTheme();
-  const tracker = useSelector(state => state.trackerReducer.tracker);
+  const tracker = useSelector(
+    (state: RootState) => state.trackerReducer.tracker,
+  );
   const dispatch = useDispatch();
 
   // Tracker Modal
@@ -60,9 +64,8 @@ const TrackerScreen = ({ navigation }) => {
                     // console.log(code);
 
                     if (code) {
-                      code = code[1];
                       getAccessToken(
-                        code,
+                        code[1],
                         myAnimeListConfig.codeChallenge,
                       ).then(objects => {
                         // console.log(objects);
@@ -73,7 +76,6 @@ const TrackerScreen = ({ navigation }) => {
                 });
               }
             }}
-            right={tracker && 'check'}
             theme={theme}
           />
           {tracker && tracker.expires_in < new Date(Date.now()) && (
