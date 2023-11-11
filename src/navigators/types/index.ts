@@ -63,6 +63,10 @@ export type BrowseSourceScreenProps = StackScreenProps<
   RootStackParamList,
   'SourceScreen'
 >;
+export type BrowseSettingsScreenProp = StackScreenProps<
+  RootStackParamList,
+  'BrowseSettings'
+>;
 export type WebviewScreenProps = StackScreenProps<
   RootStackParamList,
   'WebviewScreen'
