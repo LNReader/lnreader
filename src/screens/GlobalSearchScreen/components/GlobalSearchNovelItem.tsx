@@ -11,7 +11,11 @@ import { getString } from '@strings/translations';
 interface Props {
   novel: NovelItem;
   pluginId: string;
-  navigateToNovel: (novelItem: any) => void;
+  navigateToNovel: (item: {
+    name: string;
+    url: string;
+    pluginId: string;
+  }) => void;
   theme: ThemeColors;
   onLongPress?: () => void;
   inLibrary?: boolean;

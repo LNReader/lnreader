@@ -18,7 +18,7 @@ export type RootStackParamList = {
   };
   BrowseMal: undefined;
   BrowseSettings: undefined;
-  GlobalSearchScreen: { searchText: string } | undefined;
+  GlobalSearchScreen: { searchText?: string };
   Migration: undefined;
   SourceNovels: { pluginId: string };
   MigrateNovel: { pluginId: string; novel: any };
@@ -27,6 +27,14 @@ export type RootStackParamList = {
     name: string;
     url: string;
   };
+};
+
+export type BottomNavigatorParamList = {
+  library: undefined;
+  updates: undefined;
+  history: undefined;
+  browse: undefined;
+  more: undefined;
 };
 
 export type MoreStackParamList = {
@@ -66,6 +74,10 @@ export type BrowseSourceScreenProps = StackScreenProps<
 export type BrowseSettingsScreenProp = StackScreenProps<
   RootStackParamList,
   'BrowseSettings'
+>;
+export type GlobalSearchScreenProps = StackScreenProps<
+  RootStackParamList,
+  'GlobalSearchScreen'
 >;
 export type WebviewScreenProps = StackScreenProps<
   RootStackParamList,

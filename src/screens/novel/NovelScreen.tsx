@@ -132,7 +132,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
   const actions = useMemo(() => {
     const list = [];
 
-    if (selected.some(obj => obj.isDownloaded === 0)) {
+    if (selected.some(obj => !obj.isDownloaded)) {
       list.push({
         icon: 'download-outline',
         onPress: () => {
@@ -143,7 +143,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
         },
       });
     }
-    if (selected.some(obj => obj.isDownloaded === 1)) {
+    if (selected.some(obj => obj.isDownloaded)) {
       list.push({
         icon: 'trash-can-outline',
         onPress: () => {
@@ -161,7 +161,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
       },
     });
 
-    if (selected.some(obj => obj.unread === 0)) {
+    if (selected.some(obj => !obj.unread)) {
       list.push({
         icon: 'check',
         onPress: () => {
@@ -171,7 +171,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
       });
     }
 
-    if (selected.some(obj => obj.unread === 1)) {
+    if (selected.some(obj => obj.unread)) {
       list.push({
         icon: 'check-outline',
         onPress: () => {
