@@ -22,8 +22,10 @@ import { showToast } from '../../hooks/showToast';
 import { Appbar, EmptyView } from '@components';
 import { MoreStackScreenProps } from '@navigators/types';
 import { RootState } from '@redux/store';
+import { useNavigation } from '@react-navigation/native';
 
-const DownloadQueue = ({ navigation }: MoreStackScreenProps) => {
+const DownloadQueue = () => {
+  const { navigation } = useNavigation<MoreStackScreenProps>();
   const theme = useTheme();
   const { downloadQueue } = useSelector(
     (state: RootState) => state.downloadsReducer,

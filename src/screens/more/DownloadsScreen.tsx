@@ -19,12 +19,13 @@ import UpdateNovelCard from '@screens/updates/components/UpdateNovelCard';
 import { getString } from '@strings/translations';
 import { MoreStackScreenProps } from '@navigators/types';
 import { ChapterInfo } from '@database/types';
+import { useNavigation } from '@react-navigation/native';
 
 type DownloadGroup = Record<number, ChapterInfo[]>;
 
-const Downloads = ({ navigation }: MoreStackScreenProps) => {
+const Downloads = () => {
+  const { navigation } = useNavigation<MoreStackScreenProps>();
   const theme = useTheme();
-
   const [loading, setLoading] = useState(true);
   const [chapters, setChapters] = useState<ChapterInfo[]>([]);
   const groupUpdatesByDate = (chapters: ChapterInfo[]): ChapterInfo[][] => {

@@ -9,7 +9,7 @@ export type RootStackParamList = {
     novel: NovelInfo;
     chapter: ChapterInfo;
   };
-  MoreStack: NavigatorScreenParams<MoreStackParamList>;
+  MoreStack: NavigatorScreenParams<MoreStackParamList> | undefined;
   SourceScreen: {
     pluginId: string;
     pluginName: string;
@@ -27,14 +27,6 @@ export type RootStackParamList = {
     name: string;
     url: string;
   };
-};
-
-export type BottomNavigatorParamList = {
-  library: undefined;
-  updates: undefined;
-  history: undefined;
-  browse: undefined;
-  more: undefined;
 };
 
 export type MoreStackParamList = {

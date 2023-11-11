@@ -9,8 +9,10 @@ import { appVersion, releaseDate } from '../../utils/versionUtils';
 import { useTheme } from '@hooks/useTheme';
 import { List } from '@components';
 import { MoreStackScreenProps } from '@navigators/types';
+import { useNavigation } from '@react-navigation/native';
 
-const AboutScreen = ({ navigation }: MoreStackScreenProps) => {
+const AboutScreen = () => {
+  const { navigation } = useNavigation<MoreStackScreenProps>();
   const theme = useTheme();
 
   return (
