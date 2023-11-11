@@ -66,7 +66,7 @@ const getLibraryWithCategoryQuery = `
       category 
     FROM
     Novel LEFT JOIN (
-      SELECT NovelId, name as category FROM (NovelCategory JOIN Category ON NovelCategory.categoryId = Category.id)
+      SELECT NovelId, name as category, categoryId FROM (NovelCategory JOIN Category ON NovelCategory.categoryId = Category.id)
     ) as NC ON Novel.id = NC.novelId
     WHERE inLibrary = 1
   ) as NIL 
@@ -81,13 +81,11 @@ const getLibraryWithCategoryQuery = `
 `;
 
 export const getLibraryWithCategory = ({
-  categoryId,
   filter,
   searchText,
   sortOrder,
   downloadedOnlyMode,
 }: {
-  categoryId: number;
   sortOrder?: string;
   filter?: string;
   searchText?: string;
@@ -113,7 +111,7 @@ export const getLibraryWithCategory = ({
     db.transaction(tx => {
       tx.executeSql(
         query,
-        [categoryId],
+        [],
         (txObj, { rows }) => resolve((rows as any)._array),
         txnErrorCallback,
       );

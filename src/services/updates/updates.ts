@@ -28,7 +28,9 @@ const updateLibrary = async (options: UpdateLibraryOptions) => {
   let libraryNovels: LibraryNovelInfo[] = [];
 
   if (categoryId) {
-    libraryNovels = await getLibraryWithCategory({ categoryId });
+    libraryNovels = await getLibraryWithCategory({
+      filter: `categoryId = ${categoryId}`,
+    });
   } else {
     libraryNovels = (await getLibraryNovelsFromDb(
       onlyUpdateOngoingNovels,

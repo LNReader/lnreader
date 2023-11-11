@@ -41,6 +41,11 @@ export type BottomNavigatorParamList = {
   More: undefined;
 };
 
+export type LibraryScreenProps = CompositeScreenProps<
+  MaterialBottomTabScreenProps<BottomNavigatorParamList, 'Library'>,
+  StackScreenProps<RootStackParamList>
+>;
+
 export type BrowseScreenProps = CompositeScreenProps<
   MaterialBottomTabScreenProps<BottomNavigatorParamList, 'Browse'>,
   StackScreenProps<RootStackParamList>
