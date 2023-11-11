@@ -1,3 +1,4 @@
+import { ChapterInfo, NovelInfo } from '@database/types';
 import {
   CHAPTER_DOWNLOADING,
   CHAPTER_DOWNLOADED,
@@ -12,7 +13,6 @@ import {
   NOVEL_ERROR,
   CHAPTER_READ,
   UPDATE_NOVEL,
-  UPDATE_LAST_READ,
   CHAPTER_UNREAD,
   BOOKMARK_CHAPTER,
   MARK_PREVIOUS_CHAPTERS_READ,
@@ -20,17 +20,27 @@ import {
   RESTORE_NOVEL_STATE,
 } from './novel.types';
 
-const initialState = {
-  novel: {},
+export interface NovelState {
+  novel: NovelInfo;
+  chapters: ChapterInfo[];
+  loading: boolean;
+  updating: boolean;
+  downloading: any[]; // Array<ChapterInfo {id, url, isDownloaded, novelId, pluginId}>
+  lastRead: ChapterInfo;
+  inLibrary: boolean;
+}
+
+const initialState: NovelState = {
+  novel: {} as NovelInfo,
   chapters: [],
   loading: true,
   updating: false,
-  downloading: [], // Array<ChapterInfo {id, url, isDownloaded, novelId, pluginId}>
-  lastRead: undefined, // ChapterInfo (id, name,)
+  downloading: [],
+  lastRead: {} as ChapterInfo,
   inLibrary: false,
 };
 
-const novelReducer = (state = initialState, action) => {
+const novelReducer = (state = initialState, action: any): NovelState => {
   const { type, payload } = action;
   switch (type) {
     case LOADING_NOVEL:
@@ -90,7 +100,7 @@ const novelReducer = (state = initialState, action) => {
         ...state,
         chapters: state.chapters.map(chapter =>
           chapter.id === payload.chapterId
-            ? { ...chapter, bookmark: !payload.bookmark }
+            ? { ...chapter, bookmark: payload.bookmark ? 0 : 1 }
             : chapter,
         ),
       };
@@ -128,11 +138,6 @@ const novelReducer = (state = initialState, action) => {
           isDownloaded: 0,
         })),
       };
-    case UPDATE_LAST_READ:
-      return {
-        ...state,
-        novel: { ...state.novel, lastRead: payload.lastRead },
-      };
 
     case MARK_PREVIOUS_CHAPTERS_READ:
       return {
@@ -155,7 +160,7 @@ const novelReducer = (state = initialState, action) => {
     case NOVEL_ERROR:
       return {
         ...state,
-        novel: {},
+        novel: {} as NovelInfo,
         chapters: [],
         loading: false,
         updating: false,

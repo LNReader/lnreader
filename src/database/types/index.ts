@@ -8,7 +8,7 @@ export interface NovelInfo {
   summary?: string;
   author?: string;
   artist?: string;
-  status?: NovelStatus;
+  status?: NovelStatus | string;
   genres?: string;
   inLibrary: number;
   isLocal: number;

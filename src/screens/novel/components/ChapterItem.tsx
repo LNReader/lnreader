@@ -26,7 +26,7 @@ interface ChapterItemProps {
   navigateToChapter: (chapter: ChapterInfo) => void;
   showProgressPercentage?: (chapter: ChapterInfo) => any;
   left?: ReactNode;
-  isLocal: boolean;
+  isLocal: number;
   isUpdateCard?: boolean;
   novelName: string;
 }

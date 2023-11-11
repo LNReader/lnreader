@@ -1,4 +1,4 @@
-import React, { memo, useMemo } from 'react';
+import React, { memo, useCallback } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import color from 'color';
 
@@ -27,6 +27,24 @@ import NovelScreenButtonGroup from '../NovelScreenButtonGroup/NovelScreenButtonG
 import { useAppDispatch } from '../../../../redux/hooks';
 import { getString } from '../../../../../strings/translations';
 import { filterColor } from '../../../../theme/colors';
+import { ChapterInfo, NovelInfo as NovelData } from '@database/types';
+import { ThemeColors } from '@theme/types';
+import { NovelScreenProps } from '@navigators/types';
+import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
+import { UseBooleanReturnType } from '@hooks/useBoolean';
+
+interface NovelInfoHeaderProps {
+  novel: NovelData;
+  theme: ThemeColors;
+  filter: string;
+  chapters: ChapterInfo[];
+  lastRead: ChapterInfo;
+  navigation: NovelScreenProps['navigation'];
+  trackerSheetRef: React.RefObject<BottomSheetModalMethods>;
+  setCustomNovelCover: () => Promise<void>;
+  novelBottomSheetRef: React.RefObject<BottomSheetModalMethods>;
+  deleteDownloadsSnackbar: UseBooleanReturnType;
+}
 
 const NovelInfoHeader = ({
   novel,
@@ -36,22 +54,23 @@ const NovelInfoHeader = ({
   lastRead,
   navigation,
   trackerSheetRef,
-  setCustomcover,
+  setCustomNovelCover,
   novelBottomSheetRef,
   deleteDownloadsSnackbar,
-}) => {
+}: NovelInfoHeaderProps) => {
   const { hideBackdrop = false } = useSettings();
 
   const dispatch = useAppDispatch();
 
-  const getStatusIcon = useMemo(
-    () => ({
-      Ongoing: 'clock-outline',
-      Completed: 'check-all',
-      Unknown: 'help',
-    }),
-    [],
-  );
+  const getStatusIcon = useCallback((status?: string) => {
+    if (status === 'Ongoing') {
+      return 'clocl-outline';
+    }
+    if (status === 'Completed') {
+      return 'check-all';
+    }
+    return 'help';
+  }, []);
   return (
     <>
       <CoverImage
@@ -63,7 +82,7 @@ const NovelInfoHeader = ({
           <NovelThumbnail
             source={{ uri: novel.cover }}
             theme={theme}
-            setCustomcover={setCustomcover}
+            setCustomNovelCover={setCustomNovelCover}
           />
           <View style={styles.novelDetails}>
             <NovelTitle
@@ -95,7 +114,7 @@ const NovelInfoHeader = ({
               </NovelAuthor>
               <Row>
                 <MaterialCommunityIcons
-                  name={getStatusIcon[novel.status] || getStatusIcon.Unknown}
+                  name={getStatusIcon(novel.status)}
                   size={14}
                   color={theme.onSurfaceVariant}
                   style={{ marginRight: 4 }}
@@ -112,7 +131,7 @@ const NovelInfoHeader = ({
         <NovelScreenButtonGroup
           novel={novel}
           handleFollowNovel={() => {
-            dispatch(followNovelAction(novel, novel.pluginId));
+            dispatch(followNovelAction(novel));
             if (
               novel.inLibrary &&
               chapters.some(chapter => chapter.isDownloaded === 1)
@@ -120,11 +139,11 @@ const NovelInfoHeader = ({
               deleteDownloadsSnackbar.setTrue();
             }
           }}
-          handleTrackerSheet={() => trackerSheetRef.current.present()}
+          handleTrackerSheet={() => trackerSheetRef.current?.present()}
           theme={theme}
         />
         <NovelSummary
-          summary={novel.summary}
+          summary={novel.summary || 'No summary'}
           isExpanded={!novel.inLibrary}
           theme={theme}
         />
@@ -134,7 +153,7 @@ const NovelInfoHeader = ({
         <ReadButton novel={novel} chapters={chapters} lastRead={lastRead} />
         <Pressable
           style={styles.bottomsheet}
-          onPress={() => novelBottomSheetRef.current.present()}
+          onPress={() => novelBottomSheetRef.current?.present()}
           android_ripple={{
             color: color(theme.primary).alpha(0.12).string(),
           }}

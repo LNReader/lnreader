@@ -9,6 +9,7 @@ import { ThemeColors } from '@theme/types';
 import { getString } from '@strings/translations';
 import { Portal } from 'react-native-paper';
 import SetCategoryModal from '../SetCategoriesModal';
+import { NovelScreenProps } from '@navigators/types';
 
 interface NovelScreenButtonGroupProps {
   novel: NovelInfo;
@@ -24,7 +25,7 @@ const NovelScreenButtonGroup: React.FC<NovelScreenButtonGroupProps> = ({
   theme,
 }) => {
   const { inLibrary, isLocal } = novel;
-  const { navigate } = useNavigation();
+  const { navigate } = useNavigation<NovelScreenProps['navigation']>();
   const followButtonColor = inLibrary ? theme.primary : theme.outline;
 
   const { isTracked, isTrackerAvailable } = useNovelTrackerInfo(novel.id);
@@ -32,23 +33,17 @@ const NovelScreenButtonGroup: React.FC<NovelScreenButtonGroupProps> = ({
   const trackerButtonColor = isTracked ? theme.primary : theme.outline;
 
   const handleOpenWebView = async () => {
-    navigate(
-      'WebviewScreen' as never,
-      {
-        pluginId: novel.pluginId,
-        name: novel.pluginId,
-        url: novel.url,
-      } as never,
-    );
+    navigate('WebviewScreen', {
+      pluginId: novel.pluginId,
+      name: novel.pluginId,
+      url: novel.url,
+    });
   };
   const handleMigrateNovel = () =>
-    navigate(
-      'MigrateNovel' as never,
-      {
-        pluginId: novel.pluginId,
-        novel: novel,
-      } as never,
-    );
+    navigate('MigrateNovel', {
+      pluginId: novel.pluginId,
+      novel: novel,
+    });
 
   const {
     value: setCategoryModalVisible,

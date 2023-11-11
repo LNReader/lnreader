@@ -44,7 +44,6 @@ import {
 } from '@hooks/reduxHooks';
 import { showToast } from '../../hooks/showToast';
 import { useTheme } from '@hooks/useTheme';
-import ChapterItem from './components/ChapterItem';
 import NovelInfoHeader from './components/Info/NovelInfoHeader';
 import NovelBottomSheet from './components/NovelBottomSheet';
 import TrackSheet from './components/Tracker/TrackSheet';
@@ -56,11 +55,13 @@ import { pickCustomNovelCover } from '../../database/queries/NovelQueries';
 import DownloadCustomChapterModal from './components/DownloadCustomChapterModal';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import useBoolean from '@hooks/useBoolean';
-import { useCategorySettings } from '@hooks/useSettings';
-import { openChapter } from '../../utils/handleNavigateParams';
 import NovelScreenLoading from './components/LoadingAnimation/NovelScreenLoading';
+import { NovelScreenProps } from '@navigators/types';
+import { RootState } from '@redux/store';
+import { ChapterInfo } from '@database/types';
+import ChapterItem from './components/ChapterItem';
 
-const Novel = ({ route, navigation }) => {
+const Novel = ({ route, navigation }: NovelScreenProps) => {
   const { name, url, pluginId } = route.params;
   const theme = useTheme();
   const dispatch = useDispatch();
@@ -69,13 +70,15 @@ const Novel = ({ route, navigation }) => {
 
   const { novel, chapters, loading, updating } = useNovel();
 
-  const { downloadQueue } = useSelector(state => state.downloadsReducer);
+  const { downloadQueue } = useSelector(
+    (state: RootState) => state.downloadsReducer,
+  );
 
-  const [selected, setSelected] = useState([]);
+  const [selected, setSelected] = useState<ChapterInfo[]>([]);
   const [downloadMenu, showDownloadMenu] = useState(false);
   const [extraMenu, showExtraMenu] = useState(false);
 
-  let flatlistRef = useRef(null);
+  let flatlistRef = useRef<FlashList<ChapterInfo>>(null);
   let novelBottomSheetRef = useRef(null);
   let trackerSheetRef = useRef(null);
 
@@ -115,7 +118,7 @@ const Novel = ({ route, navigation }) => {
 
   const [jumpToChapterModal, showJumpToChapterModal] = useState(false);
 
-  const downloadChapter = chapter =>
+  const downloadChapter = (chapter: ChapterInfo) =>
     dispatch(
       downloadChapterAction(
         pluginId,
@@ -193,14 +196,17 @@ const Novel = ({ route, navigation }) => {
     return list;
   }, [selected]);
 
-  const deleteChapter = chapter =>
+  const deleteChapter = (chapter: ChapterInfo) =>
     dispatch(deleteChapterAction(pluginId, novel.id, chapter.id, chapter.name));
 
-  const isSelected = id => {
+  const isSelected = (id: number) => {
     return selected.some(obj => obj.id === id);
   };
 
-  const onSelectPress = (chapter, navigateToChapter) => {
+  const onSelectPress = (
+    chapter: ChapterInfo,
+    navigateToChapter: () => void,
+  ) => {
     if (selected.length === 0) {
       navigateToChapter();
     } else {
@@ -212,7 +218,7 @@ const Novel = ({ route, navigation }) => {
     }
   };
 
-  const onSelectLongPress = chapter => {
+  const onSelectLongPress = (chapter: ChapterInfo) => {
     if (selected.length === 0) {
       if (!disableHapticFeedback) {
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
@@ -253,11 +259,11 @@ const Novel = ({ route, navigation }) => {
       }
     }
   };
-  const navigateToChapter = chapter => {
+  const navigateToChapter = (chapter: ChapterInfo) => {
     navigation.navigate('Chapter', { novel: novel, chapter: chapter });
   };
 
-  const showProgressPercentage = chapter => {
+  const showProgressPercentage = (chapter: ChapterInfo) => {
     const savedProgress =
       position && position[chapter.id] && position[chapter.id].percentage;
     if (savedProgress < 97 && savedProgress > 0 && chapter.unread) {
@@ -292,24 +298,6 @@ const Novel = ({ route, navigation }) => {
     showExtraMenu(false);
   };
 
-  const renderItem = ({ item: it, index }) => (
-    <ChapterItem
-      isLocal={novel.isLocal}
-      theme={theme}
-      chapter={it}
-      showChapterTitles={showChapterTitles}
-      downloadQueue={downloadQueue}
-      deleteChapter={deleteChapter}
-      downloadChapter={downloadChapter}
-      isSelected={isSelected}
-      onSelectPress={onSelectPress}
-      onSelectLongPress={onSelectLongPress}
-      navigateToChapter={navigateToChapter}
-      showProgressPercentage={showProgressPercentage}
-      novelName={name}
-    />
-  );
-
   const [editInfoModal, showEditInfoModal] = useState(false);
   const downloadCustomChapterModal = useBoolean();
 
@@ -324,7 +312,7 @@ const Novel = ({ route, navigation }) => {
             <View
               style={{
                 position: 'absolute',
-                height: StatusBar.currentHeight + 54,
+                height: (StatusBar.currentHeight || 0) + 54,
                 width: '100%',
                 flexDirection: 'row',
                 justifyContent: 'space-between',
@@ -334,7 +322,7 @@ const Novel = ({ route, navigation }) => {
                 icon="arrow-left"
                 iconColor={theme.onBackground}
                 size={24}
-                style={{ marginTop: StatusBar.currentHeight + 8 }}
+                style={{ marginTop: (StatusBar.currentHeight || 0) + 8 }}
                 onPress={() => navigation.goBack()}
               />
               <Row>
@@ -343,7 +331,7 @@ const Novel = ({ route, navigation }) => {
                   iconColor={theme.onBackground}
                   size={21}
                   style={{
-                    marginTop: StatusBar.currentHeight + 8,
+                    marginTop: (StatusBar.currentHeight || 0) + 8,
                   }}
                   onPress={() =>
                     Share.share({
@@ -356,7 +344,7 @@ const Novel = ({ route, navigation }) => {
                   iconColor={theme.onBackground}
                   size={21}
                   style={{
-                    marginTop: StatusBar.currentHeight + 8,
+                    marginTop: (StatusBar.currentHeight || 0) + 8,
                   }}
                   onPress={() => showJumpToChapterModal(true)}
                 />
@@ -370,7 +358,7 @@ const Novel = ({ route, navigation }) => {
                         iconColor={theme.onBackground}
                         size={24}
                         style={{
-                          marginTop: StatusBar.currentHeight + 8,
+                          marginTop: (StatusBar.currentHeight || 0) + 8,
                         }}
                         onPress={() => showDownloadMenu(true)}
                       />
@@ -386,8 +374,7 @@ const Novel = ({ route, navigation }) => {
                           downloadAllChaptersAction(novel.pluginId, novel.url, [
                             chapters.find(
                               chapter =>
-                                !!chapter.unread === true &&
-                                !!chapter.isDownloaded === false,
+                                chapter.unread && !chapter.isDownloaded,
                             ),
                           ]),
                         );
@@ -408,8 +395,7 @@ const Novel = ({ route, navigation }) => {
                             chapters
                               .filter(
                                 chapter =>
-                                  !!chapter.unread === true &&
-                                  !!chapter.idDownloaded === false,
+                                  chapter.unread && !chapter.isDownloaded,
                               )
                               .slice(0, 5),
                           ),
@@ -431,8 +417,7 @@ const Novel = ({ route, navigation }) => {
                             chapters
                               .filter(
                                 chapter =>
-                                  !!chapter.unread === true &&
-                                  !!chapter.Downloaded === false,
+                                  chapter.unread && !chapter.isDownloaded,
                               )
                               .slice(0, 10),
                           ),
@@ -460,9 +445,7 @@ const Novel = ({ route, navigation }) => {
                           downloadAllChaptersAction(
                             novel.pluginId,
                             novel.url,
-                            chapters.filter(
-                              chapter => !!chapter.unread === true,
-                            ),
+                            chapters.filter(chapter => chapter.unread),
                           ),
                         );
                         showDownloadMenu(false);
@@ -492,7 +475,9 @@ const Novel = ({ route, navigation }) => {
                         color: theme.onSurface,
                       }}
                       onPress={() =>
-                        dispatch(deleteAllChaptersAction(pluginId, chapters))
+                        dispatch(
+                          deleteAllChaptersAction(pluginId, novel.id, chapters),
+                        )
                       }
                     />
                   </Menu>
@@ -507,7 +492,7 @@ const Novel = ({ route, navigation }) => {
                       iconColor={theme.onBackground}
                       size={21}
                       style={{
-                        marginTop: StatusBar.currentHeight + 8,
+                        marginTop: (StatusBar.currentHeight || 0) + 8,
                         marginRight: 16,
                       }}
                       onPress={() => showExtraMenu(true)}
@@ -548,7 +533,7 @@ const Novel = ({ route, navigation }) => {
                 width: '100%',
                 elevation: 2,
                 backgroundColor: theme.surface2,
-                paddingTop: StatusBar.currentHeight,
+                paddingTop: StatusBar.currentHeight || 0,
                 flexDirection: 'row',
                 alignItems: 'center',
                 paddingBottom: 8,
@@ -580,10 +565,23 @@ const Novel = ({ route, navigation }) => {
             data={chapters}
             extraData={[downloadQueue, selected]}
             removeClippedSubviews={true}
-            maxToRenderPerBatch={5}
-            windowSize={15}
-            initialNumToRender={7}
-            renderItem={renderItem}
+            renderItem={({ item }) => (
+              <ChapterItem
+                isLocal={novel.isLocal}
+                theme={theme}
+                chapter={item}
+                showChapterTitles={showChapterTitles}
+                downloadQueue={downloadQueue}
+                deleteChapter={deleteChapter}
+                downloadChapter={downloadChapter}
+                isSelected={isSelected}
+                onSelectPress={onSelectPress}
+                onSelectLongPress={onSelectLongPress}
+                navigateToChapter={navigateToChapter}
+                showProgressPercentage={showProgressPercentage}
+                novelName={name}
+              />
+            )}
             keyExtractor={(item, index) => 'chapter' + item.id + index}
             contentContainerStyle={{ paddingBottom: 100 }}
             ListHeaderComponent={
@@ -593,7 +591,6 @@ const Novel = ({ route, navigation }) => {
                 filter={filter}
                 lastRead={lastReadChapter}
                 setCustomNovelCover={setCustomNovelCover}
-                dispatch={dispatch}
                 chapters={chapters}
                 navigation={navigation}
                 trackerSheetRef={trackerSheetRef}
@@ -612,26 +609,20 @@ const Novel = ({ route, navigation }) => {
                 styles.fab,
                 { backgroundColor: theme.primary, marginBottom: bottomInset },
               ]}
-              small
               color={theme.onPrimary}
               uppercase={false}
-              label={novel.unread ? 'Start' : 'Resume'}
+              label="Resume"
               icon="play"
               onPress={() => {
-                navigation.navigate(
-                  'Chapter',
-                  openChapter(novel, lastReadChapter),
-                );
+                navigation.navigate('Chapter', {
+                  novel: novel,
+                  chapter: lastReadChapter,
+                });
               }}
             />
           )}
         <Portal>
-          <Actionbar
-            active={selected.length > 0}
-            theme={theme}
-            style={{ marginBottom: 24 }}
-            actions={actions}
-          />
+          <Actionbar active={selected.length > 0} actions={actions} />
           <Snackbar
             visible={deleteDownloadsSnackbar.value}
             onDismiss={deleteDownloadsSnackbar.setFalse}

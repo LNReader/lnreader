@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, useWindowDimensions } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import color from 'color';
 
-import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
+import { TabView, SceneMap, TabBar, TabViewProps } from 'react-native-tab-view';
 import { BottomSheetView } from '@gorhom/bottom-sheet';
 import BottomSheet from '@components/BottomSheet/BottomSheet';
 import { getString } from '@strings/translations';
@@ -12,6 +11,25 @@ import { Checkbox, SortItem } from '@components/Checkbox/Checkbox';
 
 import { showChapterTitlesAction } from '@redux/novel/novel.actions';
 import { overlay } from 'react-native-paper';
+import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
+import { Dispatch } from '@reduxjs/toolkit';
+import { ThemeColors } from '@theme/types';
+
+interface ChaptersSettingsSheetProps {
+  bottomSheetRef: React.RefObject<BottomSheetModalMethods>;
+  novelId: number;
+  sortAndFilterChapters: (
+    novelId: number,
+    sort: string,
+    filter: string,
+  ) => (dispatch: any) => Promise<void>;
+  dispatch: Dispatch<any>;
+  sort: string;
+  filter: string;
+  theme: ThemeColors;
+  showChapterTitles: boolean;
+}
+
 const ChaptersSettingsSheet = ({
   bottomSheetRef,
   novelId,
@@ -21,11 +39,11 @@ const ChaptersSettingsSheet = ({
   filter,
   theme,
   showChapterTitles,
-}) => {
-  const sortChapters = val =>
+}: ChaptersSettingsSheetProps) => {
+  const sortChapters = (val: string) =>
     dispatch(sortAndFilterChapters(novelId, val, filter));
 
-  const filterChapters = val =>
+  const filterChapters = (val: string) =>
     dispatch(sortAndFilterChapters(novelId, sort, val));
 
   const FirstRoute = () => (
@@ -33,8 +51,7 @@ const ChaptersSettingsSheet = ({
       <Checkbox
         theme={theme}
         label="Downloaded"
-        color={theme.primary}
-        status={filter.match('AND isDownloaded = 1')}
+        status={!!filter.match('AND isDownloaded = 1')}
         onPress={() =>
           filter.match('AND isDownloaded = 1')
             ? filterChapters(filter.replace(' AND isDownloaded = 1', ''))
@@ -44,7 +61,6 @@ const ChaptersSettingsSheet = ({
       <Checkbox
         theme={theme}
         label="Unread"
-        color={theme.primary}
         status={
           filter.match('AND `unread`=1')
             ? true
@@ -67,8 +83,7 @@ const ChaptersSettingsSheet = ({
       <Checkbox
         theme={theme}
         label="Bookmarked"
-        color={theme.primary}
-        status={filter.match('AND bookmark=1')}
+        status={!!filter.match('AND bookmark=1')}
         onPress={() => {
           filter.match('AND bookmark=1')
             ? filterChapters(filter.replace(' AND bookmark=1', ''))
@@ -147,7 +162,7 @@ const ChaptersSettingsSheet = ({
     { key: 'third', title: getString('novelScreen.bottomSheet.display') },
   ]);
 
-  const renderTabBar = props => (
+  const renderTabBar: TabViewProps<any>['renderTabBar'] = props => (
     <TabBar
       {...props}
       indicatorStyle={{ backgroundColor: theme.primary }}
@@ -157,7 +172,7 @@ const ChaptersSettingsSheet = ({
         borderBottomColor: theme.outline,
         elevation: 0,
       }}
-      renderLabel={({ route, focused, color }) => (
+      renderLabel={({ route, color }) => (
         <Text style={{ color }}>{route.title}</Text>
       )}
       inactiveColor={theme.onSurfaceVariant}

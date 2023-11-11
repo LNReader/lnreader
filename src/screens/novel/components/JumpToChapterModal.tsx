@@ -1,4 +1,4 @@
-import { FlashList } from '@shopify/flash-list';
+import { FlashList, FlashListProps } from '@shopify/flash-list';
 
 import React, { useState } from 'react';
 import { StyleSheet, View, Pressable } from 'react-native';
@@ -7,6 +7,17 @@ import { Button } from '@components';
 
 import { Modal, Portal, Switch, TextInput, Text } from 'react-native-paper';
 import { useTheme } from '@hooks/useTheme';
+import { ChapterInfo, NovelInfo } from '@database/types';
+import { NovelScreenProps } from '@navigators/types';
+
+interface JumpToChapterModalProps {
+  hideModal: () => void;
+  modalVisible: boolean;
+  chapters: ChapterInfo[];
+  navigation: NovelScreenProps['navigation'];
+  novel: NovelInfo;
+  chapterListRef: FlashList<ChapterInfo> | null;
+}
 
 const JumpToChapterModal = ({
   hideModal,
@@ -15,55 +26,48 @@ const JumpToChapterModal = ({
   navigation,
   novel,
   chapterListRef,
-}) => {
+}: JumpToChapterModalProps) => {
   const theme = useTheme();
-
   const [mode, setMode] = useState(false);
   const [openChapter, setOpenChapter] = useState(false);
 
-  const [text, setText] = useState();
-  const [error, setError] = useState();
-  const [result, setResult] = useState([]);
+  const [text, setText] = useState('');
+  const [error, setError] = useState('');
+  const [result, setResult] = useState<ChapterInfo[]>([]);
 
   const onDismiss = () => {
     hideModal();
-    setText();
-    setError();
+    setText('');
+    setError('');
     setResult([]);
   };
-  const navigateToChapter = chap => {
+  const navigateToChapter = (chap: ChapterInfo) => {
     onDismiss();
     navigation.navigate('Chapter', {
-      pluginId: novel.pluginId,
-      novelUrl: novel.novelUrl,
-      novelId: novel.novelId,
-      chapterId: chap.chapterId,
-      chapterUrl: chap.chapterUrl,
-      chapterName: chap.chapterName,
-      novelName: novel.novelName,
-      bookmark: chap.bookmark,
+      novel: novel,
+      chapter: chap,
     });
   };
 
-  const scrollToChapter = chap => {
+  const scrollToChapter = (chap: ChapterInfo) => {
     onDismiss();
-    chapterListRef.scrollToItem({
+    chapterListRef?.scrollToItem({
       animated: true,
       item: chap,
-      viewOffset: 91,
+      viewPosition: 91,
     });
   };
 
-  const scrollToIndex = index => {
+  const scrollToIndex = (index: number) => {
     onDismiss();
-    chapterListRef.scrollToIndex({
+    chapterListRef?.scrollToIndex({
       animated: true,
       index: index,
       viewOffset: 91,
     });
   };
 
-  const executeFunction = item => {
+  const executeFunction = (item: ChapterInfo) => {
     if (openChapter) {
       navigateToChapter(item);
     } else {
@@ -71,7 +75,7 @@ const JumpToChapterModal = ({
     }
   };
 
-  const renderItem = ({ item }) => {
+  const renderItem: FlashListProps<ChapterInfo>['renderItem'] = ({ item }) => {
     return (
       <Pressable
         android_ripple={{ color: theme.rippleColor }}
@@ -79,14 +83,14 @@ const JumpToChapterModal = ({
         style={styles.listElementContainer}
       >
         <Text numberOfLines={1} style={{ color: theme.onSurface }}>
-          {item.chapterName}
+          {item.name}
         </Text>
-        {item?.releaseDate ? (
+        {item?.releaseTime ? (
           <Text
             numberOfLines={1}
             style={[{ color: theme.onSurfaceVariant }, styles.dateCtn]}
           >
-            {item.releaseDate}
+            {item.releaseTime}
           </Text>
         ) : null}
       </Pressable>
@@ -95,40 +99,41 @@ const JumpToChapterModal = ({
 
   const onSubmit = () => {
     if (!mode) {
-      if (Number(text) && text > 0 && text <= chapters.length) {
+      const num = Number(text);
+      if (num && num > 0 && num <= chapters.length) {
         if (openChapter) {
-          return navigateToChapter(chapters[text - 1]);
+          return navigateToChapter(chapters[num - 1]);
         }
-        return scrollToIndex(text - 1);
+        return scrollToIndex(num - 1);
       }
       return setError(
         getString('novelScreen.jumpToChapterModal.error.validChapterNumber') +
-          ` (${text <= 0 ? '≤ 0' : '≤ ' + chapters.length})`,
+          ` (${num <= 0 ? '≤ 0' : '≤ ' + chapters.length})`,
       );
     } else {
-      const chapter = chapters.filter(chap =>
-        chap.chapterName.toLowerCase().includes(text?.toLowerCase()),
+      const searchedChapters = chapters.filter(chap =>
+        chap.name.toLowerCase().includes(text?.toLowerCase()),
       );
 
-      if (!chapter.length) {
+      if (!searchedChapters.length) {
         setError(
           getString('novelScreen.jumpToChapterModal.error.validChapterName'),
         );
         return;
       }
 
-      if (chapter.length === 1) {
+      if (searchedChapters.length === 1) {
         if (openChapter) {
-          return navigateToChapter(chapter[0]);
+          return navigateToChapter(searchedChapters[0]);
         }
-        return scrollToChapter(chapter[0]);
+        return scrollToChapter(searchedChapters[0]);
       }
 
-      return setResult(chapter);
+      return setResult(searchedChapters);
     }
   };
 
-  const onChangeText = txt => {
+  const onChangeText = (txt: string) => {
     setText(txt);
     setResult([]);
   };
@@ -163,7 +168,7 @@ const JumpToChapterModal = ({
             theme={{ colors: { ...theme } }}
             underlineColor={theme.outline}
             dense
-            error={error}
+            error={error.length > 0}
           />
           <Text style={[styles.errorText, { color: errorColor }]}>{error}</Text>
           <View style={styles.switch}>

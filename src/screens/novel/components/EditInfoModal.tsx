@@ -15,14 +15,31 @@ import { updateNovelInfo } from '@database/queries/NovelQueries';
 
 import { getString } from '@strings/translations';
 import { Button } from '@components';
+import { ThemeColors } from '@theme/types';
+import { NovelInfo } from '@database/types';
+import { Dispatch } from '@reduxjs/toolkit';
 
-const EditInfoModal = ({ theme, hideModal, modalVisible, novel, dispatch }) => {
+interface EditInfoModalProps {
+  theme: ThemeColors;
+  hideModal: () => void;
+  modalVisible: boolean;
+  novel: NovelInfo;
+  dispatch: Dispatch<any>;
+}
+
+const EditInfoModal = ({
+  theme,
+  hideModal,
+  modalVisible,
+  novel,
+  dispatch,
+}: EditInfoModalProps) => {
   const [info, setInfo] = useState(novel);
 
   const [tag, setTag] = useState('');
-  const removeTag = t => {
-    let tags = info.genres.split(',').filter(item => item !== t);
-    setInfo({ ...info, genres: tags.join(',') });
+  const removeTag = (t: string) => {
+    let tags = info.genres?.split(',').filter(item => item !== t);
+    setInfo({ ...info, genres: tags?.join(',') });
   };
 
   const status = ['Ongoing', 'Hiatus', 'Completed', 'Unknown', 'Cancelled'];
@@ -144,7 +161,7 @@ const EditInfoModal = ({ theme, hideModal, modalVisible, novel, dispatch }) => {
         <View style={{ flexDirection: 'row-reverse' }}>
           <Button
             onPress={() => {
-              updateNovelInfo(info, novel.id);
+              updateNovelInfo(info);
               hideModal();
               dispatch(setNovel({ ...novel, ...info }));
             }}
@@ -160,7 +177,15 @@ const EditInfoModal = ({ theme, hideModal, modalVisible, novel, dispatch }) => {
 
 export default EditInfoModal;
 
-const GenreChip = ({ children, theme, onPress }) => (
+const GenreChip = ({
+  children,
+  theme,
+  onPress,
+}: {
+  children: React.ReactNode;
+  theme: ThemeColors;
+  onPress: () => void;
+}) => (
   <View
     style={{
       flex: 1,

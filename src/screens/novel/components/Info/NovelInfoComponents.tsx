@@ -12,16 +12,42 @@ import color from 'color';
 import { IconButton, Portal } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import { easeGradient } from 'react-native-easing-gradient';
-import FastImage from 'react-native-fast-image';
+import FastImage, { Source } from 'react-native-fast-image';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { Chip } from '../../../../components';
 import { coverPlaceholderColor } from '../../../../theme/colors';
+import { ThemeColors } from '@theme/types';
 
-const NovelInfoContainer = ({ children }) => (
+interface CoverImageProps {
+  children: React.ReactNode;
+  source: Source;
+  theme: ThemeColors;
+  hideBackdrop: boolean;
+}
+
+interface NovelThumbnailProps {
+  source: Source;
+  theme: ThemeColors;
+  setCustomNovelCover: () => Promise<void>;
+}
+
+interface NovelTitleProps {
+  theme: ThemeColors;
+  children: React.ReactNode;
+  onLongPress: () => void;
+  onPress: () => void;
+}
+
+const NovelInfoContainer = ({ children }: { children: React.ReactNode }) => (
   <View style={styles.novelInfoContainer}>{children}</View>
 );
 
-const CoverImage = ({ children, source, theme, hideBackdrop }) => {
+const CoverImage = ({
+  children,
+  source,
+  theme,
+  hideBackdrop,
+}: CoverImageProps) => {
   const { colors, locations } = easeGradient({
     colorStops: {
       0: { color: 'rgba(0,0,0,0)' },
@@ -57,7 +83,11 @@ const CoverImage = ({ children, source, theme, hideBackdrop }) => {
   }
 };
 
-const NovelThumbnail = ({ source, theme, setCustomNovelCover }) => {
+const NovelThumbnail = ({
+  source,
+  theme,
+  setCustomNovelCover,
+}: NovelThumbnailProps) => {
   const [expanded, setExpanded] = useState(false);
 
   if (!expanded) {
@@ -73,7 +103,7 @@ const NovelThumbnail = ({ source, theme, setCustomNovelCover }) => {
           icon="pencil-outline"
           style={{
             position: 'absolute',
-            top: StatusBar.currentHeight + 10,
+            top: StatusBar.currentHeight ?? 0 + 10,
             right: 10,
             zIndex: 10,
           }}
@@ -103,7 +133,12 @@ const NovelThumbnail = ({ source, theme, setCustomNovelCover }) => {
   }
 };
 
-const NovelTitle = ({ theme, children, onLongPress, onPress }) => (
+const NovelTitle = ({
+  theme,
+  children,
+  onLongPress,
+  onPress,
+}: NovelTitleProps) => (
   <Text
     onLongPress={onLongPress}
     onPress={onPress}
@@ -113,13 +148,25 @@ const NovelTitle = ({ theme, children, onLongPress, onPress }) => (
   </Text>
 );
 
-const NovelAuthor = ({ theme, children }) => (
+const NovelAuthor = ({
+  theme,
+  children,
+}: {
+  theme: ThemeColors;
+  children: React.ReactNode;
+}) => (
   <Text style={[styles.novelAuthor, { color: theme.onSurfaceVariant }]}>
     {children}
   </Text>
 );
 
-const NovelInfo = ({ theme, children }) => (
+const NovelInfo = ({
+  theme,
+  children,
+}: {
+  theme: ThemeColors;
+  children: React.ReactNode;
+}) => (
   <Text
     style={[styles.novelInfo, { color: theme.onSurfaceVariant }]}
     numberOfLines={1}
@@ -128,7 +175,15 @@ const NovelInfo = ({ theme, children }) => (
   </Text>
 );
 
-const FollowButton = ({ theme, onPress, followed }) => (
+const FollowButton = ({
+  theme,
+  onPress,
+  followed,
+}: {
+  theme: ThemeColors;
+  onPress: () => void;
+  followed: boolean;
+}) => (
   <View style={{ borderRadius: 4, overflow: 'hidden', flex: 1 }}>
     <Pressable
       android_ripple={{
@@ -160,7 +215,15 @@ const FollowButton = ({ theme, onPress, followed }) => (
   </View>
 );
 
-const TrackerButton = ({ theme, isTracked, onPress }) => (
+const TrackerButton = ({
+  theme,
+  isTracked,
+  onPress,
+}: {
+  theme: ThemeColors;
+  onPress: () => void;
+  isTracked: boolean;
+}) => (
   <View style={{ borderRadius: 4, overflow: 'hidden', flex: 1 }}>
     <Pressable
       android_ripple={{
@@ -192,10 +255,14 @@ const TrackerButton = ({ theme, isTracked, onPress }) => (
   </View>
 );
 
-const NovelGenres = ({ theme, genres }) => {
+const NovelGenres = ({
+  theme,
+  genres,
+}: {
+  theme: ThemeColors;
+  genres: string;
+}) => {
   const data = genres.split(/,\s*/);
-
-  const renderItem = ({ item }) => <Chip label={item} theme={theme} />;
 
   return (
     <FlatList
@@ -203,7 +270,7 @@ const NovelGenres = ({ theme, genres }) => {
       horizontal
       data={data}
       keyExtractor={(item, index) => 'genre' + index}
-      renderItem={renderItem}
+      renderItem={({ item }) => <Chip label={item} theme={theme} />}
       showsHorizontalScrollIndicator={false}
     />
   );

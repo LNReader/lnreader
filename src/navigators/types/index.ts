@@ -1,15 +1,11 @@
-import { ChapterInfo } from '@database/types';
+import { ChapterInfo, NovelInfo } from '@database/types';
 import { StackScreenProps } from '@react-navigation/stack';
 
 export type RootStackParamList = {
   BottomNavigator: undefined;
   Novel: { name: string; url: string; pluginId: string };
   Chapter: {
-    novel: {
-      id: string;
-      pluginId: string;
-      name: string;
-    };
+    novel: NovelInfo;
     chapter: ChapterInfo;
   };
   MoreStack: undefined;
@@ -32,6 +28,7 @@ export type RootStackParamList = {
   };
 };
 
+export type NovelScreenProps = StackScreenProps<RootStackParamList, 'Novel'>;
 export type ChapterScreenProps = StackScreenProps<
   RootStackParamList,
   'Chapter'

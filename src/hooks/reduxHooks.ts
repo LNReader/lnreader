@@ -1,29 +1,31 @@
+import { ChapterInfo } from '@database/types';
+import { RootState } from '@redux/store';
 import { useSelector } from 'react-redux';
 
 const useSettings = () => {
-  const settings = useSelector(state => state.settingsReducer);
+  const settings = useSelector((state: RootState) => state.settingsReducer);
 
   return settings;
 };
 
 const useNovel = () => {
   const { novel, chapters, loading, updating } = useSelector(
-    state => state.novelReducer,
+    (state: RootState) => state.novelReducer,
   );
   return { novel, chapters, loading, updating };
 };
 
-const useFindNovel = novelId => {
+const useFindNovel = (novelId: number) => {
   let novelSettings = useSelector(
-    state => state.preferenceReducer.novelSettings,
+    (state: RootState) => state.preferenceReducer.novelSettings,
   );
-  novel = novelSettings[novelId];
+  const novel = novelSettings[novelId];
 
   return novel;
 };
 
-const usePreferences = novelId => {
-  let sort, filter, position, showChapterTitles;
+const usePreferences = (novelId: number) => {
+  let sort, filter, showChapterTitles;
 
   const novel = useFindNovel(novelId);
 
@@ -37,12 +39,14 @@ const usePreferences = novelId => {
 };
 
 const useSavedSettings = () => {
-  const settings = useSelector(state => state.preferenceReducer.novelSettings);
+  const settings = useSelector(
+    (state: RootState) => state.preferenceReducer.novelSettings,
+  );
 
   return settings;
 };
 
-const useContinueReading = (chapters, novelId) => {
+const useContinueReading = (chapters: ChapterInfo[], novelId: number) => {
   let lastReadChapter, novel, position;
   novel = useFindNovel(novelId);
   if (novel && novel.lastRead) {
@@ -70,7 +74,7 @@ const useContinueReading = (chapters, novelId) => {
   return { lastReadChapter, position };
 };
 
-const usePosition = (novelId, chapterId) => {
+const usePosition = (novelId: number, chapterId: number) => {
   let novel, position;
 
   novel = useFindNovel(novelId);
@@ -85,7 +89,7 @@ const usePosition = (novelId, chapterId) => {
 };
 
 const useTrackingStatus = () => {
-  const tracker = useSelector(state => state.trackerReducer);
+  const tracker = useSelector((state: RootState) => state.trackerReducer);
 
   return tracker;
 };
