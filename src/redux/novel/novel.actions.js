@@ -13,7 +13,6 @@ import {
   CHAPTER_DELETED,
   UPDATE_NOVEL,
   NOVEL_ERROR,
-  SET_NOVEL_SETTINGS,
   BOOKMARK_CHAPTER,
   MARK_PREVIOUS_CHAPTERS_READ,
   MARK_PREVIOUS_CHAPTERS_UNREAD,
@@ -39,10 +38,6 @@ import {
   getNextChapter,
   deleteChapters,
 } from '@database/queries/ChapterQueries';
-import {
-  SET_CHAPTER_LIST_PREF,
-  SET_LAST_READ,
-} from '../preferences/preference.types';
 import { showToast } from '@hooks/showToast';
 
 import * as Notifications from 'expo-notifications';
@@ -50,6 +45,10 @@ import * as Notifications from 'expo-notifications';
 import BackgroundService from 'react-native-background-actions';
 import { SET_DOWNLOAD_QUEUE } from '../downloads/donwloads.types';
 import { updateNovel } from '@services/updates/LibraryUpdateQueries';
+import {
+  setChapterListPreference,
+  setLastReadAction,
+} from '@redux/preferences/preferencesSlice';
 
 export const setNovel = novel => async dispatch => {
   dispatch({ type: SET_NOVEL, payload: { novel } });
@@ -113,18 +112,8 @@ export const sortAndFilterChapters =
       payload: { chapters },
     });
 
-    dispatch({
-      type: SET_CHAPTER_LIST_PREF,
-      payload: { novelId, sort, filter },
-    });
+    dispatch(setChapterListPreference({ novelId, sort, filter }));
   };
-
-export const showChapterTitlesAction = (novelId, value) => async dispatch => {
-  dispatch({
-    type: SET_NOVEL_SETTINGS,
-    payload: { novelId, showChapterTitles: value },
-  });
-};
 
 export const followNovelAction = novel => async dispatch => {
   await switchNovelToLibrary(novel.url, novel.pluginId);
@@ -158,10 +147,7 @@ export const markChapterReadAction = (chapterId, novelId) => async dispatch => {
 
   const nextChapter = await getNextChapter(novelId, chapterId);
 
-  dispatch({
-    type: SET_LAST_READ,
-    payload: { lastRead: nextChapter },
-  });
+  dispatch(setLastReadAction(nextChapter));
 };
 
 export const markPreviousChaptersReadAction =

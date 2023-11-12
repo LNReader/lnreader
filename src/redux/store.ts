@@ -8,7 +8,7 @@ import pluginsReducer from './plugins/pluginsSlice';
 import novelReducer from './novel/novel.reducer';
 import updatesReducer from './updates/updates.reducer';
 import trackerReducer from './tracker/tracker.reducer';
-import preferenceReducer from './preferences/preference.reducer';
+import preferenceReducer from './preferences/preferencesSlice';
 import downloadsReducer from './downloads/downloads.reducer';
 
 const reduxStorage: Storage = {

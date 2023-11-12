@@ -5,7 +5,7 @@ import { store } from '@redux/store';
 import { ResponsePackage } from './types';
 import { RESTORE_NOVEL_STATE } from '@redux/novel/novel.types';
 import { restorePluginState } from '@redux/plugins/pluginsSlice';
-import { RESTORE_PREFERENCE_STATE } from '@redux/preferences/preference.types';
+import { restorePreferenceState } from '@redux/preferences/preferencesSlice';
 import { restoreSettingsState as restoreSettingsStateV2 } from '@redux/settings/settingsSliceV2';
 import { RESTORE_TRACKER_STATE } from '@redux/tracker/tracker.types';
 import { RESTORE_UPDATE_STATE } from '@redux/updates/updates.types';
@@ -144,10 +144,7 @@ export const restoreSetting = (
     const state = responsePackage.content;
     store.dispatch({ type: RESTORE_NOVEL_STATE, payload: state.novelReducer });
     store.dispatch(restorePluginState(state.pluginsReducer));
-    store.dispatch({
-      type: RESTORE_PREFERENCE_STATE,
-      payload: state.preferenceReducer,
-    });
+    store.dispatch(restorePreferenceState(state.preferenceReducer));
     store.dispatch(restoreSettingsState(state.settingsReducerV1));
     store.dispatch(restoreSettingsStateV2(state.settingsReducerV2));
     store.dispatch({

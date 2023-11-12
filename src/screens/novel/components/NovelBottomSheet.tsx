@@ -9,7 +9,7 @@ import { getString } from '@strings/translations';
 
 import { Checkbox, SortItem } from '@components/Checkbox/Checkbox';
 
-import { showChapterTitlesAction } from '@redux/novel/novel.actions';
+import { showChapterTitlesAction } from '@redux/preferences/preferencesSlice';
 import { overlay } from 'react-native-paper';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { Dispatch } from '@reduxjs/toolkit';
@@ -135,13 +135,21 @@ const ChaptersSettingsSheet = ({
       <Checkbox
         status={!showChapterTitles}
         label="Source title"
-        onPress={() => dispatch(showChapterTitlesAction(novelId, false))}
+        onPress={() =>
+          dispatch(
+            showChapterTitlesAction({ novelId, showChapterTitles: false }),
+          )
+        }
         theme={theme}
       />
       <Checkbox
         status={showChapterTitles}
         label="Chapter number"
-        onPress={() => dispatch(showChapterTitlesAction(novelId, true))}
+        onPress={() =>
+          dispatch(
+            showChapterTitlesAction({ novelId, showChapterTitles: true }),
+          )
+        }
         theme={theme}
       />
     </View>
