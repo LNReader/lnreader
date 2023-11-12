@@ -1,8 +1,6 @@
 export interface NovelInfo {
   novelId: number;
-  sourceUrl: string;
   novelUrl: string;
-  sourceId: number;
   source: string;
   novelName: string;
   novelCover?: string;

@@ -1,8 +1,8 @@
-import React, { Ref, useState } from 'react';
+import React, { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import BottomSheet from '../../../components/BottomSheet/BottomSheet';
-import { BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet';
+import { BottomSheetView } from '@gorhom/bottom-sheet';
 
 import { useTheme } from '@hooks/useTheme';
 import {
@@ -17,6 +17,7 @@ import { defaultTo } from 'lodash-es';
 import { Picker } from '@react-native-picker/picker';
 import useBoolean from '@hooks/useBoolean';
 import { overlay } from 'react-native-paper';
+import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 
 const insertOrRemoveIntoArray = (array: string[], val: string): string[] =>
   array.indexOf(val) > -1 ? array.filter(ele => ele !== val) : [...array, val];
@@ -113,7 +114,7 @@ const FilterItem: React.FC<FilterItemProps> = ({
 };
 
 interface BottomSheetProps {
-  filterSheetRef: Ref<BottomSheetModal> | null;
+  filterSheetRef: React.RefObject<BottomSheetModalMethods>;
   filtersValues: SourceFilter[] | undefined;
   setFilters: (filters?: SelectedFilter) => void;
   clearFilters: () => void;
@@ -150,10 +151,10 @@ const FilterBottomSheet: React.FC<BottomSheetProps> = ({
           />
           <Button
             title={'Filter'}
-            textColor={theme.onSurface}
+            textColor={theme.onPrimary}
             onPress={() => {
               setFilters(selectedFilters);
-              filterSheetRef?.current?.collapse();
+              filterSheetRef.current?.close();
             }}
             mode="contained"
           />

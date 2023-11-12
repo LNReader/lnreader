@@ -4,6 +4,8 @@ import {
   createUrlIndexQuery,
   createLibraryIndexQuery,
   addCategoryColumnQuery,
+  dropSourceColumnQuery,
+  dropSourceUrlColumnQuery,
 } from './tables/NovelTable';
 import {
   createChapterTableQuery,
@@ -46,6 +48,18 @@ const createTables = () => {
       );
       tx.executeSql(
         createDefaultCategoryQuery,
+        undefined,
+        noop,
+        txnErrorCallbackWithoutToast,
+      );
+      tx.executeSql(
+        dropSourceColumnQuery,
+        undefined,
+        noop,
+        txnErrorCallbackWithoutToast,
+      );
+      tx.executeSql(
+        dropSourceUrlColumnQuery,
         undefined,
         noop,
         txnErrorCallbackWithoutToast,

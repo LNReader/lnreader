@@ -1,41 +1,42 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { SelectedFilter, SourceFilter } from '../../sources/types/filterTypes';
-import { sourceManager } from '../../sources/sourceManager';
-import { SourceNovelItem } from '../../sources/types';
+
+import SourceFactory from '@sourcesV2/SourceFactory';
+import { SelectedFilters, SourceFilter, SourceNovel } from '@sourcesV2/types';
 
 export const useBrowseSource = (
   sourceId: number,
   showLatestNovels?: boolean,
 ) => {
   const [isLoading, setIsLoading] = useState(true);
-  const [novels, setNovels] = useState<SourceNovelItem[]>([]);
+  const [novels, setNovels] = useState<SourceNovel[]>([]);
   const [error, setError] = useState<string>();
 
   const [currentPage, setCurrentPage] = useState(1);
   const [filterValues, setFilterValues] = useState<SourceFilter[]>();
   const [selectedFilters, setSelectedFilters] = useState<
-    SelectedFilter | undefined
+    SelectedFilters | undefined
   >();
   const [hasNextPage, setHasNextPage] = useState(true);
 
   const isScreenMounted = useRef(true);
 
   const fetchNovels = useCallback(
-    async (page: number, filters?: SelectedFilter) => {
+    async (page: number, filters?: SelectedFilters) => {
       if (isScreenMounted.current === true) {
         try {
-          const source = sourceManager(sourceId);
-          const res = await source.popularNovels(page, {
-            showLatestNovels,
+          const source = SourceFactory.getSource(sourceId);
+          const res = await source?.getPopoularNovels?.({
+            page,
+            // showLatestNovels,
             filters,
           });
           setNovels(prevState =>
-            page === 1 ? res.novels : [...prevState, ...res.novels],
+            page === 1 ? res?.novels : [...prevState, ...res?.novels],
           );
-          if (!res.novels.length) {
+          if (!res?.novels.length) {
             setHasNextPage(false);
           }
-          setFilterValues(source.filters);
+          setFilterValues(source?.filters);
         } catch (err: unknown) {
           setError(`${err}`);
         } finally {
@@ -70,7 +71,7 @@ export const useBrowseSource = (
 
   const clearFilters = useCallback(() => setSelectedFilters(undefined), []);
 
-  const setFilters = (filters?: SelectedFilter) => {
+  const setFilters = (filters?: SelectedFilters) => {
     setIsLoading(true);
     setCurrentPage(1);
     fetchNovels(1, filters);
@@ -92,15 +93,17 @@ export const useBrowseSource = (
 
 export const useSearchSource = (sourceId: number) => {
   const [isSearching, setIsSearching] = useState(false);
-  const [searchResults, setSearchResults] = useState<SourceNovelItem[]>([]);
+  const [searchResults, setSearchResults] = useState<SourceNovel[]>([]);
   const [searchError, setSearchError] = useState<string>();
 
   const searchSource = useCallback(
     async (searchTerm: string) => {
       try {
         setIsSearching(true);
-        const res = await sourceManager(sourceId).searchNovels(searchTerm);
-        setSearchResults(res);
+        const res = await SourceFactory.getSource(sourceId)?.getSearchNovels?.({
+          searchTerm,
+        });
+        setSearchResults(res?.novels || []);
       } catch (err) {
         setSearchError(`${err}`);
       } finally {

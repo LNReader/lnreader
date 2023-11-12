@@ -11,6 +11,8 @@ export enum NovelStatus {
 export interface GetPopularNovelsParams {
   page?: number;
 
+  showLatest?: boolean;
+
   filters?: SelectedFilters;
 }
 
@@ -111,11 +113,13 @@ export interface ParsedSource extends Source {
   }: GetNovelDetailsParams) => Promise<SourceNovel>;
 
   getChapter?: ({ chapterUrl }: GetChapterParams) => Promise<SourceChapter>;
+
+  filters?: SourceFilter[];
 }
 
 interface FilterOption {
   label: string;
-  value: string;
+  value: string | number;
 }
 
 export enum FilterInput {

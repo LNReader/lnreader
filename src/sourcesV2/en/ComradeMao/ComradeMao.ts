@@ -5,6 +5,7 @@ import {
   GetChapterParams,
   GetNovelDetailsParams,
   GetPopularNovelsParams,
+  GetSearchNovelsParams,
   NovelStatus,
   ParsedSource,
   SourceChapter,
@@ -40,8 +41,8 @@ export class ComradeMaoParser implements ParsedSource {
 
     const $ = cheerio.load(res);
 
-    let chapterName = $('.doc_header').text();
-    let chapterText = $('#chaptercontent').html();
+    const chapterName = $('.doc_header').text();
+    const chapterText = $('#chaptercontent').html();
 
     return {
       chapterUrl,
@@ -64,7 +65,7 @@ export class ComradeMaoParser implements ParsedSource {
 
     const statusRaw = $('div.infox > div:nth-child(3) > span').text().trim();
 
-    let chapters: SourceChapter[] = [];
+    const chapters: SourceChapter[] = [];
 
     $('#chapterlist')
       .find('li')
@@ -122,6 +123,38 @@ export class ComradeMaoParser implements ParsedSource {
         });
       }
     });
+
+    return { novels };
+  }
+
+  async getSearchNovels({
+    searchTerm,
+  }: GetSearchNovelsParams): Promise<SourceNovelsResponse> {
+    const url = this.baseUrl + '?s=' + searchTerm + '&post_type=novel';
+    const sourceId = this.id;
+
+    const res = await fetchHtml({ url, sourceId });
+
+    const $ = cheerio.load(res);
+
+    const novels: SourceNovel[] = [];
+
+    $('.listupd')
+      .find('div.bs')
+      .each(function () {
+        const novelName = $(this).find('.tt').text().trim();
+        const novelCover = $(this).find('img').attr('src');
+        const novelUrl = $(this).find('a').attr('href');
+
+        if (novelUrl) {
+          novels.push({
+            sourceId,
+            novelName,
+            novelCover,
+            novelUrl,
+          });
+        }
+      });
 
     return { novels };
   }

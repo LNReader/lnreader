@@ -2,9 +2,7 @@ export const createNovelTableQuery = `
     CREATE TABLE IF NOT EXISTS novels(
     novelId INTEGER PRIMARY KEY AUTOINCREMENT,
     novelUrl TEXT NOT NULL,
-    sourceUrl TEXT UNIQUE NOT NULL,
     sourceId INTEGER NOT NULL,
-    source TEXT NOT NULL,
     novelName TEXT NOT NULL,
     novelCover TEXT, 
     novelSummary TEXT, 
@@ -25,3 +23,8 @@ export const createLibraryIndexQuery =
 
 export const addCategoryColumnQuery =
   'ALTER TABLE novels ADD COLUMN categoryIds TEXT DEFAULT "[1]"';
+
+export const dropSourceColumnQuery = 'ALTER TABLE novels DROP COLUMN source';
+
+export const dropSourceUrlColumnQuery =
+  'ALTER TABLE novels DROP COLUMN sourceUrl';
