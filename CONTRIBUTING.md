@@ -8,9 +8,9 @@ After forking to your own github org or account, do the following steps to get s
 
 ```bash
 # prerequisites
-node --version = 18.17.1   (for version management, get nvm [recommended])
-java sdk --version = 11    (for version management, get jenv [optional])
-android sdk                 (https://developer.android.com/studio)
+node --version <= 16.13.1 or 18+    (for version management, get nvm [recommended])
+java sdk --version <= 17            (for version management, get jenv [optional])
+android sdk                         (https://developer.android.com/studio)
 
 # clone your fork to your local machine
 git clone https://github.com/<your-account-name>/lnreader.git

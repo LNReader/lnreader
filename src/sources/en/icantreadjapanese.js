@@ -14,8 +14,6 @@ const popularNovels = async (page, { filters }) => {
     link += (filters?.storyStatus ? filters.storyStatus : 'projects') + '/';
   }
 
-  console.log(link);
-
   const body = await fetchHtml({ url: link, sourceId });
 
   const loadedCheerio = cheerio.load(body);

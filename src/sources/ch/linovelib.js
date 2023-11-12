@@ -1,5 +1,5 @@
 import { showToast } from '@hooks/showToast';
-import { fetchHtml } from '@utils/fetch/fetch';
+import { fetchApi, fetchHtml } from '@utils/fetch/fetch';
 
 import * as cheerio from 'cheerio';
 
@@ -246,7 +246,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   //   '': '么',
   //   '': '裸',
   // };
-  const skillgg = {
+  const skillgg_dictionary = {
     '\u201c': '\u300c',
     '\u201d': '\u300d',
     '\u2018': '\u300e',
@@ -355,29 +355,36 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   const addPage = async pageCheerio => {
     const formatPage = async () => {
       // Remove JS
-      pageCheerio('#ccacontent .cgo').remove();
+      pageCheerio('.atitle').next().find('.cgo').remove();
 
       // Load lazyloaded images
-      pageCheerio('#ccacontent img.imagecontent').each(function () {
-        // Sometimes images are either in data-src or src
-        const imgSrc =
-          pageCheerio(this).attr('data-src') || pageCheerio(this).attr('src');
-        if (imgSrc) {
-          // The original CDN URL is locked behind a CF-like challenge, switch the URL to bypass that
-          // There are no react-native-url-polyfill lib, can't use URL API
-          const regex = /\/\/.+\.com\//;
-          const imgUrl = imgSrc.replace(regex, '//img.linovelib.com/');
-          // Clean up img element
-          pageCheerio(this)
-            .attr('src', imgUrl)
-            .removeAttr('data-src')
-            .removeClass('lazyload');
-        }
-      });
+      pageCheerio('.atitle')
+        .next()
+        .find('img.imagecontent')
+        .each(function () {
+          // Sometimes images are either in data-src or src
+          const imgSrc =
+            pageCheerio(this).attr('data-src') || pageCheerio(this).attr('src');
+          if (imgSrc) {
+            // The original CDN URL is locked behind a CF-like challenge, switch the URL to bypass that
+            // There are no react-native-url-polyfill lib, can't use URL API
+            const regex = /\/\/.+\.com\//;
+            const imgUrl = imgSrc.replace(regex, '//img.linovelib.com/');
+            // Clean up img element
+            pageCheerio(this)
+              .attr('src', imgUrl)
+              .removeAttr('data-src')
+              .removeClass('lazyload')
+              .addClass('delayed-src');
+          }
+        });
 
       // Recover the original character
-      pageText = pageCheerio('#ccacontent').html();
-      pageText = pageText.replace(/./g, char => skillgg[char] || char);
+      pageText = pageCheerio('.atitle').next().html();
+      pageText = pageText?.replace(
+        /./g,
+        char => skillgg_dictionary[char] || char,
+      );
 
       return Promise.resolve();
     };
@@ -388,7 +395,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
       ' — ' +
       pageCheerio('#atitle').text();
     if (chapterText === undefined) {
-      chapterText = '<b>' + chapterName + '</b>';
+      chapterText = '<h2>' + chapterName + '</h2>';
     }
     chapterText += pageText;
   };
@@ -426,7 +433,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 const searchNovels = async searchTerm => {
   const searchUrl = `${baseUrl}/search/`;
   const Term = encodeURI(searchTerm);
-  let NextPage, NoNextPage, DeadEnd;
+  let nextPage, noNextPage, deadEnd;
   let pageNumber = 1;
   const novels = [];
 
@@ -477,27 +484,30 @@ const searchNovels = async searchTerm => {
     const pageCheerio = cheerio.load(body);
     const redirect = pageCheerio('div.book-layout');
     await addPage(pageCheerio, redirect);
-    NextPage = pageCheerio('.next').attr('href');
-    if (!NextPage) {
-      NoNextPage === true;
+    nextPage = pageCheerio('.next').attr('href');
+    if (!nextPage) {
+      noNextPage === true;
     } else {
-      NoNextPage = NextPage === '#' ? true : false;
+      noNextPage = nextPage === '#' ? true : false;
     }
-    return { pageCheerio, NoNextPage };
+    return { pageCheerio, noNextPage };
   };
 
   let url = `${searchUrl}${Term}_${pageNumber}.html`;
   do {
     const page = await loadPage(url);
-    DeadEnd = page.NoNextPage;
-    if (DeadEnd === false) {
+    deadEnd = page.noNextPage;
+    if (deadEnd === false) {
       pageNumber++;
       url = `${searchUrl}${Term}_${pageNumber}.html`;
     }
-  } while (DeadEnd === false);
+  } while (deadEnd === false);
 
-  console.log(novels);
   return novels;
+};
+
+const headers = {
+  Referer: 'https://w.linovelib.com',
 };
 
 const LinovelibScraper = {
@@ -505,6 +515,7 @@ const LinovelibScraper = {
   parseNovelAndChapters,
   parseChapter,
   searchNovels,
+  headers,
 };
 
 export default LinovelibScraper;
