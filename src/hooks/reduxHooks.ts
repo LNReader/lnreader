@@ -3,7 +3,7 @@ import { RootState } from '@redux/store';
 import { useSelector } from 'react-redux';
 
 const useSettings = () => {
-  const settings = useSelector((state: RootState) => state.settingsReducer);
+  const settings = useSelector((state: RootState) => state.settingsReducerV1);
 
   return settings;
 };
@@ -68,7 +68,7 @@ const useContinueReading = (chapters: ChapterInfo[], novelId: number) => {
   // If all chapters are read, then set the last chapter in the list as the last read (Fixed bug)
   if (!lastReadChapter && chapters) {
     lastReadChapter =
-      chapters.find(obj => obj.unread === 0) || chapters[chapters.length - 1];
+      chapters.find(obj => !obj.unread) || chapters[chapters.length - 1];
   }
 
   return { lastReadChapter, position };

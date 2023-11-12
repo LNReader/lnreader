@@ -8,7 +8,7 @@ import { useAppDispatch, useSettingsV1 } from '@redux/hooks';
 import { useTheme } from '@hooks/useTheme';
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
 import { getString } from '@strings/translations';
-import { setAppSettings } from '@redux/settings/settings.actions';
+import { setAppSettings } from '@redux/settings/settingsSliceV1';
 
 import ReaderSheetPreferenceItem from './ReaderSheetPreferenceItem';
 import TextSizeSlider from './TextSizeSlider';
@@ -49,21 +49,27 @@ const GeneralTab: React.FC = () => {
       <ReaderSheetPreferenceItem
         label={getString('readerScreen.bottomSheet.fullscreen')}
         onPress={() =>
-          dispatch(setAppSettings('fullScreenMode', !fullScreenMode))
+          dispatch(
+            setAppSettings({ key: 'fullScreenMode', value: !fullScreenMode }),
+          )
         }
         value={fullScreenMode}
         theme={theme}
       />
       <ReaderSheetPreferenceItem
         label={getString('readerScreen.bottomSheet.autoscroll')}
-        onPress={() => dispatch(setAppSettings('autoScroll', !autoScroll))}
+        onPress={() =>
+          dispatch(setAppSettings({ key: 'autoScroll', value: !autoScroll }))
+        }
         value={autoScroll}
         theme={theme}
       />
       <ReaderSheetPreferenceItem
         label={getString('readerScreen.bottomSheet.verticalSeekbar')}
         onPress={() =>
-          dispatch(setAppSettings('verticalSeekbar', !verticalSeekbar))
+          dispatch(
+            setAppSettings({ key: 'verticalSeekbar', value: !verticalSeekbar }),
+          )
         }
         value={verticalSeekbar}
         theme={theme}
@@ -71,7 +77,12 @@ const GeneralTab: React.FC = () => {
       <ReaderSheetPreferenceItem
         label={getString('readerScreen.bottomSheet.showBatteryAndTime')}
         onPress={() =>
-          dispatch(setAppSettings('showBatteryAndTime', !showBatteryAndTime))
+          dispatch(
+            setAppSettings({
+              key: 'showBatteryAndTime',
+              value: !showBatteryAndTime,
+            }),
+          )
         }
         value={showBatteryAndTime}
         theme={theme}
@@ -80,7 +91,10 @@ const GeneralTab: React.FC = () => {
         label={getString('readerScreen.bottomSheet.showProgressPercentage')}
         onPress={() =>
           dispatch(
-            setAppSettings('showScrollPercentage', !showScrollPercentage),
+            setAppSettings({
+              key: 'showScrollPercentage',
+              value: !showScrollPercentage,
+            }),
           )
         }
         value={showScrollPercentage}
@@ -89,7 +103,9 @@ const GeneralTab: React.FC = () => {
       <ReaderSheetPreferenceItem
         label={getString('readerScreen.bottomSheet.swipeGestures')}
         onPress={() =>
-          dispatch(setAppSettings('swipeGestures', !swipeGestures))
+          dispatch(
+            setAppSettings({ key: 'swipeGestures', value: !swipeGestures }),
+          )
         }
         value={swipeGestures}
         theme={theme}
@@ -98,10 +114,10 @@ const GeneralTab: React.FC = () => {
         label={getString('readerScreen.bottomSheet.removeExtraSpacing')}
         onPress={() =>
           dispatch(
-            setAppSettings(
-              'removeExtraParagraphSpacing',
-              !removeExtraParagraphSpacing,
-            ),
+            setAppSettings({
+              key: 'removeExtraParagraphSpacing',
+              value: !removeExtraParagraphSpacing,
+            }),
           )
         }
         value={removeExtraParagraphSpacing}
@@ -110,7 +126,12 @@ const GeneralTab: React.FC = () => {
       <ReaderSheetPreferenceItem
         label={getString('readerScreen.bottomSheet.volumeButtonsScroll')}
         onPress={() =>
-          dispatch(setAppSettings('useVolumeButtons', !useVolumeButtons))
+          dispatch(
+            setAppSettings({
+              key: 'useVolumeButtons',
+              value: !useVolumeButtons,
+            }),
+          )
         }
         value={useVolumeButtons}
         theme={theme}

@@ -4,7 +4,17 @@ import { StyleSheet } from 'react-native';
 import { Portal, Modal, overlay } from 'react-native-paper';
 import { SortItem } from '../../../components/Checkbox/Checkbox';
 
-import { setAppSettings } from '../../../redux/settings/settings.actions';
+import { setAppSettings } from '@redux/settings/settingsSliceV1';
+import { ThemeColors } from '@theme/types';
+import { Dispatch } from '@reduxjs/toolkit';
+
+interface DefaultChapterSortModalProps {
+  theme: ThemeColors;
+  dispatch: Dispatch;
+  defaultChapterSort: string;
+  hideDisplayModal: () => void;
+  displayModalVisible: boolean;
+}
 
 const DefaultChapterSortModal = ({
   theme,
@@ -12,7 +22,7 @@ const DefaultChapterSortModal = ({
   defaultChapterSort,
   hideDisplayModal,
   displayModalVisible,
-}) => {
+}: DefaultChapterSortModalProps) => {
   return (
     <Portal>
       <Modal
@@ -30,10 +40,16 @@ const DefaultChapterSortModal = ({
           onPress={() =>
             defaultChapterSort === 'ORDER BY id ASC'
               ? dispatch(
-                  setAppSettings('defaultChapterSort', 'ORDER BY id DESC'),
+                  setAppSettings({
+                    key: 'defaultChapterSort',
+                    value: 'ORDER BY id DESC',
+                  }),
                 )
               : dispatch(
-                  setAppSettings('defaultChapterSort', 'ORDER BY id ASC'),
+                  setAppSettings({
+                    key: 'defaultChapterSort',
+                    value: 'ORDER BY id ASC',
+                  }),
                 )
           }
         />

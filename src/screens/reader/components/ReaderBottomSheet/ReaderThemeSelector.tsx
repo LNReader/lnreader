@@ -1,6 +1,6 @@
 import { ScrollView, StyleSheet, Text, TextStyle, View } from 'react-native';
 import React from 'react';
-import { setReaderSettings } from '../../../../redux/settings/settings.actions';
+import { setReaderSettings } from '@redux/settings/settingsSliceV1';
 import {
   useAppDispatch,
   useReaderSettings,
@@ -50,8 +50,15 @@ const ReaderThemeSelector: React.FC<ReaderThemeSelectorProps> = ({
             backgroundColor={item.backgroundColor}
             textColor={item.textColor}
             onPress={() => {
-              dispatch(setReaderSettings('theme', item.backgroundColor));
-              dispatch(setReaderSettings('textColor', item.textColor));
+              dispatch(
+                setReaderSettings({
+                  key: 'theme',
+                  value: item.backgroundColor,
+                }),
+              );
+              dispatch(
+                setReaderSettings({ key: 'textColor', value: item.textColor }),
+              );
             }}
           />
         ))}

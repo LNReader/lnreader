@@ -18,7 +18,7 @@ export const updateLibraryAction = props => async (dispatch, getState) => {
     downloadNewChapters = false,
     onlyUpdateOngoingNovels = false,
     refreshNovelMetadata = false,
-  } = getState().settingsReducer;
+  } = getState().settingsReducerV1;
 
   const categoryId = props?.categoryId;
 

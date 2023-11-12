@@ -4,7 +4,7 @@ import React from 'react';
 import { useAppDispatch, useReaderSettings } from '@redux/hooks';
 import { useTheme } from '@hooks/useTheme';
 import { IconButtonV2 } from '@components/index';
-import { setReaderSettings } from '@redux/settings/settings.actions';
+import { setReaderSettings } from '@redux/settings/settingsSliceV1';
 import { getString } from '@strings/translations';
 
 interface ReaderTextSizeProps {
@@ -28,7 +28,11 @@ const ReaderTextSize: React.FC<ReaderTextSizeProps> = ({ labelStyle }) => {
           color={theme.primary}
           size={26}
           disabled={textSize <= 0}
-          onPress={() => dispatch(setReaderSettings('textSize', textSize - 1))}
+          onPress={() =>
+            dispatch(
+              setReaderSettings({ key: 'textSize', value: textSize - 1 }),
+            )
+          }
           theme={theme}
         />
         <Text style={[styles.value, { color: theme.onSurface }]}>
@@ -38,7 +42,11 @@ const ReaderTextSize: React.FC<ReaderTextSizeProps> = ({ labelStyle }) => {
           name="plus"
           color={theme.primary}
           size={26}
-          onPress={() => dispatch(setReaderSettings('textSize', textSize + 1))}
+          onPress={() =>
+            dispatch(
+              setReaderSettings({ key: 'textSize', value: textSize + 1 }),
+            )
+          }
           theme={theme}
         />
       </View>

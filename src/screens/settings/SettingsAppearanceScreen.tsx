@@ -9,7 +9,7 @@ import ColorPickerModal from '../../components/ColorPickerModal/ColorPickerModal
 
 import { useSettings } from '../../hooks/reduxHooks';
 import { useTheme } from '@hooks/useTheme';
-import { setAppSettings } from '../../redux/settings/settings.actions';
+import { setAppSettings } from '@redux/settings/settingsSliceV1';
 import {
   defaultTheme,
   midnightDusk,
@@ -163,7 +163,9 @@ const AppearanceSettings = ({ navigation }: AppearanceSettingsScreenProps) => {
             label="Hide backdrop"
             value={hideBackdrop}
             onPress={() =>
-              dispatch(setAppSettings('hideBackdrop', !hideBackdrop))
+              dispatch(
+                setAppSettings({ key: 'hideBackdrop', value: !hideBackdrop }),
+              )
             }
             theme={theme}
           />
@@ -172,10 +174,10 @@ const AppearanceSettings = ({ navigation }: AppearanceSettingsScreenProps) => {
             value={useFabForContinueReading}
             onPress={() =>
               dispatch(
-                setAppSettings(
-                  'useFabForContinueReading',
-                  !useFabForContinueReading,
-                ),
+                setAppSettings({
+                  key: 'useFabForContinueReading',
+                  value: !useFabForContinueReading,
+                }),
               )
             }
             theme={theme}
@@ -186,7 +188,12 @@ const AppearanceSettings = ({ navigation }: AppearanceSettingsScreenProps) => {
             label="Show updates in the nav"
             value={showUpdatesTab}
             onPress={() =>
-              dispatch(setAppSettings('showUpdatesTab', !showUpdatesTab))
+              dispatch(
+                setAppSettings({
+                  key: 'showUpdatesTab',
+                  value: !showUpdatesTab,
+                }),
+              )
             }
             theme={theme}
           />
@@ -194,7 +201,12 @@ const AppearanceSettings = ({ navigation }: AppearanceSettingsScreenProps) => {
             label="Show history in the nav"
             value={showHistoryTab}
             onPress={() =>
-              dispatch(setAppSettings('showHistoryTab', !showHistoryTab))
+              dispatch(
+                setAppSettings({
+                  key: 'showHistoryTab',
+                  value: !showHistoryTab,
+                }),
+              )
             }
             theme={theme}
           />
@@ -202,7 +214,12 @@ const AppearanceSettings = ({ navigation }: AppearanceSettingsScreenProps) => {
             label="Always show nav labels"
             value={showLabelsInNav}
             onPress={() =>
-              dispatch(setAppSettings('showLabelsInNav', !showLabelsInNav))
+              dispatch(
+                setAppSettings({
+                  key: 'showLabelsInNav',
+                  value: !showLabelsInNav,
+                }),
+              )
             }
             theme={theme}
           />

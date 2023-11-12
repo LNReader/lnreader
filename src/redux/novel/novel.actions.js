@@ -413,7 +413,7 @@ export const updateNovelAction =
     dispatch({ type: FETCHING_NOVEL });
 
     const { downloadNewChapters = false, refreshNovelMetadata = false } =
-      getState().settingsReducer;
+      getState().settingsReducerV1;
 
     const options = {
       downloadNewChapters,

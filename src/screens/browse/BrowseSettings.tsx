@@ -11,7 +11,7 @@ import { useTheme } from '@hooks/useTheme';
 import { getString } from '@strings/translations';
 import { availableLanguages } from '@utils/constants/languages';
 import { toggleLanguageFilter } from '@redux/plugins/pluginsSlice';
-import { setBrowseSettings } from '@redux/settings/settingsSlice';
+import { setBrowseSettings } from '@redux/settings/settingsSliceV2';
 import { BrowseSettingsScreenProp } from '@navigators/types';
 
 const BrowseSettings = ({ navigation }: BrowseSettingsScreenProp) => {

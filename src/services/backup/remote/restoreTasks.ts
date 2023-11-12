@@ -6,8 +6,7 @@ import { ResponsePackage } from './types';
 import { RESTORE_NOVEL_STATE } from '@redux/novel/novel.types';
 import { restorePluginState } from '@redux/plugins/pluginsSlice';
 import { RESTORE_PREFERENCE_STATE } from '@redux/preferences/preference.types';
-import { RESTORE_SETTINGS_STATE } from '@redux/settings/settings.types';
-import { restoreSettingsState } from '@redux/settings/settingsSlice';
+import { restoreSettingsState as restoreSettingsStateV2 } from '@redux/settings/settingsSliceV2';
 import { RESTORE_TRACKER_STATE } from '@redux/tracker/tracker.types';
 import { RESTORE_UPDATE_STATE } from '@redux/updates/updates.types';
 import { RESTORE_DOWNLOADS_STATE } from '@redux/downloads/donwloads.types';
@@ -15,6 +14,7 @@ import { MMKVStorage } from '@utils/mmkv/mmkv';
 
 import { createCategoryTriggerQuery } from '@database/tables/CategoryTable';
 import { AppDownloadFolder } from '@utils/constants/download';
+import { restoreSettingsState } from '@redux/settings/settingsSliceV1';
 
 const db = SQLite.openDatabase('lnreader.db');
 
@@ -148,11 +148,8 @@ export const restoreSetting = (
       type: RESTORE_PREFERENCE_STATE,
       payload: state.preferenceReducer,
     });
-    store.dispatch({
-      type: RESTORE_SETTINGS_STATE,
-      payload: state.settingsReducer,
-    });
-    store.dispatch(restoreSettingsState(state.settingsReducerV2));
+    store.dispatch(restoreSettingsState(state.settingsReducerV1));
+    store.dispatch(restoreSettingsStateV2(state.settingsReducerV2));
     store.dispatch({
       type: RESTORE_TRACKER_STATE,
       payload: state.trackerReducer,
