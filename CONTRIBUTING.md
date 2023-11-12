@@ -8,7 +8,7 @@ After forking to your own github org or account, do the following steps to get s
 
 ```bash
 # prerequisites
-node --version <= 16.13.1 or 18+    (for version management, get nvm [recommended])
+node --version <= 16.13.1           (for version management, get nvm [recommended])
 java sdk --version <= 17            (for version management, get jenv [optional])
 android sdk                         (https://developer.android.com/studio)
 
