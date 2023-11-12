@@ -134,6 +134,7 @@ const parseNovelAndChapters = async novelUrl => {
 const parseChapter = async (novelUrl, chapterUrl) => {
   let chapterName, chapterText, hasNextPage, pageHasNextPage, pageText;
   let pageNumber = 1;
+  const delay = ms => new Promise(res => setTimeout(res, ms));
 
   /*
    * TODO: Maybe there are other ways to get the translation table
@@ -251,6 +252,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   const addPage = async pageCheerio => {
     const formatPage = async () => {
       // Remove JS
+      pageCheerio('.atitle').next().find('p:first').remove();
       pageCheerio('.atitle').next().find('.cgo').remove();
 
       // Load lazyloaded images
@@ -305,6 +307,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   let url = chapterUrl;
   do {
     const page = await loadPage(url);
+    await delay(1000);
     hasNextPage = page.pageHasNextPage;
     if (hasNextPage === true) {
       pageNumber++;
