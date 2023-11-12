@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, ActivityIndicator, FlatList } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  ActivityIndicator,
+  FlatList,
+  NativeScrollEvent,
+  FlatListProps,
+} from 'react-native';
 
 import * as WebBrowser from 'expo-web-browser';
 
@@ -11,26 +18,27 @@ import { scrapeSearchResults, scrapeTopNovels } from './MyAnimeListScraper';
 import MalNovelCard from './MalNovelCard/MalNovelCard';
 import { useTheme } from '@hooks/useTheme';
 import MalLoading from '../loadingAnimation/MalLoading';
+import { BrowseMalScreenProps } from '@navigators/types';
 
-const BrowseMalScreen = ({ navigation, route }) => {
+const BrowseMalScreen = ({ navigation }: BrowseMalScreenProps) => {
   const theme = useTheme();
 
   const [loading, setLoading] = useState(true);
-  const [novels, setNovels] = useState([]);
-  const [error, setError] = useState();
+  const [novels, setNovels] = useState<any[]>([]);
+  const [error, setError] = useState('');
   const [limit, setLimit] = useState(0);
 
   const [searchText, setSearchText] = useState('');
 
   const malUrl = 'https://myanimelist.net/topmanga.php?type=lightnovels';
 
-  const getNovels = async lim => {
+  const getNovels = async (lim?: number) => {
     try {
       const data = await scrapeTopNovels(lim ?? limit);
 
       setNovels(before => before.concat(data));
       setLoading(false);
-    } catch (err) {
+    } catch (err: any) {
       setError(err.message);
       setNovels([]);
       setLoading(false);
@@ -52,7 +60,7 @@ const BrowseMalScreen = ({ navigation, route }) => {
 
       setNovels(data);
       setLoading(false);
-    } catch (err) {
+    } catch (err: any) {
       setError(err.message);
       setNovels([]);
       setLoading(false);
@@ -65,7 +73,7 @@ const BrowseMalScreen = ({ navigation, route }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const renderItem = ({ item }) => (
+  const renderItem: FlatListProps<any>['renderItem'] = ({ item }) => (
     <MalNovelCard
       novel={item}
       theme={theme}
@@ -77,27 +85,11 @@ const BrowseMalScreen = ({ navigation, route }) => {
     />
   );
 
-  // const {displayMode, novelsPerRow} = useSettings();
-
-  // const orientation = useDeviceOrientation();
-
-  // const getNovelsPerRow = () => {
-  //   if (displayMode === 2) {
-  //     return 1;
-  //   }
-
-  //   if (orientation === 'landscape') {
-  //     return 6;
-  //   } else {
-  //     return novelsPerRow;
-  //   }
-  // };
-
   const isCloseToBottom = ({
     layoutMeasurement,
     contentOffset,
     contentSize,
-  }) => {
+  }: NativeScrollEvent) => {
     const paddingToBottom = 20;
     return (
       layoutMeasurement.height + contentOffset.y >=
@@ -114,7 +106,7 @@ const BrowseMalScreen = ({ navigation, route }) => {
           onPress: () => {
             getNovels();
             setLoading(true);
-            setError();
+            setError('');
           },
           icon: 'reload',
         },
@@ -124,9 +116,7 @@ const BrowseMalScreen = ({ navigation, route }) => {
   );
 
   return (
-    <View
-      style={[styles.container, { backgroundColor: theme.colorPrimaryDark }]}
-    >
+    <View style={[styles.container]}>
       <SearchbarV2
         theme={theme}
         placeholder="Search MyAnimeList"
@@ -149,7 +139,7 @@ const BrowseMalScreen = ({ navigation, route }) => {
         <FlatList
           contentContainerStyle={styles.novelsContainer}
           data={novels}
-          keyExtractor={item => item.novelName}
+          keyExtractor={(item, index) => item.novelName + index}
           renderItem={renderItem}
           ListEmptyComponent={ListEmptyComponent}
           onScroll={({ nativeEvent }) => {
@@ -159,11 +149,11 @@ const BrowseMalScreen = ({ navigation, route }) => {
             }
           }}
           ListFooterComponent={
-            !searchText && (
+            !searchText ? (
               <View style={{ paddingVertical: 16 }}>
                 <ActivityIndicator color={theme.primary} />
               </View>
-            )
+            ) : null
           }
         />
       )}

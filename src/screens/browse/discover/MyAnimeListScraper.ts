@@ -1,5 +1,5 @@
 import * as cheerio from 'cheerio';
-const scrapeTopNovels = async pageNo => {
+const scrapeTopNovels = async (pageNo: number) => {
   const url =
     'https://myanimelist.net/topmanga.php?type=lightnovels&limit=' + pageNo;
 
@@ -8,10 +8,10 @@ const scrapeTopNovels = async pageNo => {
 
   const $ = cheerio.load(body);
 
-  const novels = [];
+  const novels: any[] = [];
 
   $('tr.ranking-list').each(function () {
-    const novelId = $(this).find('img').attr('data-src').split('/');
+    const novelId = $(this).find('img').attr('data-src')?.split('/') || '';
 
     const novelCover =
       'https://cdn.myanimelist.net/images/manga/' +
@@ -34,7 +34,7 @@ const scrapeTopNovels = async pageNo => {
   return novels;
 };
 
-const scrapeSearchResults = async searchTerm => {
+const scrapeSearchResults = async (searchTerm: string) => {
   const url =
     'https://myanimelist.net/manga.php?q=' + searchTerm + '&cat=manga&type=2';
 
@@ -43,7 +43,7 @@ const scrapeSearchResults = async searchTerm => {
 
   const $ = cheerio.load(body);
 
-  const novels = [];
+  const novels: any[] = [];
 
   $('.list')
     .find('tr')
@@ -51,7 +51,7 @@ const scrapeSearchResults = async searchTerm => {
       const novelName = $(this).find('a > strong').text();
 
       if (novelName) {
-        const novelId = $(this).find('img').attr('data-src').split('/');
+        const novelId = $(this).find('img').attr('data-src')?.split('/') || '';
 
         const novelCover =
           'https://cdn.myanimelist.net/images/manga/' +
