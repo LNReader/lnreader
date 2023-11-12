@@ -7,13 +7,12 @@ import React, {
 } from 'react';
 import {
   Dimensions,
-  NativeModules,
   NativeEventEmitter,
   DrawerLayoutAndroid,
 } from 'react-native';
 import * as RNFS from 'react-native-fs';
 
-import VolumeButtonListener from '@utils/volumeButtonListener';
+import VolumeButtonListener from '@native/volumeButtonListener';
 
 import { useDispatch } from 'react-redux';
 import { useKeepAwake } from 'expo-keep-awake';
@@ -117,9 +116,7 @@ export const ChapterContent = ({
     ChapterInfo[]
   >([]);
 
-  const emmiter = useRef(
-    new NativeEventEmitter(NativeModules.VolumeButtonListener),
-  );
+  const emmiter = useRef(new NativeEventEmitter(VolumeButtonListener));
 
   const connectVolumeButton = () => {
     VolumeButtonListener.connect();
@@ -334,7 +331,7 @@ export const ChapterContent = ({
         saveProgress={saveProgress}
         onLayout={() => {
           useVolumeButtons && onLayout();
-          scrollTo(position?.offsetY);
+          scrollTo(position?.offsetY || 0);
         }}
         onPress={hideHeader}
         navigateToChapterBySwipe={navigateToChapterBySwipe}

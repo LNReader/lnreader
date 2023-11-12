@@ -1,5 +1,5 @@
-import { NativeModules } from 'react-native';
-interface VolumeButtonInterface {
+import { NativeModule, NativeModules } from 'react-native';
+interface VolumeButtonInterface extends NativeModule {
   connect(): void;
   disconnect(): void;
   preventDefault(): void;
