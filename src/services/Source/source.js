@@ -4,8 +4,6 @@ import { sourceManager } from '../../sources/sourceManager';
 export const fetchNovel = async (sourceId, novelUrl) => {
   const source = SourceFactory.getSource(sourceId);
 
-  console.log(novelUrl);
-
   const res = await source.getNovelDetails({ novelUrl });
 
   const novel = {

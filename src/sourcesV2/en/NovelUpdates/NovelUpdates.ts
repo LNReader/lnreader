@@ -103,8 +103,6 @@ export class NovelUpdatesParser implements ParsedSource {
     });
     const body = await res.text();
 
-    console.log(res.url);
-
     const $ = cheerio.load(body);
 
     const actualUrl = res.url.toLowerCase();

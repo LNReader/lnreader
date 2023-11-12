@@ -31,7 +31,7 @@ export const insertChapters = async (
       tx.executeSql(insertChaptersQuery, [
         chapter.chapterUrl,
         chapter.chapterName,
-        chapter.releaseDate,
+        chapter.releaseDate || '',
         novelId,
       ]),
     );
