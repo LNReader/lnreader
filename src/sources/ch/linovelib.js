@@ -132,7 +132,7 @@ const parseNovelAndChapters = async novelUrl => {
 };
 
 const parseChapter = async (novelUrl, chapterUrl) => {
-  let chapterName, chapterText, hasNextPage, pageHasNextPage, pageText;
+  let chapterName, chapterText, hasNextPage, pageHasNextPage, pageText, urlNext;
   let pageNumber = 1;
   const delay = ms => new Promise(res => setTimeout(res, ms));
 
@@ -252,8 +252,10 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   const addPage = async pageCheerio => {
     const formatPage = async () => {
       // Remove JS
-      pageCheerio('.atitle').next().find('p:first').remove();
-      pageCheerio('.atitle').next().find('.cgo').remove();
+      let style = pageCheerio('style:first').prop('innerHTML');
+      style = style.replace(/(.*?)\{.*?\}/g, '$1,').split(',');
+      style.push(style.pop().replace(/\}/, '.cgo'));
+      style.map(tag => pageCheerio(tag).remove());
 
       // Load lazyloaded images
       pageCheerio('.atitle')
@@ -286,21 +288,23 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 
     await formatPage();
     chapterName =
-      pageCheerio('#atitle + h3').text() +
-      ' — ' +
-      pageCheerio('#atitle').text();
+      pageCheerio('.atitle h3').text() + ' — ' + pageCheerio('#atitle').text();
     if (chapterText === undefined) {
       chapterText = '<h2>' + chapterName + '</h2>';
     }
-    chapterText += pageText;
+    chapterText +=
+      pageText ||
+      'Chapter not found, Report at lnreader github/discord if you see this message';
   };
 
   const loadPage = async url => {
     const body = await fetchHtml({ url, sourceId });
     const pageCheerio = cheerio.load(body);
     await addPage(pageCheerio);
-    pageHasNextPage =
-      pageCheerio('#footlink a:last').text() === '下一页' ? true : false;
+    urlNext = pageCheerio('#aread script:first')
+      .prop('innerHTML')
+      .replace(/.*next:'(.*?)'.*/g, '$1');
+    pageHasNextPage = urlNext.match(/_/) ? true : false;
     return { pageCheerio, pageHasNextPage };
   };
 
