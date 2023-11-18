@@ -183,6 +183,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   const chapterName = loadedCheerio('h1#chapter-heading').text();
 
   const cleanup = [
+    'center',
     '.clear',
     '.code-block',
     '.ai-viewport-2',
@@ -192,10 +193,17 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     'strong:last',
   ];
   cleanup.map(tag =>
-    loadedCheerio('#hola_siguiente').next().find(tag).remove(),
+    loadedCheerio('.entry-header')
+      .next()
+      .children('div:last')
+      .find(tag)
+      .remove(),
   );
 
-  const chapterText = loadedCheerio('#hola_siguiente').next().html();
+  const chapterText = loadedCheerio('.entry-header')
+    .next()
+    .children('div:last')
+    .html();
 
   const chapter = {
     sourceId,
