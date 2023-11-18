@@ -145,19 +145,23 @@ const parseNovelAndChapters = async novelUrl => {
       });
 
       loadedCheerio = cheerio.load(chaptersHtml);
-      loadedCheerio('.lcp_catlist li').each((i, el) => {
-        const chapterName = loadedCheerio(el)
-          .find('a')
-          .text()
-          .replace(/[\t\n]/g, '')
-          .trim();
+      loadedCheerio('h2:contains("Resumen")')
+        .closest('div')
+        .next()
+        .find('ul:first li')
+        .each((i, el) => {
+          const chapterName = loadedCheerio(el)
+            .find('a')
+            .text()
+            .replace(/[\t\n]/g, '')
+            .trim();
 
-        const releaseDate = loadedCheerio(el).find('span').text().trim();
+          const releaseDate = loadedCheerio(el).find('span').text().trim();
 
-        const chapterUrl = loadedCheerio(el).find('a').attr('href');
+          const chapterUrl = loadedCheerio(el).find('a').attr('href');
 
-        novelChapters.push({ chapterName, releaseDate, chapterUrl });
-      });
+          novelChapters.push({ chapterName, releaseDate, chapterUrl });
+        });
       await delay(1000);
     }
     return novelChapters.reverse();
@@ -193,16 +197,12 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     'strong:last',
   ];
   cleanup.map(tag =>
-    loadedCheerio('.entry-header')
-      .next()
-      .children('div:last')
-      .find(tag)
-      .remove(),
+    loadedCheerio('li:contains("A")').closest('div').next().find(tag).remove(),
   );
 
-  const chapterText = loadedCheerio('.entry-header')
+  const chapterText = loadedCheerio('li:contains("A")')
+    .closest('div')
     .next()
-    .children('div:last')
     .html();
 
   const chapter = {
