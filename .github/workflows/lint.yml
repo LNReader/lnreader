@@ -1,6 +1,8 @@
-name: Lint
+# Archivo .github/workflows/eslint.yml
+name: ESLint
 
 on:
+  # Ejecuta el workflow en cada push o pull request, pero solo para la rama main
   push:
     branches: [ main ]
   pull_request:
@@ -8,14 +10,29 @@ on:
 
 jobs:
   lint:
+    name: Lint
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v2
-      - name: Set up Node.js
+      # Obtiene el código del repositorio
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      # Instala Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '14'
+
+      # Instala las dependencias de Node.js
       - name: Install dependencies
         run: npm install
+
+      # Ejecuta ESLint
       - name: Run ESLint
-        run: npm run lint
+        uses: github/super-linter@v4
+        env:
+          DEFAULT_BRANCH: main
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VALIDATE_ALL_CODEBASE: false
+          VALIDATE_JAVASCRIPT_ES: true
