@@ -1,199 +1,150 @@
-import * as cheerio from 'cheerio';
-import { defaultCoverUri, Status } from '../helpers/constants';
-import { fetchHtml } from '@utils/fetch/fetch';
+// Importar las dependencias necesarias
+const cheerio = require("cheerio");
+const { parseNovelId, parseChapterId } = require("../../utils/parseNovelId");
+const { fixRelativePath } = require("../../utils/fixRelativePath");
 
-const sourceId = 23;
-const sourceName = 'TuNovelaLigera';
+// Definir la URL base de la fuente
+const baseUrl = "https://tunovelaligera.com/";
 
-const baseUrl = 'https://tunovelaligera.com/';
+// Definir la función para obtener la lista de novelas
+const getNovels = async (page) => {
+  // Construir la URL de la página
+  const url = page === 1 ? baseUrl : `${baseUrl}page/${page}/`;
 
-const popularNovels = async page => {
-  let url = `${baseUrl}novelas/page/${page}/?m_orderby=rating`;
+  // Obtener el HTML de la página
+  const html = await fetch(url).then((res) => res.text());
 
-  const body = await fetchHtml({ url });
+  // Cargar el HTML con cheerio
+  const $ = cheerio.load(html);
 
-  let loadedCheerio = cheerio.load(body);
+  // Crear un array vacío para almacenar las novelas
+  const novels = [];
 
-  let novels = [];
+  // Recorrer cada elemento con la clase .post-item
+  $(".post-item").each((_, el) => {
+    // Obtener el título de la novela
+    const title = $(el).find(".post-title").text().trim();
 
-  loadedCheerio('.page-item-detail').each(function () {
-    const novelName = loadedCheerio(this).find('.h5 > a').text();
-    const novelCoverImg = loadedCheerio(this).find('img');
-    const novelCover =
-      novelCoverImg.attr('src') || novelCoverImg.attr('data-cfsrc');
+    // Obtener el enlace de la novela
+    const link = $(el).find(".post-title > a").attr("href");
 
-    let novelUrl = loadedCheerio(this)
-      .find('.h5 > a')
-      .attr('href')
-      .split('/')[4];
-    novelUrl += '/';
+    // Obtener el identificador de la novela
+    const novelId = parseNovelId(link);
 
-    const novel = {
-      sourceId,
-      novelName,
-      novelCover,
-      novelUrl,
-    };
+    // Obtener la imagen de la novela
+    const image = $(el).find(".post-image > img").attr("src");
 
-    novels.push(novel);
+    // Obtener el último capítulo de la novela
+    const latestChapter = $(el).find(".post-content > p").text().trim();
+
+    // Añadir la novela al array
+    novels.push({ title, link, novelId, image, latestChapter });
   });
 
-  return { novels };
-};
-
-const parseNovelAndChapters = async novelUrl => {
-  const url = `${baseUrl}novelas/${novelUrl}`;
-
-  const body = await fetchHtml({ url });
-
-  let loadedCheerio = cheerio.load(body);
-
-  let novel = {
-    sourceId,
-    sourceName,
-    url,
-    novelUrl,
-  };
-
-  loadedCheerio('.manga-title-badges').remove();
-
-  novel.novelName = loadedCheerio('.post-title > h1').text().trim();
-
-  let novelCover = loadedCheerio('.summary_image img');
-
-  novel.novelCover =
-    novelCover.attr('data-src') ||
-    novelCover.attr('src') ||
-    novelCover.attr('data-cfsrc') ||
-    defaultCoverUri;
-
-  loadedCheerio('.post-content_item').each(function () {
-    const detailName = loadedCheerio(this)
-      .find('.summary-heading > h5')
-      .text()
-      .trim();
-    const detail = loadedCheerio(this).find('.summary-content').text().trim();
-
-    switch (detailName) {
-      case 'Generos':
-        novel.genre = detail.replace(/, /g, ',');
-        break;
-      case 'Autores':
-        novel.author = detail;
-        break;
-      case 'Estado':
-        novel.status =
-          detail.includes('OnGoing') || detail.includes('Updating')
-            ? Status.ONGOING
-            : Status.COMPLETED;
-        break;
-    }
-  });
-
-  novel.summary = loadedCheerio('div.summary__content > p').text().trim();
-
-  let novelChapters = [];
-
-  const novelId =
-    loadedCheerio('.rating-post-id').attr('value') ||
-    loadedCheerio('#manga-chapters-holder').attr('data-id');
-
-  let formData = new FormData();
-  formData.append('action', 'manga_get_chapters');
-  formData.append('manga', novelId);
-
-  const text = await fetchHtml({
-    url: 'https://tunovelaligera.com/wp-admin/admin-ajax.php',
-    init: {
-      method: 'POST',
-      body: formData,
-    },
-  });
-
-  loadedCheerio = cheerio.load(text);
-
-  loadedCheerio('.wp-manga-chapter').each(function () {
-    const chapterName = loadedCheerio(this)
-      .find('a')
-      .text()
-      .replace(/[\t\n]/g, '')
-      .trim();
-
-    const releaseDate = loadedCheerio(this).find('span').text().trim();
-
-    let chapterUrl = loadedCheerio(this).find('a').attr('href').split('/');
-
-    chapterUrl[6]
-      ? (chapterUrl = chapterUrl[5] + '/' + chapterUrl[6])
-      : (chapterUrl = chapterUrl[5]);
-
-    novelChapters.push({ chapterName, releaseDate, chapterUrl });
-  });
-
-  novel.chapters = novelChapters.reverse();
-
-  return novel;
-};
-
-const parseChapter = async (novelUrl, chapterUrl) => {
-  const url = `${baseUrl}novelas/${novelUrl}/${chapterUrl}`;
-
-  const body = await fetchHtml({ url });
-
-  let loadedCheerio = cheerio.load(body);
-
-  let chapterName = loadedCheerio('h1#chapter-heading').text();
-
-  let chapterText = loadedCheerio('.text-left').html();
-  novelUrl = novelUrl + '/';
-
-  const chapter = {
-    sourceId,
-    novelUrl,
-    chapterUrl,
-    chapterName,
-    chapterText,
-  };
-
-  return chapter;
-};
-
-const searchNovels = async searchTerm => {
-  const url = `${baseUrl}?s=${searchTerm}&post_type=wp-manga`;
-
-  const body = await fetchHtml({ url });
-
-  let loadedCheerio = cheerio.load(body);
-
-  let novels = [];
-
-  loadedCheerio('.c-tabs-item__content').each(function () {
-    const novelName = loadedCheerio(this).find('.h4 > a').text();
-    const novelCoverImg = loadedCheerio(this).find('img');
-    const novelCover =
-      novelCoverImg.attr('src') ?? novelCoverImg.attr('data-cfsrc');
-
-    let novelUrl = loadedCheerio(this).find('.h4 > a').attr('href');
-    novelUrl = novelUrl.replace(`${baseUrl}novelas/`, '');
-
-    const novel = {
-      sourceId,
-      novelName,
-      novelCover,
-      novelUrl,
-    };
-
-    novels.push(novel);
-  });
-
+  // Devolver el array de novelas
   return novels;
 };
 
-const TuNovelaLigeraScraper = {
-  popularNovels,
-  parseNovelAndChapters,
-  parseChapter,
-  searchNovels,
+// Definir la función para obtener los detalles de una novela
+const getNovelDetails = async (novelId) => {
+  // Construir la URL de la novela
+  const url = `${baseUrl}${novelId}/`;
+
+  // Obtener el HTML de la novela
+  const html = await fetch(url).then((res) => res.text());
+
+  // Cargar el HTML con cheerio
+  const $ = cheerio.load(html);
+
+  // Obtener el título de la novela
+  const title = $(".post-title").text().trim();
+
+  // Obtener la imagen de la novela
+  const image = $(".post-image > img").attr("src");
+
+  // Obtener el autor de la novela
+  const author = $(".post-content > p:nth-child(2)").text().trim();
+
+  // Obtener el estado de la novela
+  const status = $(".post-content > p:nth-child(3)").text().trim();
+
+  // Obtener el género de la novela
+  const genre = $(".post-content > p:nth-child(4)").text().trim();
+
+  // Obtener la sinopsis de la novela
+  const synopsis = $(".post-content > p:nth-child(5)").text().trim();
+
+  // Crear un objeto vacío para almacenar los detalles de la novela
+  const novelDetails = { title, image, author, status, genre, synopsis };
+
+  // Devolver el objeto de detalles de la novela
+  return novelDetails;
 };
 
-export default TuNovelaLigeraScraper;
+// Definir la función para obtener los capítulos de una novela
+const getNovelChapters = async (novelId) => {
+  // Construir la URL de la novela
+  const url = `${baseUrl}${novelId}/`;
+
+  // Obtener el HTML de la novela
+  const html = await fetch(url).then((res) => res.text());
+
+  // Cargar el HTML con cheerio
+  const $ = cheerio.load(html);
+
+  // Crear un array vacío para almacenar los capítulos
+  const chapters = [];
+
+  // Recorrer cada elemento con la clase .wp-manga-chapter
+  $(".wp-manga-chapter").each((_, el) => {
+    // Obtener el título del capítulo
+    const title = $(el).find("a").text().trim();
+
+    // Obtener el enlace del capítulo
+    const link = $(el).find("a").attr("href");
+
+    // Obtener el identificador del capítulo
+    const chapterId = parseChapterId(link);
+
+    // Añadir el capítulo al array
+    chapters.push({ title, link, chapterId });
+  });
+
+  // Devolver el array de capítulos
+  return chapters;
+};
+
+// Definir la función para obtener el contenido de un capítulo
+const getChapterContent = async (novelId, chapterId) => {
+  // Construir la URL del capítulo
+  const url = `${baseUrl}${novelId}/${chapterId}/`;
+
+  // Obtener el HTML del capítulo
+  const html = await fetch(url).then((res) => res.text());
+
+  // Cargar el HTML con cheerio
+  const $ = cheerio.load(html);
+
+  // Obtener el título del capítulo
+  const title = $(".post-title").text().trim();
+
+  // Obtener el contenido del capítulo
+  const content = $(".reading-content")
+    .html()
+    .replace(/<script[^>]*>.*?<\/script>/gi, "")
+    .replace(/<ins[^>]*>.*?<\/ins>/gi, "");
+
+  // Corregir las rutas relativas de las imágenes
+  const fixedContent = fixRelativePath(content, baseUrl);
+
+  // Devolver el título y el contenido del capítulo
+  return { title, content: fixedContent };
+};
+
+// Exportar las funciones
+module.exports = {
+  getNovels,
+  getNovelDetails,
+  getNovelChapters,
+  getChapterContent,
+};
