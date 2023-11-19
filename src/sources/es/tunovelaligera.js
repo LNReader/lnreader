@@ -186,24 +186,31 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 
   const chapterName = loadedCheerio('h1#chapter-heading').text();
 
-  const cleanup = [
+  let pageText = loadedCheerio('li:contains("A")').closest('div').next();
+
+  let cleanup = [];
+  pageText.find('div').each((i, el) => {
+    let hb = loadedCheerio(el).attr('id')?.match(/hb.*/);
+    if (!hb) {
+      return;
+    }
+    let idAttr = `div[id="${hb}"]`;
+    cleanup.push(idAttr);
+  });
+
+  cleanup.push(
     'center',
     '.clear',
     '.code-block',
     '.ai-viewport-2',
     '.cbxwpbkmarkwrap',
     '.flagcontent-form-container',
-    'a:last',
     'strong:last',
-  ];
-  cleanup.map(tag =>
-    loadedCheerio('li:contains("A")').closest('div').next().find(tag).remove(),
   );
 
-  const chapterText = loadedCheerio('li:contains("A")')
-    .closest('div')
-    .next()
-    .html();
+  cleanup.map(tag => pageText.find(tag).remove());
+
+  const chapterText = pageText.html();
 
   const chapter = {
     sourceId,
