@@ -1,52 +1,55 @@
-name: CI
+# Este es un script de workflow de GitHub para construir y publicar la aplicación LNReader en GitHub Releases
+name: Build and Release
+
+# El workflow se ejecuta cuando se crea una nueva etiqueta que empieza por 'v'
 on:
   push:
-    branches:
-      - main
+    tags:
+      - 'v*'
+
+# El workflow tiene un solo trabajo llamado 'build'
 jobs:
-  build-android:
-    name: Build App
+  build:
+    # El trabajo se ejecuta en un entorno Ubuntu
     runs-on: ubuntu-latest
+    # El trabajo tiene los siguientes pasos
     steps:
-      - name: Clone Repository (Latest)
-        uses: actions/checkout@v3
+      # El primer paso es comprobar el código fuente del repositorio
+      - name: Checkout code
+        uses: actions/checkout@v2
+      # El segundo paso es configurar Node.js en el entorno
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
         with:
-          fetch-depth: 0
-      - uses: actions/setup-node@v3
+          node-version: '14'
+      # El tercer paso es instalar las dependencias de la aplicación
+      - name: Install dependencies
+        run: npm install
+      # El cuarto paso es generar el archivo de configuración de React Native
+      - name: Generate React Native Config
+        run: npx react-native-config
+      # El quinto paso es construir la aplicación para Android
+      - name: Build Android app
+        run: npx react-native run-android --variant=release
+      # El sexto paso es crear un archivo ZIP con el APK de la aplicación
+      - name: Zip APK
+        run: zip -r lnreader.zip android/app/build/outputs/apk/release/app-release.apk
+      # El séptimo paso es publicar el archivo ZIP como un artefacto del workflow
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
         with:
-          node-version: '16'
-      - name: Install Dependencies
-        run: |
-          npm install
-
-      - name: Cache Gradle Wrapper
-        uses: actions/cache@v3
+          name: lnreader
+          path: lnreader.zip
+      # El octavo paso es crear una nueva versión de GitHub con el artefacto adjunto
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v1
         with:
-          path: ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
-
-      - name: Cache Gradle Dependencies
-        uses: actions/cache@v3
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-caches-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-caches-
-
-      - name: Make Gradlew Executable
-        run: cd android && chmod +x ./gradlew
-
-      - name: Build Android Release
-        run: |
-          cd android && ./gradlew assembleRelease --no-daemon
-
-      - name: Set Env
-        run: |
-          set -x
-          echo "COMMIT_COUNT=$(git rev-list --count HEAD)" >> $GITHUB_ENV
-
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v1
-        with:
-          name: LNReader-r${{ env.COMMIT_COUNT }}
-          path: android/app/build/outputs/apk/release/app-release.apk
+          # Se usa el nombre de la etiqueta como el nombre de la versión
+          name: ${{ github.ref }}
+          # Se usa el mensaje del commit como la descripción de la versión
+          body: ${{ github.event.head_commit.message }}
+          # Se adjunta el artefacto como un activo de la versión
+          files: lnreader.zip
+        env:
+          # Se usa un token de GitHub para autenticarse
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
