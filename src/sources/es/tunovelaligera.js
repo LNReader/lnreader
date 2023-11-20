@@ -209,6 +209,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   );
 
   cleanup.map(tag => pageText.find(tag).remove());
+  pageText.find('a, span').removeAttr();
 
   const chapterText = pageText.html();
 
