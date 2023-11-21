@@ -134,10 +134,10 @@
       "chooseLocation": "Seleziona la cartella di archiviazione EPUB",
       "pathToFolder": "Percorso cartella di salvataggio EPUB",
       "useReaderTheme": "Usa tema lettore",
-      "useCustomCSS": "Use custom CSS",
-      "useCustomJS": "Use custom JS",
+      "useCustomCSS": "Usa CSS personalizzato",
+      "useCustomJS": "Usa JS personalizzato",
       "useCustomJSWarning": "Potrebbe non essere supportato da tutti i lettori EPUB",
-      "chaptersWarning": "Only downloaded chapters are included in the EPUB"
+      "chaptersWarning": "Solo i capitoli scaricati sono inclusi nell'EPUB"
     }
   },
   "more": "Altro",
@@ -191,8 +191,8 @@
         "notSaved": "Non salvato",
         "cssHint": "Consiglio: è possibile creare una configurazione CSS specifica con l'ID sorgente. (#sourceId-[SOURCEID])",
         "jsHint": "Consiglio: Hai accesso alle variabili seguenti: html, novelName, chapterName, sourceId, chapterId, novelId",
-        "clearCustomCSS": "Are you sure? Your custom CSS would be reset.",
-        "clearCustomJS": "Are you sure? Your custom JS would be reset."
+        "clearCustomCSS": "Sei sicuro? Il CSS personalizzato verrebbe resettato.",
+        "clearCustomJS": "Sei sicuro? Il tuo JS personalizzato verrebbe resettato."
       },
       "browseSettings": "Impostazioni Esplora",
       "browseSettingsScreen": {
