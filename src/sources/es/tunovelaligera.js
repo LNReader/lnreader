@@ -162,17 +162,19 @@ const parseNovelAndChapters = async novelUrl => {
 
           novelChapters.push({ chapterName, releaseDate, chapterUrl });
         });
-      await delay(1000);
+      await delay(2000);
     }
     return novelChapters.reverse();
   };
 
-  novel.chapters = await getChapters();
-  if (!novel.chapters.length) {
-    showToast('¡Archivo no encontrado!');
-    await delay(1000);
-    novel.chapters = await getPageChapters();
-  }
+  // novel.chapters = await getChapters();
+  // if (!novel.chapters.length) {
+  //   showToast('¡Archivo no encontrado!');
+  //   await delay(1000);
+  //
+  // }
+
+  novel.chapters = await getPageChapters();
 
   return novel;
 };
