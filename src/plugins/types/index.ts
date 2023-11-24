@@ -1,4 +1,4 @@
-import { SelectedFilter, SourceFilter } from './filterTypes';
+import { FilterToValues, Filters } from './filterTypes';
 import { Languages } from '@utils/constants/languages';
 
 export interface NovelItem {
@@ -35,9 +35,9 @@ export interface SourceNovel {
   chapters?: ChapterItem[];
 }
 
-export interface SourceOptions {
+export interface PopularNovelsOptions<Q extends Filters> {
   showLatestNovels?: boolean;
-  filters?: SelectedFilter;
+  filters?: FilterToValues<Q>;
 }
 
 // this is for display in available plugins
@@ -53,13 +53,13 @@ export interface PluginItem {
 
 export interface Plugin extends PluginItem {
   path: string; // path in device
-  filters?: SourceFilter[];
+  filters?: Filters;
   userAgent: string;
   cookieString: string;
   rawCode: string;
   popularNovels: (
     pageNo: number,
-    options?: SourceOptions,
+    options?: PopularNovelsOptions<Filters>,
   ) => Promise<NovelItem[]>;
   parseNovelAndChapters: (
     novelUrl: string,

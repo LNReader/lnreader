@@ -68,6 +68,7 @@ const BrowseSourceScreen = ({ route }: BrowseSourceScreenProps) => {
 
   const handleOpenWebView = async () => {
     navigate(
+      // @ts-ignore
       'WebviewScreen' as never,
       {
         pluginId,
@@ -85,6 +86,7 @@ const BrowseSourceScreen = ({ route }: BrowseSourceScreenProps) => {
   const navigateToNovel = useCallback(
     (item: NovelItem) =>
       navigate(
+        // @ts-ignore
         'Novel' as never,
         {
           ...item,
@@ -163,7 +165,7 @@ const BrowseSourceScreen = ({ route }: BrowseSourceScreenProps) => {
         />
       )}
 
-      {!showLatestNovels && filterValues?.length ? (
+      {!showLatestNovels && filterValues ? (
         <>
           <FAB
             icon={'filter-variant'}
@@ -178,7 +180,7 @@ const BrowseSourceScreen = ({ route }: BrowseSourceScreenProps) => {
           />
           <FilterBottomSheet
             filterSheetRef={filterSheetRef}
-            filtersValues={filterValues}
+            filters={filterValues}
             setFilters={setFilters}
             clearFilters={clearFilters}
           />
