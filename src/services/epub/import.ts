@@ -91,9 +91,10 @@ const insertLocalChapter = (
             const epubContentDir = url.replace(/[^\\\/]+$/, '');
             chapterText = chapterText.replace(
               /(href|src)=(["'])(.*?)\2/g,
-              ($0, $1, $2, $3) => {
+              ($0, $1, $2, $3: string) => {
+                const escapedFilePath = $3.replace(/:/g, "\uA789");
                 if ($3) {
-                  staticPaths.push(epubContentDir + '/' + $3);
+                  staticPaths.push(epubContentDir + '/' + escapedFilePath);
                 }
                 return (
                   $1 +
@@ -102,7 +103,7 @@ const insertLocalChapter = (
                   'file://' +
                   novelDir +
                   '/' +
-                  $3.split(/[\\\/]/)?.pop() +
+                  escapedFilePath.split(/[\\\/]/)?.pop() +
                   $2
                 );
               },
@@ -130,12 +131,14 @@ const importEpubAction = async (taskData?: TaskData) => {
     throw new Error('No data provided');
   }
   await sleep(taskData.delay);
-  const novel: SourceNovel = await EpubParser.parse(
-    taskData.epubFilePath,
-    taskData.epubDirPath,
-  );
-  await sleep(taskData.delay);
   try {
+    const novel: SourceNovel = await EpubParser.parse(
+      taskData.epubFilePath,
+      taskData.epubDirPath,
+    ).catch(e => {
+      throw e;
+    });
+    await sleep(taskData.delay);
     const novelId = await insertLocalNovel(
       novel.name,
       novel.url,
@@ -241,6 +244,9 @@ export const importEpub = async () => {
       throw e;
     });
     const epubDirPath = RNFS.ExternalCachesDirectoryPath + '/epub';
+    if(await RNFS.exists(epubDirPath)){
+      await RNFS.unlink(epubDirPath); 
+    }
     await RNFS.mkdir(epubDirPath).catch(e => {
       throw e;
     });
