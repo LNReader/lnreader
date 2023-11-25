@@ -80,7 +80,7 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
             break;
           case 'error-img':
             if (event.data && typeof event.data === 'string') {
-              plugin.fetchImage(event.data).then(base64 => {
+              plugin?.fetchImage(event.data).then(base64 => {
                 webViewRef.current?.injectJavaScript(
                   `document.querySelector("img[error-src='${event.data}']").src="data:image/jpg;base64,${base64}"`,
                 );
