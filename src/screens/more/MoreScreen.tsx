@@ -158,6 +158,9 @@ const MoreScreen = ({ navigation }: MoreStackScreenProps) => {
             onPress={() =>
               navigation.navigate('MoreStack', {
                 screen: 'SettingsStack',
+                params: {
+                  screen: 'Settings',
+                }
               })
             }
             theme={theme}
