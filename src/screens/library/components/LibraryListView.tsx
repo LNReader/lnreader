@@ -49,13 +49,17 @@ export const LibraryView: React.FC<Props> = ({
         }
       }}
       libraryStatus={false} // yes but actually no :D
-      selectedNovels={selectedNovelIds}
+      selectedNovelIds={selectedNovelIds}
     />
   );
 
   const [refreshing, setRefreshing] = useState(false);
 
   const onRefresh = () => {
+    // local category
+    if (categoryId === 2) {
+      return;
+    }
     setRefreshing(true);
     dispatch(updateLibraryAction({ categoryId }));
     setRefreshing(false);

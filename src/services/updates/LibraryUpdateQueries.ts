@@ -4,6 +4,7 @@ import { downloadChapter } from '../../database/queries/ChapterQueries';
 import * as SQLite from 'expo-sqlite';
 import { SourceNovel } from '@plugins/types';
 import { UpdateLibraryOptions } from './updates';
+import { LOCAL_PLUGIN_ID } from '@plugins/pluginManager';
 const db = SQLite.openDatabase('lnreader.db');
 
 const updateNovelMetadata = async (novelId: number, novel: SourceNovel) => {
@@ -32,6 +33,9 @@ const updateNovel = async (
   novelId: number,
   options: UpdateLibraryOptions,
 ) => {
+  if (pluginId === LOCAL_PLUGIN_ID) {
+    return;
+  }
   const { downloadNewChapters, refreshNovelMetadata } = options;
 
   let novel = await fetchNovel(pluginId, novelUrl);

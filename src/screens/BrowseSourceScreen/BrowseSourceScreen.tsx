@@ -139,7 +139,7 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
                     }
                   });
                 }}
-                selectedNovels={[]}
+                selectedNovelIds={[]}
               />
             );
           }}

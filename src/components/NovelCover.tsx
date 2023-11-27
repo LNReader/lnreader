@@ -40,7 +40,7 @@ function NovelCover<TNovel extends NovelItem | NovelInfo | LibraryNovelInfo>({
   theme,
   isSelected,
   onLongPress,
-  selectedNovels,
+  selectedNovelIds,
 }: {
   item: TNovel;
   onPress: () => void;
@@ -48,7 +48,7 @@ function NovelCover<TNovel extends NovelItem | NovelInfo | LibraryNovelInfo>({
   theme: ThemeColors;
   isSelected: boolean;
   onLongPress: (item: TNovel) => void;
-  selectedNovels: TNovel[];
+  selectedNovelIds: number[];
 }) {
   const {
     displayMode = DisplayModes.Comfortable,
@@ -93,7 +93,9 @@ function NovelCover<TNovel extends NovelItem | NovelInfo | LibraryNovelInfo>({
         android_ripple={{ color: theme.rippleColor }}
         style={styles.opac}
         onPress={
-          selectedNovels && selectedNovels.length > 0 ? selectNovel : onPress
+          selectedNovelIds && selectedNovelIds.length > 0
+            ? selectNovel
+            : onPress
         }
         onLongPress={selectNovel}
       >
@@ -165,7 +167,7 @@ function NovelCover<TNovel extends NovelItem | NovelInfo | LibraryNovelInfo>({
       inLibraryBadge={libraryStatus && <InLibraryBadge theme={theme} />}
       theme={theme}
       onPress={
-        selectedNovels && selectedNovels.length > 0 ? selectNovel : onPress
+        selectedNovelIds && selectedNovelIds.length > 0 ? selectNovel : onPress
       }
       onLongPress={selectNovel}
       isSelected={isSelected}

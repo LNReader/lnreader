@@ -63,7 +63,8 @@ const getLibraryWithCategoryQuery = `
   (
     SELECT 
       Novel.*,
-      category 
+      category,
+      categoryId
     FROM
     Novel LEFT JOIN (
       SELECT NovelId, name as category, categoryId FROM (NovelCategory JOIN Category ON NovelCategory.categoryId = Category.id)
