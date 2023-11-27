@@ -35,7 +35,6 @@ const DownloadCustomChapterModal = ({
     dispatch(
       downloadAllChaptersAction(
         novel.pluginId,
-        novel.url,
         chapters
           .filter(chapter => chapter.unread && !chapter.isDownloaded)
           .slice(0, text),

@@ -136,9 +136,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
       list.push({
         icon: 'download-outline',
         onPress: () => {
-          dispatch(
-            downloadAllChaptersAction(novel.pluginId, novel.url, selected),
-          );
+          dispatch(downloadAllChaptersAction(novel.pluginId, selected));
           setSelected([]);
         },
       });
@@ -161,7 +159,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
       },
     });
 
-    if (selected.some(obj => !obj.unread)) {
+    if (selected.some(obj => obj.unread)) {
       list.push({
         icon: 'check',
         onPress: () => {
@@ -171,7 +169,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
       });
     }
 
-    if (selected.some(obj => obj.unread)) {
+    if (selected.some(obj => !obj.unread)) {
       list.push({
         icon: 'check-outline',
         onPress: () => {
@@ -266,7 +264,12 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
   const showProgressPercentage = (chapter: ChapterInfo) => {
     const savedProgress =
       position && position[chapter.id] && position[chapter.id].percentage;
-    if (savedProgress < 97 && savedProgress > 0 && chapter.unread) {
+    if (
+      savedProgress &&
+      savedProgress < 97 &&
+      savedProgress > 0 &&
+      chapter.unread
+    ) {
       return (
         <Text
           style={{
@@ -371,7 +374,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                       titleStyle={{ color: theme.onSurface }}
                       onPress={() => {
                         dispatch(
-                          downloadAllChaptersAction(novel.pluginId, novel.url, [
+                          downloadAllChaptersAction(novel.pluginId, [
                             chapters.find(
                               chapter =>
                                 chapter.unread && !chapter.isDownloaded,
@@ -391,7 +394,6 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                         dispatch(
                           downloadAllChaptersAction(
                             novel.pluginId,
-                            novel.url,
                             chapters
                               .filter(
                                 chapter =>
@@ -413,7 +415,6 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                         dispatch(
                           downloadAllChaptersAction(
                             novel.pluginId,
-                            novel.url,
                             chapters
                               .filter(
                                 chapter =>
@@ -444,7 +445,6 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                         dispatch(
                           downloadAllChaptersAction(
                             novel.pluginId,
-                            novel.url,
                             chapters.filter(chapter => chapter.unread),
                           ),
                         );
@@ -459,11 +459,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                       }}
                       onPress={() => {
                         dispatch(
-                          downloadAllChaptersAction(
-                            novel.pluginId,
-                            novel.url,
-                            chapters,
-                          ),
+                          downloadAllChaptersAction(novel.pluginId, chapters),
                         );
                         showDownloadMenu(false);
                       }}
@@ -601,26 +597,27 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
             refreshControl={refreshControl()}
           />
         </View>
-        {useFabForContinueReading &&
-          chapters?.length > 0 &&
-          lastReadChapter && (
-            <FAB
-              style={[
-                styles.fab,
-                { backgroundColor: theme.primary, marginBottom: bottomInset },
-              ]}
-              color={theme.onPrimary}
-              uppercase={false}
-              label="Resume"
-              icon="play"
-              onPress={() => {
+        {useFabForContinueReading && lastReadChapter && (
+          <FAB
+            style={[
+              styles.fab,
+              { backgroundColor: theme.primary, marginBottom: bottomInset },
+            ]}
+            color={theme.onPrimary}
+            uppercase={false}
+            label="Resume"
+            icon="play"
+            onPress={() => {
+              // for Type checking
+              if (lastReadChapter) {
                 navigation.navigate('Chapter', {
                   novel: novel,
                   chapter: lastReadChapter,
                 });
-              }}
-            />
-          )}
+              }
+            }}
+          />
+        )}
         <Portal>
           <Actionbar active={selected.length > 0} actions={actions} />
           <Snackbar

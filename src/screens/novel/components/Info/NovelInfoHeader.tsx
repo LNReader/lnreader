@@ -38,7 +38,7 @@ interface NovelInfoHeaderProps {
   theme: ThemeColors;
   filter: string;
   chapters: ChapterInfo[];
-  lastRead: ChapterInfo;
+  lastRead?: ChapterInfo;
   navigation: NovelScreenProps['navigation'];
   trackerSheetRef: React.RefObject<BottomSheetModalMethods>;
   setCustomNovelCover: () => Promise<void>;
@@ -150,7 +150,9 @@ const NovelInfoHeader = ({
         {novel.genres ? (
           <NovelGenres theme={theme} genres={novel.genres} />
         ) : null}
-        <ReadButton novel={novel} chapters={chapters} lastRead={lastRead} />
+        {lastRead ? (
+          <ReadButton novel={novel} chapters={chapters} lastRead={lastRead} />
+        ) : null}
         <Pressable
           style={styles.bottomsheet}
           onPress={() => novelBottomSheetRef.current?.present()}

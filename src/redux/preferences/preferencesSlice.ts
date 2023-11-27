@@ -44,8 +44,8 @@ const preferenceSlice = createSlice({
   reducers: {
     setLastReadAction: (state, action: PayloadAction<ChapterInfo>) => {
       const lastRead = action.payload;
-      state.novelSettings[lastRead.id] = {
-        ...state.novelSettings[lastRead.id],
+      state.novelSettings[lastRead.novelId] = {
+        ...state.novelSettings[lastRead.novelId],
         lastRead: lastRead,
       };
     },

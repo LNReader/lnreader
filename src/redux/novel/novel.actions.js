@@ -165,7 +165,7 @@ export const markPreviousChaptersReadAction =
 export const markChaptersRead =
   (chapters, novelId, sort, filter) => async dispatch => {
     try {
-      chapters.map(chapter => markChapterRead(chapter.id));
+      await Promise.all(chapters.map(chapter => markChapterRead(chapter.id)));
 
       const chaps = await getChapters(novelId, sort, filter);
 
@@ -190,7 +190,7 @@ export const markPreviousChaptersUnreadAction =
 
 export const markChapterUnreadAction =
   (chapters, novelId, sort, filter) => async dispatch => {
-    chapters.map(chapter => markChapterUnread(chapter.chapterId));
+    await Promise.all(chapters.map(chapter => markChapterUnread(chapter.id)));
 
     const chaps = await getChapters(novelId, sort, filter);
 
@@ -200,16 +200,6 @@ export const markChapterUnreadAction =
     });
   };
 
-/**
- * When propertise are stand alone, they should have prefix (novel | chapter)
- * @param {string} pluginId
- * @param {string} novelUrl
- * @param {number} novelId
- * @param {string} chapterlUrl
- * @param {string} chapterlName
- * @param {number} chapterId
- * @returns
- */
 export const downloadChapterAction =
   (pluginId, novelId, chapterUrl, chapterName, chapterId) => async dispatch => {
     dispatch({
@@ -247,22 +237,15 @@ export const downloadChapterAction =
     ToastAndroid.show(`Downloaded ${chapterName}`, ToastAndroid.SHORT);
   };
 
-/**
- *
- * @param {string} pluginId
- * @param {string} novelUrl
- * @param {import("../../database/types").ChapterItem[]} chaps
- * @returns
- */
 export const downloadAllChaptersAction =
-  (pluginId, novelUrl, chaps) => async (dispatch, getState) => {
+  (pluginId, chaps) => async (dispatch, getState) => {
     try {
-      const downloadQueue = getState().downloadsReducer.downloadQueue;
       /**
        * Filter downloaded chapters
        */
-      let chapters = chaps.filter(chapter => chapter.isDownloaded === 0);
+      let chapters = chaps.filter(chapter => !chapter.isDownloaded);
 
+      const downloadQueue = getState().downloadsReducer.downloadQueue;
       /**
        * Filter chapters already in download queue
        */
@@ -309,6 +292,12 @@ export const downloadAllChaptersAction =
             ) {
               if (BackgroundService.isRunning()) {
                 try {
+                  dispatch({
+                    type: CHAPTER_DOWNLOADING,
+                    payload: {
+                      downloadingChapter: chapters[i],
+                    },
+                  });
                   if (!chapters[i].isDownloaded) {
                     await downloadChapter(
                       pluginId,

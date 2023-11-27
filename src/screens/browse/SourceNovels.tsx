@@ -10,7 +10,6 @@ import { NovelInfo } from '@database/types';
 
 const SourceNovels = ({ navigation, route }: SourceNovelsScreenProps) => {
   const pluginId = route.params.pluginId;
-  console.log(pluginId);
   const theme = useTheme();
   const { library } = useLibraryNovels();
 
