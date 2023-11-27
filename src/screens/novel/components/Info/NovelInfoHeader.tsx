@@ -134,7 +134,7 @@ const NovelInfoHeader = ({
             dispatch(followNovelAction(novel));
             if (
               novel.inLibrary &&
-              chapters.some(chapter => chapter.isDownloaded === 1)
+              chapters.some(chapter => chapter.isDownloaded)
             ) {
               deleteDownloadsSnackbar.setTrue();
             }

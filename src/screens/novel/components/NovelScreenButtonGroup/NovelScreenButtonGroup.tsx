@@ -92,7 +92,7 @@ const NovelScreenButtonGroup: React.FC<NovelScreenButtonGroupProps> = ({
             </Pressable>
           </View>
         ) : null}
-        {inLibrary && !isLocal && (
+        {inLibrary && !isLocal ? (
           <View style={styles.buttonContainer}>
             <Pressable
               android_ripple={{ color: theme.rippleColor }}
@@ -109,8 +109,8 @@ const NovelScreenButtonGroup: React.FC<NovelScreenButtonGroupProps> = ({
               </Text>
             </Pressable>
           </View>
-        )}
-        {!isLocal && (
+        ) : null}
+        {!isLocal ? (
           <View style={styles.buttonContainer}>
             <Pressable
               android_ripple={{ color: theme.rippleColor }}
@@ -127,7 +127,7 @@ const NovelScreenButtonGroup: React.FC<NovelScreenButtonGroupProps> = ({
               </Text>
             </Pressable>
           </View>
-        )}
+        ) : null}
       </View>
       <Portal>
         <SetCategoryModal

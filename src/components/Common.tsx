@@ -28,7 +28,7 @@ const Row = ({
   style = {},
 }: {
   children?: React.ReactNode;
-  style: any;
+  style?: any;
 }) => <View style={[styles.row, style]}>{children}</View>;
 
 export { ScreenContainer, Row };
