@@ -6,39 +6,44 @@ import { BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet';
 
 import { useTheme } from '@hooks/useTheme';
 import {
-  FilterInputs,
-  SelectedFilter,
-  SourceFilter,
+  FilterTypes,
+  FilterToValues,
+  Filters,
 } from '@plugins/types/filterTypes';
 import { FlatList } from 'react-native-gesture-handler';
 import { Button, IconButtonV2 } from '@components/index';
 import { Checkbox } from '@components/Checkbox/Checkbox';
-import { defaultTo } from 'lodash-es';
 import { Picker } from '@react-native-picker/picker';
 import useBoolean from '@hooks/useBoolean';
 import { overlay } from 'react-native-paper';
+import { getValueFor } from './filterUtils';
 
 const insertOrRemoveIntoArray = (array: string[], val: string): string[] =>
   array.indexOf(val) > -1 ? array.filter(ele => ele !== val) : [...array, val];
 
+type SelectedFilters = FilterToValues<Filters>;
+
 interface FilterItemProps {
-  filter: SourceFilter;
-  selectedFilters: SelectedFilter | undefined;
-  setSelectedFilters: React.Dispatch<
-    React.SetStateAction<SelectedFilter | undefined>
-  >;
+  filter: Filters[string];
+  filterKey: keyof Filters;
+  selectedFilters: SelectedFilters;
+  setSelectedFilters: React.Dispatch<React.SetStateAction<SelectedFilters>>;
 }
 
 const FilterItem: React.FC<FilterItemProps> = ({
   filter,
+  filterKey,
   selectedFilters,
   setSelectedFilters,
 }) => {
   const theme = useTheme();
 
   const { value: isVisible, toggle: toggleCard } = useBoolean();
-
-  if (filter.inputType === FilterInputs.Picker) {
+  if (filter.type === FilterTypes.Picker) {
+    const value = getValueFor<(typeof filter)['type']>(
+      filter,
+      selectedFilters[filterKey],
+    );
     return (
       <View style={styles.pickerContainer}>
         <Text style={[styles.pickerLabel, { color: theme.onSurfaceVariant }]}>
@@ -47,17 +52,17 @@ const FilterItem: React.FC<FilterItemProps> = ({
         <Picker
           style={styles.picker}
           mode="dropdown"
-          selectedValue={selectedFilters?.[filter.key] as string}
+          selectedValue={value}
           dropdownIconRippleColor={theme.primary}
           onValueChange={(itemValue: string) =>
             setSelectedFilters(prevFilters => ({
               ...prevFilters,
-              [filter.key]: itemValue,
+              [filterKey]: { value: itemValue, type: FilterTypes.Picker },
             }))
           }
           placeholder={filter.label}
         >
-          {filter.values.map(val => {
+          {filter.options.map(val => {
             return (
               <Picker.Item
                 key={val.label}
@@ -71,10 +76,11 @@ const FilterItem: React.FC<FilterItemProps> = ({
     );
   }
 
-  if (filter.inputType === FilterInputs.Checkbox) {
-    const isChecked = (val: string) =>
-      (selectedFilters?.[filter.key] as string[])?.includes(val);
-
+  if (filter.type === FilterTypes.CheckboxGroup) {
+    const value = getValueFor<(typeof filter)['type']>(
+      filter,
+      selectedFilters[filterKey],
+    );
     return (
       <View>
         <Pressable
@@ -92,21 +98,115 @@ const FilterItem: React.FC<FilterItemProps> = ({
           />
         </Pressable>
         {isVisible
-          ? filter.values.map(val => {
+          ? filter.options.map(val => {
               return (
                 <Checkbox
+                  key={val.label}
                   label={val.label}
                   theme={theme}
-                  status={isChecked(val.value)}
+                  status={value.includes(val.value)}
                   onPress={() =>
                     setSelectedFilters(prevFilters => ({
                       ...prevFilters,
-                      [filter.key]: insertOrRemoveIntoArray(
-                        defaultTo(prevFilters?.[filter.key] as string[], []),
-                        val.value,
-                      ),
+                      [filterKey]: {
+                        type: FilterTypes.CheckboxGroup,
+                        value: insertOrRemoveIntoArray(value, val.value),
+                      },
                     }))
                   }
+                />
+              );
+            })
+          : null}
+      </View>
+    );
+  }
+
+  if (filter.type === FilterTypes.ExcludableCheckboxGroup) {
+    const value = getValueFor<(typeof filter)['type']>(
+      filter,
+      selectedFilters[filterKey],
+    );
+    return (
+      <View>
+        <Pressable
+          style={styles.checkboxHeader}
+          onPress={toggleCard}
+          android_ripple={{ color: theme.rippleColor }}
+        >
+          <Text style={[styles.filterLabel, { color: theme.onSurfaceVariant }]}>
+            {filter.label}
+          </Text>
+          <IconButtonV2
+            name={isVisible ? 'chevron-up' : 'chevron-down'}
+            onPress={toggleCard}
+            theme={theme}
+          />
+        </Pressable>
+        {isVisible
+          ? filter.options.map(val => {
+              return (
+                <Checkbox
+                  key={val.label}
+                  label={val.label}
+                  theme={theme}
+                  status={
+                    value.include?.includes(val.value)
+                      ? true
+                      : value.exclude?.includes(val.value)
+                      ? 'indeterminate'
+                      : false
+                  }
+                  onPress={() => {
+                    if (value.exclude?.includes(val.value)) {
+                      setSelectedFilters(prev => {
+                        return {
+                          ...prev,
+                          [filterKey]: {
+                            type: FilterTypes.ExcludableCheckboxGroup,
+                            value: {
+                              include: [...(value.include || [])],
+                              exclude: [
+                                ...(value.exclude?.filter(
+                                  f => f !== val.value,
+                                ) || []),
+                              ],
+                            },
+                          },
+                        };
+                      });
+                    } else if (value.include?.includes(val.value)) {
+                      setSelectedFilters(prev => {
+                        return {
+                          ...prev,
+                          [filterKey]: {
+                            type: FilterTypes.ExcludableCheckboxGroup,
+                            value: {
+                              include: [
+                                ...(value.include?.filter(
+                                  f => f !== val.value,
+                                ) || []),
+                              ],
+                              exclude: [...(value.exclude || []), val.value],
+                            },
+                          },
+                        };
+                      });
+                    } else {
+                      setSelectedFilters(prev => {
+                        return {
+                          ...prev,
+                          [filterKey]: {
+                            type: FilterTypes.ExcludableCheckboxGroup,
+                            value: {
+                              include: [...(value.include || []), val.value],
+                              exclude: value.exclude,
+                            },
+                          },
+                        };
+                      });
+                    }
+                  }}
                 />
               );
             })
@@ -120,21 +220,21 @@ const FilterItem: React.FC<FilterItemProps> = ({
 
 interface BottomSheetProps {
   filterSheetRef: React.RefObject<BottomSheetModal> | null;
-  filtersValues: SourceFilter[] | undefined;
-  setFilters: (filters?: SelectedFilter) => void;
-  clearFilters: () => void;
+  filters: Filters;
+  setFilters: (filters?: SelectedFilters) => void;
+  clearFilters: (filters: Filters) => void;
 }
 
 const FilterBottomSheet: React.FC<BottomSheetProps> = ({
+  filters,
   filterSheetRef,
-  filtersValues,
   clearFilters,
   setFilters,
 }) => {
   const theme = useTheme();
-  const [selectedFilters, setSelectedFilters] = useState<
-    SelectedFilter | undefined
-  >();
+
+  const [selectedFilters, setSelectedFilters] =
+    useState<SelectedFilters>(filters);
 
   return (
     <BottomSheet bottomSheetRef={filterSheetRef} snapPoints={[400, 600]}>
@@ -150,8 +250,8 @@ const FilterBottomSheet: React.FC<BottomSheetProps> = ({
           <Button
             title={'Reset'}
             onPress={() => {
-              setSelectedFilters(undefined);
-              clearFilters();
+              setSelectedFilters(filters);
+              clearFilters(filters);
             }}
           />
           <Button
@@ -166,11 +266,12 @@ const FilterBottomSheet: React.FC<BottomSheetProps> = ({
         </BottomSheetView>
         <FlatList
           contentContainerStyle={styles.filterContainer}
-          data={filtersValues}
-          keyExtractor={(item, index) => 'filter' + index}
-          renderItem={({ item }: { item: SourceFilter }) => (
+          data={filters && Object.entries(filters)}
+          keyExtractor={item => 'filter' + item[0]}
+          renderItem={({ item }) => (
             <FilterItem
-              filter={item}
+              filter={item[1]}
+              filterKey={item[0]}
               selectedFilters={selectedFilters}
               setSelectedFilters={setSelectedFilters}
             />

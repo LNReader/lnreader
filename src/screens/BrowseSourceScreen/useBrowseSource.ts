@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { SelectedFilter, SourceFilter } from '@plugins/types/filterTypes';
 import { NovelItem } from '@plugins/types';
 
 import { getPlugin } from '@plugins/pluginManager';
+import { FilterToValues, Filters } from '@plugins/types/filterTypes';
 
 export const useBrowseSource = (
   pluginId: string,
@@ -13,16 +13,18 @@ export const useBrowseSource = (
   const [error, setError] = useState<string>();
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [filterValues, setFilterValues] = useState<SourceFilter[]>();
+  const [filterValues, setFilterValues] = useState<Filters | undefined>(
+    getPlugin(pluginId).filters,
+  );
   const [selectedFilters, setSelectedFilters] = useState<
-    SelectedFilter | undefined
-  >();
+    FilterToValues<Filters> | undefined
+  >(filterValues);
   const [hasNextPage, setHasNextPage] = useState(true);
 
   const isScreenMounted = useRef(true);
 
   const fetchNovels = useCallback(
-    async (page: number, filters?: SelectedFilter) => {
+    async (page: number, filters?: FilterToValues<Filters>) => {
       if (isScreenMounted.current === true) {
         try {
           const plugin = getPlugin(pluginId);
@@ -67,9 +69,12 @@ export const useBrowseSource = (
     fetchNovels(1);
   };
 
-  const clearFilters = useCallback(() => setSelectedFilters(undefined), []);
+  const clearFilters = useCallback(
+    (filters: Filters) => setSelectedFilters(filters),
+    [],
+  );
 
-  const setFilters = (filters?: SelectedFilter) => {
+  const setFilters = (filters?: FilterToValues<Filters>) => {
     setIsLoading(true);
     setCurrentPage(1);
     fetchNovels(1, filters);

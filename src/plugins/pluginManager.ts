@@ -8,7 +8,7 @@ import { Languages } from '@utils/constants/languages';
 import { load } from 'cheerio';
 import dayjs from 'dayjs';
 import { NovelStatus, Plugin, PluginItem } from './types';
-import { FilterInputs } from './types/filterTypes';
+import { FilterTypes } from './types/filterTypes';
 import { parseMadaraDate } from './helpers/parseDate';
 import { isUrlAbsolute } from '@utils/isAbsoluteUrl';
 import { fetchApi, fetchFile } from '@utils/fetch/fetch';
@@ -21,7 +21,7 @@ const packages: Record<string, any> = {
   '@libs/fetch': { fetchApi, fetchFile },
   '@libs/parseMadaraDate': { parseMadaraDate },
   '@libs/isAbsoluteUrl': { isUrlAbsolute },
-  '@libs/filterInputs': { FilterInputs },
+  '@libs/filterInputs': { FilterTypes },
   '@libs/showToast': { showToast },
   '@libs/defaultCover': { defaultCover },
 };
@@ -69,7 +69,7 @@ let plugins: Record<string, Plugin> = {};
 // get existing plugin in device
 const setupPlugin = async (path: string) => {
   const rawCode = await RNFS.readFile(path, 'utf8');
-  const plugin = await initPlugin(rawCode, path);
+  const plugin = initPlugin(rawCode, path);
   if (!plugin) {
     showToast(`Invalid script in: ${path}`);
   }
@@ -78,7 +78,9 @@ const setupPlugin = async (path: string) => {
 
 const installPlugin = async (url: string): Promise<Plugin | undefined> => {
   try {
-    return await fetch(url)
+    return await fetch(url, {
+      headers: { 'pragma': 'no-cache', 'cache-control': 'no-cache' },
+    })
       .then(res => res.text())
       .then(async rawCode => {
         const plugin = initPlugin(rawCode);
@@ -143,9 +145,9 @@ const collectPlugins = async () => {
 
 const fetchPlugins = async () => {
   // plugins host
-  const githubUsername = 'LNReader';
-  const githubRepository = 'lnreader-sources';
-  const githubBranch = 'plugins';
+  const githubUsername = 'skillgg';
+  const githubRepository = 'lnplugins';
+  const githubBranch = 'filters_redesign';
 
   const availablePlugins: Record<Languages, Array<PluginItem>> = await fetch(
     `https://raw.githubusercontent.com/${githubUsername}/${githubRepository}/${githubBranch}/.dist/${githubUsername}/plugins.min.json`,

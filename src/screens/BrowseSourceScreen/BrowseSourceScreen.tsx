@@ -156,7 +156,7 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
         />
       )}
 
-      {!showLatestNovels && filterValues?.length ? (
+      {!showLatestNovels && filterValues ? (
         <>
           <FAB
             icon={'filter-variant'}
@@ -171,7 +171,7 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
           />
           <FilterBottomSheet
             filterSheetRef={filterSheetRef}
-            filtersValues={filterValues}
+            filters={filterValues}
             setFilters={setFilters}
             clearFilters={clearFilters}
           />
