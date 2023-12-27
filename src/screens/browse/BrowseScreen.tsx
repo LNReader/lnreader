@@ -1,7 +1,6 @@
 import { SectionList, StyleSheet, Text, RefreshControl } from 'react-native';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
-import { useNavigation } from '@react-navigation/native';
 import color from 'color';
 
 import {
@@ -29,9 +28,9 @@ import { PluginItem } from '@plugins/types';
 import { EmptyView, SearchbarV2 } from '@components';
 import MalCard from './discover/MalCard/MalCard';
 import PluginCard from './components/PluginCard';
+import { BrowseScreenProps } from '@navigators/types';
 
-const BrowseScreen = () => {
-  const { navigate } = useNavigation();
+const BrowseScreen = ({ navigation }: BrowseScreenProps) => {
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const [refreshing, setRefreshing] = useState(false);
@@ -68,15 +67,12 @@ const BrowseScreen = () => {
 
   const navigateToSource = useCallback(
     (plugin: PluginItem, showLatestNovels?: boolean) => {
-      navigate(
-        'SourceScreen' as never,
-        {
-          pluginId: plugin.id,
-          pluginName: plugin.name,
-          pluginUrl: plugin.site,
-          showLatestNovels,
-        } as never,
-      );
+      navigation.navigate('SourceScreen', {
+        pluginId: plugin.id,
+        pluginName: plugin.name,
+        pluginUrl: plugin.site,
+        showLatestNovels,
+      });
       dispatch(setLastUsedPlugin(plugin));
     },
     [],
@@ -86,15 +82,15 @@ const BrowseScreen = () => {
     () => [
       {
         iconName: 'book-search',
-        onPress: () => navigate('GlobalSearchScreen' as never),
+        onPress: () => navigation.navigate('GlobalSearchScreen', {}),
       },
       {
         iconName: 'swap-vertical-variant',
-        onPress: () => navigate('Migration' as never),
+        onPress: () => navigation.navigate('Migration'),
       },
       {
         iconName: 'cog-outline',
-        onPress: () => navigate('BrowseSettings' as never),
+        onPress: () => navigation.navigate('BrowseSettings'),
       },
     ],
     [],

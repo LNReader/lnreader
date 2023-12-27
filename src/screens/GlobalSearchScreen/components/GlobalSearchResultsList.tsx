@@ -27,7 +27,10 @@ const GlobalSearchResultsList: React.FC<GlobalSearchResultsListProps> = ({
 }) => {
   const theme = useTheme();
   const navigation = useNavigation<StackNavigationProp<any>>();
-  const keyExtractor = useCallback(item => item.plugin.id, []);
+  const keyExtractor = useCallback(
+    (item: GlobalSearchResult) => item.plugin.id,
+    [],
+  );
   const { library, setLibrary } = useLibraryNovels();
 
   const novelInLibrary = (novelUrl: string) =>
@@ -36,7 +39,8 @@ const GlobalSearchResultsList: React.FC<GlobalSearchResultsListProps> = ({
   const errorColor = useMemo(() => (theme.isDark ? '#B3261E' : '#F2B8B5'), []);
 
   const navigateToNovel = useCallback(
-    item => navigation.push('Novel', item),
+    (item: { name: string; url: string; pluginId: string }) =>
+      navigation.push('Novel', item),
     [],
   );
 

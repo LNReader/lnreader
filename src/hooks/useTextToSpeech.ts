@@ -19,7 +19,7 @@ export const useTextToSpeech = (
   chapterText: string,
   webViewRef: RefObject<WebView>,
   markChapterAsRead: () => void,
-) => {
+): [string, () => void] => {
   const [ttsStatus, setTtsStatus] = useState('');
   const data = useRef<TextToSpeechData>({
     currentIndex: 0,

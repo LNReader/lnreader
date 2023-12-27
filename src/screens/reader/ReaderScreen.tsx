@@ -7,13 +7,12 @@ import React, {
 } from 'react';
 import {
   Dimensions,
-  NativeModules,
   NativeEventEmitter,
   DrawerLayoutAndroid,
 } from 'react-native';
 import * as RNFS from 'react-native-fs';
 
-import VolumeButtonListener from '@utils/volumeButtonListener';
+import VolumeButtonListener from '@native/volumeButtonListener';
 
 import { useDispatch } from 'react-redux';
 import { useKeepAwake } from 'expo-keep-awake';
@@ -28,14 +27,14 @@ import { usePosition, useSettings, useTrackingStatus } from '@hooks/reduxHooks';
 import { useTheme } from '@hooks/useTheme';
 import { updateChaptersRead } from '@redux/tracker/tracker.actions';
 import { markChapterReadAction } from '@redux/novel/novel.actions';
-import { saveScrollPosition } from '@redux/preferences/preference.actions';
+import { saveScrollPosition } from '@redux/preferences/preferencesSlice';
 import { parseChapterNumber } from '@utils/parseChapterNumber';
 
 import ReaderAppbar from './components/ReaderAppbar';
 import ReaderFooter from './components/ReaderFooter';
 
 import { insertHistory } from '@database/queries/HistoryQueries';
-import { SET_LAST_READ } from '@redux/preferences/preference.types';
+import { setLastReadAction } from '@redux/preferences/preferencesSlice';
 import WebViewReader from './components/WebViewReader';
 import { useTextToSpeech } from '@hooks/useTextToSpeech';
 import { useFullscreenMode, useLibrarySettings } from '@hooks';
@@ -117,9 +116,7 @@ export const ChapterContent = ({
     ChapterInfo[]
   >([]);
 
-  const emmiter = useRef(
-    new NativeEventEmitter(NativeModules.VolumeButtonListener),
-  );
+  const emmiter = useRef(new NativeEventEmitter(VolumeButtonListener));
 
   const connectVolumeButton = () => {
     VolumeButtonListener.connect();
@@ -187,10 +184,7 @@ export const ChapterContent = ({
     getChapter();
     if (!incognitoMode) {
       insertHistory(chapter.id);
-      dispatch({
-        type: SET_LAST_READ,
-        payload: { lastRead: chapter },
-      });
+      dispatch(setLastReadAction(chapter));
     }
   }, []);
 
@@ -237,7 +231,12 @@ export const ChapterContent = ({
     async (offsetY: number, percentage: number) => {
       if (!incognitoMode) {
         dispatch(
-          saveScrollPosition(offsetY, percentage, chapter.id, chapter.novelId),
+          saveScrollPosition({
+            offsetY,
+            percentage,
+            chapterId: chapter.id,
+            novelId: chapter.novelId,
+          }),
         );
       }
 
@@ -332,7 +331,7 @@ export const ChapterContent = ({
         saveProgress={saveProgress}
         onLayout={() => {
           useVolumeButtons && onLayout();
-          scrollTo(position?.offsetY);
+          scrollTo(position?.offsetY || 0);
         }}
         onPress={hideHeader}
         navigateToChapterBySwipe={navigateToChapterBySwipe}

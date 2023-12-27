@@ -9,7 +9,7 @@ import GridSizeModal from './modals/GridSizeModal';
 
 import { useSettings } from '../../../hooks/reduxHooks';
 import { useTheme } from '@hooks/useTheme';
-import { setAppSettings } from '../../../redux/settings/settings.actions';
+import { setAppSettings } from '@redux/settings/settingsSliceV1';
 import { SHOW_LAST_UPDATE_TIME } from '../../../redux/updates/updates.types';
 import DefaultChapterSortModal from '../components/DefaultChapterSortModal';
 import {
@@ -173,7 +173,10 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
             value={updateLibraryOnLaunch}
             onPress={() =>
               dispatch(
-                setAppSettings('updateLibraryOnLaunch', !updateLibraryOnLaunch),
+                setAppSettings({
+                  key: 'updateLibraryOnLaunch',
+                  value: !updateLibraryOnLaunch,
+                }),
               )
             }
             theme={theme}
@@ -184,7 +187,9 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
             )}
             value={useLibraryFAB}
             onPress={() =>
-              dispatch(setAppSettings('useLibraryFAB', !useLibraryFAB))
+              dispatch(
+                setAppSettings({ key: 'useLibraryFAB', value: !useLibraryFAB }),
+              )
             }
             theme={theme}
           />
@@ -221,10 +226,10 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
             value={onlyUpdateOngoingNovels}
             onPress={() =>
               dispatch(
-                setAppSettings(
-                  'onlyUpdateOngoingNovels',
-                  !onlyUpdateOngoingNovels,
-                ),
+                setAppSettings({
+                  key: 'onlyUpdateOngoingNovels',
+                  value: !onlyUpdateOngoingNovels,
+                }),
               )
             }
             theme={theme}
@@ -239,7 +244,10 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
             value={refreshNovelMetadata}
             onPress={() =>
               dispatch(
-                setAppSettings('refreshNovelMetadata', !refreshNovelMetadata),
+                setAppSettings({
+                  key: 'refreshNovelMetadata',
+                  value: !refreshNovelMetadata,
+                }),
               )
             }
             theme={theme}
@@ -270,7 +278,10 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
             value={downloadNewChapters}
             onPress={() =>
               dispatch(
-                setAppSettings('downloadNewChapters', !downloadNewChapters),
+                setAppSettings({
+                  key: 'downloadNewChapters',
+                  value: !downloadNewChapters,
+                }),
               )
             }
             theme={theme}
@@ -286,7 +297,10 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
             value={disableHapticFeedback}
             onPress={() =>
               dispatch(
-                setAppSettings('disableHapticFeedback', !disableHapticFeedback),
+                setAppSettings({
+                  key: 'disableHapticFeedback',
+                  value: !disableHapticFeedback,
+                }),
               )
             }
             theme={theme}

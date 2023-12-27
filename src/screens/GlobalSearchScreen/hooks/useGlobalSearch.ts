@@ -71,7 +71,7 @@ export const useGlobalSearch = ({ defaultSearchText }: Props) => {
               },
             ),
           );
-        } catch (error) {
+        } catch (error: any) {
           setSearchResults(prevState =>
             prevState.map(prevResult =>
               prevResult.plugin.id === plugin.id

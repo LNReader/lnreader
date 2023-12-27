@@ -7,7 +7,7 @@ import {
   changeNavigationBarColor,
   hideNavigationBar,
   showNavigationBar,
-} from '../theme/NativeModules/NavigationBarColor';
+} from '../native/NavigationBarColor';
 import { useTheme } from './useTheme';
 
 const useFullscreenMode = () => {

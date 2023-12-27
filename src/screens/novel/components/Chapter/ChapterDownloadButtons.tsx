@@ -29,13 +29,13 @@ export const DownloadButton: React.FC<DownloadButtonProps> = ({
   const [downloaded, setDownloaded] = useState(chapter.isDownloaded);
   if (downloadQueue.some(chap => chap.id === chapter.id)) {
     return <ChapterDownloadingButton theme={theme} />;
-  } else if (downloaded === 0) {
+  } else if (!downloaded) {
     return (
       <DownloadChapterButton
         theme={theme}
         onPress={() => {
           downloadChapter(chapter);
-          setDownloaded(1);
+          setDownloaded(true);
         }}
       />
     );
@@ -52,7 +52,7 @@ export const DownloadButton: React.FC<DownloadButtonProps> = ({
         <Menu.Item
           onPress={() => {
             deleteChapter(chapter);
-            setDownloaded(0);
+            setDownloaded(false);
           }}
           title="Delete"
           titleStyle={{ color: theme.onSurface }}

@@ -7,7 +7,7 @@ import { getString } from '../../../../../strings/translations';
 import { useAppDispatch, useReaderSettings } from '../../../../redux/hooks';
 import { useTheme } from '@hooks/useTheme';
 
-import { setReaderSettings } from '../../../../redux/settings/settings.actions';
+import { setReaderSettings } from '@redux/settings/settingsSliceV1';
 import { Font, readerFonts } from '../../../../utils/constants/readerConstants';
 import { FlatList } from 'react-native-gesture-handler';
 
@@ -51,7 +51,9 @@ const ReaderFontPicker = () => {
         <Pressable
           style={styles.content}
           onPress={() =>
-            dispatch(setReaderSettings('fontFamily', item.fontFamily))
+            dispatch(
+              setReaderSettings({ key: 'fontFamily', value: item.fontFamily }),
+            )
           }
           android_ripple={{
             color: color(theme.primary).alpha(0.12).string(),

@@ -4,7 +4,7 @@ import React from 'react';
 import { useAppDispatch, useReaderSettings } from '../../../../redux/hooks';
 import { useTheme } from '@hooks/useTheme';
 import Slider from '@react-native-community/slider';
-import { setReaderSettings } from '../../../../redux/settings/settings.actions';
+import { setReaderSettings } from '@redux/settings/settingsSliceV1';
 import { getString } from '../../../../../strings/translations';
 
 const TRACK_TINT_COLOR = '#000000';
@@ -30,7 +30,7 @@ const TextSizeSlider: React.FC = () => {
         maximumTrackTintColor={TRACK_TINT_COLOR}
         thumbTintColor={theme.primary}
         onSlidingComplete={value =>
-          dispatch(setReaderSettings('textSize', value))
+          dispatch(setReaderSettings({ key: 'textSize', value }))
         }
       />
     </View>

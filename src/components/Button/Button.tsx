@@ -6,7 +6,7 @@ import {
 
 import { useTheme } from '@hooks';
 
-interface ButtonProps extends Omit<PaperButtonProps, 'children' | 'theme'> {
+interface ButtonProps extends Partial<PaperButtonProps> {
   title?: string;
 }
 

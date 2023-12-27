@@ -60,7 +60,6 @@ const initPlugin = (rawCode: string, path?: string) => {
     };
     return plugin;
   } catch (e) {
-    console.log(e);
     return undefined;
   }
 };
@@ -158,6 +157,8 @@ const fetchPlugins = async () => {
 
 const getPlugin = (pluginId: string) => plugins[pluginId];
 
+const LOCAL_PLUGIN_ID = 'local';
+
 export {
   getPlugin,
   installPlugin,
@@ -165,4 +166,5 @@ export {
   updatePlugin,
   collectPlugins,
   fetchPlugins,
+  LOCAL_PLUGIN_ID,
 };
