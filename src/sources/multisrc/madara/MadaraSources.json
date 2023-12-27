@@ -361,5 +361,14 @@
     "options": {
       "lang": "Turkish"
     }
+  },
+  {
+    "sourceId": 169,
+    "baseUrl": "https://asuralightnovel.com/",
+    "sourceName": "Asura Light Novel",
+    "options": {
+      "useNewChapterEndpoint": true,
+      "lang": "English"
+    }
   }
 ]

@@ -91,7 +91,7 @@ const parseChapter = async (novUrl, chapUrl) => {
 
   let chapterName = item.chp_index_title;
 
-  let chapterText = item.chp_content;
+  let chapterText = item.chp_content.replace(/\n/g, '<br>');
 
   novelUrl = novelId + '/' + novelUrl + '/';
   chapterUrl = item.id + '/' + item.chp_name;

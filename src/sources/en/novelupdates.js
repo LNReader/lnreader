@@ -204,6 +204,10 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 
   let isWattpad = result.url.toLowerCase().includes('wattpad');
 
+  let isBlossomTranslation = result.url
+    .toLowerCase()
+    .includes('blossomtranslation');
+
   let isLightNovelsTls = result.url
     .toLowerCase()
     .includes('lightnovelstranslations');
@@ -241,7 +245,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   if (isWuxiaWorld) {
     chapterText = loadedCheerio('#chapter-content').html();
   } else if (isRainOfSnow) {
-    chapterText = loadedCheerio('div.content').html();
+    chapterText = loadedCheerio('.content').html();
   } else if (isTumblr) {
     chapterText = loadedCheerio('.post').html();
   } else if (isBlogspot) {
@@ -250,13 +254,15 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   } else if (isHostedNovel) {
     chapterText = loadedCheerio('.chapter').html();
   } else if (isScribbleHub) {
-    chapterText = loadedCheerio('div.chp_raw').html();
+    chapterText = loadedCheerio('.chp_raw').html();
   } else if (isWattpad) {
     chapterText = loadedCheerio('.container  pre').html();
   } else if (isTravisTranslation) {
     chapterText = loadedCheerio('.reader-content').html();
   } else if (isLightNovelsTls) {
     chapterText = loadedCheerio('.text_story').html();
+  } else if (isBlossomTranslation) {
+    chapterText = loadedCheerio('.manga-child-content').html();
   } else if (isiNovelTranslation) {
     const link = 'https://api.' + result.url.slice(8);
     const json = await fetchApi({

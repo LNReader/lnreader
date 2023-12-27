@@ -87,15 +87,17 @@ const parseNovelAndChapters = async novelUrl => {
       const chaptersHtml = await fetchHtml({
         url: chaptersUrl,
         init: { headers },
+        sourceId,
       });
 
       loadedCheerio = cheerio.load(chaptersHtml);
 
       loadedCheerio('.chapter-list li').each(function () {
-        const chapterName = loadedCheerio(this)
-          .find('.chapter-title')
-          .text()
-          .trim();
+        const chapterName =
+          'Chapter ' +
+          loadedCheerio(this).find('.chapter-no').text().trim() +
+          ' - ';
+        loadedCheerio(this).find('.chapter-title').text().trim();
 
         const releaseDate = loadedCheerio(this)
           .find('.chapter-update')

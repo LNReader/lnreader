@@ -1,7 +1,7 @@
 import EPubSource from './local/epubSource';
 import ComradeMaoScraper from './en/comrademao';
 import ReadLightNovelScraper from './en/readlightnovel';
-import fastNovelScraper from './en/fastnovel';
+import NovelBinScraper from './en/novelbin';
 import readNovelFullScraper from './en/readnovelfull';
 import mtlNovelScraper from './en/mtlnovel';
 import novelhallScraper from './en/novelhall';
@@ -29,7 +29,9 @@ import ScribbleHubScraper from './en/scribblehub';
 import SyosetuScraper from './jp/syosetu';
 import LNMTLScraper from './en/lnmtl';
 import LightNovelFullScraper from './en/lightnovelfull';
+import ICantReadJPTLScraper from './en/icantreadjapanese';
 import {
+  AsuraLightNovelScraper,
   ArMTLScraper,
   BoxNovelScraper,
   ClickNovelScraper,
@@ -191,7 +193,7 @@ export const sourceManager = (sourceId: number): Scraper => {
     0: EPubSource, // @ts-ignore
     1: BoxNovelScraper, // @ts-ignore
     2: ReadLightNovelScraper, // @ts-ignore
-    3: fastNovelScraper, // @ts-ignore
+    3: NovelBinScraper, // @ts-ignore
     4: readNovelFullScraper, // @ts-ignore
     5: mtlNovelScraper, // @ts-ignore
     6: novelhallScraper, // @ts-ignore
@@ -336,6 +338,8 @@ export const sourceManager = (sourceId: number): Scraper => {
     166: NOVAScraper, // @ts-ignore
     167: SmakolykyTlScraper, // @ts-ignore
     168: LitSpaceScraper, // @ts-ignore
+    169: AsuraLightNovelScraper, // @ts-ignore
+    170: ICantReadJPTLScraper, // @ts-ignore
   };
 
   return scrapers[sourceId];

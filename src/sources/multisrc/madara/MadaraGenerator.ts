@@ -350,3 +350,10 @@ export const WebNovelOkuScraper = new MadaraScraper(
   'WebNovelOku ',
   { 'lang': 'Turkish' },
 );
+
+export const AsuraLightNovelScraper = new MadaraScraper(
+  169,
+  'https://asuralightnovel.com/',
+  'Asura Light Novel',
+  { 'useNewChapterEndpoint': true, 'lang': 'English' },
+);

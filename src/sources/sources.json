@@ -15,8 +15,8 @@
   },
   {
     "sourceId": 3,
-    "url": "https://fastnovel.org/",
-    "sourceName": "FastNovel",
+    "url": "https://novelbin.org/",
+    "sourceName": "NovelBin",
     "icon": "https://github.com/LNReader/lnreader-sources/blob/main/icons/src/en/fastnovel/icon.png?raw=true",
     "lang": "English"
   },
@@ -1027,5 +1027,19 @@
     "url": "https://freedlit.space/",
     "lang": "Russian",
     "icon": "https://freedlit.space/images/fav/apple-touch-icon.png"
+  },
+  {
+    "sourceId": 169,
+    "url": "https://asuralightnovel.com/",
+    "sourceName": "Asura Light Novel",
+    "icon": "https://asuralightnovel.com/wp-content/uploads/2021/06/favicon-asura-2.png",
+    "lang": "English"
+  },
+  {
+    "sourceId": 170,
+    "url": "https://icantreadjapanese.wordpress.com/",
+    "sourceName": "I Cant Read Japanese TL",
+    "icon": "https://icantreadjapanese.files.wordpress.com/2021/03/cropped-cropped-site-icon-1.png?w=16",
+    "lang": "English"
   }
 ]
