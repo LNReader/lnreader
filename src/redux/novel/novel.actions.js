@@ -13,7 +13,6 @@ import {
   CHAPTER_DELETED,
   UPDATE_NOVEL,
   NOVEL_ERROR,
-  SET_NOVEL_SETTINGS,
   BOOKMARK_CHAPTER,
   MARK_PREVIOUS_CHAPTERS_READ,
   MARK_PREVIOUS_CHAPTERS_UNREAD,
@@ -39,10 +38,6 @@ import {
   getNextChapter,
   deleteChapters,
 } from '@database/queries/ChapterQueries';
-import {
-  SET_CHAPTER_LIST_PREF,
-  SET_LAST_READ,
-} from '../preferences/preference.types';
 import { showToast } from '@hooks/showToast';
 
 import * as Notifications from 'expo-notifications';
@@ -50,6 +45,10 @@ import * as Notifications from 'expo-notifications';
 import BackgroundService from 'react-native-background-actions';
 import { SET_DOWNLOAD_QUEUE } from '../downloads/donwloads.types';
 import { updateNovel } from '@services/updates/LibraryUpdateQueries';
+import {
+  setChapterListPreference,
+  setLastReadAction,
+} from '@redux/preferences/preferencesSlice';
 
 export const setNovel = novel => async dispatch => {
   dispatch({ type: SET_NOVEL, payload: { novel } });
@@ -113,18 +112,8 @@ export const sortAndFilterChapters =
       payload: { chapters },
     });
 
-    dispatch({
-      type: SET_CHAPTER_LIST_PREF,
-      payload: { novelId, sort, filter },
-    });
+    dispatch(setChapterListPreference({ novelId, sort, filter }));
   };
-
-export const showChapterTitlesAction = (novelId, value) => async dispatch => {
-  dispatch({
-    type: SET_NOVEL_SETTINGS,
-    payload: { novelId, showChapterTitles: value },
-  });
-};
 
 export const followNovelAction = novel => async dispatch => {
   await switchNovelToLibrary(novel.url, novel.pluginId);
@@ -158,10 +147,7 @@ export const markChapterReadAction = (chapterId, novelId) => async dispatch => {
 
   const nextChapter = await getNextChapter(novelId, chapterId);
 
-  dispatch({
-    type: SET_LAST_READ,
-    payload: { lastRead: nextChapter },
-  });
+  dispatch(setLastReadAction(nextChapter));
 };
 
 export const markPreviousChaptersReadAction =
@@ -179,7 +165,7 @@ export const markPreviousChaptersReadAction =
 export const markChaptersRead =
   (chapters, novelId, sort, filter) => async dispatch => {
     try {
-      chapters.map(chapter => markChapterRead(chapter.id));
+      await Promise.all(chapters.map(chapter => markChapterRead(chapter.id)));
 
       const chaps = await getChapters(novelId, sort, filter);
 
@@ -204,7 +190,7 @@ export const markPreviousChaptersUnreadAction =
 
 export const markChapterUnreadAction =
   (chapters, novelId, sort, filter) => async dispatch => {
-    chapters.map(chapter => markChapterUnread(chapter.chapterId));
+    await Promise.all(chapters.map(chapter => markChapterUnread(chapter.id)));
 
     const chaps = await getChapters(novelId, sort, filter);
 
@@ -214,16 +200,6 @@ export const markChapterUnreadAction =
     });
   };
 
-/**
- * When propertise are stand alone, they should have prefix (novel | chapter)
- * @param {string} pluginId
- * @param {string} novelUrl
- * @param {number} novelId
- * @param {string} chapterlUrl
- * @param {string} chapterlName
- * @param {number} chapterId
- * @returns
- */
 export const downloadChapterAction =
   (pluginId, novelId, chapterUrl, chapterName, chapterId) => async dispatch => {
     dispatch({
@@ -261,22 +237,15 @@ export const downloadChapterAction =
     ToastAndroid.show(`Downloaded ${chapterName}`, ToastAndroid.SHORT);
   };
 
-/**
- *
- * @param {string} pluginId
- * @param {string} novelUrl
- * @param {import("../../database/types").ChapterItem[]} chaps
- * @returns
- */
 export const downloadAllChaptersAction =
-  (pluginId, novelUrl, chaps) => async (dispatch, getState) => {
+  (pluginId, chaps) => async (dispatch, getState) => {
     try {
-      const downloadQueue = getState().downloadsReducer.downloadQueue;
       /**
        * Filter downloaded chapters
        */
-      let chapters = chaps.filter(chapter => chapter.isDownloaded === 0);
+      let chapters = chaps.filter(chapter => !chapter.isDownloaded);
 
+      const downloadQueue = getState().downloadsReducer.downloadQueue;
       /**
        * Filter chapters already in download queue
        */
@@ -323,6 +292,12 @@ export const downloadAllChaptersAction =
             ) {
               if (BackgroundService.isRunning()) {
                 try {
+                  dispatch({
+                    type: CHAPTER_DOWNLOADING,
+                    payload: {
+                      downloadingChapter: chapters[i],
+                    },
+                  });
                   if (!chapters[i].isDownloaded) {
                     await downloadChapter(
                       pluginId,
@@ -413,7 +388,7 @@ export const updateNovelAction =
     dispatch({ type: FETCHING_NOVEL });
 
     const { downloadNewChapters = false, refreshNovelMetadata = false } =
-      getState().settingsReducer;
+      getState().settingsReducerV1;
 
     const options = {
       downloadNewChapters,

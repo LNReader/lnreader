@@ -8,15 +8,15 @@ import {
   usePluginReducer,
 } from '@redux/hooks';
 import { useTheme } from '@hooks/useTheme';
-import { useNavigation } from '@react-navigation/native';
 import { getString } from '@strings/translations';
 import { availableLanguages } from '@utils/constants/languages';
 import { toggleLanguageFilter } from '@redux/plugins/pluginsSlice';
-import { setBrowseSettings } from '@redux/settings/settingsSlice';
+import { setBrowseSettings } from '@redux/settings/settingsSliceV2';
+import { BrowseSettingsScreenProp } from '@navigators/types';
 
-const BrowseSettings = () => {
+const BrowseSettings = ({ navigation }: BrowseSettingsScreenProp) => {
   const theme = useTheme();
-  const { goBack } = useNavigation();
+  const { goBack } = navigation;
   const dispatch = useAppDispatch();
 
   const { languagesFilter } = usePluginReducer();

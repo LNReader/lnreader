@@ -38,14 +38,14 @@ import { getString } from '@strings/translations';
 import {
   setAppSettings,
   setReaderSettings,
-} from '@redux/settings/settings.actions';
+} from '@redux/settings/settingsSliceV1';
 
 import { dummyHTML } from './utils';
 import useBoolean from '@hooks/useBoolean';
 import {
   deleteCustomReaderTheme,
   saveCustomReaderTheme,
-} from '@redux/settings/settingsSlice';
+} from '@redux/settings/settingsSliceV2';
 import {
   presetReaderThemes,
   readerFonts,
@@ -185,7 +185,12 @@ const SettingsReaderScreen = () => {
           )}
           value={verticalSeekbar}
           onPress={() =>
-            dispatch(setAppSettings('verticalSeekbar', !verticalSeekbar))
+            dispatch(
+              setAppSettings({
+                key: 'verticalSeekbar',
+                value: !verticalSeekbar,
+              }),
+            )
           }
           theme={theme}
         />
@@ -193,7 +198,12 @@ const SettingsReaderScreen = () => {
           label={getString('readerScreen.bottomSheet.volumeButtonsScroll')}
           value={useVolumeButtons}
           onPress={() =>
-            dispatch(setAppSettings('useVolumeButtons', !useVolumeButtons))
+            dispatch(
+              setAppSettings({
+                key: 'useVolumeButtons',
+                value: !useVolumeButtons,
+              }),
+            )
           }
           theme={theme}
         />
@@ -201,14 +211,18 @@ const SettingsReaderScreen = () => {
           label={getString('readerScreen.bottomSheet.swipeGestures')}
           value={swipeGestures}
           onPress={() =>
-            dispatch(setAppSettings('swipeGestures', !swipeGestures))
+            dispatch(
+              setAppSettings({ key: 'swipeGestures', value: !swipeGestures }),
+            )
           }
           theme={theme}
         />
         <SwitchItem
           label={getString('readerScreen.bottomSheet.autoscroll')}
           value={autoScroll}
-          onPress={() => dispatch(setAppSettings('autoScroll', !autoScroll))}
+          onPress={() =>
+            dispatch(setAppSettings({ key: 'autoScroll', value: !autoScroll }))
+          }
           theme={theme}
         />
         {autoScroll ? (
@@ -233,7 +247,10 @@ const SettingsReaderScreen = () => {
                 onChangeText={text => {
                   if (text) {
                     dispatch(
-                      setAppSettings('autoScrollInterval', Number(text)),
+                      setAppSettings({
+                        key: 'autoScrollInterval',
+                        value: Number(text),
+                      }),
                     );
                   }
                 }}
@@ -257,7 +274,12 @@ const SettingsReaderScreen = () => {
                 keyboardType="numeric"
                 onChangeText={text => {
                   if (text) {
-                    dispatch(setAppSettings('autoScrollOffset', Number(text)));
+                    dispatch(
+                      setAppSettings({
+                        key: 'autoScrollOffset',
+                        value: Number(text),
+                      }),
+                    );
                   }
                 }}
               />
@@ -268,8 +290,12 @@ const SettingsReaderScreen = () => {
                   style={styles.customThemeButton}
                   title={getString('common.reset')}
                   onPress={() => {
-                    dispatch(setAppSettings('autoScrollInterval', 10));
-                    dispatch(setAppSettings('autoScrollOffset', null));
+                    dispatch(
+                      setAppSettings({ key: 'autoScrollInterval', value: 10 }),
+                    );
+                    dispatch(
+                      setAppSettings({ key: 'autoScrollOffset', value: null }),
+                    );
                   }}
                 />
               </View>
@@ -293,7 +319,9 @@ const SettingsReaderScreen = () => {
             <View style={styles.customCSSButtons}>
               <Button
                 onPress={() =>
-                  dispatch(setReaderSettings('customCSS', customCSS))
+                  dispatch(
+                    setReaderSettings({ key: 'customCSS', value: customCSS }),
+                  )
                 }
                 style={styles.marginLeftS}
                 title={getString('common.save')}
@@ -301,7 +329,7 @@ const SettingsReaderScreen = () => {
               <Button
                 onPress={() => {
                   setcustomCSS('');
-                  dispatch(setReaderSettings('customCSS', ''));
+                  dispatch(setReaderSettings({ key: 'customCSS', value: '' }));
                 }}
                 title={getString('common.clear')}
               />
@@ -325,7 +353,9 @@ const SettingsReaderScreen = () => {
             <View style={styles.customCSSButtons}>
               <Button
                 onPress={() =>
-                  dispatch(setReaderSettings('customJS', customJS))
+                  dispatch(
+                    setReaderSettings({ key: 'customJS', value: customJS }),
+                  )
                 }
                 style={styles.marginLeftS}
                 title={getString('common.save')}
@@ -333,7 +363,7 @@ const SettingsReaderScreen = () => {
               <Button
                 onPress={() => {
                   setcustomJS('');
-                  dispatch(setReaderSettings('customJS', ''));
+                  dispatch(setReaderSettings({ key: 'customJS', value: '' }));
                 }}
                 title={getString('common.clear')}
               />
@@ -348,7 +378,9 @@ const SettingsReaderScreen = () => {
           label={getString('readerScreen.bottomSheet.fullscreen')}
           value={fullScreenMode}
           onPress={() =>
-            dispatch(setAppSettings('fullScreenMode', !fullScreenMode))
+            dispatch(
+              setAppSettings({ key: 'fullScreenMode', value: !fullScreenMode }),
+            )
           }
           theme={theme}
         />
@@ -357,7 +389,10 @@ const SettingsReaderScreen = () => {
           value={showScrollPercentage}
           onPress={() =>
             dispatch(
-              setAppSettings('showScrollPercentage', !showScrollPercentage),
+              setAppSettings({
+                key: 'showScrollPercentage',
+                value: !showScrollPercentage,
+              }),
             )
           }
           theme={theme}
@@ -366,7 +401,12 @@ const SettingsReaderScreen = () => {
           label={getString('readerScreen.bottomSheet.showBatteryAndTime')}
           value={showBatteryAndTime}
           onPress={() =>
-            dispatch(setAppSettings('showBatteryAndTime', !showBatteryAndTime))
+            dispatch(
+              setAppSettings({
+                key: 'showBatteryAndTime',
+                value: !showBatteryAndTime,
+              }),
+            )
           }
           theme={theme}
         />
@@ -452,7 +492,9 @@ const SettingsReaderScreen = () => {
           color={readerSettings.theme}
           closeModal={readerBackgroundModal.setFalse}
           theme={theme}
-          onSubmit={color => dispatch(setReaderSettings('theme', color))}
+          onSubmit={color =>
+            dispatch(setReaderSettings({ key: 'theme', value: color }))
+          }
         />
         <ColorPickerModal
           title={getString(
@@ -462,7 +504,9 @@ const SettingsReaderScreen = () => {
           color={readerSettings.textColor}
           closeModal={readerTextColorModal.setFalse}
           theme={theme}
-          onSubmit={color => dispatch(setReaderSettings('textColor', color))}
+          onSubmit={color =>
+            dispatch(setReaderSettings({ key: 'textColor', value: color }))
+          }
         />
         <FontPickerModal
           currentFont={readerSettings.fontFamily}

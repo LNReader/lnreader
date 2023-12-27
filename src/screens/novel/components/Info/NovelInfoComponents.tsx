@@ -1,0 +1,343 @@
+import React, { useState } from 'react';
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  View,
+  Pressable,
+  Dimensions,
+  StatusBar,
+} from 'react-native';
+import color from 'color';
+import { IconButton, Portal } from 'react-native-paper';
+import { LinearGradient } from 'expo-linear-gradient';
+import { easeGradient } from 'react-native-easing-gradient';
+import FastImage, { Source } from 'react-native-fast-image';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { Chip } from '../../../../components';
+import { coverPlaceholderColor } from '../../../../theme/colors';
+import { ThemeColors } from '@theme/types';
+
+interface CoverImageProps {
+  children: React.ReactNode;
+  source: Source;
+  theme: ThemeColors;
+  hideBackdrop: boolean;
+}
+
+interface NovelThumbnailProps {
+  source: Source;
+  theme: ThemeColors;
+  setCustomNovelCover: () => Promise<void>;
+}
+
+interface NovelTitleProps {
+  theme: ThemeColors;
+  children: React.ReactNode;
+  onLongPress: () => void;
+  onPress: () => void;
+}
+
+const NovelInfoContainer = ({ children }: { children: React.ReactNode }) => (
+  <View style={styles.novelInfoContainer}>{children}</View>
+);
+
+const CoverImage = ({
+  children,
+  source,
+  theme,
+  hideBackdrop,
+}: CoverImageProps) => {
+  const { colors, locations } = easeGradient({
+    colorStops: {
+      0: { color: 'rgba(0,0,0,0)' },
+      1: { color: theme.background },
+    },
+  });
+
+  if (hideBackdrop) {
+    return <View>{children}</View>;
+  } else {
+    return (
+      <FastImage source={source} style={styles.coverImage}>
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: color(theme.background).alpha(0.7).string(),
+          }}
+        >
+          {source.uri ? (
+            <LinearGradient
+              colors={colors}
+              locations={locations}
+              style={styles.linearGradient}
+            >
+              {children}
+            </LinearGradient>
+          ) : (
+            children
+          )}
+        </View>
+      </FastImage>
+    );
+  }
+};
+
+const NovelThumbnail = ({
+  source,
+  theme,
+  setCustomNovelCover,
+}: NovelThumbnailProps) => {
+  const [expanded, setExpanded] = useState(false);
+
+  if (!expanded) {
+    return (
+      <TouchableWithoutFeedback onPress={() => setExpanded(!expanded)}>
+        <FastImage source={source} style={styles.novelThumbnail} />
+      </TouchableWithoutFeedback>
+    );
+  } else {
+    return (
+      <Portal>
+        <IconButton
+          icon="pencil-outline"
+          style={{
+            position: 'absolute',
+            top: StatusBar.currentHeight ?? 0 + 10,
+            right: 10,
+            zIndex: 10,
+          }}
+          iconColor={theme.onBackground}
+          onPress={setCustomNovelCover}
+        />
+        <Pressable
+          style={{
+            position: 'absolute',
+            width: Dimensions.get('window').width,
+            height: Dimensions.get('window').height + 60,
+            justifyContent: 'center',
+            backgroundColor: 'rgba(0,0,0,0.7)',
+          }}
+          onPress={() => setExpanded(false)}
+        >
+          <FastImage
+            source={source}
+            style={{
+              width: Dimensions.get('window').width,
+              height: (Dimensions.get('window').width * 3) / 2,
+            }}
+          />
+        </Pressable>
+      </Portal>
+    );
+  }
+};
+
+const NovelTitle = ({
+  theme,
+  children,
+  onLongPress,
+  onPress,
+}: NovelTitleProps) => (
+  <Text
+    onLongPress={onLongPress}
+    onPress={onPress}
+    style={[styles.novelTitle, { color: theme.onBackground }]}
+  >
+    {children}
+  </Text>
+);
+
+const NovelAuthor = ({
+  theme,
+  children,
+}: {
+  theme: ThemeColors;
+  children: React.ReactNode;
+}) => (
+  <Text style={[styles.novelAuthor, { color: theme.onSurfaceVariant }]}>
+    {children}
+  </Text>
+);
+
+const NovelInfo = ({
+  theme,
+  children,
+}: {
+  theme: ThemeColors;
+  children: React.ReactNode;
+}) => (
+  <Text
+    style={[styles.novelInfo, { color: theme.onSurfaceVariant }]}
+    numberOfLines={1}
+  >
+    {children}
+  </Text>
+);
+
+const FollowButton = ({
+  theme,
+  onPress,
+  followed,
+}: {
+  theme: ThemeColors;
+  onPress: () => void;
+  followed: boolean;
+}) => (
+  <View style={{ borderRadius: 4, overflow: 'hidden', flex: 1 }}>
+    <Pressable
+      android_ripple={{
+        color: color(theme.primary).alpha(0.12).string(),
+        borderless: false,
+      }}
+      onPress={onPress}
+      style={{
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingBottom: 8,
+      }}
+    >
+      <IconButton
+        icon={followed ? 'heart' : 'heart-outline'}
+        iconColor={followed ? theme.primary : theme.outline}
+        size={24}
+        style={{ margin: 0 }}
+      />
+      <Text
+        style={{
+          fontSize: 12,
+          color: followed ? theme.primary : theme.outline,
+        }}
+      >
+        {followed ? 'In Library' : 'Add to library'}
+      </Text>
+    </Pressable>
+  </View>
+);
+
+const TrackerButton = ({
+  theme,
+  isTracked,
+  onPress,
+}: {
+  theme: ThemeColors;
+  onPress: () => void;
+  isTracked: boolean;
+}) => (
+  <View style={{ borderRadius: 4, overflow: 'hidden', flex: 1 }}>
+    <Pressable
+      android_ripple={{
+        color: theme.rippleColor,
+        borderless: false,
+      }}
+      onPress={onPress}
+      style={{
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingBottom: 8,
+      }}
+    >
+      <IconButton
+        icon={isTracked ? 'check' : 'sync'}
+        iconColor={isTracked ? theme.primary : theme.outline}
+        size={24}
+        style={{ margin: 0 }}
+      />
+      <Text
+        style={{
+          fontSize: 12,
+          color: isTracked ? theme.primary : theme.outline,
+        }}
+      >
+        {isTracked ? 'Tracked' : 'Tracking'}
+      </Text>
+    </Pressable>
+  </View>
+);
+
+const NovelGenres = ({
+  theme,
+  genres,
+}: {
+  theme: ThemeColors;
+  genres: string;
+}) => {
+  const data = genres.split(/,\s*/);
+
+  return (
+    <FlatList
+      contentContainerStyle={styles.genreContainer}
+      horizontal
+      data={data}
+      keyExtractor={(item, index) => 'genre' + index}
+      renderItem={({ item }) => <Chip label={item} theme={theme} />}
+      showsHorizontalScrollIndicator={false}
+    />
+  );
+};
+
+export {
+  NovelInfoContainer,
+  CoverImage,
+  NovelThumbnail,
+  NovelTitle,
+  NovelAuthor,
+  NovelInfo,
+  FollowButton,
+  TrackerButton,
+  NovelGenres,
+};
+
+const styles = StyleSheet.create({
+  novelInfoContainer: {
+    flexDirection: 'row',
+    margin: 16,
+    marginTop: 28,
+    marginBottom: 0,
+    paddingTop: 90,
+  },
+  coverImage: {},
+  linearGradient: {
+    flex: 1,
+  },
+  novelThumbnail: {
+    height: 150,
+    width: 100,
+    marginHorizontal: 4,
+    borderRadius: 6,
+    backgroundColor: coverPlaceholderColor,
+  },
+  novelTitle: {
+    fontSize: 20,
+  },
+  novelAuthor: {
+    marginVertical: 6,
+    fontSize: 14,
+  },
+  novelInfo: {
+    fontSize: 14,
+  },
+  followButton: {
+    height: 32,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 16,
+    paddingLeft: 4,
+    borderWidth: 0,
+    elevation: 0,
+  },
+  genreContainer: {
+    paddingHorizontal: 16,
+    paddingBottom: 4,
+  },
+  genreChip: {
+    flex: 1,
+    justifyContent: 'center',
+    paddingVertical: 5,
+    paddingHorizontal: 12,
+    marginHorizontal: 2,
+    fontSize: 12,
+    borderRadius: 50,
+    textTransform: 'capitalize',
+  },
+});

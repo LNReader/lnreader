@@ -8,10 +8,10 @@ export interface NovelInfo {
   summary?: string;
   author?: string;
   artist?: string;
-  status?: NovelStatus;
+  status?: NovelStatus | string;
   genres?: string;
-  inLibrary: number;
-  isLocal: number;
+  inLibrary: boolean;
+  isLocal: boolean;
 }
 
 export interface LibraryNovelInfo extends NovelInfo {
@@ -27,9 +27,9 @@ export interface ChapterInfo {
   name: string;
   releaseTime?: string;
   readTime: string;
-  bookmark: number;
-  unread: number;
-  isDownloaded: number;
+  bookmark: boolean;
+  unread: boolean;
+  isDownloaded: boolean;
 
   // download screen need this :)
   pluginId: string;

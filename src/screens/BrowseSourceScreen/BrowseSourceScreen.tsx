@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useRef } from 'react';
-import { useNavigation } from '@react-navigation/native';
 
 import { FAB } from 'react-native-paper';
 import { Container, ErrorScreenV2, SearchbarV2 } from '@components/index';
@@ -22,9 +21,8 @@ import SourceScreenSkeletonLoading from '@screens/browse/loadingAnimation/Source
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BrowseSourceScreenProps } from '@navigators/types';
 
-const BrowseSourceScreen = ({ route }: BrowseSourceScreenProps) => {
+const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
   const theme = useTheme();
-  const { navigate, goBack } = useNavigation();
   const previousScreen = usePreviousRouteName();
 
   const { pluginId, pluginName, pluginUrl, showLatestNovels } = route.params;
@@ -67,14 +65,11 @@ const BrowseSourceScreen = ({ route }: BrowseSourceScreenProps) => {
   }, [previousScreen]);
 
   const handleOpenWebView = async () => {
-    navigate(
-      'WebviewScreen' as never,
-      {
-        pluginId,
-        name: pluginName,
-        url: pluginUrl,
-      } as never,
-    );
+    navigation.navigate('WebviewScreen', {
+      pluginId,
+      name: pluginName,
+      url: pluginUrl,
+    });
   };
 
   const { library, setLibrary } = useLibraryNovels();
@@ -84,13 +79,10 @@ const BrowseSourceScreen = ({ route }: BrowseSourceScreenProps) => {
 
   const navigateToNovel = useCallback(
     (item: NovelItem) =>
-      navigate(
-        'Novel' as never,
-        {
-          ...item,
-          pluginId: pluginId,
-        } as never,
-      ),
+      navigation.navigate('Novel', {
+        ...item,
+        pluginId: pluginId,
+      }),
     [pluginId],
   );
 
@@ -105,7 +97,7 @@ const BrowseSourceScreen = ({ route }: BrowseSourceScreenProps) => {
         onChangeText={onChangeText}
         onSubmitEditing={onSubmitEditing}
         clearSearchbar={handleClearSearchbar}
-        handleBackAction={goBack}
+        handleBackAction={navigation.goBack}
         rightIcons={[{ iconName: 'earth', onPress: handleOpenWebView }]}
         theme={theme}
       />
@@ -140,13 +132,14 @@ const BrowseSourceScreen = ({ route }: BrowseSourceScreenProps) => {
                         ...prevValues,
                         {
                           ...item,
-                          inLibrary: 1,
+                          inLibrary: true,
+                          isLocal: false,
                         } as NovelInfo,
                       ];
                     }
                   });
                 }}
-                selectedNovels={[]}
+                selectedNovelIds={[]}
               />
             );
           }}

@@ -4,7 +4,7 @@ import React from 'react';
 import { useAppDispatch, useReaderSettings } from '../../../../redux/hooks';
 import { useTheme } from '@hooks/useTheme';
 import { IconButtonV2 } from '../../../../components';
-import { setReaderSettings } from '../../../../redux/settings/settings.actions';
+import { setReaderSettings } from '@redux/settings/settingsSliceV1';
 import { getString } from '../../../../../strings/translations';
 
 interface ReaderLineHeightProps {
@@ -29,7 +29,9 @@ const ReaderLineHeight: React.FC<ReaderLineHeightProps> = ({ labelStyle }) => {
           size={26}
           disabled={lineHeight <= 1.3}
           onPress={() =>
-            dispatch(setReaderSettings('lineHeight', lineHeight - 0.1))
+            dispatch(
+              setReaderSettings({ key: 'lineHeight', value: lineHeight - 0.1 }),
+            )
           }
           theme={theme}
         />
@@ -42,7 +44,9 @@ const ReaderLineHeight: React.FC<ReaderLineHeightProps> = ({ labelStyle }) => {
           size={26}
           disabled={lineHeight >= 2}
           onPress={() =>
-            dispatch(setReaderSettings('lineHeight', lineHeight + 0.1))
+            dispatch(
+              setReaderSettings({ key: 'lineHeight', value: lineHeight + 0.1 }),
+            )
           }
           theme={theme}
         />

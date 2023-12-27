@@ -6,7 +6,7 @@ import { RadioButton } from '@components/RadioButton/RadioButton';
 
 import { useAppDispatch } from '@redux/hooks';
 import { useTheme } from '@hooks/useTheme';
-import { setReaderSettings } from '../../../redux/settings/settings.actions';
+import { setReaderSettings } from '@redux/settings/settingsSliceV1';
 
 import { readerFonts } from '../../../utils/constants/readerConstants';
 
@@ -39,7 +39,12 @@ const FontPickerModal: React.FC<FontPickerModalProps> = ({
             key={item.fontFamily}
             status={currentFont === item.fontFamily}
             onPress={() =>
-              dispatch(setReaderSettings('fontFamily', item.fontFamily))
+              dispatch(
+                setReaderSettings({
+                  key: 'fontFamily',
+                  value: item.fontFamily,
+                }),
+              )
             }
             label={item.name}
             labelStyle={{ fontFamily: item.fontFamily }}

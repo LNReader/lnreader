@@ -138,6 +138,10 @@ public class EpubParser extends ReactContextBaseJavaModule {
         return doc;
     }
 
+    public String escapeFilePath(String filePath){
+        return filePath.replaceAll(":", "\uA789");
+    }
+
     public String unzip(String epubFilePath, String epubDirPath) throws Exception {
         ZipInputStream zis = new ZipInputStream(new FileInputStream(epubFilePath));
         ZipEntry zipEntry;
@@ -145,15 +149,23 @@ public class EpubParser extends ReactContextBaseJavaModule {
         String novelCover = null;
         byte[] buffer = new byte[4096];
         while ((zipEntry = zis.getNextEntry()) != null) {
-            if(Pattern.compile(".*cover.*\\.(png|jpeg|jpg)", Pattern.CASE_INSENSITIVE).matcher(zipEntry.getName()).matches()){
-                novelCover = zipEntry.getName();
+            String escapedFilePath = escapeFilePath(zipEntry.getName());
+            if(Pattern.compile(".*cover.*\\.(png|jpeg|jpg)", Pattern.CASE_INSENSITIVE).matcher(escapedFilePath).matches()){
+                novelCover = escapedFilePath;
             }
-            File newFile = new File(epubDirPath, zipEntry.getName());
+            File newFile = new File(epubDirPath, escapedFilePath);
+            if(newFile.exists()) continue;
             newFile.getParentFile().mkdirs();
             FileOutputStream fos = new FileOutputStream(newFile);
-            while ((len = zis.read(buffer)) > 0)
+            int writeCount = 0;
+            while ((len = zis.read(buffer)) > 0) {
+                writeCount += 1;
                 fos.write(buffer, 0, len);
+            }
             fos.close();
+            if(writeCount == 0){
+                newFile.delete();
+            }
         }
         zis.closeEntry();
         zis.close();

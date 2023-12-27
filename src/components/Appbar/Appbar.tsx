@@ -6,9 +6,10 @@ import { ThemeColors } from '../../theme/types';
 
 interface AppbarProps {
   title: string;
-  handleGoBack: () => void;
+  handleGoBack?: () => void;
   theme: ThemeColors;
   mode?: 'small' | 'medium' | 'large' | 'center-aligned';
+  children?: React.ReactNode;
 }
 
 const Appbar: React.FC<AppbarProps> = ({

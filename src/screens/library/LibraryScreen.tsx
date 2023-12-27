@@ -7,7 +7,6 @@ import {
   TabBar,
   TabView,
 } from 'react-native-tab-view';
-import { useNavigation } from '@react-navigation/native';
 import color from 'color';
 
 import { SearchbarV2, Button } from '@components/index';
@@ -36,16 +35,17 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useSettings } from '@hooks/reduxHooks';
 import SourceScreenSkeletonLoading from '@screens/browse/loadingAnimation/SourceScreenSkeletonLoading';
 import { Row } from '@components/Common';
+import { LibraryScreenProps } from '@navigators/types';
+import { ChapterInfo, NovelInfo } from '@database/types';
 
 type State = NavigationState<{
   key: string;
   title: string;
 }>;
 
-const LibraryScreen = () => {
+const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
   const theme = useTheme();
   const { searchText, setSearchText, clearSearchbar } = useSearch();
-  const { navigate } = useNavigation();
   const {
     showNumberOfNovels = false,
     downloadedOnlyMode = false,
@@ -200,12 +200,9 @@ const LibraryScreen = () => {
                   )} "${searchText}" ${getString('common.globally')}`}
                   style={styles.globalSearchBtn}
                   onPress={() =>
-                    navigate(
-                      'GlobalSearchScreen' as never,
-                      {
-                        searchText,
-                      } as never,
-                    )
+                    navigation.navigate('GlobalSearchScreen', {
+                      searchText,
+                    })
                   }
                 />
               ) : null}
@@ -214,6 +211,7 @@ const LibraryScreen = () => {
                 novels={route.novels}
                 selectedNovelIds={selectedNovelIds}
                 setSelectedNovelIds={setSelectedNovelIds}
+                navigation={navigation}
               />
             </>
           )
@@ -231,29 +229,25 @@ const LibraryScreen = () => {
               styles.fab,
               { backgroundColor: theme.primary, marginRight: rightInset + 16 },
             ]}
-            small
             color={theme.onPrimary}
             uppercase={false}
             label={'Resume'}
             icon="play"
             onPress={() => {
-              navigate(
-                'Chapter' as never,
-                {
-                  novel: {
-                    id: history[0].novelId,
-                    url: history[0].novelUrl,
-                    pluginId: history[0].pluginId,
-                    name: history[0].novelName,
-                  },
-                  chapter: {
-                    id: history[0].id,
-                    url: history[0].chapterUrl,
-                    name: history[0].chapterName,
-                    novelId: history[0].novelId,
-                  },
-                } as never,
-              );
+              navigation.navigate('Chapter', {
+                novel: {
+                  id: history[0].novelId,
+                  url: history[0].novelUrl,
+                  pluginId: history[0].pluginId,
+                  name: history[0].novelName,
+                } as NovelInfo,
+                chapter: {
+                  id: history[0].id,
+                  url: history[0].chapterUrl,
+                  name: history[0].chapterName,
+                  novelId: history[0].novelId,
+                } as ChapterInfo,
+              });
             }}
           />
         )}

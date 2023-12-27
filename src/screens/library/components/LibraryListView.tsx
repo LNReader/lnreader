@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { RefreshControl, View } from 'react-native';
 import { xor } from 'lodash-es';
-import { useNavigation } from '@react-navigation/native';
 
 import { EmptyView } from '@components/index';
 import NovelCover from '@components/NovelCover';
@@ -13,12 +12,14 @@ import { getString } from '@strings/translations';
 import { useAppDispatch } from '@redux/hooks';
 import { useTheme } from '@hooks/useTheme';
 import { updateLibraryAction } from '@redux/updates/updates.actions';
+import { LibraryScreenProps } from '@navigators/types';
 
 interface Props {
   categoryId: number;
   novels: LibraryNovelInfo[];
   selectedNovelIds: number[];
   setSelectedNovelIds: React.Dispatch<React.SetStateAction<number[]>>;
+  navigation: LibraryScreenProps['navigation'];
 }
 
 export const LibraryView: React.FC<Props> = ({
@@ -26,9 +27,9 @@ export const LibraryView: React.FC<Props> = ({
   novels,
   selectedNovelIds,
   setSelectedNovelIds,
+  navigation,
 }) => {
   const theme = useTheme();
-  const { navigate } = useNavigation();
   const dispatch = useAppDispatch();
   const renderItem = ({ item }: { item: LibraryNovelInfo }) => (
     <NovelCover
@@ -40,24 +41,25 @@ export const LibraryView: React.FC<Props> = ({
         if (selectedNovelIds.length) {
           setSelectedNovelIds(xor(selectedNovelIds, [item.id]));
         } else {
-          navigate(
-            'Novel' as never,
-            {
-              name: item.name,
-              url: item.url,
-              pluginId: item.pluginId,
-            } as never,
-          );
+          navigation.navigate('Novel', {
+            name: item.name,
+            url: item.url,
+            pluginId: item.pluginId,
+          });
         }
       }}
       libraryStatus={false} // yes but actually no :D
-      selectedNovels={selectedNovelIds}
+      selectedNovelIds={selectedNovelIds}
     />
   );
 
   const [refreshing, setRefreshing] = useState(false);
 
   const onRefresh = () => {
+    // local category
+    if (categoryId === 2) {
+      return;
+    }
     setRefreshing(true);
     dispatch(updateLibraryAction({ categoryId }));
     setRefreshing(false);
