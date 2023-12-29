@@ -2,11 +2,7 @@ import React, { useState } from 'react';
 
 import { ScreenContainer } from '../../components/Common';
 
-import {
-  createBackup,
-  restoreBackup,
-  restoreError,
-} from '../../services/backup/v1/backup';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 import { useTheme } from '@hooks/useTheme';
 import { Appbar, List } from '@components';
@@ -32,6 +28,28 @@ const BackupSettings = ({ navigation }: BackupSettingsScreenProps) => {
     setFalse: closeRestoreModal,
   } = useBoolean();
 
+  const signIn = async () => {
+    const isSignedIn = await GoogleSignin.isSignedIn();
+    if (isSignedIn) {
+      console.log('signed in');
+      return;
+    }
+    GoogleSignin.configure({
+      scopes: ['https://www.googleapis.com/auth/drive'],
+    });
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      console.log(userInfo);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const driveBackup = () => {
+    signIn();
+  };
+
   return (
     <>
       <ScreenContainer theme={theme}>
@@ -55,6 +73,18 @@ const BackupSettings = ({ navigation }: BackupSettingsScreenProps) => {
             theme={theme}
           />
           <List.Item
+            title="Drive backup"
+            description="Backup data to your Google Drive"
+            onPress={driveBackup}
+            theme={theme}
+          />
+          <List.Item
+            title="Drive restore"
+            description="Restore data from Google Drive"
+            onPress={showRestoreModal}
+            theme={theme}
+          />
+          {/* <List.Item
             title="Create backup"
             description="Can be used to restore current library"
             onPress={createBackup}
@@ -71,7 +101,7 @@ const BackupSettings = ({ navigation }: BackupSettingsScreenProps) => {
             description="If there were errors when restoring backup. Using this to restore the remaining. Save your time."
             onPress={restoreError}
             theme={theme}
-          />
+          /> */}
           <List.InfoItem
             title="Restoring large backups may freeze the app until restoring is finished"
             icon="information-outline"

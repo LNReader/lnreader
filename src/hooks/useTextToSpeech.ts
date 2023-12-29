@@ -7,7 +7,7 @@ import {
   RefObject,
 } from 'react';
 import WebView from 'react-native-webview';
-import Tts from 'react-native-tts';
+import * as Speech from 'expo-speech';
 import { htmlToText } from '@plugins/helpers/htmlToText';
 
 interface TextToSpeechData {
@@ -34,27 +34,28 @@ export const useTextToSpeech = (
   );
   const play = useCallback(() => {
     if (data.current.currentIndex < data.current.sentences.length) {
-      Tts.speak(data.current.sentences[data.current.currentIndex], {
-        iosVoiceId: '',
+      Speech.speak(data.current.sentences[data.current.currentIndex], {
         rate: 0.5,
-        androidParams: {
-          KEY_PARAM_STREAM: 'STREAM_MUSIC',
-          KEY_PARAM_VOLUME: 1,
-          KEY_PARAM_PAN: 0,
+        onStart() {
+          webViewRef.current?.injectJavaScript(
+            `tts.play(${data.current.currentIndex})`,
+          );
+          data.current.currentIndex += 1;
+        },
+        onStopped() {
+          play();
         },
       });
     } else {
       markChapterAsRead();
       setTtsStatus('finished');
-      Tts.stop();
+      Speech.stop();
     }
   }, []);
 
   useEffect(() => {
     return () => {
-      Tts.removeAllListeners('tts-finish');
-      Tts.removeAllListeners('tts-start');
-      Tts.stop();
+      Speech.stop();
     };
   }, []);
 
@@ -62,18 +63,9 @@ export const useTextToSpeech = (
     if (ttsStatus === 'progress') {
       setTtsStatus('paused');
       data.current.currentIndex -= 1;
-      Tts.stop();
-      Tts.removeAllListeners('tts-finish');
-      Tts.removeAllListeners('tts-start');
+      Speech.stop();
       return;
     }
-    Tts.addEventListener('tts-finish', () => play());
-    Tts.addEventListener('tts-start', () => {
-      webViewRef.current?.injectJavaScript(
-        `tts.play(${data.current.currentIndex})`,
-      );
-      data.current.currentIndex += 1;
-    });
     setTtsStatus('progress');
     play();
   }, [ttsStatus]);
