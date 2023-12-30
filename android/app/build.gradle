@@ -80,10 +80,7 @@ import com.android.build.OutputFile
 project.ext.react = [
     entryFile: "index.js",
     enableHermes: true,  // clean and rebuild if changing
-    hermesCommand: '../../node_modules/react-native/sdks/hermesc/%OS-BIN%/hermesc',
 ]
-
-apply from: "../../node_modules/react-native/react.gradle"
 
 /**
  * Set this to true to create two separate APKs instead of one:
@@ -204,9 +201,6 @@ dependencies {
 
     implementation project(':react-native-lottie-splash-screen')
     implementation project(':react-native-fs')
-    implementation 'com.github.bumptech.glide:glide:4.12.0'
-    
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
 
     def isGifEnabled = (findProperty('expo.gif.enabled') ?: "") == "true";
     def isWebpEnabled = (findProperty('expo.webp.enabled') ?: "") == "true";
@@ -229,17 +223,6 @@ dependencies {
             // Animated webp support
            implementation 'com.facebook.fresco:animated-webp:2.0.0'
         }
-    }
-
-    debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
-      exclude group:'com.facebook.fbjni'
-    }
-    debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {
-        exclude group:'com.facebook.flipper'
-        exclude group:'com.squareup.okhttp3', module:'okhttp'
-    }
-    debugImplementation("com.facebook.flipper:flipper-fresco-plugin:${FLIPPER_VERSION}") {
-        exclude group:'com.facebook.flipper'
     }
 
     if (enableHermes) {
