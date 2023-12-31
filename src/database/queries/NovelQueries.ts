@@ -49,6 +49,28 @@ export const insertNovelAndChapters = (
   });
 };
 
+export const getAllNovels = async (): Promise<NovelInfo[]> => {
+  return new Promise(resolve =>
+    db.transaction(tx => {
+      tx.executeSql('SELECT * FROM Novel', [], (txObj, { rows }) =>
+        resolve(rows._array),
+      );
+    }),
+  );
+};
+
+export const getNovelsWithCustomCover = async (): Promise<NovelInfo[]> => {
+  return new Promise(resolve => {
+    db.transaction(tx => {
+      tx.executeSql(
+        'SELECT id, pluginId, cover FROM Novel WHERE cover NOT LIKE "http%"',
+        [],
+        (txObj, { rows }) => resolve(rows._array),
+      );
+    });
+  });
+};
+
 export const getNovel = async (novelUrl: string): Promise<NovelInfo> => {
   return new Promise(resolve =>
     db.transaction(tx => {
@@ -77,11 +99,11 @@ export const switchNovelToLibrary = async (
     db.transaction(tx => {
       tx.executeSql(
         'UPDATE Novel SET inLibrary = ? WHERE id = ?',
-        [1 - novel.inLibrary, novel.id],
+        [Number(!novel.inLibrary), novel.id],
         noop,
         txnErrorCallback,
       );
-      if (novel.inLibrary === 1) {
+      if (novel.inLibrary) {
         tx.executeSql(
           'DELETE FROM NovelCategory WHERE novelId = ?',
           [novel.id],
@@ -179,7 +201,7 @@ export const restoreLibrary = async (novel: NovelInfo) => {
           novel.artist || '',
           novel.status || '',
           novel.genres || '',
-          novel.inLibrary,
+          Number(novel.inLibrary),
         ],
         async (txObj, { insertId }) => {
           if (!insertId) {
@@ -217,7 +239,7 @@ export const updateNovelInfo = async (info: NovelInfo) => {
         info.artist || '',
         info.genres || '',
         info.status || '',
-        info.isLocal,
+        Number(info.isLocal),
         info.id,
       ],
       noop,

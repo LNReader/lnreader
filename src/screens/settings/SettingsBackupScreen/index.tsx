@@ -9,6 +9,7 @@ import useBoolean from '@hooks/useBoolean';
 // import { remoteBackup, remoteRestore } from '@services/backup/remote';
 import { BackupSettingsScreenProps } from '@navigators/types';
 import GoogleDriveModal from './Components/GoogleDriveModal';
+import { useMMKVBoolean } from 'react-native-mmkv';
 
 const BackupSettings = ({ navigation }: BackupSettingsScreenProps) => {
   const theme = useTheme();
@@ -17,6 +18,8 @@ const BackupSettings = ({ navigation }: BackupSettingsScreenProps) => {
     setFalse: closeGoogleDriveModal,
     setTrue: openGoogleDriveModal,
   } = useBoolean();
+
+  const [hasBackgroundTask] = useMMKVBoolean('HAS_BACKGROUND_TASK');
 
   return (
     <>
@@ -32,6 +35,7 @@ const BackupSettings = ({ navigation }: BackupSettingsScreenProps) => {
             title="Self Host"
             description="Backup to your server"
             theme={theme}
+            disabled={hasBackgroundTask}
           />
 
           <List.Item
@@ -39,6 +43,7 @@ const BackupSettings = ({ navigation }: BackupSettingsScreenProps) => {
             description="Backup to your Google Drive"
             theme={theme}
             onPress={openGoogleDriveModal}
+            disabled={hasBackgroundTask}
           />
         </List.Section>
       </ScreenContainer>

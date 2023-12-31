@@ -1,6 +1,6 @@
 import { txnErrorCallback } from '@database/utils/helpers';
 import * as SQLite from 'expo-sqlite';
-import RNFS, { ReadDirItem } from 'react-native-fs';
+import RNFS from 'react-native-fs';
 import { appVersion } from '@utils/versionUtils';
 import { ChapterInfo, NovelInfo } from '@database/types';
 import { store } from '@redux/store';
@@ -16,6 +16,7 @@ import {
   AppDownloadFolder,
   NovelDownloadFolder,
 } from '@utils/constants/download';
+import { walkDir } from '../utils';
 
 const db = SQLite.openDatabase('lnreader.db');
 
@@ -183,35 +184,18 @@ export const chapterTask = (): Promise<BackupTask> => {
   });
 };
 
-const walkDir = async (items: ReadDirItem[]) => {
-  let paths: string[] = [];
-  for (let item of items) {
-    if (item.isFile()) {
-      paths.push(item.path);
-    } else {
-      const _items = await RNFS.readDir(item.path);
-      paths = paths.concat(await walkDir(_items));
-    }
-  }
-  return paths;
-};
-
 export const downloadTask = (): Promise<BackupTask> => {
   return new Promise(async (resolve, reject) => {
     try {
-      let paths: string[] = [];
-      if (await RNFS.exists(AppDownloadFolder)) {
-        const items = await RNFS.readDir(AppDownloadFolder);
-        paths = await walkDir(items);
-      }
-      const subtasks = paths.map(path => {
+      const items = await walkDir(AppDownloadFolder);
+      const subtasks = items.map(item => {
         const subtask = async () => {
-          const base64 = await RNFS.readFile(path, 'base64');
+          const base64 = await RNFS.readFile(item.path, 'base64');
           return {
             taskType: TaskType.Download,
             encoding: 'base64',
             content: base64,
-            relative_path: path.replace(AppDownloadFolder + '/', ''),
+            relative_path: item.path.replace(AppDownloadFolder + '/', ''),
           } as RequestPackage;
         };
         return subtask;

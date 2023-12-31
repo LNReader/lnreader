@@ -77,6 +77,11 @@ export interface Category {
   sort: number;
 }
 
+export interface NovelCategory {
+  novelId: number;
+  categoryId: number;
+}
+
 export interface LibraryStats {
   novelsCount?: number;
   chaptersCount?: number;

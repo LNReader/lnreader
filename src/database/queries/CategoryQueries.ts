@@ -1,6 +1,6 @@
 import * as SQLite from 'expo-sqlite';
 import { noop } from 'lodash-es';
-import { Category } from '../types';
+import { Category, NovelCategory } from '../types';
 import { showToast } from '@hooks/showToast';
 import { txnErrorCallback } from '../utils/helpers';
 const db = SQLite.openDatabase('lnreader.db');
@@ -105,3 +105,16 @@ export const updateCategoryOrderInDb = (categories: Category[]): void =>
       );
     });
   });
+
+export const getAllNovelCategories = (): Promise<NovelCategory[]> => {
+  return new Promise(resolve =>
+    db.transaction(tx => {
+      tx.executeSql(
+        'SELECT * FROM NovelCategory',
+        [],
+        (txObj, { rows }) => resolve((rows as any)._array),
+        txnErrorCallback,
+      );
+    }),
+  );
+};

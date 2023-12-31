@@ -19,6 +19,7 @@ module.exports = function (api) {
             '@theme': './src/theme',
             '@navigators': './src/navigators',
             '@native': './src/native',
+            '@api': './src/api',
           },
         },
       ],

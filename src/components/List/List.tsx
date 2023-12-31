@@ -11,6 +11,7 @@ interface ListItemProps {
   icon?: string;
   onPress?: () => void;
   theme: ThemeColors;
+  disabled?: boolean;
 }
 
 const Section = ({ children }: { children: ReactNode }) => (
@@ -35,12 +36,15 @@ const Item: React.FC<ListItemProps> = ({
   icon,
   onPress,
   theme,
+  disabled,
 }) => (
   <PaperList.Item
     title={title}
-    titleStyle={{ color: theme.onSurface }}
+    titleStyle={{ color: disabled ? theme.onSurfaceDisabled : theme.onSurface }}
     description={description}
-    descriptionStyle={{ color: theme.onSurfaceVariant }}
+    descriptionStyle={{
+      color: disabled ? theme.onSurfaceDisabled : theme.onSurfaceVariant,
+    }}
     left={
       icon
         ? () => (
@@ -52,6 +56,7 @@ const Item: React.FC<ListItemProps> = ({
           )
         : undefined
     }
+    disabled={disabled}
     onPress={onPress}
     rippleColor={theme.rippleColor}
     style={styles.listItemCtn}
@@ -83,7 +88,14 @@ const Icon = ({ icon, theme }: { icon: string; theme: ThemeColors }) => (
   <PaperList.Icon color={theme.primary} icon={icon} style={{ margin: 0 }} />
 );
 
-const ColorItem = ({ title, description, theme, onPress }) => (
+interface ColorItemProps {
+  title: string;
+  description: string;
+  theme: ThemeColors;
+  onPress: () => void;
+}
+
+const ColorItem = ({ title, description, theme, onPress }: ColorItemProps) => (
   <Pressable
     style={{
       padding: 16,
