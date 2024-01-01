@@ -19,6 +19,11 @@ jobs:
         run: |
           npm install
 
+      - name: Delete and create new Gradle
+        run: |
+          rm -rf .gradle
+          gradle init
+
       - name: Cache Gradle Wrapper
         uses: actions/cache@v3
         with:
