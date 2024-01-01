@@ -63,7 +63,7 @@ const parseNovelAndChapters = async novelUrl => {
 
   novel.sourceId = 171;
 
-  novel.sourceName = 'Esmtlnovel';
+  novel.sourceName = 'EsMtlNovel';
 
   novel.url = url;
 
