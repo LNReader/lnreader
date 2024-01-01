@@ -41,7 +41,7 @@ export const novelTask = async (parentId: string): Promise<BackupTask> => {
   return getAllNovels().then(novels => {
     const subtasks = novels.map(novel => {
       if (novel.cover && !novel.cover.startsWith('http')) {
-        novel.cover = `${NovelDownloadFolder}/${novel.pluginId}/${novel.id}/Cover.jpg`;
+        novel.cover = `file:///${NovelDownloadFolder}/${novel.pluginId}/${novel.id}/cover.png`;
       }
       return (): Promise<BackupPackage> =>
         getChapters(novel.id).then(chapters => {
@@ -155,7 +155,7 @@ export const themeTask = async (parentId: string): Promise<BackupTask> => {
 
   const backupPackage: BackupPackage = {
     folderTree: [parentId],
-    name: BackupDataFileName.SETTING,
+    name: BackupDataFileName.THEME,
     mimeType: 'application/json',
     content: JSON.stringify({
       APP_THEME,
@@ -164,7 +164,7 @@ export const themeTask = async (parentId: string): Promise<BackupTask> => {
     }),
   };
   return {
-    taskType: TaskType.SETTING,
+    taskType: TaskType.THEME,
     subtasks: [async () => backupPackage],
   };
 };

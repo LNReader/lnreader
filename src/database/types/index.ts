@@ -26,10 +26,11 @@ export interface ChapterInfo {
   url: string;
   name: string;
   releaseTime?: string;
-  readTime: string;
+  readTime: string | null;
   bookmark: boolean;
   unread: boolean;
   isDownloaded: boolean;
+  updatedTime: string | null;
 
   // download screen need this :)
   pluginId: string;
@@ -91,4 +92,12 @@ export interface LibraryStats {
   sourcesCount?: number;
   genres?: Record<string, number>;
   status?: Record<string, number>;
+}
+
+export interface BackupNovel extends NovelInfo {
+  chapters: ChapterInfo[];
+}
+
+export interface BackupCategory extends Category {
+  novelIds: number[];
 }

@@ -1,10 +1,12 @@
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { downloadFile, mkdir, exists } from 'react-native-fs';
 import {
   DriveCreateRequestData,
   DriveFile,
   DriveReponse,
   DriveRequestParams,
 } from './types';
+import { AppDownloadFolder } from '@utils/constants/download';
 
 const BASE_URL = 'https://www.googleapis.com/drive/v3/files';
 const MEDIA_UPLOAD_URL = 'https://www.googleapis.com/upload/drive/v3/files';
@@ -78,4 +80,36 @@ export const create = async (
     },
     body,
   }).then(res => res.json());
+};
+
+export const getJson = async (id: string) => {
+  const { accessToken } = await GoogleSignin.getTokens();
+  const url = BASE_URL + '/' + id + '?alt=media';
+  return fetch(url, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      Accept: 'application/json',
+    },
+  }).then(res => res.json());
+};
+
+export const download = async (file: DriveFile) => {
+  const { accessToken } = await GoogleSignin.getTokens();
+  const url = BASE_URL + '/' + file.id + '?alt=media';
+  const filePath = AppDownloadFolder + '/' + file.name;
+  const dirPath = filePath.split('/').slice(0, -1).join('/');
+  return exists(filePath).then(existed => {
+    if (!existed) {
+      return mkdir(dirPath).then(() => {
+        return downloadFile({
+          fromUrl: url,
+          toFile: filePath,
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            Accept: 'application/json',
+          },
+        });
+      });
+    }
+  });
 };

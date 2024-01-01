@@ -1,6 +1,6 @@
 import * as SQLite from 'expo-sqlite';
 import { noop } from 'lodash-es';
-import { Category, NovelCategory } from '../types';
+import { BackupCategory, Category, NovelCategory } from '../types';
 import { showToast } from '@hooks/showToast';
 import { txnErrorCallback } from '../utils/helpers';
 const db = SQLite.openDatabase('lnreader.db');
@@ -117,4 +117,21 @@ export const getAllNovelCategories = (): Promise<NovelCategory[]> => {
       );
     }),
   );
+};
+
+export const _restoreCategory = (category: BackupCategory) => {
+  db.transaction(tx => {
+    tx.executeSql('DELETE FROM Category WHERE id = ?', [category.id]);
+    tx.executeSql('INSERT INTO Category (id, name, sort) VALUES (?, ?, ?)', [
+      category.id,
+      category.name,
+      category.sort,
+    ]);
+    for (const novelId of category.novelIds) {
+      tx.executeSql(
+        'INSERT INTO NovelCategory (categoryId, novelId) VALUES (?, ?)',
+        [category.id, novelId],
+      );
+    }
+  });
 };

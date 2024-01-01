@@ -4,14 +4,16 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Modal, TextInput, overlay } from 'react-native-paper';
 import { GoogleSignin, User } from '@react-native-google-signin/google-signin';
 import { useEffect, useState } from 'react';
-import { Button } from '@components';
+import { Button, EmptyView } from '@components';
 import FastImage from 'react-native-fast-image';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import * as Clipboard from 'expo-clipboard';
 import { showToast } from '@hooks/showToast';
 import { getString } from '@strings/translations';
-import { exists, makeDir } from '@api/drive';
-import { createBackup } from '@services/backup/drive';
+import { exists, getBackups, makeDir } from '@api/drive';
+import { createBackup, driveRestore } from '@services/backup/drive';
+import { DriveFile } from '@api/drive/types';
+import dayjs from 'dayjs';
 
 enum BackupModal {
   UNAUTHORIZED,
@@ -146,15 +148,51 @@ function CreateBackup({
 }
 
 function RestoreBackup({
+  theme,
   setBackupModal,
+  closeModal,
 }: {
   theme: ThemeColors;
   setBackupModal: (backupModal: BackupModal) => void;
+  closeModal: () => void;
 }) {
+  const [backupList, setBackupList] = useState<DriveFile[]>([]);
+  useEffect(() => {
+    exists('LNReader', true).then(rootFolder => {
+      if (rootFolder) {
+        getBackups(rootFolder.id).then(backups => setBackupList(backups));
+      }
+    });
+  }, []);
+
   return (
     <>
+      <FlatList
+        contentContainerStyle={styles.backupList}
+        data={backupList}
+        keyExtractor={item => item.id}
+        renderItem={({ item }) => (
+          <Button
+            mode="outlined"
+            style={styles.btnOutline}
+            onPress={() => {
+              closeModal();
+              driveRestore(item);
+            }}
+          >
+            <Text style={{ color: theme.primary }}>
+              {item.name.replace(/\.backup$/, ' ')}
+            </Text>
+            <Text style={{ color: theme.secondary, fontSize: 12 }}>
+              {'(' + dayjs(item.createdTime).format('LL') + ')'}
+            </Text>
+          </Button>
+        )}
+        ListEmptyComponent={() => (
+          <EmptyView description="No backup founded" theme={theme} />
+        )}
+      />
       <View style={styles.footerContainer}>
-        <Button title={getString('common.ok')} onPress={() => {}} />
         <Button
           title={getString('common.cancel')}
           onPress={() => setBackupModal(BackupModal.AUTHORIZED)}
@@ -224,7 +262,13 @@ export default function GoogleDriveModal({
           />
         );
       case BackupModal.RESTORE_BACKUP:
-        return <RestoreBackup theme={theme} setBackupModal={setBackupModal} />;
+        return (
+          <RestoreBackup
+            theme={theme}
+            setBackupModal={setBackupModal}
+            closeModal={closeModal}
+          />
+        );
     }
   };
 
@@ -302,5 +346,10 @@ const styles = StyleSheet.create({
   error: {
     fontSize: 16,
     marginTop: 8,
+  },
+  backupList: {
+    flexGrow: 1,
+    paddingBottom: 8,
+    paddingHorizontal: 4,
   },
 });

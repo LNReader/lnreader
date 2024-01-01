@@ -28,6 +28,11 @@ export interface BackupPackage {
   mimeType: string;
 }
 
+export interface RestoreTask {
+  taskType: TaskType;
+  subtasks: Array<() => Promise<void>>;
+}
+
 export interface BackupTask {
   taskType: TaskType; // for notification
   subtasks: Array<() => Promise<BackupPackage>>;
