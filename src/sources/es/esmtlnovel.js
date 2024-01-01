@@ -183,7 +183,7 @@ const searchNovels = async searchTerm => {
   return novels;
 };
 
-const mtlNovelEsScraper = {
+const EsmtlNovelScraper = {
   popularNovels,
   parseNovelAndChapters,
   parseChapter,
