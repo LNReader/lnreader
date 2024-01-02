@@ -9,6 +9,7 @@ import { bookmarkChapterAction } from '../../../redux/novel/novel.actions';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import { useAppDispatch } from '@redux/hooks';
 import { ThemeColors } from '@theme/types';
+import { TextToSpeechStatus } from '@hooks/useTextToSpeech';
 
 interface ReaderAppbarProps {
   bookmark: boolean;
@@ -16,7 +17,7 @@ interface ReaderAppbarProps {
   chapterId: number;
   chapterName: string;
   tts: () => void;
-  textToSpeech: string;
+  textToSpeech: TextToSpeechStatus;
   theme: ThemeColors;
 }
 
@@ -68,11 +69,17 @@ const ReaderAppbar = ({
             </Text>
           </View>
           <Appbar.Action
-            icon={textToSpeech === 'progress' ? 'pause' : 'volume-high'}
+            icon={
+              textToSpeech === TextToSpeechStatus.PROGRESS
+                ? 'pause'
+                : 'volume-high'
+            }
             size={24}
             onPress={tts}
             iconColor={
-              textToSpeech === 'progress' ? theme.primary : theme.onSurface
+              textToSpeech === TextToSpeechStatus.PROGRESS
+                ? theme.primary
+                : theme.onSurface
             }
           />
 

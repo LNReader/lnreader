@@ -197,7 +197,7 @@ export const ChapterContent = ({
     [webViewRef],
   );
 
-  let scrollInterval: NodeJS.Timer;
+  let scrollInterval: NodeJS.Timeout;
   useEffect(() => {
     if (autoScroll) {
       scrollInterval = setInterval(() => {
