@@ -1,3 +1,5 @@
+export const PATH_SEPARATOR = '&&';
+
 export enum BackupFolderName {
   DATA = 'Data',
   DOWNLOAD = 'Download',

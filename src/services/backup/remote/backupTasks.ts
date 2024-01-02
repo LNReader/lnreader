@@ -1,248 +1,177 @@
-import { txnErrorCallback } from '@database/utils/helpers';
-import * as SQLite from 'expo-sqlite';
-import RNFS from 'react-native-fs';
 import { appVersion } from '@utils/versionUtils';
-import { ChapterInfo, NovelInfo } from '@database/types';
 import { store } from '@redux/store';
-import {
-  DataFilePath,
-  DataFolderPath,
-  RequestPackage,
-  BackupTask,
-  TaskType,
-} from './types';
+
 import { MMKVStorage } from '@utils/mmkv/mmkv';
 import {
   AppDownloadFolder,
   NovelDownloadFolder,
 } from '@utils/constants/download';
 import { walkDir } from '../utils';
+import {
+  BackupPackage,
+  BackupTask,
+  BackupDataFileName,
+  TaskType,
+} from '../types';
+import {
+  getAllNovels,
+  getNovelsWithCustomCover,
+} from '@database/queries/NovelQueries';
+import { getChapters } from '@database/queries/ChapterQueries';
+import { PATH_SEPARATOR } from '../types';
+import {
+  getAllNovelCategories,
+  getCategoriesFromDb,
+} from '@database/queries/CategoryQueries';
 
-const db = SQLite.openDatabase('lnreader.db');
-
-export const versionTask = (): Promise<BackupTask> => {
-  return new Promise(resolve => {
-    const requestPackage: RequestPackage = {
-      taskType: TaskType.Version,
-      content: {
-        version: appVersion,
-      },
-      relative_path: DataFilePath.Version,
-    };
-    resolve({
-      taskType: TaskType.Version,
-      subtasks: [async () => requestPackage],
-    });
-  });
+export const versionTask = async (
+  folderTree: string[],
+): Promise<BackupTask> => {
+  const backupPackage: BackupPackage = {
+    folderTree,
+    content: JSON.stringify({
+      version: appVersion,
+    }),
+    name: BackupDataFileName.VERSION,
+    mimeType: 'application/json',
+  };
+  return {
+    taskType: TaskType.VERSION,
+    subtasks: [async () => backupPackage],
+  };
 };
 
-export const categoryTask = (): Promise<BackupTask> => {
-  return new Promise(resolve => {
-    db.transaction(tx => {
-      tx.executeSql(
-        'SELECT * FROM Category',
-        [],
-        (txObj, { rows }) => {
-          const requestPackage: RequestPackage = {
-            taskType: TaskType.Category,
-            content: rows._array,
-            relative_path: DataFilePath.Category,
-          };
-          resolve({
-            taskType: TaskType.Category,
-            subtasks: [async () => requestPackage],
-          } as BackupTask);
-        },
-        txnErrorCallback,
-      );
-    });
-  });
-};
-
-export const novelTask = (): Promise<BackupTask> => {
-  return new Promise(resolve => {
-    db.transaction(tx => {
-      tx.executeSql(
-        'SELECT * FROM Novel',
-        [],
-        (txObj, { rows }) => {
-          const requestPackage: RequestPackage = {
-            taskType: TaskType.Novel,
-            content: rows._array.map((novel: NovelInfo) => {
-              if (novel.cover && !novel.cover.startsWith('http')) {
-                novel.cover = `${NovelDownloadFolder}/${novel.pluginId}/${novel.id}/Cover.jpg`;
-              }
-              return novel;
-            }),
-            relative_path: DataFilePath.Novel,
-          };
-          resolve({
-            taskType: TaskType.Novel,
-            subtasks: [async () => requestPackage],
-          } as BackupTask);
-        },
-        txnErrorCallback,
-      );
-    });
-  });
-};
-
-export const novelCoverTask = (): Promise<BackupTask> => {
-  return new Promise(resolve => {
-    db.transaction(tx => {
-      tx.executeSql(
-        'SELECT * FROM Novel WHERE cover NOT LIKE "http%"',
-        [],
-        (txObj, { rows }) => {
-          const subtasks = rows._array
-            .filter((novel: NovelInfo) => novel.cover)
-            .map((novel: NovelInfo) => {
-              const subtask = async () => {
-                let base64 = '';
-                if (novel.cover) {
-                  base64 = await RNFS.readFile(novel.cover, 'base64');
-                }
-                return {
-                  taskType: TaskType.NovelCover,
-                  content: base64,
-                  encoding: 'base64',
-                  relative_path: `${novel.pluginId}/${novel.id}/Cover.jpg`,
-                } as RequestPackage;
-              };
-              return subtask;
-            });
-          resolve({
-            taskType: TaskType.NovelCover,
-            subtasks: subtasks,
-          } as BackupTask);
-        },
-        txnErrorCallback,
-      );
-    });
-  });
-};
-
-export const novelCategoryTask = (): Promise<BackupTask> => {
-  return new Promise(resolve => {
-    db.transaction(tx => {
-      tx.executeSql(
-        'SELECT * FROM NovelCategory',
-        [],
-        (txObj, { rows }) => {
-          const requestPackage: RequestPackage = {
-            taskType: TaskType.NovelCategory,
-            content: rows._array,
-            relative_path: DataFilePath.NovelCatgory,
-          };
-          resolve({
-            taskType: TaskType.NovelCategory,
-            subtasks: [async () => requestPackage],
-          } as BackupTask);
-        },
-        txnErrorCallback,
-      );
-    });
-  });
-};
-
-const getChaptersByNovelId = (novelId: number): Promise<ChapterInfo[]> => {
-  return new Promise(resolve => {
-    db.transaction(tx => {
-      tx.executeSql(
-        'SELECT * FROM Chapter WHERE novelId = ?',
-        [novelId],
-        (txObj, { rows }) => resolve(rows._array),
-      );
-    });
-  });
-};
-
-export const chapterTask = (): Promise<BackupTask> => {
-  return new Promise(resolve => {
-    db.transaction(tx => {
-      tx.executeSql(
-        'SELECT id FROM Novel',
-        [],
-        (txObj, { rows }) => {
-          const subtasks = rows._array.map((novel: NovelInfo) => {
-            const subtask = async () => {
-              const chapters = await getChaptersByNovelId(novel.id);
-              const requestPackage: RequestPackage = {
-                taskType: TaskType.Chapter,
-                content: chapters,
-                relative_path: `${DataFolderPath.Chapter}/${novel.id}.json`,
-              };
-              return requestPackage;
-            };
-            return subtask;
-          });
-          resolve({ taskType: TaskType.Chapter, subtasks: subtasks });
-        },
-        txnErrorCallback,
-      );
-    });
-  });
-};
-
-export const downloadTask = (): Promise<BackupTask> => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const items = await walkDir(AppDownloadFolder);
-      const subtasks = items.map(item => {
-        const subtask = async () => {
-          const base64 = await RNFS.readFile(item.path, 'base64');
+export const novelTask = async (folderTree: string[]): Promise<BackupTask> => {
+  return getAllNovels().then(novels => {
+    const subtasks = novels.map(novel => {
+      if (novel.cover && !novel.cover.startsWith('http')) {
+        novel.cover = `file:///${NovelDownloadFolder}/${novel.pluginId}/${novel.id}/cover.png`;
+      }
+      return (): Promise<BackupPackage> =>
+        getChapters(novel.id).then(chapters => {
           return {
-            taskType: TaskType.Download,
-            encoding: 'base64',
-            content: base64,
-            relative_path: item.path.replace(AppDownloadFolder + '/', ''),
-          } as RequestPackage;
-        };
-        return subtask;
-      });
-      resolve({ taskType: TaskType.Download, subtasks: subtasks });
-    } catch (error) {
-      reject(error);
-    }
-  });
-};
-
-export const settingTask = (): Promise<BackupTask> => {
-  return new Promise(resolve => {
-    const state = store.getState();
-    state.trackerReducer = {
-      'tracker': null,
-      'trackedNovels': [],
+            folderTree: folderTree,
+            name: novel.id + '.json',
+            content: JSON.stringify({
+              chapters: chapters,
+              ...novel,
+            }),
+            mimeType: 'application/json',
+          };
+        });
+    });
+    return {
+      taskType: TaskType.NOVEL_AND_CHAPTERS,
+      subtasks: subtasks,
     };
-    const requestPackage = {
-      taskType: TaskType.Setting,
-      content: state,
-      relative_path: DataFilePath.Setting,
-    } as RequestPackage;
-    resolve({
-      taskType: TaskType.Setting,
-      subtasks: [async () => requestPackage],
-    });
   });
 };
 
-export const themeTask = (): Promise<BackupTask> => {
-  return new Promise(resolve => {
-    const APP_THEME = MMKVStorage.getString('APP_THEME');
-    const AMOLED_BLACK = MMKVStorage.getBoolean('AMOLED_BLACK');
-    const CUSTOM_ACCENT_COLOR = MMKVStorage.getString('CUSTOM_ACCENT_COLOR');
-    const requestPackage = {
-      taskType: TaskType.Theme,
-      content: {
-        APP_THEME,
-        AMOLED_BLACK,
-        CUSTOM_ACCENT_COLOR,
-      },
-      relative_path: DataFilePath.Theme,
-    } as RequestPackage;
-    resolve({
-      taskType: TaskType.Theme,
-      subtasks: [async () => requestPackage],
-    });
+export const novelCoverTask = (folderTree: string[]): Promise<BackupTask> => {
+  return getNovelsWithCustomCover().then(novels => {
+    return {
+      taskType: TaskType.NOVEL_COVER,
+      subtasks: novels.map(novel => {
+        return async (): Promise<BackupPackage> => {
+          return {
+            folderTree,
+            name: `${NovelDownloadFolder}/${novel.pluginId}/${novel.id}/cover.png`
+              .replace(AppDownloadFolder + '/', '')
+              .replace(/\//g, PATH_SEPARATOR),
+            mimeType: 'image/png',
+            content: novel.cover || '',
+          };
+        };
+      }),
+    };
   });
+};
+
+export const categoryTask = (folderTree: string[]): Promise<BackupTask> => {
+  return getCategoriesFromDb().then(categories => {
+    const task = async (): Promise<BackupPackage> => {
+      return getAllNovelCategories().then(novelCategories => {
+        return {
+          folderTree,
+          name: BackupDataFileName.CATEGORY,
+          mimeType: 'application/json',
+          content: JSON.stringify(
+            categories.map(category => {
+              return {
+                ...category,
+                novelIds: novelCategories
+                  .filter(nc => nc.categoryId === category.id)
+                  .map(nc => nc.novelId),
+              };
+            }),
+          ),
+        };
+      });
+    };
+    return {
+      taskType: TaskType.CATEGORY,
+      subtasks: [task],
+    };
+  });
+};
+
+export const downloadTask = (folderTree: string[]): Promise<BackupTask> => {
+  return walkDir(AppDownloadFolder).then(items => {
+    return {
+      taskType: TaskType.DOWNLOAD,
+      subtasks: items.map(item => {
+        return async (): Promise<BackupPackage> => {
+          return {
+            folderTree,
+            name: item.path
+              .replace(AppDownloadFolder + '/', '')
+              .replace(/\//g, PATH_SEPARATOR),
+            content: item.uri,
+            mimeType: item.mimeType,
+          };
+        };
+      }),
+    };
+  });
+};
+
+export const settingTask = async (
+  folderTree: string[],
+): Promise<BackupTask> => {
+  const state = store.getState();
+  state.trackerReducer = {
+    'tracker': null,
+    'trackedNovels': [],
+  };
+  const backupPackage: BackupPackage = {
+    folderTree,
+    name: BackupDataFileName.SETTING,
+    mimeType: 'application/json',
+    content: JSON.stringify(state),
+  };
+  return {
+    taskType: TaskType.SETTING,
+    subtasks: [async () => backupPackage],
+  };
+};
+
+export const themeTask = async (folderTree: string[]): Promise<BackupTask> => {
+  const APP_THEME = MMKVStorage.getString('APP_THEME');
+  const AMOLED_BLACK = MMKVStorage.getBoolean('AMOLED_BLACK');
+  const CUSTOM_ACCENT_COLOR = MMKVStorage.getString('CUSTOM_ACCENT_COLOR');
+
+  const backupPackage: BackupPackage = {
+    folderTree,
+    name: BackupDataFileName.THEME,
+    mimeType: 'application/json',
+    content: JSON.stringify({
+      APP_THEME,
+      AMOLED_BLACK,
+      CUSTOM_ACCENT_COLOR,
+    }),
+  };
+  return {
+    taskType: TaskType.THEME,
+    subtasks: [async () => backupPackage],
+  };
 };

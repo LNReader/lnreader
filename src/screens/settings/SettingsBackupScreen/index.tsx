@@ -10,6 +10,7 @@ import useBoolean from '@hooks/useBoolean';
 import { BackupSettingsScreenProps } from '@navigators/types';
 import GoogleDriveModal from './Components/GoogleDriveModal';
 import { useMMKVBoolean } from 'react-native-mmkv';
+import SelfHostModal from './Components/SelfHostModal';
 
 const BackupSettings = ({ navigation }: BackupSettingsScreenProps) => {
   const theme = useTheme();
@@ -17,6 +18,12 @@ const BackupSettings = ({ navigation }: BackupSettingsScreenProps) => {
     value: googleDriveModalVisible,
     setFalse: closeGoogleDriveModal,
     setTrue: openGoogleDriveModal,
+  } = useBoolean();
+
+  const {
+    value: selfHostModalVisible,
+    setFalse: closeSelfHostModal,
+    setTrue: openSelfHostModal,
   } = useBoolean();
 
   const [hasBackgroundTask] = useMMKVBoolean('HAS_BACKGROUND_TASK');
@@ -35,6 +42,7 @@ const BackupSettings = ({ navigation }: BackupSettingsScreenProps) => {
             title="Self Host"
             description="Backup to your server"
             theme={theme}
+            onPress={openSelfHostModal}
             disabled={hasBackgroundTask}
           />
 
@@ -52,6 +60,11 @@ const BackupSettings = ({ navigation }: BackupSettingsScreenProps) => {
           visible={googleDriveModalVisible}
           theme={theme}
           closeModal={closeGoogleDriveModal}
+        />
+        <SelfHostModal
+          theme={theme}
+          visible={selfHostModalVisible}
+          closeModal={closeSelfHostModal}
         />
       </Portal>
     </>
