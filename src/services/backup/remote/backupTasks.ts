@@ -18,7 +18,6 @@ import {
   getNovelsWithCustomCover,
 } from '@database/queries/NovelQueries';
 import { getChapters } from '@database/queries/ChapterQueries';
-import { PATH_SEPARATOR } from '../types';
 import {
   getAllNovelCategories,
   getCategoriesFromDb,
@@ -75,9 +74,10 @@ export const novelCoverTask = (folderTree: string[]): Promise<BackupTask> => {
         return async (): Promise<BackupPackage> => {
           return {
             folderTree,
-            name: `${NovelDownloadFolder}/${novel.pluginId}/${novel.id}/cover.png`
-              .replace(AppDownloadFolder + '/', '')
-              .replace(/\//g, PATH_SEPARATOR),
+            name: `${NovelDownloadFolder}/${novel.pluginId}/${novel.id}/cover.png`.replace(
+              AppDownloadFolder + '/',
+              '',
+            ),
             mimeType: 'image/png',
             content: novel.cover || '',
           };
@@ -123,9 +123,7 @@ export const downloadTask = (folderTree: string[]): Promise<BackupTask> => {
         return async (): Promise<BackupPackage> => {
           return {
             folderTree,
-            name: item.path
-              .replace(AppDownloadFolder + '/', '')
-              .replace(/\//g, PATH_SEPARATOR),
+            name: item.path.replace(AppDownloadFolder + '/', ''),
             content: item.uri,
             mimeType: item.mimeType,
           };

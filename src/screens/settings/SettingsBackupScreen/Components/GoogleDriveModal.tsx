@@ -102,7 +102,7 @@ function CreateBackup({
 
   const prepare = async () => {
     setFetching(true);
-    let rootFolder = await exists('LNReader', true);
+    let rootFolder = await exists('LNReader', true, undefined, true);
     if (!rootFolder) {
       rootFolder = await makeDir('LNReader');
     }
@@ -158,9 +158,9 @@ function RestoreBackup({
 }) {
   const [backupList, setBackupList] = useState<DriveFile[]>([]);
   useEffect(() => {
-    exists('LNReader', true).then(rootFolder => {
+    exists('LNReader', true, undefined, true).then(rootFolder => {
       if (rootFolder) {
-        getBackups(rootFolder.id).then(backups => setBackupList(backups));
+        getBackups(rootFolder.id, true).then(backups => setBackupList(backups));
       }
     });
   }, []);

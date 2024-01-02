@@ -7,13 +7,17 @@ export const exists = async (
   fileName: string,
   isFolder?: boolean,
   parentId?: string,
+  marked?: boolean,
 ) => {
-  let q = `name = '${fileName}' and trashed = false and fullText contains '${LNREADER_DRIVE_MARK}'`;
+  let q = `name = '${fileName}' and trashed = false `;
+  if (marked) {
+    q += ` and fullText contains '${LNREADER_DRIVE_MARK}' `;
+  }
   if (isFolder) {
-    q += " and mimeType = 'application/vnd.google-apps.folder'";
+    q += " and mimeType = 'application/vnd.google-apps.folder' ";
   }
   if (parentId) {
-    q += ` and '${parentId}' in parents`;
+    q += ` and '${parentId}' in parents `;
   }
   const res = await list({ q });
   return res.files.find(file => file.name === fileName);
@@ -61,22 +65,29 @@ export const createFile = async (
   return create(data);
 };
 
-export const getBackups = async (parentId: string) => {
-  return list({
-    q: `
-      name contains '.backup' and trashed = false and fullText contains '${LNREADER_DRIVE_MARK}'
+export const getBackups = async (parentId: string, marked?: boolean) => {
+  let q = `
+      name contains '.backup' and trashed = false
       and mimeType = 'application/vnd.google-apps.folder' and '${parentId}' in parents 
-    `,
+    `;
+  if (marked) {
+    q += ` and fullText contains '${LNREADER_DRIVE_MARK}' `;
+  }
+  return list({
+    q,
   }).then(res => res.files);
 };
 
-export const readDir = async (parentId: string) => {
+export const readDir = async (parentId: string, marked?: boolean) => {
   let fileList: DriveFile[] = [];
   let pageToken = '';
-  const q = `
-    fullText contains '${LNREADER_DRIVE_MARK}' and trashed = false
-    and mimeType != 'application/vnd.google-apps.folder' and '${parentId}' in parents
+  let q = `
+    trashed = false and mimeType != 'application/vnd.google-apps.folder' 
+    and '${parentId}' in parents 
   `;
+  if (marked) {
+    q += ` and fullText contains '${LNREADER_DRIVE_MARK}' `;
+  }
   let hasNextPage = true;
   while (hasNextPage) {
     const query = pageToken ? q + ` and pageToken = '${pageToken}'` : q;

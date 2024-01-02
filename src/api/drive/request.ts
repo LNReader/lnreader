@@ -7,6 +7,7 @@ import {
   DriveRequestParams,
 } from './types';
 import { AppDownloadFolder } from '@utils/constants/download';
+import { PATH_SEPARATOR } from '@api/constants';
 
 const BASE_URL = 'https://www.googleapis.com/drive/v3/files';
 const MEDIA_UPLOAD_URL = 'https://www.googleapis.com/upload/drive/v3/files';
@@ -49,7 +50,7 @@ export const create = async (
   const url =
     (data.content ? MEDIA_UPLOAD_URL : BASE_URL) + '?' + buildParams(params);
   let body: any;
-
+  data.metadata.name = data.metadata.name.replace(/\//g, PATH_SEPARATOR);
   if (data.content) {
     body = new FormData();
     body.append('metadata', {
@@ -96,7 +97,8 @@ export const getJson = async (id: string) => {
 export const download = async (file: DriveFile) => {
   const { accessToken } = await GoogleSignin.getTokens();
   const url = BASE_URL + '/' + file.id + '?alt=media';
-  const filePath = AppDownloadFolder + '/' + file.name;
+  const regex = new RegExp(`${PATH_SEPARATOR}`, 'g');
+  const filePath = AppDownloadFolder + '/' + file.name.replace(regex, '/');
   const dirPath = filePath.split('/').slice(0, -1).join('/');
   return exists(filePath).then(existed => {
     if (!existed) {

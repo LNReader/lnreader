@@ -1,4 +1,5 @@
-import { BackupPackage, PATH_SEPARATOR } from '@services/backup/types';
+import { PATH_SEPARATOR } from '@api/constants';
+import { BackupPackage } from '@services/backup/types';
 import { AppDownloadFolder } from '@utils/constants/download';
 import { downloadFile, mkdir } from 'react-native-fs';
 
@@ -12,6 +13,7 @@ const commonHeaders = {
 export const upload = (host: string, data: BackupPackage) => {
   const url = host + '/' + 'upload';
   const body = new FormData();
+  data.name = data.name.replace(/\//g, PATH_SEPARATOR);
   body.append('metadata', JSON.stringify(data));
   if (data.mimeType === 'application/json') {
     body.append('media', {
