@@ -6,6 +6,9 @@
     "notification": {
       "icon": "./assets/notification.png",
       "color": "#00adb5"
-    }
+    },
+    "plugins": [
+      "expo-localization"
+    ]
   }
 }
