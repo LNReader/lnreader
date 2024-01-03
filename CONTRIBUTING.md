@@ -2,7 +2,7 @@
 
 Contributions are welcome and are greatly appreciated!
 
-## <a name="setup">Setting up your environment</a>
+## Setting up your environment
 
 After forking to your own github org or account, do the following steps to get started:
 
@@ -27,13 +27,7 @@ npm run buildRelease
 
 ### Common Problems with First Setup
 
-##### SDK Location not found. Define location with an ANDROID_SDK_ROOT environment variable. (expo modules error)
-
-If you're on windows, you'll need to edit your system (system wide)/user (just you) environment variables. You'll want to add an environment variable named **ANDROID_SDK_ROOT** (legacy env variable name) and **ANDROID_HOME** that points to your android studio's sdk location. It'll most likely look something like this:
-
-C:\Users\\**Username**\AppData\Local\Android\Sdk (copy paste this into the box)
-
-Delete your node_modules folder, invalidate caches and restart in android studio and restart your machine. Follow the steps again in the [setup section](#setup).
+Please refer to this [file](./COMMON_ERRORS.md)
 
 ### Developing on Android
 
