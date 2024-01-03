@@ -163,7 +163,7 @@ import {
 import NovelsOnlineScraper from './en/NovelOnline';
 import SmakolykyTlScraper from './ua/smakolykytl';
 import LitSpaceScraper from './ru/freedlit';
-
+import EsmtlNovelScraper from './es/esmtlnovel';
 interface PopularNovelsResponse {
   novels: SourceNovelItem[];
 }
@@ -340,6 +340,7 @@ export const sourceManager = (sourceId: number): Scraper => {
     168: LitSpaceScraper, // @ts-ignore
     169: AsuraLightNovelScraper, // @ts-ignore
     170: ICantReadJPTLScraper, // @ts-ignore
+    171: EsmtlNovelScraper, // @ts-ignore 
   };
 
   return scrapers[sourceId];
