@@ -34,12 +34,24 @@ const ChaptersSettingsSheet = ({
         theme={theme}
         label="Downloaded"
         color={theme.primary}
-        status={filter.match('AND downloaded=1')}
-        onPress={() =>
+        status={
           filter.match('AND downloaded=1')
-            ? filterChapters(filter.replace(' AND downloaded=1', ''))
-            : filterChapters(filter + ' AND downloaded=1')
+            ? true
+            : filter.match('AND downloaded=0')
+            ? 'indeterminate'
+            : false
         }
+        onPress={() => {
+          if (filter.match('AND downloaded=0')) {
+            filterChapters(
+              filter.replace(' AND downloaded=0', ' AND downloaded=1'),
+            );
+          } else if (filter.match('AND downloaded=1')) {
+            filterChapters(filter.replace(' AND downloaded=1', ''));
+          } else {
+            filterChapters(filter + ' AND downloaded=0');
+          }
+        }}
       />
       <Checkbox
         theme={theme}
