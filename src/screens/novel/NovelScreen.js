@@ -68,6 +68,7 @@ import { getChapterScreenRouteParams } from '../../utils/NavigationUtils';
 import NovelScreenLoading from './components/LoadingAnimation/NovelScreenLoading';
 import { useTrackerReducer } from '@redux/hooks';
 import EpubIconButton from './components/EpubIconButton';
+import { uniqBy } from 'lodash-es';
 
 const Novel = ({ route, navigation }) => {
   const item = route.params;
@@ -290,25 +291,37 @@ const Novel = ({ route, navigation }) => {
 
       if (lastSelectedChapter.chapterId !== chapter.chapterId) {
         if (lastSelectedChapter.chapterId > chapter.chapterId) {
-          setSelected(sel => [
-            ...sel,
-            chapter,
-            ...chapters.filter(
-              chap =>
-                (chap.chapterId <= chapter.chapterId ||
-                  chap.chapterId >= lastSelectedChapter.chapterId) === false,
+          setSelected(sel =>
+            uniqBy(
+              [
+                ...sel,
+                chapter,
+                ...chapters.filter(
+                  chap =>
+                    (chap.chapterId <= chapter.chapterId ||
+                      chap.chapterId >= lastSelectedChapter.chapterId) ===
+                    false,
+                ),
+              ],
+              'chapterId',
             ),
-          ]);
+          );
         } else {
-          setSelected(sel => [
-            ...sel,
-            chapter,
-            ...chapters.filter(
-              chap =>
-                (chap.chapterId >= chapter.chapterId ||
-                  chap.chapterId <= lastSelectedChapter.chapterId) === false,
+          setSelected(sel =>
+            uniqBy(
+              [
+                ...sel,
+                chapter,
+                ...chapters.filter(
+                  chap =>
+                    (chap.chapterId >= chapter.chapterId ||
+                      chap.chapterId <= lastSelectedChapter.chapterId) ===
+                    false,
+                ),
+              ],
+              'chapterId',
             ),
-          ]);
+          );
         }
       }
     }

@@ -126,7 +126,7 @@ const popularNovels = async (page: number) => {
 const NovelsOnlineScraper = {
   popularNovels,
   parseNovelAndChapters,
-  parseChapter,
+  // parseChapter,
   searchNovels,
 };
 

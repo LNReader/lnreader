@@ -42,14 +42,14 @@ const ChaptersSettingsSheet = ({
             : false
         }
         onPress={() => {
-          if (filter.match('AND downloaded=0')) {
+          if (filter.match('AND downloaded=1')) {
             filterChapters(
-              filter.replace(' AND downloaded=0', ' AND downloaded=1'),
+              filter.replace(' AND downloaded=1', ' AND downloaded=0'),
             );
-          } else if (filter.match('AND downloaded=1')) {
-            filterChapters(filter.replace(' AND downloaded=1', ''));
+          } else if (filter.match('AND downloaded=0')) {
+            filterChapters(filter.replace(' AND downloaded=0', ''));
           } else {
-            filterChapters(filter + ' AND downloaded=0');
+            filterChapters(filter + ' AND downloaded=1');
           }
         }}
       />
