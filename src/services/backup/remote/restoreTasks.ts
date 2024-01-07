@@ -1,178 +1,153 @@
-import * as SQLite from 'expo-sqlite';
-import RNFS from 'react-native-fs';
-
+import { BackupDataFileName, RestoreTask, TaskType } from '../types';
+import { BackupCategory, BackupNovel } from '@database/types';
+import { _restoreNovelAndChapters } from '@database/queries/NovelQueries';
+import { _restoreCategory } from '@database/queries/CategoryQueries';
 import { store } from '@redux/store';
-import { ResponsePackage } from './types';
 import { RESTORE_NOVEL_STATE } from '@redux/novel/novel.types';
 import { restorePluginState } from '@redux/plugins/pluginsSlice';
 import { restorePreferenceState } from '@redux/preferences/preferencesSlice';
+import { restoreSettingsState } from '@redux/settings/settingsSliceV1';
 import { restoreSettingsState as restoreSettingsStateV2 } from '@redux/settings/settingsSliceV2';
 import { RESTORE_TRACKER_STATE } from '@redux/tracker/tracker.types';
 import { RESTORE_UPDATE_STATE } from '@redux/updates/updates.types';
 import { RESTORE_DOWNLOADS_STATE } from '@redux/downloads/donwloads.types';
 import { MMKVStorage } from '@utils/mmkv/mmkv';
+import { download, exists, getJson, list } from '@api/remote';
 
-import { createCategoryTriggerQuery } from '@database/tables/CategoryTable';
-import { AppDownloadFolder } from '@utils/constants/download';
-import { restoreSettingsState } from '@redux/settings/settingsSliceV1';
-
-const db = SQLite.openDatabase('lnreader.db');
-
-const insertObject = (record: any, table: string): Promise<void> => {
-  const fields = Object.keys(record).join(', ');
-  const values = Object.keys(record)
-    .map(() => '?')
-    .join(', ');
-  const query = `INSERT OR IGNORE INTO ${table} (${fields}) VALUES (${values})`;
-  return new Promise((resolve, reject) => {
-    db.transaction(tx => {
-      tx.executeSql(
-        query,
-        Object.values(record),
-        () => resolve(),
-        error => {
-          reject(error);
-          return false;
-        },
-      );
-    });
-  });
-};
-
-const insertTable = (records: any[], table: string): Promise<void> => {
-  return new Promise((resolve, reject) => {
-    db.transaction(tx => {
-      tx.executeSql(`DELETE FROM ${table}`, [], () => {
-        Promise.all(records.map((record: any) => insertObject(record, table)))
-          .then(() => resolve())
-          .catch(error => reject(error));
+export const restoreNovel = (
+  host: string,
+  folderTree: string[],
+): (() => Promise<RestoreTask>) => {
+  return () =>
+    list(host, folderTree).then(files => {
+      const subtasks = files.map(file => {
+        return (): Promise<void> => {
+          return getJson(host, folderTree, file).then((novel: BackupNovel) =>
+            _restoreNovelAndChapters(novel),
+          );
+        };
       });
+      return {
+        taskType: TaskType.NOVEL_AND_CHAPTERS,
+        subtasks: subtasks,
+      };
     });
-  });
-};
-
-export const checkAppVersion = (
-  responsePackage: ResponsePackage,
-): Promise<void> => {
-  return new Promise(resolve => {
-    responsePackage; // currently there's nothing to do
-    resolve();
-  });
 };
 
 export const restoreCategory = (
-  responsePackage: ResponsePackage,
-): Promise<void> => {
-  return new Promise(async (resolve, reject) => {
-    // this trigger could make sort mess up
-    db.transaction(tx => {
-      tx.executeSql('DROP TRIGGER if EXISTS add_category');
+  host: string,
+  folderTree: string[],
+): (() => Promise<RestoreTask>) => {
+  return () =>
+    exists(host, folderTree, BackupDataFileName.CATEGORY).then(existed => {
+      if (existed) {
+        return getJson(host, folderTree, BackupDataFileName.CATEGORY).then(
+          (categories: BackupCategory[]) => {
+            const subtasks = categories.map(category => {
+              return async () => _restoreCategory(category);
+            });
+            return {
+              taskType: TaskType.CATEGORY,
+              subtasks: subtasks,
+            } as RestoreTask;
+          },
+        );
+      }
+      return {
+        taskType: TaskType.CATEGORY,
+        subtasks: [],
+      };
     });
-    await insertTable(responsePackage.content, 'Category').catch(error =>
-      reject(error),
-    );
-    db.transaction(tx => {
-      tx.executeSql(createCategoryTriggerQuery);
+};
+
+export const retoreDownload = (
+  host: string,
+  folderTree: string[],
+): (() => Promise<RestoreTask>) => {
+  return () =>
+    list(host, folderTree).then(files => {
+      return {
+        taskType: TaskType.DOWNLOAD,
+        subtasks: files.map(file => () => download(host, folderTree, file)),
+      };
     });
-    resolve();
-  });
-};
-
-export const restoreNovel = (
-  responsePackage: ResponsePackage,
-): Promise<void> => {
-  return new Promise((resolve, reject) => {
-    db.transaction(async tx => {
-      tx.executeSql(
-        'DELETE FROM Chapter',
-        [],
-        () =>
-          insertTable(responsePackage.content, 'Novel').then(() => resolve()),
-        error => {
-          reject(error);
-          return false;
-        },
-      );
-    });
-  });
-};
-
-export const restoreNovelCategory = (
-  responsePackage: ResponsePackage,
-): Promise<void> => {
-  return new Promise((resolve, reject) => {
-    insertTable(responsePackage.content, 'NovelCategory')
-      .then(() => resolve())
-      .catch(error => reject(error));
-  });
-};
-
-export const restoreChapter = (
-  responsePackage: ResponsePackage,
-): Promise<void> => {
-  return new Promise((resolve, reject) => {
-    const chapters: any[] = responsePackage.content;
-    Promise.all(chapters.map(chapter => insertObject(chapter, 'Chapter')))
-      .then(() => resolve())
-      .catch(error => reject(error));
-  });
-};
-
-export const restoreDownload = (
-  responsePackage: ResponsePackage,
-): Promise<void> => {
-  return new Promise((resolve, reject) => {
-    const realPath = `${AppDownloadFolder}/${responsePackage.relative_path}`;
-    const folderPath = realPath.split('/').slice(0, -1).join('/');
-    RNFS.exists(folderPath)
-      .then(exists => {
-        if (!exists) {
-          return RNFS.mkdir(folderPath);
-        }
-        return new Promise(_resolve => _resolve(null));
-      })
-      .then(() => RNFS.writeFile(realPath, responsePackage.content, 'base64'))
-      .then(() => resolve())
-      .catch(error => reject(error));
-  });
 };
 
 export const restoreSetting = (
-  responsePackage: ResponsePackage,
-): Promise<void> => {
-  return new Promise(resolve => {
-    const state = responsePackage.content;
-    store.dispatch({ type: RESTORE_NOVEL_STATE, payload: state.novelReducer });
-    store.dispatch(restorePluginState(state.pluginsReducer));
-    store.dispatch(restorePreferenceState(state.preferenceReducer));
-    store.dispatch(restoreSettingsState(state.settingsReducerV1));
-    store.dispatch(restoreSettingsStateV2(state.settingsReducerV2));
-    store.dispatch({
-      type: RESTORE_TRACKER_STATE,
-      payload: state.trackerReducer,
+  host: string,
+  folderTree: string[],
+): (() => Promise<RestoreTask>) => {
+  return () =>
+    exists(host, folderTree, BackupDataFileName.SETTING).then(existed => {
+      if (existed) {
+        return getJson(host, folderTree, BackupDataFileName.SETTING).then(
+          state => {
+            const subtask = async () => {
+              store.dispatch({
+                type: RESTORE_NOVEL_STATE,
+                payload: state.novelReducer,
+              });
+              store.dispatch(restorePluginState(state.pluginsReducer));
+              store.dispatch(restorePreferenceState(state.preferenceReducer));
+              store.dispatch(restoreSettingsState(state.settingsReducerV1));
+              store.dispatch(restoreSettingsStateV2(state.settingsReducerV2));
+              store.dispatch({
+                type: RESTORE_TRACKER_STATE,
+                payload: state.trackerReducer,
+              });
+              store.dispatch({
+                type: RESTORE_UPDATE_STATE,
+                payload: state.updatesReducer,
+              });
+              store.dispatch({
+                type: RESTORE_DOWNLOADS_STATE,
+                payload: state.downloadsReducer,
+              });
+            };
+            return {
+              taskType: TaskType.SETTING,
+              subtasks: [subtask],
+            } as RestoreTask;
+          },
+        );
+      }
+      return {
+        taskType: TaskType.SETTING,
+        subtasks: [],
+      };
     });
-    store.dispatch({
-      type: RESTORE_UPDATE_STATE,
-      payload: state.updatesReducer,
-    });
-    store.dispatch({
-      type: RESTORE_DOWNLOADS_STATE,
-      payload: state.downloadsReducer,
-    });
-    resolve();
-  });
 };
 
 export const restoreTheme = (
-  responsePackage: ResponsePackage,
-): Promise<void> => {
-  return new Promise(resovle => {
-    const theme = responsePackage.content;
-    for (let key of ['APP_THEME', 'AMOLED_BLACK', 'CUSTOM_ACCENT_COLOR']) {
-      if (key in theme) {
-        MMKVStorage.set(key, theme[key]);
+  host: string,
+  folderTree: string[],
+): (() => Promise<RestoreTask>) => {
+  return () =>
+    exists(host, folderTree, BackupDataFileName.THEME).then(existed => {
+      if (existed) {
+        return getJson(host, folderTree, BackupDataFileName.THEME).then(
+          theme => {
+            const subtask = async () => {
+              for (let key of [
+                'APP_THEME',
+                'AMOLED_BLACK',
+                'CUSTOM_ACCENT_COLOR',
+              ]) {
+                if (key in theme) {
+                  MMKVStorage.set(key, theme[key]);
+                }
+              }
+            };
+            return {
+              taskType: TaskType.THEME,
+              subtasks: [subtask],
+            } as RestoreTask;
+          },
+        );
       }
-    }
-    resovle();
-  });
+      return {
+        taskType: TaskType.THEME,
+        subtasks: [],
+      };
+    });
 };

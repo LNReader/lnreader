@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1093792259511",
+    "project_id": "lnreader-test",
+    "storage_bucket": "lnreader-test.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1093792259511:android:aab0078285720642369c32",
+        "android_client_info": {
+          "package_name": "com.rajarsheechatterjee.LNReader"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1093792259511-9kftu28l4ku1k3cco7pn83jbrlsc4fr5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rajarsheechatterjee.LNReader",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "1093792259511-ml5ko1gmnvihqb2j9nnteehoeom2umnt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDuumsGzm6iE4u7E8pkk8FcNH9wL5GzoI8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1093792259511-ml5ko1gmnvihqb2j9nnteehoeom2umnt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

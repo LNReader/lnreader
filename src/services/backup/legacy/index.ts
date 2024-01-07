@@ -52,7 +52,7 @@ interface TaskData {
   delay: number;
 }
 
-export const restoreBackup = async (filePath: string) => {
+export const restoreBackup = async (filePath?: string) => {
   try {
     const backup = await DocumentPicker.getDocumentAsync({
       copyToCacheDirectory: false,

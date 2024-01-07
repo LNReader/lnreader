@@ -47,12 +47,12 @@ export const insertChapters = async (
 };
 
 const getChaptersQuery = (sort = 'ORDER BY id ASC', filter = '') =>
-  `SELECT id, * FROM Chapter WHERE novelId = ? ${filter} ${sort}`;
+  `SELECT * FROM Chapter WHERE novelId = ? ${filter} ${sort}`;
 
 export const getChapters = (
   novelId: number,
-  sort: string,
-  filter: string,
+  sort?: string,
+  filter?: string,
 ): Promise<ChapterInfo[]> => {
   return new Promise(resolve =>
     db.transaction(tx => {

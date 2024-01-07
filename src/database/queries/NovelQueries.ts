@@ -11,7 +11,7 @@ import { showToast } from '@hooks/showToast';
 import { txnErrorCallback } from '../utils/helpers';
 import { noop } from 'lodash-es';
 import { getString } from '@strings/translations';
-import { NovelInfo } from '../types';
+import { BackupNovel, NovelInfo } from '../types';
 import { SourceNovel } from '@plugins/types';
 import { NovelDownloadFolder } from '@utils/constants/download';
 
@@ -29,12 +29,12 @@ export const insertNovelAndChapters = (
           sourceNovel.url,
           pluginId,
           sourceNovel.name,
-          sourceNovel.cover || '',
-          sourceNovel.summary || '',
-          sourceNovel.author || '',
-          sourceNovel.artist || '',
-          sourceNovel.status || '',
-          sourceNovel.genres || '',
+          sourceNovel.cover || null,
+          sourceNovel.summary || null,
+          sourceNovel.author || null,
+          sourceNovel.artist || null,
+          sourceNovel.status || null,
+          sourceNovel.genres || null,
         ],
         (txObj, resultSet) => {
           if (resultSet.insertId) {
@@ -44,6 +44,28 @@ export const insertNovelAndChapters = (
           }
         },
         txnErrorCallback,
+      );
+    });
+  });
+};
+
+export const getAllNovels = async (): Promise<NovelInfo[]> => {
+  return new Promise(resolve =>
+    db.transaction(tx => {
+      tx.executeSql('SELECT * FROM Novel', [], (txObj, { rows }) =>
+        resolve(rows._array),
+      );
+    }),
+  );
+};
+
+export const getNovelsWithCustomCover = async (): Promise<NovelInfo[]> => {
+  return new Promise(resolve => {
+    db.transaction(tx => {
+      tx.executeSql(
+        'SELECT id, pluginId, cover FROM Novel WHERE cover NOT LIKE "http%"',
+        [],
+        (txObj, { rows }) => resolve(rows._array),
       );
     });
   });
@@ -77,11 +99,11 @@ export const switchNovelToLibrary = async (
     db.transaction(tx => {
       tx.executeSql(
         'UPDATE Novel SET inLibrary = ? WHERE id = ?',
-        [1 - novel.inLibrary, novel.id],
+        [Number(!novel.inLibrary), novel.id],
         noop,
         txnErrorCallback,
       );
-      if (novel.inLibrary === 1) {
+      if (novel.inLibrary) {
         tx.executeSql(
           'DELETE FROM NovelCategory WHERE novelId = ?',
           [novel.id],
@@ -179,7 +201,7 @@ export const restoreLibrary = async (novel: NovelInfo) => {
           novel.artist || '',
           novel.status || '',
           novel.genres || '',
-          novel.inLibrary,
+          Number(novel.inLibrary),
         ],
         async (txObj, { insertId }) => {
           if (!insertId) {
@@ -217,7 +239,7 @@ export const updateNovelInfo = async (info: NovelInfo) => {
         info.artist || '',
         info.genres || '',
         info.status || '',
-        info.isLocal,
+        Number(info.isLocal),
         info.id,
       ],
       noop,
@@ -303,5 +325,57 @@ export const updateNovelCategories = async (
         );
       });
     });
+  });
+};
+
+export const _restoreNovelAndChapters = (novel: BackupNovel) => {
+  db.transaction(tx => {
+    tx.executeSql('DELETE FROM Novel WHERE id = ?', [novel.id]);
+    tx.executeSql(
+      `INSERT INTO 
+        Novel (
+          id, url, pluginId, name, cover, summary, 
+          author, artist, status, genres, inLibrary, isLocal
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `,
+      [
+        novel.id,
+        novel.url,
+        novel.pluginId,
+        novel.name,
+        novel.cover || null,
+        novel.summary || null,
+        novel.author || null,
+        novel.artist || null,
+        novel.status || null,
+        novel.genres || null,
+        Number(novel.inLibrary),
+        Number(novel.isLocal),
+      ],
+    );
+    for (const chapter of novel.chapters) {
+      tx.executeSql(
+        `INSERT INTO 
+          Chapter (
+            id, novelId, url, name, releaseTime, bookmark,
+            unread, readTime, isDownloaded, updatedTime
+          )
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `,
+        [
+          chapter.id,
+          chapter.novelId,
+          chapter.url,
+          chapter.name,
+          chapter.releaseTime || null,
+          Number(chapter.bookmark),
+          Number(chapter.unread),
+          chapter.readTime,
+          Number(chapter.isDownloaded),
+          chapter.updatedTime,
+        ],
+      );
+    }
   });
 };

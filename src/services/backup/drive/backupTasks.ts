@@ -1,33 +1,30 @@
-import { appVersion } from '@utils/versionUtils';
-import { store } from '@redux/store';
-
-import { MMKVStorage } from '@utils/mmkv/mmkv';
-import {
-  AppDownloadFolder,
-  NovelDownloadFolder,
-} from '@utils/constants/download';
-import { walkDir } from '../utils';
 import {
   BackupPackage,
   BackupTask,
   BackupDataFileName,
   TaskType,
 } from '../types';
+import { appVersion } from '@utils/versionUtils';
 import {
   getAllNovels,
   getNovelsWithCustomCover,
 } from '@database/queries/NovelQueries';
+import {
+  AppDownloadFolder,
+  NovelDownloadFolder,
+} from '@utils/constants/download';
 import { getChapters } from '@database/queries/ChapterQueries';
 import {
-  getAllNovelCategories,
   getCategoriesFromDb,
+  getAllNovelCategories,
 } from '@database/queries/CategoryQueries';
+import { walkDir } from '../utils';
+import { store } from '@redux/store';
+import { MMKVStorage } from '@utils/mmkv/mmkv';
 
-export const versionTask = async (
-  folderTree: string[],
-): Promise<BackupTask> => {
+export const versionTask = async (parentId: string): Promise<BackupTask> => {
   const backupPackage: BackupPackage = {
-    folderTree,
+    folderTree: [parentId],
     content: JSON.stringify({
       version: appVersion,
     }),
@@ -40,7 +37,7 @@ export const versionTask = async (
   };
 };
 
-export const novelTask = async (folderTree: string[]): Promise<BackupTask> => {
+export const novelTask = async (parentId: string): Promise<BackupTask> => {
   return getAllNovels().then(novels => {
     const subtasks = novels.map(novel => {
       if (novel.cover && !novel.cover.startsWith('http')) {
@@ -49,7 +46,7 @@ export const novelTask = async (folderTree: string[]): Promise<BackupTask> => {
       return (): Promise<BackupPackage> =>
         getChapters(novel.id).then(chapters => {
           return {
-            folderTree: folderTree,
+            folderTree: [parentId],
             name: novel.id + '.json',
             content: JSON.stringify({
               chapters: chapters,
@@ -66,14 +63,14 @@ export const novelTask = async (folderTree: string[]): Promise<BackupTask> => {
   });
 };
 
-export const novelCoverTask = (folderTree: string[]): Promise<BackupTask> => {
+export const novelCoverTask = (parentId: string): Promise<BackupTask> => {
   return getNovelsWithCustomCover().then(novels => {
     return {
       taskType: TaskType.NOVEL_COVER,
       subtasks: novels.map(novel => {
         return async (): Promise<BackupPackage> => {
           return {
-            folderTree,
+            folderTree: [parentId],
             name: `${NovelDownloadFolder}/${novel.pluginId}/${novel.id}/cover.png`.replace(
               AppDownloadFolder + '/',
               '',
@@ -87,12 +84,12 @@ export const novelCoverTask = (folderTree: string[]): Promise<BackupTask> => {
   });
 };
 
-export const categoryTask = (folderTree: string[]): Promise<BackupTask> => {
+export const categoryTask = (parentId: string): Promise<BackupTask> => {
   return getCategoriesFromDb().then(categories => {
     const task = async (): Promise<BackupPackage> => {
       return getAllNovelCategories().then(novelCategories => {
         return {
-          folderTree,
+          folderTree: [parentId],
           name: BackupDataFileName.CATEGORY,
           mimeType: 'application/json',
           content: JSON.stringify(
@@ -115,14 +112,14 @@ export const categoryTask = (folderTree: string[]): Promise<BackupTask> => {
   });
 };
 
-export const downloadTask = (folderTree: string[]): Promise<BackupTask> => {
+export const downloadTask = (parentId: string): Promise<BackupTask> => {
   return walkDir(AppDownloadFolder).then(items => {
     return {
       taskType: TaskType.DOWNLOAD,
       subtasks: items.map(item => {
         return async (): Promise<BackupPackage> => {
           return {
-            folderTree,
+            folderTree: [parentId],
             name: item.path.replace(AppDownloadFolder + '/', ''),
             content: item.uri,
             mimeType: item.mimeType,
@@ -133,16 +130,14 @@ export const downloadTask = (folderTree: string[]): Promise<BackupTask> => {
   });
 };
 
-export const settingTask = async (
-  folderTree: string[],
-): Promise<BackupTask> => {
+export const settingTask = async (parentId: string): Promise<BackupTask> => {
   const state = store.getState();
   state.trackerReducer = {
     'tracker': null,
     'trackedNovels': [],
   };
   const backupPackage: BackupPackage = {
-    folderTree,
+    folderTree: [parentId],
     name: BackupDataFileName.SETTING,
     mimeType: 'application/json',
     content: JSON.stringify(state),
@@ -153,13 +148,13 @@ export const settingTask = async (
   };
 };
 
-export const themeTask = async (folderTree: string[]): Promise<BackupTask> => {
+export const themeTask = async (parentId: string): Promise<BackupTask> => {
   const APP_THEME = MMKVStorage.getString('APP_THEME');
   const AMOLED_BLACK = MMKVStorage.getBoolean('AMOLED_BLACK');
   const CUSTOM_ACCENT_COLOR = MMKVStorage.getString('CUSTOM_ACCENT_COLOR');
 
   const backupPackage: BackupPackage = {
-    folderTree,
+    folderTree: [parentId],
     name: BackupDataFileName.THEME,
     mimeType: 'application/json',
     content: JSON.stringify({

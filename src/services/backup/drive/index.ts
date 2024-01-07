@@ -1,8 +1,9 @@
-import { MMKVStorage } from '@utils/mmkv/mmkv';
+import { DriveFile } from '@api/drive/types';
 import { sleep } from '@utils/sleep';
 import BackgroundService from 'react-native-background-actions';
 import * as Notifications from 'expo-notifications';
-import { upload } from '@api/remote';
+import { MMKVStorage } from '@utils/mmkv/mmkv';
+import { createFile, exists, makeDir } from '@api/drive';
 import {
   categoryTask,
   downloadTask,
@@ -12,7 +13,6 @@ import {
   themeTask,
   versionTask,
 } from './backupTasks';
-
 import {
   restoreCategory,
   restoreNovel,
@@ -23,30 +23,29 @@ import {
 
 interface TaskData {
   delay: number;
-  host: string;
-  backupFolder: string;
+  backupFolder: DriveFile;
 }
 
-const remoteBackupAction = async (taskData?: TaskData) => {
+const driveBackupAction = async (taskData?: TaskData) => {
   try {
     if (!taskData) {
       throw new Error('No data provided');
     }
-    const { delay, backupFolder, host } = taskData;
+    const { delay, backupFolder } = taskData;
     await sleep(delay);
 
-    const dataFolder = [backupFolder, 'Data'];
-    const downloadFolder = [backupFolder, 'Download'];
-    const novelFolder = [backupFolder, 'Data', 'NovelAndChapters'];
+    const dataFolder = await makeDir('Data', backupFolder.id);
+    const downloadFolder = await makeDir('Download', backupFolder.id);
+    const novelFolder = await makeDir('NovelAndChapters', dataFolder.id);
 
     const taskList = [
-      versionTask(dataFolder),
-      novelTask(novelFolder),
-      novelCoverTask(downloadFolder),
-      categoryTask(dataFolder),
-      downloadTask(downloadFolder),
-      settingTask(dataFolder),
-      themeTask(dataFolder),
+      versionTask(dataFolder.id),
+      novelTask(novelFolder.id),
+      novelCoverTask(downloadFolder.id),
+      categoryTask(dataFolder.id),
+      downloadTask(downloadFolder.id),
+      settingTask(dataFolder.id),
+      themeTask(dataFolder.id),
     ];
 
     for (let i = 0; i < taskList.length; i++) {
@@ -60,7 +59,14 @@ const remoteBackupAction = async (taskData?: TaskData) => {
           },
         })
           .then(() => subtasks[j]())
-          .then(backupPackage => upload(host, backupPackage))
+          .then(backupPackage =>
+            createFile(
+              backupPackage.name,
+              backupPackage.mimeType,
+              backupPackage.content,
+              backupPackage.folderTree[0],
+            ),
+          )
           .then(() => sleep(delay))
           .catch(error => {
             throw error;
@@ -70,7 +76,7 @@ const remoteBackupAction = async (taskData?: TaskData) => {
 
     await Notifications.scheduleNotificationAsync({
       content: {
-        title: 'Self Host Backup',
+        title: 'Drive Backup',
         body: 'Done',
       },
       trigger: null,
@@ -79,7 +85,7 @@ const remoteBackupAction = async (taskData?: TaskData) => {
     if (BackgroundService.isRunning()) {
       await Notifications.scheduleNotificationAsync({
         content: {
-          title: 'Self Host Backup Interruped',
+          title: 'Drive Backup Interruped',
           body: error.message,
         },
         trigger: null,
@@ -91,22 +97,22 @@ const remoteBackupAction = async (taskData?: TaskData) => {
   }
 };
 
-export const createBackup = async (host: string, backupFolder: string) => {
+export const createBackup = async (backupFolder: DriveFile) => {
   MMKVStorage.set('HAS_BACKGROUND_TASK', true);
   try {
-    return BackgroundService.start(remoteBackupAction, {
-      taskName: 'Self Host Backup',
-      taskTitle: 'Self Host Backup',
+    return BackgroundService.start(driveBackupAction, {
+      taskName: 'Drive Backup',
+      taskTitle: 'Drive Backup',
       taskDesc: 'Preparing',
       taskIcon: { name: 'notification_icon', type: 'drawable' },
       color: '#00adb5',
-      parameters: { delay: 200, backupFolder, host },
+      parameters: { delay: 500, backupFolder },
       linkingURI: 'lnreader://updates',
     });
   } catch (e: any) {
     await Notifications.scheduleNotificationAsync({
       content: {
-        title: 'Self Host Backup Interruped',
+        title: 'Drive Backup Interruped',
         body: e.message,
       },
       trigger: null,
@@ -117,28 +123,27 @@ export const createBackup = async (host: string, backupFolder: string) => {
   }
 };
 
-const remoteRestoreAction = async (taskData?: TaskData) => {
+const driveRestoreAction = async (taskData?: TaskData) => {
   try {
     if (!taskData) {
       throw new Error('No data provided');
     }
-    const { delay, backupFolder, host } = taskData;
+    const { delay, backupFolder } = taskData;
     await sleep(delay);
 
-    const dataFolder = [backupFolder, 'Data'];
-    const downloadFolder = [backupFolder, 'Download'];
-    const novelFolder = [backupFolder, 'Data', 'NovelAndChapters'];
-
+    const dataFolder = await exists('Data', true, backupFolder.id);
+    const downloadFolder = await exists('Download', true, backupFolder.id);
+    const novelFolder = await exists('NovelAndChapters', true, dataFolder?.id);
     if (!dataFolder || !downloadFolder || !novelFolder) {
       throw new Error('Invalid backup folder');
     }
 
     const taskList = [
-      restoreNovel(host, novelFolder),
-      restoreCategory(host, dataFolder),
-      retoreDownload(host, downloadFolder),
-      restoreSetting(host, dataFolder),
-      restoreTheme(host, dataFolder),
+      restoreNovel(novelFolder.id),
+      restoreCategory(dataFolder.id),
+      retoreDownload(downloadFolder.id),
+      restoreSetting(dataFolder.id),
+      restoreTheme(dataFolder.id),
     ];
 
     for (let i = 0; i < taskList.length; i++) {
@@ -161,7 +166,7 @@ const remoteRestoreAction = async (taskData?: TaskData) => {
 
     await Notifications.scheduleNotificationAsync({
       content: {
-        title: 'Self Host Restore',
+        title: 'Drive Restore',
         body: 'Done',
       },
       trigger: null,
@@ -171,7 +176,7 @@ const remoteRestoreAction = async (taskData?: TaskData) => {
     if (BackgroundService.isRunning()) {
       await Notifications.scheduleNotificationAsync({
         content: {
-          title: 'Self Host Restore Interruped',
+          title: 'Drive Restore Interruped',
           body: error.message,
         },
         trigger: null,
@@ -183,22 +188,22 @@ const remoteRestoreAction = async (taskData?: TaskData) => {
   }
 };
 
-export const remoteRestore = async (host: string, backupFolder: string) => {
+export const driveRestore = async (backupFolder: DriveFile) => {
   MMKVStorage.set('HAS_BACKGROUND_TASK', true);
   try {
-    return BackgroundService.start(remoteRestoreAction, {
-      taskName: 'Self Host Restore',
-      taskTitle: 'Self Host Restore',
+    return BackgroundService.start(driveRestoreAction, {
+      taskName: 'Drive Restore',
+      taskTitle: 'Drive Restore',
       taskDesc: 'Preparing',
       taskIcon: { name: 'notification_icon', type: 'drawable' },
       color: '#00adb5',
-      parameters: { delay: 200, backupFolder, host },
+      parameters: { delay: 500, backupFolder },
       linkingURI: 'lnreader://updates',
     });
   } catch (e: any) {
     await Notifications.scheduleNotificationAsync({
       content: {
-        title: 'Self Host Restore Interruped',
+        title: 'Drive Restore Interruped',
         body: e.message,
       },
       trigger: null,

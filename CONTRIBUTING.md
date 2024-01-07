@@ -19,7 +19,7 @@ git clone https://github.com/<your-account-name>/lnreader.git
 cd lnreader
 
 # install dependencies
-npm install --legacy-peer-deps
+npm install
 
 # build the apk (the built apk will be found in ~/lnreader/android/app/build/outputs/apk/release/)
 npm run buildRelease
