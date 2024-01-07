@@ -8,7 +8,7 @@ import SwitchSetting from '../../components/Switch/Switch';
 import ColorPickerModal from '../../components/ColorPickerModal/ColorPickerModal';
 
 import { useSettings } from '../../hooks/reduxHooks';
-import { useTheme } from '@hooks/useTheme';
+import { useTheme } from '@hooks/persisted';
 import { setAppSettings } from '@redux/settings/settingsSliceV1';
 import {
   defaultTheme,

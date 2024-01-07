@@ -5,7 +5,7 @@ import color from 'color';
 import { BottomSheetView, BottomSheetModal } from '@gorhom/bottom-sheet';
 import BottomSheet from '@components/BottomSheet/BottomSheet';
 import { useAppDispatch, useSettingsV1 } from '@redux/hooks';
-import { useTheme } from '@hooks/useTheme';
+import { useTheme } from '@hooks/persisted';
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
 import { getString } from '@strings/translations';
 import { setAppSettings } from '@redux/settings/settingsSliceV1';

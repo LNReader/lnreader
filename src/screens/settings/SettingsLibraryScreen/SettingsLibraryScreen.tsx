@@ -1,12 +1,8 @@
 import React from 'react';
 import { Appbar, List } from '@components';
 import { getString } from '@strings/translations';
-import {
-  useBoolean,
-  useCategories,
-  useCategorySettings,
-  useTheme,
-} from '@hooks';
+import { useBoolean, useCategories, useCategorySettings } from '@hooks';
+import { useTheme } from '@hooks/persisted';
 import { useNavigation } from '@react-navigation/native';
 import { Portal } from 'react-native-paper';
 import DefaultCategoryDialog from './DefaultCategoryDialog';

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { ScreenContainer } from '@components/Common';
 
-import { useTheme } from '@hooks/useTheme';
+import { useTheme } from '@hooks/persisted';
 import { Appbar, List } from '@components';
 import { Portal } from 'react-native-paper';
 import { useBoolean } from '@hooks';

@@ -3,10 +3,10 @@ import React from 'react';
 
 import { setReaderSettings } from '@redux/settings/settingsSliceV1';
 import { useAppDispatch, useReaderSettings } from '../../../../redux/hooks';
-import { useTheme } from '@hooks/useTheme';
-import { textAlignments } from '../../../../utils/constants/readerConstants';
-import { ToggleButton } from '../../../../components/Common/ToggleButton';
-import { getString } from '../../../../../strings/translations';
+import { useTheme } from '@hooks/persisted';
+import { textAlignments } from '@utils/constants/readerConstants';
+import { ToggleButton } from '@components/Common/ToggleButton';
+import { getString } from '@strings/translations';
 
 interface ReaderTextAlignSelectorProps {
   labelStyle?: TextStyle | TextStyle[];

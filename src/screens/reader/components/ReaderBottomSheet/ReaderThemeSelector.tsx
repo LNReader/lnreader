@@ -6,10 +6,10 @@ import {
   useReaderSettings,
   useSettingsV2,
 } from '../../../../redux/hooks';
-import { ToggleColorButton } from '../../../../components/Common/ToggleButton';
-import { getString } from '../../../../../strings/translations';
-import { presetReaderThemes } from '../../../../utils/constants/readerConstants';
-import { useTheme } from '@hooks/useTheme';
+import { ToggleColorButton } from '@components/Common/ToggleButton';
+import { getString } from '@strings/translations';
+import { presetReaderThemes } from '@utils/constants/readerConstants';
+import { useTheme } from '@hooks/persisted';
 
 interface ReaderThemeSelectorProps {
   label?: string;

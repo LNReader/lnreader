@@ -10,13 +10,13 @@ import {
 
 import * as WebBrowser from 'expo-web-browser';
 
-import { ErrorView } from '../../../components/ErrorView/ErrorView';
+import { ErrorView } from '@components/ErrorView/ErrorView';
 import { SearchbarV2 } from '@components';
 
-import { showToast } from '../../../utils/showToast';
+import { showToast } from '@utils/showToast';
 import { scrapeSearchResults, scrapeTopNovels } from './MyAnimeListScraper';
 import MalNovelCard from './MalNovelCard/MalNovelCard';
-import { useTheme } from '@hooks/useTheme';
+import { useTheme } from '@hooks/persisted';
 import MalLoading from '../loadingAnimation/MalLoading';
 import { BrowseMalScreenProps } from '@navigators/types';
 

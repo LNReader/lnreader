@@ -19,7 +19,7 @@ import {
 } from '@redux/hooks';
 
 import { useSearch } from '@hooks';
-import { useTheme } from '@hooks/useTheme';
+import { useTheme } from '@hooks/persisted';
 import { getString } from '@strings/translations';
 import { fetchPlugins } from '@plugins/pluginManager';
 

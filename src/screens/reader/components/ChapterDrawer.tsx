@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { StyleSheet, View, Pressable } from 'react-native';
 import { Text } from 'react-native-paper';
 import color from 'color';
-import { useTheme } from '@hooks/useTheme';
+import { useTheme } from '@hooks/persisted';
 import { FlashList, FlashListProps } from '@shopify/flash-list';
 import { Button, LoadingScreenV2 } from '@components/index';
 import { EdgeInsets, useSafeAreaInsets } from 'react-native-safe-area-context';

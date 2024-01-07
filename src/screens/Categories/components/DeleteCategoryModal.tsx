@@ -4,9 +4,9 @@ import { Modal, Portal } from 'react-native-paper';
 
 import { Button } from '@components/index';
 
-import { Category } from '../../../database/types';
-import { deleteCategoryById } from '../../../database/queries/CategoryQueries';
-import { useTheme } from '@hooks/useTheme';
+import { Category } from '@database/types';
+import { deleteCategoryById } from '@database/queries/CategoryQueries';
+import { useTheme } from '@hooks/persisted';
 
 import { getString } from '@strings/translations';
 

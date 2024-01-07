@@ -6,7 +6,7 @@ import { EmptyView, SearchbarV2 } from '@components/index';
 import GlobalSearchResultsList from './components/GlobalSearchResultsList';
 
 import { useSearch } from '@hooks';
-import { useTheme } from '@hooks/useTheme';
+import { useTheme } from '@hooks/persisted';
 
 import { getString } from '@strings/translations';
 import { useGlobalSearch } from './hooks/useGlobalSearch';

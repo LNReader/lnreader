@@ -5,10 +5,10 @@ import color from 'color';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { getString } from '../../../../../strings/translations';
 import { useAppDispatch, useReaderSettings } from '../../../../redux/hooks';
-import { useTheme } from '@hooks/useTheme';
+import { useTheme } from '@hooks/persisted';
 
 import { setReaderSettings } from '@redux/settings/settingsSliceV1';
-import { Font, readerFonts } from '../../../../utils/constants/readerConstants';
+import { Font, readerFonts } from '@utils/constants/readerConstants';
 import { FlatList } from 'react-native-gesture-handler';
 
 const ReaderFontPicker = () => {

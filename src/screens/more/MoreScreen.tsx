@@ -13,7 +13,7 @@ import { List } from '@components';
 
 import { MoreHeader } from './components/MoreHeader';
 import { useLibrarySettings } from '@hooks/useSettings';
-import { useTheme } from '@hooks/useTheme';
+import { useTheme } from '@hooks/persisted';
 import { MoreStackScreenProps } from '@navigators/types';
 import { RootState } from '@redux/store';
 
@@ -160,7 +160,7 @@ const MoreScreen = ({ navigation }: MoreStackScreenProps) => {
                 screen: 'SettingsStack',
                 params: {
                   screen: 'Settings',
-                }
+                },
               })
             }
             theme={theme}

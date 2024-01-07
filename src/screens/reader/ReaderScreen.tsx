@@ -24,7 +24,7 @@ import {
 import { fetchChapter } from '@services/plugin/fetch';
 import { showToast } from '@utils/showToast';
 import { usePosition, useSettings, useTrackingStatus } from '@hooks/reduxHooks';
-import { useTheme } from '@hooks/useTheme';
+import { useTheme } from '@hooks/persisted';
 import { updateChaptersRead } from '@redux/tracker/tracker.actions';
 import { markChapterReadAction } from '@redux/novel/novel.actions';
 import { saveScrollPosition } from '@redux/preferences/preferencesSlice';

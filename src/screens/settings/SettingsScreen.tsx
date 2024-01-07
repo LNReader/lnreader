@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 
 import { Appbar, List } from '@components';
-import { useTheme } from '@hooks/useTheme';
+import { useTheme } from '@hooks/persisted';
 
 import { getString } from '@strings/translations';
 import { SettingsScreenProps } from '@navigators/types';

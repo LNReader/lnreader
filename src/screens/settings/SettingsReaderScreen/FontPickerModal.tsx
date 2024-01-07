@@ -5,7 +5,7 @@ import { Portal, Modal, overlay } from 'react-native-paper';
 import { RadioButton } from '@components/RadioButton/RadioButton';
 
 import { useAppDispatch } from '@redux/hooks';
-import { useTheme } from '@hooks/useTheme';
+import { useTheme } from '@hooks/persisted';
 import { setReaderSettings } from '@redux/settings/settingsSliceV1';
 
 import { readerFonts } from '../../../utils/constants/readerConstants';

@@ -3,10 +3,10 @@ import { ScrollView } from 'react-native';
 
 import * as Linking from 'expo-linking';
 
-import { ScreenContainer } from '../../components/Common';
+import { ScreenContainer } from '@components/Common';
 import { MoreHeader } from './components/MoreHeader';
-import { appVersion, releaseDate } from '../../utils/versionUtils';
-import { useTheme } from '@hooks/useTheme';
+import { appVersion, releaseDate } from '@utils/versionUtils';
+import { useTheme } from '@hooks/persisted';
 import { List } from '@components';
 import { AboutScreenProps } from '@navigators/types';
 

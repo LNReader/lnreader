@@ -16,7 +16,7 @@ import { Banner } from './components/Banner';
 import { Actionbar } from '@components/Actionbar/Actionbar';
 
 import { useLibrary } from './hooks/useLibrary';
-import { useTheme } from '@hooks/useTheme';
+import { useTheme } from '@hooks/persisted';
 import { useSearch } from '@hooks';
 import { getString } from '@strings/translations';
 import { FAB, Portal } from 'react-native-paper';

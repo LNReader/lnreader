@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import { setBarColor } from '@theme/utils/setBarColor';
-import { useTheme } from '@hooks/useTheme';
+import { useTheme } from '@hooks/persisted';
 import { useGithubUpdateChecker } from '@hooks/common/githubUpdateChecker';
 
 /**

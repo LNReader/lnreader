@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import { Button } from '@components/index';
 
-import { useTheme } from '@hooks/useTheme';
+import { useTheme } from '@hooks/persisted';
 
 import { getString } from '@strings/translations';
 import { getCategoriesFromDb } from '@database/queries/CategoryQueries';

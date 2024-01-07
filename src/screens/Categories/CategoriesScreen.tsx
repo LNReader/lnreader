@@ -9,12 +9,12 @@ import AddCategoryModal from './components/AddCategoryModal';
 import {
   getCategoriesFromDb,
   updateCategoryOrderInDb,
-} from '../../database/queries/CategoryQueries';
+} from '@database/queries/CategoryQueries';
 import { useBoolean } from '@hooks';
-import { useTheme } from '@hooks/useTheme';
+import { useTheme } from '@hooks/persisted';
 import { getString } from '@strings/translations';
 
-import { Category } from '../../database/types';
+import { Category } from '@database/types';
 import CategoryCard from './components/CategoryCard';
 import { orderBy } from 'lodash-es';
 import CategorySkeletonLoading from './components/CategorySkeletonLoading';

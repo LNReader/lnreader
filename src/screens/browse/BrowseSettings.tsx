@@ -7,7 +7,7 @@ import {
   useBrowseSettings,
   usePluginReducer,
 } from '@redux/hooks';
-import { useTheme } from '@hooks/useTheme';
+import { useTheme } from '@hooks/persisted';
 import { getString } from '@strings/translations';
 import { availableLanguages } from '@utils/constants/languages';
 import { toggleLanguageFilter } from '@redux/plugins/pluginsSlice';

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import BottomSheet from '../../../components/BottomSheet/BottomSheet';
+import BottomSheet from '@components/BottomSheet/BottomSheet';
 import { BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet';
 
-import { useTheme } from '@hooks/useTheme';
+import { useTheme } from '@hooks/persisted';
 import {
   FilterTypes,
   FilterToValues,

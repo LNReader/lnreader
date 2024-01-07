@@ -10,7 +10,7 @@ import { LibraryNovelInfo } from '@database/types';
 
 import { getString } from '@strings/translations';
 import { useAppDispatch } from '@redux/hooks';
-import { useTheme } from '@hooks/useTheme';
+import { useTheme } from '@hooks/persisted';
 import { updateLibraryAction } from '@redux/updates/updates.actions';
 import { LibraryScreenProps } from '@navigators/types';
 

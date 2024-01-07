@@ -8,7 +8,7 @@ import {
   hideNavigationBar,
   showNavigationBar,
 } from '../../native/NavigationBarColor';
-import { useTheme } from '../useTheme';
+import { useTheme } from '../persisted';
 
 const useFullscreenMode = () => {
   const { addListener } = useNavigation();

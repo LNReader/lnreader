@@ -11,7 +11,7 @@ import {
 
 import { useSelector, useDispatch } from 'react-redux';
 import { removeTracker, setTracker } from '../../redux/tracker/tracker.actions';
-import { useTheme } from '@hooks/useTheme';
+import { useTheme } from '@hooks/persisted';
 import { Appbar, List } from '@components';
 import { TrackerSettingsScreenProps } from '@navigators/types';
 import { RootState } from '@redux/store';

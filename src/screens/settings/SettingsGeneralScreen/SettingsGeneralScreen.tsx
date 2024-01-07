@@ -8,7 +8,7 @@ import DisplayModeModal from './modals/DisplayModeModal';
 import GridSizeModal from './modals/GridSizeModal';
 
 import { useSettings } from '../../../hooks/reduxHooks';
-import { useTheme } from '@hooks/useTheme';
+import { useTheme } from '@hooks/persisted';
 import { setAppSettings } from '@redux/settings/settingsSliceV1';
 import { SHOW_LAST_UPDATE_TIME } from '../../../redux/updates/updates.types';
 import DefaultChapterSortModal from '../components/DefaultChapterSortModal';

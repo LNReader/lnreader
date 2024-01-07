@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { Dialog, Portal } from 'react-native-paper';
 
-import { useTheme } from '@hooks/useTheme';
+import { useTheme } from '@hooks/persisted';
 import { showToast } from '@utils/showToast';
 
 import { deleteCachedNovels } from '@database/queries/NovelQueries';

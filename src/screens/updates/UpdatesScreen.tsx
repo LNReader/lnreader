@@ -14,7 +14,7 @@ import { updateLibraryAction } from '@redux/updates/updates.actions';
 
 import { getString } from '@strings/translations';
 import { ThemeColors } from '@theme/types';
-import { useTheme } from '@hooks/useTheme';
+import { useTheme } from '@hooks/persisted';
 import UpdatesSkeletonLoading from './components/UpdatesSkeletonLoading';
 import UpdateNovelCard from './components/UpdateNovelCard';
 

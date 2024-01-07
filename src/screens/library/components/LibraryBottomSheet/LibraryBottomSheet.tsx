@@ -4,7 +4,7 @@ import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
 import color from 'color';
 
 import { useLibrarySettings } from '@hooks/useSettings';
-import { useTheme } from '@hooks/useTheme';
+import { useTheme } from '@hooks/persisted';
 import { getString } from '@strings/translations';
 import { Checkbox, SortItem } from '@components/Checkbox/Checkbox';
 import {

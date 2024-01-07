@@ -9,7 +9,7 @@ import {
 } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { useTheme } from '@hooks/useTheme';
+import { useTheme } from '@hooks/persisted';
 
 import {
   cancelDownload,

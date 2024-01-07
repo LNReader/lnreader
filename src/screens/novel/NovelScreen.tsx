@@ -43,7 +43,7 @@ import {
   useSettings,
 } from '@hooks/reduxHooks';
 import { showToast } from '../../utils/showToast';
-import { useTheme } from '@hooks/useTheme';
+import { useTheme } from '@hooks/persisted';
 import NovelInfoHeader from './components/Info/NovelInfoHeader';
 import NovelBottomSheet from './components/NovelBottomSheet';
 import TrackSheet from './components/Tracker/TrackSheet';

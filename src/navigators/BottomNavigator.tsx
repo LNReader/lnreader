@@ -9,7 +9,7 @@ import More from '../screens/more/MoreScreen';
 
 import { useSettings } from '../hooks/reduxHooks';
 import { getString } from '../../strings/translations';
-import { useTheme } from '@hooks/useTheme';
+import { useTheme } from '@hooks/persisted';
 import { BottomNavigatorParamList } from './types';
 
 const Tab = createMaterialBottomTabNavigator<BottomNavigatorParamList>();

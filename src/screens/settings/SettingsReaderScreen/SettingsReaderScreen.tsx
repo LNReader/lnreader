@@ -33,7 +33,7 @@ import {
   useAppDispatch,
   useSettingsV2,
 } from '@redux/hooks';
-import { useTheme } from '@hooks/useTheme';
+import { useTheme } from '@hooks/persisted';
 import { getString } from '@strings/translations';
 import {
   setAppSettings,

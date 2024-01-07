@@ -3,7 +3,7 @@ import { Dimensions, StatusBar } from 'react-native';
 import WebView, { WebViewNavigation } from 'react-native-webview';
 import color from 'color';
 
-import { useTheme } from '@hooks/useTheme';
+import { useTheme } from '@hooks/persisted';
 import { ChapterInfo } from '@database/types';
 import { useReaderSettings, useSettingsV1 } from '@redux/hooks';
 import { getString } from '@strings/translations';

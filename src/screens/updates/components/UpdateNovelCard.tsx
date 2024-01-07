@@ -15,7 +15,7 @@ import ChapterItem from '@screens/novel/components/ChapterItem';
 import { useSelector } from 'react-redux';
 import { RootState } from '@redux/store';
 import { useAppDispatch } from '@redux/hooks';
-import { useTheme } from '@hooks/useTheme';
+import { useTheme } from '@hooks/persisted';
 import { noop } from 'lodash-es';
 
 const NovelCover = ({
