@@ -19,6 +19,10 @@ const popularNovels = async (page, { showLatestNovels, filters }) => {
   url += '&access=' + (filters?.access || 'all');
   url += '&adult=' + (filters?.adult || 'hide');
 
+  if (filters?.genre?.value?.length) {
+    url += filters.genre.value.map(id => '&genres_included[]=' + id).join('');
+  }
+
   const result = await fetch(url).then(res => res.text());
   const loadedCheerio = cheerio.load(result);
 
@@ -98,7 +102,7 @@ const searchNovels = async searchTerm => {
   const result = await fetch(url).then(res => res.text());
   const loadedCheerio = cheerio.load(result);
 
-  const novels: Novel.Item[] = [];
+  const novels: SourceNovelItem[] = [];
   loadedCheerio('#bookListBlock > div').each(function () {
     const novelName = loadedCheerio(this).find('h4 > a').text()?.trim();
     const novelCover = loadedCheerio(this).find('a > img').attr('src')?.trim();
@@ -127,7 +131,6 @@ const filters = [
     key: 'genre',
     label: 'Жанры:',
     values: [
-      { label: 'Любой жанр', value: 'all' },
       { label: 'Альтернативная история', value: 'alternative-history' },
       { label: 'Антиутопия', value: 'dystopia' },
       { label: 'Бизнес-литература', value: 'business-literature' },
@@ -205,7 +208,7 @@ const filters = [
       { label: 'Юмористическое фэнтези', value: 'humor-fantasy' },
       { label: 'RPS', value: 'rps' },
     ],
-    inputType: FilterInputs.Picker,
+    inputType: FilterInputs.Checkbox,
   },
   {
     key: 'status',
