@@ -5,7 +5,7 @@ import getLoadingColors from '@utils/getLoadingColors';
 import LoadingNovel from '@screens/browse/loadingAnimation/LoadingNovel';
 import { useLibrarySettings } from '@hooks/useSettings';
 import { DisplayModes } from '@screens/library/constants/constants';
-import { useDeviceOrientation } from '@hooks/useDeviceOrientation';
+import { useDeviceOrientation } from '@hooks';
 
 interface Props {
   theme: ThemeColors;
