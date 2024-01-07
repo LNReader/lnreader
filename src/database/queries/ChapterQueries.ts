@@ -1,6 +1,6 @@
 import RNFS from 'react-native-fs';
 import * as SQLite from 'expo-sqlite';
-import { showToast } from '@hooks/showToast';
+import { showToast } from '@utils/showToast';
 import { getPlugin } from '@plugins/pluginManager';
 import { ChapterInfo, DownloadedChapter } from '../types';
 import { ChapterItem } from '@plugins/types';

@@ -38,7 +38,7 @@ import {
   getNextChapter,
   deleteChapters,
 } from '@database/queries/ChapterQueries';
-import { showToast } from '@hooks/showToast';
+import { showToast } from '@utils/showToast';
 
 import * as Notifications from 'expo-notifications';
 

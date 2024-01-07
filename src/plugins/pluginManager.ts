@@ -1,6 +1,6 @@
 import RNFS from 'react-native-fs';
 import { PluginDownloadFolder } from '@utils/constants/download';
-import { showToast } from '../hooks/showToast';
+import { showToast } from '../utils/showToast';
 import { bigger } from '../utils/compareVersion';
 import { Languages } from '@utils/constants/languages';
 
@@ -145,9 +145,9 @@ const collectPlugins = async () => {
 
 const fetchPlugins = async () => {
   // plugins host
-  const githubUsername = 'skillgg';
-  const githubRepository = 'lnplugins';
-  const githubBranch = 'filters_redesign';
+  const githubUsername = 'LNReader';
+  const githubRepository = 'lnreader-sources';
+  const githubBranch = 'plugins';
 
   const availablePlugins: Record<Languages, Array<PluginItem>> = await fetch(
     `https://raw.githubusercontent.com/${githubUsername}/${githubRepository}/${githubBranch}/.dist/${githubUsername}/plugins.min.json`,

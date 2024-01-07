@@ -18,7 +18,7 @@ import {
 } from '../../redux/downloads/downloads.actions';
 
 import BackgroundService from 'react-native-background-actions';
-import { showToast } from '../../hooks/showToast';
+import { showToast } from '../../utils/showToast';
 import { Appbar, EmptyView } from '@components';
 import { DownloadQueueScreenProps } from '@navigators/types';
 import { RootState } from '@redux/store';

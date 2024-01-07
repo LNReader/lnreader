@@ -9,7 +9,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 import { followNovelAction } from '../../../../redux/novel/novel.actions';
 import { useSettings } from '../../../../hooks/reduxHooks';
-import { showToast } from '../../../../hooks/showToast';
+import { showToast } from '../../../../utils/showToast';
 
 import {
   CoverImage,

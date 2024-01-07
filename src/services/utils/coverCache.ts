@@ -1,5 +1,5 @@
 import FastImage from 'react-native-fast-image';
-import { showToast } from '../../hooks/showToast';
+import { showToast } from '../../utils/showToast';
 
 const clearCoverCache = () => {
   FastImage.clearDiskCache();

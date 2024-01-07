@@ -8,7 +8,7 @@ import { Button, EmptyView } from '@components';
 import FastImage from 'react-native-fast-image';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import * as Clipboard from 'expo-clipboard';
-import { showToast } from '@hooks/showToast';
+import { showToast } from '@utils/showToast';
 import { getString } from '@strings/translations';
 import { exists, getBackups, makeDir } from '@api/drive';
 import { createBackup, driveRestore } from '@services/backup/drive';

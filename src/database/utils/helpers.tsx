@@ -1,4 +1,4 @@
-import { showToast } from '@hooks/showToast';
+import { showToast } from '@utils/showToast';
 import { SQLError, SQLTransaction } from 'expo-sqlite';
 
 export const txnErrorCallback = (

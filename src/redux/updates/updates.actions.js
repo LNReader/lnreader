@@ -1,7 +1,7 @@
 import BackgroundService from 'react-native-background-actions';
 
 import { SET_LAST_UPDATE_TIME } from './updates.types';
-import { showToast } from '../../hooks/showToast';
+import { showToast } from '../../utils/showToast';
 import { updateLibrary } from '../../services/updates/updates';
 
 export const updateLibraryAction = props => async (dispatch, getState) => {

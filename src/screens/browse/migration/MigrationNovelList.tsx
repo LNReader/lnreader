@@ -4,7 +4,7 @@ import { Portal, Modal } from 'react-native-paper';
 import GlobalSearchNovelCover from '../globalsearch/GlobalSearchNovelCover';
 
 import { migrateNovel } from '@services/migrate/migrateNovel';
-import { showToast } from '@hooks/showToast';
+import { showToast } from '@utils/showToast';
 
 import { Button } from '@components';
 import { getString } from '@strings/translations';

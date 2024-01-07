@@ -16,7 +16,7 @@ import { parseChapterNumber } from '@utils/parseChapterNumber';
 
 import { noop } from 'lodash-es';
 import { txnErrorCallback } from '@database/utils/helpers';
-import { showToast } from '@hooks/showToast';
+import { showToast } from '@utils/showToast';
 
 const db = SQLite.openDatabase('lnreader.db');
 

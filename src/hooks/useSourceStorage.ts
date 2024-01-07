@@ -1,6 +1,6 @@
 import { useMMKVObject } from 'react-native-mmkv';
 import { MMKVStorage } from '@utils/mmkv/mmkv';
-import { showToast } from './showToast';
+import { showToast } from '../utils/showToast';
 
 export const SOURCE_STORAGE = 'SOURCE_STORAGE';
 

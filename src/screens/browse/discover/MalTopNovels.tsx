@@ -13,7 +13,7 @@ import * as WebBrowser from 'expo-web-browser';
 import { ErrorView } from '../../../components/ErrorView/ErrorView';
 import { SearchbarV2 } from '@components';
 
-import { showToast } from '../../../hooks/showToast';
+import { showToast } from '../../../utils/showToast';
 import { scrapeSearchResults, scrapeTopNovels } from './MyAnimeListScraper';
 import MalNovelCard from './MalNovelCard/MalNovelCard';
 import { useTheme } from '@hooks/useTheme';

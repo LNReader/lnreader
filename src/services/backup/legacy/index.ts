@@ -7,7 +7,7 @@ import RNFS from 'react-native-fs';
 import { getPlugin } from '@plugins/pluginManager';
 import { restoreLibrary } from '@database/queries/NovelQueries';
 import { getLibraryNovelsFromDb } from '@database/queries/LibraryQueries';
-import { showToast } from '@hooks/showToast';
+import { showToast } from '@utils/showToast';
 import dayjs from 'dayjs';
 import { NovelInfo } from '@database/types';
 import { sleep } from '@utils/sleep';

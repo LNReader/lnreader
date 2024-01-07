@@ -7,7 +7,7 @@ import * as RNFS from 'react-native-fs';
 import { fetchChapters, fetchNovel } from '@services/plugin/fetch';
 import { insertChapters } from './ChapterQueries';
 
-import { showToast } from '@hooks/showToast';
+import { showToast } from '@utils/showToast';
 import { txnErrorCallback } from '../utils/helpers';
 import { noop } from 'lodash-es';
 import { getString } from '@strings/translations';

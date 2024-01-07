@@ -13,7 +13,7 @@ import {
 import { useTheme } from '@hooks/useTheme';
 
 import { getString } from '@strings/translations';
-import { showToast } from '@hooks/showToast';
+import { showToast } from '@utils/showToast';
 
 interface AddCategoryModalProps {
   isEditMode?: boolean;

@@ -42,7 +42,7 @@ import {
   usePreferences,
   useSettings,
 } from '@hooks/reduxHooks';
-import { showToast } from '../../hooks/showToast';
+import { showToast } from '../../utils/showToast';
 import { useTheme } from '@hooks/useTheme';
 import NovelInfoHeader from './components/Info/NovelInfoHeader';
 import NovelBottomSheet from './components/NovelBottomSheet';

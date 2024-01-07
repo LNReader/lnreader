@@ -6,7 +6,7 @@ import {
   getLibraryNovelsFromDb,
 } from '../../database/queries/LibraryQueries';
 
-import { showToast } from '../../hooks/showToast';
+import { showToast } from '../../utils/showToast';
 import { updateNovel } from './LibraryUpdateQueries';
 import { LibraryNovelInfo } from '@database/types';
 import { sleep } from '@utils/sleep';

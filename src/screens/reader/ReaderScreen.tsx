@@ -22,7 +22,7 @@ import {
   getPrevChapter,
 } from '../../database/queries/ChapterQueries';
 import { fetchChapter } from '@services/plugin/fetch';
-import { showToast } from '@hooks/showToast';
+import { showToast } from '@utils/showToast';
 import { usePosition, useSettings, useTrackingStatus } from '@hooks/reduxHooks';
 import { useTheme } from '@hooks/useTheme';
 import { updateChaptersRead } from '@redux/tracker/tracker.actions';
