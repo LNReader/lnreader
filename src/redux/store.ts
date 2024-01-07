@@ -6,7 +6,6 @@ import settingsReducerV1 from './settings/settingsSliceV1';
 import settingsReducerV2 from './settings/settingsSliceV2';
 import pluginsReducer from './plugins/pluginsSlice';
 import novelReducer from './novel/novel.reducer';
-import updatesReducer from './updates/updates.reducer';
 import trackerReducer from './tracker/tracker.reducer';
 import preferenceReducer from './preferences/preferencesSlice';
 import downloadsReducer from './downloads/downloads.reducer';
@@ -37,7 +36,6 @@ const reducers = combineReducers({
   settingsReducerV2,
   pluginsReducer,
   novelReducer,
-  updatesReducer,
   trackerReducer,
   preferenceReducer,
   downloadsReducer,

@@ -27,8 +27,7 @@ import MigrateNovel from '../screens/browse/migration/MigrationNovels';
 import MalTopNovels from '../screens/browse/discover/MalTopNovels';
 import NewUpdateDialog from '../components/NewUpdateDialog';
 import BrowseSettings from '../screens/browse/BrowseSettings';
-import { useAppDispatch } from '@redux/hooks';
-import { updateLibraryAction } from '@redux/updates/updates.actions';
+import { updateLibrary } from '@services/updates';
 import { useSettings } from '@hooks/reduxHooks';
 import WebviewScreen from '@screens/WebviewScreen/WebviewScreen';
 import { RootStackParamList } from './types';
@@ -37,7 +36,6 @@ const Stack = createStackNavigator<RootStackParamList>();
 
 const MainNavigator = () => {
   const theme = useTheme();
-  const dispatch = useAppDispatch();
   const { updateLibraryOnLaunch = false } = useSettings();
 
   useEffect(() => {
@@ -52,7 +50,7 @@ const MainNavigator = () => {
 
   useEffect(() => {
     if (updateLibraryOnLaunch) {
-      dispatch(updateLibraryAction());
+      updateLibrary();
     }
   }, []);
 

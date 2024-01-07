@@ -7,23 +7,25 @@ import {
 } from '../../database/queries/LibraryQueries';
 
 import { showToast } from '../../utils/showToast';
-import { updateNovel } from './LibraryUpdateQueries';
+import { UpdateNovelOptions, updateNovel } from './LibraryUpdateQueries';
 import { LibraryNovelInfo } from '@database/types';
 import { sleep } from '@utils/sleep';
+import { MMKVStorage } from '@utils/mmkv/mmkv';
+import { LAST_UPDATE_TIME } from '@hooks/persisted/useUpdates';
+import dayjs from 'dayjs';
 
 interface TaskData {
   delay: number;
 }
 
-export interface UpdateLibraryOptions {
-  downloadNewChapters?: boolean;
-  onlyUpdateOngoingNovels?: boolean;
-  refreshNovelMetadata?: boolean;
-  categoryId?: number;
-}
-
-const updateLibrary = async (options: UpdateLibraryOptions) => {
-  const { onlyUpdateOngoingNovels, categoryId } = options;
+const updateLibrary = async (categoryId?: number) => {
+  MMKVStorage.set(LAST_UPDATE_TIME, dayjs().format('YYYY-MM-DD HH:mm:ss'));
+  const onlyUpdateOngoingNovels = MMKVStorage.getBoolean('') || false;
+  const options: UpdateNovelOptions = {
+    downloadNewChapters: MMKVStorage.getBoolean('downloadNewChapters') || false,
+    refreshNovelMetadata:
+      MMKVStorage.getBoolean('refreshNovelMetadata') || false,
+  };
 
   let libraryNovels: LibraryNovelInfo[] = [];
 

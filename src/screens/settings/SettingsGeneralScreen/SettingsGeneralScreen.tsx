@@ -1,16 +1,15 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import SwitchSetting from '../../../components/Switch/Switch';
 import DisplayModeModal from './modals/DisplayModeModal';
 import GridSizeModal from './modals/GridSizeModal';
 
 import { useSettings } from '../../../hooks/reduxHooks';
-import { useTheme } from '@hooks/persisted';
+import { useLastUpdate, useTheme } from '@hooks/persisted';
 import { setAppSettings } from '@redux/settings/settingsSliceV1';
-import { SHOW_LAST_UPDATE_TIME } from '../../../redux/updates/updates.types';
 import DefaultChapterSortModal from '../components/DefaultChapterSortModal';
 import {
   DisplayModes,
@@ -22,7 +21,6 @@ import { useBoolean } from '@hooks';
 import { Appbar, List } from '@components';
 import NovelSortModal from './modals/NovelSortModal';
 import NovelBadgesModal from './modals/NovelBadgesModal';
-import { RootState } from '@redux/store';
 import { NavigationState } from '@react-navigation/native';
 import { getString } from '@strings/translations';
 
@@ -63,9 +61,7 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
     useLibraryFAB = false,
   } = useSettings();
 
-  const { showLastUpdateTime = true } = useSelector(
-    (state: RootState) => state.updatesReducer,
-  );
+  const { showLastUpdateTime, setShowLastUpdateTime } = useLastUpdate();
 
   const generateNovelBadgesDescription = () => {
     let res = [];
@@ -257,12 +253,7 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
               'moreScreen.settingsScreen.generalSettingsScreen.updateTime',
             )}
             value={showLastUpdateTime}
-            onPress={() =>
-              dispatch({
-                type: SHOW_LAST_UPDATE_TIME,
-                payload: !showLastUpdateTime,
-              })
-            }
+            onPress={() => setShowLastUpdateTime(!showLastUpdateTime)}
             theme={theme}
           />
           <List.Divider theme={theme} />

@@ -16,7 +16,7 @@ import {
 import {
   restoreCategory,
   restoreNovel,
-  restoreSetting,
+  // restoreSetting,
   restoreTheme,
   retoreDownload,
 } from './restoreTasks';
@@ -137,7 +137,7 @@ const remoteRestoreAction = async (taskData?: TaskData) => {
       restoreNovel(host, novelFolder),
       restoreCategory(host, dataFolder),
       retoreDownload(host, downloadFolder),
-      restoreSetting(host, dataFolder),
+      // restoreSetting(host, dataFolder),
       restoreTheme(host, dataFolder),
     ];
 

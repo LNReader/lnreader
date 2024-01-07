@@ -8,10 +8,9 @@ import { convertDateToISOString } from '@database/utils/convertDateToISOString';
 
 import { Update } from '@database/types';
 
-import { useSearch, useUpdates } from '@hooks';
-import { useAppDispatch } from '@redux/hooks';
-import { updateLibraryAction } from '@redux/updates/updates.actions';
-
+import { useSearch } from '@hooks';
+import { useUpdates } from '@hooks/persisted';
+import { updateLibrary } from '@services/updates';
 import { getString } from '@strings/translations';
 import { ThemeColors } from '@theme/types';
 import { useTheme } from '@hooks/persisted';
@@ -20,8 +19,6 @@ import UpdateNovelCard from './components/UpdateNovelCard';
 
 const UpdatesScreen = () => {
   const theme = useTheme();
-  const dispatch = useAppDispatch();
-
   const {
     isLoading,
     updates,
@@ -84,7 +81,7 @@ const UpdatesScreen = () => {
         rightIcons={[
           {
             iconName: 'reload',
-            onPress: () => dispatch(updateLibraryAction()),
+            onPress: () => updateLibrary(),
           },
         ]}
       />
@@ -123,7 +120,7 @@ const UpdatesScreen = () => {
           refreshControl={
             <RefreshControl
               refreshing={false}
-              onRefresh={() => dispatch(updateLibraryAction())}
+              onRefresh={() => updateLibrary()}
               colors={[theme.onPrimary]}
               progressBackgroundColor={theme.primary}
             />
@@ -137,7 +134,7 @@ const UpdatesScreen = () => {
 export default UpdatesScreen;
 
 const LastUpdateTime: React.FC<{
-  lastUpdateTime: Date;
+  lastUpdateTime: Date | number | string;
   theme: ThemeColors;
 }> = ({ lastUpdateTime, theme }) => (
   <Text style={[styles.lastUpdateTime, { color: theme.onSurface }]}>

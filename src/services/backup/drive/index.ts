@@ -16,7 +16,7 @@ import {
 import {
   restoreCategory,
   restoreNovel,
-  restoreSetting,
+  // restoreSetting,
   restoreTheme,
   retoreDownload,
 } from './restoreTasks';
@@ -142,7 +142,7 @@ const driveRestoreAction = async (taskData?: TaskData) => {
       restoreNovel(novelFolder.id),
       restoreCategory(dataFolder.id),
       retoreDownload(downloadFolder.id),
-      restoreSetting(dataFolder.id),
+      // restoreSetting(dataFolder.id),
       restoreTheme(dataFolder.id),
     ];
 

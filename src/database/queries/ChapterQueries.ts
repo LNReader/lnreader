@@ -473,7 +473,7 @@ export const getDownloadedChapters = (): Promise<ChapterInfo[]> => {
 
 const getUpdatesQuery = `
 SELECT
-  Chapter.id, Chapter.*,
+  Chapter.*,
   pluginId, Novel.id as novelId, Novel.name as novelName, Novel.url as novelUrl, cover as novelCover
 FROM
   Chapter
