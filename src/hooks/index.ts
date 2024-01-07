@@ -1,4 +1,4 @@
-export { default as useSearch } from './useSearch';
+export { default as useSearch } from './common/useSearch';
 export { default as useHistory } from './useHistory';
 export { default as useUpdates } from './useUpdates';
 export { default as useFullscreenMode } from './common/useFullscreenMode';

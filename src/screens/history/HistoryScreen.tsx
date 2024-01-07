@@ -7,7 +7,7 @@ import { Portal } from 'react-native-paper';
 import { EmptyView, ErrorScreenV2, SearchbarV2 } from '../../components/index';
 import HistoryCard from './components/HistoryCard/HistoryCard';
 
-import { useSearch, useHistory, useBoolean } from '@hooks/index';
+import { useSearch, useHistory, useBoolean } from '@hooks';
 import { useTheme } from '@hooks/useTheme';
 
 import { convertDateToISOString } from '../../database/utils/convertDateToISOString';

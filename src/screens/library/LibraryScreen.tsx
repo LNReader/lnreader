@@ -17,7 +17,7 @@ import { Actionbar } from '@components/Actionbar/Actionbar';
 
 import { useLibrary } from './hooks/useLibrary';
 import { useTheme } from '@hooks/useTheme';
-import useSearch from '@hooks/useSearch';
+import { useSearch } from '@hooks';
 import { getString } from '@strings/translations';
 import { FAB, Portal } from 'react-native-paper';
 import { useLibrarySettings } from '@hooks/useSettings';
