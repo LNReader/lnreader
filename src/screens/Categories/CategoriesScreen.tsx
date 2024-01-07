@@ -10,7 +10,7 @@ import {
   getCategoriesFromDb,
   updateCategoryOrderInDb,
 } from '../../database/queries/CategoryQueries';
-import useBoolean from '@hooks/useBoolean';
+import { useBoolean } from '@hooks';
 import { useTheme } from '@hooks/useTheme';
 import { getString } from '@strings/translations';
 
@@ -25,7 +25,7 @@ const CategoriesScreen = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [categories, setCategories] = useState<Category[]>();
-  const [error, setError] = useState();
+  // const [error, setError] = useState();
 
   const getCategories = async () => {
     try {
@@ -33,7 +33,7 @@ const CategoriesScreen = () => {
 
       setCategories(res);
     } catch (err) {
-      setError(error?.message);
+      // setError(error?.message);
     } finally {
       setIsLoading(false);
     }

@@ -27,7 +27,7 @@ import {
 } from '../../database/queries/ChapterQueries';
 import { removeNovelsFromLibrary } from '@database/queries/NovelQueries';
 import SetCategoryModal from '@screens/novel/components/SetCategoriesModal';
-import useBoolean from '@hooks/useBoolean';
+import { useBoolean } from '@hooks';
 import { debounce } from 'lodash-es';
 import { useBackHandler } from '@hooks/useBackHandler';
 import useHistory from '@hooks/useHistory';

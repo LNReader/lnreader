@@ -31,7 +31,7 @@ import { ChapterInfo, NovelInfo as NovelData } from '@database/types';
 import { ThemeColors } from '@theme/types';
 import { NovelScreenProps } from '@navigators/types';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
-import { UseBooleanReturnType } from '@hooks/useBoolean';
+import { UseBooleanReturnType } from '@hooks/common/useBoolean';
 
 interface NovelInfoHeaderProps {
   novel: NovelData;

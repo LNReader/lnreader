@@ -54,7 +54,7 @@ import EditInfoModal from './components/EditInfoModal';
 import { pickCustomNovelCover } from '../../database/queries/NovelQueries';
 import DownloadCustomChapterModal from './components/DownloadCustomChapterModal';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import useBoolean from '@hooks/useBoolean';
+import { useBoolean } from '@hooks';
 import NovelScreenLoading from './components/LoadingAnimation/NovelScreenLoading';
 import { NovelScreenProps } from '@navigators/types';
 import { RootState } from '@redux/store';

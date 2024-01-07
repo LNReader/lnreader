@@ -18,7 +18,7 @@ import {
   LibrarySortOrder,
 } from '@screens/library/constants/constants';
 import { useLibrarySettings } from '@hooks/useSettings';
-import useBoolean from '@hooks/useBoolean';
+import { useBoolean } from '@hooks';
 import { Appbar, List } from '@components';
 import NovelSortModal from './modals/NovelSortModal';
 import NovelBadgesModal from './modals/NovelBadgesModal';

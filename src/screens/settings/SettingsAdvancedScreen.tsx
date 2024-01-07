@@ -8,7 +8,7 @@ import { showToast } from '@hooks/showToast';
 import { deleteCachedNovels } from '@database/queries/NovelQueries';
 import { clearCoverCache } from '@services/utils/coverCache';
 import { getString } from '@strings/translations';
-import useBoolean from '@hooks/useBoolean';
+import { useBoolean } from '@hooks';
 import ConfirmationDialog from '@components/ConfirmationDialog/ConfirmationDialog';
 import {
   deleteReadChaptersFromDb,

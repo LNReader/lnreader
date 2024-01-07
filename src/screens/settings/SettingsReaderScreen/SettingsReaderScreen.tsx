@@ -41,7 +41,7 @@ import {
 } from '@redux/settings/settingsSliceV1';
 
 import { dummyHTML } from './utils';
-import useBoolean from '@hooks/useBoolean';
+import { useBoolean } from '@hooks';
 import {
   deleteCustomReaderTheme,
   saveCustomReaderTheme,

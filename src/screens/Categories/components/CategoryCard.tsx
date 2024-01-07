@@ -4,7 +4,7 @@ import React from 'react';
 import { Category } from '../../../database/types';
 import { useTheme } from '@hooks/useTheme';
 import AddCategoryModal from './AddCategoryModal';
-import useBoolean from '@hooks/useBoolean';
+import { useBoolean } from '@hooks';
 import { overlay, Portal } from 'react-native-paper';
 import IconButton from '@components/IconButtonV2/IconButtonV2';
 import DeleteCategoryModal from './DeleteCategoryModal';
