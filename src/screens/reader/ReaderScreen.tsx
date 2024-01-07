@@ -24,7 +24,7 @@ import {
 import { fetchChapter } from '@services/plugin/fetch';
 import { showToast } from '@utils/showToast';
 import { usePosition, useSettings, useTrackingStatus } from '@hooks/reduxHooks';
-import { useTheme } from '@hooks/persisted';
+import { useLibrarySettings, useTheme } from '@hooks/persisted';
 import { updateChaptersRead } from '@redux/tracker/tracker.actions';
 import { markChapterReadAction } from '@redux/novel/novel.actions';
 import { saveScrollPosition } from '@redux/preferences/preferencesSlice';
@@ -36,8 +36,7 @@ import ReaderFooter from './components/ReaderFooter';
 import { insertHistory } from '@database/queries/HistoryQueries';
 import { setLastReadAction } from '@redux/preferences/preferencesSlice';
 import WebViewReader from './components/WebViewReader';
-import { useTextToSpeech } from '@hooks';
-import { useFullscreenMode, useLibrarySettings } from '@hooks';
+import { useFullscreenMode, useTextToSpeech } from '@hooks';
 import ReaderBottomSheetV2 from './components/ReaderBottomSheet/ReaderBottomSheet';
 import { defaultTo } from 'lodash-es';
 import BottomInfoBar from './components/BottomInfoBar/BottomInfoBar';

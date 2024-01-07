@@ -34,7 +34,7 @@ const SettingsScreen = ({ navigation }: SettingsScreenProps) => {
           }
           theme={theme}
         />
-        <List.Item
+        {/* <List.Item
           title={getString('library')}
           icon="book-variant-multiple"
           onPress={() =>
@@ -43,7 +43,7 @@ const SettingsScreen = ({ navigation }: SettingsScreenProps) => {
             })
           }
           theme={theme}
-        />
+        /> */}
         <List.Item
           title={getString('moreScreen.settingsScreen.readerSettings.title')}
           icon="book-open-outline"

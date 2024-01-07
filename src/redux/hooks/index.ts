@@ -16,10 +16,6 @@ export const useBrowseSettings = () =>
 export const useReaderSettings = () =>
   useAppSelector((state: RootState) => state.settingsReducerV1.reader);
 
-/** @deprecated */
-export const useLibrarySettings = () =>
-  useAppSelector((state: RootState) => state.settingsReducerV2.library);
-
 export const useDownloadQueue = () =>
   useAppSelector((state: RootState) => state.downloadsReducer);
 

@@ -9,7 +9,7 @@ import {
 
 import { Category, LibraryNovelInfo, NovelInfo } from '@database/types';
 
-import { useLibrarySettings } from '@hooks/useSettings';
+import { useLibrarySettings } from '@hooks/persisted';
 import { LibrarySortOrder } from '../constants/constants';
 
 type Library = Category & { novels: LibraryNovelInfo[] };

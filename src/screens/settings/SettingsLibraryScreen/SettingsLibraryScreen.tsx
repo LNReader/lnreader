@@ -1,7 +1,7 @@
 import React from 'react';
 import { Appbar, List } from '@components';
 import { getString } from '@strings/translations';
-import { useBoolean, useCategorySettings } from '@hooks';
+import { useBoolean } from '@hooks';
 import { useCategories, useTheme } from '@hooks/persisted';
 import { useNavigation } from '@react-navigation/native';
 import { Portal } from 'react-native-paper';
@@ -10,13 +10,13 @@ import DefaultCategoryDialog from './DefaultCategoryDialog';
 const SettingsLibraryScreen = () => {
   const theme = useTheme();
   const { goBack, navigate } = useNavigation();
-  const { defaultCategoryId, setCategorySettings } = useCategorySettings();
   const { categories } = useCategories();
 
   const defaultCategoryDialog = useBoolean();
 
-  const setDefaultCategoryId = (categoryId: number) =>
-    setCategorySettings({ defaultCategoryId: categoryId });
+  const setDefaultCategoryId = (categoryId: number) => {
+    categoryId;
+  };
 
   return (
     <>
@@ -46,7 +46,7 @@ const SettingsLibraryScreen = () => {
       <Portal>
         <DefaultCategoryDialog
           categories={categories}
-          defaultCategoryId={defaultCategoryId || 1}
+          defaultCategoryId={categories[0]?.id}
           visible={defaultCategoryDialog.value}
           hideDialog={defaultCategoryDialog.setFalse}
           setDefaultCategory={setDefaultCategoryId}

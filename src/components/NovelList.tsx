@@ -1,4 +1,4 @@
-import { useLibrarySettings } from '@hooks/useSettings';
+import { useLibrarySettings } from '@hooks/persisted';
 import { DisplayModes } from '@screens/library/constants/constants';
 import React, { useMemo } from 'react';
 import {

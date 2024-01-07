@@ -3,7 +3,6 @@ import { Text, StyleSheet } from 'react-native';
 
 import { Portal, Modal, overlay } from 'react-native-paper';
 
-import { useLibrarySettings } from '@hooks/useSettings';
 import {
   LibrarySortOrder,
   librarySortOrderList,
@@ -11,6 +10,7 @@ import {
 import { ThemeColors } from '@theme/types';
 import { FlashList } from '@shopify/flash-list';
 import { SortItem } from '@components/Checkbox/Checkbox';
+import { useLibrarySettings } from '@hooks/persisted';
 
 interface NovelSortModalProps {
   novelSortModalVisible: boolean;

@@ -16,11 +16,10 @@ import { Banner } from './components/Banner';
 import { Actionbar } from '@components/Actionbar/Actionbar';
 
 import { useLibrary } from './hooks/useLibrary';
-import { useHistory, useTheme } from '@hooks/persisted';
+import { useHistory, useLibrarySettings, useTheme } from '@hooks/persisted';
 import { useSearch, useBackHandler, useBoolean } from '@hooks';
 import { getString } from '@strings/translations';
 import { FAB, Portal } from 'react-native-paper';
-import { useLibrarySettings } from '@hooks/useSettings';
 import {
   markAllChaptersRead,
   markAllChaptersUnread,

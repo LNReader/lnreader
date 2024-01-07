@@ -3,12 +3,12 @@ import { ScrollView } from 'react-native';
 
 import { useDispatch } from 'react-redux';
 
-import SwitchSetting from '../../../components/Switch/Switch';
+import SwitchSetting from '@components/Switch/Switch';
 import DisplayModeModal from './modals/DisplayModeModal';
 import GridSizeModal from './modals/GridSizeModal';
 
 import { useSettings } from '../../../hooks/reduxHooks';
-import { useLastUpdate, useTheme } from '@hooks/persisted';
+import { useLastUpdate, useLibrarySettings, useTheme } from '@hooks/persisted';
 import { setAppSettings } from '@redux/settings/settingsSliceV1';
 import DefaultChapterSortModal from '../components/DefaultChapterSortModal';
 import {
@@ -16,7 +16,6 @@ import {
   displayModesList,
   LibrarySortOrder,
 } from '@screens/library/constants/constants';
-import { useLibrarySettings } from '@hooks/useSettings';
 import { useBoolean } from '@hooks';
 import { Appbar, List } from '@components';
 import NovelSortModal from './modals/NovelSortModal';
