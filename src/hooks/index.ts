@@ -8,3 +8,4 @@ export { useTheme } from './useTheme';
 export { default as useCategories } from './useCategories';
 export { useCategorySettings, useLibrarySettings } from './useSettings';
 export { usePreviousRouteName } from './usePreviousRouteName';
+export { useBackHandler } from './common/useBackHandler';
