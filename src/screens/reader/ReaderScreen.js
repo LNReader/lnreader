@@ -325,6 +325,14 @@ const ChapterContent = ({ route, navigation }) => {
     }
   }, []);
 
+  useEffect(() => {
+    return () => {
+      if (position?.percentage === 100) {
+        doSaveProgress(0, 0);
+      }
+    };
+  }, [position?.percentage]);
+
   const scrollToSavedProgress = useCallback(
     () => scrollTo(position?.position),
     [],
