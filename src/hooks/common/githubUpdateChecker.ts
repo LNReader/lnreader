@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { appVersion } from '../utils/versionUtils';
+import { appVersion } from '../../utils/versionUtils';
 
 interface GithubUpdate {
   isNewVersion: boolean;
