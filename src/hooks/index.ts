@@ -7,7 +7,7 @@ export { default as useBoolean } from './common/useBoolean';
 export { useTheme } from './useTheme';
 export { default as useCategories } from './useCategories';
 export { useCategorySettings, useLibrarySettings } from './useSettings';
-export { usePreviousRouteName } from './usePreviousRouteName';
+export { usePreviousRouteName } from './common/usePreviousRouteName';
 export { useBackHandler } from './common/useBackHandler';
 export { useTextToSpeech, TextToSpeechStatus } from './common/useTextToSpeech';
 export { useDeviceOrientation } from './common/useDeviceOrientation';
