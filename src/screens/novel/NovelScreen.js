@@ -98,6 +98,7 @@ const Novel = ({ route, navigation }) => {
     useFabForContinueReading = false,
     defaultChapterSort = 'ORDER BY chapterId ASC',
     disableHapticFeedback = false,
+    jumpToLastReadChapter = false,
   } = useSettings();
 
   const {
@@ -651,6 +652,18 @@ const Novel = ({ route, navigation }) => {
         </Portal>
         <View style={styles.flashlistContainer}>
           <FlashList
+            onLayout={() => {
+              if (jumpToLastReadChapter) {
+                const lastReadChapterIdx = chapters.findIndex(
+                  chapter => chapter.chapterId === lastReadChapter.chapterId,
+                );
+
+                flatlistRef.current.scrollToIndex({
+                  animated: true,
+                  index: lastReadChapterIdx,
+                });
+              }
+            }}
             ref={flatlistRef}
             estimatedItemSize={64}
             data={chapters}
