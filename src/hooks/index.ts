@@ -1,7 +1,7 @@
 export { default as useSearch } from './useSearch';
 export { default as useHistory } from './useHistory';
 export { default as useUpdates } from './useUpdates';
-export { default as useFullscreenMode } from './useFullscreenMode';
+export { default as useFullscreenMode } from './common/useFullscreenMode';
 export { default as useNovelTrackerInfo } from './useNovelTrackerInfo';
 export { default as useBoolean } from './common/useBoolean';
 export { useTheme } from './useTheme';
