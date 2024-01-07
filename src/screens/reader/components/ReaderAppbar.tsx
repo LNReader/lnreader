@@ -9,7 +9,7 @@ import { bookmarkChapterAction } from '../../../redux/novel/novel.actions';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import { useAppDispatch } from '@redux/hooks';
 import { ThemeColors } from '@theme/types';
-import { TextToSpeechStatus } from '@hooks/useTextToSpeech';
+import { TextToSpeechStatus } from '@hooks';
 
 interface ReaderAppbarProps {
   bookmark: boolean;

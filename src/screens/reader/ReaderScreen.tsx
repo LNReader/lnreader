@@ -36,7 +36,7 @@ import ReaderFooter from './components/ReaderFooter';
 import { insertHistory } from '@database/queries/HistoryQueries';
 import { setLastReadAction } from '@redux/preferences/preferencesSlice';
 import WebViewReader from './components/WebViewReader';
-import { useTextToSpeech } from '@hooks/useTextToSpeech';
+import { useTextToSpeech } from '@hooks';
 import { useFullscreenMode, useLibrarySettings } from '@hooks';
 import ReaderBottomSheetV2 from './components/ReaderBottomSheet/ReaderBottomSheet';
 import { defaultTo } from 'lodash-es';

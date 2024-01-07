@@ -9,3 +9,7 @@ export { default as useCategories } from './useCategories';
 export { useCategorySettings, useLibrarySettings } from './useSettings';
 export { usePreviousRouteName } from './usePreviousRouteName';
 export { useBackHandler } from './common/useBackHandler';
+export { useTextToSpeech, TextToSpeechStatus } from './common/useTextToSpeech';
+
+// hook types
+export type { UseBooleanReturnType } from './common/useBoolean';
