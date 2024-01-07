@@ -63,15 +63,14 @@ const parseNovelAndChapters = async (novelUrl: string) => {
   );
   const data = (await res.json()) as response;
 
-  data?.books?.forEach(
-    volume =>
-      volume?.chapters?.map(chapter =>
-        novel.chapters.push({
-          chapterName: volume.title + ' ' + chapter.title,
-          releaseDate: dayjs(chapter.modifiedAt).format('LLL'),
-          chapterUrl: baseUrl + 'read/' + chapter.id,
-        }),
-      ),
+  data?.books?.forEach(volume =>
+    volume?.chapters?.map(chapter =>
+      novel.chapters.push({
+        chapterName: volume.title + ' ' + chapter.title,
+        releaseDate: dayjs(chapter.modifiedAt).format('LLL'),
+        chapterUrl: baseUrl + 'read/' + chapter.id,
+      }),
+    ),
   );
 
   return novel;
