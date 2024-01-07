@@ -363,9 +363,10 @@ const ChapterContent = ({ route, navigation }) => {
     };
   }, [position?.percentage]);
 
-  const scrollToSavedProgress = useCallback(() => {
-    scrollTo(position?.position);
-  }, []);
+  const scrollToSavedProgress = useCallback(
+    () => scrollTo(position?.position),
+    [],
+  );
 
   const chapterText = useMemo(
     () =>
