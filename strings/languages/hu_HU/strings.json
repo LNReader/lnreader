@@ -169,7 +169,8 @@
         "epubLocation": "EPUB Location",
         "epubLocationDescription": "The place where you open and export your EPUB files.",
         "downloadNewChapters": "Új fejezetek letöltése",
-        "disableHapticFeedback": "Haptikus visszajelzés kikapcsolása"
+        "disableHapticFeedback": "Haptikus visszajelzés kikapcsolása",
+        "jumpToLastReadChapter": "Jump to last read chapter in list"
       },
       "readerSettings": {
         "title": "Olvasó",
