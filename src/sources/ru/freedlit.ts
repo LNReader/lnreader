@@ -19,8 +19,8 @@ const popularNovels = async (page, { showLatestNovels, filters }) => {
   url += '&access=' + (filters?.access || 'all');
   url += '&adult=' + (filters?.adult || 'hide');
 
-  if (filters?.genre?.value?.length) {
-    url += filters.genre.value.map(id => '&genres_included[]=' + id).join('');
+  if (filters?.genre?.length) {
+    url += filters.genre.map(id => '&genres_included[]=' + id).join('');
   }
 
   const result = await fetch(url).then(res => res.text());
