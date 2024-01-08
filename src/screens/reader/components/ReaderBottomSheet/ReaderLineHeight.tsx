@@ -1,10 +1,8 @@
 import { StyleSheet, Text, TextStyle, View } from 'react-native';
 import React from 'react';
 
-import { useAppDispatch, useReaderSettings } from '../../../../redux/hooks';
-import { useTheme } from '@hooks/persisted';
+import { useChapterReaderSettings, useTheme } from '@hooks/persisted';
 import { IconButtonV2 } from '@components';
-import { setReaderSettings } from '@redux/settings/settingsSliceV1';
 import { getString } from '@strings/translations';
 
 interface ReaderLineHeightProps {
@@ -13,9 +11,8 @@ interface ReaderLineHeightProps {
 
 const ReaderLineHeight: React.FC<ReaderLineHeightProps> = ({ labelStyle }) => {
   const theme = useTheme();
-  const dispatch = useAppDispatch();
 
-  const { lineHeight } = useReaderSettings();
+  const { lineHeight, setChapterReaderSettings } = useChapterReaderSettings();
 
   return (
     <View style={styles.container}>
@@ -29,9 +26,7 @@ const ReaderLineHeight: React.FC<ReaderLineHeightProps> = ({ labelStyle }) => {
           size={26}
           disabled={lineHeight <= 1.3}
           onPress={() =>
-            dispatch(
-              setReaderSettings({ key: 'lineHeight', value: lineHeight - 0.1 }),
-            )
+            setChapterReaderSettings({ lineHeight: lineHeight - 0.1 })
           }
           theme={theme}
         />
@@ -44,9 +39,7 @@ const ReaderLineHeight: React.FC<ReaderLineHeightProps> = ({ labelStyle }) => {
           size={26}
           disabled={lineHeight >= 2}
           onPress={() =>
-            dispatch(
-              setReaderSettings({ key: 'lineHeight', value: lineHeight + 0.1 }),
-            )
+            setChapterReaderSettings({ lineHeight: lineHeight + 0.1 })
           }
           theme={theme}
         />

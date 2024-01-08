@@ -14,6 +14,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Install modules
-        run: npm i --legacy-peer-deps
+        run: npm install
       - name: Run ESLint
         run: npm run lint

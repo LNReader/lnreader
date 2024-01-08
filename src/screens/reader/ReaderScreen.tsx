@@ -23,8 +23,12 @@ import {
 } from '../../database/queries/ChapterQueries';
 import { fetchChapter } from '@services/plugin/fetch';
 import { showToast } from '@utils/showToast';
-import { usePosition, useSettings, useTrackingStatus } from '@hooks/reduxHooks';
-import { useLibrarySettings, useTheme } from '@hooks/persisted';
+import { usePosition, useTrackingStatus } from '@hooks/reduxHooks';
+import {
+  useChapterGeneralSettings,
+  useLibrarySettings,
+  useTheme,
+} from '@hooks/persisted';
 import { updateChaptersRead } from '@redux/tracker/tracker.actions';
 import { markChapterReadAction } from '@redux/novel/novel.actions';
 import { saveScrollPosition } from '@redux/preferences/preferencesSlice';
@@ -88,14 +92,14 @@ export const ChapterContent = ({
   const dispatch = useDispatch();
 
   const {
-    swipeGestures = false,
-    useVolumeButtons = false,
-    autoScroll = false,
-    autoScrollInterval = 10,
-    autoScrollOffset = null,
+    swipeGestures,
+    useVolumeButtons,
+    autoScroll,
+    autoScrollInterval,
+    autoScrollOffset,
     // verticalSeekbar = true,
-    removeExtraParagraphSpacing = false,
-  } = useSettings();
+    removeExtraParagraphSpacing,
+  } = useChapterGeneralSettings();
   const { incognitoMode } = useLibrarySettings();
 
   const { setImmersiveMode, showStatusAndNavBar } = useFullscreenMode();

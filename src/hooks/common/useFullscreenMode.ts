@@ -2,18 +2,21 @@ import { useCallback, useEffect } from 'react';
 import { StatusBar } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import color from 'color';
-import { useReaderSettings, useSettingsV1 } from '../../redux/hooks';
 import {
   changeNavigationBarColor,
   hideNavigationBar,
   showNavigationBar,
 } from '../../native/NavigationBarColor';
-import { useTheme } from '../persisted';
+import {
+  useChapterGeneralSettings,
+  useChapterReaderSettings,
+  useTheme,
+} from '../persisted';
 
 const useFullscreenMode = () => {
   const { addListener } = useNavigation();
-  const readerSettings = useReaderSettings();
-  const { fullScreenMode } = useSettingsV1();
+  const readerSettings = useChapterReaderSettings();
+  const { fullScreenMode } = useChapterGeneralSettings();
 
   const backgroundColor = readerSettings.theme;
 

@@ -3,9 +3,12 @@ import { Dimensions, StatusBar } from 'react-native';
 import WebView, { WebViewNavigation } from 'react-native-webview';
 import color from 'color';
 
-import { useTheme } from '@hooks/persisted';
+import {
+  useChapterGeneralSettings,
+  useChapterReaderSettings,
+  useTheme,
+} from '@hooks/persisted';
 import { ChapterInfo } from '@database/types';
-import { useReaderSettings, useSettingsV1 } from '@redux/hooks';
 import { getString } from '@strings/translations';
 
 import { getPlugin } from '@plugins/pluginManager';
@@ -49,8 +52,8 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
 
   const theme = useTheme();
   const { novel, chapter } = data;
-  const readerSettings = useReaderSettings();
-  const { showScrollPercentage } = useSettingsV1();
+  const readerSettings = useChapterReaderSettings();
+  const { showScrollPercentage } = useChapterGeneralSettings();
 
   const layoutHeight = Dimensions.get('window').height;
   const plugin = getPlugin(novel?.pluginId);

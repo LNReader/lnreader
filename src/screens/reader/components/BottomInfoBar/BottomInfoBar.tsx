@@ -3,14 +3,17 @@ import React, { useEffect, useState } from 'react';
 import { useBatteryLevel } from 'react-native-device-info';
 import dayjs from 'dayjs';
 
-import { useReaderSettings, useSettingsV1 } from '@redux/hooks';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import {
+  useChapterGeneralSettings,
+  useChapterReaderSettings,
+} from '@hooks/persisted';
 
 const BottomInfoBar = () => {
   const { bottom: bottomInset } = useSafeAreaInsets();
-  const { showBatteryAndTime = false, fullScreenMode = true } = useSettingsV1();
+  const { showBatteryAndTime, fullScreenMode } = useChapterGeneralSettings();
 
-  const { textColor } = useReaderSettings();
+  const { textColor } = useChapterReaderSettings();
 
   const batteryLevel = useBatteryLevel();
 
