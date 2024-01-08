@@ -169,7 +169,8 @@
         "epubLocation": "موقع EPUB",
         "epubLocationDescription": "مكان لحفظ ملفات EPUB وتصديرها.",
         "downloadNewChapters": "تحميل فصول جديدة",
-        "disableHapticFeedback": "تعطيل الاهتزاز"
+        "disableHapticFeedback": "تعطيل الاهتزاز",
+        "jumpToLastReadChapter": "Jump to last read chapter in list"
       },
       "readerSettings": {
         "title": "القارئ",
