@@ -12,14 +12,10 @@ import {
   uninstallPluginAction,
   updatePluginAction,
 } from '@redux/plugins/pluginsSlice';
-import {
-  useAppDispatch,
-  useBrowseSettings,
-  usePluginReducer,
-} from '@redux/hooks';
+import { useAppDispatch, usePluginReducer } from '@redux/hooks';
 
 import { useSearch } from '@hooks';
-import { useTheme } from '@hooks/persisted';
+import { useBrowseSettings, useTheme } from '@hooks/persisted';
 import { getString } from '@strings/translations';
 import { fetchPlugins } from '@plugins/pluginManager';
 
@@ -43,8 +39,7 @@ const BrowseScreen = ({ navigation }: BrowseScreenProps) => {
     languagesFilter,
     lastUsed,
   } = usePluginReducer();
-  const { showMyAnimeList = true, onlyShowPinnedSources = false } =
-    useBrowseSettings();
+  const { showMyAnimeList, onlyShowPinnedSources } = useBrowseSettings();
 
   useEffect(() => {
     if (Object.keys(availablePlugins).length === 0) {

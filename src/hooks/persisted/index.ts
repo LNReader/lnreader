@@ -3,6 +3,8 @@ export { useUpdates, useLastUpdate } from './useUpdates';
 export { default as useCategories } from './useCategories';
 export { default as useHistory } from './useHistory';
 export {
+  useAppSettings,
+  useBrowseSettings,
   useLibrarySettings,
   useChapterGeneralSettings,
   useChapterReaderSettings,

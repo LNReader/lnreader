@@ -40,10 +40,9 @@ import {
   useContinueReading,
   useNovel,
   usePreferences,
-  useSettings,
 } from '@hooks/reduxHooks';
 import { showToast } from '../../utils/showToast';
-import { useTheme } from '@hooks/persisted';
+import { useAppSettings, useTheme } from '@hooks/persisted';
 import NovelInfoHeader from './components/Info/NovelInfoHeader';
 import NovelBottomSheet from './components/NovelBottomSheet';
 import TrackSheet from './components/Tracker/TrackSheet';
@@ -88,7 +87,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
     useFabForContinueReading,
     defaultChapterSort,
     disableHapticFeedback,
-  } = useSettings();
+  } = useAppSettings();
 
   const {
     sort = defaultChapterSort,

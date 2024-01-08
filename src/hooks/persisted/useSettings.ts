@@ -5,9 +5,58 @@ import {
 } from '@screens/library/constants/constants';
 import { useMMKVObject } from 'react-native-mmkv';
 
+export const APP_SETTINGS = 'APP_SETTINGS';
+export const BROWSE_SETTINGS = 'BROWSE_SETTINGS';
 export const LIBRARY_SETTINGS = 'LIBRARY_SETTINGS';
 export const CHAPTER_GENERAL_SETTINGS = 'CHAPTER_GENERAL_SETTINGS';
 export const CHAPTER_READER_SETTINGS = 'CHAPTER_READER_SETTINGS';
+
+export interface AppSettings {
+  /**
+   * General settings
+   */
+
+  incognitoMode: boolean;
+  disableHapticFeedback: boolean;
+
+  /**
+   * Appearence settings
+   */
+
+  showHistoryTab: boolean;
+  showUpdatesTab: boolean;
+  showLabelsInNav: boolean;
+  useFabForContinueReading: boolean;
+
+  /**
+   * Library settings
+   */
+
+  downloadedOnlyMode: boolean;
+  useLibraryFAB: boolean;
+
+  /**
+   * Update settings
+   */
+
+  onlyUpdateOngoingNovels: boolean;
+  updateLibraryOnLaunch: boolean;
+  downloadNewChapters: boolean;
+  refreshNovelMetadata: boolean;
+
+  /**
+   * Novel settings
+   */
+
+  hideBackdrop: boolean;
+  defaultChapterSort: string;
+}
+
+export interface BrowseSettings {
+  onlyShowPinnedSources: boolean;
+  showMyAnimeList: boolean;
+  searchAllSources: boolean;
+}
 
 export interface LibrarySettings {
   sortOrder?: LibrarySortOrder;
@@ -35,6 +84,11 @@ export interface ChapterGeneralSettings {
   removeExtraParagraphSpacing: boolean;
 }
 
+export interface ReaderTheme {
+  backgroundColor: string;
+  textColor: string;
+}
+
 export interface ChapterReaderSettings {
   theme: string;
   textColor: string;
@@ -45,7 +99,55 @@ export interface ChapterReaderSettings {
   lineHeight: number;
   customCSS: string;
   customJS: string;
+  customThemes: ReaderTheme[];
 }
+
+const initialAppSettings: AppSettings = {
+  /**
+   * General settings
+   */
+
+  incognitoMode: false,
+  disableHapticFeedback: false,
+
+  /**
+   * Appearence settings
+   */
+
+  showHistoryTab: true,
+  showUpdatesTab: true,
+  showLabelsInNav: false,
+  useFabForContinueReading: false,
+
+  /**
+   * Library settings
+   */
+
+  downloadedOnlyMode: false,
+  useLibraryFAB: false,
+
+  /**
+   * Update settings
+   */
+
+  onlyUpdateOngoingNovels: false,
+  updateLibraryOnLaunch: false,
+  downloadNewChapters: false,
+  refreshNovelMetadata: false,
+
+  /**
+   * Novel settings
+   */
+
+  hideBackdrop: false,
+  defaultChapterSort: 'ORDER BY id ASC',
+};
+
+const initialBrowseSettings: BrowseSettings = {
+  searchAllSources: false,
+  showMyAnimeList: true,
+  onlyShowPinnedSources: false,
+};
 
 const initialChapterGeneralSettings: ChapterGeneralSettings = {
   fullScreenMode: true,
@@ -70,6 +172,33 @@ const initialChapterReaderSettings: ChapterReaderSettings = {
   lineHeight: 1.5,
   customCSS: '',
   customJS: '',
+  customThemes: [],
+};
+
+export const useAppSettings = () => {
+  const [appSettings = initialAppSettings, setSettings] =
+    useMMKVObject<AppSettings>(APP_SETTINGS);
+
+  const setAppSettings = (values: Partial<AppSettings>) =>
+    setSettings({ ...appSettings, ...values });
+
+  return {
+    ...appSettings,
+    setAppSettings,
+  };
+};
+
+export const useBrowseSettings = () => {
+  const [browseSettings = initialBrowseSettings, setSettings] =
+    useMMKVObject<BrowseSettings>(BROWSE_SETTINGS);
+
+  const setBrowseSettings = (values: Partial<BrowseSettings>) =>
+    setSettings({ ...browseSettings, ...values });
+
+  return {
+    ...browseSettings,
+    setBrowseSettings,
+  };
 };
 
 export const useLibrarySettings = () => {
@@ -105,8 +234,28 @@ export const useChapterReaderSettings = () => {
   const setChapterReaderSettings = (values: Partial<ChapterReaderSettings>) =>
     setSettings({ ...chapterReaderSettings, ...values });
 
+  const saveCustomReaderTheme = (theme: ReaderTheme) =>
+    setSettings({
+      ...chapterReaderSettings,
+      customThemes: [theme, ...chapterReaderSettings.customThemes],
+    });
+
+  const deleteCustomReaderTheme = (theme: ReaderTheme) =>
+    setSettings({
+      ...chapterReaderSettings,
+      customThemes: chapterReaderSettings.customThemes.filter(
+        v =>
+          !(
+            v.backgroundColor === theme.backgroundColor &&
+            v.textColor === theme.textColor
+          ),
+      ),
+    });
+
   return {
     ...chapterReaderSettings,
     setChapterReaderSettings,
+    saveCustomReaderTheme,
+    deleteCustomReaderTheme,
   };
 };

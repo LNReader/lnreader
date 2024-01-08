@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import { setBarColor } from '@theme/utils/setBarColor';
-import { useTheme } from '@hooks/persisted';
+import { useAppSettings, useTheme } from '@hooks/persisted';
 import { useGithubUpdateChecker } from '@hooks/common/githubUpdateChecker';
 
 /**
@@ -28,7 +28,6 @@ import MalTopNovels from '../screens/browse/discover/MalTopNovels';
 import NewUpdateDialog from '../components/NewUpdateDialog';
 import BrowseSettings from '../screens/browse/BrowseSettings';
 import { updateLibrary } from '@services/updates';
-import { useSettings } from '@hooks/reduxHooks';
 import WebviewScreen from '@screens/WebviewScreen/WebviewScreen';
 import { RootStackParamList } from './types';
 
@@ -36,7 +35,7 @@ const Stack = createStackNavigator<RootStackParamList>();
 
 const MainNavigator = () => {
   const theme = useTheme();
-  const { updateLibraryOnLaunch = false } = useSettings();
+  const { updateLibraryOnLaunch } = useAppSettings();
 
   useEffect(() => {
     const timer = setTimeout(async () => {

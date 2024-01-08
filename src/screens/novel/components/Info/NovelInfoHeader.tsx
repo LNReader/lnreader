@@ -7,9 +7,8 @@ import * as Clipboard from 'expo-clipboard';
 import { IconButton } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { followNovelAction } from '../../../../redux/novel/novel.actions';
-import { useSettings } from '../../../../hooks/reduxHooks';
-import { showToast } from '../../../../utils/showToast';
+import { followNovelAction } from '@redux/novel/novel.actions';
+import { showToast } from '@utils/showToast';
 
 import {
   CoverImage,
@@ -20,18 +19,19 @@ import {
   NovelTitle,
   NovelGenres,
 } from './NovelInfoComponents';
-import { Row } from '../../../../components/Common';
+import { Row } from '@components/Common';
 import ReadButton from './ReadButton';
 import NovelSummary from '../NovelSummary/NovelSummary';
 import NovelScreenButtonGroup from '../NovelScreenButtonGroup/NovelScreenButtonGroup';
-import { useAppDispatch } from '../../../../redux/hooks';
-import { getString } from '../../../../../strings/translations';
-import { filterColor } from '../../../../theme/colors';
+import { useAppDispatch } from '@redux/hooks';
+import { getString } from '@strings/translations';
+import { filterColor } from '@theme/colors';
 import { ChapterInfo, NovelInfo as NovelData } from '@database/types';
 import { ThemeColors } from '@theme/types';
 import { NovelScreenProps } from '@navigators/types';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { UseBooleanReturnType } from '@hooks';
+import { useAppSettings } from '@hooks/persisted';
 
 interface NovelInfoHeaderProps {
   novel: NovelData;
@@ -58,7 +58,7 @@ const NovelInfoHeader = ({
   novelBottomSheetRef,
   deleteDownloadsSnackbar,
 }: NovelInfoHeaderProps) => {
-  const { hideBackdrop = false } = useSettings();
+  const { hideBackdrop = false } = useAppSettings();
 
   const dispatch = useAppDispatch();
 

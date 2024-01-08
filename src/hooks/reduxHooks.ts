@@ -2,12 +2,6 @@ import { ChapterInfo } from '@database/types';
 import { RootState } from '@redux/store';
 import { useSelector } from 'react-redux';
 
-const useSettings = () => {
-  const settings = useSelector((state: RootState) => state.settingsReducerV1);
-
-  return settings;
-};
-
 const useNovel = () => {
   const { novel, chapters, loading, updating } = useSelector(
     (state: RootState) => state.novelReducer,
@@ -95,7 +89,6 @@ const useTrackingStatus = () => {
 };
 
 export {
-  useSettings,
   usePreferences,
   useContinueReading,
   useTrackingStatus,

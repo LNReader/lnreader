@@ -2,16 +2,11 @@ import { FlatList, StyleSheet } from 'react-native';
 import React from 'react';
 import { Appbar, List, SwitchItem } from '@components';
 
-import {
-  useAppDispatch,
-  useBrowseSettings,
-  usePluginReducer,
-} from '@redux/hooks';
-import { useTheme } from '@hooks/persisted';
+import { useAppDispatch, usePluginReducer } from '@redux/hooks';
+import { useBrowseSettings, useTheme } from '@hooks/persisted';
 import { getString } from '@strings/translations';
 import { availableLanguages } from '@utils/constants/languages';
 import { toggleLanguageFilter } from '@redux/plugins/pluginsSlice';
-import { setBrowseSettings } from '@redux/settings/settingsSliceV2';
 import { BrowseSettingsScreenProp } from '@navigators/types';
 
 const BrowseSettings = ({ navigation }: BrowseSettingsScreenProp) => {
@@ -21,9 +16,10 @@ const BrowseSettings = ({ navigation }: BrowseSettingsScreenProp) => {
 
   const { languagesFilter } = usePluginReducer();
   const {
-    searchAllSources = false,
-    showMyAnimeList = true,
-    onlyShowPinnedSources = false,
+    searchAllSources,
+    showMyAnimeList,
+    onlyShowPinnedSources,
+    setBrowseSettings,
   } = useBrowseSettings();
 
   return (
@@ -46,12 +42,7 @@ const BrowseSettings = ({ navigation }: BrowseSettingsScreenProp) => {
               )}
               value={searchAllSources}
               onPress={() =>
-                dispatch(
-                  setBrowseSettings({
-                    key: 'searchAllSources',
-                    value: !searchAllSources,
-                  }),
-                )
+                setBrowseSettings({ searchAllSources: !searchAllSources })
               }
               theme={theme}
             />
@@ -70,12 +61,7 @@ const BrowseSettings = ({ navigation }: BrowseSettingsScreenProp) => {
               label="Show MyAnimeList"
               value={showMyAnimeList}
               onPress={() =>
-                dispatch(
-                  setBrowseSettings({
-                    key: 'showMyAnimeList',
-                    value: !showMyAnimeList,
-                  }),
-                )
+                setBrowseSettings({ showMyAnimeList: !showMyAnimeList })
               }
               theme={theme}
             />
@@ -85,12 +71,9 @@ const BrowseSettings = ({ navigation }: BrowseSettingsScreenProp) => {
               )}
               value={onlyShowPinnedSources}
               onPress={() =>
-                dispatch(
-                  setBrowseSettings({
-                    key: 'onlyShowPinnedSources',
-                    value: !onlyShowPinnedSources,
-                  }),
-                )
+                setBrowseSettings({
+                  onlyShowPinnedSources: !onlyShowPinnedSources,
+                })
               }
               theme={theme}
             />

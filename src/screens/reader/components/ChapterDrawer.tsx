@@ -2,12 +2,12 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { StyleSheet, View, Pressable } from 'react-native';
 import { Text } from 'react-native-paper';
 import color from 'color';
-import { useTheme } from '@hooks/persisted';
+import { useAppSettings, useTheme } from '@hooks/persisted';
 import { FlashList, FlashListProps } from '@shopify/flash-list';
 import { Button, LoadingScreenV2 } from '@components/index';
 import { EdgeInsets, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getString } from '@strings/translations';
-import { useNovel, useSettings, usePreferences } from '@hooks/reduxHooks';
+import { useNovel, usePreferences } from '@hooks/reduxHooks';
 import { useDispatch } from 'react-redux';
 import { getNovelAction } from '@redux/novel/novel.actions';
 import { ChapterScreenProps } from '@navigators/types';
@@ -21,7 +21,7 @@ const ChapterDrawer = ({ route, navigation }: ChapterScreenProps) => {
   const listRef = useRef<FlashList<ChapterInfo>>(null);
   const dispatch = useDispatch();
   const { chapter, novel: novelItem } = route.params;
-  const { defaultChapterSort = 'ORDER BY id ASC' } = useSettings();
+  const { defaultChapterSort } = useAppSettings();
   const { sort = defaultChapterSort, filter = '' } = usePreferences(
     chapter.novelId,
   );

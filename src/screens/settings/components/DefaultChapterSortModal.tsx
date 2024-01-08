@@ -2,15 +2,14 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 
 import { Portal, Modal, overlay } from 'react-native-paper';
-import { SortItem } from '../../../components/Checkbox/Checkbox';
+import { SortItem } from '@components/Checkbox/Checkbox';
 
-import { setAppSettings } from '@redux/settings/settingsSliceV1';
 import { ThemeColors } from '@theme/types';
-import { Dispatch } from '@reduxjs/toolkit';
+import { AppSettings } from '@hooks/persisted/useSettings';
 
 interface DefaultChapterSortModalProps {
   theme: ThemeColors;
-  dispatch: Dispatch;
+  setAppSettings: (values: Partial<AppSettings>) => void;
   defaultChapterSort: string;
   hideDisplayModal: () => void;
   displayModalVisible: boolean;
@@ -18,7 +17,7 @@ interface DefaultChapterSortModalProps {
 
 const DefaultChapterSortModal = ({
   theme,
-  dispatch,
+  setAppSettings,
   defaultChapterSort,
   hideDisplayModal,
   displayModalVisible,
@@ -39,18 +38,8 @@ const DefaultChapterSortModal = ({
           status={defaultChapterSort === 'ORDER BY id ASC' ? 'asc' : 'desc'}
           onPress={() =>
             defaultChapterSort === 'ORDER BY id ASC'
-              ? dispatch(
-                  setAppSettings({
-                    key: 'defaultChapterSort',
-                    value: 'ORDER BY id DESC',
-                  }),
-                )
-              : dispatch(
-                  setAppSettings({
-                    key: 'defaultChapterSort',
-                    value: 'ORDER BY id ASC',
-                  }),
-                )
+              ? setAppSettings({ defaultChapterSort: 'ORDER BY id DESC' })
+              : setAppSettings({ defaultChapterSort: 'ORDER BY id ASC' })
           }
         />
       </Modal>

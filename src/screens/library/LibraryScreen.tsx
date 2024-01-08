@@ -16,7 +16,12 @@ import { Banner } from './components/Banner';
 import { Actionbar } from '@components/Actionbar/Actionbar';
 
 import { useLibrary } from './hooks/useLibrary';
-import { useHistory, useLibrarySettings, useTheme } from '@hooks/persisted';
+import {
+  useAppSettings,
+  useHistory,
+  useLibrarySettings,
+  useTheme,
+} from '@hooks/persisted';
 import { useSearch, useBackHandler, useBoolean } from '@hooks';
 import { getString } from '@strings/translations';
 import { FAB, Portal } from 'react-native-paper';
@@ -28,7 +33,6 @@ import { removeNovelsFromLibrary } from '@database/queries/NovelQueries';
 import SetCategoryModal from '@screens/novel/components/SetCategoriesModal';
 import { debounce } from 'lodash-es';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useSettings } from '@hooks/reduxHooks';
 import SourceScreenSkeletonLoading from '@screens/browse/loadingAnimation/SourceScreenSkeletonLoading';
 import { Row } from '@components/Common';
 import { LibraryScreenProps } from '@navigators/types';
@@ -48,7 +52,7 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
     incognitoMode = false,
   } = useLibrarySettings();
 
-  const { useLibraryFAB = false } = useSettings();
+  const { useLibraryFAB = false } = useAppSettings();
 
   const { isLoading: isHistoryLoading, history, error } = useHistory();
 

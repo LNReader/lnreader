@@ -27,7 +27,6 @@ import FontPickerModal from './FontPickerModal';
 import ReaderLineHeight from '@screens/reader/components/ReaderBottomSheet/ReaderLineHeight';
 import ReaderTextSize from './ReaderTextSize';
 
-import { useAppDispatch, useSettingsV2 } from '@redux/hooks';
 import {
   useChapterGeneralSettings,
   useChapterReaderSettings,
@@ -37,10 +36,6 @@ import { getString } from '@strings/translations';
 
 import { dummyHTML } from './utils';
 import { useBoolean } from '@hooks';
-import {
-  deleteCustomReaderTheme,
-  saveCustomReaderTheme,
-} from '@redux/settings/settingsSliceV2';
 import {
   presetReaderThemes,
   readerFonts,
@@ -59,7 +54,6 @@ export type TextAlignments =
 const SettingsReaderScreen = () => {
   const theme = useTheme();
   const navigation = useNavigation();
-  const dispatch = useAppDispatch();
 
   const readerSettings = useChapterReaderSettings();
   const {
@@ -74,10 +68,6 @@ const SettingsReaderScreen = () => {
     showBatteryAndTime,
     setChapterGeneralSettings,
   } = useChapterGeneralSettings();
-
-  const {
-    reader: { customThemes = [] },
-  } = useSettingsV2();
 
   const webViewCSS = `
   <style>
@@ -108,7 +98,7 @@ const SettingsReaderScreen = () => {
   const readerTextColorModal = useBoolean();
   const readerFontPickerModal = useBoolean();
 
-  const isCurrentThemeCustom = customThemes.some(
+  const isCurrentThemeCustom = readerSettings.customThemes.some(
     item =>
       item.backgroundColor === readerSettings.theme &&
       item.textColor === readerSettings.textColor,
@@ -406,14 +396,10 @@ const SettingsReaderScreen = () => {
                 'moreScreen.settingsScreen.readerSettings.deleteCustomTheme',
               )}
               onPress={() =>
-                dispatch(
-                  deleteCustomReaderTheme({
-                    theme: {
-                      backgroundColor: readerSettings.theme,
-                      textColor: readerSettings.textColor,
-                    },
-                  }),
-                )
+                readerSettings.deleteCustomReaderTheme({
+                  backgroundColor: readerSettings.theme,
+                  textColor: readerSettings.textColor,
+                })
               }
             />
           </View>
@@ -425,14 +411,10 @@ const SettingsReaderScreen = () => {
                 'moreScreen.settingsScreen.readerSettings.saveCustomTheme',
               )}
               onPress={() =>
-                dispatch(
-                  saveCustomReaderTheme({
-                    theme: {
-                      backgroundColor: readerSettings.theme,
-                      textColor: readerSettings.textColor,
-                    },
-                  }),
-                )
+                readerSettings.saveCustomReaderTheme({
+                  backgroundColor: readerSettings.theme,
+                  textColor: readerSettings.textColor,
+                })
               }
             />
           </View>
