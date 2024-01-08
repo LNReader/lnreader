@@ -169,7 +169,8 @@
         "epubLocation": "EPUB Speicherort",
         "epubLocationDescription": "Der Speicherort, an dem Sie Ihre EPUB Dateien öffnen und exportieren.",
         "downloadNewChapters": "Neue Kapitel herunterladen",
-        "disableHapticFeedback": "Haptisches Feedback deaktivieren"
+        "disableHapticFeedback": "Haptisches Feedback deaktivieren",
+        "jumpToLastReadChapter": "Jump to last read chapter in list"
       },
       "readerSettings": {
         "title": "Reader",
