@@ -169,7 +169,8 @@
         "epubLocation": "EPUB Konumu",
         "epubLocationDescription": "EPUB dosyalarınızı açıp, dışa aktardığınız yer.",
         "downloadNewChapters": "Yeni bölümleri indir",
-        "disableHapticFeedback": "Dokunmatik geri bildirimi devre dışı bırak"
+        "disableHapticFeedback": "Dokunmatik geri bildirimi devre dışı bırak",
+        "jumpToLastReadChapter": "Jump to last read chapter in list"
       },
       "readerSettings": {
         "title": "Okuyucu",
