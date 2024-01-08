@@ -55,6 +55,9 @@ export const useBrowseSource = (
   }, [fetchNovels, currentPage]);
 
   const refetchNovels = () => {
+    isScreenMounted.current = true;
+    setError('');
+    setIsLoading(true);
     setCurrentPage(1);
     fetchNovels(1);
   };
