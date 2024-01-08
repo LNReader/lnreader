@@ -368,6 +368,7 @@ const ChapterContent = ({ route, navigation }) => {
             iconName: 'refresh',
             title: getString('common.retry'),
             onPress: () => {
+              setError('');
               setLoading(true);
               getChapter(chapterId);
             },
