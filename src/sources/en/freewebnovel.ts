@@ -31,7 +31,7 @@ const popularNovels = async (page: number, { showLatestNovels }) => {
 };
 
 const parseNovelAndChapters = async (novelUrl: string) => {
-  const result = await fetch(result).then(res => res.text());
+  const result = await fetch(novelUrl).then(res => res.text());
   const loadedCheerio = cheerio.load(result);
 
   const novel: SourceNovel = {
