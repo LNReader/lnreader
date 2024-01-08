@@ -169,7 +169,8 @@
         "epubLocation": "Lokasi EPUB\n",
         "epubLocationDescription": "Lokasi dimana anda membuka dan mengekspor file EPUB anda.\n",
         "downloadNewChapters": "Unduh bab terbaru\n",
-        "disableHapticFeedback": "Nonaktifkan umpan balik haptic\n"
+        "disableHapticFeedback": "Nonaktifkan umpan balik haptic\n",
+        "jumpToLastReadChapter": "Jump to last read chapter in list"
       },
       "readerSettings": {
         "title": "Pembaca\n",
