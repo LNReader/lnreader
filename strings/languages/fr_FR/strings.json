@@ -169,7 +169,8 @@
         "epubLocation": "Localisation EPUB",
         "epubLocationDescription": "L'endroit où vous ouvrez et exportez vos fichiers EPUB.",
         "downloadNewChapters": "Télécharger les nouveaux chapitres",
-        "disableHapticFeedback": "Désactiver le retour haptique"
+        "disableHapticFeedback": "Désactiver le retour haptique",
+        "jumpToLastReadChapter": "Jump to last read chapter in list"
       },
       "readerSettings": {
         "title": "Lecteur",
