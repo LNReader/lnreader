@@ -169,7 +169,8 @@
         "epubLocation": "Расположение EPUB",
         "epubLocationDescription": "Место открытия и экспорта файлов EPUB.",
         "downloadNewChapters": "Скачивать новые главы",
-        "disableHapticFeedback": "Отключить виброотклик"
+        "disableHapticFeedback": "Отключить виброотклик",
+        "jumpToLastReadChapter": "Jump to last read chapter in list"
       },
       "readerSettings": {
         "title": "Чтение",
