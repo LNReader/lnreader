@@ -81,14 +81,14 @@ class ReadwnScraper {
   }
 
   async popularNovels(page, { showLatestNovels, filters }) {
-    let url = baseUrl + 'list/';
+    let url = this.baseUrl + 'list/';
     url += (filters?.genres || 'all') + '/';
     url += (filters?.status || 'all') + '-';
     url +=
       (showLatestNovels ? 'lastdotime' : filters?.sort || 'newstime') + '-';
     url += page - 1 + '.html';
 
-    const body = await fetchHtml({ url, sourceId });
+    const body = await fetchHtml({ url, sourceId: this.sourceId });
 
     const loadedCheerio = cheerio.load(body);
     const novels = loadedCheerio('li.novel-item')
@@ -106,7 +106,7 @@ class ReadwnScraper {
   }
 
   async parseNovelAndChapters(novelUrl) {
-    const body = await fetchHtml({ url: novelUrl, sourceId });
+    const body = await fetchHtml({ url: novelUrl, sourceId: this.sourceId });
     const loadedCheerio = cheerio.load(body);
 
     const novel = {
@@ -134,7 +134,7 @@ class ReadwnScraper {
     loadedCheerio('div.header-stats > span').each(function () {
       if (loadedCheerio(this).find('small').text() === 'Status') {
         novel.status =
-          loadedCheerio(this).find('strong').text() == 'Ongoing'
+          loadedCheerio(this).find('strong').text() === 'Ongoing'
             ? Status.ONGOING
             : Status.COMPLETED;
       }
@@ -146,6 +146,7 @@ class ReadwnScraper {
         .first()
         .text()
         .trim(),
+      10,
     );
 
     const chapters = loadedCheerio('.chapter-list li')
@@ -163,16 +164,16 @@ class ReadwnScraper {
           .text()
           .trim();
 
-        if (!chapterName || !chapterUrl) return null;
-
-        return {
-          chapterName,
-          releaseDate: parseMadaraDate(releaseDate),
-          chapterUrl: this.baseUrl + chapterUrl,
-        };
+        if (chapterUrl) {
+          return {
+            chapterName,
+            releaseDate: parseMadaraDate(releaseDate),
+            chapterUrl: this.baseUrl + chapterUrl,
+          };
+        }
       })
       .get()
-      .filter(chapter => chapter);
+      .filter(chapter => chapter?.chapterName);
 
     if (latestChapterNo > chapters.length) {
       const lastChapterNo = parseInt(
@@ -195,7 +196,7 @@ class ReadwnScraper {
   }
 
   async parseChapter(novelUrl, chapterUrl) {
-    const body = await fetchHtml({ url: chapterUrl, sourceId });
+    const body = await fetchHtml({ url: chapterUrl, sourceId: this.sourceId });
 
     const loadedCheerio = cheerio.load(body);
     const chapterName = loadedCheerio('.titles > h2').text();
@@ -215,6 +216,7 @@ class ReadwnScraper {
   async searchNovels(searchTerm) {
     const body = await fetchHtml({
       url: this.baseUrl + 'e/search/index.php',
+      sourceId: this.baseUrl,
       init: {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',

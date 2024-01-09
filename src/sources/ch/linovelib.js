@@ -1,5 +1,5 @@
 import { showToast } from '@hooks/showToast';
-import { fetchApi, fetchHtml } from '@utils/fetch/fetch';
+import { fetchHtml } from '@utils/fetch/fetch';
 
 import * as cheerio from 'cheerio';
 

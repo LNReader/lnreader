@@ -82,7 +82,9 @@ class IfreedomScraper {
       }
     });
 
-    if (novel.author == 'Не указан') delete novel.author;
+    if (novel.author === 'Не указан') {
+      delete novel.author;
+    }
 
     const chapters = [];
     loadedCheerio('div.li-ranobe').each(function () {
@@ -116,7 +118,9 @@ class IfreedomScraper {
         const bestlink = srcset
           .filter(url => url.startsWith('http'))
           ?.unshift();
-        if (bestlink) loadedCheerio(this).attr('src', bestlink);
+        if (bestlink) {
+          loadedCheerio(this).attr('src', bestlink);
+        }
       }
     });
 
@@ -132,8 +136,7 @@ class IfreedomScraper {
   }
 
   async searchNovels(searchTerm) {
-    const url =
-      this.baseUrl + '/vse-knigi/?searchname=' + searchTerm;
+    const url = this.baseUrl + '/vse-knigi/?searchname=' + searchTerm;
     const result = await fetch(url).then(res => res.text());
     const loadedCheerio = cheerio.load(result);
 
