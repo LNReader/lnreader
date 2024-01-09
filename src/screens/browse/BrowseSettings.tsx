@@ -2,25 +2,17 @@ import { FlatList, StyleSheet } from 'react-native';
 import React from 'react';
 import { Appbar, List, SwitchItem } from '@components';
 
-import { useAppDispatch, usePluginReducer } from '@redux/hooks';
-import { useBrowseSettings, useTheme } from '@hooks/persisted';
+import { useBrowseSettings, usePlugins, useTheme } from '@hooks/persisted';
 import { getString } from '@strings/translations';
 import { availableLanguages } from '@utils/constants/languages';
-import { toggleLanguageFilter } from '@redux/plugins/pluginsSlice';
 import { BrowseSettingsScreenProp } from '@navigators/types';
 
 const BrowseSettings = ({ navigation }: BrowseSettingsScreenProp) => {
   const theme = useTheme();
   const { goBack } = navigation;
-  const dispatch = useAppDispatch();
 
-  const { languagesFilter } = usePluginReducer();
-  const {
-    searchAllSources,
-    showMyAnimeList,
-    onlyShowPinnedSources,
-    setBrowseSettings,
-  } = useBrowseSettings();
+  const { languagesFilter, toggleLanguageFilter } = usePlugins();
+  const { showMyAnimeList, setBrowseSettings } = useBrowseSettings();
 
   return (
     <>
@@ -36,16 +28,6 @@ const BrowseSettings = ({ navigation }: BrowseSettingsScreenProp) => {
             <List.SubHeader theme={theme}>
               {getString('browseScreen.globalSearch')}
             </List.SubHeader>
-            <SwitchItem
-              label={getString(
-                'moreScreen.settingsScreen.browseSettingsScreen.searchAllSources',
-              )}
-              value={searchAllSources}
-              onPress={() =>
-                setBrowseSettings({ searchAllSources: !searchAllSources })
-              }
-              theme={theme}
-            />
             <List.InfoItem
               title={getString(
                 'moreScreen.settingsScreen.browseSettingsScreen.searchAllWarning',
@@ -65,18 +47,6 @@ const BrowseSettings = ({ navigation }: BrowseSettingsScreenProp) => {
               }
               theme={theme}
             />
-            <SwitchItem
-              label={getString(
-                'moreScreen.settingsScreen.browseSettingsScreen.onlyShowPinnedSources',
-              )}
-              value={onlyShowPinnedSources}
-              onPress={() =>
-                setBrowseSettings({
-                  onlyShowPinnedSources: !onlyShowPinnedSources,
-                })
-              }
-              theme={theme}
-            />
             <List.Divider theme={theme} />
             <List.SubHeader theme={theme}>
               {getString(
@@ -90,8 +60,8 @@ const BrowseSettings = ({ navigation }: BrowseSettingsScreenProp) => {
         renderItem={({ item }) => (
           <SwitchItem
             label={item}
-            value={languagesFilter.indexOf(item) !== -1}
-            onPress={() => dispatch(toggleLanguageFilter(item))}
+            value={languagesFilter.includes(item)}
+            onPress={() => toggleLanguageFilter(item)}
             theme={theme}
           />
         )}

@@ -9,3 +9,4 @@ export {
   useChapterGeneralSettings,
   useChapterReaderSettings,
 } from './useSettings';
+export { default as usePlugins } from './usePlugins';

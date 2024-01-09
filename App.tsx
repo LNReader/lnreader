@@ -20,6 +20,7 @@ import { collectPlugins } from '@plugins/pluginManager';
 
 import Main from './src/navigators/Main';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import { usePlugins } from '@hooks/persisted';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => {
@@ -32,9 +33,11 @@ Notifications.setNotificationHandler({
 });
 
 const App = () => {
+  const { refreshPlugins } = usePlugins();
   useEffect(() => {
     createTables();
     collectPlugins().then(() => LottieSplashScreen.hide());
+    refreshPlugins();
   }, []);
 
   return (

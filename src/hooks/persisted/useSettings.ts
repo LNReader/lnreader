@@ -53,9 +53,7 @@ export interface AppSettings {
 }
 
 export interface BrowseSettings {
-  onlyShowPinnedSources: boolean;
   showMyAnimeList: boolean;
-  searchAllSources: boolean;
 }
 
 export interface LibrarySettings {
@@ -144,9 +142,7 @@ const initialAppSettings: AppSettings = {
 };
 
 const initialBrowseSettings: BrowseSettings = {
-  searchAllSources: false,
   showMyAnimeList: true,
-  onlyShowPinnedSources: false,
 };
 
 const initialChapterGeneralSettings: ChapterGeneralSettings = {

@@ -1,8 +1,8 @@
 import RNFS from 'react-native-fs';
 import { PluginDownloadFolder } from '@utils/constants/download';
-import { showToast } from '../utils/showToast';
-import { bigger } from '../utils/compareVersion';
-import { Languages } from '@utils/constants/languages';
+import { showToast } from '@utils/showToast';
+import { newer } from '@utils/compareVersion';
+import { Language } from '@utils/constants/languages';
 
 // packages for plugins
 import { load } from 'cheerio';
@@ -90,7 +90,7 @@ const installPlugin = async (url: string): Promise<Plugin | undefined> => {
         }
         const oldPlugin = plugins[plugin.id];
         if (oldPlugin) {
-          if (bigger(plugin.version, oldPlugin.version)) {
+          if (newer(plugin.version, oldPlugin.version)) {
             delete plugins[oldPlugin.id];
             plugins[plugin.id] = plugin;
             await RNFS.writeFile(plugin.path, rawCode, 'utf8');
@@ -123,7 +123,7 @@ const uninstallPlugin = async (_plugin: PluginItem) => {
 
 const updatePlugin = async (plugin: PluginItem) => {
   const updated = await installPlugin(plugin.url);
-  if (updated && bigger(updated.version, plugin.version)) {
+  if (updated && newer(updated.version, plugin.version)) {
     showToast(`Updated ${updated.name} to ${updated.version}`);
   }
   return updated;
@@ -135,8 +135,8 @@ const collectPlugins = async () => {
     return;
   }
   const paths = await RNFS.readDir(PluginDownloadFolder);
-  for (let i = 0; i < paths.length; i++) {
-    const plugin = await setupPlugin(paths[i].path);
+  for (let item of paths) {
+    const plugin = await setupPlugin(item.path);
     if (plugin) {
       plugins[plugin.id] = plugin;
     }
@@ -149,9 +149,15 @@ const fetchPlugins = async () => {
   const githubRepository = 'lnreader-sources';
   const githubBranch = 'plugins';
 
-  const availablePlugins: Record<Languages, Array<PluginItem>> = await fetch(
-    `https://raw.githubusercontent.com/${githubUsername}/${githubRepository}/${githubBranch}/.dist/${githubUsername}/plugins.min.json`,
-  ).then(res => res.json());
+  const availablePlugins: Record<Language, Array<PluginItem>> = await fetch(
+    `https://raw.githubusercontent.com/${githubUsername}/${githubRepository}/${githubBranch}/.dist/${githubUsername}/plugins.json`,
+  )
+    .then(res => res.json())
+    .catch(() => {
+      throw new Error(
+        `Plugins host error: ${githubUsername}/${githubRepository}`,
+      );
+    });
   return availablePlugins;
 };
 

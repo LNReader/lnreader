@@ -1,4 +1,4 @@
-export const smaller = (a: string, b: string): boolean => {
+export const older = (a: string, b: string): boolean => {
   a = a.replace(/[^\d.]/g, '');
   b = b.replace(/[^\d.]/g, '');
   const arrA = a.split('.').map(value => Number(value));
@@ -31,5 +31,5 @@ export const equal = (a: string, b: string): boolean => {
   return true;
 };
 
-export const bigger = (a: string, b: string): boolean =>
-  !smaller(a, b) && !equal(a, b);
+export const newer = (a: string, b: string): boolean =>
+  !older(a, b) && !equal(a, b);

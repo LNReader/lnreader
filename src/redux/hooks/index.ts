@@ -6,6 +6,3 @@ export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
 export const useDownloadQueue = () =>
   useAppSelector((state: RootState) => state.downloadsReducer);
-
-export const usePluginReducer = () =>
-  useAppSelector((state: RootState) => state.pluginsReducer);

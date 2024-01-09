@@ -1,77 +1,55 @@
-import { SectionList, StyleSheet, Text, RefreshControl } from 'react-native';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
+import { Text } from 'react-native';
+import React, { useEffect, useMemo, useState } from 'react';
+import { TabView, TabBar } from 'react-native-tab-view';
 import color from 'color';
 
-import {
-  fetchPluginsAction,
-  searchPluginsAction,
-  setLastUsedPlugin,
-  togglePinPlugin,
-  installPluginAction,
-  uninstallPluginAction,
-  updatePluginAction,
-} from '@redux/plugins/pluginsSlice';
-import { useAppDispatch, usePluginReducer } from '@redux/hooks';
-
 import { useSearch } from '@hooks';
-import { useBrowseSettings, useTheme } from '@hooks/persisted';
+import { useBrowseSettings, usePlugins, useTheme } from '@hooks/persisted';
 import { getString } from '@strings/translations';
-import { fetchPlugins } from '@plugins/pluginManager';
 
-import { Languages } from '@utils/constants/languages';
+import { Language } from '@utils/constants/languages';
 import { PluginItem } from '@plugins/types';
 import { EmptyView, SearchbarV2 } from '@components';
-import MalCard from './discover/MalCard/MalCard';
-import PluginCard from './components/PluginCard';
 import { BrowseScreenProps } from '@navigators/types';
+import { PluginsMap } from '@hooks/persisted/usePlugins';
+import PluginSection from './components/PluginSection';
 
 const BrowseScreen = ({ navigation }: BrowseScreenProps) => {
-  const dispatch = useAppDispatch();
   const theme = useTheme();
-  const [refreshing, setRefreshing] = useState(false);
   const { searchText, setSearchText, clearSearchbar } = useSearch();
   const {
-    availablePlugins,
-    installedPlugins,
-    searchResults,
-    pinnedPlugins,
+    filteredAvailablePlugins,
+    filteredInstalledPlugins,
     languagesFilter,
-    lastUsed,
-  } = usePluginReducer();
-  const { showMyAnimeList, onlyShowPinnedSources } = useBrowseSettings();
+    lastUsedPlugin,
+  } = usePlugins();
 
-  useEffect(() => {
-    if (Object.keys(availablePlugins).length === 0) {
-      fetchPlugins().then(plugins => dispatch(fetchPluginsAction(plugins)));
-    }
-  }, []);
-
-  const onRefresh = () => {
-    setRefreshing(true);
-    fetchPlugins().then(plugins => {
-      dispatch(fetchPluginsAction(plugins));
-      setRefreshing(false);
-    });
+  const [searchedAvailablePlugins, setSearchedAvailablePlugins] =
+    useState<PluginsMap>(filteredAvailablePlugins);
+  const [searchedInstalledPlugins, setSearchedInstalledPlugins] = useState<
+    PluginItem[]
+  >(filteredInstalledPlugins);
+  const searchPlugins = (text: string) => {
+    setSearchedInstalledPlugins(
+      filteredInstalledPlugins.filter(plg =>
+        plg.name.toLocaleLowerCase().includes(text.toLocaleLowerCase()),
+      ),
+    );
+    setSearchedAvailablePlugins(
+      languagesFilter.reduce((pre, cur) => {
+        pre[cur] = filteredAvailablePlugins[cur]?.filter(plg =>
+          plg.name.toLocaleLowerCase().includes(text.toLocaleLowerCase()),
+        );
+        return pre;
+      }, {} as PluginsMap),
+    );
   };
+  const { showMyAnimeList } = useBrowseSettings();
 
   const onChangeText = (text: string) => {
     setSearchText(text);
-    dispatch(searchPluginsAction(text));
+    searchPlugins(text);
   };
-
-  const navigateToSource = useCallback(
-    (plugin: PluginItem, showLatestNovels?: boolean) => {
-      navigation.navigate('SourceScreen', {
-        pluginId: plugin.id,
-        pluginName: plugin.name,
-        pluginUrl: plugin.site,
-        showLatestNovels,
-      });
-      dispatch(setLastUsedPlugin(plugin));
-    },
-    [],
-  );
 
   const searchbarActions = useMemo(
     () => [
@@ -94,14 +72,23 @@ const BrowseScreen = ({ navigation }: BrowseScreenProps) => {
   const availableSections = useMemo(() => {
     const list = [];
     if (searchText) {
-      list.unshift({
+      list.push({
         header: getString('common.searchResults'),
-        data: searchResults,
+        data: [],
+      });
+      languagesFilter.forEach(lang => {
+        const plugins = searchedAvailablePlugins[lang as Language];
+        if (plugins?.length) {
+          list.push({
+            header: lang,
+            data: plugins,
+          });
+        }
       });
     } else {
       languagesFilter.forEach(lang => {
-        const plugins = availablePlugins[lang as Languages];
-        if (plugins) {
+        const plugins = filteredAvailablePlugins[lang as Language];
+        if (plugins?.length) {
           list.push({
             header: lang,
             data: plugins,
@@ -110,151 +97,39 @@ const BrowseScreen = ({ navigation }: BrowseScreenProps) => {
       });
     }
     return list;
-  }, [
-    JSON.stringify(searchResults),
-    availablePlugins,
-    languagesFilter,
-    searchText,
-  ]);
+  }, [languagesFilter, searchText, searchedAvailablePlugins]);
 
   const installedSections = useMemo(() => {
     const list = [];
-    if (lastUsed) {
+    if (searchText) {
       list.push({
-        header: getString('browseScreen.lastUsed'),
-        data: [lastUsed],
+        header: getString('common.searchResults'),
+        data: searchedInstalledPlugins,
       });
-    }
-    if (pinnedPlugins) {
-      list.push({
-        header: getString('browseScreen.pinned'),
-        data: pinnedPlugins,
-      });
-    }
-
-    if (!onlyShowPinnedSources) {
-      if (searchText) {
-        list.unshift({
-          header: getString('common.searchResults'),
-          data: searchResults,
+    } else if (filteredInstalledPlugins.length) {
+      if (lastUsedPlugin) {
+        list.push({
+          header: getString('browseScreen.lastUsed'),
+          data: [lastUsedPlugin],
         });
-      } else {
-        if (installedPlugins) {
-          const plugins = installedPlugins.filter(plugin =>
-            languagesFilter.includes(plugin.lang),
-          );
-          list.push({
-            header: 'Installed plugins',
-            data: plugins,
-          });
-        }
       }
+      list.push({
+        header: 'Installed plugins',
+        data: filteredInstalledPlugins,
+      });
     }
-
     return list;
-  }, [
-    lastUsed,
-    pinnedPlugins,
-    onlyShowPinnedSources,
-    JSON.stringify(searchResults),
-    installedPlugins,
-    searchText,
-    languagesFilter,
-  ]);
-
-  const makeRoute = (
-    sections: Array<{ header: string; data: Array<PluginItem> }>,
-    installTab: boolean,
-  ) => (
-    <>
-      {languagesFilter.length === 0 ? (
-        <EmptyView
-          icon="(･Д･。"
-          description={getString('browseScreen.listEmpty')}
-          theme={theme}
-        />
-      ) : (
-        <>
-          <SectionList
-            sections={sections}
-            ListHeaderComponent={
-              showMyAnimeList && installTab ? (
-                <>
-                  <Text
-                    style={[
-                      styles.sectionHeader,
-                      { color: theme.onSurfaceVariant },
-                    ]}
-                  >
-                    {getString('browseScreen.discover')}
-                  </Text>
-                  {showMyAnimeList && <MalCard theme={theme} />}
-                </>
-              ) : null
-            }
-            keyExtractor={(_, index) => index.toString() + installTab}
-            renderSectionHeader={({ section: { header, data } }) =>
-              data.length > 0 ? (
-                <Text
-                  style={[
-                    styles.sectionHeader,
-                    { color: theme.onSurfaceVariant },
-                  ]}
-                >
-                  {header}
-                </Text>
-              ) : null
-            }
-            renderItem={({ item }) => (
-              <PluginCard
-                installed={
-                  installedPlugins.find(plg => plg.id === item.id) !== undefined
-                }
-                plugin={item}
-                isPinned={
-                  installTab &&
-                  pinnedPlugins.find(plg => plg.id === item.id) !== undefined
-                }
-                navigateToSource={navigateToSource}
-                onTogglePinSource={plugin => dispatch(togglePinPlugin(plugin))}
-                onInstallPlugin={plugin =>
-                  dispatch(installPluginAction(plugin))
-                }
-                onUninstallPlugin={plugin =>
-                  dispatch(uninstallPluginAction(plugin))
-                }
-                onUpdatePlugin={plugin => dispatch(updatePluginAction(plugin))}
-                theme={theme}
-              />
-            )}
-            refreshControl={
-              installTab ? (
-                <></>
-              ) : (
-                <RefreshControl
-                  refreshing={refreshing}
-                  onRefresh={onRefresh}
-                  colors={[theme.onPrimary]}
-                  progressBackgroundColor={theme.primary}
-                />
-              )
-            }
-          />
-        </>
-      )}
-    </>
-  );
-
-  const renderScene = SceneMap({
-    availableRoute: () => makeRoute(availableSections, false),
-    installedRoute: () => makeRoute(installedSections, true),
-  });
+  }, [lastUsedPlugin, searchText, languagesFilter, searchedInstalledPlugins]);
 
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
     { key: 'installedRoute', title: 'Installed' },
     { key: 'availableRoute', title: 'Available' },
   ]);
+
+  useEffect(() => {
+    searchPlugins(searchText);
+  }, [languagesFilter, filteredInstalledPlugins, filteredAvailablePlugins]);
 
   return (
     <>
@@ -269,7 +144,39 @@ const BrowseScreen = ({ navigation }: BrowseScreenProps) => {
       />
       <TabView
         navigationState={{ index, routes }}
-        renderScene={renderScene}
+        renderScene={({ route }) => {
+          if (languagesFilter.length === 0) {
+            return (
+              <EmptyView
+                icon="(･Д･。"
+                description={getString('browseScreen.listEmpty')}
+                theme={theme}
+              />
+            );
+          }
+          switch (route.key) {
+            case 'availableRoute':
+              return (
+                <PluginSection
+                  sections={availableSections}
+                  installedTab={false}
+                  showMyAnimeList={showMyAnimeList}
+                  theme={theme}
+                  navigation={navigation}
+                />
+              );
+            default:
+              return (
+                <PluginSection
+                  sections={installedSections}
+                  installedTab={true}
+                  showMyAnimeList={showMyAnimeList}
+                  theme={theme}
+                  navigation={navigation}
+                />
+              );
+          }
+        }}
         onIndexChange={setIndex}
         renderTabBar={props => (
           <TabBar
@@ -296,11 +203,3 @@ const BrowseScreen = ({ navigation }: BrowseScreenProps) => {
 };
 
 export default BrowseScreen;
-
-const styles = StyleSheet.create({
-  sectionHeader: {
-    fontSize: 14,
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-  },
-});
