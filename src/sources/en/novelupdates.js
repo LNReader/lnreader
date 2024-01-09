@@ -1,8 +1,12 @@
 import * as cheerio from 'cheerio';
-import { fetchApi, fetchHtml, cloudflareCheck } from '@utils/fetch/fetch';
+import {
+  fetchApi,
+  fetchHtml,
+  cloudflareCheck,
+  defaultUserAgentString,
+} from '@utils/fetch/fetch';
 import { defaultTo } from 'lodash-es';
 import { FilterInputs } from '../types/filterTypes';
-import { defaultUserAgentString } from '@utils/fetch/fetch';
 
 const sourceId = 50;
 
