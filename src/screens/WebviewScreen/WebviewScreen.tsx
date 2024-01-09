@@ -4,6 +4,7 @@ import WebView from 'react-native-webview';
 import { Appbar } from '@components';
 import { useTheme } from '@hooks/useTheme';
 import { defaultUserAgentString } from '@utils/fetch/fetch';
+import CookieManager from '@react-native-cookies/cookies';
 
 type ReaderScreenRouteProps = RouteProp<{
   params: {
@@ -21,6 +22,10 @@ const WebviewScreen = () => {
     params: { name, url },
   } = useRoute<ReaderScreenRouteProps>();
 
+  const syncCookies = () => {
+    CookieManager.flush();
+  };
+
   return (
     <>
       <Appbar mode="small" title={name} handleGoBack={goBack} theme={theme} />
@@ -28,6 +33,7 @@ const WebviewScreen = () => {
         startInLoadingState
         userAgent={defaultUserAgentString}
         source={{ uri: url }}
+        onNavigationStateChange={syncCookies}
       />
     </>
   );
