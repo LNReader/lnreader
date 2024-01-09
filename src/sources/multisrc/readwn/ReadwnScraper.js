@@ -2,9 +2,9 @@ import * as cheerio from 'cheerio';
 import QueryString from 'qs';
 
 import { parseMadaraDate } from '../../helpers/parseDate';
-import { fetchHtml } from '@utils/fetch/fetch';
-
 import { FilterInputs } from '../../types/filterTypes';
+import { Status } from '../../helpers/constants';
+import { fetchHtml } from '@utils/fetch/fetch';
 
 class ReadwnScraper {
   constructor(sourceId, baseUrl, sourceName, genres) {
@@ -81,17 +81,12 @@ class ReadwnScraper {
   }
 
   async popularNovels(page, { showLatestNovels, filters }) {
-    const baseUrl = this.baseUrl;
-    const sourceId = this.sourceId;
-
-    const pageNo = page - 1;
-
     let url = baseUrl + 'list/';
     url += (filters?.genres || 'all') + '/';
     url += (filters?.status || 'all') + '-';
     url +=
       (showLatestNovels ? 'lastdotime' : filters?.sort || 'newstime') + '-';
-    url += pageNo + '.html';
+    url += page - 1 + '.html';
 
     const body = await fetchHtml({ url, sourceId });
 
@@ -111,7 +106,7 @@ class ReadwnScraper {
   }
 
   async parseNovelAndChapters(novelUrl) {
-    const body = await fetchHtml({ url, sourceId });
+    const body = await fetchHtml({ url: novelUrl, sourceId });
     const loadedCheerio = cheerio.load(body);
 
     const novel = {
@@ -138,7 +133,10 @@ class ReadwnScraper {
 
     loadedCheerio('div.header-stats > span').each(function () {
       if (loadedCheerio(this).find('small').text() === 'Status') {
-        novel.status = loadedCheerio(this).find('strong').text();
+        novel.status =
+          loadedCheerio(this).find('strong').text() == 'Ongoing'
+            ? Status.ONGOING
+            : Status.COMPLETED;
       }
     });
 
@@ -197,7 +195,7 @@ class ReadwnScraper {
   }
 
   async parseChapter(novelUrl, chapterUrl) {
-    const body = await fetchHtml({ url: this.baseUrl + chapterUrl, sourceId });
+    const body = await fetchHtml({ url: chapterUrl, sourceId });
 
     const loadedCheerio = cheerio.load(body);
     const chapterName = loadedCheerio('.titles > h2').text();
@@ -216,12 +214,12 @@ class ReadwnScraper {
 
   async searchNovels(searchTerm) {
     const body = await fetchHtml({
-      url: `${baseUrl}e/search/index.php`,
+      url: this.baseUrl + 'e/search/index.php',
       init: {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
-          Referer: `${baseUrl}search.html`,
-          Origin: baseUrl,
+          Referer: this.baseUrl + 'search.html',
+          Origin: this.baseUrl,
           'user-agent':
             'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36',
         },
