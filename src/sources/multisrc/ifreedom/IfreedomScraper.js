@@ -133,7 +133,7 @@ class IfreedomScraper {
 
   async searchNovels(searchTerm) {
     const url =
-      this.baseUrl + '/vse-knigi/?searchname=' + searchTerm + '&bpage=' + page;
+      this.baseUrl + '/vse-knigi/?searchname=' + searchTerm;
     const result = await fetch(url).then(res => res.text());
     const loadedCheerio = cheerio.load(result);
 
