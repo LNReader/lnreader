@@ -1,3 +1,4 @@
+import { Status } from '../helpers/constants';
 import * as cheerio from 'cheerio';
 import {
   SourceChapter,
@@ -54,10 +55,13 @@ const parseNovelAndChapters = async (novelUrl: string) => {
     .text()
     .replace(/[\t\n]/g, '');
 
-  novel.status = loadedCheerio('[title=Status]')
-    .next()
-    .text()
-    .replace(/[\t\n]/g, '');
+  novel.status =
+    loadedCheerio('[title=Status]')
+      .next()
+      .text()
+      .replace(/[\t\n]/g, '') === 'OnGoing'
+      ? Status.ONGOING
+      : Status.COMPLETED;
 
   const chapters: SourceChapterItem[] = loadedCheerio('#idData > li > a')
     .map((index, element) => ({

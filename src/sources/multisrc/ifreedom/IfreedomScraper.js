@@ -17,13 +17,13 @@ class IfreedomScraper {
         ? 'По дате обновления'
         : filters?.sort || 'По рейтингу');
 
-    if (filters?.status instanceof Array) {
+    if (filters?.status?.length) {
       url += filters.status.map(i => '&status[]=' + i).join('');
     }
-    if (filters?.lang instanceof Array) {
+    if (filters?.lang?.length) {
       url += filters.lang.map(i => '&lang[]=' + i).join('');
     }
-    if (filters?.genre instanceof Array) {
+    if (filters?.genre?.length) {
       url += filters.genre.map(i => '&genre[]=' + i).join('');
     }
     url += '&bpage=' + page;

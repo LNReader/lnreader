@@ -74,6 +74,7 @@ class ReadwnScraper {
           { label: 'Yaoi', value: 'yaoi' },
           ...genres.values,
         ],
+        inputType: FilterInputs.Picker,
       },
     ];
   }

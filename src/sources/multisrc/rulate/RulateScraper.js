@@ -88,11 +88,11 @@ class RulateScraper {
     url += '&adult=' + (filters?.adult || '0');
 
     if (filters?.genres?.length) {
-      url += filters.genres.map(i => `&genres[]=${i}`).join('');
+      url += filters.genres.map(i => '&genres[]=' + i).join('');
     }
 
     if (filters?.tags?.length) {
-      url += filters.tags.map(i => `&tags[]=${i}`).join('');
+      url += filters.tags.map(i => '&tags[]=' + i).join('');
     }
 
     if (filters?.trash?.length) {
