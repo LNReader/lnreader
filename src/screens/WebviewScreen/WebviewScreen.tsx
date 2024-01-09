@@ -1,10 +1,11 @@
 import React from 'react';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import WebView from 'react-native-webview';
+import CookieManager from '@react-native-cookies/cookies';
+
 import { Appbar } from '@components';
 import { useTheme } from '@hooks/useTheme';
 import { defaultUserAgentString } from '@utils/fetch/fetch';
-import CookieManager from '@react-native-cookies/cookies';
 
 type ReaderScreenRouteProps = RouteProp<{
   params: {
