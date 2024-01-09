@@ -216,7 +216,7 @@ class ReadwnScraper {
   async searchNovels(searchTerm) {
     const body = await fetchHtml({
       url: this.baseUrl + 'e/search/index.php',
-      sourceId: this.baseUrl,
+      sourceId: this.sourceId,
       init: {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
