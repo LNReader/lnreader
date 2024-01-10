@@ -1,6 +1,5 @@
 import { StyleSheet, Text } from 'react-native';
 import React, { useCallback, useEffect, useMemo } from 'react';
-
 import { EmptyView, SearchbarV2 } from '../../components';
 import {
   defaultLanguage,
