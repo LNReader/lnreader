@@ -341,7 +341,7 @@ export const sourceManager = (sourceId: number): Scraper => {
     168: LitSpaceScraper, // @ts-ignore
     169: AsuraLightNovelScraper, // @ts-ignore
     170: ICantReadJPTLScraper, // @ts-ignore
-    171: mtlNovelEsScraper, // @ts-ignore
+    173: mtlNovelEsScraper, // @ts-ignore
   };
 
   return scrapers[sourceId];
