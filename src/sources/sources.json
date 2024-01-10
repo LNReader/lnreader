@@ -1041,5 +1041,12 @@
     "sourceName": "I Cant Read Japanese TL",
     "icon": "https://icantreadjapanese.files.wordpress.com/2021/03/cropped-cropped-site-icon-1.png?w=16",
     "lang": "English"
+  },
+  {
+    "sourceId": 171,
+    "url": "https://es.mtlnovel.com",
+    "sourceName": "MTLNovel (Es)",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/icons/src/en/mtlnovel/icon.png?raw=true",
+    "lang": "Spanish"
   }
 ]
