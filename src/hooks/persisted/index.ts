@@ -11,3 +11,4 @@ export {
 } from './useSettings';
 export { default as usePlugins } from './usePlugins';
 export { getTracker, useTracker } from './useTracker';
+export { useTrackedNovel } from './useNovels';

@@ -28,10 +28,7 @@ export const MyAnimeListScoreSelector = ({
   };
 
   return (
-    <RadioButtonGroup
-      onValueChange={updateTrackScore}
-      value={trackItem.userData.score}
-    >
+    <RadioButtonGroup onValueChange={updateTrackScore} value={trackItem.score}>
       {[...Array(11).keys()].map((item, index) => (
         <RadioButton
           key={index}

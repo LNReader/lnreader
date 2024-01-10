@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Image, ActivityIndicator } from 'react-native';
 import { Modal, overlay, TextInput, TouchableRipple } from 'react-native-paper';
-import { useSelector, useDispatch } from 'react-redux';
 import { ScrollView } from 'react-native-gesture-handler';
-import { trackNovel } from '../../../../redux/tracker/tracker.actions';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import color from 'color';
 import { Button } from '@components';
@@ -11,9 +9,9 @@ import { getTracker } from '@hooks/persisted';
 
 const TrackSearchDialog = ({
   tracker,
+  trackNovel,
   trackSearchDialog,
   setTrackSearchDialog,
-  novelId,
   novelName,
   theme,
 }) => {
@@ -143,14 +141,7 @@ const TrackSearchDialog = ({
           <Button
             onPress={async () => {
               if (selectedNovel) {
-                dispatch(
-                  trackNovel(
-                    tracker.name,
-                    novelId,
-                    selectedNovel,
-                    tracker.auth,
-                  ),
-                );
+                trackNovel(tracker, selectedNovel);
               }
               setTrackSearchDialog(false);
             }}

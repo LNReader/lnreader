@@ -6,8 +6,8 @@ import { useMMKVObject } from 'react-native-mmkv';
 export const TRACKER = 'TRACKER';
 export const TRACKED_NOVELS = 'TRACKED_NOVELS';
 
-type TrackerMetadata = {
-  name: string;
+export type TrackerMetadata = {
+  name: TrackerName;
   auth: AuthenticationResult<any>;
 };
 

@@ -116,7 +116,7 @@ export const aniListTracker = {
       {
         id,
         status: payload.status,
-        progress: payload.progress,
+        progress: Math.round(payload.progress || 1),
         score: payload.score,
       },
       auth,

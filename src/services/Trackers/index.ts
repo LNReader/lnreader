@@ -97,7 +97,7 @@ export type Tracker<AuthMeta = any> = {
    */
   updateUserListEntry: (
     id: number | string,
-    payload: UserListEntry,
+    payload: Partial<UserListEntry>,
     authentication: AuthenticationResult<AuthMeta>,
   ) => Promise<UserListEntry>;
 };

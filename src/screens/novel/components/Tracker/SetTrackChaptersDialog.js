@@ -9,9 +9,7 @@ const SetTrackChaptersDialog = ({
   updateTrackChapters,
   theme,
 }) => {
-  const [trackChapters, setTrackChapters] = useState(
-    trackItem.userData.progress,
-  );
+  const [trackChapters, setTrackChapters] = useState(trackItem.progress);
 
   return (
     <Modal

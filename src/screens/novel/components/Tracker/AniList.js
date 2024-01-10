@@ -71,7 +71,7 @@ export const AniListScoreSelector = ({
     <ScrollView>
       <RadioButtonGroup
         onValueChange={updateTrackScore}
-        value={trackItem.userData.score}
+        value={trackItem.score}
       >
         {[...Array(formatting.count).keys()].map((item, index) => (
           <RadioButton

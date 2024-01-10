@@ -23,13 +23,14 @@ import {
 } from '../../database/queries/ChapterQueries';
 import { fetchChapter } from '@services/plugin/fetch';
 import { showToast } from '@utils/showToast';
-import { usePosition, useTrackingStatus } from '@hooks/reduxHooks';
+import { usePosition } from '@hooks/reduxHooks';
 import {
   useChapterGeneralSettings,
   useLibrarySettings,
   useTheme,
+  useTrackedNovel,
+  useTracker,
 } from '@hooks/persisted';
-import { updateChaptersRead } from '@redux/tracker/tracker.actions';
 import { markChapterReadAction } from '@redux/novel/novel.actions';
 import { saveScrollPosition } from '@redux/preferences/preferencesSlice';
 import { parseChapterNumber } from '@utils/parseChapterNumber';
@@ -107,10 +108,8 @@ export const ChapterContent = ({
   const [hidden, setHidden] = useState(true);
   const position = usePosition(chapter.novelId, chapter.id);
 
-  const { tracker, trackedNovels } = useTrackingStatus();
-  const isTracked = trackedNovels.find(
-    (obj: any) => obj.novel.id === chapter.novelId,
-  );
+  const { tracker } = useTracker();
+  const { trackedNovel, updateNovelProgess } = useTrackedNovel(novel.id);
 
   const [sourceChapter, setChapter] = useState({ ...chapter, chapterText: '' });
   const [loading, setLoading] = useState(true);
@@ -220,14 +219,9 @@ export const ChapterContent = ({
 
   const updateTracker = () => {
     const chapterNumber = parseChapterNumber(novel.name, chapter.name);
-
-    isTracked &&
-      chapterNumber &&
-      Number.isInteger(chapterNumber) &&
-      chapterNumber > isTracked.my_list_status.num_chapters_read &&
-      dispatch(
-        updateChaptersRead(isTracked.id, tracker.access_token, chapterNumber),
-      );
+    if (tracker && trackedNovel) {
+      updateNovelProgess(tracker, chapterNumber);
+    }
   };
 
   const saveProgress = useCallback(

@@ -1,8 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Text, Image, Pressable } from 'react-native';
 import { TouchableRipple, IconButton } from 'react-native-paper';
-import { useSelector, useDispatch } from 'react-redux';
-import { untrackNovel } from '../../../../redux/tracker/tracker.actions';
 import { getScoreFormatting } from './AniList';
 
 import color from 'color';
@@ -43,6 +41,7 @@ export const AddTrackingCard = ({ theme, setTrackSearchDialog, icon }) => (
 
 export const TrackedItemCard = ({
   tracker,
+  untrackNovel,
   trackItem,
   setTrackStatusDialog,
   setTrackChaptersDialog,
@@ -65,7 +64,7 @@ export const TrackedItemCard = ({
             icon="close"
             color={theme.onSurfaceVariant}
             size={21}
-            onPress={() => dispatch(untrackNovel(trackItem.id))}
+            onPress={untrackNovel}
           />
         </View>
       </View>
@@ -77,7 +76,7 @@ export const TrackedItemCard = ({
           rippleColor={color(theme.primary).alpha(0.12).string()}
         >
           <Text style={[styles.listItem, { color: theme.onSurfaceVariant }]}>
-            {getStatus(trackItem.userData.status)}
+            {getStatus(trackItem.status)}
           </Text>
         </TouchableRipple>
         <TouchableRipple
@@ -87,7 +86,7 @@ export const TrackedItemCard = ({
           rippleColor={color(theme.primary).alpha(0.12).string()}
         >
           <Text style={[styles.listItem, { color: theme.onSurfaceVariant }]}>
-            {`${trackItem.userData.progress}/${
+            {`${trackItem.progress}/${
               trackItem.totalChapters ? trackItem.totalChapters : '-'
             }`}
           </Text>
@@ -101,11 +100,11 @@ export const TrackedItemCard = ({
           <Text style={[styles.listItem, { color: theme.onSurfaceVariant }]}>
             {tracker.name === 'AniList'
               ? getScoreFormatting(tracker.auth.meta.scoreFormat, true).label(
-                  trackItem.userData.score,
+                  trackItem.score,
                 )
-              : trackItem.userData.score === 0
+              : trackItem.score === 0
               ? '-'
-              : trackItem.userData.score}
+              : trackItem.score}
           </Text>
         </TouchableRipple>
       </View>
