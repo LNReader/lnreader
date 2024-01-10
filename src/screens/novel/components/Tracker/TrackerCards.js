@@ -1,18 +1,15 @@
 import React from 'react';
 import { StyleSheet, View, Text, Image, Pressable } from 'react-native';
 import { TouchableRipple, IconButton } from 'react-native-paper';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { untrackNovel } from '../../../../redux/tracker/tracker.actions';
+import { getScoreFormatting } from './Anilist';
 
 import color from 'color';
-import { dividerColor } from '../../../../theme/colors';
 
-export const AddMalTrackingCard = ({ theme, setTrackSearchDialog }) => (
+export const AddTrackingCard = ({ theme, setTrackSearchDialog, icon }) => (
   <View style={styles.addCardContainer}>
-    <Image
-      source={require('../../../../../assets/mal.png')}
-      style={styles.trackerIcon}
-    />
+    <Image source={icon} style={styles.trackerIcon} />
 
     <View
       style={{
@@ -44,14 +41,16 @@ export const AddMalTrackingCard = ({ theme, setTrackSearchDialog }) => (
   </View>
 );
 
-export const MalTrackItemCard = ({
+export const TrackedItemCard = ({
   trackItem,
   setTrackStatusDialog,
   setTrackChaptersDialog,
   setTrackScoreDialog,
   getStatus,
   theme,
+  icon,
 }) => {
+  const tracker = useSelector(state => state.trackerReducer.tracker);
   const dispatch = useDispatch();
 
   return (
@@ -59,10 +58,7 @@ export const MalTrackItemCard = ({
       <View
         style={[styles.titleContainer, { borderBottomColor: theme.outline }]}
       >
-        <Image
-          source={require('../../../../../assets/mal.png')}
-          style={styles.trackerIcon}
-        />
+        <Image source={icon} style={styles.trackerIcon} />
         <View style={styles.listItemContainer}>
           <Text style={[styles.listItem, { color: theme.onSurfaceVariant }]}>
             {trackItem.title}
@@ -83,7 +79,7 @@ export const MalTrackItemCard = ({
           rippleColor={color(theme.primary).alpha(0.12).string()}
         >
           <Text style={[styles.listItem, { color: theme.onSurfaceVariant }]}>
-            {getStatus(trackItem.my_list_status.status)}
+            {getStatus(trackItem.userData.status)}
           </Text>
         </TouchableRipple>
         <TouchableRipple
@@ -93,8 +89,8 @@ export const MalTrackItemCard = ({
           rippleColor={color(theme.primary).alpha(0.12).string()}
         >
           <Text style={[styles.listItem, { color: theme.onSurfaceVariant }]}>
-            {`${trackItem.my_list_status.num_chapters_read}/${
-              trackItem.num_chapters !== 0 ? trackItem.num_chapters : '-'
+            {`${trackItem.userData.progress}/${
+              trackItem.totalChapters ? trackItem.totalChapters : '-'
             }`}
           </Text>
         </TouchableRipple>
@@ -105,9 +101,13 @@ export const MalTrackItemCard = ({
           rippleColor={color(theme.primary).alpha(0.12).string()}
         >
           <Text style={[styles.listItem, { color: theme.onSurfaceVariant }]}>
-            {trackItem.my_list_status.score === 0
+            {tracker.name === 'AniList'
+              ? getScoreFormatting(tracker.auth.meta.scoreFormat, true).label(
+                  trackItem.userData.score,
+                )
+              : trackItem.userData.score === 0
               ? '-'
-              : trackItem.my_list_status.score}
+              : trackItem.userData.score}
           </Text>
         </TouchableRipple>
       </View>

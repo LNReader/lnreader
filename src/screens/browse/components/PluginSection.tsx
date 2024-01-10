@@ -3,14 +3,15 @@ import { PluginItem } from '@plugins/types';
 import { getString } from '@strings/translations';
 import { ThemeColors } from '@theme/types';
 import { RefreshControl, SectionList, StyleSheet, Text } from 'react-native';
-import MalCard from '../discover/MalCard/MalCard';
 import PluginCard from './PluginCard';
 import { usePlugins } from '@hooks/persisted';
 import { BrowseScreenProps } from '@navigators/types';
+import TrackerCard from '../discover/TrackerCard';
 
 interface PluginSectionProps {
   sections: { header: string; data: PluginItem[] }[];
-  showMyAnimeList: boolean;
+  showMyAnimeList?: boolean;
+  showAnilist?: boolean;
   installedTab: boolean;
   theme: ThemeColors;
   navigation: BrowseScreenProps['navigation'];
@@ -19,6 +20,7 @@ interface PluginSectionProps {
 const PluginSection = ({
   sections,
   showMyAnimeList,
+  showAnilist,
   installedTab,
   theme,
   navigation,
@@ -54,7 +56,22 @@ const PluginSection = ({
             >
               {getString('browseScreen.discover')}
             </Text>
-            {showMyAnimeList && <MalCard theme={theme} />}
+            {showAnilist ? (
+              <TrackerCard
+                theme={theme}
+                icon={require('../../../../assets/anilist.png')}
+                trackerName="Anilist"
+                onPress={() => navigation.navigate('BrowseAL')}
+              />
+            ) : null}
+            {showMyAnimeList ? (
+              <TrackerCard
+                theme={theme}
+                icon={require('../../../../assets/mal.png')}
+                trackerName="MyAnimeList"
+                onPress={() => navigation.navigate('BrowseMal')}
+              />
+            ) : null}
           </>
         ) : null
       }

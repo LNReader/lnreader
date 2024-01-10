@@ -12,7 +12,8 @@ const BrowseSettings = ({ navigation }: BrowseSettingsScreenProp) => {
   const { goBack } = navigation;
 
   const { languagesFilter, toggleLanguageFilter } = usePlugins();
-  const { showMyAnimeList, setBrowseSettings } = useBrowseSettings();
+  const { showMyAnimeList, showAniList, setBrowseSettings } =
+    useBrowseSettings();
 
   return (
     <>
@@ -39,6 +40,12 @@ const BrowseSettings = ({ navigation }: BrowseSettingsScreenProp) => {
             <List.SubHeader theme={theme}>
               {getString('browseScreen.discover')}
             </List.SubHeader>
+            <SwitchItem
+              label="Show AniList"
+              value={showAniList}
+              onPress={() => setBrowseSettings({ showAniList: !showAniList })}
+              theme={theme}
+            />
             <SwitchItem
               label="Show MyAnimeList"
               value={showMyAnimeList}

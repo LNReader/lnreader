@@ -15,7 +15,7 @@ import { SearchbarV2 } from '@components';
 
 import { showToast } from '@utils/showToast';
 import { scrapeSearchResults, scrapeTopNovels } from './MyAnimeListScraper';
-import MalNovelCard from './MalNovelCard/MalNovelCard';
+import MalNovelCard from './TrackerNovelCard';
 import { useTheme } from '@hooks/persisted';
 import MalLoading from '../loadingAnimation/MalLoading';
 import { BrowseMalScreenProps } from '@navigators/types';
@@ -35,7 +35,6 @@ const BrowseMalScreen = ({ navigation }: BrowseMalScreenProps) => {
   const getNovels = async (lim?: number) => {
     try {
       const data = await scrapeTopNovels(lim ?? limit);
-
       setNovels(before => before.concat(data));
       setLoading(false);
     } catch (err: any) {
@@ -55,7 +54,6 @@ const BrowseMalScreen = ({ navigation }: BrowseMalScreenProps) => {
   const getSearchResults = async () => {
     try {
       setLoading(true);
-
       const data = await scrapeSearchResults(searchText);
 
       setNovels(data);

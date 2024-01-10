@@ -1,45 +1,54 @@
-import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { StyleSheet, Text, View, Image, Pressable } from 'react-native';
-import { getString } from '../../../../../strings/translations';
-import { Button } from '../../../../components';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  Pressable,
+  ImageSourcePropType,
+} from 'react-native';
+import { getString } from '@strings/translations';
+import { Button } from '@components';
 
-import { ThemeColors } from '../../../../theme/types';
+import { ThemeColors } from '@theme/types';
 
 interface Props {
+  trackerName: string;
+  icon: ImageSourcePropType;
+  onPress: () => void;
   theme: ThemeColors;
 }
 
-const MalCard: React.FC<Props> = ({ theme }) => {
-  const { navigate } = useNavigation();
-
+const TrackerCard: React.FC<Props> = ({
+  theme,
+  icon,
+  trackerName,
+  onPress,
+}) => {
   return (
     <Pressable
       style={styles.container}
-      onPress={() => navigate('BrowseMal' as never)}
+      onPress={onPress}
       android_ripple={{ color: theme.rippleColor }}
     >
       <View style={styles.flexRow}>
-        <Image
-          source={require('../../../../../assets/mal.png')}
-          style={styles.icon}
-        />
+        <Image source={icon} style={styles.icon} />
         <View style={styles.details}>
-          <Text style={{ color: theme.onSurface }}>MyAnimeList</Text>
+          <Text style={{ color: theme.onSurface }}>{trackerName}</Text>
         </View>
       </View>
       <View style={styles.flexRow}>
         <Button
           title={getString('browse')}
           textColor={theme.primary}
-          onPress={() => navigate('BrowseMal' as never)}
+          onPress={onPress}
         />
       </View>
     </Pressable>
   );
 };
 
-export default MalCard;
+export default TrackerCard;
 
 const styles = StyleSheet.create({
   container: {

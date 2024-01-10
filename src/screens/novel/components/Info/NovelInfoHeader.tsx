@@ -64,7 +64,7 @@ const NovelInfoHeader = ({
 
   const getStatusIcon = useCallback((status?: string) => {
     if (status === 'Ongoing') {
-      return 'clocl-outline';
+      return 'clock-outline';
     }
     if (status === 'Completed') {
       return 'check-all';

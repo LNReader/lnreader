@@ -12,6 +12,7 @@ interface ListItemProps {
   onPress?: () => void;
   theme: ThemeColors;
   disabled?: boolean;
+  right?: string;
 }
 
 const Section = ({ children }: { children: ReactNode }) => (
@@ -37,6 +38,7 @@ const Item: React.FC<ListItemProps> = ({
   onPress,
   theme,
   disabled,
+  right,
 }) => (
   <PaperList.Item
     title={title}
@@ -51,6 +53,17 @@ const Item: React.FC<ListItemProps> = ({
             <PaperList.Icon
               color={theme.primary}
               icon={icon}
+              style={styles.iconCtn}
+            />
+          )
+        : undefined
+    }
+    right={
+      right
+        ? () => (
+            <PaperList.Icon
+              color={theme.primary}
+              icon={right}
               style={styles.iconCtn}
             />
           )

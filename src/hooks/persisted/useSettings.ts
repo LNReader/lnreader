@@ -54,6 +54,7 @@ export interface AppSettings {
 
 export interface BrowseSettings {
   showMyAnimeList: boolean;
+  showAniList: boolean;
 }
 
 export interface LibrarySettings {
@@ -143,6 +144,7 @@ const initialAppSettings: AppSettings = {
 
 const initialBrowseSettings: BrowseSettings = {
   showMyAnimeList: true,
+  showAniList: true,
 };
 
 const initialChapterGeneralSettings: ChapterGeneralSettings = {

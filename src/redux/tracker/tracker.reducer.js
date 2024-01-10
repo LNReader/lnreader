@@ -1,6 +1,5 @@
 import {
   REMOVE_TRACKER,
-  RESTORE_TRACKER_STATE,
   SET_TRACKER,
   TRACK_NOVEL,
   UNTRACK_NOVEL,
@@ -20,7 +19,7 @@ const trackerReducer = (state = initialState, action) => {
     case SET_TRACKER:
       return {
         ...state,
-        tracker: { ...payload, name: 'MyAnimeList' },
+        tracker: payload,
       };
     case REMOVE_TRACKER:
       return {
@@ -40,11 +39,12 @@ const trackerReducer = (state = initialState, action) => {
       return {
         ...state,
         trackedNovels: state.trackedNovels.map(novel =>
-          novel.id === payload.malId
+          novel.id === payload.trackerId
             ? {
                 ...novel,
-                my_list_status: {
-                  num_chapters_read: payload.num_chapters_read,
+                userData: {
+                  ...novel.userData,
+                  progress: payload.progress,
                   status: payload.status,
                   score: payload.score,
                 },
@@ -61,20 +61,16 @@ const trackerReducer = (state = initialState, action) => {
       return {
         ...state,
         trackedNovels: state.trackedNovels.map(novel =>
-          novel.id === payload.malId
+          novel.id === payload.trackerId
             ? {
                 ...novel,
-                my_list_status: {
-                  ...novel.my_list_status,
-                  num_chapters_read: payload.chaptersRead,
+                userData: {
+                  ...novel.userData,
+                  progress: payload.progress,
                 },
               }
             : novel,
         ),
-      };
-    case RESTORE_TRACKER_STATE:
-      return {
-        ...payload,
       };
     default:
       return state;

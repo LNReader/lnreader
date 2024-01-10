@@ -44,7 +44,7 @@ const BrowseScreen = ({ navigation }: BrowseScreenProps) => {
       }, {} as PluginsMap),
     );
   };
-  const { showMyAnimeList } = useBrowseSettings();
+  const { showMyAnimeList, showAniList } = useBrowseSettings();
 
   const onChangeText = (text: string) => {
     setSearchText(text);
@@ -161,7 +161,6 @@ const BrowseScreen = ({ navigation }: BrowseScreenProps) => {
                 <PluginSection
                   sections={availableSections}
                   installedTab={false}
-                  showMyAnimeList={showMyAnimeList}
                   theme={theme}
                   navigation={navigation}
                 />
@@ -172,6 +171,7 @@ const BrowseScreen = ({ navigation }: BrowseScreenProps) => {
                   sections={installedSections}
                   installedTab={true}
                   showMyAnimeList={showMyAnimeList}
+                  showAnilist={showAniList}
                   theme={theme}
                   navigation={navigation}
                 />

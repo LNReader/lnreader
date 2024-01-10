@@ -21,6 +21,7 @@ export type RootStackParamList = {
     showLatestNovels?: boolean;
   };
   BrowseMal: undefined;
+  BrowseAL: undefined;
   BrowseSettings: undefined;
   GlobalSearchScreen: { searchText?: string };
   Migration: undefined;
@@ -97,6 +98,10 @@ export type BrowseSourceScreenProps = StackScreenProps<
 export type BrowseMalScreenProps = StackScreenProps<
   RootStackParamList,
   'BrowseMal'
+>;
+export type BrowseALScreenProps = StackScreenProps<
+  RootStackParamList,
+  'BrowseAL'
 >;
 export type BrowseSettingsScreenProp = StackScreenProps<
   RootStackParamList,
