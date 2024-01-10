@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, Image, Pressable } from 'react-native';
 import { TouchableRipple, IconButton } from 'react-native-paper';
 import { useSelector, useDispatch } from 'react-redux';
 import { untrackNovel } from '../../../../redux/tracker/tracker.actions';
-import { getScoreFormatting } from './Anilist';
+import { getScoreFormatting } from './AniList';
 
 import color from 'color';
 
@@ -42,6 +42,7 @@ export const AddTrackingCard = ({ theme, setTrackSearchDialog, icon }) => (
 );
 
 export const TrackedItemCard = ({
+  tracker,
   trackItem,
   setTrackStatusDialog,
   setTrackChaptersDialog,
@@ -50,9 +51,6 @@ export const TrackedItemCard = ({
   theme,
   icon,
 }) => {
-  const tracker = useSelector(state => state.trackerReducer.tracker);
-  const dispatch = useDispatch();
-
   return (
     <View style={[styles.cardContainer, { backgroundColor: theme.surface }]}>
       <View

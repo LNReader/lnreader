@@ -1,11 +1,7 @@
 import * as Linking from 'expo-linking';
 import * as WebBrowser from 'expo-web-browser';
 import { ANILIST_CLIENT_ID } from '@env';
-import {
-  createTracker,
-  type AuthenticationResult,
-  type Tracker,
-} from './index';
+import { AuthenticationResult, Tracker } from './index';
 
 const apiEndpoint = 'https://graphql.anilist.co';
 const clientId = ANILIST_CLIENT_ID;
@@ -48,7 +44,7 @@ const updateListEntryMutation = `mutation($id: Int!, $status: MediaListStatus, $
   }
 }`;
 
-export const aniListTracker = createTracker('AniList', {
+export const aniListTracker = {
   authenticate: async () => {
     const result = await WebBrowser.openAuthSessionAsync(authUrl, redirectUri);
     if (result.type === 'success') {
@@ -132,7 +128,7 @@ export const aniListTracker = createTracker('AniList', {
       score: data.SaveMediaListEntry?.score || 0,
     };
   },
-} as Tracker<{ userId: number; scoreFormat: string }>);
+} as Tracker<{ userId: number; scoreFormat: string }>;
 
 export async function queryAniList(
   query: string,

@@ -101,23 +101,3 @@ export type Tracker<AuthMeta = any> = {
     authentication: AuthenticationResult<AuthMeta>,
   ) => Promise<UserListEntry>;
 };
-
-const trackers: Record<string, Tracker> = {};
-
-/**
- * Convenience method to create a shaped Tracker object and add it to the list of trackers.
- */
-export function createTracker(
-  trackerName: TrackerName,
-  trackerOpts: Tracker,
-): Tracker {
-  trackers[trackerName] = trackerOpts;
-  return trackerOpts;
-}
-
-/**
- * A convenience method for getting a tracker by name.
- */
-export function getTracker(trackerName: TrackerName): Tracker | null {
-  return trackers[trackerName];
-}

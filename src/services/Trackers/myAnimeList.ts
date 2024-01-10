@@ -2,7 +2,7 @@ import * as Linking from 'expo-linking';
 import * as WebBrowser from 'expo-web-browser';
 import qs from 'qs';
 import { MYANIMELIST_CLIENT_ID } from '@env';
-import { createTracker, type UserListStatus } from './index';
+import { Tracker, UserListStatus } from './index';
 
 const clientId = MYANIMELIST_CLIENT_ID;
 const baseOAuthUrl = 'https://myanimelist.net/v1/oauth2/authorize';
@@ -28,7 +28,7 @@ const normalizedToMal: Record<UserListStatus, string> = {
   REPEATING: 'reading;true', // MAL has a bool for repeating, so we'll special case this
 };
 
-export const myAnimeListTracker = createTracker('MyAnimeList', {
+export const myAnimeListTracker: Tracker = {
   authenticate: async () => {
     const result = await WebBrowser.openAuthSessionAsync(authUrl, redirectUri);
 
@@ -162,7 +162,7 @@ export const myAnimeListTracker = createTracker('MyAnimeList', {
       score: data.score,
     };
   },
-});
+};
 
 function pkceChallenger() {
   const MAX_LENGTH = 88;

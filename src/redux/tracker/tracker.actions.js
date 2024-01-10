@@ -7,18 +7,7 @@ import {
   UPDATE_CHAPTERS_READ,
 } from './tracker.types';
 
-import { getTracker } from '../../services/Trackers';
-
-export const setTracker = (tracker, res) => async dispatch => {
-  dispatch({
-    type: SET_TRACKER,
-    payload: { name: tracker, ...res },
-  });
-};
-
-export const removeTracker = () => async dispatch => {
-  dispatch({ type: REMOVE_TRACKER });
-};
+import { getTracker } from '@hooks/persisted';
 
 /**
  * @param {string} trackerName

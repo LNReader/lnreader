@@ -12,9 +12,20 @@ import SetTrackStatusDialog from './SetTrackStatusDialog';
 import SetTrackScoreDialog from './SetTrackScoreDialog';
 import SetTrackChaptersDialog from './SetTrackChaptersDialog';
 import { AddTrackingCard, TrackedItemCard } from './TrackerCards';
+import { ThemeColors } from '@theme/types';
+import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
+import { useTracker } from '@hooks/persisted';
 
-const TrackSheet = ({ bottomSheetRef, novelId, novelName, theme }) => {
-  const { tracker, trackedNovels } = useTrackerReducer();
+interface Props {
+  bottomSheetRef: React.Ref<BottomSheetModalMethods>;
+  novelId: number;
+  novelName: string;
+  theme: ThemeColors;
+}
+
+const TrackSheet = ({ bottomSheetRef, novelId, novelName, theme }: Props) => {
+  const { trackedNovels } = useTrackerReducer();
+  const { tracker } = useTracker();
   const dispatch = useDispatch();
 
   const [trackItem, setTrackItem] = useState();
@@ -29,7 +40,7 @@ const TrackSheet = ({ bottomSheetRef, novelId, novelName, theme }) => {
   const [trackScoreDialog, setTrackScoreDialog] = useState(false);
 
   /** @type {(status: import("../../../../services/Trackers/index").UserListStatus) => string} */
-  const getStatus = status => {
+  const getStatus = (status: string) => {
     switch (status) {
       case 'CURRENT':
         return 'Reading';
@@ -46,7 +57,7 @@ const TrackSheet = ({ bottomSheetRef, novelId, novelName, theme }) => {
     }
   };
 
-  const updateTrackChapters = newChapters => {
+  const updateTrackChapters = (newChapters: string) => {
     if (newChapters !== '') {
       const newProgress = Number(newChapters);
       setTrackItem({
@@ -58,7 +69,7 @@ const TrackSheet = ({ bottomSheetRef, novelId, novelName, theme }) => {
       });
 
       dispatch(
-        updateTracker(tracker.name, trackItem.id, tracker.auth, {
+        updateTracker(tracker?.name, trackItem.id, tracker.auth, {
           ...trackItem.userData,
           progress: newProgress,
         }),
@@ -70,7 +81,7 @@ const TrackSheet = ({ bottomSheetRef, novelId, novelName, theme }) => {
     }
   };
 
-  const updateTrackStatus = newStatus => {
+  const updateTrackStatus = (newStatus: string) => {
     setTrackItem({
       ...trackItem,
       userData: {
@@ -80,7 +91,7 @@ const TrackSheet = ({ bottomSheetRef, novelId, novelName, theme }) => {
     });
 
     dispatch(
-      updateTracker(tracker.name, trackItem.id, trackItem, tracker.auth, {
+      updateTracker(tracker?.name, trackItem.id, trackItem, tracker.auth, {
         ...trackItem.userData,
         status: newStatus,
       }),
@@ -89,7 +100,7 @@ const TrackSheet = ({ bottomSheetRef, novelId, novelName, theme }) => {
     setTrackStatusDialog(false);
   };
 
-  const updateTrackScore = newScore => {
+  const updateTrackScore = (newScore: number) => {
     setTrackItem({
       ...trackItem,
       userData: {
@@ -99,7 +110,7 @@ const TrackSheet = ({ bottomSheetRef, novelId, novelName, theme }) => {
     });
 
     dispatch(
-      updateTracker(tracker.name, trackItem.id, tracker.auth, {
+      updateTracker(tracker?.name, trackItem.id, tracker.auth, {
         ...trackItem.userData,
         score: newScore,
       }),
@@ -118,7 +129,7 @@ const TrackSheet = ({ bottomSheetRef, novelId, novelName, theme }) => {
           ]}
         >
           {!trackItem ? (
-            tracker.name === 'MyAnimeList' ? (
+            tracker?.name === 'MyAnimeList' ? (
               <AddTrackingCard
                 icon={require('../../../../../assets/mal.png')}
                 theme={theme}
@@ -133,8 +144,9 @@ const TrackSheet = ({ bottomSheetRef, novelId, novelName, theme }) => {
             )
           ) : (
             <TrackedItemCard
+              tracker={tracker}
               icon={
-                tracker.name === 'MyAnimeList'
+                tracker?.name === 'MyAnimeList'
                   ? require('../../../../../assets/mal.png')
                   : require('../../../../../assets/anilist.png')
               }
@@ -166,6 +178,7 @@ const TrackSheet = ({ bottomSheetRef, novelId, novelName, theme }) => {
               theme={theme}
             />
             <SetTrackScoreDialog
+              tracker={tracker}
               trackItem={trackItem}
               trackScoreDialog={trackScoreDialog}
               setTrackScoreDialog={setTrackScoreDialog}
@@ -175,6 +188,7 @@ const TrackSheet = ({ bottomSheetRef, novelId, novelName, theme }) => {
           </>
         ) : (
           <TrackSearchDialog
+            tracker={tracker}
             trackSearchDialog={trackSearchDialog}
             setTrackSearchDialog={setTrackSearchDialog}
             novelId={novelId}

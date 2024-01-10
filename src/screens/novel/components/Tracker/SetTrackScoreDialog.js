@@ -3,17 +3,16 @@ import { StyleSheet, Text } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Modal, overlay } from 'react-native-paper';
 import { MyAnimeListScoreSelector } from './MyAnimeList';
-import { AniListScoreSelector } from './Anilist';
+import { AniListScoreSelector } from './AniList';
 
 const SetTrackScoreDialog = ({
+  tracker,
   trackItem,
   trackScoreDialog,
   setTrackScoreDialog,
   updateTrackScore,
   theme,
 }) => {
-  const tracker = useSelector(state => state.trackerReducer.tracker);
-
   return (
     <Modal
       visible={trackScoreDialog}

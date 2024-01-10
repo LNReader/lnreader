@@ -16,16 +16,6 @@ const trackerReducer = (state = initialState, action) => {
   const { type, payload } = action;
 
   switch (type) {
-    case SET_TRACKER:
-      return {
-        ...state,
-        tracker: payload,
-      };
-    case REMOVE_TRACKER:
-      return {
-        ...state,
-        tracker: null,
-      };
     case TRACK_NOVEL:
       return {
         ...state,

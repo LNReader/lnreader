@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Image, ActivityIndicator } from 'react-native';
 import { Modal, overlay, TextInput, TouchableRipple } from 'react-native-paper';
-import { getTracker } from '../../../../services/Trackers/index';
 import { useSelector, useDispatch } from 'react-redux';
 import { ScrollView } from 'react-native-gesture-handler';
 import { trackNovel } from '../../../../redux/tracker/tracker.actions';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import color from 'color';
 import { Button } from '@components';
+import { getTracker } from '@hooks/persisted';
 
 const TrackSearchDialog = ({
+  tracker,
   trackSearchDialog,
   setTrackSearchDialog,
   novelId,
@@ -21,10 +22,6 @@ const TrackSearchDialog = ({
   const [searchText, setSearchText] = useState(novelName);
 
   const [selectedNovel, setSelectedNovel] = useState();
-
-  const tracker = useSelector(state => state.trackerReducer.tracker);
-
-  const dispatch = useDispatch();
 
   const getSearchresults = async () => {
     setLoading(true);

@@ -2,20 +2,13 @@ import React, { useState } from 'react';
 import { View } from 'react-native';
 import { Modal, Portal, Text, Button, Provider } from 'react-native-paper';
 
-import { useSelector, useDispatch } from 'react-redux';
-import { removeTracker, setTracker } from '@redux/tracker/tracker.actions';
-import { useTheme } from '@hooks/persisted';
+import { getTracker, useTheme, useTracker } from '@hooks/persisted';
 import { Appbar, List } from '@components';
-import { getTracker } from '@services/Trackers/index';
 import { TrackerSettingsScreenProps } from '@navigators/types';
-import { RootState } from '@redux/store';
 
 const TrackerScreen = ({ navigation }: TrackerSettingsScreenProps) => {
   const theme = useTheme();
-  const tracker = useSelector(
-    (state: RootState) => state.trackerReducer.tracker,
-  );
-  const dispatch = useDispatch();
+  const { tracker, removeTracker, setTracker } = useTracker();
 
   // Tracker Modal
   const [visible, setVisible] = useState(false);
@@ -44,9 +37,9 @@ const TrackerScreen = ({ navigation }: TrackerSettingsScreenProps) => {
               if (tracker) {
                 showModal();
               } else {
-                const auth = await getTracker('AniList')?.authenticate();
+                const auth = await getTracker('AniList').authenticate();
                 if (auth) {
-                  dispatch(setTracker('AniList', { auth }));
+                  setTracker('AniList', auth);
                 }
               }
             }}
@@ -59,9 +52,9 @@ const TrackerScreen = ({ navigation }: TrackerSettingsScreenProps) => {
               if (tracker) {
                 showModal();
               } else {
-                const auth = await getTracker('MyAnimeList')?.authenticate();
+                const auth = await getTracker('MyAnimeList').authenticate();
                 if (auth) {
-                  dispatch(setTracker('MyAnimeList', { auth }));
+                  setTracker('MyAnimeList', auth);
                 }
               }
             }}
@@ -69,7 +62,7 @@ const TrackerScreen = ({ navigation }: TrackerSettingsScreenProps) => {
             theme={theme}
           />
           {tracker?.name === 'MyAnimeList' &&
-            tracker.expires_in < new Date(Date.now()) && (
+            tracker?.auth.expiresAt < new Date(Date.now()) && (
               <>
                 <List.Divider theme={theme} />
                 <List.SubHeader theme={theme}>Settings</List.SubHeader>
@@ -78,8 +71,8 @@ const TrackerScreen = ({ navigation }: TrackerSettingsScreenProps) => {
                   onPress={async () => {
                     const revalidate = getTracker('MyAnimeList')?.revalidate;
                     if (revalidate) {
-                      const auth = revalidate(tracker.auth);
-                      setTracker('MyAnimeList', { auth });
+                      const auth = await revalidate(tracker.auth);
+                      setTracker('MyAnimeList', auth);
                     }
                   }}
                   theme={theme}
@@ -132,7 +125,7 @@ const TrackerScreen = ({ navigation }: TrackerSettingsScreenProps) => {
                   textTransform: 'none',
                 }}
                 onPress={() => {
-                  dispatch(removeTracker());
+                  removeTracker();
                   hideModal();
                 }}
               >

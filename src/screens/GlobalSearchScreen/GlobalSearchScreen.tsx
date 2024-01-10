@@ -27,10 +27,9 @@ const GlobalSearchScreen = (props: Props) => {
   const onChangeText = (text: string) => setSearchText(text);
   const onSubmitEditing = () => globalSearch(searchText);
 
-  const { searchResults, globalSearch, searchAllSources, progress } =
-    useGlobalSearch({
-      defaultSearchText: searchText,
-    });
+  const { searchResults, globalSearch, progress } = useGlobalSearch({
+    defaultSearchText: searchText,
+  });
 
   return (
     <>
@@ -52,9 +51,7 @@ const GlobalSearchScreen = (props: Props) => {
           <EmptyView
             icon="__φ(．．)"
             description={`${getString('globalSearch.searchIn')} ${getString(
-              searchAllSources
-                ? 'globalSearch.allSources'
-                : 'globalSearch.pinnedSources',
+              'globalSearch.allSources',
             )}`}
             theme={theme}
           />
