@@ -79,11 +79,13 @@ const HistoryScreen = () => {
     chapter: ChapterRouteParams,
   ) =>
     navigate(
+      //@ts-ignore
       'Chapter' as never,
       getChapterScreenRouteParams(novel, chapter) as never,
     );
 
   const handleNavigateToNovel = (novel: NovelScreenRouteParams) =>
+    //@ts-ignore
     navigate('Novel' as never, getNovelScreenRouteParams(novel) as never);
 
   const {

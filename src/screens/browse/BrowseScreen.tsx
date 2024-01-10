@@ -107,14 +107,14 @@ const BrowseScreen = () => {
   type sectionType = Source | Header;
   const sections: sectionType[] = useMemo(() => {
     const list = [];
-    if (lastUsedSource) {
+    if (lastUsedSource.length !== 0) {
       list.push(
         new Header(getString('browseScreen.lastUsed')),
         ...lastUsedSource,
       );
     }
 
-    if (pinnedSourceIds) {
+    if (pinnedSourceIds.length !== 0) {
       list.push(new Header(getString('browseScreen.pinned')), ...pinnedSources);
     }
 
