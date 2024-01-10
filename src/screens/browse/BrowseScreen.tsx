@@ -1,4 +1,4 @@
-import { SectionList, StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 import React, { useCallback, useEffect, useMemo } from 'react';
 
 import { EmptyView, SearchbarV2 } from '../../components';
@@ -21,6 +21,7 @@ import SourceCard from './components/SourceCard/SourceCard';
 import { getString } from '../../../strings/translations';
 import { Source } from '../../sources/types';
 import TrackerCard from './discover/TrackerCard';
+import { FlashList } from '@shopify/flash-list';
 
 const BrowseScreen = () => {
   const { navigate } = useNavigation();
@@ -66,15 +67,13 @@ const BrowseScreen = () => {
 
   const navigateToSource = useCallback(
     (source: Source, showLatestNovels?: boolean) => {
-      navigate(
-        'SourceScreen' as never,
-        {
-          sourceId: source.sourceId,
-          sourceName: source.sourceName,
-          url: source.url,
-          showLatestNovels,
-        } as never,
-      );
+      //@ts-ignore
+      navigate('SourceScreen', {
+        sourceId: source.sourceId,
+        sourceName: source.sourceName,
+        url: source.url,
+        showLatestNovels,
+      });
       dispatch(setLastUsedSource({ sourceId: source.sourceId }));
     },
     [],
@@ -98,33 +97,34 @@ const BrowseScreen = () => {
     [],
   );
 
-  const sections = useMemo(() => {
-    const list = [
-      {
-        header: getString('browseScreen.lastUsed'),
-        data: lastUsedSource,
-      },
-    ];
+  class Header {
+    public header: string = '';
+    constructor(str: string) {
+      this.header = str;
+    }
+  }
 
-    if (pinnedSourceIds) {
-      list.push({
-        header: getString('browseScreen.pinned'),
-        data: pinnedSources,
-      });
+  type sectionType = Source | Header;
+  const sections: sectionType[] = useMemo(() => {
+    const list = [];
+    if (lastUsedSource) {
+      list.push(
+        new Header(getString('browseScreen.lastUsed')),
+        ...lastUsedSource,
+      );
     }
 
-    if (!onlyShowPinnedSources) {
-      if (searchText) {
-        list.unshift({
-          header: getString('common.searchResults'),
-          data: searchResults,
-        });
-      } else {
-        list.push({
-          header: getString('browseScreen.all'),
-          data: allSources,
-        });
-      }
+    if (pinnedSourceIds) {
+      list.push(new Header(getString('browseScreen.pinned')), ...pinnedSources);
+    }
+
+    if (onlyShowPinnedSources) {
+      return list;
+    }
+    if (searchText) {
+      return [new Header(getString('common.searchResults')), ...searchResults];
+    } else {
+      list.push(new Header(getString('browseScreen.all')), ...allSources);
     }
 
     return list;
@@ -155,10 +155,9 @@ const BrowseScreen = () => {
         />
       ) : allSources.length === 0 ? null : (
         <>
-          <SectionList
-            sections={sections}
-            ListHeaderComponent={
-              showMyAnimeList ? (
+          <FlashList
+            ListHeaderComponent={() => {
+              return showMyAnimeList ? (
                 <>
                   <Text
                     style={[
@@ -185,32 +184,39 @@ const BrowseScreen = () => {
                     />
                   )}
                 </>
-              ) : null
-            }
+              ) : (
+                <></>
+              );
+            }}
+            estimatedItemSize={50}
+            data={sections}
             keyExtractor={(_, index) => index.toString()}
-            renderSectionHeader={({ section: { header, data } }) =>
-              data.length > 0 ? (
-                <Text
-                  style={[
-                    styles.sectionHeader,
-                    { color: theme.onSurfaceVariant },
-                  ]}
-                >
-                  {header}
-                </Text>
-              ) : null
-            }
-            renderItem={({ item }) => (
-              <SourceCard
-                source={item}
-                isPinned={isPinned(item.sourceId)}
-                navigateToSource={navigateToSource}
-                onTogglePinSource={sourceId =>
-                  dispatch(togglePinSource(sourceId))
-                }
-                theme={theme}
-              />
-            )}
+            renderItem={({ item }) => {
+              if (item instanceof Header) {
+                return (
+                  <Text
+                    style={[
+                      styles.sectionHeader,
+                      { color: theme.onSurfaceVariant },
+                    ]}
+                  >
+                    {item.header}
+                  </Text>
+                );
+              } else {
+                return (
+                  <SourceCard
+                    source={item}
+                    isPinned={isPinned(item.sourceId)}
+                    navigateToSource={navigateToSource}
+                    onTogglePinSource={sourceId =>
+                      dispatch(togglePinSource(sourceId))
+                    }
+                    theme={theme}
+                  />
+                );
+              }
+            }}
           />
         </>
       )}
