@@ -2,7 +2,6 @@ import { MMKVStorage } from '@utils/mmkv/mmkv';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { persistStore, persistReducer, Storage } from 'redux-persist';
 
-import pluginsReducer from './plugins/pluginsSlice';
 import novelReducer from './novel/novel.reducer';
 import trackerReducer from './tracker/tracker.reducer';
 import preferenceReducer from './preferences/preferencesSlice';
@@ -30,7 +29,6 @@ const persistConfig = {
 };
 
 const reducers = combineReducers({
-  pluginsReducer,
   novelReducer,
   trackerReducer,
   preferenceReducer,

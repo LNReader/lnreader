@@ -7,13 +7,14 @@ import { PluginItem } from '@plugins/types';
 import { getString } from '@strings/translations';
 import { ThemeColors } from '@theme/types';
 import { RootStackParamList } from '@navigators/types';
+import { showToast } from '@utils/showToast';
 
 interface PluginMenuProps {
   plugin: PluginItem;
   theme: ThemeColors;
   navigateToSource: (plugin: PluginItem, showLatestNovels?: boolean) => void;
-  uninstallPlugin: (plugin: PluginItem) => void;
-  updatePlugin: (plugin: PluginItem) => void;
+  uninstallPlugin: (plugin: PluginItem) => Promise<void>;
+  updatePlugin: (plugin: PluginItem) => Promise<void>;
 }
 
 export const PluginMenu: React.FC<PluginMenuProps> = ({
@@ -58,7 +59,11 @@ export const PluginMenu: React.FC<PluginMenuProps> = ({
         title="Update"
         icon={'arrow-up-circle'}
         textColor={theme.primary}
-        onPress={() => updatePlugin(plugin)}
+        onPress={() =>
+          updatePlugin(plugin).then(() =>
+            showToast(`Updated to ${plugin.version}`),
+          )
+        }
       />
       <Button
         title="Visit"
@@ -78,7 +83,11 @@ export const PluginMenu: React.FC<PluginMenuProps> = ({
       <Button
         title="Uninstall"
         icon={'delete'}
-        onPress={() => uninstallPlugin(plugin)}
+        onPress={() =>
+          uninstallPlugin(plugin).then(() =>
+            showToast(`Uninstalled ${plugin.name}`),
+          )
+        }
       />
     </Menu>
   );

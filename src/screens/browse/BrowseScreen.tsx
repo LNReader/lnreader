@@ -1,5 +1,5 @@
 import { Text } from 'react-native';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { TabView, TabBar } from 'react-native-tab-view';
 import color from 'color';
 
@@ -97,7 +97,7 @@ const BrowseScreen = ({ navigation }: BrowseScreenProps) => {
       });
     }
     return list;
-  }, [languagesFilter, searchText, searchedAvailablePlugins]);
+  }, [languagesFilter, searchedAvailablePlugins, filteredAvailablePlugins]);
 
   const installedSections = useMemo(() => {
     const list = [];
@@ -119,17 +119,18 @@ const BrowseScreen = ({ navigation }: BrowseScreenProps) => {
       });
     }
     return list;
-  }, [lastUsedPlugin, searchText, languagesFilter, searchedInstalledPlugins]);
+  }, [
+    lastUsedPlugin,
+    languagesFilter,
+    searchedInstalledPlugins,
+    filteredInstalledPlugins,
+  ]);
 
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
     { key: 'installedRoute', title: 'Installed' },
     { key: 'availableRoute', title: 'Available' },
   ]);
-
-  useEffect(() => {
-    searchPlugins(searchText);
-  }, [languagesFilter, filteredInstalledPlugins, filteredAvailablePlugins]);
 
   return (
     <>

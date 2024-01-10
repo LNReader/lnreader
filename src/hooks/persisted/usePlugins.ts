@@ -11,6 +11,7 @@ import {
 import { newer } from '@utils/compareVersion';
 import { getMMKVObject, setMMKVObject } from '@utils/mmkv/mmkv';
 import { showToast } from '@utils/showToast';
+import { useCallback } from 'react';
 
 export const AVAILABLE_PLUGINS = 'AVAILABLE_PLUGINS';
 export const INSTALLED_PLUGINS = 'INSTALL_PLUGINS';
@@ -43,7 +44,7 @@ export default function usePlugins() {
    * We cant use the languagesFilter directly because it is updated only after component's lifecycle end.
    * And toggleLanguagFilter triggers filterPlugins before lifecycle end.
    */
-  const filterPlugins = (filter: Language[]) => {
+  const filterPlugins = useCallback((filter: Language[]) => {
     const installedPlugins =
       getMMKVObject<PluginItem[]>(INSTALLED_PLUGINS) || [];
     const availablePlugins =
@@ -57,9 +58,9 @@ export default function usePlugins() {
         return pre;
       }, {} as PluginsMap),
     );
-  };
+  }, []);
 
-  const refreshPlugins = () => {
+  const refreshPlugins = useCallback(() => {
     const installedPlugins =
       getMMKVObject<PluginItem[]>(INSTALLED_PLUGINS) || [];
     return fetchPlugins()
@@ -82,7 +83,7 @@ export default function usePlugins() {
         }
       })
       .catch((error: Error) => showToast(error.message));
-  };
+  }, [languagesFilter]);
 
   const toggleLanguageFilter = (lang: Language) => {
     const newFilter = languagesFilter.includes(lang)
@@ -92,51 +93,70 @@ export default function usePlugins() {
     filterPlugins(newFilter);
   };
 
-  const installPlugin = (plg: PluginItem) => {
-    return _install(plg.url).then(_plg => {
+  /**
+   * Variable scope naming
+   * plugin: parameter
+   * _plg: value returned by pluginManager functions
+   * plg: parameter in JS class method callback (.map, .reducer, ...)
+   */
+
+  const installPlugin = (plugin: PluginItem) => {
+    return _install(plugin.url).then(_plg => {
       if (_plg) {
         const installedPlugins =
           getMMKVObject<PluginItem[]>(INSTALLED_PLUGINS) || [];
         const availablePlugins =
           getMMKVObject<PluginsMap>(AVAILABLE_PLUGINS) || ({} as PluginsMap);
-        availablePlugins[plg.lang] = availablePlugins[plg.lang]?.filter(
-          _plg => _plg.id !== plg.id,
+        availablePlugins[plugin.lang] = availablePlugins[plugin.lang]?.filter(
+          plg => plg.id !== plugin.id,
         );
-        setMMKVObject(INSTALLED_PLUGINS, [...installedPlugins, plg]);
+        setMMKVObject(INSTALLED_PLUGINS, [...installedPlugins, plugin]);
         setMMKVObject(AVAILABLE_PLUGINS, availablePlugins);
         filterPlugins(languagesFilter);
       }
     });
   };
 
-  const uninstallPlugin = (plg: PluginItem) => {
-    return _uninstall(plg).then(() => {
+  const uninstallPlugin = (plugin: PluginItem) => {
+    return _uninstall(plugin).then(() => {
       const installedPlugins =
         getMMKVObject<PluginItem[]>(INSTALLED_PLUGINS) || [];
       const availablePlugins =
         getMMKVObject<PluginsMap>(AVAILABLE_PLUGINS) || ({} as PluginsMap);
-      availablePlugins[plg.lang] = [...(availablePlugins[plg.lang] || []), plg];
+      availablePlugins[plugin.lang] = [
+        ...(availablePlugins[plugin.lang] || []),
+        plugin,
+      ];
       setMMKVObject(
         INSTALLED_PLUGINS,
-        installedPlugins.filter(_plg => _plg.id !== plg.id),
+        installedPlugins.filter(plg => plg.id !== plugin.id),
       );
       setMMKVObject(AVAILABLE_PLUGINS, availablePlugins);
       filterPlugins(languagesFilter);
     });
   };
 
-  const updatePlugin = (plg: PluginItem) => {
-    return _update(plg).then(_plg => {
+  const updatePlugin = (plugin: PluginItem) => {
+    return _update(plugin).then(_plg => {
       if (_plg) {
         const installedPlugins =
           getMMKVObject<PluginItem[]>(INSTALLED_PLUGINS) || [];
-        setMMKVObject(
+        setMMKVObject<PluginItem[]>(
           INSTALLED_PLUGINS,
-          installedPlugins.map(plugin => {
+          installedPlugins.map(plg => {
             if (plugin.id !== plg.id) {
               return plugin;
             }
-            return plg;
+            return {
+              id: plugin.id,
+              url: plugin.url,
+              site: _plg.site,
+              name: _plg.name,
+              lang: _plg.lang,
+              version: _plg.version,
+              iconUrl: _plg.iconUrl,
+              hasUpdate: false,
+            };
           }),
         );
         filterPlugins(languagesFilter);

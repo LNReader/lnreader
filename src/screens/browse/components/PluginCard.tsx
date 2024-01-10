@@ -9,15 +9,16 @@ import { ThemeColors } from '@theme/types';
 import { PluginItem } from '@plugins/types';
 import { PluginMenu } from './PluginMenu';
 import FastImage from 'react-native-fast-image';
+import { showToast } from '@utils/showToast';
 
 interface Props {
   installed: boolean;
   plugin: PluginItem;
   theme: ThemeColors;
   navigateToSource: (plugin: PluginItem, showLatestNovels?: boolean) => void;
-  installPlugin: (plugin: PluginItem) => void;
-  uninstallPlugin: (plugin: PluginItem) => void;
-  updatePlugin: (plugin: PluginItem) => void;
+  installPlugin: (plugin: PluginItem) => Promise<void>;
+  uninstallPlugin: (plugin: PluginItem) => Promise<void>;
+  updatePlugin: (plugin: PluginItem) => Promise<void>;
 }
 
 const PluginCard: React.FC<Props> = ({
@@ -61,7 +62,11 @@ const PluginCard: React.FC<Props> = ({
             name={'download'}
             size={22}
             color={theme.primary}
-            onPress={() => installPlugin(plugin)}
+            onPress={() =>
+              installPlugin(plugin).then(() =>
+                showToast(`Installed ${plugin.name}`),
+              )
+            }
             theme={theme}
           />
         </>

@@ -96,13 +96,11 @@ const installPlugin = async (url: string): Promise<Plugin | undefined> => {
             await RNFS.writeFile(plugin.path, rawCode, 'utf8');
             return plugin;
           } else {
-            showToast(`There's no newer version than ${oldPlugin.version}`);
             return oldPlugin;
           }
         } else {
           plugins[plugin.id] = plugin;
           await RNFS.writeFile(plugin.path, rawCode, 'utf8');
-          showToast(`Installed ${plugin.name}`);
           return plugin;
         }
       });
@@ -118,15 +116,10 @@ const uninstallPlugin = async (_plugin: PluginItem) => {
     delete plugins[plugin.id];
     await RNFS.unlink(plugin.path);
   }
-  showToast(`Uninstalled ${_plugin.name}`);
 };
 
 const updatePlugin = async (plugin: PluginItem) => {
-  const updated = await installPlugin(plugin.url);
-  if (updated && newer(updated.version, plugin.version)) {
-    showToast(`Updated ${updated.name} to ${updated.version}`);
-  }
-  return updated;
+  return installPlugin(plugin.url);
 };
 
 const collectPlugins = async () => {
