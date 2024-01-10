@@ -3,7 +3,6 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { persistStore, persistReducer, Storage } from 'redux-persist';
 
 import novelReducer from './novel/novel.reducer';
-import trackerReducer from './tracker/tracker.reducer';
 import preferenceReducer from './preferences/preferencesSlice';
 import downloadsReducer from './downloads/downloads.reducer';
 
@@ -30,7 +29,6 @@ const persistConfig = {
 
 const reducers = combineReducers({
   novelReducer,
-  trackerReducer,
   preferenceReducer,
   downloadsReducer,
 });

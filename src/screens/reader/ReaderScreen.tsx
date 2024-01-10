@@ -219,7 +219,7 @@ export const ChapterContent = ({
 
   const updateTracker = () => {
     const chapterNumber = parseChapterNumber(novel.name, chapter.name);
-    if (tracker && trackedNovel) {
+    if (tracker && trackedNovel && chapterNumber > trackedNovel.progress) {
       updateNovelProgess(tracker, chapterNumber);
     }
   };

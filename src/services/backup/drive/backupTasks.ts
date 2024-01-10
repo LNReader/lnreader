@@ -132,10 +132,6 @@ export const downloadTask = (parentId: string): Promise<BackupTask> => {
 
 export const settingTask = async (parentId: string): Promise<BackupTask> => {
   const state = store.getState();
-  state.trackerReducer = {
-    'tracker': null,
-    'trackedNovels': [],
-  };
   const backupPackage: BackupPackage = {
     folderTree: [parentId],
     name: BackupDataFileName.SETTING,

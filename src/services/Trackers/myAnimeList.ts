@@ -126,7 +126,9 @@ export const myAnimeListTracker: Tracker = {
     };
   },
   updateUserListEntry: async (id, payload, auth) => {
-    let status = normalizedToMal[payload.status] || normalizedToMal.CURRENT;
+    let status = payload.status
+      ? normalizedToMal[payload.status]
+      : normalizedToMal.CURRENT;
     let repeating = false;
     if (status.includes(';')) {
       const split = status.split(';');

@@ -6,7 +6,6 @@ import {
   FlatList,
   ListRenderItem,
 } from 'react-native';
-import { useSelector } from 'react-redux';
 
 import * as WebBrowser from 'expo-web-browser';
 
@@ -15,13 +14,12 @@ import { SearchbarV2 } from '@components';
 
 import { showToast } from '@utils/showToast';
 import TrackerNovelCard from './TrackerNovelCard';
-import { useTheme } from '@hooks/persisted';
+import { useTheme, useTracker } from '@hooks/persisted';
 import TrackerLoading from '../loadingAnimation/TrackerLoading';
 import { queryAniList } from '@services/Trackers/aniList';
 import localeData from 'dayjs/plugin/localeData';
 import dayjs from 'dayjs';
 import { BrowseALScreenProps } from '@navigators/types';
-import { RootState } from '@redux/store';
 
 interface ALDate {
   month: number;
@@ -52,14 +50,12 @@ function datesEqual(date1: ALDate, date2: ALDate) {
 
 const BrowseALScreen = ({ navigation }: BrowseALScreenProps) => {
   const theme = useTheme();
-  const tracker = useSelector(
-    (state: RootState) => state.trackerReducer.tracker,
-  );
+  const { tracker } = useTracker();
 
   const [loading, setLoading] = useState(true);
   const [hasNextPage, setHasNextPage] = useState(true);
   const [novels, setNovels] = useState<ALNovel[]>([]);
-  const [error, setError] = useState();
+  const [error, setError] = useState<string>();
   const [limit, setLimit] = useState(50);
 
   const [searchText, setSearchText] = useState('');
@@ -96,6 +92,11 @@ const BrowseALScreen = ({ navigation }: BrowseALScreenProps) => {
 
   const searchAniList = async (onlyTop: boolean, page = 1) => {
     try {
+      if (!tracker) {
+        setLoading(false);
+        setError('Please login!');
+        return;
+      }
       const { data } = await queryAniList(
         anilistSearchQuery,
         {
@@ -105,7 +106,7 @@ const BrowseALScreen = ({ navigation }: BrowseALScreenProps) => {
         tracker.auth,
       );
 
-      const results = data.Page.media.map(m => {
+      const results = data.Page.media.map((m: any) => {
         return {
           id: m.id,
           novelName: m.title.userPreferred,
@@ -165,9 +166,9 @@ const BrowseALScreen = ({ navigation }: BrowseALScreenProps) => {
         {
           name: 'Retry',
           onPress: () => {
-            searchAniList(true);
             setLoading(true);
             setError(undefined);
+            searchAniList(true);
           },
           icon: 'reload',
         },
