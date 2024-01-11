@@ -172,7 +172,6 @@ const driveRestoreAction = async (taskData?: TaskData) => {
       trigger: null,
     });
   } catch (error: any) {
-    console.log(error);
     if (BackgroundService.isRunning()) {
       await Notifications.scheduleNotificationAsync({
         content: {

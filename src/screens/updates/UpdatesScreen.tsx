@@ -47,10 +47,10 @@ const UpdatesScreen = () => {
 
   const groupUpdatesByDate = (rawHistory: Update[]) => {
     const dateGroups = rawHistory.reduce<
-      Record<string, Record<string, Update[]>>
+      Record<string, Record<number, Update[]>>
     >((groups, item) => {
       const date = convertDateToISOString(item.updatedTime);
-      const novelId = item.novelId.toString();
+      const novelId = item.novelId;
       if (!groups[date]) {
         groups[date] = {};
       }
@@ -62,14 +62,12 @@ const UpdatesScreen = () => {
       return groups;
     }, {});
 
-    const groupedHistory = Object.keys(dateGroups).map(date => {
+    return Object.keys(dateGroups).map(date => {
       return {
         date,
         data: Object.values(dateGroups[date]), // convert map to 2d array
       };
     });
-
-    return groupedHistory;
   };
 
   useFocusEffect(

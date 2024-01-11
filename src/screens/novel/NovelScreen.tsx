@@ -47,6 +47,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
   const { name, url, pluginId } = route.params;
   const [updating, setUpdating] = useState(false);
   const {
+    progress,
     novel,
     chapters,
     lastRead,
@@ -102,7 +103,6 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
     showChapterTitles = false,
   } = novelSettings;
 
-  // let { position } = useContinueReading(chapters, novel.id);
   useEffect(() => {
     getNovel().finally(() => setLoading(false));
   }, []);
@@ -273,30 +273,30 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
     navigation.navigate('Chapter', { novel, chapter });
   };
 
-  // const showProgressPercentage = (chapter: ChapterInfo) => {
-  //   const savedProgress =
-  //     position && position[chapter.id] && position[chapter.id].percentage;
-  //   if (
-  //     savedProgress &&
-  //     savedProgress < 97 &&
-  //     savedProgress > 0 &&
-  //     chapter.unread
-  //   ) {
-  //     return (
-  //       <Text
-  //         style={{
-  //           color: theme.outline,
-  //           fontSize: 12,
-  //           marginLeft: chapter.releaseTime ? 5 : 0,
-  //         }}
-  //         numberOfLines={1}
-  //       >
-  //         {chapter.releaseTime ? '•  ' : null}
-  //         {'Progress ' + savedProgress + '%'}
-  //       </Text>
-  //     );
-  //   }
-  // };
+  const showProgressPercentage = (chapter: ChapterInfo) => {
+    const savedProgress =
+      progress && progress[chapter.id] && progress[chapter.id].percentage;
+    if (
+      savedProgress &&
+      savedProgress < 97 &&
+      savedProgress > 0 &&
+      chapter.unread
+    ) {
+      return (
+        <Text
+          style={{
+            color: theme.outline,
+            fontSize: 12,
+            marginLeft: chapter.releaseTime ? 5 : 0,
+          }}
+          numberOfLines={1}
+        >
+          {chapter.releaseTime ? '•  ' : null}
+          {'Progress ' + savedProgress + '%'}
+        </Text>
+      );
+    }
+  };
 
   const setCustomNovelCover = async () => {
     showExtraMenu(false);
@@ -558,7 +558,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
             ref={flatlistRef}
             estimatedItemSize={64}
             data={chapters}
-            extraData={[downloadQueue, selected, chapters]}
+            extraData={[chapters]}
             removeClippedSubviews={true}
             renderItem={({ item }) => (
               <ChapterItem
@@ -575,7 +575,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                 onSelectPress={onSelectPress}
                 onSelectLongPress={onSelectLongPress}
                 navigateToChapter={navigateToChapter}
-                showProgressPercentage={undefined}
+                showProgressPercentage={showProgressPercentage}
                 novelName={name}
               />
             )}

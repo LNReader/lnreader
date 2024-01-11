@@ -16,13 +16,11 @@ import {
 } from '@database/queries/ChapterQueries';
 
 import { Appbar, Button, List } from '@components';
-import useSourceStorage from '@hooks/useSourceStorage';
 import { importEpub } from '@services/epub/import';
 import { AdvancedSettingsScreenProps } from '@navigators/types';
 
 const AdvancedSettings = ({ navigation }: AdvancedSettingsScreenProps) => {
   const theme = useTheme();
-  const { clearCookies } = useSourceStorage({});
 
   /**
    * Confirm Clear Database Dialog
@@ -73,7 +71,6 @@ const AdvancedSettings = ({ navigation }: AdvancedSettingsScreenProps) => {
           onPress={showDeleteReadChaptersDialog}
           theme={theme}
         />
-        <List.Item title="Clear cookies" onPress={clearCookies} theme={theme} />
         <List.Item title="Import Epub" onPress={importEpub} theme={theme} />
       </List.Section>
       <Portal>

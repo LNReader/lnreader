@@ -19,7 +19,6 @@ import {
   getAllNovelCategories,
 } from '@database/queries/CategoryQueries';
 import { walkDir } from '../utils';
-import { store } from '@redux/store';
 import { MMKVStorage } from '@utils/mmkv/mmkv';
 
 export const versionTask = async (parentId: string): Promise<BackupTask> => {
@@ -130,19 +129,19 @@ export const downloadTask = (parentId: string): Promise<BackupTask> => {
   });
 };
 
-export const settingTask = async (parentId: string): Promise<BackupTask> => {
-  const state = store.getState();
-  const backupPackage: BackupPackage = {
-    folderTree: [parentId],
-    name: BackupDataFileName.SETTING,
-    mimeType: 'application/json',
-    content: JSON.stringify(state),
-  };
-  return {
-    taskType: TaskType.SETTING,
-    subtasks: [async () => backupPackage],
-  };
-};
+// export const settingTask = async (parentId: string): Promise<BackupTask> => {
+//   const state = store.getState();
+//   const backupPackage: BackupPackage = {
+//     folderTree: [parentId],
+//     name: BackupDataFileName.SETTING,
+//     mimeType: 'application/json',
+//     content: JSON.stringify(state),
+//   };
+//   return {
+//     taskType: TaskType.SETTING,
+//     subtasks: [async () => backupPackage],
+//   };
+// };
 
 export const themeTask = async (parentId: string): Promise<BackupTask> => {
   const APP_THEME = MMKVStorage.getString('APP_THEME');

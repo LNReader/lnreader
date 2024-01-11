@@ -34,6 +34,7 @@ export const NOVEL_CHAPTERS_PREFIX = 'NOVEL_CHAPTERS_PREFIX';
 export const CURRENT_CHAPTER = 'CURRENT_CHAPTER';
 export const NOVEL_SETTINSG_PREFIX = 'NOVEL_SETTINGS';
 export const LAST_READ_PREFIX = 'LAST_READ_PREFIX';
+export const PROGRESS_PREFIX = 'PROGRESS_PREFIX';
 
 type TrackedNovel = SearchResult & UserListEntry;
 
@@ -41,6 +42,15 @@ interface NovelSettings {
   sort?: string;
   filter?: string;
   showChapterTitles?: boolean;
+}
+
+interface ChapterProgress {
+  offsetY: number;
+  percentage: number;
+}
+
+export interface NovelProgress {
+  [chapterId: number]: ChapterProgress;
 }
 
 export const useTrackedNovel = (id: number) => {
@@ -108,6 +118,9 @@ export const useNovel = (url: string, pluginId: string) => {
   );
   const [novelSettings = {}, setNovelSettings] = useMMKVObject<NovelSettings>(
     NOVEL_SETTINSG_PREFIX + '_' + url,
+  );
+  const [progress = {}, _setProgress] = useMMKVObject<NovelProgress>(
+    PROGRESS_PREFIX + '_' + url,
   );
 
   const getNovel = () => {
@@ -312,11 +325,27 @@ export const useNovel = (url: string, pluginId: string) => {
     [novel],
   );
 
+  const setProgress = (
+    chapterId: number,
+    offsetY: number,
+    percentage: number,
+  ) => {
+    _setProgress({
+      ...progress,
+      [chapterId]: {
+        offsetY,
+        percentage,
+      },
+    });
+  };
+
   return {
+    progress,
     novel,
     lastRead,
     chapters,
     novelSettings,
+    setProgress,
     getNovel,
     setNovel,
     setLastRead,

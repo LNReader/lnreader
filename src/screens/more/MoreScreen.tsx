@@ -6,21 +6,17 @@ import {
   ScrollView,
 } from 'react-native';
 import { Switch } from 'react-native-paper';
-import { useSelector } from 'react-redux';
 import { getString } from '@strings/translations';
 
 import { List } from '@components';
 
 import { MoreHeader } from './components/MoreHeader';
-import { useLibrarySettings, useTheme } from '@hooks/persisted';
+import { useDownload, useLibrarySettings, useTheme } from '@hooks/persisted';
 import { MoreStackScreenProps } from '@navigators/types';
-import { RootState } from '@redux/store';
 
 const MoreScreen = ({ navigation }: MoreStackScreenProps) => {
   const theme = useTheme();
-  const { downloadQueue } = useSelector(
-    (state: RootState) => state.downloadsReducer,
-  );
+  const { queue } = useDownload();
   const {
     incognitoMode = false,
     downloadedOnlyMode = false,
@@ -107,11 +103,7 @@ const MoreScreen = ({ navigation }: MoreStackScreenProps) => {
           <List.Divider theme={theme} />
           <List.Item
             title="Download queue"
-            description={
-              downloadQueue.length > 0
-                ? downloadQueue.length + ' remaining'
-                : ''
-            }
+            description={queue.length > 0 ? queue.length + ' remaining' : ''}
             icon="progress-download"
             onPress={() =>
               navigation.navigate('MoreStack', {

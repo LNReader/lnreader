@@ -14,7 +14,6 @@ import * as RNFS from 'react-native-fs';
 
 import VolumeButtonListener from '@native/volumeButtonListener';
 
-import { useDispatch } from 'react-redux';
 import { useKeepAwake } from 'expo-keep-awake';
 
 import {
@@ -23,7 +22,6 @@ import {
 } from '@database/queries/ChapterQueries';
 import { fetchChapter } from '@services/plugin/fetch';
 import { showToast } from '@utils/showToast';
-import { usePosition } from '@hooks/reduxHooks';
 import {
   useChapterGeneralSettings,
   useLibrarySettings,
@@ -32,7 +30,6 @@ import {
   useTracker,
   useNovel,
 } from '@hooks/persisted';
-import { saveScrollPosition } from '@redux/preferences/preferencesSlice';
 import { parseChapterNumber } from '@utils/parseChapterNumber';
 
 import ReaderAppbar from './components/ReaderAppbar';
@@ -84,15 +81,17 @@ export const ChapterContent = ({
 }: ChapterContentProps) => {
   useKeepAwake();
   const { novel, chapter } = route.params;
-  const { markChapterRead, setLastRead, bookmarkChapters } = useNovel(
-    novel.url,
-    novel.pluginId,
-  );
+  const {
+    markChapterRead,
+    setLastRead,
+    bookmarkChapters,
+    progress,
+    setProgress,
+  } = useNovel(novel.url, novel.pluginId);
   const webViewRef = useRef<WebView>(null);
   const readerSheetRef = useRef(null);
 
   const theme = useTheme();
-  const dispatch = useDispatch();
 
   const {
     swipeGestures,
@@ -108,7 +107,6 @@ export const ChapterContent = ({
   const { setImmersiveMode, showStatusAndNavBar } = useFullscreenMode();
 
   const [hidden, setHidden] = useState(true);
-  const position = usePosition(chapter.novelId, chapter.id);
 
   const { tracker } = useTracker();
   const { trackedNovel, updateNovelProgess } = useTrackedNovel(novel.id);
@@ -229,14 +227,7 @@ export const ChapterContent = ({
   const saveProgress = useCallback(
     async (offsetY: number, percentage: number) => {
       if (!incognitoMode) {
-        dispatch(
-          saveScrollPosition({
-            offsetY,
-            percentage,
-            chapterId: chapter.id,
-            novelId: chapter.novelId,
-          }),
-        );
+        setProgress(chapter.id, offsetY, percentage);
       }
 
       if (!incognitoMode && percentage >= 97) {
@@ -330,7 +321,9 @@ export const ChapterContent = ({
         saveProgress={saveProgress}
         onLayout={() => {
           useVolumeButtons && onLayout();
-          scrollTo(position?.offsetY || 0);
+          if (progress[chapter.id]) {
+            scrollTo(progress[chapter.id]?.offsetY || 0);
+          }
         }}
         onPress={hideHeader}
         navigateToChapterBySwipe={navigateToChapterBySwipe}

@@ -1,7 +1,6 @@
 import * as SQLite from 'expo-sqlite';
 import * as Notifications from 'expo-notifications';
 import BackgroundService from 'react-native-background-actions';
-import { store } from '@redux/store';
 
 import { NovelInfo, ChapterInfo } from '@database/types';
 import {
@@ -17,25 +16,16 @@ import { parseChapterNumber } from '@utils/parseChapterNumber';
 import { noop } from 'lodash-es';
 import { txnErrorCallback } from '@database/utils/helpers';
 import { showToast } from '@utils/showToast';
+import { getMMKVObject, setMMKVObject } from '@utils/mmkv/mmkv';
+import {
+  LAST_READ_PREFIX,
+  NOVEL_SETTINSG_PREFIX,
+  NovelProgress,
+  PROGRESS_PREFIX,
+} from '@hooks/persisted/useNovel';
 
 const db = SQLite.openDatabase('lnreader.db');
 
-type ReduxNovelSettings = Record<
-  number,
-  {
-    sort: string;
-    filter: string;
-    showChapterTitles: boolean;
-    lastRead: ChapterInfo;
-    position: Record<
-      number,
-      {
-        offsetY: number;
-        percentage: number;
-      }
-    >;
-  }
->;
 const migrateNovelMetaDataQuery =
   'UPDATE Novel SET cover = ?, summary = ?, author = ?, artist = ?, status = ?, genres = ?, inLibrary = 1  WHERE id = ?';
 const migrateChapterQuery =
@@ -46,9 +36,19 @@ const sleep = (time: number): any =>
 
 const sortChaptersByNumber = (novelName: string, chapters: ChapterInfo[]) => {
   for (let i = 0; i < chapters.length; ++i) {
-    chapters[i].number = parseChapterNumber(novelName, chapters[i].name);
+    if (!chapters[i].chapterNumber) {
+      chapters[i].chapterNumber = parseChapterNumber(
+        novelName,
+        chapters[i].name,
+      );
+    }
   }
-  return chapters.sort((a, b) => a.number - b.number);
+  return chapters.sort((a, b) => {
+    if (a.chapterNumber && b.chapterNumber) {
+      return a.chapterNumber - b.chapterNumber;
+    }
+    return 0;
+  });
 };
 
 export const migrateNovel = async (
@@ -66,6 +66,9 @@ export const migrateNovel = async (
       const fetchedNovel = await fetchNovel(pluginId, toNovelUrl);
       await insertNovelAndChapters(pluginId, fetchedNovel);
       toNovel = await getNovel(toNovelUrl);
+      if (!toNovel) {
+        return;
+      }
       toChapters = await getChapters(toNovel.id, '', '');
     }
 
@@ -117,22 +120,29 @@ export const migrateNovel = async (
             txnErrorCallback,
           );
         });
+        //settings
+        setMMKVObject(
+          NOVEL_SETTINSG_PREFIX + '_' + toNovel.url,
+          getMMKVObject(NOVEL_SETTINSG_PREFIX + '_' + fromNovel.url),
+        );
 
-        const state = store.getState();
-        const novelSettings = state.preferenceReducer
-          .novelSettings as ReduxNovelSettings;
-        const { sort, filter, showChapterTitles, lastRead, position } =
-          novelSettings[fromNovel.id];
+        const fromProgress =
+          getMMKVObject<NovelProgress>(PROGRESS_PREFIX + '_' + fromNovel.url) ||
+          {};
+        const toProgresss: NovelProgress = {};
+        const setProgress = (progress: NovelProgress) => {
+          setMMKVObject(PROGRESS_PREFIX + '_' + toNovel.url, progress);
+        };
+        const lastRead = getMMKVObject<NovelInfo>(
+          LAST_READ_PREFIX + '_' + fromNovel.url,
+        );
+
+        const setLastRead = (chapter: ChapterInfo) => {
+          setMMKVObject(LAST_READ_PREFIX + '_' + toNovel.url, chapter);
+        };
+
         fromChapters = sortChaptersByNumber(fromNovel.name, fromChapters);
         toChapters = sortChaptersByNumber(toNovel.name, toChapters);
-        novelSettings[toNovel.id] = {
-          sort: sort,
-          filter: filter,
-          showChapterTitles: showChapterTitles,
-          lastRead: toChapters[0],
-          position: {},
-        };
-        delete novelSettings[fromNovel.id];
 
         let fromPointer = 0,
           toPointer = 0;
@@ -142,25 +152,29 @@ export const migrateNovel = async (
         ) {
           const fromChapter = fromChapters[fromPointer];
           const toChapter = toChapters[toPointer];
-
-          if (fromChapter.number < toChapter.number) {
+          if (fromChapter.chapterNumber && toChapter.chapterNumber) {
+            if (fromChapter.chapterNumber < toChapter.chapterNumber) {
+              ++fromPointer;
+              continue;
+            }
+            if (fromChapter.chapterNumber > toChapter.chapterNumber) {
+              ++toPointer;
+              continue;
+            }
+          } else {
             ++fromPointer;
-            continue;
-          }
-          if (fromChapter.number > toChapter.number) {
             ++toPointer;
             continue;
           }
 
-          if (position && position[fromChapter.id]) {
-            novelSettings[toNovel.id].position[toChapter.id] =
-              position[fromChapter.id];
+          if (fromProgress && fromProgress[fromChapter.id]) {
+            toProgresss[toChapter.id] = fromProgress[fromChapter.id];
           }
 
           db.transaction(tx =>
             tx.executeSql(migrateChapterQuery, [
-              fromChapter.bookmark,
-              fromChapter.unread,
+              Number(fromChapter.bookmark),
+              Number(fromChapter.unread),
               fromChapter.readTime,
               toChapter.id,
             ]),
@@ -177,7 +191,7 @@ export const migrateNovel = async (
           }
 
           if (lastRead && fromChapter.id === lastRead.id) {
-            novelSettings[toNovel.id].lastRead = lastRead;
+            setLastRead(toChapter);
           }
 
           await BackgroundService.updateNotification({
@@ -192,6 +206,7 @@ export const migrateNovel = async (
             fromChapters.length === fromPointer ||
             toChapters.length === toPointer
           ) {
+            setProgress(toProgresss);
             Notifications.scheduleNotificationAsync({
               content: {
                 title: 'Novel Migrated',

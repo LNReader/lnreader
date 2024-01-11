@@ -1,5 +1,4 @@
 import { appVersion } from '@utils/versionUtils';
-import { store } from '@redux/store';
 
 import { MMKVStorage } from '@utils/mmkv/mmkv';
 import {
@@ -133,25 +132,25 @@ export const downloadTask = (folderTree: string[]): Promise<BackupTask> => {
   });
 };
 
-export const settingTask = async (
-  folderTree: string[],
-): Promise<BackupTask> => {
-  const state = store.getState();
-  state.trackerReducer = {
-    'tracker': null,
-    'trackedNovels': [],
-  };
-  const backupPackage: BackupPackage = {
-    folderTree,
-    name: BackupDataFileName.SETTING,
-    mimeType: 'application/json',
-    content: JSON.stringify(state),
-  };
-  return {
-    taskType: TaskType.SETTING,
-    subtasks: [async () => backupPackage],
-  };
-};
+// export const settingTask = async (
+//   folderTree: string[],
+// ): Promise<BackupTask> => {
+//   const state = store.getState();
+//   state.trackerReducer = {
+//     'tracker': null,
+//     'trackedNovels': [],
+//   };
+//   const backupPackage: BackupPackage = {
+//     folderTree,
+//     name: BackupDataFileName.SETTING,
+//     mimeType: 'application/json',
+//     content: JSON.stringify(state),
+//   };
+//   return {
+//     taskType: TaskType.SETTING,
+//     subtasks: [async () => backupPackage],
+//   };
+// };
 
 export const themeTask = async (folderTree: string[]): Promise<BackupTask> => {
   const APP_THEME = MMKVStorage.getString('APP_THEME');

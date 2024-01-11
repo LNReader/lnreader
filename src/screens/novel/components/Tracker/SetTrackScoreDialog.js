@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, Text } from 'react-native';
-import { useSelector } from 'react-redux';
 import { Modal, overlay } from 'react-native-paper';
 import { MyAnimeListScoreSelector } from './MyAnimeList';
 import { AniListScoreSelector } from './AniList';
