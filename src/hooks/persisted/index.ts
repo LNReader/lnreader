@@ -12,3 +12,4 @@ export {
 export { default as usePlugins } from './usePlugins';
 export { getTracker, useTracker } from './useTracker';
 export { useTrackedNovel, useNovel } from './useNovel';
+export { default as useDownload } from './useDownload';

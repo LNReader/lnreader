@@ -315,7 +315,7 @@ export const deleteChapter = async (
 export const deleteChapters = async (
   pluginId: string,
   novelId: number,
-  chapters?: DownloadedChapter[],
+  chapters?: ChapterInfo[],
 ) => {
   if (!chapters?.length) {
     return;
@@ -453,7 +453,7 @@ const getDownloadedChaptersQuery = `
     WHERE Chapter.isDownloaded = 1
   `;
 
-export const getDownloadedChapters = (): Promise<ChapterInfo[]> => {
+export const getDownloadedChapters = (): Promise<DownloadedChapter[]> => {
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(

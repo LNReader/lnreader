@@ -19,10 +19,14 @@ import {
   FAB,
   Snackbar,
 } from 'react-native-paper';
-import { useDispatch, useSelector } from 'react-redux';
 import * as Haptics from 'expo-haptics';
 import { showToast } from '../../utils/showToast';
-import { useAppSettings, useNovel, useTheme } from '@hooks/persisted';
+import {
+  useAppSettings,
+  useDownload,
+  useNovel,
+  useTheme,
+} from '@hooks/persisted';
 import NovelInfoHeader from './components/Info/NovelInfoHeader';
 import NovelBottomSheet from './components/NovelBottomSheet';
 import TrackSheet from './components/Tracker/TrackSheet';
@@ -36,7 +40,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useBoolean } from '@hooks';
 import NovelScreenLoading from './components/LoadingAnimation/NovelScreenLoading';
 import { NovelScreenProps } from '@navigators/types';
-import { RootState } from '@redux/store';
 import { ChapterInfo } from '@database/types';
 import ChapterItem from './components/ChapterItem';
 
@@ -59,18 +62,22 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
     markPreviouschaptersRead,
     markPreviousChaptersUnread,
     followNovel,
+    deleteChapter,
+    refreshChapters,
+    deleteChapters,
   } = useNovel(url, pluginId);
 
   const [loading, setLoading] = useState(!novel);
 
   const theme = useTheme();
-  const dispatch = useDispatch();
   const { top: topInset, bottom: bottomInset } = useSafeAreaInsets();
   const progressViewOffset = topInset + 32;
 
-  const { downloadQueue } = useSelector(
-    (state: RootState) => state.downloadsReducer,
-  );
+  const {
+    queue: downloadQueue,
+    downloadChapter,
+    downloadChapters,
+  } = useDownload();
 
   const [selected, setSelected] = useState<ChapterInfo[]>([]);
   const [downloadMenu, showDownloadMenu] = useState(false);
@@ -100,6 +107,10 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
     getNovel().finally(() => setLoading(false));
   }, []);
 
+  useEffect(() => {
+    refreshChapters();
+  }, [downloadQueue]);
+
   const onRefresh = () => {
     setUpdating(true);
     updateNovel()
@@ -120,20 +131,6 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
   const [jumpToChapterModal, showJumpToChapterModal] = useState(false);
   const downloadCustomChapterModal = useBoolean();
 
-  const downloadChapter = (chapter: ChapterInfo) => {
-    chapter;
-
-    // dispatch(
-    //   downloadChapterAction(
-    //     pluginId,
-    //     novel.id,
-    //     chapter.url,
-    //     chapter.name,
-    //     chapter.id,
-    //   ),
-    // );
-  };
-
   const actions = useMemo(() => {
     const list = [];
 
@@ -141,7 +138,9 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
       list.push({
         icon: 'download-outline',
         onPress: () => {
-          // dispatch(downloadAllChaptersAction(novel.pluginId, selected));
+          if (novel) {
+            downloadChapters(novel, selected);
+          }
           setSelected([]);
         },
       });
@@ -206,11 +205,6 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
 
     return list;
   }, [selected]);
-
-  const deleteChapter = (chapter: ChapterInfo) => {
-    chapter;
-    // dispatch(deleteChapterAction(pluginId, novel.id, chapter.id, chapter.name));
-  };
 
   const isSelected = (id: number) => {
     return selected.some(obj => obj.id === id);
@@ -381,15 +375,13 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                       style={{ backgroundColor: theme.surface2 }}
                       titleStyle={{ color: theme.onSurface }}
                       onPress={() => {
-                        // dispatch(
-                        //   downloadAllChaptersAction(novel.pluginId, [
-                        //     chapters.find(
-                        //       chapter =>
-                        //         chapter.unread && !chapter.isDownloaded,
-                        //     ),
-                        //   ]),
-                        // );
                         showDownloadMenu(false);
+                        const finded = chapters.find(
+                          chapter => chapter.unread && !chapter.isDownloaded,
+                        );
+                        if (novel && finded) {
+                          downloadChapter(novel, finded);
+                        }
                       }}
                     />
                     <Menu.Item
@@ -399,18 +391,18 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                         color: theme.onSurface,
                       }}
                       onPress={() => {
-                        // dispatch(
-                        //   downloadAllChaptersAction(
-                        //     novel.pluginId,
-                        //     chapters
-                        //       .filter(
-                        //         chapter =>
-                        //           chapter.unread && !chapter.isDownloaded,
-                        //       )
-                        //       .slice(0, 5),
-                        //   ),
-                        // );
                         showDownloadMenu(false);
+                        if (novel) {
+                          downloadChapters(
+                            novel,
+                            chapters
+                              .filter(
+                                chapter =>
+                                  chapter.unread && !chapter.isDownloaded,
+                              )
+                              .slice(0, 5),
+                          );
+                        }
                       }}
                     />
                     <Menu.Item
@@ -420,18 +412,18 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                         color: theme.onSurface,
                       }}
                       onPress={() => {
-                        // dispatch(
-                        //   downloadAllChaptersAction(
-                        //     novel.pluginId,
-                        //     chapters
-                        //       .filter(
-                        //         chapter =>
-                        //           chapter.unread && !chapter.isDownloaded,
-                        //       )
-                        //       .slice(0, 10),
-                        //   ),
-                        // );
                         showDownloadMenu(false);
+                        if (novel) {
+                          downloadChapters(
+                            novel,
+                            chapters
+                              .filter(
+                                chapter =>
+                                  chapter.unread && !chapter.isDownloaded,
+                              )
+                              .slice(0, 10),
+                          );
+                        }
                       }}
                     />
                     <Menu.Item
@@ -450,13 +442,13 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                         color: theme.onSurface,
                       }}
                       onPress={() => {
-                        // dispatch(
-                        //   downloadAllChaptersAction(
-                        //     novel.pluginId,
-                        //     chapters.filter(chapter => chapter.unread),
-                        //   ),
-                        // );
                         showDownloadMenu(false);
+                        if (novel) {
+                          downloadChapters(
+                            novel,
+                            chapters.filter(chapter => chapter.unread),
+                          );
+                        }
                       }}
                     />
                     <Menu.Item
@@ -466,9 +458,9 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                         color: theme.onSurface,
                       }}
                       onPress={() => {
-                        // dispatch(
-                        //   downloadAllChaptersAction(novel.pluginId, chapters),
-                        // );
+                        if (novel) {
+                          downloadChapters(novel, chapters);
+                        }
                         showDownloadMenu(false);
                       }}
                     />
@@ -479,9 +471,8 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                         color: theme.onSurface,
                       }}
                       onPress={() => {
-                        // dispatch(
-                        //   deleteAllChaptersAction(pluginId, novel.id, chapters),
-                        // )
+                        showDownloadMenu(false);
+                        deleteChapters(chapters.filter(c => c.isDownloaded));
                       }}
                     />
                   </Menu>
@@ -567,17 +558,19 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
             ref={flatlistRef}
             estimatedItemSize={64}
             data={chapters}
-            extraData={[downloadQueue, selected]}
+            extraData={[downloadQueue, selected, chapters]}
             removeClippedSubviews={true}
             renderItem={({ item }) => (
               <ChapterItem
+                isDownloading={downloadQueue.some(
+                  c => c.chapter.id === item.id,
+                )}
                 isLocal={novel.isLocal}
                 theme={theme}
                 chapter={item}
                 showChapterTitles={showChapterTitles}
-                downloadQueue={downloadQueue}
-                deleteChapter={deleteChapter}
-                downloadChapter={downloadChapter}
+                deleteChapter={() => deleteChapter(item)}
+                downloadChapter={() => downloadChapter(novel, item)}
                 isSelected={isSelected}
                 onSelectPress={onSelectPress}
                 onSelectLongPress={onSelectLongPress}
@@ -635,7 +628,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
             action={{
               label: 'Delete',
               onPress: () => {
-                // dispatch(deleteAllChaptersAction(pluginId, novel.id, chapters));
+                deleteChapters(chapters.filter(c => c.isDownloaded));
               },
             }}
             theme={{ colors: { primary: theme.primary } }}
@@ -668,7 +661,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
             novel={novel}
             chapters={chapters}
             theme={theme}
-            dispatch={dispatch}
+            downloadChapters={downloadChapters}
           />
         </Portal>
         <NovelBottomSheet

@@ -2,9 +2,7 @@ import { MMKVStorage } from '@utils/mmkv/mmkv';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { persistStore, persistReducer, Storage } from 'redux-persist';
 
-import novelReducer from './novel/novel.reducer';
 import preferenceReducer from './preferences/preferencesSlice';
-import downloadsReducer from './downloads/downloads.reducer';
 
 const reduxStorage: Storage = {
   setItem: (key, value) => {
@@ -28,9 +26,7 @@ const persistConfig = {
 };
 
 const reducers = combineReducers({
-  novelReducer,
   preferenceReducer,
-  downloadsReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducers);

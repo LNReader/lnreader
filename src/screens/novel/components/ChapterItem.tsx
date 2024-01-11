@@ -15,13 +15,13 @@ import { ChapterInfo } from '@database/types';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 interface ChapterItemProps {
+  isDownloading?: boolean;
   chapter: ChapterInfo;
   theme: ThemeColors;
-  downloadQueue: any;
   showChapterTitles: boolean;
   isSelected?: (id: number) => boolean;
-  downloadChapter: (chapter: ChapterInfo) => (dispatch: any) => void;
-  deleteChapter: (chapter: ChapterInfo) => void;
+  downloadChapter: () => void;
+  deleteChapter: () => void;
   onSelectPress?: (chapter: ChapterInfo) => void;
   onSelectLongPress?: (chapter: ChapterInfo) => void;
   navigateToChapter: (chapter: ChapterInfo) => void;
@@ -33,10 +33,10 @@ interface ChapterItemProps {
 }
 
 const ChapterItem: React.FC<ChapterItemProps> = ({
+  isDownloading,
   chapter,
   theme,
   showChapterTitles,
-  downloadQueue,
   downloadChapter,
   deleteChapter,
   isSelected,
@@ -139,8 +139,8 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
       </Row>
       {!isLocal && (
         <DownloadButton
-          downloadQueue={downloadQueue}
-          chapter={chapter}
+          isDownloading={isDownloading}
+          isDownloaded={chapter.isDownloaded}
           theme={theme}
           deleteChapter={deleteChapter}
           downloadChapter={downloadChapter}

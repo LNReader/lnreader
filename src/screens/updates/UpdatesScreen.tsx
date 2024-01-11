@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import dayjs from 'dayjs';
 import { RefreshControl, SectionList, StyleSheet, Text } from 'react-native';
 
@@ -9,13 +9,16 @@ import { convertDateToISOString } from '@database/utils/convertDateToISOString';
 import { Update } from '@database/types';
 
 import { useSearch } from '@hooks';
-import { useUpdates } from '@hooks/persisted';
+import { useDownload, useUpdates } from '@hooks/persisted';
 import { updateLibrary } from '@services/updates';
 import { getString } from '@strings/translations';
 import { ThemeColors } from '@theme/types';
 import { useTheme } from '@hooks/persisted';
 import UpdatesSkeletonLoading from './components/UpdatesSkeletonLoading';
 import UpdateNovelCard from './components/UpdateNovelCard';
+import { useFocusEffect } from '@react-navigation/native';
+import { deleteChapter } from '@database/queries/ChapterQueries';
+import { showToast } from '@utils/showToast';
 
 const UpdatesScreen = () => {
   const theme = useTheme();
@@ -25,10 +28,12 @@ const UpdatesScreen = () => {
     searchResults,
     clearSearchResults,
     searchUpdates,
+    getUpdates,
     lastUpdateTime,
     showLastUpdateTime,
     error,
   } = useUpdates();
+  const { queue } = useDownload();
   const { searchText, setSearchText, clearSearchbar } = useSearch();
   const onChangeText = (text: string) => {
     setSearchText(text);
@@ -41,34 +46,38 @@ const UpdatesScreen = () => {
   };
 
   const groupUpdatesByDate = (rawHistory: Update[]) => {
-    const dateGroups = rawHistory.reduce<Record<string, Update[][]>>(
-      (groups, item) => {
-        const date = convertDateToISOString(item.updatedTime);
-        const novelId = item.novelId;
+    const dateGroups = rawHistory.reduce<
+      Record<string, Record<string, Update[]>>
+    >((groups, item) => {
+      const date = convertDateToISOString(item.updatedTime);
+      const novelId = item.novelId.toString();
+      if (!groups[date]) {
+        groups[date] = {};
+      }
+      if (!groups[date][novelId]) {
+        groups[date][novelId] = [];
+      }
 
-        if (!groups[date]) {
-          groups[date] = [];
-        }
-        if (!groups[date][novelId]) {
-          groups[date][novelId] = [];
-        }
-
-        groups[date][novelId].push(item);
-
-        return groups;
-      },
-      {},
-    );
+      groups[date][novelId] = [...groups[date][novelId], item];
+      return groups;
+    }, {});
 
     const groupedHistory = Object.keys(dateGroups).map(date => {
       return {
         date,
-        data: dateGroups[date].filter(val => val !== null),
+        data: Object.values(dateGroups[date]), // convert map to 2d array
       };
     });
 
     return groupedHistory;
   };
+
+  useFocusEffect(
+    useCallback(() => {
+      getUpdates();
+    }, [queue]),
+  );
+
   return (
     <>
       <SearchbarV2
@@ -91,6 +100,7 @@ const UpdatesScreen = () => {
         <ErrorScreenV2 error={error} />
       ) : (
         <SectionList
+          extraData={[updates]}
           ListHeaderComponent={
             showLastUpdateTime && lastUpdateTime ? (
               <LastUpdateTime lastUpdateTime={lastUpdateTime} theme={theme} />
@@ -106,7 +116,17 @@ const UpdatesScreen = () => {
           keyExtractor={item => 'updatedGroup' + item[0].novelId}
           renderItem={({ item }) => (
             <UpdateNovelCard
-              item={item}
+              deleteChapter={chapter => {
+                deleteChapter(
+                  chapter.pluginId,
+                  chapter.novelId,
+                  chapter.id,
+                ).then(() => {
+                  showToast(`Delete ${chapter.name}`);
+                  getUpdates();
+                });
+              }}
+              chapterList={item}
               descriptionText={getString('updatesScreen.updatesLower')}
             />
           )}

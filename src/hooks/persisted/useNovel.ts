@@ -14,11 +14,15 @@ import {
   markPreviuschaptersRead as _markPreviuschaptersRead,
   markPreviousChaptersUnread as _markPreviousChaptersUnread,
   markChapterUnread as _markChapterUnread,
+  deleteChapter as _deleteChapter,
+  deleteChapters as _deleteChapters,
 } from '@database/queries/ChapterQueries';
 import { fetchNovel } from '@services/plugin/fetch';
 import { getChapters } from '@database/queries/ChapterQueries';
 import { updateNovel as _updateNovel } from '@services/updates/LibraryUpdateQueries';
 import { APP_SETTINGS, AppSettings } from './useSettings';
+import { showToast } from '@utils/showToast';
+import { useCallback } from 'react';
 
 // store key: PREFIX + '_' + novel.id,
 
@@ -132,6 +136,15 @@ export const useNovel = (url: string, pluginId: string) => {
           throw new Error('Unable to get novel');
         }
       });
+  };
+
+  // should call this when only data in db changed.
+  const refreshChapters = () => {
+    if (novel) {
+      getChapters(novel.id, novelSettings.sort, novelSettings.filter).then(
+        chapters => setChapters(chapters),
+      );
+    }
   };
 
   const sortAndFilterChapters = async (sort?: string, filter?: string) => {
@@ -258,6 +271,47 @@ export const useNovel = (url: string, pluginId: string) => {
     }
   };
 
+  const deleteChapter = (_chapter: ChapterInfo) => {
+    if (novel) {
+      _deleteChapter(novel.pluginId, novel.id, _chapter.id).then(() => {
+        setChapters(
+          chapters.map(chapter => {
+            if (chapter.id !== _chapter.id) {
+              return chapter;
+            }
+            return {
+              ...chapter,
+              isDownloaded: false,
+            };
+          }),
+        );
+        showToast(`Deleted ${_chapter.name}`);
+      });
+    }
+  };
+
+  const deleteChapters = useCallback(
+    (_chaters: ChapterInfo[]) => {
+      if (novel) {
+        _deleteChapters(novel.pluginId, novel.id, _chaters).then(() => {
+          showToast(`Deleted ${_chaters.length} chapters`);
+          setChapters(
+            chapters.map(chapter => {
+              if (_chaters.some(_c => _c.id === chapter.id)) {
+                return {
+                  ...chapter,
+                  isDownloaded: false,
+                };
+              }
+              return chapter;
+            }),
+          );
+        });
+      }
+    },
+    [novel],
+  );
+
   return {
     novel,
     lastRead,
@@ -277,6 +331,9 @@ export const useNovel = (url: string, pluginId: string) => {
     updateNovel,
     setShowChapterTitles,
     markChapterRead,
+    refreshChapters,
+    deleteChapter,
+    deleteChapters,
   };
 };
 

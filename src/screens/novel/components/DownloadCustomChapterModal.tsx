@@ -2,10 +2,8 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput } from 'react-native';
 
 import { Button, IconButton, Modal, Portal } from 'react-native-paper';
-import { downloadAllChaptersAction } from '../../../redux/novel/novel.actions';
 import { ThemeColors } from '@theme/types';
 import { ChapterInfo, NovelInfo } from '@database/types';
-import { Dispatch } from '@reduxjs/toolkit';
 
 interface DownloadCustomChapterModalProps {
   theme: ThemeColors;
@@ -13,7 +11,7 @@ interface DownloadCustomChapterModalProps {
   modalVisible: boolean;
   novel: NovelInfo;
   chapters: ChapterInfo[];
-  dispatch: Dispatch<any>;
+  downloadChapters: (novel: NovelInfo, chapters: ChapterInfo[]) => void;
 }
 
 const DownloadCustomChapterModal = ({
@@ -22,7 +20,7 @@ const DownloadCustomChapterModal = ({
   modalVisible,
   novel,
   chapters,
-  dispatch,
+  downloadChapters,
 }: DownloadCustomChapterModalProps) => {
   const [text, setText] = useState(0);
 
@@ -32,15 +30,13 @@ const DownloadCustomChapterModal = ({
   };
 
   const onSubmit = () => {
-    dispatch(
-      downloadAllChaptersAction(
-        novel.pluginId,
-        chapters
-          .filter(chapter => chapter.unread && !chapter.isDownloaded)
-          .slice(0, text),
-      ),
-    );
     hideModal();
+    downloadChapters(
+      novel,
+      chapters
+        .filter(chapter => chapter.unread && !chapter.isDownloaded)
+        .slice(0, text),
+    );
   };
 
   const onChangeText = (txt: string) => {

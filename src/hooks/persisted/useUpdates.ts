@@ -1,9 +1,7 @@
 import { useCallback, useState } from 'react';
 import { getUpdatesFromDb } from '@database/queries/ChapterQueries';
 
-import { useFocusEffect } from '@react-navigation/native';
 import { Update } from '@database/types';
-import { useDownloadQueue } from '@redux/hooks';
 import { useMMKVBoolean, useMMKVString } from 'react-native-mmkv';
 import dayjs from 'dayjs';
 
@@ -30,8 +28,6 @@ export const useUpdates = () => {
 
   const { lastUpdateTime, showLastUpdateTime, setLastUpdateTime } =
     useLastUpdate();
-  const { downloadQueue } = useDownloadQueue();
-
   const [error, setError] = useState('');
 
   const getUpdates = () =>
@@ -66,16 +62,11 @@ export const useUpdates = () => {
     getUpdates();
   }, []);
 
-  useFocusEffect(
-    useCallback(() => {
-      getUpdates();
-    }, [downloadQueue]),
-  );
-
   return {
     isLoading,
     updates,
     searchResults,
+    getUpdates,
     clearSearchResults,
     searchUpdates,
     lastUpdateTime,
