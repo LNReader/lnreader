@@ -83,9 +83,11 @@ export const ChapterContent = ({
   drawerRef,
 }: ChapterContentProps) => {
   useKeepAwake();
-  const params = route.params;
-  const { novel, chapter } = params;
-  const { markChapterRead, setLastRead } = useNovel(novel.url, novel.pluginId);
+  const { novel, chapter } = route.params;
+  const { markChapterRead, setLastRead, bookmarkChapters } = useNovel(
+    novel.url,
+    novel.pluginId,
+  );
   const webViewRef = useRef<WebView>(null);
   const readerSheetRef = useRef(null);
 
@@ -339,11 +341,11 @@ export const ChapterContent = ({
       {!hidden && (
         <>
           <ReaderAppbar
-            bookmark={chapter.bookmark}
             novelName={novel.name}
-            chapterId={chapter.id}
-            chapterName={chapter.name}
+            chapter={chapter}
+            bookmarkChapters={bookmarkChapters}
             tts={startTts}
+            goBack={navigation.goBack}
             textToSpeech={ttsStatus}
             theme={theme}
           />
