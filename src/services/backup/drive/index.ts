@@ -10,16 +10,15 @@ import {
   novelCoverTask,
   novelTask,
   settingTask,
-  themeTask,
   versionTask,
 } from './backupTasks';
 import {
   restoreCategory,
   restoreNovel,
-  // restoreSetting,
-  restoreTheme,
+  restoreSetting,
   retoreDownload,
 } from './restoreTasks';
+import { BACKGROUND_ACTION, BackgoundAction } from '@services/constants';
 
 interface TaskData {
   delay: number;
@@ -27,6 +26,7 @@ interface TaskData {
 }
 
 const driveBackupAction = async (taskData?: TaskData) => {
+  MMKVStorage.set(BACKGROUND_ACTION, BackgoundAction.BACKUP);
   try {
     if (!taskData) {
       throw new Error('No data provided');
@@ -45,7 +45,6 @@ const driveBackupAction = async (taskData?: TaskData) => {
       categoryTask(dataFolder.id),
       downloadTask(downloadFolder.id),
       settingTask(dataFolder.id),
-      themeTask(dataFolder.id),
     ];
 
     for (let i = 0; i < taskList.length; i++) {
@@ -93,12 +92,11 @@ const driveBackupAction = async (taskData?: TaskData) => {
       await BackgroundService.stop();
     }
   } finally {
-    MMKVStorage.set('HAS_BACKGROUND_TASK', false);
+    MMKVStorage.delete(BACKGROUND_ACTION);
   }
 };
 
 export const createBackup = async (backupFolder: DriveFile) => {
-  MMKVStorage.set('HAS_BACKGROUND_TASK', true);
   try {
     return BackgroundService.start(driveBackupAction, {
       taskName: 'Drive Backup',
@@ -124,6 +122,7 @@ export const createBackup = async (backupFolder: DriveFile) => {
 };
 
 const driveRestoreAction = async (taskData?: TaskData) => {
+  MMKVStorage.set(BACKGROUND_ACTION, BackgoundAction.RESTORE);
   try {
     if (!taskData) {
       throw new Error('No data provided');
@@ -142,8 +141,7 @@ const driveRestoreAction = async (taskData?: TaskData) => {
       restoreNovel(novelFolder.id),
       restoreCategory(dataFolder.id),
       retoreDownload(downloadFolder.id),
-      // restoreSetting(dataFolder.id),
-      restoreTheme(dataFolder.id),
+      restoreSetting(dataFolder.id),
     ];
 
     for (let i = 0; i < taskList.length; i++) {
@@ -183,12 +181,11 @@ const driveRestoreAction = async (taskData?: TaskData) => {
       await BackgroundService.stop();
     }
   } finally {
-    MMKVStorage.set('HAS_BACKGROUND_TASK', false);
+    MMKVStorage.delete(BACKGROUND_ACTION);
   }
 };
 
 export const driveRestore = async (backupFolder: DriveFile) => {
-  MMKVStorage.set('HAS_BACKGROUND_TASK', true);
   try {
     return BackgroundService.start(driveRestoreAction, {
       taskName: 'Drive Restore',

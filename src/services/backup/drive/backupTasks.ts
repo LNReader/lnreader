@@ -129,37 +129,21 @@ export const downloadTask = (parentId: string): Promise<BackupTask> => {
   });
 };
 
-// export const settingTask = async (parentId: string): Promise<BackupTask> => {
-//   const state = store.getState();
-//   const backupPackage: BackupPackage = {
-//     folderTree: [parentId],
-//     name: BackupDataFileName.SETTING,
-//     mimeType: 'application/json',
-//     content: JSON.stringify(state),
-//   };
-//   return {
-//     taskType: TaskType.SETTING,
-//     subtasks: [async () => backupPackage],
-//   };
-// };
-
-export const themeTask = async (parentId: string): Promise<BackupTask> => {
-  const APP_THEME = MMKVStorage.getString('APP_THEME');
-  const AMOLED_BLACK = MMKVStorage.getBoolean('AMOLED_BLACK');
-  const CUSTOM_ACCENT_COLOR = MMKVStorage.getString('CUSTOM_ACCENT_COLOR');
-
+export const settingTask = async (parentId: string): Promise<BackupTask> => {
+  const keys = MMKVStorage.getAllKeys();
+  const data = keys.map(key => {
+    return {
+      [key]: MMKVStorage.getString(key),
+    };
+  });
   const backupPackage: BackupPackage = {
     folderTree: [parentId],
-    name: BackupDataFileName.THEME,
+    name: BackupDataFileName.SETTING,
     mimeType: 'application/json',
-    content: JSON.stringify({
-      APP_THEME,
-      AMOLED_BLACK,
-      CUSTOM_ACCENT_COLOR,
-    }),
+    content: JSON.stringify(data),
   };
   return {
-    taskType: TaskType.THEME,
+    taskType: TaskType.SETTING,
     subtasks: [async () => backupPackage],
   };
 };

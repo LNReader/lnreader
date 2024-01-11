@@ -18,6 +18,8 @@ import {
 import { Appbar, Button, List } from '@components';
 import { importEpub } from '@services/epub/import';
 import { AdvancedSettingsScreenProps } from '@navigators/types';
+import { useMMKVString } from 'react-native-mmkv';
+import { BACKGROUND_ACTION } from '@services/constants';
 
 const AdvancedSettings = ({ navigation }: AdvancedSettingsScreenProps) => {
   const theme = useTheme();
@@ -39,6 +41,8 @@ const AdvancedSettings = ({ navigation }: AdvancedSettingsScreenProps) => {
     setFalse: hideDeleteReadChaptersDialog,
   } = useBoolean();
 
+  const [hasAction] = useMMKVString(BACKGROUND_ACTION);
+
   return (
     <>
       <Appbar
@@ -49,7 +53,7 @@ const AdvancedSettings = ({ navigation }: AdvancedSettingsScreenProps) => {
       <List.Section>
         <List.SubHeader theme={theme}>Data Management</List.SubHeader>
         <List.Item
-          title="Clear database"
+          title="Clear cached novels"
           description="Delete cached novels which not in your library"
           onPress={showClearDatabaseDialog}
           theme={theme}
@@ -71,7 +75,12 @@ const AdvancedSettings = ({ navigation }: AdvancedSettingsScreenProps) => {
           onPress={showDeleteReadChaptersDialog}
           theme={theme}
         />
-        <List.Item title="Import Epub" onPress={importEpub} theme={theme} />
+        <List.Item
+          title="Import Epub"
+          onPress={importEpub}
+          theme={theme}
+          disabled={Boolean(hasAction)}
+        />
       </List.Section>
       <Portal>
         <ConfirmationDialog

@@ -8,7 +8,7 @@ import { Portal } from 'react-native-paper';
 import { useBoolean } from '@hooks';
 import { BackupSettingsScreenProps } from '@navigators/types';
 import GoogleDriveModal from './Components/GoogleDriveModal';
-import { useMMKVBoolean } from 'react-native-mmkv';
+import { useMMKVString } from 'react-native-mmkv';
 import SelfHostModal from './Components/SelfHostModal';
 import {
   createBackup as deprecatedCreateBackup,
@@ -16,6 +16,7 @@ import {
   restoreError as deprecatedRestoreError,
 } from '@services/backup/legacy';
 import { ScrollView } from 'react-native-gesture-handler';
+import { BACKGROUND_ACTION } from '@services/constants';
 
 const BackupSettings = ({ navigation }: BackupSettingsScreenProps) => {
   const theme = useTheme();
@@ -31,7 +32,7 @@ const BackupSettings = ({ navigation }: BackupSettingsScreenProps) => {
     setTrue: openSelfHostModal,
   } = useBoolean();
 
-  const [hasBackgroundTask] = useMMKVBoolean('HAS_BACKGROUND_TASK');
+  const [hasAction] = useMMKVString(BACKGROUND_ACTION);
 
   return (
     <>
@@ -49,7 +50,7 @@ const BackupSettings = ({ navigation }: BackupSettingsScreenProps) => {
               description="Backup to your server"
               theme={theme}
               onPress={openSelfHostModal}
-              disabled={hasBackgroundTask}
+              disabled={Boolean(hasAction)}
             />
 
             <List.Item
@@ -57,7 +58,7 @@ const BackupSettings = ({ navigation }: BackupSettingsScreenProps) => {
               description="Backup to your Google Drive"
               theme={theme}
               onPress={openGoogleDriveModal}
-              disabled={hasBackgroundTask}
+              disabled={Boolean(hasAction)}
             />
             <List.SubHeader theme={theme}>Legacy Backup</List.SubHeader>
             <List.Item
@@ -65,18 +66,21 @@ const BackupSettings = ({ navigation }: BackupSettingsScreenProps) => {
               description="Can be used to restore current library"
               onPress={deprecatedCreateBackup}
               theme={theme}
+              disabled={Boolean(hasAction)}
             />
             <List.Item
               title="Restore backup (Deprecated)"
               description="Restore library from backup file"
               onPress={() => deprecatedRestoreBackup()}
               theme={theme}
+              disabled={Boolean(hasAction)}
             />
             <List.Item
               title="Restore error (Deprecated)"
               description="Using this to restore the remaining. Save your time."
               onPress={deprecatedRestoreError}
               theme={theme}
+              disabled={Boolean(hasAction)}
             />
             <List.InfoItem
               title="Restoring large backups may freeze the app until restoring is finished"

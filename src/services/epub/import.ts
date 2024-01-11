@@ -14,6 +14,8 @@ import {
   updateNovelInfo,
 } from '@database/queries/NovelQueries';
 import { LOCAL_PLUGIN_ID } from '@plugins/pluginManager';
+import { MMKVStorage } from '@utils/mmkv/mmkv';
+import { BACKGROUND_ACTION, BackgoundAction } from '@services/constants';
 
 interface TaskData {
   delay: number;
@@ -229,6 +231,7 @@ const importEpubAction = async (taskData?: TaskData) => {
     });
     await BackgroundService.stop();
   }
+  MMKVStorage.delete(BACKGROUND_ACTION);
 };
 
 export const importEpub = async () => {
@@ -251,6 +254,7 @@ export const importEpub = async () => {
     await RNFS.mkdir(epubDirPath).catch(e => {
       throw e;
     });
+    MMKVStorage.set(BACKGROUND_ACTION, BackgoundAction.IMPORT_EPUB);
     await BackgroundService.start<TaskData>(importEpubAction, {
       taskName: 'Import Epub',
       taskTitle: 'Parse Epub',

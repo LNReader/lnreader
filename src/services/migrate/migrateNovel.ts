@@ -16,13 +16,14 @@ import { parseChapterNumber } from '@utils/parseChapterNumber';
 import { noop } from 'lodash-es';
 import { txnErrorCallback } from '@database/utils/helpers';
 import { showToast } from '@utils/showToast';
-import { getMMKVObject, setMMKVObject } from '@utils/mmkv/mmkv';
+import { MMKVStorage, getMMKVObject, setMMKVObject } from '@utils/mmkv/mmkv';
 import {
   LAST_READ_PREFIX,
   NOVEL_SETTINSG_PREFIX,
   NovelProgress,
   PROGRESS_PREFIX,
 } from '@hooks/persisted/useNovel';
+import { BACKGROUND_ACTION, BackgoundAction } from '@services/constants';
 
 const db = SQLite.openDatabase('lnreader.db');
 
@@ -56,6 +57,7 @@ export const migrateNovel = async (
   fromNovel: NovelInfo,
   toNovelUrl: string,
 ) => {
+  MMKVStorage.set(BACKGROUND_ACTION, BackgoundAction.MIGRATE);
   try {
     let fromChapters = await getChapters(fromNovel.id, '', '');
     let toNovel = await getNovel(toNovelUrl);
@@ -231,4 +233,5 @@ export const migrateNovel = async (
     });
     showToast(error.message);
   }
+  MMKVStorage.delete(BACKGROUND_ACTION);
 };

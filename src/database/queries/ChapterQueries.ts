@@ -286,11 +286,9 @@ const deleteDownloadedFiles = async (
     });
     const files = await RNFS.readDir(path);
     for (let i = 0; i < files.length; i++) {
-      const ex = /(\.b64\.png)|(index.html)/.exec(files[i].path);
-      if (ex) {
-        await RNFS.unlink(files[i].path);
-      }
+      await RNFS.unlink(files[i].path);
     }
+    await RNFS.unlink(path);
   } catch (error) {
     throw new Error('Cant delete chapter chapter folder');
   }

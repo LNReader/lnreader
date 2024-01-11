@@ -9,17 +9,16 @@ import {
   novelCoverTask,
   novelTask,
   settingTask,
-  themeTask,
   versionTask,
 } from './backupTasks';
 
 import {
   restoreCategory,
   restoreNovel,
-  // restoreSetting,
-  restoreTheme,
+  restoreSetting,
   retoreDownload,
 } from './restoreTasks';
+import { BACKGROUND_ACTION, BackgoundAction } from '@services/constants';
 
 interface TaskData {
   delay: number;
@@ -28,6 +27,7 @@ interface TaskData {
 }
 
 const remoteBackupAction = async (taskData?: TaskData) => {
+  MMKVStorage.set(BACKGROUND_ACTION, BackgoundAction.BACKUP);
   try {
     if (!taskData) {
       throw new Error('No data provided');
@@ -46,7 +46,6 @@ const remoteBackupAction = async (taskData?: TaskData) => {
       categoryTask(dataFolder),
       downloadTask(downloadFolder),
       settingTask(dataFolder),
-      themeTask(dataFolder),
     ];
 
     for (let i = 0; i < taskList.length; i++) {
@@ -87,12 +86,11 @@ const remoteBackupAction = async (taskData?: TaskData) => {
       await BackgroundService.stop();
     }
   } finally {
-    MMKVStorage.set('HAS_BACKGROUND_TASK', false);
+    MMKVStorage.delete(BACKGROUND_ACTION);
   }
 };
 
 export const createBackup = async (host: string, backupFolder: string) => {
-  MMKVStorage.set('HAS_BACKGROUND_TASK', true);
   try {
     return BackgroundService.start(remoteBackupAction, {
       taskName: 'Self Host Backup',
@@ -118,6 +116,7 @@ export const createBackup = async (host: string, backupFolder: string) => {
 };
 
 const remoteRestoreAction = async (taskData?: TaskData) => {
+  MMKVStorage.set(BACKGROUND_ACTION, BackgoundAction.RESTORE);
   try {
     if (!taskData) {
       throw new Error('No data provided');
@@ -137,8 +136,7 @@ const remoteRestoreAction = async (taskData?: TaskData) => {
       restoreNovel(host, novelFolder),
       restoreCategory(host, dataFolder),
       retoreDownload(host, downloadFolder),
-      // restoreSetting(host, dataFolder),
-      restoreTheme(host, dataFolder),
+      restoreSetting(host, dataFolder),
     ];
 
     for (let i = 0; i < taskList.length; i++) {
@@ -178,12 +176,11 @@ const remoteRestoreAction = async (taskData?: TaskData) => {
       await BackgroundService.stop();
     }
   } finally {
-    MMKVStorage.set('HAS_BACKGROUND_TASK', false);
+    MMKVStorage.delete(BACKGROUND_ACTION);
   }
 };
 
 export const remoteRestore = async (host: string, backupFolder: string) => {
-  MMKVStorage.set('HAS_BACKGROUND_TASK', true);
   try {
     return BackgroundService.start(remoteRestoreAction, {
       taskName: 'Self Host Restore',

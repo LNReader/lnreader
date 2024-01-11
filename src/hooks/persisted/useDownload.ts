@@ -1,11 +1,6 @@
 import { ChapterInfo, NovelInfo } from '@database/types';
 import { BACKGROUND_ACTION, BackgoundAction } from '@services/constants';
-import {
-  MMKVStorage,
-  deleteMMKVData,
-  getMMKVObject,
-  setMMKVObject,
-} from '@utils/mmkv/mmkv';
+import { MMKVStorage, getMMKVObject, setMMKVObject } from '@utils/mmkv/mmkv';
 import { showToast } from '@utils/showToast';
 import BackgroundService from 'react-native-background-actions';
 import { useMMKVBoolean, useMMKVObject } from 'react-native-mmkv';
@@ -67,7 +62,7 @@ const downloadChapterAction = async (taskData?: TaskData) => {
     }
   }
   MMKVStorage.set(CHAPTER_DOWNLOADING, false);
-  deleteMMKVData(BACKGROUND_ACTION);
+  MMKVStorage.delete(BACKGROUND_ACTION);
 };
 
 export default function useDownload() {
@@ -105,7 +100,7 @@ export default function useDownload() {
           taskIcon: { name: 'notification_icon', type: 'drawable' },
           color: '#00adb5',
           parameters: { delay: 1000 },
-          linkingURI: 'lnreader2://updates',
+          linkingURI: 'lnreader://updates',
         });
       }
     } else {
@@ -116,7 +111,7 @@ export default function useDownload() {
   const pauseDownload = () => {
     BackgroundService.stop().then(() => {
       setIsDownloading(false);
-      deleteMMKVData(BACKGROUND_ACTION);
+      MMKVStorage.delete(BACKGROUND_ACTION);
     });
   };
 
@@ -124,7 +119,7 @@ export default function useDownload() {
     BackgroundService.stop().then(() => {
       setQueue([]);
       setIsDownloading(false);
-      deleteMMKVData(BACKGROUND_ACTION);
+      MMKVStorage.delete(BACKGROUND_ACTION);
     });
   };
 

@@ -13,7 +13,3 @@ export function getMMKVObject<T>(key: string) {
 export function setMMKVObject<T>(key: string, obj: T) {
   MMKVStorage.set(key, JSON.stringify(obj));
 }
-
-export function deleteMMKVData(key: string) {
-  MMKVStorage.delete(key);
-}

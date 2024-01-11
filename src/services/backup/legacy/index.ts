@@ -11,8 +11,11 @@ import { showToast } from '@utils/showToast';
 import dayjs from 'dayjs';
 import { NovelInfo } from '@database/types';
 import { sleep } from '@utils/sleep';
+import { MMKVStorage } from '@utils/mmkv/mmkv';
+import { BACKGROUND_ACTION, BackgoundAction } from '@services/constants';
 
 export const createBackup = async () => {
+  MMKVStorage.set(BACKGROUND_ACTION, BackgoundAction.BACKUP);
   try {
     const novels = await getLibraryNovelsFromDb();
 
@@ -46,6 +49,7 @@ export const createBackup = async () => {
   } catch (error: any) {
     showToast(error.message);
   }
+  MMKVStorage.delete(BACKGROUND_ACTION);
 };
 
 interface TaskData {
@@ -53,6 +57,7 @@ interface TaskData {
 }
 
 export const restoreBackup = async (filePath?: string) => {
+  MMKVStorage.set(BACKGROUND_ACTION, BackgoundAction.RESTORE);
   try {
     const backup = await DocumentPicker.getDocumentAsync({
       copyToCacheDirectory: false,
@@ -165,6 +170,7 @@ export const restoreBackup = async (filePath?: string) => {
   } catch (error: any) {
     showToast(error.message);
   }
+  MMKVStorage.delete(BACKGROUND_ACTION);
 };
 
 export const restoreError = async () => {
