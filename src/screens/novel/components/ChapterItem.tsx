@@ -22,7 +22,7 @@ interface ChapterItemProps {
   isSelected?: (id: number) => boolean;
   downloadChapter: (chapter: ChapterInfo) => (dispatch: any) => void;
   deleteChapter: (chapter: ChapterInfo) => void;
-  onSelectPress?: (chapter: ChapterInfo, arg1: () => void) => void;
+  onSelectPress?: (chapter: ChapterInfo) => void;
   onSelectLongPress?: (chapter: ChapterInfo) => void;
   navigateToChapter: (chapter: ChapterInfo) => void;
   showProgressPercentage?: (chapter: ChapterInfo) => any;
@@ -65,9 +65,7 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
         },
       ]}
       onPress={() => {
-        onSelectPress
-          ? onSelectPress(chapter, () => navigateToChapter(chapter))
-          : navigateToChapter(chapter);
+        onSelectPress ? onSelectPress(chapter) : navigateToChapter(chapter);
       }}
       onLongPress={() => onSelectLongPress?.(chapter)}
       android_ripple={{ color: theme.rippleColor }}
@@ -113,8 +111,8 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
               numberOfLines={1}
             >
               {showChapterTitles
-                ? `Chapter ${chapterNumber} • ID: ${id}`
-                : name}
+                ? name
+                : `Chapter ${chapterNumber} • ID: ${id}`}
             </Text>
           </Row>
           <View style={styles.textRow}>

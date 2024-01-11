@@ -37,8 +37,7 @@ export interface ChapterInfo {
   novelName: string;
   novelUrl: string;
 
-  // migrate need this :)
-  number: number;
+  chapterNumber?: number;
 }
 
 export interface DownloadedChapter {

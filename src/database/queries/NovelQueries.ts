@@ -71,7 +71,7 @@ export const getNovelsWithCustomCover = async (): Promise<NovelInfo[]> => {
   });
 };
 
-export const getNovel = async (novelUrl: string): Promise<NovelInfo> => {
+export const getNovel = async (novelUrl: string): Promise<NovelInfo | null> => {
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
@@ -93,7 +93,7 @@ export const switchNovelToLibrary = async (
 ) => {
   const novel = await getNovel(novelUrl);
   if (novel) {
-    if (novel.inLibrary) {
+    if (novel.isLocal) {
       return;
     }
     db.transaction(tx => {

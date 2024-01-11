@@ -10,8 +10,7 @@ import { getString } from '@strings/translations';
 import { Portal } from 'react-native-paper';
 import SetCategoryModal from '../SetCategoriesModal';
 import { NovelScreenProps } from '@navigators/types';
-import { useTracker } from '@hooks/persisted';
-import { useTrackedNovel } from '@hooks/persisted/useNovels';
+import { useTrackedNovel, useTracker } from '@hooks/persisted';
 
 interface NovelScreenButtonGroupProps {
   novel: NovelInfo;

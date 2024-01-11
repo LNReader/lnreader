@@ -20,7 +20,7 @@ import { useKeepAwake } from 'expo-keep-awake';
 import {
   getNextChapter,
   getPrevChapter,
-} from '../../database/queries/ChapterQueries';
+} from '@database/queries/ChapterQueries';
 import { fetchChapter } from '@services/plugin/fetch';
 import { showToast } from '@utils/showToast';
 import { usePosition } from '@hooks/reduxHooks';
@@ -30,8 +30,8 @@ import {
   useTheme,
   useTrackedNovel,
   useTracker,
+  useNovel,
 } from '@hooks/persisted';
-import { markChapterReadAction } from '@redux/novel/novel.actions';
 import { saveScrollPosition } from '@redux/preferences/preferencesSlice';
 import { parseChapterNumber } from '@utils/parseChapterNumber';
 
@@ -39,7 +39,6 @@ import ReaderAppbar from './components/ReaderAppbar';
 import ReaderFooter from './components/ReaderFooter';
 
 import { insertHistory } from '@database/queries/HistoryQueries';
-import { setLastReadAction } from '@redux/preferences/preferencesSlice';
 import WebViewReader from './components/WebViewReader';
 import { useFullscreenMode, useTextToSpeech } from '@hooks';
 import ReaderBottomSheetV2 from './components/ReaderBottomSheet/ReaderBottomSheet';
@@ -86,6 +85,7 @@ export const ChapterContent = ({
   useKeepAwake();
   const params = route.params;
   const { novel, chapter } = params;
+  const { markChapterRead, setLastRead } = useNovel(novel.url, novel.pluginId);
   const webViewRef = useRef<WebView>(null);
   const readerSheetRef = useRef(null);
 
@@ -186,9 +186,9 @@ export const ChapterContent = ({
     getChapter();
     if (!incognitoMode) {
       insertHistory(chapter.id);
-      dispatch(setLastReadAction(chapter));
+      setLastRead(chapter);
     }
-  }, []);
+  }, [chapter]);
 
   const scrollTo = useCallback(
     (offsetY: number) => {
@@ -239,7 +239,7 @@ export const ChapterContent = ({
 
       if (!incognitoMode && percentage >= 97) {
         // a relative number
-        dispatch(markChapterReadAction(chapter.id, chapter.novelId));
+        markChapterRead(chapter.id);
         updateTracker();
       }
     },
@@ -299,7 +299,7 @@ export const ChapterContent = ({
 
   const [ttsStatus, startTts] = useTextToSpeech(chapterText, webViewRef, () => {
     if (!incognitoMode) {
-      dispatch(markChapterReadAction(chapter.id, chapter.novelId));
+      markChapterRead(chapter.id);
       updateTracker();
     }
   });

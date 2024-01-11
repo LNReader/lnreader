@@ -10,21 +10,19 @@ import {
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Modal, Portal, TextInput } from 'react-native-paper';
-import { setNovel } from '@redux/novel/novel.actions';
 import { updateNovelInfo } from '@database/queries/NovelQueries';
 
 import { getString } from '@strings/translations';
 import { Button } from '@components';
 import { ThemeColors } from '@theme/types';
 import { NovelInfo } from '@database/types';
-import { Dispatch } from '@reduxjs/toolkit';
 
 interface EditInfoModalProps {
   theme: ThemeColors;
   hideModal: () => void;
   modalVisible: boolean;
   novel: NovelInfo;
-  dispatch: Dispatch<any>;
+  setNovel: (novel: NovelInfo | undefined) => void;
 }
 
 const EditInfoModal = ({
@@ -32,14 +30,12 @@ const EditInfoModal = ({
   hideModal,
   modalVisible,
   novel,
-  dispatch,
+  setNovel,
 }: EditInfoModalProps) => {
-  const [info, setInfo] = useState(novel);
-
   const [tag, setTag] = useState('');
   const removeTag = (t: string) => {
-    let tags = info.genres?.split(',').filter(item => item !== t);
-    setInfo({ ...info, genres: tags?.join(',') });
+    let tags = novel.genres?.split(',').filter(item => item !== t);
+    setNovel({ ...novel, genres: tags?.join(',') });
   };
 
   const status = ['Ongoing', 'Hiatus', 'Completed', 'Unknown', 'Cancelled'];
@@ -78,19 +74,19 @@ const EditInfoModal = ({
                 <Pressable
                   style={{
                     backgroundColor:
-                      info.status === item ? theme.rippleColor : 'transparent',
+                      novel.status === item ? theme.rippleColor : 'transparent',
                     paddingVertical: 6,
                     paddingHorizontal: 12,
                   }}
                   android_ripple={{
                     color: theme.rippleColor,
                   }}
-                  onPress={() => setInfo({ ...info, status: item })}
+                  onPress={() => setNovel({ ...novel, status: item })}
                 >
                   <Text
                     style={{
                       color:
-                        info.status === item
+                        novel.status === item
                           ? theme.primary
                           : theme.onSurfaceVariant,
                     }}
@@ -103,29 +99,29 @@ const EditInfoModal = ({
           </ScrollView>
         </View>
         <TextInput
-          placeholder={`Title: ${info.name}`}
+          placeholder={`Title: ${novel.name}`}
           style={{ fontSize: 14 }}
           numberOfLines={1}
           mode="outlined"
           theme={{ colors: { ...theme } }}
-          onChangeText={text => setInfo({ ...info, name: text })}
+          onChangeText={text => setNovel({ ...novel, name: text })}
           dense
         />
         <TextInput
-          placeholder={`Author: ${info.author}`}
+          placeholder={`Author: ${novel.author}`}
           style={{ fontSize: 14 }}
           numberOfLines={1}
           mode="outlined"
           theme={{ colors: { ...theme } }}
-          onChangeText={text => setInfo({ ...info, author: text })}
+          onChangeText={text => setNovel({ ...novel, author: text })}
           dense
         />
         <TextInput
-          placeholder={`Description: ${info.summary?.substring(0, 16)}...`}
+          placeholder={`Description: ${novel.summary?.substring(0, 16)}...`}
           style={{ fontSize: 14 }}
           numberOfLines={1}
           mode="outlined"
-          onChangeText={text => setInfo({ ...info, summary: text })}
+          onChangeText={text => setNovel({ ...novel, summary: text })}
           theme={{ colors: { ...theme } }}
           dense
         />
@@ -137,18 +133,18 @@ const EditInfoModal = ({
           mode="outlined"
           onChangeText={text => setTag(text)}
           onSubmitEditing={() => {
-            setInfo({ ...info, genres: info.genres + ',' + tag });
+            setNovel({ ...novel, genres: novel.genres + ',' + tag });
             setTag('');
           }}
           theme={{ colors: { ...theme } }}
           dense
         />
 
-        {info.genres !== undefined && info.genres !== '' && (
+        {novel.genres !== undefined && novel.genres !== '' && (
           <FlatList
             contentContainerStyle={{ marginVertical: 8 }}
             horizontal
-            data={info.genres?.split(',')}
+            data={novel.genres?.split(',')}
             keyExtractor={(item, index) => 'novelTag' + index}
             renderItem={({ item }) => (
               <GenreChip theme={theme} onPress={() => removeTag(item)}>
@@ -161,9 +157,8 @@ const EditInfoModal = ({
         <View style={{ flexDirection: 'row-reverse' }}>
           <Button
             onPress={() => {
-              updateNovelInfo(info);
+              updateNovelInfo(novel);
               hideModal();
-              dispatch(setNovel({ ...novel, ...info }));
             }}
           >
             {getString('common.save')}

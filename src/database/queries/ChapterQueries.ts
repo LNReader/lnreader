@@ -389,11 +389,11 @@ export const deleteReadChaptersFromDb = async () => {
 
 const bookmarkChapterQuery = 'UPDATE Chapter SET bookmark = ? WHERE id = ?';
 
-export const bookmarkChapter = async (bookmark: number, chapterId: number) => {
+export const bookmarkChapter = async (bookmark: boolean, chapterId: number) => {
   db.transaction(tx => {
     tx.executeSql(
       bookmarkChapterQuery,
-      [1 - bookmark, chapterId],
+      [1 - Number(bookmark), chapterId],
       (_txObj, _res) => {},
       (_txObj, _error) => {
         // console.log('Error ', error)
@@ -404,7 +404,7 @@ export const bookmarkChapter = async (bookmark: number, chapterId: number) => {
 };
 
 const markPreviuschaptersReadQuery =
-  'UPDATE Chapter SET `unread` = 0 WHERE id < ? AND novelId = ?';
+  'UPDATE Chapter SET `unread` = 0 WHERE id <= ? AND novelId = ?';
 
 export const markPreviuschaptersRead = async (
   chapterId: number,
@@ -424,7 +424,7 @@ export const markPreviuschaptersRead = async (
 };
 
 const markPreviousChaptersUnreadQuery =
-  'UPDATE Chapter SET `unread` = 1 WHERE id < ? AND novelId = ?';
+  'UPDATE Chapter SET `unread` = 1 WHERE id <= ? AND novelId = ?';
 
 export const markPreviousChaptersUnread = async (
   chapterId: number,

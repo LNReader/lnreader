@@ -2,13 +2,6 @@ import { ChapterInfo } from '@database/types';
 import { RootState } from '@redux/store';
 import { useSelector } from 'react-redux';
 
-const useNovel = () => {
-  const { novel, chapters, loading, updating } = useSelector(
-    (state: RootState) => state.novelReducer,
-  );
-  return { novel, chapters, loading, updating };
-};
-
 const useFindNovel = (novelId: number) => {
   let novelSettings = useSelector(
     (state: RootState) => state.preferenceReducer.novelSettings,
@@ -16,28 +9,6 @@ const useFindNovel = (novelId: number) => {
   const novel = novelSettings[novelId];
 
   return novel;
-};
-
-const usePreferences = (novelId: number) => {
-  let sort, filter, showChapterTitles;
-
-  const novel = useFindNovel(novelId);
-
-  if (novel) {
-    sort = novel.sort;
-    filter = novel.filter;
-    showChapterTitles = novel.showChapterTitles;
-  }
-
-  return { sort, filter, showChapterTitles };
-};
-
-const useSavedSettings = () => {
-  const settings = useSelector(
-    (state: RootState) => state.preferenceReducer.novelSettings,
-  );
-
-  return settings;
 };
 
 const useContinueReading = (chapters: ChapterInfo[], novelId: number) => {
@@ -82,10 +53,4 @@ const usePosition = (novelId: number, chapterId: number) => {
   return position;
 };
 
-export {
-  usePreferences,
-  useContinueReading,
-  useNovel,
-  useSavedSettings,
-  usePosition,
-};
+export { useContinueReading, usePosition };

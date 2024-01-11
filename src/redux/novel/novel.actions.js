@@ -1,41 +1,15 @@
 import { ToastAndroid } from 'react-native';
 
 import {
-  LOADING_NOVEL,
-  GET_NOVEL,
-  GET_CHAPTERS,
-  FETCHING_NOVEL,
-  SET_NOVEL,
-  UPDATE_IN_LIBRARY,
-  CHAPTER_READ,
   CHAPTER_DOWNLOADING,
   CHAPTER_DOWNLOADED,
   CHAPTER_DELETED,
-  UPDATE_NOVEL,
-  NOVEL_ERROR,
-  BOOKMARK_CHAPTER,
-  MARK_PREVIOUS_CHAPTERS_READ,
-  MARK_PREVIOUS_CHAPTERS_UNREAD,
   ALL_CHAPTER_DELETED,
 } from './novel.types';
 
-import { fetchNovel } from '@services/plugin/fetch';
 import {
-  switchNovelToLibrary,
-  insertNovelAndChapters,
-  getNovel,
-} from '@database/queries/NovelQueries';
-import { insertChapters } from '@database/queries/ChapterQueries';
-import {
-  getChapters,
-  markChapterRead,
   downloadChapter,
   deleteChapter,
-  markChapterUnread,
-  bookmarkChapter,
-  markPreviuschaptersRead,
-  markPreviousChaptersUnread,
-  getNextChapter,
   deleteChapters,
 } from '@database/queries/ChapterQueries';
 import { showToast } from '@utils/showToast';
@@ -44,161 +18,6 @@ import * as Notifications from 'expo-notifications';
 
 import BackgroundService from 'react-native-background-actions';
 import { SET_DOWNLOAD_QUEUE } from '../downloads/donwloads.types';
-import { updateNovel } from '@services/updates/LibraryUpdateQueries';
-import {
-  setChapterListPreference,
-  setLastReadAction,
-} from '@redux/preferences/preferencesSlice';
-
-export const setNovel = novel => async dispatch => {
-  dispatch({ type: SET_NOVEL, payload: { novel } });
-};
-
-// Always use {} for payload
-
-export const getNovelAction =
-  (pluginId, novelUrl, sort, filter) => async dispatch => {
-    try {
-      dispatch({ type: LOADING_NOVEL });
-
-      dispatch({ type: FETCHING_NOVEL });
-
-      /**
-       * Check if novel is cached.
-       */
-      let novel = await getNovel(novelUrl);
-      if (novel) {
-        /**
-         * Get chapters from db.
-         */
-        chapters = await getChapters(novel.id, sort, filter);
-        dispatch({
-          type: GET_NOVEL,
-          payload: { novel, chapters },
-        });
-      } else {
-        /**
-         * Fetch novel from source.
-         */
-        const fetchedNovel = await fetchNovel(pluginId, novelUrl);
-        /**
-         * Insert novel in db.
-         */
-        await insertNovelAndChapters(pluginId, fetchedNovel);
-        /**
-         * Get novel from db.
-         */
-        novel = await getNovel(novelUrl);
-        chapters = await getChapters(novel.id, sort, filter);
-        dispatch({
-          type: GET_NOVEL,
-          payload: { novel, chapters },
-        });
-      }
-    } catch (error) {
-      showToast(error.message);
-      dispatch({ type: NOVEL_ERROR });
-    }
-  };
-
-export const sortAndFilterChapters =
-  (novelId, sort, filter) => async dispatch => {
-    dispatch({ type: FETCHING_NOVEL });
-
-    const chapters = await getChapters(novelId, sort, filter);
-
-    dispatch({
-      type: GET_CHAPTERS,
-      payload: { chapters },
-    });
-
-    dispatch(setChapterListPreference({ novelId, sort, filter }));
-  };
-
-export const followNovelAction = novel => async dispatch => {
-  await switchNovelToLibrary(novel.url, novel.pluginId);
-  dispatch({
-    type: UPDATE_IN_LIBRARY,
-    payload: { inLibrary: 1 - novel.inLibrary },
-  });
-};
-
-export const bookmarkChapterAction = chapters => async dispatch => {
-  chapters.map(chapter => {
-    bookmarkChapter(chapter.bookmark, chapter.id);
-
-    dispatch({
-      type: BOOKMARK_CHAPTER,
-      payload: {
-        bookmark: chapter.bookmark,
-        chapterId: chapter.id,
-      },
-    });
-  });
-};
-
-export const markChapterReadAction = (chapterId, novelId) => async dispatch => {
-  await markChapterRead(chapterId);
-
-  dispatch({
-    type: CHAPTER_READ,
-    payload: { chapterId },
-  });
-
-  const nextChapter = await getNextChapter(novelId, chapterId);
-
-  dispatch(setLastReadAction(nextChapter));
-};
-
-export const markPreviousChaptersReadAction =
-  (chapterId, novelId) => async dispatch => {
-    await markPreviuschaptersRead(chapterId, novelId);
-
-    dispatch({
-      type: MARK_PREVIOUS_CHAPTERS_READ,
-      payload: { chapterId },
-    });
-
-    showToast('Marked previous chapters read');
-  };
-
-export const markChaptersRead =
-  (chapters, novelId, sort, filter) => async dispatch => {
-    try {
-      await Promise.all(chapters.map(chapter => markChapterRead(chapter.id)));
-
-      const chaps = await getChapters(novelId, sort, filter);
-
-      dispatch({
-        type: GET_CHAPTERS,
-        payload: { chapters: chaps },
-      });
-    } catch (error) {
-      showToast(error.message);
-    }
-  };
-
-export const markPreviousChaptersUnreadAction =
-  (chapterId, novelId) => async dispatch => {
-    await markPreviousChaptersUnread(chapterId, novelId);
-
-    dispatch({
-      type: MARK_PREVIOUS_CHAPTERS_UNREAD,
-      payload: { chapterId },
-    });
-  };
-
-export const markChapterUnreadAction =
-  (chapters, novelId, sort, filter) => async dispatch => {
-    await Promise.all(chapters.map(chapter => markChapterUnread(chapter.id)));
-
-    const chaps = await getChapters(novelId, sort, filter);
-
-    dispatch({
-      type: GET_CHAPTERS,
-      payload: { chapters: chaps },
-    });
-  };
 
 export const downloadChapterAction =
   (pluginId, novelId, chapterUrl, chapterName, chapterId) => async dispatch => {
@@ -381,27 +200,4 @@ export const deleteAllChaptersAction =
     });
 
     showToast('Chapters deleted');
-  };
-
-export const updateNovelAction =
-  (pluginId, novelUrl, novelId, sort, filter) => async (dispatch, getState) => {
-    dispatch({ type: FETCHING_NOVEL });
-
-    const { downloadNewChapters = false, refreshNovelMetadata = false } =
-      getState().settingsReducerV1;
-
-    const options = {
-      downloadNewChapters,
-      refreshNovelMetadata,
-    };
-
-    await updateNovel(pluginId, novelUrl, novelId, options);
-
-    let novel = await getNovel(novelUrl);
-    let chapters = await getChapters(novelId, sort, filter);
-
-    dispatch({
-      type: UPDATE_NOVEL,
-      payload: { novel, chapters },
-    });
   };

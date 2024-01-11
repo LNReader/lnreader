@@ -7,7 +7,6 @@ import * as Clipboard from 'expo-clipboard';
 import { IconButton } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { followNovelAction } from '@redux/novel/novel.actions';
 import { showToast } from '@utils/showToast';
 
 import {
@@ -23,7 +22,6 @@ import { Row } from '@components/Common';
 import ReadButton from './ReadButton';
 import NovelSummary from '../NovelSummary/NovelSummary';
 import NovelScreenButtonGroup from '../NovelScreenButtonGroup/NovelScreenButtonGroup';
-import { useAppDispatch } from '@redux/hooks';
 import { getString } from '@strings/translations';
 import { filterColor } from '@theme/colors';
 import { ChapterInfo, NovelInfo as NovelData } from '@database/types';
@@ -41,7 +39,9 @@ interface NovelInfoHeaderProps {
   lastRead?: ChapterInfo;
   navigation: NovelScreenProps['navigation'];
   trackerSheetRef: React.RefObject<BottomSheetModalMethods>;
+  navigateToChapter: (chapter: ChapterInfo) => void;
   setCustomNovelCover: () => Promise<void>;
+  followNovel: () => void;
   novelBottomSheetRef: React.RefObject<BottomSheetModalMethods>;
   deleteDownloadsSnackbar: UseBooleanReturnType;
 }
@@ -54,13 +54,13 @@ const NovelInfoHeader = ({
   lastRead,
   navigation,
   trackerSheetRef,
+  navigateToChapter,
   setCustomNovelCover,
+  followNovel,
   novelBottomSheetRef,
   deleteDownloadsSnackbar,
 }: NovelInfoHeaderProps) => {
   const { hideBackdrop = false } = useAppSettings();
-
-  const dispatch = useAppDispatch();
 
   const getStatusIcon = useCallback((status?: string) => {
     if (status === 'Ongoing') {
@@ -132,7 +132,7 @@ const NovelInfoHeader = ({
         <NovelScreenButtonGroup
           novel={novel}
           handleFollowNovel={() => {
-            dispatch(followNovelAction(novel));
+            followNovel();
             if (
               novel.inLibrary &&
               chapters.some(chapter => chapter.isDownloaded)
@@ -151,9 +151,11 @@ const NovelInfoHeader = ({
         {novel.genres ? (
           <NovelGenres theme={theme} genres={novel.genres} />
         ) : null}
-        {lastRead ? (
-          <ReadButton novel={novel} chapters={chapters} lastRead={lastRead} />
-        ) : null}
+        <ReadButton
+          navigateToChapter={navigateToChapter}
+          chapters={chapters}
+          lastRead={lastRead}
+        />
         <Pressable
           style={styles.bottomsheet}
           onPress={() => novelBottomSheetRef.current?.present()}
