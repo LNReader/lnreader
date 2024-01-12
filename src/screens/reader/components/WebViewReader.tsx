@@ -139,6 +139,16 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
                     </style>
                     <link rel="stylesheet" href="file:///android_asset/css/index.css">
                     <style>${readerSettings.customCSS}</style>
+                    <script async>
+                      var showScrollPercentage = ${showScrollPercentage};
+                      var swipeGestures = ${swipeGestures};
+                      var autoSaveInterval = 2222;
+                    </script>
+                    <script defer src="file:///android_asset/js/index.js"></script>
+                    <script defer>
+                      async function fn(){${readerSettings.customJS}}
+                      document.addEventListener("DOMContentLoaded", fn);
+                    </script>
                   </head>
                   <body>
                     <div class="chapterCtn" onclick="reader.post({type:'hide'})">
@@ -167,16 +177,6 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
                         </div>`
                     }
                     </body>
-                    <script>
-                      var showScrollPercentage = ${showScrollPercentage};
-                      var swipeGestures = ${swipeGestures};
-                      var autoSaveInterval = 2222;
-                    </script>
-                    <script src="file:///android_asset/js/index.js"></script>
-                    <script>
-                      async function fn(){${readerSettings.customJS}}
-                      document.addEventListener("DOMContentLoaded", fn);
-                    </script>
                   </body>
                 </html>
                 `,
