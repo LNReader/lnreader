@@ -9,7 +9,7 @@ import {
   updatePlugin as _update,
 } from '@plugins/pluginManager';
 import { newer } from '@utils/compareVersion';
-import { getMMKVObject, setMMKVObject } from '@utils/mmkv/mmkv';
+import { MMKVStorage, getMMKVObject, setMMKVObject } from '@utils/mmkv/mmkv';
 import { showToast } from '@utils/showToast';
 import { useCallback } from 'react';
 
@@ -110,7 +110,11 @@ export default function usePlugins() {
         availablePlugins[plugin.lang] = availablePlugins[plugin.lang]?.filter(
           plg => plg.id !== plugin.id,
         );
-        setMMKVObject(INSTALLED_PLUGINS, [...installedPlugins, plugin]);
+
+        // safe
+        if (!installedPlugins.some(_plg => _plg.id === plugin.id)) {
+          setMMKVObject(INSTALLED_PLUGINS, [...installedPlugins, plugin]);
+        }
         setMMKVObject(AVAILABLE_PLUGINS, availablePlugins);
         filterPlugins(languagesFilter);
       }
@@ -119,19 +123,26 @@ export default function usePlugins() {
 
   const uninstallPlugin = (plugin: PluginItem) => {
     return _uninstall(plugin).then(() => {
+      if (lastUsedPlugin?.id === plugin.id) {
+        MMKVStorage.delete(LAST_USED_PLUGIN);
+      }
       const installedPlugins =
         getMMKVObject<PluginItem[]>(INSTALLED_PLUGINS) || [];
       const availablePlugins =
         getMMKVObject<PluginsMap>(AVAILABLE_PLUGINS) || ({} as PluginsMap);
-      availablePlugins[plugin.lang] = [
-        ...(availablePlugins[plugin.lang] || []),
-        plugin,
-      ];
+
+      // safe
+      if (!availablePlugins[plugin.lang]?.some(_plg => _plg.id === plugin.id)) {
+        availablePlugins[plugin.lang] = [
+          ...(availablePlugins[plugin.lang] || []),
+          plugin,
+        ];
+        setMMKVObject(AVAILABLE_PLUGINS, availablePlugins);
+      }
       setMMKVObject(
         INSTALLED_PLUGINS,
         installedPlugins.filter(plg => plg.id !== plugin.id),
       );
-      setMMKVObject(AVAILABLE_PLUGINS, availablePlugins);
       filterPlugins(languagesFilter);
     });
   };
