@@ -22,7 +22,7 @@ interface TaskData {
 
 const downloadChapterAction = async (taskData?: TaskData) => {
   while (true) {
-    const queue = getMMKVObject<DownloadData[]>(DOWNLOAD_QUEUE) || [];
+    let queue = getMMKVObject<DownloadData[]>(DOWNLOAD_QUEUE) || [];
     if (queue.length === 0) {
       await Notifications.scheduleNotificationAsync({
         content: {
@@ -45,6 +45,9 @@ const downloadChapterAction = async (taskData?: TaskData) => {
           chapter.id,
           chapter.url,
         );
+
+        // get the newtest queue;
+        queue = getMMKVObject<DownloadData[]>(DOWNLOAD_QUEUE) || [];
         setMMKVObject(DOWNLOAD_QUEUE, queue.slice(1));
       } catch (error: any) {
         Notifications.scheduleNotificationAsync({

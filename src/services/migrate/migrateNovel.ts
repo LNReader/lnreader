@@ -57,6 +57,11 @@ export const migrateNovel = async (
   fromNovel: NovelInfo,
   toNovelUrl: string,
 ) => {
+  const currentAction = MMKVStorage.getString(BACKGROUND_ACTION);
+  if (currentAction) {
+    showToast('Another service is running');
+    return;
+  }
   MMKVStorage.set(BACKGROUND_ACTION, BackgoundAction.MIGRATE);
   try {
     let fromChapters = await getChapters(fromNovel.id, '', '');
