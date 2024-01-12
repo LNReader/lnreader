@@ -1,5 +1,5 @@
 import { Text } from 'react-native';
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { TabView, TabBar } from 'react-native-tab-view';
 import color from 'color';
 
@@ -8,7 +8,6 @@ import { useBrowseSettings, usePlugins, useTheme } from '@hooks/persisted';
 import { getString } from '@strings/translations';
 
 import { Language } from '@utils/constants/languages';
-import { PluginItem } from '@plugins/types';
 import { EmptyView, SearchbarV2 } from '@components';
 import { BrowseScreenProps } from '@navigators/types';
 import { PluginsMap } from '@hooks/persisted/usePlugins';
@@ -24,32 +23,22 @@ const BrowseScreen = ({ navigation }: BrowseScreenProps) => {
     lastUsedPlugin,
   } = usePlugins();
 
-  const [searchedAvailablePlugins, setSearchedAvailablePlugins] =
-    useState<PluginsMap>(filteredAvailablePlugins);
-  const [searchedInstalledPlugins, setSearchedInstalledPlugins] = useState<
-    PluginItem[]
-  >(filteredInstalledPlugins);
-  const searchPlugins = (text: string) => {
-    setSearchedInstalledPlugins(
-      filteredInstalledPlugins.filter(plg =>
-        plg.name.toLocaleLowerCase().includes(text.toLocaleLowerCase()),
-      ),
+  const searchedInstalledPlugins = useMemo(() => {
+    return filteredInstalledPlugins.filter(plg =>
+      plg.name.toLocaleLowerCase().includes(searchText.toLocaleLowerCase()),
     );
-    setSearchedAvailablePlugins(
-      languagesFilter.reduce((pre, cur) => {
-        pre[cur] = filteredAvailablePlugins[cur]?.filter(plg =>
-          plg.name.toLocaleLowerCase().includes(text.toLocaleLowerCase()),
-        );
-        return pre;
-      }, {} as PluginsMap),
-    );
-  };
-  const { showMyAnimeList, showAniList } = useBrowseSettings();
+  }, [searchText, filteredInstalledPlugins]);
 
-  const onChangeText = (text: string) => {
-    setSearchText(text);
-    searchPlugins(text);
-  };
+  const searchedAvailablePlugins = useMemo(() => {
+    return languagesFilter.reduce((pre, cur) => {
+      pre[cur] = filteredAvailablePlugins[cur]?.filter(plg =>
+        plg.name.toLocaleLowerCase().includes(searchText.toLocaleLowerCase()),
+      );
+      return pre;
+    }, {} as PluginsMap);
+  }, [searchText, filteredAvailablePlugins]);
+
+  const { showMyAnimeList, showAniList } = useBrowseSettings();
 
   const searchbarActions = useMemo(
     () => [
@@ -97,7 +86,7 @@ const BrowseScreen = ({ navigation }: BrowseScreenProps) => {
       });
     }
     return list;
-  }, [languagesFilter, searchedAvailablePlugins, filteredAvailablePlugins]);
+  }, [searchedAvailablePlugins]);
 
   const installedSections = useMemo(() => {
     const list = [];
@@ -119,12 +108,7 @@ const BrowseScreen = ({ navigation }: BrowseScreenProps) => {
       });
     }
     return list;
-  }, [
-    lastUsedPlugin,
-    languagesFilter,
-    searchedInstalledPlugins,
-    filteredInstalledPlugins,
-  ]);
+  }, [lastUsedPlugin, searchedInstalledPlugins]);
 
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
@@ -138,7 +122,7 @@ const BrowseScreen = ({ navigation }: BrowseScreenProps) => {
         searchText={searchText}
         placeholder={getString('browseScreen.searchbar')}
         leftIcon="magnify"
-        onChangeText={onChangeText}
+        onChangeText={setSearchText}
         clearSearchbar={clearSearchbar}
         theme={theme}
         rightIcons={searchbarActions}
