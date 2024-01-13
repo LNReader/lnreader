@@ -1,15 +1,20 @@
 import * as cheerio from 'cheerio';
-import { fetchApi, fetchHtml, cloudflareCheck } from '@utils/fetch/fetch';
+import {
+  fetchApi,
+  fetchHtml,
+  cloudflareCheck,
+  defaultUserAgentString,
+} from '@utils/fetch/fetch';
 import { defaultTo } from 'lodash-es';
 import { FilterInputs } from '../types/filterTypes';
+
 const sourceId = 50;
 
 const sourceName = 'Novel Updates';
 
 const baseUrl = 'https://www.novelupdates.com/';
 
-const userAgent =
-  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36';
+const userAgent = defaultUserAgentString;
 
 const getPopularNovelsUrl = (page, { showLatestNovels, filters }) => {
   let url = `${baseUrl}${
