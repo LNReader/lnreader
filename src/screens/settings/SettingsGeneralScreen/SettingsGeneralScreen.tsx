@@ -62,6 +62,7 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
     refreshNovelMetadata = false,
     disableHapticFeedback = false,
     useLibraryFAB = false,
+    jumpToLastReadChapter = false,
   } = useSettings();
 
   const { showLastUpdateTime = true } = useSelector(
@@ -213,6 +214,18 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
                   )
             }`}
             onPress={defaultChapterSortModal.setTrue}
+            theme={theme}
+          />
+          <SwitchSetting
+            label={getString(
+              'moreScreen.settingsScreen.generalSettingsScreen.jumpToLastReadChapter',
+            )}
+            value={jumpToLastReadChapter}
+            onPress={() =>
+              dispatch(
+                setAppSettings('jumpToLastReadChapter', !jumpToLastReadChapter),
+              )
+            }
             theme={theme}
           />
           <List.Divider theme={theme} />

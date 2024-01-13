@@ -46,6 +46,8 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { htmlToText } from '../../sources/helpers/htmlToText';
 import ChapterLoadingScreen from './ChapterLoadingScreen/ChapterLoadingScreen';
 import { ErrorScreenV2 } from '@components';
+import { getString } from '@strings/translations';
+import { useNavigation } from '@react-navigation/native';
 
 const Chapter = ({ route }) => {
   const DrawerNav = createDrawerNavigator();
@@ -82,6 +84,7 @@ const ChapterContent = ({ route, navigation }) => {
 
   const theme = useTheme();
   const dispatch = useDispatch();
+  const { navigate } = useNavigation();
 
   const {
     swipeGestures = false,
@@ -322,6 +325,14 @@ const ChapterContent = ({ route, navigation }) => {
     }
   }, []);
 
+  useEffect(() => {
+    return () => {
+      if (position?.percentage === 100) {
+        doSaveProgress(0, 0);
+      }
+    };
+  }, [position?.percentage]);
+
   const scrollToSavedProgress = useCallback(
     () => scrollTo(position?.position),
     [],
@@ -349,7 +360,32 @@ const ChapterContent = ({ route, navigation }) => {
   }
 
   if (error) {
-    return <ErrorScreenV2 error={error} />;
+    return (
+      <ErrorScreenV2
+        error={error}
+        actions={[
+          {
+            iconName: 'refresh',
+            title: getString('common.retry'),
+            onPress: () => {
+              setError('');
+              setLoading(true);
+              getChapter(chapterId);
+            },
+          },
+          {
+            iconName: 'earth',
+            title: 'WebView',
+            onPress: () =>
+              navigate('WebviewScreen', {
+                sourceId,
+                name: `${chapterName} | ${novelName}`,
+                url: chapterUrl,
+              }),
+          },
+        ]}
+      />
+    );
   }
 
   return (

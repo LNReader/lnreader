@@ -52,6 +52,7 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
     filterValues,
     setFilters,
     clearFilters,
+    refetchNovels,
   } = useBrowseSource(sourceId, showLatestNovels);
 
   const { defaultCategoryId = 1 } = useCategorySettings();
@@ -126,6 +127,13 @@ const BrowseSourceScreen: React.FC<BrowseSourceScreenProps> = ({ route }) => {
       ) : errorMessage || novelList.length === 0 ? (
         <ErrorScreenV2
           error={errorMessage || getString('sourceScreen.noResultsFound')}
+          actions={[
+            {
+              iconName: 'refresh',
+              title: getString('common.retry'),
+              onPress: refetchNovels,
+            },
+          ]}
         />
       ) : (
         <NovelList

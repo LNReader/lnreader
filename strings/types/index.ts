@@ -137,6 +137,7 @@ export interface StringMap {
   'moreScreen.settingsScreen.generalSettingsScreen.epubLocationDescription': 'string';
   'moreScreen.settingsScreen.generalSettingsScreen.downloadNewChapters': 'string';
   'moreScreen.settingsScreen.generalSettingsScreen.disableHapticFeedback': 'string';
+  'moreScreen.settingsScreen.generalSettingsScreen.jumpToLastReadChapter': 'string';
   'moreScreen.settingsScreen.readerSettings.title': 'string';
   'moreScreen.settingsScreen.readerSettings.readerTheme': 'string';
   'moreScreen.settingsScreen.readerSettings.preset': 'string';

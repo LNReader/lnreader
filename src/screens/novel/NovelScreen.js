@@ -23,8 +23,8 @@ import {
   Appbar,
   IconButton,
   Menu,
-  FAB,
   Snackbar,
+  AnimatedFAB,
 } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Haptics from 'expo-haptics';
@@ -86,6 +86,7 @@ const Novel = ({ route, navigation }) => {
   const [selected, setSelected] = useState([]);
   const [downloadMenu, showDownloadMenu] = useState(false);
   const [extraMenu, showExtraMenu] = useState(false);
+  const [isFabExtended, setIsFabExtended] = useState(true);
 
   let flatlistRef = useRef(null);
   let novelBottomSheetRef = useRef(null);
@@ -97,6 +98,7 @@ const Novel = ({ route, navigation }) => {
     useFabForContinueReading = false,
     defaultChapterSort = 'ORDER BY chapterId ASC',
     disableHapticFeedback = false,
+    jumpToLastReadChapter = false,
   } = useSettings();
 
   const {
@@ -126,6 +128,9 @@ const Novel = ({ route, navigation }) => {
   const onPageScroll = event => {
     const y = event.nativeEvent.contentOffset.y;
     headerOpacity.value = withTiming(y > 10 ? 1 : 0, { duration: 200 });
+
+    const currentScrollPosition = Math.floor(y) ?? 0;
+    setIsFabExtended(currentScrollPosition <= 0);
   };
 
   useEffect(() => {
@@ -647,6 +652,18 @@ const Novel = ({ route, navigation }) => {
         </Portal>
         <View style={styles.flashlistContainer}>
           <FlashList
+            onLayout={() => {
+              if (jumpToLastReadChapter) {
+                const lastReadChapterIdx = chapters.findIndex(
+                  chapter => chapter.chapterId === lastReadChapter.chapterId,
+                );
+
+                flatlistRef.current.scrollToIndex({
+                  animated: true,
+                  index: lastReadChapterIdx,
+                });
+              }
+            }}
             ref={flatlistRef}
             estimatedItemSize={64}
             data={chapters}
@@ -679,12 +696,12 @@ const Novel = ({ route, navigation }) => {
           />
         </View>
         {useFabForContinueReading && chapters.length > 0 && lastReadChapter && (
-          <FAB
+          <AnimatedFAB
             style={[
               styles.fab,
               { backgroundColor: theme.primary, marginBottom: bottomInset },
             ]}
-            small
+            extended={isFabExtended}
             color={theme.onPrimary}
             uppercase={false}
             label={novel.unread ? 'Start' : 'Resume'}

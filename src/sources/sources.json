@@ -1055,5 +1055,12 @@
     "sourceName": "Bookhamster",
     "icon": "https://bookhamster.ru/wp-content/uploads/2023/01/log.jpg",
     "lang": "Russian"
+  },
+  {
+    "sourceId": 173,
+    "url": "https://es.mtlnovel.com",
+    "sourceName": "MTLNovel (ES)",
+    "icon": "https://github.com/LNReader/lnreader-sources/blob/main/icons/src/en/mtlnovel/icon.png?raw=true",
+    "lang": "Spanish"
   }
 ]
