@@ -9,9 +9,7 @@ const SetTrackChaptersDialog = ({
   updateTrackChapters,
   theme,
 }) => {
-  const [trackChapters, setTrackChapters] = useState(
-    trackItem.my_list_status.num_chapters_read,
-  );
+  const [trackChapters, setTrackChapters] = useState(trackItem.progress);
 
   return (
     <Modal

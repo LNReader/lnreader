@@ -4,7 +4,7 @@ import {
   ButtonProps as PaperButtonProps,
 } from 'react-native-paper';
 
-import { useTheme } from '@hooks';
+import { useTheme } from '@hooks/persisted';
 
 interface ButtonProps extends Partial<PaperButtonProps> {
   title?: string;

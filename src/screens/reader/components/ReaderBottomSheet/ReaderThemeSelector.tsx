@@ -1,15 +1,11 @@
-import { ScrollView, StyleSheet, Text, TextStyle, View } from 'react-native';
+import { StyleSheet, Text, TextStyle, View } from 'react-native';
 import React from 'react';
-import { setReaderSettings } from '@redux/settings/settingsSliceV1';
-import {
-  useAppDispatch,
-  useReaderSettings,
-  useSettingsV2,
-} from '../../../../redux/hooks';
-import { ToggleColorButton } from '../../../../components/Common/ToggleButton';
-import { getString } from '../../../../../strings/translations';
-import { presetReaderThemes } from '../../../../utils/constants/readerConstants';
-import { useTheme } from '@hooks/useTheme';
+import { ToggleColorButton } from '@components/Common/ToggleButton';
+import { getString } from '@strings/translations';
+import { presetReaderThemes } from '@utils/constants/readerConstants';
+import { useChapterReaderSettings, useTheme } from '@hooks/persisted';
+import { FlatList } from 'react-native-gesture-handler';
+import { ReaderTheme } from '@hooks/persisted/useSettings';
 
 interface ReaderThemeSelectorProps {
   label?: string;
@@ -20,13 +16,14 @@ const ReaderThemeSelector: React.FC<ReaderThemeSelectorProps> = ({
   label,
   labelStyle,
 }) => {
-  const dispatch = useAppDispatch();
   const theme = useTheme();
-  const {
-    reader: { customThemes = [] },
-  } = useSettingsV2();
 
-  const { theme: backgroundColor, textColor } = useReaderSettings();
+  const {
+    theme: backgroundColor,
+    textColor,
+    customThemes,
+    setChapterReaderSettings,
+  } = useChapterReaderSettings();
 
   return (
     <View style={styles.container}>
@@ -35,12 +32,9 @@ const ReaderThemeSelector: React.FC<ReaderThemeSelectorProps> = ({
       >
         {label || getString('readerScreen.bottomSheet.color')}
       </Text>
-      <ScrollView
-        horizontal={true}
-        contentContainerStyle={styles.scrollView}
-        showsHorizontalScrollIndicator={false}
-      >
-        {[...customThemes, ...presetReaderThemes].map((item, index) => (
+      <FlatList
+        data={[...customThemes, ...presetReaderThemes] as ReaderTheme[]}
+        renderItem={({ item, index }) => (
           <ToggleColorButton
             key={index}
             selected={
@@ -49,20 +43,18 @@ const ReaderThemeSelector: React.FC<ReaderThemeSelectorProps> = ({
             }
             backgroundColor={item.backgroundColor}
             textColor={item.textColor}
-            onPress={() => {
-              dispatch(
-                setReaderSettings({
-                  key: 'theme',
-                  value: item.backgroundColor,
-                }),
-              );
-              dispatch(
-                setReaderSettings({ key: 'textColor', value: item.textColor }),
-              );
-            }}
+            onPress={() =>
+              setChapterReaderSettings({
+                theme: item.backgroundColor,
+                textColor: item.textColor,
+              })
+            }
           />
-        ))}
-      </ScrollView>
+        )}
+        keyExtractor={(item, index) => item.textColor + '_' + index}
+        horizontal={true}
+        showsHorizontalScrollIndicator={false}
+      />
     </View>
   );
 };

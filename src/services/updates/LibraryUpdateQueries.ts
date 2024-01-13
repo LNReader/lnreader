@@ -3,7 +3,6 @@ import { downloadChapter } from '../../database/queries/ChapterQueries';
 
 import * as SQLite from 'expo-sqlite';
 import { SourceNovel } from '@plugins/types';
-import { UpdateLibraryOptions } from './updates';
 import { LOCAL_PLUGIN_ID } from '@plugins/pluginManager';
 const db = SQLite.openDatabase('lnreader.db');
 
@@ -27,11 +26,16 @@ const updateNovelMetadata = async (novelId: number, novel: SourceNovel) => {
   });
 };
 
+export interface UpdateNovelOptions {
+  downloadNewChapters?: boolean;
+  refreshNovelMetadata?: boolean;
+}
+
 const updateNovel = async (
   pluginId: string,
   novelUrl: string,
   novelId: number,
-  options: UpdateLibraryOptions,
+  options: UpdateNovelOptions,
 ) => {
   if (pluginId === LOCAL_PLUGIN_ID) {
     return;
@@ -47,7 +51,7 @@ const updateNovel = async (
     novel.chapters?.forEach(chapter => {
       const { name, url, releaseTime } = chapter;
       tx.executeSql(
-        "INSERT OR IGNORE INTO Cshapter (url, name, releaseTime, novelId, updatedTime) values (?, ?, ?, ?, datetime('now','localtime'))",
+        "INSERT OR IGNORE INTO Chapter (url, name, releaseTime, novelId, updatedTime) values (?, ?, ?, ?, datetime('now','localtime'))",
         [url, name, releaseTime || '', novelId],
         (txObj, { insertId }) => {
           if (insertId && downloadNewChapters) {

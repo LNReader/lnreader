@@ -9,12 +9,12 @@ import AddCategoryModal from './components/AddCategoryModal';
 import {
   getCategoriesFromDb,
   updateCategoryOrderInDb,
-} from '../../database/queries/CategoryQueries';
-import useBoolean from '@hooks/useBoolean';
-import { useTheme } from '@hooks/useTheme';
+} from '@database/queries/CategoryQueries';
+import { useBoolean } from '@hooks';
+import { useTheme } from '@hooks/persisted';
 import { getString } from '@strings/translations';
 
-import { Category } from '../../database/types';
+import { Category } from '@database/types';
 import CategoryCard from './components/CategoryCard';
 import { orderBy } from 'lodash-es';
 import CategorySkeletonLoading from './components/CategorySkeletonLoading';
@@ -25,7 +25,7 @@ const CategoriesScreen = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [categories, setCategories] = useState<Category[]>();
-  const [error, setError] = useState();
+  // const [error, setError] = useState();
 
   const getCategories = async () => {
     try {
@@ -33,7 +33,7 @@ const CategoriesScreen = () => {
 
       setCategories(res);
     } catch (err) {
-      setError(error?.message);
+      // setError(error?.message);
     } finally {
       setIsLoading(false);
     }

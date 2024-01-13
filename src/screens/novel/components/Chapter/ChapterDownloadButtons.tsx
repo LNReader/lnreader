@@ -1,24 +1,23 @@
-import { ChapterInfo } from '@database/types';
+import React from 'react';
 import { MD3ThemeType } from '@theme/types';
-import React, { useState } from 'react';
 import { ActivityIndicator, StyleSheet } from 'react-native';
 
 import { IconButton, Menu, overlay } from 'react-native-paper';
 
 interface DownloadButtonProps {
-  downloadQueue: ChapterInfo[];
-  chapter: ChapterInfo;
+  isDownloaded: boolean;
+  isDownloading?: boolean;
   theme: MD3ThemeType;
   deleteChapterMenuVisible: boolean;
-  deleteChapter: (chapter: ChapterInfo) => void;
-  downloadChapter: (chapter: ChapterInfo) => (dispatch: any) => void;
+  deleteChapter: () => void;
+  downloadChapter: () => void;
   hideDeleteChapterMenu: () => void;
   showDeleteChapterMenu: () => void;
 }
 
 export const DownloadButton: React.FC<DownloadButtonProps> = ({
-  downloadQueue,
-  chapter,
+  isDownloaded,
+  isDownloading,
   theme,
   deleteChapter,
   downloadChapter,
@@ -26,40 +25,32 @@ export const DownloadButton: React.FC<DownloadButtonProps> = ({
   showDeleteChapterMenu,
   deleteChapterMenuVisible,
 }) => {
-  const [downloaded, setDownloaded] = useState(chapter.isDownloaded);
-  if (downloadQueue.some(chap => chap.id === chapter.id)) {
+  if (isDownloading) {
     return <ChapterDownloadingButton theme={theme} />;
-  } else if (!downloaded) {
-    return (
-      <DownloadChapterButton
-        theme={theme}
-        onPress={() => {
-          downloadChapter(chapter);
-          setDownloaded(true);
-        }}
-      />
-    );
-  } else {
-    return (
-      <Menu
-        visible={deleteChapterMenuVisible}
-        onDismiss={hideDeleteChapterMenu}
-        anchor={
-          <DeleteChapterButton theme={theme} onPress={showDeleteChapterMenu} />
-        }
-        contentStyle={{ backgroundColor: overlay(2, theme.surface) }}
-      >
-        <Menu.Item
-          onPress={() => {
-            deleteChapter(chapter);
-            setDownloaded(false);
-          }}
-          title="Delete"
-          titleStyle={{ color: theme.onSurface }}
-        />
-      </Menu>
-    );
   }
+  return isDownloaded ? (
+    <Menu
+      visible={deleteChapterMenuVisible}
+      onDismiss={hideDeleteChapterMenu}
+      anchor={
+        <DeleteChapterButton theme={theme} onPress={showDeleteChapterMenu} />
+      }
+      contentStyle={{ backgroundColor: overlay(2, theme.surface) }}
+    >
+      <Menu.Item
+        onPress={deleteChapter}
+        title="Delete"
+        titleStyle={{ color: theme.onSurface }}
+      />
+    </Menu>
+  ) : (
+    <DownloadChapterButton
+      theme={theme}
+      onPress={() => {
+        downloadChapter();
+      }}
+    />
+  );
 };
 
 interface theme {

@@ -11,13 +11,13 @@ import { LinearGradient } from 'expo-linear-gradient';
 import FastImage from 'react-native-fast-image';
 import ListView from './ListView';
 
-import { useDeviceOrientation } from '@hooks/useDeviceOrientation';
+import { useDeviceOrientation } from '@hooks';
 import { coverPlaceholderColor } from '../theme/colors';
-import { useLibrarySettings } from '@hooks/useSettings';
 import { DisplayModes } from '@screens/library/constants/constants';
 import { LibraryNovelInfo, NovelInfo } from '@database/types';
 import { NovelItem } from '@plugins/types';
 import { ThemeColors } from '@theme/types';
+import { useLibrarySettings } from '@hooks/persisted';
 
 interface UnreadBadgeProps {
   chaptersDownloaded: number;

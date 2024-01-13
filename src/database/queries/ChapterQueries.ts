@@ -1,6 +1,6 @@
 import RNFS from 'react-native-fs';
 import * as SQLite from 'expo-sqlite';
-import { showToast } from '@hooks/showToast';
+import { showToast } from '@utils/showToast';
 import { getPlugin } from '@plugins/pluginManager';
 import { ChapterInfo, DownloadedChapter } from '../types';
 import { ChapterItem } from '@plugins/types';
@@ -286,11 +286,9 @@ const deleteDownloadedFiles = async (
     });
     const files = await RNFS.readDir(path);
     for (let i = 0; i < files.length; i++) {
-      const ex = /(\.b64\.png)|(index.html)/.exec(files[i].path);
-      if (ex) {
-        await RNFS.unlink(files[i].path);
-      }
+      await RNFS.unlink(files[i].path);
     }
+    await RNFS.unlink(path);
   } catch (error) {
     throw new Error('Cant delete chapter chapter folder');
   }
@@ -315,7 +313,7 @@ export const deleteChapter = async (
 export const deleteChapters = async (
   pluginId: string,
   novelId: number,
-  chapters?: DownloadedChapter[],
+  chapters?: ChapterInfo[],
 ) => {
   if (!chapters?.length) {
     return;
@@ -389,11 +387,11 @@ export const deleteReadChaptersFromDb = async () => {
 
 const bookmarkChapterQuery = 'UPDATE Chapter SET bookmark = ? WHERE id = ?';
 
-export const bookmarkChapter = async (bookmark: number, chapterId: number) => {
+export const bookmarkChapter = async (bookmark: boolean, chapterId: number) => {
   db.transaction(tx => {
     tx.executeSql(
       bookmarkChapterQuery,
-      [1 - bookmark, chapterId],
+      [1 - Number(bookmark), chapterId],
       (_txObj, _res) => {},
       (_txObj, _error) => {
         // console.log('Error ', error)
@@ -404,7 +402,7 @@ export const bookmarkChapter = async (bookmark: number, chapterId: number) => {
 };
 
 const markPreviuschaptersReadQuery =
-  'UPDATE Chapter SET `unread` = 0 WHERE id < ? AND novelId = ?';
+  'UPDATE Chapter SET `unread` = 0 WHERE id <= ? AND novelId = ?';
 
 export const markPreviuschaptersRead = async (
   chapterId: number,
@@ -424,7 +422,7 @@ export const markPreviuschaptersRead = async (
 };
 
 const markPreviousChaptersUnreadQuery =
-  'UPDATE Chapter SET `unread` = 1 WHERE id < ? AND novelId = ?';
+  'UPDATE Chapter SET `unread` = 1 WHERE id <= ? AND novelId = ?';
 
 export const markPreviousChaptersUnread = async (
   chapterId: number,
@@ -453,7 +451,7 @@ const getDownloadedChaptersQuery = `
     WHERE Chapter.isDownloaded = 1
   `;
 
-export const getDownloadedChapters = (): Promise<ChapterInfo[]> => {
+export const getDownloadedChapters = (): Promise<DownloadedChapter[]> => {
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
@@ -473,7 +471,7 @@ export const getDownloadedChapters = (): Promise<ChapterInfo[]> => {
 
 const getUpdatesQuery = `
 SELECT
-  Chapter.id, Chapter.*,
+  Chapter.*,
   pluginId, Novel.id as novelId, Novel.name as novelName, Novel.url as novelUrl, cover as novelCover
 FROM
   Chapter

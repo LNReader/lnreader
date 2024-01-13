@@ -3,30 +3,34 @@ import { FlatList, StyleSheet } from 'react-native';
 
 import { Appbar as MaterialAppbar } from 'react-native-paper';
 
-import { ScreenContainer } from '../../components/Common';
-import EmptyView from '../../components/EmptyView';
+import { ScreenContainer } from '@components/Common';
+import EmptyView from '@components/EmptyView';
 import { Appbar, List } from '@components';
 import {
+  deleteChapter,
   deleteDownloads,
   getDownloadedChapters,
-} from '../../database/queries/ChapterQueries';
+} from '@database/queries/ChapterQueries';
 
-import { useTheme } from '@hooks/useTheme';
+import { useTheme } from '@hooks/persisted';
 
 import RemoveDownloadsDialog from './components/RemoveDownloadsDialog';
 import UpdatesSkeletonLoading from '@screens/updates/components/UpdatesSkeletonLoading';
 import UpdateNovelCard from '@screens/updates/components/UpdateNovelCard';
 import { getString } from '@strings/translations';
 import { DownloadsScreenProps } from '@navigators/types';
-import { ChapterInfo } from '@database/types';
+import { DownloadedChapter } from '@database/types';
+import { showToast } from '@utils/showToast';
 
-type DownloadGroup = Record<number, ChapterInfo[]>;
+type DownloadGroup = Record<number, DownloadedChapter[]>;
 
 const Downloads = ({ navigation }: DownloadsScreenProps) => {
   const theme = useTheme();
   const [loading, setLoading] = useState(true);
-  const [chapters, setChapters] = useState<ChapterInfo[]>([]);
-  const groupUpdatesByDate = (chapters: ChapterInfo[]): ChapterInfo[][] => {
+  const [chapters, setChapters] = useState<DownloadedChapter[]>([]);
+  const groupUpdatesByDate = (
+    chapters: DownloadedChapter[],
+  ): DownloadedChapter[][] => {
     const dateGroups = chapters.reduce((groups, item) => {
       const novelId = item.novelId;
       if (!groups[novelId]) {
@@ -86,9 +90,18 @@ const Downloads = ({ navigation }: DownloadsScreenProps) => {
           keyExtractor={(item, index) => 'downloadGroup' + index}
           renderItem={({ item }) => (
             <UpdateNovelCard
-              item={item}
+              chapterList={item}
               descriptionText={getString('downloadScreen.downloadsLower')}
-              removeItemFromList
+              deleteChapter={chapter => {
+                deleteChapter(
+                  chapter.pluginId,
+                  chapter.novelId,
+                  chapter.id,
+                ).then(() => {
+                  showToast(`Delete ${chapter.name}`);
+                  getChapters();
+                });
+              }}
             />
           )}
           ListEmptyComponent={<ListEmptyComponent />}

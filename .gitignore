@@ -8,7 +8,8 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
-
+.env
+reader_playground/index.html
 # macOS
 .DS_Store
 

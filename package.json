@@ -22,7 +22,6 @@
     "@react-navigation/material-bottom-tabs": "^6.0.9",
     "@react-navigation/native": "^6.0.6",
     "@react-navigation/stack": "^6.0.11",
-    "@reduxjs/toolkit": "^1.7.2",
     "@shopify/flash-list": "1.4.0",
     "cheerio": "^1.0.0-rc.10",
     "color": "^4.2.3",
@@ -45,7 +44,7 @@
     "qs": "^6.10.3",
     "react": "18.2.0",
     "react-native": "0.71.14",
-    "react-native-background-actions": "^2.6.5",
+    "react-native-background-actions": "^3.0.1",
     "react-native-device-info": "^8.4.7",
     "react-native-easing-gradient": "^1.0.0",
     "react-native-error-boundary": "^1.1.16",
@@ -56,15 +55,13 @@
     "react-native-mmkv": "^2.11.0",
     "react-native-pager-view": "6.1.2",
     "react-native-paper": "^5.2.0",
-    "react-native-reanimated": "~2.14.4",
+    "react-native-reanimated": "^2.17.0",
     "react-native-safe-area-context": "4.5.0",
     "react-native-screens": "~3.20.0",
     "react-native-shimmer-placeholder": "^2.0.9",
     "react-native-tab-view": "^3.1.1",
     "react-native-vector-icons": "^9.0.0",
     "react-native-webview": "11.26.0",
-    "react-redux": "^7.2.6",
-    "redux-persist": "^6.0.0",
     "sanitize-html": "^2.7.0"
   },
   "devDependencies": {
@@ -87,6 +84,7 @@
     "lint-staged": "^12.3.7",
     "metro-react-native-babel-preset": "^0.73.10",
     "prettier": "^2.4.1",
+    "react-native-dotenv": "^3.4.9",
     "typescript": "4.8.4"
   },
   "resolutions": {

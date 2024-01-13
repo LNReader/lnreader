@@ -4,11 +4,9 @@ import { StyleSheet } from 'react-native';
 import { Portal, Modal, overlay } from 'react-native-paper';
 import { RadioButton } from '@components/RadioButton/RadioButton';
 
-import { useAppDispatch } from '@redux/hooks';
-import { useTheme } from '@hooks/useTheme';
-import { setReaderSettings } from '@redux/settings/settingsSliceV1';
+import { useChapterReaderSettings, useTheme } from '@hooks/persisted';
 
-import { readerFonts } from '../../../utils/constants/readerConstants';
+import { readerFonts } from '@utils/constants/readerConstants';
 
 interface FontPickerModalProps {
   visible: boolean;
@@ -22,7 +20,7 @@ const FontPickerModal: React.FC<FontPickerModalProps> = ({
   visible,
 }) => {
   const theme = useTheme();
-  const dispatch = useAppDispatch();
+  const { setChapterReaderSettings } = useChapterReaderSettings();
 
   return (
     <Portal>
@@ -39,12 +37,7 @@ const FontPickerModal: React.FC<FontPickerModalProps> = ({
             key={item.fontFamily}
             status={currentFont === item.fontFamily}
             onPress={() =>
-              dispatch(
-                setReaderSettings({
-                  key: 'fontFamily',
-                  value: item.fontFamily,
-                }),
-              )
+              setChapterReaderSettings({ fontFamily: item.fontFamily })
             }
             label={item.name}
             labelStyle={{ fontFamily: item.fontFamily }}

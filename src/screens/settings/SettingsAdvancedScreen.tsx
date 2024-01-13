@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 
 import { Dialog, Portal } from 'react-native-paper';
 
-import { useTheme } from '@hooks/useTheme';
-import { showToast } from '@hooks/showToast';
+import { useTheme } from '@hooks/persisted';
+import { showToast } from '@utils/showToast';
 
 import { deleteCachedNovels } from '@database/queries/NovelQueries';
 import { clearCoverCache } from '@services/utils/coverCache';
 import { getString } from '@strings/translations';
-import useBoolean from '@hooks/useBoolean';
+import { useBoolean } from '@hooks';
 import ConfirmationDialog from '@components/ConfirmationDialog/ConfirmationDialog';
 import {
   deleteReadChaptersFromDb,
@@ -16,13 +16,13 @@ import {
 } from '@database/queries/ChapterQueries';
 
 import { Appbar, Button, List } from '@components';
-import useSourceStorage from '@hooks/useSourceStorage';
 import { importEpub } from '@services/epub/import';
 import { AdvancedSettingsScreenProps } from '@navigators/types';
+import { useMMKVString } from 'react-native-mmkv';
+import { BACKGROUND_ACTION } from '@services/constants';
 
 const AdvancedSettings = ({ navigation }: AdvancedSettingsScreenProps) => {
   const theme = useTheme();
-  const { clearCookies } = useSourceStorage({});
 
   /**
    * Confirm Clear Database Dialog
@@ -41,6 +41,8 @@ const AdvancedSettings = ({ navigation }: AdvancedSettingsScreenProps) => {
     setFalse: hideDeleteReadChaptersDialog,
   } = useBoolean();
 
+  const [hasAction] = useMMKVString(BACKGROUND_ACTION);
+
   return (
     <>
       <Appbar
@@ -51,7 +53,7 @@ const AdvancedSettings = ({ navigation }: AdvancedSettingsScreenProps) => {
       <List.Section>
         <List.SubHeader theme={theme}>Data Management</List.SubHeader>
         <List.Item
-          title="Clear database"
+          title="Clear cached novels"
           description="Delete cached novels which not in your library"
           onPress={showClearDatabaseDialog}
           theme={theme}
@@ -73,8 +75,12 @@ const AdvancedSettings = ({ navigation }: AdvancedSettingsScreenProps) => {
           onPress={showDeleteReadChaptersDialog}
           theme={theme}
         />
-        <List.Item title="Clear cookies" onPress={clearCookies} theme={theme} />
-        <List.Item title="Import Epub" onPress={importEpub} theme={theme} />
+        <List.Item
+          title="Import Epub"
+          onPress={importEpub}
+          theme={theme}
+          disabled={Boolean(hasAction)}
+        />
       </List.Section>
       <Portal>
         <ConfirmationDialog

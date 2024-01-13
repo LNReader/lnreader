@@ -16,23 +16,23 @@ import { Banner } from './components/Banner';
 import { Actionbar } from '@components/Actionbar/Actionbar';
 
 import { useLibrary } from './hooks/useLibrary';
-import { useTheme } from '@hooks/useTheme';
-import useSearch from '@hooks/useSearch';
+import {
+  useAppSettings,
+  useHistory,
+  useLibrarySettings,
+  useTheme,
+} from '@hooks/persisted';
+import { useSearch, useBackHandler, useBoolean } from '@hooks';
 import { getString } from '@strings/translations';
 import { FAB, Portal } from 'react-native-paper';
-import { useLibrarySettings } from '@hooks/useSettings';
 import {
   markAllChaptersRead,
   markAllChaptersUnread,
-} from '../../database/queries/ChapterQueries';
+} from '@database/queries/ChapterQueries';
 import { removeNovelsFromLibrary } from '@database/queries/NovelQueries';
 import SetCategoryModal from '@screens/novel/components/SetCategoriesModal';
-import useBoolean from '@hooks/useBoolean';
 import { debounce } from 'lodash-es';
-import { useBackHandler } from '@hooks/useBackHandler';
-import useHistory from '@hooks/useHistory';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useSettings } from '@hooks/reduxHooks';
 import SourceScreenSkeletonLoading from '@screens/browse/loadingAnimation/SourceScreenSkeletonLoading';
 import { Row } from '@components/Common';
 import { LibraryScreenProps } from '@navigators/types';
@@ -52,7 +52,7 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
     incognitoMode = false,
   } = useLibrarySettings();
 
-  const { useLibraryFAB = false } = useSettings();
+  const { useLibraryFAB = false } = useAppSettings();
 
   const { isLoading: isHistoryLoading, history, error } = useHistory();
 

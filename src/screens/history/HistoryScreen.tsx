@@ -4,15 +4,15 @@ import { useNavigation } from '@react-navigation/native';
 import dayjs from 'dayjs';
 import { Portal } from 'react-native-paper';
 
-import { EmptyView, ErrorScreenV2, SearchbarV2 } from '../../components/index';
+import { EmptyView, ErrorScreenV2, SearchbarV2 } from '@components';
 import HistoryCard from './components/HistoryCard/HistoryCard';
 
-import { useSearch, useHistory, useBoolean } from '@hooks/index';
-import { useTheme } from '@hooks/useTheme';
+import { useSearch, useBoolean } from '@hooks';
+import { useTheme, useHistory } from '@hooks/persisted';
 
-import { convertDateToISOString } from '../../database/utils/convertDateToISOString';
+import { convertDateToISOString } from '@database/utils/convertDateToISOString';
 
-import { History } from '../../database/types';
+import { History } from '@database/types';
 import { getString } from '@strings/translations';
 import ClearHistoryDialog from './components/ClearHistoryDialog';
 import {

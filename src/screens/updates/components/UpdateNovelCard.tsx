@@ -1,22 +1,21 @@
-import { FlatList, Pressable, StyleSheet, View } from 'react-native';
-import React, { useCallback, useState } from 'react';
+import { Pressable, StyleSheet, View } from 'react-native';
+import React, { useCallback } from 'react';
 
-import { ChapterInfo, Update } from '@database/types';
+import {
+  ChapterInfo,
+  DownloadedChapter,
+  NovelInfo,
+  Update,
+} from '@database/types';
 import FastImage from 'react-native-fast-image';
 import { List } from 'react-native-paper';
 import { coverPlaceholderColor } from '@theme/colors';
-import { openNovel } from '@utils/handleNavigateParams';
-import {
-  deleteChapterAction,
-  downloadChapterAction,
-} from '@redux/novel/novel.actions';
-import { useNavigation } from '@react-navigation/native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import ChapterItem from '@screens/novel/components/ChapterItem';
-import { useSelector } from 'react-redux';
-import { RootState } from '@redux/store';
-import { useAppDispatch } from '@redux/hooks';
-import { useTheme } from '@hooks/useTheme';
+import { useDownload, useTheme } from '@hooks/persisted';
 import { noop } from 'lodash-es';
+import { RootStackParamList } from '@navigators/types';
+import { FlatList } from 'react-native-gesture-handler';
 
 const NovelCover = ({
   uri,
@@ -33,84 +32,60 @@ const NovelCover = ({
 };
 
 interface UpdateCardProps {
-  item: Update[] | ChapterInfo[];
+  chapterList: Update[] | DownloadedChapter[];
   descriptionText: string;
-  removeItemFromList?: boolean;
+  deleteChapter: (chapter: Update | DownloadedChapter) => void;
 }
 
 const UpdateNovelCard: React.FC<UpdateCardProps> = ({
-  item,
+  chapterList,
   descriptionText,
-  removeItemFromList,
+  deleteChapter,
 }) => {
-  const { navigate } = useNavigation();
-  const dispatch = useAppDispatch();
+  const { navigate } = useNavigation<NavigationProp<RootStackParamList>>();
+  const { downloadChapter, queue } = useDownload();
   const theme = useTheme();
 
-  const [chapterList, setChapterList] = useState(item);
-
   const handleDownloadChapter = useCallback(
-    (chapter: ChapterInfo) =>
-      dispatch(
-        downloadChapterAction(
-          chapter.pluginId,
-          chapter.novelId,
-          chapter.url,
-          chapter.name,
-          chapter.id,
-        ),
-      ),
-    [],
-  );
-
-  const handleDeleteChapter = useCallback((chapter: ChapterInfo) => {
-    dispatch(
-      deleteChapterAction(
-        chapter.pluginId,
-        chapter.novelId,
-        chapter.id,
-        chapter.name,
-      ),
-    );
-    if (removeItemFromList) {
-      //@ts-ignore
-      let index = item.indexOf(chapter);
-      item.splice(index, 1);
-      setChapterList(Array.from(item));
-    }
-  }, []);
-
-  const navigateToChapter = useCallback(
-    (chapter: ChapterInfo) =>
-      navigate(
-        'Chapter' as never,
-        {
-          novel: {
-            url: chapter.novelUrl,
+    (chapter: Update | DownloadedChapter) => {
+      if (chapterList.length) {
+        downloadChapter(
+          {
+            id: chapter.novelId,
             pluginId: chapter.pluginId,
             name: chapter.novelName,
-          },
-          chapter: chapter,
-        } as never,
-      ),
-    [],
+          } as NovelInfo,
+          chapter,
+        );
+      }
+    },
+    [chapterList],
   );
 
-  const navigateToNovel = () =>
-    navigate(
-      'Novel' as never,
-      openNovel({
+  const navigateToChapter = useCallback((chapter: ChapterInfo) => {
+    const { novelUrl, pluginId, novelName } = chapter as
+      | Update
+      | DownloadedChapter;
+    navigate('Chapter', {
+      novel: {
+        url: novelUrl,
+        pluginId: pluginId,
+        name: novelName,
+      } as NovelInfo,
+      chapter: chapter,
+    });
+  }, []);
+
+  const navigateToNovel = () => {
+    if (chapterList.length) {
+      navigate('Novel', {
         pluginId: chapterList[0].pluginId,
-        id: chapterList[0].novelId,
         url: chapterList[0].novelUrl,
         name: chapterList[0].novelName,
-        cover: chapterList[0].novelCover,
-      }) as never,
-    );
+      });
+    }
+  };
 
-  const { downloadQueue } = useSelector(
-    (state: RootState) => state.downloadsReducer,
-  );
   if (chapterList.length > 1) {
     return (
       <List.Accordion
@@ -131,18 +106,19 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
         <FlatList
           data={chapterList}
           keyExtractor={it => 'update' + it.id}
-          style={styles.chapterList}
-          renderItem={it => {
+          extraData={[chapterList]}
+          renderItem={({ item }) => {
             return (
               <ChapterItem
+                isLocal={false}
+                isDownloading={queue.some(c => c.chapter.id === item.id)}
                 isUpdateCard
                 novelName={chapterList[0].novelName}
-                chapter={it.item}
+                chapter={item}
                 theme={theme}
                 showChapterTitles={false}
-                downloadQueue={downloadQueue}
-                downloadChapter={handleDownloadChapter}
-                deleteChapter={handleDeleteChapter}
+                downloadChapter={() => handleDownloadChapter(item)}
+                deleteChapter={() => deleteChapter(item)}
                 navigateToChapter={navigateToChapter}
                 left={
                   <View style={styles.novelCover}>
@@ -162,14 +138,15 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
   } else if (chapterList.length > 0) {
     return (
       <ChapterItem
+        isLocal={false}
+        isDownloading={queue.some(c => c.chapter.id === chapterList[0].id)}
         isUpdateCard
         novelName={chapterList[0].novelName}
         chapter={chapterList[0]}
         theme={theme}
         showChapterTitles={false}
-        downloadQueue={downloadQueue}
-        downloadChapter={handleDownloadChapter}
-        deleteChapter={handleDeleteChapter}
+        downloadChapter={() => handleDownloadChapter(chapterList[0])}
+        deleteChapter={() => deleteChapter(chapterList[0])}
         navigateToChapter={navigateToChapter}
         left={
           <View style={styles.novelCover}>

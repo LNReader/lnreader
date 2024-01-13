@@ -1,29 +1,39 @@
-import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 
 import { Button } from '@components';
-import { useSettings } from '@hooks/reduxHooks';
 import { getString } from '@strings/translations';
-import { ChapterInfo, NovelInfo } from '@database/types';
-import { ChapterScreenProps } from '@navigators/types';
+import { ChapterInfo } from '@database/types';
+import { useAppSettings } from '@hooks/persisted';
 
 interface ReadButtonProps {
-  novel: NovelInfo;
   chapters: ChapterInfo[];
-  lastRead: ChapterInfo;
+  lastRead?: ChapterInfo;
+  navigateToChapter: (chapter: ChapterInfo) => void;
 }
 
-const ReadButton = ({ novel, chapters, lastRead }: ReadButtonProps) => {
-  const { navigate } = useNavigation<ChapterScreenProps['navigation']>();
-  const { useFabForContinueReading = false } = useSettings();
+const ReadButton = ({
+  chapters,
+  lastRead,
+  navigateToChapter,
+}: ReadButtonProps) => {
+  const { useFabForContinueReading = false } = useAppSettings();
 
-  const navigateToLastReadChapter = () =>
-    navigate('Chapter', { novel: novel, chapter: lastRead });
+  const navigateToLastReadChapter = () => {
+    if (lastRead) {
+      navigateToChapter(lastRead);
+    } else if (chapters.length) {
+      navigateToChapter(chapters[0]);
+    }
+  };
 
   if (!useFabForContinueReading) {
     return chapters.length > 0 ? (
       <Button
-        title={`${getString('novelScreen.continueReading')} ${lastRead.name}`}
+        title={
+          lastRead
+            ? `${getString('novelScreen.continueReading')} ${lastRead.name}`
+            : `Start reading ${chapters[0].name}`
+        }
         style={{ margin: 16 }}
         onPress={navigateToLastReadChapter}
         mode="contained"

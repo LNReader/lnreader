@@ -9,7 +9,6 @@ import {
   novelCoverTask,
   novelTask,
   settingTask,
-  themeTask,
   versionTask,
 } from './backupTasks';
 
@@ -17,9 +16,9 @@ import {
   restoreCategory,
   restoreNovel,
   restoreSetting,
-  restoreTheme,
   retoreDownload,
 } from './restoreTasks';
+import { BACKGROUND_ACTION, BackgoundAction } from '@services/constants';
 
 interface TaskData {
   delay: number;
@@ -29,6 +28,7 @@ interface TaskData {
 
 const remoteBackupAction = async (taskData?: TaskData) => {
   try {
+    MMKVStorage.set(BACKGROUND_ACTION, BackgoundAction.BACKUP);
     if (!taskData) {
       throw new Error('No data provided');
     }
@@ -46,7 +46,6 @@ const remoteBackupAction = async (taskData?: TaskData) => {
       categoryTask(dataFolder),
       downloadTask(downloadFolder),
       settingTask(dataFolder),
-      themeTask(dataFolder),
     ];
 
     for (let i = 0; i < taskList.length; i++) {
@@ -84,41 +83,37 @@ const remoteBackupAction = async (taskData?: TaskData) => {
         },
         trigger: null,
       });
-      await BackgroundService.stop();
     }
   } finally {
-    MMKVStorage.set('HAS_BACKGROUND_TASK', false);
+    MMKVStorage.delete(BACKGROUND_ACTION);
+    BackgroundService.stop();
   }
 };
 
 export const createBackup = async (host: string, backupFolder: string) => {
-  MMKVStorage.set('HAS_BACKGROUND_TASK', true);
-  try {
-    return BackgroundService.start(remoteBackupAction, {
-      taskName: 'Self Host Backup',
-      taskTitle: 'Self Host Backup',
-      taskDesc: 'Preparing',
-      taskIcon: { name: 'notification_icon', type: 'drawable' },
-      color: '#00adb5',
-      parameters: { delay: 200, backupFolder, host },
-      linkingURI: 'lnreader://updates',
-    });
-  } catch (e: any) {
-    await Notifications.scheduleNotificationAsync({
+  return BackgroundService.start(remoteBackupAction, {
+    taskName: 'Self Host Backup',
+    taskTitle: 'Self Host Backup',
+    taskDesc: 'Preparing',
+    taskIcon: { name: 'notification_icon', type: 'drawable' },
+    color: '#00adb5',
+    parameters: { delay: 200, backupFolder, host },
+    linkingURI: 'lnreader://updates',
+  }).catch((e: Error) => {
+    Notifications.scheduleNotificationAsync({
       content: {
         title: 'Self Host Backup Interruped',
         body: e.message,
       },
       trigger: null,
     });
-    await BackgroundService.stop();
-    MMKVStorage.set('HAS_BACKGROUND_TASK', false);
-    throw e;
-  }
+    BackgroundService.stop();
+  });
 };
 
 const remoteRestoreAction = async (taskData?: TaskData) => {
   try {
+    MMKVStorage.set(BACKGROUND_ACTION, BackgoundAction.RESTORE);
     if (!taskData) {
       throw new Error('No data provided');
     }
@@ -138,7 +133,6 @@ const remoteRestoreAction = async (taskData?: TaskData) => {
       restoreCategory(host, dataFolder),
       retoreDownload(host, downloadFolder),
       restoreSetting(host, dataFolder),
-      restoreTheme(host, dataFolder),
     ];
 
     for (let i = 0; i < taskList.length; i++) {
@@ -167,7 +161,6 @@ const remoteRestoreAction = async (taskData?: TaskData) => {
       trigger: null,
     });
   } catch (error: any) {
-    console.log(error);
     if (BackgroundService.isRunning()) {
       await Notifications.scheduleNotificationAsync({
         content: {
@@ -176,35 +169,30 @@ const remoteRestoreAction = async (taskData?: TaskData) => {
         },
         trigger: null,
       });
-      await BackgroundService.stop();
     }
   } finally {
-    MMKVStorage.set('HAS_BACKGROUND_TASK', false);
+    MMKVStorage.delete(BACKGROUND_ACTION);
+    BackgroundService.stop();
   }
 };
 
 export const remoteRestore = async (host: string, backupFolder: string) => {
-  MMKVStorage.set('HAS_BACKGROUND_TASK', true);
-  try {
-    return BackgroundService.start(remoteRestoreAction, {
-      taskName: 'Self Host Restore',
-      taskTitle: 'Self Host Restore',
-      taskDesc: 'Preparing',
-      taskIcon: { name: 'notification_icon', type: 'drawable' },
-      color: '#00adb5',
-      parameters: { delay: 200, backupFolder, host },
-      linkingURI: 'lnreader://updates',
-    });
-  } catch (e: any) {
-    await Notifications.scheduleNotificationAsync({
+  return BackgroundService.start(remoteRestoreAction, {
+    taskName: 'Self Host Restore',
+    taskTitle: 'Self Host Restore',
+    taskDesc: 'Preparing',
+    taskIcon: { name: 'notification_icon', type: 'drawable' },
+    color: '#00adb5',
+    parameters: { delay: 200, backupFolder, host },
+    linkingURI: 'lnreader://updates',
+  }).catch((e: Error) => {
+    Notifications.scheduleNotificationAsync({
       content: {
         title: 'Self Host Restore Interruped',
         body: e.message,
       },
       trigger: null,
     });
-    await BackgroundService.stop();
-    MMKVStorage.set('HAS_BACKGROUND_TASK', false);
-    throw e;
-  }
+    BackgroundService.stop();
+  });
 };

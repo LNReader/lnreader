@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { FlatList, View, Text, StyleSheet } from 'react-native';
 import {
   FAB,
@@ -7,35 +7,27 @@ import {
   Menu,
   overlay,
 } from 'react-native-paper';
-import { useDispatch, useSelector } from 'react-redux';
 
-import { useTheme } from '@hooks/useTheme';
+import { useDownload, useTheme } from '@hooks/persisted';
 
-import {
-  cancelDownload,
-  pauseDownloads,
-  resumeDownloads,
-} from '../../redux/downloads/downloads.actions';
-
-import BackgroundService from 'react-native-background-actions';
-import { showToast } from '../../hooks/showToast';
+import { showToast } from '../../utils/showToast';
 import { Appbar, EmptyView } from '@components';
 import { DownloadQueueScreenProps } from '@navigators/types';
-import { RootState } from '@redux/store';
+import { useMMKVString } from 'react-native-mmkv';
+import { BACKGROUND_ACTION, BackgoundAction } from '@services/constants';
 
 const DownloadQueue = ({ navigation }: DownloadQueueScreenProps) => {
   const theme = useTheme();
-  const { downloadQueue } = useSelector(
-    (state: RootState) => state.downloadsReducer,
+  const [currentAction] = useMMKVString(BACKGROUND_ACTION);
+  const isDownloading = useMemo(
+    () => currentAction === BackgoundAction.DOWNLOAD_CHAPTER,
+    [currentAction],
   );
-  const dispatch = useDispatch();
-
+  const { queue, resumeDowndload, pauseDownload, cancelDownload } =
+    useDownload();
   const [visible, setVisible] = useState(false);
   const openMenu = () => setVisible(true);
   const closeMenu = () => setVisible(false);
-
-  const [fab, setFab] = useState(BackgroundService.isRunning());
-
   return (
     <>
       <Appbar
@@ -47,20 +39,20 @@ const DownloadQueue = ({ navigation }: DownloadQueueScreenProps) => {
           visible={visible}
           onDismiss={closeMenu}
           anchor={
-            <MaterialAppbar.Action
-              icon="dots-vertical"
-              iconColor={theme.onSurface}
-              onPress={openMenu}
-            />
+            queue.length ? (
+              <MaterialAppbar.Action
+                icon="dots-vertical"
+                iconColor={theme.onSurface}
+                onPress={openMenu}
+              />
+            ) : null
           }
           contentStyle={{ backgroundColor: overlay(2, theme.surface) }}
         >
           <Menu.Item
             onPress={() => {
-              if (downloadQueue.length > 0) {
-                dispatch(cancelDownload());
-                showToast('Downloads cancelled.');
-              }
+              cancelDownload();
+              showToast('Downloads cancelled.');
               closeMenu();
             }}
             title="Cancel downloads"
@@ -70,14 +62,17 @@ const DownloadQueue = ({ navigation }: DownloadQueueScreenProps) => {
       </Appbar>
       <FlatList
         contentContainerStyle={{ flexGrow: 1, paddingBottom: 100 }}
-        keyExtractor={item => item.id.toString()}
-        data={downloadQueue}
+        keyExtractor={item => item.chapter.url.toString()}
+        data={queue}
         renderItem={({ item }) => (
           <View style={{ padding: 16 }}>
-            <Text style={{ color: theme.onSurface }}>{item.name}</Text>
+            <Text style={{ color: theme.onSurface }}>{item.chapter.name}</Text>
             <ProgressBar
-              indeterminate={BackgroundService.isRunning() ? true : false}
-              progress={Number(!BackgroundService.isRunning())}
+              indeterminate={
+                isDownloading &&
+                queue.length > 0 &&
+                queue[0].chapter.id === item.chapter.id
+              }
               color={theme.primary}
               style={{ marginTop: 8 }}
             />
@@ -87,19 +82,15 @@ const DownloadQueue = ({ navigation }: DownloadQueueScreenProps) => {
           <EmptyView icon="(･o･;)" description="No downloads" theme={theme} />
         }
       />
-      {downloadQueue.length > 0 && (
+      {queue.length > 0 && (
         <FAB
           style={[styles.fab, { backgroundColor: theme.primary }]}
           color={theme.onPrimary}
-          label={fab ? 'Pause' : 'Resume'}
+          label={isDownloading ? 'Pause' : 'Resume'}
           uppercase={false}
-          small
-          icon={fab ? 'pause' : 'play'}
+          icon={isDownloading ? 'pause' : 'play'}
           onPress={() => {
-            setFab(prevState => !prevState);
-            BackgroundService.isRunning()
-              ? dispatch(pauseDownloads())
-              : dispatch(resumeDownloads(downloadQueue));
+            isDownloading ? pauseDownload() : resumeDowndload();
           }}
         />
       )}

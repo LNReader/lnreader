@@ -1,5 +1,5 @@
 import { FilterToValues, Filters } from './filterTypes';
-import { Languages } from '@utils/constants/languages';
+import { Language } from '@utils/constants/languages';
 
 export interface NovelItem {
   name: string;
@@ -10,6 +10,7 @@ export interface NovelItem {
 export interface ChapterItem {
   name: string;
   url: string; //must be absoulute
+  chapterNumber?: number;
   releaseTime?: string;
 }
 
@@ -45,10 +46,11 @@ export interface PluginItem {
   id: string;
   name: string;
   site: string;
-  lang: Languages;
+  lang: Language;
   version: string;
   url: string; // the url of raw code
   iconUrl: string;
+  hasUpdate?: boolean;
 }
 
 export interface Plugin extends PluginItem {

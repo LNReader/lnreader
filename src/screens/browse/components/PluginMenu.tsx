@@ -1,36 +1,33 @@
 import { StyleSheet } from 'react-native';
 import { Divider, Menu, overlay } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { Button, IconButtonV2 } from '@components';
 import { PluginItem } from '@plugins/types';
-import { uninstallPlugin, updatePlugin } from '@plugins/pluginManager';
 import { getString } from '@strings/translations';
 import { ThemeColors } from '@theme/types';
+import { RootStackParamList } from '@navigators/types';
+import { showToast } from '@utils/showToast';
 
 interface PluginMenuProps {
   plugin: PluginItem;
-  isPinned: boolean;
   theme: ThemeColors;
-  onTogglePinSource: (plugin: PluginItem) => void;
   navigateToSource: (plugin: PluginItem, showLatestNovels?: boolean) => void;
-  onUninstallPlugin: (plugin: PluginItem) => void;
-  onUpdatePlugin: (plugin: PluginItem) => void;
+  uninstallPlugin: (plugin: PluginItem) => Promise<void>;
+  updatePlugin: (plugin: PluginItem) => Promise<void>;
 }
 
 export const PluginMenu: React.FC<PluginMenuProps> = ({
   plugin,
-  isPinned,
   theme,
-  onTogglePinSource,
   navigateToSource,
-  onUninstallPlugin,
-  onUpdatePlugin,
+  uninstallPlugin,
+  updatePlugin,
 }) => {
   const [visible, setVisible] = useState(false);
   const showMenu = () => setVisible(true);
   const hideMenu = () => setVisible(false);
-  const { navigate } = useNavigation();
+  const { navigate } = useNavigation<NavigationProp<RootStackParamList>>();
 
   return (
     <Menu
@@ -40,7 +37,7 @@ export const PluginMenu: React.FC<PluginMenuProps> = ({
         <IconButtonV2
           name={'dots-vertical'}
           size={30}
-          color={isPinned ? theme.primary : theme.onSurfaceVariant}
+          color={theme.primary}
           onPress={showMenu}
           theme={theme}
         />
@@ -59,27 +56,18 @@ export const PluginMenu: React.FC<PluginMenuProps> = ({
         style={[{ backgroundColor: theme.onSurfaceDisabled }, styles.divider]}
       />
       <Button
-        title={isPinned ? 'Unpin' : 'Pin'}
-        icon={isPinned ? 'pin' : 'pin-outline'}
-        textColor={isPinned ? theme.primary : theme.onSurfaceVariant}
-        onPress={() => onTogglePinSource(plugin)}
-      />
-      <Button
         title="Update"
         icon={'arrow-up-circle'}
         textColor={theme.primary}
-        onPress={() => {
-          updatePlugin(plugin).then(updated => {
-            if (updated) {
-              plugin.version = updated.version;
-              onUpdatePlugin(plugin);
-            }
-          });
-        }}
+        onPress={() =>
+          updatePlugin(plugin).then(() =>
+            showToast(`Updated to ${plugin.version}`),
+          )
+        }
       />
       <Button
         title="Visit"
-        icon={'earth'}
+        icon={'web'}
         textColor={theme.primary}
         onPress={() => {
           navigate('WebviewScreen', {
@@ -96,7 +84,9 @@ export const PluginMenu: React.FC<PluginMenuProps> = ({
         title="Uninstall"
         icon={'delete'}
         onPress={() =>
-          uninstallPlugin(plugin).then(() => onUninstallPlugin(plugin))
+          uninstallPlugin(plugin).then(() =>
+            showToast(`Uninstalled ${plugin.name}`),
+          )
         }
       />
     </Menu>

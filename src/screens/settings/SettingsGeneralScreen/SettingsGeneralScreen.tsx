@@ -1,28 +1,26 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
 
-import { useDispatch, useSelector } from 'react-redux';
-
-import SwitchSetting from '../../../components/Switch/Switch';
+import SwitchSetting from '@components/Switch/Switch';
 import DisplayModeModal from './modals/DisplayModeModal';
 import GridSizeModal from './modals/GridSizeModal';
 
-import { useSettings } from '../../../hooks/reduxHooks';
-import { useTheme } from '@hooks/useTheme';
-import { setAppSettings } from '@redux/settings/settingsSliceV1';
-import { SHOW_LAST_UPDATE_TIME } from '../../../redux/updates/updates.types';
+import {
+  useAppSettings,
+  useLastUpdate,
+  useLibrarySettings,
+  useTheme,
+} from '@hooks/persisted';
 import DefaultChapterSortModal from '../components/DefaultChapterSortModal';
 import {
   DisplayModes,
   displayModesList,
   LibrarySortOrder,
 } from '@screens/library/constants/constants';
-import { useLibrarySettings } from '@hooks/useSettings';
-import useBoolean from '@hooks/useBoolean';
+import { useBoolean } from '@hooks';
 import { Appbar, List } from '@components';
 import NovelSortModal from './modals/NovelSortModal';
 import NovelBadgesModal from './modals/NovelBadgesModal';
-import { RootState } from '@redux/store';
 import { NavigationState } from '@react-navigation/native';
 import { getString } from '@strings/translations';
 
@@ -32,7 +30,6 @@ interface GenralSettingsProps {
 
 const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
   const theme = useTheme();
-  const dispatch = useDispatch();
 
   const {
     displayMode = DisplayModes.Comfortable,
@@ -54,18 +51,17 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
   ]);
 
   const {
-    updateLibraryOnLaunch = false,
-    downloadNewChapters = false,
-    onlyUpdateOngoingNovels = false,
-    defaultChapterSort = 'ORDER BY id ASC',
-    refreshNovelMetadata = false,
-    disableHapticFeedback = false,
-    useLibraryFAB = false,
-  } = useSettings();
+    updateLibraryOnLaunch,
+    downloadNewChapters,
+    onlyUpdateOngoingNovels,
+    defaultChapterSort,
+    refreshNovelMetadata,
+    disableHapticFeedback,
+    useLibraryFAB,
+    setAppSettings,
+  } = useAppSettings();
 
-  const { showLastUpdateTime = true } = useSelector(
-    (state: RootState) => state.updatesReducer,
-  );
+  const { showLastUpdateTime, setShowLastUpdateTime } = useLastUpdate();
 
   const generateNovelBadgesDescription = () => {
     let res = [];
@@ -172,12 +168,7 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
             description={'Not recommended for low devices'}
             value={updateLibraryOnLaunch}
             onPress={() =>
-              dispatch(
-                setAppSettings({
-                  key: 'updateLibraryOnLaunch',
-                  value: !updateLibraryOnLaunch,
-                }),
-              )
+              setAppSettings({ updateLibraryOnLaunch: !updateLibraryOnLaunch })
             }
             theme={theme}
           />
@@ -186,11 +177,7 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
               'moreScreen.settingsScreen.generalSettingsScreen.useFAB',
             )}
             value={useLibraryFAB}
-            onPress={() =>
-              dispatch(
-                setAppSettings({ key: 'useLibraryFAB', value: !useLibraryFAB }),
-              )
-            }
+            onPress={() => setAppSettings({ useLibraryFAB: !useLibraryFAB })}
             theme={theme}
           />
           <List.Divider theme={theme} />
@@ -225,12 +212,9 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
             )}
             value={onlyUpdateOngoingNovels}
             onPress={() =>
-              dispatch(
-                setAppSettings({
-                  key: 'onlyUpdateOngoingNovels',
-                  value: !onlyUpdateOngoingNovels,
-                }),
-              )
+              setAppSettings({
+                onlyUpdateOngoingNovels: !onlyUpdateOngoingNovels,
+              })
             }
             theme={theme}
           />
@@ -243,12 +227,7 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
             )}
             value={refreshNovelMetadata}
             onPress={() =>
-              dispatch(
-                setAppSettings({
-                  key: 'refreshNovelMetadata',
-                  value: !refreshNovelMetadata,
-                }),
-              )
+              setAppSettings({ refreshNovelMetadata: !refreshNovelMetadata })
             }
             theme={theme}
           />
@@ -257,12 +236,7 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
               'moreScreen.settingsScreen.generalSettingsScreen.updateTime',
             )}
             value={showLastUpdateTime}
-            onPress={() =>
-              dispatch({
-                type: SHOW_LAST_UPDATE_TIME,
-                payload: !showLastUpdateTime,
-              })
-            }
+            onPress={() => setShowLastUpdateTime(!showLastUpdateTime)}
             theme={theme}
           />
           <List.Divider theme={theme} />
@@ -277,12 +251,7 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
             )}
             value={downloadNewChapters}
             onPress={() =>
-              dispatch(
-                setAppSettings({
-                  key: 'downloadNewChapters',
-                  value: !downloadNewChapters,
-                }),
-              )
+              setAppSettings({ downloadNewChapters: !downloadNewChapters })
             }
             theme={theme}
           />
@@ -296,12 +265,7 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
             )}
             value={disableHapticFeedback}
             onPress={() =>
-              dispatch(
-                setAppSettings({
-                  key: 'disableHapticFeedback',
-                  value: !disableHapticFeedback,
-                }),
-              )
+              setAppSettings({ disableHapticFeedback: !disableHapticFeedback })
             }
             theme={theme}
           />
@@ -317,7 +281,7 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
         defaultChapterSort={defaultChapterSort}
         displayModalVisible={defaultChapterSortModal.value}
         hideDisplayModal={defaultChapterSortModal.setFalse}
-        dispatch={dispatch}
+        setAppSettings={setAppSettings}
         theme={theme}
       />
       <GridSizeModal

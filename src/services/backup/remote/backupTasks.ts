@@ -1,5 +1,4 @@
 import { appVersion } from '@utils/versionUtils';
-import { store } from '@redux/store';
 
 import { MMKVStorage } from '@utils/mmkv/mmkv';
 import {
@@ -136,40 +135,20 @@ export const downloadTask = (folderTree: string[]): Promise<BackupTask> => {
 export const settingTask = async (
   folderTree: string[],
 ): Promise<BackupTask> => {
-  const state = store.getState();
-  state.trackerReducer = {
-    'tracker': null,
-    'trackedNovels': [],
-  };
+  const keys = MMKVStorage.getAllKeys();
+  const data = keys.map(key => {
+    return {
+      [key]: MMKVStorage.getString(key),
+    };
+  });
   const backupPackage: BackupPackage = {
     folderTree,
     name: BackupDataFileName.SETTING,
     mimeType: 'application/json',
-    content: JSON.stringify(state),
+    content: JSON.stringify(data),
   };
   return {
     taskType: TaskType.SETTING,
-    subtasks: [async () => backupPackage],
-  };
-};
-
-export const themeTask = async (folderTree: string[]): Promise<BackupTask> => {
-  const APP_THEME = MMKVStorage.getString('APP_THEME');
-  const AMOLED_BLACK = MMKVStorage.getBoolean('AMOLED_BLACK');
-  const CUSTOM_ACCENT_COLOR = MMKVStorage.getString('CUSTOM_ACCENT_COLOR');
-
-  const backupPackage: BackupPackage = {
-    folderTree,
-    name: BackupDataFileName.THEME,
-    mimeType: 'application/json',
-    content: JSON.stringify({
-      APP_THEME,
-      AMOLED_BLACK,
-      CUSTOM_ACCENT_COLOR,
-    }),
-  };
-  return {
-    taskType: TaskType.THEME,
     subtasks: [async () => backupPackage],
   };
 };

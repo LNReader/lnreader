@@ -3,9 +3,9 @@ import { View, StyleSheet, useWindowDimensions } from 'react-native';
 import { ThemeColors } from '@theme/types';
 import getLoadingColors from '@utils/getLoadingColors';
 import LoadingNovel from '@screens/browse/loadingAnimation/LoadingNovel';
-import { useLibrarySettings } from '@hooks/useSettings';
+import { useLibrarySettings } from '@hooks/persisted';
 import { DisplayModes } from '@screens/library/constants/constants';
-import { useDeviceOrientation } from '@hooks/useDeviceOrientation';
+import { useDeviceOrientation } from '@hooks';
 
 interface Props {
   theme: ThemeColors;

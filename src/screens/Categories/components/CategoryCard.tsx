@@ -1,10 +1,10 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 
-import { Category } from '../../../database/types';
-import { useTheme } from '@hooks/useTheme';
+import { Category } from '@database/types';
+import { useTheme } from '@hooks/persisted';
 import AddCategoryModal from './AddCategoryModal';
-import useBoolean from '@hooks/useBoolean';
+import { useBoolean } from '@hooks';
 import { overlay, Portal } from 'react-native-paper';
 import IconButton from '@components/IconButtonV2/IconButtonV2';
 import DeleteCategoryModal from './DeleteCategoryModal';

@@ -5,7 +5,7 @@ import { Button, Dialog } from 'react-native-paper';
 import { RadioButton } from '@components';
 
 import { getString } from '@strings/translations';
-import { useTheme } from '@hooks';
+import { useTheme } from '@hooks/persisted';
 
 import { Category } from '@database/types';
 

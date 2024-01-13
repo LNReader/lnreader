@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, Pressable } from 'react-native';
+import { StyleSheet, Text, View, Pressable } from 'react-native';
 
 import { IconButtonV2 } from '@components';
 
@@ -7,31 +7,28 @@ import { coverPlaceholderColor } from '@theme/colors';
 import { ThemeColors } from '@theme/types';
 
 import { PluginItem } from '@plugins/types';
-import { installPlugin } from '@plugins/pluginManager';
 import { PluginMenu } from './PluginMenu';
+import FastImage from 'react-native-fast-image';
+import { showToast } from '@utils/showToast';
 
 interface Props {
   installed: boolean;
   plugin: PluginItem;
-  isPinned: boolean;
   theme: ThemeColors;
-  onTogglePinSource: (plugin: PluginItem) => void;
   navigateToSource: (plugin: PluginItem, showLatestNovels?: boolean) => void;
-  onInstallPlugin: (plugin: PluginItem) => void;
-  onUninstallPlugin: (plugin: PluginItem) => void;
-  onUpdatePlugin: (plugin: PluginItem) => void;
+  installPlugin: (plugin: PluginItem) => Promise<void>;
+  uninstallPlugin: (plugin: PluginItem) => Promise<void>;
+  updatePlugin: (plugin: PluginItem) => Promise<void>;
 }
 
 const PluginCard: React.FC<Props> = ({
   installed,
   plugin,
-  isPinned,
   navigateToSource,
-  onTogglePinSource,
   theme,
-  onInstallPlugin,
-  onUninstallPlugin,
-  onUpdatePlugin,
+  installPlugin,
+  uninstallPlugin,
+  updatePlugin,
 }) => (
   <Pressable
     style={styles.container}
@@ -39,7 +36,7 @@ const PluginCard: React.FC<Props> = ({
     android_ripple={{ color: theme.rippleColor }}
   >
     <View style={styles.flexRow}>
-      <Image source={{ uri: plugin.iconUrl }} style={styles.icon} />
+      <FastImage source={{ uri: plugin.iconUrl }} style={styles.icon} />
       <View style={styles.details}>
         <Text style={{ color: theme.onSurface }}>{plugin.name}</Text>
         <Text style={{ color: theme.onSurface, fontWeight: 'bold' }}>
@@ -54,12 +51,10 @@ const PluginCard: React.FC<Props> = ({
       {installed ? (
         <PluginMenu
           plugin={plugin}
-          isPinned={isPinned}
           theme={theme}
-          onTogglePinSource={onTogglePinSource}
           navigateToSource={navigateToSource}
-          onUninstallPlugin={onUninstallPlugin}
-          onUpdatePlugin={onUpdatePlugin}
+          uninstallPlugin={uninstallPlugin}
+          updatePlugin={updatePlugin}
         />
       ) : (
         <>
@@ -68,11 +63,9 @@ const PluginCard: React.FC<Props> = ({
             size={22}
             color={theme.primary}
             onPress={() =>
-              installPlugin(plugin.url).then(res => {
-                if (res) {
-                  onInstallPlugin(plugin);
-                }
-              })
+              installPlugin(plugin).then(() =>
+                showToast(`Installed ${plugin.name}`),
+              )
             }
             theme={theme}
           />

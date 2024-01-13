@@ -6,7 +6,7 @@ import { getString } from '@strings/translations';
 import { Button } from '@components';
 
 import { Modal, Portal, Switch, TextInput, Text } from 'react-native-paper';
-import { useTheme } from '@hooks/useTheme';
+import { useTheme } from '@hooks/persisted';
 import { ChapterInfo, NovelInfo } from '@database/types';
 import { NovelScreenProps } from '@navigators/types';
 

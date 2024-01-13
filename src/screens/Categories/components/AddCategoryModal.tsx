@@ -10,10 +10,10 @@ import {
   isCategoryNameDuplicate,
   updateCategory,
 } from '../../../database/queries/CategoryQueries';
-import { useTheme } from '@hooks/useTheme';
+import { useTheme } from '@hooks/persisted';
 
 import { getString } from '@strings/translations';
-import { showToast } from '@hooks/showToast';
+import { showToast } from '@utils/showToast';
 
 interface AddCategoryModalProps {
   isEditMode?: boolean;

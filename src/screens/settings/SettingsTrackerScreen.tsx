@@ -2,26 +2,13 @@ import React, { useState } from 'react';
 import { View } from 'react-native';
 import { Modal, Portal, Text, Button, Provider } from 'react-native-paper';
 
-import * as WebBrowser from 'expo-web-browser';
-import {
-  myAnimeListConfig,
-  getAccessToken,
-  malTokenWatcher,
-} from '../../services/Trackers/myAnimeList';
-
-import { useSelector, useDispatch } from 'react-redux';
-import { removeTracker, setTracker } from '../../redux/tracker/tracker.actions';
-import { useTheme } from '@hooks/useTheme';
+import { getTracker, useTheme, useTracker } from '@hooks/persisted';
 import { Appbar, List } from '@components';
 import { TrackerSettingsScreenProps } from '@navigators/types';
-import { RootState } from '@redux/store';
 
 const TrackerScreen = ({ navigation }: TrackerSettingsScreenProps) => {
   const theme = useTheme();
-  const tracker = useSelector(
-    (state: RootState) => state.trackerReducer.tracker,
-  );
-  const dispatch = useDispatch();
+  const { tracker, removeTracker, setTracker } = useTracker();
 
   // Tracker Modal
   const [visible, setVisible] = useState(false);
@@ -45,53 +32,53 @@ const TrackerScreen = ({ navigation }: TrackerSettingsScreenProps) => {
         <List.Section>
           <List.SubHeader theme={theme}>Services</List.SubHeader>
           <List.Item
+            title="AniList"
+            onPress={async () => {
+              if (tracker) {
+                showModal();
+              } else {
+                const auth = await getTracker('AniList').authenticate();
+                if (auth) {
+                  setTracker('AniList', auth);
+                }
+              }
+            }}
+            right={tracker?.name === 'AniList' ? 'check' : undefined}
+            theme={theme}
+          />
+          <List.Item
             title="MyAnimeList"
             onPress={async () => {
               if (tracker) {
                 showModal();
               } else {
-                await WebBrowser.openAuthSessionAsync(
-                  myAnimeListConfig.authUrl,
-                  myAnimeListConfig.redirectUri,
-                ).then(res => {
-                  // console.log(res.type);
-                  if (res.type === 'success') {
-                    const { url } = res;
-
-                    const codeExtractor = new RegExp(/[=]([^&]+)/);
-                    let code = url.match(codeExtractor);
-
-                    // console.log(code);
-
-                    if (code) {
-                      getAccessToken(
-                        code[1],
-                        myAnimeListConfig.codeChallenge,
-                      ).then(objects => {
-                        // console.log(objects);
-                        dispatch(setTracker(objects));
-                      });
-                    }
-                  }
-                });
+                const auth = await getTracker('MyAnimeList').authenticate();
+                if (auth) {
+                  setTracker('MyAnimeList', auth);
+                }
               }
             }}
+            right={tracker?.name === 'MyAnimeList' ? 'check' : undefined}
             theme={theme}
           />
-          {tracker && tracker.expires_in < new Date(Date.now()) && (
-            <>
-              <List.Divider theme={theme} />
-              <List.SubHeader theme={theme}>Settings</List.SubHeader>
-              <List.Item
-                title="Revalidate MyAnimeList"
-                onPress={() => {
-                  const res = malTokenWatcher(tracker);
-                  dispatch(setTracker(res));
-                }}
-                theme={theme}
-              />
-            </>
-          )}
+          {tracker?.name === 'MyAnimeList' &&
+            tracker?.auth.expiresAt < new Date(Date.now()) && (
+              <>
+                <List.Divider theme={theme} />
+                <List.SubHeader theme={theme}>Settings</List.SubHeader>
+                <List.Item
+                  title="Revalidate MyAnimeList"
+                  onPress={async () => {
+                    const revalidate = getTracker('MyAnimeList')?.revalidate;
+                    if (revalidate) {
+                      const auth = await revalidate(tracker.auth);
+                      setTracker('MyAnimeList', auth);
+                    }
+                  }}
+                  theme={theme}
+                />
+              </>
+            )}
         </List.Section>
 
         <Portal>
@@ -111,7 +98,7 @@ const TrackerScreen = ({ navigation }: TrackerSettingsScreenProps) => {
                 fontSize: 18,
               }}
             >
-              Log out from MyAnimeList?
+              Log out from {tracker?.name}?
             </Text>
             <View
               style={{
@@ -138,7 +125,7 @@ const TrackerScreen = ({ navigation }: TrackerSettingsScreenProps) => {
                   textTransform: 'none',
                 }}
                 onPress={() => {
-                  dispatch(removeTracker());
+                  removeTracker();
                   hideModal();
                 }}
               >

@@ -7,9 +7,8 @@ import History from '../screens/history/HistoryScreen';
 import Browse from '../screens/browse/BrowseScreen';
 import More from '../screens/more/MoreScreen';
 
-import { useSettings } from '../hooks/reduxHooks';
-import { getString } from '../../strings/translations';
-import { useTheme } from '@hooks/useTheme';
+import { getString } from '@strings/translations';
+import { useAppSettings, useTheme } from '@hooks/persisted';
 import { BottomNavigatorParamList } from './types';
 
 const Tab = createMaterialBottomTabNavigator<BottomNavigatorParamList>();
@@ -21,7 +20,7 @@ const BottomNavigator = () => {
     showHistoryTab = true,
     showUpdatesTab = true,
     showLabelsInNav = false,
-  } = useSettings();
+  } = useAppSettings();
 
   return (
     <Tab.Navigator

@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, StyleSheet, FlatListProps } from 'react-native';
 import { ProgressBar } from 'react-native-paper';
-import { useTheme } from '@hooks/useTheme';
+import { usePlugins, useTheme } from '@hooks/persisted';
 
 import EmptyView from '@components/EmptyView';
 import MigrationNovelList from './MigrationNovelList';
 
 import { ScreenContainer } from '@components/Common';
 import { getPlugin } from '@plugins/pluginManager';
-import { useBrowseSettings, usePluginReducer } from '@redux/hooks';
 import { useLibraryNovels } from '@screens/library/hooks/useLibrary';
 import { Appbar } from '@components';
 import GlobalSearchSkeletonLoading from '../loadingAnimation/GlobalSearchSkeletonLoading';
@@ -35,15 +34,11 @@ const MigrationNovels = ({ navigation, route }: MigrateNovelScreenProps) => {
 
   const { library } = useLibraryNovels();
 
-  const { installedPlugins, pinnedPlugins } = usePluginReducer();
-
-  const { searchAllSources = false } = useBrowseSettings();
+  const { filteredInstalledPlugins } = usePlugins();
 
   const getSearchResults = async () => {
-    let migrationSources = searchAllSources ? installedPlugins : pinnedPlugins;
-
     setSearchResults(
-      migrationSources.map(item => ({
+      filteredInstalledPlugins.map(item => ({
         id: item.id,
         name: item.name,
         lang: item.lang,
@@ -53,7 +48,7 @@ const MigrationNovels = ({ navigation, route }: MigrateNovelScreenProps) => {
       })),
     );
 
-    migrationSources.map(async item => {
+    filteredInstalledPlugins.map(async item => {
       if (isMounted.current === true) {
         try {
           const source = getPlugin(item.id);
@@ -79,7 +74,7 @@ const MigrationNovels = ({ navigation, route }: MigrateNovelScreenProps) => {
           );
         }
 
-        setProgress(before => before + 1 / migrationSources.length);
+        setProgress(before => before + 1 / filteredInstalledPlugins.length);
       }
     });
   };
@@ -140,12 +135,12 @@ const MigrationNovels = ({ navigation, route }: MigrateNovelScreenProps) => {
         data={searchResults}
         keyExtractor={item => item.id}
         renderItem={renderItem}
-        extraData={pinnedPlugins}
+        extraData={filteredInstalledPlugins}
         ListEmptyComponent={
           <EmptyView
             icon="__φ(．．)"
             description={`Search a novel in your pinned plugins ${
-              pinnedPlugins.length === 0 ? '(No plugins pinned)' : ''
+              filteredInstalledPlugins.length === 0 ? '(No plugins pinned)' : ''
             }`}
           />
         }

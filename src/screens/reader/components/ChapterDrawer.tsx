@@ -1,15 +1,12 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { StyleSheet, View, Pressable } from 'react-native';
 import { Text } from 'react-native-paper';
 import color from 'color';
-import { useTheme } from '@hooks/useTheme';
+import { useAppSettings, useNovel, useTheme } from '@hooks/persisted';
 import { FlashList, FlashListProps } from '@shopify/flash-list';
 import { Button, LoadingScreenV2 } from '@components/index';
 import { EdgeInsets, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getString } from '@strings/translations';
-import { useNovel, useSettings, usePreferences } from '@hooks/reduxHooks';
-import { useDispatch } from 'react-redux';
-import { getNovelAction } from '@redux/novel/novel.actions';
 import { ChapterScreenProps } from '@navigators/types';
 import { ChapterInfo } from '@database/types';
 import { ThemeColors } from '@theme/types';
@@ -19,18 +16,14 @@ const ChapterDrawer = ({ route, navigation }: ChapterScreenProps) => {
   const insets = useSafeAreaInsets();
   const styles = createStylesheet(theme, insets);
   const listRef = useRef<FlashList<ChapterInfo>>(null);
-  const dispatch = useDispatch();
   const { chapter, novel: novelItem } = route.params;
-  const { defaultChapterSort = 'ORDER BY id ASC' } = useSettings();
-  const { sort = defaultChapterSort, filter = '' } = usePreferences(
-    chapter.novelId,
+  const { defaultChapterSort } = useAppSettings();
+  const { chapters, novelSettings } = useNovel(
+    novelItem.url,
+    novelItem.pluginId,
   );
-  const { novel, chapters } = useNovel();
-  useEffect(() => {
-    if (chapter.novelId !== novel.id || chapters.length === 0) {
-      dispatch(getNovelAction(novelItem.pluginId, novelItem.url, sort, filter));
-    }
-  }, [defaultChapterSort, dispatch, filter, novelItem, chapter]);
+  const { sort = defaultChapterSort } = novelSettings;
+
   const listAscending = sort === 'ORDER BY id ASC';
   const scrollToIndex = useMemo(() => {
     if (chapters.length < 1) {

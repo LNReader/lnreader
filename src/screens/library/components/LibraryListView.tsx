@@ -9,9 +9,8 @@ import NovelList, { NovelListRenderItem } from '@components/NovelList';
 import { LibraryNovelInfo } from '@database/types';
 
 import { getString } from '@strings/translations';
-import { useAppDispatch } from '@redux/hooks';
-import { useTheme } from '@hooks/useTheme';
-import { updateLibraryAction } from '@redux/updates/updates.actions';
+import { useTheme } from '@hooks/persisted';
+import { updateLibrary } from '@services/updates';
 import { LibraryScreenProps } from '@navigators/types';
 
 interface Props {
@@ -30,7 +29,6 @@ export const LibraryView: React.FC<Props> = ({
   navigation,
 }) => {
   const theme = useTheme();
-  const dispatch = useAppDispatch();
   const renderItem = ({ item }: { item: LibraryNovelInfo }) => (
     <NovelCover
       item={item}
@@ -61,7 +59,7 @@ export const LibraryView: React.FC<Props> = ({
       return;
     }
     setRefreshing(true);
-    dispatch(updateLibraryAction({ categoryId }));
+    updateLibrary(categoryId);
     setRefreshing(false);
   };
 

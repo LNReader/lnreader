@@ -4,11 +4,9 @@ import color from 'color';
 
 import { BottomSheetView, BottomSheetModal } from '@gorhom/bottom-sheet';
 import BottomSheet from '@components/BottomSheet/BottomSheet';
-import { useAppDispatch, useSettingsV1 } from '@redux/hooks';
-import { useTheme } from '@hooks/useTheme';
+import { useChapterGeneralSettings, useTheme } from '@hooks/persisted';
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
 import { getString } from '@strings/translations';
-import { setAppSettings } from '@redux/settings/settingsSliceV1';
 
 import ReaderSheetPreferenceItem from './ReaderSheetPreferenceItem';
 import TextSizeSlider from './TextSizeSlider';
@@ -32,44 +30,38 @@ const ReaderTab: React.FC = () => {
 
 const GeneralTab: React.FC = () => {
   const theme = useTheme();
-  const dispatch = useAppDispatch();
   const {
     fullScreenMode,
     autoScroll,
     verticalSeekbar,
     showBatteryAndTime,
     showScrollPercentage,
-    useVolumeButtons = false,
-    swipeGestures = false,
-    removeExtraParagraphSpacing = false,
-  } = useSettingsV1();
+    useVolumeButtons,
+    swipeGestures,
+    removeExtraParagraphSpacing,
+    setChapterGeneralSettings,
+  } = useChapterGeneralSettings();
 
   return (
     <View>
       <ReaderSheetPreferenceItem
         label={getString('readerScreen.bottomSheet.fullscreen')}
         onPress={() =>
-          dispatch(
-            setAppSettings({ key: 'fullScreenMode', value: !fullScreenMode }),
-          )
+          setChapterGeneralSettings({ fullScreenMode: !fullScreenMode })
         }
         value={fullScreenMode}
         theme={theme}
       />
       <ReaderSheetPreferenceItem
         label={getString('readerScreen.bottomSheet.autoscroll')}
-        onPress={() =>
-          dispatch(setAppSettings({ key: 'autoScroll', value: !autoScroll }))
-        }
+        onPress={() => setChapterGeneralSettings({ autoScroll: !autoScroll })}
         value={autoScroll}
         theme={theme}
       />
       <ReaderSheetPreferenceItem
         label={getString('readerScreen.bottomSheet.verticalSeekbar')}
         onPress={() =>
-          dispatch(
-            setAppSettings({ key: 'verticalSeekbar', value: !verticalSeekbar }),
-          )
+          setChapterGeneralSettings({ verticalSeekbar: !verticalSeekbar })
         }
         value={verticalSeekbar}
         theme={theme}
@@ -77,12 +69,7 @@ const GeneralTab: React.FC = () => {
       <ReaderSheetPreferenceItem
         label={getString('readerScreen.bottomSheet.showBatteryAndTime')}
         onPress={() =>
-          dispatch(
-            setAppSettings({
-              key: 'showBatteryAndTime',
-              value: !showBatteryAndTime,
-            }),
-          )
+          setChapterGeneralSettings({ showBatteryAndTime: !showBatteryAndTime })
         }
         value={showBatteryAndTime}
         theme={theme}
@@ -90,12 +77,9 @@ const GeneralTab: React.FC = () => {
       <ReaderSheetPreferenceItem
         label={getString('readerScreen.bottomSheet.showProgressPercentage')}
         onPress={() =>
-          dispatch(
-            setAppSettings({
-              key: 'showScrollPercentage',
-              value: !showScrollPercentage,
-            }),
-          )
+          setChapterGeneralSettings({
+            showScrollPercentage: !showScrollPercentage,
+          })
         }
         value={showScrollPercentage}
         theme={theme}
@@ -103,9 +87,7 @@ const GeneralTab: React.FC = () => {
       <ReaderSheetPreferenceItem
         label={getString('readerScreen.bottomSheet.swipeGestures')}
         onPress={() =>
-          dispatch(
-            setAppSettings({ key: 'swipeGestures', value: !swipeGestures }),
-          )
+          setChapterGeneralSettings({ swipeGestures: !swipeGestures })
         }
         value={swipeGestures}
         theme={theme}
@@ -113,12 +95,9 @@ const GeneralTab: React.FC = () => {
       <ReaderSheetPreferenceItem
         label={getString('readerScreen.bottomSheet.removeExtraSpacing')}
         onPress={() =>
-          dispatch(
-            setAppSettings({
-              key: 'removeExtraParagraphSpacing',
-              value: !removeExtraParagraphSpacing,
-            }),
-          )
+          setChapterGeneralSettings({
+            removeExtraParagraphSpacing: !removeExtraParagraphSpacing,
+          })
         }
         value={removeExtraParagraphSpacing}
         theme={theme}
@@ -126,12 +105,7 @@ const GeneralTab: React.FC = () => {
       <ReaderSheetPreferenceItem
         label={getString('readerScreen.bottomSheet.volumeButtonsScroll')}
         onPress={() =>
-          dispatch(
-            setAppSettings({
-              key: 'useVolumeButtons',
-              value: !useVolumeButtons,
-            }),
-          )
+          setChapterGeneralSettings({ useVolumeButtons: !useVolumeButtons })
         }
         value={useVolumeButtons}
         theme={theme}

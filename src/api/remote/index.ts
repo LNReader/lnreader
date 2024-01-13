@@ -1,6 +1,7 @@
 import { PATH_SEPARATOR } from '@api/constants';
 import { BackupPackage } from '@services/backup/types';
 import { AppDownloadFolder } from '@utils/constants/download';
+import { fetchTimeout } from '@utils/fetch/fetch';
 import { downloadFile, mkdir } from 'react-native-fs';
 
 const commonHeaders = {
@@ -27,7 +28,7 @@ export const upload = (host: string, data: BackupPackage) => {
       type: data.mimeType,
     });
   }
-  return fetch(url, {
+  return fetchTimeout(url, {
     method: 'POST',
     headers: commonHeaders,
     body,
@@ -39,7 +40,7 @@ export const list = (host: string, folderTree: string[]): Promise<string[]> => {
   const body = new FormData();
   body.append('metadata', JSON.stringify({ folderTree }));
 
-  return fetch(url, {
+  return fetchTimeout(url, {
     method: 'POST',
     headers: commonHeaders,
     body,
@@ -48,7 +49,7 @@ export const list = (host: string, folderTree: string[]): Promise<string[]> => {
 
 export const getJson = (host: string, folderTree: string[], name: string) => {
   const url = host + '/' + 'download' + '/' + folderTree.join('/') + '/' + name;
-  return fetch(url, {
+  return fetchTimeout(url, {
     headers: commonHeaders,
   }).then(res => res.json());
 };
@@ -79,7 +80,7 @@ export const exists = (
   const url = host + '/' + 'exists';
   const body = new FormData();
   body.append('metadata', JSON.stringify({ folderTree, name }));
-  return fetch(url, {
+  return fetchTimeout(url, {
     method: 'POST',
     headers: commonHeaders,
     body,

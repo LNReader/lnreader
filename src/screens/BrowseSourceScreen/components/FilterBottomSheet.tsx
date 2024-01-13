@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import BottomSheet from '../../../components/BottomSheet/BottomSheet';
+import BottomSheet from '@components/BottomSheet/BottomSheet';
 import { BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet';
 
-import { useTheme } from '@hooks/useTheme';
+import { useTheme } from '@hooks/persisted';
 import {
   FilterTypes,
   FilterToValues,
@@ -14,7 +14,7 @@ import { FlatList } from 'react-native-gesture-handler';
 import { Button, IconButtonV2 } from '@components/index';
 import { Checkbox } from '@components/Checkbox/Checkbox';
 import { Picker } from '@react-native-picker/picker';
-import useBoolean from '@hooks/useBoolean';
+import { useBoolean } from '@hooks';
 import { overlay } from 'react-native-paper';
 import { getValueFor } from './filterUtils';
 

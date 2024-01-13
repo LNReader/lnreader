@@ -1,38 +1,34 @@
-import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import color from 'color';
 
 import { Appbar, Text } from 'react-native-paper';
 import { IconButtonV2 } from '../../../components';
-import { bookmarkChapterAction } from '../../../redux/novel/novel.actions';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
-import { useAppDispatch } from '@redux/hooks';
 import { ThemeColors } from '@theme/types';
-import { TextToSpeechStatus } from '@hooks/useTextToSpeech';
+import { TextToSpeechStatus } from '@hooks';
+import { ChapterInfo } from '@database/types';
 
 interface ReaderAppbarProps {
-  bookmark: boolean;
   novelName: string;
-  chapterId: number;
-  chapterName: string;
+  chapter: ChapterInfo;
   tts: () => void;
   textToSpeech: TextToSpeechStatus;
   theme: ThemeColors;
+  bookmarkChapters: (chapters: ChapterInfo[]) => void;
+  goBack: () => void;
 }
 
 const ReaderAppbar = ({
-  bookmark,
   novelName,
-  chapterId,
-  chapterName,
+  chapter,
   tts,
+  bookmarkChapters,
+  goBack,
   textToSpeech,
   theme,
 }: ReaderAppbarProps) => {
-  const dispatch = useAppDispatch();
-  const { goBack } = useNavigation();
-  const [bookmarked, setBookmarked] = useState(bookmark);
+  const [bookmarked, setBookmarked] = useState(chapter.bookmark);
 
   return (
     <Animated.View
@@ -65,7 +61,7 @@ const ReaderAppbar = ({
               style={[styles.subtitle, { color: theme.onSurfaceVariant }]}
               numberOfLines={1}
             >
-              {chapterName}
+              {chapter.name}
             </Text>
           </View>
           <Appbar.Action
@@ -87,7 +83,7 @@ const ReaderAppbar = ({
             name={bookmarked ? 'bookmark' : 'bookmark-outline'}
             size={24}
             onPress={() => {
-              dispatch(bookmarkChapterAction([{ bookmark, chapterId }]));
+              bookmarkChapters([chapter]);
               setBookmarked(!bookmarked);
             }}
             color={theme.onSurface}

@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 
-import { useBrowseSettings, usePluginReducer } from '@redux/hooks';
 import { NovelItem, PluginItem } from '@plugins/types';
 import { getPlugin } from '@plugins/pluginManager';
+import { usePlugins } from '@hooks/persisted';
 
 interface Props {
   defaultSearchText?: string;
@@ -17,31 +17,25 @@ export interface GlobalSearchResult {
 
 export const useGlobalSearch = ({ defaultSearchText }: Props) => {
   const isMounted = useRef(true);
-  const { searchAllSources = false } = useBrowseSettings();
 
-  const { installedPlugins, pinnedPlugins } = usePluginReducer();
+  const { filteredInstalledPlugins } = usePlugins();
 
   const [searchResults, setSearchResults] = useState<GlobalSearchResult[]>([]);
   const [progress, setProgress] = useState(0);
 
   const globalSearch = (searchText: string) => {
-    const pinnedInstalledPlugins = installedPlugins.filter(plugin =>
-      pinnedPlugins.find(plg => plg.id === plugin.id),
+    const defaultResult: GlobalSearchResult[] = filteredInstalledPlugins.map(
+      plugin => ({
+        isLoading: true,
+        plugin,
+        novels: [],
+        error: null,
+      }),
     );
-    const plugins = searchAllSources
-      ? installedPlugins
-      : pinnedInstalledPlugins;
-
-    const defaultResult: GlobalSearchResult[] = plugins.map(plugin => ({
-      isLoading: true,
-      plugin,
-      novels: [],
-      error: null,
-    }));
 
     setSearchResults(defaultResult);
 
-    plugins.forEach(async plugin => {
+    filteredInstalledPlugins.forEach(async plugin => {
       if (isMounted.current) {
         try {
           const res = await getPlugin(plugin.id).searchNovels(searchText);
@@ -85,7 +79,9 @@ export const useGlobalSearch = ({ defaultSearchText }: Props) => {
             ),
           );
         } finally {
-          setProgress(prevState => prevState + 1 / plugins.length);
+          setProgress(
+            prevState => prevState + 1 / filteredInstalledPlugins.length,
+          );
         }
       }
     });
@@ -97,5 +93,5 @@ export const useGlobalSearch = ({ defaultSearchText }: Props) => {
     }
   }, []);
 
-  return { searchResults, globalSearch, searchAllSources, progress };
+  return { searchResults, globalSearch, progress };
 };

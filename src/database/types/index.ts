@@ -31,20 +31,14 @@ export interface ChapterInfo {
   unread: boolean;
   isDownloaded: boolean;
   updatedTime: string | null;
+  chapterNumber?: number;
+}
 
-  // download screen need this :)
+export interface DownloadedChapter extends ChapterInfo {
   pluginId: string;
   novelName: string;
   novelUrl: string;
-
-  // migrate need this :)
-  number: number;
-}
-
-export interface DownloadedChapter {
-  id: number; // chapterId
-  novelId: number;
-  pluginId: string;
+  novelCover: string;
 }
 
 export interface History {
@@ -60,16 +54,12 @@ export interface History {
   bookmark: number;
 }
 
-export interface Update {
-  id: number; // chapterId
+export interface Update extends ChapterInfo {
+  updatedTime: string;
   pluginId: string;
-  novelId: number;
   novelName: string;
   novelUrl: string;
   novelCover: string;
-  name: string; //  chapterName
-  url: string; //  chapterUrl
-  updatedTime: string;
 }
 
 export interface Category {

@@ -4,7 +4,7 @@ import { Portal, Modal } from 'react-native-paper';
 import GlobalSearchNovelCover from '../globalsearch/GlobalSearchNovelCover';
 
 import { migrateNovel } from '@services/migrate/migrateNovel';
-import { showToast } from '@hooks/showToast';
+import { showToast } from '@utils/showToast';
 
 import { Button } from '@components';
 import { getString } from '@strings/translations';
@@ -116,10 +116,9 @@ const MigrationNovelList = ({
               title={getString('common.cancel')}
             />
             <Button
-              onPress={async () => {
+              onPress={() => {
                 hideMigrateNovelDialog();
-                await migrateNovel(pluginId, fromNovel, selectedNovel.url);
-                showToast(`${fromNovel.name} migrated to new source.`);
+                migrateNovel(pluginId, fromNovel, selectedNovel.url);
               }}
               title={getString('novelScreen.migrate')}
             />

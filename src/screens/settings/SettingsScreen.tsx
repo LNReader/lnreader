@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 
 import { Appbar, List } from '@components';
-import { useTheme } from '@hooks/useTheme';
+import { useTheme } from '@hooks/persisted';
 
 import { getString } from '@strings/translations';
 import { SettingsScreenProps } from '@navigators/types';
@@ -34,7 +34,7 @@ const SettingsScreen = ({ navigation }: SettingsScreenProps) => {
           }
           theme={theme}
         />
-        <List.Item
+        {/* <List.Item
           title={getString('library')}
           icon="book-variant-multiple"
           onPress={() =>
@@ -43,7 +43,7 @@ const SettingsScreen = ({ navigation }: SettingsScreenProps) => {
             })
           }
           theme={theme}
-        />
+        /> */}
         <List.Item
           title={getString('moreScreen.settingsScreen.readerSettings.title')}
           icon="book-open-outline"

@@ -3,7 +3,7 @@ import WebView from 'react-native-webview';
 import CookieManager from '@react-native-cookies/cookies';
 
 import { Appbar } from '@components';
-import { useTheme } from '@hooks/useTheme';
+import { useTheme } from '@hooks/persisted';
 import { defaultUserAgentString } from '@utils/fetch/fetch';
 import { WebviewScreenProps } from '@navigators/types';
 import { getPlugin } from '@plugins/pluginManager';

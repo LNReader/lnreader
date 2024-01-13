@@ -13,12 +13,14 @@ const SetTrackStatusDialog = ({
   updateTrackStatus,
   theme,
 }) => {
-  const myAnimeListStatus = {
-    reading: 'Reading',
-    completed: 'Completed',
-    on_hold: 'On Hold',
-    dropped: 'Dropped',
-    plan_to_read: 'Plan to read',
+  /** @type {Record<import("../../../../services/Trackers/index").UserListStatus, string>} */
+  const statusTypes = {
+    CURRENT: 'Reading',
+    PLANNING: 'Plan to read',
+    COMPLETED: 'Completed',
+    DROPPED: 'Dropped',
+    PAUSED: 'On Hold',
+    REPEATING: 'Rereading',
   };
 
   return (
@@ -35,13 +37,13 @@ const SetTrackStatusDialog = ({
       </Text>
       <RadioButtonGroup
         onValueChange={updateTrackStatus}
-        value={trackItem.my_list_status.status}
+        value={trackItem.status}
       >
-        {Object.keys(myAnimeListStatus).map((key, index) => (
+        {Object.keys(statusTypes).map((key, index) => (
           <RadioButton
             key={index}
             value={key}
-            label={myAnimeListStatus[key]}
+            label={statusTypes[key]}
             theme={theme}
           />
         ))}

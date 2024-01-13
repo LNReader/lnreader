@@ -37,11 +37,26 @@ class ScrollHandler {
   constructor(reader) {
     this.reader = reader;
     this.$ = document.getElementById('ScrollBar');
-    this.$.innerHTML =
-      '<div class="scrollbar-item scrollbar-text d-none" id="scrollbar-percentage">0</div><div class="scrollbar-item" id="scrollbar-slider"><div id="scrollbar-track"></div><div id="scrollbar-progress"><div id="scrollbar-thumb"></div></div></div><div class="scrollbar-item scrollbar-text">100</div>';
+    this.$.innerHTML = `
+        <div class="scrollbar-item scrollbar-text d-none" id="scrollbar-percentage">
+          0
+        </div>
+        <div class="scrollbar-item" id="scrollbar-slider">
+          <div id="scrollbar-track">
+          </div>
+          <div id="scrollbar-progress">
+            <div id="scrollbar-thumb-wrapper"> 
+              <div id="scrollbar-thumb"></div>
+            </div>
+          </div>
+        </div>
+        <div class="scrollbar-item scrollbar-text">
+          100
+        </div>
+      `;
     this.percentage = this.$.querySelector('#scrollbar-percentage');
     this.progress = this.$.querySelector('#scrollbar-progress');
-    this.thumb = this.$.querySelector('#scrollbar-thumb');
+    this.thumb = this.$.querySelector('#scrollbar-thumb-wrapper');
     this.slider = this.$.querySelector('#scrollbar-slider');
     this.sliderHeight = this.slider.clientHeight;
     this.sliderOffsetY = this.slider.offsetTop + this.$.offsetTop;

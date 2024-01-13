@@ -4,12 +4,13 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 import { NovelInfo } from '@database/types';
 import { useNavigation } from '@react-navigation/native';
-import { useBoolean, useNovelTrackerInfo } from '@hooks';
+import { useBoolean } from '@hooks';
 import { ThemeColors } from '@theme/types';
 import { getString } from '@strings/translations';
 import { Portal } from 'react-native-paper';
 import SetCategoryModal from '../SetCategoriesModal';
 import { NovelScreenProps } from '@navigators/types';
+import { useTrackedNovel, useTracker } from '@hooks/persisted';
 
 interface NovelScreenButtonGroupProps {
   novel: NovelInfo;
@@ -27,10 +28,10 @@ const NovelScreenButtonGroup: React.FC<NovelScreenButtonGroupProps> = ({
   const { inLibrary, isLocal } = novel;
   const { navigate } = useNavigation<NovelScreenProps['navigation']>();
   const followButtonColor = inLibrary ? theme.primary : theme.outline;
+  const { tracker } = useTracker();
+  const { trackedNovel } = useTrackedNovel(novel.id);
 
-  const { isTracked, isTrackerAvailable } = useNovelTrackerInfo(novel.id);
-
-  const trackerButtonColor = isTracked ? theme.primary : theme.outline;
+  const trackerButtonColor = trackedNovel ? theme.primary : theme.outline;
 
   const handleOpenWebView = async () => {
     navigate('WebviewScreen', {
@@ -74,7 +75,7 @@ const NovelScreenButtonGroup: React.FC<NovelScreenButtonGroupProps> = ({
             </Text>
           </Pressable>
         </View>
-        {isTrackerAvailable ? (
+        {tracker ? (
           <View style={styles.buttonContainer}>
             <Pressable
               android_ripple={{ color: theme.rippleColor }}
@@ -82,12 +83,12 @@ const NovelScreenButtonGroup: React.FC<NovelScreenButtonGroupProps> = ({
               style={styles.button}
             >
               <MaterialCommunityIcons
-                name={isTracked ? 'check' : 'sync'}
+                name={trackedNovel ? 'check' : 'sync'}
                 color={trackerButtonColor}
                 size={24}
               />
               <Text style={[styles.buttonLabel, { color: trackerButtonColor }]}>
-                {isTracked ? 'Tracked' : 'Tracking'}
+                {trackedNovel ? 'Tracked' : 'Tracking'}
               </Text>
             </Pressable>
           </View>

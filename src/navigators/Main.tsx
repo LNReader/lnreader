@@ -3,9 +3,9 @@ import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import { setBarColor } from '../theme/utils/setBarColor';
-import { useTheme } from '../hooks/useTheme';
-import { useGithubUpdateChecker } from '../hooks/githubUpdateChecker';
+import { setBarColor } from '@theme/utils/setBarColor';
+import { useAppSettings, useTheme } from '@hooks/persisted';
+import { useGithubUpdateChecker } from '@hooks/common/githubUpdateChecker';
 
 /**
  * Navigators
@@ -25,11 +25,10 @@ import SourceNovels from '../screens/browse/SourceNovels';
 import MigrateNovel from '../screens/browse/migration/MigrationNovels';
 
 import MalTopNovels from '../screens/browse/discover/MalTopNovels';
+import AniListTopNovels from '../screens/browse/discover/AniListTopNovels';
 import NewUpdateDialog from '../components/NewUpdateDialog';
 import BrowseSettings from '../screens/browse/BrowseSettings';
-import { useAppDispatch } from '@redux/hooks';
-import { updateLibraryAction } from '@redux/updates/updates.actions';
-import { useSettings } from '@hooks/reduxHooks';
+import { updateLibrary } from '@services/updates';
 import WebviewScreen from '@screens/WebviewScreen/WebviewScreen';
 import { RootStackParamList } from './types';
 
@@ -37,8 +36,7 @@ const Stack = createStackNavigator<RootStackParamList>();
 
 const MainNavigator = () => {
   const theme = useTheme();
-  const dispatch = useAppDispatch();
-  const { updateLibraryOnLaunch = false } = useSettings();
+  const { updateLibraryOnLaunch } = useAppSettings();
 
   useEffect(() => {
     const timer = setTimeout(async () => {
@@ -52,7 +50,7 @@ const MainNavigator = () => {
 
   useEffect(() => {
     if (updateLibraryOnLaunch) {
-      dispatch(updateLibraryAction());
+      updateLibrary();
     }
   }, []);
 
@@ -68,6 +66,7 @@ const MainNavigator = () => {
         <Stack.Screen name="MoreStack" component={MoreStack} />
         <Stack.Screen name="SourceScreen" component={BrowseSourceScreen} />
         <Stack.Screen name="BrowseMal" component={MalTopNovels} />
+        <Stack.Screen name="BrowseAL" component={AniListTopNovels} />
         <Stack.Screen name="BrowseSettings" component={BrowseSettings} />
         <Stack.Screen
           name="GlobalSearchScreen"

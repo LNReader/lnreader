@@ -2,8 +2,8 @@ import React from 'react';
 import { View } from 'react-native';
 import color from 'color';
 
-import { useReaderSettings } from '@redux/hooks';
 import SkeletonLines from '../components/SkeletonLines';
+import { useChapterReaderSettings } from '@hooks/persisted';
 
 const ChapterLoadingScreen = () => {
   const {
@@ -11,7 +11,7 @@ const ChapterLoadingScreen = () => {
     padding,
     textSize,
     lineHeight,
-  } = useReaderSettings();
+  } = useChapterReaderSettings();
 
   return (
     <View style={{ backgroundColor }}>

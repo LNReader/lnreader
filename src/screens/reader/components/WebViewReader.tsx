@@ -3,9 +3,12 @@ import { Dimensions, StatusBar } from 'react-native';
 import WebView, { WebViewNavigation } from 'react-native-webview';
 import color from 'color';
 
-import { useTheme } from '@hooks/useTheme';
+import {
+  useChapterGeneralSettings,
+  useChapterReaderSettings,
+  useTheme,
+} from '@hooks/persisted';
 import { ChapterInfo } from '@database/types';
-import { useReaderSettings, useSettingsV1 } from '@redux/hooks';
 import { getString } from '@strings/translations';
 
 import { getPlugin } from '@plugins/pluginManager';
@@ -49,8 +52,8 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
 
   const theme = useTheme();
   const { novel, chapter } = data;
-  const readerSettings = useReaderSettings();
-  const { showScrollPercentage } = useSettingsV1();
+  const readerSettings = useChapterReaderSettings();
+  const { showScrollPercentage } = useChapterGeneralSettings();
 
   const layoutHeight = Dimensions.get('window').height;
   const plugin = getPlugin(novel?.pluginId);
@@ -136,6 +139,16 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
                     </style>
                     <link rel="stylesheet" href="file:///android_asset/css/index.css">
                     <style>${readerSettings.customCSS}</style>
+                    <script async>
+                      var showScrollPercentage = ${showScrollPercentage};
+                      var swipeGestures = ${swipeGestures};
+                      var autoSaveInterval = 2222;
+                    </script>
+                    <script defer src="file:///android_asset/js/index.js"></script>
+                    <script defer>
+                      async function fn(){${readerSettings.customJS}}
+                      document.addEventListener("DOMContentLoaded", fn);
+                    </script>
                   </head>
                   <body>
                     <div class="chapterCtn" onclick="reader.post({type:'hide'})">
@@ -164,16 +177,6 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
                         </div>`
                     }
                     </body>
-                    <script>
-                      var showScrollPercentage = ${showScrollPercentage};
-                      var swipeGestures = ${swipeGestures};
-                      var autoSaveInterval = 2222;
-                    </script>
-                    <script src="file:///android_asset/js/index.js"></script>
-                    <script>
-                      async function fn(){${readerSettings.customJS}}
-                      document.addEventListener("DOMContentLoaded", fn);
-                    </script>
                   </body>
                 </html>
                 `,

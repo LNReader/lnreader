@@ -15,14 +15,14 @@ import { ChapterInfo } from '@database/types';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 interface ChapterItemProps {
+  isDownloading?: boolean;
   chapter: ChapterInfo;
   theme: ThemeColors;
-  downloadQueue: any;
   showChapterTitles: boolean;
   isSelected?: (id: number) => boolean;
-  downloadChapter: (chapter: ChapterInfo) => (dispatch: any) => void;
-  deleteChapter: (chapter: ChapterInfo) => void;
-  onSelectPress?: (chapter: ChapterInfo, arg1: () => void) => void;
+  downloadChapter: () => void;
+  deleteChapter: () => void;
+  onSelectPress?: (chapter: ChapterInfo) => void;
   onSelectLongPress?: (chapter: ChapterInfo) => void;
   navigateToChapter: (chapter: ChapterInfo) => void;
   showProgressPercentage?: (chapter: ChapterInfo) => any;
@@ -33,10 +33,10 @@ interface ChapterItemProps {
 }
 
 const ChapterItem: React.FC<ChapterItemProps> = ({
+  isDownloading,
   chapter,
   theme,
   showChapterTitles,
-  downloadQueue,
   downloadChapter,
   deleteChapter,
   isSelected,
@@ -65,9 +65,7 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
         },
       ]}
       onPress={() => {
-        onSelectPress
-          ? onSelectPress(chapter, () => navigateToChapter(chapter))
-          : navigateToChapter(chapter);
+        onSelectPress ? onSelectPress(chapter) : navigateToChapter(chapter);
       }}
       onLongPress={() => onSelectLongPress?.(chapter)}
       android_ripple={{ color: theme.rippleColor }}
@@ -113,8 +111,8 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
               numberOfLines={1}
             >
               {showChapterTitles
-                ? `Chapter ${chapterNumber} • ID: ${id}`
-                : name}
+                ? name
+                : `Chapter ${chapterNumber} • ID: ${id}`}
             </Text>
           </Row>
           <View style={styles.textRow}>
@@ -141,8 +139,8 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
       </Row>
       {!isLocal && (
         <DownloadButton
-          downloadQueue={downloadQueue}
-          chapter={chapter}
+          isDownloading={isDownloading}
+          isDownloaded={chapter.isDownloaded}
           theme={theme}
           deleteChapter={deleteChapter}
           downloadChapter={downloadChapter}

@@ -1,15 +1,11 @@
 import React, { useState } from 'react';
 import { ScrollView, Text } from 'react-native';
 
-import { useDispatch } from 'react-redux';
+import { ThemePicker } from '@components/ThemePicker/ThemePicker';
+import SwitchSetting from '@components/Switch/Switch';
+import ColorPickerModal from '@components/ColorPickerModal/ColorPickerModal';
 
-import { ThemePicker } from '../../components/ThemePicker/ThemePicker';
-import SwitchSetting from '../../components/Switch/Switch';
-import ColorPickerModal from '../../components/ColorPickerModal/ColorPickerModal';
-
-import { useSettings } from '../../hooks/reduxHooks';
-import { useTheme } from '@hooks/useTheme';
-import { setAppSettings } from '@redux/settings/settingsSliceV1';
+import { useAppSettings, useTheme } from '@hooks/persisted';
 import {
   defaultTheme,
   midnightDusk,
@@ -18,7 +14,7 @@ import {
   lavenderTheme,
   strawberryDaiquiriTheme,
   takoTheme,
-} from '../../theme/md3';
+} from '@theme/md3';
 
 import {
   useMMKVBoolean,
@@ -49,19 +45,19 @@ const darkThemes = [
 
 const AppearanceSettings = ({ navigation }: AppearanceSettingsScreenProps) => {
   const theme = useTheme();
-  const dispatch = useDispatch();
   const [, setTheme] = useMMKVObject('APP_THEME');
   const [isAmoledBlack = false, setAmoledBlack] =
     useMMKVBoolean('AMOLED_BLACK');
   const [, setCustomAccentColor] = useMMKVString('CUSTOM_ACCENT_COLOR');
 
   const {
-    showHistoryTab = true,
-    showUpdatesTab = true,
-    showLabelsInNav = false,
-    hideBackdrop = false,
-    useFabForContinueReading = false,
-  } = useSettings();
+    showHistoryTab,
+    showUpdatesTab,
+    showLabelsInNav,
+    hideBackdrop,
+    useFabForContinueReading,
+    setAppSettings,
+  } = useAppSettings();
 
   /**
    * Accent Color Modal
@@ -162,23 +158,16 @@ const AppearanceSettings = ({ navigation }: AppearanceSettingsScreenProps) => {
           <SwitchSetting
             label="Hide backdrop"
             value={hideBackdrop}
-            onPress={() =>
-              dispatch(
-                setAppSettings({ key: 'hideBackdrop', value: !hideBackdrop }),
-              )
-            }
+            onPress={() => setAppSettings({ hideBackdrop: !hideBackdrop })}
             theme={theme}
           />
           <SwitchSetting
             label="Use FAB instead of button"
             value={useFabForContinueReading}
             onPress={() =>
-              dispatch(
-                setAppSettings({
-                  key: 'useFabForContinueReading',
-                  value: !useFabForContinueReading,
-                }),
-              )
+              setAppSettings({
+                useFabForContinueReading: !useFabForContinueReading,
+              })
             }
             theme={theme}
           />
@@ -187,39 +176,20 @@ const AppearanceSettings = ({ navigation }: AppearanceSettingsScreenProps) => {
           <SwitchSetting
             label="Show updates in the nav"
             value={showUpdatesTab}
-            onPress={() =>
-              dispatch(
-                setAppSettings({
-                  key: 'showUpdatesTab',
-                  value: !showUpdatesTab,
-                }),
-              )
-            }
+            onPress={() => setAppSettings({ showUpdatesTab: !showUpdatesTab })}
             theme={theme}
           />
           <SwitchSetting
             label="Show history in the nav"
             value={showHistoryTab}
-            onPress={() =>
-              dispatch(
-                setAppSettings({
-                  key: 'showHistoryTab',
-                  value: !showHistoryTab,
-                }),
-              )
-            }
+            onPress={() => setAppSettings({ showHistoryTab: !showHistoryTab })}
             theme={theme}
           />
           <SwitchSetting
             label="Always show nav labels"
             value={showLabelsInNav}
             onPress={() =>
-              dispatch(
-                setAppSettings({
-                  key: 'showLabelsInNav',
-                  value: !showLabelsInNav,
-                }),
-              )
+              setAppSettings({ showLabelsInNav: !showLabelsInNav })
             }
             theme={theme}
           />

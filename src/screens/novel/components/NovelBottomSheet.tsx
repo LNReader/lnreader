@@ -9,42 +9,32 @@ import { getString } from '@strings/translations';
 
 import { Checkbox, SortItem } from '@components/Checkbox/Checkbox';
 
-import { showChapterTitlesAction } from '@redux/preferences/preferencesSlice';
 import { overlay } from 'react-native-paper';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
-import { Dispatch } from '@reduxjs/toolkit';
 import { ThemeColors } from '@theme/types';
 
 interface ChaptersSettingsSheetProps {
   bottomSheetRef: React.RefObject<BottomSheetModalMethods>;
-  novelId: number;
-  sortAndFilterChapters: (
-    novelId: number,
-    sort: string,
-    filter: string,
-  ) => (dispatch: any) => Promise<void>;
-  dispatch: Dispatch<any>;
+  sortAndFilterChapters: (sort?: string, filter?: string) => Promise<void>;
   sort: string;
   filter: string;
   theme: ThemeColors;
   showChapterTitles: boolean;
+  setShowChapterTitles: (v: boolean) => void;
 }
 
 const ChaptersSettingsSheet = ({
   bottomSheetRef,
-  novelId,
   sortAndFilterChapters,
-  dispatch,
   sort,
   filter,
   theme,
   showChapterTitles,
+  setShowChapterTitles,
 }: ChaptersSettingsSheetProps) => {
-  const sortChapters = (val: string) =>
-    dispatch(sortAndFilterChapters(novelId, val, filter));
+  const sortChapters = (val: string) => sortAndFilterChapters(val, filter);
 
-  const filterChapters = (val: string) =>
-    dispatch(sortAndFilterChapters(novelId, sort, val));
+  const filterChapters = (val: string) => sortAndFilterChapters(sort, val);
 
   const FirstRoute = () => (
     <View style={{ flex: 1 }}>
@@ -133,23 +123,15 @@ const ChaptersSettingsSheet = ({
   const ThirdRoute = () => (
     <View style={{ flex: 1 }}>
       <Checkbox
-        status={!showChapterTitles}
+        status={showChapterTitles}
         label="Source title"
-        onPress={() =>
-          dispatch(
-            showChapterTitlesAction({ novelId, showChapterTitles: false }),
-          )
-        }
+        onPress={() => setShowChapterTitles(true)}
         theme={theme}
       />
       <Checkbox
-        status={showChapterTitles}
+        status={!showChapterTitles}
         label="Chapter number"
-        onPress={() =>
-          dispatch(
-            showChapterTitlesAction({ novelId, showChapterTitles: true }),
-          )
-        }
+        onPress={() => setShowChapterTitles(false)}
         theme={theme}
       />
     </View>

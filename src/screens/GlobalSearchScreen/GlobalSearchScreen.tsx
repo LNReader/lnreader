@@ -5,8 +5,8 @@ import { ProgressBar } from 'react-native-paper';
 import { EmptyView, SearchbarV2 } from '@components/index';
 import GlobalSearchResultsList from './components/GlobalSearchResultsList';
 
-import useSearch from '@hooks/useSearch';
-import { useTheme } from '@hooks/useTheme';
+import { useSearch } from '@hooks';
+import { useTheme } from '@hooks/persisted';
 
 import { getString } from '@strings/translations';
 import { useGlobalSearch } from './hooks/useGlobalSearch';
@@ -27,10 +27,9 @@ const GlobalSearchScreen = (props: Props) => {
   const onChangeText = (text: string) => setSearchText(text);
   const onSubmitEditing = () => globalSearch(searchText);
 
-  const { searchResults, globalSearch, searchAllSources, progress } =
-    useGlobalSearch({
-      defaultSearchText: searchText,
-    });
+  const { searchResults, globalSearch, progress } = useGlobalSearch({
+    defaultSearchText: searchText,
+  });
 
   return (
     <>
@@ -52,9 +51,7 @@ const GlobalSearchScreen = (props: Props) => {
           <EmptyView
             icon="__φ(．．)"
             description={`${getString('globalSearch.searchIn')} ${getString(
-              searchAllSources
-                ? 'globalSearch.allSources'
-                : 'globalSearch.pinnedSources',
+              'globalSearch.allSources',
             )}`}
             theme={theme}
           />

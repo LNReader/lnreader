@@ -3,15 +3,6 @@ import { BackupDataFileName, RestoreTask, TaskType } from '../types';
 import { BackupCategory, BackupNovel } from '@database/types';
 import { _restoreNovelAndChapters } from '@database/queries/NovelQueries';
 import { _restoreCategory } from '@database/queries/CategoryQueries';
-import { store } from '@redux/store';
-import { RESTORE_NOVEL_STATE } from '@redux/novel/novel.types';
-import { restorePluginState } from '@redux/plugins/pluginsSlice';
-import { restorePreferenceState } from '@redux/preferences/preferencesSlice';
-import { restoreSettingsState } from '@redux/settings/settingsSliceV1';
-import { restoreSettingsState as restoreSettingsStateV2 } from '@redux/settings/settingsSliceV2';
-import { RESTORE_TRACKER_STATE } from '@redux/tracker/tracker.types';
-import { RESTORE_UPDATE_STATE } from '@redux/updates/updates.types';
-import { RESTORE_DOWNLOADS_STATE } from '@redux/downloads/donwloads.types';
 import { MMKVStorage } from '@utils/mmkv/mmkv';
 
 export const restoreNovel = (
@@ -74,28 +65,11 @@ export const restoreSetting = (
   return () =>
     exists(BackupDataFileName.SETTING, false, parentId).then(file => {
       if (file) {
-        return readFile(file, 'json').then(state => {
+        return readFile(file, 'json').then(data => {
           const subtask = async () => {
-            store.dispatch({
-              type: RESTORE_NOVEL_STATE,
-              payload: state.novelReducer,
-            });
-            store.dispatch(restorePluginState(state.pluginsReducer));
-            store.dispatch(restorePreferenceState(state.preferenceReducer));
-            store.dispatch(restoreSettingsState(state.settingsReducerV1));
-            store.dispatch(restoreSettingsStateV2(state.settingsReducerV2));
-            store.dispatch({
-              type: RESTORE_TRACKER_STATE,
-              payload: state.trackerReducer,
-            });
-            store.dispatch({
-              type: RESTORE_UPDATE_STATE,
-              payload: state.updatesReducer,
-            });
-            store.dispatch({
-              type: RESTORE_DOWNLOADS_STATE,
-              payload: state.downloadsReducer,
-            });
+            for (let key in data) {
+              MMKVStorage.set(key, data[key]);
+            }
           };
           return {
             taskType: TaskType.SETTING,
@@ -105,37 +79,6 @@ export const restoreSetting = (
       }
       return {
         taskType: TaskType.SETTING,
-        subtasks: [],
-      };
-    });
-};
-
-export const restoreTheme = (
-  parentId: string,
-): (() => Promise<RestoreTask>) => {
-  return () =>
-    exists(BackupDataFileName.THEME, false, parentId).then(file => {
-      if (file) {
-        return readFile(file, 'json').then(theme => {
-          const subtask = async () => {
-            for (let key of [
-              'APP_THEME',
-              'AMOLED_BLACK',
-              'CUSTOM_ACCENT_COLOR',
-            ]) {
-              if (key in theme) {
-                MMKVStorage.set(key, theme[key]);
-              }
-            }
-          };
-          return {
-            taskType: TaskType.THEME,
-            subtasks: [subtask],
-          } as RestoreTask;
-        });
-      }
-      return {
-        taskType: TaskType.THEME,
         subtasks: [],
       };
     });

@@ -1,4 +1,4 @@
-import { useLibrarySettings } from '@hooks/useSettings';
+import { useLibrarySettings } from '@hooks/persisted';
 import { DisplayModes } from '@screens/library/constants/constants';
 import React, { useMemo } from 'react';
 import {
@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { NovelItem } from '@plugins/types';
 import { LibraryNovelInfo, NovelInfo } from '../database/types';
-import { useDeviceOrientation } from '@hooks/useDeviceOrientation';
+import { useDeviceOrientation } from '@hooks';
 
 export type NovelListRenderItem = ListRenderItem<
   LibraryNovelInfo | NovelInfo | NovelItem

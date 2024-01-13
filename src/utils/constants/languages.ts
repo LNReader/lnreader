@@ -1,6 +1,6 @@
 //seacrh here https://pastebin.com/raw/ppdMS687
 
-export enum Languages {
+export enum Language {
   Arabic = 'العربية',
   Chinese = '中文, 汉语, 漢語',
   English = 'English',
@@ -15,19 +15,19 @@ export enum Languages {
   Vietnamese = 'Tiếng Việt',
 }
 
-export const languagesMapping: Record<string, Languages> = {
-  'ab': Languages.Arabic,
-  'zh': Languages.Chinese,
-  'en': Languages.English,
-  'fr': Languages.French,
-  'id': Languages.Indonesian,
-  'ja': Languages.Japanese,
-  'ko': Languages.Korean,
-  'pt': Languages.Portuguese,
-  'ru': Languages.Russian,
-  'es': Languages.Spanish,
-  'tr': Languages.Turkish,
-  'vi': Languages.Vietnamese,
+export const languagesMapping: Record<string, Language> = {
+  'ab': Language.Arabic,
+  'zh': Language.Chinese,
+  'en': Language.English,
+  'fr': Language.French,
+  'id': Language.Indonesian,
+  'ja': Language.Japanese,
+  'ko': Language.Korean,
+  'pt': Language.Portuguese,
+  'ru': Language.Russian,
+  'es': Language.Spanish,
+  'tr': Language.Turkish,
+  'vi': Language.Vietnamese,
 };
 
-export const availableLanguages = Object.values(Languages);
+export const availableLanguages = Object.values(Language);

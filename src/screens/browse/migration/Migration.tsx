@@ -3,8 +3,7 @@ import { StyleSheet, View, FlatList, Text, FlatListProps } from 'react-native';
 
 import MigrationSourceItem from './MigrationSourceItem';
 
-import { useTheme } from '@hooks/useTheme';
-import { usePluginReducer } from '@redux/hooks';
+import { usePlugins, useTheme } from '@hooks/persisted';
 import { useLibraryNovels } from '@screens/library/hooks/useLibrary';
 import { Appbar } from '@components';
 import { MigrationScreenProps } from '@navigators/types';
@@ -14,12 +13,12 @@ const Migration = ({ navigation }: MigrationScreenProps) => {
   const theme = useTheme();
 
   const { library } = useLibraryNovels();
-  let { installedPlugins } = usePluginReducer();
+  let { filteredInstalledPlugins } = usePlugins();
 
   const novelsPerSource = (pluginId: string) =>
     library.filter(novel => novel.pluginId === pluginId).length;
 
-  const plugins = installedPlugins.filter(
+  const plugins = filteredInstalledPlugins.filter(
     plugin => library.find(novel => novel.pluginId === plugin.id) !== undefined,
   );
 

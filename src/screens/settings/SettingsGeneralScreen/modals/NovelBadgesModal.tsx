@@ -3,10 +3,10 @@ import { Text, StyleSheet } from 'react-native';
 
 import { Portal, Modal, overlay } from 'react-native-paper';
 
-import { useLibrarySettings } from '@hooks/useSettings';
 import { Checkbox } from '@components';
 import { getString } from '@strings/translations';
 import { ThemeColors } from '@theme/types';
+import { useLibrarySettings } from '@hooks/persisted';
 
 interface NovelBadgesModalProps {
   novelBadgesModalVisible: boolean;
