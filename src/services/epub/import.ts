@@ -135,6 +135,7 @@ const importEpubAction = async (taskData?: TaskData) => {
   }
   await sleep(taskData.delay);
   try {
+    MMKVStorage.set(BACKGROUND_ACTION, BackgoundAction.IMPORT_EPUB);
     const novel: SourceNovel = await EpubParser.parse(
       taskData.epubFilePath,
       taskData.epubDirPath,
@@ -229,9 +230,10 @@ const importEpubAction = async (taskData?: TaskData) => {
       },
       trigger: null,
     });
+  } finally {
+    MMKVStorage.delete(BACKGROUND_ACTION);
     await BackgroundService.stop();
   }
-  MMKVStorage.delete(BACKGROUND_ACTION);
 };
 
 export const importEpub = async () => {
@@ -254,7 +256,6 @@ export const importEpub = async () => {
     await RNFS.mkdir(epubDirPath).catch(e => {
       throw e;
     });
-    MMKVStorage.set(BACKGROUND_ACTION, BackgoundAction.IMPORT_EPUB);
     await BackgroundService.start<TaskData>(importEpubAction, {
       taskName: 'Import Epub',
       taskTitle: 'Parse Epub',

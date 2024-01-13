@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { FlatList, View, Text, StyleSheet } from 'react-native';
 import {
   FAB,
@@ -10,20 +10,21 @@ import {
 
 import { useDownload, useTheme } from '@hooks/persisted';
 
-import BackgroundService from 'react-native-background-actions';
 import { showToast } from '../../utils/showToast';
 import { Appbar, EmptyView } from '@components';
 import { DownloadQueueScreenProps } from '@navigators/types';
+import { useMMKVString } from 'react-native-mmkv';
+import { BACKGROUND_ACTION, BackgoundAction } from '@services/constants';
 
 const DownloadQueue = ({ navigation }: DownloadQueueScreenProps) => {
   const theme = useTheme();
-  const {
-    queue,
-    isDownloading,
-    resumeDowndload,
-    pauseDownload,
-    cancelDownload,
-  } = useDownload();
+  const [currentAction] = useMMKVString(BACKGROUND_ACTION);
+  const isDownloading = useMemo(
+    () => currentAction === BackgoundAction.DOWNLOAD_CHAPTER,
+    [currentAction],
+  );
+  const { queue, resumeDowndload, pauseDownload, cancelDownload } =
+    useDownload();
   const [visible, setVisible] = useState(false);
   const openMenu = () => setVisible(true);
   const closeMenu = () => setVisible(false);
@@ -67,8 +68,11 @@ const DownloadQueue = ({ navigation }: DownloadQueueScreenProps) => {
           <View style={{ padding: 16 }}>
             <Text style={{ color: theme.onSurface }}>{item.chapter.name}</Text>
             <ProgressBar
-              indeterminate={BackgroundService.isRunning() ? true : false}
-              progress={Number(!BackgroundService.isRunning())}
+              indeterminate={
+                isDownloading &&
+                queue.length > 0 &&
+                queue[0].chapter.id === item.chapter.id
+              }
               color={theme.primary}
               style={{ marginTop: 8 }}
             />

@@ -62,7 +62,6 @@ export const migrateNovel = async (
     showToast('Another service is running');
     return;
   }
-  MMKVStorage.set(BACKGROUND_ACTION, BackgoundAction.MIGRATE);
   try {
     let fromChapters = await getChapters(fromNovel.id, '', '');
     let toNovel = await getNovel(toNovelUrl);
@@ -98,7 +97,8 @@ export const migrateNovel = async (
     };
 
     const veryIntensiveTask = async (taskData: any) => {
-      await new Promise(async resolve => {
+      try {
+        MMKVStorage.set(BACKGROUND_ACTION, BackgoundAction.MIGRATE);
         db.transaction(tx => {
           tx.executeSql(
             migrateNovelMetaDataQuery,
@@ -221,12 +221,12 @@ export const migrateNovel = async (
               },
               trigger: null,
             });
-            resolve(null);
           }
         }
-      });
+      } finally {
+        MMKVStorage.delete(BACKGROUND_ACTION);
+      }
     };
-
     await BackgroundService.start(veryIntensiveTask, options);
   } catch (error: any) {
     Notifications.scheduleNotificationAsync({
@@ -238,5 +238,4 @@ export const migrateNovel = async (
     });
     showToast(error.message);
   }
-  MMKVStorage.delete(BACKGROUND_ACTION);
 };

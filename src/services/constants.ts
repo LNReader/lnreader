@@ -6,4 +6,5 @@ export enum BackgoundAction {
   RESTORE = 'RESTORE',
   MIGRATE = 'MIGRATE',
   IMPORT_EPUB = 'IMPORT_EPUB',
+  UPDATE_LIBRARY = 'UPDATELIBRARY',
 }

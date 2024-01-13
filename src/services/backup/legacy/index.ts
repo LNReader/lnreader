@@ -15,8 +15,8 @@ import { MMKVStorage } from '@utils/mmkv/mmkv';
 import { BACKGROUND_ACTION, BackgoundAction } from '@services/constants';
 
 export const createBackup = async () => {
-  MMKVStorage.set(BACKGROUND_ACTION, BackgoundAction.BACKUP);
   try {
+    MMKVStorage.set(BACKGROUND_ACTION, BackgoundAction.BACKUP);
     const novels = await getLibraryNovelsFromDb();
 
     const permissions =
@@ -48,8 +48,9 @@ export const createBackup = async () => {
     }
   } catch (error: any) {
     showToast(error.message);
+  } finally {
+    MMKVStorage.delete(BACKGROUND_ACTION);
   }
-  MMKVStorage.delete(BACKGROUND_ACTION);
 };
 
 interface TaskData {
@@ -57,8 +58,8 @@ interface TaskData {
 }
 
 export const restoreBackup = async (filePath?: string) => {
-  MMKVStorage.set(BACKGROUND_ACTION, BackgoundAction.RESTORE);
   try {
+    MMKVStorage.set(BACKGROUND_ACTION, BackgoundAction.RESTORE);
     const backup = await DocumentPicker.getDocumentAsync({
       copyToCacheDirectory: false,
     });
@@ -169,8 +170,9 @@ export const restoreBackup = async (filePath?: string) => {
     }
   } catch (error: any) {
     showToast(error.message);
+  } finally {
+    MMKVStorage.delete(BACKGROUND_ACTION);
   }
-  MMKVStorage.delete(BACKGROUND_ACTION);
 };
 
 export const restoreError = async () => {

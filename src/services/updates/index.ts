@@ -13,13 +13,13 @@ import { sleep } from '@utils/sleep';
 import { MMKVStorage } from '@utils/mmkv/mmkv';
 import { LAST_UPDATE_TIME } from '@hooks/persisted/useUpdates';
 import dayjs from 'dayjs';
+import { BACKGROUND_ACTION, BackgoundAction } from '@services/constants';
 
 interface TaskData {
   delay: number;
 }
 
 const updateLibrary = async (categoryId?: number) => {
-  MMKVStorage.set(LAST_UPDATE_TIME, dayjs().format('YYYY-MM-DD HH:mm:ss'));
   const onlyUpdateOngoingNovels = MMKVStorage.getBoolean('') || false;
   const options: UpdateNovelOptions = {
     downloadNewChapters: MMKVStorage.getBoolean('downloadNewChapters') || false,
@@ -50,8 +50,10 @@ const updateLibrary = async (categoryId?: number) => {
     progressBar: { max: libraryNovels.length, value: 0 },
   };
 
-  const libraryUpdateBackgroundAction = async (taskData?: TaskData) =>
-    await new Promise<void>(async resolve => {
+  const libraryUpdateBackgroundAction = async (taskData?: TaskData) => {
+    try {
+      MMKVStorage.set(BACKGROUND_ACTION, BackgoundAction.UPDATE_LIBRARY);
+      MMKVStorage.set(LAST_UPDATE_TIME, dayjs().format('YYYY-MM-DD HH:mm:ss'));
       for (
         let i = 0;
         BackgroundService.isRunning() && i < libraryNovels.length;
@@ -59,9 +61,6 @@ const updateLibrary = async (categoryId?: number) => {
       ) {
         try {
           if (BackgroundService.isRunning()) {
-            /**
-             * Update chapters
-             */
             await updateNovel(
               libraryNovels[i].pluginId,
               libraryNovels[i].url,
@@ -82,8 +81,6 @@ const updateLibrary = async (categoryId?: number) => {
              * When updating library is finished
              */
             if (libraryNovels.length === i + 1) {
-              resolve();
-
               Notifications.scheduleNotificationAsync({
                 content: {
                   title: 'Library Updated',
@@ -91,6 +88,7 @@ const updateLibrary = async (categoryId?: number) => {
                 },
                 trigger: null,
               });
+              return;
             }
 
             const nextNovelIndex = i + 1;
@@ -108,9 +106,12 @@ const updateLibrary = async (categoryId?: number) => {
           continue;
         }
       }
-    });
+    } finally {
+      MMKVStorage.delete(BACKGROUND_ACTION);
+    }
+  };
 
-  if (libraryNovels.length > 0) {
+  if (libraryNovels.length > 0 && !MMKVStorage.getString(BACKGROUND_ACTION)) {
     await BackgroundService.start<TaskData>(
       libraryUpdateBackgroundAction,
       notificationOptions,

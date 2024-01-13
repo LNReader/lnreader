@@ -3,7 +3,7 @@ import { BACKGROUND_ACTION, BackgoundAction } from '@services/constants';
 import { MMKVStorage, getMMKVObject, setMMKVObject } from '@utils/mmkv/mmkv';
 import { showToast } from '@utils/showToast';
 import BackgroundService from 'react-native-background-actions';
-import { useMMKVBoolean, useMMKVObject } from 'react-native-mmkv';
+import { useMMKVObject } from 'react-native-mmkv';
 import * as Notifications from 'expo-notifications';
 import { downloadChapter } from '@database/queries/ChapterQueries';
 import { sleep } from '@utils/sleep';
@@ -21,57 +21,58 @@ interface TaskData {
 }
 
 const downloadChapterAction = async (taskData?: TaskData) => {
-  while (true) {
-    let queue = getMMKVObject<DownloadData[]>(DOWNLOAD_QUEUE) || [];
-    if (queue.length === 0) {
-      await Notifications.scheduleNotificationAsync({
-        content: {
-          title: 'Downloader',
-          body: 'Download completed',
-        },
-        trigger: null,
-      });
-      break;
-    } else {
-      const { novel, chapter } = queue[0];
-      await BackgroundService.updateNotification({
-        taskTitle: `Downloading: ${novel.name}`,
-        taskDesc: `Chapter: ${chapter.name}`,
-      });
-      try {
-        await downloadChapter(
-          novel.pluginId,
-          novel.id,
-          chapter.id,
-          chapter.url,
-        );
-
-        // get the newtest queue;
-        queue = getMMKVObject<DownloadData[]>(DOWNLOAD_QUEUE) || [];
-        setMMKVObject(DOWNLOAD_QUEUE, queue.slice(1));
-      } catch (error: any) {
-        Notifications.scheduleNotificationAsync({
+  try {
+    MMKVStorage.set(BACKGROUND_ACTION, BackgoundAction.DOWNLOAD_CHAPTER);
+    while (true) {
+      let queue = getMMKVObject<DownloadData[]>(DOWNLOAD_QUEUE) || [];
+      if (queue.length === 0) {
+        await Notifications.scheduleNotificationAsync({
           content: {
-            title: chapter.name,
-            body: `Download failed: ${error.message}`,
+            title: 'Downloader',
+            body: 'Download completed',
           },
           trigger: null,
         });
-      }
+        break;
+      } else {
+        const { novel, chapter } = queue[0];
+        await BackgroundService.updateNotification({
+          taskTitle: `Downloading: ${novel.name}`,
+          taskDesc: `Chapter: ${chapter.name}`,
+        });
+        try {
+          await downloadChapter(
+            novel.pluginId,
+            novel.id,
+            chapter.id,
+            chapter.url,
+          );
 
-      if (queue.length > 1 && taskData) {
-        await sleep(taskData?.delay);
+          // get the newtest queue;
+          queue = getMMKVObject<DownloadData[]>(DOWNLOAD_QUEUE) || [];
+          setMMKVObject(DOWNLOAD_QUEUE, queue.slice(1));
+        } catch (error: any) {
+          Notifications.scheduleNotificationAsync({
+            content: {
+              title: chapter.name,
+              body: `Download failed: ${error.message}`,
+            },
+            trigger: null,
+          });
+        }
+
+        if (queue.length > 1 && taskData) {
+          await sleep(taskData?.delay);
+        }
       }
     }
+  } finally {
+    MMKVStorage.delete(BACKGROUND_ACTION);
   }
-  MMKVStorage.set(CHAPTER_DOWNLOADING, false);
-  MMKVStorage.delete(BACKGROUND_ACTION);
 };
 
 export default function useDownload() {
   const [queue = [], setQueue] = useMMKVObject<DownloadData[]>(DOWNLOAD_QUEUE);
-  const [isDownloading = false, setIsDownloading] =
-    useMMKVBoolean(CHAPTER_DOWNLOADING);
 
   const downloadChapter = (novel: NovelInfo, chapter: ChapterInfo) => {
     setQueue([...queue, { novel, chapter }]);
@@ -94,8 +95,6 @@ export default function useDownload() {
       | undefined;
     if (!currentAction || currentAction === BackgoundAction.DOWNLOAD_CHAPTER) {
       if (!BackgroundService.isRunning()) {
-        setIsDownloading(true);
-        MMKVStorage.set(BACKGROUND_ACTION, BackgoundAction.DOWNLOAD_CHAPTER);
         BackgroundService.start(downloadChapterAction, {
           taskName: 'Download chapters',
           taskTitle: 'Downloading',
@@ -112,23 +111,20 @@ export default function useDownload() {
   };
 
   const pauseDownload = () => {
-    BackgroundService.stop().then(() => {
-      setIsDownloading(false);
+    BackgroundService.stop().finally(() => {
       MMKVStorage.delete(BACKGROUND_ACTION);
     });
   };
 
   const cancelDownload = () => {
-    BackgroundService.stop().then(() => {
+    BackgroundService.stop().finally(() => {
       setQueue([]);
-      setIsDownloading(false);
       MMKVStorage.delete(BACKGROUND_ACTION);
     });
   };
 
   return {
     queue,
-    isDownloading,
     resumeDowndload,
     downloadChapter,
     downloadChapters,

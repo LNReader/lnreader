@@ -26,8 +26,8 @@ interface TaskData {
 }
 
 const driveBackupAction = async (taskData?: TaskData) => {
-  MMKVStorage.set(BACKGROUND_ACTION, BackgoundAction.BACKUP);
   try {
+    MMKVStorage.set(BACKGROUND_ACTION, BackgoundAction.BACKUP);
     if (!taskData) {
       throw new Error('No data provided');
     }
@@ -97,33 +97,29 @@ const driveBackupAction = async (taskData?: TaskData) => {
 };
 
 export const createBackup = async (backupFolder: DriveFile) => {
-  try {
-    return BackgroundService.start(driveBackupAction, {
-      taskName: 'Drive Backup',
-      taskTitle: 'Drive Backup',
-      taskDesc: 'Preparing',
-      taskIcon: { name: 'notification_icon', type: 'drawable' },
-      color: '#00adb5',
-      parameters: { delay: 500, backupFolder },
-      linkingURI: 'lnreader://updates',
-    });
-  } catch (e: any) {
-    await Notifications.scheduleNotificationAsync({
+  return BackgroundService.start(driveBackupAction, {
+    taskName: 'Drive Backup',
+    taskTitle: 'Drive Backup',
+    taskDesc: 'Preparing',
+    taskIcon: { name: 'notification_icon', type: 'drawable' },
+    color: '#00adb5',
+    parameters: { delay: 500, backupFolder },
+    linkingURI: 'lnreader://updates',
+  }).catch(async (error: Error) => {
+    Notifications.scheduleNotificationAsync({
       content: {
         title: 'Drive Backup Interruped',
-        body: e.message,
+        body: error.message,
       },
       trigger: null,
     });
-    await BackgroundService.stop();
-    MMKVStorage.set('HAS_BACKGROUND_TASK', false);
-    throw e;
-  }
+    BackgroundService.stop();
+  });
 };
 
 const driveRestoreAction = async (taskData?: TaskData) => {
-  MMKVStorage.set(BACKGROUND_ACTION, BackgoundAction.RESTORE);
   try {
+    MMKVStorage.set(BACKGROUND_ACTION, BackgoundAction.RESTORE);
     if (!taskData) {
       throw new Error('No data provided');
     }
@@ -186,17 +182,15 @@ const driveRestoreAction = async (taskData?: TaskData) => {
 };
 
 export const driveRestore = async (backupFolder: DriveFile) => {
-  try {
-    return BackgroundService.start(driveRestoreAction, {
-      taskName: 'Drive Restore',
-      taskTitle: 'Drive Restore',
-      taskDesc: 'Preparing',
-      taskIcon: { name: 'notification_icon', type: 'drawable' },
-      color: '#00adb5',
-      parameters: { delay: 500, backupFolder },
-      linkingURI: 'lnreader://updates',
-    });
-  } catch (e: any) {
+  return BackgroundService.start(driveRestoreAction, {
+    taskName: 'Drive Restore',
+    taskTitle: 'Drive Restore',
+    taskDesc: 'Preparing',
+    taskIcon: { name: 'notification_icon', type: 'drawable' },
+    color: '#00adb5',
+    parameters: { delay: 500, backupFolder },
+    linkingURI: 'lnreader://updates',
+  }).catch(async (e: Error) => {
     await Notifications.scheduleNotificationAsync({
       content: {
         title: 'Drive Restore Interruped',
@@ -205,7 +199,5 @@ export const driveRestore = async (backupFolder: DriveFile) => {
       trigger: null,
     });
     await BackgroundService.stop();
-    MMKVStorage.set('HAS_BACKGROUND_TASK', false);
-    throw e;
-  }
+  });
 };
