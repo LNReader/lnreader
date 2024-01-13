@@ -5,7 +5,7 @@ import { getString } from '@strings/translations';
 
 import { Dialog, Portal } from 'react-native-paper';
 import { ThemeColors } from '../../theme/types';
-import { Button } from '@components/index';
+import Button from '../Button/Button';
 
 interface ConfirmationDialogProps {
   title: string;

@@ -6,6 +6,8 @@ import {
   StatusBar,
   Share,
   Text,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
 } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
@@ -16,8 +18,8 @@ import {
   Appbar,
   IconButton,
   Menu,
-  FAB,
   Snackbar,
+  AnimatedFAB,
 } from 'react-native-paper';
 import * as Haptics from 'expo-haptics';
 import { showToast } from '../../utils/showToast';
@@ -84,6 +86,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
   const [downloadMenu, showDownloadMenu] = useState(false);
   const [extraMenu, showExtraMenu] = useState(false);
   const [editInfoModal, showEditInfoModal] = useState(false);
+  const [isFabExtended, setIsFabExtended] = useState(true);
 
   let flatlistRef = useRef<FlashList<ChapterInfo>>(null);
   let novelBottomSheetRef = useRef(null);
@@ -102,6 +105,12 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
     filter = '',
     showChapterTitles = false,
   } = novelSettings;
+
+  const onPageScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const y = event.nativeEvent.contentOffset.y;
+    const currentScrollPosition = Math.floor(y) ?? 0;
+    setIsFabExtended(currentScrollPosition <= 0);
+  };
 
   useEffect(() => {
     getNovel().finally(() => setLoading(false));
@@ -598,14 +607,16 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
               />
             }
             refreshControl={refreshControl()}
+            onScroll={onPageScroll}
           />
         </View>
         {useFabForContinueReading && lastRead && (
-          <FAB
+          <AnimatedFAB
             style={[
               styles.fab,
               { backgroundColor: theme.primary, marginBottom: bottomInset },
             ]}
+            extended={isFabExtended}
             color={theme.onPrimary}
             uppercase={false}
             label="Resume"

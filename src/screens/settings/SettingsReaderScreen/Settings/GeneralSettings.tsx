@@ -19,7 +19,7 @@ const GeneralSettings: React.FC = () => {
 
   const {
     useVolumeButtons = false,
-    verticalSeekbar = true,
+    // verticalSeekbar = true,
     swipeGestures = false,
     autoScroll = false,
     autoScrollInterval = 10,
@@ -38,7 +38,9 @@ const GeneralSettings: React.FC = () => {
       <List.SubHeader theme={theme}>
         {getString('moreScreen.settingsScreen.generalSettings')}
       </List.SubHeader>
-      <SwitchItem
+
+      {/* will add this later xD */}
+      {/* <SwitchItem
         label={getString('readerScreen.bottomSheet.verticalSeekbar')}
         description={getString(
           'moreScreen.settingsScreen.readerSettings.verticalSeekbarDesc',
@@ -48,7 +50,7 @@ const GeneralSettings: React.FC = () => {
           setChapterGeneralSettings({ verticalSeekbar: !verticalSeekbar })
         }
         theme={theme}
-      />
+      /> */}
       <SwitchItem
         label={getString('readerScreen.bottomSheet.volumeButtonsScroll')}
         value={useVolumeButtons}
