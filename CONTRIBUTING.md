@@ -11,6 +11,7 @@ After forking to your own github org or account, do the following steps to get s
 node --version <= 16.13.1           (for version management, get nvm [recommended])
 java sdk --version <= 17            (for version management, get jenv [optional])
 android sdk                         (https://developer.android.com/studio)
+python --version <= 3.11
 
 # clone your fork to your local machine
 git clone https://github.com/<your-account-name>/lnreader.git
