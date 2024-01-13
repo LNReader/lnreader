@@ -16,11 +16,14 @@ import { openDirectory } from '../../native/epubParser';
 
 import { Appbar, Button, List } from '@components';
 import { ScreenContainer } from '@components/Common';
-import useSourceStorage from '@hooks/useSourceStorage';
+import CookieManager from '@react-native-cookies/cookies';
 
 const AdvancedSettings = ({ navigation }) => {
   const theme = useTheme();
-  const { clearCookies } = useSourceStorage({});
+  const clearCookies = () => {
+    CookieManager.clearAll();
+    showToast('Cookies cleared');
+  };
 
   /**
    * Confirm Clear Database Dialog

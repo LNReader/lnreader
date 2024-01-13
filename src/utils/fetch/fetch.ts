@@ -4,7 +4,6 @@ export const defaultUserAgentString =
 interface FetchParams {
   url: string; // URL of request
   init?: RequestInit; // Variable for passing headers and other information
-  sourceId?: number; // ID number of source for cookies
 }
 
 // Checks if we bypassed cloudflare. If we failed to bypass, throw error.
