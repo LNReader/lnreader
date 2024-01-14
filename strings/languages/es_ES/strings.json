@@ -95,6 +95,7 @@
       "showBatteryAndTime": "Mostrar batería y tiempo",
       "showProgressPercentage": "Mostrar porcentaje de progreso",
       "swipeGestures": "Desliza a la izquierda o a la derecha para navegar entre los capítulos",
+      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
       "allowTextSelection": "Permitir selección de texto",
       "useChapterDrawerSwipeNavigation": "Desliza hacia la derecha para abrir el cajón",
       "removeExtraSpacing": "Eliminar espaciado extra del párrafo",
