@@ -57,7 +57,6 @@ export interface Plugin extends PluginItem {
   path: string; // path in device
   filters?: Filters;
   userAgent: string;
-  cookieString: string;
   rawCode: string;
   popularNovels: (
     pageNo: number,
@@ -71,5 +70,4 @@ export interface Plugin extends PluginItem {
   searchNovels: (searchTerm: string, pageNo?: number) => Promise<NovelItem[]>;
   fetchImage: (url: string) => Promise<string>;
   updateUserAgent: (newUserAgent: string) => Promise<void>;
-  updateCookieString: (newCookieString: string) => Promise<void>;
 }

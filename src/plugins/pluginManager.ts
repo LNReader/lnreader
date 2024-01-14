@@ -50,14 +50,6 @@ const initPlugin = (rawCode: string, path?: string) => {
       );
       await RNFS.writeFile(this.path, this.rawCode, 'utf8');
     };
-    plugin.updateCookieString = async function (newCookieString) {
-      this.cookieString = newCookieString;
-      this.rawCode = this.rawCode.replace(
-        /(cookieString\s*=\s*)([^\n;]*)/,
-        `$1"${newCookieString}"`,
-      );
-      await RNFS.writeFile(this.path, this.rawCode, 'utf8');
-    };
     return plugin;
   } catch (e) {
     return undefined;
