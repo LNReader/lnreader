@@ -1,6 +1,4 @@
 import { appVersion } from '@utils/versionUtils';
-
-import { MMKVStorage } from '@utils/mmkv/mmkv';
 import {
   AppDownloadFolder,
   NovelDownloadFolder,
@@ -21,6 +19,7 @@ import {
   getAllNovelCategories,
   getCategoriesFromDb,
 } from '@database/queries/CategoryQueries';
+import { backupMMKVData } from './helpers';
 
 export const versionTask = async (
   folderTree: string[],
@@ -135,12 +134,7 @@ export const downloadTask = (folderTree: string[]): Promise<BackupTask> => {
 export const settingTask = async (
   folderTree: string[],
 ): Promise<BackupTask> => {
-  const keys = MMKVStorage.getAllKeys();
-  const data = keys.map(key => {
-    return {
-      [key]: MMKVStorage.getString(key),
-    };
-  });
+  const data = backupMMKVData();
   const backupPackage: BackupPackage = {
     folderTree,
     name: BackupDataFileName.SETTING,

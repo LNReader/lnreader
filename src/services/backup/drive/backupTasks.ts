@@ -19,7 +19,7 @@ import {
   getAllNovelCategories,
 } from '@database/queries/CategoryQueries';
 import { walkDir } from '../utils';
-import { MMKVStorage } from '@utils/mmkv/mmkv';
+import { backupMMKVData } from '../remote/helpers';
 
 export const versionTask = async (parentId: string): Promise<BackupTask> => {
   const backupPackage: BackupPackage = {
@@ -130,12 +130,7 @@ export const downloadTask = (parentId: string): Promise<BackupTask> => {
 };
 
 export const settingTask = async (parentId: string): Promise<BackupTask> => {
-  const keys = MMKVStorage.getAllKeys();
-  const data = keys.map(key => {
-    return {
-      [key]: MMKVStorage.getString(key),
-    };
-  });
+  const data = backupMMKVData();
   const backupPackage: BackupPackage = {
     folderTree: [parentId],
     name: BackupDataFileName.SETTING,

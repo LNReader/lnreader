@@ -10,21 +10,22 @@ import { showToast } from '../../utils/showToast';
 import { UpdateNovelOptions, updateNovel } from './LibraryUpdateQueries';
 import { LibraryNovelInfo } from '@database/types';
 import { sleep } from '@utils/sleep';
-import { MMKVStorage } from '@utils/mmkv/mmkv';
+import { MMKVStorage, getMMKVObject } from '@utils/mmkv/mmkv';
 import { LAST_UPDATE_TIME } from '@hooks/persisted/useUpdates';
 import dayjs from 'dayjs';
 import { BACKGROUND_ACTION, BackgoundAction } from '@services/constants';
+import { APP_SETTINGS, AppSettings } from '@hooks/persisted/useSettings';
 
 interface TaskData {
   delay: number;
 }
 
 const updateLibrary = async (categoryId?: number) => {
-  const onlyUpdateOngoingNovels = MMKVStorage.getBoolean('') || false;
+  const { downloadNewChapters, refreshNovelMetadata, onlyUpdateOngoingNovels } =
+    getMMKVObject<AppSettings>(APP_SETTINGS) || {};
   const options: UpdateNovelOptions = {
-    downloadNewChapters: MMKVStorage.getBoolean('downloadNewChapters') || false,
-    refreshNovelMetadata:
-      MMKVStorage.getBoolean('refreshNovelMetadata') || false,
+    downloadNewChapters: downloadNewChapters || false,
+    refreshNovelMetadata: refreshNovelMetadata || false,
   };
 
   let libraryNovels: LibraryNovelInfo[] = [];

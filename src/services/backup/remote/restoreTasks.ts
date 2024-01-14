@@ -2,8 +2,8 @@ import { BackupDataFileName, RestoreTask, TaskType } from '../types';
 import { BackupCategory, BackupNovel } from '@database/types';
 import { _restoreNovelAndChapters } from '@database/queries/NovelQueries';
 import { _restoreCategory } from '@database/queries/CategoryQueries';
-import { MMKVStorage } from '@utils/mmkv/mmkv';
 import { download, exists, getJson, list } from '@api/remote';
+import { restoreMMKVData } from './helpers';
 
 export const restoreNovel = (
   host: string,
@@ -74,9 +74,7 @@ export const restoreSetting = (
         return getJson(host, folderTree, BackupDataFileName.SETTING).then(
           data => {
             const subtask = async () => {
-              for (let key in data) {
-                MMKVStorage.set(key, data[key]);
-              }
+              restoreMMKVData(data);
             };
             return {
               taskType: TaskType.SETTING,
