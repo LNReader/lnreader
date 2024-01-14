@@ -95,6 +95,7 @@
       "showBatteryAndTime": "Εμφάνιση μπαταρίας και ώρας",
       "showProgressPercentage": "Εμφάνιση ποσοστού προόδου",
       "swipeGestures": "Σύρετε αριστερά ή δεξιά για περιήγηση μεταξύ κεφαλαίων",
+      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
       "allowTextSelection": "Allow text selection",
       "useChapterDrawerSwipeNavigation": "Swipe right to open drawer",
       "removeExtraSpacing": "Αφαίρεση επιπλέον απόστασης παραγράφων",
