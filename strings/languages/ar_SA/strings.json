@@ -95,6 +95,7 @@
       "showBatteryAndTime": "اضهر البطارية والوقت",
       "showProgressPercentage": "النسبة المئوية للتقدم",
       "swipeGestures": "اسحب لليسار أو لليمين للتنقل بين الفصول",
+      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
       "allowTextSelection": "السماح باختيار النص",
       "useChapterDrawerSwipeNavigation": "مرر يمينا لفتح القائمة الجانبية",
       "removeExtraSpacing": "إزالة المسافات الزائدة بين الفقرات",
