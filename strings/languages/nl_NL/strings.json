@@ -95,6 +95,7 @@
       "showBatteryAndTime": "Toon batterij en tijd",
       "showProgressPercentage": "Voortgangspercentage weergeven",
       "swipeGestures": "Veeg naar links of rechts om tussen de hoofdstukken te navigeren",
+      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
       "allowTextSelection": "Tekstselectie toestaan",
       "useChapterDrawerSwipeNavigation": "Swipe right to open drawer",
       "removeExtraSpacing": "Remove extra paragraph spacing",
