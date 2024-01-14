@@ -42,39 +42,35 @@ const updateLibrary = async options => {
         i++
       ) {
         try {
-          if (BackgroundService.isRunning()) {
-            /**
-             * Update chapters
-             */
-            await updateNovel(
-              libraryNovels[i].sourceId,
-              libraryNovels[i].novelUrl,
-              libraryNovels[i].novelId,
-              options,
-            );
+          /**
+           * Update chapters
+           */
+          await updateNovel(
+            libraryNovels[i].sourceId,
+            libraryNovels[i].novelUrl,
+            libraryNovels[i].novelId,
+            options,
+          );
 
-            /**
-             * Update notification
-             */
-            await BackgroundService.updateNotification({
-              taskTitle: libraryNovels[i].novelName,
-              taskDesc: '(' + (i + 1) + '/' + libraryNovels.length + ')',
-              progressBar: { max: libraryNovels.length, value: i + 1 },
-            });
+          /**
+           * Update notification
+           */
+          await BackgroundService.updateNotification({
+            taskTitle: libraryNovels[i].novelName,
+            taskDesc: '(' + (i + 1) + '/' + libraryNovels.length + ')',
+            progressBar: { max: libraryNovels.length, value: i + 1 },
+          });
 
-            const nextNovelIndex = i + 1;
+          const nextNovelIndex = i + 1;
 
-            if (
-              nextNovelIndex in libraryNovels &&
-              libraryNovels[nextNovelIndex].sourceId ===
-                libraryNovels[i].sourceId
-            ) {
-              await sleep(taskData.delay);
-            }
+          if (
+            nextNovelIndex in libraryNovels &&
+            libraryNovels[nextNovelIndex].sourceId === libraryNovels[i].sourceId
+          ) {
+            await sleep(taskData.delay);
           }
         } catch (error) {
           showToast(libraryNovels[i].novelName + ': ' + error.message);
-          continue;
         }
       }
       /**
