@@ -74,6 +74,7 @@ const updateLibrary = async options => {
           }
         } catch (error) {
           showToast(libraryNovels[i].novelName + ': ' + error.message);
+          continue;
         }
       }
       /**
