@@ -3,7 +3,7 @@ import {
   AppDownloadFolder,
   NovelDownloadFolder,
 } from '@utils/constants/download';
-import { walkDir } from '../utils';
+import { walkDir, backupMMKVData } from '../utils';
 import {
   BackupPackage,
   BackupTask,
@@ -19,7 +19,6 @@ import {
   getAllNovelCategories,
   getCategoriesFromDb,
 } from '@database/queries/CategoryQueries';
-import { backupMMKVData } from './helpers';
 
 export const versionTask = async (
   folderTree: string[],

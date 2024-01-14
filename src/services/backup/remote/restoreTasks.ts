@@ -3,7 +3,7 @@ import { BackupCategory, BackupNovel } from '@database/types';
 import { _restoreNovelAndChapters } from '@database/queries/NovelQueries';
 import { _restoreCategory } from '@database/queries/CategoryQueries';
 import { download, exists, getJson, list } from '@api/remote';
-import { restoreMMKVData } from './helpers';
+import { restoreMMKVData } from '../utils';
 
 export const restoreNovel = (
   host: string,

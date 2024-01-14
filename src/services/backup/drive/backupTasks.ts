@@ -18,8 +18,7 @@ import {
   getCategoriesFromDb,
   getAllNovelCategories,
 } from '@database/queries/CategoryQueries';
-import { walkDir } from '../utils';
-import { backupMMKVData } from '../remote/helpers';
+import { walkDir, backupMMKVData } from '../utils';
 
 export const versionTask = async (parentId: string): Promise<BackupTask> => {
   const backupPackage: BackupPackage = {
