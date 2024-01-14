@@ -1,12 +1,39 @@
 export const defaultUserAgentString =
   'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36';
 
-export const fetchApi = async (url: string, init?: any): Promise<Response> => {
-  const headers = new Headers({
+export const fetchApi = async (
+  url: string,
+  init?: {
+    headers?: Record<string, string> | Headers;
+    [x: string]:
+      | string
+      | Record<string, string>
+      | undefined
+      | FormData
+      | Headers;
+  },
+): Promise<Response> => {
+  const defaultHeaders = {
     'User-Agent': defaultUserAgentString,
-    ...init?.headers,
-  });
-  return await fetch(url, { ...init, headers });
+  };
+  if (init?.headers) {
+    if (init.headers instanceof Headers) {
+      if (!init.headers.get('User-Agent') && defaultHeaders['User-Agent']) {
+        init.headers.set('User-Agent', defaultHeaders['User-Agent']);
+      }
+    } else {
+      init.headers = {
+        ...defaultHeaders,
+        ...init.headers,
+      };
+    }
+  } else {
+    init = {
+      ...init,
+      headers: defaultHeaders,
+    };
+  }
+  return await fetch(url, init);
 };
 
 export const fetchFile = async (url: string, init: any) => {
