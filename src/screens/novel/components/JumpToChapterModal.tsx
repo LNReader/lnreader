@@ -168,6 +168,7 @@ const JumpToChapterModal = ({
             theme={{ colors: { ...theme } }}
             underlineColor={theme.outline}
             dense
+            keyboardType={mode ? 'default' : 'numeric'}
             error={error.length > 0}
           />
           <Text style={[styles.errorText, { color: errorColor }]}>{error}</Text>
