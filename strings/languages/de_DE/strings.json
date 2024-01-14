@@ -95,6 +95,7 @@
       "showBatteryAndTime": "Akku und Zeit anzeigen",
       "showProgressPercentage": "Zeige Fortschritt in Prozent",
       "swipeGestures": "Nach links oder rechts wischen, um zwischen den Kapiteln zu wechseln",
+      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
       "allowTextSelection": "Textauswahl erlauben",
       "useChapterDrawerSwipeNavigation": "Wische nach rechts, um die Seitenleiste zu öffnen",
       "removeExtraSpacing": "Extra Absatzabstand entfernen",
