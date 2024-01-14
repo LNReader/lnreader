@@ -56,6 +56,7 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
     nextChapter,
     webViewRef,
     saveProgress,
+    pages,
     onPress,
     onLayout,
     navigateToChapterBySwipe,
@@ -176,6 +177,11 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
               });
             }
             break;
+          case 'pages':
+            if (event.data) {
+              pages.current = Number(event.data);
+            }
+            break;
         }
       }}
       source={{
@@ -240,14 +246,25 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
                       })}
                     </script>
                   </head>
-                  <body>
-                    <div class="chapterCtn" onclick="reader.post({type:'hide'})">
+                  <body id='sourceId-${chapterInfo.sourceId}'>
+                    <div class="chapterCtn" onclick="reader.post({type:'hide'})"> 
+                      <div id="left"></div>
+                      <div id="right"></div>
+                      <div id="middle" ${
+                        readerPages &&
+                        onClickWebViewPostMessage({
+                          type: 'hide',
+                        })
+                      }></div>
                       <chapter 
                         data-plugin-id='${novel.pluginId}'
+                        data-page=0
                         data-novel-id='${chapter.novelId}'
                         data-chapter-id='${chapter.id}'
                       >
                         ${html}
+                        <p id="spacer"></p>
+
                       </chapter>
                       <div class="hidden" id="ToolWrapper">
                           <div id="TTS-Controller"></div>
@@ -286,7 +303,10 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
                     <script src="${pluginCustomJS}"></script>
                     <script>
                       async function fn(){
-                        ${readerSettings.customJS}
+                        // Position important to prevent layout bugs
+                        ${readerPages && createHorizontalReaderPages()}
+                        
+                          ${readerSettings.customJS}
                         // scroll to saved position
                         reader.refresh();
                         window.scrollTo({

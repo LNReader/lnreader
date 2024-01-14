@@ -439,6 +439,7 @@
       "showProgressPercentage": "Show progress percentage",
       "showSwipeMargins": "Show swipe margins",
       "swipeGestures": "Swipe left or right to navigate between chapters",
+      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
       "textAlign": "Text align",
       "textSize": "Text size",
       "useChapterDrawerSwipeNavigation": "Swipe right to open drawer",

@@ -361,6 +361,7 @@ export interface StringMap {
   'readerScreen.bottomSheet.showProgressPercentage': 'string';
   'readerScreen.bottomSheet.showSwipeMargins': 'string';
   'readerScreen.bottomSheet.swipeGestures': 'string';
+  'readerScreen.bottomSheet.readerPages': 'string';
   'readerScreen.bottomSheet.textAlign': 'string';
   'readerScreen.bottomSheet.textSize': 'string';
   'readerScreen.bottomSheet.useChapterDrawerSwipeNavigation': 'string';
