@@ -89,7 +89,17 @@ const updateLibrary = async options => {
           }
         } catch (error) {
           showToast(libraryNovels[i].novelName + ': ' + error.message);
-          continue;
+          if (libraryNovels.length === i + 1) {
+            resolve();
+
+            Notifications.scheduleNotificationAsync({
+              content: {
+                title: 'Library Updated',
+                body: libraryNovels.length + ' novels updated',
+              },
+              trigger: null,
+            });
+          }
         }
       }
     });
