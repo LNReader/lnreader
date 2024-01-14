@@ -24,6 +24,7 @@ const GeneralSettings: React.FC = () => {
     useVolumeButtons = false,
     verticalSeekbar = true,
     swipeGestures = false,
+    readerPages = false,
     autoScroll = false,
     autoScrollInterval = 10,
     autoScrollOffset = null,
@@ -74,6 +75,12 @@ const GeneralSettings: React.FC = () => {
         onPress={() =>
           dispatch(setAppSettings('swipeGestures', !swipeGestures))
         }
+        theme={theme}
+      />
+      <SwitchItem
+        label={getString('readerScreen.bottomSheet.readerPages')}
+        value={readerPages}
+        onPress={() => dispatch(setAppSettings('readerPages', !readerPages))}
         theme={theme}
       />
       <SwitchItem
