@@ -95,6 +95,7 @@
       "showBatteryAndTime": "Akkumulátorinformációk és idő mutatása",
       "showProgressPercentage": "Előrehaladás százalékos mutatása",
       "swipeGestures": "Swipe left or right to navigate between chapters",
+      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
       "allowTextSelection": "Szövegkijelölés engedélyezése",
       "useChapterDrawerSwipeNavigation": "Swipe right to open drawer",
       "removeExtraSpacing": "Remove extra paragraph spacing",
