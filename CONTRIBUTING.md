@@ -26,6 +26,10 @@ npm install
 npm run buildRelease
 ```
 
+### Common Problems with First Setup
+
+Please refer to this [file](./COMMON_ERRORS.md)
+
 ### Developing on Android
 
 You will need an Android device or emulator connected to your computer as well as an IDE of your choice. (eg: vscode)
