@@ -1,11 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import WebView from 'react-native-webview';
 import CookieManager from '@react-native-cookies/cookies';
 
 import { Appbar } from '@components';
 import { useTheme } from '@hooks/useTheme';
-import useSourceStorage from '@hooks/useSourceStorage';
 import { defaultUserAgentString } from '@utils/fetch/fetch';
 
 type ReaderScreenRouteProps = RouteProp<{
@@ -21,19 +20,12 @@ const WebviewScreen = () => {
   const { goBack } = useNavigation();
 
   const {
-    params: { name, sourceId, url },
+    params: { name, url },
   } = useRoute<ReaderScreenRouteProps>();
-  const { setSourceStorage } = useSourceStorage({ sourceId });
 
-  useEffect(() => {
-    CookieManager.get(url, true).then(cookies => {
-      const cloudflareCookie = cookies?.cf_clearance;
-      if (cloudflareCookie) {
-        const cloudflareCookieString = `${cloudflareCookie.name}=${cloudflareCookie.value}`;
-        setSourceStorage('cookies', cloudflareCookieString);
-      }
-    });
-  }, []);
+  const syncCookies = () => {
+    CookieManager.flush();
+  };
 
   return (
     <>
@@ -42,6 +34,7 @@ const WebviewScreen = () => {
         startInLoadingState
         userAgent={defaultUserAgentString}
         source={{ uri: url }}
+        onNavigationStateChange={syncCookies}
       />
     </>
   );

@@ -1,12 +1,9 @@
-import { getSourceStorage } from '@hooks/useSourceStorage';
-
 export const defaultUserAgentString =
   'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Mobile Safari/537.36';
 
 interface FetchParams {
   url: string; // URL of request
   init?: RequestInit; // Variable for passing headers and other information
-  sourceId?: number; // ID number of source for cookies
 }
 
 // Checks if we bypassed cloudflare. If we failed to bypass, throw error.
@@ -27,7 +24,6 @@ export const cloudflareCheck = (text: string) => {
 export const fetchApi = async ({
   url,
   init,
-  sourceId,
 }: FetchParams): Promise<Response> => {
   let headers = new Headers({
     'User-Agent': defaultUserAgentString,
@@ -37,14 +33,6 @@ export const fetchApi = async ({
   // init: { headers: { 'User-Agent': 'New user agent!' } },
   // You can have NO user agent by doing this:
   // init: { headers: { 'User-Agent': undefined } },
-
-  if (sourceId) {
-    const { cookies = '' } = getSourceStorage(sourceId);
-
-    if (cookies) {
-      headers.append('cookie', cookies);
-    }
-  }
 
   return fetch(url, { ...init, headers });
 };

@@ -16,7 +16,6 @@ import {
   NovelScreenRouteParams,
 } from '@utils/NavigationUtils';
 
-import { getSourceStorage } from '@hooks/useSourceStorage';
 import { defaultUserAgentString } from '@utils/fetch/fetch';
 
 interface HistoryCardProps {
@@ -59,8 +58,6 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
     [chapterName, historyTimeRead],
   );
 
-  const { cookies = '' } = getSourceStorage(sourceId);
-
   return (
     <Pressable
       style={styles.container}
@@ -94,7 +91,6 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
             source={{
               uri: novelCover,
               headers: {
-                Cookie: cookies,
                 'User-Agent': defaultUserAgentString,
               },
             }}
