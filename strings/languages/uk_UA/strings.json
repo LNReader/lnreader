@@ -95,6 +95,7 @@
       "showBatteryAndTime": "Показувати стан батареї | час",
       "showProgressPercentage": "Показувати прогрес",
       "swipeGestures": "Проведіть вліво або вправо для навігації між главами",
+      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
       "allowTextSelection": "Дозволити виділяти текст",
       "useChapterDrawerSwipeNavigation": "Swipe right to open drawer",
       "removeExtraSpacing": "Remove extra paragraph spacing",
