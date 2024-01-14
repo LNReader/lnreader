@@ -95,6 +95,7 @@
       "showBatteryAndTime": "Показывать батарею и время",
       "showProgressPercentage": "Показывать процент прогресса",
       "swipeGestures": "Проведите влево или вправо для перехода между главами",
+      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
       "allowTextSelection": "Разрешить выделение текста",
       "useChapterDrawerSwipeNavigation": "Проведите вправо, чтобы открыть",
       "removeExtraSpacing": "Удалить дополнительный интервал параграфа",
