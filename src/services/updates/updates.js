@@ -62,21 +62,6 @@ const updateLibrary = async options => {
               progressBar: { max: libraryNovels.length, value: i + 1 },
             });
 
-            /**
-             * When updating library is finished
-             */
-            if (libraryNovels.length === i + 1) {
-              resolve();
-
-              Notifications.scheduleNotificationAsync({
-                content: {
-                  title: 'Library Updated',
-                  body: libraryNovels.length + ' novels updated',
-                },
-                trigger: null,
-              });
-            }
-
             const nextNovelIndex = i + 1;
 
             if (
@@ -89,9 +74,20 @@ const updateLibrary = async options => {
           }
         } catch (error) {
           showToast(libraryNovels[i].novelName + ': ' + error.message);
-          continue;
         }
       }
+      /**
+       * When updating library is finished
+       */
+      resolve();
+
+      Notifications.scheduleNotificationAsync({
+        content: {
+          title: 'Library Updated',
+          body: libraryNovels.length + ' novels updated',
+        },
+        trigger: null,
+      });
     });
 
   if (libraryNovels.length > 0) {
