@@ -95,6 +95,7 @@
       "showBatteryAndTime": "显示电池和时间",
       "showProgressPercentage": "显示进度百分比",
       "swipeGestures": "向左或向右滑动以导航章节",
+      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
       "allowTextSelection": "允许选择文本",
       "useChapterDrawerSwipeNavigation": "Swipe right to open drawer",
       "removeExtraSpacing": "Remove extra paragraph spacing",
