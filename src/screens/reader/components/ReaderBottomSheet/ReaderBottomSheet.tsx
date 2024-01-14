@@ -156,7 +156,7 @@ const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
         {
           backgroundColor: tabHeaderColor,
           borderBottomColor: theme.outline,
-          borderBottomWidth: 1,
+          borderBottomWidth: 0.5,
         },
         styles.tabBar,
       ]}
