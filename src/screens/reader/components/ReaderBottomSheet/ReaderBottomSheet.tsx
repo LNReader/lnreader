@@ -15,6 +15,8 @@ import ReaderTextAlignSelector from './ReaderTextAlignSelector';
 import ReaderLineHeight from './ReaderLineHeight';
 import ReaderFontPicker from './ReaderFontPicker';
 import { overlay } from 'react-native-paper';
+import { ScrollView } from 'react-native-gesture-handler';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const ReaderTab: React.FC = () => {
   return (
@@ -38,13 +40,14 @@ const GeneralTab: React.FC = () => {
     showScrollPercentage,
     useVolumeButtons,
     swipeGestures,
+    readerPages = false,
     removeExtraParagraphSpacing,
     bionicReading,
     setChapterGeneralSettings,
   } = useChapterGeneralSettings();
 
   return (
-    <View>
+    <ScrollView>
       <ReaderSheetPreferenceItem
         label={getString('readerScreen.bottomSheet.fullscreen')}
         onPress={() =>
@@ -94,6 +97,12 @@ const GeneralTab: React.FC = () => {
         theme={theme}
       />
       <ReaderSheetPreferenceItem
+        label={getString('readerScreen.bottomSheet.readerPages')}
+        onPress={() => dispatch(setAppSettings('readerPages', !readerPages))}
+        value={readerPages}
+        theme={theme}
+      />
+      <ReaderSheetPreferenceItem
         label={getString('readerScreen.bottomSheet.removeExtraSpacing')}
         onPress={() =>
           setChapterGeneralSettings({
@@ -119,7 +128,7 @@ const GeneralTab: React.FC = () => {
         value={bionicReading}
         theme={theme}
       />
-    </View>
+    </ScrollView>
   );
 };
 
@@ -157,27 +166,29 @@ const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
     [],
   );
 
-  const renderTabBar = (props: any) => (
-    <TabBar
-      {...props}
-      indicatorStyle={{ backgroundColor: theme.primary }}
-      style={[
-        {
-          backgroundColor: tabHeaderColor,
-          borderBottomColor: theme.outline,
-          borderBottomWidth: 0.5,
-        },
-        styles.tabBar,
-      ]}
-      renderLabel={({ route, color }) => (
-        <Text style={{ color }}>{route.title}</Text>
-      )}
-      inactiveColor={theme.onSurfaceVariant}
-      activeColor={theme.primary}
-      pressColor={color(theme.primary).alpha(0.12).string()}
-    />
-  );
-
+  const renderTabBar = (props: any) => {
+    return (
+      <TabBar
+        {...props}
+        indicatorStyle={{ backgroundColor: theme.primary }}
+        style={[
+          {
+            backgroundColor: tabHeaderColor,
+            borderBottomColor: theme.outline,
+            borderBottomWidth: 0.5,
+          },
+          styles.tabBar,
+        ]}
+        renderLabel={({ route, color }) => (
+          <Text style={{ color }}>{route.title}</Text>
+        )}
+        inactiveColor={theme.onSurfaceVariant}
+        activeColor={theme.primary}
+        pressColor={color(theme.primary).alpha(0.12).string()}
+      />
+    );
+  };
+  const { bottom } = useSafeAreaInsets();
   return (
     <BottomSheet bottomSheetRef={bottomSheetRef} snapPoints={[360, 560]}>
       <BottomSheetView
@@ -191,7 +202,7 @@ const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
           initialLayout={{ width: layout.width }}
           style={styles.tabView}
         />
-      </BottomSheetView>
+      </BottomSheetScrollView>
     </BottomSheet>
   );
 };
