@@ -9,7 +9,7 @@ const sourceName = 'TuNovelaLigera';
 const baseUrl = 'https://tunovelaligera.com/';
 
 const popularNovels = async page => {
-  let url = `${baseUrl}novelas/page/${page}/?m_orderby=rating`;
+  let url = `${baseUrl}novelas/page/${page}/?m_orderby=views`;
 
   const body = await fetchHtml({ url });
 
