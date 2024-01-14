@@ -95,6 +95,7 @@
       "showBatteryAndTime": "バッテリーと時間を表示",
       "showProgressPercentage": "進捗率を表示",
       "swipeGestures": "Swipe left or right to navigate between chapters",
+      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
       "allowTextSelection": "テキスト選択を許可",
       "useChapterDrawerSwipeNavigation": "Swipe right to open drawer",
       "removeExtraSpacing": "Remove extra paragraph spacing",
