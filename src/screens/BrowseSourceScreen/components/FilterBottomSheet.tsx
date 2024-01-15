@@ -50,7 +50,7 @@ const FilterItem: React.FC<FilterItemProps> = ({
           {filter.label}
         </Text>
         <Picker
-          style={styles.picker}
+          style={[styles.picker, { color: theme.onSurface }]}
           mode="dropdown"
           selectedValue={value}
           dropdownIconRippleColor={theme.primary}
@@ -61,6 +61,7 @@ const FilterItem: React.FC<FilterItemProps> = ({
             }))
           }
           placeholder={filter.label}
+          dropdownIconColor={theme.onSurface}
         >
           {filter.options.map(val => {
             return (
