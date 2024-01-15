@@ -42,56 +42,49 @@ const updateLibrary = async options => {
         i++
       ) {
         try {
-          if (BackgroundService.isRunning()) {
-            /**
-             * Update chapters
-             */
-            await updateNovel(
-              libraryNovels[i].sourceId,
-              libraryNovels[i].novelUrl,
-              libraryNovels[i].novelId,
-              options,
-            );
+          /**
+           * Update chapters
+           */
+          await updateNovel(
+            libraryNovels[i].sourceId,
+            libraryNovels[i].novelUrl,
+            libraryNovels[i].novelId,
+            options,
+          );
 
-            /**
-             * Update notification
-             */
-            await BackgroundService.updateNotification({
-              taskTitle: libraryNovels[i].novelName,
-              taskDesc: '(' + (i + 1) + '/' + libraryNovels.length + ')',
-              progressBar: { max: libraryNovels.length, value: i + 1 },
-            });
+          /**
+           * Update notification
+           */
+          await BackgroundService.updateNotification({
+            taskTitle: libraryNovels[i].novelName,
+            taskDesc: '(' + (i + 1) + '/' + libraryNovels.length + ')',
+            progressBar: { max: libraryNovels.length, value: i + 1 },
+          });
 
-            /**
-             * When updating library is finished
-             */
-            if (libraryNovels.length === i + 1) {
-              resolve();
+          const nextNovelIndex = i + 1;
 
-              Notifications.scheduleNotificationAsync({
-                content: {
-                  title: 'Library Updated',
-                  body: libraryNovels.length + ' novels updated',
-                },
-                trigger: null,
-              });
-            }
-
-            const nextNovelIndex = i + 1;
-
-            if (
-              nextNovelIndex in libraryNovels &&
-              libraryNovels[nextNovelIndex].sourceId ===
-                libraryNovels[i].sourceId
-            ) {
-              await sleep(taskData.delay);
-            }
+          if (
+            nextNovelIndex in libraryNovels &&
+            libraryNovels[nextNovelIndex].sourceId === libraryNovels[i].sourceId
+          ) {
+            await sleep(taskData.delay);
           }
         } catch (error) {
           showToast(libraryNovels[i].novelName + ': ' + error.message);
-          continue;
         }
       }
+      /**
+       * When updating library is finished
+       */
+      resolve();
+
+      Notifications.scheduleNotificationAsync({
+        content: {
+          title: 'Library Updated',
+          body: libraryNovels.length + ' novels updated',
+        },
+        trigger: null,
+      });
     });
 
   if (libraryNovels.length > 0) {
