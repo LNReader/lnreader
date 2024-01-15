@@ -43,6 +43,8 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
     isSearching,
     searchResults,
     searchSource,
+    searchNextPage,
+    hasNextSearchPage,
     clearSearchResults,
     searchError,
   } = useSearchSource(pluginId);
@@ -52,7 +54,9 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
 
   const { searchText, setSearchText, clearSearchbar } = useSearch();
   const onChangeText = (text: string) => setSearchText(text);
-  const onSubmitEditing = () => searchSource(searchText);
+  const onSubmitEditing = () => {
+    searchSource(searchText);
+  };
   const handleClearSearchbar = () => {
     clearSearchbar();
     clearSearchResults();
@@ -144,19 +148,24 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
             );
           }}
           onEndReached={() => {
-            if (hasNextPage && !searchText) {
+            if (searchText) {
+              if (hasNextSearchPage) {
+                searchNextPage();
+              }
+            } else if (hasNextPage) {
               fetchNextPage();
             }
           }}
           ListFooterComponent={
-            hasNextPage && !searchText ? (
+            (hasNextPage && !searchText) ||
+            (hasNextSearchPage && searchText) ? (
               <SourceScreenSkeletonLoading theme={theme} />
             ) : undefined
           }
         />
       )}
 
-      {!showLatestNovels && filterValues ? (
+      {!showLatestNovels && filterValues && !searchText ? (
         <>
           <FAB
             icon={'filter-variant'}
