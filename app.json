@@ -3,9 +3,6 @@
     "name": "LNReader",
     "slug": "LNReader",
     "scheme": "lnreader",
-    "notification": {
-      "color": "#00adb5"
-    },
     "plugins": [
       "expo-localization"
     ]

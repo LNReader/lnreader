@@ -1,4 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.rajarsheechatterjee.LNReader">
 
 	<!-- Internet -->
 	<uses-permission android:name="android.permission.INTERNET" />
@@ -37,11 +37,11 @@
 		android:usesCleartextTraffic="true">
 
 		<meta-data
-			android:name="expo.modules.notifications.default_notification_icon"
+			android:name="expo.modules.notifications.notification_icon"
 			android:resource="@drawable/notification_icon" />
 
 		<meta-data
-			android:name="expo.modules.notifications.default_notification_color"
+			android:name="expo.modules.notifications.notification_color"
 			android:resource="@color/notification_icon_color" />
 
 		<activity
