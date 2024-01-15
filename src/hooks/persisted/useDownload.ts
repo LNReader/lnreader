@@ -47,10 +47,6 @@ const downloadChapterAction = async (taskData?: TaskData) => {
             chapter.id,
             chapter.url,
           );
-
-          // get the newtest queue;
-          queue = getMMKVObject<DownloadData[]>(DOWNLOAD_QUEUE) || [];
-          setMMKVObject(DOWNLOAD_QUEUE, queue.slice(1));
         } catch (error: any) {
           Notifications.scheduleNotificationAsync({
             content: {
@@ -59,6 +55,10 @@ const downloadChapterAction = async (taskData?: TaskData) => {
             },
             trigger: null,
           });
+        } finally {
+          // get the newtest queue;
+          queue = getMMKVObject<DownloadData[]>(DOWNLOAD_QUEUE) || [];
+          setMMKVObject(DOWNLOAD_QUEUE, queue.slice(1));
         }
 
         if (queue.length > 1 && taskData) {
@@ -68,6 +68,7 @@ const downloadChapterAction = async (taskData?: TaskData) => {
     }
   } finally {
     MMKVStorage.delete(BACKGROUND_ACTION);
+    BackgroundService.stop();
   }
 };
 
