@@ -13,24 +13,24 @@ const popularNovels = async (page, { showLatestNovels, filters }) => {
   url += filters?.order ? filters?.order?.replace('+', '') : '-';
   url += showLatestNovels ? 'chapter_date' : filters?.sort || 'rating';
 
-  if (filters?.genres instanceof Array) {
-    url += filters.genres.map(i => `&genres=${i}`).join('');
+  if (filters?.genres?.length) {
+    url += filters.genres.map(i => '&genres=' + i).join('');
   }
 
-  if (filters?.status instanceof Array) {
-    url += filters?.status.map(i => `&status=${i}`).join('');
+  if (filters?.status?.length) {
+    url += filters.status.map(i => '&status=' + i).join('');
   }
 
-  if (filters?.types instanceof Array) {
-    url += filters.types.map(i => `&types=${i}`).join('');
+  if (filters?.types?.length) {
+    url += filters.types.map(i => '&types=' + i).join('');
   }
 
-  if (filters?.categories instanceof Array) {
-    url += filters.categories.map(i => `&categories=${i}`).join('');
+  if (filters?.categories?.length) {
+    url += filters.categories.map(i => '&categories=' + i).join('');
   }
 
-  if (filters?.age_limit instanceof Array) {
-    url += filters.age_limit.map(i => `&age_limit=${i}`).join('');
+  if (filters?.age_limit?.length) {
+    url += filters.age_limit.map(i => '&age_limit=' + i).join('');
   }
 
   url += '&page=' + page;

@@ -16,27 +16,27 @@ const popularNovels = async (page, { showLatestNovels, filters }) => {
   url += '&page=' + page;
 
   if (filters?.type?.length) {
-    url += filters.type.map(i => `&types[]=${i}`).join('');
+    url += filters.type.map(i => '&types[]=' + i).join('');
   }
 
   if (filters?.format?.length) {
-    url += filters.format.map(i => `&format[include][]=${i}`).join('');
+    url += filters.format.map(i => '&format[include][]=' + i).join('');
   }
 
   if (filters?.status?.length) {
-    url += filters.status.map(i => `&status[]=${i}`).join('');
+    url += filters.status.map(i => '&status[]=' + i).join('');
   }
 
   if (filters?.statuss?.length) {
-    url += filters.statuss.map(i => `&manga_status[]=${i}`).join('');
+    url += filters.statuss.map(i => '&manga_status[]=' + i).join('');
   }
 
   if (filters?.genres?.length) {
-    url += filters.genres.map(i => `&genres[include][]=${i}`).join('');
+    url += filters.genres.map(i => '&genres[include][]=' + i).join('');
   }
 
   if (filters?.tags?.length) {
-    url += filters.tags.map(i => `&tags[include][]=${i}`).join('');
+    url += filters.tags.map(i => '&tags[include][]=' + i).join('');
   }
 
   const result = await fetch(url);

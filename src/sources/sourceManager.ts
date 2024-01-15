@@ -146,6 +146,10 @@ import {
   ErolateScraper,
 } from './multisrc/rulate/RulateGenerator';
 import {
+  IfreedomScraper,
+  BookhamsterScraper,
+} from './multisrc/ifreedom/IfreedomGenerator';
+import {
   RuRanobeScraper,
   UkrRanobeScraper,
   NightnovelScraper,
@@ -341,6 +345,8 @@ export const sourceManager = (sourceId: number): Scraper => {
     168: LitSpaceScraper, // @ts-ignore
     169: AsuraLightNovelScraper, // @ts-ignore
     170: ICantReadJPTLScraper, // @ts-ignore
+    171: IfreedomScraper, // @ts-ignore
+    172: BookhamsterScraper, // @ts-ignore
     173: mtlNovelEsScraper, // @ts-ignore
   };
 

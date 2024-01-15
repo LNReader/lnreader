@@ -1,9 +1,10 @@
 import * as cheerio from 'cheerio';
 import QueryString from 'qs';
 
-import { fetchHtml } from '@utils/fetch/fetch';
-
+import { parseMadaraDate } from '../../helpers/parseDate';
 import { FilterInputs } from '../../types/filterTypes';
+import { Status } from '../../helpers/constants';
+import { fetchHtml } from '@utils/fetch/fetch';
 
 class ReadwnScraper {
   constructor(sourceId, baseUrl, sourceName, genres) {
@@ -33,156 +34,176 @@ class ReadwnScraper {
       },
       {
         key: 'genres',
-        label: genres.label,
-        values: genres.values,
+        label: 'Genre / Category',
+        values: [
+          { label: 'All', value: 'all' },
+          { label: 'Action', value: 'action' },
+          { label: 'Adventure', value: 'adventure' },
+          { label: 'Comedy', value: 'comedy' },
+          { label: 'Contemporary Romance', value: 'contemporary-romance' },
+          { label: 'Drama', value: 'drama' },
+          { label: 'Eastern Fantasy', value: 'eastern-fantasy' },
+          { label: 'Fantasy', value: 'fantasy' },
+          { label: 'Fantasy Romance', value: 'fantasy-romance' },
+          { label: 'Game', value: 'game' },
+          { label: 'Gender Bender', value: 'gender-bender' },
+          { label: 'Harem', value: 'harem' },
+          { label: 'Historical', value: 'historical' },
+          { label: 'Horror', value: 'horror' },
+          { label: 'Josei', value: 'josei' },
+          { label: 'Lolicon', value: 'lolicon' },
+          { label: 'Magical Realism', value: 'magical-realism' },
+          { label: 'Martial Arts', value: 'martial-arts' },
+          { label: 'Mecha', value: 'mecha' },
+          { label: 'Mystery', value: 'mystery' },
+          { label: 'Psychological', value: 'psychological' },
+          { label: 'Romance', value: 'romance' },
+          { label: 'School Life', value: 'school-life' },
+          { label: 'Sci-fi', value: 'sci-fi' },
+          { label: 'Seinen', value: 'seinen' },
+          { label: 'Shoujo', value: 'shoujo' },
+          { label: 'Shounen', value: 'shounen' },
+          { label: 'Shounen Ai', value: 'shounen-ai' },
+          { label: 'Slice of Life', value: 'slice-of-life' },
+          { label: 'Sports', value: 'sports' },
+          { label: 'Supernatural', value: 'supernatural' },
+          { label: 'Tragedy', value: 'tragedy' },
+          { label: 'Video Games', value: 'video-games' },
+          { label: 'Wuxia', value: 'wuxia' },
+          { label: 'Xianxia', value: 'xianxia' },
+          { label: 'Xuanhuan', value: 'xuanhuan' },
+          { label: 'Yaoi', value: 'yaoi' },
+          ...genres.values,
+        ],
         inputType: FilterInputs.Picker,
       },
     ];
   }
 
   async popularNovels(page, { showLatestNovels, filters }) {
-    const baseUrl = this.baseUrl;
-    const sourceId = this.sourceId;
-
-    const pageNo = page - 1;
-
-    let url = baseUrl + 'list/';
+    let url = this.baseUrl + 'list/';
     url += (filters?.genres || 'all') + '/';
     url += (filters?.status || 'all') + '-';
     url +=
       (showLatestNovels ? 'lastdotime' : filters?.sort || 'newstime') + '-';
-    url += pageNo + '.html';
+    url += page - 1 + '.html';
 
-    const body = await fetchHtml({ url, sourceId });
+    const body = await fetchHtml({ url, sourceId: this.sourceId });
 
     const loadedCheerio = cheerio.load(body);
-
-    let novels = [];
-
-    loadedCheerio('li.novel-item').each(function () {
-      const novelName = loadedCheerio(this).find('h4').text();
-      const novelUrl = baseUrl + loadedCheerio(this).find('a').attr('href');
-
-      const coverUri = loadedCheerio(this)
-        .find('.novel-cover > img')
-        .attr('data-src');
-
-      const novelCover = baseUrl + coverUri;
-
-      const novel = { sourceId, novelName, novelCover, novelUrl };
-
-      novels.push(novel);
-    });
+    const novels = loadedCheerio('li.novel-item')
+      .map((index, element) => ({
+        sourceId: this.sourceId,
+        novelName: loadedCheerio(element).find('h4').text(),
+        novelCover:
+          this.baseUrl +
+          loadedCheerio(element).find('.novel-cover > img').attr('data-src'),
+        novelUrl: this.baseUrl + loadedCheerio(element).find('a').attr('href'),
+      }))
+      .get();
 
     return { novels };
   }
 
   async parseNovelAndChapters(novelUrl) {
-    const sourceId = this.sourceId;
-    const baseUrl = this.baseUrl;
-    const sourceName = this.sourceName;
+    const body = await fetchHtml({ url: novelUrl, sourceId: this.sourceId });
+    const loadedCheerio = cheerio.load(body);
 
-    const url = novelUrl;
-
-    const body = await fetchHtml({ url, sourceId });
-
-    let loadedCheerio = cheerio.load(body);
-
-    let novel = {
-      sourceId: sourceId,
-      sourceName: sourceName,
-      url,
+    const novel = {
+      sourceId: this.sourceId,
+      sourceName: this.sourceName,
+      url: novelUrl,
       novelUrl,
     };
 
     novel.novelName = loadedCheerio('h1.novel-title').text();
-
-    const coverUri = loadedCheerio('figure.cover > img').attr('data-src');
-    novel.novelCover = baseUrl + coverUri;
+    novel.novelCover =
+      this.baseUrl + loadedCheerio('figure.cover > img').attr('data-src');
+    novel.author = loadedCheerio('span[itemprop=author]').text();
 
     novel.summary = loadedCheerio('.summary')
       .text()
       .replace('Summary', '')
       .trim();
 
-    novel.genre = '';
-
-    loadedCheerio('div.categories > ul > li').each(function () {
-      novel.genre += loadedCheerio(this).text().trim() + ',';
-    });
+    novel.genre = loadedCheerio('div.categories > ul > li')
+      .map((index, element) => loadedCheerio(element).text()?.trim())
+      .get()
+      .join(',');
 
     loadedCheerio('div.header-stats > span').each(function () {
       if (loadedCheerio(this).find('small').text() === 'Status') {
-        novel.status = loadedCheerio(this).find('strong').text();
+        novel.status =
+          loadedCheerio(this).find('strong').text() === 'Ongoing'
+            ? Status.ONGOING
+            : Status.COMPLETED;
       }
     });
 
-    novel.genre = novel.genre.slice(0, -1);
-
-    novel.author = loadedCheerio('span[itemprop=author]').text();
-
-    let novelChapters = [];
-
-    const novelId = novelUrl.replace('.html', '').replace(baseUrl, '');
-
-    const latestChapterNo = loadedCheerio('.header-stats')
-      .find('span > strong')
-      .first()
-      .text()
-      .trim();
-
-    let lastChapterNo = 1;
-    loadedCheerio('.chapter-list li').each(function () {
-      const chapterName = loadedCheerio(this)
-        .find('a .chapter-title')
+    const latestChapterNo = parseInt(
+      loadedCheerio('.header-stats')
+        .find('span > strong')
+        .first()
         .text()
-        .trim();
+        .trim(),
+      10,
+    );
 
-      const chapterUrl = loadedCheerio(this).find('a').attr('href').trim();
+    const chapters = loadedCheerio('.chapter-list li')
+      .map((index, element) => {
+        const chapterName = loadedCheerio(element)
+          .find('a .chapter-title')
+          .text()
+          .trim();
+        const chapterUrl = loadedCheerio(element)
+          .find('a')
+          .attr('href')
+          ?.trim();
+        const releaseDate = loadedCheerio(element)
+          .find('a .chapter-update')
+          .text()
+          .trim();
 
-      const releaseDate = loadedCheerio(this)
-        .find('a .chapter-update')
-        .text()
-        .trim();
+        if (chapterUrl) {
+          return {
+            chapterName,
+            releaseDate: parseMadaraDate(releaseDate),
+            chapterUrl: this.baseUrl + chapterUrl,
+          };
+        }
+      })
+      .get()
+      .filter(chapter => chapter?.chapterName);
 
-      lastChapterNo = loadedCheerio(this).find('a .chapter-no').text().trim();
+    if (latestChapterNo > chapters.length) {
+      const lastChapterNo = parseInt(
+        chapters[chapters.length - 1].chapterUrl.match(/_(\d+)\.html/)?.[1] ||
+          chapters.length,
+        10,
+      );
 
-      const chapter = { chapterName, releaseDate, chapterUrl };
-
-      novelChapters.push(chapter);
-    });
-
-    // Itterate once more before loop to finish off
-    lastChapterNo++;
-    for (let i = lastChapterNo; i <= latestChapterNo; i++) {
-      const chapterName = `Chapter ${i}`;
-      const chapterUrl = `${novelId}_${i}.html`;
-      const releaseDate = null;
-
-      const chapter = { chapterName, releaseDate, chapterUrl };
-
-      novelChapters.push(chapter);
+      for (let i = lastChapterNo + 1; i <= latestChapterNo; i++) {
+        chapters.push({
+          chapterName: 'Chapter ' + i,
+          releaseDate: null,
+          chapterUrl: novelUrl.replace('.html', '_' + i + '.html'),
+        });
+      }
     }
-
-    novel.chapters = novelChapters;
+    novel.chapters = chapters;
 
     return novel;
   }
 
   async parseChapter(novelUrl, chapterUrl) {
-    const baseUrl = this.baseUrl;
-    const url = baseUrl + chapterUrl;
-    const sourceId = this.sourceId;
-
-    const body = await fetchHtml({ url, sourceId });
+    const body = await fetchHtml({ url: chapterUrl, sourceId: this.sourceId });
 
     const loadedCheerio = cheerio.load(body);
-
     const chapterName = loadedCheerio('.titles > h2').text();
     const chapterText = loadedCheerio('.chapter-content').html();
 
     const chapter = {
-      sourceId,
+      sourceId: this.sourceId,
       novelUrl,
       chapterUrl,
       chapterName,
@@ -193,17 +214,14 @@ class ReadwnScraper {
   }
 
   async searchNovels(searchTerm) {
-    const baseUrl = this.baseUrl;
-    const sourceId = this.sourceId;
-    const searchUrl = `${baseUrl}e/search/index.php`;
-
     const body = await fetchHtml({
-      url: searchUrl,
+      url: this.baseUrl + 'e/search/index.php',
+      sourceId: this.sourceId,
       init: {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
-          Referer: `${baseUrl}search.html`,
-          Origin: baseUrl,
+          Referer: this.baseUrl + 'search.html',
+          Origin: this.baseUrl,
           'user-agent':
             'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36',
         },
@@ -218,25 +236,15 @@ class ReadwnScraper {
     });
 
     const loadedCheerio = cheerio.load(body);
-
-    let novels = [];
-
-    loadedCheerio('li.novel-item').each(function () {
-      const novelName = loadedCheerio(this).find('h4').text();
-      const novelUrl = baseUrl + loadedCheerio(this).find('a').attr('href');
-
-      const coverUri = loadedCheerio(this).find('img').attr('data-src');
-      const novelCover = baseUrl + coverUri;
-
-      const novel = {
-        sourceId,
-        novelName,
-        novelCover,
-        novelUrl,
-      };
-
-      novels.push(novel);
-    });
+    const novels = loadedCheerio('li.novel-item')
+      .map((index, element) => ({
+        sourceId: this.sourceId,
+        novelName: loadedCheerio(element).find('h4').text(),
+        novelCover:
+          this.baseUrl + loadedCheerio(element).find('img').attr('data-src'),
+        novelUrl: this.baseUrl + loadedCheerio(element).find('a').attr('href'),
+      }))
+      .get();
 
     return novels;
   }
