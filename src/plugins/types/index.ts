@@ -67,7 +67,7 @@ export interface Plugin extends PluginItem {
     pageNo?: number,
   ) => Promise<SourceNovel>;
   parseChapter: (chapterUrl: string) => Promise<string>;
-  searchNovels: (searchTerm: string, pageNo?: number) => Promise<NovelItem[]>;
+  searchNovels: (searchTerm: string, pageNo: number) => Promise<NovelItem[]>;
   fetchImage: (url: string) => Promise<string>;
   updateUserAgent: (newUserAgent: string) => Promise<void>;
 }
