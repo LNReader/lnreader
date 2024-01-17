@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 
 import { LinearGradient } from 'expo-linear-gradient';
-import FastImage from 'react-native-fast-image';
+import { Image } from 'react-native';
 import ListView from './ListView';
 
 import { useDeviceOrientation } from '@hooks';
@@ -18,6 +18,7 @@ import { LibraryNovelInfo, NovelInfo } from '@database/types';
 import { NovelItem } from '@plugins/types';
 import { ThemeColors } from '@theme/types';
 import { useLibrarySettings } from '@hooks/persisted';
+import { defaultUserAgentString } from '@utils/fetch/fetch';
 
 interface UnreadBadgeProps {
   chaptersDownloaded: number;
@@ -118,8 +119,8 @@ function NovelCover<TNovel extends NovelItem | NovelInfo | LibraryNovelInfo>({
             />
           )}
         </View>
-        <FastImage
-          source={{ uri }}
+        <Image
+          source={{ uri, headers: { 'User-Agent': defaultUserAgentString } }}
           style={[
             {
               height: coverHeight,

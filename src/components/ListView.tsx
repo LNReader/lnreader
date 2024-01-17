@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text, Pressable } from 'react-native';
 
-import FastImage from 'react-native-fast-image';
+import { Image } from 'react-native';
 import { coverPlaceholderColor } from '../theme/colors';
 
 import color from 'color';
@@ -41,7 +41,7 @@ const ListView = ({
       onPress={onPress}
       onLongPress={onLongPress}
     >
-      <FastImage
+      <Image
         source={{
           uri: item.cover,
         }}

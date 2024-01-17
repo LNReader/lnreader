@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import dayjs from 'dayjs';
-import FastImage from 'react-native-fast-image';
+import { Image } from 'react-native';
 
 import { IconButtonV2 } from '@components';
 import { parseChapterNumber } from '@utils/parseChapterNumber';
@@ -83,7 +83,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
             })
           }
         >
-          <FastImage source={{ uri: novelCover }} style={styles.cover} />
+          <Image source={{ uri: novelCover }} style={styles.cover} />
         </Pressable>
         <View style={styles.detailsContainer}>
           <Text

@@ -7,7 +7,7 @@ import { coverPlaceholderColor } from '@theme/colors';
 import { ThemeColors } from '@theme/types';
 
 import { PluginItem } from '@plugins/types';
-import FastImage from 'react-native-fast-image';
+import { Image } from 'react-native';
 import { showToast } from '@utils/showToast';
 import { ActivityIndicator } from 'react-native-paper';
 import { getString } from '@strings/translations';
@@ -47,7 +47,7 @@ const PluginCard: React.FC<Props> = ({
         }}
       >
         <View style={[styles.flexRow]}>
-          <FastImage source={{ uri: plugin.iconUrl }} style={styles.icon} />
+          <Image source={{ uri: plugin.iconUrl }} style={styles.icon} />
           <View style={styles.details}>
             <Text
               numberOfLines={1}
