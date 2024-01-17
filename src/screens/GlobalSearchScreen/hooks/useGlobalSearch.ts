@@ -38,7 +38,7 @@ export const useGlobalSearch = ({ defaultSearchText }: Props) => {
     filteredInstalledPlugins.forEach(async plugin => {
       if (isMounted.current) {
         try {
-          const res = await getPlugin(plugin.id).searchNovels(searchText);
+          const res = await getPlugin(plugin.id).searchNovels(searchText, 1);
 
           setSearchResults(prevState =>
             prevState.map(prevResult =>

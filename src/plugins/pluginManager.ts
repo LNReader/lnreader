@@ -97,8 +97,7 @@ const installPlugin = async (url: string): Promise<Plugin | undefined> => {
         }
       });
   } catch (e: any) {
-    showToast(e.message);
-    return undefined;
+    throw e;
   }
 };
 
@@ -135,7 +134,7 @@ const fetchPlugins = async () => {
   const githubBranch = 'plugins';
 
   const availablePlugins: Record<Language, Array<PluginItem>> = await fetch(
-    `https://raw.githubusercontent.com/${githubUsername}/${githubRepository}/${githubBranch}/.dist/${githubUsername}/plugins.json`,
+    `https://raw.githubusercontent.com/${githubUsername}/${githubRepository}/${githubBranch}/.dist/${githubUsername}/plugins.min.json`,
   )
     .then(res => res.json())
     .catch(() => {

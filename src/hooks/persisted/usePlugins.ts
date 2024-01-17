@@ -118,6 +118,8 @@ export default function usePlugins() {
         }
         setMMKVObject(AVAILABLE_PLUGINS, availablePlugins);
         filterPlugins(languagesFilter);
+      } else {
+        throw new Error(`Failed to installed ${plugin.name}`);
       }
     });
   };

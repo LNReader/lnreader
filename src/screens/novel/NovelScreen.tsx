@@ -309,7 +309,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
 
   const setCustomNovelCover = async () => {
     showExtraMenu(false);
-    const newCover = await pickCustomNovelCover(novel.id);
+    const newCover = await pickCustomNovelCover(novel);
     if (newCover) {
       setNovel({
         ...novel,

@@ -5,14 +5,8 @@ import {
   TaskType,
 } from '../types';
 import { appVersion } from '@utils/versionUtils';
-import {
-  getAllNovels,
-  getNovelsWithCustomCover,
-} from '@database/queries/NovelQueries';
-import {
-  AppDownloadFolder,
-  NovelDownloadFolder,
-} from '@utils/constants/download';
+import { getAllNovels } from '@database/queries/NovelQueries';
+import { AppDownloadFolder } from '@utils/constants/download';
 import { getChapters } from '@database/queries/ChapterQueries';
 import {
   getCategoriesFromDb,
@@ -38,9 +32,6 @@ export const versionTask = async (parentId: string): Promise<BackupTask> => {
 export const novelTask = async (parentId: string): Promise<BackupTask> => {
   return getAllNovels().then(novels => {
     const subtasks = novels.map(novel => {
-      if (novel.cover && !novel.cover.startsWith('http')) {
-        novel.cover = `file:///${NovelDownloadFolder}/${novel.pluginId}/${novel.id}/cover.png`;
-      }
       return (): Promise<BackupPackage> =>
         getChapters(novel.id).then(chapters => {
           return {
@@ -57,27 +48,6 @@ export const novelTask = async (parentId: string): Promise<BackupTask> => {
     return {
       taskType: TaskType.NOVEL_AND_CHAPTERS,
       subtasks: subtasks,
-    };
-  });
-};
-
-export const novelCoverTask = (parentId: string): Promise<BackupTask> => {
-  return getNovelsWithCustomCover().then(novels => {
-    return {
-      taskType: TaskType.NOVEL_COVER,
-      subtasks: novels.map(novel => {
-        return async (): Promise<BackupPackage> => {
-          return {
-            folderTree: [parentId],
-            name: `${NovelDownloadFolder}/${novel.pluginId}/${novel.id}/cover.png`.replace(
-              AppDownloadFolder + '/',
-              '',
-            ),
-            mimeType: 'image/png',
-            content: novel.cover || '',
-          };
-        };
-      }),
     };
   });
 };

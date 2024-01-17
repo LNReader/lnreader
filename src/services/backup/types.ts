@@ -15,7 +15,6 @@ export enum TaskType {
   VERSION = 'Version',
   CATEGORY = 'Category',
   NOVEL_AND_CHAPTERS = 'Novel and Chapters',
-  NOVEL_COVER = 'Novel Cover',
   DOWNLOAD = 'Download',
   SETTING = 'Setting',
   THEME = 'Theme',

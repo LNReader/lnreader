@@ -6,7 +6,6 @@ import { useTheme } from '@hooks/persisted';
 import { showToast } from '@utils/showToast';
 
 import { deleteCachedNovels } from '@database/queries/NovelQueries';
-import { clearCoverCache } from '@services/utils/coverCache';
 import { getString } from '@strings/translations';
 import { useBoolean } from '@hooks';
 import ConfirmationDialog from '@components/ConfirmationDialog/ConfirmationDialog';
@@ -62,12 +61,6 @@ const AdvancedSettings = ({ navigation }: AdvancedSettingsScreenProps) => {
           title="Clear updates tab"
           description="Clears chapter entries in updates tab"
           onPress={showClearUpdatesDialog}
-          theme={theme}
-        />
-        <List.Item
-          title="Clean up cached covers"
-          description="Delete all covers cached"
-          onPress={clearCoverCache}
           theme={theme}
         />
         <List.Item

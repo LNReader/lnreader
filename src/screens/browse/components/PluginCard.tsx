@@ -98,6 +98,7 @@ const PluginCard: React.FC<Props> = ({
                 } else {
                   installPlugin(plugin)
                     .then(() => showToast(`Installed ${plugin.name}`))
+                    .catch((error: Error) => showToast(error.message))
                     .finally(() => setIsLoading(false));
                 }
               }}

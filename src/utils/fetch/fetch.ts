@@ -36,7 +36,7 @@ export const fetchApi = async (
   return await fetch(url, init);
 };
 
-export const fetchFile = async (url: string, init: any) => {
+export const fetchFile = async (url: string, init: any): Promise<string> => {
   if (!init) {
     init = {};
   }
@@ -49,23 +49,12 @@ export const fetchFile = async (url: string, init: any) => {
     return new Promise(resolve => {
       const fr = new FileReader();
       fr.onloadend = () => {
-        if (
-          !fr.result
-            .toString()
-            .startsWith('data:application/octet-stream;base64,')
-        ) {
-          return undefined;
-        }
-        resolve(
-          fr.result
-            .toString()
-            .substring('data:application/octet-stream;base64,'.length),
-        );
+        resolve(fr.result.toString().replace(/data:.+\/.+;base64,/, ''));
       };
       fr.readAsDataURL(blob);
     });
   } catch (e) {
-    return undefined;
+    return '';
   }
 };
 
