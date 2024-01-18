@@ -6,7 +6,6 @@ import { upload } from '@api/remote';
 import {
   categoryTask,
   downloadTask,
-  novelCoverTask,
   novelTask,
   settingTask,
   versionTask,
@@ -42,7 +41,6 @@ const remoteBackupAction = async (taskData?: TaskData) => {
     const taskList = [
       versionTask(dataFolder),
       novelTask(novelFolder),
-      novelCoverTask(downloadFolder),
       categoryTask(dataFolder),
       downloadTask(downloadFolder),
       settingTask(dataFolder),

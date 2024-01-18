@@ -7,7 +7,6 @@ import { createFile, exists, makeDir } from '@api/drive';
 import {
   categoryTask,
   downloadTask,
-  novelCoverTask,
   novelTask,
   settingTask,
   versionTask,
@@ -41,7 +40,6 @@ const driveBackupAction = async (taskData?: TaskData) => {
     const taskList = [
       versionTask(dataFolder.id),
       novelTask(novelFolder.id),
-      novelCoverTask(downloadFolder.id),
       categoryTask(dataFolder.id),
       downloadTask(downloadFolder.id),
       settingTask(dataFolder.id),
