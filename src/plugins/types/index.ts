@@ -56,8 +56,6 @@ export interface PluginItem {
 export interface Plugin extends PluginItem {
   path: string; // path in device
   filters?: Filters;
-  userAgent: string;
-  rawCode: string;
   popularNovels: (
     pageNo: number,
     options?: PopularNovelsOptions<Filters>,
@@ -69,5 +67,4 @@ export interface Plugin extends PluginItem {
   parseChapter: (chapterUrl: string) => Promise<string>;
   searchNovels: (searchTerm: string, pageNo: number) => Promise<NovelItem[]>;
   fetchImage: (url: string) => Promise<string>;
-  updateUserAgent: (newUserAgent: string) => Promise<void>;
 }

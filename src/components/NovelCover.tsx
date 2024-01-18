@@ -18,7 +18,7 @@ import { LibraryNovelInfo, NovelInfo } from '@database/types';
 import { NovelItem } from '@plugins/types';
 import { ThemeColors } from '@theme/types';
 import { useLibrarySettings } from '@hooks/persisted';
-import { defaultUserAgentString } from '@utils/fetch/fetch';
+import { getUserAgent } from '@hooks/persisted/useUserAgent';
 
 interface UnreadBadgeProps {
   chaptersDownloaded: number;
@@ -120,7 +120,7 @@ function NovelCover<TNovel extends NovelItem | NovelInfo | LibraryNovelInfo>({
           )}
         </View>
         <Image
-          source={{ uri, headers: { 'User-Agent': defaultUserAgentString } }}
+          source={{ uri, headers: { 'User-Agent': getUserAgent() } }}
           style={[
             {
               height: coverHeight,

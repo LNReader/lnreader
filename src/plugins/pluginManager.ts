@@ -41,15 +41,6 @@ const initPlugin = (rawCode: string, path?: string) => {
       return exports.default`,
     )(_require, {});
     plugin.path = path || `${PluginDownloadFolder}/${plugin.id}.js`;
-    plugin.rawCode = rawCode;
-    plugin.updateUserAgent = async function (newUserAgent) {
-      this.userAgent = newUserAgent;
-      this.rawCode = this.rawCode.replace(
-        /(userAgent\s*=\s*)([^\n;]*)/,
-        `$1"${newUserAgent}"`,
-      );
-      await RNFS.writeFile(this.path, this.rawCode, 'utf8');
-    };
     return plugin;
   } catch (e) {
     return undefined;

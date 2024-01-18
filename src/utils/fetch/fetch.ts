@@ -1,5 +1,4 @@
-export const defaultUserAgentString =
-  'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Mobile Safari/537.36';
+import { getUserAgent } from '@hooks/persisted/useUserAgent';
 
 export const fetchApi = async (
   url: string,
@@ -14,7 +13,7 @@ export const fetchApi = async (
   },
 ): Promise<Response> => {
   const defaultHeaders = {
-    'User-Agent': defaultUserAgentString,
+    'User-Agent': getUserAgent(),
   };
   if (init?.headers) {
     if (init.headers instanceof Headers) {
