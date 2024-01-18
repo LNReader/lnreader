@@ -686,7 +686,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
         />
         <TrackSheet
           bottomSheetRef={trackerSheetRef}
-          novelId={novel.id}
+          novelUrl={novel.url}
           novelName={novel.name}
           theme={theme}
         />

@@ -15,15 +15,15 @@ import { UserListStatus } from '@services/Trackers';
 
 interface Props {
   bottomSheetRef: React.RefObject<BottomSheetModalMethods>;
-  novelId: number;
+  novelUrl: string;
   novelName: string;
   theme: ThemeColors;
 }
 
-const TrackSheet = ({ bottomSheetRef, novelId, novelName, theme }: Props) => {
+const TrackSheet = ({ bottomSheetRef, novelUrl, novelName, theme }: Props) => {
   const { tracker } = useTracker();
   const { trackedNovel, trackNovel, untrackNovel, updateTrackedNovel } =
-    useTrackedNovel(novelId);
+    useTrackedNovel(novelUrl);
 
   const [trackSearchDialog, setTrackSearchDialog] = useState(false);
   const [trackStatusDialog, setTrackStatusDialog] = useState(false);

@@ -14,6 +14,15 @@ import { getString } from '@strings/translations';
 import { BackupNovel, NovelInfo } from '../types';
 import { SourceNovel } from '@plugins/types';
 import { NovelDownloadFolder } from '@utils/constants/download';
+import { MMKVStorage } from '@utils/mmkv/mmkv';
+import {
+  LAST_READ_PREFIX,
+  NOVEL_CHAPTERS_PREFIX,
+  NOVEL_PREFIX,
+  NOVEL_SETTINSG_PREFIX,
+  PROGRESS_PREFIX,
+  TRACKED_NOVEL_PREFIX,
+} from '@hooks/persisted/useNovel';
 
 export const insertNovelAndChapters = async (
   pluginId: string,
@@ -176,6 +185,12 @@ export const getCachedNovels = (): Promise<NovelInfo[]> => {
 export const deleteCachedNovels = async () => {
   const cachedNovels = await getCachedNovels();
   for (let novel of cachedNovels) {
+    MMKVStorage.delete(TRACKED_NOVEL_PREFIX + '_' + novel.url);
+    MMKVStorage.delete(NOVEL_PREFIX + '_' + novel.url);
+    MMKVStorage.delete(NOVEL_CHAPTERS_PREFIX + '_' + novel.url);
+    MMKVStorage.delete(NOVEL_SETTINSG_PREFIX + '_' + novel.url);
+    MMKVStorage.delete(LAST_READ_PREFIX + '_' + novel.url);
+    MMKVStorage.delete(PROGRESS_PREFIX + '_' + novel.url);
     const novelDir =
       NovelDownloadFolder + '/' + novel.pluginId + '/' + novel.id;
     if (await RNFS.exists(novelDir)) {

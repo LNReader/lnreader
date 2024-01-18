@@ -24,14 +24,13 @@ import { APP_SETTINGS, AppSettings } from './useSettings';
 import { showToast } from '@utils/showToast';
 import { useCallback } from 'react';
 
-// store key: PREFIX + '_' + novel.id,
+// store key: PREFIX + '_' + novel.url,
 
 export const TRACKED_NOVEL_PREFIX = 'TRACKED_NOVEL_PREFIX';
 
 export const NOVEL_PREFIX = 'NOVEL_PREFIX';
 export const NOVEL_CHAPTERS_PREFIX = 'NOVEL_CHAPTERS_PREFIX';
 
-export const CURRENT_CHAPTER = 'CURRENT_CHAPTER';
 export const NOVEL_SETTINSG_PREFIX = 'NOVEL_SETTINGS';
 export const LAST_READ_PREFIX = 'LAST_READ_PREFIX';
 export const PROGRESS_PREFIX = 'PROGRESS_PREFIX';
@@ -53,9 +52,9 @@ export interface NovelProgress {
   [chapterId: number]: ChapterProgress;
 }
 
-export const useTrackedNovel = (id: number) => {
+export const useTrackedNovel = (url: string) => {
   const [trackedNovel, setValue] = useMMKVObject<TrackedNovel>(
-    TRACKED_NOVEL_PREFIX + '_' + id,
+    TRACKED_NOVEL_PREFIX + '_' + url,
   );
 
   const trackNovel = (tracker: TrackerMetadata, novel: SearchResult) => {
@@ -365,6 +364,3 @@ export const useNovel = (url: string, pluginId: string) => {
     deleteChapters,
   };
 };
-
-export const getCurrentChapter = () =>
-  getMMKVObject<ChapterInfo>(CURRENT_CHAPTER);
