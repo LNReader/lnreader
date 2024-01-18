@@ -35,6 +35,9 @@ export const fetchApi = async (
   return await fetch(url, init);
 };
 
+const FILE_READER_PREFIX_LENGTH = 'data:application/octet-stream;base64,'
+  .length;
+
 export const fetchFile = async (url: string, init: any): Promise<string> => {
   if (!init) {
     init = {};
@@ -45,11 +48,13 @@ export const fetchFile = async (url: string, init: any): Promise<string> => {
       throw new Error();
     }
     const blob = await res.blob();
-    return new Promise(resolve => {
+    return await new Promise((resolve, reject) => {
       const fr = new FileReader();
       fr.onloadend = () => {
-        resolve(fr.result.toString().replace(/data:.+\/.+;base64,/, ''));
+        resolve(fr.result.slice(FILE_READER_PREFIX_LENGTH) as string);
       };
+      fr.onerror = () => reject();
+      fr.onabort = () => reject();
       fr.readAsDataURL(blob);
     });
   } catch (e) {

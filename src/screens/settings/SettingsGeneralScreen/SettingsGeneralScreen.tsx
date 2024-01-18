@@ -49,8 +49,6 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
     ['lastReadAt', 'libraryScreen.bottomSheet.sortOrders.lastRead'],
     ['lastUpdatedAt', 'libraryScreen.bottomSheet.sortOrders.lastUpdated'],
   ]);
-  console.log(sortOrderNameMap.get(sortOrderDisplay[0]));
-
   const {
     updateLibraryOnLaunch,
     downloadNewChapters,
