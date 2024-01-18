@@ -1043,6 +1043,20 @@
     "lang": "English"
   },
   {
+    "sourceId": 171,
+    "url": "https://ifreedom.su",
+    "sourceName": "Свободный Мир Ранобэ",
+    "icon": "https://ifreedom.su/wp-content/uploads/2021/03/logo.png",
+    "lang": "Russian"
+  },
+  {
+    "sourceId": 172,
+    "url": "https://bookhamster.ru",
+    "sourceName": "Bookhamster",
+    "icon": "https://bookhamster.ru/wp-content/uploads/2023/01/log.jpg",
+    "lang": "Russian"
+  },
+  {
     "sourceId": 173,
     "url": "https://es.mtlnovel.com",
     "sourceName": "MTLNovel (ES)",

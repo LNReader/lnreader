@@ -88,11 +88,11 @@ class RulateScraper {
     url += '&adult=' + (filters?.adult || '0');
 
     if (filters?.genres?.length) {
-      url += filters.genres.map(i => `&genres[]=${i}`).join('');
+      url += filters.genres.map(i => '&genres[]=' + i).join('');
     }
 
     if (filters?.tags?.length) {
-      url += filters.tags.map(i => `&tags[]=${i}`).join('');
+      url += filters.tags.map(i => '&tags[]=' + i).join('');
     }
 
     if (filters?.trash?.length) {
@@ -150,6 +150,9 @@ class RulateScraper {
     )
       .text()
       .trim();
+    if (novel.novelName?.includes?.('[')) {
+      novel.novelName = novel.novelName.split('[')[0].trim();
+    }
     novel.novelCover =
       this.baseUrl + loadedCheerio('div[class="images"] > div img').attr('src');
     novel.summary = loadedCheerio(
@@ -191,7 +194,7 @@ class RulateScraper {
       },
     );
 
-    if (genre.length > 0) {
+    if (genre.length) {
       novel.genre = genre.reverse().join(',');
     }
 
@@ -210,7 +213,7 @@ class RulateScraper {
         .attr('href');
 
       if (
-        loadedCheerio(this).find('td > span[class="disabled"]').length < 1 &&
+        !loadedCheerio(this).find('td > span[class="disabled"]').length &&
         releaseDate
       ) {
         chapters.push({ chapterName, releaseDate, chapterUrl });

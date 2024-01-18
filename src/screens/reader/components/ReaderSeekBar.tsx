@@ -5,19 +5,39 @@ import color from 'color';
 import Slider from '@react-native-community/slider';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDeviceOrientation } from '@hooks/useDeviceOrientation';
+import { ThemeColors } from '@theme/types';
 
-const VerticalScrollbar = ({
+interface IScrollbar {
+  theme: ThemeColors;
+  minScroll: number;
+  pages: number;
+  verticalSeekbar: boolean;
+  readerPages: boolean;
+  percentage?: number;
+  scrollTo: (offset: number) => void;
+}
+
+const VerticalScrollbar: React.FC<IScrollbar> = ({
   theme,
   minScroll = 0,
+  pages,
   verticalSeekbar,
+  readerPages,
   percentage,
   scrollTo,
 }) => {
   const { bottom } = useSafeAreaInsets();
-  const onSlidingComplete = value => {
-    let offsetY =
-      ((value - minScroll) * Dimensions.get('window').height) / minScroll;
-    scrollTo(offsetY);
+  const onSlidingComplete = (value: number) => {
+    let offset;
+    if (readerPages) {
+      let newPage = Math.round(pages * (value / 100)) * 100;
+      // pages = { ...pages, current: newPage };
+      offset = newPage;
+    } else {
+      offset =
+        ((value - minScroll) * Dimensions.get('window').height) / minScroll;
+    }
+    scrollTo(offset);
   };
   const screenOrientation = useDeviceOrientation();
 
@@ -43,7 +63,7 @@ const VerticalScrollbar = ({
             flex: 1,
             height: 40,
           }}
-          minimumValue={Math.round(minScroll)}
+          minimumValue={readerPages ? 1 : Math.round(minScroll)}
           maximumValue={100}
           step={1}
           value={percentage || Math.round(minScroll)}
@@ -87,7 +107,7 @@ const VerticalScrollbar = ({
             flex: 1,
             height: 40,
           }}
-          minimumValue={Math.round(minScroll)}
+          minimumValue={readerPages ? 1 : Math.round(minScroll)}
           maximumValue={100}
           step={1}
           value={percentage || Math.round(minScroll)}

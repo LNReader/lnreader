@@ -8,7 +8,6 @@ import { SourceNovelItem } from '../../../sources/types';
 import { ThemeColors } from '../../../theme/types';
 import { getString } from '@strings/translations';
 
-import { getSourceStorage } from '@hooks/useSourceStorage';
 import { defaultUserAgentString } from '@utils/fetch/fetch';
 
 interface Props {
@@ -35,8 +34,6 @@ const GlobalSearchNovelItem: React.FC<Props> = ({
     [inLibrary],
   );
 
-  const { cookies = '' } = getSourceStorage(novel.sourceId);
-
   return (
     <View style={styles.novelItem}>
       <Pressable
@@ -48,7 +45,7 @@ const GlobalSearchNovelItem: React.FC<Props> = ({
         <FastImage
           source={{
             uri: novel.novelCover,
-            headers: { Cookie: cookies, 'User-Agent': defaultUserAgentString },
+            headers: { 'User-Agent': defaultUserAgentString },
           }}
           style={[styles.novelCover, { ...novelItemDimensions }]}
         />

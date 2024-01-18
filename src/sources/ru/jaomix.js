@@ -10,15 +10,15 @@ const baseUrl = 'https://jaomix.ru';
 const popularNovels = async (page, { showLatestNovels, filters }) => {
   let url = baseUrl + '/?searchrn';
 
-  if (filters?.lang instanceof Array) {
+  if (filters?.lang?.length) {
     url += filters.lang.map((lang, idx) => `&lang[${idx}]=${lang}`).join('');
   }
-  if (filters?.genre instanceof Array) {
+  if (filters?.genre?.length) {
     url += filters.genre
       .map((genre, idx) => `&genre[${idx}]=${genre}`)
       .join('');
   }
-  if (filters?.delgenre instanceof Array) {
+  if (filters?.delgenre?.length) {
     url += filters.delgenre
       .map((genre, idx) => `&delgenre[${idx}]=del ${genre}`)
       .join('');

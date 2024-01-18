@@ -1,13 +1,10 @@
-import { getSourceStorage } from '@hooks/useSourceStorage';
 import { defaultUserAgentString, fetchApi } from '@utils/fetch/fetch';
 import { Cheerio, CheerioAPI, Element } from 'cheerio';
 
 export const bypassImages = async (
   loadedCheerio: CheerioAPI,
   element: Cheerio<Element>,
-  sourceId: number,
 ): Promise<string> => {
-  const { cookies = '' } = getSourceStorage(sourceId);
   let promises: Promise<number>[] = [];
 
   element.find('noscript').each(function () {
@@ -28,7 +25,7 @@ export const bypassImages = async (
       const response = await fetchApi({
         url: attr.value,
         init: {
-          headers: { Cookie: cookies, 'User-Agent': defaultUserAgentString },
+          headers: { 'User-Agent': defaultUserAgentString },
         },
       });
 

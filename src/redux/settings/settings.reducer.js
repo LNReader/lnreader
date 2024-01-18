@@ -67,6 +67,7 @@ export const initialState = {
 
   fullScreenMode: true,
   swipeGestures: false,
+  readerPages: false,
   showScrollPercentage: true,
   useVolumeButtons: false,
   scrollAmount: Math.round(Dimensions.get('window').height),

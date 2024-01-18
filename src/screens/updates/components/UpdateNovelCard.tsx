@@ -21,18 +21,16 @@ import { useAppDispatch } from '@redux/hooks';
 import { useTheme } from '@hooks/useTheme';
 import { noop } from 'lodash-es';
 
-import { getSourceStorage } from '@hooks/useSourceStorage';
+import { defaultUserAgentString } from '@utils/fetch/fetch';
 
 const NovelCover = ({
   uri,
   navigateToNovel,
-  sourceId,
 }: {
   uri: string;
   navigateToNovel: () => void;
   sourceId: number;
 }) => {
-  const { cookies = '' } = getSourceStorage(sourceId);
   return (
     <Pressable
       onPress={navigateToNovel}
@@ -41,7 +39,7 @@ const NovelCover = ({
       }}
     >
       <FastImage
-        source={{ uri, headers: { 'cookie': cookies } }}
+        source={{ uri, headers: { 'User-Agent': defaultUserAgentString } }}
         style={styles.cover}
       />
     </Pressable>

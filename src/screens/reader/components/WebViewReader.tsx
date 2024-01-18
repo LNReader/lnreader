@@ -10,6 +10,9 @@ import { useReaderSettings, useSettingsV1 } from '@redux/hooks';
 import { getString } from '@strings/translations';
 
 import { sourceManager } from '../../../sources/sourceManager';
+import { createHorizontalReaderPages } from './stringCreators/horizontalReaderPages';
+import { createStyles } from './stringCreators/createStyle';
+import { createSwipeGestures } from './stringCreators/createSwipeGestures';
 
 type WebViewPostEvent = {
   type: string;
@@ -30,7 +33,9 @@ type WebViewReaderProps = {
   html: string;
   chapterName: string;
   swipeGestures: boolean;
+  readerPages: boolean;
   minScroll: React.MutableRefObject<number>;
+  pages: React.MutableRefObject<number>;
   nextChapter: ChapterItem;
   webViewRef: React.MutableRefObject<WebView>;
   onPress(): void;
@@ -52,9 +57,11 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
     html,
     chapterName,
     swipeGestures,
+    readerPages,
     minScroll,
     nextChapter,
     webViewRef,
+    pages,
     onPress,
     onLayout,
     doSaveProgress,
@@ -112,6 +119,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
             if (event.data) {
               const offSetY = Number(event.data?.offSetY);
               const percentage = Math.round(Number(event.data?.percentage));
+
               doSaveProgress(offSetY, percentage);
             }
             break;
@@ -121,6 +129,11 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
               minScroll.current = (layoutHeight / contentHeight) * 100;
             }
             break;
+          case 'pages':
+            if (event.data) {
+              pages.current = Number(event.data);
+            }
+            break;
         }
       }}
       source={{
@@ -128,85 +141,13 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                 <html>
                   <head>
                     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-                    <style>
-                      html {
-                        scroll-behavior: smooth;
-                        overflow-x: hidden;
-                        padding-top: ${StatusBar.currentHeight};
-                        word-wrap: break-word;
-                      }
-                      body {
-                        padding-left: ${readerSettings.padding}%;
-                        padding-right: ${readerSettings.padding}%;
-                        padding-bottom: 40px;
-                        
-                        font-size: ${readerSettings.textSize}px;
-                        color: ${readerSettings.textColor};
-                        text-align: ${readerSettings.textAlign};
-                        line-height: ${readerSettings.lineHeight};
-                        font-family: ${readerSettings.fontFamily};
-                      }
-                      chapter{
-                        display: block;
-                      }
-                      hr {
-                        margin-top: 20px;
-                        margin-bottom: 20px;
-                      }
-                      a {
-                        color: ${theme.primary};
-                      }
-                      img {
-                        display: block;
-                        width: auto;
-                        height: auto;
-                        max-width: 100%;
-                      }
-                      img.load-icon {
-                        display: block;
-                        margin-inline: auto;
-                        animation: rotation 1s infinite linear;
-                      }
-                      @keyframes rotation {
-                        100% {
-                          transform: rotate(360deg);
-                        }
-                        0% {
-                          transform: rotate(0deg);
-                        }
-                      }
-                      .nextButton,
-                      .infoText {
-                        width: 100%;
-                        border-radius: 50px;
-                        border-width: 1;
-                        color: ${theme.onPrimary};
-                        background-color: ${theme.primary};
-                        font-family: ${readerSettings.fontFamily};
-                        font-size: 16px;
-                        border-width: 0;
-                      }
-                      .nextButton {
-                        min-height: 40px;
-                        text-overflow: ellipsis;
-                        overflow: hidden;
-                        white-space: nowrap;
-                        padding: 0 16px;
-                      }
-                      .infoText {
-                        background-color: transparent;
-                        text-align:center;
-                        border: none;
-                        margin: 0px;
-                        color: inherit;
-                        padding-top: 16px;
-                        padding-bottom: 16px;
-                      }
-                      .chapterCtn {
-                        min-height: ${layoutHeight - 140};
-                        margin-bottom: auto;
-                      }
-                    </style>
+                    ${createStyles(
+                      StatusBar.currentHeight ?? 0,
+                      readerSettings,
+                      theme,
+                      layoutHeight,
+                      readerPages,
+                    )}
                     
                     <style>
                       ${readerSettings.customCSS}
@@ -220,10 +161,22 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                     </style>
                   </head>
                   <body id='sourceId-${chapterInfo.sourceId}'>
-                    <div class="chapterCtn" ${onClickWebViewPostMessage({
-                      type: 'hide',
-                    })}>
+                    <div class="chapterCtn" ${
+                      !readerPages &&
+                      onClickWebViewPostMessage({
+                        type: 'hide',
+                      })
+                    }> 
+                      <div id="left"></div>
+                      <div id="right"></div>
+                      <div id="middle" ${
+                        readerPages &&
+                        onClickWebViewPostMessage({
+                          type: 'hide',
+                        })
+                      }></div>
                       <chapter 
+                        data-page=0
                         data-novel-id='${chapterInfo.novelId}'
                         data-chapter-id='${chapterInfo.chapterId}'
                       >
@@ -233,7 +186,29 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                             : ''
                         }
                         ${html}
+                        <p id="spacer"></p>
+
                       </chapter>
+                      <div id="infoContainer" class="hide">
+                        <div class="infoText">
+                          ${getString(
+                            'readerScreen.finished',
+                          )}: ${chapterName?.trim()}
+                        </div>
+                          ${
+                            nextChapter
+                              ? `<button class="nextButton"  
+                                ${onClickWebViewPostMessage({
+                                  type: 'next',
+                                })}>
+                                  Next: ${nextChapter.chapterName}
+                                </button>`
+                              : `<div class="infoText">${getString(
+                                  'readerScreen.noNextChapter',
+                                )}</div>`
+                          }
+                      </div>
+                     
                     </div>
                     <script>
                     if(!document.querySelector("input[offline]") && ${!!headers}){
@@ -241,9 +216,8 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                         window.ReactNativeWebView.postMessage(JSON.stringify({type:"imgfile",data:img.getAttribute("delayed-src")}));
                       });
                     }
-
                     var scrollTimeout;
-                    window.addEventListener("scroll", (event) => {
+                    ${!readerPages} && window.addEventListener("scroll", (event) => {
                       window.clearTimeout( scrollTimeout );
                       scrollTimeout = setTimeout(() => {
                         window.ReactNativeWebView.postMessage(
@@ -259,65 +233,31 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                         );
                       }, 100);
                     });
-
                     let sendHeightTimeout;
                     const sendHeight = (timeOut) => {
                       clearTimeout(sendHeightTimeout);
                       sendHeightTimeout = setTimeout(
                         window.ReactNativeWebView.postMessage(
-                          JSON.stringify({type:"height",data:document.body.scrollHeight})
+                          JSON.stringify({type:"height",data: document.body.scrollHeight})
                         ), timeOut
                       );
                     }
                     sendHeight(1000);
                     </script>
-                    <div class="infoText">
-                    ${getString(
-                      'readerScreen.finished',
-                    )}: ${chapterName?.trim()}
-                    </div>
-                    ${
-                      nextChapter
-                        ? `<button class="nextButton" ${onClickWebViewPostMessage(
-                            { type: 'next' },
-                          )}>
-                      Next: ${nextChapter.chapterName}
-                    </button>`
-                        : `<div class="infoText">${getString(
-                            'readerScreen.noNextChapter',
-                          )}</div>`
-                    }
-                    ${
-                      swipeGestures
-                        ? `
-                        <script>
-                          let initialX = null;
-                          let initialY = null;
-                          document.addEventListener("touchstart", e => {
-                            initialX = e.changedTouches[0].screenX;
-                            initialY = e.changedTouches[0].screenY;
-                          });
-                          document.addEventListener("touchend", e => {
-                            let diffX = e.changedTouches[0].screenX - initialX;
-                            let diffY = e.changedTouches[0].screenY - initialY;
-                            if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 10) {
-                              e.preventDefault();
-                              window.ReactNativeWebView.postMessage(JSON.stringify({type: diffX<0 ? "next" : "prev"}))
-                            }
-                          });
-                          </script>`
-                        : ''
-                    }
-
+                    
+                    ${swipeGestures ? createSwipeGestures() : ''}
                     <script>
                       async function fn(){
+                        // Position important to prevent layout bugs
+                        ${readerPages && createHorizontalReaderPages()}
                         let novelName = "${chapterInfo.novelName}";
                         let chapterName = "${chapterInfo.chapterName}";
                         let sourceId =${chapterInfo.sourceId};
                         let chapterId =${chapterInfo.chapterId};
                         let novelId =${chapterInfo.novelId};
                         let html = document.querySelector("chapter").innerHTML;
-                        ${readerSettings.customJS}
+                        
+                          ${readerSettings.customJS}
                       }
                       document.addEventListener("DOMContentLoaded", fn);
                     </script>
@@ -328,5 +268,4 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
     />
   );
 };
-
 export default React.memo(WebViewReader, isEqual);

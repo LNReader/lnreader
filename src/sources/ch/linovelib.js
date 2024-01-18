@@ -1,5 +1,5 @@
 import { showToast } from '@hooks/showToast';
-import { fetchApi, fetchHtml } from '@utils/fetch/fetch';
+import { fetchHtml } from '@utils/fetch/fetch';
 
 import * as cheerio from 'cheerio';
 
@@ -74,8 +74,8 @@ const parseNovelAndChapters = async novelUrl => {
     genres.push(loadedCheerio(this).text());
   });
 
-  if (genres && genres.length > 0) {
-    novel.genres = genres.join(', ');
+  if (genres.length) {
+    novel.genre = genres.join(', ');
   }
 
   // Table of Content is on a different page than the summary page
