@@ -36,7 +36,8 @@
         "totalChapters": "章节总数",
         "download": "Downloaded",
         "unread": "Unread",
-        "lastRead": "Last Read"
+        "lastRead": "Last read",
+        "lastUpdated": "Last updated"
       },
       "display": {
         "displayMode": "显示模式",
@@ -56,7 +57,8 @@
     "searchbar": "搜索更新",
     "lastUpdatedAt": "最近更新的库：",
     "newChapters": "new Chapters",
-    "emptyView": "No recent updates"
+    "emptyView": "No recent updates",
+    "updatesLower": "updates"
   },
   "history": "历史",
   "historyScreen": {
@@ -86,16 +88,19 @@
       "lineHeight": "行高",
       "fontStyle": "字体样式",
       "fullscreen": "全屏",
+      "bionicReading": "Bionic Reading",
       "renderHml": "渲染HTML",
       "autoscroll": "自动滚动",
       "verticalSeekbar": "垂直进度条",
       "showBatteryAndTime": "显示电池和时间",
       "showProgressPercentage": "显示进度百分比",
       "swipeGestures": "向左或向右滑动以导航章节",
+      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
       "allowTextSelection": "允许选择文本",
       "useChapterDrawerSwipeNavigation": "Swipe right to open drawer",
       "removeExtraSpacing": "Remove extra paragraph spacing",
       "volumeButtonsScroll": "Volume buttons scroll",
+      "scrollAmount": "Scroll amount (screen height by default)",
       "showSwipeMargins": "Show swipe margins"
     },
     "drawer": {
@@ -125,6 +130,15 @@
         "validChapterName": "Enter a valid chapter name",
         "validChapterNumber": "Enter a valid chapter number"
       }
+    },
+    "convertToEpubModal": {
+      "chooseLocation": "Select EPUB storage directory",
+      "pathToFolder": "Path to EPUB save folder",
+      "useReaderTheme": "Use reader theme",
+      "useCustomCSS": "Use custom CSS",
+      "useCustomJS": "Use custom JS",
+      "useCustomJSWarning": "May not be supported by all EPUB readers",
+      "chaptersWarning": "Only downloaded chapters are included in the EPUB"
     }
   },
   "more": "更多",
@@ -152,8 +166,12 @@
         "refreshMetadataDescription": "Check for new cover and details when updating library",
         "updateTime": "Show last update time",
         "autoDownload": "Auto-download",
+        "epub": "EPUB",
+        "epubLocation": "EPUB Location",
+        "epubLocationDescription": "The place where you open and export your EPUB files.",
         "downloadNewChapters": "Download new chapters",
-        "disableHapticFeedback": "Disable haptic feedback"
+        "disableHapticFeedback": "Disable haptic feedback",
+        "jumpToLastReadChapter": "Jump to last read chapter in list"
       },
       "readerSettings": {
         "title": "阅读器",
@@ -168,7 +186,15 @@
         "autoScrollOffset": "自动滚动偏移(默认屏幕高度)",
         "saveCustomTheme": "保存自定义主题",
         "deleteCustomTheme": "删除自定义主题",
-        "customCSS": "自定义 CSS"
+        "customCSS": "自定义 CSS",
+        "customJS": "Custom JS",
+        "openCSSFile": "Open CSS file",
+        "openJSFile": "Open JS file",
+        "notSaved": "Not saved",
+        "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])",
+        "jsHint": "Hint: You have access to following variables: html, novelName, chapterName, sourceId, chapterId, novelId",
+        "clearCustomCSS": "Are you sure? Your custom CSS would be reset.",
+        "clearCustomJS": "Are you sure? Your custom JS would be reset."
       },
       "browseSettings": "浏览设置",
       "browseSettingsScreen": {
@@ -230,6 +256,7 @@
   "downloadScreen": {
     "dbInfo": "Downloads are saved in a SQLite Database.",
     "downloadChapters": "downloaded Chapters",
-    "noDownloads": "No downloads"
+    "noDownloads": "No downloads",
+    "downloadsLower": "downloads"
   }
 }

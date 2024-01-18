@@ -17,7 +17,7 @@
     "searchResults": "Résultats de la recherche",
     "chapters": "Chapitres",
     "submit": "Soumettre",
-    "retry": "Retry"
+    "retry": "Réessayer"
   },
   "library": "Bibliothèque",
   "libraryScreen": {
@@ -34,9 +34,10 @@
         "dateAdded": "Date ajoutée",
         "alphabetically": "Alphabétiquement",
         "totalChapters": "Nombre total de chapitres",
-        "download": "Downloaded",
-        "unread": "Unread",
-        "lastRead": "Last Read"
+        "download": "Téléchargé",
+        "unread": "Non lu",
+        "lastRead": "Dernière lecture",
+        "lastUpdated": "Dernière mise à jour"
       },
       "display": {
         "displayMode": "Mode d'affichage",
@@ -55,8 +56,9 @@
   "updatesScreen": {
     "searchbar": "Rechercher des mises à jour",
     "lastUpdatedAt": "Dernière mise à jour de la bibliothèque :",
-    "newChapters": "new Chapters",
-    "emptyView": "No recent updates"
+    "newChapters": "nouveaux Chapitres",
+    "emptyView": "Pas de mise à jour récente",
+    "updatesLower": "mises à jour"
   },
   "history": "Historique",
   "historyScreen": {
@@ -86,21 +88,24 @@
       "lineHeight": "Hauteur de la ligne",
       "fontStyle": "Style de police",
       "fullscreen": "Plein écran",
+      "bionicReading": "Bionic Reading",
       "renderHml": "Rendre l'HTML",
       "autoscroll": "Scroll automatique",
       "verticalSeekbar": "Barre de recherche verticale",
       "showBatteryAndTime": "Afficher la batterie et l'heure",
       "showProgressPercentage": "Afficher le pourcentage de progression",
       "swipeGestures": "Balayez vers la gauche ou la droite pour passer d'un chapitre à l'autre.",
+      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
       "allowTextSelection": "Permettre la sélection du texte",
       "useChapterDrawerSwipeNavigation": "Balayez vers la droite pour ouvrir le tiroir",
-      "removeExtraSpacing": "Remove extra paragraph spacing",
-      "volumeButtonsScroll": "Volume buttons scroll",
-      "showSwipeMargins": "Show swipe margins"
+      "removeExtraSpacing": "Supprimer l'espacement de paragraphe supplémentaire",
+      "volumeButtonsScroll": "Défilement avec boutons de volume",
+      "scrollAmount": "Défilement du montant (hauteur de l'écran par défaut)",
+      "showSwipeMargins": "Afficher les marges de balayage"
     },
     "drawer": {
       "scrollToCurrentChapter": "Défiler vers le chapitre actuel",
-      "scrollToTop": "Défiler en haut",
+      "scrollToTop": "Défiler jusqu'en haut",
       "scrollToBottom": "Défiler jusqu'en bas"
     }
   },
@@ -125,6 +130,15 @@
         "validChapterName": "Entrez un nom de chapitre valide",
         "validChapterNumber": "Entrez un numéro de chapitre valide"
       }
+    },
+    "convertToEpubModal": {
+      "chooseLocation": "Sélectionner répertoire de stockage EPUB",
+      "pathToFolder": "Chemin vers le dossier de sauvegarde d'EPUB",
+      "useReaderTheme": "Utiliser le mode lecture",
+      "useCustomCSS": "Utiliser le CSS personnalisé",
+      "useCustomJS": "Utiliser JS personnalisé",
+      "useCustomJSWarning": "Peut ne pas être supporté par tous les lecteurs d'EPUB",
+      "chaptersWarning": "Seuls les chapitres téléchargés sont inclus dans l'EPUB"
     }
   },
   "more": "Suite",
@@ -133,27 +147,31 @@
     "settingsScreen": {
       "generalSettings": "Général",
       "generalSettingsScreen": {
-        "display": "Display",
-        "displayMode": "Display Mode",
-        "itemsPerRow": "Items per row",
-        "itemsPerRowLibrary": "Items per row in library",
-        "novelBadges": "Novel Badges",
-        "novelSort": "Novel Sort",
-        "updateLibrary": "Update library on launch",
-        "useFAB": "Use FAB in Library",
-        "novel": "Novel",
-        "chapterSort": "Default chapter sort",
-        "bySource": "By source",
-        "asc": "(Ascending)",
-        "desc": "(Descending)",
-        "globalUpdate": "Global update",
-        "updateOngoing": "Only update ongoing novels",
-        "refreshMetadata": "Automatically refresh metadata",
-        "refreshMetadataDescription": "Check for new cover and details when updating library",
-        "updateTime": "Show last update time",
-        "autoDownload": "Auto-download",
-        "downloadNewChapters": "Download new chapters",
-        "disableHapticFeedback": "Disable haptic feedback"
+        "display": "Afficher",
+        "displayMode": "Mode d'affichage",
+        "itemsPerRow": "Élément par ligne",
+        "itemsPerRowLibrary": "Éléments par ligne dans la bibliothèque",
+        "novelBadges": "Badges de Novel",
+        "novelSort": "Trier les romans",
+        "updateLibrary": "Mettre à jour la bibliothèque au lancement",
+        "useFAB": "Utiliser FAB dans la bibliothèque",
+        "novel": "Roman",
+        "chapterSort": "Tri des chapitres par défaut",
+        "bySource": "Par Source",
+        "asc": "(Ascendant)",
+        "desc": "(Descendant)",
+        "globalUpdate": "Mise à jour globale",
+        "updateOngoing": "Ne mettre à jour que les romans en cours",
+        "refreshMetadata": "Rafraîchir automatiquement les métadonnées",
+        "refreshMetadataDescription": "Vérifier la nouvelle couverture et les détails lors de la mise à jour de la bibliothèque",
+        "updateTime": "Afficher la date de dernière mise à jour",
+        "autoDownload": "Téléchargement automatique",
+        "epub": "EPUB",
+        "epubLocation": "Localisation EPUB",
+        "epubLocationDescription": "L'endroit où vous ouvrez et exportez vos fichiers EPUB.",
+        "downloadNewChapters": "Télécharger les nouveaux chapitres",
+        "disableHapticFeedback": "Désactiver le retour haptique",
+        "jumpToLastReadChapter": "Jump to last read chapter in list"
       },
       "readerSettings": {
         "title": "Lecteur",
@@ -168,7 +186,15 @@
         "autoScrollOffset": "Valeur du scroll automatique (hauteur de l'écran par défaut)",
         "saveCustomTheme": "Sauvegarder le thème personnalisé",
         "deleteCustomTheme": "Supprimer le thème personnalisé",
-        "customCSS": "CSS personnalisé"
+        "customCSS": "CSS personnalisé",
+        "customJS": "JS personnalisé",
+        "openCSSFile": "Ouvrir le fichier CSS",
+        "openJSFile": "Ouvrir le fichier JS",
+        "notSaved": "Non enregistré",
+        "cssHint": "Astuce : Vous pouvez créer une configuration CSS spécifique à la source avec l'ID source. (#sourceId-[SOURCEID])",
+        "jsHint": "Astuce : Vous avez accès aux variables suivantes : html, novelName, chapterName, sourceId, chapterId, novelId",
+        "clearCustomCSS": "Êtes-vous sûr? Votre CSS personnalisé serait réinitialisé.",
+        "clearCustomJS": "Êtes-vous sûr? Votre JS personnalisé serait réinitialisé."
       },
       "browseSettings": "Parcourir les paramètres",
       "browseSettingsScreen": {
@@ -185,7 +211,7 @@
   "statsScreen": {
     "title": "Statistiques",
     "titlesInLibrary": "Titres dans la bibliothèque",
-    "totalChapters": "Total chapters",
+    "totalChapters": "Nombre total de chapitres",
     "readChapters": "Chapitres Lu",
     "unreadChapters": "Chapitres non lus",
     "downloadedChapters": "Chapitres téléchargés",
@@ -228,8 +254,9 @@
     "downloadedOnly": "Téléchargés seulement"
   },
   "downloadScreen": {
-    "dbInfo": "Downloads are saved in a SQLite Database.",
-    "downloadChapters": "downloaded Chapters",
-    "noDownloads": "No downloads"
+    "dbInfo": "Les téléchargements sont enregistrés dans une base de données SQLite.",
+    "downloadChapters": "chapitres téléchargés",
+    "noDownloads": "Aucun téléchargement",
+    "downloadsLower": "télécharger"
   }
 }

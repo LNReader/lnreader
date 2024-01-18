@@ -42,13 +42,14 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
 
   const sortOrderDisplay: string[] = sortOrder.split(' ');
   const sortOrderNameMap = new Map<string, string>([
-    ['lastReadAt', 'libraryScreen.bottomSheet.sortOrders.lastRead'],
-    ['novels.novelName', 'libraryScreen.bottomSheet.sortOrders.alphabetically'],
-    ['novels.unread', 'libraryScreen.bottomSheet.sortOrders.unread'],
+    ['name', 'libraryScreen.bottomSheet.sortOrders.alphabetically'],
     ['chaptersDownloaded', 'libraryScreen.bottomSheet.sortOrders.download'],
-    ['novelId', 'libraryScreen.bottomSheet.sortOrders.dateAdded'],
     ['chaptersUnread', 'libraryScreen.bottomSheet.sortOrders.totalChapters'],
+    ['id', 'libraryScreen.bottomSheet.sortOrders.dateAdded'],
+    ['lastReadAt', 'libraryScreen.bottomSheet.sortOrders.lastRead'],
+    ['lastUpdatedAt', 'libraryScreen.bottomSheet.sortOrders.lastUpdated'],
   ]);
+  console.log(sortOrderNameMap.get(sortOrderDisplay[0]));
 
   const {
     updateLibraryOnLaunch,

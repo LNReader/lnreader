@@ -17,7 +17,7 @@
     "searchResults": "نتائج البحث",
     "chapters": "فصول",
     "submit": "إرسال",
-    "retry": "Retry"
+    "retry": "أعد المحاولة"
   },
   "library": "المكتبة",
   "libraryScreen": {
@@ -34,9 +34,10 @@
         "dateAdded": "تاريخ الإضافة",
         "alphabetically": "حسب الترتيب الأبجدي",
         "totalChapters": "مجموع الفصول",
-        "download": "Downloaded",
-        "unread": "Unread",
-        "lastRead": "Last Read"
+        "download": "منزّل",
+        "unread": "غير مقروء",
+        "lastRead": "آخر قراءة",
+        "lastUpdated": "آخر تحديث"
       },
       "display": {
         "displayMode": "نمط العرض",
@@ -55,8 +56,9 @@
   "updatesScreen": {
     "searchbar": "البحث في التحديثات",
     "lastUpdatedAt": "آخر تحديث للمكتبة:",
-    "newChapters": "new Chapters",
-    "emptyView": "No recent updates"
+    "newChapters": "فصول جديدة",
+    "emptyView": "لا توجد تحديثات",
+    "updatesLower": "التحديثات"
   },
   "history": "السجل",
   "historyScreen": {
@@ -86,17 +88,20 @@
       "lineHeight": "ارتفاع الخط",
       "fontStyle": "نمط الخط",
       "fullscreen": "تكبير الشاشة",
+      "bionicReading": "الكلمات ثنائية الخط",
       "renderHml": "عرض HTML",
       "autoscroll": "تدوير تلقائي",
       "verticalSeekbar": "شريط البحث العمودي",
       "showBatteryAndTime": "اضهر البطارية والوقت",
       "showProgressPercentage": "النسبة المئوية للتقدم",
-      "swipeGestures": "اسحب لليسار أو لليمين للتبديل بين علامات التبويب",
+      "swipeGestures": "اسحب لليسار أو لليمين للتنقل بين الفصول",
+      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
       "allowTextSelection": "السماح باختيار النص",
       "useChapterDrawerSwipeNavigation": "مرر يمينا لفتح القائمة الجانبية",
-      "removeExtraSpacing": "Remove extra paragraph spacing",
-      "volumeButtonsScroll": "Volume buttons scroll",
-      "showSwipeMargins": "Show swipe margins"
+      "removeExtraSpacing": "إزالة المسافات الزائدة بين الفقرات",
+      "volumeButtonsScroll": "تمرير أزرار الصوت",
+      "scrollAmount": "مقدار التمرير (افتراضيًا طول الشاشة)",
+      "showSwipeMargins": "إظهار هوامش التمرير"
     },
     "drawer": {
       "scrollToCurrentChapter": "التمرير إلى الفصل الحالي",
@@ -125,6 +130,15 @@
         "validChapterName": "أدخل اسم فصل صحيح",
         "validChapterNumber": "أدخل رَقْم فصل صحيح"
       }
+    },
+    "convertToEpubModal": {
+      "chooseLocation": "حدد مسار تخزين ملفات EPUB",
+      "pathToFolder": "مسار مجلد لحفظ EPUB",
+      "useReaderTheme": "استخدام قالب القارئ",
+      "useCustomCSS": "استخدام CSS حسب التفضيل",
+      "useCustomJS": "استخدام JS حسب التفضيل",
+      "useCustomJSWarning": "قد لا يكون مدعوماً من كل قراء EPUB",
+      "chaptersWarning": "الفصول التي تم تنزيلها فقط مدرجة في EPUB"
     }
   },
   "more": "المزيد",
@@ -133,27 +147,31 @@
     "settingsScreen": {
       "generalSettings": "العامة",
       "generalSettingsScreen": {
-        "display": "Display",
-        "displayMode": "Display Mode",
-        "itemsPerRow": "Items per row",
-        "itemsPerRowLibrary": "Items per row in library",
-        "novelBadges": "Novel Badges",
-        "novelSort": "Novel Sort",
-        "updateLibrary": "Update library on launch",
-        "useFAB": "Use FAB in Library",
-        "novel": "Novel",
-        "chapterSort": "Default chapter sort",
-        "bySource": "By source",
-        "asc": "(Ascending)",
-        "desc": "(Descending)",
-        "globalUpdate": "Global update",
-        "updateOngoing": "Only update ongoing novels",
-        "refreshMetadata": "Automatically refresh metadata",
-        "refreshMetadataDescription": "Check for new cover and details when updating library",
-        "updateTime": "Show last update time",
-        "autoDownload": "Auto-download",
-        "downloadNewChapters": "Download new chapters",
-        "disableHapticFeedback": "Disable haptic feedback"
+        "display": "عرض",
+        "displayMode": "وضع العرض",
+        "itemsPerRow": "العناصر في كل صف",
+        "itemsPerRowLibrary": "العناصر لكل صف في المكتبة",
+        "novelBadges": "شارات الرواية",
+        "novelSort": "فرز الروايات",
+        "updateLibrary": "تحديث المكتبة عند تشغيل التطبيق",
+        "useFAB": "استخدام FAB في المكتبة",
+        "novel": "رواية",
+        "chapterSort": "الفرز الافتراضي للفصول",
+        "bySource": "حسب المصدر",
+        "asc": "ترتيب تصاعدي",
+        "desc": "ترتيب تنازلي",
+        "globalUpdate": "التحديث الشامل",
+        "updateOngoing": "تحديث الروايات الجارية فقط",
+        "refreshMetadata": "تحديث البيانات الوصفية تلقائيًا",
+        "refreshMetadataDescription": "تحقق من الغلاف الجديد ",
+        "updateTime": "وقت آخر تحديث",
+        "autoDownload": "التحميل التلقائي",
+        "epub": "EPUB",
+        "epubLocation": "موقع EPUB",
+        "epubLocationDescription": "مكان لحفظ ملفات EPUB وتصديرها.",
+        "downloadNewChapters": "تحميل فصول جديدة",
+        "disableHapticFeedback": "تعطيل الاهتزاز",
+        "jumpToLastReadChapter": "Jump to last read chapter in list"
       },
       "readerSettings": {
         "title": "القارئ",
@@ -168,7 +186,15 @@
         "autoScrollOffset": "تمرير إزاحة تلقائية (ارتفاع الشاشة افتراضي)",
         "saveCustomTheme": "حفظ السمة المخصصة",
         "deleteCustomTheme": "حذف السمة المخصصة",
-        "customCSS": "تنسيقات CSS مخصصة"
+        "customCSS": "تنسيقات CSS مخصصة",
+        "customJS": "JS حسب التفضيل",
+        "openCSSFile": "افتح ملف CSS",
+        "openJSFile": "فتح ملف JS",
+        "notSaved": "لم يُحفظ",
+        "cssHint": "تلميح: يمكنك إنشاء تضبيطات CSS مخصصة لمصدر محدد باستخدام معرفه. (#sourceId-[SOURCEID])",
+        "jsHint": "تلميح: يمكنك الوصول إلى المتغيرات التالية واستخدامها: html, novelName, chapterName, sourceId, chapterId, novelId",
+        "clearCustomCSS": "هل أنت متأكد؟ سيتم إعادة CSS الخاص بك إلي الحالة الافتراضية.",
+        "clearCustomJS": "هل أنت متأكد؟ سيتم إعادة JS الخاص بك إلي الحالة الافتراضية."
       },
       "browseSettings": "تصفح الإعدادات",
       "browseSettingsScreen": {
@@ -193,7 +219,7 @@
     "statusDistribution": "توزيع الحالات"
   },
   "globalSearch": {
-    "searchIn": "البحث في رواية",
+    "searchIn": "البحث عن رواية في",
     "allSources": "جميع المصادر",
     "pinnedSources": "المصادر المثبتة"
   },
@@ -228,8 +254,9 @@
     "downloadedOnly": "التنزيلات فقط"
   },
   "downloadScreen": {
-    "dbInfo": "Downloads are saved in a SQLite Database.",
-    "downloadChapters": "downloaded Chapters",
-    "noDownloads": "No downloads"
+    "dbInfo": "يتم حفظ التنزيلات في قاعدة بيانات SQLite",
+    "downloadChapters": "الفصول المحملة",
+    "noDownloads": "لا توجد تحميلات",
+    "downloadsLower": "تم التنزيل"
   }
 }

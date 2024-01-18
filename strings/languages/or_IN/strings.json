@@ -1,103 +1,103 @@
 {
   "common": {
-    "cancel": "キャンセル",
-    "ok": "Ok",
-    "save": "保存",
-    "clear": "Clear",
-    "reset": "リセット",
-    "search": "検索",
-    "install": "インストール",
-    "newUpdateAvailable": "新しいアップデートが見つかりました",
-    "categories": "カテゴリー",
-    "add": "追加",
-    "edit": "編集",
-    "name": "Name",
+    "cancel": "Cancel",
+    "ok": "ଠିକ୍ ଅଛି",
+    "save": "ସଞ୍ଚୟ କରିବା",
+    "clear": "ସଫା କରିବା",
+    "reset": "Reset",
+    "search": "ସନ୍ଧାନ",
+    "install": "Install",
+    "newUpdateAvailable": "ନୂଆ ଅଦ୍ୟତନ ଉପଲବ୍ଧ",
+    "categories": "ବର୍ଗ",
+    "add": "ଯୋଡ଼ନ୍ତୁ",
+    "edit": "ସମ୍ପାଦନା",
+    "name": "ନାମ",
     "searchFor": "Search for",
     "globally": "globally",
-    "searchResults": "検索結果",
-    "chapters": "Chapters",
+    "searchResults": "Search results",
+    "chapters": "ଅଧ୍ୟାୟ",
     "submit": "Submit",
-    "retry": "Retry"
+    "retry": "ପୁନଃ ଚେଷ୍ଟା କରିବା"
   },
-  "library": "ライブラリ",
+  "library": "Library",
   "libraryScreen": {
-    "searchbar": "ライブラリを検索",
+    "searchbar": "Search library",
     "empty": "Your library is empty. Add series to your library from Browse.",
     "bottomSheet": {
       "filters": {
-        "downloaded": "ダウンロード",
-        "unread": "未読",
-        "completed": "完成",
-        "started": "読み始めた"
+        "downloaded": "Downloaded",
+        "unread": "Unread",
+        "completed": "Completed",
+        "started": "Started"
       },
       "sortOrders": {
-        "dateAdded": "追加日",
-        "alphabetically": "アルファベット順",
-        "totalChapters": "合計章数",
+        "dateAdded": "ଯୋଡ଼ାଯିବା ତାରିଖ",
+        "alphabetically": "Alphabetically",
+        "totalChapters": "Total chapters",
         "download": "Downloaded",
         "unread": "Unread",
         "lastRead": "Last read",
         "lastUpdated": "Last updated"
       },
       "display": {
-        "displayMode": "表示モード",
-        "compact": "コンパクトグリッド",
-        "comfortable": "快適グリッド",
-        "noTitle": "カバーだけグリッド",
-        "list": "一覧",
-        "badges": "バッジ",
-        "downloadBadges": "ダウンロードバッジ",
-        "unreadBadges": "未読バッジ",
-        "showNoOfItems": "アイテム数を表示"
+        "displayMode": "Display mode",
+        "compact": "Compact grid",
+        "comfortable": "Comfortable grid",
+        "noTitle": "Cover only grid",
+        "list": "ତାଲିକା",
+        "badges": "Badges",
+        "downloadBadges": "Download badges",
+        "unreadBadges": "Unread badges",
+        "showNoOfItems": "Show number of items"
       }
     }
   },
-  "updates": "更新",
+  "updates": "Updates",
   "updatesScreen": {
-    "searchbar": "更新を検索",
-    "lastUpdatedAt": "ライブラリの最終更新日",
+    "searchbar": "Search updates",
+    "lastUpdatedAt": "Library last updated:",
     "newChapters": "new Chapters",
     "emptyView": "No recent updates",
     "updatesLower": "updates"
   },
-  "history": "履歴",
+  "history": "History",
   "historyScreen": {
-    "searchbar": "閲覧履歴",
-    "clearHistorWarning": "本当によろしいですか？すべての履歴は失われます。"
+    "searchbar": "Search history",
+    "clearHistorWarning": "Are you sure? All history will be lost."
   },
-  "browse": "閲覧",
+  "browse": "Browse",
   "browseScreen": {
     "discover": "Discover",
-    "searchbar": "ソースを検索",
-    "globalSearch": "グローバル検索",
-    "listEmpty": "設定から言語を有効にする",
+    "searchbar": "Search sources",
+    "globalSearch": "Global search",
+    "listEmpty": "Enable languages from settings",
     "lastUsed": "Last used",
-    "pinned": "ピン留め",
+    "pinned": "Pinned",
     "all": "All",
     "latest": "Latest",
-    "addedToLibrary": "ライブラリに追加",
-    "removeFromLibrary": "ライブラリから削除"
+    "addedToLibrary": "Added to library",
+    "removeFromLibrary": "Removed from library"
   },
   "readerScreen": {
     "finished": "Finished",
-    "noNextChapter": "次の章はありません",
+    "noNextChapter": "There's no next chapter",
     "bottomSheet": {
-      "textSize": "文字サイズ",
+      "textSize": "Text size",
       "color": "Color",
       "textAlign": "Text align",
       "lineHeight": "Line Height",
-      "fontStyle": "フォントスタイル",
-      "fullscreen": "全画面",
+      "fontStyle": "Font style",
+      "fullscreen": "Fullscreen",
       "bionicReading": "Bionic Reading",
-      "renderHml": "HTMLをレンダリング",
-      "autoscroll": "自動スクロール",
-      "verticalSeekbar": "垂直シークバー",
-      "showBatteryAndTime": "バッテリーと時間を表示",
-      "showProgressPercentage": "進捗率を表示",
-      "swipeGestures": "Swipe left or right to navigate between chapters",
+      "renderHml": "Render HTML",
+      "autoscroll": "AutoScroll",
+      "verticalSeekbar": "Vertical Seekbar",
+      "showBatteryAndTime": "Show battery and time",
+      "showProgressPercentage": "Show progress percentage",
+      "swipeGestures": "ଅଧ୍ୟାୟଗୁଡ଼ିକ ମଧ୍ୟରେ ଚଳନ କରିବାକୁ ବାମ କିମ୍ବା ଡାହାଣକୁ ସ୍ୱାଇପ୍ କରନ୍ତୁ",
       "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
-      "allowTextSelection": "テキスト選択を許可",
-      "useChapterDrawerSwipeNavigation": "Swipe right to open drawer",
+      "allowTextSelection": "Allow text selection",
+      "useChapterDrawerSwipeNavigation": "ଡ୍ରର୍ ଖୋଲିବାକୁ ଡାହାଣକୁ ସ୍ୱାଇପ୍ କରନ୍ତୁ",
       "removeExtraSpacing": "Remove extra paragraph spacing",
       "volumeButtonsScroll": "Volume buttons scroll",
       "scrollAmount": "Scroll amount (screen height by default)",
@@ -110,11 +110,11 @@
     }
   },
   "novelScreen": {
-    "addToLibaray": "ライブラリに追加",
+    "addToLibaray": "ଲାଇବ୍ରେରୀରେ ଯୋଡ଼ନ୍ତୁ",
     "inLibaray": "In library",
     "continueReading": "Continue reading",
-    "chapters": "章",
-    "migrate": "移行",
+    "chapters": "chapters",
+    "migrate": "Migrate",
     "noSummary": "No summary",
     "bottomSheet": {
       "filter": "Filter",
@@ -236,22 +236,22 @@
     }
   },
   "categories": {
-    "addCategories": "カテゴリーを追加",
-    "editCategories": "カテゴリー名を変更",
-    "setCategories": "カテゴリーを設定",
-    "header": "カテゴリーを編集",
-    "emptyMsg": "カテゴリーがありません。ライブラリを整理したい場合、プラスボタンをタップしてカテゴリーを作成してください。",
-    "setModalEmptyMsg": "カテゴリーがありません。ライブラリを整理したい場合、プラスボタンをタップしてカテゴリーを作成してください。",
+    "addCategories": "Add category",
+    "editCategories": "Rename category",
+    "setCategories": "Set categories",
+    "header": "Edit categories",
+    "emptyMsg": "You have no categories. Tap the plus button to create one for organizing your library",
+    "setModalEmptyMsg": "You have no categories. Tap the Edit button to create one for organizing your library",
     "deleteModal": {
-      "header": "カテゴリーを削除",
-      "desc": "カテゴリーを削除しますか?"
+      "header": "Delete category",
+      "desc": "Do you wish to delete category"
     },
-    "duplicateError": "この名前のカテゴリーはすでに存在します。",
-    "defaultCategory": "デフォルトカテゴリー"
+    "duplicateError": "A category with this name already exists!",
+    "defaultCategory": "Default category"
   },
   "settings": {
-    "icognitoMode": "シークレットモード",
-    "downloadedOnly": "ダウンロードのみ"
+    "icognitoMode": "Incognito mode",
+    "downloadedOnly": "Downloaded only"
   },
   "downloadScreen": {
     "dbInfo": "Downloads are saved in a SQLite Database.",

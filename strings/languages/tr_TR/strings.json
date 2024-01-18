@@ -36,7 +36,8 @@
         "totalChapters": "Toplam bölüm",
         "download": "İndirilenler",
         "unread": "Okunmamışlar",
-        "lastRead": "Son Okunanlar"
+        "lastRead": "Son okunma",
+        "lastUpdated": "Son güncellenme"
       },
       "display": {
         "displayMode": "Görüntüleme modu",
@@ -55,8 +56,9 @@
   "updatesScreen": {
     "searchbar": "Güncellemelerde ara",
     "lastUpdatedAt": "Kitaplık son güncelleme:",
-    "newChapters": "new Chapters",
-    "emptyView": "No recent updates"
+    "newChapters": "Yeni bölüm",
+    "emptyView": "Güncelleme yok",
+    "updatesLower": "güncellemeler"
   },
   "history": "Geçmiş",
   "historyScreen": {
@@ -86,16 +88,19 @@
       "lineHeight": "Satır Yüksekliği",
       "fontStyle": "Yazı tipi",
       "fullscreen": "Tam ekran",
+      "bionicReading": "Biyonik Okuma",
       "renderHml": "HTML'yi Render'le",
       "autoscroll": "Otomatik Kaydırma",
       "verticalSeekbar": "Dikey Arama Çubuğu",
       "showBatteryAndTime": "Pili ve saati göster",
       "showProgressPercentage": "İlerleme yüzdesini göster",
       "swipeGestures": "Bölümler arası gezinmek için sol veya sağa doğru kaydırın",
+      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
       "allowTextSelection": "Yazı seçmeye izin ver",
       "useChapterDrawerSwipeNavigation": "Çekmeceyi açmak için sağa kaydırın",
       "removeExtraSpacing": "Ekstra paragraf boşluklarını kaldır",
       "volumeButtonsScroll": "Ses butonlarıyla kaydırma",
+      "scrollAmount": "Kaydırma miktarı (varsayılan olarak ekran yüksekliği)",
       "showSwipeMargins": "Kaydırma kenar boşluklarını göster"
     },
     "drawer": {
@@ -125,6 +130,15 @@
         "validChapterName": "Geçerli bir bölüm adı girin",
         "validChapterNumber": "Geçerli bir bölüm sayısı girin"
       }
+    },
+    "convertToEpubModal": {
+      "chooseLocation": "EPUB depolama dizinini seç",
+      "pathToFolder": "EPUB dosyalarını kaydetme klasörünün yolu",
+      "useReaderTheme": "Okuyucu temasını kullan",
+      "useCustomCSS": "Özel CSS kullan",
+      "useCustomJS": "Özel JS kullan",
+      "useCustomJSWarning": "Tüm EPUB okuyucuları tarafından desteklenmeyebilir",
+      "chaptersWarning": "EPUB'da yalnızca, indirilen bölümler dahil edilir"
     }
   },
   "more": "Daha fazla",
@@ -152,8 +166,12 @@
         "refreshMetadataDescription": "Kitaplığı güncellerken yeni kapak ve ayrıntıları denetle",
         "updateTime": "Son güncelleme süresini göster",
         "autoDownload": "Otomatik İndirme",
+        "epub": "EPUB",
+        "epubLocation": "EPUB Konumu",
+        "epubLocationDescription": "EPUB dosyalarınızı açıp, dışa aktardığınız yer.",
         "downloadNewChapters": "Yeni bölümleri indir",
-        "disableHapticFeedback": "Dokunmatik geri bildirimi devre dışı bırak"
+        "disableHapticFeedback": "Dokunmatik geri bildirimi devre dışı bırak",
+        "jumpToLastReadChapter": "Jump to last read chapter in list"
       },
       "readerSettings": {
         "title": "Okuyucu",
@@ -168,7 +186,15 @@
         "autoScrollOffset": "Otomatik kaydırma konumu (varsayılan olarak ekran yüksekliği)",
         "saveCustomTheme": "Özel temayı kaydet",
         "deleteCustomTheme": "Özel temayı sil",
-        "customCSS": "Özel CSS"
+        "customCSS": "Özel CSS",
+        "customJS": "Özel JS",
+        "openCSSFile": "CSS dosyası aç",
+        "openJSFile": "JS dosyası aç",
+        "notSaved": "Kaydedilmedi",
+        "cssHint": "İpucu: Kaynak ID'si ile kaynağa özel CSS yapılandırması oluşturabilirsiniz.\n(#kaynakId-[KAYNAKID])",
+        "jsHint": "İpucu: Aşağıdaki değişkenlere erişiminiz bulunmakta:\nhtml, novelName, chapterName, sourceId, chapterId, novelId",
+        "clearCustomCSS": "Emin misiniz? Özel CSS'niz sıfırlanır.",
+        "clearCustomJS": "Emin misiniz? Özel JS kodlarınız sıfırlanır."
       },
       "browseSettings": "Göz Atma Seçenekleri",
       "browseSettingsScreen": {
@@ -228,8 +254,9 @@
     "downloadedOnly": "Yalnızca indirilenler"
   },
   "downloadScreen": {
-    "dbInfo": "Downloads are saved in a SQLite Database.",
-    "downloadChapters": "downloaded Chapters",
-    "noDownloads": "No downloads"
+    "dbInfo": "İndirilenler bir SQLite Veritabanında kaydedilmektedir.",
+    "downloadChapters": "İndirilen bölümler",
+    "noDownloads": "İndirme yok",
+    "downloadsLower": "İndirilenler"
   }
 }

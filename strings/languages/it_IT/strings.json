@@ -3,233 +3,260 @@
     "cancel": "Annulla",
     "ok": "Ok",
     "save": "Salva",
-    "clear": "Clear",
+    "clear": "Svuota",
     "reset": "Reset",
-    "search": "Search",
-    "install": "Install",
-    "newUpdateAvailable": "New update available",
-    "categories": "Categories",
-    "add": "Add",
-    "edit": "Edit",
-    "name": "Name",
-    "searchFor": "Search for",
-    "globally": "globally",
-    "searchResults": "Search results",
-    "chapters": "Chapters",
-    "submit": "Submit",
-    "retry": "Retry"
+    "search": "Cerca",
+    "install": "Installa",
+    "newUpdateAvailable": "Nuovo aggiornamento disponibile",
+    "categories": "Categorie",
+    "add": "Aggiungi",
+    "edit": "Modifica",
+    "name": "Nome",
+    "searchFor": "Cerca per",
+    "globally": "globale",
+    "searchResults": "Risultati della ricerca",
+    "chapters": "Capitoli",
+    "submit": "Invia",
+    "retry": "Riprova"
   },
-  "library": "Library",
+  "library": "Libreria",
   "libraryScreen": {
-    "searchbar": "Search library",
-    "empty": "Your library is empty. Add series to your library from Browse.",
+    "searchbar": "Cerca nella libreria",
+    "empty": "La tua libreria è vuota. Aggiungi delle serie alla tua libreria da Esplora.",
     "bottomSheet": {
       "filters": {
-        "downloaded": "Downloaded",
-        "unread": "Unread",
-        "completed": "Completed",
-        "started": "Started"
+        "downloaded": "Scaricati",
+        "unread": "Non letti",
+        "completed": "Completati",
+        "started": "Iniziati"
       },
       "sortOrders": {
-        "dateAdded": "Date added",
-        "alphabetically": "Alphabetically",
-        "totalChapters": "Total chapters",
-        "download": "Downloaded",
-        "unread": "Unread",
-        "lastRead": "Last Read"
+        "dateAdded": "Data d'inserimento",
+        "alphabetically": "Ordine Alfabetico",
+        "totalChapters": "Capitoli totali",
+        "download": "Scaricati",
+        "unread": "Non letti",
+        "lastRead": "Ultima lettura",
+        "lastUpdated": "Ultimo aggiornamento"
       },
       "display": {
-        "displayMode": "Display mode",
-        "compact": "Compact grid",
-        "comfortable": "Comfortable grid",
-        "noTitle": "Cover only grid",
-        "list": "List",
-        "badges": "Badges",
-        "downloadBadges": "Download badges",
-        "unreadBadges": "Unread badges",
-        "showNoOfItems": "Show number of items"
+        "displayMode": "Modalità di visualizzazione",
+        "compact": "Griglia compatta",
+        "comfortable": "Griglia comoda",
+        "noTitle": "Griglia solo copertina",
+        "list": "Lista",
+        "badges": "Badge",
+        "downloadBadges": "Scarica il badge",
+        "unreadBadges": "Badge non letti",
+        "showNoOfItems": "Mostra il numero di elementi"
       }
     }
   },
-  "updates": "Updates",
+  "updates": "Novità",
   "updatesScreen": {
-    "searchbar": "Search updates",
-    "lastUpdatedAt": "Library last updated:",
-    "newChapters": "new Chapters",
-    "emptyView": "No recent updates"
+    "searchbar": "Cerca aggiornamenti",
+    "lastUpdatedAt": "Aggiornamento Libreria:",
+    "newChapters": "Nuovi capitoli",
+    "emptyView": "Nessun aggiornamento recente",
+    "updatesLower": "aggiornamenti"
   },
-  "history": "History",
+  "history": "Cronologia",
   "historyScreen": {
-    "searchbar": "Search history",
-    "clearHistorWarning": "Are you sure? All history will be lost."
+    "searchbar": "Cerca nella cronologia",
+    "clearHistorWarning": "Sei sicuro? Tutta la cronologia sarà persa."
   },
-  "browse": "Browse",
+  "browse": "Esplora",
   "browseScreen": {
-    "discover": "Discover",
-    "searchbar": "Search sources",
-    "globalSearch": "Global search",
-    "listEmpty": "Enable languages from settings",
-    "lastUsed": "Last used",
-    "pinned": "Pinned",
-    "all": "All",
-    "latest": "Latest",
-    "addedToLibrary": "Added to library",
-    "removeFromLibrary": "Removed from library"
+    "discover": "Scopri",
+    "searchbar": "Cerca fonti",
+    "globalSearch": "Ricerca globale",
+    "listEmpty": "Abilita le lingue dalle impostazioni",
+    "lastUsed": "Ultima usata",
+    "pinned": "Fissato",
+    "all": "Tutte",
+    "latest": "Ultimi",
+    "addedToLibrary": "Aggiunto alla libreria",
+    "removeFromLibrary": "Rimosso dalla libreria"
   },
   "readerScreen": {
-    "finished": "Finished",
-    "noNextChapter": "There's no next chapter",
+    "finished": "Finito",
+    "noNextChapter": "Non c'è un capitolo successivo",
     "bottomSheet": {
-      "textSize": "Text size",
-      "color": "Color",
-      "textAlign": "Text align",
-      "lineHeight": "Line Height",
-      "fontStyle": "Font style",
-      "fullscreen": "Fullscreen",
-      "renderHml": "Render HTML",
-      "autoscroll": "AutoScroll",
-      "verticalSeekbar": "Vertical Seekbar",
-      "showBatteryAndTime": "Show battery and time",
-      "showProgressPercentage": "Show progress percentage",
-      "swipeGestures": "Swipe left or right to navigate between chapters",
-      "allowTextSelection": "Allow text selection",
-      "useChapterDrawerSwipeNavigation": "Swipe right to open drawer",
-      "removeExtraSpacing": "Remove extra paragraph spacing",
-      "volumeButtonsScroll": "Volume buttons scroll",
-      "showSwipeMargins": "Show swipe margins"
+      "textSize": "Dimensione del testo",
+      "color": "Colore",
+      "textAlign": "Allineamento del testo",
+      "lineHeight": "Altezza riga",
+      "fontStyle": "Stile del font",
+      "fullscreen": "Schermo Intero",
+      "bionicReading": "Lettura Bionica",
+      "renderHml": "Renderizza HTML",
+      "autoscroll": "Scorrimento automatico",
+      "verticalSeekbar": "Barra Verticale",
+      "showBatteryAndTime": "Mostra batteria e orario",
+      "showProgressPercentage": "Mostra percentuale di progresso",
+      "swipeGestures": "Scorri verso sinistra o destra per navigare tra i capitoli",
+      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
+      "allowTextSelection": "Consenti selezione",
+      "useChapterDrawerSwipeNavigation": "Scorri a destra per aprire",
+      "removeExtraSpacing": "Rimuovi spaziatura extra",
+      "volumeButtonsScroll": "Utilizzare il pulsante del volume per scorrere",
+      "scrollAmount": "Quantità di scorrimento (altezza schermo di default)",
+      "showSwipeMargins": "Mostra margini di scorrimento"
     },
     "drawer": {
-      "scrollToCurrentChapter": "Scroll to current chapter",
-      "scrollToTop": "Scroll to top",
-      "scrollToBottom": "Scroll to bottom"
+      "scrollToCurrentChapter": "Scorri al capitolo corrente",
+      "scrollToTop": "Scorri in cima",
+      "scrollToBottom": "Scorri in fondo"
     }
   },
   "novelScreen": {
-    "addToLibaray": "Add to library",
-    "inLibaray": "In library",
-    "continueReading": "Continue reading",
-    "chapters": "chapters",
-    "migrate": "Migrate",
-    "noSummary": "No summary",
+    "addToLibaray": "Aggiungi alla libreria",
+    "inLibaray": "In libreria",
+    "continueReading": "Continua a leggere",
+    "chapters": "Capitoli",
+    "migrate": "Migra",
+    "noSummary": "Nessuna trama",
     "bottomSheet": {
-      "filter": "Filter",
-      "sort": "Sort",
-      "display": "Display"
+      "filter": "﻿Filtra",
+      "sort": "Ordina",
+      "display": "Schermo"
     },
     "jumpToChapterModal": {
-      "jumpToChapter": "Jump to Chapter",
-      "openChapter": "Open Chapter",
-      "chapterName": "Chapter Name",
-      "chapterNumber": "Chapter Number",
+      "jumpToChapter": "Vai al Capitolo",
+      "openChapter": "Apri Capitolo",
+      "chapterName": "Nome Capitolo",
+      "chapterNumber": "Numero del capitolo",
       "error": {
-        "validChapterName": "Enter a valid chapter name",
-        "validChapterNumber": "Enter a valid chapter number"
+        "validChapterName": "Inserisci un nome di capitolo valido",
+        "validChapterNumber": "Inserisci un numero di capitolo valido"
       }
+    },
+    "convertToEpubModal": {
+      "chooseLocation": "Seleziona la cartella di archiviazione EPUB",
+      "pathToFolder": "Percorso cartella di salvataggio EPUB",
+      "useReaderTheme": "Usa tema lettore",
+      "useCustomCSS": "Usa CSS personalizzato",
+      "useCustomJS": "Usa JS personalizzato",
+      "useCustomJSWarning": "Potrebbe non essere supportato da tutti i lettori EPUB",
+      "chaptersWarning": "Solo i capitoli scaricati sono inclusi nell'EPUB"
     }
   },
-  "more": "More",
+  "more": "Altro",
   "moreScreen": {
-    "settings": "Settings",
+    "settings": "Impostazioni",
     "settingsScreen": {
-      "generalSettings": "General",
+      "generalSettings": "Generale",
       "generalSettingsScreen": {
-        "display": "Display",
-        "displayMode": "Display Mode",
-        "itemsPerRow": "Items per row",
-        "itemsPerRowLibrary": "Items per row in library",
-        "novelBadges": "Novel Badges",
-        "novelSort": "Novel Sort",
-        "updateLibrary": "Update library on launch",
-        "useFAB": "Use FAB in Library",
-        "novel": "Novel",
-        "chapterSort": "Default chapter sort",
-        "bySource": "By source",
-        "asc": "(Ascending)",
-        "desc": "(Descending)",
-        "globalUpdate": "Global update",
-        "updateOngoing": "Only update ongoing novels",
-        "refreshMetadata": "Automatically refresh metadata",
-        "refreshMetadataDescription": "Check for new cover and details when updating library",
-        "updateTime": "Show last update time",
-        "autoDownload": "Auto-download",
-        "downloadNewChapters": "Download new chapters",
-        "disableHapticFeedback": "Disable haptic feedback"
+        "display": "Schermo",
+        "displayMode": "Modalità di visualizzazione",
+        "itemsPerRow": "Elementi per riga",
+        "itemsPerRowLibrary": "Elementi per riga nella libreria",
+        "novelBadges": "Badge delle novel",
+        "novelSort": "Ordine novel",
+        "updateLibrary": "Aggiorna la libreria all'avvio",
+        "useFAB": "Usa FAB nella libreria",
+        "novel": "Romanzo",
+        "chapterSort": "Ordinamento predefinito dei capitoli",
+        "bySource": "Per fonte",
+        "asc": "(Crescente)",
+        "desc": "(Decrescente)",
+        "globalUpdate": "Aggiornamento globale",
+        "updateOngoing": "Aggiorna solo le novel in corso",
+        "refreshMetadata": "Aggiorna automaticamente i metadati",
+        "refreshMetadataDescription": "Controlla nuove copertine e dettagli durante l'aggiornamento della libreria",
+        "updateTime": "Mostra l'orario dell'ultimo aggiornamento",
+        "autoDownload": "Scarica automaticamente",
+        "epub": "EPUB",
+        "epubLocation": "Posizione EPUB",
+        "epubLocationDescription": "Il posto dove apri ed esporti i tuoi file EPUB.",
+        "downloadNewChapters": "Scarica nuovi capitoli",
+        "disableHapticFeedback": "Disattiva vibrazione",
+        "jumpToLastReadChapter": "Jump to last read chapter in list"
       },
       "readerSettings": {
-        "title": "Reader",
-        "readerTheme": "Reader theme",
-        "preset": "Preset",
-        "backgroundColor": "Background color",
-        "textColor": "Text color",
-        "backgroundColorModal": "Reader background color",
-        "textColorModal": "Reader text color",
-        "verticalSeekbarDesc": "Switch between vertical and horizontal seekbar",
-        "autoScrollInterval": "Auto scroll interval (in seconds)",
-        "autoScrollOffset": "Auto scroll offset (screen height by default)",
-        "saveCustomTheme": "Save custom theme",
-        "deleteCustomTheme": "Delete custom theme",
-        "customCSS": "Custom CSS"
+        "title": "Lettore",
+        "readerTheme": "Tema del lettore",
+        "preset": "Predefinito",
+        "backgroundColor": "Colore dello sfondo",
+        "textColor": "Colore del testo",
+        "backgroundColorModal": "Colore sfondo del lettore",
+        "textColorModal": "Colore testo del lettore",
+        "verticalSeekbarDesc": "Passa dalla barra verticale a quella orizzontale",
+        "autoScrollInterval": "Intervallo di scorrimento automatico (in secondi)",
+        "autoScrollOffset": "Quantità di scorrimento (altezza schermo di default)",
+        "saveCustomTheme": "Salva tema personalizzato",
+        "deleteCustomTheme": "Elimina tema personalizzato",
+        "customCSS": "CSS personalizzato",
+        "customJS": "JS personalizzato",
+        "openCSSFile": "Apri file CSS",
+        "openJSFile": "Apri file JS",
+        "notSaved": "Non salvato",
+        "cssHint": "Consiglio: è possibile creare una configurazione CSS specifica con l'ID sorgente. (#sourceId-[SOURCEID])",
+        "jsHint": "Consiglio: Hai accesso alle variabili seguenti: html, novelName, chapterName, sourceId, chapterId, novelId",
+        "clearCustomCSS": "Sei sicuro? Il CSS personalizzato verrebbe resettato.",
+        "clearCustomJS": "Sei sicuro? Il tuo JS personalizzato verrebbe resettato."
       },
-      "browseSettings": "Browse Settings",
+      "browseSettings": "Impostazioni Esplora",
       "browseSettingsScreen": {
-        "onlyShowPinnedSources": "Only show pinned sources",
-        "languages": "Languages",
-        "searchAllSources": "Search all sources",
-        "searchAllWarning": "Searching a large number of sources may freeze the app till searching is finished."
+        "onlyShowPinnedSources": "Mostra solo le sorgenti fissate",
+        "languages": "Lingue",
+        "searchAllSources": "Cerca in tutte le fonti",
+        "searchAllWarning": "La ricerca in un gran numero di fonti può rallentare l'applicazione fino a quando la ricerca è terminata."
       }
     }
   },
   "sourceScreen": {
-    "noResultsFound": "No results found"
+    "noResultsFound": "Nessun risultato trovato"
   },
   "statsScreen": {
-    "title": "Statistics",
-    "titlesInLibrary": "Titles in library",
-    "totalChapters": "Total chapters",
-    "readChapters": "Read chapters",
-    "unreadChapters": "Unread chapters",
-    "downloadedChapters": "Downloaded chapters",
-    "genreDistribution": "Genre distribution",
-    "statusDistribution": "Status distribution"
+    "title": "Statistiche",
+    "titlesInLibrary": "Titoli nella libreria",
+    "totalChapters": "Totale capitoli",
+    "readChapters": "Capitoli letti",
+    "unreadChapters": "Capitoli non letti",
+    "downloadedChapters": "Capitoli scaricati",
+    "genreDistribution": "Distribuzione dei generi",
+    "statusDistribution": "Distribuzione dello stato"
   },
   "globalSearch": {
-    "searchIn": "Search a novel in",
-    "allSources": "all sources",
-    "pinnedSources": "pinned sources"
+    "searchIn": "Cerca una novel in",
+    "allSources": "Tutte le fonti",
+    "pinnedSources": "Fonti fissate"
   },
   "advancedSettings": {
-    "deleteReadChapters": "Delete read chapters",
-    "deleteReadChaptersDialogTitle": "Are you sure? All chapters marked as read will be deleted."
+    "deleteReadChapters": "Elimina capitoli letti",
+    "deleteReadChaptersDialogTitle": "Sei sicuro? Tutti i capitoli segnati come letti verranno eliminati."
   },
   "date": {
     "calendar": {
-      "sameDay": "[Today]",
-      "nextDay": "[Tomorrow]",
-      "lastDay": "[Yesterday]",
-      "lastWeek": "[Last] dddd"
+      "sameDay": "[Oggi]",
+      "nextDay": "[Domani]",
+      "lastDay": "[Ieri]",
+      "lastWeek": "[Ultimi] dddd"
     }
   },
   "categories": {
-    "addCategories": "Add category",
-    "editCategories": "Rename category",
-    "setCategories": "Set categories",
-    "header": "Edit categories",
-    "emptyMsg": "You have no categories. Tap the plus button to create one for organizing your library",
-    "setModalEmptyMsg": "You have no categories. Tap the Edit button to create one for organizing your library",
+    "addCategories": "Aggiungi categoria",
+    "editCategories": "Rinomina categoria",
+    "setCategories": "Imposta categorie",
+    "header": "Modifica categorie",
+    "emptyMsg": "Non hai categorie. Tocca il pulsante + per crearne una per organizzare la tua libreria",
+    "setModalEmptyMsg": "Non hai categorie. Tocca il pulsante Modifica per crearne una per organizzare la tua libreria",
     "deleteModal": {
-      "header": "Delete category",
-      "desc": "Do you wish to delete category"
+      "header": "Elimina categoria",
+      "desc": "Vuoi eliminare la categoria"
     },
-    "duplicateError": "A category with this name already exists!",
-    "defaultCategory": "Default category"
+    "duplicateError": "Una categoria con questo nome esiste già!",
+    "defaultCategory": "Categoria predefinita"
   },
   "settings": {
-    "icognitoMode": "Incognito mode",
-    "downloadedOnly": "Downloaded only"
+    "icognitoMode": "Modalità incognito",
+    "downloadedOnly": "Solo scaricati"
   },
   "downloadScreen": {
-    "dbInfo": "Downloads are saved in a SQLite Database.",
-    "downloadChapters": "downloaded Chapters",
-    "noDownloads": "No downloads"
+    "dbInfo": "I download sono salvati in un database SQLite.",
+    "downloadChapters": "Capitoli scaricati",
+    "noDownloads": "Nessuno scaricamento",
+    "downloadsLower": "Scaricamenti"
   }
 }
