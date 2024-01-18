@@ -2,9 +2,11 @@ import { SearchResult, UserListEntry } from '@services/Trackers';
 import { useMMKVObject } from 'react-native-mmkv';
 import { TrackerMetadata, getTracker } from './useTracker';
 import { ChapterInfo, NovelInfo } from '@database/types';
-import { getMMKVObject } from '@utils/mmkv/mmkv';
+import { MMKVStorage, getMMKVObject } from '@utils/mmkv/mmkv';
 import {
   getNovel as _getNovel,
+  deleteCachedNovels as _deleteCachedNovels,
+  getCachedNovels as _getCachedNovels,
   insertNovelAndChapters,
   switchNovelToLibrary,
 } from '@database/queries/NovelQueries';
@@ -23,6 +25,8 @@ import { updateNovel as _updateNovel } from '@services/updates/LibraryUpdateQuer
 import { APP_SETTINGS, AppSettings } from './useSettings';
 import { showToast } from '@utils/showToast';
 import { useCallback } from 'react';
+import { NovelDownloadFolder } from '@utils/constants/download';
+import * as RNFS from 'react-native-fs';
 
 // store key: PREFIX + '_' + novel.url,
 
@@ -363,4 +367,22 @@ export const useNovel = (url: string, pluginId: string) => {
     deleteChapter,
     deleteChapters,
   };
+};
+
+export const deleteCachedNovels = async () => {
+  const cachedNovels = await _getCachedNovels();
+  for (let novel of cachedNovels) {
+    MMKVStorage.delete(TRACKED_NOVEL_PREFIX + '_' + novel.url);
+    MMKVStorage.delete(NOVEL_PREFIX + '_' + novel.url);
+    MMKVStorage.delete(NOVEL_CHAPTERS_PREFIX + '_' + novel.url);
+    MMKVStorage.delete(NOVEL_SETTINSG_PREFIX + '_' + novel.url);
+    MMKVStorage.delete(LAST_READ_PREFIX + '_' + novel.url);
+    MMKVStorage.delete(PROGRESS_PREFIX + '_' + novel.url);
+    const novelDir =
+      NovelDownloadFolder + '/' + novel.pluginId + '/' + novel.id;
+    if (await RNFS.exists(novelDir)) {
+      await RNFS.unlink(novelDir);
+    }
+  }
+  _deleteCachedNovels();
 };

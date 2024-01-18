@@ -12,7 +12,7 @@ import {
 import { useTheme, useUserAgent } from '@hooks/persisted';
 import { showToast } from '@utils/showToast';
 
-import { deleteCachedNovels } from '@database/queries/NovelQueries';
+import { deleteCachedNovels } from '@hooks/persisted/useNovel';
 import { getString } from '@strings/translations';
 import { useBoolean } from '@hooks';
 import ConfirmationDialog from '@components/ConfirmationDialog/ConfirmationDialog';
