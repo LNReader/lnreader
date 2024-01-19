@@ -2,6 +2,7 @@ import * as cheerio from 'cheerio';
 import { defaultCoverUri, Status } from '../helpers/constants';
 import { fetchHtml } from '@utils/fetch/fetch';
 import { showToast } from '@hooks/showToast';
+import { FilterInputs } from '../types/filterTypes';
 
 const sourceId = 23;
 const sourceName = 'TuNovelaLigera';
@@ -9,7 +10,10 @@ const sourceName = 'TuNovelaLigera';
 const baseUrl = 'https://tunovelaligera.com/';
 
 const popularNovels = async page => {
-  let url = `${baseUrl}novelas/page/${page}/?m_orderby=views`;
+  let url = `${baseUrl}`;
+  url += filters?.genres ? `genero/` + filters.genres : 'novelas';
+  url += `/page/${page}`;
+  url += filters?.order ? filters.order : '?m_orderby=views';
 
   const body = await fetchHtml({ url });
 
@@ -257,11 +261,82 @@ const searchNovels = async searchTerm => {
   return novels;
 };
 
+const filters = [
+  {
+    key: 'sort',
+    label: 'Clasificar por:',
+    values: [
+      { label: 'A-Z', value: 'alphabet' },
+      { label: 'Clasificacion', value: 'rating' },
+      { label: 'Hot', value: 'trending' },
+      { label: 'Mas visto', value: 'views' },
+      { label: 'Nuevo', value: 'new-manga' },
+      { label: 'Mas Nuevo', value: 'latest' },
+    ],
+    inputType: FilterInputs.Picker,
+  },
+  {
+    key: 'genres',
+    label: 'Generos',
+    values: [
+      { label: 'Acción', value: 'accion' },
+      { label: 'Adulto', value: 'adulto' },
+      { label: 'Artes Marciales', value: 'artes-marciales' },
+      { label: 'Aventura', value: 'aventura' },
+      { label: 'Ciencia Ficción', value: 'ciencia-ficcion' },
+      { label: 'Comedia', value: 'comedia' },
+      { label: 'Deportes', value: 'deportes' },
+      { label: 'Drama', value: 'drama' },
+      { label: 'Eastern Fantasy', value: 'eastern-fantasy' },
+      { label: 'Ecchi', value: 'ecchi' },
+      { label: 'FanFiction', value: 'fan-fiction' },
+      { label: 'Fantasía', value: 'fantasia' },
+      { label: 'Fantasía oriental', value: 'fantasia-oriental' },
+      { label: 'Ficción Romántica', value: 'ficcion-romantica' },
+      { label: 'Gender Bender', value: 'gender-bender' },
+      { label: 'Harem', value: 'harem' },
+      { label: 'Histórico', value: 'historico' },
+      { label: 'Horror', value: 'horror' },
+      { label: 'Josei', value: 'josei' },
+      { label: 'Maduro', value: 'maduro' },
+      { label: 'Mecha', value: 'mecha' },
+      { label: 'Misterio', value: 'misterio' },
+      { label: 'Novela China', value: 'novela-china' },
+      { label: 'Novela FanFiction', value: 'novela-fanfiction' },
+      { label: 'Novela Japonesa', value: 'novela-japonesa' },
+      { label: 'Novela Koreana', value: 'novela-koreana' },
+      { label: 'Novela ligera', value: 'novela-ligera' },
+      { label: 'Novela original', value: 'novela-original' },
+      { label: 'Novela Web', value: 'web-novel' },
+      { label: 'Psicológico', value: 'psicologico' },
+      { label: 'Realismo Mágico', value: 'realismo-magico' },
+      { label: 'Recuento de vida', value: 'recuento-de-vida' },
+      { label: 'Romance', value: 'romance' },
+      { label: 'Romance contemporáneo', value: 'romance-contemporaneo' },
+      { label: 'Romance Moderno', value: 'romance-moderno' },
+      { label: 'Seinen', value: 'seinen' },
+      { label: 'Shoujo', value: 'shoujo' },
+      { label: 'Shounen', value: 'shounen' },
+      { label: 'Sobrenatural', value: 'sobrenatural' },
+      { label: 'Tragedia', value: 'tragedia' },
+      { label: 'Vampiros', value: 'vampiros' },
+      { label: 'Vida Escolar', value: 'vida-escolar' },
+      { label: 'Fantasia Oriental', value: 'western-fantasy' },
+      { label: 'Wuxia', value: 'wuxia' },
+      { label: 'Xianxia', value: 'xianxia' },
+      { label: 'Xuanhuan', value: 'xuanhuan' },
+      { label: 'Yaoi', value: 'yaoi' },
+    ],
+    inputType: FilterInputs.Picker,
+  },
+];
+
 const TuNovelaLigeraScraper = {
   popularNovels,
   parseNovelAndChapters,
   parseChapter,
   searchNovels,
+  filters,
 };
 
 export default TuNovelaLigeraScraper;
