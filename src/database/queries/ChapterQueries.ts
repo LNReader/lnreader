@@ -16,10 +16,10 @@ const db = SQLite.openDatabase('lnreader.db');
 
 const insertChapterQuery = `
 INSERT INTO Chapter (
-  url, name, releaseTime, novelId
+  url, name, releaseTime, novelId, chapterNumber
 ) 
 Values 
-  (?, ?, ?, ?)
+  (?, ?, ?, ?, ?)
 `;
 
 export const insertChapters = async (
@@ -36,8 +36,9 @@ export const insertChapters = async (
         [
           chapter.url,
           chapter.name,
-          chapter.releaseTime ? chapter.releaseTime : '',
+          chapter.releaseTime || '',
           novelId,
+          chapter.chapterNumber || null,
         ],
         noop,
         txnErrorCallback,

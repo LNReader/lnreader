@@ -11,7 +11,6 @@ import { showToast } from '@utils/showToast';
 
 import {
   CoverImage,
-  NovelAuthor,
   NovelInfo,
   NovelInfoContainer,
   NovelThumbnail,
@@ -85,65 +84,56 @@ const NovelInfoHeader = ({
             setCustomNovelCover={setCustomNovelCover}
           />
           <View style={styles.novelDetails}>
-            <NovelTitle
-              theme={theme}
-              onPress={() =>
-                navigation.replace('GlobalSearchScreen', {
-                  searchText: novel.name,
-                })
-              }
-              onLongPress={() => {
-                Clipboard.setStringAsync(novel.name).then(() =>
-                  showToast('Copied to clipboard: ' + novel.name),
-                );
-              }}
-            >
-              {novel.name}
-            </NovelTitle>
-            <Text
-              style={{
-                fontSize: 15,
-                fontWeight: 'bold',
-                color: theme.onBackground,
-              }}
-            >
-              {`ID: ${novel.id}`}
-            </Text>
-            <>
-              <Row style={styles.infoItem}>
+            <Row>
+              <NovelTitle
+                theme={theme}
+                onPress={() =>
+                  navigation.replace('GlobalSearchScreen', {
+                    searchText: novel.name,
+                  })
+                }
+                onLongPress={() => {
+                  Clipboard.setStringAsync(novel.name).then(() =>
+                    showToast('Copied to clipboard: ' + novel.name),
+                  );
+                }}
+              >
+                {novel.name}
+              </NovelTitle>
+            </Row>
+            {novel.author && (
+              <Row>
                 <MaterialCommunityIcons
-                  name="fountain-pen"
+                  name="fountain-pen-tip"
                   size={14}
                   color={theme.onSurfaceVariant}
                   style={{ marginRight: 4 }}
                 />
-                <NovelAuthor theme={theme}>
-                  {novel.author || 'Unknown author'}
-                </NovelAuthor>
+                <NovelInfo theme={theme}>{novel.author}</NovelInfo>
               </Row>
-              <Row style={styles.infoItem}>
+            )}
+            {novel.artist && (
+              <Row>
                 <MaterialCommunityIcons
-                  name="palette"
+                  name="palette-outline"
                   size={14}
                   color={theme.onSurfaceVariant}
                   style={{ marginRight: 4 }}
                 />
-                <NovelAuthor theme={theme}>
-                  {novel.artist || 'Unknown artist'}
-                </NovelAuthor>
+                <NovelInfo theme={theme}>{novel.artist}</NovelInfo>
               </Row>
-              <Row style={styles.infoItem}>
-                <MaterialCommunityIcons
-                  name={getStatusIcon(novel.status)}
-                  size={14}
-                  color={theme.onSurfaceVariant}
-                  style={{ marginRight: 4 }}
-                />
-                <NovelInfo theme={theme}>
-                  {(novel.status || 'Unknown status') + ' • ' + novel.pluginId}
-                </NovelInfo>
-              </Row>
-            </>
+            )}
+            <Row>
+              <MaterialCommunityIcons
+                name={getStatusIcon(novel.status)}
+                size={14}
+                color={theme.onSurfaceVariant}
+                style={{ marginRight: 4 }}
+              />
+              <NovelInfo theme={theme}>
+                {(novel.status || 'Unknown status') + ' • ' + novel.pluginId}
+              </NovelInfo>
+            </Row>
           </View>
         </NovelInfoContainer>
       </CoverImage>
@@ -201,6 +191,7 @@ export default memo(NovelInfoHeader);
 const styles = StyleSheet.create({
   novelDetails: {
     flex: 1,
+    flexDirection: 'column',
     paddingBottom: 16,
     paddingLeft: 12,
     justifyContent: 'center',
@@ -217,6 +208,6 @@ const styles = StyleSheet.create({
     paddingRight: 12,
   },
   infoItem: {
-    marginVertical: 4,
+    marginVertical: 2,
   },
 });

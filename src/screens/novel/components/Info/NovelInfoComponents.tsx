@@ -144,19 +144,8 @@ const NovelTitle = ({
     onLongPress={onLongPress}
     onPress={onPress}
     style={[styles.novelTitle, { color: theme.onBackground }]}
+    numberOfLines={4}
   >
-    {children}
-  </Text>
-);
-
-const NovelAuthor = ({
-  theme,
-  children,
-}: {
-  theme: ThemeColors;
-  children: React.ReactNode;
-}) => (
-  <Text style={[styles.novelAuthor, { color: theme.onSurfaceVariant }]}>
     {children}
   </Text>
 );
@@ -282,7 +271,6 @@ export {
   CoverImage,
   NovelThumbnail,
   NovelTitle,
-  NovelAuthor,
   NovelInfo,
   FollowButton,
   TrackerButton,
@@ -310,9 +298,6 @@ const styles = StyleSheet.create({
   },
   novelTitle: {
     fontSize: 20,
-  },
-  novelAuthor: {
-    fontSize: 14,
   },
   novelInfo: {
     fontSize: 14,
