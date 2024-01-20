@@ -13,6 +13,7 @@ import { parseChapterNumber } from '@utils/parseChapterNumber';
 import { ThemeColors } from '@theme/types';
 import { ChapterInfo } from '@database/types';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import dayjs from 'dayjs';
 
 interface ChapterItemProps {
   isDownloading?: boolean;
@@ -130,7 +131,7 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
                 ]}
                 numberOfLines={1}
               >
-                {releaseTime}
+                {dayjs(releaseTime).format('LL')}
               </Text>
             ) : null}
             {showProgressPercentage?.(chapter)}

@@ -110,10 +110,29 @@ const NovelInfoHeader = ({
               {`ID: ${novel.id}`}
             </Text>
             <>
-              <NovelAuthor theme={theme}>
-                {novel.author || 'Unknown author'}
-              </NovelAuthor>
-              <Row>
+              <Row style={styles.infoItem}>
+                <MaterialCommunityIcons
+                  name="fountain-pen"
+                  size={14}
+                  color={theme.onSurfaceVariant}
+                  style={{ marginRight: 4 }}
+                />
+                <NovelAuthor theme={theme}>
+                  {novel.author || 'Unknown author'}
+                </NovelAuthor>
+              </Row>
+              <Row style={styles.infoItem}>
+                <MaterialCommunityIcons
+                  name="palette"
+                  size={14}
+                  color={theme.onSurfaceVariant}
+                  style={{ marginRight: 4 }}
+                />
+                <NovelAuthor theme={theme}>
+                  {novel.artist || 'Unknown artist'}
+                </NovelAuthor>
+              </Row>
+              <Row style={styles.infoItem}>
                 <MaterialCommunityIcons
                   name={getStatusIcon(novel.status)}
                   size={14}
@@ -196,5 +215,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingRight: 12,
+  },
+  infoItem: {
+    marginVertical: 4,
   },
 });
