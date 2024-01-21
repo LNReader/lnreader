@@ -124,7 +124,7 @@ const fetchPlugins = async () => {
   // plugins host
   const githubUsername = 'LNReader';
   const githubRepository = 'lnreader-sources';
-  const githubBranch = 'plugins';
+  const githubBranch = 'master';
 
   const availablePlugins: Record<Language, Array<PluginItem>> = await fetch(
     `https://raw.githubusercontent.com/${githubUsername}/${githubRepository}/${githubBranch}/.dist/${githubUsername}/plugins.min.json`,
