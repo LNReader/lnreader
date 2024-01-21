@@ -2,7 +2,6 @@ import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { IconButton } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { isUrlAbsolute } from '../../../utils/isAbsoluteUrl';
 import * as WebBrowser from 'expo-web-browser';
 import color from 'color';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
@@ -66,28 +65,24 @@ const ChapterFooter = ({
             iconColor={theme.onSurface}
           />
         </Pressable>
-        {isUrlAbsolute(chapterUrl) ? (
-          <Pressable
-            android_ripple={rippleConfig}
-            style={styles.buttonStyles}
-            onPress={() => WebBrowser.openBrowserAsync(chapterUrl)}
-          >
-            <IconButton icon="earth" size={26} iconColor={theme.onSurface} />
-          </Pressable>
-        ) : null}
-        <>
-          <Pressable
-            android_ripple={rippleConfig}
-            style={styles.buttonStyles}
-            onPress={() => scrollTo(0)}
-          >
-            <IconButton
-              icon="format-vertical-align-top"
-              size={26}
-              iconColor={theme.onSurface}
-            />
-          </Pressable>
-        </>
+        <Pressable
+          android_ripple={rippleConfig}
+          style={styles.buttonStyles}
+          onPress={() => WebBrowser.openBrowserAsync(chapterUrl)}
+        >
+          <IconButton icon="earth" size={26} iconColor={theme.onSurface} />
+        </Pressable>
+        <Pressable
+          android_ripple={rippleConfig}
+          style={styles.buttonStyles}
+          onPress={() => scrollTo(0)}
+        >
+          <IconButton
+            icon="format-vertical-align-top"
+            size={26}
+            iconColor={theme.onSurface}
+          />
+        </Pressable>
         <Pressable
           android_ripple={rippleConfig}
           style={styles.buttonStyles}

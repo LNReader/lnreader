@@ -60,7 +60,8 @@
     "react-native-tab-view": "^3.5.2",
     "react-native-vector-icons": "^9.0.0",
     "react-native-webview": "11.26.0",
-    "sanitize-html": "^2.7.0"
+    "sanitize-html": "^2.7.0",
+    "urlencode": "^2.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
