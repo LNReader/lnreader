@@ -100,6 +100,7 @@ const TrackSearchDialog = ({
         value={searchText}
         onChangeText={text => setSearchText(text)}
         onSubmitEditing={getSearchresults}
+        textColor={theme.onSurface}
         theme={{
           colors: {
             primary: theme.primary,

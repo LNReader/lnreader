@@ -102,17 +102,20 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
       renderLabel={({ route, color }) => (
         <Row>
           <Text style={{ color }}>{route.title}</Text>
-          <View
-            style={[styles.badgeCtn, { backgroundColor: theme.surfaceVariant }]}
-          >
-            {showNumberOfNovels && (
+          {showNumberOfNovels && (
+            <View
+              style={[
+                styles.badgeCtn,
+                { backgroundColor: theme.surfaceVariant },
+              ]}
+            >
               <Text
                 style={[styles.badgetText, { color: theme.onSurfaceVariant }]}
               >
                 {(route as any)?.novels.length}
               </Text>
-            )}
-          </View>
+            </View>
+          )}
         </Row>
       )}
       inactiveColor={theme.secondary}
@@ -319,6 +322,7 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   badgeCtn: {
+    position: 'relative',
     borderRadius: 50,
     marginHorizontal: 6,
     paddingHorizontal: 6,

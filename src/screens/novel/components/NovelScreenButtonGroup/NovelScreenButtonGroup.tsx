@@ -29,7 +29,7 @@ const NovelScreenButtonGroup: React.FC<NovelScreenButtonGroupProps> = ({
   const { navigate } = useNavigation<NovelScreenProps['navigation']>();
   const followButtonColor = inLibrary ? theme.primary : theme.outline;
   const { tracker } = useTracker();
-  const { trackedNovel } = useTrackedNovel(novel.id);
+  const { trackedNovel } = useTrackedNovel(novel.url);
 
   const trackerButtonColor = trackedNovel ? theme.primary : theme.outline;
 

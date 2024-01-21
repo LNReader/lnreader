@@ -6,6 +6,10 @@ export const fetchNovel = async (pluginId: string, novelUrl: string) => {
   return res;
 };
 
+export const fetchImage = async (pluginId: string, imageUrl: string) => {
+  return getPlugin(pluginId).fetchImage(imageUrl);
+};
+
 export const fetchChapter = async (pluginId: string, chapterUrl: string) => {
   const plugin = getPlugin(pluginId);
   let chapterText = `Not found plugin with id: ${pluginId}`;

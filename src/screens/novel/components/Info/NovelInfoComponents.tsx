@@ -7,12 +7,13 @@ import {
   Pressable,
   Dimensions,
   StatusBar,
+  ImageBackground,
 } from 'react-native';
 import color from 'color';
 import { IconButton, Portal } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import { easeGradient } from 'react-native-easing-gradient';
-import FastImage, { Source } from 'react-native-fast-image';
+import { Image, ImageURISource } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { Chip } from '../../../../components';
 import { coverPlaceholderColor } from '../../../../theme/colors';
@@ -20,13 +21,13 @@ import { ThemeColors } from '@theme/types';
 
 interface CoverImageProps {
   children: React.ReactNode;
-  source: Source;
+  source: ImageURISource;
   theme: ThemeColors;
   hideBackdrop: boolean;
 }
 
 interface NovelThumbnailProps {
-  source: Source;
+  source: ImageURISource;
   theme: ThemeColors;
   setCustomNovelCover: () => Promise<void>;
 }
@@ -59,7 +60,7 @@ const CoverImage = ({
     return <View>{children}</View>;
   } else {
     return (
-      <FastImage source={source} style={styles.coverImage}>
+      <ImageBackground source={source} style={styles.coverImage}>
         <View
           style={{
             flex: 1,
@@ -78,7 +79,7 @@ const CoverImage = ({
             children
           )}
         </View>
-      </FastImage>
+      </ImageBackground>
     );
   }
 };
@@ -93,7 +94,7 @@ const NovelThumbnail = ({
   if (!expanded) {
     return (
       <TouchableWithoutFeedback onPress={() => setExpanded(!expanded)}>
-        <FastImage source={source} style={styles.novelThumbnail} />
+        <Image source={source} style={styles.novelThumbnail} />
       </TouchableWithoutFeedback>
     );
   } else {
@@ -120,7 +121,7 @@ const NovelThumbnail = ({
           }}
           onPress={() => setExpanded(false)}
         >
-          <FastImage
+          <Image
             source={source}
             style={{
               width: Dimensions.get('window').width,
@@ -143,19 +144,8 @@ const NovelTitle = ({
     onLongPress={onLongPress}
     onPress={onPress}
     style={[styles.novelTitle, { color: theme.onBackground }]}
+    numberOfLines={4}
   >
-    {children}
-  </Text>
-);
-
-const NovelAuthor = ({
-  theme,
-  children,
-}: {
-  theme: ThemeColors;
-  children: React.ReactNode;
-}) => (
-  <Text style={[styles.novelAuthor, { color: theme.onSurfaceVariant }]}>
     {children}
   </Text>
 );
@@ -281,7 +271,6 @@ export {
   CoverImage,
   NovelThumbnail,
   NovelTitle,
-  NovelAuthor,
   NovelInfo,
   FollowButton,
   TrackerButton,
@@ -309,10 +298,6 @@ const styles = StyleSheet.create({
   },
   novelTitle: {
     fontSize: 20,
-  },
-  novelAuthor: {
-    marginVertical: 6,
-    fontSize: 14,
   },
   novelInfo: {
     fontSize: 14,

@@ -66,7 +66,6 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
       scalesPageToFit={true}
       showsVerticalScrollIndicator={false}
       onNavigationStateChange={onWebViewNavigationStateChange}
-      nestedScrollEnabled={true}
       javaScriptEnabled={true}
       onLayout={async () => onLayout()}
       onMessage={ev => {

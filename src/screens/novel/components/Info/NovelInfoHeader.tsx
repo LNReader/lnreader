@@ -11,7 +11,6 @@ import { showToast } from '@utils/showToast';
 
 import {
   CoverImage,
-  NovelAuthor,
   NovelInfo,
   NovelInfoContainer,
   NovelThumbnail,
@@ -85,46 +84,56 @@ const NovelInfoHeader = ({
             setCustomNovelCover={setCustomNovelCover}
           />
           <View style={styles.novelDetails}>
-            <NovelTitle
-              theme={theme}
-              onPress={() =>
-                navigation.replace('GlobalSearchScreen', {
-                  searchText: novel.name,
-                })
-              }
-              onLongPress={() => {
-                Clipboard.setStringAsync(novel.name).then(() =>
-                  showToast('Copied to clipboard: ' + novel.name),
-                );
-              }}
-            >
-              {novel.name}
-            </NovelTitle>
-            <Text
-              style={{
-                fontSize: 15,
-                fontWeight: 'bold',
-                color: theme.onBackground,
-              }}
-            >
-              {`ID: ${novel.id}`}
-            </Text>
-            <>
-              <NovelAuthor theme={theme}>
-                {novel.author || 'Unknown author'}
-              </NovelAuthor>
+            <Row>
+              <NovelTitle
+                theme={theme}
+                onPress={() =>
+                  navigation.replace('GlobalSearchScreen', {
+                    searchText: novel.name,
+                  })
+                }
+                onLongPress={() => {
+                  Clipboard.setStringAsync(novel.name).then(() =>
+                    showToast('Copied to clipboard: ' + novel.name),
+                  );
+                }}
+              >
+                {novel.name}
+              </NovelTitle>
+            </Row>
+            {novel.author && (
               <Row>
                 <MaterialCommunityIcons
-                  name={getStatusIcon(novel.status)}
+                  name="fountain-pen-tip"
                   size={14}
                   color={theme.onSurfaceVariant}
                   style={{ marginRight: 4 }}
                 />
-                <NovelInfo theme={theme}>
-                  {(novel.status || 'Unknown status') + ' • ' + novel.pluginId}
-                </NovelInfo>
+                <NovelInfo theme={theme}>{novel.author}</NovelInfo>
               </Row>
-            </>
+            )}
+            {novel.artist && (
+              <Row>
+                <MaterialCommunityIcons
+                  name="palette-outline"
+                  size={14}
+                  color={theme.onSurfaceVariant}
+                  style={{ marginRight: 4 }}
+                />
+                <NovelInfo theme={theme}>{novel.artist}</NovelInfo>
+              </Row>
+            )}
+            <Row>
+              <MaterialCommunityIcons
+                name={getStatusIcon(novel.status)}
+                size={14}
+                color={theme.onSurfaceVariant}
+                style={{ marginRight: 4 }}
+              />
+              <NovelInfo theme={theme}>
+                {(novel.status || 'Unknown status') + ' • ' + novel.pluginId}
+              </NovelInfo>
+            </Row>
           </View>
         </NovelInfoContainer>
       </CoverImage>
@@ -182,6 +191,7 @@ export default memo(NovelInfoHeader);
 const styles = StyleSheet.create({
   novelDetails: {
     flex: 1,
+    flexDirection: 'column',
     paddingBottom: 16,
     paddingLeft: 12,
     justifyContent: 'center',
@@ -196,5 +206,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingRight: 12,
+  },
+  infoItem: {
+    marginVertical: 2,
   },
 });

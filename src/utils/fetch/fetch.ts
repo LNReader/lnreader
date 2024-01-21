@@ -1,15 +1,44 @@
-export const defaultUserAgentString =
-  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36';
+import { getUserAgent } from '@hooks/persisted/useUserAgent';
 
-export const fetchApi = async (url: string, init?: any): Promise<Response> => {
-  const headers = new Headers({
-    'User-Agent': defaultUserAgentString,
-    ...init?.headers,
-  });
-  return await fetch(url, { ...init, headers });
+export const fetchApi = async (
+  url: string,
+  init?: {
+    headers?: Record<string, string> | Headers;
+    [x: string]:
+      | string
+      | Record<string, string>
+      | undefined
+      | FormData
+      | Headers;
+  },
+): Promise<Response> => {
+  const defaultHeaders = {
+    'User-Agent': getUserAgent(),
+  };
+  if (init?.headers) {
+    if (init.headers instanceof Headers) {
+      if (!init.headers.get('User-Agent') && defaultHeaders['User-Agent']) {
+        init.headers.set('User-Agent', defaultHeaders['User-Agent']);
+      }
+    } else {
+      init.headers = {
+        ...defaultHeaders,
+        ...init.headers,
+      };
+    }
+  } else {
+    init = {
+      ...init,
+      headers: defaultHeaders,
+    };
+  }
+  return await fetch(url, init);
 };
 
-export const fetchFile = async (url: string, init: any) => {
+const FILE_READER_PREFIX_LENGTH = 'data:application/octet-stream;base64,'
+  .length;
+
+export const fetchFile = async (url: string, init: any): Promise<string> => {
   if (!init) {
     init = {};
   }
@@ -19,26 +48,17 @@ export const fetchFile = async (url: string, init: any) => {
       throw new Error();
     }
     const blob = await res.blob();
-    return new Promise(resolve => {
+    return await new Promise((resolve, reject) => {
       const fr = new FileReader();
       fr.onloadend = () => {
-        if (
-          !fr.result
-            .toString()
-            .startsWith('data:application/octet-stream;base64,')
-        ) {
-          return undefined;
-        }
-        resolve(
-          fr.result
-            .toString()
-            .substring('data:application/octet-stream;base64,'.length),
-        );
+        resolve(fr.result.slice(FILE_READER_PREFIX_LENGTH) as string);
       };
+      fr.onerror = () => reject();
+      fr.onabort = () => reject();
       fr.readAsDataURL(blob);
     });
   } catch (e) {
-    return undefined;
+    return '';
   }
 };
 

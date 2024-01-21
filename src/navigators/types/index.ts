@@ -28,7 +28,6 @@ export type RootStackParamList = {
   SourceNovels: { pluginId: string };
   MigrateNovel: { novel: NovelInfo };
   WebviewScreen: {
-    pluginId: string;
     name: string;
     url: string;
   };

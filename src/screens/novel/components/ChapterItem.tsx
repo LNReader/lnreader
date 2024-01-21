@@ -13,6 +13,7 @@ import { parseChapterNumber } from '@utils/parseChapterNumber';
 import { ThemeColors } from '@theme/types';
 import { ChapterInfo } from '@database/types';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import dayjs from 'dayjs';
 
 interface ChapterItemProps {
   isDownloading?: boolean;
@@ -49,12 +50,15 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
   isUpdateCard,
   novelName,
 }) => {
-  const { id, name, unread, releaseTime, bookmark } = chapter;
+  const { id, name, unread, releaseTime, bookmark, chapterNumber } = chapter;
   const [deleteChapterMenuVisible, setDeleteChapterMenuVisible] =
     useState(false);
   const showDeleteChapterMenu = () => setDeleteChapterMenuVisible(true);
   const hideDeleteChapterMenu = () => setDeleteChapterMenuVisible(false);
-  const chapterNumber = parseChapterNumber(novelName, name);
+  const chapNum = chapterNumber
+    ? chapterNumber
+    : parseChapterNumber(novelName, name);
+  const parsedTime = dayjs(releaseTime);
   return (
     <Pressable
       key={'chapterItem' + id}
@@ -110,9 +114,7 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
               ]}
               numberOfLines={1}
             >
-              {showChapterTitles
-                ? name
-                : `Chapter ${chapterNumber} • ID: ${id}`}
+              {showChapterTitles ? name : `Chapter ${chapNum} • ID: ${id}`}
             </Text>
           </Row>
           <View style={styles.textRow}>
@@ -130,7 +132,7 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
                 ]}
                 numberOfLines={1}
               >
-                {releaseTime}
+                {parsedTime.isValid() ? parsedTime.format('LL') : releaseTime}
               </Text>
             ) : null}
             {showProgressPercentage?.(chapter)}

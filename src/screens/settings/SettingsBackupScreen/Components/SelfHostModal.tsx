@@ -1,5 +1,6 @@
 import { list } from '@api/remote';
 import { Button, EmptyView } from '@components';
+import { useSelfHost } from '@hooks/persisted/useSelfHost';
 import { createBackup, remoteRestore } from '@services/backup/remote';
 import { getString } from '@strings/translations';
 import { ThemeColors } from '@theme/types';
@@ -7,7 +8,6 @@ import { fetchTimeout } from '@utils/fetch/fetch';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import { useMMKVString } from 'react-native-mmkv';
 import { Modal, TextInput, overlay } from 'react-native-paper';
 
 enum BackupModal {
@@ -213,7 +213,7 @@ export default function SelfHostModal({
   closeModal,
 }: SelfHostModalProps) {
   const [backupModal, setBackupModal] = useState(BackupModal.SET_HOST);
-  const [host = '', setHost] = useMMKVString('remote-service');
+  const { host, setHost } = useSelfHost();
 
   const renderModal = () => {
     switch (backupModal) {

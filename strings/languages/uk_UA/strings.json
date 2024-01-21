@@ -15,7 +15,7 @@
     "searchFor": "Шукати",
     "globally": "глобально",
     "searchResults": "Результати пошуку",
-    "chapters": "Chapters",
+    "chapters": "Глави",
     "submit": "Submit",
     "retry": "Retry"
   },
@@ -36,7 +36,8 @@
         "totalChapters": "За загальною кількістю розділів",
         "download": "Downloaded",
         "unread": "Unread",
-        "lastRead": "Last Read"
+        "lastRead": "Last read",
+        "lastUpdated": "Last updated"
       },
       "display": {
         "displayMode": "Режим відображення",
@@ -56,7 +57,8 @@
     "searchbar": "Пошук оновлень",
     "lastUpdatedAt": "Останнє оновлення бібліотеки:",
     "newChapters": "new Chapters",
-    "emptyView": "No recent updates"
+    "emptyView": "No recent updates",
+    "updatesLower": "updates"
   },
   "history": "Історія",
   "historyScreen": {
@@ -86,16 +88,19 @@
       "lineHeight": "Висота рядка",
       "fontStyle": "Стиль шрифту",
       "fullscreen": "Повноекранний режим",
+      "bionicReading": "Bionic Reading",
       "renderHml": "Рендер HTML",
       "autoscroll": "Автопрокрутка",
       "verticalSeekbar": "Вертикальна навігаційна панель",
       "showBatteryAndTime": "Показувати стан батареї | час",
       "showProgressPercentage": "Показувати прогрес",
       "swipeGestures": "Проведіть вліво або вправо для навігації між главами",
+      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
       "allowTextSelection": "Дозволити виділяти текст",
       "useChapterDrawerSwipeNavigation": "Swipe right to open drawer",
       "removeExtraSpacing": "Remove extra paragraph spacing",
       "volumeButtonsScroll": "Volume buttons scroll",
+      "scrollAmount": "Scroll amount (screen height by default)",
       "showSwipeMargins": "Show swipe margins"
     },
     "drawer": {
@@ -125,6 +130,15 @@
         "validChapterName": "Enter a valid chapter name",
         "validChapterNumber": "Enter a valid chapter number"
       }
+    },
+    "convertToEpubModal": {
+      "chooseLocation": "Select EPUB storage directory",
+      "pathToFolder": "Path to EPUB save folder",
+      "useReaderTheme": "Use reader theme",
+      "useCustomCSS": "Use custom CSS",
+      "useCustomJS": "Use custom JS",
+      "useCustomJSWarning": "May not be supported by all EPUB readers",
+      "chaptersWarning": "Only downloaded chapters are included in the EPUB"
     }
   },
   "more": "Більше",
@@ -152,8 +166,12 @@
         "refreshMetadataDescription": "Check for new cover and details when updating library",
         "updateTime": "Show last update time",
         "autoDownload": "Auto-download",
+        "epub": "EPUB",
+        "epubLocation": "EPUB Location",
+        "epubLocationDescription": "The place where you open and export your EPUB files.",
         "downloadNewChapters": "Download new chapters",
-        "disableHapticFeedback": "Disable haptic feedback"
+        "disableHapticFeedback": "Disable haptic feedback",
+        "jumpToLastReadChapter": "Jump to last read chapter in list"
       },
       "readerSettings": {
         "title": "Тайтл",
@@ -168,7 +186,15 @@
         "autoScrollOffset": "Зсув автоматичної прокрутки (висота екрану за замовчуванням)",
         "saveCustomTheme": "Зберегти тему",
         "deleteCustomTheme": "Видалити тему",
-        "customCSS": "Довільний CSS"
+        "customCSS": "Довільний CSS",
+        "customJS": "Custom JS",
+        "openCSSFile": "Open CSS file",
+        "openJSFile": "Open JS file",
+        "notSaved": "Not saved",
+        "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])",
+        "jsHint": "Hint: You have access to following variables: html, novelName, chapterName, sourceId, chapterId, novelId",
+        "clearCustomCSS": "Are you sure? Your custom CSS would be reset.",
+        "clearCustomJS": "Are you sure? Your custom JS would be reset."
       },
       "browseSettings": "Налаштування джерел",
       "browseSettingsScreen": {
@@ -230,6 +256,7 @@
   "downloadScreen": {
     "dbInfo": "Downloads are saved in a SQLite Database.",
     "downloadChapters": "downloaded Chapters",
-    "noDownloads": "No downloads"
+    "noDownloads": "No downloads",
+    "downloadsLower": "downloads"
   }
 }

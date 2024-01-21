@@ -109,7 +109,7 @@ export const ChapterContent = ({
   const [hidden, setHidden] = useState(true);
 
   const { tracker } = useTracker();
-  const { trackedNovel, updateNovelProgess } = useTrackedNovel(novel.id);
+  const { trackedNovel, updateNovelProgess } = useTrackedNovel(novel.url);
 
   const [sourceChapter, setChapter] = useState({ ...chapter, chapterText: '' });
   const [loading, setLoading] = useState(true);

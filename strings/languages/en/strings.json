@@ -88,6 +88,7 @@
       "lineHeight": "Line Height",
       "fontStyle": "Font style",
       "fullscreen": "Fullscreen",
+      "bionicReading": "Bionic Reading",
       "renderHml": "Render HTML",
       "autoscroll": "AutoScroll",
       "verticalSeekbar": "Vertical Seekbar",
@@ -98,6 +99,7 @@
       "useChapterDrawerSwipeNavigation": "Swipe right to open drawer",
       "removeExtraSpacing": "Remove extra paragraph spacing",
       "volumeButtonsScroll": "Volume buttons scroll",
+      "scrollAmount": "Scroll amount (screen height by default)",
       "showSwipeMargins": "Show swipe margins"
     },
     "drawer": {
@@ -127,6 +129,15 @@
         "validChapterName": "Enter a valid chapter name",
         "validChapterNumber": "Enter a valid chapter number"
       }
+    },
+    "convertToEpubModal": {
+      "chooseLocation": "Select EPUB storage directory",
+      "pathToFolder": "Path to EPUB save folder",
+      "useReaderTheme": "Use reader theme",
+      "useCustomCSS": "Use custom CSS",
+      "useCustomJS": "Use custom JS",
+      "useCustomJSWarning": "May not be supported by all EPUB readers",
+      "chaptersWarning": "Only downloaded chapters are included in the EPUB"
     }
   },
   "more": "More",
@@ -154,6 +165,9 @@
         "refreshMetadataDescription": "Check for new cover and details when updating library",
         "updateTime": "Show last update time",
         "autoDownload": "Auto-download",
+        "epub": "EPUB",
+        "epubLocation": "EPUB Location",
+        "epubLocationDescription": "The place where you open and export your EPUB files.",
         "downloadNewChapters": "Download new chapters",
         "disableHapticFeedback": "Disable haptic feedback"
       },
@@ -170,7 +184,15 @@
         "autoScrollOffset": "Auto scroll offset (screen height by default)",
         "saveCustomTheme": "Save custom theme",
         "deleteCustomTheme": "Delete custom theme",
-        "customCSS": "Custom CSS"
+        "customCSS": "Custom CSS",
+        "customJS": "Custom JS",
+        "openCSSFile": "Open CSS file",
+        "openJSFile": "Open JS file",
+        "notSaved": "Not saved",
+        "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])",
+        "jsHint": "Hint: You have access to following variables: html, novelName, chapterName, sourceId, chapterId, novelId",
+        "clearCustomCSS": "Are you sure? Your custom CSS would be reset.",
+        "clearCustomJS": "Are you sure? Your custom JS would be reset."
       },
       "browseSettings": "Browse Settings",
       "browseSettingsScreen": {

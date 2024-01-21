@@ -98,27 +98,63 @@ export const useSearchSource = (pluginId: string) => {
   const [isSearching, setIsSearching] = useState(false);
   const [searchResults, setSearchResults] = useState<NovelItem[]>([]);
   const [searchError, setSearchError] = useState<string>();
+  const [hasNextSearchPage, setHasNextSearchPage] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchText, setSearchText] = useState('');
 
-  const searchSource = useCallback(
-    async (searchTerm: string) => {
-      try {
-        setIsSearching(true);
-        const res = await getPlugin(pluginId).searchNovels(searchTerm);
-        setSearchResults(res);
-      } catch (err) {
-        setSearchError(`${err}`);
-      } finally {
-        setIsSearching(false);
+  const searchSource = (searchTerm: string) => {
+    setSearchResults([]);
+    setCurrentPage(1);
+    setSearchText(searchTerm);
+    setIsSearching(true);
+  };
+
+  const isScreenMounted = useRef(true);
+
+  const fetchNovels = useCallback(
+    async (searchText: string, page: number) => {
+      if (isScreenMounted.current === true) {
+        try {
+          const plugin = getPlugin(pluginId);
+          const res = await plugin.searchNovels(searchText, page);
+          setSearchResults(prevState =>
+            page === 1 ? res : [...prevState, ...res],
+          );
+          if (!res.length) {
+            setHasNextSearchPage(false);
+          }
+        } catch (err: unknown) {
+          setSearchError(`${err}`);
+        } finally {
+          setIsSearching(false);
+        }
       }
     },
     [pluginId],
   );
 
-  const clearSearchResults = useCallback(() => setSearchResults([]), []);
+  const searchNextPage = () => {
+    hasNextSearchPage && setCurrentPage(prevState => prevState + 1);
+  };
+
+  useEffect(() => {
+    if (searchText) {
+      fetchNovels(searchText, currentPage);
+    }
+  }, [currentPage, fetchNovels, searchText]);
+
+  const clearSearchResults = useCallback(() => {
+    setSearchText('');
+    setSearchResults([]);
+    setCurrentPage(1);
+    setHasNextSearchPage(true);
+  }, []);
 
   return {
     isSearching,
     searchResults,
+    hasNextSearchPage,
+    searchNextPage,
     searchSource,
     clearSearchResults,
     searchError,

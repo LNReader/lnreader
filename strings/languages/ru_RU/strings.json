@@ -36,7 +36,8 @@
         "totalChapters": "Всего глав",
         "download": "Загружено",
         "unread": "Непрочитанные",
-        "lastRead": "Последнее прочитанное"
+        "lastRead": "Последнее прочитанное",
+        "lastUpdated": "Последнее обновление"
       },
       "display": {
         "displayMode": "Режим отображения",
@@ -45,7 +46,7 @@
         "noTitle": "Только сетка обложки",
         "list": "Список",
         "badges": "Значки",
-        "downloadBadges": "Загружено Значки",
+        "downloadBadges": "Значок загруженных глав",
         "unreadBadges": "Не прочитано Значки",
         "showNoOfItems": "Показывать количество элементов"
       }
@@ -55,8 +56,9 @@
   "updatesScreen": {
     "searchbar": "Поиск в обновлениях",
     "lastUpdatedAt": "Последнее обновление библиотеки:",
-    "newChapters": "new Chapters",
-    "emptyView": "No recent updates"
+    "newChapters": "новые главы",
+    "emptyView": "Нет последних обновлений",
+    "updatesLower": "обновлено"
   },
   "history": "История",
   "historyScreen": {
@@ -86,16 +88,19 @@
       "lineHeight": "Высота строки",
       "fontStyle": "Шрифт",
       "fullscreen": "Полноэкранный",
+      "bionicReading": "Бионическое чтение",
       "renderHml": "Рендер HTML",
       "autoscroll": "Автопрокрутка",
       "verticalSeekbar": "Вертикальная панель навигации",
       "showBatteryAndTime": "Показывать батарею и время",
       "showProgressPercentage": "Показывать процент прогресса",
       "swipeGestures": "Проведите влево или вправо для перехода между главами",
+      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
       "allowTextSelection": "Разрешить выделение текста",
       "useChapterDrawerSwipeNavigation": "Проведите вправо, чтобы открыть",
       "removeExtraSpacing": "Удалить дополнительный интервал параграфа",
       "volumeButtonsScroll": "Прокрутка кноками громкости",
+      "scrollAmount": "Смещение автопрокрутки (высота экрана по умолчанию)",
       "showSwipeMargins": "Показать зоны прокрутки"
     },
     "drawer": {
@@ -125,6 +130,15 @@
         "validChapterName": "Введите допустимое название главы",
         "validChapterNumber": "Введите действительный номер главы"
       }
+    },
+    "convertToEpubModal": {
+      "chooseLocation": "Выберите каталог хранения EPUB",
+      "pathToFolder": "Путь к папке сохранения EPUB",
+      "useReaderTheme": "Использовать тему для чтения",
+      "useCustomCSS": "Использовать пользовательский CSS",
+      "useCustomJS": "Использовать пользовательский JS",
+      "useCustomJSWarning": "Может поддерживаться не всеми читателями EPUB",
+      "chaptersWarning": "Включать в EPUB только загруженные главы"
     }
   },
   "more": "Ещё",
@@ -152,8 +166,12 @@
         "refreshMetadataDescription": "Проверять наличие новой обложки и описания при обновлении библиотеки",
         "updateTime": "Показать время последнего обновления",
         "autoDownload": "Автозагрузка",
+        "epub": "EPUB",
+        "epubLocation": "Расположение EPUB",
+        "epubLocationDescription": "Место открытия и экспорта файлов EPUB.",
         "downloadNewChapters": "Скачивать новые главы",
-        "disableHapticFeedback": "Отключить виброотклик"
+        "disableHapticFeedback": "Отключить виброотклик",
+        "jumpToLastReadChapter": "Jump to last read chapter in list"
       },
       "readerSettings": {
         "title": "Чтение",
@@ -168,7 +186,15 @@
         "autoScrollOffset": "Смещение автопрокрутки (высота экрана по умолчанию)",
         "saveCustomTheme": "Сохранить пользовательскую тему",
         "deleteCustomTheme": "Удалить пользовательскую тему",
-        "customCSS": "Пользовательские CSS"
+        "customCSS": "Пользовательские CSS",
+        "customJS": "Пользовательский JS",
+        "openCSSFile": "Открыть CSS-файл",
+        "openJSFile": "Открыть JS-файл",
+        "notSaved": "Не сохранено",
+        "cssHint": "Подсказка: Вы можете создать исходный код конфигурации с исходным ID. (#sourceId-[SOURCEID])",
+        "jsHint": "Подсказка: У вас есть доступ к следующим переменным: html, novelName, chapterName, sourceId, chapterId, novelId",
+        "clearCustomCSS": "Вы уверены? Ваш пользовательский CSS будет сброшен.",
+        "clearCustomJS": "Вы уверены? Ваш пользовательский JS будет сброшен."
       },
       "browseSettings": "Настройки обзора",
       "browseSettingsScreen": {
@@ -228,8 +254,9 @@
     "downloadedOnly": "Только загруженные главы"
   },
   "downloadScreen": {
-    "dbInfo": "Downloads are saved in a SQLite Database.",
-    "downloadChapters": "downloaded Chapters",
-    "noDownloads": "No downloads"
+    "dbInfo": "Загрузки сохраняются в базе данных SQLite.",
+    "downloadChapters": "загруженные главы",
+    "noDownloads": "Ничего не загружено",
+    "downloadsLower": "Загруженное"
   }
 }

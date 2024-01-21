@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, SectionList, Text } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import dayjs from 'dayjs';
 import { Portal } from 'react-native-paper';
 
@@ -12,7 +12,7 @@ import { useTheme, useHistory } from '@hooks/persisted';
 
 import { convertDateToISOString } from '@database/utils/convertDateToISOString';
 
-import { History } from '@database/types';
+import { History, NovelInfo } from '@database/types';
 import { getString } from '@strings/translations';
 import ClearHistoryDialog from './components/ClearHistoryDialog';
 import {
@@ -22,10 +22,11 @@ import {
   openNovelProps,
 } from '@utils/handleNavigateParams';
 import HistorySkeletonLoading from './components/HistorySkeletonLoading';
+import { RootStackParamList } from '@navigators/types';
 
 const HistoryScreen = () => {
   const theme = useTheme();
-  const { navigate } = useNavigation();
+  const { navigate } = useNavigation<NavigationProp<RootStackParamList>>();
 
   const {
     isLoading,
@@ -76,11 +77,10 @@ const HistoryScreen = () => {
   const handleNavigateToChapter = (
     novel: openChapterNovelTypes,
     chapter: openChapterChapterTypes,
-  ) =>
-    navigate('Chapter' as never, { novel: novel, chapter: chapter } as never);
+  ) => navigate('Chapter', { novel: novel as NovelInfo, chapter: chapter });
 
   const handleNavigateToNovel = (novel: openNovelProps) =>
-    navigate('Novel' as never, openNovel(novel) as openNovelProps as never);
+    navigate('Novel', openNovel(novel) as openNovelProps);
 
   const {
     value: clearHistoryDialogVisible,

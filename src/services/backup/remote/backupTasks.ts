@@ -1,21 +1,13 @@
 import { appVersion } from '@utils/versionUtils';
-
-import { MMKVStorage } from '@utils/mmkv/mmkv';
-import {
-  AppDownloadFolder,
-  NovelDownloadFolder,
-} from '@utils/constants/download';
-import { walkDir } from '../utils';
+import { AppDownloadFolder } from '@utils/constants/download';
+import { walkDir, backupMMKVData } from '../utils';
 import {
   BackupPackage,
   BackupTask,
   BackupDataFileName,
   TaskType,
 } from '../types';
-import {
-  getAllNovels,
-  getNovelsWithCustomCover,
-} from '@database/queries/NovelQueries';
+import { getAllNovels } from '@database/queries/NovelQueries';
 import { getChapters } from '@database/queries/ChapterQueries';
 import {
   getAllNovelCategories,
@@ -42,9 +34,6 @@ export const versionTask = async (
 export const novelTask = async (folderTree: string[]): Promise<BackupTask> => {
   return getAllNovels().then(novels => {
     const subtasks = novels.map(novel => {
-      if (novel.cover && !novel.cover.startsWith('http')) {
-        novel.cover = `file:///${NovelDownloadFolder}/${novel.pluginId}/${novel.id}/cover.png`;
-      }
       return (): Promise<BackupPackage> =>
         getChapters(novel.id).then(chapters => {
           return {
@@ -61,27 +50,6 @@ export const novelTask = async (folderTree: string[]): Promise<BackupTask> => {
     return {
       taskType: TaskType.NOVEL_AND_CHAPTERS,
       subtasks: subtasks,
-    };
-  });
-};
-
-export const novelCoverTask = (folderTree: string[]): Promise<BackupTask> => {
-  return getNovelsWithCustomCover().then(novels => {
-    return {
-      taskType: TaskType.NOVEL_COVER,
-      subtasks: novels.map(novel => {
-        return async (): Promise<BackupPackage> => {
-          return {
-            folderTree,
-            name: `${NovelDownloadFolder}/${novel.pluginId}/${novel.id}/cover.png`.replace(
-              AppDownloadFolder + '/',
-              '',
-            ),
-            mimeType: 'image/png',
-            content: novel.cover || '',
-          };
-        };
-      }),
     };
   });
 };
@@ -135,12 +103,7 @@ export const downloadTask = (folderTree: string[]): Promise<BackupTask> => {
 export const settingTask = async (
   folderTree: string[],
 ): Promise<BackupTask> => {
-  const keys = MMKVStorage.getAllKeys();
-  const data = keys.map(key => {
-    return {
-      [key]: MMKVStorage.getString(key),
-    };
-  });
+  const data = backupMMKVData();
   const backupPackage: BackupPackage = {
     folderTree,
     name: BackupDataFileName.SETTING,

@@ -3,7 +3,7 @@ import { BackupDataFileName, RestoreTask, TaskType } from '../types';
 import { BackupCategory, BackupNovel } from '@database/types';
 import { _restoreNovelAndChapters } from '@database/queries/NovelQueries';
 import { _restoreCategory } from '@database/queries/CategoryQueries';
-import { MMKVStorage } from '@utils/mmkv/mmkv';
+import { restoreMMKVData } from '../utils';
 
 export const restoreNovel = (
   parentId: string,
@@ -67,9 +67,7 @@ export const restoreSetting = (
       if (file) {
         return readFile(file, 'json').then(data => {
           const subtask = async () => {
-            for (let key in data) {
-              MMKVStorage.set(key, data[key]);
-            }
+            restoreMMKVData(data);
           };
           return {
             taskType: TaskType.SETTING,

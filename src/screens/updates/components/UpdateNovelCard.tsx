@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View, Image } from 'react-native';
 import React, { useCallback } from 'react';
 
 import {
@@ -7,7 +7,6 @@ import {
   NovelInfo,
   Update,
 } from '@database/types';
-import FastImage from 'react-native-fast-image';
 import { List } from 'react-native-paper';
 import { coverPlaceholderColor } from '@theme/colors';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
@@ -26,7 +25,7 @@ const NovelCover = ({
 }) => {
   return (
     <Pressable onPress={navigateToNovel}>
-      <FastImage source={{ uri }} style={styles.cover} />
+      <Image source={{ uri }} style={styles.cover} />
     </Pressable>
   );
 };

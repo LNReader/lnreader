@@ -1,28 +1,15 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import WebView from 'react-native-webview';
-import CookieManager from '@react-native-cookies/cookies';
 
 import { Appbar } from '@components';
 import { useTheme } from '@hooks/persisted';
-import { defaultUserAgentString } from '@utils/fetch/fetch';
 import { WebviewScreenProps } from '@navigators/types';
-import { getPlugin } from '@plugins/pluginManager';
+import { getUserAgent } from '@hooks/persisted/useUserAgent';
 
 const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
   const theme = useTheme();
 
-  const { name, pluginId, url } = route.params;
-  const plugin = getPlugin(pluginId);
-
-  useEffect(() => {
-    CookieManager.get(url, true).then(cookies => {
-      const cloudflareCookie = cookies?.cf_clearance;
-      if (cloudflareCookie) {
-        const cloudflareCookieString = `${cloudflareCookie.name}=${cloudflareCookie.value}`;
-        plugin.updateCookieString(cloudflareCookieString);
-      }
-    });
-  }, []);
+  const { name, url } = route.params;
 
   return (
     <>
@@ -34,7 +21,7 @@ const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
       />
       <WebView
         startInLoadingState
-        userAgent={defaultUserAgentString}
+        userAgent={getUserAgent()}
         source={{ uri: url }}
       />
     </>

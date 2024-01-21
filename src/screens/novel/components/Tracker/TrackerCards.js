@@ -24,7 +24,7 @@ export const AddTrackingCard = ({ theme, setTrackSearchDialog, icon }) => (
           color: color(theme.primary).alpha(0.12).string(),
           borderless: true,
         }}
-        onPress={() => setTrackSearchDialog(true)}
+        onPress={setTrackSearchDialog}
       >
         <Text
           style={{
@@ -43,9 +43,9 @@ export const TrackedItemCard = ({
   tracker,
   untrackNovel,
   trackItem,
-  setTrackStatusDialog,
-  setTrackChaptersDialog,
-  setTrackScoreDialog,
+  handSetTrackStatusDialog,
+  handleSetTrackChaptersDialog,
+  handleSetTrackScoreDialog,
   getStatus,
   theme,
   icon,
@@ -72,7 +72,7 @@ export const TrackedItemCard = ({
         <TouchableRipple
           style={[styles.listItemLeft, { borderRightColor: theme.outline }]}
           borderless
-          onPress={() => setTrackStatusDialog(true)}
+          onPress={handSetTrackStatusDialog}
           rippleColor={color(theme.primary).alpha(0.12).string()}
         >
           <Text style={[styles.listItem, { color: theme.onSurfaceVariant }]}>
@@ -82,7 +82,7 @@ export const TrackedItemCard = ({
         <TouchableRipple
           style={{ flex: 1 }}
           borderless
-          onPress={() => setTrackChaptersDialog(true)}
+          onPress={handleSetTrackChaptersDialog}
           rippleColor={color(theme.primary).alpha(0.12).string()}
         >
           <Text style={[styles.listItem, { color: theme.onSurfaceVariant }]}>
@@ -94,7 +94,7 @@ export const TrackedItemCard = ({
         <TouchableRipple
           style={[styles.listItemRight, { borderLeftColor: theme.outline }]}
           borderless
-          onPress={() => setTrackScoreDialog(true)}
+          onPress={handleSetTrackScoreDialog}
           rippleColor={color(theme.primary).alpha(0.12).string()}
         >
           <Text style={[styles.listItem, { color: theme.onSurfaceVariant }]}>
@@ -137,6 +137,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderBottomWidth: 1,
+    padding: 4,
   },
   listItemContainer: {
     flex: 1,

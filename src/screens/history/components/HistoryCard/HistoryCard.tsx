@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import dayjs from 'dayjs';
-import FastImage from 'react-native-fast-image';
+import { Image } from 'react-native';
 
 import { IconButtonV2 } from '@components';
 import { parseChapterNumber } from '@utils/parseChapterNumber';
@@ -59,17 +59,32 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
       style={styles.container}
       android_ripple={{ color: theme.rippleColor }}
       onPress={() =>
-        handleNavigateToNovel({
-          pluginId,
-          id: novelId,
-          url: novelUrl,
-          name: novelName,
-          cover: novelCover,
-        })
+        handleNavigateToChapter(
+          { url: novelUrl, pluginId: pluginId, name: novelName },
+          {
+            id: id,
+            url: chapterUrl,
+            novelId: novelId,
+            name: chapterName,
+            bookmark: bookmark,
+          },
+        )
       }
     >
       <View style={styles.imageAndNameContainer}>
-        <FastImage source={{ uri: novelCover }} style={styles.cover} />
+        <Pressable
+          onPress={() =>
+            handleNavigateToNovel({
+              pluginId,
+              id: novelId,
+              url: novelUrl,
+              name: novelName,
+              cover: novelCover,
+            })
+          }
+        >
+          <Image source={{ uri: novelCover }} style={styles.cover} />
+        </Pressable>
         <View style={styles.detailsContainer}>
           <Text
             numberOfLines={2}
@@ -87,22 +102,6 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
           name="delete-outline"
           theme={theme}
           onPress={() => handleRemoveFromHistory(id)}
-        />
-        <IconButtonV2
-          name="play"
-          onPress={() =>
-            handleNavigateToChapter(
-              { url: novelUrl, pluginId: pluginId, name: novelName },
-              {
-                id: id,
-                url: chapterUrl,
-                novelId: novelId,
-                name: chapterName,
-                bookmark: bookmark,
-              },
-            )
-          }
-          theme={theme}
         />
       </View>
     </Pressable>

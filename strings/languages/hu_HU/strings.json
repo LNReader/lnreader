@@ -1,205 +1,231 @@
 {
   "common": {
-    "cancel": "Cancel",
-    "ok": "Ok",
-    "save": "Save",
-    "clear": "Clear",
-    "reset": "Reset",
-    "search": "Search",
-    "install": "Install",
-    "newUpdateAvailable": "New update available",
-    "categories": "Categories",
-    "add": "Add",
-    "edit": "Edit",
-    "name": "Name",
-    "searchFor": "Search for",
-    "globally": "globally",
-    "searchResults": "Search results",
-    "chapters": "Chapters",
-    "submit": "Submit",
-    "retry": "Retry"
+    "cancel": "Mégse",
+    "ok": "OK",
+    "save": "Mentés",
+    "clear": "Törlés",
+    "reset": "Alaphelyzetbe állítás",
+    "search": "Keresés",
+    "install": "Telepítés",
+    "newUpdateAvailable": "Új frissítés érhető el",
+    "categories": "Kategóriák",
+    "add": "Hozzáadás",
+    "edit": "Szerkesztés",
+    "name": "Név",
+    "searchFor": "Keresés a következőre",
+    "globally": "globálisan",
+    "searchResults": "Keresési eredmények",
+    "chapters": "Fejezetek",
+    "submit": "Küldés",
+    "retry": "Újrapróbálkozás"
   },
-  "library": "Library",
+  "library": "Könyvtár",
   "libraryScreen": {
-    "searchbar": "Search library",
-    "empty": "Your library is empty. Add series to your library from Browse.",
+    "searchbar": "Keresés a könyvtárban",
+    "empty": "A könyvtárad üres. Adj sorozatokat a könyvtáradhoz a Böngészés menüben.",
     "bottomSheet": {
       "filters": {
-        "downloaded": "Downloaded",
-        "unread": "Unread",
-        "completed": "Completed",
-        "started": "Started"
+        "downloaded": "Letöltött",
+        "unread": "Olvasatlan",
+        "completed": "Befejezett",
+        "started": "Elkezdett"
       },
       "sortOrders": {
-        "dateAdded": "Date added",
-        "alphabetically": "Alphabetically",
-        "totalChapters": "Total chapters",
-        "download": "Downloaded",
-        "unread": "Unread",
-        "lastRead": "Last Read"
+        "dateAdded": "Hozzáadás dátuma",
+        "alphabetically": "Betűrendben",
+        "totalChapters": "Összes fejezetek száma",
+        "download": "Letöltött",
+        "unread": "Olvasatlan",
+        "lastRead": "Utoljára olvasott",
+        "lastUpdated": "Utoljára frissített"
       },
       "display": {
-        "displayMode": "Display mode",
-        "compact": "Compact grid",
-        "comfortable": "Comfortable grid",
-        "noTitle": "Cover only grid",
-        "list": "List",
+        "displayMode": "Megjelenítési mód",
+        "compact": "Kompakt rács",
+        "comfortable": "Laza rács",
+        "noTitle": "Rács csak borítókkal",
+        "list": "Lista",
         "badges": "Badges",
         "downloadBadges": "Download badges",
         "unreadBadges": "Unread badges",
-        "showNoOfItems": "Show number of items"
+        "showNoOfItems": "Elemek számának mutatása"
       }
     }
   },
-  "updates": "Updates",
+  "updates": "Frissítések",
   "updatesScreen": {
-    "searchbar": "Search updates",
-    "lastUpdatedAt": "Library last updated:",
-    "newChapters": "new Chapters",
-    "emptyView": "No recent updates"
+    "searchbar": "Frissítések keresése",
+    "lastUpdatedAt": "Könyvtár utoljára frissítve:",
+    "newChapters": "új fejezetek",
+    "emptyView": "Nincsenek új frissítések",
+    "updatesLower": "frissítések"
   },
-  "history": "History",
+  "history": "Előzmények",
   "historyScreen": {
-    "searchbar": "Search history",
-    "clearHistorWarning": "Are you sure? All history will be lost."
+    "searchbar": "Keresési előzmények",
+    "clearHistorWarning": "Biztos vagy benne? Minden előzmény törlődni fog."
   },
-  "browse": "Browse",
+  "browse": "Böngészés",
   "browseScreen": {
-    "discover": "Discover",
-    "searchbar": "Search sources",
-    "globalSearch": "Global search",
+    "discover": "Felfedezés",
+    "searchbar": "Források keresése",
+    "globalSearch": "Globális keresés",
     "listEmpty": "Enable languages from settings",
-    "lastUsed": "Last used",
-    "pinned": "Pinned",
-    "all": "All",
-    "latest": "Latest",
-    "addedToLibrary": "Added to library",
-    "removeFromLibrary": "Removed from library"
+    "lastUsed": "Utoljára használt",
+    "pinned": "Rögzített",
+    "all": "Összes",
+    "latest": "Legújabb",
+    "addedToLibrary": "Könyvtárhoz adva",
+    "removeFromLibrary": "Eltávolítva a könyvtárból"
   },
   "readerScreen": {
-    "finished": "Finished",
-    "noNextChapter": "There's no next chapter",
+    "finished": "Befejezett",
+    "noNextChapter": "Nincs következő fejezet",
     "bottomSheet": {
-      "textSize": "Text size",
-      "color": "Color",
-      "textAlign": "Text align",
-      "lineHeight": "Line Height",
-      "fontStyle": "Font style",
-      "fullscreen": "Fullscreen",
+      "textSize": "Betűméret",
+      "color": "Szín",
+      "textAlign": "Szöveg igazítása",
+      "lineHeight": "Sormagasság",
+      "fontStyle": "Betűtípus",
+      "fullscreen": "Teljes képernyő",
+      "bionicReading": "Bionic Reading",
       "renderHml": "Render HTML",
       "autoscroll": "AutoScroll",
       "verticalSeekbar": "Vertical Seekbar",
-      "showBatteryAndTime": "Show battery and time",
-      "showProgressPercentage": "Show progress percentage",
+      "showBatteryAndTime": "Akkumulátorinformációk és idő mutatása",
+      "showProgressPercentage": "Előrehaladás százalékos mutatása",
       "swipeGestures": "Swipe left or right to navigate between chapters",
-      "allowTextSelection": "Allow text selection",
+      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
+      "allowTextSelection": "Szövegkijelölés engedélyezése",
       "useChapterDrawerSwipeNavigation": "Swipe right to open drawer",
       "removeExtraSpacing": "Remove extra paragraph spacing",
-      "volumeButtonsScroll": "Volume buttons scroll",
+      "volumeButtonsScroll": "Görgetés a hangerőgombokkal",
+      "scrollAmount": "Görgetés mértéke (alapértelmezetten a képernyő magassága)",
       "showSwipeMargins": "Show swipe margins"
     },
     "drawer": {
-      "scrollToCurrentChapter": "Scroll to current chapter",
-      "scrollToTop": "Scroll to top",
-      "scrollToBottom": "Scroll to bottom"
+      "scrollToCurrentChapter": "Aktuális fejezethez ugrás",
+      "scrollToTop": "Elejére ugrás",
+      "scrollToBottom": "Végére ugrás"
     }
   },
   "novelScreen": {
-    "addToLibaray": "Add to library",
-    "inLibaray": "In library",
-    "continueReading": "Continue reading",
-    "chapters": "chapters",
-    "migrate": "Migrate",
-    "noSummary": "No summary",
+    "addToLibaray": "Hozzáadás a könyvtárhoz",
+    "inLibaray": "Könyvtárban",
+    "continueReading": "Olvasás folytatása",
+    "chapters": "fejezetek",
+    "migrate": "Áttelepítés",
+    "noSummary": "Nincs összefoglaló",
     "bottomSheet": {
-      "filter": "Filter",
-      "sort": "Sort",
-      "display": "Display"
+      "filter": "Szűrő",
+      "sort": "Rendezés",
+      "display": "Megjelenítés"
     },
     "jumpToChapterModal": {
-      "jumpToChapter": "Jump to Chapter",
-      "openChapter": "Open Chapter",
-      "chapterName": "Chapter Name",
-      "chapterNumber": "Chapter Number",
+      "jumpToChapter": "Fejezethez ugrás",
+      "openChapter": "Fejezet megnyitása",
+      "chapterName": "Fejezet címe",
+      "chapterNumber": "Fejezet száma",
       "error": {
-        "validChapterName": "Enter a valid chapter name",
-        "validChapterNumber": "Enter a valid chapter number"
+        "validChapterName": "Adj meg egy létező fejezetcímet",
+        "validChapterNumber": "Adj meg egy létező fejezetszámot"
       }
+    },
+    "convertToEpubModal": {
+      "chooseLocation": "Select EPUB storage directory",
+      "pathToFolder": "Path to EPUB save folder",
+      "useReaderTheme": "Use reader theme",
+      "useCustomCSS": "Use custom CSS",
+      "useCustomJS": "Use custom JS",
+      "useCustomJSWarning": "May not be supported by all EPUB readers",
+      "chaptersWarning": "Only downloaded chapters are included in the EPUB"
     }
   },
-  "more": "More",
+  "more": "Több",
   "moreScreen": {
-    "settings": "Settings",
+    "settings": "Beállítások",
     "settingsScreen": {
-      "generalSettings": "General",
+      "generalSettings": "Általános",
       "generalSettingsScreen": {
-        "display": "Display",
-        "displayMode": "Display Mode",
-        "itemsPerRow": "Items per row",
-        "itemsPerRowLibrary": "Items per row in library",
+        "display": "Megjelenítés",
+        "displayMode": "Megjelenítési mód",
+        "itemsPerRow": "Soronkénti elemek",
+        "itemsPerRowLibrary": "Soronkénti elemek a könyvtárban",
         "novelBadges": "Novel Badges",
         "novelSort": "Novel Sort",
-        "updateLibrary": "Update library on launch",
+        "updateLibrary": "Könyvtár frissítése indításkor",
         "useFAB": "Use FAB in Library",
-        "novel": "Novel",
+        "novel": "Regény",
         "chapterSort": "Default chapter sort",
-        "bySource": "By source",
-        "asc": "(Ascending)",
-        "desc": "(Descending)",
-        "globalUpdate": "Global update",
+        "bySource": "Forrás szerint",
+        "asc": "(Növekvő)",
+        "desc": "(Csökkenő)",
+        "globalUpdate": "Globális frissítés",
         "updateOngoing": "Only update ongoing novels",
-        "refreshMetadata": "Automatically refresh metadata",
-        "refreshMetadataDescription": "Check for new cover and details when updating library",
-        "updateTime": "Show last update time",
-        "autoDownload": "Auto-download",
-        "downloadNewChapters": "Download new chapters",
-        "disableHapticFeedback": "Disable haptic feedback"
+        "refreshMetadata": "Metaadatok automatikus frissítése",
+        "refreshMetadataDescription": "Új borító és leírás keresése a könyvtár frissítésekor",
+        "updateTime": "Utolsó frissítés idejének mutatása",
+        "autoDownload": "Automatikus letöltés",
+        "epub": "EPUB",
+        "epubLocation": "EPUB Location",
+        "epubLocationDescription": "The place where you open and export your EPUB files.",
+        "downloadNewChapters": "Új fejezetek letöltése",
+        "disableHapticFeedback": "Haptikus visszajelzés kikapcsolása",
+        "jumpToLastReadChapter": "Jump to last read chapter in list"
       },
       "readerSettings": {
-        "title": "Reader",
-        "readerTheme": "Reader theme",
-        "preset": "Preset",
-        "backgroundColor": "Background color",
-        "textColor": "Text color",
-        "backgroundColorModal": "Reader background color",
-        "textColorModal": "Reader text color",
+        "title": "Olvasó",
+        "readerTheme": "Olvasó téma",
+        "preset": "Előbeállítás",
+        "backgroundColor": "Háttérszín",
+        "textColor": "Betűszín",
+        "backgroundColorModal": "Olvasó háttérszín",
+        "textColorModal": "Olvasó betűszín",
         "verticalSeekbarDesc": "Switch between vertical and horizontal seekbar",
         "autoScrollInterval": "Auto scroll interval (in seconds)",
         "autoScrollOffset": "Auto scroll offset (screen height by default)",
-        "saveCustomTheme": "Save custom theme",
-        "deleteCustomTheme": "Delete custom theme",
-        "customCSS": "Custom CSS"
+        "saveCustomTheme": "Egyéni téma mentése",
+        "deleteCustomTheme": "Egyéni téma törlése",
+        "customCSS": "Egyéni CSS",
+        "customJS": "Egyéni JS",
+        "openCSSFile": "CSS fájl megnyitása",
+        "openJSFile": "JS fájl megnyitása",
+        "notSaved": "Nem mentett",
+        "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])",
+        "jsHint": "Hint: You have access to following variables: html, novelName, chapterName, sourceId, chapterId, novelId",
+        "clearCustomCSS": "Are you sure? Your custom CSS would be reset.",
+        "clearCustomJS": "Are you sure? Your custom JS would be reset."
       },
       "browseSettings": "Browse Settings",
       "browseSettingsScreen": {
         "onlyShowPinnedSources": "Only show pinned sources",
-        "languages": "Languages",
-        "searchAllSources": "Search all sources",
-        "searchAllWarning": "Searching a large number of sources may freeze the app till searching is finished."
+        "languages": "Nyelvek",
+        "searchAllSources": "Keresés az összes forrásban",
+        "searchAllWarning": "Nagyszámú forrásban való keresés lefagyaszthatja az alkalmazást amíg be nem fejeződik a keresés."
       }
     }
   },
   "sourceScreen": {
-    "noResultsFound": "No results found"
+    "noResultsFound": "Nincs találat"
   },
   "statsScreen": {
-    "title": "Statistics",
-    "titlesInLibrary": "Titles in library",
-    "totalChapters": "Total chapters",
-    "readChapters": "Read chapters",
-    "unreadChapters": "Unread chapters",
-    "downloadedChapters": "Downloaded chapters",
+    "title": "Statisztikák",
+    "titlesInLibrary": "Címek a könyvtárban",
+    "totalChapters": "Összes fejezetek száma",
+    "readChapters": "Olvasott fejezetek",
+    "unreadChapters": "Olvasatlan fejezetek",
+    "downloadedChapters": "Letöltött fejezetek",
     "genreDistribution": "Genre distribution",
     "statusDistribution": "Status distribution"
   },
   "globalSearch": {
     "searchIn": "Search a novel in",
-    "allSources": "all sources",
-    "pinnedSources": "pinned sources"
+    "allSources": "összes forrás",
+    "pinnedSources": "kitűzött források"
   },
   "advancedSettings": {
-    "deleteReadChapters": "Delete read chapters",
-    "deleteReadChaptersDialogTitle": "Are you sure? All chapters marked as read will be deleted."
+    "deleteReadChapters": "Olvasott fejezetek törlése",
+    "deleteReadChaptersDialogTitle": "Biztos vagy benne? Az összes olvasottnak jelölt fejezet törölve lesz."
   },
   "date": {
     "calendar": {
@@ -210,26 +236,27 @@
     }
   },
   "categories": {
-    "addCategories": "Add category",
-    "editCategories": "Rename category",
+    "addCategories": "Kategória hozzáadása",
+    "editCategories": "Kategória átnevezése",
     "setCategories": "Set categories",
-    "header": "Edit categories",
+    "header": "Kategóriák szerkesztése",
     "emptyMsg": "You have no categories. Tap the plus button to create one for organizing your library",
     "setModalEmptyMsg": "You have no categories. Tap the Edit button to create one for organizing your library",
     "deleteModal": {
-      "header": "Delete category",
+      "header": "Kategória törlése",
       "desc": "Do you wish to delete category"
     },
-    "duplicateError": "A category with this name already exists!",
-    "defaultCategory": "Default category"
+    "duplicateError": "Már létezik ilyen nevű kategória!",
+    "defaultCategory": "Alapértelmezett kategória"
   },
   "settings": {
-    "icognitoMode": "Incognito mode",
-    "downloadedOnly": "Downloaded only"
+    "icognitoMode": "Inkognitó mód",
+    "downloadedOnly": "Csak a letöltöttek"
   },
   "downloadScreen": {
-    "dbInfo": "Downloads are saved in a SQLite Database.",
-    "downloadChapters": "downloaded Chapters",
-    "noDownloads": "No downloads"
+    "dbInfo": "A letöltések egy SQLite adatbázisban vannak elmentve.",
+    "downloadChapters": "letöltött fejezetek",
+    "noDownloads": "Nincsenek letöltések",
+    "downloadsLower": "letöltések"
   }
 }

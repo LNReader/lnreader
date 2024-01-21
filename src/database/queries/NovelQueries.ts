@@ -4,7 +4,7 @@ const db = SQLite.openDatabase('lnreader.db');
 import * as DocumentPicker from 'expo-document-picker';
 import * as RNFS from 'react-native-fs';
 
-import { fetchChapters, fetchNovel } from '@services/plugin/fetch';
+import { fetchChapters, fetchImage, fetchNovel } from '@services/plugin/fetch';
 import { insertChapters } from './ChapterQueries';
 
 import { showToast } from '@utils/showToast';
@@ -15,13 +15,13 @@ import { BackupNovel, NovelInfo } from '../types';
 import { SourceNovel } from '@plugins/types';
 import { NovelDownloadFolder } from '@utils/constants/download';
 
-export const insertNovelAndChapters = (
+export const insertNovelAndChapters = async (
   pluginId: string,
   sourceNovel: SourceNovel,
-): Promise<number> => {
+): Promise<number | undefined> => {
   const insertNovelQuery =
     'INSERT INTO Novel (url, pluginId, name, cover, summary, author, artist, status, genres) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)';
-  return new Promise(resolve => {
+  const novelId: number | undefined = await new Promise(resolve => {
     db.transaction(tx => {
       tx.executeSql(
         insertNovelQuery,
@@ -36,17 +36,36 @@ export const insertNovelAndChapters = (
           sourceNovel.status || null,
           sourceNovel.genres || null,
         ],
-        (txObj, resultSet) => {
-          if (resultSet.insertId) {
-            insertChapters(resultSet.insertId, sourceNovel.chapters).then(() =>
-              resolve(resultSet.insertId || 1),
-            );
-          }
-        },
+        async (txObj, resultSet) => resolve(resultSet.insertId),
         txnErrorCallback,
       );
     });
   });
+  if (novelId) {
+    const promises = [insertChapters(novelId, sourceNovel.chapters)];
+    if (sourceNovel.cover) {
+      const novelDir = NovelDownloadFolder + '/' + pluginId + '/' + novelId;
+      const novelCoverUri = 'file://' + novelDir + '/cover.png';
+      promises.push(
+        fetchImage(pluginId, sourceNovel.cover).then(base64 => {
+          if (base64) {
+            RNFS.mkdir(novelDir)
+              .then(() => RNFS.writeFile(novelCoverUri, base64, 'base64'))
+              .then(() => {
+                db.transaction(tx => {
+                  tx.executeSql('UPDATE Novel SET cover = ? WHERE id = ?', [
+                    novelCoverUri,
+                    novelId,
+                  ]);
+                });
+              });
+          }
+        }),
+      );
+    }
+    await Promise.all(promises);
+  }
+  return novelId;
 };
 
 export const getAllNovels = async (): Promise<NovelInfo[]> => {
@@ -57,18 +76,6 @@ export const getAllNovels = async (): Promise<NovelInfo[]> => {
       );
     }),
   );
-};
-
-export const getNovelsWithCustomCover = async (): Promise<NovelInfo[]> => {
-  return new Promise(resolve => {
-    db.transaction(tx => {
-      tx.executeSql(
-        'SELECT id, pluginId, cover FROM Novel WHERE cover NOT LIKE "http%"',
-        [],
-        (txObj, { rows }) => resolve(rows._array),
-      );
-    });
-  });
 };
 
 export const getNovel = async (novelUrl: string): Promise<NovelInfo | null> => {
@@ -122,20 +129,22 @@ export const switchNovelToLibrary = async (
   } else {
     const sourceNovel = await fetchNovel(pluginId, novelUrl);
     const novelId = await insertNovelAndChapters(pluginId, sourceNovel);
-    db.transaction(tx => {
-      tx.executeSql(
-        'UPDATE Novel SET inLibrary = 1 WHERE url = ?',
-        [novelUrl],
-        () => showToast(getString('browseScreen.addedToLibrary')),
-        txnErrorCallback,
-      );
-      tx.executeSql(
-        'INSERT INTO NovelCategory (novelId, categoryId) VALUES (?, (SELECT DISTINCT id FROM Category WHERE sort = 1))',
-        [novelId],
-        noop,
-        txnErrorCallback,
-      );
-    });
+    if (novelId) {
+      db.transaction(tx => {
+        tx.executeSql(
+          'UPDATE Novel SET inLibrary = 1 WHERE url = ?',
+          [novelUrl],
+          () => showToast(getString('browseScreen.addedToLibrary')),
+          txnErrorCallback,
+        );
+        tx.executeSql(
+          'INSERT INTO NovelCategory (novelId, categoryId) VALUES (?, (SELECT DISTINCT id FROM Category WHERE sort = 1))',
+          [novelId],
+          noop,
+          txnErrorCallback,
+        );
+      });
+    }
   }
 };
 
@@ -165,14 +174,6 @@ export const getCachedNovels = (): Promise<NovelInfo[]> => {
   });
 };
 export const deleteCachedNovels = async () => {
-  const cachedNovels = await getCachedNovels();
-  for (let novel of cachedNovels) {
-    const novelDir =
-      NovelDownloadFolder + '/' + novel.pluginId + '/' + novel.id;
-    if (await RNFS.exists(novelDir)) {
-      await RNFS.unlink(novelDir);
-    }
-  }
   db.transaction(tx => {
     tx.executeSql(
       'DELETE FROM Novel WHERE inLibrary = 0',
@@ -248,21 +249,23 @@ export const updateNovelInfo = async (info: NovelInfo) => {
   });
 };
 
-export const pickCustomNovelCover = async (novelId: number) => {
+export const pickCustomNovelCover = async (novel: NovelInfo) => {
   const image = await DocumentPicker.getDocumentAsync({ type: 'image/*' });
-
   if (image.type === 'success' && image.uri) {
-    const uri = 'file://' + image.uri;
-
+    const novelDir =
+      NovelDownloadFolder + '/' + novel.pluginId + '/' + novel.id;
+    let novelCoverUri = 'file://' + novelDir + '/cover.png';
+    RNFS.copyFile(image.uri, novelCoverUri);
+    novelCoverUri += '?' + Date.now();
     db.transaction(tx => {
       tx.executeSql(
         'UPDATE Novel SET cover = ? WHERE id = ?',
-        [uri, novelId],
+        [novelCoverUri, novel.id],
         noop,
         txnErrorCallback,
       );
     });
-    return image.uri;
+    return novelCoverUri;
   }
 };
 

@@ -1,6 +1,6 @@
 import { Dimensions, Pressable, StyleSheet, Text, View } from 'react-native';
 import React, { useMemo } from 'react';
-import FastImage from 'react-native-fast-image';
+import { Image } from 'react-native';
 
 import { coverPlaceholderColor } from '@theme/colors';
 
@@ -46,7 +46,7 @@ const GlobalSearchNovelItem: React.FC<Props> = ({
         onPress={() => navigateToNovel({ ...novel, pluginId: pluginId })}
         onLongPress={onLongPress}
       >
-        <FastImage
+        <Image
           source={{ uri: novel.cover }}
           style={[styles.novelCover, { ...novelItemDimensions }]}
         />

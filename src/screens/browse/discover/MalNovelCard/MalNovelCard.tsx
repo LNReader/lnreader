@@ -1,6 +1,6 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import FastImage from 'react-native-fast-image';
+import { Image } from 'react-native';
 
 import { ThemeColors } from '../../../../theme/types';
 
@@ -18,7 +18,7 @@ const MalNovelCard: React.FC<Props> = ({ novel, onPress, theme }) => {
         onPress={onPress}
         android_ripple={{ color: theme.rippleColor }}
       >
-        <FastImage source={{ uri: novel.novelCover }} style={styles.cover} />
+        <Image source={{ uri: novel.novelCover }} style={styles.cover} />
         <View style={styles.infoContainer}>
           <Text
             style={[styles.title, { color: theme.onSurface }]}

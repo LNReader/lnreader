@@ -72,6 +72,7 @@ export default function usePlugins() {
             if (finded) {
               if (newer(plg.version, finded.version)) {
                 finded.hasUpdate = true;
+                finded.iconUrl = plg.iconUrl;
               }
               return false;
             }
@@ -117,6 +118,8 @@ export default function usePlugins() {
         }
         setMMKVObject(AVAILABLE_PLUGINS, availablePlugins);
         filterPlugins(languagesFilter);
+      } else {
+        throw new Error(`Failed to installed ${plugin.name}`);
       }
     });
   };
@@ -156,21 +159,24 @@ export default function usePlugins() {
           INSTALLED_PLUGINS,
           installedPlugins.map(plg => {
             if (plugin.id !== plg.id) {
-              return plugin;
+              return plg;
             }
             return {
               id: plugin.id,
               url: plugin.url,
+              lang: plugin.lang,
+              iconUrl: plugin.iconUrl,
               site: _plg.site,
               name: _plg.name,
-              lang: _plg.lang,
               version: _plg.version,
-              iconUrl: _plg.iconUrl,
               hasUpdate: false,
             };
           }),
         );
         filterPlugins(languagesFilter);
+        return _plg.version;
+      } else {
+        throw Error('Failed to update');
       }
     });
   };

@@ -5,21 +5,14 @@ import {
   TaskType,
 } from '../types';
 import { appVersion } from '@utils/versionUtils';
-import {
-  getAllNovels,
-  getNovelsWithCustomCover,
-} from '@database/queries/NovelQueries';
-import {
-  AppDownloadFolder,
-  NovelDownloadFolder,
-} from '@utils/constants/download';
+import { getAllNovels } from '@database/queries/NovelQueries';
+import { AppDownloadFolder } from '@utils/constants/download';
 import { getChapters } from '@database/queries/ChapterQueries';
 import {
   getCategoriesFromDb,
   getAllNovelCategories,
 } from '@database/queries/CategoryQueries';
-import { walkDir } from '../utils';
-import { MMKVStorage } from '@utils/mmkv/mmkv';
+import { walkDir, backupMMKVData } from '../utils';
 
 export const versionTask = async (parentId: string): Promise<BackupTask> => {
   const backupPackage: BackupPackage = {
@@ -39,9 +32,6 @@ export const versionTask = async (parentId: string): Promise<BackupTask> => {
 export const novelTask = async (parentId: string): Promise<BackupTask> => {
   return getAllNovels().then(novels => {
     const subtasks = novels.map(novel => {
-      if (novel.cover && !novel.cover.startsWith('http')) {
-        novel.cover = `file:///${NovelDownloadFolder}/${novel.pluginId}/${novel.id}/cover.png`;
-      }
       return (): Promise<BackupPackage> =>
         getChapters(novel.id).then(chapters => {
           return {
@@ -58,27 +48,6 @@ export const novelTask = async (parentId: string): Promise<BackupTask> => {
     return {
       taskType: TaskType.NOVEL_AND_CHAPTERS,
       subtasks: subtasks,
-    };
-  });
-};
-
-export const novelCoverTask = (parentId: string): Promise<BackupTask> => {
-  return getNovelsWithCustomCover().then(novels => {
-    return {
-      taskType: TaskType.NOVEL_COVER,
-      subtasks: novels.map(novel => {
-        return async (): Promise<BackupPackage> => {
-          return {
-            folderTree: [parentId],
-            name: `${NovelDownloadFolder}/${novel.pluginId}/${novel.id}/cover.png`.replace(
-              AppDownloadFolder + '/',
-              '',
-            ),
-            mimeType: 'image/png',
-            content: novel.cover || '',
-          };
-        };
-      }),
     };
   });
 };
@@ -130,12 +99,7 @@ export const downloadTask = (parentId: string): Promise<BackupTask> => {
 };
 
 export const settingTask = async (parentId: string): Promise<BackupTask> => {
-  const keys = MMKVStorage.getAllKeys();
-  const data = keys.map(key => {
-    return {
-      [key]: MMKVStorage.getString(key),
-    };
-  });
+  const data = backupMMKVData();
   const backupPackage: BackupPackage = {
     folderTree: [parentId],
     name: BackupDataFileName.SETTING,

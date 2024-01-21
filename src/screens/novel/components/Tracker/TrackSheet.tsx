@@ -14,21 +14,37 @@ import { useTracker, useTrackedNovel } from '@hooks/persisted';
 import { UserListStatus } from '@services/Trackers';
 
 interface Props {
-  bottomSheetRef: React.Ref<BottomSheetModalMethods>;
-  novelId: number;
+  bottomSheetRef: React.RefObject<BottomSheetModalMethods>;
+  novelUrl: string;
   novelName: string;
   theme: ThemeColors;
 }
 
-const TrackSheet = ({ bottomSheetRef, novelId, novelName, theme }: Props) => {
+const TrackSheet = ({ bottomSheetRef, novelUrl, novelName, theme }: Props) => {
   const { tracker } = useTracker();
   const { trackedNovel, trackNovel, untrackNovel, updateTrackedNovel } =
-    useTrackedNovel(novelId);
+    useTrackedNovel(novelUrl);
 
   const [trackSearchDialog, setTrackSearchDialog] = useState(false);
   const [trackStatusDialog, setTrackStatusDialog] = useState(false);
   const [trackChaptersDialog, setTrackChaptersDialog] = useState(false);
   const [trackScoreDialog, setTrackScoreDialog] = useState(false);
+  const handleSetSearchTrackDialog = () => {
+    bottomSheetRef.current?.close();
+    setTrackSearchDialog(true);
+  };
+  const handleSetStatusDialog = () => {
+    bottomSheetRef.current?.close();
+    setTrackStatusDialog(true);
+  };
+  const handleSetChaptersDialog = () => {
+    bottomSheetRef.current?.close();
+    setTrackChaptersDialog(true);
+  };
+  const handleSetScoreDialog = () => {
+    bottomSheetRef.current?.close();
+    setTrackScoreDialog(true);
+  };
   if (!tracker) {
     return null;
   }
@@ -73,7 +89,7 @@ const TrackSheet = ({ bottomSheetRef, novelId, novelName, theme }: Props) => {
 
   return (
     <>
-      <BottomSheet bottomSheetRef={bottomSheetRef} snapPoints={[130]}>
+      <BottomSheet bottomSheetRef={bottomSheetRef} snapPoints={[130, 200]}>
         <View
           style={[
             styles.contentContainer,
@@ -85,13 +101,13 @@ const TrackSheet = ({ bottomSheetRef, novelId, novelName, theme }: Props) => {
               <AddTrackingCard
                 icon={require('../../../../../assets/mal.png')}
                 theme={theme}
-                setTrackSearchDialog={setTrackSearchDialog}
+                setTrackSearchDialog={handleSetSearchTrackDialog}
               />
             ) : (
               <AddTrackingCard
                 icon={require('../../../../../assets/anilist.png')}
                 theme={theme}
-                setTrackSearchDialog={setTrackSearchDialog}
+                setTrackSearchDialog={handleSetSearchTrackDialog}
               />
             )
           ) : (
@@ -104,9 +120,9 @@ const TrackSheet = ({ bottomSheetRef, novelId, novelName, theme }: Props) => {
                   : require('../../../../../assets/anilist.png')
               }
               trackItem={trackedNovel}
-              setTrackStatusDialog={setTrackStatusDialog}
-              setTrackChaptersDialog={setTrackChaptersDialog}
-              setTrackScoreDialog={setTrackScoreDialog}
+              handSetTrackStatusDialog={handleSetStatusDialog}
+              handleSetTrackChaptersDialog={handleSetChaptersDialog}
+              handleSetTrackScoreDialog={handleSetScoreDialog}
               theme={theme}
               getStatus={getStatus}
             />

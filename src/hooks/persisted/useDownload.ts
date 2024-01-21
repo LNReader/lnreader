@@ -23,51 +23,45 @@ interface TaskData {
 const downloadChapterAction = async (taskData?: TaskData) => {
   try {
     MMKVStorage.set(BACKGROUND_ACTION, BackgoundAction.DOWNLOAD_CHAPTER);
-    while (true) {
-      let queue = getMMKVObject<DownloadData[]>(DOWNLOAD_QUEUE) || [];
-      if (queue.length === 0) {
-        await Notifications.scheduleNotificationAsync({
+    let queue = getMMKVObject<DownloadData[]>(DOWNLOAD_QUEUE) || [];
+    while (queue.length > 0) {
+      const { novel, chapter } = queue[0];
+      await BackgroundService.updateNotification({
+        taskTitle: `Downloading: ${novel.name}`,
+        taskDesc: `Chapter: ${chapter.name}`,
+      });
+      await downloadChapter(
+        novel.pluginId,
+        novel.id,
+        chapter.id,
+        chapter.url,
+      ).catch((error: Error) =>
+        Notifications.scheduleNotificationAsync({
           content: {
-            title: 'Downloader',
-            body: 'Download completed',
+            title: chapter.name,
+            body: `Download failed: ${error.message}`,
           },
           trigger: null,
-        });
-        break;
-      } else {
-        const { novel, chapter } = queue[0];
-        await BackgroundService.updateNotification({
-          taskTitle: `Downloading: ${novel.name}`,
-          taskDesc: `Chapter: ${chapter.name}`,
-        });
-        try {
-          await downloadChapter(
-            novel.pluginId,
-            novel.id,
-            chapter.id,
-            chapter.url,
-          );
-
-          // get the newtest queue;
-          queue = getMMKVObject<DownloadData[]>(DOWNLOAD_QUEUE) || [];
-          setMMKVObject(DOWNLOAD_QUEUE, queue.slice(1));
-        } catch (error: any) {
-          Notifications.scheduleNotificationAsync({
-            content: {
-              title: chapter.name,
-              body: `Download failed: ${error.message}`,
-            },
-            trigger: null,
-          });
-        }
-
-        if (queue.length > 1 && taskData) {
-          await sleep(taskData?.delay);
-        }
+        }),
+      );
+      // get the newtest queue;
+      queue = getMMKVObject<DownloadData[]>(DOWNLOAD_QUEUE) || [];
+      setMMKVObject(DOWNLOAD_QUEUE, queue.slice(1));
+      queue = getMMKVObject<DownloadData[]>(DOWNLOAD_QUEUE) || [];
+      if (taskData) {
+        await sleep(taskData?.delay);
       }
     }
   } finally {
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: 'Downloader',
+        body: 'Download completed',
+      },
+      trigger: null,
+    });
     MMKVStorage.delete(BACKGROUND_ACTION);
+    BackgroundService.stop();
   }
 };
 

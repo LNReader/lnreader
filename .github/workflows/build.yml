@@ -18,7 +18,12 @@ jobs:
       - name: Install Dependencies
         run: |
           npm install
-
+      - name: Create .env
+        run: |
+          cat > .env << EOF
+          MYANIMELIST_CLIENT_ID=${{ vars.MYANIMELIST_CLIENT_ID }}
+          ANILIST_CLIENT_ID=${{ vars.ANILIST_CLIENT_ID }}
+          EOF
       - name: Cache Gradle Wrapper
         uses: actions/cache@v3
         with:

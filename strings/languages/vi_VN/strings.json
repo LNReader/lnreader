@@ -4,7 +4,7 @@
     "ok": "Ok",
     "save": "Lưu",
     "clear": "Xóa",
-    "reset": "Thiết lập lại",
+    "reset": "Đặt lại",
     "search": "Tìm kiếm",
     "install": "Tải về",
     "newUpdateAvailable": "Đã có bản cập nhật mới",
@@ -36,7 +36,8 @@
         "totalChapters": "Toàn bộ chương",
         "download": "Đã tải xuống",
         "unread": "Chưa đọc",
-        "lastRead": "Lần đọc cuối"
+        "lastRead": "Lần đọc trước",
+        "lastUpdated": "Lân cập nhật trước"
       },
       "display": {
         "displayMode": "Chế độ Hiển thị",
@@ -56,7 +57,8 @@
     "searchbar": "Tìm kiếm bản cập nhật",
     "lastUpdatedAt": "Lần cập nhật thư viện gần nhất:",
     "newChapters": "chương mới",
-    "emptyView": "Chưa cập nhật mới"
+    "emptyView": "Chưa cập nhật mới",
+    "updatesLower": "cập nhập"
   },
   "history": "Lịch sử",
   "historyScreen": {
@@ -86,16 +88,19 @@
       "lineHeight": "Chiều cao dòng",
       "fontStyle": "Phông chữ",
       "fullscreen": "Toàn màn hình",
+      "bionicReading": "Bionic Reading",
       "renderHml": "WebView",
       "autoscroll": "Cuộn tự động",
       "verticalSeekbar": "Thanh trạng thái dọc",
       "showBatteryAndTime": "Hiển thị pin và giờ",
       "showProgressPercentage": "Hiện tiến trình",
       "swipeGestures": "Vuốt để đổi chương",
+      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
       "allowTextSelection": "Cho phép bôi đen chữ",
       "useChapterDrawerSwipeNavigation": "Vuốt phải để hiện danh sách",
       "removeExtraSpacing": "Xoá khoảng trống thừa",
       "volumeButtonsScroll": "Cuộn bằng nút âm lượng",
+      "scrollAmount": "Scroll amount (screen height by default)",
       "showSwipeMargins": "Hiện khoảng vuốt"
     },
     "drawer": {
@@ -125,6 +130,15 @@
         "validChapterName": "Vui lòng nhập tên chương hợp lệ",
         "validChapterNumber": "Vui lòng nhập số chương hợp lệ"
       }
+    },
+    "convertToEpubModal": {
+      "chooseLocation": "Select EPUB storage directory",
+      "pathToFolder": "Path to EPUB save folder",
+      "useReaderTheme": "Use reader theme",
+      "useCustomCSS": "Use custom CSS",
+      "useCustomJS": "Use custom JS",
+      "useCustomJSWarning": "May not be supported by all EPUB readers",
+      "chaptersWarning": "Only downloaded chapters are included in the EPUB"
     }
   },
   "more": "Khác",
@@ -152,8 +166,12 @@
         "refreshMetadataDescription": "Kiểm tra ảnh bìa và mô tả khi cập nhật thự viện",
         "updateTime": "Hiện lần cập nhật trước",
         "autoDownload": "Tự động tải xuống",
+        "epub": "EPUB",
+        "epubLocation": "EPUB Location",
+        "epubLocationDescription": "The place where you open and export your EPUB files.",
         "downloadNewChapters": "Tải chương mới",
-        "disableHapticFeedback": "Tắt phản hồi xúc giác"
+        "disableHapticFeedback": "Tắt phản hồi xúc giác",
+        "jumpToLastReadChapter": "Jump to last read chapter in list"
       },
       "readerSettings": {
         "title": "Trang đọc",
@@ -168,7 +186,15 @@
         "autoScrollOffset": "Khoảng cách tự động cuộn (mặc định chiều cao màn hình)",
         "saveCustomTheme": "Lưu tùy chỉnh giao diện",
         "deleteCustomTheme": "Xoá tuỳ chỉnh giao diện",
-        "customCSS": "CSS Tùy chỉnh"
+        "customCSS": "CSS Tùy chỉnh",
+        "customJS": "Custom JS",
+        "openCSSFile": "Open CSS file",
+        "openJSFile": "Open JS file",
+        "notSaved": "Not saved",
+        "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])",
+        "jsHint": "Hint: You have access to following variables: html, novelName, chapterName, sourceId, chapterId, novelId",
+        "clearCustomCSS": "Are you sure? Your custom CSS would be reset.",
+        "clearCustomJS": "Are you sure? Your custom JS would be reset."
       },
       "browseSettings": "Cài đặt trình tìm kiếm",
       "browseSettingsScreen": {
@@ -230,6 +256,7 @@
   "downloadScreen": {
     "dbInfo": "Các chương tải về sẽ được lưu trong cơ sở dữ liệu SQLite.",
     "downloadChapters": "chương đã tải về",
-    "noDownloads": "Không có tải xuống"
+    "noDownloads": "Không có tải xuống",
+    "downloadsLower": "tải xuống"
   }
 }

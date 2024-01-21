@@ -33,7 +33,7 @@ const GeneralTab: React.FC = () => {
   const {
     fullScreenMode,
     autoScroll,
-    verticalSeekbar,
+    // verticalSeekbar,
     showBatteryAndTime,
     showScrollPercentage,
     useVolumeButtons,
@@ -58,14 +58,14 @@ const GeneralTab: React.FC = () => {
         value={autoScroll}
         theme={theme}
       />
-      <ReaderSheetPreferenceItem
+      {/* <ReaderSheetPreferenceItem
         label={getString('readerScreen.bottomSheet.verticalSeekbar')}
         onPress={() =>
           setChapterGeneralSettings({ verticalSeekbar: !verticalSeekbar })
         }
         value={verticalSeekbar}
         theme={theme}
-      />
+      /> */}
       <ReaderSheetPreferenceItem
         label={getString('readerScreen.bottomSheet.showBatteryAndTime')}
         onPress={() =>
@@ -156,7 +156,7 @@ const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
         {
           backgroundColor: tabHeaderColor,
           borderBottomColor: theme.outline,
-          borderBottomWidth: 1,
+          borderBottomWidth: 0.5,
         },
         styles.tabBar,
       ]}

@@ -1,11 +1,10 @@
 import React from 'react';
 import { ThemeColors } from '@theme/types';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Image } from 'react-native';
 import { Modal, TextInput, overlay } from 'react-native-paper';
 import { GoogleSignin, User } from '@react-native-google-signin/google-signin';
 import { useEffect, useState } from 'react';
 import { Button, EmptyView } from '@components';
-import FastImage from 'react-native-fast-image';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import * as Clipboard from 'expo-clipboard';
 import { showToast } from '@utils/showToast';
@@ -297,7 +296,7 @@ export default function GoogleDriveModal({
               }
             }}
           >
-            <FastImage
+            <Image
               source={{ uri: user?.user.photo || '' }}
               style={styles.avatar}
             />

@@ -41,23 +41,6 @@ const initPlugin = (rawCode: string, path?: string) => {
       return exports.default`,
     )(_require, {});
     plugin.path = path || `${PluginDownloadFolder}/${plugin.id}.js`;
-    plugin.rawCode = rawCode;
-    plugin.updateUserAgent = async function (newUserAgent) {
-      this.userAgent = newUserAgent;
-      this.rawCode = this.rawCode.replace(
-        /(userAgent\s*=\s*)([^\n;]*)/,
-        `$1"${newUserAgent}"`,
-      );
-      await RNFS.writeFile(this.path, this.rawCode, 'utf8');
-    };
-    plugin.updateCookieString = async function (newCookieString) {
-      this.cookieString = newCookieString;
-      this.rawCode = this.rawCode.replace(
-        /(cookieString\s*=\s*)([^\n;]*)/,
-        `$1"${newCookieString}"`,
-      );
-      await RNFS.writeFile(this.path, this.rawCode, 'utf8');
-    };
     return plugin;
   } catch (e) {
     return undefined;
@@ -105,8 +88,7 @@ const installPlugin = async (url: string): Promise<Plugin | undefined> => {
         }
       });
   } catch (e: any) {
-    showToast(e.message);
-    return undefined;
+    throw e;
   }
 };
 
@@ -143,7 +125,7 @@ const fetchPlugins = async () => {
   const githubBranch = 'plugins';
 
   const availablePlugins: Record<Language, Array<PluginItem>> = await fetch(
-    `https://raw.githubusercontent.com/${githubUsername}/${githubRepository}/${githubBranch}/.dist/${githubUsername}/plugins.json`,
+    `https://raw.githubusercontent.com/${githubUsername}/${githubRepository}/${githubBranch}/.dist/${githubUsername}/plugins.min.json`,
   )
     .then(res => res.json())
     .catch(() => {

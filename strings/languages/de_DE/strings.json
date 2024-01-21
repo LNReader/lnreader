@@ -17,7 +17,7 @@
     "searchResults": "Suchergebnisse",
     "chapters": "Kapitel",
     "submit": "Bestätigen",
-    "retry": "Retry"
+    "retry": "Erneut versuchen"
   },
   "library": "Bibliothek",
   "libraryScreen": {
@@ -34,9 +34,10 @@
         "dateAdded": "Hinzugefügt am",
         "alphabetically": "Alphabetisch",
         "totalChapters": "Gesamte Kapitel",
-        "download": "Downloaded",
-        "unread": "Unread",
-        "lastRead": "Last Read"
+        "download": "Heruntergeladen",
+        "unread": "Ungelesen",
+        "lastRead": "Zuletzt gelesen",
+        "lastUpdated": "Zuletzt aktualisiert"
       },
       "display": {
         "displayMode": "Anzeigemodus",
@@ -55,8 +56,9 @@
   "updatesScreen": {
     "searchbar": "Nach Updates suchen",
     "lastUpdatedAt": "Bibliothek zuletzt aktualisiert:",
-    "newChapters": "new Chapters",
-    "emptyView": "No recent updates"
+    "newChapters": "Neue Kapitel",
+    "emptyView": "Keine kürzlichen Aktualisierungen",
+    "updatesLower": "Aktualisierungen"
   },
   "history": "Verlauf",
   "historyScreen": {
@@ -86,22 +88,25 @@
       "lineHeight": "Zeilenhöhe",
       "fontStyle": "Schriftart",
       "fullscreen": "Vollbildmodus",
+      "bionicReading": "Bionisches Lesen",
       "renderHml": "HTML anzeigen",
       "autoscroll": "AutoScroll",
       "verticalSeekbar": "Vertikale Suchleiste",
       "showBatteryAndTime": "Akku und Zeit anzeigen",
       "showProgressPercentage": "Zeige Fortschritt in Prozent",
       "swipeGestures": "Nach links oder rechts wischen, um zwischen den Kapiteln zu wechseln",
+      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
       "allowTextSelection": "Textauswahl erlauben",
-      "useChapterDrawerSwipeNavigation": "Swipe right to open drawer",
-      "removeExtraSpacing": "Remove extra paragraph spacing",
-      "volumeButtonsScroll": "Volume buttons scroll",
+      "useChapterDrawerSwipeNavigation": "Wische nach rechts, um die Seitenleiste zu öffnen",
+      "removeExtraSpacing": "Extra Absatzabstand entfernen",
+      "volumeButtonsScroll": "Scrollen mit Lautstärkeregler",
+      "scrollAmount": "Höhe des Bildlaufs (standardmäßig Bildschirmhöhe)",
       "showSwipeMargins": "Show swipe margins"
     },
     "drawer": {
-      "scrollToCurrentChapter": "Scroll to current chapter",
-      "scrollToTop": "Scroll to top",
-      "scrollToBottom": "Scroll to bottom"
+      "scrollToCurrentChapter": "Zum aktuellen Kapitel springen",
+      "scrollToTop": "Zum Anfang springen",
+      "scrollToBottom": "Zum Ende springen"
     }
   },
   "novelScreen": {
@@ -117,14 +122,23 @@
       "display": "Darstellung"
     },
     "jumpToChapterModal": {
-      "jumpToChapter": "Jump to Chapter",
-      "openChapter": "Open Chapter",
-      "chapterName": "Chapter Name",
-      "chapterNumber": "Chapter Number",
+      "jumpToChapter": "Zum Kapitel springen",
+      "openChapter": "Kapitel öffnen",
+      "chapterName": "Kapitelname",
+      "chapterNumber": "Kapitelnummer",
       "error": {
-        "validChapterName": "Enter a valid chapter name",
-        "validChapterNumber": "Enter a valid chapter number"
+        "validChapterName": "Geben Sie einen gültigen Kapitelnamen ein",
+        "validChapterNumber": "Geben Sie eine gültige Kapitelnummer ein"
       }
+    },
+    "convertToEpubModal": {
+      "chooseLocation": "EPUB-Speicherverzeichnis auswählen",
+      "pathToFolder": "Pfad zum EPUB-Speicherverzeichnis",
+      "useReaderTheme": "Use reader theme",
+      "useCustomCSS": "Eigene CSS-Datei verwenden",
+      "useCustomJS": "Eigene JS-Datei verwenden",
+      "useCustomJSWarning": "Wird möglicherweise nicht von allen EPUB-Readern unterstützt",
+      "chaptersWarning": "Nur heruntergeladene Kapitel sind im EPUB enthalten"
     }
   },
   "more": "Mehr",
@@ -133,27 +147,31 @@
     "settingsScreen": {
       "generalSettings": "Allgemein",
       "generalSettingsScreen": {
-        "display": "Display",
-        "displayMode": "Display Mode",
-        "itemsPerRow": "Items per row",
-        "itemsPerRowLibrary": "Items per row in library",
-        "novelBadges": "Novel Badges",
-        "novelSort": "Novel Sort",
-        "updateLibrary": "Update library on launch",
-        "useFAB": "Use FAB in Library",
-        "novel": "Novel",
-        "chapterSort": "Default chapter sort",
-        "bySource": "By source",
-        "asc": "(Ascending)",
-        "desc": "(Descending)",
-        "globalUpdate": "Global update",
-        "updateOngoing": "Only update ongoing novels",
-        "refreshMetadata": "Automatically refresh metadata",
-        "refreshMetadataDescription": "Check for new cover and details when updating library",
-        "updateTime": "Show last update time",
-        "autoDownload": "Auto-download",
-        "downloadNewChapters": "Download new chapters",
-        "disableHapticFeedback": "Disable haptic feedback"
+        "display": "Darstellung",
+        "displayMode": "Anzeigemodus",
+        "itemsPerRow": "Bücher pro Reihe",
+        "itemsPerRowLibrary": "Bücher pro Reihe in der Bibliothek",
+        "novelBadges": "Bücher Markierungen",
+        "novelSort": "Bücher Sortierung",
+        "updateLibrary": "Bibliothek beim Starten aktualisieren",
+        "useFAB": "FAB in der Bibliothek verwenden",
+        "novel": "Buch",
+        "chapterSort": "Standard Kapitel-Sortierung",
+        "bySource": "Nach Quelle",
+        "asc": "(Aufsteigend)",
+        "desc": "(Absteigend)",
+        "globalUpdate": "Globale Aktualisierung",
+        "updateOngoing": "Nur laufende Bücher aktualisieren",
+        "refreshMetadata": "Metadaten automatisch aktualisieren",
+        "refreshMetadataDescription": "Suche nach neuen Cover und Details beim Aktualisieren der Bibliothek",
+        "updateTime": "Zeige den Zeitpunkt der letzten Aktualisierung",
+        "autoDownload": "Automatisch herunterladen",
+        "epub": "EPUB",
+        "epubLocation": "EPUB Speicherort",
+        "epubLocationDescription": "Der Speicherort, an dem Sie Ihre EPUB Dateien öffnen und exportieren.",
+        "downloadNewChapters": "Neue Kapitel herunterladen",
+        "disableHapticFeedback": "Haptisches Feedback deaktivieren",
+        "jumpToLastReadChapter": "Jump to last read chapter in list"
       },
       "readerSettings": {
         "title": "Reader",
@@ -168,7 +186,15 @@
         "autoScrollOffset": "AutoScroll Versatz (standardmäßig Bildschirmhöhe)",
         "saveCustomTheme": "Benutzerdefiniertes Theme speichern",
         "deleteCustomTheme": "Benutzerdefiniertes Theme löschen",
-        "customCSS": "Benutzerdefiniertes CSS"
+        "customCSS": "Benutzerdefiniertes CSS",
+        "customJS": "Benutzerdefiniertes CSS",
+        "openCSSFile": "CSS-Datei öffnen",
+        "openJSFile": "JS-Datei öffnen",
+        "notSaved": "Nicht gespeichert",
+        "cssHint": "Hinweis: Sie können eine quellspezifische CSS-Konfiguration mit der Quell-ID erstellen. (#sourceId-[SOURCEID])",
+        "jsHint": "Hinweis: Sie haben Zugriff auf folgende Variablen: html, novelName, chapterName, sourceId, chapterId, novelId",
+        "clearCustomCSS": "Sind Sie sicher? Ihr benutzerdefiniertes CSS wird zurückgesetzt.",
+        "clearCustomJS": "Sind Sie sicher? Ihr benutzerdefiniertes JS wird zurückgesetzt."
       },
       "browseSettings": "Einstellungen durchsuchen",
       "browseSettingsScreen": {
@@ -185,7 +211,7 @@
   "statsScreen": {
     "title": "Statistiken",
     "titlesInLibrary": "Bücher in der Bibliothek",
-    "totalChapters": "Total chapters",
+    "totalChapters": "Gesamte Kapitel",
     "readChapters": "Gelesene Kapitel",
     "unreadChapters": "Ungelesene Kapitel",
     "downloadedChapters": "Heruntergeladene Kapitel",
@@ -194,12 +220,12 @@
   },
   "globalSearch": {
     "searchIn": "Suche ein Buch in",
-    "allSources": "all sources",
-    "pinnedSources": "pinned sources"
+    "allSources": "Alle Quellen",
+    "pinnedSources": "Angepinnte Quellen"
   },
   "advancedSettings": {
-    "deleteReadChapters": "Delete read chapters",
-    "deleteReadChaptersDialogTitle": "Are you sure? All chapters marked as read will be deleted."
+    "deleteReadChapters": "Gelesene Kapitel löschen",
+    "deleteReadChaptersDialogTitle": "Sind Sie sicher? Alle als gelesen markierten Kapitel werden gelöscht."
   },
   "date": {
     "calendar": {
@@ -210,26 +236,27 @@
     }
   },
   "categories": {
-    "addCategories": "Add category",
-    "editCategories": "Rename category",
-    "setCategories": "Set categories",
-    "header": "Edit categories",
-    "emptyMsg": "You have no categories. Tap the plus button to create one for organizing your library",
-    "setModalEmptyMsg": "You have no categories. Tap the Edit button to create one for organizing your library",
+    "addCategories": "Kategorie hinzufügen",
+    "editCategories": "Kategorie umbenennen",
+    "setCategories": "Kategorien festlegen",
+    "header": "Kategorien bearbeiten",
+    "emptyMsg": "Sie haben keine Kategorien. Tippen Sie auf die Plus-Schaltfläche, um eine für die Organisation Ihrer Bibliothek zu erstellen",
+    "setModalEmptyMsg": "Sie haben keine Kategorien. Tippen Sie auf die Plus-Schaltfläche, um eine für die Organisation Ihrer Bibliothek zu erstellen",
     "deleteModal": {
-      "header": "Delete category",
-      "desc": "Do you wish to delete category"
+      "header": "Kategorie löschen",
+      "desc": "Möchten Sie diese Kategorie löschen?"
     },
-    "duplicateError": "A category with this name already exists!",
-    "defaultCategory": "Default category"
+    "duplicateError": "Eine Kategorie mit diesem Namen existiert bereits!",
+    "defaultCategory": "Standard-Kategorie"
   },
   "settings": {
-    "icognitoMode": "Incognito mode",
-    "downloadedOnly": "Downloaded only"
+    "icognitoMode": "Inkognito-Modus",
+    "downloadedOnly": "Nur Downloads"
   },
   "downloadScreen": {
-    "dbInfo": "Downloads are saved in a SQLite Database.",
-    "downloadChapters": "downloaded Chapters",
-    "noDownloads": "No downloads"
+    "dbInfo": "Downloads werden in einer SQLite-Datenbank gespeichert.",
+    "downloadChapters": "Heruntergeladene Kapitel",
+    "noDownloads": "Keine Downloads",
+    "downloadsLower": "Downloads"
   }
 }

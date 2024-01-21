@@ -1,107 +1,112 @@
 {
   "common": {
-    "cancel": "Cancel",
-    "ok": "Ok",
-    "save": "Save",
-    "clear": "Clear",
-    "reset": "Reset",
-    "search": "Search",
-    "install": "Install",
-    "newUpdateAvailable": "New update available",
-    "categories": "Categories",
-    "add": "Add",
-    "edit": "Edit",
-    "name": "Name",
-    "searchFor": "Search for",
+    "cancel": "Ακύρωση",
+    "ok": "Οκ",
+    "save": "Αποθήκευση",
+    "clear": "Εκκαθάριση",
+    "reset": "Επαναφορά",
+    "search": "Αναζήτηση",
+    "install": "Εγκατάσταση",
+    "newUpdateAvailable": "Νέα ενημέρωση διαθέσιμη",
+    "categories": "Κατηγορίες",
+    "add": "Προσθήκη",
+    "edit": "Επεξεργασία",
+    "name": "Όνομα",
+    "searchFor": "Αναζήτηση για",
     "globally": "globally",
-    "searchResults": "Search results",
-    "chapters": "Chapters",
-    "submit": "Submit",
-    "retry": "Retry"
+    "searchResults": "Αποτελέσματα αναζήτησης",
+    "chapters": "Κεφάλαια",
+    "submit": "Υποβολή",
+    "retry": "Επανάληψη"
   },
-  "library": "Library",
+  "library": "Βιβλιοθήκη",
   "libraryScreen": {
-    "searchbar": "Search library",
-    "empty": "Your library is empty. Add series to your library from Browse.",
+    "searchbar": "Αναζήτηση στη βιβλιοθήκη",
+    "empty": "Η βιβλιοθήκη σας είναι άδεια. Προσθέστε σειρές στη βιβλιοθήκη σας από την Περιήγηση.",
     "bottomSheet": {
       "filters": {
-        "downloaded": "Downloaded",
-        "unread": "Unread",
-        "completed": "Completed",
-        "started": "Started"
+        "downloaded": "Κατεβασμένο",
+        "unread": "Δε διαβάστηκε",
+        "completed": "Ολοκληρώθηκε",
+        "started": "Ξεκίνησε"
       },
       "sortOrders": {
-        "dateAdded": "Date added",
-        "alphabetically": "Alphabetically",
-        "totalChapters": "Total chapters",
-        "download": "Downloaded",
-        "unread": "Unread",
-        "lastRead": "Last Read"
+        "dateAdded": "Ημερομηνία προσθήκης",
+        "alphabetically": "Αλφαβητικά",
+        "totalChapters": "Συνολικά κεφάλαια",
+        "download": "Κατεβασμένα",
+        "unread": "Δε διαβάστηκαν",
+        "lastRead": "Τελευταία ανάγνωση",
+        "lastUpdated": "Τελευταία ενημέρωση"
       },
       "display": {
-        "displayMode": "Display mode",
-        "compact": "Compact grid",
-        "comfortable": "Comfortable grid",
-        "noTitle": "Cover only grid",
-        "list": "List",
+        "displayMode": "Λειτουργία προβολής",
+        "compact": "Συμπαγές πλέγμα",
+        "comfortable": "Άνετο πλέγμα",
+        "noTitle": "Πλέγμα μόνο με εξώφυλλα",
+        "list": "Λίστα",
         "badges": "Badges",
         "downloadBadges": "Download badges",
         "unreadBadges": "Unread badges",
-        "showNoOfItems": "Show number of items"
+        "showNoOfItems": "Εμφάνιση αριθμού στοιχείων"
       }
     }
   },
-  "updates": "Updates",
+  "updates": "Ενημερώσεις",
   "updatesScreen": {
-    "searchbar": "Search updates",
-    "lastUpdatedAt": "Library last updated:",
+    "searchbar": "Αναζήτηση ενημερώσεων",
+    "lastUpdatedAt": "Τελευταία ενημέρωση βιβλιοθήκης:",
     "newChapters": "new Chapters",
-    "emptyView": "No recent updates"
+    "emptyView": "Δεν υπάρχουν πρόσφατες ενημερώσεις",
+    "updatesLower": "ενημερώσεις"
   },
-  "history": "History",
+  "history": "Ιστορικό",
   "historyScreen": {
     "searchbar": "Search history",
-    "clearHistorWarning": "Are you sure? All history will be lost."
+    "clearHistorWarning": "Είστε σίγουροι; Όλο το ιστορικό θα χαθεί."
   },
-  "browse": "Browse",
+  "browse": "Περιήγηση",
   "browseScreen": {
     "discover": "Discover",
-    "searchbar": "Search sources",
+    "searchbar": "Αναζήτηση πηγών",
     "globalSearch": "Global search",
-    "listEmpty": "Enable languages from settings",
-    "lastUsed": "Last used",
-    "pinned": "Pinned",
-    "all": "All",
+    "listEmpty": "Ενεργοποιήστε γλώσσες από τις ρυθμίσεις",
+    "lastUsed": "Τελευταία χρήση",
+    "pinned": "Κρεμασμένα",
+    "all": "Όλα",
     "latest": "Latest",
-    "addedToLibrary": "Added to library",
-    "removeFromLibrary": "Removed from library"
+    "addedToLibrary": "Προστέθηκε στη βιβλιοθήκη",
+    "removeFromLibrary": "Καταργήθηκε από τη βιβλιοθήκη"
   },
   "readerScreen": {
     "finished": "Finished",
-    "noNextChapter": "There's no next chapter",
+    "noNextChapter": "Δεν υπάρχει επόμενο κεφάλαιο",
     "bottomSheet": {
-      "textSize": "Text size",
-      "color": "Color",
-      "textAlign": "Text align",
-      "lineHeight": "Line Height",
-      "fontStyle": "Font style",
-      "fullscreen": "Fullscreen",
+      "textSize": "Μέγεθος κειμένου",
+      "color": "Χρώμα",
+      "textAlign": "Ευθυγράμμιση κειμένου",
+      "lineHeight": "Ύψος Γραμμής",
+      "fontStyle": "Στυλ γραμματοσειράς",
+      "fullscreen": "Πλήρης Οθόνη",
+      "bionicReading": "Bionic Reading",
       "renderHml": "Render HTML",
-      "autoscroll": "AutoScroll",
+      "autoscroll": "Αυτόματη Κύλιση",
       "verticalSeekbar": "Vertical Seekbar",
-      "showBatteryAndTime": "Show battery and time",
-      "showProgressPercentage": "Show progress percentage",
-      "swipeGestures": "Swipe left or right to navigate between chapters",
+      "showBatteryAndTime": "Εμφάνιση μπαταρίας και ώρας",
+      "showProgressPercentage": "Εμφάνιση ποσοστού προόδου",
+      "swipeGestures": "Σύρετε αριστερά ή δεξιά για περιήγηση μεταξύ κεφαλαίων",
+      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
       "allowTextSelection": "Allow text selection",
       "useChapterDrawerSwipeNavigation": "Swipe right to open drawer",
-      "removeExtraSpacing": "Remove extra paragraph spacing",
+      "removeExtraSpacing": "Αφαίρεση επιπλέον απόστασης παραγράφων",
       "volumeButtonsScroll": "Volume buttons scroll",
+      "scrollAmount": "Scroll amount (screen height by default)",
       "showSwipeMargins": "Show swipe margins"
     },
     "drawer": {
-      "scrollToCurrentChapter": "Scroll to current chapter",
-      "scrollToTop": "Scroll to top",
-      "scrollToBottom": "Scroll to bottom"
+      "scrollToCurrentChapter": "Κύλιση στο τρέχον κεφάλαιο",
+      "scrollToTop": "Κύλιση προς τα πάνω",
+      "scrollToBottom": "Κύλιση προς τα κάτω"
     }
   },
   "novelScreen": {
@@ -125,6 +130,15 @@
         "validChapterName": "Enter a valid chapter name",
         "validChapterNumber": "Enter a valid chapter number"
       }
+    },
+    "convertToEpubModal": {
+      "chooseLocation": "Select EPUB storage directory",
+      "pathToFolder": "Path to EPUB save folder",
+      "useReaderTheme": "Use reader theme",
+      "useCustomCSS": "Use custom CSS",
+      "useCustomJS": "Use custom JS",
+      "useCustomJSWarning": "May not be supported by all EPUB readers",
+      "chaptersWarning": "Only downloaded chapters are included in the EPUB"
     }
   },
   "more": "More",
@@ -152,8 +166,12 @@
         "refreshMetadataDescription": "Check for new cover and details when updating library",
         "updateTime": "Show last update time",
         "autoDownload": "Auto-download",
+        "epub": "EPUB",
+        "epubLocation": "EPUB Location",
+        "epubLocationDescription": "The place where you open and export your EPUB files.",
         "downloadNewChapters": "Download new chapters",
-        "disableHapticFeedback": "Disable haptic feedback"
+        "disableHapticFeedback": "Disable haptic feedback",
+        "jumpToLastReadChapter": "Jump to last read chapter in list"
       },
       "readerSettings": {
         "title": "Reader",
@@ -168,7 +186,15 @@
         "autoScrollOffset": "Auto scroll offset (screen height by default)",
         "saveCustomTheme": "Save custom theme",
         "deleteCustomTheme": "Delete custom theme",
-        "customCSS": "Custom CSS"
+        "customCSS": "Custom CSS",
+        "customJS": "Custom JS",
+        "openCSSFile": "Open CSS file",
+        "openJSFile": "Open JS file",
+        "notSaved": "Not saved",
+        "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])",
+        "jsHint": "Hint: You have access to following variables: html, novelName, chapterName, sourceId, chapterId, novelId",
+        "clearCustomCSS": "Are you sure? Your custom CSS would be reset.",
+        "clearCustomJS": "Are you sure? Your custom JS would be reset."
       },
       "browseSettings": "Browse Settings",
       "browseSettingsScreen": {
@@ -230,6 +256,7 @@
   "downloadScreen": {
     "dbInfo": "Downloads are saved in a SQLite Database.",
     "downloadChapters": "downloaded Chapters",
-    "noDownloads": "No downloads"
+    "noDownloads": "No downloads",
+    "downloadsLower": "downloads"
   }
 }
