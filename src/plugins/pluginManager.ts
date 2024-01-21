@@ -13,10 +13,12 @@ import { parseMadaraDate } from './helpers/parseDate';
 import { isUrlAbsolute } from './helpers/isAbsoluteUrl';
 import { fetchApi, fetchFile, fetchText } from './helpers/fetch';
 import { defaultCover } from './helpers/constants';
+import { encode, decode } from 'urlencode';
 
 const packages: Record<string, any> = {
   'cheerio': { load },
   'dayjs': dayjs,
+  'urlencode': { encode, decode },
   '@libs/novelStatus': { NovelStatus },
   '@libs/fetch': { fetchApi, fetchFile, fetchText },
   '@libs/parseMadaraDate': { parseMadaraDate },

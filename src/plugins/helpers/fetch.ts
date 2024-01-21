@@ -2,6 +2,8 @@ import { getUserAgent } from '@hooks/persisted/useUserAgent';
 
 type FetchInit = {
   headers?: Record<string, string> | Headers;
+  method?: string;
+  body?: FormData | string;
   [x: string]: string | Record<string, string> | undefined | FormData | Headers;
 };
 
