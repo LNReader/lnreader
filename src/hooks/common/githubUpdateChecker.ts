@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { appVersion } from '../../utils/versionUtils';
+import { newer } from '@utils/compareVersion';
 
 interface GithubUpdate {
   isNewVersion: boolean;
@@ -32,9 +33,8 @@ export const useGithubUpdateChecker = (): GithubUpdate => {
     const regex = /[^\\d.]/;
 
     let newVersion = versionTag.replace(regex, '');
-    currentVersion = currentVersion;
 
-    return newVersion !== currentVersion;
+    return newer(newVersion, currentVersion);
   };
 
   useEffect(() => {
