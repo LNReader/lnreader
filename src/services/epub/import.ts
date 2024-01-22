@@ -81,7 +81,7 @@ const insertLocalChapter = (
         'INSERT INTO Chapter(novelId, name, url, releaseTime) VALUES(?, ?, ?, ?)',
         [
           novelId,
-          name,
+          decodeURI(name),
           // use fakeid just for make the url is unique :D
           NovelDownloadFolder + '/local/' + novelId + '/' + fakeId,
           releaseTime,
@@ -184,7 +184,6 @@ const importEpubAction = async (taskData?: TaskData) => {
           throw e;
         });
         filePaths.forEach(filePath => filePathSet.add(filePath));
-        await sleep(500);
       }
     }
     await sleep(taskData.delay);
