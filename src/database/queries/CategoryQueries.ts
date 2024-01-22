@@ -121,7 +121,11 @@ export const isCategoryNameDuplicate = (
 
 const updateCategoryOrderQuery = 'UPDATE Category SET sort = ? WHERE id = ?';
 
-export const updateCategoryOrderInDb = (categories: Category[]): void =>
+export const updateCategoryOrderInDb = (categories: Category[]): void => {
+  // Do not set local as default one
+  if (categories.length && categories[0].id == 2) {
+    return;
+  }
   db.transaction(tx => {
     categories.map(category => {
       tx.executeSql(
@@ -132,6 +136,7 @@ export const updateCategoryOrderInDb = (categories: Category[]): void =>
       );
     });
   });
+};
 
 export const getAllNovelCategories = (): Promise<NovelCategory[]> => {
   return new Promise(resolve =>
