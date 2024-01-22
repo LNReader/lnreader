@@ -97,5 +97,6 @@ erDiagram
       TEXT readTime
       INTEGER isDownloaded  "default: 0"
       TEXT updatedTime
+      TEXT chapterNumber
     }
 ```

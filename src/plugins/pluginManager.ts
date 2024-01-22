@@ -1,6 +1,5 @@
 import RNFS from 'react-native-fs';
 import { PluginDownloadFolder } from '@utils/constants/download';
-import { showToast } from '@utils/showToast';
 import { newer } from '@utils/compareVersion';
 import { Language } from '@utils/constants/languages';
 
@@ -24,7 +23,6 @@ const packages: Record<string, any> = {
   '@libs/parseMadaraDate': { parseMadaraDate },
   '@libs/isAbsoluteUrl': { isUrlAbsolute },
   '@libs/filterInputs': { FilterTypes },
-  '@libs/showToast': { showToast },
   '@libs/defaultCover': { defaultCover },
 };
 
@@ -55,9 +53,6 @@ let plugins: Record<string, Plugin> = {};
 const setupPlugin = async (path: string) => {
   const rawCode = await RNFS.readFile(path, 'utf8');
   const plugin = initPlugin(rawCode, path);
-  if (!plugin) {
-    showToast(`Invalid script in: ${path}`);
-  }
   return plugin;
 };
 
@@ -70,7 +65,6 @@ const installPlugin = async (url: string): Promise<Plugin | undefined> => {
       .then(async rawCode => {
         const plugin = initPlugin(rawCode);
         if (!plugin) {
-          showToast(`Invalid script from ${url}`);
           return undefined;
         }
         const oldPlugin = plugins[plugin.id];
@@ -124,7 +118,7 @@ const fetchPlugins = async () => {
   // plugins host
   const githubUsername = 'LNReader';
   const githubRepository = 'lnreader-sources';
-  const githubBranch = 'plugins';
+  const githubBranch = 'master';
 
   const availablePlugins: Record<Language, Array<PluginItem>> = await fetch(
     `https://raw.githubusercontent.com/${githubUsername}/${githubRepository}/${githubBranch}/.dist/${githubUsername}/plugins.min.json`,
