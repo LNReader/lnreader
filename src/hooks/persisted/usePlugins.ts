@@ -73,6 +73,10 @@ export default function usePlugins() {
               if (newer(plg.version, finded.version)) {
                 finded.hasUpdate = true;
                 finded.iconUrl = plg.iconUrl;
+                finded.url = plg.url;
+                if (finded.id === lastUsedPlugin?.id) {
+                  setLastUsedPlugin(finded);
+                }
               }
               return false;
             }
@@ -161,16 +165,17 @@ export default function usePlugins() {
             if (plugin.id !== plg.id) {
               return plg;
             }
-            return {
-              id: plugin.id,
-              url: plugin.url,
-              lang: plugin.lang,
-              iconUrl: plugin.iconUrl,
+            const newPlugin: PluginItem = {
+              ...plugin,
               site: _plg.site,
               name: _plg.name,
               version: _plg.version,
               hasUpdate: false,
             };
+            if (newPlugin.id === lastUsedPlugin?.id) {
+              setLastUsedPlugin(newPlugin);
+            }
+            return newPlugin;
           }),
         );
         filterPlugins(languagesFilter);

@@ -10,6 +10,7 @@ import { getString } from '@strings/translations';
 import { ChapterScreenProps } from '@navigators/types';
 import { ChapterInfo } from '@database/types';
 import { ThemeColors } from '@theme/types';
+import dayjs from 'dayjs';
 
 const ChapterDrawer = ({ route, navigation }: ChapterScreenProps) => {
   const theme = useTheme();
@@ -60,29 +61,32 @@ const ChapterDrawer = ({ route, navigation }: ChapterScreenProps) => {
       chapter: item,
     });
   };
-  const renderItem: FlashListProps<ChapterInfo>['renderItem'] = ({ item }) => (
-    <View
-      style={[
-        styles.drawerElementContainer,
-        item.id === chapter.id && {
-          backgroundColor: color(theme.primary).alpha(0.12).string(),
-        },
-      ]}
-    >
-      <Pressable
-        android_ripple={{ color: theme.rippleColor }}
-        onPress={() => changeChapter(item)}
-        style={styles.chapterCtn}
+  const renderItem: FlashListProps<ChapterInfo>['renderItem'] = ({ item }) => {
+    const parsedTime = dayjs(item.releaseTime);
+    return (
+      <View
+        style={[
+          styles.drawerElementContainer,
+          item.id === chapter.id && {
+            backgroundColor: color(theme.primary).alpha(0.12).string(),
+          },
+        ]}
       >
-        <Text numberOfLines={1} style={styles.chapterNameCtn}>
-          {item.name}
-        </Text>
-        {item.readTime ? (
-          <Text style={styles.releaseDateCtn}>{item.releaseTime}</Text>
-        ) : null}
-      </Pressable>
-    </View>
-  );
+        <Pressable
+          android_ripple={{ color: theme.rippleColor }}
+          onPress={() => changeChapter(item)}
+          style={styles.chapterCtn}
+        >
+          <Text numberOfLines={1} style={styles.chapterNameCtn}>
+            {item.name}
+          </Text>
+          <Text style={styles.releaseDateCtn}>
+            {parsedTime.isValid() ? parsedTime.format('LL') : item.readTime}
+          </Text>
+        </Pressable>
+      </View>
+    );
+  };
 
   const ListFooter = () => {
     return (

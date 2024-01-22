@@ -43,10 +43,22 @@ const CategoriesScreen = () => {
     getCategories();
   }, []);
   const updateCategorySort = (currentIndex: number, newIndex: number) => {
+    // Do not set local as default one
+    if (
+      (newIndex === 0 &&
+        currentIndex == 1 &&
+        categories?.[currentIndex].id === 2) ||
+      (newIndex === 1 && currentIndex == 0 && categories?.[newIndex].id === 2)
+    ) {
+      return;
+    }
     const updatedOrderCategories = orderBy(
       categories?.map((category, index) => {
+        // + 1 because in db, sort start from 1
+
+        // swap adjacent cards
         if (index === currentIndex) {
-          return { ...category, sort: newIndex + 1 }; // + 1 because in db, sort start from 1
+          return { ...category, sort: newIndex + 1 };
         }
         if (index === newIndex) {
           return { ...category, sort: currentIndex + 1 };

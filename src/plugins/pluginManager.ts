@@ -70,8 +70,7 @@ const installPlugin = async (url: string): Promise<Plugin | undefined> => {
         const oldPlugin = plugins[plugin.id];
         if (oldPlugin) {
           if (newer(plugin.version, oldPlugin.version)) {
-            delete plugins[oldPlugin.id];
-            plugins[plugin.id] = plugin;
+            plugins[oldPlugin.id] = plugin;
             await RNFS.writeFile(plugin.path, rawCode, 'utf8');
             return plugin;
           } else {

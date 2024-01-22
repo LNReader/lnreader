@@ -44,11 +44,14 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
         style={[
           styles.cardCtn,
           {
-            backgroundColor: theme.isDark
-              ? overlay(2, category.sort === 1 ? theme.surface2 : theme.surface)
-              : category.sort === 1
-              ? theme.primaryContainer
-              : theme.secondaryContainer,
+            backgroundColor:
+              category.sort === 1
+                ? theme.isDark
+                  ? overlay(2, theme.surface2)
+                  : theme.primaryContainer
+                : category.id === 2
+                ? theme.tertiaryContainer
+                : theme.secondaryContainer,
           },
         ]}
       >

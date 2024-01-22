@@ -100,9 +100,6 @@ export const switchNovelToLibrary = async (
 ) => {
   const novel = await getNovel(novelUrl);
   if (novel) {
-    if (novel.isLocal) {
-      return;
-    }
     db.transaction(tx => {
       tx.executeSql(
         'UPDATE Novel SET inLibrary = ? WHERE id = ?',
@@ -288,45 +285,25 @@ export const updateNovelCategoryById = async (
 export const updateNovelCategories = async (
   novelIds: number[],
   categoryIds: number[],
-  option: string,
 ): Promise<void> => {
   let queries: string[] = [];
-  // allow local novels have other categories, but not the revesre
+  // not allow others have local id;
   categoryIds = categoryIds.filter(id => id !== 2);
-  if (option === 'KEEP_OLD') {
-    novelIds.forEach(novelId => {
-      categoryIds.forEach(categoryId =>
-        queries.push(
-          `INSERT OR REPLACE INTO NovelCategory (novelId, categoryId) VALUES (${novelId}, ${categoryId})`,
-        ),
-      );
-    });
-  } else {
-    novelIds.forEach(novelId =>
-      queries.push(`DELETE FROM NovelCategory WHERE novelId = ${novelId}`),
+  queries.push(
+    `DELETE FROM NovelCategory WHERE novelId IN (${novelIds.join(
+      ',',
+    )}) AND categoryId != 2`,
+  );
+  novelIds.forEach(novelId => {
+    categoryIds.forEach(categoryId =>
+      queries.push(
+        `INSERT INTO NovelCategory (novelId, categoryId) VALUES (${novelId}, ${categoryId})`,
+      ),
     );
-    novelIds.forEach(novelId => {
-      categoryIds.forEach(categoryId =>
-        queries.push(
-          `INSERT INTO NovelCategory (novelId, categoryId) VALUES (${novelId}, ${categoryId})`,
-        ),
-      );
-    });
-  }
-  return new Promise(resolve => {
-    db.transaction(tx => {
-      queries.forEach((query, index) => {
-        tx.executeSql(
-          query,
-          [],
-          () => {
-            if (index === queries.length - 1) {
-              resolve();
-            }
-          },
-          txnErrorCallback,
-        );
-      });
+  });
+  db.transaction(tx => {
+    queries.forEach(query => {
+      tx.executeSql(query);
     });
   });
 };

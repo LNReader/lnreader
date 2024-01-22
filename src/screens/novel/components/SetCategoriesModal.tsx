@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { Dimensions, FlatList, StyleSheet, Text, View } from 'react-native';
 import { Divider, Modal, overlay, Portal } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 
 import { Button } from '@components/index';
 
 import { useTheme } from '@hooks/persisted';
 
 import { getString } from '@strings/translations';
-import { getCategoriesFromDb } from '@database/queries/CategoryQueries';
+import { getCategoriesWithCount } from '@database/queries/CategoryQueries';
 import { updateNovelCategories } from '@database/queries/NovelQueries';
-import { Category } from '@database/types';
+import { CCategory, Category } from '@database/types';
 import { Checkbox } from '@components/Checkbox/Checkbox';
 import { xor } from 'lodash-es';
+import { RootStackParamList } from '@navigators/types';
 
 interface SetCategoryModalProps {
   novelIds: number[];
@@ -30,15 +31,14 @@ const SetCategoryModal: React.FC<SetCategoryModalProps> = ({
   onEditCategories,
 }) => {
   const theme = useTheme();
-  const { navigate } = useNavigation();
-  const [option, setOption] = useState<string>('KEEP_OLD');
+  const { navigate } = useNavigation<NavigationProp<RootStackParamList>>();
   const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
-  const [categories = [], setCategories] = useState<Category[]>();
+  const [categories = [], setCategories] = useState<CCategory[]>();
 
   const getCategories = async () => {
-    const res = await getCategoriesFromDb();
-
+    const res = await getCategoriesWithCount(novelIds);
     setCategories(res);
+    setSelectedCategories(res.filter(c => c.novelsCount));
   };
 
   useEffect(() => {
@@ -95,35 +95,13 @@ const SetCategoryModal: React.FC<SetCategoryModalProps> = ({
             backgroundColor: theme.onSurfaceDisabled,
           }}
         />
-        <View>
-          <Text style={[styles.modelOption, { color: theme.onSurface }]}>
-            {'Option'}
-          </Text>
-          <Checkbox
-            status={option === 'KEEP_OLD'}
-            label={'Keep old categories'}
-            onPress={() => setOption('KEEP_OLD')}
-            viewStyle={styles.checkboxView}
-            theme={theme}
-          />
-          <Checkbox
-            status={option === 'REMOVE_OLD'}
-            label={'Remove old categories (not selected)'}
-            onPress={() => setOption('REMOVE_OLD')}
-            viewStyle={styles.checkboxView}
-            theme={theme}
-          />
-        </View>
         <View style={styles.btnContainer}>
           <Button
             title={getString('common.edit')}
             onPress={() => {
-              navigate(
-                'MoreStack' as never,
-                {
-                  screen: 'Categories',
-                } as never,
-              );
+              navigate('MoreStack', {
+                screen: 'Categories',
+              });
               closeModal();
               onEditCategories?.();
             }}
@@ -142,7 +120,6 @@ const SetCategoryModal: React.FC<SetCategoryModalProps> = ({
                 await updateNovelCategories(
                   novelIds,
                   selectedCategories.map(category => category.id),
-                  option,
                 );
                 closeModal();
                 setSelectedCategories([]);

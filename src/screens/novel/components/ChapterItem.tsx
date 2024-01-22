@@ -114,7 +114,7 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
               ]}
               numberOfLines={1}
             >
-              {showChapterTitles ? name : `Chapter ${chapNum} • ID: ${id}`}
+              {showChapterTitles ? name : `Chapter ${chapNum}`}
             </Text>
           </Row>
           <View style={styles.textRow}>
