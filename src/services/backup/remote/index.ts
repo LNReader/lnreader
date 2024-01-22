@@ -58,7 +58,6 @@ const remoteBackupAction = async (taskData?: TaskData) => {
         })
           .then(() => subtasks[j]())
           .then(backupPackage => upload(host, backupPackage))
-          .then(() => sleep(delay))
           .catch(error => {
             throw error;
           });
@@ -144,7 +143,6 @@ const remoteRestoreAction = async (taskData?: TaskData) => {
           },
         })
           .then(() => subtasks[j]())
-          .then(() => sleep(delay))
           .catch(error => {
             throw error;
           });
