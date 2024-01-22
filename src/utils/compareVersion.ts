@@ -4,9 +4,12 @@ export const older = (a: string, b: string): boolean => {
   const arrA = a.split('.').map(value => Number(value));
   const arrB = b.split('.').map(value => Number(value));
   try {
-    for (let i = 0; i < Math.max(arrA.length, arrB.length); i++) {
+    for (let i = 0; i < Math.min(arrA.length, arrB.length); i++) {
       if (arrA[i] < arrB[i]) {
         return true;
+      }
+      if (arrA[i] > arrB[i]) {
+        return false;
       }
     }
   } catch (e: any) {
