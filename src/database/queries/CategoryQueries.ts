@@ -1,6 +1,6 @@
 import * as SQLite from 'expo-sqlite';
 import { noop } from 'lodash-es';
-import { BackupCategory, Category, NovelCategory } from '../types';
+import { BackupCategory, Category, NovelCategory, CCategory } from '../types';
 import { showToast } from '@utils/showToast';
 import { txnErrorCallback } from '../utils/helpers';
 const db = SQLite.openDatabase('lnreader.db');
@@ -14,6 +14,33 @@ export const getCategoriesFromDb = async (): Promise<Category[]> => {
     db.transaction(tx => {
       tx.executeSql(
         getCategoriesQuery,
+        [],
+        (txObj, { rows }) => resolve((rows as any)._array),
+        txnErrorCallback,
+      );
+    }),
+  );
+};
+
+export const getCategoriesWithCount = async (
+  novelIds: number[],
+): Promise<CCategory[]> => {
+  const getCategoriesWithCountQuery = `
+  SELECT *, novelsCount 
+  FROM Category LEFT JOIN 
+  (
+    SELECT categoryId, COUNT(novelId) as novelsCount 
+    FROM NovelCategory WHERE novelId in (${novelIds.join(
+      ',',
+    )}) GROUP BY categoryId 
+  ) as NC ON Category.id = NC.categoryId
+  ORDER BY sort
+	`;
+
+  return new Promise(resolve =>
+    db.transaction(tx => {
+      tx.executeSql(
+        getCategoriesWithCountQuery,
         [],
         (txObj, { rows }) => resolve((rows as any)._array),
         txnErrorCallback,

@@ -73,6 +73,10 @@ export interface NovelCategory {
   categoryId: number;
 }
 
+export interface CCategory extends Category {
+  novelsCount: number;
+}
+
 export interface LibraryStats {
   novelsCount?: number;
   chaptersCount?: number;
