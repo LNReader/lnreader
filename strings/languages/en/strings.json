@@ -76,7 +76,10 @@
     "all": "All",
     "latest": "Latest",
     "addedToLibrary": "Added to library",
-    "removeFromLibrary": "Removed from library"
+    "removeFromLibrary": "Removed from library",
+    "installed": "Installed",
+    "available": "Available",
+    "installedPlugins": "Installed plugins"
   },
   "readerScreen": {
     "finished": "Finished",

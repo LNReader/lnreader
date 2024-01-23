@@ -76,7 +76,10 @@
     "all": "全部",
     "latest": "最新",
     "addedToLibrary": "添加到书库",
-    "removeFromLibrary": "从书库移除"
+    "removeFromLibrary": "从书库移除",
+    "installed": "已安装",
+    "available": "可用",
+    "installedPlugins": "已安装插件"
   },
   "readerScreen": {
     "finished": "已完成",
