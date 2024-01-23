@@ -87,10 +87,10 @@ const driveBackupAction = async (taskData?: TaskData) => {
         },
         trigger: null,
       });
-      await BackgroundService.stop();
     }
   } finally {
     MMKVStorage.delete(BACKGROUND_ACTION);
+    await BackgroundService.stop();
   }
 };
 
@@ -172,10 +172,10 @@ const driveRestoreAction = async (taskData?: TaskData) => {
         },
         trigger: null,
       });
-      await BackgroundService.stop();
     }
   } finally {
     MMKVStorage.delete(BACKGROUND_ACTION);
+    await BackgroundService.stop();
   }
 };
 

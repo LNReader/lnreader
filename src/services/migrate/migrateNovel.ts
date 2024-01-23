@@ -225,6 +225,7 @@ export const migrateNovel = async (
         }
       } finally {
         MMKVStorage.delete(BACKGROUND_ACTION);
+        BackgroundService.stop();
       }
     };
     await BackgroundService.start(veryIntensiveTask, options);

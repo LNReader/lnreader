@@ -109,6 +109,7 @@ const updateLibrary = async (categoryId?: number) => {
       }
     } finally {
       MMKVStorage.delete(BACKGROUND_ACTION);
+      BackgroundService.stop();
     }
   };
 

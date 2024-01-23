@@ -53,6 +53,7 @@ const downloadChapterAction = async (taskData?: TaskData) => {
       }
     }
   } finally {
+    MMKVStorage.delete(BACKGROUND_ACTION);
     await Notifications.scheduleNotificationAsync({
       content: {
         title: 'Downloader',
@@ -60,7 +61,6 @@ const downloadChapterAction = async (taskData?: TaskData) => {
       },
       trigger: null,
     });
-    MMKVStorage.delete(BACKGROUND_ACTION);
     BackgroundService.stop();
   }
 };

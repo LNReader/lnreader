@@ -50,6 +50,7 @@ export const createBackup = async () => {
     showToast(error.message);
   } finally {
     MMKVStorage.delete(BACKGROUND_ACTION);
+    BackgroundService.stop();
   }
 };
 
@@ -122,6 +123,7 @@ export const restoreBackup = async (filePath?: string) => {
                   },
                   trigger: null,
                 });
+                MMKVStorage.delete(BACKGROUND_ACTION);
                 resolve();
               }
 
@@ -170,8 +172,6 @@ export const restoreBackup = async (filePath?: string) => {
     }
   } catch (error: any) {
     showToast(error.message);
-  } finally {
-    MMKVStorage.delete(BACKGROUND_ACTION);
   }
 };
 
