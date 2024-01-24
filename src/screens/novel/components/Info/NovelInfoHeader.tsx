@@ -94,7 +94,11 @@ const NovelInfoHeader = ({
                 }
                 onLongPress={() => {
                   Clipboard.setStringAsync(novel.name).then(() =>
-                    showToast('Copied to clipboard: ' + novel.name),
+                    showToast(
+                      getString('novelScreen.copiedToClipboard', {
+                        name: novel.name,
+                      }),
+                    ),
                   );
                 }}
               >
@@ -131,7 +135,9 @@ const NovelInfoHeader = ({
                 style={{ marginRight: 4 }}
               />
               <NovelInfo theme={theme}>
-                {(novel.status || 'Unknown status') + ' • ' + novel.pluginId}
+                {(novel.status || getString('novelScreen.unknownStatus')) +
+                  ' • ' +
+                  novel.pluginId}
               </NovelInfo>
             </Row>
           </View>
@@ -153,7 +159,7 @@ const NovelInfoHeader = ({
           theme={theme}
         />
         <NovelSummary
-          summary={novel.summary || 'No summary'}
+          summary={novel.summary || getString('novelScreen.noSummary')}
           isExpanded={!novel.inLibrary}
           theme={theme}
         />

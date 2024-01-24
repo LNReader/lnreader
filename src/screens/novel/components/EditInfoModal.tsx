@@ -38,7 +38,13 @@ const EditInfoModal = ({
     setNovel({ ...novel, genres: tags?.join(',') });
   };
 
-  const status = ['Ongoing', 'Hiatus', 'Completed', 'Unknown', 'Cancelled'];
+  const status = [
+    getString('novelScreen.status.onGoing'),
+    getString('novelScreen.status.hiatus'),
+    getString('novelScreen.status.completed'),
+    getString('novelScreen.status.unknown'),
+    getString('novelScreen.status.cancelled'),
+  ];
 
   return (
     <Portal>
@@ -51,7 +57,7 @@ const EditInfoModal = ({
         ]}
       >
         <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
-          Edit info
+          {getString('novelScreen.edit.info')}
         </Text>
         <View
           style={{
@@ -117,7 +123,9 @@ const EditInfoModal = ({
           dense
         />
         <TextInput
-          placeholder={`Description: ${novel.summary?.substring(0, 16)}...`}
+          placeholder={getString('novelScreen.edit.summary', {
+            summary: novel.summary?.substring(0, 16),
+          })}
           style={{ fontSize: 14 }}
           numberOfLines={1}
           mode="outlined"
@@ -127,7 +135,7 @@ const EditInfoModal = ({
         />
 
         <TextInput
-          placeholder={'Add Tag'}
+          placeholder={getString('novelScreen.edit.addTag')}
           style={{ fontSize: 14 }}
           numberOfLines={1}
           mode="outlined"

@@ -189,7 +189,9 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
             title={getString(
               'moreScreen.settingsScreen.generalSettingsScreen.chapterSort',
             )}
-            description={`By source ${
+            description={`${getString(
+              'moreScreen.settingsScreen.generalSettingsScreen.bySource',
+            )} ${
               defaultChapterSort === 'ORDER BY id ASC'
                 ? getString(
                     'moreScreen.settingsScreen.generalSettingsScreen.asc',

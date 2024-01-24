@@ -1,7 +1,11 @@
+import { getString } from '@strings/translations';
+
 export const lavenderTheme = {
   light: {
     id: 14,
-    name: 'Lavender',
+    name: getString(
+      'moreScreen.settingsScreen.appearanceScreen.theme.lavender',
+    ),
     isDark: false,
     primary: 'rgb(121, 68, 173)',
     onPrimary: 'rgb(255, 255, 255)',
@@ -38,7 +42,9 @@ export const lavenderTheme = {
   },
   dark: {
     id: 15,
-    name: 'Lavender',
+    name: getString(
+      'moreScreen.settingsScreen.appearanceScreen.theme.lavender',
+    ),
     isDark: true,
     primary: 'rgb(221, 184, 255)',
     onPrimary: 'rgb(72, 8, 123)',

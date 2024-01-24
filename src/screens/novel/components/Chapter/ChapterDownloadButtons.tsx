@@ -3,6 +3,7 @@ import { MD3ThemeType } from '@theme/types';
 import { ActivityIndicator, StyleSheet } from 'react-native';
 
 import { IconButton, Menu, overlay } from 'react-native-paper';
+import { getString } from '@strings/translations';
 
 interface DownloadButtonProps {
   isDownloaded: boolean;
@@ -39,7 +40,7 @@ export const DownloadButton: React.FC<DownloadButtonProps> = ({
     >
       <Menu.Item
         onPress={deleteChapter}
-        title="Delete"
+        title={getString('common.delete')}
         titleStyle={{ color: theme.onSurface }}
       />
     </Menu>

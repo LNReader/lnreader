@@ -41,13 +41,13 @@ const BrowseSettings = ({ navigation }: BrowseSettingsScreenProp) => {
               {getString('browseScreen.discover')}
             </List.SubHeader>
             <SwitchItem
-              label="Show AniList"
+              label={getString('browseScreen.show.anilist')}
               value={showAniList}
               onPress={() => setBrowseSettings({ showAniList: !showAniList })}
               theme={theme}
             />
             <SwitchItem
-              label="Show MyAnimeList"
+              label={getString('browseScreen.show.myanimelist')}
               value={showMyAnimeList}
               onPress={() =>
                 setBrowseSettings({ showMyAnimeList: !showMyAnimeList })

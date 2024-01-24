@@ -14,6 +14,7 @@ import { ThemeColors } from '@theme/types';
 import { ChapterInfo } from '@database/types';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import dayjs from 'dayjs';
+import { getString } from '@strings/translations';
 
 interface ChapterItemProps {
   isDownloading?: boolean;
@@ -114,7 +115,9 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
               ]}
               numberOfLines={1}
             >
-              {showChapterTitles ? name : `Chapter ${chapNum}`}
+              {showChapterTitles
+                ? name
+                : getString('novelScreen.chapterChapnum', { num: chapNum })}
             </Text>
           </Row>
           <View style={styles.textRow}>

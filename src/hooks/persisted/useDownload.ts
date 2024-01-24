@@ -40,7 +40,7 @@ const downloadChapterAction = async (taskData?: TaskData) => {
         Notifications.scheduleNotificationAsync({
           content: {
             title: chapter.name,
-            body: `Download failed: ${error.message}`,
+            body: getString('downloader.failed', { message: error.message }),
           },
           trigger: null,
         }),
@@ -57,8 +57,8 @@ const downloadChapterAction = async (taskData?: TaskData) => {
     MMKVStorage.delete(BACKGROUND_ACTION);
     await Notifications.scheduleNotificationAsync({
       content: {
-        title: 'Downloader',
-        body: 'Download completed',
+        title: getString('downloader.title'),
+        body: getString('downloader.completed'),
       },
       trigger: null,
     });

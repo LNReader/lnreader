@@ -40,7 +40,7 @@ const ChaptersSettingsSheet = ({
     <View style={{ flex: 1 }}>
       <Checkbox
         theme={theme}
-        label="Downloaded"
+        label={getString('libraryScreen.bottomSheet.filters.downloaded')}
         status={!!filter.match('AND isDownloaded = 1')}
         onPress={() =>
           filter.match('AND isDownloaded = 1')
@@ -50,7 +50,7 @@ const ChaptersSettingsSheet = ({
       />
       <Checkbox
         theme={theme}
-        label="Unread"
+        label={getString('libraryScreen.bottomSheet.display.unread')}
         status={
           filter.match('AND `unread`=1')
             ? true
@@ -72,7 +72,7 @@ const ChaptersSettingsSheet = ({
       />
       <Checkbox
         theme={theme}
-        label="Bookmarked"
+        label={getString('novelScreen.bottomSheet.bookmarked')}
         status={!!filter.match('AND bookmark=1')}
         onPress={() => {
           filter.match('AND bookmark=1')
@@ -86,7 +86,9 @@ const ChaptersSettingsSheet = ({
   const SecondRoute = () => (
     <View style={{ flex: 1 }}>
       <SortItem
-        label="By source"
+        label={getString(
+          'moreScreen.settingsScreen.generalSettingsScreen.bySource',
+        )}
         status={
           sort === 'ORDER BY id ASC'
             ? 'asc'
@@ -102,7 +104,7 @@ const ChaptersSettingsSheet = ({
         theme={theme}
       />
       <SortItem
-        label="By chapter name"
+        label={getString('novelScreen.byChapterName')}
         status={
           sort === 'ORDER BY name ASC'
             ? 'asc'
@@ -124,13 +126,13 @@ const ChaptersSettingsSheet = ({
     <View style={{ flex: 1 }}>
       <Checkbox
         status={showChapterTitles}
-        label="Source title"
+        label={getString('novelScreen.bottomSheet.sourceTitle')}
         onPress={() => setShowChapterTitles(true)}
         theme={theme}
       />
       <Checkbox
         status={!showChapterTitles}
-        label="Chapter number"
+        label={getString('novelScreen.bottomSheet.chapterNumber')}
         onPress={() => setShowChapterTitles(false)}
         theme={theme}
       />

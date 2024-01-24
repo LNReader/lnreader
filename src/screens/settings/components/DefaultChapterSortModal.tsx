@@ -6,6 +6,7 @@ import { SortItem } from '@components/Checkbox/Checkbox';
 
 import { ThemeColors } from '@theme/types';
 import { AppSettings } from '@hooks/persisted/useSettings';
+import { getString } from '@strings/translations';
 
 interface DefaultChapterSortModalProps {
   theme: ThemeColors;
@@ -33,7 +34,9 @@ const DefaultChapterSortModal = ({
         ]}
       >
         <SortItem
-          label="By source"
+          label={getString(
+            'moreScreen.settingsScreen.generalSettingsScreen.bySource',
+          )}
           theme={theme}
           status={defaultChapterSort === 'ORDER BY id ASC' ? 'asc' : 'desc'}
           onPress={() =>
