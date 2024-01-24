@@ -233,6 +233,7 @@ export interface StringMap {
   'statsScreen.downloadedChapters': 'string';
   'statsScreen.genreDistribution': 'string';
   'statsScreen.statusDistribution': 'string';
+  'statsScreen.sources': 'string';
   'globalSearch.searchIn': 'string';
   'globalSearch.allSources': 'string';
   'globalSearch.pinnedSources': 'string';

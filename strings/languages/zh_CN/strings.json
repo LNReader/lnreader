@@ -283,7 +283,8 @@
     "unreadChapters": "未读章节",
     "downloadedChapters": "已下载章节",
     "genreDistribution": "流派分布",
-    "statusDistribution": "状态分布"
+    "statusDistribution": "状态分布",
+    "sources": "源"
   },
   "globalSearch": {
     "searchIn": "搜索小说在",

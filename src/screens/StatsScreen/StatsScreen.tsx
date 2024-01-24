@@ -112,7 +112,10 @@ const StatsScreen = () => {
           />
         </Row>
         <Row style={styles.statsRow}>
-          <StatsCard label="Sources" value={stats.sourcesCount} />
+          <StatsCard
+            label={getString('statsScreen.sources')}
+            value={stats.sourcesCount}
+          />
         </Row>
         <Text style={[styles.header, { color: theme.onSurfaceVariant }]}>
           {getString('statsScreen.genreDistribution')}

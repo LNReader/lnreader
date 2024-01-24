@@ -283,7 +283,8 @@
     "unreadChapters": "Unread chapters",
     "downloadedChapters": "Downloaded chapters",
     "genreDistribution": "Genre distribution",
-    "statusDistribution": "Status distribution"
+    "statusDistribution": "Status distribution",
+    "sources": "Sources"
   },
   "globalSearch": {
     "searchIn": "Search a novel in",
