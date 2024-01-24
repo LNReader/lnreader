@@ -61,21 +61,23 @@ const AdvancedSettings = ({ navigation }: AdvancedSettingsScreenProps) => {
   return (
     <>
       <Appbar
-        title="Advanced"
+        title={getString('advanced')}
         handleGoBack={() => navigation.goBack()}
         theme={theme}
       />
       <List.Section>
-        <List.SubHeader theme={theme}>Data Management</List.SubHeader>
+        <List.SubHeader theme={theme}>
+          {getString('advancedSettings.dataManagement')}
+        </List.SubHeader>
         <List.Item
-          title="Clear cached novels"
-          description="Delete cached novels which not in your library"
+          title={getString('advancedSettings.clearCachedNovels')}
+          description={getString('advancedSettings.clearCachedNovelsDesc')}
           onPress={showClearDatabaseDialog}
           theme={theme}
         />
         <List.Item
-          title="Clear updates tab"
-          description="Clears chapter entries in updates tab"
+          title={getString('advancedSettings.clearUpdatesTab')}
+          description={getString('advancedSettings.clearupdatesTabDesc')}
           onPress={showClearUpdatesDialog}
           theme={theme}
         />
@@ -85,13 +87,13 @@ const AdvancedSettings = ({ navigation }: AdvancedSettingsScreenProps) => {
           theme={theme}
         />
         <List.Item
-          title="Import Epub"
+          title={getString('advancedSettings.importEpub')}
           onPress={importEpub}
           theme={theme}
           disabled={Boolean(hasAction)}
         />
         <List.Item
-          title="User Agent"
+          title={getString('advancedSettings.userAgent')}
           description={userAgent}
           onPress={showUserAgentModal}
           theme={theme}
@@ -121,8 +123,7 @@ const AdvancedSettings = ({ navigation }: AdvancedSettingsScreenProps) => {
               color: theme.onSurface,
             }}
           >
-            Are you sure? Read and Downloaded chapters and progress of
-            non-library novels will be lost.
+            {getString('advancedSettings.clearDatabaseWarning')}
           </Dialog.Title>
           <Dialog.Actions>
             <Button onPress={hideClearDatabaseDialog}>
@@ -154,18 +155,20 @@ const AdvancedSettings = ({ navigation }: AdvancedSettingsScreenProps) => {
               color: theme.onSurface,
             }}
           >
-            Are you sure? Updates tab will be cleared.
+            {getString('advancedSettings.clearUpdatesWarning')}
           </Dialog.Title>
           <Dialog.Actions>
-            <Button onPress={hideClearUpdatesDialog}>Cancel</Button>
+            <Button onPress={hideClearUpdatesDialog}>
+              {getString('common.cancel')}
+            </Button>
             <Button
               onPress={() => {
                 clearUpdates();
-                showToast('Updates cleared.');
+                showToast(getString('advancedSettings.clearUpdatesMessage'));
                 hideClearUpdatesDialog();
               }}
             >
-              Ok
+              {getString('common.ok')}
             </Button>
           </Dialog.Actions>
         </Dialog>
@@ -178,7 +181,7 @@ const AdvancedSettings = ({ navigation }: AdvancedSettingsScreenProps) => {
           ]}
         >
           <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
-            User Agent
+            {getString('advancedSettings.userAgent')}
           </Text>
           <Text style={[{ color: theme.onSurfaceVariant }]}>{userAgent}</Text>
           <TextInput

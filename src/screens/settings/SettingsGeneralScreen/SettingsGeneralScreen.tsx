@@ -65,13 +65,13 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
   const generateNovelBadgesDescription = () => {
     let res = [];
     if (showDownloadBadges) {
-      res.push('Download');
+      res.push(getString('libraryScreen.bottomSheet.display.download'));
     }
     if (showUnreadBadges) {
-      res.push('Unread');
+      res.push(getString('libraryScreen.bottomSheet.display.unread'));
     }
     if (showNumberOfNovels) {
-      res.push('Number of Items');
+      res.push(getString('libraryScreen.bottomSheet.display.numberOfItems'));
     }
     return res.join(', ');
   };
@@ -164,7 +164,9 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
             label={getString(
               'moreScreen.settingsScreen.generalSettingsScreen.updateLibrary',
             )}
-            description={'Not recommended for low devices'}
+            description={getString(
+              'moreScreen.settingsScreen.generalSettingsScreen.updateLibraryDesc',
+            )}
             value={updateLibraryOnLaunch}
             onPress={() =>
               setAppSettings({ updateLibraryOnLaunch: !updateLibraryOnLaunch })

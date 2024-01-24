@@ -7,7 +7,7 @@
     "reset": "重置",
     "search": "搜索",
     "install": "安装",
-    "newUpdateAvailable": "新的更新可用",
+    "newUpdateAvailable": "新的更新可用 %{tagName}",
     "categories": "类别",
     "add": "添加",
     "edit": "编辑",
@@ -18,7 +18,9 @@
     "chapters": "章节",
     "submit": "确定",
     "retry": "重试",
-    "downloads": "下载"
+    "downloads": "下载",
+    "delete": "删除",
+    "logout": "登出"
   },
   "library": "书库",
   "libraryScreen": {
@@ -49,7 +51,10 @@
         "badges": "徽章",
         "downloadBadges": "下载徽章",
         "unreadBadges": "未读徽章",
-        "showNoOfItems": "显示条目数量"
+        "showNoOfItems": "显示条目数量",
+        "download": "下载",
+        "unread": "未读",
+        "numberOfItems": "条目数量"
       }
     }
   },
@@ -158,6 +163,7 @@
         "novelBadges": "小说徽章",
         "novelSort": "小说排序",
         "updateLibrary": "打开应用时更新书库",
+        "updateLibraryDesc": "不推荐在低端设备上启用",
         "useFAB": "在书库中使用浮动操作按钮",
         "novel": "小说",
         "chapterSort": "默认章节排序",
@@ -235,7 +241,18 @@
   },
   "advancedSettings": {
     "deleteReadChapters": "删除已读章节",
-    "deleteReadChaptersDialogTitle": "您确定吗？所有标记为已读的章节都将被删除。"
+    "deleteReadChaptersDialogTitle": "您确定吗？所有标记为已读的章节都将被删除。",
+    "clearUpdatesTab": "清除更新页面",
+    "clearupdatesTabDesc": "清除更新页面中的章节",
+    "dataManagement": "数据",
+    "clearCachedNovels": "清除缓存的小说",
+    "clearCachedNovelsDesc": "删除不在您的书库中的缓存小说",
+    "importEpub": "导入 EPUB",
+    "userAgent": "用户代理",
+    "clearDatabaseWarning": "你确定吗？非书库书籍的阅读和下载章节和进度将会丢失。",
+    "clearUpdatesWarning": "你确定吗？更新页面将被清除。",
+    "clearUpdatesMessage": "更新页面已清除。",
+    "useFab": "使用 FAB 代替按钮"
   },
   "date": {
     "calendar": {
@@ -278,10 +295,40 @@
   },
   "aboutScreen": {
     "version": "版本",
-    "whatsNew": "最近更新",
-    "discord": "Discord\n",
+    "whatsNew": "新增内容",
+    "discord": "Discord",
     "github": "Github",
     "sources": "源代码",
     "helpTranslate": "帮助翻译"
+  },
+  "advanced": "高级",
+  "settingsScreen": {
+    "appearance": "外观",
+    "backup": "备份",
+    "tracking": "进度记录",
+    "general": {
+      "gridSize": "网格尺寸",
+      "gridSizeDesc": "每行 %{num} 列",
+      "sortOrder": "排序"
+    }
+  },
+  "trackerScreen": {
+    "services": "服务",
+    "revalidateMyanimelist": "重新认证 MyAnimeList",
+    "logOutFrom": "从以下服务注销",
+    "logOutMessage": "从 %{name} 注销？"
+  },
+  "appearanceScreen": {
+    "appTheme": "主题",
+    "lightTheme": "浅色",
+    "darkTheme": "深色",
+    "pureBlackDarkMode": "纯黑深色模式",
+    "accentColor": "强调色",
+    "novelInfo": "书籍信息",
+    "hideBackdrop": "隐藏背景",
+    "navbar": "导航栏",
+    "showUpdatesInTheNav": "在导航中显示更新",
+    "showHistoryInTheNav": "在导航中显示历史记录",
+    "alwaysShowNavLabels": "始终显示导航标签"
   }
 }

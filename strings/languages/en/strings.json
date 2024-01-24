@@ -7,7 +7,7 @@
     "reset": "Reset",
     "search": "Search",
     "install": "Install",
-    "newUpdateAvailable": "New update available",
+    "newUpdateAvailable": "New update available %{tagName}",
     "categories": "Categories",
     "add": "Add",
     "edit": "Edit",
@@ -18,7 +18,9 @@
     "chapters": "Chapters",
     "submit": "Submit",
     "retry": "Retry",
-    "downloads": "Downloads"
+    "downloads": "Downloads",
+    "delete": "Delete",
+    "logout": "Logout"
   },
   "library": "Library",
   "libraryScreen": {
@@ -47,6 +49,9 @@
         "noTitle": "Cover only grid",
         "list": "List",
         "badges": "Badges",
+        "download": "Download",
+        "unread": "Unread",
+        "numberOfItems": "Number of Items",
         "downloadBadges": "Download badges",
         "unreadBadges": "Unread badges",
         "showNoOfItems": "Show number of items"
@@ -157,6 +162,7 @@
         "novelBadges": "Novel Badges",
         "novelSort": "Novel Sort",
         "updateLibrary": "Update library on launch",
+        "updateLibraryDesc": "Not recommended for low devices",
         "useFAB": "Use FAB in Library",
         "novel": "Novel",
         "chapterSort": "Default chapter sort",
@@ -233,7 +239,18 @@
   },
   "advancedSettings": {
     "deleteReadChapters": "Delete read chapters",
-    "deleteReadChaptersDialogTitle": "Are you sure? All chapters marked as read will be deleted."
+    "deleteReadChaptersDialogTitle": "Are you sure? All chapters marked as read will be deleted.",
+    "clearCachedNovels": "Clear cached novels",
+    "dataManagement": "Data Management",
+    "clearupdatesTabDesc": "Clears chapter entries in updates tab",
+    "clearCachedNovelsDesc": "Delete cached novels which not in your library",
+    "importEpub": "Import Epub",
+    "userAgent": "User Agent",
+    "clearUpdatesWarning": "Are you sure? Updates tab will be cleared.",
+    "clearUpdatesMessage": "Updates cleared.",
+    "clearDatabaseWarning": "Are you sure? Read and Downloaded chapters and progress of non-library novels will be lost.",
+    "clearUpdatesTab": "Clear updates tab",
+    "useFab": "Use FAB instead of button"
   },
   "date": {
     "calendar": {
@@ -282,5 +299,34 @@
     "sources": "Sources",
     "helpTranslate": "Help translate",
     "version": "Version"
+  },
+  "advanced": "Advanced",
+  "settingsScreen": {
+    "appearance": "Appearance",
+    "tracking": "Tracking",
+    "backup": "Backup",
+    "general": {
+      "gridSize": "Grid size",
+      "gridSizeDesc": "%{num} per row",
+      "sortOrder": "Sort Order"
+    }
+  },
+  "trackerScreen": {
+    "services": "Services",
+    "revalidateMyanimelist": "Revalidate MyAnimeList",
+    "logOutMessage": "Log out from %{name}?"
+  },
+  "appearanceScreen": {
+    "appTheme": "App theme",
+    "lightTheme": "Light Theme",
+    "darkTheme": "Dark Theme",
+    "accentColor": "Accent Color",
+    "pureBlackDarkMode": "Pure black dark mode",
+    "novelInfo": "Novel info",
+    "hideBackdrop": "Hide backdrop",
+    "navbar": "Navbar",
+    "showUpdatesInTheNav": "Show updates in the nav",
+    "showHistoryInTheNav": "Show history in the nav",
+    "alwaysShowNavLabels": "Always show nav labels"
   }
 }

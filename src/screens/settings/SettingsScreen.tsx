@@ -12,7 +12,11 @@ const SettingsScreen = ({ navigation }: SettingsScreenProps) => {
 
   return (
     <>
-      <Appbar title="Settings" handleGoBack={navigation.goBack} theme={theme} />
+      <Appbar
+        title={getString('moreScreen.settings')}
+        handleGoBack={navigation.goBack}
+        theme={theme}
+      />
       <View style={{ flex: 1, backgroundColor: theme.background }}>
         <List.Item
           title={getString('moreScreen.settingsScreen.generalSettings')}
@@ -25,7 +29,7 @@ const SettingsScreen = ({ navigation }: SettingsScreenProps) => {
           theme={theme}
         />
         <List.Item
-          title="Appearance"
+          title={getString('settingsScreen.appearance')}
           icon="palette-outline"
           onPress={() =>
             navigation.navigate('SettingsStack', {
@@ -55,7 +59,7 @@ const SettingsScreen = ({ navigation }: SettingsScreenProps) => {
           theme={theme}
         />
         <List.Item
-          title="Tracking"
+          title={getString('settingsScreen.tracking')}
           icon="sync"
           onPress={() =>
             navigation.navigate('SettingsStack', {
@@ -65,7 +69,7 @@ const SettingsScreen = ({ navigation }: SettingsScreenProps) => {
           theme={theme}
         />
         <List.Item
-          title="Backup"
+          title={getString('settingsScreen.backup')}
           icon="cloud-upload-outline"
           onPress={() =>
             navigation.navigate('SettingsStack', {
@@ -75,7 +79,7 @@ const SettingsScreen = ({ navigation }: SettingsScreenProps) => {
           theme={theme}
         />
         <List.Item
-          title="Advanced"
+          title={getString('advanced')}
           icon="code-tags"
           onPress={() =>
             navigation.navigate('SettingsStack', {

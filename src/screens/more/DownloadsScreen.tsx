@@ -71,7 +71,11 @@ const Downloads = ({ navigation }: DownloadsScreenProps) => {
 
   return (
     <ScreenContainer theme={theme}>
-      <Appbar title="Downloads" handleGoBack={navigation.goBack} theme={theme}>
+      <Appbar
+        title={getString('common.downloads')}
+        handleGoBack={navigation.goBack}
+        theme={theme}
+      >
         {chapters.length > 0 && (
           <MaterialAppbar.Action
             icon="delete-sweep"
@@ -98,7 +102,7 @@ const Downloads = ({ navigation }: DownloadsScreenProps) => {
                   chapter.novelId,
                   chapter.id,
                 ).then(() => {
-                  showToast(`Delete ${chapter.name}`);
+                  showToast(`${getString('common.delete')} ${chapter.name}`);
                   getChapters();
                 });
               }}
