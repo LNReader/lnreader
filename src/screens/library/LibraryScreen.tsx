@@ -234,7 +234,7 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
             ]}
             color={theme.onPrimary}
             uppercase={false}
-            label={'Resume'}
+            label={getString('downloadScreen.resume')}
             icon="play"
             onPress={() => {
               navigation.navigate('Chapter', {
