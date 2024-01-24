@@ -20,7 +20,8 @@
     "retry": "Retry",
     "downloads": "Downloads",
     "delete": "Delete",
-    "logout": "Logout"
+    "logout": "Logout",
+    "resume": "Resume"
   },
   "library": "Library",
   "libraryScreen": {
@@ -150,7 +151,23 @@
       "useCustomJS": "Use custom JS",
       "useCustomJSWarning": "May not be supported by all EPUB readers",
       "chaptersWarning": "Only downloaded chapters are included in the EPUB"
-    }
+    },
+    "updatedToast": "Updated %{name}",
+    "progress": "Progress %{progress} %",
+    "download": {
+      "next": "Next chapter",
+      "next5": "Next 5 chapter",
+      "next10": "Next 10 chapter",
+      "custom": "Custom",
+      "unread": "Unread",
+      "all": "All",
+      "delete": "Delete downloads"
+    },
+    "edit": {
+      "info": "Edit info",
+      "cover": "Edit cover"
+    },
+    "deleteMessage": "Delete downloaded chapters?"
   },
   "more": "More",
   "moreScreen": {

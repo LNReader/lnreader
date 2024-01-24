@@ -24,6 +24,7 @@ export interface StringMap {
   'common.downloads': 'string';
   'common.delete': 'string';
   'common.logout': 'string';
+  'common.resume': 'string';
   'library': 'string';
   'libraryScreen.searchbar': 'string';
   'libraryScreen.empty': 'string';
@@ -122,6 +123,18 @@ export interface StringMap {
   'novelScreen.convertToEpubModal.useCustomJS': 'string';
   'novelScreen.convertToEpubModal.useCustomJSWarning': 'string';
   'novelScreen.convertToEpubModal.chaptersWarning': 'string';
+  'novelScreen.updatedToast': 'string';
+  'novelScreen.progress': 'string';
+  'novelScreen.download.next': 'string';
+  'novelScreen.download.next5': 'string';
+  'novelScreen.download.next10': 'string';
+  'novelScreen.download.custom': 'string';
+  'novelScreen.download.unread': 'string';
+  'novelScreen.download.all': 'string';
+  'novelScreen.download.delete': 'string';
+  'novelScreen.edit.info': 'string';
+  'novelScreen.edit.cover': 'string';
+  'novelScreen.deleteMessage': 'string';
   'more': 'string';
   'moreScreen.settings': 'string';
   'moreScreen.settingsScreen.generalSettings': 'string';
