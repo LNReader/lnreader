@@ -181,7 +181,10 @@
         "epubLocationDescription": "The place where you open and export your EPUB files.",
         "downloadNewChapters": "Download new chapters",
         "disableHapticFeedback": "Disable haptic feedback",
-        "jumpToLastReadChapter": "Jump to last read chapter in list"
+        "jumpToLastReadChapter": "Jump to last read chapter in list",
+        "gridSize": "Grid size",
+        "gridSizeDesc": "%{num} per row",
+        "sortOrder": "Sort Order"
       },
       "readerSettings": {
         "title": "Reader",
@@ -212,6 +215,28 @@
         "languages": "Languages",
         "searchAllSources": "Search all sources",
         "searchAllWarning": "Searching a large number of sources may freeze the app till searching is finished."
+      },
+      "backup": "Backup",
+      "tracking": "Tracking",
+      "appearance": "Appearance",
+      "appearanceScreen": {
+        "accentColor": "Accent Color",
+        "alwaysShowNavLabels": "Always show nav labels",
+        "appTheme": "App theme",
+        "darkTheme": "Dark Theme",
+        "hideBackdrop": "Hide backdrop",
+        "lightTheme": "Light Theme",
+        "navbar": "Navbar",
+        "novelInfo": "Novel info",
+        "pureBlackDarkMode": "Pure black dark mode",
+        "showHistoryInTheNav": "Show history in the nav",
+        "showUpdatesInTheNav": "Show updates in the nav"
+      },
+      "advanced": "Advanced",
+      "trackingScreen": {
+        "logOutMessage": "Log out from %{name}?",
+        "revalidateMyanimelist": "Revalidate MyAnimeList",
+        "services": "Services"
       }
     },
     "about": "About",
@@ -219,7 +244,15 @@
     "downloadOnly": "Downloaded only",
     "downloadOnlyDesc": "Filters all novels in your library",
     "incognitoMode": "Incognito mode",
-    "incognitoModeDesc": "Pauses reading history"
+    "incognitoModeDesc": "Pauses reading history",
+    "aboutScreen": {
+      "discord": "Discord",
+      "github": "Github",
+      "helpTranslate": "Help translate",
+      "sources": "Sources",
+      "version": "Version",
+      "whatsNew": "What's new"
+    }
   },
   "sourceScreen": {
     "noResultsFound": "No results found"
@@ -239,7 +272,6 @@
     "allSources": "all sources",
     "pinnedSources": "pinned sources"
   },
-  "advanced": "Advanced",
   "advancedSettings": {
     "deleteReadChapters": "Delete read chapters",
     "deleteReadChaptersDialogTitle": "Are you sure? All chapters marked as read will be deleted.",
@@ -277,10 +309,6 @@
     "duplicateError": "A category with this name already exists!",
     "defaultCategory": "Default category"
   },
-  "settings": {
-    "icognitoMode": "Incognito mode",
-    "downloadedOnly": "Downloaded only"
-  },
   "downloadScreen": {
     "dbInfo": "Downloads are saved in a SQLite Database.",
     "downloadChapters": "downloaded Chapters",
@@ -294,42 +322,5 @@
   },
   "downloader": {
     "serviceRunning": "Another service is running. Queued chapters"
-  },
-  "aboutScreen": {
-    "whatsNew": "What's new",
-    "discord": "Discord",
-    "github": "Github",
-    "sources": "Sources",
-    "helpTranslate": "Help translate",
-    "version": "Version"
-  },
-  "settingsScreen": {
-    "appearance": "Appearance",
-    "tracking": "Tracking",
-    "backup": "Backup",
-    "general": {
-      "gridSize": "Grid size",
-      "gridSizeDesc": "%{num} per row",
-      "sortOrder": "Sort Order"
-    }
-  },
-  "trackerScreen": {
-    "services": "Services",
-    "revalidateMyanimelist": "Revalidate MyAnimeList",
-    "logOutMessage": "Log out from %{name}?",
-    "logOutFrom": "log out from"
-  },
-  "appearanceScreen": {
-    "appTheme": "App theme",
-    "lightTheme": "Light Theme",
-    "darkTheme": "Dark Theme",
-    "accentColor": "Accent Color",
-    "pureBlackDarkMode": "Pure black dark mode",
-    "novelInfo": "Novel info",
-    "hideBackdrop": "Hide backdrop",
-    "navbar": "Navbar",
-    "showUpdatesInTheNav": "Show updates in the nav",
-    "showHistoryInTheNav": "Show history in the nav",
-    "alwaysShowNavLabels": "Always show nav labels"
   }
 }

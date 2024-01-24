@@ -25,12 +25,12 @@ const AboutScreen = ({ navigation }: AboutScreenProps) => {
       <ScrollView style={{ flex: 1 }}>
         <List.Section>
           <List.Item
-            title={getString('aboutScreen.version')}
+            title={getString('moreScreen.aboutScreen.version')}
             description={`Stable ${appVersion} (${releaseDate})`}
             theme={theme}
           />
           <List.Item
-            title={getString('aboutScreen.whatsNew')}
+            title={getString('moreScreen.aboutScreen.whatsNew')}
             onPress={() =>
               Linking.openURL(
                 `https://github.com/LNReader/lnreader/releases/tag/v${appVersion}`,
@@ -40,13 +40,13 @@ const AboutScreen = ({ navigation }: AboutScreenProps) => {
           />
           <List.Divider theme={theme} />
           <List.Item
-            title={getString('aboutScreen.discord')}
+            title={getString('moreScreen.aboutScreen.discord')}
             description="https://discord.gg/QdcWN4MD63"
             onPress={() => Linking.openURL('https://discord.gg/QdcWN4MD63')}
             theme={theme}
           />
           <List.Item
-            title={getString('aboutScreen.github')}
+            title={getString('moreScreen.aboutScreen.github')}
             description="https://github.com/LNReader/lnreader"
             onPress={() =>
               Linking.openURL('https://github.com/LNReader/lnreader')
@@ -54,7 +54,7 @@ const AboutScreen = ({ navigation }: AboutScreenProps) => {
             theme={theme}
           />
           <List.Item
-            title={getString('aboutScreen.sources')}
+            title={getString('moreScreen.aboutScreen.sources')}
             description="https://github.com/LNReader/lnreader-sources"
             onPress={() =>
               Linking.openURL('https://github.com/LNReader/lnreader-sources')
@@ -62,7 +62,7 @@ const AboutScreen = ({ navigation }: AboutScreenProps) => {
             theme={theme}
           />
           <List.Item
-            title={getString('aboutScreen.helpTranslate')}
+            title={getString('moreScreen.aboutScreen.helpTranslate')}
             description="https://crowdin.com/project/lnreader"
             onPress={() =>
               Linking.openURL('https://crowdin.com/project/lnreader')

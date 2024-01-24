@@ -203,7 +203,9 @@
         "searchAllSources": "Zoek in alle Bronnen",
         "searchAllWarning": "Het zoeken van een groot aantal bronnen kan de app bevriezen tot het zoeken is voltooid."
       }
-    }
+    },
+    "downloadOnly": "Alleen gedownloaden",
+    "incognitoMode": "Incognito modus"
   },
   "sourceScreen": {
     "noResultsFound": "Geen resultaten gevonden"
@@ -249,10 +251,7 @@
     "duplicateError": "Er bestaat al een categorie met deze naam!",
     "defaultCategory": "Standaard categorie"
   },
-  "settings": {
-    "icognitoMode": "Incognito modus",
-    "downloadedOnly": "Alleen gedownloaden"
-  },
+  "settings": {},
   "downloadScreen": {
     "dbInfo": "Downloads are saved in a SQLite Database.",
     "downloadChapters": "downloaded Chapters",

@@ -61,7 +61,7 @@ const AdvancedSettings = ({ navigation }: AdvancedSettingsScreenProps) => {
   return (
     <>
       <Appbar
-        title={getString('advanced')}
+        title={getString('moreScreen.settingsScreen.advanced')}
         handleGoBack={() => navigation.goBack()}
         theme={theme}
       />

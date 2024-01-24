@@ -29,7 +29,7 @@ const SettingsScreen = ({ navigation }: SettingsScreenProps) => {
           theme={theme}
         />
         <List.Item
-          title={getString('settingsScreen.appearance')}
+          title={getString('moreScreen.settingsScreen.appearance')}
           icon="palette-outline"
           onPress={() =>
             navigation.navigate('SettingsStack', {
@@ -59,7 +59,7 @@ const SettingsScreen = ({ navigation }: SettingsScreenProps) => {
           theme={theme}
         />
         <List.Item
-          title={getString('settingsScreen.tracking')}
+          title={getString('moreScreen.settingsScreen.tracking')}
           icon="sync"
           onPress={() =>
             navigation.navigate('SettingsStack', {
@@ -69,7 +69,7 @@ const SettingsScreen = ({ navigation }: SettingsScreenProps) => {
           theme={theme}
         />
         <List.Item
-          title={getString('settingsScreen.backup')}
+          title={getString('moreScreen.settingsScreen.backup')}
           icon="cloud-upload-outline"
           onPress={() =>
             navigation.navigate('SettingsStack', {
@@ -79,7 +79,7 @@ const SettingsScreen = ({ navigation }: SettingsScreenProps) => {
           theme={theme}
         />
         <List.Item
-          title={getString('advanced')}
+          title={getString('moreScreen.settingsScreen.advanced')}
           icon="code-tags"
           onPress={() =>
             navigation.navigate('SettingsStack', {

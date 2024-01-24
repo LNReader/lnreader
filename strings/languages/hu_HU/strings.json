@@ -203,7 +203,9 @@
         "searchAllSources": "Keresés az összes forrásban",
         "searchAllWarning": "Nagyszámú forrásban való keresés lefagyaszthatja az alkalmazást amíg be nem fejeződik a keresés."
       }
-    }
+    },
+    "downloadOnly": "Csak a letöltöttek",
+    "incognitoMode": "Inkognitó mód"
   },
   "sourceScreen": {
     "noResultsFound": "Nincs találat"
@@ -249,10 +251,7 @@
     "duplicateError": "Már létezik ilyen nevű kategória!",
     "defaultCategory": "Alapértelmezett kategória"
   },
-  "settings": {
-    "icognitoMode": "Inkognitó mód",
-    "downloadedOnly": "Csak a letöltöttek"
-  },
+  "settings": {},
   "downloadScreen": {
     "dbInfo": "A letöltések egy SQLite adatbázisban vannak elmentve.",
     "downloadChapters": "letöltött fejezetek",

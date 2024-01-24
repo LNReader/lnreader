@@ -203,7 +203,9 @@
         "searchAllSources": "Поиск по всем источникам",
         "searchAllWarning": "Поиск по большому количеству источников может привести к зависанию приложения, пока поиск не завершится."
       }
-    }
+    },
+    "downloadOnly": "Только загруженные главы",
+    "incognitoMode": "Режим инкогнито"
   },
   "sourceScreen": {
     "noResultsFound": "Ничего не найдено"
@@ -249,10 +251,7 @@
     "duplicateError": "Категория с таким названием уже существует!",
     "defaultCategory": "Категория по умолчанию"
   },
-  "settings": {
-    "icognitoMode": "Режим инкогнито",
-    "downloadedOnly": "Только загруженные главы"
-  },
+  "settings": {},
   "downloadScreen": {
     "dbInfo": "Загрузки сохраняются в базе данных SQLite.",
     "downloadChapters": "загруженные главы",

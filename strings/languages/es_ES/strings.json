@@ -203,7 +203,9 @@
         "searchAllSources": "Buscar en todas las fuentes",
         "searchAllWarning": "Buscar un gran número de fuentes puede congelar la aplicación hasta que la búsqueda haya finalizado."
       }
-    }
+    },
+    "downloadOnly": "Sólo descargado",
+    "incognitoMode": "Modo Incógnito"
   },
   "sourceScreen": {
     "noResultsFound": "No se han encontrado resultados"
@@ -249,10 +251,7 @@
     "duplicateError": "¡Ya existe una categoría con este nombre!",
     "defaultCategory": "Categoría por defecto"
   },
-  "settings": {
-    "icognitoMode": "Modo Incógnito",
-    "downloadedOnly": "Sólo descargado"
-  },
+  "settings": {},
   "downloadScreen": {
     "dbInfo": "Las descargas se guardan en una base de datos SQLite.",
     "downloadChapters": "capítulos descargados",

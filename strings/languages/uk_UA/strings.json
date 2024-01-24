@@ -203,7 +203,9 @@
         "searchAllSources": "Шукати у всіх джерелах",
         "searchAllWarning": "Пошук у великій кількості джерел може викликати зависання програми до закінчення пошуку."
       }
-    }
+    },
+    "downloadOnly": "Тільки завантажені",
+    "incognitoMode": "Режим інкогніто"
   },
   "sourceScreen": {
     "noResultsFound": "Нічого не знайдено"
@@ -249,10 +251,7 @@
     "duplicateError": "Категорія з такою назвою вже існує!",
     "defaultCategory": "Категорія за замовчуванням"
   },
-  "settings": {
-    "icognitoMode": "Режим інкогніто",
-    "downloadedOnly": "Тільки завантажені"
-  },
+  "settings": {},
   "downloadScreen": {
     "dbInfo": "Downloads are saved in a SQLite Database.",
     "downloadChapters": "downloaded Chapters",

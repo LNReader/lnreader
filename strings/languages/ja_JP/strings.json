@@ -203,7 +203,9 @@
         "searchAllSources": "Search all sources",
         "searchAllWarning": "Searching a large number of sources may freeze the app till searching is finished."
       }
-    }
+    },
+    "downloadOnly": "ダウンロードのみ",
+    "incognitoMode": "シークレットモード"
   },
   "sourceScreen": {
     "noResultsFound": "No results found"
@@ -249,10 +251,7 @@
     "duplicateError": "この名前のカテゴリーはすでに存在します。",
     "defaultCategory": "デフォルトカテゴリー"
   },
-  "settings": {
-    "icognitoMode": "シークレットモード",
-    "downloadedOnly": "ダウンロードのみ"
-  },
+  "settings": {},
   "downloadScreen": {
     "dbInfo": "Downloads are saved in a SQLite Database.",
     "downloadChapters": "downloaded Chapters",

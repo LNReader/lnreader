@@ -203,7 +203,9 @@
         "searchAllSources": "Tüm kaynaklarda ara",
         "searchAllWarning": "Büyük miktarda kaynaklarda arama yapmak işlem bitene kadar uygulamayı dondurabilir."
       }
-    }
+    },
+    "downloadOnly": "Yalnızca indirilenler",
+    "incognitoMode": "Gizli mod"
   },
   "sourceScreen": {
     "noResultsFound": "Sonuç bulunamadı"
@@ -249,10 +251,7 @@
     "duplicateError": "Bu ada sahip bir kategori zaten var!",
     "defaultCategory": "Varsayılan kategori"
   },
-  "settings": {
-    "icognitoMode": "Gizli mod",
-    "downloadedOnly": "Yalnızca indirilenler"
-  },
+  "settings": {},
   "downloadScreen": {
     "dbInfo": "İndirilenler bir SQLite Veritabanında kaydedilmektedir.",
     "downloadChapters": "İndirilen bölümler",

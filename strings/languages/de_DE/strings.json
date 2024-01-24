@@ -203,7 +203,9 @@
         "searchAllSources": "Alle Quellen durchsuchen",
         "searchAllWarning": "Das Durchsuchen einer großen Anzahl an Quellen kann die App einfrieren, bis die Suche beendet wurde."
       }
-    }
+    },
+    "downloadOnly": "Nur Downloads",
+    "incognitoMode": "Inkognito-Modus"
   },
   "sourceScreen": {
     "noResultsFound": "Keine Ergebnisse gefunden"
@@ -249,10 +251,7 @@
     "duplicateError": "Eine Kategorie mit diesem Namen existiert bereits!",
     "defaultCategory": "Standard-Kategorie"
   },
-  "settings": {
-    "icognitoMode": "Inkognito-Modus",
-    "downloadedOnly": "Nur Downloads"
-  },
+  "settings": {},
   "downloadScreen": {
     "dbInfo": "Downloads werden in einer SQLite-Datenbank gespeichert.",
     "downloadChapters": "Heruntergeladene Kapitel",

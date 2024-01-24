@@ -203,7 +203,9 @@
         "searchAllSources": "Cari semua sumber\n",
         "searchAllWarning": "Mencari dari banyak sumber mungkin akan membuat aplikasi hang sampai pencarian selesai.\n"
       }
-    }
+    },
+    "downloadOnly": "Terunduh saja\n",
+    "incognitoMode": "Mode penyamaran\n"
   },
   "sourceScreen": {
     "noResultsFound": "Tidak ada hasil ditemukan\n"
@@ -249,10 +251,7 @@
     "duplicateError": "Kategori dengan nama ini sudah ada!\n",
     "defaultCategory": "Kategori default\n"
   },
-  "settings": {
-    "icognitoMode": "Mode penyamaran\n",
-    "downloadedOnly": "Terunduh saja\n"
-  },
+  "settings": {},
   "downloadScreen": {
     "dbInfo": "",
     "downloadChapters": "downloaded chapters\n",

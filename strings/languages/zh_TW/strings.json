@@ -203,7 +203,9 @@
         "searchAllSources": "搜索所有源",
         "searchAllWarning": "搜索大量的源可能会在搜索完成之前程序无法操作。"
       }
-    }
+    },
+    "downloadOnly": "Downloaded only",
+    "incognitoMode": "Incognito mode"
   },
   "sourceScreen": {
     "noResultsFound": "未找到相应结果"
@@ -249,10 +251,7 @@
     "duplicateError": "A category with this name already exists!",
     "defaultCategory": "Default category"
   },
-  "settings": {
-    "icognitoMode": "Incognito mode",
-    "downloadedOnly": "Downloaded only"
-  },
+  "settings": {},
   "downloadScreen": {
     "dbInfo": "Downloads are saved in a SQLite Database.",
     "downloadChapters": "downloaded Chapters",

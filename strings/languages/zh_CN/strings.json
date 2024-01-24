@@ -181,7 +181,10 @@
         "epubLocationDescription": "打开或导入您的 EPUB 文件的位置。",
         "downloadNewChapters": "下载新章节",
         "disableHapticFeedback": "禁用振动反馈",
-        "jumpToLastReadChapter": "跳到最后阅读的位置"
+        "jumpToLastReadChapter": "跳到最后阅读的位置",
+        "gridSize": "网格尺寸",
+        "gridSizeDesc": "每行 %{num} 列",
+        "sortOrder": "排序"
       },
       "readerSettings": {
         "title": "阅读器",
@@ -212,14 +215,44 @@
         "languages": "语言",
         "searchAllSources": "搜索所有源",
         "searchAllWarning": "搜索大量的源可能会在搜索完成之前程序无法操作。"
+      },
+      "appearance": "外观",
+      "backup": "备份",
+      "tracking": "进度记录",
+      "appearanceScreen": {
+        "accentColor": "强调色",
+        "alwaysShowNavLabels": "始终显示导航标签",
+        "appTheme": "主题",
+        "darkTheme": "深色",
+        "hideBackdrop": "隐藏背景",
+        "lightTheme": "浅色",
+        "navbar": "导航栏",
+        "novelInfo": "小说信息",
+        "pureBlackDarkMode": "纯黑深色模式",
+        "showHistoryInTheNav": "在导航中显示历史记录",
+        "showUpdatesInTheNav": "在导航中显示更新"
+      },
+      "advanced": "高级",
+      "trackingScreen": {
+        "logOutMessage": "从 %{name} 注销？",
+        "revalidateMyanimelist": "重新认证 MyAnimeList",
+        "services": "服务"
       }
     },
     "about": "关于",
     "downloadQueue": "下载队列",
-    "downloadOnly": "仅下载",
+    "downloadOnly": "仅已下载",
     "downloadOnlyDesc": "过滤您书库中的所有小说",
-    "incognitoMode": "隐身模式",
-    "incognitoModeDesc": "暂停阅读历史记录"
+    "incognitoMode": "无痕模式",
+    "incognitoModeDesc": "暂停阅读历史记录",
+    "aboutScreen": {
+      "discord": "Discord",
+      "github": "Github",
+      "helpTranslate": "帮助翻译",
+      "sources": "源代码",
+      "version": "版本",
+      "whatsNew": "新增内容"
+    }
   },
   "sourceScreen": {
     "noResultsFound": "未找到相应结果"
@@ -239,7 +272,6 @@
     "allSources": "所有源",
     "pinnedSources": "置顶的源"
   },
-  "advanced": "高级",
   "advancedSettings": {
     "deleteReadChapters": "删除已读章节",
     "deleteReadChaptersDialogTitle": "您确定吗？所有标记为已读的章节都将被删除。",
@@ -253,7 +285,7 @@
     "clearDatabaseWarning": "你确定吗？非书库小说的阅读和下载章节和进度将会丢失。",
     "clearUpdatesWarning": "你确定吗？更新页面将被清除。",
     "clearUpdatesMessage": "更新页面已清除。",
-    "useFab": "使用 FAB 代替按钮"
+    "useFab": "使用浮动操作按钮"
   },
   "date": {
     "calendar": {
@@ -277,10 +309,6 @@
     "duplicateError": "已存在同名类别！",
     "defaultCategory": "默认类别"
   },
-  "settings": {
-    "icognitoMode": "无痕模式",
-    "downloadedOnly": "仅已下载"
-  },
   "downloadScreen": {
     "dbInfo": "已下载的章节保存在 SQLite 数据库中。",
     "downloadChapters": "已下载章节",
@@ -294,42 +322,5 @@
   },
   "downloader": {
     "serviceRunning": "另一个服务正在运行。已加入队列"
-  },
-  "aboutScreen": {
-    "version": "版本",
-    "whatsNew": "新增内容",
-    "discord": "Discord",
-    "github": "Github",
-    "sources": "源代码",
-    "helpTranslate": "帮助翻译"
-  },
-  "settingsScreen": {
-    "appearance": "外观",
-    "backup": "备份",
-    "tracking": "进度记录",
-    "general": {
-      "gridSize": "网格尺寸",
-      "gridSizeDesc": "每行 %{num} 列",
-      "sortOrder": "排序"
-    }
-  },
-  "trackerScreen": {
-    "services": "服务",
-    "revalidateMyanimelist": "重新认证 MyAnimeList",
-    "logOutFrom": "从以下服务注销",
-    "logOutMessage": "从 %{name} 注销？"
-  },
-  "appearanceScreen": {
-    "appTheme": "主题",
-    "lightTheme": "浅色",
-    "darkTheme": "深色",
-    "pureBlackDarkMode": "纯黑深色模式",
-    "accentColor": "强调色",
-    "novelInfo": "小说信息",
-    "hideBackdrop": "隐藏背景",
-    "navbar": "导航栏",
-    "showUpdatesInTheNav": "在导航中显示更新",
-    "showHistoryInTheNav": "在导航中显示历史记录",
-    "alwaysShowNavLabels": "始终显示导航标签"
   }
 }
