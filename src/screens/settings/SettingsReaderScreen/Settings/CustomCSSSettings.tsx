@@ -26,7 +26,10 @@ const CustomCSSSettings = () => {
       </View>
       <View style={styles.customCSSContainer}>
         <Text numberOfLines={3} style={[{ color: theme.onSurface }]}>
-          {customCSS || 'Example: body {margin: 10px;}'}
+          {customCSS ||
+            getString(
+              'moreScreen.settingsScreen.readerSettings.customCSSPlaceholder',
+            )}
         </Text>
         <View style={styles.customCSSButtons}>
           <Button
@@ -54,7 +57,9 @@ const CustomCSSSettings = () => {
           description={getString(
             'moreScreen.settingsScreen.readerSettings.cssHint',
           )}
-          placeholder="Example: body {margin: 10px;}"
+          placeholder={getString(
+            'moreScreen.settingsScreen.readerSettings.customCSSPlaceholder',
+          )}
           openFileLabel={getString(
             'moreScreen.settingsScreen.readerSettings.openCSSFile',
           )}

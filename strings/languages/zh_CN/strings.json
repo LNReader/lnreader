@@ -207,7 +207,9 @@
         "cssHint": "提示: 您可以创建源相关的 CSS 配置. (#sourceId-[SOURCEID])",
         "jsHint": "提示: 您可以访问以下变量: html, novelName, chapterName, sourceId, chapterId, novelId",
         "clearCustomCSS": "您确定吗？您的自定义 CSS 都将被重置。",
-        "clearCustomJS": "您确定吗？您的自定义 JS 都将被重置。"
+        "clearCustomJS": "您确定吗？您的自定义 JS 都将被重置。",
+        "customCSSPlaceholder": "示例: body {margin: 10px;}",
+        "customJSPlaceholder": "示例: document.getElementById('example');"
       },
       "browseSettings": "浏览设置",
       "browseSettingsScreen": {

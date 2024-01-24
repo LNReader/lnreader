@@ -25,7 +25,10 @@ const CustomJSSettings = () => {
       </View>
       <View style={styles.customJSContainer}>
         <Text numberOfLines={3} style={[{ color: theme.onSurface }]}>
-          {customJS || 'Example: body {margin: 10px;}'}
+          {customJS ||
+            getString(
+              'moreScreen.settingsScreen.readerSettings.customJSPlaceholder',
+            )}
         </Text>
         <View style={styles.customJSButtons}>
           <Button
@@ -51,7 +54,9 @@ const CustomJSSettings = () => {
           description={getString(
             'moreScreen.settingsScreen.readerSettings.jsHint',
           )}
-          placeholder="Example: document.getElementById('example');"
+          placeholder={getString(
+            'moreScreen.settingsScreen.readerSettings.customJSPlaceholder',
+          )}
           openFileLabel={getString(
             'moreScreen.settingsScreen.readerSettings.openJSFile',
           )}

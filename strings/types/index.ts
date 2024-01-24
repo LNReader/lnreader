@@ -173,6 +173,8 @@ export interface StringMap {
   'moreScreen.settingsScreen.readerSettings.jsHint': 'string';
   'moreScreen.settingsScreen.readerSettings.clearCustomCSS': 'string';
   'moreScreen.settingsScreen.readerSettings.clearCustomJS': 'string';
+  'moreScreen.settingsScreen.readerSettings.customCSSPlaceholder': 'string';
+  'moreScreen.settingsScreen.readerSettings.customJSPlaceholder': 'string';
   'moreScreen.settingsScreen.browseSettings': 'string';
   'moreScreen.settingsScreen.browseSettingsScreen.onlyShowPinnedSources': 'string';
   'moreScreen.settingsScreen.browseSettingsScreen.languages': 'string';
