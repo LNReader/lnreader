@@ -190,13 +190,13 @@
         "showUpdatesInTheNav": "Show updates in the nav",
         "theme": {
           "default": "Default",
+          "lavender": "Lavender",
           "midnightDusk": "Midnight Dusk",
+          "strawberry": "Strawberry Daiquiri",
+          "tako": "Tako",
           "teal": "Teal",
           "turquoise": "Turquoise",
-          "yotsuba": "Yotsuba",
-          "lavender": "Lavender",
-          "strawberry": "Strawberry Daiquiri",
-          "tako": "Tako"
+          "yotsuba": "Yotsuba"
         }
       },
       "backup": "Backup",
@@ -326,9 +326,12 @@
     },
     "edit": {
       "addTag": "Add Tag",
+      "author": "Author: %{author}",
       "cover": "Edit cover",
       "info": "Edit info",
-      "summary": "Description: %{summary}..."
+      "status": "Status:",
+      "summary": "Description: %{summary}...",
+      "title": "Title: %{title}"
     },
     "inLibaray": "In library",
     "jumpToChapterModal": {

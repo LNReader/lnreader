@@ -66,7 +66,9 @@ const EditInfoModal = ({
             alignItems: 'center',
           }}
         >
-          <Text style={{ color: theme.onSurfaceVariant }}>Status:</Text>
+          <Text style={{ color: theme.onSurfaceVariant }}>
+            {getString('novelScreen.edit.status')}
+          </Text>
           <ScrollView
             style={{ marginLeft: 8 }}
             horizontal
@@ -105,7 +107,9 @@ const EditInfoModal = ({
           </ScrollView>
         </View>
         <TextInput
-          placeholder={`Title: ${novel.name}`}
+          placeholder={getString('novelScreen.edit.title', {
+            title: novel.name,
+          })}
           style={{ fontSize: 14 }}
           numberOfLines={1}
           mode="outlined"
@@ -114,7 +118,9 @@ const EditInfoModal = ({
           dense
         />
         <TextInput
-          placeholder={`Author: ${novel.author}`}
+          placeholder={getString('novelScreen.edit.author', {
+            author: novel.author,
+          })}
           style={{ fontSize: 14 }}
           numberOfLines={1}
           mode="outlined"

@@ -28,7 +28,7 @@
     "latest": "最新",
     "listEmpty": "从设置中启用语言",
     "migration": {
-      "dialogMessage": "迁移 {0}？",
+      "dialogMessage": "迁移 %{url}？",
       "novelAlreadyInLibrary": "小说已经在书库中",
       "selectSource": "选择源",
       "selectSourceDesc": "选择要迁移的源"
@@ -325,9 +325,12 @@
     },
     "edit": {
       "addTag": "添加标签",
+      "author": "作者: %{author}",
       "cover": "编辑封面",
       "info": "编辑信息",
-      "summary": "描述：%{summary}..."
+      "status": "状态:",
+      "summary": "描述：%{summary}...",
+      "title": "标题: %{title}"
     },
     "inLibaray": "在书库中",
     "jumpToChapterModal": {
