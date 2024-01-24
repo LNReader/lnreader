@@ -237,6 +237,22 @@
         "logOutMessage": "从 %{name} 注销？",
         "revalidateMyanimelist": "重新认证 MyAnimeList",
         "services": "服务"
+      },
+      "backupScreen": {
+        "remoteBackup": "远程备份",
+        "selfHost": "自托管",
+        "selfHostDesc": "备份到您的服务器",
+        "googeDrive": "Google 云端硬盘",
+        "googeDriveDesc": "备份到您的 Google 云端硬盘",
+        "legacyBackup": "旧版备份",
+        "createBackupWarning": "创建备份可能无法在 Android 9 或更低版本的设备上运行。",
+        "restoreLargeBackupsWarning": "恢复大量备份可能会冻结应用程序，直到恢复完成",
+        "createBackupDeprecated": "创建备份（已弃用）",
+        "createBackupDeprecatedDesc": "可用于恢复当前书库",
+        "restoreBackupDeprecated": "恢复备份（已弃用）",
+        "restoreBackupDeprecatedDesc": "从备份文件恢复书库",
+        "restoreErrorDeprecated": "恢复错误（已弃用）",
+        "restoreErrorDeprecatedDesc": "用这个来恢复剩余的。节省您的时间。"
       }
     },
     "about": "关于",

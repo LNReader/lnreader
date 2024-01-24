@@ -237,6 +237,22 @@
         "logOutMessage": "Log out from %{name}?",
         "revalidateMyanimelist": "Revalidate MyAnimeList",
         "services": "Services"
+      },
+      "backupScreen": {
+        "remoteBackup": "Remote Backup",
+        "selfHost": "Self Host",
+        "selfHostDesc": "Backup to your server",
+        "googeDrive": "Googe Drive",
+        "googeDriveDesc": "Backup to your Google Drive",
+        "legacyBackup": "Legacy Backup",
+        "createBackupDeprecated": "Create backup (Deprecated)",
+        "createBackupDeprecatedDesc": "Can be used to restore current library",
+        "restoreBackupDeprecated": "Restore backup (Deprecated)",
+        "restoreBackupDeprecatedDesc": "Restore library from backup file",
+        "restoreErrorDeprecated": "Restore error (Deprecated)",
+        "restoreErrorDeprecatedDesc": "Using this to restore the remaining. Save your time.",
+        "restoreLargeBackupsWarning": "Restoring large backups may freeze the app until restoring is finished",
+        "createBackupWarning": "Create backup may not work on devices with Android 9 or lower."
       }
     },
     "about": "About",
