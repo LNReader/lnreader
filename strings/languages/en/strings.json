@@ -69,7 +69,9 @@
   "history": "History",
   "historyScreen": {
     "searchbar": "Search history",
-    "clearHistorWarning": "Are you sure? All history will be lost."
+    "clearHistorWarning": "Are you sure? All history will be lost.",
+    "nothingReadRecently": "Nothing read recently",
+    "chapter": "Chapter"
   },
   "browse": "Browse",
   "browseScreen": {

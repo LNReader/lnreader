@@ -59,6 +59,8 @@ export interface StringMap {
   'history': 'string';
   'historyScreen.searchbar': 'string';
   'historyScreen.clearHistorWarning': 'string';
+  'historyScreen.nothingReadRecently': 'string';
+  'historyScreen.chapter': 'string';
   'browse': 'string';
   'browseScreen.discover': 'string';
   'browseScreen.searchbar': 'string';

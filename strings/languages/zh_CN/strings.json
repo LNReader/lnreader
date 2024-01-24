@@ -69,7 +69,9 @@
   "history": "历史",
   "historyScreen": {
     "searchbar": "搜索历史记录",
-    "clearHistorWarning": "您确定吗？所有历史记录都将删除。"
+    "clearHistorWarning": "您确定吗？所有历史记录都将删除。",
+    "nothingReadRecently": "最近没读过什么",
+    "chapter": "章节"
   },
   "browse": "浏览",
   "browseScreen": {
