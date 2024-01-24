@@ -37,7 +37,9 @@ const NovelSortModal: React.FC<NovelSortModalProps> = ({
         ]}
       >
         <Text style={[styles.modalHeader, { color: theme.onSurface }]}>
-          {getString('settingsScreen.general.sortOrder')}
+          {getString(
+            'moreScreen.settingsScreen.generalSettingsScreen.sortOrder',
+          )}
         </Text>
         <FlashList
           data={librarySortOrderList}

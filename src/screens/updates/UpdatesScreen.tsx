@@ -121,7 +121,7 @@ const UpdatesScreen = () => {
                   chapter.id,
                 ).then(() => {
                   showToast(
-                    getString('updatesScreen.deleteChapter', {
+                    getString('common.deleted', {
                       name: chapter.name,
                     }),
                   );

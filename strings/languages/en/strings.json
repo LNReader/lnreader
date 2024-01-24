@@ -18,7 +18,6 @@
   "browse": "Browse",
   "browseScreen": {
     "addedToLibrary": "Added to library",
-    "all": "All",
     "available": "Available",
     "discover": "Discover",
     "globalSearch": "Global search",
@@ -39,10 +38,6 @@
     "removeFromLibrary": "Removed from library",
     "searchbar": "Search sources",
     "selectNovel": "Select Novel",
-    "show": {
-      "anilist": "Show AniList",
-      "myanimelist": "Show MyAnimeList"
-    },
     "uninstalledPlugin": "Uninstalled %{name}",
     "updatedTo": "Updated to %{}"
   },
@@ -63,13 +58,17 @@
   },
   "common": {
     "add": "Add",
+    "all": "All",
     "cancel": "Cancel",
     "categories": "Categories",
     "chapters": "Chapters",
     "clear": "Clear",
     "delete": "Delete",
+    "deleted": "Deleted %{name}",
+    "display": "Display",
     "downloads": "Downloads",
     "edit": "Edit",
+    "filter": "Filter",
     "globally": "globally",
     "install": "Install",
     "logout": "Logout",
@@ -83,6 +82,8 @@
     "search": "Search",
     "searchFor": "Search for",
     "searchResults": "Search results",
+    "show": "Show",
+    "sort": "Sort",
     "submit": "Submit"
   },
   "date": {
@@ -233,7 +234,6 @@
         "chapterSort": "Default chapter sort",
         "desc": "(Descending)",
         "disableHapticFeedback": "Disable haptic feedback",
-        "display": "Display",
         "displayMode": "Display Mode",
         "downloadNewChapters": "Download new chapters",
         "epub": "EPUB",
@@ -293,15 +293,21 @@
   "novelScreen": {
     "addToLibaray": "Add to library",
     "bottomSheet": {
-      "bookmarked": "Bookmarked",
       "byChapterName": "By chapter name",
-      "chapterNumber": "Chapter number",
-      "display": "Display",
-      "filter": "Filter",
-      "sort": "Sort",
-      "sourceTitle": "Source title"
+      "displays": {
+        "chapterNumber": "Chapter number",
+        "sourceTitle": "Source title"
+      },
+      "filters": {
+        "bookmarked": "Bookmarked",
+        "downloaded": "Downloaded",
+        "unread": "Unread"
+      },
+      "order": {
+        "byChapterName": "By chapter name",
+        "bySource": "By source"
+      }
     },
-    "byChapterName": "By chapter name",
     "chapterChapnum": "Chapter %{num}",
     "chapters": "chapters",
     "continueReading": "Continue reading",
@@ -317,7 +323,6 @@
     "copiedToClipboard": "Copied to clipboard: %{name}",
     "deleteMessage": "Delete downloaded chapters?",
     "download": {
-      "all": "All",
       "custom": "Custom",
       "customAmount": "Download custom amount",
       "delete": "Delete downloads",
@@ -348,6 +353,8 @@
     },
     "migrate": "Migrate",
     "noSummary": "No summary",
+    "order": {
+    },
     "progress": "Progress %{progress} %",
     "startReadingChapters": "Start reading %{name}",
     "status": {
@@ -416,7 +423,6 @@
   },
   "updates": "Updates",
   "updatesScreen": {
-    "deleteChapter": "Delete %{name}",
     "deletedChapters": "Deleted %{num} chapters",
     "emptyView": "No recent updates",
     "lastUpdatedAt": "Library last updated:",

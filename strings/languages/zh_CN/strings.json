@@ -18,7 +18,6 @@
   "browse": "浏览",
   "browseScreen": {
     "addedToLibrary": "添加到书库",
-    "all": "全部",
     "available": "可用",
     "discover": "发现",
     "globalSearch": "全局搜索",
@@ -39,10 +38,6 @@
     "removeFromLibrary": "从书库移除",
     "searchbar": "搜索资源",
     "selectNovel": "选择小说",
-    "show": {
-      "anilist": "显示 AniList",
-      "myanimelist": "显示 MyAnimeList"
-    },
     "uninstalledPlugin": "已卸载 %{name}",
     "updatedTo": "已更新至 %{version}"
   },
@@ -63,13 +58,17 @@
   },
   "common": {
     "add": "添加",
+    "all": "全部",
     "cancel": "取消",
     "categories": "类别",
     "chapters": "章节",
     "clear": "清除",
     "delete": "删除",
+    "deleted": "已删除 %{name}",
+    "display": "显示",
     "downloads": "下载",
     "edit": "编辑",
+    "filter": "筛选",
     "globally": "全局",
     "install": "安装",
     "logout": "登出",
@@ -83,6 +82,8 @@
     "search": "搜索",
     "searchFor": "搜索",
     "searchResults": "搜索结果",
+    "show": "显示",
+    "sort": "排序",
     "submit": "确定"
   },
   "date": {
@@ -233,7 +234,6 @@
         "chapterSort": "默认章节排序",
         "desc": "(递减)",
         "disableHapticFeedback": "禁用振动反馈",
-        "display": "显示",
         "displayMode": "显示模式",
         "downloadNewChapters": "下载新章节",
         "epub": "EPUB",
@@ -293,15 +293,21 @@
   "novelScreen": {
     "addToLibaray": "添加到书库",
     "bottomSheet": {
-      "bookmarked": "已添加书签",
       "byChapterName": "按章节名",
-      "chapterNumber": "章节编号",
-      "display": "显示",
-      "filter": "筛选",
-      "sort": "排序",
-      "sourceTitle": "源标题"
+      "displays": {
+        "chapterNumber": "章节编号",
+        "sourceTitle": "源标题"
+      },
+      "filters": {
+        "bookmarked": "已添加书签",
+        "downloaded": "已下载",
+        "unread": "未读"
+      },
+      "order": {
+        "byChapterName": "按章节名",
+        "bySource": "按源"
+      }
     },
-    "byChapterName": "按章节名",
     "chapterChapnum": "第 %{num} 章",
     "chapters": "章节",
     "continueReading": "继续阅读",
@@ -317,7 +323,6 @@
     "copiedToClipboard": "已复制到剪贴板：%{name}",
     "deleteMessage": "删除下载的章节？",
     "download": {
-      "all": "全部",
       "custom": "自定义",
       "customAmount": "下载自定义数量",
       "delete": "删除下载",
@@ -348,6 +353,8 @@
     },
     "migrate": "迁移",
     "noSummary": "无简介",
+    "order": {
+    },
     "progress": "进度 %{progress} %",
     "startReadingChapters": "开始阅读 %{name}",
     "status": {
@@ -416,7 +423,6 @@
   },
   "updates": "更新",
   "updatesScreen": {
-    "deleteChapter": "删除 %{name}",
     "deletedChapters": "已删除 %{num} 个章节",
     "emptyView": "没有新章节",
     "lastUpdatedAt": "最近更新：",

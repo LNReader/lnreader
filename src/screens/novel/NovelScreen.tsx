@@ -462,7 +462,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                       }}
                     />
                     <Menu.Item
-                      title={getString('novelScreen.download.all')}
+                      title={getString('common.all')}
                       style={{ backgroundColor: theme.surface2 }}
                       titleStyle={{
                         color: theme.onSurface,

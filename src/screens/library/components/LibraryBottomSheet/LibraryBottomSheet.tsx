@@ -189,9 +189,9 @@ const LibraryBottomSheet: React.FC<LibraryBottomSheetProps> = ({
   const [index, setIndex] = useState(0);
   const routes = useMemo(
     () => [
-      { key: 'first', title: getString('novelScreen.bottomSheet.filter') },
-      { key: 'second', title: getString('novelScreen.bottomSheet.sort') },
-      { key: 'third', title: getString('novelScreen.bottomSheet.display') },
+      { key: 'first', title: getString('common.filter') },
+      { key: 'second', title: getString('common.sort') },
+      { key: 'third', title: getString('common.display') },
     ],
     [],
   );

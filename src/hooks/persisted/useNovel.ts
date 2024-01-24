@@ -302,9 +302,7 @@ export const useNovel = (url: string, pluginId: string) => {
             };
           }),
         );
-        showToast(
-          getString('updatesScreen.deleteChapter', { name: _chapter.name }),
-        );
+        showToast(getString('common.deleted', { name: _chapter.name }));
       });
     }
   };

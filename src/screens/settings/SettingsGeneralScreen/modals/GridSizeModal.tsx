@@ -43,14 +43,19 @@ const GridSizeModal: React.FC<GridSizeModalProps> = ({
         ]}
       >
         <Text style={[styles.modalHeader, { color: theme.onSurface }]}>
-          {getString('settingsScreen.general.gridSize')}
+          {getString(
+            'moreScreen.settingsScreen.generalSettingsScreen.gridSize',
+          )}
         </Text>
         <Text
           style={[styles.modalDescription, { color: theme.onSurfaceVariant }]}
         >
-          {getString('settingsScreen.general.gridSizeDesc', {
-            num: novelsPerRow,
-          })}
+          {getString(
+            'moreScreen.settingsScreen.generalSettingsScreen.gridSizeDesc',
+            {
+              num: novelsPerRow,
+            },
+          )}
         </Text>
         {Object.keys(gridSizes).map(item => {
           let it = Number(item);

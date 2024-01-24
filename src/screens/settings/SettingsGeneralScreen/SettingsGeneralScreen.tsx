@@ -110,9 +110,7 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
       <ScrollView contentContainerStyle={{ paddingBottom: 32 }}>
         <List.Section>
           <List.SubHeader theme={theme}>
-            {getString(
-              'moreScreen.settingsScreen.generalSettingsScreen.display',
-            )}
+            {getString('common.display')}
           </List.SubHeader>
           <List.Item
             title={getString(
