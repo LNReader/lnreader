@@ -251,7 +251,6 @@
     "duplicateError": "Már létezik ilyen nevű kategória!",
     "defaultCategory": "Alapértelmezett kategória"
   },
-  "settings": {},
   "downloadScreen": {
     "dbInfo": "A letöltések egy SQLite adatbázisban vannak elmentve.",
     "downloadChapters": "letöltött fejezetek",

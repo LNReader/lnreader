@@ -251,7 +251,6 @@
     "duplicateError": "Категория с таким названием уже существует!",
     "defaultCategory": "Категория по умолчанию"
   },
-  "settings": {},
   "downloadScreen": {
     "dbInfo": "Загрузки сохраняются в базе данных SQLite.",
     "downloadChapters": "загруженные главы",

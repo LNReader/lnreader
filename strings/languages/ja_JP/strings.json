@@ -251,7 +251,6 @@
     "duplicateError": "この名前のカテゴリーはすでに存在します。",
     "defaultCategory": "デフォルトカテゴリー"
   },
-  "settings": {},
   "downloadScreen": {
     "dbInfo": "Downloads are saved in a SQLite Database.",
     "downloadChapters": "downloaded Chapters",

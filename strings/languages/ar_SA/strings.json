@@ -251,7 +251,6 @@
     "duplicateError": "يوجد تصنيف بهذا الاسم بالفعل!",
     "defaultCategory": "التصنيف الافتراضي"
   },
-  "settings": {},
   "downloadScreen": {
     "dbInfo": "يتم حفظ التنزيلات في قاعدة بيانات SQLite",
     "downloadChapters": "الفصول المحملة",

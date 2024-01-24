@@ -251,7 +251,6 @@
     "duplicateError": "Категорія з такою назвою вже існує!",
     "defaultCategory": "Категорія за замовчуванням"
   },
-  "settings": {},
   "downloadScreen": {
     "dbInfo": "Downloads are saved in a SQLite Database.",
     "downloadChapters": "downloaded Chapters",

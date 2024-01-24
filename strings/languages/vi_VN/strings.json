@@ -251,7 +251,6 @@
     "duplicateError": "Danh mục với tên này đã tồn tại!",
     "defaultCategory": "Danh mục mặc định"
   },
-  "settings": {},
   "downloadScreen": {
     "dbInfo": "Các chương tải về sẽ được lưu trong cơ sở dữ liệu SQLite.",
     "downloadChapters": "chương đã tải về",

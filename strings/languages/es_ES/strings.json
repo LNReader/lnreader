@@ -251,7 +251,6 @@
     "duplicateError": "¡Ya existe una categoría con este nombre!",
     "defaultCategory": "Categoría por defecto"
   },
-  "settings": {},
   "downloadScreen": {
     "dbInfo": "Las descargas se guardan en una base de datos SQLite.",
     "downloadChapters": "capítulos descargados",

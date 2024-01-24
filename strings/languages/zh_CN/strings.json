@@ -1,17 +1,18 @@
 {
   "advancedSettings": {
+    "cachedNovelsDeletedToast": "缓存的小说已删除",
     "clearCachedNovels": "清除缓存的小说",
     "clearCachedNovelsDesc": "删除不在您的书库中的缓存小说",
-    "clearDatabaseWarning": "你确定吗？非书库小说的阅读和下载章节和进度将会丢失。",
+    "clearDatabaseWarning": "您确定吗？非书库小说的阅读，已下载章节和进度将会丢失。",
     "clearUpdatesMessage": "更新页面已清除。",
     "clearUpdatesTab": "清除更新页面",
-    "clearUpdatesWarning": "你确定吗？更新页面将被清除。",
+    "clearUpdatesWarning": "您确定吗？更新页面将被清除。",
     "clearupdatesTabDesc": "清除更新页面中的章节",
     "dataManagement": "数据",
     "deleteReadChapters": "删除已读章节",
     "deleteReadChaptersDialogTitle": "您确定吗？所有标记为已读的章节都将被删除。",
     "importEpub": "导入 EPUB",
-    "useFab": "使用浮动操作按钮",
+    "useFAB": "使用浮动操作按钮",
     "userAgent": "用户代理"
   },
   "browse": "浏览",
@@ -47,6 +48,7 @@
   },
   "categories": {
     "addCategories": "添加类别",
+    "cantDeleteDefault": "您不能删除默认类别",
     "defaultCategory": "默认类别",
     "deleteModal": {
       "desc": "您想要删除此类别吗",
@@ -227,7 +229,7 @@
       "generalSettingsScreen": {
         "asc": "(递增)",
         "autoDownload": "自动下载",
-        "bySource": "按来源",
+        "bySource": "按源",
         "chapterSort": "默认章节排序",
         "desc": "(递减)",
         "disableHapticFeedback": "禁用振动反馈",
@@ -256,7 +258,7 @@
         "useFAB": "在书库中使用浮动操作按钮"
       },
       "readerSettings": {
-        "autoScrollInterval": "自动滚动间隔(以秒计)",
+        "autoScrollInterval": "自动滚动间隔 (以秒计)",
         "autoScrollOffset": "自动滚动偏移(默认屏幕高度)",
         "backgroundColor": "背景颜色",
         "backgroundColorModal": "阅读器背景颜色",
@@ -292,11 +294,12 @@
     "addToLibaray": "添加到书库",
     "bottomSheet": {
       "bookmarked": "已添加书签",
+      "byChapterName": "按章节名",
       "chapterNumber": "章节编号",
       "display": "显示",
       "filter": "筛选",
       "sort": "排序",
-      "sourceTitle": "来源标题"
+      "sourceTitle": "源标题"
     },
     "byChapterName": "按章节名",
     "chapterChapnum": "第 %{num} 章",
@@ -387,6 +390,7 @@
       "scrollToCurrentChapter": "滚动到当前章节",
       "scrollToTop": "滚动到顶部"
     },
+    "emptyChapterMessage": "章节为空。\\n\\n请直接在 <a href='https://github.com/LNReader/lnreader-sources/issues/new/choose'>GitHub</a> 上反馈（如果在 WebView 中可用）。",
     "finished": "已完成",
     "noNextChapter": "没有下一章节",
     "noPreviousChapter": "没有上一章节"
@@ -405,11 +409,17 @@
     "totalChapters": "统计数据",
     "unreadChapters": "未读章节"
   },
+  "toast": {
+    "deletedAllDownloads": "所有下载已删除",
+    "readChaptersDeleted": "阅读章节已删除",
+    "removedFromLibrary": "已从书库中删除"
+  },
   "updates": "更新",
   "updatesScreen": {
     "deleteChapter": "删除 %{name}",
+    "deletedChapters": "已删除 %{num} 个章节",
     "emptyView": "没有新章节",
-    "lastUpdatedAt": "最近更新的库：",
+    "lastUpdatedAt": "最近更新：",
     "newChapters": "新章节",
     "searchbar": "搜索更新",
     "updatesLower": "更新"

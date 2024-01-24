@@ -3,6 +3,7 @@
  */
 
 export interface StringMap {
+  'advancedSettings.cachedNovelsDeletedToast': 'string';
   'advancedSettings.clearCachedNovels': 'string';
   'advancedSettings.clearCachedNovelsDesc': 'string';
   'advancedSettings.clearDatabaseWarning': 'string';
@@ -14,7 +15,7 @@ export interface StringMap {
   'advancedSettings.deleteReadChapters': 'string';
   'advancedSettings.deleteReadChaptersDialogTitle': 'string';
   'advancedSettings.importEpub': 'string';
-  'advancedSettings.useFab': 'string';
+  'advancedSettings.useFAB': 'string';
   'advancedSettings.userAgent': 'string';
   'browse': 'string';
   'browseScreen.addedToLibrary': 'string';
@@ -42,6 +43,7 @@ export interface StringMap {
   'browseScreen.uninstalledPlugin': 'string';
   'browseScreen.updatedTo': 'string';
   'categories.addCategories': 'string';
+  'categories.cantDeleteDefault': 'string';
   'categories.defaultCategory': 'string';
   'categories.deleteModal.desc': 'string';
   'categories.deleteModal.header': 'string';
@@ -329,6 +331,9 @@ export interface StringMap {
   'statsScreen.titlesInLibrary': 'string';
   'statsScreen.totalChapters': 'string';
   'statsScreen.unreadChapters': 'string';
+  'toast.deletedAllDownloads': 'string';
+  'toast.readChaptersDeleted': 'string';
+  'toast.removedFromLibrary': 'string';
   'updates': 'string';
   'updatesScreen.deleteChapter': 'string';
   'updatesScreen.deletedChapters': 'string';

@@ -251,7 +251,6 @@
     "duplicateError": "Eine Kategorie mit diesem Namen existiert bereits!",
     "defaultCategory": "Standard-Kategorie"
   },
-  "settings": {},
   "downloadScreen": {
     "dbInfo": "Downloads werden in einer SQLite-Datenbank gespeichert.",
     "downloadChapters": "Heruntergeladene Kapitel",

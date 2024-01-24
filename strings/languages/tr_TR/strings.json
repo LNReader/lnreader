@@ -251,7 +251,6 @@
     "duplicateError": "Bu ada sahip bir kategori zaten var!",
     "defaultCategory": "Varsayılan kategori"
   },
-  "settings": {},
   "downloadScreen": {
     "dbInfo": "İndirilenler bir SQLite Veritabanında kaydedilmektedir.",
     "downloadChapters": "İndirilen bölümler",

@@ -1,5 +1,6 @@
 {
   "advancedSettings": {
+    "cachedNovelsDeletedToast": "Cached novels deleted",
     "clearCachedNovels": "Clear cached novels",
     "clearCachedNovelsDesc": "Delete cached novels which not in your library",
     "clearDatabaseWarning": "Are you sure? Read and Downloaded chapters and progress of non-library novels will be lost.",
@@ -11,7 +12,7 @@
     "deleteReadChapters": "Delete read chapters",
     "deleteReadChaptersDialogTitle": "Are you sure? All chapters marked as read will be deleted.",
     "importEpub": "Import Epub",
-    "useFab": "Use FAB instead of button",
+    "useFAB": "Use FAB instead of button",
     "userAgent": "User Agent"
   },
   "browse": "Browse",
@@ -47,6 +48,7 @@
   },
   "categories": {
     "addCategories": "Add category",
+    "cantDeleteDefault": "You cant delete default category",
     "defaultCategory": "Default category",
     "deleteModal": {
       "desc": "Do you wish to delete category",
@@ -406,6 +408,11 @@
     "titlesInLibrary": "Titles in library",
     "totalChapters": "Total chapters",
     "unreadChapters": "Unread chapters"
+  },
+  "toast": {
+    "deletedAllDownloads": "Deleted all Downloads",
+    "readChaptersDeleted": "Read chapters deleted",
+    "removedFromLibrary": "Removed from Library"
   },
   "updates": "Updates",
   "updatesScreen": {
