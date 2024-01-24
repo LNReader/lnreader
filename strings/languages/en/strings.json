@@ -17,7 +17,8 @@
     "searchResults": "Search results",
     "chapters": "Chapters",
     "submit": "Submit",
-    "retry": "Retry"
+    "retry": "Retry",
+    "downloads": "Downloads"
   },
   "library": "Library",
   "libraryScreen": {
@@ -204,7 +205,13 @@
         "searchAllSources": "Search all sources",
         "searchAllWarning": "Searching a large number of sources may freeze the app till searching is finished."
       }
-    }
+    },
+    "about": "About",
+    "downloadQueue": "Download queue",
+    "downloadOnly": "Downloaded only",
+    "downloadOnlyDesc": "Filters all novels in your library",
+    "incognitoMode": "Incognito mode",
+    "incognitoModeDesc": "Pauses reading history"
   },
   "sourceScreen": {
     "noResultsFound": "No results found"
@@ -259,5 +266,8 @@
     "downloadChapters": "downloaded Chapters",
     "noDownloads": "No downloads",
     "downloadsLower": "downloads"
+  },
+  "downloader": {
+    "serviceRunning": "Another service is running. Queued chapters"
   }
 }

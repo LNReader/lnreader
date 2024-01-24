@@ -2,6 +2,7 @@ import { ChapterInfo, NovelInfo } from '@database/types';
 import { BACKGROUND_ACTION, BackgoundAction } from '@services/constants';
 import { MMKVStorage, getMMKVObject, setMMKVObject } from '@utils/mmkv/mmkv';
 import { showToast } from '@utils/showToast';
+import { getString } from '@strings/translations';
 import BackgroundService from 'react-native-background-actions';
 import { useMMKVObject } from 'react-native-mmkv';
 import * as Notifications from 'expo-notifications';
@@ -100,7 +101,7 @@ export default function useDownload() {
         });
       }
     } else {
-      showToast('Another service is running. Queued chapters');
+      showToast(getString('downloader.serviceRunning'));
     }
   };
 

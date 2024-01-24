@@ -17,7 +17,8 @@
     "searchResults": "搜索结果",
     "chapters": "章节",
     "submit": "确定",
-    "retry": "重试"
+    "retry": "重试",
+    "downloads": "下载"
   },
   "library": "书库",
   "libraryScreen": {
@@ -206,7 +207,13 @@
         "searchAllSources": "搜索所有源",
         "searchAllWarning": "搜索大量的源可能会在搜索完成之前程序无法操作。"
       }
-    }
+    },
+    "about": "关于",
+    "downloadQueue": "下载队列",
+    "downloadOnly": "仅下载",
+    "downloadOnlyDesc": "过滤您书库中的所有小说",
+    "incognitoMode": "隐身模式",
+    "incognitoModeDesc": "暂停阅读历史记录"
   },
   "sourceScreen": {
     "noResultsFound": "未找到相应结果"
@@ -261,5 +268,8 @@
     "downloadChapters": "已下载章节",
     "noDownloads": "无下载",
     "downloadsLower": "下载"
+  },
+  "downloader": {
+    "serviceRunning": "另一个服务正在运行。已加入队列"
   }
 }

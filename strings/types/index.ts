@@ -21,6 +21,7 @@ export interface StringMap {
   'common.chapters': 'string';
   'common.submit': 'string';
   'common.retry': 'string';
+  'common.downloads': 'string';
   'library': 'string';
   'libraryScreen.searchbar': 'string';
   'libraryScreen.empty': 'string';
@@ -166,6 +167,12 @@ export interface StringMap {
   'moreScreen.settingsScreen.browseSettingsScreen.languages': 'string';
   'moreScreen.settingsScreen.browseSettingsScreen.searchAllSources': 'string';
   'moreScreen.settingsScreen.browseSettingsScreen.searchAllWarning': 'string';
+  'moreScreen.about': 'string';
+  'moreScreen.downloadQueue': 'string';
+  'moreScreen.downloadOnly': 'string';
+  'moreScreen.downloadOnlyDesc': 'string';
+  'moreScreen.incognitoMode': 'string';
+  'moreScreen.incognitoModeDesc': 'string';
   'sourceScreen.noResultsFound': 'string';
   'statsScreen.title': 'string';
   'statsScreen.titlesInLibrary': 'string';
@@ -200,4 +207,5 @@ export interface StringMap {
   'downloadScreen.downloadChapters': 'string';
   'downloadScreen.noDownloads': 'string';
   'downloadScreen.downloadsLower': 'string';
+  'downloader.serviceRunning': 'string';
 }
