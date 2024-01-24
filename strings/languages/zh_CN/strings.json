@@ -267,9 +267,21 @@
     "dbInfo": "已下载的章节保存在 SQLite 数据库中。",
     "downloadChapters": "已下载章节",
     "noDownloads": "无下载",
-    "downloadsLower": "下载"
+    "downloadsLower": "下载",
+    "pause": "暂停",
+    "resume": "恢复",
+    "cancelled": "下载已取消。",
+    "cancelDownloads": "取消下载"
   },
   "downloader": {
     "serviceRunning": "另一个服务正在运行。已加入队列"
+  },
+  "aboutScreen": {
+    "version": "版本",
+    "whatsNew": "最近更新",
+    "discord": "Discord\n",
+    "github": "Github",
+    "sources": "源代码",
+    "helpTranslate": "帮助翻译"
   }
 }

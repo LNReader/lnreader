@@ -207,5 +207,16 @@ export interface StringMap {
   'downloadScreen.downloadChapters': 'string';
   'downloadScreen.noDownloads': 'string';
   'downloadScreen.downloadsLower': 'string';
+  'downloadScreen.pause': 'string';
+  'downloadScreen.resume': 'string';
+  'downloadScreen.cancelled': 'string';
+  'downloadScreen.cancelDownloads': 'string';
+  'downloadScreen.removeDownloadsWarning': 'string';
   'downloader.serviceRunning': 'string';
+  'aboutScreen.whatsNew': 'string';
+  'aboutScreen.discord': 'string';
+  'aboutScreen.github': 'string';
+  'aboutScreen.sources': 'string';
+  'aboutScreen.helpTranslate': 'string';
+  'aboutScreen.version': 'string';
 }

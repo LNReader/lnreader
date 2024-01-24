@@ -31,7 +31,11 @@ const MoreScreen = ({ navigation }: MoreStackScreenProps) => {
 
   return (
     <>
-      <MoreHeader title="More" navigation={navigation} theme={theme} />
+      <MoreHeader
+        title={getString('more')}
+        navigation={navigation}
+        theme={theme}
+      />
       <ScrollView style={{ flex: 1 }}>
         <List.Section>
           <Pressable

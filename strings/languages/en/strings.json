@@ -265,9 +265,22 @@
     "dbInfo": "Downloads are saved in a SQLite Database.",
     "downloadChapters": "downloaded Chapters",
     "noDownloads": "No downloads",
-    "downloadsLower": "downloads"
+    "downloadsLower": "downloads",
+    "pause": "Pause",
+    "resume": "Resume",
+    "cancelled": "Downloads cancelled.",
+    "cancelDownloads": "Cancel downloads",
+    "removeDownloadsWarning": "Are you sure? All downloaded chapters will be deleted."
   },
   "downloader": {
     "serviceRunning": "Another service is running. Queued chapters"
+  },
+  "aboutScreen": {
+    "whatsNew": "What's new",
+    "discord": "Discord",
+    "github": "Github",
+    "sources": "Sources",
+    "helpTranslate": "Help translate",
+    "version": "Version"
   }
 }
