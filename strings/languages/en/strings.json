@@ -109,7 +109,8 @@
       "removeExtraSpacing": "Remove extra paragraph spacing",
       "volumeButtonsScroll": "Volume buttons scroll",
       "scrollAmount": "Scroll amount (screen height by default)",
-      "showSwipeMargins": "Show swipe margins"
+      "showSwipeMargins": "Show swipe margins",
+      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)"
     },
     "drawer": {
       "scrollToCurrentChapter": "Scroll to current chapter",
@@ -179,7 +180,8 @@
         "epubLocation": "EPUB Location",
         "epubLocationDescription": "The place where you open and export your EPUB files.",
         "downloadNewChapters": "Download new chapters",
-        "disableHapticFeedback": "Disable haptic feedback"
+        "disableHapticFeedback": "Disable haptic feedback",
+        "jumpToLastReadChapter": "Jump to last read chapter in list"
       },
       "readerSettings": {
         "title": "Reader",
@@ -237,6 +239,7 @@
     "allSources": "all sources",
     "pinnedSources": "pinned sources"
   },
+  "advanced": "Advanced",
   "advancedSettings": {
     "deleteReadChapters": "Delete read chapters",
     "deleteReadChaptersDialogTitle": "Are you sure? All chapters marked as read will be deleted.",
@@ -300,7 +303,6 @@
     "helpTranslate": "Help translate",
     "version": "Version"
   },
-  "advanced": "Advanced",
   "settingsScreen": {
     "appearance": "Appearance",
     "tracking": "Tracking",
@@ -314,7 +316,8 @@
   "trackerScreen": {
     "services": "Services",
     "revalidateMyanimelist": "Revalidate MyAnimeList",
-    "logOutMessage": "Log out from %{name}?"
+    "logOutMessage": "Log out from %{name}?",
+    "logOutFrom": "log out from"
   },
   "appearanceScreen": {
     "appTheme": "App theme",

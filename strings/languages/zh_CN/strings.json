@@ -226,7 +226,7 @@
   },
   "statsScreen": {
     "title": "统计数据",
-    "titlesInLibrary": "书库中的书籍",
+    "titlesInLibrary": "书库中的小说",
     "totalChapters": "统计数据",
     "readChapters": "已读章节",
     "unreadChapters": "未读章节",
@@ -239,6 +239,7 @@
     "allSources": "所有源",
     "pinnedSources": "置顶的源"
   },
+  "advanced": "高级",
   "advancedSettings": {
     "deleteReadChapters": "删除已读章节",
     "deleteReadChaptersDialogTitle": "您确定吗？所有标记为已读的章节都将被删除。",
@@ -249,7 +250,7 @@
     "clearCachedNovelsDesc": "删除不在您的书库中的缓存小说",
     "importEpub": "导入 EPUB",
     "userAgent": "用户代理",
-    "clearDatabaseWarning": "你确定吗？非书库书籍的阅读和下载章节和进度将会丢失。",
+    "clearDatabaseWarning": "你确定吗？非书库小说的阅读和下载章节和进度将会丢失。",
     "clearUpdatesWarning": "你确定吗？更新页面将被清除。",
     "clearUpdatesMessage": "更新页面已清除。",
     "useFab": "使用 FAB 代替按钮"
@@ -288,7 +289,8 @@
     "pause": "暂停",
     "resume": "继续",
     "cancelled": "下载已取消。",
-    "cancelDownloads": "取消下载"
+    "cancelDownloads": "取消下载",
+    "removeDownloadsWarning": "您确定吗？所有下载的章节都将被删除。"
   },
   "downloader": {
     "serviceRunning": "另一个服务正在运行。已加入队列"
@@ -301,7 +303,6 @@
     "sources": "源代码",
     "helpTranslate": "帮助翻译"
   },
-  "advanced": "高级",
   "settingsScreen": {
     "appearance": "外观",
     "backup": "备份",
@@ -324,7 +325,7 @@
     "darkTheme": "深色",
     "pureBlackDarkMode": "纯黑深色模式",
     "accentColor": "强调色",
-    "novelInfo": "书籍信息",
+    "novelInfo": "小说信息",
     "hideBackdrop": "隐藏背景",
     "navbar": "导航栏",
     "showUpdatesInTheNav": "在导航中显示更新",

@@ -94,6 +94,7 @@ export interface StringMap {
   'readerScreen.bottomSheet.volumeButtonsScroll': 'string';
   'readerScreen.bottomSheet.scrollAmount': 'string';
   'readerScreen.bottomSheet.showSwipeMargins': 'string';
+  'readerScreen.bottomSheet.readerPages': 'string';
   'readerScreen.drawer.scrollToCurrentChapter': 'string';
   'readerScreen.drawer.scrollToTop': 'string';
   'readerScreen.drawer.scrollToBottom': 'string';
@@ -147,6 +148,7 @@ export interface StringMap {
   'moreScreen.settingsScreen.generalSettingsScreen.epubLocationDescription': 'string';
   'moreScreen.settingsScreen.generalSettingsScreen.downloadNewChapters': 'string';
   'moreScreen.settingsScreen.generalSettingsScreen.disableHapticFeedback': 'string';
+  'moreScreen.settingsScreen.generalSettingsScreen.jumpToLastReadChapter': 'string';
   'moreScreen.settingsScreen.readerSettings.title': 'string';
   'moreScreen.settingsScreen.readerSettings.readerTheme': 'string';
   'moreScreen.settingsScreen.readerSettings.preset': 'string';
@@ -191,6 +193,7 @@ export interface StringMap {
   'globalSearch.searchIn': 'string';
   'globalSearch.allSources': 'string';
   'globalSearch.pinnedSources': 'string';
+  'advanced': 'string';
   'advancedSettings.deleteReadChapters': 'string';
   'advancedSettings.deleteReadChaptersDialogTitle': 'string';
   'advancedSettings.clearCachedNovels': 'string';
@@ -236,7 +239,6 @@ export interface StringMap {
   'aboutScreen.sources': 'string';
   'aboutScreen.helpTranslate': 'string';
   'aboutScreen.version': 'string';
-  'advanced': 'string';
   'settingsScreen.appearance': 'string';
   'settingsScreen.tracking': 'string';
   'settingsScreen.backup': 'string';
@@ -246,6 +248,7 @@ export interface StringMap {
   'trackerScreen.services': 'string';
   'trackerScreen.revalidateMyanimelist': 'string';
   'trackerScreen.logOutMessage': 'string';
+  'trackerScreen.logOutFrom': 'string';
   'appearanceScreen.appTheme': 'string';
   'appearanceScreen.lightTheme': 'string';
   'appearanceScreen.darkTheme': 'string';
