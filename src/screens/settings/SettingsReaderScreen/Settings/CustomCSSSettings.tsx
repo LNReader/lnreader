@@ -17,6 +17,8 @@ const CustomCSSSettings = () => {
   const cssModal = useBoolean();
   const clearCSSModal = useBoolean();
 
+  const customCSSPlaceholder = 'body {margin: 10px;}';
+
   return (
     <>
       <View style={styles.header}>
@@ -27,9 +29,7 @@ const CustomCSSSettings = () => {
       <View style={styles.customCSSContainer}>
         <Text numberOfLines={3} style={[{ color: theme.onSurface }]}>
           {customCSS ||
-            getString(
-              'moreScreen.settingsScreen.readerSettings.customCSSPlaceholder',
-            )}
+            `${getString('common.example')}: ${customCSSPlaceholder}`}
         </Text>
         <View style={styles.customCSSButtons}>
           <Button
@@ -57,9 +57,9 @@ const CustomCSSSettings = () => {
           description={getString(
             'moreScreen.settingsScreen.readerSettings.cssHint',
           )}
-          placeholder={getString(
-            'moreScreen.settingsScreen.readerSettings.customCSSPlaceholder',
-          )}
+          placeholder={`${getString(
+            'common.example',
+          )}: ${customCSSPlaceholder}`}
           openFileLabel={getString(
             'moreScreen.settingsScreen.readerSettings.openCSSFile',
           )}

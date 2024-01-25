@@ -16,6 +16,8 @@ const CustomJSSettings = () => {
   const jsModal = useBoolean();
   const clearJSModal = useBoolean();
 
+  const customJSPlaceholder = "document.getElementById('example');";
+
   return (
     <>
       <View style={styles.header}>
@@ -25,10 +27,7 @@ const CustomJSSettings = () => {
       </View>
       <View style={styles.customJSContainer}>
         <Text numberOfLines={3} style={[{ color: theme.onSurface }]}>
-          {customJS ||
-            getString(
-              'moreScreen.settingsScreen.readerSettings.customJSPlaceholder',
-            )}
+          {customJS || `${getString('common.example')}: ${customJSPlaceholder}`}
         </Text>
         <View style={styles.customJSButtons}>
           <Button
@@ -54,9 +53,7 @@ const CustomJSSettings = () => {
           description={getString(
             'moreScreen.settingsScreen.readerSettings.jsHint',
           )}
-          placeholder={getString(
-            'moreScreen.settingsScreen.readerSettings.customJSPlaceholder',
-          )}
+          placeholder={`${getString('common.example')}: ${customJSPlaceholder}`}
           openFileLabel={getString(
             'moreScreen.settingsScreen.readerSettings.openJSFile',
           )}

@@ -108,6 +108,7 @@ export interface StringMap {
   'common.done': 'string';
   'common.downloads': 'string';
   'common.edit': 'string';
+  'common.example': 'string';
   'common.filter': 'string';
   'common.globally': 'string';
   'common.install': 'string';
@@ -266,7 +267,6 @@ export interface StringMap {
   'moreScreen.settingsScreen.readerSettings.clearCustomJS': 'string';
   'moreScreen.settingsScreen.readerSettings.cssHint': 'string';
   'moreScreen.settingsScreen.readerSettings.customCSS': 'string';
-  'moreScreen.settingsScreen.readerSettings.customCSSPlaceholder': 'string';
   'moreScreen.settingsScreen.readerSettings.customJS': 'string';
   'moreScreen.settingsScreen.readerSettings.customJSPlaceholder': 'string';
   'moreScreen.settingsScreen.readerSettings.deleteCustomTheme': 'string';
