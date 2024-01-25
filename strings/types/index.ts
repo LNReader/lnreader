@@ -315,6 +315,8 @@ export interface StringMap {
   'novelScreen.status.hiatus': 'string';
   'novelScreen.status.onGoing': 'string';
   'novelScreen.status.unknown': 'string';
+  'novelScreen.status.licensed': 'string';
+  'novelScreen.status.publishingFinished': 'string';
   'novelScreen.tracked': 'string';
   'novelScreen.tracking': 'string';
   'novelScreen.unknownStatus': 'string';

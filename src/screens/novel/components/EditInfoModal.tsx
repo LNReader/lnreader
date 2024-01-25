@@ -38,13 +38,7 @@ const EditInfoModal = ({
     setNovel({ ...novel, genres: tags?.join(',') });
   };
 
-  const status = [
-    getString('novelScreen.status.onGoing'),
-    getString('novelScreen.status.hiatus'),
-    getString('novelScreen.status.completed'),
-    getString('novelScreen.status.unknown'),
-    getString('novelScreen.status.cancelled'),
-  ];
+  const status = ['Ongoing', 'Hiatus', 'Completed', 'Unknown', 'Cancelled'];
 
   return (
     <Portal>

@@ -395,14 +395,15 @@
     },
     "migrate": "迁移",
     "noSummary": "无简介",
-    "order": {},
     "progress": "进度 %{progress} %",
     "startReadingChapters": "开始阅读 %{name}",
     "status": {
       "cancelled": "取消",
       "completed": "完结",
       "hiatus": "停更",
+      "licensed": "已授权",
       "onGoing": "连载",
+      "publishingFinished": "出版完成",
       "unknown": "未知"
     },
     "tracked": "记录进度中",
