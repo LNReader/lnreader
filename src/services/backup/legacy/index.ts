@@ -45,7 +45,7 @@ export const createBackup = async () => {
         JSON.stringify(novels),
       );
 
-      showToast(getString('actions.backup.legacy.backupCreated', { fileName }));
+      showToast(getString('backupScreen.legacy.backupCreated', { fileName }));
     }
   } catch (error: any) {
     showToast(error.message);
@@ -71,7 +71,7 @@ export const restoreBackup = async (filePath?: string) => {
       novelsString = await StorageAccessFramework.readAsStringAsync(backup.uri);
     } else if (filePath) {
       if (!(await RNFS.exists(filePath))) {
-        showToast(getString('actions.backup.legacy.noErrorNovel'));
+        showToast(getString('backupScreen.legacy.noErrorNovel'));
         return; //neither backup nor error backup
       }
       novelsString = await RNFS.readFile(filePath);
@@ -79,12 +79,12 @@ export const restoreBackup = async (filePath?: string) => {
 
     const novels: NovelInfo[] = await JSON.parse(novelsString);
     if (novels.length === 0) {
-      showToast(getString('actions.backup.legacy.noAvailableBackup'));
+      showToast(getString('backupScreen.legacy.noAvailableBackup'));
       return;
     }
     const notificationOptions = {
       taskName: 'Backup Restore',
-      taskTitle: getString('actions.backup.restorinBackup'),
+      taskTitle: getString('backupScreen.restorinBackup'),
       taskDesc: '(0/' + novels.length + ')',
       taskIcon: { name: 'notification_icon', type: 'drawable' },
       color: '#00adb5',
@@ -106,7 +106,7 @@ export const restoreBackup = async (filePath?: string) => {
               const plugin = getPlugin(novels[i].pluginId);
               if (!plugin) {
                 showToast(
-                  getString('actions.backup.legacy.pluginNotExist', {
+                  getString('backupScreen.legacy.pluginNotExist', {
                     id: novels[i].pluginId,
                   }),
                 );
@@ -123,8 +123,8 @@ export const restoreBackup = async (filePath?: string) => {
               if (novels.length === i + 1) {
                 Notifications.scheduleNotificationAsync({
                   content: {
-                    title: getString('actions.backup.legacy.libraryRestored'),
-                    body: getString('actions.backup.legacy.novelsRestored', {
+                    title: getString('backupScreen.legacy.libraryRestored'),
+                    body: getString('backupScreen.legacy.novelsRestored', {
                       num: novels.length,
                     }),
                   },
@@ -154,8 +154,8 @@ export const restoreBackup = async (filePath?: string) => {
           await RNFS.writeFile(errorPath, JSON.stringify(errorNovels));
           Notifications.scheduleNotificationAsync({
             content: {
-              title: getString('actions.backup.legacy.libraryRestored'),
-              body: getString('actions.backup.legacy.novelsRestoredError', {
+              title: getString('backupScreen.legacy.libraryRestored'),
+              body: getString('backupScreen.legacy.novelsRestoredError', {
                 num: errorNovels.length,
               }),
             },

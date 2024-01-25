@@ -118,7 +118,7 @@ function CreateBackup({
     <>
       <TextInput
         value={backupName}
-        placeholder={getString('actions.backup.backupName')}
+        placeholder={getString('backupScreen.backupName')}
         onChangeText={setBackupName}
         mode="outlined"
         underlineColor={theme.outline}
@@ -189,7 +189,7 @@ function RestoreBackup({
         )}
         ListEmptyComponent={() => (
           <EmptyView
-            description={getString('actions.backup.noBackupFounded')}
+            description={getString('backupScreen.noBackupFounded')}
             theme={theme}
           />
         )}
@@ -286,7 +286,7 @@ export default function GoogleDriveModal({
       <>
         <View style={styles.titleContainer}>
           <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
-            {getString('actions.backup.drive.googleDriveBackup')}
+            {getString('backupScreen.drive.googleDriveBackup')}
           </Text>
           <TouchableOpacity
             onLongPress={() => {

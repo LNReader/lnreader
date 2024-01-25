@@ -40,7 +40,7 @@ function CreateBackup({
     <>
       <TextInput
         value={backupName}
-        placeholder={getString('actions.backup.backupName')}
+        placeholder={getString('backupScreen.backupName')}
         onChangeText={setBackupName}
         mode="outlined"
         underlineColor={theme.outline}
@@ -105,7 +105,7 @@ function RestoreBackup({
         )}
         ListEmptyComponent={() => (
           <EmptyView
-            description={getString('actions.backup.noBackupFounded')}
+            description={getString('backupScreen.noBackupFounded')}
             theme={theme}
           />
         )}
@@ -142,7 +142,7 @@ function SetHost({
     <>
       <TextInput
         value={host}
-        placeholder={getString('actions.backup.remote.host')}
+        placeholder={getString('backupScreen.remote.host')}
         onChangeText={setHost}
         mode="outlined"
         underlineColor={theme.outline}
@@ -166,9 +166,7 @@ function SetHost({
                 if (data.name === 'LNReader') {
                   setBackupModal(BackupModal.CONNECTED);
                 } else {
-                  throw new Error(
-                    getString('actions.backup.remote.unknownHost'),
-                  );
+                  throw new Error(getString('backupScreen.remote.unknownHost'));
                 }
               })
               .catch((error: any) => {
@@ -266,7 +264,7 @@ export default function SelfHostModal({
       <>
         <View style={styles.titleContainer}>
           <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
-            {getString('actions.backup.remote.backup')}
+            {getString('backupScreen.remote.backup')}
           </Text>
         </View>
         {renderModal()}

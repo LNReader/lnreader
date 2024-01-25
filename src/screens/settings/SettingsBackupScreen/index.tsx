@@ -46,78 +46,60 @@ const BackupSettings = ({ navigation }: BackupSettingsScreenProps) => {
         <ScrollView style={{ paddingBottom: 40 }}>
           <List.Section>
             <List.SubHeader theme={theme}>
-              {getString('moreScreen.settingsScreen.backupScreen.remoteBackup')}
+              {getString('backupScreen.remoteBackup')}
             </List.SubHeader>
             <List.Item
-              title={getString(
-                'moreScreen.settingsScreen.backupScreen.selfHost',
-              )}
-              description={getString(
-                'moreScreen.settingsScreen.backupScreen.selfHostDesc',
-              )}
+              title={getString('backupScreen.selfHost')}
+              description={getString('backupScreen.selfHostDesc')}
               theme={theme}
               onPress={openSelfHostModal}
               disabled={Boolean(hasAction)}
             />
 
             <List.Item
-              title={getString(
-                'moreScreen.settingsScreen.backupScreen.googeDrive',
-              )}
-              description={getString(
-                'moreScreen.settingsScreen.backupScreen.googeDriveDesc',
-              )}
+              title={getString('backupScreen.googeDrive')}
+              description={getString('backupScreen.googeDriveDesc')}
               theme={theme}
               onPress={openGoogleDriveModal}
               disabled={Boolean(hasAction)}
             />
             <List.SubHeader theme={theme}>
-              {getString('moreScreen.settingsScreen.backupScreen.legacyBackup')}
+              {getString('backupScreen.legacyBackup')}
             </List.SubHeader>
             <List.Item
-              title={getString(
-                'moreScreen.settingsScreen.backupScreen.createBackupDeprecated',
-              )}
-              description={getString(
-                'moreScreen.settingsScreen.backupScreen.createBackupDeprecatedDesc',
-              )}
+              title={`${getString('backupScreen.createBackup')} (${getString(
+                'common.deprecated',
+              )})`}
+              description={getString('backupScreen.createBackupDesc')}
               onPress={deprecatedCreateBackup}
               theme={theme}
               disabled={Boolean(hasAction)}
             />
             <List.Item
-              title={getString(
-                'moreScreen.settingsScreen.backupScreen.restoreBackupDeprecated',
-              )}
-              description={getString(
-                'moreScreen.settingsScreen.backupScreen.restoreBackupDeprecatedDesc',
-              )}
+              title={`${getString('backupScreen.restoreBackup')} (${getString(
+                'common.deprecated',
+              )})`}
+              description={getString('backupScreen.restoreBackupDesc')}
               onPress={() => deprecatedRestoreBackup()}
               theme={theme}
               disabled={Boolean(hasAction)}
             />
             <List.Item
-              title={getString(
-                'moreScreen.settingsScreen.backupScreen.restoreErrorDeprecated',
-              )}
-              description={getString(
-                'moreScreen.settingsScreen.backupScreen.restoreErrorDeprecatedDesc',
-              )}
+              title={`${getString('backupScreen.restoreError')} (${getString(
+                'common.deprecated',
+              )})`}
+              description={getString('backupScreen.restoreErrorDesc')}
               onPress={deprecatedRestoreError}
               theme={theme}
               disabled={Boolean(hasAction)}
             />
             <List.InfoItem
-              title={getString(
-                'moreScreen.settingsScreen.backupScreen.restoreLargeBackupsWarning',
-              )}
+              title={getString('backupScreen.restoreLargeBackupsWarning')}
               icon="information-outline"
               theme={theme}
             />
             <List.InfoItem
-              title={getString(
-                'moreScreen.settingsScreen.backupScreen.createBackupWarning',
-              )}
+              title={getString('backupScreen.createBackupWarning')}
               icon="information-outline"
               theme={theme}
             />

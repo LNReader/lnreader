@@ -1,34 +1,5 @@
 {
   "actions": {
-    "backup": {
-      "backupName": "备份名称",
-      "drive": {
-        "backup": "云端硬盘备份",
-        "backupInterruped": "云端硬盘备份中断",
-        "googleDriveBackup": "Google 云端硬盘备份",
-        "restore": "云端硬盘恢复",
-        "restoreInterruped": "云端硬盘恢复中断"
-      },
-      "legacy": {
-        "backupCreated": "备份已创建 %{fileName}",
-        "libraryRestored": "书库已恢复",
-        "noAvailableBackup": "没有可用的备份",
-        "noErrorNovel": "没有错误的小说",
-        "novelsRestored": "%{num} 部小说已恢复",
-        "novelsRestoredError": "%{num} 部小说出现错误。请使用恢复错误备份重试。",
-        "pluginNotExist": "ID 为 %{id} 的插件不存在！"
-      },
-      "noBackupFounded": "没有找到备份",
-      "remote": {
-        "backup": "自托管备份",
-        "backupInterruped": "自托管备份中断",
-        "host": "主机",
-        "restore": "自托管恢复",
-        "restoreInterruped": "自托管恢复中断",
-        "unknownHost": "未知主机"
-      },
-      "restorinBackup": "恢复备份"
-    },
     "chapter": {
       "deleteChapterError": "无法删除章节文件夹",
       "deletedAllDownloads": "所有下载已删除",
@@ -80,6 +51,49 @@
     "importEpub": "导入 EPUB",
     "useFAB": "使用浮动操作按钮",
     "userAgent": "用户代理"
+  },
+  "backupScreen": {
+    "createBackup": "创建备份",
+    "createBackupDesc": "可用于恢复当前书库",
+    "createBackupWarning": "创建备份可能无法在 Android 9 或更低版本的设备上运行。",
+    "googeDrive": "Google 云端硬盘",
+    "googeDriveDesc": "备份到您的 Google 云端硬盘",
+    "legacyBackup": "旧版备份",
+    "remoteBackup": "远程备份",
+    "restoreBackup": "恢复备份",
+    "restoreBackupDesc": "从备份文件恢复书库",
+    "restoreError": "恢复错误",
+    "restoreErrorDesc": "用这个来恢复剩余的。节省您的时间。",
+    "restoreLargeBackupsWarning": "恢复大量备份可能会冻结应用程序，直到恢复完成",
+    "selfHost": "自托管",
+    "selfHostDesc": "备份到您的服务器",
+    "backupName": "备份名称",
+    "drive": {
+      "backup": "云端硬盘备份",
+      "backupInterruped": "云端硬盘备份中断",
+      "googleDriveBackup": "Google 云端硬盘备份",
+      "restore": "云端硬盘恢复",
+      "restoreInterruped": "云端硬盘恢复中断"
+    },
+    "legacy": {
+      "backupCreated": "备份已创建 %{fileName}",
+      "libraryRestored": "书库已恢复",
+      "noAvailableBackup": "没有可用的备份",
+      "noErrorNovel": "没有错误的小说",
+      "novelsRestored": "%{num} 部小说已恢复",
+      "novelsRestoredError": "%{num} 部小说出现错误。请使用恢复错误备份重试。",
+      "pluginNotExist": "ID 为 %{id} 的插件不存在！"
+    },
+    "noBackupFounded": "没有找到备份",
+    "remote": {
+      "backup": "自托管备份",
+      "backupInterruped": "自托管备份中断",
+      "host": "主机",
+      "restore": "自托管恢复",
+      "restoreInterruped": "自托管恢复中断",
+      "unknownHost": "未知主机"
+    },
+    "restorinBackup": "恢复备份"
   },
   "browse": "浏览",
   "browseScreen": {
@@ -133,6 +147,7 @@
     "copiedToClipboard": "已复制到剪贴板：%{name}",
     "delete": "删除",
     "deleted": "已删除 %{name}",
+    "deprecated": "弃用",
     "display": "显示",
     "done": "完成",
     "downloads": "下载",
@@ -268,22 +283,6 @@
           "turquoise": "绿松石",
           "yotsuba": "四叶草"
         }
-      },
-      "backupScreen": {
-        "createBackupDeprecated": "创建备份（已弃用）",
-        "createBackupDeprecatedDesc": "可用于恢复当前书库",
-        "createBackupWarning": "创建备份可能无法在 Android 9 或更低版本的设备上运行。",
-        "googeDrive": "Google 云端硬盘",
-        "googeDriveDesc": "备份到您的 Google 云端硬盘",
-        "legacyBackup": "旧版备份",
-        "remoteBackup": "远程备份",
-        "restoreBackupDeprecated": "恢复备份（已弃用）",
-        "restoreBackupDeprecatedDesc": "从备份文件恢复书库",
-        "restoreErrorDeprecated": "恢复错误（已弃用）",
-        "restoreErrorDeprecatedDesc": "用这个来恢复剩余的。节省您的时间。",
-        "restoreLargeBackupsWarning": "恢复大量备份可能会冻结应用程序，直到恢复完成",
-        "selfHost": "自托管",
-        "selfHostDesc": "备份到您的服务器"
       },
       "browseSettings": "浏览设置",
       "browseSettingsScreen": {

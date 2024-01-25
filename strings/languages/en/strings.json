@@ -1,34 +1,5 @@
 {
   "actions": {
-    "backup": {
-      "backupName": "Backup name",
-      "drive": {
-        "backup": "Drive Backup",
-        "backupInterruped": "Drive Backup Interruped",
-        "googleDriveBackup": "Google Drive Backup",
-        "restore": "Drive Restore",
-        "restoreInterruped": "Drive Restore Interruped"
-      },
-      "legacy": {
-        "backupCreated": "Backup created %{fileName}",
-        "libraryRestored": "Library Restored",
-        "noAvailableBackup": "There's no available backup",
-        "noErrorNovel": "There's no error novel",
-        "novelsRestored": "%{num} novels restored",
-        "novelsRestoredError": "%{num} novels got errors. Please use Restore error backup to try again.",
-        "pluginNotExist": "Plugin with id %{id} doenst exist!"
-      },
-      "noBackupFounded": "No backup founded",
-      "remote": {
-        "backup": "Self Host Backup",
-        "backupInterruped": "Self Host Backup Interruped",
-        "host": "Host",
-        "restore": "Self Host Restore",
-        "restoreInterruped": "Self Host Restore Interruped",
-        "unknownHost": "Unknown host"
-      },
-      "restorinBackup": "Restoring backup"
-    },
     "chapter": {
       "deleteChapterError": "Cant delete chapter chapter folder",
       "deletedAllDownloads": "Deleted all Downloads",
@@ -80,6 +51,49 @@
     "importEpub": "Import Epub",
     "useFAB": "Use FAB instead of button",
     "userAgent": "User Agent"
+  },
+  "backupScreen": {
+    "createBackup": "Create backup",
+    "createBackupDesc": "Can be used to restore current library",
+    "createBackupWarning": "Create backup may not work on devices with Android 9 or lower.",
+    "googeDrive": "Googe Drive",
+    "googeDriveDesc": "Backup to your Google Drive",
+    "legacyBackup": "Legacy Backup",
+    "remoteBackup": "Remote Backup",
+    "restoreBackup": "Restore backup",
+    "restoreBackupDesc": "Restore library from backup file",
+    "restoreError": "Restore error",
+    "restoreErrorDesc": "Using this to restore the remaining. Save your time.",
+    "restoreLargeBackupsWarning": "Restoring large backups may freeze the app until restoring is finished",
+    "selfHost": "Self Host",
+    "selfHostDesc": "Backup to your server",
+    "backupName": "Backup name",
+    "drive": {
+      "backup": "Drive Backup",
+      "backupInterruped": "Drive Backup Interruped",
+      "googleDriveBackup": "Google Drive Backup",
+      "restore": "Drive Restore",
+      "restoreInterruped": "Drive Restore Interruped"
+    },
+    "legacy": {
+      "backupCreated": "Backup created %{fileName}",
+      "libraryRestored": "Library Restored",
+      "noAvailableBackup": "There's no available backup",
+      "noErrorNovel": "There's no error novel",
+      "novelsRestored": "%{num} novels restored",
+      "novelsRestoredError": "%{num} novels got errors. Please use Restore error backup to try again.",
+      "pluginNotExist": "Plugin with id %{id} doenst exist!"
+    },
+    "noBackupFounded": "No backup founded",
+    "remote": {
+      "backup": "Self Host Backup",
+      "backupInterruped": "Self Host Backup Interruped",
+      "host": "Host",
+      "restore": "Self Host Restore",
+      "restoreInterruped": "Self Host Restore Interruped",
+      "unknownHost": "Unknown host"
+    },
+    "restorinBackup": "Restoring backup"
   },
   "browse": "Browse",
   "browseScreen": {
@@ -133,6 +147,7 @@
     "copiedToClipboard": "Copied to clipboard: %{name}",
     "delete": "Delete",
     "deleted": "Deleted %{name}",
+    "deprecated": "Deprecated",
     "display": "Display",
     "done": "Done",
     "downloads": "Downloads",
@@ -268,22 +283,6 @@
           "turquoise": "Turquoise",
           "yotsuba": "Yotsuba"
         }
-      },
-      "backupScreen": {
-        "createBackupDeprecated": "Create backup (Deprecated)",
-        "createBackupDeprecatedDesc": "Can be used to restore current library",
-        "createBackupWarning": "Create backup may not work on devices with Android 9 or lower.",
-        "googeDrive": "Googe Drive",
-        "googeDriveDesc": "Backup to your Google Drive",
-        "legacyBackup": "Legacy Backup",
-        "remoteBackup": "Remote Backup",
-        "restoreBackupDeprecated": "Restore backup (Deprecated)",
-        "restoreBackupDeprecatedDesc": "Restore library from backup file",
-        "restoreErrorDeprecated": "Restore error (Deprecated)",
-        "restoreErrorDeprecatedDesc": "Using this to restore the remaining. Save your time.",
-        "restoreLargeBackupsWarning": "Restoring large backups may freeze the app until restoring is finished",
-        "selfHost": "Self Host",
-        "selfHostDesc": "Backup to your server"
       },
       "browseSettings": "Browse Settings",
       "browseSettingsScreen": {

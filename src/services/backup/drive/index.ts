@@ -76,7 +76,7 @@ const driveBackupAction = async (taskData?: TaskData) => {
 
     await Notifications.scheduleNotificationAsync({
       content: {
-        title: getString('actions.backup.drive.backup'),
+        title: getString('backupScreen.drive.backup'),
         body: getString('common.done'),
       },
       trigger: null,
@@ -85,7 +85,7 @@ const driveBackupAction = async (taskData?: TaskData) => {
     if (BackgroundService.isRunning()) {
       await Notifications.scheduleNotificationAsync({
         content: {
-          title: getString('actions.backup.drive.backupInterruped'),
+          title: getString('backupScreen.drive.backupInterruped'),
           body: error.message,
         },
         trigger: null,
@@ -100,7 +100,7 @@ const driveBackupAction = async (taskData?: TaskData) => {
 export const createBackup = async (backupFolder: DriveFile) => {
   return BackgroundService.start(driveBackupAction, {
     taskName: 'Drive Backup',
-    taskTitle: getString('actions.backup.drive.backup'),
+    taskTitle: getString('backupScreen.drive.backup'),
     taskDesc: getString('common.preparing'),
     taskIcon: { name: 'notification_icon', type: 'drawable' },
     color: '#00adb5',
@@ -109,7 +109,7 @@ export const createBackup = async (backupFolder: DriveFile) => {
   }).catch(async (error: Error) => {
     Notifications.scheduleNotificationAsync({
       content: {
-        title: getString('actions.backup.drive.backupInterruped'),
+        title: getString('backupScreen.drive.backupInterruped'),
         body: error.message,
       },
       trigger: null,
@@ -163,7 +163,7 @@ const driveRestoreAction = async (taskData?: TaskData) => {
 
     await Notifications.scheduleNotificationAsync({
       content: {
-        title: getString('actions.backup.drive.restore'),
+        title: getString('backupScreen.drive.restore'),
         body: getString('common.done'),
       },
       trigger: null,
@@ -172,7 +172,7 @@ const driveRestoreAction = async (taskData?: TaskData) => {
     if (BackgroundService.isRunning()) {
       await Notifications.scheduleNotificationAsync({
         content: {
-          title: getString('actions.backup.drive.restoreInterruped'),
+          title: getString('backupScreen.drive.restoreInterruped'),
           body: error.message,
         },
         trigger: null,
@@ -196,7 +196,7 @@ export const driveRestore = async (backupFolder: DriveFile) => {
   }).catch(async (e: Error) => {
     await Notifications.scheduleNotificationAsync({
       content: {
-        title: getString('actions.backup.drive.restoreInterruped'),
+        title: getString('backupScreen.drive.restoreInterruped'),
         body: e.message,
       },
       trigger: null,

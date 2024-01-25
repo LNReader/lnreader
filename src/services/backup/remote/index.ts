@@ -69,7 +69,7 @@ const remoteBackupAction = async (taskData?: TaskData) => {
 
     await Notifications.scheduleNotificationAsync({
       content: {
-        title: getString('actions.backup.remote.backup'),
+        title: getString('backupScreen.remote.backup'),
         body: getString('common.done'),
       },
       trigger: null,
@@ -78,7 +78,7 @@ const remoteBackupAction = async (taskData?: TaskData) => {
     if (BackgroundService.isRunning()) {
       await Notifications.scheduleNotificationAsync({
         content: {
-          title: getString('actions.backup.remote.backupInterruped'),
+          title: getString('backupScreen.remote.backupInterruped'),
           body: error.message,
         },
         trigger: null,
@@ -93,7 +93,7 @@ const remoteBackupAction = async (taskData?: TaskData) => {
 export const createBackup = async (host: string, backupFolder: string) => {
   return BackgroundService.start(remoteBackupAction, {
     taskName: 'Self Host Backup',
-    taskTitle: getString('actions.backup.remote.backup'),
+    taskTitle: getString('backupScreen.remote.backup'),
     taskDesc: getString('common.preparing'),
     taskIcon: { name: 'notification_icon', type: 'drawable' },
     color: '#00adb5',
@@ -102,7 +102,7 @@ export const createBackup = async (host: string, backupFolder: string) => {
   }).catch((e: Error) => {
     Notifications.scheduleNotificationAsync({
       content: {
-        title: getString('actions.backup.remote.backupInterruped'),
+        title: getString('backupScreen.remote.backupInterruped'),
         body: e.message,
       },
       trigger: null,
@@ -156,7 +156,7 @@ const remoteRestoreAction = async (taskData?: TaskData) => {
 
     await Notifications.scheduleNotificationAsync({
       content: {
-        title: getString('actions.backup.remote.restore'),
+        title: getString('backupScreen.remote.restore'),
         body: getString('common.done'),
       },
       trigger: null,
@@ -165,7 +165,7 @@ const remoteRestoreAction = async (taskData?: TaskData) => {
     if (BackgroundService.isRunning()) {
       await Notifications.scheduleNotificationAsync({
         content: {
-          title: getString('actions.backup.remote.restoreInterruped'),
+          title: getString('backupScreen.remote.restoreInterruped'),
           body: error.message,
         },
         trigger: null,
@@ -189,7 +189,7 @@ export const remoteRestore = async (host: string, backupFolder: string) => {
   }).catch((e: Error) => {
     Notifications.scheduleNotificationAsync({
       content: {
-        title: getString('actions.backup.remote.restoreInterruped'),
+        title: getString('backupScreen.remote.restoreInterruped'),
         body: e.message,
       },
       trigger: null,
