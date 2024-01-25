@@ -30,8 +30,10 @@
     },
     "download": {
       "chapterEmptyOrScrapeError": "Either chapter is empty or the app couldn't scrape it",
+      "chapterName": "Chapter: %{name}",
       "completed": "Download completed",
       "downloader": "Downloader",
+      "downloadingNovel": "Downloading: %{name}",
       "failed": "Download failed: %{message}",
       "serviceRunning": "Another service is running. Queued chapters"
     },
@@ -39,7 +41,9 @@
       "deleted": "History deleted."
     },
     "import": {
-      "error": "Import error"
+      "error": "Import Error",
+      "novel": "Import Novel",
+      "staticFiles": "Import Static Files"
     },
     "migrate": {
       "anotherServiceIsRunning": "Another service is running",
@@ -112,6 +116,7 @@
   "common": {
     "add": "Add",
     "all": "All",
+    "backup": "Backup",
     "cancel": "Cancel",
     "categories": "Categories",
     "chapters": "Chapters",
@@ -130,6 +135,7 @@
     "newUpdateAvailable": "New update available %{tagName}",
     "ok": "Ok",
     "reset": "Reset",
+    "restore": "Restore",
     "resume": "Resume",
     "retry": "Retry",
     "save": "Save",
@@ -250,7 +256,6 @@
           "yotsuba": "Yotsuba"
         }
       },
-      "backup": "Backup",
       "backupScreen": {
         "createBackupDeprecated": "Create backup (Deprecated)",
         "createBackupDeprecatedDesc": "Can be used to restore current library",

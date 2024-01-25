@@ -39,7 +39,7 @@ const BackupSettings = ({ navigation }: BackupSettingsScreenProps) => {
     <>
       <ScreenContainer theme={theme}>
         <Appbar
-          title={getString('moreScreen.settingsScreen.backup')}
+          title={getString('common.backup')}
           handleGoBack={() => navigation.goBack()}
           theme={theme}
         />

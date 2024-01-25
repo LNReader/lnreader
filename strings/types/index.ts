@@ -22,12 +22,16 @@ export interface StringMap {
   'actions.chapter.deletedAllDownloads': 'string';
   'actions.chapter.readChaptersDeleted': 'string';
   'actions.download.chapterEmptyOrScrapeError': 'string';
+  'actions.download.chapterName': 'string';
   'actions.download.completed': 'string';
   'actions.download.downloader': 'string';
+  'actions.download.downloadingNovel': 'string';
   'actions.download.failed': 'string';
   'actions.download.serviceRunning': 'string';
   'actions.history.deleted': 'string';
   'actions.import.error': 'string';
+  'actions.import.novel': 'string';
+  'actions.import.staticFiles': 'string';
   'actions.migrate.anotherServiceIsRunning': 'string';
   'actions.migrate.migrationError': 'string';
   'actions.migrate.novelMigrated': 'string';
@@ -83,6 +87,7 @@ export interface StringMap {
   'categories.setModalEmptyMsg': 'string';
   'common.add': 'string';
   'common.all': 'string';
+  'common.backup': 'string';
   'common.cancel': 'string';
   'common.categories': 'string';
   'common.chapters': 'string';
@@ -101,6 +106,7 @@ export interface StringMap {
   'common.newUpdateAvailable': 'string';
   'common.ok': 'string';
   'common.reset': 'string';
+  'common.restore': 'string';
   'common.resume': 'string';
   'common.retry': 'string';
   'common.save': 'string';
@@ -192,7 +198,6 @@ export interface StringMap {
   'moreScreen.settingsScreen.appearanceScreen.theme.teal': 'string';
   'moreScreen.settingsScreen.appearanceScreen.theme.turquoise': 'string';
   'moreScreen.settingsScreen.appearanceScreen.theme.yotsuba': 'string';
-  'moreScreen.settingsScreen.backup': 'string';
   'moreScreen.settingsScreen.backupScreen.createBackupDeprecated': 'string';
   'moreScreen.settingsScreen.backupScreen.createBackupDeprecatedDesc': 'string';
   'moreScreen.settingsScreen.backupScreen.createBackupWarning': 'string';

@@ -28,8 +28,12 @@ const downloadChapterAction = async (taskData?: TaskData) => {
     while (queue.length > 0) {
       const { novel, chapter } = queue[0];
       await BackgroundService.updateNotification({
-        taskTitle: `Downloading: ${novel.name}`,
-        taskDesc: `Chapter: ${chapter.name}`,
+        taskTitle: getString('actions.download.downloadingNovel', {
+          name: novel.name,
+        }),
+        taskDesc: getString('actions.download.chapterName', {
+          name: chapter.name,
+        }),
       });
       await downloadChapter(
         novel.pluginId,

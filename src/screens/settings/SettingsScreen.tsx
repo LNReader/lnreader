@@ -69,7 +69,7 @@ const SettingsScreen = ({ navigation }: SettingsScreenProps) => {
           theme={theme}
         />
         <List.Item
-          title={getString('moreScreen.settingsScreen.backup')}
+          title={getString('common.backup')}
           icon="cloud-upload-outline"
           onPress={() =>
             navigation.navigate('SettingsStack', {

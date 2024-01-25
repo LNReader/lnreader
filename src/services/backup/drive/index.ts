@@ -50,7 +50,9 @@ const driveBackupAction = async (taskData?: TaskData) => {
       const { taskType, subtasks } = await taskList[i];
       for (let j = 0; j < subtasks.length; j++) {
         await BackgroundService.updateNotification({
-          taskDesc: `Backup ${taskType} (${j}/${subtasks.length})`,
+          taskDesc: `${getString('common.backup')} ${taskType} (${j}/${
+            subtasks.length
+          })`,
           progressBar: {
             max: subtasks.length,
             value: j,
@@ -143,7 +145,9 @@ const driveRestoreAction = async (taskData?: TaskData) => {
       const { taskType, subtasks } = await taskList[i]();
       for (let j = 0; j < subtasks.length; j++) {
         await BackgroundService.updateNotification({
-          taskDesc: `Restore ${taskType} (${j}/${subtasks.length})`,
+          taskDesc: `${getString('common.restore')} ${taskType} (${j}/${
+            subtasks.length
+          })`,
           progressBar: {
             max: subtasks.length,
             value: j,

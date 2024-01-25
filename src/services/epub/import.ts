@@ -156,7 +156,7 @@ const importEpubAction = async (taskData?: TaskData) => {
     const filePathSet = new Set<string>();
     if (novel.chapters) {
       BackgroundService.updateNotification({
-        taskTitle: 'Import Novel',
+        taskTitle: getString('actions.import.novel'),
         taskDesc: '0/' + novel.chapters.length,
         progressBar: {
           value: 0,
@@ -191,7 +191,7 @@ const importEpubAction = async (taskData?: TaskData) => {
     // move static files
     const novelDir = NovelDownloadFolder + '/local/' + novelId;
     BackgroundService.updateNotification({
-      taskTitle: 'Import static files',
+      taskTitle: getString('actions.import.staticFiles'),
       taskDesc: '0/' + filePathSet.size,
       progressBar: {
         value: 0,

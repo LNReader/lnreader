@@ -30,8 +30,10 @@
     },
     "download": {
       "chapterEmptyOrScrapeError": "章节为空或应用无法抓取",
+      "chapterName": "章节：%{name}",
       "completed": "下载完成",
       "downloader": "下载器",
+      "downloadingNovel": "正在下载：%{name}",
       "failed": "下载失败：%{message}",
       "serviceRunning": "另一个服务正在运行。已加入队列"
     },
@@ -39,7 +41,9 @@
       "deleted": "历史记录已删除。"
     },
     "import": {
-      "error": "导入出错"
+      "error": "导入出错",
+      "novel": "导入小说",
+      "staticFiles": "导入静态文件"
     },
     "migrate": {
       "anotherServiceIsRunning": "另一个服务正在运行",
@@ -112,6 +116,7 @@
   "common": {
     "add": "添加",
     "all": "全部",
+    "backup": "备份",
     "cancel": "取消",
     "categories": "类别",
     "chapters": "章节",
@@ -130,6 +135,7 @@
     "newUpdateAvailable": "新的更新可用 %{tagName}",
     "ok": "确定",
     "reset": "重置",
+    "restore": "恢复",
     "resume": "继续",
     "retry": "重试",
     "save": "保存",
@@ -250,7 +256,6 @@
           "yotsuba": "四叶草"
         }
       },
-      "backup": "备份",
       "backupScreen": {
         "createBackupDeprecated": "创建备份（已弃用）",
         "createBackupDeprecatedDesc": "可用于恢复当前书库",
