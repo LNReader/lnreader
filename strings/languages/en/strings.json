@@ -144,6 +144,7 @@
     "name": "Name",
     "newUpdateAvailable": "New update available %{tagName}",
     "ok": "Ok",
+    "pause": "Pause",
     "preparing": "Preparing",
     "reset": "Reset",
     "restore": "Restore",
@@ -174,9 +175,7 @@
     "downloadChapters": "downloaded Chapters",
     "downloadsLower": "downloads",
     "noDownloads": "No downloads",
-    "pause": "Pause",
-    "removeDownloadsWarning": "Are you sure? All downloaded chapters will be deleted.",
-    "resume": "Resume"
+    "removeDownloadsWarning": "Are you sure? All downloaded chapters will be deleted."
   },
   "globalSearch": {
     "allSources": "all sources",

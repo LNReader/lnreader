@@ -93,8 +93,8 @@ const DownloadQueue = ({ navigation }: DownloadQueueScreenProps) => {
           color={theme.onPrimary}
           label={
             isDownloading
-              ? getString('downloadScreen.pause')
-              : getString('downloadScreen.resume')
+              ? getString('common.pause')
+              : getString('common.resume')
           }
           uppercase={false}
           icon={isDownloading ? 'pause' : 'play'}

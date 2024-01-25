@@ -115,6 +115,7 @@ export interface StringMap {
   'common.name': 'string';
   'common.newUpdateAvailable': 'string';
   'common.ok': 'string';
+  'common.pause': 'string';
   'common.preparing': 'string';
   'common.reset': 'string';
   'common.restore': 'string';
@@ -139,9 +140,7 @@ export interface StringMap {
   'downloadScreen.downloadChapters': 'string';
   'downloadScreen.downloadsLower': 'string';
   'downloadScreen.noDownloads': 'string';
-  'downloadScreen.pause': 'string';
   'downloadScreen.removeDownloadsWarning': 'string';
-  'downloadScreen.resume': 'string';
   'globalSearch.allSources': 'string';
   'globalSearch.pinnedSources': 'string';
   'globalSearch.searchIn': 'string';
