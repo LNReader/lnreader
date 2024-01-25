@@ -8,7 +8,6 @@ import { load } from 'cheerio';
 import dayjs from 'dayjs';
 import { NovelStatus, Plugin, PluginItem } from './types';
 import { FilterTypes } from './types/filterTypes';
-import { parseMadaraDate } from './helpers/parseDate';
 import { isUrlAbsolute } from './helpers/isAbsoluteUrl';
 import { fetchApi, fetchFile, fetchText } from './helpers/fetch';
 import { defaultCover } from './helpers/constants';
@@ -20,7 +19,6 @@ const packages: Record<string, any> = {
   'urlencode': { encode, decode },
   '@libs/novelStatus': { NovelStatus },
   '@libs/fetch': { fetchApi, fetchFile, fetchText },
-  '@libs/parseMadaraDate': { parseMadaraDate },
   '@libs/isAbsoluteUrl': { isUrlAbsolute },
   '@libs/filterInputs': { FilterTypes },
   '@libs/defaultCover': { defaultCover },
@@ -117,10 +115,9 @@ const fetchPlugins = async () => {
   // plugins host
   const githubUsername = 'LNReader';
   const githubRepository = 'lnreader-sources';
-  const githubBranch = 'master';
 
   const availablePlugins: Record<Language, Array<PluginItem>> = await fetch(
-    `https://raw.githubusercontent.com/${githubUsername}/${githubRepository}/${githubBranch}/.dist/${githubUsername}/plugins.min.json`,
+    `https://raw.githubusercontent.com/${githubUsername}/${githubRepository}/dist/.dist/plugins.min.json`,
   )
     .then(res => res.json())
     .catch(() => {
