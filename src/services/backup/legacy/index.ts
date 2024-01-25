@@ -84,7 +84,7 @@ export const restoreBackup = async (filePath?: string) => {
     }
     const notificationOptions = {
       taskName: 'Backup Restore',
-      taskTitle: 'Restoring backup',
+      taskTitle: getString('actions.backup.restorinBackup'),
       taskDesc: '(0/' + novels.length + ')',
       taskIcon: { name: 'notification_icon', type: 'drawable' },
       color: '#00adb5',

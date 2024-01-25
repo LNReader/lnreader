@@ -43,7 +43,7 @@ const updateLibrary = async (categoryId?: number) => {
 
   const notificationOptions = {
     taskName: 'Library Update',
-    taskTitle: 'Updating library',
+    taskTitle: getString('actions.updates.updatingLibrary'),
     taskDesc: '(0/' + libraryNovels.length + ')',
     taskIcon: { name: 'notification_icon', type: 'drawable' },
     color: '#00adb5',

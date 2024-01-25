@@ -100,8 +100,8 @@ const driveBackupAction = async (taskData?: TaskData) => {
 export const createBackup = async (backupFolder: DriveFile) => {
   return BackgroundService.start(driveBackupAction, {
     taskName: 'Drive Backup',
-    taskTitle: 'Drive Backup',
-    taskDesc: 'Preparing',
+    taskTitle: getString('actions.backup.drive.backup'),
+    taskDesc: getString('common.preparing'),
     taskIcon: { name: 'notification_icon', type: 'drawable' },
     color: '#00adb5',
     parameters: { delay: 500, backupFolder },

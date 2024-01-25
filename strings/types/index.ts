@@ -23,6 +23,7 @@ export interface StringMap {
   'actions.backup.remote.restore': 'string';
   'actions.backup.remote.restoreInterruped': 'string';
   'actions.backup.remote.unknownHost': 'string';
+  'actions.backup.restorinBackup': 'string';
   'actions.chapter.deleteChapterError': 'string';
   'actions.chapter.deletedAllDownloads': 'string';
   'actions.chapter.readChaptersDeleted': 'string';
@@ -30,6 +31,7 @@ export interface StringMap {
   'actions.download.chapterName': 'string';
   'actions.download.completed': 'string';
   'actions.download.downloader': 'string';
+  'actions.download.downloading': 'string';
   'actions.download.downloadingNovel': 'string';
   'actions.download.failed': 'string';
   'actions.download.serviceRunning': 'string';
@@ -38,11 +40,13 @@ export interface StringMap {
   'actions.import.novel': 'string';
   'actions.import.staticFiles': 'string';
   'actions.migrate.anotherServiceIsRunning': 'string';
+  'actions.migrate.migratingToNewSource': 'string';
   'actions.migrate.migrationError': 'string';
   'actions.migrate.novelMigrated': 'string';
   'actions.pluginNotFound': 'string';
   'actions.updates.libraryUpdated': 'string';
   'actions.updates.novelsUpdated': 'string';
+  'actions.updates.updatingLibrary': 'string';
   'advancedSettings.cachedNovelsDeletedToast': 'string';
   'advancedSettings.clearCachedNovels': 'string';
   'advancedSettings.clearCachedNovelsDesc': 'string';
@@ -111,6 +115,7 @@ export interface StringMap {
   'common.name': 'string';
   'common.newUpdateAvailable': 'string';
   'common.ok': 'string';
+  'common.preparing': 'string';
   'common.reset': 'string';
   'common.restore': 'string';
   'common.resume': 'string';

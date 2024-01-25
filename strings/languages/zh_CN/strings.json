@@ -26,7 +26,8 @@
         "restore": "自托管恢复",
         "restoreInterruped": "自托管恢复中断",
         "unknownHost": "未知主机"
-      }
+      },
+      "restorinBackup": "恢复备份"
     },
     "chapter": {
       "deleteChapterError": "无法删除章节文件夹",
@@ -38,6 +39,7 @@
       "chapterName": "章节：%{name}",
       "completed": "下载完成",
       "downloader": "下载器",
+      "downloading": "正在下载",
       "downloadingNovel": "正在下载：%{name}",
       "failed": "下载失败：%{message}",
       "serviceRunning": "另一个服务正在运行。已加入队列"
@@ -52,13 +54,15 @@
     },
     "migrate": {
       "anotherServiceIsRunning": "另一个服务正在运行",
+      "migratingToNewSource": "正在将 %{name} 迁移到新源",
       "migrationError": "迁移出错",
-      "novelMigrated": "小说迁移"
+      "novelMigrated": "小说迁移完成"
     },
     "pluginNotFound": "找不到插件！",
     "updates": {
       "libraryUpdated": "书库已更新",
-      "novelsUpdated": "已更新 %{num} 部小说"
+      "novelsUpdated": "已更新 %{num} 部小说",
+      "updatingLibrary": "更新书库"
     }
   },
   "advancedSettings": {
@@ -140,6 +144,7 @@
     "name": "名称",
     "newUpdateAvailable": "新的更新可用 %{tagName}",
     "ok": "确定",
+    "preparing": "准备中",
     "reset": "重置",
     "restore": "恢复",
     "resume": "继续",
@@ -424,7 +429,7 @@
       "publishingFinished": "出版完成",
       "unknown": "未知"
     },
-    "tracked": "记录进度中",
+    "tracked": "进度记录中",
     "tracking": "记录进度",
     "unknownStatus": "状态未知",
     "updatedToast": "已更新 %{name}"

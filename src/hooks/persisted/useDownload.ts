@@ -98,8 +98,8 @@ export default function useDownload() {
       if (!BackgroundService.isRunning()) {
         BackgroundService.start(downloadChapterAction, {
           taskName: 'Download chapters',
-          taskTitle: 'Downloading',
-          taskDesc: 'Preparing',
+          taskTitle: getString('actions.download.downloading'),
+          taskDesc: getString('common.preparing'),
           taskIcon: { name: 'notification_icon', type: 'drawable' },
           color: '#00adb5',
           parameters: { delay: 1000 },

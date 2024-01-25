@@ -93,8 +93,8 @@ const remoteBackupAction = async (taskData?: TaskData) => {
 export const createBackup = async (host: string, backupFolder: string) => {
   return BackgroundService.start(remoteBackupAction, {
     taskName: 'Self Host Backup',
-    taskTitle: 'Self Host Backup',
-    taskDesc: 'Preparing',
+    taskTitle: getString('actions.backup.remote.backup'),
+    taskDesc: getString('common.preparing'),
     taskIcon: { name: 'notification_icon', type: 'drawable' },
     color: '#00adb5',
     parameters: { delay: 200, backupFolder, host },

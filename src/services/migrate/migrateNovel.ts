@@ -81,7 +81,9 @@ export const migrateNovel = async (
 
     const options = {
       taskName: 'Migration',
-      taskTitle: `Migrating ${fromNovel.name} to new source`,
+      taskTitle: getString('actions.migrate.migratingToNewSource', {
+        name: fromNovel.name,
+      }),
       taskDesc: '(0/' + fromChapters.length + ')',
       taskIcon: {
         name: 'notification_icon',

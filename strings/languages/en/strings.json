@@ -26,7 +26,8 @@
         "restore": "Self Host Restore",
         "restoreInterruped": "Self Host Restore Interruped",
         "unknownHost": "Unknown host"
-      }
+      },
+      "restorinBackup": "Restoring backup"
     },
     "chapter": {
       "deleteChapterError": "Cant delete chapter chapter folder",
@@ -38,6 +39,7 @@
       "chapterName": "Chapter: %{name}",
       "completed": "Download completed",
       "downloader": "Downloader",
+      "downloading": "Downloading",
       "downloadingNovel": "Downloading: %{name}",
       "failed": "Download failed: %{message}",
       "serviceRunning": "Another service is running. Queued chapters"
@@ -52,13 +54,15 @@
     },
     "migrate": {
       "anotherServiceIsRunning": "Another service is running",
+      "migratingToNewSource": "Migrating %{name} to new source",
       "migrationError": "Migration error",
       "novelMigrated": "Novel Migrated"
     },
     "pluginNotFound": "Plugin not found!",
     "updates": {
       "libraryUpdated": "Library Updated",
-      "novelsUpdated": "%{num} novels updated"
+      "novelsUpdated": "%{num} novels updated",
+      "updatingLibrary": "Updating library"
     }
   },
   "advancedSettings": {
@@ -140,6 +144,7 @@
     "name": "Name",
     "newUpdateAvailable": "New update available %{tagName}",
     "ok": "Ok",
+    "preparing": "Preparing",
     "reset": "Reset",
     "restore": "Restore",
     "resume": "Resume",
