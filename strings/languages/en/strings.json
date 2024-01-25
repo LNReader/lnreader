@@ -24,14 +24,19 @@
       }
     },
     "chapter": {
+      "deleteChapterError": "Cant delete chapter chapter folder",
       "deletedAllDownloads": "Deleted all Downloads",
       "readChaptersDeleted": "Read chapters deleted"
     },
     "download": {
+      "chapterEmptyOrScrapeError": "Either chapter is empty or the app couldn't scrape it",
       "completed": "Download completed",
       "downloader": "Downloader",
       "failed": "Download failed: %{message}",
       "serviceRunning": "Another service is running. Queued chapters"
+    },
+    "history": {
+      "deleted": "History deleted."
     },
     "import": {
       "error": "Import error"
@@ -41,6 +46,7 @@
       "migrationError": "Migration error",
       "novelMigrated": "Novel Migrated"
     },
+    "pluginNotFound": "Plugin not found!",
     "updates": {
       "libraryUpdated": "Library Updated",
       "novelsUpdated": "%{num} novels updated"
@@ -400,11 +406,11 @@
     "status": {
       "cancelled": "Cancelled",
       "completed": "Completed",
+      "licensed": "Licensed",
       "onHiatus": "On Hiatus",
       "ongoing": "Ongoing",
-      "unknown": "Unknown",
-      "licensed": "Licensed",
-      "publishingFinished": "Publishing Finished"
+      "publishingFinished": "Publishing Finished",
+      "unknown": "Unknown"
     },
     "tracked": "Tracked",
     "tracking": "Tracking",

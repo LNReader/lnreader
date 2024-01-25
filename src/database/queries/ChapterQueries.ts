@@ -256,7 +256,7 @@ export const downloadChapter = async (
   try {
     const plugin = getPlugin(pluginId);
     if (!plugin) {
-      throw new Error('Plugin not found!');
+      throw new Error(getString('actions.pluginNotFound'));
     }
     const chapterText = await plugin.parseChapter(chapterUrl);
     if (chapterText && chapterText.length) {
@@ -268,7 +268,7 @@ export const downloadChapter = async (
         );
       });
     } else {
-      throw new Error("Either chapter is empty or the app couldn't scrape it");
+      throw new Error(getString('actions.download.chapterEmptyOrScrapeError'));
     }
   } catch (error) {
     throw error;
@@ -292,7 +292,7 @@ const deleteDownloadedFiles = async (
     }
     await RNFS.unlink(path);
   } catch (error) {
-    throw new Error('Cant delete chapter chapter folder');
+    throw new Error(getString('actions.chapter.deleteChapterError'));
   }
 };
 

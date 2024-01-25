@@ -24,14 +24,19 @@
       }
     },
     "chapter": {
+      "deleteChapterError": "无法删除章节文件夹",
       "deletedAllDownloads": "所有下载已删除",
       "readChaptersDeleted": "阅读章节已删除"
     },
     "download": {
+      "chapterEmptyOrScrapeError": "章节为空或应用无法抓取",
       "completed": "下载完成",
       "downloader": "下载器",
       "failed": "下载失败：%{message}",
       "serviceRunning": "另一个服务正在运行。已加入队列"
+    },
+    "history": {
+      "deleted": "历史记录已删除。"
     },
     "import": {
       "error": "导入出错"
@@ -41,6 +46,7 @@
       "migrationError": "迁移出错",
       "novelMigrated": "小说迁移"
     },
+    "pluginNotFound": "找不到插件！",
     "updates": {
       "libraryUpdated": "书库已更新",
       "novelsUpdated": "已更新 %{num} 部小说"
@@ -400,8 +406,8 @@
     "status": {
       "cancelled": "取消",
       "completed": "完结",
-      "onHiatus": "停更",
       "licensed": "已授权",
+      "onHiatus": "停更",
       "ongoing": "连载",
       "publishingFinished": "出版完成",
       "unknown": "未知"

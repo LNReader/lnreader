@@ -59,7 +59,7 @@ const downloadChapterAction = async (taskData?: TaskData) => {
     MMKVStorage.delete(BACKGROUND_ACTION);
     await Notifications.scheduleNotificationAsync({
       content: {
-        title: getString('actions.download.title'),
+        title: getString('actions.download.downloader'),
         body: getString('actions.download.completed'),
       },
       trigger: null,
