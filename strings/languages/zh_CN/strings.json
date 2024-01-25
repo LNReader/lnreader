@@ -461,7 +461,7 @@
       "scrollToCurrentChapter": "滚动到当前章节",
       "scrollToTop": "滚动到顶部"
     },
-    "emptyChapterMessage": "章节为空。\\n\\n请直接在 <a href='https://github.com/LNReader/lnreader-sources/issues/new/choose'>GitHub</a> 上反馈（如果在 WebView 中可用）。",
+    "emptyChapterMessage": "<p>章节为空。</p><p>请直接在 <a href='https://github.com/LNReader/lnreader-sources/issues/new/choose'>GitHub</a> 上反馈（如果在 WebView 中可用）。</p>",
     "finished": "已完成",
     "nextChapter": "下一章: %{name}",
     "noNextChapter": "没有下一章节",
