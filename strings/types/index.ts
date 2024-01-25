@@ -3,6 +3,33 @@
  */
 
 export interface StringMap {
+  'actions.backup.drive.backup': 'string';
+  'actions.backup.drive.backupInterruped': 'string';
+  'actions.backup.drive.restore': 'string';
+  'actions.backup.drive.restoreInterruped': 'string';
+  'actions.backup.legacy.backupCreated': 'string';
+  'actions.backup.legacy.libraryRestored': 'string';
+  'actions.backup.legacy.noAvailableBackup': 'string';
+  'actions.backup.legacy.noErrorNovel': 'string';
+  'actions.backup.legacy.novelsRestored': 'string';
+  'actions.backup.legacy.novelsRestoredError': 'string';
+  'actions.backup.legacy.pluginNotExist': 'string';
+  'actions.backup.remote.backup': 'string';
+  'actions.backup.remote.backupInterruped': 'string';
+  'actions.backup.remote.restore': 'string';
+  'actions.backup.remote.restoreInterruped': 'string';
+  'actions.chapter.deletedAllDownloads': 'string';
+  'actions.chapter.readChaptersDeleted': 'string';
+  'actions.download.completed': 'string';
+  'actions.download.downloader': 'string';
+  'actions.download.failed': 'string';
+  'actions.download.serviceRunning': 'string';
+  'actions.import.error': 'string';
+  'actions.migrate.anotherServiceIsRunning': 'string';
+  'actions.migrate.migrationError': 'string';
+  'actions.migrate.novelMigrated': 'string';
+  'actions.updates.libraryUpdated': 'string';
+  'actions.updates.novelsUpdated': 'string';
   'advancedSettings.cachedNovelsDeletedToast': 'string';
   'advancedSettings.clearCachedNovels': 'string';
   'advancedSettings.clearCachedNovelsDesc': 'string';
@@ -59,6 +86,7 @@ export interface StringMap {
   'common.delete': 'string';
   'common.deleted': 'string';
   'common.display': 'string';
+  'common.done': 'string';
   'common.downloads': 'string';
   'common.edit': 'string';
   'common.filter': 'string';
@@ -91,10 +119,6 @@ export interface StringMap {
   'downloadScreen.pause': 'string';
   'downloadScreen.removeDownloadsWarning': 'string';
   'downloadScreen.resume': 'string';
-  'downloader.completed': 'string';
-  'downloader.failed': 'string';
-  'downloader.serviceRunning': 'string';
-  'downloader.title': 'string';
   'globalSearch.allSources': 'string';
   'globalSearch.pinnedSources': 'string';
   'globalSearch.searchIn': 'string';
@@ -332,9 +356,6 @@ export interface StringMap {
   'statsScreen.titlesInLibrary': 'string';
   'statsScreen.totalChapters': 'string';
   'statsScreen.unreadChapters': 'string';
-  'toast.deletedAllDownloads': 'string';
-  'toast.readChaptersDeleted': 'string';
-  'toast.removedFromLibrary': 'string';
   'updates': 'string';
   'updatesScreen.deletedChapters': 'string';
   'updatesScreen.emptyView': 'string';

@@ -24,6 +24,7 @@ import {
   PROGRESS_PREFIX,
 } from '@hooks/persisted/useNovel';
 import { BACKGROUND_ACTION, BackgoundAction } from '@services/constants';
+import { getString } from '@strings/translations';
 
 const db = SQLite.openDatabase('lnreader.db');
 
@@ -59,7 +60,7 @@ export const migrateNovel = async (
 ) => {
   const currentAction = MMKVStorage.getString(BACKGROUND_ACTION);
   if (currentAction) {
-    showToast('Another service is running');
+    showToast(getString('actions.migrate.anotherServiceIsRunning'));
     return;
   }
   try {
@@ -216,7 +217,7 @@ export const migrateNovel = async (
             setProgress(toProgresss);
             Notifications.scheduleNotificationAsync({
               content: {
-                title: 'Novel Migrated',
+                title: getString('actions.migrate.novelMigrated'),
                 body: fromNovel.name,
               },
               trigger: null,
@@ -232,7 +233,7 @@ export const migrateNovel = async (
   } catch (error: any) {
     Notifications.scheduleNotificationAsync({
       content: {
-        title: 'Migration error',
+        title: getString('actions.migrate.migrationError'),
         body: error.message,
       },
       trigger: null,

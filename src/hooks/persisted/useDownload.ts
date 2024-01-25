@@ -40,7 +40,9 @@ const downloadChapterAction = async (taskData?: TaskData) => {
         Notifications.scheduleNotificationAsync({
           content: {
             title: chapter.name,
-            body: getString('downloader.failed', { message: error.message }),
+            body: getString('actions.download.failed', {
+              message: error.message,
+            }),
           },
           trigger: null,
         }),
@@ -57,8 +59,8 @@ const downloadChapterAction = async (taskData?: TaskData) => {
     MMKVStorage.delete(BACKGROUND_ACTION);
     await Notifications.scheduleNotificationAsync({
       content: {
-        title: getString('downloader.title'),
-        body: getString('downloader.completed'),
+        title: getString('actions.download.title'),
+        body: getString('actions.download.completed'),
       },
       trigger: null,
     });
@@ -101,7 +103,7 @@ export default function useDownload() {
         });
       }
     } else {
-      showToast(getString('downloader.serviceRunning'));
+      showToast(getString('actions.download.serviceRunning'));
     }
   };
 

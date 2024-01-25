@@ -18,6 +18,7 @@ import {
   retoreDownload,
 } from './restoreTasks';
 import { BACKGROUND_ACTION, BackgoundAction } from '@services/constants';
+import { getString } from '@strings/translations';
 
 interface TaskData {
   delay: number;
@@ -66,8 +67,8 @@ const remoteBackupAction = async (taskData?: TaskData) => {
 
     await Notifications.scheduleNotificationAsync({
       content: {
-        title: 'Self Host Backup',
-        body: 'Done',
+        title: getString('actions.backup.remote.backup'),
+        body: getString('common.done'),
       },
       trigger: null,
     });
@@ -75,7 +76,7 @@ const remoteBackupAction = async (taskData?: TaskData) => {
     if (BackgroundService.isRunning()) {
       await Notifications.scheduleNotificationAsync({
         content: {
-          title: 'Self Host Backup Interruped',
+          title: getString('actions.backup.remote.backupInterruped'),
           body: error.message,
         },
         trigger: null,
@@ -99,7 +100,7 @@ export const createBackup = async (host: string, backupFolder: string) => {
   }).catch((e: Error) => {
     Notifications.scheduleNotificationAsync({
       content: {
-        title: 'Self Host Backup Interruped',
+        title: getString('actions.backup.remote.backupInterruped'),
         body: e.message,
       },
       trigger: null,
@@ -151,8 +152,8 @@ const remoteRestoreAction = async (taskData?: TaskData) => {
 
     await Notifications.scheduleNotificationAsync({
       content: {
-        title: 'Self Host Restore',
-        body: 'Done',
+        title: getString('actions.backup.remote.restore'),
+        body: getString('common.done'),
       },
       trigger: null,
     });
@@ -160,7 +161,7 @@ const remoteRestoreAction = async (taskData?: TaskData) => {
     if (BackgroundService.isRunning()) {
       await Notifications.scheduleNotificationAsync({
         content: {
-          title: 'Self Host Restore Interruped',
+          title: getString('actions.backup.remote.restoreInterruped'),
           body: error.message,
         },
         trigger: null,
@@ -184,7 +185,7 @@ export const remoteRestore = async (host: string, backupFolder: string) => {
   }).catch((e: Error) => {
     Notifications.scheduleNotificationAsync({
       content: {
-        title: 'Self Host Restore Interruped',
+        title: getString('actions.backup.remote.restoreInterruped'),
         body: e.message,
       },
       trigger: null,

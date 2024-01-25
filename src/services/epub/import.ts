@@ -16,6 +16,7 @@ import {
 import { LOCAL_PLUGIN_ID } from '@plugins/pluginManager';
 import { MMKVStorage } from '@utils/mmkv/mmkv';
 import { BACKGROUND_ACTION, BackgoundAction } from '@services/constants';
+import { getString } from '@strings/translations';
 
 interface TaskData {
   delay: number;
@@ -216,15 +217,15 @@ const importEpubAction = async (taskData?: TaskData) => {
     }
     Notifications.scheduleNotificationAsync({
       content: {
-        title: 'Import Epub',
-        body: 'Done',
+        title: getString('advancedSettings.importEpub'),
+        body: getString('common.done'),
       },
       trigger: null,
     });
   } catch (e: any) {
     await Notifications.scheduleNotificationAsync({
       content: {
-        title: 'Import error',
+        title: getString('actions.import.error'),
         body: e.message,
       },
       trigger: null,
@@ -269,7 +270,7 @@ export const importEpub = async () => {
     // importEpubAction catches itself
     await Notifications.scheduleNotificationAsync({
       content: {
-        title: 'Import error',
+        title: getString('actions.import.error'),
         body: e.message,
       },
       trigger: null,

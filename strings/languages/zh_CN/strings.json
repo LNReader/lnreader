@@ -1,4 +1,51 @@
 {
+  "actions": {
+    "backup": {
+      "drive": {
+        "backup": "云端硬盘备份",
+        "backupInterruped": "云端硬盘备份中断",
+        "restore": "云端硬盘恢复",
+        "restoreInterruped": "云端硬盘恢复中断"
+      },
+      "legacy": {
+        "backupCreated": "备份已创建 %{fileName}",
+        "libraryRestored": "书库已恢复",
+        "noAvailableBackup": "没有可用的备份",
+        "noErrorNovel": "没有错误的小说",
+        "novelsRestored": "%{num} 部小说已恢复",
+        "novelsRestoredError": "%{num} 部小说出现错误。请使用恢复错误备份重试。",
+        "pluginNotExist": "ID 为 %{id} 的插件不存在！"
+      },
+      "remote": {
+        "backup": "自托管备份",
+        "backupInterruped": "自托管备份中断",
+        "restore": "自托管恢复",
+        "restoreInterruped": "自托管恢复中断"
+      }
+    },
+    "chapter": {
+      "deletedAllDownloads": "所有下载已删除",
+      "readChaptersDeleted": "阅读章节已删除"
+    },
+    "download": {
+      "completed": "下载完成",
+      "downloader": "下载器",
+      "failed": "下载失败：%{message}",
+      "serviceRunning": "另一个服务正在运行。已加入队列"
+    },
+    "import": {
+      "error": "导入出错"
+    },
+    "migrate": {
+      "anotherServiceIsRunning": "另一个服务正在运行",
+      "migrationError": "迁移出错",
+      "novelMigrated": "小说迁移"
+    },
+    "updates": {
+      "libraryUpdated": "书库已更新",
+      "novelsUpdated": "已更新 %{num} 部小说"
+    }
+  },
   "advancedSettings": {
     "cachedNovelsDeletedToast": "缓存的小说已删除",
     "clearCachedNovels": "清除缓存的小说",
@@ -35,7 +82,7 @@
     },
     "noSource": "您的图书馆没有该源的任何小说",
     "pinned": "已固定",
-    "removeFromLibrary": "从书库移除",
+    "removeFromLibrary": "已从书库中删除",
     "searchbar": "搜索资源",
     "selectNovel": "选择小说",
     "uninstalledPlugin": "已卸载 %{name}",
@@ -66,6 +113,7 @@
     "delete": "删除",
     "deleted": "已删除 %{name}",
     "display": "显示",
+    "done": "完成",
     "downloads": "下载",
     "edit": "编辑",
     "filter": "筛选",
@@ -104,12 +152,6 @@
     "pause": "暂停",
     "removeDownloadsWarning": "您确定吗？所有下载的章节都将被删除。",
     "resume": "继续"
-  },
-  "downloader": {
-    "completed": "下载完成",
-    "failed": "下载失败：%{message}",
-    "serviceRunning": "另一个服务正在运行。已加入队列",
-    "title": "下载器"
   },
   "globalSearch": {
     "allSources": "所有源",
@@ -353,8 +395,7 @@
     },
     "migrate": "迁移",
     "noSummary": "无简介",
-    "order": {
-    },
+    "order": {},
     "progress": "进度 %{progress} %",
     "startReadingChapters": "开始阅读 %{name}",
     "status": {
@@ -415,11 +456,6 @@
     "titlesInLibrary": "书库中的小说",
     "totalChapters": "统计数据",
     "unreadChapters": "未读章节"
-  },
-  "toast": {
-    "deletedAllDownloads": "所有下载已删除",
-    "readChaptersDeleted": "阅读章节已删除",
-    "removedFromLibrary": "已从书库中删除"
   },
   "updates": "更新",
   "updatesScreen": {

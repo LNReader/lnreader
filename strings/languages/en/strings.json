@@ -1,4 +1,51 @@
 {
+  "actions": {
+    "backup": {
+      "drive": {
+        "backup": "Drive Backup",
+        "backupInterruped": "Drive Backup Interruped",
+        "restore": "Drive Restore",
+        "restoreInterruped": "Drive Restore Interruped"
+      },
+      "legacy": {
+        "backupCreated": "Backup created %{fileName}",
+        "libraryRestored": "Library Restored",
+        "noAvailableBackup": "There's no available backup",
+        "noErrorNovel": "There's no error novel",
+        "novelsRestored": "%{num} novels restored",
+        "novelsRestoredError": "%{num} novels got errors. Please use Restore error backup to try again.",
+        "pluginNotExist": "Plugin with id %{id} doenst exist!"
+      },
+      "remote": {
+        "backup": "Self Host Backup",
+        "backupInterruped": "Self Host Backup Interruped",
+        "restore": "Self Host Restore",
+        "restoreInterruped": "Self Host Restore Interruped"
+      }
+    },
+    "chapter": {
+      "deletedAllDownloads": "Deleted all Downloads",
+      "readChaptersDeleted": "Read chapters deleted"
+    },
+    "download": {
+      "completed": "Download completed",
+      "downloader": "Downloader",
+      "failed": "Download failed: %{message}",
+      "serviceRunning": "Another service is running. Queued chapters"
+    },
+    "import": {
+      "error": "Import error"
+    },
+    "migrate": {
+      "anotherServiceIsRunning": "Another service is running",
+      "migrationError": "Migration error",
+      "novelMigrated": "Novel Migrated"
+    },
+    "updates": {
+      "libraryUpdated": "Library Updated",
+      "novelsUpdated": "%{num} novels updated"
+    }
+  },
   "advancedSettings": {
     "cachedNovelsDeletedToast": "Cached novels deleted",
     "clearCachedNovels": "Clear cached novels",
@@ -35,7 +82,7 @@
     },
     "noSource": "Your library does not have any novels from this source",
     "pinned": "Pinned",
-    "removeFromLibrary": "Removed from library",
+    "removeFromLibrary": "Removed from Library",
     "searchbar": "Search sources",
     "selectNovel": "Select Novel",
     "uninstalledPlugin": "Uninstalled %{name}",
@@ -66,6 +113,7 @@
     "delete": "Delete",
     "deleted": "Deleted %{name}",
     "display": "Display",
+    "done": "Done",
     "downloads": "Downloads",
     "edit": "Edit",
     "filter": "Filter",
@@ -104,12 +152,6 @@
     "pause": "Pause",
     "removeDownloadsWarning": "Are you sure? All downloaded chapters will be deleted.",
     "resume": "Resume"
-  },
-  "downloader": {
-    "completed": "Download completed",
-    "failed": "Download failed: %{message}",
-    "serviceRunning": "Another service is running. Queued chapters",
-    "title": "Downloader"
   },
   "globalSearch": {
     "allSources": "all sources",
@@ -353,8 +395,6 @@
     },
     "migrate": "Migrate",
     "noSummary": "No summary",
-    "order": {
-    },
     "progress": "Progress %{progress} %",
     "startReadingChapters": "Start reading %{name}",
     "status": {
@@ -415,11 +455,6 @@
     "titlesInLibrary": "Titles in library",
     "totalChapters": "Total chapters",
     "unreadChapters": "Unread chapters"
-  },
-  "toast": {
-    "deletedAllDownloads": "Deleted all Downloads",
-    "readChaptersDeleted": "Read chapters deleted",
-    "removedFromLibrary": "Removed from Library"
   },
   "updates": "Updates",
   "updatesScreen": {

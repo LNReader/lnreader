@@ -349,7 +349,7 @@ export const deleteDownloads = async (chapters: DownloadedChapter[]) => {
   );
   db.transaction(tx => {
     tx.executeSql('UPDATE Chapter SET isDownloaded = 0', [], () =>
-      showToast(getString('toast.deletedAllDownloads')),
+      showToast(getString('actions.chapter.deletedAllDownloads')),
     );
   });
 };
@@ -384,7 +384,7 @@ export const deleteReadChaptersFromDb = async () => {
   db.transaction(tx => {
     tx.executeSql(updateIsDownloadedQuery, [], noop, txnErrorCallback);
   });
-  showToast(getString('toast.readChaptersDeleted'));
+  showToast(getString('actions.chapter.readChaptersDeleted'));
 };
 
 const bookmarkChapterQuery = 'UPDATE Chapter SET bookmark = ? WHERE id = ?';
