@@ -312,8 +312,8 @@ export interface StringMap {
   'novelScreen.startReadingChapters': 'string';
   'novelScreen.status.cancelled': 'string';
   'novelScreen.status.completed': 'string';
-  'novelScreen.status.hiatus': 'string';
-  'novelScreen.status.onGoing': 'string';
+  'novelScreen.status.onHiatus': 'string';
+  'novelScreen.status.ongoing': 'string';
   'novelScreen.status.unknown': 'string';
   'novelScreen.status.licensed': 'string';
   'novelScreen.status.publishingFinished': 'string';

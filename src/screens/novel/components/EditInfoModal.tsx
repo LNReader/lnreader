@@ -16,6 +16,8 @@ import { getString } from '@strings/translations';
 import { Button } from '@components';
 import { ThemeColors } from '@theme/types';
 import { NovelInfo } from '@database/types';
+import { NovelStatus } from '@plugins/types';
+import { translateNovelStatus } from '@utils/translateEnum';
 
 interface EditInfoModalProps {
   theme: ThemeColors;
@@ -38,7 +40,13 @@ const EditInfoModal = ({
     setNovel({ ...novel, genres: tags?.join(',') });
   };
 
-  const status = ['Ongoing', 'Hiatus', 'Completed', 'Unknown', 'Cancelled'];
+  const status = [
+    NovelStatus.Ongoing,
+    NovelStatus.OnHiatus,
+    NovelStatus.Completed,
+    NovelStatus.Unknown,
+    NovelStatus.Cancelled,
+  ];
 
   return (
     <Portal>
@@ -93,7 +101,7 @@ const EditInfoModal = ({
                           : theme.onSurfaceVariant,
                     }}
                   >
-                    {item}
+                    {translateNovelStatus(item)}
                   </Text>
                 </Pressable>
               </View>

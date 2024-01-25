@@ -29,6 +29,8 @@ import { NovelScreenProps } from '@navigators/types';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { UseBooleanReturnType } from '@hooks';
 import { useAppSettings } from '@hooks/persisted';
+import { NovelStatus } from '@plugins/types';
+import { translateNovelStatus } from '@utils/translateEnum';
 
 interface NovelInfoHeaderProps {
   novel: NovelData;
@@ -62,10 +64,10 @@ const NovelInfoHeader = ({
   const { hideBackdrop = false } = useAppSettings();
 
   const getStatusIcon = useCallback((status?: string) => {
-    if (status === 'Ongoing') {
+    if (status === NovelStatus.Ongoing) {
       return 'clock-outline';
     }
-    if (status === 'Completed') {
+    if (status === NovelStatus.Completed) {
       return 'check-all';
     }
     return 'help';
@@ -135,7 +137,8 @@ const NovelInfoHeader = ({
                 style={{ marginRight: 4 }}
               />
               <NovelInfo theme={theme}>
-                {(novel.status || getString('novelScreen.unknownStatus')) +
+                {(translateNovelStatus(novel.status) ||
+                  getString('novelScreen.unknownStatus')) +
                   ' • ' +
                   novel.pluginId}
               </NovelInfo>

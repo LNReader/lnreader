@@ -400,8 +400,8 @@
     "status": {
       "cancelled": "Cancelled",
       "completed": "Completed",
-      "hiatus": "Hiatus",
-      "onGoing": "Ongoing",
+      "onHiatus": "On Hiatus",
+      "ongoing": "Ongoing",
       "unknown": "Unknown",
       "licensed": "Licensed",
       "publishingFinished": "Publishing Finished"

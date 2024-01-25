@@ -400,9 +400,9 @@
     "status": {
       "cancelled": "取消",
       "completed": "完结",
-      "hiatus": "停更",
+      "onHiatus": "停更",
       "licensed": "已授权",
-      "onGoing": "连载",
+      "ongoing": "连载",
       "publishingFinished": "出版完成",
       "unknown": "未知"
     },
