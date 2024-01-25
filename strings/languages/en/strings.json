@@ -452,6 +452,7 @@
     },
     "emptyChapterMessage": "Chapter is empty.\\n\\nReport on <a href='https://github.com/LNReader/lnreader-sources/issues/new/choose'>github</a> if it's available in webview.",
     "finished": "Finished",
+    "nextChapter": "Next: %{name}",
     "noNextChapter": "There's no next chapter",
     "noPreviousChapter": "There's no previous chapter"
   },

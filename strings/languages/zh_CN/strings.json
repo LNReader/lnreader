@@ -420,7 +420,7 @@
     "tracked": "记录进度中",
     "tracking": "记录进度",
     "unknownStatus": "状态未知",
-    "updatedToast": "已更新 %{名称}"
+    "updatedToast": "已更新 %{name}"
   },
   "readerScreen": {
     "bottomSheet": {
@@ -452,6 +452,7 @@
     },
     "emptyChapterMessage": "章节为空。\\n\\n请直接在 <a href='https://github.com/LNReader/lnreader-sources/issues/new/choose'>GitHub</a> 上反馈（如果在 WebView 中可用）。",
     "finished": "已完成",
+    "nextChapter": "下一章: %{name}",
     "noNextChapter": "没有下一章节",
     "noPreviousChapter": "没有上一章节"
   },

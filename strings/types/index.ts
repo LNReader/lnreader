@@ -355,6 +355,7 @@ export interface StringMap {
   'readerScreen.drawer.scrollToTop': 'string';
   'readerScreen.emptyChapterMessage': 'string';
   'readerScreen.finished': 'string';
+  'readerScreen.nextChapter': 'string';
   'readerScreen.noNextChapter': 'string';
   'readerScreen.noPreviousChapter': 'string';
   'sourceScreen.noResultsFound': 'string';

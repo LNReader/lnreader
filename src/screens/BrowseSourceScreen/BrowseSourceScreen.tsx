@@ -173,7 +173,7 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
               styles.filterFab,
               { backgroundColor: theme.primary, marginBottom: bottom },
             ]}
-            label={'Filter'}
+            label={getString('common.filter')}
             uppercase={false}
             color={theme.onPrimary}
             onPress={() => filterSheetRef?.current?.present()}
